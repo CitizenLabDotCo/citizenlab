@@ -6,7 +6,8 @@ import { Multiloc, UploadFile } from 'typings';
 // form
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
+import { string, object, mixed } from 'yup';
+import validateMultiloc from 'utils/yup/validateMultiloc';
 import RHFInputMultilocWithLocaleSwitcher from 'components/UI/RHFInputMultilocWithLocaleSwitcher';
 import RHFQuillMultilocWithLocaleSwitcher from 'components/UI/RHFQuillMultilocWithLocaleSwitcher';
 import RHFSubmit from 'components/UI/RHFSubmit';
@@ -65,61 +66,19 @@ const PageForm = ({
   const page = usePage({ pageId });
   const appConfig = useAppConfiguration();
 
-  const schema = yup
-    .object({
-      nav_bar_item_title_multiloc: yup.lazy((obj) => {
-        const keys = Object.keys(obj);
-
-        return yup.object(
-          keys.reduce(
-            (acc, curr) => (
-              (acc[curr] = yup
-                .string()
-                .required(formatMessage(messages.emptyNavbarItemTitleError))),
-              acc
-            ),
-            {}
-          )
-        );
-      }),
-      title_multiloc: yup.lazy((obj) => {
-        const keys = Object.keys(obj);
-
-        return yup.object(
-          keys.reduce(
-            (acc, curr) => (
-              (acc[curr] = yup
-                .string()
-                .required(formatMessage(messages.emptyTitleError))),
-              acc
-            ),
-            {}
-          )
-        );
-      }),
-      body_multiloc: yup.lazy((obj) => {
-        const keys = Object.keys(obj);
-
-        return yup.object(
-          keys.reduce(
-            (acc, curr) => (
-              (acc[curr] = yup
-                .string()
-                .required(formatMessage(messages.emptyDescriptionError))),
-              acc
-            ),
-            {}
-          )
-        );
-      }),
-
-      slug: yup
-        .string()
-        .matches(slugRexEx, formatMessage(messages.slugRegexError))
-        .required(formatMessage(messages.emptySlugError)),
-      local_page_files: yup.mixed(),
-    })
-    .required();
+  const schema = object({
+    nav_bar_item_title_multiloc: validateMultiloc(
+      formatMessage(messages.emptyNavbarItemTitleError)
+    ),
+    title_multiloc: validateMultiloc(formatMessage(messages.emptyTitleError)),
+    body_multiloc: validateMultiloc(
+      formatMessage(messages.emptyDescriptionError)
+    ),
+    slug: string()
+      .matches(slugRexEx, formatMessage(messages.slugRegexError))
+      .required(formatMessage(messages.emptySlugError)),
+    local_page_files: mixed(),
+  });
 
   const methods = useForm({
     defaultValues,

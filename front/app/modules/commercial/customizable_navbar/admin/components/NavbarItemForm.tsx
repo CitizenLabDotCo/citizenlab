@@ -9,7 +9,8 @@ import { SectionField } from 'components/admin/Section';
 import RHFInputMultilocWithLocaleSwitcher from 'components/UI/RHFInputMultilocWithLocaleSwitcher';
 import { yupResolver } from '@hookform/resolvers/yup';
 import RHFSubmit from 'components/UI/RHFSubmit';
-import * as yup from 'yup';
+import { object } from 'yup';
+import validateMultiloc from 'utils/yup/validateMultiloc';
 
 // intl
 import messages from './messages';
@@ -30,25 +31,11 @@ const NavbarItemForm = ({
   defaultValues,
   intl: { formatMessage },
 }: PageFormProps) => {
-  const schema = yup
-    .object({
-      nav_bar_item_title_multiloc: yup.lazy((obj) => {
-        const keys = Object.keys(obj);
-
-        return yup.object(
-          keys.reduce(
-            (acc, curr) => (
-              (acc[curr] = yup
-                .string()
-                .required(formatMessage(messages.emptyNavbarItemTitleError))),
-              acc
-            ),
-            {}
-          )
-        );
-      }),
-    })
-    .required();
+  const schema = object({
+    nav_bar_item_title_multiloc: validateMultiloc(
+      formatMessage(messages.emptyNavbarItemTitleError)
+    ),
+  });
 
   const methods = useForm({
     defaultValues,
