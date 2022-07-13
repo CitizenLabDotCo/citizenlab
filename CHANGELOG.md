@@ -2,6 +2,17 @@
 
 ## Next release
 
+### Changed
+
+- [CL-870] Move "navigation" to primary nav item
+- [CL-1093] Pin Node.js version in package.json
+
+## 2022-07-11
+
+### Fixed
+
+- Project publication status now defaults to draft on creation but remains published if it was already published
+
 ### Added
 
 - [CL-1096] Add representativeness score to header of representativeness chart card
@@ -36,6 +47,7 @@
 ### Fixed
 
 - [CL-1083] XLSX export issues with custom fields
+
 
 ## 2022-07-04
 

@@ -1,21 +1,33 @@
 import React, { lazy } from 'react';
 import PageLoading from 'components/UI/PageLoading';
-import { Outlet as RouterOutlet } from 'react-router-dom';
+import moduleConfiguration from 'modules';
 
+const CustomNavbarContainer = React.lazy(
+  () => import('containers/Admin/pages-menu')
+);
+const CustomNavbarSettingsComponent = React.lazy(
+  () => import('./NavigationSettings')
+);
 const BottomInfoForm = lazy(() => import('./containers/BottomInfoForm'));
 const HeroBannerForm = lazy(() => import('./containers/HeroBannerForm'));
+
+export const PAGES_MENU_PATH = '/admin/pages-menu';
 
 export default () => ({
   path: 'pages-menu',
   element: (
     <PageLoading>
-      <div>
-        {/* pages-and-menu home */}
-        <RouterOutlet />
-      </div>
+      <CustomNavbarContainer />
     </PageLoading>
   ),
   children: [
+    {
+      // to be changed when refactoring
+      // path: '' should only be used for redirects on
+      // index. Search the codebase for examples
+      path: '',
+      element: <CustomNavbarSettingsComponent />,
+    },
     {
       path: 'bottom-info-section',
       element: (
@@ -32,5 +44,6 @@ export default () => ({
         </PageLoading>
       ),
     },
+    ...moduleConfiguration.routes['admin.pages-menu'],
   ],
 });
