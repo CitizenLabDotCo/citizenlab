@@ -8,7 +8,6 @@ import createAdminUsersRoutes from './users/routes';
 import invitationsRoutes from './invitations/routes';
 import createAdminProjectsRoutes from './projects/routes';
 import settingsRoutes from './settings/routes';
-import flexiblePageRoutes from './pages-menu/routes';
 import pagesRoutes from './pages/routes';
 import createAdminMessagingRoutes from './messaging/routes';
 import ideasRoutes from './ideas/routes';
@@ -114,7 +113,6 @@ const createAdminRoutes = () => {
       createAdminInitiativesRoutes(),
       createAdminUsersRoutes(),
       createAdminProjectsRoutes(),
-      flexiblePageRoutes(),
       settingsRoutes(),
       pagesRoutes(),
       pagesAndMenuRoutes(),
