@@ -4,11 +4,11 @@ import { Box, Title } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 import AdminViewButton from './AdminViewButton';
 import messages from './messages';
-import {
-  THomepageSection,
-  updateHomepageSettings,
-} from 'services/homepageSettings';
 import { MessageDescriptor } from 'utils/cl-intl';
+import {
+  updateHomepageSettings,
+  THomepageSection,
+} from 'services/homepageSettings';
 import useHomepageSettings from 'hooks/useHomepageSettings';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -21,11 +21,13 @@ type TSectionToggleData = {
 const EditHomepage = () => {
   const homepageSettings = useHomepageSettings();
 
-  const [sectionTogglesData, setSectionTogglesData] = useState<
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [sectionTogglesData, _setSectionTogglesData] = useState<
     TSectionToggleData[]
   >([
     {
-      sectionEnabledSettingName: 'customizable_homepage_banner',
+      sectionEnabledSettingName: 'customizable_homepage_banner_enabled',
       titleMessageDescriptor: messages.heroBanner,
       tooltipMessageDescriptor: messages.heroBannerTooltip,
     },
@@ -46,15 +48,25 @@ const EditHomepage = () => {
     },
   ]);
 
-  const handleOnChangeToggle = (sectionName: THomepageSection) => () => {
+  const handleOnChangeToggle = (sectionName: THomepageSection) => async () => {
+    if (isNilOrError(homepageSettings)) {
+      return;
+    }
+    setIsLoading(true);
     try {
-      if (!isNilOrError(homepageSettings)) {
-        updateHomepageSettings({
-          [sectionName]: !homepageSettings.attributes[sectionName],
-        });
-      }
-    } catch (error) {}
+      await updateHomepageSettings({
+        [sectionName]: !homepageSettings.data.attributes[sectionName],
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+  if (isNilOrError(homepageSettings)) {
+    return null;
+  }
 
   const handleOnClick = () => {};
 
@@ -79,8 +91,8 @@ const EditHomepage = () => {
 
          Also font-weight is an issue again.
 
-         Should I use a Box for this? Or go with a StyledWarning?
-         */}
+       Should I use a Box for this? Or go with a StyledWarning?
+       */}
           <Box mb="28px">
             <Warning>
               Your platform homepage consists of the following sections. You can
@@ -93,18 +105,19 @@ const EditHomepage = () => {
               titleMessageDescriptor,
               tooltipMessageDescriptor,
             }) => {
-              const checked =
-                homepageSettings.attributes[sectionEnabledSettingName];
-
               return (
                 <SectionToggle
+                  key={sectionEnabledSettingName}
+                  checked={
+                    homepageSettings.data.attributes[sectionEnabledSettingName]
+                  }
                   onChangeSectionToggle={handleOnChangeToggle(
                     sectionEnabledSettingName
                   )}
                   onClickEditButton={handleOnClick}
                   titleMessageDescriptor={titleMessageDescriptor}
                   tooltipMessageDescriptor={tooltipMessageDescriptor}
-                  checked={checked}
+                  disabled={isLoading}
                 />
               );
             }

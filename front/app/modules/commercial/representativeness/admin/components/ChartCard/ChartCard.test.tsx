@@ -25,6 +25,12 @@ const generateData = (n: number) => {
 
 let mockData = generateData(4);
 
+jest.mock('../../hooks/useRScore', () => () => ({
+  attributes: {
+    score: 0.8,
+  },
+}));
+
 jest.mock('../../hooks/useReferenceData', () => () => ({
   referenceData: mockData,
   includedUsers: {
@@ -48,6 +54,14 @@ describe('<ChartCard />', () => {
     render(<ChartCard userCustomField={userCustomField} />);
 
     expect(screen.getByText('FIELD TITLE')).toBeInTheDocument();
+  });
+
+  it('shows representativeness score', () => {
+    render(<ChartCard userCustomField={userCustomField} />);
+
+    expect(screen.getByText('Representativeness score:')).toBeInTheDocument();
+    expect(screen.getByText('80')).toBeInTheDocument();
+    expect(screen.getByText('/100')).toBeInTheDocument();
   });
 });
 

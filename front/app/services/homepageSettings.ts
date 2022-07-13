@@ -11,7 +11,7 @@ export type THomepageAppConfigSetting =
 
 // * THomepageSection *
 export interface IHomepageSectionMap {
-  customizable_homepage_banner: 'customizable_homepage_banner';
+  customizable_homepage_banner_enabled: 'customizable_homepage_banner_enabled';
   top_info_section_enabled: 'top_info_section_enabled';
   projects_enabled: 'projects_enabled';
   bottom_info_section_enabled: 'bottom_info_section_enabled';
@@ -30,7 +30,7 @@ export interface IHomepageSettings {
   id: string;
   // To check
   type: string;
-  attributes: IHomepageSettingsAttributes;
+  data: { attributes: IHomepageSettingsAttributes };
 }
 
 type KeysOfBooleanValues<T> = {
@@ -75,14 +75,14 @@ export function homepageSettingsStream() {
 export async function updateHomepageSettings(
   // still to update, won't work for header_bg, which has different types when
   // updating vs. getting the data.
-  newHomepageSettings: Partial<IHomepageSettings>
+  newHomepageSettings: Partial<IHomepageSettingsAttributes>
 ) {
   const homepageSettings = await streams.update<IHomepageSettings>(
     homepageSettingsEndpoint,
     // There's only 1 object with homepage settings
     // As opposed to e.g. many ideas. So we can give it a dataId we like.
     'home_page_settings',
-    { home_pages: newHomepageSettings }
+    { home_page: newHomepageSettings }
   );
   // is this needed?
   await homepageSettingsStream().fetch();

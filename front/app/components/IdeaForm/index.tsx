@@ -1024,7 +1024,9 @@ class IdeaForm extends PureComponent<
                 id="idea-image-dropzone"
                 images={imageFile}
                 imagePreviewRatio={135 / 298}
-                acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+                acceptedFileTypes={{
+                  'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+                }}
                 onAdd={this.handleUploadOnAdd}
                 onRemove={this.handleUploadOnRemove}
               />

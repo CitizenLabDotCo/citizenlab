@@ -2,13 +2,53 @@
 
 ## Next release
 
-### Added
-
-- [CL-1058] - Add desktop preview in content builder
-
 ### Changed
 
 - [CL-870] Move "navigation" to primary nav item
+- [CL-1093] Pin Node.js version in package.json
+
+## 2022-07-11
+
+### Fixed
+
+- Project publication status now defaults to draft on creation but remains published if it was already published
+
+### Added
+
+- [CL-1058] - Add desktop preview in content builder
+- [CL-1096] Add representativeness score to header of representativeness chart card
+
+## 2022-07-07
+
+### Fixed
+
+- [TEC-198] Various permission issues
+  - Route access for project folder moderators now works correctly
+  - Project folder moderators can now create a project and select the appropriate folder for it
+  - Route access for admins is now checked correctly
+  - Project/folder moderators now see the dashboard data correctly
+
+## 2022-07-06
+
+### Added
+
+- [CL-1085] Add link to support article when there are errors during embed in the content builder
+
+### Changed
+
+- [CL-875] "en" locale is shown as "en-US" in admin HQ
+
+## 2022-07-05
+
+### Added
+
+- [CL-1058] Add desktop preview in content builder
+- [CL-1001] Added noindex meta tag to user profile pages to reduce the SEO effectiveness of external spam links
+
+### Fixed
+
+- [CL-1083] XLSX export issues with custom fields
+
 
 ## 2022-07-04
 

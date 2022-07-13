@@ -75,6 +75,7 @@ import { Locale } from 'typings';
 // utils
 import openVerificationModalIfSuccessOrError from './openVerificationModalIfSuccessOrError';
 import openSignUpInModalIfNecessary from './openSignUpInModalIfNecessary';
+import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 
 const Container = styled.div`
   display: flex;
@@ -470,7 +471,7 @@ class App extends PureComponent<Props, State> {
       !isInitiativeFormPage &&
       !isIdeaEditPage &&
       !isInitiativeEditPage;
-
+    const { pathname } = removeLocale(location.pathname);
     return (
       <>
         {tenant && visible && (
@@ -529,7 +530,10 @@ class App extends PureComponent<Props, State> {
                 </ErrorBoundary>
                 <InnerContainer>
                   <HasPermission
-                    item={{ type: 'route', path: location.pathname }}
+                    item={{
+                      type: 'route',
+                      path: pathname,
+                    }}
                     action="access"
                   >
                     <ErrorBoundary>{children}</ErrorBoundary>

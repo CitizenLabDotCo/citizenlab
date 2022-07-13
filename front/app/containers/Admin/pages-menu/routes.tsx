@@ -21,6 +21,8 @@ function adminPagesMenuHomepagePath() {
 export { adminPagesMenuHomepagePath };
 
 // routes
+export const PAGES_MENU_PATH = '/admin/pages-menu';
+
 export default () => ({
   path: ADMIN_PAGE_PATH,
   element: (

@@ -9,14 +9,14 @@ describe('Locale switcher', () => {
   });
 
   it('can switch to nl-BE', () => {
-    cy.get('.e2e-langage-dropdown-toggle').click();
+    cy.get('.e2e-language-dropdown-toggle').click();
     cy.get('.e2e-langage-nl-BE').click();
     cy.location('pathname').should('eq', '/nl-BE/');
     cy.get('#e2e-navbar-login-menu-item').contains('Inloggen');
   });
 
   it('keeps the picked locale', () => {
-    cy.get('.e2e-langage-dropdown-toggle').click();
+    cy.get('.e2e-language-dropdown-toggle').click();
     cy.get('.e2e-langage-nl-BE').click();
     cy.location('pathname').should('eq', '/nl-BE/');
     cy.goToLandingPage();
@@ -27,7 +27,7 @@ describe('Locale switcher', () => {
   });
 
   it('gets you to the right locale on sign-up', () => {
-    cy.get('.e2e-langage-dropdown-toggle').click();
+    cy.get('.e2e-language-dropdown-toggle').click();
     cy.get('.e2e-langage-nl-BE').click();
     cy.location('pathname').should('eq', '/nl-BE/');
     cy.login('admin@citizenlab.co', 'democracy2.0');
