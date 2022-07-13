@@ -135,7 +135,6 @@ const PageEditor = ({ className, pageSlug }: Props) => {
 
   if (!isNilOrError(page) && !isNilOrError(appConfigurationLocales)) {
     const pageId = page.id;
-
     return (
       <EditorWrapper
         className={`${className} e2e-page-editor editor-${pageSlug}`}
@@ -161,6 +160,12 @@ const PageEditor = ({ className, pageSlug }: Props) => {
           <EditionForm>
             <PageForm
               pageId={pageId}
+              defaultValues={{
+                title_multiloc: page.attributes.title_multiloc,
+                body_multiloc: page.attributes.body_multiloc,
+                slug: page.attributes.slug,
+                local_page_files: remotePageFiles,
+              }}
               hideSlugInput
               onSubmit={handleSubmit(pageId, remotePageFiles)}
             />

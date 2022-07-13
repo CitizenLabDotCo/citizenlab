@@ -65,7 +65,6 @@ const PageForm = ({
   const locale = useLocale();
   const page = usePage({ pageId });
   const appConfig = useAppConfiguration();
-
   const schema = object({
     title_multiloc: validateMultiloc(formatMessage(messages.emptyTitleError)),
     body_multiloc: validateMultiloc(

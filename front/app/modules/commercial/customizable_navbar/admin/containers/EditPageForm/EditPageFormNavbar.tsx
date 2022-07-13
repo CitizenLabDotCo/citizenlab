@@ -13,7 +13,7 @@ import T from 'components/T';
 import { isNilOrError } from 'utils/helperUtils';
 import { fontSizes } from 'utils/styleUtils';
 import clHistory from 'utils/cl-router/history';
-import { createPageUpdateData } from './utils';
+import { createPageUpdateData, getInitialFormValues } from './utils';
 import { NAVIGATION_PATH } from '..';
 
 // services
@@ -89,7 +89,11 @@ const EditPageFormNavbar = ({ params: { pageId } }: WithRouterProps) => {
       <Title>
         <T value={page.attributes.title_multiloc} />
       </Title>
-      <PageFormWithNavbarNameField pageId={pageId} onSubmit={handleSubmit} />
+      <PageFormWithNavbarNameField
+        pageId={pageId}
+        onSubmit={handleSubmit}
+        defaultValues={getInitialFormValues(page, remotePageFiles)}
+      />
     </div>
   );
 };
