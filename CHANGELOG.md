@@ -1,5 +1,11 @@
 # Changelog
 
+## 2022-07-13
+
+### Changed
+
+- Update existing accessibility statement, following re-certification
+
 ## 2022-07-06
 
 ### Added
