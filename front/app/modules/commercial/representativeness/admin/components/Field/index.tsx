@@ -12,6 +12,7 @@ import {
 // hooks
 import useUserCustomFieldOptions from 'modules/commercial/user_custom_fields/hooks/useUserCustomFieldOptions';
 import useReferenceDistribution from '../../hooks/useReferenceDistribution';
+import useUserCustomField from 'modules/commercial/user_custom_fields/hooks/useUserCustomField';
 
 // components
 import { Accordion, ListItem } from '@citizenlab/cl2-component-library';
@@ -44,9 +45,6 @@ interface InnerProps extends Props {
   referenceDataUploaded: boolean;
 }
 
-// TODO derive this from reference distribution or whatever
-const AGE_GROUPS_SET = false;
-
 const Field = ({
   userCustomFieldId,
   titleMultiloc,
@@ -65,6 +63,9 @@ const Field = ({
       referenceDistribution
     )
   );
+
+  // TODO remove
+  const userCustomField = useUserCustomField(userCustomFieldId);
 
   useEffect(() => {
     if (formValues === null) {
@@ -132,6 +133,15 @@ const Field = ({
 
     setSubmitting(false);
   };
+
+  // TODO remove
+  if (isNilOrError(userCustomField)) {
+    return null;
+  }
+
+  // TODO derive this from reference distribution or whatever
+  const AGE_GROUPS_SET =
+    userCustomField.attributes.key === 'birthyear' ? false : undefined;
 
   const status = getStatus(
     formValues,
