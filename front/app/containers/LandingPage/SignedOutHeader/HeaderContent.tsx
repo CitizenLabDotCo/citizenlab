@@ -13,7 +13,6 @@ import messages from '../messages';
 import { injectIntl } from 'utils/cl-intl';
 import Outlet from 'components/Outlet';
 import SignUpButton from '../SignUpButton';
-import useHomepageSettings from 'hooks/useHomepageSettings';
 import useHomepageSettingsFeatureFlag from 'hooks/useHomepageSettingsFeatureFlag';
 
 const Container = styled.div<{
@@ -146,7 +145,6 @@ const HeaderContent = ({
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const appConfiguration = useAppConfiguration();
-  const homepageSettings = useHomepageSettings();
   const localize = useLocalize();
 
   const signUpIn = (event: React.FormEvent) => {
@@ -163,7 +161,7 @@ const HeaderContent = ({
     appConfigSettingName: 'customizable_homepage_banner',
   });
 
-  if (!isNilOrError(appConfiguration) && !isNilOrError(homepageSettings)) {
+  if (!isNilOrError(appConfiguration)) {
     const coreSettings = appConfiguration.data.attributes.settings.core;
     const headerTitle = coreSettings.header_title
       ? localize(coreSettings.header_title)
