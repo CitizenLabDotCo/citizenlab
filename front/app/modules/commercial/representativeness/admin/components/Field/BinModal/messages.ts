@@ -40,5 +40,9 @@ export default defineMessages({
   applyExampleGrouping: {
     id: 'app.containers.AdminPage.DashboardPage.components.Field.BinModal.applyExampleGrouping',
     defaultMessage: 'Apply example grouping',
-  }
+  },
+  addAnAgeGroup: {
+    id: 'app.containers.AdminPage.DashboardPage.components.Field.BinModal.addAnAgeGroup',
+    defaultMessage: 'Add an age group',
+  },
 });

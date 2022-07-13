@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 // components
 import Modal from 'components/UI/Modal';
-import { Box, Icon, Text } from '@citizenlab/cl2-component-library';
+import { Box, Icon, Text, Button } from '@citizenlab/cl2-component-library';
 import BinInputs from './BinInputs';
 
 // i18n
@@ -115,6 +115,10 @@ const BinModal = ({ open, onClose }: Props) => {
           onUpdateUpperBound={handleUpdateUpperBound}
           onRemoveBin={handleRemoveBin}
         />
+
+        <Button icon="plus-circle" mt="16px" bgColor={colors.lightGreyishBlue}>
+          <FormattedMessage {...messages.addAnAgeGroup} />
+        </Button>
       </Box>
     </Modal>
   );
