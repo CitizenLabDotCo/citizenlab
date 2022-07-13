@@ -40,7 +40,7 @@ import {
   updateAppConfiguration,
   IUpdatedAppConfigurationProperties,
   IAppConfigurationData,
-  TAppConfigurationSetting,
+  TAppConfigurationSettingWithEnabled,
 } from 'services/appConfiguration';
 
 // Utils
@@ -261,7 +261,7 @@ class SettingsGeneralTab extends PureComponent<
     }
   };
 
-  handleSettingChange = (settingName: TAppConfigurationSetting) => {
+  handleSettingChange = (settingName: TAppConfigurationSettingWithEnabled) => {
     const { appConfiguration } = this.state;
 
     if (!isNilOrError(appConfiguration)) {

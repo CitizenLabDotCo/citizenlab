@@ -5,6 +5,10 @@ const homepageSettingsEndpoint = `${API_PATH}/home_page`;
 
 // type definitions
 
+export type THomepageAppConfigSetting =
+  | 'events_widget'
+  | 'customizable_homepage_banner';
+
 // * THomepageSection *
 export interface IHomepageSectionMap {
   customizable_homepage_banner: 'customizable_homepage_banner';

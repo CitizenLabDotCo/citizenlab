@@ -1,4 +1,7 @@
-import { THomepageEnabledSetting } from 'services/homepageSettings';
+import {
+  THomepageEnabledSetting,
+  THomepageAppConfigSetting,
+} from 'services/homepageSettings';
 import { TAppConfigurationSetting } from 'services/appConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
 import useHomepageSettings from './useHomepageSettings';
@@ -20,7 +23,7 @@ type TSectionSetting = Exclude<
 
 export type THomepageAppConfigSettingName = Extract<
   TAppConfigurationSetting,
-  'events_widget' | 'customizable_homepage_banner'
+  THomepageAppConfigSetting
 >;
 
 // If we deal with a section whose allowed value needs to be checked

@@ -2,7 +2,7 @@ import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { ImageSizes, Multiloc, Locale } from 'typings';
 import { TCategory } from 'components/ConsentManager/destinations';
-
+import { THomepageAppConfigSetting } from 'services/homepageSettings';
 export const currentAppConfigurationEndpoint = `${API_PATH}/app_configuration`;
 
 export interface AppConfigurationFeature {
@@ -11,6 +11,10 @@ export interface AppConfigurationFeature {
 }
 
 export type TAppConfigurationSetting = keyof IAppConfigurationSettings;
+export type TAppConfigurationSettingWithEnabled = Exclude<
+  TAppConfigurationSetting,
+  THomepageAppConfigSetting
+>;
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
 
 export type IAppConfigurationSettingsCore = {
