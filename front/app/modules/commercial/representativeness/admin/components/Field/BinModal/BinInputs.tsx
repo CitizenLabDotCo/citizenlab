@@ -31,11 +31,8 @@ const BinInputs = ({ bins, ...otherProps }: Props) => (
   </Box>
 );
 
-interface RowProps {
-  bins: Bins;
+interface RowProps extends Props {
   binIndex: number;
-  onUpdateLowerBound: (binIndex: number, newValue: number | null) => void;
-  onUpdateUpperBound: (newValue: number | null) => void;
 }
 
 const BinInputRow = injectIntl(
