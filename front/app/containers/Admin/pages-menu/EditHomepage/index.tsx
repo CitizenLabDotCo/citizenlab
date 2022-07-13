@@ -4,7 +4,7 @@ import { Box, Title } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 import AdminViewButton from './AdminViewButton';
 import messages from './messages';
-import { MessageDescriptor } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import {
   updateHomepageSettings,
   THomepageSection,
@@ -72,7 +72,9 @@ const EditHomepage = () => {
     <>
       <Box display="flex" alignItems="center" mb="12px">
         {/* Title should have no default margins. If I set margin to 0, it still gets overwritten. */}
-        <Title variant="h2">Homepage</Title>
+        <Title variant="h2">
+          <FormattedMessage {...messages.homepageTitle} />
+        </Title>
         {/* Should this happen with a Box? */}
         <Box ml="auto">
           <AdminViewButton
@@ -92,8 +94,7 @@ const EditHomepage = () => {
        */}
         <Box mb="28px">
           <Warning>
-            Your platform homepage consists of the following sections. You can
-            turn them on/off and edit them as required.
+            <FormattedMessage {...messages.sectionDescription} />
           </Warning>
         </Box>
         {sectionTogglesData.map(
