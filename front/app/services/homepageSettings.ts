@@ -3,11 +3,19 @@ import streams from 'utils/streams';
 import { ImageSizes, Multiloc } from 'typings';
 const homepageSettingsEndpoint = `${API_PATH}/home_page`;
 
-// type definitions
+// Enabled values for sections that have a corresponding
+// setting in appConfiguration.ts
+export type TAppConfigSectionSetting = Extract<
+  THomepageEnabledSetting,
+  'events_widget_enabled' | 'customizable_homepage_banner_enabled'
+>;
 
-export type THomepageAppConfigSetting =
-  | 'events_widget'
-  | 'customizable_homepage_banner';
+// Enabled values for sections that DON'T have a corresponding
+// setting in appConfiguration.ts (are regular sections)
+export type TSectionSetting = Exclude<
+  THomepageEnabledSetting,
+  TAppConfigSectionSetting
+>;
 
 // * THomepageSection *
 export interface IHomepageSectionMap {
@@ -33,9 +41,9 @@ export interface IHomepageSettings {
   data: { attributes: IHomepageSettingsAttributes };
 }
 
-export type THomepageEnabledSetting = keyof IHomepageEnabledSetting;
+export type THomepageEnabledSetting = keyof IHomepageEnabledSettings;
 
-export interface IHomepageSettingsAttributes {
+export interface IHomepageSettingsAttributes extends IHomepageEnabledSettings {
   // are these values always there?
   top_info_section_multiloc: Multiloc;
   bottom_info_section_multiloc: Multiloc;
@@ -51,7 +59,7 @@ export interface IHomepageSettingsAttributes {
   pinned_admin_publication_ids: string[];
 }
 
-interface IHomepageEnabledSetting extends IHomepageSettingsAttributes {
+interface IHomepageEnabledSettings {
   top_info_section_enabled: boolean;
   bottom_info_section_enabled: boolean;
   // move to module

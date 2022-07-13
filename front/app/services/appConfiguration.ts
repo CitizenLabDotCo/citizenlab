@@ -2,7 +2,6 @@ import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { ImageSizes, Multiloc, Locale } from 'typings';
 import { TCategory } from 'components/ConsentManager/destinations';
-import { THomepageAppConfigSetting } from 'services/homepageSettings';
 export const currentAppConfigurationEndpoint = `${API_PATH}/app_configuration`;
 
 export interface AppConfigurationFeature {
@@ -11,10 +10,17 @@ export interface AppConfigurationFeature {
 }
 
 export type TAppConfigurationSetting = keyof IAppConfigurationSettings;
+
+// Setting that have their enabled values in homepageSettings.
+// Their allowed value is still in appConfiguration.
+export type THomepageSetting = 'events_widget' | 'customizable_homepage_banner';
+
+// All appConfig setting names except THomepageSetting
 export type TAppConfigurationSettingWithEnabled = Exclude<
   TAppConfigurationSetting,
-  THomepageAppConfigSetting
+  THomepageSetting
 >;
+
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
 
 export type IAppConfigurationSettingsCore = {

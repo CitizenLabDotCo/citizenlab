@@ -1,30 +1,11 @@
 import {
-  THomepageEnabledSetting,
-  THomepageAppConfigSetting,
+  TAppConfigSectionSetting,
+  TSectionSetting,
 } from 'services/homepageSettings';
-import { TAppConfigurationSetting } from 'services/appConfiguration';
+import { THomepageSetting } from 'services/appConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
 import useHomepageSettings from './useHomepageSettings';
 import useAppConfiguration from './useAppConfiguration';
-
-// Enabled values for sections that have a corresponding
-// setting in appConfiguration.ts
-export type TAppConfigSectionSetting = Extract<
-  THomepageEnabledSetting,
-  'events_widget_enabled' | 'customizable_homepage_banner_enabled'
->;
-
-// Enabled values for sections that DON'T have a corresponding
-// setting in appConfiguration.ts (are regular sections)
-type TSectionSetting = Exclude<
-  THomepageEnabledSetting,
-  TAppConfigSectionSetting
->;
-
-export type THomepageAppConfigSettingName = Extract<
-  TAppConfigurationSetting,
-  THomepageAppConfigSetting
->;
 
 // If we deal with a section whose allowed value needs to be checked
 // in appConfiguration, we require the appConfiguration setting name.
@@ -33,7 +14,7 @@ type Parameters = FeatureSectionParameters | RegularSectionParameters;
 
 type FeatureSectionParameters = {
   homepageEnabledSetting: TAppConfigSectionSetting;
-  appConfigSettingName: THomepageAppConfigSettingName;
+  appConfigSettingName: THomepageSetting;
 };
 
 type RegularSectionParameters = {
@@ -61,7 +42,7 @@ export default function useHomepageSettingsFeatureFlag({
     !appConfigSettingName ||
     (!isNilOrError(appConfigSetting) ? appConfigSetting.allowed : false);
   const isEnabled = !isNilOrError(homepageSettings)
-    ? homepageSettings.attributes[homepageEnabledSetting]
+    ? homepageSettings.data.attributes[homepageEnabledSetting]
     : false;
 
   return isAllowed && isEnabled;

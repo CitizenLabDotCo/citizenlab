@@ -2,28 +2,21 @@ import { useState, useEffect } from 'react';
 import {
   currentAppConfigurationStream,
   IAppConfiguration,
-  TAppConfigurationSetting,
+  TAppConfigurationSettingWithEnabled,
+  THomepageSetting,
 } from 'services/appConfiguration';
-import { THomepageAppConfigSettingName } from 'hooks/useHomepageSettingsFeatureFlag';
-
-// All appConfig setting names except those that should be checked
-// in homepageSettings/useHomepageSettingsFeatureFlag
-export type TSettingName = Exclude<
-  TAppConfigurationSetting,
-  THomepageAppConfigSettingName
->;
 
 export type Parameters = HomepageSettingProps | AppConfigSettingProps;
 
-// For THomepageAppConfigSettingName, you can only use
-// this hook to check the allowed value, that is in appConfiguration
+// For THomepageSetting, you can only use
+// this hook to check the allowed value, which still resides in appConfiguration
 type HomepageSettingProps = {
-  name: THomepageAppConfigSettingName;
+  name: THomepageSetting;
   onlyCheckAllowed: true;
 };
 
 type AppConfigSettingProps = {
-  name: TSettingName;
+  name: TAppConfigurationSettingWithEnabled;
   onlyCheckAllowed?: boolean;
 };
 
