@@ -6,7 +6,7 @@ export const validateBins = (bins: Bins) => {
   }
 
   return true;
-}
+};
 
 export const updateLowerBound = (
   bins: Bins,
@@ -17,28 +17,22 @@ export const updateLowerBound = (
   clonedBins[binIndex] = newValue;
 
   return clonedBins;
-}
+};
 
-export const updateUpperBound = (
-  bins: Bins,
-  newValue: number | null
-): Bins => {
+export const updateUpperBound = (bins: Bins, newValue: number | null): Bins => {
   const clonedBins = [...bins];
   clonedBins[clonedBins.length - 1] = newValue;
 
   return clonedBins;
-}
+};
 
 const ABSOLUTE_MIN = 0;
 const ABSOLUTE_MAX = 130;
 
-export const getLowerBoundLimits = (
-  bins: Bins,
-  binIndex: number
-) => ([
+export const getLowerBoundLimits = (bins: Bins, binIndex: number) => [
   getLowerBoundMin(bins, binIndex),
-  getLowerBoundMax(bins, binIndex)
-])
+  getLowerBoundMax(bins, binIndex),
+];
 
 const getLowerBoundMin = (bins: Bins, binIndex: number) => {
   if (binIndex === 0) return ABSOLUTE_MIN;
@@ -47,12 +41,12 @@ const getLowerBoundMin = (bins: Bins, binIndex: number) => {
     const bin = bins[i];
 
     if (bin !== null) {
-      return bin + ((binIndex - i) * 2);
+      return bin + (binIndex - i) * 2;
     }
   }
 
   return ABSOLUTE_MIN + binIndex * 2;
-}
+};
 
 const getLowerBoundMax = (bins: Bins, binIndex: number) => {
   if (binIndex === bins.length - 2) {
@@ -69,26 +63,44 @@ const getLowerBoundMax = (bins: Bins, binIndex: number) => {
     const bin = bins[i];
 
     if (bin !== null) {
-      return bin - ((i - binIndex) * 2)
+      return bin - (i - binIndex) * 2;
     }
   }
 
   const upperBound = bins[bins.length - 1];
 
   return upperBound === null
-    ? ABSOLUTE_MAX - ((bins.length - binIndex) * 2) + 3
-    : upperBound - ((bins.length - binIndex) * 2) + 3
-}
+    ? ABSOLUTE_MAX - (bins.length - binIndex) * 2 + 3
+    : upperBound - (bins.length - binIndex) * 2 + 3;
+};
 
 export const getUpperBoundLimits = (bins: Bins) => {
   const lowerBoundLastBin = bins[bins.length - 2];
 
-  const lastLowerBoundMin = lowerBoundLastBin === null
-    ? getLowerBoundMin(bins, bins.length - 2)
-    : lowerBoundLastBin
+  const lastLowerBoundMin =
+    lowerBoundLastBin === null
+      ? getLowerBoundMin(bins, bins.length - 2)
+      : lowerBoundLastBin;
 
-  return [
-    lastLowerBoundMin + 1,
-    ABSOLUTE_MAX
-  ]
-}
+  return [lastLowerBoundMin + 1, ABSOLUTE_MAX];
+};
+
+const defined = (bound: string | undefined) =>
+  bound !== undefined && bound !== '';
+
+export const parseLabel = (
+  lowerBound: string | undefined,
+  upperBound: string | undefined,
+  isLastBin: boolean,
+  andOverMessage: string
+) => {
+  if (isLastBin && defined(lowerBound) && !defined(upperBound)) {
+    return andOverMessage;
+  }
+
+  if (defined(lowerBound) && defined(upperBound)) {
+    return `${lowerBound}-${upperBound}`;
+  }
+
+  return '';
+};

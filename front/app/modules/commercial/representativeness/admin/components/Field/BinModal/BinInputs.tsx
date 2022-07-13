@@ -10,7 +10,7 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
 // utils
-import { getLowerBoundLimits, getUpperBoundLimits } from './utils';
+import { getLowerBoundLimits, getUpperBoundLimits, parseLabel } from './utils';
 import { clamp } from 'lodash-es';
 
 // typings
@@ -38,9 +38,6 @@ interface RowProps {
   onUpdateUpperBound: (newValue: number | null) => void;
 }
 
-const withinRange = (value: number, lower: number, upper: number) =>
-  value >= lower && value <= upper;
-
 const BinInputRow = injectIntl(
   ({
     bins,
@@ -50,50 +47,54 @@ const BinInputRow = injectIntl(
     intl: { formatMessage },
   }: RowProps & InjectedIntlProps) => {
     const lowerBound = bins[binIndex];
-    const nextLowerBound = bins[binIndex + 1];
-    const upperBound = nextLowerBound === null ? null : nextLowerBound - 1;
-    
+    const nextBound = bins[binIndex + 1];
+
     const isLastBin = binIndex === bins.length - 2;
     const [lowerBoundMin, lowerBoundMax] = getLowerBoundLimits(bins, binIndex);
     const [upperBoundMin, upperBoundMax] = getUpperBoundLimits(bins);
 
-    const [tempLowerBound, setTempLowerBound] = useState<number | null>(lowerBound);
-    const [tempUpperBound, setTempUpperBound] = useState<number | null>(upperBound);
+    const [currentLowerBound, setCurrentLowerBound] = useState<
+      string | undefined
+    >();
+    const [currentUpperBound, setCurrentUpperBound] = useState<
+      string | undefined
+    >();
 
-    const displayLowerBound // TODO
-
-    const handleChangeLowerBound = (newValueStr: string) => {
-      setTempLowerBound(newValueStr === '' ? null : +newValueStr)
-    };
+    const lowerBoundDisplayValue = currentLowerBound ?? lowerBound?.toString();
+    const upperBoundDisplayValue = isLastBin
+      ? currentUpperBound ?? nextBound?.toString()
+      : nextBound === null
+      ? undefined
+      : (nextBound - 1).toString();
 
     const handleBlurLowerBound = () => {
-      if (tempLowerBound === lowerBound) {
-        return;
+      if (currentLowerBound === undefined) return;
+
+      const newValue =
+        currentLowerBound === ''
+          ? null
+          : clamp(+currentLowerBound, lowerBoundMin, lowerBoundMax);
+
+      if (newValue !== lowerBound) {
+        onUpdateLowerBound(binIndex, newValue);
       }
 
-      onUpdateLowerBound(
-        binIndex, 
-        tempLowerBound === null
-          ? tempLowerBound
-          : clamp(tempLowerBound, lowerBoundMin, lowerBoundMax)
-      )
-    };
-
-    const handleChangeUpperBound = (newValueStr: string) => {
-      setTempUpperBound(newValueStr === '' ? null : +newValueStr);
+      setCurrentLowerBound(undefined);
     };
 
     const handleBlurUpperBound = () => {
-      if (tempUpperBound === upperBound) {
-        return;
+      if (currentUpperBound === undefined) return;
+
+      const newValue =
+        currentUpperBound === ''
+          ? null
+          : clamp(+currentUpperBound, upperBoundMin, upperBoundMax);
+
+      if (newValue !== nextBound) {
+        onUpdateUpperBound(newValue);
       }
 
-      onUpdateLowerBound(
-        binIndex, 
-        tempLowerBound === null
-          ? tempLowerBound
-          : clamp(tempLowerBound, lowerBoundMin, lowerBoundMax)
-      )
+      setCurrentUpperBound(undefined);
     };
 
     return (
@@ -104,32 +105,35 @@ const BinInputRow = injectIntl(
         <Box width="25%" pr="24px" display="flex" alignItems="center">
           <Input
             type="number"
-            value={}
+            value={lowerBoundDisplayValue}
             min={lowerBoundMin.toString()}
             max={lowerBoundMax.toString()}
-            onChange={handleChangeLowerBound}
+            onChange={setCurrentLowerBound}
             onBlur={handleBlurLowerBound}
           />
         </Box>
         <Box width="25%" pr="24px" display="flex" alignItems="center">
           <Input
             type="number"
-            value={}
+            value={upperBoundDisplayValue}
             disabled={!isLastBin}
             placeholder={
               isLastBin ? formatMessage(messages.andOver) : undefined
             }
             min={upperBoundMin.toString()}
             max={upperBoundMax.toString()}
-            onChange={handleChangeUpperBound}
+            onChange={setCurrentUpperBound}
             onBlur={handleBlurUpperBound}
           />
         </Box>
         <Box width="25%">
           <Text variant="bodyS" fontWeight="bold" color="adminTextColor">
-            {upperBound !== null
-              ? `${lowerBound}-${upperBound}`
-              : formatMessage(messages.ageAndOver, { age: lowerBound })}
+            {parseLabel(
+              lowerBoundDisplayValue,
+              upperBoundDisplayValue,
+              isLastBin,
+              formatMessage(messages.ageAndOver, { age: lowerBound })
+            )}
           </Text>
         </Box>
       </Box>
