@@ -4,7 +4,7 @@ import { Box, Title } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 import AdminViewButton from './AdminViewButton';
 import messages from './messages';
-import { MessageDescriptor } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import {
   updateHomepageSettings,
   THomepageSection,
@@ -64,28 +64,27 @@ const EditHomepage = () => {
     }
   };
 
+  const handleOnClick = () => {};
+
   if (isNilOrError(homepageSettings)) {
     return null;
   }
 
-  const handleOnClick = () => {};
-
-  if (!isNilOrError(homepageSettings)) {
-    return (
+  return (
+    <Box display="flex" alignItems="center" mb="12px">
+      {/* Title should have no default margins. If I set margin to 0, it still gets overwritten. */}
+      <Title variant="h2">
+        <FormattedMessage {...messages.homepageTitle} />
+      </Title>
+      {/* Should this happen with a Box? */}
+      <Box ml="auto">
+        <AdminViewButton
+          buttonTextMessageDescriptor={messages.viewPage}
+          linkTo="/"
+        />
+      </Box>
       <>
-        <Box display="flex" alignItems="center" mb="12px">
-          {/* Title should have no default margins. If I set margin to 0, it still gets overwritten. */}
-          <Title variant="h2">Homepage</Title>
-          {/* Should this happen with a Box? */}
-          <Box ml="auto">
-            <AdminViewButton
-              buttonTextMessageDescriptor={messages.viewPage}
-              linkTo="/"
-            />
-          </Box>
-        </Box>
-        <div>
-          {/*
+        {/*
          How do we deal with margins on Title to not make the tech debt worse here?
            + be consistent
 
@@ -93,41 +92,37 @@ const EditHomepage = () => {
 
        Should I use a Box for this? Or go with a StyledWarning?
        */}
-          <Box mb="28px">
-            <Warning>
-              Your platform homepage consists of the following sections. You can
-              turn them on/off and edit them as required.
-            </Warning>
-          </Box>
-          {sectionTogglesData.map(
-            ({
-              sectionEnabledSettingName,
-              titleMessageDescriptor,
-              tooltipMessageDescriptor,
-            }) => {
-              return (
-                <SectionToggle
-                  key={sectionEnabledSettingName}
-                  checked={
-                    homepageSettings.data.attributes[sectionEnabledSettingName]
-                  }
-                  onChangeSectionToggle={handleOnChangeToggle(
-                    sectionEnabledSettingName
-                  )}
-                  onClickEditButton={handleOnClick}
-                  titleMessageDescriptor={titleMessageDescriptor}
-                  tooltipMessageDescriptor={tooltipMessageDescriptor}
-                  disabled={isLoading}
-                />
-              );
-            }
-          )}
-        </div>
+        <Box mb="28px">
+          <Warning>
+            <FormattedMessage {...messages.sectionDescription} />
+          </Warning>
+        </Box>
+        {sectionTogglesData.map(
+          ({
+            sectionEnabledSettingName,
+            titleMessageDescriptor,
+            tooltipMessageDescriptor,
+          }) => {
+            return (
+              <SectionToggle
+                key={sectionEnabledSettingName}
+                checked={
+                  homepageSettings.data.attributes[sectionEnabledSettingName]
+                }
+                onChangeSectionToggle={handleOnChangeToggle(
+                  sectionEnabledSettingName
+                )}
+                onClickEditButton={handleOnClick}
+                titleMessageDescriptor={titleMessageDescriptor}
+                tooltipMessageDescriptor={tooltipMessageDescriptor}
+                disabled={isLoading}
+              />
+            );
+          }
+        )}
       </>
-    );
-  }
-
-  return null;
+    </Box>
+  );
 };
 
 export default EditHomepage;

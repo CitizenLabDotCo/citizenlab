@@ -39,4 +39,13 @@ export default defineMessages({
     defaultMessage:
       'Add your own content to the customizable section at the bottom of the homepage.',
   },
+  sectionDescription: {
+    id: 'app.containers.Admin.pages-menu.EditHomepage.sectionDescription',
+    defaultMessage:
+      'Your platform homepage consists of the following sections. You can turn them on/off and edit them as required.',
+  },
+  homepageTitle: {
+    id: 'app.containers.Admin.pages-menu.EditHomepage.homepageTitle',
+    defaultMessage: 'Homepage',
+  },
 });
