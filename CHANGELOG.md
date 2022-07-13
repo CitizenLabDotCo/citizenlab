@@ -6,6 +6,12 @@
 
 - [CL-1113] Fixed sharing button styling when copy link text is long
 
+## 2022-07-13
+
+### Changed
+
+- [CL-474] Update existing accessibility statement, following re-certification
+
 ### Added
 
 - [CL-972] Add a 'read more' expand/collapse feature to timeline phases
