@@ -21,6 +21,8 @@ import {
   useRoutes,
 } from 'react-router-dom';
 
+import ToastProvider from 'components/Toast/ToastProvider';
+
 const Routes = () => {
   const importedRoutes = createRoutes();
   const routes = useRoutes(importedRoutes);
@@ -35,7 +37,9 @@ const Root = () => {
     <OutletsProvider>
       <LanguageProvider>
         <HistoryRouter history={history}>
-          <Routes />
+          <ToastProvider>
+            <Routes />
+          </ToastProvider>
         </HistoryRouter>
       </LanguageProvider>
     </OutletsProvider>

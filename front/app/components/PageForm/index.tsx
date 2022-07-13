@@ -12,10 +12,7 @@ import RHFInputMultilocWithLocaleSwitcher from 'components/UI/RHFInputMultilocWi
 import RHFQuillMultilocWithLocaleSwitcher from 'components/UI/RHFQuillMultilocWithLocaleSwitcher';
 import RHFInput from 'components/UI/RHFInput';
 import RHFFileUploader from 'components/UI/RHFFileUploader';
-import {
-  SectionFieldPageContent,
-  SectionField,
-} from 'components/admin/Section';
+import { SectionField } from 'components/admin/Section';
 
 // intl
 import messages from './messages';
@@ -31,6 +28,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 import Button from 'components/UI/Button';
+import useToast from 'components/Toast/useToast';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -62,6 +60,7 @@ const PageForm = ({
   pageId,
   hideSlugInput,
 }: PageFormProps) => {
+  const { add } = useToast();
   const locale = useLocale();
   const page = usePage({ pageId });
   const appConfig = useAppConfiguration();
@@ -85,9 +84,18 @@ const PageForm = ({
 
   if (isNilOrError(appConfig)) return null;
 
+  const onSuccess = (formValues: FormValues) => {
+    add({ variant: 'success', text: 'Form was successfully submitted' });
+    onSubmit(formValues);
+  };
+
+  const onError = () => {
+    add({ variant: 'error', text: 'An error has occurred with this form' });
+  };
+
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)}>
+      <form onSubmit={methods.handleSubmit(onSuccess, onError)}>
         <SectionField>
           <RHFInputMultilocWithLocaleSwitcher
             label={formatMessage(messages.pageTitle)}
@@ -95,12 +103,12 @@ const PageForm = ({
             name="title_multiloc"
           />
         </SectionField>
-        <SectionFieldPageContent>
+        <SectionField>
           <RHFQuillMultilocWithLocaleSwitcher
             name="body_multiloc"
             label={formatMessage(messages.editContent)}
           />
-        </SectionFieldPageContent>
+        </SectionField>
         {!hideSlugInput && (
           <SectionField>
             <Label htmlFor="slug">

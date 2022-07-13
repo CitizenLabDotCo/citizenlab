@@ -35,7 +35,7 @@ const NewPageForm = () => {
       }
 
       clHistory.push('/admin/pages');
-    } catch (error) {
+    } catch {
       // Do nothing
     }
   };
