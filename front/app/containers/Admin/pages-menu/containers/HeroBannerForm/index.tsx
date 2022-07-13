@@ -58,7 +58,7 @@ import useHomepageSettings from 'hooks/useHomepageSettings';
 // utils
 import { isNil, isNilOrError } from 'utils/helperUtils';
 import { isCLErrorJSON } from 'utils/errorUtils';
-import { forOwn, size, trim, debounce, pick } from 'lodash-es';
+import { forOwn, size, trim, debounce, isEqual } from 'lodash-es';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 
 // constants
@@ -123,26 +123,18 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   }, [homepageSettings]);
 
   const onSave = async () => {
-    if (localHomepageSettings) {
-      // only send the keys that relate to the banner
-      // and layout back to the API
-      const bannerRelevantKeys = [
-        'banner_layout',
-        'banner_avatars_enabled',
-        'banner_signed_out_header_overlay_opacity',
-        'banner_signed_out_header_overlay_color',
-        'banner_signed_out_header_multiloc',
-        'banner_signed_out_subheader_multiloc',
-        'banner_signed_in_header_multiloc',
-        'header_bg',
-      ];
-      const bannerRelevantValues = pick(
-        localHomepageSettings,
-        bannerRelevantKeys
-      );
+    if (localHomepageSettings && !isNilOrError(homepageSettings)) {
+      // only update the homepage settings if they have changed
+      const diffedValues = {};
+      forOwn(localHomepageSettings, (value, key) => {
+        if (!isEqual(value, homepageSettings.data.attributes[key])) {
+          diffedValues[key] = value;
+        }
+      });
+
       setIsLoading(true);
       try {
-        await updateHomepageSettings(bannerRelevantValues);
+        await updateHomepageSettings(diffedValues);
         setApiErrors(null);
         setIsLoading(false);
       } catch (error) {
