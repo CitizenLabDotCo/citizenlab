@@ -58,7 +58,7 @@ const ProjectSharingModal = memo<Props & InjectedIntlProps>(
         >
           <Box
             width="100%"
-            maxWidth="420px"
+            maxWidth="400px"
             padding="40px 25px"
             ml="auto"
             mr="auto"
