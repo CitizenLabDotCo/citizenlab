@@ -151,7 +151,6 @@
   "app.components.admin.ReportExportMenu.FileName.projectFilter": "Projeto",
   "app.components.admin.ReportExportMenu.FileName.topicFilter": "tópico",
   "app.components.admin.ReportExportMenu.FileName.untilFilter": "ate",
-  "app.components.admin.ReportExportMenu.downloadAsImage": "Descarregar como imagem",
   "app.components.admin.ReportExportMenu.downloadXlsx": "Exportar para Excel",
   "app.components.admin.SlugInput.regexError": "O slug (última parte da URL da página do seu projeto) só pode conter letras minúsculas regulares (a-z), números (0-9) e hifens (-). O primeiro e o último caracteres não podem ser hifens. Hífens consecutivos (-) são proibidos",
   "app.components.admin.SlugInput.resultingURL": "URL resultante",

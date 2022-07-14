@@ -151,7 +151,6 @@
   "app.components.admin.ReportExportMenu.FileName.projectFilter": "projekt",
   "app.components.admin.ReportExportMenu.FileName.topicFilter": "ämne",
   "app.components.admin.ReportExportMenu.FileName.untilFilter": "tills",
-  "app.components.admin.ReportExportMenu.downloadAsImage": "Ladda ner som bild",
   "app.components.admin.ReportExportMenu.downloadXlsx": "Ladda ner Excel",
   "app.components.admin.SlugInput.regexError": "En slug får bara innehålla små bokstäver (a–z), siffror (0–9) och bindestreck (-). Det första och sista tecknet får inte vara ett bindestreck. Två bindestreck i rad (--) får inte användas.",
   "app.components.admin.SlugInput.resultingURL": "Resulterande webbadress",

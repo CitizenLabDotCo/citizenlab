@@ -151,7 +151,6 @@
   "app.components.admin.ReportExportMenu.FileName.projectFilter": "projekt",
   "app.components.admin.ReportExportMenu.FileName.topicFilter": "oznaka",
   "app.components.admin.ReportExportMenu.FileName.untilFilter": "do",
-  "app.components.admin.ReportExportMenu.downloadAsImage": "Preuzmi kao sliku",
   "app.components.admin.ReportExportMenu.downloadXlsx": "Preuzmi Excel",
   "app.components.admin.SlugInput.regexError": "Opis može sadržavati samo obična mala slova (a-z), brojeve (0-9) i crtice (-). Crtica ne može biti na mjestu prvog i posljednjeg znaka. Dvije uzastopne crtice (--) su zabranjene.",
   "app.components.admin.SlugInput.resultingURL": "Rezultirajući URL",
