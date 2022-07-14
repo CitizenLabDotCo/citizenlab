@@ -1,6 +1,21 @@
 import { IUser } from 'services/users';
-import { TRole, IProjectModeratorRole } from 'services/permissions';
 import { isNilOrError } from 'utils/helperUtils';
+
+export interface IProjectModeratorRole {
+  type: 'project_moderator';
+  project_id: string;
+}
+
+interface IAdminRole {
+  type: 'admin';
+}
+
+export interface IRoleRegisty {
+  IAdminRole: IAdminRole;
+  IProjectModeratorRole: IProjectModeratorRole;
+}
+
+export type TRole = IRoleRegisty[keyof IRoleRegisty];
 
 export const userHasRole = (user: IUser, role: TRole['type']) => {
   return !!(

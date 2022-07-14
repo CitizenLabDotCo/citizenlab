@@ -1,6 +1,6 @@
 // Libraries
 import React, { PureComponent } from 'react';
-import { isAdmin } from 'services/permissions/roles';
+import { isAdmin, TRole } from 'services/permissions/roles';
 import { includes, get, isArray } from 'lodash-es';
 
 // Components
@@ -11,7 +11,6 @@ import UserTableRow from './UserTableRow';
 
 // Services
 import { IUserData, updateUser } from 'services/users';
-import { TRole } from 'services/permissions';
 
 // Resources
 import { GetUsersChildProps, SortAttribute } from 'resources/GetUsers';
