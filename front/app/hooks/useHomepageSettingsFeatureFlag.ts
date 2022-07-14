@@ -31,19 +31,31 @@ export default function useHomepageSettingsFeatureFlag({
 }: Parameters) {
   const homepageSettings = useHomepageSettings();
   const appConfig = useAppConfiguration();
+
+  const appConfigisValid = !isNilOrError(appConfig);
+  const homepageSettingsAreValid = !isNilOrError(homepageSettings);
+  const appSettingNameandConfigAreValid =
+    appConfigSettingName && appConfigisValid;
+
   // It only makes sense to have appConfigSetting if there's an appConfigSettingName
-  const appConfigSetting =
-    appConfigSettingName && !isNilOrError(appConfig)
-      ? appConfig.data.attributes.settings?.[appConfigSettingName]
-      : null;
-  // If there's no appConfigSetting, a homepageSetting
-  // is always allowed.
-  const isAllowed =
-    !appConfigSettingName ||
-    (!isNilOrError(appConfigSetting) ? appConfigSetting.allowed : false);
-  const isEnabled = !isNilOrError(homepageSettings)
+  const appConfigSetting = appSettingNameandConfigAreValid
+    ? appConfig.data.attributes.settings?.[appConfigSettingName]
+    : null;
+
+  // if the named setting is enabled in homepageSettings
+  const homepageSettingisEnabled = homepageSettingsAreValid
     ? homepageSettings.data.attributes[sectionEnabledSettingName]
     : false;
 
-  return isAllowed && isEnabled;
+  // If there's no appConfigSetting, a homepageSetting
+  // is always allowed.
+  if (!appConfigSettingName && homepageSettingisEnabled) {
+    return true;
+  }
+
+  const isAllowedInAppConfig = !isNilOrError(appConfigSetting)
+    ? appConfigSetting.allowed
+    : false;
+
+  return isAllowedInAppConfig && homepageSettingisEnabled;
 }

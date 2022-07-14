@@ -5,7 +5,13 @@ import useHomepageSettings from './usehomepageSettings';
 
 jest.mock('hooks/useHomepageSettings', () => {
   return jest.fn(() => ({
-    data: { attributes: { events_widget_enabled: true } },
+    data: {
+      attributes: {
+        events_widget_enabled: true,
+        top_info_section_enabled: true,
+        bottom_info_section_enabled: false,
+      },
+    },
   }));
 });
 
@@ -23,20 +29,29 @@ describe('useHomepageSettingsFeatureFlag', () => {
   it('should return true when widget is allowed and enabled', () => {
     const { result } = renderHook(() =>
       useHomepageSettingsFeatureFlag({
-        homepageEnabledSetting: 'events_widget_enabled',
+        sectionEnabledSettingName: 'events_widget_enabled',
         appConfigSettingName: 'events_widget',
       })
     );
     expect(result.current).toBe(true);
   });
 
-  it('should return true when checking a homepageSetting without a corresponding app config section', () => {
+  it('should return true when checking an enabled homepageSetting without a corresponding app config section', () => {
     const { result } = renderHook(() =>
       useHomepageSettingsFeatureFlag({
-        homepageEnabledSetting: 'top_info_section_enabled',
+        sectionEnabledSettingName: 'top_info_section_enabled',
       })
     );
     expect(result.current).toBe(true);
+  });
+
+  it('should return false when checking a disabled homepageSetting without a corresponding app config section', () => {
+    const { result } = renderHook(() =>
+      useHomepageSettingsFeatureFlag({
+        sectionEnabledSettingName: 'bottom_info_section_enabled',
+      })
+    );
+    expect(result.current).toBe(false);
   });
 
   it('should return false when widget is allowed but not enabled', () => {
@@ -45,7 +60,7 @@ describe('useHomepageSettingsFeatureFlag', () => {
     });
     const { result } = renderHook(() =>
       useHomepageSettingsFeatureFlag({
-        homepageEnabledSetting: 'events_widget_enabled',
+        sectionEnabledSettingName: 'events_widget_enabled',
         appConfigSettingName: 'events_widget',
       })
     );
@@ -62,7 +77,7 @@ describe('useHomepageSettingsFeatureFlag', () => {
     });
     const { result } = renderHook(() =>
       useHomepageSettingsFeatureFlag({
-        homepageEnabledSetting: 'events_widget_enabled',
+        sectionEnabledSettingName: 'events_widget_enabled',
         appConfigSettingName: 'events_widget',
       })
     );
