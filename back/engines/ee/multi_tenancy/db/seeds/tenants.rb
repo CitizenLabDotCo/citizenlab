@@ -110,6 +110,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            bulk_import_ideas: {
+              enabled: true,
+              allowed: true
+            },
             content_builder: {
               enabled: true,
               allowed: true
