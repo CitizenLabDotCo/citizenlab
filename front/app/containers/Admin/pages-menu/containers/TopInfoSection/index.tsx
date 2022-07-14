@@ -26,35 +26,36 @@ import { updateHomepageSettings } from 'services/homepageSettings';
 import { isNilOrError } from 'utils/helperUtils';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
-const BottomInfoForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+const TopInfoSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const homepageSettings = useHomepageSettings();
   const theme: any = useTheme();
 
-  const [bottomInfoSectionMultilocState, setBottomInfoSectionMultilocState] =
-    useState<Multiloc | null>(null);
+  const [topInfoSectionMultiloc, setTopInfoSectionMultiloc] = useState<
+    Multiloc | null | undefined
+  >(null);
   const [isLoading, setIsLoading] = useState(false);
   const [apiErrors, setApiErrors] = useState<CLError[] | null>(null);
 
   useEffect(() => {
     if (!isNilOrError(homepageSettings)) {
-      setBottomInfoSectionMultilocState(
-        homepageSettings.data.attributes.bottom_info_section_multiloc
+      setTopInfoSectionMultiloc(
+        homepageSettings.data.attributes.top_info_section_multiloc
       );
     }
   }, [homepageSettings]);
 
   const handleCustomSectionMultilocOnChange = (
-    bottomInfoMultiloc: Multiloc
+    multilocFromEditor: Multiloc
   ) => {
-    setBottomInfoSectionMultilocState(bottomInfoMultiloc);
+    setTopInfoSectionMultiloc(multilocFromEditor);
   };
 
   const onSave = async () => {
     setIsLoading(true);
     try {
-      if (bottomInfoSectionMultilocState) {
+      if (topInfoSectionMultiloc) {
         await updateHomepageSettings({
-          bottom_info_section_multiloc: bottomInfoSectionMultilocState,
+          top_info_section_multiloc: topInfoSectionMultiloc,
         });
       }
       setIsLoading(false);
@@ -79,21 +80,21 @@ const BottomInfoForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           label: formatMessage(homeBreadcrumb.label),
           linkTo: homeBreadcrumb.linkTo,
         },
-        { label: formatMessage(messages.bottomInfoPageTitle) },
+        { label: formatMessage(messages.topInfoPageTitle) },
       ]}
-      title={formatMessage(messages.bottomInfoPageTitle)}
+      title={formatMessage(messages.topInfoPageTitle)}
       stickyMenuContents={
         <Button disabled={isLoading} onClick={onSave}>
-          <FormattedMessage {...messages.bottomInfoSaveButton} />
+          <FormattedMessage {...messages.topInfoSaveButton} />
         </Button>
       }
     >
       <Box maxWidth={`${theme.maxPageWidth - 100}px`} mb="24px">
         <QuillMultilocWithLocaleSwitcher
           id="custom-section"
-          label={formatMessage(messages.bottomInfoContentEditorTitle)}
-          labelTooltipText={formatMessage(messages.bottomInfoDescription)}
-          valueMultiloc={bottomInfoSectionMultilocState}
+          label={formatMessage(messages.topInfoContentEditorTitle)}
+          labelTooltipText={formatMessage(messages.topInfoDescription)}
+          valueMultiloc={topInfoSectionMultiloc}
           onChange={handleCustomSectionMultilocOnChange}
           withCTAButton
         />
@@ -103,4 +104,4 @@ const BottomInfoForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   );
 };
 
-export default injectIntl(BottomInfoForm);
+export default injectIntl(TopInfoSection);

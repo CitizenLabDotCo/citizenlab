@@ -140,8 +140,6 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       } catch (error) {
         if (isCLErrorJSON(error)) {
           setApiErrors(error.json.errors);
-        } else {
-          setApiErrors(error);
         }
         setIsLoading(false);
       }
