@@ -13,7 +13,7 @@ import { IHomepageSettings } from 'services/homepageSettings';
 import 'utils/moduleUtils';
 
 declare module 'utils/moduleUtils' {
-  interface OutletsPropertyMap {
+  export interface OutletsPropertyMap {
     'app.containers.Admin.settings.customize.headerSectionEnd': Props;
   }
 }

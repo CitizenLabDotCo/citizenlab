@@ -9,7 +9,7 @@ const SignedOutHeaderIndex = () => {
   const appConfiguration = useAppConfiguration();
   // Flag should not be here, but inside module.
   const customizableHomepageBannerEnabled = useHomepageSettingsFeatureFlag({
-    homepageEnabledSetting: 'customizable_homepage_banner_enabled',
+    sectionEnabledSettingName: 'customizable_homepage_banner_enabled',
     appConfigSettingName: 'customizable_homepage_banner',
   });
 

@@ -39,7 +39,6 @@ export const getAppConfigurationData = (
       },
       customizable_homepage_banner: {
         allowed: true,
-        enabled: true,
         cta_signed_out_customized_button: {
           text: { en: 'Click' },
           url: 'https://www.wonder.ville/promo',
