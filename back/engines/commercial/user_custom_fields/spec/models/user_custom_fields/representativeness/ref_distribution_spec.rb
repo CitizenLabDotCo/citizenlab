@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe UserCustomFields::Representativeness::RefDistribution do
-  subject(:ref_distribution) { build(:ref_distribution) }
+  subject(:ref_distribution) { build(:categorical_distribution) }
 
   describe 'factory' do
     it { is_expected.to be_valid }

@@ -6,7 +6,7 @@ RSpec.describe UserCustomFields::Representativeness::RScore do
   describe '.compute' do
     subject(:r_score) { described_class.compute(user_counts, ref_distribution) }
 
-    let(:ref_distribution) { create(:ref_distribution, population_counts: [100, 200]) }
+    let(:ref_distribution) { create(:categorical_distribution, population_counts: [100, 200]) }
     let(:user_counts) do
       # The number of missing values (UNKNOWN_VALUE_LABEL) does not matter as it does
       # not affect the scores.

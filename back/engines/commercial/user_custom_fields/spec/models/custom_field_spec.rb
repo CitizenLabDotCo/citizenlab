@@ -9,7 +9,7 @@ RSpec.describe CustomField do
 
   describe 'before_destroy callbacks' do
     it 'destroys the dependent reference distributions' do
-      ref_distribution = create(:ref_distribution)
+      ref_distribution = create(:categorical_distribution)
       # Check that the callback does not create an N+1 query problem.
       expect_any_instance_of(UserCustomFields::Representativeness::CategoricalDistribution)
         .not_to receive(:sync_with_options!)

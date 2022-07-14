@@ -11,7 +11,7 @@ resource 'R-scores (Representativeness scores)' do
           Project ID. Only participants of this project will be considered to compute the score.
     DESC
 
-    let(:ref_distribution) { create(:ref_distribution) }
+    let(:ref_distribution) { create(:categorical_distribution) }
     let(:custom_field) { ref_distribution.custom_field }
     let(:custom_field_id) { custom_field.id }
 

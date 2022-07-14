@@ -25,7 +25,7 @@ resource 'Representativeness reference distributions' do
   end
 
   get 'web_api/v1/users/custom_fields/:custom_field_id/reference_distribution' do
-    let!(:reference_distribution) { create(:ref_distribution) }
+    let!(:reference_distribution) { create(:categorical_distribution) }
     let(:custom_field_id) { reference_distribution.custom_field.id }
 
     context 'when admin' do
@@ -113,7 +113,7 @@ resource 'Representativeness reference distributions' do
       end
 
       context 'when the custom field already has a distribution' do
-        let!(:previous_distribution) { create(:ref_distribution, custom_field: custom_field) }
+        let!(:previous_distribution) { create(:categorical_distribution, custom_field: custom_field) }
 
         example_request 'replaces the existing distribution' do
           expect(status).to eq(201)
@@ -133,7 +133,7 @@ resource 'Representativeness reference distributions' do
   end
 
   delete 'web_api/v1/users/custom_fields/:custom_field_id/reference_distribution' do
-    let!(:reference_distribution) { create(:ref_distribution) }
+    let!(:reference_distribution) { create(:categorical_distribution) }
     let(:custom_field_id) { reference_distribution.custom_field_id }
 
     context 'when admin' do
