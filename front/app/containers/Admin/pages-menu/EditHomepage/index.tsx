@@ -8,7 +8,7 @@ import Outlet from 'components/Outlet';
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import {
   updateHomepageSettings,
-  THomepageSection,
+  THomepageEnabledSetting,
 } from 'services/homepageSettings';
 import useHomepageSettings from 'hooks/useHomepageSettings';
 import { isNilOrError } from 'utils/helperUtils';
@@ -16,7 +16,7 @@ import { insertConfiguration } from 'utils/moduleUtils';
 import { InsertConfigurationOptions } from 'typings';
 
 export type TSectionToggleData = {
-  name: THomepageSection;
+  name: THomepageEnabledSetting;
   titleMessageDescriptor: MessageDescriptor;
   tooltipMessageDescriptor: MessageDescriptor;
 };
@@ -49,21 +49,22 @@ const EditHomepage = () => {
     },
   ]);
 
-  const handleOnChangeToggle = (sectionName: THomepageSection) => async () => {
-    if (isNilOrError(homepageSettings)) {
-      return;
-    }
-    setIsLoading(true);
-    try {
-      await updateHomepageSettings({
-        [sectionName]: !homepageSettings.data.attributes[sectionName],
-      });
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const handleOnChangeToggle =
+    (sectionName: THomepageEnabledSetting) => async () => {
+      if (isNilOrError(homepageSettings)) {
+        return;
+      }
+      setIsLoading(true);
+      try {
+        await updateHomepageSettings({
+          [sectionName]: !homepageSettings.data.attributes[sectionName],
+        });
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
   const handleOnData = (
     sectionToggleData: InsertConfigurationOptions<TSectionToggleData>

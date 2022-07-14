@@ -17,16 +17,6 @@ export type TSectionSetting = Exclude<
   TAppConfigSectionSetting
 >;
 
-// * THomepageSection *
-export interface IHomepageSectionMap {
-  customizable_homepage_banner_enabled: 'customizable_homepage_banner_enabled';
-  top_info_section_enabled: 'top_info_section_enabled';
-  projects_enabled: 'projects_enabled';
-  bottom_info_section_enabled: 'bottom_info_section_enabled';
-}
-export type THomepageSection = IHomepageSectionMap[keyof IHomepageSectionMap];
-
-// * THomepageBannerLayout *
 export interface THomepageBannerLayoutMap {
   full_width_banner_layout: 'full_width_banner_layout';
 }
@@ -48,7 +38,6 @@ export interface IHomepageSettingsData {
 export type THomepageEnabledSetting = keyof IHomepageEnabledSettings;
 
 export interface IHomepageSettingsAttributes extends IHomepageEnabledSettings {
-  // are these values always there?
   top_info_section_multiloc: Multiloc;
   bottom_info_section_multiloc: Multiloc;
   projects_header_multiloc: Multiloc;
@@ -63,7 +52,7 @@ export interface IHomepageSettingsAttributes extends IHomepageEnabledSettings {
   pinned_admin_publication_ids: string[];
 }
 
-interface IHomepageEnabledSettings {
+export interface IHomepageEnabledSettings {
   top_info_section_enabled: boolean;
   bottom_info_section_enabled: boolean;
   banner_avatars_enabled: boolean;
