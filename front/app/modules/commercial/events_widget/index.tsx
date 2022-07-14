@@ -31,6 +31,24 @@ const RenderOnAllowed = ({ children }) => {
   return allowed ? <>{children}</> : null;
 };
 
+const RenderOnFeatureFlag = ({ children }) => {
+  const featureFlag = useHomepageSettingsFeatureFlag({
+    sectionEnabledSettingName: 'events_widget_enabled',
+    appConfigSettingName: 'events_widget',
+  });
+
+  return featureFlag ? <>{children}</> : null;
+};
+
+const RenderOnAllowed = ({ children }) => {
+  const allowed = useFeatureFlag({
+    name: 'events_widget',
+    onlyCheckAllowed: true,
+  });
+
+  return allowed ? <>{children}</> : null;
+};
+
 const configuration: ModuleConfiguration = {
   outlets: {
     'app.containers.Admin.flexible-pages.EditHomepage.sectionToggles': ({
