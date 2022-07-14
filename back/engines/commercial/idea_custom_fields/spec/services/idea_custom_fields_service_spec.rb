@@ -102,6 +102,23 @@ describe IdeaCustomFieldsService do
         extra_field2
       ]
     end
+
+    it 'only returns default fields when there is no custom form' do
+      custom_form.destroy!
+      service = described_class.new nil
+      output = service.all_fields
+      expect(output.map(&:code)).to eq %w[
+        title_multiloc
+        body_multiloc
+        author_id
+        budget
+        proposed_budget
+        topic_ids
+        location_description
+        idea_images_attributes
+        idea_files_attributes
+      ]
+    end
   end
 
   describe 'configurable_fields' do

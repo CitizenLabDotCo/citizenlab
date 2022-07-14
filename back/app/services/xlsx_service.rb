@@ -297,7 +297,8 @@ class XlsxService
   end
 
   def value_getter_for_user_custom_field_columns(field, record_to_user, options)
-    if field.key == 'domicile' # 'domicile' is a special case
+    if field.code == 'domicile' # 'domicile' is a special case
+      areas = Area.all.index_by(&:id)
       lambda do |record|
         user = record.send(record_to_user)
         multiloc_service.t(areas[user.domicile]&.title_multiloc) if user && user.custom_field_values['domicile']

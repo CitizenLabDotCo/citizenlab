@@ -1,43 +1,32 @@
-import { THomepageEnabledSetting } from 'services/homepageSettings';
-import { TAppConfigurationSetting } from 'services/appConfiguration';
+import {
+  TAppConfigSectionSetting,
+  TSectionSetting,
+} from 'services/homepageSettings';
+import { THomepageSetting } from 'services/appConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
 import useHomepageSettings from './useHomepageSettings';
 import useAppConfiguration from './useAppConfiguration';
 
-// Enabled values for sections that have a corresponding
-// setting in appConfiguration.ts
-type TFeatureSectionEnabledSetting = Extract<
-  THomepageEnabledSetting,
-  'events_widget_enabled' | 'customizable_homepage_banner_enabled'
->;
-
-// Enabled values for sections that DON'T have a corresponding
-// setting in appConfiguration.ts (are regular sections)
-type TRegularSectionEnabledSetting = Exclude<
-  THomepageEnabledSetting,
-  TFeatureSectionEnabledSetting
->;
-
 // If we deal with a section whose allowed value needs to be checked
-// in appConfiguration, we requre the appConfiguration setting name.
+// in appConfiguration, we require the appConfiguration setting name.
 // Otherwise, we just need the enabled value that can be found in homepageSettings.
 type Parameters = FeatureSectionParameters | RegularSectionParameters;
 
 type FeatureSectionParameters = {
-  homepageEnabledSetting: TFeatureSectionEnabledSetting;
-  appConfigSettingName: Extract<
-    TAppConfigurationSetting,
-    'events_widget' | 'customizable_homepage_banner'
-  >;
+  sectionEnabledSettingName: TAppConfigSectionSetting;
+  appConfigSettingName: THomepageSetting;
 };
 
 type RegularSectionParameters = {
-  homepageEnabledSetting: TRegularSectionEnabledSetting;
+  sectionEnabledSettingName: TSectionSetting;
   appConfigSettingName?: never;
 };
 
+// If you just need to check the allowed value for appConfig settings,
+// you should still use onlyCheckAllowed useFeatureFlag/FeatureFlag/GetFeatureFlag. This hook
+// doesn't have this functionality implemented.
 export default function useHomepageSettingsFeatureFlag({
-  homepageEnabledSetting,
+  sectionEnabledSettingName,
   appConfigSettingName,
 }: Parameters) {
   const homepageSettings = useHomepageSettings();
@@ -53,7 +42,7 @@ export default function useHomepageSettingsFeatureFlag({
     !appConfigSettingName ||
     (!isNilOrError(appConfigSetting) ? appConfigSetting.allowed : false);
   const isEnabled = !isNilOrError(homepageSettings)
-    ? homepageSettings.data.attributes[homepageEnabledSetting]
+    ? homepageSettings.data.attributes[sectionEnabledSettingName]
     : false;
 
   return isAllowed && isEnabled;

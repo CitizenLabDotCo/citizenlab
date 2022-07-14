@@ -88,7 +88,9 @@ const HeaderImageDropzone = ({
   return (
     <ImagesDropzone
       id="landingpage-header-dropzone"
-      acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+      acceptedFileTypes={{
+        'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+      }}
       images={header_bg}
       imagePreviewRatio={getImagePreviewRatio()}
       onAdd={onAdd}

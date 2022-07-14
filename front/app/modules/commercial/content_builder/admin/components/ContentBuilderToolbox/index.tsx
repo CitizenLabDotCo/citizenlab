@@ -21,6 +21,7 @@ import Iframe from '../CraftComponents/Iframe';
 import AboutBox from '../CraftComponents/AboutBox';
 import Accordion from '../CraftComponents/Accordion';
 import WhiteSpace from '../CraftComponents/WhiteSpace';
+import Button from '../CraftComponents/Button';
 import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
 import ImageTextCards from '../CraftSections/ImageTextCards';
 
@@ -69,12 +70,12 @@ const ContentBuilderToolbox = ({
       <Box w="100%" display="inline">
         <Title
           fontWeight="normal"
-          mb="0px"
+          mb="4px"
           mt="24px"
           ml="10px"
           variant="h6"
           as="h3"
-          color="label"
+          color="secondaryText"
         >
           <FormattedMessage {...messages.sections} />
         </Title>
@@ -116,12 +117,12 @@ const ContentBuilderToolbox = ({
         </DraggableElement>
         <Title
           fontWeight="normal"
-          mb="0px"
+          mb="4px"
           mt="24px"
           ml="10px"
           variant="h6"
           as="h3"
-          color="label"
+          color="secondaryText"
         >
           <FormattedMessage {...messages.layout} />
         </Title>
@@ -179,12 +180,12 @@ const ContentBuilderToolbox = ({
         </DraggableElement>
         <Title
           fontWeight="normal"
-          mb="0px"
+          mb="4px"
           mt="24px"
           ml="10px"
           variant="h6"
           as="h3"
-          color="label"
+          color="secondaryText"
         >
           <FormattedMessage {...messages.content} />
         </Title>
@@ -204,6 +205,28 @@ const ContentBuilderToolbox = ({
           }
         >
           <ToolboxItem icon="text" label={formatMessage(messages.text)} />
+        </DraggableElement>
+        <DraggableElement
+          id="e2e-draggable-button"
+          ref={(ref) =>
+            ref &&
+            connectors.create(
+              ref,
+              <Button
+                text={formatMessage(messages.button)}
+                url={''}
+                type={'primary'}
+                alignment={'left'}
+              />,
+              {
+                onCreate: (node) => {
+                  selectNode(node.rootNodeId);
+                },
+              }
+            )
+          }
+        >
+          <ToolboxItem icon="button" label={formatMessage(messages.button)} />
         </DraggableElement>
         <DraggableElement
           id="e2e-draggable-image"

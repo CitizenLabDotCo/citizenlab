@@ -41,7 +41,7 @@ const CTASettings = ({
 
   if (
     !latestAppConfigSettings.customizable_homepage_banner ||
-    !latestHomepageSettings.attributes
+    !latestHomepageSettings.data?.attributes
   ) {
     return null;
   }
@@ -51,9 +51,9 @@ const CTASettings = ({
     cta_signed_in_customized_button: ctaSignedInCustomizedButton,
   } = latestAppConfigSettings.customizable_homepage_banner;
   const {
-    cta_signed_out_type: ctaSignedOutType,
-    cta_signed_in_type: ctaSignedInType,
-  } = latestHomepageSettings.attributes;
+    banner_cta_signed_out_type: ctaSignedOutType,
+    banner_cta_signed_in_type: ctaSignedInType,
+  } = latestHomepageSettings.data.attributes;
 
   return (
     <Section>

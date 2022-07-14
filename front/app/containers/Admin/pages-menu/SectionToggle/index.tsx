@@ -17,6 +17,7 @@ export interface Props {
   titleMessageDescriptor: MessageDescriptor;
   tooltipMessageDescriptor: MessageDescriptor;
   checked: boolean;
+  disabled: boolean;
 }
 
 const SectionToggle = ({
@@ -25,12 +26,17 @@ const SectionToggle = ({
   titleMessageDescriptor,
   tooltipMessageDescriptor,
   checked,
+  disabled,
 }: Props) => {
   return (
     <Row>
       <Box display="flex" alignItems="center">
         <Box mr="20px">
-          <Toggle checked={checked} onChange={onChangeSectionToggle} />
+          <Toggle
+            checked={checked}
+            onChange={onChangeSectionToggle}
+            disabled={disabled}
+          />
         </Box>
         {/*
       Note: I think we want a default font-weigt of 600, not 700 for this component.

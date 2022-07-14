@@ -20,7 +20,7 @@ shared_examples 'xlsx export' do |field_name|
     worksheet_values = xlsx_worksheet_to_array(worksheet)
 
     expect(worksheet.sheet_name).to eq(expected_worksheet_name)
-    expect(worksheet_values).to match(expected_worksheet_values)
+    expect(worksheet_values).to eq(expected_worksheet_values)
   end
 end
 

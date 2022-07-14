@@ -4,7 +4,7 @@ import HiddenNavbarItemList from '.';
 import allNavbarItems from 'hooks/fixtures/navbarItems';
 import { addNavbarItem } from '../../../../services/navbar';
 import { deletePage } from 'services/pages';
-import { NAVIGATION_PATH } from 'containers/Admin/pages-menu';
+import { PAGES_MENU_PATH } from 'containers/Admin/pages-menu/routes';
 import clHistory from 'utils/cl-router/history';
 
 jest.mock('services/locale');
@@ -57,7 +57,7 @@ describe('<HiddenNavbarItemList />', () => {
     fireEvent.click(editButtons[0]);
 
     expect(clHistory.push).toHaveBeenCalledWith(
-      `${NAVIGATION_PATH}/pages/edit/1b095a31-72e1-450a-81be-f6e7a9296553`
+      `${PAGES_MENU_PATH}/pages/edit/1b095a31-72e1-450a-81be-f6e7a9296553`
     );
   });
 

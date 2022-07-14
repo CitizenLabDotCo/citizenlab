@@ -1,7 +1,4 @@
-import {
-  IAppConfigurationData,
-  TAppConfigurationSetting,
-} from 'services/appConfiguration';
+import { IAppConfigurationData } from 'services/appConfiguration';
 import { IUserData } from 'services/users';
 
 export interface IDestinationMap {}
@@ -12,13 +9,17 @@ export type TCategory = typeof CATEGORIES[number];
 
 const destinationConfigs: IDestinationConfig[] = [];
 
+export interface IConsentManagerFeatureMap {}
+export type TConsentManagerFeature =
+  IConsentManagerFeatureMap[keyof IConsentManagerFeatureMap];
+
 export interface IDestinationConfig {
   /** A unique key, used to name the destination in the stored cookie */
   key: IDestination;
   /** Destinations are grouped in categories. Under which category should it be listed? */
   category: TCategory | ((tenant: IAppConfigurationData) => TCategory);
   /** The name of the feature flag that should be active for the destination to be functional */
-  feature_flag?: keyof IAppConfigurationData['attributes']['settings'];
+  feature_flag?: TConsentManagerFeature;
   /** Can the destination be active for the given user? */
   hasPermission?: (user?: IUserData) => boolean;
   /** Name of the destination shown in the UI */
@@ -58,7 +59,7 @@ export const isDestinationActive = (
 };
 
 function isFeatureActive(
-  featureName: TAppConfigurationSetting,
+  featureName: TConsentManagerFeature,
   appConfig: IAppConfigurationData
 ) {
   return (

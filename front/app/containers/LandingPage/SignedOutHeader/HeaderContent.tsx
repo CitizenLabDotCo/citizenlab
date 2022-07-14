@@ -11,10 +11,9 @@ import { openSignUpInModal } from 'components/SignUpIn/events';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 import { injectIntl } from 'utils/cl-intl';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import Outlet from 'components/Outlet';
 import SignUpButton from '../SignUpButton';
-import useHomepageSettings from 'hooks/useHomepageSettings';
+import useHomepageSettingsFeatureFlag from 'hooks/useHomepageSettingsFeatureFlag';
 
 const Container = styled.div<{
   align: 'center' | 'left';
@@ -146,7 +145,6 @@ const HeaderContent = ({
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const appConfiguration = useAppConfiguration();
-  const homepageSettings = useHomepageSettings();
   const localize = useLocalize();
 
   const signUpIn = (event: React.FormEvent) => {
@@ -157,11 +155,13 @@ const HeaderContent = ({
     openSignUpInModal();
   };
   const buttonStyle = getButtonStyle(fontColors);
-  const customizableHomepageBannerEnabled = useFeatureFlag({
-    name: 'customizable_homepage_banner',
+  // Flag should not be here, but inside module.
+  const customizableHomepageBannerEnabled = useHomepageSettingsFeatureFlag({
+    sectionEnabledSettingName: 'customizable_homepage_banner_enabled',
+    appConfigSettingName: 'customizable_homepage_banner',
   });
 
-  if (!isNilOrError(appConfiguration) && !isNilOrError(homepageSettings)) {
+  if (!isNilOrError(appConfiguration)) {
     const coreSettings = appConfiguration.data.attributes.settings.core;
     const headerTitle = coreSettings.header_title
       ? localize(coreSettings.header_title)
@@ -202,6 +202,10 @@ const HeaderContent = ({
 
         {displayHeaderAvatars && <StyledAvatarBubbles />}
 
+        {/*
+          This should use a mechanisme similar to navbarModuleActive instead.
+          The core shouldn't have feature flags about modularized features.
+        */}
         {!customizableHomepageBannerEnabled && (
           <SignUpButton buttonStyle={buttonStyle} signUpIn={signUpIn} />
         )}

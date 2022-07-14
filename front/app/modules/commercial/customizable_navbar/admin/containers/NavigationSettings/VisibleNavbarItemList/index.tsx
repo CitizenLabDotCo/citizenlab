@@ -29,7 +29,7 @@ import messages from './messages';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
-import { NAVIGATION_PATH } from 'containers/Admin/pages-menu';
+import { PAGES_MENU_PATH } from 'containers/Admin/pages-menu/routes';
 
 const VisibleNavbarItemList = ({
   intl: { formatMessage },
@@ -45,8 +45,8 @@ const VisibleNavbarItemList = ({
     const pageData = navbarItem.relationships.static_page.data;
 
     pageData
-      ? clHistory.push(`${NAVIGATION_PATH}/pages/edit/${pageData.id}`)
-      : clHistory.push(`${NAVIGATION_PATH}/navbar-items/edit/${navbarItem.id}`);
+      ? clHistory.push(`${PAGES_MENU_PATH}/pages/edit/${pageData.id}`)
+      : clHistory.push(`${PAGES_MENU_PATH}/navbar-items/edit/${navbarItem.id}`);
   };
 
   const getViewButtonLink = (navbarItem: INavbarItem) => {

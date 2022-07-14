@@ -2,7 +2,6 @@ import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { ImageSizes, Multiloc, Locale } from 'typings';
 import { TCategory } from 'components/ConsentManager/destinations';
-
 export const currentAppConfigurationEndpoint = `${API_PATH}/app_configuration`;
 
 export interface AppConfigurationFeature {
@@ -11,6 +10,17 @@ export interface AppConfigurationFeature {
 }
 
 export type TAppConfigurationSetting = keyof IAppConfigurationSettings;
+
+// Settings that have their enabled values in homepageSettings.
+// Their allowed value is still in appConfiguration.
+export type THomepageSetting = 'events_widget' | 'customizable_homepage_banner';
+
+// All appConfig setting names except those in THomepageSetting
+export type TAppConfigurationSettingWithEnabled = Exclude<
+  TAppConfigurationSetting,
+  THomepageSetting
+>;
+
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
 
 export type IAppConfigurationSettingsCore = {
@@ -245,25 +255,6 @@ export interface IAppConfigurationStyle {
   projectNavbarIdeaButtonBackgroundColor?: string;
   projectNavbarIdeaButtonTextColor?: string;
 }
-
-// to be moved?
-export const homepageBannerLayoutHeights = {
-  full_width_banner_layout: {
-    desktop: 450,
-    tablet: 350,
-    phone: 300,
-  },
-  two_column_layout: {
-    desktop: 532,
-    tablet: 532,
-    phone: 240,
-  },
-  two_row_layout: {
-    desktop: 280,
-    tablet: 200,
-    phone: 200,
-  },
-};
 
 export interface IAppConfigurationAttributes {
   name: string;

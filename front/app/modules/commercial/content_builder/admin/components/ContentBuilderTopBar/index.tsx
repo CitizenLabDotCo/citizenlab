@@ -107,11 +107,6 @@ const ContentBuilderTopBar = ({
     }
   };
 
-  const redirectToProject = async () => {
-    await handleSave();
-    window.open(`/projects/${project?.attributes.slug}`, '_blank');
-  };
-
   const handleSelectLocale = (locale: Locale) => {
     const editorData = query.getSerializedNodes();
     onSelectLocale({ locale, editorData });
@@ -182,7 +177,8 @@ const ContentBuilderTopBar = ({
           icon="eye"
           mx="20px"
           disabled={!project}
-          onClick={redirectToProject}
+          linkTo={`/projects/${project?.attributes.slug}`}
+          openLinkInNewTab
         >
           <FormattedMessage {...messages.viewProject} />
         </Button>

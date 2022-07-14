@@ -23,7 +23,6 @@ module AdminApi
     def template_import
       template = YAML.load(template_import_params[:template_yaml])
       ProjectCopyService.new.import(template)
-      DumpTenantJob.perform_later(Tenant.current) if defined?(NLP)
     rescue StandardError => e
       ErrorReporter.report(e)
       raise ClErrors::TransactionError.new(error_key: :bad_template)

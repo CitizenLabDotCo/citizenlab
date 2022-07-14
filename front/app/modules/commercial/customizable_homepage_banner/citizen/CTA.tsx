@@ -26,8 +26,8 @@ const CTA = ({
 
   if (!isNilOrError(homepageSettings)) {
     const ctaType = signedIn
-      ? homepageSettings.attributes.cta_signed_in_type
-      : homepageSettings.attributes.cta_signed_out_type;
+      ? homepageSettings.data.attributes.banner_cta_signed_in_type
+      : homepageSettings.data.attributes.banner_cta_signed_out_type;
 
     switch (ctaType) {
       case 'sign_up_button':
