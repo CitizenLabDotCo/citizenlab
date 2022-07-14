@@ -38,15 +38,16 @@ const configuration: ModuleConfiguration = {
       onChangeSectionToggle,
       ...otherProps
     }) => {
-      // still add new feature flag mechanism
       return (
-        <SectionToggle
-          titleMessageDescriptor={messages.eventsWidget}
-          tooltipMessageDescriptor={messages.eventsWidgetTooltip}
-          checked={homepageSettingsAttributes['events_widget_enabled']}
-          onChangeSectionToggle={onChangeSectionToggle('events_widget')}
-          {...otherProps}
-        />
+        <RenderOnFeatureFlag>
+          <SectionToggle
+            titleMessageDescriptor={messages.eventsWidget}
+            tooltipMessageDescriptor={messages.eventsWidgetTooltip}
+            checked={homepageSettingsAttributes['events_widget_enabled']}
+            onChangeSectionToggle={onChangeSectionToggle('events_widget')}
+            {...otherProps}
+          />
+        </RenderOnFeatureFlag>
       );
     },
     'app.containers.LandingPage.EventsWidget': () => {
