@@ -292,7 +292,7 @@ const ProgressBarOverlay: any = styled.div`
   width: 0px;
   height: 100%;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  background: ${colors.clRed};
+  background: ${colors.red500};
   transition: width 1000ms cubic-bezier(0.19, 1, 0.22, 1);
   will-change: width;
 

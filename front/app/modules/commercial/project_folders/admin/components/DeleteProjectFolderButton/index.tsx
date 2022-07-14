@@ -60,8 +60,8 @@ const DeleteProjectFolderButton = memo<Props & InjectedIntlProps>(
         icon="delete"
         buttonStyle="text"
         className={`e2e-admin-delete-publication`}
-        iconHoverColor={colors.clRedError}
-        textHoverColor={colors.clRedError}
+        iconHoverColor={colors.red600}
+        textHoverColor={colors.red600}
         {...rest}
       >
         {deletionProps.copy}
