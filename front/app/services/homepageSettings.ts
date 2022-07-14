@@ -66,9 +66,6 @@ export interface IHomepageSettingsAttributes extends IHomepageEnabledSettings {
 interface IHomepageEnabledSettings {
   top_info_section_enabled: boolean;
   bottom_info_section_enabled: boolean;
-  // move to module
-  // the allowed of events_widget_enabled still needs to be checked in appConfig
-  events_widget_enabled: boolean;
   banner_avatars_enabled: boolean;
   // the allowed of customizable_homepage_banner_enabled still needs to be checked in appConfig
   customizable_homepage_banner_enabled: boolean;
