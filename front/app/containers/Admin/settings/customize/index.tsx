@@ -6,7 +6,6 @@ import { get, has, isEmpty, omitBy } from 'lodash-es';
 // components
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import Branding from './Branding';
-// import Header from './Header';
 import ProjectHeader from './ProjectHeader';
 import Events from './Events';
 import AllInput from './AllInput';
@@ -248,22 +247,13 @@ class SettingsCustomizeTab extends PureComponent<
     if (!isNilOrError(locale) && !isNilOrError(tenant)) {
       const {
         logo,
-        // header_bg,
         attributesDiff,
         logoError,
-        // headerError,
-        // titleError,
-        // subtitleError,
         errors,
         saved,
         newEventsNavbarItemEnabled,
         newAllInputNavbarItemEnabled,
       } = this.state;
-
-      // const latestAppConfigStyleSettings = {
-      // ...tenant.data.attributes.style,
-      // ...attributesDiff.style,
-      // };
 
       const latestAppConfigSettings = {
         ...tenant.data.attributes,
@@ -282,19 +272,6 @@ class SettingsCustomizeTab extends PureComponent<
             setParentState={setState}
             getSetting={getSetting}
           />
-
-          {/* <Header
-            header_bg={header_bg}
-            headerError={headerError}
-            titleError={titleError}
-            subtitleError={subtitleError}
-            latestAppConfigStyleSettings={latestAppConfigStyleSettings}
-            latestAppConfigSettings={latestAppConfigSettings}
-            setParentState={setState}
-            getSetting={getSetting}
-            handleSettingOnChange={this.handleSettingOnChange}
-            errors={errors}
-          /> */}
 
           <ProjectHeader
             currentlyWorkingOnText={
