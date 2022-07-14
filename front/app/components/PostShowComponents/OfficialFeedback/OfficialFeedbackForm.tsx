@@ -375,7 +375,7 @@ class OfficialFeedbackForm extends PureComponent<
             <SubmitButton
               className="e2e-official-feedback-form-submit-button"
               bgColor={
-                formType === 'edit' ? colors.adminTextColor : colors.clRed
+                formType === 'edit' ? colors.adminTextColor : colors.red500
               }
               icon="pen"
               textColor="white"
@@ -400,7 +400,7 @@ class OfficialFeedbackForm extends PureComponent<
                 buttonStyle="secondary"
                 onClick={onClose}
                 textColor={
-                  formType === 'edit' ? colors.adminTextColor : colors.clRed
+                  formType === 'edit' ? colors.adminTextColor : colors.red500
                 }
               >
                 <FormattedMessage {...messages.cancel} />

@@ -221,8 +221,8 @@ const IdeaStatuses = () => {
                           buttonStyle="text"
                           disabled={!isDeletable(ideaStatus)}
                           icon="delete"
-                          iconHoverColor={colors.clRedError}
-                          textHoverColor={colors.clRedError}
+                          iconHoverColor={colors.red600}
+                          textHoverColor={colors.red600}
                         >
                           <FormattedMessage {...messages.deleteButtonLabel} />
                         </DeleteButton>

@@ -6,14 +6,14 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
 const Container = styled.span`
-  color: ${colors.clRedError};
+  color: ${colors.red600};
   font-size: ${fontSizes.xs}px;
   line-height: 16px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   text-transform: uppercase;
   text-align: center;
   font-weight: 600;
-  background: ${lighten(0.52, colors.clRedError)};
+  background: ${lighten(0.52, colors.red600)};
   border: none;
   padding: 4px 8px;
   height: 24px;

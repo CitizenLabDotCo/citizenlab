@@ -20,7 +20,7 @@ const Container = styled.div`
 `;
 
 const WarningContent = styled.div`
-  color: ${colors.clRedError};
+  color: ${colors.red600};
   font-weight: bold;
   margin-right: 5px;
 `;
@@ -57,7 +57,7 @@ const InappropriateContentWarning = ({
             }
           </WarningContent>
           <StyledIconTooltip
-            iconColor={colors.clRedError}
+            iconColor={colors.red600}
             content={formatMessage(messages.flagTooltip)}
           />
         </Container>
