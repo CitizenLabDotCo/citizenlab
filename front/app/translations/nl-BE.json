@@ -557,7 +557,7 @@
   "app.containers.AccessibilityStatement.changePreferencesText": "Je kunt op elk moment {changePreferencesButton}.",
   "app.containers.AccessibilityStatement.citizenLabAddress2022": "Boulevard Pachéco 34, 1000 Brussel, België",
   "app.containers.AccessibilityStatement.compatibilityTitle2022": "Compatibel met ondersteunende technologie",
-  "app.containers.AccessibilityStatement.conformanceExceptions": "Uitzonderingen conformiteit ",
+  "app.containers.AccessibilityStatement.conformanceExceptions": "Uitzonderingen conformiteit",
   "app.containers.AccessibilityStatement.conformanceStatus": "Toegankelijkheidsstatus",
   "app.containers.AccessibilityStatement.contentConformanceExceptions": "We streven ernaar om onze inhoud voor iedereen toegankelijk te maken. In sommige gevallen kan er echter ontoegankelijke inhoud op het platform staan, zoals:",
   "app.containers.AccessibilityStatement.demoPlatformLinkText": "demowebsite",
