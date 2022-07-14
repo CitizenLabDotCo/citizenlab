@@ -1,115 +1,148 @@
 # frozen_string_literal: true
 
 class ImportIdeasService
-  MAX_IDEAS = 500
+  DEFAULT_MAX_IDEAS = 500
 
-  def import_ideas(idea_models_data)
-    added_idea_ids = []
-    begin
-      if idea_models_data.size > MAX_IDEAS
-        raise "The maximal amount of #{MAX_IDEAS} ideas has been exceeded"
-      end
+  def import_ideas(idea_rows, max_ideas: DEFAULT_MAX_IDEAS)
+    raise "The maximal amount of #{max_ideas} ideas has been exceeded" if idea_rows > max_ideas
 
-      idea_models_data.each do |idea_data|
-        added_idea_ids.push convert_idea(idea_data).id
-        Rails.logger.debug { "Created #{added_idea_ids.first}" }
+    ActiveRecord::Base.transaction do
+      idea_rows.each do |idea_row|
+        idea = import_idea idea_row
+        Rails.logger.info { "Created #{idea.id}" }
       end
-    rescue StandardError => e
-      added_idea_ids.select { |id| id }.each do |id|
-        Idea.find(id)&.destroy!
-        Rails.logger.debug { "Destroyed #{id}" }
-      end
-      raise e
     end
   end
 
   private
 
-  def convert_idea(idea_data)
-    d = {}
-    if idea_data[:title_multiloc].blank?
-      raise 'A title for the idea is mandatory!'
-    end
+  def import_idea(idea_row)
+    idea_attributes = {}
+    add_title_multiloc idea_row, idea_attributes
+    add_body_multiloc idea_row, idea_attributes
+    add_project idea_row, idea_attributes
+    add_author idea_row, idea_attributes
+    add_published_at idea_row, idea_attributes
+    add_publication_status idea_row, idea_attributes
+    add_location idea_row, idea_attributes
+    add_phase idea_row, idea_attributes
+    add_topics idea_row, idea_attributes
 
-    d[:title_multiloc] = idea_data[:title_multiloc]
-    if idea_data[:body_multiloc].blank?
-      raise 'A body for the idea is mandatory!'
-    end
+    idea = Idea.new idea_attributes
+    # Later iteration: parseable error using idea.errors.details
+    raise "The resulting idea is not valid: #{idea.errors.messages}" unless idea.valid?
 
-    d[:body_multiloc] = idea_data[:body_multiloc]
-    d[:topics] = idea_data[:topic_titles].map do |topic_title|
-      topic_title = topic_title.downcase
-      Topic.all.find do |topic|
-        topic.title_multiloc.values
-          .map(&:downcase)
-          .include? topic_title
-      end
-    end.select { |topic| topic }.uniq(&:id)
-    unless idea_data[:project_title]
-      raise 'A project title is mandatory!'
-    end
+    idea.save!
 
-    project_title = idea_data[:project_title].downcase.strip
-    d[:project] = Project.all.select do |project|
-      project.title_multiloc.values
-        .map { |v| v.downcase.strip }
-        .include? project_title
-    end&.first
-    unless d[:project]
-      raise "No project with title #{idea_data[:project_title]} exists"
-    end
+    create_idea_image idea_row, idea
 
-    if idea_data[:user_email]
-      d[:author] = User.find_by_cimail idea_data[:user_email]
-      unless d[:author]
-        raise "No user with email #{idea_data[:user_email]} exists"
-      end
-    end
-    if idea_data[:published_at]
-      begin
-        d[:published_at] = Date.parse idea_data[:published_at]
-      rescue StandardError => _e
-        Rails.logger.debug { "Failed to parse publication date: #{idea_data[:published_at]}" }
-      end
-    end
-    if (lat = idea_data[:latitude]&.to_f) && (lon = idea_data[:longitude]&.to_f)
-      d[:location_point_geojson] = {
-        'type' => 'Point',
-        'coordinates' => [lon, lat]
-      }
-    end
-    d[:location_description] = idea_data[:location_description] if idea_data[:location_description]
-    d[:publication_status] = 'published'
-    idea = Idea.create! d
-    if idea_data[:image_url]
-      begin
-        IdeaImage.create!(remote_image_url: idea_data[:image_url], idea: idea)
-      rescue StandardError => _e
-        raise "No image could be downloaded from #{idea_data[:image_url]}, make sure the URL is valid and ends with a file extension such as .png or .jpg"
-      end
-    end
-    if idea_data[:phase_rank]
-      idea_data[:phase_rank] = idea_data[:phase_rank].to_i
-      project_phases = Phase.where(project_id: d[:project].id)
-      if idea_data[:phase_rank] > project_phases.size
-        raise "Only #{idea_data[:phase_rank]} phases exist within project #{idea_data[:project_title]}"
-      end
-
-      phase = project_phases.order(:start_at).all[idea_data[:phase_rank] - 1]
-      unless phase
-        raise "No phase with title #{idea_data[:phase_title]} exists within project #{idea_data[:project_title]}"
-      end
-
-      IdeasPhase.create!(phase: phase, idea: idea)
-    end
     idea
   end
 
-  def multiloculate(value)
-    multiloc = {}
-    AppConfiguration.instance.settings('core', 'locales').each do |loc|
-      multiloc[loc] = value
+  def add_title_multiloc(idea_row, idea_attributes)
+    raise 'Idea with empty title' if idea_row[:title_multiloc].blank?
+
+    idea_attributes[:title_multiloc] = idea_row[:title_multiloc]
+  end
+
+  def add_body_multiloc(idea_row, idea_attributes)
+    raise 'Idea with empty body' if idea_row[:body_multiloc].blank?
+
+    idea_attributes[:body_multiloc] = idea_row[:body_multiloc]
+  end
+
+  def add_project(idea_row, idea_attributes)
+    raise 'Idea without project' if idea_row[:project_title].blank?
+
+    project_title = idea_row[:project_title].downcase.strip
+    # Later iteration: Only load necessary attributes? Preload all projects before importing all?
+    project = Project.all.find do |find_project|
+      find_project
+        .title_multiloc
+        .values
+        .map { |v| v.downcase.strip }
+        .include? project_title
     end
-    multiloc
+    raise "No project with title #{idea_row[:project_title]} exists" if project.blank?
+
+    idea_attributes[:project] = project
+  end
+
+  def add_author(idea_row, idea_attributes)
+    raise 'Idea without user email' if idea_row[:user_email].blank?
+
+    author = User.find_by_cimail idea_row[:user_email]
+    raise "No user exists with email #{idea_row[:user_email]}" if author.blank?
+
+    idea_attributes[:author] = author
+  end
+
+  def add_published_at(idea_row, idea_attributes)
+    return if idea_row[:published_at].blank?
+
+    published_at = nil
+    begin
+      published_at = Date.parse idea_row[:published_at]
+    rescue StandardError => _e
+      raise "Idea with invalid publication date format: #{idea_row[:published_at]}"
+    end
+
+    idea_attributes[:published_at] = published_at
+  end
+
+  def add_publication_status(_idea_row, idea_attributes)
+    idea_attributes[:publication_status] = 'published'
+  end
+
+  def add_location(idea_row, idea_attributes)
+    if (lat = idea_row[:latitude]&.to_f) && (lon = idea_row[:longitude]&.to_f)
+      location_point = {
+        'type' => 'Point',
+        'coordinates' => [lon, lat]
+      }
+      idea_attributes[:location_point_geojson] = location_point
+    end
+    idea_attributes[:location_description] = idea_row[:location_description] if idea_data[:location_description]
+  end
+
+  def add_phase(idea_row, idea_attributes)
+    return if idea_row[:phase_rank].blank?
+
+    phase_rank = idea_data[:phase_rank].to_i
+    project_phases = Phase.where(project: idea_attributes[:project])
+    if phase_rank > project_phases.size
+      raise "There are only #{project_phases.size} phases in project #{idea_row[:project_title]} (requested phase: #{phase_rank})"
+    end
+
+    phase = project_phases.order(:start_at).all[phase_rank - 1]
+    raise "No phase #{phase_rank} found in project #{idea_row[:project_title]}" if phase.blank?
+
+    idea_attributes[:phases] = [phase]
+  end
+
+  def add_topics(idea_row, idea_attributes)
+    topics_ids = idea_row[:topic_titles].map do |topic_title|
+      topic_title = topic_title.downcase.strip
+      # Later iteration: Only load necessary attributes? Preload all topics before importing all?
+      Topic.all.find do |topic|
+        topic
+          .title_multiloc
+          .values
+          .map(&:downcase)
+          .include? topic_title
+      end
+    end.select(&:present?).uniq(&:id)
+
+    idea_attributes[:topics_ids] = topics_ids
+  end
+
+  def create_idea_image(idea_row, idea)
+    return if idea_row[:image_url].blank?
+
+    begin
+      IdeaImage.create!(remote_image_url: idea_row[:image_url], idea: idea)
+    rescue StandardError => _e
+      raise "No image could be downloaded from #{idea_row[:image_url]}, make sure the URL is valid and ends with a file extension such as .png or .jpg"
+    end
   end
 end
