@@ -167,7 +167,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLinkText": "artículo de soporte",
   "app.components.app.containers.AdminPage.ProjectEdit.ideaTerm": "Idea",
   "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "¿Cómo debería llamarse una entrada?",
-  "app.components.app.containers.AdminPage.ProjectEdit.issueTerm": "Asunto",
+  "app.components.app.containers.AdminPage.ProjectEdit.issueTerm": "Respuesta",
   "app.components.app.containers.AdminPage.ProjectEdit.maxBudgetRequired": "Se requiere un presupuesto máximo",
   "app.components.app.containers.AdminPage.ProjectEdit.minBudgetLargerThanMaxError": "El presupuesto mínimo no puede ser mayor que el máximo",
   "app.components.app.containers.AdminPage.ProjectEdit.minBudgetRequired": "Se requiere un presupuesto mínimo",
