@@ -145,17 +145,19 @@ module Analytics
 
       validate_json
 
-      if @query.key?(:dimensions)
-        validate_dimensions
-        validate_dates
-      end
+      if @validation['messages'].empty?
+        if @query.key?(:dimensions)
+          validate_dimensions
+          validate_dates
+        end
 
-      if @query.key?(:groups)
-        validate_groups
-      end
+        if @query.key?(:groups)
+          validate_groups
+        end
 
-      if @query.key?(:sort)
-        validate_order
+        if @query.key?(:sort)
+          validate_order
+        end
       end
 
       @validation

@@ -1,5 +1,6 @@
 {
   "type" : "object",
+  "$schema": "http://citizenlab.co/tenant_settings_spec.json",
   "properties" : {
     "dimensions" : {
       "type" : "object",
@@ -31,13 +32,13 @@
           "anyOf" : [
             {
               "type" : "string",
-              "pattern" : "^[a-z_]*\.[a-z_]*$"
+              "pattern" : "^[a-z_]*\\.[a-z_]*$"
             }, 
             {
               "type": "array",
               "items" : {
                 "type" : "string",
-                "pattern" : "^[a-z_]*\.[a-z_]*$"
+                "pattern" : "^[a-z_]*\\.[a-z_]*$"
               },
               "minLength" : 1
             }
@@ -47,7 +48,7 @@
           "type" : "object",
           "minProperties" : 1,
           "patternProperties" : {
-            "^[a-z_]*\.[a-z_]*$" : {
+            "^[a-z_]*\\.[a-z_]*$" : {
               "anyOf" : [
                 {
                   "type" : "string",
@@ -73,11 +74,12 @@
     "sort" : {
       "type": "object",
       "patternProperties" : {
-        "^[a-z_]*\.[a-z_]*$" : {
+        "^[a-z_]*\\.[a-z_]*$" : {
           "type" : "string",
           "enum" : ["ASC", "DESC"]
         }
-      }
+      },
+      "additionalProperties" : false
     },
     "limit" : {
       "type" : "integer",
