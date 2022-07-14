@@ -83,4 +83,24 @@ describe('useHomepageSettingsFeatureFlag', () => {
     );
     expect(result.current).toBe(false);
   });
+
+  it('should return false when widget disabled and not allowed', () => {
+    (useHomepageSettings as jest.Mock).mockReturnValue({
+      data: { attributes: { events_widget_enabled: false } },
+    });
+    (useAppConfiguration as jest.Mock).mockReturnValue({
+      data: {
+        attributes: {
+          settings: { events_widget: { allowed: false } },
+        },
+      },
+    });
+    const { result } = renderHook(() =>
+      useHomepageSettingsFeatureFlag({
+        sectionEnabledSettingName: 'events_widget_enabled',
+        appConfigSettingName: 'events_widget',
+      })
+    );
+    expect(result.current).toBe(false);
+  });
 });
