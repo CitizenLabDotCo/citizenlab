@@ -6,6 +6,7 @@ import { CTASignedInType } from 'services/appConfiguration';
 import SettingRadioButtons from './SettingRadioButtons';
 import { CLErrors, Multiloc } from 'typings';
 import SettingsLabel from './SettingsLabel';
+import { BannerSettingKeyType } from '.';
 
 const CTA_SIGNED_IN_TYPES: CTASignedInType[] = [
   'customized_button',
@@ -16,7 +17,10 @@ type Props = {
   ctaType: CTASignedInType;
   ctaButtonMultiloc: Multiloc;
   ctaButtonUrl: string;
-  handleSettingOnChange: (settingKey: string, settingValue: any) => void;
+  handleSettingOnChange: (
+    settingKey: BannerSettingKeyType,
+    settingValue: any
+  ) => void;
   errors: CLErrors;
 };
 

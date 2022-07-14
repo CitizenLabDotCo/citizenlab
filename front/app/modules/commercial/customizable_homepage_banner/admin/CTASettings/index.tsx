@@ -8,8 +8,8 @@ import CTASignedInSettings from './CTASignedInSettings';
 import { CLErrors } from 'typings';
 
 // only these keys will be used in CTA settings
-export type BannerSettingKeyTypes = Extract<
-  IHomepageSettingsAttributes,
+export type BannerSettingKeyType = Extract<
+  keyof IHomepageSettingsAttributes,
   | 'banner_cta_signed_in_text_multiloc'
   | 'banner_cta_signed_out_text_multiloc'
   | 'banner_cta_signed_in_url'
@@ -20,10 +20,7 @@ export type BannerSettingKeyTypes = Extract<
 
 interface Props {
   homepageSettings: IHomepageSettingsAttributes;
-  handleOnChange: (
-    settingKey: keyof BannerSettingKeyTypes,
-    settingValue: any
-  ) => void;
+  handleOnChange: (settingKey: BannerSettingKeyType, settingValue: any) => void;
   errors: CLErrors;
 }
 

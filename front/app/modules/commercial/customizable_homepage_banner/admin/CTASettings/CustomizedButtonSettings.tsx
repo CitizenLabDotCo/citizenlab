@@ -13,7 +13,7 @@ import { InjectedIntlProps } from 'react-intl';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
-import { BannerSettingKeyTypes } from '.';
+import { BannerSettingKeyType } from '.';
 
 const TextSettings = styled.div`
   margin-top: 10px;
@@ -87,7 +87,7 @@ interface Props {
   buttonMultiloc: Multiloc;
   buttonConfig?: CustomizedButtonConfig;
   handleSettingOnChange: (
-    settingKey: keyof BannerSettingKeyTypes,
+    settingKey: BannerSettingKeyType,
     settingValue: Multiloc | string
   ) => void;
   signInStatus: 'signed_out' | 'signed_in';
