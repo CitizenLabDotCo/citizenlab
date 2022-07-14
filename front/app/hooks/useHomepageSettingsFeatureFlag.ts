@@ -34,11 +34,10 @@ export default function useHomepageSettingsFeatureFlag({
 
   const appConfigExists = !isNilOrError(appConfig);
   const homepageSettingsExist = !isNilOrError(homepageSettings);
-  const appSettingNameandConfigAreValid =
-    appConfigSettingName && appConfigExists;
+  const appSettingNameandConfigExist = appConfigSettingName && appConfigExists;
 
   // It only makes sense to have appConfigSetting if there's an appConfigSettingName
-  const appConfigSetting = appSettingNameandConfigAreValid
+  const appConfigSetting = appSettingNameandConfigExist
     ? appConfig.data.attributes.settings?.[appConfigSettingName]
     : null;
 
