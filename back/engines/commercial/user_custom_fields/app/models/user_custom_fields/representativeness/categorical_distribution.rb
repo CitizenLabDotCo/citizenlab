@@ -24,7 +24,9 @@ module UserCustomFields
     class CategoricalDistribution < RefDistribution
       has_many :options, through: :custom_field
 
+      # rubocop:disable Rails/I18nLocaleTexts
       validates :distribution, presence: true, length: { minimum: 2, message: 'must have at least 2 options.' }
+      # rubocop:enable Rails/I18nLocaleTexts
       validate :validate_distribution_options
 
       def probabilities_and_counts

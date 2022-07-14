@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # This migration comes from user_custom_fields (originally 20220706144252)
 
 class AddTypeToUserCustomFieldsRepresentativenessRefDistributions < ActiveRecord::Migration[6.1]
