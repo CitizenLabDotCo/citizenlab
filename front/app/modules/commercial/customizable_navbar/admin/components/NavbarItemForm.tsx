@@ -43,6 +43,7 @@ const NavbarItemForm = ({
   });
 
   const methods = useForm({
+    mode: 'onBlur',
     defaultValues,
     resolver: yupResolver(schema),
   });
@@ -75,9 +76,9 @@ const NavbarItemForm = ({
       <form onSubmit={methods.handleSubmit(onSuccess, onValidationError)}>
         <SectionField>
           <RHFInputMultilocWithLocaleSwitcher
+            name="nav_bar_item_title_multiloc"
             label={formatMessage(messages.navbarItemTitle)}
             type="text"
-            name="nav_bar_item_title_multiloc"
           />
         </SectionField>
         <Box display="flex">

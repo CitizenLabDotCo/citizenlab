@@ -62,6 +62,7 @@ const Toast = ({ text, onDismiss, variant = 'error' }: ToastProps) => {
       right="12px"
       border={`1px solid ${colors.separation}`}
       borderRadius="3px"
+      role="alert"
     >
       <Box display="flex" alignItems="center" gap="12px">
         <Icon

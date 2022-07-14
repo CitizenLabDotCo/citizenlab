@@ -83,6 +83,7 @@ const PageFormWithNavbarNameField = ({
   });
 
   const methods = useForm({
+    mode: 'onBlur',
     defaultValues,
     resolver: yupResolver(schema),
   });

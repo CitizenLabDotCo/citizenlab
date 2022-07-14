@@ -79,6 +79,7 @@ const PageForm = ({
   });
 
   const methods = useForm({
+    mode: 'onBlur',
     defaultValues,
     resolver: yupResolver(schema),
   });
