@@ -14,6 +14,7 @@ import validateMultiloc from 'utils/yup/validateMultiloc';
 // components
 import Button from 'components/UI/Button';
 import { Box } from '@citizenlab/cl2-component-library';
+import useToast from 'components/Toast/useToast';
 
 // intl
 import messages from './messages';
@@ -34,6 +35,7 @@ const NavbarItemForm = ({
   defaultValues,
   intl: { formatMessage },
 }: PageFormProps) => {
+  const { add } = useToast();
   const schema = object({
     nav_bar_item_title_multiloc: validateMultiloc(
       formatMessage(messages.emptyNavbarItemTitleError)
@@ -45,9 +47,32 @@ const NavbarItemForm = ({
     resolver: yupResolver(schema),
   });
 
+  const onSuccess = async (formValues: FormValues) => {
+    try {
+      await onSubmit(formValues);
+      add({ variant: 'success', text: 'Page successfully saved' });
+    } catch (error) {
+      Object.keys(error.json.errors).forEach((key: keyof FormValues) => {
+        methods.setError(key, error.json.errors[key][0]);
+      });
+
+      add({
+        variant: 'error',
+        text: 'There is a problem - please fix the issues shown and try again.',
+      });
+    }
+  };
+
+  const onValidationError = () => {
+    add({
+      variant: 'error',
+      text: 'There is a problem - please fix the issues shown and try again.',
+    });
+  };
+
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)}>
+      <form onSubmit={methods.handleSubmit(onSuccess, onValidationError)}>
         <SectionField>
           <RHFInputMultilocWithLocaleSwitcher
             label={formatMessage(messages.navbarItemTitle)}

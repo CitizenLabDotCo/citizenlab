@@ -37,14 +37,10 @@ const EditNavbarItemForm = ({ params: { navbarItemId } }: WithRouterProps) => {
   }
 
   const handleSubmit = async (values: FormValues) => {
-    try {
-      await updateNavbarItem(
-        navbarItemId,
-        createNavbarItemUpdateData(navbarItem, values)
-      );
-    } catch (error) {
-      // Do nothing
-    }
+    await updateNavbarItem(
+      navbarItemId,
+      createNavbarItemUpdateData(navbarItem, values)
+    );
   };
 
   const goBack = () => {
