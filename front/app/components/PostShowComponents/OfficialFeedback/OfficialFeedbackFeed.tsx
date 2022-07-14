@@ -44,7 +44,7 @@ const FeedbackHeader = styled.div`
 `;
 
 const FeedbackTitle = styled.h2`
-  color: ${colors.clRedError};
+  color: ${colors.red600};
   font-size: ${fontSizes.l}px;
   line-height: normal;
   font-weight: 600;
@@ -53,7 +53,7 @@ const FeedbackTitle = styled.h2`
 `;
 
 const FeedbackSubtitle = styled.div`
-  color: ${colors.clRedError};
+  color: ${colors.red600};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 400;

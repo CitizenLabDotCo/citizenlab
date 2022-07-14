@@ -15,18 +15,18 @@ const timeout = 350;
 
 const ErrorMessageText = styled.div`
   flex: 1 1 100%;
-  color: ${colors.clRedError};
+  color: ${colors.red600};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 400;
 
   a {
-    color: ${colors.clRedError};
+    color: ${colors.red600};
     font-weight: 500;
     text-decoration: underline;
 
     &:hover {
-      color: ${darken(0.2, colors.clRedError)};
+      color: ${darken(0.2, colors.red600)};
       text-decoration: underline;
     }
   }
@@ -40,7 +40,7 @@ const ErrorIcon = styled(Icon)`
   flex: 0 0 20px;
   width: 20px;
   height: 20px;
-  fill: ${colors.clRedError};
+  fill: ${colors.red600};
   padding: 0px;
   margin: 0px;
   margin-right: 10px;
@@ -57,7 +57,7 @@ const ContainerInner = styled.div`
   justify-content: space-between;
   padding: 10px 13px;
   border-radius: ${(props) => props.theme.borderRadius};
-  background: ${colors.clRedErrorBackground};
+  background: ${colors.red100};
 
   ${isRtl`
     flex-direction: row-reverse;
