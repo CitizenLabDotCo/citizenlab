@@ -46,8 +46,10 @@ export default ({
       id="participationmethod-ideation"
       label={
         <LabelHeaderDescription
-          header="inputAndFeedback"
-          description="inputAndFeedbackDescription"
+          header={<FormattedMessage {...messages.inputAndFeedback} />}
+          description={
+            <FormattedMessage {...messages.inputAndFeedbackDescription} />
+          }
         />
       }
     />
@@ -61,8 +63,16 @@ export default ({
         id={'participationmethod-budgeting'}
         label={
           <LabelHeaderDescription
-            header="conductParticipatoryBudgetingText"
-            description="conductParticipatoryBudgetingDescriptionText"
+            header={
+              <FormattedMessage
+                {...messages.conductParticipatoryBudgetingText}
+              />
+            }
+            description={
+              <FormattedMessage
+                {...messages.conductParticipatoryBudgetingDescriptionText}
+              />
+            }
           />
         }
       />
@@ -76,8 +86,10 @@ export default ({
         id={'participationmethod-poll'}
         label={
           <LabelHeaderDescription
-            header="createPoll"
-            description="createPollDescription"
+            header={<FormattedMessage {...messages.createPoll} />}
+            description={
+              <FormattedMessage {...messages.createPollDescription} />
+            }
           />
         }
       />
@@ -92,8 +104,10 @@ export default ({
         id={'participationmethod-survey'}
         label={
           <LabelHeaderDescription
-            header="createSurveyText"
-            description="createSurveyDescription"
+            header={<FormattedMessage {...messages.createSurveyText} />}
+            description={
+              <FormattedMessage {...messages.createSurveyDescription} />
+            }
           />
         }
       />
@@ -108,8 +122,10 @@ export default ({
         id={'participationmethod-volunteering'}
         label={
           <LabelHeaderDescription
-            header="findVolunteers"
-            description="findVolunteersDescriptionText"
+            header={<FormattedMessage {...messages.findVolunteers} />}
+            description={
+              <FormattedMessage {...messages.findVolunteersDescriptionText} />
+            }
           />
         }
       />
@@ -123,8 +139,10 @@ export default ({
       id="participationmethod-information"
       label={
         <LabelHeaderDescription
-          header="shareInformation"
-          description="shareInformationDescription"
+          header={<FormattedMessage {...messages.shareInformation} />}
+          description={
+            <FormattedMessage {...messages.shareInformationDescription} />
+          }
         />
       }
     />

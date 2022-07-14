@@ -77,7 +77,9 @@ const ImageControl = ({
         id={sanitizeForClassname(id)}
         images={imageFiles}
         imagePreviewRatio={135 / 298}
-        acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+        acceptedFileTypes={{
+          'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+        }}
         onAdd={handleUploadOnAdd}
         onRemove={handleUploadOnRemove}
       />

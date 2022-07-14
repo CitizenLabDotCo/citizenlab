@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+
 // components
 import {
   IconTooltip,
@@ -9,18 +9,15 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { Row } from 'components/admin/ResourceList';
 import AdminEditButton from './AdminEditButton';
-import { FormattedMessage } from 'react-intl';
-import { MessageDescriptor } from 'utils/cl-intl';
-
-const StyledToggle = styled(Toggle)`
-  margin-right: 20px;
-`;
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
 export interface Props {
   onChangeSectionToggle: () => void;
   onClickEditButton?: () => void;
   titleMessageDescriptor: MessageDescriptor;
   tooltipMessageDescriptor: MessageDescriptor;
+  checked: boolean;
+  disabled: boolean;
 }
 
 const SectionToggle = ({
@@ -28,11 +25,19 @@ const SectionToggle = ({
   onClickEditButton,
   titleMessageDescriptor,
   tooltipMessageDescriptor,
+  checked,
+  disabled,
 }: Props) => {
   return (
     <Row>
       <Box display="flex" alignItems="center">
-        <StyledToggle checked onChange={onChangeSectionToggle} />
+        <Box mr="20px">
+          <Toggle
+            checked={checked}
+            onChange={onChangeSectionToggle}
+            disabled={disabled}
+          />
+        </Box>
         {/*
       Note: I think we want a default font-weigt of 600, not 700 for this component.
       Also, the margin-top is more than margin-bottom (for an h3).
@@ -44,7 +49,7 @@ const SectionToggle = ({
           content={<FormattedMessage {...tooltipMessageDescriptor} />}
         />
       </Box>
-      {onClickEditButton && <AdminEditButton onClick={onClickEditButton} />}{' '}
+      {onClickEditButton && <AdminEditButton onClick={onClickEditButton} />}
     </Row>
   );
 };

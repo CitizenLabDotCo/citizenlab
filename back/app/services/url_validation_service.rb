@@ -2,24 +2,29 @@
 
 class UrlValidationService
   URL_WHITELIST = [
-    %r{\Ahttps://(.+\.)typeform\.com/to/},
-    %r{\Ahttps://widget\.surveymonkey\.com/collect/website/js/.*\.js},
-    %r{\Ahttps://docs.google.com/forms/d/e/.*/viewform\?embedded=true},
-    %r{\Ahttps://surveys.enalyzer.com/?\?pid=.*},
-    %r{\Ahttps://(www\.)?survey-xact\.dk/LinkCollector\?key=.*},
-    %r{\Ahttps://(.+\.)qualtrics\.com/jfe/form/},
-    %r{\Ahttps://(www\.)?smartsurvey\.co\.uk/},
-    %r{\Ahttps://(.+\.)(microsoft|office)\.com/},
-    %r{\Ahttps://(www\.)?eventbrite\.com/static/widgets/},
-    %r{\Ahttps://(www\.)?arcgis\.com/},
-    %r{\Ahttps://public\.tableau\.com/},
-    %r{\Ahttps://datastudio\.google\.com/embed/},
-    %r{\Ahttps://app\.powerbi\.com/},
-    %r{\Ahttps://static\.ctctcdn\.com/js/},
-    %r{\Ahttps://(www\.)?instagram\.com/},
-    %r{\Ahttps://platform\.twitter\.com/},
-    %r{\Ahttps://.+\.konveio\.com/},
-    %r{\Ahttps://(www\.)?facebook\.com/}
+    %r{\A(https?)://(.+\.)typeform\.com/to/},
+    %r{\A(https?)://surveys.enalyzer.com/?\?pid=.*},
+    %r{\A(https?)://(www\.)?survey-xact\.dk/LinkCollector\?key=.*}i,
+    %r{\A(https?)://(.+\.)qualtrics\.com/jfe/form/},
+    %r{\A(https?)://(www\.)?smartsurvey\.co\.uk/},
+    %r{\A(https?)://(.+\.)(microsoft|office)\.com/},
+    %r{\A(https?)://(www\.)?eventbrite\.([-A-Z0-9+&@#/%=~_|!:,.;]+)}i,
+    %r{\A(https?)://(www\.)?(arcgis|arcg)\.([-A-Z0-9+&@#/%=~_|!:,.;]+)}i,
+    %r{\A(https?)://public\.tableau\.com/([-A-Z0-9+&@#/%=~_|!:,.;?]+)}i,
+    %r{\A(https?)://datastudio\.google\.com/embed/},
+    %r{\A(https?)://app\.powerbi\.com/},
+    %r{\A(https?)://static\.ctctcdn\.com/js/},
+    %r{\A(https?)://(www\.)?instagram\.com/},
+    %r{\A(https?)://platform\.twitter\.com/},
+    %r{\A(https?)://.+\.konveio\.com/},
+    %r{\A(https?)://(www\.)?facebook\.com/},
+    %r{\A(https?)://(.+\.)(welcomesyourfeedback.net|snapsurveys.com)/},
+    %r{\A(https?)://([-A-Z0-9.]+)\.surveymonkey\.([-A-Z0-9+&@#/%=~_|!:,.;]+)}i,
+    %r{\A(https?)://docs\.google\.com/(document|spreadsheets|forms|presentation)/d/(.*?)/.*?},
+    %r{\A(https?)://(www\.)?google\.com/maps(/[a-z])?/embed\?([^&]*)=([-A-Z0-9+&@#/%=~_|!:,.;]+)}i,
+    %r{\A(https?)://([-A-Z0-9.]+)\.slideshare(\.(net|com))/slideshow/embed_code/key/([-A-Z0-9+&@#/%=~_|!:,.;]+)}i,
+    %r{\A(https?)://(www\.)?onedrive\.live\.([-A-Z0-9+&@#/%=~_|!:,.;?]+)}i,
+    %r{\A(https?)://.*pdf$}
   ].freeze
 
   VIDEO_WHITELIST = [

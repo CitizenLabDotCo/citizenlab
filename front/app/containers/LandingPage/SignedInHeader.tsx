@@ -514,7 +514,6 @@ class SignedInHeader extends PureComponent<Props, State> {
               <Right>
                 <Outlet
                   id="app.containers.LandingPage.SignedInHeader.CTA"
-                  ctaType={customizableHomepageBanner.cta_signed_in_type}
                   customizedButtonConfig={
                     customizableHomepageBanner.cta_signed_in_customized_button
                   }

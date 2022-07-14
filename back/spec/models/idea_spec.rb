@@ -13,7 +13,50 @@ RSpec.describe Idea, type: :model do
     end
 
     it 'can create an idea without author' do
-      expect(build(:idea, author: nil)).to be_valid
+      expect(build(:idea, author: nil).valid?(:create)).to be true
+    end
+
+    it 'cannot create an idea without author on publication' do
+      idea = build(:idea, author: nil)
+      expect(idea.valid?(:publication)).to be false
+      expect(idea.errors.details).to eq({ author: [{ error: :blank }] })
+    end
+
+    context 'without custom form' do
+      it 'can publish an idea without custom fields' do
+        project = create :project
+        CustomForm.where(project: project).first&.destroy!
+        idea = build :idea, project: project, custom_field_values: {}
+        expect(idea.save(context: :publication)).to be true
+      end
+    end
+  end
+
+  context 'with custom fields' do
+    context 'when creating ideas' do
+      let(:idea) { build :idea }
+
+      %i[create publication].each do |validation_context|
+        context "on #{validation_context}" do
+          it 'can persist an idea with invalid field values' do
+            idea.custom_field_values = { 'nonexisting_field' => 22 }
+            expect(idea.valid?(validation_context)).to be true
+          end
+        end
+      end
+    end
+
+    context 'when updating ideas' do
+      let(:idea) { create :idea }
+
+      %i[update publication].each do |validation_context|
+        context "on #{validation_context}" do
+          it 'can persist an idea with invalid field values' do
+            idea.custom_field_values = { 'nonexisting_field' => 65 }
+            expect(idea.valid?(validation_context)).to be true
+          end
+        end
+      end
     end
   end
 

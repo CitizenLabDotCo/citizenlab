@@ -223,7 +223,7 @@ models:
         - imageable_field: body_multiloc
           remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png
           text_reference: 85a9e561-4c27-4f6b-949a-d8e06905787b
-  nav_bar_items:
+  nav_bar_item:
     -
       code: home
       ordering: 0

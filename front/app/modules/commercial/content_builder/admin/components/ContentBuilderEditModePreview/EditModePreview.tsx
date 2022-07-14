@@ -20,7 +20,7 @@ import { PROJECT_DESCRIPTION_CODE } from '../../../services/contentBuilder';
 // types
 import { SerializedNodes } from '@craftjs/core';
 
-export const MobileViewPreview = () => {
+export const EditModePreview = () => {
   const [draftData, setDraftData] = useState<SerializedNodes | undefined>();
   const [selectedLocale, setSelectedLocale] = useState<string | undefined>();
   const { projectId } = useParams() as { projectId: string };
@@ -72,7 +72,7 @@ export const MobileViewPreview = () => {
         height="100vh"
         bgColor="#fff"
         overflowY="auto"
-        data-testid="contentBuilderMobilePreviewContent"
+        data-testid="contentBuilderEditModePreviewContent"
       >
         <Box p="20px">
           <Title color="colorText" variant="h1">
@@ -92,11 +92,11 @@ export const MobileViewPreview = () => {
   );
 };
 
-const MobileViewPreviewModal = () => {
+const EditModePreviewModal = () => {
   const modalPortalElement = document.getElementById('modal-portal');
 
   return modalPortalElement
-    ? createPortal(<MobileViewPreview />, modalPortalElement)
+    ? createPortal(<EditModePreview />, modalPortalElement)
     : null;
 };
-export default MobileViewPreviewModal;
+export default EditModePreviewModal;

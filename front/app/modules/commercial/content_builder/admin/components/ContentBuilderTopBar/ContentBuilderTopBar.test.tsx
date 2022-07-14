@@ -96,8 +96,8 @@ describe('ContentBuilderTopBar', () => {
           selectedLocale="en"
           localesWithError={[]}
           onSelectLocale={() => {}}
-          mobilePreviewEnabled={false}
-          setMobilePreviewEnabled={() => {}}
+          previewEnabled={false}
+          setPreviewEnabled={() => {}}
         />
       </Editor>
     );
@@ -110,8 +110,8 @@ describe('ContentBuilderTopBar', () => {
           selectedLocale="en"
           localesWithError={[]}
           onSelectLocale={() => {}}
-          mobilePreviewEnabled={false}
-          setMobilePreviewEnabled={() => {}}
+          previewEnabled={false}
+          setPreviewEnabled={() => {}}
         />
       </Editor>
     );
@@ -125,8 +125,8 @@ describe('ContentBuilderTopBar', () => {
           selectedLocale="en"
           localesWithError={[]}
           onSelectLocale={() => {}}
-          mobilePreviewEnabled={false}
-          setMobilePreviewEnabled={() => {}}
+          previewEnabled={false}
+          setPreviewEnabled={() => {}}
           draftEditorData={{ en: {} }}
         />
       </Editor>
@@ -148,8 +148,8 @@ describe('ContentBuilderTopBar', () => {
           selectedLocale="en"
           localesWithError={['en']}
           onSelectLocale={() => {}}
-          mobilePreviewEnabled={false}
-          setMobilePreviewEnabled={() => {}}
+          previewEnabled={false}
+          setPreviewEnabled={() => {}}
         />
       </Editor>
     );
@@ -165,8 +165,8 @@ describe('ContentBuilderTopBar', () => {
           selectedLocale="en"
           localesWithError={[]}
           onSelectLocale={() => {}}
-          mobilePreviewEnabled={false}
-          setMobilePreviewEnabled={() => {}}
+          previewEnabled={false}
+          setPreviewEnabled={() => {}}
         />
       </Editor>
     );
@@ -174,40 +174,40 @@ describe('ContentBuilderTopBar', () => {
     expect(saveButton).not.toBeDisabled();
   });
 
-  it('calls setMobilePreviewEnabled correctly on toggle change when mobilePreviewEnabled is false', async () => {
-    const setMobilePreviewEnabled = jest.fn();
+  it('calls setPreviewEnabled correctly on toggle change when previewEnabled is false', async () => {
+    const setPreviewEnabled = jest.fn();
     render(
       <Editor>
         <ContentBuilderTopBar
           selectedLocale="en"
           localesWithError={[]}
           onSelectLocale={() => {}}
-          mobilePreviewEnabled={false}
-          setMobilePreviewEnabled={setMobilePreviewEnabled}
+          previewEnabled={false}
+          setPreviewEnabled={setPreviewEnabled}
         />
       </Editor>
     );
     const toggle = screen.getByRole('checkbox');
     fireEvent.click(toggle);
-    expect(setMobilePreviewEnabled).toHaveBeenCalledWith(true);
+    expect(setPreviewEnabled).toHaveBeenCalledWith(true);
   });
 
-  it('calls setMobilePreviewEnabled correctly on toggle change when mobilePreviewEnabled is true', async () => {
-    const setMobilePreviewEnabled = jest.fn();
+  it('calls setPreviewEnabled correctly on toggle change when previewEnabled is true', async () => {
+    const setPreviewEnabled = jest.fn();
     render(
       <Editor>
         <ContentBuilderTopBar
           selectedLocale="en"
           localesWithError={[]}
           onSelectLocale={() => {}}
-          mobilePreviewEnabled={true}
-          setMobilePreviewEnabled={setMobilePreviewEnabled}
+          previewEnabled={true}
+          setPreviewEnabled={setPreviewEnabled}
         />
       </Editor>
     );
     const toggle = screen.getByRole('checkbox');
     fireEvent.click(toggle);
-    expect(setMobilePreviewEnabled).toHaveBeenCalledWith(false);
+    expect(setPreviewEnabled).toHaveBeenCalledWith(false);
   });
 
   it('does not render locale switcher when there is only one locale', () => {
@@ -217,8 +217,8 @@ describe('ContentBuilderTopBar', () => {
           selectedLocale="en"
           localesWithError={[]}
           onSelectLocale={() => {}}
-          mobilePreviewEnabled={false}
-          setMobilePreviewEnabled={() => {}}
+          previewEnabled={false}
+          setPreviewEnabled={() => {}}
         />
       </Editor>
     );
@@ -233,8 +233,8 @@ describe('ContentBuilderTopBar', () => {
           selectedLocale="en"
           localesWithError={[]}
           onSelectLocale={() => {}}
-          mobilePreviewEnabled={false}
-          setMobilePreviewEnabled={() => {}}
+          previewEnabled={false}
+          setPreviewEnabled={() => {}}
         />
       </Editor>
     );
@@ -249,8 +249,8 @@ describe('ContentBuilderTopBar', () => {
           selectedLocale="en"
           localesWithError={[]}
           onSelectLocale={onSelectLocale}
-          mobilePreviewEnabled={false}
-          setMobilePreviewEnabled={() => {}}
+          previewEnabled={false}
+          setPreviewEnabled={() => {}}
         />
       </Editor>
     );
@@ -269,11 +269,28 @@ describe('ContentBuilderTopBar', () => {
           selectedLocale="en"
           localesWithError={['en']}
           onSelectLocale={onSelectLocale}
-          mobilePreviewEnabled={false}
-          setMobilePreviewEnabled={() => {}}
+          previewEnabled={false}
+          setPreviewEnabled={() => {}}
         />
       </Editor>
     );
     expect(screen.getByText('en').firstChild).toHaveClass('empty');
+  });
+
+  it('sets Save button to pending state correctly', () => {
+    const onSelectLocale = jest.fn();
+    render(
+      <Editor>
+        <ContentBuilderTopBar
+          hasPendingState={true}
+          selectedLocale="en"
+          localesWithError={['en']}
+          onSelectLocale={onSelectLocale}
+          previewEnabled={false}
+          setPreviewEnabled={() => {}}
+        />
+      </Editor>
+    );
+    expect(screen.getByText('Save')).not.toBeInTheDocument;
   });
 });

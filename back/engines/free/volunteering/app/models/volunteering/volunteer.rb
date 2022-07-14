@@ -12,8 +12,8 @@
 #
 # Indexes
 #
-#  index_volunteering_volunteers_on_cause_id  (cause_id)
-#  index_volunteering_volunteers_on_user_id   (user_id)
+#  index_volunteering_volunteers_on_cause_id_and_user_id  (cause_id,user_id) UNIQUE
+#  index_volunteering_volunteers_on_user_id               (user_id)
 #
 # Foreign Keys
 #

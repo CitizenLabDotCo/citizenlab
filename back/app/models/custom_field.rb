@@ -31,12 +31,12 @@
 class CustomField < ApplicationRecord
   acts_as_list column: :ordering, top_of_list: 0, scope: [:resource_type]
 
-  has_many :options, dependent: :destroy, class_name: 'CustomFieldOption'
+  has_many :options, -> { order(:ordering) }, dependent: :destroy, class_name: 'CustomFieldOption', inverse_of: :custom_field
   belongs_to :resource, polymorphic: true, optional: true
 
   FIELDABLE_TYPES = %w[User CustomForm].freeze
   INPUT_TYPES = %w[text number multiline_text html text_multiloc multiline_text_multiloc html_multiloc select multiselect checkbox date files image_files point].freeze
-  CODES = %w[gender birthyear domicile education title_multiloc body_multiloc topic_ids location_description location_point_geojson proposed_budget idea_images_attributes idea_files_attributes author_id budget].freeze
+  CODES = %w[gender birthyear domicile education title_multiloc body_multiloc topic_ids location_description proposed_budget idea_images_attributes idea_files_attributes author_id budget].freeze
 
   validates :resource_type, presence: true, inclusion: { in: FIELDABLE_TYPES }
   validates :key, presence: true, uniqueness: { scope: %i[resource_type resource_id] }, format: { with: /\A[a-zA-Z0-9_]+\z/,
@@ -67,6 +67,18 @@ class CustomField < ApplicationRecord
 
   def built_in?
     !!code
+  end
+
+  def hidden?
+    hidden
+  end
+
+  def enabled?
+    enabled
+  end
+
+  def required?
+    required
   end
 
   private

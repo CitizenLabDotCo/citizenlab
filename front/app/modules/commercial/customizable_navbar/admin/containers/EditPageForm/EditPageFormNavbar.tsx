@@ -16,7 +16,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { fontSizes } from 'utils/styleUtils';
 import clHistory from 'utils/cl-router/history';
 import { getInitialFormValues, createPageUpdateData } from './utils';
-import { NAVIGATION_PATH } from 'containers/Admin/pages-menu';
+import { PAGES_MENU_PATH } from 'containers/Admin/pages-menu/routes';
 
 // services
 import { updatePage } from 'services/pages';
@@ -89,7 +89,7 @@ const EditPageFormNavbar = ({ params: { pageId } }: WithRouterProps) => {
   };
 
   const goBack = () => {
-    clHistory.push(NAVIGATION_PATH);
+    clHistory.push(PAGES_MENU_PATH);
   };
 
   const renderFn = (props: FormikProps<FormValues>) => {

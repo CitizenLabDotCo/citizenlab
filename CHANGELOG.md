@@ -5,6 +5,85 @@
 ### Changed
 
 - [CL-870] Move "navigation" to primary nav item
+- [CL-1093] Pin Node.js version in package.json
+
+## 2022-07-11
+
+### Fixed
+
+- Project publication status now defaults to draft on creation but remains published if it was already published
+
+### Added
+
+- [CL-1058] - Add desktop preview in content builder
+- [CL-1096] Add representativeness score to header of representativeness chart card
+
+## 2022-07-07
+
+### Fixed
+
+- [TEC-198] Various permission issues
+  - Route access for project folder moderators now works correctly
+  - Project folder moderators can now create a project and select the appropriate folder for it
+  - Route access for admins is now checked correctly
+  - Project/folder moderators now see the dashboard data correctly
+
+## 2022-07-06
+
+### Added
+
+- [CL-1085] Add link to support article when there are errors during embed in the content builder
+
+### Changed
+
+- [CL-875] "en" locale is shown as "en-US" in admin HQ
+
+## 2022-07-05
+
+### Added
+
+- [CL-1058] Add desktop preview in content builder
+- [CL-1001] Added noindex meta tag to user profile pages to reduce the SEO effectiveness of external spam links
+
+### Fixed
+
+- [CL-1083] XLSX export issues with custom fields
+
+
+## 2022-07-04
+
+### Added
+
+- [CL-504] Dynamic idea form has limited support for extra fields
+- [CL-1034] Add support for more URLs in the embed component whitelist
+- [CL-851] Create interface to add representativeness reference data (feature flagged for now).
+
+### Fixed
+
+- [CL-1074] Fix missing options check in user graph
+- [CL-1076] Fix failed request check on bar chart
+
+## 2022-06-30
+
+### Fixed
+
+- [CL-1051] When a new project is published, its default publication status is now draft
+- [CL-993] Fixed bug on idea form where fields were reset to empty state after changing description
+
+## 2022-06-29_2
+
+### Added
+
+- [CL-949] Adds explanation of the implications for project filtering when selecting all areas / no areas / a selection of areas in the Admin project creation / editing form.
+
+## 2022-06-29
+
+### Added
+
+- [CL-1028] Add Swedish locale
+
+### Changed
+
 - [CL-1024] Shows respective CTA buttons in the About component of the content builder
 
 ## 2022-06-22

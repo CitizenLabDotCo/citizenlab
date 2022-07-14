@@ -33,7 +33,7 @@ const ChartFilters = ({
     />
     {!noData && (
       <Button
-        linkTo="https://citizenlabco.typeform.com/to/wwXLjcL6"
+        linkTo="/admin/dashboard/representation/edit-base-data"
         text={<FormattedMessage {...messages.editBaseData} />}
         bgColor={colors.clBlueDark}
       />

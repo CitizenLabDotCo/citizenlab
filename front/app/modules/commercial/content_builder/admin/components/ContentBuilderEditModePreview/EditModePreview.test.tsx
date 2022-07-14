@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
-import { MobileViewPreview } from './MobileViewPreview';
+import { EditModePreview } from './EditModePreview';
 
 let mockLocale = 'en';
 jest.mock('services/locale');
@@ -46,25 +46,25 @@ jest.mock('hooks/useProject', () => {
   }));
 });
 
-describe('Mobile Preview Content', () => {
+describe('Preview Content', () => {
   it('should render', () => {
-    render(<MobileViewPreview />);
+    render(<EditModePreview />);
     expect(
-      screen.getByTestId('contentBuilderMobilePreviewContent')
+      screen.getByTestId('contentBuilderEditModePreviewContent')
     ).toBeInTheDocument();
     expect(screen.getByText('Test Project')).toBeInTheDocument();
   });
 
   it('should show correct title with a different locale', () => {
     mockLocale = 'fr-FR';
-    render(<MobileViewPreview />);
+    render(<EditModePreview />);
 
     expect(screen.getByText('Test Projet')).toBeInTheDocument();
   });
 
   it('shows loading state correctly', () => {
     mockContentBuilderLayoutData = undefined;
-    render(<MobileViewPreview />);
+    render(<EditModePreview />);
 
     expect(screen.getByTestId('spinner')).toBeInTheDocument();
   });

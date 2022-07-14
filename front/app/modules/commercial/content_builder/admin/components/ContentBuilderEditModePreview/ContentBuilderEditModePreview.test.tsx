@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from 'utils/testUtils/rtl';
 
-import ContentBuilderMobileView from './';
+import ContentBuilderEditModePreview from '.';
 
 jest.mock('services/locale');
 jest.mock('hooks/useLocale');
@@ -17,12 +17,14 @@ jest.mock('hooks/useProject', () => {
   }));
 });
 
-describe('ContentBulderMobileView', () => {
+describe('ContentBulderEditModePreview', () => {
   it('renders iframe with the correct src', () => {
-    const { container } = render(<ContentBuilderMobileView projectId="id" />);
+    const { container } = render(
+      <ContentBuilderEditModePreview projectId="id" />
+    );
     expect(container.querySelector('iframe')).toHaveAttribute(
       'src',
-      '/en/admin/content-builder/projects/id/mobile-preview'
+      '/en/admin/content-builder/projects/id/preview'
     );
   });
 });

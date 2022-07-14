@@ -104,6 +104,21 @@ jobs:
     steps:
       - run: bundle exec rubocop -P --format simple
 
+  back-bundle-audit:
+    resource_class: small
+    executor:
+      name: cl2-back
+      image-tag: $CIRCLE_SHA1
+    working_directory: /cl2_back
+    environment:
+      RAILS_ENV: development
+    steps:
+      # CVE-2015-9284 is "CSRF vulnerability in OmniAuth's request phase"
+      # Solution: upgrade to '>= 2.0.0'
+      # But we can't, due to unmaintained gems that don't work with Omniauth 2.0.
+      # See https://github.com/rubysec/bundler-audit
+      - run: bundle exec bundle-audit check --update --ignore CVE-2015-9284
+
   back-test:
     resource_class: small
     executor:
@@ -375,6 +390,15 @@ workflows:
               ignore:
                 - crowdin_master
                 - /l10n_.*/
+      - back-bundle-audit:
+          context: docker-hub-access
+          requires:
+            - back-build-essential-docker-image
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
       - back-test:
           context: docker-hub-access
           requires:
@@ -494,6 +518,14 @@ workflows:
             branches:
               only:
                 - production
+      - back-bundle-audit:
+          context: docker-hub-access
+          requires:
+            - back-build-essential-docker-image
+          filters:
+            branches:
+              only:
+                - production
       - back-test:
           context: docker-hub-access
           requires:
@@ -520,6 +552,7 @@ workflows:
             - front-lint
             - back-lint
             - back-test
+            - back-bundle-audit
             - back-license-check
           filters:
             branches:
@@ -535,6 +568,7 @@ workflows:
             - front-lint
             - back-lint
             - back-test
+            - back-bundle-audit
             - back-license-check
           filters:
             branches:

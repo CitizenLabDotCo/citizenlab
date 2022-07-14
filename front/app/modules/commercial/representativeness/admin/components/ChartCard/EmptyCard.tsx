@@ -93,7 +93,7 @@ const EmptyCard = ({ titleMultiloc, isComingSoon }: Props) => {
             <Button
               width="164px"
               bgColor={colors.adminTextColor}
-              linkTo="https://citizenlabco.typeform.com/to/wwXLjcL6"
+              linkTo="/admin/dashboard/representation/edit-base-data"
             >
               <FormattedMessage {...messages.submitBaseDataButton} />
             </Button>

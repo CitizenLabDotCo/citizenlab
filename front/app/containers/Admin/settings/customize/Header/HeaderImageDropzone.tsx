@@ -1,9 +1,7 @@
 import React from 'react';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import {
-  IAppConfigurationStyle,
-  THomepageBannerLayout,
-} from 'services/appConfiguration';
+import { IAppConfigurationStyle } from 'services/appConfiguration';
+import { THomepageBannerLayout } from 'services/homepageSettings';
 import { UploadFile } from 'typings';
 import { PreviewDevice } from './';
 import styled, { useTheme } from 'styled-components';
@@ -90,7 +88,9 @@ const HeaderImageDropzone = ({
   return (
     <ImagesDropzone
       id="landingpage-header-dropzone"
-      acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+      acceptedFileTypes={{
+        'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+      }}
       images={header_bg}
       imagePreviewRatio={getImagePreviewRatio()}
       onAdd={onAdd}

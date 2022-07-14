@@ -2,6 +2,6 @@
 
 FactoryBot.define do
   factory :custom_form do
-    # Do nothing
+    project
   end
 end

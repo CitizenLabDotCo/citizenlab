@@ -13,11 +13,19 @@ import useLocalize from 'hooks/useLocalize';
 import { IAreaData } from 'services/areas';
 import { useParams } from 'react-router-dom';
 import { TOnProjectAttributesDiffChangeFunction } from '..';
+import { LabelHeaderDescription } from '../../participationContext/components/labels';
+
+// styles
+import styled from 'styled-components';
 
 interface Props {
   areaIds: string[] | undefined;
   onProjectAttributesDiffChange: TOnProjectAttributesDiffChangeFunction;
 }
+
+const AreaRadio = styled(Radio)`
+  margin-bottom: 25px;
+`;
 
 type TProjectAreaType = 'none' | 'all' | 'selection';
 
@@ -124,30 +132,53 @@ const GeographicAreaInputs = ({
             }
           />
         </SubSectionTitle>
-        <Radio
+        <AreaRadio
           onChange={handleAreaTypeOnChange}
           currentValue={areaType}
           value="none"
           name="areas"
           id="areas-none"
-          label={<FormattedMessage {...messages.areasNoneLabel} />}
+          label={
+            <LabelHeaderDescription
+              header={<FormattedMessage {...messages.areasNoneLabel} />}
+              description={
+                <FormattedMessage {...messages.areasNoneLabelDescription} />
+              }
+            />
+          }
         />
-        <Radio
+        <AreaRadio
           onChange={handleAreaTypeOnChange}
           currentValue={areaType}
           value="all"
           name="areas"
           id="areas-all"
-          label={<FormattedMessage {...messages.areasAllLabel} />}
+          label={
+            <LabelHeaderDescription
+              header={<FormattedMessage {...messages.areasAllLabel} />}
+              description={
+                <FormattedMessage {...messages.areasAllLabelDescription} />
+              }
+            />
+          }
         />
-        <Radio
+        <AreaRadio
           onChange={handleAreaTypeOnChange}
           currentValue={areaType}
           value="selection"
           name="areas"
           id="areas-selection"
           className="e2e-areas-selection"
-          label={<FormattedMessage {...messages.areasSelectionLabel} />}
+          label={
+            <LabelHeaderDescription
+              header={<FormattedMessage {...messages.areasSelectionLabel} />}
+              description={
+                <FormattedMessage
+                  {...messages.areasSelectionLabelDescription}
+                />
+              }
+            />
+          }
         />
 
         {areaType === 'selection' && (

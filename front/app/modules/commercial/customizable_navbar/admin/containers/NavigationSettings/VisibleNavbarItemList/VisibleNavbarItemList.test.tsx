@@ -6,7 +6,7 @@ import {
   removeNavbarItem,
 } from '../../../../services/navbar';
 import { deletePage } from 'services/pages';
-import { NAVIGATION_PATH } from 'containers/Admin/pages-menu';
+import { PAGES_MENU_PATH } from 'containers/Admin/pages-menu/routes';
 import navbarItems from 'hooks/fixtures/navbarItems';
 import clHistory from 'utils/cl-router/history';
 
@@ -75,7 +75,7 @@ describe('<VisibleNavbarItemList />', () => {
     fireEvent.click(editButtons[0]);
 
     expect(clHistory.push).toHaveBeenCalledWith(
-      `${NAVIGATION_PATH}/navbar-items/edit/${navbarItems[1].id}`
+      `${PAGES_MENU_PATH}/navbar-items/edit/${navbarItems[1].id}`
     );
   });
 
@@ -88,7 +88,7 @@ describe('<VisibleNavbarItemList />', () => {
     fireEvent.click(editButtons[5]);
 
     expect(clHistory.push).toHaveBeenCalledWith(
-      `${NAVIGATION_PATH}/pages/edit/${navbarItems[6].relationships.static_page.data?.id}`
+      `${PAGES_MENU_PATH}/pages/edit/${navbarItems[6].relationships.static_page.data?.id}`
     );
   });
 

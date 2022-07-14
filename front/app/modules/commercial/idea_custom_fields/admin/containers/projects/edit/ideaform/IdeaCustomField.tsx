@@ -131,16 +131,18 @@ export default memo<Props>(
     };
 
     if (!isNilOrError(ideaCustomField)) {
+      const { code, key, title_multiloc } = ideaCustomField.attributes;
+      const e2eId = code || key;
       return (
         <Accordion
           title={
             <Box
               className={`
-              e2e-${ideaCustomField.attributes.code}-setting-collapsed
+              e2e-${e2eId}-setting-collapsed
             `}
             >
               <Title variant="h3">
-                <T value={ideaCustomField.attributes.title_multiloc} />
+                <T value={title_multiloc} />
               </Title>
             </Box>
           }
@@ -158,7 +160,7 @@ export default memo<Props>(
                     label={<FormattedMessage {...messages.enabled} />}
                     labelTextColor={colors.adminTextColor}
                     className={`
-                      e2e-${ideaCustomField.attributes.code}-enabled-toggle-label
+                      e2e-${e2eId}-enabled-toggle-label
                     `}
                   />
                   <IconTooltip
@@ -176,7 +178,7 @@ export default memo<Props>(
                     label={<FormattedMessage {...messages.required} />}
                     labelTextColor={colors.adminTextColor}
                     className={`
-                        e2e-${ideaCustomField.attributes.code}-required-toggle-label
+                        e2e-${e2eId}-required-toggle-label
                     `}
                   />
                   <IconTooltip

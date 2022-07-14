@@ -1,5 +1,12 @@
 # frozen_string_literal: true
 
+# We don't use the 'banner_' prefix for customizable_homepage_banner_enabled to maintain the
+# relation of the name to AppConfiguration.settings['customizable_homepage_banner']['allowed'],
+# which is used to toggle the feature via AdminHQ, usually in-line with pricing plans.
+# Here, customizable_homepage_banner_enabled is a toggle to be used by the app user,
+# for example, via the Admin UI.
+# Both related toggles should be 'true' for the feature to be active.
+
 # Contains settings & configuration data of the homepage.
 # == Schema Information
 #
@@ -10,23 +17,23 @@
 #  top_info_section_multiloc                :jsonb            not null
 #  bottom_info_section_enabled              :boolean          default(FALSE), not null
 #  bottom_info_section_multiloc             :jsonb            not null
-#  events_widget                            :boolean          default(FALSE), not null
+#  events_widget_enabled                    :boolean          default(FALSE), not null
 #  projects_enabled                         :boolean          default(TRUE), not null
 #  projects_header_multiloc                 :jsonb            not null
 #  banner_avatars_enabled                   :boolean          default(TRUE), not null
-#  customizable_homepage_banner             :boolean          default(TRUE), not null
+#  customizable_homepage_banner_enabled     :boolean          default(TRUE), not null
 #  banner_layout                            :string           default("full_width_banner_layout"), not null
 #  banner_signed_in_header_multiloc         :jsonb            not null
-#  cta_signed_in_text_multiloc              :jsonb            not null
-#  cta_signed_in_type                       :string           default("no_button"), not null
-#  cta_signed_in_url                        :string
+#  banner_cta_signed_in_text_multiloc       :jsonb            not null
+#  banner_cta_signed_in_type                :string           default("no_button"), not null
+#  banner_cta_signed_in_url                 :string
 #  banner_signed_out_header_multiloc        :jsonb            not null
 #  banner_signed_out_subheader_multiloc     :jsonb            not null
 #  banner_signed_out_header_overlay_color   :string
 #  banner_signed_out_header_overlay_opacity :integer
-#  cta_signed_out_text_multiloc             :jsonb            not null
-#  cta_signed_out_type                      :string           default("sign_up_button"), not null
-#  cta_signed_out_url                       :string
+#  banner_cta_signed_out_text_multiloc      :jsonb            not null
+#  banner_cta_signed_out_type               :string           default("sign_up_button"), not null
+#  banner_cta_signed_out_url                :string
 #  created_at                               :datetime         not null
 #  updated_at                               :datetime         not null
 #  header_bg                                :string
@@ -48,13 +55,14 @@ class HomePage < ApplicationRecord
   validates :bottom_info_section_enabled, inclusion: [true, false]
   validates :bottom_info_section_multiloc, presence: true, multiloc: { html: true, presence: true }, if: :bottom_info_section_enabled
 
-  validates :events_widget, inclusion: [true, false]
+  validates :events_widget_enabled, inclusion: [true, false]
   validates :projects_enabled, inclusion: [true, false]
 
   validates :projects_header_multiloc, multiloc: true
 
   validates :banner_avatars_enabled, inclusion: [true, false]
-  validates :customizable_homepage_banner, inclusion: [true, false]
+
+  validates :customizable_homepage_banner_enabled, inclusion: [true, false]
   validates :banner_layout, inclusion: %w[full_width_banner_layout two_column_layout two_row_layout]
   validates :banner_signed_in_header_multiloc, multiloc: true
 
@@ -65,20 +73,20 @@ class HomePage < ApplicationRecord
                                                                        in: [0..100],
                                                                        allow_nil: true }
 
-  validates :cta_signed_in_type, inclusion: %w[customized_button no_button]
-  validates :cta_signed_out_type, inclusion: %w[sign_up_button customized_button no_button]
+  validates :banner_cta_signed_in_type, inclusion: %w[customized_button no_button]
+  validates :banner_cta_signed_out_type, inclusion: %w[sign_up_button customized_button no_button]
 
-  with_options if: -> { cta_signed_in_type == 'customized_button' } do
-    validates :cta_signed_in_text_multiloc, presence: true, multiloc: { presence: true }
-    validates :cta_signed_in_url, presence: true, url: true
+  with_options if: -> { banner_cta_signed_in_type == 'customized_button' } do
+    validates :banner_cta_signed_in_text_multiloc, presence: true, multiloc: { presence: true }
+    validates :banner_cta_signed_in_url, presence: true, url: true
   end
 
-  with_options if: -> { cta_signed_out_type == 'customized_button' } do
-    validates :cta_signed_out_text_multiloc, presence: true, multiloc: { presence: true }
-    validates :cta_signed_out_url, presence: true, url: true
+  with_options if: -> { banner_cta_signed_out_type == 'customized_button' } do
+    validates :banner_cta_signed_out_text_multiloc, presence: true, multiloc: { presence: true }
+    validates :banner_cta_signed_out_url, presence: true, url: true
   end
 
-  mount_base64_uploader :header_bg, AppHeaderBgUploader
+  mount_base64_uploader :header_bg, HeaderBgUploader
 
   private
 

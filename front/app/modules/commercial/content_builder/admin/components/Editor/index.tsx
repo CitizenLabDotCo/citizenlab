@@ -16,6 +16,9 @@ import Iframe from '../CraftComponents/Iframe';
 import AboutBox from '../CraftComponents/AboutBox';
 import Accordion from '../CraftComponents/Accordion';
 import WhiteSpace from '../CraftComponents/WhiteSpace';
+import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
+import ImageTextCards from '../CraftSections/ImageTextCards';
+import Button from '../CraftComponents/Button';
 
 type EditorProps = {
   children?: React.ReactNode;
@@ -41,6 +44,14 @@ const Editor: React.FC<EditorProps> = ({
         AboutBox,
         Accordion,
         WhiteSpace,
+        InfoWithAccordions,
+        ImageTextCards,
+        Button,
+      }}
+      indicator={{
+        success: 'rgb(98, 196, 98)',
+        error: 'red',
+        transition: 'none',
       }}
       onRender={isPreview ? undefined : RenderNode}
       enabled={isPreview ? false : true}

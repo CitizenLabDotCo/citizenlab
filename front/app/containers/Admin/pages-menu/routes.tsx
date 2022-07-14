@@ -10,7 +10,7 @@ const EditHomepage = lazy(() => import('./EditHomepage'));
 // path utils
 const ADMIN_PAGE_PATH = 'pages-menu';
 const PATH_PREFIX = `admin/${ADMIN_PAGE_PATH}`;
-const HOMEPAGE_PATH = 'homepage';
+const HOMEPAGE_PATH = 'home_page';
 
 function adminPagesMenuHomepagePath() {
   // could use type checking, I initially edited it to /pages/edit...,
@@ -21,6 +21,8 @@ function adminPagesMenuHomepagePath() {
 export { adminPagesMenuHomepagePath };
 
 // routes
+export const PAGES_MENU_PATH = '/admin/pages-menu';
+
 export default () => ({
   path: ADMIN_PAGE_PATH,
   element: (

@@ -1,5 +1,16 @@
 # frozen_string_literal: true
 
+module ConsoleMethods
+  def switch(tenant_name)
+    Apartment::Tenant.switch! tenant_name
+    "Switched to tenant #{Apartment::Tenant.current}"
+  end
+
+  def localhost
+    switch 'localhost'
+  end
+end
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -96,4 +107,16 @@ Rails.application.configure do
     # Bullet.stacktrace_includes = [ 'your_gem', 'your_middleware' ]
     # Bullet.stacktrace_excludes = [ 'their_gem', 'their_middleware', ['my_file.rb', 'my_method'], ['my_file.rb', 16..20] ]
   end
+
+  # rubocop:disable Rails/Output
+  console do
+    # We use Pry as our Rails console (see https://github.com/pry/pry-rails), so:
+    TOPLEVEL_BINDING.eval('self').extend(ConsoleMethods)
+    puts
+    puts 'Available methods:'
+    puts '  `switch(tenant_name)`: switch to given tenant.'
+    puts '  `localhost`: switch to localhost.'
+    puts
+  end
+  # rubocop:enable Rails/Output
 end
