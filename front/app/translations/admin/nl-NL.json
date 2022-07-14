@@ -1394,7 +1394,7 @@
   "app.containers.admin.ContentBuilder.embedIframeUrlLabelTooltip": "Volledige URL van de website die je in wilt sluiten.",
   "app.containers.admin.ContentBuilder.error": "fout",
   "app.containers.admin.ContentBuilder.errorMessage": "Er is een fout opgetreden in de {locale} inhoud, los het probleem op om je wijzigingen op te kunnen slaan",
-  "app.containers.admin.ContentBuilder.iframeDescription": "Scherminhoud van een externe website op je pagina in een HTML iFrame",
+  "app.containers.admin.ContentBuilder.iframeDescription": "Scherminhoud van een externe website op je pagina in een HTML iFrame.",
   "app.containers.admin.ContentBuilder.iframeEmbedVisitLinkMessage": "Bekijk onze supportpagina",
   "app.containers.admin.ContentBuilder.iframeHeightPlaceholder": "B.v. 120px",
   "app.containers.admin.ContentBuilder.iframeInvalidWhitelistUrlErrorMessage": "Sorry, deze inhoud kan niet worden ingesloten. {visitLinkMessage} voor meer informatie.",
