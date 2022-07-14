@@ -22,6 +22,8 @@
 module UserCustomFields
   module Representativeness
     class RefDistribution < ApplicationRecord
+      attr_readonly :custom_field_id
+      attr_readonly :type
       belongs_to :custom_field
 
       validates :custom_field_id, uniqueness: true
