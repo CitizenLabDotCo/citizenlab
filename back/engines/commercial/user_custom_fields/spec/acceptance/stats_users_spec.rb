@@ -100,7 +100,7 @@ resource 'Stats - Users' do
                 female: kind_of(Numeric),
                 unspecified: kind_of(Numeric)
               },
-              reference_population: ref_distribution.distribution_by_option_id.symbolize_keys
+              reference_population: ref_distribution.distribution_by_option_key.symbolize_keys
             }
           )
         end

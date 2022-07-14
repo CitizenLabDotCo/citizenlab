@@ -38,9 +38,8 @@ module UserCustomFields
         probabilities.transform_values { |probability| (probability * nb_users).round(1) }
       end
 
-      # TODO should be named distribution_by_option_key?
-      def distribution_by_option_id
-        @distribution_by_option_id ||= distribution.transform_keys do |option_id|
+      def distribution_by_option_key
+        @distribution_by_option_key ||= distribution.transform_keys do |option_id|
           option_id_to_key.fetch(option_id)
         end
       end
