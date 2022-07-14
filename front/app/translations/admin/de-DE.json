@@ -1397,7 +1397,7 @@
   "app.containers.admin.ContentBuilder.iframeEmbedVisitLinkMessage": "Besuchen Sie die Wissensdatenbank",
   "app.containers.admin.ContentBuilder.iframeHeightPlaceholder": "z.B. 120px",
   "app.containers.admin.ContentBuilder.iframeInvalidWhitelistUrlErrorMessage": "Dieser Inhalt konnte leider nicht eingebettet werden. {visitLinkMessage} um mehr zu erfahren.",
-  "app.containers.admin.ContentBuilder.iframeSupportLink": "https://support.citizenlab.co/en/articles/6354058-embedding-elements-in-the-content-builder-to-enrich-project-descriptions",
+  "app.containers.admin.ContentBuilder.iframeSupportLink": "https://support.citizenlab.co/de/articles/6354058-elemente-in-den-content-builder-einbetten-um-projektbeschreibungen-zu-erweitern",
   "app.containers.admin.ContentBuilder.iframeUrlErrorMessage": "Muss eine gültige URL angeben.",
   "app.containers.admin.ContentBuilder.image": "Bild",
   "app.containers.admin.ContentBuilder.imageAltTextLabel": "Kurzbeschreibung des Bildes",

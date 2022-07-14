@@ -70,8 +70,8 @@ const Title = styled.h2`
   margin-right: 15px;
 
   &.validationError {
-    color: ${colors.clRedError};
-    fill: ${colors.clRedError};
+    color: ${colors.red600};
+    fill: ${colors.red600};
   }
 
   &.validationSuccess {
@@ -117,7 +117,7 @@ const BudgetAmount = styled.span`
   font-weight: 600;
 
   &.red {
-    color: ${colors.clRedError};
+    color: ${colors.red600};
   }
 
   &.green {
@@ -159,7 +159,7 @@ const ProgressBarOverlay: any = styled.div`
   transition: all 350ms cubic-bezier(0.19, 1, 0.22, 1);
 
   &.red {
-    background: ${colors.clRedError};
+    background: ${colors.red600};
   }
 
   &.green {

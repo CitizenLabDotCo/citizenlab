@@ -75,19 +75,13 @@ describe('Content builder navigation', () => {
 
   it('navigates to live project in a new tab when view project button in content builder is clicked', () => {
     const projectUrl = `/en/projects/${projectSlug}`;
-    cy.visit(`/admin/projects/${projectId}/description`);
 
     cy.intercept('**/content_builder_layouts/project_description/upsert').as(
       'saveContentBuilder'
     );
 
-    cy.get('#e2e-toggle-enable-content-builder')
-      .find('input')
-      .click({ force: true });
-
-    cy.wait('@saveContentBuilder');
-    cy.get('#e2e-content-builder-link').click();
-
+    cy.apiEnableContentBuilder({ projectId });
+    cy.visit(`/admin/content-builder/projects/${projectId}/description`);
     cy.get('#e2e-view-project-button > a')
       .should(($a) => {
         expect($a.attr('href'), 'href').to.equal(projectUrl);

@@ -6,6 +6,7 @@ import useReferenceData, {
   RepresentativenessRow,
   RepresentativenessRowMultiloc,
 } from '../../hooks/useReferenceData';
+import useRScore from '../../hooks/useRScore';
 
 // services
 import {
@@ -63,6 +64,7 @@ const ChartCard = ({
   projectFilter,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
+  const rScore = useRScore(userCustomField.id, projectFilter);
   const { referenceData, includedUsers, referenceDataUploaded } =
     useReferenceData(userCustomField, projectFilter);
 
@@ -95,6 +97,7 @@ const ChartCard = ({
 
   if (
     isNilOrError(referenceData) ||
+    isNilOrError(rScore) ||
     isNilOrError(includedUsers) ||
     referenceDataUploaded === undefined ||
     viewState === undefined
@@ -135,6 +138,7 @@ const ChartCard = ({
       <Header
         title={title}
         svgNode={currentChartRef}
+        rScore={rScore.attributes.score}
         viewState={viewState}
         projectFilter={projectFilter}
         xlsxEndpoint={xlsxEndpoint}

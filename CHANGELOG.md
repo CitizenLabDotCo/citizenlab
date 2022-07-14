@@ -6,6 +6,30 @@
 
 - [CL-1077] Add PNG export to graph export dropdown
 
+## 2022-07-14
+
+### Fixed
+
+- [CL-1113] Fixed sharing button styling when copy link text is long
+
+### Changed
+
+- [CL-474] Update existing accessibility statement, following re-certification
+
+### Added
+
+- [CL-972] Add a 'read more' expand/collapse feature to timeline phases
+
+## 2022-07-11
+
+### Fixed
+
+- Project publication status now defaults to draft on creation but remains published if it was already published
+
+### Added
+
+- [CL-1096] Add representativeness score to header of representativeness chart card
+
 ## 2022-07-07
 
 ### Fixed
