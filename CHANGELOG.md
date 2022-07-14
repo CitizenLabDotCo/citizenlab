@@ -1,5 +1,9 @@
 # Changelog
 
+### Added
+
+- [CL-1128] Feature to bulk import ideas from an XLSX sheet
+
 ## Next release
 
 ## 2022-07-14
