@@ -47,12 +47,15 @@ export default function useHomepageSettingsFeatureFlag({
     ? homepageSettings.data.attributes[sectionEnabledSettingName]
     : false;
 
-  // If there's no appConfigSetting, a homepageSetting
-  // is always allowed.
+  // if no setting name from the app config was passed in,
+  // we only need to check if the homepage setting is enabled
   if (!appConfigSettingName && homepageSettingisEnabled) {
     return true;
   }
 
+  // if an app config setting name was passed in,
+  // we check if it's allowed in app config and if it's enabled
+  // in homepage settings
   const isAllowedInAppConfig = !isNilOrError(appConfigSetting)
     ? appConfigSetting.allowed
     : false;
