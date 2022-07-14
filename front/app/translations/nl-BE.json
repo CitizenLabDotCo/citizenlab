@@ -552,7 +552,7 @@
   "app.container.InitiativeForm.imageDropzonePlaceholder": "Sleep je afbeelding hierheen",
   "app.containers.AccessibilityStatement.applicability": "Deze toegankelijkheidsverklaring is van toepassing op een {demoPlatformLink} die representatief is voor deze website; het gebruikt dezelfde broncode en heeft dezelfde functionaliteit.",
   "app.containers.AccessibilityStatement.assesmentMethodsTitle": "Evaluatiemethode",
-  "app.containers.AccessibilityStatement.assesmentText2022": "De toegankelijkheid van deze site is geëvalueerd door een externe entiteit die niet betrokken was bij het ontwerp- en ontwikkelingsproces. De conformiteit van bovengenoemde {demoPlatformLink} kan worden geïdentificeerd op deze {statusPaginaLink}.",
+  "app.containers.AccessibilityStatement.assesmentText2022": "De toegankelijkheid van deze site is geëvalueerd door een externe entiteit die niet betrokken was bij het ontwerp- en ontwikkelingsproces. De conformiteit van bovengenoemde {demoPlatformLink} kan worden geïdentificeerd op deze {statusPageLink}.",
   "app.containers.AccessibilityStatement.changePreferencesButtonText": "je voorkeuren aanpassen",
   "app.containers.AccessibilityStatement.changePreferencesText": "Je kunt op elk moment {changePreferencesButton}.",
   "app.containers.AccessibilityStatement.citizenLabAddress2022": "Boulevard Pachéco 34, 1000 Brussel, België",
