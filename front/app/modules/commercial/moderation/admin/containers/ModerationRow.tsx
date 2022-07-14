@@ -36,8 +36,7 @@ import useInappropriateContentFlag from 'modules/commercial/flag_inappropriate_c
 import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.tr<{ bgColor: string; flagged: boolean }>`
-  background: ${({ bgColor, flagged }) =>
-    flagged ? colors.clRedErrorBackground : bgColor};
+  background: ${({ bgColor, flagged }) => (flagged ? colors.red100 : bgColor)};
 `;
 
 const StyledCheckbox = styled(Checkbox)`

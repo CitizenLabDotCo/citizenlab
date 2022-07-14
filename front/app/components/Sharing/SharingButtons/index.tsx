@@ -68,7 +68,7 @@ const SharingButtons = memo(
           justifyContent={maxTabletOrSmaller ? 'center' : 'flex-start'}
           display="flex"
           gap="5px"
-          flexWrap={maxTabletOrSmaller ? 'wrap' : 'nowrap'}
+          flexWrap="wrap"
         >
           <Facebook
             facebookMessage={facebookMessage}

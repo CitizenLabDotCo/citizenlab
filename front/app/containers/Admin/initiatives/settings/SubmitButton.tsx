@@ -21,7 +21,7 @@ const ButtonContainer = styled.div`
 
 const ErrorMessage = styled.div`
   font-size: ${fontSizes.base}px;
-  color: ${colors.clRedError};
+  color: ${colors.red600};
   font-weight: 400;
   line-height: normal;
   margin-left: 14px;

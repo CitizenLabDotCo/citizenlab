@@ -29,7 +29,7 @@ const StyledBox = styled(Box)`
   background-color: ${colors.twitter};
   border-radius: 3px;
   height: 40px;
-  width: 48px;
+  width: 40px;
   align-items: center;
   justify-content: center;
   cursor: pointer;
