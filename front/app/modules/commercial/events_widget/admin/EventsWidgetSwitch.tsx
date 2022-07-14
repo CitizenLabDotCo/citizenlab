@@ -29,6 +29,7 @@ const EventsWidgetSwitch = ({
 }: Props & InjectedIntlProps) => {
   const currentSwitchValue = getSetting('events_widget.enabled');
 
+  // still to change
   const handleChange = () => {
     setParentState((state) => {
       return {

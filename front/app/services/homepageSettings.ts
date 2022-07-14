@@ -7,6 +7,7 @@ const homepageSettingsEndpoint = `${API_PATH}/home_page`;
 // setting in appConfiguration.ts
 export type TAppConfigSectionSetting = Extract<
   THomepageEnabledSetting,
+  // still move to module
   'events_widget_enabled' | 'customizable_homepage_banner_enabled'
 >;
 
