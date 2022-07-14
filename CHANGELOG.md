@@ -2,11 +2,11 @@
 
 ## Next release
 
+## 2022-07-14
+
 ### Fixed
 
 - [CL-1113] Fixed sharing button styling when copy link text is long
-
-## 2022-07-13
 
 ### Changed
 
@@ -15,10 +15,6 @@
 ### Added
 
 - [CL-972] Add a 'read more' expand/collapse feature to timeline phases
-
-### Changed
-
-- [CL-1093] Pin Node.js version in package.json
 
 ## 2022-07-11
 
