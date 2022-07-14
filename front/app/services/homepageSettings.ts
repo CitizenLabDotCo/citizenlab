@@ -38,7 +38,11 @@ export interface IHomepageSettings {
   id: string;
   // To check
   type: string;
-  data: { attributes: IHomepageSettingsAttributes };
+  data: IHomepageSettingsData;
+}
+
+export interface IHomepageSettingsData {
+  attributes: IHomepageSettingsAttributes;
 }
 
 export type THomepageEnabledSetting = keyof IHomepageEnabledSettings;
