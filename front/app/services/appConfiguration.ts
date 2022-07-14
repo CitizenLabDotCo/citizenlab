@@ -13,6 +13,7 @@ export type TAppConfigurationSetting = keyof IAppConfigurationSettings;
 
 // Settings that have their enabled values in homepageSettings.
 // Their allowed value is still in appConfiguration.
+// To be moved to modules
 export type THomepageSetting = 'events_widget' | 'customizable_homepage_banner';
 
 // All appConfig setting names except those in THomepageSetting
@@ -209,12 +210,6 @@ export interface IAppConfigurationSettings {
     }[];
   };
   disable_user_bios?: AppConfigurationFeature;
-  // the enabled value needs to be checked in homepageSettings
-  // (with e.g. useHomepageSettingsFeatureFlag)
-  events_widget?: {
-    allowed: boolean;
-    widget_title?: Multiloc;
-  };
   customizable_navbar?: AppConfigurationFeature;
   texting?: AppConfigurationFeature;
   content_builder?: AppConfigurationFeature;
