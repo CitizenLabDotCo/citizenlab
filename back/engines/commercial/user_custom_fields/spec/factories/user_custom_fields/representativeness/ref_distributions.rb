@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :ref_distribution, class: 'UserCustomFields::Representativeness::RefDistribution' do
+  factory :ref_distribution, class: 'UserCustomFields::Representativeness::CategoricalDistribution' do
     transient do
       population_counts { [450, 550] }
     end

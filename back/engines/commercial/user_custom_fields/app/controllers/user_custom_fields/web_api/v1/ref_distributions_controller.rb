@@ -48,7 +48,9 @@ module UserCustomFields
       end
 
       def create_params
-        params.permit(:custom_field_id, distribution: {})
+        params
+          .permit(:custom_field_id, distribution: {})
+          .merge(type: 'UserCustomFields::Representativeness::CategoricalDistribution')
       end
 
       def serialize(ref_distribution)
