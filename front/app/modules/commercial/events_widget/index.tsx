@@ -4,14 +4,9 @@ import useHomepageSettingsFeatureFlag from 'hooks/useHomepageSettingsFeatureFlag
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import EventsWidget from './citizen';
 import EventsWidgetSwitch from './admin/EventsWidgetSwitch';
-import messages from './messages';
 import SectionToggle, {
   Props as SectionToggleProps,
-} from 'containers/Admin/pages-menu/SectionToggle';
-import {
-  IHomepageSettingsAttributes,
-  THomepageSection,
-} from 'services/homepageSettings';
+} from './admin/SectionToggle';
 
 const RenderOnFeatureFlag = ({ children }) => {
   const featureFlag = useHomepageSettingsFeatureFlag({
@@ -33,20 +28,12 @@ const RenderOnAllowed = ({ children }) => {
 
 const configuration: ModuleConfiguration = {
   outlets: {
-    'app.containers.Admin.flexible-pages.EditHomepage.sectionToggles': ({
-      homepageSettingsAttributes,
-      onChangeSectionToggle,
-      ...otherProps
-    }) => {
+    'app.containers.Admin.flexible-pages.EditHomepage.sectionToggles': (
+      props
+    ) => {
       return (
         <RenderOnFeatureFlag>
-          <SectionToggle
-            titleMessageDescriptor={messages.eventsWidget}
-            tooltipMessageDescriptor={messages.eventsWidgetTooltip}
-            checked={homepageSettingsAttributes['events_widget_enabled']}
-            onChangeSectionToggle={onChangeSectionToggle('events_widget')}
-            {...otherProps}
-          />
+          <SectionToggle {...props} />
         </RenderOnFeatureFlag>
       );
     },
@@ -71,14 +58,6 @@ export default configuration;
 
 declare module 'utils/moduleUtils' {
   export interface OutletsPropertyMap {
-    'app.containers.Admin.flexible-pages.EditHomepage.sectionToggles': Pick<
-      SectionToggleProps,
-      'disabled'
-    > & {
-      onChangeSectionToggle: (
-        sectionName: THomepageSection
-      ) => () => Promise<void>;
-      homepageSettingsAttributes: IHomepageSettingsAttributes;
-    };
+    'app.containers.Admin.flexible-pages.EditHomepage.sectionToggles': SectionToggleProps;
   }
 }

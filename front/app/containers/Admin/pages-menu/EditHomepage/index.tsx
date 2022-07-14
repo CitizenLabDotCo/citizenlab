@@ -12,36 +12,38 @@ import {
 } from 'services/homepageSettings';
 import useHomepageSettings from 'hooks/useHomepageSettings';
 import { isNilOrError } from 'utils/helperUtils';
+import { insertConfiguration } from 'utils/moduleUtils';
+import { InsertConfigurationOptions } from 'typings';
 
-type TSectionToggleData = {
+export type TSectionToggleData = {
+  name: THomepageSection;
   titleMessageDescriptor: MessageDescriptor;
   tooltipMessageDescriptor: MessageDescriptor;
-  sectionEnabledSettingName: THomepageSection;
 };
 
 const EditHomepage = () => {
   const homepageSettings = useHomepageSettings();
   const [isLoading, setIsLoading] = useState(false);
-  const [sectionTogglesData, _setSectionTogglesData] = useState<
+  const [sectionTogglesData, setSectionTogglesData] = useState<
     TSectionToggleData[]
   >([
     {
-      sectionEnabledSettingName: 'customizable_homepage_banner_enabled',
+      name: 'customizable_homepage_banner_enabled',
       titleMessageDescriptor: messages.heroBanner,
       tooltipMessageDescriptor: messages.heroBannerTooltip,
     },
     {
-      sectionEnabledSettingName: 'top_info_section_enabled',
+      name: 'top_info_section_enabled',
       titleMessageDescriptor: messages.topInfoSection,
       tooltipMessageDescriptor: messages.topInfoSectionTooltip,
     },
     {
-      sectionEnabledSettingName: 'projects_enabled',
+      name: 'projects_enabled',
       titleMessageDescriptor: messages.projectsList,
       tooltipMessageDescriptor: messages.projectsListTooltip,
     },
     {
-      sectionEnabledSettingName: 'bottom_info_section_enabled',
+      name: 'bottom_info_section_enabled',
       titleMessageDescriptor: messages.bottomInfoSection,
       tooltipMessageDescriptor: messages.bottomInfoSectionTooltip,
     },
@@ -61,6 +63,12 @@ const EditHomepage = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleOnData = (
+    sectionToggleData: InsertConfigurationOptions<TSectionToggleData>
+  ) => {
+    setSectionTogglesData(insertConfiguration(sectionToggleData));
   };
 
   const handleOnClick = () => {};
@@ -97,20 +105,12 @@ const EditHomepage = () => {
           </Warning>
         </Box>
         {sectionTogglesData.map(
-          ({
-            sectionEnabledSettingName,
-            titleMessageDescriptor,
-            tooltipMessageDescriptor,
-          }) => {
+          ({ name, titleMessageDescriptor, tooltipMessageDescriptor }) => {
             return (
               <SectionToggle
-                key={sectionEnabledSettingName}
-                checked={
-                  homepageSettings.data.attributes[sectionEnabledSettingName]
-                }
-                onChangeSectionToggle={handleOnChangeToggle(
-                  sectionEnabledSettingName
-                )}
+                key={name}
+                checked={homepageSettings.data.attributes[name]}
+                onChangeSectionToggle={handleOnChangeToggle(name)}
                 onClickEditButton={handleOnClick}
                 titleMessageDescriptor={titleMessageDescriptor}
                 tooltipMessageDescriptor={tooltipMessageDescriptor}
@@ -121,9 +121,7 @@ const EditHomepage = () => {
         )}
         <Outlet
           id="app.containers.Admin.flexible-pages.EditHomepage.sectionToggles"
-          onChangeSectionToggle={handleOnChangeToggle}
-          disabled={isLoading}
-          homepageSettingsAttributes={homepageSettings.data.attributes}
+          onData={handleOnData}
         />
       </>
     </Box>
