@@ -151,6 +151,8 @@
   "app.components.admin.ReportExportMenu.FileName.projectFilter": "projet",
   "app.components.admin.ReportExportMenu.FileName.topicFilter": "étiquette",
   "app.components.admin.ReportExportMenu.FileName.untilFilter": "jusqu'à",
+  "app.components.admin.ReportExportMenu.downloadPng": "Télécharger au format PNG",
+  "app.components.admin.ReportExportMenu.downloadSvg": "Télécharger au format SVG",
   "app.components.admin.ReportExportMenu.downloadXlsx": "Télécharger Excel",
   "app.components.admin.SlugInput.regexError": "Le slug ne peut contenir que des lettres minuscules (a-z), des chiffres (0-9) et des traits d'union (-). Le premier et le dernier caractère ne peuvent pas être des traits d'union. Les traits d'union consécutifs (--) ne sont pas autorisés.",
   "app.components.admin.SlugInput.resultingURL": "URL résultant",
