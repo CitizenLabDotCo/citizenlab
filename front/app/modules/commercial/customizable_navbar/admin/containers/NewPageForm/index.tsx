@@ -43,17 +43,13 @@ const NewPageForm = () => {
   const handleSubmit = async (values: FormValues) => {
     const localPageFiles = values.local_page_files;
 
-    try {
-      const page = await createPage(values);
+    const page = await createPage(values);
 
-      if (!isNilOrError(page) && !isNilOrError(localPageFiles)) {
-        await handleAddPageFiles(page.data.id, localPageFiles, null);
-      }
-
-      goBack();
-    } catch (error) {
-      // Do nothing
+    if (!isNilOrError(page) && !isNilOrError(localPageFiles)) {
+      await handleAddPageFiles(page.data.id, localPageFiles, null);
     }
+
+    goBack();
   };
 
   return (

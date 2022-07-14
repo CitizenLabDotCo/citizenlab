@@ -27,16 +27,16 @@ const getVariantProps = (variant: ToastProps['variant']) => {
 
     case 'info':
       return {
-        backgroundColor: colors.clGreenSuccessBackground,
-        icon: 'checkmark-full' as IconProps['name'],
-        iconColor: colors.clGreenSuccess,
+        backgroundColor: colors.clBlueLightest,
+        icon: 'info' as IconProps['name'],
+        iconColor: colors.clBlue,
       };
 
     case 'warning':
       return {
-        backgroundColor: colors.clGreenSuccessBackground,
+        backgroundColor: colors.backgroundLightGrey,
         icon: 'checkmark-full' as IconProps['name'],
-        iconColor: colors.clGreenSuccess,
+        iconColor: colors.adminOrangeIcons,
       };
 
     default:

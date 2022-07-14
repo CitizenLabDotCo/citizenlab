@@ -48,14 +48,11 @@ const EditPageForm = ({ params: { pageId } }: WithRouterProps) => {
     async (values: FormValues) => {
       const localPageFiles = values.local_page_files;
       const pageId = page.id;
-      try {
-        await updatePage(pageId, values);
-        if (!isNilOrError(localPageFiles)) {
-          handleAddPageFiles(pageId, localPageFiles, remotePageFiles);
-          handleRemovePageFiles(pageId, localPageFiles, remotePageFiles);
-        }
-      } catch (error) {
-        // Do nothing
+
+      await updatePage(pageId, values);
+      if (!isNilOrError(localPageFiles)) {
+        handleAddPageFiles(pageId, localPageFiles, remotePageFiles);
+        handleRemovePageFiles(pageId, localPageFiles, remotePageFiles);
       }
     };
 

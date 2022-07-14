@@ -53,30 +53,26 @@ const EditPageFormNavbar = ({ params: { pageId } }: WithRouterProps) => {
   const handleSubmit = async (values: FormValues) => {
     const localPageFiles = values.local_page_files;
 
-    try {
-      const promises: Promise<any>[] = [
-        updatePage(pageId, createPageUpdateData(page, values)),
-      ];
+    const promises: Promise<any>[] = [
+      updatePage(pageId, createPageUpdateData(page, values)),
+    ];
 
-      if (!isNilOrError(localPageFiles)) {
-        const addPromise = handleAddPageFiles(
-          pageId,
-          localPageFiles,
-          remotePageFiles
-        );
-        const removePromise = handleRemovePageFiles(
-          pageId,
-          localPageFiles,
-          remotePageFiles
-        );
+    if (!isNilOrError(localPageFiles)) {
+      const addPromise = handleAddPageFiles(
+        pageId,
+        localPageFiles,
+        remotePageFiles
+      );
+      const removePromise = handleRemovePageFiles(
+        pageId,
+        localPageFiles,
+        remotePageFiles
+      );
 
-        promises.push(addPromise, removePromise);
-      }
-
-      await Promise.all(promises);
-    } catch (error) {
-      // Do nothing
+      promises.push(addPromise, removePromise);
     }
+
+    await Promise.all(promises);
   };
 
   const goBack = () => {

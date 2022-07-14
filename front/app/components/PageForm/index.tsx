@@ -64,6 +64,7 @@ const PageForm = ({
   const locale = useLocale();
   const page = usePage({ pageId });
   const appConfig = useAppConfiguration();
+
   const schema = object({
     title_multiloc: validateMultiloc(formatMessage(messages.emptyTitleError)),
     body_multiloc: validateMultiloc(
@@ -84,18 +85,32 @@ const PageForm = ({
 
   if (isNilOrError(appConfig)) return null;
 
-  const onSuccess = (formValues: FormValues) => {
-    add({ variant: 'success', text: 'Form was successfully submitted' });
-    onSubmit(formValues);
+  const onSuccess = async (formValues: FormValues) => {
+    try {
+      await onSubmit(formValues);
+      add({ variant: 'success', text: 'Page successfully saved' });
+    } catch (error) {
+      Object.keys(error.json.errors).forEach((key: keyof FormValues) => {
+        methods.setError(key, error.json.errors[key][0]);
+      });
+
+      add({
+        variant: 'error',
+        text: 'There is a problem - please fix the issues shown and try again.',
+      });
+    }
   };
 
-  const onError = () => {
-    add({ variant: 'error', text: 'An error has occurred with this form' });
+  const onValidationError = () => {
+    add({
+      variant: 'error',
+      text: 'There is a problem - please fix the issues shown and try again.',
+    });
   };
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSuccess, onError)}>
+      <form onSubmit={methods.handleSubmit(onSuccess, onValidationError)}>
         <SectionField>
           <RHFInputMultilocWithLocaleSwitcher
             label={formatMessage(messages.pageTitle)}

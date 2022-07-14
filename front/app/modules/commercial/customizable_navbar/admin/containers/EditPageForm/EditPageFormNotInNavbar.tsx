@@ -52,28 +52,24 @@ const EditPageFormNotInNavbar = () => {
     local_page_files,
     ...pageUpdate
   }: FormValues) => {
-    try {
-      const promises: Promise<any>[] = [updatePage(pageId, pageUpdate)];
+    const promises: Promise<any>[] = [updatePage(pageId, pageUpdate)];
 
-      if (!isNilOrError(local_page_files)) {
-        const addPromise = handleAddPageFiles(
-          pageId,
-          local_page_files,
-          remotePageFiles
-        );
-        const removePromise = handleRemovePageFiles(
-          pageId,
-          local_page_files,
-          remotePageFiles
-        );
+    if (!isNilOrError(local_page_files)) {
+      const addPromise = handleAddPageFiles(
+        pageId,
+        local_page_files,
+        remotePageFiles
+      );
+      const removePromise = handleRemovePageFiles(
+        pageId,
+        local_page_files,
+        remotePageFiles
+      );
 
-        promises.push(addPromise, removePromise);
-      }
-
-      await Promise.all(promises);
-    } catch (error) {
-      // Do nothing
+      promises.push(addPromise, removePromise);
     }
+
+    await Promise.all(promises);
   };
 
   const goBack = () => {

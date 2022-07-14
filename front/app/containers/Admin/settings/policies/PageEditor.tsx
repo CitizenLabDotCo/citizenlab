@@ -120,16 +120,12 @@ const PageEditor = ({ className, pageSlug }: Props) => {
       body_multiloc,
       local_page_files,
     }: FormValues) => {
-      try {
-        const fieldValues = { slug, title_multiloc, body_multiloc };
-        await updatePage(pageId, fieldValues);
+      const fieldValues = { slug, title_multiloc, body_multiloc };
+      await updatePage(pageId, fieldValues);
 
-        if (!isNilOrError(local_page_files)) {
-          handleAddPageFiles(pageId, local_page_files, remotePageFiles);
-          handleRemovePageFiles(pageId, local_page_files, remotePageFiles);
-        }
-      } catch (errorResponse) {
-        // Do nothing
+      if (!isNilOrError(local_page_files)) {
+        handleAddPageFiles(pageId, local_page_files, remotePageFiles);
+        handleRemovePageFiles(pageId, local_page_files, remotePageFiles);
       }
     };
 

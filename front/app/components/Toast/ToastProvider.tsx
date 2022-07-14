@@ -22,7 +22,7 @@ const ToastProvider = ({ children }) => {
   useEffect(() => {
     let timeout;
     if (toast?.variant === 'success') {
-      timeout = setTimeout(() => remove(), 2500);
+      timeout = setTimeout(() => remove(), 4000);
     }
     return () => {
       clearTimeout(timeout);
