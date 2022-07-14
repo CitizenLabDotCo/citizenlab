@@ -89,7 +89,7 @@ const BinModal = ({ open, onClose }: Props) => {
             justifyContent="flex-end"
           >
             <ClearAllButton onClick={resetAll}>
-              <Text variant="bodyS" mt="0px" mb="0px" color="clRedError">
+              <Text variant="bodyS" mt="0px" mb="0px" color="red600">
                 <FormattedMessage {...messages.clearAll} />
               </Text>
             </ClearAllButton>
