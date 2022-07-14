@@ -24,7 +24,7 @@
   "app.components.ProjectTemplatePreview.goBack": "Gå tillbaka",
   "app.components.ProjectTemplatePreview.goBackTo": "Gå tillbaka till {goBackLink}.",
   "app.components.ProjectTemplatePreview.infoboxLine1": "Vill du använda den här mallen för ditt deltagandeprojekt?",
-  "app.components.ProjectTemplatePreview.infoboxLine2": "Kontakta den ansvariga personen i din stadsförvaltning eller kontakta en {länk}.",
+  "app.components.ProjectTemplatePreview.infoboxLine2": "Kontakta den ansvariga personen i din stadsförvaltning eller kontakta en {link}.",
   "app.components.ProjectTemplatePreview.projectInvalidStartDateError": "Det valda datumet är ogiltigt. Ange ett datum i följande format: ÅÅÅÅ-MM-DD",
   "app.components.ProjectTemplatePreview.projectNoStartDateError": "Välj ett startdatum för projektet",
   "app.components.ProjectTemplatePreview.projectStartDate": "Ditt projekts startdatum",
