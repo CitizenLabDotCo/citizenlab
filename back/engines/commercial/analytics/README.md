@@ -29,6 +29,12 @@ docker exec -it -e PGPASSWORD=postgres cl-postgres-analytics /bin/bash -c "pg_du
 
 5. Docker Rebuild required?
 
+6. Set up your test DB in the same way
+```
+docker exec -it -e PGPASSWORD=postgres cl-postgres-analytics /bin/bash -c "psql -h localhost -U postgres -c 'CREATE DATABASE cl2_analytics_test;'"
+docker exec -it -e PGPASSWORD=postgres cl-postgres-analytics /bin/bash -c "pg_dump --clean -h postgres -U postgres cl2_back_test | psql -h localhost -U postgres cl2_analytics_test"
+```
+
 ## Database
 
 There is a secondary database connection set up to cl_back_analytics - however it currently is ignoring appartment and
