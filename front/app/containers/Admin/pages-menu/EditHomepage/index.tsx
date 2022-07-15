@@ -69,7 +69,9 @@ const EditHomepage = () => {
   const handleOnData = (
     sectionToggleData: InsertConfigurationOptions<TSectionToggleData>
   ) => {
-    setSectionTogglesData(insertConfiguration(sectionToggleData));
+    setSectionTogglesData((currentSectionTogglesData) => {
+      return insertConfiguration(sectionToggleData)(currentSectionTogglesData);
+    });
   };
 
   const handleOnClick = () => {};
