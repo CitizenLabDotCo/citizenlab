@@ -9,8 +9,6 @@
   "app.components.AdminPage.SettingsPage.eventsPageSetting": "Add Events to navigation bar",
   "app.components.AdminPage.SettingsPage.eventsPageSettingDescription": "When enabled, a link to all project events will be added to the navigation bar.",
   "app.components.AdminPage.SettingsPage.eventsSection": "Hendelser",
-  "app.components.AdminPage.SettingsPage.eventsWidgetSetting": "Add upcoming events to homepage",
-  "app.components.AdminPage.SettingsPage.eventsWidgetSettingDescription": "Display a preview of upcoming events on the homepage",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSection": "Homepage customizable section",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSectionTooltip": "This empty section at the bottom of the homepage can be customized with your own images, text and links.",
   "app.components.ConfirmationModal.accountConfirmation": "Kontoinformasjon",

@@ -9,8 +9,6 @@
   "app.components.AdminPage.SettingsPage.eventsPageSetting": "Dodajte događaje u navigacioni meni",
   "app.components.AdminPage.SettingsPage.eventsPageSettingDescription": "Kada je omogućeno, veza do svih projektnih događaja biće dodata na traku za navigaciju.",
   "app.components.AdminPage.SettingsPage.eventsSection": "Događaji",
-  "app.components.AdminPage.SettingsPage.eventsWidgetSetting": "Dodajte predstojeće događaje na početnu stranicu",
-  "app.components.AdminPage.SettingsPage.eventsWidgetSettingDescription": "Prikažite pregled predstojećih događaja na početnoj stranici",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSection": "Prilagođena sekcija početne stranice",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSectionTooltip": "Ovaj prazan odeljak pri dnu početne stranice može se prilagoditi sa vašim slikama, tekstom i linkovima.",
   "app.components.ConfirmationModal.accountConfirmation": "Potvrda naloga",
