@@ -26,6 +26,7 @@ module Analytics
     belongs_to :created_date, class_name: 'DimensionDate'
     belongs_to :project, class_name: 'DimensionProject'
 
+    # TODO: Refactor this out into an outer class
     def self.refresh
       Scenic.database.refresh_materialized_view(table_name, concurrently: true, cascade: true)
     end
