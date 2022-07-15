@@ -37,7 +37,6 @@ const DEV_WORKSHOPS_PORT = process.env.DEV_WORKSHOPS_PORT || 4005;
 const currentYear = new Date().getFullYear();
 
 const clConfig = require(path.join(process.cwd(), '../citizenlab.config.json'));
-// const {MATOMO_HOST} = require("../../app/containers/App/constants");
 try {
   const clConfigEe = require(path.join(
     process.cwd(),
@@ -160,7 +159,6 @@ const config = {
         CIRCLE_SHA1: JSON.stringify(process.env.CIRCLE_SHA1),
         CIRCLE_BRANCH: JSON.stringify(process.env.CIRCLE_BRANCH),
         GOOGLE_MAPS_API_KEY: JSON.stringify(process.env.GOOGLE_MAPS_API_KEY),
-        MATOMO_HOST: JSON.stringify(process.env.MATOMO_HOST),
       },
       CL_CONFIG: JSON.stringify(clConfig),
     }),
