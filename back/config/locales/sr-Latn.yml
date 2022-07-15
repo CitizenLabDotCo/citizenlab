@@ -25,6 +25,8 @@ sr-Latn:
     answered_description: odgovoreno
     ineligible: nije moguće
     ineligible_description: nije moguće
+    implemented: realizovano
+    implemented_description: Ova ponuda je primenjena
   topics:
     nature: Ekologija
     nature_description: Ekologija
@@ -108,7 +110,7 @@ sr-Latn:
         title: Obrazovanje
     ideas:
       title:
-        title: Naslov
+        title: Naziv
         description:
       body:
         title: Opis
@@ -117,7 +119,7 @@ sr-Latn:
         title: Autor
         description:
       topic_ids:
-        title: Tema
+        title: Teme
         description:
       location:
         title: Lokacija
@@ -159,7 +161,7 @@ sr-Latn:
     gender:
       male: Muškarac
       female: Žena
-      unspecified: Ostalo
+      unspecified: Drugo
     domicile:
       outside: Negde drugo
     education:
