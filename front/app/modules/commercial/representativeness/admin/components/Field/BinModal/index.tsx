@@ -19,6 +19,7 @@ import {
   updateLowerBound,
   updateUpperBound,
   removeBin,
+  addBin,
 } from './utils';
 
 const ClearAllButton = styled.button`
@@ -69,6 +70,10 @@ const BinModal = ({ open, onClose }: Props) => {
     setBins((bins) => removeBin(bins));
   };
 
+  const handleAddBin = () => {
+    setBins((bins) => addBin(bins));
+  };
+
   return (
     <Modal
       opened={open}
@@ -116,7 +121,12 @@ const BinModal = ({ open, onClose }: Props) => {
           onRemoveBin={handleRemoveBin}
         />
 
-        <Button icon="plus-circle" mt="16px" bgColor={colors.lightGreyishBlue}>
+        <Button
+          icon="plus-circle"
+          mt="16px"
+          buttonStyle="secondary"
+          onClick={handleAddBin}
+        >
           <FormattedMessage {...messages.addAnAgeGroup} />
         </Button>
       </Box>

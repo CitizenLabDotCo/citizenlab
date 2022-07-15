@@ -117,3 +117,7 @@ export const parseLabel = (
 
   return '';
 };
+
+export const addBin = (bins: Bins) => {
+  return [...bins, null];
+};
