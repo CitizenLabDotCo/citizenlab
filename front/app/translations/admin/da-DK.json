@@ -9,8 +9,6 @@
   "app.components.AdminPage.SettingsPage.eventsPageSetting": "Tilføj begivenheder til navigationslinjen",
   "app.components.AdminPage.SettingsPage.eventsPageSettingDescription": "Når den er aktiveret, tilføjes et link til alle projektbegivenheder til navigationslinjen.",
   "app.components.AdminPage.SettingsPage.eventsSection": "Begivenheder",
-  "app.components.AdminPage.SettingsPage.eventsWidgetSetting": "Tilføj kommende begivenheder til forsiden",
-  "app.components.AdminPage.SettingsPage.eventsWidgetSettingDescription": "Vis en forhåndsvisning af kommende begivenheder på forsiden",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSection": "Hjemmeside sektion, der kan tilpasses",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSectionTooltip": "Dette tomme afsnit nederst på hjemmesiden kan tilpasses med din egne billeder, tekst og links.",
   "app.components.ConfirmationModal.accountConfirmation": "Bekræftelse af konto",

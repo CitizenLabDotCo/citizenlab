@@ -9,8 +9,6 @@
   "app.components.AdminPage.SettingsPage.eventsPageSetting": "Pisussat Events Navigationslinjemut ilanngutiguk",
   "app.components.AdminPage.SettingsPage.eventsPageSettingDescription": "Taanna atulerpat, suliniummut tunngasut tamarmik navigationslinjemut ilanngunneqassapput.",
   "app.components.AdminPage.SettingsPage.eventsSection": "Pisimasut",
-  "app.components.AdminPage.SettingsPage.eventsWidgetSetting": "Add upcoming events to homepage",
-  "app.components.AdminPage.SettingsPage.eventsWidgetSettingDescription": "Nittartakkamut piffissami aggersumi pisussat begivenheder siuningaaniit takutikkit",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSection": "Qupperneq Hjem brugerdefiner-itut immikkoortinneqarpoq",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSectionTooltip": "Immikkoortoq taanna imaqanngitsoq nittartakkap naqqaniittoq nammineq assilisanik, oqaasertaanik linkinillu naleqqussarsinnaavoq.",
   "app.components.ConfirmationModal.accountConfirmation": "Kontomik uppernarsaaneq",
