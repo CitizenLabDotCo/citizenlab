@@ -2,6 +2,8 @@
 
 ## Next release
 
+/
+
 ### Changed
 
 - [CL-870] Move "navigation" to primary nav item
@@ -15,6 +17,7 @@
 
 ### Added
 
+- [CL-1058] - Add desktop preview in content builder
 - [CL-1096] Add representativeness score to header of representativeness chart card
 
 ## 2022-07-07

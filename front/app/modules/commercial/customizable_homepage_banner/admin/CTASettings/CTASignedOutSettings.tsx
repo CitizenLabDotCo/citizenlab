@@ -2,7 +2,7 @@ import React from 'react';
 import { SectionField } from 'components/admin/Section';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-import { CTASignedOutType } from 'services/appConfiguration';
+import { CTASignedOutType } from 'services/homepageSettings';
 import SettingRadioButtons from './SettingRadioButtons';
 import { CLErrors, Multiloc } from 'typings';
 import SettingsLabel from './SettingsLabel';

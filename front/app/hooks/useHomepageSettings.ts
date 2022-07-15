@@ -6,8 +6,8 @@ import {
 
 export default function useHomepageSettings() {
   const [homepageSettings, setHomepageSettings] = useState<
-    IHomepageSettings | undefined | null | Error
-  >(undefined);
+    IHomepageSettings | null | Error
+  >(null);
 
   useEffect(() => {
     const subscription = homepageSettingsStream().observable.subscribe(

@@ -26,7 +26,6 @@ import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import { ParticipationMethod } from 'services/participationContexts';
 import {
   CellConfiguration,
-  CLErrors,
   FormikSubmitHandler,
   InsertConfigurationOptions,
   ITab,
@@ -41,13 +40,14 @@ import { MessageValue } from 'react-intl';
 import { NavItem } from 'containers/Admin/sideBar';
 import {
   AppConfigurationFeature,
-  CTASignedInType,
-  CTASignedOutType,
   CustomizedButtonConfig,
   TAppConfigurationSetting,
   TAppConfigurationSettingCore,
-  THomepageBannerLayout,
 } from 'services/appConfiguration';
+import {
+  THomepageBannerLayout,
+  IHomepageSettingsAttributes,
+} from 'services/homepageSettings';
 import { ManagerType } from 'components/admin/PostManager';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaHeaderRow';
@@ -65,7 +65,6 @@ import {
   IOnboardingCampaignNames,
   IOnboardingCampaigns,
 } from 'services/onboardingCampaigns';
-import { IHomepageSettingsAttributes } from 'services/homepageSettings';
 import { TNotificationData } from 'services/notifications';
 import { BannerButtonStyle } from 'containers/LandingPage/BannerButton';
 import { AuthProvider } from 'components/SignUpIn/AuthProviders';
@@ -99,7 +98,7 @@ export type IAdminSettingsRegistrationSectionEndOutletProps = {
   userConfirmationSetting?: AppConfigurationFeature;
 };
 
-export type OutletsPropertyMap = {
+export interface OutletsPropertyMap {
   'app.containers.Navbar.projectlist.item': {
     publication: IAdminPublicationContent;
     localize: Localize;
@@ -382,24 +381,14 @@ export type OutletsPropertyMap = {
     onMount: () => void;
   };
   'app.containers.Admin.settings.policies.subTitle': Record<string, any>;
-  'app.containers.Admin.settings.customize.headerSectionEnd': {
-    homepageSettings: IHomepageSettingsAttributes;
-    handleOnChange: (
-      settingKey: keyof IHomepageSettingsAttributes,
-      settingValue: any
-    ) => void;
-    errors: CLErrors;
-  };
   'app.containers.Admin.pages-menu.index': Record<string, any>;
   'app.containers.Admin.pages-menu.NavigationSettings': Record<string, any>;
   'app.containers.LandingPage.SignedOutHeader.CTA': {
-    ctaType: CTASignedOutType;
     customizedButtonConfig?: CustomizedButtonConfig;
     buttonStyle: BannerButtonStyle;
     signUpIn: (event: MouseEvent | KeyboardEvent) => void;
   };
   'app.containers.LandingPage.SignedInHeader.CTA': {
-    ctaType: CTASignedInType;
     customizedButtonConfig?: CustomizedButtonConfig;
     buttonStyle: BannerButtonStyle;
   };
@@ -411,7 +400,7 @@ export type OutletsPropertyMap = {
     string,
     any
   >;
-};
+}
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];
 

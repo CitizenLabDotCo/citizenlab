@@ -6,6 +6,7 @@ import { IHomepageSettingsAttributes } from 'services/homepageSettings';
 import CTASignedOutSettings from './CTASignedOutSettings';
 import CTASignedInSettings from './CTASignedInSettings';
 import { CLErrors } from 'typings';
+import 'utils/moduleUtils';
 
 // only these keys will be used in CTA settings
 export type BannerSettingKeyType = Extract<

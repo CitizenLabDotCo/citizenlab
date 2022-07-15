@@ -6,8 +6,10 @@ import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { PreviewDevice } from './index';
 
 // types
-import { THomepageBannerLayout } from 'services/appConfiguration';
-import { IHomepageSettingsAttributes } from 'services/homepageSettings';
+import {
+  IHomepageSettingsAttributes,
+  THomepageBannerLayout,
+} from 'services/homepageSettings';
 import { UploadFile } from 'typings';
 
 const HeaderImageOverlay = styled.div<{
