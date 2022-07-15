@@ -81,6 +81,7 @@ const Events = ({
           <FormattedMessage {...messages.eventsSection} />
         </StyledSectionTitle>
 
+        {/* Still needs to be looked at. What if events_widget module is not there. Important? */}
         {!navbarModuleActive && (
           <EventsToggleSectionField>
             <Setting>
