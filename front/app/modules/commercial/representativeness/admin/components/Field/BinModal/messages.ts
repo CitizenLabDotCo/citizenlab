@@ -45,4 +45,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.components.Field.BinModal.addAnAgeGroup',
     defaultMessage: 'Add an age group',
   },
+  save: {
+    id: 'app.containers.AdminPage.DashboardPage.components.Field.BinModal.save',
+    defaultMessage: 'Save',
+  },
 });

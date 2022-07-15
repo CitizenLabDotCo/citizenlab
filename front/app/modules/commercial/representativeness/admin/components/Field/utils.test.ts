@@ -3,6 +3,7 @@ import {
   getSubmitAction,
   getStatus,
   isSubmittingAllowed,
+  convertBinsToFormValues,
   FormValues,
 } from './utils';
 import {
@@ -328,5 +329,33 @@ describe('isSubmittingAllowed', () => {
     };
 
     expect(isSubmittingAllowed(formValues, true, false)).toBe(true);
+  });
+});
+
+describe('convertBinsToFormValues', () => {
+  it('works with upper bound', () => {
+    const bins = [18, 25, 35, 55, 70];
+
+    const expectedFormValues = {
+      '18-24': null,
+      '25-34': null,
+      '35-54': null,
+      '55-70': null,
+    };
+
+    expect(convertBinsToFormValues(bins)).toEqual(expectedFormValues);
+  });
+
+  it('works without upper bound', () => {
+    const bins = [18, 25, 35, 55, null];
+
+    const expectedFormValues = {
+      '18-24': null,
+      '25-34': null,
+      '35-54': null,
+      '55+': null,
+    };
+
+    expect(convertBinsToFormValues(bins)).toEqual(expectedFormValues);
   });
 });

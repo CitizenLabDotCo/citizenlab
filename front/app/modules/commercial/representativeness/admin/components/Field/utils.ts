@@ -8,6 +8,7 @@ import {
   TDistribution,
   TUploadDistribution,
 } from '../../services/referenceDistribution';
+import { Bins } from './BinModal';
 
 // EXPORTS
 export type FormValues = Record<string, number | null>;
@@ -34,7 +35,7 @@ export const getInitialValues = (
 };
 
 export const isFormValid = (formValues: FormValues) => {
-  if (areAllOptionsDisabled(formValues)) {
+  if (isEmptyObject(formValues)) {
     return true;
   }
 
@@ -52,7 +53,7 @@ export const getSubmitAction = (
   referenceDistribution: IReferenceDistributionData | NilOrError
 ) => {
   if (isNilOrError(referenceDistribution)) {
-    if (!areAllOptionsDisabled(formValues)) return 'create';
+    if (!isEmptyObject(formValues)) return 'create';
     return null;
   }
 
@@ -60,7 +61,7 @@ export const getSubmitAction = (
     return null;
   }
 
-  if (areAllOptionsDisabled(formValues)) {
+  if (isEmptyObject(formValues)) {
     return 'delete';
   }
 
@@ -102,11 +103,25 @@ export const isSubmittingAllowed = (
   touched: boolean,
   referenceDataUploaded: boolean
 ) => {
-  if (!referenceDataUploaded && areAllOptionsDisabled(formValues)) {
+  if (!referenceDataUploaded && isEmptyObject(formValues)) {
     return false;
   }
 
   return touched && isFormValid(formValues);
+};
+
+export const convertBinsToFormValues = (bins: Bins) => {
+  return bins.slice(0, bins.length - 1).reduce((acc, curr, i) => {
+    const upperBound = bins[i];
+    const group =
+      upperBound === null ? `${curr}+` : `${curr}-${upperBound - 1}`;
+
+    return { ...acc, [group]: null };
+  }, {});
+};
+
+export const isEmptyObject = (formValues: FormValues) => {
+  return Object.keys(formValues).length === 0;
 };
 
 // HELPERS
@@ -144,10 +159,6 @@ const areAllOptionsFilledOut = (formValues: FormValues) => {
   });
 };
 
-const areAllOptionsDisabled = (formValues: FormValues) => {
-  return Object.keys(formValues).length === 0;
-};
-
 const hasNoChanges = (
   formValues: FormValues,
   referenceDistribution: IReferenceDistributionData
@@ -176,7 +187,7 @@ const isSaved = (
   if (touched) return false;
 
   if (isNilOrError(referenceDistribution)) {
-    if (areAllOptionsDisabled(formValues)) return true;
+    if (isEmptyObject(formValues)) return true;
     return false;
   }
 
@@ -184,15 +195,11 @@ const isSaved = (
 };
 
 const isComplete = (formValues: FormValues, touched: boolean) => {
-  return (
-    touched && !areAllOptionsDisabled(formValues) && isFormValid(formValues)
-  );
+  return touched && !isEmptyObject(formValues) && isFormValid(formValues);
 };
 
 const isIncomplete = (formValues: FormValues, touched: boolean) => {
-  return (
-    touched && !areAllOptionsDisabled(formValues) && !isFormValid(formValues)
-  );
+  return touched && !isEmptyObject(formValues) && !isFormValid(formValues);
 };
 
 const sameNumberOfKeys = (

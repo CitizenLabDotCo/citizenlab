@@ -26,11 +26,14 @@ import {
   getSubmitAction,
   getStatus,
   parseFormValues,
+  convertBinsToFormValues,
+  isEmptyObject,
 } from './utils';
 
 // typings
 import { Multiloc } from 'typings';
 import { IUserCustomFieldOptionData } from 'modules/commercial/user_custom_fields/services/userCustomFieldOptions';
+import { Bins } from './BinModal';
 
 interface Props {
   userCustomFieldId: string;
@@ -64,7 +67,6 @@ const Field = ({
     )
   );
 
-  // TODO remove
   const userCustomField = useUserCustomField(userCustomFieldId);
 
   useEffect(() => {
@@ -86,7 +88,7 @@ const Field = ({
 
   if (formValues === null) return null;
 
-  const onUpdateEnabled = (optionId: string, enabled: boolean) => {
+  const handleUpdateEnabled = (optionId: string, enabled: boolean) => {
     if (enabled) {
       setFormValues({
         ...formValues,
@@ -99,7 +101,10 @@ const Field = ({
     setTouched(true);
   };
 
-  const onUpdatePopulation = (optionId: string, population: number | null) => {
+  const handleUpdatePopulation = (
+    optionId: string,
+    population: number | null
+  ) => {
     setFormValues({
       ...formValues,
       [optionId]: population,
@@ -108,7 +113,11 @@ const Field = ({
     setTouched(true);
   };
 
-  const onSubmit = async () => {
+  const handleSaveBins = (bins: Bins) => {
+    setFormValues(convertBinsToFormValues(bins));
+  };
+
+  const handleSubmit = async () => {
     setTouched(false);
 
     const submitAction = getSubmitAction(formValues, referenceDistribution);
@@ -134,20 +143,20 @@ const Field = ({
     setSubmitting(false);
   };
 
-  // TODO remove
   if (isNilOrError(userCustomField)) {
     return null;
   }
 
-  // TODO derive this from reference distribution or whatever
-  const AGE_GROUPS_SET =
-    userCustomField.attributes.key === 'birthyear' ? false : undefined;
+  const ageGroupsSet =
+    userCustomField.attributes.key === 'birthyear'
+      ? !isEmptyObject(formValues)
+      : undefined;
 
   const status = getStatus(
     formValues,
     referenceDistribution,
     touched,
-    AGE_GROUPS_SET
+    ageGroupsSet
   );
 
   if (isComingSoon) {
@@ -179,10 +188,11 @@ const Field = ({
         formValues={formValues}
         submitting={submitting}
         touched={touched}
-        ageGroupsSet={AGE_GROUPS_SET}
-        onUpdateEnabled={onUpdateEnabled}
-        onUpdatePopulation={onUpdatePopulation}
-        onSubmit={onSubmit}
+        ageGroupsSet={ageGroupsSet}
+        onUpdateEnabled={handleUpdateEnabled}
+        onUpdatePopulation={handleUpdatePopulation}
+        onSaveBins={handleSaveBins}
+        onSubmit={handleSubmit}
       />
     </Accordion>
   );

@@ -15,6 +15,7 @@ import { colors } from 'utils/styleUtils';
 
 // utils
 import {
+  validateBins,
   allBinsEmpty,
   updateLowerBound,
   updateUpperBound,
@@ -37,6 +38,7 @@ const StyledIcon = styled(Icon)`
 interface Props {
   open: boolean;
   onClose: () => void;
+  onSave: (bins: Bins) => void;
 }
 
 export type Bins = (number | null)[];
@@ -44,7 +46,7 @@ export type Bins = (number | null)[];
 // TODO delete this when real data is available
 export const getDummyBins = (): Bins => [18, 25, 35, 45, 55, 65, null];
 
-const BinModal = ({ open, onClose }: Props) => {
+const BinModal = ({ open, onClose, onSave }: Props) => {
   const [bins, setBins] = useState(getDummyBins());
 
   const handleUpdateLowerBound = (
@@ -72,6 +74,11 @@ const BinModal = ({ open, onClose }: Props) => {
 
   const handleAddBin = () => {
     setBins((bins) => addBin(bins));
+  };
+
+  const handleSave = () => {
+    onSave(bins);
+    onClose();
   };
 
   return (
@@ -129,6 +136,16 @@ const BinModal = ({ open, onClose }: Props) => {
         >
           <FormattedMessage {...messages.addAnAgeGroup} />
         </Button>
+
+        <Box display="flex" justifyContent="flex-start" mt="28px">
+          <Button
+            width="auto"
+            onClick={handleSave}
+            disabled={!validateBins(bins)}
+          >
+            <FormattedMessage {...messages.save} />
+          </Button>
+        </Box>
       </Box>
     </Modal>
   );

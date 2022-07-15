@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 // hooks
-import useUserCustomField from 'modules/commercial/user_custom_fields/hooks/useUserCustomField';
 import useReferenceDistribution from '../../hooks/useReferenceDistribution';
 
 // components
@@ -11,7 +10,7 @@ import Options from './Options';
 import Tippy from '@tippyjs/react';
 import Button from 'components/UI/Button';
 import Warning from 'components/UI/Warning';
-import BinModal from './BinModal';
+import BinModal, { Bins } from './BinModal';
 
 // styling
 import { colors } from 'utils/styleUtils';
@@ -22,7 +21,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
 import { isSubmittingAllowed, FormValues } from './utils';
-import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   userCustomFieldId: string;
@@ -32,6 +30,7 @@ interface Props {
   ageGroupsSet?: boolean;
   onUpdateEnabled: (optionId: string, enabled: boolean) => void;
   onUpdatePopulation: (optionId: string, population: number | null) => void;
+  onSaveBins: (bins: Bins) => void;
   onSubmit: () => void;
 }
 
@@ -43,13 +42,13 @@ const FieldContent = ({
   ageGroupsSet,
   onUpdateEnabled,
   onUpdatePopulation,
+  onSaveBins,
   onSubmit,
 }: Props) => {
   const [binModalOpen, setBinModalOpen] = useState(false);
-  const userCustomField = useUserCustomField(userCustomFieldId);
   const { referenceDataUploaded } = useReferenceDistribution(userCustomFieldId);
 
-  if (referenceDataUploaded === undefined || isNilOrError(userCustomField)) {
+  if (referenceDataUploaded === undefined) {
     return null;
   }
 
@@ -58,9 +57,6 @@ const FieldContent = ({
     touched,
     referenceDataUploaded
   );
-
-  const showSetAgeGroupsMessage =
-    userCustomField.attributes.code === 'birthyear' && ageGroupsSet === false;
 
   const openBinModal = () => setBinModalOpen(true);
   const closeBinModal = () => setBinModalOpen(false);
@@ -83,7 +79,7 @@ const FieldContent = ({
           px="16px"
         >
           <Header />
-          {showSetAgeGroupsMessage ? (
+          {ageGroupsSet === false ? (
             <Box mt="12px" mb="12px">
               <Warning>
                 <FormattedMessage
@@ -130,7 +126,12 @@ const FieldContent = ({
           </div>
         </Tippy>
       </Box>
-      <BinModal open={binModalOpen} onClose={closeBinModal} />
+
+      <BinModal
+        open={binModalOpen}
+        onClose={closeBinModal}
+        onSave={onSaveBins}
+      />
     </>
   );
 };
