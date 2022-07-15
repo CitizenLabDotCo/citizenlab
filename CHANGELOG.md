@@ -2,6 +2,8 @@
 
 ## Next release
 
+/
+
 ### Changed
 
 - [CL-870] Move "navigation" to primary nav item
