@@ -102,7 +102,7 @@ export default defineMessages({
   },
   saveHeroBanner: {
     id: 'app.containers.AdminPage.HeroBannerForm.saveHeroBanner',
-    defaultMessage: 'Save Hero Banner',
+    defaultMessage: 'Save hero banner',
   },
   heroBannerInfoBar: {
     id: 'app.containers.AdminPage.HeroBannerForm.heroBannerInfoBar',

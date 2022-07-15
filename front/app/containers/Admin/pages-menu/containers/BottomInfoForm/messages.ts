@@ -16,6 +16,6 @@ export default defineMessages({
   },
   bottomInfoSaveButton: {
     id: 'app.containers.Admin.pagesAndMenu.bottomInfoSaveButton',
-    defaultMessage: 'Save Bottom Info Section',
+    defaultMessage: 'Save bottom info section',
   },
 });
