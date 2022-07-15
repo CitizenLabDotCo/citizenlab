@@ -325,7 +325,6 @@ class SettingsCustomizeTab extends PureComponent<
           <Events
             newNavbarItemEnabled={newEventsNavbarItemEnabled}
             setParentState={setState}
-            getSetting={getSetting}
           />
 
           <AllInput

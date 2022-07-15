@@ -39,13 +39,11 @@ export const EventsToggleSectionField = styled(SectionField)`
 interface Props {
   newNavbarItemEnabled: boolean | null;
   setParentState: (state: any) => void;
-  getSetting: (setting: string) => any;
 }
 
 const Events = ({
   newNavbarItemEnabled,
   setParentState,
-  getSetting,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const navbarItemEnabled = useNavbarItemEnabled('events');
@@ -107,12 +105,6 @@ const Events = ({
             </Setting>
           </EventsToggleSectionField>
         )}
-
-        <Outlet
-          id="app.containers.Admin.settings.customize.eventsSectionEnd"
-          getSetting={getSetting}
-          setParentState={setParentState}
-        />
       </StyledSection>
     </>
   );
