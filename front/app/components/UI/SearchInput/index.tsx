@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
   SearchInput,
   SearchInputProps,
@@ -31,9 +31,12 @@ const SearchInputWrapper = ({
   intl: { formatMessage },
   a11y_numberOfSearchResults,
 }: Props & InjectedIntlProps) => {
-  const handleOnChange = (searchTerm: string | null) => {
-    onChange(searchTerm);
-  };
+  const handleOnChange = useCallback(
+    (searchTerm: string | null) => {
+      onChange(searchTerm);
+    },
+    [onChange]
+  );
 
   return (
     <>
