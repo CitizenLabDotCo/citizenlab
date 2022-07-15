@@ -1,21 +1,19 @@
-import FeatureFlag from 'components/FeatureFlag';
-import React from 'react';
+import React, { lazy } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
+import FeatureFlag from 'components/FeatureFlag';
 import ModuleActive from './admin/components/ModuleActive';
 import PoliciesSubtitle from './admin/components/PoliciesSubtitle';
 import PagesMenu from './admin/containers';
 
-const NewPageFormComponent = React.lazy(
+const NewPageFormComponent = lazy(
   () => import('./admin/containers/NewPageForm')
 );
-const EditPageComponent = React.lazy(
-  () => import('./admin/containers/EditPageForm')
-);
-const EditNavbarItemComponent = React.lazy(
+const EditPageComponent = lazy(() => import('./admin/containers/EditPageForm'));
+const EditNavbarItemComponent = lazy(
   () => import('./admin/containers/EditNavbarItemForm')
 );
 
-const NavigationSettings = React.lazy(
+const NavigationSettings = lazy(
   () => import('./admin/containers/NavigationSettings')
 );
 

@@ -1,9 +1,7 @@
 import React from 'react';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import {
-  IAppConfigurationStyle,
-  THomepageBannerLayout,
-} from 'services/appConfiguration';
+import { IAppConfigurationStyle } from 'services/appConfiguration';
+import { THomepageBannerLayout } from 'services/homepageSettings';
 import { UploadFile } from 'typings';
 import { PreviewDevice } from './';
 import styled, { useTheme } from 'styled-components';
