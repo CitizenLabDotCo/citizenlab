@@ -69,19 +69,21 @@ const EditHomepage = () => {
   }
 
   return (
-    <Box display="flex" alignItems="center" mb="12px">
-      {/* Title should have no default margins. If I set margin to 0, it still gets overwritten. */}
-      <Title variant="h2">
-        <FormattedMessage {...messages.homepageTitle} />
-      </Title>
-      {/* Should this happen with a Box? */}
-      <Box ml="auto">
-        <AdminViewButton
-          buttonTextMessageDescriptor={messages.viewPage}
-          linkTo="/"
-        />
+    <>
+      <Box display="flex" alignItems="center" mb="12px">
+        {/* Title should have no default margins. If I set margin to 0, it still gets overwritten. */}
+        <Title variant="h2">
+          <FormattedMessage {...messages.homepageTitle} />
+        </Title>
+        {/* Should this happen with a Box? */}
+        <Box ml="auto">
+          <AdminViewButton
+            buttonTextMessageDescriptor={messages.viewPage}
+            linkTo="/"
+          />
+        </Box>
       </Box>
-      <>
+      <Box display="flex" flexDirection="column">
         {/*
          How do we deal with margins on Title to not make the tech debt worse here?
            + be consistent
@@ -118,8 +120,8 @@ const EditHomepage = () => {
             );
           }
         )}
-      </>
-    </Box>
+      </Box>
+    </>
   );
 };
 
