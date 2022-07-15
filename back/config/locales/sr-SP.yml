@@ -25,6 +25,8 @@ sr-SP:
     answered_description: одговорено
     ineligible: није могуће
     ineligible_description: није могуће
+    implemented: реализовано
+    implemented_description: Ова понуда је примењена
   topics:
     nature: Екологија
     nature_description: Екологија
@@ -108,7 +110,7 @@ sr-SP:
         title: Образовање
     ideas:
       title:
-        title: Наслов
+        title: Назив
         description:
       body:
         title: Опис
