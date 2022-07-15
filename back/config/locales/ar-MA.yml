@@ -25,6 +25,8 @@ ar-MA:
     answered_description: تمت الإجابة عليها
     ineligible: غير مؤهلة
     ineligible_description: غير مؤهلة
+    implemented: تم تنفيذها
+    implemented_description: تم تطبيق هذا المقترح
   topics:
     nature: الطبيعة والتنوع البيولوجي
     nature_description: الطبيعة والتنوع البيولوجي
