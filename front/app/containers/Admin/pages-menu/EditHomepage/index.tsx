@@ -21,7 +21,6 @@ type TSectionToggleData = {
 const EditHomepage = () => {
   const homepageSettings = useHomepageSettings();
   const [isLoading, setIsLoading] = useState(false);
-
   const [sectionTogglesData, _setSectionTogglesData] = useState<
     TSectionToggleData[]
   >([
@@ -63,11 +62,12 @@ const EditHomepage = () => {
     }
   };
 
+  const handleOnClick = () => {};
+
   if (isNilOrError(homepageSettings)) {
     return null;
   }
 
-  const handleOnClick = () => {};
   return (
     <>
       <Box display="flex" alignItems="center" mb="12px">
@@ -83,12 +83,12 @@ const EditHomepage = () => {
           />
         </Box>
       </Box>
-      <div>
+      <Box display="flex" flexDirection="column">
         {/*
-       How do we deal with margins on Title to not make the tech debt worse here?
-         + be consistent
+         How do we deal with margins on Title to not make the tech debt worse here?
+           + be consistent
 
-       Also font-weight is an issue again.
+         Also font-weight is an issue again.
 
        Should I use a Box for this? Or go with a StyledWarning?
        */}
@@ -120,7 +120,7 @@ const EditHomepage = () => {
             );
           }
         )}
-      </div>
+      </Box>
     </>
   );
 };

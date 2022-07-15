@@ -18,10 +18,11 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 import {
-  THomepageBannerLayout,
   TAppConfigurationSetting,
   IAppConfigurationSettings,
 } from 'services/appConfiguration';
+
+import { THomepageBannerLayout } from 'services/homepageSettings';
 
 const LayoutPreview = styled.img`
   width: 200px;

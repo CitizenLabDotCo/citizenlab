@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+
 // components
 import {
   IconTooltip,
@@ -10,10 +10,6 @@ import {
 import { Row } from 'components/admin/ResourceList';
 import AdminEditButton from './AdminEditButton';
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
-
-const StyledToggle = styled(Toggle)`
-  margin-right: 20px;
-`;
 
 export interface Props {
   onChangeSectionToggle: () => void;
@@ -35,11 +31,13 @@ const SectionToggle = ({
   return (
     <Row>
       <Box display="flex" alignItems="center">
-        <StyledToggle
-          checked={checked}
-          onChange={onChangeSectionToggle}
-          disabled={disabled}
-        />
+        <Box mr="20px">
+          <Toggle
+            checked={checked}
+            onChange={onChangeSectionToggle}
+            disabled={disabled}
+          />
+        </Box>
         {/*
       Note: I think we want a default font-weigt of 600, not 700 for this component.
       Also, the margin-top is more than margin-bottom (for an h3).
