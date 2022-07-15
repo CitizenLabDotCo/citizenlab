@@ -75,7 +75,7 @@ describe('<HeroBannerForm />', () => {
 
     // save form
     await act(async () => {
-      fireEvent.click(screen.getByText('Save Hero Banner'));
+      fireEvent.click(screen.getByText('Save hero banner'));
     });
 
     expect(spy).toHaveBeenCalledWith({
