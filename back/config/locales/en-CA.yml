@@ -25,6 +25,8 @@ en-CA:
     answered_description: answered
     ineligible: ineligible
     ineligible_description: ineligible
+    implemented: implemented
+    implemented_description: This proposal has been implemented
   topics:
     nature: Nature and biodiversity
     nature_description: Nature and biodiversity
