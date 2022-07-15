@@ -29,13 +29,18 @@ const MultiSelectControl = ({
   id,
 }: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
-  const options =
-    (!Array.isArray(schema.items) &&
-      schema.items?.oneOf?.map((o) => ({
-        value: o.const as string,
-        label: (o.title || o.const) as string,
-      }))) ||
-    null;
+  // const options =
+  //   (!Array.isArray(schema.items) &&
+  //     schema.items?.oneOf?.map((o) => ({
+  //       value: o.const as string,
+  //       label: (o.title || o.const) as string,
+  //     }))) ||
+  //   null;
+
+  const options2 = [
+    { value: 'One', label: 'One' },
+    { value: 'Two', label: 'Two' },
+  ];
 
   return (
     <>
@@ -49,7 +54,7 @@ const MultiSelectControl = ({
       <Box display="flex" flexDirection="row" overflow="visible">
         <StyledMultipleSelect
           value={data}
-          options={options}
+          options={options2}
           onChange={(vals) => {
             setDidBlur(true);
             handleChange(
