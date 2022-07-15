@@ -11,11 +11,13 @@ import {
 } from 'services/homepageSettings';
 import useHomepageSettings from 'hooks/useHomepageSettings';
 import { isNilOrError } from 'utils/helperUtils';
+import clHistory from 'utils/cl-router/history';
 
 type TSectionToggleData = {
   titleMessageDescriptor: MessageDescriptor;
   tooltipMessageDescriptor: MessageDescriptor;
   sectionEnabledSettingName: THomepageSection;
+  linkToPath?: string;
 };
 
 const EditHomepage = () => {
@@ -28,11 +30,13 @@ const EditHomepage = () => {
       sectionEnabledSettingName: 'customizable_homepage_banner_enabled',
       titleMessageDescriptor: messages.heroBanner,
       tooltipMessageDescriptor: messages.heroBannerTooltip,
+      linkToPath: 'homepage-banner',
     },
     {
       sectionEnabledSettingName: 'top_info_section_enabled',
       titleMessageDescriptor: messages.topInfoSection,
       tooltipMessageDescriptor: messages.topInfoSectionTooltip,
+      linkToPath: 'top-info-section',
     },
     {
       sectionEnabledSettingName: 'projects_enabled',
@@ -43,6 +47,7 @@ const EditHomepage = () => {
       sectionEnabledSettingName: 'bottom_info_section_enabled',
       titleMessageDescriptor: messages.bottomInfoSection,
       tooltipMessageDescriptor: messages.bottomInfoSectionTooltip,
+      linkToPath: 'bottom-info-section',
     },
   ]);
 
@@ -62,7 +67,11 @@ const EditHomepage = () => {
     }
   };
 
-  const handleOnClick = () => {};
+  const handleOnClick = (url: string) => {
+    if (url) {
+      clHistory.push(`/admin/pages-menu/${url}/`);
+    }
+  };
 
   if (isNilOrError(homepageSettings)) {
     return null;
@@ -102,6 +111,7 @@ const EditHomepage = () => {
             sectionEnabledSettingName,
             titleMessageDescriptor,
             tooltipMessageDescriptor,
+            linkToPath,
           }) => {
             return (
               <SectionToggle
@@ -113,6 +123,7 @@ const EditHomepage = () => {
                   sectionEnabledSettingName
                 )}
                 onClickEditButton={handleOnClick}
+                editLinkPath={linkToPath}
                 titleMessageDescriptor={titleMessageDescriptor}
                 tooltipMessageDescriptor={tooltipMessageDescriptor}
                 disabled={isLoading}

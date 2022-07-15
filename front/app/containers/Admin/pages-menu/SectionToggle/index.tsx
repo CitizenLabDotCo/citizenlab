@@ -13,11 +13,12 @@ import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
 export interface Props {
   onChangeSectionToggle: () => void;
-  onClickEditButton?: () => void;
+  onClickEditButton?: (string) => void;
   titleMessageDescriptor: MessageDescriptor;
   tooltipMessageDescriptor: MessageDescriptor;
   checked: boolean;
   disabled: boolean;
+  editLinkPath?: string;
 }
 
 const SectionToggle = ({
@@ -25,6 +26,7 @@ const SectionToggle = ({
   onClickEditButton,
   titleMessageDescriptor,
   tooltipMessageDescriptor,
+  editLinkPath,
   checked,
   disabled,
 }: Props) => {
@@ -49,7 +51,9 @@ const SectionToggle = ({
           content={<FormattedMessage {...tooltipMessageDescriptor} />}
         />
       </Box>
-      {onClickEditButton && <AdminEditButton onClick={onClickEditButton} />}
+      {editLinkPath && onClickEditButton && (
+        <AdminEditButton onClick={() => onClickEditButton(editLinkPath)} />
+      )}
     </Row>
   );
 };

@@ -1,5 +1,7 @@
 import { defineMessages } from 'react-intl';
 
+// moved from admin/settings/customize
+
 export default defineMessages({
   header: {
     id: 'app.containers.AdminPage.SettingsPage.header',
@@ -89,5 +91,21 @@ export default defineMessages({
   headerImageSupportPageText: {
     id: 'app.containers.AdminPage.SettingsPage.headerImageSupportPageText',
     defaultMessage: 'visit our support center',
+  },
+  noHeader: {
+    id: 'app.containers.AdminPage.SettingsPage.noHeader',
+    defaultMessage: 'Please upload a header image',
+  },
+  heroBannerTitle: {
+    id: 'app.containers.AdminPage.HeroBannerForm.heroBannerTitle',
+    defaultMessage: 'Hero Banner',
+  },
+  saveHeroBanner: {
+    id: 'app.containers.AdminPage.HeroBannerForm.saveHeroBanner',
+    defaultMessage: 'Save hero banner',
+  },
+  heroBannerInfoBar: {
+    id: 'app.containers.AdminPage.HeroBannerForm.heroBannerInfoBar',
+    defaultMessage: 'Customise the hero banner image and text.',
   },
 });

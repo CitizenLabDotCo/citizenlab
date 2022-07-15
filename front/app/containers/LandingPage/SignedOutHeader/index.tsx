@@ -1,22 +1,20 @@
-import useAppConfiguration from 'hooks/useAppConfiguration';
 import useHomepageSettingsFeatureFlag from 'hooks/useHomepageSettingsFeatureFlag';
 import React from 'react';
 import FullWidthBannerLayout from './FullWidthBannerLayout';
 import { isNilOrError } from 'utils/helperUtils';
 import Outlet from 'components/Outlet';
+import useHomepageSettings from 'hooks/useHomepageSettings';
 
 const SignedOutHeaderIndex = () => {
-  const appConfiguration = useAppConfiguration();
+  const homepageSettings = useHomepageSettings();
   // Flag should not be here, but inside module.
   const customizableHomepageBannerEnabled = useHomepageSettingsFeatureFlag({
     sectionEnabledSettingName: 'customizable_homepage_banner_enabled',
     appConfigSettingName: 'customizable_homepage_banner',
   });
 
-  if (!isNilOrError(appConfiguration)) {
-    const layoutSetting =
-      appConfiguration.data.attributes.settings.customizable_homepage_banner
-        ?.layout;
+  if (!isNilOrError(homepageSettings)) {
+    const layoutSetting = homepageSettings.data.attributes.banner_layout;
     // Mistake, we should rather use a mechanism similar to
     // navbarModuleActive. The core should not know about
     // a feature flag of a modularized feature.

@@ -2,74 +2,47 @@ import { Section, SubSectionTitle } from 'components/admin/Section';
 import { FormattedMessage } from 'utils/cl-intl';
 import React from 'react';
 import messages from '../messages';
-import {
-  TAppConfigurationSetting,
-  IAppConfigurationSettings,
-} from 'services/appConfiguration';
+import { IHomepageSettingsAttributes } from 'services/homepageSettings';
 import CTASignedOutSettings from './CTASignedOutSettings';
 import CTASignedInSettings from './CTASignedInSettings';
 import { CLErrors } from 'typings';
-import { IHomepageSettings } from 'services/homepageSettings';
 import 'utils/moduleUtils';
 
-declare module 'utils/moduleUtils' {
-  export interface OutletsPropertyMap {
-    'app.containers.Admin.settings.customize.headerSectionEnd': Props;
-  }
+// only these keys will be used in CTA settings
+export type BannerSettingKeyType = Extract<
+  keyof IHomepageSettingsAttributes,
+  | 'banner_cta_signed_in_text_multiloc'
+  | 'banner_cta_signed_out_text_multiloc'
+  | 'banner_cta_signed_in_url'
+  | 'banner_cta_signed_out_url'
+  | 'banner_cta_signed_out_type'
+  | 'banner_cta_signed_in_type'
+>;
+
+interface Props {
+  homepageSettings: IHomepageSettingsAttributes;
+  handleOnChange: (settingKey: BannerSettingKeyType, settingValue: any) => void;
+  errors: CLErrors | undefined;
 }
 
-export interface Props {
-  latestAppConfigSettings:
-    | IAppConfigurationSettings
-    | Partial<IAppConfigurationSettings>;
-  latestHomepageSettings: IHomepageSettings | Partial<IHomepageSettings>;
-  handleOnChange: (
-    settingName: TAppConfigurationSetting
-  ) => (settingKey: string, settingValue: any) => void;
-  errors: CLErrors;
-}
-
-const CTASettings = ({
-  latestAppConfigSettings,
-  latestHomepageSettings,
-  handleOnChange,
-  errors,
-}: Props) => {
-  const handleSettingOnChange = (key: string, value: any) => {
-    handleOnChange('customizable_homepage_banner')(key, value);
-  };
-
-  if (
-    !latestAppConfigSettings.customizable_homepage_banner ||
-    !latestHomepageSettings.data?.attributes
-  ) {
-    return null;
-  }
-
-  const {
-    cta_signed_out_customized_button: ctaSignedOutCustomizedButton,
-    cta_signed_in_customized_button: ctaSignedInCustomizedButton,
-  } = latestAppConfigSettings.customizable_homepage_banner;
-  const {
-    banner_cta_signed_out_type: ctaSignedOutType,
-    banner_cta_signed_in_type: ctaSignedInType,
-  } = latestHomepageSettings.data.attributes;
-
+const CTASettings = ({ homepageSettings, handleOnChange, errors }: Props) => {
   return (
     <Section>
       <SubSectionTitle>
         <FormattedMessage {...messages.ctaHeader} />
       </SubSectionTitle>
       <CTASignedOutSettings
-        ctaType={ctaSignedOutType}
-        customizedButtonConfig={ctaSignedOutCustomizedButton}
-        handleSettingOnChange={handleSettingOnChange}
+        ctaType={homepageSettings.banner_cta_signed_out_type}
+        ctaButtonMultiloc={homepageSettings.banner_cta_signed_out_text_multiloc}
+        ctaButtonUrl={homepageSettings.banner_cta_signed_out_url}
+        handleSettingOnChange={handleOnChange}
         errors={errors}
       />
       <CTASignedInSettings
-        ctaType={ctaSignedInType}
-        customizedButtonConfig={ctaSignedInCustomizedButton}
-        handleSettingOnChange={handleSettingOnChange}
+        ctaType={homepageSettings.banner_cta_signed_in_type}
+        ctaButtonMultiloc={homepageSettings.banner_cta_signed_in_text_multiloc}
+        ctaButtonUrl={homepageSettings.banner_cta_signed_in_url}
+        handleSettingOnChange={handleOnChange}
         errors={errors}
       />
     </Section>

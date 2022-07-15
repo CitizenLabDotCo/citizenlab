@@ -71,8 +71,8 @@ describe('<VisibleNavbarItemList />', () => {
 
     const editButtons = screen.getAllByText('Edit');
 
-    // 'All projects' edit button, 'Home' doesn't have one
-    fireEvent.click(editButtons[0]);
+    // 'All projects' edit button, 'Home' is index zero  one
+    fireEvent.click(editButtons[1]);
 
     expect(clHistory.push).toHaveBeenCalledWith(
       `${PAGES_MENU_PATH}/navbar-items/edit/${navbarItems[1].id}`
@@ -85,7 +85,7 @@ describe('<VisibleNavbarItemList />', () => {
     const editButtons = screen.getAllByText('Edit');
 
     // 'About' edit button, 'Home' doesn't have one
-    fireEvent.click(editButtons[5]);
+    fireEvent.click(editButtons[6]);
 
     expect(clHistory.push).toHaveBeenCalledWith(
       `${PAGES_MENU_PATH}/pages/edit/${navbarItems[6].relationships.static_page.data?.id}`

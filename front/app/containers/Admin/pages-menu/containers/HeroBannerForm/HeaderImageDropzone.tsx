@@ -1,10 +1,16 @@
 import React from 'react';
-import ImagesDropzone from 'components/UI/ImagesDropzone';
-import { IAppConfigurationStyle } from 'services/appConfiguration';
-import { THomepageBannerLayout } from 'services/homepageSettings';
-import { UploadFile } from 'typings';
-import { PreviewDevice } from './';
+
+// components and theming
 import styled, { useTheme } from 'styled-components';
+import ImagesDropzone from 'components/UI/ImagesDropzone';
+import { PreviewDevice } from './index';
+
+// types
+import {
+  IHomepageSettingsAttributes,
+  THomepageBannerLayout,
+} from 'services/homepageSettings';
+import { UploadFile } from 'typings';
 
 const HeaderImageOverlay = styled.div<{
   overlayColor: string;
@@ -20,7 +26,8 @@ const HeaderImageOverlay = styled.div<{
 `;
 
 interface Props {
-  latestAppConfigStyleSettings?: IAppConfigurationStyle;
+  homepageSettingsOverlayOpacity: IHomepageSettingsAttributes['banner_signed_out_header_overlay_opacity'];
+  homepageSettingsOverlayColor: IHomepageSettingsAttributes['banner_signed_out_header_overlay_color'];
   onAdd: (newImage: UploadFile[]) => void;
   onRemove: () => void;
   headerError: string | null;
@@ -29,6 +36,7 @@ interface Props {
   layout: THomepageBannerLayout;
 }
 
+// move this to homepage settings resource?
 export const homepageBannerLayoutHeights = {
   full_width_banner_layout: {
     desktop: 450,
@@ -48,7 +56,8 @@ export const homepageBannerLayoutHeights = {
 };
 
 const HeaderImageDropzone = ({
-  latestAppConfigStyleSettings,
+  homepageSettingsOverlayColor,
+  homepageSettingsOverlayOpacity,
   onAdd,
   onRemove,
   headerError,
@@ -71,12 +80,9 @@ const HeaderImageDropzone = ({
   };
 
   const theme: any = useTheme();
-  const overlayColor =
-    latestAppConfigStyleSettings?.signedOutHeaderOverlayColor ??
-    theme.colorMain;
+  const overlayColor = homepageSettingsOverlayColor ?? theme.colorMain;
   const overlayOpacity =
-    latestAppConfigStyleSettings?.signedOutHeaderOverlayOpacity ??
-    theme.signedOutHeaderOverlayOpacity;
+    homepageSettingsOverlayOpacity ?? theme.signedOutHeaderOverlayOpacity;
   const previewOverlayElement =
     layout === 'full_width_banner_layout' && overlayColor && overlayOpacity ? (
       <HeaderImageOverlay

@@ -8,10 +8,10 @@ import createAdminUsersRoutes from './users/routes';
 import invitationsRoutes from './invitations/routes';
 import createAdminProjectsRoutes from './projects/routes';
 import settingsRoutes from './settings/routes';
-import flexiblePageRoutes from './pages-menu/routes';
 import pagesRoutes from './pages/routes';
 import createAdminMessagingRoutes from './messaging/routes';
 import ideasRoutes from './ideas/routes';
+import pagesAndMenuRoutes from './pages-menu/routes';
 
 // components
 import PageLoading from 'components/UI/PageLoading';
@@ -113,9 +113,9 @@ const createAdminRoutes = () => {
       createAdminInitiativesRoutes(),
       createAdminUsersRoutes(),
       createAdminProjectsRoutes(),
-      flexiblePageRoutes(),
       settingsRoutes(),
       pagesRoutes(),
+      pagesAndMenuRoutes(),
       invitationsRoutes(),
       createAdminMessagingRoutes(),
       ideasRoutes(),
