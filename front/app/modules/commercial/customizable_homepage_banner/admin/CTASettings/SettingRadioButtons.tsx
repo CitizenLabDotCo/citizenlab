@@ -18,24 +18,24 @@ type SettingRadioButtonsProps =
       ctaTypes: CTASignedOutType[];
       ctaType: CTASignedOutType;
       ctaButtonMultiloc: Multiloc;
-      ctaButtonUrl: string;
+      ctaButtonUrl: string | null;
       handleSettingOnChange: (
         settingKey: BannerSettingKeyType,
         settingValue: any
       ) => void;
-      errors: CLErrors;
+      errors: CLErrors | undefined;
     }
   | {
       signInStatus: 'signed_in';
       ctaTypes: CTASignedInType[];
       ctaType: CTASignedInType;
       ctaButtonMultiloc: Multiloc;
-      ctaButtonUrl: string;
+      ctaButtonUrl: string | null;
       handleSettingOnChange: (
         settingKey: BannerSettingKeyType,
         settingValue: any
       ) => void;
-      errors: CLErrors;
+      errors: CLErrors | undefined;
     };
 
 const SettingRadioButtons = ({

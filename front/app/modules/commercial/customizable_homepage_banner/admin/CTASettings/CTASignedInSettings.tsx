@@ -17,12 +17,12 @@ const CTA_SIGNED_IN_TYPES: CTASignedInType[] = [
 type Props = {
   ctaType: CTASignedInType;
   ctaButtonMultiloc: Multiloc;
-  ctaButtonUrl: string;
+  ctaButtonUrl: string | null;
   handleSettingOnChange: (
     settingKey: BannerSettingKeyType,
     settingValue: any
   ) => void;
-  errors: CLErrors;
+  errors: CLErrors | undefined;
 };
 
 const CTASignedInSettings = ({

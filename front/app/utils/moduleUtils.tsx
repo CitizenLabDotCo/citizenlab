@@ -32,6 +32,7 @@ import {
   MessageDescriptor,
   Multiloc,
   Locale,
+  CLErrors,
 } from 'typings';
 import { LatLngTuple } from 'leaflet';
 import { Point } from 'components/UI/LeafletMap/typings';
@@ -373,6 +374,14 @@ export interface OutletsPropertyMap {
       settingKey: keyof IHomepageSettingsAttributes,
       settingValue: any
     ) => void;
+  };
+  'app.containers.Admin.settings.customize.headerSectionEnd': {
+    homepageSettings: IHomepageSettingsAttributes;
+    handleOnChange: (
+      settingKey: keyof IHomepageSettingsAttributes,
+      settingValue: any
+    ) => void;
+    errors: CLErrors | undefined;
   };
   'app.containers.LandingPage.SignedOutHeader.index': {
     homepageBannerLayout: THomepageBannerLayout;

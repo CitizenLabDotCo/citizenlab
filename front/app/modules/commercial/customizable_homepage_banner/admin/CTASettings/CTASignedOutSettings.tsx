@@ -17,12 +17,12 @@ const CTA_SIGNED_OUT_TYPES: CTASignedOutType[] = [
 type Props = {
   ctaType: CTASignedOutType;
   ctaButtonMultiloc: Multiloc;
-  ctaButtonUrl: string;
+  ctaButtonUrl: string | null;
   handleSettingOnChange: (
     settingKey: BannerSettingKeyType,
     settingValue: string
   ) => void;
-  errors: CLErrors;
+  errors: CLErrors | undefined;
 };
 
 const CTASignedOutSettings = ({

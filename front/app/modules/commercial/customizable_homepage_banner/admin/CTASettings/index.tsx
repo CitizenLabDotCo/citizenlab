@@ -22,7 +22,7 @@ export type BannerSettingKeyType = Extract<
 interface Props {
   homepageSettings: IHomepageSettingsAttributes;
   handleOnChange: (settingKey: BannerSettingKeyType, settingValue: any) => void;
-  errors: CLErrors;
+  errors: CLErrors | undefined;
 }
 
 const CTASettings = ({ homepageSettings, handleOnChange, errors }: Props) => {
