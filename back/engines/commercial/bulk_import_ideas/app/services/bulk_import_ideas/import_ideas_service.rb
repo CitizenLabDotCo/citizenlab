@@ -17,6 +17,58 @@ module BulkImportIdeas
       end
     end
 
+    def generate_example_xlsx
+      XlsxService.new.hash_array_to_xlsx [
+        {
+          'Title_nl-BE' => 'Mijn idee titel',
+          'Title_fr-BE' => 'Mon idée titre',
+          'Body_nl-BE' => 'Mijn idee inhoud',
+          'Body_fr-BE' => 'Mon idée contenu',
+          'Email' => 'moderator@citizenlab.co',
+          'Project' => 'Project 1',
+          'Phase' => 1,
+          'Image URL' => 'https://res.cloudinary.com/citizenlabco/image/upload/v1548847594/image_v8imrf.png',
+          'Date (dd-mm-yyyy)' => '2022-07-18',
+          'Latitude' => 50.5035,
+          'Longitude' => 6.0944,
+          'Location Description' => 'Panorama sur les Hautes Fagnes / Hohes Venn'
+        }
+      ]
+    end
+
+    def xlsx_to_idea_rows(xlsx)
+      xlsx.map do |xlsx_row|
+        idea_row = {}
+
+        title_multiloc = {}
+        body_multiloc  = {}
+        xlsx_row.each do |key, value|
+          next unless key.include? '_'
+
+          field, locale = key.split '_'
+          case field
+          when 'Title'
+            title_multiloc[locale] = value
+          when 'Body'
+            body_multiloc[locale] = value
+          end
+        end
+
+        idea_row[:title_multiloc]       = title_multiloc
+        idea_row[:body_multiloc]        = body_multiloc
+        idea_row[:topic_titles]         = (csv_idea['Topics'] || '').split(';').map(&:strip).select { |topic| topic }
+        idea_row[:project_title]        = csv_idea['Project']
+        idea_row[:user_email]           = csv_idea['Email']
+        idea_row[:image_url]            = csv_idea['Image URL']
+        idea_row[:phase_rank]           = csv_idea['Phase']
+        idea_row[:published_at]         = csv_idea['Date (dd-mm-yyyy)']
+        idea_row[:latitude]             = csv_idea['Latitude']
+        idea_row[:longitude]            = csv_idea['Longitude']
+        idea_row[:location_description] = csv_idea['Location Description']
+        idea_row
+      end
+    end
+
     private
 
     def import_idea(idea_row)
