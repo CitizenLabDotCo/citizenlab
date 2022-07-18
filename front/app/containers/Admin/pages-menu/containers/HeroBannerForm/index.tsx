@@ -134,7 +134,9 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
 
       setIsLoading(true);
       try {
-        await updateHomepageSettings(diffedValues);
+        await updateHomepageSettings({
+          ...diffedValues,
+        });
         setApiErrors(null);
         setIsLoading(false);
       } catch (error) {

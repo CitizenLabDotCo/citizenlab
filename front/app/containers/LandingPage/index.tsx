@@ -49,7 +49,7 @@ const LandingPage = () => {
     <>
       <Container id="e2e-landing-page">
         {!isNilOrError(authUser) ? (
-          <SignedInHeader />
+          <SignedInHeader homepageSettings={homepageSettings} />
         ) : (
           <Fragment name="signed-out-header">
             <SignedOutHeader />

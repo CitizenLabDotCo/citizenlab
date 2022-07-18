@@ -42,6 +42,7 @@ import styled, { withTheme } from 'styled-components';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { media, fontSizes, isRtl } from 'utils/styleUtils';
 import Outlet from 'components/Outlet';
+import { IHomepageSettings } from 'services/homepageSettings';
 
 const contentTimeout = 350;
 const contentEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -284,6 +285,7 @@ export const StyledAvatar = styled(Avatar)`
 
 export interface InputProps {
   className?: string;
+  homepageSettings: Error | IHomepageSettings | null;
 }
 
 interface DataProps {
@@ -314,22 +316,29 @@ class SignedInHeader extends PureComponent<Props, State> {
   };
 
   render() {
-    const { locale, tenant, authUser, className, theme, onboardingCampaigns } =
-      this.props;
+    const {
+      locale,
+      tenant,
+      authUser,
+      className,
+      theme,
+      onboardingCampaigns,
+      homepageSettings,
+    } = this.props;
 
     if (
       !isNilOrError(locale) &&
       !isNilOrError(tenant) &&
       !isNilOrError(authUser) &&
-      !isNilOrError(onboardingCampaigns)
+      !isNilOrError(onboardingCampaigns) &&
+      !isNilOrError(homepageSettings)
     ) {
-      const tenantHeaderImage = tenant.attributes.header_bg
-        ? tenant.attributes.header_bg.large
+      const tenantHeaderImage = homepageSettings.data.attributes.header_bg
+        ? homepageSettings.data.attributes.header_bg.large
         : null;
       const defaultMessage =
-        tenant.attributes.settings.core.custom_onboarding_fallback_message;
-      const customizableHomepageBanner =
-        tenant.attributes.settings.customizable_homepage_banner;
+        homepageSettings.data.attributes.banner_signed_in_header_multiloc;
+
       const objectFitCoverSupported =
         window['CSS'] && CSS.supports('object-fit: cover');
 
@@ -514,9 +523,6 @@ class SignedInHeader extends PureComponent<Props, State> {
               <Right>
                 <Outlet
                   id="app.containers.LandingPage.SignedInHeader.CTA"
-                  customizedButtonConfig={
-                    customizableHomepageBanner.cta_signed_in_customized_button
-                  }
                   buttonStyle="primary-inverse"
                 />
               </Right>
