@@ -23,7 +23,7 @@ module Analytics
   class FactParticipation < Analytics::ApplicationRecord
     self.primary_key = :id
     belongs_to :type, class_name: 'DimensionType'
-    belongs_to :created_date, class_name: 'DimensionDate'
+    belongs_to :created_date, class_name: 'DimensionDate', foreign_key: 'created_date'
     belongs_to :project, class_name: 'DimensionProject'
 
     # TODO: Refactor this out into an outer class

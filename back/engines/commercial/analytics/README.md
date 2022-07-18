@@ -12,7 +12,7 @@ To run docker with analytics enabled
 1. Run this when you first install the application:
 
 ```
-docker exec -it -e PGPASSWORD=postgres cl-postgres-analytics /bin/bash -c "psql -h localhost -U postgres cl2_analytics -c 'CREATE DATABASE cl2_analytics;'"
+docker exec -it -e PGPASSWORD=postgres cl-postgres-analytics /bin/bash -c "psql -h localhost -U postgres -c 'CREATE DATABASE cl2_analytics;'"
 ```
 
 2. To sync data from your main DB to the analytics DB run the following command
