@@ -5,7 +5,7 @@ module BulkImportIdeas
     DEFAULT_MAX_IDEAS = 500
 
     def import_ideas(idea_rows, max_ideas: DEFAULT_MAX_IDEAS)
-      raise "The maximal amount of #{max_ideas} ideas has been exceeded" if idea_rows > max_ideas
+      raise "The maximal amount of #{max_ideas} ideas has been exceeded" if idea_rows.size > max_ideas
 
       ActiveRecord::Base.transaction do
         idea_rows.each do |idea_row|
@@ -103,7 +103,7 @@ module BulkImportIdeas
         }
         idea_attributes[:location_point_geojson] = location_point
       end
-      idea_attributes[:location_description] = idea_row[:location_description] if idea_data[:location_description]
+      idea_attributes[:location_description] = idea_row[:location_description] if idea_row[:location_description]
     end
 
     def add_phase(idea_row, idea_attributes)
@@ -122,6 +122,7 @@ module BulkImportIdeas
     end
 
     def add_topics(idea_row, idea_attributes)
+      idea_row[:topic_titles] ||= []
       topics_ids = idea_row[:topic_titles].map do |topic_title|
         topic_title = topic_title.downcase.strip
         # Later iteration: Only load necessary attributes? Preload all topics before importing all?
@@ -134,7 +135,7 @@ module BulkImportIdeas
         end
       end.select(&:present?).uniq(&:id)
 
-      idea_attributes[:topics_ids] = topics_ids
+      idea_attributes[:topic_ids] = topics_ids
     end
 
     def create_idea_image(idea_row, idea)
