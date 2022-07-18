@@ -393,7 +393,6 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.pages-menu.index': Record<string, any>;
   'app.containers.Admin.pages-menu.NavigationSettings': Record<string, any>;
   'app.containers.LandingPage.SignedOutHeader.CTA': {
-    customizedButtonConfig?: CustomizedButtonConfig;
     buttonStyle: BannerButtonStyle;
     signUpIn: (event: MouseEvent | KeyboardEvent) => void;
   };
