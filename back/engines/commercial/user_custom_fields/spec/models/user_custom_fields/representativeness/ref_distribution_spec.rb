@@ -13,6 +13,12 @@ RSpec.describe UserCustomFields::Representativeness::RefDistribution do
   it { is_expected.to have_many(:options).through(:custom_field) }
   it { is_expected.to validate_uniqueness_of(:custom_field_id).case_insensitive }
   it { is_expected.to validate_presence_of(:distribution) }
+  it { is_expected.to validate_presence_of(:type) }
+
+  it do
+    allowed_types = described_class.descendants.map(&:name)
+    is_expected.to validate_inclusion_of(:type).in_array(allowed_types)
+  end
 
   it 'validates that the distribution has at least 2 options', :aggregate_failures do
     distribution = ref_distribution.distribution
