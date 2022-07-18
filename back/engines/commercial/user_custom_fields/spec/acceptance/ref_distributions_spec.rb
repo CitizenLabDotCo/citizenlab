@@ -36,7 +36,7 @@ resource 'Representativeness reference distributions' do
           {
             data: {
               id: reference_distribution.id,
-              type: 'reference_distribution',
+              type: 'categorical_distribution',
               attributes: {
                 distribution: reference_distribution.probabilities_and_counts.symbolize_keys
               },
@@ -92,13 +92,13 @@ resource 'Representativeness reference distributions' do
         expect { do_request }.to enqueue_job(LogActivityJob)
         expect(status).to eq(201)
 
-        ref_distribution = UserCustomFields::Representativeness::RefDistribution.find(response_data[:id])
+        ref_distribution = UserCustomFields::Representativeness::CategoricalDistribution.find(response_data[:id])
 
         aggregate_failures do
           expect(ref_distribution.distribution).to eq(distribution)
           expect(ref_distribution.custom_field_id).to eq(custom_field_id)
           expect(JSON.parse(response_body)).to match(
-            UserCustomFields::WebApi::V1::RefDistributionSerializer.new(ref_distribution).as_json
+            UserCustomFields::WebApi::V1::CategoricalDistributionSerializer.new(ref_distribution).as_json
           )
         end
       end

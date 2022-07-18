@@ -50,11 +50,27 @@ module UserCustomFields
       def create_params
         params
           .permit(:custom_field_id, distribution: {})
-          .merge(type: 'UserCustomFields::Representativeness::CategoricalDistribution')
+          .merge(type: infer_ref_distribution_type)
+      end
+
+      def infer_ref_distribution_type
+        custom_field = CustomField.find(params[:custom_field_id])
+        if custom_field.key == 'birthyear'
+          'UserCustomFields::Representativeness::BinnedDistribution'
+        elsif custom_field.input_type == 'select'
+          'UserCustomFields::Representativeness::CategoricalDistribution'
+        else
+          raise 'Unsupported custom field type.'
+        end
       end
 
       def serialize(ref_distribution)
-        RefDistributionSerializer.new(ref_distribution).serialized_json
+        serializer_class = identify_serializer_class(ref_distribution)
+        serializer_class.new(ref_distribution).serialized_json
+      end
+
+      def identify_serializer_class(ref_distribution)
+        "UserCustomFields::WebApi::V1::#{ref_distribution.class.name.demodulize}Serializer".constantize
       end
     end
   end

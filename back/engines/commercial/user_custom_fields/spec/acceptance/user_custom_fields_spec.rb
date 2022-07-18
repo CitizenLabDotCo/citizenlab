@@ -70,7 +70,7 @@ resource 'User Custom Fields' do
       let(:ref_distribution) { create(:categorical_distribution) }
       let(:custom_field) { ref_distribution.custom_field }
       let(:expected_ref_distribution_linkage) do
-        { data: { type: 'reference_distribution', id: ref_distribution.id } }
+        { data: { type: 'categorical_distribution', id: ref_distribution.id } }
       end
 
       example_request 'Get one custom field by id' do
