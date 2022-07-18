@@ -3,7 +3,6 @@ import styled, { css } from 'styled-components';
 import { media, fontSizes } from 'utils/styleUtils';
 import AvatarBubbles from 'components/AvatarBubbles';
 import useLocalize from 'hooks/useLocalize';
-import useAppConfiguration from 'hooks/useAppConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../tracks';
@@ -14,6 +13,7 @@ import { injectIntl } from 'utils/cl-intl';
 import Outlet from 'components/Outlet';
 import SignUpButton from '../SignUpButton';
 import useHomepageSettingsFeatureFlag from 'hooks/useHomepageSettingsFeatureFlag';
+import useHomepageSettings from 'hooks/useHomepageSettings';
 
 const Container = styled.div<{
   align: 'center' | 'left';
@@ -144,7 +144,7 @@ const HeaderContent = ({
   fontColors,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
-  const appConfiguration = useAppConfiguration();
+  const homepageSettings = useHomepageSettings();
   const localize = useLocalize();
 
   const signUpIn = (event: React.FormEvent) => {
@@ -161,19 +161,20 @@ const HeaderContent = ({
     appConfigSettingName: 'customizable_homepage_banner',
   });
 
-  if (!isNilOrError(appConfiguration)) {
-    const coreSettings = appConfiguration.data.attributes.settings.core;
-    const headerTitle = coreSettings.header_title
-      ? localize(coreSettings.header_title)
+  if (!isNilOrError(homepageSettings)) {
+    const homepageAttributes = homepageSettings.data.attributes;
+
+    const headerTitle = homepageAttributes.banner_signed_out_header_multiloc
+      ? localize(homepageAttributes.banner_signed_out_header_multiloc)
       : formatMessage(messages.titleCity);
-    const headerSubtitle = coreSettings.header_slogan
-      ? localize(coreSettings.header_slogan)
-      : formatMessage(messages.subtitleCity);
-    const headerImage = appConfiguration.data.attributes.header_bg?.large;
-    const displayHeaderAvatars =
-      appConfiguration.data.attributes.settings.core.display_header_avatars;
-    const customizableHomepageBanner =
-      appConfiguration.data.attributes.settings.customizable_homepage_banner;
+    const headerSubtitle =
+      homepageAttributes.banner_signed_out_subheader_multiloc
+        ? localize(homepageAttributes.banner_signed_out_subheader_multiloc)
+        : formatMessage(messages.subtitleCity);
+    const headerImage = homepageAttributes.header_bg
+      ? homepageAttributes.header_bg.large
+      : null;
+    const displayHeaderAvatars = homepageAttributes.banner_avatars_enabled;
 
     return (
       <Container
@@ -211,9 +212,6 @@ const HeaderContent = ({
         )}
         <Outlet
           id="app.containers.LandingPage.SignedOutHeader.CTA"
-          customizedButtonConfig={
-            customizableHomepageBanner.cta_signed_out_customized_button
-          }
           buttonStyle={buttonStyle}
           signUpIn={signUpIn}
         />
