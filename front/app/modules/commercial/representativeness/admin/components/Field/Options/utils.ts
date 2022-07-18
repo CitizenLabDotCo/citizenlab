@@ -3,6 +3,9 @@ import { roundPercentages } from 'utils/math';
 
 // typings
 import { FormValues } from '../utils';
+import { IUserCustomFieldOptionData } from 'modules/commercial/user_custom_fields/services/userCustomFieldOptions';
+import { Localize } from 'hooks/useLocalize';
+import { Bins } from '../BinModal'
 
 /*
  * Takes a thousand-formatted locale string in the US format (e.g. 1,000,000)
@@ -73,6 +76,18 @@ export const getPercentages = (
     };
   }, {});
 };
+
+export const parseUserCustomFieldOptions = (
+  userCustomFieldOptions: IUserCustomFieldOptionData[],
+  localize: Localize
+) => userCustomFieldOptions.map((userCustomFieldOption) => ({
+  id: userCustomFieldOption.id,
+  label: localize(userCustomFieldOption.attributes.title_multiloc)
+}))
+
+export const parseBins = (bins: Bins) => {
+
+}
 
 const areAllOptionsEmpty = (formValues: FormValues) => {
   return Object.values(formValues).every((formValue) => formValue === null);

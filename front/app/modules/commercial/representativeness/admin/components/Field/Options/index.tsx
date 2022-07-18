@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 // hooks
+import useUserCustomField from 'modules/commercial/user_custom_fields/hooks/useUserCustomField';
 import useUserCustomFieldOptions from 'modules/commercial/user_custom_fields/hooks/useUserCustomFieldOptions';
 import useLocalize from 'hooks/useLocalize';
 
@@ -15,14 +16,16 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { getPercentages } from './utils';
+import { getPercentages, parseUserCustomFieldOptions } from './utils';
 
 // typings
 import { FormValues } from '../utils';
+import { Bins } from '../BinModal'
 
 interface Props {
   userCustomFieldId: string;
   formValues: FormValues;
+  bins?: Bins;
   onUpdateEnabled: (optionId: string, enabled: boolean) => void;
   onUpdatePopulation: (optionId: string, population: number | null) => void;
 }
@@ -30,18 +33,24 @@ interface Props {
 const Options = ({
   userCustomFieldId,
   formValues,
+  bins,
   onUpdateEnabled,
   onUpdatePopulation,
 }: Props) => {
   const [seeMore, setSeeMore] = useState(false);
+  const userCustomField = useUserCustomField(userCustomFieldId);
   const userCustomFieldOptions = useUserCustomFieldOptions(userCustomFieldId);
   const localize = useLocalize();
 
-  if (isNilOrError(userCustomFieldOptions)) {
+  if (isNilOrError(userCustomFieldOptions) || isNilOrError(userCustomField)) {
     return null;
   }
 
-  const visibleUserCustomFieldOptions = userCustomFieldOptions.slice(
+  const options = userCustomField.attributes.key === 'birthyear'
+    ? []
+    : parseUserCustomFieldOptions(userCustomFieldOptions, localize)
+
+  const visibleOptions = options.slice(
     0,
     seeMore ? userCustomFieldOptions.length : 12
   );
@@ -62,7 +71,7 @@ const Options = ({
 
   return (
     <>
-      {visibleUserCustomFieldOptions.map(({ id, attributes }) => {
+      {visibleOptions.map(({ id, label }) => {
         const enabled = id in formValues;
         const population = formValues[id];
 
@@ -72,7 +81,7 @@ const Options = ({
               <Toggle checked={enabled} onChange={onToggle(id)} />
 
               <Text ml="12px" variant="bodyM" color="adminTextColor">
-                {localize(attributes.title_multiloc)}
+                {label}
               </Text>
             </Box>
 
