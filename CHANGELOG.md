@@ -1,8 +1,16 @@
 # Changelog
 
-## Next release
+## 2022-07-14 (2)
 
-## 2022-07-13
+### Added
+
+- [CL-1077] Add PNG export to graph export dropdown
+
+## 2022-07-14
+
+### Fixed
+
+- [CL-1113] Fixed sharing button styling when copy link text is long
 
 ### Changed
 
@@ -12,10 +20,6 @@
 
 - [CL-1088] Add link to academy. Update link to guides
 - [CL-972] Add a 'read more' expand/collapse feature to timeline phases
-
-### Changed
-
-- [CL-1093] Pin Node.js version in package.json
 
 ## 2022-07-11
 

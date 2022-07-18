@@ -26,7 +26,7 @@ const RemainingCharacters = ({ remainingChars, overCharacterLimit }: Props) => {
     }
   };
   return (
-    <Box color={overCharacterLimit ? colors.clRed : colors.label}>
+    <Box color={overCharacterLimit ? colors.red500 : colors.label}>
       {getText()}
     </Box>
   );

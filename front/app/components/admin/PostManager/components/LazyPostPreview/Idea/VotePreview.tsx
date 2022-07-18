@@ -57,7 +57,7 @@ const UpvoteIcon = styled(VoteIcon)`
 `;
 
 const DownvoteIcon = styled(VoteIcon)`
-  fill: ${colors.clRed};
+  fill: ${colors.red500};
   margin-top: 6px;
 `;
 
@@ -71,7 +71,7 @@ const UpvotesCount = styled(VotesCount)`
 `;
 
 const DownvotesCount = styled(VotesCount)`
-  color: ${colors.clRed};
+  color: ${colors.red500};
 `;
 
 interface DataProps {
