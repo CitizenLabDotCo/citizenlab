@@ -36,7 +36,7 @@ describe('<BinModal />', () => {
       expect(onSave).toHaveBeenCalledWith([18, 25, 37, 45, 55, 65, null]);
     });
 
-    it.only('calls onSave with right data (not blurring input, saving directly)', () => {
+    it('calls onSave with right data (not blurring input, saving directly)', () => {
       const onSave = jest.fn();
 
       const { container } = render(
