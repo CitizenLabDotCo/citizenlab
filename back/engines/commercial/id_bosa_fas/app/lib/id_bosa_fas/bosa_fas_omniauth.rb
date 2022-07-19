@@ -4,6 +4,17 @@ module IdBosaFas
   class BosaFasOmniauth
     include BosaFasVerification
 
+    ENVIRONMENTS = {
+      'integration' => {
+        host: 'idp.iamfas.int.belgium.be',
+        jwks_uri: 'https://idp.iamfas.int.belgium.be/fas/oauth2/connect/jwk_uri'
+      },
+      'production' => {
+        host: 'idp.iamfas.belgium.be',
+        jwks_uri: 'https://idp.iamfas.belgium.be/fas/oauth2/connect/jwk_uri'
+      }
+    }
+
     def profile_to_user_attrs(auth)
       {}.tap do |info|
         info[:first_name] = auth.dig('extra', 'raw_info', 'givenName') if auth.dig('extra', 'raw_info', 'givenName')
@@ -23,7 +34,7 @@ module IdBosaFas
       options[:issuer] = "https://#{host}"
       options[:acr_values] = 'urn:be:fedict:iam:fas:Level450'
       options[:send_scope_to_token_endpoint] = false
-      options[:client_signing_alg] = :HS256
+      options[:client_signing_alg] = :RS256
       options[:client_options] = {
         identifier: config[:identifier],
         secret: config[:secret],
@@ -33,17 +44,17 @@ module IdBosaFas
         authorization_endpoint: '/fas/oauth2/authorize',
         token_endpoint: '/fas/oauth2/access_token',
         userinfo_endpoint: '/fas/oauth2/userinfo',
-        redirect_uri: "#{configuration.base_backend_uri}/auth/bosa_fas/callback"
+        redirect_uri: "#{configuration.base_backend_uri}/auth/bosa_fas/callback",
+        jwks_uri: jwks_uri
       }
     end
 
     def host
-      case config[:environment]
-      when 'integration'
-        'idp.iamfas.int.belgium.be'
-      when 'production'
-        'idp.iamfas.belgium.be'
-      end
+      ENVIRONMENTS.fetch(config[:environment]).fetch(:host)
+    end
+
+    def jwks_uri
+      ENVIRONMENTS.fetch(config[:environment]).fetch(:jwks_uri)
     end
 
     def updateable_user_attrs
