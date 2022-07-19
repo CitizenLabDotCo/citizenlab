@@ -30,33 +30,27 @@ const SearchInputWrapper = ({
   size,
   intl: { formatMessage },
   a11y_numberOfSearchResults,
-}: Props & InjectedIntlProps) => {
-  const handleOnChange = (searchTerm: string | null) => {
-    onChange(searchTerm);
-  };
-
-  return (
-    <>
-      <Label htmlFor="search-input" hidden>
-        {formatMessage(messages.searchLabel)}
-      </Label>
-      <SearchInput
-        id="search-input"
-        placeholder={placeholder || formatMessage(messages.searchPlaceholder)}
-        ariaLabel={ariaLabel || formatMessage(messages.searchAriaLabel)}
-        debounce={debounce}
-        className={className}
-        onChange={handleOnChange}
-        a11y_closeIconTitle={formatMessage(messages.removeSearchTerm)}
-        size={size}
-      />
-      <ScreenReaderOnly aria-live="assertive">
-        {formatMessage(messages.a11y_searchResultsHaveChanged, {
-          numberOfSearchResults: a11y_numberOfSearchResults,
-        })}
-      </ScreenReaderOnly>
-    </>
-  );
-};
+}: Props & InjectedIntlProps) => (
+  <>
+    <Label htmlFor="search-input" hidden>
+      {formatMessage(messages.searchLabel)}
+    </Label>
+    <SearchInput
+      id="search-input"
+      placeholder={placeholder || formatMessage(messages.searchPlaceholder)}
+      ariaLabel={ariaLabel || formatMessage(messages.searchAriaLabel)}
+      debounce={debounce}
+      className={className}
+      onChange={onChange}
+      a11y_closeIconTitle={formatMessage(messages.removeSearchTerm)}
+      size={size}
+    />
+    <ScreenReaderOnly aria-live="assertive">
+      {formatMessage(messages.a11y_searchResultsHaveChanged, {
+        numberOfSearchResults: a11y_numberOfSearchResults,
+      })}
+    </ScreenReaderOnly>
+  </>
+);
 
 export default injectIntl(SearchInputWrapper);
