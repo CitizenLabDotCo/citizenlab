@@ -56,15 +56,15 @@ module BulkImportIdeas
 
         idea_row[:title_multiloc]       = title_multiloc
         idea_row[:body_multiloc]        = body_multiloc
-        idea_row[:topic_titles]         = (csv_idea['Topics'] || '').split(';').map(&:strip).select { |topic| topic }
-        idea_row[:project_title]        = csv_idea['Project']
-        idea_row[:user_email]           = csv_idea['Email']
-        idea_row[:image_url]            = csv_idea['Image URL']
-        idea_row[:phase_rank]           = csv_idea['Phase']
-        idea_row[:published_at]         = csv_idea['Date (dd-mm-yyyy)']
-        idea_row[:latitude]             = csv_idea['Latitude']
-        idea_row[:longitude]            = csv_idea['Longitude']
-        idea_row[:location_description] = csv_idea['Location Description']
+        idea_row[:topic_titles]         = (xlsx_row['Topics'] || '').split(';').map(&:strip).select { |topic| topic }
+        idea_row[:project_title]        = xlsx_row['Project']
+        idea_row[:user_email]           = xlsx_row['Email']
+        idea_row[:image_url]            = xlsx_row['Image URL']
+        idea_row[:phase_rank]           = xlsx_row['Phase']
+        idea_row[:published_at]         = xlsx_row['Date (dd-mm-yyyy)']
+        idea_row[:latitude]             = xlsx_row['Latitude']
+        idea_row[:longitude]            = xlsx_row['Longitude']
+        idea_row[:location_description] = xlsx_row['Location Description']
         idea_row
       end
     end

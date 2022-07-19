@@ -2,20 +2,19 @@
 
 module BulkImportIdeas
   class WebApi::V1::ImportIdeasController < ApplicationController
+    before_action :authorize_bulk_import_ideas
+
     def bulk_create_xlsx
-      authorize :import_ideas
-      service = ImportIdeasService.new
       xlsx = parse_xlsx
-      idea_rows = service.xlsx_to_idea_rows xlsx
-      service.import_ideas idea_rows, max_ideas: 100
+      idea_rows = import_ideas_service.xlsx_to_idea_rows xlsx
+      import_ideas_service.import_ideas idea_rows, max_ideas: 100
       head :ok
     rescue BulkImportIdeas::Error => e
       render json: { errors: e.message }, status: :unprocessable_entity
     end
 
     def example_xlsx
-      authorize :import_ideas
-      xlsx = ImportIdeasService.new.generate_example_xlsx
+      xlsx = import_ideas_service.generate_example_xlsx
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas.xlsx'
     end
 
@@ -23,7 +22,7 @@ module BulkImportIdeas
 
     def bulk_create_xlsx_params
       params
-        .require(:invites)
+        .require(:import_ideas)
         .permit(:xlsx)
     end
 
@@ -34,6 +33,14 @@ module BulkImportIdeas
 
       xlsx_io = StringIO.new Base64.decode64(xlsx_base64)
       XlsxService.new.xlsx_to_hash_array xlsx_io
+    end
+
+    def import_ideas_service
+      @import_ideas_service ||= ImportIdeasService.new
+    end
+
+    def authorize_bulk_import_ideas
+      authorize :'bulk_import_ideas/import_ideas'
     end
   end
 end
