@@ -27,6 +27,7 @@ module UserCustomFields
       belongs_to :custom_field
 
       validates :type, presence: true, inclusion: { in: ->(_record) { allowed_types } }
+      validates :distribution, presence: true, json: { schema: -> { self.class.distribution_schema }, message: ->(errors) { errors } }
       validates :custom_field_id, uniqueness: true
       validate :validate_distribution_counts
       validate :validate_custom_field_type_with_guard
@@ -41,13 +42,16 @@ module UserCustomFields
         def policy_class
           UserCustomFields::Representativeness::RefDistributionPolicy
         end
+
+        def distribution_schema
+          raise NotImplementedError, 'distribution_schema must be overridden in subclasses.'
+        end
       end
 
       private
 
-      # Must be overridden in subclasses.
       def counts
-        raise NotImplementedError
+        raise NotImplementedError, 'counts must be overridden in subclasses.'
       end
 
       def total_population

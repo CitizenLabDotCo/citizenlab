@@ -25,7 +25,7 @@ module UserCustomFields
       has_many :options, through: :custom_field
 
       # rubocop:disable Rails/I18nLocaleTexts
-      validates :distribution, presence: true, length: { minimum: 2, message: 'must have at least 2 options.' }
+      validates :distribution, length: { minimum: 2, message: 'must have at least 2 options.' }
       # rubocop:enable Rails/I18nLocaleTexts
       validate :validate_distribution_options
 
@@ -57,6 +57,12 @@ module UserCustomFields
       end
 
       private
+
+      def self.distribution_schema
+        @distribution_schema ||= UserCustomFields::Engine.root.join(
+          'config', 'schemas', 'categorical_distribution.schema.json'
+        ).to_s
+      end
 
       def counts
         @counts ||= distribution.values.dup.freeze

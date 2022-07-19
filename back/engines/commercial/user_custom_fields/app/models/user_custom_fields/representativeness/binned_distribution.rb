@@ -28,6 +28,12 @@ module UserCustomFields
 
       private
 
+      def self.distribution_schema
+        @distribution_schema ||= UserCustomFields::Engine.root.join(
+          'config', 'schemas', 'binned_distribution.schema.json'
+        ).to_s
+      end
+
       def bin_boundaries
         distribution['bins']
       end
