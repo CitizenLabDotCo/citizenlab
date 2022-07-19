@@ -1,6 +1,10 @@
 import 'services/homepageSettings';
 
 declare module 'services/homepageSettings' {
+  interface THomepageSettingKeyMap {
+    events_widget: 'events_widget';
+  }
+
   export interface IHomepageSectionMap {
     events_widget_enabled: 'events_widget_enabled';
   }

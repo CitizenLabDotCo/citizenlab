@@ -2,6 +2,10 @@ import 'services/homepageSettings';
 import { Multiloc } from 'typings';
 
 declare module 'services/homepageSettings' {
+  interface THomepageSettingKeyMap {
+    customizable_homepage_banner: 'customizable_homepage_banner';
+  }
+
   interface CTASignedOutTypeMap {
     sign_up_button: 'sign_up_button';
     customized_button: 'customized_button';
