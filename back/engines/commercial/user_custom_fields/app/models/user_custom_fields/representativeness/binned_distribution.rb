@@ -63,11 +63,11 @@ module UserCustomFields
       def validate_custom_field_type
         super
 
-        errors.add(:custom_field, <<-MSG) unless custom_field.input_type == 'number'
+        errors.add(:custom_field, <<~MSG.squish) unless custom_field.input_type == 'number'
           input type must be 'number' for binned distributions.
         MSG
 
-        errors.add(:custom_field, <<-MSG) unless custom_field.key == 'birthyear'
+        errors.add(:custom_field, <<~MSG.squish) unless custom_field.key == 'birthyear'
           key must be 'birthyear' for binned distributions.
         MSG
       end
