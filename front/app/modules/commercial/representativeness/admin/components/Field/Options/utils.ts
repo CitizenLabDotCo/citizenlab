@@ -77,7 +77,7 @@ export const getPercentages = (
   }, {});
 };
 
-export const parseUserCustomFieldOptions = (
+export const formatUserCustomFieldOptions = (
   userCustomFieldOptions: IUserCustomFieldOptionData[],
   localize: Localize
 ) =>
@@ -86,7 +86,7 @@ export const parseUserCustomFieldOptions = (
     label: localize(userCustomFieldOption.attributes.title_multiloc),
   }));
 
-export const parseBins = (bins: Bins, andOverText: string) =>
+export const formatBins = (bins: Bins, andOverText: string) =>
   [...Array(bins.length - 1)].map((_, i) => {
     const lowerBound = bins[i];
     const upperBound = bins[i + 1];

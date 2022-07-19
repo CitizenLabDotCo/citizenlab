@@ -20,8 +20,8 @@ import { InjectedIntlProps } from 'react-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import {
   getPercentages,
-  parseUserCustomFieldOptions,
-  parseBins,
+  formatUserCustomFieldOptions,
+  formatBins,
 } from './utils';
 
 // typings
@@ -56,8 +56,8 @@ const Options = injectIntl(
 
     const options =
       userCustomField.attributes.key === 'birthyear' && bins
-        ? parseBins(bins, formatMessage(binMessages.andOver))
-        : parseUserCustomFieldOptions(userCustomFieldOptions, localize);
+        ? formatBins(bins, formatMessage(binMessages.andOver))
+        : formatUserCustomFieldOptions(userCustomFieldOptions, localize);
 
     const visibleOptions = options.slice(
       0,
