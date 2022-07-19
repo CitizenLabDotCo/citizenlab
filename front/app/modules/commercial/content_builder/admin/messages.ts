@@ -185,21 +185,21 @@ export default defineMessages({
   },
   toggleLabel: {
     id: 'app.containers.AdminPage.ProjectDescription.toggleLabel',
-    defaultMessage: 'Use page builder for description',
+    defaultMessage: 'Use Content Builder for description',
   },
   toggleTooltip: {
     id: 'app.containers.AdminPage.ProjectDescription.toggleTooltip',
     defaultMessage:
-      'Using the page builder will let you use more advanced layout options.',
+      'Using the Content Builder will let you use more advanced layout options.',
   },
   linkText: {
     id: 'app.containers.AdminPage.ProjectDescription.linkText',
-    defaultMessage: 'Edit description in page builder',
+    defaultMessage: 'Edit description in Content Builder',
   },
   layoutBuilderWarning: {
     id: 'app.containers.AdminPage.ProjectDescription.layoutBuilderWarning',
     defaultMessage:
-      'Using the page builder will let you use more advanced layout options. For languages where no content is available in the page builder, the regular project description content will be displayed instead.',
+      'Using the Content Builder will let you use more advanced layout options. For languages where no content is available in the content builder, the regular project description content will be displayed instead.',
   },
   columnLayoutRadioLabel: {
     id: 'app.containers.AdminPage.ProjectDescription.columnLayoutRadioLabel',

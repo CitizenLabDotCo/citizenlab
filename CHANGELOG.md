@@ -1,10 +1,61 @@
 # Changelog
 
-## Next release
+## 2022-07-19
+
+### Fixed
+
+- [CL-1160] Fix blank insights tag detail view
+
+## 2022-07-14 (2)
 
 ### Added
 
-- [CL-1085] - Add link to support article when there are errors during embed in the content builder
+- [CL-1077] Add PNG export to graph export dropdown
+
+## 2022-07-14
+
+### Fixed
+
+- [CL-1113] Fixed sharing button styling when copy link text is long
+
+### Changed
+
+- [CL-474] Update existing accessibility statement, following re-certification
+
+### Added
+
+- [CL-1088] Add link to academy. Update link to guides
+- [CL-972] Add a 'read more' expand/collapse feature to timeline phases
+
+## 2022-07-11
+
+### Fixed
+
+- Project publication status now defaults to draft on creation but remains published if it was already published
+
+### Added
+
+- [CL-1096] Add representativeness score to header of representativeness chart card
+
+## 2022-07-07
+
+### Fixed
+
+- [TEC-198] Various permission issues
+  - Route access for project folder moderators now works correctly
+  - Project folder moderators can now create a project and select the appropriate folder for it
+  - Route access for admins is now checked correctly
+  - Project/folder moderators now see the dashboard data correctly
+
+## 2022-07-06
+
+### Added
+
+- [CL-1085] Add link to support article when there are errors during embed in the content builder
+
+### Changed
+
+- [CL-875] "en" locale is shown as "en-US" in admin HQ
 
 ## 2022-07-05
 
