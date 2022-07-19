@@ -542,6 +542,7 @@
   "app.containers.Admin.pages-menu.EditHomepage.bottomInfoSectionTooltip": "Add your own content to the customizable section at the bottom of the homepage.",
   "app.containers.Admin.pages-menu.EditHomepage.heroBanner": "Hero banner",
   "app.containers.Admin.pages-menu.EditHomepage.heroBannerTooltip": "Customise the homepage banner image and text.",
+  "app.containers.Admin.pages-menu.EditHomepage.homepageSectionsTitle": "Sections",
   "app.containers.Admin.pages-menu.EditHomepage.homepageTitle": "Home",
   "app.containers.Admin.pages-menu.EditHomepage.projectsList": "Projects list",
   "app.containers.Admin.pages-menu.EditHomepage.projectsListTooltip": "Customize how projects are displayed on the homepage.",
