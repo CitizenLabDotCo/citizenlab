@@ -1,12 +1,9 @@
 import { Bins } from '.';
-import { isEqual } from 'lodash-es';
 
-export const validateBins = (currentBins: Bins, savedBins?: Bins) => {
+export const validateBins = (currentBins: Bins) => {
   for (let i = 0; i < currentBins.length - 1; i++) {
     if (currentBins[i] === null) return false;
   }
-
-  if (isEqual(currentBins, savedBins)) return false;
 
   return true;
 };

@@ -22,6 +22,7 @@ import {
   removeBin,
   addBin,
 } from './utils';
+import { isEqual } from 'lodash-es';
 
 const ClearAllButton = styled.button`
   cursor: pointer;
@@ -78,7 +79,10 @@ const BinModal = ({ open, bins, onClose, onSave }: Props) => {
   };
 
   const handleSave = () => {
-    onSave(currentBins);
+    if (!isEqual(bins, currentBins)) {
+      onSave(currentBins);
+    }
+
     onClose();
   };
 
@@ -142,7 +146,7 @@ const BinModal = ({ open, bins, onClose, onSave }: Props) => {
           <Button
             width="auto"
             onClick={handleSave}
-            disabled={!validateBins(currentBins, bins)}
+            disabled={!validateBins(currentBins)}
           >
             <FormattedMessage {...messages.save} />
           </Button>
