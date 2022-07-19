@@ -115,12 +115,12 @@ export const convertBinsToFormValues = (bins: Bins) => {
     const upperBound = bins[i + 1];
     const isLastBin = i === bins.length - 2;
 
-    const group =
+    const binId =
       upperBound === null
         ? `${curr}+`
         : `${curr}-${upperBound - (isLastBin ? 0 : 1)}`;
 
-    return { ...acc, [group]: null };
+    return { ...acc, [binId]: null };
   }, {});
 };
 

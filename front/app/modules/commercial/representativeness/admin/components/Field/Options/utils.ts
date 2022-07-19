@@ -92,17 +92,17 @@ export const formatBins = (bins: Bins, andOverText: string) =>
     const upperBound = bins[i + 1];
     const isLastBin = i === bins.length - 2;
 
-    const group =
+    const binId =
       upperBound === null
         ? `${lowerBound}+`
         : `${lowerBound}-${upperBound - (isLastBin ? 0 : 1)}`;
 
-    const groupLabel =
+    const binLabel =
       upperBound === null
         ? `${lowerBound} ${andOverText}`
         : `${lowerBound}-${upperBound - (isLastBin ? 0 : 1)}`;
 
-    return { id: group, label: groupLabel };
+    return { id: binId, label: binLabel };
   });
 
 const areAllOptionsEmpty = (formValues: FormValues) => {
