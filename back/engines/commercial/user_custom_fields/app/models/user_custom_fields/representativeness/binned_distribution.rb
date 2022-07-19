@@ -26,7 +26,7 @@ module UserCustomFields
     class BinnedDistribution < RefDistribution
       validate :validate_distribution
 
-      private_class_method def self.distribution_schema
+      def self.distribution_schema
         @distribution_schema ||= UserCustomFields::Engine.root.join(
           'config', 'schemas', 'binned_distribution.schema.json'
         ).to_s
