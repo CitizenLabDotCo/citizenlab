@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // components
 import Modal from 'components/UI/Modal';
@@ -49,6 +49,7 @@ const getExampleBins = (): Bins => [18, 25, 35, 45, 55, 65, null];
 
 const BinModal = ({ open, bins, onClose, onSave }: Props) => {
   const [currentBins, setCurrentBins] = useState(bins ?? getExampleBins());
+  const [saveScheduled, setSaveScheduled] = useState(false);
 
   const handleUpdateLowerBound = (
     binIndex: number,
@@ -78,12 +79,26 @@ const BinModal = ({ open, bins, onClose, onSave }: Props) => {
   };
 
   const handleSave = () => {
+    const activeElement = document.activeElement
+
+    if (activeElement) {
+      (activeElement as HTMLElement)?.blur();
+    }
+
+    setSaveScheduled(true);
+  };
+
+  // This is
+  useEffect(() => {
+    if (!saveScheduled) return;
+
     if (!isEqual(bins, currentBins)) {
       onSave(currentBins);
     }
 
+    setSaveScheduled(false);
     onClose();
-  };
+  }, [saveScheduled])
 
   return (
     <Modal
