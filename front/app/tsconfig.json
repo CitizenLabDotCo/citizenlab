@@ -22,7 +22,8 @@
       {
         "name": "typescript-styled-plugin"
       }
-    ]
+    ],
+    "resolveJsonModule": true
   },
   "files": ["custom.d.ts"],
   "include": ["**/*"],

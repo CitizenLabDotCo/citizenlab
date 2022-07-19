@@ -1,0 +1,146 @@
+{
+    "type": "Categorization",
+    "elements": [
+      {
+        "type": "Category",
+        "label": "Basic Information",
+        "elements": [
+          {
+            "type": "VerticalLayout",
+            "elements": [
+              {
+                "type": "Control",
+                "scope": "#/properties/firstName",
+                "label": "First name."
+              },
+              {
+                "type": "Control",
+                "scope": "#/properties/secondName",
+                "label": "Second name"
+              }
+            ]
+          },
+          {
+            "type": "VerticalLayout",
+            "elements": [
+              {
+                "type": "Control",
+                "scope": "#/properties/birthDate",
+                "label": "Date of birth."
+              },
+              {
+                "type": "Control",
+                "label": "Nationality",
+                "scope": "#/properties/nationality"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "Category",
+        "label": "Address",
+        "elements": [
+          {
+            "type": "VerticalLayout",
+            "elements": [
+              {
+                "type": "Control",
+                "scope": "#/properties/address/properties/street",
+                "label": "Street."
+              },
+              {
+                "type": "Control",
+                "scope": "#/properties/address/properties/streetNumber",
+                "label": "Street number."
+              }
+            ]
+          },
+          {
+            "type": "VerticalLayout",
+            "elements": [
+              {
+                "type": "Control",
+                "scope": "#/properties/address/properties/city",
+                "label": "City."
+              },
+              {
+                "type": "Control",
+                "scope": "#/properties/address/properties/postalCode",
+                "label": "Postal code."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "Category",
+        "label": "Additional",
+        "elements": [
+          {
+            "type": "Control",
+            "scope": "#/properties/vegan",
+            "label": "Are you a vegan?"
+          },
+          {
+            "type": "Control",
+            "scope": "#/properties/favoriteVegetable",
+            "label": "Favorite vegetable."
+          },
+          {
+            "type": "Control",
+            "scope": "#/properties/otherFavoriteVegetable",
+            "label": "Any other vegetable you like?"
+          }
+        ]
+      },
+      {
+        "type": "Category",
+        "label": "Attachments control",
+        "elements": [
+          {
+            "type": "Control",
+            "scope": "#/properties/test_files_attributes",
+            "label": "Please enter any files you would like to attach."
+          }
+        ]
+      },
+      {
+        "type": "Category",
+        "label": "Description control",
+        "elements": [
+          {
+            "type": "Control",
+            "scope": "#/properties/desc_body_multiloc",
+            "label": "Anything else you would like us to know?"
+          }
+        ]
+      },
+      {
+        "type": "Category",
+        "label": "Image control",
+        "elements": [
+          {
+            "type": "Control",
+            "scope": "#/properties/_images_attributes",
+            "label": "Please enter any images you would like to attach."
+          }
+        ]
+      },
+      {
+        "type": "Category",
+        "label": "Location control",
+        "elements": [
+          {
+            "type": "Control",
+            "scope": "#/properties/_location_description",
+            "label": "Please enter your any pertinent location information"
+          }
+        ]
+      }
+    ],
+    "options": {
+      "variant": "stepper",
+      "showNavButtons": true
+    }
+}

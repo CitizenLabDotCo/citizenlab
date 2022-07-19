@@ -54,9 +54,9 @@ import UserPickerControl, {
 import WYSIWYGControl, {
   WYSIWYGControlTester,
 } from 'components/Form/Components/Controls/WYSIWYGControl';
-import CLCategoryLayout, {
-  clCategoryTester,
-} from 'components/Form/Components/Layouts/CLCategoryLayout';
+import CLIndividualQuestionSurveyLayout, {
+    clIndividualQuestionCategoryTester,
+} from 'components/Form/Components/Layouts/CLIndividualQuestionSurveyLayout';
 import OrderedLayout, {
   orderedLayoutTester,
 } from 'components/Form/Components/Layouts/OrderedLayout';
@@ -64,7 +64,7 @@ import OrderedLayout, {
 import schema from './schema.json';
 import uischema from './uischema.json';
 
-const SurveyTest = () => {
+const TypeFormSurveyExample = () => {
   const initialData = {
     name: 'Amanda',
     description: 'Long description',
@@ -84,7 +84,7 @@ const SurveyTest = () => {
     { tester: titleControlTester, renderer: TitleControl },
     { tester: imageControlTester, renderer: ImageControl },
     { tester: attachmentsControlTester, renderer: AttachmentsControl },
-    { tester: clCategoryTester, renderer: CLCategoryLayout },
+    { tester: clIndividualQuestionCategoryTester, renderer: CLIndividualQuestionSurveyLayout },
     { tester: orderedLayoutTester, renderer: OrderedLayout },
     { tester: locationControlTester, renderer: LocationControl },
     { tester: dateControlTester, renderer: DateControl },
@@ -95,55 +95,44 @@ const SurveyTest = () => {
 
   return (
     <Box
-    height="100vh"
-    display='flex'
-    width='100%'
-    flexDirection='column'
-    zIndex="10000"
-    position="fixed"
-    bgColor={colors.adminBackground}
-    overflowY="auto"
+      height="100vh"
+      display='flex'
+      width='100%'
+      flexDirection='column'
+      zIndex="10000"
+      position="fixed"
+      bgColor={colors.adminBackground}
+      overflowY="auto"
     >
-      <Box
-        padding="36px"
-        borderRadius="5px"
-        width="700px"
-        marginRight="auto"
-        marginLeft="auto"
-        display="flex"
-        alignItems="center"
-        flexWrap="wrap"
-      >
-        <Box width="100%" flexGrow={1} flexShrink={1}>
-          <Title textAlign="center" width="100%">
+        <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center' mt='100px'>
+        <Title textAlign="center">
             Survey Title
           </Title>
-          <Text textAlign="center" width="100%">
+          <Text textAlign="center">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur.
           </Text>
         </Box>
+
+        <Box display='flex' height='60vh' justifyContent='center' alignItems='center'>
         <JsonForms
-          schema={schema}
-          uischema={uischema}
-          data={data}
-          renderers={renderers}
-          onChange={({ data }) => setData(data)}
+            schema={schema}
+            uischema={uischema}
+            data={data}
+            renderers={renderers}
+            onChange={({ data }) => setData(data)}
         />
-      </Box>
+        </Box>
+
     </Box>
-  );
+  )
 };
 
-const SurveyTestModal = () => {
+const TypeFormSurveyTest = () => {
   const modalPortalElement = document.getElementById('modal-portal');
 
   return modalPortalElement
-    ? createPortal(<SurveyTest />, modalPortalElement)
+    ? createPortal(<TypeFormSurveyExample />, modalPortalElement)
     : null;
 };
-export default SurveyTestModal;
+export default TypeFormSurveyTest;

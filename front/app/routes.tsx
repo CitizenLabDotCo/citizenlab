@@ -15,6 +15,7 @@ const InitiativesIndexPage = lazy(
   () => import('containers/InitiativesIndexPage')
 );
 const SurveyTest = lazy(() => import('containers/SurveyTest'));
+const TypeFormSurveyTest = lazy(() => import('containers/SurveyTest/TypeFormSurveyTest'));
 const InitiativesEditPage = lazy(
   () => import('containers/InitiativesEditPage')
 );
@@ -136,6 +137,14 @@ export default function createRoutes() {
           element: (
             <PageLoading>
               <SurveyTest />
+            </PageLoading>
+          ),
+        },
+        {
+          path: 'typeformsurveytest',
+          element: (
+            <PageLoading>
+              <TypeFormSurveyTest />
             </PageLoading>
           ),
         },
