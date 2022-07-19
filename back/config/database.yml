@@ -75,6 +75,7 @@ test:
     <<: *default
     database: <%= ENV.fetch("POSTGRES_DB", 'cl2_back_test') %>
     schema_search_path: public,shared_extensions
+    migrations_paths: engines/commercial/analytics/db/migrate
   analytics:
     <<: *default
     database: <%= ENV.fetch("POSTGRES_DB_ANALYTICS", 'cl2_back_test') %>
