@@ -3,14 +3,19 @@
 module UserCustomFields
   module WebApi::V1
     class RefDistributionsController < ::ApplicationController
+      # Shortcuts for long namespace
+      RefDistribution = Representativeness::RefDistribution
+      CategoricalDistribution = Representativeness::CategoricalDistribution
+      private_constant :RefDistribution, :CategoricalDistribution
+
       def show
         render json: serialize(reference_distribution)
       end
 
       def create
-        ref_distribution = authorize(Representativeness::RefDistribution.new(create_params))
+        ref_distribution = authorize(RefDistribution.new(create_params))
 
-        Representativeness::RefDistribution.transaction do
+        RefDistribution.transaction do
           remove_reference_distribution_if_any(params[:custom_field_id])
           ref_distribution.save!
         end
@@ -30,9 +35,9 @@ module UserCustomFields
       private
 
       def remove_reference_distribution_if_any(custom_field_id)
-        Representativeness::RefDistribution.where(
-          custom_field_id: custom_field_id
-        ).destroy_all
+        RefDistribution
+          .where(custom_field_id: custom_field_id)
+          .destroy_all
       end
 
       def side_fx
@@ -41,9 +46,7 @@ module UserCustomFields
 
       def reference_distribution
         @reference_distribution ||= authorize(
-          Representativeness::RefDistribution
-            .includes(:options)
-            .find_by!(custom_field_id: params[:custom_field_id])
+          RefDistribution.find_by!(custom_field_id: params[:custom_field_id])
         )
       end
 
