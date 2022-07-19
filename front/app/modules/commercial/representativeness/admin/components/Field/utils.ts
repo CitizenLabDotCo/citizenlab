@@ -112,9 +112,13 @@ export const isSubmittingAllowed = (
 
 export const convertBinsToFormValues = (bins: Bins) => {
   return bins.slice(0, bins.length - 1).reduce((acc, curr, i) => {
-    const upperBound = bins[i];
+    const upperBound = bins[i + 1];
+    const isLastBin = i === bins.length - 2;
+
     const group =
-      upperBound === null ? `${curr}+` : `${curr}-${upperBound - 1}`;
+      upperBound === null
+        ? `${curr}+`
+        : `${curr}-${upperBound - (isLastBin ? 0 : 1)}`;
 
     return { ...acc, [group]: null };
   }, {});

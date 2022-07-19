@@ -5,7 +5,7 @@ import { roundPercentages } from 'utils/math';
 import { FormValues } from '../utils';
 import { IUserCustomFieldOptionData } from 'modules/commercial/user_custom_fields/services/userCustomFieldOptions';
 import { Localize } from 'hooks/useLocalize';
-import { Bins } from '../BinModal'
+import { Bins } from '../BinModal';
 
 /*
  * Takes a thousand-formatted locale string in the US format (e.g. 1,000,000)
@@ -80,14 +80,30 @@ export const getPercentages = (
 export const parseUserCustomFieldOptions = (
   userCustomFieldOptions: IUserCustomFieldOptionData[],
   localize: Localize
-) => userCustomFieldOptions.map((userCustomFieldOption) => ({
-  id: userCustomFieldOption.id,
-  label: localize(userCustomFieldOption.attributes.title_multiloc)
-}))
+) =>
+  userCustomFieldOptions.map((userCustomFieldOption) => ({
+    id: userCustomFieldOption.id,
+    label: localize(userCustomFieldOption.attributes.title_multiloc),
+  }));
 
-export const parseBins = (bins: Bins) => {
+export const parseBins = (bins: Bins, andOverText: string) =>
+  [...Array(bins.length - 1)].map((_, i) => {
+    const lowerBound = bins[i];
+    const upperBound = bins[i + 1];
+    const isLastBin = i === bins.length - 2;
 
-}
+    const group =
+      upperBound === null
+        ? `${lowerBound}+`
+        : `${lowerBound}-${upperBound - (isLastBin ? 0 : 1)}`;
+
+    const groupLabel =
+      upperBound === null
+        ? `${lowerBound} ${andOverText}`
+        : `${lowerBound}-${upperBound - (isLastBin ? 0 : 1)}`;
+
+    return { id: group, label: groupLabel };
+  });
 
 const areAllOptionsEmpty = (formValues: FormValues) => {
   return Object.values(formValues).every((formValue) => formValue === null);
