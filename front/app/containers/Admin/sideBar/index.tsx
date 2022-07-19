@@ -90,7 +90,7 @@ const Spacer = styled.div`
   flex-grow: 1;
 `;
 
-const GetStartedLink = styled.a`
+const MenuLink = styled.a`
   flex: 0 0 auto;
   width: 210px;
   display: flex;
@@ -98,15 +98,13 @@ const GetStartedLink = styled.a`
   justify-content: space-between;
   padding-left: 5px;
   padding-right: 15px;
-  padding-bottom: 1px;
-  margin-bottom: 25px;
   cursor: pointer;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  background: ${lighten(0.05, colors.adminMenuBackground)};
   transition: all 100ms ease-out;
 
-  &:hover {
-    background: ${lighten(0.1, colors.adminMenuBackground)};
+  &:hover,
+  &.focus-visible {
+    background: rgba(0, 0, 0, 0.36);
 
     ${Text} {
       color: #fff;
@@ -121,6 +119,16 @@ const GetStartedLink = styled.a`
       display: none;
     }
   `}
+`;
+
+const GetStartedLink = styled(MenuLink)`
+  padding-bottom: 1px;
+  margin-bottom: 25px;
+  background: ${lighten(0.05, colors.adminMenuBackground)};
+
+  &:hover {
+    background: ${lighten(0.1, colors.adminMenuBackground)};
+  }
 `;
 
 interface InputProps {}
@@ -277,8 +285,19 @@ class Sidebar extends PureComponent<
             <MenuItem navItem={navItem} key={navItem.name} />
           ))}
           <Spacer />
+
+          <MenuLink
+            href={formatMessage(messages.linkToAcademy)}
+            target="_blank"
+          >
+            <IconWrapper>
+              <Icon name="academy" />
+            </IconWrapper>
+            <Text>{formatMessage({ ...messages.academy })}</Text>
+          </MenuLink>
+
           <GetStartedLink
-            href={formatMessage(messages.linkToSupportCenter)}
+            href={formatMessage(messages.linkToGuide)}
             target="_blank"
           >
             <IconWrapper>
