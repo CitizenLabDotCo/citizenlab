@@ -381,7 +381,7 @@ export interface OutletsPropertyMap {
       settingKey: keyof IHomepageSettingsAttributes,
       settingValue: any
     ) => void;
-    errors: CLErrors | undefined | null;
+    errors: CLErrors | null;
   };
   'app.containers.LandingPage.SignedOutHeader.index': {
     homepageBannerLayout: THomepageBannerLayout;
