@@ -45,11 +45,10 @@ interface Props {
 
 export type Bins = (number | null)[];
 
-// TODO delete this when real data is available
-export const getDummyBins = (): Bins => [18, 25, 35, 45, 55, 65, null];
+const getExampleBins = (): Bins => [18, 25, 35, 45, 55, 65, null];
 
 const BinModal = ({ open, bins, onClose, onSave }: Props) => {
-  const [currentBins, setCurrentBins] = useState(bins ?? getDummyBins());
+  const [currentBins, setCurrentBins] = useState(bins ?? getExampleBins());
 
   const handleUpdateLowerBound = (
     binIndex: number,
@@ -67,7 +66,7 @@ const BinModal = ({ open, bins, onClose, onSave }: Props) => {
   };
 
   const applyExampleGrouping = () => {
-    setCurrentBins(getDummyBins());
+    setCurrentBins(getExampleBins());
   };
 
   const handleRemoveBin = () => {
