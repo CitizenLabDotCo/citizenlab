@@ -5,7 +5,6 @@ require 'user_custom_fields/core_ext/enumerable'
 
 RSpec.describe Enumerable do
   describe '#sorted?' do
-
     context 'when sorted' do
       where(enumerable: [
         [],
@@ -42,7 +41,7 @@ RSpec.describe Enumerable do
       ])
 
       with_them do
-        it { expect { enumerable.sorted? }.to raise_error }
+        it { expect { enumerable.sorted? }.to raise_error(NoMethodError) }
       end
     end
   end

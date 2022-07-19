@@ -56,13 +56,13 @@ module UserCustomFields
         destroy!
       end
 
-      private
-
-      def self.distribution_schema
+      private_class_method def self.distribution_schema
         @distribution_schema ||= UserCustomFields::Engine.root.join(
           'config', 'schemas', 'categorical_distribution.schema.json'
         ).to_s
       end
+
+      private
 
       def counts
         @counts = distribution.values
