@@ -22,7 +22,7 @@ type Props = {
     settingKey: BannerSettingKeyType,
     settingValue: string
   ) => void;
-  errors: CLErrors | undefined;
+  errors: CLErrors | undefined | null;
 };
 
 const CTASignedOutSettings = ({
