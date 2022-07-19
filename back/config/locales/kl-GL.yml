@@ -138,23 +138,23 @@ kl:
     categories:
       main_content:
         idea:
-          title: What is your idea ?
+          title: Suna isumassarsiaraajuk?
         question:
-          title: What is your question ?
+          title: Suna apeqqutissaraajuk?
         contribution:
-          title: What is your contribution ?
+          title: Suna ilanngussaraajuk?
         project:
-          title: What is your project ?
+          title: Suna suliniutigaajuk?
         issue:
-          title: What is your issue ?
+          title: Suna ajornartorsiutaava?
         option:
-          title: What is your option ?
+          title: Suna toqqagassaraajuk?
       details:
         title: Immikkuualuttut
       attachements:
-        title: Images and Attachements
+        title: Assit fiilillu kakkiussat
       extra:
-        title: Additional information
+        title: Paasissutissat annertunerusut
   custom_field_options:
     gender:
       male: Angut

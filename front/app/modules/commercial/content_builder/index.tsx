@@ -2,7 +2,7 @@ import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import ContentBuilderToggle from 'modules/commercial/content_builder/admin/components/ContentBuilderToggle';
 import ContentBuilderPreview from 'modules/commercial/content_builder/admin/components/ContentBuilderPreview';
-import MobileViewPreview from 'modules/commercial/content_builder/admin/components/ContentBuilderMobileView/MobileViewPreview';
+import EditModePreview from 'modules/commercial/content_builder/admin/components/ContentBuilderEditModePreview/EditModePreview';
 
 const ContentBuilderComponent = React.lazy(() => import('./admin/containers'));
 
@@ -14,8 +14,8 @@ const configuration: ModuleConfiguration = {
         element: <ContentBuilderComponent />,
       },
       {
-        path: 'content-builder/projects/:projectId/mobile-preview',
-        element: <MobileViewPreview />,
+        path: 'content-builder/projects/:projectId/preview',
+        element: <EditModePreview />,
       },
     ],
   },

@@ -98,6 +98,13 @@ resource 'Stats - Ideas' do
           expect(json_response[:count]).to eq 1
         end
       end
+
+      example 'Count is not limited by pagination' do
+        do_request(page: { size: 2, number: 1 })
+
+        assert_status 200
+        expect(json_parse(response_body)[:count]).to eq 6
+      end
     end
   end
 

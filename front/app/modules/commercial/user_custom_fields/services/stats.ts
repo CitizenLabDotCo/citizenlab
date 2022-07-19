@@ -9,6 +9,9 @@ export interface IUsersByRegistrationField {
     users: {
       [key: string]: number;
     };
+    reference_population: {
+      [key: string]: number;
+    };
     expected_users: {
       [key: string]: number;
     };
@@ -26,13 +29,17 @@ export interface IUsersByDomicile {
     users: {
       [key: string]: number;
     };
-    expected_users: {
-      [key: string]: number;
-    };
+    // reference_population: {
+    //   [key: string]: number;
+    // }
+    // expected_users: {
+    //   [key: string]: number;
+    // };
   };
   areas: {
     [key: string]: {
       title_multiloc: Multiloc;
+      ordering: number;
     };
   };
 }
@@ -45,7 +52,7 @@ export interface IUsersByBirthyear {
   };
 }
 
-export type TStreamResponse = IUsersByRegistrationField | IUsersByDomicile;
+export type TStreamResponse = IUsersByRegistrationField; // | IUsersByDomicile;
 
 export const usersByRegFieldXlsxEndpoint = (customFieldId: string) =>
   `${apiEndpoint}/users_by_custom_field_as_xlsx/${customFieldId}`;

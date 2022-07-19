@@ -1,5 +1,5 @@
 import React from 'react';
-import { InjectedFormikProps } from 'formik';
+import { FormikProps } from 'formik';
 import styled from 'styled-components';
 
 // components
@@ -21,7 +21,7 @@ const BasePageForm = ({
   handleSubmit,
   setTouched,
   children,
-}: InjectedFormikProps<Props, Record<string, any>>) => {
+}: FormikProps<Record<string, any>> & Props) => {
   const handleOnSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     handleSubmit();

@@ -30,7 +30,7 @@ const TableWrapper = ({
   title,
   data,
   legendLabels,
-  includedUserPercentage,
+  includedUsers,
   fieldIsRequired,
   projectFilter,
   xlsxEndpoint,
@@ -77,7 +77,7 @@ const TableWrapper = ({
         title={title}
         columns={columns}
         data={data}
-        includedUserPercentage={includedUserPercentage}
+        includedUsers={includedUsers}
         fieldIsRequired={fieldIsRequired}
         projectFilter={projectFilter}
         xlsxEndpoint={xlsxEndpoint}

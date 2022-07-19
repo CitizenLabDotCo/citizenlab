@@ -16,15 +16,7 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
 // style
-import styled from 'styled-components';
-
-const Container = styled.div`
-  width: 100%;
-  max-width: 400px;
-  padding: 40px 25px;
-  margin-left: auto;
-  margin-right: auto;
-`;
+import { Box } from '@citizenlab/cl2-component-library';
 
 interface Props {
   projectId: string;
@@ -55,6 +47,7 @@ const ProjectSharingModal = memo<Props & InjectedIntlProps>(
     }, [close]);
 
     if (!isNilOrError(project)) {
+      const url = window.location.href;
       return (
         <Modal
           width={550}
@@ -63,7 +56,15 @@ const ProjectSharingModal = memo<Props & InjectedIntlProps>(
           closeOnClickOutside={true}
           header={<T value={project.attributes.title_multiloc} />}
         >
-          <Container className={className}>
+          <Box
+            width="100%"
+            maxWidth="400px"
+            padding="40px 25px"
+            ml="auto"
+            mr="auto"
+            style={{ textAlign: 'center' }}
+            className={className}
+          >
             {opened && (
               <>
                 <T value={project.attributes.title_multiloc} maxLength={50}>
@@ -78,21 +79,39 @@ const ProjectSharingModal = memo<Props & InjectedIntlProps>(
                             projectName: title,
                           }
                         )}
+                        facebookMessage={formatMessage(
+                          messages.facebookMessage,
+                          {
+                            projectName: title,
+                          }
+                        )}
                         twitterMessage={formatMessage(
                           messages.projectTwitterMessage,
                           {
                             projectName: title,
                           }
                         )}
+                        emailSubject={formatMessage(
+                          messages.emailSharingSubject,
+                          {
+                            projectName: title,
+                            initiativeTitle: title,
+                            initiativeUrl: url,
+                          }
+                        )}
+                        emailBody={formatMessage(messages.emailSharingBody, {
+                          projectUrl: url,
+                          projectName: title,
+                          initiativeUrl: url,
+                        })}
                         utmParams={utmParams}
-                        layout="columnLayout"
                       />
                     );
                   }}
                 </T>
               </>
             )}
-          </Container>
+          </Box>
         </Modal>
       );
     }

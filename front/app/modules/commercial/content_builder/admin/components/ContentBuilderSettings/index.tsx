@@ -56,7 +56,10 @@ const ContentBuilderSettings = () => {
     actions.selectNode();
   };
 
-  return selected && isEnabled && selected.id !== ROOT_NODE ? (
+  return selected &&
+    isEnabled &&
+    selected.id !== ROOT_NODE &&
+    selected.name !== 'Box' ? (
     <StyledBox
       position="fixed"
       right="0"
@@ -84,9 +87,9 @@ const ContentBuilderSettings = () => {
             id="e2e-delete-button"
             icon="delete"
             buttonStyle="primary-outlined"
-            borderColor={colors.clRed}
-            textColor={colors.clRed}
-            iconColor={colors.clRed}
+            borderColor={colors.red500}
+            textColor={colors.red500}
+            iconColor={colors.red500}
             onClick={() => {
               actions.delete(selected.id);
               eventEmitter.emit(

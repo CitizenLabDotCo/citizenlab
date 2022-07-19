@@ -25,13 +25,23 @@ const generateData = (n: number) => {
 
 let mockData = generateData(4);
 
+jest.mock('../../hooks/useRScore', () => () => ({
+  attributes: {
+    score: 0.8,
+  },
+}));
+
 jest.mock('../../hooks/useReferenceData', () => () => ({
   referenceData: mockData,
-  includedUserPercentage: 85,
+  includedUsers: {
+    known: 85,
+    total: 100,
+    percentage: 85,
+  },
   referenceDataUploaded: true,
 }));
 
-const customField: any = {
+const userCustomField: any = {
   id: '4',
   attributes: {
     title_multiloc: { en: 'FIELD TITLE' },
@@ -41,15 +51,23 @@ const customField: any = {
 
 describe('<ChartCard />', () => {
   it('renders title', () => {
-    render(<ChartCard customField={customField} />);
+    render(<ChartCard userCustomField={userCustomField} />);
 
     expect(screen.getByText('FIELD TITLE')).toBeInTheDocument();
+  });
+
+  it('shows representativeness score', () => {
+    render(<ChartCard userCustomField={userCustomField} />);
+
+    expect(screen.getByText('Representativeness score:')).toBeInTheDocument();
+    expect(screen.getByText('80')).toBeInTheDocument();
+    expect(screen.getByText('/100')).toBeInTheDocument();
   });
 });
 
 describe('<ChartCard /> (chart view)', () => {
   it('renders legend', () => {
-    render(<ChartCard customField={customField} />);
+    render(<ChartCard userCustomField={userCustomField} />);
 
     expect(screen.getByTestId('graph-legend')).toBeInTheDocument();
   });
@@ -60,7 +78,9 @@ describe('<ChartCard /> (chart view)', () => {
     });
 
     it('renders chart by default', () => {
-      const { container } = render(<ChartCard customField={customField} />);
+      const { container } = render(
+        <ChartCard userCustomField={userCustomField} />
+      );
 
       expect(
         container.querySelector('.recharts-responsive-container')
@@ -68,7 +88,9 @@ describe('<ChartCard /> (chart view)', () => {
     });
 
     it('renders labels', () => {
-      const { container } = render(<ChartCard customField={customField} />);
+      const { container } = render(
+        <ChartCard userCustomField={userCustomField} />
+      );
 
       waitFor(() => {
         expect(container.querySelectorAll('.recharts-label')).toHaveLength(8);
@@ -76,7 +98,9 @@ describe('<ChartCard /> (chart view)', () => {
     });
 
     it('renders ticks', () => {
-      const { container } = render(<ChartCard customField={customField} />);
+      const { container } = render(
+        <ChartCard userCustomField={userCustomField} />
+      );
 
       waitFor(() => {
         expect(
@@ -89,13 +113,13 @@ describe('<ChartCard /> (chart view)', () => {
     });
 
     it('renders included users percentage', () => {
-      render(<ChartCard customField={customField} />);
+      render(<ChartCard userCustomField={userCustomField} />);
 
       expect(screen.getByText('85%')).toBeInTheDocument();
     });
 
     it('does not render warning', () => {
-      render(<ChartCard customField={customField} />);
+      render(<ChartCard userCustomField={userCustomField} />);
 
       expect(
         screen.queryByTestId('representativeness-items-hidden-warning')
@@ -109,7 +133,9 @@ describe('<ChartCard /> (chart view)', () => {
     });
 
     it('renders chart by default', () => {
-      const { container } = render(<ChartCard customField={customField} />);
+      const { container } = render(
+        <ChartCard userCustomField={userCustomField} />
+      );
 
       expect(
         container.querySelector('.recharts-responsive-container')
@@ -117,7 +143,9 @@ describe('<ChartCard /> (chart view)', () => {
     });
 
     it('does not render labels', () => {
-      const { container } = render(<ChartCard customField={customField} />);
+      const { container } = render(
+        <ChartCard userCustomField={userCustomField} />
+      );
 
       waitFor(() => {
         expect(container.querySelectorAll('.recharts-label')).toHaveLength(0);
@@ -125,7 +153,9 @@ describe('<ChartCard /> (chart view)', () => {
     });
 
     it('renders ticks', () => {
-      const { container } = render(<ChartCard customField={customField} />);
+      const { container } = render(
+        <ChartCard userCustomField={userCustomField} />
+      );
 
       waitFor(() => {
         expect(
@@ -138,13 +168,13 @@ describe('<ChartCard /> (chart view)', () => {
     });
 
     it('renders included users percentage', () => {
-      render(<ChartCard customField={customField} />);
+      render(<ChartCard userCustomField={userCustomField} />);
 
       expect(screen.getByText('85%')).toBeInTheDocument();
     });
 
     it('does not render warning', () => {
-      render(<ChartCard customField={customField} />);
+      render(<ChartCard userCustomField={userCustomField} />);
 
       expect(
         screen.queryByTestId('representativeness-items-hidden-warning')
@@ -158,7 +188,9 @@ describe('<ChartCard /> (chart view)', () => {
     });
 
     it('does not render chart by default', () => {
-      const { container } = render(<ChartCard customField={customField} />);
+      const { container } = render(
+        <ChartCard userCustomField={userCustomField} />
+      );
 
       expect(
         container.querySelector('.recharts-responsive-container')
@@ -173,7 +205,9 @@ describe('<ChartCard /> (chart view)', () => {
     });
 
     it('on select chart view: does not render labels', () => {
-      const { container } = render(<ChartCard customField={customField} />);
+      const { container } = render(
+        <ChartCard userCustomField={userCustomField} />
+      );
 
       const chartTabButton = container.querySelector('button#chart');
       fireEvent.click(chartTabButton);
@@ -184,7 +218,9 @@ describe('<ChartCard /> (chart view)', () => {
     });
 
     it('on select chart view: does not render ticks', () => {
-      const { container } = render(<ChartCard customField={customField} />);
+      const { container } = render(
+        <ChartCard userCustomField={userCustomField} />
+      );
 
       const chartTabButton = container.querySelector('button#chart');
       fireEvent.click(chartTabButton);
@@ -200,7 +236,9 @@ describe('<ChartCard /> (chart view)', () => {
     });
 
     it('on select chart view: renders included users percentage', () => {
-      const { container } = render(<ChartCard customField={customField} />);
+      const { container } = render(
+        <ChartCard userCustomField={userCustomField} />
+      );
 
       const chartTabButton = container.querySelector('button#chart');
       fireEvent.click(chartTabButton);
@@ -209,7 +247,9 @@ describe('<ChartCard /> (chart view)', () => {
     });
 
     it('on select chart view: does not render warning', () => {
-      const { container } = render(<ChartCard customField={customField} />);
+      const { container } = render(
+        <ChartCard userCustomField={userCustomField} />
+      );
 
       const chartTabButton = container.querySelector('button#chart');
       fireEvent.click(chartTabButton);
@@ -226,7 +266,9 @@ describe('<ChartCard /> (chart view)', () => {
     });
 
     it('does not render chart by default', () => {
-      const { container } = render(<ChartCard customField={customField} />);
+      const { container } = render(
+        <ChartCard userCustomField={userCustomField} />
+      );
 
       expect(
         container.querySelector('.recharts-responsive-container')
@@ -241,7 +283,9 @@ describe('<ChartCard /> (chart view)', () => {
     });
 
     it('on select chart view: renders included users percentage', () => {
-      const { container } = render(<ChartCard customField={customField} />);
+      const { container } = render(
+        <ChartCard userCustomField={userCustomField} />
+      );
 
       const chartTabButton = container.querySelector('button#chart');
       fireEvent.click(chartTabButton);
@@ -250,7 +294,9 @@ describe('<ChartCard /> (chart view)', () => {
     });
 
     it('on select chart view: renders warning', () => {
-      const { container } = render(<ChartCard customField={customField} />);
+      const { container } = render(
+        <ChartCard userCustomField={userCustomField} />
+      );
 
       const chartTabButton = container.querySelector('button#chart');
       fireEvent.click(chartTabButton);
@@ -261,7 +307,9 @@ describe('<ChartCard /> (chart view)', () => {
     });
 
     it('on select chart view: link in warning switches to tab view', () => {
-      const { container } = render(<ChartCard customField={customField} />);
+      const { container } = render(
+        <ChartCard userCustomField={userCustomField} />
+      );
 
       const chartTabButton = container.querySelector('button#chart');
       fireEvent.click(chartTabButton);
@@ -283,7 +331,9 @@ describe('<ChartCard /> (table view)', () => {
   });
 
   it('does not render legend in table view', () => {
-    const { container } = render(<ChartCard customField={customField} />);
+    const { container } = render(
+      <ChartCard userCustomField={userCustomField} />
+    );
 
     expect(screen.getByTestId('graph-legend')).toBeInTheDocument();
 
@@ -299,7 +349,9 @@ describe('<ChartCard /> (table view)', () => {
     });
 
     it('does not render table by default', () => {
-      const { container } = render(<ChartCard customField={customField} />);
+      const { container } = render(
+        <ChartCard userCustomField={userCustomField} />
+      );
 
       expect(container.querySelector('table.ui.table')).not.toBeInTheDocument();
 
@@ -310,7 +362,9 @@ describe('<ChartCard /> (table view)', () => {
     });
 
     it('renders correct number of rows', () => {
-      const { container } = render(<ChartCard customField={customField} />);
+      const { container } = render(
+        <ChartCard userCustomField={userCustomField} />
+      );
 
       const tableTabButton = container.querySelector('button#table');
       fireEvent.click(tableTabButton);
@@ -319,7 +373,9 @@ describe('<ChartCard /> (table view)', () => {
     });
 
     it('renders included users percentage', () => {
-      const { container } = render(<ChartCard customField={customField} />);
+      const { container } = render(
+        <ChartCard userCustomField={userCustomField} />
+      );
 
       const tableTabButton = container.querySelector('button#table');
       fireEvent.click(tableTabButton);
@@ -328,7 +384,9 @@ describe('<ChartCard /> (table view)', () => {
     });
 
     it('does not render warning', () => {
-      const { container } = render(<ChartCard customField={customField} />);
+      const { container } = render(
+        <ChartCard userCustomField={userCustomField} />
+      );
 
       const tableTabButton = container.querySelector('button#table');
       fireEvent.click(tableTabButton);
@@ -339,7 +397,7 @@ describe('<ChartCard /> (table view)', () => {
     });
 
     it('does not render open modal button', () => {
-      render(<ChartCard customField={customField} />);
+      render(<ChartCard userCustomField={userCustomField} />);
 
       expect(screen.queryByTestId('show-modal-button')).not.toBeInTheDocument();
     });
@@ -351,25 +409,29 @@ describe('<ChartCard /> (table view)', () => {
     });
 
     it('renders table by default', () => {
-      const { container } = render(<ChartCard customField={customField} />);
+      const { container } = render(
+        <ChartCard userCustomField={userCustomField} />
+      );
 
       expect(container.querySelector('table.ui.table')).toBeInTheDocument();
     });
 
     it('renders correct number of rows', () => {
-      const { container } = render(<ChartCard customField={customField} />);
+      const { container } = render(
+        <ChartCard userCustomField={userCustomField} />
+      );
 
       expect(container.querySelectorAll('tbody > tr')).toHaveLength(12);
     });
 
     it('renders included users percentage', () => {
-      render(<ChartCard customField={customField} />);
+      render(<ChartCard userCustomField={userCustomField} />);
 
       expect(screen.getByText('85%')).toBeInTheDocument();
     });
 
     it('does not render warning', () => {
-      render(<ChartCard customField={customField} />);
+      render(<ChartCard userCustomField={userCustomField} />);
 
       expect(
         screen.queryByTestId('representativeness-items-hidden-warning')
@@ -377,7 +439,7 @@ describe('<ChartCard /> (table view)', () => {
     });
 
     it('renders open modal button', () => {
-      render(<ChartCard customField={customField} />);
+      render(<ChartCard userCustomField={userCustomField} />);
 
       expect(screen.getByTestId('show-modal-button')).toBeInTheDocument();
     });
@@ -389,13 +451,13 @@ describe('<ChartCard /> (table view)', () => {
     });
 
     it('renders included users percentage', () => {
-      render(<ChartCard customField={customField} />);
+      render(<ChartCard userCustomField={userCustomField} />);
 
       expect(screen.getByText('85%')).toBeInTheDocument();
     });
 
     it('does not render warning', () => {
-      render(<ChartCard customField={customField} />);
+      render(<ChartCard userCustomField={userCustomField} />);
 
       expect(
         screen.queryByTestId('representativeness-items-hidden-warning')
@@ -409,7 +471,9 @@ describe('<ChartCard /> (table view)', () => {
     });
 
     it('opens modal on click button', () => {
-      const { container } = render(<ChartCard customField={customField} />);
+      const { container } = render(
+        <ChartCard userCustomField={userCustomField} />
+      );
 
       expect(
         container.querySelector('#e2e-modal-container')
@@ -424,7 +488,9 @@ describe('<ChartCard /> (table view)', () => {
     });
 
     it('renders correct number of rows', () => {
-      const { container } = render(<ChartCard customField={customField} />);
+      const { container } = render(
+        <ChartCard userCustomField={userCustomField} />
+      );
 
       const button = screen.getByTestId('show-modal-button');
       fireEvent.click(button);

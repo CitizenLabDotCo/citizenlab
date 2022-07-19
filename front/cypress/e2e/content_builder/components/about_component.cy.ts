@@ -61,7 +61,7 @@ describe('Content builder About component', () => {
     );
     cy.visit(`/admin/content-builder/projects/${projectId}/description`);
 
-    cy.get('#e2e-about-box').click();
+    cy.get('#e2e-about-box').click({ force: true });
     cy.get('#e2e-delete-button').click();
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveContentBuilder');

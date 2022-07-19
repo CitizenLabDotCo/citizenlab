@@ -13,6 +13,37 @@ describe('Admin: add project', () => {
 
   context('Type: Timeline', () => {
     context('Areas: All areas', () => {
+      it('creates a draft project by default', () => {
+        const projectTitleEN = randomString();
+        const projectTitleNLBE = randomString();
+        const projectTitleNLNL = randomString();
+        const projectTitleFRBE = randomString();
+
+        // Type random project titles for these required fields
+        cy.get('#project-title').type(projectTitleEN);
+        cy.get('.e2e-localeswitcher.nl-BE').click();
+        cy.get('#project-title').type(projectTitleNLBE);
+        cy.get('.e2e-localeswitcher.nl-NL').click();
+        cy.get('#project-title').type(projectTitleNLNL);
+        cy.get('.e2e-localeswitcher.fr-BE').click();
+        cy.get('#project-title').type(projectTitleFRBE);
+
+        // Submit project
+        cy.get('.e2e-submit-wrapper-button').click();
+
+        cy.wait(2000);
+
+        // Project should appear on top of the projects list
+        cy.get('#e2e-admin-projects-list-unsortable')
+          .children()
+          .first()
+          .contains(projectTitleEN);
+        cy.get('#e2e-admin-projects-list-unsortable')
+          .children()
+          .first()
+          .contains('Draft');
+      });
+
       it('creates a draft project', () => {
         const projectTitleEN = randomString();
         const projectTitleNLBE = randomString();
@@ -36,8 +67,15 @@ describe('Admin: add project', () => {
 
         cy.wait(2000);
 
-        // Project should appear on top of the Published projects
-        cy.get('#e2e-admin-projects-list-unsortable').contains(projectTitleEN);
+        // Project should appear on top of the projects list
+        cy.get('#e2e-admin-projects-list-unsortable')
+          .children()
+          .first()
+          .contains(projectTitleEN);
+        cy.get('#e2e-admin-projects-list-unsortable')
+          .children()
+          .first()
+          .contains('Draft');
       });
 
       it('creates a published project', () => {
@@ -47,7 +85,7 @@ describe('Admin: add project', () => {
         const projectTitleFRBE = randomString();
 
         // Select 'Draft' publication status
-        cy.get('.e2e-projecstatus-draft').click();
+        cy.get('.e2e-projecstatus-published').click();
 
         // Type random project titles for these required fields
         cy.get('#project-title').type(projectTitleEN);
@@ -63,8 +101,11 @@ describe('Admin: add project', () => {
 
         cy.wait(2000);
 
-        // Project should appear on top of the Published projects
-        cy.get('#e2e-admin-projects-list-unsortable').contains(projectTitleEN);
+        // Project should appear on top of the projects list
+        cy.get('#e2e-admin-projects-list-unsortable')
+          .children()
+          .first()
+          .contains(projectTitleEN);
       });
 
       it('creates an archived project', () => {
@@ -89,8 +130,15 @@ describe('Admin: add project', () => {
         cy.get('.e2e-submit-wrapper-button').click();
         cy.wait(2000);
 
-        // Project should appear on top of the Published projects
-        cy.get('#e2e-admin-projects-list-unsortable').contains(projectTitleEN);
+        // Project should appear on top of the projects list
+        cy.get('#e2e-admin-projects-list-unsortable')
+          .children()
+          .first()
+          .contains(projectTitleEN);
+        cy.get('#e2e-admin-projects-list-unsortable')
+          .children()
+          .first()
+          .contains('Archived');
       });
     });
 

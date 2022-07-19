@@ -13,7 +13,7 @@ const Tab = ({ onData, formatMessage }: ITabsOutlet) => {
         configuration: {
           label: formatMessage(messages.tabRepresentativeness),
           name: 'representativeness',
-          url: '/admin/dashboard/representativeness',
+          url: '/admin/dashboard/representation',
           feature: 'representativeness',
         },
         insertAfterName: 'users',

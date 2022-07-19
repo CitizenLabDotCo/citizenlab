@@ -107,8 +107,8 @@ resource 'User Custom Field Options' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :ordering)).to match ordering
-        expect(@custom_field.custom_field_options.order(:ordering)[1].id).to eq id
-        expect(@custom_field.custom_field_options.order(:ordering).map(&:ordering)).to eq (0..3).to_a
+        expect(@custom_field.options.order(:ordering)[1].id).to eq id
+        expect(@custom_field.options.order(:ordering).map(&:ordering)).to eq (0..3).to_a
       end
     end
 

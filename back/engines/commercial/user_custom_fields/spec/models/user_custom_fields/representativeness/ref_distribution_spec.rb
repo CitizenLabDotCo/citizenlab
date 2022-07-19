@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe UserCustomFields::Representativeness::RefDistribution do
+RSpec.describe UserCustomFields::Representativeness::RefDistribution do
   subject(:ref_distribution) { build(:ref_distribution) }
 
   describe 'factory' do
@@ -10,7 +10,7 @@ describe UserCustomFields::Representativeness::RefDistribution do
   end
 
   it { is_expected.to belong_to(:custom_field) }
-  it { is_expected.to have_many(:values).through(:custom_field).source(:custom_field_options) }
+  it { is_expected.to have_many(:options).through(:custom_field) }
   it { is_expected.to validate_uniqueness_of(:custom_field_id).case_insensitive }
   it { is_expected.to validate_presence_of(:distribution) }
 
@@ -29,6 +29,33 @@ describe UserCustomFields::Representativeness::RefDistribution do
     expect(ref_distribution).not_to be_valid
     expect(ref_distribution.errors.messages[:distribution])
       .to include('options must be a subset of the options of the associated custom field.')
+  end
+
+  it 'validates that the distribution counts are positive', :aggregate_failures do
+    distribution = ref_distribution.distribution
+    distribution[distribution.keys.first] = -1
+
+    expect(ref_distribution).not_to be_valid
+    expect(ref_distribution.errors.messages[:distribution])
+      .to include('population counts must be strictly positive.')
+  end
+
+  it 'validates that the distribution counts are integers', :aggregate_failures do
+    distribution = ref_distribution.distribution
+    distribution[distribution.keys.first] = 1.5
+
+    expect(ref_distribution).not_to be_valid
+    expect(ref_distribution.errors.messages[:distribution])
+      .to include('population counts must be integers.')
+  end
+
+  it 'validates that the distribution counts are not nil', :aggregate_failures do
+    distribution = ref_distribution.distribution
+    distribution[distribution.keys.first] = nil
+
+    expect(ref_distribution).not_to be_valid
+    expect(ref_distribution.errors.messages[:distribution])
+      .to include('population counts cannot be nil.')
   end
 
   describe '#probabilities_and_counts' do

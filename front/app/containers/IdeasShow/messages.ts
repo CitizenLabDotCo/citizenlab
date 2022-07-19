@@ -124,6 +124,30 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.contributionTwitterMessage',
     defaultMessage: 'Support this contribution: {postTitle}',
   },
+  ideaFacebookMessage: {
+    id: 'app.containers.IdeasShow.ideaFacebookMessage',
+    defaultMessage: 'Support this idea: {postTitle}',
+  },
+  optionFacebookMessage: {
+    id: 'app.containers.IdeasShow.optionFacebookMessage',
+    defaultMessage: 'Support this option: {postTitle}',
+  },
+  issueFacebookMessage: {
+    id: 'app.containers.IdeasShow.issueFacebookMessage',
+    defaultMessage: 'Support this issue: {postTitle}',
+  },
+  projectFacebookMessage: {
+    id: 'app.containers.IdeasShow.projectFacebookMessage',
+    defaultMessage: 'Support this project: {postTitle}',
+  },
+  questionFacebookMessage: {
+    id: 'app.containers.IdeasShow.questionFacebookMessage',
+    defaultMessage: 'Join the discussion: {postTitle}',
+  },
+  contributionFacebookMessage: {
+    id: 'app.containers.IdeasShow.contributionFacebookMessage',
+    defaultMessage: 'Support this contribution: {postTitle}',
+  },
   ideaWhatsAppMessage: {
     id: 'app.containers.IdeasShow.ideaWhatsAppMessage',
     defaultMessage: 'Support this idea: {postTitle}',

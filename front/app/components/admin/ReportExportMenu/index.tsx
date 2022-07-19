@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { findDOMNode } from 'react-dom';
 import { trackEventByName } from 'utils/analytics';
+import { Canvg } from 'canvg';
 
 // styling
 import styled from 'styled-components';
@@ -26,6 +27,32 @@ const Container = styled.div`
   position: relative;
   cursor: pointer;
 `;
+
+const StyledButton = styled(Button)`
+  button {
+    display: flex !important;
+    justify-content: flex-start !important;
+  }
+`;
+
+const getSVGStringStart = (width: number, height: number) =>
+  `<svg xmlns="http://www.w3.org/2000/svg" class="recharts-surface" width="${width}" height="${height}"`;
+
+const replaceWH = (
+  svgContent: string,
+  width: number,
+  height: number,
+  newWidth: number,
+  newHeight: number
+) => {
+  const start = getSVGStringStart(width, height);
+  const contentWithoutStart = svgContent.split(start)[1];
+  const newStart = getSVGStringStart(
+    Math.round(newWidth),
+    Math.round(newHeight)
+  );
+  return `${newStart}${contentWithoutStart}`;
+};
 
 interface ReportExportMenuProps {
   className?: string;
@@ -107,6 +134,58 @@ const ReportExportMenu = ({
     trackEventByName('Clicked export svg', { extra: { graph: name } });
   };
 
+  const handleDownloadPng = async () => {
+    // eslint-disable-next-line react/no-find-dom-node
+    const node = findDOMNode(svgNode && svgNode.current.container.children[0]);
+    if (node) {
+      // Create copy of node to trick TS (doesn't seem to understand that this will be always be a SVG)
+      const copy = node as SVGElement;
+
+      // Get aspect ratio
+      const width = copy.clientWidth;
+      const height = copy.clientHeight;
+
+      const aspectRatio = width / height;
+
+      // Increase width and height for better resolution
+      const newWidth = aspectRatio > 1 ? 4000 : aspectRatio * 4000;
+      const newHeight = aspectRatio <= 1 ? 4000 : (1 / aspectRatio) * 4000;
+
+      // Convert SVG to string
+      const svgContent = new XMLSerializer().serializeToString(node);
+
+      // Make SVG string with bigger width and height
+      const newSvgContent = replaceWH(
+        svgContent,
+        width,
+        height,
+        newWidth,
+        newHeight
+      );
+
+      // Create canvas
+      const canvas = document.createElement('canvas');
+
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      // Start SVG rendering with animations and mouse handling
+      const v = await Canvg.fromString(ctx, newSvgContent);
+      v.start();
+
+      // Convert the Canvas to an image
+      const link = document.createElement('a');
+      link.setAttribute('download', `${fileName}.png`);
+      link.setAttribute(
+        'href',
+        canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream')
+      );
+      link.click();
+    }
+
+    trackEventByName('Clicked export png', { extra: { graph: name } });
+  };
+
   const toggleDropdown = (value?: boolean) => () => {
     setDropdownOpened(value || !dropdownOpened);
   };
@@ -160,17 +239,27 @@ const ReportExportMenu = ({
         content={
           <>
             {svgNode && (
-              <Button
+              <StyledButton
                 onClick={handleDownloadSvg}
                 buttonStyle="text"
                 padding="0"
                 fontSize={`${fontSizes.s}px`}
               >
-                <FormattedMessage {...messages.downloadAsImage} />
-              </Button>
+                <FormattedMessage {...messages.downloadSvg} />
+              </StyledButton>
+            )}
+            {svgNode && (
+              <StyledButton
+                onClick={handleDownloadPng}
+                buttonStyle="text"
+                padding="0"
+                fontSize={`${fontSizes.s}px`}
+              >
+                <FormattedMessage {...messages.downloadPng} />
+              </StyledButton>
             )}
             {xlsxEndpoint && (
-              <Button
+              <StyledButton
                 onClick={downloadXlsx}
                 buttonStyle="text"
                 processing={exportingXls}
@@ -178,7 +267,7 @@ const ReportExportMenu = ({
                 fontSize={`${fontSizes.s}px`}
               >
                 <FormattedMessage {...messages.downloadXlsx} />
-              </Button>
+              </StyledButton>
             )}
           </>
         }

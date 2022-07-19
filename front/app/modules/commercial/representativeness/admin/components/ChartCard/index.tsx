@@ -6,6 +6,7 @@ import useReferenceData, {
   RepresentativenessRow,
   RepresentativenessRowMultiloc,
 } from '../../hooks/useReferenceData';
+import useRScore from '../../hooks/useRScore';
 
 // services
 import {
@@ -40,13 +41,13 @@ import { isNilOrError } from 'utils/helperUtils';
 export type ViewState = 'chart' | 'table';
 
 interface Props {
-  customField: IUserCustomFieldData;
+  userCustomField: IUserCustomFieldData;
   projectFilter?: string;
 }
 
 const getXlsxEndpoint = (
   code: TCustomFieldCode | null,
-  customFieldId: string
+  userCustomFieldId: string
 ): string => {
   switch (code) {
     case 'gender':
@@ -54,17 +55,18 @@ const getXlsxEndpoint = (
     case 'domicile':
       return usersByDomicileXlsxEndpoint;
     default:
-      return usersByRegFieldXlsxEndpoint(customFieldId);
+      return usersByRegFieldXlsxEndpoint(userCustomFieldId);
   }
 };
 
 const ChartCard = ({
-  customField,
+  userCustomField,
   projectFilter,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
-  const { referenceData, includedUserPercentage, referenceDataUploaded } =
-    useReferenceData(customField, projectFilter);
+  const rScore = useRScore(userCustomField.id, projectFilter);
+  const { referenceData, includedUsers, referenceDataUploaded } =
+    useReferenceData(userCustomField, projectFilter);
 
   const currentChartRef = useRef<SVGElement>();
   const [viewState, setViewState] = useState<ViewState | undefined>(
@@ -87,7 +89,7 @@ const ChartCard = ({
   if (referenceDataUploaded === false) {
     return (
       <EmptyCard
-        titleMultiloc={customField.attributes.title_multiloc}
+        titleMultiloc={userCustomField.attributes.title_multiloc}
         isComingSoon={false}
       />
     );
@@ -95,7 +97,8 @@ const ChartCard = ({
 
   if (
     isNilOrError(referenceData) ||
-    isNilOrError(includedUserPercentage) ||
+    isNilOrError(rScore) ||
+    isNilOrError(includedUsers) ||
     referenceDataUploaded === undefined ||
     viewState === undefined
   ) {
@@ -116,16 +119,17 @@ const ChartCard = ({
 
   const legendLabels = getLegendLabels(barNames);
 
-  const title = localize(customField.attributes.title_multiloc);
-  const fieldIsRequired = customField.attributes.required;
+  const title = localize(userCustomField.attributes.title_multiloc);
+  const fieldIsRequired = userCustomField.attributes.required;
   const xlsxEndpoint = getXlsxEndpoint(
-    customField.attributes.code,
-    customField.id
+    userCustomField.attributes.code,
+    userCustomField.id
   );
+
   const data = referenceData.map(
-    (opt: RepresentativenessRowMultiloc): RepresentativenessRow => {
-      const { title_multiloc, ..._opt } = opt;
-      return { ..._opt, name: localize(title_multiloc) };
+    (row: RepresentativenessRowMultiloc): RepresentativenessRow => {
+      const { title_multiloc, ...rest } = row;
+      return { ...rest, name: localize(title_multiloc) };
     }
   );
 
@@ -134,6 +138,7 @@ const ChartCard = ({
       <Header
         title={title}
         svgNode={currentChartRef}
+        rScore={rScore.attributes.score}
         viewState={viewState}
         projectFilter={projectFilter}
         xlsxEndpoint={xlsxEndpoint}
@@ -152,7 +157,7 @@ const ChartCard = ({
           title={title}
           data={data}
           legendLabels={legendLabels}
-          includedUserPercentage={includedUserPercentage}
+          includedUsers={includedUsers}
           fieldIsRequired={fieldIsRequired}
           projectFilter={projectFilter}
           xlsxEndpoint={xlsxEndpoint}
@@ -160,7 +165,7 @@ const ChartCard = ({
       )}
       <Footer
         fieldIsRequired={fieldIsRequired}
-        includedUserPercentage={includedUserPercentage}
+        includedUsers={includedUsers}
         hideTicks={hideTicks}
         dataIsTooLong={dataIsTooLong}
         numberOfHiddenItems={numberOfHiddenItems}

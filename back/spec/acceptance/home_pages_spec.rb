@@ -29,7 +29,6 @@ resource 'Home Page' do
 
     patch 'web_api/v1/home_page' do
       with_options scope: :home_page do
-        parameter :customizable_homepage_banner, 'if the custom homepage banner is enabled'
         parameter :banner_layout, 'the specific layout for the banner, one of: full_width_banner_layout two_column_layout two_row_layout'
         parameter :banner_avatars_enabled, 'if avatar display in the banner is enabled'
         parameter :banner_signed_in_header_multiloc, 'multiloc content for the banner header for signed in users'
@@ -39,29 +38,28 @@ resource 'Home Page' do
         parameter :banner_signed_out_header_overlay_opacity, 'color for the header banner overlay for signed out users, 0-100'
         parameter :bottom_info_section_enabled, 'if the bottom info section is enabled'
         parameter :bottom_info_section_multiloc, 'multiloc content for the bottom info section'
-        parameter :cta_signed_in_text_multiloc, 'multiloc content for the CTA for signed in users'
-        parameter :cta_signed_in_type, 'type of the CTA for signed in users, one of: customized_button no_button'
-        parameter :cta_signed_in_url, 'url for the CTA for signed in users'
-        parameter :cta_signed_out_text_multiloc, 'multiloc content for the CTA for signed out users'
-        parameter :cta_signed_out_type, 'type of the CTA for signed out users, one of: sign_up_button customized_button no_button'
-        parameter :cta_signed_out_url, 'url for the CTA for signed out users'
+        parameter :banner_cta_signed_in_text_multiloc, 'multiloc content for the CTA for signed in users'
+        parameter :banner_cta_signed_in_type, 'type of the CTA for signed in users, one of: customized_button no_button'
+        parameter :banner_cta_signed_in_url, 'url for the CTA for signed in users'
+        parameter :banner_cta_signed_out_text_multiloc, 'multiloc content for the CTA for signed out users'
+        parameter :banner_cta_signed_out_type, 'type of the CTA for signed out users, one of: sign_up_button customized_button no_button'
+        parameter :banner_cta_signed_out_url, 'url for the CTA for signed out users'
         parameter :header_bg, 'image for the header background'
         parameter :top_info_section_enabled, 'if the top info section is enabled'
         parameter :top_info_section_multiloc, 'multiloc content for the top info section'
-        parameter :events_widget, 'if events are enabled'
+        parameter :events_widget_enabled, 'if events are enabled'
         parameter :projects_enabled, 'if projects are enabled'
         parameter :projects_header_multiloc, 'multiloc content for the projects header'
         parameter :pinned_admin_publication_ids, 'the IDs of admin publications that are pinned to the page', type: :array
       end
       ValidationErrorHelper.new.error_fields(self, HomePage)
 
-      let(:customizable_homepage_banner) { true }
-      let(:events_widget) { true }
+      let(:events_widget_enabled) { true }
 
       example_request 'Update the current home page' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes, :customizable_homepage_banner)).to be true
+        expect(json_response.dig(:data, :attributes, :events_widget_enabled)).to be true
       end
 
       describe 'updating pins' do

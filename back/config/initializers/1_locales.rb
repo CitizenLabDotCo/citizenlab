@@ -2,32 +2,36 @@
 
 require 'i18n/backend/fallbacks'
 
+# Unfortunately we implicitly require the first supported locale to be `:en` in some places in the code,
+# which is why this list is not in alphabetical order.
+# CL-1069 is supposed to fix it.
 CL2_SUPPORTED_LOCALES = %i[
   en
   ar-MA
   ar-SA
-  en-GB
+  da-DK
+  de-DE
   en-CA
-  nl-BE
-  nl-NL
+  en-GB
+  es-CL
+  es-ES
   fr-BE
   fr-FR
-  de-DE
-  it-IT
-  da-DK
-  nb-NO
-  es-ES
-  es-CL
-  pl-PL
+  hr-HR
   hu-HU
+  it-IT
   kl-GL
   lb-LU
-  ro-RO
-  pt-BR
   mi
+  nb-NO
+  nl-BE
+  nl-NL
+  pl-PL
+  pt-BR
+  ro-RO
   sr-Latn
   sr-SP
-  hr-HR
+  sv-SE
 ].freeze
 
 fallback_locales =

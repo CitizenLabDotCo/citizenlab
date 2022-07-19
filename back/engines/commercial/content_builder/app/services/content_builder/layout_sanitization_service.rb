@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module ContentBuilder
-  class LayoutSanitizationService < ::ContentImageService
+  class LayoutSanitizationService
     def sanitize(craftjson, text_features: %i[title alignment list decoration link image video])
       sanitize_html_in_text_elements craftjson, text_features
     end
@@ -15,9 +15,7 @@ module ContentBuilder
     private
 
     def sanitize_html_in_text_elements(craftjson, features)
-      craftjson.each do |key, elt|
-        next if key == 'ROOT' || elt.dig('type', 'resolvedName') != 'Text'
-
+      LayoutService.new.select_craftjs_elements_for_type(craftjson, 'Text').each do |elt|
         text = elt.dig 'props', 'text'
         elt['props']['text'] = html_sanitizer.sanitize text, features if text
       end
