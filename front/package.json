@@ -6,8 +6,8 @@
   "version": "1.0.0",
   "description": "CitizenLab is a ready-to-use citizen participation platform for local governments",
   "engines": {
-    "node":"16.15.0",
-    "npm":">=8"
+    "node": "16.15.0",
+    "npm": ">=8"
   },
   "author": "CitizenLab",
   "scripts": {
@@ -38,7 +38,10 @@
     "detect-deadcode": "ts-prune -p app/tsconfig.json -i '(node_modules|utils/testUtils/rtl.tsx|services/permissions|i18n|/*/*/__mocks__)' | (! grep -v 'used in module')"
   },
   "lint-staged": {
-    "*.{ts,tsx,js,jsx}": [
+    "!(*app/containers/App/constants).js": [
+      "eslint --max-warnings=0"
+    ],
+    "*.{ts,tsx,jsx}": [
       "eslint --max-warnings=0"
     ],
     "*.{js,jsx,ts,tsx,json,css,scss,md,mdx,html}": [
@@ -56,7 +59,7 @@
   "dependencies": {
     "@apollo/client": "^3.5.6",
     "@babel/runtime": "7.x",
-    "@citizenlab/cl2-component-library": "^0.9.77",
+    "@citizenlab/cl2-component-library": "^0.9.79",
     "@craftjs/core": "^0.2.0-beta.5",
     "@jsonforms/core": "3.0.0-beta.0",
     "@jsonforms/react": "3.0.0-beta.1",
@@ -69,6 +72,7 @@
     "ajv": "^8.9.0",
     "bowser": "1.x",
     "canvas-to-blob": "^1.0.0",
+    "canvg": "^4.0.0",
     "clipboard-polyfill": "3.0.3",
     "compression": "1.7.4",
     "core-js": "^3.22.3",

@@ -174,7 +174,7 @@ const RenderNode = ({ render }) => {
       borderWidth="1px"
       borderColor={
         hasError
-          ? colors.clRedError
+          ? colors.red600
           : solidBorderIsVisible
           ? colors.adminTextColor
           : isSelectable
@@ -188,7 +188,7 @@ const RenderNode = ({ render }) => {
         <Box
           id="e2e-node-label"
           p="4px"
-          bgColor={hasError ? colors.clRedError : colors.adminTextColor}
+          bgColor={hasError ? colors.red600 : colors.adminTextColor}
           color="#fff"
           position="absolute"
           top="-28px"

@@ -38,10 +38,10 @@ const Name = styled.span<{
   }
 
   &.canModerate {
-    color: ${colors.clRedError};
+    color: ${colors.red600};
 
     &:hover {
-      color: ${darken(0.15, colors.clRedError)};
+      color: ${darken(0.15, colors.red600)};
     }
   }
 

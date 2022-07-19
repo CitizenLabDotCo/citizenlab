@@ -55,7 +55,7 @@ const Container = styled.div`
 
 const PostContainer = styled(Container)`
   white-space: pre-line;
-  background: ${transparentize(0.94, colors.clRedError)};
+  background: ${transparentize(0.94, colors.red600)};
   position: relative;
 `;
 
