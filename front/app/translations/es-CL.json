@@ -787,7 +787,7 @@
   "app.containers.IdeasNewPage.ideaFormTitle": "Agregar nueva idea",
   "app.containers.IdeasNewPage.ideaNewMetaDescription": "Publica un envío y únete a la conversación en la plataforma de participación de {orgName}.",
   "app.containers.IdeasNewPage.ideaNewMetaTitle": "Agregar nueva idea | {projectName}",
-  "app.containers.IdeasNewPage.issueFormTitle": "Agregar nuevo respuesta",
+  "app.containers.IdeasNewPage.issueFormTitle": "Agregar nueva respuesta",
   "app.containers.IdeasNewPage.issueMetaTitle": "Agregar nueva respuesta | {projectName}",
   "app.containers.IdeasNewPage.optionFormTitle": "Agregar nueva opción",
   "app.containers.IdeasNewPage.optionMetaTitle": "Agregar nueva opción | {projectName}",
