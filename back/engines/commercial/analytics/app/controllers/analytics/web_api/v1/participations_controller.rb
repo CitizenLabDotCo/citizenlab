@@ -12,7 +12,7 @@ module Analytics
 
         if validation['messages'].empty?
           results = query.run
-          render json: results
+          render json: { 'data' => results }
         else
           render json: { 'messages' => validation['messages'] }, status: :bad_request
         end
