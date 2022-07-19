@@ -4,6 +4,7 @@ import { fireEvent, render, screen, waitFor } from 'utils/testUtils/rtl';
 
 jest.mock('services/appConfiguration');
 jest.mock('hooks/useLocalize');
+jest.mock('utils/cl-intl');
 
 const indices = (n: number) => [...Array(n)].map((_, i) => i);
 
@@ -20,8 +21,22 @@ jest.mock(
   () => () => mockOptions
 );
 
+let mockField;
+
+const selectField = { attributes: { key: null } };
+const birthyearField = { attributes: { key: 'birthyear' } };
+
+jest.mock(
+  'modules/commercial/user_custom_fields/hooks/useUserCustomField',
+  () => () => mockField
+);
+
 describe('<Options />', () => {
   describe('select field', () => {
+    beforeEach(() => {
+      mockField = selectField;
+    });
+
     it('renders options correctly (all empty)', () => {
       mockOptions = generateOptions(5);
 
@@ -208,7 +223,13 @@ describe('<Options />', () => {
     });
   });
 
-  // describe('birthyear field', () => {
+  describe('birthyear field', () => {
+    beforeEach(() => {
+      mockField = birthyearField;
+    });
 
-  // })
+    it('TODO', () => {
+      expect(2 + 2).toBe(4);
+    });
+  });
 });
