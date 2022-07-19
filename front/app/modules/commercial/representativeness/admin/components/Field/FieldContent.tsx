@@ -25,6 +25,7 @@ import { isSubmittingAllowed, FormValues } from './utils';
 interface Props {
   userCustomFieldId: string;
   formValues: FormValues;
+  bins?: Bins;
   submitting: boolean;
   touched: boolean;
   ageGroupsSet?: boolean;
@@ -37,6 +38,7 @@ interface Props {
 const FieldContent = ({
   userCustomFieldId,
   formValues,
+  bins,
   submitting,
   touched,
   ageGroupsSet,
@@ -102,6 +104,7 @@ const FieldContent = ({
             <Options
               userCustomFieldId={userCustomFieldId}
               formValues={formValues}
+              bins={bins}
               onUpdateEnabled={onUpdateEnabled}
               onUpdatePopulation={onUpdatePopulation}
             />

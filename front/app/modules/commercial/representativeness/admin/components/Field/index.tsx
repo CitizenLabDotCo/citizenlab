@@ -27,7 +27,6 @@ import {
   getStatus,
   parseFormValues,
   convertBinsToFormValues,
-  isEmptyObject,
 } from './utils';
 
 // typings
@@ -59,6 +58,7 @@ const Field = ({
 }: InnerProps) => {
   const [submitting, setSubmitting] = useState(false);
   const [touched, setTouched] = useState(false);
+  const [bins, setBins] = useState<Bins | undefined>();
   const [formValues, setFormValues] = useState(
     getInitialValues(
       userCustomFieldOptions,
@@ -114,6 +114,7 @@ const Field = ({
   };
 
   const handleSaveBins = (bins: Bins) => {
+    setBins(bins);
     setFormValues(convertBinsToFormValues(bins));
   };
 
@@ -148,9 +149,7 @@ const Field = ({
   }
 
   const ageGroupsSet =
-    userCustomField.attributes.key === 'birthyear'
-      ? !isEmptyObject(formValues)
-      : undefined;
+    userCustomField.attributes.key === 'birthyear' ? !!bins : undefined;
 
   const status = getStatus(
     formValues,
@@ -186,6 +185,7 @@ const Field = ({
       <FieldContent
         userCustomFieldId={userCustomFieldId}
         formValues={formValues}
+        bins={bins}
         submitting={submitting}
         touched={touched}
         ageGroupsSet={ageGroupsSet}
