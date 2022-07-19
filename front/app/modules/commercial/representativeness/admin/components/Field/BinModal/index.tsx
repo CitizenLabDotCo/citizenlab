@@ -142,7 +142,7 @@ const BinModal = ({ open, bins, onClose, onSave }: Props) => {
           <Button
             width="auto"
             onClick={handleSave}
-            disabled={!validateBins(currentBins)}
+            disabled={!validateBins(currentBins, bins)}
           >
             <FormattedMessage {...messages.save} />
           </Button>
