@@ -470,8 +470,7 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           id="app.containers.Admin.settings.customize.headerSectionEnd"
           homepageSettings={localHomepageSettings}
           handleOnChange={handleSettingOnChange}
-          // testing
-          errors={{ base: [{ error: 'some error' }] }}
+          errors={apiErrors}
         />
         <Error apiErrors={apiErrors} />
       </Section>

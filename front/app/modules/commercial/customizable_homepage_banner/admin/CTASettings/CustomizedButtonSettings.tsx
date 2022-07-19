@@ -52,11 +52,11 @@ const getTextErrors = (
   }
 
   if (!isNilOrError(tenantLocales)) {
-    tenantLocales.forEach((locale) => {
-      if (isEmpty(textMultiloc?.[locale])) {
-        textErrors[locale] = formatMessage(genericMessages.blank);
-      }
-    });
+    if (tenantLocales.every((locale) => isEmpty(textMultiloc?.[locale]))) {
+      tenantLocales.forEach(
+        (locale) => (textErrors[locale] = formatMessage(genericMessages.blank))
+      );
+    }
   }
 
   return textErrors;
