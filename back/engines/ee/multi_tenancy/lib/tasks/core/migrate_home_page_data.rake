@@ -63,7 +63,6 @@ namespace :fix_existing_tenants do
 
           if settings['customizable_homepage_banner']
             banner = settings['customizable_homepage_banner']
-            home_page.customizable_homepage_banner_enabled = banner['enabled']
             home_page.banner_layout = banner['layout'] if banner['layout']
             home_page.banner_cta_signed_in_type = banner['cta_signed_in_type'] if banner['cta_signed_in_type']
 
