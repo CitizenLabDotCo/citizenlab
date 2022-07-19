@@ -37,6 +37,7 @@ const StyledIcon = styled(Icon)`
 
 interface Props {
   open: boolean;
+  bins?: Bins;
   onClose: () => void;
   onSave: (bins: Bins) => void;
 }
@@ -46,38 +47,38 @@ export type Bins = (number | null)[];
 // TODO delete this when real data is available
 export const getDummyBins = (): Bins => [18, 25, 35, 45, 55, 65, null];
 
-const BinModal = ({ open, onClose, onSave }: Props) => {
-  const [bins, setBins] = useState(getDummyBins());
+const BinModal = ({ open, bins, onClose, onSave }: Props) => {
+  const [currentBins, setCurrentBins] = useState(bins ?? getDummyBins());
 
   const handleUpdateLowerBound = (
     binIndex: number,
     newValue: number | null
   ) => {
-    setBins((bins) => updateLowerBound(bins, binIndex, newValue));
+    setCurrentBins((bins) => updateLowerBound(bins, binIndex, newValue));
   };
 
   const handleUpdateUpperBound = (newValue: number | null) => {
-    setBins((bins) => updateUpperBound(bins, newValue));
+    setCurrentBins((bins) => updateUpperBound(bins, newValue));
   };
 
   const resetAll = () => {
-    setBins((bins) => Array(bins.length).fill(null));
+    setCurrentBins((bins) => Array(bins.length).fill(null));
   };
 
   const applyExampleGrouping = () => {
-    setBins(getDummyBins());
+    setCurrentBins(getDummyBins());
   };
 
   const handleRemoveBin = () => {
-    setBins((bins) => removeBin(bins));
+    setCurrentBins((bins) => removeBin(bins));
   };
 
   const handleAddBin = () => {
-    setBins((bins) => addBin(bins));
+    setCurrentBins((bins) => addBin(bins));
   };
 
   const handleSave = () => {
-    onSave(bins);
+    onSave(currentBins);
     onClose();
   };
 
@@ -105,7 +106,7 @@ const BinModal = ({ open, onClose, onSave }: Props) => {
                 <FormattedMessage {...messages.clearAll} />
               </Text>
             </ClearAllButton>
-            {allBinsEmpty(bins) && (
+            {allBinsEmpty(currentBins) && (
               <ApplyExampleGroupingButton onClick={applyExampleGrouping}>
                 <Text variant="bodyS" mt="0px" mb="0px" color="label">
                   <StyledIcon
@@ -122,7 +123,7 @@ const BinModal = ({ open, onClose, onSave }: Props) => {
           </Box>
         </Box>
         <BinInputs
-          bins={bins}
+          bins={currentBins}
           onUpdateLowerBound={handleUpdateLowerBound}
           onUpdateUpperBound={handleUpdateUpperBound}
           onRemoveBin={handleRemoveBin}
@@ -141,7 +142,7 @@ const BinModal = ({ open, onClose, onSave }: Props) => {
           <Button
             width="auto"
             onClick={handleSave}
-            disabled={!validateBins(bins)}
+            disabled={!validateBins(currentBins)}
           >
             <FormattedMessage {...messages.save} />
           </Button>
