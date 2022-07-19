@@ -9,9 +9,9 @@ import PageWrapper from 'components/admin/PageWrapper';
 
 interface Props {
   breadcrumbs: { label: string; linkTo?: string }[];
-  title: string;
+  title?: string;
   children: JSX.Element | JSX.Element[];
-  stickyMenuContents: JSX.Element | JSX.Element[];
+  stickyMenuContents?: JSX.Element | JSX.Element[];
 }
 
 const SectionFormWrapper = ({
@@ -25,13 +25,17 @@ const SectionFormWrapper = ({
       <Box mb="16px">
         <Breadcrumbs breadcrumbs={breadcrumbs} />
       </Box>
-      <Box mb="20px">
-        <PageTitle>{title}</PageTitle>
-      </Box>
+      {title && (
+        <Box mb="20px">
+          <PageTitle>{title}</PageTitle>
+        </Box>
+      )}
       <Box>
         <PageWrapper>
           {children}
-          <StickyContainer>{stickyMenuContents}</StickyContainer>
+          {stickyMenuContents && (
+            <StickyContainer>{stickyMenuContents}</StickyContainer>
+          )}
         </PageWrapper>
       </Box>
     </>

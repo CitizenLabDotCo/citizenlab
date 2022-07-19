@@ -1,15 +1,26 @@
 import React, { useState } from 'react';
+
+// components
 import SectionToggle from '../SectionToggle';
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 import AdminViewButton from './AdminViewButton';
+import SectionFormWrapper from '../components/SectionFormWrapper';
+import { pagesAndMenuBreadcrumb, homeBreadcrumb } from '../breadcrumbs';
+
+// i18n
 import messages from './messages';
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl, MessageDescriptor } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+
+// services, hooks, resources, and types
 import {
   updateHomepageSettings,
   THomepageSection,
 } from 'services/homepageSettings';
 import useHomepageSettings from 'hooks/useHomepageSettings';
+
+// utils
 import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 
@@ -20,7 +31,7 @@ type TSectionToggleData = {
   linkToPath?: string;
 };
 
-const EditHomepage = () => {
+const EditHomepage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const homepageSettings = useHomepageSettings();
   const [isLoading, setIsLoading] = useState(false);
   const [sectionTogglesData, _setSectionTogglesData] = useState<
@@ -78,11 +89,22 @@ const EditHomepage = () => {
   }
 
   return (
-    <>
+    <SectionFormWrapper
+      title={formatMessage(messages.homepageTitle)}
+      breadcrumbs={[
+        {
+          label: formatMessage(pagesAndMenuBreadcrumb.label),
+          linkTo: pagesAndMenuBreadcrumb.linkTo,
+        },
+        {
+          label: formatMessage(homeBreadcrumb.label),
+        },
+      ]}
+    >
       <Box display="flex" alignItems="center" mb="12px">
         {/* Title should have no default margins. If I set margin to 0, it still gets overwritten. */}
         <Title variant="h2">
-          <FormattedMessage {...messages.homepageTitle} />
+          <FormattedMessage {...messages.sectionsTitle} />
         </Title>
         {/* Should this happen with a Box? */}
         <Box ml="auto">
@@ -132,8 +154,8 @@ const EditHomepage = () => {
           }
         )}
       </Box>
-    </>
+    </SectionFormWrapper>
   );
 };
 
-export default EditHomepage;
+export default injectIntl(EditHomepage);
