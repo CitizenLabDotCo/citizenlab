@@ -79,16 +79,17 @@ const BinModal = ({ open, bins, onClose, onSave }: Props) => {
   };
 
   const handleSave = () => {
-    const activeElement = document.activeElement
+    const activeElement = document.activeElement;
 
     if (activeElement) {
       (activeElement as HTMLElement)?.blur();
     }
 
-    setSaveScheduled(true);
+    setTimeout(() => {
+      setSaveScheduled(true);
+    }, 10);
   };
 
-  // This is
   useEffect(() => {
     if (!saveScheduled) return;
 
@@ -98,7 +99,8 @@ const BinModal = ({ open, bins, onClose, onSave }: Props) => {
 
     setSaveScheduled(false);
     onClose();
-  }, [saveScheduled])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [saveScheduled]);
 
   return (
     <Modal

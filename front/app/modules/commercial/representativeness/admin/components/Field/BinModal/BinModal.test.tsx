@@ -1,6 +1,6 @@
 import React from 'react';
 import BinModal from '.';
-import { render, screen, fireEvent } from 'utils/testUtils/rtl';
+import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
 
 jest.mock('services/appConfiguration');
 jest.mock('utils/cl-intl');
@@ -36,7 +36,7 @@ describe('<BinModal />', () => {
       expect(onSave).toHaveBeenCalledWith([18, 25, 37, 45, 55, 65, null]);
     });
 
-    it('calls onSave with right data (not blurring input, saving directly)', () => {
+    it.only('calls onSave with right data (not blurring input, saving directly)', () => {
       const onSave = jest.fn();
 
       const { container } = render(
@@ -48,8 +48,10 @@ describe('<BinModal />', () => {
 
       fireEvent.click(screen.getByText('Save'));
 
-      expect(onSave).toHaveBeenCalledTimes(1);
-      expect(onSave).toHaveBeenCalledWith([18, 25, 37, 45, 55, 65, null]);
+      waitFor(() => {
+        expect(onSave).toHaveBeenCalledTimes(1);
+        expect(onSave).toHaveBeenCalledWith([18, 25, 37, 45, 55, 65, null]);
+      });
     });
   });
 
