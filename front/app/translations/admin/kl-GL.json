@@ -1210,7 +1210,6 @@
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Inissiissutit nutarterput.",
   "app.containers.AdminPage.SettingsPage.tabAreas": "Nunami immikkoortut",
   "app.containers.AdminPage.SettingsPage.tabCustomize": "Naleqqussaagit",
-  "app.containers.AdminPage.SettingsPage.tabPages": "Quppernerit",
   "app.containers.AdminPage.SettingsPage.tabPolicies": "Politikkit",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "Nalunaarsuineq",
   "app.containers.AdminPage.SettingsPage.tabSettings": "Nalinginnaasumik",
@@ -1465,11 +1464,6 @@
   "app.modules.commercial.flag_inappropriate_content.admin.components.warnings": "Imarisat pillugit mianersoqqussut",
   "app.modules.granular_permissions.admin.components.projectPermissionsTab": "Iserfigisinnaasanut pisinnaatitaaffiit",
   "app.modules.idea_assignment.admin.components.permissionsTab": "Iserfigisinnaasanut pisinnaatitaaffiit",
-  "app.modules.navbar.admin.component.NavbarItemList.editButton": "Aaqqiissuteqarfigiuk",
-  "app.modules.navbar.admin.component.NavbarItemList.viewButton": "Ersersiguk",
-  "app.modules.navbar.admin.components.NavbarItemList.addButton": "Iserfiusinnaasut ilakkit",
-  "app.modules.navbar.admin.components.NavbarItemList.defaultTag": "NALINGINNAASOQ",
-  "app.modules.navbar.admin.components.NavbarItemList.deleteButton": "Piiaruk",
   "app.modules.navbar.admin.components.NavbarItemList.hiddenFromNavigation": "Quppernerit takuneqariaannaasut",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Quppernerit illit iserfigisinnaasanni takusinnaasatit",
   "app.modules.navbar.admin.components.tabNavigation": "Iserfiusinnaasut",
@@ -1477,7 +1471,6 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Ilumut qupperneq una peerniarpiuk? Uterteqqissinnaanavianngilaq. Peernissaanut piareersimanngikkuit qupperneq navigationslinjemiit peersinnaavat.",
   "app.modules.navbar.admin.containers.deletePageConfirmationHidden": "Ilumut qupperneq una peerniarpiuk? Uterteqqissinnaanavianngilaq.",
   "app.modules.navbar.admin.containers.pageSubtitle": "Iserfigisinnaasannik toqqaavissartalik Angerlarit aamma Suliniutit saniatigut tallimat tikillugit saqqummertinneqarsinnaapput. Toqqagassani taaguutit allanngortissinnaavatit nuussinnaallugillu aamma nammineq imaritikkusutannik quppernernik ikkussisinnaavutit.",
-  "app.modules.navbar.admin.containers.pageTitle": "Iserfiusinnaasut nittartakkamilu quppernerit",
   "app.modules.project_management.admin.components.permissionsTab": "Iserfigisinnaasanut pisinnaatitaaffiit",
   "components.admin.ServerError.genericServerError": "Imarisanik aallerniarnermi ajortoqarpoq, kingusinnerusukkut misileqqilaariuk."
 }
