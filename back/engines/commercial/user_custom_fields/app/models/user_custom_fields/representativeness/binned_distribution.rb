@@ -39,7 +39,7 @@ module UserCustomFields
       end
 
       def counts
-        distribution['counts']
+        distribution['counts'].dup
       end
 
       def validate_distribution

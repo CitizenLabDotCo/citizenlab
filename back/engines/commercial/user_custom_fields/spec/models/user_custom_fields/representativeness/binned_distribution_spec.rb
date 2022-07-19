@@ -11,6 +11,16 @@ RSpec.describe UserCustomFields::Representativeness::BinnedDistribution do
     it { is_expected.to be_valid }
   end
 
+  # Needed to test counts validations.
+  # See 'reference distribution' shared examples for more info.
+  described_class.class_eval do
+    def counts=(counts)
+      distribution['counts'] = counts
+    end
+  end
+
+  it_behaves_like 'reference distribution', described_class, :binned_distribution
+
   it 'validates that bin boundaries are ordered', :aggregate_failures do
     bin_boundaries.reverse!
 

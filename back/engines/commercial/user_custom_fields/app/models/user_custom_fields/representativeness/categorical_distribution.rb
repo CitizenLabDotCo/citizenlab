@@ -65,7 +65,7 @@ module UserCustomFields
       end
 
       def counts
-        @counts ||= distribution.values.dup.freeze
+        @counts = distribution.values
       end
 
       def probabilities
