@@ -5,11 +5,11 @@ module IdBosaFas
     include BosaFasVerification
 
     ENVIRONMENTS = {
-      integration: {
+      'integration' => {
         host: 'idp.iamfas.int.belgium.be',
         jwks_uri: 'https://idp.iamfas.int.belgium.be/fas/oauth2/connect/jwk_uri'
       },
-      production: {
+      'production' => {
         host: 'idp.iamfas.belgium.be',
         jwks_uri: 'https://idp.iamfas.belgium.be/fas/oauth2/connect/jwk_uri'
       }
