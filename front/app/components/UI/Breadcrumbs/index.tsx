@@ -50,7 +50,13 @@ const Breadcrumbs = ({ breadcrumbs }: Props) => {
               </Text>
             )}
             {!isLastBreadcrumb && (
-              <Text ml="16px" as="span" mr="16px" fontSize="m">
+              <Text
+                color="separation"
+                ml="16px"
+                as="span"
+                mr="16px"
+                fontSize="m"
+              >
                 /
               </Text>
             )}
