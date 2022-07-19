@@ -107,6 +107,7 @@ const FieldContent = ({
               bins={bins}
               onUpdateEnabled={onUpdateEnabled}
               onUpdatePopulation={onUpdatePopulation}
+              onEditBins={openBinModal}
             />
           )}
         </Box>
@@ -132,6 +133,7 @@ const FieldContent = ({
 
       <BinModal
         open={binModalOpen}
+        bins={bins}
         onClose={closeBinModal}
         onSave={onSaveBins}
       />

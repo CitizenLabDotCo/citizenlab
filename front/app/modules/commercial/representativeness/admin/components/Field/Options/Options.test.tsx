@@ -53,6 +53,7 @@ describe('<Options />', () => {
           formValues={formValues}
           onUpdateEnabled={jest.fn()}
           onUpdatePopulation={jest.fn()}
+          onEditBins={jest.fn()}
         />
       );
 
@@ -88,6 +89,7 @@ describe('<Options />', () => {
           formValues={formValues}
           onUpdateEnabled={jest.fn()}
           onUpdatePopulation={jest.fn()}
+          onEditBins={jest.fn()}
         />
       );
 
@@ -114,6 +116,7 @@ describe('<Options />', () => {
           formValues={formValues}
           onUpdateEnabled={jest.fn()}
           onUpdatePopulation={jest.fn()}
+          onEditBins={jest.fn()}
         />
       );
 
@@ -138,6 +141,7 @@ describe('<Options />', () => {
           formValues={formValues}
           onUpdateEnabled={jest.fn()}
           onUpdatePopulation={jest.fn()}
+          onEditBins={jest.fn()}
         />
       );
 
@@ -157,6 +161,7 @@ describe('<Options />', () => {
             formValues={formValues}
             onUpdateEnabled={jest.fn()}
             onUpdatePopulation={jest.fn()}
+            onEditBins={jest.fn()}
           />
         );
 
@@ -184,6 +189,7 @@ describe('<Options />', () => {
           formValues={formValues}
           onUpdateEnabled={onUpdateEnabled}
           onUpdatePopulation={jest.fn()}
+          onEditBins={jest.fn()}
         />
       );
 
@@ -212,6 +218,7 @@ describe('<Options />', () => {
           formValues={formValues}
           onUpdateEnabled={jest.fn()}
           onUpdatePopulation={onUpdatePopulation}
+          onEditBins={jest.fn()}
         />
       );
 

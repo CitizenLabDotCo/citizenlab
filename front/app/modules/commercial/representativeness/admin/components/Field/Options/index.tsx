@@ -34,6 +34,7 @@ interface Props {
   bins?: Bins;
   onUpdateEnabled: (optionId: string, enabled: boolean) => void;
   onUpdatePopulation: (optionId: string, population: number | null) => void;
+  onEditBins: () => void;
 }
 
 const Options = injectIntl(
@@ -43,6 +44,7 @@ const Options = injectIntl(
     bins,
     onUpdateEnabled,
     onUpdatePopulation,
+    onEditBins,
     intl: { formatMessage },
   }: Props & InjectedIntlProps) => {
     const [seeMore, setSeeMore] = useState(false);
@@ -65,6 +67,8 @@ const Options = injectIntl(
     );
 
     const showSeeMoreButton = userCustomFieldOptions.length > 12;
+    const showEditAgeGroupsButton =
+      userCustomField.attributes.key === 'birthyear' && bins;
 
     const onToggle = (optionId: string) => () => {
       const currentlyEnabled = optionId in formValues;
@@ -110,7 +114,6 @@ const Options = injectIntl(
           <Box width="100%" display="flex" mt="16px" mb="12px">
             <Button
               buttonStyle="secondary"
-              onClick={toggleSeeMore}
               text={
                 seeMore
                   ? formatMessage(messages.seeLess)
@@ -119,6 +122,19 @@ const Options = injectIntl(
                     })
               }
               width="auto"
+              onClick={toggleSeeMore}
+            />
+          </Box>
+        )}
+
+        {showEditAgeGroupsButton && (
+          <Box width="100%" display="flex" mt="16px" mb="12px">
+            <Button
+              buttonStyle="secondary"
+              text={formatMessage(messages.editAgeGroups)}
+              width="auto"
+              icon="edit"
+              onClick={onEditBins}
             />
           </Box>
         )}
