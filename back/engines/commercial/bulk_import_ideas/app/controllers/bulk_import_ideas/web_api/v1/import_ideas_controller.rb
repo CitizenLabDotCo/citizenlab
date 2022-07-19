@@ -10,7 +10,7 @@ module BulkImportIdeas
       import_ideas_service.import_ideas idea_rows, max_ideas: 100
       head :ok
     rescue BulkImportIdeas::Error => e
-      render json: { errors: e.message }, status: :unprocessable_entity
+      render json: { errors: [{ error: e.message }] }, status: :unprocessable_entity
     end
 
     def example_xlsx

@@ -136,10 +136,9 @@ describe BulkImportIdeas::ImportIdeasService do
       expect(idea.topic_ids).to match_array [topic1.id, topic2.id]
     end
 
-    it 'imports ideas with images', pending: true do
+    it 'imports ideas with images' do
       WebMock.disable_net_connect!
-      stub_request(:get, 'https://images.com/image.png')
-        .to_return(body: 'abc')
+      FakeWeb.register_uri(:get, 'https://images.com/image.png', body: 'Hello World!')
 
       create :user, email: 'userimport@citizenlab.co'
       create :project, title_multiloc: { 'en' => 'Project title' }
@@ -212,7 +211,7 @@ describe BulkImportIdeas::ImportIdeasService do
 
       idea_rows = service.xlsx_to_idea_rows xlsx_array
 
-      expect(idea_rows).to match [
+      expect(idea_rows).to contain_exactly(
         a_hash_including(
           title_multiloc: { 'nl-BE' => 'Mijn idee titel', 'fr-BE' => 'Mon idée titre' },
           body_multiloc: { 'nl-BE' => 'Mijn idee inhoud', 'fr-BE' => 'Mon idée contenu' },
@@ -232,7 +231,7 @@ describe BulkImportIdeas::ImportIdeasService do
           user_email: 'admin@citizenlab.co',
           project_title: 'Project 2'
         )
-      ]
+      )
     end
   end
 end
