@@ -38,10 +38,7 @@ export default () => ({
       ),
       children: [
         {
-          // to be changed when refactoring
-          // path: '' should only be used for redirects on
-          // index. Search the codebase for examples
-          path: '',
+          index: true,
           // the main page with outlets and a visual container
           element: <CustomNavbarSettingsComponent />,
         },
