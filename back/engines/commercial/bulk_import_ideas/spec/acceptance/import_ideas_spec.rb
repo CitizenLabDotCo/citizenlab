@@ -68,7 +68,7 @@ resource 'BulkImportIdeasImportIdeas' do
   def create_bulk_import_ideas_xlsx
     hash_array = [
       {
-        'Title_en' => 'My idea titel',
+        'Title_en' => 'My idea title',
         'Body_en' => 'My idea content',
         'Email' => 'moderator@citizenlab.co',
         'Project' => 'Project 1'
