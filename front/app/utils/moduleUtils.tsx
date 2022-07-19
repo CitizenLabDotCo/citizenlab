@@ -32,6 +32,7 @@ import {
   MessageDescriptor,
   Multiloc,
   Locale,
+  CLErrors,
 } from 'typings';
 import { LatLngTuple } from 'leaflet';
 import { Point } from 'components/UI/LeafletMap/typings';
@@ -41,11 +42,13 @@ import { NavItem } from 'containers/Admin/sideBar';
 import {
   AppConfigurationFeature,
   CustomizedButtonConfig,
-  IAppConfigurationSettings,
   TAppConfigurationSetting,
   TAppConfigurationSettingCore,
 } from 'services/appConfiguration';
-import { THomepageBannerLayout } from 'services/homepageSettings';
+import {
+  THomepageBannerLayout,
+  IHomepageSettingsAttributes,
+} from 'services/homepageSettings';
 import { ManagerType } from 'components/admin/PostManager';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaHeaderRow';
@@ -362,12 +365,19 @@ export interface OutletsPropertyMap {
     onMount: () => void;
   };
   'app.containers.Admin.settings.customize.headerSectionStart': {
-    latestAppConfigSettings:
-      | IAppConfigurationSettings
-      | Partial<IAppConfigurationSettings>;
+    homepageSettings: IHomepageSettingsAttributes;
     handleOnChange: (
-      settingName: TAppConfigurationSetting
-    ) => (settingKey: string, settingValue: any) => void;
+      settingKey: keyof IHomepageSettingsAttributes,
+      settingValue: any
+    ) => void;
+  };
+  'app.containers.Admin.settings.customize.headerSectionEnd': {
+    homepageSettings: IHomepageSettingsAttributes;
+    handleOnChange: (
+      settingKey: keyof IHomepageSettingsAttributes,
+      settingValue: any
+    ) => void;
+    errors: CLErrors | undefined;
   };
   'app.containers.LandingPage.SignedOutHeader.index': {
     homepageBannerLayout: THomepageBannerLayout;
@@ -379,7 +389,6 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.pages-menu.index': Record<string, any>;
   'app.containers.Admin.pages-menu.NavigationSettings': Record<string, any>;
   'app.containers.LandingPage.SignedOutHeader.CTA': {
-    customizedButtonConfig?: CustomizedButtonConfig;
     buttonStyle: BannerButtonStyle;
     signUpIn: (event: MouseEvent | KeyboardEvent) => void;
   };

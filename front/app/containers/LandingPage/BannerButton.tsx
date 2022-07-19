@@ -7,7 +7,7 @@ type Props = {
   className?: string;
   buttonStyle: BannerButtonStyle;
   text: string;
-  linkTo?: string;
+  linkTo?: string | null;
   onClick?: (event: MouseEvent | KeyboardEvent) => void;
   openLinkInNewTab?: boolean;
 };

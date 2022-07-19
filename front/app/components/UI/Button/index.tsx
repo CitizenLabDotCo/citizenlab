@@ -10,7 +10,7 @@ import {
 
 import Link from 'utils/cl-router/Link';
 interface Props extends ButtonProps {
-  linkTo?: string;
+  linkTo?: string | null;
   openLinkInNewTab?: boolean;
 }
 

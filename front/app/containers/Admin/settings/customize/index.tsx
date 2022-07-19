@@ -6,9 +6,7 @@ import { get, has, isEmpty, omitBy } from 'lodash-es';
 // components
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import Branding from './Branding';
-import Header from './Header';
 import ProjectHeader from './ProjectHeader';
-import HomepageCustomizableSection from './HomepageCustomizableSection';
 import Events from './Events';
 import AllInput from './AllInput';
 
@@ -160,22 +158,14 @@ class SettingsCustomizeTab extends PureComponent<
       !localLogoIsNull || (hasRemoteLogo && localLogoIsNotSet)
         ? null
         : formatMessage(messages.noLogo);
-    const hasRemoteHeader = has(tenant, 'data.attributes.header_bg.large');
-    const localHeaderIsNotSet = !has(attributesDiff, 'header_bg');
-    const localHeaderIsNull =
-      !localHeaderIsNotSet && attributesDiff.header_bg === null;
-    const headerError =
-      !localHeaderIsNull || (hasRemoteHeader && localHeaderIsNotSet)
-        ? null
-        : formatMessage(messages.noHeader);
     const hasTitleError = !isEmpty(omitBy(this.state.titleError, isEmpty));
     const hasSubtitleError = !isEmpty(
       omitBy(this.state.subtitleError, isEmpty)
     );
 
-    this.setState({ logoError, headerError });
+    this.setState({ logoError });
 
-    return !logoError && !headerError && !hasTitleError && !hasSubtitleError;
+    return !logoError && !hasTitleError && !hasSubtitleError;
   };
 
   save = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -255,26 +245,15 @@ class SettingsCustomizeTab extends PureComponent<
     const { locale, tenant } = this.state;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant)) {
-      const homepageInfoPage = tenant.data.attributes.homepage_info_multiloc;
-
       const {
         logo,
-        header_bg,
         attributesDiff,
         logoError,
-        headerError,
-        titleError,
-        subtitleError,
         errors,
         saved,
         newEventsNavbarItemEnabled,
         newAllInputNavbarItemEnabled,
       } = this.state;
-
-      const latestAppConfigStyleSettings = {
-        ...tenant.data.attributes.style,
-        ...attributesDiff.style,
-      };
 
       const latestAppConfigSettings = {
         ...tenant.data.attributes,
@@ -294,31 +273,10 @@ class SettingsCustomizeTab extends PureComponent<
             getSetting={getSetting}
           />
 
-          <Header
-            header_bg={header_bg}
-            headerError={headerError}
-            titleError={titleError}
-            subtitleError={subtitleError}
-            latestAppConfigStyleSettings={latestAppConfigStyleSettings}
-            latestAppConfigSettings={latestAppConfigSettings}
-            setParentState={setState}
-            getSetting={getSetting}
-            handleSettingOnChange={this.handleSettingOnChange}
-            errors={errors}
-          />
-
           <ProjectHeader
             currentlyWorkingOnText={
               latestAppConfigCoreSettings?.['currently_working_on_text']
             }
-            setParentState={setState}
-          />
-
-          <HomepageCustomizableSection
-            homepageInfoMultiloc={
-              attributesDiff.homepage_info_multiloc || homepageInfoPage
-            }
-            homepageInfoErrors={errors.homepage_info}
             setParentState={setState}
           />
 

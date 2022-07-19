@@ -13,6 +13,7 @@ import { InjectedIntlProps } from 'react-intl';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
+import { BannerSettingKeyType } from '.';
 
 const TextSettings = styled.div`
   margin-top: 10px;
@@ -39,7 +40,7 @@ const TextSettings = styled.div`
 // front/app/containers/Admin/projects/general/index.tsx
 const getTextErrors = (
   textMultiloc: Multiloc | undefined,
-  errors: CLErrors,
+  errors: CLErrors | undefined,
   formatMessage: (messageDescriptor, values?) => string,
   tenantLocales: Locale[] | undefined | null | Error
 ) => {
@@ -62,8 +63,8 @@ const getTextErrors = (
 };
 
 const getUrlErrors = (
-  url: string | undefined,
-  errors: CLErrors,
+  url: string | undefined | null,
+  errors: CLErrors | undefined,
   formatMessage: (messageDescriptor, values?) => string
 ) => {
   // Prevent displaying errors on the first render.
@@ -82,45 +83,53 @@ const getUrlErrors = (
 };
 
 interface Props {
+  buttonUrl: string | null;
+  buttonMultiloc: Multiloc;
   buttonConfig?: CustomizedButtonConfig;
-  handleSettingOnChange: (settingKey: string, settingValue: any) => void;
+  handleSettingOnChange: (
+    settingKey: BannerSettingKeyType,
+    settingValue: Multiloc | string
+  ) => void;
   signInStatus: 'signed_out' | 'signed_in';
-  errors: CLErrors;
+  errors: CLErrors | undefined;
   className?: string;
 }
 
 const CustomizedButtonSettings = ({
-  buttonConfig,
+  buttonMultiloc,
+  buttonUrl,
   handleSettingOnChange,
   signInStatus,
   errors,
   className,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
-  const customizedButtonKey = `cta_${signInStatus}_customized_button`;
-  const handleOnChange =
-    (buttonKey: keyof CustomizedButtonConfig) => (value: any) => {
-      handleSettingOnChange(customizedButtonKey, {
-        ...buttonConfig,
-        [buttonKey]: value,
-      });
-    };
+  const tenantLocales = useAppConfigurationLocales();
+  const [textErrors, setTextError] = useState<Multiloc>({});
+
   const handleTextOnChange = (textMultiloc: Multiloc) => {
-    handleOnChange('text')(textMultiloc);
+    const signedInStatusKey =
+      signInStatus === 'signed_out'
+        ? 'banner_cta_signed_out_text_multiloc'
+        : 'banner_cta_signed_in_text_multiloc';
+    handleSettingOnChange(signedInStatusKey, textMultiloc);
     // We set it to {} because if it's set to the current error and there are two empty locale inputs,
     // cursor jumps to the next empty locale input after typing the first letter in the first empty locale input.
     // For the same reason we don't calculate the errors on every render.
     // The same done in front/app/containers/Admin/projects/general/index.tsx  #handleTitleMultilocOnChange
     setTextError({});
   };
-  const handleUrlOnChange = (url: string) => handleOnChange('url')(url);
 
-  const tenantLocales = useAppConfigurationLocales();
-  const [textErrors, setTextError] = useState<Multiloc>({});
+  const handleUrlOnChange = (url: string) => {
+    const signedInStatusKey =
+      signInStatus === 'signed_out'
+        ? 'banner_cta_signed_out_url'
+        : 'banner_cta_signed_in_url';
+    handleSettingOnChange(signedInStatusKey, url);
+  };
 
   const memedTextErrors = useMemo(
-    () =>
-      getTextErrors(buttonConfig?.text, errors, formatMessage, tenantLocales),
+    () => getTextErrors(buttonMultiloc, errors, formatMessage, tenantLocales),
     // if it depends on buttonConfig, cursor jumps to the next empty locale input (see comment in text onChange)
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [errors, formatMessage, tenantLocales]
@@ -133,7 +142,7 @@ const CustomizedButtonSettings = ({
         <InputMultilocWithLocaleSwitcher
           data-testid="inputMultilocLocaleSwitcher"
           type="text"
-          valueMultiloc={buttonConfig?.text}
+          valueMultiloc={buttonMultiloc}
           label={
             <FormattedMessage {...messages.customized_button_text_label} />
           }
@@ -150,8 +159,8 @@ const CustomizedButtonSettings = ({
         type="text"
         placeholder="https://..."
         onChange={handleUrlOnChange}
-        value={buttonConfig?.url}
-        error={getUrlErrors(buttonConfig?.url, errors, formatMessage)}
+        value={buttonUrl}
+        error={getUrlErrors(buttonUrl, errors, formatMessage)}
       />
     </SectionField>
   );

@@ -11,6 +11,7 @@ const Footer = lazy(() => import('./Footer'));
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
+import useHomepageSettings from 'hooks/useHomepageSettings';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -41,13 +42,14 @@ const Content = styled.div`
 `;
 
 const LandingPage = () => {
+  const homepageSettings = useHomepageSettings();
   const authUser = useAuthUser();
 
   return (
     <>
       <Container id="e2e-landing-page">
         {!isNilOrError(authUser) ? (
-          <SignedInHeader />
+          <SignedInHeader homepageSettings={homepageSettings} />
         ) : (
           <Fragment name="signed-out-header">
             <SignedOutHeader />
@@ -56,8 +58,28 @@ const LandingPage = () => {
 
         <Content>
           <Suspense fallback={<LoadingBox />}>
+            {!isNilOrError(homepageSettings) &&
+              homepageSettings.data.attributes.top_info_section_enabled && (
+                // top info section
+                <HomepageInfoSection
+                  multilocContent={
+                    homepageSettings.data.attributes.top_info_section_multiloc
+                  }
+                  fragmentName="pages/homepage_info/top-content"
+                />
+              )}
             <MainContent />
-            <HomepageInfoSection />
+            {!isNilOrError(homepageSettings) &&
+              homepageSettings.data.attributes.top_info_section_enabled && (
+                // bottom info section
+                <HomepageInfoSection
+                  multilocContent={
+                    homepageSettings.data.attributes
+                      .bottom_info_section_multiloc
+                  }
+                  fragmentName="pages/homepage_info/content"
+                />
+              )}
             <Footer />
           </Suspense>
         </Content>

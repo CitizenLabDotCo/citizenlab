@@ -14,11 +14,13 @@ import useHomepageSettings from 'hooks/useHomepageSettings';
 import { isNilOrError } from 'utils/helperUtils';
 import { insertConfiguration } from 'utils/moduleUtils';
 import { InsertConfigurationOptions } from 'typings';
+import clHistory from 'utils/cl-router/history';
 
 export type TSectionToggleData = {
   name: THomepageEnabledSetting;
   titleMessageDescriptor: MessageDescriptor;
   tooltipMessageDescriptor: MessageDescriptor;
+  linkToPath?: string;
 };
 
 const EditHomepage = () => {
@@ -31,11 +33,13 @@ const EditHomepage = () => {
       name: 'customizable_homepage_banner_enabled',
       titleMessageDescriptor: messages.heroBanner,
       tooltipMessageDescriptor: messages.heroBannerTooltip,
+      linkToPath: 'homepage-banner',
     },
     {
       name: 'top_info_section_enabled',
       titleMessageDescriptor: messages.topInfoSection,
       tooltipMessageDescriptor: messages.topInfoSectionTooltip,
+      linkToPath: 'top-info-section',
     },
     {
       name: 'projects_enabled',
@@ -46,6 +50,7 @@ const EditHomepage = () => {
       name: 'bottom_info_section_enabled',
       titleMessageDescriptor: messages.bottomInfoSection,
       tooltipMessageDescriptor: messages.bottomInfoSectionTooltip,
+      linkToPath: 'bottom-info-section',
     },
   ]);
 
@@ -74,7 +79,11 @@ const EditHomepage = () => {
     });
   };
 
-  const handleOnClick = () => {};
+  const handleOnClick = (url: string) => {
+    if (url) {
+      clHistory.push(`/admin/pages-menu/${url}/`);
+    }
+  };
 
   if (isNilOrError(homepageSettings)) {
     return null;
@@ -110,13 +119,19 @@ const EditHomepage = () => {
           </Warning>
         </Box>
         {sectionTogglesData.map(
-          ({ name, titleMessageDescriptor, tooltipMessageDescriptor }) => {
+          ({
+            name,
+            titleMessageDescriptor,
+            tooltipMessageDescriptor,
+            linkToPath,
+          }) => {
             return (
               <SectionToggle
                 key={name}
                 checked={homepageSettings.data.attributes[name]}
                 onChangeSectionToggle={handleOnChangeToggle(name)}
                 onClickEditButton={handleOnClick}
+                editLinkPath={linkToPath}
                 titleMessageDescriptor={titleMessageDescriptor}
                 tooltipMessageDescriptor={tooltipMessageDescriptor}
                 disabled={isLoading}
