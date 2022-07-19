@@ -129,12 +129,15 @@ const EditHomepage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           </Warning>
         </Box>
         {sectionTogglesData.map(
-          ({
-            sectionEnabledSettingName,
-            titleMessageDescriptor,
-            tooltipMessageDescriptor,
-            linkToPath,
-          }) => {
+          (
+            {
+              sectionEnabledSettingName,
+              titleMessageDescriptor,
+              tooltipMessageDescriptor,
+              linkToPath,
+            },
+            index
+          ) => {
             return (
               <SectionToggle
                 key={sectionEnabledSettingName}
@@ -149,6 +152,7 @@ const EditHomepage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
                 titleMessageDescriptor={titleMessageDescriptor}
                 tooltipMessageDescriptor={tooltipMessageDescriptor}
                 disabled={isLoading}
+                isLastItem={index === sectionTogglesData.length - 1}
               />
             );
           }

@@ -19,6 +19,7 @@ export interface Props {
   checked: boolean;
   disabled: boolean;
   editLinkPath?: string;
+  isLastItem: boolean;
 }
 
 const SectionToggle = ({
@@ -29,10 +30,11 @@ const SectionToggle = ({
   editLinkPath,
   checked,
   disabled,
+  isLastItem,
 }: Props) => {
   return (
-    <Row>
-      <Box display="flex" alignItems="center">
+    <Row isLastItem={isLastItem}>
+      <Box display="flex" alignItems="center" justifyContent="center">
         <Box mr="20px">
           <Toggle
             checked={checked}
@@ -40,16 +42,16 @@ const SectionToggle = ({
             disabled={disabled}
           />
         </Box>
-        {/*
-      Note: I think we want a default font-weigt of 600, not 700 for this component.
-      Also, the margin-top is more than margin-bottom (for an h3).
-      */}
-        <Title variant="h3" mr="10px">
-          <FormattedMessage {...titleMessageDescriptor} />
-        </Title>
-        <IconTooltip
-          content={<FormattedMessage {...tooltipMessageDescriptor} />}
-        />
+        <Box pb="13px">
+          <Title variant="h3" mr="10px">
+            <FormattedMessage {...titleMessageDescriptor} />
+          </Title>
+        </Box>
+        <Box pb="15px">
+          <IconTooltip
+            content={<FormattedMessage {...tooltipMessageDescriptor} />}
+          />
+        </Box>
       </Box>
       {editLinkPath && onClickEditButton && (
         <AdminEditButton onClick={() => onClickEditButton(editLinkPath)} />
