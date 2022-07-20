@@ -28,17 +28,14 @@ import {
   parseFormValues,
   convertBinsToFormValues,
 } from './utils';
+import { isSupported } from '../../containers/Dashboard/utils';
 
 // typings
-import { Multiloc } from 'typings';
 import { IUserCustomFieldOptionData } from 'modules/commercial/user_custom_fields/services/userCustomFieldOptions';
 import { Bins } from './BinModal';
 
 interface Props {
   userCustomFieldId: string;
-  titleMultiloc: Multiloc;
-  isDefault: boolean;
-  isComingSoon: boolean;
 }
 
 interface InnerProps extends Props {
@@ -49,9 +46,6 @@ interface InnerProps extends Props {
 
 const Field = ({
   userCustomFieldId,
-  titleMultiloc,
-  isDefault,
-  isComingSoon,
   userCustomFieldOptions,
   referenceDistribution,
   referenceDataUploaded,
@@ -86,7 +80,23 @@ const Field = ({
     referenceDistribution,
   ]);
 
-  if (formValues === null) return null;
+  if (formValues === null || isNilOrError(userCustomField)) {
+    return null;
+  }
+
+  const isComingSoon = !isSupported(userCustomField);
+  const isDefault = userCustomField.attributes.code !== null;
+  const titleMultiloc = userCustomField.attributes.title_multiloc;
+
+  const ageGroupsSet =
+    userCustomField.attributes.key === 'birthyear' ? !!bins : undefined;
+
+  const status = getStatus(
+    formValues,
+    referenceDistribution,
+    touched,
+    ageGroupsSet
+  );
 
   const handleUpdateEnabled = (optionId: string, enabled: boolean) => {
     if (enabled) {
@@ -143,20 +153,6 @@ const Field = ({
 
     setSubmitting(false);
   };
-
-  if (isNilOrError(userCustomField)) {
-    return null;
-  }
-
-  const ageGroupsSet =
-    userCustomField.attributes.key === 'birthyear' ? !!bins : undefined;
-
-  const status = getStatus(
-    formValues,
-    referenceDistribution,
-    touched,
-    ageGroupsSet
-  );
 
   if (isComingSoon) {
     return (
