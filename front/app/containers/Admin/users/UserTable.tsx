@@ -1,6 +1,6 @@
 // Libraries
 import React, { PureComponent } from 'react';
-import { isAdmin } from 'services/permissions/roles';
+import { isAdmin, TRole } from 'services/permissions/roles';
 import { includes, get, isArray } from 'lodash-es';
 
 // Components
@@ -10,7 +10,7 @@ import Pagination from 'components/Pagination';
 import UserTableRow from './UserTableRow';
 
 // Services
-import { IUserData, IRole, updateUser } from 'services/users';
+import { IUserData, updateUser } from 'services/users';
 
 // Resources
 import { GetUsersChildProps, SortAttribute } from 'resources/GetUsers';
@@ -91,7 +91,7 @@ class UsersTable extends PureComponent<Props & Tracks, State> {
   };
 
   handleAdminRoleOnChange = (user: IUserData) => () => {
-    let newRoles: IRole[] = [];
+    let newRoles: TRole[] = [];
     const { authUser, trackAdminToggle } = this.props;
 
     trackAdminToggle();

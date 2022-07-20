@@ -39,7 +39,8 @@ const Email = ({
       aria-label={formatMessage(messages.shareByEmail)}
       icon="email"
       iconSize="20px"
-      width="48px"
+      width="40px"
+      height="40px"
     />
   );
 };

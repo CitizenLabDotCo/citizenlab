@@ -44,7 +44,8 @@ describe UrlValidationService do
       'https://arcg.is/1jiOj',
       'https://onedrive.live.com/embed?cid=ECDDF98AA79FDEDB&resid=ECDDF98AA79FDEDB%21145&authkey=AIRY6_880wuOdDc&em=2',
       'http://www.slideshare.net/slideshow/embed_code/key/AYBogCfDlXkgMi',
-      'https://online1.snapsurveys.com/interview/deff624d-0604-45bb-a072-0c6da45b22e6'
+      'https://online1.snapsurveys.com/interview/deff624d-0604-45bb-a072-0c6da45b22e6',
+      'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf'
     ]
 
     invalid_urls = [
@@ -67,7 +68,8 @@ describe UrlValidationService do
       'https://platform.twitter.com',
       'https://facebook.com',
       'https://konveio.com/something',
-      'https://subdomain.arcgis.com'
+      'https://subdomain.arcgis.com',
+      'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pd'
     ]
 
     valid_urls.each do |url|

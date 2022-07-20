@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import Dropzone from 'react-dropzone';
+import Dropzone, { Accept } from 'react-dropzone';
 import { size, isEmpty, uniqBy, forEach } from 'lodash-es';
 import { reportError } from 'utils/loggingUtils';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
@@ -201,7 +201,7 @@ const RemoveButton = styled.button`
 interface Props {
   id?: string;
   images: UploadFile[] | null;
-  acceptedFileTypes?: string | null | undefined;
+  acceptedFileTypes?: Accept;
   imagePreviewRatio: number;
   maxImagePreviewWidth?: string;
   maxImageFileSize?: number;
@@ -401,7 +401,6 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
           )})`
         : null;
     const maxImageSizeInMb = this.getMaxImageSizeInMb();
-    const acceptedFileTypes = this.props.acceptedFileTypes || '*';
     const label =
       this.props.label ||
       (maxNumberOfImages && maxNumberOfImages === 1
@@ -424,7 +423,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
               }
             >
               <Dropzone
-                accept={acceptedFileTypes}
+                accept={this.props.acceptedFileTypes}
                 maxSize={maxImageFileSize}
                 disabled={!!(images && maxNumberOfImages === images.length)}
                 onDrop={this.onDrop as any}

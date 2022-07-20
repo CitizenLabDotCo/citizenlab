@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 // components
-import { Box, Icon } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // styles
 import { colors } from 'utils/styleUtils';
@@ -25,6 +25,7 @@ const ACCORDION = 'Accordion';
 const WHITE_SPACE = 'WhiteSpace';
 const INFO_WITH_ACCORDIONS = 'InfoWithAccordions';
 const IMAGE_TEXT_CARDS = 'ImageTextCards';
+const BUTTON = 'Button';
 
 type ComponentNamesType =
   | typeof CONTAINER
@@ -37,7 +38,8 @@ type ComponentNamesType =
   | typeof ACCORDION
   | typeof WHITE_SPACE
   | typeof INFO_WITH_ACCORDIONS
-  | typeof IMAGE_TEXT_CARDS;
+  | typeof IMAGE_TEXT_CARDS
+  | typeof BUTTON;
 
 export const getComponentNameMessage = (name: ComponentNamesType) => {
   switch (name) {
@@ -63,6 +65,8 @@ export const getComponentNameMessage = (name: ComponentNamesType) => {
       return messages.infoWithAccordions;
     case IMAGE_TEXT_CARDS:
       return messages.imageTextCards;
+    case BUTTON:
+      return messages.button;
     default:
       return messages.default;
   }
@@ -86,7 +90,6 @@ const RenderNode = ({ render }) => {
     name,
     isHover,
     hasError,
-    props,
     connectors: { connect, drag },
   } = useNode((node) => ({
     props: node.data.props,
@@ -171,7 +174,7 @@ const RenderNode = ({ render }) => {
       borderWidth="1px"
       borderColor={
         hasError
-          ? colors.clRedError
+          ? colors.red600
           : solidBorderIsVisible
           ? colors.adminTextColor
           : isSelectable
@@ -185,7 +188,7 @@ const RenderNode = ({ render }) => {
         <Box
           id="e2e-node-label"
           p="4px"
-          bgColor={hasError ? colors.clRedError : colors.adminTextColor}
+          bgColor={hasError ? colors.red600 : colors.adminTextColor}
           color="#fff"
           position="absolute"
           top="-28px"
@@ -203,21 +206,12 @@ const RenderNode = ({ render }) => {
       <div
         style={{
           pointerEvents:
-            name === IFRAME || name === ABOUT_BOX ? 'none' : 'auto',
-          display: name === IMAGE ? 'flex' : 'auto',
+            name === IFRAME || name === ABOUT_BOX || name === BUTTON
+              ? 'none'
+              : 'auto',
           width: '100%',
         }}
       >
-        {name === IMAGE && !props.imageUrl && (
-          <Icon
-            margin="auto"
-            padding="24px"
-            width="100px"
-            height="100px"
-            fill={colors.clIconSecondary}
-            name="image"
-          />
-        )}
         {render}
       </div>
     </StyledBox>

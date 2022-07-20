@@ -499,7 +499,9 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             />
           </SubSectionTitle>
           <ImagesDropzone
-            acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+            acceptedFileTypes={{
+              'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+            }}
             images={headerBg ? [headerBg] : null}
             imagePreviewRatio={250 / 1380}
             onAdd={handleHeaderBgOnAdd}
@@ -520,7 +522,9 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             images={projectFolderImages}
             imagePreviewRatio={960 / 1440}
             maxImagePreviewWidth="240px"
-            acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+            acceptedFileTypes={{
+              'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+            }}
             onAdd={getHandler(setProjectFolderImages)}
             onRemove={handleProjectFolderImageOnRemove}
           />
