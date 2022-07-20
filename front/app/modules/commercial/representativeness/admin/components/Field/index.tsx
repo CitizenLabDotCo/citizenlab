@@ -194,7 +194,7 @@ const Field = ({
   );
 };
 
-const FieldWrapper = ({ userCustomFieldId, ...otherProps }: Props) => {
+const FieldWrapper = ({ userCustomFieldId }: Props) => {
   const userCustomFieldOptions = useUserCustomFieldOptions(userCustomFieldId);
   const { referenceDistribution, referenceDataUploaded } =
     useReferenceDistribution(userCustomFieldId);
@@ -209,7 +209,6 @@ const FieldWrapper = ({ userCustomFieldId, ...otherProps }: Props) => {
   return (
     <Field
       userCustomFieldId={userCustomFieldId}
-      {...otherProps}
       userCustomFieldOptions={userCustomFieldOptions}
       referenceDistribution={referenceDistribution}
       referenceDataUploaded={referenceDataUploaded}
