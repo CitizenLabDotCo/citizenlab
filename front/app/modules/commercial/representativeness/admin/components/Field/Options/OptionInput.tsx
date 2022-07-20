@@ -39,6 +39,7 @@ const OptionInput = ({ value, percentage, disabled, onChange }: Props) => {
         ) : (
           <Input
             type="text"
+            className="option-population-input"
             value={formattedPopulation}
             onChange={handleChange}
           />

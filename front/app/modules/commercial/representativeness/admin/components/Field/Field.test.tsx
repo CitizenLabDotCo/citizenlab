@@ -1,6 +1,6 @@
 import React from 'react';
 import Field from '.';
-import { render, screen } from 'utils/testUtils/rtl';
+import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 
 jest.mock('services/appConfiguration');
 jest.mock('services/locale');
@@ -73,6 +73,31 @@ describe('<Field />', () => {
     it('renders', () => {
       render(<Field userCustomFieldId="field1" />);
       expect(screen.getByText('Age')).toBeInTheDocument();
+    });
+
+    describe('no data yet', () => {
+      it("opens bin modal on click 'set age groups'", () => {
+        const { container } = render(<Field userCustomFieldId="field1" />);
+        fireEvent.click(screen.getByText('Age'));
+        fireEvent.click(screen.getByText('set age groups'));
+        expect(
+          container.querySelector('#e2e-modal-container')
+        ).toBeInTheDocument();
+      });
+
+      it("sets default age groups on opening modal and clicking 'save'", () => {
+        render(<Field userCustomFieldId="field1" />);
+        fireEvent.click(screen.getByText('Age'));
+        fireEvent.click(screen.getByText('set age groups'));
+        fireEvent.click(screen.getByTestId('bin-save-button'));
+
+        expect(screen.getByText('18-24')).toBeInTheDocument();
+        expect(screen.getByText('25-34')).toBeInTheDocument();
+        expect(screen.getByText('35-44')).toBeInTheDocument();
+        expect(screen.getByText('45-54')).toBeInTheDocument();
+        expect(screen.getByText('55-64')).toBeInTheDocument();
+        expect(screen.getByText('65 and over')).toBeInTheDocument();
+      });
     });
   });
 });
