@@ -68,14 +68,6 @@ export async function toggleProposals({ enabled }: { enabled: boolean }) {
   return response;
 }
 
-export async function toggleEvents({ enabled }: { enabled: boolean }) {
-  const response = await streams.add(`${apiEndpoint}/toggle_events`, {
-    enabled,
-  });
-  await streams.fetchAllWith({ partialApiEndpoint: [apiEndpoint] });
-  return response;
-}
-
 // utility function to get slug associated with navbar item
 export function getNavbarItemSlug(
   navbarItemCode: TNavbarItemCode,
