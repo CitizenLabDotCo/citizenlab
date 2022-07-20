@@ -67,3 +67,6 @@ Views/tables should be named as follows:
 * analytics_dimension_*
 * analytics_fact_*
 
+### TODO
+
+* Do we need to make the application work without the separate analytics DB?
