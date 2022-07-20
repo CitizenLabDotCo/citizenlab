@@ -6,9 +6,6 @@ module Analytics
 
     connects_to database: { writing: :analytics, reading: :analytics }
 
-    # Set the schema to the schema that has already been set by Apartment for the main connection
-    connection.schema_search_path = ActiveRecord::Base.connection.schema_search_path
-
     def readonly?
       true
     end
