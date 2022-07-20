@@ -125,6 +125,7 @@ const FieldContent = ({
               text="Save"
               mt="20px"
               width="auto"
+              data-testid="representativeness-field-save-button"
               onClick={onSubmit}
             />
           </div>

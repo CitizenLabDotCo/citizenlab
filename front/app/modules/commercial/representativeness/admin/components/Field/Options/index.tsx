@@ -134,6 +134,7 @@ const Options = injectIntl(
               text={formatMessage(messages.editAgeGroups)}
               width="auto"
               icon="edit"
+              data-testid="edit-age-groups-button"
               onClick={onEditBins}
             />
           </Box>
