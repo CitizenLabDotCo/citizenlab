@@ -1100,7 +1100,6 @@
   "app.containers.Projects.removeItem": "Fjern emnet\n",
   "app.containers.Projects.requiredSelection": "Nødvendigt valg",
   "app.containers.Projects.requiredSelectionExceeded": "Du har overskredet den krævede udvælgelse.",
-  "app.containers.Projects.seeLess": "Se mindre",
   "app.containers.Projects.seeTheContributions": "Se alle bidrag",
   "app.containers.Projects.seeTheIdeas": "Se idéerne",
   "app.containers.Projects.seeTheIssues": "Se høringssvar",
