@@ -28,18 +28,21 @@ export const PAGES_MENU_PATH = '/admin/pages-menu';
 
 export default () => ({
   path: ADMIN_PAGE_PATH,
-  element: (
-    <PageLoading>
-      <CustomNavbarContainer />
-    </PageLoading>
-  ),
   children: [
     {
-      // to be changed when refactoring
-      // path: '' should only be used for redirects on
-      // index. Search the codebase for examples
       path: '',
-      element: <CustomNavbarSettingsComponent />,
+      element: (
+        <PageLoading>
+          <CustomNavbarContainer />
+        </PageLoading>
+      ),
+      children: [
+        {
+          index: true,
+          // the main page with outlets and a visual container
+          element: <CustomNavbarSettingsComponent />,
+        },
+      ],
     },
     {
       path: 'bottom-info-section',

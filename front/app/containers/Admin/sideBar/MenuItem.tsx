@@ -117,7 +117,7 @@ const IconWrapper = styled.div`
   }
 
   &.blankPage svg {
-    height: 31px;
+    height: 22px;
   }
 `;
 

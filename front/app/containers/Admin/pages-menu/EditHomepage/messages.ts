@@ -46,6 +46,10 @@ export default defineMessages({
   },
   homepageTitle: {
     id: 'app.containers.Admin.pages-menu.EditHomepage.homepageTitle',
-    defaultMessage: 'Homepage',
+    defaultMessage: 'Home',
+  },
+  sectionsTitle: {
+    id: 'app.containers.Admin.pages-menu.EditHomepage.homepageSectionsTitle',
+    defaultMessage: 'Sections',
   },
 });

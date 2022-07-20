@@ -7,9 +7,9 @@ import { Box, Text } from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
 
 const StyledLink = styled(Link)`
-  color: ${colors.adminSecondaryTextColor};
+  color: ${colors.label};
   &:hover {
-    border-bottom: 2px solid ${colors.adminSecondaryTextColor};
+    border-bottom: 2px solid ${colors.label};
     color: inherit;
     margin-bottom: -2px;
   }
@@ -33,24 +33,25 @@ const Breadcrumbs = ({ breadcrumbs }: Props) => {
         const isLastBreadcrumb = index === breadcrumbs.length - 1;
 
         return (
-          <Box
-            key={label}
-            display="flex"
-            alignItems="center"
-            color="adminSecondaryTextColor"
-          >
+          <Box key={label} display="flex" alignItems="center" color="label">
             {linkTo && (
               <Text fontSize="m" as="span">
                 <StyledLink to={linkTo}>{label}</StyledLink>
               </Text>
             )}
             {!linkTo && (
-              <Text fontSize="m" as="span">
+              <Text color="label" fontSize="m" as="span">
                 {label}
               </Text>
             )}
             {!isLastBreadcrumb && (
-              <Text ml="16px" as="span" mr="16px" fontSize="m">
+              <Text
+                color="separationDark"
+                ml="16px"
+                as="span"
+                mr="16px"
+                fontSize="m"
+              >
                 /
               </Text>
             )}

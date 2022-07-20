@@ -1,16 +1,27 @@
 import React, { useState } from 'react';
+
+// components
 import SectionToggle from '../SectionToggle';
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 import AdminViewButton from './AdminViewButton';
+import SectionFormWrapper from '../components/SectionFormWrapper';
+import { pagesAndMenuBreadcrumb, homeBreadcrumb } from '../breadcrumbs';
+
+// i18n
 import messages from './messages';
+import { FormattedMessage, injectIntl, MessageDescriptor } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+
+// services, hooks, resources, and types
 import Outlet from 'components/Outlet';
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import {
   updateHomepageSettings,
   THomepageEnabledSetting,
 } from 'services/homepageSettings';
 import useHomepageSettings from 'hooks/useHomepageSettings';
+
+// utils
 import { isNilOrError } from 'utils/helperUtils';
 import { insertConfiguration } from 'utils/moduleUtils';
 import { InsertConfigurationOptions } from 'typings';
@@ -21,9 +32,10 @@ export type TSectionToggleData = {
   titleMessageDescriptor: MessageDescriptor;
   tooltipMessageDescriptor: MessageDescriptor;
   linkToPath?: string;
+  hideToggle?: boolean;
 };
 
-const EditHomepage = () => {
+const EditHomepage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const homepageSettings = useHomepageSettings();
   const [isLoading, setIsLoading] = useState(false);
   const [sectionTogglesData, setSectionTogglesData] = useState<
@@ -34,6 +46,7 @@ const EditHomepage = () => {
       titleMessageDescriptor: messages.heroBanner,
       tooltipMessageDescriptor: messages.heroBannerTooltip,
       linkToPath: 'homepage-banner',
+      hideToggle: true,
     },
     {
       name: 'top_info_section_enabled',
@@ -90,13 +103,22 @@ const EditHomepage = () => {
   }
 
   return (
-    <>
+    <SectionFormWrapper
+      title={formatMessage(messages.homepageTitle)}
+      breadcrumbs={[
+        {
+          label: formatMessage(pagesAndMenuBreadcrumb.label),
+          linkTo: pagesAndMenuBreadcrumb.linkTo,
+        },
+        {
+          label: formatMessage(homeBreadcrumb.label),
+        },
+      ]}
+    >
       <Box display="flex" alignItems="center" mb="12px">
-        {/* Title should have no default margins. If I set margin to 0, it still gets overwritten. */}
         <Title variant="h2">
-          <FormattedMessage {...messages.homepageTitle} />
+          <FormattedMessage {...messages.sectionsTitle} />
         </Title>
-        {/* Should this happen with a Box? */}
         <Box ml="auto">
           <AdminViewButton
             buttonTextMessageDescriptor={messages.viewPage}
@@ -105,26 +127,22 @@ const EditHomepage = () => {
         </Box>
       </Box>
       <Box display="flex" flexDirection="column">
-        {/*
-         How do we deal with margins on Title to not make the tech debt worse here?
-           + be consistent
-
-         Also font-weight is an issue again.
-
-       Should I use a Box for this? Or go with a StyledWarning?
-       */}
         <Box mb="28px">
           <Warning>
             <FormattedMessage {...messages.sectionDescription} />
           </Warning>
         </Box>
         {sectionTogglesData.map(
-          ({
-            name,
-            titleMessageDescriptor,
-            tooltipMessageDescriptor,
-            linkToPath,
-          }) => {
+          (
+            {
+              name,
+              titleMessageDescriptor,
+              tooltipMessageDescriptor,
+              linkToPath,
+              hideToggle,
+            },
+            index
+          ) => {
             return (
               <SectionToggle
                 key={name}
@@ -135,6 +153,8 @@ const EditHomepage = () => {
                 titleMessageDescriptor={titleMessageDescriptor}
                 tooltipMessageDescriptor={tooltipMessageDescriptor}
                 disabled={isLoading}
+                isLastItem={index === sectionTogglesData.length - 1}
+                hideToggle={hideToggle}
               />
             );
           }
@@ -144,8 +164,8 @@ const EditHomepage = () => {
           onData={handleOnData}
         />
       </Box>
-    </>
+    </SectionFormWrapper>
   );
 };
 
-export default EditHomepage;
+export default injectIntl(EditHomepage);

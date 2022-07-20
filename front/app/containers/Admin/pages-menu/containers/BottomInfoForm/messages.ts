@@ -3,7 +3,7 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   bottomInfoPageTitle: {
     id: 'app.containers.Admin.pagesAndMenu.bottomInfoPageTitle',
-    defaultMessage: 'Bottom Info Section',
+    defaultMessage: 'Bottom info section',
   },
   bottomInfoContentEditorTitle: {
     id: 'app.containers.Admin.pagesAndMenu.bottomInfoContentEditorTitle',
