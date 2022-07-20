@@ -4,6 +4,7 @@ import moduleConfiguration from 'modules';
 
 const AdminIdeasContainer = lazy(() => import('./index'));
 const AdminIdeasAll = lazy(() => import('./all'));
+const Import = lazy(() => import('./import'));
 
 export default () => ({
   path: 'ideas',
@@ -18,6 +19,14 @@ export default () => ({
       element: (
         <PageLoading>
           <AdminIdeasAll />
+        </PageLoading>
+      ),
+    },
+    {
+      path: 'import',
+      element: (
+        <PageLoading>
+          <Import />
         </PageLoading>
       ),
     },
