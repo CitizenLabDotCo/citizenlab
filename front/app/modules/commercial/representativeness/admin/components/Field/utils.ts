@@ -110,7 +110,10 @@ export const isSubmittingAllowed = (
   return touched && isFormValid(formValues);
 };
 
-export const convertBinsToFormValues = (bins: Bins) => {
+export const convertBinsToFormValues = (
+  bins: Bins,
+  formValues: FormValues | null
+) => {
   return bins.slice(0, bins.length - 1).reduce((acc, curr, i) => {
     const upperBound = bins[i + 1];
     const isLastBin = i === bins.length - 2;
@@ -120,7 +123,11 @@ export const convertBinsToFormValues = (bins: Bins) => {
         ? `${curr}+`
         : `${curr}-${upperBound - (isLastBin ? 0 : 1)}`;
 
-    return { ...acc, [binId]: null };
+    return {
+      ...acc,
+      [binId]:
+        formValues !== null && binId in formValues ? formValues[binId] : null,
+    };
   }, {});
 };
 

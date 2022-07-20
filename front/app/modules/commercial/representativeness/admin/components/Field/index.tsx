@@ -125,7 +125,7 @@ const Field = ({
 
   const handleSaveBins = (bins: Bins) => {
     setBins(bins);
-    setFormValues(convertBinsToFormValues(bins));
+    setFormValues(convertBinsToFormValues(bins, formValues));
   };
 
   const handleSubmit = async () => {

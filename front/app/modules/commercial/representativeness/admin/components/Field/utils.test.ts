@@ -333,29 +333,75 @@ describe('isSubmittingAllowed', () => {
 });
 
 describe('convertBinsToFormValues', () => {
-  it('works with upper bound', () => {
-    const bins = [18, 25, 35, 55, 70];
+  describe('no existing formValues', () => {
+    it('works with upper bound', () => {
+      const bins = [18, 25, 35, 55, 70];
 
-    const expectedFormValues = {
-      '18-24': null,
-      '25-34': null,
-      '35-54': null,
-      '55-70': null,
-    };
+      const expectedFormValues = {
+        '18-24': null,
+        '25-34': null,
+        '35-54': null,
+        '55-70': null,
+      };
 
-    expect(convertBinsToFormValues(bins)).toEqual(expectedFormValues);
+      expect(convertBinsToFormValues(bins, null)).toEqual(expectedFormValues);
+    });
+
+    it('works without upper bound', () => {
+      const bins = [18, 25, 35, 55, null];
+
+      const expectedFormValues = {
+        '18-24': null,
+        '25-34': null,
+        '35-54': null,
+        '55+': null,
+      };
+
+      expect(convertBinsToFormValues(bins, null)).toEqual(expectedFormValues);
+    });
   });
 
-  it('works without upper bound', () => {
-    const bins = [18, 25, 35, 55, null];
+  describe('with existing formValues', () => {
+    it('works with upper bound', () => {
+      const bins = [18, 25, 37, 55, 70];
+      const formValues = {
+        '18-24': 100,
+        '25-34': 100,
+        '35-54': 100,
+        '55-70': 100,
+      };
 
-    const expectedFormValues = {
-      '18-24': null,
-      '25-34': null,
-      '35-54': null,
-      '55+': null,
-    };
+      const expectedFormValues = {
+        '18-24': 100,
+        '25-36': null,
+        '37-54': null,
+        '55-70': 100,
+      };
 
-    expect(convertBinsToFormValues(bins)).toEqual(expectedFormValues);
+      expect(convertBinsToFormValues(bins, formValues)).toEqual(
+        expectedFormValues
+      );
+    });
+
+    it('works without upper bound', () => {
+      const bins = [18, 25, 37, 55, null];
+      const formValues = {
+        '18-24': 100,
+        '25-34': 100,
+        '35-54': 100,
+        '55+': 100,
+      };
+
+      const expectedFormValues = {
+        '18-24': 100,
+        '25-36': null,
+        '37-54': null,
+        '55+': 100,
+      };
+
+      expect(convertBinsToFormValues(bins, formValues)).toEqual(
+        expectedFormValues
+      );
+    });
   });
 });

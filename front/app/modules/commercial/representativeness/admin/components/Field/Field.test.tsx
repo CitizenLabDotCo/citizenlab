@@ -1,6 +1,6 @@
 import React from 'react';
 import Field from '.';
-import { render, screen, fireEvent } from 'utils/testUtils/rtl';
+import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
 import { indices } from 'utils/helperUtils';
 import { createReferenceDistribution } from '../../services/referenceDistribution';
 
@@ -156,11 +156,13 @@ describe('<Field />', () => {
         fireEvent.blur(binInputs[5]);
         fireEvent.click(screen.getByTestId('bin-save-button'));
 
-        indices(6).forEach((i) => {
-          expect(populationInputs[i]).toHaveAttribute(
-            'value',
-            i === 1 || i === 2 ? '' : '100'
-          );
+        waitFor(() => {
+          indices(6).forEach((i) => {
+            expect(populationInputs[i]).toHaveAttribute(
+              'value',
+              i === 1 || i === 2 ? '' : '100'
+            );
+          });
         });
       });
     });
