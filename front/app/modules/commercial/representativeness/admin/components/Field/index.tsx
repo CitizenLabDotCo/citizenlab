@@ -6,7 +6,7 @@ import {
   createReferenceDistribution,
   replaceReferenceDistribution,
   deleteReferenceDistribution,
-  IReferenceDistributionData,
+  TReferenceDistributionData,
 } from '../../services/referenceDistribution';
 
 // hooks
@@ -40,7 +40,7 @@ interface Props {
 
 interface InnerProps extends Props {
   userCustomFieldOptions: IUserCustomFieldOptionData[];
-  referenceDistribution: IReferenceDistributionData | NilOrError;
+  referenceDistribution: TReferenceDistributionData | NilOrError;
   referenceDataUploaded: boolean;
 }
 

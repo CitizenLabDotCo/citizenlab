@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 // services
 import {
   referenceDistributionStream,
-  IReferenceDistributionData,
+  TReferenceDistributionData,
   IReferenceDistribution,
 } from '../services/referenceDistribution';
 import {
@@ -16,7 +16,7 @@ import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 function useReferenceDistribution(userCustomFieldId: string) {
   const [referenceDistribution, setReferenceDistribution] = useState<
-    IReferenceDistributionData | NilOrError
+    TReferenceDistributionData | NilOrError
   >();
   const [referenceDataUploaded, setReferenceDataUploaded] = useState<
     boolean | undefined

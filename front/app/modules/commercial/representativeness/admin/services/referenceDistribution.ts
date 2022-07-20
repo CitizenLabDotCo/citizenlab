@@ -5,7 +5,7 @@ import { apiEndpoint as statsEndpoint } from 'services/stats';
 const getStatsEndpoints = (userCustomFieldId: string) => [
   `${statsEndpoint}/users_by_gender`,
   // `${statsEndpoint}/users_by_domicile`
-  // `${statsEndpoint}/users_by_birthyear`,
+  `${statsEndpoint}/users_by_birthyear`,
   `${statsEndpoint}/users_by_custom_field/${userCustomFieldId}`,
 ];
 
@@ -15,19 +15,19 @@ const getCustomFieldEndpoint = (userCustomFieldId: string) =>
 const getReferenceDistributionEndpoint = (userCustomFieldId: string) =>
   `${getCustomFieldEndpoint(userCustomFieldId)}/reference_distribution`;
 
-export type TDistribution = Record<
-  string,
-  {
-    count: number;
-    probability: number;
-  }
->;
+export interface IReferenceDistribution {
+  data: TReferenceDistributionData;
+}
 
-export interface IReferenceDistributionData {
+export type TReferenceDistributionData =
+  | ICategoricalDistributionData
+  | IBinnedDistributionData;
+
+export interface ICategoricalDistributionData {
   id: string;
-  type: 'reference_distribution';
+  type: 'categorical_distribution';
   attributes: {
-    distribution: TDistribution;
+    distribution: TCategoricalDistribution;
   };
   relationships: {
     values: {
@@ -36,11 +36,30 @@ export interface IReferenceDistributionData {
   };
 }
 
-export interface IReferenceDistribution {
-  data: IReferenceDistributionData;
+export interface IBinnedDistributionData {
+  id: string;
+  type: 'binned_distribution';
+  attributes: {
+    distribution: IBinnedDistribution;
+  };
 }
 
-export type TUploadDistribution = Record<string, number>;
+export type TDistribution = TCategoricalDistribution | IBinnedDistribution;
+
+export type TCategoricalDistribution = Record<
+  string,
+  {
+    count: number;
+    probability: number;
+  }
+>;
+
+export interface IBinnedDistribution {
+  bins: (number | null)[];
+  counts: number[];
+}
+
+export type TUploadDistribution = Record<string, number> | IBinnedDistribution;
 
 export function referenceDistributionStream(userCustomFieldId: string) {
   return streams.get<IReferenceDistribution>({
