@@ -122,6 +122,7 @@ const Options = injectIntl(
                     })
               }
               width="auto"
+              data-testid="representativeness-see-more-button"
               onClick={toggleSeeMore}
             />
           </Box>

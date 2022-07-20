@@ -120,7 +120,9 @@ describe('<Options />', () => {
       );
 
       waitFor(() => {
-        expect(screen.getByText('See 3 more')).toBeInTheDocument();
+        expect(
+          screen.getByTestId('representativeness-see-more-button')
+        ).toBeInTheDocument();
       });
     });
 
@@ -151,8 +153,12 @@ describe('<Options />', () => {
       expect(screen.queryByText('option 13')).not.toBeInTheDocument();
 
       waitFor(() => {
-        expect(screen.getByText('See 3 more')).toBeInTheDocument();
-        fireEvent.click(screen.getByText('See 3 more'));
+        expect(
+          screen.getByTestId('representativeness-see-more-button')
+        ).toBeInTheDocument();
+        fireEvent.click(
+          screen.getByTestId('representativeness-see-more-button')
+        );
 
         rerender(
           <Options

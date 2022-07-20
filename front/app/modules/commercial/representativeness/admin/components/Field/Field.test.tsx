@@ -85,7 +85,7 @@ describe('<Field />', () => {
       it("opens bin modal on click 'set age groups'", () => {
         const { container } = render(<Field userCustomFieldId="field1" />);
         fireEvent.click(screen.getByText('Age'));
-        fireEvent.click(screen.getByText('set age groups'));
+        fireEvent.click(screen.getByTestId('set-age-groups-button'));
         expect(
           container.querySelector('#e2e-modal-container')
         ).toBeInTheDocument();
@@ -94,7 +94,7 @@ describe('<Field />', () => {
       it("sets default age groups on opening modal and clicking 'save'", () => {
         render(<Field userCustomFieldId="field1" />);
         fireEvent.click(screen.getByText('Age'));
-        fireEvent.click(screen.getByText('set age groups'));
+        fireEvent.click(screen.getByTestId('set-age-groups-button'));
         fireEvent.click(screen.getByTestId('bin-save-button'));
 
         expect(screen.getByText('18-24')).toBeInTheDocument();
@@ -108,7 +108,7 @@ describe('<Field />', () => {
       it('saves entered population data', async () => {
         const { container } = render(<Field userCustomFieldId="field1" />);
         fireEvent.click(screen.getByText('Age'));
-        fireEvent.click(screen.getByText('set age groups'));
+        fireEvent.click(screen.getByTestId('set-age-groups-button'));
         fireEvent.click(screen.getByTestId('bin-save-button'));
 
         const populationInputs = container.querySelectorAll(
@@ -140,7 +140,7 @@ describe('<Field />', () => {
       it('clears correct filled out options after modifying bins', () => {
         const { container } = render(<Field userCustomFieldId="field1" />);
         fireEvent.click(screen.getByText('Age'));
-        fireEvent.click(screen.getByText('set age groups'));
+        fireEvent.click(screen.getByTestId('set-age-groups-button'));
         fireEvent.click(screen.getByTestId('bin-save-button'));
         const populationInputs = container.querySelectorAll(
           '.option-population-input > input'

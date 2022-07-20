@@ -90,6 +90,7 @@ const FieldContent = ({
                     setAgeGroupsLink: (
                       <Box
                         as="button"
+                        data-testid="set-age-groups-button"
                         style={{ fontWeight: 700 }}
                         onClick={openBinModal}
                       >

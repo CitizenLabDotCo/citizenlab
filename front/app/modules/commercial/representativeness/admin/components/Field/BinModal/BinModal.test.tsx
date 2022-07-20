@@ -30,7 +30,7 @@ describe('<BinModal />', () => {
       fireEvent.input(inputs[4], { target: { value: 37 } });
       fireEvent.blur(inputs[4]);
 
-      fireEvent.click(screen.getByText('Save'));
+      fireEvent.click(screen.getByTestId('bin-save-button'));
 
       expect(onSave).toHaveBeenCalledTimes(1);
       expect(onSave).toHaveBeenCalledWith([18, 25, 37, 45, 55, 65, null]);
@@ -46,7 +46,7 @@ describe('<BinModal />', () => {
       const inputs = container.querySelectorAll('input');
       fireEvent.input(inputs[4], { target: { value: 37 } });
 
-      fireEvent.click(screen.getByText('Save'));
+      fireEvent.click(screen.getByTestId('bin-save-button'));
 
       waitFor(() => {
         expect(onSave).toHaveBeenCalledTimes(1);
@@ -69,7 +69,7 @@ describe('<BinModal />', () => {
       fireEvent.input(inputs[4], { target: { value: 37 } });
       fireEvent.blur(inputs[4]);
 
-      fireEvent.click(screen.getByText('Save'));
+      fireEvent.click(screen.getByTestId('bin-save-button'));
 
       expect(onSave).toHaveBeenCalledTimes(1);
       expect(onSave).toHaveBeenCalledWith([18, 25, 37, 42, 57, 65, null]);
@@ -89,7 +89,7 @@ describe('<BinModal />', () => {
       fireEvent.input(inputs[4], { target: { value: 33 } });
       fireEvent.blur(inputs[4]);
 
-      fireEvent.click(screen.getByText('Save'));
+      fireEvent.click(screen.getByTestId('bin-save-button'));
 
       expect(onSave).not.toHaveBeenCalled();
     });
