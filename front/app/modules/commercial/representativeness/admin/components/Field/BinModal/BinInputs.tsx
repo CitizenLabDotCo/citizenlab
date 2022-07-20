@@ -17,7 +17,7 @@ import { getLowerBoundLimits, getUpperBoundLimits, parseLabel } from './utils';
 import { clamp } from 'lodash-es';
 
 // typings
-import { Bins } from '.';
+import { Bins } from '../../../services/referenceDistribution';
 
 const RemoveBinButton = styled.button`
   cursor: pointer;

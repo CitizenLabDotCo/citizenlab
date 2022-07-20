@@ -24,6 +24,9 @@ import {
 } from './utils';
 import { isEqual } from 'lodash-es';
 
+// typings
+import { Bins } from '../../../services/referenceDistribution';
+
 const ClearAllButton = styled.button`
   cursor: pointer;
 `;
@@ -42,8 +45,6 @@ interface Props {
   onClose: () => void;
   onSave: (bins: Bins) => void;
 }
-
-export type Bins = (number | null)[];
 
 const getExampleBins = (): Bins => [18, 25, 35, 45, 55, 65, null];
 

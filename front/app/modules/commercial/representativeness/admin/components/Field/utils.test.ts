@@ -7,13 +7,13 @@ import {
   FormValues,
 } from './utils';
 import {
-  IReferenceDistributionData,
+  TReferenceDistributionData,
   TDistribution,
 } from '../../services/referenceDistribution';
 
 const createReferenceDistribution = (
   distribution: TDistribution
-): IReferenceDistributionData => ({
+): TReferenceDistributionData => ({
   id: 'bla',
   type: 'reference_distribution',
   attributes: { distribution },

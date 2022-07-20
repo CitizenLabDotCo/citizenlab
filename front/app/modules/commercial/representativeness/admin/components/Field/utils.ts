@@ -4,11 +4,12 @@ import { isNilOrError, NilOrError } from 'utils/helperUtils';
 // typings
 import { IUserCustomFieldOptionData } from 'modules/commercial/user_custom_fields/services/userCustomFieldOptions';
 import {
-  IReferenceDistributionData,
+  TReferenceDistributionData,
   TDistribution,
+  IBinnedDistribution,
   TUploadDistribution,
+  Bins,
 } from '../../services/referenceDistribution';
-import { Bins } from './BinModal';
 
 // EXPORTS
 export type FormValues = Record<string, number | null>;
@@ -16,7 +17,7 @@ export type FormValues = Record<string, number | null>;
 export const getInitialValues = (
   userCustomFieldOptions: IUserCustomFieldOptionData[],
   referenceDataUploaded: boolean,
-  referenceDistribution: IReferenceDistributionData | NilOrError
+  referenceDistribution: TReferenceDistributionData | NilOrError
 ): FormValues | null => {
   if (referenceDataUploaded) {
     // If reference data has been uploaded, but the distribution
@@ -50,7 +51,7 @@ export const isFormValid = (formValues: FormValues) => {
 
 export const getSubmitAction = (
   formValues: FormValues,
-  referenceDistribution: IReferenceDistributionData | NilOrError
+  referenceDistribution: TReferenceDistributionData | NilOrError
 ) => {
   if (isNilOrError(referenceDistribution)) {
     if (!isEmptyObject(formValues)) return 'create';
@@ -72,7 +73,7 @@ export type Status = 'saved' | 'complete' | 'incomplete';
 
 export const getStatus = (
   formValues: FormValues,
-  referenceDistribution: IReferenceDistributionData | NilOrError,
+  referenceDistribution: TReferenceDistributionData | NilOrError,
   touched: boolean,
   ageGroupsDefined?: boolean
 ): Status | null => {
@@ -93,9 +94,15 @@ export const getStatus = (
   return null;
 };
 
-export const parseFormValues = (formValues: FormValues) => {
+export const parseFormValues = (
+  formValues: FormValues,
+  bins?: Bins
+): TUploadDistribution | null => {
   if (!isFormValid(formValues)) return null;
-  return formValues as TUploadDistribution;
+
+  return bins
+    ? convertFormValuesToBinnedDistribution(formValues, bins)
+    : (formValues as TUploadDistribution);
 };
 
 export const isSubmittingAllowed = (
@@ -138,9 +145,10 @@ export const isEmptyObject = (formValues: FormValues) => {
 // HELPERS
 const getInitialValuesFromDistribution = (
   userCustomFieldOptions: IUserCustomFieldOptionData[],
-  referenceDistribution: IReferenceDistributionData
+  referenceDistribution: TReferenceDistributionData
 ): FormValues => {
   const { distribution } = referenceDistribution.attributes;
+  // TODO different logic for different distributions
 
   return userCustomFieldOptions.reduce((acc, { id }) => {
     const referenceDistributionValue = distribution[id];
@@ -172,8 +180,9 @@ const areAllOptionsFilledOut = (formValues: FormValues) => {
 
 const hasNoChanges = (
   formValues: FormValues,
-  referenceDistribution: IReferenceDistributionData
+  referenceDistribution: TReferenceDistributionData
 ) => {
+  // TODO different logic for different distributions
   const { distribution } = referenceDistribution.attributes;
 
   if (!sameNumberOfKeys(formValues, distribution)) {
@@ -192,7 +201,7 @@ const hasNoChanges = (
 
 const isSaved = (
   formValues: FormValues,
-  referenceDistribution: IReferenceDistributionData | NilOrError,
+  referenceDistribution: TReferenceDistributionData | NilOrError,
   touched: boolean
 ) => {
   if (touched) return false;
@@ -211,6 +220,20 @@ const isComplete = (formValues: FormValues, touched: boolean) => {
 
 const isIncomplete = (formValues: FormValues, touched: boolean) => {
   return touched && !isEmptyObject(formValues) && !isFormValid(formValues);
+};
+
+const convertFormValuesToBinnedDistribution = (
+  formValues: FormValues,
+  bins: Bins
+): IBinnedDistribution => {
+  const counts: number[] = [];
+
+  // TODO
+
+  return {
+    bins,
+    counts,
+  };
 };
 
 const sameNumberOfKeys = (

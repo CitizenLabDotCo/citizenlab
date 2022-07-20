@@ -5,7 +5,7 @@ import { roundPercentages } from 'utils/math';
 import { FormValues } from '../utils';
 import { IUserCustomFieldOptionData } from 'modules/commercial/user_custom_fields/services/userCustomFieldOptions';
 import { Localize } from 'hooks/useLocalize';
-import { Bins } from '../BinModal';
+import { Bins } from '../../../services/referenceDistribution';
 
 /*
  * Takes a thousand-formatted locale string in the US format (e.g. 1,000,000)

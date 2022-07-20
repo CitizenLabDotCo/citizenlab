@@ -7,6 +7,7 @@ import {
   replaceReferenceDistribution,
   deleteReferenceDistribution,
   TReferenceDistributionData,
+  Bins,
 } from '../../services/referenceDistribution';
 
 // hooks
@@ -32,8 +33,6 @@ import { isSupported } from '../../containers/Dashboard/utils';
 
 // typings
 import { IUserCustomFieldOptionData } from 'modules/commercial/user_custom_fields/services/userCustomFieldOptions';
-import { Bins } from './BinModal';
-
 interface Props {
   userCustomFieldId: string;
 }
@@ -134,7 +133,7 @@ const Field = ({
     const submitAction = getSubmitAction(formValues, referenceDistribution);
     if (submitAction === null) return;
 
-    const newDistribution = parseFormValues(formValues);
+    const newDistribution = parseFormValues(formValues, bins);
     if (newDistribution === null) return;
 
     setSubmitting(true);

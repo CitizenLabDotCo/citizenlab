@@ -55,9 +55,11 @@ export type TCategoricalDistribution = Record<
 >;
 
 export interface IBinnedDistribution {
-  bins: (number | null)[];
+  bins: Bins;
   counts: number[];
 }
+
+export type Bins = (number | null)[];
 
 export type TUploadDistribution = Record<string, number> | IBinnedDistribution;
 

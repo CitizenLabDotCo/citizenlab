@@ -10,7 +10,7 @@ import Options from './Options';
 import Tippy from '@tippyjs/react';
 import Button from 'components/UI/Button';
 import Warning from 'components/UI/Warning';
-import BinModal, { Bins } from './BinModal';
+import BinModal from './BinModal';
 
 // styling
 import { colors } from 'utils/styleUtils';
@@ -21,6 +21,9 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
 import { isSubmittingAllowed, FormValues } from './utils';
+
+// typings
+import { Bins } from '../../services/referenceDistribution';
 
 interface Props {
   userCustomFieldId: string;

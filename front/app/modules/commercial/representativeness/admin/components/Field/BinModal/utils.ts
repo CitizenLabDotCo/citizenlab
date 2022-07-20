@@ -1,4 +1,4 @@
-import { Bins } from '.';
+import { Bins } from '../../../services/referenceDistribution';
 
 export const validateBins = (currentBins: Bins) => {
   for (let i = 0; i < currentBins.length - 1; i++) {
