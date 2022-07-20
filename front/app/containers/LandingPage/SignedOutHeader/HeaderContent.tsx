@@ -12,8 +12,8 @@ import messages from '../messages';
 import { injectIntl } from 'utils/cl-intl';
 import Outlet from 'components/Outlet';
 import SignUpButton from '../SignUpButton';
-import useHomepageSettingsFeatureFlag from 'hooks/useHomepageSettingsFeatureFlag';
 import useHomepageSettings from 'hooks/useHomepageSettings';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const Container = styled.div<{
   align: 'center' | 'left';
@@ -156,9 +156,8 @@ const HeaderContent = ({
   };
   const buttonStyle = getButtonStyle(fontColors);
   // Flag should not be here, but inside module.
-  const customizableHomepageBannerEnabled = useHomepageSettingsFeatureFlag({
-    sectionEnabledSettingName: 'customizable_homepage_banner_enabled',
-    appConfigSettingName: 'customizable_homepage_banner',
+  const customizableHomepageBannerEnabled = useFeatureFlag({
+    name: 'customizable_homepage_banner',
   });
 
   if (!isNilOrError(homepageSettings)) {
