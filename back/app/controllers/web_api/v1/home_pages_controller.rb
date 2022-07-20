@@ -35,7 +35,6 @@ class WebApi::V1::HomePagesController < ApplicationController
       :events_widget_enabled,
       :projects_enabled,
       :banner_avatars_enabled,
-      :customizable_homepage_banner_enabled,
       :banner_layout,
       :banner_cta_signed_in_type,
       :banner_cta_signed_in_url,

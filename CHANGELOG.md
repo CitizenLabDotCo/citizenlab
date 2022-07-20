@@ -1,5 +1,11 @@
 # Changelog
 
+## 2022-07-19
+
+### Fixed
+
+- [CL-1160] Fix blank insights tag detail view
+
 ## 2022-07-14 (2)
 
 ### Added
