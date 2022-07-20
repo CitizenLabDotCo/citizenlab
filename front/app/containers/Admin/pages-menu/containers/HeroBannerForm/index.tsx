@@ -108,7 +108,7 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     // to process the initial API response
     const convertHeaderToUploadFile = async (fileInfo) => {
       if (fileInfo) {
-        const tenantHeaderBg = await convertUrlToUploadFile(fileInfo.url);
+        const tenantHeaderBg = await convertUrlToUploadFile(fileInfo);
         const headerBgUploadFile = !isNilOrError(tenantHeaderBg)
           ? [tenantHeaderBg]
           : [];
