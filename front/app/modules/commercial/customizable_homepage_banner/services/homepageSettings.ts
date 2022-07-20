@@ -33,4 +33,8 @@ declare module 'services/homepageSettings' {
     banner_cta_signed_out_type: CTASignedOutType;
     banner_cta_signed_out_url: string | null;
   }
+
+  export interface IHomepageEnabledSettings {
+    customizable_homepage_banner_enabled: boolean;
+  }
 }

@@ -7,7 +7,6 @@ const homepageSettingsEndpoint = `${API_PATH}/home_page`;
 // setting in appConfiguration.ts
 export type TAppConfigSectionSetting = Extract<
   THomepageEnabledSetting,
-  // still move to module
   'events_widget_enabled' | 'customizable_homepage_banner_enabled'
 >;
 
@@ -57,8 +56,6 @@ export interface IHomepageEnabledSettings {
   top_info_section_enabled: boolean;
   bottom_info_section_enabled: boolean;
   banner_avatars_enabled: boolean;
-  // the allowed of customizable_homepage_banner_enabled still needs to be checked in appConfig
-  customizable_homepage_banner_enabled: boolean;
   projects_enabled: boolean;
 }
 
