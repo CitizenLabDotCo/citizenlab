@@ -119,7 +119,7 @@ const DeletedIcon = styled(Icon)`
   height: 18px;
   fill: ${colors.label};
   &:hover {
-    fill: ${colors.clRedError};
+    fill: ${colors.red600};
   }
 `;
 

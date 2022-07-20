@@ -29,7 +29,6 @@ const ContentBuilderEditModePreview = React.forwardRef<
     height: '40px',
     width: '92px',
   };
-
   return (
     <Box
       mt={`${stylingConsts.menuHeight + 20}px`}
@@ -37,17 +36,15 @@ const ContentBuilderEditModePreview = React.forwardRef<
       justifyContent="center"
     >
       <Box display="flex" flexDirection="column" alignItems="center">
-        <Box
-          display="flex"
-          mb="16px"
-          border={`1px solid ${colors.adminTextColor}`}
-          borderRadius="4px"
-        >
+        <Box display="flex" mb="16px">
           <Button
             bgColor={colorIfMobileView}
             onClick={() => {
               !isMobile && setIsMobile(true);
             }}
+            borderRadius="4px 0px 0px 4px"
+            bgHoverColor={colorIfMobileView}
+            borderColor={`${colors.adminTextColor}`}
             id="e2e-mobile-preview"
             {...buttonProps}
           >
@@ -64,6 +61,9 @@ const ContentBuilderEditModePreview = React.forwardRef<
               isMobile && setIsMobile(false);
             }}
             id="e2e-desktop-preview"
+            borderRadius="0px 4px 4px 0px"
+            bgHoverColor={colorIfDesktopView}
+            borderColor={`${colors.adminTextColor}`}
             {...buttonProps}
           >
             <Icon name="desktop" width="20px" fill={colorIfMobileView} />
@@ -77,7 +77,7 @@ const ContentBuilderEditModePreview = React.forwardRef<
           zIndex="1"
           mb="12px"
           width={isMobile ? '360px' : '1140px'}
-          borderRadius="33px"
+          borderRadius="20px"
         >
           {/* Iframe */}
           <Box

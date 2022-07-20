@@ -3,7 +3,10 @@ import styled from 'styled-components';
 import AsyncSelect from 'react-select/async';
 import { first } from 'rxjs/operators';
 import { IOption } from 'typings';
-import { isProjectFolderModerator } from '../../../permissions/roles';
+import {
+  isProjectFolderModerator,
+  userModeratesFolder,
+} from '../../../permissions/roles';
 
 // utils
 import { isNilOrError, isNonEmptyString } from 'utils/helperUtils';
@@ -113,7 +116,7 @@ const FolderPermissions = ({
     if (!isNilOrError(users)) {
       return users.data
         .filter(
-          (user: IUserData) => !isProjectFolderModerator(user, projectFolderId)
+          (user: IUserData) => !userModeratesFolder(user, projectFolderId)
         )
         .map((user: IUserData) => {
           return {

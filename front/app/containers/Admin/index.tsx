@@ -5,7 +5,7 @@ import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // permissions
 import useAuthUser from 'hooks/useAuthUser';
-import { hasPermission } from 'services/permissions';
+import { usePermission } from 'services/permissions';
 import HasPermission from 'components/HasPermission';
 
 // components
@@ -91,7 +91,7 @@ export const chartTheme = (theme) => {
     ...theme,
     chartStroke: colors.clIconAccent,
     chartStrokeGreen: colors.clGreen,
-    chartStrokeRed: colors.clRed,
+    chartStrokeRed: colors.red500,
     chartFill: colors.clIconAccent,
     barFill: colors.adminContentBackground,
     chartLabelColor: colors.adminSecondaryTextColor,
@@ -117,6 +117,11 @@ const AdminPage = memo<Props & WithRouterProps>(
     const [adminFullWidth, setAdminFullWidth] = useState(false);
     const [adminNoPadding, setAdminNoPadding] = useState(false);
 
+    const userCanViewAdmin = usePermission({
+      item: { type: 'route', path: '/admin' },
+      action: 'access',
+    });
+
     useEffect(() => {
       const subscriptions = [
         globalState
@@ -131,22 +136,13 @@ const AdminPage = memo<Props & WithRouterProps>(
       };
     }, []);
 
-    const userCanViewAdmin = () =>
-      hasPermission({
-        action: 'access',
-        item: { type: 'route', path: '/admin' },
-      });
-
     useEffect(() => {
-      if (
-        authUser === null ||
-        (authUser !== undefined && !userCanViewAdmin())
-      ) {
+      if (authUser === null || (authUser !== undefined && !userCanViewAdmin)) {
         clHistory.push('/');
       }
-    }, [authUser]);
+    }, [authUser, userCanViewAdmin]);
 
-    if (!userCanViewAdmin()) {
+    if (!userCanViewAdmin) {
       return null;
     }
 

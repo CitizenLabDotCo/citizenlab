@@ -217,11 +217,11 @@ const Container = styled.div<{
   }
 
   &.error .ql-toolbar.ql-snow + .ql-container.ql-snow {
-    border-color: ${colors.clRedError};
+    border-color: ${colors.red600};
   }
 
   &.error.focus .ql-toolbar.ql-snow + .ql-container.ql-snow {
-    border-color: ${colors.clRedError};
+    border-color: ${colors.red600};
     box-shadow: inset ${defaultStyles.boxShadowError};
   }
 

@@ -13,12 +13,6 @@
 #  upvotes_count   :integer
 #  downvotes_count :integer
 #
-# Indexes
-#
-#  index_analytics_fact_participations_on_created_date  (created_date)
-#  index_analytics_fact_participations_on_id            (id)
-#  index_analytics_fact_participations_on_project_id    (project_id)
-#
 module Analytics
   class FactParticipation < Analytics::ApplicationRecord
     self.primary_key = :id
