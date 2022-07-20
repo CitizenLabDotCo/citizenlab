@@ -28,7 +28,7 @@ import { InsertConfigurationOptions } from 'typings';
 import clHistory from 'utils/cl-router/history';
 
 export type TSectionToggleData = {
-  name?: THomepageEnabledSetting;
+  name: THomepageEnabledSetting | 'homepage_banner';
   titleMessageDescriptor: MessageDescriptor;
   tooltipMessageDescriptor: MessageDescriptor;
   linkToPath?: string;
@@ -42,6 +42,7 @@ const EditHomepage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     TSectionToggleData[]
   >([
     {
+      name: 'homepage_banner',
       titleMessageDescriptor: messages.heroBanner,
       tooltipMessageDescriptor: messages.heroBannerTooltip,
       linkToPath: 'homepage-banner',
@@ -68,7 +69,7 @@ const EditHomepage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   ]);
 
   const handleOnChangeToggle =
-    (sectionName: THomepageEnabledSetting) => async () => {
+    (sectionName: THomepageEnabledSetting | 'homepage_banner') => async () => {
       if (isNilOrError(homepageSettings)) {
         return;
       }
