@@ -36,7 +36,7 @@ import {
   IUpdatedAppConfigurationProperties,
   TAppConfigurationSetting,
 } from 'services/appConfiguration';
-import { toggleEvents, toggleAllInput } from 'services/navbar';
+import { toggleAllInput } from 'services/navbar';
 
 // typings
 import { UploadFile, Locale, Multiloc, CLErrors } from 'typings';
@@ -47,9 +47,7 @@ interface Props {
 
 interface IAttributesDiff {
   settings?: Partial<IAppConfigurationSettings>;
-  homepage_info_multiloc?: Multiloc;
   logo?: UploadFile;
-  header_bg?: UploadFile;
   style?: IAppConfigurationStyle;
 }
 
@@ -58,16 +56,13 @@ export interface State {
   attributesDiff: IAttributesDiff;
   tenant: IAppConfiguration | null;
   logo: UploadFile[] | null;
-  header_bg: UploadFile[] | null;
   loading: boolean;
   errors: CLErrors;
   saved: boolean;
   logoError: string | null;
-  headerError: string | null;
   titleError: Multiloc;
   settings: Partial<IAppConfigurationSettings>;
   subtitleError: Multiloc;
-  newEventsNavbarItemEnabled: boolean | null;
   newAllInputNavbarItemEnabled: boolean | null;
 }
 
@@ -93,16 +88,13 @@ class SettingsCustomizeTab extends PureComponent<
       attributesDiff: {},
       tenant: null,
       logo: null,
-      header_bg: null,
       loading: false,
       errors: {},
       saved: false,
       logoError: null,
-      headerError: null,
       titleError: {},
       subtitleError: {},
       settings: {},
-      newEventsNavbarItemEnabled: null,
       newAllInputNavbarItemEnabled: null,
     };
     this.subscriptions = [];
@@ -117,40 +109,27 @@ class SettingsCustomizeTab extends PureComponent<
         .pipe(
           switchMap(([locale, tenant]) => {
             const logoUrl = get(tenant, 'data.attributes.logo.large', null);
-            const headerUrl = get(
-              tenant,
-              'data.attributes.header_bg.large',
-              null
-            );
             const settings = get(tenant, 'data.attributes.settings', {});
 
             const logo$ = logoUrl
               ? convertUrlToUploadFileObservable(logoUrl, null, null)
               : of(null);
-            const headerBg$ = headerUrl
-              ? convertUrlToUploadFileObservable(headerUrl, null, null)
-              : of(null);
 
-            return combineLatest([logo$, headerBg$]).pipe(
-              map(([tenantLogo, tenantHeaderBg]) => ({
+            return combineLatest([logo$]).pipe(
+              map(([tenantLogo]) => ({
                 locale,
                 tenant,
                 tenantLogo,
-                tenantHeaderBg,
                 settings,
               }))
             );
           })
         )
-        .subscribe(
-          ({ locale, tenant, tenantLogo, tenantHeaderBg, settings }) => {
-            const logo = !isNilOrError(tenantLogo) ? [tenantLogo] : [];
-            const header_bg = !isNilOrError(tenantHeaderBg)
-              ? [tenantHeaderBg]
-              : [];
-            this.setState({ locale, tenant, logo, header_bg, settings });
-          }
-        ),
+        .subscribe(({ locale, tenant, tenantLogo, settings }) => {
+          const logo = !isNilOrError(tenantLogo) ? [tenantLogo] : [];
+
+          this.setState({ locale, tenant, logo, settings });
+        }),
     ];
   }
 
@@ -193,12 +172,7 @@ class SettingsCustomizeTab extends PureComponent<
           );
         }
 
-        const { newEventsNavbarItemEnabled, newAllInputNavbarItemEnabled } =
-          this.state;
-
-        if (newEventsNavbarItemEnabled !== null) {
-          await toggleEvents({ enabled: newEventsNavbarItemEnabled });
-        }
+        const { newAllInputNavbarItemEnabled } = this.state;
 
         if (newAllInputNavbarItemEnabled !== null) {
           await toggleAllInput({ enabled: newAllInputNavbarItemEnabled });
@@ -209,7 +183,6 @@ class SettingsCustomizeTab extends PureComponent<
           saved: true,
           errors: {},
           attributesDiff: {},
-          newEventsNavbarItemEnabled: null,
           newAllInputNavbarItemEnabled: null,
         });
       } catch (error) {

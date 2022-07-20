@@ -5,8 +5,21 @@ import EventsWidget from './citizen';
 import SectionToggle, {
   Props as SectionToggleProps,
 } from './admin/SectionToggle';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
-const RenderOnFeatureFlag = ({ children }) => {
+// The events section toggle should be rendered if the customer is Allowed to use the feature
+const RenderOnFeatureAllowed = ({ children }) => {
+  const allowed = useFeatureFlag({
+    name: 'events_widget',
+    onlyCheckAllowed: true,
+  });
+
+  return allowed ? <>{children}</> : null;
+};
+
+// The events section on the front page should be shown
+// if the customer is Allowed (appConfig) and if the feature is Enabled (homePageSettings)
+const RenderOnAllowedAndEnabled = ({ children }) => {
   const featureFlag = useHomepageSettingsFeatureFlag({
     sectionEnabledSettingName: 'events_widget_enabled',
     appConfigSettingName: 'events_widget',
@@ -21,16 +34,16 @@ const configuration: ModuleConfiguration = {
       props
     ) => {
       return (
-        <RenderOnFeatureFlag>
+        <RenderOnFeatureAllowed>
           <SectionToggle {...props} />
-        </RenderOnFeatureFlag>
+        </RenderOnFeatureAllowed>
       );
     },
     'app.containers.LandingPage.EventsWidget': () => {
       return (
-        <RenderOnFeatureFlag>
+        <RenderOnAllowedAndEnabled>
           <EventsWidget />
-        </RenderOnFeatureFlag>
+        </RenderOnAllowedAndEnabled>
       );
     },
   },
