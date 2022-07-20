@@ -8,8 +8,6 @@
   "app.components.AdminPage.SettingsPage.eventsPageSetting": "إضافة أحداث إلى شريط التنقل",
   "app.components.AdminPage.SettingsPage.eventsPageSettingDescription": "عند تمكين هذه الميزة، سيُضاف إلى شريط التنقل رابط يؤدي إلى جميع أحداث المشروع.",
   "app.components.AdminPage.SettingsPage.eventsSection": "الأحداث",
-  "app.components.AdminPage.SettingsPage.eventsWidgetSetting": "إضافة أحداث قادمة إلى الصفحة الرئيسية",
-  "app.components.AdminPage.SettingsPage.eventsWidgetSettingDescription": "عرض معاينة للأحداث القادمة في الصفحة الرئيسية",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSection": "قسم قابل للتخصيص في الصفحة الرئيسية",
   "app.components.ConfirmationModal.accountConfirmation": "Account Confirmation",
   "app.components.ConfirmationModal.disabled": "تم التعطيل",

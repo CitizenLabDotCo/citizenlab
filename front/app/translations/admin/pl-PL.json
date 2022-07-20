@@ -8,8 +8,6 @@
   "app.components.AdminPage.SettingsPage.eventsPageSetting": "Dodaj wydarzenia do paska nawigacji",
   "app.components.AdminPage.SettingsPage.eventsPageSettingDescription": "Po włączeniu tej opcji do paska nawigacji zostanie dodany link do wszystkich wydarzeń związanych z projektem.",
   "app.components.AdminPage.SettingsPage.eventsSection": "Wydarzenia",
-  "app.components.AdminPage.SettingsPage.eventsWidgetSetting": "Dodaj nadchodzące wydarzenia do strony głównej",
-  "app.components.AdminPage.SettingsPage.eventsWidgetSettingDescription": "Wyświetlanie podglądu nadchodzących wydarzeń na stronie głównej",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSection": "Część konfigurowalna na stronie głównej",
   "app.components.ConfirmationModal.accountConfirmation": "Potwierdzenie konta",
   "app.components.ConfirmationModal.disabled": "Wyłączone",

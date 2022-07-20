@@ -1,9 +1,10 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import useHomepageSettingsFeatureFlag from 'hooks/useHomepageSettingsFeatureFlag';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import EventsWidget from './citizen';
-import EventsWidgetSwitch from './admin/EventsWidgetSwitch';
+import SectionToggle, {
+  Props as SectionToggleProps,
+} from './admin/SectionToggle';
 
 const RenderOnFeatureFlag = ({ children }) => {
   const featureFlag = useHomepageSettingsFeatureFlag({
@@ -14,17 +15,17 @@ const RenderOnFeatureFlag = ({ children }) => {
   return featureFlag ? <>{children}</> : null;
 };
 
-const RenderOnAllowed = ({ children }) => {
-  const allowed = useFeatureFlag({
-    name: 'events_widget',
-    onlyCheckAllowed: true,
-  });
-
-  return allowed ? <>{children}</> : null;
-};
-
 const configuration: ModuleConfiguration = {
   outlets: {
+    'app.containers.Admin.flexible-pages.EditHomepage.sectionToggles': (
+      props
+    ) => {
+      return (
+        <RenderOnFeatureFlag>
+          <SectionToggle {...props} />
+        </RenderOnFeatureFlag>
+      );
+    },
     'app.containers.LandingPage.EventsWidget': () => {
       return (
         <RenderOnFeatureFlag>
@@ -32,14 +33,13 @@ const configuration: ModuleConfiguration = {
         </RenderOnFeatureFlag>
       );
     },
-    'app.containers.Admin.settings.customize.eventsSectionEnd': (props) => {
-      return (
-        <RenderOnAllowed>
-          <EventsWidgetSwitch {...props} />
-        </RenderOnAllowed>
-      );
-    },
   },
 };
 
 export default configuration;
+
+declare module 'utils/moduleUtils' {
+  export interface OutletsPropertyMap {
+    'app.containers.Admin.flexible-pages.EditHomepage.sectionToggles': SectionToggleProps;
+  }
+}

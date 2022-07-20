@@ -8,8 +8,6 @@
   "app.components.AdminPage.SettingsPage.eventsPageSetting": "Lägg till evenemang i navigeringsfältet",
   "app.components.AdminPage.SettingsPage.eventsPageSettingDescription": "När det är aktiverat kommer en länk till alla projektevenemang att läggas till i navigeringsfältet.",
   "app.components.AdminPage.SettingsPage.eventsSection": "Evenemang",
-  "app.components.AdminPage.SettingsPage.eventsWidgetSetting": "Lägg till kommande evenemang på startsidan",
-  "app.components.AdminPage.SettingsPage.eventsWidgetSettingDescription": "Visa en förhandsvisning av kommande evenemang på startsidan",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSection": "Anpassningsbart avsnitt för startsidan",
   "app.components.ConfirmationModal.accountConfirmation": "Account Confirmation",
   "app.components.ConfirmationModal.disabled": "Inaktiverad",

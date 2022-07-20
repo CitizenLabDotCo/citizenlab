@@ -355,10 +355,6 @@ export interface OutletsPropertyMap {
     className?: string;
   };
   'app.containers.LandingPage.EventsWidget': Record<string, any>;
-  'app.containers.Admin.settings.customize.eventsSectionEnd': {
-    getSetting: (settingName: string) => any;
-    setParentState: (state: any) => void;
-  };
   'app.containers.Admin.settings.customize.Events': {
     onMount: () => void;
   };

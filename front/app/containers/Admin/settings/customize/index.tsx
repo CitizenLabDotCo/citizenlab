@@ -4,14 +4,14 @@ import { map, switchMap } from 'rxjs/operators';
 import { get, has, isEmpty, omitBy } from 'lodash-es';
 
 // components
+import { Section, SectionTitle } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import Branding from './Branding';
 import ProjectHeader from './ProjectHeader';
-import Events from './Events';
 import AllInput from './AllInput';
 
 // style
-import { withTheme } from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 
 // utils
 import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
@@ -70,6 +70,15 @@ export interface State {
   newEventsNavbarItemEnabled: boolean | null;
   newAllInputNavbarItemEnabled: boolean | null;
 }
+
+// Styles and custom components
+export const StyledSection = styled(Section)`
+  margin-bottom 20px;
+`;
+
+export const StyledSectionTitle = styled(SectionTitle)`
+  margin-bottom 30px;
+`;
 
 class SettingsCustomizeTab extends PureComponent<
   Props & InjectedIntlProps,
@@ -251,7 +260,6 @@ class SettingsCustomizeTab extends PureComponent<
         logoError,
         errors,
         saved,
-        newEventsNavbarItemEnabled,
         newAllInputNavbarItemEnabled,
       } = this.state;
 
@@ -278,12 +286,6 @@ class SettingsCustomizeTab extends PureComponent<
               latestAppConfigCoreSettings?.['currently_working_on_text']
             }
             setParentState={setState}
-          />
-
-          <Events
-            newNavbarItemEnabled={newEventsNavbarItemEnabled}
-            setParentState={setState}
-            getSetting={getSetting}
           />
 
           <AllInput

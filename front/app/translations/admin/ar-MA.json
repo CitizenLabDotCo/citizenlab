@@ -8,8 +8,6 @@
   "app.components.AdminPage.SettingsPage.eventsPageSetting": "Add Events to navigation bar",
   "app.components.AdminPage.SettingsPage.eventsPageSettingDescription": "When enabled, a link to all project events will be added to the navigation bar.",
   "app.components.AdminPage.SettingsPage.eventsSection": "الأحداث",
-  "app.components.AdminPage.SettingsPage.eventsWidgetSetting": "Add upcoming events to homepage",
-  "app.components.AdminPage.SettingsPage.eventsWidgetSettingDescription": "Display a preview of upcoming events on the homepage",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSection": "Homepage customizable section",
   "app.components.ConfirmationModal.accountConfirmation": "Account Confirmation",
   "app.components.ConfirmationModal.disabled": "تم التعطيل",

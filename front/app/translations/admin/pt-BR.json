@@ -8,8 +8,6 @@
   "app.components.AdminPage.SettingsPage.eventsPageSetting": "Adicionar eventos à barra de navegação",
   "app.components.AdminPage.SettingsPage.eventsPageSettingDescription": "Quando ativado, um link para todos os eventos do projeto será adicionado à barra de navegação.",
   "app.components.AdminPage.SettingsPage.eventsSection": "Eventos",
-  "app.components.AdminPage.SettingsPage.eventsWidgetSetting": "Adicionar os próximos eventos à página inicial",
-  "app.components.AdminPage.SettingsPage.eventsWidgetSettingDescription": "Mostrar uma prévia dos próximos eventos na página inicial",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSection": "Seção personalizada da página inicial",
   "app.components.ConfirmationModal.accountConfirmation": "Confirmação da conta",
   "app.components.ConfirmationModal.disabled": "Desativado",
