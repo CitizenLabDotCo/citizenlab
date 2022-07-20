@@ -20,6 +20,7 @@ export interface Props {
   disabled: boolean;
   editLinkPath?: string;
   isLastItem: boolean;
+  hideToggle?: boolean;
 }
 
 const SectionToggle = ({
@@ -31,11 +32,12 @@ const SectionToggle = ({
   checked,
   disabled,
   isLastItem,
+  hideToggle = false,
 }: Props) => {
   return (
     <Row isLastItem={isLastItem}>
       <Box display="flex" alignItems="center" justifyContent="center">
-        <Box mr="20px">
+        <Box visibility={hideToggle ? 'hidden' : 'visible'} mr="20px">
           <Toggle
             checked={checked}
             onChange={onChangeSectionToggle}

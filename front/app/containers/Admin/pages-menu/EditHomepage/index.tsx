@@ -32,6 +32,7 @@ export type TSectionToggleData = {
   titleMessageDescriptor: MessageDescriptor;
   tooltipMessageDescriptor: MessageDescriptor;
   linkToPath?: string;
+  hideToggle?: boolean;
 };
 
 const EditHomepage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
@@ -45,6 +46,7 @@ const EditHomepage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       titleMessageDescriptor: messages.heroBanner,
       tooltipMessageDescriptor: messages.heroBannerTooltip,
       linkToPath: 'homepage-banner',
+      hideToggle: true,
     },
     {
       name: 'top_info_section_enabled',
@@ -137,6 +139,7 @@ const EditHomepage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
               titleMessageDescriptor,
               tooltipMessageDescriptor,
               linkToPath,
+              hideToggle,
             },
             index
           ) => {
@@ -151,6 +154,7 @@ const EditHomepage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
                 tooltipMessageDescriptor={tooltipMessageDescriptor}
                 disabled={isLoading}
                 isLastItem={index === sectionTogglesData.length - 1}
+                hideToggle={hideToggle}
               />
             );
           }
