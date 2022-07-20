@@ -111,6 +111,7 @@ const BinInputRow = injectIntl(
         <Box width="25%" pr="24px" display="flex" alignItems="center">
           <Input
             type="number"
+            className="bin-input"
             value={lowerBoundDisplayValue}
             min={lowerBoundMin.toString()}
             max={lowerBoundMax.toString()}
@@ -121,6 +122,7 @@ const BinInputRow = injectIntl(
         <Box width="25%" pr="24px" display="flex" alignItems="center">
           <Input
             type="number"
+            className="bin-input"
             value={upperBoundDisplayValue}
             disabled={!isLastBin}
             placeholder={

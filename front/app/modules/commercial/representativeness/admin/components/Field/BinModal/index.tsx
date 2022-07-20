@@ -78,27 +78,37 @@ const BinModal = ({ open, bins, onClose, onSave }: Props) => {
     setCurrentBins((bins) => addBin(bins));
   };
 
-  const handleSave = () => {
-    const activeElement = document.activeElement;
-
-    if (activeElement) {
-      (activeElement as HTMLElement)?.blur();
-    }
-
-    setTimeout(() => {
-      setSaveScheduled(true);
-    }, 10);
-  };
-
-  useEffect(() => {
-    if (!saveScheduled) return;
-
+  const saveAndClose = () => {
     if (!isEqual(bins, currentBins)) {
       onSave(currentBins);
     }
 
-    setSaveScheduled(false);
     onClose();
+  };
+
+  const handleSave = () => {
+    const activeElement = document.activeElement;
+
+    if (activeElement && activeElement.className === 'bin-input') {
+      (activeElement as HTMLElement)?.blur();
+
+      setTimeout(() => {
+        setSaveScheduled(true);
+      }, 10);
+    } else {
+      saveAndClose();
+    }
+  };
+
+  // This is only triggered if one of the bin inputs was focussed
+  // the moment 'Save' was clicked. Because the bin input value
+  // is only updated on blur, we first need to trigger blur and wait
+  // for the next state update. This forces React to wait for the
+  // next state update.
+  useEffect(() => {
+    if (!saveScheduled) return;
+    setSaveScheduled(false);
+    saveAndClose();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [saveScheduled]);
 
