@@ -12,7 +12,7 @@ export type Parameters = HomepageSettingProps | AppConfigSettingProps;
 // this hook to check the allowed value, which still resides in appConfiguration
 type HomepageSettingProps = {
   name: THomepageSetting;
-  onlyCheckAllowed?: true;
+  onlyCheckAllowed: true;
 };
 
 type AppConfigSettingProps = {
