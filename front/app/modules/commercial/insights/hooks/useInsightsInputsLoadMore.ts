@@ -11,7 +11,6 @@ import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks
 const defaultPageSize = 20;
 
 export type QueryParameters = {
-  category: string;
   search: string;
   categories: string[];
   keywords: string[];
@@ -28,7 +27,6 @@ const useInsightsInputsLoadMore = (
   const [loading, setLoading] = useState<boolean>(true);
   const [pageNumber, setPageNumber] = useState(1);
 
-  const category = queryParameters?.category;
   const search = queryParameters?.search;
 
   // Stringifying the keywords and categories array to avoid non-primary values in the useEffect dependencies
@@ -40,13 +38,12 @@ const useInsightsInputsLoadMore = (
   // Reset page number on search and category change
   useEffect(() => {
     setPageNumber(1);
-  }, [category, search, categories, keywords]);
+  }, [search, categories, keywords]);
 
   useEffect(() => {
     setLoading(true);
     const subscription = insightsInputsStream(viewId, {
       queryParameters: {
-        category,
         search,
         ...JSON.parse(categories),
         ...JSON.parse(keywords),
@@ -75,7 +72,7 @@ const useInsightsInputsLoadMore = (
     });
 
     return () => subscription.unsubscribe();
-  }, [viewId, pageNumber, category, search, categories, keywords]);
+  }, [viewId, pageNumber, search, categories, keywords]);
 
   const onLoadMore = () => {
     setPageNumber(pageNumber + 1);

@@ -25,7 +25,7 @@ const Container = styled.div<{ error: boolean }>`
   border-radius: ${(props: any) => props.theme.borderRadius};
   border: 1px solid
     ${({ error }) =>
-      error ? lighten(0.4, colors.clRed) : lighten(0.4, colors.label)};
+      error ? lighten(0.4, colors.red500) : lighten(0.4, colors.label)};
 `;
 
 const Paperclip = styled(Icon)`
@@ -43,7 +43,7 @@ const FileInfo = styled.div`
 `;
 
 const FileDownloadLink = styled.a<{ error: boolean }>`
-  color: ${({ error }) => (error ? colors.clRed : colors.label)};
+  color: ${({ error }) => (error ? colors.red500 : colors.label)};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: normal;
@@ -60,7 +60,7 @@ const FileDownloadLink = styled.a<{ error: boolean }>`
 `;
 
 const FileSize = styled.span<{ error: boolean }>`
-  color: ${({ error }) => (error ? colors.clRed : colors.label)};
+  color: ${({ error }) => (error ? colors.red500 : colors.label)};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: normal;
@@ -119,7 +119,7 @@ const FileDisplay = ({
         iconWidth={'12px'}
         iconHeight={'14px'}
         iconColor={colors.label}
-        iconColorOnHover={colors.clRed}
+        iconColorOnHover={colors.red500}
       />
     </Container>
   );

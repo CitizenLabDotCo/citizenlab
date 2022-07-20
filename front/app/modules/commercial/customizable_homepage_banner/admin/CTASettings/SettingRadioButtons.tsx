@@ -23,7 +23,7 @@ type SettingRadioButtonsProps =
         settingKey: BannerSettingKeyType,
         settingValue: any
       ) => void;
-      errors: CLErrors | undefined;
+      errors: CLErrors | undefined | null;
     }
   | {
       signInStatus: 'signed_in';
@@ -35,7 +35,7 @@ type SettingRadioButtonsProps =
         settingKey: BannerSettingKeyType,
         settingValue: any
       ) => void;
-      errors: CLErrors | undefined;
+      errors: CLErrors | undefined | null;
     };
 
 const SettingRadioButtons = ({

@@ -22,8 +22,11 @@ class WebApi::V1::HomePageSerializer < WebApi::V1::BaseSerializer
     :banner_cta_signed_out_text_multiloc,
     :banner_cta_signed_out_type,
     :banner_cta_signed_out_url,
-    :header_bg,
     :pinned_admin_publication_ids
+
+  attribute :header_bg do |object|
+    object.header_bg && object.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
+  end
 
   has_many :pinned_admin_publications
 end

@@ -65,12 +65,20 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.pages',
     defaultMessage: 'Pages',
   },
+  academy: {
+    id: 'app.containers.AdminPage.SideBar.academy',
+    defaultMessage: 'Academy',
+  },
+  linkToAcademy: {
+    id: 'app.containers.AdminPage.SideBar.linkToAcademy',
+    defaultMessage: 'https://academy.citizenlab.co/',
+  },
   guide: {
     id: 'app.containers.AdminPage.SideBar.guide',
     defaultMessage: 'Guide',
   },
-  linkToSupportCenter: {
-    id: 'app.containers.AdminPage.SideBar.linkToSupportCenter',
-    defaultMessage: 'https://support.citizenlab.co/',
+  linkToGuide: {
+    id: 'app.containers.AdminPage.SideBar.linkToGuide',
+    defaultMessage: 'https://community.citizenlab.co/en/folders/guide',
   },
 });

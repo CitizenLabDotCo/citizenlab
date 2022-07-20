@@ -30,7 +30,6 @@ module Insights
 
       def index_params
         @index_params ||= params.permit(
-          :category,
           :search,
           :sort,
           :processed,
@@ -42,7 +41,6 @@ module Insights
 
       def index_xlsx_params
         @index_xlsx_params ||= params.permit(
-          :category,
           :search,
           :processed,
           categories: [],

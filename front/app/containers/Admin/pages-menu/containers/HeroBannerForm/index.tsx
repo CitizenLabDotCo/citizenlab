@@ -2,7 +2,6 @@ import React, { useState, useMemo, useEffect } from 'react';
 import styled, { useTheme } from 'styled-components';
 
 // components
-import Error from 'components/UI/Error';
 import SectionFormWrapper from '../../components/SectionFormWrapper';
 import {
   Section,
@@ -40,7 +39,7 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // typings
-import { UploadFile, Multiloc, CLError } from 'typings';
+import { UploadFile, Multiloc, CLErrors } from 'typings';
 type MultilocErrorType = {
   signedOutHeaderErrors: Multiloc;
   signedOutSubheaderErrors: Multiloc;
@@ -79,7 +78,7 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const [headerLocalDisplayImage, setHeaderLocalDisplayImage] = useState<
     UploadFile[] | null
   >(null);
-  const [apiErrors, setApiErrors] = useState<CLError[] | null>(null);
+  const [apiErrors, setApiErrors] = useState<CLErrors | null>({});
   const [headerAndSubheaderErrors, setHeaderAndSubheaderErrors] =
     useState<MultilocErrorType>({
       signedOutHeaderErrors: {},
@@ -138,8 +137,11 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         setApiErrors(null);
         setIsLoading(false);
       } catch (error) {
+        setIsLoading(false);
         if (isCLErrorJSON(error)) {
           setApiErrors(error.json.errors);
+        } else {
+          setApiErrors(error);
         }
         setIsLoading(false);
       }
@@ -470,10 +472,8 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           id="app.containers.Admin.settings.customize.headerSectionEnd"
           homepageSettings={localHomepageSettings}
           handleOnChange={handleSettingOnChange}
-          // testing
-          errors={{ base: [{ error: 'some error' }] }}
+          errors={apiErrors}
         />
-        <Error apiErrors={apiErrors} />
       </Section>
     </SectionFormWrapper>
   );
