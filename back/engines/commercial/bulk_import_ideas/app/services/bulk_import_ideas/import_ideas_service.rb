@@ -7,7 +7,7 @@ module BulkImportIdeas
     DEFAULT_MAX_IDEAS = 500
 
     def import_ideas(idea_rows, max_ideas: DEFAULT_MAX_IDEAS)
-      raise Error, "The maximal amount of #{max_ideas} ideas has been exceeded" if idea_rows.size > max_ideas
+      raise Error, "The maximal amount of #{max_ideas} ideas has been exceeded." if idea_rows.size > max_ideas
 
       ActiveRecord::Base.transaction do
         idea_rows.each do |idea_row|
@@ -65,6 +65,7 @@ module BulkImportIdeas
         idea_row[:latitude]             = xlsx_row['Latitude']
         idea_row[:longitude]            = xlsx_row['Longitude']
         idea_row[:location_description] = xlsx_row['Location Description']
+        idea_row[:id]                   = xlsx_row['ID']
         idea_row
       end
     end
@@ -85,7 +86,7 @@ module BulkImportIdeas
 
       idea = Idea.new idea_attributes
       # Later iteration: parseable error using idea.errors.details
-      raise Error, "The resulting idea is not valid: #{idea.errors.messages}" unless idea.valid?
+      raise Error, "The resulting idea is not valid: #{idea.errors.messages}." unless idea.valid?
 
       idea.save!
 
@@ -95,19 +96,19 @@ module BulkImportIdeas
     end
 
     def add_title_multiloc(idea_row, idea_attributes)
-      raise Error, 'Idea with empty title' if idea_row[:title_multiloc].blank?
+      report_import_error 'Idea with empty title.', idea_row if idea_row[:title_multiloc].blank?
 
       idea_attributes[:title_multiloc] = idea_row[:title_multiloc]
     end
 
     def add_body_multiloc(idea_row, idea_attributes)
-      raise Error, 'Idea with empty body' if idea_row[:body_multiloc].blank?
+      report_import_error 'Idea with empty body.', idea_row if idea_row[:body_multiloc].blank?
 
       idea_attributes[:body_multiloc] = idea_row[:body_multiloc]
     end
 
     def add_project(idea_row, idea_attributes)
-      raise Error, 'Idea without project' if idea_row[:project_title].blank?
+      report_import_error 'Idea without project.', idea_row if idea_row[:project_title].blank?
 
       project_title = idea_row[:project_title].downcase.strip
       # Later iteration: Only load necessary attributes? Preload all projects before importing all?
@@ -118,16 +119,20 @@ module BulkImportIdeas
           .map { |v| v.downcase.strip }
           .include? project_title
       end
-      raise Error, "No project with title \"#{idea_row[:project_title]}\" exists" if project.blank?
+      if project.blank?
+        report_import_error "No project with title \"#{idea_row[:project_title]}\" exists.", idea_row
+      end
 
       idea_attributes[:project] = project
     end
 
     def add_author(idea_row, idea_attributes)
-      raise Error, 'Idea without user email' if idea_row[:user_email].blank?
+      report_import_error 'Idea without user email.', idea_row if idea_row[:user_email].blank?
 
       author = User.find_by_cimail idea_row[:user_email]
-      raise Error, "No user exists with email \"#{idea_row[:user_email]}\"" if author.blank?
+      if author.blank?
+        report_import_error "No user exists with email \"#{idea_row[:user_email]}\".", idea_row
+      end
 
       idea_attributes[:author] = author
     end
@@ -139,7 +144,10 @@ module BulkImportIdeas
       begin
         published_at = Date.parse idea_row[:published_at]
       rescue StandardError => _e
-        raise Error, "Idea with invalid publication date format \"#{idea_row[:published_at]}\""
+        report_import_error(
+          "Idea with invalid publication date format \"#{idea_row[:published_at]}\".",
+          idea_row
+        )
       end
 
       idea_attributes[:published_at] = published_at
@@ -166,11 +174,16 @@ module BulkImportIdeas
       phase_rank = idea_row[:phase_rank].to_i
       project_phases = Phase.where(project: idea_attributes[:project])
       if phase_rank > project_phases.size
-        raise Error, "There are only #{project_phases.size} phases in project \"#{idea_row[:project_title]}\" (requested phase: #{phase_rank})"
+        report_import_error(
+          "There are only #{project_phases.size} phases in project \"#{idea_row[:project_title]}\" (requested phase: #{phase_rank}).",
+          idea_row
+        )
       end
 
       phase = project_phases.order(:start_at).all[phase_rank - 1]
-      raise Error, "No phase #{phase_rank} found in project \"#{idea_row[:project_title]}\"" if phase.blank?
+      if phase.blank?
+        report_import_error "No phase #{phase_rank} found in project \"#{idea_row[:project_title]}\".", idea_row
+      end
 
       idea_attributes[:phases] = [phase]
     end
@@ -198,8 +211,18 @@ module BulkImportIdeas
       begin
         IdeaImage.create!(remote_image_url: idea_row[:image_url], idea: idea)
       rescue StandardError => _e
-        raise Error, "No image could be downloaded from #{idea_row[:image_url]}, make sure the URL is valid and ends with a file extension such as .png or .jpg"
+        report_import_error(
+          "No image could be downloaded from #{idea_row[:image_url]}, make sure the URL is valid and ends with a file extension such as .png or .jpg.",
+          idea_row
+        )
       end
+    end
+
+    def report_import_error(message, idea_row)
+      if idea_row[:id].present?
+        message = "#{message} This issue occurs in the row with ID #{idea_row[:id]}."
+      end
+      raise Error, message
     end
   end
 end
