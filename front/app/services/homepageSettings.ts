@@ -17,16 +17,6 @@ export type TSectionSetting = Exclude<
   TAppConfigSectionSetting
 >;
 
-// * THomepageSection *
-export interface IHomepageSectionMap {
-  customizable_homepage_banner_enabled: 'customizable_homepage_banner_enabled';
-  top_info_section_enabled: 'top_info_section_enabled';
-  projects_enabled: 'projects_enabled';
-  bottom_info_section_enabled: 'bottom_info_section_enabled';
-}
-export type THomepageSection = IHomepageSectionMap[keyof IHomepageSectionMap];
-
-// * THomepageBannerLayout *
 export interface THomepageBannerLayoutMap {
   full_width_banner_layout: 'full_width_banner_layout';
 }
@@ -48,7 +38,6 @@ export interface IHomepageSettingsData {
 export type THomepageEnabledSetting = keyof IHomepageEnabledSettings;
 
 export interface IHomepageSettingsAttributes extends IHomepageEnabledSettings {
-  // are these values always there?
   top_info_section_multiloc: Multiloc;
   bottom_info_section_multiloc: Multiloc;
   projects_header_multiloc: Multiloc;
@@ -61,27 +50,12 @@ export interface IHomepageSettingsAttributes extends IHomepageEnabledSettings {
   banner_signed_out_header_overlay_opacity: number | null;
   header_bg: ImageSizes | null;
   pinned_admin_publication_ids: string[];
-
-  // CTA banner attributes. these are set in the custom homepage module
-  // but should be here as they are returned with the homepage settings API call
-  banner_cta_signed_in_text_multiloc: Multiloc;
-  banner_cta_signed_in_type: CTASignedInType;
-  banner_cta_signed_in_url: string | null;
-  // cta_signed_out
-  banner_cta_signed_out_text_multiloc: Multiloc;
-  banner_cta_signed_out_type: CTASignedOutType;
-  banner_cta_signed_out_url: string | null;
 }
 
-interface IHomepageEnabledSettings {
+export interface IHomepageEnabledSettings {
   top_info_section_enabled: boolean;
   bottom_info_section_enabled: boolean;
-  // move to module
-  // the allowed of events_widget_enabled still needs to be checked in appConfig
-  events_widget_enabled: boolean;
   banner_avatars_enabled: boolean;
-  // the allowed of customizable_homepage_banner_enabled still needs to be checked in appConfig
-  customizable_homepage_banner_enabled: boolean;
   projects_enabled: boolean;
 }
 

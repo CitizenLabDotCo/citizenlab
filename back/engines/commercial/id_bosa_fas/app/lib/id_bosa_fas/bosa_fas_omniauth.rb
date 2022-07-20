@@ -23,6 +23,7 @@ module IdBosaFas
       options[:issuer] = "https://#{host}"
       options[:acr_values] = 'urn:be:fedict:iam:fas:Level450'
       options[:send_scope_to_token_endpoint] = false
+      options[:client_signing_alg] = :HS256
       options[:client_options] = {
         identifier: config[:identifier],
         secret: config[:secret],

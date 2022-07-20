@@ -25,7 +25,7 @@ const StyledIcon = styled(Icon)`
   flex: 0 0 60px;
   width: 60px;
   height: 60px;
-  fill: ${colors.clRedError};
+  fill: ${colors.red600};
   margin-bottom: 30px;
 `;
 

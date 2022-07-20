@@ -52,7 +52,7 @@ const FormattedStatusLabel = (
       return (
         <StatusLabel
           width={props.width}
-          backgroundColor={colors.clRedError}
+          backgroundColor={colors.red600}
           text={<FormattedMessage {...messages.failed} />}
         />
       );

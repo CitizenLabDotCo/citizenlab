@@ -59,7 +59,7 @@ const SubmitFooterInner = styled.div`
 `;
 
 const ErrorContainer = styled.div`
-  color: ${colors.clRedError};
+  color: ${colors.red600};
 `;
 export const FormSubmitFooter = withTheme(
   memo(

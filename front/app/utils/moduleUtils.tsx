@@ -355,10 +355,6 @@ export interface OutletsPropertyMap {
     className?: string;
   };
   'app.containers.LandingPage.EventsWidget': Record<string, any>;
-  'app.containers.Admin.settings.customize.eventsSectionEnd': {
-    getSetting: (settingName: string) => any;
-    setParentState: (state: any) => void;
-  };
   'app.containers.Admin.settings.customize.Events': {
     onMount: () => void;
   };
@@ -381,7 +377,7 @@ export interface OutletsPropertyMap {
       settingKey: keyof IHomepageSettingsAttributes,
       settingValue: any
     ) => void;
-    errors: CLErrors | undefined;
+    errors: CLErrors | null;
   };
   'app.containers.LandingPage.SignedOutHeader.index': {
     homepageBannerLayout: THomepageBannerLayout;

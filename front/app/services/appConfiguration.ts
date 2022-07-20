@@ -2,6 +2,7 @@ import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { ImageSizes, Multiloc, Locale } from 'typings';
 import { TCategory } from 'components/ConsentManager/destinations';
+import { THomepageSettingKeyMap } from 'services/homepageSettings';
 export const currentAppConfigurationEndpoint = `${API_PATH}/app_configuration`;
 
 export interface AppConfigurationFeature {
@@ -13,7 +14,7 @@ export type TAppConfigurationSetting = keyof IAppConfigurationSettings;
 
 // Settings that have their enabled values in homepageSettings.
 // Their allowed value is still in appConfiguration.
-export type THomepageSetting = 'events_widget' | 'customizable_homepage_banner';
+export type THomepageSetting = keyof THomepageSettingKeyMap;
 
 // All appConfig setting names except those in THomepageSetting
 export type TAppConfigurationSettingWithEnabled = Exclude<
@@ -209,12 +210,6 @@ export interface IAppConfigurationSettings {
     }[];
   };
   disable_user_bios?: AppConfigurationFeature;
-  // the enabled value needs to be checked in homepageSettings
-  // (with e.g. useHomepageSettingsFeatureFlag)
-  events_widget?: {
-    allowed: boolean;
-    widget_title?: Multiloc;
-  };
   customizable_navbar?: AppConfigurationFeature;
   texting?: AppConfigurationFeature;
   content_builder?: AppConfigurationFeature;

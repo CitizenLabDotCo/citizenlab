@@ -14,68 +14,80 @@ import { FormattedMessage, injectIntl, MessageDescriptor } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
 // services, hooks, resources, and types
+import Outlet from 'components/Outlet';
 import {
   updateHomepageSettings,
-  THomepageSection,
+  THomepageEnabledSetting,
 } from 'services/homepageSettings';
 import useHomepageSettings from 'hooks/useHomepageSettings';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { insertConfiguration } from 'utils/moduleUtils';
+import { InsertConfigurationOptions } from 'typings';
 import clHistory from 'utils/cl-router/history';
 
-type TSectionToggleData = {
+export type TSectionToggleData = {
+  name: THomepageEnabledSetting;
   titleMessageDescriptor: MessageDescriptor;
   tooltipMessageDescriptor: MessageDescriptor;
-  sectionEnabledSettingName: THomepageSection;
   linkToPath?: string;
 };
 
 const EditHomepage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const homepageSettings = useHomepageSettings();
   const [isLoading, setIsLoading] = useState(false);
-  const [sectionTogglesData, _setSectionTogglesData] = useState<
+  const [sectionTogglesData, setSectionTogglesData] = useState<
     TSectionToggleData[]
   >([
     {
-      sectionEnabledSettingName: 'customizable_homepage_banner_enabled',
+      name: 'customizable_homepage_banner_enabled',
       titleMessageDescriptor: messages.heroBanner,
       tooltipMessageDescriptor: messages.heroBannerTooltip,
       linkToPath: 'homepage-banner',
     },
     {
-      sectionEnabledSettingName: 'top_info_section_enabled',
+      name: 'top_info_section_enabled',
       titleMessageDescriptor: messages.topInfoSection,
       tooltipMessageDescriptor: messages.topInfoSectionTooltip,
       linkToPath: 'top-info-section',
     },
     {
-      sectionEnabledSettingName: 'projects_enabled',
+      name: 'projects_enabled',
       titleMessageDescriptor: messages.projectsList,
       tooltipMessageDescriptor: messages.projectsListTooltip,
     },
     {
-      sectionEnabledSettingName: 'bottom_info_section_enabled',
+      name: 'bottom_info_section_enabled',
       titleMessageDescriptor: messages.bottomInfoSection,
       tooltipMessageDescriptor: messages.bottomInfoSectionTooltip,
       linkToPath: 'bottom-info-section',
     },
   ]);
 
-  const handleOnChangeToggle = (sectionName: THomepageSection) => async () => {
-    if (isNilOrError(homepageSettings)) {
-      return;
-    }
-    setIsLoading(true);
-    try {
-      await updateHomepageSettings({
-        [sectionName]: !homepageSettings.data.attributes[sectionName],
-      });
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-    }
+  const handleOnChangeToggle =
+    (sectionName: THomepageEnabledSetting) => async () => {
+      if (isNilOrError(homepageSettings)) {
+        return;
+      }
+      setIsLoading(true);
+      try {
+        await updateHomepageSettings({
+          [sectionName]: !homepageSettings.data.attributes[sectionName],
+        });
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+  const handleOnData = (
+    sectionToggleData: InsertConfigurationOptions<TSectionToggleData>
+  ) => {
+    setSectionTogglesData((currentSectionTogglesData) => {
+      return insertConfiguration(sectionToggleData)(currentSectionTogglesData);
+    });
   };
 
   const handleOnClick = (url: string) => {
@@ -102,11 +114,9 @@ const EditHomepage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       ]}
     >
       <Box display="flex" alignItems="center" mb="12px">
-        {/* Title should have no default margins. If I set margin to 0, it still gets overwritten. */}
         <Title variant="h2">
           <FormattedMessage {...messages.sectionsTitle} />
         </Title>
-        {/* Should this happen with a Box? */}
         <Box ml="auto">
           <AdminViewButton
             buttonTextMessageDescriptor={messages.viewPage}
@@ -115,14 +125,6 @@ const EditHomepage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         </Box>
       </Box>
       <Box display="flex" flexDirection="column">
-        {/*
-         How do we deal with margins on Title to not make the tech debt worse here?
-           + be consistent
-
-         Also font-weight is an issue again.
-
-       Should I use a Box for this? Or go with a StyledWarning?
-       */}
         <Box mb="28px">
           <Warning>
             <FormattedMessage {...messages.sectionDescription} />
@@ -131,7 +133,7 @@ const EditHomepage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         {sectionTogglesData.map(
           (
             {
-              sectionEnabledSettingName,
+              name,
               titleMessageDescriptor,
               tooltipMessageDescriptor,
               linkToPath,
@@ -140,13 +142,9 @@ const EditHomepage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           ) => {
             return (
               <SectionToggle
-                key={sectionEnabledSettingName}
-                checked={
-                  homepageSettings.data.attributes[sectionEnabledSettingName]
-                }
-                onChangeSectionToggle={handleOnChangeToggle(
-                  sectionEnabledSettingName
-                )}
+                key={name}
+                checked={homepageSettings.data.attributes[name]}
+                onChangeSectionToggle={handleOnChangeToggle(name)}
                 onClickEditButton={handleOnClick}
                 editLinkPath={linkToPath}
                 titleMessageDescriptor={titleMessageDescriptor}
@@ -157,6 +155,10 @@ const EditHomepage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
             );
           }
         )}
+        <Outlet
+          id="app.containers.Admin.flexible-pages.EditHomepage.sectionToggles"
+          onData={handleOnData}
+        />
       </Box>
     </SectionFormWrapper>
   );

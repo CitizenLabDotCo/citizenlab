@@ -40,7 +40,7 @@ const TextSettings = styled.div`
 // front/app/containers/Admin/projects/general/index.tsx
 const getTextErrors = (
   textMultiloc: Multiloc | undefined,
-  errors: CLErrors | undefined,
+  errors: CLErrors | undefined | null,
   formatMessage: (messageDescriptor, values?) => string,
   tenantLocales: Locale[] | undefined | null | Error
 ) => {
@@ -52,11 +52,11 @@ const getTextErrors = (
   }
 
   if (!isNilOrError(tenantLocales)) {
-    tenantLocales.forEach((locale) => {
-      if (isEmpty(textMultiloc?.[locale])) {
-        textErrors[locale] = formatMessage(genericMessages.blank);
-      }
-    });
+    if (tenantLocales.every((locale) => isEmpty(textMultiloc?.[locale]))) {
+      tenantLocales.forEach(
+        (locale) => (textErrors[locale] = formatMessage(genericMessages.blank))
+      );
+    }
   }
 
   return textErrors;
@@ -64,7 +64,7 @@ const getTextErrors = (
 
 const getUrlErrors = (
   url: string | undefined | null,
-  errors: CLErrors | undefined,
+  errors: CLErrors | undefined | null,
   formatMessage: (messageDescriptor, values?) => string
 ) => {
   // Prevent displaying errors on the first render.
@@ -91,7 +91,7 @@ interface Props {
     settingValue: Multiloc | string
   ) => void;
   signInStatus: 'signed_out' | 'signed_in';
-  errors: CLErrors | undefined;
+  errors: CLErrors | undefined | null;
   className?: string;
 }
 

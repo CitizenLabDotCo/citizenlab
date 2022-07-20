@@ -205,7 +205,7 @@ describe Insights::InputsFinder do
       end
 
       context '(asc)' do
-        let(:params) { { category: category.id, sort: 'approval' } }
+        let(:params) { { categories: [category.id], sort: 'approval' } }
 
         it 'returns inputs with approved assignments first' do
           approved_status = finder_result.map { |i| get_assignment(i, category).approved? }
@@ -214,7 +214,7 @@ describe Insights::InputsFinder do
       end
 
       context '(desc)' do
-        let(:params) { { category: category.id, sort: '-approval' } }
+        let(:params) { { categories: [category.id], sort: '-approval' } }
 
         it 'returns inputs with suggestions first' do
           approved_status = finder_result.map { |i| get_assignment(i, category).approved? }

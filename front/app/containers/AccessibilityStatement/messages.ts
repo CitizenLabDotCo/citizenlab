@@ -10,10 +10,10 @@ export default defineMessages({
     id: 'app.containers.AccessibilityStatement.pageDescription',
     defaultMessage: 'A statement on the accessibility of this website',
   },
-  intro: {
-    id: 'app.containers.AccessibilityStatement.intro',
+  intro2022: {
+    id: 'app.containers.AccessibilityStatement.intro2022',
     defaultMessage:
-      'CitizenLab is committed to ensuring digital accessibility for people with disabilities. Current and relevant accessibility standards are applied in our on-going efforts to improve the user experience for all who visit and use our platforms.',
+      '{citizenLabLink} is committed to providing a platform that is accessible to all users, regardless of technology or ability. Current relevant accessibility standards are adhered to in our on-going efforts to maximise the accessibility and usability of our platforms for all users.',
   },
   changePreferencesText: {
     id: 'app.containers.AccessibilityStatement.changePreferencesText',
@@ -27,19 +27,6 @@ export default defineMessages({
     id: 'app.containers.AccessibilityStatement.conformanceStatus',
     defaultMessage: 'Conformance status',
   },
-  currentStandard: {
-    id: 'app.containers.AccessibilityStatement.currentStandard',
-    defaultMessage: 'Current accessibility standard of the site:',
-  },
-  contentConformanceTitle: {
-    id: 'app.containers.AccessibilityStatement.contentConformanceTitle',
-    defaultMessage: 'Current content conformance status:',
-  },
-  contentConformanceInfo: {
-    id: 'app.containers.AccessibilityStatement.contentConformanceInfo',
-    defaultMessage:
-      'Fully conformant: the standard content fully conforms to the accessibility standard without any exceptions.',
-  },
   contentConformanceExceptions: {
     id: 'app.containers.AccessibilityStatement.contentConformanceExceptions',
     defaultMessage:
@@ -50,19 +37,14 @@ export default defineMessages({
     defaultMessage:
       'Our digital engagement platforms facilitate user-generated content posted by individuals and organisations. It is possible that PDFs, images or other file types including multi-media are uploaded to the platform as attachments or added into text fields by platform users. These documents may not be fully accessible.',
   },
-  exception2: {
-    id: 'app.containers.AccessibilityStatement.exception2',
+  onlineWorkshopsException: {
+    id: 'app.containers.AccessibilityStatement.onlineWorkshopsException',
     defaultMessage:
-      'Our online workshops have a live video streaming component, which do not currently support subtitles.',
+      'Our online workshops have a live video streaming component, which does not currently support subtitles.',
   },
   compatibilityTitle: {
-    id: 'app.containers.AccessibilityStatement.compatibilityTitle',
-    defaultMessage: 'Compatibility with browsers and assistive technology',
-  },
-  compatibilityInfo: {
-    id: 'app.containers.AccessibilityStatement.compatibilityInfo',
-    defaultMessage:
-      'This site is optimised for Google Chrome, version 80 and later. It is also designed to be fully compatible with NVDA software.',
+    id: 'app.containers.AccessibilityStatement.compatibilityTitle2022',
+    defaultMessage: 'Compatibility with assistive technology',
   },
   screenReaderBugWarning: {
     id: 'app.containers.AccessibilityStatement.screenReaderBugWarning',
@@ -82,10 +64,10 @@ export default defineMessages({
     id: 'app.containers.AccessibilityStatement.assesmentMethodsTitle',
     defaultMessage: 'Assessment method',
   },
-  assesmentText: {
-    id: 'app.containers.AccessibilityStatement.assesmentText',
+  assesmentText2022: {
+    id: 'app.containers.AccessibilityStatement.assesmentText2022',
     defaultMessage:
-      'The accessibility of this site was evaluated by an external entity not involved in the design and development process as can be identified on this {statusPageLink}.',
+      'The accessibility of this site was evaluated by an external entity not involved in the design and development process. The compliance of the forementioned {demoPlatformLink} can be identified on this {statusPageLink}.',
   },
   statusPageText: {
     id: 'app.containers.AccessibilityStatement.statusPageText',
@@ -108,12 +90,69 @@ export default defineMessages({
     id: 'app.containers.AccessibilityStatement.postalAddress',
     defaultMessage: 'Postal address:',
   },
-  citizenLabAddress: {
-    id: 'app.containers.AccessibilityStatement.citizenLabAddress',
-    defaultMessage: 'Boulevard Anspach 65, 1000 Brussels, Belgium',
+  citizenLabAddress2022: {
+    id: 'app.containers.AccessibilityStatement.citizenLabAddress2022',
+    defaultMessage: 'Boulevard Pachéco 34, 1000 Brussels, Belgium',
   },
   responsiveness: {
     id: 'app.containers.AccessibilityStatement.responsiveness',
     defaultMessage: 'We aim to respond to feedback within 1-2 business days.',
+  },
+  publicationDate: {
+    id: 'app.containers.AccessibilityStatement.publicationDate',
+    defaultMessage: 'Publication date',
+  },
+  publicationDateIntro: {
+    id: 'app.containers.AccessibilityStatement.publicationDateIntro',
+    defaultMessage:
+      'This accessibility statement was published on June 30, 2022.',
+  },
+  applicability: {
+    id: 'app.containers.AccessibilityStatement.applicability',
+    defaultMessage:
+      'This accessibility statement applies to a {demoPlatformLink} that is representative of this website; it uses the same source code and has the same functionality.',
+  },
+  demoPlatformLinkText: {
+    id: 'app.containers.AccessibilityStatement.demoPlatformLinkText',
+    defaultMessage: 'demo website',
+  },
+  conformanceExceptions: {
+    id: 'app.containers.AccessibilityStatement.conformanceExceptions',
+    defaultMessage: 'Conformance exceptions',
+  },
+  userGeneratedContent: {
+    id: 'app.containers.AccessibilityStatement.userGeneratedContent',
+    defaultMessage: 'User-generated content ',
+  },
+  workshops: {
+    id: 'app.containers.AccessibilityStatement.workshops',
+    defaultMessage: 'Workshops',
+  },
+  surveyTools: {
+    id: 'app.containers.AccessibilityStatement.surveyTools',
+    defaultMessage: 'Survey tools',
+  },
+  surveyToolsException: {
+    id: 'app.containers.AccessibilityStatement.surveyToolsException',
+    defaultMessage:
+      'Survey tools that are available for use on this platform are third-party software and may not be accessible.',
+  },
+  mapviewIdeas: {
+    id: 'app.containers.AccessibilityStatement.mapviewIdeas',
+    defaultMessage: 'Map view of inputs',
+  },
+  mapviewIdeasException: {
+    id: 'app.containers.AccessibilityStatement.mapviewIdeasException',
+    defaultMessage:
+      'Projects have the option to display their inputs in a map view, which is not accessible. There is, however, always an alternative list view available, which is accessible.',
+  },
+  screenReaderSearchResults: {
+    id: 'app.containers.AccessibilityStatement.screenReaderSearchResults',
+    defaultMessage: 'Search function',
+  },
+  screenReaderSearchResultsException: {
+    id: 'app.containers.AccessibilityStatement.screenReaderSearchResultsException',
+    defaultMessage:
+      'Screen reader users may experience difficulties when using the search function. The number of search results may not be reported consistently.',
   },
 });
