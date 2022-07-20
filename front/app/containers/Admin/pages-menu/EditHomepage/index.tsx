@@ -54,11 +54,12 @@ const EditHomepage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       tooltipMessageDescriptor: messages.topInfoSectionTooltip,
       linkToPath: 'top-info-section',
     },
-    {
-      name: 'projects_enabled',
-      titleMessageDescriptor: messages.projectsList,
-      tooltipMessageDescriptor: messages.projectsListTooltip,
-    },
+    // Should be enabled and extended again in i2
+    // {
+    //   name: 'projects_enabled',
+    //   titleMessageDescriptor: messages.projectsList,
+    //   tooltipMessageDescriptor: messages.projectsListTooltip,
+    // },
     {
       name: 'bottom_info_section_enabled',
       titleMessageDescriptor: messages.bottomInfoSection,
