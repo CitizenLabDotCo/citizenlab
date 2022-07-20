@@ -153,6 +153,7 @@ describe('<Field />', () => {
         fireEvent.click(screen.getByTestId('edit-age-groups-button'));
         const binInputs = container.querySelectorAll('.bin-input > input');
         fireEvent.input(binInputs[5], { target: { value: 37 } });
+        fireEvent.blur(binInputs[5]);
         fireEvent.click(screen.getByTestId('bin-save-button'));
 
         indices(6).forEach((i) => {
