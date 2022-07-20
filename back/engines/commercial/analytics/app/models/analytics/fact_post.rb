@@ -18,12 +18,6 @@
 #  upvotes_count          :integer
 #  downvotes_count        :integer
 #
-# Indexes
-#
-#  index_analytics_fact_posts_on_created_date  (created_date)
-#  index_analytics_fact_posts_on_id            (id)
-#  index_analytics_fact_posts_on_project_id    (project_id)
-#
 module Analytics
   class FactPost < Analytics::ApplicationRecord
     self.primary_key = :id
