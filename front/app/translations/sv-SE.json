@@ -1100,7 +1100,6 @@
   "app.containers.Projects.removeItem": "Ta bort objekt",
   "app.containers.Projects.requiredSelection": "Obligatoriskt val",
   "app.containers.Projects.requiredSelectionExceeded": "Du har överskridit det obligatoriska valet.",
-  "app.containers.Projects.seeLess": "Se mindre",
   "app.containers.Projects.seeTheContributions": "Se bidragen",
   "app.containers.Projects.seeTheIdeas": "Se idéerna",
   "app.containers.Projects.seeTheIssues": "Se kommentarerna",

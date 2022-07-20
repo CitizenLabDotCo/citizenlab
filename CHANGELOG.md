@@ -1,5 +1,9 @@
 # Changelog
 
+### Next release
+
+- [CL-1205] Change see less copy to read less in read more on project info and phase description
+
 ## 2022-07-19
 
 ### Fixed
