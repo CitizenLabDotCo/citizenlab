@@ -1,6 +1,6 @@
 import React from 'react';
 import Field from '.';
-import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
+import { render, screen, fireEvent, waitFor, act } from 'utils/testUtils/rtl';
 import { indices } from 'utils/helperUtils';
 import { createReferenceDistribution } from '../../services/referenceDistribution';
 
@@ -105,7 +105,7 @@ describe('<Field />', () => {
         expect(screen.getByText('65 and over')).toBeInTheDocument();
       });
 
-      it('saves entered population data', () => {
+      it('saves entered population data', async () => {
         const { container } = render(<Field userCustomFieldId="field1" />);
         fireEvent.click(screen.getByText('Age'));
         fireEvent.click(screen.getByText('set age groups'));
@@ -120,9 +120,11 @@ describe('<Field />', () => {
           fireEvent.input(populationInputs[i], { target: { value: 100 } });
         });
 
-        fireEvent.click(
-          screen.getByTestId('representativeness-field-save-button')
-        );
+        await act(async () => {
+          fireEvent.click(
+            screen.getByTestId('representativeness-field-save-button')
+          );
+        });
 
         expect(createReferenceDistribution).toHaveBeenCalledTimes(1);
         expect(createReferenceDistribution).toHaveBeenCalledWith('field1', {
