@@ -18,15 +18,10 @@
 #  upvotes_count          :integer
 #  downvotes_count        :integer
 #
-# Indexes
-#
-#  index_analytics_fact_posts_on_created_date  (created_date)
-#  index_analytics_fact_posts_on_id            (id)
-#  index_analytics_fact_posts_on_project_id    (project_id)
-#
 module Analytics
   class FactPost < Analytics::ApplicationRecord
     self.primary_key = :id
+    attribute :feedback_time_taken, :string
     belongs_to :type, class_name: 'DimensionType'
     belongs_to :created_date, class_name: 'DimensionDate', foreign_key: 'created_date'
     belongs_to :project, class_name: 'DimensionProject'

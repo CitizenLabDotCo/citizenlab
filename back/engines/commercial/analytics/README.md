@@ -1,6 +1,19 @@
 # Analytics
 New analytics engine
 
+## IMPORTANT: Iteration 1
+
+The instructions below this section apply only to the multi-database set-up which will not be deployed until 
+later iterations. Until then, this engine can be used as any other by:
+
+1. Add the following to citizenlab.config.ee.json:
+
+`"commercial/analytics": true`
+
+2. Copying migrations (and views) to the main codebase using:
+
+`rails analytics:install:migrations`
+
 ## How to run the additional required docker container
 
 To run docker with analytics enabled
