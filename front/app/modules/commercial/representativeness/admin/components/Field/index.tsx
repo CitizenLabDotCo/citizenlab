@@ -78,11 +78,9 @@ const Field = ({
 
   useEffect(() => {
     if (isBinnedDistribution && !bins) {
-      setBins(
-        referenceDistribution.attributes.distribution.bins
-      )
+      setBins(referenceDistribution.attributes.distribution.bins);
     }
-  }, [isBinnedDistribution, bins])
+  }, [isBinnedDistribution, bins, referenceDistribution]);
 
   useEffect(() => {
     if (formValues === null) {
