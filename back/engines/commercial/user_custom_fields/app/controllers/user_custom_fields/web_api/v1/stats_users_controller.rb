@@ -92,7 +92,7 @@ module UserCustomFields
           @expected_user_counts ||=
             if (ref_distribution = custom_field.current_ref_distribution).present?
               # user counts for toggled off options are not used to calculate expected user counts
-              toggled_on_option_keys = ref_distribution.distribution_by_option_id.keys
+              toggled_on_option_keys = ref_distribution.distribution_by_option_key.keys
               nb_users_to_redistribute = user_counts.slice(*toggled_on_option_keys).values.sum
               expected_counts = ref_distribution.expected_counts(nb_users_to_redistribute)
 
@@ -104,7 +104,7 @@ module UserCustomFields
         def reference_population
           @reference_population ||=
             if (ref_distribution = custom_field.current_ref_distribution).present?
-              ref_distribution.distribution_by_option_id
+              ref_distribution.distribution_by_option_key
             end
         end
 

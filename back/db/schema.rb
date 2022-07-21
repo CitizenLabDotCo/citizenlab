@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_07_102050) do
+ActiveRecord::Schema.define(version: 2022_07_19_103052) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -342,7 +342,6 @@ ActiveRecord::Schema.define(version: 2022_07_07_102050) do
     t.boolean "projects_enabled", default: true, null: false
     t.jsonb "projects_header_multiloc", default: {}, null: false
     t.boolean "banner_avatars_enabled", default: true, null: false
-    t.boolean "customizable_homepage_banner_enabled", default: true, null: false
     t.string "banner_layout", default: "full_width_banner_layout", null: false
     t.jsonb "banner_signed_in_header_multiloc", default: {}, null: false
     t.jsonb "banner_cta_signed_in_text_multiloc", default: {}, null: false
@@ -1131,6 +1130,7 @@ ActiveRecord::Schema.define(version: 2022_07_07_102050) do
     t.jsonb "distribution", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "type"
     t.index ["custom_field_id"], name: "index_ucf_representativeness_ref_distributions_on_custom_field"
   end
 

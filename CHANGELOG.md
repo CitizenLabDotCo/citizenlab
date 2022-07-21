@@ -1,5 +1,11 @@
 # Changelog
 
+## 2022-07-19
+
+### Fixed
+
+- [CL-1160] Fix blank insights tag detail view
+
 ## 2022-07-14 (2)
 
 ### Added
@@ -18,6 +24,7 @@
 
 ### Added
 
+- [CL-1088] Add link to academy. Update link to guides
 - [CL-972] Add a 'read more' expand/collapse feature to timeline phases
 
 ## 2022-07-11

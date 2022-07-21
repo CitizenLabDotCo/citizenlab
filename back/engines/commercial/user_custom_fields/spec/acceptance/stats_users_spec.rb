@@ -87,7 +87,7 @@ resource 'Stats - Users' do
 
       context "when 'gender' custom field has a reference distribution" do
         let!(:ref_distribution) do
-          create(:ref_distribution, custom_field: CustomField.find_by(key: 'gender'))
+          create(:categorical_distribution, custom_field: CustomField.find_by(key: 'gender'))
         end
 
         example_request 'Users by gender with expected user counts' do
@@ -100,7 +100,7 @@ resource 'Stats - Users' do
                 female: kind_of(Numeric),
                 unspecified: kind_of(Numeric)
               },
-              reference_population: ref_distribution.distribution_by_option_id.symbolize_keys
+              reference_population: ref_distribution.distribution_by_option_key.symbolize_keys
             }
           )
         end
@@ -386,7 +386,7 @@ resource 'Stats - Users' do
         end
 
         context 'when the custom field has a reference distribution' do
-          before { create(:ref_distribution, custom_field: @custom_field) }
+          before { create(:categorical_distribution, custom_field: @custom_field) }
 
           example_request 'Users by custom field (select) including expected nb of users' do
             expect(response_status).to eq 200
@@ -536,7 +536,7 @@ resource 'Stats - Users' do
 
         describe 'when the custom field has a reference distribution' do
           before do
-            create(:ref_distribution, custom_field: @custom_field, distribution: {
+            create(:categorical_distribution, custom_field: @custom_field, distribution: {
               @option1.id => 80, @option3.id => 20
             })
           end
