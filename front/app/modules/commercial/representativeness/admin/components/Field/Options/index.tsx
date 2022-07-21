@@ -91,7 +91,11 @@ const Options = injectIntl(
           return (
             <Box key={id} display="flex" width="100%">
               <Box display="flex" alignItems="center" width="60%">
-                <Toggle checked={enabled} onChange={onToggle(id)} />
+                <Toggle
+                  checked={enabled}
+                  onChange={onToggle(id)}
+                  className="representativeness-toggle"
+                />
 
                 <Text ml="12px" variant="bodyM" color="adminTextColor">
                   {label}

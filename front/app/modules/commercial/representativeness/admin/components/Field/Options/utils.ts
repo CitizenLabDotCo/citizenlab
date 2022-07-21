@@ -1,5 +1,4 @@
 // utils
-import { indices } from 'utils/helperUtils';
 import { roundPercentages } from 'utils/math';
 import { FormValues } from '../utils';
 import { forEachBin } from '../../../utils';
@@ -91,10 +90,8 @@ export const formatUserCustomFieldOptions = (
 export const formatBins = (bins: Bins, andOverText: string) =>
   forEachBin(bins).map(({ lowerBound, upperBound, binId }) => ({
     id: binId,
-    label: upperBound === null
-      ? `${lowerBound} ${andOverText}`
-      : binId
-  }))
+    label: upperBound === null ? `${lowerBound} ${andOverText}` : binId,
+  }));
 
 const areAllOptionsEmpty = (formValues: FormValues) => {
   return Object.values(formValues).every((formValue) => formValue === null);

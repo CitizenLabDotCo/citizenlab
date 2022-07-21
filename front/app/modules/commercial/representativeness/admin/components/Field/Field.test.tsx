@@ -2,7 +2,11 @@ import React from 'react';
 import Field from '.';
 import { render, screen, fireEvent, waitFor, act } from 'utils/testUtils/rtl';
 import { indices } from 'utils/helperUtils';
-import { createReferenceDistribution } from '../../services/referenceDistribution';
+import {
+  createReferenceDistribution,
+  replaceReferenceDistribution,
+  deleteReferenceDistribution,
+} from '../../services/referenceDistribution';
 
 jest.mock('services/appConfiguration');
 jest.mock('services/locale');
@@ -11,6 +15,8 @@ jest.mock('utils/cl-intl');
 
 jest.mock('../../services/referenceDistribution', () => ({
   createReferenceDistribution: jest.fn(),
+  replaceReferenceDistribution: jest.fn(),
+  deleteReferenceDistribution: jest.fn(),
 }));
 
 let mockUserCustomFieldOptions;
@@ -26,7 +32,7 @@ jest.mock(
   () => () => mockUserCustomFieldOptions
 );
 
-let mockReferenceDistribution = {
+let mockReferenceDistribution: any = {
   referenceDataUploaded: false,
   referenceDistribution: null,
   remoteFormValues: undefined,
@@ -41,8 +47,9 @@ let mockUserCustomField;
 
 const selectField = {
   attributes: {
+    input_type: 'select',
     key: null,
-    code: 'code',
+    code: null,
     title_multiloc: { en: 'Select field' },
   },
 };
@@ -70,6 +77,145 @@ describe('<Field />', () => {
     it('renders', () => {
       render(<Field userCustomFieldId="field1" />);
       expect(screen.getByText('Select field')).toBeInTheDocument();
+    });
+
+    describe('no data yet', () => {
+      beforeEach(() => {
+        mockReferenceDistribution = {
+          referenceDataUploaded: false,
+          referenceDistribution: null,
+          remoteFormValues: undefined,
+        };
+      });
+
+      it('saves entered population data', async () => {
+        const { container } = render(<Field userCustomFieldId="field1" />);
+        fireEvent.click(screen.getByText('Select field'));
+        const populationInputs = container.querySelectorAll(
+          '.option-population-input > input'
+        );
+        expect(populationInputs.length).toBe(3);
+
+        indices(3).forEach((i) => {
+          fireEvent.input(populationInputs[i], { target: { value: 100 } });
+        });
+
+        await act(async () => {
+          fireEvent.click(
+            screen.getByTestId('representativeness-field-save-button')
+          );
+        });
+
+        expect(createReferenceDistribution).toHaveBeenCalledTimes(1);
+        expect(createReferenceDistribution).toHaveBeenCalledWith('field1', {
+          option1: 100,
+          option2: 100,
+          option3: 100,
+        });
+      });
+
+      it('does not allow saving if form incomplete', async () => {
+        const { container } = render(<Field userCustomFieldId="field1" />);
+        fireEvent.click(screen.getByText('Select field'));
+        const populationInputs = container.querySelectorAll(
+          '.option-population-input > input'
+        );
+        expect(populationInputs.length).toBe(3);
+
+        indices(2).forEach((i) => {
+          fireEvent.input(populationInputs[i], { target: { value: 100 } });
+        });
+
+        await act(async () => {
+          fireEvent.click(
+            screen.getByTestId('representativeness-field-save-button')
+          );
+        });
+
+        expect(createReferenceDistribution).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('with saved data', () => {
+      beforeEach(() => {
+        mockReferenceDistribution = {
+          referenceDataUploaded: true,
+          referenceDistribution: {
+            type: 'categorical_distribution',
+          },
+          remoteFormValues: {
+            option1: 100,
+            option2: 100,
+          },
+        };
+      });
+
+      it('shows correct form values', () => {
+        const { container } = render(<Field userCustomFieldId="field1" />);
+        fireEvent.click(screen.getByText('Select field'));
+
+        const toggles = container.querySelectorAll(
+          '.representativeness-toggle > input'
+        );
+        expect(toggles[0]).toHaveAttribute('checked', '');
+        expect(toggles[1]).toHaveAttribute('checked', '');
+        expect(toggles[2]).not.toHaveAttribute('checked', '');
+
+        const populationInputs = container.querySelectorAll(
+          '.option-population-input > input'
+        );
+        expect(populationInputs.length).toBe(2);
+        expect(populationInputs[0]).toHaveAttribute('value', '100');
+        expect(populationInputs[1]).toHaveAttribute('value', '100');
+      });
+
+      it('allows replacing distribution', async () => {
+        const { container } = render(<Field userCustomFieldId="field1" />);
+        fireEvent.click(screen.getByText('Select field'));
+
+        const toggles = container.querySelectorAll(
+          '.representativeness-toggle > input'
+        );
+        fireEvent.click(toggles[2]);
+
+        const populationInputs = container.querySelectorAll(
+          '.option-population-input > input'
+        );
+        fireEvent.input(populationInputs[2], { target: { value: 200 } });
+
+        await act(async () => {
+          fireEvent.click(
+            screen.getByTestId('representativeness-field-save-button')
+          );
+        });
+
+        expect(replaceReferenceDistribution).toHaveBeenCalledTimes(1);
+        expect(replaceReferenceDistribution).toHaveBeenCalledWith('field1', {
+          option1: 100,
+          option2: 100,
+          option3: 200,
+        });
+      });
+
+      it('allows deleting distribution', async () => {
+        const { container } = render(<Field userCustomFieldId="field1" />);
+        fireEvent.click(screen.getByText('Select field'));
+
+        const toggles = container.querySelectorAll(
+          '.representativeness-toggle > input'
+        );
+        fireEvent.click(toggles[0]);
+        fireEvent.click(toggles[1]);
+
+        await act(async () => {
+          fireEvent.click(
+            screen.getByTestId('representativeness-field-save-button')
+          );
+        });
+
+        expect(deleteReferenceDistribution).toHaveBeenCalledTimes(1);
+        expect(deleteReferenceDistribution).toHaveBeenCalledWith('field1');
+      });
     });
   });
 
@@ -144,6 +290,30 @@ describe('<Field />', () => {
         });
       });
 
+      it('does not allow saving if form incomplete', async () => {
+        const { container } = render(<Field userCustomFieldId="field1" />);
+        fireEvent.click(screen.getByText('Age'));
+        fireEvent.click(screen.getByTestId('set-age-groups-button'));
+        fireEvent.click(screen.getByTestId('bin-save-button'));
+
+        const populationInputs = container.querySelectorAll(
+          '.option-population-input > input'
+        );
+        expect(populationInputs.length).toBe(6);
+
+        indices(5).forEach((i) => {
+          fireEvent.input(populationInputs[i], { target: { value: 100 } });
+        });
+
+        await act(async () => {
+          fireEvent.click(
+            screen.getByTestId('representativeness-field-save-button')
+          );
+        });
+
+        expect(createReferenceDistribution).not.toHaveBeenCalled();
+      });
+
       it('clears correct filled out options after modifying bins', () => {
         const { container } = render(<Field userCustomFieldId="field1" />);
         fireEvent.click(screen.getByText('Age'));
@@ -175,9 +345,5 @@ describe('<Field />', () => {
         });
       });
     });
-
-    // describe('with saved data', () => {
-    //   // TODO
-    // })
   });
 });
