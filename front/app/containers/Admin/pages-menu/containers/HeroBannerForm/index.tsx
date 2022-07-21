@@ -20,7 +20,6 @@ import {
 
 import {
   Box,
-  Button,
   ColorPickerInput,
   IconTooltip,
   IOption,
@@ -32,6 +31,7 @@ import HeaderImageDropzone from './HeaderImageDropzone';
 import RangeInput from 'components/UI/RangeInput';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import Outlet from 'components/Outlet';
+import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -75,6 +75,7 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
 
   // component state
   const [isLoading, setIsLoading] = useState(false);
+  const [formStatus, setFormStatus] = useState<ISubmitState>('enabled');
   const [headerLocalDisplayImage, setHeaderLocalDisplayImage] = useState<
     UploadFile[] | null
   >(null);
@@ -132,10 +133,12 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       });
 
       setIsLoading(true);
+      setFormStatus('disabled');
       try {
         await updateHomepageSettings(diffedValues);
         setApiErrors(null);
         setIsLoading(false);
+        setFormStatus('success');
       } catch (error) {
         setIsLoading(false);
         if (isCLErrorJSON(error)) {
@@ -154,6 +157,10 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         ...localHomepageSettings,
         [key]: value,
       });
+
+      if (formStatus !== 'enabled') {
+        setFormStatus('enabled');
+      }
     }
   };
 
@@ -255,6 +262,7 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   useEffect(() => {
     if (isNil(localHomepageSettings?.header_bg)) {
       setBannerError(formatMessage(messages.noHeader));
+      setFormStatus('disabled');
       return;
     }
 
@@ -273,10 +281,7 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     banner_signed_out_header_multiloc,
     banner_signed_out_subheader_multiloc,
     banner_signed_in_header_multiloc,
-    header_bg,
   } = localHomepageSettings;
-
-  const saveDisabled = isLoading || isNil(header_bg);
 
   return (
     <SectionFormWrapper
@@ -293,9 +298,18 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       ]}
       title={formatMessage(messages.heroBannerTitle)}
       stickyMenuContents={
-        <Button disabled={saveDisabled} onClick={onSave}>
-          <FormattedMessage {...messages.saveHeroBanner} />
-        </Button>
+        <SubmitWrapper
+          status={formStatus}
+          buttonStyle="primary"
+          loading={isLoading}
+          onClick={onSave}
+          messages={{
+            buttonSave: messages.heroBannerSaveButton,
+            buttonSuccess: messages.heroBannerButtonSuccess,
+            messageSuccess: messages.heroBannerMessageSuccess,
+            messageError: messages.heroBannerError,
+          }}
+        />
       }
     >
       <Section key={'header'}>
