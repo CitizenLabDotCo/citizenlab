@@ -20,7 +20,6 @@ import SelectableResourceByProjectChart from './charts/SelectableResourceByProje
 import SelectableResourceByTopicChart from './charts/SelectableResourceByTopicChart';
 import LineBarChartVotesByTime from './charts/LineBarChartVotesByTime';
 import IdeasByStatusChart from './charts/IdeasByStatusChart';
-import Outlet from 'components/Outlet';
 
 // typings
 import { IOption } from 'typings';
@@ -303,7 +302,6 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
               />
             </Column>
           </GraphsContainer>
-          <Outlet id="app.containers.Admin.dashboards.summary" />
         </>
       );
     }
