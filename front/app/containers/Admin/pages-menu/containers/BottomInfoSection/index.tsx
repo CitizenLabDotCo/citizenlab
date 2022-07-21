@@ -27,7 +27,7 @@ import { updateHomepageSettings } from 'services/homepageSettings';
 import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
-const BottomInfoForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+const BottomInfoSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const homepageSettings = useHomepageSettings();
   const theme: any = useTheme();
 
@@ -35,7 +35,7 @@ const BottomInfoForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     useState<Multiloc | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [apiErrors, setApiErrors] = useState<CLError[] | null>(null);
-  const [formStatus, setFormStatus] = useState<ISubmitState>('enabled');
+  const [formStatus, setFormStatus] = useState<ISubmitState>('disabled');
 
   useEffect(() => {
     if (!isNilOrError(homepageSettings)) {
@@ -122,4 +122,4 @@ const BottomInfoForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   );
 };
 
-export default injectIntl(BottomInfoForm);
+export default injectIntl(BottomInfoSection);

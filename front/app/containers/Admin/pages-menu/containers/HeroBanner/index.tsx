@@ -75,7 +75,7 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
 
   // component state
   const [isLoading, setIsLoading] = useState(false);
-  const [formStatus, setFormStatus] = useState<ISubmitState>('enabled');
+  const [formStatus, setFormStatus] = useState<ISubmitState>('disabled');
   const [headerLocalDisplayImage, setHeaderLocalDisplayImage] = useState<
     UploadFile[] | null
   >(null);

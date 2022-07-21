@@ -36,7 +36,7 @@ const TopInfoSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   >(null);
   const [isLoading, setIsLoading] = useState(false);
   const [apiErrors, setApiErrors] = useState<CLError[] | null>(null);
-  const [formStatus, setFormStatus] = useState<ISubmitState>('enabled');
+  const [formStatus, setFormStatus] = useState<ISubmitState>('disabled');
 
   useEffect(() => {
     if (!isNilOrError(homepageSettings)) {
