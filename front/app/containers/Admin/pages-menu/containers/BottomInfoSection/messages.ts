@@ -27,7 +27,7 @@ export default defineMessages({
     defaultMessage: 'Bottom info section saved',
   },
   bottomInfoError: {
-    id: 'app.containers.Admin.pagesAndMenu.bottomInfoSaveButton',
+    id: 'app.containers.Admin.pagesAndMenu.bottomInfoError',
     defaultMessage: "Couldn't save bottom info section. Please try again",
   },
 });
