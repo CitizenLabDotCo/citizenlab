@@ -107,10 +107,10 @@ const Field = ({
   const isDefault = userCustomField.attributes.code !== null;
   const titleMultiloc = userCustomField.attributes.title_multiloc;
 
-  const ageGroupsSet =
+  const binsSet =
     userCustomField.attributes.key === 'birthyear' ? !!bins : undefined;
 
-  const status = getStatus(formValues, remoteFormValues, touched, ageGroupsSet);
+  const status = getStatus(formValues, remoteFormValues, touched, binsSet);
 
   const handleUpdateEnabled = (optionId: string, enabled: boolean) => {
     if (enabled) {
@@ -198,7 +198,7 @@ const Field = ({
         bins={bins}
         submitting={submitting}
         touched={touched}
-        ageGroupsSet={ageGroupsSet}
+        binsSet={binsSet}
         onUpdateEnabled={handleUpdateEnabled}
         onUpdatePopulation={handleUpdatePopulation}
         onSaveBins={handleSaveBins}

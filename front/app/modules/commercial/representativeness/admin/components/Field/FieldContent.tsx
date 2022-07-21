@@ -31,7 +31,7 @@ interface Props {
   bins?: Bins;
   submitting: boolean;
   touched: boolean;
-  ageGroupsSet?: boolean;
+  binsSet?: boolean;
   onUpdateEnabled: (optionId: string, enabled: boolean) => void;
   onUpdatePopulation: (optionId: string, population: number | null) => void;
   onSaveBins: (bins: Bins) => void;
@@ -44,7 +44,7 @@ const FieldContent = ({
   bins,
   submitting,
   touched,
-  ageGroupsSet,
+  binsSet,
   onUpdateEnabled,
   onUpdatePopulation,
   onSaveBins,
@@ -84,7 +84,7 @@ const FieldContent = ({
           px="16px"
         >
           <Header />
-          {ageGroupsSet === false ? (
+          {binsSet === false ? (
             <Box mt="12px" mb="12px">
               <Warning>
                 <FormattedMessage

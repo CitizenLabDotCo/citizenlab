@@ -70,9 +70,9 @@ export const getStatus = (
   formValues: FormValues,
   remoteFormValues: RemoteFormValues | undefined,
   touched: boolean,
-  ageGroupsDefined?: boolean
+  binsSet?: boolean
 ): Status | null => {
-  if (ageGroupsDefined === false) return null;
+  if (binsSet === false) return null;
 
   if (isSaved(formValues, remoteFormValues, touched)) {
     return 'saved';
