@@ -1,5 +1,6 @@
 // utils
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import { isNilOrError, NilOrError, indices } from 'utils/helperUtils';
+import { forEachBin } from '../../utils';
 
 // typings
 import { IUserCustomFieldOptionData } from 'modules/commercial/user_custom_fields/services/userCustomFieldOptions';
@@ -120,23 +121,13 @@ export const isSubmittingAllowed = (
 export const convertBinsToFormValues = (
   bins: Bins,
   formValues: FormValues | null
-) => {
-  return bins.slice(0, bins.length - 1).reduce((acc, curr, i) => {
-    const upperBound = bins[i + 1];
-    const isLastBin = i === bins.length - 2;
-
-    const binId =
-      upperBound === null
-        ? `${curr}+`
-        : `${curr}-${upperBound - (isLastBin ? 0 : 1)}`;
-
-    return {
-      ...acc,
-      [binId]:
-        formValues !== null && binId in formValues ? formValues[binId] : null,
-    };
-  }, {});
-};
+) => 
+  forEachBin(bins).reduce((acc, { binId }) => ({ 
+    ...acc,
+    [binId]: formValues !== null && binId in formValues 
+      ? formValues[binId]
+      : null
+  }), {});
 
 export const isEmptyObject = (formValues: FormValues) => {
   return Object.keys(formValues).length === 0;
@@ -226,9 +217,13 @@ const convertFormValuesToBinnedDistribution = (
   formValues: FormValues,
   bins: Bins
 ): IBinnedDistribution => {
-  const counts: number[] = [];
+  const counts = indices(bins.length - 1).map((i) => {
+    const lowerBound = bins[i]
+    const upperBound = bins[i + 1]
+    const isLastBin = i === bins.length - 2;
 
-  // TODO
+    return formValues[getBinId(lowerBound, upperBound, isLastBin)]
+  }) as number[];
 
   return {
     bins,

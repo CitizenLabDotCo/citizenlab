@@ -1,8 +1,10 @@
 // utils
+import { indices } from 'utils/helperUtils';
 import { roundPercentages } from 'utils/math';
+import { FormValues } from '../utils';
+import { forEachBin } from '../../../utils';
 
 // typings
-import { FormValues } from '../utils';
 import { IUserCustomFieldOptionData } from 'modules/commercial/user_custom_fields/services/userCustomFieldOptions';
 import { Localize } from 'hooks/useLocalize';
 import { Bins } from '../../../services/referenceDistribution';
@@ -87,23 +89,12 @@ export const formatUserCustomFieldOptions = (
   }));
 
 export const formatBins = (bins: Bins, andOverText: string) =>
-  [...Array(bins.length - 1)].map((_, i) => {
-    const lowerBound = bins[i];
-    const upperBound = bins[i + 1];
-    const isLastBin = i === bins.length - 2;
-
-    const binId =
-      upperBound === null
-        ? `${lowerBound}+`
-        : `${lowerBound}-${upperBound - (isLastBin ? 0 : 1)}`;
-
-    const binLabel =
-      upperBound === null
-        ? `${lowerBound} ${andOverText}`
-        : `${lowerBound}-${upperBound - (isLastBin ? 0 : 1)}`;
-
-    return { id: binId, label: binLabel };
-  });
+  forEachBin(bins).map(({ lowerBound, upperBound, binId }) => ({
+    id: binId,
+    label: upperBound === null
+      ? `${lowerBound} ${andOverText}`
+      : binId
+  }))
 
 const areAllOptionsEmpty = (formValues: FormValues) => {
   return Object.values(formValues).every((formValue) => formValue === null);
