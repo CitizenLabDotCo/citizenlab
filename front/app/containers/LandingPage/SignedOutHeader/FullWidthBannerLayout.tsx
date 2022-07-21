@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 // hooks
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import useHomepageSettings from 'hooks/useHomepageSettings';
 
 const Container = styled.div`
   width: 100%;
@@ -74,10 +74,10 @@ export interface Props {
 }
 
 const FullWidthBannerLayout = ({ className }: Props) => {
-  const appConfiguration = useAppConfiguration();
+  const homepageSettings = useHomepageSettings();
 
-  if (!isNilOrError(appConfiguration)) {
-    const headerImage = appConfiguration.data.attributes.header_bg?.large;
+  if (!isNilOrError(homepageSettings)) {
+    const headerImage = homepageSettings.data.attributes.header_bg?.large;
 
     return (
       <Container className={`e2e-signed-out-header ${className}`}>
