@@ -11,6 +11,7 @@ import {
   TUploadDistribution,
   Bins,
 } from '../../services/referenceDistribution';
+import { RemoteFormValues } from '../../hooks/useReferenceDistribution'
 
 // EXPORTS
 export type FormValues = Record<string, number | null>;
@@ -18,19 +19,17 @@ export type FormValues = Record<string, number | null>;
 export const getInitialValues = (
   userCustomFieldOptions: IUserCustomFieldOptionData[],
   referenceDataUploaded: boolean,
-  referenceDistribution: TReferenceDistributionData | NilOrError
+  remoteFormValues?: RemoteFormValues
 ): FormValues | null => {
   if (referenceDataUploaded) {
-    // If reference data has been uploaded, but the distribution
-    // is nil or error, we are still waiting for the data to sync
+    // If reference data has been uploaded, but the remote
+    // form values are undefined, we are still waiting for 
+    // the data to sync.
     // Hence we return null and don't render anything until
     // the data has been synced
-    if (isNilOrError(referenceDistribution)) return null;
+    if (!remoteFormValues) return null;
 
-    return getInitialValuesFromDistribution(
-      userCustomFieldOptions,
-      referenceDistribution
-    );
+    return { ...remoteFormValues };
   }
 
   return getInitialEmptyValues(userCustomFieldOptions);
@@ -121,35 +120,16 @@ export const isSubmittingAllowed = (
 export const convertBinsToFormValues = (
   bins: Bins,
   formValues: FormValues | null
-) => 
-  forEachBin(bins).reduce((acc, { binId }) => ({ 
+) =>
+  forEachBin(bins).reduce((acc, { binId }) => ({
     ...acc,
-    [binId]: formValues !== null && binId in formValues 
+    [binId]: formValues !== null && binId in formValues
       ? formValues[binId]
       : null
   }), {});
 
 export const isEmptyObject = (formValues: FormValues) => {
   return Object.keys(formValues).length === 0;
-};
-
-// HELPERS
-const getInitialValuesFromDistribution = (
-  userCustomFieldOptions: IUserCustomFieldOptionData[],
-  referenceDistribution: TReferenceDistributionData
-): FormValues => {
-  const { distribution } = referenceDistribution.attributes;
-  // TODO different logic for different distributions
-
-  return userCustomFieldOptions.reduce((acc, { id }) => {
-    const referenceDistributionValue = distribution[id];
-    if (!referenceDistributionValue) return acc;
-
-    return {
-      ...acc,
-      [id]: referenceDistributionValue.count,
-    };
-  }, {});
 };
 
 const getInitialEmptyValues = (

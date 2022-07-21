@@ -23,7 +23,7 @@ import { forEachBin } from '../utils'
  * makes it easier to deal with different types of distributions
  * in the same interface (i.e. the 'Field' component)
  */
-type RemoteFormValues = Record<string, number>;
+export type RemoteFormValues = Record<string, number>;
 
 function useReferenceDistribution(userCustomFieldId: string) {
   const [referenceDistribution, setReferenceDistribution] = useState<
@@ -66,8 +66,10 @@ function useReferenceDistribution(userCustomFieldId: string) {
     const subscription = observable.subscribe(
       (referenceDistribution: IReferenceDistribution | NilOrError) => {
         if (!isNilOrError(referenceDistribution)) {
-          setReferenceDistribution(referenceDistribution.data)
-          setRemoteFormValues(getRemoteFormValues(referenceDistribution.data))
+          const distributionData = referenceDistribution.data
+
+          setReferenceDistribution(distributionData);
+          setRemoteFormValues(getRemoteFormValues(distributionData));
         } else {
           setReferenceDistribution(referenceDistribution)
           setRemoteFormValues(undefined);
@@ -78,7 +80,11 @@ function useReferenceDistribution(userCustomFieldId: string) {
     return () => subscription.unsubscribe();
   }, [userCustomFieldId, referenceDataUploaded]);
 
-  return { referenceDistribution, referenceDataUploaded, remoteFormValues };
+  return { 
+    referenceDistribution,
+    referenceDataUploaded,
+    remoteFormValues
+  };
 }
 
 export const getRemoteFormValues = ({ 

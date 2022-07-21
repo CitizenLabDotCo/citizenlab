@@ -6,13 +6,13 @@ import {
   createReferenceDistribution,
   replaceReferenceDistribution,
   deleteReferenceDistribution,
-  TReferenceDistributionData,
   Bins,
+  TReferenceDistributionData,
 } from '../../services/referenceDistribution';
 
 // hooks
 import useUserCustomFieldOptions from 'modules/commercial/user_custom_fields/hooks/useUserCustomFieldOptions';
-import useReferenceDistribution from '../../hooks/useReferenceDistribution';
+import useReferenceDistribution, { RemoteFormValues } from '../../hooks/useReferenceDistribution';
 import useUserCustomField from 'modules/commercial/user_custom_fields/hooks/useUserCustomField';
 
 // components
@@ -40,7 +40,9 @@ interface Props {
 interface InnerProps extends Props {
   userCustomFieldOptions: IUserCustomFieldOptionData[];
   referenceDistribution: TReferenceDistributionData | NilOrError;
+  remoteFormValues?: RemoteFormValues;
   referenceDataUploaded: boolean;
+  distributionType: string;
 }
 
 const Field = ({
@@ -48,15 +50,27 @@ const Field = ({
   userCustomFieldOptions,
   referenceDistribution,
   referenceDataUploaded,
+  remoteFormValues,
 }: InnerProps) => {
   const [submitting, setSubmitting] = useState(false);
   const [touched, setTouched] = useState(false);
-  const [bins, setBins] = useState<Bins | undefined>();
+
+  const isBinnedDistribution = (
+    !isNilOrError(referenceDistribution) &&
+    referenceDistribution.type === 'binned_distribution'
+  );
+
+  const [bins, setBins] = useState<Bins | undefined>(
+    isBinnedDistribution 
+      ? referenceDistribution.attributes.distribution.bins
+      : undefined
+  );
+
   const [formValues, setFormValues] = useState(
     getInitialValues(
       userCustomFieldOptions,
       referenceDataUploaded,
-      referenceDistribution
+      remoteFormValues
     )
   );
 
@@ -68,7 +82,7 @@ const Field = ({
         getInitialValues(
           userCustomFieldOptions,
           referenceDataUploaded,
-          referenceDistribution
+          remoteFormValues
         )
       );
     }
@@ -76,7 +90,7 @@ const Field = ({
     formValues,
     userCustomFieldOptions,
     referenceDataUploaded,
-    referenceDistribution,
+    remoteFormValues,
   ]);
 
   if (formValues === null || isNilOrError(userCustomField)) {
@@ -195,7 +209,11 @@ const Field = ({
 
 const FieldWrapper = ({ userCustomFieldId }: Props) => {
   const userCustomFieldOptions = useUserCustomFieldOptions(userCustomFieldId);
-  const { referenceDistribution, referenceDataUploaded } =
+  const { 
+    referenceDistribution,
+    referenceDataUploaded,
+    remoteFormValues,
+  } =
     useReferenceDistribution(userCustomFieldId);
 
   if (
@@ -211,6 +229,7 @@ const FieldWrapper = ({ userCustomFieldId }: Props) => {
       userCustomFieldOptions={userCustomFieldOptions}
       referenceDistribution={referenceDistribution}
       referenceDataUploaded={referenceDataUploaded}
+      remoteFormValues={remoteFormValues}
     />
   );
 };
