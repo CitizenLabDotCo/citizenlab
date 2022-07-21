@@ -28,7 +28,7 @@ import { InsertConfigurationOptions } from 'typings';
 import clHistory from 'utils/cl-router/history';
 
 export type TSectionToggleData = {
-  name: THomepageEnabledSetting;
+  name: THomepageEnabledSetting | 'homepage_banner';
   titleMessageDescriptor: MessageDescriptor;
   tooltipMessageDescriptor: MessageDescriptor;
   linkToPath?: string;
@@ -42,7 +42,7 @@ const EditHomepage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     TSectionToggleData[]
   >([
     {
-      name: 'customizable_homepage_banner_enabled',
+      name: 'homepage_banner',
       titleMessageDescriptor: messages.heroBanner,
       tooltipMessageDescriptor: messages.heroBannerTooltip,
       linkToPath: 'homepage-banner',
@@ -54,11 +54,12 @@ const EditHomepage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       tooltipMessageDescriptor: messages.topInfoSectionTooltip,
       linkToPath: 'top-info-section',
     },
-    {
-      name: 'projects_enabled',
-      titleMessageDescriptor: messages.projectsList,
-      tooltipMessageDescriptor: messages.projectsListTooltip,
-    },
+    // Should be enabled and extended again in i2
+    // {
+    //   name: 'projects_enabled',
+    //   titleMessageDescriptor: messages.projectsList,
+    //   tooltipMessageDescriptor: messages.projectsListTooltip,
+    // },
     {
       name: 'bottom_info_section_enabled',
       titleMessageDescriptor: messages.bottomInfoSection,
@@ -68,7 +69,7 @@ const EditHomepage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   ]);
 
   const handleOnChangeToggle =
-    (sectionName: THomepageEnabledSetting) => async () => {
+    (sectionName: THomepageEnabledSetting | 'homepage_banner') => async () => {
       if (isNilOrError(homepageSettings)) {
         return;
       }

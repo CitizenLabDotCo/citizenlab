@@ -5,45 +5,36 @@ import TwoColumnLayout from './citizen/TwoColumnLayout';
 import TwoRowLayout from './citizen/TwoRowLayout';
 import CTASettings from './admin/CTASettings';
 import CTA from './citizen/CTA';
-import useHomepageSettingsFeatureFlag from 'hooks/useHomepageSettingsFeatureFlag';
-
-const RenderOnFeatureFlag = ({ children }) => {
-  const featureFlag = useHomepageSettingsFeatureFlag({
-    sectionEnabledSettingName: 'customizable_homepage_banner_enabled',
-    appConfigSettingName: 'customizable_homepage_banner',
-  });
-
-  return featureFlag ? <>{children}</> : null;
-};
+import FeatureFlag from 'components/FeatureFlag';
 
 const configuration: ModuleConfiguration = {
   outlets: {
     'app.containers.Admin.settings.customize.headerSectionStart': (props) => {
       return (
-        <RenderOnFeatureFlag>
+        <FeatureFlag name="customizable_homepage_banner">
           <LayoutSetting {...props} />
-        </RenderOnFeatureFlag>
+        </FeatureFlag>
       );
     },
     'app.containers.Admin.settings.customize.headerSectionEnd': (props) => {
       return (
-        <RenderOnFeatureFlag>
+        <FeatureFlag name="customizable_homepage_banner">
           <CTASettings {...props} />
-        </RenderOnFeatureFlag>
+        </FeatureFlag>
       );
     },
     'app.containers.LandingPage.SignedOutHeader.CTA': (props) => {
       return (
-        <RenderOnFeatureFlag>
+        <FeatureFlag name="customizable_homepage_banner">
           <CTA signedIn={false} {...props} />
-        </RenderOnFeatureFlag>
+        </FeatureFlag>
       );
     },
     'app.containers.LandingPage.SignedInHeader.CTA': (props) => {
       return (
-        <RenderOnFeatureFlag>
+        <FeatureFlag name="customizable_homepage_banner">
           <CTA signedIn {...props} />
-        </RenderOnFeatureFlag>
+        </FeatureFlag>
       );
     },
     'app.containers.LandingPage.SignedOutHeader.index': ({

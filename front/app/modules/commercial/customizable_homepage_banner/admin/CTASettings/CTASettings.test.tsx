@@ -11,7 +11,6 @@ jest.mock('services/appConfiguration');
 
 const props = {
   homepageSettings: {
-    customizable_homepage_banner_enabled: true,
     banner_layout: 'full_width_banner_layout',
     banner_cta_signed_out_type: 'no_button',
     banner_cta_signed_in_type: 'no_button',
