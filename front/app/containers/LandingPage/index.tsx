@@ -70,7 +70,7 @@ const LandingPage = () => {
               )}
             <MainContent />
             {!isNilOrError(homepageSettings) &&
-              homepageSettings.data.attributes.top_info_section_enabled && (
+              homepageSettings.data.attributes.bottom_info_section_enabled && (
                 // bottom info section
                 <HomepageInfoSection
                   multilocContent={
