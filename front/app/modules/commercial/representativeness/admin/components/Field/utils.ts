@@ -1,17 +1,15 @@
 // utils
-import { isNilOrError, NilOrError, indices } from 'utils/helperUtils';
 import { forEachBin } from '../../utils';
+import { isEqual } from 'lodash-es';
 
 // typings
 import { IUserCustomFieldOptionData } from 'modules/commercial/user_custom_fields/services/userCustomFieldOptions';
 import {
-  TReferenceDistributionData,
-  TDistribution,
   IBinnedDistribution,
   TUploadDistribution,
   Bins,
 } from '../../services/referenceDistribution';
-import { RemoteFormValues } from '../../hooks/useReferenceDistribution'
+import { RemoteFormValues } from '../../hooks/useReferenceDistribution';
 
 // EXPORTS
 export type FormValues = Record<string, number | null>;
@@ -23,7 +21,7 @@ export const getInitialValues = (
 ): FormValues | null => {
   if (referenceDataUploaded) {
     // If reference data has been uploaded, but the remote
-    // form values are undefined, we are still waiting for 
+    // form values are undefined, we are still waiting for
     // the data to sync.
     // Hence we return null and don't render anything until
     // the data has been synced
@@ -41,24 +39,21 @@ export const isFormValid = (formValues: FormValues) => {
   }
 
   const allOptionsFilledOut = areAllOptionsFilledOut(formValues);
+  const numberOfOptions = Object.keys(formValues).length;
 
-  const numberOfOptionsFilledOut = Object.values(formValues).filter(
-    (formValue) => formValue !== null
-  ).length;
-
-  return allOptionsFilledOut && numberOfOptionsFilledOut > 1;
+  return allOptionsFilledOut && numberOfOptions > 1;
 };
 
 export const getSubmitAction = (
   formValues: FormValues,
-  referenceDistribution: TReferenceDistributionData | NilOrError
+  remoteFormValues?: RemoteFormValues
 ) => {
-  if (isNilOrError(referenceDistribution)) {
+  if (!remoteFormValues) {
     if (!isEmptyObject(formValues)) return 'create';
     return null;
   }
 
-  if (hasNoChanges(formValues, referenceDistribution)) {
+  if (isEqual(formValues, remoteFormValues)) {
     return null;
   }
 
@@ -73,13 +68,13 @@ export type Status = 'saved' | 'complete' | 'incomplete';
 
 export const getStatus = (
   formValues: FormValues,
-  referenceDistribution: TReferenceDistributionData | NilOrError,
+  remoteFormValues: RemoteFormValues | undefined,
   touched: boolean,
   ageGroupsDefined?: boolean
 ): Status | null => {
   if (ageGroupsDefined === false) return null;
 
-  if (isSaved(formValues, referenceDistribution, touched)) {
+  if (isSaved(formValues, remoteFormValues, touched)) {
     return 'saved';
   }
 
@@ -121,17 +116,20 @@ export const convertBinsToFormValues = (
   bins: Bins,
   formValues: FormValues | null
 ) =>
-  forEachBin(bins).reduce((acc, { binId }) => ({
-    ...acc,
-    [binId]: formValues !== null && binId in formValues
-      ? formValues[binId]
-      : null
-  }), {});
+  forEachBin(bins).reduce(
+    (acc, { binId }) => ({
+      ...acc,
+      [binId]:
+        formValues !== null && binId in formValues ? formValues[binId] : null,
+    }),
+    {}
+  );
 
 export const isEmptyObject = (formValues: FormValues) => {
   return Object.keys(formValues).length === 0;
 };
 
+// UTILS
 const getInitialEmptyValues = (
   userCustomFieldOptions: IUserCustomFieldOptionData[]
 ): FormValues => {
@@ -149,40 +147,18 @@ const areAllOptionsFilledOut = (formValues: FormValues) => {
   });
 };
 
-const hasNoChanges = (
-  formValues: FormValues,
-  referenceDistribution: TReferenceDistributionData
-) => {
-  // TODO different logic for different distributions
-  const { distribution } = referenceDistribution.attributes;
-
-  if (!sameNumberOfKeys(formValues, distribution)) {
-    return false;
-  }
-
-  const noChanges = Object.keys(formValues).every((optionId) => {
-    const population = formValues[optionId];
-    const savedPopulation = distribution[optionId]?.count;
-
-    return savedPopulation === population;
-  });
-
-  return noChanges;
-};
-
 const isSaved = (
   formValues: FormValues,
-  referenceDistribution: TReferenceDistributionData | NilOrError,
+  remoteFormValues: RemoteFormValues | undefined,
   touched: boolean
 ) => {
   if (touched) return false;
 
-  if (isNilOrError(referenceDistribution)) {
-    if (isEmptyObject(formValues)) return true;
-    return false;
+  if (!remoteFormValues) {
+    return isEmptyObject(formValues);
   }
 
-  return hasNoChanges(formValues, referenceDistribution);
+  return isEqual(formValues, remoteFormValues);
 };
 
 const isComplete = (formValues: FormValues, touched: boolean) => {
@@ -197,23 +173,12 @@ const convertFormValuesToBinnedDistribution = (
   formValues: FormValues,
   bins: Bins
 ): IBinnedDistribution => {
-  const counts = indices(bins.length - 1).map((i) => {
-    const lowerBound = bins[i]
-    const upperBound = bins[i + 1]
-    const isLastBin = i === bins.length - 2;
-
-    return formValues[getBinId(lowerBound, upperBound, isLastBin)]
-  }) as number[];
+  const counts = forEachBin(bins).map(
+    ({ binId }) => formValues[binId]
+  ) as number[];
 
   return {
     bins,
     counts,
   };
-};
-
-const sameNumberOfKeys = (
-  formValues: FormValues,
-  distribution: TDistribution
-) => {
-  return Object.keys(distribution).length === Object.keys(formValues).length;
 };

@@ -12,7 +12,9 @@ import {
 
 // hooks
 import useUserCustomFieldOptions from 'modules/commercial/user_custom_fields/hooks/useUserCustomFieldOptions';
-import useReferenceDistribution, { RemoteFormValues } from '../../hooks/useReferenceDistribution';
+import useReferenceDistribution, {
+  RemoteFormValues,
+} from '../../hooks/useReferenceDistribution';
 import useUserCustomField from 'modules/commercial/user_custom_fields/hooks/useUserCustomField';
 
 // components
@@ -42,7 +44,6 @@ interface InnerProps extends Props {
   referenceDistribution: TReferenceDistributionData | NilOrError;
   remoteFormValues?: RemoteFormValues;
   referenceDataUploaded: boolean;
-  distributionType: string;
 }
 
 const Field = ({
@@ -55,13 +56,12 @@ const Field = ({
   const [submitting, setSubmitting] = useState(false);
   const [touched, setTouched] = useState(false);
 
-  const isBinnedDistribution = (
+  const isBinnedDistribution =
     !isNilOrError(referenceDistribution) &&
-    referenceDistribution.type === 'binned_distribution'
-  );
+    referenceDistribution.type === 'binned_distribution';
 
   const [bins, setBins] = useState<Bins | undefined>(
-    isBinnedDistribution 
+    isBinnedDistribution
       ? referenceDistribution.attributes.distribution.bins
       : undefined
   );
@@ -104,12 +104,7 @@ const Field = ({
   const ageGroupsSet =
     userCustomField.attributes.key === 'birthyear' ? !!bins : undefined;
 
-  const status = getStatus(
-    formValues,
-    referenceDistribution,
-    touched,
-    ageGroupsSet
-  );
+  const status = getStatus(formValues, remoteFormValues, touched, ageGroupsSet);
 
   const handleUpdateEnabled = (optionId: string, enabled: boolean) => {
     if (enabled) {
@@ -144,7 +139,7 @@ const Field = ({
   const handleSubmit = async () => {
     setTouched(false);
 
-    const submitAction = getSubmitAction(formValues, referenceDistribution);
+    const submitAction = getSubmitAction(formValues, remoteFormValues);
     if (submitAction === null) return;
 
     const newDistribution = parseFormValues(formValues, bins);
@@ -209,11 +204,7 @@ const Field = ({
 
 const FieldWrapper = ({ userCustomFieldId }: Props) => {
   const userCustomFieldOptions = useUserCustomFieldOptions(userCustomFieldId);
-  const { 
-    referenceDistribution,
-    referenceDataUploaded,
-    remoteFormValues,
-  } =
+  const { referenceDistribution, referenceDataUploaded, remoteFormValues } =
     useReferenceDistribution(userCustomFieldId);
 
   if (
