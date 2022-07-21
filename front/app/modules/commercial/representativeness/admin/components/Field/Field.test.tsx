@@ -26,10 +26,10 @@ jest.mock(
   () => () => mockUserCustomFieldOptions
 );
 
-const mockReferenceDistribution = {
+let mockReferenceDistribution = {
   referenceDataUploaded: false,
   referenceDistribution: null,
-  remoteFormValues: undefined
+  remoteFormValues: undefined,
 };
 
 jest.mock(
@@ -85,6 +85,14 @@ describe('<Field />', () => {
     });
 
     describe('no data yet', () => {
+      beforeEach(() => {
+        mockReferenceDistribution = {
+          referenceDataUploaded: false,
+          referenceDistribution: null,
+          remoteFormValues: undefined,
+        };
+      });
+
       it("opens bin modal on click 'set age groups'", () => {
         const { container } = render(<Field userCustomFieldId="field1" />);
         fireEvent.click(screen.getByText('Age'));
@@ -131,12 +139,8 @@ describe('<Field />', () => {
 
         expect(createReferenceDistribution).toHaveBeenCalledTimes(1);
         expect(createReferenceDistribution).toHaveBeenCalledWith('field1', {
-          '18-24': 100,
-          '25-34': 100,
-          '35-44': 100,
-          '45-54': 100,
-          '55-64': 100,
-          '65+': 100,
+          bins: [18, 25, 35, 45, 55, 65, null],
+          counts: [100, 100, 100, 100, 100, 100],
         });
       });
 
@@ -171,5 +175,9 @@ describe('<Field />', () => {
         });
       });
     });
+
+    // describe('with saved data', () => {
+    //   // TODO
+    // })
   });
 });
