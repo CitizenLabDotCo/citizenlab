@@ -44,8 +44,6 @@ export interface IBinnedDistributionData {
   };
 }
 
-export type TDistribution = TCategoricalDistribution | IBinnedDistribution;
-
 export type TCategoricalDistribution = Record<
   string,
   {
