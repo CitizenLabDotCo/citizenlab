@@ -77,6 +77,14 @@ const Field = ({
   const userCustomField = useUserCustomField(userCustomFieldId);
 
   useEffect(() => {
+    if (isBinnedDistribution && !bins) {
+      setBins(
+        referenceDistribution.attributes.distribution.bins
+      )
+    }
+  }, [isBinnedDistribution, bins])
+
+  useEffect(() => {
     if (formValues === null) {
       setFormValues(
         getInitialValues(

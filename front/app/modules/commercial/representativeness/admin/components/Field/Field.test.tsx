@@ -29,6 +29,7 @@ jest.mock(
 const mockReferenceDistribution = {
   referenceDataUploaded: false,
   referenceDistribution: null,
+  remoteFormValues: undefined
 };
 
 jest.mock(
@@ -37,6 +38,7 @@ jest.mock(
 );
 
 let mockUserCustomField;
+
 const selectField = {
   attributes: {
     key: null,
@@ -44,6 +46,7 @@ const selectField = {
     title_multiloc: { en: 'Select field' },
   },
 };
+
 const birthyearField = {
   attributes: {
     key: 'birthyear',
