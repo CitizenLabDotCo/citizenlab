@@ -20,6 +20,7 @@ const StickyContainer = styled.div`
   ${media.smallerThan1280px`
     width: calc(100% + 4rem);
     margin-left: -2rem;
+    padding-left: 2rem;
   `}
 
   z-index: 1001;

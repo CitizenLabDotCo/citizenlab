@@ -2,14 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { useTheme } from 'styled-components';
 
 // components
-import { Box, Button } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import SectionFormWrapper from '../../components/SectionFormWrapper';
 import Error from 'components/UI/Error';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
+import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // typings
@@ -23,7 +24,7 @@ import useHomepageSettings from 'hooks/useHomepageSettings';
 import { updateHomepageSettings } from 'services/homepageSettings';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
 const BottomInfoForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
@@ -34,6 +35,7 @@ const BottomInfoForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     useState<Multiloc | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [apiErrors, setApiErrors] = useState<CLError[] | null>(null);
+  const [formStatus, setFormStatus] = useState<ISubmitState>('enabled');
 
   useEffect(() => {
     if (!isNilOrError(homepageSettings)) {
@@ -46,17 +48,27 @@ const BottomInfoForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const handleCustomSectionMultilocOnChange = (
     bottomInfoMultiloc: Multiloc
   ) => {
+    if (formStatus !== 'enabled') {
+      setFormStatus('enabled');
+    }
+
     setBottomInfoSectionMultilocState(bottomInfoMultiloc);
+
+    if (isEmptyMultiloc(bottomInfoMultiloc)) {
+      setFormStatus('disabled');
+    }
   };
 
   const onSave = async () => {
     setIsLoading(true);
+    setFormStatus('disabled');
     try {
       if (bottomInfoSectionMultilocState) {
         await updateHomepageSettings({
           bottom_info_section_multiloc: bottomInfoSectionMultilocState,
         });
       }
+      setFormStatus('success');
       setIsLoading(false);
     } catch (error) {
       if (isCLErrorJSON(error)) {
@@ -82,11 +94,6 @@ const BottomInfoForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         { label: formatMessage(messages.bottomInfoPageTitle) },
       ]}
       title={formatMessage(messages.bottomInfoPageTitle)}
-      stickyMenuContents={
-        <Button disabled={isLoading} onClick={onSave}>
-          <FormattedMessage {...messages.bottomInfoSaveButton} />
-        </Button>
-      }
     >
       <Box maxWidth={`${theme.maxPageWidth - 100}px`} mb="24px">
         <QuillMultilocWithLocaleSwitcher
@@ -99,6 +106,18 @@ const BottomInfoForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         />
       </Box>
       <Error apiErrors={apiErrors} />
+      <SubmitWrapper
+        status={formStatus}
+        buttonStyle="primary"
+        loading={isLoading}
+        onClick={onSave}
+        messages={{
+          buttonSave: messages.bottomInfoSaveButton,
+          buttonSuccess: messages.bottomInfoButtonSuccess,
+          messageSuccess: messages.bottomInfoMessageSuccess,
+          messageError: messages.bottomInfoError,
+        }}
+      />
     </SectionFormWrapper>
   );
 };
