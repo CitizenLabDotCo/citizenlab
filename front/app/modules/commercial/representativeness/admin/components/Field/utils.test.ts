@@ -4,6 +4,7 @@ import {
   getStatus,
   isSubmittingAllowed,
   convertBinsToFormValues,
+  parseFormValues,
   FormValues,
 } from './utils';
 
@@ -333,4 +334,23 @@ describe('convertBinsToFormValues', () => {
   });
 });
 
-describe('parseFormValues', () => {});
+describe('parseFormValues', () => {
+  it('works with bins', () => {
+    const formValues = {
+      '18-24': 100,
+      '25-34': 100,
+      '35-44': 100,
+      '45-64': 100,
+      '65+': 100,
+    };
+
+    const bins = [18, 25, 35, 45, 65, null];
+
+    const expectedOutput = {
+      bins,
+      counts: [100, 100, 100, 100, 100],
+    };
+
+    expect(parseFormValues(formValues, bins)).toEqual(expectedOutput);
+  });
+});
