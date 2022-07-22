@@ -6,7 +6,7 @@ import ContentContainer from 'components/ContentContainer';
 import styled from 'styled-components';
 import Image from 'components/UI/Image';
 import { media } from 'utils/styleUtils';
-import { homepageBannerLayoutHeights } from 'containers/Admin/pages-menu/containers/HeroBannerForm/HeaderImageDropzone';
+import { homepageBannerLayoutHeights } from 'containers/Admin/pages-menu/containers/HeroBanner/HeaderImageDropzone';
 
 const Container = styled.div`
   display: flex;

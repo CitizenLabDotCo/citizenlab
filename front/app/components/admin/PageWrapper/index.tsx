@@ -8,7 +8,7 @@ const Wrapper = styled.div`
   border: 1px solid ${(props) => props.theme.colors.separation};
   box-sizing: border-box;
   padding: 3.5rem 4rem;
-  margin-bottom: 60px;
+  margin-bottom: 0px;
 
   ${media.smallerThan1280px`
     padding: 2rem 2rem;

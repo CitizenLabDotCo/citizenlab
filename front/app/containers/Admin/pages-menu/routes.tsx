@@ -5,9 +5,9 @@ const CustomNavbarContainer = lazy(() => import('containers/Admin/pages-menu'));
 const CustomNavbarSettingsComponent = lazy(
   () => import('./NavigationSettings')
 );
-const BottomInfoForm = lazy(() => import('./containers/BottomInfoForm'));
+const BottomInfoForm = lazy(() => import('./containers/BottomInfoSection'));
 const TopInfoSection = lazy(() => import('./containers/TopInfoSection'));
-const HeroBannerForm = lazy(() => import('./containers/HeroBannerForm'));
+const HeroBannerForm = lazy(() => import('./containers/HeroBanner'));
 const EditHomepage = lazy(() => import('./EditHomepage'));
 
 // path utils
