@@ -6,7 +6,7 @@ export default defineMessages({
     defaultMessage: 'Age groups',
   },
   modalDescription: {
-    id: 'app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageGroups',
+    id: 'app.containers.AdminPage.DashboardPage.components.Field.BinModal.modalDescription',
     defaultMessage: 'Set age groups to align with your base dataset.',
   },
   ageGroup: {
