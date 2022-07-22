@@ -68,15 +68,16 @@ const BottomInfoSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           bottom_info_section_multiloc: bottomInfoSectionMultilocState,
         });
       }
-      setFormStatus('success');
       setIsLoading(false);
+      setFormStatus('success');
     } catch (error) {
+      setIsLoading(false);
+      setFormStatus('error');
       if (isCLErrorJSON(error)) {
         setApiErrors(error.json.errors);
       } else {
         setApiErrors(error);
       }
-      setIsLoading(false);
     }
   };
 

@@ -28,6 +28,6 @@ export default defineMessages({
   },
   bottomInfoError: {
     id: 'app.containers.Admin.pagesAndMenu.bottomInfoError',
-    defaultMessage: "Couldn't save bottom info section. Please try again",
+    defaultMessage: "Couldn't save bottom info section",
   },
 });
