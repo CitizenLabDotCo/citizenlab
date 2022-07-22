@@ -1100,7 +1100,6 @@
   "app.containers.Projects.removeItem": "Remove item",
   "app.containers.Projects.requiredSelection": "Required selection",
   "app.containers.Projects.requiredSelectionExceeded": "You've exceeded the required selection.",
-  "app.containers.Projects.seeLess": "See less",
   "app.containers.Projects.seeTheContributions": "See the contributions",
   "app.containers.Projects.seeTheIdeas": "See the ideas",
   "app.containers.Projects.seeTheIssues": "See the comments",

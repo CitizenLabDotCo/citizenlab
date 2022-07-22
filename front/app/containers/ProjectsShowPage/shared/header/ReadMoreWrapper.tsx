@@ -166,7 +166,7 @@ const ReadMoreWrapper = memo<Props>(
                       fontSize={`${fontSizes.m}px`}
                       padding="0"
                     >
-                      <FormattedMessage {...messages.seeLess} />
+                      <FormattedMessage {...messages.readLess} />
                     </Button>
                   </Box>
                 )}
