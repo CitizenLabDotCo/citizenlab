@@ -345,5 +345,64 @@ describe('<Field />', () => {
         });
       });
     });
+
+    describe('with saved data', () => {
+      beforeEach(() => {
+        mockReferenceDistribution = {
+          referenceDataUploaded: true,
+          referenceDistribution: {
+            type: 'binned_distribution',
+            attributes: {
+              distribution: {
+                bins: [18, 25, 35, 45, 65, null],
+              },
+            },
+          },
+          remoteFormValues: {
+            '18-24': 100,
+            '25-34': 100,
+            '35-44': 100,
+            '45-64': 100,
+            '65+': 100,
+          },
+        };
+      });
+
+      it('shows correct form values', () => {
+        const { container } = render(<Field userCustomFieldId="field1" />);
+        fireEvent.click(screen.getByText('Age'));
+
+        const populationInputs = container.querySelectorAll(
+          '.option-population-input > input'
+        );
+
+        expect(populationInputs.length).toBe(5);
+        indices(5).forEach((i) => {
+          expect(populationInputs[i]).toHaveAttribute('value', '100');
+        });
+      });
+
+      it('allows replacing distribution', async () => {
+        const { container } = render(<Field userCustomFieldId="field1" />);
+        fireEvent.click(screen.getByText('Age'));
+
+        const populationInputs = container.querySelectorAll(
+          '.option-population-input > input'
+        );
+        fireEvent.input(populationInputs[2], { target: { value: 200 } });
+
+        await act(async () => {
+          fireEvent.click(
+            screen.getByTestId('representativeness-field-save-button')
+          );
+        });
+
+        expect(replaceReferenceDistribution).toHaveBeenCalledTimes(1);
+        expect(replaceReferenceDistribution).toHaveBeenCalledWith('field1', {
+          bins: [18, 25, 35, 45, 65, null],
+          counts: [100, 100, 200, 100, 100],
+        });
+      });
+    });
   });
 });
