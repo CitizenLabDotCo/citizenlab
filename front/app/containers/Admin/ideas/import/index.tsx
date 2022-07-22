@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { InjectedIntlProps } from 'react-intl';
 
 import { UploadFile, CLErrors } from 'typings';
 
@@ -53,7 +52,7 @@ const DownloadButton = styled(Button)`
   margin-bottom: 15px;
 `;
 
-const Import = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+const Import = () => {
   const [files, setFiles] = useState<UploadFile[]>([]);
   const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
 
@@ -62,10 +61,9 @@ const Import = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       await addIdeaImportFile(fileToAdd.base64);
       setFiles((files) => [...files, fileToAdd]);
     } catch (errors) {
-
-        // const errorMessage = formatMessage(messages.importRequiredFieldError, {
-        //   requiredField: 'title',
-        // });
+      // const errorMessage = formatMessage(messages.importRequiredFieldError, {
+      //   requiredField: 'title',
+      // });
 
       // let errorMessage: string;
       // if (errors?.json?.requiredField) {
@@ -75,9 +73,9 @@ const Import = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       // } else {
       //   errorMessage = formatMessage(messages.importGenericError);
       // }
-      
+
       // setApiErrors({ file: [ { error: errorMessage } ]})
-      setApiErrors(errors?.json)
+      setApiErrors(errors?.json);
     }
   };
 
@@ -93,7 +91,9 @@ const Import = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   return (
     <>
       <h1>Import inputs</h1>
-      <SectionDescription><p>Import existing inputs from an Excel file.</p></SectionDescription>
+      <SectionDescription>
+        <p>Import existing inputs from an Excel file.</p>
+      </SectionDescription>
       <SectionField>
         <StyledSectionTitle>
           1. Download and fill out the template
@@ -109,10 +109,21 @@ const Import = ({ intl: { formatMessage } }: InjectedIntlProps) => {
             </DownloadButton>
           </FlexWrapper>
           <SectionParagraph>
-            <span><a href="https://support.citizenlab.co/en/articles/1502238-how-to-bulk-import-ideas-and-input-or-locations-into-your-project" target="_blank" rel="noreferrer">Visit the support page</a> if you want more info about all supported columns in the import template.</span>
+            <span>
+              <a
+                href="https://support.citizenlab.co/en/articles/1502238-how-to-bulk-import-ideas-and-input-or-locations-into-your-project"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Visit the support page
+              </a>{' '}
+              if you want more info about all supported columns in the import
+              template.
+            </span>
           </SectionParagraph>
           <SectionParagraph>
-            Important: In order to send the invitations correctly, no column can be removed from the import template. Leave unused columns empty.
+            Important: In order to send the invitations correctly, no column can
+            be removed from the import template. Leave unused columns empty.
           </SectionParagraph>
         </SectionDescription>
 
