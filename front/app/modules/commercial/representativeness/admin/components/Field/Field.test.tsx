@@ -375,8 +375,8 @@ describe('<Field />', () => {
         const populationInputs = container.querySelectorAll(
           '.option-population-input > input'
         );
-
         expect(populationInputs.length).toBe(5);
+
         indices(5).forEach((i) => {
           expect(populationInputs[i]).toHaveAttribute('value', '100');
         });
@@ -389,6 +389,7 @@ describe('<Field />', () => {
         const populationInputs = container.querySelectorAll(
           '.option-population-input > input'
         );
+
         fireEvent.input(populationInputs[2], { target: { value: 200 } });
 
         await act(async () => {

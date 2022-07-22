@@ -97,7 +97,7 @@ export const parseFormValues = (
 
   return bins
     ? convertFormValuesToBinnedDistribution(formValues, bins)
-    : (formValues as TUploadDistribution);
+    : ({ ...formValues } as TUploadDistribution);
 };
 
 export const isSubmittingAllowed = (
