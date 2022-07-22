@@ -30,10 +30,31 @@ import { Bins } from '../../../services/referenceDistribution';
 
 const ClearAllButton = styled.button`
   cursor: pointer;
+
+  p {
+    color: ${colors.red600};
+    &:hover {
+      color: ${colors.red800};
+    }
+  }
 `;
 
 const ApplyExampleGroupingButton = styled.button`
   cursor: pointer;
+
+  p {
+    color: ${colors.label};
+    &:hover {
+      color: ${colors.text};
+    }
+  }
+
+  svg {
+    fill: ${colors.label};
+    &:hover {
+      fill: ${colors.text};
+    }
+  }
 `;
 
 const StyledIcon = styled(Icon)`
@@ -132,19 +153,18 @@ const BinModal = ({ open, bins, onClose, onSave }: Props) => {
             justifyContent="flex-end"
           >
             <ClearAllButton onClick={resetAll}>
-              <Text variant="bodyS" mt="0px" mb="0px" color="red600">
+              <Text variant="bodyS" mt="0px" mb="0px">
                 <FormattedMessage {...messages.clearAll} />
               </Text>
             </ClearAllButton>
             {!isExampleBins(currentBins) && (
               <ApplyExampleGroupingButton onClick={applyExampleGrouping}>
-                <Text variant="bodyS" mt="0px" mb="0px" color="label">
+                <Text variant="bodyS" mt="0px" mb="0px">
                   <StyledIcon
                     name="groups2"
                     height="10px"
                     width="14px"
                     mr="6px"
-                    fill={colors.label}
                   />
                   <FormattedMessage {...messages.applyExampleGrouping} />
                 </Text>

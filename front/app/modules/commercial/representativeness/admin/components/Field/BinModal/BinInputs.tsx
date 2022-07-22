@@ -11,16 +11,24 @@ import { InjectedIntlProps } from 'react-intl';
 
 // styling
 import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
 
 // utils
 import { getLowerBoundLimits, getUpperBoundLimits, parseLabel } from './utils';
 import { clamp } from 'lodash-es';
+import { indices } from 'utils/helperUtils';
 
 // typings
 import { Bins } from '../../../services/referenceDistribution';
 
 const RemoveBinButton = styled.button`
   cursor: pointer;
+
+  svg > g > path {
+    &:hover {
+      fill: ${colors.red800};
+    }
+  }
 `;
 
 interface Props {
@@ -33,7 +41,7 @@ interface Props {
 const BinInputs = ({ bins, ...otherProps }: Props) => (
   <Box mt="32px">
     <BinInputsHeader />
-    {[...Array(bins.length - 1)].map((_, i) => (
+    {indices(bins.length - 1).map((i) => (
       <BinInputRow binIndex={i} bins={bins} key={i} {...otherProps} />
     ))}
   </Box>
