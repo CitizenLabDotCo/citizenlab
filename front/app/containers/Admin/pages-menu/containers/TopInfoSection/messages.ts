@@ -28,7 +28,7 @@ export default defineMessages({
     defaultMessage: 'Top info section saved',
   },
   topInfoError: {
-    id: 'app.containers.Admin.pagesAndMenu.topInfoSaveButton',
+    id: 'app.containers.Admin.pagesAndMenu.topInfoError',
     defaultMessage: "Couldn't save top info section",
   },
 });
