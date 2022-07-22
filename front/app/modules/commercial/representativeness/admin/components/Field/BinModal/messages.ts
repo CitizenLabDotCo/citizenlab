@@ -49,4 +49,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.components.Field.BinModal.save',
     defaultMessage: 'Save',
   },
+  ageGroupNotIncluded: {
+    id: 'app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageGroupNotIncluded',
+    defaultMessage: 'Age group(s) of {upperBound} and over is not included. ',
+  },
 });

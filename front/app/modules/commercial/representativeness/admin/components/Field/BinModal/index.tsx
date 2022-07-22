@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Modal from 'components/UI/Modal';
 import { Box, Icon, Text, Button } from '@citizenlab/cl2-component-library';
 import BinInputs from './BinInputs';
+import Warning from 'components/UI/Warning';
 
 // i18n
 import messages from './messages';
@@ -133,6 +134,8 @@ const BinModal = ({ open, bins, onClose, onSave }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [saveScheduled]);
 
+  const upperBound = currentBins[currentBins.length - 1];
+
   return (
     <Modal
       opened={open}
@@ -187,6 +190,17 @@ const BinModal = ({ open, bins, onClose, onSave }: Props) => {
         >
           <FormattedMessage {...messages.addAnAgeGroup} />
         </Button>
+
+        {upperBound !== null && (
+          <Box mt="20px">
+            <Warning>
+              <FormattedMessage
+                {...messages.ageGroupNotIncluded}
+                values={{ upperBound: upperBound + 1 }}
+              />
+            </Warning>
+          </Box>
+        )}
 
         <Box display="flex" justifyContent="flex-start" mt="28px">
           <Button
