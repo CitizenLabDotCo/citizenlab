@@ -16,7 +16,7 @@ const SectionToggle = ({ onData }: Props) => {
           titleMessageDescriptor: messages.eventsWidgetSetting,
           tooltipMessageDescriptor: messages.eventsWidgetSettingDescription,
         },
-        insertAfterName: 'projects_enabled',
+        insertBeforeName: 'bottom_info_section_enabled',
       }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []

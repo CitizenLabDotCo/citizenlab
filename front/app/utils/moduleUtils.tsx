@@ -601,7 +601,7 @@ export const insertConfiguration =
       // if number is outside of lower and upper, it picks
       // the closes value. If it's inside the ranges, the
       // number is kept
-      insertAfterName ? referenceIndex + 1 : referenceIndex - 1,
+      insertAfterName ? referenceIndex + 1 : referenceIndex,
       0,
       items.length
     );

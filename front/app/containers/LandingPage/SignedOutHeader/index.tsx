@@ -1,16 +1,15 @@
-import useHomepageSettingsFeatureFlag from 'hooks/useHomepageSettingsFeatureFlag';
 import React from 'react';
 import FullWidthBannerLayout from './FullWidthBannerLayout';
 import { isNilOrError } from 'utils/helperUtils';
 import Outlet from 'components/Outlet';
 import useHomepageSettings from 'hooks/useHomepageSettings';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const SignedOutHeaderIndex = () => {
   const homepageSettings = useHomepageSettings();
-  // Flag should not be here, but inside module.
-  const customizableHomepageBannerEnabled = useHomepageSettingsFeatureFlag({
-    sectionEnabledSettingName: 'customizable_homepage_banner_enabled',
-    appConfigSettingName: 'customizable_homepage_banner',
+  // Flag should not be here, but inside module (not sure now)
+  const customizableHomepageBannerEnabled = useFeatureFlag({
+    name: 'customizable_homepage_banner',
   });
 
   if (!isNilOrError(homepageSettings)) {
