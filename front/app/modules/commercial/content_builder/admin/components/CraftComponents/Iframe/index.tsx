@@ -106,7 +106,7 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
               />
             </span>
           }
-          placeholder={formatMessage(messages.iframeUrlPlaceholder)}
+          placeholder={formatMessage(messages.urlPlaceholder)}
           type="text"
           value={url}
           onChange={(value) => {

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_30_084221) do
+ActiveRecord::Schema.define(version: 2022_07_19_103052) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -342,7 +342,6 @@ ActiveRecord::Schema.define(version: 2022_06_30_084221) do
     t.boolean "projects_enabled", default: true, null: false
     t.jsonb "projects_header_multiloc", default: {}, null: false
     t.boolean "banner_avatars_enabled", default: true, null: false
-    t.boolean "customizable_homepage_banner_enabled", default: true, null: false
     t.string "banner_layout", default: "full_width_banner_layout", null: false
     t.jsonb "banner_signed_in_header_multiloc", default: {}, null: false
     t.jsonb "banner_cta_signed_in_text_multiloc", default: {}, null: false
@@ -1193,7 +1192,7 @@ ActiveRecord::Schema.define(version: 2022_06_30_084221) do
     t.uuid "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["cause_id"], name: "index_volunteering_volunteers_on_cause_id"
+    t.index ["cause_id", "user_id"], name: "index_volunteering_volunteers_on_cause_id_and_user_id", unique: true
     t.index ["user_id"], name: "index_volunteering_volunteers_on_user_id"
   end
 

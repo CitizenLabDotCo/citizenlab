@@ -40,7 +40,7 @@ const CharacterCount = styled.p`
   right: 0;
 
   &.error {
-    color: ${colors.clRedError};
+    color: ${colors.red600};
   }
 `;
 

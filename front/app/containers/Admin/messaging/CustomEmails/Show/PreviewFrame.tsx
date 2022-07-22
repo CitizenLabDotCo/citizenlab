@@ -52,7 +52,9 @@ class PreviewFrame extends React.Component<Props, State> {
         id="e2e-email-preview-iframe"
         className={className}
         initialContent={previewHtml}
-      />
+      >
+        {this.props.children}
+      </StyledFrame>
     );
   }
 }

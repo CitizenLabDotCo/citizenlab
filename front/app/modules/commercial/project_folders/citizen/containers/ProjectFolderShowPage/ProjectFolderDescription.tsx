@@ -4,7 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import FileAttachments from 'components/UI/FileAttachments';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-import ReactResizeDetector from 'react-resize-detector/build/withPolyfill';
+import ReactResizeDetector from 'react-resize-detector';
 import Button from 'components/UI/Button';
 
 // services

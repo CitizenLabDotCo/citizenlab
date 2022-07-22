@@ -45,7 +45,9 @@ export default ({
       images={projectImages}
       imagePreviewRatio={960 / 1440}
       maxImagePreviewWidth="240px"
-      acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+      acceptedFileTypes={{
+        'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+      }}
       onAdd={handleProjectImagesOnAdd}
       onRemove={handleProjectImageOnRemove}
     />
