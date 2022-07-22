@@ -1100,7 +1100,6 @@
   "app.containers.Projects.removeItem": "Уклоните филтер",
   "app.containers.Projects.requiredSelection": "Тражена селекција",
   "app.containers.Projects.requiredSelectionExceeded": "Прекорачили сте неопходни избор.",
-  "app.containers.Projects.seeLess": "Прикажи мање",
   "app.containers.Projects.seeTheContributions": "Погледајте све уносе",
   "app.containers.Projects.seeTheIdeas": "Погледајте идеје",
   "app.containers.Projects.seeTheIssues": "Погледајте коментаре",

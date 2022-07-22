@@ -1100,7 +1100,6 @@
   "app.containers.Projects.removeItem": "إزالة العنصر",
   "app.containers.Projects.requiredSelection": "عدد العناصر المحددة المطلوب",
   "app.containers.Projects.requiredSelectionExceeded": "لقد تجاوزت عدد العناصر المحددة المطلوب.",
-  "app.containers.Projects.seeLess": "شاهد أقل",
   "app.containers.Projects.seeTheContributions": "اعرض المُساهمات",
   "app.containers.Projects.seeTheIdeas": "شاهد الأفكار",
   "app.containers.Projects.seeTheIssues": "اعرض المشكلات",
