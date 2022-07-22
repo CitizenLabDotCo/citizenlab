@@ -1096,6 +1096,7 @@
   "app.containers.Projects.projectTwitterMessage": "Isummatit tusartikkit! {projectName}-imut peqataagit | {orgName}",
   "app.containers.Projects.projects": "Suliniutit",
   "app.containers.Projects.questions": "Saqqummiussaq takuuk",
+  "app.containers.Projects.readLess": "Read less",
   "app.containers.Projects.readMore": "Atuarnerugit",
   "app.containers.Projects.removeItem": "Toqqagak peeruk",
   "app.containers.Projects.requiredSelection": "Toqqaqquneqartoq",
