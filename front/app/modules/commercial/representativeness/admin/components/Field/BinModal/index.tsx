@@ -15,8 +15,9 @@ import { colors } from 'utils/styleUtils';
 
 // utils
 import {
+  getExampleBins,
+  isExampleBins,
   validateBins,
-  allBinsEmpty,
   updateLowerBound,
   updateUpperBound,
   removeBin,
@@ -45,8 +46,6 @@ interface Props {
   onClose: () => void;
   onSave: (bins: Bins) => void;
 }
-
-const getExampleBins = (): Bins => [18, 25, 35, 45, 55, 65, null];
 
 const BinModal = ({ open, bins, onClose, onSave }: Props) => {
   const [currentBins, setCurrentBins] = useState(bins ?? getExampleBins());
@@ -137,7 +136,7 @@ const BinModal = ({ open, bins, onClose, onSave }: Props) => {
                 <FormattedMessage {...messages.clearAll} />
               </Text>
             </ClearAllButton>
-            {allBinsEmpty(currentBins) && (
+            {!isExampleBins(currentBins) && (
               <ApplyExampleGroupingButton onClick={applyExampleGrouping}>
                 <Text variant="bodyS" mt="0px" mb="0px" color="label">
                   <StyledIcon

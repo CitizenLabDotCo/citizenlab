@@ -1,4 +1,8 @@
 import { Bins } from '../../../services/referenceDistribution';
+import { isEqual } from 'lodash-es';
+
+export const getExampleBins = (): Bins => [18, 25, 35, 45, 55, 65, null];
+export const isExampleBins = (bins: Bins) => isEqual(bins, getExampleBins());
 
 export const validateBins = (currentBins: Bins) => {
   for (let i = 0; i < currentBins.length - 1; i++) {
@@ -6,10 +10,6 @@ export const validateBins = (currentBins: Bins) => {
   }
 
   return true;
-};
-
-export const allBinsEmpty = (bins: Bins) => {
-  return bins.every((bin) => bin === null);
 };
 
 export const updateLowerBound = (
