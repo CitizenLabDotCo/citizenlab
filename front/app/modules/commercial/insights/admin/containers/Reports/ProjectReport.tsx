@@ -355,10 +355,6 @@ const ProjectReport = memo(
               />
             )
           ) : null}
-          <Outlet
-            id="app.containers.Admin.dashboards.summary"
-            projectId={project.id}
-          />
         </Section>
       </>
     );

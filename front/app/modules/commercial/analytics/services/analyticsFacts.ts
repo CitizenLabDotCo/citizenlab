@@ -1,18 +1,19 @@
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
-export interface AnalyticsResponse {
-  data: any[];
-}
 
-export async function postsAnalyticsStream(queryObject) {
-  return await streams.add<AnalyticsResponse>(
+type AnalyticsResponse<T> = {
+  data: T[];
+};
+
+export async function postsAnalyticsStream<T>(queryObject) {
+  return await streams.add<AnalyticsResponse<T>>(
     `${API_PATH}/analytics/posts`,
     queryObject
   );
 }
 
-export async function participationsAnalyticsStream(queryObject) {
-  return await streams.add<AnalyticsResponse>(
+export async function participationsAnalyticsStream<T>(queryObject) {
+  return await streams.add<AnalyticsResponse<T>>(
     `${API_PATH}/analytics/participations`,
     queryObject
   );

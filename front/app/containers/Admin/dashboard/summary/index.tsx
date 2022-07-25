@@ -12,6 +12,7 @@ import {
 import ResolutionControl, {
   IResolution,
 } from 'components/admin/ResolutionControl';
+import Outlet from 'components/Outlet';
 import ChartFilters from '../components/ChartFilters';
 import TimeControl from '../components/TimeControl';
 import LineBarChart from './charts/LineBarChart';
@@ -301,6 +302,10 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 {...this.state}
               />
             </Column>
+            <Outlet
+              id="app.containers.Admin.dashboards.summary"
+              projectId={currentProjectFilter}
+            />
           </GraphsContainer>
         </>
       );

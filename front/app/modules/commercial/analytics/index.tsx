@@ -1,9 +1,9 @@
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import ProjectAnalyticsGraphs from './admin/components/ProjectAnalyticsGraphs';
+import PostFeedback from './admin/components/PostFeedback';
 
 const configuration: ModuleConfiguration = {
   outlets: {
-    'app.containers.Admin.dashboards.summary': ProjectAnalyticsGraphs,
+    'app.containers.Admin.dashboards.summary': PostFeedback,
   },
 };
 
