@@ -63,10 +63,10 @@ module UserCustomFields
 
         def custom_field
           @custom_field ||=
-            if params[:custom_field_id]
-              CustomField.find(params[:custom_field_id])
-            elsif (key = custom_field_key_from_path)
+            if (key = custom_field_key_from_path)
               CustomField.find_by(key: key)
+            elsif params[:custom_field_id]
+              CustomField.find(params[:custom_field_id])
             else
               raise ActiveRecord::RecordNotFound
             end
