@@ -12,14 +12,11 @@ namespace :bulk_import do
     service = BulkImportIdeas::ImportIdeasService.new
 
     tenant.switch do
-      idea_rows = service.xlsx_to_idea_rows read_csv(args)
+      xlsx = CSV.parse open(args[:url]).read, { headers: true, col_sep: ',', converters: [] }
+      idea_rows = service.xlsx_to_idea_rows xlsx
       service.import_ideas idea_rows
     end
 
     DumpTenantJob.perform_now tenant
-  end
-
-  def read_csv(args)
-    CSV.parse(open(args[:url]).read, { headers: true, col_sep: ',', converters: [] })
   end
 end

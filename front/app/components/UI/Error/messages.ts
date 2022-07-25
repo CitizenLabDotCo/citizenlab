@@ -231,4 +231,62 @@ export default defineMessages({
     id: 'app.errors.category_name_taken',
     defaultMessage: 'A category with this name already exists',
   },
+  bulk_import_ideas_maximum_ideas_exceeded: {
+    id: 'app.errors.bulk_import_ideas_maximum_ideas_exceeded',
+    defaultMessage: 'The maximal amount of {value} ideas has been exceeded.',
+  },
+  bulk_import_ideas_idea_not_valid: {
+    id: 'app.errors.bulk_import_ideas_idea_not_valid',
+    defaultMessage: 'The resulting idea is not valid: {value}.',
+  },
+  bulk_import_ideas_blank_title: {
+    id: 'app.errors.bulk_import_ideas_blank_title',
+    defaultMessage:
+      'Idea with empty title. This issue occurs in the row with ID {row}.',
+  },
+  bulk_import_ideas_blank_body: {
+    id: 'app.errors.bulk_import_ideas_blank_body',
+    defaultMessage:
+      'Idea with empty body. This issue occurs in the row with ID {row}.',
+  },
+  bulk_import_ideas_blank_project: {
+    id: 'app.errors.bulk_import_ideas_blank_project',
+    defaultMessage:
+      'Idea without project. This issue occurs in the row with ID {row}.',
+  },
+  bulk_import_ideas_project_not_found: {
+    id: 'app.errors.bulk_import_ideas_project_not_found',
+    defaultMessage:
+      'No project with title "{value}" exists.. This issue occurs in the row with ID {row}.',
+  },
+  bulk_import_ideas_blank_email: {
+    id: 'app.errors.bulk_import_ideas_blank_email',
+    defaultMessage:
+      'Idea without user email. This issue occurs in the row with ID {row}.',
+  },
+  bulk_import_ideas_email_not_found: {
+    id: 'app.errors.bulk_import_ideas_email_not_found',
+    defaultMessage:
+      'No user exists with email "{value}". This issue occurs in the row with ID {row}.',
+  },
+  bulk_import_ideas_publication_date_invalid_format: {
+    id: 'app.errors.bulk_import_ideas_publication_date_invalid_format',
+    defaultMessage:
+      'Idea with invalid publication date format "{value}". This issue occurs in the row with ID {row}.',
+  },
+  bulk_import_ideas_maximum_phase_rank_exceeded: {
+    id: 'app.errors.bulk_import_ideas_maximum_phase_rank_exceeded',
+    defaultMessage:
+      'Idea project has less phases than the requested phase {value}. This issue occurs in the row with ID {row}.',
+  },
+  bulk_import_ideas_project_phase_not_found: {
+    id: 'app.errors.bulk_import_ideas_project_phase_not_found',
+    defaultMessage:
+      'No phase {value} found in project. This issue occurs in the row with ID {row}.',
+  },
+  bulk_import_ideas_image_url_not_valid: {
+    id: 'app.errors.bulk_import_ideas_image_url_not_valid',
+    defaultMessage:
+      'No image could be downloaded from {value}, make sure the URL is valid and ends with a file extension such as .png or .jpg.. This issue occurs in the row with ID {row}.',
+  },
 });

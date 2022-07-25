@@ -11,7 +11,7 @@ module BulkImportIdeas
       head :ok
     rescue BulkImportIdeas::Error => e
       # render json: { file: [{ error: 'unknown_locale', value: 'my value', row: 24 }] }, status: :unprocessable_entity
-      render json: { file: [{ error: e.message }] }, status: :unprocessable_entity
+      render json: { file: [{ error: e.key, **e.params }] }, status: :unprocessable_entity
     end
 
     def example_xlsx

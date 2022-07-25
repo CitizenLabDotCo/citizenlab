@@ -136,29 +136,29 @@ describe BulkImportIdeas::ImportIdeasService do
       expect(idea.topic_ids).to match_array [topic1.id, topic2.id]
     end
 
-    it 'imports ideas with images', pending: true do
-      # WebMock.disable_net_connect!
-      # FakeWeb.register_uri(:get, 'https://images.com/image.png', body: 'Hello World!')
+    # it 'imports ideas with images' do
+    #   # WebMock.disable_net_connect!
+    #   # FakeWeb.register_uri(:get, 'https://images.com/image.png', body: 'Hello World!')
 
-      create :user, email: 'userimport@citizenlab.co'
-      create :project, title_multiloc: { 'en' => 'Project title' }
+    #   create :user, email: 'userimport@citizenlab.co'
+    #   create :project, title_multiloc: { 'en' => 'Project title' }
 
-      idea_rows = [
-        {
-          title_multiloc: { 'en' => 'My idea title' },
-          body_multiloc: { 'en' => 'My idea description' },
-          project_title: 'Project title',
-          user_email: 'userimport@citizenlab.co',
-          image_url: 'https://images.com/image.png'
-        }
-      ]
+    #   idea_rows = [
+    #     {
+    #       title_multiloc: { 'en' => 'My idea title' },
+    #       body_multiloc: { 'en' => 'My idea description' },
+    #       project_title: 'Project title',
+    #       user_email: 'userimport@citizenlab.co',
+    #       image_url: 'https://images.com/image.png'
+    #     }
+    #   ]
 
-      service.import_ideas idea_rows
+    #   service.import_ideas idea_rows
 
-      expect(Idea.count).to eq 1
-      idea = Idea.first
-      expect(idea.idea_images.count).to eq 1
-    end
+    #   expect(Idea.count).to eq 1
+    #   idea = Idea.first
+    #   expect(idea.idea_images.count).to eq 1
+    # end
 
     it 'does not accept invalid import data' do
       create :user, email: 'userimport@citizenlab.co'
@@ -166,19 +166,23 @@ describe BulkImportIdeas::ImportIdeasService do
 
       idea_rows = [
         {
+          id: '1',
           title_multiloc: { 'en' => 'My idea title' },
           body_multiloc: { 'en' => 'My idea description' },
           project_title: 'Project title',
           user_email: 'userimport@citizenlab.co'
         },
         {
+          id: '2',
           title_multiloc: { 'en' => 'My idea title' },
           body_multiloc: { 'en' => 'My idea description' },
           project_title: 'Non-existing project',
           user_email: 'userimport@citizenlab.co'
         }
       ]
-      expect { service.import_ideas idea_rows }.to raise_error BulkImportIdeas::Error
+      expect { service.import_ideas idea_rows }.to raise_error(
+        an_instance_of(BulkImportIdeas::Error).and(having_attributes(key: 'bulk_import_ideas_project_not_found', params: { value: 'Non-existing project', row: '2' }))
+      )
       expect(Idea.count).to eq 0
     end
   end
