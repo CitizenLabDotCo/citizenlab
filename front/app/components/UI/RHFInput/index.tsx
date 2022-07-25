@@ -32,6 +32,7 @@ const RHFInput = ({ name, ...rest }: Props) => {
           <Input id={name} {...field} {...rest} />
         )}
       />
+      hi
       {validationError && (
         <Error marginTop="8px" marginBottom="8px" text={validationError} />
       )}
