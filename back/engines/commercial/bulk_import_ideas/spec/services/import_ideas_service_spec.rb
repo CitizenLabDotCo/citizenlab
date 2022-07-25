@@ -136,9 +136,9 @@ describe BulkImportIdeas::ImportIdeasService do
       expect(idea.topic_ids).to match_array [topic1.id, topic2.id]
     end
 
-    it 'imports ideas with images' do
-      WebMock.disable_net_connect!
-      FakeWeb.register_uri(:get, 'https://images.com/image.png', body: 'Hello World!')
+    it 'imports ideas with images', pending: true do
+      # WebMock.disable_net_connect!
+      # FakeWeb.register_uri(:get, 'https://images.com/image.png', body: 'Hello World!')
 
       create :user, email: 'userimport@citizenlab.co'
       create :project, title_multiloc: { 'en' => 'Project title' }

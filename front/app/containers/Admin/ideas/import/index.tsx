@@ -109,19 +109,6 @@ const Import = () => {
             </DownloadButton>
           </FlexWrapper>
           <SectionParagraph>
-            <span>
-              <a
-                href="https://support.citizenlab.co/en/articles/1502238-how-to-bulk-import-ideas-and-input-or-locations-into-your-project"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Visit the support page
-              </a>{' '}
-              if you want more info about all supported columns in the import
-              template.
-            </span>
-          </SectionParagraph>
-          <SectionParagraph>
             Important: In order to send the invitations correctly, no column can
             be removed from the import template. Leave unused columns empty.
           </SectionParagraph>
