@@ -1075,11 +1075,21 @@ export function apiUpdateHomepageSettings({
   bottom_info_section_enabled,
   banner_avatars_enabled,
   events_widget_enabled,
+  banner_layout,
+  banner_signed_out_header_multiloc,
+  banner_signed_out_subheader_multiloc,
+  banner_signed_in_header_multiloc,
+  banner_cta_signed_out_text_multiloc,
 }: {
   top_info_section_enabled?: boolean;
   bottom_info_section_enabled?: boolean;
   banner_avatars_enabled?: boolean;
   events_widget_enabled?: boolean;
+  banner_layout?: string;
+  banner_signed_out_header_multiloc?: Record<string, string>;
+  banner_signed_out_subheader_multiloc?: Record<string, string>;
+  banner_signed_in_header_multiloc?: Record<string, string>;
+  banner_cta_signed_out_text_multiloc?: Record<string, string>;
 }) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1097,6 +1107,11 @@ export function apiUpdateHomepageSettings({
           bottom_info_section_enabled,
           banner_avatars_enabled,
           events_widget_enabled,
+          banner_layout,
+          banner_signed_out_header_multiloc,
+          banner_signed_out_subheader_multiloc,
+          banner_signed_in_header_multiloc,
+          banner_cta_signed_out_text_multiloc,
         },
       },
     });

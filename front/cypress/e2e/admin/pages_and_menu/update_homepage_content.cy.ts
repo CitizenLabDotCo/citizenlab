@@ -1,7 +1,7 @@
 import { randomString } from '../../../support/commands';
 
 describe('Admin: update HomePage content', () => {
-  beforeEach(() => {
+  before(() => {
     cy.setAdminLoginCookie();
     cy.visit('/admin/pages-menu/');
     cy.acceptCookies();
