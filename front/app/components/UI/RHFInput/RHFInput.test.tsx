@@ -21,10 +21,7 @@ const Form = () => {
 
   return (
     <FormProvider {...methods}>
-      <form
-        onSubmit={methods.handleSubmit((formData) => onSubmit(formData))}
-        data-testid="form"
-      >
+      <form onSubmit={methods.handleSubmit((formData) => onSubmit(formData))}>
         <RHFInput name="input" type="text" placeholder="input" />
         <button type="submit">Submit</button>
       </form>
@@ -70,7 +67,6 @@ describe('RHFInput', () => {
             onSubmit={methods.handleSubmit(() =>
               methods.setError('slug', { error: 'taken' } as any)
             )}
-            data-testid="form"
           >
             <RHFInput name="slug" type="text" placeholder="slug" />
             <button type="submit">Submit</button>
