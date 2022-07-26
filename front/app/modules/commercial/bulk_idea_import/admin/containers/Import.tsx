@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 
 import { UploadFile, CLErrors } from 'typings';
 
-import { injectIntl } from 'utils/cl-intl';
-
 import { API_PATH } from 'containers/App/constants';
 import { saveAs } from 'file-saver';
 import { requestBlob } from 'utils/request';
@@ -20,6 +18,9 @@ import { addIdeaImportFile } from 'services/ideaFiles';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 const StyledSectionTitle = styled(SectionTitle)`
   margin-bottom: 15px;
@@ -55,32 +56,23 @@ const DownloadButton = styled(Button)`
 const Import = () => {
   const [files, setFiles] = useState<UploadFile[]>([]);
   const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const handleFileOnAdd = async (fileToAdd: UploadFile) => {
+    setIsLoading(true);
     try {
       await addIdeaImportFile(fileToAdd.base64);
       setFiles((files) => [...files, fileToAdd]);
+      setIsSuccess(true);
     } catch (errors) {
-      // const errorMessage = formatMessage(messages.importRequiredFieldError, {
-      //   requiredField: 'title',
-      // });
-
-      // let errorMessage: string;
-      // if (errors?.json?.requiredField) {
-      //   errorMessage = formatMessage(messages.importRequiredFieldError, {
-      //     requiredField: errors.json.requiredField,
-      //   });
-      // } else {
-      //   errorMessage = formatMessage(messages.importGenericError);
-      // }
-
-      // setApiErrors({ file: [ { error: errorMessage } ]})
       setApiErrors(errors?.json);
+      setIsSuccess(false);
     }
+    setIsLoading(false);
   };
 
-  const downloadExampleFile = async (event) => {
-    event.preventDefault();
+  const downloadExampleFile = async () => {
     const blob = await requestBlob(
       `${API_PATH}/import_ideas/example_xlsx`,
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
@@ -90,13 +82,17 @@ const Import = () => {
 
   return (
     <>
-      <h1>Import inputs</h1>
+      <h1>
+        <FormattedMessage {...messages.importInputs} />
+      </h1>
       <SectionDescription>
-        <p>Import existing inputs from an Excel file.</p>
+        <p>
+          <FormattedMessage {...messages.importDescription} />
+        </p>
       </SectionDescription>
       <SectionField>
         <StyledSectionTitle>
-          1. Download and fill out the template
+          <FormattedMessage {...messages.importStepOne} />
         </StyledSectionTitle>
         <SectionDescription>
           <FlexWrapper>
@@ -105,17 +101,16 @@ const Import = () => {
               icon="download"
               onClick={downloadExampleFile}
             >
-              Download template
+              <FormattedMessage {...messages.downloadTemplate} />
             </DownloadButton>
           </FlexWrapper>
           <SectionParagraph>
-            Important: In order to send the invitations correctly, no column can
-            be removed from the import template. Leave unused columns empty.
+            <FormattedMessage {...messages.importHint} />
           </SectionParagraph>
         </SectionDescription>
 
         <StyledSectionTitle>
-          2. Upload your completed template file
+          <FormattedMessage {...messages.importStepTwo} />
         </StyledSectionTitle>
         <FileUploader
           id={'bulk_idea_import'}
@@ -124,9 +119,10 @@ const Import = () => {
           apiErrors={apiErrors}
           files={files}
         />
+        {!isLoading && isSuccess && <div>File upload successful</div>}
       </SectionField>
     </>
   );
 };
 
-export default injectIntl(Import);
+export default Import;

@@ -22,11 +22,6 @@ const IdeasPage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       name: 'manage',
       url: '/admin/ideas',
     },
-    {
-      label: 'Import',
-      name: 'manage',
-      url: '/admin/ideas/import',
-    },
   ]);
 
   const resource = {
