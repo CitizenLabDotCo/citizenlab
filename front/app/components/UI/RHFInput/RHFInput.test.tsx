@@ -4,6 +4,7 @@ import RHFInput from './';
 import { useForm, FormProvider } from 'react-hook-form';
 import { string, object } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import translationMessages from 'i18n/en';
 
 const schema = object({
   input: string().required('Error message'),
@@ -60,5 +61,42 @@ describe('RHFInput', () => {
       expect(screen.getByText('Error message')).toBeInTheDocument();
     });
   });
-  it('shows API validation error when there is one', async () => {});
+  it('shows API validation error when there is one', async () => {
+    const FormWithAPIError = () => {
+      const methods = useForm();
+      return (
+        <FormProvider {...methods}>
+          <form
+            onSubmit={methods.handleSubmit(() =>
+              methods.setError('slug', { error: 'taken' } as any)
+            )}
+            data-testid="form"
+          >
+            <RHFInput name="slug" type="text" placeholder="slug" />
+            <button type="submit">Submit</button>
+          </form>
+        </FormProvider>
+      );
+    };
+
+    render(<FormWithAPIError />);
+
+    const value = 'slug';
+    fireEvent.change(screen.getByPlaceholderText(/slug/i), {
+      target: {
+        value,
+      },
+    });
+
+    fireEvent.click(screen.getByText(/submit/i));
+    await waitFor(() => {
+      expect(
+        screen.getByText(
+          (translationMessages as Record<string, string>)[
+            'app.errors.slug_taken'
+          ]
+        )
+      ).toBeInTheDocument();
+    });
+  });
 });
