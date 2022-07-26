@@ -155,7 +155,7 @@
   "app.components.admin.ReportExportMenu.downloadSvg": "Download as SVG",
   "app.components.admin.ReportExportMenu.downloadXlsx": "Exel aaguk",
   "app.components.admin.SlugInput.regexError": "Uani slugimi taamaallaat naqinnerit minnerit naliginnaasut (a-z), kisitsisit (0-9) aamma kittoraatit (-) atorneqarsinnaapput. Naqinneq siulleq kingullerlu killiffilersuutaassanngilaq. Killifilersuutit tulleriit (--) inerteqqutaapput.",
-  "app.components.admin.SlugInput.resultingURL": "Resulting URL",
+  "app.components.admin.SlugInput.resultingURL": "URL-ip inerneri",
   "app.components.admin.SlugInput.url": "URL",
   "app.components.admin.SlugInput.urlSlugBrokenLinkWarning": "URL allanngortikkukku, URL pisoqaq atorlugu quppernermut linkit atorsinnaajunnaassapput.",
   "app.components.admin.SlugInput.urlSlugLabel": "Slug",
