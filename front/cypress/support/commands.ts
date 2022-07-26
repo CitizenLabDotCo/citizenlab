@@ -1043,7 +1043,7 @@ export function apiCreateEvent({
             'nl-BE': location,
           },
           start_at: startDate.toJSON(),
-          end_at: startDate.toJSON(),
+          end_at: endDate.toJSON(),
         },
       },
     });
@@ -1074,12 +1074,12 @@ export function apiUpdateHomepageSettings({
   top_info_section_enabled,
   bottom_info_section_enabled,
   banner_avatars_enabled,
-  projects_enabled,
+  events_widget_enabled,
 }: {
   top_info_section_enabled?: boolean;
   bottom_info_section_enabled?: boolean;
   banner_avatars_enabled?: boolean;
-  projects_enabled?: boolean;
+  events_widget_enabled?: boolean;
 }) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1096,7 +1096,7 @@ export function apiUpdateHomepageSettings({
           top_info_section_enabled,
           bottom_info_section_enabled,
           banner_avatars_enabled,
-          projects_enabled,
+          events_widget_enabled,
         },
       },
     });
