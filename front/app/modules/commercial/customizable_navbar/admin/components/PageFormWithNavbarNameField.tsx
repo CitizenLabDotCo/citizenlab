@@ -90,7 +90,7 @@ const PageFormWithNavbarNameField = ({
 
   if (isNilOrError(appConfig)) return null;
 
-  const onSuccess = async (formValues: FormValues) => {
+  const onSubmit = async (formValues: FormValues) => {
     try {
       await onSubmit(formValues);
       add({ variant: 'success', text: 'Page successfully saved' });
@@ -115,7 +115,7 @@ const PageFormWithNavbarNameField = ({
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSuccess, onValidationError)}>
+      <form onSubmit={methods.handleSubmit(onSubmit, onValidationError)}>
         <SectionField>
           <RHFInputMultilocWithLocaleSwitcher
             label={formatMessage(messages.navbarItemTitle)}
