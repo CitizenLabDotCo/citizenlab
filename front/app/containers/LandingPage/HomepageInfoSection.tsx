@@ -46,15 +46,16 @@ type Props = {
   fragmentName:
     | 'pages/homepage_info/content'
     | 'pages/homepage_info/top-content';
+  testId?: string;
 };
 
-const HomepageInfoSection = ({ multilocContent, fragmentName }: Props) => {
+const HomepageInfoSection = ({ multilocContent, fragmentName, testId }: Props) => {
   if (!multilocContent || isEmptyMultiloc(multilocContent)) {
     return null;
   }
 
   return (
-    <CustomSectionContentContainer>
+    <CustomSectionContentContainer testId={testId}>
       <StyledQuillEditedContent>
         <Fragment name={fragmentName}>
           <T value={multilocContent} supportHtml={true} />

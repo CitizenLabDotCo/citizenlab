@@ -47,6 +47,7 @@ declare global {
       apiEnableContentBuilder: typeof apiEnableContentBuilder;
       intersectsViewport: typeof intersectsViewport;
       notIntersectsViewport: typeof notIntersectsViewport;
+      apiUpdateHomepageSettings: typeof apiUpdateHomepageSettings;
     }
   }
 }
@@ -1069,6 +1070,39 @@ export function apiEnableContentBuilder({ projectId }: { projectId: string }) {
   });
 }
 
+export function apiUpdateHomepageSettings({
+  top_info_section_enabled,
+  bottom_info_section_enabled,
+  banner_avatars_enabled,
+  projects_enabled,
+}: {
+  top_info_section_enabled?: boolean;
+  bottom_info_section_enabled?: boolean;
+  banner_avatars_enabled?: boolean;
+  projects_enabled?: boolean;
+}) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'PATCH',
+      url: `web_api/v1/home_page/`,
+      body: {
+        home_page: {
+          top_info_section_enabled,
+          bottom_info_section_enabled,
+          banner_avatars_enabled,
+          projects_enabled,
+        },
+      },
+    });
+  });
+}
+
 // https://stackoverflow.com/a/16012490
 interface Bbox {
   left: number;
@@ -1172,3 +1206,4 @@ Cypress.Commands.add(
   { prevSubject: true },
   notIntersectsViewport
 );
+Cypress.Commands.add('apiUpdateHomepageSettings', apiUpdateHomepageSettings);

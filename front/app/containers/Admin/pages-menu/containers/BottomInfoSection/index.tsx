@@ -118,6 +118,7 @@ const BottomInfoSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           messageSuccess: messages.bottomInfoMessageSuccess,
           messageError: messages.bottomInfoError,
         }}
+        testId="bottom-info-section-submit"
       />
     </SectionFormWrapper>
   );

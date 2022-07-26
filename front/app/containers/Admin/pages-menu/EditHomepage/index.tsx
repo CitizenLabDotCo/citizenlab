@@ -147,6 +147,7 @@ const EditHomepage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
             return (
               <SectionToggle
                 key={name}
+                name={name}
                 checked={homepageSettings.data.attributes[name]}
                 onChangeSectionToggle={handleOnChangeToggle(name)}
                 onClickEditButton={handleOnClick}

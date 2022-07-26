@@ -21,6 +21,7 @@ export interface Props {
   editLinkPath?: string;
   isLastItem: boolean;
   hideToggle?: boolean;
+  name?: string;
 }
 
 const SectionToggle = ({
@@ -33,11 +34,14 @@ const SectionToggle = ({
   disabled,
   isLastItem,
   hideToggle = false,
+  name
 }: Props) => {
   return (
     <Row isLastItem={isLastItem}>
       <Box display="flex" alignItems="center" justifyContent="center">
-        <Box visibility={hideToggle ? 'hidden' : 'visible'} mr="20px">
+        <Box visibility={hideToggle ? 'hidden' : 'visible'} mr="20px"
+        data-testid={`${name}-toggle`}
+        >
           <Toggle
             checked={checked}
             onChange={onChangeSectionToggle}
@@ -56,7 +60,10 @@ const SectionToggle = ({
         </Box>
       </Box>
       {editLinkPath && onClickEditButton && (
-        <AdminEditButton onClick={() => onClickEditButton(editLinkPath)} />
+        <AdminEditButton
+        onClick={() => onClickEditButton(editLinkPath)} 
+        testId={name}
+        />
       )}
     </Row>
   );

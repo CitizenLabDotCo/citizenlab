@@ -66,6 +66,7 @@ const LandingPage = () => {
                     homepageSettings.data.attributes.top_info_section_multiloc
                   }
                   fragmentName="pages/homepage_info/top-content"
+                  testId="e2e-landing-page-top-info-section"
                 />
               )}
             <MainContent />
@@ -78,6 +79,7 @@ const LandingPage = () => {
                       .bottom_info_section_multiloc
                   }
                   fragmentName="pages/homepage_info/content"
+                  testId='e2e-landing-page-bottom-info-section'
                 />
               )}
             <Footer />
