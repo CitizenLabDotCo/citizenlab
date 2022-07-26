@@ -12,6 +12,7 @@ import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
+import homepageMessages from '../../EditHomepage/messages';
 
 // typings
 import { Multiloc, CLError } from 'typings';
@@ -101,7 +102,9 @@ const TopInfoSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         <QuillMultilocWithLocaleSwitcher
           id="custom-section"
           label={formatMessage(messages.topInfoContentEditorTitle)}
-          labelTooltipText={formatMessage(messages.topInfoDescription)}
+          labelTooltipText={formatMessage(
+            homepageMessages.topInfoSectionTooltip
+          )}
           valueMultiloc={topInfoSectionMultiloc}
           onChange={handleCustomSectionMultilocOnChange}
           withCTAButton
