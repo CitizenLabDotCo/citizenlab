@@ -101,10 +101,6 @@ module UserCustomFields
           key == 'age' ? 'birthyear' : key
         end
 
-        def user_counts_by_age
-          @user_counts_by_age ||= AgeCounter.new.count(find_users)
-        end
-
         def user_counts
           @user_counts ||= FieldValueCounter.counts_by_field_option(find_users, custom_field)
         end
