@@ -630,4 +630,69 @@ resource 'Stats - Users' do
       end
     end
   end
+
+  describe 'by_age' do
+    get 'web_api/v1/stats/users_by_age' do
+      time_boundary_parameters self
+      group_filter_parameter self
+      parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
+
+      let_it_be(:start_at) { Time.zone.local(2019) }
+      let_it_be(:end_at) { Time.zone.local(2020).end_of_year }
+
+      before do
+        AppConfiguration.instance.update(created_at: start_at)
+
+        travel_to start_at + 16.days do
+          birthyears = [1962, 1980, 1976, 1990, 1991, 2005, 2006]
+          _users = birthyears.map { |year| create(:user, birthyear: year) }
+          _user_without_birthyear = create(:user, birthyear: nil)
+        end
+      end
+
+      context 'when the birthyear custom field has no reference distribution' do
+        example 'Users counts by age' do
+          travel_to(Time.zone.local(2020, 1, 1)) { do_request }
+
+          expect(response_status).to eq 200
+          expect(json_response_body).to match(
+            total_users: 8,
+            unknown_users: 1,
+            series: {
+              users: [0, 2, 2, 1, 1, 1, 0, 0, 0, 0],
+              expected_users: nil,
+              reference_population: nil,
+              bins: UserCustomFields::AgeCounter::DEFAULT_BINS
+            }
+          )
+        end
+      end
+
+      context 'when the birthyear custom field has a reference distribution' do
+        let!(:ref_distribution) do
+          create(
+            :binned_distribution,
+            bins: [nil, 25, 50, 75, nil],
+            counts: [190, 279, 308, 213]
+          )
+        end
+
+        example 'Users counts by age' do
+          travel_to(Time.zone.local(2020, 1, 1)) { do_request }
+
+          expect(response_status).to eq 200
+          expect(json_response_body).to match(
+            total_users: 8,
+            unknown_users: 1,
+            series: {
+              users: [2, 4, 1, 0],
+              expected_users: ref_distribution.expected_counts(7),
+              reference_population: ref_distribution.counts,
+              bins: ref_distribution.bin_boundaries
+            }
+          )
+        end
+      end
+    end
+  end
 end

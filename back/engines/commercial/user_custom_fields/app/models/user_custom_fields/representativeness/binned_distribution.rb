@@ -32,8 +32,6 @@ module UserCustomFields
         ).to_s
       end
 
-      private
-
       def bin_boundaries
         distribution['bins']
       end
@@ -41,6 +39,14 @@ module UserCustomFields
       def counts
         distribution['counts'].dup
       end
+
+      # Returns the expected count distribution for a given (total) number of users.
+      # @return [Array<Numeric>]
+      def expected_counts(nb_users)
+        counts.map { |count| (count.to_f * nb_users / total_population).round(1) }
+      end
+
+      private
 
       def validate_distribution
         return if custom_field.blank? || distribution.blank?
