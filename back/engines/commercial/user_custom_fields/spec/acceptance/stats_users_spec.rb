@@ -656,11 +656,11 @@ resource 'Stats - Users' do
 
           expect(response_status).to eq 200
           expect(json_response_body).to match(
-            total_users: 8,
-            unknown_users: 1,
+            total_user_count: 8,
+            unknown_age_count: 1,
             series: {
-              users: [0, 2, 2, 1, 1, 1, 0, 0, 0, 0],
-              expected_users: nil,
+              user_counts: [0, 2, 2, 1, 1, 1, 0, 0, 0, 0],
+              expected_user_counts: nil,
               reference_population: nil,
               bins: UserCustomFields::AgeCounter::DEFAULT_BINS
             }
@@ -682,11 +682,11 @@ resource 'Stats - Users' do
 
           expect(response_status).to eq 200
           expect(json_response_body).to match(
-            total_users: 8,
-            unknown_users: 1,
+            total_user_count: 8,
+            unknown_age_count: 1,
             series: {
-              users: [2, 4, 1, 0],
-              expected_users: ref_distribution.expected_counts(7),
+              user_counts: [2, 4, 1, 0],
+              expected_user_counts: ref_distribution.expected_counts(7),
               reference_population: ref_distribution.counts,
               bins: ref_distribution.bin_boundaries
             }

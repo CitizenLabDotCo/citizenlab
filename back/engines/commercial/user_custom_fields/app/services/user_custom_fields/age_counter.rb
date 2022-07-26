@@ -2,7 +2,7 @@
 
 module UserCustomFields
   class AgeCounter
-    Result = Struct.new(:age_counts, :unknown_count, :bins)
+    Result = Struct.new(:binned_counts, :unknown_age_count, :bins)
 
     DEFAULT_BINS = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, nil].freeze
 
@@ -11,11 +11,11 @@ module UserCustomFields
       birthyear_custom_field = CustomField.find_by(key: 'birthyear')
       birthyear_counts = FieldValueCounter.counts_by_field_option(users, birthyear_custom_field)
 
-      unknown_birthyear_count = birthyear_counts.delete(FieldValueCounter::UNKNOWN_VALUE_LABEL)
+      unknown_age_count = birthyear_counts.delete(FieldValueCounter::UNKNOWN_VALUE_LABEL)
       age_counts = birthyear_counts.transform_keys { |birthyear| convert_to_age(birthyear, precision: 1) }
       binned_counts = bin_data(age_counts, bins)
 
-      Result.new(binned_counts, unknown_birthyear_count, bins)
+      Result.new(binned_counts, unknown_age_count, bins)
     end
 
     private

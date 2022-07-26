@@ -8,24 +8,16 @@ module UserCustomFields
         private_constant :XLSX_MIME_TYPE
 
         def users_by_age
-          ref_distribution = custom_field.current_ref_distribution
+          age_stats = AgeStats.calculate(find_users)
+          render json: age_stats, serializer: AgeStatsSerializer, adapter: :attributes
+        end
 
-          users = find_users
-          bins = ref_distribution&.bin_boundaries
-          count_result = AgeCounter.new.count(users, bins)
+        def users_by_age_as_xlsx
+          send_data(users_by_age_xlsx, type: XLSX_MIME_TYPE, filename: xlsx_export_filename(custom_field))
+        end
 
-          expected_users = ref_distribution&.expected_counts(count_result.age_counts.sum)
-
-          render json: {
-            total_users: users.count,
-            unknown_users: count_result.unknown_count,
-            series: {
-              users: count_result.age_counts,
-              expected_users: expected_users,
-              reference_population: ref_distribution&.counts,
-              bins: count_result.bins
-            }
-          }
+        def users_by_age_xlsx
+          AgeStatsXlsxMaker.generate(age_stats)
         end
 
         def users_by_custom_field
