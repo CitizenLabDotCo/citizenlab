@@ -1,5 +1,16 @@
 # Changelog
 
+### 2022-07-22
+
+### Fixed
+
+- [CL-1216] Fix slow insights export
+
+### Changed
+
+- [CL-1205] Change see less copy to read less in read more on project info and phase description
+- [CL-1140] Show sign up modal when a logged user clicks the take survey button
+
 ## 2022-07-19
 
 ### Fixed
