@@ -86,7 +86,7 @@ const PageForm = ({
 
   if (isNilOrError(appConfig)) return null;
 
-  const onSubmit = async (formValues: FormValues) => {
+  const onFormSubmit = async (formValues: FormValues) => {
     try {
       await onSubmit(formValues);
       add({ variant: 'success', text: 'Page successfully saved' });
@@ -111,7 +111,7 @@ const PageForm = ({
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit, onValidationError)}>
+      <form onSubmit={methods.handleSubmit(onFormSubmit, onValidationError)}>
         <SectionField>
           <RHFInputMultilocWithLocaleSwitcher
             label={formatMessage(messages.pageTitle)}

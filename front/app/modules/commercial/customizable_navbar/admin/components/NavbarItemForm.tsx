@@ -48,7 +48,7 @@ const NavbarItemForm = ({
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = async (formValues: FormValues) => {
+  const onFormSubmit = async (formValues: FormValues) => {
     try {
       await onSubmit(formValues);
       add({ variant: 'success', text: 'Page successfully saved' });
@@ -73,7 +73,7 @@ const NavbarItemForm = ({
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit, onValidationError)}>
+      <form onSubmit={methods.handleSubmit(onFormSubmit, onValidationError)}>
         <SectionField>
           <RHFInputMultilocWithLocaleSwitcher
             name="nav_bar_item_title_multiloc"
