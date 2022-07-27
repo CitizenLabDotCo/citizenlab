@@ -1230,7 +1230,7 @@
   "app.containers.AdminPage.SettingsPage.urlError": "La URL no es válida.",
   "app.containers.AdminPage.SettingsPage.urlTitle": "Sitio web",
   "app.containers.AdminPage.SettingsPage.urlTitleTooltip": "Añadir la URL de la página web que desea vincular a esta plataforma. El vínculo será utilizado en el pie de página en la página de inicio.",
-  "app.containers.AdminPage.SideBar.academy": "Academy",
+  "app.containers.AdminPage.SideBar.academy": "Academia",
   "app.containers.AdminPage.SideBar.dashboard": "Tablero de controles",
   "app.containers.AdminPage.SideBar.emails": "Correo electrónico",
   "app.containers.AdminPage.SideBar.groups": "Grupos",
