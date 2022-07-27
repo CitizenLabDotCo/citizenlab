@@ -595,6 +595,7 @@
   "app.containers.AdminPage.DashboardPage.components.Field.Options.seeLess": "Manner gesinn",
   "app.containers.AdminPage.DashboardPage.components.Field.Options.seeMore": "Méi {numberOfHiddenItems} gesinn...",
   "app.containers.AdminPage.DashboardPage.components.Field.baseMonth": "Basismount (optional)",
+  "app.containers.AdminPage.DashboardPage.components.Field.birthyearCustomTitle": "Age groups (Year of birth)",
   "app.containers.AdminPage.DashboardPage.components.Field.comingSoon": "Deemnächst",
   "app.containers.AdminPage.DashboardPage.components.Field.complete": "Vollstänneg",
   "app.containers.AdminPage.DashboardPage.components.Field.default": "Standardastellung",
