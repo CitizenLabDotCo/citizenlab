@@ -595,6 +595,7 @@
   "app.containers.AdminPage.DashboardPage.components.Field.Options.seeLess": "Se mindre",
   "app.containers.AdminPage.DashboardPage.components.Field.Options.seeMore": "Se {numberOfHiddenItems} mere...",
   "app.containers.AdminPage.DashboardPage.components.Field.baseMonth": "Grundmåned (valgfri)",
+  "app.containers.AdminPage.DashboardPage.components.Field.birthyearCustomTitle": "Age groups (Year of birth)",
   "app.containers.AdminPage.DashboardPage.components.Field.comingSoon": "Kommer snart",
   "app.containers.AdminPage.DashboardPage.components.Field.complete": "Komplet",
   "app.containers.AdminPage.DashboardPage.components.Field.default": "Standard",
