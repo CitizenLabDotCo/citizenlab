@@ -83,15 +83,13 @@ describe('Admin: update Hero Banner content', () => {
       .find('input')
       .clear()
       .type(updatedSignedOutHeaderEnglish);
-    cy.get('[data-testid="e2e-signed-out-subheader-section"]')
+    cy.get('[data-cy="e2e-signed-out-subheader-section"]')
       .find('input')
       .clear()
       .type(updatedSignedOutSubheaderEnglish);
 
     // enable avatar display
-    cy.get('[data-testid="e2e-banner-avatar-toggle-section"]')
-      .find('i')
-      .click();
+    cy.get('[data-cy="e2e-banner-avatar-toggle-section"]').find('i').click();
 
     // enable custom signed out button and fill out text/url
     cy.get('[data-cy="e2e-cta-settings-signed_out-customized_button"]')
