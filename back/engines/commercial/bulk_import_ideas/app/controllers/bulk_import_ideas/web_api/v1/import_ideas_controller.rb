@@ -10,7 +10,6 @@ module BulkImportIdeas
       import_ideas_service.import_ideas idea_rows, max_ideas: 100
       head :ok
     rescue BulkImportIdeas::Error => e
-      # render json: { file: [{ error: 'unknown_locale', value: 'my value', row: 24 }] }, status: :unprocessable_entity
       render json: { file: [{ error: e.key, **e.params }] }, status: :unprocessable_entity
     end
 

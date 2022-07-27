@@ -208,7 +208,6 @@ const Error = (props: Props) => {
     }
 
     return null;
-    // return { id: error, defaultMessage: error } as Message;
   };
 
   const dedupApiErrors =

@@ -93,7 +93,6 @@ module BulkImportIdeas
       add_topics idea_row, idea_attributes
 
       idea = Idea.new idea_attributes
-      # Later iteration: parseable error using idea.errors.details
       raise Error.new 'bulk_import_ideas_idea_not_valid', value: idea.errors.messages unless idea.valid?
 
       idea.save!
@@ -119,7 +118,6 @@ module BulkImportIdeas
       raise Error.new 'bulk_import_ideas_blank_project', row: idea_row[:id] if idea_row[:project_title].blank?
 
       project_title = idea_row[:project_title].downcase.strip
-      # Later iteration: Only load necessary attributes? Preload all projects before importing all?
       project = Project.all.find do |find_project|
         find_project
           .title_multiloc
@@ -190,7 +188,6 @@ module BulkImportIdeas
       idea_row[:topic_titles] ||= []
       topics_ids = idea_row[:topic_titles].map do |topic_title|
         topic_title = topic_title.downcase.strip
-        # Later iteration: Only load necessary attributes? Preload all topics before importing all?
         Topic.all.find do |topic|
           topic
             .title_multiloc
