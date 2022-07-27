@@ -257,7 +257,7 @@ export default defineMessages({
   bulk_import_ideas_project_not_found: {
     id: 'app.errors.bulk_import_ideas_project_not_found',
     defaultMessage:
-      'No project with title "{value}" exists.. This issue occurs in the row with ID {row}.',
+      'No project with title "{value}" exists. This issue occurs in the row with ID {row}.',
   },
   bulk_import_ideas_blank_email: {
     id: 'app.errors.bulk_import_ideas_blank_email',
@@ -302,6 +302,6 @@ export default defineMessages({
   bulk_import_ideas_image_url_not_valid: {
     id: 'app.errors.bulk_import_ideas_image_url_not_valid',
     defaultMessage:
-      'No image could be downloaded from {value}, make sure the URL is valid and ends with a file extension such as .png or .jpg.. This issue occurs in the row with ID {row}.',
+      'No image could be downloaded from {value}. Make sure the URL is valid and ends with a file extension such as .png or .jpg. This issue occurs in the row with ID {row}.',
   },
 });
