@@ -21,7 +21,7 @@ const ChartCards = ({ projectFilter }: Props) => {
   });
 
   if (isNilOrError(userCustomFields)) return null;
-
+  
   const sortedUserCustomFields = sortUserCustomFields(
     userCustomFields.filter(isShown)
   );

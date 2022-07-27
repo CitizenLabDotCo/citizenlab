@@ -52,7 +52,10 @@ export interface IUsersByBirthyear {
   };
 }
 
-export type TStreamResponse = IUsersByRegistrationField; // | IUsersByDomicile;
+export type TStreamResponse = 
+  | IUsersByBirthyear
+  // | IUsersByDomicile
+  | IUsersByRegistrationField;
 
 export const usersByRegFieldXlsxEndpoint = (customFieldId: string) =>
   `${apiEndpoint}/users_by_custom_field_as_xlsx/${customFieldId}`;

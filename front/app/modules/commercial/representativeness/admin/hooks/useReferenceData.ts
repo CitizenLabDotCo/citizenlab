@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import {
   usersByRegFieldStream,
   usersByGenderStream,
+  usersByBirthyearStream,
   // usersByDomicileStream,
   TStreamResponse,
 } from 'modules/commercial/user_custom_fields/services/stats';
@@ -59,6 +60,15 @@ const getSubscription = (
     return subscription;
   }
 
+  if (code === 'birthyear') {
+    const observable = usersByBirthyearStream({
+      queryParameters: { project: projectId }
+    }).observable;
+
+    const subscription = observable.subscribe(handleStreamResponse);
+    return subscription;
+  }
+
   // if (code === 'domicile') {
   //   const observable = usersByDomicileStream({
   //     queryParameters: { project: projectId },
@@ -102,7 +112,7 @@ function useReferenceData(
         return;
       }
 
-      if (!usersByField.series.reference_population) {
+      if (!(usersByField.series as any).reference_population) {
         setReferenceDataUploaded(false);
         return;
       }
