@@ -7,12 +7,13 @@ import {
   GraphCardInner,
 } from 'components/admin/GraphWrappers';
 import PieChart from 'components/admin/Graphs/PieChart';
+import ProgressBars from 'components/admin/Graphs/ProgressBars';
 
 export default ({ projectId }) => {
   const data = usePostsWithFeedback(projectId);
   if (!data) return null;
 
-  const { serie, feedbackPercent, avgTime } = data;
+  const { serie, feedbackPercent, avgTime, progressBars } = data;
 
   return (
     <GraphCard>
@@ -21,8 +22,8 @@ export default ({ projectId }) => {
           <GraphCardTitle>Posts Feedback</GraphCardTitle>
         </GraphCardHeader>
         <PieChart serie={serie} value={feedbackPercent} />
-
         {`Avg time: ${avgTime} days`}
+        <ProgressBars data={progressBars} />
       </GraphCardInner>
     </GraphCard>
   );

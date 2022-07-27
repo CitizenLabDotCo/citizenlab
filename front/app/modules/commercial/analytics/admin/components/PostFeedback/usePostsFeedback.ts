@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { postsAnalyticsStream } from '../../../services/analyticsFacts';
-import { sum } from 'utils/helperUtils';
+import { sum, roundPercentage } from 'utils/math';
 
 const query = (projectId) => ({
   query: {
@@ -42,11 +42,11 @@ export default function usePostsWithFeedback(projectId) {
             avg_feedback_time_taken,
           } = results.data[0];
 
-          const feedback_count = sum(
+          const feedback_count = sum([
             sum_feedback_official,
-            sum_feedback_status_change
-          );
-          const total = sum(feedback_count, sum_feedback_none);
+            sum_feedback_status_change,
+          ]);
+          const total = sum([feedback_count, sum_feedback_none]);
 
           const serie = [
             { name: 'sum_feedback', value: feedback_count, color: '#40B8C5' },
@@ -59,7 +59,33 @@ export default function usePostsWithFeedback(projectId) {
 
           const feedbackPercent = feedback_count / total;
           const avgTime = Math.round(avg_feedback_time_taken / 86400);
-          setPostsWithFeedback({ serie, feedbackPercent, avgTime });
+
+          const progressBars = [
+            {
+              name: 'Status Changed',
+              label: `Status Changed: ${sum_feedback_status_change} (${roundPercentage(
+                sum_feedback_status_change,
+                total
+              )}%)`,
+              value: sum_feedback_status_change,
+              total,
+            },
+            {
+              name: 'Official Update',
+              label: `Official Update: ${sum_feedback_official} (${roundPercentage(
+                sum_feedback_official,
+                total
+              )}%)`,
+              value: sum_feedback_official,
+              total,
+            },
+          ];
+          setPostsWithFeedback({
+            serie,
+            feedbackPercent,
+            avgTime,
+            progressBars,
+          });
         }
       });
     }
