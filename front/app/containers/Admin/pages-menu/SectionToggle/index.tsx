@@ -34,13 +34,15 @@ const SectionToggle = ({
   disabled,
   isLastItem,
   hideToggle = false,
-  name
+  name,
 }: Props) => {
   return (
     <Row isLastItem={isLastItem}>
       <Box display="flex" alignItems="center" justifyContent="center">
-        <Box visibility={hideToggle ? 'hidden' : 'visible'} mr="20px"
-        data-testid={`${name}-toggle`}
+        <Box
+          visibility={hideToggle ? 'hidden' : 'visible'}
+          mr="20px"
+          data-testid={`${name}-toggle`}
         >
           <Toggle
             checked={checked}
@@ -61,8 +63,8 @@ const SectionToggle = ({
       </Box>
       {editLinkPath && onClickEditButton && (
         <AdminEditButton
-        onClick={() => onClickEditButton(editLinkPath)} 
-        testId={name}
+          onClick={() => onClickEditButton(editLinkPath)}
+          testId={name}
         />
       )}
     </Row>

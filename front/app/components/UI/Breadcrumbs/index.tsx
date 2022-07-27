@@ -33,7 +33,13 @@ const Breadcrumbs = ({ breadcrumbs }: Props) => {
         const isLastBreadcrumb = index === breadcrumbs.length - 1;
 
         return (
-          <Box key={label} display="flex" alignItems="center" color="label" data-testid={`breadcrumbs-${label}`}>
+          <Box
+            key={label}
+            display="flex"
+            alignItems="center"
+            color="label"
+            data-testid={`breadcrumbs-${label}`}
+          >
             {linkTo && (
               <Text fontSize="m" as="span">
                 <StyledLink to={linkTo}>{label}</StyledLink>

@@ -49,7 +49,11 @@ type Props = {
   testId?: string;
 };
 
-const HomepageInfoSection = ({ multilocContent, fragmentName, testId }: Props) => {
+const HomepageInfoSection = ({
+  multilocContent,
+  fragmentName,
+  testId,
+}: Props) => {
   if (!multilocContent || isEmptyMultiloc(multilocContent)) {
     return null;
   }

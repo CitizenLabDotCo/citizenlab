@@ -62,7 +62,11 @@ export default class ContentContainer extends PureComponent<Props, State> {
     }
 
     return (
-      <Outer id={id} className={`${className} ${bowser.msie ? 'ie' : ''}`} data-testid={testId}>
+      <Outer
+        id={id}
+        className={`${className} ${bowser.msie ? 'ie' : ''}`}
+        data-testid={testId}
+      >
         <Inner
           className={`inner ${bowser.msie ? 'ie' : ''}`}
           maxWidth={maxWidth}
