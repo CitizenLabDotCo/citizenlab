@@ -1538,7 +1538,7 @@
   "containers.SiteMap.signInPage": "Logga in",
   "containers.SiteMap.signUpPage": "Registrera dig",
   "containers.SiteMap.siteMapDescription": "Från den här sidan kan du navigera till vilket innehåll som helst på plattformen.",
-  "containers.SiteMap.siteMapTitle": "Webbplatskarta över plattformen för deltagande för {orgName}",
+  "containers.SiteMap.siteMapTitle1": "Webbplatskarta över plattformen för deltagande för {orgName}",
   "containers.SiteMap.successStories": "Framgångsberättelser",
   "containers.SiteMap.timeline": "Projektfaser",
   "containers.SiteMap.userSpaceSection": "Ditt konto",

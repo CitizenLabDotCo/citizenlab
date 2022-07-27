@@ -1538,7 +1538,7 @@
   "containers.SiteMap.signInPage": "تسجيل الدخول",
   "containers.SiteMap.signUpPage": "التسجيل",
   "containers.SiteMap.siteMapDescription": "يمكنك من هذه الصفحة الانتقال إلى أي محتوى على المنصة.",
-  "containers.SiteMap.siteMapTitle": "خريطة الموقع لمنصة مشاركة {orgName}",
+  "containers.SiteMap.siteMapTitle1": "خريطة الموقع لمنصة مشاركة {orgName}",
   "containers.SiteMap.successStories": "قصص نجاح",
   "containers.SiteMap.timeline": "مراحل المشروع",
   "containers.SiteMap.userSpaceSection": "حسابك",

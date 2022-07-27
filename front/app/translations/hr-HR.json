@@ -1538,7 +1538,7 @@
   "containers.SiteMap.signInPage": "Prijava",
   "containers.SiteMap.signUpPage": "Registracija",
   "containers.SiteMap.siteMapDescription": "S ove stranice možete pristupiti bilo kom sadržaju na platformi.",
-  "containers.SiteMap.siteMapTitle": "Mapa web-mjesta platforme za sudjelovanje organizacije {orgName}",
+  "containers.SiteMap.siteMapTitle1": "Mapa web-mjesta platforme za sudjelovanje organizacije {orgName}",
   "containers.SiteMap.successStories": "Priče o uspjehu",
   "containers.SiteMap.timeline": "Faze projekta",
   "containers.SiteMap.userSpaceSection": "Vaš račun",

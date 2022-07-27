@@ -2605,7 +2605,7 @@
   "containers.SiteMap.signInPage": "Sign in",
   "containers.SiteMap.signUpPage": "Waitohu",
   "containers.SiteMap.siteMapDescription": "From this page, you can navigate to any content on the platform.",
-  "containers.SiteMap.siteMapTitle": "Site map of the participation platform of {orgName}",
+  "containers.SiteMap.siteMapTitle1": "Site map of the participation platform of {orgName}",
   "containers.SiteMap.successStories": "Success stories",
   "containers.SiteMap.termsAndConditionsLink": "Ngā tikanga",
   "containers.SiteMap.timeline": "Project phases",

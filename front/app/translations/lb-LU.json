@@ -1538,7 +1538,7 @@
   "containers.SiteMap.signInPage": "Umellen",
   "containers.SiteMap.signUpPage": "Aschreiwen",
   "containers.SiteMap.siteMapDescription": "Vun dëser Säit aus kënnt Dir zu all den Inhalter op der Plattform navigéieren.",
-  "containers.SiteMap.siteMapTitle": "Iwwersiichtssäit vun der participativer Plattform vum {orgName}",
+  "containers.SiteMap.siteMapTitle1": "Iwwersiichtssäit vun der participativer Plattform vum {orgName}",
   "containers.SiteMap.successStories": "Erfollegsgeschichten",
   "containers.SiteMap.timeline": "Projetsphasen",
   "containers.SiteMap.userSpaceSection": "Äre Kont",

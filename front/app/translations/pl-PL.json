@@ -1538,7 +1538,7 @@
   "containers.SiteMap.signInPage": "Zapisz się",
   "containers.SiteMap.signUpPage": "Zarejestruj się",
   "containers.SiteMap.siteMapDescription": "Z tej strony można przejść do dowolnej treści na platformie.",
-  "containers.SiteMap.siteMapTitle": "Mapa strony platformy uczestnictwa {orgName}",
+  "containers.SiteMap.siteMapTitle1": "Mapa strony platformy uczestnictwa {orgName}",
   "containers.SiteMap.successStories": "Success stories",
   "containers.SiteMap.timeline": "Etapy projektu",
   "containers.SiteMap.userSpaceSection": "Twoje konto",
