@@ -8,8 +8,10 @@ module BulkImportIdeas
       xlsx = parse_xlsx
       idea_rows = import_ideas_service.xlsx_to_idea_rows xlsx
       import_ideas_service.import_ideas idea_rows
+      # TODO: log success activity
       head :ok
     rescue BulkImportIdeas::Error => e
+      # TODO: log failure activity
       render json: { file: [{ error: e.key, **e.params }] }, status: :unprocessable_entity
     end
 

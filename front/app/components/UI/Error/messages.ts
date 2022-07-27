@@ -274,6 +274,21 @@ export default defineMessages({
     defaultMessage:
       'Idea with invalid publication date format "{value}". This issue occurs in the row with ID {row}.',
   },
+  bulk_import_ideas_location_point_blank_coordinate: {
+    id: 'app.errors.bulk_import_ideas_location_point_blank_coordinate',
+    defaultMessage:
+      'Idea location with a missing coordinate in {value}. This issue occurs in the row with ID {row}.',
+  },
+  bulk_import_ideas_location_point_non_numeric_coordinate: {
+    id: 'app.errors.bulk_import_ideas_location_point_non_numeric_coordinate',
+    defaultMessage:
+      'Idea location with a non-numeric coordinate in {value}. This issue occurs in the row with ID {row}.',
+  },
+  bulk_import_ideas_non_numeric_phase_rank: {
+    id: 'app.errors.bulk_import_ideas_non_numeric_phase_rank',
+    defaultMessage:
+      'Non-numeric phase rank in {value}. This issue occurs in the row with ID {row}.',
+  },
   bulk_import_ideas_maximum_phase_rank_exceeded: {
     id: 'app.errors.bulk_import_ideas_maximum_phase_rank_exceeded',
     defaultMessage:

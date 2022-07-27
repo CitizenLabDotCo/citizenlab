@@ -161,6 +161,23 @@ describe BulkImportIdeas::ImportIdeasService do
     #   expect(idea.idea_images.count).to eq 1
     # end
 
+    it 'enqueues tenant dump job after importing ideas' do
+      idea_rows = [
+        {
+          title_multiloc: { 'en' => 'My idea title' },
+          body_multiloc: { 'en' => 'My idea description' },
+          project_title: create(:project).title_multiloc.values.first,
+          user_email: create(:user).email,
+          published_at: '2022-07-18'
+        }
+      ]
+
+      expect { service.import_ideas(idea_rows)}
+        .to have_enqueued_job(DumpTenantJob).exactly(1).times
+
+      expect(Idea.count).to eq 1
+    end
+
     it 'does not accept invalid import data' do
       create :user, email: 'userimport@citizenlab.co'
       create :project, title_multiloc: { 'en' => 'Project title' }
