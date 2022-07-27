@@ -86,15 +86,12 @@ const FullWidthBannerLayout = ({ className }: Props) => {
     const homepageSettingOpacity =
       homepageSettings.data.attributes.banner_signed_out_header_overlay_opacity;
     return (
-      <Container
-        data-testid="e2e-full-width-banner-layout-container"
-        className={`e2e-signed-out-header ${className}`}
-      >
+      <Container className={`e2e-signed-out-header ${className}`}>
         <Header id="hook-header">
           <HeaderImage id="hook-header-image">
             <HeaderImageBackground src={headerImage || null} />
             <HeaderImageOverlay
-              data-testid="e2e-full-width-layout-header-image-overlay"
+              data-cy="e2e-full-width-layout-header-image-overlay"
               overlayColor={homepageSettingColor}
               overlayOpacity={homepageSettingOpacity}
             />

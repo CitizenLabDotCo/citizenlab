@@ -38,7 +38,7 @@ const Breadcrumbs = ({ breadcrumbs }: Props) => {
             display="flex"
             alignItems="center"
             color="label"
-            data-testid={`breadcrumbs-${label}`}
+            data-cy={`breadcrumbs-${label}`}
           >
             {linkTo && (
               <Text fontSize="m" as="span">

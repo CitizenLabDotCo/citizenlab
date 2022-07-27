@@ -310,7 +310,6 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
             messageSuccess: messages.heroBannerMessageSuccess,
             messageError: messages.heroBannerError,
           }}
-          testId="e2e-hero-banner-save-button"
         />
       }
     >

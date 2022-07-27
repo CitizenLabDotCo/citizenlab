@@ -92,7 +92,6 @@ interface Props
   onClick?: (event: FormEvent<any>) => void;
   buttonStyle?: ButtonStyles;
   animate?: boolean;
-  testId?: string;
 }
 
 export default class SubmitWrapper extends PureComponent<Props> {
@@ -129,7 +128,7 @@ export default class SubmitWrapper extends PureComponent<Props> {
       'loading',
     ]);
 
-    const { loading, status, onClick, messages, animate, customError, testId } =
+    const { loading, status, onClick, messages, animate, customError } =
       this.props;
 
     return (
@@ -141,7 +140,6 @@ export default class SubmitWrapper extends PureComponent<Props> {
           disabled={status === 'disabled' || status === 'success'}
           onClick={onClick}
           setSubmitButtonRef={this.setSubmitButtonRef}
-          data-testid={testId}
           {...buttonProps}
         >
           {(status === 'enabled' ||

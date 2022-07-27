@@ -39,14 +39,13 @@ interface Props {
   className?: string;
   mode?: 'oldPage' | 'banner' | 'page' | 'text';
   maxWidth?: number | string;
-  testId?: string;
 }
 
 interface State {}
 
 export default class ContentContainer extends PureComponent<Props, State> {
   render() {
-    const { mode, id, className, children, testId } = this.props;
+    const { mode, id, className, children } = this.props;
     let maxWidth = this.props.maxWidth;
 
     if (!maxWidth) {
@@ -62,11 +61,7 @@ export default class ContentContainer extends PureComponent<Props, State> {
     }
 
     return (
-      <Outer
-        id={id}
-        className={`${className} ${bowser.msie ? 'ie' : ''}`}
-        data-testid={testId}
-      >
+      <Outer id={id} className={`${className} ${bowser.msie ? 'ie' : ''}`}>
         <Inner
           className={`inner ${bowser.msie ? 'ie' : ''}`}
           maxWidth={maxWidth}

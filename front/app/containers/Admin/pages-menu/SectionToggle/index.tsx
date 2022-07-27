@@ -42,7 +42,7 @@ const SectionToggle = ({
         <Box
           visibility={hideToggle ? 'hidden' : 'visible'}
           mr="20px"
-          data-testid={`${name}-toggle`}
+          data-cy={`e2e-admin-section-toggle-${name}`}
         >
           <Toggle
             checked={checked}
@@ -62,10 +62,7 @@ const SectionToggle = ({
         </Box>
       </Box>
       {editLinkPath && onClickEditButton && (
-        <AdminEditButton
-          onClick={() => onClickEditButton(editLinkPath)}
-          testId={name}
-        />
+        <AdminEditButton onClick={() => onClickEditButton(editLinkPath)} />
       )}
     </Row>
   );

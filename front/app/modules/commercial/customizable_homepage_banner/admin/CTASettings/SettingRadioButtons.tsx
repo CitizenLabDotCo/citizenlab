@@ -59,7 +59,7 @@ const SettingRadioButtons = ({
     <>
       {ctaTypes.map((option: CTASignedOutType | CTASignedInType) => (
         <div
-          data-testid={`e2e-cta-settings-${signInStatus}-${option}`}
+          data-cy={`e2e-cta-settings-${signInStatus}-${option}`}
           key={option}
         >
           <Radio

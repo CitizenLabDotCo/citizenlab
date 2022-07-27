@@ -7,18 +7,17 @@ import messages from './messages';
 
 interface Props {
   onClick: () => void;
-  testId?: string;
 }
 
 // to be moved to a general component folder (+ refactor existing buttons using this?)
 
-const AdminEditButton = ({ onClick, testId }: Props) => {
+const AdminEditButton = ({ onClick }: Props) => {
   return (
     <Button
       buttonStyle="secondary"
       icon="edit"
       onClick={onClick}
-      data-testid={`admin-edit-button-${testId}`}
+      data-cy={`e2e-admin-edit-button`}
     >
       <FormattedMessage {...messages.edit} />
     </Button>

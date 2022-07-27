@@ -122,7 +122,6 @@ const TopInfoSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           messageSuccess: messages.topInfoMessageSuccess,
           messageError: messages.topInfoError,
         }}
-        testId="top-info-section-submit"
       />
     </SectionFormWrapper>
   );

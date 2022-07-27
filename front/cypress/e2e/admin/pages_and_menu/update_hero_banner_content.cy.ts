@@ -1,19 +1,19 @@
 import { randomString } from '../../../support/commands';
 
 describe('Admin: update Hero Banner content', () => {
-  it('updates hero banner content and options correctly', () => {
-    const signedOutHeaderEnglish = randomString();
-    const signedOutSubheaderEnglish = randomString();
-    const updatedSignedOutHeaderEnglish = randomString();
-    const updatedSignedOutSubheaderEnglish = randomString();
+  const signedOutHeaderEnglish = randomString();
+  const signedOutSubheaderEnglish = randomString();
+  const updatedSignedOutHeaderEnglish = randomString();
+  const updatedSignedOutSubheaderEnglish = randomString();
 
-    // static strings because the buttons can only display a small amount of chars
-    const signedOutCTAButton = 'signnnn in!';
-    const updatedSignedOutCTAButton = 'pls sign in';
-    const updatedSignedOutCTAURL = 'https://wikipedia.org';
-    const updatedSignedInCTAButton = 'signedin button!';
-    const updatedSignedInCTAURL = 'https://www.example.biz';
+  // static strings because the buttons can only display a small amount of chars
+  const signedOutCTAButton = 'signnnn in!';
+  const updatedSignedOutCTAButton = 'pls sign in';
+  const updatedSignedOutCTAURL = 'https://wikipedia.org';
+  const updatedSignedInCTAButton = 'signedin button!';
+  const updatedSignedInCTAURL = 'https://www.example.biz';
 
+  it('displays hero banner settings on the landing page correctly', () => {
     // set default homepage settings
     cy.apiUpdateHomepageSettings({
       top_info_section_enabled: false,
@@ -36,7 +36,6 @@ describe('Admin: update Hero Banner content', () => {
 
     cy.visit('/');
     cy.acceptCookies();
-    cy.wait(1000);
 
     // main page should be full width layout when logged out
     cy.get('[data-testid="e2e-full-width-banner-layout-container"]').should(
@@ -62,7 +61,9 @@ describe('Admin: update Hero Banner content', () => {
       'opacity',
       '0.55'
     );
+  });
 
+  it('updates hero banner settings as admin correctly', () => {
     // log in as admin and reload page
     cy.setLoginCookie('admin@citizenlab.co', 'democracy2.0');
     cy.reload();
@@ -93,28 +94,28 @@ describe('Admin: update Hero Banner content', () => {
       .click();
 
     // enable custom signed out button and fill out text/url
-    cy.get('[data-testid="e2e-cta-settings-signed_out-customized_button"]')
+    cy.get('[data-cy="e2e-cta-settings-signed_out-customized_button"]')
       .find('.circle')
       .click();
 
-    cy.get('[data-testid="e2e-cta-settings-signed_out-customized_button"]')
+    cy.get('[data-cy="e2e-cta-settings-signed_out-customized_button"]')
       .find('[data-testid=inputMultilocLocaleSwitcher]')
       .find('input')
       .clear()
       .type(updatedSignedOutCTAButton);
 
-    cy.get('[data-testid="e2e-cta-settings-signed_out-customized_button"]')
-      .find('[data-testid=buttonConfigInput]')
+    cy.get('[data-cy="e2e-cta-settings-signed_out-customized_button"]')
+      .find('[data-cy=buttonConfigInput]')
       .find('input')
       .clear()
       .type(updatedSignedOutCTAURL);
 
     // enable custom signed in button and fill out text/url
-    cy.get('[data-testid="e2e-cta-settings-signed_in-customized_button"]')
+    cy.get('[data-cy="e2e-cta-settings-signed_in-customized_button"]')
       .find('.circle')
       .click();
 
-    cy.get('[data-testid="e2e-cta-settings-signed_in-customized_button"]')
+    cy.get('[data-cy="e2e-cta-settings-signed_in-customized_button"]')
       .find('[data-testid=inputMultilocLocaleSwitcher]')
       .find('input')
       .clear()
@@ -139,7 +140,9 @@ describe('Admin: update Hero Banner content', () => {
     cy.get('[data-testid="e2e-cta-banner-button"]')
       .find('a')
       .should('have.attr', 'href', updatedSignedInCTAURL);
+  });
 
+  it('views updated settings as logged-out user successfully', () => {
     // logout and reload as signed out user
     cy.logout();
     cy.reload();
