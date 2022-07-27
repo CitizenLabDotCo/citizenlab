@@ -3,9 +3,8 @@ import { IUserCustomFieldData } from 'modules/commercial/user_custom_fields/serv
 
 export const isShown = ({
   attributes: { input_type, code, enabled },
-}: IUserCustomFieldData) => {
-  return (input_type === 'select' || code === 'birthyear') && enabled;
-};
+}: IUserCustomFieldData) =>
+  (input_type === 'select' || code === 'birthyear') && enabled;
 
 export const isSupported = ({
   attributes: { input_type, code },
