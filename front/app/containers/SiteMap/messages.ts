@@ -2,11 +2,11 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   siteMapTitle: {
-    id: 'containers.SiteMap.siteMapTitle',
+    id: 'containers.SiteMap.siteMapTitle1',
     defaultMessage: 'Site map of the participation platform of {orgName}',
   },
   siteMapDescription: {
-    id: 'containers.SiteMap.siteMapDescription',
+    id: 'containers.SiteMap.siteMapDescription2',
     defaultMessage:
       'From this page, you can navigate to any content on the platform.',
   },
