@@ -258,7 +258,6 @@ const Error = (props: Props) => {
                       const value = error?.value ?? null;
                       const row = error?.row ?? null;
                       const rows = error?.rows ?? null;
-                      // extend?
 
                       let values = {
                         row: <strong>{row}</strong>,

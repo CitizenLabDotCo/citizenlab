@@ -136,6 +136,7 @@ describe BulkImportIdeas::ImportIdeasService do
       expect(idea.topic_ids).to match_array [topic1.id, topic2.id]
     end
 
+    # TODO: Cannot be enabled because mocking image URLs is not working.
     # it 'imports ideas with images' do
     #   # WebMock.disable_net_connect!
     #   # FakeWeb.register_uri(:get, 'https://images.com/image.png', body: 'Hello World!')
@@ -215,8 +216,8 @@ describe BulkImportIdeas::ImportIdeasService do
 
       idea_rows = service.xlsx_to_idea_rows xlsx_array
 
-      expect(idea_rows).to contain_exactly(
-        a_hash_including(
+      expect(idea_rows).to eq [
+        {
           title_multiloc: { 'nl-BE' => 'Mijn idee titel', 'fr-BE' => 'Mon idée titre' },
           body_multiloc: { 'nl-BE' => 'Mijn idee inhoud', 'fr-BE' => 'Mon idée contenu' },
           user_email: 'moderator@citizenlab.co',
@@ -228,14 +229,14 @@ describe BulkImportIdeas::ImportIdeasService do
           longitude: 6.0944,
           location_description: 'Panorama sur les Hautes Fagnes / Hohes Venn',
           image_url: 'https://images.com/image.png'
-        ),
-        a_hash_including(
+        },
+        {
           title_multiloc: { 'en' => 'My wonderful idea title' },
           body_multiloc: { 'en' => 'My wonderful idea content' },
           user_email: 'admin@citizenlab.co',
           project_title: 'Project 2'
-        )
-      )
+        }
+      ]
     end
   end
 end

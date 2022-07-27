@@ -233,7 +233,7 @@ export default defineMessages({
   },
   bulk_import_ideas_maximum_ideas_exceeded: {
     id: 'app.errors.bulk_import_ideas_maximum_ideas_exceeded',
-    defaultMessage: 'The maximal amount of {value} ideas has been exceeded.',
+    defaultMessage: 'The maximum of {value} ideas has been exceeded.',
   },
   bulk_import_ideas_idea_not_valid: {
     id: 'app.errors.bulk_import_ideas_idea_not_valid',

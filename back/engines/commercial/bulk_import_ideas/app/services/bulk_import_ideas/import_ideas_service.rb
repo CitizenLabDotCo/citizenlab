@@ -14,6 +14,11 @@ module BulkImportIdeas
   class ImportIdeasService
     DEFAULT_MAX_IDEAS = 500
 
+    def initialize
+      @all_projects = Project.all
+      @all_topics = Topics.all
+    end
+
     def import_ideas(idea_rows, max_ideas: DEFAULT_MAX_IDEAS)
       raise Error.new 'bulk_import_ideas_maximum_ideas_exceeded', value: max_ideas if idea_rows.size > max_ideas
 
@@ -23,6 +28,8 @@ module BulkImportIdeas
           Rails.logger.info { "Created #{idea.id}" }
         end
       end
+
+      DumpTenantJob.perform_later Tenant.current
     end
 
     def generate_example_xlsx
@@ -64,7 +71,7 @@ module BulkImportIdeas
 
         idea_row[:title_multiloc]       = title_multiloc
         idea_row[:body_multiloc]        = body_multiloc
-        idea_row[:topic_titles]         = (xlsx_row['Topics'] || '').split(';').map(&:strip).select { |topic| topic }
+        idea_row[:topic_titles]         = (xlsx_row['Topics'] || '').split(';').map(&:strip).select(&:present?)
         idea_row[:project_title]        = xlsx_row['Project']
         idea_row[:user_email]           = xlsx_row['Email']
         idea_row[:image_url]            = xlsx_row['Image URL']
@@ -79,6 +86,8 @@ module BulkImportIdeas
     end
 
     private
+
+    attr_reader :all_projects, :all_topics
 
     def import_idea(idea_row)
       idea_attributes = {}
@@ -118,14 +127,14 @@ module BulkImportIdeas
       raise Error.new 'bulk_import_ideas_blank_project', row: idea_row[:id] if idea_row[:project_title].blank?
 
       project_title = idea_row[:project_title].downcase.strip
-      project = Project.all.find do |find_project|
+      project = all_projects.find do |find_project|
         find_project
           .title_multiloc
           .values
-          .map { |v| v.downcase.strip }
+          .map { |title| title.downcase.strip }
           .include? project_title
       end
-      if project.blank?
+      if project
         raise Error.new 'bulk_import_ideas_project_not_found', value: idea_row[:project_title], row: idea_row[:id]
       end
 
@@ -136,7 +145,7 @@ module BulkImportIdeas
       raise Error.new 'bulk_import_ideas_blank_email', row: idea_row[:id] if idea_row[:user_email].blank?
 
       author = User.find_by_cimail idea_row[:user_email]
-      raise Error.new 'bulk_import_ideas_email_not_found', value: idea_row[:user_email], row: idea_row[:id] if author.blank?
+      raise Error.new 'bulk_import_ideas_email_not_found', value: idea_row[:user_email], row: idea_row[:id] if author
 
       idea_attributes[:author] = author
     end
@@ -159,27 +168,47 @@ module BulkImportIdeas
     end
 
     def add_location(idea_row, idea_attributes)
-      if (lat = idea_row[:latitude]&.to_f) && (lon = idea_row[:longitude]&.to_f)
-        location_point = {
-          'type' => 'Point',
-          'coordinates' => [lon, lat]
-        }
-        idea_attributes[:location_point_geojson] = location_point
-      end
       idea_attributes[:location_description] = idea_row[:location_description] if idea_row[:location_description]
+
+      return if idea_row[:latitude].blank? && idea_row[:longitude].blank?
+
+      if idea_row[:latitude].blank? || idea_row[:longitude].blank?
+        raise Error.new 'bulk_import_ideas_location_point_blank_coordinate', value: "(#{idea_row[:latitude]}, #{idea_row[:longitude]})", row: idea_row[:id] # TODO: add message in frontend
+      end
+
+      lat = nil
+      lon = nil
+      begin
+        lat = Float idea_row[:latitude]
+        lon = Float idea_row[:longitude]
+      rescue ArgumentError => _e
+        raise Error.new 'bulk_import_ideas_location_point_non_numeric_coordinate', value: "(#{idea_row[:latitude]}, #{idea_row[:longitude]})", row: idea_row[:id] # TODO: add message in frontend
+      end
+
+      location_point = {
+        'type' => 'Point',
+        'coordinates' => [lon, lat]
+      }
+      idea_attributes[:location_point_geojson] = location_point
     end
 
     def add_phase(idea_row, idea_attributes)
       return if idea_row[:phase_rank].blank?
 
-      phase_rank = idea_row[:phase_rank].to_i
+      phase_rank = nil
+      begin
+        phase_rank = Integer idea_row[:phase_rank]
+      rescue ArgumentError => _e
+        raise Error.new 'bulk_import_ideas_non_numeric_phase_rank', value: idea_row[:phase_rank], row: idea_row[:id] # TODO: add message in frontend
+      end
+
       project_phases = Phase.where(project: idea_attributes[:project])
       if phase_rank > project_phases.size
         raise Error.new 'bulk_import_ideas_maximum_phase_rank_exceeded', value: phase_rank, row: idea_row[:id]
       end
 
       phase = project_phases.order(:start_at).all[phase_rank - 1]
-      raise Error.new 'bulk_import_ideas_project_phase_not_found', value: phase_rank, row: idea_row[:id] if phase.blank?
+      raise Error.new 'bulk_import_ideas_project_phase_not_found', value: phase_rank, row: idea_row[:id] if phase
 
       idea_attributes[:phases] = [phase]
     end
@@ -188,7 +217,7 @@ module BulkImportIdeas
       idea_row[:topic_titles] ||= []
       topics_ids = idea_row[:topic_titles].map do |topic_title|
         topic_title = topic_title.downcase.strip
-        Topic.all.find do |topic|
+        all_topics.find do |topic|
           topic
             .title_multiloc
             .values

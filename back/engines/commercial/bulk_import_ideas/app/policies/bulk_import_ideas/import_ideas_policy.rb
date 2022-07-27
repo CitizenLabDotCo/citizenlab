@@ -3,11 +3,19 @@
 module BulkImportIdeas
   class ImportIdeasPolicy < ApplicationPolicy
     def bulk_create_xlsx?
-      user&.active? && user&.admin?
+      active_admin?
     end
 
     def example_xlsx?
-      user&.active? && user&.admin?
+      active_admin?
+    end
+
+    private
+
+    def active_admin?
+      return false unless user
+
+      user.active? && user.admin?
     end
   end
 end

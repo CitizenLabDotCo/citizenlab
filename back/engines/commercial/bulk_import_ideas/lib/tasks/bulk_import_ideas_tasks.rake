@@ -16,7 +16,5 @@ namespace :bulk_import do
       idea_rows = service.xlsx_to_idea_rows xlsx
       service.import_ideas idea_rows
     end
-
-    DumpTenantJob.perform_now tenant
   end
 end
