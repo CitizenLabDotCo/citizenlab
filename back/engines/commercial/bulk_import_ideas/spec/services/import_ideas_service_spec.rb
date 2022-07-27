@@ -207,6 +207,7 @@ describe BulkImportIdeas::ImportIdeasService do
           'Image URL' => 'https://images.com/image.png'
         },
         {
+          'ID' => 'c891c58b-a0d7-42f5-9262-9f3031d70a39',
           'Title_en' => 'My wonderful idea title',
           'Body_en' => 'My wonderful idea content',
           'Email' => 'admin@citizenlab.co',
@@ -218,6 +219,7 @@ describe BulkImportIdeas::ImportIdeasService do
 
       expect(idea_rows).to eq [
         {
+          id: nil,
           title_multiloc: { 'nl-BE' => 'Mijn idee titel', 'fr-BE' => 'Mon idée titre' },
           body_multiloc: { 'nl-BE' => 'Mijn idee inhoud', 'fr-BE' => 'Mon idée contenu' },
           user_email: 'moderator@citizenlab.co',
@@ -231,10 +233,18 @@ describe BulkImportIdeas::ImportIdeasService do
           image_url: 'https://images.com/image.png'
         },
         {
+          id: 'c891c58b-a0d7-42f5-9262-9f3031d70a39',
           title_multiloc: { 'en' => 'My wonderful idea title' },
           body_multiloc: { 'en' => 'My wonderful idea content' },
           user_email: 'admin@citizenlab.co',
-          project_title: 'Project 2'
+          project_title: 'Project 2',
+          phase_rank: nil,
+          topic_titles: [],
+          published_at: nil,
+          latitude: nil,
+          longitude: nil,
+          location_description: nil,
+          image_url: nil
         }
       ]
     end

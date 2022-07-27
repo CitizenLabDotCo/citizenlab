@@ -7,7 +7,7 @@ module BulkImportIdeas
     def bulk_create_xlsx
       xlsx = parse_xlsx
       idea_rows = import_ideas_service.xlsx_to_idea_rows xlsx
-      import_ideas_service.import_ideas idea_rows, max_ideas: 100
+      import_ideas_service.import_ideas idea_rows
       head :ok
     rescue BulkImportIdeas::Error => e
       render json: { file: [{ error: e.key, **e.params }] }, status: :unprocessable_entity

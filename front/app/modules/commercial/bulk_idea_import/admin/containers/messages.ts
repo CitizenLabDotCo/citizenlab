@@ -20,7 +20,7 @@ export default defineMessages({
   importHint: {
     id: 'app.containers.admin.import.importHint',
     defaultMessage:
-      'Important: In order to send the invitations correctly, no column can be removed from the import template. Leave unused columns empty.',
+      'Important: In order to import the inputs correctly, no column can be removed from the import template. Leave unused columns empty.',
   },
   importStepTwo: {
     id: 'app.containers.admin.import.importStepTwo',

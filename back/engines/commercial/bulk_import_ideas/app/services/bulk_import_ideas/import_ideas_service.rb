@@ -16,7 +16,7 @@ module BulkImportIdeas
 
     def initialize
       @all_projects = Project.all
-      @all_topics = Topics.all
+      @all_topics = Topic.all
     end
 
     def import_ideas(idea_rows, max_ideas: DEFAULT_MAX_IDEAS)
@@ -134,7 +134,7 @@ module BulkImportIdeas
           .map { |title| title.downcase.strip }
           .include? project_title
       end
-      if project
+      if !project
         raise Error.new 'bulk_import_ideas_project_not_found', value: idea_row[:project_title], row: idea_row[:id]
       end
 
@@ -145,7 +145,7 @@ module BulkImportIdeas
       raise Error.new 'bulk_import_ideas_blank_email', row: idea_row[:id] if idea_row[:user_email].blank?
 
       author = User.find_by_cimail idea_row[:user_email]
-      raise Error.new 'bulk_import_ideas_email_not_found', value: idea_row[:user_email], row: idea_row[:id] if author
+      raise Error.new 'bulk_import_ideas_email_not_found', value: idea_row[:user_email], row: idea_row[:id] if !author
 
       idea_attributes[:author] = author
     end
@@ -208,7 +208,7 @@ module BulkImportIdeas
       end
 
       phase = project_phases.order(:start_at).all[phase_rank - 1]
-      raise Error.new 'bulk_import_ideas_project_phase_not_found', value: phase_rank, row: idea_row[:id] if phase
+      raise Error.new 'bulk_import_ideas_project_phase_not_found', value: phase_rank, row: idea_row[:id] if !phase
 
       idea_attributes[:phases] = [phase]
     end
