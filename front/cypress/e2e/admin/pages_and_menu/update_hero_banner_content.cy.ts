@@ -7,6 +7,7 @@ describe('Admin: update Hero Banner content', () => {
     const updatedSignedOutHeaderEnglish = randomString();
     const updatedSignedOutSubheaderEnglish = randomString();
 
+    // static strings because the buttons can only display a small amount of chars
     const signedOutCTAButton = 'signnnn in!';
     const updatedSignedOutCTAButton = 'pls sign in';
     const updatedSignedOutCTAURL = 'https://wikipedia.org';
@@ -42,8 +43,8 @@ describe('Admin: update Hero Banner content', () => {
 
     cy.get('#hook-header-content').should('contain', signedOutHeaderEnglish);
     cy.get('#hook-header-content').should('contain', signedOutSubheaderEnglish);
-    // avatars should be turned off for now
 
+    // avatars should be turned off for now
     cy.get('#hook-header-content')
       .find('[data-testid=avatarBubblesContainer]')
       .should('not.exist');
@@ -117,6 +118,40 @@ describe('Admin: update Hero Banner content', () => {
 
     cy.visit('/');
 
-    cy.wait(2000);
+    // check content and url for signed in CTA button
+    cy.get('[data-testid="e2e-cta-banner-button"]')
+      .find('a')
+      .contains(updatedSignedInCTAButton);
+    cy.get('[data-testid="e2e-cta-banner-button"]')
+      .find('a')
+      .should('have.attr', 'href', updatedSignedInCTAURL);
+
+    // logout and reload as signed out user
+    cy.logout();
+    cy.reload();
+
+    cy.get('[data-testid=e2e-two-column-layout-container]').should('exist');
+
+    // check that the content we saved earlier is shown here
+    cy.get('#hook-header-content').should(
+      'contain',
+      updatedSignedOutHeaderEnglish
+    );
+    cy.get('#hook-header-content').should(
+      'contain',
+      updatedSignedOutSubheaderEnglish
+    );
+
+    // avatars should be turned on no
+    cy.get('#hook-header-content')
+      .find('[data-testid=avatarBubblesContainer]')
+      .should('exist');
+
+    cy.get('#hook-header-content')
+      .find('a')
+      .contains(updatedSignedOutCTAButton);
+    cy.get('#hook-header-content')
+      .find('a')
+      .should('have.attr', 'href', updatedSignedOutCTAURL);
   });
 });
