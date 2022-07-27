@@ -47,4 +47,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.components.Field.setAgeGroupsLink',
     defaultMessage: 'set age groups',
   },
+  birthyearCustomTitle: {
+    id: 'app.containers.AdminPage.DashboardPage.components.Field.birthyearCustomTitle',
+    defaultMessage: 'Age groups (Year of birth)',
+  },
 });

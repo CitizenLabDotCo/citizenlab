@@ -105,10 +105,10 @@ const Field = ({
 
   const isComingSoon = !isSupported(userCustomField);
   const isDefault = userCustomField.attributes.code !== null;
+  const isBirthyear = userCustomField.attributes.key === 'birthyear';
   const titleMultiloc = userCustomField.attributes.title_multiloc;
 
-  const binsSet =
-    userCustomField.attributes.key === 'birthyear' ? !!bins : undefined;
+  const binsSet = isBirthyear ? !!bins : undefined;
 
   const status = getStatus(formValues, remoteFormValues, touched, binsSet);
 
@@ -173,9 +173,10 @@ const Field = ({
       <ListItem>
         <FieldTitle
           titleMultiloc={titleMultiloc}
-          status={null}
           isDefault={false}
           isComingSoon
+          isBirthyear={isBirthyear}
+          status={null}
         />
       </ListItem>
     );
@@ -188,6 +189,7 @@ const Field = ({
           titleMultiloc={titleMultiloc}
           isDefault={isDefault}
           isComingSoon={false}
+          isBirthyear={isBirthyear}
           status={status}
         />
       }
