@@ -30,6 +30,8 @@ describe('Admin: update Hero Banner content', () => {
       banner_cta_signed_out_text_multiloc: {
         en: signedOutCTAButton,
       },
+      banner_signed_out_header_overlay_color: '#33FFD1',
+      banner_signed_out_header_overlay_opacity: 55,
     });
 
     cy.visit('/');
@@ -48,6 +50,18 @@ describe('Admin: update Hero Banner content', () => {
     cy.get('#hook-header-content')
       .find('[data-testid=avatarBubblesContainer]')
       .should('not.exist');
+
+    // check that the header image color and opacity are displayed correctly
+    cy.get('[data-testid=e2e-full-width-layout-header-image-overlay]').should(
+      'have.css',
+      'background-color',
+      'rgb(51, 255, 209)'
+    );
+    cy.get('[data-testid=e2e-full-width-layout-header-image-overlay]').should(
+      'have.css',
+      'opacity',
+      '0.55'
+    );
 
     // log in as admin and reload page
     cy.setLoginCookie('admin@citizenlab.co', 'democracy2.0');

@@ -94,6 +94,7 @@ const FullWidthBannerLayout = ({ className }: Props) => {
           <HeaderImage id="hook-header-image">
             <HeaderImageBackground src={headerImage || null} />
             <HeaderImageOverlay
+              data-testid="e2e-full-width-layout-header-image-overlay"
               overlayColor={homepageSettingColor}
               overlayOpacity={homepageSettingOpacity}
             />
