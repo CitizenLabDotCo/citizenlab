@@ -1222,7 +1222,7 @@
   "app.containers.AdminPage.SettingsPage.urlError": "Adres URL jest błędny.",
   "app.containers.AdminPage.SettingsPage.urlTitle": "Strona internetowa",
   "app.containers.AdminPage.SettingsPage.urlTitleTooltip": "Możesz dodać link do swojej własnej strony internetowej. Link ten zostanie użyty na dole strony głównej.",
-  "app.containers.AdminPage.SideBar.academy": "Academy",
+  "app.containers.AdminPage.SideBar.academy": "Akademia",
   "app.containers.AdminPage.SideBar.dashboard": "Statystyki",
   "app.containers.AdminPage.SideBar.emails": "Wiadomości",
   "app.containers.AdminPage.SideBar.groups": "Grupy",
