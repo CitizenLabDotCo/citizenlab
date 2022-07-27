@@ -1537,7 +1537,6 @@
   "containers.SiteMap.projectsSection": "Projecten van {orgName}",
   "containers.SiteMap.signInPage": "Inloggen",
   "containers.SiteMap.signUpPage": "Registreren",
-  "containers.SiteMap.siteMapDescription": "Vanaf deze pagina kan je naar alle inhoud op het platform navigeren.",
   "containers.SiteMap.siteMapTitle1": "Sitemap van het participatieplatform van {orgName}",
   "containers.SiteMap.successStories": "Succesverhalen",
   "containers.SiteMap.timeline": "Projectfasen",

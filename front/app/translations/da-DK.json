@@ -1537,7 +1537,6 @@
   "containers.SiteMap.projectsSection": "Projekter fra {orgName}",
   "containers.SiteMap.signInPage": "Log ind",
   "containers.SiteMap.signUpPage": "Registrer dig",
-  "containers.SiteMap.siteMapDescription": "Fra denne side kan du navigere til alt indhold på siden.",
   "containers.SiteMap.siteMapTitle1": "Sitemap over dialogplatformen for {orgName}",
   "containers.SiteMap.successStories": "Succeshistorier",
   "containers.SiteMap.timeline": "Projektfaser",

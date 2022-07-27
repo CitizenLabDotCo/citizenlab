@@ -1496,7 +1496,6 @@
   "containers.SiteMap.projectsSection": "Prosjekter fra {orgName}",
   "containers.SiteMap.signInPage": "Logg inn",
   "containers.SiteMap.signUpPage": "Registrer deg",
-  "containers.SiteMap.siteMapDescription": "Fra denne siden kan du navigere til alt innhold på plattformen",
   "containers.SiteMap.siteMapTitle1": "Områdekart over plattformen for {orgName}",
   "containers.SiteMap.successStories": "Suksesshistorier ",
   "containers.SiteMap.timeline": "Prosjektfaser",

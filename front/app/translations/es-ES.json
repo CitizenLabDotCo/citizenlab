@@ -1537,7 +1537,6 @@
   "containers.SiteMap.projectsSection": "Proyectos de {orgName}",
   "containers.SiteMap.signInPage": "Inicia sesión",
   "containers.SiteMap.signUpPage": "Inscríbete",
-  "containers.SiteMap.siteMapDescription": "Desde esta página, puede navegar a cualquier contenido de la plataforma.",
   "containers.SiteMap.siteMapTitle1": "Mapa del sitio de la plataforma de participación de {orgName}",
   "containers.SiteMap.successStories": "Historias de éxito",
   "containers.SiteMap.timeline": "Fases del proyecto",

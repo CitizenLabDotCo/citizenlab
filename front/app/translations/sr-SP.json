@@ -1537,7 +1537,6 @@
   "containers.SiteMap.projectsSection": "Пројекти од {orgName}",
   "containers.SiteMap.signInPage": "Пријавите се",
   "containers.SiteMap.signUpPage": "Региструјте се",
-  "containers.SiteMap.siteMapDescription": "Са ове странице, можете приступити било ком садржају на платформи.",
   "containers.SiteMap.siteMapTitle1": "Мапа сајта {orgName} партиципативне платформе",
   "containers.SiteMap.successStories": "Успешне приче",
   "containers.SiteMap.timeline": "Фазе пројекта",
