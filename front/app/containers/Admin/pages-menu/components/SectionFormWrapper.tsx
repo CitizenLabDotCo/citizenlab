@@ -9,7 +9,7 @@ import PageWrapper from 'components/admin/PageWrapper';
 
 interface Props {
   breadcrumbs: { label: string; linkTo?: string }[];
-  title?: string;
+  title?: string | JSX.Element;
   children: JSX.Element | JSX.Element[];
   stickyMenuContents?: JSX.Element | JSX.Element[];
   rightSideCTA?: JSX.Element | JSX.Element[];
