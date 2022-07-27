@@ -93,14 +93,14 @@ const BottomInfoSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           label: formatMessage(homeBreadcrumb.label),
           linkTo: homeBreadcrumb.linkTo,
         },
-        { label: formatMessage(messages.bottomInfoPageTitle) },
+        { label: formatMessage(messages.pageTitle) },
       ]}
-      title={formatMessage(messages.bottomInfoPageTitle)}
+      title={formatMessage(messages.pageTitle)}
     >
       <Box maxWidth={`${theme.maxPageWidth - 100}px`} mb="24px">
         <QuillMultilocWithLocaleSwitcher
           id="custom-section"
-          label={formatMessage(messages.bottomInfoContentEditorTitle)}
+          label={formatMessage(messages.contentEditorTitle)}
           labelTooltipText={formatMessage(
             homepageMessages.bottomInfoSectionTooltip
           )}
@@ -116,10 +116,10 @@ const BottomInfoSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         loading={isLoading}
         onClick={onSave}
         messages={{
-          buttonSave: messages.bottomInfoSaveButton,
-          buttonSuccess: messages.bottomInfoButtonSuccess,
-          messageSuccess: messages.bottomInfoMessageSuccess,
-          messageError: messages.bottomInfoError,
+          buttonSave: messages.saveButton,
+          buttonSuccess: messages.buttonSuccess,
+          messageSuccess: messages.messageSuccess,
+          messageError: messages.error,
         }}
       />
     </SectionFormWrapper>

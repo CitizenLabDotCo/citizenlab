@@ -1,28 +1,28 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  bottomInfoPageTitle: {
-    id: 'app.containers.Admin.pagesAndMenu.bottomInfoPageTitle',
+  pageTitle: {
+    id: 'app.containers.Admin.pages-menu.containers.BottomInfoSection.pageTitle',
     defaultMessage: 'Bottom info section',
   },
-  bottomInfoContentEditorTitle: {
-    id: 'app.containers.Admin.pagesAndMenu.bottomInfoContentEditorTitle',
+  contentEditorTitle: {
+    id: 'app.containers.Admin.pages-menu.containers.BottomInfoSection.contentEditorTitle',
     defaultMessage: 'Content',
   },
-  bottomInfoSaveButton: {
-    id: 'app.containers.Admin.pagesAndMenu.bottomInfoSaveButton',
+  saveButton: {
+    id: 'app.containers.Admin.pages-menu.containers.BottomInfoSection.saveButton',
     defaultMessage: 'Save bottom info section',
   },
-  bottomInfoButtonSuccess: {
-    id: 'app.containers.Admin.pagesAndMenu.bottomInfoButtonSuccess',
+  buttonSuccess: {
+    id: 'app.containers.Admin.pages-menu.containers.BottomInfoSection.buttonSuccess',
     defaultMessage: 'Success',
   },
-  bottomInfoMessageSuccess: {
-    id: 'app.containers.Admin.pagesAndMenu.bottomInfoMessageSuccess',
+  messageSuccess: {
+    id: 'app.containers.Admin.pages-menu.containers.BottomInfoSection.messageSuccess',
     defaultMessage: 'Bottom info section saved',
   },
-  bottomInfoError: {
-    id: 'app.containers.Admin.pagesAndMenu.bottomInfoError',
+  error: {
+    id: 'app.containers.Admin.pages-menu.containers.BottomInfoSection.error',
     defaultMessage: "Couldn't save bottom info section",
   },
 });
