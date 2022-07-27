@@ -595,6 +595,7 @@
   "app.containers.AdminPage.DashboardPage.components.Field.Options.seeLess": "Zie minder",
   "app.containers.AdminPage.DashboardPage.components.Field.Options.seeMore": "Zie {numberOfHiddenItems} meer...",
   "app.containers.AdminPage.DashboardPage.components.Field.baseMonth": "Basismaand (optioneel)",
+  "app.containers.AdminPage.DashboardPage.components.Field.birthyearCustomTitle": "Age groups (Year of birth)",
   "app.containers.AdminPage.DashboardPage.components.Field.comingSoon": "Binnenkort",
   "app.containers.AdminPage.DashboardPage.components.Field.complete": "Compleet",
   "app.containers.AdminPage.DashboardPage.components.Field.default": "Standaard",
