@@ -115,17 +115,17 @@ const EditHomepage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           label: formatMessage(homeBreadcrumb.label),
         },
       ]}
+      rightSideCTA={
+        <AdminViewButton
+          buttonTextMessageDescriptor={messages.viewPage}
+          linkTo="/"
+        />
+      }
     >
       <Box display="flex" alignItems="center" mb="12px">
         <Title variant="h2">
           <FormattedMessage {...messages.sectionsTitle} />
         </Title>
-        <Box ml="auto">
-          <AdminViewButton
-            buttonTextMessageDescriptor={messages.viewPage}
-            linkTo="/"
-          />
-        </Box>
       </Box>
       <Box display="flex" flexDirection="column">
         <Box mb="28px">

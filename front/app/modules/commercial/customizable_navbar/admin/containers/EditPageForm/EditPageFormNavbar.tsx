@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { Formik, FormikProps } from 'formik';
 
@@ -8,15 +7,16 @@ import PageFormWithNavbarNameField, {
   validatePageForm,
   FormValues,
 } from '../../components/PageFormWithNavbarNameField';
-import GoBackButton from 'components/UI/GoBackButton';
-import T from 'components/T';
+import SectionFormWrapper from 'containers/Admin/pages-menu/components/SectionFormWrapper';
+import { pagesAndMenuBreadcrumb } from 'containers/Admin/pages-menu/breadcrumbs';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { fontSizes } from 'utils/styleUtils';
-import clHistory from 'utils/cl-router/history';
 import { getInitialFormValues, createPageUpdateData } from './utils';
-import { PAGES_MENU_PATH } from 'containers/Admin/pages-menu/routes';
+
+// i18n
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 // services
 import { updatePage } from 'services/pages';
@@ -27,16 +27,15 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useRemoteFiles from 'hooks/useRemoteFiles';
 import usePage from 'hooks/usePage';
 import usePageSlugs from 'hooks/usePageSlugs';
+import useLocalize from 'hooks/useLocalize';
 
-const Title = styled.h1`
-  font-size: ${fontSizes.xxxl}px;
-  padding: 0;
-  width: 100%;
-  margin: 1rem 0 3rem 0;
-`;
-
-const EditPageFormNavbar = ({ params: { pageId } }: WithRouterProps) => {
+const EditPageFormNavbar = ({
+  params: { pageId },
+  intl: { formatMessage },
+}: WithRouterProps & InjectedIntlProps) => {
   const appConfigurationLocales = useAppConfigurationLocales();
+  const localize = useLocalize();
+
   const page = usePage({ pageId });
   const remotePageFiles = useRemoteFiles({
     resourceType: 'page',
@@ -88,20 +87,23 @@ const EditPageFormNavbar = ({ params: { pageId } }: WithRouterProps) => {
     }
   };
 
-  const goBack = () => {
-    clHistory.push(PAGES_MENU_PATH);
-  };
-
   const renderFn = (props: FormikProps<FormValues>) => {
     return <PageFormWithNavbarNameField {...props} pageId={pageId} />;
   };
 
   return (
-    <div>
-      <GoBackButton onClick={goBack} />
-      <Title>
-        <T value={page.attributes.title_multiloc} />
-      </Title>
+    <SectionFormWrapper
+      title={localize(page.attributes.title_multiloc)}
+      breadcrumbs={[
+        {
+          label: formatMessage(pagesAndMenuBreadcrumb.label),
+          linkTo: pagesAndMenuBreadcrumb.linkTo,
+        },
+        {
+          label: localize(page.attributes.title_multiloc),
+        },
+      ]}
+    >
       <Formik
         initialValues={getInitialFormValues(page, remotePageFiles)}
         onSubmit={handleSubmit}
@@ -114,8 +116,8 @@ const EditPageFormNavbar = ({ params: { pageId } }: WithRouterProps) => {
         validateOnChange={false}
         validateOnBlur={false}
       />
-    </div>
+    </SectionFormWrapper>
   );
 };
 
-export default withRouter(EditPageFormNavbar);
+export default injectIntl(withRouter(EditPageFormNavbar));
