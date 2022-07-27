@@ -15,22 +15,15 @@ import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 // resources
 import { addIdeaImportFile } from 'services/ideaFiles';
 
-// styling
-import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
-
+// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-
-const SectionDescription = styled(Text)`
-  font-size: ${fontSizes.base}px;
-`;
 
 const Import = () => {
   const [file, setFile] = useState<UploadFile | undefined>(undefined);
   const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
   const [isLoading, setIsLoading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
+  const [isSuccessful, setIsSuccessful] = useState(false);
 
   const handleFileOnAdd = async (fileToAdd: UploadFile) => {
     setFile(fileToAdd);
@@ -43,10 +36,10 @@ const Import = () => {
     setIsLoading(true);
     try {
       await addIdeaImportFile(file.base64);
-      setIsSuccess(true);
+      setIsSuccessful(true);
       setApiErrors(undefined);
     } catch (errors) {
-      setIsSuccess(false);
+      setIsSuccessful(false);
       setApiErrors(errors?.json);
     } finally {
       setIsLoading(false);
@@ -66,11 +59,9 @@ const Import = () => {
       <Title>
         <FormattedMessage {...messages.importInputs} />
       </Title>
-      <SectionDescription>
-        <Text color="adminTextColor">
-          <FormattedMessage {...messages.importDescription} />
-        </Text>
-      </SectionDescription>
+      <Text color="adminTextColor" fontSize="base">
+        <FormattedMessage {...messages.importDescription} />
+      </Text>
       <SectionField>
         <Text
           mb="16px"
@@ -80,21 +71,19 @@ const Import = () => {
         >
           <FormattedMessage {...messages.importStepOne} />
         </Text>
-        <SectionDescription>
-          <Box display="flex" alignItems="flex-start">
-            <Button
-              buttonStyle="secondary"
-              icon="download"
-              onClick={downloadExampleFile}
-              mb="16px"
-            >
-              <FormattedMessage {...messages.downloadTemplate} />
-            </Button>
-          </Box>
-          <Text>
-            <FormattedMessage {...messages.importHint} />
-          </Text>
-        </SectionDescription>
+        <Box display="flex" alignItems="flex-start">
+          <Button
+            buttonStyle="secondary"
+            icon="download"
+            onClick={downloadExampleFile}
+            mb="16px"
+          >
+            <FormattedMessage {...messages.downloadTemplate} />
+          </Button>
+        </Box>
+        <Text>
+          <FormattedMessage {...messages.importHint} />
+        </Text>
 
         <Text
           mb="16px"
@@ -123,7 +112,7 @@ const Import = () => {
             <FormattedMessage {...messages.importInput} />
           </Button>
         </Box>
-        {!isLoading && isSuccess && (
+        {!isLoading && isSuccessful && (
           <Text color="clGreenSuccess">
             <FormattedMessage {...messages.successMessage} />
           </Text>
