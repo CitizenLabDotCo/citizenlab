@@ -8,68 +8,42 @@ import { requestBlob } from 'utils/request';
 
 // components
 import FileUploader from 'components/UI/FileUploader';
-import { SectionField, SectionTitle } from 'components/admin/Section';
+import { SectionField } from 'components/admin/Section';
 import Button from 'components/UI/Button';
+import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 
 // resources
 import { addIdeaImportFile } from 'services/ideaFiles';
 
-// styling
-import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-import { darken } from 'polished';
-
+// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-const StyledSectionTitle = styled(SectionTitle)`
-  margin-bottom: 15px;
-  font-size: ${fontSizes.l}px;
-  font-weight: bold;
-`;
-
-const SectionDescription = styled.div`
-  font-size: ${fontSizes.base}px;
-`;
-
-const SectionParagraph = styled.p`
-  a {
-    color: ${colors.clBlue};
-    text-decoration: underline;
-
-    &:hover {
-      color: ${darken(0.2, colors.clBlue)};
-      text-decoration: underline;
-    }
-  }
-`;
-
-const FlexWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const DownloadButton = styled(Button)`
-  margin-bottom: 15px;
-`;
-
 const Import = () => {
-  const [files, setFiles] = useState<UploadFile[]>([]);
+  const [file, setFile] = useState<UploadFile | undefined>(undefined);
   const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
   const [isLoading, setIsLoading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
+  const [isSuccessful, setIsSuccessful] = useState(false);
 
   const handleFileOnAdd = async (fileToAdd: UploadFile) => {
+    setFile(fileToAdd);
+    setApiErrors(undefined);
+  };
+
+  const handleFileImport = async () => {
+    if (!file) return;
+
     setIsLoading(true);
     try {
-      await addIdeaImportFile(fileToAdd.base64);
-      setFiles((files) => [...files, fileToAdd]);
-      setIsSuccess(true);
+      await addIdeaImportFile(file.base64);
+      setIsSuccessful(true);
+      setApiErrors(undefined);
     } catch (errors) {
+      setIsSuccessful(false);
       setApiErrors(errors?.json);
-      setIsSuccess(false);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   const downloadExampleFile = async () => {
@@ -82,44 +56,67 @@ const Import = () => {
 
   return (
     <>
-      <h1>
+      <Title>
         <FormattedMessage {...messages.importInputs} />
-      </h1>
-      <SectionDescription>
-        <p>
-          <FormattedMessage {...messages.importDescription} />
-        </p>
-      </SectionDescription>
+      </Title>
+      <Text color="adminTextColor" fontSize="base">
+        <FormattedMessage {...messages.importDescription} />
+      </Text>
       <SectionField>
-        <StyledSectionTitle>
+        <Text
+          mb="16px"
+          variant="bodyL"
+          fontWeight="bold"
+          color="adminTextColor"
+        >
           <FormattedMessage {...messages.importStepOne} />
-        </StyledSectionTitle>
-        <SectionDescription>
-          <FlexWrapper>
-            <DownloadButton
-              buttonStyle="secondary"
-              icon="download"
-              onClick={downloadExampleFile}
-            >
-              <FormattedMessage {...messages.downloadTemplate} />
-            </DownloadButton>
-          </FlexWrapper>
-          <SectionParagraph>
-            <FormattedMessage {...messages.importHint} />
-          </SectionParagraph>
-        </SectionDescription>
+        </Text>
+        <Box display="flex" alignItems="flex-start">
+          <Button
+            buttonStyle="secondary"
+            icon="download"
+            onClick={downloadExampleFile}
+            mb="16px"
+          >
+            <FormattedMessage {...messages.downloadTemplate} />
+          </Button>
+        </Box>
+        <Text>
+          <FormattedMessage {...messages.importHint} />
+        </Text>
 
-        <StyledSectionTitle>
+        <Text
+          mb="16px"
+          variant="bodyL"
+          fontWeight="bold"
+          color="adminTextColor"
+        >
           <FormattedMessage {...messages.importStepTwo} />
-        </StyledSectionTitle>
+        </Text>
         <FileUploader
           id={'bulk_idea_import'}
-          onFileRemove={() => {}}
+          onFileRemove={() => {
+            setFile(undefined);
+            setApiErrors(undefined);
+          }}
           onFileAdd={handleFileOnAdd}
           apiErrors={apiErrors}
-          files={files}
+          files={file ? [file] : []}
         />
-        {!isLoading && isSuccess && <div>File upload successful</div>}
+        <Box display="flex" flexDirection="row" alignItems="flex-start">
+          <Button
+            buttonStyle="success"
+            onClick={handleFileImport}
+            processing={isLoading}
+          >
+            <FormattedMessage {...messages.importInput} />
+          </Button>
+        </Box>
+        {!isLoading && isSuccessful && (
+          <Text color="clGreenSuccess">
+            <FormattedMessage {...messages.successMessage} />
+          </Text>
+        )}
       </SectionField>
     </>
   );

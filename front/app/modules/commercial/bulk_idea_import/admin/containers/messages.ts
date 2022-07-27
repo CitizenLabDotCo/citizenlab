@@ -26,4 +26,12 @@ export default defineMessages({
     id: 'app.containers.admin.import.importStepTwo',
     defaultMessage: '2. Upload your completed template file',
   },
+  importInput: {
+    id: 'app.containers.admin.import.importInput',
+    defaultMessage: 'Import input',
+  },
+  successMessage: {
+    id: 'app.containers.admin.import.successMessage',
+    defaultMessage: 'File imported successfully!',
+  },
 });
