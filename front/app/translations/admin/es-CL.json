@@ -1232,7 +1232,7 @@
   "app.containers.AdminPage.SideBar.insights": "Reportar",
   "app.containers.AdminPage.SideBar.invitations": "Invitaciones",
   "app.containers.AdminPage.SideBar.linkToAcademy": "https://academy.citizenlab.co/",
-  "app.containers.AdminPage.SideBar.linkToGuide": "https://community.citizenlab.co/de-DE/folders/guide",
+  "app.containers.AdminPage.SideBar.linkToGuide": "https://community.citizenlab.co/folders/guide",
   "app.containers.AdminPage.SideBar.messaging": "Mensajería ",
   "app.containers.AdminPage.SideBar.moderation": "Actividad",
   "app.containers.AdminPage.SideBar.processing": "Tramitación",
