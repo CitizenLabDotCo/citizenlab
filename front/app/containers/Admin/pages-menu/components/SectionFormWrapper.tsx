@@ -12,6 +12,7 @@ interface Props {
   title?: string;
   children: JSX.Element | JSX.Element[];
   stickyMenuContents?: JSX.Element | JSX.Element[];
+  rightSideCTA?: JSX.Element | JSX.Element[];
 }
 
 const SectionFormWrapper = ({
@@ -19,17 +20,21 @@ const SectionFormWrapper = ({
   title,
   children,
   stickyMenuContents,
+  rightSideCTA,
 }: Props) => {
   return (
     <>
       <Box mb="16px">
         <Breadcrumbs breadcrumbs={breadcrumbs} />
       </Box>
-      {title && (
-        <Box mb="20px">
-          <PageTitle>{title}</PageTitle>
-        </Box>
-      )}
+      <Box display="flex" justifyContent="space-between">
+        {title && (
+          <Box mb="20px">
+            <PageTitle>{title}</PageTitle>
+          </Box>
+        )}
+        {rightSideCTA && <Box ml="auto">{rightSideCTA}</Box>}
+      </Box>
       <Box>
         <PageWrapper>
           {children}
