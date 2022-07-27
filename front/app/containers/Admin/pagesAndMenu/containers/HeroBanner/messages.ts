@@ -109,19 +109,19 @@ export default defineMessages({
     defaultMessage: 'Customise the hero banner image and text.',
   },
   heroBannerSaveButton: {
-    id: 'app.containers.Admin.pages-menu.heroBannerSaveButton',
+    id: 'app.containers.Admin.PagesAndMenu.heroBannerSaveButton',
     defaultMessage: 'Save hero banner',
   },
   heroBannerButtonSuccess: {
-    id: 'app.containers.Admin.pages-menu.heroBannerButtonSuccess',
+    id: 'app.containers.Admin.PagesAndMenu.heroBannerButtonSuccess',
     defaultMessage: 'Success',
   },
   heroBannerMessageSuccess: {
-    id: 'app.containers.Admin.pages-menu.heroBannerMessageSuccess',
+    id: 'app.containers.Admin.PagesAndMenu.heroBannerMessageSuccess',
     defaultMessage: 'Hero banner saved',
   },
   heroBannerError: {
-    id: 'app.containers.Admin.pages-menu.heroBannerError',
+    id: 'app.containers.Admin.PagesAndMenu.heroBannerError',
     defaultMessage: "Couldn't save hero banner",
   },
 });

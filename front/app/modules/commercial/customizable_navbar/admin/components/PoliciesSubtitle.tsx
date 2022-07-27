@@ -11,7 +11,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // utils
-import { PAGES_MENU_PATH } from 'containers/Admin/pages-menu/routes';
+import { PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 
 export default () => {
   const featureEnabled = useFeatureFlag({ name: 'customizable_navbar' });

@@ -11,7 +11,7 @@ import settingsRoutes from './settings/routes';
 import pagesRoutes from './pages/routes';
 import createAdminMessagingRoutes from './messaging/routes';
 import ideasRoutes from './ideas/routes';
-import pagesAndMenuRoutes from './pages-menu/routes';
+import pagesAndMenuRoutes from './pagesAndMenu/routes';
 
 // components
 import PageLoading from 'components/UI/PageLoading';

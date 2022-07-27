@@ -5,7 +5,7 @@ import HeaderContent from 'containers/LandingPage/SignedOutHeader/HeaderContent'
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 import Image from 'components/UI/Image';
-import { homepageBannerLayoutHeights } from 'containers/Admin/pages-menu/containers/HeroBanner/HeaderImageDropzone';
+import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/HeroBanner/HeaderImageDropzone';
 
 const Container = styled.div`
   width: 100%;
