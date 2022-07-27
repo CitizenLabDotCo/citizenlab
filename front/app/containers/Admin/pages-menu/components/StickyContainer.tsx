@@ -12,7 +12,7 @@ const StickyContainer = styled.div`
   bottom: 0;
   margin-left: -4rem;
   margin-bottom: -4rem;
-  padding-left: 45px;
+  padding-left: 4rem;
 
   display: flex;
   align-items: center;
