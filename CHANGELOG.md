@@ -1,6 +1,10 @@
 # Changelog
 
-### Next release
+### 2022-07-22
+
+### Fixed
+
+- [CL-1216] Fix slow insights export
 
 ### Changed
 

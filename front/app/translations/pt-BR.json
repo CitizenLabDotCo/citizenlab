@@ -1096,6 +1096,7 @@
   "app.containers.Projects.projectTwitterMessage": "Faça sua voz ser ouvida! Participe de {projectName} | {orgName}",
   "app.containers.Projects.projects": "Projetos",
   "app.containers.Projects.questions": "Perguntas",
+  "app.containers.Projects.readLess": "Read less",
   "app.containers.Projects.readMore": "Ler mais",
   "app.containers.Projects.removeItem": "Remover item",
   "app.containers.Projects.requiredSelection": "Seleção necessária",

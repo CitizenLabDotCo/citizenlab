@@ -1096,6 +1096,7 @@
   "app.containers.Projects.projectTwitterMessage": "Gør din stemme hørt! Deltag i {projectName} | {orgName}",
   "app.containers.Projects.projects": "Projekter",
   "app.containers.Projects.questions": "Spørgsmål",
+  "app.containers.Projects.readLess": "Read less",
   "app.containers.Projects.readMore": "Læs mere",
   "app.containers.Projects.removeItem": "Fjern emnet\n",
   "app.containers.Projects.requiredSelection": "Nødvendigt valg",
