@@ -38,7 +38,7 @@ describe('Admin: update Hero Banner content', () => {
     cy.acceptCookies();
 
     // main page should be full width layout when logged out
-    cy.get('[data-testid="e2e-full-width-banner-layout-container"]').should(
+    cy.get('[data-cy=e2e-full-width-layout-header-image-overlay]').should(
       'exist'
     );
 
@@ -51,12 +51,12 @@ describe('Admin: update Hero Banner content', () => {
       .should('not.exist');
 
     // check that the header image color and opacity are displayed correctly
-    cy.get('[data-testid=e2e-full-width-layout-header-image-overlay]').should(
+    cy.get('[data-cy=e2e-full-width-layout-header-image-overlay]').should(
       'have.css',
       'background-color',
       'rgb(51, 255, 209)'
     );
-    cy.get('[data-testid=e2e-full-width-layout-header-image-overlay]').should(
+    cy.get('[data-cy=e2e-full-width-layout-header-image-overlay]').should(
       'have.css',
       'opacity',
       '0.55'
@@ -74,7 +74,7 @@ describe('Admin: update Hero Banner content', () => {
     cy.get('[data-testid="edit-button"]').first().click();
 
     // click hero banner edit button
-    cy.get('[data-testid="admin-edit-button-homepage_banner"]').click();
+    cy.get('[data-cy="e2e-admin-edit-button"]').first().click();
 
     // click two-column banner layout
     cy.get('[data-testid="e2e-two-column-layout-option"]').click();
@@ -105,7 +105,7 @@ describe('Admin: update Hero Banner content', () => {
       .type(updatedSignedOutCTAButton);
 
     cy.get('[data-cy="e2e-cta-settings-signed_out-customized_button"]')
-      .find('[data-cy=buttonConfigInput]')
+      .find('[data-testid=buttonConfigInput]')
       .find('input')
       .clear()
       .type(updatedSignedOutCTAURL);
@@ -121,23 +121,23 @@ describe('Admin: update Hero Banner content', () => {
       .clear()
       .type(updatedSignedInCTAButton);
 
-    cy.get('[data-testid="e2e-cta-settings-signed_in-customized_button"]')
+    cy.get('[data-cy="e2e-cta-settings-signed_in-customized_button"]')
       .find('[data-testid=buttonConfigInput]')
       .find('input')
       .clear()
       .type(updatedSignedInCTAURL);
 
     // save form
-    cy.get('[data-testid=e2e-hero-banner-save-button]').click();
-    cy.get('[data-testid=e2e-hero-banner-save-button]').contains('Success');
+    cy.get('.e2e-submit-wrapper-button').click();
+    cy.get('.e2e-submit-wrapper-button').contains('Success');
 
     cy.visit('/');
 
     // check content and url for signed in CTA button
-    cy.get('[data-testid="e2e-cta-banner-button"]')
+    cy.get('[data-cy="e2e-cta-banner-button"]')
       .find('a')
       .contains(updatedSignedInCTAButton);
-    cy.get('[data-testid="e2e-cta-banner-button"]')
+    cy.get('[data-cy="e2e-cta-banner-button"]')
       .find('a')
       .should('have.attr', 'href', updatedSignedInCTAURL);
   });
