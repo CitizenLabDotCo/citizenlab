@@ -314,7 +314,7 @@ describe('<Field />', () => {
         expect(createReferenceDistribution).not.toHaveBeenCalled();
       });
 
-      it('clears correct filled out options after modifying bins', () => {
+      it('clears correct filled out options after modifying bins', async () => {
         const { container } = render(<Field userCustomFieldId="field1" />);
         fireEvent.click(screen.getByText('Age'));
         fireEvent.click(screen.getByTestId('set-age-groups-button'));
@@ -331,13 +331,17 @@ describe('<Field />', () => {
 
         fireEvent.click(screen.getByTestId('edit-age-groups-button'));
         const binInputs = container.querySelectorAll('.bin-input > input');
-        fireEvent.input(binInputs[5], { target: { value: 37 } });
-        fireEvent.blur(binInputs[5]);
+        fireEvent.input(binInputs[4], { target: { value: 37 } });
+        fireEvent.blur(binInputs[4]);
         fireEvent.click(screen.getByTestId('bin-save-button'));
 
-        waitFor(() => {
+        const populationInputs2 = container.querySelectorAll(
+          '.option-population-input > input'
+        );
+
+        await waitFor(() => {
           indices(6).forEach((i) => {
-            expect(populationInputs[i]).toHaveAttribute(
+            expect(populationInputs2[i]).toHaveAttribute(
               'value',
               i === 1 || i === 2 ? '' : '100'
             );
@@ -368,14 +372,17 @@ describe('<Field />', () => {
         };
       });
 
-      it('shows correct form values', () => {
+      it('shows correct form values', async () => {
         const { container } = render(<Field userCustomFieldId="field1" />);
         fireEvent.click(screen.getByText('Age'));
 
         const populationInputs = container.querySelectorAll(
           '.option-population-input > input'
         );
-        expect(populationInputs.length).toBe(5);
+
+        await waitFor(() => {
+          expect(populationInputs.length).toBe(5);
+        });
 
         indices(5).forEach((i) => {
           expect(populationInputs[i]).toHaveAttribute('value', '100');
