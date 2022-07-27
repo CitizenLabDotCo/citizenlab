@@ -43,7 +43,7 @@ const Message = styled.p`
   margin-left: 20px;
 
   &.error {
-    color: ${colors.clRedError};
+    color: ${colors.red600};
   }
 
   &.success {

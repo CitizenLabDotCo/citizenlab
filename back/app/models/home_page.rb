@@ -1,12 +1,5 @@
 # frozen_string_literal: true
 
-# We don't use the 'banner_' prefix for customizable_homepage_banner_enabled to maintain the
-# relation of the name to AppConfiguration.settings['customizable_homepage_banner']['allowed'],
-# which is used to toggle the feature via AdminHQ, usually in-line with pricing plans.
-# Here, customizable_homepage_banner_enabled is a toggle to be used by the app user,
-# for example, via the Admin UI.
-# Both related toggles should be 'true' for the feature to be active.
-
 # Contains settings & configuration data of the homepage.
 # == Schema Information
 #
@@ -21,7 +14,6 @@
 #  projects_enabled                         :boolean          default(TRUE), not null
 #  projects_header_multiloc                 :jsonb            not null
 #  banner_avatars_enabled                   :boolean          default(TRUE), not null
-#  customizable_homepage_banner_enabled     :boolean          default(TRUE), not null
 #  banner_layout                            :string           default("full_width_banner_layout"), not null
 #  banner_signed_in_header_multiloc         :jsonb            not null
 #  banner_cta_signed_in_text_multiloc       :jsonb            not null
@@ -44,16 +36,16 @@ class HomePage < ApplicationRecord
 
   accepts_nested_attributes_for :pinned_admin_publications, allow_destroy: true
 
-  before_validation :sanitize_top_info_section_multiloc, if: :top_info_section_enabled
-  before_validation :sanitize_bottom_info_section_multiloc, if: :bottom_info_section_enabled
+  before_validation :sanitize_top_info_section_multiloc
+  before_validation :sanitize_bottom_info_section_multiloc
 
   validate :only_one_home_page, on: :create
 
   validates :top_info_section_enabled, inclusion: [true, false]
-  validates :top_info_section_multiloc, presence: true, multiloc: { html: true, presence: true }, if: :top_info_section_enabled
+  validates :top_info_section_multiloc, multiloc: { presence: false, html: true }
 
   validates :bottom_info_section_enabled, inclusion: [true, false]
-  validates :bottom_info_section_multiloc, presence: true, multiloc: { html: true, presence: true }, if: :bottom_info_section_enabled
+  validates :bottom_info_section_multiloc, multiloc: { presence: false, html: true }
 
   validates :events_widget_enabled, inclusion: [true, false]
   validates :projects_enabled, inclusion: [true, false]
@@ -62,7 +54,6 @@ class HomePage < ApplicationRecord
 
   validates :banner_avatars_enabled, inclusion: [true, false]
 
-  validates :customizable_homepage_banner_enabled, inclusion: [true, false]
   validates :banner_layout, inclusion: %w[full_width_banner_layout two_column_layout two_row_layout]
   validates :banner_signed_in_header_multiloc, multiloc: true
 

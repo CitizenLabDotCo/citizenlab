@@ -1,10 +1,33 @@
 # Changelog
 
+## Next release
+
 ### Added
 
 - [CL-1128] Feature to bulk import ideas from an XLSX sheet
 
-## Next release
+## 2022-07-22
+
+### Fixed
+
+- [CL-1216] Fix slow insights export
+
+### Changed
+
+- [CL-1205] Change see less copy to read less in read more on project info and phase description
+- [CL-1140] Show sign up modal when a logged user clicks the take survey button
+
+## 2022-07-19
+
+### Fixed
+
+- [CL-1160] Fix blank insights tag detail view
+
+## 2022-07-14 (2)
+
+### Added
+
+- [CL-1077] Add PNG export to graph export dropdown
 
 ## 2022-07-14
 
@@ -18,6 +41,7 @@
 
 ### Added
 
+- [CL-1088] Add link to academy. Update link to guides
 - [CL-972] Add a 'read more' expand/collapse feature to timeline phases
 
 ## 2022-07-11
