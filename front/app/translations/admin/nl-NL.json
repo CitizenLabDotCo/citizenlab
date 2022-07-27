@@ -1240,7 +1240,7 @@
   "app.containers.AdminPage.SideBar.insights": "Rapportering",
   "app.containers.AdminPage.SideBar.invitations": "Uitnodigingen",
   "app.containers.AdminPage.SideBar.linkToAcademy": "https://academy.citizenlab.co/nl",
-  "app.containers.AdminPage.SideBar.linkToGuide": "https://community.citizenlab.co/nl-Be/folders/guide",
+  "app.containers.AdminPage.SideBar.linkToGuide": "https://community.citizenlab.co/folders/guide",
   "app.containers.AdminPage.SideBar.messaging": "Berichten",
   "app.containers.AdminPage.SideBar.moderation": "Activiteit",
   "app.containers.AdminPage.SideBar.processing": "Verwerking",
