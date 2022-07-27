@@ -8,10 +8,10 @@ module BulkImportIdeas
       xlsx = parse_xlsx
       idea_rows = import_ideas_service.xlsx_to_idea_rows xlsx
       import_ideas_service.import_ideas idea_rows
-      # TODO: log success activity
+      sidefx.after_success current_user
       head :ok
     rescue BulkImportIdeas::Error => e
-      # TODO: log failure activity
+      sidefx.after_failure current_user
       render json: { file: [{ error: e.key, **e.params }] }, status: :unprocessable_entity
     end
 
@@ -43,6 +43,10 @@ module BulkImportIdeas
 
     def authorize_bulk_import_ideas
       authorize :'bulk_import_ideas/import_ideas'
+    end
+
+    def sidefx
+      @sidefx ||= SideFxImportIdeasService.new
     end
   end
 end

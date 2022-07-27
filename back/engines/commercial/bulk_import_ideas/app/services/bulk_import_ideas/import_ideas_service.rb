@@ -173,7 +173,7 @@ module BulkImportIdeas
       return if idea_row[:latitude].blank? && idea_row[:longitude].blank?
 
       if idea_row[:latitude].blank? || idea_row[:longitude].blank?
-        raise Error.new 'bulk_import_ideas_location_point_blank_coordinate', value: "(#{idea_row[:latitude]}, #{idea_row[:longitude]})", row: idea_row[:id] # TODO: add message in frontend
+        raise Error.new 'bulk_import_ideas_location_point_blank_coordinate', value: "(#{idea_row[:latitude]}, #{idea_row[:longitude]})", row: idea_row[:id]
       end
 
       lat = nil
@@ -182,7 +182,7 @@ module BulkImportIdeas
         lat = Float idea_row[:latitude]
         lon = Float idea_row[:longitude]
       rescue ArgumentError => _e
-        raise Error.new 'bulk_import_ideas_location_point_non_numeric_coordinate', value: "(#{idea_row[:latitude]}, #{idea_row[:longitude]})", row: idea_row[:id] # TODO: add message in frontend
+        raise Error.new 'bulk_import_ideas_location_point_non_numeric_coordinate', value: "(#{idea_row[:latitude]}, #{idea_row[:longitude]})", row: idea_row[:id]
       end
 
       location_point = {
@@ -199,7 +199,7 @@ module BulkImportIdeas
       begin
         phase_rank = Integer idea_row[:phase_rank]
       rescue ArgumentError => _e
-        raise Error.new 'bulk_import_ideas_non_numeric_phase_rank', value: idea_row[:phase_rank], row: idea_row[:id] # TODO: add message in frontend
+        raise Error.new 'bulk_import_ideas_non_numeric_phase_rank', value: idea_row[:phase_rank], row: idea_row[:id]
       end
 
       project_phases = Phase.where(project: idea_attributes[:project])
