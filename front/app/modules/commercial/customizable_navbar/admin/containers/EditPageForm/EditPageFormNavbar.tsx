@@ -7,8 +7,8 @@ import PageFormWithNavbarNameField, {
   validatePageForm,
   FormValues,
 } from '../../components/PageFormWithNavbarNameField';
-import SectionFormWrapper from 'containers/Admin/pages-menu/components/SectionFormWrapper';
-import { pagesAndMenuBreadcrumb } from 'containers/Admin/pages-menu/breadcrumbs';
+import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
+import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

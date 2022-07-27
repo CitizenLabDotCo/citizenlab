@@ -4,8 +4,8 @@ import { Formik, FormikProps } from 'formik';
 
 // components
 import PageForm, { validatePageForm, FormValues } from 'components/PageForm';
-import SectionFormWrapper from 'containers/Admin/pages-menu/components/SectionFormWrapper';
-import { pagesAndMenuBreadcrumb } from 'containers/Admin/pages-menu/breadcrumbs';
+import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
+import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

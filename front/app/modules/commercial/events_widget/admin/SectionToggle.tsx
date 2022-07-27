@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { InsertConfigurationOptions } from 'typings';
 import messages from './messages';
-import { TSectionToggleData } from 'containers/Admin/pages-menu/EditHomepage';
+import { TSectionToggleData } from 'containers/Admin/pagesAndMenu/EditHomepage';
 
 export interface Props {
   onData: (data: InsertConfigurationOptions<TSectionToggleData>) => void;

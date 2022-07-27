@@ -6,7 +6,7 @@ import {
   removeNavbarItem,
 } from '../../../../services/navbar';
 import { deletePage } from 'services/pages';
-import { PAGES_MENU_PATH } from 'containers/Admin/pages-menu/routes';
+import { PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 import navbarItems from 'hooks/fixtures/navbarItems';
 import clHistory from 'utils/cl-router/history';
 
