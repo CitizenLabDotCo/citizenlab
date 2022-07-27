@@ -3,7 +3,7 @@ import PostFeedback from './admin/components/PostFeedback';
 
 const configuration: ModuleConfiguration = {
   outlets: {
-    'app.containers.Admin.dashboards.summary': PostFeedback,
+    'app.containers.Admin.dashboard.summary.postStatus': PostFeedback,
   },
 };
 

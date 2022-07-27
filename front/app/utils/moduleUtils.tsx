@@ -185,7 +185,7 @@ export type OutletsPropertyMap = {
     currentGroupFilter?: string;
     currentGroupFilterLabel?: string;
   };
-  'app.containers.Admin.dashboards.summary': {
+  'app.containers.Admin.dashboard.summary.postStatus': {
     projectId: string | undefined;
   };
   'app.components.SignUpIn.SignUp.step': SignUpStepOutletProps;
