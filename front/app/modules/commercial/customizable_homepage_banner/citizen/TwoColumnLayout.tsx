@@ -36,7 +36,7 @@ const TwoColumnLayout = () => {
     const headerImage = homepageSettings.data.attributes.header_bg?.large;
 
     return (
-      <Container data-testid="e2e-two-column-layout-container">
+      <Container data-cy="e2e-two-column-layout-container">
         {headerImage && (
           <HeaderImage
             src={headerImage}

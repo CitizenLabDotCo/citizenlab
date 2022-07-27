@@ -424,7 +424,7 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           )}
         <SectionField
           key={'banner_text'}
-          data-testid="e2e-signed-out-header-section"
+          data-cy="e2e-signed-out-header-section"
         >
           <SubSectionTitle>
             <FormattedMessage {...messages.bannerTextTitle} />
