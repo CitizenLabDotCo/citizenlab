@@ -130,6 +130,7 @@ interface Props {
   fieldName?: TFieldName | undefined;
   apiErrors?: (CLError | IInviteError)[] | null;
   id?: string;
+  children?: React.ReactNode;
 }
 
 export type TFieldName =
@@ -172,10 +173,26 @@ export type TFieldName =
   | 'category_name'
   | 'nav_bar_item_title_multiloc';
 
+export const findErrorMessage = (
+  fieldName: TFieldName | undefined,
+  error: string
+) => {
+  if (fieldName && messages[`${fieldName}_${error}`]) {
+    return messages[`${fieldName}_${error}`] as Message;
+  }
+
+  if (messages[error]) {
+    return messages[error] as Message;
+  }
+
+  return null;
+};
+
 const Error = (props: Props) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   const {
+    children,
     text,
     apiErrors,
     fieldName,
@@ -198,18 +215,6 @@ const Error = (props: Props) => {
     }
   }, [text, apiErrors]);
 
-  const findMessage = (fieldName: TFieldName | undefined, error: string) => {
-    if (fieldName && messages[`${fieldName}_${error}`]) {
-      return messages[`${fieldName}_${error}`] as Message;
-    }
-
-    if (messages[error]) {
-      return messages[error] as Message;
-    }
-
-    return null;
-  };
-
   const dedupApiErrors =
     apiErrors && isArray(apiErrors) && !isEmpty(apiErrors)
       ? uniqBy(apiErrors, 'error')
@@ -218,7 +223,7 @@ const Error = (props: Props) => {
   return (
     <CSSTransition
       classNames="error"
-      in={!!(text || apiErrors)}
+      in={!!(text || apiErrors || children)}
       timeout={timeout}
       mounOnEnter={true}
       unmountOnExit={true}
@@ -249,8 +254,11 @@ const Error = (props: Props) => {
                   {dedupApiErrors.map((error, index) => {
                     // If we have multiple possible errors for a certain input field,
                     // we can 'group' them in the messages.js file using the fieldName as a prefix
-                    // Check the implementation of findMessage for details
-                    const errorMessage = findMessage(fieldName, error.error);
+                    // Check the implementation of findErrorMessage for details
+                    const errorMessage = findErrorMessage(
+                      fieldName,
+                      error.error
+                    );
 
                     if (errorMessage) {
                       // Variables for inside messages.js
@@ -302,6 +310,7 @@ const Error = (props: Props) => {
                   })}
                 </ErrorList>
               )}
+            {children}
           </ErrorMessageText>
         </ContainerInner>
       </Container>

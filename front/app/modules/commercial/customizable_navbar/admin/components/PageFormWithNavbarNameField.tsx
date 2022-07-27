@@ -31,7 +31,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 import Button from 'components/UI/Button';
-import useToast from 'components/Toast/useToast';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -63,7 +62,6 @@ const PageFormWithNavbarNameField = ({
   pageId,
   intl: { formatMessage },
 }: PageFormWithNavbarNameFieldProps) => {
-  const { add } = useToast();
   const locale = useLocale();
   const page = usePage({ pageId });
   const appConfig = useAppConfiguration();
@@ -93,29 +91,16 @@ const PageFormWithNavbarNameField = ({
   const onFormSubmit = async (formValues: FormValues) => {
     try {
       await onSubmit(formValues);
-      add({ variant: 'success', text: 'Page successfully saved' });
     } catch (error) {
       Object.keys(error.json.errors).forEach((key: keyof FormValues) => {
         methods.setError(key, error.json.errors[key][0]);
       });
-
-      add({
-        variant: 'error',
-        text: 'There is a problem - please fix the issues shown and try again.',
-      });
     }
-  };
-
-  const onValidationError = () => {
-    add({
-      variant: 'error',
-      text: 'There is a problem - please fix the issues shown and try again.',
-    });
   };
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onFormSubmit, onValidationError)}>
+      <form onSubmit={methods.handleSubmit(onFormSubmit)}>
         <SectionField>
           <RHFInputMultilocWithLocaleSwitcher
             label={formatMessage(messages.navbarItemTitle)}
