@@ -96,6 +96,15 @@ PATH
       ros-apartment (>= 2.9.0)
 
 PATH
+  remote: engines/commercial/bulk_import_ideas
+  specs:
+    bulk_import_ideas (0.1.0)
+      active_model_serializers (~> 0.10.7)
+      pundit (~> 2.0)
+      rails (~> 6.1)
+      ros-apartment (>= 2.9.0)
+
+PATH
   remote: engines/commercial/content_builder
   specs:
     content_builder (0.1.0)
@@ -609,6 +618,7 @@ GEM
       railties (>= 5.0.0)
     faker (2.20.0)
       i18n (>= 1.8.11, < 2)
+    fakeweb (1.3.0)
     faraday (1.10.0)
       faraday-em_http (~> 1.0)
       faraday-em_synchrony (~> 1.0)
@@ -1141,6 +1151,7 @@ DEPENDENCIES
   axlsx (= 3.0.0.pre)
   bcrypt (~> 3.1.7)
   bootsnap (~> 1)
+  bulk_import_ideas!
   bullet
   bundler-audit
   bunny (>= 2.7.2)
@@ -1158,6 +1169,7 @@ DEPENDENCIES
   email_campaigns!
   factory_bot_rails
   faker
+  fakeweb (~> 1.3.0)
   fast_jsonapi!
   flag_inappropriate_content!
   fog-aws (~> 3.12)
