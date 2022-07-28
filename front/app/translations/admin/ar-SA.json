@@ -595,7 +595,7 @@
   "app.containers.AdminPage.DashboardPage.components.Field.Options.seeLess": "شاهد أقل",
   "app.containers.AdminPage.DashboardPage.components.Field.Options.seeMore": "عرض {numberOfHiddenItems} أخرى...",
   "app.containers.AdminPage.DashboardPage.components.Field.baseMonth": "الشهر الأساسي (اختياري)",
-  "app.containers.AdminPage.DashboardPage.components.Field.birthyearCustomTitle": "Age groups (Year of birth)",
+  "app.containers.AdminPage.DashboardPage.components.Field.birthyearCustomTitle": "الفئات العمرية (سنة الميلاد)",
   "app.containers.AdminPage.DashboardPage.components.Field.comingSoon": "تتوفر قريبًا",
   "app.containers.AdminPage.DashboardPage.components.Field.complete": "مكتمل",
   "app.containers.AdminPage.DashboardPage.components.Field.default": "افتراضي",
