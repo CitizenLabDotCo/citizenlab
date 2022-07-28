@@ -1,4 +1,4 @@
-import { getLowerBoundLimits, getUpperBoundLimits, addBin } from './utils';
+import { getLowerBoundLimits, getUpperBoundLimits, addBin } from './bins';
 
 describe('getLowerBoundLimits', () => {
   it('works when all bins are empty', () => {

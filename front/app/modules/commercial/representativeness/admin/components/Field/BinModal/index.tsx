@@ -23,7 +23,7 @@ import {
   updateUpperBound,
   removeBin,
   addBin,
-} from './utils';
+} from '../../../utils/bins';
 import { isEqual } from 'lodash-es';
 
 // typings

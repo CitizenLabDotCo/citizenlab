@@ -6,7 +6,7 @@ import {
   TReferenceDistributionData,
   IReferenceDistribution,
   IBinnedDistribution,
-  TCategoricalDistribution
+  TCategoricalDistribution,
 } from '../services/referenceDistribution';
 import {
   userCustomFieldStream,
@@ -15,7 +15,7 @@ import {
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
-import { forEachBin } from '../utils'
+import { forEachBin } from '../utils/bins';
 
 /*
  * This is an intermediate data structure that is able to represent
@@ -66,12 +66,12 @@ function useReferenceDistribution(userCustomFieldId: string) {
     const subscription = observable.subscribe(
       (referenceDistribution: IReferenceDistribution | NilOrError) => {
         if (!isNilOrError(referenceDistribution)) {
-          const distributionData = referenceDistribution.data
+          const distributionData = referenceDistribution.data;
 
           setReferenceDistribution(distributionData);
           setRemoteFormValues(getRemoteFormValues(distributionData));
         } else {
-          setReferenceDistribution(referenceDistribution)
+          setReferenceDistribution(referenceDistribution);
           setRemoteFormValues(undefined);
         }
       }
@@ -80,35 +80,44 @@ function useReferenceDistribution(userCustomFieldId: string) {
     return () => subscription.unsubscribe();
   }, [userCustomFieldId, referenceDataUploaded]);
 
-  return { 
+  return {
     referenceDistribution,
     referenceDataUploaded,
-    remoteFormValues
+    remoteFormValues,
   };
 }
 
-export const getRemoteFormValues = ({ 
+export const getRemoteFormValues = ({
   type,
-  attributes: { distribution }
+  attributes: { distribution },
 }: TReferenceDistributionData) => {
   if (type === 'binned_distribution') {
-    return convertBinsToRemoteFormValues(distribution as IBinnedDistribution)
+    return convertBinsToRemoteFormValues(distribution as IBinnedDistribution);
   }
-  return convertCategoriesToRemoteFormValues(distribution as TCategoricalDistribution)
-}
+  return convertCategoriesToRemoteFormValues(
+    distribution as TCategoricalDistribution
+  );
+};
 
-const convertBinsToRemoteFormValues = ({ bins, counts }: IBinnedDistribution): RemoteFormValues => {
-  return forEachBin(bins).reduce((acc, { binId }, i) => ({
-    ...acc,
-    [binId]: counts[i]
-  }), {});
-}
+const convertBinsToRemoteFormValues = ({
+  bins,
+  counts,
+}: IBinnedDistribution): RemoteFormValues => {
+  return forEachBin(bins).reduce(
+    (acc, { binId }, i) => ({
+      ...acc,
+      [binId]: counts[i],
+    }),
+    {}
+  );
+};
 
 const convertCategoriesToRemoteFormValues = (
   distribution: TCategoricalDistribution
-): RemoteFormValues => Object.keys(distribution).reduce(
-  (acc, key) => ({ ...acc, [key]: distribution[key].count }), 
-  {}
-);
+): RemoteFormValues =>
+  Object.keys(distribution).reduce(
+    (acc, key) => ({ ...acc, [key]: distribution[key].count }),
+    {}
+  );
 
 export default useReferenceDistribution;

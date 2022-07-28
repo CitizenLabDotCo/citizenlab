@@ -6,7 +6,7 @@ import {
   convertBinsToFormValues,
   parseFormValues,
   FormValues,
-} from './utils';
+} from './form';
 
 describe('isFormValid', () => {
   it('returns true if form is empty', () => {

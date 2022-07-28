@@ -23,7 +23,6 @@ jest.mock(
 let mockField;
 
 const selectField = { attributes: { key: null } };
-const birthyearField = { attributes: { key: 'birthyear' } };
 
 jest.mock(
   'modules/commercial/user_custom_fields/hooks/useUserCustomField',
@@ -232,16 +231,6 @@ describe('<Options />', () => {
 
       expect(onUpdatePopulation).toHaveBeenCalledTimes(1);
       expect(onUpdatePopulation).toHaveBeenCalledWith('_0', 10000);
-    });
-  });
-
-  describe('birthyear field', () => {
-    beforeEach(() => {
-      mockField = birthyearField;
-    });
-
-    it('TODO', () => {
-      expect(2 + 2).toBe(4);
     });
   });
 });

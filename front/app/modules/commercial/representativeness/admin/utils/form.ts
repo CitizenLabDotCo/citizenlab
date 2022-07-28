@@ -1,5 +1,5 @@
 // utils
-import { forEachBin } from '../../utils';
+import { forEachBin } from './bins';
 import { isEqual } from 'lodash-es';
 
 // typings
@@ -8,8 +8,8 @@ import {
   IBinnedDistribution,
   TUploadDistribution,
   Bins,
-} from '../../services/referenceDistribution';
-import { RemoteFormValues } from '../../hooks/useReferenceDistribution';
+} from '../services/referenceDistribution';
+import { RemoteFormValues } from '../hooks/useReferenceDistribution';
 
 // EXPORTS
 export type FormValues = Record<string, number | null>;

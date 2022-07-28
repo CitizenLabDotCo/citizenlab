@@ -21,11 +21,11 @@ import { isNilOrError } from 'utils/helperUtils';
 import {
   getPercentages,
   formatUserCustomFieldOptions,
-  formatBins,
-} from './utils';
+  formatBinOptions,
+} from '../../../utils/options';
 
 // typings
-import { FormValues } from '../utils';
+import { FormValues } from '../../../utils/form';
 import { Bins } from '../../../services/referenceDistribution';
 
 interface Props {
@@ -58,7 +58,7 @@ const Options = injectIntl(
 
     const options =
       userCustomField.attributes.key === 'birthyear' && bins
-        ? formatBins(bins, formatMessage(binMessages.andOver))
+        ? formatBinOptions(bins, formatMessage(binMessages.andOver))
         : formatUserCustomFieldOptions(userCustomFieldOptions, localize);
 
     const visibleOptions = options.slice(

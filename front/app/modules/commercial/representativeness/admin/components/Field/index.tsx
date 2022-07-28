@@ -30,7 +30,7 @@ import {
   getStatus,
   parseFormValues,
   convertBinsToFormValues,
-} from './utils';
+} from '../../utils/form';
 import { isSupported } from '../../containers/Dashboard/utils';
 
 // typings

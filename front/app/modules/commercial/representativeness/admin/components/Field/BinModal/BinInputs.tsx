@@ -14,7 +14,11 @@ import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 // utils
-import { getLowerBoundLimits, getUpperBoundLimits, parseLabel } from './utils';
+import {
+  getLowerBoundLimits,
+  getUpperBoundLimits,
+  parseLabel,
+} from '../../../utils/bins';
 import { clamp } from 'lodash-es';
 import { indices } from 'utils/helperUtils';
 
