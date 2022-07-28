@@ -1230,7 +1230,7 @@
   "app.containers.AdminPage.SettingsPage.urlError": "عنوان الـ URL غير صالح.",
   "app.containers.AdminPage.SettingsPage.urlTitle": "الموقع الإلكتروني",
   "app.containers.AdminPage.SettingsPage.urlTitleTooltip": "يمكنك إضافة رابط إلى موقعك الإلكتروني. سيتم استخدام هذا الرابط في الجزء السفلي من الصفحة الرئيسية.",
-  "app.containers.AdminPage.SideBar.academy": "Academy",
+  "app.containers.AdminPage.SideBar.academy": "الأكاديمية",
   "app.containers.AdminPage.SideBar.dashboard": "اللوحة الرئيسية",
   "app.containers.AdminPage.SideBar.emails": "الرسائل الإلكترونية",
   "app.containers.AdminPage.SideBar.groups": "المجموعات",
