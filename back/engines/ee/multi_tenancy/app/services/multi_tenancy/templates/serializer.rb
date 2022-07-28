@@ -113,6 +113,7 @@ module MultiTenancy
             'banner_cta_signed_out_text_multiloc' => hp.banner_cta_signed_out_text_multiloc,
             'banner_cta_signed_out_type' => hp.banner_cta_signed_out_type,
             'banner_cta_signed_out_url' => hp.banner_cta_signed_out_url,
+            'remote_header_bg_url' => hp.header_bg_url,
             'created_at' => hp.created_at.to_s,
             'updated_at' => hp.updated_at.to_s,
           }
