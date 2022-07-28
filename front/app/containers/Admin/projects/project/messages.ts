@@ -98,7 +98,7 @@ export default defineMessages({
   },
   createSurveyText: {
     id: 'app.containers.AdminPage.ProjectEdit.createSurveyText',
-    defaultMessage: 'Create an advanced survey',
+    defaultMessage: 'Embed an external survey',
   },
   createSurveyDescription: {
     id: 'app.containers.AdminPage.ProjectEdit.createSurveyDescription',
@@ -113,6 +113,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingDescriptionText',
     defaultMessage:
       'Assign a budget to projects and ask participants to select their preferred projects that fit within a total budget.',
+  },
+  createNativeSurvey: {
+    id: 'app.containers.AdminPage.ProjectEdit.createNativeSurvey',
+    defaultMessage: 'Create an in-platform survey',
+  },
+  createNativeSurveyDescription: {
+    id: 'app.containers.AdminPage.ProjectEdit.createNativeSurveyDescription',
+    defaultMessage: 'Set up a survey without leaving our platform.',
   },
   createPoll: {
     id: 'app.containers.AdminPage.ProjectEdit.createPoll',
