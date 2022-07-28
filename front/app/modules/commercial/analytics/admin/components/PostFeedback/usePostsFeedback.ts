@@ -62,8 +62,8 @@ export default function usePostsWithFeedback(projectId) {
 
           const progressBars = [
             {
-              name: 'Status Changed',
-              label: `Status Changed: ${sum_feedback_status_change} (${roundPercentage(
+              name: 'Status changed',
+              label: `Status changed: ${sum_feedback_status_change} (${roundPercentage(
                 sum_feedback_status_change,
                 total
               )}%)`,
@@ -71,8 +71,8 @@ export default function usePostsWithFeedback(projectId) {
               total,
             },
             {
-              name: 'Official Update',
-              label: `Official Update: ${sum_feedback_official} (${roundPercentage(
+              name: 'Official update',
+              label: `Official update: ${sum_feedback_official} (${roundPercentage(
                 sum_feedback_official,
                 total
               )}%)`,
