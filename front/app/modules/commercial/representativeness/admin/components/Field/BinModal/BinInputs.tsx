@@ -24,8 +24,8 @@ import { Bins } from '../../../services/referenceDistribution';
 const RemoveBinButton = styled.button`
   cursor: pointer;
 
-  svg > g > path {
-    &:hover {
+  &:hover {
+    svg > g > path {
       fill: ${colors.red800};
     }
   }
