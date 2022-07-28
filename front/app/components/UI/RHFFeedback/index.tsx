@@ -1,14 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
-import Error, { findErrorMessage, TFieldName } from 'components/UI/Error';
+import { findErrorMessage, TFieldName } from 'components/UI/Error';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import { Text, Title } from '@citizenlab/cl2-component-library';
+import { Text, Title, Box, colors } from '@citizenlab/cl2-component-library';
+import { scrollToElement } from 'utils/scroll';
 
 const RHFFeedback = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const {
-    formState: { errors, isSubmitSuccessful, isSubmitted },
+    formState: { errors, isSubmitSuccessful, isSubmitted, submitCount },
   } = useFormContext();
+
+  useEffect(() => {
+    if (submitCount > 0) {
+      scrollToElement({ id: 'rhfFeedback' });
+    }
+  }, [submitCount]);
 
   const getAllErrorMessages = () => {
     const errorMessages: Array<{ field: string; message?: string }> = [];
@@ -46,26 +53,57 @@ const RHFFeedback = ({ intl: { formatMessage } }: InjectedIntlProps) => {
 
     return errorMessages;
   };
-  console.log(errors);
-  console.log(getAllErrorMessages());
 
-  // Add a general success message
-  // Add a general error message
   return (
-    <>
+    <Box id="rhfFeedback">
       {isSubmitted ? (
         isSubmitSuccessful ? (
-          <>success</>
+          <Box
+            bgColor={colors.clGreenSuccessBackground}
+            borderRadius="3px"
+            px="12px"
+            py="4px"
+            mb="12px"
+          >
+            <Title color="clGreenSuccess" variant="h4">
+              Form is submitted successfully!
+            </Title>
+          </Box>
         ) : (
-          <Error>
-            <Title>There was a problem!</Title>
+          <Box
+            bgColor={colors.clRedErrorBackground}
+            borderRadius="3px"
+            px="12px"
+            py="4px"
+            mb="12px"
+          >
+            <Title color="clRed" variant="h4">
+              There is a problem!
+            </Title>
             {getAllErrorMessages().map((error) => {
-              return <Text key={error.field}>{error.message}</Text>;
+              return (
+                <Text
+                  key={error.field}
+                  onClick={() => scrollToElement({ id: error.field })}
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      scrollToElement({ id: error.field });
+                    }
+                  }}
+                  textDecoration="underline"
+                  color="clRed"
+                  style={{ cursor: 'pointer' }}
+                  role="link"
+                  tabIndex={0}
+                >
+                  {error.message}
+                </Text>
+              );
             })}
-          </Error>
+          </Box>
         )
       ) : null}
-    </>
+    </Box>
   );
 };
 
