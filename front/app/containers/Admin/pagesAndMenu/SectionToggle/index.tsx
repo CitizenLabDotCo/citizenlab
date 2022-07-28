@@ -38,10 +38,17 @@ const SectionToggle = ({
 }: Props) => {
   return (
     <Row isLastItem={isLastItem}>
-      <Box display="flex" alignItems="center" justifyContent="center">
+      <Box
+        pt="5px"
+        pb="5px"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
         <Box
           visibility={hideToggle ? 'hidden' : 'visible'}
           mr="20px"
+          mt="7px"
           data-cy={`e2e-admin-section-toggle-${name}`}
         >
           <Toggle
@@ -50,12 +57,12 @@ const SectionToggle = ({
             disabled={disabled}
           />
         </Box>
-        <Box pb="13px">
-          <Title variant="h3" mr="10px">
+        <Box>
+          <Title mr="10px">
             <FormattedMessage {...titleMessageDescriptor} />
           </Title>
         </Box>
-        <Box pb="15px">
+        <Box pb="13px">
           <IconTooltip
             content={<FormattedMessage {...tooltipMessageDescriptor} />}
           />

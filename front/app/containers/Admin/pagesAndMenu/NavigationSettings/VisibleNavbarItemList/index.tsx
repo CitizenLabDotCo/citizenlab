@@ -7,7 +7,7 @@ import { List, Row } from 'components/admin/ResourceList';
 import { isNilOrError } from 'utils/helperUtils';
 import usePageSlugById from 'hooks/usePageSlugById';
 import clHistory from 'utils/cl-router/history';
-import { PAGES_MENU_PATH } from 'containers/Admin/pages-menu/routes';
+import { PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 
 export default function VisibleNavbarItemList() {
   const navbarItems = useNavbarItems({ onlyDefault: true });

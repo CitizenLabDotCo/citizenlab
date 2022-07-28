@@ -15,7 +15,7 @@ import {
   LockedRow,
 } from 'components/admin/ResourceList';
 import { SubSectionTitle } from 'components/admin/Section';
-import NavbarItemRow from 'containers/Admin/pages-menu/NavbarItemRow';
+import NavbarItemRow from 'containers/Admin/pagesAndMenu/NavbarItemRow';
 
 // hooks
 import useNavbarItems from 'hooks/useNavbarItems';
@@ -29,7 +29,7 @@ import messages from './messages';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
-import { PAGES_MENU_PATH } from 'containers/Admin/pages-menu/routes';
+import { PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 
 const VisibleNavbarItemList = ({
   intl: { formatMessage },
