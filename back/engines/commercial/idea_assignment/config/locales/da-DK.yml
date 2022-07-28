@@ -9,5 +9,5 @@ da:
       cta_reply_to: 'Giv feedback til %{authorName}'
       event_description_idea: 'Du er blevet tildelt en idé. Giv feedback ved at skrive en officiel opdatering eller ved at ændre idéens status.'
       main_header: '%{firstName}, du har en ny tildeling'
-      subject: 'Du har en tildeling på platformen for %{organizationName}'
+      subject: 'Du har en ny tildeling på platformen for %{organizationName}'
       preheader_idea: 'Du er blevet tildelt %{authorName}s idé'
