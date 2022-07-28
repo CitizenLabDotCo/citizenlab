@@ -60,7 +60,7 @@ module IdBosaFas
     # Returns the JSON Web Key Set (JWKS) that can be used to validate JSON tokens
     # issued by BOSA FAS.
     def jwks
-      @public_jwks ||= open(jwks_uri).read
+      @jwks ||= URI.parse(jwks_uri).read
     end
 
     def updateable_user_attrs
