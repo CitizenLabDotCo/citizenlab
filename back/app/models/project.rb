@@ -141,6 +141,10 @@ class Project < ApplicationRecord
     process_type == 'timeline'
   end
 
+  def native_survey?
+    participation_method == 'native_survey'
+  end
+
   def project
     self
   end
