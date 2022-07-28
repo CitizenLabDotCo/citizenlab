@@ -35,7 +35,7 @@ module IdBosaFas
       options[:acr_values] = 'urn:be:fedict:iam:fas:Level450'
       options[:send_scope_to_token_endpoint] = false
       options[:client_signing_alg] = :RS256
-      options[:client_jwk_signing_key] = File.read(::IdBosaFas::Engine.root.join('config', 'bosa_fas_jwks.json'))
+      options[:client_jwk_signing_key] = jwks
       options[:client_options] = {
         identifier: config[:identifier],
         secret: config[:secret],
@@ -55,6 +55,12 @@ module IdBosaFas
 
     def jwks_uri
       ENVIRONMENTS.fetch(config[:environment]).fetch(:jwks_uri)
+    end
+
+    # Returns the JSON Web Key Set (JWKS) that can be used to validate JSON tokens
+    # issued by BOSA FAS.
+    def jwks
+      @public_jwks ||= open(jwks_uri).read
     end
 
     def updateable_user_attrs
