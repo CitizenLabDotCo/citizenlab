@@ -151,7 +151,7 @@
   "app.components.admin.ReportExportMenu.FileName.projectFilter": "project",
   "app.components.admin.ReportExportMenu.FileName.topicFilter": "tag",
   "app.components.admin.ReportExportMenu.FileName.untilFilter": "until",
-  "app.components.admin.ReportExportMenu.downloadAsImage": "Download as image",
+  "app.components.admin.ReportExportMenu.downloadAsImage": "Als Bild eroflueden",
   "app.components.admin.ReportExportMenu.downloadXlsx": "Download Excel",
   "app.components.admin.SlugInput.regexError": "De Slug däerf nëmmen normal Klengbuschtawen (a-z), Zifferen, (0-9) a Bindestrécher (-) enthalen. Déi éischt a lescht Buschtawen däerfe keng Bindestrécher sinn. E puer Bindestrécher (--) hannereneen si verbueden.",
   "app.components.admin.SlugInput.resultingURL": "Resultéierend URL",
