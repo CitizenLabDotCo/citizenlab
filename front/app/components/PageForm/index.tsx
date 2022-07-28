@@ -98,8 +98,8 @@ const PageForm = ({
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onFormSubmit)}>
-        <RHFFeedback />
         <SectionField>
+          <RHFFeedback />
           <RHFInputMultilocWithLocaleSwitcher
             label={formatMessage(messages.pageTitle)}
             type="text"
