@@ -1230,7 +1230,7 @@
   "app.containers.AdminPage.SettingsPage.urlError": "URL'en er ikke gyldig",
   "app.containers.AdminPage.SettingsPage.urlTitle": "Websted",
   "app.containers.AdminPage.SettingsPage.urlTitleTooltip": "Du kan tilføje et link til din eget websted. Dette link vil blive brugt nederst på hjemmesiden.",
-  "app.containers.AdminPage.SideBar.academy": "Academy",
+  "app.containers.AdminPage.SideBar.academy": "Akademi",
   "app.containers.AdminPage.SideBar.dashboard": "Dashboard",
   "app.containers.AdminPage.SideBar.emails": "E-mails",
   "app.containers.AdminPage.SideBar.groups": "Grupper",
