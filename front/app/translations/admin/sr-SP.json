@@ -595,7 +595,7 @@
   "app.containers.AdminPage.DashboardPage.components.Field.Options.seeLess": "Прикажи мање",
   "app.containers.AdminPage.DashboardPage.components.Field.Options.seeMore": "Погледајте још {numberOfHiddenItems}...",
   "app.containers.AdminPage.DashboardPage.components.Field.baseMonth": "Osnovni mesec (opcionalno)",
-  "app.containers.AdminPage.DashboardPage.components.Field.birthyearCustomTitle": "Age groups (Year of birth)",
+  "app.containers.AdminPage.DashboardPage.components.Field.birthyearCustomTitle": "Старосне групе (година рођења)",
   "app.containers.AdminPage.DashboardPage.components.Field.comingSoon": "Долази ускоро",
   "app.containers.AdminPage.DashboardPage.components.Field.complete": "Заврши",
   "app.containers.AdminPage.DashboardPage.components.Field.default": "Подразумевано",
