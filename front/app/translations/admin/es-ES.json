@@ -595,7 +595,7 @@
   "app.containers.AdminPage.DashboardPage.components.Field.Options.seeLess": "Ver menos",
   "app.containers.AdminPage.DashboardPage.components.Field.Options.seeMore": "Ver {numberOfHiddenItems} más...",
   "app.containers.AdminPage.DashboardPage.components.Field.baseMonth": "Mes base (opcional)",
-  "app.containers.AdminPage.DashboardPage.components.Field.birthyearCustomTitle": "Age groups (Year of birth)",
+  "app.containers.AdminPage.DashboardPage.components.Field.birthyearCustomTitle": "Grupos de edad (Año de nacimiento)",
   "app.containers.AdminPage.DashboardPage.components.Field.comingSoon": "Próximamente",
   "app.containers.AdminPage.DashboardPage.components.Field.complete": "Completar",
   "app.containers.AdminPage.DashboardPage.components.Field.default": "Por defecto",
