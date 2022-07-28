@@ -48,25 +48,42 @@ describe('Admin: update HomePage content', () => {
     cy.visit('/admin/pages-menu/');
     cy.get('[data-testid="edit-button"]').first().click();
 
-    // toggle top and bottom info sections
+    // toggle top info section and wait for requests to complete
     cy.get(
       '[data-cy="e2e-admin-section-toggle-top_info_section_enabled"]'
     ).click();
     cy.wait('@saveHomePage');
     cy.wait('@getHomePage');
-    cy.wait(1000);
+
+    // wait for the next toggle to become disabled, then enabled again once it finishes toggling
+    cy.get('[data-cy="e2e-admin-section-toggle-bottom_info_section_enabled"]')
+      .find('i')
+      .should('have.class', 'disabled');
+    cy.get('[data-cy="e2e-admin-section-toggle-bottom_info_section_enabled"]')
+      .find('i')
+      .should('have.class', 'enabled');
+
+    // click bottom info section toggle and wait for requests to complete
     cy.get(
       '[data-cy="e2e-admin-section-toggle-bottom_info_section_enabled"]'
     ).click();
     cy.wait('@saveHomePage');
     cy.wait('@getHomePage');
-    cy.wait(1000);
+
+    // wait for the next toggle to become disabled, then enabled again once it finishes toggling
+    cy.get('[data-cy="e2e-admin-section-toggle-events_widget_enabled"]')
+      .find('i')
+      .should('have.class', 'disabled');
+    cy.get('[data-cy="e2e-admin-section-toggle-events_widget_enabled"]')
+      .find('i')
+      .should('have.class', 'enabled');
+
+    // toggle events section and wait for requests to complete
     cy.get(
       '[data-cy="e2e-admin-section-toggle-events_widget_enabled"]'
     ).click();
     cy.wait('@saveHomePage');
     cy.wait('@getHomePage');
-    cy.wait(1000);
 
     // go back to homepage and see that the content is there correctly
     cy.visit('/');
