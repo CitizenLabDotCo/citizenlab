@@ -306,6 +306,10 @@ namespace :cl2_back do
           allowed: true,
           from_number: '+12345678912',
           monthly_sms_segments_limit: 100_000
+        },
+        native_surveys: {
+          enabled: true,
+          allowed: true
         }
       }
     )
