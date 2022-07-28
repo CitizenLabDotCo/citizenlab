@@ -172,7 +172,7 @@ describe BulkImportIdeas::ImportIdeasService do
         }
       ]
 
-      expect { service.import_ideas(idea_rows)}
+      expect { service.import_ideas(idea_rows) }
         .to have_enqueued_job(DumpTenantJob).exactly(1).times
 
       expect(Idea.count).to eq 1
