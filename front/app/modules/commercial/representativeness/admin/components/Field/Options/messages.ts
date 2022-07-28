@@ -13,4 +13,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.components.Field.Options.seeLess',
     defaultMessage: 'See less',
   },
+  editAgeGroups: {
+    id: 'app.containers.AdminPage.DashboardPage.components.Field.Options.editAgeGroups',
+    defaultMessage: 'Edit age groups',
+  },
 });
