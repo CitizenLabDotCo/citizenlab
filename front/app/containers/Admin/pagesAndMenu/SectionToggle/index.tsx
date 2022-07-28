@@ -21,6 +21,7 @@ export interface Props {
   editLinkPath?: string;
   isLastItem: boolean;
   hideToggle?: boolean;
+  name?: string;
 }
 
 const SectionToggle = ({
@@ -33,6 +34,7 @@ const SectionToggle = ({
   disabled,
   isLastItem,
   hideToggle = false,
+  name,
 }: Props) => {
   return (
     <Row isLastItem={isLastItem}>
@@ -43,7 +45,12 @@ const SectionToggle = ({
         alignItems="center"
         justifyContent="center"
       >
-        <Box visibility={hideToggle ? 'hidden' : 'visible'} mr="20px" mt="7px">
+        <Box
+          visibility={hideToggle ? 'hidden' : 'visible'}
+          mr="20px"
+          mt="7px"
+          data-cy={`e2e-admin-section-toggle-${name}`}
+        >
           <Toggle
             checked={checked}
             onChange={onChangeSectionToggle}

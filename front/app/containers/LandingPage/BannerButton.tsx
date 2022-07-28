@@ -17,6 +17,7 @@ const BannerButton = ({ buttonStyle, ...props }: Props) => (
     buttonStyle={buttonStyle || 'primary-inverse'}
     fontWeight="500"
     padding="13px 22px"
+    data-cy="e2e-cta-banner-button"
     {...props}
   />
 );

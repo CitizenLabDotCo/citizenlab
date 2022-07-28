@@ -83,7 +83,7 @@ const LayoutSetting = ({ homepageSettings, handleOnChange }: Props) => {
           />
         </LayoutOption>
         <LayoutOption>
-          <LayoutOptionTop>
+          <LayoutOptionTop data-cy="e2e-two-column-layout-option">
             <Radio
               onChange={handleLayoutOnChange}
               currentValue={homepageBannerLayout}

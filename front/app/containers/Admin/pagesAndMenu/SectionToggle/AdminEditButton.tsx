@@ -13,7 +13,12 @@ interface Props {
 
 const AdminEditButton = ({ onClick }: Props) => {
   return (
-    <Button buttonStyle="secondary" icon="edit" onClick={onClick}>
+    <Button
+      buttonStyle="secondary"
+      icon="edit"
+      onClick={onClick}
+      data-cy={`e2e-admin-edit-button`}
+    >
       <FormattedMessage {...messages.edit} />
     </Button>
   );

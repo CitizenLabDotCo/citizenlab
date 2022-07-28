@@ -16,6 +16,7 @@ interface Props extends ButtonProps {
 
 interface ButtonContainerProps extends ComponentLibraryButtonContainerProps {
   'data-testid'?: string;
+  'data-cy'?: string;
 }
 
 const ButtonWrapper = ({

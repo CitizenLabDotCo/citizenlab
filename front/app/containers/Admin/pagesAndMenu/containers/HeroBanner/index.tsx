@@ -422,7 +422,10 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
               </SectionField>
             </>
           )}
-        <SectionField key={'banner_text'}>
+        <SectionField
+          key={'banner_text'}
+          data-cy="e2e-signed-out-header-section"
+        >
           <SubSectionTitle>
             <FormattedMessage {...messages.bannerTextTitle} />
           </SubSectionTitle>
@@ -439,7 +442,7 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
             errorMultiloc={headerAndSubheaderErrors.signedOutHeaderErrors}
           />
         </SectionField>
-        <SectionField>
+        <SectionField data-cy="e2e-signed-out-subheader-section">
           <InputMultilocWithLocaleSwitcher
             type="text"
             valueMultiloc={banner_signed_out_subheader_multiloc}
@@ -457,7 +460,7 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
             onChange={handleSignedInHeaderOnChange}
           />
         </SectionField>
-        <SectionField key="avatars">
+        <SectionField key="avatars" data-cy="e2e-banner-avatar-toggle-section">
           <SubSectionTitle>
             <FormattedMessage {...messages.avatarsTitle} />
           </SubSectionTitle>
