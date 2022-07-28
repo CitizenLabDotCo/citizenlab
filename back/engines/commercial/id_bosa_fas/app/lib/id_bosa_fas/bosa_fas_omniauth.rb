@@ -35,6 +35,7 @@ module IdBosaFas
       options[:acr_values] = 'urn:be:fedict:iam:fas:Level450'
       options[:send_scope_to_token_endpoint] = false
       options[:client_signing_alg] = :RS256
+      options[:client_jwk_signing_key] = File.read(::IdBosaFas::Engine.root.join('config', 'bosa_fas_jwks.json'))
       options[:client_options] = {
         identifier: config[:identifier],
         secret: config[:secret],
