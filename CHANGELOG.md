@@ -1,9 +1,10 @@
 # Changelog
 
-## Next release
+## 2022-07-28
 
 ### Added
 
+- [CL-1118] Native survey feature
 - [CL-1128] Feature to bulk import ideas from an XLSX sheet
 
 ## 2022-07-22
