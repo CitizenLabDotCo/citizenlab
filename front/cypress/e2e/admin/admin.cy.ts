@@ -17,7 +17,7 @@ describe('/admin route', () => {
 const ADMIN_PAGES = [
   { url: 'moderation', container: '#e2e-moderation-container' },
   { url: 'projects', container: '#e2e-projects-admin-container' },
-  { url: 'insights', container: '#e2e-insights-container' },
+  { url: 'insights/reports', container: '#e2e-insights-container' },
   { url: 'ideas', container: '#e2e-input-manager-container' },
   { url: 'initiatives', container: '#e2e-initiatives-admin-container' },
   { url: 'users', container: '#e2e-users-container' },
