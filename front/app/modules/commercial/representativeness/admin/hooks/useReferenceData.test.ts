@@ -1,22 +1,20 @@
 import {
-  toReferenceData,
+  toReferenceDataRegField,
   getIncludedUsers,
   RepresentativenessRowMultiloc,
 } from './useReferenceData';
-import { TStreamResponse } from 'modules/commercial/user_custom_fields/services/stats';
 
 jest.mock('services/appConfiguration');
 jest.mock('services/auth');
 
-describe('toReferenceData', () => {
+describe('toReferenceDataRegField', () => {
   it('works if users and reference_population have same keys', () => {
-    const usersByField: TStreamResponse = {
+    const usersByField: any = {
       series: {
         users: {
           id123: 100,
           id456: 300,
         },
-        expected_users: {},
         reference_population: {
           id123: 2000,
           id456: 3000,
@@ -51,17 +49,17 @@ describe('toReferenceData', () => {
       },
     ];
 
-    expect(toReferenceData(usersByField)).toEqual(expectedOutput);
+    const { options, series: { users, reference_population } } = usersByField;
+    expect(toReferenceDataRegField(users, reference_population, options)).toEqual(expectedOutput);
   });
 
   it('works if users and reference_population have same keys, weird ordering', () => {
-    const usersByField: TStreamResponse = {
+    const usersByField: any = {
       series: {
         users: {
           id123: 100,
           id456: 300,
         },
-        expected_users: {},
         reference_population: {
           id123: 2000,
           id456: 3000,
@@ -96,18 +94,18 @@ describe('toReferenceData', () => {
       },
     ];
 
-    expect(toReferenceData(usersByField)).toEqual(expectedOutput);
+    const { options, series: { users, reference_population } } = usersByField;
+    expect(toReferenceDataRegField(users, reference_population, options)).toEqual(expectedOutput);
   });
 
   it('works if reference data has fewer keys van user data', () => {
-    const usersByField: TStreamResponse = {
+    const usersByField: any = {
       series: {
         users: {
           id123: 100,
           id456: 300,
           id789: 200,
         },
-        expected_users: {},
         reference_population: {
           id123: 2000,
           id456: 3000,
@@ -146,17 +144,17 @@ describe('toReferenceData', () => {
       },
     ];
 
-    expect(toReferenceData(usersByField)).toEqual(expectedOutput);
+    const { options, series: { users, reference_population } } = usersByField;
+    expect(toReferenceDataRegField(users, reference_population, options)).toEqual(expectedOutput);
   });
 
   it('actual numbers fall back to zero if all relevant user data entries are zero (i.e. missing)', () => {
-    const usersByField: TStreamResponse = {
+    const usersByField: any = {
       series: {
         users: {
           id789: 200,
           id000: 300,
         },
-        expected_users: {},
         reference_population: {
           id123: 2000,
           id456: 3000,
@@ -199,7 +197,8 @@ describe('toReferenceData', () => {
       },
     ];
 
-    expect(toReferenceData(usersByField)).toEqual(expectedOutput);
+    const { options, series: { users, reference_population } } = usersByField;
+    expect(toReferenceDataRegField(users, reference_population, options)).toEqual(expectedOutput);
   });
 });
 
@@ -225,7 +224,8 @@ describe('getIncludedUsers', () => {
       percentage: 50,
     };
 
-    expect(getIncludedUsers(usersByField)).toEqual(expectedOutput);
+    const { series: { users, reference_population } } = usersByField;
+    expect(getIncludedUsers(users, reference_population)).toEqual(expectedOutput);
   });
 
   it('works if not all keys in users are in reference_population', () => {
@@ -250,7 +250,8 @@ describe('getIncludedUsers', () => {
       percentage: 50,
     };
 
-    expect(getIncludedUsers(usersByField)).toEqual(expectedOutput);
+    const { series: { users, reference_population } } = usersByField;
+    expect(getIncludedUsers(users, reference_population)).toEqual(expectedOutput);
   });
 
   it('returns 0 if all relevant keys are 0', () => {
@@ -275,7 +276,8 @@ describe('getIncludedUsers', () => {
       percentage: 0,
     };
 
-    expect(getIncludedUsers(usersByField)).toEqual(expectedOutput);
+    const { series: { users, reference_population } } = usersByField;
+    expect(getIncludedUsers(users, reference_population)).toEqual(expectedOutput);
   });
 
   it('returns 0 if all relevant keys (including _blank) are 0', () => {
@@ -300,6 +302,7 @@ describe('getIncludedUsers', () => {
       percentage: 0,
     };
 
-    expect(getIncludedUsers(usersByField)).toEqual(expectedOutput);
+    const { series: { users, reference_population } } = usersByField;
+    expect(getIncludedUsers(users, reference_population)).toEqual(expectedOutput);
   });
 });

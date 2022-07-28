@@ -4,52 +4,40 @@ import streams, { IStreamParams } from 'utils/streams';
 
 const apiEndpoint = `${API_PATH}/stats`;
 
-export interface IUsersByRegistrationField {
-  series: {
-    users: {
-      [key: string]: number;
-    };
-    reference_population: {
-      [key: string]: number;
-    };
-    expected_users: {
-      [key: string]: number;
-    };
+interface ISeries {
+  users: {
+    [key: string]: number;
   };
-  options: {
-    [key: string]: {
-      title_multiloc: Multiloc;
-      ordering: number;
-    };
+  reference_population: null | {
+    [key: string]: number;
+  };
+  expected_users: null | {
+    [key: string]: number;
   };
 }
+
+export type TOptions = Record<
+  string,
+  { title_multiloc: Multiloc, ordering: number }
+>
 
 export interface IUsersByDomicile {
   series: {
     users: {
       [key: string]: number;
     };
-    // reference_population: {
-    //   [key: string]: number;
-    // }
-    // expected_users: {
-    //   [key: string]: number;
-    // };
+    // TODO replace by ISeries when implemented
   };
-  areas: {
-    [key: string]: {
-      title_multiloc: Multiloc;
-      ordering: number;
-    };
-  };
+  areas: TOptions;
 }
 
 export interface IUsersByBirthyear {
-  series: {
-    users: {
-      [key: string]: number;
-    };
-  };
+  series: ISeries;
+}
+
+export interface IUsersByRegistrationField {
+  series: ISeries;
+  options: TOptions;
 }
 
 export type TStreamResponse = 

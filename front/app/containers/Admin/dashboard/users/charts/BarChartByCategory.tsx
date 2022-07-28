@@ -28,7 +28,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // types
 import { IStreamParams, IStream } from 'utils/streams';
-
 import { IGraphFormat } from 'typings';
 
 interface DataProps {
@@ -44,8 +43,8 @@ interface InputProps {
   stream: (
     streamParams?: IStreamParams | null,
     customId?: string
-  ) => IStream<ISupportedDataType>;
-  convertToGraphFormat: (data: ISupportedDataType) => IGraphFormat | null;
+  ) => IStream<any>;
+  convertToGraphFormat: (data: any) => IGraphFormat | null;
   startAt: string | null | undefined;
   endAt: string | null;
   currentGroupFilter: string | undefined;

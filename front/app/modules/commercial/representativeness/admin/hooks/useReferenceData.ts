@@ -7,6 +7,9 @@ import {
   usersByBirthyearStream,
   // usersByDomicileStream,
   TStreamResponse,
+  TOptions,
+  IUsersByRegistrationField,
+  // IUsersByBirthyear
 } from 'modules/commercial/user_custom_fields/services/stats';
 
 // utils
@@ -112,13 +115,32 @@ function useReferenceData(
         return;
       }
 
-      if (!(usersByField.series as any).reference_population) {
+      const { users, reference_population } = usersByField.series;
+
+      if (!reference_population) {
         setReferenceDataUploaded(false);
         return;
       }
 
-      const referenceData = toReferenceData(usersByField);
-      const includedUsers = getIncludedUsers(usersByField);
+      if (`${code}1` === 'birthyear1') {
+        console.log(users)
+        console.log(reference_population)
+        return;
+      }
+
+      const referenceData = code === 'birthyear'
+        ? toReferenceDataBirthyear(
+            users,
+            reference_population
+          )
+        : toReferenceDataRegField(
+            users,
+            reference_population,
+            (usersByField as IUsersByRegistrationField).options
+          );
+
+      const includedUsers = getIncludedUsers(users, reference_population);
+
       setReferenceData(referenceData);
       setIncludedUsers(includedUsers);
       setReferenceDataUploaded(true);
@@ -147,21 +169,27 @@ function useReferenceData(
 
 export default useReferenceData;
 
-export const toReferenceData = (
-  usersByField: TStreamResponse
+const toReferenceDataBirthyear = (
+  users: Record<string, number>,
+  referencePopulation: Record<string, number>,
+) => {
+  if (1 + 2 === 4) {
+    console.log(users, referencePopulation)
+  }
+  return [] // TODO
+}
+
+export const toReferenceDataRegField = (
+  users: Record<string, number>,
+  referencePopulation: Record<string, number>,
+  options: TOptions
 ): RepresentativenessRowMultiloc[] => {
-  const { users, reference_population } = usersByField.series;
-
-  const optionIds = Object.keys(reference_population);
+  const optionIds = Object.keys(referencePopulation);
   const includedUsers = syncKeys(users, optionIds);
-
-  // const options =
-  //   'options' in usersByField ? usersByField.options : usersByField.areas;
-  const options = usersByField.options;
 
   const actualPercentages = roundPercentages(Object.values(includedUsers), 1);
   const referencePercentages = roundPercentages(
-    Object.values(reference_population),
+    Object.values(referencePopulation),
     1
   );
 
@@ -177,7 +205,7 @@ export const toReferenceData = (
     actualPercentage: actualPercentagesObj[optionId],
     referencePercentage: referencePercentagesObj[optionId],
     actualNumber: includedUsers[optionId],
-    referenceNumber: reference_population[optionId],
+    referenceNumber: referencePopulation[optionId],
   }));
 
   return data;
@@ -195,11 +223,11 @@ const syncKeys = (users: Record<string, number>, keys: string[]) => {
 };
 
 export const getIncludedUsers = (
-  usersByField: TStreamResponse
+  users: Record<string, number>,
+  referencePopulation: Record<string, number>,
 ): IncludedUsers => {
-  const { users, reference_population } = usersByField.series;
   const includedUsers = syncKeys(users, [
-    ...Object.keys(reference_population),
+    ...Object.keys(referencePopulation),
     '_blank',
   ]);
 
