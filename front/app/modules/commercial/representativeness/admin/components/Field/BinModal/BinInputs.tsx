@@ -151,7 +151,10 @@ const BinInputRow = injectIntl(
               formatMessage(messages.ageAndOver, { age: lowerBound })
             )}
             {isLastBin && bins.length > 3 && (
-              <RemoveBinButton onClick={onRemoveBin}>
+              <RemoveBinButton
+                data-testid="remove-bin-button"
+                onClick={onRemoveBin}
+              >
                 <Icon
                   name="minus-circle"
                   width="13px"

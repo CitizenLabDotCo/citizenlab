@@ -53,6 +53,26 @@ describe('<BinModal />', () => {
         expect(onSave).toHaveBeenCalledWith([18, 25, 37, 45, 55, 65, null]);
       });
     });
+
+    it('if upper bound is one highest than highest lower bound: works correctly', () => {
+      const { container } = render(
+        <BinModal open={true} onClose={jest.fn()} onSave={jest.fn()} />
+      );
+
+      fireEvent.click(screen.getByTestId('add-new-bin-button'));
+
+      const inputs = container.querySelectorAll('input');
+      fireEvent.input(inputs[12], { target: { value: 67 } });
+      fireEvent.blur(inputs[12]);
+
+      fireEvent.click(screen.getByTestId('remove-bin-button'));
+      fireEvent.click(screen.getByTestId('add-new-bin-button'));
+
+      const inputs2 = container.querySelectorAll('input');
+
+      expect(inputs2[11]).toHaveValue(66);
+      expect(inputs2[12]).toHaveValue(67);
+    });
   });
 
   describe('With initial bins', () => {

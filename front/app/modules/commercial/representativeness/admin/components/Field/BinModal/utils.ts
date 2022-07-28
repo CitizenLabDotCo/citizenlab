@@ -1,5 +1,5 @@
 import { Bins } from '../../../services/referenceDistribution';
-import { isEqual } from 'lodash-es';
+import { isEqual, isNumber } from 'lodash-es';
 
 export const getExampleBins = (): Bins => [18, 25, 35, 45, 55, 65, null];
 export const isExampleBins = (bins: Bins) => isEqual(bins, getExampleBins());
@@ -119,5 +119,18 @@ export const parseLabel = (
 };
 
 export const addBin = (bins: Bins) => {
+  const upperBound = bins[bins.length - 1];
+  const highestLowerBound = bins[bins.length - 2];
+
+  if (
+    isNumber(upperBound) &&
+    isNumber(highestLowerBound) &&
+    upperBound - highestLowerBound === 1
+  ) {
+    const clonedBins = [...bins];
+    clonedBins[bins.length - 1] = upperBound + 1;
+    return [...clonedBins, null];
+  }
+
   return [...bins, null];
 };
