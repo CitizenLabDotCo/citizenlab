@@ -31,7 +31,7 @@ module IdBosaFas
       options[:response_type] = :code
       options[:state] = true
       options[:nonce] = true
-      options[:issuer] = "https://#{host}"
+      options[:issuer] = "https://#{host}/fas/oauth2"
       options[:acr_values] = 'urn:be:fedict:iam:fas:Level450'
       options[:send_scope_to_token_endpoint] = false
       options[:client_signing_alg] = :RS256
