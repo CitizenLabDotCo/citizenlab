@@ -1,16 +1,48 @@
 # Changelog
 
-## Next
+## 2022-07-28
 
 ### Added
 
 - [CL-1118] Native survey feature
 
-## Next release
+## 2022-07-22
+
+### Fixed
+
+- [CL-1216] Fix slow insights export
 
 ### Changed
 
-- [CL-1093] Pin Node.js version in package.json
+- [CL-1205] Change see less copy to read less in read more on project info and phase description
+- [CL-1140] Show sign up modal when a logged user clicks the take survey button
+
+## 2022-07-19
+
+### Fixed
+
+- [CL-1160] Fix blank insights tag detail view
+
+## 2022-07-14 (2)
+
+### Added
+
+- [CL-1077] Add PNG export to graph export dropdown
+
+## 2022-07-14
+
+### Fixed
+
+- [CL-1113] Fixed sharing button styling when copy link text is long
+
+### Changed
+
+- [CL-474] Update existing accessibility statement, following re-certification
+
+### Added
+
+- [CL-1088] Add link to academy. Update link to guides
+- [CL-972] Add a 'read more' expand/collapse feature to timeline phases
 
 ## 2022-07-11
 

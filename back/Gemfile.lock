@@ -1226,7 +1226,7 @@ DEPENDENCIES
   rack-attack (~> 6)
   rack-cors
   rack-mini-profiler
-  rails (~> 6.1)
+  rails (~> 6.1.6.1)
   rails-html-sanitizer (>= 1.4.3)
   rails-i18n (~> 6.0.0)
   rails_semantic_logger
