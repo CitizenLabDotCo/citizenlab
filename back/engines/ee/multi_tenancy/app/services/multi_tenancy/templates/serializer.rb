@@ -11,6 +11,7 @@ module MultiTenancy
       def run
         template = { 'models' => {} }
         Apartment::Tenant.switch(@tenant.schema_name) do
+          template['models']['home_page']                            = yml_home_pages
           template['models']['area']                                 = yml_areas
           template['models']['custom_form']                          = yml_custom_forms
           template['models']['custom_field']                         = yml_custom_fields
@@ -87,6 +88,36 @@ module MultiTenancy
       def store_ref(yml_obj, id, model_name)
         @refs[model_name] ||= {}
         @refs[model_name][id] = yml_obj
+      end
+
+      def yml_home_pages
+        HomePage.all.map do |hp|
+          yml_home_page = {
+            'top_info_section_enabled' => hp.top_info_section_enabled,
+            'top_info_section_multiloc' => hp.top_info_section_multiloc,
+            'bottom_info_section_enabled' => hp.bottom_info_section_enabled,
+            'bottom_info_section_multiloc' => hp.bottom_info_section_multiloc,
+            'events_widget_enabled' => hp.events_widget_enabled,
+            'projects_enabled' => hp.projects_enabled,
+            'projects_header_multiloc' => hp.projects_header_multiloc,
+            'banner_avatars_enabled' => hp.banner_avatars_enabled,
+            'banner_layout' => hp.banner_layout,
+            'banner_signed_in_header_multiloc' => hp.banner_signed_in_header_multiloc,
+            'banner_cta_signed_in_text_multiloc' => hp.banner_cta_signed_in_text_multiloc,
+            'banner_cta_signed_in_type' => hp.banner_cta_signed_in_type,
+            'banner_cta_signed_in_url' => hp.banner_cta_signed_in_url,
+            'banner_signed_out_header_multiloc' => hp.banner_signed_out_header_multiloc,
+            'banner_signed_out_subheader_multiloc' => hp.banner_signed_out_subheader_multiloc,
+            'banner_signed_out_header_overlay_color' => hp.banner_signed_out_header_overlay_color,
+            'banner_signed_out_header_overlay_opacity' => hp.banner_signed_out_header_overlay_opacity,
+            'banner_cta_signed_out_text_multiloc' => hp.banner_cta_signed_out_text_multiloc,
+            'banner_cta_signed_out_type' => hp.banner_cta_signed_out_type,
+            'banner_cta_signed_out_url' => hp.banner_cta_signed_out_url,
+            'created_at' => hp.created_at.to_s,
+            'updated_at' => hp.updated_at.to_s,
+          }
+          yml_home_page
+        end
       end
 
       def yml_areas
