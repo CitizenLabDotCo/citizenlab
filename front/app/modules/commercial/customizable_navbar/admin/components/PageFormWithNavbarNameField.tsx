@@ -11,6 +11,7 @@ import validateMultiloc from 'utils/yup/validateMultiloc';
 import RHFInputMultilocWithLocaleSwitcher from 'components/UI/RHFInputMultilocWithLocaleSwitcher';
 import RHFQuillMultilocWithLocaleSwitcher from 'components/UI/RHFQuillMultilocWithLocaleSwitcher';
 import RHFInput from 'components/UI/RHFInput';
+import RHFFeedback from 'components/UI/RHFFeedback';
 import RHFFileUploader from 'components/UI/RHFFileUploader';
 import {
   SectionFieldPageContent,
@@ -101,6 +102,7 @@ const PageFormWithNavbarNameField = ({
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onFormSubmit)}>
+        <RHFFeedback />
         <SectionField>
           <RHFInputMultilocWithLocaleSwitcher
             label={formatMessage(messages.navbarItemTitle)}
