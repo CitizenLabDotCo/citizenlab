@@ -55,7 +55,7 @@ const SectionToggle = ({
             <FormattedMessage {...titleMessageDescriptor} />
           </Title>
         </Box>
-        <Box pb="13px">
+        <Box>
           <IconTooltip
             content={<FormattedMessage {...tooltipMessageDescriptor} />}
           />
