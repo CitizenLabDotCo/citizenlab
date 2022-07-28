@@ -1,5 +1,13 @@
 # Changelog
 
+## Next Release
+
+## 2022-07-28_2
+
+### Fixed
+
+- [CL-1256] Fix verification using Belgian eID or Itsme application
+
 ## 2022-07-28
 
 ### Added
