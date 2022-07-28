@@ -17,11 +17,12 @@ describe('/admin route', () => {
 const ADMIN_PAGES = [
   { url: 'moderation', container: '#e2e-moderation-container' },
   { url: 'projects', container: '#e2e-projects-admin-container' },
-  { url: 'insights/reports', container: '#e2e-insights-container' },
+  { url: 'insights', container: '#e2e-insights-container' },
   { url: 'ideas', container: '#e2e-input-manager-container' },
   { url: 'initiatives', container: '#e2e-initiatives-admin-container' },
   { url: 'users', container: '#e2e-users-container' },
   { url: 'invitations', container: '#e2e-invitations-container' },
+  { url: 'pages-menu', container: '#e2e-pages-menu-container' },
   { url: 'messaging', container: '#e2e-messaging-container' },
   { url: 'settings/general', container: '#e2e-settings-container' },
 ];
@@ -32,7 +33,7 @@ describe('navigation to admin section when clicking corresponding button in side
     cy.visit('/en/admin/dashboard');
   });
 
-  ADMIN_PAGES.forEach(({ url, container }, i) => {
+  ADMIN_PAGES.forEach(({ url, container }) => {
     it(`navigates to ${url}`, () => {
       cy.get(`nav#sidebar > a[href="/en/admin/${url}"]`).click();
       cy.location('pathname').should('include', `/en/admin/${url}`);

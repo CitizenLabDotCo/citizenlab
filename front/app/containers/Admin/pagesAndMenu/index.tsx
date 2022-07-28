@@ -14,7 +14,7 @@ const Containers = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     name: 'customizable_navbar',
   });
   return (
-    <>
+    <div id="e2e-pages-menu-container">
       <Outlet id="app.containers.Admin.pages-menu.index" />
       {customizableNavbarEnabled || (
         <TabbedResource
@@ -25,7 +25,7 @@ const Containers = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           <RouterOutlet />
         </TabbedResource>
       )}
-    </>
+    </div>
   );
 };
 
