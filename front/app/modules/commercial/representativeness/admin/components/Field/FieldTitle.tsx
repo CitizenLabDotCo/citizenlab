@@ -20,7 +20,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // typings
 import { Multiloc, MessageDescriptor } from 'typings';
-import { Status } from './utils';
+import { Status } from '../../utils/form';
 
 const DefaultStatusLabel = styled(StatusLabel)`
   color: ${colors.clGreyOnGreyBackground};

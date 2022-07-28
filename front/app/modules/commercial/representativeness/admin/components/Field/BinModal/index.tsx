@@ -23,7 +23,7 @@ import {
   updateUpperBound,
   removeBin,
   addBin,
-} from './utils';
+} from '../../../utils/bins';
 import { isEqual } from 'lodash-es';
 
 // typings
@@ -186,6 +186,7 @@ const BinModal = ({ open, bins, onClose, onSave }: Props) => {
           icon="plus-circle"
           mt="16px"
           buttonStyle="secondary"
+          data-testid="add-new-bin-button"
           onClick={handleAddBin}
         >
           <FormattedMessage {...messages.addAnAgeGroup} />

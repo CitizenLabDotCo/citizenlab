@@ -8,7 +8,7 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
-import { parsePopulationValue } from './utils';
+import { parsePopulationValue } from '../../../utils/options';
 
 interface Props {
   value: number | null;

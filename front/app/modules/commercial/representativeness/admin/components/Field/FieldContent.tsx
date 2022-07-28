@@ -20,7 +20,7 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
-import { isSubmittingAllowed, FormValues } from './utils';
+import { isSubmittingAllowed, FormValues } from '../../utils/form';
 
 // typings
 import { Bins } from '../../services/referenceDistribution';

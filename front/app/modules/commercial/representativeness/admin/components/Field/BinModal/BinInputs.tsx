@@ -14,7 +14,11 @@ import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 // utils
-import { getLowerBoundLimits, getUpperBoundLimits, parseLabel } from './utils';
+import {
+  getLowerBoundLimits,
+  getUpperBoundLimits,
+  parseLabel,
+} from '../../../utils/bins';
 import { clamp } from 'lodash-es';
 import { indices } from 'utils/helperUtils';
 
@@ -24,8 +28,8 @@ import { Bins } from '../../../services/referenceDistribution';
 const RemoveBinButton = styled.button`
   cursor: pointer;
 
-  svg > g > path {
-    &:hover {
+  &:hover {
+    svg > g > path {
       fill: ${colors.red800};
     }
   }
@@ -151,7 +155,10 @@ const BinInputRow = injectIntl(
               formatMessage(messages.ageAndOver, { age: lowerBound })
             )}
             {isLastBin && bins.length > 3 && (
-              <RemoveBinButton onClick={onRemoveBin}>
+              <RemoveBinButton
+                data-testid="remove-bin-button"
+                onClick={onRemoveBin}
+              >
                 <Icon
                   name="minus-circle"
                   width="13px"
