@@ -365,7 +365,7 @@
   "app.components.ProjectFolderCards.components.Topbar.filterBy": "Filtrere efter",
   "app.components.ProjectFolderCards.components.Topbar.published": "Aktiv",
   "app.components.ProjectFolderCards.components.Topbar.topicTitle": "Tag",
-  "app.components.ProjectFolderCards.noProjectYet": "Der er endnu noget projekt",
+  "app.components.ProjectFolderCards.noProjectYet": "Der er endnu ikke noget projekt",
   "app.components.ProjectFolderCards.noProjectsAvailable": "Ingen tilgængelige projekter",
   "app.components.ProjectFolderCards.showMore": "Vis mere ",
   "app.components.ProjectFolderCards.stayTuned": "Følg med, der dukker snart et projekt op.",
