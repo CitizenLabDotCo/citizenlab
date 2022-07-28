@@ -1230,7 +1230,7 @@
   "app.containers.AdminPage.SettingsPage.urlError": "URL nije validan",
   "app.containers.AdminPage.SettingsPage.urlTitle": "Website",
   "app.containers.AdminPage.SettingsPage.urlTitleTooltip": "početna stranica.",
-  "app.containers.AdminPage.SideBar.academy": "Academy",
+  "app.containers.AdminPage.SideBar.academy": "Akademija",
   "app.containers.AdminPage.SideBar.dashboard": "Komandni panel",
   "app.containers.AdminPage.SideBar.emails": "Email",
   "app.containers.AdminPage.SideBar.groups": "Grupe",
