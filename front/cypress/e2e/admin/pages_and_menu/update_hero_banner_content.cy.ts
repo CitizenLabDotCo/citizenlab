@@ -13,7 +13,7 @@ describe('Admin: update Hero Banner content', () => {
   const updatedSignedInCTAButton = 'signedin button!';
   const updatedSignedInCTAURL = 'https://www.example.biz';
 
-  it('displays hero banner settings on the landing page correctly', () => {
+  before(() => {
     // set default homepage settings
     cy.apiUpdateHomepageSettings({
       top_info_section_enabled: false,
@@ -33,7 +33,9 @@ describe('Admin: update Hero Banner content', () => {
       banner_signed_out_header_overlay_color: '#33FFD1',
       banner_signed_out_header_overlay_opacity: 55,
     });
+  });
 
+  it('displays hero banner settings on the landing page correctly', () => {
     cy.visit('/');
     cy.acceptCookies();
 
@@ -64,6 +66,9 @@ describe('Admin: update Hero Banner content', () => {
   });
 
   it('updates hero banner settings as admin correctly', () => {
+    cy.intercept('PATCH', '**/home_page').as('saveHomePage');
+    cy.intercept('GET', '**/home_page').as('getHomePage');
+
     // log in as admin and reload page
     cy.setLoginCookie('admin@citizenlab.co', 'democracy2.0');
     cy.reload();
@@ -79,6 +84,7 @@ describe('Admin: update Hero Banner content', () => {
     // click two-column banner layout
     cy.get('[data-cy="e2e-two-column-layout-option"]').click();
 
+    // fill in header and subheader
     cy.get('[data-cy="e2e-signed-out-header-section"]')
       .find('input')
       .clear()
@@ -127,9 +133,11 @@ describe('Admin: update Hero Banner content', () => {
 
     // save form
     cy.get('.e2e-submit-wrapper-button').click();
+    cy.wait('@saveHomePage');
     cy.get('.e2e-submit-wrapper-button').contains('Success');
 
     cy.visit('/');
+    cy.wait('@getHomePage');
 
     // check content and url for signed in CTA button
     cy.get('[data-cy="e2e-cta-banner-button"]')
@@ -141,9 +149,7 @@ describe('Admin: update Hero Banner content', () => {
   });
 
   it('views updated settings as logged-out user successfully', () => {
-    // logout and reload as signed out user
-    cy.logout();
-    cy.reload();
+    cy.goToLandingPage();
 
     cy.get('[data-cy=e2e-two-column-layout-container]').should('exist');
 
@@ -156,11 +162,6 @@ describe('Admin: update Hero Banner content', () => {
       'contain',
       updatedSignedOutSubheaderEnglish
     );
-
-    // avatars should be turned on no
-    cy.get('#hook-header-content')
-      .find('[data-testid=avatarBubblesContainer]')
-      .should('exist');
 
     cy.get('#hook-header-content')
       .find('a')
