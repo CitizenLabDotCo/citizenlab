@@ -144,20 +144,40 @@ resource 'Stats - Users' do
   end
 
   describe 'by_birthyear endpoints' do
+    before do
+      travel_to start_at + 16.days do
+        group_members = [1980, 1980, 1976].map { |year| create(:user, birthyear: year) }
+        @group = create_group(group_members)
+        _non_member = create(:user, birthyear: 1980)
+      end
+
+      travel_to start_at + 18.days do
+        @project = create(:project)
+        @idea1 = create(:idea, project: @project)
+        create(:published_activity, item: @idea1, user: @idea1.author)
+      end
+    end
+
+    shared_examples 'ignore reference distribution' do
+      example 'is not affected by the presence of a reference distribution', document: false do
+        do_request
+        response_without_reference = response_body
+
+        create(:binned_distribution)
+        do_request
+        response_with_reference = response_body
+
+        expect(response_status).to eq 200
+        expect(response_without_reference).to eq response_with_reference
+      end
+    end
+
     get 'web_api/v1/stats/users_by_birthyear' do
       time_boundary_parameters self
       group_filter_parameter self
       parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
 
       describe 'filtered by group' do
-        before do
-          travel_to start_at + 16.days do
-            group_members = [1980, 1980, 1976].map { |year| create(:user, birthyear: year) }
-            @group = create_group(group_members)
-            _non_member = create(:user, birthyear: 1980)
-          end
-        end
-
         let(:group) { @group.id }
 
         example_request 'Users by birthyear' do
@@ -173,20 +193,6 @@ resource 'Stats - Users' do
       end
 
       describe 'filtered by project' do
-        before do
-          travel_to start_at + 16.days do
-            group_members = [1980, 1980, 1976].map { |year| create(:user, birthyear: year) }
-            @group = create_group(group_members)
-            _non_member = create(:user, birthyear: 1980)
-          end
-
-          travel_to start_at + 18.days do
-            @project = create(:project)
-            @idea1 = create(:idea, project: @project)
-            create(:published_activity, item: @idea1, user: @idea1.author)
-          end
-        end
-
         let(:project) { @project.id }
 
         example_request 'Users by birthyear filtered by project' do
@@ -194,20 +200,14 @@ resource 'Stats - Users' do
           expect(json_response_body[:series][:users].values.sum).to eq 1
         end
       end
+
+      include_examples 'ignore reference distribution'
     end
 
     get 'web_api/v1/stats/users_by_birthyear_as_xlsx' do
       time_boundary_parameters self
       group_filter_parameter self
       parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
-
-      before do
-        travel_to start_at + 16.days do
-          group_members = [1980, 1980, 1976].map { |year| create(:user, birthyear: year) }
-          @group = create_group(group_members)
-          _non_member = create(:user, birthyear: 1980)
-        end
-      end
 
       let(:group) { @group.id }
 
@@ -222,6 +222,7 @@ resource 'Stats - Users' do
           ]
         end
       end
+      include_examples 'ignore reference distribution'
     end
   end
 

@@ -102,23 +102,31 @@ module UserCustomFields
         end
 
         def expected_user_counts
-          @expected_user_counts ||=
-            if (ref_distribution = custom_field.current_ref_distribution).present?
-              # user counts for toggled off options are not used to calculate expected user counts
-              toggled_on_option_keys = ref_distribution.distribution_by_option_key.keys
-              nb_users_to_redistribute = user_counts.slice(*toggled_on_option_keys).values.sum
-              expected_counts = ref_distribution.expected_counts(nb_users_to_redistribute)
+          @expected_user_counts ||= calculate_expected_user_counts
+        end
 
-              option_id_to_key = custom_field.options.to_h { |option| [option.id, option.key] }
-              expected_counts.transform_keys { |option_id| option_id_to_key.fetch(option_id) }
-            end
+        def calculate_expected_user_counts
+          return if custom_field.key == 'birthyear'
+          return if (ref_distribution = custom_field.current_ref_distribution).blank?
+
+          # user counts for toggled off options are not used to calculate expected user counts
+          toggled_on_option_keys = ref_distribution.distribution_by_option_key.keys
+          nb_users_to_redistribute = user_counts.slice(*toggled_on_option_keys).values.sum
+          expected_counts = ref_distribution.expected_counts(nb_users_to_redistribute)
+
+          option_id_to_key = custom_field.options.to_h { |option| [option.id, option.key] }
+          expected_counts.transform_keys { |option_id| option_id_to_key.fetch(option_id) }
         end
 
         def reference_population
-          @reference_population ||=
-            if (ref_distribution = custom_field.current_ref_distribution).present?
-              ref_distribution.distribution_by_option_key
-            end
+          @reference_population ||= calculate_reference_population
+        end
+
+        def calculate_reference_distribution
+          return if custom_field.key == 'birthyear'
+          return if (ref_distribution = custom_field.current_ref_distribution).blank?
+
+          ref_distribution.distribution_by_option_key
         end
 
         def users_by_custom_field_xlsx
