@@ -24,6 +24,8 @@ const RenderOnHideTabCondition = (props: RenderOnHideTabConditionProps) => {
     !phases.some(
       (phase) => phase.attributes.participation_method === 'native_survey'
     );
+
+  // Hide tab when participation method is not native survey in timeline and continuous process types
   const hideTab =
     (processType === 'continuous' && participationMethod !== 'native_survey') ||
     (processType === 'timeline' &&
