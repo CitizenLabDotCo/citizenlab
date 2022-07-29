@@ -51,6 +51,7 @@ const mobileEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 
 export const ModalContentContainer = styled.div<{
   padding?: string | undefined;
+  fullScreen?: boolean;
 }>`
   flex: 1 1 auto;
   width: 100%;
@@ -62,6 +63,11 @@ export const ModalContentContainer = styled.div<{
   ${media.smallerThanMinTablet`
     padding: ${({ padding }) => padding || '20px'};
   `}
+
+  ${({ fullScreen }) =>
+    fullScreen &&
+    `
+  max-width: 580px;`}
 `;
 
 const StyledCloseIconButton = styled(CloseIconButton)`
@@ -94,15 +100,27 @@ const StyledCloseIconButton = styled(CloseIconButton)`
   `}
 `;
 
-const StyledFocusOn = styled(FocusOn)<{ width: number | string }>`
+const StyledFocusOn = styled(FocusOn)<{
+  width: number | string;
+  fullScreen?: boolean;
+}>`
   width: 100%;
   max-width: ${({ width }) =>
     width.constructor === String ? width : `${width}px`};
   display: flex;
   justify-content: center;
+
+  ${({ fullScreen }) =>
+    fullScreen &&
+    `
+  height: 100%;
+  max-width: 100%;`}
 `;
 
-const ModalContainer = styled(clickOutside)<{ windowHeight: string }>`
+const ModalContainer = styled(clickOutside)<{
+  windowHeight: string;
+  fullScreen?: boolean;
+}>`
   width: 100%;
   max-height: 85vh;
   margin-top: 50px;
@@ -135,9 +153,17 @@ const ModalContainer = styled(clickOutside)<{ windowHeight: string }>`
       max-height: 85vh;
     }
   `}
+
+  ${({ fullScreen }) =>
+    fullScreen &&
+    `
+    margin: 0;
+    align-items: center;
+    max-height: 100%;
+  `}
 `;
 
-const Overlay = styled.div`
+const Overlay = styled.div<{ fullScreen?: boolean }>`
   width: 100vw;
   height: 100vh;
   position: fixed;
@@ -164,6 +190,11 @@ const Overlay = styled.div`
     padding-right: 12px;
     padding: 0px;
   `}
+
+  ${({ fullScreen }) =>
+    fullScreen &&
+    `
+    padding: 0px;`}
 
   &.modal-enter {
     opacity: 0;
@@ -327,6 +358,7 @@ export interface InputProps {
   padding?: string;
   closeOnClickOutside?: boolean;
   children: React.ReactNode;
+  fullScreen?: boolean;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -437,6 +469,11 @@ class Modal extends PureComponent<Props, State> {
     const smallerThanSmallTablet = windowSize
       ? windowSize <= viewportWidths.smallTablet
       : false;
+    const timeout = this.props.fullScreen
+      ? 0
+      : smallerThanSmallTablet
+      ? mobileTransformTimeout
+      : desktopTransformTimeout;
     const modalPortalElement = document?.getElementById('modal-portal');
     let padding: string | undefined = undefined;
 
@@ -451,18 +488,18 @@ class Modal extends PureComponent<Props, State> {
         <CSSTransition
           classNames="modal"
           in={opened}
-          timeout={
-            smallerThanSmallTablet
-              ? mobileTransformTimeout
-              : desktopTransformTimeout
-          }
+          timeout={timeout}
           mountOnEnter={true}
           unmountOnExit={true}
           enter={true}
           exit={false}
         >
-          <Overlay id="e2e-modal-container" className={this.props.className}>
-            <StyledFocusOn width={width}>
+          <Overlay
+            id="e2e-modal-container"
+            className={this.props.className}
+            fullScreen={this.props.fullScreen}
+          >
+            <StyledFocusOn width={width} fullScreen={this.props.fullScreen}>
               <ModalContainer
                 className={`modalcontent ${
                   hasFixedHeight ? 'fixedHeight' : ''
@@ -472,6 +509,7 @@ class Modal extends PureComponent<Props, State> {
                 ariaLabelledBy={header ? 'modal-header' : undefined}
                 aria-modal="true"
                 role="dialog"
+                fullScreen={this.props.fullScreen}
               >
                 <StyledCloseIconButton
                   className="e2e-modal-close-button"
@@ -487,7 +525,10 @@ class Modal extends PureComponent<Props, State> {
                   </HeaderContainer>
                 )}
 
-                <ModalContentContainer padding={padding}>
+                <ModalContentContainer
+                  padding={padding}
+                  fullScreen={this.props.fullScreen}
+                >
                   {children}
                 </ModalContentContainer>
 
