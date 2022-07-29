@@ -19,13 +19,16 @@ const RenderOnHideTabCondition = (props: RenderOnHideTabConditionProps) => {
   const { project, phases, children } = props;
   const processType = project.attributes.process_type;
   const participationMethod = project.attributes.participation_method;
+  const noNativeSurveyInTimeline =
+    !isNilOrError(phases) &&
+    !phases.some(
+      (phase) => phase.attributes.participation_method === 'native_survey'
+    );
   const hideTab =
     (processType === 'continuous' && participationMethod !== 'native_survey') ||
     (processType === 'timeline' &&
       !isNilOrError(phases) &&
-      phases.filter((phase) => {
-        return phase.attributes.participation_method === 'native_survey';
-      }).length === 0);
+      noNativeSurveyInTimeline);
 
   if (hideTab) {
     return null;
