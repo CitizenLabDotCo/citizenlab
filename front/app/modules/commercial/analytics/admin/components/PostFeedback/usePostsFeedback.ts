@@ -1,10 +1,19 @@
 import { useState, useEffect } from 'react';
-import { postsAnalyticsStream } from '../../../services/analyticsFacts';
+
+// services
+import { postsAnalyticsStream, Query } from '../../../services/analyticsFacts';
+
+// utils
 import { sum, roundPercentage } from 'utils/math';
+
+// typings
 import { InjectedIntlProps } from 'react-intl';
+import { Response, PostFeedback } from './typings';
+
+// i18n
 import messages from './messages';
 
-const query = (projectId?: string) => {
+const query = (projectId?: string): Query => {
   const groups = {
     groups: {
       key: 'project.id',
@@ -23,22 +32,16 @@ const query = (projectId?: string) => {
 
   const query = { query: { ...groups, ...dimensions } };
 
-  return query;
-};
-
-type Response = {
-  'project.id'?: string;
-  sum_feedback_none: number;
-  sum_feedback_official: number;
-  sum_feedback_status_change: number;
-  avg_feedback_time_taken: number;
+  return query as Query;
 };
 
 export default function usePostsWithFeedback(
   formatMessage: InjectedIntlProps['intl']['formatMessage'],
   projectId?: string
 ) {
-  const [postsWithFeedback, setPostsWithFeedback] = useState<any>(undefined);
+  const [postsWithFeedback, setPostsWithFeedback] = useState<
+    PostFeedback | undefined
+  >(undefined);
   useEffect(() => {
     postsAnalyticsStream<Response>(query(projectId)).then((results) => {
       if (results && results.data.length > 0) {
@@ -55,7 +58,13 @@ export default function usePostsWithFeedback(
         ]);
         const total = sum([feedback_count, sum_feedback_none]);
 
-        const serie = [
+        const feedbackPercent = feedback_count / total;
+        const days = Math.round(avg_feedback_time_taken / 86400);
+
+        const statusChanged = formatMessage(messages.statusChanged);
+        const officialUpdate = formatMessage(messages.officialUpdate);
+
+        const pieData = [
           { name: 'sum_feedback', value: feedback_count, color: '#40B8C5' },
           {
             name: 'sum_no_feedback',
@@ -64,12 +73,7 @@ export default function usePostsWithFeedback(
           },
         ];
 
-        const feedbackPercent = feedback_count / total;
-        const days = Math.round(avg_feedback_time_taken / 86400);
-
-        const statusChanged = formatMessage(messages.statusChanged);
-        const officialUpdate = formatMessage(messages.officialUpdate);
-        const progressBars = [
+        const progressBarsData = [
           {
             name: statusChanged,
             label: `${statusChanged}: ${sum_feedback_status_change} (${roundPercentage(
@@ -90,10 +94,10 @@ export default function usePostsWithFeedback(
           },
         ];
         setPostsWithFeedback({
-          serie,
+          pieData,
           feedbackPercent,
           days,
-          progressBars,
+          progressBarsData,
         });
       }
     });
