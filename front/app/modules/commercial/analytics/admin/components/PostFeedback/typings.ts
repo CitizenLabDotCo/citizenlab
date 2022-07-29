@@ -1,15 +1,11 @@
+import { DataRow } from 'components/admin/Graphs/PieChart/typings';
+
 export type Response = {
   'project.id'?: string;
   sum_feedback_none: number;
   sum_feedback_official: number;
   sum_feedback_status_change: number;
   avg_feedback_time_taken: number;
-};
-
-type PieItem = {
-  name: string;
-  color: string;
-  value: number;
 };
 
 type ProgressBarsItem = {
@@ -20,7 +16,7 @@ type ProgressBarsItem = {
 };
 
 export type PostFeedback = {
-  pieData: PieItem[];
+  pieData: DataRow[];
   progressBarsData: ProgressBarsItem[];
   feedbackPercent: number;
   days: number;

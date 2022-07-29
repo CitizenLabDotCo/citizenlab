@@ -1,37 +1,55 @@
 import React from 'react';
+
+// components
 import { PieChart, Pie, Cell, Label } from 'recharts';
+import { NoDataContainer } from 'components/admin/GraphWrappers';
+import { FormattedMessage } from 'utils/cl-intl';
+import CustomLabel from './CustomLabel';
 
-const CustomLabel = ({ viewBox, value, label }: { viewBox?; value; label }) => {
-  const { cy } = viewBox;
-  return (
-    <>
-      <text textAnchor="middle" x="50%" y={cy - 10}>
-        <tspan fontWeight="bold" fontSize="23px">
-          {value}
-        </tspan>
-      </text>
-      <text textAnchor="middle" x="50%" y={cy + 12}>
-        <tspan fontSize="14px">{label}</tspan>
-      </text>
-    </>
-  );
-};
+// i18n
+import messages from '../messages';
 
-export default function ({ serie, center: { label, value } }) {
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import { isEmpty } from 'lodash-es';
+
+// typings
+import { PieProps } from './typings';
+
+export default function ({
+  data,
+  centerLabel,
+  centerValue,
+  emptyContainerContent,
+}: PieProps) {
+  const noData = isNilOrError(data) || data.every(isEmpty) || data.length <= 0;
+
+  if (noData) {
+    return (
+      <NoDataContainer>
+        {emptyContainerContent ? (
+          <>{emptyContainerContent}</>
+        ) : (
+          <FormattedMessage {...messages.noData} />
+        )}
+      </NoDataContainer>
+    );
+  }
+
   return (
     <PieChart width={210} height={210}>
       <Pie
         isAnimationActive={true}
-        data={serie}
+        data={data}
         dataKey="value"
         innerRadius={88}
         outerRadius={104}
       >
-        {serie.map((entry, index) => (
+        {data.map((entry, index) => (
           <Cell key={`cell-${index}`} fill={entry.color} />
         ))}
         <Label
-          content={<CustomLabel value={value} label={label} />}
+          content={<CustomLabel value={centerValue} label={centerLabel} />}
           position="center"
         />
       </Pie>

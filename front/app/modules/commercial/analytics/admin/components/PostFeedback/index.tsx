@@ -51,10 +51,8 @@ const PostFeedback = ({
   if (!data) return null;
 
   const { pieData, feedbackPercent, days, progressBarsData } = data;
-  const pieCenter = {
-    value: `${Math.round(feedbackPercent * 100)}%`,
-    label: formatMessage(messages.feedbackGiven),
-  };
+  const centerValue = `${Math.round(feedbackPercent * 100)}%`;
+  const centerLabel = formatMessage(messages.feedbackGiven);
 
   return (
     <GraphCard className="fullWidth dynamicHeight">
@@ -72,7 +70,11 @@ const PostFeedback = ({
         </GraphCardHeader>
         <Box display="flex" justifyContent="center">
           <Box>
-            <PieChart serie={pieData} center={pieCenter} />
+            <PieChart
+              data={pieData}
+              centerLabel={centerLabel}
+              centerValue={centerValue}
+            />
           </Box>
           <Box m="30px 0 0 50px">
             <ProgressBars data={progressBarsData} />
