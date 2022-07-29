@@ -18,6 +18,7 @@ describe MultiTenancy::Templates::Serializer do
       tenant = create :tenant, locales: localhost.settings.dig('core', 'locales')
       Apartment::Tenant.switch(tenant.schema_name) do
         MultiTenancy::TenantTemplateService.new.apply_template template
+        expect(HomePage.count).to be 1
         expect(Area.count).to be > 0
         expect(Comment.count).to be > 0
         expect(CustomFieldOption.count).to be > 0
