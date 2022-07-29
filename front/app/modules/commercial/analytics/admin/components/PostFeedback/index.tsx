@@ -32,7 +32,10 @@ export default ({ projectId }) => {
   if (!data) return null;
 
   const { serie, feedbackPercent, avgTime, progressBars } = data;
-
+  const pieCenter = {
+    value: `${Math.round(feedbackPercent * 100)}%`,
+    label: 'feedback given',
+  };
   return (
     <GraphCard className="fullWidth dynamicHeight">
       <GraphCardInner>
@@ -47,7 +50,7 @@ export default ({ projectId }) => {
         </GraphCardHeader>
         <Box display="flex" justifyContent="center">
           <Box>
-            <PieChart serie={serie} value={feedbackPercent} />
+            <PieChart serie={serie} center={pieCenter} />
           </Box>
           <Box m="30px 0 0 50px">
             <ProgressBars data={progressBars} />
