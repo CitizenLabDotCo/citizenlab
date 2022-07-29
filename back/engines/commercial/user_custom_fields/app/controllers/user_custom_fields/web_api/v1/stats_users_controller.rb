@@ -13,11 +13,9 @@ module UserCustomFields
         end
 
         def users_by_age_as_xlsx
-          send_data(users_by_age_xlsx, type: XLSX_MIME_TYPE, filename: xlsx_export_filename(custom_field))
-        end
-
-        def users_by_age_xlsx
-          AgeStatsXlsxMaker.generate(age_stats)
+          age_stats = AgeStats.calculate(find_users)
+          xlsx = Xlsx::AgeStatsSerializer.generate(age_stats)
+          send_xlsx(xlsx, filename: 'users_by_age.xlsx')
         end
 
         def users_by_custom_field
@@ -39,7 +37,7 @@ module UserCustomFields
         end
 
         def users_by_custom_field_as_xlsx
-          send_data(users_by_custom_field_xlsx, type: XLSX_MIME_TYPE, filename: xlsx_export_filename(custom_field))
+          send_xlsx(users_by_custom_field_xlsx)
         rescue NotSupportedFieldTypeError
           head :not_implemented
         end
@@ -65,7 +63,7 @@ module UserCustomFields
           )
 
           xlsx = XlsxService.new.generate_res_stats_xlsx(res, 'users', 'area')
-          send_data(xlsx, type: XLSX_MIME_TYPE, filename: xlsx_export_filename(custom_field))
+          send_xlsx(xlsx)
         end
 
         private
@@ -147,6 +145,11 @@ module UserCustomFields
 
         def localized_option_titles(options)
           options.map { |o| MultilocService.new.t(o.title_multiloc) }
+        end
+
+        def send_xlsx(xlsx, filename: nil)
+          filename ||= xlsx_export_filename(custom_field)
+          send_data(xlsx, type: XLSX_MIME_TYPE, filename: filename)
         end
 
         def xlsx_export_filename(custom_field)

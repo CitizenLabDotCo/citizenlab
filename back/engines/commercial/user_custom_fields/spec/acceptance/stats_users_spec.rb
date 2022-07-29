@@ -12,8 +12,14 @@ def group_filter_parameter(s)
   s.parameter :group, 'Group ID. Only return users that are a member of the given group', required: false
 end
 
-shared_examples 'xlsx export' do |field_name|
-  example_request "Users xlsx by #{field_name}" do
+shared_examples 'xlsx export' do |field_name, request_time|
+  example "Users xlsx by #{field_name}" do
+    if request_time.present?
+      travel_to(request_time) { do_request }
+    else
+      do_request
+    end
+
     expect(response_status).to eq 200
 
     worksheet = RubyXL::Parser.parse_buffer(response_body)[0]
@@ -632,23 +638,30 @@ resource 'Stats - Users' do
   end
 
   describe 'by_age' do
+    let(:start_at) { Time.zone.local(2019) }
+    let(:end_at) { Time.zone.local(2020).end_of_year }
+
+    # I made my life easier here, at the expense of test coverage, by using a group
+    # filter to make sure not to capture unwanted users (e.g. the user making the
+    # request).
+    let(:group) { @group.id }
+
+    before do
+      AppConfiguration.instance.update(created_at: start_at)
+
+      travel_to start_at + 16.days do
+        birthyears = [1962, 1976, 1980, 1990, 1991, 2005, 2006]
+        users = birthyears.map { |year| create(:user, birthyear: year) }
+        user_without_birthyear = create(:user, birthyear: nil)
+
+        @group = create_group(users + [user_without_birthyear])
+      end
+    end
+
     get 'web_api/v1/stats/users_by_age' do
       time_boundary_parameters self
       group_filter_parameter self
       parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
-
-      let_it_be(:start_at) { Time.zone.local(2019) }
-      let_it_be(:end_at) { Time.zone.local(2020).end_of_year }
-
-      before do
-        AppConfiguration.instance.update(created_at: start_at)
-
-        travel_to start_at + 16.days do
-          birthyears = [1962, 1980, 1976, 1990, 1991, 2005, 2006]
-          _users = birthyears.map { |year| create(:user, birthyear: year) }
-          _user_without_birthyear = create(:user, birthyear: nil)
-        end
-      end
 
       context 'when the birthyear custom field has no reference distribution' do
         example 'Users counts by age' do
@@ -691,6 +704,58 @@ resource 'Stats - Users' do
               bins: ref_distribution.bin_boundaries
             }
           )
+        end
+      end
+    end
+
+    get 'web_api/v1/stats/users_by_age_as_xlsx' do
+      time_boundary_parameters self
+      group_filter_parameter self
+      parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
+
+      context 'when the birthyear custom field has no reference distribution' do
+        include_examples('xlsx export', 'age', Time.zone.local(2020, 1, 1)) do
+          let(:expected_worksheet_name) { 'users_by_age' }
+          let(:expected_worksheet_values) do
+            [
+              %w[age user_count],
+              ['0-9', 0],
+              ['10-19', 2],
+              ['20-29', 2],
+              ['30-39', 1],
+              ['40-49', 1],
+              ['50-59', 1],
+              ['60-69', 0],
+              ['70-79', 0],
+              ['80-89', 0],
+              ['90+', 0],
+              ['unknown', 1]
+            ]
+          end
+        end
+      end
+
+      context 'when the birthyear custom field has a reference distribution' do
+        let!(:ref_distribution) do
+          create(
+            :binned_distribution,
+            bins: [nil, 25, 50, 75, nil],
+            counts: [190, 279, 308, 213]
+          )
+        end
+
+        include_examples('xlsx export', 'age', Time.zone.local(2020, 1, 1)) do
+          let(:expected_worksheet_name) { 'users_by_age' }
+          let(:expected_worksheet_values) do
+            [
+              %w[age user_count expected_user_count total_population],
+              ['0-24', 2, 1.3, 190],
+              ['25-49', 4, 2.0, 279],
+              ['50-74', 1, 2.2, 308],
+              ['75+', 0, 1.5, 213],
+              ['unknown', 1, '', '']
+            ]
+          end
         end
       end
     end
