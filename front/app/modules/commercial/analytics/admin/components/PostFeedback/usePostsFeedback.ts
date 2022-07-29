@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { postsAnalyticsStream } from '../../../services/analyticsFacts';
 import { sum, roundPercentage } from 'utils/math';
+import { InjectedIntlProps } from 'react-intl';
+import messages from './messages';
 
-const query = (projectId) => {
+const query = (projectId?: string) => {
   const groups = {
     groups: {
       key: 'project.id',
@@ -32,7 +34,10 @@ type Response = {
   avg_feedback_time_taken: number;
 };
 
-export default function usePostsWithFeedback(projectId) {
+export default function usePostsWithFeedback(
+  formatMessage: InjectedIntlProps['intl']['formatMessage'],
+  projectId?: string
+) {
   const [postsWithFeedback, setPostsWithFeedback] = useState<any>(undefined);
   useEffect(() => {
     postsAnalyticsStream<Response>(query(projectId)).then((results) => {
@@ -60,12 +65,14 @@ export default function usePostsWithFeedback(projectId) {
         ];
 
         const feedbackPercent = feedback_count / total;
-        const avgTime = Math.round(avg_feedback_time_taken / 86400);
+        const days = Math.round(avg_feedback_time_taken / 86400);
 
+        const statusChanged = formatMessage(messages.statusChanged);
+        const officialUpdate = formatMessage(messages.officialUpdate);
         const progressBars = [
           {
-            name: 'Status changed',
-            label: `Status changed: ${sum_feedback_status_change} (${roundPercentage(
+            name: statusChanged,
+            label: `${statusChanged}: ${sum_feedback_status_change} (${roundPercentage(
               sum_feedback_status_change,
               total
             )}%)`,
@@ -73,8 +80,8 @@ export default function usePostsWithFeedback(projectId) {
             total,
           },
           {
-            name: 'Official update',
-            label: `Official update: ${sum_feedback_official} (${roundPercentage(
+            name: officialUpdate,
+            label: `${officialUpdate}: ${sum_feedback_official} (${roundPercentage(
               sum_feedback_official,
               total
             )}%)`,
@@ -85,12 +92,12 @@ export default function usePostsWithFeedback(projectId) {
         setPostsWithFeedback({
           serie,
           feedbackPercent,
-          avgTime,
+          days,
           progressBars,
         });
       }
     });
-  }, [projectId]);
+  }, [projectId, formatMessage]);
 
   return postsWithFeedback;
 }

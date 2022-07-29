@@ -1,5 +1,5 @@
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import PostFeedback from './admin/components/PostFeedback';
+import PostFeedback from './admin/containers/PostFeedback';
 
 const configuration: ModuleConfiguration = {
   outlets: {

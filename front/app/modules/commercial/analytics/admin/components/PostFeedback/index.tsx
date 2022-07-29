@@ -11,6 +11,9 @@ import { Box, Icon } from '@citizenlab/cl2-component-library';
 import ProgressBars from 'components/admin/Graphs/ProgressBars';
 import styled from 'styled-components';
 import ReportExportMenu from 'components/admin/ReportExportMenu';
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import messages from './messages';
 
 const CalendarIcon = styled(Icon)`
   fill: #044d6c;
@@ -27,20 +30,30 @@ const Text = styled.p`
   display: block !important;
 `;
 
-export default ({ projectId }) => {
-  const data = usePostsWithFeedback(projectId);
+interface Props {
+  projectId?: string;
+}
+
+const PostFeedback = ({
+  projectId,
+  intl: { formatMessage },
+}: Props & InjectedIntlProps) => {
+  const data = usePostsWithFeedback(formatMessage, projectId);
   if (!data) return null;
 
-  const { serie, feedbackPercent, avgTime, progressBars } = data;
+  const { serie, feedbackPercent, days, progressBars } = data;
   const pieCenter = {
     value: `${Math.round(feedbackPercent * 100)}%`,
-    label: 'feedback given',
+    label: formatMessage(messages.feedbackGiven),
   };
+
   return (
     <GraphCard className="fullWidth dynamicHeight">
       <GraphCardInner>
         <GraphCardHeader>
-          <GraphCardTitle>Post feedback</GraphCardTitle>
+          <GraphCardTitle>
+            {formatMessage(messages.postFeedback)}
+          </GraphCardTitle>
           <ReportExportMenu
             name="title"
             currentProjectFilter={undefined}
@@ -56,7 +69,7 @@ export default ({ projectId }) => {
             <ProgressBars data={progressBars} />
             <Text>
               <CalendarIcon name="calendar" />
-              {`Avg. response time: ${avgTime} days`}
+              {formatMessage(messages.averageTime, { days })}
             </Text>
           </Box>
         </Box>
@@ -64,3 +77,5 @@ export default ({ projectId }) => {
     </GraphCard>
   );
 };
+
+export default injectIntl(PostFeedback);
