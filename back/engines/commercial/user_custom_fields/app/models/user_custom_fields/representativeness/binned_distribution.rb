@@ -60,6 +60,11 @@ module UserCustomFields
           bins are not properly defined. The bin boundaries must be sorted.
         MSG
 
+        distinct_bin_boundaries = bin_boundaries.compact.uniq.size == bin_boundaries.compact.size
+        errors.add(:distribution, <<~MSG.squish) unless distinct_bin_boundaries
+          bins are not properly defined. The bin boundaries must be distinct.
+        MSG
+
         errors.add(:distribution, <<~MSG.squish) if bin_boundaries.size != counts.size + 1
           bins are not properly defined. The number of bins must match the number of 
           counts.

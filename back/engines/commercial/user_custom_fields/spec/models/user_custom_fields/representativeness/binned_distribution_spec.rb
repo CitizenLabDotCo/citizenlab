@@ -45,6 +45,14 @@ RSpec.describe UserCustomFields::Representativeness::BinnedDistribution do
       .to include('bins are not properly defined. The number of bins must match the number of counts.')
   end
 
+  it 'validates that bin boundaries are distinct', :aggregate_failures do
+    bin_boundaries[0] = bin_boundaries[1]
+
+    expect(binned_distribution).not_to be_valid
+    expect(binned_distribution.errors[:distribution])
+      .to include('bins are not properly defined. The bin boundaries must be distinct.')
+  end
+
   it "validates that the custom field is 'birthyear'", :aggregate_failures do
     binned_distribution.custom_field = build(:custom_field_select)
 
