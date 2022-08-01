@@ -44,7 +44,6 @@ const SurveyBuilderSettings = () => (
     </Title>
     <Box display="flex">
       <Button
-        id="e2e-delete-button"
         icon="delete"
         buttonStyle="primary-outlined"
         borderColor={colors.red500}

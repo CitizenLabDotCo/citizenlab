@@ -40,7 +40,7 @@ const SurveyBuilderToolbox = ({
         fontWeight="normal"
         mb="4px"
         mt="24px"
-        ml="10px"
+        ml="12px"
         variant="h6"
         as="h3"
         color="secondaryText"
@@ -48,7 +48,7 @@ const SurveyBuilderToolbox = ({
         <FormattedMessage {...messages.addSurveyContent} />
       </Title>
 
-      <DraggableElement id="e2e-draggable-text">
+      <DraggableElement>
         <ToolboxItem icon="text" label={formatMessage(messages.shortAnswer)} />
       </DraggableElement>
     </Box>

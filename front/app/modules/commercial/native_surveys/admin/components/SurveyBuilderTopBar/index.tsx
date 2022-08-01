@@ -75,7 +75,6 @@ const SurveyBuilderTopBar = ({ params: { projectId } }: WithRouterProps) => {
         </Box>
         <Box ml="24px" />
         <Button
-          id="e2e-view-project-button"
           buttonStyle="secondary"
           icon="eye"
           mx="20px"
