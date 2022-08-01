@@ -5,6 +5,11 @@ describe('Admin: update HomePage content', () => {
     cy.setAdminLoginCookie();
     cy.visit('/admin/pages-menu/');
     cy.acceptCookies();
+    cy.apiUpdateHomepageSettings({
+      top_info_section_enabled: false,
+      bottom_info_section_enabled: false,
+      events_widget_enabled: false,
+    });
   });
 
   it('updates top and bottom info section content and visibility', () => {
@@ -14,11 +19,6 @@ describe('Admin: update HomePage content', () => {
     const topInfoContent = randomString();
     const bottomInfoContent = randomString();
 
-    cy.apiUpdateHomepageSettings({
-      top_info_section_enabled: false,
-      bottom_info_section_enabled: false,
-      events_widget_enabled: false,
-    });
     // go to page with homepage settings toggles
     cy.get('[data-testid="edit-button"]').first().click();
 
@@ -90,5 +90,13 @@ describe('Admin: update HomePage content', () => {
     cy.contains(topInfoContent);
     cy.contains(bottomInfoContent);
     cy.get('[data-testid="e2e-events-widget-container"]').should('exist');
+  });
+
+  after(() => {
+    cy.apiUpdateHomepageSettings({
+      top_info_section_enabled: false,
+      bottom_info_section_enabled: false,
+      events_widget_enabled: false,
+    });
   });
 });
