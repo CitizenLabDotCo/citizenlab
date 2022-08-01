@@ -14,6 +14,7 @@ import ProgressBars from 'components/admin/Graphs/ProgressBars';
 
 // styling
 import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
 
 // hooks
 import usePostsWithFeedback from './usePostsFeedback';
@@ -37,6 +38,31 @@ const Text = styled.p`
   color: #044d6c;
   font-size: 14px;
   display: block !important;
+`;
+
+const ProgressBarsBox = styled(Box)`
+  max-width: 257px;
+  margin: 30px 0 0 50px;
+  width: 100%;
+  ${media.smallerThan1280px`
+    margin: 30px 0 0 0;
+  `}
+`;
+
+const PieBox = styled(Box)`
+  max-width: 210px;
+  width: 100%;
+`;
+
+const WrapperBox = styled(Box)`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+
+  ${media.smallerThan1280px`
+    flex-direction: column;
+    align-items: center;
+  `}
 `;
 
 interface Props {
@@ -68,22 +94,22 @@ const PostFeedback = ({
             svgNode={undefined}
           />
         </GraphCardHeader>
-        <Box display="flex" justifyContent="center">
-          <Box>
+        <WrapperBox>
+          <PieBox>
             <PieChart
               data={pieData}
               centerLabel={centerLabel}
               centerValue={centerValue}
             />
-          </Box>
-          <Box m="30px 0 0 50px">
+          </PieBox>
+          <ProgressBarsBox>
             <ProgressBars data={progressBarsData} />
             <Text>
               <CalendarIcon name="calendar" />
               {formatMessage(messages.averageTime, { days })}
             </Text>
-          </Box>
-        </Box>
+          </ProgressBarsBox>
+        </WrapperBox>
       </GraphCardInner>
     </GraphCard>
   );

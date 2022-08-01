@@ -1,8 +1,11 @@
 import React from 'react';
 
 // components
-import { PieChart, Pie, Cell, Label } from 'recharts';
-import { NoDataContainer } from 'components/admin/GraphWrappers';
+import { PieChart, Pie, Cell, Label, ResponsiveContainer } from 'recharts';
+import {
+  NoDataContainer,
+  PieChartStyleFixesDiv,
+} from 'components/admin/GraphWrappers';
 import { FormattedMessage } from 'utils/cl-intl';
 import CustomLabel from './CustomLabel';
 
@@ -37,22 +40,26 @@ export default function ({
   }
 
   return (
-    <PieChart width={210} height={210}>
-      <Pie
-        isAnimationActive={true}
-        data={data}
-        dataKey="value"
-        innerRadius={88}
-        outerRadius={104}
-      >
-        {data.map((entry, index) => (
-          <Cell key={`cell-${index}`} fill={entry.color} />
-        ))}
-        <Label
-          content={<CustomLabel value={centerValue} label={centerLabel} />}
-          position="center"
-        />
-      </Pie>
-    </PieChart>
+    <PieChartStyleFixesDiv>
+      <ResponsiveContainer height={210} width="100%">
+        <PieChart>
+          <Pie
+            isAnimationActive={true}
+            data={data}
+            dataKey="value"
+            innerRadius={88}
+            outerRadius={104}
+          >
+            {data.map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={entry.color} />
+            ))}
+            <Label
+              content={<CustomLabel value={centerValue} label={centerLabel} />}
+              position="center"
+            />
+          </Pie>
+        </PieChart>
+      </ResponsiveContainer>
+    </PieChartStyleFixesDiv>
   );
 }

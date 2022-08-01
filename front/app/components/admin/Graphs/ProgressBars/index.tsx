@@ -1,5 +1,12 @@
 import React from 'react';
-import { BarChart, Bar, XAxis, YAxis, LabelList } from 'recharts';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  LabelList,
+  ResponsiveContainer,
+} from 'recharts';
 
 const renderCustomizedLabel = (props) => {
   const { x, y, value } = props;
@@ -67,37 +74,37 @@ const OneSideRoundedBar = (props) => {
 
 export default function ({ data }) {
   return (
-    <BarChart
-      height={data.length * 68}
-      width={257}
-      data={data}
-      layout="vertical"
-      stackOffset="expand"
-      barSize={8}
-      margin={{ bottom: 0 }}
-    >
-      <XAxis hide type="number" />
-      <YAxis width={0} type="category" dataKey="name" />
-      <Bar
-        dataKey="value"
-        stackId="a"
-        fill="#044D6C"
-        isAnimationActive={false}
-        shape={<OneSideRoundedBar />}
+    <ResponsiveContainer height={data.length * 68} width="100%">
+      <BarChart
+        data={data}
+        layout="vertical"
+        stackOffset="expand"
+        barSize={8}
+        margin={{ bottom: 0 }}
       >
-        <LabelList
-          dataKey="label"
-          data={data}
-          content={renderCustomizedLabel}
+        <XAxis hide type="number" />
+        <YAxis width={0} type="category" dataKey="name" />
+        <Bar
+          dataKey="value"
+          stackId="a"
+          fill="#044D6C"
+          isAnimationActive={false}
+          shape={<OneSideRoundedBar />}
+        >
+          <LabelList
+            dataKey="label"
+            data={data}
+            content={renderCustomizedLabel}
+          />
+        </Bar>
+        <Bar
+          dataKey="total"
+          stackId="a"
+          fill="#E0E0E0"
+          isAnimationActive={false}
+          shape={<OneSideRoundedBar side="right" />}
         />
-      </Bar>
-      <Bar
-        dataKey="total"
-        stackId="a"
-        fill="#E0E0E0"
-        isAnimationActive={false}
-        shape={<OneSideRoundedBar side="right" />}
-      />
-    </BarChart>
+      </BarChart>
+    </ResponsiveContainer>
   );
 }
