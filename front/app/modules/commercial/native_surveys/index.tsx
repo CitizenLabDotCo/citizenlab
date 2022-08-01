@@ -5,8 +5,9 @@ import { isNilOrError } from 'utils/helperUtils';
 import { IProjectData } from 'services/projects';
 import { IPhaseData } from 'services/phases';
 
-const AdminProjectIdeaEditFormComponent = React.lazy(
-  () => import('./admin/containers/projects/surveys')
+const Surveys = React.lazy(() => import('./admin/containers/projects/surveys'));
+const SurveyEdit = React.lazy(
+  () => import('./admin/containers/projects/surveys/edit')
 );
 
 type RenderOnHideTabConditionProps = {
@@ -44,7 +45,11 @@ const configuration: ModuleConfiguration = {
     'admin.projects.project': [
       {
         path: 'native-survey',
-        element: <AdminProjectIdeaEditFormComponent />,
+        element: <Surveys />,
+      },
+      {
+        path: 'native-survey/edit',
+        element: <SurveyEdit />,
       },
     ],
   },
