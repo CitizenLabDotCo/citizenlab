@@ -17,11 +17,6 @@ const StyledBox = styled(Box)`
   box-shadow: -2px 0px 1px 0px rgba(0, 0, 0, 0.06);
 `;
 
-const StyledCloseIconButton = styled(CloseIconButton)`
-  position: absolute;
-  right: 8px;
-`;
-
 const SurveyBuilderSettings = () => (
   <StyledBox
     position="fixed"
@@ -33,12 +28,14 @@ const SurveyBuilderSettings = () => (
     h="100%"
     background="#ffffff"
   >
-    <StyledCloseIconButton
-      a11y_buttonActionMessage={messages.close}
-      onClick={() => {}}
-      iconColor={colors.label}
-      iconColorOnHover={'#000'}
-    />
+    <Box position="absolute" right="8px">
+      <CloseIconButton
+        a11y_buttonActionMessage={messages.close}
+        onClick={() => {}}
+        iconColor={colors.label}
+        iconColorOnHover={'#000'}
+      />
+    </Box>
     <Title variant="h2">
       <FormattedMessage {...messages.shortAnswer} />
     </Title>

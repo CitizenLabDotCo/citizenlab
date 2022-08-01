@@ -27,10 +27,11 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // routing
 import clHistory from 'utils/cl-router/history';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { useParams } from 'react-router-dom';
 
-const SurveyBuilderTopBar = ({ params: { projectId } }: WithRouterProps) => {
+const SurveyBuilderTopBar = () => {
   const localize = useLocalize();
+  const { projectId } = useParams();
   const project = useProject({ projectId });
 
   const goBack = () => {
@@ -49,8 +50,8 @@ const SurveyBuilderTopBar = ({ params: { projectId } }: WithRouterProps) => {
       borderBottom={`1px solid ${colors.mediumGrey}`}
     >
       <Box
-        p="15px"
-        w="210px"
+        p="16px"
+        w="212px"
         h="100%"
         borderRight={`1px solid ${colors.mediumGrey}`}
         display="flex"
@@ -58,7 +59,7 @@ const SurveyBuilderTopBar = ({ params: { projectId } }: WithRouterProps) => {
       >
         <GoBackButton onClick={goBack} />
       </Box>
-      <Box display="flex" p="15px" flexGrow={1} alignItems="center">
+      <Box display="flex" p="16px" flexGrow={1} alignItems="center">
         <Box flexGrow={2}>
           {isNilOrError(project) ? (
             <Spinner />
@@ -96,4 +97,4 @@ const SurveyBuilderTopBar = ({ params: { projectId } }: WithRouterProps) => {
   );
 };
 
-export default withRouter(SurveyBuilderTopBar);
+export default SurveyBuilderTopBar;

@@ -22,7 +22,7 @@ const ToolboxItem = ({ icon, label }: Props) => {
     <StyledBox
       width="100%"
       display="flex"
-      paddingLeft="10px"
+      paddingLeft="12px"
       alignItems="center"
     >
       <Icon
@@ -32,9 +32,7 @@ const ToolboxItem = ({ icon, label }: Props) => {
         fill={colors.adminTextColor}
         name={icon}
       />
-      <Text color="text" style={{ lineHeight: '1' }}>
-        {label}
-      </Text>
+      <Text color="text">{label}</Text>
     </StyledBox>
   );
 };
