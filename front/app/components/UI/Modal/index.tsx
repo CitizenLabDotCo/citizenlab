@@ -456,6 +456,7 @@ class Modal extends PureComponent<Props, State> {
   render() {
     const { windowHeight } = this.state;
     const {
+      className,
       windowSize,
       width,
       children,
@@ -464,12 +465,13 @@ class Modal extends PureComponent<Props, State> {
       footer,
       hasSkipButton,
       skipText,
+      fixedHeight,
+      fullScreen = false,
     } = this.props;
-    const hasFixedHeight = this.props.fixedHeight;
     const smallerThanSmallTablet = windowSize
       ? windowSize <= viewportWidths.smallTablet
       : false;
-    const timeout = this.props.fullScreen
+    const timeout = fullScreen
       ? 0
       : smallerThanSmallTablet
       ? mobileTransformTimeout
@@ -496,20 +498,18 @@ class Modal extends PureComponent<Props, State> {
         >
           <Overlay
             id="e2e-modal-container"
-            className={this.props.className}
-            fullScreen={this.props.fullScreen}
+            className={className}
+            fullScreen={fullScreen}
           >
-            <StyledFocusOn width={width} fullScreen={this.props.fullScreen}>
+            <StyledFocusOn width={width} fullScreen={fullScreen}>
               <ModalContainer
-                className={`modalcontent ${
-                  hasFixedHeight ? 'fixedHeight' : ''
-                }`}
+                className={`modalcontent ${fixedHeight ? 'fixedHeight' : ''}`}
                 onClickOutside={this.clickOutsideModal}
                 windowHeight={windowHeight}
                 ariaLabelledBy={header ? 'modal-header' : undefined}
                 aria-modal="true"
                 role="dialog"
-                fullScreen={this.props.fullScreen}
+                fullScreen={fullScreen}
               >
                 <StyledCloseIconButton
                   className="e2e-modal-close-button"
@@ -527,7 +527,7 @@ class Modal extends PureComponent<Props, State> {
 
                 <ModalContentContainer
                   padding={padding}
-                  fullScreen={this.props.fullScreen}
+                  fullScreen={fullScreen}
                 >
                   {children}
                 </ModalContentContainer>
