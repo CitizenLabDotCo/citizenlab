@@ -1394,7 +1394,7 @@
   "app.errors.bulk_import_ideas_image_url_not_valid": "Der kunne ikke downloades noget billede fra {value}. Sørg for, at URL-adressen er gyldig og slutter med en filudvidelse som f.eks. .png eller .jpg. Dette problem opstår i rækken med ID {row}.",
   "app.errors.bulk_import_ideas_location_point_blank_coordinate": "Idea location med en manglende koordinat i {value}. Dette problem opstår i rækken med ID {row}.",
   "app.errors.bulk_import_ideas_location_point_non_numeric_coordinate": "Idéplacering med en ikke-numerisk koordinat i {value}. Dette problem opstår i rækken med ID {row}.",
-  "app.errors.bulk_import_ideas_maximum_ideas_exceeded": "Det maksimale antal {værdi} idéer er overskredet.",
+  "app.errors.bulk_import_ideas_maximum_ideas_exceeded": "Det maksimale antal {value} idéer er overskredet.",
   "app.errors.bulk_import_ideas_maximum_phase_rank_exceeded": "Idéprojektet har færre faser end den ønskede fase {value}. Dette problem opstår i rækken med ID {row}.",
   "app.errors.bulk_import_ideas_non_numeric_phase_rank": "Ikke-numerisk fase rang i {value}. Dette problem opstår i rækken med ID {row}.",
   "app.errors.bulk_import_ideas_project_not_found": "Der findes intet projekt med titlen \"{value}\". Dette problem opstår i rækken med ID {row}.",
