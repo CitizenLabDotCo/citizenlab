@@ -98,7 +98,6 @@ module MultiTenancy
             'bottom_info_section_enabled' => hp.bottom_info_section_enabled,
             'bottom_info_section_multiloc' => hp.bottom_info_section_multiloc,
             'events_widget_enabled' => hp.events_widget_enabled,
-            'projects_enabled' => hp.projects_enabled,
             'projects_header_multiloc' => hp.projects_header_multiloc,
             'banner_avatars_enabled' => hp.banner_avatars_enabled,
             'banner_layout' => hp.banner_layout,
