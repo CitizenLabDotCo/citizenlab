@@ -20,6 +20,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
+import { handleRHFSubmissionError } from 'utils/errorUtils';
 
 export interface FormValues {
   nav_bar_item_title_multiloc: Multiloc;
@@ -51,9 +52,7 @@ const NavbarItemForm = ({
     try {
       await onSubmit(formValues);
     } catch (error) {
-      Object.keys(error.json.errors).forEach((key: keyof FormValues) => {
-        methods.setError(key, error.json.errors[key][0]);
-      });
+      handleRHFSubmissionError(error, methods.setError);
     }
   };
 

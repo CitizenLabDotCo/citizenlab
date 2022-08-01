@@ -36,6 +36,7 @@ import Button from 'components/UI/Button';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { slugRexEx } from 'utils/textUtils';
+import { handleRHFSubmissionError } from 'utils/errorUtils';
 
 // hooks
 import useLocale from 'hooks/useLocale';
@@ -93,9 +94,7 @@ const PageFormWithNavbarNameField = ({
     try {
       await onSubmit(formValues);
     } catch (error) {
-      Object.keys(error.json.errors).forEach((key: keyof FormValues) => {
-        methods.setError(key, error.json.errors[key][0]);
-      });
+      handleRHFSubmissionError(error, methods.setError);
     }
   };
 
