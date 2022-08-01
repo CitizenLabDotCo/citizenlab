@@ -48,7 +48,6 @@ resource 'Home Page' do
         parameter :top_info_section_enabled, 'if the top info section is enabled'
         parameter :top_info_section_multiloc, 'multiloc content for the top info section'
         parameter :events_widget_enabled, 'if events are enabled'
-        parameter :projects_enabled, 'if projects are enabled'
         parameter :projects_header_multiloc, 'multiloc content for the projects header'
         parameter :pinned_admin_publication_ids, 'the IDs of admin publications that are pinned to the page', type: :array
       end

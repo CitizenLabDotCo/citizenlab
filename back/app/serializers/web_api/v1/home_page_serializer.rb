@@ -6,7 +6,6 @@ class WebApi::V1::HomePageSerializer < WebApi::V1::BaseSerializer
     :bottom_info_section_enabled,
     :bottom_info_section_multiloc,
     :events_widget_enabled,
-    :projects_enabled,
     :projects_header_multiloc,
     :banner_avatars_enabled,
     :banner_layout,
