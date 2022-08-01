@@ -14,7 +14,7 @@ RSpec.describe UserCustomFields::WebApi::V1::CategoricalDistributionSerializer d
           id: be_kind_of(String),
           type: :categorical_distribution,
           attributes: {
-            distribution: distribution.probabilities_and_counts,
+            distribution: distribution.probabilities_and_counts
           },
           relationships: {
             values: {

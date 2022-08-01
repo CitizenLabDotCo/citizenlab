@@ -122,7 +122,7 @@ module UserCustomFields
           @reference_population ||= calculate_reference_population
         end
 
-        def calculate_reference_distribution
+        def calculate_reference_population
           return if custom_field.key == 'birthyear'
           return if (ref_distribution = custom_field.current_ref_distribution).blank?
 
