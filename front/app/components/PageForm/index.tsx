@@ -1,7 +1,7 @@
 import React from 'react';
 
 // types
-import { Multiloc, UploadFile } from 'typings';
+import { Multiloc, UploadFile, CLErrorsJSON } from 'typings';
 
 // form
 import { useForm, FormProvider } from 'react-hook-form';
@@ -39,6 +39,20 @@ import useLocale from 'hooks/useLocale';
 import usePage from 'hooks/usePage';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 
+const handleRHFSubmissionError = (
+  error: Error | CLErrorsJSON,
+  handleError: (error: string, options: Record<string, any>) => void
+) => {
+  if ('json' in error && error.json.errors) {
+    Object.keys(error.json.errors).forEach((key) => {
+      handleError(key, error.json.errors[key][0]);
+    });
+  } else {
+    handleError('submissionError', {
+      type: 'server',
+    });
+  }
+};
 export interface FormValues {
   title_multiloc: Multiloc;
   body_multiloc: Multiloc;
@@ -89,9 +103,7 @@ const PageForm = ({
     try {
       await onSubmit(formValues);
     } catch (error) {
-      Object.keys(error.json.errors).forEach((key: keyof FormValues) => {
-        methods.setError(key, error.json.errors[key][0]);
-      });
+      handleRHFSubmissionError(error, methods.setError);
     }
   };
 

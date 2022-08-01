@@ -14,7 +14,7 @@ import { scrollToElement } from 'utils/scroll';
 import CloseIconButton from '../CloseIconButton';
 
 const RHFFeedback = ({ intl: { formatMessage } }: InjectedIntlProps) => {
-  const [successMessageIsVisible, setSuccessMessageIsVisible] = useState(true);
+  const [successMessageIsVisible, setSuccessMessageIsShown] = useState(true);
   const {
     formState: { errors, isSubmitSuccessful, isSubmitted, submitCount },
   } = useFormContext();
@@ -22,7 +22,7 @@ const RHFFeedback = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   useEffect(() => {
     if (submitCount > 0) {
       scrollToElement({ id: 'rhfFeedback' });
-      setSuccessMessageIsVisible(true);
+      setSuccessMessageIsShown(true);
     }
   }, [submitCount]);
 
@@ -63,12 +63,11 @@ const RHFFeedback = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     return errorMessages;
   };
 
-  // Add tests
-  // Add copy
-  const closeSuccessMessage = () => setSuccessMessageIsVisible(false);
+  const closeSuccessMessage = () => setSuccessMessageIsShown(false);
   const successMessageIsShown = isSubmitSuccessful && successMessageIsVisible;
   const errorMessageIsShown =
-    getAllErrorMessages().length > 0 && !isSubmitSuccessful;
+    (getAllErrorMessages().length > 0 || errors.submissionError) &&
+    !isSubmitSuccessful;
 
   return (
     <>
@@ -105,26 +104,30 @@ const RHFFeedback = ({ intl: { formatMessage } }: InjectedIntlProps) => {
               <Title color="clRed" variant="h4">
                 There is a problem
               </Title>
-              {getAllErrorMessages().map((error) => {
-                return (
-                  <Text
-                    key={error.field}
-                    onClick={() => scrollToElement({ id: error.field })}
-                    onKeyPress={(e) => {
-                      if (e.key === 'Enter') {
-                        scrollToElement({ id: error.field });
-                      }
-                    }}
-                    textDecoration="underline"
-                    color="clRed"
-                    style={{ cursor: 'pointer' }}
-                    role="link"
-                    tabIndex={0}
-                  >
-                    {error.message}
-                  </Text>
-                );
-              })}
+              {errors.submissionError ? (
+                <Text color="clRed">Submission error</Text>
+              ) : (
+                getAllErrorMessages().map((error) => {
+                  return (
+                    <Text
+                      key={error.field}
+                      onClick={() => scrollToElement({ id: error.field })}
+                      onKeyPress={(e) => {
+                        if (e.key === 'Enter') {
+                          scrollToElement({ id: error.field });
+                        }
+                      }}
+                      textDecoration="underline"
+                      color="clRed"
+                      style={{ cursor: 'pointer' }}
+                      role="link"
+                      tabIndex={0}
+                    >
+                      {error.message}
+                    </Text>
+                  );
+                })
+              )}
             </Error>
           )}
         </Box>
