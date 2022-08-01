@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_19_103052) do
+ActiveRecord::Schema.define(version: 2022_08_01_201347) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -339,7 +339,6 @@ ActiveRecord::Schema.define(version: 2022_07_19_103052) do
     t.boolean "bottom_info_section_enabled", default: false, null: false
     t.jsonb "bottom_info_section_multiloc", default: {}, null: false
     t.boolean "events_widget_enabled", default: false, null: false
-    t.boolean "projects_enabled", default: true, null: false
     t.jsonb "projects_header_multiloc", default: {}, null: false
     t.boolean "banner_avatars_enabled", default: true, null: false
     t.string "banner_layout", default: "full_width_banner_layout", null: false
