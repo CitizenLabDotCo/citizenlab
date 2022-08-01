@@ -12,8 +12,16 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { scrollToElement } from 'utils/scroll';
 import CloseIconButton from '../CloseIconButton';
+import messages from './messages';
 
-const RHFFeedback = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+type RHFFeedbackProps = {
+  successMessage?: string;
+} & InjectedIntlProps;
+
+const RHFFeedback = ({
+  successMessage,
+  intl: { formatMessage },
+}: RHFFeedbackProps) => {
   const [successMessageIsVisible, setSuccessMessageIsShown] = useState(true);
   const {
     formState: { errors, isSubmitSuccessful, isSubmitted, submitCount },
@@ -93,7 +101,7 @@ const RHFFeedback = ({ intl: { formatMessage } }: InjectedIntlProps) => {
                   height="24px"
                 />
                 <Title color="clGreenSuccess" variant="h4" as="h3">
-                  Form is submitted successfully
+                  {successMessage || formatMessage(messages.successMessage)}
                 </Title>
               </Box>
               <CloseIconButton onClick={closeSuccessMessage} />
@@ -102,10 +110,12 @@ const RHFFeedback = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           {errorMessageIsShown && (
             <Error marginBottom="12px">
               <Title color="clRed" variant="h4">
-                There is a problem
+                {formatMessage(messages.errorTitle)}
               </Title>
               {errors.submissionError ? (
-                <Text color="clRed">Submission error</Text>
+                <Text color="clRed">
+                  {formatMessage(messages.submissionErrorMessage)}
+                </Text>
               ) : (
                 getAllErrorMessages().map((error) => {
                   return (
