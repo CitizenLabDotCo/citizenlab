@@ -116,3 +116,5 @@ export function usersByAgeStream(streamParams: IStreamParams | null = null) {
     ...streamParams,
   });
 }
+
+export const usersByAgeXlsxEndpoint = `${apiEndpoint}/users_by_age_as_xlsx`;
