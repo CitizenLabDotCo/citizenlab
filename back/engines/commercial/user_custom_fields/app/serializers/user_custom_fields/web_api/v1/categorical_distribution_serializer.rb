@@ -3,8 +3,8 @@
 module UserCustomFields
   module WebApi
     module V1
-      class RefDistributionSerializer < ::WebApi::V1::BaseSerializer
-        set_type :reference_distribution
+      class CategoricalDistributionSerializer < ::WebApi::V1::BaseSerializer
+        set_type :categorical_distribution
 
         attribute :distribution, &:probabilities_and_counts
 

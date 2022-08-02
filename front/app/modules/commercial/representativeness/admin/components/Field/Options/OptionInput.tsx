@@ -8,7 +8,7 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
-import { parsePopulationValue } from './utils';
+import { parsePopulationValue } from '../../../utils/options';
 
 interface Props {
   value: number | null;
@@ -39,6 +39,7 @@ const OptionInput = ({ value, percentage, disabled, onChange }: Props) => {
         ) : (
           <Input
             type="text"
+            className="option-population-input"
             value={formattedPopulation}
             onChange={handleChange}
           />

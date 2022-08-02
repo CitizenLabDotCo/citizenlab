@@ -7,6 +7,19 @@ module UserCustomFields
         XLSX_MIME_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         private_constant :XLSX_MIME_TYPE
 
+        def users_by_age
+          age_stats = AgeStats.calculate(find_users)
+          render json: age_stats, serializer: AgeStatsSerializer, adapter: :attributes
+        end
+
+        def users_by_age_as_xlsx
+          send_data(users_by_age_xlsx, type: XLSX_MIME_TYPE, filename: xlsx_export_filename(custom_field))
+        end
+
+        def users_by_age_xlsx
+          AgeStatsXlsxMaker.generate(age_stats)
+        end
+
         def users_by_custom_field
           json_response = { series: {
             users: user_counts,
@@ -63,19 +76,21 @@ module UserCustomFields
 
         def custom_field
           @custom_field ||=
-            if params[:custom_field_id]
-              CustomField.find(params[:custom_field_id])
-            elsif (key = custom_field_key_from_path)
+            if (key = custom_field_key_from_path)
               CustomField.find_by(key: key)
+            elsif params[:custom_field_id]
+              CustomField.find(params[:custom_field_id])
             else
               raise ActiveRecord::RecordNotFound
             end
         end
 
         def custom_field_key_from_path
-          request
+          key = request
             .path.split('/').last
-            .match(/^users_by_(?<key>gender|education|birthyear|domicile)/)&.[](:key)
+            .match(/^users_by_(?<key>age|birthyear|domicile|education|gender)/)&.[](:key)
+
+          key == 'age' ? 'birthyear' : key
         end
 
         def user_counts
@@ -92,7 +107,7 @@ module UserCustomFields
           @expected_user_counts ||=
             if (ref_distribution = custom_field.current_ref_distribution).present?
               # user counts for toggled off options are not used to calculate expected user counts
-              toggled_on_option_keys = ref_distribution.distribution_by_option_id.keys
+              toggled_on_option_keys = ref_distribution.distribution_by_option_key.keys
               nb_users_to_redistribute = user_counts.slice(*toggled_on_option_keys).values.sum
               expected_counts = ref_distribution.expected_counts(nb_users_to_redistribute)
 
@@ -104,7 +119,7 @@ module UserCustomFields
         def reference_population
           @reference_population ||=
             if (ref_distribution = custom_field.current_ref_distribution).present?
-              ref_distribution.distribution_by_option_id
+              ref_distribution.distribution_by_option_key
             end
         end
 

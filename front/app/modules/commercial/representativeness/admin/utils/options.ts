@@ -1,8 +1,12 @@
 // utils
 import { roundPercentages } from 'utils/math';
+import { FormValues } from './form';
+import { forEachBin } from './bins';
 
 // typings
-import { FormValues } from '../utils';
+import { IUserCustomFieldOptionData } from 'modules/commercial/user_custom_fields/services/userCustomFieldOptions';
+import { Localize } from 'hooks/useLocalize';
+import { Bins } from '../services/referenceDistribution';
 
 /*
  * Takes a thousand-formatted locale string in the US format (e.g. 1,000,000)
@@ -73,6 +77,21 @@ export const getPercentages = (
     };
   }, {});
 };
+
+export const formatUserCustomFieldOptions = (
+  userCustomFieldOptions: IUserCustomFieldOptionData[],
+  localize: Localize
+) =>
+  userCustomFieldOptions.map((userCustomFieldOption) => ({
+    id: userCustomFieldOption.id,
+    label: localize(userCustomFieldOption.attributes.title_multiloc),
+  }));
+
+export const formatBinOptions = (bins: Bins, andOverText: string) =>
+  forEachBin(bins).map(({ lowerBound, upperBound, binId }) => ({
+    id: binId,
+    label: upperBound === null ? `${lowerBound} ${andOverText}` : binId,
+  }));
 
 const areAllOptionsEmpty = (formValues: FormValues) => {
   return Object.values(formValues).every((formValue) => formValue === null);

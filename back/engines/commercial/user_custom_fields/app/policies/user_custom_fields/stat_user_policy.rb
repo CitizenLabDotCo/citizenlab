@@ -6,6 +6,10 @@ module UserCustomFields
       user&.active? && (user&.admin? || user&.project_moderator?)
     end
 
+    def users_by_age?
+      user&.active? && (user&.admin? || user&.project_moderator?)
+    end
+
     def users_by_birthyear?
       user&.active? && (user&.admin? || user&.project_moderator?)
     end

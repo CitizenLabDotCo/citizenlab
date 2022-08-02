@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "type": "object",
+  "required": [
+    "counts",
+    "bins"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "counts": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
+    },
+    "bins": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    }
+  }
+}

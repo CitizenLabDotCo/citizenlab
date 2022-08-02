@@ -34,19 +34,9 @@ const Fields = () => {
         </Box>
       )}
 
-      {userCustomFields.filter(isShown).map((userCustomField) => {
-        const { id, attributes } = userCustomField;
-
-        return (
-          <Field
-            userCustomFieldId={id}
-            isDefault={attributes.code !== null}
-            isComingSoon={!isSupported(userCustomField)}
-            titleMultiloc={attributes.title_multiloc}
-            key={id}
-          />
-        );
-      })}
+      {userCustomFields.filter(isShown).map(({ id }) => (
+        <Field userCustomFieldId={id} key={id} />
+      ))}
     </Box>
   );
 };
