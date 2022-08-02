@@ -66,14 +66,16 @@ const PageForm = ({
   const appConfig = useAppConfiguration();
 
   const schema = object({
-    title_multiloc: validateMultiloc(formatMessage(messages.emptyTitleError)),
+    title_multiloc: validateMultiloc(
+      formatMessage(messages.emptyTitleErrorMessage)
+    ),
     body_multiloc: validateMultiloc(
-      formatMessage(messages.emptyDescriptionError)
+      formatMessage(messages.emptyDescriptionErrorMessage)
     ),
     ...(!hideSlugInput && {
       slug: string()
-        .matches(slugRexEx, formatMessage(messages.slugRegexError))
-        .required(formatMessage(messages.emptySlugError)),
+        .matches(slugRexEx, formatMessage(messages.slugRegexErrorMessage))
+        .required(formatMessage(messages.emptySlugErrorMessage)),
       local_page_files: mixed(),
     }),
   });
@@ -174,7 +176,7 @@ const PageForm = ({
         </SectionField>
         <Box display="flex">
           <Button type="submit" processing={methods.formState.isSubmitting}>
-            {formatMessage(messages.save)}
+            {formatMessage(messages.savePage)}
           </Button>
         </Box>
       </form>

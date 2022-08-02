@@ -38,7 +38,7 @@ const NavbarItemForm = ({
 }: PageFormProps) => {
   const schema = object({
     nav_bar_item_title_multiloc: validateMultiloc(
-      formatMessage(messages.emptyNavbarItemTitleError)
+      formatMessage(messages.emptyTitleErrorMessage)
     ),
   });
 
@@ -69,7 +69,7 @@ const NavbarItemForm = ({
         </SectionField>
         <Box display="flex">
           <Button type="submit" processing={methods.formState.isSubmitting}>
-            {formatMessage(messages.save)}
+            {formatMessage(messages.savePage)}
           </Button>
         </Box>
       </form>

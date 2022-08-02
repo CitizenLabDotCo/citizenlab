@@ -63,27 +63,25 @@ export default defineMessages({
     defaultMessage:
       'The slug can only contain regular, lowercase letters (a-z), numbers (0-9) and hyphens (-). The first and last characters cannot be hyphens. Consecutive hyphens (--) are forbidden.',
   },
-  emptySlugError: {
+  emptySlugErrorMessage: {
     id: 'app.modules.commercial.customizable_navbar.emptySlugError',
-    defaultMessage: "The slug can't be empty.",
+    defaultMessage: 'Please provide a slug.',
   },
-  takenSlugError: {
+  takenSlugErrorMessage: {
     id: 'app.components.pageForm.takenSlugError',
     defaultMessage:
       'This slug is already taken. Please choose a different one.',
   },
-  emptyTitleError: {
-    id: 'app.modules.commercial.customizable_navbar.emptyTitleError',
-    defaultMessage:
-      'The title field is required. If your platform has multiple languages, check that all languages are filled in.',
+  emptyTitleErrorMessage: {
+    id: 'app.modules.commercial.customizable_navbar.emptyTitleErrorMessage',
+    defaultMessage: 'Please provide title for all languages.',
   },
-  emptyDescriptionError: {
-    id: 'app.modules.commercial.customizable_navbar.emptyDescriptionError',
-    defaultMessage:
-      'The description field is required. If your platform has multiple languages, check that all languages are filled in.',
+  emptyDescriptionErrorMessage: {
+    id: 'app.modules.commercial.customizable_navbar.emptyDescriptionErrorMessage',
+    defaultMessage: 'Please provide description for all languages.',
   },
-  save: {
+  savePage: {
     id: 'app.modules.commercial.customizable_navbar.admin.components.NavbarTitleField.save',
-    defaultMessage: 'Save',
+    defaultMessage: 'Save page',
   },
 });

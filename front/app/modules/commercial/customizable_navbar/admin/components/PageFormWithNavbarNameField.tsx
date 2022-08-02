@@ -72,13 +72,15 @@ const PageFormWithNavbarNameField = ({
     nav_bar_item_title_multiloc: validateMultiloc(
       formatMessage(messages.emptyNavbarItemTitleError)
     ),
-    title_multiloc: validateMultiloc(formatMessage(messages.emptyTitleError)),
+    title_multiloc: validateMultiloc(
+      formatMessage(messages.emptyTitleErrorMessage)
+    ),
     body_multiloc: validateMultiloc(
-      formatMessage(messages.emptyDescriptionError)
+      formatMessage(messages.emptyDescriptionErrorMessage)
     ),
     slug: string()
       .matches(slugRexEx, formatMessage(messages.slugRegexError))
-      .required(formatMessage(messages.emptySlugError)),
+      .required(formatMessage(messages.emptySlugErrorMessage)),
     local_page_files: mixed(),
   });
 
@@ -185,7 +187,7 @@ const PageFormWithNavbarNameField = ({
         </SectionField>
         <Box display="flex">
           <Button type="submit" processing={methods.formState.isSubmitting}>
-            {formatMessage(messages.save)}
+            {formatMessage(messages.savePage)}
           </Button>
         </Box>
       </form>

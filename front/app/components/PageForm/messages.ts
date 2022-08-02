@@ -42,32 +42,30 @@ export default defineMessages({
     defaultMessage:
       'If you change the URL, links to this page using the old URL will no longer work.',
   },
-  slugRegexError: {
-    id: 'app.components.PagesForm.slugRegexError',
+  slugRegexErrorMessage: {
+    id: 'app.components.PagesForm.slugRegexErrorMessage',
     defaultMessage:
       'The slug can only contain regular, lowercase letters (a-z), numbers (0-9) and hyphens (-). The first and last characters cannot be hyphens. Consecutive hyphens (--) are forbidden.',
   },
-  emptySlugError: {
-    id: 'app.components.PagesForm.emptySlugError',
-    defaultMessage: "The slug can't be empty.",
+  emptySlugErrorMessage: {
+    id: 'app.components.PagesForm.emptySlugErrorMessage',
+    defaultMessage: 'Please provide a slug.',
   },
-  takenSlugError: {
-    id: 'app.components.pageForm.takenSlugError',
+  takenSlugErrorMessage: {
+    id: 'app.components.pageForm.takenSlugErrorMessage',
     defaultMessage:
       'This slug is already taken. Please choose a different one.',
   },
-  emptyTitleError: {
-    id: 'app.components.PagesForm.emptyTitleError',
-    defaultMessage:
-      'The title field is required. If your platform has multiple languages, check that all languages are filled in.',
+  emptyTitleErrorMessage: {
+    id: 'app.components.PagesForm.emptyTitleErrorMessage',
+    defaultMessage: 'Please provide title for all languages.',
   },
-  emptyDescriptionError: {
-    id: 'app.components.PagesForm.emptyDescriptionError',
-    defaultMessage:
-      'The description field is required. If your platform has multiple languages, check that all languages are filled in.',
+  emptyDescriptionErrorMessage: {
+    id: 'app.components.PagesForm.emptyDescriptionErrorMessage',
+    defaultMessage: 'Please provide description for all languages.',
   },
-  save: {
+  savePage: {
     id: 'app.components.PagesForm.save',
-    defaultMessage: 'Save',
+    defaultMessage: 'Save page',
   },
 });
