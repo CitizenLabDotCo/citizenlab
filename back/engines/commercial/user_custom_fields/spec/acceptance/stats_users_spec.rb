@@ -222,6 +222,7 @@ resource 'Stats - Users' do
           ]
         end
       end
+
       include_examples 'ignore reference distribution'
     end
   end

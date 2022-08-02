@@ -23,6 +23,8 @@ require 'user_custom_fields/core_ext/enumerable'
 #
 module UserCustomFields
   module Representativeness
+    # Currently, the +BinnedDistribution+s can only be used for the birthyear custom field, but this
+    # could be adapted to support number custom field in general.
     class BinnedDistribution < RefDistribution
       validate :validate_distribution
 

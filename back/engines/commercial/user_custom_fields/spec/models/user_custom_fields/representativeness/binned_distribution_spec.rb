@@ -11,7 +11,7 @@ RSpec.describe UserCustomFields::Representativeness::BinnedDistribution do
     it { is_expected.to be_valid }
   end
 
-  # Needed to test counts validations.
+  # This patch is needed to test counts validations.
   # See 'reference distribution' shared examples for more info.
   described_class.class_eval do
     def counts=(counts)

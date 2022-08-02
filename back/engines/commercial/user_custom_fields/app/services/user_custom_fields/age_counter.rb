@@ -21,7 +21,8 @@ module UserCustomFields
     private
 
     def convert_to_age(birthyear, time: Time.zone.now, precision: 0)
-      # Estimated birth date (time) is July 1st of the year of birth
+      # Since we don't known the exact birth date, we estimate it as the middle of the
+      # year: July 1st of the year of birth.
       birth_time = Time.zone.local(birthyear, 7, 1)
       age = (time - birth_time) / 1.year
       age.round(precision)
