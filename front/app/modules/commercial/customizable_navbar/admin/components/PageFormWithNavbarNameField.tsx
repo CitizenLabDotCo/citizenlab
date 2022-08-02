@@ -103,7 +103,9 @@ const PageFormWithNavbarNameField = ({
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onFormSubmit)}>
-        <RHFFeedback />
+        <RHFFeedback
+          successMessage={formatMessage(messages.savePageSuccessMessage)}
+        />
         <SectionField>
           <RHFInputMultilocWithLocaleSwitcher
             label={formatMessage(messages.navbarItemTitle)}

@@ -7,7 +7,8 @@ export default defineMessages({
   },
   submissionErrorMessage: {
     id: 'app.components.RHFFeedback.submissionErrorMessage',
-    defaultMessage: 'Submission error',
+    defaultMessage:
+      'The form was not submitted successfully. Please contact us for more information.',
   },
   successMessage: {
     id: 'app.components.RHFFeedback.successMessage',

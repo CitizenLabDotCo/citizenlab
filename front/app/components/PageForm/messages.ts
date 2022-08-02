@@ -68,4 +68,8 @@ export default defineMessages({
     id: 'app.components.PagesForm.save',
     defaultMessage: 'Save page',
   },
+  savePageSuccessMessage: {
+    id: 'app.components.PagesForm.save',
+    defaultMessage: 'Page successfully saved.',
+  },
 });

@@ -84,4 +84,8 @@ export default defineMessages({
     id: 'app.modules.commercial.customizable_navbar.admin.components.NavbarTitleField.save',
     defaultMessage: 'Save page',
   },
+  savePageSuccessMessage: {
+    id: 'app.components.PagesForm.save',
+    defaultMessage: 'Page successfully saved.',
+  },
 });
