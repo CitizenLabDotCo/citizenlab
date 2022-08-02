@@ -138,9 +138,23 @@ const ModalContainer = styled(clickOutside)<{
     max-height: 600px;
   }
 
+  ${({ fullScreen }) =>
+    fullScreen &&
+    `
+    margin: 0;
+    align-items: center;
+    max-height: 100%;
+  `}
+
   /* tall desktops screens */
   @media (min-height: 1200px) {
     margin-top: 120px;
+
+    ${({ fullScreen }) =>
+      fullScreen &&
+      `
+        margin-top: 0;
+      `}
   }
 
   ${media.smallerThanMinTablet`
@@ -148,18 +162,18 @@ const ModalContainer = styled(clickOutside)<{
     max-height: ${(props) => `calc(${props.windowHeight} - 30px)`};
     margin-top: 15px;
 
+    ${({ fullScreen }) =>
+      fullScreen &&
+      `
+        margin-top: 0;
+        max-height: 100%;
+        max-width: 100%;
+      `}
+
     &.fixedHeight {
       height: auto;
       max-height: 85vh;
     }
-  `}
-
-  ${({ fullScreen }) =>
-    fullScreen &&
-    `
-    margin: 0;
-    align-items: center;
-    max-height: 100%;
   `}
 `;
 
