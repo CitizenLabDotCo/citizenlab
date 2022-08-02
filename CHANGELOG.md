@@ -2,6 +2,10 @@
 
 ## Next Release
 
+### Added
+
+- [CL-1189] Adds Turkish locale to platform
+
 ## 2022-07-28_2
 
 ### Fixed
