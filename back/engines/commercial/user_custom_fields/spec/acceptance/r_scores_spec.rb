@@ -85,20 +85,7 @@ resource 'R-scores (Representativeness scores)' do
       end
     end
 
-    context 'when normal user' do
-      before { user_header_token }
-
-      example 'returns 401 (Unauthorized)', document: false do
-        do_request
-        expect(status).to eq(401)
-      end
-    end
-
-    context 'when visitor' do
-      example 'returns 401 (Unauthorized)', document: false do
-        do_request
-        expect(status).to eq(401)
-      end
-    end
+    include_examples 'not authorized to visitors'
+    include_examples 'not authorized to normal users'
   end
 end
