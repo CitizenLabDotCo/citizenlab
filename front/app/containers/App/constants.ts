@@ -50,6 +50,7 @@ export const locales = [
   'sr-Latn',
   'sr-SP',
   'sv-SE',
+  'tr-TR',
 ];
 
 // the locales we really support, ie we have translations for these ect
@@ -80,6 +81,7 @@ export const appLocalePairs = {
   'sr-Latn': 'Srpski (Latinica)',
   'sr-SP': 'Српски (Ћирилица)',
   'sv-SE': 'Svenska',
+  'tr-TR': 'Türkçe',
 };
 
 export const appGraphqlLocalePairs = {
@@ -115,6 +117,7 @@ export const appGraphqlLocalePairs = {
   srLatn: 'sr-Latn',
   srSp: 'sr-SP',
   svSE: 'sv-SE',
+  trTR: 'tr-TR',
 };
 
 export const shortenedAppLocalePairs = {
@@ -144,6 +147,7 @@ export const shortenedAppLocalePairs = {
   'sr-Latn': 'Srpski',
   'sr-SP': 'Српски',
   'sv-SE': 'Svenska',
+  'tr-TR': 'Türkçe',
 };
 
 // https://github.com/moment/moment/tree/develop/locale lists the supported locales by moment.js
@@ -173,4 +177,5 @@ export const appLocalesMomentPairs = {
   'sr-Latn': 'sr',
   'sr-SP': 'sr',
   'sv-SE': 'sv',
+  'tr-TR': 'tr',
 };
