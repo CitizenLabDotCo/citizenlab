@@ -6,11 +6,11 @@ import {
   NoDataContainer,
   PieChartStyleFixesDiv,
 } from 'components/admin/GraphWrappers';
-import { FormattedMessage } from 'utils/cl-intl';
 import CustomLabel from './CustomLabel';
 
 // i18n
 import messages from '../messages';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -24,6 +24,8 @@ export default function ({
   centerLabel,
   centerValue,
   emptyContainerContent,
+  width,
+  height,
 }: PieProps) {
   const noData = isNilOrError(data) || data.every(isEmpty) || data.length <= 0;
 
@@ -41,7 +43,7 @@ export default function ({
 
   return (
     <PieChartStyleFixesDiv>
-      <ResponsiveContainer height={210} width="100%">
+      <ResponsiveContainer width={width} height={height}>
         <PieChart>
           <Pie
             isAnimationActive={true}

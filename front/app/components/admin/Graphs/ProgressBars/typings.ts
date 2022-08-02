@@ -1,13 +1,12 @@
 export interface DataRow {
   name: string;
-  color: string;
   value: number;
+  label: string;
+  total: number;
 }
 
-export interface PieProps {
+export interface ProgressBarsProps {
   data?: DataRow[] | null | Error;
-  centerLabel?: string;
-  centerValue?: string;
   width?: string | number;
   height?: string | number;
   emptyContainerContent?: React.ReactNode;

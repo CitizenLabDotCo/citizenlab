@@ -97,13 +97,15 @@ const PostFeedback = ({
         <WrapperBox>
           <PieBox>
             <PieChart
+              height={210}
+              width="100%"
               data={pieData}
               centerLabel={centerLabel}
               centerValue={centerValue}
             />
           </PieBox>
           <ProgressBarsBox>
-            <ProgressBars data={progressBarsData} />
+            <ProgressBars data={progressBarsData} width="100%" height={136} />
             <Text>
               <CalendarIcon name="calendar" />
               {formatMessage(messages.averageTime, { days })}

@@ -1,4 +1,6 @@
 import React from 'react';
+
+// components
 import {
   BarChart,
   Bar,
@@ -7,6 +9,18 @@ import {
   LabelList,
   ResponsiveContainer,
 } from 'recharts';
+import { NoDataContainer } from 'components/admin/GraphWrappers';
+
+// i18n
+import messages from '../messages';
+import { FormattedMessage } from 'utils/cl-intl';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import { isEmpty } from 'lodash-es';
+
+// typings
+import { ProgressBarsProps } from './typings';
 
 const renderCustomizedLabel = (props) => {
   const { x, y, value } = props;
@@ -49,7 +63,7 @@ const OneSideRoundedBar = (props) => {
 
   const radius = 3;
   let shape;
-  if (value === 0 || total === 0) {
+  if (value === 0 || total === value) {
     shape = (
       <rect
         x={x}
@@ -72,9 +86,28 @@ const OneSideRoundedBar = (props) => {
   return shape;
 };
 
-export default function ({ data }) {
+export default function ({
+  data,
+  width,
+  height,
+  emptyContainerContent,
+}: ProgressBarsProps) {
+  const noData = isNilOrError(data) || data.every(isEmpty) || data.length <= 0;
+
+  if (noData) {
+    return (
+      <NoDataContainer>
+        {emptyContainerContent ? (
+          <>{emptyContainerContent}</>
+        ) : (
+          <FormattedMessage {...messages.noData} />
+        )}
+      </NoDataContainer>
+    );
+  }
+
   return (
-    <ResponsiveContainer height={data.length * 68} width="100%">
+    <ResponsiveContainer width={width} height={height}>
       <BarChart
         data={data}
         layout="vertical"
