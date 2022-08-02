@@ -1,91 +1,99 @@
 {
-  "type" : "object",
   "$schema": "http://citizenlab.co/tenant_settings_spec.json",
-  "properties" : {
-    "dimensions" : {
-      "type" : "object",
-      "minProperties" : 1,
-      "patternProperties" : {
-        "^[a-z_]*$" : {
-          "type" : "object",
-          "minProperties" : 1,
-          "patternProperties" : {
-            "^[a-z_]*$" : {
-              "type" : ["string", "array", "object"],
-              "minLength" : 1,
-              "properties" : {
-                "from" : {"type": ["integer","string"]},
-                "to" : {"type": ["integer","string"]}
-              },
-              "required" : ["from", "to"],
-              "additionalProperties": false
+  "type": "array",
+  "items" : {
+    "type" : "object",
+    "properties" : {
+      "fact" : {
+        "type" : "string",
+        "enum" : ["post", "participation"]
+      },
+      "dimensions" : {
+        "type" : "object",
+        "minProperties" : 1,
+        "patternProperties" : {
+          "^[a-z_]*$" : {
+            "type" : "object",
+            "minProperties" : 1,
+            "patternProperties" : {
+              "^[a-z_]*$" : {
+                "type" : ["string", "array", "object"],
+                "minLength" : 1,
+                "properties" : {
+                  "from" : {"type": ["integer","string"]},
+                  "to" : {"type": ["integer","string"]}
+                },
+                "required" : ["from", "to"],
+                "additionalProperties": false
+              }
             }
           }
-        }
+        },
+        "additionalProperties": false
       },
-      "additionalProperties": false
-    },
-    "groups" : {
-      "type" : "object",
-      "properties" : {
-        "key" : {
-          "anyOf" : [
-            {
-              "type" : "string",
-              "pattern" : "^[a-z_]*\.[a-z_]*$"
-            }, 
-            {
-              "type": "array",
-              "items" : {
+      "groups" : {
+        "type" : "object",
+        "properties" : {
+          "key" : {
+            "anyOf" : [
+              {
                 "type" : "string",
                 "pattern" : "^[a-z_]*\.[a-z_]*$"
-              },
-              "minLength" : 1
-            }
-          ]
-        },
-        "aggregations" : {
-          "type" : "object",
-          "minProperties" : 1,
-          "patternProperties" : {
-            "^[a-z_]*\.[a-z_]*$" : {
-              "anyOf" : [
-                {
+              }, 
+              {
+                "type": "array",
+                "items" : {
                   "type" : "string",
-                  "enum" : ["min", "max", "avg", "sum", "count"]
-                }, 
-                {
-                  "type": "array",
-                  "items" : {
+                  "pattern" : "^[a-z_]*\.[a-z_]*$"
+                },
+                "minLength" : 1
+              }
+            ]
+          },
+          "aggregations" : {
+            "type" : "object",
+            "minProperties" : 1,
+            "patternProperties" : {
+              "^[a-z_]*\.[a-z_]*$" : {
+                "anyOf" : [
+                  {
                     "type" : "string",
                     "enum" : ["min", "max", "avg", "sum", "count"]
-                  },
-                  "minLength" : 1
-                }
-              ]
-            }
-          },
-          "additionalProperties" : false
-        }
+                  }, 
+                  {
+                    "type": "array",
+                    "items" : {
+                      "type" : "string",
+                      "enum" : ["min", "max", "avg", "sum", "count"]
+                    },
+                    "minLength" : 1
+                  }
+                ]
+              }
+            },
+            "additionalProperties" : false
+          }
+        },
+        "required" : ["key","aggregations"],
+        "additionalProperties" : false
       },
-      "required" : ["key","aggregations"],
-      "additionalProperties" : false
-    },
-    "sort" : {
-      "type": "object",
-      "patternProperties" : {
-        "^[a-z_]*\.[a-z_]*$" : {
-          "type" : "string",
-          "enum" : ["ASC", "DESC"]
-        }
+      "sort" : {
+        "type": "object",
+        "patternProperties" : {
+          "^[a-z_]*\.[a-z_]*$" : {
+            "type" : "string",
+            "enum" : ["ASC", "DESC"]
+          }
+        },
+        "additionalProperties" : false
       },
-      "additionalProperties" : false
+      "limit" : {
+        "type" : "integer",
+        "minimum" : 1,
+        "maximum" : 1000
+      }
     },
-    "limit" : {
-      "type" : "integer",
-      "minimum" : 1,
-      "maximum" : 1000
-    }
-  },
-  "additionalProperties" : false
+    "additionalProperties" : false,
+    "required": ["fact"]
+  }
 }
