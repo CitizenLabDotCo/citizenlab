@@ -80,7 +80,7 @@ const RHFFeedback = ({
   return (
     <>
       {isSubmitted && (
-        <Box id="rhfFeedback">
+        <Box id="rhfFeedback" data-testid="feedback">
           {successMessageIsShown && (
             <Box
               bgColor={colors.clGreenSuccessBackground}
@@ -92,6 +92,7 @@ const RHFFeedback = ({
               display="flex"
               justifyContent="space-between"
               alignItems="center"
+              data-testid="feedbackSuccessMessage"
             >
               <Box display="flex" gap="16px" alignItems="center">
                 <Icon
@@ -113,7 +114,7 @@ const RHFFeedback = ({
                 {formatMessage(messages.errorTitle)}
               </Title>
               {errors.submissionError ? (
-                <Text color="clRed">
+                <Text color="clRed" data-testid="feedbackSubmissionError">
                   {formatMessage(messages.submissionErrorMessage)}
                 </Text>
               ) : (
