@@ -159,7 +159,7 @@ ar:
     gender:
       male: ذكر
       female: أنثى
-      unspecified: غير محدد
+      unspecified: آخر
     domicile:
       outside: في مكان آخر
     education:
