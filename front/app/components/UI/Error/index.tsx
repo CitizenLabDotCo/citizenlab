@@ -130,7 +130,6 @@ interface Props {
   fieldName?: TFieldName | undefined;
   apiErrors?: (CLError | IInviteError)[] | null;
   id?: string;
-  children?: React.ReactNode;
 }
 
 export type TFieldName =
@@ -192,7 +191,6 @@ const Error = (props: Props) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   const {
-    children,
     text,
     apiErrors,
     fieldName,
@@ -223,7 +221,7 @@ const Error = (props: Props) => {
   return (
     <CSSTransition
       classNames="error"
-      in={!!(text || apiErrors || children)}
+      in={!!(text || apiErrors)}
       timeout={timeout}
       mounOnEnter={true}
       unmountOnExit={true}
@@ -310,7 +308,6 @@ const Error = (props: Props) => {
                   })}
                 </ErrorList>
               )}
-            {children}
           </ErrorMessageText>
         </ContainerInner>
       </Container>
