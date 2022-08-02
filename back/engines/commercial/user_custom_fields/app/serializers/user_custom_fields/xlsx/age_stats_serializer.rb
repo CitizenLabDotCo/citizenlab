@@ -22,6 +22,8 @@ module UserCustomFields
           'total_population' => age_stats.population_counts
         }.compact
 
+        # Copy (+dup+) the columns because +add_row+ modifies the column arrays in-place.
+        columns.transform_values!(&:dup)
         add_row(columns, 'age' => 'unknown', 'user_count' => age_stats.unknown_age_count)
         columns
       end

@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe UserCustomFields::Representativeness::BinnedDistribution do
   subject(:binned_distribution) { build(:binned_distribution) }
 
-  let(:bin_boundaries) { binned_distribution.send(:bin_boundaries) }
+  let(:bin_boundaries) { binned_distribution.distribution['bins'] }
 
   describe 'factory' do
     it { is_expected.to be_valid }
@@ -61,5 +61,17 @@ RSpec.describe UserCustomFields::Representativeness::BinnedDistribution do
       "input type must be 'number' for binned distributions.",
       "key must be 'birthyear' for binned distributions."
     )
+  end
+
+  describe '#bin_boundaries' do
+    subject { binned_distribution.bin_boundaries }
+
+    it { is_expected.to be_frozen }
+  end
+
+  describe '#counts' do
+    subject { binned_distribution.counts }
+
+    it { is_expected.to be_frozen }
   end
 end

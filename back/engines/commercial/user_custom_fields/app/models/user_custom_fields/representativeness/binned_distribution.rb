@@ -35,11 +35,11 @@ module UserCustomFields
       end
 
       def bin_boundaries
-        distribution['bins']
+        distribution['bins'].freeze
       end
 
       def counts
-        distribution['counts'].dup
+        distribution['counts'].freeze
       end
 
       # Returns the expected count distribution for a given (total) number of users.
