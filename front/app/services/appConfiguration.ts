@@ -51,6 +51,7 @@ export type IAppConfigurationSettingsCore = {
   currency: TCurrency;
   reply_to_email: string;
   custom_onboarding_message?: Multiloc | null;
+  custom_onboarding_button?: Multiloc | null;
   custom_onboarding_link?: string | null;
   currently_working_on_text?: Multiloc | null;
   segment_destinations_blacklist: string[] | null;
