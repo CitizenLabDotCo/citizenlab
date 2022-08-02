@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.components.RHFFeedback.errorTitle',
     defaultMessage: 'There is a problem',
   },
+  submissionErrorTitle: {
+    id: 'app.components.RHFFeedback.submissionErrorTitle',
+    defaultMessage: 'There was a problem',
+  },
   submissionErrorMessage: {
     id: 'app.components.RHFFeedback.submissionErrorMessage',
     defaultMessage:

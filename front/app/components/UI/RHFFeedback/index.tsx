@@ -113,34 +113,41 @@ const RHFFeedback = ({
               marginBottom="12px"
               text={
                 <>
-                  <Title color="clRed" variant="h4">
-                    {formatMessage(messages.errorTitle)}
-                  </Title>
                   {errors.submissionError ? (
-                    <Text color="clRed" data-testid="feedbackSubmissionError">
-                      {formatMessage(messages.submissionErrorMessage)}
-                    </Text>
+                    <>
+                      <Title color="clRed" variant="h4">
+                        {formatMessage(messages.submissionErrorTitle)}
+                      </Title>
+                      <Text color="clRed" data-testid="feedbackSubmissionError">
+                        {formatMessage(messages.submissionErrorMessage)}
+                      </Text>
+                    </>
                   ) : (
-                    getAllErrorMessages().map((error) => {
-                      return (
-                        <Text
-                          key={error.field}
-                          onClick={() => scrollToElement({ id: error.field })}
-                          onKeyPress={(e) => {
-                            if (e.key === 'Enter') {
-                              scrollToElement({ id: error.field });
-                            }
-                          }}
-                          textDecoration="underline"
-                          color="clRed"
-                          style={{ cursor: 'pointer' }}
-                          role="link"
-                          tabIndex={0}
-                        >
-                          {error.message}
-                        </Text>
-                      );
-                    })
+                    <>
+                      <Title color="clRed" variant="h4">
+                        {formatMessage(messages.errorTitle)}
+                      </Title>
+                      {getAllErrorMessages().map((error) => {
+                        return (
+                          <Text
+                            key={error.field}
+                            onClick={() => scrollToElement({ id: error.field })}
+                            onKeyPress={(e) => {
+                              if (e.key === 'Enter') {
+                                scrollToElement({ id: error.field });
+                              }
+                            }}
+                            textDecoration="underline"
+                            color="clRed"
+                            style={{ cursor: 'pointer' }}
+                            role="link"
+                            tabIndex={0}
+                          >
+                            {error.message}
+                          </Text>
+                        );
+                      })}
+                    </>
                   )}
                 </>
               }
