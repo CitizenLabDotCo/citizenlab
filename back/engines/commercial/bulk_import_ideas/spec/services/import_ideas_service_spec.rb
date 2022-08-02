@@ -203,6 +203,37 @@ describe BulkImportIdeas::ImportIdeasService do
       )
       expect(Idea.count).to eq 0
     end
+
+    it 'does not accept invalid import data with invalid date format' do
+      create :user, email: 'userimport@citizenlab.co'
+      create :project, title_multiloc: { 'en' => 'Project title' }
+
+      idea_rows = [
+        {
+          title_multiloc: { 'en' => 'My idea title' },
+          body_multiloc: { 'en' => 'My idea description' },
+          project_title: 'Project title',
+          user_email: 'userimport@citizenlab.co',
+          published_at: '2021/01/01'
+        }
+      ]
+      expect { service.import_ideas idea_rows }.to raise_error(
+        an_instance_of(BulkImportIdeas::Error).and(having_attributes(key: 'bulk_import_ideas_publication_date_invalid_format', params: { value: '2021/01/01', row: nil }))
+      )
+
+      idea_rows = [
+        {
+          title_multiloc: { 'en' => 'My idea title' },
+          body_multiloc: { 'en' => 'My idea description' },
+          project_title: 'Project title',
+          user_email: 'userimport@citizenlab.co',
+          published_at: '2021-13-01'
+        }
+      ]
+      expect { service.import_ideas idea_rows }.to raise_error(
+        an_instance_of(BulkImportIdeas::Error).and(having_attributes(key: 'bulk_import_ideas_publication_date_invalid_format', params: { value: '2021-13-01', row: nil }))
+      )
+    end
   end
 
   describe 'xlsx_to_idea_rows' do

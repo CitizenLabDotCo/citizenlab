@@ -35,6 +35,7 @@ module BulkImportIdeas
     def generate_example_xlsx
       XlsxService.new.hash_array_to_xlsx [
         {
+          'ID' => '1',
           'Title_nl-BE' => 'Mijn idee titel',
           'Title_fr-BE' => 'Mon idée titre',
           'Body_nl-BE' => 'Mijn idee inhoud',
@@ -155,7 +156,7 @@ module BulkImportIdeas
 
       published_at = nil
       begin
-        published_at = Date.parse idea_row[:published_at]
+        published_at = Date.iso8601 idea_row[:published_at]
       rescue StandardError => _e
         raise Error.new 'bulk_import_ideas_publication_date_invalid_format', value: idea_row[:published_at], row: idea_row[:id]
       end

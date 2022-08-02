@@ -81,10 +81,6 @@ const Import = () => {
             <FormattedMessage {...messages.downloadTemplate} />
           </Button>
         </Box>
-        <Text>
-          <FormattedMessage {...messages.importHint} />
-        </Text>
-
         <Text
           mb="16px"
           variant="bodyL"

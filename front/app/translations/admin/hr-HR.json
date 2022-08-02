@@ -1458,7 +1458,6 @@
   "app.containers.admin.ideas.all.tabStatuses": "Statusi",
   "app.containers.admin.import.downloadTemplate": "Preuzmi predložak",
   "app.containers.admin.import.importDescription": "Import existing inputs from an Excel file.",
-  "app.containers.admin.import.importHint": "Important: In order to send the inputs correctly, no column can be removed from the import template. Leave unused columns empty.",
   "app.containers.admin.import.importInput": "Import input",
   "app.containers.admin.import.importInputs": "Import inputs",
   "app.containers.admin.import.importStepOne": "1. Preuzmite i popunite predložak",
