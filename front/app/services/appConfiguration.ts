@@ -40,8 +40,6 @@ export type IAppConfigurationSettingsCore = {
     | 'active'
     | 'churned'
     | 'not_applicable';
-  header_title?: Multiloc | null;
-  header_slogan?: Multiloc | null;
   display_header_avatars: boolean;
   meta_title?: Multiloc | null;
   meta_description?: Multiloc | null;
@@ -53,9 +51,7 @@ export type IAppConfigurationSettingsCore = {
   color_menu_bg?: string | null;
   currency: TCurrency;
   reply_to_email: string;
-  custom_onboarding_fallback_message?: Multiloc | null;
   custom_onboarding_message?: Multiloc | null;
-  custom_onboarding_button?: Multiloc | null;
   custom_onboarding_link?: string | null;
   currently_working_on_text?: Multiloc | null;
   segment_destinations_blacklist: string[] | null;

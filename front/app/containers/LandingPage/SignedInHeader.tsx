@@ -342,8 +342,6 @@ class SignedInHeader extends PureComponent<Props, State> {
       const objectFitCoverSupported =
         window['CSS'] && CSS.supports('object-fit: cover');
 
-      // translate header title into a h1 with a fallback
-      const headerTitleMultiLoc = tenant.attributes.settings.core.header_title;
       const genericTitle = (
         <FormattedMessage tagName="h1" {...messages.titleCity} />
       );
@@ -354,8 +352,8 @@ class SignedInHeader extends PureComponent<Props, State> {
           id="hook-header"
         >
           <ScreenReaderOnly>
-            {headerTitleMultiLoc ? (
-              <T as="h1" value={headerTitleMultiLoc}>
+            {defaultMessage ? (
+              <T as="h1" value={defaultMessage}>
                 {(translatedTitle) =>
                   translatedTitle ? <h1>{translatedTitle}</h1> : genericTitle
                 }
