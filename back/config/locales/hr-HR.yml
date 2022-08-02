@@ -25,6 +25,8 @@ hr:
     answered_description: odgovoreno
     ineligible: nije prihvatljivo
     ineligible_description: nije prihvatljivo
+    implemented: provedeno
+    implemented_description: Prijedlog je realiziran
   topics:
     nature: Priroda i bioraznolikost
     nature_description: Priroda i bioraznolikost

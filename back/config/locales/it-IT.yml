@@ -25,6 +25,8 @@ it:
     answered_description: ha risposto
     ineligible: ineleggibile
     ineligible_description: ineleggibile
+    implemented: implementato
+    implemented_description: This proposal has been implemented
   topics:
     nature: Natura e biodiversità
     nature_description: Natura e biodiversità

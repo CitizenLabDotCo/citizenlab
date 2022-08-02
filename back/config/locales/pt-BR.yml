@@ -25,6 +25,8 @@ pt:
     answered_description: Respondido
     ineligible: Ilegível
     ineligible_description: Ilegível
+    implemented: Implementada
+    implemented_description: Esta proposta foi implementada
   topics:
     nature: Natureza e biodiversidade
     nature_description: Natureza e biodiversidade
@@ -111,7 +113,7 @@ pt:
         title: Assunto
         description:
       body:
-        title: Descrição 
+        title: Descrição
         description:
       author_id:
         title: Autor

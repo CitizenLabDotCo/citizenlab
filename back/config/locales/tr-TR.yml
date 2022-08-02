@@ -1,4 +1,4 @@
-en-CA:
+tr:
   symbols:
     outside: somewhere else
   idea_statuses:
@@ -134,7 +134,7 @@ en-CA:
         title: Images
         description:
       attachments:
-        title: Other files
+        title: Attachments
         description:
   custom_forms:
     categories:

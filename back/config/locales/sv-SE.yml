@@ -25,6 +25,8 @@ sv:
     answered_description: svarade
     ineligible: oberättigad
     ineligible_description: oberättigad
+    implemented: genomfördes
+    implemented_description: Det här förslaget har genomförts
   topics:
     nature: Natur och biologisk mångfald
     nature_description: Natur och biologisk mångfald
@@ -117,7 +119,7 @@ sv:
         title: Författare
         description:
       topic_ids:
-        title: Topics
+        title: Ämnen
         description:
       location:
         title: Plats
