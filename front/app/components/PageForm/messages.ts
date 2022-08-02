@@ -62,10 +62,10 @@ export default defineMessages({
   },
   emptyDescriptionErrorMessage: {
     id: 'app.components.PagesForm.emptyDescriptionErrorMessage',
-    defaultMessage: 'Please provide description for all languages.',
+    defaultMessage: 'Please provide content for all languages.',
   },
   savePage: {
-    id: 'app.components.PagesForm.save',
+    id: 'app.components.PagesForm.savePage',
     defaultMessage: 'Save page',
   },
   savePageSuccessMessage: {

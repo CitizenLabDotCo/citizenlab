@@ -78,10 +78,10 @@ export default defineMessages({
   },
   emptyDescriptionErrorMessage: {
     id: 'app.modules.commercial.customizable_navbar.emptyDescriptionErrorMessage',
-    defaultMessage: 'Please provide description for all languages.',
+    defaultMessage: 'Please provide content for all languages.',
   },
   savePage: {
-    id: 'app.modules.commercial.customizable_navbar.admin.components.NavbarTitleField.save',
+    id: 'app.modules.commercial.customizable_navbar.admin.components.NavbarTitleField.savePage',
     defaultMessage: 'Save page',
   },
   savePageSuccessMessage: {
