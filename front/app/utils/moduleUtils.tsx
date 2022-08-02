@@ -205,6 +205,9 @@ export type OutletsPropertyMap = {
     projectId: string;
     children: OutletRenderProps;
   };
+  'app.containers.projectsShowPage.projectActionButtons': {
+    project: IProjectData;
+  };
   'app.containers.Admin.project.edit.permissions.moderatorRights': {
     projectId: string;
     children: OutletRenderProps;
