@@ -52,6 +52,17 @@ export interface IUsersByBirthyear {
   };
 }
 
+export interface IUsersByAge {
+  total_user_count: number;
+  unknown_age_count: number;
+  series: {
+    user_counts: number[];
+    expected_user_counts: number[];
+    reference_population: number[];
+    bins: (number | null)[];
+  };
+}
+
 export type TStreamResponse = IUsersByRegistrationField; // | IUsersByDomicile;
 
 export const usersByRegFieldXlsxEndpoint = (customFieldId: string) =>
@@ -95,6 +106,13 @@ export function usersByDomicileStream(
 ) {
   return streams.get<IUsersByDomicile>({
     apiEndpoint: `${apiEndpoint}/users_by_domicile`,
+    ...streamParams,
+  });
+}
+
+export function usersByAgeStream(streamParams: IStreamParams | null = null) {
+  return streams.get<IUsersByAge>({
+    apiEndpoint: `${apiEndpoint}/users_by_age`,
     ...streamParams,
   });
 }
