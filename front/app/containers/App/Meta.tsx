@@ -23,6 +23,9 @@ import { imageSizes } from 'utils/fileUtils';
 import { API_PATH } from 'containers/App/constants';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
+import GetHomepageSettings, {
+  GetHomepageSettingsChildProps,
+} from 'resources/GetHomepageSettings';
 
 interface InputProps {}
 
@@ -30,6 +33,7 @@ interface DataProps {
   locale: GetLocaleChildProps;
   tenant: GetAppConfigurationChildProps;
   authUser: GetAuthUserChildProps;
+  homepageSettings: GetHomepageSettingsChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -37,15 +41,20 @@ interface Props extends InputProps, DataProps {}
 const Meta: React.SFC<Props & InjectedIntlProps> = ({
   locale,
   tenant,
+  homepageSettings,
   authUser,
   intl,
 }) => {
-  if (!isNilOrError(locale) && !isNilOrError(tenant)) {
+  if (
+    !isNilOrError(locale) &&
+    !isNilOrError(tenant) &&
+    !isNilOrError(homepageSettings)
+  ) {
     const { formatMessage } = intl;
     const tenantLocales = tenant.attributes.settings.core.locales;
     const headerBg =
-      tenant.attributes.header_bg && tenant.attributes.header_bg.large
-        ? tenant.attributes.header_bg.large
+      homepageSettings.header_bg && homepageSettings.header_bg.large
+        ? homepageSettings.header_bg.large
         : '';
     const organizationNameMultiLoc =
       tenant.attributes.settings.core.organization_name;
@@ -143,6 +152,7 @@ const Meta: React.SFC<Props & InjectedIntlProps> = ({
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
+  homepageSettings: <GetHomepageSettings />,
   tenant: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
 });
