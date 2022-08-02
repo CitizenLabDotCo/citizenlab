@@ -615,7 +615,7 @@ module MultiTenancy
       end
 
       def yml_ideas
-        Idea.published.where.not(author_id: nil).map do |i|
+        Idea.published.map do |i|
           yml_idea = {
             'title_multiloc' => i.title_multiloc,
             'body_multiloc' => i.body_multiloc,
@@ -647,7 +647,7 @@ module MultiTenancy
       end
 
       def yml_baskets_ideas
-        BasketsIdea.where(idea: Idea.published.where.not(author_id: nil)).map do |b|
+        BasketsIdea.where(idea: Idea.published).map do |b|
           if lookup_ref(b.idea_id, :idea)
             {
               'basket_ref' => lookup_ref(b.basket_id, :basket),
@@ -658,7 +658,7 @@ module MultiTenancy
       end
 
       def yml_idea_files
-        IdeaFile.where(idea: Idea.published.where.not(author_id: nil)).map do |i|
+        IdeaFile.where(idea: Idea.published).map do |i|
           {
             'idea_ref' => lookup_ref(i.idea_id, :idea),
             'name' => i.name,
@@ -671,7 +671,7 @@ module MultiTenancy
       end
 
       def yml_idea_images
-        IdeaImage.where(idea: Idea.published.where.not(author_id: nil)).map do |i|
+        IdeaImage.where(idea: Idea.published).map do |i|
           {
             'idea_ref' => lookup_ref(i.idea_id, :idea),
             'remote_image_url' => i.image_url,
@@ -683,7 +683,7 @@ module MultiTenancy
       end
 
       def yml_ideas_phases
-        IdeasPhase.where(idea: Idea.published.where.not(author_id: nil)).map do |i|
+        IdeasPhase.where(idea: Idea.published).map do |i|
           {
             'idea_ref' => lookup_ref(i.idea_id, :idea),
             'phase_ref' => lookup_ref(i.phase_id, :phase),
@@ -694,7 +694,7 @@ module MultiTenancy
       end
 
       def yml_ideas_topics
-        IdeasTopic.where(idea: Idea.published.where.not(author_id: nil)).map do |i|
+        IdeasTopic.where(idea: Idea.published).map do |i|
           {
             'idea_ref' => lookup_ref(i.idea_id, :idea),
             'topic_ref' => lookup_ref(i.topic_id, :topic)
@@ -802,7 +802,7 @@ module MultiTenancy
       end
 
       def yml_official_feedback
-        OfficialFeedback.where.not(post_id: Idea.where(author_id: nil)).map do |a|
+        OfficialFeedback.where(post_id: (Idea.published.ids + Initiative.published.ids)).map do |a|
           yml_official_feedback = {
             'user_ref' => lookup_ref(a.user_id, :user),
             'post_ref' => lookup_ref(a.post_id, %i[idea initiative]),
@@ -817,7 +817,7 @@ module MultiTenancy
       end
 
       def yml_comments
-        comments = Comment.where.not(post_id: Idea.where(author_id: nil))
+        comments = Comment.where(post_id: (Idea.published.ids + Initiative.published.ids))
         (comments.where(parent_id: nil) + comments.where.not(parent_id: nil)).map do |c|
           yml_comment = {
             'author_ref' => lookup_ref(c.author_id, :user),
@@ -835,7 +835,8 @@ module MultiTenancy
       end
 
       def yml_votes
-        Vote.where.not(user_id: nil).where.not(votable_id: Idea.where(author_id: nil)).map do |v|
+        idea_or_initiative_ids = Idea.published.ids + Initiative.published.ids
+        Vote.where.not(user_id: nil).where(votable: (idea_or_initiative_ids + Comment.where(post: idea_or_initiative_ids))).map do |v|
           yml_vote = {
             'votable_ref' => lookup_ref(v.votable_id, %i[idea initiative comment]),
             'user_ref' => lookup_ref(v.user_id, :user),
