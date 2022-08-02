@@ -55,11 +55,11 @@ const RHFFileUploader = ({
               {...rest}
               id={name}
               files={field.value}
-              onFileAdd={(file) =>
+              onFileAdd={(file) => {
                 setValue(name, field.value ? [...field.value, file] : [file], {
                   shouldDirty: true,
-                })
-              }
+                });
+              }}
               onFileRemove={(fileToRemove) =>
                 setValue(
                   name,
@@ -69,6 +69,7 @@ const RHFFileUploader = ({
                   { shouldDirty: true }
                 )
               }
+              data-testid="rhfFileUploader"
             />
           );
         }}
