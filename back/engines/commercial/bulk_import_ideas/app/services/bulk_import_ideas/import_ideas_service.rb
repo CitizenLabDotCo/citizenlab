@@ -35,6 +35,7 @@ module BulkImportIdeas
     def generate_example_xlsx
       XlsxService.new.hash_array_to_xlsx [
         {
+          'ID' => '1',
           'Title_nl-BE' => 'Mijn idee titel',
           'Title_fr-BE' => 'Mon idée titre',
           'Body_nl-BE' => 'Mijn idee inhoud',
