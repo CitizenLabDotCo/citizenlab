@@ -1230,7 +1230,7 @@
   "app.containers.AdminPage.SettingsPage.urlError": "URL nije valjan",
   "app.containers.AdminPage.SettingsPage.urlTitle": "Web-mjesto",
   "app.containers.AdminPage.SettingsPage.urlTitleTooltip": "Možete dodati vez na svoje web-mjesto. Ta veza koristit će se na dnu početne stranice.",
-  "app.containers.AdminPage.SideBar.academy": "Academy",
+  "app.containers.AdminPage.SideBar.academy": "Akademija",
   "app.containers.AdminPage.SideBar.dashboard": "Nadzorna ploča",
   "app.containers.AdminPage.SideBar.emails": "E-poruke",
   "app.containers.AdminPage.SideBar.groups": "Grupe",
