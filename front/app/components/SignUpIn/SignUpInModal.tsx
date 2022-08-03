@@ -25,6 +25,7 @@ import {
 
 // style
 import styled from 'styled-components';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const Container = styled.div``;
 
@@ -59,6 +60,10 @@ const SignUpInModal = memo<Props>(
       signUpActiveStep === 'verification' && hasParticipationConditions
         ? 820
         : 580;
+
+    const isFranceconnectLoginEnabled = useFeatureFlag({
+      name: 'franceconnect_login',
+    });
 
     useEffect(() => {
       if (isMounted()) {
@@ -127,6 +132,7 @@ const SignUpInModal = memo<Props>(
         opened={opened}
         close={onClose}
         closeOnClickOutside={false}
+        fullScreen={isFranceconnectLoginEnabled}
       >
         <Container id="e2e-sign-up-in-modal" className={className}>
           {opened && metaData && (

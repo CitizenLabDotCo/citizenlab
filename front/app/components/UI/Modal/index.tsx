@@ -51,6 +51,7 @@ const mobileEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 
 export const ModalContentContainer = styled.div<{
   padding?: string | undefined;
+  fullScreen?: boolean;
 }>`
   flex: 1 1 auto;
   width: 100%;
@@ -62,6 +63,11 @@ export const ModalContentContainer = styled.div<{
   ${media.smallerThanMinTablet`
     padding: ${({ padding }) => padding || '20px'};
   `}
+
+  ${({ fullScreen }) =>
+    fullScreen &&
+    `
+  max-width: 580px;`}
 `;
 
 const StyledCloseIconButton = styled(CloseIconButton)`
@@ -94,15 +100,27 @@ const StyledCloseIconButton = styled(CloseIconButton)`
   `}
 `;
 
-const StyledFocusOn = styled(FocusOn)<{ width: number | string }>`
+const StyledFocusOn = styled(FocusOn)<{
+  width: number | string;
+  fullScreen?: boolean;
+}>`
   width: 100%;
   max-width: ${({ width }) =>
     width.constructor === String ? width : `${width}px`};
   display: flex;
   justify-content: center;
+
+  ${({ fullScreen }) =>
+    fullScreen &&
+    `
+  height: 100%;
+  max-width: 100%;`}
 `;
 
-const ModalContainer = styled(clickOutside)<{ windowHeight: string }>`
+const ModalContainer = styled(clickOutside)<{
+  windowHeight: string;
+  fullScreen?: boolean;
+}>`
   width: 100%;
   max-height: 85vh;
   margin-top: 50px;
@@ -120,15 +138,37 @@ const ModalContainer = styled(clickOutside)<{ windowHeight: string }>`
     max-height: 600px;
   }
 
+  ${({ fullScreen }) =>
+    fullScreen &&
+    `
+    margin: 0;
+    align-items: center;
+    max-height: 100%;
+  `}
+
   /* tall desktops screens */
   @media (min-height: 1200px) {
     margin-top: 120px;
+
+    ${({ fullScreen }) =>
+      fullScreen &&
+      `
+        margin-top: 0;
+      `}
   }
 
   ${media.smallerThanMinTablet`
     max-width: calc(100vw - 30px);
     max-height: ${(props) => `calc(${props.windowHeight} - 30px)`};
     margin-top: 15px;
+
+    ${({ fullScreen }) =>
+      fullScreen &&
+      `
+        margin-top: 0;
+        max-height: 100%;
+        max-width: 100%;
+      `}
 
     &.fixedHeight {
       height: auto;
@@ -137,7 +177,7 @@ const ModalContainer = styled(clickOutside)<{ windowHeight: string }>`
   `}
 `;
 
-const Overlay = styled.div`
+const Overlay = styled.div<{ fullScreen?: boolean }>`
   width: 100vw;
   height: 100vh;
   position: fixed;
@@ -164,6 +204,11 @@ const Overlay = styled.div`
     padding-right: 12px;
     padding: 0px;
   `}
+
+  ${({ fullScreen }) =>
+    fullScreen &&
+    `
+    padding: 0px;`}
 
   &.modal-enter {
     opacity: 0;
@@ -327,6 +372,7 @@ export interface InputProps {
   padding?: string;
   closeOnClickOutside?: boolean;
   children: React.ReactNode;
+  fullScreen?: boolean;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -424,6 +470,7 @@ class Modal extends PureComponent<Props, State> {
   render() {
     const { windowHeight } = this.state;
     const {
+      className,
       windowSize,
       width,
       children,
@@ -432,11 +479,17 @@ class Modal extends PureComponent<Props, State> {
       footer,
       hasSkipButton,
       skipText,
+      fixedHeight,
+      fullScreen = false,
     } = this.props;
-    const hasFixedHeight = this.props.fixedHeight;
     const smallerThanSmallTablet = windowSize
       ? windowSize <= viewportWidths.smallTablet
       : false;
+    const timeout = fullScreen
+      ? 0
+      : smallerThanSmallTablet
+      ? mobileTransformTimeout
+      : desktopTransformTimeout;
     const modalPortalElement = document?.getElementById('modal-portal');
     let padding: string | undefined = undefined;
 
@@ -451,27 +504,26 @@ class Modal extends PureComponent<Props, State> {
         <CSSTransition
           classNames="modal"
           in={opened}
-          timeout={
-            smallerThanSmallTablet
-              ? mobileTransformTimeout
-              : desktopTransformTimeout
-          }
+          timeout={timeout}
           mountOnEnter={true}
           unmountOnExit={true}
           enter={true}
           exit={false}
         >
-          <Overlay id="e2e-modal-container" className={this.props.className}>
-            <StyledFocusOn width={width}>
+          <Overlay
+            id="e2e-modal-container"
+            className={className}
+            fullScreen={fullScreen}
+          >
+            <StyledFocusOn width={width} fullScreen={fullScreen}>
               <ModalContainer
-                className={`modalcontent ${
-                  hasFixedHeight ? 'fixedHeight' : ''
-                }`}
+                className={`modalcontent ${fixedHeight ? 'fixedHeight' : ''}`}
                 onClickOutside={this.clickOutsideModal}
                 windowHeight={windowHeight}
                 ariaLabelledBy={header ? 'modal-header' : undefined}
                 aria-modal="true"
                 role="dialog"
+                fullScreen={fullScreen}
               >
                 <StyledCloseIconButton
                   className="e2e-modal-close-button"
@@ -487,7 +539,10 @@ class Modal extends PureComponent<Props, State> {
                   </HeaderContainer>
                 )}
 
-                <ModalContentContainer padding={padding}>
+                <ModalContentContainer
+                  padding={padding}
+                  fullScreen={fullScreen}
+                >
                   {children}
                 </ModalContentContainer>
 
