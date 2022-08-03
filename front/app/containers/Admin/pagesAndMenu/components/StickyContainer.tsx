@@ -23,7 +23,7 @@ const StickyContainer = styled.div`
     padding-left: 2rem;
   `}
 
-  z-index: 1001;
+  z-index: 1000;
 `;
 
 export default StickyContainer;
