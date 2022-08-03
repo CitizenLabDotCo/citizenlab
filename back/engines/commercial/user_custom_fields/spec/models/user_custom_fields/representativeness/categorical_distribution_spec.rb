@@ -57,4 +57,32 @@ RSpec.describe UserCustomFields::Representativeness::CategoricalDistribution do
       expect(probabilities.sum).to be_within(1e-6).of(1)
     end
   end
+
+  describe '#compute_rscore' do
+    subject(:r_score) { ref_distribution.compute_rscore(users) }
+
+    let(:ref_distribution) { create(:categorical_distribution, population_counts: [100, 200]) }
+    let(:users) do
+      custom_field = ref_distribution.custom_field
+      users = custom_field.options.map do |option|
+        create(:user, custom_field_values: { custom_field.key => option.key })
+      end
+      # Users whose custom field value is unknown should not affect the score.
+      users << create(:user)
+      User.where(id: users)
+    end
+
+    it 'creates an RScore with the correct value' do
+      expect(r_score.value).to eq(0.5)
+    end
+
+    it 'creates an RScore that holds a reference to the reference distribution' do
+      expect(r_score.ref_distribution).to eq(ref_distribution)
+    end
+
+    it 'creates an RScore that holds a reference to the user counts' do
+      expect(r_score.user_counts.size).to eq(3)
+      expect(r_score.user_counts.values).to all(eq(1))
+    end
+  end
 end
