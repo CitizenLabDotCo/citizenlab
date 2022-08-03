@@ -35,14 +35,14 @@ function useReferenceData(
   const code = userCustomField.attributes.code;
   const userCustomFieldId = userCustomField.id;
 
-  const setters = {
-    setReferenceData,
-    setIncludedUsers,
-    setReferenceDataUploaded,
-  };
-
   useEffect(() => {
     if (isNilOrError(locale)) return;
+
+    const setters = {
+      setReferenceData,
+      setIncludedUsers,
+      setReferenceDataUploaded,
+    };
 
     if (code === 'gender') {
       const subscription = createGenderFieldSubscription(projectId, setters);
@@ -67,7 +67,6 @@ function useReferenceData(
     );
 
     return () => subscription.unsubscribe();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [code, userCustomFieldId, projectId, locale]);
 
   return {
