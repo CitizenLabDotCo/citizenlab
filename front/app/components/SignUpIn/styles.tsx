@@ -70,45 +70,28 @@ export const StyledHeaderContainer = styled((props) => (
 ))<{
   inModal: boolean;
 }>`
-  ${(props) =>
-    !props.inModal &&
-    css`
-      padding-top: 0px;
-      background: transparent;
-      border: none;
-
-      ${media.smallerThanMinTablet`
-        padding-top: 0px;
-        padding-left: 2px;
-        padding-right: 2px;
-      `}
-    `}
+  padding: 0;
+  border: none;
 `;
 
 export const StyledHeaderTitle = styled((props) => <HeaderTitle {...props} />)<{
   inModal: boolean;
 }>`
-  ${(props) =>
-    !props.inModal &&
-    css`
-      font-size: ${fontSizes.xxxl}px;
-    `}
+  font-size: ${fontSizes.xxl}px;
 `;
 
 export const StyledModalContentContainer = styled(ModalContentContainer)<{
   inModal: boolean;
   headerHeight: string;
 }>`
+  padding-left: 0;
+  padding-right: 0;
+
   ${(props) =>
     props.inModal &&
     css`
       padding-top: 20px;
       padding-bottom: 0px;
-      max-height: calc(85vh - ${props.headerHeight});
-
-      ${media.smallerThanMinTablet`
-        max-height: ${(props) => `calc(85vh - 30px - ${props.headerHeight})`};
-      `}
     `}
 
   ${(props) =>

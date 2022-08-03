@@ -508,6 +508,8 @@ class App extends PureComponent<Props, State> {
                   <SignUpInModal
                     onMounted={this.handleSignUpInModalMounted}
                     onDeclineInvitation={this.handleDeclineInvitation}
+                    navbarRef={navbarRef}
+                    mobileNavbarRef={mobileNavbarRef}
                   />
                 </ErrorBoundary>
                 <Outlet
