@@ -121,8 +121,24 @@ const ReportExportMenu = ({
 
   const handleDownloadSvg = () => {
     // eslint-disable-next-line react/no-find-dom-node
-    const node = findDOMNode(svgNode && svgNode.current.container.children[0]);
+    let node = findDOMNode(svgNode && svgNode.current.container.children[0]);
     if (node) {
+      const nodeClone = node?.cloneNode(true) as Element;
+      const legend = node?.parentNode
+        ?.querySelector('.recharts-legend-wrapper')
+        ?.cloneNode(true);
+      if (legend) {
+        const foreignObject = document.createElementNS(
+          'http://www.w3.org/2000/svg',
+          'foreignObject'
+        );
+        const bBox = (node as SVGAElement).getBBox();
+        foreignObject.setAttribute('width', String(bBox.width));
+        foreignObject.setAttribute('height', String(bBox.height + 40));
+        foreignObject.appendChild(legend);
+        node = nodeClone;
+        node.appendChild(foreignObject);
+      }
       const svgContent = new XMLSerializer().serializeToString(node);
       const svgBlob = new Blob([svgContent], {
         type: 'image/svg+xml;charset=utf-8',
