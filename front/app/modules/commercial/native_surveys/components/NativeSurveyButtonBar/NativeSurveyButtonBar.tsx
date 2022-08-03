@@ -14,7 +14,7 @@ const NativeSurveyButtonBar = () => {
       width="100%"
       borderTop={`1px solid ${colors.separation}`}
     >
-      <Box display="flex" width="630px">
+      <Box display="flex" width="632px">
         <Button width="auto" type="submit">
           Submit
         </Button>

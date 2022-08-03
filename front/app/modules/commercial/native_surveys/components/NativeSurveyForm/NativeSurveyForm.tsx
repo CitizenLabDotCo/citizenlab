@@ -119,7 +119,7 @@ const NativeSurveyForm = () => {
         <Box
           padding="40px 40px 30px"
           borderRadius="4px"
-          width="650px"
+          width="652px"
           background="white"
         >
           <JsonForms

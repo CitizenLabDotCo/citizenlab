@@ -98,7 +98,6 @@ const configuration: ModuleConfiguration = {
                     `/projects/${props.project.attributes.slug}/survey-title/survey`
                   ) // Replace "survey-title" with the survey title for the project
               }
-              fontWeight="500"
             >
               <FormattedMessage {...messages.takeTheSurvey} />
             </Button>
