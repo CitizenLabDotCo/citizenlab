@@ -1,9 +1,11 @@
 import {
   regFieldToReferenceData,
   regFieldToIncludedUsers,
+  ageFieldToReferenceData,
+  ageFieldToIncludedUsers,
   RepresentativenessRowMultiloc,
 } from './createRefDataSubscription';
-import { IUsersByRegistrationField } from 'modules/commercial/user_custom_fields/services/stats';
+import { IUsersByRegistrationField, IUsersByAge } from 'modules/commercial/user_custom_fields/services/stats';
 
 jest.mock('services/appConfiguration');
 jest.mock('services/auth');
@@ -301,5 +303,40 @@ describe('regFieldToIncludedUsers', () => {
     };
 
     expect(regFieldToIncludedUsers(usersByField)).toEqual(expectedOutput);
+  });
+});
+
+describe('ageFieldToReferenceData', () => {
+  const ageField: IUsersByAge = {
+    total_user_count: 100,
+    unknown_age_count: 10,
+    series: {
+      user_counts: [100, 100, 100, 100, 100],
+      expected_user_counts: [100, 100, 100, 100, 100],
+      reference_population: [1000, 500, 1500, 1000, 1000],
+      bins: [18, 25, 35, 45, 65, null],
+    } 
+  }
+
+  const locale = 'en';
+
+  it('works', () => {
+    const expectedOutput = [
+      {
+        title_multiloc: { en: '18 - 24' },
+        referenceNumber: 1000,
+        referencePercentage: 20,
+        actualNumber: 100,
+        actualPercentage: 20,
+      }
+    ]
+
+    expect(ageFieldToReferenceData(ageField, locale)).toEqual(expectedOutput)
+  });
+});
+
+describe('ageFieldToIncludedUsers', () => {
+  it('works', () => {
+
   });
 });
