@@ -14,7 +14,7 @@ import { sum, roundPercentage, roundPercentages } from 'utils/math';
 import { forEachBin } from '../utils/bins';
 
 // typings
-import { Multiloc } from 'typings';
+import { Multiloc, Locale } from 'typings';
 
 interface RepresentativenessRowBase {
   actualPercentage: number;
@@ -65,6 +65,7 @@ export const createGenderFieldSubscription = (
 // Birthyear field
 export const createAgeFieldSubscription = (
   projectId: string | undefined,
+  locale: Locale,
   { setReferenceData, setIncludedUsers, setReferenceDataUploaded }: Setters
 ) => {
   const observable = usersByAgeStream({
@@ -84,7 +85,7 @@ export const createAgeFieldSubscription = (
         return;
       }
 
-      setReferenceData(ageFieldToReferenceData(usersByAge));
+      setReferenceData(ageFieldToReferenceData(usersByAge, locale));
       setIncludedUsers(ageFieldToIncludedUsers(usersByAge));
       setReferenceDataUploaded(true);
     }
@@ -197,14 +198,15 @@ export const regFieldToIncludedUsers = (
   };
 };
 
-export const ageFieldToReferenceData = ({
-  series: { user_counts, reference_population, bins },
-}: IUsersByAge): RepresentativenessRowMultiloc[] => {
-  const actualPercentages = roundPercentages(user_counts);
-  const referencePercentages = roundPercentages(reference_population);
+export const ageFieldToReferenceData = (
+  { series: { user_counts, reference_population, bins } }: IUsersByAge,
+  locale: Locale
+): RepresentativenessRowMultiloc[] => {
+  const actualPercentages = roundPercentages(user_counts, 1);
+  const referencePercentages = roundPercentages(reference_population, 1);
 
   return forEachBin(bins).map(({ binId }, i) => ({
-    title_multiloc: { en: binId },
+    title_multiloc: { [locale]: binId },
     actualPercentage: actualPercentages[i],
     referencePercentage: referencePercentages[i],
     actualNumber: user_counts[i],

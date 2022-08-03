@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react';
 
+// hooks
+import useLocale from 'hooks/useLocale';
+
 // utils
-import { NilOrError } from 'utils/helperUtils';
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import {
   createGenderFieldSubscription,
   createAgeFieldSubscription,
   createRegFieldSubscription,
   RepresentativenessRowMultiloc,
-  IncludedUsers
+  IncludedUsers,
 } from './createRefDataSubscription';
 
 // typings
@@ -27,17 +30,22 @@ function useReferenceData(
     boolean | undefined
   >();
 
+  const locale = useLocale();
+
   const code = userCustomField.attributes.code;
   const userCustomFieldId = userCustomField.id;
-  
-  const setters = { setReferenceData, setIncludedUsers, setReferenceDataUploaded };
+
+  const setters = {
+    setReferenceData,
+    setIncludedUsers,
+    setReferenceDataUploaded,
+  };
 
   useEffect(() => {
+    if (isNilOrError(locale)) return;
+
     if (code === 'gender') {
-      const subscription = createGenderFieldSubscription(
-        projectId,
-        setters
-      );
+      const subscription = createGenderFieldSubscription(projectId, setters);
 
       return () => subscription.unsubscribe();
     }
@@ -45,6 +53,7 @@ function useReferenceData(
     if (code === 'birthyear') {
       const subscription = createAgeFieldSubscription(
         projectId,
+        locale,
         setters
       );
 
@@ -58,7 +67,8 @@ function useReferenceData(
     );
 
     return () => subscription.unsubscribe();
-  }, [code, userCustomFieldId, projectId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [code, userCustomFieldId, projectId, locale]);
 
   return {
     referenceData,
