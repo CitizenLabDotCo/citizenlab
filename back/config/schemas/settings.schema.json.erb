@@ -10,7 +10,7 @@
         "type": "object",
         "title": "Core system",
         "description": "The container for general settings. The core system should always be enabled.",
-        "required-settings": ["organization_type", "timezone", "currency", "locales", "color_main", "color_secondary","color_text", "lifecycle_stage", "display_header_avatars"],
+        "required-settings": ["organization_type", "timezone", "currency", "locales", "color_main", "color_secondary","color_text", "lifecycle_stage"],
         "additionalProperties": false,
         "required": ["allowed", "enabled", "lifecycle_stage"],
         "properties": {
@@ -845,7 +845,7 @@
         "title": "Widgets",
         "description":  "Admins can generate platform widgets to embed on external websites.",
         "additionalProperties": false,
-        "required": ["allowed", "enabled"],
+        "required": ["allowed"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true}
@@ -893,7 +893,7 @@
         "title": "Events Landing Page Widget",
         "description":	"Display a widget of the next upcoming events in your landing page.",
         "additionalProperties": false,
-        "required": ["allowed", "enabled"],
+        "required": ["allowed"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false},
