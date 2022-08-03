@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
-import RHFFileUploader from './';
+import FileUploader from './';
 import { useForm, FormProvider } from 'react-hook-form';
 
 jest.mock('utils/cl-intl');
@@ -17,14 +17,14 @@ const Form = () => {
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit((formData) => onSubmit(formData))}>
-        <RHFFileUploader name="input" resourceId="pageId" resourceType="page" />
+        <FileUploader name="input" resourceId="pageId" resourceType="page" />
         <button type="submit">Submit</button>
       </form>
     </FormProvider>
   );
 };
 
-describe('RHFFileUploader', () => {
+describe('FileUploader', () => {
   it('renders', () => {
     render(<Form />);
     expect(screen.getByTestId('fileInput')).toBeInTheDocument();

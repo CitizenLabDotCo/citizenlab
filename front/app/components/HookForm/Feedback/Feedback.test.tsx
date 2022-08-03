@@ -1,12 +1,12 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
-import RHFFeedback from './';
-import RHFInput from '../RHFInput';
+import Feedback from './';
+import Input from '../Input';
 import { useForm, FormProvider } from 'react-hook-form';
 import { string, object } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import translationMessages from 'i18n/en';
-import { handleRHFSubmissionError } from 'utils/errorUtils';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 const schema = object({
   input: string().required('Error message'),
@@ -24,15 +24,15 @@ const Form = () => {
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit((formData) => onSubmit(formData))}>
-        <RHFFeedback />
-        <RHFInput name="input" type="text" placeholder="input" />
+        <Feedback />
+        <Input name="input" type="text" placeholder="input" />
         <button type="submit">Submit</button>
       </form>
     </FormProvider>
   );
 };
 
-describe('RHFFeedback', () => {
+describe('Feedback', () => {
   it('does not render initially', () => {
     render(<Form />);
     expect(screen.queryByTestId('feedback')).not.toBeInTheDocument();
@@ -72,8 +72,8 @@ describe('RHFFeedback', () => {
               methods.setError('slug', { error: 'taken' } as any)
             )}
           >
-            <RHFFeedback />
-            <RHFInput name="slug" type="text" placeholder="slug" />
+            <Feedback />
+            <Input name="slug" type="text" placeholder="slug" />
             <button type="submit">Submit</button>
           </form>
         </FormProvider>
@@ -107,11 +107,11 @@ describe('RHFFeedback', () => {
         <FormProvider {...methods}>
           <form
             onSubmit={methods.handleSubmit(() => {
-              handleRHFSubmissionError(new Error(), methods.setError);
+              handleHookFormSubmissionError(new Error(), methods.setError);
             })}
           >
-            <RHFFeedback />
-            <RHFInput name="input" type="text" />
+            <Feedback />
+            <Input name="input" type="text" />
             <button type="submit">Submit</button>
           </form>
         </FormProvider>

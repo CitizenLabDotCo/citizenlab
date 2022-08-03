@@ -8,11 +8,11 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { string, object, mixed } from 'yup';
 import validateMultiloc from 'utils/yup/validateMultiloc';
-import RHFInputMultilocWithLocaleSwitcher from 'components/UI/RHFInputMultilocWithLocaleSwitcher';
-import RHFQuillMultilocWithLocaleSwitcher from 'components/UI/RHFQuillMultilocWithLocaleSwitcher';
-import RHFInput from 'components/UI/RHFInput';
-import RHFFileUploader from 'components/UI/RHFFileUploader';
-import RHFFeedback from 'components/UI/RHFFeedback';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
+import Input from 'components/HookForm/Input';
+import FileUploader from 'components/HookForm/FileUploader';
+import Feedback from 'components/HookForm/Feedback';
 import { SectionField } from 'components/admin/Section';
 
 // intl
@@ -33,7 +33,7 @@ import Button from 'components/UI/Button';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { slugRexEx } from 'utils/textUtils';
-import { handleRHFSubmissionError } from 'utils/errorUtils';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 // hooks
 import useLocale from 'hooks/useLocale';
@@ -92,7 +92,7 @@ const PageForm = ({
     try {
       await onSubmit(formValues);
     } catch (error) {
-      handleRHFSubmissionError(error, methods.setError);
+      handleHookFormSubmissionError(error, methods.setError);
     }
   };
 
@@ -100,17 +100,17 @@ const PageForm = ({
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onFormSubmit)}>
         <SectionField>
-          <RHFFeedback
+          <Feedback
             successMessage={formatMessage(messages.savePageSuccessMessage)}
           />
-          <RHFInputMultilocWithLocaleSwitcher
+          <InputMultilocWithLocaleSwitcher
             label={formatMessage(messages.pageTitle)}
             type="text"
             name="title_multiloc"
           />
         </SectionField>
         <SectionField>
-          <RHFQuillMultilocWithLocaleSwitcher
+          <QuillMultilocWithLocaleSwitcher
             name="body_multiloc"
             label={formatMessage(messages.editContent)}
           />
@@ -151,7 +151,7 @@ const PageForm = ({
                 </Warning>
               </Box>
             )}
-            <RHFInput id="slug" name="slug" type="text" />
+            <Input id="slug" name="slug" type="text" />
             <Text>
               <b>
                 <FormattedMessage {...messages.resultingPageURL} />
@@ -170,7 +170,7 @@ const PageForm = ({
               }
             />
           </Label>
-          <RHFFileUploader
+          <FileUploader
             name="local_page_files"
             resourceId={pageId}
             resourceType="page"

@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
-import FileUploader, { FileUploaderProps } from 'components/UI/FileUploader';
+import FileUploaderComponent, {
+  FileUploaderProps,
+} from 'components/UI/FileUploader';
 
 import Error from 'components/UI/Error';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -17,12 +19,7 @@ interface Props
   resourceId: string | null;
 }
 
-const RHFFileUploader = ({
-  name,
-  resourceId,
-  resourceType,
-  ...rest
-}: Props) => {
+const FileUploader = ({ name, resourceId, resourceType, ...rest }: Props) => {
   const {
     setValue,
     formState: { errors },
@@ -50,7 +47,7 @@ const RHFFileUploader = ({
         defaultValue={[]}
         render={({ field: { ref: _ref, ...field } }) => {
           return (
-            <FileUploader
+            <FileUploaderComponent
               {...field}
               {...rest}
               id={name}
@@ -69,7 +66,6 @@ const RHFFileUploader = ({
                   { shouldDirty: true }
                 )
               }
-              data-testid="rhfFileUploader"
             />
           );
         }}
@@ -81,4 +77,4 @@ const RHFFileUploader = ({
   );
 };
 
-export default RHFFileUploader;
+export default FileUploader;

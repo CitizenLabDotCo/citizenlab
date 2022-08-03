@@ -5,7 +5,7 @@ import { Controller, useFormContext, FieldError } from 'react-hook-form';
 import { Locale } from 'typings';
 
 // components
-import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
+import QuillMultilocWithLocaleSwitcherComponent from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import { isNilOrError } from 'utils/helperUtils';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
@@ -18,7 +18,7 @@ interface Props {
   withCTAButton?: boolean;
 }
 
-const RHFQuillMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
+const QuillMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
   const {
     formState: { errors },
     control,
@@ -45,10 +45,10 @@ const RHFQuillMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
         control={control}
         defaultValue={defaultValue}
         render={({ field: { ref: _ref, ...field } }) => (
-          <QuillMultilocWithLocaleSwitcher
+          <QuillMultilocWithLocaleSwitcherComponent
+            id={name}
             {...field}
             {...rest}
-            id={name}
             valueMultiloc={{ ...defaultValue, ...field.value }}
           />
         )}
@@ -60,4 +60,4 @@ const RHFQuillMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
   );
 };
 
-export default RHFQuillMultilocWithLocaleSwitcher;
+export default QuillMultilocWithLocaleSwitcher;

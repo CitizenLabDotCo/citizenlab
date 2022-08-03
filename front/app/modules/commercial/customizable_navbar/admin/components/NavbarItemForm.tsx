@@ -6,8 +6,8 @@ import { Multiloc } from 'typings';
 // form
 import { FormProvider, useForm } from 'react-hook-form';
 import { SectionField } from 'components/admin/Section';
-import RHFInputMultilocWithLocaleSwitcher from 'components/UI/RHFInputMultilocWithLocaleSwitcher';
-import RHFFeedback from 'components/UI/RHFFeedback';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import Feedback from 'components/HookForm/Feedback';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object } from 'yup';
 import validateMultiloc from 'utils/yup/validateMultiloc';
@@ -20,7 +20,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { handleRHFSubmissionError } from 'utils/errorUtils';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 export interface FormValues {
   nav_bar_item_title_multiloc: Multiloc;
@@ -52,16 +52,18 @@ const NavbarItemForm = ({
     try {
       await onSubmit(formValues);
     } catch (error) {
-      handleRHFSubmissionError(error, methods.setError);
+      handleHookFormSubmissionError(error, methods.setError);
     }
   };
 
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onFormSubmit)}>
-        <RHFFeedback />
+        <Feedback
+          successMessage={formatMessage(messages.savePageSuccessMessage)}
+        />
         <SectionField>
-          <RHFInputMultilocWithLocaleSwitcher
+          <InputMultilocWithLocaleSwitcher
             name="nav_bar_item_title_multiloc"
             label={formatMessage(messages.navbarItemTitle)}
             type="text"

@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
-import RHFQuillMultilocWithLocaleSwitcher from './';
+import QuillMultilocWithLocaleSwitcher from './';
 import { useForm, FormProvider } from 'react-hook-form';
 import { object } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -27,14 +27,14 @@ const Form = ({ defaultValue }: { defaultValue?: Record<string, string> }) => {
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit((formData) => onSubmit(formData))}>
-        <RHFQuillMultilocWithLocaleSwitcher name="description" />
+        <QuillMultilocWithLocaleSwitcher name="description" />
         <button type="submit">Submit</button>
       </form>
     </FormProvider>
   );
 };
 
-describe('RHFQuillMultilocWithLocaleSwitcher', () => {
+describe('QuillMultilocWithLocaleSwitcher', () => {
   it('renders', () => {
     const { container } = render(<Form />);
     expect(container.querySelector('.ql-editor')).toBeInTheDocument();

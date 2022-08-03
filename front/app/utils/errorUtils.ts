@@ -128,7 +128,7 @@ export function getDefaultAjvErrorMessage({
   );
 }
 
-export const handleRHFSubmissionError = (
+export const handleHookFormSubmissionError = (
   error: Error | CLErrorsJSON,
   handleError: (error: string, options: Record<string, any>) => void
 ) => {

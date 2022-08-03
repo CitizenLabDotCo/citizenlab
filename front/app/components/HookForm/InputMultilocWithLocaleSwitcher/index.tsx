@@ -2,7 +2,7 @@ import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import {
-  InputMultilocWithLocaleSwitcher,
+  InputMultilocWithLocaleSwitcher as InputMultilocWithLocaleSwitcherComponent,
   InputMultilocWithLocaleSwitcherProps,
 } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
@@ -17,7 +17,7 @@ export interface Props
   name: string;
 }
 
-const RHFInputMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
+const InputMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
   const {
     formState: { errors },
     control,
@@ -45,7 +45,8 @@ const RHFInputMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
         defaultValue={defaultValue}
         render={({ field: { ref: _ref, ...field } }) => {
           return (
-            <InputMultilocWithLocaleSwitcher
+            <InputMultilocWithLocaleSwitcherComponent
+              id={name}
               {...field}
               {...rest}
               locales={locales}
@@ -62,4 +63,4 @@ const RHFInputMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
   );
 };
 
-export default RHFInputMultilocWithLocaleSwitcher;
+export default InputMultilocWithLocaleSwitcher;

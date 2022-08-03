@@ -1,5 +1,8 @@
 import React from 'react';
-import { Input, InputProps } from '@citizenlab/cl2-component-library';
+import {
+  Input as InputComponent,
+  InputProps,
+} from '@citizenlab/cl2-component-library';
 import Error, { TFieldName } from 'components/UI/Error';
 import { Controller, useFormContext } from 'react-hook-form';
 import { CLError } from 'typings';
@@ -8,7 +11,7 @@ export interface Props extends InputProps {
   name: string;
 }
 
-const RHFInput = ({ name, ...rest }: Props) => {
+const Input = ({ name, ...rest }: Props) => {
   const {
     formState: { errors },
     control,
@@ -29,7 +32,7 @@ const RHFInput = ({ name, ...rest }: Props) => {
         control={control}
         defaultValue={defaultValue}
         render={({ field: { ref: _ref, ...field } }) => (
-          <Input id={name} {...field} {...rest} />
+          <InputComponent id={name} {...field} {...rest} />
         )}
       />
       {validationError && (
@@ -47,4 +50,4 @@ const RHFInput = ({ name, ...rest }: Props) => {
   );
 };
 
-export default RHFInput;
+export default Input;

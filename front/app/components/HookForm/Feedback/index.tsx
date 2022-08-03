@@ -11,17 +11,17 @@ import {
   Icon,
 } from '@citizenlab/cl2-component-library';
 import { scrollToElement } from 'utils/scroll';
-import CloseIconButton from '../CloseIconButton';
+import CloseIconButton from 'components/UI/CloseIconButton';
 import messages from './messages';
 
-type RHFFeedbackProps = {
+type FeedbackProps = {
   successMessage?: string;
 } & InjectedIntlProps;
 
-const RHFFeedback = ({
+const Feedback = ({
   successMessage,
   intl: { formatMessage },
-}: RHFFeedbackProps) => {
+}: FeedbackProps) => {
   const [successMessageIsVisible, setSuccessMessageIsShown] = useState(true);
   const {
     formState: { errors, isSubmitSuccessful, isSubmitted, submitCount },
@@ -29,7 +29,7 @@ const RHFFeedback = ({
 
   useEffect(() => {
     if (submitCount > 0) {
-      scrollToElement({ id: 'rhfFeedback' });
+      scrollToElement({ id: 'Feedback' });
       setSuccessMessageIsShown(true);
     }
   }, [submitCount]);
@@ -80,7 +80,7 @@ const RHFFeedback = ({
   return (
     <>
       {isSubmitted && (
-        <Box id="rhfFeedback" data-testid="feedback">
+        <Box id="feedback" data-testid="feedback">
           {successMessageIsShown && (
             <Box
               bgColor={colors.clGreenSuccessBackground}
@@ -159,4 +159,4 @@ const RHFFeedback = ({
   );
 };
 
-export default injectIntl(RHFFeedback);
+export default injectIntl(Feedback);
