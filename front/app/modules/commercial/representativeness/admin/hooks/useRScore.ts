@@ -9,6 +9,8 @@ export default function useRScore(
   const [rScore, setRScore] = useState<RScoreData | NilOrError>();
 
   useEffect(() => {
+    if (userCustomFieldId === 'bb0d31db-944c-4368-a953-ac8d30b960aa') return;
+
     const observable = rScoreStream(userCustomFieldId, projectId).observable;
     const subscription = observable.subscribe((rScore: RScore | NilOrError) => {
       setRScore(isNilOrError(rScore) ? rScore : rScore.data);
@@ -16,6 +18,17 @@ export default function useRScore(
 
     return () => subscription.unsubscribe();
   }, [userCustomFieldId, projectId]);
+
+  if (userCustomFieldId === 'bb0d31db-944c-4368-a953-ac8d30b960aa') {
+    return {
+      id: 'test',
+      type: 'rscore',
+      attributes: {
+        score: 0.6,
+        counts: {},
+      },
+    };
+  }
 
   return rScore;
 }

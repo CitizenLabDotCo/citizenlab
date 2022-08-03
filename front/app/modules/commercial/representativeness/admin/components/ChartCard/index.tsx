@@ -2,10 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
-import useReferenceData, {
-  RepresentativenessRow,
-  RepresentativenessRowMultiloc,
-} from '../../hooks/useReferenceData';
+import useReferenceData from '../../hooks/useReferenceData';
 import useRScore from '../../hooks/useRScore';
 
 // services
@@ -33,6 +30,10 @@ import {
   IUserCustomFieldData,
   TCustomFieldCode,
 } from 'modules/commercial/user_custom_fields/services/userCustomFields';
+import {
+  RepresentativenessRow,
+  RepresentativenessRowMultiloc,
+} from '../../hooks/createRefDataSubscription';
 
 // utils
 import { getLegendLabels } from './utils';

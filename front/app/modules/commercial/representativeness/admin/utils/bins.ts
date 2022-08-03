@@ -9,7 +9,7 @@ export const getBinId = (
 ) =>
   upperBound === null
     ? `${lowerBound}+`
-    : `${lowerBound}-${upperBound - (isLastBin ? 0 : 1)}`;
+    : `${lowerBound} - ${upperBound - (isLastBin ? 0 : 1)}`;
 
 export const forEachBin = (bins: Bins) =>
   indices(bins.length - 1).map((i) => {

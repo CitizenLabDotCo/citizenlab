@@ -4,7 +4,7 @@ import {
   usersByAgeStream,
   usersByRegFieldStream,
   IUsersByAge,
-  IUsersByRegistrationField
+  IUsersByRegistrationField,
 } from 'modules/commercial/user_custom_fields/services/stats';
 
 // utils
@@ -41,7 +41,9 @@ export interface IncludedUsers {
 }
 
 interface Setters {
-  setReferenceData: (referenceData: RepresentativenessRowMultiloc[] | NilOrError) => void;
+  setReferenceData: (
+    referenceData: RepresentativenessRowMultiloc[] | NilOrError
+  ) => void;
   setIncludedUsers: (includedUsers: IncludedUsers | NilOrError) => void;
   setReferenceDataUploaded: (uploaded?: boolean) => void;
 }
@@ -51,29 +53,23 @@ export const createGenderFieldSubscription = (
   projectId: string | undefined,
   setters: Setters
 ) => {
-  const observable = usersByGenderStream(
-    { queryParameters: { project: projectId } }
-  ).observable;
+  const observable = usersByGenderStream({
+    queryParameters: { project: projectId },
+  }).observable;
 
-  const subscription = observable.subscribe(
-    handleRegFieldResponse(setters)
-  )
+  const subscription = observable.subscribe(handleRegFieldResponse(setters));
 
   return subscription;
-}
+};
 
 // Birthyear field
 export const createAgeFieldSubscription = (
   projectId: string | undefined,
-  {
-    setReferenceData,
-    setIncludedUsers,
-    setReferenceDataUploaded
-  }: Setters
+  { setReferenceData, setIncludedUsers, setReferenceDataUploaded }: Setters
 ) => {
-  const observable = usersByAgeStream(
-    { queryParameters: { project: projectId } }
-  ).observable;
+  const observable = usersByAgeStream({
+    queryParameters: { project: projectId },
+  }).observable;
 
   const subscription = observable.subscribe(
     (usersByAge: IUsersByAge | NilOrError) => {
@@ -92,10 +88,10 @@ export const createAgeFieldSubscription = (
       setIncludedUsers(ageFieldToIncludedUsers(usersByAge));
       setReferenceDataUploaded(true);
     }
-  )
+  );
 
   return subscription;
-}
+};
 
 // Other registration fields
 export const createRegFieldSubscription = (
@@ -108,21 +104,15 @@ export const createRegFieldSubscription = (
     userCustomFieldId
   ).observable;
 
-  const subscription = observable.subscribe(
-    handleRegFieldResponse(setters)
-  );
+  const subscription = observable.subscribe(handleRegFieldResponse(setters));
 
   return subscription;
-}
+};
 
 // Helpers
-const handleRegFieldResponse = ({
-  setReferenceData,
-  setIncludedUsers,
-  setReferenceDataUploaded
-}: Setters) => (
-  usersByRegField: IUsersByRegistrationField | NilOrError
-) => {
+const handleRegFieldResponse =
+  ({ setReferenceData, setIncludedUsers, setReferenceDataUploaded }: Setters) =>
+  (usersByRegField: IUsersByRegistrationField | NilOrError) => {
     if (isNilOrError(usersByRegField)) {
       setReferenceData(usersByRegField);
       setIncludedUsers(usersByRegField);
@@ -137,7 +127,7 @@ const handleRegFieldResponse = ({
     setReferenceData(regFieldToReferenceData(usersByRegField));
     setIncludedUsers(regFieldToIncludedUsers(usersByRegField));
     setReferenceDataUploaded(true);
-  }
+  };
 
 export const regFieldToReferenceData = (
   usersByField: IUsersByRegistrationField
@@ -207,18 +197,31 @@ export const regFieldToIncludedUsers = (
   };
 };
 
-export const ageFieldToReferenceData = ({ 
-  series: { user_counts, reference_population, bins }
+export const ageFieldToReferenceData = ({
+  series: { user_counts, reference_population, bins },
 }: IUsersByAge): RepresentativenessRowMultiloc[] => {
-  const binIds = forEachBin(bins).map(({ binId }) => binId);
   const actualPercentages = roundPercentages(user_counts);
   const referencePercentages = roundPercentages(reference_population);
-  
-  return forEachBin(usersByAge.series.bins).map(({ binId }) => ({
 
-  }))
-}
+  return forEachBin(bins).map(({ binId }, i) => ({
+    title_multiloc: { en: binId },
+    actualPercentage: actualPercentages[i],
+    referencePercentage: referencePercentages[i],
+    actualNumber: user_counts[i],
+    referenceNumber: reference_population[i],
+  }));
+};
 
-export const ageFieldToIncludedUsers = (usersByAge: IUsersByAge): IncludedUsers => {
+export const ageFieldToIncludedUsers = ({
+  total_user_count: total,
+  unknown_age_count: unknown,
+}: IUsersByAge): IncludedUsers => {
+  const known = total - unknown;
+  const percentage = roundPercentage(known, total);
 
-}
+  return {
+    known,
+    total,
+    percentage,
+  };
+};

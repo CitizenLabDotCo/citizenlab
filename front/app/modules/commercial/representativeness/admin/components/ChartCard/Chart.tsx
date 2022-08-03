@@ -13,7 +13,7 @@ import { colors } from 'utils/styleUtils';
 import { formatPercentage, emptyString } from './utils';
 
 // typings
-import { RepresentativenessData } from '../../hooks/useReferenceData';
+import { RepresentativenessData } from '../../hooks/createRefDataSubscription';
 
 interface Props {
   currentChartRef: React.RefObject<SVGElement | undefined>;
