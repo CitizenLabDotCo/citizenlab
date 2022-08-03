@@ -6,14 +6,11 @@ module UserCustomFields
       class RScoresController < ::ApplicationController
         def show
           authorize %i[user_custom_fields representativeness r_score]
+          ref_distribution = user_custom_field.current_ref_distribution
+          return render status: :method_not_allowed if ref_distribution.blank?
 
-          if (ref_distribution = user_custom_field.current_ref_distribution).present?
-            user_counts = FieldValueCounter.counts_by_field_option(find_users, user_custom_field, by_option_id: true)
-            r_score = Representativeness::RScore.compute(user_counts, ref_distribution)
-            render json: RScoreSerializer.new(r_score, include: [:reference_distribution]).serialized_json
-          else
-            render status: :method_not_allowed
-          end
+          r_score = ref_distribution.compute_rscore(find_users)
+          render json: RScoreSerializer.new(r_score, include: [:reference_distribution]).serialized_json
         end
 
         private

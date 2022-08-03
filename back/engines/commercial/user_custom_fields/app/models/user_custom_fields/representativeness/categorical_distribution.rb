@@ -56,6 +56,12 @@ module UserCustomFields
         destroy!
       end
 
+      def compute_rscore(users)
+        user_counts = FieldValueCounter.counts_by_field_option(users, custom_field, by_option_id: true)
+        score_value = RScore.compute_scores(user_counts, distribution)[:min_max_p_ratio]
+        RScore.new(score_value, user_counts, self)
+      end
+
       def self.distribution_schema
         @distribution_schema ||= UserCustomFields::Engine.root.join(
           'config', 'schemas', 'categorical_distribution.schema.json'
