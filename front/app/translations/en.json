@@ -1487,6 +1487,7 @@
   "app.modules.id_id_card_lookup.takenFormError": "Already taken.",
   "app.modules.id_id_card_lookup.verifyYourIdentity": "Verify your identity",
   "app.modules.nativeSurveys.takeTheSurvey": "Take the survey",
+  "app.modules.nativeSurveys.xSurveys": "{surveysCount, plural, no {# surveys} one {# survey} other {# surveys}}",
   "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "You received admin rights over the \"{folderName}\" folder.",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "Share",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingBody": "View the projects at {folderUrl} to make your voice heard!",
