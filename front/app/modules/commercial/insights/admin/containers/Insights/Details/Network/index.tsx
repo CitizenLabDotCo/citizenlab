@@ -1,4 +1,3 @@
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import React, {
   useEffect,
   useRef,
@@ -6,6 +5,7 @@ import React, {
   useMemo,
   useCallback,
 } from 'react';
+import { useParams, useSearchParams } from 'react-router-dom';
 
 // graph
 import ForceGraph2D, {
@@ -25,9 +25,15 @@ import { IInsightsNetworkNode } from 'modules/commercial/insights/services/insig
 import { isNilOrError, isError } from 'utils/helperUtils';
 import { cloneDeep } from 'lodash-es';
 import { colors } from 'utils/styleUtils';
-import clHistory from 'utils/cl-router/history';
-import { stringify } from 'qs';
 import { saveAs } from 'file-saver';
+import {
+  drawHideIcon,
+  drawHideIconClickBox,
+  drawHideIconArea,
+  drawBubbleArea,
+  drawLabelArea,
+  drawAreaInBetween,
+} from 'modules/commercial/insights/utils/canvasShapes';
 
 // components
 import { Box, Spinner, IconTooltip } from '@citizenlab/cl2-component-library';
@@ -36,6 +42,7 @@ import {
   TooltipContent,
   SectionTitle,
 } from 'modules/commercial/insights/admin/components/StyledTextComponents';
+import ShowHiddenNodes from 'modules/commercial/insights/admin/components/ShowHiddenNodes';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -49,7 +56,13 @@ import messages from '../../messages';
 import styled from 'styled-components';
 
 type CanvasCustomRenderMode = 'replace' | 'before' | 'after';
-type Node = NodeObject & IInsightsNetworkNode;
+export interface IInsightsNetworkNodeMeta extends IInsightsNetworkNode {
+  nodeVerticalOffset: number;
+  textWidth: number;
+  globalScale: number;
+  nodeFontSize: number;
+}
+type Node = NodeObject & IInsightsNetworkNodeMeta;
 
 const zoomStep = 0.2;
 const chargeStrength = -10;
@@ -77,18 +90,41 @@ const StyledMessage = styled.h4`
 `;
 
 const Network = ({
-  params: { viewId },
   intl: { formatMessage, formatDate },
-  location: { query, pathname },
-}: WithRouterProps & InjectedIntlProps) => {
+}: InjectedIntlProps) => {
   const [initialRender, setInitialRender] = useState(true);
   const [height, setHeight] = useState(0);
   const [width, setWidth] = useState(0);
   const [zoomLevel, setZoomLevel] = useState(0);
+  const [hoverNode, setHoverNode] = useState<Node | undefined>();
+  const [pointerPosition, setPointerPosition] = useState([0, 0]);
+  const [graphInitialized, setGraphInitialized] = useState<boolean>(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { viewId } = useParams() as { viewId: string };
 
   const networkRef = useRef<ForceGraphMethods>();
   const { loading, network } = useNetwork(viewId);
   const view = useInsightsView(viewId);
+  const tooltipRef = document.getElementsByClassName('graph-tooltip')[0];
+
+  const setPointerEvent = (e) => setPointerPosition([e.offsetX, e.offsetY]);
+  const appendSearchParams = (params) =>
+    setSearchParams({
+      ...Object.fromEntries(searchParams.entries()),
+      ...params,
+    });
+
+  useEffect(() => {
+    if (graphInitialized) {
+      const canvasElement = document.getElementsByTagName('canvas')[0];
+      canvasElement.addEventListener('pointermove', setPointerEvent);
+      return () =>
+        canvasElement &&
+        canvasElement.removeEventListener('pointermove', setPointerEvent);
+    } else {
+      return;
+    }
+  }, [graphInitialized]);
 
   useEffect(() => {
     if (networkRef.current) {
@@ -131,12 +167,14 @@ const Network = ({
 
   const nodeCanvasObjectMode = () => 'after' as CanvasCustomRenderMode;
 
+  const handleNodeHover = (node: Node) => setHoverNode(node);
+
   const nodeCanvasObject = (
     node: Node,
     ctx: CanvasRenderingContext2D,
     globalScale: number
   ) => {
-    if (node.x && node.y) {
+    if (node.x !== undefined && node.y !== undefined) {
       const label = node.name;
       const nodeFontSize = 14 / (globalScale * 1.2);
       const nodeVerticalOffset = node.y - node.val / 3 - 2.5;
@@ -144,35 +182,84 @@ const Network = ({
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillStyle = nodeColors[node.color_index % nodeColors.length];
+      const textWidth = ctx.measureText(label).width;
+      node.nodeVerticalOffset = nodeVerticalOffset;
+      node.textWidth = textWidth;
+      node.globalScale = globalScale;
+      node.nodeFontSize = nodeFontSize;
 
       if (globalScale >= visibleKeywordLabelScale) {
         ctx.fillText(label, node.x, nodeVerticalOffset);
+
+        if (node === hoverNode) {
+          drawHideIcon(ctx, node);
+
+          const [offsetX, offsetY] = pointerPosition;
+          const rect = drawHideIconClickBox(node);
+
+          if (ctx.isPointInPath(rect, offsetX, offsetY)) {
+            tooltipRef.textContent = formatMessage(messages.networkHideNode);
+          } else {
+            tooltipRef.textContent = label;
+          }
+        }
       }
     }
   };
 
-  const handleNodeClick = (node: Node) => {
-    const keywords =
-      query.keywords && typeof query.keywords === 'string'
-        ? [query.keywords]
-        : query.keywords;
+  const getURLArrayParam = (key: string) => {
+    const value = searchParams.getAll(key);
+    return typeof value === 'string' ? [value] : value ? value : [];
+  };
 
-    clHistory.replace({
-      pathname,
-      search: stringify(
-        // Toggle selected keywords in url
-        {
-          ...query,
-          keywords: keywords
-            ? !keywords.includes(node.id)
-              ? [keywords, node.id]
-              : keywords.filter((keyword: string) => keyword !== node.id)
-            : node.id,
-        },
-        { addQueryPrefix: true, indices: false }
-      ),
-    });
+  const getKeywords = ({ id }: Node, isHiding: boolean) => {
+    let keywords = getURLArrayParam('keywords');
+
+    if (keywords.includes(id)) {
+      keywords = keywords.filter((keyword: string) => keyword !== id);
+    } else if (!isHiding) {
+      keywords.push(id);
+    }
+    return keywords;
+  };
+
+  const handleNodeClick = (node: Node, event: MouseEvent) => {
+    let isHiding = false;
+    const hidden_keywords = getURLArrayParam('hidden_keywords');
+    if (node.x !== undefined && node.y !== undefined) {
+      const { target, offsetX, offsetY } = event;
+      if (target) {
+        const ctx = (target as HTMLCanvasElement).getContext('2d');
+        const rect = drawHideIconClickBox(node);
+
+        if (ctx && ctx.isPointInPath(rect, offsetX, offsetY)) {
+          hidden_keywords.push(node.id);
+          isHiding = true;
+        }
+      }
+    }
+
+    const keywords = getKeywords(node, isHiding);
+    appendSearchParams({ keywords, hidden_keywords });
+
     trackEventByName(tracks.clickOnKeyword, { keywordName: node.name });
+  };
+
+  const handleShowHiddenNodesClick = () => {
+    const { hidden_keywords, ...params } = Object.fromEntries(
+      searchParams.entries()
+    );
+
+    setSearchParams(params);
+  };
+
+  const nodePointerAreaPaint = (node, color, ctx) => {
+    ctx.fillStyle = color;
+
+    drawHideIconArea(ctx, node);
+    drawBubbleArea(ctx, node);
+    drawLabelArea(ctx, node);
+    drawAreaInBetween(ctx, node);
   };
 
   const onZoomEnd = ({ k }: { k: number }) => {
@@ -198,6 +285,14 @@ const Network = ({
 
   const nodeColor = (node: Node) =>
     nodeColors[node.color_index % nodeColors.length];
+
+  const nodeVisibility = ({ id }: Node) =>
+    !getURLArrayParam('hidden_keywords').includes(id);
+  const linkVisibility = ({ source, target }) => {
+    return getURLArrayParam('hidden_keywords').every(
+      (nodeId) => ![source.id, target.id].includes(nodeId)
+    );
+  };
 
   const exportNetwork = () => {
     const srcCanvas = document.getElementsByTagName('canvas')[0];
@@ -226,6 +321,8 @@ const Network = ({
       });
     }
   };
+
+  const onEngineTick = () => !graphInitialized && setGraphInitialized(true);
 
   if (loading) {
     return (
@@ -295,22 +392,35 @@ const Network = ({
             }
           />
         </SectionTitle>
+        <ShowHiddenNodes
+          hiddenNodes={getURLArrayParam('hidden_keywords')}
+          nodesNames={
+            !isNilOrError(network) &&
+            network.data.attributes.nodes.map(({ id, name }) => ({ id, name }))
+          }
+          handleShowHiddenNodesClick={handleShowHiddenNodesClick}
+        />
       </Box>
       {height && width && (
         <ForceGraph2D
           height={height}
           width={width}
           cooldownTicks={50}
-          nodeRelSize={1}
+          enableNodeDrag={false}
           ref={networkRef}
-          onNodeClick={handleNodeClick}
           graphData={networkAttributes}
+          onNodeClick={handleNodeClick}
+          onNodeHover={handleNodeHover}
           onEngineStop={handleEngineStop}
+          onZoomEnd={onZoomEnd}
+          linkVisibility={linkVisibility}
+          nodeVisibility={nodeVisibility}
+          nodeRelSize={1}
+          nodePointerAreaPaint={nodePointerAreaPaint}
           nodeCanvasObjectMode={nodeCanvasObjectMode}
           nodeCanvasObject={nodeCanvasObject}
-          onZoomEnd={onZoomEnd}
           nodeColor={nodeColor}
-          enableNodeDrag={false}
+          onEngineTick={onEngineTick}
         />
       )}
       <Box
@@ -354,4 +464,4 @@ const Network = ({
   );
 };
 
-export default withRouter(injectIntl(Network));
+export default injectIntl(Network);
