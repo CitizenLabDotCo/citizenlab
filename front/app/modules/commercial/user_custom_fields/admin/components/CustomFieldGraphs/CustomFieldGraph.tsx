@@ -27,7 +27,8 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 
 // typings
 import { IUserCustomFieldData } from '../../../services/userCustomFields';
-import { IStreamParams, IStream } from 'utils/streams';
+import { IStream } from 'utils/streams';
+import { ICustomFieldParams } from '../../../services/stats';
 
 // services
 import {
@@ -49,7 +50,9 @@ import createConvertAndMergeSeries, {
 } from './convertAndMergeSeries';
 
 interface ICustomFieldEndpoint {
-  stream: (streamParams: IStreamParams | null) => IStream<ISupportedDataType>;
+  stream: (
+    streamParams: ICustomFieldParams | null
+  ) => IStream<ISupportedDataType>;
   xlsxEndpoint: string;
 }
 
