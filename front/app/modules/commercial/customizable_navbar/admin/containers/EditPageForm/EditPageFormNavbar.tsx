@@ -1,11 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { Formik, FormikProps } from 'formik';
 
 // components
 import PageFormWithNavbarNameField, {
-  validatePageForm,
   FormValues,
 } from '../../components/PageFormWithNavbarNameField';
 import GoBackButton from 'components/UI/GoBackButton';
@@ -15,7 +13,7 @@ import T from 'components/T';
 import { isNilOrError } from 'utils/helperUtils';
 import { fontSizes } from 'utils/styleUtils';
 import clHistory from 'utils/cl-router/history';
-import { getInitialFormValues, createPageUpdateData } from './utils';
+import { createPageUpdateData, getInitialFormValues } from './utils';
 import { NAVIGATION_PATH } from '..';
 
 // services
@@ -52,48 +50,33 @@ const EditPageFormNavbar = ({ params: { pageId } }: WithRouterProps) => {
     return null;
   }
 
-  const handleSubmit = async (
-    values: FormValues,
-    { setSubmitting, setStatus }
-  ) => {
+  const handleSubmit = async (values: FormValues) => {
     const localPageFiles = values.local_page_files;
 
-    try {
-      const promises: Promise<any>[] = [
-        updatePage(pageId, createPageUpdateData(page, values)),
-      ];
+    const promises: Promise<any>[] = [
+      updatePage(pageId, createPageUpdateData(page, values)),
+    ];
 
-      if (!isNilOrError(localPageFiles)) {
-        const addPromise = handleAddPageFiles(
-          pageId,
-          localPageFiles,
-          remotePageFiles
-        );
-        const removePromise = handleRemovePageFiles(
-          pageId,
-          localPageFiles,
-          remotePageFiles
-        );
+    if (!isNilOrError(localPageFiles)) {
+      const addPromise = handleAddPageFiles(
+        pageId,
+        localPageFiles,
+        remotePageFiles
+      );
+      const removePromise = handleRemovePageFiles(
+        pageId,
+        localPageFiles,
+        remotePageFiles
+      );
 
-        promises.push(addPromise, removePromise);
-      }
-
-      await Promise.all(promises);
-
-      setStatus('success');
-      setSubmitting(false);
-    } catch (error) {
-      setStatus('error');
-      setSubmitting(false);
+      promises.push(addPromise, removePromise);
     }
+
+    await Promise.all(promises);
   };
 
   const goBack = () => {
     clHistory.push(NAVIGATION_PATH);
-  };
-
-  const renderFn = (props: FormikProps<FormValues>) => {
-    return <PageFormWithNavbarNameField {...props} pageId={pageId} />;
   };
 
   return (
@@ -102,17 +85,10 @@ const EditPageFormNavbar = ({ params: { pageId } }: WithRouterProps) => {
       <Title>
         <T value={page.attributes.title_multiloc} />
       </Title>
-      <Formik
-        initialValues={getInitialFormValues(page, remotePageFiles)}
+      <PageFormWithNavbarNameField
+        pageId={pageId}
         onSubmit={handleSubmit}
-        render={renderFn}
-        validate={validatePageForm(
-          appConfigurationLocales,
-          pageSlugs,
-          page.attributes.slug
-        )}
-        validateOnChange={false}
-        validateOnBlur={false}
+        defaultValues={getInitialFormValues(page, remotePageFiles)}
       />
     </div>
   );

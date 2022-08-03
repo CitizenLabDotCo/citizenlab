@@ -97,7 +97,7 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
     const id = `${props.id}-${selectedLocale}`;
 
     return (
-      <Container className={className}>
+      <Container className={className} id={props.id}>
         <LabelContainer>
           {label && (
             <StyledLabel htmlFor={id}>

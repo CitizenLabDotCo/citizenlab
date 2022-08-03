@@ -10,9 +10,8 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import usePageSlugs from 'hooks/usePageSlugs';
 
 // components
-import { Formik, FormikProps } from 'formik';
 import GoBackButton from 'components/UI/GoBackButton';
-import PageForm, { FormValues, validatePageForm } from 'components/PageForm';
+import PageForm, { FormValues } from 'components/PageForm';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -21,7 +20,6 @@ import messages from '../messages';
 // utils
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
-import getInitialValues from './getInitialValues';
 import { NAVIGATION_PATH } from '..';
 
 const PageTitle = styled.h1`
@@ -42,28 +40,16 @@ const NewPageForm = () => {
     clHistory.push(NAVIGATION_PATH);
   };
 
-  const handleSubmit = async (
-    values: FormValues,
-    { setSubmitting, setStatus }
-  ) => {
+  const handleSubmit = async (values: FormValues) => {
     const localPageFiles = values.local_page_files;
 
-    try {
-      const page = await createPage(values);
+    const page = await createPage(values);
 
-      if (!isNilOrError(page) && !isNilOrError(localPageFiles)) {
-        await handleAddPageFiles(page.data.id, localPageFiles, null);
-      }
-
-      goBack();
-    } catch (error) {
-      setStatus('error');
-      setSubmitting(false);
+    if (!isNilOrError(page) && !isNilOrError(localPageFiles)) {
+      await handleAddPageFiles(page.data.id, localPageFiles, null);
     }
-  };
 
-  const renderFn = (props: FormikProps<FormValues>) => {
-    return <PageForm {...props} pageId={null} />;
+    goBack();
   };
 
   return (
@@ -72,14 +58,7 @@ const NewPageForm = () => {
       <PageTitle>
         <FormattedMessage {...messages.addPageButton} />
       </PageTitle>
-      <Formik
-        initialValues={getInitialValues(appConfigurationLocales)}
-        onSubmit={handleSubmit}
-        render={renderFn}
-        validate={validatePageForm(appConfigurationLocales, pageSlugs)}
-        validateOnChange={false}
-        validateOnBlur={false}
-      />
+      <PageForm onSubmit={handleSubmit} hideSlugInput pageId={null} />
     </div>
   );
 };
