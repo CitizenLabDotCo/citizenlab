@@ -12,7 +12,10 @@ import clHistory from 'utils/cl-router/history';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+
+// components
 import NativeSurveyLayout from './components/NativeSurveyLayout/NativeSurveyLayout';
+import NativeSurveyProjectInfo from './components/NativeSurveyProjectInfo/NativeSurveyProjectInfo';
 
 const AdminProjectIdeaEditFormComponent = React.lazy(
   () => import('./admin/containers/projects/surveys')
@@ -58,7 +61,7 @@ const configuration: ModuleConfiguration = {
     ],
     citizen: [
       {
-        path: '/:locale/projects/:slug/survey-title/survey',
+        path: '/:locale/projects/:slug/:survey-title/survey',
         element: <NativeSurveyLayout />,
       },
     ],
@@ -71,16 +74,29 @@ const configuration: ModuleConfiguration = {
         </RenderOnHideTabCondition>
       );
     },
+    'app.containers.projectsShowPage.projectInfoSideBar': (props) => {
+      if (props.project.attributes.participation_method === 'native_survey') {
+        return (
+          <NativeSurveyProjectInfo
+            slug={props.project.attributes.slug}
+            authUser={props.authUser}
+          />
+        );
+      } else {
+        return <></>;
+      }
+    },
     'app.containers.projectsShowPage.projectActionButtons': (props) => {
       if (props.project.attributes.participation_method === 'native_survey') {
         return (
           <>
             <Button
               buttonStyle="primary"
-              onClick={() =>
-                clHistory.push(
-                  `/projects/${props.project.attributes.slug}/survey-title/survey`
-                )
+              onClick={
+                () =>
+                  clHistory.push(
+                    `/projects/${props.project.attributes.slug}/survey-title/survey`
+                  ) // Replace "survey-title" with the survey title for the project
               }
               fontWeight="500"
             >

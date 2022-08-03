@@ -71,6 +71,7 @@ import { BannerButtonStyle } from 'containers/LandingPage/BannerButton';
 import { AuthProvider } from 'components/SignUpIn/AuthProviders';
 import { Localize } from 'hooks/useLocalize';
 import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/projects/project/general';
+import { TAuthUser } from 'hooks/useAuthUser';
 
 export type ITabsOutlet = {
   formatMessage: (
@@ -207,6 +208,10 @@ export type OutletsPropertyMap = {
   };
   'app.containers.projectsShowPage.projectActionButtons': {
     project: IProjectData;
+  };
+  'app.containers.projectsShowPage.projectInfoSideBar': {
+    project: IProjectData;
+    authUser: TAuthUser;
   };
   'app.containers.Admin.project.edit.permissions.moderatorRights': {
     projectId: string;
