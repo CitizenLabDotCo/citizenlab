@@ -226,6 +226,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
       <Outlet
         id="app.containers.projectsShowPage.projectActionButtons"
         project={project}
+        currentPhase={currentPhase}
       />
     </Container>
   );

@@ -208,10 +208,12 @@ export type OutletsPropertyMap = {
   };
   'app.containers.projectsShowPage.projectActionButtons': {
     project: IProjectData;
+    currentPhase: IPhaseData | null;
   };
   'app.containers.projectsShowPage.projectInfoSideBar': {
     project: IProjectData;
     authUser: TAuthUser;
+    currentPhase: IPhaseData | null;
   };
   'app.containers.Admin.project.edit.permissions.moderatorRights': {
     projectId: string;

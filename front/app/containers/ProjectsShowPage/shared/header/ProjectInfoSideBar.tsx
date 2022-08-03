@@ -369,6 +369,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
             <Outlet
               id="app.containers.projectsShowPage.projectInfoSideBar"
               project={project}
+              currentPhase={currentPhase}
               authUser={authUser}
             />
             {((projectType === 'continuous' &&

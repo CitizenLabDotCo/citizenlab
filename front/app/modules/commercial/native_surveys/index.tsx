@@ -75,7 +75,10 @@ const configuration: ModuleConfiguration = {
       );
     },
     'app.containers.projectsShowPage.projectInfoSideBar': (props) => {
-      if (props.project.attributes.participation_method === 'native_survey') {
+      if (
+        props.project.attributes.participation_method === 'native_survey' ||
+        props.currentPhase?.attributes.participation_method === 'native_survey'
+      ) {
         return (
           <NativeSurveyProjectInfo
             slug={props.project.attributes.slug}
@@ -87,7 +90,10 @@ const configuration: ModuleConfiguration = {
       }
     },
     'app.containers.projectsShowPage.projectActionButtons': (props) => {
-      if (props.project.attributes.participation_method === 'native_survey') {
+      if (
+        props.project.attributes.participation_method === 'native_survey' ||
+        props.currentPhase?.attributes.participation_method === 'native_survey'
+      ) {
         return (
           <>
             <Button
