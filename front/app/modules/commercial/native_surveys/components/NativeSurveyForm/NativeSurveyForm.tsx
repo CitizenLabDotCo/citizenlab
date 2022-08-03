@@ -56,8 +56,12 @@ import DateControl, {
 import MultilocInputLayout, {
   multilocInputTester,
 } from 'components/Form/Components/Controls/MultilocInputLayout';
+import useLocale from 'hooks/useLocale';
+import { isNilOrError } from 'utils/helperUtils';
 
 const NativeSurveyForm = () => {
+  const locale = useLocale();
+
   const renderers = [
     { tester: inputControlTester, renderer: InputControl },
     { tester: textAreaControlTester, renderer: TextAreaControl },
@@ -83,25 +87,50 @@ const NativeSurveyForm = () => {
     name: 'John Doe',
   };
 
-  const dummyJsonSchema = {
-    type: 'object',
-    properties: {
-      name: {
-        type: 'string',
-        minLength: 1,
+  // Dummy data mocking an API response. Once back office is set up, replace this with an API call.
+  const dummyAPIResponse = {
+    json_schema_multiloc: {
+      en: {
+        type: 'object',
+        properties: {
+          nameEnglish: {
+            type: 'string',
+            minLength: 1,
+          },
+        },
+        required: ['name'],
+      },
+      'fr-BE': {
+        type: 'object',
+        properties: {
+          nameFrench: {
+            type: 'string',
+            minLength: 1,
+          },
+        },
+        required: ['name'],
       },
     },
-    required: ['name', 'due_date'],
-  };
-
-  const dummyUiJsonSchema = {
-    type: 'VerticalLayout',
-    elements: [
-      {
-        type: 'Control',
-        scope: '#/properties/name',
+    ui_schema_multiloc: {
+      en: {
+        type: 'VerticalLayout',
+        elements: [
+          {
+            type: 'Control',
+            scope: '#/properties/nameEnglish',
+          },
+        ],
       },
-    ],
+      'fr-BE': {
+        type: 'VerticalLayout',
+        elements: [
+          {
+            type: 'Control',
+            scope: '#/properties/nameFrench',
+          },
+        ],
+      },
+    },
   };
 
   return (
@@ -122,12 +151,14 @@ const NativeSurveyForm = () => {
           width="652px"
           background="white"
         >
-          <JsonForms
-            data={dummyData}
-            schema={dummyJsonSchema}
-            uischema={dummyUiJsonSchema}
-            renderers={renderers}
-          />
+          {!isNilOrError(locale) && (
+            <JsonForms
+              data={dummyData}
+              schema={dummyAPIResponse.json_schema_multiloc[locale]}
+              uischema={dummyAPIResponse.ui_schema_multiloc[locale]}
+              renderers={renderers}
+            />
+          )}
         </Box>
       </Box>
     </>
