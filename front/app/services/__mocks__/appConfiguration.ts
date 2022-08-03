@@ -35,7 +35,6 @@ export const getAppConfigurationData = (
         currency: 'EUR',
         segment_destinations_blacklist: null,
         reply_to_email: 'not-support@citizenlab.co',
-        display_header_avatars: true,
       },
       customizable_homepage_banner: {
         allowed: true,
@@ -54,11 +53,6 @@ export const getAppConfigurationData = (
       small: 'http://zah.cy/wof.jpg',
       medium: 'http://fepe.et/fivacsok.jpg',
       large: 'http://jostoska.gt/timihosin.jpg',
-    },
-    header_bg: {
-      small: 'http://neena.gr/owocap.jpg',
-      medium: 'http://hedopewa.mw/ra.jpg',
-      large: 'http://sarmuvov.co/uzro.jpg',
     },
     ...attributes,
   },

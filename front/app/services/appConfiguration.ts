@@ -40,9 +40,6 @@ export type IAppConfigurationSettingsCore = {
     | 'active'
     | 'churned'
     | 'not_applicable';
-  header_title?: Multiloc | null;
-  header_slogan?: Multiloc | null;
-  display_header_avatars: boolean;
   meta_title?: Multiloc | null;
   meta_description?: Multiloc | null;
   signup_helper_text?: Multiloc | null;
@@ -53,7 +50,6 @@ export type IAppConfigurationSettingsCore = {
   color_menu_bg?: string | null;
   currency: TCurrency;
   reply_to_email: string;
-  custom_onboarding_fallback_message?: Multiloc | null;
   custom_onboarding_message?: Multiloc | null;
   custom_onboarding_button?: Multiloc | null;
   custom_onboarding_link?: string | null;
@@ -239,11 +235,8 @@ export interface IAppConfigurationStyle {
   navbarTextColor?: string;
   navbarHighlightedItemBackgroundColor?: string;
   navbarBorderColor?: string;
-  signedOutHeaderOverlayColor?: string;
   signedOutHeaderTitleFontSize?: number;
   signedOutHeaderTitleFontWeight?: number;
-  // Number between 0 and 100, inclusive
-  signedOutHeaderOverlayOpacity?: number;
   signedInHeaderOverlayColor?: string;
   // Number between 0 and 100, inclusive
   signedInHeaderOverlayOpacity?: number;
@@ -261,10 +254,8 @@ export interface IAppConfigurationAttributes {
   host: string;
   settings: IAppConfigurationSettings;
   logo: ImageSizes | null;
-  header_bg: ImageSizes | null;
   favicon?: ImageSizes | null;
   style?: IAppConfigurationStyle;
-  homepage_info_multiloc?: Multiloc;
 }
 
 export interface IAppConfigurationData {
@@ -284,10 +275,8 @@ export interface IUpdatedAppConfigurationProperties {
     >;
   }>;
   logo?: string;
-  header_bg?: string;
   favicon?: string;
   style?: IAppConfigurationStyle;
-  homepage_info_multiloc?: Multiloc;
 }
 
 export function currentAppConfigurationStream() {

@@ -1,6 +1,13 @@
-import { randomString } from '../../../support/commands';
+import { randomString, randomEmail } from '../../../support/commands';
 
 describe('Admin: update Hero Banner content', () => {
+  // for a fake verified user
+  const verifiedFirstName = randomString();
+  const verifiedLastName = randomString();
+  const verifiedEmail = randomEmail();
+  const verifiedPassword = randomString();
+
+  // header content
   const signedOutHeaderEnglish = randomString();
   const signedOutSubheaderEnglish = randomString();
   const updatedSignedOutHeaderEnglish = randomString();
@@ -13,27 +20,51 @@ describe('Admin: update Hero Banner content', () => {
   const updatedSignedInCTAButton = 'signedin button!';
   const updatedSignedInCTAURL = 'https://www.example.biz';
 
-  it('displays hero banner settings on the landing page correctly', () => {
-    // set default homepage settings
-    cy.apiUpdateHomepageSettings({
-      top_info_section_enabled: false,
-      bottom_info_section_enabled: false,
-      events_widget_enabled: false,
-      banner_avatars_enabled: false,
-      banner_layout: 'full_width_banner_layout',
-      banner_signed_out_header_multiloc: {
-        en: signedOutHeaderEnglish,
-      },
-      banner_signed_out_subheader_multiloc: {
-        en: signedOutSubheaderEnglish,
-      },
-      banner_cta_signed_out_text_multiloc: {
-        en: signedOutCTAButton,
-      },
-      banner_signed_out_header_overlay_color: '#33FFD1',
-      banner_signed_out_header_overlay_opacity: 55,
-    });
+  const defaultHomepageSettings = {
+    top_info_section_enabled: false,
+    bottom_info_section_enabled: false,
+    events_widget_enabled: false,
+    banner_avatars_enabled: false,
+    banner_layout: 'full_width_banner_layout',
+    banner_signed_out_header_multiloc: {
+      en: signedOutHeaderEnglish,
+    },
+    banner_signed_out_subheader_multiloc: {
+      en: signedOutSubheaderEnglish,
+    },
+    banner_cta_signed_out_text_multiloc: {
+      en: signedOutCTAButton,
+    },
+    banner_signed_out_header_overlay_color: '#33FFD1',
+    banner_signed_out_header_overlay_opacity: 55,
+    banner_cta_signed_out_type: 'sign_up_button',
+    banner_cta_signed_in_type: 'no_button',
+  };
 
+  before(() => {
+    // create a fake verified user
+    cy.apiSignup(
+      verifiedFirstName,
+      verifiedLastName,
+      verifiedEmail,
+      verifiedPassword
+    ).then(() => {
+      cy.apiLogin(verifiedEmail, verifiedPassword).then((response) => {
+        cy.apiVerifyBogus(response.body.jwt);
+      });
+    });
+    // verify the verified user
+
+    // set default homepage settings
+    cy.apiUpdateHomepageSettings(defaultHomepageSettings);
+  });
+
+  // reset settings so we don't interfere with other tests
+  after(() => {
+    cy.apiUpdateHomepageSettings(defaultHomepageSettings);
+  });
+
+  it('displays hero banner settings on the landing page correctly', () => {
     cy.visit('/');
     cy.acceptCookies();
 
@@ -64,6 +95,9 @@ describe('Admin: update Hero Banner content', () => {
   });
 
   it('updates hero banner settings as admin correctly', () => {
+    cy.intercept('PATCH', '**/home_page').as('saveHomePage');
+    cy.intercept('GET', '**/home_page').as('getHomePage');
+
     // log in as admin and reload page
     cy.setLoginCookie('admin@citizenlab.co', 'democracy2.0');
     cy.reload();
@@ -79,6 +113,7 @@ describe('Admin: update Hero Banner content', () => {
     // click two-column banner layout
     cy.get('[data-cy="e2e-two-column-layout-option"]').click();
 
+    // fill in header and subheader
     cy.get('[data-cy="e2e-signed-out-header-section"]')
       .find('input')
       .clear()
@@ -127,9 +162,16 @@ describe('Admin: update Hero Banner content', () => {
 
     // save form
     cy.get('.e2e-submit-wrapper-button').click();
+    cy.wait('@saveHomePage');
     cy.get('.e2e-submit-wrapper-button').contains('Success');
+  });
 
-    cy.visit('/');
+  it('views the signed-in content properly as a verified user', () => {
+    cy.setLoginCookie(verifiedEmail, verifiedPassword);
+    cy.goToLandingPage();
+
+    // click button to remove "complete your profile" banner
+    cy.get('.e2e-signed-in-header-complete-skip-btn').find('button').click();
 
     // check content and url for signed in CTA button
     cy.get('[data-cy="e2e-cta-banner-button"]')
@@ -141,9 +183,7 @@ describe('Admin: update Hero Banner content', () => {
   });
 
   it('views updated settings as logged-out user successfully', () => {
-    // logout and reload as signed out user
-    cy.logout();
-    cy.reload();
+    cy.goToLandingPage();
 
     cy.get('[data-cy=e2e-two-column-layout-container]').should('exist');
 
@@ -156,11 +196,6 @@ describe('Admin: update Hero Banner content', () => {
       'contain',
       updatedSignedOutSubheaderEnglish
     );
-
-    // avatars should be turned on no
-    cy.get('#hook-header-content')
-      .find('[data-testid=avatarBubblesContainer]')
-      .should('exist');
 
     cy.get('#hook-header-content')
       .find('a')
