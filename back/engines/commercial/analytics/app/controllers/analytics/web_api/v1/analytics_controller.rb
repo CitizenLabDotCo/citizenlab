@@ -3,10 +3,9 @@
 module Analytics
   module WebApi::V1
     class AnalyticsController < ::ApplicationController
-      skip_after_action :verify_policy_scoped, only: [:created]
-      after_action :verify_authorized, only: [:created]
-
       def create
+        authorize :analytics, policy_class: AnalyticsPolicy
+
         query = QueryBuilderService.new(params[:query])
         validation = query.validate
 
