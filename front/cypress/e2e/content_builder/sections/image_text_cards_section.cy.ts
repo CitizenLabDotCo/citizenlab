@@ -56,17 +56,17 @@ describe('Content builder Image Text Cards section', () => {
     // Edit image components
     cy.get('div#e2e-image').eq(0).parent().click();
     cy.get('input[type="file"]').attachFile('icon.png');
-    cy.get('#imageAltTextInput').click().type('Image alt text.');
+    cy.get('#imageAltTextInput').click().clear().type('Image alt text.');
     cy.get('[alt="Image alt text."]').should('exist');
 
     cy.get('div#e2e-image').eq(1).parent().click();
     cy.get('input[type="file"]').attachFile('icon.png');
-    cy.get('#imageAltTextInput').click().type('Image alt text.');
+    cy.get('#imageAltTextInput').click().clear().type('Image alt text.');
     cy.get('[alt="Image alt text."]').should('exist');
 
     cy.get('div#e2e-image').eq(2).parent().click();
     cy.get('input[type="file"]').attachFile('icon.png');
-    cy.get('#imageAltTextInput').click().type('Image alt text.');
+    cy.get('#imageAltTextInput').click().clear().type('Image alt text.');
     cy.get('[alt="Image alt text."]').should('exist');
 
     cy.get('#e2e-content-builder-topbar-save').click();
