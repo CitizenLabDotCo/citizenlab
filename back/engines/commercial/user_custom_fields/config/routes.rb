@@ -22,6 +22,9 @@ UserCustomFields::Engine.routes.draw do
           get 'users_by_domicile'
           get 'users_by_domicile_as_xlsx'
 
+          get 'users_by_age'
+          get 'users_by_age_as_xlsx'
+
           with_options action: :users_by_custom_field do
             get 'users_by_gender'
             get 'users_by_birthyear'

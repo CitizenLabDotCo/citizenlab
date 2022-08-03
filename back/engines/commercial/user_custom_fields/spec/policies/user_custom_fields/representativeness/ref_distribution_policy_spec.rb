@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe UserCustomFields::Representativeness::RefDistributionPolicy do
   subject(:policy) { described_class.new(user, ref_distribution) }
 
-  let_it_be(:ref_distribution) { create(:ref_distribution) }
+  let_it_be(:ref_distribution) { create(:categorical_distribution) }
 
   context 'when the user has admin rights' do
     let_it_be(:user) { build(:admin) }
