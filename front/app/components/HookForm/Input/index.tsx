@@ -36,7 +36,12 @@ const Input = ({ name, ...rest }: Props) => {
         )}
       />
       {validationError && (
-        <Error marginTop="8px" marginBottom="8px" text={validationError} />
+        <Error
+          marginTop="8px"
+          marginBottom="8px"
+          text={validationError}
+          scrollIntoView={false}
+        />
       )}
       {apiError && (
         <Error
@@ -44,6 +49,7 @@ const Input = ({ name, ...rest }: Props) => {
           apiErrors={apiError}
           marginTop="8px"
           marginBottom="8px"
+          scrollIntoView={false}
         />
       )}
     </>

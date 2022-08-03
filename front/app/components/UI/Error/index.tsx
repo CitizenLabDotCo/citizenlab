@@ -130,6 +130,7 @@ interface Props {
   fieldName?: TFieldName | undefined;
   apiErrors?: (CLError | IInviteError)[] | null;
   id?: string;
+  scrollIntoView?: boolean;
 }
 
 export type TFieldName =
@@ -201,17 +202,18 @@ const Error = (props: Props) => {
     className = '',
     animate = true,
     id,
+    scrollIntoView = true,
   } = props;
 
   useEffect(() => {
-    if (text || apiErrors) {
+    if (scrollIntoView) {
       containerRef.current?.scrollIntoView &&
         containerRef.current.scrollIntoView({
           behavior: 'smooth',
           block: 'center',
         });
     }
-  }, [text, apiErrors]);
+  }, [scrollIntoView]);
 
   const dedupApiErrors =
     apiErrors && isArray(apiErrors) && !isEmpty(apiErrors)

@@ -57,7 +57,12 @@ const InputMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
         }}
       />
       {errorMessage && (
-        <Error marginTop="8px" marginBottom="8px" text={errorMessage} />
+        <Error
+          marginTop="8px"
+          marginBottom="8px"
+          text={errorMessage}
+          scrollIntoView={false}
+        />
       )}
     </>
   );

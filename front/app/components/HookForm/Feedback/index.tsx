@@ -80,7 +80,7 @@ const Feedback = ({
   return (
     <>
       {isSubmitted && (
-        <Box id="feedback" data-testid="feedback">
+        <Box id="feedback" data-testid="feedback" key={submitCount}>
           {successMessageIsShown && (
             <Box
               bgColor={colors.clGreenSuccessBackground}
