@@ -74,8 +74,6 @@ export interface IUsersByAge {
   };
 }
 
-export type TStreamResponse = IUsersByRegistrationField; // | IUsersByDomicile;
-
 export const usersByRegFieldXlsxEndpoint = (customFieldId: string) =>
   `${apiEndpoint}/users_by_custom_field_as_xlsx/${customFieldId}`;
 
