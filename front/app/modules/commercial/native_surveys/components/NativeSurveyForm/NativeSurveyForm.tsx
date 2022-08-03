@@ -113,7 +113,7 @@ const NativeSurveyForm = () => {
         width="100%"
         id="e2e-native-survey-form"
       >
-        <Title marginTop="45px" width="100%" textAlign="center">
+        <Title marginTop="48px" width="100%" textAlign="center">
           Survey Title
         </Title>
         <Box
