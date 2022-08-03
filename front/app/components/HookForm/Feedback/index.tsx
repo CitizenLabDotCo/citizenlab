@@ -22,15 +22,15 @@ const Feedback = ({
   successMessage,
   intl: { formatMessage },
 }: FeedbackProps) => {
-  const [successMessageIsVisible, setSuccessMessageIsShown] = useState(true);
+  const [successMessageIsVisible, setSuccessMessageIsVisible] = useState(true);
   const {
     formState: { errors, isSubmitSuccessful, isSubmitted, submitCount },
   } = useFormContext();
 
   useEffect(() => {
     if (submitCount > 0) {
-      scrollToElement({ id: 'Feedback' });
-      setSuccessMessageIsShown(true);
+      scrollToElement({ id: 'feedback' });
+      setSuccessMessageIsVisible(true);
     }
   }, [submitCount]);
 
@@ -71,7 +71,7 @@ const Feedback = ({
     return errorMessages;
   };
 
-  const closeSuccessMessage = () => setSuccessMessageIsShown(false);
+  const closeSuccessMessage = () => setSuccessMessageIsVisible(false);
   const successMessageIsShown = isSubmitSuccessful && successMessageIsVisible;
   const errorMessageIsShown =
     (getAllErrorMessages().length > 0 || errors.submissionError) &&
