@@ -85,6 +85,7 @@ const Content = styled.div`
 interface InputProps {
   className?: string;
   opened: boolean;
+  // rename to onClose
   close: () => void;
   url?: string | null;
   goBackUrl?: string | null;
