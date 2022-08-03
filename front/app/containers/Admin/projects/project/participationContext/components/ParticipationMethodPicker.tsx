@@ -95,6 +95,24 @@ export default ({
       />
     </FeatureFlag>
 
+    <FeatureFlag name="native_surveys">
+      <ParticipationMethodRadio
+        onChange={handleParticipationMethodOnChange}
+        currentValue={participation_method}
+        value="native_survey"
+        name="participationmethod"
+        id={'participationmethod-native_survey'}
+        label={
+          <LabelHeaderDescription
+            header={<FormattedMessage {...messages.createNativeSurvey} />}
+            description={
+              <FormattedMessage {...messages.createNativeSurveyDescription} />
+            }
+          />
+        }
+      />
+    </FeatureFlag>
+
     {showSurveys && (
       <ParticipationMethodRadio
         onChange={handleParticipationMethodOnChange}

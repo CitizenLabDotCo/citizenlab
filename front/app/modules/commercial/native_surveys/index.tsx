@@ -5,8 +5,9 @@ import { isNilOrError } from 'utils/helperUtils';
 import { IProjectData } from 'services/projects';
 import { IPhaseData } from 'services/phases';
 
-const AdminProjectIdeaEditFormComponent = React.lazy(
-  () => import('./admin/containers/projects/edit/ideaform')
+const Surveys = React.lazy(() => import('./admin/containers/projects/surveys'));
+const SurveyEdit = React.lazy(
+  () => import('./admin/containers/projects/surveys/edit')
 );
 
 type RenderOnHideTabConditionProps = {
@@ -19,20 +20,18 @@ const RenderOnHideTabCondition = (props: RenderOnHideTabConditionProps) => {
   const { project, phases, children } = props;
   const processType = project.attributes.process_type;
   const participationMethod = project.attributes.participation_method;
+  const noNativeSurveyInTimeline =
+    !isNilOrError(phases) &&
+    !phases.some(
+      (phase) => phase.attributes.participation_method === 'native_survey'
+    );
+
+  // Hide tab when participation method is not native survey in timeline and continuous process types
   const hideTab =
-    (processType === 'continuous' &&
-      participationMethod !== 'ideation' &&
-      participationMethod !== 'native_survey' &&
-      participationMethod !== 'budgeting') ||
+    (processType === 'continuous' && participationMethod !== 'native_survey') ||
     (processType === 'timeline' &&
       !isNilOrError(phases) &&
-      phases.filter((phase) => {
-        return (
-          phase.attributes.participation_method === 'ideation' ||
-          phase.attributes.participation_method === 'native_survey' ||
-          phase.attributes.participation_method === 'budgeting'
-        );
-      }).length === 0);
+      noNativeSurveyInTimeline);
 
   if (hideTab) {
     return null;
@@ -45,8 +44,12 @@ const configuration: ModuleConfiguration = {
   routes: {
     'admin.projects.project': [
       {
-        path: 'ideaform',
-        element: <AdminProjectIdeaEditFormComponent />,
+        path: 'native-survey',
+        element: <Surveys />,
+      },
+      {
+        path: 'native-survey/edit',
+        element: <SurveyEdit />,
       },
     ],
   },

@@ -93,6 +93,7 @@ const PARTICIPATION_METHOD_MESSAGES: Record<
 > = {
   ideation: messages.ideationAndFeedback,
   information: messages.information,
+  native_survey: messages.native_survey,
   survey: messages.survey,
   budgeting: messages.budgeting,
   poll: messages.poll,

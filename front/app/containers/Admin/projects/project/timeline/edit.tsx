@@ -294,7 +294,7 @@ class AdminProjectTimelineEdit extends PureComponent<
     });
   };
 
-  handleParcticipationContextOnSubmit = (
+  handleParticipationContextOnSubmit = (
     participationContextConfig: IParticipationContextConfig
   ) => {
     const { phase } = this.state;
@@ -443,7 +443,7 @@ class AdminProjectTimelineEdit extends PureComponent<
               <SectionField>
                 <ParticipationContext
                   phaseId={phase ? phase.data.id : null}
-                  onSubmit={this.handleParcticipationContextOnSubmit}
+                  onSubmit={this.handleParticipationContextOnSubmit}
                   onChange={this.handleParticipationContextOnChange}
                   apiErrors={errors}
                 />

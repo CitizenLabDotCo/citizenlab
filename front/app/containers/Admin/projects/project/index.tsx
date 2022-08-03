@@ -151,6 +151,7 @@ export class AdminProjectsProjectIndex extends PureComponent<
           if (
             processType === 'continuous' &&
             participationMethod !== 'ideation' &&
+            participationMethod !== 'native_survey' &&
             participationMethod !== 'budgeting'
           ) {
             return true;
