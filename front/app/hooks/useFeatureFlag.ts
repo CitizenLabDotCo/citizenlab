@@ -2,11 +2,21 @@ import { useState, useEffect } from 'react';
 import {
   currentAppConfigurationStream,
   IAppConfiguration,
-  TAppConfigurationSetting,
+  TAppConfigurationSettingWithEnabled,
+  THomepageSetting,
 } from 'services/appConfiguration';
 
-type Parameters = {
-  name: TAppConfigurationSetting;
+export type Parameters = HomepageSettingProps | AppConfigSettingProps;
+
+// For THomepageSetting, you can only use
+// this hook to check the allowed value, which still resides in appConfiguration
+type HomepageSettingProps = {
+  name: THomepageSetting;
+  onlyCheckAllowed: true;
+};
+
+type AppConfigSettingProps = {
+  name: TAppConfigurationSettingWithEnabled;
   onlyCheckAllowed?: boolean;
 };
 

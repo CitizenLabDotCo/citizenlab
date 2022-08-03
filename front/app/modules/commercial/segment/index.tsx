@@ -30,6 +30,10 @@ declare module 'components/ConsentManager/destinations' {
   export interface IDestinationMap {
     segment: 'segment';
   }
+
+  interface IConsentManagerFeatureMap {
+    segment: 'segment';
+  }
 }
 
 const destinationConfig: IDestinationConfig = {

@@ -14,7 +14,7 @@ import {
   LabelTitle,
   LabelDescription,
 } from '../general';
-import { StyledSection, StyledSectionTitle } from './Events';
+import { StyledSection, StyledSectionTitle } from '.';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

@@ -2,13 +2,11 @@ import React from 'react';
 import { SectionField } from 'components/admin/Section';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-import {
-  CTASignedOutType,
-  CustomizedButtonConfig,
-} from 'services/appConfiguration';
+import { CTASignedOutType } from 'services/homepageSettings';
 import SettingRadioButtons from './SettingRadioButtons';
-import { CLErrors } from 'typings';
+import { CLErrors, Multiloc } from 'typings';
 import SettingsLabel from './SettingsLabel';
+import { BannerSettingKeyType } from '.';
 
 const CTA_SIGNED_OUT_TYPES: CTASignedOutType[] = [
   'sign_up_button',
@@ -18,14 +16,19 @@ const CTA_SIGNED_OUT_TYPES: CTASignedOutType[] = [
 
 type Props = {
   ctaType: CTASignedOutType;
-  customizedButtonConfig?: CustomizedButtonConfig;
-  handleSettingOnChange: (settingKey: string, settingValue: any) => void;
-  errors: CLErrors;
+  ctaButtonMultiloc: Multiloc;
+  ctaButtonUrl: string | null;
+  handleSettingOnChange: (
+    settingKey: BannerSettingKeyType,
+    settingValue: string
+  ) => void;
+  errors: CLErrors | undefined | null;
 };
 
 const CTASignedOutSettings = ({
   ctaType,
-  customizedButtonConfig,
+  ctaButtonMultiloc,
+  ctaButtonUrl,
   handleSettingOnChange,
   errors,
 }: Props) => (
@@ -37,7 +40,8 @@ const CTASignedOutSettings = ({
       ctaTypes={CTA_SIGNED_OUT_TYPES}
       ctaType={ctaType}
       signInStatus={'signed_out'}
-      customizedButtonConfig={customizedButtonConfig}
+      ctaButtonMultiloc={ctaButtonMultiloc}
+      ctaButtonUrl={ctaButtonUrl}
       handleSettingOnChange={handleSettingOnChange}
       errors={errors}
     />

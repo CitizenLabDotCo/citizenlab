@@ -1,55 +1,40 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import Tab from './admin/components/Tab';
+import FeatureFlag from 'components/FeatureFlag';
 import ModuleActive from './admin/components/ModuleActive';
 import PoliciesSubtitle from './admin/components/PoliciesSubtitle';
+import PagesMenu from './admin/containers';
 
-const CustomNavbarContainer = React.lazy(() => import('./admin/containers'));
-const CustomNavbarSettingsComponent = React.lazy(
-  () => import('./admin/containers/NavigationSettings')
-);
-const NewPageFormComponent = React.lazy(
+const NewPageFormComponent = lazy(
   () => import('./admin/containers/NewPageForm')
 );
-const EditPageComponent = React.lazy(
-  () => import('./admin/containers/EditPageForm')
-);
-const EditNavbarItemComponent = React.lazy(
+const EditPageComponent = lazy(() => import('./admin/containers/EditPageForm'));
+const EditNavbarItemComponent = lazy(
   () => import('./admin/containers/EditNavbarItemForm')
+);
+
+const NavigationSettings = lazy(
+  () => import('./admin/containers/NavigationSettings')
 );
 
 const configuration: ModuleConfiguration = {
   routes: {
-    'admin.settings': [
+    'admin.pages-menu': [
       {
-        path: 'navigation',
-        element: <CustomNavbarContainer />,
-        children: [
-          {
-            // to be changed when refactoring
-            // path: '' should only be used for redirects on
-            // index. Search the codebase for examples
-            path: '',
-            element: <CustomNavbarSettingsComponent />,
-          },
-          {
-            path: 'pages/new',
-            element: <NewPageFormComponent />,
-          },
-          {
-            path: 'pages/edit/:pageId',
-            element: <EditPageComponent />,
-          },
-          {
-            path: 'navbar-items/edit/:navbarItemId',
-            element: <EditNavbarItemComponent />,
-          },
-        ],
+        path: 'pages/new',
+        element: <NewPageFormComponent />,
+      },
+      {
+        path: 'pages/edit/:pageId',
+        element: <EditPageComponent />,
+      },
+      {
+        path: 'navbar-items/edit/:navbarItemId',
+        element: <EditNavbarItemComponent />,
       },
     ],
   },
   outlets: {
-    'app.containers.Admin.settings.tabs': (props) => <Tab {...props} />,
     'app.containers.Admin.settings.customize.Events': (props) => (
       <ModuleActive {...props} />
     ),
@@ -64,6 +49,16 @@ const configuration: ModuleConfiguration = {
     ),
     'app.containers.Admin.settings.policies.subTitle': () => (
       <PoliciesSubtitle />
+    ),
+    'app.containers.Admin.pages-menu.index': () => (
+      <FeatureFlag name="customizable_navbar">
+        <PagesMenu />
+      </FeatureFlag>
+    ),
+    'app.containers.Admin.pages-menu.NavigationSettings': () => (
+      <FeatureFlag name="customizable_navbar">
+        <NavigationSettings />
+      </FeatureFlag>
     ),
   },
 };

@@ -2,13 +2,12 @@ import React from 'react';
 import { SectionField } from 'components/admin/Section';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-import {
-  CTASignedInType,
-  CustomizedButtonConfig,
-} from 'services/appConfiguration';
+import { CTASignedInType } from 'services/homepageSettings';
+
 import SettingRadioButtons from './SettingRadioButtons';
-import { CLErrors } from 'typings';
+import { CLErrors, Multiloc } from 'typings';
 import SettingsLabel from './SettingsLabel';
+import { BannerSettingKeyType } from '.';
 
 const CTA_SIGNED_IN_TYPES: CTASignedInType[] = [
   'customized_button',
@@ -17,14 +16,19 @@ const CTA_SIGNED_IN_TYPES: CTASignedInType[] = [
 
 type Props = {
   ctaType: CTASignedInType;
-  customizedButtonConfig?: CustomizedButtonConfig;
-  handleSettingOnChange: (settingKey: string, settingValue: any) => void;
-  errors: CLErrors;
+  ctaButtonMultiloc: Multiloc;
+  ctaButtonUrl: string | null;
+  handleSettingOnChange: (
+    settingKey: BannerSettingKeyType,
+    settingValue: any
+  ) => void;
+  errors: CLErrors | undefined | null;
 };
 
 const CTASignedInSettings = ({
   ctaType,
-  customizedButtonConfig,
+  ctaButtonMultiloc,
+  ctaButtonUrl,
   handleSettingOnChange,
   errors,
 }: Props) => (
@@ -36,7 +40,8 @@ const CTASignedInSettings = ({
       ctaTypes={CTA_SIGNED_IN_TYPES}
       ctaType={ctaType}
       signInStatus={'signed_in'}
-      customizedButtonConfig={customizedButtonConfig}
+      ctaButtonMultiloc={ctaButtonMultiloc}
+      ctaButtonUrl={ctaButtonUrl}
       handleSettingOnChange={handleSettingOnChange}
       errors={errors}
     />

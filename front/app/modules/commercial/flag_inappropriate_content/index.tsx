@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import RenderOnNotificationType from 'modules/utilComponents/RenderOnNotificationType';
-import FeatureFlag from 'components/FeatureFlag';
 import Setting from './admin/containers/Setting';
 import RemoveFlagButton from './admin/components/RemoveFlagButton';
 import ActivityWarningsTab from './admin/components/ActivityWarningsTab';
@@ -9,6 +8,7 @@ import InappropriateContentWarning from './admin/components/InappropriateContent
 import EmptyMessageModerationsWithFlag from './admin/components/EmptyMessageModerationsWithFlag';
 import NLPFlagNotification from './citizen/components/NLPFlagNotification';
 import { INLPFlagNotificationData } from 'services/notifications';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 type RenderOnSelectedTabValueProps = {
   isTabSelected: boolean;
@@ -23,13 +23,32 @@ const RenderOnSelectedTabValue = ({
   return <>{children}</>;
 };
 
+const RenderOnFeatureFlag = ({ children }) => {
+  const featureFlag = useFeatureFlag({
+    name: 'flag_inappropriate_content',
+  });
+
+  return featureFlag ? <>{children}</> : null;
+};
+
+const RenderOnAllowed = ({ children }) => {
+  const allowed = useFeatureFlag({
+    name: 'flag_inappropriate_content',
+    onlyCheckAllowed: true,
+  });
+
+  return allowed ? <>{children}</> : null;
+};
+
 const configuration: ModuleConfiguration = {
   outlets: {
-    'app.containers.Admin.settings.general.form': (props) => (
-      <FeatureFlag onlyCheckAllowed name="flag_inappropriate_content">
-        <Setting {...props} />
-      </FeatureFlag>
-    ),
+    'app.containers.Admin.settings.general.form': (props) => {
+      return (
+        <RenderOnAllowed>
+          <Setting {...props} />
+        </RenderOnAllowed>
+      );
+    },
     'app.modules.commercial.moderation.admin.containers.actionbar.buttons': ({
       isWarningsTabSelected,
       ...otherProps
@@ -63,13 +82,13 @@ const configuration: ModuleConfiguration = {
       },
     'app.modules.commercial.moderation.admin.containers.tabs': (props) => {
       return (
-        <FeatureFlag name="flag_inappropriate_content">
+        <RenderOnFeatureFlag>
           <ActivityWarningsTab {...props} />
-        </FeatureFlag>
+        </RenderOnFeatureFlag>
       );
     },
     'app.components.NotificationMenu.Notification': ({ notification }) => (
-      <FeatureFlag name="flag_inappropriate_content">
+      <RenderOnFeatureFlag>
         <RenderOnNotificationType
           notification={notification}
           notificationType="inappropriate_content_flagged"
@@ -78,7 +97,7 @@ const configuration: ModuleConfiguration = {
             notification={notification as INLPFlagNotificationData}
           />
         </RenderOnNotificationType>
-      </FeatureFlag>
+      </RenderOnFeatureFlag>
     ),
   },
 };

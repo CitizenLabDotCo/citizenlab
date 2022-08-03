@@ -67,6 +67,7 @@
 
 ### Added
 
+- [CL-1058] - Add desktop preview in content builder
 - [CL-1096] Add representativeness score to header of representativeness chart card
 
 ## 2022-07-07
@@ -99,6 +100,7 @@
 ### Fixed
 
 - [CL-1083] XLSX export issues with custom fields
+
 
 ## 2022-07-04
 

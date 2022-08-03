@@ -107,6 +107,7 @@ export default ({
             icon="edit"
             onClick={handleOnClickEditButton}
             ml="10px"
+            data-testid="edit-button"
           >
             <FormattedMessage {...messages.editButton} />
           </Button>
@@ -120,7 +121,7 @@ export default ({
           </Link>
         )}
 
-        {!isDefaultPage && (
+        {!isDefaultPage && onClickDeleteButton && (
           <Button
             buttonStyle="secondary"
             icon="delete"

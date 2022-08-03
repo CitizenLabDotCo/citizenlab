@@ -2,11 +2,11 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   eventsWidgetSetting: {
-    id: 'app.components.AdminPage.SettingsPage.eventsWidgetSetting',
-    defaultMessage: 'Add upcoming events to homepage',
+    id: 'app.modules.commercial.events_widget.admin.eventsWidgetSetting',
+    defaultMessage: 'Events',
   },
   eventsWidgetSettingDescription: {
-    id: 'app.components.AdminPage.SettingsPage.eventsWidgetSettingDescription',
-    defaultMessage: 'Display a preview of upcoming events on the homepage',
+    id: 'app.modules.commercial.events_widget.admin.eventsWidgetSettingDescription',
+    defaultMessage: 'Display a preview of upcoming events on the homepage.',
   },
 });

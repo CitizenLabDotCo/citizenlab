@@ -9,16 +9,10 @@ interface Parameters {
 }
 
 export default function getSubmitState({ errors, saved, state }: Parameters) {
-  const {
-    attributesDiff,
-    newAllInputNavbarItemEnabled,
-    newEventsNavbarItemEnabled,
-  } = state;
+  const { attributesDiff, newAllInputNavbarItemEnabled } = state;
 
   const emptyAttributesDiff = isEmpty(attributesDiff);
-  const noNavbarUpdates =
-    newAllInputNavbarItemEnabled === null &&
-    newEventsNavbarItemEnabled === null;
+  const noNavbarUpdates = newAllInputNavbarItemEnabled === null;
 
   if (errors && (!isEmpty(errors) || isError(errors))) {
     return 'error';

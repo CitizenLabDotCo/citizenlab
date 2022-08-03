@@ -80,7 +80,7 @@ export default injectIntl<InjectedIntlProps>(({ intl }) => {
   const eventsError = isError(events);
 
   return (
-    <EventsWidgetContainer>
+    <EventsWidgetContainer data-testid="e2e-events-widget-container">
       <TopBar />
 
       {eventsLoading && <EventsSpinner />}

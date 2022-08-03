@@ -1,11 +1,11 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import useAppConfiguration from 'hooks/useAppConfiguration';
 import HeaderContent from 'containers/LandingPage/SignedOutHeader/HeaderContent';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 import Image from 'components/UI/Image';
-import { homepageBannerLayoutHeights } from 'containers/Admin/settings/customize/Header/HeaderImageDropzone';
+import useHomepageSettings from 'hooks/useHomepageSettings';
+import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/HeroBanner/HeaderImageDropzone';
 
 const Container = styled.div`
   width: 100%;
@@ -30,13 +30,13 @@ const HeaderImage = styled(Image)`
 `;
 
 const TwoColumnLayout = () => {
-  const appConfiguration = useAppConfiguration();
+  const homepageSettings = useHomepageSettings();
 
-  if (!isNilOrError(appConfiguration)) {
-    const headerImage = appConfiguration.data.attributes.header_bg?.large;
+  if (!isNilOrError(homepageSettings)) {
+    const headerImage = homepageSettings.data.attributes.header_bg?.large;
 
     return (
-      <Container>
+      <Container data-cy="e2e-two-column-layout-container">
         {headerImage && (
           <HeaderImage
             src={headerImage}
