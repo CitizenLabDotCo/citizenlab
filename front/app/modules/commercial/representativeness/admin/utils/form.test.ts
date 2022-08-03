@@ -266,10 +266,10 @@ describe('convertBinsToFormValues', () => {
       const bins = [18, 25, 35, 55, 70];
 
       const expectedFormValues = {
-        '18-24': null,
-        '25-34': null,
-        '35-54': null,
-        '55-70': null,
+        '18 - 24': null,
+        '25 - 34': null,
+        '35 - 54': null,
+        '55 - 70': null,
       };
 
       expect(convertBinsToFormValues(bins, null)).toEqual(expectedFormValues);
@@ -279,9 +279,9 @@ describe('convertBinsToFormValues', () => {
       const bins = [18, 25, 35, 55, null];
 
       const expectedFormValues = {
-        '18-24': null,
-        '25-34': null,
-        '35-54': null,
+        '18 - 24': null,
+        '25 - 34': null,
+        '35 - 54': null,
         '55+': null,
       };
 
@@ -293,17 +293,17 @@ describe('convertBinsToFormValues', () => {
     it('works with upper bound', () => {
       const bins = [18, 25, 37, 55, 70];
       const formValues = {
-        '18-24': 100,
-        '25-34': 100,
-        '35-54': 100,
-        '55-70': 100,
+        '18 - 24': 100,
+        '25 - 34': 100,
+        '35 - 54': 100,
+        '55 - 70': 100,
       };
 
       const expectedFormValues = {
-        '18-24': 100,
-        '25-36': null,
-        '37-54': null,
-        '55-70': 100,
+        '18 - 24': 100,
+        '25 - 36': null,
+        '37 - 54': null,
+        '55 - 70': 100,
       };
 
       expect(convertBinsToFormValues(bins, formValues)).toEqual(
@@ -314,16 +314,16 @@ describe('convertBinsToFormValues', () => {
     it('works without upper bound', () => {
       const bins = [18, 25, 37, 55, null];
       const formValues = {
-        '18-24': 100,
-        '25-34': 100,
-        '35-54': 100,
+        '18 - 24': 100,
+        '25 - 34': 100,
+        '35 - 54': 100,
         '55+': 100,
       };
 
       const expectedFormValues = {
-        '18-24': 100,
-        '25-36': null,
-        '37-54': null,
+        '18 - 24': 100,
+        '25 - 36': null,
+        '37 - 54': null,
         '55+': 100,
       };
 
@@ -337,10 +337,10 @@ describe('convertBinsToFormValues', () => {
 describe('parseFormValues', () => {
   it('works with bins', () => {
     const formValues = {
-      '18-24': 100,
-      '25-34': 100,
-      '35-44': 100,
-      '45-64': 100,
+      '18 - 24': 100,
+      '25 - 34': 100,
+      '35 - 44': 100,
+      '45 - 64': 100,
       '65+': 100,
     };
 
