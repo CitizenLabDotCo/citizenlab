@@ -2,12 +2,14 @@
 
 module MultiTenancy
   module Templates
-    class Serializer
+    class Serializer # rubocop:disable Metrics/ClassLength
       def initialize(tenant)
         @tenant = tenant
         @refs = {}
       end
 
+      # rubocop:disable Metrics/AbcSize
+      # rubocop:disable Metrics/MethodLength
       def run
         template = { 'models' => {} }
         Apartment::Tenant.switch(@tenant.schema_name) do
@@ -70,6 +72,9 @@ module MultiTenancy
         template
       end
 
+      # rubocop:enable Metrics/AbcSize
+      # rubocop:enable Metrics/MethodLength
+
       private
 
       def lookup_ref(id, model_name)
@@ -115,7 +120,7 @@ module MultiTenancy
             'banner_cta_signed_out_url' => hp.banner_cta_signed_out_url,
             'remote_header_bg_url' => hp.header_bg_url,
             'created_at' => hp.created_at.to_s,
-            'updated_at' => hp.updated_at.to_s,
+            'updated_at' => hp.updated_at.to_s
           }
           yml_home_page
         end
