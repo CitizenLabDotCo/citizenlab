@@ -125,7 +125,7 @@
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# projetos} one {# projeto} other {# projetos}}",
   "app.components.GoBackButton.group.edit.goBack": "Voltar",
   "app.components.HookForm.Feedback.errorTitle": "Há um problema",
-  "app.components.HookForm.Feedback.submissionErrorText": "Please try again. If the issue persists, contact us",
+  "app.components.HookForm.Feedback.submissionError": "Try again. If the issue persists, contact us",
   "app.components.HookForm.Feedback.submissionErrorTitle": "Havia um problema por aqui, desculpe",
   "app.components.HookForm.Feedback.successMessage": "Formulário enviado com sucesso",
   "app.components.IdeaCards.showMore": "Mostrar mais",
