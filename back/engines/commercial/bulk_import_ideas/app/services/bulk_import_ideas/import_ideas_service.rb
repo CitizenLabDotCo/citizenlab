@@ -13,6 +13,7 @@ module BulkImportIdeas
 
   class ImportIdeasService
     DEFAULT_MAX_IDEAS = 500
+    DATE_FORMAT_REGEX = %r{^([0]?[1-9]|[1|2][0-9]|[3][0|1])[-]([0]?[1-9]|[1][0-2])[-]([0-9]{4}|[0-9]{2})$}
 
     def initialize
       @all_projects = Project.all
@@ -44,7 +45,7 @@ module BulkImportIdeas
           'Project' => 'Project 1',
           'Phase' => 1,
           'Image URL' => 'https://res.cloudinary.com/citizenlabco/image/upload/v1548847594/image_v8imrf.png',
-          'Date (dd-mm-yyyy)' => '2022-07-18',
+          'Date (dd-mm-yyyy)' => '18-07-2022',
           'Latitude' => 50.5035,
           'Longitude' => 6.0944,
           'Location Description' => 'Panorama sur les Hautes Fagnes / Hohes Venn'
@@ -155,8 +156,11 @@ module BulkImportIdeas
       return if idea_row[:published_at].blank?
 
       published_at = nil
+      unless idea_row[:published_at] =~ DATE_FORMAT_REGEX
+        raise Error.new 'bulk_import_ideas_publication_date_invalid_format', value: idea_row[:published_at], row: idea_row[:id]
+      end
       begin
-        published_at = Date.iso8601 idea_row[:published_at]
+        published_at = Date.parse idea_row[:published_at]
       rescue StandardError => _e
         raise Error.new 'bulk_import_ideas_publication_date_invalid_format', value: idea_row[:published_at], row: idea_row[:id]
       end
