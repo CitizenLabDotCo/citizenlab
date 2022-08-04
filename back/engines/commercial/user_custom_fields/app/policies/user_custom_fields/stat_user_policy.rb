@@ -30,6 +30,10 @@ module UserCustomFields
       user&.active? && (user&.admin? || user&.project_moderator?)
     end
 
+    def users_by_age_as_xlsx?
+      user&.active? && (user&.admin? || user&.project_moderator?)
+    end
+
     def users_by_birthyear_as_xlsx?
       user&.active? && (user&.admin? || user&.project_moderator?)
     end

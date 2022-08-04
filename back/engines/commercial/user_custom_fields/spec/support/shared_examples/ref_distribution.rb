@@ -28,9 +28,9 @@ RSpec.shared_examples 'reference distribution' do |distribution_class, factory_n
   # Look for usages in the code for an example.
   example_group '[counts validations]', skip: skip_counts_validation_tests do
     def replace_first_count(ref_distribution, new_count)
-      ref_distribution.counts = ref_distribution.send(:counts).tap do |counts|
-        counts[0] = new_count
-      end
+      counts = ref_distribution.send(:counts).dup
+      counts[0] = new_count
+      ref_distribution.counts = counts
     end
 
     it 'validates that the distribution counts are not negative', :aggregate_failures do

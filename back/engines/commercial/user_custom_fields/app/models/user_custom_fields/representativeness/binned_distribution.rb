@@ -23,6 +23,8 @@ require 'user_custom_fields/core_ext/enumerable'
 #
 module UserCustomFields
   module Representativeness
+    # Currently, the +BinnedDistribution+s can only be used for the birthyear custom field, but this
+    # could be adapted to support number custom field in general.
     class BinnedDistribution < RefDistribution
       validate :validate_distribution
 
@@ -33,17 +35,23 @@ module UserCustomFields
       end
 
       def bin_boundaries
-        distribution['bins']
+        distribution['bins'].freeze
       end
 
       def counts
-        distribution['counts'].dup
+        distribution['counts'].freeze
       end
 
       # Returns the expected count distribution for a given (total) number of users.
       # @return [Array<Numeric>]
       def expected_counts(nb_users)
         counts.map { |count| (count.to_f * nb_users / total_population).round(1) }
+      end
+
+      def compute_rscore(users)
+        user_counts = AgeStats.calculate(users).binned_counts
+        score_value = RScore.compute_scores(user_counts, counts)[:min_max_p_ratio]
+        RScore.new(score_value, user_counts, self)
       end
 
       private
@@ -58,6 +66,11 @@ module UserCustomFields
 
         errors.add(:distribution, <<~MSG.squish) unless bin_boundaries.compact.sorted?
           bins are not properly defined. The bin boundaries must be sorted.
+        MSG
+
+        distinct_bin_boundaries = bin_boundaries.compact.uniq.size == bin_boundaries.compact.size
+        errors.add(:distribution, <<~MSG.squish) unless distinct_bin_boundaries
+          bins are not properly defined. The bin boundaries must be distinct.
         MSG
 
         errors.add(:distribution, <<~MSG.squish) if bin_boundaries.size != counts.size + 1

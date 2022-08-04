@@ -12,7 +12,7 @@ module UserCustomFields
       birthyear_counts = FieldValueCounter.counts_by_field_option(users, birthyear_custom_field)
 
       unknown_age_count = birthyear_counts.delete(FieldValueCounter::UNKNOWN_VALUE_LABEL)
-      age_counts = birthyear_counts.transform_keys { |birthyear| convert_to_age(birthyear, precision: 1) }
+      age_counts = birthyear_counts.transform_keys { |birthyear| convert_to_age(birthyear) }
       binned_counts = bin_data(age_counts, bins)
 
       Result.new(binned_counts, unknown_age_count, bins)
@@ -20,11 +20,11 @@ module UserCustomFields
 
     private
 
-    def convert_to_age(birthyear, time: Time.zone.now, precision: 0)
-      # Estimated birth date (time) is July 1st of the year of birth
+    def convert_to_age(birthyear, time: Time.zone.now)
+      # Since we don't known the exact birth date, we estimate it as the middle of the
+      # year: July 1st of the year of birth.
       birth_time = Time.zone.local(birthyear, 7, 1)
-      age = (time - birth_time) / 1.year
-      age.round(precision)
+      (time - birth_time) / 1.year
     end
 
     # @param [Hash] counts
