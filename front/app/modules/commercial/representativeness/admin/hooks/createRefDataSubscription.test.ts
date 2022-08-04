@@ -5,7 +5,10 @@ import {
   ageFieldToIncludedUsers,
   RepresentativenessRowMultiloc,
 } from './createRefDataSubscription';
-import { IUsersByRegistrationField, IUsersByAge } from 'modules/commercial/user_custom_fields/services/stats';
+import {
+  IUsersByRegistrationField,
+  IUsersByAge,
+} from 'modules/commercial/user_custom_fields/services/stats';
 
 jest.mock('services/appConfiguration');
 jest.mock('services/auth');
@@ -306,21 +309,21 @@ describe('regFieldToIncludedUsers', () => {
   });
 });
 
+const ageField: IUsersByAge = {
+  total_user_count: 100,
+  unknown_age_count: 10,
+  series: {
+    user_counts: [100, 100, 100, 100, 100],
+    expected_user_counts: [100, 100, 100, 100, 100],
+    reference_population: [1000, 500, 1500, 1000, 1000],
+    bins: [18, 25, 35, 45, 65, null],
+  },
+};
+
 describe('ageFieldToReferenceData', () => {
-  const ageField: IUsersByAge = {
-    total_user_count: 100,
-    unknown_age_count: 10,
-    series: {
-      user_counts: [100, 100, 100, 100, 100],
-      expected_user_counts: [100, 100, 100, 100, 100],
-      reference_population: [1000, 500, 1500, 1000, 1000],
-      bins: [18, 25, 35, 45, 65, null],
-    } 
-  }
-
-  const locale = 'en';
-
   it('works', () => {
+    const locale = 'en';
+
     const expectedOutput = [
       {
         title_multiloc: { en: '18 - 24' },
@@ -328,15 +331,49 @@ describe('ageFieldToReferenceData', () => {
         referencePercentage: 20,
         actualNumber: 100,
         actualPercentage: 20,
-      }
-    ]
+      },
+      {
+        title_multiloc: { en: '25 - 34' },
+        referenceNumber: 500,
+        referencePercentage: 10,
+        actualNumber: 100,
+        actualPercentage: 20,
+      },
+      {
+        title_multiloc: { en: '35 - 44' },
+        referenceNumber: 1500,
+        referencePercentage: 30,
+        actualNumber: 100,
+        actualPercentage: 20,
+      },
+      {
+        title_multiloc: { en: '45 - 64' },
+        referenceNumber: 1000,
+        referencePercentage: 20,
+        actualNumber: 100,
+        actualPercentage: 20,
+      },
+      {
+        title_multiloc: { en: '65+' },
+        referenceNumber: 1000,
+        referencePercentage: 20,
+        actualNumber: 100,
+        actualPercentage: 20,
+      },
+    ];
 
-    expect(ageFieldToReferenceData(ageField, locale)).toEqual(expectedOutput)
+    expect(ageFieldToReferenceData(ageField, locale)).toEqual(expectedOutput);
   });
 });
 
 describe('ageFieldToIncludedUsers', () => {
   it('works', () => {
+    const expectedOutput = {
+      known: 90,
+      total: 100,
+      percentage: 90,
+    };
 
+    expect(ageFieldToIncludedUsers(ageField)).toEqual(expectedOutput);
   });
 });
