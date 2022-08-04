@@ -18,6 +18,7 @@ describe MultiTenancy::Templates::Serializer do
       tenant = create :tenant, locales: localhost.settings.dig('core', 'locales')
       Apartment::Tenant.switch(tenant.schema_name) do
         MultiTenancy::TenantTemplateService.new.apply_template template
+        expect(HomePage.count).to be 1
         expect(Area.count).to be > 0
         expect(Comment.count).to be > 0
         expect(CustomFieldOption.count).to be > 0
@@ -81,6 +82,16 @@ describe MultiTenancy::Templates::Serializer do
         MultiTenancy::TenantTemplateService.new.apply_template template
         expect(Comment.count).to eq 1
       end
+    end
+
+    it 'includes a reference to an existing home_page header_bg' do
+      create(:home_page, header_bg: File.open(Rails.root.join('spec/fixtures/header.jpg')))
+
+      serializer = described_class.new(Tenant.current)
+      template = serializer.run
+
+      expect(template['models']).to be_present
+      expect(template.dig('models', 'home_page', 0, 'remote_header_bg_url')).to match(%r{/uploads/.*/home_page/header_bg/.*.jpg})
     end
   end
 end
