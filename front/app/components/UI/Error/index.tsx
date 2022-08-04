@@ -173,11 +173,8 @@ export type TFieldName =
   | 'category_name'
   | 'nav_bar_item_title_multiloc';
 
-export const findErrorMessage = (
-  fieldName: TFieldName | undefined,
-  error: string
-) => {
-  if (fieldName && messages[`${fieldName}_${error}`]) {
+export const findErrorMessage = (fieldName: TFieldName, error: string) => {
+  if (messages[`${fieldName}_${error}`]) {
     return messages[`${fieldName}_${error}`] as Message;
   }
 
@@ -255,10 +252,8 @@ const Error = (props: Props) => {
                     // If we have multiple possible errors for a certain input field,
                     // we can 'group' them in the messages.js file using the fieldName as a prefix
                     // Check the implementation of findErrorMessage for details
-                    const errorMessage = findErrorMessage(
-                      fieldName,
-                      error.error
-                    );
+                    const errorMessage =
+                      fieldName && findErrorMessage(fieldName, error.error);
 
                     if (errorMessage) {
                       // Variables for inside messages.js
