@@ -38,6 +38,7 @@ import FormattedBudget from 'utils/currency/FormattedBudget';
 import styled from 'styled-components';
 import { fontSizes, colors, isRtl, media } from 'utils/styleUtils';
 import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
+import Outlet from 'components/Outlet';
 
 const Container = styled.div``;
 
@@ -365,6 +366,12 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                 )}
               </ListItem>
             )}
+            <Outlet
+              id="app.containers.projectsShowPage.projectInfoSideBar"
+              project={project}
+              currentPhase={currentPhase}
+              authUser={authUser}
+            />
             {((projectType === 'continuous' &&
               projectParticipationMethod === 'poll') ||
               currentPhaseParticipationMethod === 'poll') && (
