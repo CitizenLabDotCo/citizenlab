@@ -11,6 +11,7 @@ class WebApi::V1::HomePagesController < ApplicationController
   def update
     @homepage.assign_attributes home_page_params
     authorize @homepage
+    SideFxHomePageService.new.before_update(@homepage)
     if @homepage.save
       render json: WebApi::V1::HomePageSerializer.new(
         @homepage,
