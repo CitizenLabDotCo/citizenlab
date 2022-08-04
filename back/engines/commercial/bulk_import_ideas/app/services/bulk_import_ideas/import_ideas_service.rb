@@ -13,7 +13,7 @@ module BulkImportIdeas
 
   class ImportIdeasService
     DEFAULT_MAX_IDEAS = 500
-    DATE_FORMAT_REGEX = %r{^([0]?[1-9]|[1|2][0-9]|[3][0|1])[-]([0]?[1-9]|[1][0-2])[-]([0-9]{4}|[0-9]{2})$}
+    DATE_FORMAT_REGEX = /^(0[1-9]|[1|2][0-9]|3[0|1])-(0[1-9]|1[0-2])-([0-9]{4})$/ # After https://stackoverflow.com/a/47218282/3585671
 
     def initialize
       @all_projects = Project.all
@@ -156,13 +156,17 @@ module BulkImportIdeas
       return if idea_row[:published_at].blank?
 
       published_at = nil
-      unless idea_row[:published_at] =~ DATE_FORMAT_REGEX
-        raise Error.new 'bulk_import_ideas_publication_date_invalid_format', value: idea_row[:published_at], row: idea_row[:id]
-      end
+      invalid_date_error = Error.new(
+        'bulk_import_ideas_publication_date_invalid_format',
+        value: idea_row[:published_at],
+        row: idea_row[:id]
+      )
+      raise invalid_date_error unless idea_row[:published_at].match? DATE_FORMAT_REGEX
+
       begin
         published_at = Date.parse idea_row[:published_at]
       rescue StandardError => _e
-        raise Error.new 'bulk_import_ideas_publication_date_invalid_format', value: idea_row[:published_at], row: idea_row[:id]
+        raise invalid_date_error
       end
 
       idea_attributes[:published_at] = published_at
