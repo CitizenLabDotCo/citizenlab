@@ -10,6 +10,8 @@ class Factory
     method_class = case project.participation_method
     when 'ideation'
       ::ParticipationMethod::Ideation
+    when 'budgeting'
+      ::ParticipationMethod::Budgeting
     when 'native_survey'
       ::ParticipationMethod::NativeSurvey
     else
