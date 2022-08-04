@@ -1458,7 +1458,6 @@
   "app.containers.admin.ideas.all.tabStatuses": "Statusser",
   "app.containers.admin.import.downloadTemplate": "Download skabelon",
   "app.containers.admin.import.importDescription": "Import af eksisterende input fra en Excel-fil.",
-  "app.containers.admin.import.importHint": "Vigtigt: For at sende input korrekt kan ingen kolonne fjernes fra importskabelonen for at få input korrekt sendt. Lad ubrugte kolonner være tomme.",
   "app.containers.admin.import.importInput": "Import af input",
   "app.containers.admin.import.importInputs": "Import af input",
   "app.containers.admin.import.importStepOne": "1. Download og udfyld skabelonen",
