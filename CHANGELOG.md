@@ -2,6 +2,10 @@
 
 ## Next Release
 
+### Added
+
+-[CL-5] Customizable Pages iterarion 1
+
 ## 2022-08-03
 
 ### Added
