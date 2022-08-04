@@ -10,7 +10,7 @@ export default defineMessages({
     defaultMessage: 'There was a problem on our end, sorry',
   },
   submissionErrorText: {
-    id: 'app.components.HookForm.Feedback.submissionErrorText',
+    id: 'app.components.HookForm.Feedback.submissionError',
     defaultMessage: 'Try again. If the issue persists, contact us',
   },
   successMessage: {
