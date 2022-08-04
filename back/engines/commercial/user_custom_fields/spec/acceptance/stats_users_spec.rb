@@ -643,9 +643,9 @@ resource 'Stats - Users' do
     let(:start_at) { Time.zone.local(2019) }
     let(:end_at) { Time.zone.local(2020).end_of_year }
 
-    # I made my life easier here, at the expense of test coverage, by using a group
-    # filter to make sure not to capture unwanted users (e.g. the user making the
-    # request).
+    # Here, we use a group filter to make sure not to capture unwanted users (e.g. the
+    # user making the request). As it stands, the test case of counting all users
+    # (without filters) by age is not covered.
     let(:group) { @group.id }
 
     before do
