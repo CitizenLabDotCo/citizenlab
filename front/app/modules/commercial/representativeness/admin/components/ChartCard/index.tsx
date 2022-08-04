@@ -10,6 +10,7 @@ import {
   usersByRegFieldXlsxEndpoint,
   usersByGenderXlsxEndpoint,
   usersByDomicileXlsxEndpoint,
+  usersByAgeXlsxEndpoint,
 } from 'modules/commercial/user_custom_fields/services/stats';
 
 // components
@@ -56,6 +57,8 @@ const getXlsxEndpoint = (
       return usersByGenderXlsxEndpoint;
     case 'domicile':
       return usersByDomicileXlsxEndpoint;
+    case 'birthyear':
+      return usersByAgeXlsxEndpoint;
     default:
       return usersByRegFieldXlsxEndpoint(userCustomFieldId);
   }
