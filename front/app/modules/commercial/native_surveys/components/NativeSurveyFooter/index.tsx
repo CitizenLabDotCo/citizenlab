@@ -8,7 +8,7 @@ import Button from 'components/UI/Button';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
-const NativeSurveyButtonBar = () => {
+const NativeSurveyFooter = () => {
   return (
     <Box
       display="flex"
@@ -27,4 +27,4 @@ const NativeSurveyButtonBar = () => {
   );
 };
 
-export default NativeSurveyButtonBar;
+export default NativeSurveyFooter;

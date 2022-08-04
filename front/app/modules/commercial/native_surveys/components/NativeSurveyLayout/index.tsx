@@ -2,7 +2,7 @@ import React from 'react';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import NativeSurveyButtonBar from '../NativeSurveyButtonBar';
+import NativeSurveyFooter from '../NativeSurveyFooter';
 import NativeSurveyForm from '../NativeSurveyForm';
 
 // style
@@ -23,7 +23,7 @@ const NativeSurveyLayout = () => {
         <NativeSurveyForm />
       </Box>
       <Box position="fixed" width="100%" bottom="0px" zIndex="9999">
-        <NativeSurveyButtonBar />
+        <NativeSurveyFooter />
       </Box>
     </>
   );
