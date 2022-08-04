@@ -5,13 +5,13 @@ require 'rails_helper'
 RSpec.describe UserCustomFields::Representativeness::BinnedDistribution do
   subject(:binned_distribution) { build(:binned_distribution) }
 
-  let(:bin_boundaries) { binned_distribution.send(:bin_boundaries) }
+  let(:bin_boundaries) { binned_distribution.distribution['bins'] }
 
   describe 'factory' do
     it { is_expected.to be_valid }
   end
 
-  # Needed to test counts validations.
+  # This patch is needed to test counts validations.
   # See 'reference distribution' shared examples for more info.
   described_class.class_eval do
     def counts=(counts)
@@ -45,6 +45,14 @@ RSpec.describe UserCustomFields::Representativeness::BinnedDistribution do
       .to include('bins are not properly defined. The number of bins must match the number of counts.')
   end
 
+  it 'validates that bin boundaries are distinct', :aggregate_failures do
+    bin_boundaries[0] = bin_boundaries[1]
+
+    expect(binned_distribution).not_to be_valid
+    expect(binned_distribution.errors[:distribution])
+      .to include('bins are not properly defined. The bin boundaries must be distinct.')
+  end
+
   it "validates that the custom field is 'birthyear'", :aggregate_failures do
     binned_distribution.custom_field = build(:custom_field_select)
 
@@ -53,5 +61,17 @@ RSpec.describe UserCustomFields::Representativeness::BinnedDistribution do
       "input type must be 'number' for binned distributions.",
       "key must be 'birthyear' for binned distributions."
     )
+  end
+
+  describe '#bin_boundaries' do
+    subject { binned_distribution.bin_boundaries }
+
+    it { is_expected.to be_frozen }
+  end
+
+  describe '#counts' do
+    subject { binned_distribution.counts }
+
+    it { is_expected.to be_frozen }
   end
 end
