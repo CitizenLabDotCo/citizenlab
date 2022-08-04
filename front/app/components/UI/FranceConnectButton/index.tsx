@@ -49,8 +49,8 @@ const FranceConnectButtonLink = styled.button`
     cursor: not-allowed;
   }
 
-  &:hover #Fond {
-    fill: #2183f0;
+  &:hover #background {
+    fill: #0000df;
   }
 `;
 
