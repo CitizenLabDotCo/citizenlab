@@ -91,13 +91,6 @@ module Post
       end
     end
 
-    def generate_slug
-      return if slug
-
-      title = MultilocService.new.t title_multiloc, author
-      self.slug ||= SlugService.new.generate_slug self, title
-    end
-
     def set_published_at
       self.published_at ||= Time.zone.now
     end

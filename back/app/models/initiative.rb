@@ -60,7 +60,7 @@ class Initiative < ApplicationRecord
     post.validates :body_multiloc, presence: true, multiloc: { presence: true, html: true }
     post.validates :author, presence: true, on: :publication
     post.validates :author, presence: true, if: :author_id_changed?
-    # post.validates :slug, uniqueness: true, presence: true # TODO: this is not necessary when a slug is generated.
+    post.validates :slug, uniqueness: true, presence: true
 
     post.before_validation :strip_title
     post.before_validation :generate_slug
@@ -136,6 +136,13 @@ class Initiative < ApplicationRecord
   end
 
   private
+
+  def generate_slug
+    return if slug
+
+    title = MultilocService.new.t title_multiloc, author
+    self.slug ||= SlugService.new.generate_slug self, title
+  end
 
   def sanitize_body_multiloc
     service = SanitizationService.new

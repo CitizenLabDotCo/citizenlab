@@ -166,10 +166,6 @@ class Idea < ApplicationRecord
     !draft? && participation_method.validate_built_in_fields?
   end
 
-  def generate_slug
-    # Ideas do not generate slugs before validation. Slugs are set after creation.
-  end
-
   def assign_slug!
     participation_method.assign_slug! self
   end
