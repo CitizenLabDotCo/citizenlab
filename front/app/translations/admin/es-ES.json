@@ -1458,7 +1458,6 @@
   "app.containers.admin.ideas.all.tabStatuses": "Estatus",
   "app.containers.admin.import.downloadTemplate": "Descargar el modelo",
   "app.containers.admin.import.importDescription": "Importar entradas existentes desde un archivo de Excel.",
-  "app.containers.admin.import.importHint": "Importante: Para enviar las entradas correctamente, no se puede eliminar ninguna columna de la plantilla de importación. Deje vacías las columnas no utilizadas.",
   "app.containers.admin.import.importInput": "Importar entrada",
   "app.containers.admin.import.importInputs": "Importar entradas",
   "app.containers.admin.import.importStepOne": "1. Descargar y llenar el modelo",
