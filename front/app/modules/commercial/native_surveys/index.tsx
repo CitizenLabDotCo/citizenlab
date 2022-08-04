@@ -14,8 +14,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // components
-import NativeSurveyLayout from './components/NativeSurveyLayout/NativeSurveyLayout';
-import NativeSurveyProjectInfo from './components/NativeSurveyProjectInfo/NativeSurveyProjectInfo';
+import NativeSurveyLayout from './components/NativeSurveyLayout';
+import NativeSurveyProjectInfo from './components/NativeSurveyProjectInfo';
 
 const AdminProjectIdeaEditFormComponent = React.lazy(
   () => import('./admin/containers/projects/surveys')
@@ -86,7 +86,7 @@ const configuration: ModuleConfiguration = {
           />
         );
       } else {
-        return <></>;
+        return null;
       }
     },
     'app.containers.projectsShowPage.projectActionButtons': (props) => {
@@ -102,7 +102,7 @@ const configuration: ModuleConfiguration = {
                 () =>
                   clHistory.push(
                     `/projects/${props.project.attributes.slug}/survey-title/survey`
-                  ) // Replace "survey-title" with the survey title for the project
+                  ) // TODO Replace "survey-title" with correct survey title for the project
               }
             >
               <FormattedMessage {...messages.takeTheSurvey} />
@@ -110,7 +110,7 @@ const configuration: ModuleConfiguration = {
           </>
         );
       } else {
-        return <></>;
+        return null;
       }
     },
   },

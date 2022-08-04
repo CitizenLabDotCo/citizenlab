@@ -4,6 +4,10 @@ import React from 'react';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../../messages';
+
 const NativeSurveyButtonBar = () => {
   return (
     <Box
@@ -16,7 +20,7 @@ const NativeSurveyButtonBar = () => {
     >
       <Box display="flex" width="632px">
         <Button width="auto" type="submit">
-          Submit
+          <FormattedMessage {...messages.submitSurvey} />
         </Button>
       </Box>
     </Box>

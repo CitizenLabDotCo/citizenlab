@@ -10,4 +10,8 @@ export default defineMessages({
     defaultMessage:
       '{surveysCount, plural, no {# surveys} one {# survey} other {# surveys}}',
   },
+  submitSurvey: {
+    id: 'app.modules.nativeSurveys.submitSurvey',
+    defaultMessage: 'Submit',
+  },
 });

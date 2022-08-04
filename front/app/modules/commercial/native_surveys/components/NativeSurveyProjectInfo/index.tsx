@@ -76,16 +76,19 @@ const NativeSurveyProjectInfo = (slug, authUser) => {
         <ListItemButton
           id="e2e-project-sidebar-surveys-count"
           onClick={
-            () => clHistory.push(`/projects/${slug}/survey-title/survey`) // Replace "survey-title" with the survey title for the project
+            () => clHistory.push(`/projects/${slug}/survey-title/survey`) // TODO Replace "survey-title" with correct survey title for the project
           }
         >
           <FormattedMessage
-            {...messages.xSurveys}
+            {...messages.nativeSurveyCount}
             values={{ surveysCount: 1 }}
           />
         </ListItemButton>
       ) : (
-        <FormattedMessage {...messages.xSurveys} values={{ surveysCount: 1 }} />
+        <FormattedMessage
+          {...messages.nativeSurveyCount}
+          values={{ surveysCount: 1 }}
+        />
       )}
     </ListItem>
   );
