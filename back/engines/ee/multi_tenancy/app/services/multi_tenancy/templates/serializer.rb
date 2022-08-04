@@ -2,78 +2,74 @@
 
 module MultiTenancy
   module Templates
-    class Serializer # rubocop:disable Metrics/ClassLength
+    class Serializer
       def initialize(tenant)
         @tenant = tenant
         @refs = {}
       end
 
-      # rubocop:disable Metrics/AbcSize
-      # rubocop:disable Metrics/MethodLength
       def run
-        template = { 'models' => {} }
-        Apartment::Tenant.switch(@tenant.schema_name) do
-          template['models']['home_page']                            = yml_home_pages
-          template['models']['area']                                 = yml_areas
-          template['models']['custom_form']                          = yml_custom_forms
-          template['models']['custom_field']                         = yml_custom_fields
-          template['models']['custom_field_option']                  = yml_custom_field_options
-          template['models']['topic']                                = yml_topics
-          template['models']['user']                                 = yml_users
-          template['models']['email_campaigns/unsubscription_token'] = yml_unsubscription_tokens
-          template['models']['project_folders/folder']               = yml_project_folders
-          template['models']['project_folders/image']                = yml_project_folder_images
-          template['models']['project_folders/file']                 = yml_project_folder_files
-          template['models']['project']                              = yml_projects
-          template['models']['project_file']                         = yml_project_files
-          template['models']['project_image']                        = yml_project_images
-          template['models']['projects_allowed_input_topic']         = yml_projects_allowed_input_topics
-          template['models']['phase']                                = yml_phases
-          template['models']['phase_file']                           = yml_phase_files
-          template['models']['areas_project']                        = yml_areas_projects
-          template['models']['email_campaigns/campaigns']            = yml_campaigns
-          template['models']['basket']                               = yml_baskets
-          template['models']['event']                                = yml_events
-          template['models']['event_file']                           = yml_event_files
-          template['models']['group']                                = yml_groups
-          template['models']['groups_project']                       = yml_groups_projects
-          template['models']['permission']                           = yml_permissions
-          template['models']['groups_permission']                    = yml_groups_permissions
-          template['models']['membership']                           = yml_memberships
-          template['models']['static_page']                          = yml_static_pages
-          template['models']['nav_bar_item']                         = yml_nav_bar_items
-          template['models']['static_page_file']                     = yml_static_page_files
-          template['models']['idea_status']                          = yml_idea_statuses
-          template['models']['idea']                                 = yml_ideas
-          template['models']['baskets_idea']                         = yml_baskets_ideas
-          template['models']['idea_file']                            = yml_idea_files
-          template['models']['idea_image']                           = yml_idea_images
-          template['models']['ideas_phase']                          = yml_ideas_phases
-          template['models']['ideas_topic']                          = yml_ideas_topics
-          template['models']['initiative_status']                    = yml_initiative_statuses
-          template['models']['initiative']                           = yml_initiatives
-          template['models']['areas_initiative']                     = yml_areas_initiatives
-          template['models']['initiative_file']                      = yml_initiative_files
-          template['models']['initiative_image']                     = yml_initiative_images
-          template['models']['initiatives_topic']                    = yml_initiatives_topics
-          template['models']['official_feedback']                    = yml_official_feedback
-          template['models']['comment']                              = yml_comments
-          template['models']['vote']                                 = yml_votes
-          template['models']['polls/question']                       = yml_poll_questions
-          template['models']['polls/option']                         = yml_poll_options
-          template['models']['polls/response']                       = yml_poll_responses
-          template['models']['polls/response_option']                = yml_poll_response_options
-          template['models']['volunteering/cause']                   = yml_volunteering_causes
-          template['models']['volunteering/volunteer']               = yml_volunteering_volunteers
-          template['models']['custom_maps/map_config']               = yml_maps_map_configs
-          template['models']['custom_maps/layer']                    = yml_maps_layers
-          template['models']['custom_maps/legend_item']              = yml_maps_legend_items
+        models = Apartment::Tenant.switch(@tenant.schema_name) do
+          {
+            'home_page'                            => yml_home_pages,
+            'area'                                 => yml_areas,
+            'custom_form'                          => yml_custom_forms,
+            'custom_field'                         => yml_custom_fields,
+            'custom_field_option'                  => yml_custom_field_options,
+            'topic'                                => yml_topics,
+            'user'                                 => yml_users,
+            'email_campaigns/unsubscription_token' => yml_unsubscription_tokens,
+            'project_folders/folder'               => yml_project_folders,
+            'project_folders/image'                => yml_project_folder_images,
+            'project_folders/file'                 => yml_project_folder_files,
+            'project'                              => yml_projects,
+            'project_file'                         => yml_project_files,
+            'project_image'                        => yml_project_images,
+            'projects_allowed_input_topic'         => yml_projects_allowed_input_topics,
+            'phase'                                => yml_phases,
+            'phase_file'                           => yml_phase_files,
+            'areas_project'                        => yml_areas_projects,
+            'email_campaigns/campaigns'            => yml_campaigns,
+            'basket'                               => yml_baskets,
+            'event'                                => yml_events,
+            'event_file'                           => yml_event_files,
+            'group'                                => yml_groups,
+            'groups_project'                       => yml_groups_projects,
+            'permission'                           => yml_permissions,
+            'groups_permission'                    => yml_groups_permissions,
+            'membership'                           => yml_memberships,
+            'static_page'                          => yml_static_pages,
+            'nav_bar_item'                         => yml_nav_bar_items,
+            'static_page_file'                     => yml_static_page_files,
+            'idea_status'                          => yml_idea_statuses,
+            'idea'                                 => yml_ideas,
+            'baskets_idea'                         => yml_baskets_ideas,
+            'idea_file'                            => yml_idea_files,
+            'idea_image'                           => yml_idea_images,
+            'ideas_phase'                          => yml_ideas_phases,
+            'ideas_topic'                          => yml_ideas_topics,
+            'initiative_status'                    => yml_initiative_statuses,
+            'initiative'                           => yml_initiatives,
+            'areas_initiative'                     => yml_areas_initiatives,
+            'initiative_file'                      => yml_initiative_files,
+            'initiative_image'                     => yml_initiative_images,
+            'initiatives_topic'                    => yml_initiatives_topics,
+            'official_feedback'                    => yml_official_feedback,
+            'comment'                              => yml_comments,
+            'vote'                                 => yml_votes,
+            'polls/question'                       => yml_poll_questions,
+            'polls/option'                         => yml_poll_options,
+            'polls/response'                       => yml_poll_responses,
+            'polls/response_option'                => yml_poll_response_options,
+            'volunteering/cause'                   => yml_volunteering_causes,
+            'volunteering/volunteer'               => yml_volunteering_volunteers,
+            'custom_maps/map_config'               => yml_maps_map_configs,
+            'custom_maps/layer'                    => yml_maps_layers,
+            'custom_maps/legend_item'              => yml_maps_legend_items
+          }
         end
-        template
+        { 'models' => models }
       end
-
-      # rubocop:enable Metrics/AbcSize
-      # rubocop:enable Metrics/MethodLength
 
       private
 
