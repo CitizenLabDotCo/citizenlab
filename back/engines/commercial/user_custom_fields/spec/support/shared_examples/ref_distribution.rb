@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.shared_examples 'reference distribution' do |distribution_class, factory_name|
+RSpec.shared_examples 'reference distribution' do |factory_name|
   subject(:ref_distribution) { build(factory_name) }
 
   it { is_expected.to belong_to(:custom_field) }
@@ -13,24 +13,31 @@ RSpec.shared_examples 'reference distribution' do |distribution_class, factory_n
     expect(subject).to validate_inclusion_of(:type).in_array(allowed_types)
   end
 
-  skip_counts_validation_tests = <<~REASON.chomp unless distribution_class.method_defined?(:counts=)
-    reference distribution does not respond to :counts=
+  # This group of examples runs only if the :assign_counts helper method is defined to
+  # allow tests to assign new counts to the reference distribution.
+  #
+  #   def assign_counts(ref_distribution, counts)
+  #    ...
+  #   end
+  #
+  # It needs to be defined in the context that includes the shared examples because the
+  # implementation of the helper depends on the type of reference distribution. Look for
+  # usages in the code for examples.
+  #
+  # Note that the distribution classes themselves do not provide a generic way to set
+  # the counts (:counts=). That's because:
+  # - This method would have very little practical use outside of testing.
+  # - It is also ill-defined for some classes of distributions, where setting counts
+  #   without additional context does not make sense (e.g. +CategoricalDistribution+).
+  skip_counts_validation_tests = <<~REASON.chomp unless method_defined?(:assign_counts)
+    :assign_counts helper method is not defined.
   REASON
 
-  # This group of examples runs only if the distribution class provides a generic way
-  # to set the counts (:counts=). This method has very little practical use outside of
-  # testing. It is also ill-defined for some classes of distributions, where setting
-  # counts without additional context does not make sense (e.g.
-  # +CategoricalDistribution+).
-  #
-  # For those reasons, the method is typically not implemented directly in the class,
-  # but patched into it in the test files before including this group of examples.
-  # Look for usages in the code for an example.
   example_group '[counts validations]', skip: skip_counts_validation_tests do
     def replace_first_count(ref_distribution, new_count)
       counts = ref_distribution.send(:counts).dup
       counts[0] = new_count
-      ref_distribution.counts = counts
+      assign_counts(ref_distribution, counts)
     end
 
     it 'validates that the distribution counts are not negative', :aggregate_failures do

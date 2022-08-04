@@ -9,15 +9,14 @@ RSpec.describe UserCustomFields::Representativeness::CategoricalDistribution do
     it { is_expected.to be_valid }
   end
 
-  # This patch is needed to test counts validations.
+  # This helper is necessary to run the tests for counts validations in
+  # 'reference distribution' shared examples.
   # See 'reference distribution' shared examples for more info.
-  described_class.class_eval do
-    def counts=(counts)
-      self.distribution = distribution.keys.zip(counts).to_h
-    end
+  def assign_counts(ref_distribution, counts)
+    ref_distribution.distribution = ref_distribution.distribution.keys.zip(counts).to_h
   end
 
-  it_behaves_like 'reference distribution', described_class, :categorical_distribution
+  it_behaves_like 'reference distribution', :categorical_distribution
 
   it { is_expected.to have_many(:options).through(:custom_field) }
 
