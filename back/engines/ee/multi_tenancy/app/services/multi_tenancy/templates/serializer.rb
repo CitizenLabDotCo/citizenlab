@@ -2,14 +2,12 @@
 
 module MultiTenancy
   module Templates
-    class Serializer # rubocop:disable Metrics/ClassLength
+    class Serializer
       def initialize(tenant)
         @tenant = tenant
         @refs = {}
       end
 
-      # rubocop:disable Metrics/AbcSize
-      # rubocop:disable Metrics/MethodLength
       def run
         models = Apartment::Tenant.switch(@tenant.schema_name) do
           {
@@ -72,9 +70,6 @@ module MultiTenancy
         end
         { 'models' => models }
       end
-
-      # rubocop:enable Metrics/AbcSize
-      # rubocop:enable Metrics/MethodLength
 
       private
 
