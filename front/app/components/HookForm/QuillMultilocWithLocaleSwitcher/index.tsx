@@ -34,6 +34,7 @@ const QuillMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
     {}
   );
 
+  // Select the first error messages from the field's multiloc validation error
   const errorMessage = Object.values(
     (errors[name] as Record<Locale, FieldError> | undefined) || {}
   )[0]?.message;
