@@ -1458,7 +1458,6 @@
   "app.containers.admin.ideas.all.tabStatuses": "الحالات",
   "app.containers.admin.import.downloadTemplate": "تنزيل القالب",
   "app.containers.admin.import.importDescription": "استيراد مدخلات موجودة من ملف Excel.",
-  "app.containers.admin.import.importHint": "مهم: لإرسال المدخلات بشكل صحيح، لا يمكن إزالة أي عمود من نموذج الاستيراد. اترك الأعمدة غير المستخدمة فارغة.",
   "app.containers.admin.import.importInput": "استيراد مدخل",
   "app.containers.admin.import.importInputs": "استيراد مدخلات",
   "app.containers.admin.import.importStepOne": "1. تنزيل وتعبئة القالب",

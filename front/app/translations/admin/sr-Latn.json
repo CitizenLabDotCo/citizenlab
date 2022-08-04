@@ -1458,7 +1458,6 @@
   "app.containers.admin.ideas.all.tabStatuses": "Statusi",
   "app.containers.admin.import.downloadTemplate": "Preuzmi šablon",
   "app.containers.admin.import.importDescription": "Uvezite postojeće unose iz datoteke u Excel-u.",
-  "app.containers.admin.import.importHint": "Važno: Kako biste ispravno poslali unose, nije moguće ukloniti nijednu kolonu iz šablona za uvoz. Neiskorišćene kolone treba da ostanu prazne.",
   "app.containers.admin.import.importInput": "Uvezi unos",
   "app.containers.admin.import.importInputs": "Uvezi unose",
   "app.containers.admin.import.importStepOne": "1. Preuzmite i popunite šablon",

@@ -1458,7 +1458,6 @@
   "app.containers.admin.ideas.all.tabStatuses": "Statusy",
   "app.containers.admin.import.downloadTemplate": "Pobierz szablon",
   "app.containers.admin.import.importDescription": "Importuj istniejące dane wejściowe z pliku Excel.",
-  "app.containers.admin.import.importHint": "Ważne: W celu prawidłowego wysłania zaproszeń nie można usunąć żadnej kolumny z szablonu importu. Nieużywane kolumny należy pozostawić puste.",
   "app.containers.admin.import.importInput": "Importuj dane wejściowe",
   "app.containers.admin.import.importInputs": "Importuj dane wejściowe",
   "app.containers.admin.import.importStepOne": "1. Pobierz i uzupełnij szablon",

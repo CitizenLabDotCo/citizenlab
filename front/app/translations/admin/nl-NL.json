@@ -1458,7 +1458,6 @@
   "app.containers.admin.ideas.all.tabStatuses": "Statussen",
   "app.containers.admin.import.downloadTemplate": "Sjabloon downloaden",
   "app.containers.admin.import.importDescription": "Importeer bestaande invoer uit een Excel-bestand.",
-  "app.containers.admin.import.importHint": "Belangrijk: Om de invoer correct te verzenden, kan er geen kolom uit de importsjabloon worden verwijderd. Laat ongebruikte kolommen leeg.",
   "app.containers.admin.import.importInput": "Importeer invoer",
   "app.containers.admin.import.importInputs": "Importeer invoeren",
   "app.containers.admin.import.importStepOne": "1. Download en gebruik het sjabloon",

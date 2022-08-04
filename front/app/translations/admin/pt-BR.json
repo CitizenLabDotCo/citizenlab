@@ -1458,7 +1458,6 @@
   "app.containers.admin.ideas.all.tabStatuses": "Status",
   "app.containers.admin.import.downloadTemplate": "Baixar modelo",
   "app.containers.admin.import.importDescription": "Importar entradas existentes de uma planilha Excel.",
-  "app.containers.admin.import.importHint": "Importante: Não exclua nenhuma coluna do modelo de importação - as colunas que não forem usadas devem ser deixadas vazias. Antes de importar o arquivo, certifique-se de que não haja endereços de e-mail duplicados, para evitar erro no envio dos convites. Deixe colunas não usadas vazias.",
   "app.containers.admin.import.importInput": "Importar entrada",
   "app.containers.admin.import.importInputs": "Importar entradas",
   "app.containers.admin.import.importStepOne": "Baixe e preencha o modelo",
