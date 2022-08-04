@@ -46,19 +46,6 @@ module Post
 
     validates :publication_status, presence: true, inclusion: { in: PUBLICATION_STATUSES }
 
-    with_options unless: :draft? do |post|
-      post.validates :title_multiloc, presence: true, multiloc: { presence: true }
-      post.validates :body_multiloc, presence: true, multiloc: { presence: true, html: true }
-      post.validates :author, presence: true, on: :publication
-      post.validates :author, presence: true, if: :author_id_changed?
-      post.validates :slug, uniqueness: true, presence: true
-
-      post.before_validation :strip_title
-      post.before_validation :generate_slug
-      post.after_validation :set_published_at, if: ->(record) { record.published? && record.publication_status_changed? }
-      post.after_validation :set_assigned_at, if: ->(record) { record.assignee_id && record.assignee_id_changed? }
-    end
-
     scope :with_bounding_box, (proc do |coordinates|
       x1, y1, x2, y2 = JSON.parse(coordinates)
       where('ST_Intersects(ST_MakeEnvelope(?, ?, ?, ?), location_point)', x1, y1, x2, y2)

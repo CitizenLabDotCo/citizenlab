@@ -55,6 +55,19 @@ class Initiative < ApplicationRecord
 
   belongs_to :assignee, class_name: 'User', optional: true
 
+  with_options unless: :draft? do |post|
+    post.validates :title_multiloc, presence: true, multiloc: { presence: true }
+    post.validates :body_multiloc, presence: true, multiloc: { presence: true, html: true }
+    post.validates :author, presence: true, on: :publication
+    post.validates :author, presence: true, if: :author_id_changed?
+    # post.validates :slug, uniqueness: true, presence: true # TODO: this is not necessary when a slug is generated.
+
+    post.before_validation :strip_title
+    post.before_validation :generate_slug
+    post.after_validation :set_published_at, if: ->(record) { record.published? && record.publication_status_changed? }
+    post.after_validation :set_assigned_at, if: ->(record) { record.assignee_id && record.assignee_id_changed? }
+  end
+
   with_options unless: :draft? do
     # Problem is that this validation happens too soon, as the first idea status change is created after create.
     # initiative.validates :initiative_status, presence: true
