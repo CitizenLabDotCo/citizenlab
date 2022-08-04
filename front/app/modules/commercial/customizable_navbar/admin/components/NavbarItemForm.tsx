@@ -38,7 +38,7 @@ const NavbarItemForm = ({
 }: PageFormProps) => {
   const schema = object({
     nav_bar_item_title_multiloc: validateMultiloc(
-      formatMessage(messages.emptyTitleErrorMessage)
+      formatMessage(messages.emptyTitleError)
     ),
   });
 

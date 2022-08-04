@@ -45,7 +45,7 @@ export default defineMessages({
   slugRegexError: {
     id: 'app.components.PagesForm.slugRegexError',
     defaultMessage:
-      'The slug can only contain regular, lowercase letters (a-z), numbers (0-9) and hyphens (-). The first and last characters cannot be hyphens. Consecutive hyphens (--) are forbidden',
+      'The slug can only contain regular, lowercase letters (a-z), numbers (0-9) and hyphens (-). The first and last characters cannot be hyphens. Consecutive hyphens (--) are forbidden.',
   },
   emptySlugError: {
     id: 'app.components.PagesForm.emptySlugError',
@@ -53,7 +53,7 @@ export default defineMessages({
   },
   takenSlugError: {
     id: 'app.components.pageForm.takenSlugError',
-    defaultMessage: 'This slug is already taken, choose a different one',
+    defaultMessage: 'This slug is already taken. Choose a different one.',
   },
   emptyTitleError: {
     id: 'app.components.PagesForm.emptyTitleError',

@@ -72,15 +72,13 @@ const PageFormWithNavbarNameField = ({
     nav_bar_item_title_multiloc: validateMultiloc(
       formatMessage(messages.emptyNavbarItemTitleError)
     ),
-    title_multiloc: validateMultiloc(
-      formatMessage(messages.emptyTitleErrorMessage)
-    ),
+    title_multiloc: validateMultiloc(formatMessage(messages.emptyTitleError)),
     body_multiloc: validateMultiloc(
-      formatMessage(messages.emptyDescriptionErrorMessage)
+      formatMessage(messages.emptyDescriptionError)
     ),
     slug: string()
       .matches(slugRexEx, formatMessage(messages.slugRegexError))
-      .required(formatMessage(messages.emptySlugErrorMessage)),
+      .required(formatMessage(messages.emptySlugError)),
     local_page_files: mixed(),
   });
 
