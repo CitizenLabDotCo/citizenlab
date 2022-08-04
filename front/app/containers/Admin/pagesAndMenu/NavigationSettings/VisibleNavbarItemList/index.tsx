@@ -18,6 +18,12 @@ export default function VisibleNavbarItemList() {
   }
 
   const handleClickEdit = (navbarItem: INavbarItem) => () => {
+    // redirect to homepage toggle page
+    if (navbarItem?.attributes?.code && navbarItem.attributes.code === 'home') {
+      clHistory.push(`${PAGES_MENU_PATH}/homepage/`);
+      return;
+    }
+
     const pageData = navbarItem.relationships.static_page.data;
 
     pageData
@@ -41,7 +47,7 @@ export default function VisibleNavbarItemList() {
         <Row key={navbarItem.id} isLastItem={i === navbarItems.length - 1}>
           <NavbarItemRow
             title={navbarItem.attributes.title_multiloc}
-            showEditButton={navbarItem.attributes.code !== 'home'}
+            showEditButton
             viewButtonLink={getViewButtonLink(navbarItem)}
             onClickEditButton={handleClickEdit(navbarItem)}
             data-testid="navbar-item-row"
