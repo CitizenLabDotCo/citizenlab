@@ -8,7 +8,7 @@ git_source(:github) do |repo_name|
 end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.1'
+gem 'rails', '~> 6.1.6.1'
 # Use postgresql as the database for Active Record
 gem 'pg' # , '~> 0.18'
 # Use Puma as the app server
@@ -189,3 +189,5 @@ require './lib/citizen_lab'
 CitizenLab.enabled_modules.each do |m|
   gem m.split('/').last, path: "engines/#{m}" if File.exist? "engines/#{m}"
 end
+
+gem 'bulk_import_ideas', path: 'engines/commercial/bulk_import_ideas'

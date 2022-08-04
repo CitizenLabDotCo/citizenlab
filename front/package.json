@@ -6,8 +6,8 @@
   "version": "1.0.0",
   "description": "CitizenLab is a ready-to-use citizen participation platform for local governments",
   "engines": {
-    "npm": ">=7",
-    "node": ">=12"
+    "node": "16.15.0",
+    "npm": ">=8"
   },
   "author": "CitizenLab",
   "scripts": {
@@ -38,7 +38,10 @@
     "detect-deadcode": "ts-prune -p app/tsconfig.json -i '(node_modules|utils/testUtils/rtl.tsx|services/permissions|i18n|/*/*/__mocks__)' | (! grep -v 'used in module')"
   },
   "lint-staged": {
-    "*.{ts,tsx,js,jsx}": [
+    "!(*app/containers/App/constants).js": [
+      "eslint --max-warnings=0"
+    ],
+    "*.{ts,tsx,jsx}": [
       "eslint --max-warnings=0"
     ],
     "*.{js,jsx,ts,tsx,json,css,scss,md,mdx,html}": [
@@ -56,7 +59,7 @@
   "dependencies": {
     "@apollo/client": "^3.5.6",
     "@babel/runtime": "7.x",
-    "@citizenlab/cl2-component-library": "^0.9.77",
+    "@citizenlab/cl2-component-library": "^0.9.79",
     "@craftjs/core": "^0.2.0-beta.5",
     "@hookform/resolvers": "^2.9.5",
     "@jsonforms/core": "3.0.0-beta.0",
@@ -70,6 +73,7 @@
     "ajv": "^8.9.0",
     "bowser": "1.x",
     "canvas-to-blob": "^1.0.0",
+    "canvg": "^4.0.0",
     "clipboard-polyfill": "3.0.3",
     "compression": "1.7.4",
     "core-js": "^3.22.3",
@@ -80,7 +84,7 @@
     "focus-visible": "5.2.0",
     "formatcoords": "1.1.3",
     "formik": "1.x",
-    "graphql": "^16.3.0",
+    "graphql": "^16.5.0",
     "history": "^5.3.0",
     "https-browserify": "^1.0.0",
     "identity-obj-proxy": "3.0.0",
@@ -95,7 +99,7 @@
     "lodash-es": "4.17.21",
     "moment": "2.29.4",
     "moment-timezone": "0.5.34",
-    "path-to-regexp": "6.2.0",
+    "path-to-regexp": "6.2.1",
     "polished": "^4.2.2",
     "process": "^0.11.10",
     "qs": "6.10.3",
@@ -146,18 +150,18 @@
     "@babel/core": "7.18.2",
     "@babel/node": "7.x",
     "@babel/plugin-transform-runtime": "^7.17.0",
-    "@babel/preset-env": "^7.17.10",
-    "@babel/preset-react": "^7.17.12",
+    "@babel/preset-env": "^7.18.6",
+    "@babel/preset-react": "^7.18.6",
     "@babel/preset-typescript": "7.x",
     "@cypress/skip-test": "^2.6.1",
     "@cypress/webpack-preprocessor": "^5.11.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.4",
     "@sentry/webpack-plugin": "^1.18.8",
-    "@testing-library/jest-dom": "^5.16.3",
+    "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^12.1.2",
     "@testing-library/react-hooks": "^7.0.2",
-    "@testing-library/user-event": "^14.0.3",
-    "@types/enzyme": "3.10.11",
+    "@testing-library/user-event": "^14.3.0",
+    "@types/enzyme": "3.10.12",
     "@types/enzyme-adapter-react-16": "1.0.6",
     "@types/file-saver": "2.0.5",
     "@types/geojson": "7946.0.8",
@@ -193,7 +197,7 @@
     "@typescript-eslint/parser": "^5.14.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^28.1.1",
-    "babel-loader": "8.2.3",
+    "babel-loader": "8.2.5",
     "babel-plugin-dynamic-import-node": "2.3.3",
     "babel-plugin-react-intl": "2.4.0",
     "babel-plugin-styled-components": "^2.0.7",
@@ -207,9 +211,9 @@
     "enzyme-adapter-react-16": "1.15.6",
     "enzyme-to-json": "3.6.2",
     "eslint": "^8.12.0",
-    "eslint-plugin-jsx-a11y": "^6.6.0",
+    "eslint-plugin-jsx-a11y": "^6.6.1",
     "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-react": "^7.29.4",
+    "eslint-plugin-react": "^7.30.1",
     "eslint-plugin-react-hooks": "^4.5.0",
     "express": "4.17.3",
     "fork-ts-checker-webpack-plugin": "6.4.0",
@@ -219,7 +223,7 @@
     "jest": "^28.1.2",
     "jest-cli": "^28.1.1",
     "jest-environment-jsdom": "^28.1.1",
-    "jest-junit": "^13.0.0",
+    "jest-junit": "^14.0.0",
     "jest-styled-components": "^7.0.8",
     "lint-staged": "^13.0.2",
     "mini-css-extract-plugin": "^2.6.1",

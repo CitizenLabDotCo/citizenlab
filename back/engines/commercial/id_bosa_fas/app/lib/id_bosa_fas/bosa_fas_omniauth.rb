@@ -4,6 +4,17 @@ module IdBosaFas
   class BosaFasOmniauth
     include BosaFasVerification
 
+    ENVIRONMENTS = {
+      'integration' => {
+        host: 'idp.iamfas.int.belgium.be',
+        jwks_uri: 'https://idp.iamfas.int.belgium.be/fas/oauth2/connect/jwk_uri'
+      },
+      'production' => {
+        host: 'idp.iamfas.belgium.be',
+        jwks_uri: 'https://idp.iamfas.belgium.be/fas/oauth2/connect/jwk_uri'
+      }
+    }
+
     def profile_to_user_attrs(auth)
       {}.tap do |info|
         info[:first_name] = auth.dig('extra', 'raw_info', 'givenName') if auth.dig('extra', 'raw_info', 'givenName')
@@ -20,9 +31,11 @@ module IdBosaFas
       options[:response_type] = :code
       options[:state] = true
       options[:nonce] = true
-      options[:issuer] = "https://#{host}"
+      options[:issuer] = "https://#{host}/fas/oauth2"
       options[:acr_values] = 'urn:be:fedict:iam:fas:Level450'
       options[:send_scope_to_token_endpoint] = false
+      options[:client_signing_alg] = :RS256
+      options[:client_jwk_signing_key] = jwks
       options[:client_options] = {
         identifier: config[:identifier],
         secret: config[:secret],
@@ -37,12 +50,17 @@ module IdBosaFas
     end
 
     def host
-      case config[:environment]
-      when 'integration'
-        'idp.iamfas.int.belgium.be'
-      when 'production'
-        'idp.iamfas.belgium.be'
-      end
+      ENVIRONMENTS.fetch(config[:environment]).fetch(:host)
+    end
+
+    def jwks_uri
+      ENVIRONMENTS.fetch(config[:environment]).fetch(:jwks_uri)
+    end
+
+    # Returns the JSON Web Key Set (JWKS) that can be used to validate JSON tokens
+    # issued by BOSA FAS.
+    def jwks
+      @jwks ||= URI.parse(jwks_uri).read
     end
 
     def updateable_user_attrs

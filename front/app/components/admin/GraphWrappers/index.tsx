@@ -175,7 +175,7 @@ export const GraphCardFigureChange = styled.span`
   }
 
   &.decrease {
-    color: ${colors.clRedError};
+    color: ${colors.red600};
   }
 `;
 

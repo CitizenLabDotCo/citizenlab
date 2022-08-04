@@ -174,6 +174,14 @@ AppConfiguration.create!(
     events_widget: {
       enabled: true,
       allowed: true
+    },
+    native_surveys: {
+      enabled: true,
+      allowed: true
+    },
+    user_confirmation: {
+      allowed: true,
+      enabled: false
     }
   })
 )

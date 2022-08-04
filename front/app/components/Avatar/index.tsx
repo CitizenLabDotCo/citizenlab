@@ -172,9 +172,7 @@ const Avatar = memo(
               size={containerSize}
               borderThickness={borderThickness}
               borderColor={borderColor}
-              borderHoverColor={
-                moderator ? colors.clRedError : borderHoverColor
-              }
+              borderHoverColor={moderator ? colors.red600 : borderHoverColor}
               bgColor={bgColor}
               padding={paddingValue}
             />
@@ -189,20 +187,14 @@ const Avatar = memo(
               fillHoverColor={fillHoverColor}
               borderThickness={borderThickness}
               borderColor={borderColor}
-              borderHoverColor={
-                moderator ? colors.clRedError : borderHoverColor
-              }
+              borderHoverColor={moderator ? colors.red600 : borderHoverColor}
               bgColor={bgColor}
               paddingValue={paddingValue}
             />
           )}
 
           {moderator && (
-            <BadgeIcon
-              name="clShield"
-              size={badgeSize}
-              fill={colors.clRedError}
-            />
+            <BadgeIcon name="clShield" size={badgeSize} fill={colors.red600} />
           )}
 
           {verified && addVerificationBadge && (

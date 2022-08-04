@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 const Container = styled.div`
-  color: ${colors.clRedError};
+  color: ${colors.red600};
   flex-grow: 1;
   display: flex;
   justify-content: center;
