@@ -39,7 +39,7 @@ namespace :fix_existing_tenants do
             home_page.projects_header_multiloc = settings['core']['currently_working_on_text']
           end
 
-          home_page.banner_avatars_enabled = settings['core']['display_header_avatars'] if settings['core']['display_header_avatars']
+          home_page.banner_avatars_enabled = !!settings['core']['display_header_avatars']
 
           if settings['core']['custom_onboarding_fallback_message']
             home_page.banner_signed_in_header_multiloc = settings['core']['custom_onboarding_fallback_message']
