@@ -27,7 +27,14 @@ import styled from 'styled-components';
 // typings
 import { ISignUpInMetaData } from 'components/SignUpIn';
 
-const Container = styled.div``;
+const Container = styled.div`
+  min-height: calc(
+    100vh -
+      ${(props) => {
+        return props.theme.menuHeight + props.theme.footerHeight;
+      }}px
+  );
+`;
 
 export type TSignInSteps = 'auth-providers' | 'password-signin';
 

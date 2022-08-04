@@ -35,6 +35,7 @@ const StyledSignUpIn = styled(SignUpIn)`
   padding-top: 20px;
   display: flex;
   flex-direction: column;
+  width: 580px;
 `;
 
 const StyledButton = styled(Button)`
@@ -175,7 +176,7 @@ const SignUpInModal = ({
               flexDirection="column"
               alignItems="center"
             >
-              <Box maxWidth={`${modalWidth}px`} padding="60px">
+              <Box padding="60px 0 0">
                 <StyledButton
                   className={className}
                   icon="circle-arrow-left"
