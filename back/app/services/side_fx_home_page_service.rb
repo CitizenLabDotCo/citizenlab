@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SideFxHomePageService
   include SideFxHelper
 
@@ -6,8 +8,8 @@ class SideFxHomePageService
       home_page.top_info_section_multiloc = TextImageService.new.swap_data_images home_page, :top_info_section_multiloc
     end
 
-    if home_page.bottom_info_section_multiloc
-      home_page.bottom_info_section_multiloc = TextImageService.new.swap_data_images home_page, :bottom_info_section_multiloc
-    end
+    return unless home_page.bottom_info_section_multiloc
+
+    home_page.bottom_info_section_multiloc = TextImageService.new.swap_data_images home_page, :bottom_info_section_multiloc
   end
 end
