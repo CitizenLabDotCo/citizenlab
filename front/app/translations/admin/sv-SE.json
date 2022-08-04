@@ -1458,7 +1458,6 @@
   "app.containers.admin.ideas.all.tabStatuses": "Statusar",
   "app.containers.admin.import.downloadTemplate": "Ladda ner mall",
   "app.containers.admin.import.importDescription": "Importera befintliga indata från en Excel-fil.",
-  "app.containers.admin.import.importHint": "Viktigt! För att indata ska skickas korrekt kan ingen kolumn tas bort från importmallen. Lämna oanvända kolumner tomma.",
   "app.containers.admin.import.importInput": "Importera indata",
   "app.containers.admin.import.importInputs": "Importera indata",
   "app.containers.admin.import.importStepOne": "1. Ladda ner och fyll i mallen",

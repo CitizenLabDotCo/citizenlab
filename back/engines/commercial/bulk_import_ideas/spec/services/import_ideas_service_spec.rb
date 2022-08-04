@@ -54,7 +54,7 @@ describe BulkImportIdeas::ImportIdeasService do
           body_multiloc: { 'en' => 'My idea description' },
           project_title: 'Project title',
           user_email: 'userimport@citizenlab.co',
-          published_at: '2022-07-18'
+          published_at: '18-07-2022'
         }
       ]
 
@@ -168,7 +168,7 @@ describe BulkImportIdeas::ImportIdeasService do
           body_multiloc: { 'en' => 'My idea description' },
           project_title: create(:project).title_multiloc.values.first,
           user_email: create(:user).email,
-          published_at: '2022-07-18'
+          published_at: '18-07-2022'
         }
       ]
 
@@ -202,6 +202,37 @@ describe BulkImportIdeas::ImportIdeasService do
         an_instance_of(BulkImportIdeas::Error).and(having_attributes(key: 'bulk_import_ideas_project_not_found', params: { value: 'Non-existing project', row: '2' }))
       )
       expect(Idea.count).to eq 0
+    end
+
+    it 'does not accept import data with invalid date format' do
+      create :user, email: 'userimport@citizenlab.co'
+      create :project, title_multiloc: { 'en' => 'Project title' }
+
+      idea_rows = [
+        {
+          title_multiloc: { 'en' => 'My idea title' },
+          body_multiloc: { 'en' => 'My idea description' },
+          project_title: 'Project title',
+          user_email: 'userimport@citizenlab.co',
+          published_at: '01/01/2021'
+        }
+      ]
+      expect { service.import_ideas idea_rows }.to raise_error(
+        an_instance_of(BulkImportIdeas::Error).and(having_attributes(key: 'bulk_import_ideas_publication_date_invalid_format', params: { value: '01/01/2021', row: nil }))
+      )
+
+      idea_rows = [
+        {
+          title_multiloc: { 'en' => 'My idea title' },
+          body_multiloc: { 'en' => 'My idea description' },
+          project_title: 'Project title',
+          user_email: 'userimport@citizenlab.co',
+          published_at: '01-13-2021'
+        }
+      ]
+      expect { service.import_ideas idea_rows }.to raise_error(
+        an_instance_of(BulkImportIdeas::Error).and(having_attributes(key: 'bulk_import_ideas_publication_date_invalid_format', params: { value: '01-13-2021', row: nil }))
+      )
     end
   end
 
