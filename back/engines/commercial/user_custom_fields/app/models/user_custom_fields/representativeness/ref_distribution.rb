@@ -40,7 +40,7 @@ module UserCustomFields
         # This method allows pundit to identify the right policy class for
         # instances of subclasses of this class.
         def policy_class
-          UserCustomFields::Representativeness::RefDistributionPolicy
+          ::UserCustomFields::Representativeness::RefDistributionPolicy
         end
 
         def distribution_schema
