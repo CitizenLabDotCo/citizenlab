@@ -24,6 +24,7 @@ import Footer from './Footer';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
+import fieldMessages from '../Field/messages';
 
 // typings
 import {
@@ -113,7 +114,11 @@ const ChartCard = injectIntl(
 
     const legendLabels = getLegendLabels(barNames);
 
-    const title = localize(userCustomField.attributes.title_multiloc);
+    const title =
+      userCustomField.attributes.key === 'birthyear'
+        ? formatMessage(fieldMessages.birthyearCustomTitle)
+        : localize(userCustomField.attributes.title_multiloc);
+
     const fieldIsRequired = userCustomField.attributes.required;
     const xlsxEndpoint = getXlsxEndpoint(
       userCustomField.attributes.code,
