@@ -47,20 +47,20 @@ export default defineMessages({
     defaultMessage:
       'The slug can only contain regular, lowercase letters (a-z), numbers (0-9) and hyphens (-). The first and last characters cannot be hyphens. Consecutive hyphens (--) are forbidden.',
   },
-  emptySlugError: {
-    id: 'app.components.PagesForm.emptySlugError',
+  blankSlugError: {
+    id: 'app.components.PagesForm.blankSlugError',
     defaultMessage: 'Provide a slug',
   },
   takenSlugError: {
     id: 'app.components.pageForm.takenSlugError',
     defaultMessage: 'This slug is already taken. Choose a different one.',
   },
-  emptyTitleError: {
-    id: 'app.components.PagesForm.emptyTitleError',
+  blankTitleError: {
+    id: 'app.components.PagesForm.blankTitleError',
     defaultMessage: 'Provide title for all languages',
   },
-  emptyDescriptionError: {
-    id: 'app.components.PagesForm.emptyDescriptionError',
+  blankDescriptionError: {
+    id: 'app.components.PagesForm.blankDescriptionError',
     defaultMessage: 'Provide content for all languages',
   },
   savePage: {

@@ -66,14 +66,14 @@ const PageForm = ({
   const appConfig = useAppConfiguration();
 
   const schema = object({
-    title_multiloc: validateMultiloc(formatMessage(messages.emptyTitleError)),
+    title_multiloc: validateMultiloc(formatMessage(messages.blankTitleError)),
     body_multiloc: validateMultiloc(
-      formatMessage(messages.emptyDescriptionError)
+      formatMessage(messages.blankDescriptionError)
     ),
     ...(!hideSlugInput && {
       slug: string()
         .matches(slugRexEx, formatMessage(messages.slugRegexError))
-        .required(formatMessage(messages.emptySlugError)),
+        .required(formatMessage(messages.blankSlugError)),
       local_page_files: mixed(),
     }),
   });
