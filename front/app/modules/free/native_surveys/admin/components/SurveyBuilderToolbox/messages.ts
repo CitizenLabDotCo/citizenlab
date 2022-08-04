@@ -9,4 +9,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.toolbox.shortAnswer',
     defaultMessage: 'Short answer',
   },
+  newField: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.toolbox.newField',
+    defaultMessage: 'New field',
+  },
 });

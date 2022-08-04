@@ -85,13 +85,6 @@ const SurveyBuilderTopBar = () => {
         >
           <FormattedMessage {...messages.viewSurvey} />
         </Button>
-        <Button
-          buttonStyle="primary"
-          onClick={() => {}}
-          data-testid="contentBuilderTopBarSaveButton"
-        >
-          <FormattedMessage {...messages.saveSurvey} />
-        </Button>
       </Box>
     </Box>
   );

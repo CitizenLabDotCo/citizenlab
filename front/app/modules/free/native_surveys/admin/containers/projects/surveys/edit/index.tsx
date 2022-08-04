@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 
@@ -12,6 +12,10 @@ import { Box } from '@citizenlab/cl2-component-library';
 import SurveyBuilderTopBar from 'modules/free/native_surveys/admin/components/SurveyBuilderTopBar';
 import SurveyBuilderToolbox from 'modules/free/native_surveys/admin/components/SurveyBuilderToolbox';
 import SurveyBuilderSettings from 'modules/free/native_surveys/admin/components/SurveyBuilderSettings';
+import SurveyFields from 'modules/free/native_surveys/components/SurveyFields';
+
+// Types
+import { ISurveyCustomFieldData } from 'modules/free/native_surveys/services/surveyCustomFields';
 
 const StyledRightColumn = styled(RightColumn)`
   height: calc(100vh - ${stylingConsts.menuHeight}px);
@@ -23,29 +27,36 @@ const StyledRightColumn = styled(RightColumn)`
   overflow-y: auto;
 `;
 
-export const SurveyEdit = () => (
-  <Box
-    display="flex"
-    flexDirection="column"
-    w="100%"
-    zIndex="10000"
-    position="fixed"
-    bgColor={colors.adminBackground}
-    h="100vh"
-    data-testid="surveyBuilderPage"
-  >
-    <FocusOn>
-      <SurveyBuilderTopBar />
-      <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
-        <SurveyBuilderToolbox />
-        <StyledRightColumn>
-          <Box width="1000px" bgColor="#ffffff" minHeight="300px" />
-        </StyledRightColumn>
-        <SurveyBuilderSettings />
-      </Box>
-    </FocusOn>
-  </Box>
-);
+export const SurveyEdit = () => {
+  const [selectedField, setSelectedField] = useState<
+    ISurveyCustomFieldData | undefined
+  >(undefined);
+  return (
+    <Box
+      display="flex"
+      flexDirection="column"
+      w="100%"
+      zIndex="10000"
+      position="fixed"
+      bgColor={colors.adminBackground}
+      h="100vh"
+      data-testid="surveyBuilderPage"
+    >
+      <FocusOn>
+        <SurveyBuilderTopBar />
+        <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
+          <SurveyBuilderToolbox />
+          <StyledRightColumn>
+            <Box width="1000px" bgColor="#ffffff" minHeight="300px">
+              <SurveyFields onEditField={setSelectedField} />
+            </Box>
+          </StyledRightColumn>
+          <SurveyBuilderSettings field={selectedField} />
+        </Box>
+      </FocusOn>
+    </Box>
+  );
+};
 
 const SurveyBuilderPage = () => {
   const modalPortalElement = document.getElementById('modal-portal');
