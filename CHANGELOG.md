@@ -4,7 +4,7 @@
 
 ### Added
 
--[CL-5] Customizable Pages iterarion 1
+-[CL-5] Customizable Pages iteration 1
 
 ## 2022-08-03
 
