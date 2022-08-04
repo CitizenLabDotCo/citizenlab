@@ -59,7 +59,7 @@ module UserCustomFields
       def infer_ref_distribution_type
         custom_field = CustomField.find(params[:custom_field_id])
         if custom_field.key == 'birthyear'
-          'UserCustomFields::Representativeness::BinnedDistribution'
+          UserCustomFields::Representativeness::BinnedDistribution.name
         elsif custom_field.input_type == 'select'
           'UserCustomFields::Representativeness::CategoricalDistribution'
         else
