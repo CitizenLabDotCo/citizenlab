@@ -69,6 +69,7 @@ describe('Content builder Image Text Cards section', () => {
     cy.get('#imageAltTextInput').click().clear().type('Image alt text.');
     cy.get('[alt="Image alt text."]').should('exist');
 
+    // Save
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveContentBuilder');
 
