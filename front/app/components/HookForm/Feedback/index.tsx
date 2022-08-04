@@ -114,16 +114,19 @@ const Feedback = ({
                 <>
                   {errors.submissionError ? (
                     <>
-                      <Title color="clRed" variant="h4">
+                      <Title color="red600" variant="h4">
                         {formatMessage(messages.submissionErrorTitle)}
                       </Title>
-                      <Text color="clRed" data-testid="feedbackSubmissionError">
+                      <Text
+                        color="red600"
+                        data-testid="feedbackSubmissionError"
+                      >
                         {formatMessage(messages.submissionErrorMessage)}
                       </Text>
                     </>
                   ) : (
                     <>
-                      <Title color="clRed" variant="h4">
+                      <Title color="red600" variant="h4">
                         {formatMessage(messages.errorTitle)}
                       </Title>
                       {getAllErrorMessages().map((error) => {
@@ -137,7 +140,7 @@ const Feedback = ({
                               }
                             }}
                             textDecoration="underline"
-                            color="clRed"
+                            color="red600"
                             style={{ cursor: 'pointer' }}
                             role="link"
                             tabIndex={0}
