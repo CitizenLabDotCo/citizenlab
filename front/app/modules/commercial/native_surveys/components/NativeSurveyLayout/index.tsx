@@ -2,8 +2,8 @@ import React from 'react';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import NativeSurveyButtonBar from '../NativeSurveyButtonBar/NativeSurveyButtonBar';
-import NativeSurveyForm from '../NativeSurveyForm/NativeSurveyForm';
+import NativeSurveyButtonBar from '../NativeSurveyButtonBar';
+import NativeSurveyForm from '../NativeSurveyForm';
 
 // style
 import { stylingConsts, colors } from 'utils/styleUtils';
