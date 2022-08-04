@@ -157,9 +157,10 @@ module Analytics
 
     def validate_dimensions(query, index)
       query[:dimensions].each do |dimension, columns|
-        if all_dimensions(query['fact']).key?(dimension)
+        query_all_dimensions = all_dimensions(query['fact'])
+        if query_all_dimensions.key?(dimension)
           columns.each do |column, _value|
-            unless all_dimensions[dimension].include?(column)
+            unless query_all_dimensions [dimension].include?(column)
               @validation['messages'].push("Column #{column} does not exist in dimension #{dimension} on query #{index}.")
             end
           end
