@@ -64,11 +64,11 @@ export default defineMessages({
       'The slug can only contain regular, lowercase letters (a-z), numbers (0-9) and hyphens (-). The first and last characters cannot be hyphens. Consecutive hyphens (--) are forbidden.',
   },
   emptySlugErrorMessage: {
-    id: 'app.modules.commercial.customizable_navbar.emptySlugError',
+    id: 'app.modules.commercial.customizable_navbar.emptySlugErrorMessage',
     defaultMessage: 'Please provide a slug.',
   },
   takenSlugErrorMessage: {
-    id: 'app.components.pageForm.takenSlugError',
+    id: 'app.components.pageForm.takenSlugErrorMessage',
     defaultMessage:
       'This slug is already taken. Please choose a different one.',
   },
@@ -85,7 +85,7 @@ export default defineMessages({
     defaultMessage: 'Save page',
   },
   savePageSuccessMessage: {
-    id: 'app.components.PagesForm.save',
+    id: 'app.modules.commercial.customizable_navbar.admin.components.NavbarTitleField.saveSuccess',
     defaultMessage: 'Page successfully saved.',
   },
 });
