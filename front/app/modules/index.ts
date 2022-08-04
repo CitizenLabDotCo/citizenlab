@@ -73,7 +73,7 @@ export default loadModules([
   },
   {
     configuration: nativeSurveyConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/native_surveys'],
+    isEnabled: CL_CONFIG['modules']['free/idea_custom_fields'],
   },
   {
     configuration: googleTagManagerConfiguration,
