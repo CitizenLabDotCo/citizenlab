@@ -182,7 +182,8 @@ export const findErrorMessage = (fieldName: TFieldName, error: string) => {
     return messages[error] as Message;
   }
 
-  return null;
+  // If no specific error is defined for the field, return a default message
+  return messages.invalid;
 };
 
 const Error = (props: Props) => {

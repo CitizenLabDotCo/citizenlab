@@ -54,12 +54,11 @@ const Feedback = ({
           field as TFieldName,
           String(apiError)
         );
-        if (apiErrorMessage) {
-          errorMessages.push({
-            field,
-            message: formatMessage(apiErrorMessage),
-          });
-        }
+
+        errorMessages.push({
+          field,
+          message: formatMessage(apiErrorMessage),
+        });
       } else if (multilocFieldFirstError) {
         errorMessages.push({
           field,
