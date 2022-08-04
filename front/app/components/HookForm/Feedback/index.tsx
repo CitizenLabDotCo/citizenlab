@@ -121,7 +121,7 @@ const Feedback = ({
                         color="red600"
                         data-testid="feedbackSubmissionError"
                       >
-                        {formatMessage(messages.submissionErrorMessage)}
+                        {formatMessage(messages.submissionErrorText)}
                       </Text>
                     </>
                   ) : (

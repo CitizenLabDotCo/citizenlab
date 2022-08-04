@@ -9,10 +9,9 @@ export default defineMessages({
     id: 'app.components.HookForm.Feedback.submissionErrorTitle',
     defaultMessage: 'There was a problem on our end, sorry',
   },
-  submissionErrorMessage: {
-    id: 'app.components.HookForm.Feedback.submissionErrorMessage',
-    defaultMessage:
-      'Please try again. If the issue persists, please contact us.',
+  submissionErrorText: {
+    id: 'app.components.HookForm.Feedback.submissionErrorText',
+    defaultMessage: 'Please try again. If the issue persists, contact us',
   },
   successMessage: {
     id: 'app.components.HookForm.Feedback.successMessage',
