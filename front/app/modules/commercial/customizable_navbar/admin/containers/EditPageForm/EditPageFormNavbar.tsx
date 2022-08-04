@@ -1,20 +1,20 @@
 import React from 'react';
-import styled from 'styled-components';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // components
 import PageFormWithNavbarNameField, {
   FormValues,
 } from '../../components/PageFormWithNavbarNameField';
-import GoBackButton from 'components/UI/GoBackButton';
-import T from 'components/T';
+import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
+import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { fontSizes } from 'utils/styleUtils';
-import clHistory from 'utils/cl-router/history';
 import { createPageUpdateData, getInitialFormValues } from './utils';
-import { NAVIGATION_PATH } from '..';
+
+// i18n
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 // services
 import { updatePage } from 'services/pages';
@@ -24,29 +24,22 @@ import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useRemoteFiles from 'hooks/useRemoteFiles';
 import usePage from 'hooks/usePage';
-import usePageSlugs from 'hooks/usePageSlugs';
+import useLocalize from 'hooks/useLocalize';
 
-const Title = styled.h1`
-  font-size: ${fontSizes.xxxl}px;
-  padding: 0;
-  width: 100%;
-  margin: 1rem 0 3rem 0;
-`;
-
-const EditPageFormNavbar = ({ params: { pageId } }: WithRouterProps) => {
+const EditPageFormNavbar = ({
+  params: { pageId },
+  intl: { formatMessage },
+}: WithRouterProps & InjectedIntlProps) => {
   const appConfigurationLocales = useAppConfigurationLocales();
+  const localize = useLocalize();
+
   const page = usePage({ pageId });
   const remotePageFiles = useRemoteFiles({
     resourceType: 'page',
     resourceId: !isNilOrError(page) ? page.id : null,
   });
-  const pageSlugs = usePageSlugs();
 
-  if (
-    isNilOrError(page) ||
-    isNilOrError(appConfigurationLocales) ||
-    isNilOrError(pageSlugs)
-  ) {
+  if (isNilOrError(page) || isNilOrError(appConfigurationLocales)) {
     return null;
   }
 
@@ -75,23 +68,26 @@ const EditPageFormNavbar = ({ params: { pageId } }: WithRouterProps) => {
     await Promise.all(promises);
   };
 
-  const goBack = () => {
-    clHistory.push(NAVIGATION_PATH);
-  };
-
   return (
-    <div>
-      <GoBackButton onClick={goBack} />
-      <Title>
-        <T value={page.attributes.title_multiloc} />
-      </Title>
+    <SectionFormWrapper
+      title={localize(page.attributes.title_multiloc)}
+      breadcrumbs={[
+        {
+          label: formatMessage(pagesAndMenuBreadcrumb.label),
+          linkTo: pagesAndMenuBreadcrumb.linkTo,
+        },
+        {
+          label: localize(page.attributes.title_multiloc),
+        },
+      ]}
+    >
       <PageFormWithNavbarNameField
         pageId={pageId}
         onSubmit={handleSubmit}
         defaultValues={getInitialFormValues(page, remotePageFiles)}
       />
-    </div>
+    </SectionFormWrapper>
   );
 };
 
-export default withRouter(EditPageFormNavbar);
+export default injectIntl(withRouter(EditPageFormNavbar));

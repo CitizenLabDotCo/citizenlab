@@ -1,36 +1,34 @@
 import React from 'react';
-import styled from 'styled-components';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // components
 import NavbarItemForm, { FormValues } from '../../components/NavbarItemForm';
-import GoBackButton from 'components/UI/GoBackButton';
-import T from 'components/T';
+import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
+import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { fontSizes } from 'utils/styleUtils';
-import clHistory from 'utils/cl-router/history';
 import { getInitialFormValues, createNavbarItemUpdateData } from './utils';
-import { NAVIGATION_PATH } from '..';
 
 // services
 import { updateNavbarItem } from '../../../services/navbar';
 
+// i18n
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+
 // hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useNavbarItem from '../../../hooks/useNavbarItem';
+import useLocalize from 'hooks/useLocalize';
 
-const Title = styled.h1`
-  font-size: ${fontSizes.xxxl}px;
-  padding: 0;
-  width: 100%;
-  margin: 1rem 0 3rem 0;
-`;
-
-const EditNavbarItemForm = ({ params: { navbarItemId } }: WithRouterProps) => {
+const EditNavbarItemForm = ({
+  params: { navbarItemId },
+  intl: { formatMessage },
+}: WithRouterProps & InjectedIntlProps) => {
   const appConfigurationLocales = useAppConfigurationLocales();
   const navbarItem = useNavbarItem({ navbarItemId });
+  const localize = useLocalize();
 
   if (isNilOrError(appConfigurationLocales) || isNilOrError(navbarItem)) {
     return null;
@@ -43,22 +41,25 @@ const EditNavbarItemForm = ({ params: { navbarItemId } }: WithRouterProps) => {
     );
   };
 
-  const goBack = () => {
-    clHistory.push(NAVIGATION_PATH);
-  };
-
   return (
-    <div>
-      <GoBackButton onClick={goBack} />
-      <Title>
-        <T value={navbarItem.attributes.title_multiloc} />
-      </Title>
+    <SectionFormWrapper
+      title={localize(navbarItem.attributes.title_multiloc)}
+      breadcrumbs={[
+        {
+          label: formatMessage(pagesAndMenuBreadcrumb.label),
+          linkTo: pagesAndMenuBreadcrumb.linkTo,
+        },
+        {
+          label: localize(navbarItem.attributes.title_multiloc),
+        },
+      ]}
+    >
       <NavbarItemForm
         defaultValues={getInitialFormValues(navbarItem)}
         onSubmit={handleSubmit}
       />
-    </div>
+    </SectionFormWrapper>
   );
 };
 
-export default withRouter(EditNavbarItemForm);
+export default injectIntl(withRouter(EditNavbarItemForm));
