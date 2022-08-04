@@ -48,6 +48,12 @@ module UserCustomFields
         counts.map { |count| (count.to_f * nb_users / total_population).round(1) }
       end
 
+      def compute_rscore(users)
+        user_counts = AgeStats.calculate(users).binned_counts
+        score_value = RScore.compute_scores(user_counts, counts)[:min_max_p_ratio]
+        RScore.new(score_value, user_counts, self)
+      end
+
       private
 
       def validate_distribution
