@@ -19,4 +19,6 @@ class Factory
     end
     method_class.new(project)
   end
+
+  private_class_method :new
 end
