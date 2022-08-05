@@ -2,6 +2,10 @@
   "type" : "object",
   "$schema": "http://citizenlab.co/tenant_settings_spec.json",
   "properties" : {
+    "fact" : {
+      "type" : "string",
+      "enum" : ["post", "participation"]
+    },
     "dimensions" : {
       "type" : "object",
       "minProperties" : 1,
@@ -87,5 +91,6 @@
       "maximum" : 1000
     }
   },
-  "additionalProperties" : false
+  "additionalProperties" : false,
+  "required": ["fact"]
 }

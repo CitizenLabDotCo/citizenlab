@@ -1,0 +1,114 @@
+# frozen_string_literal: true
+
+module Analytics
+  class QueryValidatorService
+    def initialize(query)
+      @query = query
+      @json_query = query.json_query
+      @messages = []
+      @response_status = nil
+
+      validate
+      @valid = @messages.empty?
+    end
+
+    attr_reader :valid, :messages, :response_status
+
+    def validate
+      validate_json
+
+      return unless @valid
+
+      if @json_query.key?(:dimensions)
+        validate_dimensions
+        validate_dates
+      end
+
+      if @json_query.key?(:groups)
+        validate_groups
+      end
+
+      return unless @json_query.key?(:sort)
+
+      validate_order
+    end
+
+    private
+
+    def add_error(messages, status)
+      @valid = false
+      @messages.push(*messages)
+      @response_status = status
+    end
+
+    def validate_json
+      json_errors = JSON::Validator.fully_validate('engines/commercial/analytics/app/services/analytics/query_schema.json', @json_query.to_unsafe_hash)
+      return if json_errors.empty?
+
+      add_error(json_errors, 400)
+    end
+
+    def validate_dimensions
+      @json_query[:dimensions].each do |dimension, columns|
+        query_dimensions = @query.all_dimensions
+        if query_dimensions.key?(dimension)
+          columns.each do |column, _value|
+            unless query_dimensions[dimension].include?(column)
+              add_error("Column #{column} does not exist in dimension #{dimension}.", 422)
+            end
+          end
+        else
+          add_error("Dimension #{dimension} does not exist.", 422)
+        end
+      end
+    end
+
+    def validate_dates
+      dates_attrs = %w[from to]
+      @json_query[:dimensions].each do |dimension, columns|
+        columns.each do |column, value|
+          next unless [Array, String].exclude?(value.class) && (column == 'date')
+
+          dates_attrs.each do |date|
+            Date.parse(value[date])
+          rescue ArgumentError
+            add_error("Invalid '#{date}' date in #{dimension} dimension.", 422)
+          end
+        end
+      end
+    end
+
+    def validate_dotted(key, kind)
+      if key.include? '.'
+        dimension, column = key.split('.')
+        query_dimensions = @query.all_dimensions
+        if query_dimensions.key?(dimension)
+          unless query_dimensions[dimension].include?(column)
+            add_error("#{kind} column #{column} does not exist in dimension #{dimension}.", 422)
+          end
+        else
+          add_error("#{kind} dimension #{dimension} does not exist.", 422)
+        end
+
+      elsif @query.normalized_calculated_attributes.exclude?(key) && @model.column_names.exclude?(key)
+        add_error("#{kind} column #{key} does not exist in fact table.", 422)
+      end
+    end
+
+    def validate_groups
+      groups_keys.each do |key|
+        validate_dotted(key, 'Groups')
+      end
+
+      @json_query[:groups][:aggregations].each do |key, _aggregation|
+        validate_dotted(key, 'Aggregations')
+      end
+    end
+
+    def validate_order
+      @json_query[:sort].each_key do |key|
+        validate_dotted(key, 'Sort')
+      end
+    end
+  end
+end
