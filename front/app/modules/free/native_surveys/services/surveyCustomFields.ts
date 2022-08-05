@@ -72,14 +72,6 @@ export function updateSurveyCustomField(customFieldId: string, object) {
   );
 }
 
-export function reorderSurveyCustomField(customFieldId: string, object) {
-  return streams.update<ISurveyCustomField>(
-    `${API_PATH}/users/custom_fields/${customFieldId}/reorder`,
-    customFieldId,
-    { custom_field: object }
-  );
-}
-
 export function deleteSurveyCustomField(customFieldId: string) {
   return streams.delete(
     `${API_PATH}/users/custom_fields/${customFieldId}`,
