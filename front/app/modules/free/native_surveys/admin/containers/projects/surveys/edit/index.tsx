@@ -9,9 +9,9 @@ import { stylingConsts, colors } from 'utils/styleUtils';
 // components
 import { RightColumn } from 'containers/Admin';
 import { Box } from '@citizenlab/cl2-component-library';
-import SurveyBuilderTopBar from 'modules/commercial/native_surveys/admin/components/SurveyBuilderTopBar';
-import SurveyBuilderToolbox from 'modules/commercial/native_surveys/admin/components/SurveyBuilderToolbox';
-import SurveyBuilderSettings from 'modules/commercial/native_surveys/admin/components/SurveyBuilderSettings';
+import SurveyBuilderTopBar from 'modules/free/native_surveys/admin/components/SurveyBuilderTopBar';
+import SurveyBuilderToolbox from 'modules/free/native_surveys/admin/components/SurveyBuilderToolbox';
+import SurveyBuilderSettings from 'modules/free/native_surveys/admin/components/SurveyBuilderSettings';
 
 const StyledRightColumn = styled(RightColumn)`
   height: calc(100vh - ${stylingConsts.menuHeight}px);
