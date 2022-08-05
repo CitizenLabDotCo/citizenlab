@@ -35,7 +35,7 @@ module UserCustomFields
       end
 
       def bin_boundaries
-        distribution['bins'].freeze
+        @bin_boundaries ||= distribution['bins'].freeze
       end
 
       def counts
