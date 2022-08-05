@@ -15,7 +15,7 @@ const NavigationSettings = () => {
   return (
     <>
       <Outlet id="app.containers.Admin.pages-menu.NavigationSettings" />
-      {customizableNavbarEnabled || (
+      {!customizableNavbarEnabled && (
         <Box mb="44px">
           <VisibleNavbarItemList />
         </Box>

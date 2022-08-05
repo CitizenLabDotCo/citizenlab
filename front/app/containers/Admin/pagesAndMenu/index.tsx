@@ -16,7 +16,7 @@ const Containers = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   return (
     <div id="e2e-pages-menu-container">
       <Outlet id="app.containers.Admin.pages-menu.index" />
-      {customizableNavbarEnabled || (
+      {!customizableNavbarEnabled && (
         <TabbedResource
           resource={{
             title: formatMessage(messages.pageHeader),
