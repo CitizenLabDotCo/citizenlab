@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 // services
-import { postsAnalyticsStream, Query } from '../../../services/analyticsFacts';
+import { analyticsStream, Query } from '../../../services/analyticsFacts';
 
 // utils
 import { sum, roundPercentage } from 'utils/math';
@@ -15,6 +15,7 @@ import messages from './messages';
 
 const query = (projectId?: string): Query => {
   const groups = {
+    fact: 'post',
     groups: {
       key: 'project.id',
       aggregations: {
@@ -43,7 +44,7 @@ export default function usePostsWithFeedback(
     PostFeedback | undefined
   >(undefined);
   useEffect(() => {
-    postsAnalyticsStream<Response>(query(projectId)).then((results) => {
+    analyticsStream<Response>(query(projectId)).then((results) => {
       if (results && results.data.length > 0) {
         const {
           sum_feedback_none,

@@ -33,16 +33,9 @@ export interface Query {
   };
 }
 
-export async function postsAnalyticsStream<T>(queryObject) {
+export async function analyticsStream<T>(queryObject) {
   return await streams.add<AnalyticsResponse<T>>(
-    `${API_PATH}/analytics/posts`,
-    queryObject
-  );
-}
-
-export async function participationsAnalyticsStream<T>(queryObject) {
-  return await streams.add<AnalyticsResponse<T>>(
-    `${API_PATH}/analytics/participations`,
+    `${API_PATH}/analytics`,
     queryObject
   );
 }
