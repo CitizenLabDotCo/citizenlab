@@ -1482,7 +1482,7 @@
   "app.modules.navbar.admin.containers.addPageButton": "Seite hinzufügen",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Sind Sie sicher, dass Sie diese Seite löschen möchten? Dies kann nicht rückgängig gemacht werden. Wenn Sie diese Seite noch nicht löschen möchten, können Sie die Seite auch von Navigationsleiste entfernen.",
   "app.modules.navbar.admin.containers.deletePageConfirmationHidden": "Sind Sie sicher, dass Sie diese Seite löschen möchten? Dies kann nicht rückgängig gemacht werden.",
-  "app.modules.navbar.admin.containers.pageSubtitle": "In Ihrer Navigationsleiste können bis zu fünf Seiten zusätzlich zu Startseite und den Projektseiten angezeigt werden. Sie können Menü-Elemente umbenennen, neu anordnen und neue Seiten mit Ihrem eigenen Inhalt hinzufügen.",
+  "app.modules.navbar.admin.containers.pageSubtitle": "In Ihrer Navigationsleiste können bis zu fünf Seiten zusätzlich zur Startseite und den Projektseiten angezeigt werden. Sie können Menü-Elemente umbenennen, neu anordnen und neue Seiten mit eigenem Inhalt hinzufügen.",
   "app.modules.navbar.admin.containers.pageTitle": "Navigationsleiste und Plattform-Seiten",
   "app.modules.project_management.admin.components.permissionsTab": "Zugriffsrechte",
   "components.admin.ServerError.genericServerError": "Es gab ein Problem beim Laden dieses Inhalts, bitte versuchen Sie es später noch einmal."
