@@ -39,7 +39,13 @@ class NavBarItem < ApplicationRecord
 
   scope :only_default, lambda {
     result = left_joins(:static_page)
-    result.where(code: 'home').or(result.where(static_page: { code: %w[about faq] }))
+    result.where(code: 'home')
+      # Before introducing sidebar "Pages" page and  `only_default` scope,
+      # the pages for editing ([{ code: :about, slug: information }, { code: :faq, slug: faq }])
+      # were fetched by slug not by code
+      # https://github.com/CitizenLabDotCo/citizenlab/blob/1989676d15f497d721583b66015cdd2ea2f2415a/front/app/containers/Admin/settings/pages/index.tsx#L48
+      # So, here we copy this behaviour.
+      .or(result.where(static_page: { slug: %w[information faq] }))
   }
 
   def custom?
