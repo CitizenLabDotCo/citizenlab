@@ -18,7 +18,6 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// services
 import { ISurveyCustomFieldData } from 'modules/free/native_surveys/services/surveyCustomFields';
 
 const StyledBox = styled(Box)`
@@ -27,9 +26,10 @@ const StyledBox = styled(Box)`
 
 interface Props {
   field?: ISurveyCustomFieldData;
+  onDelete: (fieldId: string) => void;
 }
 
-const SurveyBuilderSettings = ({ field }: Props) => {
+const SurveyBuilderSettings = ({ field, onDelete }: Props) => {
   if (!field) {
     return null;
   }
@@ -82,9 +82,7 @@ const SurveyBuilderSettings = ({ field }: Props) => {
           borderColor={colors.red500}
           textColor={colors.red500}
           iconColor={colors.red500}
-          onClick={() => {
-            // TODO: Handle delete
-          }}
+          onClick={() => onDelete(field.id)}
           minWidth="160px"
         >
           <FormattedMessage {...messages.delete} />

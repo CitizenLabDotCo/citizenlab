@@ -14,8 +14,10 @@ import SurveyBuilderToolbox from 'modules/free/native_surveys/admin/components/S
 import SurveyBuilderSettings from 'modules/free/native_surveys/admin/components/SurveyBuilderSettings';
 import SurveyFields from 'modules/free/native_surveys/components/SurveyFields';
 
-// Types
-import { ISurveyCustomFieldData } from 'modules/free/native_surveys/services/surveyCustomFields';
+import {
+  ISurveyCustomFieldData,
+  deleteSurveyCustomField,
+} from 'modules/free/native_surveys/services/surveyCustomFields';
 
 const StyledRightColumn = styled(RightColumn)`
   height: calc(100vh - ${stylingConsts.menuHeight}px);
@@ -31,6 +33,12 @@ export const SurveyEdit = () => {
   const [selectedField, setSelectedField] = useState<
     ISurveyCustomFieldData | undefined
   >(undefined);
+
+  const handleDelete = async (fieldId: string) => {
+    await deleteSurveyCustomField(fieldId);
+    setSelectedField(undefined);
+  };
+
   return (
     <Box
       display="flex"
@@ -51,7 +59,10 @@ export const SurveyEdit = () => {
               <SurveyFields onEditField={setSelectedField} />
             </Box>
           </StyledRightColumn>
-          <SurveyBuilderSettings field={selectedField} />
+          <SurveyBuilderSettings
+            field={selectedField}
+            onDelete={handleDelete}
+          />
         </Box>
       </FocusOn>
     </Box>
