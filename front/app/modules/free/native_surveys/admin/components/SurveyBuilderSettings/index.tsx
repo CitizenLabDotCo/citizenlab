@@ -33,6 +33,11 @@ const SurveyBuilderSettings = ({ field }: Props) => {
   if (!field) {
     return null;
   }
+  let translatedStringKey: ReactIntl.FormattedMessage.MessageDescriptor | null =
+    null;
+  if (field.attributes.input_type === 'text') {
+    translatedStringKey = messages.shortAnswer;
+  }
 
   return (
     <StyledBox
@@ -40,14 +45,16 @@ const SurveyBuilderSettings = ({ field }: Props) => {
       right="0"
       top={`${stylingConsts.menuHeight}px`}
       zIndex="99999"
-      p="20px"
+      px="20px"
       w="400px"
       h="100%"
       background="#ffffff"
     >
-      <Title variant="h2">
-        <FormattedMessage {...messages.shortAnswer} />
-      </Title>
+      {translatedStringKey && (
+        <Title variant="h2">
+          <FormattedMessage {...translatedStringKey} />
+        </Title>
+      )}
       <InputMultilocWithLocaleSwitcher
         type="text"
         label={<FormattedMessage {...messages.questionTitle} />}
