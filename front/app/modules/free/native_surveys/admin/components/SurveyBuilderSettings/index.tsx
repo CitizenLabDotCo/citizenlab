@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // styles
 import styled from 'styled-components';
@@ -18,7 +18,12 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-import { ISurveyCustomFieldData } from 'modules/free/native_surveys/services/surveyCustomFields';
+import {
+  ISurveyCustomFieldData,
+  updateSurveyCustomField,
+} from 'modules/free/native_surveys/services/surveyCustomFields';
+
+import { Multiloc } from 'typings';
 
 const StyledBox = styled(Box)`
   box-shadow: -2px 0px 1px 0px rgba(0, 0, 0, 0.06);
@@ -30,6 +35,17 @@ interface Props {
 }
 
 const SurveyBuilderSettings = ({ field, onDelete }: Props) => {
+  // I'm keeping this form as simple as possible using state pending form rework from (TEC-35)
+  const [isRequired, setIsRequired] = useState<boolean | undefined>(
+    field?.attributes.required
+  );
+  const [questionTitle, setQuestionTitle] = useState<Multiloc | undefined>(
+    field?.attributes.title_multiloc
+  );
+  const [questionDescription, setQuestionDescription] = useState<
+    Multiloc | undefined
+  >(field?.attributes.description_multiloc);
+
   if (!field) {
     return null;
   }
@@ -38,6 +54,14 @@ const SurveyBuilderSettings = ({ field, onDelete }: Props) => {
   if (field.attributes.input_type === 'text') {
     translatedStringKey = messages.shortAnswer;
   }
+
+  const onSave = () => {
+    updateSurveyCustomField(field.id, {
+      title_multiloc: questionTitle,
+      description_multiloc: questionDescription,
+      required: isRequired,
+    });
+  };
 
   return (
     <StyledBox
@@ -58,22 +82,23 @@ const SurveyBuilderSettings = ({ field, onDelete }: Props) => {
       <InputMultilocWithLocaleSwitcher
         type="text"
         label={<FormattedMessage {...messages.questionTitle} />}
-        valueMultiloc={field.attributes.title_multiloc}
+        valueMultiloc={questionTitle}
+        onChange={setQuestionTitle}
       />
       <InputMultilocWithLocaleSwitcher
         type="text"
         label={<FormattedMessage {...messages.questionDescription} />}
-        valueMultiloc={field.attributes.description_multiloc}
+        valueMultiloc={questionDescription}
+        onChange={setQuestionDescription}
       />
-      <Toggle checked={field.attributes.required} onChange={() => {}} />
+      <Toggle
+        checked={!!isRequired}
+        onChange={() => {
+          setIsRequired(!isRequired);
+        }}
+      />
       <Box display="flex" justifyContent="space-between">
-        <Button
-          buttonStyle="primary"
-          onClick={() => {
-            // TODO: Handle save
-          }}
-          minWidth="160px"
-        >
+        <Button buttonStyle="primary" onClick={onSave} minWidth="160px">
           <FormattedMessage {...messages.save} />
         </Button>
         <Button

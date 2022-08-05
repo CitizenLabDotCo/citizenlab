@@ -60,6 +60,7 @@ export const SurveyEdit = () => {
             </Box>
           </StyledRightColumn>
           <SurveyBuilderSettings
+            key={selectedField ? selectedField.id : 'no-field-selected'}
             field={selectedField}
             onDelete={handleDelete}
           />
