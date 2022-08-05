@@ -8,11 +8,6 @@ RSpec.shared_examples 'reference distribution' do |factory_name|
   it { is_expected.to validate_presence_of(:distribution) }
   it { is_expected.to validate_presence_of(:type) }
 
-  it do
-    allowed_types = described_class.descendants.map(&:name)
-    expect(subject).to validate_inclusion_of(:type).in_array(allowed_types)
-  end
-
   # This group of examples runs only if the :assign_counts helper method is defined to
   # allow tests to assign new counts to the reference distribution.
   #
