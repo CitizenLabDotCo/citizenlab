@@ -23,9 +23,10 @@ RSpec.describe ParticipationMethod::Budgeting do
     end
 
     context 'when the input does not have a slug' do
-      let(:input) { build :idea, slug: nil }
+      let(:input) { create :idea }
 
       it 'sets and persists the slug of the input' do
+        input.update_column :slug, nil
         input.title_multiloc = { 'en' => 'Changed title' }
         participation_method.assign_slug!(input)
         input.reload

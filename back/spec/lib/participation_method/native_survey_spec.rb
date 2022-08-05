@@ -21,9 +21,10 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
 
     context 'when the input does not have a slug' do
-      let(:input) { build :input, slug: nil }
+      let(:input) { create :input, slug: nil }
 
       it 'sets and persists the id as the slug of the input' do
+        input.update_column :slug, nil
         participation_method.assign_slug!(input)
         input.reload
         expect(input.slug).to eq input.id
