@@ -65,7 +65,7 @@ module UserCustomFields
       private
 
       def counts
-        @counts = distribution.values
+        @counts ||= distribution.values
       end
 
       def probabilities

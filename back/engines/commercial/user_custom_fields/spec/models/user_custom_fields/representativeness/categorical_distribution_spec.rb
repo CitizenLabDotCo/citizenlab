@@ -12,8 +12,9 @@ RSpec.describe UserCustomFields::Representativeness::CategoricalDistribution do
   # This helper is necessary to run the tests for counts validations in
   # 'reference distribution' shared examples.
   # See 'reference distribution' shared examples for more info.
-  def assign_counts(ref_distribution, counts)
-    ref_distribution.distribution = ref_distribution.distribution.keys.zip(counts).to_h
+  def transform_counts(ref_distribution)
+    new_counts = yield ref_distribution.distribution.values
+    ref_distribution.distribution = ref_distribution.option_ids.zip(new_counts).to_h
   end
 
   it_behaves_like 'reference distribution', :categorical_distribution

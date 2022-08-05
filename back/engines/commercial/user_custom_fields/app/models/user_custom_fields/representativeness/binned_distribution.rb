@@ -39,7 +39,7 @@ module UserCustomFields
       end
 
       def counts
-        distribution['counts'].freeze
+        @counts ||= distribution['counts'].freeze
       end
 
       # Returns the expected count distribution for a given (total) number of users.

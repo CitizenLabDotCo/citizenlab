@@ -14,8 +14,10 @@ RSpec.describe UserCustomFields::Representativeness::BinnedDistribution do
   # This helper is necessary to run the tests for counts validations in
   # 'reference distribution' shared examples.
   # See 'reference distribution' shared examples for more info.
-  def assign_counts(ref_distribution, counts)
-    ref_distribution.distribution['counts'] = counts
+  def transform_counts(ref_distribution)
+    counts = ref_distribution.distribution['counts']
+    new_counts = yield counts.dup
+    ref_distribution.distribution['counts'] = new_counts
   end
 
   it_behaves_like 'reference distribution', :binned_distribution

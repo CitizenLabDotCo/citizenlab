@@ -16,7 +16,8 @@ RSpec.shared_examples 'reference distribution' do |factory_name|
   # This group of examples runs only if the :assign_counts helper method is defined to
   # allow tests to assign new counts to the reference distribution.
   #
-  #   def assign_counts(ref_distribution, counts)
+  #   #
+  #   def transform_counts(ref_distribution, &block)
   #    ...
   #   end
   #
@@ -29,15 +30,15 @@ RSpec.shared_examples 'reference distribution' do |factory_name|
   # - This method would have very little practical use outside of testing.
   # - It is also ill-defined for some classes of distributions, where setting counts
   #   without additional context does not make sense (e.g. +CategoricalDistribution+).
-  skip_counts_validation_tests = <<~REASON.chomp unless method_defined?(:assign_counts)
-    :assign_counts helper method is not defined.
+  skip_counts_validation_tests = <<~REASON.chomp unless method_defined?(:transform_counts)
+    :transform_counts helper method is not defined.
   REASON
 
   example_group '[counts validations]', skip: skip_counts_validation_tests do
     def replace_first_count(ref_distribution, new_count)
-      counts = ref_distribution.send(:counts).dup
-      counts[0] = new_count
-      assign_counts(ref_distribution, counts)
+      transform_counts(ref_distribution) do |counts|
+        [new_count, *counts[1..]]
+      end
     end
 
     it 'validates that the distribution counts are not negative', :aggregate_failures do
