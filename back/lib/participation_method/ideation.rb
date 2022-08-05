@@ -6,8 +6,8 @@ module ParticipationMethod
       return if input.slug # Slugs never change.
 
       title = MultilocService.new.t input.title_multiloc, input.author
-      input.slug = SlugService.new.generate_slug input, title
-      input.save validate: false
+      new_slug = SlugService.new.generate_slug input, title
+      input.update_column :slug, new_slug
     end
 
     def validate_built_in_fields?

@@ -8,8 +8,7 @@ module ParticipationMethod
     def assign_slug!(input)
       return if input.slug # Slugs never change.
 
-      input.slug = input.id
-      input.save validate: false
+      input.update_column :slug, input.id
     end
   end
 end
