@@ -3,14 +3,12 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-resource 'Posts' do
+resource 'Posts', use_transactional_fixtures: false do
   explanation 'Analytics API'
 
   before { header 'Content-Type', 'application/json' }
 
-  let(:json_response) { json_parse(response_body) }
-
-  post 'web_api/v1/analytics/posts' do
+  post 'web_api/v1/analytics' do
     route_description <<~DESC
       Universal API for querying posts from the analytics database
     DESC
@@ -20,33 +18,21 @@ resource 'Posts' do
     end
 
     context 'when admin' do
-      before { admin_header_token }
+      before do
+        admin_header_token
+        create :idea
+      end
 
-      let(:query) do
-        {
-          dimensions: {
-            type: {
-              name: 'idea'
-            }
-          }
-        }
-      end
-      let(:expected_response) do
-        [
-          {
-            sum_votes_count: 470,
-            'type.name': 'idea'
-          },
-          {
-            sum_votes_count: 156,
-            'type.name': 'initiative'
-          }
-        ]
-      end
+      let(:query) { { fact: 'post' } }
+
+      let(:expected_response) { { } }
 
       example_request 'makes a query' do
+        # binding.pry
+        puts query
+        puts json_response
         expect(status).to eq(200)
-        expect(json_response).to match(expected_response)
+        expect(json_response_body).to match(expected_response)
       end
     end
   end
