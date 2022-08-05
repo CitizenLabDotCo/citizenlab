@@ -71,7 +71,13 @@ module Analytics
     end
 
     def query_groups(results)
-      @pluck_attributes = @query.calculated_attributes + @query.groups_keys
+      calculated_attributes = @query.calculated_attributes
+      count_all = 'count(all) as count_all'
+      if calculated_attributes.include? count_all
+        calculated_attributes.delete(count_all)
+        calculated_attributes.push(Arel.sql('COUNT(*) as count'))
+      end
+      @pluck_attributes = calculated_attributes + @query.groups_keys
 
       results.group(@json_query[:groups][:key])
     end

@@ -35,14 +35,11 @@ module Analytics
     end
 
     def model
-      if @model.nil?
-        @model = MODELS[@json_query['fact'].to_sym]
-      end
-      @model
+      MODELS[@json_query['fact'].to_sym]
     end
 
     def all_dimensions
-      @model
+      model
         .reflect_on_all_associations(:belongs_to)
         .to_h do |assoc|
           [assoc.name.to_s, "Analytics::#{assoc.options[:class_name]}".constantize.new.attributes.keys]

@@ -8,6 +8,7 @@ module Analytics
       @messages = []
       @response_status = nil
 
+      @valid = true
       validate
       @valid = @messages.empty?
     end
@@ -23,7 +24,6 @@ module Analytics
         validate_dimensions
         validate_dates
       end
-
       if @json_query.key?(:groups)
         validate_groups
       end
@@ -90,17 +90,24 @@ module Analytics
           add_error("#{kind} dimension #{dimension} does not exist.", 422)
         end
 
-      elsif @query.normalized_calculated_attributes.exclude?(key) && @model.column_names.exclude?(key)
+      elsif @query.normalized_calculated_attributes.exclude?(key) && @query.model.column_names.exclude?(key)
         add_error("#{kind} column #{key} does not exist in fact table.", 422)
       end
     end
 
     def validate_groups
-      groups_keys.each do |key|
+      @query.groups_keys.each do |key|
         validate_dotted(key, 'Groups')
       end
 
-      @json_query[:groups][:aggregations].each do |key, _aggregation|
+      @json_query[:groups][:aggregations].each do |key, aggregation|
+        if key == 'all'
+          next if aggregation == 'count'
+
+          add_error("Aggregations on 'all' can only be 'count'.", 422)
+          next
+        end
+
         validate_dotted(key, 'Aggregations')
       end
     end
