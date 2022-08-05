@@ -11,12 +11,11 @@ export type IProjectAllowedInputTopicsState =
   | IProjectAllowedInputTopic[]
   | NilOrError;
 
-export default function useProjectAllowedInputTopics(projectId?: string) {
+export default function useProjectAllowedInputTopics(projectId: string) {
   const [projectAllowedInputTopics, setProjectAllowedInputTopics] =
     useState<IProjectAllowedInputTopicsState>(undefined);
 
   useEffect(() => {
-    if (!projectId) return;
     const subscription = createSubscription(
       projectId,
       setProjectAllowedInputTopics
