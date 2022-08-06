@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { useState } from 'react';
 import { Omit } from 'typings';
 
 import 'react-dates/initialize';
@@ -23,10 +23,6 @@ interface Props
   className?: string;
 }
 
-interface State {
-  focusedInput: 'startDate' | 'endDate' | null;
-}
-
 const StylingWrapper = styled.div`
   .DateRangePickerInput {
     border-radius: ${(props: any) => props.theme.borderRadius};
@@ -48,45 +44,37 @@ const StylingWrapper = styled.div`
 `;
 
 /** Light wrapper around react-dates DateRangePicker that autonomously deals with focusing and styling */
-class OurDateRangePicker extends PureComponent<
-  Props & InjectedIntlProps,
-  State
-> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      focusedInput: null,
-    };
-  }
+const OurDateRangePicker = (props: Props & InjectedIntlProps) => {
+  const [focusedInput, setFocusedInput] = useState<
+    'startDate' | 'endDate' | null
+  >(null);
 
-  handleFocusChange = (focusedInput: 'startDate' | 'endDate') => {
-    this.setState({ focusedInput });
+  const handleFocusChange = (focusedInput: 'startDate' | 'endDate') => {
+    setFocusedInput(focusedInput);
   };
 
-  handleIsOutsideRange = () => {
+  const handleIsOutsideRange = () => {
     return false;
   };
 
-  render() {
-    return (
-      <StylingWrapper className={this.props.className}>
-        <DateRangePicker
-          {...omit(this.props, 'intl')}
-          startDateId="startAt"
-          endDateId="endAt"
-          focusedInput={this.state.focusedInput}
-          onFocusChange={this.handleFocusChange}
-          startDatePlaceholderText={this.props.intl.formatMessage(
-            messages.startDatePlaceholder
-          )}
-          endDatePlaceholderText={this.props.intl.formatMessage(
-            messages.endDatePlaceholder
-          )}
-          isOutsideRange={this.handleIsOutsideRange}
-        />
-      </StylingWrapper>
-    );
-  }
-}
+  return (
+    <StylingWrapper className={props.className}>
+      <DateRangePicker
+        {...omit(props, 'intl')}
+        startDateId="startAt"
+        endDateId="endAt"
+        focusedInput={focusedInput}
+        onFocusChange={handleFocusChange}
+        startDatePlaceholderText={props.intl.formatMessage(
+          messages.startDatePlaceholder
+        )}
+        endDatePlaceholderText={props.intl.formatMessage(
+          messages.endDatePlaceholder
+        )}
+        isOutsideRange={handleIsOutsideRange}
+      />
+    </StylingWrapper>
+  );
+};
 
 export default injectIntl(OurDateRangePicker);
