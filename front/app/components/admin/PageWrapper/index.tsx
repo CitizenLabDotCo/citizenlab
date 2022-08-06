@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
@@ -29,10 +29,13 @@ export const ButtonWrapper = styled.div`
   }
 `;
 
-export default class PageWrapper extends PureComponent<{ className?: string }> {
-  render() {
-    return (
-      <Wrapper className={this.props.className}>{this.props.children}</Wrapper>
-    );
-  }
+interface Props {
+  className?: string;
+  children: ReactNode;
 }
+
+const PageWrapper = ({ className, children }: Props) => {
+  return <Wrapper className={className}>{children}</Wrapper>;
+};
+
+export default PageWrapper;
