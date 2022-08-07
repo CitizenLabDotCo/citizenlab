@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Icon } from '@citizenlab/cl2-component-library';
 import { colors, fontSizes } from 'utils/styleUtils';
@@ -114,8 +114,14 @@ export interface Props {
   useColorsTheme?: boolean;
 }
 
-class Pagination extends PureComponent<Props> {
-  calculateMenuItems(currentPage: number, totalPages: number) {
+const Pagination = ({
+  currentPage,
+  totalPages,
+  className,
+  useColorsTheme,
+  loadPage,
+}: Props) => {
+  const calculateMenuItems = (currentPage: number, totalPages: number) => {
     const current = currentPage;
     const last = totalPages;
     const delta = 2;
@@ -146,67 +152,64 @@ class Pagination extends PureComponent<Props> {
     });
 
     return rangeWithDots;
-  }
-
-  handleItemClick = (item: number) => () => {
-    this.props.loadPage(item);
   };
 
-  goTo = (page: number) => () => {
-    if (page > 0 && page <= this.props.totalPages) {
-      this.props.loadPage(page);
+  const handleItemClick = (item: number) => () => {
+    loadPage(item);
+  };
+
+  const goTo = (page: number) => () => {
+    if (page > 0 && page <= totalPages) {
+      loadPage(page);
     }
   };
 
-  render() {
-    const { currentPage, totalPages, className, useColorsTheme } = this.props;
-    const pageItems = this.calculateMenuItems(currentPage, totalPages);
+  const pageItems = calculateMenuItems(currentPage, totalPages);
 
-    if (totalPages > 1) {
-      return (
-        <Container className={className} data-testid="pagination">
-          <ContainerInner>
-            <Back
-              onMouseDown={removeFocusAfterMouseClick}
-              onClick={this.goTo(currentPage - 1)}
-              disabled={currentPage === 1}
-              className={currentPage === 1 ? 'disabled' : ''}
-            >
-              <ChevronIcon name="chevron-right" />
-            </Back>
+  if (totalPages > 1) {
+    return (
+      <Container className={className} data-testid="pagination">
+        <ContainerInner>
+          <Back
+            onMouseDown={removeFocusAfterMouseClick}
+            onClick={goTo(currentPage - 1)}
+            disabled={currentPage === 1}
+            className={currentPage === 1 ? 'disabled' : ''}
+          >
+            <ChevronIcon name="chevron-right" />
+          </Back>
 
-            <Pages>
-              {pageItems.map((item) => (
-                <Item
-                  key={item}
-                  className={`${item === currentPage ? 'active' : ''} ${
-                    item < 0 ? 'disabled' : ''
-                  }`}
-                  onMouseDown={removeFocusAfterMouseClick}
-                  onClick={this.handleItemClick(item)}
-                  disabled={item < 0}
-                  useColorsTheme={useColorsTheme}
-                >
-                  <span>{item < 0 ? '...' : item.toString()}</span>
-                </Item>
-              ))}
-            </Pages>
+          <Pages>
+            {pageItems.map((item) => (
+              <Item
+                key={item}
+                className={`${item === currentPage ? 'active' : ''} ${
+                  item < 0 ? 'disabled' : ''
+                }`}
+                onMouseDown={removeFocusAfterMouseClick}
+                onClick={handleItemClick(item)}
+                disabled={item < 0}
+                useColorsTheme={useColorsTheme}
+              >
+                <span>{item < 0 ? '...' : item.toString()}</span>
+              </Item>
+            ))}
+          </Pages>
 
-            <Next
-              onMouseDown={removeFocusAfterMouseClick}
-              onClick={this.goTo(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              className={currentPage === totalPages ? 'disabled' : ''}
-            >
-              <ChevronIcon name="chevron-right" />
-            </Next>
-          </ContainerInner>
-        </Container>
-      );
-    }
-
-    return null;
+          <Next
+            onMouseDown={removeFocusAfterMouseClick}
+            onClick={goTo(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className={currentPage === totalPages ? 'disabled' : ''}
+          >
+            <ChevronIcon name="chevron-right" />
+          </Next>
+        </ContainerInner>
+      </Container>
+    );
   }
-}
+
+  return null;
+};
 
 export default Pagination;

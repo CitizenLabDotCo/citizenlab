@@ -8,13 +8,8 @@ interface Props {
   loadPage: (arg: number) => void;
 }
 
-class Pagination extends React.PureComponent<Props> {
-  constructor(props) {
-    super(props);
-    this.handleItemClick = this.handleItemClick.bind(this);
-  }
-
-  calculateMenuItems(c, m) {
+const Pagination = ({ currentPage, totalPages, loadPage }: Props) => {
+  const calculateMenuItems = (c, m) => {
     const current = c;
     const last = m;
     const delta = 2;
@@ -43,32 +38,31 @@ class Pagination extends React.PureComponent<Props> {
     });
 
     return rangeWithDots;
+  };
+
+  const handleItemClick = (_event, data) => {
+    loadPage(parseInt(data.name, 10));
+  };
+
+  const pageItems = calculateMenuItems(currentPage, totalPages);
+
+  if (totalPages > 1) {
+    return (
+      <Menu pagination={true} floated="right">
+        {pageItems.map((item) => (
+          <Menu.Item
+            key={item}
+            name={item < 0 ? '...' : item.toString()}
+            active={item === currentPage}
+            onClick={handleItemClick}
+            disabled={item < 0 || item === currentPage}
+          />
+        ))}
+      </Menu>
+    );
   }
 
-  handleItemClick(_event, data) {
-    this.props.loadPage(parseInt(data.name, 10));
-  }
-
-  render() {
-    const { currentPage, totalPages } = this.props;
-    const pageItems = this.calculateMenuItems(currentPage, totalPages);
-    if (totalPages > 1) {
-      return (
-        <Menu pagination={true} floated="right">
-          {pageItems.map((item) => (
-            <Menu.Item
-              key={item}
-              name={item < 0 ? '...' : item.toString()}
-              active={item === currentPage}
-              onClick={this.handleItemClick}
-              disabled={item < 0 || item === currentPage}
-            />
-          ))}
-        </Menu>
-      );
-    }
-    return null;
-  }
-}
+  return null;
+};
 
 export default Pagination;
