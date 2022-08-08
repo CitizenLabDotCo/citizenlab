@@ -154,6 +154,7 @@ export default (projectId: string | undefined) => {
       );
 
       if (isNilOrError(response)) {
+        // TODO undo commenting here once BE is functional
         // setSchema(null);
         // setUiSchema(null);
         // setIsError(true);
