@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import { isFunction } from 'lodash-es';
@@ -36,41 +36,35 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {}
-
-export class InitiativesCount extends React.PureComponent<Props, State> {
-  componentDidUpdate(prevProps) {
-    if (prevProps.searchTerm !== this.props.searchTerm) {
-      if (isFunction(this.props.initiativesCount.onChangeSearchTerm)) {
-        this.props.initiativesCount.onChangeSearchTerm(this.props.searchTerm);
-      }
+const InitiativesCount = ({
+  initiativesCount: { onChangeSearchTerm, count },
+  searchTerm,
+}: Props) => {
+  useEffect(() => {
+    if (isFunction(onChangeSearchTerm)) {
+      onChangeSearchTerm(searchTerm);
     }
-  }
+  }, [searchTerm, onChangeSearchTerm]);
 
-  render() {
-    const { initiativesCount } = this.props;
-    const initiativesMatchingFiltersCount = initiativesCount.count;
-
-    return (
-      <Container>
-        {/*
+  return (
+    <Container>
+      {/*
           If there are no initiatives, we have an 'empty container' to indicate there are no initiatives matching the filters.
           Hence we only show this count when there's at least 1 initiative.
         */}
-        {!isNilOrError(initiativesMatchingFiltersCount) &&
-          initiativesMatchingFiltersCount > 0 &&
-          (initiativesMatchingFiltersCount === 1 ? (
-            <FormattedMessage {...messages.oneInitiative} />
-          ) : (
-            <FormattedMessage
-              {...messages.multipleInitiatives}
-              values={{ initiativesCount: initiativesMatchingFiltersCount }}
-            />
-          ))}
-      </Container>
-    );
-  }
-}
+      {!isNilOrError(count) &&
+        count > 0 &&
+        (count === 1 ? (
+          <FormattedMessage {...messages.oneInitiative} />
+        ) : (
+          <FormattedMessage
+            {...messages.multipleInitiatives}
+            values={{ initiativesCount: count }}
+          />
+        ))}
+    </Container>
+  );
+};
 
 const Data = adopt({
   initiativesCount: ({
@@ -95,7 +89,7 @@ const Data = adopt({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => (
+    {(dataProps: DataProps) => (
       <InitiativesCount
         {...inputProps}
         initiativesCount={dataProps.initiativesCount}
