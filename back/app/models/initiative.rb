@@ -27,7 +27,7 @@
 #
 #  index_initiatives_on_author_id       (author_id)
 #  index_initiatives_on_location_point  (location_point) USING gist
-#  index_initiatives_on_slug            (slug)
+#  index_initiatives_on_slug            (slug) UNIQUE
 #  index_initiatives_search             (((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))) USING gin
 #
 # Foreign Keys
