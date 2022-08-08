@@ -51,6 +51,7 @@ const ProjectAndFolderCardsInner = ({
   currentTab,
   statusCounts,
   showTitle,
+  search,
   layout,
   publicationStatusFilter,
   onChangeTopics,
@@ -62,6 +63,7 @@ const ProjectAndFolderCardsInner = ({
     publicationStatusFilter,
     rootLevelOnly: true,
     removeNotAllowedParents: true,
+    search,
   });
 
   const { counts: statusCountsWithoutFilters } =
@@ -88,6 +90,12 @@ const ProjectAndFolderCardsInner = ({
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [publicationStatusesForCurrentTabStringified]);
+
+  useEffect(() => {
+    if (!search) return;
+    adminPublications.onChangeSearch(search);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search]);
 
   if (isNilOrError(statusCountsWithoutFilters)) return null;
 

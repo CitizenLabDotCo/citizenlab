@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // components
 import ContentContainer from 'components/ContentContainer';
 import ProjectAndFolderCards from 'components/ProjectAndFolderCards';
 import CityLogoSection from 'components/CityLogoSection';
 import ProjectsIndexMeta from './ProjectsIndexMeta';
+import SearchInput from 'components/UI/SearchInput';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -61,21 +62,36 @@ const PageTitle = styled.h1`
   `}
 `;
 
-export default React.memo(() => (
-  <>
-    <ProjectsIndexMeta />
-    <Container>
-      <StyledContentContainer mode="page">
-        <PageTitle>
-          <FormattedMessage {...messages.pageTitle} />
-        </PageTitle>
-        <ProjectAndFolderCards
-          showTitle={false}
-          layout="threecolumns"
-          publicationStatusFilter={['published', 'archived']}
-        />
-      </StyledContentContainer>
-      <CityLogoSection />
-    </Container>
-  </>
-));
+const ProjectsIndex = () => {
+  const [search, setSearch] = useState('');
+
+  const handleSearchOnChange = (search: string) => {
+    setSearch(search);
+  };
+
+  return (
+    <>
+      <ProjectsIndexMeta />
+      <Container>
+        <StyledContentContainer mode="page">
+          <PageTitle>
+            <FormattedMessage {...messages.pageTitle} />
+          </PageTitle>
+          <SearchInput
+            onChange={handleSearchOnChange}
+            a11y_numberOfSearchResults={1}
+          />
+          <ProjectAndFolderCards
+            showTitle={false}
+            layout="threecolumns"
+            publicationStatusFilter={['published', 'archived']}
+            search={search}
+          />
+        </StyledContentContainer>
+        <CityLogoSection />
+      </Container>
+    </>
+  );
+};
+
+export default ProjectsIndex;
