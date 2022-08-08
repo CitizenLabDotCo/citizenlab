@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_19_103052) do
+ActiveRecord::Schema.define(version: 2022_08_08_135654) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -190,6 +190,30 @@ ActiveRecord::Schema.define(version: 2022_07_19_103052) do
   end
 
   create_table "custom_forms", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "custom_pages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.jsonb "title_multiloc", default: {}, null: false
+    t.string "slug"
+    t.boolean "banner_enabled", default: true, null: false
+    t.string "banner_layout", default: "full_width_banner_layout", null: false
+    t.string "banner_overlay_color"
+    t.integer "banner_overlay_opacity"
+    t.jsonb "banner_cta_button_multiloc", default: {}, null: false
+    t.string "banner_cta_button_type", default: "no_button", null: false
+    t.string "banner_cta_url"
+    t.jsonb "banner_header_multiloc", default: {}, null: false
+    t.jsonb "banner_subheader_multiloc", default: {}, null: false
+    t.boolean "top_info_section_enabled", default: false, null: false
+    t.jsonb "top_info_section_multiloc", default: {}, null: false
+    t.boolean "projects_enabled", default: false, null: false
+    t.string "projects_filter_type"
+    t.boolean "events_enabled", default: false, null: false
+    t.boolean "bottom_info_section_enabled", default: false, null: false
+    t.jsonb "bottom_info_section_multiloc", default: {}, null: false
+    t.string "header_bg"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
