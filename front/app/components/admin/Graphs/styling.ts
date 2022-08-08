@@ -16,6 +16,10 @@ export const colors = {
   newBarFill: '#073F80',
   barFillLighter: '#073f80b3',
   newLine: '#7FBBCA',
+  pinkRed: '#C37281',
+  lightBlue: '#5D99C6',
+  lightGreen: '#B0CDC4',
+  grey: '#C0C2CE',
 };
 
 export const sizes = {
@@ -27,3 +31,10 @@ export const animation = {
   begin: 10,
   duration: 200,
 };
+
+export const piechartColors = [
+  colors.pinkRed,
+  colors.lightBlue,
+  colors.lightGreen,
+  colors.grey,
+];

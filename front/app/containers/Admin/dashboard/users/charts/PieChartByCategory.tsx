@@ -8,7 +8,7 @@ import messages from '../../messages';
 
 // styling
 import { withTheme } from 'styled-components';
-import { animation } from 'components/admin/Graphs/styling';
+import { animation, piechartColors } from 'components/admin/Graphs/styling';
 
 // components
 import ReportExportMenu from 'components/admin/ReportExportMenu';
@@ -58,8 +58,6 @@ interface InputProps {
 }
 
 interface Props extends InputProps, DataProps {}
-
-const labelColors = ['#C37281 ', '#5D99C6', '#B0CDC4 ', '#C0C2CE'];
 
 class PieChartByCategory extends React.PureComponent<
   Props & InjectedIntlProps
@@ -124,7 +122,10 @@ class PieChartByCategory extends React.PureComponent<
                     ref={this.currentChart}
                   >
                     {serie.map((_, index) => (
-                      <Cell key={`cell-${index}`} fill={labelColors[index]} />
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={piechartColors[index]}
+                      />
                     ))}
                   </Pie>
                   <Tooltip isAnimationActive={false} />
