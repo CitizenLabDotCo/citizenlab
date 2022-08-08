@@ -1,9 +1,4 @@
-export interface Margin {
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
-}
+import { Margin } from './typings';
 
 export const DEFAULT_BAR_CHART_MARGIN: Margin = {
   top: 20,

@@ -26,14 +26,12 @@ import {
   getRechartsLayout,
   Mapping,
   applyChannel,
-  Data,
   Layout,
-  AxisProps,
 } from './utils';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
-import { Margin } from 'components/admin/Graphs/constants';
+import { Margin, Data, AxisProps } from 'components/admin/Graphs/typings';
 
 interface RenderLabelsProps {
   fill: string;

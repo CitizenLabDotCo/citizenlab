@@ -19,7 +19,7 @@ import {
   GraphCardInner,
 } from 'components/admin/GraphWrappers';
 import BarChart from 'components/admin/Graphs/BarChart';
-import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/constants';
+import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/styling';
 import { LabelList } from 'recharts';
 import ReportExportMenu from 'components/admin/ReportExportMenu';
 

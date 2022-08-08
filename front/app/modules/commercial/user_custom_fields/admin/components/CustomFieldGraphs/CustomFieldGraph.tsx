@@ -22,7 +22,7 @@ import {
 } from 'components/admin/GraphWrappers';
 import { Tooltip, LabelList } from 'recharts';
 import BarChart from 'components/admin/Graphs/BarChart';
-import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/constants';
+import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/styling';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
 // typings

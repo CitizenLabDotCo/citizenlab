@@ -24,7 +24,7 @@ import { IResolution } from 'components/admin/ResolutionControl';
 import { Select } from '@citizenlab/cl2-component-library';
 import { HiddenLabel } from 'utils/a11y';
 import BarChart from 'components/admin/Graphs/BarChart';
-import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/constants';
+import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/styling';
 
 // typings
 import {
