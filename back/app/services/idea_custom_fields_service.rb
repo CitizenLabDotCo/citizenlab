@@ -47,8 +47,8 @@ class IdeaCustomFieldsService
   attr_reader :custom_form
 
   def native_survey?
-    project = custom_form.project
-    project.continuous? && project.native_survey?
+    participation_context = ::ParticipationContextService.new.get_participation_context(custom_form.project)
+    participation_context.native_survey?
   end
 
   def default_fields

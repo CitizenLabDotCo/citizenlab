@@ -2,8 +2,8 @@
 
 module ParticipationMethod
   class Base
-    def initialize(project)
-      @project = project
+    def initialize(participation_context)
+      @participation_context = participation_context
     end
 
     def assign_slug!(input)
@@ -19,6 +19,6 @@ module ParticipationMethod
 
     private
 
-    attr_reader :project
+    attr_reader :participation_context
   end
 end

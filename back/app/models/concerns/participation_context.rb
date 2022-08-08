@@ -110,6 +110,10 @@ module ParticipationContext
     !timeline_project?
   end
 
+  def native_survey?
+    participation_method == 'native_survey'
+  end
+
   private
 
   def timeline_project?

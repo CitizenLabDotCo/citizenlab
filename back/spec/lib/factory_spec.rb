@@ -23,6 +23,14 @@ RSpec.describe Factory do
   describe '#participation_method_for' do
     subject(:participation_method) { described_class.instance.participation_method_for(project) }
 
+    context 'for a project without participation context' do
+      let(:project) { create :project_with_past_phases }
+
+      it 'returns an instance of ParticipationMethod::None' do
+        expect(participation_method).to be_an_instance_of(ParticipationMethod::None)
+      end
+    end
+
     context 'for an ideation project' do
       let(:project) { create :continuous_project }
 
