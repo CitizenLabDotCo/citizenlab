@@ -34,6 +34,9 @@ class HomePage < ApplicationRecord
   has_many :pins, as: :page, inverse_of: :page, dependent: :destroy
   has_many :pinned_admin_publications, through: :pins, source: :admin_publication
 
+  has_many :text_images, as: :imageable, dependent: :destroy
+  accepts_nested_attributes_for :text_images
+
   accepts_nested_attributes_for :pinned_admin_publications, allow_destroy: true
 
   before_validation :sanitize_top_info_section_multiloc

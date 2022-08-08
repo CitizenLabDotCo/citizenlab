@@ -6,7 +6,7 @@ import {
   removeNavbarItem,
 } from '../../../../services/navbar';
 import { deletePage } from 'services/pages';
-import { INavbarItem, getNavbarItemSlug } from 'services/navbar';
+import { getNavbarItemSlug, INavbarItem } from 'services/navbar';
 
 // components
 import {
@@ -15,7 +15,7 @@ import {
   LockedRow,
 } from 'components/admin/ResourceList';
 import { SubSectionTitle } from 'components/admin/Section';
-import NavbarItemRow from '../../../components/NavbarItemRow';
+import NavbarItemRow from 'containers/Admin/pagesAndMenu/NavbarItemRow';
 
 // hooks
 import useNavbarItems from 'hooks/useNavbarItems';
@@ -29,7 +29,7 @@ import messages from './messages';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
-import { NAVIGATION_PATH } from '../..';
+import { PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 
 const VisibleNavbarItemList = ({
   intl: { formatMessage },
@@ -42,11 +42,17 @@ const VisibleNavbarItemList = ({
   }
 
   const handleClickEdit = (navbarItem: INavbarItem) => () => {
+    // redirect to homepage toggle page
+    if (navbarItem?.attributes?.code && navbarItem.attributes.code === 'home') {
+      clHistory.push(`${PAGES_MENU_PATH}/homepage/`);
+      return;
+    }
+
     const pageData = navbarItem.relationships.static_page.data;
 
     pageData
-      ? clHistory.push(`${NAVIGATION_PATH}/pages/edit/${pageData.id}`)
-      : clHistory.push(`${NAVIGATION_PATH}/navbar-items/edit/${navbarItem.id}`);
+      ? clHistory.push(`${PAGES_MENU_PATH}/pages/edit/${pageData.id}`)
+      : clHistory.push(`${PAGES_MENU_PATH}/navbar-items/edit/${navbarItem.id}`);
   };
 
   const getViewButtonLink = (navbarItem: INavbarItem) => {
@@ -93,7 +99,7 @@ const VisibleNavbarItemList = ({
                 <NavbarItemRow
                   title={navbarItem.attributes.title_multiloc}
                   isDefaultPage={navbarItem.attributes.code !== 'custom'}
-                  showEditButton={navbarItem.attributes.code !== 'home'}
+                  showEditButton
                   viewButtonLink={getViewButtonLink(navbarItem)}
                   onClickEditButton={handleClickEdit(navbarItem)}
                 />

@@ -8,6 +8,7 @@ class WebApi::V1::NavBarItemsController < ApplicationController
 
   def index
     @items = policy_scope(NavBarItem).includes(:static_page).order(:ordering)
+    @items = @items.only_default if parse_bool(params[:only_default])
     render json: WebApi::V1::NavBarItemSerializer.new(@items, params: fastjson_params).serialized_json
   end
 
@@ -28,7 +29,7 @@ class WebApi::V1::NavBarItemsController < ApplicationController
     code = params[:code]
     authorize NavBarItem, "toggle_#{code}?".to_sym
     @item = NavBarItem.find_by code: code
-    if ActiveModel::Type::Boolean.new.cast params[:enabled]
+    if parse_bool(params[:enabled])
       # Enable
       if @item
         render json: { errors: { base: [{ error: 'already_enabled' }] } }, status: :unprocessable_entity
@@ -42,5 +43,11 @@ class WebApi::V1::NavBarItemsController < ApplicationController
     else
       render json: { errors: { base: [{ error: 'already_disabled' }] } }, status: :unprocessable_entity
     end
+  end
+
+  private
+
+  def customizable_navbar_activated?
+    AppConfiguration.instance.feature_activated?('customizable_navbar')
   end
 end

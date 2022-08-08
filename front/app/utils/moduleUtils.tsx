@@ -26,13 +26,13 @@ import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import { ParticipationMethod } from 'services/participationContexts';
 import {
   CellConfiguration,
-  CLErrors,
   FormikSubmitHandler,
   InsertConfigurationOptions,
   ITab,
   MessageDescriptor,
   Multiloc,
   Locale,
+  CLErrors,
 } from 'typings';
 import { LatLngTuple } from 'leaflet';
 import { Point } from 'components/UI/LeafletMap/typings';
@@ -41,14 +41,14 @@ import { MessageValue } from 'react-intl';
 import { NavItem } from 'containers/Admin/sideBar';
 import {
   AppConfigurationFeature,
-  CTASignedInType,
-  CTASignedOutType,
   CustomizedButtonConfig,
-  IAppConfigurationSettings,
   TAppConfigurationSetting,
   TAppConfigurationSettingCore,
-  THomepageBannerLayout,
 } from 'services/appConfiguration';
+import {
+  THomepageBannerLayout,
+  IHomepageSettingsAttributes,
+} from 'services/homepageSettings';
 import { ManagerType } from 'components/admin/PostManager';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaHeaderRow';
@@ -100,7 +100,7 @@ export type IAdminSettingsRegistrationSectionEndOutletProps = {
   userConfirmationSetting?: AppConfigurationFeature;
 };
 
-export type OutletsPropertyMap = {
+export interface OutletsPropertyMap {
   'app.containers.Navbar.projectlist.item': {
     publication: IAdminPublicationContent;
     localize: Localize;
@@ -365,10 +365,6 @@ export type OutletsPropertyMap = {
     className?: string;
   };
   'app.containers.LandingPage.EventsWidget': Record<string, any>;
-  'app.containers.Admin.settings.customize.eventsSectionEnd': {
-    getSetting: (settingName: string) => any;
-    setParentState: (state: any) => void;
-  };
   'app.containers.Admin.settings.customize.Events': {
     onMount: () => void;
   };
@@ -379,12 +375,19 @@ export type OutletsPropertyMap = {
     onMount: () => void;
   };
   'app.containers.Admin.settings.customize.headerSectionStart': {
-    latestAppConfigSettings:
-      | IAppConfigurationSettings
-      | Partial<IAppConfigurationSettings>;
+    homepageSettings: IHomepageSettingsAttributes;
     handleOnChange: (
-      settingName: TAppConfigurationSetting
-    ) => (settingKey: string, settingValue: any) => void;
+      settingKey: keyof IHomepageSettingsAttributes,
+      settingValue: any
+    ) => void;
+  };
+  'app.containers.Admin.settings.customize.headerSectionEnd': {
+    homepageSettings: IHomepageSettingsAttributes;
+    handleOnChange: (
+      settingKey: keyof IHomepageSettingsAttributes,
+      settingValue: any
+    ) => void;
+    errors: CLErrors | null;
   };
   'app.containers.LandingPage.SignedOutHeader.index': {
     homepageBannerLayout: THomepageBannerLayout;
@@ -393,23 +396,13 @@ export type OutletsPropertyMap = {
     onMount: () => void;
   };
   'app.containers.Admin.settings.policies.subTitle': Record<string, any>;
-  'app.containers.Admin.settings.customize.headerSectionEnd': {
-    latestAppConfigSettings:
-      | IAppConfigurationSettings
-      | Partial<IAppConfigurationSettings>;
-    handleOnChange: (
-      settingName: TAppConfigurationSetting
-    ) => (settingKey: string, settingValue: any) => void;
-    errors: CLErrors;
-  };
+  'app.containers.Admin.pages-menu.index': Record<string, any>;
+  'app.containers.Admin.pages-menu.NavigationSettings': Record<string, any>;
   'app.containers.LandingPage.SignedOutHeader.CTA': {
-    ctaType: CTASignedOutType;
-    customizedButtonConfig?: CustomizedButtonConfig;
     buttonStyle: BannerButtonStyle;
     signUpIn: (event: MouseEvent | KeyboardEvent) => void;
   };
   'app.containers.LandingPage.SignedInHeader.CTA': {
-    ctaType: CTASignedInType;
     customizedButtonConfig?: CustomizedButtonConfig;
     buttonStyle: BannerButtonStyle;
   };
@@ -421,7 +414,7 @@ export type OutletsPropertyMap = {
     string,
     any
   >;
-};
+}
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];
 
@@ -457,6 +450,7 @@ interface Routes {
   'admin.projects.project': RouteConfiguration[];
   'admin.initiatives': RouteConfiguration[];
   'admin.ideas': RouteConfiguration[];
+  'admin.pages-menu': RouteConfiguration[];
   'admin.dashboards': RouteConfiguration[];
   'admin.project_templates': RouteConfiguration[];
   'admin.settings': RouteConfiguration[];
@@ -563,6 +557,10 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
         mergedRoutes?.['admin.ideas'],
         RouteTypes.ADMIN
       ),
+      'admin.pages-menu': parseModuleRoutes(
+        mergedRoutes?.['admin.pages-menu'],
+        RouteTypes.ADMIN
+      ),
       'admin.dashboards': parseModuleRoutes(
         mergedRoutes?.['admin.dashboards'],
         RouteTypes.ADMIN
@@ -600,7 +598,6 @@ export const insertConfiguration =
     configuration,
     insertAfterName,
     insertBeforeName,
-    removeName,
   }: InsertConfigurationOptions<T>) =>
   (items: T[]): T[] => {
     const itemAlreadyInserted = items.some(
@@ -614,7 +611,7 @@ export const insertConfiguration =
       // if number is outside of lower and upper, it picks
       // the closes value. If it's inside the ranges, the
       // number is kept
-      insertAfterName ? referenceIndex + 1 : referenceIndex - 1,
+      insertAfterName ? referenceIndex + 1 : referenceIndex,
       0,
       items.length
     );
@@ -628,16 +625,6 @@ export const insertConfiguration =
       configuration,
       ...items.slice(insertIndex),
     ];
-
-    if (removeName) {
-      const removeIndex = newItems.findIndex(
-        (item) => removeName === item.name
-      );
-
-      if (removeIndex > -1) {
-        newItems.splice(removeIndex, 1);
-      }
-    }
 
     return newItems;
   };
