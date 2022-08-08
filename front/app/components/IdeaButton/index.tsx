@@ -323,16 +323,22 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
                   disabled={!enabled}
                   ariaDisabled={false}
                 >
-                  <FormattedMessage
-                    {...getInputTermMessage(inputTerm, {
-                      idea: messages.submitYourIdea,
-                      option: messages.addAnOption,
-                      project: messages.addAProject,
-                      question: messages.addAQuestion,
-                      issue: messages.submitAnIssue,
-                      contribution: messages.addAContribution,
-                    })}
-                  />
+                  {project.attributes.participation_method === 'ideation' && (
+                    <FormattedMessage
+                      {...getInputTermMessage(inputTerm, {
+                        idea: messages.submitYourIdea,
+                        option: messages.addAnOption,
+                        project: messages.addAProject,
+                        question: messages.addAQuestion,
+                        issue: messages.submitAnIssue,
+                        contribution: messages.addAContribution,
+                      })}
+                    />
+                  )}
+                  {project.attributes.participation_method ===
+                    'native_survey' && (
+                    <FormattedMessage {...messages.takeTheSurvey} />
+                  )}
                 </Button>
               </ButtonWrapper>
             </Tippy>

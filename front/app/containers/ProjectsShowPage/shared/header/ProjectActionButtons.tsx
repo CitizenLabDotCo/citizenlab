@@ -40,7 +40,6 @@ import clHistory from 'utils/cl-router/history';
 import { useLocation } from 'react-router-dom';
 
 import { openSignUpInModal } from 'components/SignUpIn/events';
-import Outlet from 'components/Outlet';
 
 const Container = styled.div``;
 
@@ -147,6 +146,8 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     phases
   );
   const isParticipationMethodIdeation = participation_method === 'ideation';
+  const isParticipationMethodNativeSurvey =
+    participation_method === 'native_survey';
   const showSeeIdeasButton =
     ((isProcessTypeContinuous && isParticipationMethodIdeation) ||
       currentPhase?.attributes.participation_method === 'ideation') &&
@@ -204,6 +205,14 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
             fontWeight="500"
           />
         )}
+      {isParticipationMethodNativeSurvey && (
+        <IdeaButton
+          id="project-ideabutton"
+          projectId={project.id}
+          participationContextType="project"
+          fontWeight="500"
+        />
+      )}
       {showSurvey && (
         <Button
           buttonStyle="primary"
@@ -223,11 +232,6 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           <FormattedMessage {...messages.takeThePoll} />
         </Button>
       )}
-      <Outlet
-        id="app.containers.projectsShowPage.projectActionButtons"
-        project={project}
-        currentPhase={currentPhase}
-      />
     </Container>
   );
 });
