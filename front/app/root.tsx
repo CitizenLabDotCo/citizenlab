@@ -11,7 +11,8 @@ import 'tippy.js/themes/light.css';
 import App from 'containers/App';
 import LanguageProvider from 'containers/LanguageProvider';
 import createRoutes from './routes';
-import { init } from '@sentry/browser';
+import { init } from '@sentry/react';
+import { BrowserTracing } from '@sentry/tracing';
 import OutletsProvider from 'containers/OutletsProvider';
 import modules from 'modules';
 import history from 'utils/browserHistory';
@@ -53,12 +54,13 @@ const mountApplication = () => {
 mountApplication();
 
 if (process.env.SENTRY_DSN) {
-  import('@sentry/integrations').then((Integrations) => {
-    init({
-      dsn: process.env.SENTRY_DSN,
-      environment: process.env.SENTRY_ENV,
-      release: process.env.CIRCLE_BUILD_NUM,
-      integrations: [new Integrations.RewriteFrames()],
-    });
+  // import('@sentry/integrations').then((Integrations) => {
+  init({
+    dsn: process.env.SENTRY_DSN,
+    environment: process.env.SENTRY_ENV,
+    release: process.env.CIRCLE_BUILD_NUM,
+    integrations: [new BrowserTracing()],
+    tracesSampleRate: 1.0,
   });
+  // });
 }
