@@ -256,11 +256,11 @@ describe('<Field />', () => {
         fireEvent.click(screen.getByTestId('set-age-groups-button'));
         fireEvent.click(screen.getByTestId('bin-save-button'));
 
-        expect(screen.getByText('18-24')).toBeInTheDocument();
-        expect(screen.getByText('25-34')).toBeInTheDocument();
-        expect(screen.getByText('35-44')).toBeInTheDocument();
-        expect(screen.getByText('45-54')).toBeInTheDocument();
-        expect(screen.getByText('55-64')).toBeInTheDocument();
+        expect(screen.getByText('18 - 24')).toBeInTheDocument();
+        expect(screen.getByText('25 - 34')).toBeInTheDocument();
+        expect(screen.getByText('35 - 44')).toBeInTheDocument();
+        expect(screen.getByText('45 - 54')).toBeInTheDocument();
+        expect(screen.getByText('55 - 64')).toBeInTheDocument();
         expect(screen.getByText('65 and over')).toBeInTheDocument();
       });
 
@@ -365,10 +365,10 @@ describe('<Field />', () => {
             },
           },
           remoteFormValues: {
-            '18-24': 100,
-            '25-34': 100,
-            '35-44': 100,
-            '45-64': 100,
+            '18 - 24': 100,
+            '25 - 34': 100,
+            '35 - 44': 100,
+            '45 - 64': 100,
             '65+': 100,
           },
         };

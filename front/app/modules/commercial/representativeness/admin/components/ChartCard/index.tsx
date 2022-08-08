@@ -2,10 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
-import useReferenceData, {
-  RepresentativenessRow,
-  RepresentativenessRowMultiloc,
-} from '../../hooks/useReferenceData';
+import useReferenceData from '../../hooks/useReferenceData';
 import useRScore from '../../hooks/useRScore';
 
 // services
@@ -13,6 +10,7 @@ import {
   usersByRegFieldXlsxEndpoint,
   usersByGenderXlsxEndpoint,
   usersByDomicileXlsxEndpoint,
+  usersByAgeXlsxEndpoint,
 } from 'modules/commercial/user_custom_fields/services/stats';
 
 // components
@@ -27,12 +25,17 @@ import Footer from './Footer';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
+import fieldMessages from '../Field/messages';
 
 // typings
 import {
   IUserCustomFieldData,
   TCustomFieldCode,
 } from 'modules/commercial/user_custom_fields/services/userCustomFields';
+import {
+  RepresentativenessRow,
+  RepresentativenessRowMultiloc,
+} from '../../hooks/createRefDataSubscription';
 
 // utils
 import { getLegendLabels } from './utils';
@@ -54,6 +57,8 @@ const getXlsxEndpoint = (
       return usersByGenderXlsxEndpoint;
     case 'domicile':
       return usersByDomicileXlsxEndpoint;
+    case 'birthyear':
+      return usersByAgeXlsxEndpoint;
     default:
       return usersByRegFieldXlsxEndpoint(userCustomFieldId);
   }
@@ -112,7 +117,11 @@ const ChartCard = injectIntl(
 
     const legendLabels = getLegendLabels(barNames);
 
-    const title = localize(userCustomField.attributes.title_multiloc);
+    const title =
+      userCustomField.attributes.key === 'birthyear'
+        ? formatMessage(fieldMessages.birthyearCustomTitle)
+        : localize(userCustomField.attributes.title_multiloc);
+
     const fieldIsRequired = userCustomField.attributes.required;
     const xlsxEndpoint = getXlsxEndpoint(
       userCustomField.attributes.code,
