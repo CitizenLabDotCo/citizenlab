@@ -14,19 +14,20 @@ interface Props {
   resetSelection: () => void;
 }
 
-class ActionBarMulti extends React.PureComponent<Props & InjectedIntlProps> {
-  handleClickDeleteIdeas = () => {
-    const {
-      selection,
-      resetSelection,
-      intl: { formatMessage },
-    } = this.props;
-
-    const message = formatMessage(messages.deleteInputsConfirmation, {
-      count: selection.size,
-    });
-
-    if (window.confirm(message)) {
+const ActionBarMulti = ({
+  type,
+  selection,
+  resetSelection,
+  intl: { formatMessage },
+}: Props & InjectedIntlProps) => {
+  const handleClickDeleteIdeas = () => {
+    if (
+      window.confirm(
+        formatMessage(messages.deleteInputsConfirmation, {
+          count: selection.size,
+        })
+      )
+    ) {
       selection.forEach((id) => {
         deleteIdea(id);
       });
@@ -35,18 +36,14 @@ class ActionBarMulti extends React.PureComponent<Props & InjectedIntlProps> {
     resetSelection();
   };
 
-  handleClickDeleteInitiatives = () => {
-    const {
-      selection,
-      resetSelection,
-      intl: { formatMessage },
-    } = this.props;
-
-    const message = formatMessage(messages.deleteInitiativesConfirmation, {
-      count: selection.size,
-    });
-
-    if (window.confirm(message)) {
+  const handleClickDeleteInitiatives = () => {
+    if (
+      window.confirm(
+        formatMessage(messages.deleteInitiativesConfirmation, {
+          count: selection.size,
+        })
+      )
+    ) {
       selection.forEach((id) => {
         deleteInitiative(id);
       });
@@ -55,39 +52,32 @@ class ActionBarMulti extends React.PureComponent<Props & InjectedIntlProps> {
     resetSelection();
   };
 
-  render() {
-    const { type, selection } = this.props;
-    if (type === 'AllIdeas' || type === 'ProjectIdeas') {
-      return (
-        <Button
-          negative={true}
-          basic={true}
-          onClick={this.handleClickDeleteIdeas}
-        >
-          <Icon name="trash" />
-          <FormattedMessage
-            {...messages.deleteAllSelectedInputs}
-            values={{ count: selection.size }}
-          />
-        </Button>
-      );
-    } else if (type === 'Initiatives') {
-      return (
-        <Button
-          negative={true}
-          basic={true}
-          onClick={this.handleClickDeleteInitiatives}
-        >
-          <Icon name="trash" />
-          <FormattedMessage
-            {...messages.deleteAllSelectedInitiatives}
-            values={{ count: selection.size }}
-          />
-        </Button>
-      );
-    }
-    return null;
+  if (type === 'AllIdeas' || type === 'ProjectIdeas') {
+    return (
+      <Button negative={true} basic={true} onClick={handleClickDeleteIdeas}>
+        <Icon name="trash" />
+        <FormattedMessage
+          {...messages.deleteAllSelectedInputs}
+          values={{ count: selection.size }}
+        />
+      </Button>
+    );
+  } else if (type === 'Initiatives') {
+    return (
+      <Button
+        negative={true}
+        basic={true}
+        onClick={handleClickDeleteInitiatives}
+      >
+        <Icon name="trash" />
+        <FormattedMessage
+          {...messages.deleteAllSelectedInitiatives}
+          values={{ count: selection.size }}
+        />
+      </Button>
+    );
   }
-}
+  return null;
+};
 
-export default injectIntl<Props>(ActionBarMulti);
+export default injectIntl(ActionBarMulti);
