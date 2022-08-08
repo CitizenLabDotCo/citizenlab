@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import { isFunction } from 'lodash-es';
@@ -38,41 +38,35 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {}
-
-export class IdeasCount extends React.PureComponent<Props, State> {
-  componentDidUpdate(prevProps) {
-    if (prevProps.searchTerm !== this.props.searchTerm) {
-      if (isFunction(this.props.ideasCount.onChangeSearchTerm)) {
-        this.props.ideasCount.onChangeSearchTerm(this.props.searchTerm);
-      }
+const IdeasCount = ({
+  ideasCount: { onChangeSearchTerm, count },
+  searchTerm,
+}: Props) => {
+  useEffect(() => {
+    if (isFunction(onChangeSearchTerm)) {
+      onChangeSearchTerm(searchTerm);
     }
-  }
+  }, [searchTerm, onChangeSearchTerm]);
 
-  render() {
-    const { ideasCount } = this.props;
-    const ideasMatchingFiltersCount = ideasCount.count;
-
-    return (
-      <Container>
-        {/*
+  return (
+    <Container>
+      {/*
           If there are no ideas, we have an 'empty container' to indicate there are no ideas matching the filters.
           Hence we only show this count when there's at least 1 idea.
         */}
-        {!isNilOrError(ideasMatchingFiltersCount) &&
-          ideasMatchingFiltersCount > 0 &&
-          (ideasMatchingFiltersCount === 1 ? (
-            <FormattedMessage {...messages.oneInput} />
-          ) : (
-            <FormattedMessage
-              {...messages.multipleInputs}
-              values={{ ideaCount: ideasMatchingFiltersCount }}
-            />
-          ))}
-      </Container>
-    );
-  }
-}
+      {!isNilOrError(count) &&
+        count > 0 &&
+        (count === 1 ? (
+          <FormattedMessage {...messages.oneInput} />
+        ) : (
+          <FormattedMessage
+            {...messages.multipleInputs}
+            values={{ ideaCount: count }}
+          />
+        ))}
+    </Container>
+  );
+};
 
 const Data = adopt({
   ideasCount: ({
@@ -103,7 +97,7 @@ const Data = adopt({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => (
+    {(dataProps: DataProps) => (
       <IdeasCount {...inputProps} ideasCount={dataProps.ideasCount} />
     )}
   </Data>
