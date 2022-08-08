@@ -378,7 +378,7 @@ class LineBarChart extends React.PureComponent<
                   dataKey="barValue"
                   yAxisId="barValue"
                   barSize={sizes.bar}
-                  fill={colors.newBarFill}
+                  fill={colors.barFill}
                   fillOpacity={1}
                   name={formatMessage(messages.totalForPeriod, {
                     period: formatMessage(messages[resolution]),
@@ -389,8 +389,8 @@ class LineBarChart extends React.PureComponent<
                   yAxisId="total"
                   dataKey="total"
                   activeDot={Boolean(serie && serie?.length < 31)}
-                  stroke={colors.newLine}
-                  fill={colors.newLine}
+                  stroke={colors.line}
+                  fill={colors.line}
                   strokeWidth={1}
                   name={formatMessage(messages.total)}
                 />

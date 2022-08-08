@@ -335,7 +335,7 @@ class LineBarChartVotesByTime extends React.PureComponent<
                 <Bar
                   dataKey="up"
                   name={formatMessage(messages.numberOfVotesUp)}
-                  fill={colors.newBarFill}
+                  fill={colors.barFill}
                   animationDuration={animation.duration}
                   animationBegin={animation.begin}
                   stackId="1"
@@ -358,8 +358,8 @@ class LineBarChartVotesByTime extends React.PureComponent<
                   dataKey="cumulatedTotal"
                   name={formatMessage(messages.total)}
                   dot={serie && serie?.length < 31}
-                  stroke={colors.newLine}
-                  fill={colors.newLine}
+                  stroke={colors.line}
+                  fill={colors.line}
                   strokeWidth={1}
                   yAxisId="cumulatedTotal"
                 />

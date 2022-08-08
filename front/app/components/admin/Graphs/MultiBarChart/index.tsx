@@ -93,7 +93,7 @@ const MultiBarChart = ({
 
   const { length, fill, opacity } = mapping;
   const rechartsLayout = getRechartsLayout(layout);
-  const parsedBarProps = parseBarProps(colors.newBarFill, length.length, bars);
+  const parsedBarProps = parseBarProps(colors.barFill, length.length, bars);
 
   const labelPosition = layout === 'vertical' ? 'top' : 'right';
 

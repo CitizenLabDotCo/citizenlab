@@ -149,7 +149,7 @@ export const HorizontalBarChartWithoutStream: React.SFC<
                 name="Downvotes"
                 stackId={'votes'}
                 dataKey="down"
-                fill={colors.newBarFill}
+                fill={colors.barFill}
                 barSize={['ideas', 'votes'].includes(graphUnit) ? 5 : sizes.bar}
                 animationDuration={animation.duration}
                 animationBegin={animation.begin}
@@ -163,9 +163,7 @@ export const HorizontalBarChartWithoutStream: React.SFC<
                       return (
                         <Cell
                           key={`cell-${index}`}
-                          fill={
-                            (entry.color && entry.color) || colors.newBarFill
-                          }
+                          fill={(entry.color && entry.color) || colors.barFill}
                           opacity={0.8}
                         />
                       );
@@ -187,7 +185,7 @@ export const HorizontalBarChartWithoutStream: React.SFC<
                 name="Upvotes"
                 stackId={'votes'}
                 dataKey="up"
-                fill={colors.newBarFill}
+                fill={colors.barFill}
                 opacity={0.7}
                 barSize={['ideas', 'votes'].includes(graphUnit) ? 5 : sizes.bar}
                 animationDuration={animation.duration}
@@ -198,7 +196,7 @@ export const HorizontalBarChartWithoutStream: React.SFC<
                     return (
                       <Cell
                         key={`cell-${index}`}
-                        fill={(entry.color && entry.color) || colors.newBarFill}
+                        fill={(entry.color && entry.color) || colors.barFill}
                         opacity={0.4}
                       />
                     );
