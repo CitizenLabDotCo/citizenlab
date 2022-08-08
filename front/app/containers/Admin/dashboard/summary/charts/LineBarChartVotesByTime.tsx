@@ -4,8 +4,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { map, isEmpty } from 'lodash-es';
 
 // styling
-import { withTheme } from 'styled-components';
-import { rgba } from 'polished';
+import { colors, sizes, animation } from 'components/admin/Graphs/styling';
 
 // services
 import {
@@ -251,16 +250,6 @@ class LineBarChartVotesByTime extends React.PureComponent<
   }
 
   render() {
-    const {
-      chartLabelSize,
-      chartLabelColor,
-      newLineColor,
-      animationBegin,
-      animationDuration,
-      cartesianGridColor,
-      newBarFill,
-      barSize,
-    } = this.props['theme'];
     const { formatMessage } = this.props.intl;
     const { serie } = this.state;
     const formattedNumbers = this.getFormattedNumbers(serie);
@@ -302,19 +291,22 @@ class LineBarChartVotesByTime extends React.PureComponent<
                 margin={{ right: 40 }}
                 ref={this.currentChart}
               >
-                <CartesianGrid stroke={cartesianGridColor} strokeWidth={0.5} />
+                <CartesianGrid
+                  stroke={colors.cartesianGrid}
+                  strokeWidth={0.5}
+                />
                 <XAxis
                   dataKey="date"
                   interval="preserveStartEnd"
-                  stroke={chartLabelColor}
-                  fontSize={chartLabelSize}
+                  stroke={colors.chartLabel}
+                  fontSize={sizes.chartLabel}
                   tick={{ transform: 'translate(0, 7)' }}
                   tickFormatter={this.formatTick}
                   tickLine={false}
                 />
                 <YAxis
-                  stroke={chartLabelColor}
-                  fontSize={chartLabelSize}
+                  stroke={colors.chartLabel}
+                  fontSize={sizes.chartLabel}
                   yAxisId="cumulatedTotal"
                   tickLine={false}
                 >
@@ -343,31 +335,31 @@ class LineBarChartVotesByTime extends React.PureComponent<
                 <Bar
                   dataKey="up"
                   name={formatMessage(messages.numberOfVotesUp)}
-                  fill={rgba(newBarFill, 1)}
-                  animationDuration={animationDuration}
-                  animationBegin={animationBegin}
+                  fill={colors.newBarFill}
+                  animationDuration={animation.duration}
+                  animationBegin={animation.begin}
                   stackId="1"
                   yAxisId="barValue"
-                  barSize={barSize}
+                  barSize={sizes.bar}
                 />
                 <Bar
                   dataKey="down"
                   name={formatMessage(messages.numberOfVotesDown)}
-                  fill={rgba(newBarFill, 0.7)}
+                  fill={colors.barFillLighter}
                   stackId="1"
-                  animationDuration={animationDuration}
-                  animationBegin={animationBegin}
+                  animationDuration={animation.duration}
+                  animationBegin={animation.begin}
                   stroke="none"
                   yAxisId="barValue"
-                  barSize={barSize}
+                  barSize={sizes.bar}
                 />
                 <Line
                   type="monotone"
                   dataKey="cumulatedTotal"
                   name={formatMessage(messages.total)}
                   dot={serie && serie?.length < 31}
-                  stroke={newLineColor}
-                  fill={newLineColor}
+                  stroke={colors.newLine}
+                  fill={colors.newLine}
                   strokeWidth={1}
                   yAxisId="cumulatedTotal"
                 />
@@ -386,6 +378,4 @@ class LineBarChartVotesByTime extends React.PureComponent<
   }
 }
 
-export default injectIntl<Props>(
-  withTheme(LineBarChartVotesByTime as any) as any
-);
+export default injectIntl<Props>(LineBarChartVotesByTime);

@@ -48,7 +48,8 @@ import { Popup } from 'semantic-ui-react';
 import { Icon } from '@citizenlab/cl2-component-library';
 
 // styling
-import styled, { withTheme } from 'styled-components';
+import styled from 'styled-components';
+import { colors, sizes } from 'components/admin/Graphs/styling';
 
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -279,15 +280,6 @@ class LineBarChart extends React.PureComponent<
     const { className, graphTitle, infoMessage, resolution } = this.props;
     const { serie } = this.state;
 
-    const {
-      chartLabelSize,
-      chartLabelColor,
-      cartesianGridColor,
-      newBarFill,
-      newLineColor,
-      barSize,
-    } = this.props['theme'];
-
     const formattedNumbers = this.getFormattedNumbers(serie);
     const { totalNumber, formattedSerieChange, typeOfChange } =
       formattedNumbers;
@@ -343,20 +335,23 @@ class LineBarChart extends React.PureComponent<
                 reverseStackOrder={true}
                 ref={this.currentChart}
               >
-                <CartesianGrid stroke={cartesianGridColor} strokeWidth={0.5} />
+                <CartesianGrid
+                  stroke={colors.cartesianGrid}
+                  strokeWidth={0.5}
+                />
                 <XAxis
                   dataKey="name"
                   interval="preserveStartEnd"
-                  stroke={chartLabelColor}
-                  fontSize={chartLabelSize}
+                  stroke={colors.chartLabel}
+                  fontSize={sizes.chartLabel}
                   tick={{ transform: 'translate(0, 7)' }}
                   tickFormatter={this.formatTick}
                   tickLine={false}
                 />
                 <YAxis
                   yAxisId="total"
-                  stroke={chartLabelColor}
-                  fontSize={chartLabelSize}
+                  stroke={colors.chartLabel}
+                  fontSize={sizes.chartLabel}
                   tickLine={false}
                 >
                   <Label
@@ -390,8 +385,8 @@ class LineBarChart extends React.PureComponent<
                 <Bar
                   dataKey="barValue"
                   yAxisId="barValue"
-                  barSize={barSize}
-                  fill={newBarFill}
+                  barSize={sizes.bar}
+                  fill={colors.newBarFill}
                   fillOpacity={1}
                   name={formatMessage(messages.totalForPeriod, {
                     period: formatMessage(messages[resolution]),
@@ -402,8 +397,8 @@ class LineBarChart extends React.PureComponent<
                   yAxisId="total"
                   dataKey="total"
                   activeDot={Boolean(serie && serie?.length < 31)}
-                  stroke={newLineColor}
-                  fill={newLineColor}
+                  stroke={colors.newLine}
+                  fill={colors.newLine}
                   strokeWidth={1}
                   name={formatMessage(messages.total)}
                 />
@@ -421,4 +416,4 @@ class LineBarChart extends React.PureComponent<
   }
 }
 
-export default injectIntl<Props>(withTheme(LineBarChart as any) as any);
+export default injectIntl<Props>(LineBarChart);

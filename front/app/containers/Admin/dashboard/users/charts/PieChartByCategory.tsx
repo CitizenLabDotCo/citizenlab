@@ -8,6 +8,7 @@ import messages from '../../messages';
 
 // styling
 import { withTheme } from 'styled-components';
+import { animation } from 'components/admin/Graphs/styling';
 
 // components
 import ReportExportMenu from 'components/admin/ReportExportMenu';
@@ -74,8 +75,7 @@ class PieChartByCategory extends React.PureComponent<
     return `${entry.name} : ${entry.value}`;
   };
   render() {
-    const { colorMain, animationBegin, animationDuration } =
-      this.props['theme'];
+    const { colorMain } = this.props['theme'];
     const {
       startAt,
       endAt,
@@ -113,8 +113,8 @@ class PieChartByCategory extends React.PureComponent<
               <ResponsiveContainer height={175} width="100%" minWidth={175}>
                 <PieChart>
                   <Pie
-                    animationDuration={animationDuration}
-                    animationBegin={animationBegin}
+                    animationDuration={animation.duration}
+                    animationBegin={animation.begin}
                     isAnimationActive={true}
                     data={serie}
                     dataKey="value"
