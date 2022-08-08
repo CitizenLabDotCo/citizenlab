@@ -48,6 +48,8 @@ class IdeaCustomFieldsService
 
   def native_survey?
     participation_context = ::ParticipationContextService.new.get_participation_context(custom_form.project)
+    return false unless participation_context
+
     participation_context.native_survey?
   end
 
