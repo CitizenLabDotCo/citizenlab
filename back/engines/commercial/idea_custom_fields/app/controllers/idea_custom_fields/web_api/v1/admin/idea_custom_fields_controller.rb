@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
 module IdeaCustomFields
+  class UpdateAllFailedError < StandardError; end
+
   class WebApi::V1::Admin::IdeaCustomFieldsController < ApplicationController
     before_action :verify_feature_flag
     before_action :set_custom_field, only: %i[show update]
-    before_action :set_custom_form, only: %i[index]
+    before_action :set_custom_form, only: %i[index update_all]
     skip_after_action :verify_policy_scoped
 
     def index
@@ -24,6 +26,52 @@ module IdeaCustomFields
       update_field do |custom_form|
         IdeaCustomFieldsService.new(custom_form).find_field_by_id(params[:id])
       end
+    end
+
+    def update_all
+      authorize CustomField.new(resource: @custom_form), :update_all?, policy_class: IdeaCustomFieldPolicy
+      errors = {}
+      fields = IdeaCustomFieldsService.new(@custom_form).configurable_fields
+      field_params_for_create, field_params_for_update = update_all_params.partition { |field_params| !field_params[:id] }
+      field_params_for_update = field_params_for_update.index_by { |field_params| field_params[:id] }
+      ActiveRecord::Base.transaction do
+        fields.each do |field|
+          if field_params_for_update[field.id]
+            field.assign_attributes field_params_for_update[field.id]
+            SideFxCustomFieldService.new.before_update(field, current_user)
+            unless field.save
+              errors[field.key] = field.errors.details
+              next
+            end
+            SideFxCustomFieldService.new.after_update(field, current_user)
+          else
+            SideFxCustomFieldService.new.before_destroy(field, current_user)
+            unless field.destroy
+              errors[field.key] = field.errors.details
+              next
+            end
+            SideFxCustomFieldService.new.after_destroy(field, current_user)
+          end
+        end
+        field_params_for_create.each do |field_params|
+          field = CustomField.new field_params.merge(resource: @custom_form)
+          SideFxCustomFieldService.new.before_create(field, current_user)
+          unless field.save
+            errors[field.key] = field.errors.details
+            next
+          end
+          SideFxCustomFieldService.new.after_create(field, current_user)
+        end
+
+        raise UpdateAllFailedError if errors.present?
+      end
+
+      render json: ::WebApi::V1::CustomFieldSerializer.new(
+        IdeaCustomFieldsService.new(@custom_form).configurable_fields,
+        params: fastjson_params
+      ).serialized_json
+    rescue UpdateAllFailedError
+      render json: { errors: errors }, status: :unprocessable_entity
     end
 
     # `upsert_by_code` cannot be used for extra fields, because they do not have a code.
@@ -75,6 +123,21 @@ module IdeaCustomFields
         .require(:custom_field)
         .permit(IdeaCustomFieldPolicy.new(current_user, custom_field).permitted_attributes)
       custom_field.assign_attributes field_params
+    end
+
+    def update_all_params
+      params
+        .require(:custom_fields)
+        .map do |field|
+          field.permit(
+            :id,
+            :input_type,
+            :required,
+            :enabled,
+            { title_multiloc: CL2_SUPPORTED_LOCALES,
+              description_multiloc: CL2_SUPPORTED_LOCALES }
+          )
+        end
     end
 
     def set_custom_form

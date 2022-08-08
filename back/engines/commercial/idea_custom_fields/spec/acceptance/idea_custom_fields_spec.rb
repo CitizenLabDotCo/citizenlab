@@ -174,5 +174,55 @@ resource 'Idea Custom Fields' do
         expect(CustomField.count).to eq 1
       end
     end
+
+    patch 'web_api/v1/admin/projects/:project_id/custom_fields/update_all' do
+      parameter :custom_fields, type: :array
+      # parameter :id, 'The ID of an existing custom field to update. When the ID is not provided, a new field is created.', required: false
+      # parameter :required, 'Whether filling out the field is mandatory', required: true
+      # parameter :enabled, 'Whether the field is active or not', required: true
+      # parameter :title_multiloc, 'An optional title of the field, as shown to users, in multiple locales', required: true
+      # parameter :description_multiloc, 'An optional description of the field, as shown to users, in multiple locales', required: false
+
+      with_options scope: 'custom_fields[]' do
+        parameter :id, 'The ID of an existing custom field to update. When the ID is not provided, a new field is created.', required: false
+        parameter :input_type, 'The type of the input. Required when creating a new field.', required: false
+        parameter :required, 'Whether filling out the field is mandatory', required: true
+        parameter :enabled, 'Whether the field is active or not', required: true
+        parameter :title_multiloc, 'An optional title of the field, as shown to users, in multiple locales', required: true
+        parameter :description_multiloc, 'An optional description of the field, as shown to users, in multiple locales', required: false
+      end
+
+      before { SettingsService.new.activate_feature! 'dynamic_idea_form' }
+
+      let(:custom_form) { create(:custom_form) }
+      let(:project) { create(:continuous_project, custom_form: custom_form, participation_method: 'native_survey') }
+      let(:project_id) { project.id }
+
+      example 'Insert one field, update one field, and destroy one field' do
+        field_to_update = create(:custom_field, resource: custom_form, title_multiloc: { 'en' => 'My field' })
+        create(:custom_field, resource: custom_form) # field to destroy
+        request = {
+          custom_fields: [
+            {
+              id: field_to_update.id,
+              title_multiloc: { 'en' => 'My updated field' },
+              required: true,
+              enabled: true
+            },
+            {
+              input_type: 'text',
+              title_multiloc: { 'en' => 'My inserted field' },
+              required: false,
+              enabled: false
+            }
+          ]
+        }
+        do_request request
+
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response).to eq
+      end
+    end
   end
 end
