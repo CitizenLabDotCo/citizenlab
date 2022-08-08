@@ -1,4 +1,9 @@
-import { getLowerBoundLimits, getUpperBoundLimits, addBin } from './bins';
+import {
+  getLowerBoundLimits,
+  getUpperBoundLimits,
+  addBin,
+  removeBin,
+} from './bins';
 
 describe('getLowerBoundLimits', () => {
   it('works when all bins are empty', () => {
@@ -80,5 +85,21 @@ describe('addBin', () => {
     const expectedBins = [18, 25, 35, 45, 65, 67, null];
 
     expect(addBin(bins)).toEqual(expectedBins);
+  });
+});
+
+describe('removeBin', () => {
+  it('results in no upper bound if previous lower bound is null', () => {
+    const bins = [18, 25, 35, 45, 65, null, null];
+    const expectedBins = [18, 25, 35, 45, 65, null];
+
+    expect(removeBin(bins)).toEqual(expectedBins);
+  });
+
+  it('results in no upper bound if previous lower bound is not null', () => {
+    const bins = [18, 25, 35, 45, 65, 80, null];
+    const expectedBins = [18, 25, 35, 45, 65, null];
+
+    expect(removeBin(bins)).toEqual(expectedBins);
   });
 });

@@ -114,12 +114,7 @@ export const getUpperBoundLimits = (bins: Bins) => {
 };
 
 export const removeBin = (bins: Bins) => {
-  const sliced = bins.slice(0, bins.length - 1);
-  const newLastBin = sliced[sliced.length - 1];
-
-  sliced[sliced.length - 1] = newLastBin === null ? newLastBin : newLastBin - 1;
-
-  return sliced;
+  return [...bins.slice(0, bins.length - 2), null];
 };
 
 const defined = (bound: string | undefined) =>
