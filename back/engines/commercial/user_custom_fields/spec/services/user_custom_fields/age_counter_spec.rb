@@ -37,6 +37,11 @@ RSpec.describe UserCustomFields::AgeCounter do
           counts: { 16 => 1, 20 => 5, 25 => 9, 35 => 7, 47 => 3, 53 => 8, 66 => 6, 77 => 7 },
           bins: [nil, 21, 35, 55, nil],
           expected_result: [6, 9, 18, 13]
+        },
+        'default_min_is_zero' => {
+          counts: { -1 => 1, 0 => 2 },
+          bins: [nil, 100],
+          expected_result: [2]
         }
       }
     end
