@@ -89,11 +89,7 @@ export const RightColumn = styled.div`
 export const chartTheme = (theme) => {
   return {
     ...theme,
-    chartStroke: colors.clIconAccent,
-    chartStrokeGreen: colors.clGreen,
-    chartStrokeRed: colors.red500,
     chartFill: colors.clIconAccent,
-    barFill: colors.adminContentBackground,
     chartLabelColor: colors.adminSecondaryTextColor,
     barHoverColor: rgba(colors.clIconAccent, 0.25),
     chartLabelSize: 13,
