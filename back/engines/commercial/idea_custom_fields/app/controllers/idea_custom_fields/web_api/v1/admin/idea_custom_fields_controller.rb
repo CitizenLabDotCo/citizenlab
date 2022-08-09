@@ -66,19 +66,16 @@ module IdeaCustomFields
         deleted_fields = fields.reject { |field| given_ids.include? field.id }
         deleted_fields.each do |field|
           SideFxCustomFieldService.new.before_destroy(field, current_user)
-          unless field.destroy
-            errors[field.key] = field.errors.details
-            next
-          end
+          field.destroy!
           SideFxCustomFieldService.new.after_destroy(field, current_user)
         end
-        update_all_params.each do |field_params|
+        update_all_params.each_with_index do |field_params, index|
           if field_params[:id]
             field = field_index[field_params[:id]]
             field.assign_attributes field_params
             SideFxCustomFieldService.new.before_update(field, current_user)
             unless field.save
-              errors[field.key] = field.errors.details
+              errors[index.to_s] = field.errors.details
               next
             end
             SideFxCustomFieldService.new.after_update(field, current_user)
@@ -86,7 +83,7 @@ module IdeaCustomFields
             field = CustomField.new field_params.merge(resource: @custom_form)
             SideFxCustomFieldService.new.before_create(field, current_user)
             unless field.save
-              errors[field.key] = field.errors.details
+              errors[index.to_s] = field.errors.details
               next
             end
             SideFxCustomFieldService.new.after_create(field, current_user)

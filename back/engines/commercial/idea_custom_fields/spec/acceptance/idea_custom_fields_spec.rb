@@ -196,6 +196,41 @@ resource 'Idea Custom Fields' do
       let(:custom_form) { create(:custom_form, project: project) }
       let(:project_id) { project.id }
 
+      example '[error] Invalid data' do
+        field_to_update = create(:custom_field, resource: custom_form, title_multiloc: { 'en' => 'Some field' })
+        request = {
+          custom_fields: [
+            {
+              # input_type is not given
+              title_multiloc: { 'en' => 'Inserted field' },
+              required: false,
+              enabled: false
+            },
+            {
+              id: field_to_update.id,
+              title_multiloc: { 'en' => '' },
+              required: true,
+              enabled: true
+            }
+          ]
+        }
+        do_request request
+
+        assert_status 422
+        json_response = json_parse(response_body)
+        expect(json_response[:errors]).to eq({
+          '0': {
+            input_type: [
+              { error: 'blank' },
+              { error: 'inclusion', value: nil }
+            ]
+          },
+          '1': {
+            title_multiloc: [{ error: 'blank' }]
+          }
+        })
+      end
+
       example 'Insert one field, update one field, and destroy one field' do
         field_to_update = create(:custom_field, resource: custom_form, title_multiloc: { 'en' => 'Some field' })
         create(:custom_field, resource: custom_form) # field to destroy
