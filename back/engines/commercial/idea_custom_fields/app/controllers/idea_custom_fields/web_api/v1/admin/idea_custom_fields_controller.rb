@@ -1,7 +1,13 @@
 # frozen_string_literal: true
 
 module IdeaCustomFields
-  class UpdateAllFailedError < StandardError; end
+  class UpdateAllFailedError < StandardError
+    def initialize(errors)
+      super()
+      @errors = errors
+    end
+    attr_reader :errors
+  end
 
   class WebApi::V1::Admin::IdeaCustomFieldsController < ApplicationController
     before_action :verify_feature_flag
@@ -30,48 +36,14 @@ module IdeaCustomFields
 
     def update_all
       authorize CustomField.new(resource: @custom_form), :update_all?, policy_class: IdeaCustomFieldPolicy
-      errors = {}
-      fields = IdeaCustomFieldsService.new(@custom_form).configurable_fields
-      field_params_for_create, field_params_for_update = update_all_params.partition { |field_params| !field_params[:id] }
-      field_params_for_update = field_params_for_update.index_by { |field_params| field_params[:id] }
-      ActiveRecord::Base.transaction do
-        fields.each do |field|
-          if field_params_for_update[field.id]
-            field.assign_attributes field_params_for_update[field.id]
-            SideFxCustomFieldService.new.before_update(field, current_user)
-            unless field.save
-              errors[field.key] = field.errors.details
-              next
-            end
-            SideFxCustomFieldService.new.after_update(field, current_user)
-          else
-            SideFxCustomFieldService.new.before_destroy(field, current_user)
-            unless field.destroy
-              errors[field.key] = field.errors.details
-              next
-            end
-            SideFxCustomFieldService.new.after_destroy(field, current_user)
-          end
-        end
-        field_params_for_create.each do |field_params|
-          field = CustomField.new field_params.merge(resource: @custom_form)
-          SideFxCustomFieldService.new.before_create(field, current_user)
-          unless field.save
-            errors[field.key] = field.errors.details
-            next
-          end
-          SideFxCustomFieldService.new.after_create(field, current_user)
-        end
-
-        raise UpdateAllFailedError if errors.present?
-      end
-
+      update_fields
+      @custom_form.reload
       render json: ::WebApi::V1::CustomFieldSerializer.new(
         IdeaCustomFieldsService.new(@custom_form).configurable_fields,
         params: fastjson_params
       ).serialized_json
-    rescue UpdateAllFailedError
-      render json: { errors: errors }, status: :unprocessable_entity
+    rescue UpdateAllFailedError => e
+      render json: { errors: e.errors }, status: :unprocessable_entity
     end
 
     # `upsert_by_code` cannot be used for extra fields, because they do not have a code.
@@ -83,6 +55,47 @@ module IdeaCustomFields
     end
 
     private
+
+    def update_fields
+      errors = {}
+      fields = IdeaCustomFieldsService.new(@custom_form).configurable_fields
+      field_index = fields.index_by(&:id)
+      given_ids = update_all_params.pluck(:id)
+
+      ActiveRecord::Base.transaction do
+        deleted_fields = fields.reject { |field| given_ids.include? field.id }
+        deleted_fields.each do |field|
+          SideFxCustomFieldService.new.before_destroy(field, current_user)
+          unless field.destroy
+            errors[field.key] = field.errors.details
+            next
+          end
+          SideFxCustomFieldService.new.after_destroy(field, current_user)
+        end
+        update_all_params.each do |field_params|
+          if field_params[:id]
+            field = field_index[field_params[:id]]
+            field.assign_attributes field_params
+            SideFxCustomFieldService.new.before_update(field, current_user)
+            unless field.save
+              errors[field.key] = field.errors.details
+              next
+            end
+            SideFxCustomFieldService.new.after_update(field, current_user)
+          else
+            field = CustomField.new field_params.merge(resource: @custom_form)
+            SideFxCustomFieldService.new.before_create(field, current_user)
+            unless field.save
+              errors[field.key] = field.errors.details
+              next
+            end
+            SideFxCustomFieldService.new.after_create(field, current_user)
+          end
+          field.move_to_bottom
+        end
+        raise UpdateAllFailedError, errors if errors.present?
+      end
+    end
 
     def update_field(&_block)
       # Wrapping this in a transaction, to avoid the race condition where

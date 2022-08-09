@@ -192,28 +192,27 @@ resource 'Idea Custom Fields' do
         parameter :description_multiloc, 'An optional description of the field, as shown to users, in multiple locales', required: false
       end
 
-      before { SettingsService.new.activate_feature! 'dynamic_idea_form' }
-
-      let(:custom_form) { create(:custom_form) }
-      let(:project) { create(:continuous_project, custom_form: custom_form, participation_method: 'native_survey') }
+      let(:project) { create(:continuous_project, participation_method: 'native_survey') }
+      let(:custom_form) { create(:custom_form, project: project) }
       let(:project_id) { project.id }
 
       example 'Insert one field, update one field, and destroy one field' do
-        field_to_update = create(:custom_field, resource: custom_form, title_multiloc: { 'en' => 'My field' })
+        field_to_update = create(:custom_field, resource: custom_form, title_multiloc: { 'en' => 'Some field' })
         create(:custom_field, resource: custom_form) # field to destroy
         request = {
           custom_fields: [
-            {
-              id: field_to_update.id,
-              title_multiloc: { 'en' => 'My updated field' },
-              required: true,
-              enabled: true
-            },
+            # Inserted field first to test reordering of fields.
             {
               input_type: 'text',
-              title_multiloc: { 'en' => 'My inserted field' },
+              title_multiloc: { 'en' => 'Inserted field' },
               required: false,
               enabled: false
+            },
+            {
+              id: field_to_update.id,
+              title_multiloc: { 'en' => 'Updated field' },
+              required: true,
+              enabled: true
             }
           ]
         }
@@ -221,7 +220,39 @@ resource 'Idea Custom Fields' do
 
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response).to eq
+        expect(json_response[:data].size).to eq 2
+        expect(json_response[:data][0]).to match({
+          attributes: {
+            code: nil,
+            created_at: an_instance_of(String),
+            description_multiloc: {},
+            enabled: false,
+            input_type: 'text',
+            key: 'inserted_field',
+            ordering: 0,
+            required: false,
+            title_multiloc: { en: 'Inserted field' },
+            updated_at: an_instance_of(String)
+          },
+          id: an_instance_of(String),
+          type: 'custom_field'
+        })
+        expect(json_response[:data][1]).to match({
+          attributes: {
+            code: nil,
+            created_at: an_instance_of(String),
+            description_multiloc: { en: 'Which councils are you attending in our city?' },
+            enabled: true,
+            input_type: 'text',
+            key: field_to_update.key,
+            ordering: 1,
+            required: true,
+            title_multiloc: { en: 'Updated field' },
+            updated_at: an_instance_of(String)
+          },
+          id: an_instance_of(String),
+          type: 'custom_field'
+        })
       end
     end
   end
