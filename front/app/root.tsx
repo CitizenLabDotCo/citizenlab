@@ -11,7 +11,8 @@ import 'tippy.js/themes/light.css';
 import App from 'containers/App';
 import LanguageProvider from 'containers/LanguageProvider';
 import createRoutes from './routes';
-import { init } from '@sentry/react';
+import { init, withSentryReactRouterV6Routing } from '@sentry/react';
+import * as Sentry from '@sentry/react';
 import { BrowserTracing } from '@sentry/tracing';
 import OutletsProvider from 'containers/OutletsProvider';
 import modules from 'modules';
@@ -20,7 +21,14 @@ import history from 'utils/browserHistory';
 import {
   unstable_HistoryRouter as HistoryRouter,
   useRoutes,
+  Routes as DomRoutes,
+  useLocation,
+  useNavigationType,
+  createRoutesFromChildren,
+  matchRoutes,
 } from 'react-router-dom';
+
+const SentryRoutes = withSentryReactRouterV6Routing(DomRoutes);
 
 const Routes = () => {
   const importedRoutes = createRoutes();
@@ -29,8 +37,13 @@ const Routes = () => {
     modules.afterMountApplication();
   }, []);
 
-  return <App>{routes}</App>;
+  return (
+    <App>
+      <SentryRoutes>{routes}</SentryRoutes>
+    </App>
+  );
 };
+
 const Root = () => {
   return (
     <OutletsProvider>
@@ -59,7 +72,17 @@ if (process.env.SENTRY_DSN) {
     dsn: process.env.SENTRY_DSN,
     environment: process.env.SENTRY_ENV,
     release: process.env.CIRCLE_BUILD_NUM,
-    integrations: [new BrowserTracing()],
+    integrations: [
+      new BrowserTracing({
+        routingInstrumentation: Sentry.reactRouterV6Instrumentation(
+          React.useEffect,
+          useLocation,
+          useNavigationType,
+          createRoutesFromChildren,
+          matchRoutes
+        ),
+      }),
+    ],
     tracesSampleRate: 1.0,
   });
   // });
