@@ -29,7 +29,7 @@
 #
 # Indexes
 #
-#  index_custom_pages_on_slug  (slug)
+#  index_custom_pages_on_slug  (slug) UNIQUE
 #
 class CustomPage < ApplicationRecord
   has_many :pins, as: :page, inverse_of: :page, dependent: :destroy
