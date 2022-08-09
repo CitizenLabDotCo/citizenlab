@@ -154,9 +154,10 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     isNumber(ideas_count) &&
     ideas_count > 0;
   const showIdeasButton =
-    isProcessTypeContinuous &&
-    isParticipationMethodIdeation &&
-    publication_status !== 'archived';
+    (isProcessTypeContinuous &&
+      isParticipationMethodIdeation &&
+      publication_status !== 'archived') ||
+    isParticipationMethodNativeSurvey;
   const showSurvey =
     (phases && participation_method === 'survey') ||
     (currentPhase?.attributes.participation_method === 'survey' &&
@@ -165,6 +166,8 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     ((isProcessTypeContinuous && participation_method === 'poll') ||
       currentPhase?.attributes.participation_method === 'poll') &&
     !hasProjectEnded;
+  const isPhaseIdeation =
+    currentPhase?.attributes.participation_method === 'ideation';
 
   return (
     <Container className={className || ''}>
@@ -187,29 +190,12 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           />
         </SeeIdeasButton>
       )}
-      {showIdeasButton && (
+      {showIdeasButton && !hasProjectEnded && (
         <IdeaButton
           id="project-ideabutton"
           projectId={project.id}
           participationContextType="project"
-          fontWeight="500"
-        />
-      )}
-      {currentPhase?.attributes.participation_method === 'ideation' &&
-        !hasProjectEnded && (
-          <IdeaButton
-            id="project-ideabutton"
-            projectId={project.id}
-            phaseId={currentPhase.id}
-            participationContextType="phase"
-            fontWeight="500"
-          />
-        )}
-      {isParticipationMethodNativeSurvey && (
-        <IdeaButton
-          id="project-ideabutton"
-          projectId={project.id}
-          participationContextType="project"
+          phaseId={isPhaseIdeation ? currentPhase.id : ''}
           fontWeight="500"
         />
       )}
