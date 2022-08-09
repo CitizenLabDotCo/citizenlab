@@ -154,15 +154,15 @@ const Field = ({
     setSubmitting(true);
 
     if (submitAction === 'create') {
-      await createReferenceDistribution(userCustomFieldId, newDistribution);
+      await createReferenceDistribution(userCustomField, newDistribution);
     }
 
     if (submitAction === 'replace') {
-      await replaceReferenceDistribution(userCustomFieldId, newDistribution);
+      await replaceReferenceDistribution(userCustomField, newDistribution);
     }
 
     if (submitAction === 'delete') {
-      await deleteReferenceDistribution(userCustomFieldId);
+      await deleteReferenceDistribution(userCustomField);
     }
 
     setSubmitting(false);

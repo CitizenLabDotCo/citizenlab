@@ -107,7 +107,7 @@ describe('<Field />', () => {
         });
 
         expect(createReferenceDistribution).toHaveBeenCalledTimes(1);
-        expect(createReferenceDistribution).toHaveBeenCalledWith('field1', {
+        expect(createReferenceDistribution).toHaveBeenCalledWith(selectField, {
           option1: 100,
           option2: 100,
           option3: 100,
@@ -190,7 +190,7 @@ describe('<Field />', () => {
         });
 
         expect(replaceReferenceDistribution).toHaveBeenCalledTimes(1);
-        expect(replaceReferenceDistribution).toHaveBeenCalledWith('field1', {
+        expect(replaceReferenceDistribution).toHaveBeenCalledWith(selectField, {
           option1: 100,
           option2: 100,
           option3: 200,
@@ -214,7 +214,7 @@ describe('<Field />', () => {
         });
 
         expect(deleteReferenceDistribution).toHaveBeenCalledTimes(1);
-        expect(deleteReferenceDistribution).toHaveBeenCalledWith('field1');
+        expect(deleteReferenceDistribution).toHaveBeenCalledWith(selectField);
       });
     });
   });
@@ -286,10 +286,13 @@ describe('<Field />', () => {
         });
 
         expect(createReferenceDistribution).toHaveBeenCalledTimes(1);
-        expect(createReferenceDistribution).toHaveBeenCalledWith('field1', {
-          bins: [18, 25, 35, 45, 55, 65, null],
-          counts: [100, 100, 100, 100, 100, 100],
-        });
+        expect(createReferenceDistribution).toHaveBeenCalledWith(
+          birthyearField,
+          {
+            bins: [18, 25, 35, 45, 55, 65, null],
+            counts: [100, 100, 100, 100, 100, 100],
+          }
+        );
       });
 
       it('does not allow saving if form incomplete', async () => {
@@ -408,10 +411,13 @@ describe('<Field />', () => {
         });
 
         expect(replaceReferenceDistribution).toHaveBeenCalledTimes(1);
-        expect(replaceReferenceDistribution).toHaveBeenCalledWith('field1', {
-          bins: [18, 25, 35, 45, 65, null],
-          counts: [100, 100, 200, 100, 100],
-        });
+        expect(replaceReferenceDistribution).toHaveBeenCalledWith(
+          birthyearField,
+          {
+            bins: [18, 25, 35, 45, 65, null],
+            counts: [100, 100, 200, 100, 100],
+          }
+        );
       });
     });
   });
