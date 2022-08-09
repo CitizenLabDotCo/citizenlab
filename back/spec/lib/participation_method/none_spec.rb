@@ -3,15 +3,13 @@
 require 'rails_helper'
 
 RSpec.describe ParticipationMethod::None do
-  subject(:participation_method) { described_class.new project }
-
-  let(:project) { build :continuous_project, participation_method: nil }
+  subject(:participation_method) { described_class.new }
 
   describe '#assign_slug!' do
     let(:input) { create :idea, slug: 'original-slug' }
 
     it 'does not change the slug of the input' do
-      expect { participation_method.assign_slug!(input) }.not_to change(project, :slug)
+      expect { participation_method.assign_slug!(input) }.not_to change(input, :slug)
     end
   end
 

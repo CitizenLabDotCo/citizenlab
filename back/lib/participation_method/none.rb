@@ -3,7 +3,7 @@
 module ParticipationMethod
   class None < Base
     def initialize
-      super nil
+      super(nil)
     end
   end
 end

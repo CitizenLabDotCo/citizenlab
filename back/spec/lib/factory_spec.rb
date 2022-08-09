@@ -3,7 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe Factory do
-
   describe '.instance' do
     it 'always returns the same object' do
       singleton = described_class.instance
