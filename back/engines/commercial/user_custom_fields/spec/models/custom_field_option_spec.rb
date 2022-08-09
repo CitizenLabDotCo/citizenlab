@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe CustomFieldOption do
   def create_ref_distribution(nb_options:)
     # The actual population counts does not matter.
-    create(:ref_distribution, population_counts: [10] * nb_options)
+    create(:categorical_distribution, population_counts: [10] * nb_options)
   end
 
   describe 'after_destroy callbacks' do
