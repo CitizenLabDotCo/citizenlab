@@ -8,7 +8,7 @@ class Factory
 
   def participation_method_for(project)
     participation_context = ::ParticipationContextService.new.get_participation_context(project)
-    return ::ParticipationMethod::None.new(nil) unless participation_context
+    return ::ParticipationMethod::None.new unless participation_context
 
     participation_method = participation_context.participation_method
     method_class = case participation_method

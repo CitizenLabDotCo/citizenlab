@@ -3,9 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe Factory do
-  # subject(:factory) { described_class.new project }
-
-  # let(:project) { create :continuous_budgeting_project }
 
   describe '.instance' do
     it 'always returns the same object' do
@@ -32,7 +29,7 @@ RSpec.describe Factory do
     end
 
     context 'for an ideation project' do
-      let(:project) { create :continuous_project }
+      let(:project) { create :continuous_project, participation_method: 'ideation' }
 
       it 'returns an instance of ParticipationMethod::Ideation' do
         expect(participation_method).to be_an_instance_of(ParticipationMethod::Ideation)
