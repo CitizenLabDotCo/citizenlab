@@ -70,8 +70,8 @@ describe('<BinModal />', () => {
 
       const inputs2 = container.querySelectorAll('input');
 
-      expect(inputs2[11]).toHaveValue(66);
-      expect(inputs2[12]).toHaveValue(67);
+      expect(inputs2[11]).toHaveValue(null);
+      expect(inputs2[12]).toHaveValue(null);
     });
   });
 
