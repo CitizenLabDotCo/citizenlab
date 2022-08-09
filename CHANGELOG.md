@@ -1,5 +1,11 @@
 # Changelog
 
+## Next release
+
+### Fixed
+
+- [CL-1289] Fix 'Submit base data' button width (representation dashboard)
+
 ## 2022-08-04
 
 ### Added
