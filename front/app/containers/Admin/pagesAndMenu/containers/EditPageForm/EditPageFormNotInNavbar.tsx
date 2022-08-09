@@ -25,10 +25,15 @@ import useRemoteFiles from 'hooks/useRemoteFiles';
 import usePage from 'hooks/usePage';
 import usePageSlugs from 'hooks/usePageSlugs';
 
+interface Props {
+  hideSlugInput: boolean;
+}
+
 const EditPageFormNotInNavbar = ({
+  hideSlugInput = false,
   params: { pageId },
   intl: { formatMessage },
-}: WithRouterProps & InjectedIntlProps) => {
+}: Props & WithRouterProps & InjectedIntlProps) => {
   const appConfigurationLocales = useAppConfigurationLocales();
   const localize = useLocalize();
   const page = usePage({ pageId });
@@ -79,7 +84,9 @@ const EditPageFormNotInNavbar = ({
   };
 
   const renderFn = (props: FormikProps<FormValues>) => {
-    return <PageForm {...props} pageId={pageId} />;
+    return (
+      <PageForm {...props} pageId={pageId} hideSlugInput={hideSlugInput} />
+    );
   };
 
   return (
