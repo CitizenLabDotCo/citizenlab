@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from 'components/UI/Button';
 import { fontSizes } from 'utils/styleUtils';
 
@@ -20,27 +20,13 @@ interface Props {
   exportType: exportType;
 }
 
-interface State {
-  exporting: boolean;
-}
-
-class ExportInitiativesButton extends React.PureComponent<
-  Props & InjectedIntlProps,
-  State
-> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      exporting: false,
-    };
-  }
-
-  handleExportInitiatives = async () => {
-    const {
-      exportQueryParameter,
-      intl: { formatDate, formatMessage },
-    } = this.props;
-
+const ExportInitiativesButton = ({
+  exportQueryParameter,
+  exportType,
+  intl: { formatDate, formatMessage },
+}: Props & InjectedIntlProps) => {
+  const [exporting, setExporting] = useState(false);
+  const handleExportInitiatives = async () => {
     const queryParametersObject = {};
     if (isString(exportQueryParameter) && exportQueryParameter !== 'all') {
       queryParametersObject['project'] = exportQueryParameter;
@@ -49,7 +35,7 @@ class ExportInitiativesButton extends React.PureComponent<
     }
 
     try {
-      this.setState({ exporting: true });
+      setExporting(true);
       const blob = await requestBlob(
         `${API_PATH}/initiatives/as_xlsx`,
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -61,39 +47,35 @@ class ExportInitiativesButton extends React.PureComponent<
           Date.now()
         )}.xlsx`
       );
-      this.setState({ exporting: false });
+      setExporting(false);
     } catch (error) {
       reportError(error);
-      this.setState({ exporting: false });
+      setExporting(false);
     }
 
     // track this click for user analytics
     trackEventByName(tracks.clickExportInitiatives.name);
   };
 
-  render() {
-    const { exportType } = this.props;
-    const { exporting } = this.state;
-    return (
-      <Button
-        buttonStyle="text"
-        onClick={this.handleExportInitiatives}
-        processing={exporting}
-        padding="0"
-        fontSize={`${fontSizes.s}px`}
-      >
-        {exportType === 'all' && (
-          <FormattedMessage {...messages.exportInitiatives} />
-        )}
-        {exportType === 'project' && (
-          <FormattedMessage {...messages.exportInitiativesProjects} />
-        )}
-        {exportType === 'selected_posts' && (
-          <FormattedMessage {...messages.exportSelectedInitiatives} />
-        )}
-      </Button>
-    );
-  }
-}
+  return (
+    <Button
+      buttonStyle="text"
+      onClick={handleExportInitiatives}
+      processing={exporting}
+      padding="0"
+      fontSize={`${fontSizes.s}px`}
+    >
+      {exportType === 'all' && (
+        <FormattedMessage {...messages.exportInitiatives} />
+      )}
+      {exportType === 'project' && (
+        <FormattedMessage {...messages.exportInitiativesProjects} />
+      )}
+      {exportType === 'selected_posts' && (
+        <FormattedMessage {...messages.exportSelectedInitiatives} />
+      )}
+    </Button>
+  );
+};
 
 export default injectIntl(ExportInitiativesButton);

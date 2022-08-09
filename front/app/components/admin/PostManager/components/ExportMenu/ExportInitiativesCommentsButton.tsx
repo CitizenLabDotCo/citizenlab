@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from 'components/UI/Button';
 import { fontSizes } from 'utils/styleUtils';
 
@@ -19,27 +19,14 @@ interface Props {
   exportType: exportType;
 }
 
-interface State {
-  exporting: boolean;
-}
+const ExportCommentsButton = ({
+  exportQueryParameter: queryParameter,
+  exportType,
+  intl: { formatDate, formatMessage },
+}: Props & InjectedIntlProps) => {
+  const [exporting, setExporting] = useState(false);
 
-class ExportCommentsButton extends React.PureComponent<
-  Props & InjectedIntlProps,
-  State
-> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      exporting: false,
-    };
-  }
-
-  handleExportComments = async () => {
-    const {
-      exportQueryParameter: queryParameter,
-      intl: { formatDate, formatMessage },
-    } = this.props;
-
+  const handleExportComments = async () => {
     const queryParametersObject = {};
     if (isString(queryParameter) && queryParameter !== 'all') {
       queryParametersObject['project'] = queryParameter;
@@ -48,7 +35,7 @@ class ExportCommentsButton extends React.PureComponent<
     }
 
     try {
-      this.setState({ exporting: true });
+      setExporting(true);
       const blob = await requestBlob(
         `${API_PATH}/initiatives/comments/as_xlsx`,
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -60,35 +47,31 @@ class ExportCommentsButton extends React.PureComponent<
           messages.initiativesCommentsExportFileName
         )}_${formatDate(Date.now())}.xlsx`
       );
-      this.setState({ exporting: false });
+      setExporting(false);
     } catch (error) {
-      this.setState({ exporting: false });
+      setExporting(false);
     }
 
     // track this click for user analytics
     trackEventByName(tracks.clickExportComments.name);
   };
 
-  render() {
-    const { exportType } = this.props;
-    const { exporting } = this.state;
-    return (
-      <Button
-        buttonStyle="text"
-        onClick={this.handleExportComments}
-        processing={exporting}
-        padding="0"
-        fontSize={`${fontSizes.s}px`}
-      >
-        {exportType === 'all' && (
-          <FormattedMessage {...messages.exportInitiativesComments} />
-        )}
-        {exportType === 'selected_posts' && (
-          <FormattedMessage {...messages.exportSelectedInitiativesComments} />
-        )}
-      </Button>
-    );
-  }
-}
+  return (
+    <Button
+      buttonStyle="text"
+      onClick={handleExportComments}
+      processing={exporting}
+      padding="0"
+      fontSize={`${fontSizes.s}px`}
+    >
+      {exportType === 'all' && (
+        <FormattedMessage {...messages.exportInitiativesComments} />
+      )}
+      {exportType === 'selected_posts' && (
+        <FormattedMessage {...messages.exportSelectedInitiativesComments} />
+      )}
+    </Button>
+  );
+};
 
 export default injectIntl(ExportCommentsButton);

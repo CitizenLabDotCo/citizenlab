@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { useState } from 'react';
 
 // components
 import { Dropdown } from '@citizenlab/cl2-component-library';
@@ -33,22 +33,11 @@ export interface Props {
   className?: string;
 }
 
-type State = {
-  dropdownOpened: boolean;
-};
+const ExportMenu = ({ selection, selectedProject, className, type }: Props) => {
+  const [dropdownOpened, setDropdownOpened] = useState(false);
 
-export default class ExportMenu extends PureComponent<Props, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      dropdownOpened: false,
-    };
-  }
-
-  getExportQueryParameters = () => {
-    const { selection, selectedProject } = this.props;
-
-    let exportQueryParameter;
+  const getExportQueryParameters = () => {
+    let exportQueryParameter: string | string[] | null = null;
     let exportType: null | exportType = null;
     if (selection.size > 0) {
       exportQueryParameter = [...selection];
@@ -64,47 +53,42 @@ export default class ExportMenu extends PureComponent<Props, State> {
     return { exportQueryParameter, exportType };
   };
 
-  toggleDropdown = (event: React.FormEvent<any>) => {
+  const toggleDropdown = (event: React.FormEvent<any>) => {
     event.preventDefault();
-    this.setState(({ dropdownOpened }) => ({
-      dropdownOpened: !dropdownOpened,
-    }));
+    setDropdownOpened((dropdownOpened) => !dropdownOpened);
   };
 
-  render() {
-    const { className, type } = this.props;
-    const { dropdownOpened } = this.state;
-    const { exportQueryParameter, exportType } =
-      this.getExportQueryParameters();
+  const { exportQueryParameter, exportType } = getExportQueryParameters();
 
-    return (
-      <Container className={className}>
-        <DropdownButton
-          buttonStyle="admin-dark-text"
-          onClick={this.toggleDropdown}
-          icon="download"
-          iconPos="right"
-          padding="0px"
-        >
-          <FormattedMessage {...messages.exports} />
-        </DropdownButton>
+  return (
+    <Container className={className}>
+      <DropdownButton
+        buttonStyle="admin-dark-text"
+        onClick={toggleDropdown}
+        icon="download"
+        iconPos="right"
+        padding="0px"
+      >
+        <FormattedMessage {...messages.exports} />
+      </DropdownButton>
 
-        <Dropdown
-          width="100%"
-          top="35px"
-          right="-5px"
-          mobileRight="-5px"
-          opened={dropdownOpened}
-          onClickOutside={this.toggleDropdown}
-          content={
-            <ExportButtons
-              type={type}
-              exportQueryParameter={exportQueryParameter}
-              exportType={exportType}
-            />
-          }
-        />
-      </Container>
-    );
-  }
-}
+      <Dropdown
+        width="100%"
+        top="35px"
+        right="-5px"
+        mobileRight="-5px"
+        opened={dropdownOpened}
+        onClickOutside={toggleDropdown}
+        content={
+          <ExportButtons
+            type={type}
+            exportQueryParameter={exportQueryParameter}
+            exportType={exportType}
+          />
+        }
+      />
+    </Container>
+  );
+};
+
+export default ExportMenu;

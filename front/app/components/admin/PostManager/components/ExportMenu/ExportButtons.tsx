@@ -27,37 +27,39 @@ interface Props {
   className?: string;
 }
 
-class ExportButtons extends React.PureComponent<Props> {
-  render() {
-    const { exportType, className, exportQueryParameter, type } = this.props;
-    return (
-      <Container className={className}>
-        {type === 'Initiatives' ? (
-          <>
-            <ExportInitiativesButton
-              exportType={exportType}
-              exportQueryParameter={exportQueryParameter}
-            />
-            <ExportInitiativesCommentsButton
-              exportType={exportType}
-              exportQueryParameter={exportQueryParameter}
-            />
-          </>
-        ) : type === 'AllIdeas' || type === 'ProjectIdeas' ? (
-          <>
-            <ExportIdeasButton
-              exportType={exportType}
-              exportQueryParameter={exportQueryParameter}
-            />
-            <ExportIdeasCommentsButton
-              exportType={exportType}
-              exportQueryParameter={exportQueryParameter}
-            />
-          </>
-        ) : null}
-      </Container>
-    );
-  }
-}
+const ExportButtons = ({
+  exportType,
+  className,
+  exportQueryParameter,
+  type,
+}: Props) => {
+  return (
+    <Container className={className}>
+      {type === 'Initiatives' ? (
+        <>
+          <ExportInitiativesButton
+            exportType={exportType}
+            exportQueryParameter={exportQueryParameter}
+          />
+          <ExportInitiativesCommentsButton
+            exportType={exportType}
+            exportQueryParameter={exportQueryParameter}
+          />
+        </>
+      ) : type === 'AllIdeas' || type === 'ProjectIdeas' ? (
+        <>
+          <ExportIdeasButton
+            exportType={exportType}
+            exportQueryParameter={exportQueryParameter}
+          />
+          <ExportIdeasCommentsButton
+            exportType={exportType}
+            exportQueryParameter={exportQueryParameter}
+          />
+        </>
+      ) : null}
+    </Container>
+  );
+};
 
 export default ExportButtons;
