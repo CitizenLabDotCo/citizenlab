@@ -1,5 +1,11 @@
 # Changelog
 
+## Next
+
+### Fixed
+
+- [CL-1302] Added topics column to bulk idea import example sheet
+
 ## 2022-08-04
 
 ### Added
