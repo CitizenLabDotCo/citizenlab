@@ -6,44 +6,47 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../messages';
 
-type Props = {
+interface Props {
   phases?: IPhaseData[];
   selectedPhase?: string | null;
-  onChangePhaseFilter?: (string) => void;
+  onChangePhaseFilter?: (phaseId: string) => void;
+}
+
+const FilterSidebarPhases = ({
+  phases,
+  selectedPhase,
+  onChangePhaseFilter,
+}: Props) => {
+  const handleItemClick = (id: string) => () => {
+    onChangePhaseFilter && onChangePhaseFilter(id);
+  };
+
+  const clearFilter = () => {
+    onChangePhaseFilter && onChangePhaseFilter(null);
+  };
+
+  const isActive = (id: string) => {
+    return selectedPhase === id;
+  };
+
+  return (
+    <Menu secondary vertical fluid>
+      <Menu.Item onClick={clearFilter} active={!selectedPhase}>
+        <FormattedMessage {...messages.allPhases} />
+      </Menu.Item>
+      <Divider />
+      {phases &&
+        phases.map((phase, index) => (
+          <FilterSidebarPhasesItem
+            key={phase.id}
+            phase={phase}
+            phaseNumber={index + 1}
+            active={isActive(phase.id)}
+            onClick={handleItemClick(phase.id)}
+          />
+        ))}
+    </Menu>
+  );
 };
 
-export default class FilterSidebarPhases extends React.PureComponent<Props> {
-  handleItemClick = (id) => () => {
-    this.props.onChangePhaseFilter && this.props.onChangePhaseFilter(id);
-  };
-
-  clearFilter = () => {
-    this.props.onChangePhaseFilter && this.props.onChangePhaseFilter(null);
-  };
-
-  isActive = (id) => {
-    return this.props.selectedPhase === id;
-  };
-
-  render() {
-    const { phases, selectedPhase } = this.props;
-    return (
-      <Menu secondary={true} vertical={true} fluid={true}>
-        <Menu.Item onClick={this.clearFilter} active={!selectedPhase}>
-          <FormattedMessage {...messages.allPhases} />
-        </Menu.Item>
-        <Divider />
-        {phases &&
-          phases.map((phase, index) => (
-            <FilterSidebarPhasesItem
-              key={phase.id}
-              phase={phase}
-              phaseNumber={index + 1}
-              active={!!this.isActive(phase.id)}
-              onClick={this.handleItemClick(phase.id)}
-            />
-          ))}
-      </Menu>
-    );
-  }
-}
+export default FilterSidebarPhases;
