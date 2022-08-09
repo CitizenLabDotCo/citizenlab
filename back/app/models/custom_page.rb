@@ -13,21 +13,20 @@
 #  banner_overlay_opacity       :integer
 #  banner_cta_button_multiloc   :jsonb            not null
 #  banner_cta_button_type       :string           default("no_button"), not null
-#  banner_cta_url               :string
+#  banner_cta_button_url        :string
 #  banner_header_multiloc       :jsonb            not null
 #  banner_subheader_multiloc    :jsonb            not null
 #  top_info_section_enabled     :boolean          default(FALSE), not null
 #  top_info_section_multiloc    :jsonb            not null
 #  projects_enabled             :boolean          default(FALSE), not null
 #  projects_filter_type         :string
-#  events_enabled               :boolean          default(FALSE), not null
+#  events_widget_enabled        :boolean          default(FALSE), not null
 #  bottom_info_section_enabled  :boolean          default(FALSE), not null
 #  bottom_info_section_multiloc :jsonb            not null
 #  header_bg                    :string
 #  created_at                   :datetime         not null
 #  updated_at                   :datetime         not null
 #
-# Contains settings & configuration data of a custom page.
 class CustomPage < ApplicationRecord
   has_many :pins, as: :page, inverse_of: :page, dependent: :destroy
   has_many :pinned_admin_publications, through: :pins, source: :admin_publication

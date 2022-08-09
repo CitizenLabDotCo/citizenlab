@@ -203,14 +203,14 @@ ActiveRecord::Schema.define(version: 2022_08_08_135654) do
     t.integer "banner_overlay_opacity"
     t.jsonb "banner_cta_button_multiloc", default: {}, null: false
     t.string "banner_cta_button_type", default: "no_button", null: false
-    t.string "banner_cta_url"
+    t.string "banner_cta_button_url"
     t.jsonb "banner_header_multiloc", default: {}, null: false
     t.jsonb "banner_subheader_multiloc", default: {}, null: false
     t.boolean "top_info_section_enabled", default: false, null: false
     t.jsonb "top_info_section_multiloc", default: {}, null: false
     t.boolean "projects_enabled", default: false, null: false
     t.string "projects_filter_type"
-    t.boolean "events_enabled", default: false, null: false
+    t.boolean "events_widget_enabled", default: false, null: false
     t.boolean "bottom_info_section_enabled", default: false, null: false
     t.jsonb "bottom_info_section_multiloc", default: {}, null: false
     t.string "header_bg"
