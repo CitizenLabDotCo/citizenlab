@@ -9,25 +9,13 @@ import messages from './messages';
 // components
 import Button from 'components/UI/Button';
 import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
-import { Badge, Box } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
-
-// hooks
-import useSurveyCustomFields from 'modules/free/native_surveys/hooks/useSurveyCustomFields';
 
 // typings
 import { ISurveyCustomFieldData } from 'modules/free/native_surveys/services/surveyCustomFields';
 
-// styles
-import { colors } from 'utils/styleUtils';
 import styled from 'styled-components';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
-const StyledBadge = styled(Badge)`
-  margin-left: 10px;
-`;
 
 const StyledTextCell = styled(TextCell)`
   display: flex;
@@ -40,13 +28,13 @@ const TextCellContent = styled.span`
 
 interface CustomFieldsProps {
   onEditField: (field: ISurveyCustomFieldData) => void;
+  surveyCustomFields: ISurveyCustomFieldData[];
 }
 
-const SurveyFields = ({ onEditField }: CustomFieldsProps) => {
-  const surveyCustomFields = useSurveyCustomFields({});
-
-  if (isNilOrError(surveyCustomFields)) return null;
-
+const SurveyFields = ({
+  onEditField,
+  surveyCustomFields,
+}: CustomFieldsProps) => {
   return (
     <DndProvider backend={HTML5Backend}>
       <Box p="32px">
@@ -69,11 +57,6 @@ const SurveyFields = ({ onEditField }: CustomFieldsProps) => {
                   <TextCellContent>
                     <T value={field.attributes.title_multiloc} />
                   </TextCellContent>
-                  {field.attributes.required && (
-                    <StyledBadge className="inverse" color={colors.red500}>
-                      <FormattedMessage {...messages.required} />
-                    </StyledBadge>
-                  )}
                 </StyledTextCell>
                 <Button
                   buttonStyle="secondary"

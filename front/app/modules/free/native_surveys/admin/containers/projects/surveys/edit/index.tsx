@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
+import { useParams } from 'react-router-dom';
 
 // styles
 import styled from 'styled-components';
@@ -13,6 +14,12 @@ import SurveyBuilderTopBar from 'modules/free/native_surveys/admin/components/Su
 import SurveyBuilderToolbox from 'modules/free/native_surveys/admin/components/SurveyBuilderToolbox';
 import SurveyBuilderSettings from 'modules/free/native_surveys/admin/components/SurveyBuilderSettings';
 import SurveyFields from 'modules/free/native_surveys/components/SurveyFields';
+
+// hooks
+import useSurveyCustomFields from 'modules/free/native_surveys/hooks/useSurveyCustomFields';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
 
 import {
   ISurveyCustomFieldData,
@@ -33,10 +40,39 @@ export const SurveyEdit = () => {
   const [selectedField, setSelectedField] = useState<
     ISurveyCustomFieldData | undefined
   >(undefined);
+  const { projectId } = useParams() as { projectId: string };
+
+  const { surveyCustomFields, setSurveyCustomFields } = useSurveyCustomFields({
+    projectId,
+  });
 
   const handleDelete = async (fieldId: string) => {
     await deleteSurveyCustomField(fieldId);
     setSelectedField(undefined);
+  };
+
+  const onAddField = (field: ISurveyCustomFieldData) => {
+    if (!isNilOrError(surveyCustomFields)) {
+      setSurveyCustomFields(surveyCustomFields.concat([field]));
+    } else {
+      setSurveyCustomFields([field]);
+    }
+  };
+
+  const onFieldChange = (field: ISurveyCustomFieldData) => {
+    if (!isNilOrError(surveyCustomFields)) {
+      setSurveyCustomFields(
+        surveyCustomFields.map((f) => {
+          if (f.id === field.id) {
+            return {
+              ...f,
+              ...{ attributes: { ...f.attributes, ...field.attributes } },
+            };
+          }
+          return f;
+        })
+      );
+    }
   };
 
   return (
@@ -48,21 +84,26 @@ export const SurveyEdit = () => {
       position="fixed"
       bgColor={colors.adminBackground}
       h="100vh"
-      data-testid="surveyBuilderPage"
     >
       <FocusOn>
         <SurveyBuilderTopBar />
         <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
-          <SurveyBuilderToolbox />
+          <SurveyBuilderToolbox onAddField={onAddField} />
           <StyledRightColumn>
             <Box width="1000px" bgColor="#ffffff" minHeight="300px">
-              <SurveyFields onEditField={setSelectedField} />
+              {!isNilOrError(surveyCustomFields) && (
+                <SurveyFields
+                  onEditField={setSelectedField}
+                  surveyCustomFields={surveyCustomFields}
+                />
+              )}
             </Box>
           </StyledRightColumn>
           <SurveyBuilderSettings
             key={selectedField ? selectedField.id : 'no-field-selected'}
             field={selectedField}
             onDelete={handleDelete}
+            onFieldChange={onFieldChange}
           />
         </Box>
       </FocusOn>

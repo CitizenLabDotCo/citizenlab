@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+
 import {
   surveyCustomFieldsStream,
   ISurveyCustomFieldData,
@@ -7,22 +8,29 @@ import {
 
 interface Props {
   inputTypes?: ISurveyCustomFieldInputType[];
+  projectId: string;
 }
 
-export default function useSurveyCustomFields({ inputTypes }: Props) {
+export default function useSurveyCustomFields({
+  inputTypes,
+  projectId,
+}: Props) {
   const [surveyCustomFields, setSurveyCustomFields] = useState<
-    ISurveyCustomFieldData[] | undefined | null | Error
+    ISurveyCustomFieldData[] | undefined | Error
   >(undefined);
 
   useEffect(() => {
-    const subscription = surveyCustomFieldsStream({
+    const subscription = surveyCustomFieldsStream(projectId, {
       queryParameters: { input_types: inputTypes },
     }).observable.subscribe((surveyCustomFields) => {
       setSurveyCustomFields(surveyCustomFields.data);
     });
 
     return () => subscription.unsubscribe();
-  }, [inputTypes]);
+  }, [inputTypes, projectId]);
 
-  return surveyCustomFields;
+  return {
+    surveyCustomFields,
+    setSurveyCustomFields,
+  };
 }

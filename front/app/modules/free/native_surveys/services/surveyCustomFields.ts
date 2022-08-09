@@ -4,6 +4,7 @@ import { IRelationship, Multiloc } from 'typings';
 
 export const surveyCustomFieldsSchemaApiEndpoint = `${API_PATH}/users/custom_fields/schema`;
 export const surveyCustomFieldsJSONSchemaApiEndpoint = `${API_PATH}/users/custom_fields/json_forms_schema`;
+export const surveyCustomFieldsEndpoint = `${API_PATH}/users/custom_fields/json_forms_schema`;
 
 // Please note that the structure is bound to change once we move to the custom idea api.
 // We are using the user custom fields api for now to make progress on the frontend
@@ -41,6 +42,38 @@ export interface ISurveyCustomFieldData {
   };
 }
 
+type NestedKeys<T extends string, U extends string[]> = {
+  [K in keyof U]: U[K] extends `${T}.${infer V}` ? V : never;
+};
+
+type PartialExcept<T, U extends string[]> = {
+  [K in keyof T as K extends U[number] ? K : never]?: T[K];
+} & {
+  [K in keyof T as K extends U[number] ? never : K]: K extends string
+    ? PartialExcept<T[K], NestedKeys<K, U>>
+    : T[K];
+};
+
+export type ISurveyCustomFieldAdd = PartialExcept<
+  ISurveyCustomFieldData,
+  [
+    'type',
+    'attributes.key',
+    'attributes.required',
+    'attributes.input_type',
+    'attributes.hidden',
+    'attributes.enabled',
+    'attributes.ordering',
+    'attributes.created_at',
+    'attributes.updated_at'
+  ]
+>;
+
+export type ISurveyCustomFieldUpdate = PartialExcept<
+  ISurveyCustomFieldAdd,
+  ['attributes.input_type']
+>;
+
 export interface ISurveyCustomField {
   data: ISurveyCustomFieldData;
 }
@@ -50,17 +83,13 @@ export interface ISurveyCustomFields {
 }
 
 export function surveyCustomFieldsStream(
+  projectId: string,
   streamParams: IStreamParams | null = null
 ) {
+  const apiEndpoint = `${API_PATH}/projects/${projectId}/custom_fields/schema`;
   return streams.get<ISurveyCustomFields>({
-    apiEndpoint: `${API_PATH}/users/custom_fields`,
+    apiEndpoint,
     ...streamParams,
-  });
-}
-
-export function addSurveyCustomField(data) {
-  return streams.add<ISurveyCustomField>(`${API_PATH}/users/custom_fields`, {
-    custom_field: data,
   });
 }
 

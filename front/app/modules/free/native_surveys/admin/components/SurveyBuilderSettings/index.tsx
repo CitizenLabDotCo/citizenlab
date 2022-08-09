@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // styles
 import styled from 'styled-components';
@@ -21,9 +21,13 @@ import { FormattedMessage } from 'utils/cl-intl';
 import {
   ISurveyCustomFieldData,
   updateSurveyCustomField,
+  ISurveyCustomFieldUpdate,
 } from 'modules/free/native_surveys/services/surveyCustomFields';
 
 import { Multiloc } from 'typings';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
 
 const StyledBox = styled(Box)`
   box-shadow: -2px 0px 1px 0px rgba(0, 0, 0, 0.06);
@@ -32,23 +36,34 @@ const StyledBox = styled(Box)`
 interface Props {
   field?: ISurveyCustomFieldData;
   onDelete: (fieldId: string) => void;
+  onFieldChange: (field: ISurveyCustomFieldUpdate) => void;
 }
 
-const SurveyBuilderSettings = ({ field, onDelete }: Props) => {
+const SurveyBuilderSettings = ({ field, onDelete, onFieldChange }: Props) => {
   // I'm keeping this form as simple as possible using state pending form rework from (TEC-35)
-  const [isRequired, setIsRequired] = useState<boolean | undefined>(
-    field?.attributes.required
-  );
-  const [questionTitle, setQuestionTitle] = useState<Multiloc | undefined>(
-    field?.attributes.title_multiloc
-  );
-  const [questionDescription, setQuestionDescription] = useState<
-    Multiloc | undefined
-  >(field?.attributes.description_multiloc);
+  const [fieldState, setFieldState] = useState({
+    isRequired: field?.attributes.required,
+    questionTitle: field?.attributes.title_multiloc,
+    questionDescription: field?.attributes.description_multiloc,
+  });
 
-  if (!field) {
+  useEffect(() => {
+    if (!isNilOrError(field)) {
+      onFieldChange({
+        id: field.id,
+        attributes: {
+          title_multiloc: fieldState.questionTitle as Multiloc,
+          description_multiloc: fieldState.questionDescription as Multiloc,
+          required: !!fieldState.isRequired,
+        },
+      });
+    }
+  }, [fieldState, field, onFieldChange]);
+
+  if (isNilOrError(field)) {
     return null;
   }
+
   let translatedStringKey: ReactIntl.FormattedMessage.MessageDescriptor | null =
     null;
   if (field.attributes.input_type === 'text') {
@@ -62,6 +77,15 @@ const SurveyBuilderSettings = ({ field, onDelete }: Props) => {
       required: isRequired,
     });
   };
+
+  const onStateChange = (key: string, value: Multiloc | boolean) => {
+    setFieldState({
+      ...fieldState,
+      [key]: value,
+    });
+  };
+
+  const { isRequired, questionTitle, questionDescription } = fieldState;
 
   return (
     <StyledBox
@@ -83,19 +107,19 @@ const SurveyBuilderSettings = ({ field, onDelete }: Props) => {
         type="text"
         label={<FormattedMessage {...messages.questionTitle} />}
         valueMultiloc={questionTitle}
-        onChange={setQuestionTitle}
+        onChange={(value: Multiloc) => onStateChange('questionTitle', value)}
       />
       <InputMultilocWithLocaleSwitcher
         type="text"
         label={<FormattedMessage {...messages.questionDescription} />}
         valueMultiloc={questionDescription}
-        onChange={setQuestionDescription}
+        onChange={(value: Multiloc) =>
+          onStateChange('questionDescription', value)
+        }
       />
       <Toggle
         checked={!!isRequired}
-        onChange={() => {
-          setIsRequired(!isRequired);
-        }}
+        onChange={() => onStateChange('isRequired', !isRequired)}
       />
       <Box display="flex" justifyContent="space-between">
         <Button buttonStyle="primary" onClick={onSave} minWidth="160px">

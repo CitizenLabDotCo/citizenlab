@@ -13,21 +13,28 @@ import { Box, Title } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
-// services
-import { addSurveyCustomField } from 'modules/free/native_surveys/services/surveyCustomFields';
+import { ISurveyCustomFieldAdd } from 'modules/free/native_surveys/services/surveyCustomFields';
 
 const DraggableElement = styled.div`
   cursor: move;
 `;
 
+interface SurveyBuilderToolboxProps {
+  onAddField: (field: ISurveyCustomFieldAdd) => void;
+}
+
 const SurveyBuilderToolbox = ({
   intl: { formatMessage },
-}: InjectedIntlProps) => {
-  const handleSubmit = async () => {
-    await addSurveyCustomField({
-      input_type: 'text',
-      title_multiloc: {
-        en: formatMessage(messages.newField),
+  onAddField,
+}: SurveyBuilderToolboxProps & InjectedIntlProps) => {
+  const handleAddShortAnswer = () => {
+    onAddField({
+      id: `${Math.random()}`,
+      attributes: {
+        description_multiloc: {},
+        input_type: 'text',
+        required: true,
+        title_multiloc: { en: 'New field' },
       },
     });
   };
@@ -63,7 +70,7 @@ const SurveyBuilderToolbox = ({
           <ToolboxItem
             icon="text"
             label={formatMessage(messages.shortAnswer)}
-            onClick={handleSubmit}
+            onClick={handleAddShortAnswer}
           />
         </DraggableElement>
       </Box>
