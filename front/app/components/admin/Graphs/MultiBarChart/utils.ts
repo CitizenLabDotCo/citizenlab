@@ -1,14 +1,5 @@
 import { DataRow } from '../typings';
-
-// MAPPING
-type MappingFunction<T> = (row: DataRow) => T[];
-type Channel<T> = string[] | MappingFunction<T>;
-
-export interface Mapping {
-  length: string[];
-  fill?: Channel<string>;
-  opacity?: Channel<number>;
-}
+import { Channel, Layout, BarProps, ParsedBarProps, CategoryProps } from './typings';
 
 export const applyChannel = <T>(
   row: DataRow,
@@ -19,26 +10,6 @@ export const applyChannel = <T>(
   if (channel instanceof Function) return channel(row)[index];
   return;
 };
-
-// BARS
-export interface BarProps {
-  name?: string[];
-  size?: number[];
-  fill?: string[];
-  opacity?: (string | number)[];
-  isAnimationActive?: boolean;
-  categoryGap?: string | number;
-}
-
-interface CategoryProps {
-  name?: string;
-  barSize?: number;
-  fill?: string;
-  opacity?: string | number;
-  isAnimationActive?: boolean;
-}
-
-type ParsedBarProps = CategoryProps[];
 
 export const parseBarProps = (
   defaultFill: string,
@@ -62,9 +33,6 @@ export const parseBarProps = (
 
   return parsedBarProps;
 };
-
-// LAYOUT
-export type Layout = 'horizontal' | 'vertical';
 
 // For some reason, in recharts a 'horizontal' bar chart
 // actually means a 'vertical' bar chart. For our own API

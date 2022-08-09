@@ -1,4 +1,4 @@
-import React, { RefObject } from 'react';
+import React from 'react';
 import { isEmpty } from 'lodash-es';
 
 // styling
@@ -22,44 +22,13 @@ import { FormattedMessage } from 'utils/cl-intl';
 // utils
 import {
   parseBarProps,
-  BarProps,
   getRechartsLayout,
-  Mapping,
   applyChannel,
-  Layout,
 } from './utils';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
-import { Margin, Data, AxisProps } from 'components/admin/Graphs/typings';
-
-interface RenderLabelsProps {
-  fill: string;
-  fontSize: number;
-  position: 'top' | 'right';
-}
-
-interface RenderTooltipProps {
-  isAnimationActive: false;
-  cursor: { fill: string };
-}
-
-export interface Props {
-  width?: string | number;
-  height?: string | number;
-  data?: Data | null | Error;
-  mapping: Mapping;
-  layout?: Layout;
-  margin?: Margin;
-  bars?: BarProps;
-  xaxis?: AxisProps;
-  yaxis?: AxisProps;
-  renderLabels?: (props: RenderLabelsProps) => React.ReactNode;
-  renderTooltip?: (props: RenderTooltipProps) => React.ReactNode;
-  emptyContainerContent?: React.ReactNode;
-  className?: string;
-  innerRef?: RefObject<any>;
-}
+import { Props } from './typings';
 
 const MultiBarChart = ({
   width,
