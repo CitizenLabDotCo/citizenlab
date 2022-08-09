@@ -8,7 +8,7 @@
 
 ### Added
 
-- [CL-1015] Enable age graphs in representation dashboard
+- [CL-1273] Enable age graphs in representation dashboard
 
 ## 2022-08-04
 
