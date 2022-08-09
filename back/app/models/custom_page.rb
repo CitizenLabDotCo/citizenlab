@@ -62,7 +62,7 @@ class CustomPage < ApplicationRecord
 
   validates :projects_enabled, inclusion: [true, false]
   with_options if: -> { projects_enabled == true } do
-    validates :projects_filter_type, inclusion: %w[area topics]
+    validates :projects_filter_type, presence: true, inclusion: %w[area topics]
   end
 
   validates :events_widget_enabled, inclusion: [true, false]

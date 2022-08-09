@@ -10,6 +10,13 @@ RSpec.describe CustomPage, type: :model do
       it { is_expected.to validate_presence_of(:banner_cta_button_url) }
       it { is_expected.to validate_presence_of(:banner_cta_button_multiloc) }
     end
+
+    context 'when projects_enabled is set to true' do
+      subject { described_class.new(projects_enabled: true) }
+
+      it { is_expected.to validate_presence_of(:projects_filter_type) }
+      it { is_expected.to validate_inclusion_of(:projects_filter_type).in_array(%w[area topics]) }
+    end
   end
 
   describe 'image uploads' do
