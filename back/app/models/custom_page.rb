@@ -27,6 +27,10 @@
 #  created_at                   :datetime         not null
 #  updated_at                   :datetime         not null
 #
+# Indexes
+#
+#  index_custom_pages_on_slug  (slug)
+#
 class CustomPage < ApplicationRecord
   has_many :pins, as: :page, inverse_of: :page, dependent: :destroy
   has_many :pinned_admin_publications, through: :pins, source: :admin_publication

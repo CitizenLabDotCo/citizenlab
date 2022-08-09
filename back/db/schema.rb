@@ -216,6 +216,7 @@ ActiveRecord::Schema.define(version: 2022_08_08_135654) do
     t.string "header_bg"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["slug"], name: "index_custom_pages_on_slug"
   end
 
   create_table "email_campaigns_campaign_email_commands", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
