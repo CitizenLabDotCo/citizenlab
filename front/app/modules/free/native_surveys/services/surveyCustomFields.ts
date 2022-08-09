@@ -112,9 +112,13 @@ export function surveyCustomFieldsStream(
 
 export async function updateSurveyCustomFields(projectId: string, array) {
   const apiEndpoint = `${API_PATH}/admin/projects/${projectId}/custom_fields/update_all`;
-  return streams.update<ICustomFields>(apiEndpoint, projectId, {
-    custom_fields: array,
-  });
+  return streams.update<ICustomFields>(
+    apiEndpoint,
+    `${projectId}/custom_fields`,
+    {
+      custom_fields: array,
+    }
+  );
 }
 
 export function deleteSurveyCustomField(customFieldId: string) {
