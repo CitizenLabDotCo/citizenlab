@@ -90,7 +90,7 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   }, [search]);
 
   const onSubmit = async (data) => {
-    // TODO Once the API is updated to include a new property in the JSON schema, we can handle the submit differently for ideas versus survey inputs (i.e. no redirection)
+    // TODO Next iteration: Handle the submit differently for ideas versus survey inputs (i.e. no redirection)
 
     let location_point_geojson;
 
