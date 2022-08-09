@@ -7,6 +7,17 @@ class WebApi::V1::AdminPublicationsController < ::ApplicationController
   def index
     publication_filterer = AdminPublicationsFilteringService.new
     publications = policy_scope(AdminPublication.includes(:parent))
+
+    if params[:search].present?
+      Rails.logger.info("*" * 30)
+      Rails.logger.info("*" * 30)
+      Rails.logger.info("*" * 30)
+      Rails.logger.info(params[:search])
+      Rails.logger.info("*" * 30)
+      Rails.logger.info("*" * 30)
+      Rails.logger.info("*" * 30)
+    end
+
     publications = publication_filterer.filter(publications, params)
 
     @publications = publications.includes(:publication, :children)

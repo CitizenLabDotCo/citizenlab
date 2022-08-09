@@ -41,8 +41,22 @@ class AdminPublicationsFilteringService
     projects = Project.where(id: scope.where(publication_type: Project.name).select(:publication_id))
     filtered_projects = ProjectsFilteringService.new.filter(projects, options)
 
+    if options[:search].present?
+      filtered_projects = filtered_projects.search_by_all(options[:search])
+    end
+
     project_publications = scope.where(publication: filtered_projects)
     other_publications = scope.where.not(publication_type: Project.name)
+    project_publications.or(other_publications)
+  end
+
+  add_filter('search_folders') do |scope, options|
+    next scope if options[:search].blank?
+
+    searched_folders = ProjectFolders::Folder.search_by_all(options[:search])
+
+    project_publications = scope.where(publication: searched_folders)
+    other_publications = scope.where.not(publication_type: ProjectFolders::Folder.name)
     project_publications.or(other_publications)
   end
 
