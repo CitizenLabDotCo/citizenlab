@@ -41,7 +41,7 @@ const EmptyState = () => (
 
         <Box display="flex" justifyContent="center">
           <Button
-            width="164px"
+            width="auto"
             mb="16px"
             bgColor={colors.adminTextColor}
             linkTo="/admin/dashboard/representation/edit-base-data"
