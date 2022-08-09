@@ -35,8 +35,10 @@ class CustomPage < ApplicationRecord
   has_many :pins, as: :page, inverse_of: :page, dependent: :destroy
   has_many :pinned_admin_publications, through: :pins, source: :admin_publication
 
-  # has_many :text_images, as: :imageable, dependent: :destroy
-  # accepts_nested_attributes_for :text_images
+  has_many :text_images, as: :imageable, dependent: :destroy
+  accepts_nested_attributes_for :text_images
+
+  has_many :custom_page_files, -> { order(:ordering) }, dependent: :destroy, inverse_of: :custom_page
 
   accepts_nested_attributes_for :pinned_admin_publications, allow_destroy: true
 
@@ -47,7 +49,7 @@ class CustomPage < ApplicationRecord
 
   validates :slug, presence: true, uniqueness: true
 
-  validates :banner_enabled, inclusion: [true, false]
+  validates :banner_enabled, inclusion: [true, false] # Default is true on db table, perhaps should be false on db table?
   validates :banner_layout, inclusion: %w[full_width_banner_layout two_column_layout two_row_layout]
   validates :banner_overlay_color, css_color: true
   validates :banner_overlay_opacity, numericality: { only_integer: true,

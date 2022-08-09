@@ -45,6 +45,13 @@ class WebApi::V1::FilesController < ApplicationController
       policy_scope_class: StaticPageFilePolicy::Scope,
       file_relationship: :static_page_files,
       container_id: :static_page_id
+    },
+    'CustomPage' => {
+      container_class: CustomPage,
+      file_class: CustomPageFile,
+      policy_scope_class: CustomPageFilePolicy::Scope,
+      file_relationship: :custom_page_files,
+      container_id: :custom_page_id
     }
   }
 
