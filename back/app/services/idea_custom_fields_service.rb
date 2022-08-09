@@ -47,6 +47,8 @@ class IdeaCustomFieldsService
   attr_reader :custom_form
 
   def native_survey?
+    return false unless custom_form
+
     project = custom_form.project
     project.continuous? && project.native_survey?
   end

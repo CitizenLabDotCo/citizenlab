@@ -3,7 +3,6 @@ import styled, { css } from 'styled-components';
 import { media, fontSizes } from 'utils/styleUtils';
 import AvatarBubbles from 'components/AvatarBubbles';
 import useLocalize from 'hooks/useLocalize';
-import useAppConfiguration from 'hooks/useAppConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../tracks';
@@ -11,9 +10,10 @@ import { openSignUpInModal } from 'components/SignUpIn/events';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 import { injectIntl } from 'utils/cl-intl';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import Outlet from 'components/Outlet';
 import SignUpButton from '../SignUpButton';
+import useHomepageSettings from 'hooks/useHomepageSettings';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const Container = styled.div<{
   align: 'center' | 'left';
@@ -144,7 +144,7 @@ const HeaderContent = ({
   fontColors,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
-  const appConfiguration = useAppConfiguration();
+  const homepageSettings = useHomepageSettings();
   const localize = useLocalize();
 
   const signUpIn = (event: React.FormEvent) => {
@@ -155,23 +155,25 @@ const HeaderContent = ({
     openSignUpInModal();
   };
   const buttonStyle = getButtonStyle(fontColors);
+  // Flag should not be here, but inside module.
   const customizableHomepageBannerEnabled = useFeatureFlag({
     name: 'customizable_homepage_banner',
   });
 
-  if (!isNilOrError(appConfiguration)) {
-    const coreSettings = appConfiguration.data.attributes.settings.core;
-    const headerTitle = coreSettings.header_title
-      ? localize(coreSettings.header_title)
+  if (!isNilOrError(homepageSettings)) {
+    const homepageAttributes = homepageSettings.data.attributes;
+
+    const headerTitle = homepageAttributes.banner_signed_out_header_multiloc
+      ? localize(homepageAttributes.banner_signed_out_header_multiloc)
       : formatMessage(messages.titleCity);
-    const headerSubtitle = coreSettings.header_slogan
-      ? localize(coreSettings.header_slogan)
-      : formatMessage(messages.subtitleCity);
-    const headerImage = appConfiguration.data.attributes.header_bg?.large;
-    const displayHeaderAvatars =
-      appConfiguration.data.attributes.settings.core.display_header_avatars;
-    const customizableHomepageBanner =
-      appConfiguration.data.attributes.settings.customizable_homepage_banner;
+    const headerSubtitle =
+      homepageAttributes.banner_signed_out_subheader_multiloc
+        ? localize(homepageAttributes.banner_signed_out_subheader_multiloc)
+        : formatMessage(messages.subtitleCity);
+    const headerImage = homepageAttributes.header_bg
+      ? homepageAttributes.header_bg.large
+      : null;
+    const displayHeaderAvatars = homepageAttributes.banner_avatars_enabled;
 
     return (
       <Container
@@ -200,15 +202,15 @@ const HeaderContent = ({
 
         {displayHeaderAvatars && <StyledAvatarBubbles />}
 
+        {/*
+          This should use a mechanisme similar to navbarModuleActive instead.
+          The core shouldn't have feature flags about modularized features.
+        */}
         {!customizableHomepageBannerEnabled && (
           <SignUpButton buttonStyle={buttonStyle} signUpIn={signUpIn} />
         )}
         <Outlet
           id="app.containers.LandingPage.SignedOutHeader.CTA"
-          ctaType={customizableHomepageBanner.cta_signed_out_type}
-          customizedButtonConfig={
-            customizableHomepageBanner.cta_signed_out_customized_button
-          }
           buttonStyle={buttonStyle}
           signUpIn={signUpIn}
         />
