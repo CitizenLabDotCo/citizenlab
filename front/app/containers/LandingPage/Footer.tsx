@@ -1,7 +1,7 @@
 import React from 'react';
 import useAuthUser from 'hooks/useAuthUser';
 import useLocalize from 'hooks/useLocalize';
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import useHomepageSettings from 'hooks/useHomepageSettings';
 
 // utils
 import { trackEventByName } from 'utils/analytics';
@@ -56,7 +56,7 @@ const StyledAvatarBubbles = styled(AvatarBubbles)`
 const Footer = () => {
   const authUser = useAuthUser();
   const localize = useLocalize();
-  const appConfiguration = useAppConfiguration();
+  const homepageSettings = useHomepageSettings();
 
   const signUpIn = (event: React.FormEvent) => {
     event.preventDefault();
@@ -66,12 +66,12 @@ const Footer = () => {
     openSignUpInModal();
   };
 
-  if (!isNilOrError(appConfiguration)) {
+  if (!isNilOrError(homepageSettings)) {
     // tranlate header slogan into a h2 wih a fallback
     const headerSloganMultiLoc =
-      appConfiguration.data.attributes.settings.core.header_slogan;
+      homepageSettings.data.attributes.banner_signed_out_subheader_multiloc;
     const displayHeaderAvatars =
-      appConfiguration.data.attributes.settings.core.display_header_avatars;
+      homepageSettings.data.attributes.banner_avatars_enabled;
 
     return (
       <>

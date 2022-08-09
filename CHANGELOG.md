@@ -1,6 +1,16 @@
 # Changelog
 
-## Next Release
+## 2022-08-04
+
+### Added
+
+-[CL-5] Customizable Pages iteration 1
+
+## 2022-08-03
+
+### Added
+
+- [CL-1189] Added Turkish locale to platform
 
 ## 2022-07-28_2
 
@@ -61,6 +71,7 @@
 
 ### Added
 
+- [CL-1058] - Add desktop preview in content builder
 - [CL-1096] Add representativeness score to header of representativeness chart card
 
 ## 2022-07-07
@@ -93,6 +104,7 @@
 ### Fixed
 
 - [CL-1083] XLSX export issues with custom fields
+
 
 ## 2022-07-04
 
