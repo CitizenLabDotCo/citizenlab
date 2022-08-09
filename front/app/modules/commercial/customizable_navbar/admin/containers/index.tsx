@@ -1,12 +1,21 @@
 import React from 'react';
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import TabbedResource from 'components/admin/TabbedResource';
 import { Outlet as RouterOutlet } from 'react-router-dom';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
+import messages from './messages';
 
-export const NAVIGATION_PATH = '/admin/settings/navigation';
-
-export default () => {
-  const featureEnabled = useFeatureFlag({ name: 'customizable_navbar' });
-  if (!featureEnabled) return null;
-
-  return <RouterOutlet />;
+const PagesMenu = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+  return (
+    <TabbedResource
+      resource={{
+        title: formatMessage(messages.pageHeader),
+        subtitle: formatMessage(messages.pageSubtitle),
+      }}
+    >
+      <RouterOutlet />
+    </TabbedResource>
+  );
 };
+
+export default injectIntl(PagesMenu);

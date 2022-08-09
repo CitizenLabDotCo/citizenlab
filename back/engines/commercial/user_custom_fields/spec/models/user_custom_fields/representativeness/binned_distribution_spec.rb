@@ -11,15 +11,16 @@ RSpec.describe UserCustomFields::Representativeness::BinnedDistribution do
     it { is_expected.to be_valid }
   end
 
-  # This patch is needed to test counts validations.
+  # This helper is necessary to run the tests for counts validations in
+  # 'reference distribution' shared examples.
   # See 'reference distribution' shared examples for more info.
-  described_class.class_eval do
-    def counts=(counts)
-      distribution['counts'] = counts
-    end
+  def transform_counts(ref_distribution)
+    counts = ref_distribution.distribution['counts']
+    new_counts = yield counts.dup
+    ref_distribution.distribution['counts'] = new_counts
   end
 
-  it_behaves_like 'reference distribution', described_class, :binned_distribution
+  it_behaves_like 'reference distribution', :binned_distribution
 
   it 'validates that bin boundaries are ordered', :aggregate_failures do
     bin_boundaries.reverse!

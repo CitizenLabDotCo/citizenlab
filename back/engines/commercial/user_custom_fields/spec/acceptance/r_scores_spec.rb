@@ -11,6 +11,9 @@ resource 'R-scores (Representativeness scores)' do
           Project ID. Only participants of this project will be considered to compute the score.
     DESC
 
+    # `custom_field_id` is overridden in the `when admin` context below.
+    # For the other (non-authorized) users, it's value does not matter and the custom
+    # field may not even exist.
     let(:custom_field_id) { 'whatever' }
 
     context 'when admin' do

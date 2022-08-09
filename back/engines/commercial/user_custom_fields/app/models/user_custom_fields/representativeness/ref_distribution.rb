@@ -26,21 +26,17 @@ module UserCustomFields
       attr_readonly :type
       belongs_to :custom_field
 
-      validates :type, presence: true, inclusion: { in: ->(_record) { allowed_types } }
+      validates :type, presence: true
       validates :distribution, presence: true, json: { schema: -> { self.class.distribution_schema }, message: ->(errors) { errors } }
       validates :custom_field_id, uniqueness: true
       validate :validate_distribution_counts
       validate :validate_custom_field_type_with_guard
 
       class << self
-        def allowed_types
-          @allowed_types = descendants.map(&:name)
-        end
-
         # This method allows pundit to identify the right policy class for
         # instances of subclasses of this class.
         def policy_class
-          UserCustomFields::Representativeness::RefDistributionPolicy
+          ::UserCustomFields::Representativeness::RefDistributionPolicy
         end
 
         def distribution_schema
