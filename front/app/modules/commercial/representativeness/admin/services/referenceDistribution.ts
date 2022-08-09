@@ -5,6 +5,7 @@ import {
   IUserCustomFieldData,
   TCustomFieldCode,
 } from 'modules/commercial/user_custom_fields/services/userCustomFields';
+import { getEndpoint as getRScoreEndpoint } from './rScore';
 
 const ENDPOINT_BY_CODE = {
   gender: `${statsEndpoint}/users_by_gender`,
@@ -90,6 +91,7 @@ export async function createReferenceDistribution(
     apiEndpoint: [
       getCustomFieldEndpoint(id),
       getStatsEndpoint(code, id),
+      getRScoreEndpoint(id),
       `${API_PATH}/users/custom_fields`,
     ],
   });
@@ -107,7 +109,7 @@ export async function replaceReferenceDistribution(
   );
 
   await streams.fetchAllWith({
-    apiEndpoint: [getStatsEndpoint(code, id)],
+    apiEndpoint: [getStatsEndpoint(code, id), getRScoreEndpoint(id)],
   });
 
   return response;
@@ -126,6 +128,7 @@ export async function deleteReferenceDistribution({
     apiEndpoint: [
       getCustomFieldEndpoint(id),
       getStatsEndpoint(code, id),
+      getRScoreEndpoint(id),
       `${API_PATH}/users/custom_fields`,
     ],
   });
