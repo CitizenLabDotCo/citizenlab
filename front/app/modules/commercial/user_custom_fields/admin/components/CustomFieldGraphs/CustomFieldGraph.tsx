@@ -10,7 +10,10 @@ import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import T from 'components/T';
 
 // styling
-import { withTheme } from 'styled-components';
+import {
+  sizes,
+  DEFAULT_BAR_CHART_MARGIN,
+} from 'components/admin/Graphs/styling';
 
 // components
 import ReportExportMenu from 'components/admin/ReportExportMenu';
@@ -22,7 +25,6 @@ import {
 } from 'components/admin/GraphWrappers';
 import { Tooltip, LabelList } from 'recharts';
 import BarChart from 'components/admin/Graphs/BarChart';
-import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/constants';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
 // typings
@@ -150,8 +152,7 @@ const CustomFieldsGraph = ({
   localize,
   intl: { formatMessage },
   className,
-  theme: { barSize },
-}: Props & { theme: any }) => {
+}: Props) => {
   const [serie, setSerie] = useState<TOutput | null>(null);
   const currentChartRef = useRef();
   const convertAndMergeSeriesRef = useRef(
@@ -230,7 +231,7 @@ const CustomFieldsGraph = ({
             ...DEFAULT_BAR_CHART_MARGIN,
             left: 20,
           }}
-          bars={{ name: formatMessage(messages.participants), size: barSize }}
+          bars={{ name: formatMessage(messages.participants), size: sizes.bar }}
           mapping={{ length: 'participants' }}
           yaxis={{ width: 150, tickLine: false }}
           renderTooltip={() => (
@@ -255,7 +256,5 @@ const CustomFieldsGraph = ({
 };
 
 export default injectLocalize<InputProps>(
-  injectIntl<InputProps & InjectedLocalized>(
-    withTheme(CustomFieldsGraph as any) as any
-  )
+  injectIntl<InputProps & InjectedLocalized>(CustomFieldsGraph)
 );

@@ -2,7 +2,7 @@ import React from 'react';
 
 // components
 import MultiBarChart from 'components/admin/Graphs/MultiBarChart';
-import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/constants';
+import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/styling';
 import { LabelList, Tooltip } from 'recharts';
 import CustomTooltip from './CustomTooltip';
 

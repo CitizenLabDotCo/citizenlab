@@ -6,7 +6,11 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 
 // styling
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
+import {
+  sizes,
+  DEFAULT_BAR_CHART_MARGIN,
+} from 'components/admin/Graphs/styling';
 import { media } from 'utils/styleUtils';
 
 // resources
@@ -24,7 +28,6 @@ import { IResolution } from 'components/admin/ResolutionControl';
 import { Select } from '@citizenlab/cl2-component-library';
 import { HiddenLabel } from 'utils/a11y';
 import BarChart from 'components/admin/Graphs/BarChart';
-import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/constants';
 
 // typings
 import {
@@ -158,7 +161,6 @@ const SelectableResourceChart = ({
   ...reportExportMenuProps
 }: Props & InjectedIntlProps) => {
   const currentChart = useRef();
-  const { barSize }: any = useTheme();
 
   const unitName = formatMessage(RESOURCE_MESSAGES[currentSelectedResource]);
   const xlsxEndpoint = XLSX_ENDPOINTS_MAP[currentSelectedResource + byWhat];
@@ -201,7 +203,7 @@ const SelectableResourceChart = ({
               ? (row) => (row.code === currentFilter ? 1 : 0.5)
               : undefined,
           }}
-          bars={{ name: unitName, size: barSize }}
+          bars={{ name: unitName, size: sizes.bar }}
           yaxis={{ width: 150, tickLine: false }}
           renderLabels={(props) => <LabelList {...props} />}
           renderTooltip={(props) => <Tooltip {...props} />}
