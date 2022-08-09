@@ -9,4 +9,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.topBar.viewSurvey',
     defaultMessage: 'View survey',
   },
+  save: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.topBar.save',
+    defaultMessage: 'Save',
+  },
 });

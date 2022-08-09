@@ -3,11 +3,11 @@ import { useState, useEffect } from 'react';
 import {
   surveyCustomFieldsStream,
   ISurveyCustomFieldData,
-  ISurveyCustomFieldInputType,
+  ICustomFieldInputType,
 } from '../services/surveyCustomFields';
 
 interface Props {
-  inputTypes?: ISurveyCustomFieldInputType[];
+  inputTypes?: ICustomFieldInputType[];
   projectId: string;
 }
 

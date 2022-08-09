@@ -20,7 +20,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import {
   ISurveyCustomFieldData,
-  updateSurveyCustomField,
   ISurveyCustomFieldUpdate,
 } from 'modules/free/native_surveys/services/surveyCustomFields';
 
@@ -58,7 +57,9 @@ const SurveyBuilderSettings = ({ field, onDelete, onFieldChange }: Props) => {
         },
       });
     }
-  }, [fieldState, field, onFieldChange]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fieldState]);
 
   if (isNilOrError(field)) {
     return null;
@@ -69,14 +70,6 @@ const SurveyBuilderSettings = ({ field, onDelete, onFieldChange }: Props) => {
   if (field.attributes.input_type === 'text') {
     translatedStringKey = messages.shortAnswer;
   }
-
-  const onSave = () => {
-    updateSurveyCustomField(field.id, {
-      title_multiloc: questionTitle,
-      description_multiloc: questionDescription,
-      required: isRequired,
-    });
-  };
 
   const onStateChange = (key: string, value: Multiloc | boolean) => {
     setFieldState({
@@ -122,9 +115,6 @@ const SurveyBuilderSettings = ({ field, onDelete, onFieldChange }: Props) => {
         onChange={() => onStateChange('isRequired', !isRequired)}
       />
       <Box display="flex" justifyContent="space-between">
-        <Button buttonStyle="primary" onClick={onSave} minWidth="160px">
-          <FormattedMessage {...messages.save} />
-        </Button>
         <Button
           icon="delete"
           buttonStyle="primary-outlined"

@@ -86,7 +86,7 @@ export const SurveyEdit = () => {
       h="100vh"
     >
       <FocusOn>
-        <SurveyBuilderTopBar />
+        <SurveyBuilderTopBar surveyCustomFields={surveyCustomFields} />
         <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
           <SurveyBuilderToolbox onAddField={onAddField} />
           <StyledRightColumn>

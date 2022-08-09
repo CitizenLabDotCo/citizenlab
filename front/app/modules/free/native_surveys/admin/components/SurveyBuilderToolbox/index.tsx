@@ -30,6 +30,7 @@ const SurveyBuilderToolbox = ({
   const handleAddShortAnswer = () => {
     onAddField({
       id: `${Math.random()}`,
+      isLocalOnly: true,
       attributes: {
         description_multiloc: {},
         input_type: 'text',

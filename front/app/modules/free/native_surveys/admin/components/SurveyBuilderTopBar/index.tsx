@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -29,13 +29,46 @@ import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { useParams } from 'react-router-dom';
 
-const SurveyBuilderTopBar = () => {
+import {
+  ISurveyCustomFieldData,
+  updateSurveyCustomFields,
+} from 'modules/free/native_surveys/services/surveyCustomFields';
+
+interface SurveyBuilderTopBarProps {
+  surveyCustomFields: ISurveyCustomFieldData[] | undefined | Error;
+}
+
+const SurveyBuilderTopBar = ({
+  surveyCustomFields,
+}: SurveyBuilderTopBarProps) => {
   const localize = useLocalize();
-  const { projectId } = useParams();
+  const { projectId } = useParams() as { projectId: string };
   const project = useProject({ projectId });
+  const [loading, setLoading] = useState(false);
 
   const goBack = () => {
     clHistory.push(`/admin/projects/${projectId}/native-survey`);
+  };
+
+  const handleSave = async () => {
+    if (!isNilOrError(surveyCustomFields)) {
+      try {
+        setLoading(true);
+        const finalResponseArray = surveyCustomFields.map((field) => ({
+          ...(!field.isLocalOnly && { id: field.id }),
+          input_type: field.attributes.input_type,
+          required: field.attributes.required,
+          enabled: field.attributes.enabled,
+          title_multiloc: field.attributes.title_multiloc || {},
+          description_multiloc: field.attributes.description_multiloc || {},
+        }));
+        await updateSurveyCustomFields(projectId, finalResponseArray);
+      } catch {
+        // Do nothing
+      } finally {
+        setLoading(false);
+      }
+    }
   };
 
   return (
@@ -84,6 +117,15 @@ const SurveyBuilderTopBar = () => {
           openLinkInNewTab
         >
           <FormattedMessage {...messages.viewSurvey} />
+        </Button>
+        <Button
+          buttonStyle="primary"
+          mx="20px"
+          disabled={!project}
+          processing={loading}
+          onClick={handleSave}
+        >
+          <FormattedMessage {...messages.save} />
         </Button>
       </Box>
     </Box>

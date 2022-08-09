@@ -61,7 +61,9 @@ const SurveyFields = ({
                 <Button
                   buttonStyle="secondary"
                   icon="edit"
-                  onClick={() => onEditField(field)}
+                  onClick={() => {
+                    onEditField(field);
+                  }}
                 >
                   <FormattedMessage {...messages.editButtonLabel} />
                 </Button>

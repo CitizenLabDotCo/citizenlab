@@ -8,7 +8,7 @@ export const surveyCustomFieldsEndpoint = `${API_PATH}/users/custom_fields/json_
 
 // Please note that the structure is bound to change once we move to the custom idea api.
 // We are using the user custom fields api for now to make progress on the frontend
-export type ISurveyCustomFieldInputType =
+export type ICustomFieldInputType =
   | 'text'
   | 'number'
   | 'multiline_text'
@@ -24,7 +24,7 @@ export interface ISurveyCustomFieldData {
     key: string;
     title_multiloc: Multiloc;
     description_multiloc: Multiloc;
-    input_type: ISurveyCustomFieldInputType;
+    input_type: ICustomFieldInputType;
     required: boolean;
     enabled: boolean;
     ordering: number;
@@ -40,6 +40,20 @@ export interface ISurveyCustomFieldData {
       data: IRelationship;
     };
   };
+  isLocalOnly?: boolean;
+}
+
+export interface ICustomField {
+  id: string;
+  input_type: ICustomFieldInputType;
+  required: boolean;
+  enabled: boolean;
+  title_multiloc: Multiloc;
+  description_multiloc: Multiloc;
+}
+
+export interface ICustomFields {
+  custom_fields: ICustomField[];
 }
 
 type NestedKeys<T extends string, U extends string[]> = {
@@ -54,9 +68,12 @@ type PartialExcept<T, U extends string[]> = {
     : T[K];
 };
 
-export type ISurveyCustomFieldAdd = PartialExcept<
+export type ISurveyCustomFieldAdd = {
+  id: string;
+} & PartialExcept<
   ISurveyCustomFieldData,
   [
+    'id',
     'type',
     'attributes.key',
     'attributes.required',
@@ -71,7 +88,7 @@ export type ISurveyCustomFieldAdd = PartialExcept<
 
 export type ISurveyCustomFieldUpdate = PartialExcept<
   ISurveyCustomFieldAdd,
-  ['attributes.input_type']
+  ['attributes.input_type', 'isLocalOnly']
 >;
 
 export interface ISurveyCustomField {
@@ -86,19 +103,18 @@ export function surveyCustomFieldsStream(
   projectId: string,
   streamParams: IStreamParams | null = null
 ) {
-  const apiEndpoint = `${API_PATH}/projects/${projectId}/custom_fields/schema`;
+  const apiEndpoint = `${API_PATH}/admin/projects/${projectId}/custom_fields`;
   return streams.get<ISurveyCustomFields>({
     apiEndpoint,
     ...streamParams,
   });
 }
 
-export function updateSurveyCustomField(customFieldId: string, object) {
-  return streams.update<ISurveyCustomField>(
-    `${API_PATH}/users/custom_fields/${customFieldId}`,
-    customFieldId,
-    { custom_field: object }
-  );
+export async function updateSurveyCustomFields(projectId: string, array) {
+  const apiEndpoint = `${API_PATH}/admin/projects/${projectId}/custom_fields/update_all`;
+  return streams.update<ICustomFields>(apiEndpoint, projectId, {
+    custom_fields: array,
+  });
 }
 
 export function deleteSurveyCustomField(customFieldId: string) {

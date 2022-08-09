@@ -21,8 +21,4 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.settings.questionDescription',
     defaultMessage: 'Question description',
   },
-  save: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.settings.save',
-    defaultMessage: 'Save',
-  },
 });
