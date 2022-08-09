@@ -177,12 +177,6 @@ resource 'Idea Custom Fields' do
 
     patch 'web_api/v1/admin/projects/:project_id/custom_fields/update_all' do
       parameter :custom_fields, type: :array
-      # parameter :id, 'The ID of an existing custom field to update. When the ID is not provided, a new field is created.', required: false
-      # parameter :required, 'Whether filling out the field is mandatory', required: true
-      # parameter :enabled, 'Whether the field is active or not', required: true
-      # parameter :title_multiloc, 'An optional title of the field, as shown to users, in multiple locales', required: true
-      # parameter :description_multiloc, 'An optional description of the field, as shown to users, in multiple locales', required: false
-
       with_options scope: 'custom_fields[]' do
         parameter :id, 'The ID of an existing custom field to update. When the ID is not provided, a new field is created.', required: false
         parameter :input_type, 'The type of the input. Required when creating a new field.', required: false
