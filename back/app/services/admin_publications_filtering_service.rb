@@ -50,7 +50,7 @@ class AdminPublicationsFilteringService
     project_publications.or(other_publications)
   end
 
-  add_filter('search_folders') do |scope, options|
+  add_filter('filter_folders') do |scope, options|
     next scope if options[:search].blank?
 
     searched_folders = ProjectFolders::Folder.search_by_all(options[:search])
