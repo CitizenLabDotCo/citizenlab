@@ -29,4 +29,71 @@
 #
 # Contains settings & configuration data of a custom page.
 class CustomPage < ApplicationRecord
+  has_many :pins, as: :page, inverse_of: :page, dependent: :destroy
+  has_many :pinned_admin_publications, through: :pins, source: :admin_publication
+
+  # has_many :text_images, as: :imageable, dependent: :destroy
+  # accepts_nested_attributes_for :text_images
+
+  accepts_nested_attributes_for :pinned_admin_publications, allow_destroy: true
+
+  before_validation :sanitize_top_info_section_multiloc
+  before_validation :sanitize_bottom_info_section_multiloc
+
+  validates :title_multiloc, presence: true, multiloc: { presence: true }
+
+  validates :slug, presence: true, uniqueness: true
+
+  validates :banner_enabled, inclusion: [true, false]
+  validates :banner_layout, inclusion: %w[full_width_banner_layout two_column_layout two_row_layout]
+  validates :banner_overlay_color, css_color: true
+  validates :banner_overlay_opacity, numericality: { only_integer: true,
+                                                     in: [0..100],
+                                                     allow_nil: true }
+  validates :banner_header_multiloc, multiloc: true
+  validates :banner_subheader_multiloc, multiloc: true
+  validates :banner_cta_button_type, inclusion: %w[customized_button no_button]
+  with_options if: -> { banner_cta_button_type == 'customized_button' } do
+    validates :banner_cta_button_multiloc, presence: true, multiloc: { presence: true }
+    validates :banner_cta_button_url, presence: true, url: true
+  end
+
+  validates :top_info_section_enabled, inclusion: [true, false]
+  validates :top_info_section_multiloc, multiloc: { presence: false, html: true }
+
+  validates :projects_enabled, inclusion: [true, false]
+  with_options if: -> { projects_enabled == true } do
+    validates :projects_filter_type, inclusion: %w[area topics]
+  end
+
+  validates :events_widget_enabled, inclusion: [true, false]
+
+  validates :bottom_info_section_enabled, inclusion: [true, false]
+  validates :bottom_info_section_multiloc, multiloc: { presence: false, html: true }
+
+  mount_base64_uploader :header_bg, HeaderBgUploader
+
+  private
+
+  def sanitize_top_info_section_multiloc
+    sanitize_info_section_multiloc(:top_info_section_multiloc)
+  end
+
+  def sanitize_bottom_info_section_multiloc
+    sanitize_info_section_multiloc(:bottom_info_section_multiloc)
+  end
+
+  # Sanitizes an info section multiloc.
+  # - Removes invalid HTML
+  # - Removes empty trailing tags
+  # - Automatically links URLs
+  def sanitize_info_section_multiloc(attribute)
+    return if self[attribute].nil?
+
+    @service ||= SanitizationService.new
+
+    self[attribute] = @service.sanitize_multiloc(self[attribute], %i[title alignment list decoration link image video])
+    self[attribute] = @service.remove_multiloc_empty_trailing_tags(self[attribute])
+    self[attribute] = @service.linkify_multiloc(self[attribute])
+  end
 end
