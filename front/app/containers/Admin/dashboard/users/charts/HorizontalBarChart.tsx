@@ -105,6 +105,7 @@ export class HorizontalBarChart extends React.PureComponent<
             )}
           </GraphCardHeader>
           <BarChart
+            innerRef={this.currentChart}
             height={!noData && serie.length > 1 ? serie.length * 50 : 100}
             data={serie}
             layout="horizontal"
