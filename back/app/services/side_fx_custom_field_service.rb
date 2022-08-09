@@ -9,6 +9,8 @@ class SideFxCustomFieldService
     LogActivityJob.perform_later(custom_field, 'created', current_user, custom_field.created_at.to_i)
   end
 
+  def before_update(custom_field, current_user); end
+
   def after_update(custom_field, current_user)
     LogActivityJob.perform_later(custom_field, 'changed', current_user, custom_field.updated_at.to_i)
   end

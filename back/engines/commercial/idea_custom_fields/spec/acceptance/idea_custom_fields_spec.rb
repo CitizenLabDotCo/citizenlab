@@ -174,5 +174,115 @@ resource 'Idea Custom Fields' do
         expect(CustomField.count).to eq 1
       end
     end
+
+    patch 'web_api/v1/admin/projects/:project_id/custom_fields/update_all' do
+      parameter :custom_fields, type: :array
+      with_options scope: 'custom_fields[]' do
+        parameter :id, 'The ID of an existing custom field to update. When the ID is not provided, a new field is created.', required: false
+        parameter :input_type, 'The type of the input. Required when creating a new field.', required: false
+        parameter :required, 'Whether filling out the field is mandatory', required: true
+        parameter :enabled, 'Whether the field is active or not', required: true
+        parameter :title_multiloc, 'An optional title of the field, as shown to users, in multiple locales', required: true
+        parameter :description_multiloc, 'An optional description of the field, as shown to users, in multiple locales', required: false
+      end
+
+      let(:project) { create(:continuous_project, participation_method: 'native_survey') }
+      let(:custom_form) { create(:custom_form, project: project) }
+      let(:project_id) { project.id }
+
+      example '[error] Invalid data' do
+        field_to_update = create(:custom_field, resource: custom_form, title_multiloc: { 'en' => 'Some field' })
+        request = {
+          custom_fields: [
+            {
+              # input_type is not given
+              title_multiloc: { 'en' => 'Inserted field' },
+              required: false,
+              enabled: false
+            },
+            {
+              id: field_to_update.id,
+              title_multiloc: { 'en' => '' },
+              required: true,
+              enabled: true
+            }
+          ]
+        }
+        do_request request
+
+        assert_status 422
+        json_response = json_parse(response_body)
+        expect(json_response[:errors]).to eq({
+          '0': {
+            input_type: [
+              { error: 'blank' },
+              { error: 'inclusion', value: nil }
+            ]
+          },
+          '1': {
+            title_multiloc: [{ error: 'blank' }]
+          }
+        })
+      end
+
+      example 'Insert one field, update one field, and destroy one field' do
+        field_to_update = create(:custom_field, resource: custom_form, title_multiloc: { 'en' => 'Some field' })
+        create(:custom_field, resource: custom_form) # field to destroy
+        request = {
+          custom_fields: [
+            # Inserted field first to test reordering of fields.
+            {
+              input_type: 'text',
+              title_multiloc: { 'en' => 'Inserted field' },
+              required: false,
+              enabled: false
+            },
+            {
+              id: field_to_update.id,
+              title_multiloc: { 'en' => 'Updated field' },
+              required: true,
+              enabled: true
+            }
+          ]
+        }
+        do_request request
+
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 2
+        expect(json_response[:data][0]).to match({
+          attributes: {
+            code: nil,
+            created_at: an_instance_of(String),
+            description_multiloc: {},
+            enabled: false,
+            input_type: 'text',
+            key: 'inserted_field',
+            ordering: 0,
+            required: false,
+            title_multiloc: { en: 'Inserted field' },
+            updated_at: an_instance_of(String)
+          },
+          id: an_instance_of(String),
+          type: 'custom_field'
+        })
+        expect(json_response[:data][1]).to match({
+          attributes: {
+            code: nil,
+            created_at: an_instance_of(String),
+            description_multiloc: { en: 'Which councils are you attending in our city?' },
+            enabled: true,
+            input_type: 'text',
+            key: field_to_update.key,
+            ordering: 1,
+            required: true,
+            title_multiloc: { en: 'Updated field' },
+            updated_at: an_instance_of(String)
+          },
+          id: an_instance_of(String),
+          type: 'custom_field'
+        })
+      end
+    end
   end
 end
