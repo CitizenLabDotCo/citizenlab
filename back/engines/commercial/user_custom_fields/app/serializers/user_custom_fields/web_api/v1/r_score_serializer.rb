@@ -11,7 +11,7 @@ module UserCustomFields
 
         has_one(
           :reference_distribution,
-          serializer: UserCustomFields::WebApi::V1::RefDistributionSerializer
+          polymorphic: true
         ) { |rscore, _params| rscore.ref_distribution }
       end
     end

@@ -1,8 +1,8 @@
 import {
   Mapping as ConvertedMapping,
   BarProps as ConvertedBarProps,
-  DataRow,
 } from 'components/admin/Graphs/MultiBarChart/utils';
+import { DataRow } from '../typings';
 
 // MAPPING
 type MappingFunction<T> = (row: DataRow) => T;
