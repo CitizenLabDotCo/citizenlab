@@ -11,7 +11,6 @@ RSpec.shared_examples 'reference distribution' do |factory_name|
   # This group of examples runs only if the :assign_counts helper method is defined to
   # allow tests to assign new counts to the reference distribution.
   #
-  #   #
   #   def transform_counts(ref_distribution, &block)
   #    ...
   #   end
