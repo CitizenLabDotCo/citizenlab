@@ -46,14 +46,31 @@ interface Props {
   visibleFilterMenus: string[];
 }
 
-class FilterSidebar extends React.PureComponent<Props & InjectedIntlProps> {
-  handleItemClick = (_event, data) => {
-    this.props.onChangeActiveFilterMenu(data.id);
+const FilterSidebar = ({
+  onChangeActiveFilterMenu,
+  intl: { formatMessage },
+  activeFilterMenu,
+  phases,
+  projects,
+  statuses,
+  topics,
+  selectedTopics,
+  selectedPhase,
+  selectedProject,
+  selectedStatus,
+  onChangePhaseFilter,
+  onChangeTopicsFilter,
+  onChangeProjectFilter,
+  onChangeStatusFilter,
+  visibleFilterMenus,
+}: Props & InjectedIntlProps) => {
+  const handleItemClick = (_event, data) => {
+    onChangeActiveFilterMenu(data.id);
   };
 
-  tabName = (
+  const tabName = (
     messageKey: 'statusesTab' | 'timelineTab' | 'topicsTab' | 'projectsTab',
-    selection,
+    selection: string | string[] | null | undefined,
     key: 'phases' | 'projects' | 'topics' | 'statuses'
   ) => {
     const titleMessage = {
@@ -68,8 +85,8 @@ class FilterSidebar extends React.PureComponent<Props & InjectedIntlProps> {
       topicsTab: messages.topicsTabTooltipText,
       projectsTab: messages.projectsTabTooltipContent,
     }[messageKey];
-    const title = this.props.intl.formatMessage(titleMessage);
-    const active = this.props.activeFilterMenu === key;
+    const title = formatMessage(titleMessage);
+    const active = activeFilterMenu === key;
     const selectionSign = isEmpty(selection) ? '' : '*';
     return (
       <>
@@ -77,7 +94,7 @@ class FilterSidebar extends React.PureComponent<Props & InjectedIntlProps> {
         {selectionSign}&nbsp;
         {active ? (
           <Popup
-            content={this.props.intl.formatMessage(tooltipMessage)}
+            content={formatMessage(tooltipMessage)}
             trigger={
               <button>
                 <InfoIcon name="info3" />
@@ -89,81 +106,78 @@ class FilterSidebar extends React.PureComponent<Props & InjectedIntlProps> {
     );
   };
 
-  menuItems = {
+  const menuItems = {
     phases: () => ({
-      name: this.tabName('timelineTab', this.props.selectedPhase, 'phases'),
+      name: tabName('timelineTab', selectedPhase, 'phases'),
       key: 'phases',
       content: (
         <PhasesMenu
-          phases={this.props.phases}
-          selectedPhase={this.props.selectedPhase}
-          onChangePhaseFilter={this.props.onChangePhaseFilter}
+          phases={phases}
+          selectedPhase={selectedPhase}
+          onChangePhaseFilter={onChangePhaseFilter}
         />
       ),
     }),
     topics: () => ({
-      name: this.tabName('topicsTab', this.props.selectedTopics, 'topics'),
+      name: tabName('topicsTab', selectedTopics, 'topics'),
       key: 'topics',
       content: (
         <TopicsMenu
-          selectableTopics={this.props.topics}
-          selectedTopics={this.props.selectedTopics}
-          onChangeTopicsFilter={this.props.onChangeTopicsFilter}
+          selectableTopics={topics}
+          selectedTopics={selectedTopics}
+          onChangeTopicsFilter={onChangeTopicsFilter}
         />
       ),
     }),
     projects: () => ({
-      name: this.tabName('projectsTab', this.props.selectedProject, 'projects'),
+      name: tabName('projectsTab', selectedProject, 'projects'),
       key: 'projects',
       content: (
         <ProjectsMenu
-          projects={this.props.projects}
-          selectedProject={this.props.selectedProject}
-          onChangeProjectFilter={this.props.onChangeProjectFilter}
+          projects={projects}
+          selectedProject={selectedProject}
+          onChangeProjectFilter={onChangeProjectFilter}
         />
       ),
     }),
     statuses: () => ({
-      name: this.tabName('statusesTab', this.props.selectedStatus, 'statuses'),
+      name: tabName('statusesTab', selectedStatus, 'statuses'),
       key: 'statuses',
       content: (
         <StatusesMenu
-          statuses={this.props.statuses}
-          selectedStatus={this.props.selectedStatus}
-          onChangeStatusFilter={this.props.onChangeStatusFilter}
+          statuses={statuses}
+          selectedStatus={selectedStatus}
+          onChangeStatusFilter={onChangeStatusFilter}
         />
       ),
     }),
   };
 
-  filteredMenuItems = () => {
-    return this.props.visibleFilterMenus.map((menuName) => {
-      return this.menuItems[menuName]();
+  const filteredMenuItems = () => {
+    return visibleFilterMenus.map((menuName) => {
+      return menuItems[menuName]();
     });
   };
 
-  render() {
-    const { activeFilterMenu } = this.props;
-    const items = this.filteredMenuItems();
-    const selectedItem = items.find((i) => i.key === activeFilterMenu);
-    return (
-      <>
-        <Menu tabular attached="top" size="tiny">
-          {items.map((item) => (
-            <Menu.Item
-              key={item.key}
-              id={item.key}
-              active={activeFilterMenu === item.key}
-              onClick={this.handleItemClick}
-            >
-              {item.name}
-            </Menu.Item>
-          ))}
-        </Menu>
-        <Segment attached="bottom">{selectedItem.content}</Segment>
-      </>
-    );
-  }
-}
+  const items = filteredMenuItems();
+  const selectedItem = items.find((i) => i.key === activeFilterMenu);
+  return (
+    <>
+      <Menu tabular attached="top" size="tiny">
+        {items.map((item) => (
+          <Menu.Item
+            key={item.key}
+            id={item.key}
+            active={activeFilterMenu === item.key}
+            onClick={handleItemClick}
+          >
+            {item.name}
+          </Menu.Item>
+        ))}
+      </Menu>
+      <Segment attached="bottom">{selectedItem.content}</Segment>
+    </>
+  );
+};
 
 export default injectIntl(FilterSidebar);
