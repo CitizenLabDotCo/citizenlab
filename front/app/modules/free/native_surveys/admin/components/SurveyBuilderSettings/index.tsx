@@ -55,8 +55,8 @@ const SurveyBuilderSettings = ({
       onFieldChange({
         ...field,
         id: field.id,
-        title_multiloc: fieldState.questionTitle as Multiloc,
-        description_multiloc: fieldState.questionDescription as Multiloc,
+        title_multiloc: fieldState.questionTitle,
+        description_multiloc: fieldState.questionDescription,
         required: !!fieldState.isRequired,
       });
     }

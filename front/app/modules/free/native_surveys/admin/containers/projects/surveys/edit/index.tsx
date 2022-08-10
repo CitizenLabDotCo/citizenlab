@@ -60,6 +60,7 @@ export const SurveyEdit = () => {
     }
   };
 
+  // TODO: Improve this to remove usage of type casting
   const onAddField = (field: IFlatCreateCustomField) => {
     if (!isNilOrError(surveyCustomFields)) {
       setSurveyCustomFields(
