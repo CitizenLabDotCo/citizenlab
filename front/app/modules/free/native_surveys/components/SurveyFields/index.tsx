@@ -37,7 +37,7 @@ const SurveyFields = ({
 }: CustomFieldsProps) => {
   return (
     <DndProvider backend={HTML5Backend}>
-      <Box p="32px">
+      <Box p="32px" height="100%" overflowY="auto">
         <List key={surveyCustomFields.length}>
           {surveyCustomFields.map((field, index) => {
             return (
