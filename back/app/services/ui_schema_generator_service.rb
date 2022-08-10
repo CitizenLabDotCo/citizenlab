@@ -149,7 +149,7 @@ class UiSchemaGeneratorService < FieldVisitorService
 
   attr_reader :locales, :multiloc_service, :current_locale
 
-  def multiloc_field(field)
+  def multiloc_field(_field)
     elements = locales.map do |locale|
       yield.tap do |ui_field|
         ui_field[:scope] = "#{ui_field[:scope]}/properties/#{locale}"
@@ -163,7 +163,7 @@ class UiSchemaGeneratorService < FieldVisitorService
     }
   end
 
-  def for_current_locale(multiloc, locale)
+  def for_current_locale(multiloc)
     I18n.with_locale(current_locale) do
       multiloc_service.t multiloc
     end
