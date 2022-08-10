@@ -9,7 +9,8 @@ class PublicApi::V1::ProjectSerializer < ActiveModel::Serializer
     :description_preview,
     :ideas_count,
     :href,
-    :images
+    :images,
+    :map_center_geojson
 
   def title
     @@multiloc_service.t(object.title_multiloc)
@@ -31,5 +32,9 @@ class PublicApi::V1::ProjectSerializer < ActiveModel::Serializer
 
   def href
     Frontend::UrlService.new.model_to_url object
+  end
+
+  def map_center_geojson
+    object.map_config&.center_geojson
   end
 end

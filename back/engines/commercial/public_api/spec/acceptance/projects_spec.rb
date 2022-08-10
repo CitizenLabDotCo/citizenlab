@@ -40,6 +40,7 @@ resource 'Projects' do
   route '/api/v1/projects/:id', 'Projects: Retrieve one project' do
     get 'Retrieve one project' do
       let(:project) { create(:project) }
+      let!(:map_config) { create(:map_config, :with_positioning, project: project) }
       let(:id) { project.id }
 
       example_request 'Get one project by id' do
@@ -50,10 +51,21 @@ resource 'Projects' do
           title: 'Renew West Parc',
           description_html: '<p>Let\'s renew the parc at the city border and make it an enjoyable place for young and old.</p>',
           description_preview: 'Let\'s renew the parc at the city border and make it an enjoyable place for young and old.',
-          href: 'http://example.org/projects/renew-west-parc-11',
+          map_center_geojson: { coordinates: [an_instance_of(Float), an_instance_of(Float)], type: 'Point' },
+          href: "http://example.org/projects/#{project.slug}",
           ideas_count: 0,
           images: []
         })
+      end
+
+      example 'Get one project by id without a map configuration', document: false do
+        project.update!(map_config: nil)
+        do_request
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:project]).to include(
+          map_center_geojson: nil
+        )
       end
     end
   end
