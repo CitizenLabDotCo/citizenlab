@@ -102,7 +102,7 @@ const SurveyBuilderTopBar = ({
                 {localize(project.attributes.title_multiloc)}
               </Text>
               <Title variant="h4" as="h1">
-                <FormattedMessage {...messages.surveyText} />
+                <FormattedMessage {...messages.surveyTitle} />
               </Title>
             </>
           )}

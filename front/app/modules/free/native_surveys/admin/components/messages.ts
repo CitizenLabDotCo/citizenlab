@@ -1,8 +1,8 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  surveyText: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.surveyText',
+  surveyTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.surveyTitle',
     defaultMessage: 'Survey',
   },
   viewSurvey: {
