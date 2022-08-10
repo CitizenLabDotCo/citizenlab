@@ -20,12 +20,13 @@ import CloseIconButton from 'components/UI/CloseIconButton';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-import {
-  ISurveyCustomFieldData,
-  ISurveyCustomFieldUpdate,
-} from 'modules/free/native_surveys/services/surveyCustomFields';
-
+// Types
 import { Multiloc } from 'typings';
+
+import {
+  IFlatCustomField,
+  IFlatUpdateCustomField,
+} from 'modules/free/native_surveys/services/surveyCustomFields';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -35,9 +36,9 @@ const StyledBox = styled(Box)`
 `;
 
 interface Props {
-  field?: ISurveyCustomFieldData;
+  field?: IFlatCustomField;
   onDelete: (fieldId: string) => void;
-  onFieldChange: (field: ISurveyCustomFieldUpdate) => void;
+  onFieldChange: (field: IFlatUpdateCustomField) => void;
   onClose: () => void;
 }
 
@@ -49,20 +50,19 @@ const SurveyBuilderSettings = ({
 }: Props) => {
   // I'm keeping this form as simple as possible using state pending form rework from (TEC-35)
   const [fieldState, setFieldState] = useState({
-    isRequired: field?.attributes.required,
-    questionTitle: field?.attributes.title_multiloc,
-    questionDescription: field?.attributes.description_multiloc,
+    isRequired: field?.required || false,
+    questionTitle: field?.title_multiloc || {},
+    questionDescription: field?.description_multiloc || {},
   });
 
   useEffect(() => {
     if (!isNilOrError(field)) {
       onFieldChange({
         id: field.id,
-        attributes: {
-          title_multiloc: fieldState.questionTitle as Multiloc,
-          description_multiloc: fieldState.questionDescription as Multiloc,
-          required: !!fieldState.isRequired,
-        },
+        title_multiloc: fieldState.questionTitle as Multiloc,
+        description_multiloc: fieldState.questionDescription as Multiloc,
+        required: !!fieldState.isRequired,
+        enabled: true,
       });
     }
 
@@ -75,7 +75,7 @@ const SurveyBuilderSettings = ({
 
   let translatedStringKey: ReactIntl.FormattedMessage.MessageDescriptor | null =
     null;
-  if (field.attributes.input_type === 'text') {
+  if (field.input_type === 'text') {
     translatedStringKey = messages.shortAnswer;
   }
 
@@ -99,15 +99,13 @@ const SurveyBuilderSettings = ({
       h="100%"
       background="#ffffff"
     >
-      <Box mb="20px">
-        <Box position="absolute" right="8px">
-          <CloseIconButton
-            a11y_buttonActionMessage={messages.close}
-            onClick={onClose}
-            iconColor={colors.label}
-            iconColorOnHover={'#000'}
-          />
-        </Box>
+      <Box position="absolute" right="8px" mb="20px">
+        <CloseIconButton
+          a11y_buttonActionMessage={messages.close}
+          onClick={onClose}
+          iconColor={colors.label}
+          iconColorOnHover={'#000'}
+        />
       </Box>
       {translatedStringKey && (
         <SectionTitle>
@@ -133,23 +131,15 @@ const SurveyBuilderSettings = ({
         />
       </SectionField>
       <SectionField>
-        <Box flexDirection="row" alignItems="center" justifyContent="center">
-          <Toggle
-            checked={!!isRequired}
-            onChange={() => onStateChange('isRequired', !isRequired)}
-            label={
-              <Text
-                as="span"
-                color="adminTextColor"
-                variant="bodyM"
-                mt="0px"
-                mb="0px"
-              >
-                <FormattedMessage {...messages.required} />
-              </Text>
-            }
-          />
-        </Box>
+        <Toggle
+          checked={!!isRequired}
+          onChange={() => onStateChange('isRequired', !isRequired)}
+          label={
+            <Text as="span" color="adminTextColor" variant="bodyM" my="0px">
+              <FormattedMessage {...messages.required} />
+            </Text>
+          }
+        />
       </SectionField>
       <Box display="flex" justifyContent="space-between">
         <Button

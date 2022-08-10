@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 
+import { surveyCustomFieldsStream } from '../services/surveyCustomFields';
+
 import {
-  surveyCustomFieldsStream,
-  ISurveyCustomFieldData,
+  ICustomFieldResponse,
   ICustomFieldInputType,
-} from '../services/surveyCustomFields';
+  IFlatCustomField,
+} from 'modules/free/native_surveys/services/surveyCustomFields';
 
 interface Props {
   inputTypes?: ICustomFieldInputType[];
@@ -16,14 +18,25 @@ export default function useSurveyCustomFields({
   projectId,
 }: Props) {
   const [surveyCustomFields, setSurveyCustomFields] = useState<
-    ISurveyCustomFieldData[] | undefined | Error
+    IFlatCustomField[] | undefined | Error
   >(undefined);
 
   useEffect(() => {
+    // We flatten this to work with the differences in the body of the update structure and that of the get response
+    const flattenSurveyCustomFields = (
+      fields: ICustomFieldResponse[]
+    ): IFlatCustomField[] => {
+      return fields.map(({ id, type, attributes }) => ({
+        id,
+        type,
+        ...attributes,
+      }));
+    };
+
     const subscription = surveyCustomFieldsStream(projectId, {
       queryParameters: { input_types: inputTypes },
     }).observable.subscribe((surveyCustomFields) => {
-      setSurveyCustomFields(surveyCustomFields.data);
+      setSurveyCustomFields(flattenSurveyCustomFields(surveyCustomFields.data));
     });
 
     return () => subscription.unsubscribe();

@@ -12,8 +12,7 @@ import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
 import { Box } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
 
-// typings
-import { ISurveyCustomFieldData } from 'modules/free/native_surveys/services/surveyCustomFields';
+import { IFlatCustomField } from 'modules/free/native_surveys/services/surveyCustomFields';
 
 import styled from 'styled-components';
 
@@ -27,8 +26,8 @@ const TextCellContent = styled.span`
 `;
 
 interface CustomFieldsProps {
-  onEditField: (field: ISurveyCustomFieldData) => void;
-  surveyCustomFields: ISurveyCustomFieldData[];
+  onEditField: (field: IFlatCustomField) => void;
+  surveyCustomFields: IFlatCustomField[];
 }
 
 const SurveyFields = ({
@@ -55,7 +54,7 @@ const SurveyFields = ({
               >
                 <StyledTextCell className="expand">
                   <TextCellContent>
-                    <T value={field.attributes.title_multiloc} />
+                    <T value={field.title_multiloc} />
                   </TextCellContent>
                 </StyledTextCell>
                 <Button

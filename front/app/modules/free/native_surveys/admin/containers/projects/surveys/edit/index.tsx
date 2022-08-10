@@ -21,7 +21,10 @@ import useSurveyCustomFields from 'modules/free/native_surveys/hooks/useSurveyCu
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
-import { ISurveyCustomFieldData } from 'modules/free/native_surveys/services/surveyCustomFields';
+import {
+  IFlatCreateCustomField,
+  IFlatCustomField,
+} from 'modules/free/native_surveys/services/surveyCustomFields';
 
 const StyledRightColumn = styled(RightColumn)`
   height: calc(100vh - ${stylingConsts.menuHeight}px);
@@ -35,7 +38,7 @@ const StyledRightColumn = styled(RightColumn)`
 
 export const SurveyEdit = () => {
   const [selectedField, setSelectedField] = useState<
-    ISurveyCustomFieldData | undefined
+    IFlatCustomField | undefined
   >(undefined);
   const { projectId } = useParams() as { projectId: string };
 
@@ -57,23 +60,22 @@ export const SurveyEdit = () => {
     }
   };
 
-  const onAddField = (field: ISurveyCustomFieldData) => {
+  const onAddField = (field: IFlatCreateCustomField) => {
     if (!isNilOrError(surveyCustomFields)) {
-      setSurveyCustomFields(surveyCustomFields.concat([field]));
+      setSurveyCustomFields(
+        surveyCustomFields.concat([field as IFlatCustomField])
+      );
     } else {
-      setSurveyCustomFields([field]);
+      setSurveyCustomFields([field as IFlatCustomField]);
     }
   };
 
-  const onFieldChange = (field: ISurveyCustomFieldData) => {
+  const onFieldChange = (field: IFlatCustomField) => {
     if (!isNilOrError(surveyCustomFields)) {
       setSurveyCustomFields(
         surveyCustomFields.map((f) => {
           if (f.id === field.id) {
-            return {
-              ...f,
-              ...{ attributes: { ...f.attributes, ...field.attributes } },
-            };
+            return field;
           }
           return f;
         })

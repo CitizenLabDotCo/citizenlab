@@ -13,14 +13,14 @@ import { Box, Title } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
-import { ISurveyCustomFieldAdd } from 'modules/free/native_surveys/services/surveyCustomFields';
+import { IFlatCreateCustomField } from 'modules/free/native_surveys/services/surveyCustomFields';
 
 const DraggableElement = styled.div`
   cursor: move;
 `;
 
 interface SurveyBuilderToolboxProps {
-  onAddField: (field: ISurveyCustomFieldAdd) => void;
+  onAddField: (field: IFlatCreateCustomField) => void;
 }
 
 const SurveyBuilderToolbox = ({
@@ -31,12 +31,11 @@ const SurveyBuilderToolbox = ({
     onAddField({
       id: `${Math.random()}`,
       isLocalOnly: true,
-      attributes: {
-        description_multiloc: {},
-        input_type: 'text',
-        required: true,
-        title_multiloc: { en: 'New field' },
-      },
+      description_multiloc: {},
+      input_type: 'text',
+      required: false,
+      title_multiloc: { en: 'New field' },
+      enabled: true,
     });
   };
 

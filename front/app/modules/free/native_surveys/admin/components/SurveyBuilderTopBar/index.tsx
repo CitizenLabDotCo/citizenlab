@@ -30,12 +30,12 @@ import clHistory from 'utils/cl-router/history';
 import { useParams } from 'react-router-dom';
 
 import {
-  ISurveyCustomFieldData,
   updateSurveyCustomFields,
+  IFlatCustomField,
 } from 'modules/free/native_surveys/services/surveyCustomFields';
 
 interface SurveyBuilderTopBarProps {
-  surveyCustomFields: ISurveyCustomFieldData[] | undefined | Error;
+  surveyCustomFields: IFlatCustomField[] | undefined | Error;
 }
 
 const SurveyBuilderTopBar = ({
@@ -56,11 +56,11 @@ const SurveyBuilderTopBar = ({
         setLoading(true);
         const finalResponseArray = surveyCustomFields.map((field) => ({
           ...(!field.isLocalOnly && { id: field.id }),
-          input_type: field.attributes.input_type,
-          required: field.attributes.required,
-          enabled: field.attributes.enabled,
-          title_multiloc: field.attributes.title_multiloc || {},
-          description_multiloc: field.attributes.description_multiloc || {},
+          input_type: field.input_type,
+          required: field.required,
+          enabled: field.enabled,
+          title_multiloc: field.title_multiloc || {},
+          description_multiloc: field.description_multiloc || {},
         }));
         await updateSurveyCustomFields(projectId, finalResponseArray);
       } catch {
