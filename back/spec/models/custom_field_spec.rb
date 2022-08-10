@@ -252,7 +252,7 @@ RSpec.describe CustomField, type: :model do
       subject(:field) { build :custom_field, input_type: 'unsupported' }
 
       it 'raises an error' do
-        expect { field.accept(visitor)}.to raise_error 'Unsupported input type: unsupported'
+        expect { field.accept(visitor) }.to raise_error 'Unsupported input type: unsupported'
       end
     end
   end
