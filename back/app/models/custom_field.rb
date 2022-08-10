@@ -90,7 +90,10 @@ class CustomField < ApplicationRecord
   def generate_key
     return if key
 
-    self.key = CustomFieldService.new.generate_key(self, title_multiloc.values.first) do |key_proposal|
+    title = title_multiloc.values.first
+    return unless title
+
+    self.key = CustomFieldService.new.generate_key(self, title) do |key_proposal|
       self.class.find_by(key: key_proposal, resource_type: resource_type)
     end
   end

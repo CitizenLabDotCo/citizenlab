@@ -9,6 +9,24 @@ RSpec.describe CustomField, type: :model do
       expect(cf.key).to be_present
     end
 
+    describe 'saving a custom field without title_multiloc' do
+      it 'produces validation errors on the key and the title_multiloc' do
+        form = create :custom_form
+        field = described_class.new resource: form, input_type: 'text', title_multiloc: {}
+        expect(field.save).to be false
+        expect(field.errors.details).to eq({
+          key: [
+            { error: :blank },
+            { error: :invalid, value: nil }
+          ],
+          title_multiloc: [
+            { error: :blank },
+            { error: :blank }
+          ]
+        })
+      end
+    end
+
     it 'generates unique keys in the resource_type scope, if not specified' do
       cf1 = create(:custom_field)
       cf2 = create(:custom_field)
