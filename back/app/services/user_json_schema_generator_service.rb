@@ -1,0 +1,32 @@
+# frozen_string_literal: true
+
+class UserJsonSchemaGeneratorService < JsonSchemaGeneratorService
+  # Code comes from back/app/services/concerns/json_forms_user_overrides.rb
+
+  def visit_number(field)
+    return super unless field.code == 'domicile'
+
+    super.tap do |schema|
+      years = (1900..(Time.now.year - 12)).to_a.reverse
+      schema[:oneOf] = years.map { |y| { const: y } }
+    end
+  end
+
+  def visit_select(field)
+    return super unless field.code == 'domicile'
+
+    super.tap do |schema|
+      areas = Area.all.order(created_at: :desc).map do |area|
+        {
+          const: area.id,
+          title: multiloc_service.t(area.title_multiloc)
+        }
+      end
+      areas.push({
+        const: 'outside',
+        title: I18n.t('custom_field_options.domicile.outside')
+      })
+      schema[:oneOf] = areas
+    end
+  end
+end

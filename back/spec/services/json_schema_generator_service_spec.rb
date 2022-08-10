@@ -198,7 +198,7 @@ RSpec.describe JsonSchemaGeneratorService do
   end
 
   describe '#visit_multiselect' do
-    context 'not required and without options' do
+    context 'when not required, and without options' do
       let(:field) { create :custom_field_select, input_type: 'multiselect', key: field_key }
 
       it 'returns the schema for the given field' do
@@ -213,7 +213,7 @@ RSpec.describe JsonSchemaGeneratorService do
       end
     end
 
-    context 'not required with options' do
+    context 'when not required, and with options' do
       let(:field) { create :custom_field_select, :with_options, input_type: 'multiselect', key: field_key }
 
       it 'returns the schema for the given field' do
@@ -238,7 +238,7 @@ RSpec.describe JsonSchemaGeneratorService do
       end
     end
 
-    context 'required with options' do
+    context 'when required, and with options' do
       let(:field) { create :custom_field_select, :with_options, input_type: 'multiselect', key: field_key, required: true }
 
       it 'returns the schema for the given field' do
