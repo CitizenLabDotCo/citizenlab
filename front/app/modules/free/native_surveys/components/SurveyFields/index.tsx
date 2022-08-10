@@ -9,12 +9,14 @@ import messages from './messages';
 // components
 import Button from 'components/UI/Button';
 import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Badge } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
 
 import { IFlatCustomField } from 'modules/free/native_surveys/services/surveyCustomFields';
 
+// styling
 import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
 
 const StyledTextCell = styled(TextCell)`
   display: flex;
@@ -23,6 +25,10 @@ const StyledTextCell = styled(TextCell)`
 const TextCellContent = styled.span`
   display: flex;
   align-items: center;
+`;
+
+const StyledBadge = styled(Badge)`
+  margin-left: 12px;
 `;
 
 interface CustomFieldsProps {
@@ -56,6 +62,9 @@ const SurveyFields = ({
                   <TextCellContent>
                     <T value={field.title_multiloc} />
                   </TextCellContent>
+                  <StyledBadge color={colors.adminSecondaryTextColor}>
+                    <FormattedMessage {...messages.shortAnswer} />
+                  </StyledBadge>
                 </StyledTextCell>
                 <Button
                   buttonStyle="secondary"

@@ -58,11 +58,11 @@ const SurveyBuilderSettings = ({
   useEffect(() => {
     if (!isNilOrError(field)) {
       onFieldChange({
+        ...field,
         id: field.id,
         title_multiloc: fieldState.questionTitle as Multiloc,
         description_multiloc: fieldState.questionDescription as Multiloc,
         required: !!fieldState.isRequired,
-        enabled: true,
       });
     }
 

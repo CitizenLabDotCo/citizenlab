@@ -13,4 +13,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.customFields.editButtonLabel',
     defaultMessage: 'Edit',
   },
+  shortAnswer: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.customFields.shortAnswer',
+    defaultMessage: 'Short answer',
+  },
 });

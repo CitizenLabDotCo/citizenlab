@@ -34,7 +34,7 @@ const SurveyBuilderToolbox = ({
       description_multiloc: {},
       input_type: 'text',
       required: false,
-      title_multiloc: { en: 'New field' },
+      title_multiloc: {},
       enabled: true,
     });
   };
