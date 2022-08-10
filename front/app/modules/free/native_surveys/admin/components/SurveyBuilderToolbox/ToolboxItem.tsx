@@ -3,11 +3,14 @@ import styled from 'styled-components';
 
 // Components
 import { Box, Icon, IconNames, Text } from '@citizenlab/cl2-component-library';
+import Button from 'components/UI/Button';
+
 import { colors } from 'utils/styleUtils';
 
 interface Props {
   label: string;
   icon: IconNames;
+  onClick: () => void;
 }
 
 const StyledBox = styled(Box)`
@@ -17,7 +20,7 @@ const StyledBox = styled(Box)`
   }
 `;
 
-const ToolboxItem = ({ icon, label }: Props) => {
+const ToolboxItem = ({ icon, label, onClick }: Props) => {
   return (
     <StyledBox
       width="100%"
@@ -33,6 +36,7 @@ const ToolboxItem = ({ icon, label }: Props) => {
         name={icon}
       />
       <Text color="text">{label}</Text>
+      <Button buttonStyle="text" onClick={onClick} icon="plus" />
     </StyledBox>
   );
 };

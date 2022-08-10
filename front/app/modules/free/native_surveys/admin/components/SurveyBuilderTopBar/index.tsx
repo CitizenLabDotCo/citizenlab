@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -22,20 +22,53 @@ import {
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
-import messages from './messages';
+import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // routing
 import clHistory from 'utils/cl-router/history';
 import { useParams } from 'react-router-dom';
 
-const SurveyBuilderTopBar = () => {
+import {
+  updateSurveyCustomFields,
+  IFlatCustomField,
+} from 'modules/free/native_surveys/services/surveyCustomFields';
+
+interface SurveyBuilderTopBarProps {
+  surveyCustomFields: IFlatCustomField[] | undefined | Error;
+}
+
+const SurveyBuilderTopBar = ({
+  surveyCustomFields,
+}: SurveyBuilderTopBarProps) => {
   const localize = useLocalize();
-  const { projectId } = useParams();
+  const { projectId } = useParams() as { projectId: string };
   const project = useProject({ projectId });
+  const [loading, setLoading] = useState(false);
 
   const goBack = () => {
     clHistory.push(`/admin/projects/${projectId}/native-survey`);
+  };
+
+  const save = async () => {
+    if (!isNilOrError(surveyCustomFields)) {
+      try {
+        setLoading(true);
+        const finalResponseArray = surveyCustomFields.map((field) => ({
+          ...(!field.isLocalOnly && { id: field.id }),
+          input_type: field.input_type,
+          required: field.required,
+          enabled: field.enabled,
+          title_multiloc: field.title_multiloc || {},
+          description_multiloc: field.description_multiloc || {},
+        }));
+        await updateSurveyCustomFields(projectId, finalResponseArray);
+      } catch {
+        // TODO: Add error handling
+      } finally {
+        setLoading(false);
+      }
+    }
   };
 
   return (
@@ -69,7 +102,7 @@ const SurveyBuilderTopBar = () => {
                 {localize(project.attributes.title_multiloc)}
               </Text>
               <Title variant="h4" as="h1">
-                <FormattedMessage {...messages.survey} />
+                <FormattedMessage {...messages.surveyTitle} />
               </Title>
             </>
           )}
@@ -87,10 +120,12 @@ const SurveyBuilderTopBar = () => {
         </Button>
         <Button
           buttonStyle="primary"
-          onClick={() => {}}
-          data-testid="contentBuilderTopBarSaveButton"
+          mx="20px"
+          disabled={!project}
+          processing={loading}
+          onClick={save}
         >
-          <FormattedMessage {...messages.saveSurvey} />
+          <FormattedMessage {...messages.save} />
         </Button>
       </Box>
     </Box>
