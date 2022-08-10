@@ -2,16 +2,26 @@ import React from 'react';
 import { render, screen, waitFor } from 'utils/testUtils/rtl';
 import MultiBarChart from './';
 import { LabelList } from 'recharts';
+import { NilOrError } from 'utils/helperUtils';
+import { colors } from '../styling';
 
 jest.mock('services/appConfiguration');
 jest.mock('utils/cl-intl');
+
+type Row = { name: string; value1: number; value2: number };
+
+const getEmptyData = (): Row[] | NilOrError => null;
+const getErrorData = (): Row[] | NilOrError => new Error();
+const emptyData = getEmptyData();
+const errorData = getErrorData();
 
 describe('<MultiBarChart />', () => {
   describe('Missing data', () => {
     it('renders empty state message if data is nil', () => {
       render(
         <MultiBarChart
-          mapping={{ length: [] }}
+          data={emptyData}
+          mapping={{ category: 'name', length: ['value1', 'value2'] }}
           emptyContainerContent={'No data available'}
         />
       );
@@ -22,8 +32,8 @@ describe('<MultiBarChart />', () => {
     it('renders empty state message if data is Error', () => {
       render(
         <MultiBarChart
-          data={new Error()}
-          mapping={{ length: [] }}
+          data={errorData}
+          mapping={{ category: 'name', length: ['value1', 'value2'] }}
           emptyContainerContent={'No data available'}
         />
       );
@@ -41,15 +51,14 @@ describe('<MultiBarChart />', () => {
     const scale = (x) => 17.5 * x;
     const barHeights = [4, 10, 7].map((x) => scale(x).toString());
 
-    // TODO
     it('renders correctly with correct mapping', () => {
       const { container } = render(
         <MultiBarChart
           width={200}
           height={250}
           data={data}
-          mapping={{ length: ['value1', 'value2'] }}
-          bars={{ isAnimationActive: false }}
+          mapping={{ category: 'name', length: ['value1', 'value2'] }}
+          barSettings={{ isAnimationActive: false }}
         />
       );
 
@@ -73,81 +82,128 @@ describe('<MultiBarChart />', () => {
           width={200}
           height={250}
           data={data}
-          mapping={{ length: ['value1', 'value2'] }}
-          bars={{ fill: ['red', 'blue'], isAnimationActive: false }}
+          mapping={{
+            category: 'name',
+            length: ['value1', 'value2'],
+            fill: () => ['lightBlue', 'pinkRed'],
+          }}
+          barSettings={{ isAnimationActive: false }}
         />
       );
 
       const bars = container.querySelectorAll('path');
       expect(bars).toHaveLength(6);
 
-      expect(bars[0]).toHaveAttribute('fill', 'red');
-      expect(bars[1]).toHaveAttribute('fill', 'red');
-      expect(bars[2]).toHaveAttribute('fill', 'red');
-      expect(bars[3]).toHaveAttribute('fill', 'blue');
-      expect(bars[4]).toHaveAttribute('fill', 'blue');
-      expect(bars[5]).toHaveAttribute('fill', 'blue');
+      expect(bars[0]).toHaveAttribute('fill', colors.lightBlue);
+      expect(bars[1]).toHaveAttribute('fill', colors.lightBlue);
+      expect(bars[2]).toHaveAttribute('fill', colors.lightBlue);
+      expect(bars[3]).toHaveAttribute('fill', colors.pinkRed);
+      expect(bars[4]).toHaveAttribute('fill', colors.pinkRed);
+      expect(bars[5]).toHaveAttribute('fill', colors.pinkRed);
     });
 
     it('renders correctly with fill mapping', () => {
-      const data = [
+      interface Row2 extends Row {
+        fill1: string;
+        fill2: string;
+      }
+
+      const data: Row2[] = [
         { name: 'a', value1: 4, value2: 7, fill1: 'red', fill2: 'blue' },
         { name: 'b', value1: 10, value2: 4, fill1: 'blue', fill2: 'green' },
         { name: 'c', value1: 7, value2: 10, fill1: 'green', fill2: 'red' },
       ];
 
+      const mapping = {
+        red: 'pinkRed',
+        blue: 'lightBlue',
+        green: 'lightGreen',
+      };
+
       const { container } = render(
         <MultiBarChart
           width={200}
           height={250}
-          mapping={{
-            length: ['value1', 'value2'],
-            fill: ['fill1', 'fill2'],
-          }}
           data={data}
-          bars={{ isAnimationActive: false }}
+          mapping={{
+            category: 'name',
+            length: ['value1', 'value2'],
+            fill: ({ fill1, fill2 }) => [mapping[fill1], mapping[fill2]],
+          }}
+          barSettings={{ isAnimationActive: false }}
         />
       );
 
       const bars = container.querySelectorAll('path');
       expect(bars).toHaveLength(6);
 
-      expect(bars[0]).toHaveAttribute('fill', 'red');
-      expect(bars[1]).toHaveAttribute('fill', 'blue');
-      expect(bars[2]).toHaveAttribute('fill', 'green');
-      expect(bars[3]).toHaveAttribute('fill', 'blue');
-      expect(bars[4]).toHaveAttribute('fill', 'green');
-      expect(bars[5]).toHaveAttribute('fill', 'red');
+      expect(bars[0]).toHaveAttribute('fill', colors.pinkRed);
+      expect(bars[1]).toHaveAttribute('fill', colors.lightBlue);
+      expect(bars[2]).toHaveAttribute('fill', colors.lightGreen);
+      expect(bars[3]).toHaveAttribute('fill', colors.lightBlue);
+      expect(bars[4]).toHaveAttribute('fill', colors.lightGreen);
+      expect(bars[5]).toHaveAttribute('fill', colors.pinkRed);
     });
 
-    it('renders correctly when fill mapping is function', () => {
+    it('has correct fallback fill when not enough fills are provided', () => {
       const { container } = render(
         <MultiBarChart
           width={200}
           height={250}
-          mapping={{
-            length: ['value1', 'value2'],
-            fill: (row) =>
-              row.name === 'a' ? ['red', 'blue'] : ['green', 'orange'],
-          }}
           data={data}
-          bars={{ isAnimationActive: false }}
+          mapping={{
+            category: 'name',
+            length: ['value1', 'value2'],
+            fill: () => ['lightBlue'],
+          }}
+          barSettings={{ isAnimationActive: false }}
         />
       );
 
       const bars = container.querySelectorAll('path');
       expect(bars).toHaveLength(6);
 
-      expect(bars[0]).toHaveAttribute('fill', 'red');
-      expect(bars[1]).toHaveAttribute('fill', 'green');
-      expect(bars[2]).toHaveAttribute('fill', 'green');
-      expect(bars[3]).toHaveAttribute('fill', 'blue');
-      expect(bars[4]).toHaveAttribute('fill', 'orange');
-      expect(bars[5]).toHaveAttribute('fill', 'orange');
+      expect(bars[0]).toHaveAttribute('fill', colors.lightBlue);
+      expect(bars[1]).toHaveAttribute('fill', colors.lightBlue);
+      expect(bars[2]).toHaveAttribute('fill', colors.lightBlue);
+      expect(bars[3]).toHaveAttribute('fill', colors.barFill);
+      expect(bars[4]).toHaveAttribute('fill', colors.barFill);
+      expect(bars[5]).toHaveAttribute('fill', colors.barFill);
+    });
+
+    it('renders correctly with fixed opacities', () => {
+      const { container } = render(
+        <MultiBarChart
+          width={200}
+          height={250}
+          data={data}
+          mapping={{
+            category: 'name',
+            length: ['value1', 'value2'],
+            opacity: () => [0.8],
+          }}
+          barSettings={{ isAnimationActive: false }}
+        />
+      );
+
+      const bars = container.querySelectorAll('path');
+      expect(bars).toHaveLength(6);
+
+      expect(bars[0]).toHaveAttribute('opacity', '0.8');
+      expect(bars[1]).toHaveAttribute('opacity', '0.8');
+      expect(bars[2]).toHaveAttribute('opacity', '0.8');
+      expect(bars[3]).not.toHaveAttribute('opacity');
+      expect(bars[4]).not.toHaveAttribute('opacity');
+      expect(bars[5]).not.toHaveAttribute('opacity');
     });
 
     it('renders correctly with opacity mapping', () => {
-      const data = [
+      interface Row3 extends Row {
+        opacity1: number;
+        opacity2: number;
+      }
+
+      const data: Row3[] = [
         { name: 'a', value1: 4, value2: 7, opacity1: 1, opacity2: 0.8 },
         { name: 'b', value1: 10, value2: 4, opacity1: 0.5, opacity2: 0.3 },
         { name: 'c', value1: 7, value2: 10, opacity1: 0.7, opacity2: 0.4 },
@@ -157,12 +213,13 @@ describe('<MultiBarChart />', () => {
         <MultiBarChart
           width={200}
           height={250}
-          mapping={{
-            length: ['value1', 'value2'],
-            opacity: ['opacity1', 'opacity2'],
-          }}
           data={data}
-          bars={{ isAnimationActive: false }}
+          mapping={{
+            category: 'name',
+            length: ['value1', 'value2'],
+            opacity: ({ opacity1, opacity2 }) => [opacity1, opacity2],
+          }}
+          barSettings={{ isAnimationActive: false }}
         />
       );
 
@@ -176,31 +233,6 @@ describe('<MultiBarChart />', () => {
       expect(bars[4]).toHaveAttribute('opacity', '0.3');
       expect(bars[5]).toHaveAttribute('opacity', '0.4');
     });
-
-    it('renders correctly when opacity mapping is function', () => {
-      const { container } = render(
-        <MultiBarChart
-          width={200}
-          height={250}
-          mapping={{
-            length: ['value1', 'value2'],
-            opacity: (row) => (row.name === 'a' ? [1, 0.5] : [0.8, 0.6]),
-          }}
-          data={data}
-          bars={{ isAnimationActive: false }}
-        />
-      );
-
-      const bars = container.querySelectorAll('path');
-      expect(bars).toHaveLength(6);
-
-      expect(bars[0]).toHaveAttribute('opacity', '1');
-      expect(bars[1]).toHaveAttribute('opacity', '0.8');
-      expect(bars[2]).toHaveAttribute('opacity', '0.8');
-      expect(bars[3]).toHaveAttribute('opacity', '0.5');
-      expect(bars[4]).toHaveAttribute('opacity', '0.6');
-      expect(bars[5]).toHaveAttribute('opacity', '0.6');
-    });
   });
 
   describe('Horizontal layout', () => {
@@ -213,8 +245,8 @@ describe('<MultiBarChart />', () => {
           width={400}
           height={200}
           data={data}
-          mapping={{ length: ['value1', 'value2'] }}
-          bars={{ isAnimationActive: false }}
+          mapping={{ category: 'name', length: ['value1', 'value2'] }}
+          barSettings={{ isAnimationActive: false }}
           layout="horizontal"
         />
       );
@@ -247,8 +279,8 @@ describe('<MultiBarChart />', () => {
           width={400}
           height={200}
           data={data}
-          mapping={{ length: ['value1', 'value2'] }}
-          bars={{ isAnimationActive: false }}
+          mapping={{ category: 'name', length: ['value1', 'value2'] }}
+          barSettings={{ isAnimationActive: false }}
         />
       );
 
@@ -263,8 +295,8 @@ describe('<MultiBarChart />', () => {
           width={400}
           height={200}
           data={data}
-          mapping={{ length: ['value1', 'value2'] }}
-          bars={{ isAnimationActive: false }}
+          mapping={{ category: 'name', length: ['value1', 'value2'] }}
+          barSettings={{ isAnimationActive: false }}
           renderLabels={() => <LabelList />}
         />
       );

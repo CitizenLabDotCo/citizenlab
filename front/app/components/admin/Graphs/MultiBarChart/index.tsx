@@ -79,6 +79,7 @@ const MultiBarChart = <T,>({
             key={barIndex}
             animationDuration={animation.duration}
             animationBegin={animation.begin}
+            fill={colors.barFill}
             {...bar}
           >
             {renderLabels &&
