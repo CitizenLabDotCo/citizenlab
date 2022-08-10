@@ -19,7 +19,7 @@ import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
-import { getCategories, getRechartsLayout } from './utils';
+import { getBars, getRechartsLayout } from './utils';
 import { hasNoData } from '../utils';
 
 // typings
@@ -30,7 +30,7 @@ const MultiBarChart = <T,>({
   height,
   data,
   mapping,
-  bars,
+  barSettings,
   layout = 'vertical',
   margin,
   xaxis,
@@ -53,7 +53,7 @@ const MultiBarChart = <T,>({
     );
   }
 
-  const categories = getCategories(data, mapping, bars);
+  const bars = getBars(data, mapping, barSettings);
   const rechartsLayout = getRechartsLayout(layout);
   const labelPosition = layout === 'vertical' ? 'top' : 'right';
 
@@ -65,7 +65,7 @@ const MultiBarChart = <T,>({
         margin={margin}
         ref={innerRef}
         barGap={0}
-        barCategoryGap={bars?.categoryGap}
+        barCategoryGap={barSettings?.gap}
       >
         {renderTooltip &&
           renderTooltip({
@@ -73,12 +73,12 @@ const MultiBarChart = <T,>({
             cursor: { fill: colors.barHover },
           })}
 
-        {categories.map((category, categoryIndex) => (
+        {bars.map((bar, barIndex) => (
           <Bar
-            key={categoryIndex}
+            key={barIndex}
             animationDuration={animation.duration}
             animationBegin={animation.begin}
-            {...category}
+            {...bar}
           >
             {renderLabels &&
               renderLabels({
@@ -87,9 +87,9 @@ const MultiBarChart = <T,>({
                 position: labelPosition,
               })}
 
-            {category.cells &&
-              category.cells.map((cell, cellIndex) => (
-                <Cell key={`cell-${categoryIndex}-${cellIndex}`} {...cell} />
+            {bar.cells &&
+              bar.cells.map((cell, cellIndex) => (
+                <Cell key={`cell-${barIndex}-${cellIndex}`} {...cell} />
               ))}
           </Bar>
         ))}

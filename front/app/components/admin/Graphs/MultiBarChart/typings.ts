@@ -16,7 +16,7 @@ export interface Props<Row> {
   height?: string | number;
   data: Row[] | NilOrError;
   mapping: Mapping<Row>;
-  bars?: Bars;
+  barSettings?: BarSettings;
   layout?: Layout;
   margin?: Margin;
   xaxis?: AxisProps;
@@ -35,17 +35,19 @@ export interface Mapping<Row> {
   opacity?: Channel<Row, number[]>;
 }
 
-export interface Bars {
-  barSize?: number;
-  categoryGap?: string | number;
+export interface BarSettings {
+  size?: number;
+  gap?: string | number;
   isAnimationActive?: boolean;
 }
 
 // PARSED CONFIG
-export interface Category extends Bars {
+export interface Bar {
   name: string;
   dataKey: string;
   cells?: Cell[];
+  barSize?: number;
+  isAnimationActive?: boolean;
 }
 
 interface Cell {
