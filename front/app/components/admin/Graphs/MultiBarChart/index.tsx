@@ -26,9 +26,10 @@ import { hasNoData } from '../utils';
 import { Props } from './typings';
 
 const MultiBarChart = ({
-  config,
   width,
   height,
+  data,
+  config,
   layout = 'vertical',
   margin,
   xaxis,
@@ -39,8 +40,7 @@ const MultiBarChart = ({
   className,
   innerRef,
 }: Props) => {
-  const { data } = config;
-  const categories = parseConfig(config);
+  const categories = parseConfig(data, config);
 
   if (hasNoData(data) || categories === null) {
     return (
@@ -65,7 +65,7 @@ const MultiBarChart = ({
         margin={margin}
         ref={innerRef}
         barGap={0}
-        barCategoryGap={config.bars?.categoryGap}
+        barCategoryGap={config?.bars?.categoryGap}
       >
         {renderTooltip &&
           renderTooltip({

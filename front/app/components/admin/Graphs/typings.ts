@@ -1,4 +1,9 @@
 import { colors } from './styling';
+import { NilOrError } from 'utils/helperUtils';
+
+// DATA
+export type NaiveRow = Record<string, any>;
+export type NaiveData = NaiveRow[] | NilOrError;
 
 // COLORS
 export type Color = keyof typeof colors;
