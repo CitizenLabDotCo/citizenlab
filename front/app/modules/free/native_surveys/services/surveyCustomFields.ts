@@ -120,10 +120,3 @@ export async function updateSurveyCustomFields(projectId: string, array) {
     }
   );
 }
-
-export function deleteSurveyCustomField(customFieldId: string) {
-  return streams.delete(
-    `${API_PATH}/users/custom_fields/${customFieldId}`,
-    customFieldId
-  );
-}

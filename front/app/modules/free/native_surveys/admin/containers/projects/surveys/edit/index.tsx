@@ -21,10 +21,7 @@ import useSurveyCustomFields from 'modules/free/native_surveys/hooks/useSurveyCu
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
-import {
-  ISurveyCustomFieldData,
-  deleteSurveyCustomField,
-} from 'modules/free/native_surveys/services/surveyCustomFields';
+import { ISurveyCustomFieldData } from 'modules/free/native_surveys/services/surveyCustomFields';
 
 const StyledRightColumn = styled(RightColumn)`
   height: calc(100vh - ${stylingConsts.menuHeight}px);
@@ -51,8 +48,13 @@ export const SurveyEdit = () => {
   };
 
   const handleDelete = async (fieldId: string) => {
-    await deleteSurveyCustomField(fieldId);
-    closeSettings();
+    if (!isNilOrError(surveyCustomFields)) {
+      const newFields = surveyCustomFields.filter(
+        (field) => field.id !== fieldId
+      );
+      setSurveyCustomFields(newFields);
+      closeSettings();
+    }
   };
 
   const onAddField = (field: ISurveyCustomFieldData) => {
