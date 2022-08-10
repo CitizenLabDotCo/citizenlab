@@ -6,13 +6,15 @@ import { colors } from 'utils/styleUtils';
 
 // components
 import {
-  Title,
   Box,
   Toggle,
+  Text,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import { SectionField, SectionTitle } from 'components/admin/Section';
+import CloseIconButton from 'components/UI/CloseIconButton';
 
 // intl
 import messages from './messages';
@@ -36,9 +38,15 @@ interface Props {
   field?: ISurveyCustomFieldData;
   onDelete: (fieldId: string) => void;
   onFieldChange: (field: ISurveyCustomFieldUpdate) => void;
+  onClose: () => void;
 }
 
-const SurveyBuilderSettings = ({ field, onDelete, onFieldChange }: Props) => {
+const SurveyBuilderSettings = ({
+  field,
+  onDelete,
+  onFieldChange,
+  onClose,
+}: Props) => {
   // I'm keeping this form as simple as possible using state pending form rework from (TEC-35)
   const [fieldState, setFieldState] = useState({
     isRequired: field?.attributes.required,
@@ -91,29 +99,58 @@ const SurveyBuilderSettings = ({ field, onDelete, onFieldChange }: Props) => {
       h="100%"
       background="#ffffff"
     >
+      <Box mb="20px">
+        <Box position="absolute" right="8px">
+          <CloseIconButton
+            a11y_buttonActionMessage={messages.close}
+            onClick={onClose}
+            iconColor={colors.label}
+            iconColorOnHover={'#000'}
+          />
+        </Box>
+      </Box>
       {translatedStringKey && (
-        <Title variant="h2">
+        <SectionTitle>
           <FormattedMessage {...translatedStringKey} />
-        </Title>
+        </SectionTitle>
       )}
-      <InputMultilocWithLocaleSwitcher
-        type="text"
-        label={<FormattedMessage {...messages.questionTitle} />}
-        valueMultiloc={questionTitle}
-        onChange={(value: Multiloc) => onStateChange('questionTitle', value)}
-      />
-      <InputMultilocWithLocaleSwitcher
-        type="text"
-        label={<FormattedMessage {...messages.questionDescription} />}
-        valueMultiloc={questionDescription}
-        onChange={(value: Multiloc) =>
-          onStateChange('questionDescription', value)
-        }
-      />
-      <Toggle
-        checked={!!isRequired}
-        onChange={() => onStateChange('isRequired', !isRequired)}
-      />
+      <SectionField>
+        <InputMultilocWithLocaleSwitcher
+          type="text"
+          label={<FormattedMessage {...messages.questionTitle} />}
+          valueMultiloc={questionTitle}
+          onChange={(value: Multiloc) => onStateChange('questionTitle', value)}
+        />
+      </SectionField>
+      <SectionField>
+        <InputMultilocWithLocaleSwitcher
+          type="text"
+          label={<FormattedMessage {...messages.questionDescription} />}
+          valueMultiloc={questionDescription}
+          onChange={(value: Multiloc) =>
+            onStateChange('questionDescription', value)
+          }
+        />
+      </SectionField>
+      <SectionField>
+        <Box flexDirection="row" alignItems="center" justifyContent="center">
+          <Toggle
+            checked={!!isRequired}
+            onChange={() => onStateChange('isRequired', !isRequired)}
+            label={
+              <Text
+                as="span"
+                color="adminTextColor"
+                variant="bodyM"
+                mt="0px"
+                mb="0px"
+              >
+                <FormattedMessage {...messages.required} />
+              </Text>
+            }
+          />
+        </Box>
+      </SectionField>
       <Box display="flex" justifyContent="space-between">
         <Button
           icon="delete"

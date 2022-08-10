@@ -46,9 +46,13 @@ export const SurveyEdit = () => {
     projectId,
   });
 
+  const closeSettings = () => {
+    setSelectedField(undefined);
+  };
+
   const handleDelete = async (fieldId: string) => {
     await deleteSurveyCustomField(fieldId);
-    setSelectedField(undefined);
+    closeSettings();
   };
 
   const onAddField = (field: ISurveyCustomFieldData) => {
@@ -104,6 +108,7 @@ export const SurveyEdit = () => {
             field={selectedField}
             onDelete={handleDelete}
             onFieldChange={onFieldChange}
+            onClose={closeSettings}
           />
         </Box>
       </FocusOn>
