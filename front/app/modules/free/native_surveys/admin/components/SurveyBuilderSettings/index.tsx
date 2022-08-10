@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
 // styles
-import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 // components
@@ -30,10 +29,6 @@ import {
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-
-const StyledBox = styled(Box)`
-  box-shadow: -2px 0px 1px 0px rgba(0, 0, 0, 0.06);
-`;
 
 interface Props {
   field?: IFlatCustomField;
@@ -89,7 +84,7 @@ const SurveyBuilderSettings = ({
   const { isRequired, questionTitle, questionDescription } = fieldState;
 
   return (
-    <StyledBox
+    <Box
       position="fixed"
       right="0"
       top={`${stylingConsts.menuHeight}px`}
@@ -97,7 +92,8 @@ const SurveyBuilderSettings = ({
       px="20px"
       w="400px"
       h="100%"
-      background="#ffffff"
+      background="white"
+      boxShadow="-2px 0px 1px 0px rgba(0, 0, 0, 0.06)"
     >
       <Box position="absolute" right="8px" mb="20px">
         <CloseIconButton
@@ -154,7 +150,7 @@ const SurveyBuilderSettings = ({
           <FormattedMessage {...messages.delete} />
         </Button>
       </Box>
-    </StyledBox>
+    </Box>
   );
 };
 

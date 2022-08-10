@@ -50,7 +50,7 @@ const SurveyBuilderTopBar = ({
     clHistory.push(`/admin/projects/${projectId}/native-survey`);
   };
 
-  const handleSave = async () => {
+  const save = async () => {
     if (!isNilOrError(surveyCustomFields)) {
       try {
         setLoading(true);
@@ -64,7 +64,7 @@ const SurveyBuilderTopBar = ({
         }));
         await updateSurveyCustomFields(projectId, finalResponseArray);
       } catch {
-        // Do nothing
+        // TODO: Add error handling
       } finally {
         setLoading(false);
       }
@@ -123,7 +123,7 @@ const SurveyBuilderTopBar = ({
           mx="20px"
           disabled={!project}
           processing={loading}
-          onClick={handleSave}
+          onClick={save}
         >
           <FormattedMessage {...messages.save} />
         </Button>

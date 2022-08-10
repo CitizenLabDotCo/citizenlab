@@ -8,8 +8,8 @@ import messages from '../messages';
 
 // components
 import Button from 'components/UI/Button';
-import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
-import { Box, Badge } from '@citizenlab/cl2-component-library';
+import { List, SortableRow } from 'components/admin/ResourceList';
+import { Box, Badge, Text } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
 
 import { IFlatCustomField } from 'modules/free/native_surveys/services/surveyCustomFields';
@@ -18,20 +18,11 @@ import { IFlatCustomField } from 'modules/free/native_surveys/services/surveyCus
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
-const StyledTextCell = styled(TextCell)`
-  display: flex;
-`;
-
-const TextCellContent = styled.span`
-  display: flex;
-  align-items: center;
-`;
-
 const StyledBadge = styled(Badge)`
   margin-left: 12px;
 `;
 
-interface CustomFieldsProps {
+interface SurveyFieldsProps {
   onEditField: (field: IFlatCustomField) => void;
   surveyCustomFields: IFlatCustomField[];
 }
@@ -39,7 +30,7 @@ interface CustomFieldsProps {
 const SurveyFields = ({
   onEditField,
   surveyCustomFields,
-}: CustomFieldsProps) => {
+}: SurveyFieldsProps) => {
   return (
     <DndProvider backend={HTML5Backend}>
       <Box p="32px" height="100%" overflowY="auto">
@@ -58,14 +49,16 @@ const SurveyFields = ({
                   // TODO: implement dropRow
                 }}
               >
-                <StyledTextCell className="expand">
-                  <TextCellContent>
-                    <T value={field.title_multiloc} />
-                  </TextCellContent>
+                <Box display="flex" className="expand">
+                  <Box as="span" display="flex" alignItems="center">
+                    <Text fontSize="base" my="0px" color="adminTextColor">
+                      <T value={field.title_multiloc} />
+                    </Text>
+                  </Box>
                   <StyledBadge color={colors.adminSecondaryTextColor}>
                     <FormattedMessage {...messages.shortAnswer} />
                   </StyledBadge>
-                </StyledTextCell>
+                </Box>
                 <Button
                   buttonStyle="secondary"
                   icon="edit"

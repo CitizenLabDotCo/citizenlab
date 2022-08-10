@@ -19,7 +19,7 @@ import SurveyFields from 'modules/free/native_surveys/admin/components/SurveyFie
 import useSurveyCustomFields from 'modules/free/native_surveys/hooks/useSurveyCustomFields';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isNil } from 'utils/helperUtils';
 
 import {
   IFlatCreateCustomField,
@@ -65,19 +65,16 @@ export const SurveyEdit = () => {
       setSurveyCustomFields(
         surveyCustomFields.concat([field as IFlatCustomField])
       );
-    } else {
+    } else if (isNil(surveyCustomFields)) {
       setSurveyCustomFields([field as IFlatCustomField]);
     }
   };
 
-  const onFieldChange = (field: IFlatCustomField) => {
+  const onFieldChange = (fieldToUpdate: IFlatCustomField) => {
     if (!isNilOrError(surveyCustomFields)) {
       setSurveyCustomFields(
-        surveyCustomFields.map((f) => {
-          if (f.id === field.id) {
-            return field;
-          }
-          return f;
+        surveyCustomFields.map((field) => {
+          return field.id === fieldToUpdate.id ? fieldToUpdate : field;
         })
       );
     }
@@ -98,7 +95,7 @@ export const SurveyEdit = () => {
         <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
           <SurveyBuilderToolbox onAddField={onAddField} />
           <StyledRightColumn>
-            <Box width="1000px" bgColor="#ffffff" minHeight="300px">
+            <Box width="1000px" bgColor="white" minHeight="300px">
               {!isNilOrError(surveyCustomFields) && (
                 <SurveyFields
                   onEditField={setSelectedField}

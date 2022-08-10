@@ -2,10 +2,6 @@ import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { Multiloc } from 'typings';
 
-export const surveyCustomFieldsSchemaApiEndpoint = `${API_PATH}/users/custom_fields/schema`;
-export const surveyCustomFieldsJSONSchemaApiEndpoint = `${API_PATH}/users/custom_fields/json_forms_schema`;
-export const surveyCustomFieldsEndpoint = `${API_PATH}/users/custom_fields/json_forms_schema`;
-
 // We can add more input types here when we support them
 export type ICustomFieldInputType = 'text';
 

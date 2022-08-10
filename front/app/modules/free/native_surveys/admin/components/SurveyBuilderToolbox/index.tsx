@@ -13,7 +13,10 @@ import { Box, Title } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
-import { IFlatCreateCustomField } from 'modules/free/native_surveys/services/surveyCustomFields';
+import {
+  IFlatCreateCustomField,
+  ICustomFieldInputType,
+} from 'modules/free/native_surveys/services/surveyCustomFields';
 
 const DraggableElement = styled.div`
   cursor: move;
@@ -27,12 +30,12 @@ const SurveyBuilderToolbox = ({
   intl: { formatMessage },
   onAddField,
 }: SurveyBuilderToolboxProps & InjectedIntlProps) => {
-  const handleAddShortAnswer = () => {
+  const addAnswer = (inputType: ICustomFieldInputType) => {
     onAddField({
       id: `${Math.floor(Date.now() * Math.random())}`,
       isLocalOnly: true,
       description_multiloc: {},
-      input_type: 'text',
+      input_type: inputType,
       required: false,
       title_multiloc: {},
       enabled: true,
@@ -49,7 +52,7 @@ const SurveyBuilderToolbox = ({
       display="flex"
       flexDirection="column"
       alignItems="center"
-      bgColor="#ffffff"
+      bgColor="white"
       overflowY="auto"
       borderRight={`1px solid ${colors.mediumGrey}`}
     >
@@ -70,7 +73,7 @@ const SurveyBuilderToolbox = ({
           <ToolboxItem
             icon="short-answer"
             label={formatMessage(messages.shortAnswer)}
-            onClick={handleAddShortAnswer}
+            onClick={() => addAnswer('text')}
           />
         </DraggableElement>
       </Box>
