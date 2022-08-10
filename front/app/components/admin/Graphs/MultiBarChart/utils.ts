@@ -1,37 +1,32 @@
-import { DataRow } from '../typings';
-import { Channel, Layout, BarProps, ParsedBarProps, CategoryProps } from './typings';
+// styling
+import { colors } from '../styling';
 
-export const applyChannel = <T>(
-  row: DataRow,
-  index: number,
-  channel?: Channel<T>
-): T | undefined => {
-  if (channel instanceof Array) return row[channel[index]];
-  if (channel instanceof Function) return channel(row)[index];
-  return;
-};
+// utils
+import { hasNoData } from '../utils';
 
-export const parseBarProps = (
-  defaultFill: string,
-  numberOfParallelBars: number,
-  barProps: BarProps = {}
-): ParsedBarProps => {
-  const parsedBarProps: ParsedBarProps = [];
-  const { name, size, fill, opacity, isAnimationActive } = barProps;
+// typings
+import { Config, Category, Layout } from './typings';
 
-  for (let i = 0; i < numberOfParallelBars; i++) {
-    const categoryProps: CategoryProps = {
-      name: name?.[i],
-      barSize: size?.[i],
-      fill: fill?.[i] ?? defaultFill,
-      opacity: opacity?.[i],
-      isAnimationActive,
+export const parseConfig = <Row>({ data, mapping, bars }: Config<Row>) => {
+  if (hasNoData(data)) return null;
+
+  const { category, length, fill, opacity } = mapping;
+
+  const categories: Category[] = length.map((lengthColumn, categoryIndex) => {
+    const cells = data.map((row, rowIndex) => ({
+      fill: fill && colors[fill(row, rowIndex)[categoryIndex]],
+      opacity: opacity && opacity(row, rowIndex)[categoryIndex],
+    }));
+
+    return {
+      name: category as string,
+      dataKey: lengthColumn as string,
+      ...bars,
+      cells,
     };
+  });
 
-    parsedBarProps.push(categoryProps);
-  }
-
-  return parsedBarProps;
+  return categories;
 };
 
 // For some reason, in recharts a 'horizontal' bar chart

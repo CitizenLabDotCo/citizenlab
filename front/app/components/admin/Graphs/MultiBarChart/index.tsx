@@ -1,5 +1,4 @@
 import React from 'react';
-import { isEmpty } from 'lodash-es';
 
 // styling
 import { colors, sizes, animation } from 'components/admin/Graphs/styling';
@@ -20,24 +19,18 @@ import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
-import {
-  parseBarProps,
-  getRechartsLayout,
-  applyChannel,
-} from './utils';
-import { isNilOrError } from 'utils/helperUtils';
+import { parseConfig, getRechartsLayout } from './utils';
+import { hasNoData } from '../utils';
 
 // typings
 import { Props } from './typings';
 
 const MultiBarChart = ({
+  config,
   width,
   height,
-  data,
-  mapping,
   layout = 'vertical',
   margin,
-  bars,
   xaxis,
   yaxis,
   renderLabels,
@@ -46,9 +39,10 @@ const MultiBarChart = ({
   className,
   innerRef,
 }: Props) => {
-  const noData = isNilOrError(data) || data.every(isEmpty) || data.length <= 0;
+  const { data } = config;
+  const categories = parseConfig(config);
 
-  if (noData) {
+  if (hasNoData(data) || categories === null) {
     return (
       <NoDataContainer>
         {emptyContainerContent ? (
@@ -60,10 +54,7 @@ const MultiBarChart = ({
     );
   }
 
-  const { length, fill, opacity } = mapping;
   const rechartsLayout = getRechartsLayout(layout);
-  const parsedBarProps = parseBarProps(colors.barFill, length.length, bars);
-
   const labelPosition = layout === 'vertical' ? 'top' : 'right';
 
   return (
@@ -74,7 +65,7 @@ const MultiBarChart = ({
         margin={margin}
         ref={innerRef}
         barGap={0}
-        barCategoryGap={bars?.categoryGap}
+        barCategoryGap={config.bars?.categoryGap}
       >
         {renderTooltip &&
           renderTooltip({
@@ -82,13 +73,12 @@ const MultiBarChart = ({
             cursor: { fill: colors.barHover },
           })}
 
-        {parsedBarProps.map((parallelBarProps, index) => (
+        {categories.map((category, categoryIndex) => (
           <Bar
-            dataKey={length[index]}
+            key={categoryIndex}
             animationDuration={animation.duration}
             animationBegin={animation.begin}
-            {...parallelBarProps}
-            key={index}
+            {...category}
           >
             {renderLabels &&
               renderLabels({
@@ -97,13 +87,9 @@ const MultiBarChart = ({
                 position: labelPosition,
               })}
 
-            {(fill || opacity) &&
-              data.map((row, fillIndex) => (
-                <Cell
-                  key={`cell-${index}-${fillIndex}`}
-                  fill={applyChannel(row, index, fill) || parallelBarProps.fill}
-                  opacity={applyChannel(row, index, opacity) || 1}
-                />
+            {category.cells &&
+              category.cells.map((cell, cellIndex) => (
+                <Cell key={`cell-${categoryIndex}-${cellIndex}`} {...cell} />
               ))}
           </Bar>
         ))}
