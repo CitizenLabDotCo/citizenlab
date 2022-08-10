@@ -54,7 +54,6 @@ class AdminPublicationsFilteringService
     next scope if options[:search].blank?
 
     searched_folders = ProjectFolders::Folder.search_by_all(options[:search])
-
     project_publications = scope.where(publication: searched_folders)
     other_publications = scope.where.not(publication_type: ProjectFolders::Folder.name)
     project_publications.or(other_publications)
