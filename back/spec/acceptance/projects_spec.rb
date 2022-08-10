@@ -122,18 +122,6 @@ resource 'Projects' do
         assert_status 200
         expect(json_response[:data].size).to eq 4
       end
-
-      example 'Search for projects' do
-        p1 = create(:project, title_multiloc: {
-          en: 'super-specific-title-string',
-          'fr-BE': 'a title',
-          'nl-BE': 'a title'
-        })
-
-        do_request search: 'super-specific-title-string'
-        expect(response_data.size).to eq 1
-        expect(response_ids).to eq [p1.id]
-      end
     end
 
     get 'web_api/v1/projects/:id' do
