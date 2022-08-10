@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class PublicApi::V1::PhaseSerializer < ActiveModel::Serializer
-  @@multiloc_service = MultilocService.new
+  @multiloc_service = MultilocService.new
 
   attributes :id,
     :title,
