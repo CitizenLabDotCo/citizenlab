@@ -40,7 +40,6 @@ import clHistory from 'utils/cl-router/history';
 import { useLocation } from 'react-router-dom';
 
 import { openSignUpInModal } from 'components/SignUpIn/events';
-import Outlet from 'components/Outlet';
 
 const Container = styled.div``;
 
@@ -147,15 +146,18 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     phases
   );
   const isParticipationMethodIdeation = participation_method === 'ideation';
+  const isParticipationMethodNativeSurvey =
+    participation_method === 'native_survey';
   const showSeeIdeasButton =
     ((isProcessTypeContinuous && isParticipationMethodIdeation) ||
       currentPhase?.attributes.participation_method === 'ideation') &&
     isNumber(ideas_count) &&
     ideas_count > 0;
   const showIdeasButton =
-    isProcessTypeContinuous &&
-    isParticipationMethodIdeation &&
-    publication_status !== 'archived';
+    (isProcessTypeContinuous &&
+      isParticipationMethodIdeation &&
+      publication_status !== 'archived') ||
+    isParticipationMethodNativeSurvey;
   const showSurvey =
     (phases && participation_method === 'survey') ||
     (currentPhase?.attributes.participation_method === 'survey' &&
@@ -164,6 +166,8 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     ((isProcessTypeContinuous && participation_method === 'poll') ||
       currentPhase?.attributes.participation_method === 'poll') &&
     !hasProjectEnded;
+  const isPhaseIdeation =
+    currentPhase?.attributes.participation_method === 'ideation';
 
   return (
     <Container className={className || ''}>
@@ -186,24 +190,15 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           />
         </SeeIdeasButton>
       )}
-      {showIdeasButton && (
+      {showIdeasButton && !hasProjectEnded && (
         <IdeaButton
           id="project-ideabutton"
           projectId={project.id}
-          participationContextType="project"
+          participationContextType={isPhaseIdeation ? 'phase' : 'project'}
+          phaseId={isPhaseIdeation ? currentPhase.id : ''}
           fontWeight="500"
         />
       )}
-      {currentPhase?.attributes.participation_method === 'ideation' &&
-        !hasProjectEnded && (
-          <IdeaButton
-            id="project-ideabutton"
-            projectId={project.id}
-            phaseId={currentPhase.id}
-            participationContextType="phase"
-            fontWeight="500"
-          />
-        )}
       {showSurvey && (
         <Button
           buttonStyle="primary"
@@ -223,11 +218,6 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           <FormattedMessage {...messages.takeThePoll} />
         </Button>
       )}
-      <Outlet
-        id="app.containers.projectsShowPage.projectActionButtons"
-        project={project}
-        currentPhase={currentPhase}
-      />
     </Container>
   );
 });

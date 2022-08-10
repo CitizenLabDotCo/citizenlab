@@ -278,7 +278,7 @@ const Form = memo(
     return (
       <Box
         as="form"
-        height="100%"
+        height="100vh"
         display="flex"
         flexDirection="column"
         maxHeight={
