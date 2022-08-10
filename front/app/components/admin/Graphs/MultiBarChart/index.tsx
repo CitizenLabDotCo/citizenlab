@@ -19,17 +19,18 @@ import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
-import { parseConfig, getRechartsLayout } from './utils';
+import { getCategories, getRechartsLayout } from './utils';
 import { hasNoData } from '../utils';
 
 // typings
 import { Props } from './typings';
 
-const MultiBarChart = ({
+const MultiBarChart = <T,>({
   width,
   height,
   data,
-  config,
+  mapping,
+  bars,
   layout = 'vertical',
   margin,
   xaxis,
@@ -39,10 +40,8 @@ const MultiBarChart = ({
   emptyContainerContent,
   className,
   innerRef,
-}: Props) => {
-  const categories = parseConfig(data, config);
-
-  if (hasNoData(data) || categories === null) {
+}: Props<T>) => {
+  if (hasNoData(data)) {
     return (
       <NoDataContainer>
         {emptyContainerContent ? (
@@ -54,6 +53,7 @@ const MultiBarChart = ({
     );
   }
 
+  const categories = getCategories(data, mapping, bars);
   const rechartsLayout = getRechartsLayout(layout);
   const labelPosition = layout === 'vertical' ? 'top' : 'right';
 
@@ -65,7 +65,7 @@ const MultiBarChart = ({
         margin={margin}
         ref={innerRef}
         barGap={0}
-        barCategoryGap={config?.bars?.categoryGap}
+        barCategoryGap={bars?.categoryGap}
       >
         {renderTooltip &&
           renderTooltip({

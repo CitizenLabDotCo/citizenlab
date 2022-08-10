@@ -1,6 +1,4 @@
 import {
-  NaiveData,
-  NaiveRow,
   Margin,
   AxisProps,
   RenderLabelsProps,
@@ -10,13 +8,15 @@ import {
   Channel,
 } from '../typings';
 import { RefObject } from 'react';
+import { NilOrError } from 'utils/helperUtils';
 
 // PROPS
-export interface Props {
+export interface Props<Row> {
   width?: string | number;
   height?: string | number;
-  data: NaiveData;
-  config: NaiveConfig | null;
+  data: Row[] | NilOrError;
+  mapping: Mapping<Row>;
+  bars?: Bars;
   layout?: Layout;
   margin?: Margin;
   xaxis?: AxisProps;
@@ -26,12 +26,6 @@ export interface Props {
   emptyContainerContent?: React.ReactNode;
   className?: string;
   innerRef?: RefObject<any>;
-}
-
-// CONFIG
-export interface Config<Row> {
-  mapping: Mapping<Row>;
-  bars?: Bars;
 }
 
 export interface Mapping<Row> {
@@ -46,8 +40,6 @@ export interface Bars {
   categoryGap?: string | number;
   isAnimationActive?: boolean;
 }
-
-export type NaiveConfig = Config<NaiveRow>;
 
 // PARSED CONFIG
 export interface Category extends Bars {
