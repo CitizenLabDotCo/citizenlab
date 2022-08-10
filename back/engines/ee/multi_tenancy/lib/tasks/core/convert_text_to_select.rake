@@ -37,7 +37,7 @@ namespace :fix_existing_tenants do
         puts "(#{count} ocurrences) #{value_match}"
       end
 
-      puts "\n Do you want to persist this changes? [Y/N]"
+      puts "\n Do you want to persist this change? [Y/N]"
       answer = $stdin.gets.chomp
       return false unless answer == 'Y'
 
