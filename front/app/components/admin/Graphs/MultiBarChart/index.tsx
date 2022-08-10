@@ -56,6 +56,7 @@ const MultiBarChart = <T,>({
   const bars = getBars(data, mapping, barSettings);
   const rechartsLayout = getRechartsLayout(layout);
   const labelPosition = layout === 'vertical' ? 'top' : 'right';
+  const category = mapping.category as string;
 
   return (
     <ResponsiveContainer className={className} width={width} height={height}>
@@ -95,7 +96,7 @@ const MultiBarChart = <T,>({
         ))}
 
         <XAxis
-          dataKey={layout === 'vertical' ? 'name' : undefined}
+          dataKey={layout === 'vertical' ? category : undefined}
           type={layout === 'vertical' ? 'category' : 'number'}
           stroke={colors.chartLabel}
           fontSize={sizes.chartLabel}
@@ -103,7 +104,7 @@ const MultiBarChart = <T,>({
           {...xaxis}
         />
         <YAxis
-          dataKey={layout === 'horizontal' ? 'name' : undefined}
+          dataKey={layout === 'horizontal' ? category : undefined}
           type={layout === 'horizontal' ? 'category' : 'number'}
           stroke={colors.chartLabel}
           fontSize={sizes.chartLabel}
