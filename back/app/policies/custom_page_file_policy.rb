@@ -13,20 +13,4 @@ class CustomPageFilePolicy < ApplicationPolicy
       scope.where custom_page: Pundit.policy_scope(user, CustomPage)
     end
   end
-
-  def create?
-    CustomPagePolicy.new(user, record.custom_page).update?
-  end
-
-  def show?
-    CustomPagePolicy.new(user, record.custom_page).show?
-  end
-
-  def update?
-    CustomPagePolicy.new(user, record.custom_page).update?
-  end
-
-  def destroy?
-    CustomPagePolicy.new(user, record.custom_page).update?
-  end
 end
