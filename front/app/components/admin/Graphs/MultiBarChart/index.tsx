@@ -1,6 +1,9 @@
 import React, { RefObject } from 'react';
 import { isEmpty } from 'lodash-es';
 
+// styling
+import { colors, sizes, animation } from 'components/admin/Graphs/styling';
+
 // components
 import {
   ResponsiveContainer,
@@ -11,9 +14,6 @@ import {
   Cell,
 } from 'recharts';
 import { NoDataContainer } from 'components/admin/GraphWrappers';
-
-// hooks
-import { useTheme } from 'styled-components';
 
 // i18n
 import messages from '../messages';
@@ -26,14 +26,12 @@ import {
   getRechartsLayout,
   Mapping,
   applyChannel,
-  Data,
   Layout,
-  AxisProps,
 } from './utils';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
-import { Margin } from 'components/admin/Graphs/constants';
+import { Margin, Data, AxisProps } from 'components/admin/Graphs/typings';
 
 interface RenderLabelsProps {
   fill: string;
@@ -79,15 +77,6 @@ const MultiBarChart = ({
   className,
   innerRef,
 }: Props) => {
-  const {
-    chartLabelSize,
-    chartLabelColor,
-    animationBegin,
-    animationDuration,
-    newBarFill,
-    barHoverColor,
-  }: any = useTheme();
-
   const noData = isNilOrError(data) || data.every(isEmpty) || data.length <= 0;
 
   if (noData) {
@@ -104,7 +93,7 @@ const MultiBarChart = ({
 
   const { length, fill, opacity } = mapping;
   const rechartsLayout = getRechartsLayout(layout);
-  const parsedBarProps = parseBarProps(newBarFill, length.length, bars);
+  const parsedBarProps = parseBarProps(colors.barFill, length.length, bars);
 
   const labelPosition = layout === 'vertical' ? 'top' : 'right';
 
@@ -121,21 +110,21 @@ const MultiBarChart = ({
         {renderTooltip &&
           renderTooltip({
             isAnimationActive: false,
-            cursor: { fill: barHoverColor },
+            cursor: { fill: colors.barHover },
           })}
 
         {parsedBarProps.map((parallelBarProps, index) => (
           <Bar
             dataKey={length[index]}
-            animationDuration={animationDuration}
-            animationBegin={animationBegin}
+            animationDuration={animation.duration}
+            animationBegin={animation.begin}
             {...parallelBarProps}
             key={index}
           >
             {renderLabels &&
               renderLabels({
-                fill: chartLabelColor,
-                fontSize: chartLabelSize,
+                fill: colors.chartLabel,
+                fontSize: sizes.chartLabel,
                 position: labelPosition,
               })}
 
@@ -153,16 +142,16 @@ const MultiBarChart = ({
         <XAxis
           dataKey={layout === 'vertical' ? 'name' : undefined}
           type={layout === 'vertical' ? 'category' : 'number'}
-          stroke={chartLabelColor}
-          fontSize={chartLabelSize}
+          stroke={colors.chartLabel}
+          fontSize={sizes.chartLabel}
           tick={{ transform: 'translate(0, 7)' }}
           {...xaxis}
         />
         <YAxis
           dataKey={layout === 'horizontal' ? 'name' : undefined}
           type={layout === 'horizontal' ? 'category' : 'number'}
-          stroke={chartLabelColor}
-          fontSize={chartLabelSize}
+          stroke={colors.chartLabel}
+          fontSize={sizes.chartLabel}
           {...yaxis}
         />
       </RechartsBarChart>

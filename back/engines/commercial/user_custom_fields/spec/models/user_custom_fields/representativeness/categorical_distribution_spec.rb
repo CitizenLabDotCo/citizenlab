@@ -2,17 +2,24 @@
 
 require 'rails_helper'
 
-RSpec.describe UserCustomFields::Representativeness::RefDistribution do
-  subject(:ref_distribution) { build(:ref_distribution) }
+RSpec.describe UserCustomFields::Representativeness::CategoricalDistribution do
+  subject(:ref_distribution) { build(:categorical_distribution) }
 
   describe 'factory' do
     it { is_expected.to be_valid }
   end
 
-  it { is_expected.to belong_to(:custom_field) }
+  # This helper is necessary to run the tests for counts validations in
+  # 'reference distribution' shared examples.
+  # See 'reference distribution' shared examples for more info.
+  def transform_counts(ref_distribution)
+    new_counts = yield ref_distribution.distribution.values
+    ref_distribution.distribution = ref_distribution.option_ids.zip(new_counts).to_h
+  end
+
+  it_behaves_like 'reference distribution', :categorical_distribution
+
   it { is_expected.to have_many(:options).through(:custom_field) }
-  it { is_expected.to validate_uniqueness_of(:custom_field_id).case_insensitive }
-  it { is_expected.to validate_presence_of(:distribution) }
 
   it 'validates that the distribution has at least 2 options', :aggregate_failures do
     distribution = ref_distribution.distribution
@@ -29,33 +36,6 @@ RSpec.describe UserCustomFields::Representativeness::RefDistribution do
     expect(ref_distribution).not_to be_valid
     expect(ref_distribution.errors.messages[:distribution])
       .to include('options must be a subset of the options of the associated custom field.')
-  end
-
-  it 'validates that the distribution counts are positive', :aggregate_failures do
-    distribution = ref_distribution.distribution
-    distribution[distribution.keys.first] = -1
-
-    expect(ref_distribution).not_to be_valid
-    expect(ref_distribution.errors.messages[:distribution])
-      .to include('population counts must be strictly positive.')
-  end
-
-  it 'validates that the distribution counts are integers', :aggregate_failures do
-    distribution = ref_distribution.distribution
-    distribution[distribution.keys.first] = 1.5
-
-    expect(ref_distribution).not_to be_valid
-    expect(ref_distribution.errors.messages[:distribution])
-      .to include('population counts must be integers.')
-  end
-
-  it 'validates that the distribution counts are not nil', :aggregate_failures do
-    distribution = ref_distribution.distribution
-    distribution[distribution.keys.first] = nil
-
-    expect(ref_distribution).not_to be_valid
-    expect(ref_distribution.errors.messages[:distribution])
-      .to include('population counts cannot be nil.')
   end
 
   describe '#probabilities_and_counts' do
@@ -75,6 +55,34 @@ RSpec.describe UserCustomFields::Representativeness::RefDistribution do
 
       expect(differences).to all(be <= 1e-6)
       expect(probabilities.sum).to be_within(1e-6).of(1)
+    end
+  end
+
+  describe '#compute_rscore' do
+    subject(:r_score) { ref_distribution.compute_rscore(users) }
+
+    let(:ref_distribution) { create(:categorical_distribution, population_counts: [100, 200]) }
+    let(:users) do
+      custom_field = ref_distribution.custom_field
+      users = custom_field.options.map do |option|
+        create(:user, custom_field_values: { custom_field.key => option.key })
+      end
+      # Users whose custom field value is unknown should not affect the score.
+      users << create(:user)
+      User.where(id: users)
+    end
+
+    it 'creates an RScore with the correct value' do
+      expect(r_score.value).to eq(0.5)
+    end
+
+    it 'creates an RScore that holds a reference to the reference distribution' do
+      expect(r_score.ref_distribution).to eq(ref_distribution)
+    end
+
+    it 'creates an RScore that holds a reference to the user counts' do
+      expect(r_score.user_counts.size).to eq(3)
+      expect(r_score.user_counts.values).to all(eq(1))
     end
   end
 end
