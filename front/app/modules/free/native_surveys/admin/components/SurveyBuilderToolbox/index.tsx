@@ -69,7 +69,7 @@ const SurveyBuilderToolbox = ({
 
         <DraggableElement>
           <ToolboxItem
-            icon="text"
+            icon="short-answer"
             label={formatMessage(messages.shortAnswer)}
             onClick={handleAddShortAnswer}
           />
