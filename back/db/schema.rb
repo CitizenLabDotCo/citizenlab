@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_19_103052) do
+ActiveRecord::Schema.define(version: 2022_08_09_141825) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -192,6 +192,41 @@ ActiveRecord::Schema.define(version: 2022_07_19_103052) do
   create_table "custom_forms", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "custom_page_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "custom_page_id"
+    t.string "file"
+    t.string "name"
+    t.integer "ordering"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["custom_page_id"], name: "index_custom_page_files_on_custom_page_id"
+  end
+
+  create_table "custom_pages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.jsonb "title_multiloc", default: {}, null: false
+    t.string "slug"
+    t.boolean "banner_enabled", default: true, null: false
+    t.string "banner_layout", default: "full_width_banner_layout", null: false
+    t.string "banner_overlay_color"
+    t.integer "banner_overlay_opacity"
+    t.jsonb "banner_cta_button_multiloc", default: {}, null: false
+    t.string "banner_cta_button_type", default: "no_button", null: false
+    t.string "banner_cta_button_url"
+    t.jsonb "banner_header_multiloc", default: {}, null: false
+    t.jsonb "banner_subheader_multiloc", default: {}, null: false
+    t.boolean "top_info_section_enabled", default: false, null: false
+    t.jsonb "top_info_section_multiloc", default: {}, null: false
+    t.boolean "projects_enabled", default: false, null: false
+    t.string "projects_filter_type"
+    t.boolean "events_widget_enabled", default: false, null: false
+    t.boolean "bottom_info_section_enabled", default: false, null: false
+    t.jsonb "bottom_info_section_multiloc", default: {}, null: false
+    t.string "header_bg"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["slug"], name: "index_custom_pages_on_slug", unique: true
   end
 
   create_table "email_campaigns_campaign_email_commands", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1221,6 +1256,7 @@ ActiveRecord::Schema.define(version: 2022_07_19_103052) do
   add_foreign_key "baskets_ideas", "ideas"
   add_foreign_key "comments", "users", column: "author_id"
   add_foreign_key "custom_field_options", "custom_fields"
+  add_foreign_key "custom_page_files", "custom_pages"
   add_foreign_key "email_campaigns_campaign_email_commands", "users", column: "recipient_id"
   add_foreign_key "email_campaigns_campaigns", "users", column: "author_id"
   add_foreign_key "email_campaigns_campaigns_groups", "email_campaigns_campaigns", column: "campaign_id"
