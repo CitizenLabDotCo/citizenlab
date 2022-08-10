@@ -5,14 +5,11 @@ import ModuleActive from './admin/components/ModuleActive';
 import PoliciesSubtitle from './admin/components/PoliciesSubtitle';
 import PagesMenu from './admin/containers';
 
-const NewPageFormComponent = lazy(
-  () => import('./admin/containers/NewPageForm')
-);
-const EditPageComponent = lazy(() => import('./admin/containers/EditPageForm'));
-const EditNavbarItemComponent = lazy(
+const NewPageForm = lazy(() => import('./admin/containers/NewPageForm'));
+const EditPageForm = lazy(() => import('./admin/containers/EditPageForm'));
+const EditNavbarItemForm = lazy(
   () => import('./admin/containers/EditNavbarItemForm')
 );
-
 const NavigationSettings = lazy(
   () => import('./admin/containers/NavigationSettings')
 );
@@ -22,15 +19,15 @@ const configuration: ModuleConfiguration = {
     'admin.pages-menu': [
       {
         path: 'pages/new',
-        element: <NewPageFormComponent />,
+        element: <NewPageForm />,
       },
       {
         path: 'pages/edit/:pageId',
-        element: <EditPageComponent />,
+        element: <EditPageForm />,
       },
       {
         path: 'navbar-items/edit/:navbarItemId',
-        element: <EditNavbarItemComponent />,
+        element: <EditNavbarItemForm />,
       },
     ],
   },
