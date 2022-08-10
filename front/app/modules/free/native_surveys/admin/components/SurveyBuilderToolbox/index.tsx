@@ -29,7 +29,7 @@ const SurveyBuilderToolbox = ({
 }: SurveyBuilderToolboxProps & InjectedIntlProps) => {
   const handleAddShortAnswer = () => {
     onAddField({
-      id: `${Math.random()}`,
+      id: `${Math.floor(Date.now() * Math.random())}`,
       isLocalOnly: true,
       description_multiloc: {},
       input_type: 'text',
