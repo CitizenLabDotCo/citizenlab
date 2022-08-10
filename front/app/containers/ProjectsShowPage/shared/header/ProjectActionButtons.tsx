@@ -194,7 +194,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
         <IdeaButton
           id="project-ideabutton"
           projectId={project.id}
-          participationContextType="project"
+          participationContextType={isPhaseIdeation ? 'phase' : 'project'}
           phaseId={isPhaseIdeation ? currentPhase.id : ''}
           fontWeight="500"
         />
