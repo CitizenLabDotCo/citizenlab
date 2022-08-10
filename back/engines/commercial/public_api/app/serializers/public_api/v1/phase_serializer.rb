@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class PublicApi::V1::PhaseSerializer < ActiveModel::Serializer
-
   attributes :id,
     :title,
     :start_at,
