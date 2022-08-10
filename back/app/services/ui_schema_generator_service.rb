@@ -5,7 +5,6 @@ class UiSchemaGeneratorService < FieldVisitorService
 
   def initialize
     super
-    # configuration = AppConfiguration.instance
     @locales = configuration.settings('core', 'locales')
     @multiloc_service = MultilocService.new app_configuration: @configuration
     @current_locale = 'en'
@@ -13,54 +12,9 @@ class UiSchemaGeneratorService < FieldVisitorService
 
   def generate_for(fields)
     locales.index_with do |locale|
-      elements = ui_schema_elements fields, locale
-      elements_to_ui_schema elements
+      fields_to_ui_schema fields locale
     end
   end
-
-  def ui_schema_elements(fields, locale)
-    @current_locale = locale
-    fields_for_ui_schema(fields).filter_map do |field|
-      next nil if !field.enabled? || field.hidden?
-
-      visit field
-    end
-  end
-
-  def fields_for_ui_schema(fields)
-    # Filter out and reorder fields
-    fields
-  end
-
-  def elements_to_ui_schema(elements)
-    # Set properties such as type and options
-    {
-      elements: elements
-    }
-  end
-
-  #   # TODO: keep overrides for later
-  #   # field_properties = fields.each_with_object({}) do |field, accu|
-  #   #   override_method = "#{field.resource_type.underscore}_#{field.code}_to_json_schema_field"
-  #   #   accu[field.key] = if field.code && respond_to?(override_method, true)
-  #   #     send(override_method, field, locale)
-  #   #   else
-  #   #     send("#{field.input_type}_to_json_schema_field", field, locale)
-  #   #   end
-  #   # end
-  #   @current_locale = locale
-  #   field_properties = fields.each_with_object({}) do |field, accu|
-  #     accu[field.key] = visit field
-  #   end
-  #   {
-  #     type: 'object',
-  #     additionalProperties: false,
-  #     properties: field_properties
-  #   }.tap do |output|
-  #     required = fields.select(&:enabled?).select(&:required?).map(&:key)
-  #     output[:required] = required unless required.empty?
-  #   end
-  # end
 
   def visit_text(field)
     default(field).tap do |ui_field|
@@ -143,6 +97,14 @@ class UiSchemaGeneratorService < FieldVisitorService
         desciption: for_current_locale(field.description_multiloc)
       }
     }
+  end
+
+  protected
+
+  def visit_or_filter(field)
+    return nil if !field.enabled? || field.hidden?
+
+    visit field
   end
 
   private
