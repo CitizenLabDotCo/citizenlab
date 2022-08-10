@@ -102,6 +102,11 @@ Rails.application.routes.draw do
         get 'by_slug/:slug', on: :collection, to: 'static_pages#by_slug'
       end
 
+      resources :custom_pages do
+        resources :files, defaults: { container_type: 'CustomPage' }, shallow: false
+        get 'by_slug/:slug', on: :collection, to: 'custom_pages#by_slug'
+      end
+
       resources :nav_bar_items, only: :index do
         get 'removed_default_items', on: :collection
         %w[proposals events all_input].each do |code|
