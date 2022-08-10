@@ -15,6 +15,9 @@ import usePhases from 'hooks/usePhases';
 import useEvents from 'hooks/useEvents';
 import useAuthUser from 'hooks/useAuthUser';
 
+// router
+import clHistory from 'utils/cl-router/history';
+
 // services
 import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
 
@@ -38,7 +41,6 @@ import FormattedBudget from 'utils/currency/FormattedBudget';
 import styled from 'styled-components';
 import { fontSizes, colors, isRtl, media } from 'utils/styleUtils';
 import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
-import Outlet from 'components/Outlet';
 
 const Container = styled.div``;
 
@@ -366,12 +368,37 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                 )}
               </ListItem>
             )}
-            <Outlet
-              id="app.containers.projectsShowPage.projectInfoSideBar"
-              project={project}
-              currentPhase={currentPhase}
-              authUser={authUser}
-            />
+            {((projectType === 'continuous' &&
+              projectParticipationMethod === 'native_survey') ||
+              currentPhaseParticipationMethod === 'native_survey') && (
+              <ListItem>
+                <ListItemIcon ariaHidden name="survey" />
+                {!isNilOrError(authUser) ? (
+                  <ListItemButton
+                    id="e2e-project-sidebar-surveys-count"
+                    onClick={() => {
+                      clHistory.push(
+                        `/projects/${project.attributes.slug}/ideas/new`
+                      );
+                    }}
+                  >
+                    <FormattedMessage
+                      {...(projectType === 'continuous'
+                        ? messages.xSurveys
+                        : messages.xSurveysInCurrentPhase)}
+                      values={{ surveysCount: 1 }}
+                    />
+                  </ListItemButton>
+                ) : (
+                  <FormattedMessage
+                    {...(projectType === 'continuous'
+                      ? messages.xSurveys
+                      : messages.xSurveysInCurrentPhase)}
+                    values={{ surveysCount: 1 }}
+                  />
+                )}
+              </ListItem>
+            )}
             {((projectType === 'continuous' &&
               projectParticipationMethod === 'poll') ||
               currentPhaseParticipationMethod === 'poll') && (
