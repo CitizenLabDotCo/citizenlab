@@ -17,7 +17,7 @@ import { SectionField, SectionTitle } from 'components/admin/Section';
 import CloseIconButton from 'components/UI/CloseIconButton';
 
 // intl
-import messages from './messages';
+import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // Types

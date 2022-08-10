@@ -22,7 +22,7 @@ import {
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
-import messages from './messages';
+import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // routing
@@ -102,7 +102,7 @@ const SurveyBuilderTopBar = ({
                 {localize(project.attributes.title_multiloc)}
               </Text>
               <Title variant="h4" as="h1">
-                <FormattedMessage {...messages.survey} />
+                <FormattedMessage {...messages.surveyText} />
               </Title>
             </>
           )}

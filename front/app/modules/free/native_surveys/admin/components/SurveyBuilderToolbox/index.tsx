@@ -3,7 +3,7 @@ import React from 'react';
 // intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // components
 import ToolboxItem from './ToolboxItem';

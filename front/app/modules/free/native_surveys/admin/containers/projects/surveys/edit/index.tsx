@@ -13,7 +13,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import SurveyBuilderTopBar from 'modules/free/native_surveys/admin/components/SurveyBuilderTopBar';
 import SurveyBuilderToolbox from 'modules/free/native_surveys/admin/components/SurveyBuilderToolbox';
 import SurveyBuilderSettings from 'modules/free/native_surveys/admin/components/SurveyBuilderSettings';
-import SurveyFields from 'modules/free/native_surveys/components/SurveyFields';
+import SurveyFields from 'modules/free/native_surveys/admin/components/SurveyFields';
 
 // hooks
 import useSurveyCustomFields from 'modules/free/native_surveys/hooks/useSurveyCustomFields';

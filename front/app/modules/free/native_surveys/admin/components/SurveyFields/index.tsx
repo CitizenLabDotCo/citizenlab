@@ -4,7 +4,7 @@ import HTML5Backend from 'react-dnd-html5-backend-cjs';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // components
 import Button from 'components/UI/Button';
