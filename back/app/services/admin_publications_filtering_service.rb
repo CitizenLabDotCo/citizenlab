@@ -53,11 +53,11 @@ class AdminPublicationsFilteringService
   add_filter('filter_folders') do |scope, options|
     next scope if options[:search].blank?
 
-    searched_folders = ProjectFolders::Folder.search_by_all(options[:search])
+    matching_folders = ProjectFolders::Folder.search_by_all(options[:search])
 
-    project_publications = scope.where(publication: searched_folders)
+    folder_publications = scope.where(publication: matching_folders)
     other_publications = scope.where.not(publication_type: ProjectFolders::Folder.name)
-    project_publications.or(other_publications)
+    folder_publications.or(other_publications)
   end
 
   add_filter('compute_visible_children_counts') do |scope, _|

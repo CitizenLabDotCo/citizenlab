@@ -286,6 +286,53 @@ resource 'AdminPublication' do
           expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 1
           expect(json_response[:data].find { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.dig(:attributes, :visible_children_count)).to eq 1
         end
+
+        example_request 'Search admin publications' do
+          p1 = create(
+            :project,
+            admin_publication_attributes: { publication_status: 'published' },
+            title_multiloc: {
+              en: 'super-specific-title-string-1',
+              'fr-BE': 'a title',
+              'nl-BE': 'a title'
+            }
+          )
+
+          create(
+            :project,
+            admin_publication_attributes: { publication_status: 'archived' },
+            title_multiloc: {
+              en: 'other-string',
+              'fr-BE': 'a title',
+              'nl-BE': 'a title'
+            }
+          )
+
+          f1 = create(
+            :project_folder,
+            admin_publication_attributes: { publication_status: 'published' },
+            title_multiloc: {
+              en: 'super-specific-title-string-1',
+              'fr-BE': 'a title',
+              'nl-BE': 'a title'
+            }
+          )
+
+          create(
+            :project_folder,
+            admin_publication_attributes: { publication_status: 'archived' },
+            title_multiloc: {
+              en: 'other-string',
+              'fr-BE': 'a title',
+              'nl-BE': 'a title'
+            }
+          )
+
+          do_request search: 'super-specific-title-string'
+          expect(response_data.size).to eq 2
+          expect(response_ids).to include p1.admin_publication.id
+          expect(response_ids).to include f1.admin_publication.id
+        end
       end
 
       example 'Returns an empty list success response when there are no publications', document: false do
