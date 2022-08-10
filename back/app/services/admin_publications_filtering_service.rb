@@ -57,6 +57,7 @@ class AdminPublicationsFilteringService
 
     folder_publications = scope.where(publication: matching_folders)
     other_publications = scope.where.not(publication_type: ProjectFolders::Folder.name)
+
     folder_publications.or(other_publications)
   end
 

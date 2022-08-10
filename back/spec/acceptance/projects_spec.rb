@@ -617,32 +617,6 @@ resource 'Projects' do
         expect(json_response[:data].size).to eq 1
       end
 
-      example 'Search for projects does not return projects with draft status' do
-        p1 = create(
-          :project,
-          admin_publication_attributes: { publication_status: 'published' },
-          title_multiloc: {
-            en: 'super-specific-title-string-1',
-            'fr-BE': 'a title',
-            'nl-BE': 'a title'
-          }
-        )
-
-        create(
-          :project,
-          admin_publication_attributes: { publication_status: 'draft' },
-          title_multiloc: {
-            en: 'super-specific-title-string-2',
-            'fr-BE': 'a title',
-            'nl-BE': 'a title'
-          }
-        )
-
-        do_request search: 'super-specific-title-string'
-        expect(response_data.size).to eq 1
-        expect(response_ids).to eq [p1.id]
-      end
-
       example 'Normal users cannot moderate any projects', document: false, skip: !CitizenLab.ee? do
         %w[published published draft published archived published archived]
           .map { |ps| create(:project, admin_publication_attributes: { publication_status: ps }) }
