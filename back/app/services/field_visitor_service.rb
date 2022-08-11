@@ -5,59 +5,59 @@ class FieldVisitorService
     field.accept self
   end
 
-  def visit_text(_field)
+  def visit_text(field)
     default(field)
   end
 
-  def visit_number(_field)
+  def visit_number(field)
     default(field)
   end
 
-  def visit_multiline_text(_field)
+  def visit_multiline_text(field)
     default(field)
   end
 
-  def visit_html(_field)
+  def visit_html(field)
     default(field)
   end
 
-  def visit_text_multiloc(_field)
+  def visit_text_multiloc(field)
     default(field)
   end
 
-  def visit_multiline_text_multiloc(_field)
+  def visit_multiline_text_multiloc(field)
     default(field)
   end
 
-  def visit_html_multiloc(_field)
+  def visit_html_multiloc(field)
     default(field)
   end
 
-  def visit_select(_field)
+  def visit_select(field)
     default(field)
   end
 
-  def visit_multiselect(_field)
+  def visit_multiselect(field)
     default(field)
   end
 
-  def visit_checkbox(_field)
+  def visit_checkbox(field)
     default(field)
   end
 
-  def visit_date(_field)
+  def visit_date(field)
     default(field)
   end
 
-  def visit_files(_field)
+  def visit_files(field)
     default(field)
   end
 
-  def visit_image_files(_field)
+  def visit_image_files(field)
     default(field)
   end
 
-  def visit_point(_field)
+  def visit_point(field)
     default(field)
   end
 
