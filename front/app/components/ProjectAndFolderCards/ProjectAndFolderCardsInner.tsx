@@ -58,10 +58,13 @@ const ProjectAndFolderCardsInner = ({
   onChangeAreas,
   onChangeTab,
 }: Props) => {
+  // if a search string is provided, we want to show all depths of admin publication
+  const rootLevelOnly = search && search.length > 0 ? false : true;
+
   const adminPublications = useAdminPublications({
     pageSize: 6,
     publicationStatusFilter,
-    rootLevelOnly: true,
+    rootLevelOnly,
     removeNotAllowedParents: true,
     search,
   });
