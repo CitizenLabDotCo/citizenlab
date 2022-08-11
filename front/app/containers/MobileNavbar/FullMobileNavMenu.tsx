@@ -5,6 +5,7 @@ import tracks from './tracks';
 // hooks
 import useNavbarItems from 'hooks/useNavbarItems';
 import usePageSlugById from 'hooks/usePageSlugById';
+import useLocalize from 'hooks/useLocalize';
 
 // components
 import FullscreenModal from 'components/UI/FullscreenModal';
@@ -19,6 +20,7 @@ import { darken } from 'polished';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
+import mainHeaderMessages from '../MainHeader/messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -127,13 +129,14 @@ const FullMobileNavMenu = ({
 }: Props & InjectedIntlProps) => {
   const navbarItems = useNavbarItems();
   const pageSlugById = usePageSlugById();
+  const localize = useLocalize();
 
   if (isNilOrError(navbarItems) || isNilOrError(pageSlugById)) return null;
 
   const navbarItemPropsArray = getNavbarItemPropsArray(
     navbarItems,
     pageSlugById
-  );
+  ).filter(({ linkTo }) => linkTo !== '/projects');
 
   const modalPortalElement = document?.getElementById('mobile-nav-portal');
 
@@ -175,11 +178,17 @@ const FullMobileNavMenu = ({
                     key={linkTo}
                     linkTo={linkTo}
                     onlyActiveOnIndex={onlyActiveOnIndex}
-                    navigationItemTitle={navigationItemTitle}
+                    navigationItemTitle={localize(navigationItemTitle)}
                     onClick={handleOnMenuItemClick(linkTo)}
                   />
                 );
               })}
+              <FullMobileNavMenuItem
+                linkTo="/projects?focusSearch=true"
+                navigationItemTitle={formatMessage(mainHeaderMessages.search)}
+                onClick={handleOnMenuItemClick('/projects?focusSearch=true')}
+                iconName="search"
+              />
             </MenuItems>
             <StyledCloseIconButton
               a11y_buttonActionMessage={messages.closeMobileNavMenu}
