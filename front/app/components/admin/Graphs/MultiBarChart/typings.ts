@@ -23,7 +23,6 @@ export interface Props<Row> {
   renderLabels?: (props: RenderLabelsProps) => React.ReactNode;
   renderTooltip?: (props: RenderTooltipProps) => React.ReactNode;
   emptyContainerContent?: React.ReactNode;
-  className?: string;
   innerRef?: RefObject<any>;
 }
 

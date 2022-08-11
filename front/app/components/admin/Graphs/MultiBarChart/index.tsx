@@ -38,7 +38,6 @@ const MultiBarChart = <T,>({
   renderLabels,
   renderTooltip,
   emptyContainerContent,
-  className,
   innerRef,
 }: Props<T>) => {
   if (hasNoData(data)) {
@@ -59,7 +58,7 @@ const MultiBarChart = <T,>({
   const category = mapping.category as string;
 
   return (
-    <ResponsiveContainer className={className} width={width} height={height}>
+    <ResponsiveContainer width={width} height={height}>
       <RechartsBarChart
         data={data}
         layout={rechartsLayout}
