@@ -11,7 +11,7 @@ class SideFxCustomPageService
   end
 
   def before_update(page, _)
-    page.body_multiloc = TextImageService.new.swap_data_images page, :bottom_info_section_multiloc
+    page.bottom_info_section_multiloc = TextImageService.new.swap_data_images page, :bottom_info_section_multiloc
   end
 
   def after_update(page, user)

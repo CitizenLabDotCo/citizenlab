@@ -19,6 +19,7 @@ resource 'CustomPageFile' do
     let(:page_id) { @page.id }
 
     example_request 'List all file attachments of a custom page' do
+      CustomPage.all.each { |p| puts p.slug }
       assert_status 200
       json_response = json_parse response_body
       expect(json_response[:data].size).to eq 2

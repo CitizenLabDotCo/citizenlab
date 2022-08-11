@@ -2,6 +2,7 @@
 
 class WebApi::V1::CustomPagesController < ApplicationController
   skip_before_action :authenticate_user, only: %i[show by_slug]
+  before_action :set_page, only: %i[show update destroy]
 
   def show
     authorize @page
@@ -59,8 +60,17 @@ class WebApi::V1::CustomPagesController < ApplicationController
 
   private
 
-  def home_page_params
-    params.require(:home_page).permit(
+  def assign_attributes_for_update
+    @page.assign_attributes permitted_attributes(CustomPage)
+  end
+
+  def set_page
+    @page = CustomPage.find params[:id]
+    authorize @page
+  end
+
+  def custom_page_params
+    params.require(:custom_page).permit(
       :slug,
       :banner_enabled,
       :banner_layout,
