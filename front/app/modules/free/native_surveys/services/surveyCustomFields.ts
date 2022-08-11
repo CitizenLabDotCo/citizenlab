@@ -59,6 +59,7 @@ export function surveyCustomFieldsStream(
   const apiEndpoint = `${API_PATH}/admin/projects/${projectId}/custom_fields`;
   return streams.get<ICustomFields>({
     apiEndpoint,
+    cacheStream: false,
     ...streamParams,
   });
 }
