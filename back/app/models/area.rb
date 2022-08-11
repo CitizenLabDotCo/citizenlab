@@ -58,3 +58,5 @@ class Area < ApplicationRecord
     end
   end
 end
+
+Area.include_if_ee('UserCustomFields::Patches::Area')
