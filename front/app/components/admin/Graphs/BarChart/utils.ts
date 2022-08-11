@@ -18,7 +18,7 @@ export const convertBars = (bars?: Bars): ConvertedBars | undefined => {
   if (!bars) return;
   const { name, ...rest } = bars;
 
-  return { names: [name], ...rest };
+  return { names: name ? [name] : undefined, ...rest };
 };
 
 // UTILS
