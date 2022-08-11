@@ -14,7 +14,7 @@ class UserJsonSchemaGeneratorService < JsonSchemaGeneratorService
 
   def visit_select(field)
     return super unless field.code == 'domicile'
-  
+
     super.tap do |schema|
       areas = Area.all.order(created_at: :desc).map do |area|
         {

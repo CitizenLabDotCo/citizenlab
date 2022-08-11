@@ -62,7 +62,7 @@ RSpec.describe Factory do
   end
 
   describe '#json_schema_generator_class_for' do
-    subject(:factory) { described_class.instance} 
+    subject(:factory) { described_class.instance }
 
     context 'for resource type "CustomForm"' do
       it 'returns InputJsonSchemaGeneratorService' do
@@ -81,6 +81,5 @@ RSpec.describe Factory do
         expect { factory.json_schema_generator_class_for('Unsupported') }.to raise_error 'Unsupported resource type: Unsupported'
       end
     end
-
   end
 end
