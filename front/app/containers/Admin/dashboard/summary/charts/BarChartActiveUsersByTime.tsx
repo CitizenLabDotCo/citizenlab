@@ -1,7 +1,7 @@
 // libraries
 import React from 'react';
 import { Subscription } from 'rxjs';
-import { map, isEmpty } from 'lodash-es';
+import { isEmpty } from 'lodash-es';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
@@ -11,7 +11,6 @@ import moment from 'moment';
 // typings
 import { IStreamParams, IStream } from 'utils/streams';
 import { IResourceByTime, IUsersByTime } from 'services/stats';
-import { IGraphFormat } from 'typings';
 
 // components
 import ReportExportMenu from 'components/admin/ReportExportMenu';
@@ -41,16 +40,10 @@ const InfoIcon = styled(Icon)`
   margin-left: 10px;
 `;
 
-const StyledBarChart = styled(BarChart)`
-  .recharts-wrapper {
-    @media print {
-      margin: 0 auto;
-    }
-  }
-`;
+type Row = { name: string, code: string, value: number };
 
 type State = {
-  serie: IGraphFormat | null;
+  serie: Row[] | null;
 };
 
 type Props = {
@@ -144,8 +137,8 @@ class BarChartActiveUsersByTime extends React.PureComponent<
     const { graphUnit } = this.props;
 
     if (!isEmpty(data.series[graphUnit])) {
-      return map(data.series[graphUnit], (value, key) => ({
-        value,
+      return Object.entries(data.series[graphUnit]).map(([key, value]) => ({
+        value: value as number,
         name: key,
         code: key,
       }));
@@ -232,8 +225,12 @@ class BarChartActiveUsersByTime extends React.PureComponent<
               />
             )}
           </GraphCardHeader>
-          <StyledBarChart
+          <BarChart
             data={serie}
+            mapping={{
+              category: 'name',
+              length: 'value'
+            }}
             innerRef={this.currentChart}
             xaxis={{ tickFormatter: this.formatTick }}
             renderTooltip={(props) => (
