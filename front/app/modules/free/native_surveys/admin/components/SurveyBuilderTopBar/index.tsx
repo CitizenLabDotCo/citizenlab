@@ -113,7 +113,7 @@ const SurveyBuilderTopBar = ({
           icon="eye"
           mx="20px"
           disabled={!project}
-          linkTo={`/projects/${project?.attributes.slug}`}
+          linkTo={`/projects/${project?.attributes.slug}/ideas/new`}
           openLinkInNewTab
         >
           <FormattedMessage {...messages.viewSurvey} />

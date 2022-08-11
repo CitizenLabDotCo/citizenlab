@@ -13,8 +13,12 @@ import clHistory from 'utils/cl-router/history';
 // i18n
 import messages from './messages';
 
+// hooks
+import useProject from 'hooks/useProject';
+
 const Surveys = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const { projectId } = useParams() as { projectId: string };
+  const project = useProject({ projectId });
 
   return (
     <Box width="100%">
@@ -65,7 +69,14 @@ const Surveys = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         >
           {formatMessage(messages.editSurveyContent)}
         </Button>
-        <Button icon="eye" buttonStyle="primary" width="auto" minWidth="312px">
+        <Button
+          linkTo={`/projects/${project?.attributes.slug}/ideas/new`}
+          icon="eye"
+          openLinkInNewTab
+          buttonStyle="primary"
+          width="auto"
+          minWidth="312px"
+        >
           {formatMessage(messages.viewSurveyText)}
         </Button>
       </Box>
