@@ -2,20 +2,20 @@
 import { colors } from '../styling';
 
 // typings
-import { Mapping, BarSettings, Bar, Layout } from './typings';
+import { Mapping, Bars, BarConfig, Layout } from './typings';
 
 const FALLBACKS = {
   fill: colors.barFill,
 };
 
-export const getBars = <Row>(
+export const getBarConfigs = <Row>(
   data: Row[],
   mapping: Mapping<Row>,
-  barSettings?: BarSettings
+  bars?: Bars
 ) => {
   const { category, length, fill, opacity } = mapping;
 
-  const bars: Bar[] = length.map((lengthColumn, categoryIndex) => {
+  const barConfigs: BarConfig[] = length.map((lengthColumn, categoryIndex) => {
     const cells = data.map((row, rowIndex) => ({
       fill:
         (fill && colors[fill(row, rowIndex)[categoryIndex]]) ?? FALLBACKS.fill,
@@ -23,15 +23,17 @@ export const getBars = <Row>(
     }));
 
     return {
-      name: category as string,
-      dataKey: lengthColumn as string,
+      props: {
+        name: category as string,
+        dataKey: lengthColumn as string,
+        isAnimationActive: bars?.isAnimationActive,
+        barSize: bars?.size,
+      },
       cells,
-      isAnimationActive: barSettings?.isAnimationActive,
-      barSize: barSettings?.size,
     };
   });
 
-  return bars;
+  return barConfigs;
 };
 
 // For some reason, in recharts a 'horizontal' bar chart

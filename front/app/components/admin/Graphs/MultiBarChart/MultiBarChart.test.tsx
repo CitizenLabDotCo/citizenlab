@@ -58,7 +58,7 @@ describe('<MultiBarChart />', () => {
           height={250}
           data={data}
           mapping={{ category: 'name', length: ['value1', 'value2'] }}
-          barSettings={{ isAnimationActive: false }}
+          bars={{ isAnimationActive: false }}
         />
       );
 
@@ -87,7 +87,7 @@ describe('<MultiBarChart />', () => {
             length: ['value1', 'value2'],
             fill: () => ['lightBlue', 'pinkRed'],
           }}
-          barSettings={{ isAnimationActive: false }}
+          bars={{ isAnimationActive: false }}
         />
       );
 
@@ -130,7 +130,7 @@ describe('<MultiBarChart />', () => {
             length: ['value1', 'value2'],
             fill: ({ fill1, fill2 }) => [mapping[fill1], mapping[fill2]],
           }}
-          barSettings={{ isAnimationActive: false }}
+          bars={{ isAnimationActive: false }}
         />
       );
 
@@ -156,7 +156,7 @@ describe('<MultiBarChart />', () => {
             length: ['value1', 'value2'],
             fill: () => ['lightBlue'],
           }}
-          barSettings={{ isAnimationActive: false }}
+          bars={{ isAnimationActive: false }}
         />
       );
 
@@ -184,7 +184,7 @@ describe('<MultiBarChart />', () => {
             length: ['value1', 'value2'],
             opacity: () => [0.8],
           }}
-          barSettings={{ isAnimationActive: false }}
+          bars={{ isAnimationActive: false }}
         />
       );
 
@@ -221,7 +221,7 @@ describe('<MultiBarChart />', () => {
             length: ['value1', 'value2'],
             opacity: ({ opacity1, opacity2 }) => [opacity1, opacity2],
           }}
-          barSettings={{ isAnimationActive: false }}
+          bars={{ isAnimationActive: false }}
         />
       );
 
@@ -248,7 +248,7 @@ describe('<MultiBarChart />', () => {
           height={200}
           data={data}
           mapping={{ category: 'name', length: ['value1', 'value2'] }}
-          barSettings={{ isAnimationActive: false }}
+          bars={{ isAnimationActive: false }}
           layout="horizontal"
         />
       );
@@ -282,7 +282,7 @@ describe('<MultiBarChart />', () => {
           height={200}
           data={data}
           mapping={{ category: 'name', length: ['value1', 'value2'] }}
-          barSettings={{ isAnimationActive: false }}
+          bars={{ isAnimationActive: false }}
         />
       );
 
@@ -298,7 +298,7 @@ describe('<MultiBarChart />', () => {
           height={200}
           data={data}
           mapping={{ category: 'name', length: ['value1', 'value2'] }}
-          barSettings={{ isAnimationActive: false }}
+          bars={{ isAnimationActive: false }}
           renderLabels={() => <LabelList />}
         />
       );
