@@ -224,3 +224,5 @@ export const byId = (array: ObjectWithId[]) =>
     acc[curr.id] = curr;
     return acc;
   }, {});
+
+export const indices = (n: number) => [...Array(n)].map((_, i) => i);

@@ -1,4 +1,4 @@
-import { parsePopulationValue } from './utils';
+import { parsePopulationValue } from './options';
 
 describe('parsePopulationValue', () => {
   it('returns null if value is empty string', () => {

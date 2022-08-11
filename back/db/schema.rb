@@ -1130,6 +1130,7 @@ ActiveRecord::Schema.define(version: 2022_08_08_074431) do
     t.jsonb "distribution", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "type"
     t.index ["custom_field_id"], name: "index_ucf_representativeness_ref_distributions_on_custom_field"
   end
 

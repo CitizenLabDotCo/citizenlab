@@ -12,8 +12,14 @@ def group_filter_parameter(s)
   s.parameter :group, 'Group ID. Only return users that are a member of the given group', required: false
 end
 
-shared_examples 'xlsx export' do |field_name|
-  example_request "Users xlsx by #{field_name}" do
+shared_examples 'xlsx export' do |field_name, request_time|
+  example "Users xlsx by #{field_name}" do
+    if request_time.present?
+      travel_to(request_time) { do_request }
+    else
+      do_request
+    end
+
     expect(response_status).to eq 200
 
     worksheet = RubyXL::Parser.parse_buffer(response_body)[0]
@@ -87,7 +93,7 @@ resource 'Stats - Users' do
 
       context "when 'gender' custom field has a reference distribution" do
         let!(:ref_distribution) do
-          create(:ref_distribution, custom_field: CustomField.find_by(key: 'gender'))
+          create(:categorical_distribution, custom_field: CustomField.find_by(key: 'gender'))
         end
 
         example_request 'Users by gender with expected user counts' do
@@ -100,7 +106,7 @@ resource 'Stats - Users' do
                 female: kind_of(Numeric),
                 unspecified: kind_of(Numeric)
               },
-              reference_population: ref_distribution.distribution_by_option_id.symbolize_keys
+              reference_population: ref_distribution.distribution_by_option_key.symbolize_keys
             }
           )
         end
@@ -138,20 +144,40 @@ resource 'Stats - Users' do
   end
 
   describe 'by_birthyear endpoints' do
+    before do
+      travel_to start_at + 16.days do
+        group_members = [1980, 1980, 1976].map { |year| create(:user, birthyear: year) }
+        @group = create_group(group_members)
+        _non_member = create(:user, birthyear: 1980)
+      end
+
+      travel_to start_at + 18.days do
+        @project = create(:project)
+        @idea1 = create(:idea, project: @project)
+        create(:published_activity, item: @idea1, user: @idea1.author)
+      end
+    end
+
+    shared_examples 'ignore reference distribution' do
+      example 'is not affected by the presence of a reference distribution', document: false do
+        do_request
+        response_without_reference = response_body
+
+        create(:binned_distribution)
+        do_request
+        response_with_reference = response_body
+
+        expect(response_status).to eq 200
+        expect(response_without_reference).to eq response_with_reference
+      end
+    end
+
     get 'web_api/v1/stats/users_by_birthyear' do
       time_boundary_parameters self
       group_filter_parameter self
       parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
 
       describe 'filtered by group' do
-        before do
-          travel_to start_at + 16.days do
-            group_members = [1980, 1980, 1976].map { |year| create(:user, birthyear: year) }
-            @group = create_group(group_members)
-            _non_member = create(:user, birthyear: 1980)
-          end
-        end
-
         let(:group) { @group.id }
 
         example_request 'Users by birthyear' do
@@ -167,20 +193,6 @@ resource 'Stats - Users' do
       end
 
       describe 'filtered by project' do
-        before do
-          travel_to start_at + 16.days do
-            group_members = [1980, 1980, 1976].map { |year| create(:user, birthyear: year) }
-            @group = create_group(group_members)
-            _non_member = create(:user, birthyear: 1980)
-          end
-
-          travel_to start_at + 18.days do
-            @project = create(:project)
-            @idea1 = create(:idea, project: @project)
-            create(:published_activity, item: @idea1, user: @idea1.author)
-          end
-        end
-
         let(:project) { @project.id }
 
         example_request 'Users by birthyear filtered by project' do
@@ -188,20 +200,14 @@ resource 'Stats - Users' do
           expect(json_response_body[:series][:users].values.sum).to eq 1
         end
       end
+
+      include_examples 'ignore reference distribution'
     end
 
     get 'web_api/v1/stats/users_by_birthyear_as_xlsx' do
       time_boundary_parameters self
       group_filter_parameter self
       parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
-
-      before do
-        travel_to start_at + 16.days do
-          group_members = [1980, 1980, 1976].map { |year| create(:user, birthyear: year) }
-          @group = create_group(group_members)
-          _non_member = create(:user, birthyear: 1980)
-        end
-      end
 
       let(:group) { @group.id }
 
@@ -216,6 +222,8 @@ resource 'Stats - Users' do
           ]
         end
       end
+
+      include_examples 'ignore reference distribution'
     end
   end
 
@@ -386,7 +394,7 @@ resource 'Stats - Users' do
         end
 
         context 'when the custom field has a reference distribution' do
-          before { create(:ref_distribution, custom_field: @custom_field) }
+          before { create(:categorical_distribution, custom_field: @custom_field) }
 
           example_request 'Users by custom field (select) including expected nb of users' do
             expect(response_status).to eq 200
@@ -536,7 +544,7 @@ resource 'Stats - Users' do
 
         describe 'when the custom field has a reference distribution' do
           before do
-            create(:ref_distribution, custom_field: @custom_field, distribution: {
+            create(:categorical_distribution, custom_field: @custom_field, distribution: {
               @option1.id => 80, @option3.id => 20
             })
           end
@@ -624,6 +632,130 @@ resource 'Stats - Users' do
               ['false', 1],
               ['true', 1],
               ['_blank', 1]
+            ]
+          end
+        end
+      end
+    end
+  end
+
+  describe 'by_age' do
+    let(:start_at) { Time.zone.local(2019) }
+    let(:end_at) { Time.zone.local(2020).end_of_year }
+
+    # Here, we use a group filter to make sure not to capture unwanted users (e.g. the
+    # user making the request). As it stands, the test case of counting all users
+    # (without filters) by age is not covered.
+    let(:group) { @group.id }
+
+    before do
+      AppConfiguration.instance.update(created_at: start_at)
+
+      travel_to start_at + 16.days do
+        birthyears = [1962, 1976, 1980, 1990, 1991, 2005, 2006]
+        users = birthyears.map { |year| create(:user, birthyear: year) }
+        user_without_birthyear = create(:user, birthyear: nil)
+
+        @group = create_group(users + [user_without_birthyear])
+      end
+    end
+
+    get 'web_api/v1/stats/users_by_age' do
+      time_boundary_parameters self
+      group_filter_parameter self
+      parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
+
+      context 'when the birthyear custom field has no reference distribution' do
+        example 'Users counts by age' do
+          travel_to(Time.zone.local(2020, 1, 1)) { do_request }
+
+          expect(response_status).to eq 200
+          expect(json_response_body).to match(
+            total_user_count: 8,
+            unknown_age_count: 1,
+            series: {
+              user_counts: [0, 2, 2, 1, 1, 1, 0, 0, 0, 0],
+              expected_user_counts: nil,
+              reference_population: nil,
+              bins: UserCustomFields::AgeCounter::DEFAULT_BINS
+            }
+          )
+        end
+      end
+
+      context 'when the birthyear custom field has a reference distribution' do
+        let!(:ref_distribution) do
+          create(
+            :binned_distribution,
+            bins: [nil, 25, 50, 75, nil],
+            counts: [190, 279, 308, 213]
+          )
+        end
+
+        example 'Users counts by age' do
+          travel_to(Time.zone.local(2020, 1, 1)) { do_request }
+
+          expect(response_status).to eq 200
+          expect(json_response_body).to match(
+            total_user_count: 8,
+            unknown_age_count: 1,
+            series: {
+              user_counts: [2, 4, 1, 0],
+              expected_user_counts: ref_distribution.expected_counts(7),
+              reference_population: ref_distribution.counts,
+              bins: ref_distribution.bin_boundaries
+            }
+          )
+        end
+      end
+    end
+
+    get 'web_api/v1/stats/users_by_age_as_xlsx' do
+      time_boundary_parameters self
+      group_filter_parameter self
+      parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
+
+      context 'when the birthyear custom field has no reference distribution' do
+        include_examples('xlsx export', 'age', Time.zone.local(2020, 1, 1)) do
+          let(:expected_worksheet_name) { 'users_by_age' }
+          let(:expected_worksheet_values) do
+            [
+              %w[age user_count],
+              ['0-9', 0],
+              ['10-19', 2],
+              ['20-29', 2],
+              ['30-39', 1],
+              ['40-49', 1],
+              ['50-59', 1],
+              ['60-69', 0],
+              ['70-79', 0],
+              ['80-89', 0],
+              ['90+', 0],
+              ['unknown', 1]
+            ]
+          end
+        end
+      end
+
+      context 'when the birthyear custom field has a reference distribution' do
+        let!(:ref_distribution) do
+          create(
+            :binned_distribution,
+            bins: [nil, 25, 50, 75, nil],
+            counts: [190, 279, 308, 213]
+          )
+        end
+
+        include_examples('xlsx export', 'age', Time.zone.local(2020, 1, 1)) do
+          let(:expected_worksheet_name) { 'users_by_age' }
+          let(:expected_worksheet_values) do
+            [
+              %w[age user_count expected_user_count total_population],
+              ['0-24', 2, 1.3, 190],
+              ['25-49', 4, 2.0, 279],
+              ['50-74', 1, 2.2, 308],
+              ['75+', 0, 1.5, 213],
+              ['unknown', 1, '', '']
             ]
           end
         end
