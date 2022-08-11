@@ -25,11 +25,15 @@ const StyledBadge = styled(Badge)`
 interface SurveyFieldsProps {
   onEditField: (field: IFlatCustomField) => void;
   surveyCustomFields: IFlatCustomField[];
+  handleDragRow: (fromIndex: number, toIndex: number) => void;
+  handleDropRow: (fieldId: string, toIndex: number) => void;
 }
 
 const SurveyFields = ({
   onEditField,
   surveyCustomFields,
+  handleDragRow,
+  handleDropRow,
 }: SurveyFieldsProps) => {
   return (
     <DndProvider backend={HTML5Backend}>
@@ -42,12 +46,8 @@ const SurveyFields = ({
                 id={field.id}
                 className="e2e-custom-registration-field-row"
                 index={index}
-                moveRow={() => {
-                  // TODO: implement moveRow
-                }}
-                dropRow={() => {
-                  // TODO: implement dropRow
-                }}
+                moveRow={handleDragRow}
+                dropRow={handleDropRow}
               >
                 <Box display="flex" className="expand">
                   <Box as="span" display="flex" alignItems="center">
