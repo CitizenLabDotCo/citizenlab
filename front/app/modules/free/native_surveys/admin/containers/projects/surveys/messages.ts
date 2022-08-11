@@ -21,8 +21,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.editSurveyContent',
     defaultMessage: 'Edit survey content',
   },
-  viewSurvey: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.viewSurvey',
+  viewSurveyText: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.viewSurveyText',
     defaultMessage: 'View survey',
   },
 });

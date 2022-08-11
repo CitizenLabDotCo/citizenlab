@@ -17,7 +17,7 @@ const Tab: FC<Props & InjectedIntlProps> = ({
   useEffect(() => {
     onData({
       configuration: {
-        label: formatMessage(messages.nativeSurveyTab),
+        label: formatMessage(messages.surveyTitle),
         url: 'native-survey',
         feature: 'native_surveys',
         name: 'nativeSurveys',

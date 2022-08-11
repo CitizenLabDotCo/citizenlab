@@ -66,7 +66,7 @@ const Surveys = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           {formatMessage(messages.editSurveyContent)}
         </Button>
         <Button icon="eye" buttonStyle="primary" width="auto" minWidth="312px">
-          {formatMessage(messages.viewSurvey)}
+          {formatMessage(messages.viewSurveyText)}
         </Button>
       </Box>
     </Box>

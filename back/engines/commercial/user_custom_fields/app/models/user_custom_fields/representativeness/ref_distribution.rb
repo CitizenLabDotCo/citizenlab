@@ -9,6 +9,7 @@
 #  distribution    :jsonb            not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  type            :string
 #
 # Indexes
 #
@@ -21,71 +22,65 @@
 module UserCustomFields
   module Representativeness
     class RefDistribution < ApplicationRecord
+      attr_readonly :custom_field_id
+      attr_readonly :type
       belongs_to :custom_field
-      has_many :options, through: :custom_field
 
+      validates :type, presence: true
+      validates :distribution, presence: true, json: { schema: -> { self.class.distribution_schema }, message: ->(errors) { errors } }
       validates :custom_field_id, uniqueness: true
-      validates :distribution, presence: true, length: { minimum: 2, message: 'must have at least 2 options.' }
-      validate :validate_distribution_options
       validate :validate_distribution_counts
+      validate :validate_custom_field_type_with_guard
 
-      def probabilities_and_counts
-        distribution.merge(probabilities) do |_option_id, count, probability|
-          { count: count, probability: probability }
+      class << self
+        # This method allows pundit to identify the right policy class for
+        # instances of subclasses of this class.
+        def policy_class
+          ::UserCustomFields::Representativeness::RefDistributionPolicy
         end
-      end
 
-      def distribution_by_option_id
-        @distribution_by_option_id ||= distribution.transform_keys do |option_id|
-          option_id_to_key.fetch(option_id)
+        def distribution_schema
+          raise NotImplementedError, 'distribution_schema must be overridden in subclasses.'
         end
-      end
-
-      # Returns the expected count distribution for a given (total) number of users.
-      def expected_counts(nb_users)
-        probabilities.transform_values { |probability| (probability * nb_users).round(1) }
-      end
-
-      # Removes options that no longer exist from the distribution description. If it
-      # results in a distribution with less than 2 options, the distribution is destroyed.
-      def sync_with_options!
-        update!(distribution: distribution.slice(*option_ids))
-      rescue ActiveRecord::RecordInvalid => e
-        raise unless e.message == 'Validation failed: Distribution must have at least 2 options.'
-
-        destroy!
       end
 
       private
 
-      def validate_distribution_options
-        return if custom_field.blank? || distribution.blank?
-        return if distribution.keys.to_set <= option_ids.to_set
+      def counts
+        raise NotImplementedError, 'counts must be overridden in subclasses.'
+      end
 
-        errors.add(:distribution, 'options must be a subset of the options of the associated custom field.')
+      def total_population
+        @total_population ||= counts.sum
       end
 
       def validate_distribution_counts
         return if custom_field.blank? || distribution.blank?
 
-        counts = distribution.values
         errors.add(:distribution, 'population counts cannot be nil.') if counts.any?(&:nil?)
 
-        counts.compact!
-        errors.add(:distribution, 'population counts must be strictly positive.') unless counts.all?(&:positive?)
-        errors.add(:distribution, 'population counts must be integers.') unless counts.all?(&:integer?)
+        counts_without_nil = counts.compact
+        errors.add(:distribution, 'population counts must be strictly positive.') unless counts_without_nil.all?(&:positive?)
+        errors.add(:distribution, 'population counts must be integers.') unless counts_without_nil.all?(&:integer?)
       end
 
-      def option_id_to_key
-        @option_id_to_key ||= custom_field.options.to_h { |option| [option.id, option.key] }
+      # Validates that the type of the custom field is compatible with the distribution.
+      # The method uses the template method pattern to make it easier to override in
+      # subclasses without repeating the guard clause.
+      #
+      # Subclasses must override +validate_custom_field_type+ to apply their specific
+      # rules.
+      def validate_custom_field_type_with_guard
+        return if custom_field.blank?
+
+        validate_custom_field_type
       end
 
-      def total_population
-        @total_population ||= distribution.values.sum
-      end
-
-      def probabilities
-        distribution.transform_values { |count| count.to_f / total_population }
+      # See +validate_custom_field_type_with_guard+.
+      def validate_custom_field_type
+        errors.add(:custom_field, <<-MSG) unless custom_field.resource_type == 'User'
+          resource type must be 'User'.
+        MSG
       end
     end
   end
