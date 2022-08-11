@@ -41,7 +41,7 @@ resource 'AdminPublication' do
       parameter :depth, 'Filter by depth (AND)', required: false
       parameter :topics, 'Filter by topics (AND)', required: false
       parameter :areas, 'Filter by areas (AND)', required: false
-      parameter :search, 'Search text of title, description, preview, and slug (AND) ?', required: false
+      parameter :search, 'Search text of title, description, preview, and slug', required: false
       parameter :publication_statuses, 'Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default', required: false
       if CitizenLab.ee?
         parameter :folder, 'Filter by folder (project folder id)', required: false
