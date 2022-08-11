@@ -44,6 +44,10 @@ class WebApi::V1::CustomPagesController < ApplicationController
     end
   end
 
+  def destroy
+    # TODO: implement
+  end
+
   # def update
   #   @homepage.assign_attributes home_page_params
   #   authorize @homepage
