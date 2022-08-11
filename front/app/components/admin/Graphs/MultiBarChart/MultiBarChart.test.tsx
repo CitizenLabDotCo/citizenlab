@@ -146,7 +146,7 @@ describe('<MultiBarChart />', () => {
     });
 
     it('has correct fallback fill when not enough fills are provided', () => {
-      const { container } = render(
+      const { container, debug } = render(
         <MultiBarChart
           width={200}
           height={250}
@@ -159,6 +159,8 @@ describe('<MultiBarChart />', () => {
           barSettings={{ isAnimationActive: false }}
         />
       );
+
+      debug();
 
       const bars = container.querySelectorAll('path');
       expect(bars).toHaveLength(6);

@@ -45,13 +45,13 @@ export interface BarSettings {
 export interface Bar {
   name: string;
   dataKey: string;
-  cells?: Cell[];
+  cells: Cell[];
   barSize?: number;
   isAnimationActive?: boolean;
 }
 
-interface Cell {
-  fill?: string;
+export interface Cell {
+  fill: string;
   opacity?: number;
 }
 

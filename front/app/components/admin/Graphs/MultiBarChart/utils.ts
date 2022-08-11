@@ -4,6 +4,10 @@ import { colors } from '../styling';
 // typings
 import { Mapping, BarSettings, Bar, Layout } from './typings';
 
+const FALLBACKS = {
+  fill: colors.barFill,
+};
+
 export const getBars = <Row>(
   data: Row[],
   mapping: Mapping<Row>,
@@ -12,12 +16,11 @@ export const getBars = <Row>(
   const { category, length, fill, opacity } = mapping;
 
   const bars: Bar[] = length.map((lengthColumn, categoryIndex) => {
-    const cells =
-      (fill || opacity) &&
-      data.map((row, rowIndex) => ({
-        fill: fill && colors[fill(row, rowIndex)[categoryIndex]],
-        opacity: opacity && opacity(row, rowIndex)[categoryIndex],
-      }));
+    const cells = data.map((row, rowIndex) => ({
+      fill:
+        (fill && colors[fill(row, rowIndex)[categoryIndex]]) ?? FALLBACKS.fill,
+      opacity: opacity && opacity(row, rowIndex)[categoryIndex],
+    }));
 
     return {
       name: category as string,

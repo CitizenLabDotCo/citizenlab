@@ -89,10 +89,9 @@ const MultiBarChart = <T,>({
                 position: labelPosition,
               })}
 
-            {bar.cells &&
-              bar.cells.map((cell, cellIndex) => (
-                <Cell key={`cell-${barIndex}-${cellIndex}`} {...cell} />
-              ))}
+            {bar.cells.map((cell, cellIndex) => (
+              <Cell key={`cell-${barIndex}-${cellIndex}`} {...cell} />
+            ))}
           </Bar>
         ))}
 
