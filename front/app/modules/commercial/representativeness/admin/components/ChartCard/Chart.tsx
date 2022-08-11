@@ -6,9 +6,6 @@ import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/styling';
 import { LabelList, Tooltip } from 'recharts';
 import CustomTooltip from './CustomTooltip';
 
-// styling
-import { colors } from 'utils/styleUtils';
-
 // utils
 import { formatPercentage, emptyString } from './utils';
 
@@ -31,10 +28,13 @@ const Chart = ({ currentChartRef, data, barNames, hideTicks }: Props) => {
       height={300}
       innerRef={currentChartRef}
       data={slicedData}
-      mapping={{ length: ['actualPercentage', 'referencePercentage'] }}
+      mapping={{
+        category: 'name',
+        length: ['actualPercentage', 'referencePercentage'],
+        fill: () => ['representativenessBlue', 'representativenessLightBlue'],
+      }}
       bars={{
-        name: barNames,
-        fill: [colors.adminTextColor, colors.clBlueLight],
+        names: barNames,
         categoryGap: '20%',
       }}
       margin={DEFAULT_BAR_CHART_MARGIN}

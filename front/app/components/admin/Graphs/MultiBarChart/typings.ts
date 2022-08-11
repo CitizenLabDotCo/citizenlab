@@ -36,15 +36,16 @@ export interface Mapping<Row> {
 }
 
 export interface Bars {
+  names?: string[];
   size?: number;
-  gap?: string | number;
+  categoryGap?: string | number;
   isAnimationActive?: boolean;
 }
 
 // PARSED CONFIG
 export interface BarConfig {
   props: {
-    name: string;
+    name?: string;
     dataKey: string;
     barSize?: number;
     isAnimationActive?: boolean;

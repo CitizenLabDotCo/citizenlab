@@ -13,18 +13,17 @@ export const getBarConfigs = <Row>(
   mapping: Mapping<Row>,
   bars?: Bars
 ) => {
-  const { category, length, fill, opacity } = mapping;
+  const { length, fill, opacity } = mapping;
 
-  const barConfigs: BarConfig[] = length.map((lengthColumn, categoryIndex) => {
+  const barConfigs: BarConfig[] = length.map((lengthColumn, barIndex) => {
     const cells = data.map((row, rowIndex) => ({
-      fill:
-        (fill && colors[fill(row, rowIndex)[categoryIndex]]) ?? FALLBACKS.fill,
-      opacity: opacity && opacity(row, rowIndex)[categoryIndex],
+      fill: (fill && colors[fill(row, rowIndex)[barIndex]]) ?? FALLBACKS.fill,
+      opacity: opacity && opacity(row, rowIndex)[barIndex],
     }));
 
     return {
       props: {
-        name: category as string,
+        name: bars?.names?.[barIndex],
         dataKey: lengthColumn as string,
         isAnimationActive: bars?.isAnimationActive,
         barSize: bars?.size,

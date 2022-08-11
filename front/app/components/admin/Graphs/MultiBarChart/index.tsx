@@ -66,7 +66,7 @@ const MultiBarChart = <T,>({
         margin={margin}
         ref={innerRef}
         barGap={0}
-        barCategoryGap={bars?.gap}
+        barCategoryGap={bars?.categoryGap}
       >
         {renderTooltip &&
           renderTooltip({

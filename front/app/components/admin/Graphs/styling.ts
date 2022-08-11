@@ -20,6 +20,8 @@ export const colors = {
   lightBlue: '#5D99C6',
   lightGreen: '#B0CDC4',
   grey: '#C0C2CE',
+  representativenessBlue: mainColors.adminTextColor,
+  representativenessLightBlue: mainColors.clBlueLight,
 };
 
 export const sizes = {
