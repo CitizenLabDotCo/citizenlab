@@ -114,7 +114,7 @@ describe('<MultiBarChart />', () => {
         { name: 'c', value1: 7, value2: 10, fill1: 'green', fill2: 'red' },
       ];
 
-      const mapping = {
+      const colorMapping = {
         red: 'pinkRed',
         blue: 'lightBlue',
         green: 'lightGreen',
@@ -128,7 +128,7 @@ describe('<MultiBarChart />', () => {
           mapping={{
             category: 'name',
             length: ['value1', 'value2'],
-            fill: ({ fill1, fill2 }) => [mapping[fill1], mapping[fill2]],
+            fill: ({ fill1, fill2 }) => [colorMapping[fill1], colorMapping[fill2]],
           }}
           bars={{ isAnimationActive: false }}
         />

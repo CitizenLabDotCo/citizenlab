@@ -3,6 +3,7 @@ import { render, screen } from 'utils/testUtils/rtl';
 import BarChart from './';
 import { LabelList } from 'recharts';
 import { NilOrError } from 'utils/helperUtils';
+import { colors } from '../styling';
 
 jest.mock('services/appConfiguration');
 jest.mock('utils/cl-intl');
@@ -70,23 +71,50 @@ describe('<BarChart />', () => {
       expect(bars[2]).toHaveAttribute('height', barHeights[2]);
     });
 
-    it('renders correctly with fixed fills', () => {
-      // TODO
+    it('renders correctly with fixed fill', () => {
+      const { container } = render(
+        <BarChart
+          width={200}
+          height={250}
+          data={data}
+          mapping={{ 
+            category: 'name',
+            length: 'value',
+            fill: () => 'pinkRed'
+          }}
+          bars={{ isAnimationActive: false }}
+        />
+      );
+
+      const bars = container.querySelectorAll('path');
+      expect(bars).toHaveLength(3);
+
+      expect(bars[0]).toHaveAttribute('fill', colors.pinkRed);
+      expect(bars[1]).toHaveAttribute('fill', colors.pinkRed);
+      expect(bars[2]).toHaveAttribute('fill', colors.pinkRed);
     });
 
     it('renders correctly with fill mapping', () => {
-      // TODO
       const data = [
         { name: 'a', value: 4, color: 'red' },
         { name: 'b', value: 10, color: 'blue' },
         { name: 'c', value: 7, color: 'green' },
       ];
 
+      const colorMapping = {
+        red: 'pinkRed',
+        blue: 'lightBlue',
+        green: 'lightGreen',
+      };
+
       const { container } = render(
         <BarChart
           width={200}
           height={250}
           data={data}
+          mapping={{
+
+          }}
           bars={{ isAnimationActive: false }}
         />
       );
@@ -99,7 +127,7 @@ describe('<BarChart />', () => {
       expect(bars[2]).toHaveAttribute('color', 'green');
     });
 
-    it('has correct fallback fill when not enough fills are provided', () => {
+    it('has correct fallback fill when no fill is provided', () => {
       // TODO
     });
 
