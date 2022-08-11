@@ -28,6 +28,10 @@ module UserCustomFields::Patches::CustomField
     ref_distributions.order(created_at: :desc).first
   end
 
+  def domicile?
+    key == 'domicile' && code == 'domicile'
+  end
+
   private
 
   def destroy_ref_distributions
@@ -45,9 +49,5 @@ module UserCustomFields::Patches::CustomField
     end
 
     options.create!(title_multiloc: title_multiloc)
-  end
-
-  def domicile?
-    key == 'domicile'
   end
 end
