@@ -3,11 +3,14 @@
 require 'rails_helper'
 
 RSpec.describe Area, type: :model do
+  subject { build(:area) }
+
   describe 'Default factory' do
-    it 'is valid' do
-      expect(build(:area)).to be_valid
-    end
+    it { is_expected.to be_valid }
   end
+
+  it { is_expected.not_to validate_presence_of(:ordering) }
+  it { is_expected.to validate_numericality_of(:ordering) }
 
   describe 'default_scope' do
     it 'defaults to sorting areas by ordering' do
@@ -34,13 +37,6 @@ RSpec.describe Area, type: :model do
   describe '#create' do
     before do
       create_list(:area, 3)
-    end
-
-    context 'when ordering is given' do
-      subject { create(:area) }
-
-      it { is_expected.not_to validate_presence_of(:ordering) }
-      it { is_expected.to validate_numericality_of(:ordering) }
     end
 
     context 'when no ordering is given' do
