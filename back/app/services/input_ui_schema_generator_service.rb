@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class InputUiSchemaGeneratorService < InputUiSchemaGeneratorService
+class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   def fields_to_ui_schema(fields, locale)
     project = fields.first.resource.project
     input_term = ParticipationContextService.new.get_participation_context(project)&.input_term || 'idea'
