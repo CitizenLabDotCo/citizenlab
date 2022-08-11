@@ -496,7 +496,7 @@ RSpec.describe UiSchemaGeneratorService do
     end
 
     it 'returns the schema for the given field' do
-      expect(generator.visit_point(field)).to eq nil
+      expect(generator.visit_point(field)).to be_nil
     end
   end
 end
