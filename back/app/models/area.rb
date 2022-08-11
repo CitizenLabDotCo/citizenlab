@@ -35,6 +35,13 @@ class Area < ApplicationRecord
   before_validation :sanitize_description_multiloc
   before_validation :strip_title
 
+  # If the domicile custom field exists, area are associated to its options.
+  # The two associated resources are kept in sync: changes mode to the
+  # area are reflected in the option, and vice versa.
+  belongs_to :custom_field_option, dependent: :destroy, optional: true
+  after_create :create_custom_field_option
+  after_update :update_custom_field_option
+
   validates :ordering, numericality: {
     only_integer: true,
     greater_than_or_equal_to: 0
@@ -57,6 +64,25 @@ class Area < ApplicationRecord
       title_multiloc[key] = value.strip
     end
   end
+
+  def create_custom_field_option
+    return unless (domicile_field = CustomField.find_by(key: 'domicile'))
+
+    create_custom_field_option!(
+      custom_field: domicile_field,
+      title_multiloc: title_multiloc,
+      ordering: ordering
+    )
+  end
+
+  def update_custom_field_option
+    return unless custom_field_option
+    return unless ordering_previously_changed? || title_multiloc_previously_changed?
+
+    custom_field_option.update(
+      title_multiloc: title_multiloc,
+      ordering: ordering
+    )
+  end
 end
 
-Area.include_if_ee('UserCustomFields::Patches::Area')

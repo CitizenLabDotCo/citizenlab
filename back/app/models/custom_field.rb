@@ -52,6 +52,7 @@ class CustomField < ApplicationRecord
   before_validation :set_default_enabled
   before_validation :generate_key, on: :create
   before_validation :sanitize_description_multiloc
+  after_create :create_domicile_options, if: :domicile?
 
   scope :with_resource_type, ->(resource_type) { where(resource_type: resource_type) }
   scope :enabled, -> { where(enabled: true) }
@@ -81,6 +82,10 @@ class CustomField < ApplicationRecord
     required
   end
 
+  def domicile?
+    key == 'domicile' && code == 'domicile'
+  end
+
   private
 
   def set_default_enabled
@@ -100,6 +105,19 @@ class CustomField < ApplicationRecord
     self.description_multiloc = service.sanitize_multiloc description_multiloc, %i[decoration link list title]
     self.description_multiloc = service.remove_multiloc_empty_trailing_tags description_multiloc
     self.description_multiloc = service.linkify_multiloc description_multiloc
+  end
+
+  def create_domicile_options
+    Area.all.each(&:create_custom_field_option)
+    create_somewhere_else_domicile_option
+  end
+
+  def create_somewhere_else_domicile_option
+    title_multiloc = CL2_SUPPORTED_LOCALES.index_with do |locale|
+      I18n.t('custom_field_options.domicile.outside', locale: locale)
+    end
+
+    options.create!(title_multiloc: title_multiloc)
   end
 end
 
