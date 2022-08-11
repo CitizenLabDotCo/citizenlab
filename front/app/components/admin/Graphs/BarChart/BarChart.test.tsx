@@ -2,29 +2,46 @@ import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
 import BarChart from './';
 import { LabelList } from 'recharts';
+import { NilOrError } from 'utils/helperUtils';
 
 jest.mock('services/appConfiguration');
 jest.mock('utils/cl-intl');
 
+type Row = { name: string; value: number };
+
+const getEmptyData = (): Row[] | NilOrError => null;
+const getErrorData = (): Row[] | NilOrError => new Error();
+const emptyData = getEmptyData();
+const errorData = getErrorData();
+
 describe('<BarChart />', () => {
   describe('Missing data', () => {
     it('renders empty state message if data is nil', () => {
-      render(<BarChart emptyContainerContent={'No data available'} />);
+      render(
+        <BarChart
+          data={emptyData}
+          mapping={{ category: 'name', length: 'value' }}
+          emptyContainerContent={'No data available'}
+        />
+      );
+
       expect(screen.getByText('No data available')).toBeInTheDocument();
     });
 
     it('renders empty state message if data is Error', () => {
       render(
         <BarChart
-          data={new Error()}
+          data={errorData}
+          mapping={{ category: 'name', length: 'value' }}
           emptyContainerContent={'No data available'}
         />
       );
+
       expect(screen.getByText('No data available')).toBeInTheDocument();
     });
   });
 
-  const data = [
+  const data: Row[] = [
     { name: 'a', value: 4 },
     { name: 'b', value: 10 },
     { name: 'c', value: 7 },
@@ -34,12 +51,13 @@ describe('<BarChart />', () => {
     const scale = (x) => 17.5 * x;
     const barHeights = [4, 10, 7].map((x) => scale(x).toString());
 
-    it('renders correctly with default column names', () => {
+    it('renders correctly', () => {
       const { container } = render(
         <BarChart
           width={200}
           height={250}
           data={data}
+          mapping={{ category: 'name', length: 'value' }}
           bars={{ isAnimationActive: false }}
         />
       );
@@ -52,32 +70,12 @@ describe('<BarChart />', () => {
       expect(bars[2]).toHaveAttribute('height', barHeights[2]);
     });
 
-    it('renders correctly with custom length mapping', () => {
-      const data = [
-        { name: 'a', y: 4 },
-        { name: 'b', y: 10 },
-        { name: 'c', y: 7 },
-      ];
-
-      const { container } = render(
-        <BarChart
-          width={200}
-          height={250}
-          data={data}
-          mapping={{ length: 'y' }}
-          bars={{ isAnimationActive: false }}
-        />
-      );
-
-      const bars = container.querySelectorAll('path');
-      expect(bars).toHaveLength(3);
-
-      expect(bars[0]).toHaveAttribute('height', barHeights[0]);
-      expect(bars[1]).toHaveAttribute('height', barHeights[1]);
-      expect(bars[2]).toHaveAttribute('height', barHeights[2]);
+    it('renders correctly with fixed fills', () => {
+      // TODO
     });
 
     it('renders correctly with fill mapping', () => {
+      // TODO
       const data = [
         { name: 'a', value: 4, color: 'red' },
         { name: 'b', value: 10, color: 'blue' },
@@ -101,28 +99,16 @@ describe('<BarChart />', () => {
       expect(bars[2]).toHaveAttribute('color', 'green');
     });
 
-    it('renders correctly when fill mapping is function', () => {
-      const { container } = render(
-        <BarChart
-          width={200}
-          height={250}
-          mapping={{
-            fill: (row) => (row.name === 'a' ? 'green' : 'orange'),
-          }}
-          data={data}
-          bars={{ isAnimationActive: false }}
-        />
-      );
+    it('has correct fallback fill when not enough fills are provided', () => {
+      // TODO
+    });
 
-      const bars = container.querySelectorAll('path');
-      expect(bars).toHaveLength(3);
-
-      expect(bars[0]).toHaveAttribute('fill', 'green');
-      expect(bars[1]).toHaveAttribute('fill', 'orange');
-      expect(bars[2]).toHaveAttribute('fill', 'orange');
+    it('renders correctly with fixed opacities', () => {
+      // TODO
     });
 
     it('renders correctly with opacity mapping', () => {
+      // TODO
       const data = [
         { name: 'a', value: 4, opacity: 1 },
         { name: 'b', value: 10, opacity: 0.4 },
@@ -145,27 +131,6 @@ describe('<BarChart />', () => {
       expect(bars[0]).toHaveAttribute('opacity', '1');
       expect(bars[1]).toHaveAttribute('opacity', '0.4');
       expect(bars[2]).toHaveAttribute('opacity', '0.7');
-    });
-
-    it('renders correctly when opacity mapping is function', () => {
-      const { container } = render(
-        <BarChart
-          width={200}
-          height={250}
-          mapping={{
-            opacity: (row) => (row.name === 'a' ? 1 : 0.8),
-          }}
-          data={data}
-          bars={{ isAnimationActive: false }}
-        />
-      );
-
-      const bars = container.querySelectorAll('path');
-      expect(bars).toHaveLength(3);
-
-      expect(bars[0]).toHaveAttribute('opacity', '1');
-      expect(bars[1]).toHaveAttribute('opacity', '0.8');
-      expect(bars[2]).toHaveAttribute('opacity', '0.8');
     });
   });
 
@@ -194,7 +159,7 @@ describe('<BarChart />', () => {
   });
 
   describe('Labels', () => {
-    const data = [
+    const data: Row[] = [
       { name: 'a', value: 4 },
       { name: 'b', value: 7.24 },
       { name: 'c', value: 10 },
