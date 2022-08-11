@@ -4,7 +4,7 @@ class UserJsonSchemaGeneratorService < JsonSchemaGeneratorService
   # Code comes from back/app/services/concerns/json_forms_user_overrides.rb
 
   def visit_number(field)
-    return super unless field.code == 'domicile'
+    return super unless field.code == 'birthyear'
 
     super.tap do |schema|
       years = (1900..(Time.now.year - 12)).to_a.reverse
@@ -14,7 +14,7 @@ class UserJsonSchemaGeneratorService < JsonSchemaGeneratorService
 
   def visit_select(field)
     return super unless field.code == 'domicile'
-
+  
     super.tap do |schema|
       areas = Area.all.order(created_at: :desc).map do |area|
         {

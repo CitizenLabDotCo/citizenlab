@@ -8,8 +8,8 @@ RSpec.describe UserJsonSchemaGeneratorService do
   let(:field_key) { 'field_key' }
 
   describe '#visit_number' do
-    context 'when the code is domicile' do
-      let(:field) { create :custom_field, input_type: 'number', code: 'domicile', key: field_key }
+    context 'when the code is birthyear' do
+      let(:field) { create :custom_field, input_type: 'number', code: 'birthyear', key: field_key }
 
       it 'returns the schema for the given built-in field' do
         schema = travel_to(Date.parse('1915-01-01')) { generator.visit_number(field) }

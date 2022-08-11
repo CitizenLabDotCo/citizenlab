@@ -17,7 +17,8 @@ class JsonFormsService
     return nil if resource_types.empty?
 
     allowed_fields = allowed_fields(fields, current_user)
-    json_schema_multiloc = fields_to_json_schema_multiloc(allowed_fields)
+    json_schema_generator_class = Factory.instance.json_schema_generator_class_for resource_types.first
+    json_schema_multiloc = json_schema_generator_class.new.generate_for allowed_fields
     ui_schema_multiloc = fields_to_ui_schema_multiloc(allowed_fields)
 
     { json_schema_multiloc: json_schema_multiloc, ui_schema_multiloc: ui_schema_multiloc }

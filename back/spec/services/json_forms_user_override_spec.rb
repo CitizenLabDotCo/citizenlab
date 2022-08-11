@@ -17,7 +17,7 @@ describe JsonFormsService do
     end
 
     it 'properly handles the custom behaviour of the domicile field' do
-      fields = [create(:custom_field, key: 'domicile', code: 'domicile')]
+      fields = [create(:custom_field, key: 'domicile', code: 'domicile', input_type: 'select')]
       create_list(:area, 5)
       schema = service.ui_and_json_multiloc_schemas(fields, user)[:json_schema_multiloc]['en']
       expect(JSON::Validator.validate!(metaschema, schema)).to be true
