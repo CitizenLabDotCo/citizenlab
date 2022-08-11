@@ -47,6 +47,16 @@ class Area < ApplicationRecord
     greater_than_or_equal_to: 0
   }, unless: ->(area) { area.ordering.nil? }
 
+  def create_custom_field_option
+    return unless (domicile_field = CustomField.find_by(key: 'domicile'))
+
+    create_custom_field_option!(
+      custom_field: domicile_field,
+      title_multiloc: title_multiloc,
+      ordering: ordering
+    )
+  end
+
   private
 
   def sanitize_description_multiloc
@@ -63,16 +73,6 @@ class Area < ApplicationRecord
     title_multiloc.each do |key, value|
       title_multiloc[key] = value.strip
     end
-  end
-
-  def create_custom_field_option
-    return unless (domicile_field = CustomField.find_by(key: 'domicile'))
-
-    create_custom_field_option!(
-      custom_field: domicile_field,
-      title_multiloc: title_multiloc,
-      ordering: ordering
-    )
   end
 
   def update_custom_field_option
