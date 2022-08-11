@@ -10,7 +10,7 @@ import HasPermission from 'components/HasPermission';
 
 // components
 import Sidebar from './sideBar/';
-import styled, { ThemeProvider } from 'styled-components';
+import styled from 'styled-components';
 import { colors, media } from 'utils/styleUtils';
 
 // utils
@@ -19,7 +19,6 @@ import { endsWith } from 'utils/helperUtils';
 
 // stlying
 import 'assets/semantic/semantic.min.css';
-import { rgba } from 'polished';
 
 const Container = styled.div`
   display: flex;
@@ -86,26 +85,6 @@ export const RightColumn = styled.div`
   `}
 `;
 
-export const chartTheme = (theme) => {
-  return {
-    ...theme,
-    chartStroke: colors.clIconAccent,
-    chartStrokeGreen: colors.clGreen,
-    chartStrokeRed: colors.red500,
-    chartFill: colors.clIconAccent,
-    barFill: colors.adminContentBackground,
-    chartLabelColor: colors.adminSecondaryTextColor,
-    barHoverColor: rgba(colors.clIconAccent, 0.25),
-    chartLabelSize: 13,
-    animationBegin: 10,
-    animationDuration: 200,
-    cartesianGridColor: '#f5f5f5',
-    newBarFill: '#073F80',
-    newLineColor: '#7FBBCA',
-    barSize: 20,
-  };
-};
-
 type Props = {
   className?: string;
 };
@@ -164,18 +143,16 @@ const AdminPage = memo<Props & WithRouterProps>(
         item={{ type: 'route', path: '/admin/dashboard' }}
         action="access"
       >
-        <ThemeProvider theme={chartTheme}>
-          <Container className={`${className} ${whiteBg ? 'whiteBg' : ''}`}>
-            <Sidebar />
-            <RightColumn
-              className={`${fullWidth && 'fullWidth'} ${
-                noPadding && 'noPadding'
-              }`}
-            >
-              <RouterOutlet />
-            </RightColumn>
-          </Container>
-        </ThemeProvider>
+        <Container className={`${className} ${whiteBg ? 'whiteBg' : ''}`}>
+          <Sidebar />
+          <RightColumn
+            className={`${fullWidth && 'fullWidth'} ${
+              noPadding && 'noPadding'
+            }`}
+          >
+            <RouterOutlet />
+          </RightColumn>
+        </Container>
       </HasPermission>
     );
   }
