@@ -26,7 +26,6 @@ export interface Props {
 
 const ProjectAndFolderCards = ({
   publicationStatusFilter,
-  search,
   ...otherProps
 }: Props) => {
   const { counts, onChangeTopics, onChangeAreas } =
@@ -58,7 +57,6 @@ const ProjectAndFolderCards = ({
       currentTab={currentTab}
       statusCounts={counts}
       publicationStatusFilter={publicationStatusFilter}
-      search={search}
       onChangeTopics={onChangeTopics}
       onChangeAreas={onChangeAreas}
       onChangeTab={onChangeTab}

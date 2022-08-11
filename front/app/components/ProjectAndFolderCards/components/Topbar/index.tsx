@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // services
@@ -15,6 +15,7 @@ import Tabs from './Tabs';
 import { ScreenReaderOnly } from 'utils/a11y';
 import SelectTopics from './SelectTopics';
 import SelectAreas from './SelectAreas';
+import SearchInput from 'components/UI/SearchInput';
 
 // styling
 import styled from 'styled-components';
@@ -28,6 +29,7 @@ import messages from './messages';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { getShowFilters, getShowFiltersLabel } from './show';
+import { useSearchParams } from 'react-router-dom';
 
 // typings
 import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
@@ -96,6 +98,10 @@ const StyledSelectTopics = styled(SelectTopics)`
   margin-right: 13px !important;
 `;
 
+const StyledSearchInput = styled(SearchInput)`
+  margin-bottom: 20px;
+`;
+
 const FiltersLabel = styled.div`
   margin-right: 16px;
   height: 100%;
@@ -122,6 +128,7 @@ interface Props {
   onChangeTopics: (topics: string[]) => void;
   onChangeAreas: (areas: string[]) => void;
   onChangeTab: (tab: PublicationTab) => void;
+  onChangeSearch: (search: string) => void;
 }
 
 const Header = ({
@@ -135,6 +142,7 @@ const Header = ({
   onChangeTopics,
   onChangeAreas,
   onChangeTab,
+  onChangeSearch,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const appConfiguration = useAppConfiguration();
@@ -145,6 +153,22 @@ const Header = ({
   const localize = useLocalize();
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const [selectedAreas, setSelectedAreas] = useState<string[]>([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    const focusSearch = searchParams.get('focusSearch');
+    // it's a string from the query param
+    if (focusSearch === 'true') {
+      // this should be a ref to the input element
+      // it's null on page load
+      const searchInput = document.getElementById('search-input');
+      if (searchInput) {
+        searchInput.focus();
+      }
+      searchParams.delete('focusSearch');
+      setSearchParams(searchParams);
+    }
+  }, [searchParams, setSearchParams]);
 
   if (isNilOrError(appConfiguration)) return null;
 
@@ -179,6 +203,10 @@ const Header = ({
     onChangeAreas(selectedAreas);
   };
 
+  const handleOnSearchChange = (search: string) => {
+    onChangeSearch(search);
+  };
+
   return (
     <div className={className}>
       {showTitle ? (
@@ -191,6 +219,11 @@ const Header = ({
       ) : (
         <ScreenReaderOnly>{currentlyWorkingOnText}</ScreenReaderOnly>
       )}
+
+      <StyledSearchInput
+        onChange={handleOnSearchChange}
+        a11y_numberOfSearchResults={1}
+      />
 
       <Container>
         {!smallerThanXlPhone && showFilters && (

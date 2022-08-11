@@ -94,11 +94,6 @@ const ProjectAndFolderCardsInner = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [publicationStatusesForCurrentTabStringified]);
 
-  useEffect(() => {
-    adminPublications.onChangeSearch(search);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search]);
-
   if (isNilOrError(statusCountsWithoutFilters)) return null;
 
   const availableTabs = getAvailableTabs(statusCountsWithoutFilters);
@@ -119,6 +114,10 @@ const ProjectAndFolderCardsInner = ({
     adminPublications.onChangeAreas(areas);
   };
 
+  const handleChangeSearch = (search: string) => {
+    adminPublications.onChangeSearch(search);
+  };
+
   const { loadingInitial, loadingMore, hasMore, list } = adminPublications;
   const hasPublications = !isNilOrError(list) && list.length > 0;
 
@@ -133,6 +132,7 @@ const ProjectAndFolderCardsInner = ({
         hasPublications={hasPublications}
         onChangeTopics={handleChangeTopics}
         onChangeAreas={handleChangeAreas}
+        onChangeSearch={handleChangeSearch}
         onChangeTab={onChangeTab}
       />
 
