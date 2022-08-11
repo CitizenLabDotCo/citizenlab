@@ -13,38 +13,8 @@ class JsonSchemaGeneratorService < FieldVisitorService
 
   def generate_for(fields)
     locales.index_with do |locale|
-      # TODO: keep overrides for later
-      # override_method = "#{fields.first.resource_type.underscore}_to_json_schema"
-      # if respond_to?(override_method, true)
-      #   send(override_method, fields, locale)
-      # else
-      #   fields_to_json_schema(fields, locale)
-      # end
-      fields_to_json_schema fields, locale
-    end
-  end
-
-  def fields_to_json_schema(fields, locale)
-    # TODO: keep overrides for later
-    # field_properties = fields.each_with_object({}) do |field, accu|
-    #   override_method = "#{field.resource_type.underscore}_#{field.code}_to_json_schema_field"
-    #   accu[field.key] = if field.code && respond_to?(override_method, true)
-    #     send(override_method, field, locale)
-    #   else
-    #     send("#{field.input_type}_to_json_schema_field", field, locale)
-    #   end
-    # end
-    @current_locale = locale
-    field_properties = fields.each_with_object({}) do |field, accu|
-      accu[field.key] = visit field
-    end
-    {
-      type: 'object',
-      additionalProperties: false,
-      properties: field_properties
-    }.tap do |output|
-      required = fields.select(&:enabled?).select(&:required?).map(&:key)
-      output[:required] = required unless required.empty?
+      @current_locale = locale
+      generate_for_current_locale fields
     end
   end
 
@@ -210,6 +180,20 @@ class JsonSchemaGeneratorService < FieldVisitorService
   private
 
   attr_reader :locales, :multiloc_service, :current_locale
+
+  def generate_for_current_locale(fields)
+    field_properties = fields.each_with_object({}) do |field, accu|
+      accu[field.key] = visit field
+    end
+    {
+      type: 'object',
+      additionalProperties: false,
+      properties: field_properties
+    }.tap do |output|
+      required = fields.select(&:enabled?).select(&:required?).map(&:key)
+      output[:required] = required unless required.empty?
+    end
+  end
 
   def title_for(field, locale)
     I18n.with_locale(locale) do
