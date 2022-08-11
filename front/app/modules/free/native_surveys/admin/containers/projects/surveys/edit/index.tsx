@@ -70,6 +70,7 @@ export const SurveyEdit = () => {
     } else if (isNil(surveyCustomFields)) {
       setSurveyCustomFields([field as IFlatCustomField]);
     }
+    setSelectedField(field as IFlatCustomField);
   };
 
   const onFieldChange = (fieldToUpdate: IFlatCustomField) => {
