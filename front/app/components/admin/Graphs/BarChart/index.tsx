@@ -1,26 +1,22 @@
 import React from 'react';
 
 // components
-import MultiBarChart, {
-  Props as MultiBarChartProps,
-} from 'components/admin/Graphs/MultiBarChart';
+import MultiBarChart from 'components/admin/Graphs/MultiBarChart';
 
 // utils
-import { convertMapping, convertBarProps, Mapping, BarProps } from './utils';
+import { convertMapping, convertBars } from './utils';
 
-interface Props extends Omit<MultiBarChartProps, 'mapping' | 'bars'> {
-  mapping?: Mapping;
-  bars?: BarProps;
-}
+// typings
+import { Props } from './typings';
 
-const BarChart = ({ mapping, bars, ...otherProps }: Props) => {
+const BarChart = <T,>({ mapping, bars, ...otherProps }: Props<T>) => {
   const convertedMapping = convertMapping(mapping);
-  const convertedBarProps = convertBarProps(bars);
+  const convertedBars = convertBars(bars);
 
   return (
     <MultiBarChart
       mapping={convertedMapping}
-      bars={convertedBarProps}
+      bars={convertedBars}
       {...otherProps}
     />
   );
