@@ -11,48 +11,45 @@ interface Props {
   onChangeProjectFilter?: (project: string[] | undefined) => void;
 }
 
-class FilterSidebarProjects extends React.PureComponent<Props> {
-  handleItemClick = (id: string) => () => {
+const FilterSidebarProjects = ({
+  projects,
+  selectedProject,
+  onChangeProjectFilter,
+}: Props) => {
+  const handleItemClick = (id: string) => () => {
     const projectIds = [id];
-    this.props.onChangeProjectFilter &&
-      this.props.onChangeProjectFilter(projectIds);
+    onChangeProjectFilter && onChangeProjectFilter(projectIds);
   };
 
-  clearFilter = () => {
-    this.props.onChangeProjectFilter &&
-      this.props.onChangeProjectFilter(undefined);
+  const clearFilter = () => {
+    onChangeProjectFilter && onChangeProjectFilter(undefined);
   };
 
-  isActive = (id) => {
-    return this.props.selectedProject && this.props.selectedProject === id;
+  const isActive = (id: string) => {
+    return selectedProject && selectedProject === id;
   };
 
-  render() {
-    return (
-      <Menu secondary={true} vertical={true} fluid={true}>
-        {!(this.props.projects && this.props.projects.length === 1) && (
-          <>
-            <Menu.Item
-              onClick={this.clearFilter}
-              active={!this.props.selectedProject}
-            >
-              <FormattedMessage {...messages.allProjects} />
-            </Menu.Item>
-            <Divider />
-          </>
-        )}
-        {this.props.projects &&
-          this.props.projects.map((project) => (
-            <FilterSidebarProjectsItem
-              key={project.id}
-              project={project}
-              active={!!this.isActive(project.id)}
-              onClick={this.handleItemClick(project.id)}
-            />
-          ))}
-      </Menu>
-    );
-  }
-}
+  return (
+    <Menu secondary={true} vertical={true} fluid={true}>
+      {!(projects && projects.length === 1) && (
+        <>
+          <Menu.Item onClick={clearFilter} active={!selectedProject}>
+            <FormattedMessage {...messages.allProjects} />
+          </Menu.Item>
+          <Divider />
+        </>
+      )}
+      {projects &&
+        projects.map((project) => (
+          <FilterSidebarProjectsItem
+            key={project.id}
+            project={project}
+            active={isActive(project.id)}
+            onClick={handleItemClick(project.id)}
+          />
+        ))}
+    </Menu>
+  );
+};
 
 export default FilterSidebarProjects;

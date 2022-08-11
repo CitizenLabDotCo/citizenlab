@@ -14,48 +14,45 @@ interface Props {
   onChangeStatusFilter?: (status: string | null) => void;
 }
 
-class FilterSidebarStatuses extends React.PureComponent<Props> {
-  handleItemClick = (id) => () => {
-    this.props.onChangeStatusFilter && this.props.onChangeStatusFilter(id);
+const FilterSidebarStatuses = ({
+  statuses,
+  selectedStatus,
+  onChangeStatusFilter,
+}: Props) => {
+  const handleItemClick = (id: string) => () => {
+    onChangeStatusFilter && onChangeStatusFilter(id);
   };
 
-  clearFilter = () => {
-    this.props.onChangeStatusFilter && this.props.onChangeStatusFilter(null);
+  const clearFilter = () => {
+    onChangeStatusFilter && onChangeStatusFilter(null);
   };
 
-  isActive = (id) => {
-    return this.props.selectedStatus === id;
+  const isActive = (id: string) => {
+    return selectedStatus === id;
   };
 
-  render() {
-    const { statuses } = this.props;
-
-    if (!isNilOrError(statuses)) {
-      return (
-        <Menu secondary={true} vertical={true} fluid={true}>
-          <Menu.Item
-            onClick={this.clearFilter}
-            active={!this.props.selectedStatus}
-          >
-            <FormattedMessage {...messages.allStatuses} />
-          </Menu.Item>
-          <Divider />
-          {(statuses as (IIdeaStatusData | IInitiativeStatusData)[]).map(
-            (status) => (
-              <FilterSidebarStatusesItem
-                key={status.id}
-                status={status}
-                active={!!this.isActive(status.id)}
-                onClick={this.handleItemClick(status.id)}
-              />
-            )
-          )}
-        </Menu>
-      );
-    }
-
-    return null;
+  if (!isNilOrError(statuses)) {
+    return (
+      <Menu secondary={true} vertical={true} fluid={true}>
+        <Menu.Item onClick={clearFilter} active={!selectedStatus}>
+          <FormattedMessage {...messages.allStatuses} />
+        </Menu.Item>
+        <Divider />
+        {(statuses as (IIdeaStatusData | IInitiativeStatusData)[]).map(
+          (status) => (
+            <FilterSidebarStatusesItem
+              key={status.id}
+              status={status}
+              active={isActive(status.id)}
+              onClick={handleItemClick(status.id)}
+            />
+          )
+        )}
+      </Menu>
+    );
   }
-}
+
+  return null;
+};
 
 export default FilterSidebarStatuses;

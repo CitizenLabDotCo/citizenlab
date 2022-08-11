@@ -14,29 +14,32 @@ interface Props {
   connectDropTarget: any;
 }
 
-class FilterSidebarProjectsItem extends React.PureComponent<Props> {
-  render() {
-    const { project, active, onClick, connectDropTarget, isOver, canDrop } =
-      this.props;
-    return connectDropTarget(
-      <div>
-        <Menu.Item
-          className="e2e-idea-manager-project-filter-item"
-          active={active || (isOver && canDrop)}
-          onClick={onClick}
-        >
-          <T value={project.attributes.title_multiloc} />
-        </Menu.Item>
-      </div>
-    );
-  }
-}
+const FilterSidebarProjectsItem = ({
+  project,
+  active,
+  onClick,
+  connectDropTarget,
+  isOver,
+  canDrop,
+}: Props) => {
+  return connectDropTarget(
+    <div>
+      <Menu.Item
+        className="e2e-idea-manager-project-filter-item"
+        active={active || (isOver && canDrop)}
+        onClick={onClick}
+      >
+        <T value={project.attributes.title_multiloc} />
+      </Menu.Item>
+    </div>
+  );
+};
 
 const projectTarget = {
-  drop(props) {
+  drop({ project }: Props) {
     return {
       type: 'project',
-      id: props.project.id,
+      id: project.id,
     };
   },
 };
