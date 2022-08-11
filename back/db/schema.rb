@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_19_103052) do
+ActiveRecord::Schema.define(version: 2022_08_10_084347) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -70,6 +70,8 @@ ActiveRecord::Schema.define(version: 2022_07_19_103052) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "ordering"
+    t.uuid "custom_field_option_id"
+    t.index ["custom_field_option_id"], name: "index_areas_on_custom_field_option_id"
   end
 
   create_table "areas_ideas", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -1210,6 +1212,7 @@ ActiveRecord::Schema.define(version: 2022_07_19_103052) do
   end
 
   add_foreign_key "activities", "users"
+  add_foreign_key "areas", "custom_field_options"
   add_foreign_key "areas_ideas", "areas"
   add_foreign_key "areas_ideas", "ideas"
   add_foreign_key "areas_initiatives", "areas"

@@ -4,12 +4,21 @@
 #
 # Table name: areas
 #
-#  id                   :uuid             not null, primary key
-#  title_multiloc       :jsonb
-#  description_multiloc :jsonb
-#  created_at           :datetime         not null
-#  updated_at           :datetime         not null
-#  ordering             :integer
+#  id                     :uuid             not null, primary key
+#  title_multiloc         :jsonb
+#  description_multiloc   :jsonb
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  ordering               :integer
+#  custom_field_option_id :uuid
+#
+# Indexes
+#
+#  index_areas_on_custom_field_option_id  (custom_field_option_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (custom_field_option_id => custom_field_options.id)
 #
 class Area < ApplicationRecord
   acts_as_list column: :ordering, top_of_list: 0
