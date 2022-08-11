@@ -77,10 +77,10 @@ describe('<BarChart />', () => {
           width={200}
           height={250}
           data={data}
-          mapping={{ 
+          mapping={{
             category: 'name',
             length: 'value',
-            fill: () => 'pinkRed'
+            fill: () => 'pinkRed',
           }}
           bars={{ isAnimationActive: false }}
         />
@@ -113,7 +113,9 @@ describe('<BarChart />', () => {
           height={250}
           data={data}
           mapping={{
-
+            category: 'name',
+            length: 'value',
+            fill: ({ color }) => colorMapping[color],
           }}
           bars={{ isAnimationActive: false }}
         />
@@ -122,21 +124,57 @@ describe('<BarChart />', () => {
       const bars = container.querySelectorAll('path');
       expect(bars).toHaveLength(3);
 
-      expect(bars[0]).toHaveAttribute('color', 'red');
-      expect(bars[1]).toHaveAttribute('color', 'blue');
-      expect(bars[2]).toHaveAttribute('color', 'green');
+      expect(bars[0]).toHaveAttribute('fill', colors.pinkRed);
+      expect(bars[1]).toHaveAttribute('fill', colors.lightBlue);
+      expect(bars[2]).toHaveAttribute('fill', colors.lightGreen);
     });
 
     it('has correct fallback fill when no fill is provided', () => {
-      // TODO
+      const { container } = render(
+        <BarChart
+          width={200}
+          height={250}
+          data={data}
+          mapping={{
+            category: 'name',
+            length: 'value',
+          }}
+          bars={{ isAnimationActive: false }}
+        />
+      );
+
+      const bars = container.querySelectorAll('path');
+      expect(bars).toHaveLength(3);
+
+      expect(bars[0]).toHaveAttribute('fill', colors.barFill);
+      expect(bars[1]).toHaveAttribute('fill', colors.barFill);
+      expect(bars[2]).toHaveAttribute('fill', colors.barFill);
     });
 
     it('renders correctly with fixed opacities', () => {
-      // TODO
+      const { container } = render(
+        <BarChart
+          width={200}
+          height={250}
+          data={data}
+          mapping={{
+            category: 'name',
+            length: 'value',
+            opacity: () => 0.7,
+          }}
+          bars={{ isAnimationActive: false }}
+        />
+      );
+
+      const bars = container.querySelectorAll('path');
+      expect(bars).toHaveLength(3);
+
+      expect(bars[0]).toHaveAttribute('opacity', '0.7');
+      expect(bars[1]).toHaveAttribute('opacity', '0.7');
+      expect(bars[2]).toHaveAttribute('opacity', '0.7');
     });
 
     it('renders correctly with opacity mapping', () => {
-      // TODO
       const data = [
         { name: 'a', value: 4, opacity: 1 },
         { name: 'b', value: 10, opacity: 0.4 },
@@ -147,8 +185,12 @@ describe('<BarChart />', () => {
         <BarChart
           width={200}
           height={250}
-          mapping={{ opacity: 'opacity' }}
           data={data}
+          mapping={{
+            category: 'name',
+            length: 'value',
+            opacity: ({ opacity }) => opacity,
+          }}
           bars={{ isAnimationActive: false }}
         />
       );
@@ -172,6 +214,7 @@ describe('<BarChart />', () => {
           width={400}
           height={200}
           data={data}
+          mapping={{ category: 'name', length: 'value' }}
           bars={{ isAnimationActive: false }}
           layout="horizontal"
         />
@@ -199,6 +242,7 @@ describe('<BarChart />', () => {
           width={400}
           height={200}
           data={data}
+          mapping={{ category: 'name', length: 'value' }}
           bars={{ isAnimationActive: false }}
         />
       );
@@ -213,29 +257,8 @@ describe('<BarChart />', () => {
           width={400}
           height={200}
           data={data}
+          mapping={{ category: 'name', length: 'value' }}
           bars={{ isAnimationActive: false }}
-          renderLabels={() => <LabelList />}
-        />
-      );
-
-      expect(screen.getByText('4')).toBeInTheDocument();
-      expect(screen.getByText('7.24')).toBeInTheDocument();
-    });
-
-    it('renders correctly with custom mapping', () => {
-      const data = [
-        { name: 'a', y: 4 },
-        { name: 'b', y: 7.24 },
-        { name: 'c', y: 10 },
-      ];
-
-      render(
-        <BarChart
-          width={400}
-          height={200}
-          data={data}
-          bars={{ isAnimationActive: false }}
-          mapping={{ length: 'y' }}
           renderLabels={() => <LabelList />}
         />
       );
