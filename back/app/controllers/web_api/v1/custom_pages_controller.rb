@@ -14,6 +14,35 @@ class WebApi::V1::CustomPagesController < ApplicationController
     show
   end
 
+  def create
+    @page = CustomPage.new permitted_attributes(CustomPage)
+    authorize @page
+
+    SideFxCustomPageService.new.before_create @page, current_user
+    if @page.save
+      SideFxCustomPageService.new.after_create @page, current_user
+      render(
+        json: WebApi::V1::CustomPageSerializer.new(@page, params: fastjson_params).serialized_json,
+        status: :created
+      )
+    else
+      render json: { errors: @page.errors.details }, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    assign_attributes_for_update
+    authorize @page
+
+    SideFxCustomPageService.new.before_update @page, current_user
+    if @page.save
+      SideFxCustomPageService.new.after_update @page, current_user
+      render json: WebApi::V1::CustomPageSerializer.new(@page, params: fastjson_params).serialized_json, status: :ok
+    else
+      render json: { errors: @page.errors.details }, status: :unprocessable_entity
+    end
+  end
+
   # def update
   #   @homepage.assign_attributes home_page_params
   #   authorize @homepage

@@ -20,7 +20,8 @@ class WebApi::V1::CustomPageSerializer < WebApi::V1::BaseSerializer
     :projects_enabled,
     :projects_filter_type,
     :header_bg,
-    :pinned_admin_publication_ids
+    :pinned_admin_publication_ids,
+    :custom_page_file_ids
 
   attribute :header_bg do |object|
     object.header_bg && object.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
