@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import { useParams } from 'react-router-dom';
+import { clone } from 'lodash-es';
 
 // styles
 import styled from 'styled-components';
@@ -81,6 +82,27 @@ export const SurveyEdit = () => {
     }
   };
 
+  const handleDragRow = (fromIndex: number, toIndex: number) => {
+    if (!isNilOrError(surveyCustomFields)) {
+      const newFields = clone(surveyCustomFields);
+      const [removed] = newFields.splice(fromIndex, 1);
+      newFields.splice(toIndex, 0, removed);
+      setSurveyCustomFields(newFields);
+    }
+  };
+
+  const handleDropRow = (fieldId: string, toIndex: number) => {
+    if (!isNilOrError(surveyCustomFields)) {
+      const newFields = clone(surveyCustomFields);
+      const [removed] = newFields.splice(
+        newFields.findIndex((field) => field.id === fieldId),
+        1
+      );
+      newFields.splice(toIndex, 0, removed);
+      setSurveyCustomFields(newFields);
+    }
+  };
+
   return (
     <Box
       display="flex"
@@ -101,6 +123,8 @@ export const SurveyEdit = () => {
                 <SurveyFields
                   onEditField={setSelectedField}
                   surveyCustomFields={surveyCustomFields}
+                  handleDragRow={handleDragRow}
+                  handleDropRow={handleDropRow}
                 />
               )}
             </Box>
