@@ -11,6 +11,7 @@ RSpec.describe Area, type: :model do
 
   it { is_expected.not_to validate_presence_of(:ordering) }
   it { is_expected.to validate_numericality_of(:ordering) }
+  it { is_expected.to belong_to(:custom_field_option).dependent(:destroy).optional }
 
   describe 'default_scope' do
     it 'defaults to sorting areas by ordering' do
@@ -55,6 +56,31 @@ RSpec.describe Area, type: :model do
 
       it 'should stay as given' do
         expect(subject.ordering).to eq(ordering)
+      end
+    end
+
+    context 'when domicile field exist' do
+      before { create(:custom_field_domicile) }
+
+      it 'creates the corresponding domicile option' do
+        area = nil
+        expect { area = create(:area) }.to change { CustomFieldOption.count }.by(1)
+
+        expect(area.title_multiloc).to eq(area.custom_field_option.title_multiloc)
+        expect(area.ordering).to eq(area.custom_field_option.ordering)
+      end
+    end
+  end
+
+  describe '#update' do
+    context 'when domicile field exist' do
+      before { create(:custom_field_domicile) }
+
+      let(:area) { create(:area, title_multiloc: { 'en' => 'Title' }) }
+
+      it 'updates the corresponding domicile option' do
+        area.update(title_multiloc: { 'en' => 'New title' })
+        expect(area.custom_field_option.title_multiloc).to eq(area.title_multiloc)
       end
     end
   end
