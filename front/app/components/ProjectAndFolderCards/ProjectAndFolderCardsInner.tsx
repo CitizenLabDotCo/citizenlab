@@ -95,7 +95,6 @@ const ProjectAndFolderCardsInner = ({
   }, [publicationStatusesForCurrentTabStringified]);
 
   useEffect(() => {
-    if (!search) return;
     adminPublications.onChangeSearch(search);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);

@@ -50,16 +50,20 @@ const PageTitle = styled.h1`
   text-align: center;
   padding: 0;
   margin: 0;
-  margin-bottom: 0px;
+  margin-bottom: 40px;
 
   ${media.smallerThanMaxTablet`
     text-align: left;
-    margin-bottom: 0px;
+    margin-bottom: 20px;
   `}
 
   ${media.smallerThanMinTablet`
     font-size: ${fontSizes.xxxl}px;
   `}
+`;
+
+const StyledSearchInput = styled(SearchInput)`
+  margin-bottom: 40px;
 `;
 
 const ProjectsIndex = () => {
@@ -77,7 +81,7 @@ const ProjectsIndex = () => {
           <PageTitle>
             <FormattedMessage {...messages.pageTitle} />
           </PageTitle>
-          <SearchInput
+          <StyledSearchInput
             onChange={handleSearchOnChange}
             a11y_numberOfSearchResults={1}
           />

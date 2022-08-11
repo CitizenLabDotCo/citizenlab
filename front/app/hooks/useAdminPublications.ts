@@ -56,7 +56,7 @@ export interface IUseAdminPublicationsOutput {
   loadingMore: boolean;
   onLoadMore: () => void;
   onChangeTopics: (topics: string[]) => void;
-  onChangeSearch: (string: string) => void;
+  onChangeSearch: (string: string | undefined) => void;
   onChangeAreas: (areas: string[]) => void;
   onChangePublicationStatus: (publicationStatuses: PublicationStatus[]) => void;
 }

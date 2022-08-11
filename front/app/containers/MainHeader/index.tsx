@@ -29,7 +29,8 @@ import eventEmitter from 'utils/eventEmitter';
 import clHistory from 'utils/cl-router/history';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // style
@@ -249,7 +250,10 @@ interface Props {
   setRef?: (arg: HTMLElement) => void | undefined;
 }
 
-const MainHeader = ({ setRef }: Props) => {
+const MainHeader = ({
+  setRef,
+  intl: { formatMessage },
+}: Props & InjectedIntlProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const appConfiguration = useAppConfiguration();
   const authUser = useAuthUser();
@@ -339,6 +343,22 @@ const MainHeader = ({ setRef }: Props) => {
           <Right className={bowser.msie ? 'ie' : ''}>
             {!isEmailSettingsPage && (
               <>
+                <RightItem className="projectSearch">
+                  <IconButton
+                    onClick={() => clHistory.push('/projects?focusSearch=true')}
+                    iconName="search"
+                    a11y_buttonActionMessage={formatMessage(messages.search)}
+                    iconColor={theme.navbarTextColor || colors.label}
+                    iconColorOnHover={
+                      theme.navbarTextColor
+                        ? darken(0.2, theme.navbarTextColor)
+                        : colors.text
+                    }
+                    iconWidth={'20px'}
+                    iconHeight={'24px'}
+                  />
+                </RightItem>
+
                 {isNilOrError(authUser) && (
                   <RightItem className="login noLeftMargin">
                     <LogInMenuItem
@@ -369,23 +389,6 @@ const MainHeader = ({ setRef }: Props) => {
                   </RightItem>
                 )}
 
-                <RightItem className="projectSearch">
-                  <IconButton
-                    onClick={() => clHistory.push('/projects?focusSearch=true')}
-                    iconName="search"
-                    a11y_buttonActionMessage={'search'}
-                    iconColor={theme.navbarTextColor || colors.label}
-                    iconColorOnHover={
-                      theme.navbarTextColor
-                        ? darken(0.2, theme.navbarTextColor)
-                        : colors.text
-                    }
-                    iconWidth={'20px'}
-                    iconHeight={'24px'}
-                    // ariaControls="notifications-dropdown"
-                  />
-                </RightItem>
-
                 {!isNilOrError(authUser) && (
                   <RightItem className="notification">
                     <NotificationMenu />
@@ -412,4 +415,4 @@ const MainHeader = ({ setRef }: Props) => {
   );
 };
 
-export default MainHeader;
+export default injectIntl(MainHeader);
