@@ -5,13 +5,15 @@ class UiSchemaGeneratorService < FieldVisitorService
 
   def initialize
     super
+    configuration = AppConfiguration.instance
     @locales = configuration.settings('core', 'locales')
-    @multiloc_service = MultilocService.new app_configuration: @configuration
+    @multiloc_service = MultilocService.new app_configuration: configuration
     @current_locale = 'en'
   end
 
   def generate_for(fields)
     locales.index_with do |locale|
+      @current_locale = locale
       fields_to_ui_schema fields, locale
     end
   end
@@ -35,7 +37,7 @@ class UiSchemaGeneratorService < FieldVisitorService
     end
   end
 
-  def visit_text_multiloc(_field)
+  def visit_text_multiloc(field)
     multiloc_field(field) do
       default(field).tap do |ui_field|
         ui_field[:options][:trim_on_blur] = true
@@ -43,7 +45,7 @@ class UiSchemaGeneratorService < FieldVisitorService
     end
   end
 
-  def visit_multiline_text_multiloc(_field)
+  def visit_multiline_text_multiloc(field)
     multiloc_field(field) do
       default(field).tap do |ui_field|
         ui_field[:options][:textarea] = true
@@ -52,7 +54,7 @@ class UiSchemaGeneratorService < FieldVisitorService
     end
   end
 
-  def visit_html_multiloc(_field)
+  def visit_html_multiloc(field)
     multiloc_field(field) do
       visit_html(field).tap do |ui_field|
         ui_field[:options][:trim_on_blur] = true
@@ -68,19 +70,19 @@ class UiSchemaGeneratorService < FieldVisitorService
     default field
   end
 
-  def visit_checkbox(_field)
+  def visit_checkbox(field)
     default field
   end
 
-  def visit_date(_field)
+  def visit_date(field)
     default field
   end
 
-  def visit_files(_field)
+  def visit_files(field)
     default field
   end
 
-  def visit_image_files(_field)
+  def visit_image_files(field)
     default field
   end
 
@@ -94,7 +96,7 @@ class UiSchemaGeneratorService < FieldVisitorService
       scope: "#/properties/#{field.key}",
       label: for_current_locale(field.title_multiloc),
       options: {
-        desciption: for_current_locale(field.description_multiloc)
+        description: for_current_locale(field.description_multiloc)
       }
     }
   end
