@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module UserCustomFields
   module DataMigrations
     class CreateDomicileOptionsJob < ApplicationJob
@@ -6,6 +8,7 @@ module UserCustomFields
 
       class CreateDomicileOptionsJobAborted < RuntimeError; end
 
+      # rubocop:disable Rails/ApplicationRecord
       class CustomField < ActiveRecord::Base
         self.table_name = 'custom_fields'
       end
@@ -20,6 +23,7 @@ module UserCustomFields
       class Area < ActiveRecord::Base
         self.table_name = 'areas'
       end
+      # rubocop:enable Rails/ApplicationRecord
 
       def perform
         return unless domicile_custom_field
@@ -84,4 +88,3 @@ module UserCustomFields
     end
   end
 end
-
