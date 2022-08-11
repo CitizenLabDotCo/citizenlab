@@ -12,52 +12,52 @@ interface Props {
   onChangeTopicsFilter?: (topics: string[]) => void;
 }
 
-export default class FilterSidebarTopics extends React.PureComponent<Props> {
-  handleItemClick = (id) => (event) => {
+const FilterSidebarTopics = ({
+  selectableTopics,
+  selectedTopics,
+  onChangeTopicsFilter,
+}: Props) => {
+  const handleItemClick = (id: string) => (event) => {
     if (event.ctrlKey) {
-      const selectedTopics = xor(this.props.selectedTopics || [], [id]);
-      this.props.onChangeTopicsFilter &&
-        this.props.onChangeTopicsFilter(selectedTopics);
+      onChangeTopicsFilter &&
+        onChangeTopicsFilter(xor(selectedTopics || [], [id]));
     } else {
-      this.props.onChangeTopicsFilter && this.props.onChangeTopicsFilter([id]);
+      onChangeTopicsFilter && onChangeTopicsFilter([id]);
     }
   };
 
-  clearFilter = () => {
-    this.props.onChangeTopicsFilter && this.props.onChangeTopicsFilter([]);
+  const clearFilter = () => {
+    onChangeTopicsFilter && onChangeTopicsFilter([]);
   };
 
-  isActive = (id) => {
-    return (
-      this.props.selectedTopics && this.props.selectedTopics.indexOf(id) >= 0
-    );
+  const isActive = (id: string) => {
+    return selectedTopics && selectedTopics.indexOf(id) >= 0;
   };
 
-  render() {
-    const { selectableTopics, selectedTopics } = this.props;
-    return (
-      <Menu
-        id="e2e-idea-manager-topic-filters"
-        secondary={true}
-        vertical={true}
-        fluid={true}
+  return (
+    <Menu
+      id="e2e-idea-manager-topic-filters"
+      secondary={true}
+      vertical={true}
+      fluid={true}
+    >
+      <Menu.Item
+        onClick={clearFilter}
+        active={!selectedTopics || selectedTopics.length === 0}
       >
-        <Menu.Item
-          onClick={this.clearFilter}
-          active={!selectedTopics || selectedTopics.length === 0}
-        >
-          <FormattedMessage {...messages.allTopics} />
-        </Menu.Item>
-        <Divider />
-        {selectableTopics.map((topic) => (
-          <FilterSidebarTopicsItem
-            key={topic.id}
-            topic={topic}
-            active={!!this.isActive(topic.id)}
-            onClick={this.handleItemClick(topic.id)}
-          />
-        ))}
-      </Menu>
-    );
-  }
-}
+        <FormattedMessage {...messages.allTopics} />
+      </Menu.Item>
+      <Divider />
+      {selectableTopics.map((topic) => (
+        <FilterSidebarTopicsItem
+          key={topic.id}
+          topic={topic}
+          active={isActive(topic.id)}
+          onClick={handleItemClick(topic.id)}
+        />
+      ))}
+    </Menu>
+  );
+};
+
+export default FilterSidebarTopics;
