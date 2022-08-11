@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // components
 import ContentContainer from 'components/ContentContainer';
@@ -6,6 +6,9 @@ import ProjectAndFolderCards from 'components/ProjectAndFolderCards';
 import CityLogoSection from 'components/CityLogoSection';
 import ProjectsIndexMeta from './ProjectsIndexMeta';
 import SearchInput from 'components/UI/SearchInput';
+
+// history
+import { useSearchParams } from 'react-router-dom';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -68,6 +71,22 @@ const StyledSearchInput = styled(SearchInput)`
 
 const ProjectsIndex = () => {
   const [search, setSearch] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    const focusSearch = searchParams.get('focusSearch');
+    // it's a string from the query param
+    if (focusSearch === 'true') {
+      // this should be a ref to the input element
+      // it's null on page load
+      const searchInput = document.getElementById('search-input');
+      if (searchInput) {
+        searchInput.focus();
+      }
+      searchParams.delete('focusSearch');
+      setSearchParams(searchParams);
+    }
+  }, [searchParams, setSearchParams]);
 
   const handleSearchOnChange = (search: string) => {
     setSearch(search);
