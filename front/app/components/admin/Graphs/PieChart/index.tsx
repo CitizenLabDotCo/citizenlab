@@ -1,7 +1,13 @@
 import React from 'react';
 
 // components
-import { PieChart, Pie, Cell, Label, ResponsiveContainer } from 'recharts';
+import { 
+  PieChart as RechartsPieChart,
+  Pie,
+  Cell,
+  Label,
+  ResponsiveContainer
+} from 'recharts';
 import {
   NoDataContainer,
   PieChartStyleFixesDiv,
@@ -13,23 +19,21 @@ import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
-import { isEmpty } from 'lodash-es';
+import { hasNoData } from '../utils';
 
 // typings
-import { PieProps } from './typings';
+import { Props } from './typings';
 
-export default function ({
+const PieChart = <T,>({
   data,
+  mapping,
   centerLabel,
   centerValue,
   emptyContainerContent,
   width,
   height,
-}: PieProps) {
-  const noData = isNilOrError(data) || data.every(isEmpty) || data.length <= 0;
-
-  if (noData) {
+}: Props<T>) => {
+  if (hasNoData(data)) {
     return (
       <NoDataContainer>
         {emptyContainerContent ? (
@@ -44,7 +48,7 @@ export default function ({
   return (
     <PieChartStyleFixesDiv>
       <ResponsiveContainer width={width} height={height}>
-        <PieChart>
+        <RechartsPieChart>
           <Pie
             isAnimationActive={true}
             data={data}
@@ -60,8 +64,10 @@ export default function ({
               position="center"
             />
           </Pie>
-        </PieChart>
+        </RechartsPieChart>
       </ResponsiveContainer>
     </PieChartStyleFixesDiv>
   );
 }
+
+export default PieChart;

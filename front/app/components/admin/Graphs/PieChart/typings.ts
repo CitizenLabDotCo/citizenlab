@@ -1,14 +1,17 @@
-export interface DataRow {
-  name: string;
-  color: string;
-  value: number;
-}
+// typings
+import { NilOrError } from 'utils/helperUtils';
+import { BaseMapping, KeyOfType } from '../typings';
 
-export interface PieProps {
-  data?: DataRow[] | null | Error;
-  centerLabel?: string;
-  centerValue?: string;
+export interface Props<Row> {
   width?: string | number;
   height?: string | number;
+  data: Row[] | NilOrError;
+  mapping: Mapping<Row>;
+  centerLabel?: string;
+  centerValue?: string;
   emptyContainerContent?: React.ReactNode;
+}
+
+interface Mapping<Row> extends BaseMapping<Row> {
+  angle: KeyOfType<Row, number>;
 }

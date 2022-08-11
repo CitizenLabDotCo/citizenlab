@@ -6,6 +6,12 @@ export interface Margin {
   right?: number;
 }
 
+// MAPPING
+export interface BaseMapping<Row> {
+  fill?: Channel<Row, string[]>;
+  opacity?: Channel<Row, number[]>;
+}
+
 // AXES
 export interface AxisProps {
   tickFormatter?: (value: any) => string;

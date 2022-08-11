@@ -4,7 +4,7 @@ import {
   RenderLabelsProps,
   RenderTooltipProps,
   KeyOfType,
-  Channel,
+  BaseMapping,
 } from '../typings';
 import { RefObject } from 'react';
 import { NilOrError } from 'utils/helperUtils';
@@ -26,11 +26,9 @@ export interface Props<Row> {
   innerRef?: RefObject<any>;
 }
 
-export interface Mapping<Row> {
+export interface Mapping<Row> extends BaseMapping<Row> {
   category: KeyOfType<Row, string>;
   length: KeyOfType<Row, number>[];
-  fill?: Channel<Row, string[]>;
-  opacity?: Channel<Row, number[]>;
 }
 
 export interface Bars {
