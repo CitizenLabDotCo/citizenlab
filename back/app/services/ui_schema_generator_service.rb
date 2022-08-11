@@ -12,7 +12,7 @@ class UiSchemaGeneratorService < FieldVisitorService
 
   def generate_for(fields)
     locales.index_with do |locale|
-      fields_to_ui_schema fields locale
+      fields_to_ui_schema fields, locale
     end
   end
 
