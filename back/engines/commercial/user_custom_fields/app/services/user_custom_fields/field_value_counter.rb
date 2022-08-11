@@ -15,7 +15,7 @@ module UserCustomFields
     # @param [UserCustomField] user_custom_field
     # @param [Boolean] by_option_id index the counts by the option id instead of the option key
     # @return [ActiveSupport::HashWithIndifferentAccess]
-    def self.counts_by_field_option(users, custom_field, by_option_id: false)
+    def self.counts_by_field_option(users, custom_field, by_option_id: false, by_area_id: false)
       field_values = select_field_values(users, custom_field)
 
       # Warning: The method +count+ cannot be used here because it introduces a SQL syntax
@@ -29,6 +29,19 @@ module UserCustomFields
 
       counts[UNKNOWN_VALUE_LABEL] = counts.delete(nil) || 0
       counts = add_missing_options(counts, custom_field)
+
+      # TODO: Tech debt of CL-959.
+      # CL-959 adds custom field options to the domicile custom field. Before CL-959, the
+      # domicile custom field was a select custom field without options
+      # (CustomFieldOption records associated to it). Instead, the options were implicitly
+      # defined by the areas (Area model). As a consequence, the user custom field values are
+      # using the area id as the field value, instead of the option key (as for the other
+      # select custom fields).
+      #
+      # We have to run a data migration to update the user custom field values to use the
+      # option key for domicile before we can remove the following conversion step.
+      convert_area_ids_to_option_keys!(counts, custom_field) if custom_field.domicile? && !by_area_id
+
       convert_keys_to_option_ids!(counts, custom_field) if by_option_id
       counts.with_indifferent_access
     end
@@ -58,6 +71,20 @@ module UserCustomFields
       else
         raise NotSupportedFieldTypeError
       end
+    end
+
+    private_class_method def self.convert_area_ids_to_option_keys!(counts, custom_field)
+      raise 'custom_field is not the domicile field' unless custom_field.domicile?
+
+      area_id_to_option_key = Area.includes(:custom_field_option)
+        .all.to_h { |area| [area.id, area.custom_field_option.key] }
+
+      # Adding special keys to the mapping
+      somewhere_else_option = custom_field.options.left_joins(:area).find_by(areas: { id: nil })
+      area_id_to_option_key['outside'] = somewhere_else_option.key
+      area_id_to_option_key[FieldValueCounter::UNKNOWN_VALUE_LABEL] = FieldValueCounter::UNKNOWN_VALUE_LABEL
+
+      counts.transform_keys!(&area_id_to_option_key)
     end
 
     private_class_method def self.convert_keys_to_option_ids!(counts, custom_field)
