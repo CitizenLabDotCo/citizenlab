@@ -54,11 +54,10 @@ class AdminPublicationsFilteringService
     next scope if options[:search].blank?
 
     matching_folders = ProjectFolders::Folder.search_by_all(options[:search])
+    folder_publications_in_scope = scope.where(publication: matching_folders)
+    projects_still_in_scope = scope.where.not(publication_type: ProjectFolders::Folder.name)
 
-    folder_publications = scope.where(publication: matching_folders)
-    other_publications = scope.where.not(publication_type: ProjectFolders::Folder.name)
-
-    folder_publications.or(other_publications)
+    folder_publications_in_scope.or(projects_still_in_scope)
   end
 
   add_filter('compute_visible_children_counts') do |scope, _|
