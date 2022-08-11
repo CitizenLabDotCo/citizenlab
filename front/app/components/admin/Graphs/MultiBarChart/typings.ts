@@ -4,7 +4,6 @@ import {
   RenderLabelsProps,
   RenderTooltipProps,
   KeyOfType,
-  Color,
   Channel,
 } from '../typings';
 import { RefObject } from 'react';
@@ -31,7 +30,7 @@ export interface Props<Row> {
 export interface Mapping<Row> {
   category: KeyOfType<Row, string>;
   length: KeyOfType<Row, number>[];
-  fill?: Channel<Row, Color[]>;
+  fill?: Channel<Row, string[]>;
   opacity?: Channel<Row, number[]>;
 }
 

@@ -1,8 +1,13 @@
 import React from 'react';
 
+// styling
+import {
+  colors,
+  DEFAULT_BAR_CHART_MARGIN,
+} from 'components/admin/Graphs/styling';
+
 // components
 import MultiBarChart from 'components/admin/Graphs/MultiBarChart';
-import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/styling';
 import { LabelList, Tooltip } from 'recharts';
 import CustomTooltip from './CustomTooltip';
 
@@ -31,7 +36,10 @@ const Chart = ({ currentChartRef, data, barNames, hideTicks }: Props) => {
       mapping={{
         category: 'name',
         length: ['actualPercentage', 'referencePercentage'],
-        fill: () => ['representativenessBlue', 'representativenessLightBlue'],
+        fill: () => [
+          colors.representativenessBlue,
+          colors.representativenessLightBlue,
+        ],
       }}
       bars={{
         names: barNames,

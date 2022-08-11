@@ -1,8 +1,3 @@
-import { colors } from './styling';
-
-// COLORS
-export type Color = keyof typeof colors;
-
 // STYLING
 export interface Margin {
   top?: number;

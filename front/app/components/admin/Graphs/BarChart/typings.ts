@@ -2,7 +2,7 @@ import {
   Props as MultiBarChartProps,
   Bars as MultiBarChartBars,
 } from '../MultiBarChart/typings';
-import { KeyOfType, Channel, Color } from '../typings';
+import { KeyOfType, Channel } from '../typings';
 
 export interface Props<Row>
   extends Omit<MultiBarChartProps<Row>, 'mapping' | 'bars'> {
@@ -13,7 +13,7 @@ export interface Props<Row>
 export interface Mapping<Row> {
   category: KeyOfType<Row, string>;
   length: KeyOfType<Row, number>;
-  fill?: Channel<Row, Color>;
+  fill?: Channel<Row, string>;
   opacity?: Channel<Row, number>;
 }
 

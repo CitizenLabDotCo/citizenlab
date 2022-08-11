@@ -80,7 +80,7 @@ describe('<BarChart />', () => {
           mapping={{
             category: 'name',
             length: 'value',
-            fill: () => 'pinkRed',
+            fill: () => colors.pinkRed,
           }}
           bars={{ isAnimationActive: false }}
         />
@@ -102,9 +102,9 @@ describe('<BarChart />', () => {
       ];
 
       const colorMapping = {
-        red: 'pinkRed',
-        blue: 'lightBlue',
-        green: 'lightGreen',
+        red: colors.pinkRed,
+        blue: colors.lightBlue,
+        green: colors.lightGreen,
       };
 
       const { container } = render(

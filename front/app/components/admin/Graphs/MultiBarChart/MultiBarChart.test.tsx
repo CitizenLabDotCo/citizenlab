@@ -85,7 +85,7 @@ describe('<MultiBarChart />', () => {
           mapping={{
             category: 'name',
             length: ['value1', 'value2'],
-            fill: () => ['lightBlue', 'pinkRed'],
+            fill: () => [colors.lightBlue, colors.pinkRed],
           }}
           bars={{ isAnimationActive: false }}
         />
@@ -115,9 +115,9 @@ describe('<MultiBarChart />', () => {
       ];
 
       const colorMapping = {
-        red: 'pinkRed',
-        blue: 'lightBlue',
-        green: 'lightGreen',
+        red: colors.pinkRed,
+        blue: colors.lightBlue,
+        green: colors.lightGreen,
       };
 
       const { container } = render(
@@ -128,7 +128,10 @@ describe('<MultiBarChart />', () => {
           mapping={{
             category: 'name',
             length: ['value1', 'value2'],
-            fill: ({ fill1, fill2 }) => [colorMapping[fill1], colorMapping[fill2]],
+            fill: ({ fill1, fill2 }) => [
+              colorMapping[fill1],
+              colorMapping[fill2],
+            ],
           }}
           bars={{ isAnimationActive: false }}
         />
@@ -154,7 +157,7 @@ describe('<MultiBarChart />', () => {
           mapping={{
             category: 'name',
             length: ['value1', 'value2'],
-            fill: () => ['lightBlue'],
+            fill: () => [colors.lightBlue],
           }}
           bars={{ isAnimationActive: false }}
         />

@@ -17,7 +17,7 @@ export const getBarConfigs = <Row>(
 
   const barConfigs: BarConfig[] = length.map((lengthColumn, barIndex) => {
     const cells = data.map((row, rowIndex) => ({
-      fill: (fill && colors[fill(row, rowIndex)[barIndex]]) ?? FALLBACKS.fill,
+      fill: (fill && fill(row, rowIndex)[barIndex]) ?? FALLBACKS.fill,
       opacity: opacity && opacity(row, rowIndex)[barIndex],
     }));
 
