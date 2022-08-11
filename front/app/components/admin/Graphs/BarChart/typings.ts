@@ -18,5 +18,5 @@ export interface Mapping<Row> {
 }
 
 export interface Bars extends Omit<MultiBarChartBars, 'names'> {
-  name: string;
+  name?: string;
 }
