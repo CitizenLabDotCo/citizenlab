@@ -104,7 +104,7 @@ class UiSchemaGeneratorService < FieldVisitorService
   protected
 
   def visit_or_filter(field)
-    return nil if !field.enabled? || field.hidden?
+    return nil if !field || !field.enabled? || field.hidden?
 
     visit field
   end

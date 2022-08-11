@@ -51,4 +51,22 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
       ].compact)
     }
   end
+
+  def visit_html_multiloc(field)
+    super.tap do |ui_field|
+      if field.code == 'body_multiloc'
+        ui_field[:elements].each do |elt|
+          elt[:options].delete :trim_on_blur
+        end
+      end
+    end
+  end
+
+  private
+
+  def drop_empty_categories(categories)
+    categories.reject do |category|
+      category[:elements].empty?
+    end
+  end
 end
