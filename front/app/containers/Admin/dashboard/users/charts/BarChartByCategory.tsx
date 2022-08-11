@@ -109,6 +109,10 @@ export class BarChartByCategory extends React.PureComponent<
             data={serie}
             innerRef={this.currentChart}
             margin={DEFAULT_BAR_CHART_MARGIN}
+            mapping={{
+              category: 'name',
+              length: 'value',
+            }}
             bars={{ name: unitName }}
             renderLabels={(props) => <LabelList {...props} />}
             renderTooltip={(props) => <Tooltip {...props} />}

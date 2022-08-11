@@ -77,7 +77,9 @@ export class IdeasByStatusChart extends React.PureComponent<
       serie.length <= 0;
 
     const unitName = formatMessage(messages.inputs);
-    const sortedByValue = orderBy(serie, ['value'], ['desc']);
+    const sortedByValue = noData
+      ? null
+      : (orderBy(serie, ['value'], ['desc']) as IGraphFormat);
 
     return (
       <GraphCard className={className}>
@@ -100,21 +102,24 @@ export class IdeasByStatusChart extends React.PureComponent<
           </GraphCardHeader>
           <BarChart
             height={
-              !noData && sortedByValue.length > 1
+              !noData && sortedByValue !== null && sortedByValue.length > 1
                 ? sortedByValue.length * 50
                 : 100
             }
             data={sortedByValue}
+            mapping={{
+              category: 'name',
+              length: 'value',
+              fill: ({ color }) => color ?? colors.chartFill,
+              opacity: () => 0.8,
+            }}
             layout="horizontal"
             innerRef={this.currentChart}
             margin={DEFAULT_BAR_CHART_MARGIN}
             bars={{
               name: unitName,
-              fill: colors.chartFill,
               size: sizes.bar,
-              opacity: 0.8,
             }}
-            mapping={{ fill: 'color' }}
             yaxis={{ width: 150, tickLine: false }}
             renderLabels={(props) => <LabelList {...props} />}
             renderTooltip={(props) => <Tooltip {...props} />}

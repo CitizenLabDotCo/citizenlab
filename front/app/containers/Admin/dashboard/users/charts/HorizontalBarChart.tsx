@@ -109,12 +109,16 @@ export class HorizontalBarChart extends React.PureComponent<
             innerRef={this.currentChart}
             height={!noData && serie.length > 1 ? serie.length * 50 : 100}
             data={serie}
-            layout="horizontal"
-            margin={DEFAULT_BAR_CHART_MARGIN}
+            mapping={{
+              category: 'name',
+              length: 'value',
+            }}
             bars={{
               name: unitName,
               size: graphUnit === 'ideas' ? 5 : sizes.bar,
             }}
+            layout="horizontal"
+            margin={DEFAULT_BAR_CHART_MARGIN}
             yaxis={{ width: 150, tickLine: false }}
             renderLabels={(props) => <LabelList {...props} />}
           />

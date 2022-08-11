@@ -41,14 +41,6 @@ const InfoIcon = styled(Icon)`
   margin-left: 10px;
 `;
 
-const StyledBarChart = styled(BarChart)`
-  .recharts-wrapper {
-    @media print {
-      margin: 0 auto;
-    }
-  }
-`;
-
 type State = {
   serie: IGraphFormat | null;
 };
@@ -240,10 +232,14 @@ class BarChartActiveUsersByTime extends React.PureComponent<
               />
             )}
           </GraphCardHeader>
-          <StyledBarChart
+          <BarChart
             data={serie}
-            innerRef={this.currentChart}
+            mapping={{
+              category: 'name',
+              length: 'value',
+            }}
             bars={{ name: graphTitle }}
+            innerRef={this.currentChart}
             xaxis={{ tickFormatter: this.formatTick }}
             renderTooltip={(props) => (
               <Tooltip {...props} labelFormatter={this.formatLabel} />

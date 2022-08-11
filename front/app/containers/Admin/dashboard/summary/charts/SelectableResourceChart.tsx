@@ -199,9 +199,11 @@ const SelectableResourceChart = ({
           innerRef={currentChart}
           margin={DEFAULT_BAR_CHART_MARGIN}
           mapping={{
+            category: 'name',
+            length: 'value',
             opacity: currentFilter
               ? (row) => (row.code === currentFilter ? 1 : 0.5)
-              : undefined,
+              : () => 1,
           }}
           bars={{ name: unitName, size: sizes.bar }}
           yaxis={{ width: 150, tickLine: false }}

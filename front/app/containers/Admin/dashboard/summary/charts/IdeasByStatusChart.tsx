@@ -107,13 +107,14 @@ export class IdeasByStatusChart extends React.PureComponent<
             innerRef={this.currentChart}
             margin={DEFAULT_BAR_CHART_MARGIN}
             mapping={{
-              fill: 'color'
+              category: 'name',
+              length: 'value',
+              fill: ({ color }) => color ?? colors.chartFill,
+              opacity: () => 0.8,
             }}
             bars={{
               name: unitName,
-              fill: colors.chartFill,
               size: sizes.bar,
-              opacity: 0.8,
             }}
             yaxis={{ width: 150, tickLine: false }}
             renderLabels={(props) => <LabelList {...props} position="right" />}
