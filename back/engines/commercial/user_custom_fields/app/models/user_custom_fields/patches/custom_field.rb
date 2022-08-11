@@ -19,6 +19,8 @@ module UserCustomFields::Patches::CustomField
       # Since the +:dependent+ option of +has_many+ does not support the prepending of
       # callbacks, we us +:before_destroy+.
       before_destroy :destroy_ref_distributions, prepend: true
+
+      after_create :create_domicile_options, if: :domicile?
     end
   end
 
@@ -30,5 +32,22 @@ module UserCustomFields::Patches::CustomField
 
   def destroy_ref_distributions
     ref_distributions.destroy_all
+  end
+
+  def create_domicile_options
+    Area.all.each(&:create_custom_field_option)
+    create_somewhere_else_domicile_option
+  end
+
+  def create_somewhere_else_domicile_option
+    title_multiloc = CL2_SUPPORTED_LOCALES.index_with do |locale|
+      I18n.t('custom_field_options.domicile.outside', locale: locale)
+    end
+
+    options.create!(title_multiloc: title_multiloc)
+  end
+
+  def domicile?
+    key == 'domicile'
   end
 end
