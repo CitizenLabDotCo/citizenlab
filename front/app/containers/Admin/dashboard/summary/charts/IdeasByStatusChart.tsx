@@ -106,7 +106,9 @@ export class IdeasByStatusChart extends React.PureComponent<
             layout="horizontal"
             innerRef={this.currentChart}
             margin={DEFAULT_BAR_CHART_MARGIN}
-            mapping={{ fill: 'color' }}
+            mapping={{
+              fill: 'color'
+            }}
             bars={{
               name: unitName,
               fill: colors.chartFill,
