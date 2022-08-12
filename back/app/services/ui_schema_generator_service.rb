@@ -62,30 +62,6 @@ class UiSchemaGeneratorService < FieldVisitorService
     end
   end
 
-  def visit_select(field)
-    default field
-  end
-
-  def visit_multiselect(field)
-    default field
-  end
-
-  def visit_checkbox(field)
-    default field
-  end
-
-  def visit_date(field)
-    default field
-  end
-
-  def visit_files(field)
-    default field
-  end
-
-  def visit_image_files(field)
-    default field
-  end
-
   def visit_point(_field)
     nil
   end
