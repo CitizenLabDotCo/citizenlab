@@ -44,7 +44,10 @@ module UserCustomFields
 
         def users_by_domicile
           areas = Area.all.select(:id, :title_multiloc)
-          render json: { series: { users: user_counts }, areas: areas.to_h { |a| [a.id, a.attributes.except('id')] } }
+          render json: {
+            series: { users: user_counts_by_area_id },
+            areas: areas.to_h { |a| [a.id, a.attributes.except('id')] }
+          }
         end
 
         def users_by_domicile_as_xlsx
@@ -52,14 +55,14 @@ module UserCustomFields
             {
               'area_id' => area.id,
               'area' => MultilocService.new.t(area.title_multiloc),
-              'users' => user_counts.fetch(area.id, 0)
+              'users' => user_counts_by_area_id.fetch(area.id, 0)
             }
           end
 
           res.push(
             'area_id' => '_blank',
             'area' => 'unknown',
-            'users' => user_counts['_blank']
+            'users' => user_counts_by_area_id['_blank']
           )
 
           xlsx = XlsxService.new.generate_res_stats_xlsx(res, 'users', 'area')
@@ -93,6 +96,12 @@ module UserCustomFields
 
         def user_counts
           @user_counts ||= FieldValueCounter.counts_by_field_option(find_users, custom_field)
+        end
+
+        def user_counts_by_area_id
+          @user_counts_by_area_id ||= FieldValueCounter.counts_by_field_option(
+            find_users, custom_field, by_area_id: true
+          )
         end
 
         def find_users

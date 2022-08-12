@@ -27,6 +27,19 @@ RSpec.describe CustomField, type: :model do
     end
   end
 
+  context 'when domicile field is created' do
+    before { create_list(:area, 2) }
+
+    let(:domicile_field) { create(:custom_field_domicile) }
+
+    it 'creates custom field options from areas', :aggregate_failures do
+      expect(domicile_field.options.count).to eq(3)
+      expect(domicile_field.options.take(2).pluck(:id, :ordering, :title_multiloc))
+        .to match_array(Area.pluck(:custom_field_option_id, :ordering, :title_multiloc))
+      expect(domicile_field.options.last.area).to be_nil
+    end
+  end
+
   describe 'description sanitizer' do
     it 'sanitizes script tags in the description' do
       custom_field = create(:custom_field, description_multiloc: {
