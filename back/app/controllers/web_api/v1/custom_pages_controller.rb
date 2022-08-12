@@ -45,22 +45,15 @@ class WebApi::V1::CustomPagesController < ApplicationController
   end
 
   def destroy
-    # TODO: implement
-  end
+    page = @page.destroy
 
-  # def update
-  #   @homepage.assign_attributes home_page_params
-  #   authorize @homepage
-  #   SideFxHomePageService.new.before_update(@homepage)
-  #   if @homepage.save
-  #     render json: WebApi::V1::HomePageSerializer.new(
-  #       @homepage,
-  #       params: fastjson_params
-  #     ).serialized_json, status: :ok
-  #   else
-  #     render json: { errors: @homepage.errors.details }, status: :unprocessable_entity
-  #   end
-  # end
+    if page.destroyed?
+      SideFxCustomPageService.new.after_destroy page, current_user
+      head :ok
+    else
+      head :internal_server_error
+    end
+  end
 
   private
 
