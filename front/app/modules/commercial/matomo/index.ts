@@ -39,27 +39,27 @@ const destinationConfig: IDestinationConfig = {
   name: () => 'Matomo',
 };
 
+export function trackMatomoPageview(path: string, allAppPaths: string[]) {
+  const locale = getUrlLocale(path);
+  locale && window._paq.push(['setCustomDimension', 3, locale]);
+  window._paq.push(['setCustomUrl', path]);
+
+  // sorts out path and params for this pathname
+  const routeMatch = matchPath(path, {
+    path: allAppPaths,
+    exact: true,
+  });
+
+  if (routeMatch?.isExact) {
+    window._paq.push(['trackPageView', routeMatch.path]);
+  } else {
+    window._paq.push(['trackPageView']);
+  }
+}
+
 const configuration: ModuleConfiguration = {
   beforeMountApplication: () => {
     const allAppPaths = getAllPathsFromRoutes(createRoutes()[0]);
-
-    function trackMatomoPageview(path) {
-      const locale = getUrlLocale(path);
-      locale && window._paq.push(['setCustomDimension', 3, locale]);
-      window._paq.push(['setCustomUrl', path]);
-
-      // sorts out path and params for this pathname
-      const routeMatch = matchPath(path, {
-        path: allAppPaths,
-        exact: true,
-      });
-
-      if (routeMatch?.isExact) {
-        window._paq.push(['trackPageView', routeMatch.path]);
-      } else {
-        window._paq.push(['trackPageView']);
-      }
-    }
 
     combineLatest([
       currentAppConfigurationStream().observable,
@@ -131,7 +131,7 @@ const configuration: ModuleConfiguration = {
         window._paq.push(['setCustomDimension', 2, appConfiguration.data.id]);
       }
 
-      trackMatomoPageview(window.location.pathname);
+      trackMatomoPageview(window.location.pathname, allAppPaths);
     });
 
     shutdownFor('matomo').subscribe(() => {
@@ -162,7 +162,7 @@ const configuration: ModuleConfiguration = {
       currentAppConfigurationStream().observable,
     ]).subscribe(([pageChange, _]) => {
       if (window._paq) {
-        trackMatomoPageview(pageChange.path);
+        trackMatomoPageview(pageChange.path, allAppPaths);
       }
     });
 

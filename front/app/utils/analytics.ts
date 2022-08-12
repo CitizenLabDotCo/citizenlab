@@ -58,6 +58,7 @@ export const initializeFor = (destination: IDestination) => {
   ]).pipe(
     filter(([consent, tenant, user]) => {
       const config = getDestinationConfig(destination);
+
       return (
         consent.eventValue[destination] &&
         (!config || isDestinationActive(config, tenant.data, user?.data))

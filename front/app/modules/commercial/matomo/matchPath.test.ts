@@ -1,38 +1,38 @@
 import { getAllPathsFromRoutes } from './matchPath';
 
-describe('getAllPathsFromRoutes', () => {
-  it('should return all paths from routes', () => {
-    const mockRoutes = {
-      path: '/:locale',
+export const mockRoutes = {
+  path: '/:locale',
+  children: [
+    {
+      path: 'sign-in',
+    },
+    {
+      path: 'sign-up',
+    },
+    {
+      path: 'invite',
+    },
+    {
+      path: 'complete-signup',
+    },
+    {
+      path: 'admin',
       children: [
         {
-          path: 'sign-in',
-        },
-        {
-          path: 'sign-up',
-        },
-        {
-          path: 'invite',
-        },
-        {
-          path: 'complete-signup',
-        },
-        {
-          path: 'admin',
+          path: 'dashboard',
           children: [
             {
-              path: 'dashboard',
-              children: [
-                {
-                  path: 'users',
-                },
-              ],
+              path: 'users',
             },
           ],
         },
       ],
-    };
+    },
+  ],
+};
 
+describe('getAllPathsFromRoutes', () => {
+  it('should return all paths from routes', () => {
     const expected = [
       '/:locale',
       '/:locale/sign-in',

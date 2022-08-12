@@ -117,7 +117,7 @@ describe('<ConsentManager />', () => {
           .props().categorizedDestinations;
         expect(categorizedDestinations).toMatchSnapshot();
       });
-      it('acts properly when all disabled', () => {
+      it.only('acts properly when all disabled', () => {
         __setMockAppConfiguration(tenantDataAllEnabled);
         const wrapper = shallow(
           <ConsentManager authUser={null} tenant={tenantDataAllDisabled} />
