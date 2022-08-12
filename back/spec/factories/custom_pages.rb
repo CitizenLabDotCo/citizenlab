@@ -9,6 +9,12 @@ FactoryBot.define do
         'nl-BE' => 'Mijn geweldige aangepaste pagina'
       }
     end
-    slug { 'my-amazing-custom-page' }
+    bottom_info_section_multiloc do
+      {
+        'en' => 'My amazing custom page info section',
+        'nl-BE' => 'Mijn geweldige aangepaste pagina informatie sectie'
+      }
+    end
+    sequence(:slug) { |n| "#{Faker::Internet.slug.parameterize}-#{n}".tr('_', '-') }
   end
 end

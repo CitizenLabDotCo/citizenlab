@@ -78,7 +78,13 @@ class CustomPage < ApplicationRecord
 
   mount_base64_uploader :header_bg, HeaderBgUploader
 
+  before_validation :generate_slug, on: :create
+
   private
+
+  def generate_slug
+    self.slug ||= SlugService.new.generate_slug self, title_multiloc.values.first
+  end
 
   def sanitize_top_info_section_multiloc
     sanitize_info_section_multiloc(:top_info_section_multiloc)

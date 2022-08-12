@@ -1,8 +1,14 @@
 # frozen_string_literal: true
 
 class WebApi::V1::CustomPagesController < ApplicationController
-  skip_before_action :authenticate_user, only: %i[show by_slug]
+  skip_before_action :authenticate_user, only: %i[index show by_slug]
   before_action :set_page, only: %i[show update destroy]
+
+  def index
+    @pages = paginate policy_scope(CustomPage)
+
+    render json: linked_json(@pages, WebApi::V1::CustomPageSerializer, params: fastjson_params)
+  end
 
   def show
     authorize @page
