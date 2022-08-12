@@ -38,9 +38,10 @@ class Area < ApplicationRecord
   # If the domicile custom field exists, area are associated to its options.
   # The two associated resources are kept in sync: changes mode to the
   # area are reflected in the option, and vice versa.
-  belongs_to :custom_field_option, dependent: :destroy, optional: true
+  belongs_to :custom_field_option, optional: true
   after_create :create_custom_field_option
   after_update :update_custom_field_option
+  before_destroy :destroy_custom_field_option
 
   validates :ordering, numericality: {
     only_integer: true,
@@ -83,6 +84,15 @@ class Area < ApplicationRecord
       title_multiloc: title_multiloc,
       ordering: ordering
     )
+  end
+
+  def destroy_custom_field_option
+    return unless custom_field_option
+
+    # TODO: (tech debt) Rework to log the user responsible for the deletion.
+    SideFxCustomFieldOptionService.new.before_destroy(@option, nil)
+    custom_field_option.destroy
+    SideFxCustomFieldOptionService.new.after_destroy(@option, nil)
   end
 end
 
