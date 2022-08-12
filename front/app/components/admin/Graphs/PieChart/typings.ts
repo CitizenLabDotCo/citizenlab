@@ -7,6 +7,7 @@ export interface Props<Row> {
   height?: string | number;
   data: Row[] | NilOrError;
   mapping: Mapping<Row>;
+  pie: Pie;
   centerLabel?: string;
   centerValue?: string;
   emptyContainerContent?: React.ReactNode;
@@ -15,3 +16,5 @@ export interface Props<Row> {
 interface Mapping<Row> extends BaseMapping<Row> {
   angle: KeyOfType<Row, number>;
 }
+
+interface Pie {}

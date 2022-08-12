@@ -4,9 +4,7 @@ import { legacyColors } from '../styling';
 // typings
 import { Mapping, Bars, BarConfig, Layout } from './typings';
 
-const FALLBACKS = {
-  fill: legacyColors.barFill,
-};
+const FALLBACK_FILL = legacyColors.barFill;
 
 export const getBarConfigs = <Row>(
   data: Row[],
@@ -17,7 +15,7 @@ export const getBarConfigs = <Row>(
 
   const barConfigs: BarConfig[] = length.map((lengthColumn, barIndex) => {
     const cells = data.map((row, rowIndex) => ({
-      fill: (fill && fill(row, rowIndex)[barIndex]) ?? FALLBACKS.fill,
+      fill: (fill && fill(row, rowIndex)[barIndex]) ?? FALLBACK_FILL,
       opacity: opacity && opacity(row, rowIndex)[barIndex],
     }));
 
