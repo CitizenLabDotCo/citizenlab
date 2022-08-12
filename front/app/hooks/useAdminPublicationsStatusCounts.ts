@@ -30,7 +30,7 @@ export default function useAdminPublicationsStatusCounts({
   >(undefined);
   const [topics, setTopics] = useState<string[] | undefined>(topicFilter);
   const [areas, setAreas] = useState<string[] | undefined>(areaFilter);
-  const [search, setSearch] = useState<string | undefined>('');
+  const [search, setSearch] = useState<string | null>(null);
   const [publicationStatuses, setPublicationStatuses] = useState<
     PublicationStatus[]
   >(publicationStatusFilter);
@@ -44,7 +44,7 @@ export default function useAdminPublicationsStatusCounts({
   }, []);
 
   const onChangeSearch = useCallback((search: string) => {
-    search && search.length === 0 ? setSearch(undefined) : setSearch(search);
+    search && search.length === 0 ? setSearch(null) : setSearch(search);
   }, []);
 
   useEffect(() => {

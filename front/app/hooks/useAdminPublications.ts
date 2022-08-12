@@ -56,7 +56,7 @@ export interface IUseAdminPublicationsOutput {
   loadingMore: boolean;
   onLoadMore: () => void;
   onChangeTopics: (topics: string[]) => void;
-  onChangeSearch: (string: string | undefined) => void;
+  onChangeSearch: (string: string | null) => void;
   onChangeAreas: (areas: string[]) => void;
   onChangePublicationStatus: (publicationStatuses: PublicationStatus[]) => void;
 }
@@ -77,7 +77,7 @@ export default function useAdminPublications({
   const [loadingInitial, setLoadingInitial] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState<string | null>(null);
   const [topics, setTopics] = useState<string[] | undefined>(topicFilter);
   const [areas, setAreas] = useState<string[] | undefined>(areaFilter);
   const [publicationStatuses, setPublicationStatuses] = useState<
