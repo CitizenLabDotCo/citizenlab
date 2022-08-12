@@ -34,6 +34,8 @@
 #  index_custom_pages_on_slug  (slug) UNIQUE
 #
 class CustomPage < ApplicationRecord
+  CODES = %w[about faq proposals custom].freeze
+
   has_many :pins, as: :page, inverse_of: :page, dependent: :destroy
   has_many :pinned_admin_publications, through: :pins, source: :admin_publication
 
@@ -51,7 +53,8 @@ class CustomPage < ApplicationRecord
 
   validates :slug, presence: true, uniqueness: true
 
-  validates :code, inclusion: %w[custom]
+  validates :code, inclusion: { in: CODES }
+  validates uniqueness: true, unless: :custom?
 
   validates :banner_enabled, inclusion: [true, false] # Default is true on db table, perhaps should be false on db table?
   validates :banner_layout, inclusion: %w[full_width_banner_layout two_column_layout two_row_layout]
@@ -81,6 +84,10 @@ class CustomPage < ApplicationRecord
   validates :bottom_info_section_multiloc, multiloc: { presence: false, html: true }
 
   mount_base64_uploader :header_bg, HeaderBgUploader
+
+  def custom?
+    code == 'custom'
+  end
 
   private
 
