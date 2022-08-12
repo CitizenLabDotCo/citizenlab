@@ -87,6 +87,10 @@ class CustomPage < ApplicationRecord
 
   before_validation :generate_slug, on: :create
 
+  def custom?
+    code == 'custom'
+  end
+
   private
 
   def generate_slug
