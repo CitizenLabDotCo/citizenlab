@@ -43,7 +43,9 @@ const SurveyFields = ({
         <List key={surveyCustomFields.length}>
           {surveyCustomFields.map((field, index) => {
             const border =
-              selectedFieldId === field.id ? `1px solid #74B4FF` : 'none';
+              selectedFieldId === field.id
+                ? `1px solid ${colors.clBlueLight}`
+                : 'none';
             return (
               <Box border={border} key={field.id}>
                 <SortableRow
