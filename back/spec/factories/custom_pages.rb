@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :custom_page do
-    # Use database defaults for now
+    code { 'custom' }
     title_multiloc do
       {
         'en' => 'My amazing custom page',
