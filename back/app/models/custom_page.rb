@@ -34,6 +34,8 @@
 #  index_custom_pages_on_slug  (slug) UNIQUE
 #
 class CustomPage < ApplicationRecord
+  CODES = %w[about terms-and-conditions privacy-policy faq proposals custom].freeze
+
   has_many :pins, as: :page, inverse_of: :page, dependent: :destroy
   has_many :pinned_admin_publications, through: :pins, source: :admin_publication
 
@@ -50,6 +52,9 @@ class CustomPage < ApplicationRecord
   validates :title_multiloc, presence: true, multiloc: { presence: true }
 
   validates :slug, presence: true, uniqueness: true
+
+  validates :code, inclusion: { in: CODES }
+  validates :code, uniqueness: true, if: ->(page) { !page.custom? }
 
   validates :banner_enabled, inclusion: [true, false] # Default is true on db table, perhaps should be false on db table?
   validates :banner_layout, inclusion: %w[full_width_banner_layout two_column_layout two_row_layout]
