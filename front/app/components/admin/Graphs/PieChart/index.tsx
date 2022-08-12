@@ -29,6 +29,7 @@ const PieChart = <T,>({
   centerLabel,
   centerValue,
   emptyContainerContent,
+  innerRef,
 }: Props<T>) => {
   if (hasNoData(data)) {
     return <EmptyState emptyContainerContent={emptyContainerContent} />;
@@ -39,7 +40,7 @@ const PieChart = <T,>({
   return (
     <PieChartStyleFixesDiv>
       <ResponsiveContainer width={width} height={height}>
-        <RechartsPieChart margin={margin}>
+        <RechartsPieChart margin={margin} ref={innerRef}>
           <Pie data={data} {...pieConfig.props}>
             {pieConfig.cells.map((cell, cellIndex) => (
               <Cell key={`cell-${cellIndex}`} {...cell} />

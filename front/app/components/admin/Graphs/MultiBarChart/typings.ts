@@ -1,3 +1,4 @@
+import { RefObject } from 'react';
 import {
   Margin,
   AxisProps,
@@ -7,7 +8,6 @@ import {
   Channel,
   Cell,
 } from '../typings';
-import { RefObject } from 'react';
 import { NilOrError } from 'utils/helperUtils';
 
 // PROPS

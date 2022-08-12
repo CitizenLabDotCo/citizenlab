@@ -1,4 +1,4 @@
-// typings
+import { RefObject } from 'react';
 import { NilOrError } from 'utils/helperUtils';
 import { Margin, KeyOfType, Channel, Cell } from '../typings';
 
@@ -13,6 +13,7 @@ export interface Props<Row> {
   centerLabel?: string;
   centerValue?: string;
   emptyContainerContent?: React.ReactNode;
+  innerRef?: RefObject<any>;
 }
 
 export interface Mapping<Row> {
