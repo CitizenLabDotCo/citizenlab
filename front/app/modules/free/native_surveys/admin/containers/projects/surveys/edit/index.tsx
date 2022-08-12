@@ -126,6 +126,7 @@ export const SurveyEdit = () => {
                   surveyCustomFields={surveyCustomFields}
                   handleDragRow={handleDragRow}
                   handleDropRow={handleDropRow}
+                  selectedFieldId={selectedField?.id}
                 />
               )}
             </Box>

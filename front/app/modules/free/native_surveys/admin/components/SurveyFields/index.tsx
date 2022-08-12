@@ -27,6 +27,7 @@ interface SurveyFieldsProps {
   surveyCustomFields: IFlatCustomField[];
   handleDragRow: (fromIndex: number, toIndex: number) => void;
   handleDropRow: (fieldId: string, toIndex: number) => void;
+  selectedFieldId?: string;
 }
 
 const SurveyFields = ({
@@ -34,41 +35,46 @@ const SurveyFields = ({
   surveyCustomFields,
   handleDragRow,
   handleDropRow,
+  selectedFieldId,
 }: SurveyFieldsProps) => {
   return (
     <DndProvider backend={HTML5Backend}>
       <Box p="32px" height="100%" overflowY="auto">
         <List key={surveyCustomFields.length}>
           {surveyCustomFields.map((field, index) => {
+            const border =
+              selectedFieldId === field.id
+                ? `1px solid ${colors.clBlueLight}`
+                : 'none';
             return (
-              <SortableRow
-                key={field.id}
-                id={field.id}
-                className="e2e-custom-registration-field-row"
-                index={index}
-                moveRow={handleDragRow}
-                dropRow={handleDropRow}
-              >
-                <Box display="flex" className="expand">
-                  <Box as="span" display="flex" alignItems="center">
-                    <Text fontSize="base" my="0px" color="adminTextColor">
-                      <T value={field.title_multiloc} />
-                    </Text>
-                  </Box>
-                  <StyledBadge color={colors.adminSecondaryTextColor}>
-                    <FormattedMessage {...messages.shortAnswer} />
-                  </StyledBadge>
-                </Box>
-                <Button
-                  buttonStyle="secondary"
-                  icon="edit"
-                  onClick={() => {
-                    onEditField(field);
-                  }}
+              <Box border={border} key={field.id}>
+                <SortableRow
+                  id={field.id}
+                  index={index}
+                  moveRow={handleDragRow}
+                  dropRow={handleDropRow}
                 >
-                  <FormattedMessage {...messages.editButtonLabel} />
-                </Button>
-              </SortableRow>
+                  <Box display="flex" className="expand">
+                    <Box as="span" display="flex" alignItems="center">
+                      <Text fontSize="base" my="0px" color="adminTextColor">
+                        <T value={field.title_multiloc} />
+                      </Text>
+                    </Box>
+                    <StyledBadge color={colors.adminSecondaryTextColor}>
+                      <FormattedMessage {...messages.shortAnswer} />
+                    </StyledBadge>
+                  </Box>
+                  <Button
+                    buttonStyle="secondary"
+                    icon="edit"
+                    onClick={() => {
+                      onEditField(field);
+                    }}
+                  >
+                    <FormattedMessage {...messages.editButtonLabel} />
+                  </Button>
+                </SortableRow>
+              </Box>
             );
           })}
         </List>
