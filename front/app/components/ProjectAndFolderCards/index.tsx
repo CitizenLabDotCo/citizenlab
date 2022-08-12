@@ -28,7 +28,7 @@ const ProjectAndFolderCards = ({
   publicationStatusFilter,
   ...otherProps
 }: Props) => {
-  const { counts, onChangeTopics, onChangeAreas } =
+  const { counts, onChangeTopics, onChangeAreas, onChangeSearch } =
     useAdminPublicationsStatusCount({
       publicationStatusFilter,
       rootLevelOnly: true,
@@ -60,6 +60,7 @@ const ProjectAndFolderCards = ({
       onChangeTopics={onChangeTopics}
       onChangeAreas={onChangeAreas}
       onChangeTab={onChangeTab}
+      onChangeSearch={onChangeSearch}
       {...otherProps}
     />
   );

@@ -45,6 +45,7 @@ interface Props extends BaseProps {
   onChangeTopics: (topics: string[]) => void;
   onChangeAreas: (areas: string[]) => void;
   onChangeTab: (tab: PublicationTab) => void;
+  onChangeSearch: (search: string) => void;
 }
 
 const ProjectAndFolderCardsInner = ({
@@ -57,6 +58,7 @@ const ProjectAndFolderCardsInner = ({
   onChangeTopics,
   onChangeAreas,
   onChangeTab,
+  onChangeSearch,
 }: Props) => {
   // if a search string is provided, we want to show all depths of admin publication
   const rootLevelOnly = search && search.length > 0 ? false : true;
@@ -115,6 +117,7 @@ const ProjectAndFolderCardsInner = ({
   };
 
   const handleChangeSearch = (search: string) => {
+    onChangeSearch(search);
     adminPublications.onChangeSearch(search);
   };
 
