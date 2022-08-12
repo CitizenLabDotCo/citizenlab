@@ -207,6 +207,7 @@ ActiveRecord::Schema.define(version: 2022_08_09_141825) do
   create_table "custom_pages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.jsonb "title_multiloc", default: {}, null: false
     t.string "slug"
+    t.string "code", default: "custom", null: false
     t.boolean "banner_enabled", default: true, null: false
     t.string "banner_layout", default: "full_width_banner_layout", null: false
     t.string "banner_overlay_color"
@@ -226,6 +227,7 @@ ActiveRecord::Schema.define(version: 2022_08_09_141825) do
     t.string "header_bg"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["code"], name: "index_custom_pages_on_code"
     t.index ["slug"], name: "index_custom_pages_on_slug", unique: true
   end
 

@@ -7,6 +7,7 @@
 #  id                           :uuid             not null, primary key
 #  title_multiloc               :jsonb            not null
 #  slug                         :string
+#  code                         :string           default("custom"), not null
 #  banner_enabled               :boolean          default(TRUE), not null
 #  banner_layout                :string           default("full_width_banner_layout"), not null
 #  banner_overlay_color         :string
@@ -29,9 +30,12 @@
 #
 # Indexes
 #
+#  index_custom_pages_on_code  (code)
 #  index_custom_pages_on_slug  (slug) UNIQUE
 #
 class CustomPage < ApplicationRecord
+  CODES = %w[about faq proposals custom].freeze
+
   has_many :pins, as: :page, inverse_of: :page, dependent: :destroy
   has_many :pinned_admin_publications, through: :pins, source: :admin_publication
 
@@ -49,7 +53,10 @@ class CustomPage < ApplicationRecord
 
   validates :slug, presence: true, uniqueness: true
 
-  validates :banner_enabled, inclusion: [true, false] # Default is true on db table, perhaps should be false on db table?
+  validates :code, inclusion: { in: CODES }
+  validates :code, uniqueness: true, unless: :custom?
+
+  validates :banner_enabled, inclusion: [true, false]
   validates :banner_layout, inclusion: %w[full_width_banner_layout two_column_layout two_row_layout]
   validates :banner_overlay_color, css_color: true
   validates :banner_overlay_opacity, numericality: { only_integer: true,
