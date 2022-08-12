@@ -73,6 +73,7 @@ const ProjectsIndex = () => {
 
           <ProjectAndFolderCards
             showTitle={false}
+            showSearch={true}
             layout="threecolumns"
             publicationStatusFilter={['published', 'archived']}
           />

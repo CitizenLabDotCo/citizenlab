@@ -52,6 +52,7 @@ const ProjectAndFolderCardsInner = ({
   currentTab,
   statusCounts,
   showTitle,
+  showSearch,
   search,
   layout,
   publicationStatusFilter,
@@ -128,6 +129,7 @@ const ProjectAndFolderCardsInner = ({
     <Container id="e2e-projects-container">
       <StyledTopbar
         showTitle={showTitle}
+        showSearch={showSearch}
         currentTab={currentTab}
         statusCounts={statusCounts}
         noAdminPublicationsAtAll={noAdminPublicationsAtAll}

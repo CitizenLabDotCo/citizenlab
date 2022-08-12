@@ -124,6 +124,7 @@ interface Props {
   noAdminPublicationsAtAll: boolean;
   availableTabs: PublicationTab[];
   showTitle: boolean;
+  showSearch?: boolean;
   hasPublications: boolean;
   onChangeTopics: (topics: string[]) => void;
   onChangeAreas: (areas: string[]) => void;
@@ -138,6 +139,7 @@ const Header = ({
   noAdminPublicationsAtAll,
   availableTabs,
   showTitle,
+  showSearch,
   hasPublications,
   onChangeTopics,
   onChangeAreas,
@@ -154,21 +156,19 @@ const Header = ({
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const [selectedAreas, setSelectedAreas] = useState<string[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [searchInputRef, setSearchInputRef] = useState<HTMLInputElement | null>(
+    null
+  );
 
   useEffect(() => {
     const focusSearch = searchParams.get('focusSearch');
-    // it's a string from the query param
-    if (focusSearch === 'true') {
-      // this should be a ref to the input element
-      // it's null on page load
-      const searchInput = document.getElementById('search-input');
-      if (searchInput) {
-        searchInput.focus();
-      }
+    // the value from the query param is a string, not a boolean
+    if (focusSearch === 'true' && searchInputRef) {
+      searchInputRef.focus();
       searchParams.delete('focusSearch');
       setSearchParams(searchParams);
     }
-  }, [searchParams, setSearchParams]);
+  }, [searchParams, setSearchParams, searchInputRef]);
 
   if (isNilOrError(appConfiguration)) return null;
 
@@ -207,6 +207,10 @@ const Header = ({
     onChangeSearch(search);
   };
 
+  const handleSetSearchInputRef = (ref: HTMLInputElement | null) => {
+    setSearchInputRef(ref);
+  };
+
   return (
     <div className={className}>
       {showTitle ? (
@@ -220,10 +224,13 @@ const Header = ({
         <ScreenReaderOnly>{currentlyWorkingOnText}</ScreenReaderOnly>
       )}
 
-      <StyledSearchInput
-        onChange={handleOnSearchChange}
-        a11y_numberOfSearchResults={1}
-      />
+      {showSearch && (
+        <StyledSearchInput
+          onChange={handleOnSearchChange}
+          a11y_numberOfSearchResults={1}
+          setInputRef={handleSetSearchInputRef}
+        />
+      )}
 
       <Container>
         {!smallerThanXlPhone && showFilters && (

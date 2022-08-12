@@ -22,10 +22,12 @@ export interface Props {
   layout: TLayout;
   publicationStatusFilter: PublicationStatus[];
   search?: string;
+  showSearch?: boolean;
 }
 
 const ProjectAndFolderCards = ({
   publicationStatusFilter,
+  showSearch = false,
   ...otherProps
 }: Props) => {
   const { counts, onChangeTopics, onChangeAreas, onChangeSearch } =
@@ -61,6 +63,7 @@ const ProjectAndFolderCards = ({
       onChangeAreas={onChangeAreas}
       onChangeTab={onChangeTab}
       onChangeSearch={onChangeSearch}
+      showSearch={showSearch}
       {...otherProps}
     />
   );
