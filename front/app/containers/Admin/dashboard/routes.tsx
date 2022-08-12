@@ -5,6 +5,9 @@ const DashboardWrapper = lazy(() => import('.'));
 const Summary = lazy(() => import('./summary'));
 const Users = lazy(() => import('./users'));
 
+// TODO remove
+const Playground = lazy(() => import('./playground'));
+
 const createAdminDashboardRoutes = () => {
   return {
     path: 'dashboard',
@@ -31,6 +34,16 @@ const createAdminDashboardRoutes = () => {
         ),
       },
       ...moduleConfiguration.routes['admin.dashboards'],
+
+      // TODO remove
+      {
+        path: 'playground',
+        element: (
+          <PageLoading>
+            <Playground />
+          </PageLoading>
+        )
+      }
     ],
   };
 };
