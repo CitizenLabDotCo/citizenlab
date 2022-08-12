@@ -26,14 +26,15 @@ import { getPieConfig } from './utils';
 import { Props } from './typings';
 
 const PieChart = <T,>({
+  width,
+  height,
   data,
   mapping,
   pie,
+  margin,
   centerLabel,
   centerValue,
   emptyContainerContent,
-  width,
-  height,
 }: Props<T>) => {
   if (hasNoData(data)) {
     return (
@@ -52,7 +53,7 @@ const PieChart = <T,>({
   return (
     <PieChartStyleFixesDiv>
       <ResponsiveContainer width={width} height={height}>
-        <RechartsPieChart>
+        <RechartsPieChart margin={margin}>
           <Pie data={data} {...pieConfig.props}>
             {pieConfig.cells.map((cell, cellIndex) => (
               <Cell key={`cell-${cellIndex}`} {...cell} />

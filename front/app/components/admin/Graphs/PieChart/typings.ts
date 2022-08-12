@@ -1,6 +1,6 @@
 // typings
 import { NilOrError } from 'utils/helperUtils';
-import { KeyOfType, Channel, Cell } from '../typings';
+import { Margin, KeyOfType, Channel, Cell } from '../typings';
 
 // PROPS
 export interface Props<Row> {
@@ -9,6 +9,7 @@ export interface Props<Row> {
   data: Row[] | NilOrError;
   mapping: Mapping<Row>;
   pie?: Pie;
+  margin?: Margin;
   centerLabel?: string;
   centerValue?: string;
   emptyContainerContent?: React.ReactNode;
