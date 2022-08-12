@@ -357,7 +357,7 @@
   "app.components.ProjectCard.viewTheProjects": "Projeleri görüntüleyin",
   "app.components.ProjectCard.viewTheQuestions": "Soruları görüntüleyin",
   "app.components.ProjectCard.vote": "Oy verin",
-  "app.components.ProjectCard.xComments": "{commentsCount, plural, one {# comments} other {# comments}}",
+  "app.components.ProjectCard.xComments": "{commentsCount, plural, one {# yorum} other {# yorum}}",
   "app.components.ProjectCard.xContributions": "{ideasCount, plural, one {# contribution} other {# contributions}}",
   "app.components.ProjectCard.xIdeas": "{ideasCount, plural, =0 {no ideas yet} one {# idea} other {# ideas}}",
   "app.components.ProjectCard.xIssues": "{ideasCount, plural, one {# comment} other {# comments}}",
