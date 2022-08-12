@@ -73,7 +73,7 @@ export const bufferUntilInitialized = <T>(
   o$: Observable<T>
 ): Observable<T> => {
   return concat(
-    o$.pipe(buffer(initializeFor(destination).pipe(take(1))), mergeAll()),
+    o$.pipe(buffer(initializeFor(destination)), take(1), mergeAll()),
     o$
   );
 };
