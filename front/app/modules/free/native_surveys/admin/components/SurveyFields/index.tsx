@@ -42,10 +42,10 @@ const SurveyFields = ({
       <Box p="32px" height="100%" overflowY="auto">
         <List key={surveyCustomFields.length}>
           {surveyCustomFields.map((field, index) => {
-            const borderIfSeleted =
+            const border =
               selectedFieldId === field.id ? `1px solid #74B4FF` : 'none';
             return (
-              <Box border={borderIfSeleted} key={field.id}>
+              <Box border={border} key={field.id}>
                 <SortableRow
                   id={field.id}
                   index={index}
