@@ -8,15 +8,9 @@ import {
   Label,
   ResponsiveContainer,
 } from 'recharts';
-import {
-  NoDataContainer,
-  PieChartStyleFixesDiv,
-} from 'components/admin/GraphWrappers';
+import { PieChartStyleFixesDiv } from 'components/admin/GraphWrappers';
+import EmptyState from '../EmptyState';
 import CustomLabel from './CustomLabel';
-
-// i18n
-import messages from '../messages';
-import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
 import { hasNoData } from '../utils';
@@ -37,15 +31,7 @@ const PieChart = <T,>({
   emptyContainerContent,
 }: Props<T>) => {
   if (hasNoData(data)) {
-    return (
-      <NoDataContainer>
-        {emptyContainerContent ? (
-          <>{emptyContainerContent}</>
-        ) : (
-          <FormattedMessage {...messages.noData} />
-        )}
-      </NoDataContainer>
-    );
+    return <EmptyState emptyContainerContent={emptyContainerContent} />;
   }
 
   const pieConfig = getPieConfig(data, mapping, pie);

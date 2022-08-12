@@ -16,11 +16,7 @@ import {
   YAxis,
   Cell,
 } from 'recharts';
-import { NoDataContainer } from 'components/admin/GraphWrappers';
-
-// i18n
-import messages from '../messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import EmptyState from '../EmptyState';
 
 // utils
 import { getBarConfigs, getRechartsLayout } from './utils';
@@ -45,15 +41,7 @@ const MultiBarChart = <T,>({
   innerRef,
 }: Props<T>) => {
   if (hasNoData(data)) {
-    return (
-      <NoDataContainer>
-        {emptyContainerContent ? (
-          <>{emptyContainerContent}</>
-        ) : (
-          <FormattedMessage {...messages.noData} />
-        )}
-      </NoDataContainer>
-    );
+    return <EmptyState emptyContainerContent={emptyContainerContent} />;
   }
 
   const barConfigs = getBarConfigs(data, mapping, bars);
