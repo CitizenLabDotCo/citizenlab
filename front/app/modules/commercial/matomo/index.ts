@@ -43,7 +43,7 @@ const configuration: ModuleConfiguration = {
   beforeMountApplication: () => {
     const allAppPaths = getAllPathsFromRoutes(createRoutes()[0]);
 
-    function tackMatomoPageview(path) {
+    function trackMatomoPageview(path) {
       const locale = getUrlLocale(path);
       locale && window._paq.push(['setCustomDimension', 3, locale]);
       window._paq.push(['setCustomUrl', path]);
@@ -131,7 +131,7 @@ const configuration: ModuleConfiguration = {
         window._paq.push(['setCustomDimension', 2, appConfiguration.data.id]);
       }
 
-      tackMatomoPageview(window.location.pathname);
+      trackMatomoPageview(window.location.pathname);
     });
 
     shutdownFor('matomo').subscribe(() => {
@@ -162,7 +162,7 @@ const configuration: ModuleConfiguration = {
       currentAppConfigurationStream().observable,
     ]).subscribe(([pageChange, _]) => {
       if (window._paq) {
-        tackMatomoPageview(pageChange.path);
+        trackMatomoPageview(pageChange.path);
       }
     });
 
