@@ -54,7 +54,7 @@ class CustomPage < ApplicationRecord
   validates :slug, presence: true, uniqueness: true
 
   validates :code, inclusion: { in: CODES }
-  validates uniqueness: true, unless: :custom?
+  validates uniqueness: true, if: ->(page) { !page.custom? }
 
   validates :banner_enabled, inclusion: [true, false] # Default is true on db table, perhaps should be false on db table?
   validates :banner_layout, inclusion: %w[full_width_banner_layout two_column_layout two_row_layout]
