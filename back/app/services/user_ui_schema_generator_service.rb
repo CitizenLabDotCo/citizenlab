@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 class UserUiSchemaGeneratorService < UiSchemaGeneratorService
-  def fields_to_ui_schema(fields, locale)
+  protected
+
+  def generate_for_current_locale(fields)
     {
       type: 'VerticalLayout',
       options: {

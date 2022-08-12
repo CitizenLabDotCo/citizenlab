@@ -14,7 +14,7 @@ class UiSchemaGeneratorService < FieldVisitorService
   def generate_for(fields)
     locales.index_with do |locale|
       @current_locale = locale
-      fields_to_ui_schema fields, locale
+      generate_for_current_locale fields
     end
   end
 
@@ -102,6 +102,10 @@ class UiSchemaGeneratorService < FieldVisitorService
   end
 
   protected
+
+  def generate_for_current_locale(fields)
+    raise NotImplementedError
+  end
 
   def visit_or_filter(field)
     return nil if !field || !field.enabled? || field.hidden?
