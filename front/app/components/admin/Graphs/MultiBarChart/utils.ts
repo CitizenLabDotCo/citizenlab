@@ -1,11 +1,11 @@
 // styling
-import { colors } from '../styling';
+import { legacyColors } from '../styling';
 
 // typings
 import { Mapping, Bars, BarConfig, Layout } from './typings';
 
 const FALLBACKS = {
-  fill: colors.barFill,
+  fill: legacyColors.barFill,
 };
 
 export const getBarConfigs = <Row>(

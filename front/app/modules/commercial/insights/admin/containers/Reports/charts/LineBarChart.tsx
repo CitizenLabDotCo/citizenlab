@@ -49,7 +49,7 @@ import { Icon } from '@citizenlab/cl2-component-library';
 
 // styling
 import styled from 'styled-components';
-import { colors, sizes } from 'components/admin/Graphs/styling';
+import { legacyColors, sizes } from 'components/admin/Graphs/styling';
 
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -336,13 +336,13 @@ class LineBarChart extends React.PureComponent<
                 ref={this.currentChart}
               >
                 <CartesianGrid
-                  stroke={colors.cartesianGrid}
+                  stroke={legacyColors.cartesianGrid}
                   strokeWidth={0.5}
                 />
                 <XAxis
                   dataKey="name"
                   interval="preserveStartEnd"
-                  stroke={colors.chartLabel}
+                  stroke={legacyColors.chartLabel}
                   fontSize={sizes.chartLabel}
                   tick={{ transform: 'translate(0, 7)' }}
                   tickFormatter={this.formatTick}
@@ -350,7 +350,7 @@ class LineBarChart extends React.PureComponent<
                 />
                 <YAxis
                   yAxisId="total"
-                  stroke={colors.chartLabel}
+                  stroke={legacyColors.chartLabel}
                   fontSize={sizes.chartLabel}
                   tickLine={false}
                 >
@@ -386,7 +386,7 @@ class LineBarChart extends React.PureComponent<
                   dataKey="barValue"
                   yAxisId="barValue"
                   barSize={sizes.bar}
-                  fill={colors.barFill}
+                  fill={legacyColors.barFill}
                   fillOpacity={1}
                   name={formatMessage(messages.totalForPeriod, {
                     period: formatMessage(messages[resolution]),
@@ -397,8 +397,8 @@ class LineBarChart extends React.PureComponent<
                   yAxisId="total"
                   dataKey="total"
                   activeDot={Boolean(serie && serie?.length < 31)}
-                  stroke={colors.line}
-                  fill={colors.line}
+                  stroke={legacyColors.line}
+                  fill={legacyColors.line}
                   strokeWidth={1}
                   name={formatMessage(messages.total)}
                 />

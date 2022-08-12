@@ -36,10 +36,7 @@ const Chart = ({ currentChartRef, data, barNames, hideTicks }: Props) => {
       mapping={{
         category: 'name',
         length: ['actualPercentage', 'referencePercentage'],
-        fill: () => [
-          colors.representativenessBlue,
-          colors.representativenessLightBlue,
-        ],
+        fill: () => [colors.blue, colors.lightBlue],
       }}
       bars={{
         names: barNames,

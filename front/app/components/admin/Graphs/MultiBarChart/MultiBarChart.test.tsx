@@ -3,7 +3,7 @@ import { render, screen, waitFor } from 'utils/testUtils/rtl';
 import MultiBarChart from './';
 import { LabelList } from 'recharts';
 import { NilOrError } from 'utils/helperUtils';
-import { colors } from '../styling';
+import { legacyColors } from '../styling';
 
 jest.mock('services/appConfiguration');
 jest.mock('utils/cl-intl');
@@ -85,7 +85,7 @@ describe('<MultiBarChart />', () => {
           mapping={{
             category: 'name',
             length: ['value1', 'value2'],
-            fill: () => [colors.lightBlue, colors.pinkRed],
+            fill: () => [legacyColors.lightBlue, legacyColors.pinkRed],
           }}
           bars={{ isAnimationActive: false }}
         />
@@ -94,12 +94,12 @@ describe('<MultiBarChart />', () => {
       const bars = container.querySelectorAll('path');
       expect(bars).toHaveLength(6);
 
-      expect(bars[0]).toHaveAttribute('fill', colors.lightBlue);
-      expect(bars[1]).toHaveAttribute('fill', colors.lightBlue);
-      expect(bars[2]).toHaveAttribute('fill', colors.lightBlue);
-      expect(bars[3]).toHaveAttribute('fill', colors.pinkRed);
-      expect(bars[4]).toHaveAttribute('fill', colors.pinkRed);
-      expect(bars[5]).toHaveAttribute('fill', colors.pinkRed);
+      expect(bars[0]).toHaveAttribute('fill', legacyColors.lightBlue);
+      expect(bars[1]).toHaveAttribute('fill', legacyColors.lightBlue);
+      expect(bars[2]).toHaveAttribute('fill', legacyColors.lightBlue);
+      expect(bars[3]).toHaveAttribute('fill', legacyColors.pinkRed);
+      expect(bars[4]).toHaveAttribute('fill', legacyColors.pinkRed);
+      expect(bars[5]).toHaveAttribute('fill', legacyColors.pinkRed);
     });
 
     it('renders correctly with fill mapping', () => {
@@ -115,9 +115,9 @@ describe('<MultiBarChart />', () => {
       ];
 
       const colorMapping = {
-        red: colors.pinkRed,
-        blue: colors.lightBlue,
-        green: colors.lightGreen,
+        red: legacyColors.pinkRed,
+        blue: legacyColors.lightBlue,
+        green: legacyColors.lightGreen,
       };
 
       const { container } = render(
@@ -140,12 +140,12 @@ describe('<MultiBarChart />', () => {
       const bars = container.querySelectorAll('path');
       expect(bars).toHaveLength(6);
 
-      expect(bars[0]).toHaveAttribute('fill', colors.pinkRed);
-      expect(bars[1]).toHaveAttribute('fill', colors.lightBlue);
-      expect(bars[2]).toHaveAttribute('fill', colors.lightGreen);
-      expect(bars[3]).toHaveAttribute('fill', colors.lightBlue);
-      expect(bars[4]).toHaveAttribute('fill', colors.lightGreen);
-      expect(bars[5]).toHaveAttribute('fill', colors.pinkRed);
+      expect(bars[0]).toHaveAttribute('fill', legacyColors.pinkRed);
+      expect(bars[1]).toHaveAttribute('fill', legacyColors.lightBlue);
+      expect(bars[2]).toHaveAttribute('fill', legacyColors.lightGreen);
+      expect(bars[3]).toHaveAttribute('fill', legacyColors.lightBlue);
+      expect(bars[4]).toHaveAttribute('fill', legacyColors.lightGreen);
+      expect(bars[5]).toHaveAttribute('fill', legacyColors.pinkRed);
     });
 
     it('has correct fallback fill when not enough fills are provided', () => {
@@ -157,7 +157,7 @@ describe('<MultiBarChart />', () => {
           mapping={{
             category: 'name',
             length: ['value1', 'value2'],
-            fill: () => [colors.lightBlue],
+            fill: () => [legacyColors.lightBlue],
           }}
           bars={{ isAnimationActive: false }}
         />
@@ -166,12 +166,12 @@ describe('<MultiBarChart />', () => {
       const bars = container.querySelectorAll('path');
       expect(bars).toHaveLength(6);
 
-      expect(bars[0]).toHaveAttribute('fill', colors.lightBlue);
-      expect(bars[1]).toHaveAttribute('fill', colors.lightBlue);
-      expect(bars[2]).toHaveAttribute('fill', colors.lightBlue);
-      expect(bars[3]).toHaveAttribute('fill', colors.barFill);
-      expect(bars[4]).toHaveAttribute('fill', colors.barFill);
-      expect(bars[5]).toHaveAttribute('fill', colors.barFill);
+      expect(bars[0]).toHaveAttribute('fill', legacyColors.lightBlue);
+      expect(bars[1]).toHaveAttribute('fill', legacyColors.lightBlue);
+      expect(bars[2]).toHaveAttribute('fill', legacyColors.lightBlue);
+      expect(bars[3]).toHaveAttribute('fill', legacyColors.barFill);
+      expect(bars[4]).toHaveAttribute('fill', legacyColors.barFill);
+      expect(bars[5]).toHaveAttribute('fill', legacyColors.barFill);
     });
 
     it('renders correctly with fixed opacities', () => {

@@ -8,7 +8,7 @@ import messages from '../../messages';
 
 // styling
 import { withTheme } from 'styled-components';
-import { animation, piechartColors } from 'components/admin/Graphs/styling';
+import { animation, legacyColors } from 'components/admin/Graphs/styling';
 
 // components
 import ReportExportMenu from 'components/admin/ReportExportMenu';
@@ -58,6 +58,13 @@ interface InputProps {
 }
 
 interface Props extends InputProps, DataProps {}
+
+export const piechartColors = [
+  legacyColors.pinkRed,
+  legacyColors.lightBlue,
+  legacyColors.lightGreen,
+  legacyColors.grey,
+];
 
 class PieChartByCategory extends React.PureComponent<
   Props & InjectedIntlProps

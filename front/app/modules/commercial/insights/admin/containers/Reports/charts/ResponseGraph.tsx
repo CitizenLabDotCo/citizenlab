@@ -7,7 +7,7 @@ import { InjectedIntlProps } from 'react-intl';
 
 // styling
 import styled from 'styled-components';
-import { colors } from 'components/admin/Graphs/styling';
+import { legacyColors } from 'components/admin/Graphs/styling';
 
 // resources
 import { isNilOrError } from 'utils/helperUtils';
@@ -52,7 +52,7 @@ export const ResponseGraph = memo(
             y={y}
             dx={30}
             dy={-6}
-            fill={colors.chartLabel}
+            fill={legacyColors.chartLabel}
             textAnchor="left"
           >
             {value}
@@ -70,7 +70,7 @@ export const ResponseGraph = memo(
             y={y}
             dx={5}
             dy={-6}
-            fill={colors.chartLabel}
+            fill={legacyColors.chartLabel}
             textAnchor="right"
             fontWeight={'800'}
           >

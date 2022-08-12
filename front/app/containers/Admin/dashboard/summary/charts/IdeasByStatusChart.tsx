@@ -9,7 +9,7 @@ import messages from '../../messages';
 
 // styling
 import {
-  colors,
+  legacyColors,
   sizes,
   DEFAULT_BAR_CHART_MARGIN,
 } from 'components/admin/Graphs/styling';
@@ -109,7 +109,7 @@ export class IdeasByStatusChart extends React.PureComponent<
             mapping={{
               category: 'name',
               length: 'value',
-              fill: ({ color }) => color ?? colors.chartFill,
+              fill: ({ color }) => color ?? legacyColors.chartFill,
               opacity: () => 0.8,
             }}
             bars={{

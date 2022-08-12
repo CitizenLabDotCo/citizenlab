@@ -1,7 +1,11 @@
 import React from 'react';
 
 // styling
-import { colors, sizes, animation } from 'components/admin/Graphs/styling';
+import {
+  legacyColors,
+  sizes,
+  animation,
+} from 'components/admin/Graphs/styling';
 
 // components
 import {
@@ -70,7 +74,7 @@ const MultiBarChart = <T,>({
         {renderTooltip &&
           renderTooltip({
             isAnimationActive: false,
-            cursor: { fill: colors.barHover },
+            cursor: { fill: legacyColors.barHover },
           })}
 
         {barConfigs.map((barConfig, barIndex) => (
@@ -78,12 +82,12 @@ const MultiBarChart = <T,>({
             key={barIndex}
             animationDuration={animation.duration}
             animationBegin={animation.begin}
-            fill={colors.barFill}
+            fill={legacyColors.barFill}
             {...barConfig.props}
           >
             {renderLabels &&
               renderLabels({
-                fill: colors.chartLabel,
+                fill: legacyColors.chartLabel,
                 fontSize: sizes.chartLabel,
                 position: labelPosition,
               })}
@@ -97,7 +101,7 @@ const MultiBarChart = <T,>({
         <XAxis
           dataKey={layout === 'vertical' ? category : undefined}
           type={layout === 'vertical' ? 'category' : 'number'}
-          stroke={colors.chartLabel}
+          stroke={legacyColors.chartLabel}
           fontSize={sizes.chartLabel}
           tick={{ transform: 'translate(0, 7)' }}
           {...xaxis}
@@ -105,7 +109,7 @@ const MultiBarChart = <T,>({
         <YAxis
           dataKey={layout === 'horizontal' ? category : undefined}
           type={layout === 'horizontal' ? 'category' : 'number'}
-          stroke={colors.chartLabel}
+          stroke={legacyColors.chartLabel}
           fontSize={sizes.chartLabel}
           {...yaxis}
         />

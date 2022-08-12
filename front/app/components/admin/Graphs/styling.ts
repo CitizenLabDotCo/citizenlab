@@ -8,7 +8,7 @@ export const DEFAULT_BAR_CHART_MARGIN: Margin = {
   bottom: 5,
 };
 
-export const colors = {
+export const legacyColors = {
   chartFill: mainColors.clIconAccent,
   chartLabel: mainColors.adminSecondaryTextColor,
   cartesianGrid: '#f5f5f5',
@@ -20,8 +20,11 @@ export const colors = {
   lightBlue: '#5D99C6',
   lightGreen: '#B0CDC4',
   grey: '#C0C2CE',
-  representativenessBlue: mainColors.adminTextColor,
-  representativenessLightBlue: mainColors.clBlueLight,
+};
+
+export const colors = {
+  blue: mainColors.adminTextColor,
+  lightBlue: mainColors.clBlueLight,
 };
 
 export const sizes = {
@@ -33,10 +36,3 @@ export const animation = {
   begin: 10,
   duration: 200,
 };
-
-export const piechartColors = [
-  colors.pinkRed,
-  colors.lightBlue,
-  colors.lightGreen,
-  colors.grey,
-];
