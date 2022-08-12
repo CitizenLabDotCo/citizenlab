@@ -7,6 +7,7 @@
 #  id                           :uuid             not null, primary key
 #  title_multiloc               :jsonb            not null
 #  slug                         :string
+#  code                         :string           default("custom"), not null
 #  banner_enabled               :boolean          default(TRUE), not null
 #  banner_layout                :string           default("full_width_banner_layout"), not null
 #  banner_overlay_color         :string
@@ -29,6 +30,7 @@
 #
 # Indexes
 #
+#  index_custom_pages_on_code  (code)
 #  index_custom_pages_on_slug  (slug) UNIQUE
 #
 class CustomPage < ApplicationRecord
