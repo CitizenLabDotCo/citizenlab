@@ -1,7 +1,7 @@
 import streams from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
 
-const getEndpoint = (userCustomFieldId: string) =>
+export const getEndpoint = (userCustomFieldId: string) =>
   `${API_PATH}/users/custom_fields/${userCustomFieldId}/rscore`;
 
 export interface RScore {

@@ -1,16 +1,21 @@
 import {
-  toReferenceData,
-  getIncludedUsers,
+  regFieldToReferenceData,
+  regFieldToIncludedUsers,
+  ageFieldToReferenceData,
+  ageFieldToIncludedUsers,
   RepresentativenessRowMultiloc,
-} from './useReferenceData';
-import { TStreamResponse } from 'modules/commercial/user_custom_fields/services/stats';
+} from './createRefDataSubscription';
+import {
+  IUsersByRegistrationField,
+  IUsersByAge,
+} from 'modules/commercial/user_custom_fields/services/stats';
 
 jest.mock('services/appConfiguration');
 jest.mock('services/auth');
 
-describe('toReferenceData', () => {
+describe('regFieldToReferenceData', () => {
   it('works if users and reference_population have same keys', () => {
-    const usersByField: TStreamResponse = {
+    const usersByField: IUsersByRegistrationField = {
       series: {
         users: {
           id123: 100,
@@ -51,11 +56,11 @@ describe('toReferenceData', () => {
       },
     ];
 
-    expect(toReferenceData(usersByField)).toEqual(expectedOutput);
+    expect(regFieldToReferenceData(usersByField)).toEqual(expectedOutput);
   });
 
   it('works if users and reference_population have same keys, weird ordering', () => {
-    const usersByField: TStreamResponse = {
+    const usersByField: IUsersByRegistrationField = {
       series: {
         users: {
           id123: 100,
@@ -96,11 +101,11 @@ describe('toReferenceData', () => {
       },
     ];
 
-    expect(toReferenceData(usersByField)).toEqual(expectedOutput);
+    expect(regFieldToReferenceData(usersByField)).toEqual(expectedOutput);
   });
 
   it('works if reference data has fewer keys van user data', () => {
-    const usersByField: TStreamResponse = {
+    const usersByField: IUsersByRegistrationField = {
       series: {
         users: {
           id123: 100,
@@ -146,11 +151,11 @@ describe('toReferenceData', () => {
       },
     ];
 
-    expect(toReferenceData(usersByField)).toEqual(expectedOutput);
+    expect(regFieldToReferenceData(usersByField)).toEqual(expectedOutput);
   });
 
   it('actual numbers fall back to zero if all relevant user data entries are zero (i.e. missing)', () => {
-    const usersByField: TStreamResponse = {
+    const usersByField: IUsersByRegistrationField = {
       series: {
         users: {
           id789: 200,
@@ -199,11 +204,11 @@ describe('toReferenceData', () => {
       },
     ];
 
-    expect(toReferenceData(usersByField)).toEqual(expectedOutput);
+    expect(regFieldToReferenceData(usersByField)).toEqual(expectedOutput);
   });
 });
 
-describe('getIncludedUsers', () => {
+describe('regFieldToIncludedUsers', () => {
   it('works', () => {
     const usersByField: any = {
       series: {
@@ -225,7 +230,7 @@ describe('getIncludedUsers', () => {
       percentage: 50,
     };
 
-    expect(getIncludedUsers(usersByField)).toEqual(expectedOutput);
+    expect(regFieldToIncludedUsers(usersByField)).toEqual(expectedOutput);
   });
 
   it('works if not all keys in users are in reference_population', () => {
@@ -250,7 +255,7 @@ describe('getIncludedUsers', () => {
       percentage: 50,
     };
 
-    expect(getIncludedUsers(usersByField)).toEqual(expectedOutput);
+    expect(regFieldToIncludedUsers(usersByField)).toEqual(expectedOutput);
   });
 
   it('returns 0 if all relevant keys are 0', () => {
@@ -275,7 +280,7 @@ describe('getIncludedUsers', () => {
       percentage: 0,
     };
 
-    expect(getIncludedUsers(usersByField)).toEqual(expectedOutput);
+    expect(regFieldToIncludedUsers(usersByField)).toEqual(expectedOutput);
   });
 
   it('returns 0 if all relevant keys (including _blank) are 0', () => {
@@ -300,6 +305,75 @@ describe('getIncludedUsers', () => {
       percentage: 0,
     };
 
-    expect(getIncludedUsers(usersByField)).toEqual(expectedOutput);
+    expect(regFieldToIncludedUsers(usersByField)).toEqual(expectedOutput);
+  });
+});
+
+const ageField: IUsersByAge = {
+  total_user_count: 100,
+  unknown_age_count: 10,
+  series: {
+    user_counts: [100, 100, 100, 100, 100],
+    expected_user_counts: [100, 100, 100, 100, 100],
+    reference_population: [1000, 500, 1500, 1000, 1000],
+    bins: [18, 25, 35, 45, 65, null],
+  },
+};
+
+describe('ageFieldToReferenceData', () => {
+  it('works', () => {
+    const locale = 'en';
+
+    const expectedOutput = [
+      {
+        title_multiloc: { en: '18 - 24' },
+        referenceNumber: 1000,
+        referencePercentage: 20,
+        actualNumber: 100,
+        actualPercentage: 20,
+      },
+      {
+        title_multiloc: { en: '25 - 34' },
+        referenceNumber: 500,
+        referencePercentage: 10,
+        actualNumber: 100,
+        actualPercentage: 20,
+      },
+      {
+        title_multiloc: { en: '35 - 44' },
+        referenceNumber: 1500,
+        referencePercentage: 30,
+        actualNumber: 100,
+        actualPercentage: 20,
+      },
+      {
+        title_multiloc: { en: '45 - 64' },
+        referenceNumber: 1000,
+        referencePercentage: 20,
+        actualNumber: 100,
+        actualPercentage: 20,
+      },
+      {
+        title_multiloc: { en: '65+' },
+        referenceNumber: 1000,
+        referencePercentage: 20,
+        actualNumber: 100,
+        actualPercentage: 20,
+      },
+    ];
+
+    expect(ageFieldToReferenceData(ageField, locale)).toEqual(expectedOutput);
+  });
+});
+
+describe('ageFieldToIncludedUsers', () => {
+  it('works', () => {
+    const expectedOutput = {
+      known: 90,
+      total: 100,
+      percentage: 90,
+    };
+
+    expect(ageFieldToIncludedUsers(ageField)).toEqual(expectedOutput);
   });
 });
