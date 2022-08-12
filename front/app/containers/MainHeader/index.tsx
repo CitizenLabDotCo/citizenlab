@@ -343,21 +343,25 @@ const MainHeader = ({
           <Right className={bowser.msie ? 'ie' : ''}>
             {!isEmailSettingsPage && (
               <>
-                <RightItem className="projectSearch">
-                  <IconButton
-                    onClick={() => clHistory.push('/projects?focusSearch=true')}
-                    iconName="search"
-                    a11y_buttonActionMessage={formatMessage(messages.search)}
-                    iconColor={theme.navbarTextColor || colors.label}
-                    iconColorOnHover={
-                      theme.navbarTextColor
-                        ? darken(0.2, theme.navbarTextColor)
-                        : colors.text
-                    }
-                    iconWidth={'20px'}
-                    iconHeight={'24px'}
-                  />
-                </RightItem>
+                {isDesktopUser && (
+                  <RightItem className="projectSearch">
+                    <IconButton
+                      onClick={() =>
+                        clHistory.push('/projects?focusSearch=true')
+                      }
+                      iconName="search"
+                      a11y_buttonActionMessage={formatMessage(messages.search)}
+                      iconColor={theme.navbarTextColor || colors.label}
+                      iconColorOnHover={
+                        theme.navbarTextColor
+                          ? darken(0.2, theme.navbarTextColor)
+                          : colors.text
+                      }
+                      iconWidth={'20px'}
+                      iconHeight={'24px'}
+                    />
+                  </RightItem>
+                )}
 
                 {isNilOrError(authUser) && (
                   <RightItem className="login noLeftMargin">
