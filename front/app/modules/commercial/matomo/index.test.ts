@@ -1,6 +1,7 @@
 import config from '.';
 import { mockRoutes } from './matchPath.test';
 import eventEmitter from 'utils/eventEmitter';
+import { trackPage } from 'utils/analytics';
 
 jest.mock('services/appConfiguration');
 jest.mock('services/auth');
@@ -63,4 +64,13 @@ describe('matomo', () => {
 
     expect(window._paq).toEqual(expectedCalls);
   });
+
+  it('tracks page change', () => {
+    (config as any).beforeMountApplication();
+    eventEmitter.emit<any>('destinationConsentChanged', { matomo: true });
+
+    trackPage('/en/sign-in');
+
+    console.log(window._paq)
+  })
 });
