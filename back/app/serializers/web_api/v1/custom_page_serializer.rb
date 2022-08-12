@@ -3,6 +3,7 @@
 class WebApi::V1::CustomPageSerializer < WebApi::V1::BaseSerializer
   attributes :title_multiloc,
     :slug,
+    :code,
     :banner_enabled,
     :banner_layout,
     :banner_overlay_color,
