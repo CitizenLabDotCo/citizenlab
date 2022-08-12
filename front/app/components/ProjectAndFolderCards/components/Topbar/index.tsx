@@ -227,7 +227,7 @@ const Header = ({
       {showSearch && (
         <StyledSearchInput
           onChange={handleOnSearchChange}
-          a11y_numberOfSearchResults={1}
+          a11y_numberOfSearchResults={statusCounts.all}
           setInputRef={handleSetSearchInputRef}
         />
       )}
