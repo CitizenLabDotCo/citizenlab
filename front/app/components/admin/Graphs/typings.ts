@@ -7,9 +7,9 @@ export interface Margin {
 }
 
 // MAPPING
-export interface BaseMapping<Row> {
-  fill?: Channel<Row, string[]>;
-  opacity?: Channel<Row, number[]>;
+export interface Cell {
+  fill: string;
+  opacity?: number;
 }
 
 // AXES

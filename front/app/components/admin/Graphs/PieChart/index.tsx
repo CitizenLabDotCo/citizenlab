@@ -1,12 +1,12 @@
 import React from 'react';
 
 // components
-import { 
+import {
   PieChart as RechartsPieChart,
   Pie,
   Cell,
   Label,
-  ResponsiveContainer
+  ResponsiveContainer,
 } from 'recharts';
 import {
   NoDataContainer,
@@ -20,6 +20,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
 import { hasNoData } from '../utils';
+import { getPieConfig } from './utils';
 
 // typings
 import { Props } from './typings';
@@ -27,6 +28,7 @@ import { Props } from './typings';
 const PieChart = <T,>({
   data,
   mapping,
+  pie,
   centerLabel,
   centerValue,
   emptyContainerContent,
@@ -45,19 +47,15 @@ const PieChart = <T,>({
     );
   }
 
+  const pieConfig = getPieConfig(data, mapping, pie);
+
   return (
     <PieChartStyleFixesDiv>
       <ResponsiveContainer width={width} height={height}>
         <RechartsPieChart>
-          <Pie
-            isAnimationActive={true}
-            data={data}
-            dataKey="value"
-            innerRadius={88}
-            outerRadius={104}
-          >
-            {data.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={entry.color} />
+          <Pie data={data} {...pieConfig.props}>
+            {pieConfig.cells.map((cell, cellIndex) => (
+              <Cell key={`cell-${cellIndex}`} {...cell} />
             ))}
             <Label
               content={<CustomLabel value={centerValue} label={centerLabel} />}
@@ -68,6 +66,6 @@ const PieChart = <T,>({
       </ResponsiveContainer>
     </PieChartStyleFixesDiv>
   );
-}
+};
 
 export default PieChart;
