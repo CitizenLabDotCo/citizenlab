@@ -1,6 +1,7 @@
+import { CLErrorsJSON } from 'typings';
 import messages from './messages';
 
-export function isCLErrorJSON(error) {
+export function isCLErrorJSON(error: any): error is CLErrorsJSON {
   return !!(error && error.json && error.json.errors);
 }
 
