@@ -519,7 +519,7 @@ de:
       send_email: e-Mail
       subject: 'Deine erste Idee auf der Plattform von %{organizationName}'
     welcome:
-      cta_join_platform: 'Entdecken Sie die Plattform'
+      cta_join_platform: 'Entdecke die Plattform'
       subject: 'Willkommen auf der Plattform von %{organizationName}'
       main_header: Herzlich Willkommen!
       message_welcome: 'Herzlichen Glückwunsch, Sie haben sich erfolgreich auf der Beteiligungsplattform von %{organizationName} angemeldet. Sie können nun die Plattform erkunden und Ihrer Stimme Gehör verschaffen. Sie können auch ein Profilbild und eine kurze Beschreibung hinzufügen, um anderen mitzuteilen, wer Sie sind.'
