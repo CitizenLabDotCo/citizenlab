@@ -101,10 +101,10 @@ const PageFormWithNavbarNameField = ({
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onFormSubmit)}>
-        <Feedback
-          successMessage={formatMessage(messages.savePageSuccessMessage)}
-        />
         <SectionField>
+          <Feedback
+            successMessage={formatMessage(messages.savePageSuccessMessage)}
+          />
           <InputMultilocWithLocaleSwitcher
             label={formatMessage(messages.navbarItemTitle)}
             type="text"
