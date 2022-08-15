@@ -56,11 +56,12 @@ const Title = styled.h2<{ hasPublications: boolean }>`
   `}
 `;
 
-const Container = styled.div`
+const Container = styled.div<{ showFilters: boolean }>`
   width: 100%;
   display: flex;
   flex-direction: row-reverse;
-  justify-content: space-between;
+  justify-content: ${({ showFilters }) =>
+    showFilters ? 'space-between' : 'start'};
   border-bottom: 1px solid #d1d1d1;
 
   ${isRtl`
@@ -214,6 +215,8 @@ const Header = React.memo(
       setSearchInputRef(ref);
     };
 
+    const shouldShowAreaAndTagFilters = !smallerThanXlPhone && showFilters;
+
     return (
       <div className={className}>
         {showTitle ? (
@@ -235,8 +238,8 @@ const Header = React.memo(
           />
         )}
 
-        <Container>
-          {!smallerThanXlPhone && showFilters && (
+        <Container showFilters={shouldShowAreaAndTagFilters}>
+          {shouldShowAreaAndTagFilters && (
             <DesktopFilters>
               {showFiltersLabel && (
                 <FiltersLabel>{formatMessage(messages.filterBy)}</FiltersLabel>
