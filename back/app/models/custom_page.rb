@@ -7,7 +7,6 @@
 #  id                           :uuid             not null, primary key
 #  title_multiloc               :jsonb            not null
 #  slug                         :string
-#  code                         :string           default("custom"), not null
 #  banner_enabled               :boolean          default(TRUE), not null
 #  banner_layout                :string           default("full_width_banner_layout"), not null
 #  banner_overlay_color         :string
@@ -19,6 +18,7 @@
 #  banner_subheader_multiloc    :jsonb            not null
 #  top_info_section_enabled     :boolean          default(FALSE), not null
 #  top_info_section_multiloc    :jsonb            not null
+#  file_section_enabled         :boolean          default(FALSE), not null
 #  projects_enabled             :boolean          default(FALSE), not null
 #  projects_filter_type         :string
 #  events_widget_enabled        :boolean          default(FALSE), not null
@@ -30,7 +30,6 @@
 #
 # Indexes
 #
-#  index_custom_pages_on_code  (code)
 #  index_custom_pages_on_slug  (slug) UNIQUE
 #
 class CustomPage < ApplicationRecord
