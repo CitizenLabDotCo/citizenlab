@@ -33,8 +33,6 @@
 #  index_custom_pages_on_slug  (slug) UNIQUE
 #
 class CustomPage < ApplicationRecord
-  CODES = %w[about faq proposals custom].freeze
-
   has_many :pins, as: :page, inverse_of: :page, dependent: :destroy
   has_many :pinned_admin_publications, through: :pins, source: :admin_publication
 
@@ -45,15 +43,14 @@ class CustomPage < ApplicationRecord
 
   accepts_nested_attributes_for :pinned_admin_publications, allow_destroy: true
 
+  before_validation :strip_title
+  before_validation :generate_slug, on: :create
   before_validation :sanitize_top_info_section_multiloc
   before_validation :sanitize_bottom_info_section_multiloc
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
 
   validates :slug, presence: true, uniqueness: true
-
-  validates :code, inclusion: { in: CODES }
-  validates :code, uniqueness: true, unless: :custom?
 
   validates :banner_enabled, inclusion: [true, false]
   validates :banner_layout, inclusion: %w[full_width_banner_layout two_column_layout two_row_layout]
@@ -84,11 +81,13 @@ class CustomPage < ApplicationRecord
 
   mount_base64_uploader :header_bg, HeaderBgUploader
 
-  def custom?
-    code == 'custom'
-  end
-
   private
+
+  def strip_title
+    title_multiloc.each do |key, value|
+      title_multiloc[key] = value.strip
+    end
+  end
 
   def sanitize_top_info_section_multiloc
     sanitize_info_section_multiloc(:top_info_section_multiloc)
