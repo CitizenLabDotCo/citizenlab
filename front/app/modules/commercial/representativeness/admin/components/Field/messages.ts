@@ -38,4 +38,17 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.components.Field.incomplete',
     defaultMessage: 'Incomplete',
   },
+  setAgeGroups: {
+    id: 'app.containers.AdminPage.DashboardPage.components.Field.setAgeGroups',
+    defaultMessage:
+      'Please {setAgeGroupsLink} first to start entering base data.',
+  },
+  setAgeGroupsLink: {
+    id: 'app.containers.AdminPage.DashboardPage.components.Field.setAgeGroupsLink',
+    defaultMessage: 'set age groups',
+  },
+  birthyearCustomTitle: {
+    id: 'app.containers.AdminPage.DashboardPage.components.Field.birthyearCustomTitle',
+    defaultMessage: 'Age groups (Year of birth)',
+  },
 });

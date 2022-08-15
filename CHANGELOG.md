@@ -1,10 +1,26 @@
 # Changelog
 
-## Next Release
+## 2022-08-11
+
+### Fixed
+
+- [CL-1302] Added topics column to bulk idea import example sheet
+
+## 2022-08-09
+
+### Fixed
+
+- [CL-1289] Fix 'Submit base data' button width (representation dashboard)
 
 ### Added
 
--[CL-5] Customizable Pages iterarion 1
+- [CL-1273] Enable age graphs in representation dashboard
+
+## 2022-08-04
+
+### Added
+
+-[CL-5] Customizable Pages iteration 1
 
 ## 2022-08-03
 
