@@ -11,13 +11,13 @@ import { stylingConsts, colors } from 'utils/styleUtils';
 // components
 import { RightColumn } from 'containers/Admin';
 import { Box } from '@citizenlab/cl2-component-library';
-import SurveyBuilderTopBar from 'modules/free/native_surveys/admin/components/SurveyBuilderTopBar';
-import SurveyBuilderToolbox from 'modules/free/native_surveys/admin/components/SurveyBuilderToolbox';
-import SurveyBuilderSettings from 'modules/free/native_surveys/admin/components/SurveyBuilderSettings';
-import SurveyFields from 'modules/free/native_surveys/admin/components/SurveyFields';
+import SurveyBuilderTopBar from 'containers/Admin/formBuilder/components/SurveyBuilderTopBar';
+import SurveyBuilderToolbox from 'containers/Admin/formBuilder/components/SurveyBuilderToolbox';
+import SurveyBuilderSettings from 'containers/Admin/formBuilder/components/SurveyBuilderSettings';
+import SurveyFields from 'containers/Admin/formBuilder/components/SurveyFields';
 
 // hooks
-import useSurveyCustomFields from 'modules/free/native_surveys/hooks/useSurveyCustomFields';
+import useSurveyCustomFields from 'hooks/useSurveyCustomFields';
 
 // utils
 import { isNilOrError, isNil } from 'utils/helperUtils';
@@ -25,7 +25,7 @@ import { isNilOrError, isNil } from 'utils/helperUtils';
 import {
   IFlatCreateCustomField,
   IFlatCustomField,
-} from 'modules/free/native_surveys/services/surveyCustomFields';
+} from 'services/surveyCustomFields';
 
 const StyledRightColumn = styled(RightColumn)`
   height: calc(100vh - ${stylingConsts.menuHeight}px);

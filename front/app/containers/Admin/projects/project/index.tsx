@@ -116,6 +116,11 @@ export class AdminProjectsProjectIndex extends PureComponent<
           name: 'poll',
         },
         {
+          label: formatMessage(messages.surveyTab),
+          url: 'native-survey',
+          name: 'survey',
+        },
+        {
           label: formatMessage(messages.surveyResultsTab),
           url: 'survey-results',
           name: 'survey-results',
@@ -174,6 +179,29 @@ export class AdminProjectsProjectIndex extends PureComponent<
             return true;
           }
 
+          return false;
+        },
+        survey: function isSurveyTabHidden(project, phases) {
+          const processType = project.attributes.process_type;
+          const participationMethod = project.attributes.participation_method;
+          const noNativeSurveyInTimeline =
+            !isNilOrError(phases) &&
+            !phases.some(
+              (phase) =>
+                phase.attributes.participation_method === 'native_survey'
+            );
+
+          // Hide tab when participation method is not native survey in timeline and continuous process types
+          const hideTab =
+            (processType === 'continuous' &&
+              participationMethod !== 'native_survey') ||
+            (processType === 'timeline' &&
+              !isNilOrError(phases) &&
+              noNativeSurveyInTimeline);
+
+          if (hideTab) {
+            return true;
+          }
           return false;
         },
         'survey-results': function surveyResultsTabHidden(project, phases) {

@@ -12,11 +12,10 @@ import { List, SortableRow } from 'components/admin/ResourceList';
 import { Box, Badge, Text } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
 
-import { IFlatCustomField } from 'modules/free/native_surveys/services/surveyCustomFields';
-
 // styling
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
+import { IFlatCustomField } from 'services/surveyCustomFields';
 
 const StyledBadge = styled(Badge)`
   margin-left: 12px;
