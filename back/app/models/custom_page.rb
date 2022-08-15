@@ -89,6 +89,10 @@ class CustomPage < ApplicationRecord
     end
   end
 
+  def generate_slug
+    self.slug ||= SlugService.new.generate_slug self, title_multiloc.values.first
+  end
+
   def sanitize_top_info_section_multiloc
     sanitize_info_section_multiloc(:top_info_section_multiloc)
   end
