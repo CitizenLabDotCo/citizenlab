@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
 
-import { surveyCustomFieldsStream } from '../services/surveyCustomFields';
-
 import {
-  ICustomFieldResponse,
   ICustomFieldInputType,
+  ICustomFieldResponse,
   IFlatCustomField,
-} from 'modules/free/native_surveys/services/surveyCustomFields';
+  surveyCustomFieldsStream,
+} from '../services/surveyCustomFields';
 
 interface Props {
   inputTypes?: ICustomFieldInputType[];

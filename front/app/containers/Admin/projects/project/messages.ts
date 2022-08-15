@@ -361,6 +361,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.surveyResultsTab',
     defaultMessage: 'Survey Results',
   },
+  surveyTab: {
+    id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.surveyTab',
+    defaultMessage: 'Survey',
+  },
   exportSurveyResults: {
     id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.exportSurveyResults',
     defaultMessage: 'Export survey results',
