@@ -30,6 +30,7 @@ import messages from './messages';
 import { isNilOrError } from 'utils/helperUtils';
 import { getShowFilters, getShowFiltersLabel } from './show';
 import { useSearchParams } from 'react-router-dom';
+import clHistory from 'utils/cl-router/history';
 
 // typings
 import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
@@ -156,7 +157,7 @@ const Header = ({
   const localize = useLocalize();
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const [selectedAreas, setSelectedAreas] = useState<string[]>([]);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const [searchInputRef, setSearchInputRef] = useState<HTMLInputElement | null>(
     null
   );
@@ -166,10 +167,9 @@ const Header = ({
     // the value from the query param is a string, not a boolean
     if (focusSearch === 'true' && searchInputRef) {
       searchInputRef.focus();
-      searchParams.delete('focusSearch');
-      setSearchParams(searchParams);
+      clHistory.replace('/projects');
     }
-  }, [searchParams, setSearchParams, searchInputRef]);
+  }, [searchParams, searchInputRef]);
 
   const handleOnSearchChange = React.useCallback(
     (search: string) => {
