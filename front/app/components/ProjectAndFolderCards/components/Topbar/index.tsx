@@ -132,112 +132,138 @@ interface Props {
   onChangeSearch: (search: string) => void;
 }
 
-const Header = ({
-  className,
-  currentTab,
-  statusCounts,
-  noAdminPublicationsAtAll,
-  availableTabs,
-  showTitle,
-  showSearch,
-  hasPublications,
-  onChangeTopics,
-  onChangeAreas,
-  onChangeTab,
-  onChangeSearch,
-  intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
-  const appConfiguration = useAppConfiguration();
-  const smallerThanXlPhone = useBreakpoint('xlPhone');
-  const smallerThanMinTablet = useBreakpoint('smallTablet');
-  const topics = useTopics({ forHomepageFilter: true });
-  const areas = useAreas({ forHomepageFilter: true });
-  const localize = useLocalize();
-  const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
-  const [selectedAreas, setSelectedAreas] = useState<string[]>([]);
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [searchInputRef, setSearchInputRef] = useState<HTMLInputElement | null>(
-    null
-  );
-
-  useEffect(() => {
-    const focusSearch = searchParams.get('focusSearch');
-    // the value from the query param is a string, not a boolean
-    if (focusSearch === 'true' && searchInputRef) {
-      searchInputRef.focus();
-      searchParams.delete('focusSearch');
-      setSearchParams(searchParams);
-    }
-  }, [searchParams, setSearchParams, searchInputRef]);
-
-  if (isNilOrError(appConfiguration)) return null;
-
-  const customCurrentlyWorkingOn =
-    coreSettings(appConfiguration).currently_working_on_text;
-  const fallback = formatMessage(messages.currentlyWorkingOn);
-  const currentlyWorkingOnText = localize(customCurrentlyWorkingOn, {
-    fallback,
-  });
-
-  const showTabs = !noAdminPublicationsAtAll;
-  const showFilters = getShowFilters({
-    smallerThanXlPhone,
-    hasPublications,
+const Header = React.memo(
+  ({
+    className,
+    currentTab,
     statusCounts,
-    selectedTopics,
-    selectedAreas,
-  });
-  const showFiltersLabel = getShowFiltersLabel(
-    topics,
-    areas,
-    smallerThanMinTablet
-  );
+    noAdminPublicationsAtAll,
+    availableTabs,
+    showTitle,
+    showSearch,
+    hasPublications,
+    onChangeTopics,
+    onChangeAreas,
+    onChangeTab,
+    onChangeSearch,
+    intl: { formatMessage },
+  }: Props & InjectedIntlProps) => {
+    const appConfiguration = useAppConfiguration();
+    const smallerThanXlPhone = useBreakpoint('xlPhone');
+    const smallerThanMinTablet = useBreakpoint('smallTablet');
+    const topics = useTopics({ forHomepageFilter: true });
+    const areas = useAreas({ forHomepageFilter: true });
+    const localize = useLocalize();
+    const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
+    const [selectedAreas, setSelectedAreas] = useState<string[]>([]);
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchInputRef, setSearchInputRef] =
+      useState<HTMLInputElement | null>(null);
 
-  const handleOnChangeTopics = (selectedTopics: string[]) => {
-    setSelectedTopics(selectedTopics);
-    onChangeTopics(selectedTopics);
-  };
+    useEffect(() => {
+      const focusSearch = searchParams.get('focusSearch');
+      // the value from the query param is a string, not a boolean
+      if (focusSearch === 'true' && searchInputRef) {
+        searchInputRef.focus();
+        searchParams.delete('focusSearch');
+        setSearchParams(searchParams);
+      }
+    }, [searchParams, setSearchParams, searchInputRef]);
 
-  const handleOnChangeAreas = (selectedAreas: string[]) => {
-    setSelectedAreas(selectedAreas);
-    onChangeAreas(selectedAreas);
-  };
+    const handleOnSearchChange = React.useCallback(
+      (search: string) => {
+        onChangeSearch(search);
+      },
+      [onChangeSearch]
+    );
 
-  const handleOnSearchChange = (search: string) => {
-    onChangeSearch(search);
-  };
+    if (isNilOrError(appConfiguration)) return null;
 
-  const handleSetSearchInputRef = (ref: HTMLInputElement | null) => {
-    setSearchInputRef(ref);
-  };
+    const customCurrentlyWorkingOn =
+      coreSettings(appConfiguration).currently_working_on_text;
+    const fallback = formatMessage(messages.currentlyWorkingOn);
+    const currentlyWorkingOnText = localize(customCurrentlyWorkingOn, {
+      fallback,
+    });
 
-  return (
-    <div className={className}>
-      {showTitle ? (
-        <Title
-          hasPublications={hasPublications}
-          data-testid="currently-working-on-text"
-        >
-          {currentlyWorkingOnText}
-        </Title>
-      ) : (
-        <ScreenReaderOnly>{currentlyWorkingOnText}</ScreenReaderOnly>
-      )}
+    const showTabs = !noAdminPublicationsAtAll;
+    const showFilters = getShowFilters({
+      smallerThanXlPhone,
+      hasPublications,
+      statusCounts,
+      selectedTopics,
+      selectedAreas,
+    });
+    const showFiltersLabel = getShowFiltersLabel(
+      topics,
+      areas,
+      smallerThanMinTablet
+    );
 
-      {showSearch && (
-        <StyledSearchInput
-          onChange={handleOnSearchChange}
-          a11y_numberOfSearchResults={statusCounts.all}
-          setInputRef={handleSetSearchInputRef}
-        />
-      )}
+    const handleOnChangeTopics = (selectedTopics: string[]) => {
+      setSelectedTopics(selectedTopics);
+      onChangeTopics(selectedTopics);
+    };
 
-      <Container>
-        {!smallerThanXlPhone && showFilters && (
-          <DesktopFilters>
-            {showFiltersLabel && (
-              <FiltersLabel>{formatMessage(messages.filterBy)}</FiltersLabel>
-            )}
+    const handleOnChangeAreas = (selectedAreas: string[]) => {
+      setSelectedAreas(selectedAreas);
+      onChangeAreas(selectedAreas);
+    };
+
+    const handleSetSearchInputRef = (ref: HTMLInputElement | null) => {
+      setSearchInputRef(ref);
+    };
+
+    return (
+      <div className={className}>
+        {showTitle ? (
+          <Title
+            hasPublications={hasPublications}
+            data-testid="currently-working-on-text"
+          >
+            {currentlyWorkingOnText}
+          </Title>
+        ) : (
+          <ScreenReaderOnly>{currentlyWorkingOnText}</ScreenReaderOnly>
+        )}
+
+        {showSearch && (
+          <StyledSearchInput
+            onChange={handleOnSearchChange}
+            a11y_numberOfSearchResults={statusCounts.all}
+            setInputRef={handleSetSearchInputRef}
+          />
+        )}
+
+        <Container>
+          {!smallerThanXlPhone && showFilters && (
+            <DesktopFilters>
+              {showFiltersLabel && (
+                <FiltersLabel>{formatMessage(messages.filterBy)}</FiltersLabel>
+              )}
+              <StyledSelectTopics
+                selectedTopics={selectedTopics}
+                onChangeTopics={handleOnChangeTopics}
+              />
+              <SelectAreas
+                selectedAreas={selectedAreas}
+                onChangeAreas={handleOnChangeAreas}
+              />
+            </DesktopFilters>
+          )}
+
+          {showTabs && (
+            <Tabs
+              currentTab={currentTab}
+              statusCounts={statusCounts}
+              availableTabs={availableTabs}
+              onChangeTab={onChangeTab}
+            />
+          )}
+        </Container>
+
+        {smallerThanXlPhone && showFilters && (
+          <MobileFilters>
             <StyledSelectTopics
               selectedTopics={selectedTopics}
               onChangeTopics={handleOnChangeTopics}
@@ -246,33 +272,11 @@ const Header = ({
               selectedAreas={selectedAreas}
               onChangeAreas={handleOnChangeAreas}
             />
-          </DesktopFilters>
+          </MobileFilters>
         )}
-
-        {showTabs && (
-          <Tabs
-            currentTab={currentTab}
-            statusCounts={statusCounts}
-            availableTabs={availableTabs}
-            onChangeTab={onChangeTab}
-          />
-        )}
-      </Container>
-
-      {smallerThanXlPhone && showFilters && (
-        <MobileFilters>
-          <StyledSelectTopics
-            selectedTopics={selectedTopics}
-            onChangeTopics={handleOnChangeTopics}
-          />
-          <SelectAreas
-            selectedAreas={selectedAreas}
-            onChangeAreas={handleOnChangeAreas}
-          />
-        </MobileFilters>
-      )}
-    </div>
-  );
-};
+      </div>
+    );
+  }
+);
 
 export default injectIntl(Header);

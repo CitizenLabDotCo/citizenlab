@@ -97,6 +97,14 @@ const ProjectAndFolderCardsInner = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [publicationStatusesForCurrentTabStringified]);
 
+  const handleChangeSearch = React.useCallback(
+    (search: string) => {
+      onChangeSearch(search);
+      adminPublications.onChangeSearch(search);
+    },
+    [onChangeSearch, adminPublications]
+  );
+
   if (isNilOrError(statusCountsWithoutFilters)) return null;
 
   const availableTabs = getAvailableTabs(statusCountsWithoutFilters);
@@ -115,11 +123,6 @@ const ProjectAndFolderCardsInner = ({
   const handleChangeAreas = (areas: string[]) => {
     onChangeAreas(areas);
     adminPublications.onChangeAreas(areas);
-  };
-
-  const handleChangeSearch = (search: string) => {
-    onChangeSearch(search);
-    adminPublications.onChangeSearch(search);
   };
 
   const { loadingInitial, loadingMore, hasMore, list } = adminPublications;
