@@ -120,7 +120,7 @@ de:
       preheader: 'Adminzusammenfassung für %{organizationName}'
       title_your_weekly_report: '%{firstName}, Ihr wöchentlicher Bericht'
       text_introduction: 'Wir haben für Sie die Beiträge zusammengestellt, die in der vergangenen Woche die meisten Aktivitäten erreicht haben. Finden Sie heraus, was auf Ihrer Plattform passiert ist!'
-      cta_visit_the_platform: 'Besuchen Sie Ihre Plattform'
+      cta_visit_the_platform: 'Zur Plattform'
       new_users: 'Neue BenutzerInnen'
       new_ideas: 'Neue Ideen'
       new_comments: 'Neue Kommentare'
