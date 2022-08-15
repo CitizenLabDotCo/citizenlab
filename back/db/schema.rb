@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_19_103052) do
+ActiveRecord::Schema.define(version: 2022_07_20_152611) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -49,6 +49,27 @@ ActiveRecord::Schema.define(version: 2022_07_19_103052) do
     t.index ["ordering"], name: "index_admin_publications_on_ordering"
     t.index ["parent_id"], name: "index_admin_publications_on_parent_id"
     t.index ["rgt"], name: "index_admin_publications_on_rgt"
+  end
+
+  create_table "analytics_dimension_dates", primary_key: "date", id: :date, force: :cascade do |t|
+    t.string "year"
+    t.string "month"
+    t.string "day"
+  end
+
+  create_table "analytics_dimension_types", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "parent"
+  end
+
+  create_table "analytics_test", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.date "date"
+    t.string "year"
+  end
+
+  create_table "analytics_test_main", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.date "date"
+    t.string "year"
   end
 
   create_table "app_configurations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1130,6 +1151,7 @@ ActiveRecord::Schema.define(version: 2022_07_19_103052) do
     t.jsonb "distribution", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "type"
     t.index ["custom_field_id"], name: "index_ucf_representativeness_ref_distributions_on_custom_field"
   end
 
@@ -1432,5 +1454,128 @@ ActiveRecord::Schema.define(version: 2022_07_19_103052) do
        LEFT JOIN moderation_moderation_statuses ON ((moderation_moderation_statuses.moderatable_id = comments.id)))
        LEFT JOIN initiatives ON ((initiatives.id = comments.post_id)))
     WHERE ((comments.post_type)::text = 'Initiative'::text);
+  SQL
+  create_view "analytics_dimension_projects", sql_definition: <<-SQL
+      SELECT projects.id,
+      projects.title_multiloc
+     FROM projects;
+  SQL
+  create_view "analytics_build_feedbacks", sql_definition: <<-SQL
+      SELECT a.post_id,
+      min(a.feedback_first_date) AS feedback_first_date,
+      max(a.feedback_official) AS feedback_official,
+      max(a.feedback_status_change) AS feedback_status_change
+     FROM ( SELECT activities.item_id AS post_id,
+              min(activities.created_at) AS feedback_first_date,
+              0 AS feedback_official,
+              1 AS feedback_status_change
+             FROM activities
+            WHERE (((activities.action)::text = 'changed_status'::text) AND ((activities.item_type)::text = ANY ((ARRAY['Idea'::character varying, 'Initiative'::character varying])::text[])))
+            GROUP BY activities.item_id
+          UNION ALL
+           SELECT official_feedbacks.post_id,
+              min(official_feedbacks.created_at) AS feedback_first_date,
+              1 AS feedback_official,
+              0 AS feedback_status_change
+             FROM official_feedbacks
+            GROUP BY official_feedbacks.post_id) a
+    GROUP BY a.post_id;
+  SQL
+  create_view "analytics_fact_posts", sql_definition: <<-SQL
+      SELECT i.id,
+      i.author_id AS user_id,
+      i.project_id,
+      adt.id AS type_id,
+      (i.created_at)::date AS created_date,
+      (abf.feedback_first_date)::date AS feedback_first_date,
+      (abf.feedback_first_date - i.created_at) AS feedback_time_taken,
+      COALESCE(abf.feedback_official, 0) AS feedback_official,
+      COALESCE(abf.feedback_status_change, 0) AS feedback_status_change,
+          CASE
+              WHEN (abf.feedback_first_date IS NULL) THEN 1
+              ELSE 0
+          END AS feedback_none,
+      (i.upvotes_count + i.downvotes_count) AS votes_count,
+      i.upvotes_count,
+      i.downvotes_count
+     FROM ((ideas i
+       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'idea'::text)))
+       LEFT JOIN analytics_build_feedbacks abf ON ((abf.post_id = i.id)))
+  UNION ALL
+   SELECT i.id,
+      i.author_id AS user_id,
+      NULL::uuid AS project_id,
+      adt.id AS type_id,
+      (i.created_at)::date AS created_date,
+      (abf.feedback_first_date)::date AS feedback_first_date,
+      (abf.feedback_first_date - i.created_at) AS feedback_time_taken,
+      COALESCE(abf.feedback_official, 0) AS feedback_official,
+      COALESCE(abf.feedback_status_change, 0) AS feedback_status_change,
+          CASE
+              WHEN (abf.feedback_first_date IS NULL) THEN 1
+              ELSE 0
+          END AS feedback_none,
+      (i.upvotes_count + i.downvotes_count) AS votes_count,
+      i.upvotes_count,
+      i.downvotes_count
+     FROM ((initiatives i
+       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'initiative'::text)))
+       LEFT JOIN analytics_build_feedbacks abf ON ((abf.post_id = i.id)));
+  SQL
+  create_view "analytics_fact_participations", sql_definition: <<-SQL
+      SELECT i.id,
+      i.author_id AS user_id,
+      i.project_id,
+      adt.id AS type_id,
+      (i.created_at)::date AS created_date,
+      (i.upvotes_count + i.downvotes_count) AS votes_count,
+      i.upvotes_count,
+      i.downvotes_count
+     FROM (ideas i
+       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'idea'::text)))
+  UNION ALL
+   SELECT i.id,
+      i.author_id AS user_id,
+      NULL::uuid AS project_id,
+      adt.id AS type_id,
+      (i.created_at)::date AS created_date,
+      (i.upvotes_count + i.downvotes_count) AS votes_count,
+      i.upvotes_count,
+      i.downvotes_count
+     FROM (initiatives i
+       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'initiative'::text)))
+  UNION ALL
+   SELECT c.id,
+      c.author_id AS user_id,
+      i.project_id,
+      adt.id AS type_id,
+      (c.created_at)::date AS created_date,
+      (c.upvotes_count + c.downvotes_count) AS votes_count,
+      c.upvotes_count,
+      c.downvotes_count
+     FROM (((comments c
+       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'comment'::text)))
+       JOIN analytics_dimension_dates add ON ((add.date = (c.created_at)::date)))
+       LEFT JOIN ideas i ON ((c.post_id = i.id)))
+  UNION ALL
+   SELECT v.id,
+      v.user_id,
+      COALESCE(i.project_id, ic.project_id) AS project_id,
+      adt.id AS type_id,
+      (v.created_at)::date AS created_date,
+      1 AS votes_count,
+          CASE
+              WHEN ((v.mode)::text = 'up'::text) THEN 1
+              ELSE 0
+          END AS upvotes_count,
+          CASE
+              WHEN ((v.mode)::text = 'down'::text) THEN 1
+              ELSE 0
+          END AS downvotes_count
+     FROM ((((votes v
+       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'vote'::text)))
+       LEFT JOIN ideas i ON ((i.id = v.votable_id)))
+       LEFT JOIN comments c ON ((c.id = v.votable_id)))
+       LEFT JOIN ideas ic ON ((ic.id = c.post_id)));
   SQL
 end

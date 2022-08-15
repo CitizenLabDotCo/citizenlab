@@ -96,6 +96,13 @@ PATH
       ros-apartment (>= 2.9.0)
 
 PATH
+  remote: engines/commercial/analytics
+  specs:
+    analytics (0.1.0)
+      rails (~> 6.1.6)
+      scenic
+
+PATH
   remote: engines/commercial/content_builder
   specs:
     content_builder (0.1.0)
@@ -353,7 +360,6 @@ PATH
   specs:
     multi_tenancy (0.1.0)
       actionpack-cloudfront (~> 1.2.0)
-      nlp
       rails (~> 6.1)
       ros-apartment (>= 2.9.0)
 
@@ -1134,6 +1140,7 @@ DEPENDENCIES
   activerecord_json_validator (~> 1.3.0)
   acts_as_list (~> 1.0)
   admin_api!
+  analytics!
   annotate
   api-pagination (~> 4.8.2)
   awesome_nested_set (~> 3.5.0)
