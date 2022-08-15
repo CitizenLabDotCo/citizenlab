@@ -42,10 +42,10 @@ class AdminPublicationsFilteringService
     filtered_projects = ProjectsFilteringService.new.filter(projects, options)
 
     if options[:search].present?
-      filtered_projects = filtered_projects.search_by_all(options[:search])
+      project_ids = filtered_projects.search_ids_by_all_including_patches(options[:search])
     end
 
-    project_publications = scope.where(publication: filtered_projects)
+    project_publications = scope.where(publication: project_ids || filtered_projects)
     other_publications = scope.where.not(publication_type: Project.name)
     project_publications.or(other_publications)
   end
