@@ -75,10 +75,10 @@ export default () => ({
       path: HOMEPAGE_PATH,
       element: <EditHomepage />,
     },
-    ...moduleConfiguration.routes['admin.pages-menu'],
     {
       path: 'pages/edit/:pageId', // used only if the same route is not loaded by `customizable_navbar` module
       element: <EditPageFormNotInNavbar hideSlugInput />,
     },
+    ...moduleConfiguration.routes['admin.pages-menu'],
   ],
 });
