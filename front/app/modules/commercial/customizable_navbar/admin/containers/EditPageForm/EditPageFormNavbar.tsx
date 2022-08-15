@@ -12,7 +12,8 @@ import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumb
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { getInitialFormValues, createPageUpdateData } from './utils';
+import { createPageUpdateData } from './utils';
+import { truncateMultiloc } from 'utils/textUtils';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -21,6 +22,7 @@ import { InjectedIntlProps } from 'react-intl';
 // services
 import { updatePage } from 'services/pages';
 import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
+import { MAX_TITLE_LENGTH } from 'services/navbar';
 
 // hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
@@ -105,7 +107,16 @@ const EditPageFormNavbar = ({
       ]}
     >
       <Formik
-        initialValues={getInitialFormValues(page, remotePageFiles)}
+        initialValues={{
+          nav_bar_item_title_multiloc: truncateMultiloc(
+            page.attributes.nav_bar_item_title_multiloc,
+            MAX_TITLE_LENGTH
+          ),
+          title_multiloc: page.attributes.title_multiloc,
+          body_multiloc: page.attributes.body_multiloc,
+          slug: page.attributes.slug,
+          local_page_files: remotePageFiles,
+        }}
         onSubmit={handleSubmit}
         render={renderFn}
         validate={validatePageForm(
