@@ -21,11 +21,10 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // Types
 import { Multiloc } from 'typings';
-
 import {
   IFlatCustomField,
   IFlatUpdateCustomField,
-} from 'modules/free/native_surveys/services/surveyCustomFields';
+} from 'services/surveyCustomFields';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

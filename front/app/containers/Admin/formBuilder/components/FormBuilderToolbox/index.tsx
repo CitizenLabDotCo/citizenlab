@@ -13,10 +13,11 @@ import { Box, Title } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
+// types
 import {
-  IFlatCreateCustomField,
   ICustomFieldInputType,
-} from 'modules/free/native_surveys/services/surveyCustomFields';
+  IFlatCreateCustomField,
+} from 'services/surveyCustomFields';
 
 const DraggableElement = styled.div`
   cursor: move;

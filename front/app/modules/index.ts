@@ -4,7 +4,6 @@ import projectFoldersConfiguration from './commercial/project_folders';
 import smartGroupsConfiguration from './commercial/smart_groups';
 import userCustomFieldsConfiguration from './commercial/user_custom_fields';
 import ideaCustomFieldsConfiguration from './commercial/idea_custom_fields';
-import nativeSurveyConfiguration from './free/native_surveys';
 import granularPermissionsConfiguration from './commercial/granular_permissions';
 import projectManagementConfiguration from './commercial/project_management';
 import ideaAssignmentConfiguration from './commercial/idea_assignment';
@@ -70,10 +69,6 @@ export default loadModules([
   {
     configuration: ideaCustomFieldsConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/idea_custom_fields'],
-  },
-  {
-    configuration: nativeSurveyConfiguration,
-    isEnabled: CL_CONFIG['modules']['free/native_surveys'],
   },
   {
     configuration: googleTagManagerConfiguration,

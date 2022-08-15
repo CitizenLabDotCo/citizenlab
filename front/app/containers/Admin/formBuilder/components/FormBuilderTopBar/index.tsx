@@ -28,11 +28,10 @@ import { FormattedMessage } from 'utils/cl-intl';
 // routing
 import clHistory from 'utils/cl-router/history';
 import { useParams } from 'react-router-dom';
-
 import {
-  updateSurveyCustomFields,
   IFlatCustomField,
-} from 'modules/free/native_surveys/services/surveyCustomFields';
+  updateSurveyCustomFields,
+} from 'services/surveyCustomFields';
 
 interface SurveyBuilderTopBarProps {
   surveyCustomFields: IFlatCustomField[] | undefined | Error;
