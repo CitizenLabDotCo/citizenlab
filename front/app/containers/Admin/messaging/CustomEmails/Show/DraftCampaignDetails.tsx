@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { ICampaignData, deleteCampaign } from 'services/campaigns';
 import clHistory from 'utils/cl-router/history';
 
@@ -27,36 +27,32 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps, InjectedIntlProps {}
 
-class DraftCampaignDetails extends React.Component<Props> {
-  handleDelete = () => {
-    const deleteMessage = this.props.intl.formatMessage(
-      messages.campaignDeletionConfirmation
-    );
+const DraftCampaignDetails = ({
+  intl: { formatMessage },
+  campaign,
+}: Props & InjectedIntlProps) => {
+  const handleDelete = () => {
+    const deleteMessage = formatMessage(messages.campaignDeletionConfirmation);
     if (window.confirm(deleteMessage)) {
-      deleteCampaign(this.props.campaign.id).then(() => {
+      deleteCampaign(campaign.id).then(() => {
         clHistory.push('/admin/messaging/emails/custom');
       });
     }
   };
 
-  render() {
-    const { campaign } = this.props;
-    return (
-      <>
-        <PreviewFrame campaignId={campaign.id} />
-        <ButtonWrapper>
-          <Button buttonStyle="delete" icon="trash" onClick={this.handleDelete}>
-            <FormattedMessage {...messages.deleteCampaignButton} />
-          </Button>
-        </ButtonWrapper>
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <PreviewFrame campaignId={campaign.id} />
+      <ButtonWrapper>
+        <Button buttonStyle="delete" icon="trash" onClick={handleDelete}>
+          <FormattedMessage {...messages.deleteCampaignButton} />
+        </Button>
+      </ButtonWrapper>
+    </>
+  );
+};
 
-const DraftCampaignDetailsWithHOCs = injectIntl<InputProps & DataProps>(
-  DraftCampaignDetails
-);
+const DraftCampaignDetailsWithHOCs = injectIntl(DraftCampaignDetails);
 
 export default (inputProps: InputProps) => (
   <GetCampaign id={inputProps.campaignId}>

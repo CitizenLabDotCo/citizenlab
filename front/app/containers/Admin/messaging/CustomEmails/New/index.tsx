@@ -13,15 +13,13 @@ import { Formik } from 'formik';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { isCLErrorJSON } from 'utils/errorUtils';
+import useAuthUser from 'hooks/useAuthUser';
 
-type Props = {
-  authUser: GetAuthUserChildProps;
-};
+const New = () => {
+  const authUser = useAuthUser();
 
-class New extends React.Component<Props> {
-  handleSubmit = (
+  const handleSubmit = (
     values: FormValues,
     { setErrors, setSubmitting, setStatus }
   ) => {
@@ -42,8 +40,7 @@ class New extends React.Component<Props> {
       });
   };
 
-  initialValues = (): FormValues => {
-    const { authUser } = this.props;
+  const initialValues = (): FormValues => {
     return {
       sender: 'author',
       reply_to: (!isNilOrError(authUser) && authUser.attributes.email) || '',
@@ -53,32 +50,26 @@ class New extends React.Component<Props> {
     };
   };
 
-  renderFn = (props) => <CampaignForm {...props} mode="new" />;
+  const renderFn = () => <CampaignForm mode="new" />;
 
-  goBack = () => {
+  const goBack = () => {
     clHistory.push('/admin/messaging/emails/custom');
   };
 
-  render() {
-    return (
-      <div>
-        <GoBackButton onClick={this.goBack} />
-        <PageTitle>
-          <FormattedMessage {...messages.addCampaignTitle} />
-        </PageTitle>
-        <Formik
-          initialValues={this.initialValues()}
-          onSubmit={this.handleSubmit}
-          render={this.renderFn}
-          validate={validateCampaignForm}
-        />
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <GoBackButton onClick={goBack} />
+      <PageTitle>
+        <FormattedMessage {...messages.addCampaignTitle} />
+      </PageTitle>
+      <Formik
+        initialValues={initialValues()}
+        onSubmit={handleSubmit}
+        render={renderFn}
+        validate={validateCampaignForm}
+      />
+    </div>
+  );
+};
 
-export default () => (
-  <GetAuthUser>
-    {(user) => (isNilOrError(user) ? null : <New authUser={user} />)}
-  </GetAuthUser>
-);
+export default New;
