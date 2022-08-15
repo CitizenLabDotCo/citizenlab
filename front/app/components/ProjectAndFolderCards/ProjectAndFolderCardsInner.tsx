@@ -102,7 +102,8 @@ const ProjectAndFolderCardsInner = ({
       onChangeSearch(search);
       adminPublications.onChangeSearch(search);
     },
-    [onChangeSearch, adminPublications]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [onChangeSearch]
   );
 
   if (isNilOrError(statusCountsWithoutFilters)) return null;
