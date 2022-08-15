@@ -11,10 +11,10 @@ import { stylingConsts, colors } from 'utils/styleUtils';
 // components
 import { RightColumn } from 'containers/Admin';
 import { Box } from '@citizenlab/cl2-component-library';
-import SurveyBuilderTopBar from 'containers/Admin/formBuilder/components/SurveyBuilderTopBar';
-import SurveyBuilderToolbox from 'containers/Admin/formBuilder/components/SurveyBuilderToolbox';
-import SurveyBuilderSettings from 'containers/Admin/formBuilder/components/SurveyBuilderSettings';
-import SurveyFields from 'containers/Admin/formBuilder/components/SurveyFields';
+import SurveyBuilderTopBar from 'containers/Admin/formBuilder/components/FormBuilderTopBar';
+import SurveyBuilderToolbox from 'containers/Admin/formBuilder/components/FormBuilderToolbox';
+import SurveyBuilderSettings from 'containers/Admin/formBuilder/components/FormBuilderSettings';
+import SurveyFields from 'containers/Admin/formBuilder/components/FormFields';
 
 // hooks
 import useSurveyCustomFields from 'hooks/useSurveyCustomFields';
