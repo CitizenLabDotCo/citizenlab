@@ -11,6 +11,7 @@ import {
   createRegFieldSubscription,
   RepresentativenessRowMultiloc,
   IncludedUsers,
+  createDomicileFieldSubscription,
 } from './createRefDataSubscription';
 
 // typings
@@ -56,6 +57,12 @@ function useReferenceData(
         locale,
         setters
       );
+
+      return () => subscription.unsubscribe();
+    }
+
+    if (code === 'domicile') {
+      const subscription = createDomicileFieldSubscription(projectId, setters);
 
       return () => subscription.unsubscribe();
     }

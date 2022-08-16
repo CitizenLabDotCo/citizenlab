@@ -2,6 +2,7 @@
 import {
   usersByGenderStream,
   usersByAgeStream,
+  usersByDomicileStream,
   usersByRegFieldStream,
   IUsersByAge,
   IUsersByRegistrationField,
@@ -90,6 +91,20 @@ export const createAgeFieldSubscription = (
       setReferenceDataUploaded(true);
     }
   );
+
+  return subscription;
+};
+
+// Domicile field
+export const createDomicileFieldSubscription = (
+  projectId: string | undefined,
+  setters: Setters
+) => {
+  const observable = usersByDomicileStream({
+    queryParameters: { project: projectId },
+  }).observable;
+
+  const subscription = observable.subscribe(handleRegFieldResponse(setters));
 
   return subscription;
 };
