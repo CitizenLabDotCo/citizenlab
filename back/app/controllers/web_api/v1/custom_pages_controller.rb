@@ -75,7 +75,6 @@ class WebApi::V1::CustomPagesController < ApplicationController
   def custom_page_params
     params.require(:custom_page).permit(
       :slug,
-      :code,
       :banner_enabled,
       :banner_layout,
       :banner_overlay_color,
@@ -84,6 +83,7 @@ class WebApi::V1::CustomPagesController < ApplicationController
       :banner_cta_button_url,
       :top_info_section_enabled,
       :bottom_info_section_enabled,
+      :files_section_enabled,
       :events_widget_enabled,
       :projects_enabled,
       :projects_filter_type,

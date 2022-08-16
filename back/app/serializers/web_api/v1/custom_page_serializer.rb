@@ -3,7 +3,6 @@
 class WebApi::V1::CustomPageSerializer < WebApi::V1::BaseSerializer
   attributes :title_multiloc,
     :slug,
-    :code,
     :banner_enabled,
     :banner_layout,
     :banner_overlay_color,
@@ -17,6 +16,7 @@ class WebApi::V1::CustomPageSerializer < WebApi::V1::BaseSerializer
     :top_info_section_multiloc,
     :bottom_info_section_enabled,
     :bottom_info_section_multiloc,
+    :files_section_enabled,
     :events_widget_enabled,
     :projects_enabled,
     :projects_filter_type,
