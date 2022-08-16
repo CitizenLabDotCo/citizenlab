@@ -356,6 +356,18 @@ resource 'AdminPublication' do
             expect(response_ids).not_to include f3.admin_publication.id
           end
 
+          example_request 'searching with query and filtering by topic', document: false do
+            topic = create(:topic)
+            project_with_topic = create(:project, topics: [topic],
+              admin_publication_attributes: { publication_status: 'published' },
+              title_multiloc: {
+                en: 'fancy title'
+              })
+            do_request search: 'fancy title', topics: [topic.id]
+            expect(response_data.size).to eq 1
+            expect(response_ids).to contain_exactly(project_with_topic.admin_publication.id)
+          end
+
           example_request 'Search param should return a project within a folder' do
             project_in_folder = create(
               :project,

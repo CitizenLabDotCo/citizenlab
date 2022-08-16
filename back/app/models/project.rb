@@ -108,7 +108,7 @@ class Project < ApplicationRecord
   end)
 
   scope :with_some_topics, (proc do |topic_ids|
-    joins(:projects_topics).where(projects_topics: { topic_id: topic_ids }).distinct
+    joins(:projects_topics).where(projects_topics: { topic_id: topic_ids })
   end)
 
   scope :is_participation_context, lambda {
