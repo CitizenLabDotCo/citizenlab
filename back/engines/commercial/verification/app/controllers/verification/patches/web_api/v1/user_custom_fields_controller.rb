@@ -11,7 +11,7 @@ module Verification
             end
           end
 
-          def user_ui_and_json_multiloc_schemas(fields, current_user)
+          def user_ui_and_json_multiloc_schemas(fields)
             super.tap do |schemas_multiloc|
               mark_locked_json_forms_fields(schemas_multiloc) if current_user
             end
