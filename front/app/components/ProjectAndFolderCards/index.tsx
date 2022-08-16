@@ -21,13 +21,16 @@ export interface Props {
   showTitle: boolean;
   layout: TLayout;
   publicationStatusFilter: PublicationStatus[];
+  search?: string;
+  showSearch?: boolean;
 }
 
 const ProjectAndFolderCards = ({
   publicationStatusFilter,
+  showSearch = false,
   ...otherProps
 }: Props) => {
-  const { counts, onChangeTopics, onChangeAreas } =
+  const { counts, onChangeTopics, onChangeAreas, onChangeSearch } =
     useAdminPublicationsStatusCount({
       publicationStatusFilter,
       rootLevelOnly: true,
@@ -59,6 +62,8 @@ const ProjectAndFolderCards = ({
       onChangeTopics={onChangeTopics}
       onChangeAreas={onChangeAreas}
       onChangeTab={onChangeTab}
+      onChangeSearch={onChangeSearch}
+      showSearch={showSearch}
       {...otherProps}
     />
   );
