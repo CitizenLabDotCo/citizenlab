@@ -136,7 +136,7 @@ const FullMobileNavMenu = ({
   const navbarItemPropsArray = getNavbarItemPropsArray(
     navbarItems,
     pageSlugById
-  ).filter(({ linkTo }) => linkTo !== '/projects');
+  ).filter(({ linkTo }) => linkTo !== '/projects'); // /projects is already in the 'outer' fixed menu
 
   const modalPortalElement = document?.getElementById('mobile-nav-portal');
 
