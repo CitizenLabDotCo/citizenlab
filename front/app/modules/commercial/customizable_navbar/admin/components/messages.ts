@@ -68,7 +68,7 @@ export default defineMessages({
     defaultMessage: 'Provide a slug',
   },
   takenSlugError: {
-    id: 'app.components.pageForm.takenSlugError',
+    id: 'app.modules.commercial.customizable_navbar.takenSlugError',
     defaultMessage: 'This slug is already taken. Choose a different one.',
   },
   emptyTitleError: {

@@ -7,6 +7,7 @@ import { Multiloc } from 'typings';
 import { FormProvider, useForm } from 'react-hook-form';
 import { SectionField } from 'components/admin/Section';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import Feedback from 'components/HookForm/Feedback';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object } from 'yup';
 import validateMultiloc from 'utils/yup/validateMultiloc';
@@ -59,6 +60,9 @@ const NavbarItemForm = ({
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onFormSubmit)}>
         <SectionField>
+          <Feedback
+            successMessage={formatMessage(messages.savePageSuccessMessage)}
+          />
           <InputMultilocWithLocaleSwitcher
             name="nav_bar_item_title_multiloc"
             label={formatMessage(messages.navbarItemTitle)}
