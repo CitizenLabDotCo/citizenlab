@@ -97,7 +97,7 @@ class Project < ApplicationRecord
   validate :admin_publication_must_exist
 
   pg_search_scope :search_by_all,
-    against: %i[title_multiloc description_multiloc description_preview_multiloc],
+    against: %i[title_multiloc description_multiloc description_preview_multiloc slug],
     using: { tsearch: { prefix: true } }
 
   scope :with_all_areas, -> { where(include_all_areas: true) }
