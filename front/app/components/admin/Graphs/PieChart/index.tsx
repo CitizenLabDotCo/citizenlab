@@ -9,7 +9,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { PieChartStyleFixesDiv } from 'components/admin/GraphWrappers';
-import EmptyState from '../EmptyState';
+import EmptyState from '../_components/EmptyState';
 
 // utils
 import { hasNoData } from '../utils';

@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+// import { Box } from '@citizenlab/cl2-component-library';
 import PieChart from 'components/admin/Graphs/PieChart';
 import BarChart from 'components/admin/Graphs/BarChart';
 
@@ -18,14 +18,12 @@ const data: Row[] = [
 
 const Playground = () => (
   <>
-    <Box height="200px">
-      <BarChart
-        width={'100%'}
-        height={'100%'}
-        data={data}
-        mapping={{ length: 'value', category: 'label' }}
-      />
-    </Box>
+    <BarChart
+      width={'100%'}
+      height={200}
+      data={data}
+      mapping={{ length: 'value', category: 'label' }}
+    />
 
     <PieChart data={data} mapping={{ angle: 'value', name: 'label' }} />
   </>

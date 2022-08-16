@@ -16,7 +16,7 @@ import {
   YAxis,
   Cell,
 } from 'recharts';
-import EmptyState from '../EmptyState';
+import EmptyState from '../_components/EmptyState';
 
 // utils
 import { getBarConfigs, getRechartsLayout } from './utils';
