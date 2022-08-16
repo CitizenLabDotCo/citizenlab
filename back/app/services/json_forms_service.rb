@@ -16,13 +16,15 @@ class JsonFormsService
     raise "Can't render a UI schema for fields belonging to different resource types" if resource_types.many?
     return nil if resource_types.empty?
 
-    allowed_fields = allowed_fields(fields, current_user).reject do |field|
+    resource_type = resource_types.first
+
+    visible_fields = allowed_fields(fields, current_user).reject do |field|
       !field.enabled? || field.hidden?
     end
-    json_schema_generator_class = Factory.instance.json_schema_generator_class_for resource_types.first
-    json_schema_multiloc = json_schema_generator_class.new.generate_for allowed_fields
-    ui_schema_multiloc = fields_to_ui_schema_multiloc(allowed_fields)
-
+    json_schema_generator_class = Factory.instance.json_schema_generator_class_for resource_type
+    json_schema_multiloc = json_schema_generator_class.new.generate_for visible_fields
+    ui_schema_generator_class = Factory.instance.ui_schema_generator_class_for resource_type
+    ui_schema_multiloc = ui_schema_generator_class.new.generate_for visible_fields
     { json_schema_multiloc: json_schema_multiloc, ui_schema_multiloc: ui_schema_multiloc }
   end
 

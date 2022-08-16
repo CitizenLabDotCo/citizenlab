@@ -71,7 +71,7 @@ RSpec.describe Factory do
     end
 
     context 'for resource type "User"' do
-      it 'returns InputJsonSchemaGeneratorService' do
+      it 'returns UserJsonSchemaGeneratorService' do
         expect(factory.json_schema_generator_class_for('User')).to be UserJsonSchemaGeneratorService
       end
     end
@@ -79,6 +79,28 @@ RSpec.describe Factory do
     context 'for unsupported resource types' do
       it 'raises an error' do
         expect { factory.json_schema_generator_class_for('Unsupported') }.to raise_error 'Unsupported resource type: Unsupported'
+      end
+    end
+  end
+
+  describe '#ui_schema_generator_class_for' do
+    subject(:factory) { described_class.instance }
+
+    context 'for resource type "CustomForm"' do
+      it 'returns InputUiSchemaGeneratorService' do
+        expect(factory.ui_schema_generator_class_for('CustomForm')).to be InputUiSchemaGeneratorService
+      end
+    end
+
+    context 'for resource type "User"' do
+      it 'returns UserUiSchemaGeneratorService' do
+        expect(factory.ui_schema_generator_class_for('User')).to be UserUiSchemaGeneratorService
+      end
+    end
+
+    context 'for unsupported resource types' do
+      it 'raises an error' do
+        expect { factory.ui_schema_generator_class_for('Unsupported') }.to raise_error 'Unsupported resource type: Unsupported'
       end
     end
   end
