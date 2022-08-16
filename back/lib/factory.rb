@@ -24,27 +24,5 @@ class Factory
     method_class.new(project)
   end
 
-  def json_schema_generator_class_for(resource_type)
-    case resource_type
-    when 'CustomForm'
-      InputJsonSchemaGeneratorService
-    when 'User'
-      UserJsonSchemaGeneratorService
-    else
-      raise "Unsupported resource type: #{resource_type}"
-    end
-  end
-
-  def ui_schema_generator_class_for(resource_type)
-    case resource_type
-    when 'CustomForm'
-      InputUiSchemaGeneratorService
-    when 'User'
-      UserUiSchemaGeneratorService
-    else
-      raise "Unsupported resource type: #{resource_type}"
-    end
-  end
-
   private_class_method :new
 end
