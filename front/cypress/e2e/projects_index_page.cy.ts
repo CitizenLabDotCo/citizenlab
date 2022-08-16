@@ -49,7 +49,7 @@ describe('Project overview page', () => {
     });
   });
 
-  it('shows 6 project by default and loads more when the show more button is pressed', () => {
+  it('shows 6 projects by default and loads more when the show more button is pressed', () => {
     cy.visit('/projects/');
 
     cy.get('#e2e-projects-container');

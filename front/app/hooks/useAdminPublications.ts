@@ -101,7 +101,7 @@ export default function useAdminPublications({
     setPageNumber(1);
   }, []);
 
-  const onChangeSearch = useCallback((search) => {
+  const onChangeSearch = useCallback((search: string | null) => {
     setSearch(search);
     setPageNumber(1);
   }, []);

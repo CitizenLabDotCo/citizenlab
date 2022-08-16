@@ -43,7 +43,7 @@ export default function useAdminPublicationsStatusCounts({
     areas.length === 0 ? setAreas(undefined) : setAreas(areas);
   }, []);
 
-  const onChangeSearch = useCallback((search: string) => {
+  const onChangeSearch = useCallback((search: string | null) => {
     search && search.length === 0 ? setSearch(null) : setSearch(search);
   }, []);
 
