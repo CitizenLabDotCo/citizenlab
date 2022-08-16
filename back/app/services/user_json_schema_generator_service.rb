@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class UserJsonSchemaGeneratorService < JsonSchemaGeneratorService
-  # Code comes from back/app/services/concerns/json_forms_user_overrides.rb
-
   def visit_number(field)
     return super unless field.code == 'birthyear'
 
