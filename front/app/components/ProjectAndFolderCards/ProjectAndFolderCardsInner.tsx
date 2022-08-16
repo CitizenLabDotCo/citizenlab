@@ -46,7 +46,7 @@ interface Props extends BaseProps {
   onChangeTopics: (topics: string[]) => void;
   onChangeAreas: (areas: string[]) => void;
   onChangeTab: (tab: PublicationTab) => void;
-  onChangeSearch: (search: string) => void;
+  onChangeSearch: (search: string | null) => void;
 }
 
 const ProjectAndFolderCardsInner = ({
@@ -62,7 +62,6 @@ const ProjectAndFolderCardsInner = ({
   onChangeSearch,
   rootLevelOnly,
 }: Props) => {
-
   const adminPublications = useAdminPublications({
     pageSize: 6,
     publicationStatusFilter,
@@ -96,7 +95,7 @@ const ProjectAndFolderCardsInner = ({
   }, [publicationStatusesForCurrentTabStringified]);
 
   const handleChangeSearch = React.useCallback(
-    (search: string) => {
+    (search: string | null) => {
       onChangeSearch(search);
       adminPublications.onChangeSearch(search);
     },

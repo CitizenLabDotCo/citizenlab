@@ -31,7 +31,9 @@ const ProjectAndFolderCards = ({
 }: Props) => {
   // used locally to keep track of the depth of the search
   const [search, setSearch] = useState<string | null>(null);
-  const rootLevelOnly = search && search.length > 0 ? false : true;
+  // with a search string, return projects within folders
+  // if no search string exists, do not return projects in folders
+  const rootLevelOnly = !search || search.length === 0;
 
   const { counts, onChangeTopics, onChangeAreas, onChangeSearch } =
     useAdminPublicationsStatusCount({
@@ -54,7 +56,7 @@ const ProjectAndFolderCards = ({
     setSearch(search);
     // pass search term to useAdminPublicationsStatusCount hook
     onChangeSearch(search);
-  }
+  };
 
   const onChangeTab = (tab: PublicationTab) => {
     setCurrentTab(tab);
