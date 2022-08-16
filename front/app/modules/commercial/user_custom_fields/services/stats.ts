@@ -15,6 +15,11 @@ export interface ICustomFieldParams extends IStreamParams {
 }
 
 // Response types
+export interface Option {
+  title_multiloc: Multiloc;
+  ordering: number;
+}
+
 export interface IUsersByRegistrationField {
   series: {
     users: {
@@ -28,30 +33,7 @@ export interface IUsersByRegistrationField {
     };
   };
   options: {
-    [key: string]: {
-      title_multiloc: Multiloc;
-      ordering: number;
-    };
-  };
-}
-
-export interface IUsersByDomicile {
-  series: {
-    users: {
-      [key: string]: number;
-    };
-    // reference_population: {
-    //   [key: string]: number;
-    // }
-    // expected_users: {
-    //   [key: string]: number;
-    // };
-  };
-  areas: {
-    [key: string]: {
-      title_multiloc: Multiloc;
-      ordering: number;
-    };
+    [key: string]: Option;
   };
 }
 
@@ -115,7 +97,7 @@ export const usersByDomicileXlsxEndpoint = `${apiEndpoint}/users_by_domicile_as_
 export function usersByDomicileStream(
   streamParams: ICustomFieldParams | null = null
 ) {
-  return streams.get<IUsersByDomicile>({
+  return streams.get<IUsersByRegistrationField>({
     apiEndpoint: `${apiEndpoint}/users_by_domicile`,
     ...streamParams,
   });

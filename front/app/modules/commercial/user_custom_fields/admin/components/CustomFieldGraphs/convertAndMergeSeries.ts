@@ -13,7 +13,6 @@ import { fallbackMessages } from '../AreaChart';
 import { TCustomFieldCode } from '../../../services/userCustomFields';
 import {
   IUsersByRegistrationField,
-  IUsersByDomicile,
   IUsersByBirthyear,
 } from 'modules/commercial/user_custom_fields/services/stats';
 
@@ -22,10 +21,7 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from 'containers/Admin/dashboard/messages';
 import { InjectedLocalized } from 'utils/localize';
 
-export type ISupportedDataType =
-  | IUsersByRegistrationField
-  | IUsersByDomicile
-  | IUsersByBirthyear;
+export type ISupportedDataType = IUsersByRegistrationField | IUsersByBirthyear;
 
 interface IParameters {
   formatMessage: InjectedIntlProps['intl']['formatMessage'];
@@ -98,15 +94,15 @@ const createConvertAndMergeSeries =
           ? formatMessage(fallbackMessages[key])
           : localize(value.title_multiloc);
 
-      const areas = (totalSerie as IUsersByDomicile).areas;
+      const options = (totalSerie as IUsersByRegistrationField).options;
       const resTotal = convertDomicileData(
-        areas,
+        options,
         totalSerie.series.users,
         parseName
       );
 
       const resParticipants = convertDomicileData(
-        areas,
+        options,
         participantSerie.series.users,
         parseName
       );

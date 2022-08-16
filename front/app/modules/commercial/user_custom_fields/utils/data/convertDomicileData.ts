@@ -1,21 +1,14 @@
-import { Multiloc } from 'typings';
+import { IUsersByRegistrationField, Option } from '../../services/stats';
 import { RawData } from './typings';
 
-export type AreaValue = {
-  title_multiloc: Multiloc;
-};
-type Areas = {
-  [key: string]: AreaValue;
-};
-
 const convertDomicileData = (
-  areas: Areas,
+  options: IUsersByRegistrationField['options'],
   data: RawData,
-  parseName: (key: string, value?: AreaValue) => string
+  parseName: (key: string, value?: Option) => string
 ) => {
-  return [...Object.keys(areas), '_blank', 'outside'].map((key) => ({
+  return [...Object.keys(options), '_blank', 'outside'].map((key) => ({
     value: data[key],
-    name: parseName(key, areas[key]),
+    name: parseName(key, options[key]),
   }));
 };
 

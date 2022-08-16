@@ -10,7 +10,7 @@ import messages from 'containers/Admin/dashboard/messages';
 
 // services
 import {
-  IUsersByDomicile,
+  IUsersByRegistrationField,
   usersByDomicileStream,
   usersByDomicileXlsxEndpoint,
 } from 'modules/commercial/user_custom_fields/services/stats';
@@ -22,6 +22,10 @@ import HorizontalBarChart from 'containers/Admin/dashboard/users/charts/Horizont
 import { isNilOrError } from 'utils/helperUtils';
 import { convertDomicileData } from '../../utils/data';
 
+// typings
+import { MessageDescriptor } from 'typings';
+import { Option } from '../../services/stats';
+
 interface Props {
   startAt: string | null | undefined;
   endAt: string | null;
@@ -30,7 +34,9 @@ interface Props {
   className?: string;
 }
 
-export const fallbackMessages = {
+type FallbackKey = '_blank' | 'outside';
+
+export const fallbackMessages: Record<FallbackKey, MessageDescriptor> = {
   _blank: messages._blank,
   outside: messages.otherArea,
 };
@@ -41,17 +47,17 @@ const AreaChart = (props: Props & InjectedIntlProps & InjectedLocalized) => {
     localize,
   } = props;
 
-  const convertToGraphFormat = (data: IUsersByDomicile) => {
+  const convertToGraphFormat = (data: IUsersByRegistrationField) => {
     if (isNilOrError(data)) return null;
 
-    const { series, areas } = data;
+    const { series, options } = data;
 
-    const parseName = (key, value) =>
+    const parseName = (key: string, value: Option) =>
       key in fallbackMessages
         ? formatMessage(fallbackMessages[key])
         : localize(value.title_multiloc);
 
-    const res = convertDomicileData(areas, series.users, parseName);
+    const res = convertDomicileData(options, series.users, parseName);
     const sortedByValue = orderBy(res, 'value', 'desc');
     return sortedByValue.length > 0 ? sortedByValue : null;
   };
