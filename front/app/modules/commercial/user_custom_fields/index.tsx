@@ -9,11 +9,7 @@ import CustomFieldsStep from './citizen/components/CustomFieldsStep';
 import UserCustomFieldsForm from './citizen/components/UserCustomFieldsForm';
 import useUserCustomFieldsSchema from './hooks/useUserCustomFieldsSchema';
 import RegistrationQuestions from './admin/components/RegistrationQuestions';
-import {
-  IUsersByBirthyear,
-  IUsersByDomicile,
-  IUsersByRegistrationField,
-} from './services/stats';
+import { IUsersByBirthyear, IUsersByRegistrationField } from './services/stats';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import UserCustomFieldsFormMigrated from './citizen/components/UserCustomFieldsFormMigrated';
 
@@ -62,7 +58,7 @@ declare module 'containers/Admin/dashboard/users/charts/BarChartByCategory' {
   export interface ISupportedDataTypeMap {
     usersByBirthyear: IUsersByBirthyear;
     usersByRegistrationField: IUsersByRegistrationField;
-    usersByDomicile: IUsersByDomicile;
+    usersByDomicile: IUsersByRegistrationField;
   }
 }
 
@@ -70,7 +66,7 @@ declare module 'containers/Admin/dashboard/users/charts/HorizontalBarChart' {
   export interface ISupportedDataTypeMap {
     usersByBirthyear: IUsersByBirthyear;
     usersByRegistrationField: IUsersByRegistrationField;
-    usersByDomicile: IUsersByDomicile;
+    usersByDomicile: IUsersByRegistrationField;
   }
 }
 
