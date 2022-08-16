@@ -24,7 +24,7 @@ describe JsonFormsService do
       end
 
       it 'creates localized schemas with titles and descriptions for all languages' do
-        ui_schema = service.user_ui_and_json_multiloc_schemas(fields,)[:ui_schema_multiloc]
+        ui_schema = service.user_ui_and_json_multiloc_schemas(fields)[:ui_schema_multiloc]
         expect(ui_schema['en'][:elements][0][:label]).to eq title_multiloc['en']
         expect(ui_schema['nl-NL'][:elements][0][:label]).to eq title_multiloc['nl-NL']
         expect(ui_schema['en'][:elements][0][:options][:description]).to eq description_multiloc['en']
@@ -33,7 +33,7 @@ describe JsonFormsService do
     end
 
     describe 'fields_to_json_schema_multiloc' do
-      it 'returns nil empty fields' do
+      it 'returns nil when no fields are given' do
         schema = service.user_ui_and_json_multiloc_schemas([])
         expect(schema).to be_nil
       end
