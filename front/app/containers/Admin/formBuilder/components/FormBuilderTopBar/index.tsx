@@ -30,30 +30,29 @@ import clHistory from 'utils/cl-router/history';
 import { useParams } from 'react-router-dom';
 import {
   IFlatCustomField,
-  updateSurveyCustomFields,
-} from 'services/surveyCustomFields';
+  updateFormCustomFields,
+} from 'services/formCustomFields';
 
-interface SurveyBuilderTopBarProps {
-  surveyCustomFields: IFlatCustomField[] | undefined | Error;
+interface FormBuilderTopBarProps {
+  formCustomFields: IFlatCustomField[] | undefined | Error;
 }
 
-const SurveyBuilderTopBar = ({
-  surveyCustomFields,
-}: SurveyBuilderTopBarProps) => {
+const FormBuilderTopBar = ({ formCustomFields }: FormBuilderTopBarProps) => {
   const localize = useLocalize();
   const { projectId } = useParams() as { projectId: string };
   const project = useProject({ projectId });
   const [loading, setLoading] = useState(false);
 
+  // TODO : Generalize this form builder and use new ParticipationMethod abstraction to control method specific copy, etc.
   const goBack = () => {
     clHistory.push(`/admin/projects/${projectId}/native-survey`);
   };
 
   const save = async () => {
-    if (!isNilOrError(surveyCustomFields)) {
+    if (!isNilOrError(formCustomFields)) {
       try {
         setLoading(true);
-        const finalResponseArray = surveyCustomFields.map((field) => ({
+        const finalResponseArray = formCustomFields.map((field) => ({
           ...(!field.isLocalOnly && { id: field.id }),
           input_type: field.input_type,
           required: field.required,
@@ -61,7 +60,7 @@ const SurveyBuilderTopBar = ({
           title_multiloc: field.title_multiloc || {},
           description_multiloc: field.description_multiloc || {},
         }));
-        await updateSurveyCustomFields(projectId, finalResponseArray);
+        await updateFormCustomFields(projectId, finalResponseArray);
       } catch {
         // TODO: Add error handling
       } finally {
@@ -131,4 +130,4 @@ const SurveyBuilderTopBar = ({
   );
 };
 
-export default SurveyBuilderTopBar;
+export default FormBuilderTopBar;

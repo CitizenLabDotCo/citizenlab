@@ -21,10 +21,11 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // Types
 import { Multiloc } from 'typings';
+
 import {
   IFlatCustomField,
   IFlatUpdateCustomField,
-} from 'services/surveyCustomFields';
+} from 'services/formCustomFields';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -36,7 +37,7 @@ interface Props {
   onClose: () => void;
 }
 
-const SurveyBuilderSettings = ({
+const FormBuilderSettings = ({
   field,
   onDelete,
   onFieldChange,
@@ -153,4 +154,4 @@ const SurveyBuilderSettings = ({
   );
 };
 
-export default SurveyBuilderSettings;
+export default FormBuilderSettings;
