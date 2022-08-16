@@ -42,6 +42,7 @@ const StyledTopbar = styled(Topbar)`
 interface Props extends BaseProps {
   currentTab: PublicationTab;
   statusCounts: IStatusCounts;
+  rootLevelOnly: boolean;
   onChangeTopics: (topics: string[]) => void;
   onChangeAreas: (areas: string[]) => void;
   onChangeTab: (tab: PublicationTab) => void;
@@ -53,23 +54,20 @@ const ProjectAndFolderCardsInner = ({
   statusCounts,
   showTitle,
   showSearch,
-  search,
   layout,
   publicationStatusFilter,
   onChangeTopics,
   onChangeAreas,
   onChangeTab,
   onChangeSearch,
+  rootLevelOnly,
 }: Props) => {
-  // if a search string is provided, we want to show all depths of admin publication
-  const rootLevelOnly = search && search.length > 0 ? false : true;
 
   const adminPublications = useAdminPublications({
     pageSize: 6,
     publicationStatusFilter,
     rootLevelOnly,
     removeNotAllowedParents: true,
-    search,
   });
 
   const { counts: statusCountsWithoutFilters } =

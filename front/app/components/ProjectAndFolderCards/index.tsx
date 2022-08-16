@@ -21,7 +21,6 @@ export interface Props {
   showTitle: boolean;
   layout: TLayout;
   publicationStatusFilter: PublicationStatus[];
-  search?: string;
   showSearch?: boolean;
 }
 
@@ -30,10 +29,14 @@ const ProjectAndFolderCards = ({
   showSearch = false,
   ...otherProps
 }: Props) => {
+  // used locally to keep track of the depth of the search
+  const [search, setSearch] = useState<string | null>(null);
+  const rootLevelOnly = search && search.length > 0 ? false : true;
+
   const { counts, onChangeTopics, onChangeAreas, onChangeSearch } =
     useAdminPublicationsStatusCount({
       publicationStatusFilter,
-      rootLevelOnly: true,
+      rootLevelOnly,
       removeNotAllowedParents: true,
     });
 
@@ -45,6 +48,13 @@ const ProjectAndFolderCards = ({
     if (isNilOrError(counts) || currentTab) return;
     setCurrentTab((currentTab) => getCurrentTab(counts, currentTab));
   }, [counts, currentTab]);
+
+  const handleSearchChange = (search: string | null) => {
+    // set search term locally to calculate depth
+    setSearch(search);
+    // pass search term to useAdminPublicationsStatusCount hook
+    onChangeSearch(search);
+  }
 
   const onChangeTab = (tab: PublicationTab) => {
     setCurrentTab(tab);
@@ -62,8 +72,9 @@ const ProjectAndFolderCards = ({
       onChangeTopics={onChangeTopics}
       onChangeAreas={onChangeAreas}
       onChangeTab={onChangeTab}
-      onChangeSearch={onChangeSearch}
+      onChangeSearch={handleSearchChange}
       showSearch={showSearch}
+      rootLevelOnly={rootLevelOnly}
       {...otherProps}
     />
   );

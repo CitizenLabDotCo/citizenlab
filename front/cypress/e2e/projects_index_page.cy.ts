@@ -50,13 +50,20 @@ describe('Project overview page', () => {
   });
 
   it('shows 6 projects by default and loads more when the show more button is pressed', () => {
+    cy.intercept('GET', '**/admin_publications**').as('getAdminPublications')
+    
     cy.visit('/projects/');
 
     cy.get('#e2e-projects-container');
+    cy.wait('@getAdminPublications').then(interception => {
+      console.log(interception);
+    });
     cy.get('.e2e-projects-list');
 
     cy.acceptCookies();
     cy.wait(500);
+
+   
 
     const initialCards = cy.get(
       '.e2e-projects-list.active-tab > .e2e-admin-publication-card'
@@ -79,6 +86,8 @@ describe('Project overview page', () => {
   });
 
   it('shows the filtered projects based on the search input', () => {
+    cy.intercept('GET', '**/admin_publications**').as('getAdminPublications')
+
     cy.visit('/projects/');
 
     cy.get('#e2e-projects-container');
@@ -87,6 +96,10 @@ describe('Project overview page', () => {
     cy.acceptCookies();
 
     cy.get('#search-input').type(projectTitleOne);
+
+    cy.wait('@getAdminPublications').then(interception => {
+      console.log(interception);
+    });
 
     cy.get(
       '.e2e-projects-list.active-tab > .e2e-admin-publication-card'

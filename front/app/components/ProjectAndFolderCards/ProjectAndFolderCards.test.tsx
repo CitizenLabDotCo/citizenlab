@@ -37,6 +37,7 @@ const mockLoadMore = jest.fn();
 const mockChangeTopics = jest.fn();
 const mockChangeAreas = jest.fn();
 const mockChangePublicationStatus = jest.fn();
+const mockChangeSearch = jest.fn();
 
 jest.mock('hooks/useAdminPublications', () =>
   jest.fn(() => ({
@@ -48,6 +49,7 @@ jest.mock('hooks/useAdminPublications', () =>
     onChangeTopics: mockChangeTopics,
     onChangeAreas: mockChangeAreas,
     onChangePublicationStatus: mockChangePublicationStatus,
+    onChangeSearch: mockChangeSearch
   }))
 );
 
@@ -254,6 +256,26 @@ describe('<ProjectAndFolderCards />', () => {
 
     expect(mockLoadMore).toHaveBeenCalledTimes(1);
   });
+
+  it('sets the search term in the input properly', () => {
+    const { container } = render(
+      <ProjectAndFolderCards
+        publicationStatusFilter={['published', 'archived']}
+        showTitle={true}
+        layout={'dynamic'}
+        showSearch={true}
+      />
+    );
+
+    const searchInput = container.querySelector(
+      '#search-input'
+      );
+      fireEvent.change(searchInput, {target: {value: 'dog'}});
+      screen.debug();
+
+    expect(searchInput.value).toBe('dog');
+  });
+
 
   it('calls onChangePublicationStatus of useAdminPublications on click tab', () => {
     render(
