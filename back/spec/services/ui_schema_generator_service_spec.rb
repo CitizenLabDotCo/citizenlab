@@ -20,7 +20,7 @@ RSpec.describe UiSchemaGeneratorService do
       create(
         :custom_field,
         input_type: 'text',
-        title_multiloc: { 'en' => 'Field1 title', 'fr-BE' => 'Field1 titre', 'nl-BE' => 'Field1 titel' },
+        title_multiloc: { 'en' => 'Field1 title', 'fr-FR' => 'Field1 titre', 'nl-NL' => 'Field1 titel' },
         description_multiloc: { 'en' => 'Field1 description' }
       )
     end
