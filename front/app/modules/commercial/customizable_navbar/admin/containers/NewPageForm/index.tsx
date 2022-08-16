@@ -9,8 +9,7 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import usePageSlugs from 'hooks/usePageSlugs';
 
 // components
-import { Formik, FormikProps } from 'formik';
-import PageForm, { FormValues, validatePageForm } from 'components/PageForm';
+import PageForm, { FormValues } from 'components/PageForm';
 import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
 import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 
@@ -22,7 +21,6 @@ import messages from '../messages';
 // utils
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
-import getInitialValues from './getInitialValues';
 import { PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 
 const NewPageForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
@@ -37,28 +35,16 @@ const NewPageForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     clHistory.push(PAGES_MENU_PATH);
   };
 
-  const handleSubmit = async (
-    values: FormValues,
-    { setSubmitting, setStatus }
-  ) => {
+  const handleSubmit = async (values: FormValues) => {
     const localPageFiles = values.local_page_files;
 
-    try {
-      const page = await createPage(values);
+    const page = await createPage(values);
 
-      if (!isNilOrError(page) && !isNilOrError(localPageFiles)) {
-        await handleAddPageFiles(page.data.id, localPageFiles, null);
-      }
-
-      goBack();
-    } catch (error) {
-      setStatus('error');
-      setSubmitting(false);
+    if (!isNilOrError(page) && !isNilOrError(localPageFiles)) {
+      await handleAddPageFiles(page.data.id, localPageFiles, null);
     }
-  };
 
-  const renderFn = (props: FormikProps<FormValues>) => {
-    return <PageForm {...props} pageId={null} />;
+    goBack();
   };
 
   return (
@@ -74,14 +60,7 @@ const NewPageForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       ]}
       title={<FormattedMessage {...messages.addPageButton} />}
     >
-      <Formik
-        initialValues={getInitialValues(appConfigurationLocales)}
-        onSubmit={handleSubmit}
-        render={renderFn}
-        validate={validatePageForm(appConfigurationLocales, pageSlugs)}
-        validateOnChange={false}
-        validateOnBlur={false}
-      />
+      <PageForm onSubmit={handleSubmit} hideSlugInput pageId={null} />
     </SectionFormWrapper>
   );
 };
