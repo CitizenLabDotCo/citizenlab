@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 // Components
-import { Box, Icon, IconNames, Text } from '@citizenlab/cl2-component-library';
+import { Icon, IconNames, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 
 import { colors } from 'utils/styleUtils';
@@ -13,31 +13,42 @@ interface Props {
   onClick: () => void;
 }
 
-const StyledBox = styled(Box)`
+const AddIcon = styled(Icon).attrs({ name: 'plus', ml: '20px' })`
+  width: 16px;
+  height: 16px;
+  fill: ${colors.adminSecondaryTextColor};
+`;
+
+const StyledButton = styled(Button)`
+  ${AddIcon} {
+    visibility: hidden;
+  }
   &:hover {
     background-color: ${colors.emailBg};
     transition: background-color 80ms ease-out 0s;
+  }
+  &:last-child:hover ${AddIcon} {
+    visibility: visible;
   }
 `;
 
 const ToolboxItem = ({ icon, label, onClick }: Props) => {
   return (
-    <StyledBox
+    <StyledButton
+      buttonStyle="text"
+      onClick={onClick}
+      icon={icon}
+      iconColor={colors.adminTextColor}
+      iconSize="20px"
       width="100%"
-      display="flex"
-      paddingLeft="12px"
-      alignItems="center"
+      m="0px"
+      px="0px"
     >
-      <Icon
-        marginRight="16px"
-        width="20px"
-        height="20px"
-        fill={colors.adminTextColor}
-        name={icon}
-      />
-      <Text color="text">{label}</Text>
-      <Button buttonStyle="text" onClick={onClick} icon="plus" />
-    </StyledBox>
+      <Text color="text" as="span">
+        {label}
+      </Text>
+      <AddIcon />
+    </StyledButton>
   );
 };
 
