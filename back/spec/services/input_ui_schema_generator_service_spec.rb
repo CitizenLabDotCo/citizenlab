@@ -8,192 +8,262 @@ RSpec.describe InputUiSchemaGeneratorService do
   let(:field_key) { 'field_key' }
 
   describe '#generate_for' do
-    let(:project) { create :continuous_project, input_term: 'contribution' }
-    let(:custom_form) { create :custom_form, project: project }
-    let(:field1) do
-      create(
-        :custom_field,
-        :for_custom_form,
-        resource: custom_form,
-        input_type: 'text',
-        title_multiloc: { 'en' => 'Text title', 'fr-FR' => 'Text titre', 'nl-NL' => 'Text titel' },
-        description_multiloc: { 'en' => 'Text description' }
-      )
-    end
-    let(:field2) do
-      create(
-        :custom_field,
-        :for_custom_form,
-        resource: custom_form,
-        input_type: 'html_multiloc',
-        code: 'body_multiloc',
-        title_multiloc: { 'en' => 'Body multiloc field title' },
-        description_multiloc: { 'en' => 'Body multiloc field description' }
-      )
+    context 'for project with a built-in field and an extra field' do
+      let(:project) { create :continuous_project, input_term: 'contribution' }
+      let(:custom_form) { create :custom_form, project: project }
+      let(:field1) do
+        create(
+          :custom_field,
+          :for_custom_form,
+          resource: custom_form,
+          input_type: 'text',
+          title_multiloc: { 'en' => 'Text title', 'fr-FR' => 'Text titre', 'nl-NL' => 'Text titel' },
+          description_multiloc: { 'en' => 'Text description' }
+        )
+      end
+      let(:field2) do
+        create(
+          :custom_field,
+          :for_custom_form,
+          resource: custom_form,
+          input_type: 'html_multiloc',
+          code: 'body_multiloc',
+          title_multiloc: { 'en' => 'Body multiloc field title' },
+          description_multiloc: { 'en' => 'Body multiloc field description' }
+        )
+      end
+
+      it 'returns the schema for the given fields' do
+        expect(generator.generate_for([field1, field2])).to eq({
+          'en' => {
+            type: 'Categorization',
+            options: {
+              formId: 'idea-form',
+              inputTerm: 'contribution'
+            },
+            elements: [
+              {
+                type: 'Category',
+                label: I18n.t('custom_forms.categories.main_content.contribution.title', locale: 'en'),
+                options: { id: 'mainContent' },
+                elements: [
+                  {
+                    type: 'VerticalLayout',
+                    options: { render: 'multiloc' },
+                    elements: [
+                      {
+                        type: 'Control',
+                        scope: "#/properties/#{field2.key}/properties/en",
+                        label: 'Body multiloc field title',
+                        options: { description: 'Body multiloc field description', render: 'WYSIWYG', locale: 'en' }
+                      },
+                      {
+                        type: 'Control',
+                        scope: "#/properties/#{field2.key}/properties/fr-FR",
+                        label: 'Body multiloc field title',
+                        options: { description: 'Body multiloc field description', render: 'WYSIWYG', locale: 'fr-FR' }
+                      },
+                      {
+                        type: 'Control',
+                        scope: "#/properties/#{field2.key}/properties/nl-NL",
+                        label: 'Body multiloc field title',
+                        options: { description: 'Body multiloc field description', render: 'WYSIWYG', locale: 'nl-NL' }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                type: 'Category',
+                options: { id: 'extra' },
+                label: I18n.t('custom_forms.categories.extra.title', locale: 'en'),
+                elements: [
+                  {
+                    type: 'Control',
+                    scope: "#/properties/#{field1.key}",
+                    label: 'Text title',
+                    options: { description: 'Text description', transform: 'trim_on_blur' }
+                  }
+                ]
+              }
+            ]
+          },
+          'fr-FR' => {
+            type: 'Categorization',
+            options: {
+              formId: 'idea-form',
+              inputTerm: 'contribution'
+            },
+            elements: [
+              {
+                type: 'Category',
+                label: I18n.t('custom_forms.categories.main_content.contribution.title', locale: 'fr-FR'),
+                options: { id: 'mainContent' },
+                elements: [
+                  {
+                    type: 'VerticalLayout',
+                    options: { render: 'multiloc' },
+                    elements: [
+                      {
+                        type: 'Control',
+                        scope: "#/properties/#{field2.key}/properties/en",
+                        label: 'Body multiloc field title',
+                        options: { description: 'Body multiloc field description', render: 'WYSIWYG', locale: 'en' }
+                      },
+                      {
+                        type: 'Control',
+                        scope: "#/properties/#{field2.key}/properties/fr-FR",
+                        label: 'Body multiloc field title',
+                        options: { description: 'Body multiloc field description', render: 'WYSIWYG', locale: 'fr-FR' }
+                      },
+                      {
+                        type: 'Control',
+                        scope: "#/properties/#{field2.key}/properties/nl-NL",
+                        label: 'Body multiloc field title',
+                        options: { description: 'Body multiloc field description', render: 'WYSIWYG', locale: 'nl-NL' }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                type: 'Category',
+                options: { id: 'extra' },
+                label: I18n.t('custom_forms.categories.extra.title', locale: 'fr-FR'),
+                elements: [
+                  {
+                    type: 'Control',
+                    scope: "#/properties/#{field1.key}",
+                    label: 'Text titre',
+                    options: { description: 'Text description', transform: 'trim_on_blur' }
+                  }
+                ]
+              }
+            ]
+          },
+          'nl-NL' => {
+            type: 'Categorization',
+            options: {
+              formId: 'idea-form',
+              inputTerm: 'contribution'
+            },
+            elements: [
+              {
+                type: 'Category',
+                label: I18n.t('custom_forms.categories.main_content.contribution.title', locale: 'nl-NL'),
+                options: { id: 'mainContent' },
+                elements: [
+                  {
+                    type: 'VerticalLayout',
+                    options: { render: 'multiloc' },
+                    elements: [
+                      {
+                        type: 'Control',
+                        scope: "#/properties/#{field2.key}/properties/en",
+                        label: 'Body multiloc field title',
+                        options: { description: 'Body multiloc field description', render: 'WYSIWYG', locale: 'en' }
+                      },
+                      {
+                        type: 'Control',
+                        scope: "#/properties/#{field2.key}/properties/fr-FR",
+                        label: 'Body multiloc field title',
+                        options: { description: 'Body multiloc field description', render: 'WYSIWYG', locale: 'fr-FR' }
+                      },
+                      {
+                        type: 'Control',
+                        scope: "#/properties/#{field2.key}/properties/nl-NL",
+                        label: 'Body multiloc field title',
+                        options: { description: 'Body multiloc field description', render: 'WYSIWYG', locale: 'nl-NL' }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                type: 'Category',
+                options: { id: 'extra' },
+                label: I18n.t('custom_forms.categories.extra.title', locale: 'nl-NL'),
+                elements: [
+                  {
+                    type: 'Control',
+                    scope: "#/properties/#{field1.key}",
+                    label: 'Text titel',
+                    options: { description: 'Text description', transform: 'trim_on_blur' }
+                  }
+                ]
+              }
+            ]
+          }
+        })
+      end
     end
 
-    it 'returns the schema for the given fields' do
-      expect(generator.generate_for([field1, field2])).to eq({
-        'en' => {
-          type: 'Categorization',
-          options: {
-            formId: 'idea-form',
-            inputTerm: 'contribution'
-          },
-          elements: [
-            {
-              type: 'Category',
-              label: I18n.t('custom_forms.categories.main_content.contribution.title', locale: 'en'),
-              options: { id: 'mainContent' },
-              elements: [
-                {
-                  type: 'VerticalLayout',
-                  options: { render: 'multiloc' },
-                  elements: [
-                    {
-                      type: 'Control',
-                      scope: "#/properties/#{field2.key}/properties/en",
-                      label: 'Body multiloc field title',
-                      options: { description: 'Body multiloc field description', render: 'WYSIWYG', locale: 'en' }
-                    },
-                    {
-                      type: 'Control',
-                      scope: "#/properties/#{field2.key}/properties/fr-FR",
-                      label: 'Body multiloc field title',
-                      options: { description: 'Body multiloc field description', render: 'WYSIWYG', locale: 'fr-FR' }
-                    },
-                    {
-                      type: 'Control',
-                      scope: "#/properties/#{field2.key}/properties/nl-NL",
-                      label: 'Body multiloc field title',
-                      options: { description: 'Body multiloc field description', render: 'WYSIWYG', locale: 'nl-NL' }
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              type: 'Category',
-              options: { id: 'extra' },
-              label: I18n.t('custom_forms.categories.extra.title', locale: 'en'),
-              elements: [
-                {
-                  type: 'Control',
-                  scope: "#/properties/#{field1.key}",
-                  label: 'Text title',
-                  options: { description: 'Text description', transform: 'trim_on_blur' }
-                }
-              ]
-            }
-          ]
-        },
-        'fr-FR' => {
-          type: 'Categorization',
-          options: {
-            formId: 'idea-form',
-            inputTerm: 'contribution'
-          },
-          elements: [
-            {
-              type: 'Category',
-              label: I18n.t('custom_forms.categories.main_content.contribution.title', locale: 'fr-FR'),
-              options: { id: 'mainContent' },
-              elements: [
-                {
-                  type: 'VerticalLayout',
-                  options: { render: 'multiloc' },
-                  elements: [
-                    {
-                      type: 'Control',
-                      scope: "#/properties/#{field2.key}/properties/en",
-                      label: 'Body multiloc field title',
-                      options: { description: 'Body multiloc field description', render: 'WYSIWYG', locale: 'en' }
-                    },
-                    {
-                      type: 'Control',
-                      scope: "#/properties/#{field2.key}/properties/fr-FR",
-                      label: 'Body multiloc field title',
-                      options: { description: 'Body multiloc field description', render: 'WYSIWYG', locale: 'fr-FR' }
-                    },
-                    {
-                      type: 'Control',
-                      scope: "#/properties/#{field2.key}/properties/nl-NL",
-                      label: 'Body multiloc field title',
-                      options: { description: 'Body multiloc field description', render: 'WYSIWYG', locale: 'nl-NL' }
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              type: 'Category',
-              options: { id: 'extra' },
-              label: I18n.t('custom_forms.categories.extra.title', locale: 'fr-FR'),
-              elements: [
-                {
-                  type: 'Control',
-                  scope: "#/properties/#{field1.key}",
-                  label: 'Text titre',
-                  options: { description: 'Text description', transform: 'trim_on_blur' }
-                }
-              ]
-            }
-          ]
-        },
-        'nl-NL' => {
-          type: 'Categorization',
-          options: {
-            formId: 'idea-form',
-            inputTerm: 'contribution'
-          },
-          elements: [
-            {
-              type: 'Category',
-              label: I18n.t('custom_forms.categories.main_content.contribution.title', locale: 'nl-NL'),
-              options: { id: 'mainContent' },
-              elements: [
-                {
-                  type: 'VerticalLayout',
-                  options: { render: 'multiloc' },
-                  elements: [
-                    {
-                      type: 'Control',
-                      scope: "#/properties/#{field2.key}/properties/en",
-                      label: 'Body multiloc field title',
-                      options: { description: 'Body multiloc field description', render: 'WYSIWYG', locale: 'en' }
-                    },
-                    {
-                      type: 'Control',
-                      scope: "#/properties/#{field2.key}/properties/fr-FR",
-                      label: 'Body multiloc field title',
-                      options: { description: 'Body multiloc field description', render: 'WYSIWYG', locale: 'fr-FR' }
-                    },
-                    {
-                      type: 'Control',
-                      scope: "#/properties/#{field2.key}/properties/nl-NL",
-                      label: 'Body multiloc field title',
-                      options: { description: 'Body multiloc field description', render: 'WYSIWYG', locale: 'nl-NL' }
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              type: 'Category',
-              options: { id: 'extra' },
-              label: I18n.t('custom_forms.categories.extra.title', locale: 'nl-NL'),
-              elements: [
-                {
-                  type: 'Control',
-                  scope: "#/properties/#{field1.key}",
-                  label: 'Text titel',
-                  options: { description: 'Text description', transform: 'trim_on_blur' }
-                }
-              ]
-            }
-          ]
-        }
-      })
+    context 'for a continuous project' do
+      let(:project) { create(:continuous_project, input_term: 'option') }
+      let(:continuous_fields) do
+        IdeaCustomFieldsService.new(
+          create(:custom_form, project: project)
+        ).all_fields
+      end
+
+      it 'uses the right input_term' do
+        ui_schema = generator.generate_for(continuous_fields)['en']
+        expect(ui_schema.dig(:options, :inputTerm)).to eq 'option'
+      end
+
+      it 'does not include the details category when there are no fields inside' do
+        disabled_codes = %w[proposed_budget budget topic_ids location_description]
+        enabled_fields = continuous_fields.reject do |field|
+          disabled_codes.include?(field.code)
+        end
+        ui_schema = generator.generate_for(enabled_fields)['en']
+        expect(ui_schema[:elements].any? { |e| e[:options][:id] == 'details' }).to be false
+        expect(ui_schema[:elements].any? { |e| e[:options][:id] == 'mainContent' }).to be true
+      end
+
+      it 'does not include the images and attachments category when there are no fields inside' do
+        disabled_codes = %w[idea_images_attributes idea_files_attributes]
+        enabled_fields = continuous_fields.reject do |field|
+          disabled_codes.include?(field.code)
+        end
+        ui_schema = generator.generate_for(enabled_fields)['en']
+        expect(ui_schema[:elements].any? { |e| e[:options][:id] == 'attachments' }).to be false
+        expect(ui_schema[:elements].any? { |e| e[:options][:id] == 'mainContent' }).to be true
+      end
+
+      it 'does not include an extra category when there are only built-in fields' do
+        ui_schema = generator.generate_for(continuous_fields)['en']
+        expect(ui_schema[:elements].any? { |e| e[:options][:id] == 'extra' }).to be false
+        expect(ui_schema[:elements].any? { |e| e[:options][:id] == 'mainContent' }).to be true
+      end
+
+      it 'includes all non built-in fields in an extra category' do
+        continuous_fields.push(create(:custom_field_extra_custom_form, resource: project.custom_form))
+        ui_schema = generator.generate_for(continuous_fields)['en']
+        expect(ui_schema[:elements].any? { |e| e[:options][:id] == 'extra' }).to be true
+        expect(ui_schema[:elements].find { |e| e[:options][:id] == 'extra' }[:elements].size).to eq 1
+        expect(ui_schema[:elements].any? { |e| e[:options][:id] == 'mainContent' }).to be true
+      end
+
+      it 'gives all non built-in fields a nested path' do
+        continuous_fields.push(create(:custom_field_extra_custom_form, resource: project.custom_form))
+        ui_schema = generator.generate_for(continuous_fields)['en']
+        expect(ui_schema[:elements].find { |e| e[:options][:id] == 'extra' }[:elements].size).to eq 1
+        expect(ui_schema[:elements].find { |e| e[:options][:id] == 'extra' }[:elements].first[:scope]).to eq '#/properties/extra_field'
+      end
+    end
+
+    context 'for a timeline project' do
+      let(:timeline_fields) do
+        project_with_current_phase = create(:project_with_current_phase)
+        TimelineService.new.current_phase(project_with_current_phase).update(input_term: 'option')
+        IdeaCustomFieldsService.new(create(:custom_form, project: project_with_current_phase)).all_fields
+      end
+
+      it 'uses the right input_term' do
+        ui_schema = generator.generate_for(timeline_fields)['en']
+        expect(ui_schema.dig(:options, :inputTerm)).to eq 'option'
+      end
     end
   end
 

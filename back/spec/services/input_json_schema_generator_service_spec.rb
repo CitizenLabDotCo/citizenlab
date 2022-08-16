@@ -7,6 +7,199 @@ RSpec.describe InputJsonSchemaGeneratorService do
 
   let(:field_key) { 'field_key' }
 
+  describe '#generate_for' do
+    let(:metaschema) { JSON::Validator.validator_for_name('draft4').metaschema }
+    let(:project) { create(:project) }
+    let(:custom_form) { create(:custom_form, project: project) }
+    let(:fields) { IdeaCustomFieldsService.new(custom_form).visible_fields }
+
+    context 'when there are default fields only' do
+      it 'returns the JSON schema for all enabled built-in fields' do
+        schema = generator.generate_for(fields)['en']
+        expect(JSON::Validator.validate!(metaschema, schema)).to be true
+        expect(schema).to eq({
+          type: 'object',
+          additionalProperties: false,
+          properties: {
+            'author_id' => { type: 'string' },
+            'budget' => { type: 'number' },
+            'title_multiloc' => {
+              type: 'object',
+              minProperties: 1,
+              properties: {
+                'en' => { type: 'string', minLength: 10, maxLength: 80 },
+                'fr-FR' => { type: 'string', minLength: 10, maxLength: 80 },
+                'nl-NL' => { type: 'string', minLength: 10, maxLength: 80 }
+              }
+            },
+            'body_multiloc' => {
+              type: 'object',
+              minProperties: 1,
+              properties: {
+                'en' => { type: 'string', minLength: 40 },
+                'fr-FR' => { type: 'string', minLength: 40 },
+                'nl-NL' => { type: 'string', minLength: 40 }
+              }
+            },
+            'topic_ids' => {
+              type: 'array',
+              uniqueItems: true,
+              minItems: 0,
+              items: { type: 'string' }
+            },
+            'location_description' => { type: 'string' },
+            'idea_images_attributes' => {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: { image: { type: 'string' } }
+              }
+            },
+            'idea_files_attributes' => {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: {
+                  file_by_content: {
+                    type: 'object',
+                    properties: { file: { type: 'string' }, name: { type: 'string' } }
+                  },
+                  name: { type: 'string' }
+                }
+              }
+            }
+          },
+          required: %w[title_multiloc body_multiloc]
+        })
+      end
+    end
+
+    context 'when there is a required extra field' do
+      let!(:custom_field) { create(:custom_field_number, required: true, resource: custom_form) }
+
+      if CitizenLab.ee?
+        it 'returns the JSON schema for all enabled built-in fields, and the extra field' do
+          schema = generator.generate_for(fields)['en']
+          expect(JSON::Validator.validate!(metaschema, schema)).to be true
+          expect(schema).to match({
+            type: 'object',
+            additionalProperties: false,
+            properties: {
+              'author_id' => { type: 'string' },
+              'budget' => { type: 'number' },
+              'title_multiloc' => {
+                type: 'object',
+                minProperties: 1,
+                properties: {
+                  'en' => { type: 'string', minLength: 10, maxLength: 80 },
+                  'fr-FR' => { type: 'string', minLength: 10, maxLength: 80 },
+                  'nl-NL' => { type: 'string', minLength: 10, maxLength: 80 }
+                }
+              },
+              'body_multiloc' => {
+                type: 'object',
+                minProperties: 1,
+                properties: {
+                  'en' => { type: 'string', minLength: 40 },
+                  'fr-FR' => { type: 'string', minLength: 40 },
+                  'nl-NL' => { type: 'string', minLength: 40 }
+                }
+              },
+              'topic_ids' => {
+                type: 'array',
+                uniqueItems: true,
+                minItems: 0,
+                items: { type: 'string' }
+              },
+              'location_description' => { type: 'string' },
+              'idea_images_attributes' => {
+                type: 'array',
+                items: {
+                  type: 'object',
+                  properties: { image: { type: 'string' } }
+                }
+              },
+              'idea_files_attributes' => {
+                type: 'array',
+                items: {
+                  type: 'object',
+                  properties: {
+                    file_by_content: {
+                      type: 'object',
+                      properties: { file: { type: 'string' }, name: { type: 'string' } }
+                    },
+                    name: { type: 'string' }
+                  }
+                }
+              },
+              custom_field.key => { type: 'number' }
+            },
+            required: match_array(['title_multiloc', 'body_multiloc', custom_field.key])
+          })
+        end
+      else
+        it 'returns the JSON schema for all enabled non-hidden default fields (the extra field is ignored)' do
+          schema = generator.generate_for(fields)['en']
+          expect(JSON::Validator.validate!(metaschema, schema)).to be true
+          expect(schema).to eq({
+            type: 'object',
+            additionalProperties: false,
+            properties: {
+              'author_id' => { type: 'string' },
+              'budget' => { type: 'number' },
+              'title_multiloc' => {
+                type: 'object',
+                minProperties: 1,
+                properties: {
+                  'en' => { type: 'string', minLength: 10, maxLength: 80 },
+                  'fr-FR' => { type: 'string', minLength: 10, maxLength: 80 },
+                  'nl-NL' => { type: 'string', minLength: 10, maxLength: 80 }
+                }
+              },
+              'body_multiloc' => {
+                type: 'object',
+                minProperties: 1,
+                properties: {
+                  'en' => { type: 'string', minLength: 40 },
+                  'fr-FR' => { type: 'string', minLength: 40 },
+                  'nl-NL' => { type: 'string', minLength: 40 }
+                }
+              },
+              'topic_ids' => {
+                type: 'array',
+                uniqueItems: true,
+                minItems: 0,
+                items: { type: 'string' }
+              },
+              'location_description' => { type: 'string' },
+              'idea_images_attributes' => {
+                type: 'array',
+                items: {
+                  type: 'object',
+                  properties: { image: { type: 'string' } }
+                }
+              },
+              'idea_files_attributes' => {
+                type: 'array',
+                items: {
+                  type: 'object',
+                  properties: {
+                    file_by_content: {
+                      type: 'object',
+                      properties: { file: { type: 'string' }, name: { type: 'string' } }
+                    },
+                    name: { type: 'string' }
+                  }
+                }
+              }
+            },
+            required: %w[title_multiloc body_multiloc]
+          })
+        end
+      end
+    end
+  end
+
   describe '#visit_text_multiloc' do
     context 'when the code is title_multiloc' do
       let(:field) { create :custom_field, input_type: 'text_multiloc', code: 'title_multiloc', key: field_key }
