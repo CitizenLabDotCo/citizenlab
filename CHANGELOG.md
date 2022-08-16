@@ -1,5 +1,11 @@
 # Changelog
 
+## Next release
+
+### Changed
+
+- Improve error handling and user feedback in the forms for creating pages and custom navigation items 
+
 ## 2022-08-11
 
 ### Fixed
