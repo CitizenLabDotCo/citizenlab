@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class JsonSchemaGeneratorService < FieldVisitorService
-  # Code comes from back/app/services/json_forms_service.rb
-
   def initialize
     super
     configuration = AppConfiguration.instance

@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class InputJsonSchemaGeneratorService < JsonSchemaGeneratorService
-  # Code comes from back/app/services/concerns/json_forms_ideas_overrides.rb
-
   def visit_text_multiloc(field)
     return super unless field.code == 'title_multiloc'
 
