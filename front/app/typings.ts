@@ -197,3 +197,5 @@ export type FormikSubmitHandler<V> = (
 ) => void;
 
 export type Override<T, U> = Pick<T, Exclude<keyof T, keyof U>> & U;
+
+export type Percentage = `${number}%`;

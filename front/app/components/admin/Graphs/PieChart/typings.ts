@@ -1,11 +1,12 @@
 import { RefObject } from 'react';
 import { NilOrError } from 'utils/helperUtils';
+import { Percentage } from 'typings';
 import { Margin, KeyOfType, Channel, Cell } from '../typings';
 
 // PROPS
 export interface Props<Row> {
-  width?: string | number;
-  height?: string | number;
+  width?: Percentage | number;
+  height?: Percentage | number;
   data: Row[] | NilOrError;
   mapping: Mapping<Row>;
   pie?: Pie;

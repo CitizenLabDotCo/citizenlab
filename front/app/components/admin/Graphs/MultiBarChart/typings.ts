@@ -1,4 +1,5 @@
 import { RefObject } from 'react';
+import { Percentage } from 'typings';
 import {
   Margin,
   AxisProps,
@@ -12,8 +13,8 @@ import { NilOrError } from 'utils/helperUtils';
 
 // PROPS
 export interface Props<Row> {
-  width?: string | number;
-  height?: string | number;
+  width?: Percentage | number;
+  height?: Percentage | number;
   data: Row[] | NilOrError;
   mapping: Mapping<Row>;
   bars?: Bars;
