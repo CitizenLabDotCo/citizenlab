@@ -24,8 +24,6 @@ export const legacyColors = {
 };
 
 export const colors = {
-  chartLabel: mainColors.adminSecondaryTextColor,
-  cartesianGrid: '#f5f5f5',
   blue: mainColors.adminTextColor,
   lightBlue: mainColors.clBlueLight,
   categorical01: '#2F478A',

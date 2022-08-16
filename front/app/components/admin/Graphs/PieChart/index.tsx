@@ -10,7 +10,6 @@ import {
 } from 'recharts';
 import { PieChartStyleFixesDiv } from 'components/admin/GraphWrappers';
 import EmptyState from '../EmptyState';
-import CustomLabel from './CustomLabel';
 
 // utils
 import { hasNoData } from '../utils';
@@ -27,7 +26,6 @@ const PieChart = <T,>({
   pie,
   margin,
   centerLabel,
-  centerValue,
   emptyContainerContent,
   innerRef,
 }: Props<T>) => {
@@ -45,10 +43,7 @@ const PieChart = <T,>({
             {pieConfig.cells.map((cell, cellIndex) => (
               <Cell key={`cell-${cellIndex}`} {...cell} />
             ))}
-            <Label
-              content={<CustomLabel value={centerValue} label={centerLabel} />}
-              position="center"
-            />
+            <Label content={centerLabel} position="center" />
           </Pie>
         </RechartsPieChart>
       </ResponsiveContainer>

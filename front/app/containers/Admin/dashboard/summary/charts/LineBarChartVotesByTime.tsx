@@ -5,7 +5,6 @@ import { map, isEmpty } from 'lodash-es';
 
 // styling
 import {
-  colors,
   legacyColors,
   sizes,
   animation,
@@ -297,20 +296,20 @@ class LineBarChartVotesByTime extends React.PureComponent<
                 ref={this.currentChart}
               >
                 <CartesianGrid
-                  stroke={colors.cartesianGrid}
+                  stroke={legacyColors.cartesianGrid}
                   strokeWidth={0.5}
                 />
                 <XAxis
                   dataKey="date"
                   interval="preserveStartEnd"
-                  stroke={colors.chartLabel}
+                  stroke={legacyColors.chartLabel}
                   fontSize={sizes.chartLabel}
                   tick={{ transform: 'translate(0, 7)' }}
                   tickFormatter={this.formatTick}
                   tickLine={false}
                 />
                 <YAxis
-                  stroke={colors.chartLabel}
+                  stroke={legacyColors.chartLabel}
                   fontSize={sizes.chartLabel}
                   yAxisId="cumulatedTotal"
                   tickLine={false}

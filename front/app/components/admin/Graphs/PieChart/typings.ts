@@ -10,8 +10,7 @@ export interface Props<Row> {
   mapping: Mapping<Row>;
   pie?: Pie;
   margin?: Margin;
-  centerLabel?: string;
-  centerValue?: string;
+  centerLabel?: React.ReactElement;
   emptyContainerContent?: React.ReactNode;
   innerRef?: RefObject<any>;
 }
