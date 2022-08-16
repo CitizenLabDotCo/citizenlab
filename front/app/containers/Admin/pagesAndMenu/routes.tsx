@@ -7,15 +7,21 @@ const CustomNavbarContainer = lazy(
 const CustomNavbarSettingsComponent = lazy(
   () => import('./NavigationSettings')
 );
+
+// homepage
+const EditHomepage = lazy(() => import('./EditHomepage'));
 const BottomInfoForm = lazy(() => import('./containers/BottomInfoSection'));
 const TopInfoSection = lazy(() => import('./containers/TopInfoSection'));
 const HeroBannerForm = lazy(() => import('./containers/HeroBanner'));
-const EditHomepage = lazy(() => import('./EditHomepage'));
+
+// custom pages
+const CreateCustomPage = lazy(() => import('./containers/CustomPages/Create'));
 
 // path utils
 const ADMIN_PAGE_PATH = 'pages-menu';
 const PATH_PREFIX = `admin/${ADMIN_PAGE_PATH}`;
 const HOMEPAGE_PATH = 'homepage';
+const CUSTOM_PAGES_PATH = 'custom';
 
 function adminPagesMenuHomepagePath() {
   // could use type checking, I initially edited it to /pages/edit...,
@@ -29,7 +35,7 @@ export { adminPagesMenuHomepagePath };
 export const PAGES_MENU_PATH = '/admin/pages-menu';
 
 export default () => ({
-  path: ADMIN_PAGE_PATH,
+  path: ADMIN_PAGE_PATH, // pages-menu
   children: [
     {
       path: '',
@@ -73,6 +79,10 @@ export default () => ({
     {
       path: HOMEPAGE_PATH,
       element: <EditHomepage />,
+    },
+    {
+      path: `${CUSTOM_PAGES_PATH}/new`,
+      element: <CreateCustomPage />,
     },
     ...moduleConfiguration.routes['admin.pages-menu'],
   ],

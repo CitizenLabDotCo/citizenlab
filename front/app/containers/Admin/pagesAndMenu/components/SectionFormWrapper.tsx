@@ -8,7 +8,7 @@ import PageTitle from 'components/admin/PageTitle';
 import PageWrapper from 'components/admin/PageWrapper';
 
 interface Props {
-  breadcrumbs: { label: string; linkTo?: string }[];
+  breadcrumbs?: { label: string; linkTo?: string }[];
   title?: string | JSX.Element;
   children: JSX.Element | JSX.Element[];
   stickyMenuContents?: JSX.Element | JSX.Element[];
@@ -25,7 +25,7 @@ const SectionFormWrapper = ({
   return (
     <>
       <Box mb="16px">
-        <Breadcrumbs breadcrumbs={breadcrumbs} />
+        {breadcrumbs && <Breadcrumbs breadcrumbs={breadcrumbs} />}
       </Box>
       <Box display="flex" justifyContent="space-between">
         {title && (
