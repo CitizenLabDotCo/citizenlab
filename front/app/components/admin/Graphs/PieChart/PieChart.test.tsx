@@ -1,21 +1,38 @@
 import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
 import PieChart from './';
+import { NilOrError } from 'utils/helperUtils';
 
 jest.mock('services/appConfiguration');
 jest.mock('utils/cl-intl');
 
+type Row = { a: number; name: string };
+
+const data: Row[] = [
+  { a: 10, name: 'x' },
+  { a: 5, name: 'y' },
+];
+const getData = (): Row[] | NilOrError => data;
+const getErrorData = (): Row[] | NilOrError => new Error();
+
 describe('<PieChart />', () => {
   describe('Missing data', () => {
     it('renders empty state message if data is nil', () => {
-      render(<PieChart emptyContainerContent={'No data available'} />);
+      render(
+        <PieChart
+          data={getData()}
+          mapping={{ angle: 'a', name: 'name' }}
+          emptyContainerContent={'No data available'}
+        />
+      );
       expect(screen.getByText('No data available')).toBeInTheDocument();
     });
 
     it('renders empty state message if data is Error', () => {
       render(
         <PieChart
-          data={new Error()}
+          data={getErrorData()}
+          mapping={{ angle: 'a', name: 'name' }}
           emptyContainerContent={'No data available'}
         />
       );
