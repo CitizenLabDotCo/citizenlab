@@ -35,7 +35,8 @@ class InputJsonSchemaGeneratorService < JsonSchemaGeneratorService
   def visit_multiselect(field)
     return super unless field.code == 'topic_ids'
 
-    # TODO: can `project` be nil?
+    # TODO: (native surveys) can `project` be nil?
+    # TODO: (native surveys) the next line will not work when we attach forms to phases.
     topics = field.resource.project&.allowed_input_topics
     {
       type: 'array',
