@@ -83,12 +83,6 @@ class UiSchemaGeneratorService < FieldVisitorService
     raise NotImplementedError
   end
 
-  def visit_or_filter(field)
-    return nil if !field || !field.enabled? || field.hidden?
-
-    visit field
-  end
-
   private
 
   attr_reader :locales, :multiloc_service, :current_locale

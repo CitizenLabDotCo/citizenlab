@@ -5,7 +5,7 @@ require 'rails_helper'
 class UiSchemaGeneratorServiceSubclass < UiSchemaGeneratorService
   def generate_for_current_locale(fields)
     {
-      elements: fields.map { |field| visit_or_filter field }
+      elements: fields.map { |field| visit field }
     }
   end
 end

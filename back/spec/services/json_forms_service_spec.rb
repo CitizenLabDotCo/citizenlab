@@ -104,9 +104,7 @@ describe JsonFormsService do
               },
                           'field5' =>
               { type: 'boolean' },
-                          'field6' =>
-              { type: 'string',
-                format: 'date' },
+                          # field6 is excluded because it is disabled.
                           'field7' =>
               { type: 'number' },
                           'field8' =>

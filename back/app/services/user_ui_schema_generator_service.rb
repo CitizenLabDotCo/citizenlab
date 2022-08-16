@@ -10,7 +10,7 @@ class UserUiSchemaGeneratorService < UiSchemaGeneratorService
         formId: 'user-form'
       },
       elements: fields.filter_map do |field|
-        visit_or_filter field
+        visit field
       end
     }
   end

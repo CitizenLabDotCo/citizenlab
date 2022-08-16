@@ -16,59 +16,38 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   def generate_for_current_locale(fields)
     project = fields.first.resource.project
     input_term = ParticipationContextService.new.get_participation_context(project)&.input_term || 'idea'
+    built_in_field_index = fields.select(&:built_in?).index_by(&:code)
+    main_fields = built_in_field_index.slice('title_multiloc', 'author_id', 'body_multiloc').values
+    details_fields = built_in_field_index.slice('proposed_budget', 'budget', 'topic_ids', 'location_description').values
+    attachments_fields = built_in_field_index.slice('idea_images_attributes', 'idea_files_attributes').values
+    custom_fields = fields.reject(&:built_in?)
 
+    elements = [
+      category_for(main_fields, 'mainContent', "custom_forms.categories.main_content.#{input_term}.title"),
+      category_for(details_fields, 'details', 'custom_forms.categories.details.title'),
+      category_for(attachments_fields, 'attachments', 'custom_forms.categories.attachements.title'),
+      category_for(custom_fields, 'extra', 'custom_forms.categories.extra.title')
+    ].compact
     {
       type: 'Categorization',
       options: {
         formId: 'idea-form',
         inputTerm: input_term
       },
-      elements: drop_empty_categories([
-        {
-          type: 'Category',
-          label: I18n.t("custom_forms.categories.main_content.#{input_term}.title", locale: current_locale),
-          options: { id: 'mainContent' },
-          elements: [
-            visit_or_filter(fields.find { |f| f.code == 'title_multiloc' }),
-            visit_or_filter(fields.find { |f| f.code == 'author_id' }),
-            visit_or_filter(fields.find { |f| f.code == 'body_multiloc' })
-          ].compact
-        },
-        {
-          type: 'Category',
-          options: { id: 'details' },
-          label: I18n.t('custom_forms.categories.details.title', locale: current_locale),
-          elements: [
-            visit_or_filter(fields.find { |f| f.code == 'proposed_budget' }),
-            visit_or_filter(fields.find { |f| f.code == 'budget' }),
-            visit_or_filter(fields.find { |f| f.code == 'topic_ids' }),
-            visit_or_filter(fields.find { |f| f.code == 'location_description' })
-          ].compact
-        },
-        {
-          type: 'Category',
-          label: I18n.t('custom_forms.categories.attachements.title', locale: current_locale),
-          options: { id: 'attachments' },
-          elements: [
-            visit_or_filter(fields.find { |f| f.code == 'idea_images_attributes' }),
-            visit_or_filter(fields.find { |f| f.code == 'idea_files_attributes' })
-          ].compact
-        },
-        {
-          type: 'Category',
-          options: { id: 'extra' },
-          label: I18n.t('custom_forms.categories.extra.title', locale: current_locale),
-          elements: fields.reject(&:built_in?).map { |field| visit_or_filter field }
-        }
-      ].compact)
+      elements: elements
     }
   end
 
   private
 
-  def drop_empty_categories(categories)
-    categories.reject do |category|
-      category[:elements].empty?
-    end
+  def category_for(fields, category_id, translation_key)
+    return if fields.empty?
+
+    {
+      type: 'Category',
+      label: I18n.t(translation_key, locale: current_locale),
+      options: { id: category_id },
+      elements: fields.map { |field| visit field }
+    }
   end
 end
