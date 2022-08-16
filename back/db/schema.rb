@@ -218,7 +218,7 @@ ActiveRecord::Schema.define(version: 2022_08_09_141825) do
     t.jsonb "banner_subheader_multiloc", default: {}, null: false
     t.boolean "top_info_section_enabled", default: false, null: false
     t.jsonb "top_info_section_multiloc", default: {}, null: false
-    t.boolean "file_section_enabled", default: false, null: false
+    t.boolean "files_section_enabled", default: false, null: false
     t.boolean "projects_enabled", default: false, null: false
     t.string "projects_filter_type"
     t.boolean "events_widget_enabled", default: false, null: false

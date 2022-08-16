@@ -18,7 +18,7 @@
 #  banner_subheader_multiloc    :jsonb            not null
 #  top_info_section_enabled     :boolean          default(FALSE), not null
 #  top_info_section_multiloc    :jsonb            not null
-#  file_section_enabled         :boolean          default(FALSE), not null
+#  files_section_enabled        :boolean          default(FALSE), not null
 #  projects_enabled             :boolean          default(FALSE), not null
 #  projects_filter_type         :string
 #  events_widget_enabled        :boolean          default(FALSE), not null
@@ -68,6 +68,8 @@ class CustomPage < ApplicationRecord
 
   validates :top_info_section_enabled, inclusion: [true, false]
   validates :top_info_section_multiloc, multiloc: { presence: false, html: true }
+
+  validates :files_section_enabled, inclusion: [true, false]
 
   validates :projects_enabled, inclusion: [true, false]
   with_options if: -> { projects_enabled == true } do

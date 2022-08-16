@@ -19,7 +19,7 @@ class CreateCustomPages < ActiveRecord::Migration[6.1]
       t.boolean :top_info_section_enabled, default: false, null: false
       t.jsonb :top_info_section_multiloc, default: {}, null: false
 
-      t.boolean :file_section_enabled, default: false, null: false
+      t.boolean :files_section_enabled, default: false, null: false
 
       t.boolean :projects_enabled, default: false, null: false
       t.string :projects_filter_type
