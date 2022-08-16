@@ -2,7 +2,6 @@
 
 FactoryBot.define do
   factory :custom_page do
-    code { 'custom' }
     title_multiloc do
       {
         'en' => 'My amazing custom page',

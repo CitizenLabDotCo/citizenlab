@@ -7,7 +7,6 @@
 #  id                           :uuid             not null, primary key
 #  title_multiloc               :jsonb            not null
 #  slug                         :string
-#  code                         :string           default("custom"), not null
 #  banner_enabled               :boolean          default(TRUE), not null
 #  banner_layout                :string           default("full_width_banner_layout"), not null
 #  banner_overlay_color         :string
@@ -19,6 +18,7 @@
 #  banner_subheader_multiloc    :jsonb            not null
 #  top_info_section_enabled     :boolean          default(FALSE), not null
 #  top_info_section_multiloc    :jsonb            not null
+#  files_section_enabled        :boolean          default(FALSE), not null
 #  projects_enabled             :boolean          default(FALSE), not null
 #  projects_filter_type         :string
 #  events_widget_enabled        :boolean          default(FALSE), not null
@@ -30,12 +30,9 @@
 #
 # Indexes
 #
-#  index_custom_pages_on_code  (code)
 #  index_custom_pages_on_slug  (slug) UNIQUE
 #
 class CustomPage < ApplicationRecord
-  CODES = %w[about faq proposals custom].freeze
-
   has_many :pins, as: :page, inverse_of: :page, dependent: :destroy
   has_many :pinned_admin_publications, through: :pins, source: :admin_publication
 
@@ -46,15 +43,14 @@ class CustomPage < ApplicationRecord
 
   accepts_nested_attributes_for :pinned_admin_publications, allow_destroy: true
 
+  before_validation :strip_title
+  before_validation :generate_slug, on: :create
   before_validation :sanitize_top_info_section_multiloc
   before_validation :sanitize_bottom_info_section_multiloc
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
 
   validates :slug, presence: true, uniqueness: true
-
-  validates :code, inclusion: { in: CODES }
-  validates :code, uniqueness: true, unless: :custom?
 
   validates :banner_enabled, inclusion: [true, false]
   validates :banner_layout, inclusion: %w[full_width_banner_layout two_column_layout two_row_layout]
@@ -73,6 +69,8 @@ class CustomPage < ApplicationRecord
   validates :top_info_section_enabled, inclusion: [true, false]
   validates :top_info_section_multiloc, multiloc: { presence: false, html: true }
 
+  validates :files_section_enabled, inclusion: [true, false]
+
   validates :projects_enabled, inclusion: [true, false]
   with_options if: -> { projects_enabled == true } do
     validates :projects_filter_type, presence: true, inclusion: %w[area topics]
@@ -85,11 +83,17 @@ class CustomPage < ApplicationRecord
 
   mount_base64_uploader :header_bg, HeaderBgUploader
 
-  def custom?
-    code == 'custom'
+  private
+
+  def strip_title
+    title_multiloc.each do |key, value|
+      title_multiloc[key] = value.strip
+    end
   end
 
-  private
+  def generate_slug
+    self.slug ||= SlugService.new.generate_slug self, title_multiloc.values.first
+  end
 
   def sanitize_top_info_section_multiloc
     sanitize_info_section_multiloc(:top_info_section_multiloc)
