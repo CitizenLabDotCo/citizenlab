@@ -85,4 +85,10 @@ class AdminPublicationsFilteringService
   add_filter('top_level_only') do |scope, options|
     [0, '0'].include?(options[:depth]) ? scope.where(depth: 0) : scope
   end
+
+  # Keep that as the last filter, this acts as a failsafe.
+  # If any of the filters before return duplicate admin publications, we remove them at the last step
+  add_filter('distinct') do |scope, _options|
+    scope.distinct
+  end
 end
