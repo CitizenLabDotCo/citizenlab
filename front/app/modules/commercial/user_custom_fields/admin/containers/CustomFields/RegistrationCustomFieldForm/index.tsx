@@ -92,6 +92,7 @@ const RegistrationCustomFieldForm = ({
               name="input_type"
               options={inputTypeOptions()}
               label={formatMessage(messages.answerFormat)}
+              disabled={mode === 'edit' || builtInField}
             />
           </SectionField>
           <SectionField>
@@ -102,7 +103,6 @@ const RegistrationCustomFieldForm = ({
               disabled={builtInField}
             />
           </SectionField>
-
           <SectionField>
             <TextAreaMultilocWithLocaleSwitcher
               name="description_multiloc"
@@ -110,7 +110,6 @@ const RegistrationCustomFieldForm = ({
               disabled={builtInField}
             />
           </SectionField>
-
           <SectionField>
             <Toggle
               name="required"
@@ -118,7 +117,6 @@ const RegistrationCustomFieldForm = ({
             />
           </SectionField>
         </Section>
-
         <Box display="flex">
           <Button type="submit" processing={methods.formState.isSubmitting}>
             Save field
