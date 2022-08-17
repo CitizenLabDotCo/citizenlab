@@ -71,6 +71,8 @@ import { BannerButtonStyle } from 'containers/LandingPage/BannerButton';
 import { AuthProvider } from 'components/SignUpIn/AuthProviders';
 import { Localize } from 'hooks/useLocalize';
 import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/projects/project/general';
+import { FormikErrors } from 'formik';
+import { FormValues as PageFormValues } from 'components/PageForm';
 
 export type ITabsOutlet = {
   formatMessage: (
@@ -404,6 +406,9 @@ export interface OutletsPropertyMap {
     string,
     any
   >;
+  'app.components.PageForm.index.top': {
+    errors: FormikErrors<PageFormValues>;
+  };
 }
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];

@@ -1,7 +1,7 @@
 import React, { lazy } from 'react';
 import PageLoading from 'components/UI/PageLoading';
 import moduleConfiguration from 'modules';
-import EditPageFormNotInNavbar from './containers/EditPageForm/EditPageFormNotInNavbar';
+import EditPageForm from './containers/EditPageForm';
 const CustomNavbarContainer = lazy(
   () => import('containers/Admin/pagesAndMenu')
 );
@@ -76,8 +76,8 @@ export default () => ({
       element: <EditHomepage />,
     },
     {
-      path: 'pages/edit/:pageId', // used only if the same route is not loaded by `customizable_navbar` module
-      element: <EditPageFormNotInNavbar hideSlugInput />,
+      path: 'pages/edit/:pageId',
+      element: <EditPageForm />,
     },
     ...moduleConfiguration.routes['admin.pages-menu'],
   ],

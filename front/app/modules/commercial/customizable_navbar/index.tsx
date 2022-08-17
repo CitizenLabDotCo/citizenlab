@@ -4,9 +4,9 @@ import FeatureFlag from 'components/FeatureFlag';
 import ModuleActive from './admin/components/ModuleActive';
 import PoliciesSubtitle from './admin/components/PoliciesSubtitle';
 import PagesMenu from './admin/containers';
+import NavbarTitleField from './admin/components/NavbarTitleField';
 
 const NewPageForm = lazy(() => import('./admin/containers/NewPageForm'));
-const EditPageForm = lazy(() => import('./admin/containers/EditPageForm'));
 const EditNavbarItemForm = lazy(
   () => import('./admin/containers/EditNavbarItemForm')
 );
@@ -20,10 +20,6 @@ const configuration: ModuleConfiguration = {
       {
         path: 'pages/new',
         element: <NewPageForm />,
-      },
-      {
-        path: 'pages/edit/:pageId',
-        element: <EditPageForm />,
       },
       {
         path: 'navbar-items/edit/:navbarItemId',
@@ -55,6 +51,11 @@ const configuration: ModuleConfiguration = {
     'app.containers.Admin.pages-menu.NavigationSettings': () => (
       <FeatureFlag name="customizable_navbar">
         <NavigationSettings />
+      </FeatureFlag>
+    ),
+    'app.components.PageForm.index.top': ({ errors }) => (
+      <FeatureFlag name="customizable_navbar">
+        <NavbarTitleField error={errors.nav_bar_item_title_multiloc} />
       </FeatureFlag>
     ),
   },

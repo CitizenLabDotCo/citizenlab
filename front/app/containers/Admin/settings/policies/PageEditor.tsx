@@ -165,6 +165,10 @@ const PageEditor = ({ className, pageSlug }: Props) => {
           <EditionForm>
             <Formik
               initialValues={{
+                nav_bar_item_title_multiloc: truncateMultiloc(
+                  page.attributes.nav_bar_item_title_multiloc,
+                  MAX_TITLE_LENGTH
+                ),
                 title_multiloc: page.attributes.title_multiloc,
                 body_multiloc: page.attributes.body_multiloc,
                 slug: page.attributes.slug,
