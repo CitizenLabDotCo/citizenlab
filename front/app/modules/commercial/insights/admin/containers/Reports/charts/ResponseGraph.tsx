@@ -102,7 +102,7 @@ export const ResponseGraph = memo(
             margin={{ right: 20, top: 10 }}
             xaxis={{ hide: true }}
             yaxis={{ width: 150, tickLine: false, hide: true }}
-            renderLabels={() => (
+            labels={() => (
               <>
                 <LabelList
                   dataKey="name"

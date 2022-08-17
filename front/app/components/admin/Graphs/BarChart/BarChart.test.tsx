@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
 import BarChart from './';
-import { LabelList } from 'recharts';
 import { NilOrError } from 'utils/helperUtils';
 import { legacyColors } from '../styling';
 
@@ -236,7 +235,7 @@ describe('<BarChart />', () => {
       { name: 'c', value: 10 },
     ];
 
-    it('does not render labels without providing renderLabels', () => {
+    it('does not render labels without providing labels', () => {
       render(
         <BarChart
           width={400}
@@ -259,7 +258,7 @@ describe('<BarChart />', () => {
           data={data}
           mapping={{ category: 'name', length: 'value' }}
           bars={{ isAnimationActive: false }}
-          renderLabels={() => <LabelList />}
+          labels
         />
       );
 

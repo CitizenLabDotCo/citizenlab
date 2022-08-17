@@ -23,7 +23,7 @@ import {
   GraphCard,
   GraphCardInner,
 } from 'components/admin/GraphWrappers';
-import { Tooltip, LabelList } from 'recharts';
+import { Tooltip } from 'recharts';
 import BarChart from 'components/admin/Graphs/BarChart';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
@@ -237,6 +237,7 @@ const CustomFieldsGraph = ({
             left: 20,
           }}
           yaxis={{ width: 150, tickLine: false }}
+          labels
           renderTooltip={() => (
             <>
               <Tooltip
@@ -251,7 +252,6 @@ const CustomFieldsGraph = ({
               />
             </>
           )}
-          renderLabels={(props) => <LabelList {...props} />}
         />
       </GraphCardInner>
     </GraphCard>

@@ -3,7 +3,6 @@ import { Percentage } from 'typings';
 import {
   Margin,
   AxisProps,
-  RenderLabelsProps,
   RenderTooltipProps,
   KeyOfType,
   Channel,
@@ -22,7 +21,7 @@ export interface Props<Row> {
   margin?: Margin;
   xaxis?: AxisProps;
   yaxis?: AxisProps;
-  renderLabels?: (props: RenderLabelsProps) => React.ReactNode;
+  labels?: boolean | Labels | ((props: LabelConfig) => React.ReactNode);
   renderTooltip?: (props: RenderTooltipProps) => React.ReactNode;
   emptyContainerContent?: React.ReactNode;
   innerRef?: RefObject<any>;
@@ -42,7 +41,14 @@ export interface Bars {
   isAnimationActive?: boolean;
 }
 
-// PARSED CONFIG
+export interface Labels {
+  fill?: string;
+  fontSize?: number;
+  position?: 'top' | 'right';
+  formatter?: (value: number) => string;
+}
+
+// PARSED CONFIGS
 export interface BarConfig {
   props: {
     name?: string;
@@ -51,6 +57,13 @@ export interface BarConfig {
     isAnimationActive?: boolean;
   };
   cells: Cell[];
+}
+
+export interface LabelConfig {
+  fill: string;
+  fontSize: number;
+  position: 'top' | 'right';
+  formatter?: (value: number) => string;
 }
 
 // LAYOUT

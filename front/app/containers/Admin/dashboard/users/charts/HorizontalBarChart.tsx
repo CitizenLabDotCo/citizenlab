@@ -22,7 +22,6 @@ import {
   GraphCardInner,
 } from 'components/admin/GraphWrappers';
 import BarChart from 'components/admin/Graphs/BarChart';
-import { LabelList } from 'recharts';
 import ReportExportMenu from 'components/admin/ReportExportMenu';
 
 // resources
@@ -120,7 +119,7 @@ export class HorizontalBarChart extends React.PureComponent<
             layout="horizontal"
             margin={DEFAULT_BAR_CHART_MARGIN}
             yaxis={{ width: 150, tickLine: false }}
-            renderLabels={(props) => <LabelList {...props} />}
+            labels
           />
         </GraphCardInner>
       </GraphCard>

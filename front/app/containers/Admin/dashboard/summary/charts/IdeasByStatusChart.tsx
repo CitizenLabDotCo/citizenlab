@@ -23,7 +23,7 @@ import {
   GraphCardInner,
 } from 'components/admin/GraphWrappers';
 import BarChart from 'components/admin/Graphs/BarChart';
-import { Tooltip, LabelList } from 'recharts';
+import { Tooltip } from 'recharts';
 
 // resources
 import GetSerieFromStream from 'resources/GetSerieFromStream';
@@ -117,7 +117,7 @@ export class IdeasByStatusChart extends React.PureComponent<
               size: sizes.bar,
             }}
             yaxis={{ width: 150, tickLine: false }}
-            renderLabels={(props) => <LabelList {...props} position="right" />}
+            labels
             renderTooltip={(props) => <Tooltip {...props} />}
           />
         </GraphCardInner>

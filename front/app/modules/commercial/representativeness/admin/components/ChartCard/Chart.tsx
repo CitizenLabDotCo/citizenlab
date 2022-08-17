@@ -8,7 +8,7 @@ import {
 
 // components
 import MultiBarChart from 'components/admin/Graphs/MultiBarChart';
-import { LabelList, Tooltip } from 'recharts';
+import { Tooltip } from 'recharts';
 import CustomTooltip from './CustomTooltip';
 
 // utils
@@ -47,11 +47,7 @@ const Chart = ({ currentChartRef, data, barNames, hideTicks }: Props) => {
         hideTicks ? { tickFormatter: emptyString, tickLine: false } : undefined
       }
       yaxis={{ tickFormatter: formatPercentage }}
-      renderLabels={
-        hideLabels
-          ? undefined
-          : (props) => <LabelList {...props} formatter={formatPercentage} />
-      }
+      labels={hideLabels ? undefined : { formatter: formatPercentage }}
       renderTooltip={(props) => (
         <Tooltip
           {...props}

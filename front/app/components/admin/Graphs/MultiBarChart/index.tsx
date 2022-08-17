@@ -15,11 +15,12 @@ import {
   XAxis,
   YAxis,
   Cell,
+  LabelList,
 } from 'recharts';
 import EmptyState from '../_components/EmptyState';
 
 // utils
-import { getBarConfigs, getRechartsLayout } from './utils';
+import { getBarConfigs, getRechartsLayout, getLabelConfig } from './utils';
 import { hasNoData } from '../utils';
 
 // typings
@@ -35,7 +36,7 @@ const MultiBarChart = <T,>({
   margin,
   xaxis,
   yaxis,
-  renderLabels,
+  labels,
   renderTooltip,
   emptyContainerContent,
   innerRef,
@@ -46,8 +47,10 @@ const MultiBarChart = <T,>({
 
   const barConfigs = getBarConfigs(data, mapping, bars);
   const rechartsLayout = getRechartsLayout(layout);
-  const labelPosition = layout === 'vertical' ? 'top' : 'right';
   const category = mapping.category as string;
+
+  const labelPosition = layout === 'vertical' ? 'top' : 'right';
+  const labelConfig = getLabelConfig(labels, labelPosition);
 
   return (
     <ResponsiveContainer width={width} height={height}>
@@ -73,12 +76,10 @@ const MultiBarChart = <T,>({
             fill={legacyColors.barFill}
             {...barConfig.props}
           >
-            {renderLabels &&
-              renderLabels({
-                fill: legacyColors.chartLabel,
-                fontSize: sizes.chartLabel,
-                position: labelPosition,
-              })}
+            {(typeof labels === 'object' || labels === true) && (
+              <LabelList {...labelConfig} />
+            )}
+            {typeof labels === 'function' && labels(labelConfig)}
 
             {barConfig.cells.map((cell, cellIndex) => (
               <Cell key={`cell-${barIndex}-${cellIndex}`} {...cell} />

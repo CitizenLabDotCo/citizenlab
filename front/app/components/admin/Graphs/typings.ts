@@ -21,13 +21,6 @@ export interface AxisProps {
   hide?: boolean;
 }
 
-// LABELS
-export interface RenderLabelsProps {
-  fill: string;
-  fontSize: number;
-  position: 'top' | 'right';
-}
-
 // TOOLTIP
 export interface RenderTooltipProps {
   isAnimationActive: false;

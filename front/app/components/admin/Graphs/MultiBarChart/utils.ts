@@ -1,8 +1,15 @@
 // styling
-import { legacyColors } from '../styling';
+import { legacyColors, sizes } from '../styling';
 
 // typings
-import { Mapping, Bars, BarConfig, Layout } from './typings';
+import {
+  Props,
+  Mapping,
+  Bars,
+  BarConfig,
+  Layout,
+  LabelConfig,
+} from './typings';
 
 const FALLBACK_FILL = legacyColors.barFill;
 
@@ -38,3 +45,20 @@ export const getBarConfigs = <Row>(
 // we use the correct terminology
 export const getRechartsLayout = (layout: Layout) =>
   layout === 'vertical' ? 'horizontal' : 'vertical';
+
+export const getLabelConfig = (
+  labels: Props<any>['labels'],
+  position: 'top' | 'right'
+): LabelConfig => {
+  const defaultLabelConfig = {
+    fill: legacyColors.chartLabel,
+    fontSize: sizes.chartLabel,
+    position,
+  };
+
+  if (typeof labels === 'object') {
+    return { ...defaultLabelConfig, ...labels };
+  }
+
+  return defaultLabelConfig;
+};

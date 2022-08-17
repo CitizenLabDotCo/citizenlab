@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen, waitFor } from 'utils/testUtils/rtl';
 import MultiBarChart from './';
-import { LabelList } from 'recharts';
 import { NilOrError } from 'utils/helperUtils';
 import { legacyColors } from '../styling';
 
@@ -276,7 +275,7 @@ describe('<MultiBarChart />', () => {
       { name: 'c', value1: 10, value2: 9.31 },
     ];
 
-    it('does not render labels without providing renderLabels', () => {
+    it('does not render labels without providing labels', () => {
       render(
         <MultiBarChart
           width={400}
@@ -300,7 +299,7 @@ describe('<MultiBarChart />', () => {
           data={data}
           mapping={{ category: 'name', length: ['value1', 'value2'] }}
           bars={{ isAnimationActive: false }}
-          renderLabels={() => <LabelList />}
+          labels
         />
       );
 
