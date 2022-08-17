@@ -11,6 +11,7 @@ export interface Props<Row> {
   mapping: Mapping<Row>;
   pie?: Pie;
   margin?: Margin;
+  annotations?: boolean | ((row: Row) => string);
   centerLabel?: React.ReactElement;
   emptyContainerContent?: React.ReactNode;
   innerRef?: RefObject<any>;
@@ -41,6 +42,7 @@ export interface PieConfig {
     outerRadius?: number | string;
     startAngle?: number;
     endAngle?: number;
+    label?: any;
   };
   cells: Cell[];
 }

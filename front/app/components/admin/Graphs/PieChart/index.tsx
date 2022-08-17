@@ -2,11 +2,11 @@ import React from 'react';
 
 // components
 import {
+  ResponsiveContainer,
   PieChart as RechartsPieChart,
   Pie,
   Cell,
   Label,
-  ResponsiveContainer,
 } from 'recharts';
 import EmptyState from '../_components/EmptyState';
 
@@ -24,6 +24,7 @@ const PieChart = <T,>({
   mapping,
   pie,
   margin,
+  annotations,
   centerLabel,
   emptyContainerContent,
   innerRef,
@@ -32,7 +33,7 @@ const PieChart = <T,>({
     return <EmptyState emptyContainerContent={emptyContainerContent} />;
   }
 
-  const pieConfig = getPieConfig(data, mapping, pie);
+  const pieConfig = getPieConfig(data, mapping, pie, annotations);
 
   return (
     <ResponsiveContainer width={width} height={height}>
