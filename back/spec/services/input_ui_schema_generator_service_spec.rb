@@ -10,7 +10,7 @@ RSpec.describe InputUiSchemaGeneratorService do
   describe '#generate_for' do
     context 'for project with a built-in field and an extra field' do
       let(:project) { create :continuous_project, input_term: 'contribution' }
-      let(:custom_form) { create :custom_form, project: project }
+      let(:custom_form) { create :custom_form, participation_context: project }
       let(:field1) do
         create(
           :custom_field,
@@ -202,7 +202,7 @@ RSpec.describe InputUiSchemaGeneratorService do
       let(:project) { create(:continuous_project, input_term: 'option') }
       let(:continuous_fields) do
         IdeaCustomFieldsService.new(
-          create(:custom_form, project: project)
+          create(:custom_form, participation_context: project)
         ).all_fields
       end
 
@@ -257,7 +257,7 @@ RSpec.describe InputUiSchemaGeneratorService do
       let(:timeline_fields) do
         project_with_current_phase = create(:project_with_current_phase)
         TimelineService.new.current_phase(project_with_current_phase).update(input_term: 'option')
-        IdeaCustomFieldsService.new(create(:custom_form, project: project_with_current_phase)).all_fields
+        IdeaCustomFieldsService.new(create(:custom_form, participation_context: project_with_current_phase)).all_fields
       end
 
       it 'uses the right input_term' do

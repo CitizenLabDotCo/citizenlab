@@ -44,7 +44,7 @@ describe IdeaCustomFieldsService do
 
   describe 'allowed_extra_field_keys' do
     let(:project) { create :project }
-    let(:custom_form) { create :custom_form, project: project }
+    let(:custom_form) { create :custom_form, participation_context: project }
 
     it 'lists keys' do
       create(

@@ -47,12 +47,7 @@ class IdeaCustomFieldsService
   attr_reader :custom_form
 
   def native_survey?
-    return false unless custom_form
-
-    participation_context = ::ParticipationContextService.new.get_participation_context(custom_form.project)
-    return false unless participation_context
-
-    participation_context.native_survey?
+    !!custom_form&.participation_context&.native_survey?
   end
 
   def default_fields

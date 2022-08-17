@@ -20,7 +20,7 @@ resource 'Idea Custom Fields' do
     get 'web_api/v1/admin/projects/:project_id/custom_fields' do
       let(:project) { create(:project) }
       let(:project_id) { project.id }
-      let(:form) { create(:custom_form, project: project) }
+      let(:form) { create(:custom_form, participation_context: project) }
       let!(:custom_field) do
         create :custom_field, resource: form, key: 'extra_field1'
       end
@@ -187,7 +187,7 @@ resource 'Idea Custom Fields' do
       end
 
       let(:project) { create(:continuous_project, participation_method: 'native_survey') }
-      let(:custom_form) { create(:custom_form, project: project) }
+      let(:custom_form) { create(:custom_form, participation_context: project) }
       let(:project_id) { project.id }
 
       example '[error] Invalid data' do
