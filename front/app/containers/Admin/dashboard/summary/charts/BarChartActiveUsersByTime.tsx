@@ -22,7 +22,6 @@ import {
   GraphCardTitle,
 } from 'components/admin/GraphWrappers';
 import BarChart from 'components/admin/Graphs/BarChart';
-import { Tooltip } from 'recharts';
 import { IResolution } from 'components/admin/ResolutionControl';
 import { Popup } from 'semantic-ui-react';
 import { Icon } from '@citizenlab/cl2-component-library';
@@ -40,7 +39,7 @@ const InfoIcon = styled(Icon)`
   margin-left: 10px;
 `;
 
-type Row = { name: string, code: string, value: number };
+type Row = { name: string; code: string; value: number };
 
 type State = {
   serie: Row[] | null;
@@ -229,13 +228,11 @@ class BarChartActiveUsersByTime extends React.PureComponent<
             data={serie}
             mapping={{
               category: 'name',
-              length: 'value'
+              length: 'value',
             }}
             innerRef={this.currentChart}
             xaxis={{ tickFormatter: this.formatTick }}
-            renderTooltip={(props) => (
-              <Tooltip {...props} labelFormatter={this.formatLabel} />
-            )}
+            tooltip={{ labelFormatter: this.formatLabel }}
           />
         </GraphCardInner>
       </GraphCard>

@@ -16,11 +16,17 @@ import {
   YAxis,
   Cell,
   LabelList,
+  Tooltip,
 } from 'recharts';
 import EmptyState from '../_components/EmptyState';
 
 // utils
-import { getBarConfigs, getRechartsLayout, getLabelConfig } from './utils';
+import {
+  getBarConfigs,
+  getRechartsLayout,
+  getLabelConfig,
+  getTooltipConfig,
+} from './utils';
 import { hasNoData } from '../utils';
 
 // typings
@@ -37,7 +43,7 @@ const MultiBarChart = <T,>({
   xaxis,
   yaxis,
   labels,
-  renderTooltip,
+  tooltip,
   emptyContainerContent,
   innerRef,
 }: Props<T>) => {
@@ -51,6 +57,7 @@ const MultiBarChart = <T,>({
 
   const labelPosition = layout === 'vertical' ? 'top' : 'right';
   const labelConfig = getLabelConfig(labels, labelPosition);
+  const tooltipConfig = getTooltipConfig(tooltip);
 
   return (
     <ResponsiveContainer width={width} height={height}>
@@ -62,11 +69,10 @@ const MultiBarChart = <T,>({
         barGap={0}
         barCategoryGap={bars?.categoryGap}
       >
-        {renderTooltip &&
-          renderTooltip({
-            isAnimationActive: false,
-            cursor: { fill: legacyColors.barHover },
-          })}
+        {(typeof tooltip === 'object' || tooltip === true) && (
+          <Tooltip {...tooltipConfig} />
+        )}
+        {typeof tooltip === 'function' && tooltip(tooltipConfig)}
 
         {barConfigs.map((barConfig, barIndex) => (
           <Bar

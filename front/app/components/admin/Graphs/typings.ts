@@ -21,12 +21,6 @@ export interface AxisProps {
   hide?: boolean;
 }
 
-// TOOLTIP
-export interface RenderTooltipProps {
-  isAnimationActive: false;
-  cursor: { fill: string };
-}
-
 // UTILS
 // https://stackoverflow.com/a/49752227
 export type KeyOfType<T, V> = keyof {

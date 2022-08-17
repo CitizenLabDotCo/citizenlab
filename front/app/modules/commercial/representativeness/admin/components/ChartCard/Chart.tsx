@@ -48,7 +48,7 @@ const Chart = ({ currentChartRef, data, barNames, hideTicks }: Props) => {
       }
       yaxis={{ tickFormatter: formatPercentage }}
       labels={hideLabels ? undefined : { formatter: formatPercentage }}
-      renderTooltip={(props) => (
+      tooltip={(props) => (
         <Tooltip
           {...props}
           content={(props) => (

@@ -18,7 +18,6 @@ import GetSerieFromStream from 'resources/GetSerieFromStream';
 
 // components
 import ReportExportMenu from 'components/admin/ReportExportMenu';
-import { Tooltip } from 'recharts';
 import {
   GraphCard,
   GraphCardInner,
@@ -208,7 +207,7 @@ const SelectableResourceChart = ({
           bars={{ name: unitName, size: sizes.bar }}
           yaxis={{ width: 150, tickLine: false }}
           labels
-          renderTooltip={(props) => <Tooltip {...props} />}
+          tooltip
         />
       </GraphCardInner>
     </GraphCard>

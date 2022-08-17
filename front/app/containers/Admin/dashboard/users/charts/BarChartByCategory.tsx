@@ -18,7 +18,6 @@ import {
 } from 'components/admin/GraphWrappers';
 import BarChart from 'components/admin/Graphs/BarChart';
 import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/styling';
-import { Tooltip } from 'recharts';
 
 // resources
 import GetSerieFromStream from 'resources/GetSerieFromStream';
@@ -115,7 +114,7 @@ export class BarChartByCategory extends React.PureComponent<
             }}
             bars={{ name: unitName }}
             labels
-            renderTooltip={(props) => <Tooltip {...props} />}
+            tooltip
           />
         </GraphCardInner>
       </GraphCard>

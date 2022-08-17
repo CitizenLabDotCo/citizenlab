@@ -9,6 +9,7 @@ import {
   BarConfig,
   Layout,
   LabelConfig,
+  TooltipConfig,
 } from './typings';
 
 const FALLBACK_FILL = legacyColors.barFill;
@@ -56,9 +57,20 @@ export const getLabelConfig = (
     position,
   };
 
-  if (typeof labels === 'object') {
-    return { ...defaultLabelConfig, ...labels };
-  }
+  return typeof labels === 'object'
+    ? { ...defaultLabelConfig, ...labels }
+    : defaultLabelConfig;
+};
 
-  return defaultLabelConfig;
+export const getTooltipConfig = (
+  tooltip: Props<any>['tooltip']
+): TooltipConfig => {
+  const defaultTooltipConfig = {
+    isAnimationActive: false,
+    cursor: { fill: legacyColors.barHover },
+  };
+
+  return typeof tooltip === 'object'
+    ? { ...defaultTooltipConfig, ...tooltip }
+    : defaultTooltipConfig;
 };

@@ -238,7 +238,7 @@ const CustomFieldsGraph = ({
           }}
           yaxis={{ width: 150, tickLine: false }}
           labels
-          renderTooltip={() => (
+          tooltip={() => (
             <>
               <Tooltip
                 content={({ active, payload, label }: TooltipProps) => (
