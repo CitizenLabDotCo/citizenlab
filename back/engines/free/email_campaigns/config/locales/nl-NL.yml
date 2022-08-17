@@ -417,10 +417,10 @@ nl:
       x_projects: '%{numberOfProjects} projecten'
     project_phase_started:
       cta_view_phase: 'Ontdek deze nieuwe fase'
-      event_description: 'Dit project ging een nieuwe fase in op het platform van %{organizationName}. Klik op de link hieronder om meer te weten te komen!'
-      main_header: 'Project ''%{projectName}'' in een nieuwe fase'
-      new_phase: 'Het project ging de fase ''%{phaseTitle}'' in'
-      subject: '%{projectName} ging een nieuwe fase in'
+      event_description: 'Dit project is een nieuwe fase ingegaan op het platform van %{organizationName}. Klik op de link hieronder om meer te weten te komen!'
+      main_header: 'Een nieuwe fase is begonnen voor het project ''%{projectName}'''
+      new_phase: 'Het project is de fase ''%{phaseTitle}'' ingegaan'
+      subject: '%{projectName} entered a new phase'
       preheader: 'Een nieuwe fase is gestart voor %{projectName}'
     project_phase_upcoming:
       cta_view_phase: 'Zet deze fase klaar'
