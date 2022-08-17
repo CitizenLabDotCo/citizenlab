@@ -27,11 +27,8 @@ import {
   IFlatUpdateCustomField,
 } from 'services/formCustomFields';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
 interface Props {
-  field?: IFlatCustomField;
+  field: IFlatCustomField;
   onDelete: (fieldId: string) => void;
   onFieldChange: (field: IFlatUpdateCustomField) => void;
   onClose: () => void;
@@ -43,30 +40,24 @@ const FormBuilderSettings = ({
   onFieldChange,
   onClose,
 }: Props) => {
-  // I'm keeping this form as simple as possible using state pending form rework from (TEC-35)
+  // TODO I'm keeping this form as simple as possible using state pending form rework from (TEC-35)
   const [fieldState, setFieldState] = useState({
-    isRequired: field?.required || false,
-    questionTitle: field?.title_multiloc || {},
-    questionDescription: field?.description_multiloc || {},
+    isRequired: field.required || false,
+    questionTitle: field.title_multiloc || {},
+    questionDescription: field.description_multiloc || {},
   });
 
   useEffect(() => {
-    if (!isNilOrError(field)) {
-      onFieldChange({
-        ...field,
-        id: field.id,
-        title_multiloc: fieldState.questionTitle,
-        description_multiloc: fieldState.questionDescription,
-        required: !!fieldState.isRequired,
-      });
-    }
+    onFieldChange({
+      ...field,
+      id: field.id,
+      title_multiloc: fieldState.questionTitle,
+      description_multiloc: fieldState.questionDescription,
+      required: !!fieldState.isRequired,
+    });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fieldState]);
-
-  if (isNilOrError(field)) {
-    return null;
-  }
 
   let translatedStringKey: ReactIntl.FormattedMessage.MessageDescriptor | null =
     null;

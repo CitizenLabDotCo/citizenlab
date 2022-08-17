@@ -129,13 +129,15 @@ export const FormEdit = () => {
               )}
             </Box>
           </StyledRightColumn>
-          <FormBuilderSettings
-            key={selectedField ? selectedField.id : 'no-field-selected'}
-            field={selectedField}
-            onDelete={handleDelete}
-            onFieldChange={onFieldChange}
-            onClose={closeSettings}
-          />
+          {!isNilOrError(selectedField) && (
+            <FormBuilderSettings
+              key={selectedField ? selectedField.id : 'no-field-selected'}
+              field={selectedField}
+              onDelete={handleDelete}
+              onFieldChange={onFieldChange}
+              onClose={closeSettings}
+            />
+          )}
         </Box>
       </FocusOn>
     </Box>
