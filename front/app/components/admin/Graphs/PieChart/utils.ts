@@ -4,8 +4,8 @@ import { Mapping, Pie, PieConfig } from './typings';
 // styling
 import { categoricalColorScheme } from '../styling';
 
-const DEFAULT_START_ANGLE = -90;
-const DEFAULT_END_ANGLE = 270;
+const DEFAULT_START_ANGLE = 90;
+const DEFAULT_END_ANGLE = -270;
 
 export const getPieConfig = <Row>(
   data: Row[],

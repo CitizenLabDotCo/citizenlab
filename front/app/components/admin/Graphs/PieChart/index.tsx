@@ -37,7 +37,7 @@ const PieChart = <T,>({
   return (
     <ResponsiveContainer width={width} height={height}>
       <RechartsPieChart margin={margin} ref={innerRef}>
-        <Pie data={data} {...pieConfig.props} startAngle={-90} endAngle={270}>
+        <Pie data={data} {...pieConfig.props}>
           {pieConfig.cells.map((cell, cellIndex) => (
             <Cell key={`cell-${cellIndex}`} {...cell} />
           ))}
