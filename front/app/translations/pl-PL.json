@@ -259,7 +259,7 @@
   "app.components.PagesForm.pageTitle": "Tytuł",
   "app.components.PagesForm.pageUrl": "URL strony",
   "app.components.PagesForm.resultingPageURL": "Wynikowy adres URL",
-  "app.components.PagesForm.savePage": "Save page",
+  "app.components.PagesForm.savePage": "Zapisz",
   "app.components.PagesForm.saveSuccess": "Page successfully saved.",
   "app.components.PagesForm.slugLabelTooltip": "Możesz określić ostatnią część adresu URL swojej strony projektu (nazywaną slug). Na przykład, adres URL bieżącego projektu to {currentPageURL}, gdzie {currentPageSlug} to slug.",
   "app.components.PagesForm.slugRegexError": "Url może zawierać tylko zwykłe, małe litery (a-z), cyfry (0-9) i myślniki (-). Pierwszy i ostatni znak nie mogą być myślnikami. Kolejne myślniki (--) są niedozwolone.",
