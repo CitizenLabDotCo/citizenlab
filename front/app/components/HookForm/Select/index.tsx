@@ -6,18 +6,16 @@ import {
 import Error, { TFieldName } from 'components/UI/Error';
 import { Controller, useFormContext } from 'react-hook-form';
 import { CLError } from 'typings';
-
-export interface Props extends Omit<SelectProps, 'onChange'> {
+interface Props extends Omit<SelectProps, 'onChange'> {
   name: string;
 }
 
 const Select = ({ name, ...rest }: Props) => {
   const {
+    setValue,
     formState: { errors },
     control,
   } = useFormContext();
-
-  const defaultValue = false;
 
   const validationError = errors[name]?.message as string | undefined;
 
@@ -30,9 +28,15 @@ const Select = ({ name, ...rest }: Props) => {
       <Controller
         name={name}
         control={control}
-        defaultValue={defaultValue}
         render={({ field: { ref: _ref, ...field } }) => {
-          return <SelectComponent id={name} {...field} {...rest} />;
+          return (
+            <SelectComponent
+              id={name}
+              {...field}
+              {...rest}
+              onChange={(e) => setValue(name, e.value)}
+            />
+          );
         }}
       />
       {validationError && (

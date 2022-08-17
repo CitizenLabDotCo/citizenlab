@@ -7,7 +7,7 @@ import Error, { TFieldName } from 'components/UI/Error';
 import { Controller, useFormContext } from 'react-hook-form';
 import { CLError } from 'typings';
 
-export interface Props extends InputProps {
+interface Props extends InputProps {
   name: string;
 }
 

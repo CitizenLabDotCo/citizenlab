@@ -9,7 +9,7 @@ import Error from 'components/UI/Error';
 import { Controller, useFormContext, FieldError } from 'react-hook-form';
 import { Locale } from 'typings';
 
-export interface Props
+interface Props
   extends Omit<
     InputMultilocWithLocaleSwitcherProps,
     'locales' | 'valueMultiloc'
