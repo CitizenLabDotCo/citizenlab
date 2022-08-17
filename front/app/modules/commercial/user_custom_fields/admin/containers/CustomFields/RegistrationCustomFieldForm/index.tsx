@@ -51,6 +51,7 @@ const RegistrationCustomFieldForm = ({
   intl: { formatMessage },
   defaultValues,
   onSubmit,
+  builtInField,
 }: Props) => {
   const schema = object({
     input_type: string()
@@ -58,9 +59,8 @@ const RegistrationCustomFieldForm = ({
       .required('input type error'),
     title_multiloc: validateMultiloc('title error'),
     description_multiloc: validateMultiloc('description error'),
-    required: boolean(),
+    required: boolean().required(),
   });
-
   const methods = useForm({
     mode: 'onBlur',
     defaultValues,
@@ -99,6 +99,7 @@ const RegistrationCustomFieldForm = ({
               label={formatMessage(messages.fieldName)}
               type="text"
               name="title_multiloc"
+              disabled={builtInField}
             />
           </SectionField>
 
@@ -106,6 +107,7 @@ const RegistrationCustomFieldForm = ({
             <TextAreaMultilocWithLocaleSwitcher
               name="description_multiloc"
               label={formatMessage(messages.fieldDescription)}
+              disabled={builtInField}
             />
           </SectionField>
 
