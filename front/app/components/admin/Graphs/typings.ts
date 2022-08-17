@@ -1,3 +1,19 @@
+// typings
+import { RefObject } from 'react';
+import { Percentage } from 'typings';
+import { NilOrError } from 'utils/helperUtils';
+
+// PROPS
+export interface BaseProps<Row> {
+  width?: Percentage | number;
+  height?: Percentage | number;
+  data: Row[] | NilOrError;
+  margin?: Margin;
+  tooltip?: TooltipProps;
+  emptyContainerContent?: React.ReactNode;
+  innerRef?: RefObject<any>;
+}
+
 // STYLING
 export interface Margin {
   top?: number;

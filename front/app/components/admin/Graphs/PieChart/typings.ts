@@ -1,22 +1,13 @@
-import { RefObject } from 'react';
-import { NilOrError } from 'utils/helperUtils';
 import { Percentage } from 'typings';
-import { Margin, TooltipProps, KeyOfType, Cell } from '../typings';
+import { BaseProps, KeyOfType, Cell } from '../typings';
 import { Payload } from '../BarChart/typings';
 
 // PROPS
-export interface Props<Row> {
-  width?: Percentage | number;
-  height?: Percentage | number;
-  data: Row[] | NilOrError;
+export interface Props<Row> extends BaseProps<Row> {
   mapping: Mapping<Row>;
   pie?: Pie;
-  margin?: Margin;
   annotations?: boolean | ((row: Row) => string);
-  tooltip?: TooltipProps;
   centerLabel?: React.ReactElement;
-  emptyContainerContent?: React.ReactNode;
-  innerRef?: RefObject<any>;
   onMouseOver?: (payload: Payload<Row>, event: React.MouseEvent) => void;
   onMouseOut?: (payload: Payload<Row>, event: React.MouseEvent) => void;
 }

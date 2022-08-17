@@ -1,13 +1,8 @@
-import React, { RefObject } from 'react';
-import { Percentage } from 'typings';
-import { Margin, AxisProps, TooltipProps, KeyOfType, Cell } from '../typings';
-import { NilOrError } from 'utils/helperUtils';
+import React from 'react';
+import { BaseProps, Margin, AxisProps, KeyOfType, Cell } from '../typings';
 
 // PROPS
-export interface Props<Row> {
-  width?: Percentage | number;
-  height?: Percentage | number;
-  data: Row[] | NilOrError;
+export interface Props<Row> extends BaseProps<Row> {
   mapping: Mapping<Row>;
   bars?: Bars;
   layout?: Layout;
@@ -15,9 +10,6 @@ export interface Props<Row> {
   xaxis?: AxisProps;
   yaxis?: AxisProps;
   labels?: boolean | Labels | ((props: LabelConfig) => React.ReactNode);
-  tooltip?: TooltipProps;
-  emptyContainerContent?: React.ReactNode;
-  innerRef?: RefObject<any>;
   onMouseOver?: (payload: Payload<Row>, event: React.MouseEvent) => void;
   onMouseOut?: (payload: Payload<Row>, event: React.MouseEvent) => void;
 }

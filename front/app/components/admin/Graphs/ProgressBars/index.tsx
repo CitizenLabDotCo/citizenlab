@@ -10,6 +10,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { NoDataContainer } from 'components/admin/GraphWrappers';
+import { OneSideRoundedBar, CustomizedLabel } from './components';
 
 // i18n
 import messages from '../messages';
@@ -20,78 +21,14 @@ import { isNilOrError } from 'utils/helperUtils';
 import { isEmpty } from 'lodash-es';
 
 // typings
-import { ProgressBarsProps } from './typings';
+import { Props } from './typings';
 
-const renderCustomizedLabel = (props) => {
-  const { x, y, value } = props;
-  return (
-    <text fill="#044D6C" x={x} y={y - 13} fontSize={14}>
-      {value}
-    </text>
-  );
-};
-
-const rightRoundedRect = (x, y, w, h, r) => `
-  M${x},${y}
-  h${w - r}
-  a${r},${r} 0 0 1 ${r},${r}
-  v${h - 2 * r}
-  a${r},${r} 0 0 1 ${-r},${r}
-  h${r - w}
-  z`;
-
-const leftRoundedRect = (x, y, w, h, r) => `
-  M${x + r},${y}
-  h${w - r}
-  v${h}
-  h${r - w}
-  a${r},${r} 0 0 1 ${-r},${-r}
-  v${2 * r - h}
-  a${r},${r} 0 0 1 ${r},${-r}
-  z`;
-
-const OneSideRoundedBar = (props) => {
-  const {
-    fill,
-    x,
-    y,
-    width,
-    height,
-    payload: { value, total },
-    side,
-  } = props;
-
-  const radius = 3;
-  let shape;
-  if (value === 0 || total === value) {
-    shape = (
-      <rect
-        x={x}
-        y={y}
-        width={width}
-        height={height}
-        fill={fill}
-        rx={radius}
-        ry={radius}
-      />
-    );
-  } else {
-    const drawPath =
-      side === 'right'
-        ? rightRoundedRect(x, y, width, height, radius)
-        : leftRoundedRect(x, y, width, height, radius);
-    shape = <path d={drawPath} fill={fill} stroke="none" />;
-  }
-
-  return shape;
-};
-
-export default function ({
+const ProgressBars = <Row,>({
   data,
   width,
   height,
   emptyContainerContent,
-}: ProgressBarsProps) {
+}: Props<Row>) => {
   const noData = isNilOrError(data) || data.every(isEmpty) || data.length <= 0;
 
   if (noData) {
@@ -127,7 +64,7 @@ export default function ({
           <LabelList
             dataKey="label"
             data={data}
-            content={renderCustomizedLabel}
+            content={CustomizedLabel}
           />
         </Bar>
         <Bar
@@ -141,3 +78,5 @@ export default function ({
     </ResponsiveContainer>
   );
 }
+
+export default ProgressBars;
