@@ -69,6 +69,7 @@ const BgHeaderPreviewSelect = styled(Select)`
   margin-bottom: 20px;
 `;
 
+export type TBannerError = string | null;
 const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const theme: any = useTheme();
   const homepageSettings = useHomepageSettings();
@@ -85,7 +86,7 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       signedOutHeaderErrors: {},
       signedOutSubheaderErrors: {},
     });
-  const [bannerError, setBannerError] = useState<string | null>(null);
+  const [bannerError, setBannerError] = useState<TBannerError>(null);
   const [localHomepageSettings, setLocalHomepageSettings] =
     useState<IHomepageSettingsAttributes | null>(null);
   const [previewDevice, setPreviewDevice] = useState<PreviewDevice>('desktop');

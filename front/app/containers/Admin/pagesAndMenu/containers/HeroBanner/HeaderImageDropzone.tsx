@@ -3,7 +3,7 @@ import React from 'react';
 // components and theming
 import styled, { useTheme } from 'styled-components';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import { PreviewDevice } from './index';
+import { PreviewDevice, TBannerError } from './index';
 
 // types
 import {
@@ -30,7 +30,7 @@ interface Props {
   homepageSettingsOverlayColor: IHomepageSettingsAttributes['banner_signed_out_header_overlay_color'];
   onAdd: (newImage: UploadFile[]) => void;
   onRemove: () => void;
-  headerError: string | null;
+  headerError: TBannerError;
   header_bg: UploadFile[] | null;
   previewDevice: PreviewDevice;
   layout: THomepageBannerLayout;
