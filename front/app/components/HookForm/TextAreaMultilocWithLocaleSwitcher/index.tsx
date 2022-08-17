@@ -50,7 +50,7 @@ const TextAreaMultilocWithLocaleSwitcher = ({
     ([errors[name]] as unknown as CLError[]);
 
   return (
-    <>
+    <div id={name}>
       <Controller
         name={name}
         control={control}
@@ -83,7 +83,7 @@ const TextAreaMultilocWithLocaleSwitcher = ({
           scrollIntoView={false}
         />
       )}
-    </>
+    </div>
   );
 };
 

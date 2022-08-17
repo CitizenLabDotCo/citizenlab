@@ -52,13 +52,14 @@ const RegistrationCustomFieldForm = ({
   defaultValues,
   onSubmit,
   builtInField,
+  mode,
 }: Props) => {
   const schema = object({
     input_type: string()
-      .oneOf(fieldTypes, 'input type error')
-      .required('input type error'),
-    title_multiloc: validateMultiloc('title error'),
-    description_multiloc: validateMultiloc('description error'),
+      .oneOf(fieldTypes, formatMessage(messages.answerFormatError))
+      .required(formatMessage(messages.answerFormatError)),
+    title_multiloc: validateMultiloc(formatMessage(messages.fieldNameError)),
+    description_multiloc: object(),
     required: boolean().required(),
   });
   const methods = useForm({
@@ -87,7 +88,9 @@ const RegistrationCustomFieldForm = ({
       <form onSubmit={methods.handleSubmit(onFormSubmit)}>
         <Section>
           <SectionField>
-            <Feedback />
+            <Feedback
+              successMessage={formatMessage(messages.saveFieldSuccess)}
+            />
             <Select
               name="input_type"
               options={inputTypeOptions()}
@@ -119,7 +122,7 @@ const RegistrationCustomFieldForm = ({
         </Section>
         <Box display="flex">
           <Button type="submit" processing={methods.formState.isSubmitting}>
-            Save field
+            {formatMessage(messages.saveField)}
           </Button>
         </Box>
       </form>
