@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_09_141825) do
+ActiveRecord::Schema.define(version: 2022_08_17_134100) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -746,12 +746,13 @@ ActiveRecord::Schema.define(version: 2022_08_09_141825) do
     t.string "code", null: false
     t.integer "ordering"
     t.jsonb "title_multiloc"
-    t.uuid "static_page_id"
+    t.uuid "page_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "page_type"
     t.index ["code"], name: "index_nav_bar_items_on_code"
     t.index ["ordering"], name: "index_nav_bar_items_on_ordering"
-    t.index ["static_page_id"], name: "index_nav_bar_items_on_static_page_id"
+    t.index ["page_id"], name: "index_nav_bar_items_on_page_id", unique: true
   end
 
   create_table "nlp_text_network_analysis_tasks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1300,7 +1301,6 @@ ActiveRecord::Schema.define(version: 2022_08_09_141825) do
   add_foreign_key "maps_legend_items", "maps_map_configs", column: "map_config_id"
   add_foreign_key "memberships", "groups"
   add_foreign_key "memberships", "users"
-  add_foreign_key "nav_bar_items", "static_pages"
   add_foreign_key "notifications", "comments"
   add_foreign_key "notifications", "flag_inappropriate_content_inappropriate_content_flags", column: "inappropriate_content_flag_id"
   add_foreign_key "notifications", "invites"

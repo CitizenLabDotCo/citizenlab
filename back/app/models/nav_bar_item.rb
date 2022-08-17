@@ -8,19 +8,16 @@
 #  code           :string           not null
 #  ordering       :integer
 #  title_multiloc :jsonb
-#  static_page_id :uuid
+#  page_id        :uuid
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
+#  page_type      :string
 #
 # Indexes
 #
-#  index_nav_bar_items_on_code            (code)
-#  index_nav_bar_items_on_ordering        (ordering)
-#  index_nav_bar_items_on_static_page_id  (static_page_id)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (static_page_id => static_pages.id)
+#  index_nav_bar_items_on_code      (code)
+#  index_nav_bar_items_on_ordering  (ordering)
+#  index_nav_bar_items_on_page_id   (page_id) UNIQUE
 #
 class NavBarItem < ApplicationRecord
   # The codes must be listed in the correct default ordering
