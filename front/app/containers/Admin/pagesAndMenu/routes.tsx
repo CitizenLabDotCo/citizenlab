@@ -1,6 +1,7 @@
 import React, { lazy } from 'react';
 import PageLoading from 'components/UI/PageLoading';
 import moduleConfiguration from 'modules';
+import EditPageForm from './containers/EditPageForm';
 const CustomNavbarContainer = lazy(
   () => import('containers/Admin/pagesAndMenu')
 );
@@ -73,6 +74,10 @@ export default () => ({
     {
       path: HOMEPAGE_PATH,
       element: <EditHomepage />,
+    },
+    {
+      path: 'pages/edit/:pageId',
+      element: <EditPageForm />,
     },
     ...moduleConfiguration.routes['admin.pages-menu'],
   ],

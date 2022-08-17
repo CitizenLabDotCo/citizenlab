@@ -1,64 +1,63 @@
-import React from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 // components
-import PageFormWithNavbarNameField, {
-  FormValues,
-} from '../../components/PageFormWithNavbarNameField';
+import PageForm, { FormValues } from 'components/PageForm';
+import Outlet from 'components/Outlet';
+
+// components
 import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
 import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { createPageUpdateData, getInitialFormValues } from './utils';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
+import useLocalize from 'hooks/useLocalize';
 
 // services
 import { updatePage } from 'services/pages';
 import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
+import { MAX_TITLE_LENGTH } from 'services/navbar';
 
 // hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useRemoteFiles from 'hooks/useRemoteFiles';
 import usePage from 'hooks/usePage';
-import useLocalize from 'hooks/useLocalize';
+import { truncateMultiloc } from 'utils/textUtils';
 
-const EditPageFormNavbar = ({
-  params: { pageId },
-  intl: { formatMessage },
-}: WithRouterProps & InjectedIntlProps) => {
+const EditPageForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+  const { pageId } = useParams() as { pageId: string };
   const appConfigurationLocales = useAppConfigurationLocales();
   const localize = useLocalize();
-
   const page = usePage({ pageId });
   const remotePageFiles = useRemoteFiles({
     resourceType: 'page',
     resourceId: !isNilOrError(page) ? page.id : null,
   });
+  const [navbarModuleActive, setNavbarModuleActive] = useState(false);
 
   if (isNilOrError(page) || isNilOrError(appConfigurationLocales)) {
     return null;
   }
 
-  const handleSubmit = async (values: FormValues) => {
-    const localPageFiles = values.local_page_files;
+  const handleSubmit = async ({
+    local_page_files,
+    ...pageUpdate
+  }: FormValues) => {
+    const promises: Promise<any>[] = [updatePage(pageId, pageUpdate)];
 
-    const promises: Promise<any>[] = [
-      updatePage(pageId, createPageUpdateData(page, values)),
-    ];
-
-    if (!isNilOrError(localPageFiles)) {
+    if (!isNilOrError(local_page_files)) {
       const addPromise = handleAddPageFiles(
         pageId,
-        localPageFiles,
+        local_page_files,
         remotePageFiles
       );
       const removePromise = handleRemovePageFiles(
         pageId,
-        localPageFiles,
+        local_page_files,
         remotePageFiles
       );
 
@@ -81,13 +80,27 @@ const EditPageFormNavbar = ({
         },
       ]}
     >
-      <PageFormWithNavbarNameField
+      <Outlet
+        id="app.containers.Admin.pages-menu.containers.EditPageForm.index.onMount"
+        onMount={() => setNavbarModuleActive(true)}
+      />
+      <PageForm
         pageId={pageId}
         onSubmit={handleSubmit}
-        defaultValues={getInitialFormValues(page, remotePageFiles)}
+        defaultValues={{
+          nav_bar_item_title_multiloc: truncateMultiloc(
+            page.attributes.nav_bar_item_title_multiloc,
+            MAX_TITLE_LENGTH
+          ),
+          title_multiloc: page.attributes.title_multiloc,
+          body_multiloc: page.attributes.body_multiloc,
+          slug: page.attributes.slug,
+          local_page_files: remotePageFiles,
+        }}
+        hideSlugInput={!navbarModuleActive}
       />
     </SectionFormWrapper>
   );
 };
 
-export default injectIntl(withRouter(EditPageFormNavbar));
+export default injectIntl(EditPageForm);

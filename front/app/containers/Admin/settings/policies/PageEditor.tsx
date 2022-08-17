@@ -157,6 +157,8 @@ const PageEditor = ({ className, pageSlug }: Props) => {
             <PageForm
               pageId={pageId}
               defaultValues={{
+                nav_bar_item_title_multiloc:
+                  page.attributes.nav_bar_item_title_multiloc,
                 title_multiloc: page.attributes.title_multiloc,
                 body_multiloc: page.attributes.body_multiloc,
                 slug: page.attributes.slug,

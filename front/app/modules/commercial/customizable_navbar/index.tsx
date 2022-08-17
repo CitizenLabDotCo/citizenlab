@@ -4,11 +4,11 @@ import FeatureFlag from 'components/FeatureFlag';
 import ModuleActive from './admin/components/ModuleActive';
 import PoliciesSubtitle from './admin/components/PoliciesSubtitle';
 import PagesMenu from './admin/containers';
+import NavbarTitleField from './admin/components/NavbarTitleField';
 
 const NewPageFormComponent = lazy(
   () => import('./admin/containers/NewPageForm')
 );
-const EditPageComponent = lazy(() => import('./admin/containers/EditPageForm'));
 const EditNavbarItemComponent = lazy(
   () => import('./admin/containers/EditNavbarItemForm')
 );
@@ -23,10 +23,6 @@ const configuration: ModuleConfiguration = {
       {
         path: 'pages/new',
         element: <NewPageFormComponent />,
-      },
-      {
-        path: 'pages/edit/:pageId',
-        element: <EditPageComponent />,
       },
       {
         path: 'navbar-items/edit/:navbarItemId',
@@ -58,6 +54,14 @@ const configuration: ModuleConfiguration = {
     'app.containers.Admin.pages-menu.NavigationSettings': () => (
       <FeatureFlag name="customizable_navbar">
         <NavigationSettings />
+      </FeatureFlag>
+    ),
+    'app.containers.Admin.pages-menu.containers.EditPageForm.index.onMount': (
+      props
+    ) => <ModuleActive {...props} />,
+    'app.components.PageForm.index.top': () => (
+      <FeatureFlag name="customizable_navbar">
+        <NavbarTitleField />
       </FeatureFlag>
     ),
   },

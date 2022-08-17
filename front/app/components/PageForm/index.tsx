@@ -29,6 +29,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 import Button from 'components/UI/Button';
+import Outlet from 'components/Outlet';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -41,6 +42,7 @@ import usePage from 'hooks/usePage';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 
 export interface FormValues {
+  nav_bar_item_title_multiloc: Multiloc;
   title_multiloc: Multiloc;
   body_multiloc: Multiloc;
   slug?: string;
@@ -59,7 +61,7 @@ const PageForm = ({
   onSubmit,
   defaultValues,
   pageId,
-  hideSlugInput,
+  hideSlugInput = false,
 }: PageFormProps) => {
   const locale = useLocale();
   const page = usePage({ pageId });
@@ -101,6 +103,9 @@ const PageForm = ({
           <Feedback
             successMessage={formatMessage(messages.savePageSuccessMessage)}
           />
+          <Outlet id="app.components.PageForm.index.top" />
+        </SectionField>
+        <SectionField>
           <InputMultilocWithLocaleSwitcher
             label={formatMessage(messages.pageTitle)}
             type="text"

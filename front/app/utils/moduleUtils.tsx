@@ -404,6 +404,10 @@ export interface OutletsPropertyMap {
     string,
     any
   >;
+  'app.components.PageForm.index.top': Record<string, any>;
+  'app.containers.Admin.pages-menu.containers.EditPageForm.index.onMount': {
+    onMount: () => void;
+  };
 }
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];
