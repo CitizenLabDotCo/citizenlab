@@ -1,4 +1,4 @@
-import { RefObject } from 'react';
+import React, { RefObject } from 'react';
 import { Percentage } from 'typings';
 import {
   Margin,
@@ -25,6 +25,18 @@ export interface Props<Row> {
   tooltip?: TooltipProps;
   emptyContainerContent?: React.ReactNode;
   innerRef?: RefObject<any>;
+  onMouseOver?: (
+    row: Row,
+    rowIndex: number,
+    barIndex: number,
+    event: React.MouseEvent
+  ) => void;
+  onMouseOut?: (
+    row: Row,
+    rowIndex: number,
+    barIndex: number,
+    event: React.MouseEvent
+  ) => void;
 }
 
 export interface Mapping<Row> {

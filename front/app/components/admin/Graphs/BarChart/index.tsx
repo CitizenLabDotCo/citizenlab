@@ -9,14 +9,40 @@ import { convertMapping, convertBars } from './utils';
 // typings
 import { Props } from './typings';
 
-const BarChart = <T,>({ mapping, bars, ...otherProps }: Props<T>) => {
+const BarChart = <Row,>({
+  mapping,
+  bars,
+  onMouseOver,
+  onMouseOut,
+  ...otherProps
+}: Props<Row>) => {
   const convertedMapping = convertMapping(mapping);
   const convertedBars = convertBars(bars);
+
+  const handleMouseOver = (
+    row: Row,
+    rowIndex: number,
+    _: number,
+    event: React.MouseEvent
+  ) => {
+    onMouseOver && onMouseOver(row, rowIndex, event);
+  };
+
+  const handleMouseOut = (
+    row: Row,
+    rowIndex: number,
+    _: number,
+    event: React.MouseEvent
+  ) => {
+    onMouseOut && onMouseOut(row, rowIndex, event);
+  };
 
   return (
     <MultiBarChart
       mapping={convertedMapping}
       bars={convertedBars}
+      onMouseOver={handleMouseOver}
+      onMouseOut={handleMouseOut}
       {...otherProps}
     />
   );

@@ -27,7 +27,7 @@ import { hasNoData, getTooltipConfig } from '../utils';
 // typings
 import { Props } from './typings';
 
-const MultiBarChart = <T,>({
+const MultiBarChart = <Row,>({
   width,
   height,
   data,
@@ -41,7 +41,9 @@ const MultiBarChart = <T,>({
   tooltip,
   emptyContainerContent,
   innerRef,
-}: Props<T>) => {
+  onMouseOver,
+  onMouseOut,
+}: Props<Row>) => {
   if (hasNoData(data)) {
     return <EmptyState emptyContainerContent={emptyContainerContent} />;
   }
@@ -53,6 +55,16 @@ const MultiBarChart = <T,>({
   const labelPosition = layout === 'vertical' ? 'top' : 'right';
   const labelConfig = getLabelConfig(labels, labelPosition);
   const tooltipConfig = getTooltipConfig(tooltip);
+
+  const handleMouseOver =
+    (barIndex: number) => (_, rowIndex: number, event: React.MouseEvent) => {
+      onMouseOver && onMouseOver(data[rowIndex], rowIndex, barIndex, event);
+    };
+
+  const handleMouseOut =
+    (barIndex: number) => (_, rowIndex: number, event: React.MouseEvent) => {
+      onMouseOut && onMouseOut(data[rowIndex], rowIndex, barIndex, event);
+    };
 
   return (
     <ResponsiveContainer width={width} height={height}>
@@ -76,6 +88,8 @@ const MultiBarChart = <T,>({
             animationBegin={animation.begin}
             fill={legacyColors.barFill}
             {...barConfig.props}
+            onMouseOver={handleMouseOver(barIndex)}
+            onMouseOut={handleMouseOut(barIndex)}
           >
             {(typeof labels === 'object' || labels === true) && (
               <LabelList {...labelConfig} />

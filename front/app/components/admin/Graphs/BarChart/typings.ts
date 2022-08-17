@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Props as MultiBarChartProps,
   Bars as MultiBarChartBars,
@@ -5,9 +6,14 @@ import {
 import { KeyOfType, Channel } from '../typings';
 
 export interface Props<Row>
-  extends Omit<MultiBarChartProps<Row>, 'mapping' | 'bars'> {
+  extends Omit<
+    MultiBarChartProps<Row>,
+    'mapping' | 'bars' | 'onMouseOver' | 'onMouseOut'
+  > {
   mapping: Mapping<Row>;
   bars?: Bars;
+  onMouseOver?: (row: Row, rowIndex: number, event: React.MouseEvent) => void;
+  onMouseOut?: (row: Row, rowIndex: number, event: React.MouseEvent) => void;
 }
 
 export interface Mapping<Row> {
