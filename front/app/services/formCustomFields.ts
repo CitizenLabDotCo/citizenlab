@@ -52,7 +52,7 @@ export interface ICustomFields {
   data: ICustomFieldResponse[];
 }
 
-export function surveyCustomFieldsStream(
+export function formCustomFieldsStream(
   projectId: string,
   streamParams: IStreamParams | null = null
 ) {
@@ -64,10 +64,7 @@ export function surveyCustomFieldsStream(
   });
 }
 
-export async function updateSurveyCustomFields(
-  projectId: string,
-  customFields
-) {
+export async function updateFormCustomFields(projectId: string, customFields) {
   const apiEndpoint = `${API_PATH}/admin/projects/${projectId}/custom_fields/update_all`;
   return streams.update(apiEndpoint, `${projectId}/custom_fields`, {
     custom_fields: customFields,

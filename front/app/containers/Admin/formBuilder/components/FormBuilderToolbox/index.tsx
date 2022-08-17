@@ -17,20 +17,20 @@ import { colors } from 'utils/styleUtils';
 import {
   ICustomFieldInputType,
   IFlatCreateCustomField,
-} from 'services/surveyCustomFields';
+} from 'services/formCustomFields';
 
 const DraggableElement = styled.div`
   cursor: move;
 `;
 
-interface SurveyBuilderToolboxProps {
+interface FormBuilderToolboxProps {
   onAddField: (field: IFlatCreateCustomField) => void;
 }
 
-const SurveyBuilderToolbox = ({
+const FormBuilderToolbox = ({
   intl: { formatMessage },
   onAddField,
-}: SurveyBuilderToolboxProps & InjectedIntlProps) => {
+}: FormBuilderToolboxProps & InjectedIntlProps) => {
   const addAnswer = (inputType: ICustomFieldInputType) => {
     onAddField({
       id: `${Math.floor(Date.now() * Math.random())}`,
@@ -82,4 +82,4 @@ const SurveyBuilderToolbox = ({
   );
 };
 
-export default injectIntl(SurveyBuilderToolbox);
+export default injectIntl(FormBuilderToolbox);

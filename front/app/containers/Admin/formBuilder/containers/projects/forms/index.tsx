@@ -16,7 +16,7 @@ import messages from './messages';
 // hooks
 import useProject from 'hooks/useProject';
 
-const Surveys = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+const Forms = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const { projectId } = useParams() as { projectId: string };
   const project = useProject({ projectId });
 
@@ -84,4 +84,4 @@ const Surveys = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   );
 };
 
-export default injectIntl(Surveys);
+export default injectIntl(Forms);
