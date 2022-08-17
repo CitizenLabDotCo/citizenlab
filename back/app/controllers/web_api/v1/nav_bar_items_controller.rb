@@ -7,7 +7,7 @@ class WebApi::V1::NavBarItemsController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
-    @items = policy_scope(NavBarItem).includes(:static_page).order(:ordering)
+    @items = policy_scope(NavBarItem).includes(:page).order(:ordering)
     @items = @items.only_default if parse_bool(params[:only_default])
     render json: WebApi::V1::NavBarItemSerializer.new(@items, params: fastjson_params).serialized_json
   end

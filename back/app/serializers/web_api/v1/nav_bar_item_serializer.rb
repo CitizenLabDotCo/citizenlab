@@ -7,5 +7,6 @@ class WebApi::V1::NavBarItemSerializer < ::WebApi::V1::BaseSerializer
     item.title_multiloc_with_fallback
   end
 
-  belongs_to :static_page, serializer: WebApi::V1::StaticPageSerializer
+  belongs_to :page, polymorphic: true
+  # belongs_to :static_page, serializer: WebApi::V1::StaticPageSerializer
 end
