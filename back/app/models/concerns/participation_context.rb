@@ -22,6 +22,7 @@ module ParticipationContext
   included do
     has_many :baskets, as: :participation_context, dependent: :destroy
     has_many :permissions, as: :permission_scope, dependent: :destroy
+    has_one :custom_form, as: :participation_context, dependent: :destroy
 
     # for timeline projects, the phases are the participation contexts, so nothing applies
     with_options unless: :timeline_project? do

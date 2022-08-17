@@ -194,6 +194,7 @@ ActiveRecord::Schema.define(version: 2022_08_17_144847) do
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "participation_context_id", null: false
     t.string "participation_context_type", null: false
+    t.index ["participation_context_id", "participation_context_type"], name: "index_custom_forms_on_participation_context"
   end
 
   create_table "email_campaigns_campaign_email_commands", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

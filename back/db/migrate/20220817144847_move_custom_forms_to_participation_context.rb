@@ -18,6 +18,10 @@ class MoveCustomFormsToParticipationContext < ActiveRecord::Migration[6.1]
       SET participation_context_type = 'Project'
     SQL
     change_column_null :custom_forms, :participation_context_type, false
-    add_index :custom_forms, %i[participation_context_id participation_context_type]
+    add_index(
+      :custom_forms,
+      %i[participation_context_id participation_context_type],
+      name: 'index_custom_forms_on_participation_context'
+    )
   end
 end
