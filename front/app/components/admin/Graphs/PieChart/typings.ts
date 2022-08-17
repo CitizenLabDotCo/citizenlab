@@ -17,8 +17,8 @@ export interface Props<Row> {
   centerLabel?: React.ReactElement;
   emptyContainerContent?: React.ReactNode;
   innerRef?: RefObject<any>;
-  onMouseOver?: (x: any, i: number) => void;
-  onMouseOut?: (x: any, i: number) => void;
+  onMouseOver?: (payload: Payload<Row>, event: React.MouseEvent) => void;
+  onMouseOut?: (payload: Payload<Row>, event: React.MouseEvent) => void;
 }
 
 export interface Mapping<Row> {

@@ -31,7 +31,7 @@ const PieChart = <T,>({
   emptyContainerContent,
   innerRef,
   onMouseOver,
-  onMouseOut
+  onMouseOut,
 }: Props<T>) => {
   if (hasNoData(data)) {
     return <EmptyState emptyContainerContent={emptyContainerContent} />;
@@ -39,6 +39,14 @@ const PieChart = <T,>({
 
   const pieConfig = getPieConfig(data, mapping, pie, annotations);
   const tooltipConfig = getTooltipConfig(tooltip);
+
+  const handleMouseOver = (_, rowIndex: number, event: React.MouseEvent) => {
+    onMouseOver && onMouseOver({ row: data[rowIndex], rowIndex }, event);
+  };
+
+  const handleMouseOut = (_, rowIndex: number, event: React.MouseEvent) => {
+    onMouseOut && onMouseOut({ row: data[rowIndex], rowIndex }, event);
+  };
 
   return (
     <ResponsiveContainer width={width} height={height}>
@@ -48,11 +56,11 @@ const PieChart = <T,>({
         )}
         {typeof tooltip === 'function' && tooltip(tooltipConfig)}
 
-        <Pie 
+        <Pie
           data={data}
           {...pieConfig.props}
-          onMouseOver={onMouseOver}
-          onMouseOut={onMouseOut}
+          onMouseOver={handleMouseOver}
+          onMouseOut={handleMouseOut}
         >
           {pieConfig.cells.map((cell, cellIndex) => (
             <Cell key={`cell-${cellIndex}`} {...cell} />
