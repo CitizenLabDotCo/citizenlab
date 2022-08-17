@@ -25,7 +25,11 @@ const Playground = () => (
       mapping={{ length: 'value', category: 'label' }}
     />
 
-    <PieChart data={data} mapping={{ angle: 'value', name: 'label' }} />
+    <PieChart
+      height={200}
+      data={data}
+      mapping={{ angle: 'value', name: 'label' }}
+    />
   </>
 );
 

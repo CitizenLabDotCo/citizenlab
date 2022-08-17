@@ -25,8 +25,10 @@ export interface Mapping<Row> {
 
 export interface Pie {
   isAnimationActive?: boolean;
-  innerRadius?: number | string;
-  outerRadius?: number | string;
+  innerRadius?: Percentage | number;
+  outerRadius?: Percentage | number;
+  startAngle?: number;
+  endAngle?: number;
 }
 
 // PARSED CONFIG
@@ -37,6 +39,8 @@ export interface PieConfig {
     isAnimationActive?: boolean;
     innerRadius?: number | string;
     outerRadius?: number | string;
+    startAngle?: number;
+    endAngle?: number;
   };
   cells: Cell[];
 }

@@ -8,7 +8,6 @@ import {
   Label,
   ResponsiveContainer,
 } from 'recharts';
-import { PieChartStyleFixesDiv } from 'components/admin/GraphWrappers';
 import EmptyState from '../_components/EmptyState';
 
 // utils
@@ -36,18 +35,16 @@ const PieChart = <T,>({
   const pieConfig = getPieConfig(data, mapping, pie);
 
   return (
-    <PieChartStyleFixesDiv>
-      <ResponsiveContainer width={width} height={height}>
-        <RechartsPieChart margin={margin} ref={innerRef}>
-          <Pie data={data} {...pieConfig.props}>
-            {pieConfig.cells.map((cell, cellIndex) => (
-              <Cell key={`cell-${cellIndex}`} {...cell} />
-            ))}
-            <Label content={centerLabel} position="center" />
-          </Pie>
-        </RechartsPieChart>
-      </ResponsiveContainer>
-    </PieChartStyleFixesDiv>
+    <ResponsiveContainer width={width} height={height}>
+      <RechartsPieChart margin={margin} ref={innerRef}>
+        <Pie data={data} {...pieConfig.props} startAngle={-90} endAngle={270}>
+          {pieConfig.cells.map((cell, cellIndex) => (
+            <Cell key={`cell-${cellIndex}`} {...cell} />
+          ))}
+          <Label content={centerLabel} position="center" />
+        </Pie>
+      </RechartsPieChart>
+    </ResponsiveContainer>
   );
 };
 
