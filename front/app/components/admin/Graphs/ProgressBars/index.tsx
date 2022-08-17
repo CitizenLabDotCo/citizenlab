@@ -59,24 +59,20 @@ const ProgressBars = <Row,>({
           stackId="a"
           fill="#044D6C"
           isAnimationActive={false}
-          shape={<OneSideRoundedBar />}
+          shape={(props) => <OneSideRoundedBar {...props} side="left" />}
         >
-          <LabelList
-            dataKey="label"
-            data={data}
-            content={CustomizedLabel}
-          />
+          <LabelList dataKey="label" data={data} content={CustomizedLabel} />
         </Bar>
         <Bar
           dataKey="total"
           stackId="a"
           fill="#E0E0E0"
           isAnimationActive={false}
-          shape={<OneSideRoundedBar side="right" />}
+          shape={(props) => <OneSideRoundedBar {...props} side="right" />}
         />
       </BarChart>
     </ResponsiveContainer>
   );
-}
+};
 
 export default ProgressBars;

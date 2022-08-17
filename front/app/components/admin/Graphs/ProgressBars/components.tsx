@@ -12,13 +12,51 @@ export const CustomizedLabel = ({ x, y, value }: CustomizedLabelProps) => (
   </text>
 );
 
-const rightRoundedRect = (
-  x: number,
-  y: number,
-  w: number,
-  h: number,
-  r: number
-) => `
+const CORNER_RADIUS = 3;
+const r = CORNER_RADIUS;
+
+interface OneSideRoundedBarProps {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  fill: string;
+  payload: { value: number; total: number };
+  side: 'left' | 'right';
+}
+
+export const OneSideRoundedBar = ({
+  x,
+  y,
+  width,
+  height,
+  fill,
+  payload: { value, total },
+  side,
+}: OneSideRoundedBarProps) => {
+  if (value === 0 || total === value) {
+    return (
+      <rect
+        x={x}
+        y={y}
+        width={width}
+        height={height}
+        fill={fill}
+        rx={CORNER_RADIUS}
+        ry={CORNER_RADIUS}
+      />
+    );
+  }
+
+  const path =
+    side === 'right'
+      ? rightRoundedRect(x, y, width, height)
+      : leftRoundedRect(x, y, width, height);
+
+  return <path d={path} fill={fill} stroke="none" />;
+};
+
+const rightRoundedRect = (x: number, y: number, w: number, h: number) => `
   M${x},${y}
   h${w - r}
   a${r},${r} 0 0 1 ${r},${r}
@@ -27,13 +65,7 @@ const rightRoundedRect = (
   h${r - w}
   z`;
 
-const leftRoundedRect = (
-  x: number,
-  y: number,
-  w: number,
-  h: number,
-  r: number
-) => `
+const leftRoundedRect = (x: number, y: number, w: number, h: number) => `
   M${x + r},${y}
   h${w - r}
   v${h}
@@ -42,39 +74,3 @@ const leftRoundedRect = (
   v${2 * r - h}
   a${r},${r} 0 0 1 ${r},${-r}
   z`;
-
-export const OneSideRoundedBar = (props) => {
-  const {
-    fill,
-    x,
-    y,
-    width,
-    height,
-    payload: { value, total },
-    side,
-  } = props;
-
-  const radius = 3;
-  let shape;
-  if (value === 0 || total === value) {
-    shape = (
-      <rect
-        x={x}
-        y={y}
-        width={width}
-        height={height}
-        fill={fill}
-        rx={radius}
-        ry={radius}
-      />
-    );
-  } else {
-    const drawPath =
-      side === 'right'
-        ? rightRoundedRect(x, y, width, height, radius)
-        : leftRoundedRect(x, y, width, height, radius);
-    shape = <path d={drawPath} fill={fill} stroke="none" />;
-  }
-
-  return shape;
-};
