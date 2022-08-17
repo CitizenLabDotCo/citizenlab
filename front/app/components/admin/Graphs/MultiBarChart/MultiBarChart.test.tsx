@@ -84,7 +84,8 @@ describe('<MultiBarChart />', () => {
           mapping={{
             category: 'name',
             length: ['value1', 'value2'],
-            fill: () => [legacyColors.lightBlue, legacyColors.pinkRed],
+            fill: ({ barIndex }) =>
+              [legacyColors.lightBlue, legacyColors.pinkRed][barIndex],
           }}
           bars={{ isAnimationActive: false }}
         />
@@ -127,10 +128,8 @@ describe('<MultiBarChart />', () => {
           mapping={{
             category: 'name',
             length: ['value1', 'value2'],
-            fill: ({ fill1, fill2 }) => [
-              colorMapping[fill1],
-              colorMapping[fill2],
-            ],
+            fill: ({ row: { fill1, fill2 }, barIndex }) =>
+              [colorMapping[fill1], colorMapping[fill2]][barIndex],
           }}
           bars={{ isAnimationActive: false }}
         />
@@ -147,32 +146,6 @@ describe('<MultiBarChart />', () => {
       expect(bars[5]).toHaveAttribute('fill', legacyColors.pinkRed);
     });
 
-    it('has correct fallback fill when not enough fills are provided', () => {
-      const { container } = render(
-        <MultiBarChart
-          width={200}
-          height={250}
-          data={data}
-          mapping={{
-            category: 'name',
-            length: ['value1', 'value2'],
-            fill: () => [legacyColors.lightBlue],
-          }}
-          bars={{ isAnimationActive: false }}
-        />
-      );
-
-      const bars = container.querySelectorAll('path');
-      expect(bars).toHaveLength(6);
-
-      expect(bars[0]).toHaveAttribute('fill', legacyColors.lightBlue);
-      expect(bars[1]).toHaveAttribute('fill', legacyColors.lightBlue);
-      expect(bars[2]).toHaveAttribute('fill', legacyColors.lightBlue);
-      expect(bars[3]).toHaveAttribute('fill', legacyColors.barFill);
-      expect(bars[4]).toHaveAttribute('fill', legacyColors.barFill);
-      expect(bars[5]).toHaveAttribute('fill', legacyColors.barFill);
-    });
-
     it('renders correctly with fixed opacities', () => {
       const { container } = render(
         <MultiBarChart
@@ -182,7 +155,7 @@ describe('<MultiBarChart />', () => {
           mapping={{
             category: 'name',
             length: ['value1', 'value2'],
-            opacity: () => [0.8],
+            opacity: () => 0.8,
           }}
           bars={{ isAnimationActive: false }}
         />
@@ -219,7 +192,8 @@ describe('<MultiBarChart />', () => {
           mapping={{
             category: 'name',
             length: ['value1', 'value2'],
-            opacity: ({ opacity1, opacity2 }) => [opacity1, opacity2],
+            opacity: ({ row: { opacity1, opacity2 }, barIndex }) =>
+              [opacity1, opacity2][barIndex],
           }}
           bars={{ isAnimationActive: false }}
         />

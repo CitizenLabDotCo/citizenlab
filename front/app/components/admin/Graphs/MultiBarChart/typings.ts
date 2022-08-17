@@ -1,13 +1,6 @@
 import React, { RefObject } from 'react';
 import { Percentage } from 'typings';
-import {
-  Margin,
-  AxisProps,
-  TooltipProps,
-  KeyOfType,
-  Channel,
-  Cell,
-} from '../typings';
+import { Margin, AxisProps, TooltipProps, KeyOfType, Cell } from '../typings';
 import { NilOrError } from 'utils/helperUtils';
 
 // PROPS
@@ -38,8 +31,8 @@ interface Payload<Row> {
 export interface Mapping<Row> {
   category: KeyOfType<Row, string>;
   length: KeyOfType<Row, number>[];
-  fill?: Channel<Row, string[]>;
-  opacity?: Channel<Row, number[]>;
+  fill?: (payload: Payload<Row>) => string;
+  opacity?: (payload: Payload<Row>) => number;
 }
 
 export interface Bars {

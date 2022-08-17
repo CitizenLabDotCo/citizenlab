@@ -24,6 +24,8 @@ interface Props {
   hideTicks: boolean;
 }
 
+const BAR_FILLS = [colors.blue, colors.lightBlue];
+
 const Chart = ({ currentChartRef, data, barNames, hideTicks }: Props) => {
   const hideLabels = data.length > 10;
   const slicedData = data.slice(0, 24);
@@ -36,7 +38,7 @@ const Chart = ({ currentChartRef, data, barNames, hideTicks }: Props) => {
       mapping={{
         category: 'name',
         length: ['actualPercentage', 'referencePercentage'],
-        fill: () => [colors.blue, colors.lightBlue],
+        fill: ({ barIndex }) => BAR_FILLS[barIndex],
       }}
       bars={{
         names: barNames,

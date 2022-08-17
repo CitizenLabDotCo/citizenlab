@@ -3,7 +3,7 @@ import {
   Props as MultiBarChartProps,
   Bars as MultiBarChartBars,
 } from '../MultiBarChart/typings';
-import { KeyOfType, Channel } from '../typings';
+import { KeyOfType } from '../typings';
 
 export interface Props<Row>
   extends Omit<
@@ -16,7 +16,7 @@ export interface Props<Row>
   onMouseOut?: (payload: Payload<Row>, event: React.MouseEvent) => void;
 }
 
-interface Payload<Row> {
+export interface Payload<Row> {
   row: Row;
   rowIndex: number;
 }
@@ -24,8 +24,8 @@ interface Payload<Row> {
 export interface Mapping<Row> {
   category: KeyOfType<Row, string>;
   length: KeyOfType<Row, number>;
-  fill?: Channel<Row, string>;
-  opacity?: Channel<Row, number>;
+  fill?: (payload: Payload<Row>) => string;
+  opacity?: (payload: Payload<Row>) => number;
 }
 
 export interface Bars extends Omit<MultiBarChartBars, 'names'> {

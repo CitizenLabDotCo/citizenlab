@@ -44,5 +44,3 @@ export type TooltipProps =
 export type KeyOfType<T, V> = keyof {
   [P in keyof T as T[P] extends V ? P : never]: any;
 };
-
-export type Channel<Row, Output> = (row: Row, index: number) => Output;

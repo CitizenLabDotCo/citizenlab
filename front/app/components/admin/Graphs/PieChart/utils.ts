@@ -16,9 +16,9 @@ export const getPieConfig = <Row>(
   const { name, angle, fill, opacity } = mapping;
   const fillMapping = fill ?? categoricalColorScheme;
 
-  const cells = data.map((row, rowIndex) => ({
-    fill: fillMapping(row, rowIndex),
-    opacity: opacity && opacity(row, rowIndex),
+  const cells = data.map((row: Row, rowIndex: number) => ({
+    fill: fillMapping({ row, rowIndex }),
+    opacity: opacity && opacity({ row, rowIndex }),
   }));
 
   const nameKey = name as string;

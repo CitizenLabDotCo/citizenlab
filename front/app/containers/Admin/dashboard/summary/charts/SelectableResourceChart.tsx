@@ -201,7 +201,7 @@ const SelectableResourceChart = ({
             category: 'name',
             length: 'value',
             opacity: currentFilter
-              ? (row) => (row.code === currentFilter ? 1 : 0.5)
+              ? ({ row }) => (row.code === currentFilter ? 1 : 0.5)
               : () => 1,
           }}
           bars={{ name: unitName, size: sizes.bar }}

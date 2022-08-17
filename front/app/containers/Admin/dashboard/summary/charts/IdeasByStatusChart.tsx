@@ -108,7 +108,7 @@ export class IdeasByStatusChart extends React.PureComponent<
             mapping={{
               category: 'name',
               length: 'value',
-              fill: ({ color }) => color ?? legacyColors.chartFill,
+              fill: ({ row: { color } }) => color ?? legacyColors.chartFill,
               opacity: () => 0.8,
             }}
             bars={{

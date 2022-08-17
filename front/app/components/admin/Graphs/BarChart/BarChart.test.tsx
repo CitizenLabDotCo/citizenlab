@@ -114,7 +114,7 @@ describe('<BarChart />', () => {
           mapping={{
             category: 'name',
             length: 'value',
-            fill: ({ color }) => colorMapping[color],
+            fill: ({ row: { color } }) => colorMapping[color],
           }}
           bars={{ isAnimationActive: false }}
         />
@@ -188,7 +188,7 @@ describe('<BarChart />', () => {
           mapping={{
             category: 'name',
             length: 'value',
-            opacity: ({ opacity }) => opacity,
+            opacity: ({ row: { opacity } }) => opacity,
           }}
           bars={{ isAnimationActive: false }}
         />

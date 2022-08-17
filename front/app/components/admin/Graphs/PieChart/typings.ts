@@ -1,7 +1,8 @@
 import { RefObject } from 'react';
 import { NilOrError } from 'utils/helperUtils';
 import { Percentage } from 'typings';
-import { Margin, TooltipProps, KeyOfType, Channel, Cell } from '../typings';
+import { Margin, TooltipProps, KeyOfType, Cell } from '../typings';
+import { Payload } from '../BarChart/typings';
 
 // PROPS
 export interface Props<Row> {
@@ -23,8 +24,8 @@ export interface Props<Row> {
 export interface Mapping<Row> {
   name: KeyOfType<Row, string>;
   angle: KeyOfType<Row, number>;
-  fill?: Channel<Row, string>;
-  opacity?: Channel<Row, number>;
+  fill?: (payload: Payload<Row>) => string;
+  opacity?: (payload: Payload<Row>) => number;
 }
 
 export interface Pie {

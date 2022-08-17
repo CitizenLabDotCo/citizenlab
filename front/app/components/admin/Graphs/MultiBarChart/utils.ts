@@ -22,8 +22,8 @@ export const getBarConfigs = <Row>(
 
   const barConfigs: BarConfig[] = length.map((lengthColumn, barIndex) => {
     const cells = data.map((row, rowIndex) => ({
-      fill: (fill && fill(row, rowIndex)[barIndex]) ?? FALLBACK_FILL,
-      opacity: opacity && opacity(row, rowIndex)[barIndex],
+      fill: (fill && fill({ row, rowIndex, barIndex })) ?? FALLBACK_FILL,
+      opacity: opacity && opacity({ row, rowIndex, barIndex }),
     }));
 
     return {

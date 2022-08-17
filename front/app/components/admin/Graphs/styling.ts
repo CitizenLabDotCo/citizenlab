@@ -52,8 +52,8 @@ const DEFAULT_CATEGORICAL_COLORS = [
   colors.categorical10,
 ];
 
-export const categoricalColorScheme = (_, index: number) =>
-  DEFAULT_CATEGORICAL_COLORS[index];
+export const categoricalColorScheme = ({ rowIndex }) =>
+  DEFAULT_CATEGORICAL_COLORS[rowIndex];
 
 // other
 export const sizes = {
