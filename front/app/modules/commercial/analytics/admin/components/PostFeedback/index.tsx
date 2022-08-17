@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 // components
 import {
@@ -73,6 +73,8 @@ const PostFeedback = ({
   projectId,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
+  const currentPieChart = useRef();
+  const currentProgressBarsChart = useRef();
   const data = usePostsWithFeedback(formatMessage, projectId);
   if (!data) return null;
 
@@ -88,10 +90,12 @@ const PostFeedback = ({
             {formatMessage(messages.postFeedback)}
           </GraphCardTitle>
           <ReportExportMenu
-            name="title"
+            name={formatMessage(messages.postFeedback)
+              .toLowerCase()
+              .replace(' ', '_')}
             currentProjectFilter={undefined}
             xlsxEndpoint={undefined}
-            svgNode={undefined}
+            svgNode={[currentPieChart, currentProgressBarsChart]}
           />
         </GraphCardHeader>
         <WrapperBox>
@@ -102,10 +106,16 @@ const PostFeedback = ({
               data={pieData}
               centerLabel={centerLabel}
               centerValue={centerValue}
+              innerRef={currentPieChart}
             />
           </PieBox>
           <ProgressBarsBox>
-            <ProgressBars data={progressBarsData} width="100%" height={136} />
+            <ProgressBars
+              data={progressBarsData}
+              width="100%"
+              height={136}
+              innerRef={currentProgressBarsChart}
+            />
             <Text>
               <CalendarIcon name="calendar" />
               {formatMessage(messages.averageTime, { days })}

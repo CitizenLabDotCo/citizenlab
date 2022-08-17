@@ -112,6 +112,7 @@ export class HorizontalBarChart extends React.PureComponent<
             bars={{ name: unitName, size: graphUnit === 'ideas' ? 5 : barSize }}
             yaxis={{ width: 150, tickLine: false }}
             renderLabels={(props) => <LabelList {...props} />}
+            innerRef={this.currentChart}
           />
         </GraphCardInner>
       </GraphCard>

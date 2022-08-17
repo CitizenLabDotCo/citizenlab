@@ -1,3 +1,5 @@
+import React, { RefObject } from 'react';
+
 export interface DataRow {
   name: string;
   color: string;
@@ -11,4 +13,5 @@ export interface PieProps {
   width?: string | number;
   height?: string | number;
   emptyContainerContent?: React.ReactNode;
+  innerRef?: RefObject<any>;
 }

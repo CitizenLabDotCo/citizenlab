@@ -26,6 +26,7 @@ export default function ({
   emptyContainerContent,
   width,
   height,
+  innerRef,
 }: PieProps) {
   const noData = isNilOrError(data) || data.every(isEmpty) || data.length <= 0;
 
@@ -44,7 +45,7 @@ export default function ({
   return (
     <PieChartStyleFixesDiv>
       <ResponsiveContainer width={width} height={height}>
-        <PieChart>
+        <PieChart ref={innerRef}>
           <Pie
             isAnimationActive={true}
             data={data}

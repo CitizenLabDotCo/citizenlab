@@ -1,3 +1,5 @@
+import React, { RefObject } from 'react';
+
 export interface DataRow {
   name: string;
   value: number;
@@ -10,4 +12,5 @@ export interface ProgressBarsProps {
   width?: string | number;
   height?: string | number;
   emptyContainerContent?: React.ReactNode;
+  innerRef?: RefObject<any>;
 }

@@ -91,6 +91,7 @@ export default function ({
   width,
   height,
   emptyContainerContent,
+  innerRef,
 }: ProgressBarsProps) {
   const noData = isNilOrError(data) || data.every(isEmpty) || data.length <= 0;
 
@@ -114,6 +115,7 @@ export default function ({
         stackOffset="expand"
         barSize={8}
         margin={{ bottom: 0 }}
+        ref={innerRef}
       >
         <XAxis hide type="number" />
         <YAxis width={0} type="category" dataKey="name" />
