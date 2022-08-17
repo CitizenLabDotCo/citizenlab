@@ -17,7 +17,7 @@
 #
 #  index_nav_bar_items_on_code      (code)
 #  index_nav_bar_items_on_ordering  (ordering)
-#  index_nav_bar_items_on_page_id   (page_id) UNIQUE
+#  index_nav_bar_items_on_page_id   (page_id)
 #
 class NavBarItem < ApplicationRecord
   # The codes must be listed in the correct default ordering

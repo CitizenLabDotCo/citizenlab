@@ -9,8 +9,6 @@ class RenameStaticPageIdToPageIdAndAddPageTypeAndUpdateDataInNavBarItems < Activ
   def change
     remove_foreign_key :nav_bar_items, :static_pages
     rename_column :nav_bar_items, :static_page_id, :page_id
-    remove_index :nav_bar_items, :page_id
-    add_index :nav_bar_items, :page_id, unique: true
     add_column :nav_bar_items, :page_type, :string
 
     reversible do |dir|

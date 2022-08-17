@@ -752,7 +752,7 @@ ActiveRecord::Schema.define(version: 2022_08_17_134100) do
     t.string "page_type"
     t.index ["code"], name: "index_nav_bar_items_on_code"
     t.index ["ordering"], name: "index_nav_bar_items_on_ordering"
-    t.index ["page_id"], name: "index_nav_bar_items_on_page_id", unique: true
+    t.index ["page_id"], name: "index_nav_bar_items_on_page_id"
   end
 
   create_table "nlp_text_network_analysis_tasks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
