@@ -24,8 +24,8 @@ RSpec.describe NavBarItem, type: :model do
 
     context 'with custom items' do
       it 'returns the custom copy for locales with custom copy and falls back to the page title for other locales' do
-        page = create(:static_page, title_multiloc: { 'en' => 'How to take part', 'fr-FR' => 'Comment participer' })
-        item = create(:nav_bar_item, static_page: page, title_multiloc: { 'en' => 'How to participate' })
+        page = create(:custom_page, title_multiloc: { 'en' => 'How to take part', 'fr-FR' => 'Comment participer' })
+        item = create(:nav_bar_item, page_id: page.id, page_type: 'CustomPage', title_multiloc: { 'en' => 'How to participate' })
         expected_title = { 'en' => 'How to participate', 'fr-FR' => 'Comment participer' }
         expect(item.title_multiloc_with_fallback).to match expected_title
       end

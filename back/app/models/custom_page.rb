@@ -41,6 +41,8 @@ class CustomPage < ApplicationRecord
 
   has_many :custom_page_files, -> { order(:ordering) }, dependent: :destroy, inverse_of: :custom_page
 
+  has_one :nav_bar_item, inverse_of: :custom_page, dependent: :destroy
+
   accepts_nested_attributes_for :pinned_admin_publications, allow_destroy: true
 
   before_validation :strip_title

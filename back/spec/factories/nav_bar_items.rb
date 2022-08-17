@@ -9,6 +9,5 @@ FactoryBot.define do
         'nl-BE' => 'Feestfotos'
       }
     end
-    static_page
   end
 end

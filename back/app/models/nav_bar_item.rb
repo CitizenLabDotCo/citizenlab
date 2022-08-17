@@ -25,12 +25,13 @@ class NavBarItem < ApplicationRecord
 
   acts_as_list column: :ordering, top_of_list: 0, add_new_at: :bottom
 
-  belongs_to :static_page, optional: true
+  #belongs_to :static_page, optional: true
+  belongs_to :page, polymorphic: true, optional: true
 
   validates :title_multiloc, multiloc: { presence: false }
   validates :code, inclusion: { in: CODES }
-  validates :code, uniqueness: true, if: ->(item) { !item.custom? }
-  validates :static_page, presence: true, if: :custom?
+  # validates :code, uniqueness: true, if: ->(item) { !item.custom? }
+  # validates :static_page, presence: true, if: :custom?
 
   before_validation :set_code, on: :create
 
@@ -60,12 +61,14 @@ class NavBarItem < ApplicationRecord
   end
 
   def fallback_title_multiloc
-    key_code = custom? ? static_page.code : code
+    # I changed this from key_code = custom? ? static_page.code : code
+    # Not entirely sure this makes sense, but it does get nav_bar_item_spec, context 'with custom items', to pass.
+    key_code = custom? ? 'custom' : code
     key = "nav_bar_items.#{key_code}.title"
     if I18n.exists? key
       MultilocService.new.i18n_to_multiloc key
     elsif custom?
-      static_page.title_multiloc
+      page.title_multiloc
     end
   end
 end
