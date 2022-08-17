@@ -131,7 +131,7 @@ export const FormEdit = () => {
           </StyledRightColumn>
           {!isNilOrError(selectedField) && (
             <FormBuilderSettings
-              key={selectedField ? selectedField.id : 'no-field-selected'}
+              key={selectedField.id}
               field={selectedField}
               onDelete={handleDelete}
               onFieldChange={onFieldChange}
