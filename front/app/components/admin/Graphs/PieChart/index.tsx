@@ -1,5 +1,8 @@
 import React from 'react';
 
+// styling
+import { animation } from '../styling';
+
 // components
 import {
   ResponsiveContainer,
@@ -58,6 +61,8 @@ const PieChart = <T,>({
 
         <Pie
           data={data}
+          animationDuration={animation.duration}
+          animationBegin={animation.begin}
           {...pieConfig.props}
           onMouseOver={handleMouseOver}
           onMouseOut={handleMouseOut}

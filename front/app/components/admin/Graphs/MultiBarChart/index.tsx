@@ -102,7 +102,6 @@ const MultiBarChart = <Row,>({
             key={barIndex}
             animationDuration={animation.duration}
             animationBegin={animation.begin}
-            fill={legacyColors.barFill}
             {...barConfig.props}
             onMouseOver={handleMouseOver(barIndex)}
             onMouseOut={handleMouseOut(barIndex)}
