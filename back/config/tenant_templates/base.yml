@@ -242,11 +242,11 @@ models:
     -
       code: custom
       ordering: 5
-      static_page_ref: *information-page
+      page_ref: *information-page
     -
       code: custom
       ordering: 6
-      static_page_ref: *faq-page
+      page_ref: *faq-page
   project:
     - &open_idea_project
       title_multiloc: projects.open_idea_project_title

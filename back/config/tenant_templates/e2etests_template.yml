@@ -243,11 +243,11 @@ models:
     -
       code: custom
       ordering: 5
-      static_page_ref: *information-page
+      page_ref: *information-page
     -
       code: custom
       ordering: 6
-      static_page_ref: *faq-page
+      page_ref: *faq-page
   custom_form:
   - &custom_idea_fields_custom_form {}
   custom_field:
