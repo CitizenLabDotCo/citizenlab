@@ -6,13 +6,13 @@ class JsonSchemaGeneratorService < FieldVisitorService
     configuration = AppConfiguration.instance
     @locales = configuration.settings('core', 'locales')
     @multiloc_service = MultilocService.new app_configuration: @configuration
-    @current_locale = 'en'
   end
 
   def generate_for(fields)
     locales.index_with do |locale|
-      @current_locale = locale
-      generate_for_current_locale fields
+      I18n.with_locale(locale) do
+        generate_for_current_locale fields
+      end
     end
   end
 
@@ -77,7 +77,7 @@ class JsonSchemaGeneratorService < FieldVisitorService
         json[:oneOf] = options.map do |option|
           {
             const: option.key,
-            title: title_for(option, current_locale)
+            title: multiloc_service.t(option.title_multiloc)
           }
         end
       end
@@ -97,7 +97,7 @@ class JsonSchemaGeneratorService < FieldVisitorService
           items[:oneOf] = options.map do |option|
             {
               const: option.key,
-              title: title_for(option, current_locale)
+              title: multiloc_service.t(option.title_multiloc)
             }
           end
         end
@@ -177,7 +177,7 @@ class JsonSchemaGeneratorService < FieldVisitorService
 
   private
 
-  attr_reader :locales, :multiloc_service, :current_locale
+  attr_reader :locales, :multiloc_service
 
   def generate_for_current_locale(fields)
     field_properties = fields.each_with_object({}) do |field, accu|
@@ -190,12 +190,6 @@ class JsonSchemaGeneratorService < FieldVisitorService
     }.tap do |output|
       required = fields.select(&:enabled?).select(&:required?).map(&:key)
       output[:required] = required unless required.empty?
-    end
-  end
-
-  def title_for(field, locale)
-    I18n.with_locale(locale) do
-      multiloc_service.t(field.title_multiloc)
     end
   end
 end

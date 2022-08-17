@@ -6,13 +6,13 @@ class UiSchemaGeneratorService < FieldVisitorService
     configuration = AppConfiguration.instance
     @locales = configuration.settings('core', 'locales')
     @multiloc_service = MultilocService.new app_configuration: configuration
-    @current_locale = 'en'
   end
 
   def generate_for(fields)
     locales.index_with do |locale|
-      @current_locale = locale
-      generate_for_current_locale fields
+      I18n.with_locale(locale) do
+        generate_for_current_locale fields
+      end
     end
   end
 
@@ -68,9 +68,9 @@ class UiSchemaGeneratorService < FieldVisitorService
     {
       type: 'Control',
       scope: "#/properties/#{field.key}",
-      label: for_current_locale(field.title_multiloc),
+      label: multiloc_service.t(field.title_multiloc),
       options: {
-        description: for_current_locale(field.description_multiloc)
+        description: multiloc_service.t(field.description_multiloc)
       }
     }
   end
@@ -83,7 +83,7 @@ class UiSchemaGeneratorService < FieldVisitorService
 
   private
 
-  attr_reader :locales, :multiloc_service, :current_locale
+  attr_reader :locales, :multiloc_service
 
   def multiloc_field(_field)
     elements = locales.map do |locale|
@@ -97,11 +97,5 @@ class UiSchemaGeneratorService < FieldVisitorService
       options: { render: 'multiloc' },
       elements: elements
     }
-  end
-
-  def for_current_locale(multiloc)
-    I18n.with_locale(current_locale) do
-      multiloc_service.t multiloc
-    end
   end
 end

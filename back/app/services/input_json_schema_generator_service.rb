@@ -49,7 +49,7 @@ class InputJsonSchemaGeneratorService < JsonSchemaGeneratorService
           items[:oneOf] = topics.map do |topic|
             {
               const: topic.id,
-              title: title_for(topic, current_locale)
+              title: multiloc_service.t(topic.title_multiloc)
             }
           end
         end
