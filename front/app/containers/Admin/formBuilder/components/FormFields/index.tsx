@@ -12,36 +12,35 @@ import { List, SortableRow } from 'components/admin/ResourceList';
 import { Box, Badge, Text } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
 
-import { IFlatCustomField } from 'modules/free/native_surveys/services/surveyCustomFields';
-
 // styling
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
+import { IFlatCustomField } from 'services/formCustomFields';
 
 const StyledBadge = styled(Badge)`
   margin-left: 12px;
 `;
 
-interface SurveyFieldsProps {
+interface FormFieldsProps {
   onEditField: (field: IFlatCustomField) => void;
-  surveyCustomFields: IFlatCustomField[];
+  formCustomFields: IFlatCustomField[];
   handleDragRow: (fromIndex: number, toIndex: number) => void;
   handleDropRow: (fieldId: string, toIndex: number) => void;
   selectedFieldId?: string;
 }
 
-const SurveyFields = ({
+const FormFields = ({
   onEditField,
-  surveyCustomFields,
+  formCustomFields,
   handleDragRow,
   handleDropRow,
   selectedFieldId,
-}: SurveyFieldsProps) => {
+}: FormFieldsProps) => {
   return (
     <DndProvider backend={HTML5Backend}>
       <Box p="32px" height="100%" overflowY="auto">
-        <List key={surveyCustomFields.length}>
-          {surveyCustomFields.map((field, index) => {
+        <List key={formCustomFields.length}>
+          {formCustomFields.map((field, index) => {
             const border =
               selectedFieldId === field.id
                 ? `1px solid ${colors.clBlueLight}`
@@ -83,4 +82,4 @@ const SurveyFields = ({
   );
 };
 
-export default SurveyFields;
+export default FormFields;

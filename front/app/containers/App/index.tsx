@@ -454,7 +454,6 @@ class App extends PureComponent<Props, State> {
     const isAdminPage = isPage('admin', location.pathname);
     const isInitiativeFormPage = isPage('initiative_form', location.pathname);
     const isIdeaFormPage = isPage('idea_form', location.pathname);
-    const isNativeSurveyFormPage = isPage('native_survey', location.pathname);
     const isIdeaEditPage = isPage('idea_edit', location.pathname);
     const isInitiativeEditPage = isPage('initiative_edit', location.pathname);
     const isDesktopUser = windowSize && isDesktop(windowSize);
@@ -464,14 +463,12 @@ class App extends PureComponent<Props, State> {
       !isIdeaFormPage &&
       !isInitiativeFormPage &&
       !isIdeaEditPage &&
-      !isNativeSurveyFormPage &&
       !isInitiativeEditPage;
     const showMobileNav =
       !isDesktopUser &&
       !isAdminPage &&
       !isIdeaFormPage &&
       !isInitiativeFormPage &&
-      !isNativeSurveyFormPage &&
       !isIdeaEditPage &&
       !isInitiativeEditPage;
     const { pathname } = removeLocale(location.pathname);

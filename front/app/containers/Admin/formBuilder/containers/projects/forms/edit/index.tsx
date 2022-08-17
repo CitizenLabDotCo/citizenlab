@@ -11,13 +11,10 @@ import { stylingConsts, colors } from 'utils/styleUtils';
 // components
 import { RightColumn } from 'containers/Admin';
 import { Box } from '@citizenlab/cl2-component-library';
-import SurveyBuilderTopBar from 'modules/free/native_surveys/admin/components/SurveyBuilderTopBar';
-import SurveyBuilderToolbox from 'modules/free/native_surveys/admin/components/SurveyBuilderToolbox';
-import SurveyBuilderSettings from 'modules/free/native_surveys/admin/components/SurveyBuilderSettings';
-import SurveyFields from 'modules/free/native_surveys/admin/components/SurveyFields';
-
-// hooks
-import useSurveyCustomFields from 'modules/free/native_surveys/hooks/useSurveyCustomFields';
+import FormBuilderTopBar from 'containers/Admin/formBuilder/components/FormBuilderTopBar';
+import FormBuilderToolbox from 'containers/Admin/formBuilder/components/FormBuilderToolbox';
+import FormBuilderSettings from 'containers/Admin/formBuilder/components/FormBuilderSettings';
+import FormFields from 'containers/Admin/formBuilder/components/FormFields';
 
 // utils
 import { isNilOrError, isNil } from 'utils/helperUtils';
@@ -25,7 +22,10 @@ import { isNilOrError, isNil } from 'utils/helperUtils';
 import {
   IFlatCreateCustomField,
   IFlatCustomField,
-} from 'modules/free/native_surveys/services/surveyCustomFields';
+} from 'services/formCustomFields';
+
+// hooks
+import useFormCustomFields from 'hooks/useFormCustomFields';
 
 const StyledRightColumn = styled(RightColumn)`
   height: calc(100vh - ${stylingConsts.menuHeight}px);
@@ -37,13 +37,13 @@ const StyledRightColumn = styled(RightColumn)`
   overflow-y: auto;
 `;
 
-export const SurveyEdit = () => {
+export const FormEdit = () => {
   const [selectedField, setSelectedField] = useState<
     IFlatCustomField | undefined
   >(undefined);
   const { projectId } = useParams() as { projectId: string };
 
-  const { surveyCustomFields, setSurveyCustomFields } = useSurveyCustomFields({
+  const { formCustomFields, setFormCustomFields } = useFormCustomFields({
     projectId,
   });
 
@@ -52,31 +52,29 @@ export const SurveyEdit = () => {
   };
 
   const handleDelete = async (fieldId: string) => {
-    if (!isNilOrError(surveyCustomFields)) {
-      const newFields = surveyCustomFields.filter(
+    if (!isNilOrError(formCustomFields)) {
+      const newFields = formCustomFields.filter(
         (field) => field.id !== fieldId
       );
-      setSurveyCustomFields(newFields);
+      setFormCustomFields(newFields);
       closeSettings();
     }
   };
 
   // TODO: Improve this to remove usage of type casting
   const onAddField = (field: IFlatCreateCustomField) => {
-    if (!isNilOrError(surveyCustomFields)) {
-      setSurveyCustomFields(
-        surveyCustomFields.concat([field as IFlatCustomField])
-      );
-    } else if (isNil(surveyCustomFields)) {
-      setSurveyCustomFields([field as IFlatCustomField]);
+    if (!isNilOrError(formCustomFields)) {
+      setFormCustomFields(formCustomFields.concat([field as IFlatCustomField]));
+    } else if (isNil(formCustomFields)) {
+      setFormCustomFields([field as IFlatCustomField]);
     }
     setSelectedField(field as IFlatCustomField);
   };
 
   const onFieldChange = (fieldToUpdate: IFlatCustomField) => {
-    if (!isNilOrError(surveyCustomFields)) {
-      setSurveyCustomFields(
-        surveyCustomFields.map((field) => {
+    if (!isNilOrError(formCustomFields)) {
+      setFormCustomFields(
+        formCustomFields.map((field) => {
           return field.id === fieldToUpdate.id ? fieldToUpdate : field;
         })
       );
@@ -84,23 +82,23 @@ export const SurveyEdit = () => {
   };
 
   const handleDragRow = (fromIndex: number, toIndex: number) => {
-    if (!isNilOrError(surveyCustomFields)) {
-      const newFields = clone(surveyCustomFields);
+    if (!isNilOrError(formCustomFields)) {
+      const newFields = clone(formCustomFields);
       const [removed] = newFields.splice(fromIndex, 1);
       newFields.splice(toIndex, 0, removed);
-      setSurveyCustomFields(newFields);
+      setFormCustomFields(newFields);
     }
   };
 
   const handleDropRow = (fieldId: string, toIndex: number) => {
-    if (!isNilOrError(surveyCustomFields)) {
-      const newFields = clone(surveyCustomFields);
+    if (!isNilOrError(formCustomFields)) {
+      const newFields = clone(formCustomFields);
       const [removed] = newFields.splice(
         newFields.findIndex((field) => field.id === fieldId),
         1
       );
       newFields.splice(toIndex, 0, removed);
-      setSurveyCustomFields(newFields);
+      setFormCustomFields(newFields);
     }
   };
 
@@ -115,15 +113,15 @@ export const SurveyEdit = () => {
       h="100vh"
     >
       <FocusOn>
-        <SurveyBuilderTopBar surveyCustomFields={surveyCustomFields} />
+        <FormBuilderTopBar formCustomFields={formCustomFields} />
         <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
-          <SurveyBuilderToolbox onAddField={onAddField} />
+          <FormBuilderToolbox onAddField={onAddField} />
           <StyledRightColumn>
             <Box width="1000px" bgColor="white" minHeight="300px">
-              {!isNilOrError(surveyCustomFields) && (
-                <SurveyFields
+              {!isNilOrError(formCustomFields) && (
+                <FormFields
                   onEditField={setSelectedField}
-                  surveyCustomFields={surveyCustomFields}
+                  formCustomFields={formCustomFields}
                   handleDragRow={handleDragRow}
                   handleDropRow={handleDropRow}
                   selectedFieldId={selectedField?.id}
@@ -131,24 +129,26 @@ export const SurveyEdit = () => {
               )}
             </Box>
           </StyledRightColumn>
-          <SurveyBuilderSettings
-            key={selectedField ? selectedField.id : 'no-field-selected'}
-            field={selectedField}
-            onDelete={handleDelete}
-            onFieldChange={onFieldChange}
-            onClose={closeSettings}
-          />
+          {!isNilOrError(selectedField) && (
+            <FormBuilderSettings
+              key={selectedField.id}
+              field={selectedField}
+              onDelete={handleDelete}
+              onFieldChange={onFieldChange}
+              onClose={closeSettings}
+            />
+          )}
         </Box>
       </FocusOn>
     </Box>
   );
 };
 
-const SurveyBuilderPage = () => {
+const FormBuilderPage = () => {
   const modalPortalElement = document.getElementById('modal-portal');
   return modalPortalElement
-    ? createPortal(<SurveyEdit />, modalPortalElement)
+    ? createPortal(<FormEdit />, modalPortalElement)
     : null;
 };
 
-export default SurveyBuilderPage;
+export default FormBuilderPage;

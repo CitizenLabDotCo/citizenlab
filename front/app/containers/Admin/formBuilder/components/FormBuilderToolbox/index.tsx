@@ -13,23 +13,24 @@ import { Box, Title } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
+// types
 import {
-  IFlatCreateCustomField,
   ICustomFieldInputType,
-} from 'modules/free/native_surveys/services/surveyCustomFields';
+  IFlatCreateCustomField,
+} from 'services/formCustomFields';
 
 const DraggableElement = styled.div`
   cursor: move;
 `;
 
-interface SurveyBuilderToolboxProps {
+interface FormBuilderToolboxProps {
   onAddField: (field: IFlatCreateCustomField) => void;
 }
 
-const SurveyBuilderToolbox = ({
+const FormBuilderToolbox = ({
   intl: { formatMessage },
   onAddField,
-}: SurveyBuilderToolboxProps & InjectedIntlProps) => {
+}: FormBuilderToolboxProps & InjectedIntlProps) => {
   const addAnswer = (inputType: ICustomFieldInputType) => {
     onAddField({
       id: `${Math.floor(Date.now() * Math.random())}`,
@@ -81,4 +82,4 @@ const SurveyBuilderToolbox = ({
   );
 };
 
-export default injectIntl(SurveyBuilderToolbox);
+export default injectIntl(FormBuilderToolbox);

@@ -894,6 +894,7 @@
   "app.containers.AdminPage.ProjectEdit.SurveyResults.exportSurveyResults": "Export the survey results (.xlsx)",
   "app.containers.AdminPage.ProjectEdit.SurveyResults.subtitleSurveyResults": "Here, you can download the results of the Typeform survey(s) within this project as an Excel file.",
   "app.containers.AdminPage.ProjectEdit.SurveyResults.surveyResultsTab": "Survey Results",
+  "app.containers.AdminPage.ProjectEdit.SurveyResults.surveyTab": "Survey",
   "app.containers.AdminPage.ProjectEdit.SurveyResults.titleSurveyResults": "Consult the survey answers",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.addCauseButton": "Add cause",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.causeDeletionConfirmation": "Are you sure?",
