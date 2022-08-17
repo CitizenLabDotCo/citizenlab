@@ -29,6 +29,7 @@ const Playground = () => (
       height={200}
       data={data}
       mapping={{ angle: 'value', name: 'label' }}
+      tooltip
     />
   </>
 );

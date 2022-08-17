@@ -1,6 +1,13 @@
 import { RefObject } from 'react';
 import { Percentage } from 'typings';
-import { Margin, AxisProps, KeyOfType, Channel, Cell } from '../typings';
+import {
+  Margin,
+  AxisProps,
+  TooltipProps,
+  KeyOfType,
+  Channel,
+  Cell,
+} from '../typings';
 import { NilOrError } from 'utils/helperUtils';
 
 // PROPS
@@ -15,7 +22,7 @@ export interface Props<Row> {
   xaxis?: AxisProps;
   yaxis?: AxisProps;
   labels?: boolean | Labels | ((props: LabelConfig) => React.ReactNode);
-  tooltip?: boolean | Tooltip | ((props: TooltipConfig) => React.ReactNode);
+  tooltip?: TooltipProps;
   emptyContainerContent?: React.ReactNode;
   innerRef?: RefObject<any>;
 }
@@ -41,12 +48,6 @@ export interface Labels {
   formatter?: (value: number) => string;
 }
 
-export interface Tooltip {
-  isAnimationActive?: boolean;
-  cursor?: { fill: string };
-  labelFormatter?: (value: any) => string;
-}
-
 // PARSED CONFIGS
 export interface BarConfig {
   props: {
@@ -63,12 +64,6 @@ export interface LabelConfig {
   fontSize: number;
   position: 'top' | 'right';
   formatter?: (value: number) => string;
-}
-
-export interface TooltipConfig {
-  isAnimationActive: boolean;
-  cursor: { fill: string };
-  labelFormatter?: (value: any) => string;
 }
 
 // LAYOUT

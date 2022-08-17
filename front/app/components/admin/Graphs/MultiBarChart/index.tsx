@@ -21,13 +21,8 @@ import {
 import EmptyState from '../_components/EmptyState';
 
 // utils
-import {
-  getBarConfigs,
-  getRechartsLayout,
-  getLabelConfig,
-  getTooltipConfig,
-} from './utils';
-import { hasNoData } from '../utils';
+import { getBarConfigs, getRechartsLayout, getLabelConfig } from './utils';
+import { hasNoData, getTooltipConfig } from '../utils';
 
 // typings
 import { Props } from './typings';

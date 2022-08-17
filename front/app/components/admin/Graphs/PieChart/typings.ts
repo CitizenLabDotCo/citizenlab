@@ -1,7 +1,7 @@
 import { RefObject } from 'react';
 import { NilOrError } from 'utils/helperUtils';
 import { Percentage } from 'typings';
-import { Margin, KeyOfType, Channel, Cell } from '../typings';
+import { Margin, TooltipProps, KeyOfType, Channel, Cell } from '../typings';
 
 // PROPS
 export interface Props<Row> {
@@ -12,6 +12,7 @@ export interface Props<Row> {
   pie?: Pie;
   margin?: Margin;
   annotations?: boolean | ((row: Row) => string);
+  tooltip?: TooltipProps;
   centerLabel?: React.ReactElement;
   emptyContainerContent?: React.ReactNode;
   innerRef?: RefObject<any>;

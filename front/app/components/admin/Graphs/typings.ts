@@ -21,6 +21,24 @@ export interface AxisProps {
   hide?: boolean;
 }
 
+// TOOLTIP
+export interface Tooltip {
+  isAnimationActive?: boolean;
+  cursor?: { fill: string };
+  labelFormatter?: (value: any) => string;
+}
+
+export interface TooltipConfig {
+  isAnimationActive: boolean;
+  cursor: { fill: string };
+  labelFormatter?: (value: any) => string;
+}
+
+export type TooltipProps =
+  | boolean
+  | Tooltip
+  | ((props: TooltipConfig) => React.ReactNode);
+
 // UTILS
 // https://stackoverflow.com/a/49752227
 export type KeyOfType<T, V> = keyof {

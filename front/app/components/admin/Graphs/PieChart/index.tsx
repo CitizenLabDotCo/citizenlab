@@ -4,6 +4,7 @@ import React from 'react';
 import {
   ResponsiveContainer,
   PieChart as RechartsPieChart,
+  Tooltip,
   Pie,
   Cell,
   Label,
@@ -11,8 +12,8 @@ import {
 import EmptyState from '../_components/EmptyState';
 
 // utils
-import { hasNoData } from '../utils';
 import { getPieConfig } from './utils';
+import { hasNoData, getTooltipConfig } from '../utils';
 
 // typings
 import { Props } from './typings';
@@ -25,6 +26,7 @@ const PieChart = <T,>({
   pie,
   margin,
   annotations,
+  tooltip,
   centerLabel,
   emptyContainerContent,
   innerRef,
@@ -34,10 +36,16 @@ const PieChart = <T,>({
   }
 
   const pieConfig = getPieConfig(data, mapping, pie, annotations);
+  const tooltipConfig = getTooltipConfig(tooltip);
 
   return (
     <ResponsiveContainer width={width} height={height}>
       <RechartsPieChart margin={margin} ref={innerRef}>
+        {(typeof tooltip === 'object' || tooltip === true) && (
+          <Tooltip {...tooltipConfig} />
+        )}
+        {typeof tooltip === 'function' && tooltip(tooltipConfig)}
+
         <Pie data={data} {...pieConfig.props}>
           {pieConfig.cells.map((cell, cellIndex) => (
             <Cell key={`cell-${cellIndex}`} {...cell} />
