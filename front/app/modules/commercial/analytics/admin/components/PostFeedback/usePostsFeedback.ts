@@ -12,6 +12,7 @@ import { Response, PostFeedback } from './typings';
 
 // i18n
 import messages from './messages';
+import DashboardMessages from 'containers/Admin/dashboard/messages';
 
 const query = (projectId?: string): Query => {
   const groups = {
@@ -60,6 +61,9 @@ export default function usePostsWithFeedback(
         const total = sum([feedback_count, sum_feedback_none]);
 
         const feedbackPercent = feedback_count / total;
+        const pieCenterValue = `${Math.round(feedbackPercent * 100)}%`;
+        const pieCenterLabel = formatMessage(messages.feedbackGiven);
+
         const days = Math.round(avg_feedback_time_taken / 86400);
 
         const statusChanged = formatMessage(messages.statusChanged);
@@ -94,11 +98,31 @@ export default function usePostsWithFeedback(
             total,
           },
         ];
+
+        const xlsxDataSheet1Row1 = {};
+        xlsxDataSheet1Row1[formatMessage(messages.feedbackGiven)] =
+          feedback_count;
+        xlsxDataSheet1Row1[formatMessage(messages.statusChanged)] =
+          sum_feedback_status_change;
+        xlsxDataSheet1Row1[formatMessage(messages.officialUpdate)] =
+          sum_feedback_official;
+        xlsxDataSheet1Row1[formatMessage(DashboardMessages.total)] = total;
+
+        const xlsxDataSheet2Row1 = {};
+        xlsxDataSheet2Row1[formatMessage(messages.averageTimeColumnName)] =
+          days;
+
+        const xlsxData = {};
+        xlsxData[formatMessage(messages.postFeedback)] = [xlsxDataSheet1Row1];
+        xlsxData[formatMessage(messages.responseTime)] = [xlsxDataSheet2Row1];
+
         setPostsWithFeedback({
           pieData,
-          feedbackPercent,
+          pieCenterValue,
+          pieCenterLabel,
           days,
           progressBarsData,
+          xlsxData,
         });
       }
     });

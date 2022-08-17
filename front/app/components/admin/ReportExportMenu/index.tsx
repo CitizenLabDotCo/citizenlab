@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { findDOMNode } from 'react-dom';
 import { trackEventByName } from 'utils/analytics';
 import { Canvg } from 'canvg';
+import XLSX from 'xlsx';
 
 // styling
 import styled from 'styled-components';
@@ -49,6 +50,7 @@ interface ReportExportMenuProps {
   currentProjectFilterLabel?: string | undefined;
   currentGroupFilterLabel?: string | undefined;
   currentTopicFilterLabel?: string | undefined;
+  data?: object;
 }
 
 const ReportExportMenu = ({
@@ -66,6 +68,7 @@ const ReportExportMenu = ({
   currentTopicFilterLabel,
   currentProjectFilterLabel,
   intl: { formatMessage, formatDate },
+  data,
 }: ReportExportMenuProps & InjectedIntlProps) => {
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const [exportingXls, setExportingXls] = useState(false);
@@ -185,29 +188,38 @@ const ReportExportMenu = ({
   };
 
   const downloadXlsx = async () => {
-    try {
-      setExportingXls(true);
-      const blob = await requestBlob(
-        xlsxEndpoint,
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        {
-          start_at: startAt,
-          end_at: endAt,
-          interval: resolution,
-          project: currentProjectFilter,
-          group: currentGroupFilter,
-          topic: currentTopicFilter,
+    if (xlsxEndpoint) {
+      try {
+        setExportingXls(true);
+        const blob = await requestBlob(
+          xlsxEndpoint,
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          {
+            start_at: startAt,
+            end_at: endAt,
+            interval: resolution,
+            project: currentProjectFilter,
+            group: currentGroupFilter,
+            topic: currentTopicFilter,
+          }
+        );
+        if (blob.size <= 2467) {
+          throw new Error(`Empty xlsx : ${xlsxEndpoint}`);
         }
-      );
-      if (blob.size <= 2467) {
-        throw new Error(`Empty xlsx : ${xlsxEndpoint}`);
+        saveAs(blob, `${fileName}.xlsx`);
+        setExportingXls(false);
+        setDropdownOpened(false);
+      } catch (error) {
+        reportError(error);
+        setExportingXls(false);
       }
-      saveAs(blob, `${fileName}.xlsx`);
-      setExportingXls(false);
-      setDropdownOpened(false);
-    } catch (error) {
-      reportError(error);
-      setExportingXls(false);
+    } else if (data) {
+      const workbook = XLSX.utils.book_new();
+      Object.entries(data).forEach(([sheet_name, sheet_data]) => {
+        const worksheet = XLSX.utils.json_to_sheet(sheet_data);
+        XLSX.utils.book_append_sheet(workbook, worksheet, sheet_name);
+      });
+      XLSX.writeFile(workbook, `${fileName}.xlsx`);
     }
 
     // track this click for user analytics
@@ -252,7 +264,7 @@ const ReportExportMenu = ({
                 <FormattedMessage {...messages.downloadPng} />
               </StyledButton>
             )}
-            {xlsxEndpoint && (
+            {(data || xlsxEndpoint) && (
               <StyledButton
                 onClick={downloadXlsx}
                 buttonStyle="text"

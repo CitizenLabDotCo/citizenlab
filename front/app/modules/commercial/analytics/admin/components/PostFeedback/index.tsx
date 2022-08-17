@@ -78,9 +78,14 @@ const PostFeedback = ({
   const data = usePostsWithFeedback(formatMessage, projectId);
   if (!data) return null;
 
-  const { pieData, feedbackPercent, days, progressBarsData } = data;
-  const centerValue = `${Math.round(feedbackPercent * 100)}%`;
-  const centerLabel = formatMessage(messages.feedbackGiven);
+  const {
+    pieData,
+    pieCenterValue,
+    pieCenterLabel,
+    xlsxData,
+    days,
+    progressBarsData,
+  } = data;
 
   return (
     <GraphCard className="fullWidth dynamicHeight">
@@ -93,9 +98,8 @@ const PostFeedback = ({
             name={formatMessage(messages.postFeedback)
               .toLowerCase()
               .replace(' ', '_')}
-            currentProjectFilter={undefined}
-            xlsxEndpoint={undefined}
             svgNode={[currentPieChart, currentProgressBarsChart]}
+            data={xlsxData}
           />
         </GraphCardHeader>
         <WrapperBox>
@@ -104,8 +108,8 @@ const PostFeedback = ({
               height={210}
               width="100%"
               data={pieData}
-              centerLabel={centerLabel}
-              centerValue={centerValue}
+              centerLabel={pieCenterLabel}
+              centerValue={pieCenterValue}
               innerRef={currentPieChart}
             />
           </PieBox>

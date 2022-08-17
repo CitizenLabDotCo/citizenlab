@@ -15,10 +15,18 @@ export default defineMessages({
   },
   feedbackGiven: {
     id: 'app.containers.AdminPage.DashboardPage.components.PostFeedback.feedbackGiven',
-    defaultMessage: 'feedback given',
+    defaultMessage: 'Feedback given',
   },
   averageTime: {
     id: 'app.containers.AdminPage.DashboardPage.components.PostFeedback.averageTime',
     defaultMessage: 'Avg. response time: {days} days',
+  },
+  averageTimeColumnName: {
+    id: 'app.containers.AdminPage.DashboardPage.components.PostFeedback.averageTimeColumnName',
+    defaultMessage: 'Average amount of days to respond',
+  },
+  responseTime: {
+    id: 'app.containers.AdminPage.DashboardPage.components.PostFeedback.responseTime',
+    defaultMessage: 'Response time',
   },
 });

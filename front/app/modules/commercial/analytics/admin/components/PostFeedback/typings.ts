@@ -17,7 +17,9 @@ type ProgressBarsItem = {
 
 export type PostFeedback = {
   pieData: DataRow[];
+  pieCenterValue: string;
+  pieCenterLabel: string;
   progressBarsData: ProgressBarsItem[];
-  feedbackPercent: number;
   days: number;
+  xlsxData: object;
 };
