@@ -47,12 +47,29 @@ export default function usePostsWithFeedback(
   useEffect(() => {
     analyticsStream<Response>(query(projectId)).then((results) => {
       if (results && results.data.length > 0) {
+        const parsedResult = results.data.reduce(
+          (acc, e) => {
+            acc.sum_feedback_none += e.sum_feedback_none;
+            acc.sum_feedback_official += e.sum_feedback_official;
+            acc.sum_feedback_status_change += e.sum_feedback_status_change;
+            acc.avg_feedback_time_taken_ += e.avg_feedback_time_taken;
+            return acc;
+          },
+          {
+            sum_feedback_none: 0,
+            sum_feedback_official: 0,
+            sum_feedback_status_change: 0,
+            avg_feedback_time_taken_: 0,
+          }
+        );
         const {
           sum_feedback_none,
           sum_feedback_official,
           sum_feedback_status_change,
-          avg_feedback_time_taken,
-        } = results.data[0];
+          avg_feedback_time_taken_,
+        } = parsedResult as any;
+        const avg_feedback_time_taken =
+          avg_feedback_time_taken_ / results.data.length;
 
         const feedback_count = sum([
           sum_feedback_official,
@@ -124,6 +141,8 @@ export default function usePostsWithFeedback(
           progressBarsData,
           xlsxData,
         });
+      } else {
+        setPostsWithFeedback(undefined);
       }
     });
   }, [projectId, formatMessage]);
