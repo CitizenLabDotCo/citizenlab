@@ -30,6 +30,8 @@ const PieChart = <T,>({
   centerLabel,
   emptyContainerContent,
   innerRef,
+  onMouseOver,
+  onMouseOut
 }: Props<T>) => {
   if (hasNoData(data)) {
     return <EmptyState emptyContainerContent={emptyContainerContent} />;
@@ -46,7 +48,12 @@ const PieChart = <T,>({
         )}
         {typeof tooltip === 'function' && tooltip(tooltipConfig)}
 
-        <Pie data={data} {...pieConfig.props}>
+        <Pie 
+          data={data}
+          {...pieConfig.props}
+          onMouseOver={onMouseOver}
+          onMouseOut={onMouseOut}
+        >
           {pieConfig.cells.map((cell, cellIndex) => (
             <Cell key={`cell-${cellIndex}`} {...cell} />
           ))}

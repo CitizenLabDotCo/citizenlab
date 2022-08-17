@@ -16,6 +16,8 @@ const data: Row[] = [
   { value: 5, label: 'coconut' },
 ];
 
+const handle = (_, i) => { console.log(i) }
+
 const Playground = () => (
   <>
     <BarChart
@@ -23,13 +25,17 @@ const Playground = () => (
       height={200}
       data={data}
       mapping={{ length: 'value', category: 'label' }}
+      labels
     />
 
     <PieChart
       height={200}
       data={data}
       mapping={{ angle: 'value', name: 'label' }}
+      annotations
       tooltip
+      onMouseOver={handle}
+      onMouseOut={handle}
     />
   </>
 );
