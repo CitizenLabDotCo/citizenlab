@@ -19,22 +19,12 @@ const BarChart = <Row,>({
   const convertedMapping = convertMapping(mapping);
   const convertedBars = convertBars(bars);
 
-  const handleMouseOver = (
-    row: Row,
-    rowIndex: number,
-    _: number,
-    event: React.MouseEvent
-  ) => {
-    onMouseOver && onMouseOver(row, rowIndex, event);
+  const handleMouseOver = ({ row, rowIndex }, event: React.MouseEvent) => {
+    onMouseOver && onMouseOver({ row, rowIndex }, event);
   };
 
-  const handleMouseOut = (
-    row: Row,
-    rowIndex: number,
-    _: number,
-    event: React.MouseEvent
-  ) => {
-    onMouseOut && onMouseOut(row, rowIndex, event);
+  const handleMouseOut = ({ row, rowIndex }, event: React.MouseEvent) => {
+    onMouseOut && onMouseOut({ row, rowIndex }, event);
   };
 
   return (

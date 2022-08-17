@@ -12,8 +12,13 @@ export interface Props<Row>
   > {
   mapping: Mapping<Row>;
   bars?: Bars;
-  onMouseOver?: (row: Row, rowIndex: number, event: React.MouseEvent) => void;
-  onMouseOut?: (row: Row, rowIndex: number, event: React.MouseEvent) => void;
+  onMouseOver?: (payload: Payload<Row>, event: React.MouseEvent) => void;
+  onMouseOut?: (payload: Payload<Row>, event: React.MouseEvent) => void;
+}
+
+interface Payload<Row> {
+  row: Row;
+  rowIndex: number;
 }
 
 export interface Mapping<Row> {

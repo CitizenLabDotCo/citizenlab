@@ -25,18 +25,14 @@ export interface Props<Row> {
   tooltip?: TooltipProps;
   emptyContainerContent?: React.ReactNode;
   innerRef?: RefObject<any>;
-  onMouseOver?: (
-    row: Row,
-    rowIndex: number,
-    barIndex: number,
-    event: React.MouseEvent
-  ) => void;
-  onMouseOut?: (
-    row: Row,
-    rowIndex: number,
-    barIndex: number,
-    event: React.MouseEvent
-  ) => void;
+  onMouseOver?: (payload: Payload<Row>, event: React.MouseEvent) => void;
+  onMouseOut?: (payload: Payload<Row>, event: React.MouseEvent) => void;
+}
+
+interface Payload<Row> {
+  row: Row;
+  rowIndex: number;
+  barIndex: number;
 }
 
 export interface Mapping<Row> {

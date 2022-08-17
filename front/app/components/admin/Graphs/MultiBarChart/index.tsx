@@ -58,12 +58,28 @@ const MultiBarChart = <Row,>({
 
   const handleMouseOver =
     (barIndex: number) => (_, rowIndex: number, event: React.MouseEvent) => {
-      onMouseOver && onMouseOver(data[rowIndex], rowIndex, barIndex, event);
+      onMouseOver &&
+        onMouseOver(
+          {
+            row: data[rowIndex],
+            rowIndex,
+            barIndex,
+          },
+          event
+        );
     };
 
   const handleMouseOut =
     (barIndex: number) => (_, rowIndex: number, event: React.MouseEvent) => {
-      onMouseOut && onMouseOut(data[rowIndex], rowIndex, barIndex, event);
+      onMouseOut &&
+        onMouseOut(
+          {
+            row: data[rowIndex],
+            rowIndex,
+            barIndex,
+          },
+          event
+        );
     };
 
   return (
