@@ -698,6 +698,7 @@
   "app.containers.IdeaButton.signUpLinkText": "registrieren",
   "app.containers.IdeaButton.submitAnIssue": "Kommentieren",
   "app.containers.IdeaButton.submitYourIdea": "Idee einreichen",
+  "app.containers.IdeaButton.takeTheSurvey": "An Umfrage teilnehmen",
   "app.containers.IdeaButton.verificationLinkText": "Verifiziere jetzt das Konto.",
   "app.containers.IdeaCard.xComments": "{commentsCount, plural, =0 {keine Vorhaben} one {1 Vorhaben} other {# Vorhaben}}",
   "app.containers.IdeaCards.a11y_totalInitiatives": "Gesamtanzahl Vorschläge: {initiativeCount}",
