@@ -45,13 +45,22 @@ describe MultiTenancy::TenantTemplateService do
       yml = <<~YAML
         ---
         models:
+          project:
+          - &3
+            title_multiloc:
+              en: Project 1
+          - &4
+            title_multiloc:
+              en: Project 2
           custom_form:
           - &1
             created_at: 2020-02-18 22:46:33 UTC
             updated_at: 2020-02-18 22:46:33 UTC
+            participation_context_ref: *3
           - &2
             created_at: 2020-02-18 22:46:33 UTC
             updated_at: 2020-02-18 22:46:33 UTC
+            participation_context_ref: *4
           custom_field:
             - resource_type: CustomForm
               resource_ref: *1
