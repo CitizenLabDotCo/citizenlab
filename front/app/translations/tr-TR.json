@@ -544,7 +544,7 @@
   "app.components.form.locationGoogleUnavailable": "Google Maps tarafından sağlanan konum alanı yüklenemedi.",
   "app.components.form.submit": "Gönder",
   "app.components.form.submitApiError": "Form gönderilirken bir sorun oluştu. Lütfen olası hataları düzeltip tekrar deneyin.",
-  "app.components.pageForm.takenSlugError": "Bu adres kısa adı alınmış. Lütfen başka bir adres kısa adı seçin.",
+  "app.components.pageForm.takenSlugError": "This slug is already taken. Please choose a different one.",
   "app.components.sendFeedback": "Platform hakkındaki görüşleriniz",
   "app.components.sendFeedbackLink": "https://citizenlabco.typeform.com/to/z7baRP?source={url}",
   "app.container.IdeaForm.budgetIsTooBig": "Girilen bütçe çok büyük",
