@@ -102,7 +102,7 @@ module IdeaCustomFields
         # Row-level locking of the project record
         # See https://www.2ndquadrant.com/en/blog/postgresql-anti-patterns-read-modify-write-cycles/
         project = Project.lock.find(params[:project_id])
-        custom_form = CustomForm.find_or_initialize_by(project: project)
+        custom_form = CustomForm.find_or_initialize_by(participation_context: project)
         custom_form.save! unless custom_form.persisted?
 
         (yield custom_form).tap do |field|
@@ -152,7 +152,7 @@ module IdeaCustomFields
 
     def set_custom_form
       @project = Project.find(params[:project_id])
-      @custom_form = CustomForm.find_or_initialize_by(project: @project)
+      @custom_form = CustomForm.find_or_initialize_by(participation_context: @project)
     end
 
     def set_custom_field
