@@ -1528,7 +1528,7 @@
   "app.modules.commercial.customizable_navbar.editContent": "Content",
   "app.modules.commercial.customizable_navbar.emptyDescriptionError": "Provide content for all languages",
   "app.modules.commercial.customizable_navbar.emptySlugError": "Provide a slug",
-  "app.modules.commercial.customizable_navbar.emptyTitleError": "Provide title for all languages",
+  "app.modules.commercial.customizable_navbar.emptyTitleError": "Provide a title for all languages",
   "app.modules.commercial.customizable_navbar.fileUploadLabel": "Add files to this page",
   "app.modules.commercial.customizable_navbar.fileUploadLabelTooltip": "Files should not be larger than 50Mb. Added files will be shown on the bottom of this page.",
   "app.modules.commercial.customizable_navbar.pageTitle": "Title",
