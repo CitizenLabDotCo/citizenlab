@@ -96,6 +96,13 @@ PATH
       ros-apartment (>= 2.9.0)
 
 PATH
+  remote: engines/commercial/analytics
+  specs:
+    analytics (0.1.0)
+      rails (~> 6.1.6)
+      scenic
+
+PATH
   remote: engines/commercial/bulk_import_ideas
   specs:
     bulk_import_ideas (0.1.0)
@@ -362,6 +369,7 @@ PATH
   specs:
     multi_tenancy (0.1.0)
       actionpack-cloudfront (~> 1.2.0)
+      nlp
       rails (~> 6.1)
       ros-apartment (>= 2.9.0)
 
@@ -773,7 +781,6 @@ GEM
       rake
     mini_magick (4.11.0)
     mini_mime (1.1.2)
-    mini_portile2 (2.8.0)
     minitest (5.16.2)
     mjml-rails (4.7.2)
     msgpack (1.5.2)
@@ -785,8 +792,7 @@ GEM
       ruby2_keywords (~> 0.0.1)
     netrc (0.11.0)
     nio4r (2.5.8)
-    nokogiri (1.13.8)
-      mini_portile2 (~> 2.8.0)
+    nokogiri (1.13.8-x86_64-linux)
       racc (~> 1.4)
     nori (2.6.0)
     oauth2 (1.4.9)
@@ -1132,7 +1138,7 @@ GEM
     zeitwerk (2.6.0)
 
 PLATFORMS
-  ruby
+  x86_64-linux
 
 DEPENDENCIES
   actionpack-cloudfront!

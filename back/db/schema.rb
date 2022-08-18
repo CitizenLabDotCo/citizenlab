@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_08_074431) do
+ActiveRecord::Schema.define(version: 2022_08_18_151214) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -60,16 +60,6 @@ ActiveRecord::Schema.define(version: 2022_08_08_074431) do
   create_table "analytics_dimension_types", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "parent"
-  end
-
-  create_table "analytics_test", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.date "date"
-    t.string "year"
-  end
-
-  create_table "analytics_test_main", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.date "date"
-    t.string "year"
   end
 
   create_table "app_configurations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
