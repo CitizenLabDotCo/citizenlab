@@ -13,6 +13,16 @@ class WebApi::V1::AdminPublicationsController < ::ApplicationController
       .order(:ordering)
     @publications = paginate @publications
 
+    if params[:search].present?
+      LogActivityJob.perform_later(
+        current_user,
+        'searched_admin_publications',
+        current_user,
+        Time.now.to_i,
+        payload: { search_query: params[:search] }
+      )
+    end
+
     render json: linked_json(
       @publications,
       WebApi::V1::AdminPublicationSerializer,
