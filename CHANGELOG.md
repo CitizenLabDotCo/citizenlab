@@ -1,5 +1,15 @@
 # Changelog
 
+## Next release
+
+### Added
+
+- [CL-1097] Added the ability for users to search for projects and folders by keyword on the main projects index page
+
+### Changed
+
+- Improve error handling and user feedback in the forms for creating pages and custom navigation items
+
 ## 2022-08-11
 
 ### Fixed
