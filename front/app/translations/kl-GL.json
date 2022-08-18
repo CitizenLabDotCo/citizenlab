@@ -698,6 +698,7 @@
   "app.containers.IdeaButton.signUpLinkText": "nalunaarsorit",
   "app.containers.IdeaButton.submitAnIssue": "Ajornartorsiummik ilanngussigit",
   "app.containers.IdeaButton.submitYourIdea": "Isumassarsiannik ilanngussigit",
+  "app.containers.IdeaButton.takeTheSurvey": "Apeqqutit akikkit ",
   "app.containers.IdeaButton.verificationLinkText": "Kontut uppernarsaruk.",
   "app.containers.IdeaCard.xComments": "{commentsCount, plural, =0 {no oqaaseqaatit} one {1 oqaaseqaatit} other {# oqaaseqaatit}}",
   "app.containers.IdeaCards.a11y_totalInitiatives": "Innuttaasut isumassarsiaat katillugit: {initiativeCount}",
