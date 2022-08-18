@@ -698,6 +698,7 @@
   "app.containers.IdeaButton.signUpLinkText": "التسجيل",
   "app.containers.IdeaButton.submitAnIssue": "قُم بتقديم مُشكلة ",
   "app.containers.IdeaButton.submitYourIdea": "قُم بتقديم فكرة ",
+  "app.containers.IdeaButton.takeTheSurvey": "شارك في الاستبيان",
   "app.containers.IdeaButton.verificationLinkText": "تحقق من هويتك الآن.",
   "app.containers.IdeaCard.xComments": "{commentsCount, plural, =0 {لا يوجد تعليقات} one {تعليق واحد} other {# من التعليقات}}",
   "app.containers.IdeaCards.a11y_totalInitiatives": "إجمالي المُقترحات: {initiativeCount}",
