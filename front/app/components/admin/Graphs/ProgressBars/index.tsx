@@ -2,23 +2,19 @@ import React from 'react';
 
 // components
 import {
+  ResponsiveContainer,
   BarChart,
   Bar,
   XAxis,
   YAxis,
   LabelList,
-  ResponsiveContainer,
+  Tooltip,
 } from 'recharts';
-import { NoDataContainer } from 'components/admin/GraphWrappers';
 import { OneSideRoundedBar, CustomizedLabel } from './components';
-
-// i18n
-import messages from '../messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import EmptyState from '../_components/EmptyState';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
-import { isEmpty } from 'lodash-es';
+import { hasNoData, getTooltipConfig } from '../utils';
 
 // typings
 import { Props } from './typings';
@@ -27,21 +23,14 @@ const ProgressBars = <Row,>({
   data,
   width,
   height,
+  tooltip,
   emptyContainerContent,
 }: Props<Row>) => {
-  const noData = isNilOrError(data) || data.every(isEmpty) || data.length <= 0;
-
-  if (noData) {
-    return (
-      <NoDataContainer>
-        {emptyContainerContent ? (
-          <>{emptyContainerContent}</>
-        ) : (
-          <FormattedMessage {...messages.noData} />
-        )}
-      </NoDataContainer>
-    );
+  if (hasNoData(data)) {
+    return <EmptyState emptyContainerContent={emptyContainerContent} />;
   }
+
+  const tooltipConfig = getTooltipConfig(tooltip);
 
   return (
     <ResponsiveContainer width={width} height={height}>
@@ -52,6 +41,11 @@ const ProgressBars = <Row,>({
         barSize={8}
         margin={{ bottom: 0 }}
       >
+        {(typeof tooltip === 'object' || tooltip === true) && (
+          <Tooltip {...tooltipConfig} />
+        )}
+        {typeof tooltip === 'function' && tooltip(tooltipConfig)}
+
         <XAxis hide type="number" />
         <YAxis width={0} type="category" dataKey="name" />
         <Bar
