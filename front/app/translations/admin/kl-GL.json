@@ -1528,7 +1528,7 @@
   "app.modules.commercial.customizable_navbar.editContent": "Imarisai",
   "app.modules.commercial.customizable_navbar.emptyDescriptionError": "Provide content for all languages",
   "app.modules.commercial.customizable_navbar.emptySlugError": "Provide a slug",
-  "app.modules.commercial.customizable_navbar.emptyTitleError": "Provide title for all languages",
+  "app.modules.commercial.customizable_navbar.emptyTitleError": "Provide a title for all languages",
   "app.modules.commercial.customizable_navbar.fileUploadLabel": "Add files to this page",
   "app.modules.commercial.customizable_navbar.fileUploadLabelTooltip": "Fil-it 50 Mb-imit annertunerussanngillat. Fil-it ilanngunneqartut quppernermi matumani allermi nuisinneqassapput.",
   "app.modules.commercial.customizable_navbar.pageTitle": "Taaguut",
