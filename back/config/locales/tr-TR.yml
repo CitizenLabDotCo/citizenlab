@@ -76,15 +76,15 @@ tr:
     home:
       title: Home
     projects:
-      title: All projects
+      title: Tüm projeler
     all_input:
       title: All input
     proposals:
       title: Proposals
     events:
-      title: Events
+      title: Etkinlikler
     about:
-      title: About
+      title: Hakkında
     faq:
       title: FAQ
   projects:
