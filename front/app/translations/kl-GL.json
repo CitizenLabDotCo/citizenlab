@@ -251,7 +251,7 @@
   "app.components.Modal.closeModal": "Modal una matujuk",
   "app.components.PagesForm.blankDescriptionError": "Provide content for all languages",
   "app.components.PagesForm.blankSlugError": "Provide a slug",
-  "app.components.PagesForm.blankTitleError": "Provide title for all languages",
+  "app.components.PagesForm.blankTitleError": "Provide a title for all languages",
   "app.components.PagesForm.brokenURLWarning": "URL allanngortikkukku, URL pisoqaq atorlugu quppernermut link-it atorsinnaajunnaassapput.",
   "app.components.PagesForm.editContent": "Imarisai",
   "app.components.PagesForm.fileUploadLabel": "Kakkiussinerit (annerpaamik 50MB)",
