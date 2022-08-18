@@ -10,6 +10,17 @@ module IdeaCustomFields
   end
 
   class WebApi::V1::Admin::IdeaCustomFieldsController < ApplicationController
+    CONSTANTIZER = {
+      'Project' => {
+        container_class: Project,
+        container_id: :project_id
+      },
+      'Phase' => {
+        container_class: Phase,
+        container_id: :phase_id
+      }
+    }
+
     before_action :verify_feature_flag
     before_action :set_custom_field, only: %i[show update]
     before_action :set_custom_form, only: %i[index update_all]
@@ -151,12 +162,13 @@ module IdeaCustomFields
     end
 
     def set_custom_form
-      @project = Project.find(params[:project_id])
-      @custom_form = CustomForm.find_or_initialize_by(participation_context: @project)
+      container_id = params[secure_constantize(:container_id)]
+      @container = secure_constantize(:container_class).find container_id
+      @custom_form = CustomForm.find_or_initialize_by participation_context: @container
     end
 
     def set_custom_field
-      @custom_field = CustomField.find(params[:id])
+      @custom_field = CustomField.find params[:id]
       authorize @custom_field, policy_class: IdeaCustomFieldPolicy
     end
 
@@ -164,6 +176,10 @@ module IdeaCustomFields
       return if AppConfiguration.instance.feature_activated? 'idea_custom_fields'
 
       render json: { errors: { base: [{ error: '"idea_custom_fields" feature is not activated' }] } }, status: :unauthorized
+    end
+
+    def secure_constantize(key)
+      CONSTANTIZER.fetch(params[:container_type])[key]
     end
   end
 end
