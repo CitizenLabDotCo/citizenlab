@@ -256,7 +256,7 @@ RSpec.describe InputUiSchemaGeneratorService do
     context 'for a timeline project' do
       let(:timeline_fields) do
         project_with_current_phase = create(:project_with_current_phase)
-        TimelineService.new.current_phase(project_with_current_phase).update(input_term: 'option')
+        TimelineService.new.current_phase(project_with_current_phase).update!(input_term: 'option')
         IdeaCustomFieldsService.new(create(:custom_form, participation_context: project_with_current_phase)).all_fields
       end
 

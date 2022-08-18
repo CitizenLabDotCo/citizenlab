@@ -3,23 +3,23 @@
 module IdeaCustomFields
   class IdeaCustomFieldPolicy < ApplicationPolicy
     def index?
-      can_configure_custom_fields? record&.resource&.project
+      can_configure_custom_fields? record&.resource&.participation_context&.project
     end
 
     def show?
-      can_configure_custom_fields? record&.resource&.project
+      can_configure_custom_fields? record&.resource&.participation_context&.project
     end
 
     def upsert_by_code?
-      can_configure_custom_fields? record&.resource&.project
+      can_configure_custom_fields? record&.resource&.participation_context&.project
     end
 
     def update?
-      can_configure_custom_fields? record&.resource&.project
+      can_configure_custom_fields? record&.resource&.participation_context&.project
     end
 
     def update_all?
-      can_configure_custom_fields? record&.resource&.project
+      can_configure_custom_fields? record&.resource&.participation_context&.project
     end
 
     def permitted_attributes
