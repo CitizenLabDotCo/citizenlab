@@ -1528,7 +1528,7 @@
   "app.modules.commercial.customizable_navbar.editContent": "Conteúdo",
   "app.modules.commercial.customizable_navbar.emptyDescriptionError": "Provide content for all languages",
   "app.modules.commercial.customizable_navbar.emptySlugError": "Provide a slug",
-  "app.modules.commercial.customizable_navbar.emptyTitleError": "Provide title for all languages",
+  "app.modules.commercial.customizable_navbar.emptyTitleError": "Provide a title for all languages",
   "app.modules.commercial.customizable_navbar.fileUploadLabel": "Adicionar arquivos a esta página",
   "app.modules.commercial.customizable_navbar.fileUploadLabelTooltip": "Os arquivos adicionados serão mostrados na parte inferior desta página",
   "app.modules.commercial.customizable_navbar.pageTitle": "Assunto",
