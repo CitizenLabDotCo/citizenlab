@@ -34,7 +34,7 @@ const Select = ({ name, ...rest }: Props) => {
               id={name}
               {...field}
               {...rest}
-              onChange={(e) => setValue(name, e.value)}
+              onChange={(option) => setValue(name, option.value)}
             />
           );
         }}

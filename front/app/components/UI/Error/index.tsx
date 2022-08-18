@@ -246,7 +246,11 @@ const Error = (props: Props) => {
           {showIcon && <ErrorIcon name="error" data-testid="error-icon" />}
 
           <ErrorMessageText data-testid="error-message-text">
-            {typeof text === 'string' ? <Box py="16px">{text}</Box> : text}
+            {typeof text === 'string' ? (
+              <Box py="16px">{text}</Box>
+            ) : (
+              <p>{text}</p>
+            )}
             {dedupApiErrors &&
               isArray(dedupApiErrors) &&
               !isEmpty(dedupApiErrors) && (
