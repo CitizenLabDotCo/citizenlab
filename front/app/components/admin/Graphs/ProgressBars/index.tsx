@@ -62,7 +62,11 @@ const ProgressBars = <Row,>({
           stackId="a"
           shape={(props) => <OneSideRoundedBar {...props} side="left" />}
         >
-          <LabelList dataKey="label" data={data} content={CustomizedLabel} />
+          <LabelList
+            dataKey={mapping.name as string}
+            data={data}
+            content={(props) => <CustomizedLabel {...props} />}
+          />
 
           {progressBarConfig.cells.map((cell, cellIndex) => (
             <Cell key={`cell-${cellIndex}`} {...cell} />
