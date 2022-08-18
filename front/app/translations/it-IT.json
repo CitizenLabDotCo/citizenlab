@@ -698,6 +698,7 @@
   "app.containers.IdeaButton.signUpLinkText": "iscriversi",
   "app.containers.IdeaButton.submitAnIssue": "Invia un numero",
   "app.containers.IdeaButton.submitYourIdea": "Invia la tua idea",
+  "app.containers.IdeaButton.takeTheSurvey": "Prendi il sondaggio",
   "app.containers.IdeaButton.verificationLinkText": "Verifica la tua identità ora.",
   "app.containers.IdeaCard.xComments": "{commentsCount, plural, =0 {nessun commento} one {1 commento} other {# commenti}}",
   "app.containers.IdeaCards.a11y_totalInitiatives": "Proposte totali: {initiativeCount}",
