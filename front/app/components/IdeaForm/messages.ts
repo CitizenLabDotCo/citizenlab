@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'app.components.IdeaForm.descriptionLengthError',
     defaultMessage: 'The idea description must be at least 30 characters long',
   },
+  adminFieldTooltip: {
+    id: 'app.components.IdeaForm.adminFieldTooltip',
+    defaultMessage: 'Field only visible to admins',
+  },
   title: {
     id: 'app.components.IdeaForm.title',
     defaultMessage: 'Title',
