@@ -1176,7 +1176,7 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.editCustomFieldAnswerOptionFormTitle": "Edit answer option",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldDescription": "Description",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldName": "Field name",
-  "app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldNameError": "Provide a field name",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldNameErrorMessage": "Provide a field name for all languages",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldSettingsTab": "Field settings",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldType_checkbox": "Yes-no (checkbox)",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldType_date": "Date",
