@@ -33,11 +33,16 @@ import {
   updateFormCustomFields,
 } from 'services/formCustomFields';
 
+import { CLErrorsJSON, CLErrors } from 'typings';
+
+import { isCLErrorJSON } from 'utils/errorUtils';
+
 interface FormBuilderTopBarProps {
   formCustomFields: IFlatCustomField[] | undefined | Error;
+  setApiErrors: (apiErrors: CLErrors | null) => void;
 }
 
-const FormBuilderTopBar = ({ formCustomFields }: FormBuilderTopBarProps) => {
+const FormBuilderTopBar = ({ formCustomFields, setApiErrors }: FormBuilderTopBarProps) => {
   const localize = useLocalize();
   const { projectId } = useParams() as { projectId: string };
   const project = useProject({ projectId });
@@ -61,8 +66,12 @@ const FormBuilderTopBar = ({ formCustomFields }: FormBuilderTopBarProps) => {
           description_multiloc: field.description_multiloc || {},
         }));
         await updateFormCustomFields(projectId, finalResponseArray);
-      } catch {
-        // TODO: Add error handling
+      } catch (error) {
+        console.log('errors', error)
+        if (isCLErrorJSON(error)) {
+          const apiErrors = (error as CLErrorsJSON).json.errors;
+          setApiErrors(apiErrors);
+        }
       } finally {
         setLoading(false);
       }

@@ -15,6 +15,7 @@ import FormBuilderTopBar from 'containers/Admin/formBuilder/components/FormBuild
 import FormBuilderToolbox from 'containers/Admin/formBuilder/components/FormBuilderToolbox';
 import FormBuilderSettings from 'containers/Admin/formBuilder/components/FormBuilderSettings';
 import FormFields from 'containers/Admin/formBuilder/components/FormFields';
+import Warning from 'components/UI/Warning';
 
 // utils
 import { isNilOrError, isNil } from 'utils/helperUtils';
@@ -27,6 +28,12 @@ import {
 // hooks
 import useFormCustomFields from 'hooks/useFormCustomFields';
 
+import { CLErrors } from 'typings';
+
+import messages from '../messages';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
 const StyledRightColumn = styled(RightColumn)`
   height: calc(100vh - ${stylingConsts.menuHeight}px);
   z-index: 2;
@@ -35,6 +42,10 @@ const StyledRightColumn = styled(RightColumn)`
   align-items: center;
   padding-bottom: 100px;
   overflow-y: auto;
+`;
+
+const StyledWarning = styled(Warning)`
+  background: ${colors.red100};
 `;
 
 export const FormEdit = () => {
@@ -46,6 +57,8 @@ export const FormEdit = () => {
   const { formCustomFields, setFormCustomFields } = useFormCustomFields({
     projectId,
   });
+
+  const [apiErrors, setApiErrors] = useState<CLErrors | null>(null)
 
   const closeSettings = () => {
     setSelectedField(undefined);
@@ -87,6 +100,20 @@ export const FormEdit = () => {
       const [removed] = newFields.splice(fromIndex, 1);
       newFields.splice(toIndex, 0, removed);
       setFormCustomFields(newFields);
+
+      if(apiErrors) {
+        const newErrors = {} as CLErrors;
+        Object.keys(apiErrors).forEach((key) => {
+          if (Number(key) === fromIndex) {
+            newErrors[toIndex.toString()] = apiErrors[key];
+          } else if (Number(key) === toIndex) {
+            newErrors[fromIndex.toString()] = apiErrors[key];
+          } else {
+            newErrors[key] = apiErrors[key];
+          }
+        })
+        setApiErrors(newErrors);
+      }
     }
   };
 
@@ -113,21 +140,29 @@ export const FormEdit = () => {
       h="100vh"
     >
       <FocusOn>
-        <FormBuilderTopBar formCustomFields={formCustomFields} />
+        <FormBuilderTopBar formCustomFields={formCustomFields} setApiErrors={setApiErrors} />
         <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
           <FormBuilderToolbox onAddField={onAddField} />
           <StyledRightColumn>
-            <Box width="1000px" bgColor="white" minHeight="300px">
-              {!isNilOrError(formCustomFields) && (
-                <FormFields
-                  onEditField={setSelectedField}
-                  formCustomFields={formCustomFields}
-                  handleDragRow={handleDragRow}
-                  handleDropRow={handleDropRow}
-                  selectedFieldId={selectedField?.id}
-                />
-              )}
-            </Box>
+            <Box width="1000px">
+                <Box mb="16px">
+                  {apiErrors && <StyledWarning>
+                    <FormattedMessage {...messages.errorMessage} />
+                  </StyledWarning>}
+                </Box>
+                <Box bgColor="white" minHeight="300px">
+                  {!isNilOrError(formCustomFields) && (
+                    <FormFields
+                      onEditField={setSelectedField}
+                      formCustomFields={formCustomFields}
+                      handleDragRow={handleDragRow}
+                      handleDropRow={handleDropRow}
+                      selectedFieldId={selectedField?.id}
+                      apiErrors={apiErrors}
+                    />
+                  )}
+                </Box>
+              </Box>
           </StyledRightColumn>
           {!isNilOrError(selectedField) && (
             <FormBuilderSettings

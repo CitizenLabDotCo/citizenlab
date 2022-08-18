@@ -17,6 +17,8 @@ import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 import { IFlatCustomField } from 'services/formCustomFields';
 
+import { CLErrors } from 'typings';
+
 const StyledBadge = styled(Badge)`
   margin-left: 12px;
 `;
@@ -27,6 +29,7 @@ interface FormFieldsProps {
   handleDragRow: (fromIndex: number, toIndex: number) => void;
   handleDropRow: (fieldId: string, toIndex: number) => void;
   selectedFieldId?: string;
+  apiErrors: CLErrors | null;
 }
 
 const FormFields = ({
@@ -35,16 +38,22 @@ const FormFields = ({
   handleDragRow,
   handleDropRow,
   selectedFieldId,
+  apiErrors,
 }: FormFieldsProps) => {
   return (
     <DndProvider backend={HTML5Backend}>
       <Box p="32px" height="100%" overflowY="auto">
         <List key={formCustomFields.length}>
           {formCustomFields.map((field, index) => {
-            const border =
-              selectedFieldId === field.id
-                ? `1px solid ${colors.clBlueLight}`
-                : 'none';
+            const numberApiErrorKeys = Object.keys(apiErrors || {}).map(apiError => parseInt(apiError));
+            const isIndexInApiErrors = numberApiErrorKeys.includes(index);
+            let border = 'none';
+            if (isIndexInApiErrors) {
+              border = '1px solid red';
+            } else if(selectedFieldId === field.id) {
+              border = `1px solid ${colors.clBlueLight}`;
+            }
+
             return (
               <Box border={border} key={field.id}>
                 <SortableRow

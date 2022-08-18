@@ -25,4 +25,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.viewSurveyText',
     defaultMessage: 'View survey',
   },
+  errorMessage: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.errorMessage',
+    defaultMessage: 'There is a problem, please fix the issue to be able to save your changes',
+  },
 });
