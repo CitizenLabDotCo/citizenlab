@@ -1,13 +1,11 @@
 import React from 'react';
 
-// styling
-import { colors } from '../styling';
-
 // components
 import {
   ResponsiveContainer,
   BarChart,
   Bar,
+  Cell,
   XAxis,
   YAxis,
   LabelList,
@@ -18,6 +16,7 @@ import EmptyState from '../_components/EmptyState';
 
 // utils
 import { hasNoData, getTooltipConfig } from '../utils';
+import { getBarConfigs } from './utils';
 
 // typings
 import { Props } from './typings';
@@ -26,6 +25,8 @@ const ProgressBars = <Row,>({
   data,
   width,
   height,
+  mapping,
+  bars,
   tooltip,
   emptyContainerContent,
 }: Props<Row>) => {
@@ -34,6 +35,11 @@ const ProgressBars = <Row,>({
   }
 
   const tooltipConfig = getTooltipConfig(tooltip);
+  const { progressBarConfig, totalBarConfig } = getBarConfigs(
+    data,
+    mapping,
+    bars
+  );
 
   return (
     <ResponsiveContainer width={width} height={height}>
@@ -52,19 +58,19 @@ const ProgressBars = <Row,>({
         <XAxis hide type="number" />
         <YAxis width={0} type="category" dataKey="name" />
         <Bar
-          dataKey="value"
+          {...progressBarConfig.props}
           stackId="a"
-          fill={colors.blue}
-          isAnimationActive={false}
           shape={(props) => <OneSideRoundedBar {...props} side="left" />}
         >
           <LabelList dataKey="label" data={data} content={CustomizedLabel} />
+
+          {progressBarConfig.cells.map((cell, cellIndex) => (
+            <Cell key={`cell-${cellIndex}`} {...cell} />
+          ))}
         </Bar>
         <Bar
-          dataKey="total"
+          {...totalBarConfig.props}
           stackId="a"
-          fill={colors.lightGrey}
-          isAnimationActive={false}
           shape={(props) => <OneSideRoundedBar {...props} side="right" />}
         />
       </BarChart>
