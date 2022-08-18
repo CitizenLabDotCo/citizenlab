@@ -8,6 +8,7 @@ export interface Props<Row> extends BaseProps<Row> {
 interface Mapping<Row> {
   name: KeyOfType<Row, string>;
   length: KeyOfType<Row, number>;
+  total: KeyOfType<Row, number>;
   fill?: (payload: Payload<Row>) => string;
   opacity?: (payload: Payload<Row>) => number;
 }
