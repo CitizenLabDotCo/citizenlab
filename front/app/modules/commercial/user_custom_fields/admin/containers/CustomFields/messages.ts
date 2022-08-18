@@ -20,8 +20,8 @@ export default defineMessages({
     defaultMessage: 'Field name',
   },
   fieldNameError: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldNameError',
-    defaultMessage: 'Provide a field name',
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldNameErrorMessage',
+    defaultMessage: 'Provide a field name for all languages',
   },
   saveField: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.saveField',
