@@ -37,6 +37,7 @@ export const colors = {
   categorical09: '#875A20',
   categorical10: '#A3A33A',
   categoricalOther: mainColors.tagHoverBackgroundColor,
+  lightGrey: mainColors.separation,
 };
 
 const DEFAULT_CATEGORICAL_COLORS = [

@@ -1,5 +1,8 @@
 import React from 'react';
 
+// styling
+import { colors } from '../styling';
+
 interface CustomizedLabelProps {
   x: number;
   y: number;
@@ -7,7 +10,7 @@ interface CustomizedLabelProps {
 }
 
 export const CustomizedLabel = ({ x, y, value }: CustomizedLabelProps) => (
-  <text fill="#044D6C" x={x} y={y - 13} fontSize={14}>
+  <text fill={colors.blue} x={x} y={y - 13} fontSize={14}>
     {value}
   </text>
 );
