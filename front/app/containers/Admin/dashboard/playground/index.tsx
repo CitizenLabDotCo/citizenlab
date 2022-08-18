@@ -1,9 +1,10 @@
 import React from 'react';
 
 // components
-// import { Box } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import BarChart from 'components/admin/Graphs/BarChart';
-import PieChart from 'components/admin/Graphs/PieChart';
+import MultiBarChart from 'components/admin/Graphs/MultiBarChart';
+// import PieChart from 'components/admin/Graphs/PieChart';
 
 type Row = {
   value: number;
@@ -19,21 +20,27 @@ const data: Row[] = [
 
 const Playground = () => (
   <>
-    <BarChart
-      width={'100%'}
-      height={400}
-      data={data}
-      mapping={{ length: 'value', category: 'label' }}
-      labels
-    />
+    <Box width="50%" height="400px">
+      <BarChart
+        height="100%"
+        data={data}
+        mapping={{
+          length: 'value',
+          category: 'label',
+        }}
+      />
 
-    <PieChart
-      height={200}
-      data={data}
-      mapping={{ angle: 'value', name: 'label' }}
-      annotations
-      tooltip
-    />
+      <MultiBarChart
+        height="100%"
+        data={data}
+        mapping={{
+          length: ['value', 'value2'],
+          category: 'label',
+        }}
+        tooltip
+        labels
+      />
+    </Box>
   </>
 );
 
