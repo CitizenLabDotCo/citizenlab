@@ -13,7 +13,7 @@ module ParticipationContext
   include Polls::PollParticipationContext
   include Volunteering::VolunteeringParticipationContext
 
-  PARTICIPATION_METHODS = %w[information ideation survey budgeting poll volunteering].freeze
+  PARTICIPATION_METHODS = %w[information ideation survey budgeting poll volunteering native_survey].freeze
   PRESENTATION_MODES    = %w[card map].freeze
   VOTING_METHODS        = %w[unlimited limited].freeze
   IDEAS_ORDERS          = %w[trending random popular -new new].freeze
@@ -108,6 +108,10 @@ module ParticipationContext
 
   def participation_context?
     !timeline_project?
+  end
+
+  def native_survey?
+    participation_method == 'native_survey'
   end
 
   private
