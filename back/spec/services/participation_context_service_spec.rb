@@ -177,7 +177,7 @@ describe ParticipationContextService do
       end
 
       it "returns 'idea_not_in_current_phase' for an idea when it's not in the current phase" do
-        project = create(:project_with_current_phase, current_phase_attrs: { participation_method: 'information' })
+        project = create(:project_with_current_phase)
         idea = create(:idea, project: project, phases: [project.phases[1]])
         expect(service.commenting_disabled_reason_for_idea(idea, user)).to eq 'idea_not_in_current_phase'
       end

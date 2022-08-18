@@ -6,7 +6,9 @@ FactoryBot.define do
     sequence(:key) { |n| "option_#{n}" }
     title_multiloc do
       {
-        'en' => 'youth council'
+        'en' => 'youth council',
+        'fr-FR' => 'conseil des jeunes',
+        'nl-NL' => 'jeugdraad'
       }
     end
   end

@@ -11,6 +11,7 @@ import UserMenu from './UserMenu';
 import TenantLogo from './TenantLogo';
 import LanguageSelector from 'containers/MainHeader/LanguageSelector';
 import Fragment from 'components/Fragment';
+import { IconButton, useWindowSize } from '@citizenlab/cl2-component-library';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -20,21 +21,22 @@ import tracks from './tracks';
 import useAuthUser from 'hooks/useAuthUser';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useLocale from 'hooks/useLocale';
-import { useWindowSize } from '@citizenlab/cl2-component-library';
 
 // utils
 import { isNilOrError, isPage, isDesktop } from 'utils/helperUtils';
 import { openSignUpInModal } from 'components/SignUpIn/events';
 import eventEmitter from 'utils/eventEmitter';
+import clHistory from 'utils/cl-router/history';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // style
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { darken } from 'polished';
-import { media, fontSizes, isRtl } from 'utils/styleUtils';
+import { media, fontSizes, isRtl, colors } from 'utils/styleUtils';
 
 const Container = styled.header<{ position: 'fixed' | 'absolute' }>`
   width: 100vw;
@@ -248,11 +250,15 @@ interface Props {
   setRef?: (arg: HTMLElement) => void | undefined;
 }
 
-const MainHeader = ({ setRef }: Props) => {
+const MainHeader = ({
+  setRef,
+  intl: { formatMessage },
+}: Props & InjectedIntlProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const appConfiguration = useAppConfiguration();
   const authUser = useAuthUser();
   const locale = useLocale();
+  const theme: any = useTheme();
   const windowSize = useWindowSize();
   const [fullscreenModalOpened, setFullscreenModalOpened] = useState(false);
 
@@ -337,6 +343,26 @@ const MainHeader = ({ setRef }: Props) => {
           <Right className={bowser.msie ? 'ie' : ''}>
             {!isEmailSettingsPage && (
               <>
+                {isDesktopUser && (
+                  <RightItem className="projectSearch">
+                    <IconButton
+                      onClick={() =>
+                        clHistory.push('/projects?focusSearch=true')
+                      }
+                      iconName="search"
+                      a11y_buttonActionMessage={formatMessage(messages.search)}
+                      iconColor={theme.navbarTextColor || colors.label}
+                      iconColorOnHover={
+                        theme.navbarTextColor
+                          ? darken(0.2, theme.navbarTextColor)
+                          : colors.text
+                      }
+                      iconWidth={'20px'}
+                      iconHeight={'24px'}
+                    />
+                  </RightItem>
+                )}
+
                 {isNilOrError(authUser) && (
                   <RightItem className="login noLeftMargin">
                     <LogInMenuItem
@@ -393,4 +419,4 @@ const MainHeader = ({ setRef }: Props) => {
   );
 };
 
-export default MainHeader;
+export default injectIntl(MainHeader);

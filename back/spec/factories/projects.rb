@@ -221,6 +221,11 @@ FactoryBot.define do
       upvoting_limited_max { 7 }
     end
 
+    factory :continuous_native_survey_project do
+      process_type { 'continuous' }
+      participation_method { 'native_survey' }
+    end
+
     factory :continuous_survey_project do
       process_type { 'continuous' }
       participation_method { 'survey' }
