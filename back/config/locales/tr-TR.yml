@@ -177,7 +177,7 @@ tr:
       <ul> <li>It must fall within the policy areas and competencies of local policy</li> <li>It serves the public interest rather than your individual interest</li> <li>It does not discriminate based on gender, race, age, or background</li> <li>It does not harm others</li> </ul>
   reset_password_mailer:
     send_reset_password:
-      cta_reset_password: 'Reset your password'
+      cta_reset_password: 'Parolanızı sıfırlayın'
       message_you_reset_your_password: 'You requested a password reset for the participation platform of %{organizationName}. Click the button below to choose a new, safe password. The link expires in 1 hour.'
       subject: '%{organizationName}: Reset your password'
       title_reset_your_password: 'Choose a new password'
