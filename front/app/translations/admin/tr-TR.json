@@ -1532,7 +1532,7 @@
   "app.modules.commercial.customizable_navbar.editContent": "İçerik",
   "app.modules.commercial.customizable_navbar.emptyDescriptionError": "Provide content for all languages",
   "app.modules.commercial.customizable_navbar.emptySlugError": "Provide a slug",
-  "app.modules.commercial.customizable_navbar.emptyTitleError": "Provide title for all languages",
+  "app.modules.commercial.customizable_navbar.emptyTitleError": "Provide a title for all languages",
   "app.modules.commercial.customizable_navbar.fileUploadLabel": "Add files to this page",
   "app.modules.commercial.customizable_navbar.fileUploadLabelTooltip": "Dosyalar 50 MB'tan büyük olamaz. Eklenen dosyalar bu sayfanın altında gösterilir.",
   "app.modules.commercial.customizable_navbar.pageTitle": "Başlık",
