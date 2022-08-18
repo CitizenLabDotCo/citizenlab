@@ -251,7 +251,7 @@
   "app.components.Modal.closeModal": "Chiudere il modale",
   "app.components.PagesForm.blankDescriptionError": "Provide content for all languages",
   "app.components.PagesForm.blankSlugError": "Provide a slug",
-  "app.components.PagesForm.blankTitleError": "Provide title for all languages",
+  "app.components.PagesForm.blankTitleError": "Provide a title for all languages",
   "app.components.PagesForm.brokenURLWarning": "Se cambiate l'URL, i link a questa pagina usando il vecchio URL non funzioneranno più.",
   "app.components.PagesForm.editContent": "Contenuto",
   "app.components.PagesForm.fileUploadLabel": "Allegati (max. 50MB)",
