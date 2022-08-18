@@ -596,6 +596,7 @@
   "app.containers.AdminPage.DashboardPage.components.PostFeedback.postFeedback": "Post feedback",
   "app.containers.AdminPage.DashboardPage.components.PostFeedback.responseTime": "Response time",
   "app.containers.AdminPage.DashboardPage.components.PostFeedback.statusChanged": "Status changed",
+  "app.containers.AdminPage.DashboardPage.components.PostFeedback.total": "Total",
   "app.containers.AdminPage.DashboardPage.components.editBaseData": "Edit base data",
   "app.containers.AdminPage.DashboardPage.components.representativenessArticleLinkText2": "how we calculate representativeness scores",
   "app.containers.AdminPage.DashboardPage.continuousType": "Without a timeline",
