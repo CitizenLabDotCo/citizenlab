@@ -698,6 +698,7 @@
   "app.containers.IdeaButton.signUpLinkText": "kaydolun",
   "app.containers.IdeaButton.submitAnIssue": "Yorum gönderin",
   "app.containers.IdeaButton.submitYourIdea": "Fikrinizi gönderin",
+  "app.containers.IdeaButton.takeTheSurvey": "Ankete katılın",
   "app.containers.IdeaButton.verificationLinkText": "Kimliğinizi şimdi doğrulayın.",
   "app.containers.IdeaCard.xComments": "{commentsCount, plural, =0 {yorum yok} one {1 yorum} other {# yorum}}",
   "app.containers.IdeaCards.a11y_totalInitiatives": "Toplam teklif sayısı: {initiativeCount}",
