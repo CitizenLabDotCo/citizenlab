@@ -12,6 +12,7 @@ interface Props extends Omit<SelectProps, 'onChange'> {
 
 const Select = ({ name, ...rest }: Props) => {
   const {
+    trigger,
     setValue,
     formState: { errors },
     control,
@@ -34,7 +35,10 @@ const Select = ({ name, ...rest }: Props) => {
               id={name}
               {...field}
               {...rest}
-              onChange={(option) => setValue(name, option.value)}
+              onChange={(option) => {
+                setValue(name, option.value);
+                trigger(name);
+              }}
             />
           );
         }}
