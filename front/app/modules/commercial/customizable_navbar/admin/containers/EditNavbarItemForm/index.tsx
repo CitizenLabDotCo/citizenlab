@@ -1,12 +1,8 @@
 import React from 'react';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { Formik, FormikActions, FormikProps } from 'formik';
 
 // components
-import NavbarItemForm, {
-  validatePageForm,
-  FormValues,
-} from '../../components/NavbarItemForm';
+import NavbarItemForm, { FormValues } from '../../components/NavbarItemForm';
 import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
 import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 
@@ -38,26 +34,11 @@ const EditNavbarItemForm = ({
     return null;
   }
 
-  const handleSubmit = async (
-    values: FormValues,
-    { setSubmitting, setStatus }: FormikActions<FormValues>
-  ) => {
-    try {
-      await updateNavbarItem(
-        navbarItemId,
-        createNavbarItemUpdateData(navbarItem, values)
-      );
-
-      setStatus('success');
-      setSubmitting(false);
-    } catch (error) {
-      setStatus('error');
-      setSubmitting(false);
-    }
-  };
-
-  const renderFn = (props: FormikProps<FormValues>) => {
-    return <NavbarItemForm {...props} />;
+  const handleSubmit = async (values: FormValues) => {
+    await updateNavbarItem(
+      navbarItemId,
+      createNavbarItemUpdateData(navbarItem, values)
+    );
   };
 
   return (
@@ -73,13 +54,9 @@ const EditNavbarItemForm = ({
         },
       ]}
     >
-      <Formik
-        initialValues={getInitialFormValues(navbarItem)}
+      <NavbarItemForm
+        defaultValues={getInitialFormValues(navbarItem)}
         onSubmit={handleSubmit}
-        render={renderFn}
-        validate={validatePageForm(appConfigurationLocales)}
-        validateOnChange={false}
-        validateOnBlur={false}
       />
     </SectionFormWrapper>
   );
