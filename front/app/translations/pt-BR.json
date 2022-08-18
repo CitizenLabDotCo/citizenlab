@@ -251,7 +251,7 @@
   "app.components.Modal.closeModal": "Fechar a janela",
   "app.components.PagesForm.blankDescriptionError": "Provide content for all languages",
   "app.components.PagesForm.blankSlugError": "Provide a slug",
-  "app.components.PagesForm.blankTitleError": "Provide title for all languages",
+  "app.components.PagesForm.blankTitleError": "Provide a title for all languages",
   "app.components.PagesForm.brokenURLWarning": "Se você mudar o URL, os links para esta página usando o antigo URL não funcionarão mais.",
   "app.components.PagesForm.editContent": "Conteúdo",
   "app.components.PagesForm.fileUploadLabel": "Anexos (max. 50MB)",
