@@ -698,6 +698,7 @@
   "app.containers.IdeaButton.signUpLinkText": "zarejestruj się",
   "app.containers.IdeaButton.submitAnIssue": "Zgłoś sprawę",
   "app.containers.IdeaButton.submitYourIdea": "Zgłoś swój pomysł",
+  "app.containers.IdeaButton.takeTheSurvey": "Weź udział w ankiecie",
   "app.containers.IdeaButton.verificationLinkText": "Zweryfikuj swoją tożsamość.",
   "app.containers.IdeaCard.xComments": "{commentsCount, plural, =0 {brak komentarzy} one {1 komentarz} few {# komentarze} many {# komentarzy} other {# komentarze}}",
   "app.containers.IdeaCards.a11y_totalInitiatives": "Wszystkich propozycji: {initiativeCount}",
