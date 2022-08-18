@@ -247,9 +247,9 @@ const Error = (props: Props) => {
 
           <ErrorMessageText data-testid="error-message-text">
             {typeof text === 'string' ? (
-              <Box py="16px">{text}</Box>
-            ) : (
               <p>{text}</p>
+            ) : (
+              <Box py="16px">{text}</Box>
             )}
             {dedupApiErrors &&
               isArray(dedupApiErrors) &&
