@@ -12,7 +12,6 @@ import { Response, PostFeedback } from './typings';
 
 // i18n
 import messages from './messages';
-import DashboardMessages from 'containers/Admin/dashboard/messages';
 
 const query = (projectId?: string): Query => {
   const groups = {
@@ -123,7 +122,7 @@ export default function usePostsWithFeedback(
           sum_feedback_status_change;
         xlsxDataSheet1Row1[formatMessage(messages.officialUpdate)] =
           sum_feedback_official;
-        xlsxDataSheet1Row1[formatMessage(DashboardMessages.total)] = total;
+        xlsxDataSheet1Row1[formatMessage(messages.total)] = total;
 
         const xlsxDataSheet2Row1 = {};
         xlsxDataSheet2Row1[formatMessage(messages.averageTimeColumnName)] =

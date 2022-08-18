@@ -29,4 +29,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.components.PostFeedback.responseTime',
     defaultMessage: 'Response time',
   },
+  total: {
+    id: 'app.containers.AdminPage.DashboardPage.components.PostFeedback.total',
+    defaultMessage: 'Total',
+  },
 });
