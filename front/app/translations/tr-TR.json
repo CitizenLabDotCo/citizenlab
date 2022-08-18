@@ -251,7 +251,7 @@
   "app.components.Modal.closeModal": "İletişim kutusunu kapat",
   "app.components.PagesForm.blankDescriptionError": "Provide content for all languages",
   "app.components.PagesForm.blankSlugError": "Provide a slug",
-  "app.components.PagesForm.blankTitleError": "Provide title for all languages",
+  "app.components.PagesForm.blankTitleError": "Provide a title for all languages",
   "app.components.PagesForm.brokenURLWarning": "URL'yi değiştirirseniz eski URL ile bu sayfaya yönlendirilen bağlantılar kullanılamaz.",
   "app.components.PagesForm.editContent": "İçerik",
   "app.components.PagesForm.fileUploadLabel": "Ekler (en fazla 50 MB)",
