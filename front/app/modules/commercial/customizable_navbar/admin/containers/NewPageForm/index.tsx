@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 
 // services
 import { createPage } from 'services/pages';
@@ -10,27 +9,21 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import usePageSlugs from 'hooks/usePageSlugs';
 
 // components
-import { Formik, FormikProps } from 'formik';
-import GoBackButton from 'components/UI/GoBackButton';
-import PageForm, { FormValues, validatePageForm } from 'components/PageForm';
+import PageForm, { FormValues } from 'components/PageForm';
+import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
+import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // utils
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
-import getInitialValues from './getInitialValues';
-import { NAVIGATION_PATH } from '..';
+import { PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 
-const PageTitle = styled.h1`
-  width: 100%;
-  font-size: 2rem;
-  margin: 1rem 0 3rem 0;
-`;
-
-const NewPageForm = () => {
+const NewPageForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const appConfigurationLocales = useAppConfigurationLocales();
   const pageSlugs = usePageSlugs();
 
@@ -39,49 +32,37 @@ const NewPageForm = () => {
   }
 
   const goBack = () => {
-    clHistory.push(NAVIGATION_PATH);
+    clHistory.push(PAGES_MENU_PATH);
   };
 
-  const handleSubmit = async (
-    values: FormValues,
-    { setSubmitting, setStatus }
-  ) => {
+  const handleSubmit = async (values: FormValues) => {
     const localPageFiles = values.local_page_files;
 
-    try {
-      const page = await createPage(values);
+    const page = await createPage(values);
 
-      if (!isNilOrError(page) && !isNilOrError(localPageFiles)) {
-        await handleAddPageFiles(page.data.id, localPageFiles, null);
-      }
-
-      goBack();
-    } catch (error) {
-      setStatus('error');
-      setSubmitting(false);
+    if (!isNilOrError(page) && !isNilOrError(localPageFiles)) {
+      await handleAddPageFiles(page.data.id, localPageFiles, null);
     }
-  };
 
-  const renderFn = (props: FormikProps<FormValues>) => {
-    return <PageForm {...props} pageId={null} />;
+    goBack();
   };
 
   return (
-    <div>
-      <GoBackButton onClick={goBack} />
-      <PageTitle>
-        <FormattedMessage {...messages.addPageButton} />
-      </PageTitle>
-      <Formik
-        initialValues={getInitialValues(appConfigurationLocales)}
-        onSubmit={handleSubmit}
-        render={renderFn}
-        validate={validatePageForm(appConfigurationLocales, pageSlugs)}
-        validateOnChange={false}
-        validateOnBlur={false}
-      />
-    </div>
+    <SectionFormWrapper
+      breadcrumbs={[
+        {
+          label: formatMessage(pagesAndMenuBreadcrumb.label),
+          linkTo: pagesAndMenuBreadcrumb.linkTo,
+        },
+        {
+          label: formatMessage(messages.addPageButton),
+        },
+      ]}
+      title={<FormattedMessage {...messages.addPageButton} />}
+    >
+      <PageForm onSubmit={handleSubmit} hideSlugInput pageId={null} />
+    </SectionFormWrapper>
   );
 };
 
-export default NewPageForm;
+export default injectIntl(NewPageForm);

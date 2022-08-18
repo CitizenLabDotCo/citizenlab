@@ -96,11 +96,13 @@ PATH
       ros-apartment (>= 2.9.0)
 
 PATH
-  remote: engines/commercial/analytics
+  remote: engines/commercial/bulk_import_ideas
   specs:
-    analytics (0.1.0)
-      rails (~> 6.1.6)
-      scenic
+    bulk_import_ideas (0.1.0)
+      active_model_serializers (~> 0.10.7)
+      pundit (~> 2.0)
+      rails (~> 6.1)
+      ros-apartment (>= 2.9.0)
 
 PATH
   remote: engines/commercial/content_builder
@@ -704,7 +706,7 @@ GEM
     httpi (2.5.0)
       rack
       socksify
-    i18n (1.10.0)
+    i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     image_processing (1.12.2)
       mini_magick (>= 4.9.5, < 5)
@@ -772,7 +774,7 @@ GEM
     mini_magick (4.11.0)
     mini_mime (1.1.2)
     mini_portile2 (2.8.0)
-    minitest (5.16.0)
+    minitest (5.16.2)
     mjml-rails (4.7.2)
     msgpack (1.5.2)
     multi_json (1.15.0)
@@ -783,7 +785,7 @@ GEM
       ruby2_keywords (~> 0.0.1)
     netrc (0.11.0)
     nio4r (2.5.8)
-    nokogiri (1.13.6)
+    nokogiri (1.13.8)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
     nori (2.6.0)
@@ -862,7 +864,7 @@ GEM
       que (~> 1.0.0.beta3)
       sinatra
     racc (1.6.0)
-    rack (2.2.3.1)
+    rack (2.2.4)
     rack-attack (6.6.1)
       rack (>= 1.0, < 3)
     rack-cors (1.1.1)
@@ -877,8 +879,8 @@ GEM
       rack (>= 2.1.0)
     rack-protection (2.2.0)
       rack
-    rack-test (1.1.0)
-      rack (>= 1.0, < 3)
+    rack-test (2.0.2)
+      rack (>= 1.3)
     rails (6.1.6.1)
       actioncable (= 6.1.6.1)
       actionmailbox (= 6.1.6.1)
@@ -1092,7 +1094,7 @@ GEM
       faraday (>= 0.9, < 2.0)
       jwt (>= 1.5, <= 2.5)
       nokogiri (>= 1.6, < 2.0)
-    tzinfo (2.0.4)
+    tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
     uber (0.1.0)
     unf (0.1.4)
@@ -1148,6 +1150,7 @@ DEPENDENCIES
   axlsx (= 3.0.0.pre)
   bcrypt (~> 3.1.7)
   bootsnap (~> 1)
+  bulk_import_ideas!
   bullet
   bundler-audit
   bunny (>= 2.7.2)
@@ -1279,4 +1282,4 @@ DEPENDENCIES
   webmock (~> 3.14)
 
 BUNDLED WITH
-   2.3.16
+   2.3.20

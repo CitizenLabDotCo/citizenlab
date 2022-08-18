@@ -90,6 +90,8 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   }, [search]);
 
   const onSubmit = async (data) => {
+    // TODO Next iteration: Handle the submit differently for ideas versus survey inputs (i.e. no redirection)
+
     let location_point_geojson;
 
     if (data.location_description && !data.location_point_geojson) {

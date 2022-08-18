@@ -8,6 +8,7 @@ import messages from '../../messages';
 
 // styling
 import { withTheme } from 'styled-components';
+import { animation, piechartColors } from 'components/admin/Graphs/styling';
 
 // components
 import ReportExportMenu from 'components/admin/ReportExportMenu';
@@ -58,8 +59,6 @@ interface InputProps {
 
 interface Props extends InputProps, DataProps {}
 
-const labelColors = ['#C37281 ', '#5D99C6', '#B0CDC4 ', '#C0C2CE'];
-
 class PieChartByCategory extends React.PureComponent<
   Props & InjectedIntlProps
 > {
@@ -74,8 +73,7 @@ class PieChartByCategory extends React.PureComponent<
     return `${entry.name} : ${entry.value}`;
   };
   render() {
-    const { colorMain, animationBegin, animationDuration } =
-      this.props['theme'];
+    const { colorMain } = this.props['theme'];
     const {
       startAt,
       endAt,
@@ -113,8 +111,8 @@ class PieChartByCategory extends React.PureComponent<
               <ResponsiveContainer height={175} width="100%" minWidth={175}>
                 <PieChart>
                   <Pie
-                    animationDuration={animationDuration}
-                    animationBegin={animationBegin}
+                    animationDuration={animation.duration}
+                    animationBegin={animation.begin}
                     isAnimationActive={true}
                     data={serie}
                     dataKey="value"
@@ -124,7 +122,10 @@ class PieChartByCategory extends React.PureComponent<
                     ref={this.currentChart}
                   >
                     {serie.map((_, index) => (
-                      <Cell key={`cell-${index}`} fill={labelColors[index]} />
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={piechartColors[index]}
+                      />
                     ))}
                   </Pie>
                   <Tooltip isAnimationActive={false} />
