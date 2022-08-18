@@ -698,6 +698,7 @@
   "app.containers.IdeaButton.signUpLinkText": "cadastrar-se",
   "app.containers.IdeaButton.submitAnIssue": "Enviar um problema",
   "app.containers.IdeaButton.submitYourIdea": "Enviar uma ideia",
+  "app.containers.IdeaButton.takeTheSurvey": "Faça a pesquisa",
   "app.containers.IdeaButton.verificationLinkText": "Verifique o seu usuário agora",
   "app.containers.IdeaCard.xComments": "{commentsCount, plural, =0 {sem comentários} one {1 comentário} other {# comentários}}",
   "app.containers.IdeaCards.a11y_totalInitiatives": "Total de propostas: {initiativeCount}",
