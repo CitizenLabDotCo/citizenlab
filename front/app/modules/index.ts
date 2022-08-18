@@ -26,6 +26,7 @@ import segmentConfiguration from './commercial/segment';
 import matomoConfiguration from './commercial/matomo';
 import contentBuilderConfiguration from './commercial/content_builder';
 import customIdeaStatusesConfiguration from './commercial/custom_idea_statuses';
+import bulkIdeaImportConfiguration from './commercial/bulk_idea_import';
 import verificationConfiguration from './commercial/verification';
 import customTopicsConfiguration from './commercial/custom_topics';
 
@@ -125,6 +126,10 @@ export default loadModules([
   {
     configuration: customIdeaStatusesConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/custom_idea_statuses'],
+  },
+  {
+    configuration: bulkIdeaImportConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/bulk_import_ideas'],
   },
   {
     configuration: customTopicsConfiguration,

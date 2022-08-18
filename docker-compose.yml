@@ -27,6 +27,7 @@ services:
       - "./back:/cl2_back"
     env_file:
       - ".env-back"
+    tty: true
     stdin_open: true
 
   que:

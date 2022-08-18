@@ -10,9 +10,6 @@ const AdminSettingsGeneral = lazy(
 const AdminSettingsCustomize = lazy(
   () => import('containers/Admin/settings/customize')
 );
-const AdminSettingsPages = lazy(
-  () => import('containers/Admin/settings/pages')
-);
 const AdminSettingsPolicies = lazy(
   () => import('containers/Admin/settings/policies')
 );
@@ -49,14 +46,6 @@ export default () => ({
       element: (
         <PageLoading>
           <AdminSettingsCustomize />
-        </PageLoading>
-      ),
-    },
-    {
-      path: 'pages',
-      element: (
-        <PageLoading>
-          <AdminSettingsPages />
         </PageLoading>
       ),
     },

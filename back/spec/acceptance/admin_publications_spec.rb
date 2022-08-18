@@ -38,10 +38,11 @@ resource 'AdminPublication' do
         parameter :number, 'Page number'
         parameter :size, 'Number of projects per page'
       end
-      parameter :depth, 'Filter by depth (AND)', required: false
       parameter :topics, 'Filter by topics (AND)', required: false
       parameter :areas, 'Filter by areas (AND)', required: false
-      parameter :publication_statuses, 'Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default', required: false
+      parameter :depth, 'Filter by depth', required: false
+      parameter :search, 'Search text of title, description, preview, and slug', required: false
+      parameter :publication_statuses, 'Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default (OR)', required: false
       if CitizenLab.ee?
         parameter :folder, 'Filter by folder (project folder id)', required: false
         parameter :remove_not_allowed_parents, 'Exclude children with parent', required: false
@@ -285,6 +286,140 @@ resource 'AdminPublication' do
           expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 1
           expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 1
           expect(json_response[:data].find { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.dig(:attributes, :visible_children_count)).to eq 1
+        end
+
+        context 'search param' do
+          example_request 'Search param should return the proper projects and folders' do
+            p1 = create(
+              :project,
+              admin_publication_attributes: { publication_status: 'published' },
+              title_multiloc: {
+                en: 'super specific string 1'
+              }
+            )
+
+            p2 = create(
+              :project,
+              admin_publication_attributes: { publication_status: 'published' },
+              title_multiloc: {
+                en: 'another-string'
+              },
+              description_multiloc: {
+                en: 'super specific string 2'
+              }
+            )
+
+            p3 = create(
+              :project,
+              admin_publication_attributes: { publication_status: 'archived' },
+              title_multiloc: {
+                en: 'other-string'
+              }
+            )
+
+            f1 = create(
+              :project_folder,
+              admin_publication_attributes: { publication_status: 'published' },
+              title_multiloc: {
+                en: 'super specific string 3'
+              }
+            )
+
+            f2 = create(
+              :project_folder,
+              admin_publication_attributes: { publication_status: 'published' },
+              title_multiloc: {
+                en: 'a different string 3'
+              },
+              description_multiloc: {
+                en: 'super specific string description'
+              }
+            )
+
+            f3 = create(
+              :project_folder,
+              admin_publication_attributes: { publication_status: 'archived' },
+              title_multiloc: {
+                en: 'other-string'
+              }
+            )
+
+            do_request search: 'super specific string'
+            expect(response_data.size).to eq 4
+            expect(response_ids).to contain_exactly(
+              p1.admin_publication.id,
+              p2.admin_publication.id,
+              f1.admin_publication.id,
+              f2.admin_publication.id
+            )
+            expect(response_ids).not_to include p3.admin_publication.id
+            expect(response_ids).not_to include f3.admin_publication.id
+          end
+
+          example_request 'searching with query and filtering by topic', document: false do
+            topic = create(:topic)
+            project_with_topic = create(:project, topics: [topic],
+              admin_publication_attributes: { publication_status: 'published' },
+              title_multiloc: {
+                en: 'fancy title'
+              })
+            do_request search: 'fancy title', topics: [topic.id]
+            expect(response_data.size).to eq 1
+            expect(response_ids).to contain_exactly(project_with_topic.admin_publication.id)
+          end
+
+          example_request 'Search param should return a project within a folder' do
+            project_in_folder = create(
+              :project,
+              admin_publication_attributes: { publication_status: 'published' },
+              title_multiloc: {
+                en: 'title'
+              },
+              description_multiloc: {
+                en: 'super specific string'
+              }
+            )
+
+            folder = create(
+              :project_folder,
+              projects: [project_in_folder]
+            )
+
+            do_request search: 'super specific string'
+            expect(response_data.size).to eq 1
+            expect(response_ids).to contain_exactly(
+              project_in_folder.admin_publication.id
+            )
+            expect(response_ids).not_to include folder.admin_publication.id
+          end
+
+          example_request 'Search param should return a project within a folder and folder' do
+            project_in_folder = create(
+              :project,
+              admin_publication_attributes: { publication_status: 'published' },
+              title_multiloc: {
+                en: 'title'
+              },
+              description_multiloc: {
+                en: 'folder and project string'
+              }
+            )
+
+            folder = create(
+              :project_folder,
+              projects: [project_in_folder],
+              title_multiloc: {
+                en: 'folder and project string'
+              }
+            )
+
+            do_request search: 'folder and project string'
+            expect(response_data.size).to eq 2
+            expect(response_ids).to contain_exactly(
+              project_in_folder.admin_publication.id,
+              folder.admin_publication.id
+            )
+          end
         end
       end
 

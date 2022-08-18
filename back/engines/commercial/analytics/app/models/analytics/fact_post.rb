@@ -19,7 +19,7 @@
 #  downvotes_count        :integer
 #
 module Analytics
-  class FactPost < Analytics::ApplicationRecord
+  class FactPost < Analytics::ApplicationView
     self.primary_key = :id
     attribute :feedback_time_taken, :string
     belongs_to :type, class_name: 'DimensionType'

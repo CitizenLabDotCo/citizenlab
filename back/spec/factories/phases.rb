@@ -49,6 +49,10 @@ FactoryBot.define do
       participation_method { 'volunteering' }
     end
 
+    factory :native_survey_phase do
+      participation_method { 'native_survey' }
+    end
+
     trait :with_ideas do
       after(:create) do |phase|
         phase.ideas = create_list(:idea, 3, project: phase.project)
