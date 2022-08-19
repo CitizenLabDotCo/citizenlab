@@ -12,14 +12,14 @@ class Factory
 
     participation_method = participation_context.participation_method
     method_class = case participation_method
-    when 'ideation'
-      ::ParticipationMethod::Ideation
+    # when 'ideation'
+    #   ::ParticipationMethod::Ideation
     when 'budgeting'
       ::ParticipationMethod::Budgeting
     when 'native_survey'
       ::ParticipationMethod::NativeSurvey
-    else
-      raise "Unsupported participation method: #{participation_method}"
+    else # TODO: Introduce participation method for every participation_method
+      ::ParticipationMethod::Ideation
     end
     method_class.new(project)
   end
