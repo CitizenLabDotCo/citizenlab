@@ -557,7 +557,7 @@
   "app.containers.Admin.initiatives.manageTab": "Verwalten",
   "app.containers.Admin.initiatives.metaDescription": "Verwalten Sie Vorschläge auf Ihrer Plattform",
   "app.containers.Admin.initiatives.metaTitle": "Admin-Seite für Vorschläge",
-  "app.containers.Admin.initiatives.permissionTab": "Mitwirkungsrechte",
+  "app.containers.Admin.initiatives.permissionTab": "Zugriffsrechte",
   "app.containers.Admin.initiatives.proposalEligibilityCriteria": "Kriterien für die Eignung",
   "app.containers.Admin.initiatives.proposalEligibilityCriteriaInfo": "Geben Sie eine klare Beschreibung der Kriterien, nach denen Sie entscheiden, ob ein Vorschlag förderfähig ist oder nicht.",
   "app.containers.Admin.initiatives.proposalSuccessMessage": "Erfolgsmeldung",
