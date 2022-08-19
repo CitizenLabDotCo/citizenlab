@@ -235,9 +235,10 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def idea_complex_attributes(custom_form, enabled_field_keys)
-    complex_attributes = {
-      location_point_geojson: [:type, { coordinates: [] }]
-    }
+    complex_attributes = {}
+    if enabled_field_keys.include?(:location_point_geojson)
+      complex_attributes[:location_point_geojson] = [:type, { coordinates: [] }]
+    end
     allowed_extra_field_keys = IdeaCustomFieldsService.new(custom_form).allowed_extra_field_keys
     if allowed_extra_field_keys.any?
       complex_attributes[:custom_field_values] = allowed_extra_field_keys
