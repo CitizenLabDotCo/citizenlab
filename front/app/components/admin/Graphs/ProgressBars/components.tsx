@@ -2,15 +2,22 @@ import React from 'react';
 
 // styling
 import { colors } from '../styling';
+import { fontSizes } from 'utils/styleUtils';
 
 interface CustomizedLabelProps {
-  x: number;
-  y: number;
-  value: string;
+  x?: string | number;
+  y?: string | number;
+  value?: string | number;
 }
 
 export const CustomizedLabel = ({ x, y, value }: CustomizedLabelProps) => (
-  <text fill={colors.blue} x={x} y={y - 13} fontSize={14}>
+  <text
+    x={x}
+    y={y}
+    transform="translate(0px,-12px)"
+    fill={colors.blue}
+    fontSize={fontSizes.s}
+  >
     {value}
   </text>
 );
