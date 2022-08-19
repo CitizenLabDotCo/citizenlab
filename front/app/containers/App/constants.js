@@ -132,6 +132,7 @@ exports.appGraphqlLocalePairs = {
   svSe: 'sv-SE',
   trTr: 'tr-TR',
 };
+
 exports.shortenedAppLocalePairs = {
   'ar-MA': 'عربي',
   'ar-SA': 'عربى',
@@ -161,7 +162,6 @@ exports.shortenedAppLocalePairs = {
   'sv-SE': 'Svenska',
   'tr-TR': 'Türkçe',
 };
-
 // https://github.com/moment/moment/tree/develop/locale lists the supported locales by moment.js
 exports.appLocalesMomentPairs = {
   'ar-MA': 'ar-ma',

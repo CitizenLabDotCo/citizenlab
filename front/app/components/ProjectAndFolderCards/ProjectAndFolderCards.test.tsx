@@ -255,6 +255,23 @@ describe('<ProjectAndFolderCards />', () => {
     expect(mockLoadMore).toHaveBeenCalledTimes(1);
   });
 
+  it('sets the search term in the input properly', () => {
+    const { container } = render(
+      <ProjectAndFolderCards
+        publicationStatusFilter={['published', 'archived']}
+        showTitle={true}
+        layout={'dynamic'}
+        showSearch={true}
+      />
+    );
+
+    const searchInput = container.querySelector('#search-input');
+    fireEvent.change(searchInput, { target: { value: 'dog' } });
+    screen.debug();
+
+    expect(searchInput.value).toBe('dog');
+  });
+
   it('calls onChangePublicationStatus of useAdminPublications on click tab', () => {
     render(
       <ProjectAndFolderCards

@@ -81,6 +81,41 @@ class CustomField < ApplicationRecord
     required
   end
 
+  def accept(visitor)
+    case input_type
+    when 'text'
+      visitor.visit_text self
+    when 'number'
+      visitor.visit_number self
+    when 'multiline_text'
+      visitor.visit_multiline_text self
+    when 'html'
+      visitor.visit_html self
+    when 'text_multiloc'
+      visitor.visit_text_multiloc self
+    when 'multiline_text_multiloc'
+      visitor.visit_multiline_text_multiloc self
+    when 'html_multiloc'
+      visitor.visit_html_multiloc self
+    when 'select'
+      visitor.visit_select self
+    when 'multiselect'
+      visitor.visit_multiselect self
+    when 'checkbox'
+      visitor.visit_checkbox self
+    when 'date'
+      visitor.visit_date self
+    when 'files'
+      visitor.visit_files self
+    when 'image_files'
+      visitor.visit_image_files self
+    when 'point'
+      visitor.visit_point self
+    else
+      raise "Unsupported input type: #{input_type}"
+    end
+  end
+
   private
 
   def set_default_enabled
@@ -90,7 +125,10 @@ class CustomField < ApplicationRecord
   def generate_key
     return if key
 
-    self.key = CustomFieldService.new.generate_key(self, title_multiloc.values.first) do |key_proposal|
+    title = title_multiloc.values.first
+    return unless title
+
+    self.key = CustomFieldService.new.generate_key(self, title) do |key_proposal|
       self.class.find_by(key: key_proposal, resource_type: resource_type)
     end
   end
