@@ -11,27 +11,32 @@ import 'tippy.js/themes/light.css';
 import App from 'containers/App';
 import LanguageProvider from 'containers/LanguageProvider';
 import createRoutes from './routes';
-import { init, withSentryReactRouterV6Routing } from '@sentry/react';
-import * as Sentry from '@sentry/react';
+import { init } from '@sentry/react';
+// import * as Sentry from '@sentry/react';
 import { BrowserTracing } from '@sentry/tracing';
 import OutletsProvider from 'containers/OutletsProvider';
 import modules from 'modules';
 import history from 'utils/browserHistory';
 
+import SentryReactRouterV6RouterInstrumentation, {
+  reactRouterV6Instrumentation,
+} from './SentryReactRouterV6RouterInstrumentation';
+
 import {
   unstable_HistoryRouter as HistoryRouter,
   useRoutes,
-  Routes as DomRoutes,
-  useLocation,
-  useNavigationType,
-  createRoutesFromChildren,
-  matchRoutes,
+  // Routes,
+  // useLocation,
+  // useNavigationType,
+  // createRoutesFromChildren,
+  // matchRoutes,
 } from 'react-router-dom';
 
-const SentryRoutes = withSentryReactRouterV6Routing(DomRoutes);
+// const SentryRoutes = DomRoutes;
+
+const importedRoutes = createRoutes();
 
 const Routes = () => {
-  const importedRoutes = createRoutes();
   const routes = useRoutes(importedRoutes);
   useEffect(() => {
     modules.afterMountApplication();
@@ -39,7 +44,8 @@ const Routes = () => {
 
   return (
     <App>
-      <SentryRoutes>{routes}</SentryRoutes>
+      {routes}
+      <SentryReactRouterV6RouterInstrumentation />
     </App>
   );
 };
@@ -74,12 +80,9 @@ if (process.env.SENTRY_DSN) {
     release: process.env.CIRCLE_BUILD_NUM,
     integrations: [
       new BrowserTracing({
-        routingInstrumentation: Sentry.reactRouterV6Instrumentation(
-          React.useEffect,
-          useLocation,
-          useNavigationType,
-          createRoutesFromChildren,
-          matchRoutes
+        routingInstrumentation: reactRouterV6Instrumentation(
+          importedRoutes,
+          true
         ),
       }),
     ],
