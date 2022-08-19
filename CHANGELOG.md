@@ -1,6 +1,19 @@
 # Changelog
 
-## Next
+## 2022-08-18
+
+### Fixed
+ - [CL-1407] Quickfix for critical bug that made the 'Submit your idea' button disappear for projects with a timeline
+
+### Added
+
+- [CL-1097] Added the ability for users to search for projects and folders by keyword on the main projects index page
+
+### Changed
+
+- Improve error handling and user feedback in the forms for creating pages and custom navigation items
+
+## 2022-08-11
 
 ### Fixed
 
