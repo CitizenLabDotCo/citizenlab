@@ -9,29 +9,6 @@ RSpec.describe Project, type: :model do
     end
   end
 
-  describe '#can_contain_input?' do
-    expected_results = {
-      'information' => false,
-      'ideation' => true,
-      'survey' => false,
-      'budgeting' => true,
-      'poll' => false,
-      'volunteering' => false,
-      'native_survey' => true
-    }
-    # Written this way so that additional participation methods will make this spec fail.
-    ::ParticipationContext::PARTICIPATION_METHODS.each do |participation_method|
-      expected_result = expected_results[participation_method]
-      context "for #{participation_method}" do
-        let(:project) { build(:project, participation_method: participation_method) }
-
-        it "returns #{expected_result}" do
-          expect(project.can_contain_input?).to be expected_result
-        end
-      end
-    end
-  end
-
   describe 'Factory with topics' do
     it 'is valid' do
       expect(create(:project_with_allowed_input_topics)).to be_valid
