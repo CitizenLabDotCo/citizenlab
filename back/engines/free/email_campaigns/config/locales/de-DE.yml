@@ -520,10 +520,10 @@ de:
       subject: 'Deine erste Idee auf der Plattform von %{organizationName}'
     welcome:
       cta_join_platform: 'Entdecke die Plattform'
-      subject: 'Willkommen auf der Plattform von %{organizationName}'
+      subject: 'Ihre Registrierung für die Plattform von %{organizationName}'
       main_header: Herzlich Willkommen!
-      message_welcome: 'Herzlichen Glückwunsch, Sie haben sich erfolgreich auf der Beteiligungsplattform von %{organizationName} angemeldet. Sie können nun die Plattform erkunden und Ihrer Stimme Gehör verschaffen. Sie können auch ein Profilbild und eine kurze Beschreibung hinzufügen, um anderen mitzuteilen, wer Sie sind.'
-      preheader: 'Hier ist was du machen kannst auf der Plattform von %{organizationName}'
+      message_welcome: 'Sie haben sich erfolgreich auf der Beteiligungsplattform von %{organizationName} angemeldet. Hier können Sie im Dialog mit uns zu bestimmten Fragestellungen Ihre Gedanken austauschen, Ideen sammeln und Feedback geben.'
+      preheader: 'Das können Sie auf der Plattform von %{organizationName} tun:'
     idea_published:
       action_add_image: '%{addImageLink} um die Sichtbarkeit zu erhöhen'
       action_published_idea: 'Ihre Idee veröffentlicht'
