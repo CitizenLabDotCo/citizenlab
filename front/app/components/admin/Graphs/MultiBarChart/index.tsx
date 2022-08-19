@@ -87,7 +87,7 @@ const MultiBarChart = <Row,>({
       <RechartsBarChart
         data={data}
         layout={rechartsLayout}
-        margin={margin}
+        margin={{ ...margin, bottom: 30 }}
         ref={innerRef}
         barGap={0}
         barCategoryGap={bars?.categoryGap}
