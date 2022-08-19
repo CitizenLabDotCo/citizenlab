@@ -1,5 +1,34 @@
 # Changelog
 
+## 2022-08-18
+
+### Fixed
+ - [CL-1407] Quickfix for critical bug that made the 'Submit your idea' button disappear for projects with a timeline
+
+### Added
+
+- [CL-1097] Added the ability for users to search for projects and folders by keyword on the main projects index page
+
+### Changed
+
+- Improve error handling and user feedback in the forms for creating pages and custom navigation items
+
+## 2022-08-11
+
+### Fixed
+
+- [CL-1302] Added topics column to bulk idea import example sheet
+
+## 2022-08-09
+
+### Fixed
+
+- [CL-1289] Fix 'Submit base data' button width (representation dashboard)
+
+### Added
+
+- [CL-1273] Enable age graphs in representation dashboard
+
 ## 2022-08-04
 
 ### Added

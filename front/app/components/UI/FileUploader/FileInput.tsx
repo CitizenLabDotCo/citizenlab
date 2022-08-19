@@ -177,6 +177,7 @@ const FileInput = ({ className, id, onAdd }: Props) => {
         type="file"
         accept={fileAccept.join(',')}
         tabIndex={0}
+        data-testid="fileInput"
       />
       <Label aria-hidden htmlFor={id}>
         <StyledIcon name="upload-file" ariaHidden />

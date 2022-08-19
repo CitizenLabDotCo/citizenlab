@@ -48,6 +48,7 @@ import GetAppConfiguration, {
 } from 'resources/GetAppConfiguration';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import { UploadFile } from 'typings';
+import useProject from 'hooks/useProject';
 
 const Container = styled.div`
   background: ${colors.background};
@@ -417,7 +418,12 @@ export default withRouter((inputProps: InputProps & WithRouterProps) => {
     name: 'dynamic_idea_form',
   });
 
-  if (isDynamicIdeaFormEnabled) {
+  const project = useProject({ projectSlug: inputProps.params.slug });
+
+  if (
+    isDynamicIdeaFormEnabled ||
+    project?.attributes.participation_method === 'native_survey'
+  ) {
     return <IdeasNewPageWithJSONForm {...inputProps} />;
   }
 

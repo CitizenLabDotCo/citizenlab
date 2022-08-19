@@ -26,7 +26,9 @@ const hasAnyReferenceData = (userCustomFields: IUserCustomFieldData[]) =>
   userCustomFields.some(hasReferenceData);
 
 const RepresentativenessDashboard = () => {
-  const userCustomFields = useUserCustomFields({ inputTypes: ['select'] });
+  const userCustomFields = useUserCustomFields({
+    inputTypes: ['select', 'number'],
+  });
 
   const [currentProjectFilter, setCurrentProjectFilter] = useState<string>();
 

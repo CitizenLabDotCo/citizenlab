@@ -15,7 +15,7 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
 // typings
-import { RepresentativenessData } from '../../../hooks/useReferenceData';
+import { RepresentativenessData } from '../../../hooks/createRefDataSubscription';
 import { Props as FieldInfoProps } from '../FieldInfo';
 
 interface Props extends FieldInfoProps {

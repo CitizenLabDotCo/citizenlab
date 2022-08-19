@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_19_103052) do
+ActiveRecord::Schema.define(version: 2022_08_08_074431) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -516,7 +516,7 @@ ActiveRecord::Schema.define(version: 2022_07_19_103052) do
     t.index "((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))", name: "index_initiatives_search", using: :gin
     t.index ["author_id"], name: "index_initiatives_on_author_id"
     t.index ["location_point"], name: "index_initiatives_on_location_point", using: :gist
-    t.index ["slug"], name: "index_initiatives_on_slug"
+    t.index ["slug"], name: "index_initiatives_on_slug", unique: true
   end
 
   create_table "initiatives_topics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1130,6 +1130,7 @@ ActiveRecord::Schema.define(version: 2022_07_19_103052) do
     t.jsonb "distribution", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "type"
     t.index ["custom_field_id"], name: "index_ucf_representativeness_ref_distributions_on_custom_field"
   end
 
