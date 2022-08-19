@@ -5,6 +5,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import BarChart from 'components/admin/Graphs/BarChart';
 import MultiBarChart from 'components/admin/Graphs/MultiBarChart';
 // import PieChart from 'components/admin/Graphs/PieChart';
+import ProgressBars from 'components/admin/Graphs/ProgressBars';
 
 type Row = {
   value: number;
@@ -39,6 +40,15 @@ const Playground = () => (
         }}
         tooltip
         labels
+      />
+
+      <ProgressBars
+        data={data}
+        mapping={{
+          name: 'label',
+          length: 'value',
+          total: 'value2',
+        }}
       />
     </Box>
   </>

@@ -109,7 +109,8 @@ describe('<ProgressBars />', () => {
         { name: 'a', label: 'aaa', value: 0, total: 10 },
         { name: 'b', label: 'bbb', value: 10, total: 10 },
       ];
-      const { debug } = render(
+
+      render(
         <ProgressBars
           width={200}
           height={200}
@@ -119,10 +120,9 @@ describe('<ProgressBars />', () => {
             length: 'value',
             total: 'total',
           }}
+          bars={{ isAnimationActive: false }}
         />
       );
-
-      debug();
 
       expect(screen.getByText('aaa')).toBeInTheDocument();
       expect(screen.getByText('bbb')).toBeInTheDocument();
