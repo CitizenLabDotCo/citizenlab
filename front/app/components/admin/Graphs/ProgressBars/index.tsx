@@ -22,14 +22,15 @@ import { getBarConfigs } from './utils';
 import { Props } from './typings';
 
 const ProgressBars = <Row,>({
-  data,
   width,
   height,
+  data,
   mapping,
   bars,
   margin,
   tooltip,
   emptyContainerContent,
+  innerRef,
 }: Props<Row>) => {
   if (hasNoData(data)) {
     return <EmptyState emptyContainerContent={emptyContainerContent} />;
@@ -50,6 +51,7 @@ const ProgressBars = <Row,>({
         stackOffset="expand"
         barSize={12}
         margin={margin}
+        ref={innerRef}
       >
         {(typeof tooltip === 'object' || tooltip === true) && (
           <Tooltip {...tooltipConfig} />
