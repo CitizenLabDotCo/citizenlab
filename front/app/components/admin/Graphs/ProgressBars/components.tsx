@@ -10,17 +10,19 @@ interface CustomizedLabelProps {
   value?: string | number;
 }
 
-export const CustomizedLabel = ({ x, y, value }: CustomizedLabelProps) => (
-  <text
-    x={x}
-    y={y}
-    transform="translate(0px,-12px)"
-    fill={colors.blue}
-    fontSize={fontSizes.s}
-  >
-    {value}
-  </text>
-);
+export const CustomizedLabel = ({ x, y, value }: CustomizedLabelProps) => {
+  return (
+    <text
+      x={x}
+      y={y}
+      transform="translate(0,-8)"
+      fill={colors.blue}
+      fontSize={fontSizes.s}
+    >
+      {value}
+    </text>
+  );
+};
 
 const CORNER_RADIUS = 3;
 const r = CORNER_RADIUS;

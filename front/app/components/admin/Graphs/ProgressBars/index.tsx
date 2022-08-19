@@ -27,6 +27,7 @@ const ProgressBars = <Row,>({
   height,
   mapping,
   bars,
+  margin,
   tooltip,
   emptyContainerContent,
 }: Props<Row>) => {
@@ -47,8 +48,8 @@ const ProgressBars = <Row,>({
         data={data}
         layout="vertical"
         stackOffset="expand"
-        barSize={8}
-        margin={{ bottom: 0 }}
+        barSize={12}
+        margin={margin}
       >
         {(typeof tooltip === 'object' || tooltip === true) && (
           <Tooltip {...tooltipConfig} />
@@ -56,7 +57,7 @@ const ProgressBars = <Row,>({
         {typeof tooltip === 'function' && tooltip(tooltipConfig)}
 
         <XAxis hide type="number" />
-        <YAxis width={0} type="category" dataKey="name" />
+        <YAxis width={0} type="category" dataKey={mapping.name as string} />
         <Bar
           {...progressBarConfig.props}
           stackId="a"

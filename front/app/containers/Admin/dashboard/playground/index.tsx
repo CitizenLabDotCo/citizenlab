@@ -2,8 +2,8 @@ import React from 'react';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import BarChart from 'components/admin/Graphs/BarChart';
-import MultiBarChart from 'components/admin/Graphs/MultiBarChart';
+// import BarChart from 'components/admin/Graphs/BarChart';
+// import MultiBarChart from 'components/admin/Graphs/MultiBarChart';
 // import PieChart from 'components/admin/Graphs/PieChart';
 import ProgressBars from 'components/admin/Graphs/ProgressBars';
 
@@ -22,7 +22,7 @@ const data: Row[] = [
 const Playground = () => (
   <>
     <Box width="50%" height="400px">
-      <BarChart
+      {/* <BarChart
         height="100%"
         data={data}
         mapping={{
@@ -40,9 +40,10 @@ const Playground = () => (
         }}
         tooltip
         labels
-      />
+      /> */}
 
       <ProgressBars
+        height={200}
         data={data}
         mapping={{
           name: 'label',
