@@ -95,6 +95,10 @@ module ParticipationContext
     ideation? || budgeting?
   end
 
+  def can_contain_input?
+    can_contain_ideas? || native_survey?
+  end
+
   def upvoting_limited?
     upvoting_method == 'limited'
   end
