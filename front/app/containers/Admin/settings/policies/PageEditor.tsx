@@ -165,6 +165,7 @@ const PageEditor = ({ className, pageSlug }: Props) => {
                 local_page_files: remotePageFiles,
               }}
               hideSlugInput
+              hideNavbarItemTitle
               onSubmit={handleSubmit(pageId, remotePageFiles)}
             />
           </EditionForm>

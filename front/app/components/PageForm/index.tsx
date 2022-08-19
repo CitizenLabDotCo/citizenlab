@@ -54,6 +54,7 @@ type PageFormProps = {
   defaultValues?: FormValues;
   pageId: string | null;
   hideSlugInput?: boolean;
+  hideNavbarItemTitle?: boolean;
 } & InjectedIntlProps;
 
 const PageForm = ({
@@ -62,6 +63,7 @@ const PageForm = ({
   defaultValues,
   pageId,
   hideSlugInput = false,
+  hideNavbarItemTitle = false,
 }: PageFormProps) => {
   const locale = useLocale();
   const page = usePage({ pageId });
@@ -103,7 +105,10 @@ const PageForm = ({
           <Feedback
             successMessage={formatMessage(messages.savePageSuccessMessage)}
           />
-          <Outlet id="app.components.PageForm.index.top" />
+          <Outlet
+            id="app.components.PageForm.index.top"
+            hideNavbarItemTitle={hideNavbarItemTitle}
+          />
         </SectionField>
         <SectionField>
           <InputMultilocWithLocaleSwitcher
