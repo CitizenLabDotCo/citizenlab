@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rack::Attack.class_eval do
   # After https://github.com/rack/rack-attack/blob/master/docs/example_configuration.md
 

@@ -10,7 +10,10 @@ import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import T from 'components/T';
 
 // styling
-import { withTheme } from 'styled-components';
+import {
+  sizes,
+  DEFAULT_BAR_CHART_MARGIN,
+} from 'components/admin/Graphs/styling';
 
 // components
 import ReportExportMenu from 'components/admin/ReportExportMenu';
@@ -21,12 +24,13 @@ import {
   GraphCardInner,
 } from 'components/admin/GraphWrappers';
 import { Tooltip, LabelList } from 'recharts';
-import BarChart, { DEFAULT_MARGIN } from 'components/admin/Graphs/BarChart';
+import BarChart from 'components/admin/Graphs/BarChart';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
 // typings
 import { IUserCustomFieldData } from '../../../services/userCustomFields';
-import { IStreamParams, IStream } from 'utils/streams';
+import { IStream } from 'utils/streams';
+import { ICustomFieldParams } from '../../../services/stats';
 
 // services
 import {
@@ -48,7 +52,9 @@ import createConvertAndMergeSeries, {
 } from './convertAndMergeSeries';
 
 interface ICustomFieldEndpoint {
-  stream: (streamParams: IStreamParams | null) => IStream<ISupportedDataType>;
+  stream: (
+    streamParams: ICustomFieldParams | null
+  ) => IStream<ISupportedDataType>;
   xlsxEndpoint: string;
 }
 
@@ -146,8 +152,7 @@ const CustomFieldsGraph = ({
   localize,
   intl: { formatMessage },
   className,
-  theme: { barSize },
-}: Props & { theme: any }) => {
+}: Props) => {
   const [serie, setSerie] = useState<TOutput | null>(null);
   const currentChartRef = useRef();
   const convertAndMergeSeriesRef = useRef(
@@ -186,7 +191,9 @@ const CustomFieldsGraph = ({
   }, [customField, currentProject, startAt, endAt]);
 
   const noData =
-    !serie || serie.every((item) => isEmpty(item)) || serie.length <= 0;
+    isNilOrError(serie) ||
+    serie.every((item) => isEmpty(item)) ||
+    serie.length <= 0;
 
   const { code } = customField.attributes;
 
@@ -210,6 +217,8 @@ const CustomFieldsGraph = ({
               svgNode={currentChartRef}
               xlsxEndpoint={xlsxEndpoint}
               currentProjectFilter={currentProject}
+              startAt={startAt}
+              endAt={endAt}
             />
           )}
         </GraphCardHeader>
@@ -219,10 +228,10 @@ const CustomFieldsGraph = ({
           layout="horizontal"
           innerRef={currentChartRef}
           margin={{
-            ...DEFAULT_MARGIN,
+            ...DEFAULT_BAR_CHART_MARGIN,
             left: 20,
           }}
-          bars={{ name: formatMessage(messages.participants), size: barSize }}
+          bars={{ name: formatMessage(messages.participants), size: sizes.bar }}
           mapping={{ length: 'participants' }}
           yaxis={{ width: 150, tickLine: false }}
           renderTooltip={() => (
@@ -239,7 +248,7 @@ const CustomFieldsGraph = ({
               />
             </>
           )}
-          renderLabels={(props) => <LabelList {...props} position="right" />}
+          renderLabels={(props) => <LabelList {...props} />}
         />
       </GraphCardInner>
     </GraphCard>
@@ -247,7 +256,5 @@ const CustomFieldsGraph = ({
 };
 
 export default injectLocalize<InputProps>(
-  injectIntl<InputProps & InjectedLocalized>(
-    withTheme(CustomFieldsGraph as any) as any
-  )
+  injectIntl<InputProps & InjectedLocalized>(CustomFieldsGraph)
 );

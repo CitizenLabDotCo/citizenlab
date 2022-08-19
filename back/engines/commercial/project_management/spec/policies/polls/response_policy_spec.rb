@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-skip_reason = defined?(Polls::Engine) ? nil : "polls engine is not installed"
+skip_reason = defined?(Polls::Engine) ? nil : 'polls engine is not installed'
 
 describe 'Polls::ResponsePolicy', skip: skip_reason do
   subject { Polls::ResponsePolicy.new(user, response) }

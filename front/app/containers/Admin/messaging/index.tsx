@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { isEmpty } from 'lodash-es';
 import { adopt } from 'react-adopt';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import HelmetIntl from 'components/HelmetIntl';
@@ -10,6 +10,7 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 import GetPermission from 'resources/GetPermission';
 import GetFeatureFlag from 'resources/GetFeatureFlag';
+import { Outlet as RouterOutlet } from 'react-router-dom';
 
 type Props = {
   canManageAutomatedCampaigns: boolean | null;
@@ -45,6 +46,7 @@ class MessagingDashboard extends React.PureComponent<
       tabs.push({
         label: formatMessage(messages.tabTexting),
         url: '/admin/messaging/texting',
+        statusLabel: 'Beta',
       });
     }
     if (
@@ -66,7 +68,6 @@ class MessagingDashboard extends React.PureComponent<
 
   render() {
     const {
-      children,
       intl: { formatMessage },
     } = this.props;
     const tabs = this.tabs();
@@ -84,11 +85,13 @@ class MessagingDashboard extends React.PureComponent<
             title={messages.helmetTitle}
             description={messages.helmetDescription}
           />
-          {isEmpty(tabs) ? (
-            <FormattedMessage {...messages.noAccess} />
-          ) : (
-            children
-          )}
+          <div id="e2e-messaging-container">
+            {isEmpty(tabs) ? (
+              <FormattedMessage {...messages.noAccess} />
+            ) : (
+              <RouterOutlet />
+            )}
+          </div>
         </TabbedResource>
       </>
     );

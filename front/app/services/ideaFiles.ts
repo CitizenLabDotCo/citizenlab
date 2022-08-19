@@ -47,6 +47,12 @@ export function addIdeaFile(
   });
 }
 
+export function addIdeaImportFile(base64: string) {
+  return streams.add<IIdeaFile>(`${API_PATH}/import_ideas/bulk_create_xlsx`, {
+    import_ideas: { xlsx: base64 },
+  });
+}
+
 export function deleteIdeaFile(ideaId: string, fileId: string) {
   return streams.delete(`${apiEndpoint}/${ideaId}/files/${fileId}`, fileId);
 }

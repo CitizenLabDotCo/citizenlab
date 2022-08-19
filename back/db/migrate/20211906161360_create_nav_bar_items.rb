@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateNavBarItems < ActiveRecord::Migration[6.1]
   def change
     create_table :nav_bar_items, id: :uuid do |t|

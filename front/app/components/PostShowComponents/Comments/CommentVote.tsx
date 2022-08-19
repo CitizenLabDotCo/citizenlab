@@ -2,7 +2,6 @@ import React, { PureComponent, MouseEvent } from 'react';
 import { adopt } from 'react-adopt';
 import { cloneDeep, isNumber, get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
-import { LiveMessage } from 'react-aria-live';
 
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
@@ -36,7 +35,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
 // a11y
@@ -111,6 +110,10 @@ const UpvoteButton = styled.button`
 
 const UpvoteCount = styled.div`
   margin-left: 6px;
+  ${isRtl`
+    margin-right: 6px;
+    margin-left: auto;
+  `}
 `;
 
 interface InputProps {
@@ -370,12 +373,11 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
                 </UpvoteCount>
               )}
             </UpvoteButton>
-            <LiveMessage
-              message={formatMessage(messages.a11y_upvoteCount, {
+            <ScreenReaderOnly aria-live="polite">
+              {formatMessage(messages.a11y_upvoteCount, {
                 upvoteCount,
               })}
-              aria-live="polite"
-            />
+            </ScreenReaderOnly>
           </Container>
         );
       }

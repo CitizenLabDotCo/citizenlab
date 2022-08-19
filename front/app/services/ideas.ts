@@ -94,9 +94,6 @@ export interface IIdeaData {
     topics?: {
       data: IRelationship[];
     };
-    areas: {
-      data: IRelationship[];
-    };
     idea_images: {
       data: IRelationship[] | null;
     };
@@ -180,7 +177,6 @@ export interface IIdeaAdd {
   title_multiloc: Multiloc;
   body_multiloc: Multiloc;
   topic_ids: string[] | null;
-  area_ids?: string[] | null;
   phase_ids?: string[] | null;
   location_point_geojson: GeoJSON.Point | null;
   location_description: string | null;
@@ -190,9 +186,6 @@ export interface IIdeaAdd {
 
 export interface IIdeasFilterCounts {
   idea_status_id: {
-    [key: string]: number;
-  };
-  area_id: {
     [key: string]: number;
   };
   topic_id: {

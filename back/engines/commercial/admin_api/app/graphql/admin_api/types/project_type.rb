@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module AdminApi
   class Types::ProjectType < GraphQL::Schema::Object
-    description "A city defined scope to constrain the citizen input received"
+    description 'A city defined scope to constrain the citizen input received'
 
     class ProjectPublicationStatus < GraphQL::Schema::Enum
       AdminPublication::PUBLICATION_STATUSES.each do |ps|

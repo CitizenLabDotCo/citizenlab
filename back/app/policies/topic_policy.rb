@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TopicPolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
@@ -14,7 +16,7 @@ class TopicPolicy < ApplicationPolicy
 
   def show?
     true
-  end 
+  end
 end
 
 TopicPolicy.include_if_ee('CustomTopics::Extensions::TopicPolicy')

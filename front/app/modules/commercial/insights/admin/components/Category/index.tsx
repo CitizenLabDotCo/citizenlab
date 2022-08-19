@@ -10,7 +10,7 @@ import {
   addInsightsInputCategory,
 } from 'modules/commercial/insights/services/insightsInputs';
 
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 export type CategoryProps = {
   id: string;

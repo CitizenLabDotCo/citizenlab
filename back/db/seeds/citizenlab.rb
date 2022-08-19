@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 def create_for_current_locales
   translations = {}
   AppConfiguration.instance.settings.dig('core', 'locales').each { |locale| translations[locale] = yield }
@@ -83,7 +85,7 @@ AppConfiguration.create!(
     },
     typeform_surveys: {
       enabled: true,
-      allowed: true,
+      allowed: true
     },
     google_forms_surveys: {
       enabled: true,
@@ -98,6 +100,10 @@ AppConfiguration.create!(
       allowed: true
     },
     qualtrics_surveys: {
+      enabled: true,
+      allowed: true
+    },
+    snap_survey_surveys: {
       enabled: true,
       allowed: true
     },
@@ -151,7 +157,7 @@ AppConfiguration.create!(
     },
     redirects: {
       enabled: false,
-      allowed: true,
+      allowed: true
     },
     idea_custom_copy: {
       enabled: false,
@@ -168,9 +174,17 @@ AppConfiguration.create!(
     events_widget: {
       enabled: true,
       allowed: true
+    },
+    native_surveys: {
+      enabled: true,
+      allowed: true
+    },
+    user_confirmation: {
+      allowed: true,
+      enabled: false
     }
-  }
-))
+  })
+)
 
 # Creates a default admin account.
 User.create!(
@@ -538,6 +552,9 @@ open_idea_project = Project.create!({
 
 open_idea_project.project_images.create!(remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1539874546/undraw_brainstorming_49d4_iaimmn.png')
 open_idea_project.set_default_topics!
+
+# Create settings for Home Page.
+HomePage.create!
 
 User.find_each do |user|
   EmailCampaigns::UnsubscriptionToken.create!(user_id: user.id)

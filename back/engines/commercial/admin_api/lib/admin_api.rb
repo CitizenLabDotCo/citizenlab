@@ -1,5 +1,7 @@
-require "admin_api/engine"
-require "graphql"
+# frozen_string_literal: true
+
+require 'admin_api/engine'
+require 'graphql'
 
 module AdminApi
 end

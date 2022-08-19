@@ -1,14 +1,16 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Group, type: :model do
-  describe "Default factory" do
-    it "is valid" do
+  describe 'Default factory' do
+    it 'is valid' do
       expect(build(:group)).to be_valid
     end
   end
 
-  context "users (members)" do
-    it "can be assigned to manual groups" do
+  context 'users (members)' do
+    it 'can be assigned to manual groups' do
       g1 = create(:group)
       expect(g1.members).to be_empty
       g2 = create(:group)
@@ -29,7 +31,7 @@ RSpec.describe Group, type: :model do
       expect(u4.groups).to be_empty
     end
 
-    it "can be added to and removed from manual groups" do
+    it 'can be added to and removed from manual groups' do
       g = create(:group)
       expect(g.members).to be_empty
       u1 = create(:user)
@@ -52,19 +54,18 @@ RSpec.describe Group, type: :model do
       expect(g.members).to be_empty
     end
 
-    it "has consistent responses between member and member_ids" do
+    it 'has consistent responses between member and member_ids' do
       g1 = create(:group)
       g1.members << create_list(:user, 5)
-      members = g1.members
       expect(g1.member_ids).to match g1.members.map(&:id)
     end
   end
 
-  describe "update_memberships_count!" do
-    it "does nothing for a manual group" do
+  describe 'update_memberships_count!' do
+    it 'does nothing for a manual group' do
       group = build(:group)
       create_list(:membership, 2, group: group)
-      expect(group).not_to receive(:update).with({memberships_count: 2})
+      expect(group).not_to receive(:update).with({ memberships_count: 2 })
       group.update_memberships_count!
     end
   end

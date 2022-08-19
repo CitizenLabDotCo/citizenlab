@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Surveys
   class WebhookManagerJob < ApplicationJob
     queue_as :default
@@ -6,6 +8,5 @@ module Surveys
       service = TypeformWebhookManager.new
       service.send(action, *args)
     end
-
   end
 end

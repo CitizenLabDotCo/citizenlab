@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::ResetPasswordController < ::ApplicationController
   skip_after_action :verify_authorized
   skip_before_action :authenticate_user
@@ -18,7 +20,7 @@ class WebApi::V1::ResetPasswordController < ::ApplicationController
 
   def reset_password
     @user = User.not_invited
-                .find_by(reset_password_token: reset_password_params[:token])
+      .find_by(reset_password_token: reset_password_params[:token])
     if @user && ResetPasswordService.new.token_valid?(@user, reset_password_params[:token])
       if @user.update(password: reset_password_params[:password], reset_password_token: nil)
         render json: WebApi::V1::UserSerializer.new(

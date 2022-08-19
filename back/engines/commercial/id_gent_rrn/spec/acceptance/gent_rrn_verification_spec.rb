@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 require 'savon/mock/spec_helper'
@@ -51,11 +53,11 @@ resource 'Verifications' do
         assert_status 201
         expect(@user.reload.verified).to be true
         expect(@user.verifications.first).to have_attributes({
-                                                               method_name: 'gent_rrn',
-                                                               user_id: @user.id,
-                                                               active: true,
-                                                               hashed_uid: '2a77e70b71b206c4c9dcf263250847b101180a8303938ed88caa8e60bb5a5fcf'
-                                                             })
+          method_name: 'gent_rrn',
+          user_id: @user.id,
+          active: true,
+          hashed_uid: '2a77e70b71b206c4c9dcf263250847b101180a8303938ed88caa8e60bb5a5fcf'
+        })
         expect(@user.custom_field_values[@custom_field.key]).to eq @cfo5.key
       end
     end
@@ -72,11 +74,11 @@ resource 'Verifications' do
         assert_status 201
         expect(@user.reload.verified).to be true
         expect(@user.verifications.first).to have_attributes({
-                                                               method_name: 'gent_rrn',
-                                                               user_id: @user.id,
-                                                               active: true,
-                                                               hashed_uid: '2a77e70b71b206c4c9dcf263250847b101180a8303938ed88caa8e60bb5a5fcf'
-                                                             })
+          method_name: 'gent_rrn',
+          user_id: @user.id,
+          active: true,
+          hashed_uid: '2a77e70b71b206c4c9dcf263250847b101180a8303938ed88caa8e60bb5a5fcf'
+        })
         expect(@user.custom_field_values[@custom_field.key]).to be_nil
       end
     end

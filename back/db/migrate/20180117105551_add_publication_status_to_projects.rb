@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class AddPublicationStatusToProjects < ActiveRecord::Migration[5.1]
   def change
-  	add_column :projects, :publication_status, :string, null: false, default: 'published'
+    add_column :projects, :publication_status, :string, null: false, default: 'published'
   end
 end

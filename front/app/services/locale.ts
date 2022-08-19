@@ -39,6 +39,7 @@ import { updateUser } from 'services/users';
 import { Locale } from 'typings';
 import { locales } from 'containers/App/constants';
 import { setCookieLocale, getCookieLocale } from 'utils/localeCookie';
+import clHistory from 'utils/cl-router/history';
 
 const LocaleSubject: BehaviorSubject<Locale> = new BehaviorSubject(null as any);
 const $tenantLocales = currentAppConfigurationStream().observable.pipe(
@@ -187,7 +188,7 @@ function setUrlLocale(locale: Locale): void {
     locale,
     location.search
   );
-  window.history.replaceState({ path: newLocalizedUrl }, '', newLocalizedUrl);
+  clHistory.replace(newLocalizedUrl);
 }
 
 /*  @param pathname: a string representing a pathname, without a starting locale. pathname must tart with /, and final / will not be moved
@@ -217,7 +218,7 @@ function replaceUrlLocale(locale: Locale) {
     location.search
   );
   // replaces current location with updated url
-  window.history.replaceState({ path: newLocalizedUrl }, '', newLocalizedUrl);
+  clHistory.replace(newLocalizedUrl);
 }
 
 /*  @param pathname: a string representing a pathname, with a first part we want to replace

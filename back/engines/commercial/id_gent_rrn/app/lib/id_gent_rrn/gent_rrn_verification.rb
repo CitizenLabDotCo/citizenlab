@@ -35,9 +35,9 @@ module IdGentRrn
         wijk_mapping: {
           type: 'object',
           description: 'Maps wijknummers (see https://data.stad.gent/explore/dataset/stadswijken-gent/table/) to custom_field_value keys',
-          properties: (1..25).map do |i|
+          properties: (1..25).to_h do |i|
             [i.to_s, { type: 'string' }]
-          end.to_h,
+          end,
           additionalProperties: false,
           private: true
         }
@@ -94,7 +94,7 @@ module IdGentRrn
       return false if rrn.length != 11
 
       unique_part = rrn[0..8]
-      check_digit = rrn[-2..-1].to_i
+      check_digit = rrn[-2..].to_i
 
       vanilla_check = 97 - (unique_part.to_i % 97)
       y2k_check = 97 - ("2#{unique_part}".to_i % 97)

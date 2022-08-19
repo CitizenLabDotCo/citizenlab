@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ProjectFolders
   class ImagePolicy < ApplicationPolicy
     class Scope

@@ -14,8 +14,9 @@ jest.mock('modules/commercial/insights/services/insightsCategories', () => ({
 }));
 
 jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
+jest.mock('utils/cl-router/Link');
 
-jest.mock('react-router', () => {
+jest.mock('utils/cl-router/withRouter', () => {
   return {
     withRouter: (Component) => {
       return (props) => {
@@ -28,7 +29,6 @@ jest.mock('react-router', () => {
         );
       };
     },
-    Link: 'Link',
   };
 });
 

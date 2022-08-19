@@ -24,16 +24,7 @@ jest.mock('hooks/useAdminPublications', () =>
   }))
 );
 
-jest.mock('react-router', () => {
-  return {
-    withRouter: (Component) => {
-      return (props) => {
-        return <Component {...props} location={{ pathname: 'en' }} />;
-      };
-    },
-    Link: (props) => <a href={props.to.pathname}>{props.children}</a>,
-  };
-});
+jest.mock('utils/cl-router/Link');
 
 describe('<DesktopNavbar />', () => {
   it('renders', () => {

@@ -9,9 +9,9 @@ import {
   isRtl,
 } from 'utils/styleUtils';
 import { FormattedMessage, IMessageInfo } from 'utils/cl-intl';
-// tslint:disable-next-line:no-vanilla-formatted-messages
 import {
   Messages,
+  // eslint-disable-next-line no-restricted-imports
   FormattedMessage as OriginalFormattedMessage,
 } from 'react-intl';
 import messages from './messages';
@@ -127,6 +127,9 @@ const OptionalText = styled.span`
 const LabelContainer = styled.div`
   display: flex;
   align-items: center;
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 `;
 
 const StyledIcon = styled(Icon)`

@@ -96,6 +96,7 @@ const UsersShowPageMeta: React.SFC<Props & InjectedIntlProps> = ({
         <meta property="og:title" content={usersShowPageIndexTitle} />
         <meta property="og:description" content={usersShowPageDescription} />
         <meta property="og:url" content={location.href} />
+        <meta name="robots" content="noindex" />
       </Helmet>
     );
   }

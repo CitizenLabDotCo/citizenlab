@@ -55,7 +55,7 @@ jest.mock('hooks/useFeatureFlag', () => jest.fn(() => mockFeatureFlagData));
 
 const mockLocationData = { pathname: '', query: {} };
 
-jest.mock('react-router', () => {
+jest.mock('utils/cl-router/withRouter', () => {
   return {
     withRouter: (Component) => {
       return (props) => {
@@ -68,10 +68,10 @@ jest.mock('react-router', () => {
         );
       };
     },
-    Link: () => 'Link',
   };
 });
 
+jest.mock('utils/cl-router/Link');
 jest.mock('utils/cl-router/history');
 
 describe('Insights Edit Categories', () => {

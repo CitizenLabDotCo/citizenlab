@@ -1,6 +1,6 @@
 import React, { useEffect, ReactElement, useState } from 'react';
 import { adopt } from 'react-adopt';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
 
 // components
@@ -133,7 +133,9 @@ const SignUpPage = ({
   useEffect(() => {
     const subscriptions = [
       openSignUpInModal$.subscribe(({ eventValue: newMetaData }) => {
-        if (newMetaData) setMetaData(newMetaData);
+        if (newMetaData) {
+          setMetaData(newMetaData);
+        }
       }),
       signUpActiveStepChange$.subscribe(() => {
         window.scrollTo(0, 0);
@@ -142,7 +144,6 @@ const SignUpPage = ({
     return () => {
       subscriptions.forEach((subscription) => subscription.unsubscribe());
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSignUpInCompleted = () => {
@@ -188,7 +189,7 @@ const Data = adopt<DataProps, WithRouterProps>({
   ),
 });
 
-export default (inputProps: WithRouterProps) => (
+export default (inputProps) => (
   <Data {...inputProps}>
     {(dataProps) => <SignUpPageWithHoC {...inputProps} {...dataProps} />}
   </Data>

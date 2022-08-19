@@ -102,20 +102,19 @@ describe Insights::InputsFinder do
       end
     end
 
-    # rubocop:disable RSpec/MultipleMemoizedHelpers
     context 'when filtering by categories' do
       let(:origin) { add_data_source(view).origin }
-      let(:category_1) { create(:category, view: view) }
-      let(:category_2) { create(:category, view: view) }
+      let(:category1) { create(:category, view: view) }
+      let(:category2) { create(:category, view: view) }
 
       let!(:input_without_category) { create(:idea, project: origin) }
 
       let!(:input_with_c1) do
-        create(:idea, project: origin).tap { |i| add_categories(i, category_1) }
+        create(:idea, project: origin).tap { |i| add_categories(i, category1) }
       end
 
       let!(:input_with_c2) do
-        create(:idea, project: origin).tap { |i| add_categories(i, category_2) }
+        create(:idea, project: origin).tap { |i| add_categories(i, category2) }
       end
 
       def add_categories(input, *categories)
@@ -128,12 +127,12 @@ describe Insights::InputsFinder do
       end
 
       it 'can select inputs from a single category' do
-        finder = described_class.new(view, { categories: [category_1.id] })
+        finder = described_class.new(view, { categories: [category1.id] })
         expect(finder.execute).to eq [input_with_c1]
       end
 
       it 'can select inputs from a set of categories' do
-        category_ids = [category_1, category_2].pluck(:id)
+        category_ids = [category1, category2].pluck(:id)
         finder = described_class.new(view, { categories: category_ids })
 
         expected_inputs = [input_with_c1, input_with_c2]
@@ -150,15 +149,14 @@ describe Insights::InputsFinder do
       end
 
       context 'when an input has mutliple categories' do
-        before { add_categories(input_with_c1, category_2) }
+        before { add_categories(input_with_c1, category2) }
 
         it 'does not return duplicates' do
-          finder = described_class.new(view, { categories: [category_1, category_2].pluck(:id) })
+          finder = described_class.new(view, { categories: [category1, category2].pluck(:id) })
           expect(finder.execute.ids.count(input_with_c1.id)).to eq(1)
         end
       end
     end
-    # rubocop:enable RSpec/MultipleMemoizedHelpers
 
     context 'when using the processed filter' do
       let!(:inputs) { add_data_source(view, 3).origin.ideas }
@@ -207,7 +205,7 @@ describe Insights::InputsFinder do
       end
 
       context '(asc)' do
-        let(:params) { { category: category.id, sort: 'approval' } }
+        let(:params) { { categories: [category.id], sort: 'approval' } }
 
         it 'returns inputs with approved assignments first' do
           approved_status = finder_result.map { |i| get_assignment(i, category).approved? }
@@ -216,7 +214,7 @@ describe Insights::InputsFinder do
       end
 
       context '(desc)' do
-        let(:params) { { category: category.id, sort: '-approval' } }
+        let(:params) { { categories: [category.id], sort: '-approval' } }
 
         it 'returns inputs with suggestions first' do
           approved_status = finder_result.map { |i| get_assignment(i, category).approved? }
@@ -229,8 +227,8 @@ describe Insights::InputsFinder do
 
         it 'does not order inputs by approval status' do
           is_ordered = finder_result
-                         .order_values
-                         .any? { |o| o.to_sql.include?('"insights_category_assignments"."approved"') }
+            .order_values
+            .any? { |o| o.to_sql.include?('"insights_category_assignments"."approved"') }
           expect(is_ordered).to be false
         end
       end
@@ -257,7 +255,7 @@ describe Insights::InputsFinder do
     let(:params) { {} }
 
     it 'defaults to MAX_PER_PAGE' do
-      is_expected.to eq(described_class::MAX_PER_PAGE)
+      expect(per_page).to eq(described_class::MAX_PER_PAGE)
     end
 
     context 'when page size is too large' do
@@ -272,7 +270,7 @@ describe Insights::InputsFinder do
       let(:params) { { page: { size: '20' } } }
 
       it 'converts it to an integer' do
-        is_expected.to eq(20)
+        expect(per_page).to eq(20)
       end
     end
   end
@@ -282,8 +280,8 @@ describe Insights::InputsFinder do
 
     let(:params) { {} }
 
-    it "defaults to 1" do
-      is_expected.to eq(1)
+    it 'defaults to 1' do
+      expect(page).to eq(1)
     end
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::FilesController < ApplicationController
   skip_before_action :authenticate_user
 
@@ -82,7 +84,7 @@ class WebApi::V1::FilesController < ApplicationController
     end
   end
 
-  # todo: move this to a service?
+  # TODO: move this to a service?
   #
   # @param [String] container_type
   # @param [Class] container_class

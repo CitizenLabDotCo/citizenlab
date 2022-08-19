@@ -1,18 +1,23 @@
 import { isString } from 'lodash-es';
+// eslint-disable-next-line no-restricted-imports
+import { Location } from 'history';
 import {
   getUrlLocale,
   replacePathnameLocale,
   setPathnameLocale,
 } from 'services/locale';
-import { LocationDescriptor, LocationDescriptorObject } from 'history';
 import { Locale } from 'typings';
+
+type LocationDescriptorObject = Partial<Location> | string;
 
 // prerequisite : the pathname (location or lcoation.pathname) should start with a / or a locale
 export default function updateLocationDescriptor(
-  location: LocationDescriptor,
+  location: LocationDescriptorObject,
   locale: Locale
-): LocationDescriptorObject {
-  const descriptor = isString(location) ? { pathname: location } : location;
+) {
+  const descriptor: Partial<Location> = isString(location)
+    ? { pathname: location }
+    : location;
   const urlLocale = descriptor.pathname
     ? getUrlLocale(descriptor.pathname)
     : null;
@@ -30,7 +35,7 @@ export default function updateLocationDescriptor(
   return descriptor;
 }
 
-export function removeLocale(location: LocationDescriptor): {
+export function removeLocale(location: Partial<Location> | string): {
   pathname?: string;
   urlLocale: string | null;
 } {

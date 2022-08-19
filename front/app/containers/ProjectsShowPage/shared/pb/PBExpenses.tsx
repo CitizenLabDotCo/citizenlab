@@ -30,10 +30,9 @@ import FormattedBudget from 'utils/currency/FormattedBudget';
 // styling
 import styled from 'styled-components';
 import { colors, fontSizes, defaultCardStyle } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
 
 // a11y
-import { LiveMessage } from 'react-aria-live';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
@@ -71,8 +70,8 @@ const Title = styled.h2`
   margin-right: 15px;
 
   &.validationError {
-    color: ${colors.clRedError};
-    fill: ${colors.clRedError};
+    color: ${colors.red600};
+    fill: ${colors.red600};
   }
 
   &.validationSuccess {
@@ -118,7 +117,7 @@ const BudgetAmount = styled.span`
   font-weight: 600;
 
   &.red {
-    color: ${colors.clRedError};
+    color: ${colors.red600};
   }
 
   &.green {
@@ -160,7 +159,7 @@ const ProgressBarOverlay: any = styled.div`
   transition: all 350ms cubic-bezier(0.19, 1, 0.22, 1);
 
   &.red {
-    background: ${colors.clRedError};
+    background: ${colors.red600};
   }
 
   &.green {
@@ -422,10 +421,9 @@ const PBExpenses = ({
                   <FormattedMessage {...messages.basketSubmitted} />
                 </>
               )}
-              <LiveMessage
-                message={validationStatusMessage}
-                aria-live="polite"
-              />
+              <ScreenReaderOnly aria-live="polite">
+                {validationStatusMessage}
+              </ScreenReaderOnly>
             </Title>
             <Spacer />
             {viewMode === 'row' && (

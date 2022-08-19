@@ -1,8 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import GoToCommentsButton from '../../Buttons/GoToCommentsButton';
-import IdeaSharingButton from '../../Buttons/IdeaSharingButton';
-import SharingButtonComponent from '../../Buttons/SharingButtonComponent';
 import { isNilOrError } from 'utils/helperUtils';
 import useIdea from 'hooks/useIdea';
 
@@ -28,10 +26,6 @@ const IdeaCTAButtons = ({ ideaId, className }: Props) => {
     return (
       <Container className={className || ''}>
         {commentingEnabled && <StyledGoToCommentsButton />}
-        <IdeaSharingButton
-          ideaId={ideaId}
-          buttonComponent={<SharingButtonComponent />}
-        />
       </Container>
     );
   }

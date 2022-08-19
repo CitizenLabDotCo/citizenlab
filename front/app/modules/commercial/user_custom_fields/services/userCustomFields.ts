@@ -48,6 +48,9 @@ export interface IUserCustomFieldData {
     custom_field_options: {
       data: IRelationship;
     };
+    current_ref_distribution: {
+      data: IRelationship;
+    };
   };
 }
 

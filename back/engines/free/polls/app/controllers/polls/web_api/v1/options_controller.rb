@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Polls
   module WebApi
     module V1
@@ -79,7 +81,7 @@ module Polls
             SideFxOptionService.new.after_destroy(option, current_user)
             head :ok
           else
-            head 500
+            head :internal_server_error
           end
         end
 

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Subscription, combineLatest, of, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import shallowCompare from 'utils/shallowCompare';
 import { adopt } from 'react-adopt';
 
@@ -119,12 +119,18 @@ interface InputProps {
   proposedBudget: number | null;
   address: string;
   imageFile: UploadFile[];
+  ideaFiles: UploadFile[];
   onSubmit: (arg: IIdeaFormOutput) => void;
   remoteIdeaFiles?: UploadFile[] | null;
   hasTitleProfanityError: boolean;
   hasDescriptionProfanityError: boolean;
   onTitleChange: (title: string) => void;
   onDescriptionChange: (description: string) => void;
+  onImageFileAdd: (imageFile: UploadFile[]) => void;
+  onImageFileRemove: () => void;
+  onTagsChange: (selectedTopics: string[]) => void;
+  onAddressChange: (address: string) => void;
+  onIdeaFilesChange: (ideaFiles: UploadFile[]) => void;
   authorId: string | null;
 }
 
@@ -161,6 +167,7 @@ interface State {
   imageFile: UploadFile[];
   ideaFiles: UploadFile[];
   ideaFilesToRemove: UploadFile[];
+  ideaFilesChanged: boolean;
   ideaCustomFieldsSchemas: IIdeaFormSchemas | null;
   authorId: string | null;
 }
@@ -194,6 +201,7 @@ class IdeaForm extends PureComponent<
       proposedBudgetError: null,
       ideaFiles: [],
       ideaFilesToRemove: [],
+      ideaFilesChanged: false,
       ideaCustomFieldsSchemas: null,
       locationError: null,
       imageError: null,
@@ -283,8 +291,14 @@ class IdeaForm extends PureComponent<
       remoteIdeaFiles,
       authUser,
       authorId,
+      ideaFiles: newIdeaFiles,
     } = this.props;
-    const ideaFiles = Array.isArray(remoteIdeaFiles) ? remoteIdeaFiles : [];
+
+    const ideaFiles = this.state.ideaFilesChanged
+      ? newIdeaFiles
+      : Array.isArray(remoteIdeaFiles)
+      ? remoteIdeaFiles
+      : [];
 
     this.setState({
       selectedTopics,
@@ -321,22 +335,26 @@ class IdeaForm extends PureComponent<
 
   handleTopicsOnChange = (selectedTopics: string[]) => {
     this.setState({ selectedTopics });
+    this.props.onTagsChange(selectedTopics);
   };
 
   handleLocationOnChange = (address: string) => {
     this.setState({ address });
+    this.props.onAddressChange(address);
   };
 
   handleUploadOnAdd = (imageFile: UploadFile[]) => {
     this.setState({
       imageFile: [imageFile[0]],
     });
+    this.props.onImageFileAdd(imageFile);
   };
 
   handleUploadOnRemove = () => {
     this.setState({
       imageFile: [],
     });
+    this.props.onImageFileRemove();
   };
 
   handleBudgetOnChange = (budget: string) => {
@@ -561,18 +579,25 @@ class IdeaForm extends PureComponent<
   };
 
   handleIdeaFileOnAdd = (ideaFileToAdd: UploadFile) => {
-    this.setState(({ ideaFiles }) => ({
-      ideaFiles: [...ideaFiles, ideaFileToAdd],
-    }));
+    const ideaFiles = [...this.state.ideaFiles, ideaFileToAdd];
+    this.setState({ ideaFiles, ideaFilesChanged: true });
+    this.props.onIdeaFilesChange(ideaFiles);
   };
 
   handleIdeaFileOnRemove = (ideaFileToRemove: UploadFile) => {
-    this.setState(({ ideaFiles, ideaFilesToRemove }) => ({
-      ideaFiles: ideaFiles.filter(
-        (ideaFile) => ideaFile.base64 !== ideaFileToRemove.base64
-      ),
-      ideaFilesToRemove: [...ideaFilesToRemove, ideaFileToRemove],
-    }));
+    const ideaFiles = this.state.ideaFiles.filter(
+      (ideaFile) => ideaFile.base64 !== ideaFileToRemove.base64
+    );
+
+    this.setState(({ ideaFilesToRemove }) => {
+      return {
+        ideaFiles,
+        ideaFilesToRemove: [...ideaFilesToRemove, ideaFileToRemove],
+        ideaFilesChanged: true,
+      };
+    });
+
+    this.props.onIdeaFilesChange(ideaFiles);
   };
 
   handleOnSubmit = () => {
@@ -598,7 +623,6 @@ class IdeaForm extends PureComponent<
       imageFile,
       ideaFiles
     );
-
     if (formClientSideIsValid) {
       const output: IIdeaFormOutput = {
         title,
@@ -623,7 +647,7 @@ class IdeaForm extends PureComponent<
   ) => {
     return ideaCustomFieldsSchemas.json_schema_multiloc[
       locale
-    ].required.includes(fieldCode);
+    ].required?.includes(fieldCode);
   };
 
   isFieldEnabled = (
@@ -718,7 +742,7 @@ class IdeaForm extends PureComponent<
       const showTopics =
         topicsEnabled && allowedTopics && allowedTopics.length > 0;
       const showLocation = locationEnabled;
-      const showproposedBudget = proposedBudgetEnabled;
+      const showProposedBudget = proposedBudgetEnabled;
       const inputTerm = getInputTerm(
         project.attributes.process_type,
         project,
@@ -846,7 +870,10 @@ class IdeaForm extends PureComponent<
             </FormElement>
           </StyledFormSection>
 
-          {(showPBBudget || showTopics || showLocation) && (
+          {(showPBBudget ||
+            showTopics ||
+            showLocation ||
+            showProposedBudget) && (
             <StyledFormSection>
               <FormSectionTitle message={messages.formDetailsSectionTitle} />
               {showPBBudget && (
@@ -876,7 +903,7 @@ class IdeaForm extends PureComponent<
                 </HasPermission>
               )}
 
-              {showproposedBudget && (
+              {showProposedBudget && (
                 <FormElement>
                   <FormLabel
                     htmlFor="estimated-budget"
@@ -997,7 +1024,9 @@ class IdeaForm extends PureComponent<
                 id="idea-image-dropzone"
                 images={imageFile}
                 imagePreviewRatio={135 / 298}
-                acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+                acceptedFileTypes={{
+                  'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+                }}
                 onAdd={this.handleUploadOnAdd}
                 onRemove={this.handleUploadOnRemove}
               />
@@ -1067,7 +1096,7 @@ const Data = adopt<DataProps, InputProps>({
   },
 });
 
-const IdeaFormWitHOCs = withRouter<Props>(injectIntl(IdeaForm));
+const IdeaFormWitHOCs = injectIntl(withRouter(IdeaForm));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

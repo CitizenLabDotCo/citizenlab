@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // hooks
 import useDetectedCategories from 'modules/commercial/insights/hooks/useInsightsDetectedCategories';

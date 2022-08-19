@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module AdminApi
   class Types::IdeaType < GraphQL::Schema::Object
-    description "Single unit of citizen input"
+    description 'Single unit of citizen input'
 
     class IdeaPublicationStatus < GraphQL::Schema::Enum
       Idea::PUBLICATION_STATUSES.each do |ps|
@@ -9,7 +11,7 @@ module AdminApi
     end
 
     class IdeaImage < GraphQL::Schema::Object
-      description "An image associates with an idea"
+      description 'An image associates with an idea'
 
       field :id, ID, null: false
       field :ordering, Integer, null: true
@@ -28,7 +30,6 @@ module AdminApi
       field :updated_at, String, null: false
       field :created_at, String, null: false
     end
-
 
     field :id, ID, null: false
     field :title_multiloc, Types::MultilocType, null: false
@@ -51,10 +52,8 @@ module AdminApi
       object.published_at&.iso8601
     end
 
-
     def href
       Frontend::UrlService.new.model_to_url(object)
     end
-
   end
 end

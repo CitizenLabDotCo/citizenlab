@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EmailCampaigns
   class WebApi::V1::ConsentsController < EmailCampaignsController
     before_action :set_consent, only: :update
@@ -48,9 +50,9 @@ module EmailCampaigns
     private
 
     def ensure_consents
-      if current_user_by_unsubscription_token
-        Consent.create_all_for_user!(current_user_by_unsubscription_token)
-      end
+      return unless current_user_by_unsubscription_token
+
+      Consent.create_all_for_user!(current_user_by_unsubscription_token)
     end
 
     def set_consent

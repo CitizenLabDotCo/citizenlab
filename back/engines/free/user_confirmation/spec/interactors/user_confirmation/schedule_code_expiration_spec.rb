@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe UserConfirmation::ScheduleCodeExpiration do
@@ -14,10 +16,6 @@ RSpec.describe UserConfirmation::ScheduleCodeExpiration do
       context[:user] = create(:user_with_confirmation)
       context[:user].email_confirmation_code_sent_at = Time.zone.now
       context[:user].save
-    end
-
-    it 'is successful' do
-      expect(result).to be_a_success
     end
 
     it 'enqueues a code expiration job' do

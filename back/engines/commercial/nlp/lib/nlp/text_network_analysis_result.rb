@@ -6,8 +6,8 @@ require 'nlp/text_network'
 module NLP
   # Data class for results of text network analysis.
   class TextNetworkAnalysisResult
-    attr_reader :task_id, :tenant_id, :locale, :network
-    attr_reader :json_message # is only initialized if the instance is created with +.from_json+
+    # json_message is only initialized if the instance is created with +.from_json+
+    attr_reader :task_id, :tenant_id, :locale, :network, :json_message
 
     # @param [String] task_id
     # @param [String] tenant_id

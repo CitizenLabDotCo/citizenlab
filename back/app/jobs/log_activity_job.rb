@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class LogActivityJob < ApplicationJob
   include SideFxHelper
   queue_as :default
@@ -27,15 +29,15 @@ class LogActivityJob < ApplicationJob
 
   def instantiate_activity
     @activity = if item.is_a? String
-                  # when e.g. the item has been destroyed, the class and id must be
-                  # retrieved by encoding and decoding to a string
-                  claz, id = decode_frozen_resource(item)
-                  Activity.new(item_type: claz.name, item_id: id)
-                else
-                  # item.class.name is needed for polymorphic subclasses like Notification
-                  # descendants
-                  Activity.new(item: item, item_type: item.class.name)
-                end
+      # when e.g. the item has been destroyed, the class and id must be
+      # retrieved by encoding and decoding to a string
+      claz, id = decode_frozen_resource(item)
+      Activity.new(item_type: claz.name, item_id: id)
+    else
+      # item.class.name is needed for polymorphic subclasses like Notification
+      # descendants
+      Activity.new(item: item, item_type: item.class.name)
+    end
   end
 
   def save_activity

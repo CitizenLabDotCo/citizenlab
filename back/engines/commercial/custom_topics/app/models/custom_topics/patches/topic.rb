@@ -1,13 +1,14 @@
+# frozen_string_literal: true
+
 module CustomTopics
   module Patches
     module Topic
-
       CUSTOM_CODE = 'custom'
 
       def self.prepended(base)
         base.before_validation :set_code
 
-        base.singleton_class.prepend ClassMethods 
+        base.singleton_class.prepend ClassMethods
       end
 
       module ClassMethods
@@ -16,11 +17,9 @@ module CustomTopics
         end
       end
 
-
       def custom?
-        self.code == CUSTOM_CODE
+        code == CUSTOM_CODE
       end
-
 
       private
 

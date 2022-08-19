@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ActivitiesFinder < ApplicationFinder
   default_sort acted_at: :asc
 

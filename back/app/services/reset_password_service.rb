@@ -25,8 +25,8 @@ class ResetPasswordService
   def send_email_later(user, token)
     url = url_for(user, token)
     ResetPasswordMailer.with(user: user, password_reset_url: url)
-                       .send_reset_password
-                       .deliver_later(priority: 1)
+      .send_reset_password
+      .deliver_later(priority: 1)
   end
 
   # Verifies if the specified token is valid for the user.

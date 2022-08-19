@@ -3,8 +3,7 @@
 require 'rails_helper'
 
 describe 'CitizenLab::Mixins::SettingsSpecification' do
-
-  context "with settings specified as JSON" do
+  context 'with settings specified as JSON' do
     let(:spec_as_json) do
       Module.new do
         def self.json_schema

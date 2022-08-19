@@ -13,7 +13,7 @@ module ProjectFolders
       end
 
       def can_moderate_project?(project, user)
-        super || (project.has_folder? && user.project_folder_moderator?(project.folder_id))
+        super || (project.folder? && user.project_folder_moderator?(project.folder_id))
       end
 
       def moderators_for(object, scope = ::User)
@@ -38,10 +38,10 @@ module ProjectFolders
 
         admin_publications =
           AdminPublication.joins(:parent)
-                          .where(parents_admin_publications: {
-                                   publication_type: 'ProjectFolders::Folder',
-                                   publication_id: user.moderated_project_folder_ids
-                                 })
+            .where(parents_admin_publications: {
+              publication_type: 'ProjectFolders::Folder',
+              publication_id: user.moderated_project_folder_ids
+            })
 
         super.or(scope.where(admin_publication: admin_publications))
       end

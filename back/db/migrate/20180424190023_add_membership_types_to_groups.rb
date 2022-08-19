@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddMembershipTypesToGroups < ActiveRecord::Migration[5.1]
   def up
     # This shouldn't be necessary because the migration timestamp already existed in schema_migrations.

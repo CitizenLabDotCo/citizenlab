@@ -1,7 +1,6 @@
 import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
 import React, { ReactNode } from 'react';
-import { MembershipType } from 'resources/GetGroups';
-import { IGroupDataAttributes } from 'services/groups';
+import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import { FormikSubmitHandler } from 'typings';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import HeaderIcon from './components/HeaderIcon';

@@ -19,25 +19,24 @@ module IdFranceconnect
     end
 
     add_setting 'environment', required: true, schema: {
-      type: "string",
-      title: "Environment",
-      description: "Live on the production FranceConnect environment or still testing on their integration environment?",
-      enum: ["production", "integration"],
-      default: "production",
+      type: 'string',
+      title: 'Environment',
+      description: 'Live on the production FranceConnect environment or still testing on their integration environment?',
+      enum: %w[production integration],
+      default: 'production',
       private: true
     }
 
     add_setting 'identifier', required: true, schema: {
-      title: "Identifier",
-      type: "string",
+      title: 'Identifier',
+      type: 'string',
       private: true
     }
 
     add_setting 'secret', required: true, schema: {
-      title: "Secret Key",
-      type: "string",
+      title: 'Secret Key',
+      type: 'string',
       private: true
     }
-
   end
 end

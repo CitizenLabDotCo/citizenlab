@@ -1,6 +1,7 @@
 import React from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { API_PATH } from 'containers/App/constants';
+import { saveAs } from 'file-saver';
 
 // components
 import Button from 'components/UI/Button';

@@ -13,7 +13,6 @@ import { fallbackMessages } from '../AreaChart';
 import { TCustomFieldCode } from '../../../services/userCustomFields';
 import {
   IUsersByRegistrationField,
-  IUsersByGender,
   IUsersByDomicile,
   IUsersByBirthyear,
 } from 'modules/commercial/user_custom_fields/services/stats';
@@ -25,7 +24,6 @@ import { InjectedLocalized } from 'utils/localize';
 
 export type ISupportedDataType =
   | IUsersByRegistrationField
-  | IUsersByGender
   | IUsersByDomicile
   | IUsersByBirthyear;
 

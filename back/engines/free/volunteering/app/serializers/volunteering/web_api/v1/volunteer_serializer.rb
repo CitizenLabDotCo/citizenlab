@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Volunteering
   class WebApi::V1::VolunteerSerializer < ::WebApi::V1::BaseSerializer
     attributes :created_at, :updated_at

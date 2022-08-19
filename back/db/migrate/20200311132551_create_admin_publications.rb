@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateAdminPublications < ActiveRecord::Migration[6.0]
   def change
     # Create admin publications
@@ -19,33 +21,33 @@ class CreateAdminPublications < ActiveRecord::Migration[6.0]
 
     # Migrate existing data
     folder_to_publication_id = {}
-    sql = %q(
-      SELECT project_holder_id, project_holder_type 
+    sql = '
+      SELECT project_holder_id, project_holder_type
       FROM project_holder_orderings
       ORDER BY ordering DESC;
-    )
+    '
     ActiveRecord::Base.connection.execute(sql).each do |pho|
       publication = AdminPublication.create!(
-        publication_id:   pho['project_holder_id'],
+        publication_id: pho['project_holder_id'],
         publication_type: pho['project_holder_type']
-        )
+      )
       if pho['project_holder_type'] == 'ProjectFolder'
         folder_to_publication_id[pho['project_holder_id']] = publication.id
       end
     end
 
-    sql = %q(
+    sql = '
       SELECT id, folder_id
       FROM projects
       WHERE folder_id IS NOT NULL
       ORDER BY ordering DESC;
-    )
+    '
     ActiveRecord::Base.connection.execute(sql).each do |pho|
       AdminPublication.create!(
-        publication_id:   pho['id'],
+        publication_id: pho['id'],
         publication_type: 'Project',
         parent_id: folder_to_publication_id[pho['folder_id']]
-        )
+      )
     end
 
     # Remove project holder modelling

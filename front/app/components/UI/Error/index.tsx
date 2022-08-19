@@ -14,18 +14,18 @@ const timeout = 350;
 
 const ErrorMessageText = styled.div`
   flex: 1 1 100%;
-  color: ${colors.clRedError};
+  color: ${colors.red600};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 400;
 
   a {
-    color: ${colors.clRedError};
+    color: ${colors.red600};
     font-weight: 500;
     text-decoration: underline;
 
     &:hover {
-      color: ${darken(0.2, colors.clRedError)};
+      color: ${darken(0.2, colors.red600)};
       text-decoration: underline;
     }
   }
@@ -39,7 +39,7 @@ const ErrorIcon = styled(Icon)`
   flex: 0 0 20px;
   width: 20px;
   height: 20px;
-  fill: ${colors.clRedError};
+  fill: ${colors.red600};
   padding: 0px;
   margin: 0px;
   margin-right: 10px;
@@ -54,11 +54,11 @@ const ContainerInner = styled.div<{ showBackground: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 13px;
+  padding: 0px 13px;
   border-radius: ${(props) => props.theme.borderRadius};
-  background: ${colors.clRedErrorBackground};
+  background: ${colors.red100};
   background: ${(props) =>
-    props.showBackground ? colors.clRedErrorBackground : 'transparent'};
+    props.showBackground ? colors.red100 : 'transparent'};
 
   ${isRtl`
     flex-direction: row-reverse;
@@ -130,6 +130,7 @@ interface Props {
   fieldName?: TFieldName | undefined;
   apiErrors?: (CLError | IInviteError)[] | null;
   id?: string;
+  scrollIntoView?: boolean;
 }
 
 export type TFieldName =
@@ -172,6 +173,21 @@ export type TFieldName =
   | 'category_name'
   | 'nav_bar_item_title_multiloc';
 
+export const findErrorMessage = (
+  fieldName: TFieldName | undefined,
+  error: string
+) => {
+  if (fieldName && messages[`${fieldName}_${error}`]) {
+    return messages[`${fieldName}_${error}`] as Message;
+  }
+
+  if (messages[error]) {
+    return messages[error] as Message;
+  }
+  // Return a generic error message
+  return messages.invalid;
+};
+
 const Error = (props: Props) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -186,29 +202,18 @@ const Error = (props: Props) => {
     className = '',
     animate = true,
     id,
+    scrollIntoView = true,
   } = props;
 
   useEffect(() => {
-    if (text || apiErrors) {
+    if (scrollIntoView) {
       containerRef.current?.scrollIntoView &&
         containerRef.current.scrollIntoView({
           behavior: 'smooth',
           block: 'center',
         });
     }
-  }, [text, apiErrors]);
-
-  const findMessage = (fieldName: TFieldName | undefined, error: string) => {
-    if (fieldName && messages[`${fieldName}_${error}`]) {
-      return messages[`${fieldName}_${error}`] as Message;
-    }
-
-    if (messages[error]) {
-      return messages[error] as Message;
-    }
-
-    return null;
-  };
+  }, [scrollIntoView]);
 
   const dedupApiErrors =
     apiErrors && isArray(apiErrors) && !isEmpty(apiErrors)
@@ -249,8 +254,11 @@ const Error = (props: Props) => {
                   {dedupApiErrors.map((error, index) => {
                     // If we have multiple possible errors for a certain input field,
                     // we can 'group' them in the messages.js file using the fieldName as a prefix
-                    // Check the implementation of findMessage for details
-                    const errorMessage = findMessage(fieldName, error.error);
+                    // Check the implementation of findErrorMessage for details
+                    const errorMessage = findErrorMessage(
+                      fieldName,
+                      error.error
+                    );
 
                     if (errorMessage) {
                       // Variables for inside messages.js

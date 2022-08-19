@@ -284,11 +284,11 @@ const IdeasWithoutFiltersSidebar = ({
                 onClick={selectView}
               />
             )}
-
             {!showMapView && (
               <StyledSearchInput
                 className="e2e-search-ideas-input"
                 onChange={handleSearchOnChange}
+                a11y_numberOfSearchResults={list.length}
               />
             )}
           </LeftFilterArea>

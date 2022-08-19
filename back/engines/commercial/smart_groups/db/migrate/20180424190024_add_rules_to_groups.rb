@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddRulesToGroups < ActiveRecord::Migration[5.1]
   def up
     return if column_exists? :groups, :rules

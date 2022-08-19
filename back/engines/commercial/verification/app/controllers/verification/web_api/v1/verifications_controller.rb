@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Verification
   module WebApi
     module V1
@@ -21,7 +23,7 @@ module Verification
           render json: { errors: { base: [{ error: 'no_match' }] } }, status: :unprocessable_entity
         rescue VerificationService::NotEntitledError => e
           render json: { errors: { base: [{ error: 'not_entitled', why: e.why }.compact] } },
-                 status: :unprocessable_entity
+            status: :unprocessable_entity
         rescue VerificationService::ParameterInvalidError => e
           render json: { errors: { e.message => [{ error: 'invalid' }] } }, status: :unprocessable_entity
         rescue VerificationService::VerificationTakenError => _e
@@ -44,9 +46,9 @@ module Verification
 
           raise Pundit::NotAuthorizedError unless AppConfiguration.instance.feature_activated?('verification')
 
-          unless @ver_ser.active_methods(AppConfiguration.instance).include?(@verification_method)
-            raise Pundit::NotAuthorizedError
-          end
+          return if @ver_ser.active_methods(AppConfiguration.instance).include?(@verification_method)
+
+          raise Pundit::NotAuthorizedError
         end
       end
     end

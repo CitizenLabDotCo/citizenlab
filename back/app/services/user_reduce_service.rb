@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UserReduceService
   # Service to automatically reduce the number of
   # users.
@@ -84,10 +86,10 @@ class UserReduceService
     picked_project_sets = {}
     participants_service = ParticipantsService.new
 
-    context_participants = Project.all.map do |project|
+    context_participants = Project.all.to_h do |project|
       participants = participants_service.project_participants project
       [project.id, participants.map(&:id)]
-    end.to_h
+    end
     context_participants['global'] = participants_service.initiatives_participants(Initiative.all).map(&:id)
 
     scope.each do |user|
@@ -107,11 +109,11 @@ class UserReduceService
 
     project_sets.select do |project_set, participants|
       participants.present? && (project_set & exclude).empty? && (!project_set.empty? || can_pick_empty_set)
-    end.to_a.sort do |l1, l2|
+    end.to_a.min do |l1, l2|
       set1, prtcps1 = l1
       set2, prtcps2 = l2
       [set1.size, -prtcps1.size] <=> [set2.size, -prtcps2.size]
-    end.first&.first
+    end&.first
   end
 
   def pick_and_pop_user_for_merge!(users, project_sets: nil)
@@ -134,7 +136,7 @@ class UserReduceService
       r['table_name']
     end.uniq.reject do |table_name|
       MERGE_TABLES_BLACKLIST.include? table_name
-    end.map do |table_name|
+    end.to_h do |table_name|
       column_names = ActiveRecord::Base.connection.execute(
         <<-SQL.squish
           SELECT column_name
@@ -147,6 +149,6 @@ class UserReduceService
         c['column_name']
       end.uniq
       [table_name, column_names]
-    end.to_h
+    end
   end
 end

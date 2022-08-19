@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RenamePermittableFromPermissions < ActiveRecord::Migration[6.0]
   def change
     rename_column :permissions, :permittable_id, :permission_scope_id

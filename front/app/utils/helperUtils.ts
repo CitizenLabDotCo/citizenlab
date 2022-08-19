@@ -74,6 +74,7 @@ type pageKeys =
   | 'initiative_form'
   | 'idea_edit'
   | 'initiative_edit'
+  | 'native_survey'
   | 'sign_in'
   | 'sign_up'
   | 'email-settings';
@@ -105,6 +106,8 @@ export function isPage(pageKey: pageKeys, pathName: string) {
       return pathnameWithoutLocale.startsWith('/ideas/edit/');
     case 'initiative_edit':
       return pathnameWithoutLocale.startsWith('/initiatives/edit/');
+    case 'native_survey':
+      return pathnameWithoutLocale.endsWith('/survey');
     case 'sign_in':
       return pathnameWithoutLocale.startsWith('/sign-in');
     case 'sign_up':
@@ -174,7 +177,7 @@ export function isFunction(f): f is Function {
   return f instanceof Function;
 }
 
-export function isString(s): s is string {
+export function isString(s: unknown): s is string {
   return typeof s === 'string';
 }
 
@@ -221,3 +224,5 @@ export const byId = (array: ObjectWithId[]) =>
     acc[curr.id] = curr;
     return acc;
   }, {});
+
+export const indices = (n: number) => [...Array(n)].map((_, i) => i);

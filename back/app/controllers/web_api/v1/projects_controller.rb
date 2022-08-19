@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::ProjectsController < ::ApplicationController
   before_action :set_project, only: %i[show update reorder destroy]
   skip_before_action :authenticate_user
@@ -6,11 +8,11 @@ class WebApi::V1::ProjectsController < ::ApplicationController
   define_callbacks :save_project
 
   def index
-    params["moderator"] = current_user if params[:filter_can_moderate]
+    params['moderator'] = current_user if params[:filter_can_moderate]
 
     publications = policy_scope(AdminPublication)
     publications = AdminPublicationsFilteringService.new.filter(publications, params)
-                                                 .where(publication_type: Project.name)
+      .where(publication_type: Project.name)
 
     # Not very satisfied with this ping-pong of SQL queries (knowing that the
     # AdminPublicationsFilteringService is also making a request on projects).
@@ -18,16 +20,9 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     # scope.
 
     @projects = Project.where(id: publications.select(:publication_id))
-                       .includes(:project_images, :phases, :areas, admin_publication: [:children])
+      .ordered
+      .includes(:project_images, :phases, :areas, admin_publication: [:children])
     @projects = paginate @projects
-
-    if params[:search].present?
-      @projects = @projects.search_by_all(params[:search])
-    else
-      @projects = @projects.ordered
-    end
-
-    LogActivityJob.perform_later(current_user, 'searched_projects', current_user, Time.now.to_i, payload: {search_query: params[:search]}) if params[:search].present?
 
     user_baskets = current_user&.baskets
       &.where(participation_context_type: 'Project')
@@ -115,7 +110,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
       SideFxProjectService.new.after_destroy(@project, current_user)
       head :ok
     else
-      head 500
+      head :internal_server_error
     end
   end
 

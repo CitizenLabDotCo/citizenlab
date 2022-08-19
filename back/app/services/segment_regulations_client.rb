@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class SegmentRegulationsClient
-
   # All deletion and suppression actions in Segment are asynchronous,
   # and categorized as *Regulations*.
   #
@@ -16,7 +15,7 @@ class SegmentRegulationsClient
     delete: 'Delete',                             # Delete existing data without suppressing any new data
     unsuppress: 'Unsuppress',                     # Stop an ongoing suppression
     suppress: 'Suppress',                         # Suppress new data without deleting existing data
-    delete_internal: 'Delete_Internal',           # Delete data from Segment internals only
+    delete_internal: 'Delete_Internal'            # Delete data from Segment internals only
   }.freeze
 
   # @param [String,nil] authorization_token A "Workspace Owner" token is
@@ -34,7 +33,7 @@ class SegmentRegulationsClient
   def delete(user_ids)
     create_regulation(:delete, user_ids)
   end
-  
+
   # @param [Symbol] regulation_type
   # @param [Array<String>] user_ids
   def create_regulation(regulation_type, user_ids)
@@ -47,7 +46,6 @@ class SegmentRegulationsClient
     )
   end
 
-  
   # @param [String] regulation_id
   def delete_regulation(regulation_id)
     HTTParty.delete(

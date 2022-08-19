@@ -215,7 +215,7 @@ export class GroupsListPanel extends React.PureComponent<
 
     return (
       <Container className={this.props.className}>
-        <MenuLink to="/admin/users" activeClassName="active" onlyActiveOnIndex>
+        <MenuLink to="/admin/users" onlyActiveOnIndex>
           <GroupName>
             <FormattedMessage {...messages.allUsers} />
           </GroupName>
@@ -246,8 +246,9 @@ export class GroupsListPanel extends React.PureComponent<
               <MenuLink
                 key={group.id}
                 to={`/admin/users/${group.id}`}
-                activeClassName="active"
-                className={highlightedGroups.has(group.id) ? 'highlight' : ''}
+                className={() =>
+                  `${highlightedGroups.has(group.id) ? 'highlight' : ''}`
+                }
               >
                 <Outlet
                   id="app.containers.Admin.users.GroupsListPanel.listitem.icon"

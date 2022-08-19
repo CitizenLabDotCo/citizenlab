@@ -24,7 +24,7 @@ module EmailCampaigns
         values: {
           ideaTitle: localize_for_recipient(event.post_title_multiloc),
           organizationName: organization_name,
-          commentAuthor: comment_author,
+          commentAuthor: comment_author
         }
       )
     end

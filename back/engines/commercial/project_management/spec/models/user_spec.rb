@@ -20,19 +20,19 @@ RSpec.describe User, type: :model do
     it 'responds true when the user has the project_moderator role' do
       l = create(:project)
       u = build(:user, roles: [{ type: 'project_moderator', project_id: l.id }])
-      expect(u.project_moderator?(l.id)).to eq true
+      expect(u.project_moderator?(l.id)).to be true
     end
 
     it 'responds false when the user does not have a project_moderator role for the given project' do
       l1 = create(:project)
       l2 = create(:project)
       u = build(:user, roles: [{ type: 'project_moderator', project_id: l1.id }])
-      expect(u.project_moderator?(l2.id)).to eq false
+      expect(u.project_moderator?(l2.id)).to be false
     end
 
     it 'responds true when the user is project_moderator and no project_id is passed' do
       u = build(:user, roles: [{ type: 'project_moderator', project_id: 'project_id' }])
-      expect(u.project_moderator?).to eq true
+      expect(u.project_moderator?).to be true
     end
   end
 
@@ -40,12 +40,12 @@ RSpec.describe User, type: :model do
     it 'gives a user moderator rights for a project' do
       usr = create(:user, roles: [])
       prj = create(:project)
-      expect(usr.project_moderator? prj.id).to eq false
+      expect(usr.project_moderator?(prj.id)).to be false
 
       usr.add_role 'project_moderator', project_id: prj.id
-      expect(usr.save).to eq true
-      expect(usr.project_moderator? prj.id).to eq true
-      expect(usr.project_moderator? create(:project).id).to eq false
+      expect(usr.save).to be true
+      expect(usr.project_moderator?(prj.id)).to be true
+      expect(usr.project_moderator?(create(:project).id)).to be false
     end
   end
 
@@ -55,8 +55,8 @@ RSpec.describe User, type: :model do
       mod = create(:project_moderator, projects: [prj])
 
       mod.delete_role 'project_moderator', project_id: prj.id
-      expect(mod.save).to eq true
-      expect(mod.project_moderator? prj.id).to eq false
+      expect(mod.save).to be true
+      expect(mod.project_moderator?(prj.id)).to be false
     end
   end
 

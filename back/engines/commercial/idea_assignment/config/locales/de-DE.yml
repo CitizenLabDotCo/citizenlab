@@ -3,7 +3,7 @@ de:
     campaign_type_description:
       "idea_assigned_to_you": Zuweisung einer Idee an mich
     admin_campaign_type_description:
-      "idea_assigned_to_you": Zuweisung einer Idee - Admins und ProjektleiterInnen
+      "idea_assigned_to_you": Zuweisung einer Idee - Admins und ProjektmanagerInnen
     idea_assigned_to_you:
       by_author: 'von %{authorName}'
       cta_reply_to: 'Geben Sie %{authorName} Feedback'

@@ -55,10 +55,10 @@ module Insights
     # @return [Array<Hash>] The links of the network.
     def links
       @links ||= @network.links
-                         .reject { |l| l.from_id == l.to_id } # removing loops (links that connect a node to itself)
-                         .sort_by { |l| [l.weight, l.from_id, l.to_id] }.reverse
-                         .take(max_nb_links)
-                         .map(&:as_json)
+        .reject { |l| l.from_id == l.to_id } # removing loops (links that connect a node to itself)
+        .sort_by { |l| [l.weight, l.from_id, l.to_id] }.reverse
+        .take(max_nb_links)
+        .map(&:as_json)
     end
 
     private
@@ -71,7 +71,6 @@ module Insights
     end
 
     class << self
-
       # @param [NLP::TextNetwork] network
       # @param [Array(Numeric, Numeric)] val_range range of the +val+ attribute after rescaling
       # @return [Array<Hash>]

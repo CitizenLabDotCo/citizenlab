@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: phase_files
@@ -19,24 +21,23 @@
 #  fk_rails_...  (phase_id => phases.id)
 #
 class PhaseFile < ApplicationRecord
-  EXTENSION_WHITELIST = %w(pdf doc docx pages odt xls xlsx numbers ods ppt pptx key odp txt csv mp3 mp4 avi mkv)
+  EXTENSION_WHITELIST = %w[pdf doc docx pages odt xls xlsx numbers ods ppt pptx key odp txt csv mp3 mp4 avi mkv]
 
-	mount_base64_file_uploader :file, PhaseFileUploader
+  mount_base64_file_uploader :file, PhaseFileUploader
   belongs_to :phase
 
   validates :phase, :file, :name, presence: true
   validate :extension_whitelist
 
-
-  private 
+  private
 
   def extension_whitelist
-    if !EXTENSION_WHITELIST.include? self.name.split('.').last.downcase
-      self.errors.add(
-        :file,
-        :extension_whitelist_error,
-        message: 'Unsupported file extension'
-      )
-    end
+    return if EXTENSION_WHITELIST.include? name.split('.').last.downcase
+
+    errors.add(
+      :file,
+      :extension_whitelist_error,
+      message: 'Unsupported file extension'
+    )
   end
 end

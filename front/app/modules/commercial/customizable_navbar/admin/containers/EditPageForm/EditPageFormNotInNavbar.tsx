@@ -1,18 +1,20 @@
 import React from 'react';
-import styled from 'styled-components';
-import { withRouter, WithRouterProps } from 'react-router';
-import { Formik, FormikProps } from 'formik';
+import { useParams } from 'react-router-dom';
 
 // components
-import PageForm, { validatePageForm, FormValues } from 'components/PageForm';
-import GoBackButton from 'components/UI/GoBackButton';
-import T from 'components/T';
+import PageForm, { FormValues } from 'components/PageForm';
+
+// components
+import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
+import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { fontSizes } from 'utils/styleUtils';
-import clHistory from 'utils/cl-router/history';
-import { NAVIGATION_PATH } from '..';
+
+// i18n
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import useLocalize from 'hooks/useLocalize';
 
 // services
 import { updatePage } from 'services/pages';
@@ -22,97 +24,72 @@ import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useRemoteFiles from 'hooks/useRemoteFiles';
 import usePage from 'hooks/usePage';
-import usePageSlugs from 'hooks/usePageSlugs';
 
-const Title = styled.h1`
-  font-size: ${fontSizes.xxxl}px;
-  padding: 0;
-  width: 100%;
-  margin: 1rem 0 3rem 0;
-`;
-
-const EditPageFormNotInNavbar = ({ params: { pageId } }: WithRouterProps) => {
+const EditPageFormNotInNavbar = ({
+  intl: { formatMessage },
+}: InjectedIntlProps) => {
+  const { pageId } = useParams() as { pageId: string };
   const appConfigurationLocales = useAppConfigurationLocales();
+  const localize = useLocalize();
   const page = usePage({ pageId });
   const remotePageFiles = useRemoteFiles({
     resourceType: 'page',
     resourceId: !isNilOrError(page) ? page.id : null,
   });
-  const pageSlugs = usePageSlugs();
 
-  if (
-    isNilOrError(page) ||
-    isNilOrError(appConfigurationLocales) ||
-    isNilOrError(pageSlugs)
-  ) {
+  if (isNilOrError(page) || isNilOrError(appConfigurationLocales)) {
     return null;
   }
 
-  const handleSubmit = async (
-    { local_page_files, ...pageUpdate }: FormValues,
-    { setSubmitting, setStatus }
-  ) => {
-    try {
-      const promises: Promise<any>[] = [updatePage(pageId, pageUpdate)];
+  const handleSubmit = async ({
+    local_page_files,
+    ...pageUpdate
+  }: FormValues) => {
+    const promises: Promise<any>[] = [updatePage(pageId, pageUpdate)];
 
-      if (!isNilOrError(local_page_files)) {
-        const addPromise = handleAddPageFiles(
-          pageId,
-          local_page_files,
-          remotePageFiles
-        );
-        const removePromise = handleRemovePageFiles(
-          pageId,
-          local_page_files,
-          remotePageFiles
-        );
+    if (!isNilOrError(local_page_files)) {
+      const addPromise = handleAddPageFiles(
+        pageId,
+        local_page_files,
+        remotePageFiles
+      );
+      const removePromise = handleRemovePageFiles(
+        pageId,
+        local_page_files,
+        remotePageFiles
+      );
 
-        promises.push(addPromise, removePromise);
-      }
-
-      await Promise.all(promises);
-
-      setStatus('success');
-      setSubmitting(false);
-    } catch (error) {
-      setStatus('error');
-      setSubmitting(false);
+      promises.push(addPromise, removePromise);
     }
-  };
 
-  const goBack = () => {
-    clHistory.push(NAVIGATION_PATH);
-  };
-
-  const renderFn = (props: FormikProps<FormValues>) => {
-    return <PageForm {...props} pageId={pageId} />;
+    await Promise.all(promises);
   };
 
   return (
-    <div>
-      <GoBackButton onClick={goBack} />
-      <Title>
-        <T value={page.attributes.title_multiloc} />
-      </Title>
-      <Formik
-        initialValues={{
+    <SectionFormWrapper
+      title={localize(page.attributes.title_multiloc)}
+      breadcrumbs={[
+        {
+          label: formatMessage(pagesAndMenuBreadcrumb.label),
+          linkTo: pagesAndMenuBreadcrumb.linkTo,
+        },
+        {
+          label: localize(page.attributes.title_multiloc),
+        },
+      ]}
+    >
+      <PageForm
+        pageId={pageId}
+        onSubmit={handleSubmit}
+        defaultValues={{
           title_multiloc: page.attributes.title_multiloc,
           body_multiloc: page.attributes.body_multiloc,
           slug: page.attributes.slug,
           local_page_files: remotePageFiles,
         }}
-        onSubmit={handleSubmit}
-        render={renderFn}
-        validate={validatePageForm(
-          appConfigurationLocales,
-          pageSlugs,
-          page.attributes.slug
-        )}
-        validateOnChange={false}
-        validateOnBlur={false}
       />
-    </div>
+    </SectionFormWrapper>
   );
 };
 
-export default withRouter(EditPageFormNotInNavbar);
+export default injectIntl(EditPageFormNotInNavbar);

@@ -11,7 +11,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // types
-import { PublicationStatus } from 'resources/GetProjects';
+import { PublicationStatus } from 'services/projects';
 
 interface Props {
   publicationStatus: PublicationStatus;
@@ -21,7 +21,7 @@ const PublicationStatusLabel = memo<Props>(({ publicationStatus }) => {
   if (publicationStatus !== 'published') {
     const publicationStatusColor = {
       draft: 'orangered',
-      archived: colors.clRedError,
+      archived: colors.red600,
     }[publicationStatus];
 
     return (

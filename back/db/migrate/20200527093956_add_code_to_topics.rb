@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddCodeToTopics < ActiveRecord::Migration[6.0]
   def change
     # All existing topics will receive the "custom" code.

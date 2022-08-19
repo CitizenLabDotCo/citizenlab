@@ -8,7 +8,10 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 
 // styling
-import { withTheme } from 'styled-components';
+import {
+  sizes,
+  DEFAULT_BAR_CHART_MARGIN,
+} from 'components/admin/Graphs/styling';
 
 // components
 import {
@@ -18,7 +21,7 @@ import {
   GraphCard,
   GraphCardInner,
 } from 'components/admin/GraphWrappers';
-import BarChart, { DEFAULT_MARGIN } from 'components/admin/Graphs/BarChart';
+import BarChart from 'components/admin/Graphs/BarChart';
 import { LabelList } from 'recharts';
 import ReportExportMenu from 'components/admin/ReportExportMenu';
 
@@ -69,8 +72,9 @@ export class HorizontalBarChart extends React.PureComponent<
     this.currentChart = React.createRef();
   }
   render() {
-    const { barSize } = this.props['theme'];
     const {
+      startAt,
+      endAt,
       className,
       graphTitleString,
       serie,
@@ -96,17 +100,23 @@ export class HorizontalBarChart extends React.PureComponent<
                 svgNode={this.currentChart}
                 xlsxEndpoint={xlsxEndpoint}
                 name={graphTitleString}
+                startAt={startAt}
+                endAt={endAt}
               />
             )}
           </GraphCardHeader>
           <BarChart
+            innerRef={this.currentChart}
             height={!noData && serie.length > 1 ? serie.length * 50 : 100}
             data={serie}
             layout="horizontal"
-            margin={DEFAULT_MARGIN}
-            bars={{ name: unitName, size: graphUnit === 'ideas' ? 5 : barSize }}
+            margin={DEFAULT_BAR_CHART_MARGIN}
+            bars={{
+              name: unitName,
+              size: graphUnit === 'ideas' ? 5 : sizes.bar,
+            }}
             yaxis={{ width: 150, tickLine: false }}
-            renderLabels={(props) => <LabelList {...props} position="right" />}
+            renderLabels={(props) => <LabelList {...props} />}
           />
         </GraphCardInner>
       </GraphCard>
@@ -114,9 +124,7 @@ export class HorizontalBarChart extends React.PureComponent<
   }
 }
 
-const HorizontalBarChartWithHoCs = injectIntl<Props>(
-  withTheme(HorizontalBarChart as any) as any
-);
+const HorizontalBarChartWithHoCs = injectIntl<Props>(HorizontalBarChart);
 
 const WrappedHorizontalBarChart = (inputProps: InputProps) => (
   <GetSerieFromStream {...inputProps}>

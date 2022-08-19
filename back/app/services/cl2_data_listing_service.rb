@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Cl2DataListingService
   def cl2_global_models
     [PublicApi::ApiClient, Tenant]

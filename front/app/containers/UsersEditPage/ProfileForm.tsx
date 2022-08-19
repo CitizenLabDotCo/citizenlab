@@ -313,7 +313,9 @@ class ProfileForm extends PureComponent<Props, State> {
               images={this.state.avatar}
               imagePreviewRatio={1}
               maxImagePreviewWidth="170px"
-              acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+              acceptedFileTypes={{
+                'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+              }}
               onAdd={handleAvatarOnAdd}
               onRemove={handleAvatarOnRemove}
               label={formatMessage(messages.imageDropzonePlaceholder)}
@@ -330,6 +332,7 @@ class ProfileForm extends PureComponent<Props, State> {
             <InputContainer>
               <Input
                 type="text"
+                autocomplete="given-name"
                 name="first_name"
                 id="firstName"
                 value={values.first_name}
@@ -352,6 +355,7 @@ class ProfileForm extends PureComponent<Props, State> {
             <InputContainer id="e2e-last-name-input">
               <Input
                 type="text"
+                autocomplete="family-name"
                 name="last_name"
                 id="lastName"
                 value={values.last_name}

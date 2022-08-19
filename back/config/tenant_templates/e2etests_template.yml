@@ -1,5 +1,7 @@
 ---
 models:
+  home_page:
+    - {}
   idea_status:
     -
       title_multiloc: idea_statuses.proposed
@@ -222,7 +224,7 @@ models:
     title_multiloc: static_pages.faq_title
     body_multiloc: static_pages.faq_body
     slug: faq
-  nav_bar_items:
+  nav_bar_item:
     -
       code: home
       ordering: 0
@@ -246,6 +248,8 @@ models:
       code: custom
       ordering: 6
       static_page_ref: *faq-page
+  custom_form:
+  - &custom_idea_fields_custom_form {}
   custom_field:
   - &5
     resource_type: User
@@ -281,6 +285,26 @@ models:
     ordering: 3
     enabled: false
     code: education
+  - &custom_idea_number_field
+    resource_ref: *custom_idea_fields_custom_form
+    key: number_of_benches
+    input_type: number
+    title_multiloc:
+      en: Number of benches
+    description_multiloc:
+      en: How many benches do you want?
+    required: true
+    enabled: true
+  - &custom_idea_text_field
+    resource_ref: *custom_idea_fields_custom_form
+    key: park_name
+    input_type: text
+    title_multiloc:
+      en: Name for the new park
+    description_multiloc:
+      en: Propose a name for the new park
+    required: false
+    enabled: true
   custom_field_option:
   - custom_field_ref: *5
     key: male
@@ -1187,6 +1211,30 @@ models:
     voting_enabled: true
     upvoting_method: unlimited
     upvoting_limited_max: 10
+  - &custom_idea_fields_project
+    title_multiloc:
+      en: Custom idea fields project
+      nl-BE: Custom idea fields project
+    description_multiloc:
+      en: "<p>Test idea custom fields. Let's renew the parc at the city border and make it an enjoyable place
+        for young and old.</p>"
+      nl-BE: "<p>Test idea custom fields. Laten we het park op de grens van de stad vernieuwen en er een aangename
+        plek van maken, voor jong en oud.</p>"
+    description_preview_multiloc:
+      en: Test idea custom fields. Let's renew the parc at the city border and make it an enjoyable place
+        for young and old.
+      nl-BE: Test idea custom fields. Laten we het park op de grens van de stad vernieuwen en er een aangename
+        plek van maken, voor jong en oud.
+    presentation_mode: card
+    participation_method: ideation
+    process_type: continuous
+    admin_publication_attributes:
+      publication_status: published
+    posting_enabled: true
+    commenting_enabled: true
+    voting_enabled: true
+    upvoting_method: unlimited
+    custom_form_ref: *custom_idea_fields_custom_form
   project_file:
   - project_ref: *project1
     created_at: 2019-01-14 13:46:54 UTC

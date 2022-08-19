@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: machine_translations_machine_translations
@@ -22,9 +24,5 @@ module MachineTranslations
 
     validates :translatable, :attribute_name, :translation, presence: true
     validates :locale_to, presence: true, inclusion: { in: CL2_SUPPORTED_LOCALES.map(&:to_s) } # , message: :unsupported_locales }
-
-
-    private
-    
   end
 end

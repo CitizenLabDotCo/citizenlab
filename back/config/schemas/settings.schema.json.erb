@@ -60,11 +60,17 @@
             "type": "array",
             "items": {
               "type": "string",
-              "enum": [<%= CL2_SUPPORTED_LOCALES.map{|l| "\"#{l}\""}.join(",") %>]
+              "enum": [<%= CL2_SUPPORTED_LOCALES.map { |locale| "\"#{locale}\"" }.join(",") %>],
+              "enumNames": [<%= CL2_SUPPORTED_LOCALES.map { |locale| locale.to_s == 'en' ? '"en-US"' : "\"#{locale}\"" }.join(",") %>]
             },
             "uniqueItems": true,
             "minItems": 1,
             "default": ["en"]
+          },
+          "weglot_api_key": {
+            "title": "Weglot API key",
+            "description": "Set the API key of Weglot to enable automatic page translations.",
+            "type": "string"
           },
           "color_main": {
             "title": "Main Colour",
@@ -647,6 +653,18 @@
         }
       },
 
+      "snap_survey_surveys": {
+        "type": "object",
+        "title": "Snap Survey Surveys",
+        "description":  "Allow the embedding of Snap Survey surveys.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
       "qualtrics_surveys": {
         "type": "object",
         "title": "Qualtrics Surveys",
@@ -783,18 +801,6 @@
             "type": "string",
             "format": "uri"
           }
-        }
-      },
-
-      "idea_custom_fields": {
-        "type": "object",
-        "title": "Custom Idea Fields",
-        "description":  "Admin and project managers can specify which idea form fields to enable/disable or make mandatory.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
         }
       },
 
@@ -1000,6 +1006,30 @@
             }
           }
         }
+      },
+
+      "representativeness": {
+        "type": "object",
+        "title": "Representativeness (experimental)",
+        "description":  "Enables the representativeness dashboard. Don't turn this on unless you know what you're doing.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "native_surveys": {
+        "type": "object",
+        "title": "Allow in-platform surveys",
+        "description":  "DO NOT ENABLE THIS FEATURE BECAUSE IT IS STILL UNDER DEVELOPMENT !!!",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
       }
     },
   "dependencies": {
@@ -1009,6 +1039,7 @@
     "survey_xact_surveys": ["surveys"],
     "surveymonkey_surveys": ["surveys"],
     "qualtrics_surveys": ["surveys"],
+    "snap_survey_surveys": ["surveys"],
     "microsoft_forms_surveys": ["surveys"],
     "smart_survey_surveys": ["surveys"],
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -22,7 +24,6 @@ Rails.application.configure do
   # Apache or NGINX already handles this.
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
 
-
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   # config.action_controller.asset_host = 'http://assets.example.com'
 
@@ -45,17 +46,17 @@ Rails.application.configure do
   # when problems arise.
   config.log_level = :info
 
-  if ENV["RAILS_LOG_TO_STDOUT"].present?
-    STDOUT.sync = true
+  if ENV['RAILS_LOG_TO_STDOUT'].present?
+    $stdout.sync = true
     config.rails_semantic_logger.add_file_appender = false
-    config.semantic_logger.add_appender(io: STDOUT, level: config.log_level, formatter: :json)
+    config.semantic_logger.add_appender(io: $stdout, level: config.log_level, formatter: :json)
   end
 
   # Use a different cache store in production.
   config.cache_store = :mem_cache_store,
     ENV.fetch('MEMCACHED_HOST'),
     {
-      namespace: lambda do 
+      namespace: lambda do
         AppConfiguration.instance.id
       rescue ActiveRecord::RecordNotFound
         'public'
@@ -80,5 +81,4 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
-
 end

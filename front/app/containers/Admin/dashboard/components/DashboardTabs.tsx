@@ -1,6 +1,6 @@
 import React, { memo, useMemo } from 'react';
 
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import Link from 'utils/cl-router/Link';
 
 // typings
@@ -17,6 +17,7 @@ import NavigationTabs, {
 import { matchPathToUrl } from 'utils/helperUtils';
 
 interface Props {
+  children?: React.ReactNode;
   resource: {
     title: string;
     subtitle?: string;

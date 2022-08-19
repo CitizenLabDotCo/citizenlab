@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module FlagInappropriateContent
   module EmailCampaigns
     class InappropriateContentFlaggedMailer < ::EmailCampaigns::ApplicationMailer

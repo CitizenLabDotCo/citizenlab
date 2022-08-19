@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module UserConfirmation
   class ExpireConfirmationCodeJob < ApplicationJob
     def run(user, code_to_expire)

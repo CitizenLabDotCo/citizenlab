@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: project_folders_folders
@@ -17,10 +19,12 @@
 #
 module ProjectFolders
   class Folder < ::ApplicationRecord
+    include PgSearch::Model
+
     has_one :admin_publication, as: :publication, dependent: :destroy
     accepts_nested_attributes_for :admin_publication, update_only: true
-    has_many :images, -> { order(:ordering) }, dependent: :destroy, inverse_of: 'project_folder', foreign_key: "project_folder_id" # todo remove after renaming project_folder association in Image model
-    has_many :files, -> { order(:ordering) }, dependent: :destroy, inverse_of: 'project_folder', foreign_key: "project_folder_id"  # todo remove after renaming project_folder association in File model
+    has_many :images, -> { order(:ordering) }, dependent: :destroy, inverse_of: 'project_folder', foreign_key: 'project_folder_id' # TODO: remove after renaming project_folder association in Image model
+    has_many :files, -> { order(:ordering) }, dependent: :destroy, inverse_of: 'project_folder', foreign_key: 'project_folder_id'  # TODO: remove after renaming project_folder association in File model
     has_many :text_images, as: :imageable, dependent: :destroy
     accepts_nested_attributes_for :text_images
 
@@ -41,6 +45,12 @@ module ProjectFolders
     before_validation :strip_title
     before_validation :set_admin_publication
 
+    after_destroy :remove_moderators
+
+    pg_search_scope :search_by_all,
+      against: %i[title_multiloc description_multiloc description_preview_multiloc slug],
+      using: { tsearch: { prefix: true } }
+
     def projects
       Project.joins(:admin_publication).where(admin_publication: admin_publication.children)
     end
@@ -55,9 +65,9 @@ module ProjectFolders
       # Built-in presence validation does not work.
       # Admin publication must always be present
       # once the folder was created.
-      if id.present? && admin_publication&.id.blank?
-        errors.add(:admin_publication_id, :blank, message: "Admin publication can't be blank")
-      end
+      return unless id.present? && admin_publication&.id.blank?
+
+      errors.add(:admin_publication_id, :blank, message: "Admin publication can't be blank")
     end
 
     def generate_slug
@@ -95,9 +105,16 @@ module ProjectFolders
 
     def remove_notifications
       notifications.each do |notification|
-        if !notification.update project_folder: nil
+        unless notification.update project_folder: nil
           notification.destroy!
         end
+      end
+    end
+
+    def remove_moderators
+      User.project_folder_moderator(id).each do |user|
+        user.delete_role('project_folder_moderator', project_folder_id: id)
+        user.save!
       end
     end
   end

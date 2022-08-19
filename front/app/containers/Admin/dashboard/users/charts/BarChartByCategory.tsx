@@ -16,11 +16,15 @@ import {
   GraphCard,
   GraphCardInner,
 } from 'components/admin/GraphWrappers';
-import BarChart, { DEFAULT_MARGIN } from 'components/admin/Graphs/BarChart';
+import BarChart from 'components/admin/Graphs/BarChart';
+import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/styling';
 import { Tooltip, LabelList } from 'recharts';
 
 // resources
 import GetSerieFromStream from 'resources/GetSerieFromStream';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
 
 // types
 import { IStreamParams, IStream } from 'utils/streams';
@@ -65,6 +69,8 @@ export class BarChartByCategory extends React.PureComponent<
   }
   render() {
     const {
+      startAt,
+      endAt,
       currentGroupFilterLabel,
       currentGroupFilter,
       xlsxEndpoint,
@@ -76,7 +82,9 @@ export class BarChartByCategory extends React.PureComponent<
     } = this.props;
 
     const noData =
-      !serie || serie.every((item) => isEmpty(item)) || serie.length <= 0;
+      isNilOrError(serie) ||
+      serie.every((item) => isEmpty(item)) ||
+      serie.length <= 0;
 
     const unitName = formatMessage(messages[graphUnit]);
 
@@ -92,15 +100,17 @@ export class BarChartByCategory extends React.PureComponent<
                 xlsxEndpoint={xlsxEndpoint}
                 currentGroupFilterLabel={currentGroupFilterLabel}
                 currentGroupFilter={currentGroupFilter}
+                startAt={startAt}
+                endAt={endAt}
               />
             )}
           </GraphCardHeader>
           <BarChart
             data={serie}
             innerRef={this.currentChart}
-            margin={DEFAULT_MARGIN}
+            margin={DEFAULT_BAR_CHART_MARGIN}
             bars={{ name: unitName }}
-            renderLabels={(props) => <LabelList {...props} position="top" />}
+            renderLabels={(props) => <LabelList {...props} />}
             renderTooltip={(props) => <Tooltip {...props} />}
           />
         </GraphCardInner>

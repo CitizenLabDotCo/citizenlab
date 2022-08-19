@@ -13,7 +13,7 @@ module ParticipationContext
   include Polls::PollParticipationContext
   include Volunteering::VolunteeringParticipationContext
 
-  PARTICIPATION_METHODS = %w[information ideation survey budgeting poll volunteering].freeze
+  PARTICIPATION_METHODS = %w[information ideation survey budgeting poll volunteering native_survey].freeze
   PRESENTATION_MODES    = %w[card map].freeze
   VOTING_METHODS        = %w[unlimited limited].freeze
   IDEAS_ORDERS          = %w[trending random popular -new new].freeze
@@ -33,15 +33,15 @@ module ParticipationContext
       # ideation? or budgeting?
       with_options if: :ideation_or_budgeting? do
         validates :presentation_mode,
-                  inclusion: { in: PRESENTATION_MODES }, allow_nil: true
+          inclusion: { in: PRESENTATION_MODES }, allow_nil: true
 
-        validates :posting_enabled, inclusion: { in: [ true, false ] }
-        validates :commenting_enabled, inclusion: { in: [ true, false ] }
-        validates :voting_enabled, inclusion: { in: [ true, false ] }
+        validates :posting_enabled, inclusion: { in: [true, false] }
+        validates :commenting_enabled, inclusion: { in: [true, false] }
+        validates :voting_enabled, inclusion: { in: [true, false] }
         validates :upvoting_method, presence: true, inclusion: { in: VOTING_METHODS }
-        validates :downvoting_enabled, inclusion: { in: [ true, false ] }
+        validates :downvoting_enabled, inclusion: { in: [true, false] }
         validates :downvoting_method, presence: true, inclusion: { in: VOTING_METHODS }
-        
+
         validates :ideas_order, inclusion: { in: IDEAS_ORDERS }, allow_nil: true
         validates :input_term, inclusion: { in: INPUT_TERMS }
 
@@ -65,12 +65,12 @@ module ParticipationContext
         validates :min_budget, presence: true
         validates :max_budget, presence: true
       end
-      validates_numericality_of :min_budget, 
-        greater_than_or_equal_to: 0, less_than_or_equal_to: :max_budget, 
-        if: %i[budgeting? max_budget]
-      validates_numericality_of :max_budget, 
-        greater_than_or_equal_to: :min_budget, 
-        if: %i[budgeting? min_budget]
+      validates :min_budget,
+        numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: :max_budget,
+                        if: %i[budgeting? max_budget] }
+      validates :max_budget,
+        numericality: { greater_than_or_equal_to: :min_budget,
+                        if: %i[budgeting? min_budget] }
     end
   end
 
@@ -110,10 +110,14 @@ module ParticipationContext
     !timeline_project?
   end
 
+  def native_survey?
+    participation_method == 'native_survey'
+  end
+
   private
 
   def timeline_project?
-    self.class == Project && timeline?
+    instance_of?(Project) && timeline?
   end
 
   def set_participation_method

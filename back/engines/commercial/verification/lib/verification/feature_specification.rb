@@ -19,22 +19,22 @@ module Verification
     end
 
     add_setting 'verification_methods', required: true, schema: {
-      "title": 'Verification Methods',
-      "private": true,
-      "type": 'array',
-      "default": [],
-      "items": {
-        "anyOf": VerificationService.new.all_methods.map do |method|
+      title: 'Verification Methods',
+      private: true,
+      type: 'array',
+      default: [],
+      items: {
+        anyOf: VerificationService.new.all_methods.map do |method|
           {
             type: 'object',
             title: method.name,
             required: ['name', *method.config_parameters],
             properties: {
               name: { type: 'string', enum: [method.name], default: method.name, readOnly: true },
-              **method.config_parameters.map do |cp|
+              **method.config_parameters.to_h do |cp|
                 parameter_schema = method.respond_to?(:config_parameters_schema) && method.config_parameters_schema[cp]
                 [cp, parameter_schema || { type: 'string', private: 'true' }]
-              end.to_h
+              end
             }
           }
         end

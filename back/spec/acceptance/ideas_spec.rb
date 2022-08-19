@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
@@ -19,7 +21,6 @@ resource 'Ideas' do
       parameter :size, 'Number of ideas per page'
     end
     parameter :topics, 'Filter by topics (OR)', required: false
-    parameter :areas, 'Filter by areas (OR)', required: false
     parameter :projects, 'Filter by projects (OR)', required: false
     parameter :phase, 'Filter by project phase', required: false
     parameter :author, 'Filter by author (user id)', required: false
@@ -27,7 +28,7 @@ resource 'Ideas' do
     parameter :search, 'Filter by searching in title and body', required: false
     parameter :sort, "Either 'new', '-new', 'trending', '-trending', 'popular', '-popular', 'author_name', '-author_name', 'upvotes_count', '-upvotes_count', 'downvotes_count', '-downvotes_count', 'status', '-status', 'baskets_count', '-baskets_count', 'random'", required: false
     parameter :publication_status, 'Filter by publication status; returns all published ideas by default', required: false
-    parameter :project_publication_status, "Filter by project publication_status. One of #{AdminPublication::PUBLICATION_STATUSES.join(", ")}", required: false
+    parameter :project_publication_status, "Filter by project publication_status. One of #{AdminPublication::PUBLICATION_STATUSES.join(', ')}", required: false
     parameter :feedback_needed, 'Filter out ideas that need feedback', required: false
     parameter :filter_trending, 'Filter out truly trending ideas', required: false
 
@@ -41,7 +42,7 @@ resource 'Ideas' do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 5
-      expect(json_response[:data].map { |d| d.dig(:attributes,:publication_status) }).to all(eq 'published')
+      expect(json_response[:data].map { |d| d.dig(:attributes, :publication_status) }).to all(eq 'published')
     end
 
     example 'Don\'t list drafts (default behaviour)', document: false do
@@ -56,7 +57,7 @@ resource 'Ideas' do
       i1 = @ideas.first
       i1.project.update!(allowed_input_topics: Topic.all)
       i1.topics << t1
-      i1.save
+      i1.save!
 
       do_request topics: [t1.id]
       json_response = json_parse(response_body)
@@ -70,7 +71,7 @@ resource 'Ideas' do
       i1 = @ideas.first
       i1.project.update!(allowed_input_topics: Topic.all)
       i1.topics << t1
-      i1.save
+      i1.save!
 
       do_request topics: [t1.id], sort: 'random'
       expect(status).to eq(200)
@@ -83,7 +84,7 @@ resource 'Ideas' do
 
       i1 = @ideas[0]
       i1.project.update!(allowed_input_topics: Topic.all)
-      i1.topics = [t1,t3]
+      i1.topics = [t1, t3]
       i1.save!
       i2 = @ideas[1]
       i2.project.update!(allowed_input_topics: Topic.all)
@@ -91,42 +92,13 @@ resource 'Ideas' do
       i2.save!
       i3 = @ideas[3]
       i3.project.update!(allowed_input_topics: Topic.all)
-      i3.topics = [t3,t1,t2]
+      i3.topics = [t3, t1, t2]
       i3.save!
 
       do_request topics: [t1.id, t2.id]
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 3
-      expect(json_response[:data].map{|h| h[:id]}).to match_array [i1.id, i2.id, i3.id]
-    end
-
-    example 'List all ideas with an area' do
-      a1 = create(:area)
-
-      i1 = @ideas.first
-      i1.areas << a1
-      i1.save!
-
-      do_request areas: [a1.id]
-      json_response = json_parse(response_body)
-      expect(json_response[:data][0][:id]).to eq i1.id
-    end
-
-    example 'List all ideas which match one of the given areas', document: false do
-      a1 = create(:area)
-      a2 = create(:area)
-
-      i1 = @ideas.first
-      i1.areas = [a1]
-      i1.save
-      i2 = @ideas.second
-      i2.areas = [a2]
-      i2.save
-
-      do_request areas: [a1.id, a2.id]
-      json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 2
-      expect(json_response[:data].map{|h| h[:id]}).to match_array [i1.id, i2.id]
+      expect(json_response[:data].pluck(:id)).to match_array [i1.id, i2.id, i3.id]
     end
 
     example 'List all ideas in a project' do
@@ -148,29 +120,31 @@ resource 'Ideas' do
 
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
-      expect(json_response[:data].map{|d| d[:id]}).to match_array [i1.id, i2.id]
+      expect(json_response[:data].pluck(:id)).to match_array [i1.id, i2.id]
     end
 
     example 'List all ideas in a phase of a project' do
       pr = create(:project_with_phases)
       ph1 = pr.phases.first
       ph2 = pr.phases.second
-      i1 = create(:idea, phases: [ph1], project: pr)
-      i2 = create(:idea, phases: [ph2], project: pr)
-      i3 = create(:idea, phases: [ph1, ph2], project: pr)
+      ideas = [
+        create(:idea, phases: [ph1], project: pr),
+        create(:idea, phases: [ph2], project: pr),
+        create(:idea, phases: [ph1, ph2], project: pr)
+      ]
 
       do_request phase: ph2.id
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
-      expect(json_response[:data].map{|d| d[:id]}).to match_array [i2.id, i3.id]
+      expect(json_response[:data].pluck(:id)).to match_array [ideas[1].id, ideas[2].id]
     end
 
     example 'List all ideas in published projects' do
-      idea = create(:idea, project: create(:project, admin_publication_attributes: {publication_status: 'archived'}))
+      idea = create(:idea, project: create(:project, admin_publication_attributes: { publication_status: 'archived' }))
       do_request(project_publication_status: 'published')
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 5
-      expect(json_response[:data].map{|d| d[:id]}).not_to include(idea.id)
+      expect(json_response[:data].pluck(:id)).not_to include(idea.id)
     end
 
     example 'List all ideas for an idea status' do
@@ -204,13 +178,15 @@ resource 'Ideas' do
     end
 
     example 'Search for ideas' do
-      i1 = create(:idea, title_multiloc: {en: 'This idea is uniqque'})
-      i2 = create(:idea, title_multiloc: {en: 'This one origiinal'})
+      initiatives = [
+        create(:idea, title_multiloc: { en: 'This idea is uniqque' }),
+        create(:idea, title_multiloc: { en: 'This one origiinal' })
+      ]
 
       do_request search: 'uniqque'
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 1
-      expect(json_response[:data][0][:id]).to eq i1.id
+      expect(json_response[:data][0][:id]).to eq initiatives[0].id
     end
 
     example 'List all ideas sorted by new' do
@@ -232,12 +208,11 @@ resource 'Ideas' do
 
     example 'List all ideas includes the user_vote', document: false do
       vote = create(:vote, user: @user)
-      idea = vote.votable
 
       do_request
       json_response = json_parse(response_body)
-      expect(json_response[:data].map{|d| d[:relationships][:user_vote][:data]}.compact.first[:id]).to eq vote.id
-      expect(json_response[:included].map{|i| i[:id]}).to include vote.id
+      expect(json_response[:data].filter_map { |d| d[:relationships][:user_vote][:data] }.first[:id]).to eq vote.id
+      expect(json_response[:included].pluck(:id)).to include vote.id
     end
 
     example 'Search for ideas should work with trending ordering', document: false do
@@ -262,7 +237,6 @@ resource 'Ideas' do
       parameter :size, 'Number of ideas per page'
     end
     parameter :topics, 'Filter by topics (OR)', required: false
-    parameter :areas, 'Filter by areas (OR)', required: false
     parameter :projects, 'Filter by projects (OR)', required: false
     parameter :phase, 'Filter by project phase', required: false
     parameter :author, 'Filter by author (user id)', required: false
@@ -292,7 +266,7 @@ resource 'Ideas' do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 5
-      expect(json_response[:data].map { |d| d.dig(:attributes, :title_multiloc, :en) }.sort).to match ['Ghent', 'Brussels', 'Liège', 'Meise', 'Mons'].sort
+      expect(json_response[:data].map { |d| d.dig(:attributes, :title_multiloc, :en) }.sort).to match %w[Ghent Brussels Liège Meise Mons].sort
     end
 
     example 'List all idea markers in a phase of a project', document: false do
@@ -306,7 +280,7 @@ resource 'Ideas' do
       do_request phase: ph2.id
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
-      expect(json_response[:data].map{|d| d[:id]}).to match_array [i2.id, i3.id]
+      expect(json_response[:data].pluck(:id)).to match_array [i2.id, i3.id]
     end
   end
 
@@ -342,7 +316,7 @@ resource 'Ideas' do
       example_request 'XLSX export by project' do
         expect(status).to eq 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        expect(worksheet.count).to eq (@selected_ideas.size + 1)
+        expect(worksheet.count).to eq(@selected_ideas.size + 1)
       end
     end
 
@@ -356,7 +330,7 @@ resource 'Ideas' do
       example_request 'XLSX export by idea ids' do
         expect(status).to eq 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        expect(worksheet.count).to eq (@selected_ideas.size + 1)
+        expect(worksheet.count).to eq(@selected_ideas.size + 1)
       end
     end
 
@@ -379,15 +353,13 @@ resource 'Ideas' do
       @t2 = create(:topic)
       @project = create(:project, allowed_input_topics: [@t1, @t2])
 
-      @a1 = create(:area)
-      @a2 = create(:area)
       @s1 = create(:idea_status)
       @s2 = create(:idea_status)
-      @i1 = create(:idea, project: @project, topics: [@t1, @t2], areas: [@a1], idea_status: @s1)
-      @i2 = create(:idea, project: @project, topics: [@t1], areas: [@a1, @a2], idea_status: @s2)
-      @i3 = create(:idea, project: @project, topics: [@t2], areas: [], idea_status: @s2)
-      @i4 = create(:idea, project: @project, topics: [], areas: [@a1], idea_status: @s2)
-      create(:idea, topics: [@t1, @t2], areas: [@a1, @a2], idea_status: @s1, project: create(:project, allowed_input_topics: [@t1, @t2]))
+      @i1 = create(:idea, project: @project, topics: [@t1, @t2], idea_status: @s1)
+      @i2 = create(:idea, project: @project, topics: [@t1], idea_status: @s2)
+      @i3 = create(:idea, project: @project, topics: [@t2], idea_status: @s2)
+      @i4 = create(:idea, project: @project, topics: [], idea_status: @s2)
+      create(:idea, topics: [@t1, @t2], idea_status: @s1, project: create(:project, allowed_input_topics: [@t1, @t2]))
 
       # a1 -> 3
       # a2 -> 1
@@ -398,18 +370,17 @@ resource 'Ideas' do
     end
 
     parameter :topics, 'Filter by topics (OR)', required: false
-    parameter :areas, 'Filter by areas (OR)', required: false
     parameter :projects, 'Filter by projects (OR)', required: false
     parameter :phase, 'Filter by project phase', required: false
     parameter :author, 'Filter by author (user id)', required: false
     parameter :idea_status, 'Filter by status (idea status id)', required: false
     parameter :search, 'Filter by searching in title and body', required: false
     parameter :publication_status, 'Return only ideas with the specified publication status; returns all pusblished ideas by default', required: false
-    parameter :project_publication_status, "Filter by project publication_status. One of #{AdminPublication::PUBLICATION_STATUSES.join(", ")}", required: false
+    parameter :project_publication_status, "Filter by project publication_status. One of #{AdminPublication::PUBLICATION_STATUSES.join(', ')}", required: false
     parameter :feedback_needed, 'Filter out ideas that need feedback', required: false
     parameter :filter_trending, 'Filter out truly trending ideas', required: false
 
-    let(:projects) {[@project.id]}
+    let(:projects) { [@project.id] }
 
     example_request 'List idea counts per filter option' do
       expect(status).to eq 200
@@ -417,8 +388,6 @@ resource 'Ideas' do
 
       expect(json_response[:idea_status_id][@s1.id.to_sym]).to eq 1
       expect(json_response[:idea_status_id][@s2.id.to_sym]).to eq 3
-      expect(json_response[:area_id][@a1.id.to_sym]).to eq 3
-      expect(json_response[:area_id][@a2.id.to_sym]).to eq 1
       expect(json_response[:topic_id][@t1.id.to_sym]).to eq 2
       expect(json_response[:topic_id][@t2.id.to_sym]).to eq 2
       expect(json_response[:total]).to eq 4
@@ -426,11 +395,6 @@ resource 'Ideas' do
 
     example 'List idea counts per filter option on topic' do
       do_request topics: [@t1.id], projects: nil
-      expect(status).to eq 200
-    end
-
-    example 'List idea counts per filter option on area' do
-      do_request areas: [@a1.id], projects: nil
       expect(status).to eq 200
     end
 
@@ -488,16 +452,15 @@ resource 'Ideas' do
             future_enabled: nil
           }
         }
-        )
+      )
       expect(json_response.dig(:data, :relationships)).to include(
         topics: {
-          data: [{id: topic.id, type: 'topic'}]
+          data: [{ id: topic.id, type: 'topic' }]
         },
-        areas: {data: []},
-        author: {data: {id: idea.author_id, type: 'user'}},
-        idea_status: {data: {id: idea.idea_status_id, type: 'idea_status'}},
-        user_vote: {data: {id: user_vote.id, type: 'vote'}}
-        )
+        author: { data: { id: idea.author_id, type: 'user' } },
+        idea_status: { data: { id: idea.idea_status_id, type: 'idea_status' } },
+        user_vote: { data: { id: user_vote.id, type: 'vote' } }
+      )
     end
   end
 
@@ -527,20 +490,20 @@ resource 'Ideas' do
     end
 
     with_options scope: :idea do
-      parameter :project_id, "The identifier of the project that hosts the idea", extra: ""
-      parameter :phase_ids, "The phases the idea is part of, defaults to the current only, only allowed by admins"
-      parameter :author_id, "The user id of the user owning the idea", extra: "Required if not draft"
-      parameter :idea_status_id, "The status of the idea, only allowed for admins", extra: "Defaults to status with code 'proposed'"
-      parameter :publication_status, "Publication status", required: true, extra: "One of #{Post::PUBLICATION_STATUSES.join(",")}"
-      parameter :title_multiloc, "Multi-locale field with the idea title", required: true, extra: "Maximum 100 characters"
-      parameter :body_multiloc, "Multi-locale field with the idea body", extra: "Required if not draft"
-      parameter :topic_ids, "Array of ids of the associated topics"
-      parameter :area_ids, "Array of ids of the associated areas"
-      parameter :location_point_geojson, "A GeoJSON point that situates the location the idea applies to"
-      parameter :location_description, "A human readable description of the location the idea applies to"
-      parameter :budget, "The budget needed to realize the idea, as determined by the city"
-      parameter :idea_images_attributes, "an array of base64 images to create"
-      parameter :idea_files_attributes, "an array of base64 files to create"
+      parameter :project_id, 'The identifier of the project that hosts the idea', extra: ''
+      parameter :phase_ids, 'The phases the idea is part of, defaults to the current only, only allowed by admins'
+      parameter :author_id, 'The user id of the user owning the idea', extra: 'Required if not draft'
+      parameter :idea_status_id, 'The status of the idea, only allowed for admins', extra: "Defaults to status with code 'proposed'"
+      parameter :publication_status, 'Publication status', required: true, extra: "One of #{Post::PUBLICATION_STATUSES.join(',')}"
+      parameter :title_multiloc, 'Multi-locale field with the idea title', required: true, extra: 'Maximum 100 characters'
+      parameter :body_multiloc, 'Multi-locale field with the idea body', extra: 'Required if not draft'
+      parameter :topic_ids, 'Array of ids of the associated topics'
+      parameter :location_point_geojson, 'A GeoJSON point that situates the location the idea applies to'
+      parameter :location_description, 'A human readable description of the location the idea applies to'
+      parameter :proposed_budget, 'The budget needed to realize the idea, as proposed by the author'
+      parameter :budget, 'The budget needed to realize the idea, as determined by the city'
+      parameter :idea_images_attributes, 'an array of base64 images to create'
+      parameter :idea_files_attributes, 'an array of base64 files to create'
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
     response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
@@ -553,7 +516,6 @@ resource 'Ideas' do
     let(:title_multiloc) { idea.title_multiloc }
     let(:body_multiloc) { idea.body_multiloc }
     let(:topic_ids) { create_list(:topic, 2, projects: [project]).map(&:id) }
-    let(:area_ids) { create_list(:area, 2).map(&:id) }
     let(:location_point_geojson) { { type: 'Point', coordinates: [51.11520776293035, 3.921154106874878] } }
     let(:location_description) { 'Stanley Road 4' }
 
@@ -561,11 +523,10 @@ resource 'Ideas' do
       example_request 'Create an idea' do
         assert_status 201
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:relationships,:project,:data, :id)).to eq project_id
-        expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match_array topic_ids
-        expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
-        expect(json_response.dig(:data,:attributes,:location_point_geojson)).to eq location_point_geojson
-        expect(json_response.dig(:data,:attributes,:location_description)).to eq location_description
+        expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
+        expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
+        expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
+        expect(json_response.dig(:data, :attributes, :location_description)).to eq location_description
         expect(project.reload.ideas_count).to eq 1
       end
 
@@ -577,6 +538,21 @@ resource 'Ideas' do
         expect(new_idea.votes[0].mode).to eq 'up'
         expect(new_idea.votes[0].user.id).to eq @user.id
         expect(json_response[:data][:attributes][:upvotes_count]).to eq 1
+      end
+
+      describe 'Values for disabled fields are ignored' do
+        let(:proposed_budget) { 12_345 }
+
+        example_request 'Create an idea with values for disabled fields', document: false do
+          expect(status).to be 201
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to eq 'Plant more trees'
+          # proposed_budget is disabled, so its given value was ignored.
+          expect(json_response.dig(:data, :attributes, :proposed_budget)).to be_nil
+          expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
+          expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
+          expect(json_response.dig(:data, :attributes, :location_description)).to eq location_description
+        end
       end
     end
 
@@ -590,11 +566,10 @@ resource 'Ideas' do
       example_request 'Creates an idea', document: false do
         assert_status 201
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:relationships,:project,:data, :id)).to eq project_id
-        expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match_array topic_ids
-        expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
-        expect(json_response.dig(:data,:attributes,:location_point_geojson)).to eq location_point_geojson
-        expect(json_response.dig(:data,:attributes,:location_description)).to eq location_description
+        expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
+        expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
+        expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
+        expect(json_response.dig(:data, :attributes, :location_description)).to eq location_description
         expect(project.reload.ideas_count).to eq 1
       end
     end
@@ -630,9 +605,11 @@ resource 'Ideas' do
     end
 
     describe do
-      let(:project) { create(:project_with_current_phase, current_phase_attrs: {
-        participation_method: 'information'
-      })}
+      let(:project) do
+        create(:project_with_current_phase, current_phase_attrs: {
+          participation_method: 'information'
+        })
+      end
 
       example_request '[error] Creating an idea in a project with an active information phase' do
         expect(response_status).to eq 401
@@ -654,7 +631,7 @@ resource 'Ideas' do
 
       before do
         project.permissions.find_by(action: 'posting_idea')
-               .update!(permitted_by: 'groups', groups: [group])
+          .update!(permitted_by: 'groups', groups: [group])
       end
 
       example_request '[error] Create an idea in a project with groups posting permission', document: false do
@@ -670,16 +647,16 @@ resource 'Ideas' do
 
     describe do
       before { SettingsService.new.activate_feature! 'blocking_profanity' }
-      # Weak attempt to make it less explicit
-      let(:title_multiloc) {{'nl-BE' => 'Fu'+'ck'}}
-      let(:body_multiloc) {{'fr-FR' => 'co'+'cksu'+'cker'}}
+
+      let(:title_multiloc) { { 'nl-BE' => 'Fuck' } }
+      let(:body_multiloc) { { 'fr-FR' => 'cocksucker' } }
 
       example_request '[error] Create an idea with blocked words' do
         assert_status 422
         json_response = json_parse(response_body)
-        blocked_error = json_response.dig(:errors, :base)&.select{|err| err[:error] == 'includes_banned_words'}&.first
+        blocked_error = json_response.dig(:errors, :base)&.select { |err| err[:error] == 'includes_banned_words' }&.first
         expect(blocked_error).to be_present
-        expect(blocked_error.dig(:blocked_words).map{|bw| bw[:attribute]}.uniq).to include('title_multiloc', 'body_multiloc')
+        expect(blocked_error[:blocked_words].pluck(:attribute).uniq).to include('title_multiloc', 'body_multiloc')
       end
     end
 
@@ -691,13 +668,13 @@ resource 'Ideas' do
       end
 
       describe do
-        let(:project) { create(:project_with_current_phase, phases_config: {sequence: "xxcx"}) }
+        let(:project) { create(:project_with_current_phase, phases_config: { sequence: 'xxcx' }) }
         let(:phase_ids) { project.phases.shuffle.take(2).map(&:id) }
 
-        example_request "Creating an idea in specific phases" do
+        example_request 'Creating an idea in specific phases' do
           assert_status 201
           json_response = json_parse(response_body)
-          expect(json_response.dig(:data,:relationships,:phases,:data).map{|d| d[:id]}).to match_array phase_ids
+          expect(json_response.dig(:data, :relationships, :phases, :data).pluck(:id)).to match_array phase_ids
         end
       end
 
@@ -730,9 +707,9 @@ resource 'Ideas' do
       parameter :title_multiloc, 'Multi-locale field with the idea title', extra: 'Maximum 100 characters'
       parameter :body_multiloc, 'Multi-locale field with the idea body', extra: 'Required if not draft'
       parameter :topic_ids, 'Array of ids of the associated topics'
-      parameter :area_ids, 'Array of ids of the associated areas'
       parameter :location_point_geojson, 'A GeoJSON point that situates the location the idea applies to'
       parameter :location_description, 'A human readable description of the location the idea applies to'
+      parameter :proposed_budget, 'The budget needed to realize the idea, as proposed by the author'
       parameter :budget, 'The budget needed to realize the idea, as determined by the city'
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
@@ -740,20 +717,17 @@ resource 'Ideas' do
     response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::POSTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
 
     let(:id) { @idea.id }
-    let(:area_ids) { create_list(:area, 2).map(&:id) }
     let(:location_point_geojson) { { type: 'Point', coordinates: [51.4365635, 3.825930459] } }
     let(:location_description) { 'Watkins Road 8' }
+    let(:title_multiloc) { { 'en' => 'Changed title' } }
+    let(:topic_ids) { create_list(:topic, 2, projects: [@project]).map(&:id) }
 
     describe do
-      let(:title_multiloc) { { 'en' => 'Changed title' } }
-      let(:topic_ids) { create_list(:topic, 2, projects: [@project]).map(&:id) }
-
       example_request 'Update an idea' do
         expect(status).to be 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to eq 'Changed title'
         expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
-        expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
         expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
         expect(json_response.dig(:data, :attributes, :location_description)).to eq location_description
       end
@@ -768,26 +742,32 @@ resource 'Ideas' do
         expect(new_idea.votes[0].user.id).to eq @user.id
         expect(json_response.dig(:data, :attributes, :upvotes_count)).to eq 1
       end
+    end
 
-      example '[error] Removing the author of a published idea', document: false do
-        @idea.update(publication_status: 'published')
-        do_request idea: { author_id: nil }
-        expect(status).to be >= 400
+    describe 'Values for disabled fields are ignored' do
+      let(:proposed_budget) { 12_345 }
+
+      example_request 'Update an idea with values for disabled fields', document: false do
+        expect(status).to be 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to eq 'Changed title'
+        # proposed_budget is disabled, so its given value was ignored.
+        expect(json_response.dig(:data, :attributes, :proposed_budget)).to eq @idea.proposed_budget
+        expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
+        expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
+        expect(json_response.dig(:data, :attributes, :location_description)).to eq location_description
       end
     end
 
     describe do
       let(:topic_ids) { [] }
-      let(:area_ids) { [] }
 
-      example 'Remove the topics/areas', document: false do
+      example 'Remove the topics', document: false do
         @idea.topics = create_list :topic, 2
-        @idea.areas = create_list :area, 2
         do_request
         expect(status).to be 200
         json_response = json_parse response_body
         expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
-        expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
       end
     end
 
@@ -838,7 +818,7 @@ resource 'Ideas' do
           before do
             @project = create(:project_with_phases)
             @idea.project = @project
-            @idea.save
+            @idea.save!
             do_request(idea: { phase_ids: phase_ids })
           end
 
@@ -908,6 +888,14 @@ resource 'Ideas' do
 
           expect(@idea.reload).to be_valid
         end
+      end
+
+      example '[error] Removing the author of a published idea', document: false do
+        @idea.update! publication_status: 'published'
+        do_request idea: { author_id: nil }
+        assert_status 422
+        json_response = json_parse response_body
+        expect(json_response).to include_response_error(:author, 'blank')
       end
     end
 

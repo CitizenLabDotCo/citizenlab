@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddRegistrationCompletedAtToUsers < ActiveRecord::Migration[5.1]
   def change
     add_column :users, :registration_completed_at, :datetime, null: true

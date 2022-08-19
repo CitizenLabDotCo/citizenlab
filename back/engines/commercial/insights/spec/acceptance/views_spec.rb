@@ -202,7 +202,7 @@ resource 'Views' do
 
           ideas.each do |idea|
             topic_ids = assignments.select { |a| a.input_id == idea.id }
-                                   .map { |a| a.category.source_id }
+              .map { |a| a.category.source_id }
             expect(topic_ids).to match_array(topics.pluck(:id))
           end
         end

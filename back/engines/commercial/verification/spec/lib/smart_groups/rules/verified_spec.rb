@@ -1,46 +1,45 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe Verification::SmartGroups::Rules::Verified do
+  let(:valid_json_rule) do
+    {
+      'ruleType' => 'verified',
+      'predicate' => 'is_verified'
+    }
+  end
+  let(:valid_rule) { described_class.from_json(valid_json_rule) }
 
-  let(:valid_json_rule) {{
-    'ruleType' => 'verified',
-    'predicate' => 'is_verified'
-  }}
-  let(:valid_rule) { Verification::SmartGroups::Rules::Verified.from_json(valid_json_rule) }
-
-  describe "from_json" do
-
-    it "successfully parses a valid json" do
+  describe 'from_json' do
+    it 'successfully parses a valid json' do
       expect(valid_rule.predicate).to eq valid_json_rule['predicate']
     end
-
   end
 
-  describe "validations" do
-    it "successfully validate the valid rule" do
+  describe 'validations' do
+    it 'successfully validate the valid rule' do
       expect(valid_rule).to be_valid
     end
   end
 
-  describe "filter" do
-
-    let!(:users) {
+  describe 'filter' do
+    let!(:users) do
       users = build_list(:user, 3)
       users[0].verified = true
       users[1].verified = false
       users[2].verified = true
       users.each(&:save!)
-    }
+    end
 
     it "correctly filters on 'is_verified' predicate" do
-      rule = Verification::SmartGroups::Rules::Verified.new('is_verified')
+      rule = described_class.new('is_verified')
       expect(rule.filter(User).count).to eq 2
     end
 
     it "correctly filters on 'not_is_verified' predicate" do
-      rule = Verification::SmartGroups::Rules::Verified.new('not_is_verified')
+      rule = described_class.new('not_is_verified')
       expect(rule.filter(User).count).to eq User.count - 2
     end
   end
-
 end

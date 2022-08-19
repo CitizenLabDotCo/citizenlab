@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ContentBuilder
   class WebApi::V1::LayoutImagesController < ApplicationController
     def create

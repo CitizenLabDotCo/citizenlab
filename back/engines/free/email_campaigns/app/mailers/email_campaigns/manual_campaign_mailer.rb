@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EmailCampaigns
   class ManualCampaignMailer < ApplicationMailer
     helper_method :body, :body_text
@@ -6,7 +8,6 @@ module EmailCampaigns
 
     def body
       multiloc_service = MultilocService.new
-      frontend_service = Frontend::UrlService.new
       @app_configuration = AppConfiguration.instance
 
       body_html_with_liquid = multiloc_service.t(command[:body_multiloc], recipient)
@@ -34,15 +35,16 @@ module EmailCampaigns
 
     private
 
-    def from_name sender_type, author, recipient
-      if sender_type == 'author'
+    def from_name(sender_type, author, recipient)
+      case sender_type
+      when 'author'
         "#{author.first_name} #{author.last_name}"
-      elsif sender_type == 'organization'
+      when 'organization'
         MultilocService.new.t(AppConfiguration.instance.settings('core', 'organization_name'), recipient)
       end
     end
 
-    def liquid_params user
+    def liquid_params(user)
       {
         'first_name' => user.first_name,
         'last_name' => user.last_name,

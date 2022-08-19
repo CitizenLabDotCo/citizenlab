@@ -7,15 +7,13 @@ import { colors, fontSizes } from 'utils/styleUtils';
 
 // components
 import Link from 'utils/cl-router/Link';
-
-// i18n
-import T from 'components/T';
-import { Multiloc } from 'typings';
+import { Icon, IconNames } from '@citizenlab/cl2-component-library';
 
 const MenuItem = styled.li`
   font-size: ${fontSizes.base}px;
   display: flex;
   justify-content: center;
+  align-items: center;
 `;
 
 const StyledLink = styled(Link)`
@@ -35,9 +33,10 @@ const StyledLink = styled(Link)`
 
 interface Props {
   linkTo: string;
-  navigationItemTitle: Multiloc;
+  navigationItemTitle: string;
   onlyActiveOnIndex?: boolean;
   onClick: () => void;
+  iconName?: IconNames;
 }
 
 const FullMobileNavMenuItem = ({
@@ -45,15 +44,18 @@ const FullMobileNavMenuItem = ({
   navigationItemTitle,
   onClick,
   onlyActiveOnIndex,
+  iconName,
 }: Props) => (
   <MenuItem>
+    {/* Without specifying height, the icon height increases too much.
+    It can be tested by switching to NL language or changing FAQ to "FAQ 123123123". */}
+    {iconName && <Icon name={iconName} height="20px" />}
     <StyledLink
       onClick={onClick}
       to={linkTo}
-      activeClassName="active"
       onlyActiveOnIndex={onlyActiveOnIndex}
     >
-      <T value={navigationItemTitle} />
+      {navigationItemTitle}
     </StyledLink>
   </MenuItem>
 );

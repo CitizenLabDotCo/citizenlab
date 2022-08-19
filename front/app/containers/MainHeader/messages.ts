@@ -26,4 +26,8 @@ export default defineMessages({
     id: 'app.containers.app.navbar.allProjects',
     defaultMessage: 'All projects',
   },
+  ariaLabel: {
+    id: 'app.containers.app.navbar.ariaLabel',
+    defaultMessage: 'Primary',
+  },
 });

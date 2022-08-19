@@ -46,7 +46,7 @@ import PollReport from './PollReport';
 
 import Outlet from 'components/Outlet';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 const Section = styled.div`
   margin-bottom: 20px;
@@ -93,6 +93,7 @@ const PARTICIPATION_METHOD_MESSAGES: Record<
 > = {
   ideation: messages.ideationAndFeedback,
   information: messages.information,
+  native_survey: messages.native_survey,
   survey: messages.survey,
   budgeting: messages.budgeting,
   poll: messages.poll,

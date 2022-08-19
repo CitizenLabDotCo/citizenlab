@@ -21,9 +21,13 @@ export default defineMessages({
     id: 'app.components.admin.ReportExportMenu.FileName.topicFilter',
     defaultMessage: 'topic',
   },
-  downloadAsImage: {
-    id: 'app.components.admin.ReportExportMenu.downloadAsImage',
-    defaultMessage: 'Download as image',
+  downloadSvg: {
+    id: 'app.components.admin.ReportExportMenu.downloadSvg',
+    defaultMessage: 'Download as SVG',
+  },
+  downloadPng: {
+    id: 'app.components.admin.ReportExportMenu.downloadPng',
+    defaultMessage: 'Download as PNG',
   },
   downloadXlsx: {
     id: 'app.components.admin.ReportExportMenu.downloadXlsx',

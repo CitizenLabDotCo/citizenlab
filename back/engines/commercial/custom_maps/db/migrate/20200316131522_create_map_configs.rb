@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateMapConfigs < ActiveRecord::Migration[6.0]
   def change
     create_table :maps_map_configs, id: :uuid do |t|

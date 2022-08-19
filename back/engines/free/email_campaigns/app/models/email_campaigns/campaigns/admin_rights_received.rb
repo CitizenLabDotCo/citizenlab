@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: email_campaigns_campaigns
@@ -30,7 +32,7 @@ module EmailCampaigns
     include Disableable
     include LifecycleStageRestrictable
     include Trackable
-    allow_lifecycle_stages except: ['trial', 'churned']
+    allow_lifecycle_stages except: %w[trial churned]
 
     recipient_filter :filter_notification_recipient
 
@@ -39,18 +41,17 @@ module EmailCampaigns
     end
 
     def activity_triggers
-      {'Notifications::AdminRightsReceived' => {'created' => true}}
+      { 'Notifications::AdminRightsReceived' => { 'created' => true } }
     end
 
-    def filter_notification_recipient users_scope, activity:, time: nil
+    def filter_notification_recipient(users_scope, activity:, time: nil)
       users_scope.where(id: activity.item.recipient.id)
     end
 
-    def generate_commands recipient:, activity:, time: nil
-      notification = activity.item
+    def generate_commands(recipient:, activity:, time: nil)
       [{
         event_payload: {
-          
+
         }
       }]
     end

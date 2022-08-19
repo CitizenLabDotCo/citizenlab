@@ -1,5 +1,4 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 // tracks
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
@@ -19,7 +18,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import styled, { useTheme } from 'styled-components';
 import { media } from 'utils/styleUtils';
 import { rgba } from 'polished';
-import useLocale from 'hooks/useLocale';
 
 const Loading = styled.div`
   width: 100%;
@@ -99,61 +97,55 @@ const ProposalsList = ({
   querying,
 }: Props) => {
   const theme: any = useTheme();
-  const locale = useLocale();
   const loadMore = () => {
     trackEventByName(tracks.loadMoreProposals);
     onLoadMore();
   };
 
-  if (!isNilOrError(locale)) {
-    const hasInitiatives = list && list.length > 0;
+  const hasInitiatives = list && list.length > 0;
 
-    return (
-      <div aria-labelledby={ariaLabelledBy} id={id} tabIndex={0}>
-        {querying ? (
-          <Loading id="initiatives-loading">
-            <Spinner />
-          </Loading>
-        ) : (
-          <>
-            {hasInitiatives && list && (
-              <InitiativesList id="e2e-initiatives-list">
-                {list.map((initiative) => (
-                  <StyledInitiativeCard
-                    key={initiative.id}
-                    initiativeId={initiative.id}
-                  />
-                ))}
-              </InitiativesList>
-            )}
-
-            {hasMore && (
-              <Footer>
-                <Button
-                  id="e2e-initiative-cards-show-more-button"
-                  onClick={loadMore}
-                  buttonStyle="secondary"
-                  text={<FormattedMessage {...messages.showMore} />}
-                  processing={loadingMore}
-                  height="50px"
-                  icon="showMore"
-                  iconPos="left"
-                  textColor={theme.colorText}
-                  bgColor={rgba(theme.colorText, 0.08)}
-                  bgHoverColor={rgba(theme.colorText, 0.12)}
-                  fontWeight="500"
-                  locale={locale}
+  return (
+    <div aria-labelledby={ariaLabelledBy} id={id} tabIndex={0}>
+      {querying ? (
+        <Loading id="initiatives-loading">
+          <Spinner />
+        </Loading>
+      ) : (
+        <>
+          {hasInitiatives && list && (
+            <InitiativesList id="e2e-initiatives-list">
+              {list.map((initiative) => (
+                <StyledInitiativeCard
+                  key={initiative.id}
+                  initiativeId={initiative.id}
                 />
-              </Footer>
-            )}
-          </>
-        )}
-        ;
-      </div>
-    );
-  }
+              ))}
+            </InitiativesList>
+          )}
 
-  return null;
+          {hasMore && (
+            <Footer>
+              <Button
+                id="e2e-initiative-cards-show-more-button"
+                onClick={loadMore}
+                buttonStyle="secondary"
+                text={<FormattedMessage {...messages.showMore} />}
+                processing={loadingMore}
+                height="50px"
+                icon="showMore"
+                iconPos="left"
+                textColor={theme.colorText}
+                bgColor={rgba(theme.colorText, 0.08)}
+                bgHoverColor={rgba(theme.colorText, 0.12)}
+                fontWeight="500"
+              />
+            </Footer>
+          )}
+        </>
+      )}
+      ;
+    </div>
+  );
 };
 
 export default ProposalsList;

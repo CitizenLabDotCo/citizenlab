@@ -21,7 +21,6 @@ RSpec.describe NLP::Api do
       end
     end
 
-    # rubocop:disable RSpec/NestedGroups
     context 'when arguments are not provided' do
       let(:base_uri) { nil }
       let(:authorization_token) { nil }
@@ -52,12 +51,11 @@ RSpec.describe NLP::Api do
         it { expect(service.authorization_token).to eq(ENV['NLP_API_TOKEN']) }
       end
     end
-    # rubocop:enable RSpec/NestedGroups
   end
 
   describe '#text_network_analysis_for_project' do
     it 'sends a request with an authorization header' do
-      response = instance_double(HTTParty::Response, 'success?': true, parsed_response: {})
+      response = instance_double(HTTParty::Response, success?: true, parsed_response: {})
       allow(HTTParty).to receive(:post).and_return(response)
       service.text_network_analysis_for_project('tenant-id', 'project-id', 'en')
 

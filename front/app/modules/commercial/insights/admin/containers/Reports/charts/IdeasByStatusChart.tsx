@@ -8,7 +8,11 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
 // styling
-import { withTheme } from 'styled-components';
+import {
+  colors,
+  sizes,
+  DEFAULT_BAR_CHART_MARGIN,
+} from 'components/admin/Graphs/styling';
 
 // components
 import ReportExportMenu from 'components/admin/ReportExportMenu';
@@ -18,7 +22,7 @@ import {
   GraphCard,
   GraphCardInner,
 } from 'components/admin/GraphWrappers';
-import BarChart, { DEFAULT_MARGIN } from 'components/admin/Graphs/BarChart';
+import BarChart from 'components/admin/Graphs/BarChart';
 import { Tooltip, LabelList } from 'recharts';
 
 // resources
@@ -57,8 +61,9 @@ export class IdeasByStatusChart extends React.PureComponent<
   }
 
   render() {
-    const { chartFill, barSize } = this.props['theme'];
     const {
+      startAt,
+      endAt,
       currentGroupFilterLabel,
       currentGroupFilter,
       className,
@@ -88,6 +93,8 @@ export class IdeasByStatusChart extends React.PureComponent<
                 xlsxEndpoint={ideasByStatusXlsxEndpoint}
                 currentGroupFilterLabel={currentGroupFilterLabel}
                 currentGroupFilter={currentGroupFilter}
+                startAt={startAt}
+                endAt={endAt}
               />
             )}
           </GraphCardHeader>
@@ -100,16 +107,16 @@ export class IdeasByStatusChart extends React.PureComponent<
             data={sortedByValue}
             layout="horizontal"
             innerRef={this.currentChart}
-            margin={DEFAULT_MARGIN}
+            margin={DEFAULT_BAR_CHART_MARGIN}
             bars={{
               name: unitName,
-              fill: chartFill,
-              size: barSize,
+              fill: colors.chartFill,
+              size: sizes.bar,
               opacity: 0.8,
             }}
             mapping={{ fill: 'color' }}
             yaxis={{ width: 150, tickLine: false }}
-            renderLabels={(props) => <LabelList {...props} position="right" />}
+            renderLabels={(props) => <LabelList {...props} />}
             renderTooltip={(props) => <Tooltip {...props} />}
           />
         </GraphCardInner>
@@ -118,9 +125,7 @@ export class IdeasByStatusChart extends React.PureComponent<
   }
 }
 
-const IdeasByStatusChartWithHoCs = injectIntl<Props>(
-  withTheme(IdeasByStatusChart as any) as any
-);
+const IdeasByStatusChartWithHoCs = injectIntl<Props>(IdeasByStatusChart);
 
 const WrappedIdeasByStatusChart = (
   inputProps: InputProps & InjectedLocalized

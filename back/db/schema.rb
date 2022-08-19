@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_07_131522) do
+ActiveRecord::Schema.define(version: 2022_08_08_074431) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -333,6 +333,32 @@ ActiveRecord::Schema.define(version: 2022_04_07_131522) do
     t.index ["project_id"], name: "index_groups_projects_on_project_id"
   end
 
+  create_table "home_pages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.boolean "top_info_section_enabled", default: false, null: false
+    t.jsonb "top_info_section_multiloc", default: {}, null: false
+    t.boolean "bottom_info_section_enabled", default: false, null: false
+    t.jsonb "bottom_info_section_multiloc", default: {}, null: false
+    t.boolean "events_widget_enabled", default: false, null: false
+    t.boolean "projects_enabled", default: true, null: false
+    t.jsonb "projects_header_multiloc", default: {}, null: false
+    t.boolean "banner_avatars_enabled", default: true, null: false
+    t.string "banner_layout", default: "full_width_banner_layout", null: false
+    t.jsonb "banner_signed_in_header_multiloc", default: {}, null: false
+    t.jsonb "banner_cta_signed_in_text_multiloc", default: {}, null: false
+    t.string "banner_cta_signed_in_type", default: "no_button", null: false
+    t.string "banner_cta_signed_in_url"
+    t.jsonb "banner_signed_out_header_multiloc", default: {}, null: false
+    t.jsonb "banner_signed_out_subheader_multiloc", default: {}, null: false
+    t.string "banner_signed_out_header_overlay_color"
+    t.integer "banner_signed_out_header_overlay_opacity"
+    t.jsonb "banner_cta_signed_out_text_multiloc", default: {}, null: false
+    t.string "banner_cta_signed_out_type", default: "sign_up_button", null: false
+    t.string "banner_cta_signed_out_url"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "header_bg"
+  end
+
   create_table "id_id_card_lookup_id_cards", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "hashed_card_id"
     t.index ["hashed_card_id"], name: "index_id_id_card_lookup_id_cards_on_hashed_card_id"
@@ -390,6 +416,7 @@ ActiveRecord::Schema.define(version: 2022_04_07_131522) do
     t.uuid "assignee_id"
     t.datetime "assigned_at"
     t.integer "proposed_budget"
+    t.jsonb "custom_field_values", default: {}, null: false
     t.index "((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))", name: "index_ideas_search", using: :gin
     t.index ["author_id"], name: "index_ideas_on_author_id"
     t.index ["idea_status_id"], name: "index_ideas_on_idea_status_id"
@@ -489,7 +516,7 @@ ActiveRecord::Schema.define(version: 2022_04_07_131522) do
     t.index "((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))", name: "index_initiatives_search", using: :gin
     t.index ["author_id"], name: "index_initiatives_on_author_id"
     t.index ["location_point"], name: "index_initiatives_on_location_point", using: :gist
-    t.index ["slug"], name: "index_initiatives_on_slug"
+    t.index ["slug"], name: "index_initiatives_on_slug", unique: true
   end
 
   create_table "initiatives_topics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -806,6 +833,16 @@ ActiveRecord::Schema.define(version: 2022_04_07_131522) do
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 
+  create_table "pins", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "admin_publication_id", null: false
+    t.string "page_type", null: false
+    t.uuid "page_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["admin_publication_id"], name: "index_pins_on_admin_publication_id"
+    t.index ["page_id", "admin_publication_id"], name: "index_pins_on_page_id_and_admin_publication_id", unique: true
+  end
+
   create_table "polls_options", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "question_id"
     t.jsonb "title_multiloc", default: {}, null: false
@@ -928,6 +965,7 @@ ActiveRecord::Schema.define(version: 2022_04_07_131522) do
     t.integer "min_budget", default: 0
     t.string "downvoting_method", default: "unlimited", null: false
     t.integer "downvoting_limited_max", default: 10
+    t.boolean "include_all_areas", default: false, null: false
     t.index ["custom_form_id"], name: "index_projects_on_custom_form_id"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
@@ -1087,6 +1125,15 @@ ActiveRecord::Schema.define(version: 2022_04_07_131522) do
     t.string "code", default: "custom", null: false
   end
 
+  create_table "user_custom_fields_representativeness_ref_distributions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "custom_field_id", null: false
+    t.jsonb "distribution", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "type"
+    t.index ["custom_field_id"], name: "index_ucf_representativeness_ref_distributions_on_custom_field"
+  end
+
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "email"
     t.string "password_digest"
@@ -1146,7 +1193,7 @@ ActiveRecord::Schema.define(version: 2022_04_07_131522) do
     t.uuid "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["cause_id"], name: "index_volunteering_volunteers_on_cause_id"
+    t.index ["cause_id", "user_id"], name: "index_volunteering_volunteers_on_cause_id_and_user_id", unique: true
     t.index ["user_id"], name: "index_volunteering_volunteers_on_user_id"
   end
 
@@ -1229,6 +1276,7 @@ ActiveRecord::Schema.define(version: 2022_04_07_131522) do
   add_foreign_key "official_feedbacks", "users"
   add_foreign_key "phase_files", "phases"
   add_foreign_key "phases", "projects"
+  add_foreign_key "pins", "admin_publications"
   add_foreign_key "polls_options", "polls_questions", column: "question_id"
   add_foreign_key "polls_response_options", "polls_options", column: "option_id"
   add_foreign_key "polls_response_options", "polls_responses", column: "response_id"
@@ -1244,6 +1292,7 @@ ActiveRecord::Schema.define(version: 2022_04_07_131522) do
   add_foreign_key "public_api_api_clients", "tenants"
   add_foreign_key "spam_reports", "users"
   add_foreign_key "static_page_files", "static_pages"
+  add_foreign_key "user_custom_fields_representativeness_ref_distributions", "custom_fields"
   add_foreign_key "volunteering_volunteers", "volunteering_causes", column: "cause_id"
   add_foreign_key "votes", "users"
 

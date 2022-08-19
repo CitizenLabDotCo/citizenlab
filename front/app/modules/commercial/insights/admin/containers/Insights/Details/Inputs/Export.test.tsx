@@ -21,7 +21,7 @@ jest.mock('hooks/useLocale');
 jest.mock('services/locale');
 jest.mock('utils/request');
 
-jest.mock('react-router', () => {
+jest.mock('utils/cl-router/withRouter', () => {
   return {
     withRouter: (Component) => {
       return (props) => {

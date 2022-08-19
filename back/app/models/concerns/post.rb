@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'active_support/concern'
 
 module Post
@@ -8,16 +10,16 @@ module Post
 
   included do
     pg_search_scope :search_by_all,
-                    against: [:title_multiloc, :body_multiloc],
-                    using: { :tsearch => {:prefix => true} }
+      against: %i[title_multiloc body_multiloc],
+      using: { tsearch: { prefix: true } }
 
     pg_search_scope :restricted_search,
-                    against: [:title_multiloc, :body_multiloc],
-                    using: { :tsearch => {:prefix => true} }
+      against: %i[title_multiloc body_multiloc],
+      using: { tsearch: { prefix: true } }
 
     pg_search_scope :search_any_word,
-                    against: [:title_multiloc, :body_multiloc],
-                    using: { tsearch: {any_word: true} }
+      against: %i[title_multiloc body_multiloc],
+      using: { tsearch: { any_word: true } }
 
     # Note from: https://github.com/Casecommons/pg_search
     # > Searching through associations
@@ -33,28 +35,16 @@ module Post
     has_many :official_feedbacks, as: :post, dependent: :destroy
 
     has_many :votes, as: :votable, dependent: :destroy
-    has_many :upvotes, -> { where(mode: "up") }, as: :votable, class_name: 'Vote'
-    has_many :downvotes, -> { where(mode: "down") }, as: :votable, class_name: 'Vote'
-    has_one :user_vote, -> (user_id) {where(user_id: user_id)}, as: :votable, class_name: 'Vote'
+    has_many :upvotes, -> { where(mode: 'up') }, as: :votable, class_name: 'Vote'
+    has_many :downvotes, -> { where(mode: 'down') }, as: :votable, class_name: 'Vote'
+    has_one :user_vote, ->(user_id) { where(user_id: user_id) }, as: :votable, class_name: 'Vote'
 
     has_many :spam_reports, as: :spam_reportable, class_name: 'SpamReport', dependent: :destroy
 
     before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
     has_many :notifications, foreign_key: :post_id, dependent: :nullify
 
-    validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
-
-    with_options unless: :draft? do |post|
-      post.validates :title_multiloc, presence: true, multiloc: { presence: true }
-      post.validates :body_multiloc, presence: true, multiloc: { presence: true, html: true }
-      post.validates :author, presence: true, on: :publication
-      post.validates :slug, uniqueness: true, presence: true
-
-      post.before_validation :strip_title
-      post.before_validation :generate_slug
-      post.after_validation :set_published_at, if: ->(post) { post.published? && post.publication_status_changed? }
-      post.after_validation :set_assigned_at, if: ->(post) { post.assignee_id && post.assignee_id_changed? }
-    end
+    validates :publication_status, presence: true, inclusion: { in: PUBLICATION_STATUSES }
 
     scope :with_bounding_box, (proc do |coordinates|
       x1, y1, x2, y2 = JSON.parse(coordinates)
@@ -63,8 +53,8 @@ module Post
 
     scope :published, -> { where publication_status: 'published' }
 
-    scope :order_new, -> (direction=:desc) { order(published_at: direction) }
-    scope :order_random, -> {
+    scope :order_new, ->(direction = :desc) { order(published_at: direction) }
+    scope :order_random, lambda {
       modulus = RandomOrderingService.new.modulus_of_the_day
       order(Arel.sql("(extract(epoch from #{table_name}.created_at) * 100)::bigint % #{modulus}, #{table_name}.id"))
     }
@@ -73,7 +63,7 @@ module Post
       RGeo::GeoJSON.encode(location_point) if location_point.present?
     end
 
-    def location_point_geojson= geojson_point
+    def location_point_geojson=(geojson_point)
       self.location_point = RGeo::GeoJSON.decode(geojson_point)
     end
 
@@ -101,13 +91,6 @@ module Post
       end
     end
 
-    def generate_slug
-      if !slug
-        title = MultilocService.new.t title_multiloc, author
-        self.slug ||= SlugService.new.generate_slug self, title
-      end
-    end
-
     def set_published_at
       self.published_at ||= Time.zone.now
     end
@@ -118,7 +101,7 @@ module Post
 
     def remove_notifications
       notifications.each do |notification|
-        if !notification.update post: nil
+        unless notification.update post: nil
           notification.destroy!
         end
       end

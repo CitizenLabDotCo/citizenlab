@@ -34,10 +34,6 @@ const Label = styled.label<{ disabled: boolean }>`
   display: flex;
   align-items: center;
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
-
-  ${isRtl`
-    flex-direction: row-reverse;
-  `}
 `;
 
 const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`

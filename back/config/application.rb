@@ -17,7 +17,7 @@ require 'action_cable/engine'
 # require time extentions to fix
 #   NoMethodError: undefined method `day' for 1:Integer
 #   /usr/local/bundle/bundler/gems/knock-9214cd027422/lib/knock.rb:7:in `<module:Knock>'
-require "active_support/core_ext/integer/time"
+require 'active_support/core_ext/integer/time'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -45,7 +45,7 @@ module Cl2Back
 
     config.active_job.queue_adapter = ENV.fetch('ACTIVE_JOB_QUEUE_ADAPTER', 'que').to_sym
     config.action_mailer.deliver_later_queue_name = 'default'
-    config.i18n.fallbacks = [I18n.default_locale, { 'nb-NO': [:nb, :no] }]
+    config.i18n.fallbacks = [I18n.default_locale, { 'nb-NO': %i[nb no] }]
 
     ### After https://stackoverflow.com/a/44985745/3585671
     # Without lines below we get an uninitialized constant
@@ -62,16 +62,16 @@ module Cl2Back
     when 'mailgun'
       config.action_mailer.delivery_method = :mailgun
       config.action_mailer.mailgun_settings = {
-        api_key: ENV.fetch("MAILGUN_API_KEY"),
-        domain: ENV.fetch("MAILGUN_DOMAIN"),
-        api_host: ENV.fetch("MAILGUN_API_HOST", "api.mailgun.net"),
+        api_key: ENV.fetch('MAILGUN_API_KEY'),
+        domain: ENV.fetch('MAILGUN_DOMAIN'),
+        api_host: ENV.fetch('MAILGUN_API_HOST', 'api.mailgun.net')
       }
     when 'smtp'
       config.action_mailer.delivery_method = :smtp
       config.action_mailer.smtp_settings = {
         address: ENV.fetch('SMTP_ADDRESS'),
         port: ENV.fetch('SMTP_PORT', nil),
-        domain:ENV.fetch('SMTP_DOMAIN', nil),
+        domain: ENV.fetch('SMTP_DOMAIN', nil),
         user_name: ENV.fetch('SMTP_USER_NAME', nil),
         password: ENV.fetch('SMTP_PASSWORD', nil),
         authentication: ENV.fetch('SMTP_AUTHENTICATION', nil)&.to_sym,
@@ -79,6 +79,5 @@ module Cl2Back
         openssl_verify_mode: ENV.fetch('SMTP_OPENSSL_VERIFY_MODE', nil)
       }.compact
     end
-
   end
 end

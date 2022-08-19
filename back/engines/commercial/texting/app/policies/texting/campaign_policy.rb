@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Texting::CampaignPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     def resolve

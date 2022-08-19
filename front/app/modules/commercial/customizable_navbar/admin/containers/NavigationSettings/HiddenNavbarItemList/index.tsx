@@ -13,7 +13,7 @@ import usePageSlugById from 'hooks/usePageSlugById';
 
 // components
 import { List, Row } from 'components/admin/ResourceList';
-import NavbarItemRow from '../../../components/NavbarItemRow';
+import NavbarItemRow from 'containers/Admin/pagesAndMenu/NavbarItemRow';
 import Header from './Header';
 
 // i18n
@@ -25,7 +25,7 @@ import messages from './messages';
 import { isNilOrError } from 'utils/helperUtils';
 import getItemsNotInNavbar, { IItemNotInNavbar } from './getItemsNotInNavbar';
 import clHistory from 'utils/cl-router/history';
-import { NAVIGATION_PATH } from '../..';
+import { PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 
 const FIXED_PAGES_SET = new Set<TPageCode>(FIXED_PAGES);
 const removeFixedPages = (page: IPageData) =>
@@ -62,7 +62,7 @@ const HiddenNavbarItemList = ({
 
   const handleClickEditButton = (item: IItemNotInNavbar) => () => {
     if (item.type !== 'page') return;
-    clHistory.push(`${NAVIGATION_PATH}/pages/edit/${item.pageId}`);
+    clHistory.push(`${PAGES_MENU_PATH}/pages/edit/${item.pageId}`);
   };
 
   const handleClickAdd = (item: IItemNotInNavbar) => () => {
@@ -106,7 +106,7 @@ const HiddenNavbarItemList = ({
               viewButtonLink={getViewButtonLink(item)}
               onClickEditButton={handleClickEditButton(item)}
               onClickAddButton={handleClickAdd(item)}
-              addButtonDisabled={navbarItems.length === 7}
+              addButtonDisabled={navbarItems.length >= 7}
               onClickDeleteButton={handleClickDelete(
                 item.type === 'page' ? item.pageId : undefined
               )}

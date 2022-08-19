@@ -43,8 +43,8 @@ module Insights
         view.categories.find(category_ids.compact) # raise an exception if a category does not exist
 
         subquery = Insights::CategoryAssignment.select(:input_id, :input_type)
-                                               .where(category_id: category_ids.compact)
-                                               .distinct
+          .where(category_id: category_ids.compact)
+          .distinct
         in_categories = inputs.where(subquery.where("input_id = ideas.id AND input_type = 'Idea'").arel.exists)
         filtered = filtered.or(in_categories)
       end
@@ -79,7 +79,7 @@ module Insights
       return inputs unless %w[true false].include?(params[:processed])
 
       inputs_with_flags = inputs.left_outer_joins(:insights_processed_flags)
-                                .where(insights_processed_flags: { view: [view] })
+        .where(insights_processed_flags: { view: [view] })
 
       if params[:processed] == 'true'
         inputs_with_flags
@@ -91,14 +91,15 @@ module Insights
     def sort_by_approval(inputs)
       return inputs unless %w[approval -approval].include?(params[:sort])
       return inputs unless category_ids.size == 1
-      return inputs if (category_id = category_ids.first).nil?
 
       category_id = category_ids.first
+      return inputs if category_id.nil?
+
       order = params[:sort].start_with?('-') ? :asc : :desc
 
       inputs.joins(:insights_category_assignments)
-            .where(insights_category_assignments: { category_id: category_id })
-            .order('insights_category_assignments.approved': order)
+        .where(insights_category_assignments: { category_id: category_id })
+        .order('insights_category_assignments.approved': order)
     end
 
     def search(inputs)
@@ -125,9 +126,8 @@ module Insights
     private
 
     def category_ids
-      @category_ids ||= params[:categories].to_a.tap do |ids|
-        ids << params[:category] if params.key?(:category)
-      end.map(&:presence).uniq
+      # Empty strings are converted to nil and allow to select inputs without categories.
+      @category_ids ||= params.fetch(:categories, []).map(&:presence).uniq
     end
   end
 end

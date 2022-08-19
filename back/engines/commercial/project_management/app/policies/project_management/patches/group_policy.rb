@@ -23,7 +23,7 @@ module ProjectManagement
           return ::Group.none if group_projects.blank? # skip the DB query if we can
 
           ::Group.joins(:groups_projects)
-                 .where(groups_projects: { project_id: group_projects })
+            .where(groups_projects: { project_id: group_projects })
         end
       end
 

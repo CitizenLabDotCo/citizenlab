@@ -56,14 +56,11 @@ const DropdownListItem = styled.button`
   }
 `;
 
-type Props = {
+interface Props {
   startAtMoment?: Moment | null;
   endAtMoment: Moment | null;
-  onChange: (
-    startAtMoment: Moment | null | undefined,
-    endAtMoment: Moment | null
-  ) => void;
-};
+  onChange: (startAtMoment: Moment | null, endAtMoment: Moment | null) => void;
+}
 
 type State = {
   dropdownOpened: boolean;

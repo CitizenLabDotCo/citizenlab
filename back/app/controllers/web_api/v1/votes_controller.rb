@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::VotesController < ApplicationController
   before_action :set_vote, only: %i[show destroy]
   before_action :set_votable_type_and_id, only: %i[index create up down]
@@ -60,13 +62,13 @@ class WebApi::V1::VotesController < ApplicationController
       SideFxVoteService.new.after_destroy(frozen_vote, current_user)
       head :ok
     else
-      head 500
+      head :internal_server_error
     end
   end
 
   private
 
-  def upsert_vote mode
+  def upsert_vote(mode)
     @old_vote = Vote.find_by(
       user: current_user,
       votable_type: @votable_type,
@@ -84,7 +86,7 @@ class WebApi::V1::VotesController < ApplicationController
           SideFxVoteService.new.after_destroy(old_vote_frozen, current_user)
         end
         @new_vote = Vote.new(
-          user: current_user, 
+          user: current_user,
           votable_type: @votable_type,
           votable_id: @votable_id,
           mode: mode
@@ -104,27 +106,27 @@ class WebApi::V1::VotesController < ApplicationController
         end
       end
     end
-
   end
 
   def set_votable_type_and_id
     @votable_type = params[:votable]
     @votable_id = params[:"#{@votable_type.underscore}_id"]
     @policy_class = case @votable_type
-      when 'Idea' then IdeaVotePolicy
-      when 'Comment' then CommentVotePolicy
-      when 'Initiative' then InitiativeVotePolicy
-      else raise "#{@votable_type} has no voting policy defined"
+    when 'Idea' then IdeaVotePolicy
+    when 'Comment' then CommentVotePolicy
+    when 'Initiative' then InitiativeVotePolicy
+    else raise "#{@votable_type} has no voting policy defined"
     end
-    raise RuntimeError, "must not be blank" if @votable_type.blank? or @votable_id.blank?
+    raise 'must not be blank' if @votable_type.blank? || @votable_id.blank?
   end
 
-  def derive_policy_class votable
-    if votable.kind_of? Idea
+  def derive_policy_class(votable)
+    case votable
+    when Idea
       IdeaVotePolicy
-    elsif votable.kind_of? Comment
+    when Comment
       CommentVotePolicy
-    elsif votable.kind_of? Initiative
+    when Initiative
       InitiativeVotePolicy
     else
       raise "Votable #{votable.class} has no voting policy defined"

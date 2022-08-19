@@ -1,6 +1,8 @@
 import 'cypress-file-upload';
+import './dnd';
 
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
     interface Chainable {
       unregisterServiceWorkers: typeof unregisterServiceWorkers;
@@ -42,13 +44,15 @@ declare global {
       apiAddPoll: typeof apiAddPoll;
       apiVerifyBogus: typeof apiVerifyBogus;
       apiCreateEvent: typeof apiCreateEvent;
+      apiEnableContentBuilder: typeof apiEnableContentBuilder;
       intersectsViewport: typeof intersectsViewport;
       notIntersectsViewport: typeof notIntersectsViewport;
+      apiUpdateHomepageSettings: typeof apiUpdateHomepageSettings;
     }
   }
 }
 
-export function randomString(length: number = 15) {
+export function randomString(length = 15) {
   let text = '';
   const possible = 'abcdefghijklmnopqrstuvwxyz0123456789';
 
@@ -1039,7 +1043,87 @@ export function apiCreateEvent({
             'nl-BE': location,
           },
           start_at: startDate.toJSON(),
-          end_at: startDate.toJSON(),
+          end_at: endDate.toJSON(),
+        },
+      },
+    });
+  });
+}
+
+export function apiEnableContentBuilder({ projectId }: { projectId: string }) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: `web_api/v1/projects/${projectId}/content_builder_layouts/project_description/upsert`,
+      body: {
+        content_builder_layout: {
+          enabled: true,
+        },
+      },
+    });
+  });
+}
+
+export function apiUpdateHomepageSettings({
+  top_info_section_enabled,
+  bottom_info_section_enabled,
+  banner_avatars_enabled,
+  events_widget_enabled,
+  banner_layout,
+  banner_signed_out_header_multiloc,
+  banner_signed_out_subheader_multiloc,
+  banner_signed_in_header_multiloc,
+  banner_cta_signed_out_text_multiloc,
+  banner_signed_out_header_overlay_color,
+  banner_signed_out_header_overlay_opacity,
+  banner_cta_signed_out_type,
+  banner_cta_signed_in_type,
+}: {
+  top_info_section_enabled?: boolean;
+  bottom_info_section_enabled?: boolean;
+  banner_avatars_enabled?: boolean;
+  events_widget_enabled?: boolean;
+  banner_layout?: string;
+  banner_signed_out_header_multiloc?: Record<string, string>;
+  banner_signed_out_subheader_multiloc?: Record<string, string>;
+  banner_signed_in_header_multiloc?: Record<string, string>;
+  banner_cta_signed_out_text_multiloc?: Record<string, string>;
+  banner_signed_out_header_overlay_color?: string;
+  banner_signed_out_header_overlay_opacity?: number;
+  banner_cta_signed_out_type?: string;
+  banner_cta_signed_in_type?: string;
+}) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'PATCH',
+      url: `web_api/v1/home_page/`,
+      body: {
+        home_page: {
+          top_info_section_enabled,
+          bottom_info_section_enabled,
+          banner_avatars_enabled,
+          events_widget_enabled,
+          banner_layout,
+          banner_signed_out_header_multiloc,
+          banner_signed_out_subheader_multiloc,
+          banner_signed_in_header_multiloc,
+          banner_cta_signed_out_text_multiloc,
+          banner_signed_out_header_overlay_color,
+          banner_signed_out_header_overlay_opacity,
+          banner_cta_signed_in_type,
+          banner_cta_signed_out_type,
         },
       },
     });
@@ -1138,6 +1222,7 @@ Cypress.Commands.add('setAdminLoginCookie', setAdminLoginCookie);
 Cypress.Commands.add('setLoginCookie', setLoginCookie);
 Cypress.Commands.add('apiVerifyBogus', apiVerifyBogus);
 Cypress.Commands.add('apiCreateEvent', apiCreateEvent);
+Cypress.Commands.add('apiEnableContentBuilder', apiEnableContentBuilder);
 Cypress.Commands.add(
   'intersectsViewport',
   { prevSubject: true },
@@ -1148,3 +1233,4 @@ Cypress.Commands.add(
   { prevSubject: true },
   notIntersectsViewport
 );
+Cypress.Commands.add('apiUpdateHomepageSettings', apiUpdateHomepageSettings);

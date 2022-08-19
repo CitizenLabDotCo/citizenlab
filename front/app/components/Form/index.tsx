@@ -166,7 +166,6 @@ const renderers = [
   { tester: dateControlTester, renderer: DateControl },
   { tester: userPickerControlTester, renderer: UserPickerControl },
   { tester: multilocInputTester, renderer: MultilocInputLayout },
-  { tester: clCategoryTester, renderer: CLCategoryLayout },
   { tester: orderedLayoutTester, renderer: OrderedLayout },
 ];
 
@@ -275,21 +274,21 @@ const Form = memo(
       },
       [formatMessage, getAjvErrorMessage]
     );
-    const layoutTpye = isCategorization(uiSchema) ? 'fullpage' : 'inline';
+    const layoutType = isCategorization(uiSchema) ? 'fullpage' : 'inline';
     return (
       <Box
         as="form"
-        height="100%"
+        height={layoutType === 'fullpage' ? '100vh' : '100%'}
         display="flex"
         flexDirection="column"
         maxHeight={
-          layoutTpye === 'inline'
+          layoutType === 'inline'
             ? 'auto'
             : `calc(100vh - ${stylingConsts.menuHeight}px)`
         }
         id={uiSchema?.options?.formId}
       >
-        <Box overflow={layoutTpye === 'inline' ? 'visible' : 'auto'} flex="1">
+        <Box overflow={layoutType === 'inline' ? 'visible' : 'auto'} flex="1">
           {title && <Title>{title}</Title>}
           <APIErrorsContext.Provider value={apiErrors}>
             <FormContext.Provider
@@ -317,7 +316,7 @@ const Form = memo(
             </FormContext.Provider>
           </APIErrorsContext.Provider>
         </Box>
-        {layoutTpye === 'fullpage' ? (
+        {layoutType === 'fullpage' ? (
           <ButtonBar
             onSubmit={handleSubmit}
             apiErrors={Boolean(

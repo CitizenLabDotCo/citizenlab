@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe ProjectFolders::EmailCampaigns::ProjectFolderModerationRightsReceivedMailer, type: :mailer do

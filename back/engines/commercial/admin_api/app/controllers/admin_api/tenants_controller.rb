@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AdminApi
   class TenantsController < AdminApiController
     before_action :set_tenant, only: %i[show update remove_locale destroy]
@@ -5,7 +7,6 @@ module AdminApi
 
     def index
       tenants = Tenant.not_deleted.order(name: :asc)
-      tenants = tenants.where('name LIKE ?', "%#{params[:search]}%") if params[:search]
       # Call #to_json explicitly, otherwise 'data' is added as root.
       render json: serialize_tenants(tenants).to_json
     end

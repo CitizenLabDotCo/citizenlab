@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module UserConfirmation
   class ConfirmUser < ApplicationInteractor
     delegate :user, :code, to: :context
@@ -11,7 +13,7 @@ module UserConfirmation
     end
 
     def validate_user
-      return unless user.blank?
+      return if user.present?
 
       fail_with_error! :user, :blank
     end

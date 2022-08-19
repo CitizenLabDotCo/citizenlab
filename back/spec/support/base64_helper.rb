@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Base64Helper
   def png_image_as_base64(filename)
     file_as_base64 filename, 'image/png'

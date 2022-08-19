@@ -26,8 +26,6 @@ const Container = styled.div`
   `}
 `;
 
-const ShowMoreButton = styled(Button)``;
-
 interface Props {
   loadingMore: boolean;
   onShowMore: () => void;
@@ -38,7 +36,7 @@ const Footer = ({ loadingMore, onShowMore }: Props) => {
 
   return (
     <Container>
-      <ShowMoreButton
+      <Button
         data-testid="show-more-button"
         onClick={onShowMore}
         buttonStyle="secondary"

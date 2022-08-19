@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This migration comes from smart_groups (originally 20180424190024)
 class AddRulesToGroups < ActiveRecord::Migration[5.1]
   def up

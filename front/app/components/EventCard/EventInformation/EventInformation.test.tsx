@@ -28,6 +28,8 @@ jest.mock('utils/cl-intl');
 jest.mock('services/appConfiguration');
 jest.mock('services/locale');
 jest.mock('utils/cl-router/history');
+jest.mock('utils/cl-router/withRouter');
+jest.mock('utils/cl-router/Link');
 
 const createEvent = (description) => ({
   attributes: {

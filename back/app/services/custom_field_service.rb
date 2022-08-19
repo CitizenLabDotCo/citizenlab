@@ -1,9 +1,10 @@
+# frozen_string_literal: true
+
 class CustomFieldService
   include CustomFieldUserOverrides
 
   def initialize
-    ActiveSupport::Deprecation.warn('CustomFieldService is deprecated. Use JsonFormsService instead.')
-    @multiloc_service = MultilocService.new
+    @multiloc_service = MultilocService.new app_configuration: AppConfiguration.instance
   end
 
   def ui_and_json_multiloc_schemas(configuration, fields)
@@ -16,30 +17,29 @@ class CustomFieldService
   # @param [AppConfiguration] configuration
   # @return [Hash{String => Object}]
   def fields_to_json_schema_multiloc(configuration, fields)
-    configuration.settings('core', 'locales').each_with_object({}) do |locale, obj|
-      obj[locale] = fields_to_json_schema(fields, locale)
+    configuration.settings('core', 'locales').index_with do |locale|
+      fields_to_json_schema(fields, locale)
     end
   end
 
-  def fields_to_json_schema(fields, locale = "en")
+  def fields_to_json_schema(fields, locale = 'en')
     {
-      type: "object",
+      type: 'object',
       additionalProperties: false,
-      properties: fields.inject({}) do |memo, field|
+      properties: fields.each_with_object({}) do |field, memo|
         override_method_code = "#{field.resource_type.underscore}_#{field.code}_to_json_schema_field"
         override_method_type = "#{field.resource_type.underscore}_#{field.input_type}_to_json_schema_field"
         memo[field.key] =
-          if field.code && self.respond_to?(override_method_code, true)
+          if field.code && respond_to?(override_method_code, true)
             send(override_method_code, field, locale)
-          elsif field.input_type && self.respond_to?(override_method_type, true)
+          elsif field.input_type && respond_to?(override_method_type, true)
             send(override_method_type, field, locale)
           else
             send("#{field.input_type}_to_json_schema_field", field, locale)
           end
-        memo
       end
     }.tap do |output|
-      required = fields.select(&:enabled).select(&:required).map(&:key)
+      required = fields.select(&:enabled?).select(&:required?).map(&:key)
       output[:required] = required unless required.empty?
     end
   end
@@ -47,48 +47,48 @@ class CustomFieldService
   # @param [AppConfiguration] configuration
   # @return [Hash{String => Object}]
   def fields_to_ui_schema_multiloc(configuration, fields)
-    configuration.settings('core', 'locales').inject({}) do |memo, locale|
-      memo[locale] = fields_to_ui_schema(fields, locale)
-      memo
+    configuration.settings('core', 'locales').index_with do |locale|
+      fields_to_ui_schema(fields, locale)
     end
   end
 
-  def fields_to_ui_schema(fields, locale = "en")
-    fields.inject({}) do |memo, field|
+  def fields_to_ui_schema(fields, locale = 'en')
+    fields.each_with_object({}) do |field, memo|
       override_method = "#{field.resource_type.underscore}_#{field.code}_to_ui_schema_field"
       memo[field.key] =
-        if field.code && self.respond_to?(override_method, true)
+        if field.code && respond_to?(override_method, true)
           send(override_method, field, locale)
         else
           send("#{field.input_type}_to_ui_schema_field", field, locale)
         end
-      memo
     end.tap do |output|
       output['ui:order'] = fields.sort_by { |f| f.ordering || Float::INFINITY }.map(&:key)
     end
   end
 
-  def generate_key(record, title)
+  def generate_key(_record, title)
     key = keyify(title)
-    indexedKey = nil
+    indexed_key = nil
     i = 0
-    # while record.class.find_by(key: indexedKey || key)
-    while yield(indexedKey || key)
+    # while record.class.find_by(key: indexed_key || key)
+    while yield(indexed_key || key)
       i += 1
-      indexedKey = [key, '_', i].join
+      indexed_key = [key, '_', i].join
     end
-    indexedKey || key
+    indexed_key || key
   end
 
   def keyify(str)
-    str.parameterize.gsub(/\-/, '_')
+    str.parameterize.tr('-', '_').presence || '_'
   end
 
   def cleanup_custom_field_values!(custom_field_values)
-    custom_field_values.keys.each do |key|
-      if custom_field_values[key].nil?
-        custom_field_values.delete key
-      end
+    custom_field_values.each_key do |key|
+      value = custom_field_values[key]
+      is_boolean = !!value == value
+      next if is_boolean || value.present?
+
+      custom_field_values.delete key
     end
     custom_field_values
   end
@@ -126,13 +126,13 @@ class CustomFieldService
     end
   end
 
-  def base_ui_schema_field(field, locale)
-    Hash.new.tap do |ui_schema|
-      ui_schema[:'ui:widget'] = 'hidden' if field.hidden || !field.enabled
+  def base_ui_schema_field(field, _locale)
+    {}.tap do |ui_schema|
+      ui_schema[:'ui:widget'] = 'hidden' if field.hidden? || !field.enabled?
     end
   end
 
-# *** text ***
+  # *** text ***
 
   def text_to_ui_schema_field(field, locale)
     base_ui_schema_field(field, locale)
@@ -142,7 +142,7 @@ class CustomFieldService
     {
       title: handle_title(field, locale),
       description: handle_description(field, locale),
-      type: "string"
+      type: 'string'
     }
   end
 
@@ -156,7 +156,7 @@ class CustomFieldService
     {
       title: handle_title(field, locale),
       description: handle_description(field, locale),
-      type: "number"
+      type: 'number'
     }
   end
 
@@ -164,10 +164,10 @@ class CustomFieldService
 
   def multiline_text_to_ui_schema_field(field, locale)
     base = base_ui_schema_field(field, locale)
-    if base[:"ui:widget"]
+    if base[:'ui:widget']
       base
     else
-      {"ui:widget": "textarea"}
+      { 'ui:widget': 'textarea' }
     end
   end
 
@@ -175,7 +175,7 @@ class CustomFieldService
     {
       title: handle_title(field, locale),
       description: handle_description(field, locale),
-      type: "string"
+      type: 'string'
     }
   end
 
@@ -189,9 +189,9 @@ class CustomFieldService
     {
       title: handle_title(field, locale),
       description: handle_description(field, locale),
-      type: "string",
+      type: 'string'
     }.tap do |items|
-      options = field.custom_field_options.order(:ordering)
+      options = field.options.order(:ordering)
       unless options.empty?
         items[:enum] = options.map(&:key)
         items[:enumNames] = options.map { |o| handle_title(o, locale) }
@@ -209,18 +209,18 @@ class CustomFieldService
     {
       title: handle_title(field, locale),
       description: handle_description(field, locale),
-      type: "array",
+      type: 'array',
       uniqueItems: true,
-      minItems: (field.enabled && field.required) ? 1 : 0,
+      minItems: field.enabled? && field.required? ? 1 : 0,
       items: {
-          type: "string",
+        type: 'string'
       }.tap do |items|
-        options = field.custom_field_options.order(:ordering)
+        options = field.options.order(:ordering)
         unless options.empty?
           items[:enum] = options.map(&:key)
           items[:enumNames] = options.map { |o| handle_title(o, locale) }
         end
-      end,
+      end
     }
   end
 
@@ -234,7 +234,7 @@ class CustomFieldService
     {
       title: handle_title(field, locale),
       description: handle_description(field, locale),
-      type: "boolean"
+      type: 'boolean'
     }
   end
 
@@ -248,115 +248,112 @@ class CustomFieldService
     {
       title: handle_title(field, locale),
       description: handle_description(field, locale),
-      type: "string",
-      format: "date"
+      type: 'string',
+      format: 'date'
     }
   end
 
+  # Methods here are not really used to render the fields on the front-end, only description hidden and required are used
 
+  # *** html ***
 
-    # Methods here are not really used to render the fields on the front-end, only description hidden and required are used
+  def html_to_ui_schema_field(field, locale)
+    base_ui_schema_field(field, locale)
+  end
 
-    # *** html ***
+  def html_to_json_schema_field(field, locale)
+    {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
+      type: 'string'
+    }
+  end
 
-    def html_to_ui_schema_field(field, locale)
-      base_ui_schema_field(field, locale)
+  # *** text_multiloc ***
+
+  def text_multiloc_to_ui_schema_field(field, locale)
+    base_ui_schema_field(field, locale)
+  end
+
+  def text_multiloc_to_json_schema_field(field, locale)
+    {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
+      type: 'string'
+    }
+  end
+
+  # *** multiline_text_multiloc ***
+
+  def multiline_text_multiloc_to_ui_schema_field(field, locale)
+    base_ui_schema_field(field, locale)
+  end
+
+  def multiline_text_multiloc_to_json_schema_field(field, locale)
+    {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
+      type: 'string'
+    }
+  end
+
+  # *** html_multiloc ***
+
+  def html_multiloc_to_ui_schema_field(field, locale)
+    base_ui_schema_field(field, locale)
+  end
+
+  def html_multiloc_to_json_schema_field(field, locale)
+    {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
+      type: 'string'
+    }
+  end
+
+  # *** point ***
+
+  def point_to_ui_schema_field(_field, _locale)
+    {}.tap do |ui_schema|
+      ui_schema[:'ui:widget'] = 'hidden'
     end
+  end
 
-    def html_to_json_schema_field(field, locale)
-      {
-        title: handle_title(field, locale),
-        description: handle_description(field, locale),
-        type: 'string'
+  def point_to_json_schema_field(_field, _locale)
+    {
+      type: 'string'
+    }
+  end
+
+  # *** files ***
+
+  def files_to_ui_schema_field(field, locale)
+    base_ui_schema_field(field, locale)
+  end
+
+  def files_to_json_schema_field(field, locale)
+    {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
+      type: 'array',
+      items: {
+        type: 'string',
+        format: 'data-url'
       }
-    end
+    }
+  end
 
-    # *** text_multiloc ***
+  # *** image files ***
 
-    def text_multiloc_to_ui_schema_field(field, locale)
-      base_ui_schema_field(field, locale)
-    end
+  def image_files_to_ui_schema_field(field, locale)
+    base_ui_schema_field(field, locale)
+  end
 
-    def text_multiloc_to_json_schema_field(field, locale)
-      {
-        title: handle_title(field, locale),
-        description: handle_description(field, locale),
-        type: 'string'
-      }
-    end
-
-    # *** multiline_text_multiloc ***
-
-    def multiline_text_multiloc_to_ui_schema_field(field, locale)
-      base_ui_schema_field(field, locale)
-    end
-
-    def multiline_text_multiloc_to_json_schema_field(field, locale)
-      {
-        title: handle_title(field, locale),
-        description: handle_description(field, locale),
-        type: 'string'
-      }
-    end
-
-    # *** html_multiloc ***
-
-    def html_multiloc_to_ui_schema_field(field, locale)
-      base_ui_schema_field(field, locale)
-    end
-
-    def html_multiloc_to_json_schema_field(field, locale)
-      {
-        title: handle_title(field, locale),
-        description: handle_description(field, locale),
-        type: 'string'
-      }
-    end
-
-    # *** point ***
-
-    def point_to_ui_schema_field(field, locale)
-      Hash.new.tap do |ui_schema|
-        ui_schema[:'ui:widget'] = 'hidden'
-      end
-    end
-
-    def point_to_json_schema_field(field, locale)
-      {
-        type: 'string'
-      }
-    end
-
-    # *** files ***
-
-    def files_to_ui_schema_field(field, locale)
-      base_ui_schema_field(field, locale)
-    end
-
-    def files_to_json_schema_field(field, locale)
-      {
-        title: handle_title(field, locale),
-        description: handle_description(field, locale),
-        type: "array",
-        items: {
-          type: "string",
-          format: "data-url",
-        }
-      }
-    end
-
-    # *** image files ***
-
-    def image_files_to_ui_schema_field(field, locale)
-      base_ui_schema_field(field, locale)
-    end
-
-    def image_files_to_json_schema_field(field, locale)
-      {
-        title: handle_title(field, locale),
-        description: handle_description(field, locale),
-        type: 'string'
-      }
-    end
-
+  def image_files_to_json_schema_field(field, locale)
+    {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
+      type: 'string'
+    }
+  end
 end

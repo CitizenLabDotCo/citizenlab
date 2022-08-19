@@ -25,7 +25,7 @@ import messages from 'containers/ProjectsShowPage/messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
-import { getIsoDate } from 'utils/dateUtils';
+import { getIsoDateUtc } from 'utils/dateUtils';
 
 // style
 import styled, { css } from 'styled-components';
@@ -40,6 +40,12 @@ const grey = colors.label;
 const greenTransparent = rgba(colors.clGreen, 0.15);
 const green = colors.clGreen;
 const darkGreen = colors.clGreenDark;
+
+const RtlBox = styled(Box)`
+  ${isRtl`
+    flex-direction: row-reverse;
+  `};
+`;
 
 const Container = styled.div<{ isHidden: boolean }>`
   width: 100%;
@@ -62,10 +68,6 @@ const Phases = styled.div`
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-
-  ${isRtl`
-    flex-direction: row-reverse;
-  `}
 `;
 
 const phaseBarHeight = '24px';
@@ -286,7 +288,7 @@ const Timeline = ({
             <FormattedMessage {...messages.a11y_phasesOverview} />
           </ScreenReaderOnly>
           <Phases className="e2e-phases" role="tablist">
-            <Box display="flex" mb="20px">
+            <RtlBox display="flex" mb="20px">
               {phases.map((phase, phaseIndex) => {
                 const phaseNumber = phaseIndex + 1;
                 const phaseTitle = localize(phase.attributes.title_multiloc);
@@ -351,7 +353,7 @@ const Timeline = ({
                   </PhaseContainer>
                 );
               })}
-            </Box>
+            </RtlBox>
             <PhaseDescriptions
               projectId={projectId}
               selectedPhaseId={selectedPhaseId}
@@ -368,8 +370,10 @@ const Timeline = ({
 export default Timeline;
 
 function getNumberOfDays(phase: IPhaseData) {
-  const startIsoDate = getIsoDate(phase.attributes.start_at);
-  const endIsoDate = getIsoDate(phase.attributes.end_at);
+  // we can ignore user timezone to compare start/end dates,
+  // since all we care about is the amount of time between the two
+  const startIsoDate = getIsoDateUtc(phase.attributes.start_at);
+  const endIsoDate = getIsoDateUtc(phase.attributes.end_at);
   const startMoment = moment(startIsoDate, 'YYYY-MM-DD');
   const endMoment = moment(endIsoDate, 'YYYY-MM-DD');
   const numberOfDays = Math.abs(startMoment.diff(endMoment, 'days')) + 1;

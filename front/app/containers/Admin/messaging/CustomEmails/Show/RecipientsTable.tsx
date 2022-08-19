@@ -17,8 +17,8 @@ const statusColorMapping: {
   [k in IDeliveryData['attributes']['delivery_status']]: keyof typeof colors;
 } = {
   sent: 'lightGreyishBlue',
-  bounced: 'clRedError',
-  failed: 'clRedError',
+  bounced: 'red600',
+  failed: 'red600',
   accepted: 'lightGreyishBlue',
   delivered: 'clBlueLight',
   opened: 'clGreenSuccess',

@@ -6,8 +6,7 @@ describe PermissionsService do
   let(:service) { described_class.new }
 
   before(:all) do
-    # rubocop:disable RSpec/BeforeAfterAll
-    @scope_types = PermissionsService.instance_variable_get(:@scope_spec_hash)
+    @scope_types = described_class.instance_variable_get(:@scope_spec_hash)
 
     # rubocop:disable Style/SingleLineMethods Layout/EmptyLineBetweenDefs
     dummy_global_scope = Module.new do
@@ -17,13 +16,13 @@ describe PermissionsService do
     end
     # rubocop:enable Style/SingleLineMethods Layout/EmptyLineBetweenDefs
 
-    PermissionsService.clear_scope_types
-    PermissionsService.register_scope_type(dummy_global_scope)
+    described_class.clear_scope_types
+    described_class.register_scope_type(dummy_global_scope)
   end
 
   after(:all) do
     # Restore registered scope-types as they were before the tests.
-    PermissionsService.instance_variable_set(:@scope_spec_hash, @scope_types)
+    described_class.instance_variable_set(:@scope_spec_hash, @scope_types)
   end
 
   describe '#denied_reason' do

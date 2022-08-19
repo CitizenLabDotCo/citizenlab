@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class WebApi::V1::EngagementScoreSerializer < WebApi::V1::BaseSerializer
-  set_id :id do |object|
+  set_id :id do |_object|
     SecureRandom.uuid
   end
 

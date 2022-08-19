@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module NLP
   module WebApi
     module V1
@@ -16,7 +18,7 @@ module NLP
             idea_ids: policy_scope(Idea).ids,
             min_score: SIMILARITY_TRESHOLD
           )
-          @ideas = policy_scope(Idea.where(id: similarities.map{ |h| h[:idea_id] }))
+          @ideas = policy_scope(Idea.where(id: similarities.pluck(:idea_id)))
           @ideas = paginate @ideas
 
           render json: linked_json(@ideas, ::WebApi::V1::SimilarIdeaSerializer, params: fastjson_params)

@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import clHistory from 'utils/cl-router/history';
 import { isEmpty, isEqual } from 'lodash-es';
-
 import { CLErrors, Multiloc, UploadFile } from 'typings';
-
 import { isNilOrError } from 'utils/helperUtils';
 import {
   addProjectFolder,
@@ -17,10 +15,8 @@ import { convertUrlToUploadFile } from 'utils/fileUtils';
 import useProjectFolderImages from '../../../hooks/useProjectFolderImages';
 import useProjectFolder from '../../../hooks/useProjectFolder';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
-
 import {
   SectionField,
   Section,
@@ -272,7 +268,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             descriptionMultiloc &&
             shortDescriptionMultiloc
           ) {
-            const res = await addProjectFolder({
+            const projectFolder = await addProjectFolder({
               title_multiloc: titleMultiloc,
               slug,
               description_multiloc: descriptionMultiloc,
@@ -282,12 +278,12 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                 publication_status: publicationStatus,
               },
             });
-            if (!isNilOrError(res)) {
+            if (!isNilOrError(projectFolder)) {
               const imagesToAddPromises = projectFolderImages.map((file) =>
-                addProjectFolderImage(res.id, file.base64)
+                addProjectFolderImage(projectFolder.id, file.base64)
               );
               const filesToAddPromises = projectFolderFiles.map((file) =>
-                addProjectFolderFile(res.id, file.base64, file.name)
+                addProjectFolderFile(projectFolder.id, file.base64, file.name)
               );
 
               (imagesToAddPromises || filesToAddPromises) &&
@@ -295,8 +291,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                   ...imagesToAddPromises,
                   ...filesToAddPromises,
                 ]));
-
-              clHistory.push(`/admin/projects/folders/${res.id}`);
+              clHistory.push(`/admin/projects/folders/${projectFolder.id}`);
             }
           }
         } catch (errors) {
@@ -458,13 +453,15 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             label={<FormattedMessage {...messages.titleInputLabel} />}
           />
         </SectionField>
-        <SlugInput
-          slug={slug}
-          resource="folder"
-          apiErrors={errors}
-          showSlugErrorMessage={showSlugErrorMessage}
-          handleSlugOnChange={handleSlugOnChange}
-        />
+        <SectionField>
+          <SlugInput
+            slug={slug}
+            resource="folder"
+            apiErrors={errors}
+            showSlugErrorMessage={showSlugErrorMessage}
+            handleSlugOnChange={handleSlugOnChange}
+          />
+        </SectionField>
         <SectionField>
           <TextAreaMultilocWithLocaleSwitcher
             valueMultiloc={shortDescriptionMultiloc}
@@ -502,7 +499,9 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             />
           </SubSectionTitle>
           <ImagesDropzone
-            acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+            acceptedFileTypes={{
+              'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+            }}
             images={headerBg ? [headerBg] : null}
             imagePreviewRatio={250 / 1380}
             onAdd={handleHeaderBgOnAdd}
@@ -523,7 +522,9 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             images={projectFolderImages}
             imagePreviewRatio={960 / 1440}
             maxImagePreviewWidth="240px"
-            acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+            acceptedFileTypes={{
+              'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+            }}
             onAdd={getHandler(setProjectFolderImages)}
             onRemove={handleProjectFolderImageOnRemove}
           />

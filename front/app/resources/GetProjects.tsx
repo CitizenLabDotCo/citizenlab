@@ -10,7 +10,11 @@ import {
 } from 'lodash-es';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, mergeScan, map } from 'rxjs/operators';
-import { projectsStream, IProjectData } from 'services/projects';
+import {
+  projectsStream,
+  IProjectData,
+  PublicationStatus,
+} from 'services/projects';
 import shallowCompare from 'utils/shallowCompare';
 import { isNilOrError } from 'utils/helperUtils';
 import { reportError } from 'utils/loggingUtils';
@@ -23,7 +27,6 @@ export type Sort =
   | 'popular'
   | '-popular';
 
-export type PublicationStatus = 'draft' | 'published' | 'archived';
 export type SelectedPublicationStatus = 'all' | 'published' | 'archived';
 
 export interface InputProps {

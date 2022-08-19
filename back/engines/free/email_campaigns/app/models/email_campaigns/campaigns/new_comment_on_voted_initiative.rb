@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: email_campaigns_campaigns
@@ -32,7 +34,7 @@ module EmailCampaigns
     include Disableable
     include LifecycleStageRestrictable
     include Trackable
-    allow_lifecycle_stages only: ['trial','active']
+    allow_lifecycle_stages only: %w[trial active]
 
     recipient_filter :filter_recipient
 
@@ -41,10 +43,10 @@ module EmailCampaigns
     end
 
     def activity_triggers
-      {'Comment' => {'created' => true}}
+      { 'Comment' => { 'created' => true } }
     end
 
-    def filter_recipient users_scope, activity:, time: nil
+    def filter_recipient(users_scope, activity:, time: nil)
       users_scope
         .where(id: activity.item.post.votes.pluck(:user_id))
         .where.not(id: activity.item.author_id)
@@ -56,9 +58,10 @@ module EmailCampaigns
       'voted'
     end
 
-    def generate_commands recipient:, activity:, time: nil
+    def generate_commands(recipient:, activity:, time: nil)
       comment = activity.item
       return [] if comment.post_type != 'Initiative'
+
       name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
       [{
         event_payload: {
@@ -73,8 +76,7 @@ module EmailCampaigns
     end
 
     def set_enabled
-      self.enabled = false if self.enabled.nil?
+      self.enabled = false if enabled.nil?
     end
-
   end
 end

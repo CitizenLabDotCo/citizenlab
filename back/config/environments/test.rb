@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -47,7 +49,6 @@ Rails.application.configure do
   config.log_level = :debug
   config.active_record.verbose_query_logs = true
 
-
   # Comment this out to see the queries in the logs.
   # STDOUT.sync = true
   # config.rails_semantic_logger.add_file_appender = false
@@ -57,5 +58,4 @@ Rails.application.configure do
   # config.rails_semantic_logger.started    = true
   # config.rails_semantic_logger.processing = true
   # config.rails_semantic_logger.rendered   = true
-
 end

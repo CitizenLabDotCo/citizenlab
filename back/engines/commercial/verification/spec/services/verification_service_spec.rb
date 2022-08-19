@@ -1,8 +1,10 @@
-require "rails_helper"
+# frozen_string_literal: true
+
+require 'rails_helper'
 
 describe Verification::VerificationService do
   let(:sfxv_service) { instance_double(Verification::SideFxVerificationService) }
-  let(:service) { Verification::VerificationService.new sfxv_service }
+  let(:service) { described_class.new sfxv_service }
 
   before do
     configuration = AppConfiguration.instance
@@ -10,24 +12,24 @@ describe Verification::VerificationService do
     settings['verification'] = {
       allowed: true,
       enabled: true,
-      verification_methods: [{name: 'cow', api_username: 'fake_username', api_password: 'fake_password', rut_empresa: 'fake_rut_empresa'}],
+      verification_methods: [{ name: 'cow', api_username: 'fake_username', api_password: 'fake_password', rut_empresa: 'fake_rut_empresa' }]
     }
     configuration.save!
   end
 
-  describe "verify_sync" do
+  describe 'verify_sync' do
     let(:user) { create(:user) }
 
-    it "executes side fx hooks" do
+    it 'executes side fx hooks' do
       params = {
         user: user,
         method_name: 'bogus',
-        verification_parameters: {desired_error: nil}
+        verification_parameters: { desired_error: nil }
       }
 
       allow_any_instance_of(IdBogus::BogusVerification)
         .to receive(:verify_sync)
-        .and_return({uid: 'fakeuuid'})
+        .and_return({ uid: 'fakeuuid' })
 
       expect(sfxv_service)
         .to receive(:before_create)
@@ -40,7 +42,7 @@ describe Verification::VerificationService do
       service.verify_sync(params)
     end
 
-    it "updates the user with received attributes from verify_sync" do
+    it 'updates the user with received attributes from verify_sync' do
       allow(sfxv_service).to receive(:before_create)
       allow(sfxv_service).to receive(:after_create)
 
@@ -54,7 +56,7 @@ describe Verification::VerificationService do
         .to receive(:verify_sync)
         .and_return({
           uid: '123',
-          attributes: {first_name: 'BOB'},
+          attributes: { first_name: 'BOB' }
         })
 
       service.verify_sync(params)
@@ -62,14 +64,14 @@ describe Verification::VerificationService do
       expect(user.reload.first_name).to eq 'BOB'
     end
 
-    it "updates the user with received custom_field_values from verify_sync" do
+    it 'updates the user with received custom_field_values from verify_sync' do
       allow(sfxv_service).to receive(:before_create)
       allow(sfxv_service).to receive(:after_create)
       cf1 = create(:custom_field)
       cf2 = create(:custom_field)
       user.update!(custom_field_values: {
         cf1.key => 'original',
-        cf2.key => 'original',
+        cf2.key => 'original'
       })
 
       params = {
@@ -84,7 +86,7 @@ describe Verification::VerificationService do
           uid: '123',
           custom_field_values: {
             cf2.key => 'changed'
-          },
+          }
         })
 
       service.verify_sync(params)
@@ -95,14 +97,14 @@ describe Verification::VerificationService do
       })
     end
 
-    it "adds a verification" do
+    it 'adds a verification' do
       allow(sfxv_service).to receive(:before_create)
       allow(sfxv_service).to receive(:after_create)
 
       params = {
         user: user,
         method_name: 'cow',
-        verification_parameters: {run: "12.025.365-6", id_serial: "A001529382"}
+        verification_parameters: { run: '12.025.365-6', id_serial: 'A001529382' }
       }
 
       expect(Verification::Verification.count).to eq 0
@@ -110,7 +112,7 @@ describe Verification::VerificationService do
       expect_any_instance_of(IdCow::CowVerification)
         .to receive(:verify_sync)
         .with(params[:verification_parameters])
-        .and_return({uid: '001529382'})
+        .and_return({ uid: '001529382' })
 
       service.verify_sync(params)
 
@@ -123,85 +125,83 @@ describe Verification::VerificationService do
       })
     end
 
-    it "raises a VerificationTakenError when another user verified with that identity" do
+    it 'raises a VerificationTakenError when another user verified with that identity' do
       allow(sfxv_service).to receive(:before_create)
       allow(sfxv_service).to receive(:after_create)
 
       params1 = {
         user: create(:user),
         method_name: 'cow',
-        verification_parameters: {run: "12.025.365-6", id_serial: "A001529382"}
+        verification_parameters: { run: '12.025.365-6', id_serial: 'A001529382' }
       }
 
       expect_any_instance_of(IdCow::CowVerification)
         .to receive(:verify_sync)
         .with(params1[:verification_parameters])
-        .and_return({uid: '001529382'})
+        .and_return({ uid: '001529382' })
 
       service.verify_sync(params1)
 
       params2 = {
         user: user,
         method_name: 'cow',
-        verification_parameters: {run: "12.025.365-6", id_serial: "A001529382"}
+        verification_parameters: { run: '12.025.365-6', id_serial: 'A001529382' }
       }
 
       expect_any_instance_of(IdCow::CowVerification)
         .to receive(:verify_sync)
         .with(params2[:verification_parameters])
-        .and_return({uid: '001529382'})
+        .and_return({ uid: '001529382' })
 
-      expect{service.verify_sync(params2)}.to raise_error(Verification::VerificationService::VerificationTakenError)
+      expect { service.verify_sync(params2) }.to raise_error(Verification::VerificationService::VerificationTakenError)
     end
-
   end
 
-  describe "locked_attributes" do
-    context "for a user only authenticated with facebook" do
-      it "returns no locked attributes" do
+  describe 'locked_attributes' do
+    context 'for a user only authenticated with facebook' do
+      it 'returns no locked attributes' do
         identity = create(:facebook_identity)
         expect(service.locked_attributes(identity.user)).to eq []
       end
     end
 
-    context "for a user only verified with bosa_fas" do
-      it "returns some locked attributes" do
+    context 'for a user only verified with bosa_fas' do
+      it 'returns some locked attributes' do
         verification = create(:verification, method_name: 'bosa_fas')
-        expect(service.locked_attributes(verification.user)).to match_array [:first_name, :last_name]
+        expect(service.locked_attributes(verification.user)).to match_array %i[first_name last_name]
       end
     end
   end
 
-  describe "locked_custom_fields" do
-    context "for a user only authenticated with facebook" do
-      it "returns no locked custom field keys" do
+  describe 'locked_custom_fields' do
+    context 'for a user only authenticated with facebook' do
+      it 'returns no locked custom field keys' do
         identity = create(:facebook_identity)
         expect(service.locked_custom_fields(identity.user)).to eq []
       end
     end
 
-    context "for a user only verified with bogus" do
-      it "returns some locked custom field keys" do
+    context 'for a user only verified with bogus' do
+      it 'returns some locked custom field keys' do
         verification = create(:verification, method_name: 'bogus')
         expect(service.locked_custom_fields(verification.user)).to match_array [:gender]
       end
     end
   end
 
-  describe "add_method" do
-    it "adds methods that are exposed through #all_methods" do
+  describe 'add_method' do
+    it 'adds methods that are exposed through #all_methods' do
       mthd = OpenStruct.new(id: '9fb591e7-f577-40a7-8596-03e406d7eebe')
       service.class.add_method(mthd)
       expect(service.class.all_methods).to include(mthd)
     end
 
-    it "replaces duplicate methods with the same .id" do
+    it 'replaces duplicate methods with the same .id' do
       mthd1 = OpenStruct.new(id: '9fb591e7-f577-40a7-8596-03e406d7eebe')
       mthd2 = OpenStruct.new(id: '9fb591e7-f577-40a7-8596-03e406d7eebe')
       service.class.add_method(mthd1)
       service.class.add_method(mthd2)
-      expect(service.all_methods.select{|m| m.id == '9fb591e7-f577-40a7-8596-03e406d7eebe'}).to contain_exactly(mthd2)
+      expect(service.all_methods.select { |m| m.id == '9fb591e7-f577-40a7-8596-03e406d7eebe' }).to contain_exactly(mthd2)
     end
   end
-
 end

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-skip_reason = defined?(EmailCampaigns::Engine) ? nil : "email_campaigns engine is not installed"
+skip_reason = defined?(EmailCampaigns::Engine) ? nil : 'email_campaigns engine is not installed'
 
 describe EmailCampaigns::CampaignPolicy, skip: skip_reason do
   subject { described_class.new(user, campaign) }

@@ -11,7 +11,7 @@ import { Icon } from '@citizenlab/cl2-component-library';
 
 // styling
 import styled, { useTheme } from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, isRtl } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
@@ -19,6 +19,9 @@ const Container = styled.div`
   padding-bottom: 14px;
   border-bottom: solid 1px #ccc;
   margin-bottom: 29px;
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 `;
 
 const Title = styled.h1`

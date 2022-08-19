@@ -6,6 +6,13 @@ import { TTabName } from 'containers/Admin/projects/all/CreateProject';
 import ProjectTemplatePreviewAdminWithEventWrapper from './admin/containers/ProjectTemplatePreviewAdminWithEventWrapper';
 import FeatureFlag from 'components/FeatureFlag';
 
+const CitizenTemplatePreviewComponent = React.lazy(
+  () => import('./citizen/containers/ProjectTemplatePreviewCitizen')
+);
+const AdminTemplatePreviewComponent = React.lazy(
+  () => import('./admin/containers/ProjectTemplatePreviewAdmin')
+);
+
 declare module 'containers/Admin/projects/all/CreateProject' {
   export interface ITabNamesMap {
     template: 'template';
@@ -30,17 +37,13 @@ const configuration: ModuleConfiguration = {
     citizen: [
       {
         path: 'templates/:projectTemplateId',
-        name: 'project template preview page',
-        container: () =>
-          import('./citizen/containers/ProjectTemplatePreviewCitizen'),
+        element: <CitizenTemplatePreviewComponent />,
       },
     ],
     'admin.project_templates': [
       {
         path: 'templates/:projectTemplateId',
-        name: 'admin project template preview page',
-        container: () =>
-          import('./admin/containers/ProjectTemplatePreviewAdmin'),
+        element: <AdminTemplatePreviewComponent />,
       },
     ],
   },

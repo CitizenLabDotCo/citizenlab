@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :idea do
     title_multiloc do
@@ -30,17 +32,6 @@ FactoryBot.define do
           topic = create(:topic)
           idea.project.allowed_input_topics << topic
           idea.topics << topic
-        end
-      end
-    end
-
-    factory :idea_with_areas do
-      transient do
-        areas_count { 2 }
-      end
-      after(:create) do |idea, evaluator|
-        evaluator.areas_count.times do |_i|
-          idea.areas << create(:area)
         end
       end
     end

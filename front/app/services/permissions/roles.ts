@@ -1,7 +1,23 @@
-import { IUser, IRole, IProjectModeratorRole } from 'services/users';
+import { IUser } from 'services/users';
 import { isNilOrError } from 'utils/helperUtils';
 
-export const userHasRole = (user: IUser, role: IRole['type']) => {
+export interface IProjectModeratorRole {
+  type: 'project_moderator';
+  project_id: string;
+}
+
+interface IAdminRole {
+  type: 'admin';
+}
+
+export interface IRoleRegisty {
+  IAdminRole: IAdminRole;
+  IProjectModeratorRole: IProjectModeratorRole;
+}
+
+export type TRole = IRoleRegisty[keyof IRoleRegisty];
+
+export const userHasRole = (user: IUser, role: TRole['type']) => {
   return !!(
     user.data.attributes?.roles &&
     user.data.attributes.roles?.find((r) => r.type === role)
@@ -32,7 +48,11 @@ export const isSuperAdmin = (user?: IUser | null | Error) => {
 };
 
 export const isModerator = (user?: IUser | null) => {
-  return !!user && userHasRole(user, 'project_moderator');
+  if (!isNilOrError(user)) {
+    // Every user with a role higher than "user" can be considered a moderator
+    return user.data.attributes?.highest_role !== 'user';
+  }
+  return false;
 };
 
 export const isProjectModerator = (user?: IUser | null, projectId?: string) => {

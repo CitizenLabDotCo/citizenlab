@@ -5,6 +5,11 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 export const Section = styled.div`
   margin-bottom: 0;
+  ${isRtl`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  `}
 `;
 
 export const SectionField = styled(Box)`
@@ -54,6 +59,10 @@ export const SectionTitle = styled.h2`
   font-weight: 500;
   line-height: ${remCalc(32)};
   margin-bottom: ${remCalc(45)};
+  ${isRtl`
+    direction: rtl;
+    text-align: right;
+  `}
 `;
 
 export const SubSectionTitle = styled.h3`
@@ -67,6 +76,11 @@ export const SubSectionTitle = styled.h3`
   & > :not(last-child) {
     margin-right: 7px;
   }
+
+  ${isRtl`
+    direction: rtl;
+    text-align: right;
+  `}
 `;
 
 export const SubSectionTitleWithDescription = styled(SubSectionTitle)`
@@ -83,6 +97,12 @@ export const SectionDescription = styled.p`
   ${SectionTitle} + & {
     margin-top: -2rem;
   }
+
+  ${isRtl`
+    direction: rtl;
+    text-align: right;
+    max-width: 100%;
+  `}
 `;
 
 export const StyledLink = styled(Link)`

@@ -160,6 +160,11 @@ export default defineMessages({
     defaultMessage:
       '{projectName} | from the participation platform of {orgName}',
   },
+  facebookMessage: {
+    id: 'app.containers.Projects.facebookMessage',
+    defaultMessage:
+      '{projectName} | from the participation platform of {orgName}',
+  },
   about: {
     id: 'app.containers.Projects.about',
     defaultMessage: 'About',
@@ -355,9 +360,9 @@ export default defineMessages({
     id: 'app.containers.Projects.readMore',
     defaultMessage: 'Read more',
   },
-  seeLess: {
-    id: 'app.containers.Projects.seeLess',
-    defaultMessage: 'See less',
+  readLess: {
+    id: 'app.containers.Projects.readLess',
+    defaultMessage: 'Read less',
   },
   xEvents: {
     id: 'app.containers.Projects.xEvents',
@@ -398,5 +403,14 @@ export default defineMessages({
   a11y_phase: {
     id: 'app.containers.Projects.a11y_phase',
     defaultMessage: 'Phase {phaseNumber}: {phaseTitle}',
+  },
+  emailSharingSubject: {
+    id: 'app.containers.Projects.emailSharingSubject',
+    defaultMessage: '{projectName}: join the discussion',
+  },
+  emailSharingBody: {
+    id: 'app.containers.Projects.emailSharingBody',
+    defaultMessage:
+      'What do you think of this project? Join the discussion at {projectUrl} to make your voice heard!',
   },
 });

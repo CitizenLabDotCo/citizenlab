@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module IdeaAssignment
   class WebApi::V1::Notifications::IdeaAssignedToYouSerializer < ::WebApi::V1::Notifications::NotificationSerializer
     attribute :initiating_user_first_name do |object|

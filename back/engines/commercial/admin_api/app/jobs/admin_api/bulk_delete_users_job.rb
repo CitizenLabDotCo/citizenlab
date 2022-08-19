@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AdminApi::BulkDeleteUsersJob < ApplicationJob
   def run(emails)
     emails.each do |email|

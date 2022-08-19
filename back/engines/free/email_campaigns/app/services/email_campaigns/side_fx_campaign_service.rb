@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EmailCampaigns
   class SideFxCampaignService < BaseSideFxService
     include SideFxHelper

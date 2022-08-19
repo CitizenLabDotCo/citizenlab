@@ -25,11 +25,8 @@ import { CSSTransition } from 'react-transition-group';
 
 // resources
 import { adopt } from 'react-adopt';
-import GetProjects, {
-  GetProjectsChildProps,
-  PublicationStatus,
-} from 'resources/GetProjects';
-
+import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
+import { PublicationStatus } from 'services/projects';
 // hooks
 import useLocalize from 'hooks/useLocalize';
 import useProjectFolders from 'modules/commercial/project_folders/hooks/useProjectFolders';

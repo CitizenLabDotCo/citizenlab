@@ -16,6 +16,5 @@ RSpec.describe Insights::CreateTnaTasksJob, type: :job do
 
       expect(tna_service).to have_received(:analyse).with(view)
     end
-
   end
 end

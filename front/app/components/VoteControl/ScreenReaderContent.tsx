@@ -2,38 +2,23 @@ import React from 'react';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { LiveMessage } from 'react-aria-live';
+import { FormattedMessage } from 'utils/cl-intl';
 
 interface Props {
   upvotesCount: number;
   downvotesCount: number;
 }
 
-const ScreenReaderContent = ({
-  upvotesCount,
-  downvotesCount,
-  intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+const ScreenReaderContent = ({ upvotesCount, downvotesCount }: Props) => {
   return (
-    <>
-      <ScreenReaderOnly>
-        <FormattedMessage
-          {...messages.a11y_upvotesDownvotes}
-          values={{ upvotesCount, downvotesCount }}
-        />
-      </ScreenReaderOnly>
-      <LiveMessage
-        message={formatMessage(messages.a11y_upvotesDownvotes, {
-          upvotesCount,
-          downvotesCount,
-        })}
-        aria-live="polite"
+    <ScreenReaderOnly>
+      <FormattedMessage
+        {...messages.a11y_upvotesDownvotes}
+        values={{ upvotesCount, downvotesCount }}
       />
-    </>
+    </ScreenReaderOnly>
   );
 };
 
-export default injectIntl(ScreenReaderContent);
+export default ScreenReaderContent;

@@ -8,13 +8,14 @@ declare global {
     displayName?: string;
   }
   interface Window {
-    _paq: any;
-    googleMaps?: boolean;
     Intercom?: any;
-    intercomSettings: any;
+    Weglot?: any;
+    _paq: any;
     attachEvent?: any;
-    satismeter?: any;
     dataLayer?: any[];
+    googleMaps?: boolean;
+    intercomSettings: any;
+    satismeter?: any;
   }
 }
 
@@ -54,6 +55,7 @@ export interface ITab {
   url: string;
   active?: boolean | ((pathname: string) => boolean);
   feature?: TAppConfigurationSetting;
+  statusLabel?: string;
 }
 
 export type CellConfiguration<ComponentProps> = {
@@ -69,8 +71,6 @@ export interface InsertConfigurationOptions<T extends { name: string }> {
   configuration: T;
   insertAfterName?: string;
   insertBeforeName?: string;
-  reinsertAfterUpdate?: boolean;
-  removeName?: string;
 }
 
 export interface ILinks {
@@ -95,6 +95,15 @@ export interface IOption {
   value: any;
   label: string;
   disabled?: boolean;
+}
+
+export function isIOption(
+  maybeOption: {
+    value: string;
+    label: string;
+  } | null
+): maybeOption is IOption {
+  return maybeOption !== null;
 }
 
 export interface Message {

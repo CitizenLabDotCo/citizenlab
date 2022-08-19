@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe ActivitiesService do
-  let(:service) { ActivitiesService.new }
+  let(:service) { described_class.new }
 
   describe '#create_periodic_activities' do
     it 'logs phase started activity when a new phase starts (in the application timezone)' do

@@ -1,4 +1,4 @@
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import React, {
   useEffect,
   useRef,
@@ -62,7 +62,7 @@ const collideForce = 10;
 const nodeColors = [
   colors.clGreen,
   colors.clBlue,
-  colors.clRed,
+  colors.red500,
   colors.adminOrangeIcons,
   colors.adminTextColor,
   colors.facebookMessenger,

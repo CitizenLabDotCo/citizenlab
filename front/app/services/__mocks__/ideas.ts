@@ -80,7 +80,6 @@ export const getIdea = (id: string, enTitle?: string): IIdeaData => ({
         },
       ],
     },
-    areas: { data: [] },
     idea_images: { data: [] },
     phases: { data: [] },
     author: {

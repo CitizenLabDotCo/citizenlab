@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# @deprecated Use {HeaderBgUploader} instead.
 class AppHeaderBgUploader < BaseImageUploader
   def store_dir
     'uploads/header-background'

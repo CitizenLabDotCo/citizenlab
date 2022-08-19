@@ -19,8 +19,8 @@ RSpec.describe Matomo::RemoveUserFromMatomoJob do
 
     it 'raises an error if MATOMO_HOST is configured but MATOMO_AUTHORIZATION_TOKEN is missing' do
       stubbed_env = ENV.to_h
-                       .except('MATOMO_AUTHORIZATION_TOKEN')
-                       .merge('MATOMO_HOST' => 'matomo.hq.citizenlab.co')
+        .except('MATOMO_AUTHORIZATION_TOKEN')
+        .merge('MATOMO_HOST' => 'matomo.hq.citizenlab.co')
       stub_const('ENV', stubbed_env)
 
       expect { job.perform(user_id) }.to raise_error(Matomo::Client::MissingAuthorizationTokenError)

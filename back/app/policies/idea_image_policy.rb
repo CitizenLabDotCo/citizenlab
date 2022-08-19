@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class IdeaImagePolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
@@ -27,5 +29,4 @@ class IdeaImagePolicy < ApplicationPolicy
   def destroy?
     IdeaPolicy.new(user, record.idea).update?
   end
-
 end

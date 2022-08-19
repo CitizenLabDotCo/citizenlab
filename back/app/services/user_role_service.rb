@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UserRoleService
   def can_moderate?(object, user)
     return true if user.admin?
@@ -7,9 +9,7 @@ class UserRoleService
       can_moderate? object.project, user
     when 'Initiative'
       can_moderate_initiatives? user
-    when 'Comment'
-      can_moderate? object.post, user
-    when 'OfficialFeedback'
+    when 'Comment', 'OfficialFeedback'
       can_moderate? object.post, user
     when 'Vote'
       can_moderate? object.votable, user

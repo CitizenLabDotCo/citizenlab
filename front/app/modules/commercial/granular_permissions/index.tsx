@@ -6,6 +6,10 @@ import ProjectSettingsTab from './admin/components/ProjectSettingsTab';
 import Granular from './admin/containers/Granular';
 import FeatureFlag from 'components/FeatureFlag';
 
+const AdminGranularPermissionsComponent = React.lazy(
+  () => import('./admin/containers/permissions')
+);
+
 type RenderOnTabHideConditionProps = {
   children: ReactNode;
 };
@@ -29,7 +33,7 @@ const configuration: ModuleConfiguration = {
     'admin.initiatives': [
       {
         path: 'permissions',
-        container: () => import('./admin/containers/permissions'),
+        element: <AdminGranularPermissionsComponent />,
       },
     ],
   },

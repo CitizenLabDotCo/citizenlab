@@ -1,6 +1,7 @@
-class RenameProjectFoldersTables < ActiveRecord::Migration[6.0]
+# frozen_string_literal: true
 
-  class AdminPublication < ActiveRecord::Base
+class RenameProjectFoldersTables < ActiveRecord::Migration[6.0]
+  class AdminPublication < ApplicationRecord
     self.table_name = 'admin_publications'
   end
 
@@ -12,12 +13,12 @@ class RenameProjectFoldersTables < ActiveRecord::Migration[6.0]
     reversible do |dir|
       dir.up do
         AdminPublication.where(publication_type: 'ProjectFolder')
-                        .update_all(publication_type: 'ProjectFolders::Folder')
+          .update_all(publication_type: 'ProjectFolders::Folder')
       end
 
       dir.down do
         AdminPublication.where(publication_type: 'ProjectFolders::Folder')
-                        .update_all(publication_type: 'ProjectFolder')
+          .update_all(publication_type: 'ProjectFolder')
       end
     end
   end

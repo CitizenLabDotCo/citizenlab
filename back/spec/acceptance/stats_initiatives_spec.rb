@@ -108,7 +108,7 @@ resource 'Stats - Initiatives' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expected_topics = @initiatives_with_topics.flat_map { |i| i.initiatives_topics.map(&:topic_id) }.uniq
-        expect(json_response[:series][:initiatives].keys.map(&:to_s).compact.uniq - expected_topics).to eq []
+        expect(json_response[:series][:initiatives].keys.map(&:to_s).uniq - expected_topics).to eq []
         expect(json_response[:series][:initiatives].values.map(&:class).uniq).to eq [Integer]
       end
     end
@@ -128,7 +128,7 @@ resource 'Stats - Initiatives' do
       example_request 'Initiatives by topic filtered by group' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response[:series][:initiatives].values.inject(&:+)).to eq 2
+        expect(json_response[:series][:initiatives].values.sum).to eq 2
       end
     end
   end
@@ -146,7 +146,7 @@ resource 'Stats - Initiatives' do
       expect(response_status).to eq 200
       json_response = json_parse(response_body)
       expected_areas = @initiatives_with_areas.flat_map { |i| i.areas_initiatives.map(&:area_id) }.uniq
-      expect(json_response[:series][:initiatives].keys.map(&:to_s).compact.uniq - expected_areas).to eq []
+      expect(json_response[:series][:initiatives].keys.map(&:to_s).uniq - expected_areas).to eq []
       expect(json_response[:series][:initiatives].values.map(&:class).uniq).to eq [Integer]
     end
   end
@@ -165,7 +165,7 @@ resource 'Stats - Initiatives' do
       expect(response_status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response[:series][:initiatives].size).to eq end_at.yday
-      expect(json_response[:series][:initiatives].values.inject(&:+)).to eq 11
+      expect(json_response[:series][:initiatives].values.sum).to eq 11
     end
   end
 

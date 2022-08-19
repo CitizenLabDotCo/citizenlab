@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # The Filterer mixin can help you to implement filtering services that applies a sequence of filter.
 # The mixin allows the registration of new filters to the filtering service.
 #
@@ -16,13 +18,12 @@
 # > StringFilterer.filters.map(&:name)                        # => ["swap case", "call method"]
 
 module Filterer
-
-  def self.included(base) #:nodoc:
+  def self.included(base) # :nodoc:
     base.extend ClassMethods
   end
 
-  def filter(object, options={})
-    self.class.filters.inject(object) { |object, filter| filter.apply(object, self, options)  }
+  def filter(object, options = {})
+    self.class.filters.inject(object) { |memo, filter| filter.apply(memo, self, options) }
   end
 
   module ClassMethods
@@ -44,7 +45,8 @@ module Filterer
     # @param [String] name name of the filter
     # @param [Proc] block
     def initialize(name, &block)
-      @name, @block = name, block
+      @name = name
+      @block = block
     end
 
     # The context is most useful when the filter needs to access instance variables (e.g. to store partial results).
@@ -52,9 +54,8 @@ module Filterer
     # an object as input and just returns the object filtered according the +options+.
     #
     # @param [Object] context the context (self) in which the block of the filter will be executed.
-    def apply(scope, context=nil, options={})
+    def apply(scope, context = nil, options = {})
       (context || self).instance_exec(scope, options, &block)
     end
   end
-
 end

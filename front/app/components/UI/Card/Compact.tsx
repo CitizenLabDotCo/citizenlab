@@ -137,7 +137,7 @@ interface Props {
   title: JSX.Element | string;
   body: JSX.Element | string;
   footer: JSX.Element | null;
-  onClick: (event: MouseEvent<HTMLDivElement>) => void;
+  onClick: (event: MouseEvent<HTMLAnchorElement>) => void;
   className?: string;
 }
 

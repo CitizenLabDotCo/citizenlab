@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # This migration comes from insights (originally 20210526132209)
 
 class CreateCategoryAssignments < ActiveRecord::Migration[6.0]

@@ -8,6 +8,7 @@ import messages from './messages';
 import { Icon } from '@citizenlab/cl2-component-library';
 import CountBadge from 'components/UI/CountBadge';
 import HasPermission from 'components/HasPermission';
+import useFeatureFlags from 'hooks/useFeatureFlags';
 
 const Text = styled.div`
   flex: 1;
@@ -49,7 +50,7 @@ const MenuItemLink = styled(Link)`
   transition: background-color 80ms ease-out;
 
   &:hover,
-  &.selected,
+  &.active,
   &.focus-visible {
     background: rgba(0, 0, 0, 0.36);
 
@@ -58,7 +59,7 @@ const MenuItemLink = styled(Link)`
     }
   }
 
-  &:not(.selected) {
+  &:not(.active) {
     .cl-icon {
       .cl-icon-primary {
         fill: ${colors.clIconPrimary};
@@ -69,7 +70,7 @@ const MenuItemLink = styled(Link)`
     }
   }
 
-  &.selected {
+  &.active {
     ${ArrowIcon} {
       opacity: 1;
     }
@@ -101,6 +102,8 @@ const MenuItemLink = styled(Link)`
   `}
 `;
 
+// We should not set the height for a blankPage icon in the admin navigation like this
+// https://github.com/CitizenLabDotCo/citizenlab/pull/2162#discussion_r916039349
 const IconWrapper = styled.div`
   flex: 0 0 auto;
   width: 45px;
@@ -112,32 +115,34 @@ const IconWrapper = styled.div`
   &.processing svg {
     height: 31px;
   }
+
+  &.blankPage svg {
+    height: 22px;
+  }
 `;
 
 type Props = {
-  route: NavItem;
+  navItem: NavItem;
 };
 
-export default ({ route }: Props) => {
-  const pathname = location.pathname;
-  return (
-    <HasPermission action="access" item={{ type: 'route', path: route.link }}>
-      <MenuItemLink
-        activeClassName="active"
-        className={`${route.iconName} ${
-          route.isActive(pathname) ? 'selected' : ''
-        }`}
-        to={route.link}
-      >
-        <IconWrapper className={route.iconName}>
-          <Icon name={route.iconName} />
+const MenuItem = ({ navItem }: Props) => {
+  return useFeatureFlags({
+    names: navItem.featureNames ?? [],
+    onlyCheckAllowed: navItem.onlyCheckAllowed,
+  }) ? (
+    <HasPermission action="access" item={{ type: 'route', path: navItem.link }}>
+      <MenuItemLink to={navItem.link}>
+        <IconWrapper className={navItem.iconName}>
+          <Icon name={navItem.iconName} />
         </IconWrapper>
         <Text>
-          <FormattedMessage {...messages[route.message]} />
-          {!!route.count && <CountBadge count={route.count} />}
+          <FormattedMessage {...messages[navItem.message]} />
+          {!!navItem.count && <CountBadge count={navItem.count} />}
         </Text>
         <ArrowIcon name="arrowLeft" />
       </MenuItemLink>
     </HasPermission>
-  );
+  ) : null;
 };
+
+export default MenuItem;

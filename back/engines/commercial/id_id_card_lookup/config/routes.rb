@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 IdIdCardLookup::Engine.routes.draw do
-  namespace :admin_api, :defaults => {:format => :json} do
+  namespace :admin_api, defaults: { format: :json } do
     scope 'verification_id_cards' do
       post :bulk_replace, controller: 'id_cards'
       get :count, controller: 'id_cards'

@@ -212,8 +212,6 @@ class PasswordRecovery extends React.PureComponent<
                 setRef={this.handleEmailInputSetRef}
               />
 
-              {/* <Error fieldName="title_multiloc" apiErrors={this.state.errors.title_multiloc} /> */}
-
               <StyledButton
                 size="2"
                 width="100%"

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::InviteSerializer < WebApi::V1::BaseSerializer
   attributes :token, :invite_text, :accepted_at, :updated_at, :created_at
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: nav_bar_items
@@ -20,7 +22,7 @@
 #
 #  fk_rails_...  (static_page_id => static_pages.id)
 #
-class NavBarItem < ActiveRecord::Base
+class NavBarItem < ApplicationRecord
   # The codes must be listed in the correct default ordering
   CODES = %w[home projects proposals events all_input custom].freeze
 
@@ -35,12 +37,23 @@ class NavBarItem < ActiveRecord::Base
 
   before_validation :set_code, on: :create
 
+  scope :only_default, lambda {
+    result = left_joins(:static_page)
+    result.where(code: 'home')
+      # Before introducing sidebar "Pages" page and  `only_default` scope,
+      # the pages for editing ([{ code: :about, slug: information }, { code: :faq, slug: faq }])
+      # were fetched by slug not by code
+      # https://github.com/CitizenLabDotCo/citizenlab/blob/1989676d15f497d721583b66015cdd2ea2f2415a/front/app/containers/Admin/settings/pages/index.tsx#L48
+      # So, here we copy this behaviour.
+      .or(result.where(static_page: { slug: %w[information faq] }))
+  }
+
   def custom?
     code == 'custom'
   end
 
-  def title_multiloc
-    super.presence || fallback_title_multiloc
+  def title_multiloc_with_fallback
+    fallback_title_multiloc.merge(title_multiloc || {})
   end
 
   private

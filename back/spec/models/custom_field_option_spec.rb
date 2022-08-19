@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe CustomFieldOption, type: :model do
@@ -8,6 +10,24 @@ RSpec.describe CustomFieldOption, type: :model do
       cfo2 = create(:custom_field_option, key: nil, custom_field: cf)
       cfo3 = create(:custom_field_option, key: nil, custom_field: cf)
       expect([cfo1, cfo2, cfo3].map(&:key).uniq).to match [cfo1, cfo2, cfo3].map(&:key)
+    end
+  end
+
+  describe 'saving a custom field option without title_multiloc' do
+    it 'produces validation errors on the key and the title_multiloc' do
+      field = create :custom_field_select
+      option = described_class.new custom_field: field, title_multiloc: {}
+      expect(option.save).to be false
+      expect(option.errors.details).to eq({
+        key: [
+          { error: :blank },
+          { error: :invalid, value: nil }
+        ],
+        title_multiloc: [
+          { error: :blank },
+          { error: :blank }
+        ]
+      })
     end
   end
 end

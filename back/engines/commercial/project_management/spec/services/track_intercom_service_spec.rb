@@ -10,7 +10,6 @@ describe TrackIntercomService do
     context 'when it creates a new contact' do
       let(:user) { create(:admin) }
 
-      # rubocop:disable RSpec/ExampleLength, RSpec/MultipleExpectations
       it "includes 'isProjectModerator' custom attribute" do
         contacts_api = double('contacts_api').as_null_object
         expect(intercom).to receive(:contacts).twice.and_return(contacts_api)
@@ -19,18 +18,16 @@ describe TrackIntercomService do
         expect(contacts_api).to receive(:search).and_return(zero_contacts)
 
         expect(contacts_api).to receive(:create) do |attributes|
-          expect(attributes.dig(:custom_attributes, :isProjectModerator)).to eq(false)
+          expect(attributes.dig(:custom_attributes, :isProjectModerator)).to be(false)
         end.and_return(double('contact').as_null_object)
 
         service.identify_user(user)
       end
-      # rubocop:enable RSpec/ExampleLength, RSpec/MultipleExpectations
     end
 
     context 'when it updates an existing contact' do
       let(:user) { create(:admin) }
 
-      # rubocop:disable RSpec/ExampleLength, RSpec/MultipleExpectations
       it "includes 'isProjectModerator' custom attribute" do
         contacts_api = double('contacts_api').as_null_object
         expect(intercom).to receive(:contacts).twice.and_return(contacts_api)
@@ -43,7 +40,6 @@ describe TrackIntercomService do
 
         service.identify_user(user)
       end
-      # rubocop:enable RSpec/ExampleLength, RSpec/MultipleExpectations
     end
   end
 end

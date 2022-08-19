@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SpamReportPolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
@@ -8,7 +10,7 @@ class SpamReportPolicy < ApplicationPolicy
     end
 
     def resolve
-      if user && user.admin?
+      if user&.admin?
         scope
       elsif user
         scope.where(user: user)
@@ -19,19 +21,18 @@ class SpamReportPolicy < ApplicationPolicy
   end
 
   def create?
-    user&.active? && (record.user_id == user.id || user.admin?)
+    user&.active? && (record.user_id == user.id || user&.admin?)
   end
 
   def show?
-    user&.active? && (record.user_id == user.id || user.admin?)
+    user&.active? && (record.user_id == user.id || user&.admin?)
   end
 
   def update?
-    user&.active? && (record.user_id == user.id || user.admin?)
+    user&.active? && (record.user_id == user.id || user&.admin?)
   end
 
   def destroy?
     update?
   end
-
 end

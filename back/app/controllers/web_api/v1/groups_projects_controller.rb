@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::GroupsProjectsController < ApplicationController
   before_action :set_groups_project, only: %i[show destroy]
 
@@ -7,14 +9,14 @@ class WebApi::V1::GroupsProjectsController < ApplicationController
       .includes(:group)
 
     @groups_projects = case params[:sort]
-      when "new"
-        @groups_projects.order_new
-      when "-new"
-        @groups_projects.order_new(:asc)
-      when nil
-        @groups_projects
-      else
-        raise "Unsupported sort method"
+    when 'new'
+      @groups_projects.order_new
+    when '-new'
+      @groups_projects.order_new(:asc)
+    when nil
+      @groups_projects
+    else
+      raise 'Unsupported sort method'
     end
 
     @groups_projects = paginate @groups_projects
@@ -56,7 +58,7 @@ class WebApi::V1::GroupsProjectsController < ApplicationController
     if groups_project.destroyed?
       head :ok
     else
-      head 500
+      head :internal_server_error
     end
   end
 

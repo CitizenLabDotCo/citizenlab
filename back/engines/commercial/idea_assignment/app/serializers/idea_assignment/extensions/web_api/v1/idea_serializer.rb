@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module IdeaAssignment
   module Extensions
     module WebApi
@@ -6,9 +8,9 @@ module IdeaAssignment
           def self.included(base)
             base.class_eval do
               belongs_to :assignee,
-                         if: proc { |object, params| can_moderate?(object, params) },
-                         record_type: :user,
-                         serializer: ::WebApi::V1::UserSerializer
+                if: proc { |object, params| can_moderate?(object, params) },
+                record_type: :user,
+                serializer: ::WebApi::V1::UserSerializer
             end
           end
         end

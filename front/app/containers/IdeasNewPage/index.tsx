@@ -1,11 +1,11 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { adopt } from 'react-adopt';
 import { isEmpty, isNumber, get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { parse } from 'qs';
 
 // libraries
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
 
 // components
@@ -47,6 +47,8 @@ import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import { UploadFile } from 'typings';
+import useProject from 'hooks/useProject';
 
 const Container = styled.div`
   background: ${colors.background};
@@ -101,7 +103,7 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
+class IdeasNewPage extends React.Component<Props & WithRouterProps, State> {
   globalState: IGlobalStateService<IIdeasPageGlobalState>;
 
   constructor(props) {
@@ -258,18 +260,13 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
         }
 
         const { fileOrImageError } = await this.globalState.get();
+        const newUrl = `/ideas/${idea.data.attributes.slug}?new_idea_id=${ideaId}`;
         if (fileOrImageError) {
           setTimeout(() => {
-            clHistory.push({
-              pathname: `/ideas/${idea.data.attributes.slug}`,
-              search: `?new_idea_id=${ideaId}`,
-            });
+            clHistory.push(newUrl);
           }, 4000);
         } else {
-          clHistory.push({
-            pathname: `/ideas/${idea.data.attributes.slug}`,
-            search: `?new_idea_id=${ideaId}`,
-          });
+          clHistory.push(newUrl);
         }
       } catch (error) {
         // eslint-disable-next-line no-console
@@ -335,10 +332,36 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
     });
   };
 
+  onTagsChange = (selectedTopics: string[]) => {
+    this.globalState.set({ selectedTopics });
+  };
+
+  onAddressChange = (address: string) => {
+    this.globalState.set({ position: address });
+  };
+
+  onImageFileAdd = (imageFile: UploadFile[]) => {
+    this.globalState.set({
+      imageFile: [imageFile[0]],
+    });
+  };
+
+  onImageFileRemove = () => {
+    this.globalState.set({
+      imageFile: [],
+    });
+  };
+
   onDescriptionChange = (description: string) => {
     this.globalState.set({
       description,
       descriptionProfanityError: false,
+    });
+  };
+
+  onIdeaFilesChange = (ideaFiles: UploadFile[]) => {
+    this.globalState.set({
+      ideaFiles,
     });
   };
 
@@ -355,6 +378,11 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
               projectId={project.id}
               onTitleChange={this.onTitleChange}
               onDescriptionChange={this.onDescriptionChange}
+              onImageFileAdd={this.onImageFileAdd}
+              onImageFileRemove={this.onImageFileRemove}
+              onTagsChange={this.onTagsChange}
+              onAddressChange={this.onAddressChange}
+              onIdeaFilesChange={this.onIdeaFilesChange}
             />
           </PageContainer>
           <ButtonBarContainer>
@@ -390,7 +418,12 @@ export default withRouter((inputProps: InputProps & WithRouterProps) => {
     name: 'dynamic_idea_form',
   });
 
-  if (isDynamicIdeaFormEnabled) {
+  const project = useProject({ projectSlug: inputProps.params.slug });
+
+  if (
+    isDynamicIdeaFormEnabled ||
+    project?.attributes.participation_method === 'native_survey'
+  ) {
     return <IdeasNewPageWithJSONForm {...inputProps} />;
   }
 
