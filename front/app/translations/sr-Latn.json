@@ -698,6 +698,7 @@
   "app.containers.IdeaButton.signUpLinkText": "registrujte se",
   "app.containers.IdeaButton.submitAnIssue": "Postavite komentar",
   "app.containers.IdeaButton.submitYourIdea": "Postavite ideju",
+  "app.containers.IdeaButton.takeTheSurvey": "Popunite upitnik",
   "app.containers.IdeaButton.verificationLinkText": "Potvrdite svoj identitet.",
   "app.containers.IdeaCard.xComments": "{commentsCount, plural, =0 {nema komentara} one {1 komentar} other {# komentara}}",
   "app.containers.IdeaCards.a11y_totalInitiatives": "Ukupno predloga: {initiativeCount}",

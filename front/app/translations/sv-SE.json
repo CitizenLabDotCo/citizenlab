@@ -698,6 +698,7 @@
   "app.containers.IdeaButton.signUpLinkText": "registrera dig",
   "app.containers.IdeaButton.submitAnIssue": "Skicka en kommentar",
   "app.containers.IdeaButton.submitYourIdea": "Skicka din idé",
+  "app.containers.IdeaButton.takeTheSurvey": "Gör undersökningen",
   "app.containers.IdeaButton.verificationLinkText": "Verifiera din identitet nu.",
   "app.containers.IdeaCard.xComments": "{commentsCount, plural, =0 {inga kommentarer} one {1 kommentar} other {# kommentarer}}",
   "app.containers.IdeaCards.a11y_totalInitiatives": "Totalt antal förslag: {initiativeCount}",
