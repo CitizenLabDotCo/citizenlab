@@ -1,46 +1,59 @@
-
 import React from 'react';
 
 // typings
 import { Multiloc } from 'typings';
 
 // form
+import Feedback from 'components/HookForm/Feedback';
 import { FormProvider, useForm } from 'react-hook-form';
 import { SectionField } from 'components/admin/Section';
-import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import Feedback from 'components/HookForm/Feedback';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { object } from 'yup';
+import { object, string } from 'yup';
 import validateMultiloc from 'utils/yup/validateMultiloc';
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import { slugRexEx } from 'utils/textUtils';
+// import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 // components
+import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
 import Button from 'components/UI/Button';
-import { Box } from '@citizenlab/cl2-component-library';
+import Input from 'components/HookForm/Input';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+
+// styling
+import styled from 'styled-components';
+
+// constants
+import { pagesAndMenuBreadcrumb } from '../../../breadcrumbs';
 
 // intl
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
-export interface FormValues {
-  nav_bar_item_title_multiloc: Multiloc;
+export interface CreateCustomPageFormValues {
+  title_multiloc: Multiloc;
+  slug: string;
 }
 
-type PageFormProps = {
-  onSubmit: (formValues: FormValues) => void | Promise<void>;
-  defaultValues?: FormValues;
+const StyledMultilocInput = styled(InputMultilocWithLocaleSwitcher)`
+  margin-bottom: 20px;
+`
+
+type CreateCustomPageFormProps = {
+  onSubmit: (formValues: CreateCustomPageFormValues) => void | Promise<void>;
+  defaultValues?: CreateCustomPageFormValues;
 } & InjectedIntlProps;
 
-const NavbarItemForm = ({
+const CreateCustomPageHookForm = ({
   onSubmit,
   defaultValues,
   intl: { formatMessage },
-}: PageFormProps) => {
+}: CreateCustomPageFormProps) => {
   const schema = object({
-    nav_bar_item_title_multiloc: validateMultiloc(
-      formatMessage(messages.emptyTitleError)
-    ),
+    title_multiloc: validateMultiloc(formatMessage(messages.multilocError)),
+    slug: string()
+      .matches(slugRexEx, formatMessage(messages.slugRegexError))
+      .required(formatMessage(messages.slugRequiredError)),
   });
 
   const methods = useForm({
@@ -49,35 +62,55 @@ const NavbarItemForm = ({
     resolver: yupResolver(schema),
   });
 
-  const onFormSubmit = async (formValues: FormValues) => {
+  const onFormSubmit = async (formValues: CreateCustomPageFormValues) => {
     try {
       await onSubmit(formValues);
     } catch (error) {
-      handleHookFormSubmissionError(error, methods.setError);
+      console.log(error);
     }
+    console.log(onSubmit);
+    console.log(formValues);
   };
 
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onFormSubmit)}>
-        <SectionField>
-          <Feedback
-            successMessage={formatMessage(messages.savePageSuccessMessage)}
-          />
-          <InputMultilocWithLocaleSwitcher
-            name="nav_bar_item_title_multiloc"
-            label={formatMessage(messages.navbarItemTitle)}
-            type="text"
-          />
-        </SectionField>
-        <Box display="flex">
-          <Button type="submit" processing={methods.formState.isSubmitting}>
-            {formatMessage(messages.savePage)}
-          </Button>
-        </Box>
+        <SectionFormWrapper
+          breadcrumbs={[
+            {
+              label: formatMessage(pagesAndMenuBreadcrumb.label),
+              linkTo: pagesAndMenuBreadcrumb.linkTo,
+            },
+            {
+              label: 'Create custom page',
+            },
+          ]}
+          title={formatMessage(messages.pageTitle)}
+          stickyMenuContents={
+            <Button type="submit" processing={methods.formState.isSubmitting}>
+              {formatMessage(messages.saveButton)}
+            </Button>
+          }
+        >
+          <SectionField>
+            <Feedback successMessage={formatMessage(messages.pageTitle)} />
+            <StyledMultilocInput
+              name="title_multiloc"
+              label={formatMessage(messages.titleLabel)}
+              type="text"
+              labelTooltipText={formatMessage(messages.titleTooltip)}
+            />
+            <Input
+              label={formatMessage(messages.slugLabel)}
+              labelTooltipText={formatMessage(messages.slugTooltip)}
+              name="slug"
+              type="text"
+            />
+          </SectionField>
+        </SectionFormWrapper>
       </form>
     </FormProvider>
   );
 };
 
-export default injectIntl(NavbarItemForm);
+export default injectIntl(CreateCustomPageHookForm);

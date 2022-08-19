@@ -25,6 +25,10 @@ export default defineMessages({
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.error',
     defaultMessage: "Couldn't save custom page",
   },
+  multilocError: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.multilocError',
+    defaultMessage: 'Please enter a title in every language',
+  },
   titleLabel: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleLabel',
     defaultMessage: 'Title',
@@ -40,6 +44,16 @@ export default defineMessages({
   slugTooltip: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.slugTooltip',
     defaultMessage: 'You can set the URL for your new custom page here',
+  },
+  slugRegexError: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.slugRegexError',
+    defaultMessage:
+      'The slug can only contain regular, lowercase letters (a-z), numbers (0-9) and hyphens (-). The first and last characters cannot be hyphens. Consecutive hyphens (--) are forbidden.',
+  },
+  slugRequiredError: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.slugRequiredError',
+    defaultMessage: 'You must enter a slug'
+
   },
   resultingURL: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.resultingUrl',

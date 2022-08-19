@@ -16,7 +16,7 @@ const HeroBannerForm = lazy(() => import('./containers/HeroBanner'));
 
 // custom pages
 const CreateCustomPage = lazy(() => import('./containers/CustomPages/Create'));
-const CreateCustomPageHookForm = lazy(() => import('./containers/CustomPages/Create/CreateHookForm'));
+const CreateCustomPageHookFormWrapper = lazy(() => import('./containers/CustomPages/Create/CreateHookFormWrapper'));
 
 // path utils
 const ADMIN_PAGE_PATH = 'pages-menu';
@@ -87,7 +87,7 @@ export default () => ({
     },
     {
       path: `${CUSTOM_PAGES_PATH}/hook`,
-      element: <CreateCustomPageHookForm />,
+      element: <CreateCustomPageHookFormWrapper />,
     },
     ...moduleConfiguration.routes['admin.pages-menu'],
   ],
