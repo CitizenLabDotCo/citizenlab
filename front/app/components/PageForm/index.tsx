@@ -70,6 +70,9 @@ const PageForm = ({
   const appConfig = useAppConfiguration();
 
   const schema = object({
+    nav_bar_item_title_multiloc: validateMultiloc(
+      formatMessage(messages.blankTitleError)
+    ),
     title_multiloc: validateMultiloc(formatMessage(messages.blankTitleError)),
     body_multiloc: validateMultiloc(
       formatMessage(messages.blankDescriptionError)
