@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import { Box, Input } from '@citizenlab/cl2-component-library';
+import { Input } from '@citizenlab/cl2-component-library';
 
 // styling
 import styled from 'styled-components';
@@ -28,6 +28,8 @@ import { Multiloc } from 'typings';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { validateSlug } from 'utils/textUtils'
+import { forOwn } from 'lodash-es';
 
 const StyledInputMultiloc = styled(InputMultilocWithLocaleSwitcher)`
   width: 497px;
@@ -45,17 +47,29 @@ export const SlugPreview = styled.div`
 `;
 
 const CreateCustomPage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
-  const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
-  const [slug, setSlug] = useState<string>('');
+  const [titleMultiloc, setTitleMultiloc] = useState<Multiloc>({});
+  const [slug, setSlug] = useState<string | null>(null);
+  const [titleErrors, setTitleErrors] = useState<Multiloc>({});
+  const [isSlugValid, setIsSlugValid] = useState<boolean>(true);
   const appConfig = useAppConfiguration();
   const locale = useLocale();
 
   const handleTitleMultilocOnChange = (titleMultiloc: Multiloc) => {
+    const errors = {};
+
+    forOwn(titleMultiloc, (title, locale) => {
+      if (!title || title == "") {
+        errors[locale] = 'broken'
+      }
+    });
+  
     setTitleMultiloc(titleMultiloc);
+    setTitleErrors(errors);
   };
 
   const handleSlugOnChange = (slug: string) => {
     setSlug(slug);
+    setIsSlugValid(validateSlug(slug));
   };
 
   if (isNilOrError(appConfig)) return null;
@@ -95,7 +109,7 @@ const CreateCustomPage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         valueMultiloc={titleMultiloc}
         label={<FormattedMessage {...messages.titleLabel} />}
         onChange={handleTitleMultilocOnChange}
-        // errorMultiloc={titleError}
+        errorMultiloc={titleErrors}
         labelTooltipText={<FormattedMessage {...messages.titleTooltip} />}
       />
       <StyledSlugInput
@@ -104,12 +118,12 @@ const CreateCustomPage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         label={<FormattedMessage {...messages.slugLabel} />}
         onChange={handleSlugOnChange}
         value={slug}
-        labelTooltipText={<FormattedMessage {...messages.titleLabel} />}
+        error={!isSlugValid ? 'slug error' : null}
+        labelTooltipText={<FormattedMessage {...messages.slugTooltip} />}
       />
       <SlugPreview>
         <b>{formatMessage(messages.resultingURL)}</b>: {previewUrl}
       </SlugPreview>
-      <Box mb="40px" />
     </SectionFormWrapper>
   );
 };

@@ -24,7 +24,7 @@ const SectionFormWrapper = ({
 }: Props) => {
   return (
     <>
-      <Box mb="16px">
+      <Box mb="16px" pb="40px">
         {breadcrumbs && <Breadcrumbs breadcrumbs={breadcrumbs} />}
       </Box>
       <Box display="flex" justifyContent="space-between">
