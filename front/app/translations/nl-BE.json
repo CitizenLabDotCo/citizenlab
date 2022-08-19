@@ -698,6 +698,7 @@
   "app.containers.IdeaButton.signUpLinkText": "registreren",
   "app.containers.IdeaButton.submitAnIssue": "{tenantName, select, gent {Voeg een verhaal toe} other {Voeg een reactie toe}}",
   "app.containers.IdeaButton.submitYourIdea": "Plaats je idee",
+  "app.containers.IdeaButton.takeTheSurvey": "Naar de enquête",
   "app.containers.IdeaButton.verificationLinkText": "Verifieer nu je identiteit.",
   "app.containers.IdeaCard.xComments": "{commentsCount, plural, =0 {geen reacties} one {1 reactie} other {# reacties}}",
   "app.containers.IdeaCards.a11y_totalInitiatives": "Totaal aantal voorstellen: {initiativeCount}",
