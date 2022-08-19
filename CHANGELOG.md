@@ -9,6 +9,7 @@
 ### Changed
 
 - Improve error handling and user feedback in the forms for creating pages and custom navigation items
+- [CL-854] Added tooltip to admin budget field in idea form for clarity
 
 ## 2022-08-11
 
