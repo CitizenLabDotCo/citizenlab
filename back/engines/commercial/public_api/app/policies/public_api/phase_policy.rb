@@ -3,8 +3,6 @@
 module PublicApi
   class PhasePolicy < PublicApiPolicy
     class Scope
-      attr_reader :api_client, :scope
-
       def initialize(api_client, scope)
         @api_client = api_client
         @scope = scope
@@ -14,6 +12,10 @@ module PublicApi
         # We base this on the same scope as a non-authenticated user
         ::PhasePolicy::Scope.new(nil, scope).resolve
       end
+
+      private
+
+      attr_reader :api_client, :scope
     end
 
     def show?
