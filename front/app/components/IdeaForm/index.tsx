@@ -754,6 +754,26 @@ class IdeaForm extends PureComponent<
         phases
       );
 
+      const AdminBudgetFieldLabel = () => {
+        return (
+          <>
+            <FormattedMessage
+              {...messages.budgetLabel}
+              values={{
+                currency: tenantCurrency,
+                maxBudget: pbContext?.attributes.max_budget,
+              }}
+            />
+            <IconTooltip
+              iconColor="black"
+              marginLeft="4px"
+              icon="admin"
+              content={<FormattedMessage {...messages.adminFieldTooltip} />}
+            />
+          </>
+        );
+      };
+
       return (
         <Form id="idea-form" className={className}>
           <StyledFormSection>
@@ -891,30 +911,10 @@ class IdeaForm extends PureComponent<
                     <Box display="flex">
                       <FormLabel
                         width="auto"
-                        labelValue={
-                          <>
-                            <FormattedMessage
-                              {...messages.budgetLabel}
-                              values={{
-                                currency: tenantCurrency,
-                                maxBudget: pbContext?.attributes.max_budget,
-                              }}
-                            />
-                            <IconTooltip
-                              marginLeft="4px"
-                              icon="admin"
-                              content={
-                                <FormattedMessage
-                                  {...messages.adminFieldTooltip}
-                                />
-                              }
-                            />
-                          </>
-                        }
+                        labelValue={<AdminBudgetFieldLabel />}
                         htmlFor="budget"
                       />
                     </Box>
-
                     <Input
                       id="budget"
                       error={budgetError}
