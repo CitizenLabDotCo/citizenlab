@@ -26,7 +26,7 @@ import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import GetInitiatives, {
   GetInitiativesChildProps,
 } from 'resources/GetInitiatives';
-import { GetPhasesChildProps } from 'resources/GetPhases';
+import { TPhases } from 'hooks/usePhases';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import GetProjectAllowedInputTopics from 'resources/GetProjectAllowedInputTopics';
 
@@ -107,7 +107,7 @@ interface InputProps {
   // the filters needed for this view, in the order they'll be shown, first one active by default
   visibleFilterMenus: TFilterMenu[]; // cannot be empty.
   defaultFilterMenu: TFilterMenu;
-  phases?: GetPhasesChildProps;
+  phases?: TPhases;
   // When the PostManager is used in admin/posts, the parent component passes
   // down the array of projects the current user can moderate.
   projects?: IProjectData[] | null;

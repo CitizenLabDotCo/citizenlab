@@ -3,10 +3,9 @@ import { isNilOrError } from 'utils/helperUtils';
 import { Observable, of } from 'rxjs';
 import { phasesStream, IPhaseData, IPhases } from 'services/phases';
 
+export type TPhases = IPhaseData[] | undefined | null | Error;
 export default function useProject(projectId: string | null | undefined) {
-  const [phases, setPhases] = useState<IPhaseData[] | undefined | null | Error>(
-    undefined
-  );
+  const [phases, setPhases] = useState<TPhases>(undefined);
 
   useEffect(() => {
     setPhases(undefined);
