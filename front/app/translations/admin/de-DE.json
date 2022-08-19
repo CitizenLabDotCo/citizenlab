@@ -283,7 +283,7 @@
   "app.containers.Admin.Insights.Reports.inputs": "Beiträge",
   "app.containers.Admin.Insights.Reports.inputsByStatusTitle": "Beiträge nach Status",
   "app.containers.Admin.Insights.Reports.month": "Monat",
-  "app.containers.Admin.Insights.Reports.native_survey": "eingebaute Umfrage",
+  "app.containers.Admin.Insights.Reports.native_survey": "hauseigene Umfrage",
   "app.containers.Admin.Insights.Reports.noData": "Es können keine Daten angezeigt werden.",
   "app.containers.Admin.Insights.Reports.noPhase": "Keine Phase für dieses Projekt erstellt",
   "app.containers.Admin.Insights.Reports.numberOfVotesDown": "Ablehnende Stimmen",
