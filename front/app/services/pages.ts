@@ -127,14 +127,14 @@ export function pageBySlugStream(
 }
 
 export function createPage(pageData: IPageCreate) {
-  return streams.add<IPage>(`${apiEndpoint}`, pageData);
+  return streams.add<IPage>(`${apiEndpoint}`, { static_page: pageData });
 }
 
 export async function updatePage(pageId: string, pageData: IPageUpdate) {
   const response = await streams.update<IPage>(
     `${apiEndpoint}/${pageId}`,
     pageId,
-    pageData
+    { static_page: pageData }
   );
 
   await streams.fetchAllWith({

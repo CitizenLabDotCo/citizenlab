@@ -7,10 +7,14 @@ module CustomizableNavbar
         module StaticPagesController
           private
 
-          def assign_attributes_for_update
+          # See also back/app/serializers/web_api/v1/static_page_serializer.rb
+          # `attribute :nav_bar_item_title_multiloc`
+          def assign_attributes
             attributes = permitted_attributes(StaticPage).to_h
-            if attributes[:nav_bar_item_attributes].present?
+            if (nav_bar_item_title = attributes.delete(:nav_bar_item_title_multiloc)).present?
+              attributes[:nav_bar_item_attributes] ||= {}
               attributes[:nav_bar_item_attributes][:id] = @page.nav_bar_item_id
+              attributes[:nav_bar_item_attributes][:title_multiloc] = nav_bar_item_title
             end
             @page.assign_attributes attributes
           end

@@ -21,7 +21,8 @@ class WebApi::V1::StaticPagesController < ::ApplicationController
   end
 
   def create
-    @page = StaticPage.new permitted_attributes(StaticPage)
+    @page = StaticPage.new
+    assign_attributes
     authorize @page
 
     SideFxStaticPageService.new.before_create @page, current_user
@@ -37,7 +38,7 @@ class WebApi::V1::StaticPagesController < ::ApplicationController
   end
 
   def update
-    assign_attributes_for_update
+    assign_attributes
     authorize @page
 
     SideFxStaticPageService.new.before_update @page, current_user
@@ -62,7 +63,7 @@ class WebApi::V1::StaticPagesController < ::ApplicationController
 
   private
 
-  def assign_attributes_for_update
+  def assign_attributes
     @page.assign_attributes permitted_attributes(StaticPage)
   end
 

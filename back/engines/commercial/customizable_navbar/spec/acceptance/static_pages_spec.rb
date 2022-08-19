@@ -19,10 +19,9 @@ resource 'StaticPages' do
         parameter :title_multiloc, 'The title of the page, as a multiloc string', required: true
         parameter :body_multiloc, 'The content of the page, as a multiloc HTML string', required: true
         parameter :slug, 'The unique slug of the page. If not given, it will be auto generated'
+        parameter :nav_bar_item_title_multiloc, 'The title of the corresponding NavBarItem'
       end
-      with_options scope: %i[static_page nav_bar_item_attributes] do
-        parameter :title_multiloc, 'The title of the corresponding NavBarItem'
-      end
+
       ValidationErrorHelper.new.error_fields self, StaticPage
       ValidationErrorHelper.new.error_fields self, NavBarItem
 
@@ -34,7 +33,7 @@ resource 'StaticPages' do
           static_page: {
             title_multiloc: page.title_multiloc,
             body_multiloc: page.body_multiloc,
-            nav_bar_item_attributes: { title_multiloc: item_title_multiloc }
+            nav_bar_item_title_multiloc: item_title_multiloc
           }
         )
         expect(response_status).to eq 201
@@ -48,10 +47,9 @@ resource 'StaticPages' do
         parameter :title_multiloc, 'The title of the static page, as a multiloc string'
         parameter :body_multiloc, 'The content of the static page, as a multiloc HTML string'
         parameter :slug, 'The unique slug of the static page'
+        parameter :nav_bar_item_title_multiloc, 'The title of the corresponding NavBarItem'
       end
-      with_options scope: %i[static_page nav_bar_item_attributes] do
-        parameter :title_multiloc, 'The title of the corresponding NavBarItem'
-      end
+
       ValidationErrorHelper.new.error_fields self, StaticPage
       ValidationErrorHelper.new.error_fields self, NavBarItem
 
@@ -62,7 +60,7 @@ resource 'StaticPages' do
         title_multiloc = { 'en' => 'Awesome item' }
         item = create :nav_bar_item, static_page: page
 
-        do_request(static_page: { nav_bar_item_attributes: { title_multiloc: title_multiloc } })
+        do_request(static_page: { nav_bar_item_title_multiloc: title_multiloc })
         assert_status 200
         expect(item.reload.title_multiloc).to match title_multiloc
       end
@@ -70,7 +68,7 @@ resource 'StaticPages' do
       example 'Update the NavBarItem title of a static page with no NavBarItem' do
         title_multiloc = { 'en' => 'Awesome item' }
         page.nav_bar_item&.destroy!
-        do_request(static_page: { nav_bar_item_attributes: { title_multiloc: title_multiloc } })
+        do_request(static_page: { nav_bar_item_title_multiloc: title_multiloc })
         assert_status 200
       end
 
@@ -78,7 +76,7 @@ resource 'StaticPages' do
         title_multiloc = { 'en' => 42 }
         create :nav_bar_item, static_page: page
 
-        do_request(static_page: { nav_bar_item_attributes: { title_multiloc: title_multiloc } })
+        do_request(static_page: { nav_bar_item_title_multiloc: title_multiloc })
         assert_status 422
       end
     end
