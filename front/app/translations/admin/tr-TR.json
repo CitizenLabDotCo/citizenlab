@@ -1031,7 +1031,7 @@
   "app.containers.AdminPage.ProjectTimeline.nameColumnTitle": "Name and dates",
   "app.containers.AdminPage.ProjectTimeline.newPhaseTitle": "Create a new phase",
   "app.containers.AdminPage.ProjectTimeline.orderColumnTitle": "Order",
-  "app.containers.AdminPage.ProjectTimeline.saveErrorMessage": "There was an error submitting the form, please try again.",
+  "app.containers.AdminPage.ProjectTimeline.saveErrorMessage": "Form gönderilirken bir hata oluştu, lütfen tekrar deneyin.",
   "app.containers.AdminPage.ProjectTimeline.saveLabel": "Kaydet",
   "app.containers.AdminPage.ProjectTimeline.saveSuccessLabel": "Saved!",
   "app.containers.AdminPage.ProjectTimeline.saveSuccessMessage": "Your changes have been saved.",
