@@ -101,7 +101,7 @@ tr:
       "link_privacy_policy": "Privacy Policy"
       "link_terms_conditions": "Terms & Conditions"
       "link_unsubscribe": "Unsubscribe"
-      "powered_by": "Powered by"
+      "powered_by": "Destekleyen"
       "statement": "This e-mail was sent to you by CitizenLab on behalf of %{organizationName}, because you are a registered user of %{organizationLink}. You can %{unsubscribeLink} if you do not want to receive these e-mails in the future."
       "unsubscribe_text": "unsubscribe"
     comment_deleted_by_admin:
