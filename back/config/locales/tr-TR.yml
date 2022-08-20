@@ -180,4 +180,4 @@ tr:
       cta_reset_password: 'Parolanızı sıfırlayın'
       message_you_reset_your_password: 'You requested a password reset for the participation platform of %{organizationName}. Click the button below to choose a new, safe password. The link expires in 1 hour.'
       subject: '%{organizationName}: Reset your password'
-      title_reset_your_password: 'Choose a new password'
+      title_reset_your_password: 'Yeni bir parola seçin'
