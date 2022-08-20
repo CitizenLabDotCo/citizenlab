@@ -806,7 +806,7 @@
   "app.containers.AdminPage.ProjectDescription.buttonTextErrorMessage": "Enter text for the button",
   "app.containers.AdminPage.ProjectDescription.buttonTypePrimaryLabel": "Birincil",
   "app.containers.AdminPage.ProjectDescription.buttonTypeRadioLabel": "Button type",
-  "app.containers.AdminPage.ProjectDescription.buttonTypeSecondaryLabel": "Secondary",
+  "app.containers.AdminPage.ProjectDescription.buttonTypeSecondaryLabel": "İkincil",
   "app.containers.AdminPage.ProjectDescription.buttonUrl": "Button URL",
   "app.containers.AdminPage.ProjectDescription.buttonUrlErrorMessage": "Enter a URL for the button",
   "app.containers.AdminPage.ProjectDescription.columnLayoutRadioLabel": "Column layout",
