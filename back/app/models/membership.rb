@@ -32,11 +32,4 @@ class Membership < ApplicationRecord
 
   validates :group, :user, presence: true
   validates :user, uniqueness: { scope: :group }
-  validate :validate_belongs_to_manual_group
-
-  def validate_belongs_to_manual_group
-    return unless group.present? && !group.manual?
-
-    errors.add(:group, :is_not_a_manual_group, message: 'is not a manual group')
-  end
 end
