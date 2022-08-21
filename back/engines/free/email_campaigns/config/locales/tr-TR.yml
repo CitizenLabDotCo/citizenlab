@@ -177,7 +177,7 @@ tr:
       today_by_author: 'Today by %{author}'
       x_days_ago_by_author: '%{x} days ago by %{author}'
       idea_section: Fikirler
-      initiative_section: Proposals
+      initiative_section: Teklifler
       title_initiatives_past_week: 'New proposals assigned to you'
       title_successful_initiatives_past_week: 'Proposals assigned to you that reached the threshold'
     idea_marked_as_spam:
