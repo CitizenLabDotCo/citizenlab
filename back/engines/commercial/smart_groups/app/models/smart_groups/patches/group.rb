@@ -50,35 +50,35 @@ module SmartGroups
         super
       end
 
-      def members
-        return SmartGroups::RulesService.new.filter(::User, rules) if rules?
+      # def members
+      #   return SmartGroups::RulesService.new.filter(::User, rules) if rules?
 
-        super
-      end
+      #   super
+      # end
 
-      def members=(*args)
-        raise "can't set members if a rules group" if rules?
+      # def members=(*args)
+      #   raise "can't set members if a rules group" if rules?
 
-        super
-      end
+      #   super
+      # end
 
-      def member_ids
-        return SmartGroups::RulesService.new.filter(::User, rules).ids if rules?
+      # def member_ids
+      #   return SmartGroups::RulesService.new.filter(::User, rules).ids if rules?
 
-        super
-      end
+      #   super
+      # end
 
-      def member_ids=(*args)
-        raise "can't set member_ids of a rules group" if rules?
+      # def member_ids=(*args)
+      #   raise "can't set member_ids of a rules group" if rules?
 
-        super
-      end
+      #   super
+      # end
 
-      def update_memberships_count!
-        return update(memberships_count: members.active.count) if rules?
+      # def update_memberships_count!
+      #   return update(memberships_count: members.active.count) if rules?
 
-        super
-      end
+      #   super
+      # end
 
       def rules?
         membership_type == 'rules'
@@ -89,13 +89,13 @@ module SmartGroups
           super + ['rules']
         end
 
-        def _with_user(groups, user)
-          groups = groups.left_outer_joins(:users)
-          smart_groups = groups.where(membership_type: 'rules')
-          other_groups = groups.where.not(membership_type: 'rules')
+        # def _with_user(groups, user)
+        #   groups = groups.left_outer_joins(:users)
+        #   smart_groups = groups.where(membership_type: 'rules')
+        #   other_groups = groups.where.not(membership_type: 'rules')
 
-          super(other_groups, user).or(SmartGroups::RulesService.new.groups_for_user(user, smart_groups))
-        end
+        #   super(other_groups, user).or(SmartGroups::RulesService.new.groups_for_user(user, smart_groups))
+        # end
       end
     end
   end
