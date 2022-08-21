@@ -4,10 +4,6 @@ import React from 'react';
 import { createPage } from 'services/pages';
 import { handleAddPageFiles } from 'services/pageFiles';
 
-// hooks
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import usePageSlugs from 'hooks/usePageSlugs';
-
 // components
 import PageForm, { FormValues } from 'components/PageForm';
 import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
@@ -24,13 +20,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 
 const NewPageForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
-  const appConfigurationLocales = useAppConfigurationLocales();
-  const pageSlugs = usePageSlugs();
-
-  if (isNilOrError(appConfigurationLocales) || isNilOrError(pageSlugs)) {
-    return null;
-  }
-
   const goBack = () => {
     clHistory.push(PAGES_MENU_PATH);
   };
