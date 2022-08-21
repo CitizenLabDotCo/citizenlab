@@ -3,65 +3,65 @@ tr:
     outside: başka bir yerde
   idea_statuses:
     proposed: teklif edildi
-    proposed_description: Bu fikir şehre önerildi
+    proposed_description: Bu fikir şehir yönetimine önerildi
     viewed: görüntülendi
-    viewed_description: Bu fikir şehirden biri tarafından görülmüştür
+    viewed_description: Bu fikir şehir yönetiminden biri tarafından görülmüştür
     under_consideration: değerlendiriliyor
-    under_consideration_description: Bu fikir şehir tarafından dikkate alınmıştır
+    under_consideration_description: Bu fikir şehir yönetimi tarafından dikkate alınmıştır
     accepted: kabul edildi
-    accepted_description: This idea has been accepted and will be implemented by the city
-    implemented: implemented
-    implemented_description: This idea has been implemented by the city
-    rejected: rejected
-    rejected_description: This idea has been rejected
+    accepted_description: Bu fikir kabul edildi ve şehir yönetimi tarafından uygulanacak
+    implemented: uygulandı
+    implemented_description: Bu fikir şehir yönetimi tarafından uygulandı
+    rejected: reddedildi
+    rejected_description: Bu fikir reddedildi
   initiative_statuses:
     proposed: teklif edildi
     proposed_description: teklif edildi
-    expired: expired
-    expired_description: expired
-    threshold_reached: threshold reached
-    threshold_reached_description: threshold reached
-    answered: answered
-    answered_description: answered
-    ineligible: ineligible
-    ineligible_description: ineligible
+    expired: süresi doldu
+    expired_description: süresi doldu
+    threshold_reached: eşiğe ulaşıldı
+    threshold_reached_description: eşiğe ulaşıldı
+    answered: yanıtlandı
+    answered_description: yanıtlandı
+    ineligible: uygun değil
+    ineligible_description: uygun değil
   topics:
-    nature: Nature and biodiversity
-    nature_description: Nature and biodiversity
-    waste: Cleanliness and waste
-    waste_description: Cleanliness and waste
-    sustainability: Sustainable development
-    sustainability_description: Sustainable development
-    mobility: Mobility
-    mobility_description: Mobility
-    technology: Energy and technology
-    technology_description: Energy and technology
-    economy: Work, economy and tourism
-    economy_description: Work, economy and tourism
-    housing: Housing
-    housing_description: Housing
-    public_space: Public spaces and buildings
-    public_space_description: Public spaces and buildings
-    safety: Safety
-    safety_description: Safety
-    education: Education and youth
-    education_description: Education and youth
-    culture: Culture, sports and events
-    culture_description: Culture, sports and events
-    health: Health and welfare
-    health_description: Health and welfare
-    inclusion: Social inclusion
-    inclusion_description: Social inclusion
-    community: Community development
-    community_description: Community development
-    services: Public services
-    services_description: Public services
-    other: Other
-    other_description: Other
+    nature: Doğa ve biyoçeşitlilik
+    nature_description: Doğa ve biyoçeşitlilik
+    waste: Temizlik ve atık
+    waste_description: Temizlik ve atık
+    sustainability: Sürdürülebilir kalkınma
+    sustainability_description: Sürdürülebilir kalkınma
+    mobility: Hareketlilik
+    mobility_description: Hareketlilik
+    technology: Enerji ve teknoloji
+    technology_description: Enerji ve teknoloji
+    economy: Çalışma, ekonomi ve turizm
+    economy_description: Çalışma, ekonomi ve turizm
+    housing: Konut
+    housing_description: Konut
+    public_space: Kamusal alanlar ve binalar
+    public_space_description: Kamusal alanlar ve binalar
+    safety: Güvenlik
+    safety_description: Güvenlik
+    education: Eğitim ve gençlik
+    education_description: Eğitim ve gençlik
+    culture: Kültür, spor ve etkinlikler
+    culture_description: Kültür, spor ve etkinlikler
+    health: Sağlık ve refah
+    health_description: Sağlık ve refah
+    inclusion: Toplumsal kapsayıcılık
+    inclusion_description: Toplumsal kapsayıcılık
+    community: Toplumsal gelişim
+    community_description: Toplumsal gelişim
+    services: Kamu hizmetleri
+    services_description: Kamu hizmetleri
+    other: Diğer
+    other_description: Diğer
   static_pages:
-    terms_and_conditions_title: Terms & conditions
+    terms_and_conditions_title: Hüküm ve koşullar
     terms_and_conditions_body: >
-      <p>These terms & conditions outline the rules and guidelines of contributing to the platform and are meant to help ensure a constructive dialogue.</p> <p>Your ideas to further improve the platform are welcome and can be sent to support@citizenlab.co.</p> <h2>Who can participate?</h2> <p>Anyone is able to view public projects via the platform. If you’d like to contribute content (e.g., submit input or vote), you will need to register and create an account. You can register using your e-mail address; for some platforms, it may also be possible to sign in using an existing Facebook or Google account. If you use either of these services, your name, email address and profile photo will be shared with and added to your platform account.</p> <p>Please note that the creation of your account does not give you ownership. Platform administrators can refuse, suspend or delete accounts for reasons such as not adhering to the terms and conditions outlined on this page.</p> <p>The general conditions for your account are the following: </p> <ul> <li> <strong>You may create one account</strong> <p>An individual may not create and maintain multiple accounts. The account details you provide must be accurate and this account cannot be transferred to someone else without permission from a platform administrator. </p> </li> <li> <strong>Your account cannot be used for commercial promotion</strong> <p>An account may not be used for the sole purpose of advertising, marketing a product or service, etc.</p> </li> <li> <strong>You are responsible for keeping your account information secure and confidential</strong> <p>You are the only person who should use your account and have access to your account’s password and login details. To improve your account security, we advise using a password with a combination of numbers, lowercase letters and uppercase letters. We are not responsible for any loss or damage incurred to your account and cannot be held responsible for its theft (e.g., via phishing). Note that we will never ask you for your log-in details such as your password. </p>  <h2>Your activity on the platform</h2> <p>To ensure safe and productive participation, there are some restrictions on the type of content that may be published on this platform. Any content you post on the platform must be free of:</p> <ul> <li> <strong>Private data</strong> <p>Confidential data and personal information about others, such as telephone numbers and addresses may not be posted without their express authorization and consent.  </p> <li><strong>Spam / malware / phishing / viruses / worms / Trojans</strong> <p>Malicious content or links that are meant violate others’ privacy or to damage or disrupt others’ browsers or computers.</p> </li> <li> <strong>Threats, insults and other inappropriate content </strong> <p>Personal attacks and insults, threatening behavior or language, discriminatory comments, profanity and other offensive language.</p> </li> <li><strong>Advertising and commercial activity</strong> <p>Content posted with the sole purpose of advertising a commercial service or product.</p> </li> <li> <strong>Copyrighted material</strong> <p>Content that infringes upon intellectual property rights (e.g., copyrighted images).</p> </li> <li> <strong>Illegal activities</strong> <p>Content that in any way promotes illegal activities.</li></p> </ul> <p>Submissions and other content that includes any of the above may be edited, deleted or otherwise prevented from being posted, and the account may be temporarily blocked or permanently deleted. New or additional accounts created to avoid temporary or permanent suspension may also be monitored and deleted.</p> <h2>Applicable laws</h2> <p>The use of an account may not infringe upon applicable laws. This includes any violation of privacy legislation, intellectual property rights, the criminal code, etc.</p> <p>We cannot be held liable in any way for content posted on the platform that does not adhere to the above rules and laws. Violations can be reported to support@citizenlab.co and may result in the relevant messages being deleted and/or the underlying account being suspended or permanently revoked.</p> <p>It is possible that content posted on the platform can contain harmful files or links. By downloading files or accessing hyperlinks via the platform, you assume the risk and responsibility for any damage that may incur.</p> <h2>Property rights</h2> <p>This platform is protected by intellectual property rights related to its content, source code, databases, etc. Any original content that you post on the platform may be visible to the public and falls under the Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) Public License, which allows your content to be shared or adapted with attribution. You may not otherwise reproduce, distribute, modify or transmit the platform and any of its contents that do not fall under the public domain without permission.</p>
+      <p>Bu hüküm ve koşullar, platforma katkıda bulunmanın kurallarını ve yönergelerini ana hatlarıyla belirtir ve yapıcı bir diyaloğun sağlanmasına yardımcı olmayı amaçlar.</p> <p>Platformu daha da geliştirmek için fikirlerinizi support@citizenlab.co adresine gönderebilirsiniz.</p> <h2>Kimler katılabilir?</h2> <p>Platform üzerinden herkes kamuya açık projeleri görüntüleyebilir. İçeriğe katkıda bulunmak istiyorsanız (örneğin, girdi göndermek veya oy kullanmak) kaydolmanız ve bir hesap oluşturmanız gerekir. E-posta adresinizi kullanarak kaydolabilirsiniz; bazı platformlar için mevcut bir Facebook veya Google hesabını kullanarak oturum açmak da mümkün olabilir. Bu hizmetlerden birini kullanırsanız adınız, e-posta adresiniz ve profil fotoğrafınız platform hesabınızla paylaşılacak ve hesabınıza eklenecektir.</p> <p>Hesabınızın oluşturulmasının size sahiplik hakkı vermediğini lütfen unutmayın. Platform  yöneticileri, bu sayfada belirtilen hüküm ve koşullara uyulmaması gibi nedenlerle hesapları reddedebilir, askıya alabilir veya silebilir.</p> <p>Hesabınız için genel koşullar şunlardır: </p> <ul> <li> <strong>Tek bir hesap oluşturabilirsiniz</strong> <p>Kişiler birden fazla hesap oluşturamaz ve tutamaz. Verdiğiniz hesap bilgileri doğru olmalıdır ve bu hesap bir platform yöneticisinin izni olmadan başkasına devredilemez. </p> </li> <li> <strong>Hesabınız ticari tanıtım için kullanılamaz</strong> <p>Hesaplar yalnızca reklam, ürün veya hizmet pazarlama vb. amaçlarla kullanılamaz.</p> </li> <li> <strong>Hesap bilgilerinizi güvenli ve gizli tutmaktan siz sorumlusunuz</strong> <p>Hesabınızı, hesabınızın parolasını ve giriş bilgilerini yalnızca siz kullanabilirsiniz. Hesap güvenliğinizi artırmak için rakamlar, küçük harfler ve büyük harflerden oluşan bir parola kullanmanız önerilir. Hesabınızda meydana gelen herhangi bir kayıp veya hasardan sorumlu değiliz ve çalınmasından (örneğin, kimlik avı yoluyla) sorumlu tutulamayız. Sizden parolanız gibi oturum açma bilgilerinizi hiçbir zaman istemeyiz. </p>  <h2>Platformdaki etkinliğiniz</h2> <p>Güvenli ve üretken katılımı sağlamak için, bu platformda yayınlanabilecek içerik türüne ilişkin bazı kısıtlamalar vardır. Platformda yayınladığınız tüm içerikler aşağıdakilerden arındırılmış olmalıdır:</p> <ul> <li> <strong>Özel veriler</strong> <p>Gizli veriler, telefon numaraları ve adresler gibi başkaları hakkındaki kişisel bilgiler, kişilerin açık izinleri ve rızaları olmadan yayınlanamaz.  </p> <li><strong>Spam / kötü amaçlı yazılım / kimlik avı / virüsler / solucanlar / Truva atları</strong> <p>Başkalarının gizliliğini ihlal etmeyi veya başkalarının tarayıcılarına veya bilgisayarlarına zarar vermeyi veya bozmayı amaçlayan kötü amaçlı içerik veya bağlantılar.</p> </li> <li> <strong>Tehditler, hakaretler ve diğer uygunsuz içerikler </strong> <p>Kişisel saldırılar ve hakaretler, tehdit edici davranışlar veya dil, ayrımcı yorumlar, küfür ve diğer saldırgan dil.</p> </li> <li><strong>Reklam ve ticari faaliyet</strong> <p>Yalnızca ticari bir hizmet veya ürünün reklamını yapmak amacıyla yayınlanan içerik.</p> </li> <li> <strong>Telif hakkıyla korunan materyaller</strong> <p>Fikri mülkiyet haklarını ihlal eden içerikler (örneğin, telif hakkıyla korunan görseller).</p> </li> <li> <strong>Yasa dışı faaliyetler</strong> <p>Herhangi bir şekilde yasa dışı faaliyetleri teşvik eden içerikler.</li></p> </ul> <p>Yukarıdakilerden herhangi birini içeren gönderiler ve diğer içerikler düzenlenebilir, silinebilir veya başka bir şekilde gönderilmesi engellenebilir ve hesap geçici olarak engellenebilir veya kalıcı olarak silinebilir. Geçici veya kalıcı olarak askıya alınmaktan kaçınmak için oluşturulan yeni veya ek hesaplar da izlenebilir ve silinebilir.</p> <h2>Geçerli yasalar</h2> <p>Bir hesabın kullanımı geçerli yasaları ihlal edemez. Bu, gizlilik mevzuatının, fikri mülkiyet haklarının, ceza kanununun vb. ihlalini içerir.</p> <p>Platformda yayınlanan ve yukarıdaki kurallara ve yasalara uymayan içerikten hiçbir şekilde sorumlu tutulamayız. İhlaller support@citizenlab.co adresine bildirilebilir ve ilgili mesajların silinmesine ve/veya ilgili hesabın askıya alınmasına veya kalıcı olarak iptal edilmesine neden olabilir.</p> <p>Platformda yayınlanan içeriğin zararlı dosyalar veya bağlantılar içermesi mümkündür. Platform üzerinden dosya indirerek veya köprülere erişerek oluşabilecek herhangi bir zararın riskini ve sorumluluğunu kendiniz üstlenirsiniz.</p> <h2>Mülkiyet hakları</h2> <p>Bu platform, içeriği, kaynak kodu, veritabanları vb. ile ilgili fikri mülkiyet hakları ile korunmaktadır. Platformda yayınladığınız tüm orijinal içerikler herkesin kullanımına açıktır ve içeriğinizin atıfta bulunularak paylaşılmasına veya uyarlanmasına izin veren Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) Genel Lisansı kapsamındadır. Platformu ve herkese açık nitelikte olmayan herhangi bir içeriğini izinsiz olarak hiçbir biçimde çoğaltamaz, dağıtamaz, değiştiremez veya iletemezsiniz.</p>
     privacy_policy_title: Privacy Policy
     privacy_policy_body: >
       <p>Responsible for the processing of the Data:</p> <p>CitizenLab NV - Anspachlaan 65 - 1000 Brussels - Belgium</p> <p>Contact e-mail address: support@citizenlab.co</p> <p>Organization: //insert client contacts</p> <h2>1. PRIVACY POLICY</h2> <p>This ‘Privacy Policy’ applies to the ‘Personal Data’ collected by CitizenLab on behalf of the organization through this website.</p> <h2>2. WHAT ARE PERSONAL DATA?</h2> <p>In this Privacy Policy, Personal Data refers to information that makes it possible to identify you. An identifiable person is someone who can be identified, either directly or indirectly, in particular by referring to an identification number or to one or more factors that are linked to physical, physiological, mental, economic, cultural or social identity. A typical example of personal information is your name and email address.</p> <h2>3. WHAT PERSONAL DATA DO WE COLLECT?</h2> <p>We might collect your Personal Data from the following three sources:</p> <h3>3.1 Personal Data that you provide during the registration process on the Platform, some of which are optional.</h3> <p>The personal data that we might collect from you are:</p> <ul> <li>First and last name</li> <li>E-mail address</li> <li>Year of birth</li> <li>Gender</li> <li>Area of residence</li> <li>Preferred language</li> </ul> <p>This list can be extended on request of the organization. If you choose to sign-in via a 3rd party authentication provider as Google Accounts, Facebook or FranceConnect, we will get this data from them. If you choose to verify your identity with a 3rd party identity provider as COW, FranceConnect or CSAM, we will get this information from them.</p> <h3>3.2 Personal data that you provide when taking participative action on our platform.</h3> <p>Every action you take on the platform (voting, posting an idea, writing a comment, answering a poll,…) is registered and stored. This data is also linked to your registration data (3.1), implying that the organization can link your platform profile to this participation data.</p> <h3>3.3 Personal Data that we collect when you visit our platform.</h3> <p>We (and third party processors acting on our behalf) collect information about usage of our platform for assessing the good functioning and security of the platform. To this end, we collect technical information that can identify you, such as your IP address and browser details. By using our services you agree to this data being collected.</p> <p>We also gather usage data to improve our services, you can opt-out of this collection at all time from the consent manager.</p> <h2>4. HOW DO WE USE PERSONAL DATA?</h2> <p>We might use your personal data for the following purposes:</p> <ul> <li>First and foremost, to communicate your input to the organization with relevant context, and to draw aggregated reports of all the data collected on this platform to assist their decision-making.</li> <li>To create and maintain your user profile on this website.</li> <li>To manage the identification and authentication of users.</li> <li>To provide information about your community and/or alert you when activities on the platform may interest you. You can opt-out of user emails from your user profile at any time.</li> <li>To improve our services and monitor their functionalities.</li> </ul> <p>The personal data is only stored and processed for the period required for the purpose of the processing. After that, the data will be deleted or anonymized.</p> <h2>5. WITH WHOM DO WE SHARE YOUR PERSONAL DATA?</h2> <p>We share your personal data with the organization on behalf of which we gather this data. We share your data to the sub-processors working on our behalf. We will never sell or rent your personal data to other service providers, nor will we share your Personal Data with any service providers who are not compliant with the GDPR.</p> <h2>6. WHERE DO WE TRANSFER YOUR PERSONAL DATA TO?</h2> <p>We only transfer your Personal Data to service providers established outside the European Economic Area if they comply to art 44 GDPR.</p> <h2>7. WHAT RIGHTS DO YOU HAVE?</h2> <p>You have the right to view your personal data at any time, as well as the right to be informed of the use that Citizenlab makes of your personal data.</p> <h3>7.1 Right to rectification, erasure and restriction of processing</h3> <p>You are free to decide whether or not to provide your personal data to Citizenlab. In addition, you always have the right to request Citizenlab to correct, supplement or remove your personal data. You acknowledge that a refusal to provide or a request for the erasure of personal data means that certain services can no longer be delivered. You may also request that the processing of your personal data is limited. If you choose to remove your account from the platform, the personal data that was collected about you will be removed from our servers. Some personal information about you might remain in the logging data we keep for security and legal reasons for up to 30 days.</p> <h3>7.2 Right to object</h3> <p>You have the right to object to the processing of your personal data for serious and legitimate reasons. In addition, you always have the right to object to the use of your personal data for direct marketing purposes; in such cases, you do not have to state reasons.</p> <h3>7.3 Right to data portability</h3> <p>You have the right to obtain the personal data you have provided to Citizenlab in a structured, typical and machine-readable form and/or have such transferred to different controllers.</p> <h3>7.4 Right to withdraw consent</h3> <p>Insofar as the processing is based on your prior consent, you have the right to withdraw this approval.</p> <h3>7.5 Exercising your rights</h3> <p>You can exercise your rights by contacting Citizenlab to this end, either by email to support@citizenlab.co, by post to Anspachlaan 65, 1000 Brussels, Belgium or by using the “Contact us” form on our Website, provided you enclose a copy of the front of your identity card.</p> <h3>7.6 Automated decision-making and profiling</h3> <p>The processing of your personal data does not include profiling and shall also not be subjected by Citizenlab to automated decision-making.</p> <h3>7.7 Right to lodge a complaint</h3> <p>You have the right to lodge a complaint to the Privacy authority of your country, or the Belgian Privacy Authority under which authority CitizenLab falls: Drukpersstraat 35, 1000 Brussels, Belgium, Tel +32 (0)2 274 48 00, Fax +32 (0)2 274 48 35, e-mail: contact@adp-gba.be. This does not affect relief before a civil court.</p> <h2>8. ADDITIONAL INFORMATION ON DATA COLLECTION AND PROCESSING</h2> <h3>Legal procedures</h3> <p>CitizenLab and the Organization we process this data for might use the Personal Data of the User for legal purposes, for the court or legal proceedings preceding phases in the event of unlawful use of this Application or the related services. The User is aware that CitizenLab and the Organization we work with might be obliged to disclose the personal data at the request of competent government institutions for the processing of the Data. The legal basis for this processing is the acceptance of the terms and conditions (contractual basis) and given consent.</p> <h3>Security Measures</h3> <p>Citizenlab has developed security measures which have been adjusted at the technological and organisational level to prevent the destruction, loss, falsification, changing, prohibited access or the erroneous disclosure to third parties of personal data as well as any other prohibited processing of this data. Under no circumstances can Citizenlab be held liable for any direct or indirect loss resulting from the incorrect or unlawful use of your personal data by a third party. You must at all times comply with the security instructions, including by preventing all prohibited access to your login details and password. You are solely responsible for the use made from the website on your computer, IP-address and your identification details, as well as for the confidentiality of such.</p> <h3>Changes to this privacy policy</h3> <p>CitizenLab reserves the right to change this privacy policy at any time by notifying Users on this page. We encourage you to check this page for possible changes. The date of the last change is indicated at the bottom of the page. If a User objects to any change in the policy, the User must not continue to use this Application. Unless otherwise indicated, the valid Privacy Policy applicable at that time applies to all Personal Data that we have collected.</p> <p><em>Most recent update: 17/12/2019</em></p>
@@ -159,7 +159,7 @@ tr:
     gender:
       male: Male
       female: Female
-      unspecified: Other
+      unspecified: Diğer
     domicile:
       outside: Somewhere else
     education:
