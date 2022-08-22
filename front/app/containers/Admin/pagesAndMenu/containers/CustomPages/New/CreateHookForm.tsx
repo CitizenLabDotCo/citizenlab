@@ -10,7 +10,7 @@ import { SectionField } from 'components/admin/Section';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, string } from 'yup';
 import validateMultiloc from 'utils/yup/validateMultiloc';
-import { slugRexEx } from 'utils/textUtils';
+import { slugRegEx } from 'utils/textUtils';
 // import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 // components
@@ -54,7 +54,7 @@ const CreateCustomPageHookForm = ({
   const schema = object({
     title_multiloc: validateMultiloc(formatMessage(messages.multilocError)),
     slug: string()
-      .matches(slugRexEx, formatMessage(messages.slugRegexError))
+      .matches(slugRegEx, formatMessage(messages.slugRegexError))
       .required(formatMessage(messages.slugRequiredError)),
   });
 
