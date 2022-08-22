@@ -27,6 +27,6 @@ class MoveCustomFormsToParticipationContext < ActiveRecord::Migration[6.1]
       unique: true
     )
 
-    remove_column :custom_forms, :custom_form_id
+    remove_column :projects, :custom_form_id
   end
 end

@@ -12,7 +12,7 @@
 #
 # Indexes
 #
-#  index_custom_forms_on_participation_context  (participation_context_id,participation_context_type)
+#  index_custom_forms_on_participation_context  (participation_context_id,participation_context_type) UNIQUE
 #
 class CustomForm < ApplicationRecord
   belongs_to :participation_context, polymorphic: true
