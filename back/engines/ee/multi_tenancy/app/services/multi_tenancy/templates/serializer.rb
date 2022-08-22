@@ -13,9 +13,6 @@ module MultiTenancy
           {
             'home_page'                            => yml_home_pages,
             'area'                                 => yml_areas,
-            'custom_form'                          => yml_custom_forms,
-            'custom_field'                         => yml_custom_fields,
-            'custom_field_option'                  => yml_custom_field_options,
             'topic'                                => yml_topics,
             'user'                                 => yml_users,
             'email_campaigns/unsubscription_token' => yml_unsubscription_tokens,
@@ -65,7 +62,10 @@ module MultiTenancy
             'volunteering/volunteer'               => yml_volunteering_volunteers,
             'custom_maps/map_config'               => yml_maps_map_configs,
             'custom_maps/layer'                    => yml_maps_layers,
-            'custom_maps/legend_item'              => yml_maps_legend_items
+            'custom_maps/legend_item'              => yml_maps_legend_items,
+            'custom_form'                          => yml_custom_forms,
+            'custom_field'                         => yml_custom_fields,
+            'custom_field_option'                  => yml_custom_field_options
           }
         end
         { 'models' => models }
@@ -140,7 +140,8 @@ module MultiTenancy
         CustomForm.all.map do |c|
           yml_custom_form = {
             'created_at' => c.created_at.to_s,
-            'updated_at' => c.updated_at.to_s
+            'updated_at' => c.updated_at.to_s,
+            'participation_context_ref' => lookup_ref(c.participation_context_id, %i[project phase])
           }
           store_ref yml_custom_form, c.id, :custom_form
           yml_custom_form
@@ -296,8 +297,7 @@ module MultiTenancy
             'description_preview_multiloc' => p.description_preview_multiloc,
             'process_type' => p.process_type,
             'internal_role' => p.internal_role,
-            'custom_form_ref' => lookup_ref(p.custom_form_id, :custom_form),
-            'text_images_attributes' => p.text_images.map  do |ti|
+            'text_images_attributes' => p.text_images.map do |ti|
               {
                 'imageable_field' => ti.imageable_field,
                 'remote_image_url' => ti.image_url,
