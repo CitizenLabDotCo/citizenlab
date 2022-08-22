@@ -107,16 +107,14 @@ const StatusLabelWithMargin = styled(StatusLabel)`
   margin-left: 12px;
 `;
 
-type Props = {
+interface Props {
   resource: {
     title: string;
     subtitle?: string;
   };
   tabs?: ITab[];
   children?: React.ReactNode;
-};
-
-interface State {}
+}
 
 function getRegularExpression(tabUrl: string) {
   return new RegExp(`^/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)(${tabUrl})(/)?$`);
@@ -143,15 +141,13 @@ const FormattedTabLink = ({
   return <Link to={url}>{label}</Link>;
 };
 
-class TabbedResource extends React.PureComponent<
-  Props & WithRouterProps,
-  State
-> {
-  activeClassForTab = (tab: ITab) => {
-    const {
-      location: { pathname },
-    } = this.props;
-
+const TabbedResource = ({
+  location: { pathname },
+  children,
+  resource: { title, subtitle },
+  tabs,
+}: Props & WithRouterProps) => {
+  const activeClassForTab = (tab: ITab) => {
     return (
       typeof tab.active === 'function'
         ? tab.active(pathname)
@@ -162,57 +158,50 @@ class TabbedResource extends React.PureComponent<
       : '';
   };
 
-  render() {
-    const {
-      children,
-      resource: { title, subtitle },
-      tabs,
-    } = this.props;
+  return (
+    <>
+      <ResourceHeader className="e2e-resource-header">
+        <div>
+          <Title>{title}</Title>
+          {subtitle && <SectionDescription>{subtitle}</SectionDescription>}
+        </div>
+      </ResourceHeader>
 
-    return (
-      <>
-        <ResourceHeader className="e2e-resource-header">
-          <div>
-            <Title>{title}</Title>
-            {subtitle && <SectionDescription>{subtitle}</SectionDescription>}
-          </div>
-        </ResourceHeader>
-
-        {tabs && tabs.length > 0 && (
-          <TabbedNav className="e2e-resource-tabs">
-            {tabs.map((tab) => {
-              if (tab.feature) {
-                return (
-                  <FeatureFlag key={tab.url} name={tab.feature}>
-                    <Tab
-                      key={tab.url}
-                      className={`${tab.name} ${this.activeClassForTab(tab)}`}
-                      data-testid="resource-single-tab"
-                    >
-                      <FormattedTabLink tab={tab} />
-                    </Tab>
-                  </FeatureFlag>
-                );
-              }
-
-              // no feature, just return tab with label
+      {tabs && tabs.length > 0 && (
+        <TabbedNav className="e2e-resource-tabs">
+          {tabs.map((tab) => {
+            if (tab.feature) {
               return (
-                <Tab
-                  key={tab.url}
-                  className={`${tab.name} ${this.activeClassForTab(tab)}`}
-                  data-testid="resource-single-tab"
-                >
-                  <FormattedTabLink tab={tab} />
-                </Tab>
+                <FeatureFlag key={tab.url} name={tab.feature}>
+                  <Tab
+                    key={tab.url}
+                    className={`${tab.name} ${activeClassForTab(tab)}`}
+                    data-testid="resource-single-tab"
+                  >
+                    <FormattedTabLink tab={tab} />
+                  </Tab>
+                </FeatureFlag>
               );
-            })}
-          </TabbedNav>
-        )}
+            }
 
-        <ChildWrapper>{children}</ChildWrapper>
-      </>
-    );
-  }
-}
+            // no feature, just return tab with label
+            return (
+              <Tab
+                key={tab.url}
+                className={`${tab.name} ${activeClassForTab(tab)}`}
+                data-testid="resource-single-tab"
+              >
+                <FormattedTabLink tab={tab} />
+              </Tab>
+            );
+          })}
+        </TabbedNav>
+      )}
+      <ChildWrapper>{children}</ChildWrapper>
+
+      {true ? <>{children}</> : <ChildWrapper>{children}</ChildWrapper>}
+    </>
+  );
+};
 
 export default withRouter(TabbedResource);
