@@ -30,6 +30,8 @@ class RegistrationCustomFieldNew extends React.Component<Props> {
       clHistory.push(
         `/admin/settings/registration/custom-fields/${result.data.id}/options`
       );
+    } else {
+      clHistory.push('/admin/settings/registration');
     }
   };
 
