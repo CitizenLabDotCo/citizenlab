@@ -121,6 +121,11 @@ const FormBuilderSettings = ({
     }
   };
 
+  const errorComponentProps = {
+    marginTop: '8px',
+    marginBottom: '8px',
+    scrollIntoView: false,
+  };
   const { required, title_multiloc, description_multiloc } = fieldState;
 
   return (
@@ -156,10 +161,8 @@ const FormBuilderSettings = ({
           onChange={(value: Multiloc) => onStateChange('title_multiloc', value)}
         />
         <Error
-          marginTop="8px"
-          marginBottom="8px"
+          {...errorComponentProps}
           apiErrors={keyErrors['title_multiloc']}
-          scrollIntoView={false}
         />
       </SectionField>
       <SectionField>
@@ -172,10 +175,8 @@ const FormBuilderSettings = ({
           }
         />
         <Error
-          marginTop="8px"
-          marginBottom="8px"
+          {...errorComponentProps}
           apiErrors={keyErrors['description_multiloc']}
-          scrollIntoView={false}
         />
       </SectionField>
       <SectionField>
@@ -188,12 +189,7 @@ const FormBuilderSettings = ({
             </Text>
           }
         />
-        <Error
-          marginTop="8px"
-          marginBottom="8px"
-          apiErrors={keyErrors['required']}
-          scrollIntoView={false}
-        />
+        <Error {...errorComponentProps} apiErrors={keyErrors['required']} />
       </SectionField>
       <Box display="flex" justifyContent="space-between">
         <Button
