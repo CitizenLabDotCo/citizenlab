@@ -28,7 +28,7 @@ import { Multiloc } from 'typings';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { validateSlug } from 'utils/textUtils'
+import { validateSlug } from 'utils/textUtils';
 import { forOwn } from 'lodash-es';
 
 const StyledInputMultiloc = styled(InputMultilocWithLocaleSwitcher)`
@@ -58,11 +58,11 @@ const CreateCustomPage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     const errors = {};
 
     forOwn(titleMultiloc, (title, locale) => {
-      if (!title || title == "") {
-        errors[locale] = 'broken'
+      if (!title || title.length === 0) {
+        errors[locale] = 'broken';
       }
     });
-  
+
     setTitleMultiloc(titleMultiloc);
     setTitleErrors(errors);
   };
@@ -84,7 +84,7 @@ const CreateCustomPage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           linkTo: pagesAndMenuBreadcrumb.linkTo,
         },
         {
-          label: 'Create custom page',
+          label: formatMessage(messages.createCustomPage),
         },
       ]}
       title={formatMessage(messages.pageTitle)}
@@ -92,7 +92,9 @@ const CreateCustomPage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         <SubmitWrapper
           status={'enabled'}
           buttonStyle="primary"
+          // to be changed
           loading={false}
+          // to be changed
           onClick={() => {}}
           messages={{
             buttonSave: messages.saveButton,
@@ -118,6 +120,7 @@ const CreateCustomPage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         label={<FormattedMessage {...messages.slugLabel} />}
         onChange={handleSlugOnChange}
         value={slug}
+        // to be changed
         error={!isSlugValid ? 'slug error' : null}
         labelTooltipText={<FormattedMessage {...messages.slugTooltip} />}
       />
