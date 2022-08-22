@@ -82,8 +82,8 @@ tr:
       "password_reset": Parola sıfırlama - tüm kullanıcılar
       "project_moderation_rights_received": Proje moderasyon hakları alındı - proje yöneticileri
       "project_folder_moderation_rights_received": Klasör yöneticisi hakları alındı
-      "project_phase_started": New project phase - all users
-      "project_phase_upcoming": Upcoming new project phase - admins and project managers
+      "project_phase_started": Yeni proje aşaması - tüm kullanıcılar
+      "project_phase_upcoming": Yaklaşan yeni proje aşaması - yöneticiler ve proje yöneticileri
       "status_change_of_commented_idea": Status change of an idea you commented on - all users
       "status_change_of_commented_initiative": Status change of a proposal you commented on - all users
       "status_change_of_voted_idea": Status change of an idea you voted on - all users
