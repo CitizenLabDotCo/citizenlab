@@ -9,12 +9,14 @@ jest.mock('hooks/useAppConfiguration', () => () => ({
 jest.mock('hooks/useLocale');
 jest.mock('services/locale');
 
+const slug = 'my-folder';
+
 const defaultProps: Props = {
   apiErrors: {},
   handleSlugOnChange: jest.mock,
-  resource: 'folder',
+  previewUrlWithoutSlug: `localhost:3000/my-area-folder/${slug}`,
   showSlugErrorMessage: true,
-  slug: 'my-folder',
+  slug,
 };
 
 describe('SlugInput', () => {
