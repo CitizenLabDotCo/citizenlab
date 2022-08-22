@@ -102,7 +102,7 @@ tr:
       "link_terms_conditions": "Hüküm ve Koşullar"
       "link_unsubscribe": "Abonelikten ayrıl"
       "powered_by": "Destekleyen"
-      "statement": "This e-mail was sent to you by CitizenLab on behalf of %{organizationName}, because you are a registered user of %{organizationLink}. You can %{unsubscribeLink} if you do not want to receive these e-mails in the future."
+      "statement": "Bu e-posta %{organizationName} adına CitizenLab tarafından kayıtlı bir %{organizationLink} kullanıcısı olduğunuz için gönderilmiştir. Bu e-postaları almaya devam etmek istemiyorsanız %{unsubscribeLink}."
       "unsubscribe_text": "abonelikten ayrılabilirsiniz"
     comment_deleted_by_admin:
       reason: 'Yorumunuzun silinme nedeni:'
