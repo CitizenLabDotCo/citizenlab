@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { cloneDeep } from 'lodash-es';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -39,10 +40,26 @@ import { isCLErrorJSON } from 'utils/errorUtils';
 
 interface FormBuilderTopBarProps {
   formCustomFields: IFlatCustomField[] | undefined | Error;
-  setApiErrors: (apiErrors: CLErrors | null) => void;
+  setApiErrors: (apiErrors: CLErrors) => void;
 }
 
-const FormBuilderTopBar = ({ formCustomFields, setApiErrors }: FormBuilderTopBarProps) => {
+// We remove the key error becuase it is a backend issue that we don't need on the frontend. For reference https://citizenlabco.slack.com/archives/C03NAUHQUPM/p1660117282283629?thread_ts=1659975245.293159&cid=C03NAUHQUPM
+const getErrorsWithoutKeys = (errors: CLErrors) => {
+  const newErrorObject = cloneDeep(errors);
+
+  Object.values(newErrorObject).forEach((error) => {
+    if ('key' in error) {
+      delete error['key'];
+    }
+  });
+
+  return newErrorObject;
+};
+
+const FormBuilderTopBar = ({
+  formCustomFields,
+  setApiErrors,
+}: FormBuilderTopBarProps) => {
   const localize = useLocalize();
   const { projectId } = useParams() as { projectId: string };
   const project = useProject({ projectId });
@@ -67,10 +84,9 @@ const FormBuilderTopBar = ({ formCustomFields, setApiErrors }: FormBuilderTopBar
         }));
         await updateFormCustomFields(projectId, finalResponseArray);
       } catch (error) {
-        console.log('errors', error)
         if (isCLErrorJSON(error)) {
           const apiErrors = (error as CLErrorsJSON).json.errors;
-          setApiErrors(apiErrors);
+          setApiErrors(getErrorsWithoutKeys(apiErrors));
         }
       } finally {
         setLoading(false);

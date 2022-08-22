@@ -15,7 +15,7 @@ import FormBuilderTopBar from 'containers/Admin/formBuilder/components/FormBuild
 import FormBuilderToolbox from 'containers/Admin/formBuilder/components/FormBuilderToolbox';
 import FormBuilderSettings from 'containers/Admin/formBuilder/components/FormBuilderSettings';
 import FormFields from 'containers/Admin/formBuilder/components/FormFields';
-import Warning from 'components/UI/Warning';
+import Error from 'components/UI/Error';
 
 // utils
 import { isNilOrError, isNil } from 'utils/helperUtils';
@@ -28,7 +28,7 @@ import {
 // hooks
 import useFormCustomFields from 'hooks/useFormCustomFields';
 
-import { CLErrors } from 'typings';
+import { CLErrors, CLError } from 'typings';
 
 import messages from '../messages';
 
@@ -44,9 +44,9 @@ const StyledRightColumn = styled(RightColumn)`
   overflow-y: auto;
 `;
 
-const StyledWarning = styled(Warning)`
-  background: ${colors.red100};
-`;
+type SelectedError = {
+  [fieldId: string]: CLError[] | null;
+} | null;
 
 export const FormEdit = () => {
   const [selectedField, setSelectedField] = useState<
@@ -58,7 +58,9 @@ export const FormEdit = () => {
     projectId,
   });
 
-  const [apiErrors, setApiErrors] = useState<CLErrors | null>(null)
+  const [apiErrors, setApiErrors] = useState<CLErrors | null>(null);
+  const [selectedFieldError, setSelectedFieldError] =
+    useState<SelectedError>(null);
 
   const closeSettings = () => {
     setSelectedField(undefined);
@@ -95,25 +97,25 @@ export const FormEdit = () => {
   };
 
   const handleDragRow = (fromIndex: number, toIndex: number) => {
-    if (!isNilOrError(formCustomFields)) {
-      const newFields = clone(formCustomFields);
-      const [removed] = newFields.splice(fromIndex, 1);
-      newFields.splice(toIndex, 0, removed);
-      setFormCustomFields(newFields);
+    if (isNilOrError(formCustomFields)) return;
 
-      if(apiErrors) {
-        const newErrors = {} as CLErrors;
-        Object.keys(apiErrors).forEach((key) => {
-          if (Number(key) === fromIndex) {
-            newErrors[toIndex.toString()] = apiErrors[key];
-          } else if (Number(key) === toIndex) {
-            newErrors[fromIndex.toString()] = apiErrors[key];
-          } else {
-            newErrors[key] = apiErrors[key];
-          }
-        })
-        setApiErrors(newErrors);
-      }
+    const newFields = clone(formCustomFields);
+    const [removed] = newFields.splice(fromIndex, 1);
+    newFields.splice(toIndex, 0, removed);
+    setFormCustomFields(newFields);
+
+    if (apiErrors) {
+      const newErrors = {} as CLErrors;
+      Object.keys(apiErrors).forEach((key) => {
+        if (Number(key) === fromIndex) {
+          newErrors[toIndex.toString()] = apiErrors[key];
+        } else if (Number(key) === toIndex) {
+          newErrors[fromIndex.toString()] = apiErrors[key];
+        } else {
+          newErrors[key] = apiErrors[key];
+        }
+      });
+      setApiErrors(newErrors);
     }
   };
 
@@ -129,6 +131,55 @@ export const FormEdit = () => {
     }
   };
 
+  const onEditField = (field: IFlatCustomField) => {
+    if (isNilOrError(formCustomFields)) return;
+
+    const fieldIndex = formCustomFields.findIndex(
+      (fieldInArray) => fieldInArray.id === field.id
+    );
+
+    if (fieldIndex !== -1) {
+      setSelectedFieldError({
+        [field.id]: apiErrors
+          ? (apiErrors[fieldIndex.toString()] as CLError[])
+          : null,
+      });
+    }
+
+    setSelectedField(field);
+  };
+
+  const setErrorsOnSave = (errors: CLErrors) => {
+    if (selectedField && !isNilOrError(formCustomFields)) {
+      const fieldIndex = formCustomFields.findIndex(
+        (fieldInArray) => fieldInArray.id === selectedField.id
+      );
+
+      setSelectedFieldError({
+        [selectedField.id]: errors[fieldIndex.toString()] as CLError[],
+      });
+    }
+    setApiErrors(errors);
+  };
+
+  const updateApiErrors = (fieldId: string, errors: SelectedError) => {
+    if (!isNilOrError(errors)) {
+      const fieldIndex = (formCustomFields as IFlatCustomField[]).findIndex(
+        (fieldInArray) => fieldInArray.id === fieldId
+      );
+      setSelectedFieldError(errors);
+      const updatedErrors = {
+        ...apiErrors,
+        [fieldIndex]: errors[fieldId] as unknown as CLError[],
+      };
+      setApiErrors(updatedErrors);
+    }
+  };
+
+  const showErrorMessage = !!Object.values(apiErrors || {}).find(
+    (apiError) => Object.keys(apiError).length > 0
+  );
+
   return (
     <Box
       display="flex"
@@ -140,29 +191,37 @@ export const FormEdit = () => {
       h="100vh"
     >
       <FocusOn>
-        <FormBuilderTopBar formCustomFields={formCustomFields} setApiErrors={setApiErrors} />
+        <FormBuilderTopBar
+          formCustomFields={formCustomFields}
+          setApiErrors={setErrorsOnSave}
+        />
         <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
           <FormBuilderToolbox onAddField={onAddField} />
           <StyledRightColumn>
             <Box width="1000px">
-                <Box mb="16px">
-                  {apiErrors && <StyledWarning>
-                    <FormattedMessage {...messages.errorMessage} />
-                  </StyledWarning>}
-                </Box>
-                <Box bgColor="white" minHeight="300px">
-                  {!isNilOrError(formCustomFields) && (
-                    <FormFields
-                      onEditField={setSelectedField}
-                      formCustomFields={formCustomFields}
-                      handleDragRow={handleDragRow}
-                      handleDropRow={handleDropRow}
-                      selectedFieldId={selectedField?.id}
-                      apiErrors={apiErrors}
-                    />
-                  )}
-                </Box>
+              <Box mb="16px">
+                {showErrorMessage && (
+                  <Error
+                    marginTop="8px"
+                    marginBottom="8px"
+                    text={<FormattedMessage {...messages.errorMessage} />}
+                    scrollIntoView={false}
+                  />
+                )}
               </Box>
+              <Box bgColor="white" minHeight="300px">
+                {!isNilOrError(formCustomFields) && (
+                  <FormFields
+                    onEditField={onEditField}
+                    formCustomFields={formCustomFields}
+                    handleDragRow={handleDragRow}
+                    handleDropRow={handleDropRow}
+                    selectedFieldId={selectedField?.id}
+                    apiErrors={apiErrors}
+                  />
+                )}
+              </Box>
+            </Box>
           </StyledRightColumn>
           {!isNilOrError(selectedField) && (
             <FormBuilderSettings
@@ -171,6 +230,8 @@ export const FormEdit = () => {
               onDelete={handleDelete}
               onFieldChange={onFieldChange}
               onClose={closeSettings}
+              errors={selectedFieldError}
+              setErrors={updateApiErrors}
             />
           )}
         </Box>

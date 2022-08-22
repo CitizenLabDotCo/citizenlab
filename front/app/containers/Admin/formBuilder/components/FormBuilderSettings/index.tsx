@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { cloneDeep } from 'lodash-es';
 
 // styles
 import { colors } from 'utils/styleUtils';
@@ -14,46 +15,83 @@ import Button from 'components/UI/Button';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import { SectionField, SectionTitle } from 'components/admin/Section';
 import CloseIconButton from 'components/UI/CloseIconButton';
+import Error from 'components/UI/Error';
 
 // intl
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // Types
-import { Multiloc } from 'typings';
+import { Multiloc, CLError } from 'typings';
 
 import {
   IFlatCustomField,
   IFlatUpdateCustomField,
 } from 'services/formCustomFields';
 
+import { isNilOrError } from 'utils/helperUtils';
+
+type SelectedError = {
+  [fieldId: string]: CLError[] | null;
+} | null;
+
 interface Props {
   field: IFlatCustomField;
   onDelete: (fieldId: string) => void;
   onFieldChange: (field: IFlatUpdateCustomField) => void;
   onClose: () => void;
+  errors: SelectedError;
+  setErrors: (fieldId: string, errors: SelectedError) => void;
 }
+
+const settingInputs = [
+  'title_multiloc',
+  'description_multiloc',
+  'required',
+] as const;
+
+type KeyErrorType = {
+  [key: string]: CLError[] | null;
+};
 
 const FormBuilderSettings = ({
   field,
   onDelete,
   onFieldChange,
   onClose,
+  errors,
+  setErrors,
 }: Props) => {
   // TODO I'm keeping this form as simple as possible using state pending form rework from (TEC-35)
   const [fieldState, setFieldState] = useState({
-    isRequired: field.required || false,
-    questionTitle: field.title_multiloc || {},
-    questionDescription: field.description_multiloc || {},
+    required: field.required || false,
+    title_multiloc: field.title_multiloc || {},
+    description_multiloc: field.description_multiloc || {},
   });
+
+  const keyErrors: KeyErrorType = {
+    title_multiloc: null,
+    description_multiloc: null,
+    required: null,
+  };
+
+  if (!isNilOrError(errors)) {
+    const fieldError = errors[field.id] as unknown as CLError[];
+
+    settingInputs.forEach((input) => {
+      if (fieldError && input in fieldError) {
+        keyErrors[input] = [fieldError[input][0]];
+      }
+    });
+  }
 
   useEffect(() => {
     onFieldChange({
       ...field,
       id: field.id,
-      title_multiloc: fieldState.questionTitle,
-      description_multiloc: fieldState.questionDescription,
-      required: !!fieldState.isRequired,
+      title_multiloc: fieldState.title_multiloc,
+      description_multiloc: fieldState.description_multiloc,
+      required: !!fieldState.required,
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -70,9 +108,20 @@ const FormBuilderSettings = ({
       ...fieldState,
       [key]: value,
     });
+
+    if (!isNilOrError(errors)) {
+      const newErrors = cloneDeep(errors);
+      const fieldError = newErrors[field.id] as unknown as CLError[];
+
+      if (fieldError && key in fieldError) {
+        delete fieldError[key];
+      }
+
+      setErrors(field.id, newErrors);
+    }
   };
 
-  const { isRequired, questionTitle, questionDescription } = fieldState;
+  const { required, title_multiloc, description_multiloc } = fieldState;
 
   return (
     <Box
@@ -103,29 +152,47 @@ const FormBuilderSettings = ({
         <InputMultilocWithLocaleSwitcher
           type="text"
           label={<FormattedMessage {...messages.questionTitle} />}
-          valueMultiloc={questionTitle}
-          onChange={(value: Multiloc) => onStateChange('questionTitle', value)}
+          valueMultiloc={title_multiloc}
+          onChange={(value: Multiloc) => onStateChange('title_multiloc', value)}
+        />
+        <Error
+          marginTop="8px"
+          marginBottom="8px"
+          apiErrors={keyErrors['title_multiloc']}
+          scrollIntoView={false}
         />
       </SectionField>
       <SectionField>
         <InputMultilocWithLocaleSwitcher
           type="text"
           label={<FormattedMessage {...messages.questionDescription} />}
-          valueMultiloc={questionDescription}
+          valueMultiloc={description_multiloc}
           onChange={(value: Multiloc) =>
-            onStateChange('questionDescription', value)
+            onStateChange('description_multiloc', value)
           }
+        />
+        <Error
+          marginTop="8px"
+          marginBottom="8px"
+          apiErrors={keyErrors['description_multiloc']}
+          scrollIntoView={false}
         />
       </SectionField>
       <SectionField>
         <Toggle
-          checked={!!isRequired}
-          onChange={() => onStateChange('isRequired', !isRequired)}
+          checked={!!required}
+          onChange={() => onStateChange('required', !required)}
           label={
             <Text as="span" color="adminTextColor" variant="bodyM" my="0px">
               <FormattedMessage {...messages.required} />
             </Text>
           }
+        />
+        <Error
+          marginTop="8px"
+          marginBottom="8px"
+          apiErrors={keyErrors['required']}
+          scrollIntoView={false}
         />
       </SectionField>
       <Box display="flex" justifyContent="space-between">

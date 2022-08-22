@@ -17,7 +17,7 @@ import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 import { IFlatCustomField } from 'services/formCustomFields';
 
-import { CLErrors } from 'typings';
+import { CLErrors, CLError } from 'typings';
 
 const StyledBadge = styled(Badge)`
   margin-left: 12px;
@@ -45,12 +45,18 @@ const FormFields = ({
       <Box p="32px" height="100%" overflowY="auto">
         <List key={formCustomFields.length}>
           {formCustomFields.map((field, index) => {
-            const numberApiErrorKeys = Object.keys(apiErrors || {}).map(apiError => parseInt(apiError));
-            const isIndexInApiErrors = numberApiErrorKeys.includes(index);
+            const numberApiErrorKeys = Object.keys(apiErrors || {}).map(
+              (apiError) => parseInt(apiError, 10)
+            );
+            const fieldError = (apiErrors || {})[index] as unknown as CLError[];
+            const hasError =
+              numberApiErrorKeys.includes(index) &&
+              Object.keys(fieldError).length > 0;
+
             let border = 'none';
-            if (isIndexInApiErrors) {
+            if (hasError) {
               border = '1px solid red';
-            } else if(selectedFieldId === field.id) {
+            } else if (selectedFieldId === field.id) {
               border = `1px solid ${colors.clBlueLight}`;
             }
 
