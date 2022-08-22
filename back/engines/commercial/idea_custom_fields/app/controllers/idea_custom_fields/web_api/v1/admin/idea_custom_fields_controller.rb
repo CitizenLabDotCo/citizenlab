@@ -50,8 +50,9 @@ module IdeaCustomFields
       update_fields
       @custom_form.reload
       render json: ::WebApi::V1::CustomFieldSerializer.new(
-        IdeaCustomFieldsService.new(@custom_form).configurable_fields,
-        params: fastjson_params
+        IdeaCustomFieldsService.new(@custom_form).configurable_fields, # TODO: include options
+        params: fastjson_params,
+        include: [:options]
       ).serialized_json
     rescue UpdateAllFailedError => e
       render json: { errors: e.errors }, status: :unprocessable_entity
@@ -81,6 +82,7 @@ module IdeaCustomFields
           SideFxCustomFieldService.new.after_destroy(field, current_user)
         end
         update_all_params.each_with_index do |field_params, index|
+          options = field_params.delete :options
           if field_params[:id]
             field = field_index[field_params[:id]]
             field.assign_attributes field_params
@@ -99,6 +101,7 @@ module IdeaCustomFields
             end
             SideFxCustomFieldService.new.after_create(field, current_user)
           end
+          update_options field, options if options
           field.move_to_bottom
         end
         raise UpdateAllFailedError, errors if errors.present?
@@ -139,6 +142,44 @@ module IdeaCustomFields
       end
     end
 
+    def update_options(field, options_params)
+      errors = {}
+      options = field.options
+      option_index = options.index_by(&:id)
+      given_ids = options_params.pluck :id
+
+      ActiveRecord::Base.transaction do
+        deleted_options = options.reject { |option| given_ids.include? option.id }
+        deleted_options.each do |option|
+          SideFxCustomFieldOptionService.new.before_destroy option, current_user
+          option.destroy!
+          SideFxCustomFieldOptionService.new.after_destroy option, current_user
+        end
+        options_params.each_with_index do |option_params, index|
+          if option_params[:id]
+            option = option_index[option_params[:id]]
+            option.assign_attributes option_params
+            SideFxCustomFieldOptionService.new.before_update option, current_user
+            unless option.save
+              errors[index.to_s] = option.errors.details
+              next
+            end
+            SideFxCustomFieldOptionService.new.after_update option, current_user
+          else
+            option = CustomFieldOption.new option_params.merge(custom_field: field)
+            SideFxCustomFieldOptionService.new.before_create option, current_user
+            unless option.save
+              errors[index.to_s] = option.errors.details
+              next
+            end
+            SideFxCustomFieldOptionService.new.after_create option, current_user
+          end
+          option.move_to_bottom
+        end
+        raise UpdateAllFailedError, errors if errors.present?
+      end
+    end
+
     def assign_attributes_to(custom_field)
       field_params = params
         .require(:custom_field)
@@ -156,7 +197,8 @@ module IdeaCustomFields
             :required,
             :enabled,
             { title_multiloc: CL2_SUPPORTED_LOCALES,
-              description_multiloc: CL2_SUPPORTED_LOCALES }
+              description_multiloc: CL2_SUPPORTED_LOCALES,
+              options: [:id, { title_multiloc: CL2_SUPPORTED_LOCALES }] }
           )
         end
     end
