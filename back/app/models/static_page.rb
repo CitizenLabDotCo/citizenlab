@@ -6,7 +6,7 @@
 #
 #  id                           :uuid             not null, primary key
 #  title_multiloc               :jsonb
-#  top_info_section_multiloc    :jsonb
+#  top_info_section_multiloc    :jsonb            not null
 #  slug                         :string
 #  created_at                   :datetime         not null
 #  updated_at                   :datetime         not null
