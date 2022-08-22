@@ -124,7 +124,7 @@ export default defineMessages({
   },
   answerOptionSuccess: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionSuccess',
-    defaultMessage: 'Answer option successfully updated',
+    defaultMessage: 'Answer option successfully saved',
   },
   answerOptionError: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionError',
