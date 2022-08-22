@@ -18,9 +18,7 @@ import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/Section
 import Button from 'components/UI/Button';
 import Input from 'components/HookForm/Input';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-
-// styling
-import styled from 'styled-components';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // constants
 import { pagesAndMenuBreadcrumb } from '../../../breadcrumbs';
@@ -34,10 +32,6 @@ export interface CreateCustomPageFormValues {
   title_multiloc: Multiloc;
   slug: string;
 }
-
-const StyledMultilocInput = styled(InputMultilocWithLocaleSwitcher)`
-  margin-bottom: 20px;
-`;
 
 type CreateCustomPageFormProps = {
   onSubmit: (formValues: CreateCustomPageFormValues) => void | Promise<void>;
@@ -94,12 +88,14 @@ const CreateCustomPageHookForm = ({
         >
           <SectionField>
             <Feedback successMessage={formatMessage(messages.pageTitle)} />
-            <StyledMultilocInput
-              name="title_multiloc"
-              label={formatMessage(messages.titleLabel)}
-              type="text"
-              labelTooltipText={formatMessage(messages.titleTooltip)}
-            />
+            <Box mb="20px">
+              <InputMultilocWithLocaleSwitcher
+                name="title_multiloc"
+                label={formatMessage(messages.titleLabel)}
+                type="text"
+                labelTooltipText={formatMessage(messages.titleTooltip)}
+              />
+            </Box>
             <Input
               label={formatMessage(messages.slugLabel)}
               labelTooltipText={formatMessage(messages.slugTooltip)}
