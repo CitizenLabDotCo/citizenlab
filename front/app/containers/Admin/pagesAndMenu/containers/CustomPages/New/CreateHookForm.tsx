@@ -28,21 +28,21 @@ import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
-export interface CreateCustomPageFormValues {
+interface CreateCustomPageFormValues {
   title_multiloc: Multiloc;
   slug: string;
 }
 
-type CreateCustomPageFormProps = {
+interface Props {
   onSubmit: (formValues: CreateCustomPageFormValues) => void | Promise<void>;
   defaultValues?: CreateCustomPageFormValues;
-} & InjectedIntlProps;
+}
 
 const CreateCustomPageHookForm = ({
   onSubmit,
   defaultValues,
   intl: { formatMessage },
-}: CreateCustomPageFormProps) => {
+}: Props & InjectedIntlProps) => {
   // types still to change
   const [_error, setError] = useState({});
   const schema = object({
