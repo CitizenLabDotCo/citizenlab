@@ -15,7 +15,7 @@ const TopInfoSection = lazy(() => import('./containers/TopInfoSection'));
 const HeroBannerForm = lazy(() => import('./containers/HeroBanner'));
 
 // custom pages
-const CreateCustomPage = lazy(() => import('./containers/CustomPages/Create'));
+const CreateCustomPage = lazy(() => import('./containers/CustomPages/New'));
 
 // path utils
 const ADMIN_PAGE_PATH = 'pages-menu';
