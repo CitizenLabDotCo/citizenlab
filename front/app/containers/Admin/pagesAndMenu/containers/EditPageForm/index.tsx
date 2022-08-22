@@ -68,38 +68,40 @@ const EditPageForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   };
 
   return (
-    <SectionFormWrapper
-      title={localize(page.attributes.title_multiloc)}
-      breadcrumbs={[
-        {
-          label: formatMessage(pagesAndMenuBreadcrumb.label),
-          linkTo: pagesAndMenuBreadcrumb.linkTo,
-        },
-        {
-          label: localize(page.attributes.title_multiloc),
-        },
-      ]}
-    >
+    <>
       <Outlet
         id="app.containers.Admin.pages-menu.containers.EditPageForm.index.onMount"
         onMount={() => setNavbarModuleActive(true)}
       />
-      <PageForm
-        pageId={pageId}
-        onSubmit={handleSubmit}
-        defaultValues={{
-          nav_bar_item_title_multiloc: truncateMultiloc(
-            page.attributes.nav_bar_item_title_multiloc,
-            MAX_TITLE_LENGTH
-          ),
-          title_multiloc: page.attributes.title_multiloc,
-          body_multiloc: page.attributes.body_multiloc,
-          slug: page.attributes.slug,
-          local_page_files: remotePageFiles,
-        }}
-        hideSlugInput={!navbarModuleActive}
-      />
-    </SectionFormWrapper>
+      <SectionFormWrapper
+        title={localize(page.attributes.title_multiloc)}
+        breadcrumbs={[
+          {
+            label: formatMessage(pagesAndMenuBreadcrumb.label),
+            linkTo: pagesAndMenuBreadcrumb.linkTo,
+          },
+          {
+            label: localize(page.attributes.title_multiloc),
+          },
+        ]}
+      >
+        <PageForm
+          pageId={pageId}
+          onSubmit={handleSubmit}
+          defaultValues={{
+            nav_bar_item_title_multiloc: truncateMultiloc(
+              page.attributes.nav_bar_item_title_multiloc,
+              MAX_TITLE_LENGTH
+            ),
+            title_multiloc: page.attributes.title_multiloc,
+            body_multiloc: page.attributes.body_multiloc,
+            slug: page.attributes.slug,
+            local_page_files: remotePageFiles,
+          }}
+          hideSlugInput={!navbarModuleActive}
+        />
+      </SectionFormWrapper>
+    </>
   );
 };
 

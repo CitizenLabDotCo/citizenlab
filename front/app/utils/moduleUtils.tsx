@@ -404,7 +404,9 @@ export interface OutletsPropertyMap {
     string,
     any
   >;
-  'app.components.PageForm.index.top': Record<string, any>;
+  'app.components.PageForm.index.top': {
+    hideNavbarItemTitle: boolean;
+  };
   'app.containers.Admin.pages-menu.containers.EditPageForm.index.onMount': {
     onMount: () => void;
   };

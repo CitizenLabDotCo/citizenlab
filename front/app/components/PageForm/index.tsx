@@ -108,6 +108,8 @@ const PageForm = ({
           <Feedback
             successMessage={formatMessage(messages.savePageSuccessMessage)}
           />
+        </SectionField>
+        <SectionField>
           <Outlet
             id="app.components.PageForm.index.top"
             hideNavbarItemTitle={hideNavbarItemTitle}
