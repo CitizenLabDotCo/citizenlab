@@ -189,5 +189,3 @@ require './lib/citizen_lab'
 CitizenLab.enabled_modules.each do |m|
   gem m.split('/').last, path: "engines/#{m}" if File.exist? "engines/#{m}"
 end
-
-gem 'bulk_import_ideas', path: 'engines/commercial/bulk_import_ideas'
