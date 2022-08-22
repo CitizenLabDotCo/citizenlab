@@ -103,36 +103,36 @@ tr:
       "link_unsubscribe": "Abonelikten ayrıl"
       "powered_by": "Destekleyen"
       "statement": "This e-mail was sent to you by CitizenLab on behalf of %{organizationName}, because you are a registered user of %{organizationLink}. You can %{unsubscribeLink} if you do not want to receive these e-mails in the future."
-      "unsubscribe_text": "unsubscribe"
+      "unsubscribe_text": "abonelikten ayrılabilirsiniz"
     comment_deleted_by_admin:
-      reason: 'The reason why your comment was deleted:'
-      cta_view: 'View this idea'
-      event_description: '%{organizationName} deleted the comment you wrote on an idea.'
-      main_header: '%{organizationName} deleted your comment'
+      reason: 'Yorumunuzun silinme nedeni:'
+      cta_view: 'Bu fikri görüntüle'
+      event_description: '%{organizationName} bir fikir hakkında yazdığınız yorumu sildi.'
+      main_header: '%{organizationName} yorumunuzu sildi'
       other_reason: '%{otherReason}'
-      inappropriate_reason: 'Your comment was considered to be inappropriate'
-      irrelevant_reason: 'Your comment was considered to be irrelevant for that context'
-      no_reason: 'No reason was specified'
-      subject: 'Your comment has been deleted from the platform of %{organizationName}'
-      preheader: 'Your comment has been deleted'
+      inappropriate_reason: 'Yorumunuz uygunsuz bulundu'
+      irrelevant_reason: 'Yorumunuz konuyla alakasız bulundu'
+      no_reason: 'Neden belirtilmedi'
+      subject: 'Yorumunuz %{organizationName} platformundan silindi'
+      preheader: 'Yorumunuz silindi'
     admin_digest:
-      subject: 'Your weekly admin report of %{time}'
-      preheader: 'Admin digest of %{organizationName}'
-      title_your_weekly_report: '%{firstName}, your weekly report'
-      text_introduction: 'We''ve curated for you the input that has generated the most activity over the past week. Find out what''s happening on your platform!'
-      cta_visit_the_platform: 'Visit your platform'
-      new_users: 'New users'
-      new_ideas: 'New ideas'
-      new_comments: 'New comments'
-      title_activity_past_week: 'Activity of the past week'
-      title_no_activity_past_week: 'There was no activity in the past week'
-      title_initiatives_past_week: 'New proposals of the past week'
-      title_successful_initiatives_past_week: 'Proposals that reached the threshold in the past week'
-      yesterday_by_author: 'Yesterday by %{author}'
-      today_by_author: 'Today by %{author}'
-      x_days_ago_by_author: '%{x} days ago by %{author}'
+      subject: '%{time} için haftalık yönetici raporunuz'
+      preheader: '%{organizationName} ile ilgili yönetici özeti'
+      title_your_weekly_report: '%{firstName}, haftalık raporunuz'
+      text_introduction: 'Geçtiğimiz hafta en fazla etkinlik üreten girdileri derledik. Platformunuzda neler olduğunu öğrenin.'
+      cta_visit_the_platform: 'Platformunuzu ziyaret edin'
+      new_users: 'Yeni kullanıcılar'
+      new_ideas: 'Yeni fikirler'
+      new_comments: 'Yeni yorumlar'
+      title_activity_past_week: 'Geçen haftanın etkinliği'
+      title_no_activity_past_week: 'Geçen hafta etkinlik yoktu'
+      title_initiatives_past_week: 'Geçen haftanın yeni teklifleri'
+      title_successful_initiatives_past_week: 'Geçen hafta eğişe ulaşan teklifler'
+      yesterday_by_author: '%{author} tarafından dün'
+      today_by_author: '%{author} tarafından bugün'
+      x_days_ago_by_author: '%{author} tarafından %{x} gün önce'
     admin_rights_received:
-      cta_moderate_platform: 'Moderate your platform'
+      cta_moderate_platform: 'Platformunuzu yönetin'
       message_you_became_administrator: 'You have been granted administrator rights for the participation platform of %{organizationName}.'
       preheader: 'You were granted administrator rights for the participation platform of %{organizationName}'
       subject: 'You became an administrator on the platform of %{organizationName}'
@@ -173,9 +173,9 @@ tr:
       assigned_ideas: 'Ideas need your feedback'
       title_assignment_past_week: 'Latest ideas assigned to you'
       title_no_assignment_past_week: 'No new ideas assigned to you last week'
-      yesterday_by_author: 'Yesterday by %{author}'
-      today_by_author: 'Today by %{author}'
-      x_days_ago_by_author: '%{x} days ago by %{author}'
+      yesterday_by_author: '%{author} tarafından dün'
+      today_by_author: '%{author} tarafından bugün'
+      x_days_ago_by_author: '%{author} tarafından %{x} gün önce'
       idea_section: Fikirler
       initiative_section: Teklifler
       title_initiatives_past_week: 'New proposals assigned to you'
@@ -258,17 +258,17 @@ tr:
     moderator_digest:
       subject: 'Your weekly project manager report of %{time}'
       preheader: 'Project manager digest of %{organizationName}'
-      title_your_weekly_report: '%{firstName}, your weekly report'
+      title_your_weekly_report: '%{firstName}, haftalık raporunuz'
       text_introduction: 'We''ve curated for you the input that has generated the most activity over the past week. Find out what''s happening with your project!'
       cta_moderate: 'Moderate your project'
-      new_users: 'New users'
-      new_ideas: 'New ideas'
-      new_comments: 'New comments'
-      title_activity_past_week: 'Activity of the past week'
+      new_users: 'Yeni kullanıcılar'
+      new_ideas: 'Yeni fikirler'
+      new_comments: 'Yeni yorumlar'
+      title_activity_past_week: 'Geçen haftanın etkinliği'
       title_no_activity_past_week: 'No activity in the past week'
-      yesterday_by_author: 'Yesterday by %{author}'
-      today_by_author: 'Today by %{author}'
-      x_days_ago_by_author: '%{x} days ago by %{author}'
+      yesterday_by_author: '%{author} tarafından dün'
+      today_by_author: '%{author} tarafından bugün'
+      x_days_ago_by_author: '%{author} tarafından %{x} gün önce'
     new_comment_on_commented_initiative:
       commented: '%{commentAuthor} wrote:'
       cta_reply_to: 'Reply to %{commentAuthor}'
@@ -483,9 +483,9 @@ tr:
       proposals_started_text: "Proposals are ideas that need to gain traction and support from others (people like you!) in order to move forward. Below is a list of proposals that have been put forward in the last week. Click on any of them to take a look and offer your support and feedback!"
       title_successful_proposals: "Proposals that reached the threshold"
       successful_proposals_text: "These proposals have gotten enough support to move to the next stage! Click on the proposal to learn more about what happens next."
-      today_by_author: "Today by %{author}"
-      yesterday_by_author: "Yesterday by %{author}"
-      x_days_ago_by_author: "%{x} days ago by %{author}"
+      today_by_author: "%{author} tarafından bugün"
+      yesterday_by_author: "%{author} tarafından dün"
+      x_days_ago_by_author: "%{author} tarafından %{x} gün önce"
       trending_ideas: "Trending ideas"
       trending_ideas_text: "Interested in what’s been happening on the platform? Here are the three most trending ideas and what people are saying about them."
       no_notifications: "No notifications"
