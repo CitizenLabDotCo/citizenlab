@@ -698,6 +698,7 @@
   "app.containers.IdeaButton.signUpLinkText": "registrer dig",
   "app.containers.IdeaButton.submitAnIssue": "Send dit høringssvar",
   "app.containers.IdeaButton.submitYourIdea": "Beskriv din idé",
+  "app.containers.IdeaButton.takeTheSurvey": "Besvar spørgeskemaet ",
   "app.containers.IdeaButton.verificationLinkText": "Bekræft din konto nu.",
   "app.containers.IdeaCard.xComments": "{commentsCount, plural, =0 {ingen kommentarer} one {1 kommentar} other {# kommentarer}}",
   "app.containers.IdeaCards.a11y_totalInitiatives": "Totale borgerforslag: {initiativeCount}",

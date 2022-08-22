@@ -92,6 +92,22 @@ FactoryBot.define do
       end
     end
 
+    # Example usage: Create a project with 4 timeline phases, for which the 2nd
+    # is the current phase. The first phase has posting_enabled, the last 2 have
+    # voting_disabled
+    # create(
+    #   :project_with_current_phase,
+    #   phases_config: {
+    #     sequence: 'xcyy',
+    #     x: { posting_enabled: false },
+    #     y: { voting_enabled: false }
+    #   },
+    #   current_phase_attrs: {
+    #     participation_method: 'budgeting',
+    #     max_budget: 1200
+    #   }
+    # )
+
     factory :project_with_current_phase do
       transient do
         current_phase_attrs { {} }
