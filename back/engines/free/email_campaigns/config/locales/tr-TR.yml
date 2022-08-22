@@ -2,88 +2,88 @@ tr:
   email_campaigns:
     campaign_type_description:
       "manual": Resmi mesajlar
-      "admin_rights_received": Admin rights received
-      "comment_deleted_by_admin": Deletion of my comment
-      "comment_marked_as_spam": Comment spam report
-      "comment_on_your_comment": A reply on my comment
-      "comment_on_your_idea": A comment on my idea
-      "comment_on_your_initiative": A comment on my proposal
-      "first_idea_published": Publication of my first idea
-      "idea_marked_as_spam": Idea spam report
-      "idea_published": Publication of my idea
-      "initiative_assigned_to_you": Assignment of a proposal to me
-      "initiative_marked_as_spam": Proposal spam report
-      "initiative_published": Publication of my proposal
-      "invite_received": Invitation
-      "invite_reminder": Invitation reminder
-      "mention_in_official_feedback": Mention in an update
-      "new_comment_for_admin": New comment in a project I moderate
-      "new_comment_on_commented_idea": New comment on an idea I commented on
-      "new_comment_on_commented_initiative": New comment on a proposal I commented on
-      "new_comment_on_voted_idea": New comment on an idea I voted for
-      "new_comment_on_voted_initiative": New comment on a proposal I voted for
-      "new_idea_for_admin": New idea in a project I moderate
-      "new_initiative_for_admin": New proposal
-      "official_feedback_on_commented_idea": Update on an idea I commented on
-      "official_feedback_on_commented_initiative": Update on a proposal I commented on
-      "official_feedback_on_voted_idea": Update on an idea I voted on
-      "official_feedback_on_voted_initiative": Update on a proposal I voted on
-      "official_feedback_on_your_idea": Update on my idea
-      "official_feedback_on_your_initiative": Update on my proposal
+      "admin_rights_received": Yönetici hakları alındı
+      "comment_deleted_by_admin": Yorumumun silinmesi
+      "comment_marked_as_spam": Yorumun spam olarak bildirilmesi
+      "comment_on_your_comment": Yorumuma bir yanıt
+      "comment_on_your_idea": Fikrim hakkında bir yorum
+      "comment_on_your_initiative": Teklifim hakkında bir yorum
+      "first_idea_published": İlk fikrimin yayımlanması
+      "idea_marked_as_spam": Fikrin spam olarak bildirilmesi
+      "idea_published": Fikrimin yayımlanması
+      "initiative_assigned_to_you": Bana teklif atanması
+      "initiative_marked_as_spam": Teklifin spam olarak bildirilmesi
+      "initiative_published": Teklifimin yayımlanması
+      "invite_received": Davetiye
+      "invite_reminder": Davetiye anımsatıcısı
+      "mention_in_official_feedback": Bir bildirimde bahis
+      "new_comment_for_admin": Yönettiğim bir projede yeni yorum
+      "new_comment_on_commented_idea": Yorum yaptığım bir fikir hakkında yeni yorum
+      "new_comment_on_commented_initiative": Yorum yaptığım bir teklif hakkında yeni yorum
+      "new_comment_on_voted_idea": Oy verdiğim bir fikir hakkında yeni yorum
+      "new_comment_on_voted_initiative": Oy verdiğim bir teklif hakkında yeni yorum
+      "new_idea_for_admin": Yönettiğim bir projede yeni fikir
+      "new_initiative_for_admin": Yeni teklif
+      "official_feedback_on_commented_idea": Yorum yaptığım bir fikir hakkında bilgilendirme
+      "official_feedback_on_commented_initiative": Yorum yaptığım bir teklif hakkında bilgilendirme
+      "official_feedback_on_voted_idea": Oy verdiğim bir fikir hakkında bilgilendirme
+      "official_feedback_on_voted_initiative": Oy verdiğim bir teklif hakkında bilgilendirme
+      "official_feedback_on_your_idea": Fikrim hakkında bilgilendirme
+      "official_feedback_on_your_initiative": Teklifim hakkında bilgilendirme
       "password_reset": Parola sıfırla
-      "project_moderation_rights_received": Project moderation rights received
-      "project_folder_moderation_rights_received": Folder manager rights received
-      "project_phase_started": New project phase
-      "project_phase_upcoming": Upcoming new project phase
-      "status_change_of_commented_idea": Status change of an idea I commented on
-      "status_change_of_commented_initiative": Status change of a proposal I commented on
-      "status_change_of_voted_idea": Status change of an idea I voted for
-      "status_change_of_voted_initiative": Status change of a proposal I voted for
-      "status_change_of_your_idea": Status change of my idea
-      "status_change_of_your_initiative": Status change of my proposal
-      "threshold_reached_for_admin": Proposal reached the voting threshold
-      "welcome": After registration
-      "admin_digest": Weekly overview for admins
-      "moderator_digest": Weekly overview for project managers
-      "assignee_digest": Weekly overview of assigned ideas
-      "user_digest": Weekly overview
-      "your_proposed_initiatives_digest": Weekly overview of your proposals
+      "project_moderation_rights_received": Proje moderasyon hakları alındı
+      "project_folder_moderation_rights_received": Klasör yöneticisi hakları alındı
+      "project_phase_started": Yeni proje aşaması
+      "project_phase_upcoming": Yaklaşan yeni proje aşaması
+      "status_change_of_commented_idea": Yorum yaptığım bir fikrin durum değişikliği
+      "status_change_of_commented_initiative": Yorum yaptığım bir teklifin durum değişikliği
+      "status_change_of_voted_idea": Oy verdiğim bir fikrin durum değişikliği
+      "status_change_of_voted_initiative": Oy verdiğim bir teklifin durum değişikliği
+      "status_change_of_your_idea": Fikrimin durum değişikliği
+      "status_change_of_your_initiative": Teklifimin durum değişikliği
+      "threshold_reached_for_admin": Teklif oylama eşiğine ulaştı
+      "welcome": Kayıttan sonra
+      "admin_digest": Yöneticiler için haftalık genel bakış
+      "moderator_digest": Proje yöneticileri için haftalık genel bakış
+      "assignee_digest": Atanmış fikirlere haftalık genel bakış
+      "user_digest": Haftalık genel bakış
+      "your_proposed_initiatives_digest": Tekliflerinize haftalık genel bakış
     admin_campaign_type_description:
-      "manual": Official message - all users
-      "admin_rights_received": Admin rights received - admins
-      "comment_deleted_by_admin": Deletion of your comment - all users
-      "comment_marked_as_spam": Comment spam report - admins and project managers
-      "comment_on_your_comment": Reply on your comment - all users
-      "comment_on_your_idea": Comment on your idea - all users
-      "comment_on_your_initiative": Comment on your proposal - all users
-      "first_idea_published": Publication of your first idea - all users
-      "idea_marked_as_spam": Idea spam report - admins and project managers
-      "idea_published": Publication of your idea - all users
-      "initiative_assigned_to_you": Assignment of a proposal - admins
-      "initiative_marked_as_spam": Proposal spam report - admins
-      "initiative_published": Publication of your proposal - all users
-      "invite_received": Invitation - all users
-      "invite_reminder": Invitation reminder - all users
-      "mention_in_comment": Mention in a comment - all users
-      "mention_in_official_feedback": Mention in an update - all users
-      "new_comment_for_admin": New comment - admins and project managers
-      "new_comment_on_commented_idea": New comment on an idea you commented on - all users
-      "new_comment_on_commented_initiative": New comment on a proposal you commented on - all users
-      "new_comment_on_voted_idea": New comment on an idea you voted for - all users
-      "new_comment_on_voted_initiative": New comment on a proposal you voted for - all users
-      "new_idea_for_admin": New idea - admins and project managers
-      "new_initiative_for_admin": New proposal - admins
-      "official_feedback_on_commented_idea": Update on an idea you commented on - all users
-      "official_feedback_on_commented_initiative": Update on a proposal you commented on - all users
-      "official_feedback_on_voted_idea": Update on an idea you voted on - all users
-      "official_feedback_on_voted_initiative": Update on a proposal you voted on - all users
-      "official_feedback_on_your_idea": Update on your idea - all users
-      "official_feedback_on_your_initiative": Update on your proposal - all users
-      "password_reset": Password reset - all users
-      "project_moderation_rights_received": Project moderation rights received - project managers
-      "project_folder_moderation_rights_received": Folder manager rights received
-      "project_phase_started": New project phase - all users
-      "project_phase_upcoming": Upcoming new project phase - admins and project managers
+      "manual": Resmi mesaj - tüm kullanıcılar
+      "admin_rights_received": Yönetici hakları alındı - yöneticiler
+      "comment_deleted_by_admin": Yorumunuzun silinmesi - tüm kullanıcılar
+      "comment_marked_as_spam": Yorumun spam olarak bildirilmesi - yöneticiler ve proje yöneticileri
+      "comment_on_your_comment": Yorumunuza yanıt - tüm kullanıcılar
+      "comment_on_your_idea": Fikriniz hakkında yorum - tüm kullanıcılar
+      "comment_on_your_initiative": Teklifiniz hakkında yorum - tüm kullanıcılar
+      "first_idea_published": İlk fikrinizin yayımlanması - tüm kullanıcılar
+      "idea_marked_as_spam": Fikrin spam olarak bildirilmesi - yöneticiler ve proje yöneticileri
+      "idea_published": Fikrinizin yayımlanması - tüm kullanıcılar
+      "initiative_assigned_to_you": Bir teklifin atanması - yöneticiler
+      "initiative_marked_as_spam": Teklifin spam olarak bildirilmesi - yöneticiler
+      "initiative_published": Teklifinizin yayımlanması - tüm kullanıcılar
+      "invite_received": Davetiye - tüm kullanıcılar
+      "invite_reminder": Davetiye anımsatıcısı - tüm kullanıcılar
+      "mention_in_comment": Bir yorumda bahis - tüm kullanıcılar
+      "mention_in_official_feedback": Bir bildirimde bahis - tüm kullanıcılar
+      "new_comment_for_admin": Yeni yorum - yöneticiler ve proje yöneticileri
+      "new_comment_on_commented_idea": Yorum yaptığınız bir fikir hakkında yeni yorum - tüm kullanıcılar
+      "new_comment_on_commented_initiative": Yorum yaptığınız bir teklif hakkında yeni yorum - tüm kullanıcılar
+      "new_comment_on_voted_idea": Oy verdiğiniz bir fikir hakkında yeni yorum - tüm kullanıcılar
+      "new_comment_on_voted_initiative": Oy verdiğiniz bir teklif hakkında yeni yorum - tüm kullanıcılar
+      "new_idea_for_admin": Yeni fikir - yöneticiler ve proje yöneticileri
+      "new_initiative_for_admin": Yeni teklif - yöneticiler
+      "official_feedback_on_commented_idea": Yorum yaptığınız bir fikir hakkında bilgilendirme - tüm kullanıcılar
+      "official_feedback_on_commented_initiative": Yorum yaptığınız bir teklif hakkında bilgilendirme - tüm kullanıcılar
+      "official_feedback_on_voted_idea": Oy verdiğiniz bir fikir hakkında bilgilendirme - tüm kullanıcılar
+      "official_feedback_on_voted_initiative": Oy verdiğiniz bir teklif hakkında bilgilendirme - tüm kullanıcılar
+      "official_feedback_on_your_idea": Fikriniz hakkında bilgilendirme - tüm kullanıcılar
+      "official_feedback_on_your_initiative": Teklifiniz hakkında bilgilendirme - tüm kullanıcılar
+      "password_reset": Parola sıfırlama - tüm kullanıcılar
+      "project_moderation_rights_received": Proje moderasyon hakları alındı - proje yöneticileri
+      "project_folder_moderation_rights_received": Klasör yöneticisi hakları alındı
+      "project_phase_started": Yeni proje aşaması - tüm kullanıcılar
+      "project_phase_upcoming": Yaklaşan yeni proje aşaması - yöneticiler ve proje yöneticileri
       "status_change_of_commented_idea": Status change of an idea you commented on - all users
       "status_change_of_commented_initiative": Status change of a proposal you commented on - all users
       "status_change_of_voted_idea": Status change of an idea you voted on - all users
@@ -101,7 +101,7 @@ tr:
       "link_privacy_policy": "Privacy Policy"
       "link_terms_conditions": "Terms & Conditions"
       "link_unsubscribe": "Unsubscribe"
-      "powered_by": "Powered by"
+      "powered_by": "Destekleyen"
       "statement": "This e-mail was sent to you by CitizenLab on behalf of %{organizationName}, because you are a registered user of %{organizationLink}. You can %{unsubscribeLink} if you do not want to receive these e-mails in the future."
       "unsubscribe_text": "unsubscribe"
     comment_deleted_by_admin:
@@ -177,7 +177,7 @@ tr:
       today_by_author: 'Today by %{author}'
       x_days_ago_by_author: '%{x} days ago by %{author}'
       idea_section: Fikirler
-      initiative_section: Proposals
+      initiative_section: Teklifler
       title_initiatives_past_week: 'New proposals assigned to you'
       title_successful_initiatives_past_week: 'Proposals assigned to you that reached the threshold'
     idea_marked_as_spam:
