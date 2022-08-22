@@ -1,6 +1,7 @@
 import React, { lazy } from 'react';
 import PageLoading from 'components/UI/PageLoading';
 import moduleConfiguration from 'modules';
+const CustomPages = lazy(() => import('./containers/CustomPages'));
 const CustomNavbarContainer = lazy(
   () => import('containers/Admin/pagesAndMenu')
 );
@@ -71,8 +72,14 @@ export default () => ({
       element: <EditHomepage />,
     },
     {
-      path: `${CUSTOM_PAGES_PATH}/new`,
-      element: <NewCustomPage />,
+      path: CUSTOM_PAGES_PATH,
+      element: <CustomPages />,
+      children: [
+        {
+          path: 'new',
+          element: <NewCustomPage />,
+        },
+      ],
     },
     ...moduleConfiguration.routes['admin.pages-menu'],
   ],
