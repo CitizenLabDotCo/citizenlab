@@ -297,7 +297,7 @@ module MultiTenancy
             'description_preview_multiloc' => p.description_preview_multiloc,
             'process_type' => p.process_type,
             'internal_role' => p.internal_role,
-            'text_images_attributes' => p.text_images.map  do |ti|
+            'text_images_attributes' => p.text_images.map do |ti|
               {
                 'imageable_field' => ti.imageable_field,
                 'remote_image_url' => ti.image_url,
