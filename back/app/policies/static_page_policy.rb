@@ -38,7 +38,7 @@ class StaticPagePolicy < ApplicationPolicy
     [
       :slug,
       { title_multiloc: CL2_SUPPORTED_LOCALES },
-      { body_multiloc: CL2_SUPPORTED_LOCALES }
+      { top_info_section_multiloc: CL2_SUPPORTED_LOCALES }
     ]
   end
 end

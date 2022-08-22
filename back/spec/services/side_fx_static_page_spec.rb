@@ -14,14 +14,14 @@ describe SideFxStaticPageService do
     end
 
     it 'runs the body through the text image service' do
-      expect_any_instance_of(TextImageService).to receive(:swap_data_images).with(page, :body_multiloc).and_return(page.body_multiloc)
+      expect_any_instance_of(TextImageService).to receive(:swap_data_images).with(page, :top_info_section_multiloc).and_return(page.top_info_section_multiloc)
       service.after_create(page, user)
     end
   end
 
   describe 'before_update' do
     it 'runs the description through the text image service' do
-      expect_any_instance_of(TextImageService).to receive(:swap_data_images).with(page, :body_multiloc).and_return(page.body_multiloc)
+      expect_any_instance_of(TextImageService).to receive(:swap_data_images).with(page, :top_info_section_multiloc).and_return(page.top_info_section_multiloc)
       service.before_update(page, user)
     end
   end

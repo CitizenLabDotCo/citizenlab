@@ -53,7 +53,9 @@ class StaticPage < ApplicationRecord
   before_validation :generate_slug, on: :create
 
   before_validation :strip_title
-  before_validation :sanitize_body_multiloc
+  before_validation :sanitize_top_info_section_multiloc
+
+  mount_base64_uploader :header_bg, HeaderBgUploader
 
   def custom?
     code == 'custom'
@@ -75,13 +77,21 @@ class StaticPage < ApplicationRecord
     end
   end
 
-  def sanitize_body_multiloc
-    service = SanitizationService.new
-    self.body_multiloc = service.sanitize_multiloc(
-      body_multiloc,
-      %i[title alignment list decoration link image video]
-    )
-    self.body_multiloc = service.remove_multiloc_empty_trailing_tags body_multiloc
-    self.body_multiloc = service.linkify_multiloc body_multiloc
+  def sanitize_top_info_section_multiloc
+    sanitize_info_section_multiloc(:top_info_section_multiloc)
+  end
+
+  def sanitize_bottom_info_section_multiloc
+    sanitize_info_section_multiloc(:bottom_info_section_multiloc)
+  end
+
+  def sanitize_info_section_multiloc(attribute)
+    return if self[attribute].nil?
+
+    @service ||= SanitizationService.new
+
+    self[attribute] = @service.sanitize_multiloc(self[attribute], %i[title alignment list decoration link image video])
+    self[attribute] = @service.remove_multiloc_empty_trailing_tags(self[attribute])
+    self[attribute] = @service.linkify_multiloc(self[attribute])
   end
 end

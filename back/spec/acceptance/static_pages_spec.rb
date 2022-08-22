@@ -63,20 +63,20 @@ resource 'StaticPages' do
     post 'web_api/v1/static_pages' do
       with_options scope: :static_page do
         parameter :title_multiloc, 'The title of the static page, as a multiloc string', required: true
-        parameter :body_multiloc, 'The content of the static page, as a multiloc HTML string', required: true
+        parameter :top_info_section_multiloc, 'The content of the static page, as a multiloc HTML string', required: true
         parameter :slug, 'The unique slug of the static page. If not given, it will be auto generated'
       end
       ValidationErrorHelper.new.error_fields self, StaticPage
 
       let(:page) { build :static_page }
       let(:title_multiloc) { page.title_multiloc }
-      let(:body_multiloc) { page.body_multiloc }
+      let(:top_info_section_multiloc) { page.top_info_section_multiloc }
 
       example_request 'Create a static page' do
         assert_status 201
 
         expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match page.title_multiloc
-        expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match page.body_multiloc
+        expect(json_response.dig(:data, :attributes, :top_info_section_multiloc).stringify_keys).to match page.top_info_section_multiloc
         expect(json_response.dig(:data, :attributes, :code)).to eq 'custom'
       end
 
@@ -93,19 +93,19 @@ resource 'StaticPages' do
     patch 'web_api/v1/static_pages/:id' do
       with_options scope: :static_page do
         parameter :title_multiloc, 'The title of the static page, as a multiloc string'
-        parameter :body_multiloc, 'The content of the static page, as a multiloc HTML string'
+        parameter :top_info_section_multiloc, 'The content of the static page, as a multiloc HTML string'
         parameter :slug, 'The unique slug of the static page'
       end
       ValidationErrorHelper.new.error_fields self, StaticPage
 
       let(:id) { @pages.first.id }
       let(:title_multiloc) { { 'en' => 'Changed title' } }
-      let(:body_multiloc) { { 'en' => 'Changed body' } }
+      let(:top_info_section_multiloc) { { 'en' => 'Changed body' } }
       let(:slug) { 'changed-title' }
 
       example_request 'Update a static page' do
         expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to eq 'Changed title'
-        expect(json_response.dig(:data, :attributes, :body_multiloc, :en)).to eq 'Changed body'
+        expect(json_response.dig(:data, :attributes, :top_info_section_multiloc, :en)).to eq 'Changed body'
         expect(json_response.dig(:data, :attributes, :slug)).to eq 'changed-title'
       end
     end

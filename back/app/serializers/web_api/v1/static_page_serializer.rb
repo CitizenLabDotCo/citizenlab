@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::StaticPageSerializer < WebApi::V1::BaseSerializer
-  attributes :title_multiloc, :code, :slug, :created_at, :updated_at
+  attributes :title_multiloc, :code, :slug, :created_at, :updated_at, :top_info_section_multiloc
 
   attribute :top_info_section_multiloc do |object|
     TextImageService.new.render_data_images object, :top_info_section_multiloc
