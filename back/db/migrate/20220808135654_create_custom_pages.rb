@@ -5,6 +5,7 @@ class CreateCustomPages < ActiveRecord::Migration[6.1]
     create_table :custom_pages, id: :uuid do |t|
       t.jsonb :title_multiloc, default: {}, null: false
       t.string :slug, index: { unique: true }
+      t.string :code, default: 'custom', null: false, index: true
 
       t.boolean :banner_enabled, default: true, null: false
       t.string :banner_layout, default: 'full_width_banner_layout', null: false
@@ -18,8 +19,6 @@ class CreateCustomPages < ActiveRecord::Migration[6.1]
 
       t.boolean :top_info_section_enabled, default: false, null: false
       t.jsonb :top_info_section_multiloc, default: {}, null: false
-
-      t.boolean :files_section_enabled, default: false, null: false
 
       t.boolean :projects_enabled, default: false, null: false
       t.string :projects_filter_type
