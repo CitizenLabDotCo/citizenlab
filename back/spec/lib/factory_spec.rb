@@ -52,11 +52,10 @@ RSpec.describe Factory do
     end
 
     context 'for a project with another participation method' do
-      let(:project) { create :continuous_native_survey_project }
+      let(:project) { create :continuous_native_survey_project, participation_method: 'information' }
 
-      it 'raises an error' do
-        project.participation_method = 'unsupported'
-        expect { participation_method }.to raise_error 'Unsupported participation method: unsupported'
+      it 'returns an instance of ParticipationMethod::Ideation' do
+        expect(participation_method).to be_an_instance_of(ParticipationMethod::Ideation)
       end
     end
   end
