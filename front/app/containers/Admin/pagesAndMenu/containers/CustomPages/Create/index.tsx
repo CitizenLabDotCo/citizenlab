@@ -5,8 +5,9 @@ import React, { useState } from 'react';
 import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import { Input } from '@citizenlab/cl2-component-library';
-
+import SlugInput, {
+  TApiErrors as SlugInputApiErrors,
+} from 'components/admin/SlugInput';
 // styling
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
@@ -36,7 +37,7 @@ const StyledInputMultiloc = styled(InputMultilocWithLocaleSwitcher)`
   margin-bottom: 40px;
 `;
 
-const StyledSlugInput = styled(Input)`
+const StyledSlugInput = styled(SlugInput)`
   margin-bottom: 20px;
   width: 497px;
 `;
@@ -50,7 +51,8 @@ const CreateCustomPage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const [titleMultiloc, setTitleMultiloc] = useState<Multiloc>({});
   const [slug, setSlug] = useState<string | null>(null);
   const [titleErrors, setTitleErrors] = useState<Multiloc>({});
-  const [isSlugValid, setIsSlugValid] = useState<boolean>(true);
+  const [isSlugValid, setIsSlugValid] = useState(false);
+  const [apiErrors, _setApiErrors] = useState<SlugInputApiErrors>(null);
   const appConfig = useAppConfiguration();
   const locale = useLocale();
 
@@ -74,8 +76,6 @@ const CreateCustomPage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
 
   if (isNilOrError(appConfig)) return null;
 
-  const previewUrl = `${appConfig.data.attributes.host}/${locale}/pages/${slug}`;
-
   return (
     <SectionFormWrapper
       breadcrumbs={[
@@ -84,7 +84,7 @@ const CreateCustomPage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           linkTo: pagesAndMenuBreadcrumb.linkTo,
         },
         {
-          label: formatMessage(messages.createCustomPage),
+          label: 'Create custom page',
         },
       ]}
       title={formatMessage(messages.pageTitle)}
@@ -115,18 +115,13 @@ const CreateCustomPage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         labelTooltipText={<FormattedMessage {...messages.titleTooltip} />}
       />
       <StyledSlugInput
-        id="custom-page-slug"
-        type="text"
-        label={<FormattedMessage {...messages.slugLabel} />}
-        onChange={handleSlugOnChange}
-        value={slug}
-        // to be changed
-        error={!isSlugValid ? 'slug error' : null}
-        labelTooltipText={<FormattedMessage {...messages.slugTooltip} />}
+        inputFieldId="custom-page-slug"
+        onSlugChange={handleSlugOnChange}
+        slug={slug}
+        previewUrlWithoutSlug={`${appConfig.data.attributes.host}/${locale}/pages`}
+        showSlugErrorMessage={!isSlugValid}
+        apiErrors={apiErrors}
       />
-      <SlugPreview>
-        <b>{formatMessage(messages.resultingURL)}</b>: {previewUrl}
-      </SlugPreview>
     </SectionFormWrapper>
   );
 };

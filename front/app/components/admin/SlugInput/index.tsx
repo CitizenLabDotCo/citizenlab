@@ -19,13 +19,15 @@ import messages from './messages';
 // typings
 import { CLErrors } from 'typings';
 
+export type TApiErrors = CLErrors | null;
+
 export interface Props {
   inputFieldId?: string;
   slug: string | null;
   previewUrlWithoutSlug: string;
-  apiErrors: CLErrors;
+  apiErrors: CLErrors | null;
   showSlugErrorMessage: boolean;
-  handleSlugOnChange: (slug: string) => void;
+  onSlugChange: (slug: string) => void;
 }
 
 const SlugInput = ({
@@ -34,7 +36,7 @@ const SlugInput = ({
   previewUrlWithoutSlug,
   apiErrors,
   showSlugErrorMessage,
-  handleSlugOnChange,
+  onSlugChange,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const previewUrl = `${previewUrlWithoutSlug}/${slug}`;
@@ -70,14 +72,14 @@ const SlugInput = ({
         id={inputFieldId}
         type="text"
         label={<FormattedMessage {...messages.urlSlugLabel} />}
-        onChange={handleSlugOnChange}
+        onChange={onSlugChange}
         value={slug}
       />
       <SlugPreview>
         <b>{formatMessage(messages.resultingURL)}</b>: {previewUrl}
       </SlugPreview>
       {/* Backend error */}
-      <Error fieldName="slug" apiErrors={apiErrors.slug} />
+      {apiErrors && <Error fieldName="slug" apiErrors={apiErrors.slug} />}
       {/* Frontend error */}
       {showSlugErrorMessage && (
         <Error text={formatMessage(messages.regexError)} />

@@ -54,10 +54,6 @@ export default defineMessages({
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.slugRequiredError',
     defaultMessage: 'You must enter a slug',
   },
-  resultingURL: {
-    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.resultingUrl',
-    defaultMessage: 'Resulting URL',
-  },
   createCustomPage: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.createCustomPage',
     defaultMessage: 'Create custom page',

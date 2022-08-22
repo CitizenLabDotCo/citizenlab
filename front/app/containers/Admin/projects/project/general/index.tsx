@@ -490,7 +490,7 @@ const AdminProjectsProjectGeneral = ({
               previewUrlWithoutSlug={`${appConfig.data.attributes.host}/${locale}/projects/${slug}`}
               apiErrors={apiErrors}
               showSlugErrorMessage={showSlugErrorMessage}
-              handleSlugOnChange={handleSlugOnChange}
+              onSlugChange={handleSlugOnChange}
             />
           )}
 

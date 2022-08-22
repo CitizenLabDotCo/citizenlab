@@ -469,7 +469,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             previewUrlWithoutSlug={`${appConfig.data.attributes.host}/${locale}/folders/${slug}`}
             apiErrors={errors}
             showSlugErrorMessage={showSlugErrorMessage}
-            handleSlugOnChange={handleSlugOnChange}
+            onSlugChange={handleSlugOnChange}
           />
         </SectionField>
         <SectionField>
