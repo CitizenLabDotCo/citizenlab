@@ -1,7 +1,7 @@
 import React from 'react';
 
 // routing
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { useLocation } from 'react-router-dom';
 import Link from 'utils/cl-router/Link';
 
 // style
@@ -112,8 +112,9 @@ interface Props {
     title: string;
     subtitle?: string;
   };
-  tabs?: ITab[];
-  children?: React.ReactNode;
+  tabs: ITab[];
+  children: React.ReactNode;
+  childWrapper?: boolean;
 }
 
 function getRegularExpression(tabUrl: string) {
@@ -142,11 +143,13 @@ const FormattedTabLink = ({
 };
 
 const TabbedResource = ({
-  location: { pathname },
   children,
   resource: { title, subtitle },
   tabs,
-}: Props & WithRouterProps) => {
+  childWrapper = true,
+}: Props) => {
+  const { pathname } = useLocation();
+
   const activeClassForTab = (tab: ITab) => {
     return (
       typeof tab.active === 'function'
@@ -199,9 +202,9 @@ const TabbedResource = ({
       )}
       <ChildWrapper>{children}</ChildWrapper>
 
-      {true ? <>{children}</> : <ChildWrapper>{children}</ChildWrapper>}
+      {childWrapper ? <ChildWrapper>{children}</ChildWrapper> : <>{children}</>}
     </>
   );
 };
 
-export default withRouter(TabbedResource);
+export default TabbedResource;
