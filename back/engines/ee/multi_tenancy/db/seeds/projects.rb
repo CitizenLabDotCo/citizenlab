@@ -100,7 +100,7 @@ module MultiTenancy
           end
           if phase.budgeting?
             phase.assign_attributes({
-              max_budget: (rand(100..1_000_099)).round(-2)
+              max_budget: rand(100..1_000_099).round(-2)
             })
           end
           phase.save!
