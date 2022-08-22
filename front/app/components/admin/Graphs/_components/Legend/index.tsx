@@ -1,64 +1,63 @@
 import React from 'react';
 
 // components
-import { Rectangle } from './icons';
+import Icon from './Icon';
 
 // typings
-import { Item, LegendItemsSummary } from './typings';
-
-type Position = 'bottom-left' | 'bottom-center' | 'bottom-right';
+import { Item, LegendItemsDimensions, Position } from './typings';
 
 interface Props {
   items: Item[];
-  legendItemsSummary: LegendItemsSummary
-  parentWidth: number;
-  parentHeight: number;
+  legendItemsDimensions: LegendItemsDimensions
+  graphWidth: number;
+  graphHeight: number;
   position: Position;
 }
 
 const getLegendTranslate = (
   position: Position,
-  parentWidth: number,
-  parentHeight: number,
-  { legendWidth, legendHeight }: LegendItemsSummary
+  graphWidth: number,
+  graphHeight: number,
+  { legendWidth, legendHeight }: LegendItemsDimensions
 ) => {
-  const top = parentHeight - 20;
+  const top = graphHeight - legendHeight;
 
   if (position === 'bottom-left') return `translate(8,${top})`
 
   if (position === 'bottom-center') {
-    const left = ((parentWidth - legendWidth) / 2) + 8
+    const left = ((graphWidth - legendWidth) / 2) + 8
     return `translate(${left},${top})`
   }
 
-  const left = (parentWidth - legendHeight) + 8;
+  const left = (graphWidth - legendWidth) + 8;
   return `translate(${left},${top})`
 }
 
 const Legend = ({
   items,
-  legendItemsSummary,
-  parentWidth,
-  parentHeight,
+  legendItemsDimensions,
+  graphWidth,
+  graphHeight,
   position,
 }: Props) => (
   <g
     transform={getLegendTranslate(
       position,
-      parentWidth,
-      parentHeight,
-      legendItemsSummary
+      graphWidth,
+      graphHeight,
+      legendItemsDimensions
     )}
   >
     {items.map((item, i) => {
-      const { left } = legendItemsSummary.itemSizes[i];
+      const { left } = legendItemsDimensions.itemSizes[i];
 
       return (
         <g transform={`translate(${left},0)`} key={i}>
-          <Rectangle fill={item.fill} />
+          <Icon {...item} />
           <text
-            transform="translate(18,11)"
+            transform="translate(18,12)"
             fontSize="14px"
+            fill={item.color}
           >
             {item.label}
           </text>

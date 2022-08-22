@@ -2,6 +2,7 @@
 import { RefObject } from 'react';
 import { Percentage } from 'typings';
 import { NilOrError } from 'utils/helperUtils';
+import { Position } from './_components/Legend/typings';
 
 // PROPS
 export interface BaseProps<Row> {
@@ -10,6 +11,7 @@ export interface BaseProps<Row> {
   data: Row[] | NilOrError;
   margin?: Margin;
   tooltip?: TooltipProps;
+  legend?: LegendProps;
   emptyContainerContent?: React.ReactNode;
   innerRef?: RefObject<any>;
 }
@@ -54,6 +56,15 @@ export type TooltipProps =
   | boolean
   | Tooltip
   | ((props: TooltipConfig) => React.ReactNode);
+
+// LEGEND
+type LegendProps =
+  | boolean
+  | Legend
+
+interface Legend {
+  position: Position;
+}
 
 // UTILS
 // https://stackoverflow.com/a/49752227

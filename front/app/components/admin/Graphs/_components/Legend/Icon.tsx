@@ -1,7 +1,9 @@
 import React from 'react';
 
+import { Item } from './typings';
+
 // Adapted from https://github.com/recharts/recharts/blob/master/src/component/DefaultLegendContent.tsx
-export const ICON_SIZE = 14;
+const ICON_SIZE = 14;
 const halfSize = ICON_SIZE / 2;
 const sixthSize = ICON_SIZE / 6;
 const thirdSize = ICON_SIZE / 3;
@@ -11,9 +13,9 @@ interface PlainLineProps {
   strokeDasharray?: string | number;
 }
 
-export const PlainLine = ({ stroke, strokeDasharray }: PlainLineProps) => (
+const PlainLine = ({ stroke, strokeDasharray }: PlainLineProps) => (
   <line
-    strokeWidth={4}
+    strokeWidth={2}
     fill="none"
     stroke={stroke}
     strokeDasharray={strokeDasharray}
@@ -29,9 +31,9 @@ interface LineProps {
   stroke: string;
 }
 
-export const Line = ({ stroke }: LineProps) => (
+const Line = ({ stroke }: LineProps) => (
   <path
-    strokeWidth={4}
+    strokeWidth={2}
     fill="none"
     stroke={stroke}
     d={`M0,${halfSize}h${thirdSize}
@@ -46,7 +48,7 @@ interface RectangleProps {
   fill: string;
 }
 
-export const Rectangle = ({ fill }: RectangleProps) => (
+const Rectangle = ({ fill }: RectangleProps) => (
   <path
     stroke="none"
     fill={fill}
@@ -54,3 +56,17 @@ export const Rectangle = ({ fill }: RectangleProps) => (
     className="recharts-legend-icon"
   />
 );
+
+const Icon = ({ icon, color }: Item) => {
+  if (icon === 'rect') {
+    return <Rectangle fill={color} />
+  }
+
+  if (icon === 'line') {
+    return <Line stroke={color} />
+  }
+
+  return <PlainLine stroke={color} />
+}
+
+export default Icon;

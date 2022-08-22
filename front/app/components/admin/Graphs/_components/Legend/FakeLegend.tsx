@@ -2,29 +2,28 @@ import React, { useEffect } from 'react';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import { Rectangle } from './icons';
+import Icon from './Icon';
 
 // typings
-import { Item, LegendItemsSummary } from './typings';
+import { Item, LegendItemsDimensions } from './typings';
 
 interface Props {
   items: Item[];
-  show?: boolean;
-  onCalculateDimensions: (summary: LegendItemsSummary) => void;
+  onCalculateDimensions: (dimensions: LegendItemsDimensions) => void;
 }
 
-const FakeLegend = ({ items, show, onCalculateDimensions }: Props) => {
+const FakeLegend = ({ items, onCalculateDimensions }: Props) => {
   useEffect(() => {
     const legendElements = document.getElementsByClassName('fake-legend-item');
     if (legendElements.length === 0) return;
     
-    const legendItemsSummaryAcc: LegendItemsSummary = {
+    const legendItemsDimensionsAcc: LegendItemsDimensions = {
       legendWidth: 0,
       legendHeight: 0,
       itemSizes: []
     }
   
-    const legendItemsSummary = [...legendElements].reduce((acc, { clientWidth, clientHeight }) => {
+    const legendItemsDimensions = [...legendElements].reduce((acc, { clientWidth, clientHeight }) => {
       acc.itemSizes.push({
         left: acc.legendWidth,
         width: clientWidth,
@@ -35,14 +34,14 @@ const FakeLegend = ({ items, show, onCalculateDimensions }: Props) => {
       acc.legendHeight = Math.max(acc.legendHeight, clientHeight);
 
       return acc;
-    }, legendItemsSummaryAcc);
+    }, legendItemsDimensionsAcc);
 
-    onCalculateDimensions(legendItemsSummary);
+    onCalculateDimensions(legendItemsDimensions);
   }, [items])
 
   return (
     <Box
-      style={{ visibility: show ? 'visible' : 'hidden' }}
+      style={{ visibility: 'hidden' }}
       width="5000px"
       display="flex"
       flexDirection="row"
@@ -57,7 +56,7 @@ const FakeLegend = ({ items, show, onCalculateDimensions }: Props) => {
           key={i}
         >
           <svg width="14px" height="14px" style={{ marginRight: '4px' }}>
-            <Rectangle fill={item.fill} />
+            <Icon {...item} />
           </svg>
 
           <Box style={{ fontSize: '14px' }} display="flex" alignItems="center">
