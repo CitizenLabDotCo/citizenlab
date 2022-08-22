@@ -84,23 +84,23 @@ tr:
       "project_folder_moderation_rights_received": Klasör yöneticisi hakları alındı
       "project_phase_started": Yeni proje aşaması - tüm kullanıcılar
       "project_phase_upcoming": Yaklaşan yeni proje aşaması - yöneticiler ve proje yöneticileri
-      "status_change_of_commented_idea": Status change of an idea you commented on - all users
-      "status_change_of_commented_initiative": Status change of a proposal you commented on - all users
-      "status_change_of_voted_idea": Status change of an idea you voted on - all users
-      "status_change_of_voted_initiative": Status change of a proposal you voted on - all users
-      "status_change_of_your_idea": Status change of your idea - all users
-      "status_change_of_your_initiative": Status change of your proposal - all users
-      "threshold_reached_for_admin": Proposal reached the voting threshold - admins
-      "welcome": Welcome email to new users - all users
-      "admin_digest": Weekly overview - admins
-      "moderator_digest": Weekly overview - project managers
-      "assignee_digest": Weekly overview of assigned ideas - admins and project managers
-      "user_digest": Weekly overview - all users
-      "your_proposed_initiatives_digest": Weekly overview of your own proposals - all users
+      "status_change_of_commented_idea": Yorum yaptığınız bir fikrin durum değişikliği - tüm kullanıcılar
+      "status_change_of_commented_initiative": Yorum yaptığınız bir teklifin durum değişikliği - tüm kullanıcılar
+      "status_change_of_voted_idea": Oy verdiğiniz bir fikrin durum değişikliği - tüm kullanıcılar
+      "status_change_of_voted_initiative": Oy verdiğiniz bir teklifin durum değişikliği - tüm kullanıcılar
+      "status_change_of_your_idea": Fikrinizin durum değişikliği - tüm kullanıcılar
+      "status_change_of_your_initiative": Teklifinizin durum değişikliği - tüm kullanıcılar
+      "threshold_reached_for_admin": Teklif oylama eşiğine ulaştı - yöneticiler
+      "welcome": Yeni kullanıcılar için karşılama e-postası - tüm kullanıcılar
+      "admin_digest": Haftalık genel bakış - yöneticiler
+      "moderator_digest": Haftalık genel bakış - proje yöneticileri
+      "assignee_digest": Atanmış fikirlere haftalık genel bakış - yöneticiler ve proje yöneticileri
+      "user_digest": Haftalık genel bakış - tüm kullanıcılar
+      "your_proposed_initiatives_digest": Kendi tekliflerinize haftalık genel bakış - tüm kullanıcılar
     footer:
-      "link_privacy_policy": "Privacy Policy"
-      "link_terms_conditions": "Terms & Conditions"
-      "link_unsubscribe": "Unsubscribe"
+      "link_privacy_policy": "Gi̇zli̇li̇k Poli̇ti̇kası"
+      "link_terms_conditions": "Hüküm ve Koşullar"
+      "link_unsubscribe": "Abonelikten ayrıl"
       "powered_by": "Destekleyen"
       "statement": "This e-mail was sent to you by CitizenLab on behalf of %{organizationName}, because you are a registered user of %{organizationLink}. You can %{unsubscribeLink} if you do not want to receive these e-mails in the future."
       "unsubscribe_text": "unsubscribe"
