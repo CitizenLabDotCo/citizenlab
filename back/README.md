@@ -109,7 +109,7 @@ docker-compose run --rm web bundle exec rake cl2_back:create_tenant[localhost,e2
 ```
 
 ### Rubocop
-
+ 
 As part of our OS efforts, we are using rubocop as a linter for our ruby code.
 
 ### Running rubocop
