@@ -14,7 +14,7 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   protected
 
   def generate_for_current_locale(fields)
-    input_term = fields.first.resource.participation_context&.input_term || 'idea'
+    input_term = fields.first.resource.participation_context&.input_term || ParticipationContext::DEFAULT_INPUT_TERM
     built_in_field_index = fields.select(&:built_in?).index_by(&:code)
     main_fields = built_in_field_index.slice('title_multiloc', 'author_id', 'body_multiloc').values
     details_fields = built_in_field_index.slice('proposed_budget', 'budget', 'topic_ids', 'location_description').values

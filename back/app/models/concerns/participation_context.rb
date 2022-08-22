@@ -18,6 +18,7 @@ module ParticipationContext
   VOTING_METHODS        = %w[unlimited limited].freeze
   IDEAS_ORDERS          = %w[trending random popular -new new].freeze
   INPUT_TERMS           = %w[idea question contribution project issue option].freeze
+  DEFAULT_INPUT_TERM    = 'idea'
 
   included do
     has_many :baskets, as: :participation_context, dependent: :destroy
@@ -134,6 +135,6 @@ module ParticipationContext
   end
 
   def set_input_term
-    self.input_term ||= 'idea'
+    self.input_term ||= DEFAULT_INPUT_TERM
   end
 end
