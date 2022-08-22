@@ -47,7 +47,7 @@ export const SlugPreview = styled.div`
   font-size: ${fontSizes.base}px;
 `;
 
-const CreateCustomPage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+const NewCustomPage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const [titleMultiloc, setTitleMultiloc] = useState<Multiloc>({});
   const [slug, setSlug] = useState<string | null>(null);
   const [titleErrors, setTitleErrors] = useState<Multiloc>({});
@@ -126,4 +126,4 @@ const CreateCustomPage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   );
 };
 
-export default injectIntl(CreateCustomPage);
+export default injectIntl(NewCustomPage);
