@@ -1,129 +1,111 @@
 import React, { useState } from 'react';
-// import { useTheme } from 'styled-components';
+
+// typings
+import { Multiloc } from 'typings';
+
+// form
+import Feedback from 'components/HookForm/Feedback';
+import { FormProvider, useForm } from 'react-hook-form';
+import { SectionField } from 'components/admin/Section';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { object, string } from 'yup';
+import validateMultiloc from 'utils/yup/validateMultiloc';
+import { slugRegEx } from 'utils/textUtils';
+// import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 // components
 import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import SubmitWrapper from 'components/admin/SubmitWrapper';
-import SlugInput, {
-  TApiErrors as SlugInputApiErrors,
-} from 'components/admin/SlugInput';
-// styling
-import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
-
-// i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
-import messages from './messages';
-
-// hooks
-import useAppConfiguration from 'hooks/useAppConfiguration';
-import useLocale from 'hooks/useLocale';
+import Button from 'components/UI/Button';
+import Input from 'components/HookForm/Input';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // constants
 import { pagesAndMenuBreadcrumb } from '../../../breadcrumbs';
 
-// types
-import { Multiloc } from 'typings';
+// intl
+import messages from './messages';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import { validateSlug } from 'utils/textUtils';
-import { forOwn } from 'lodash-es';
+// services
+import { createCustomPageStream } from 'services/customPages';
 
-const StyledInputMultiloc = styled(InputMultilocWithLocaleSwitcher)`
-  width: 497px;
-  margin-bottom: 40px;
-`;
+interface CreateCustomPageFormValues {
+  title_multiloc: Multiloc;
+  slug: string;
+}
 
-const StyledSlugInput = styled(SlugInput)`
-  margin-bottom: 20px;
-  width: 497px;
-`;
+interface Props {
+  defaultValues?: CreateCustomPageFormValues;
+}
 
-export const SlugPreview = styled.div`
-  margin-bottom: 20px;
-  font-size: ${fontSizes.base}px;
-`;
+const CreateCustomPageHookForm = ({
+  intl: { formatMessage },
+}: Props & InjectedIntlProps) => {
+  // types still to change
+  const [_error, setError] = useState({});
+  const schema = object({
+    title_multiloc: validateMultiloc(formatMessage(messages.multilocError)),
+    slug: string()
+      .matches(slugRegEx, formatMessage(messages.slugRegexError))
+      .required(formatMessage(messages.slugRequiredError)),
+  });
 
-const NewCustomPage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
-  const [titleMultiloc, setTitleMultiloc] = useState<Multiloc>({});
-  const [slug, setSlug] = useState<string | null>(null);
-  const [titleErrors, setTitleErrors] = useState<Multiloc>({});
-  const [isSlugValid, setIsSlugValid] = useState(false);
-  const [apiErrors, _setApiErrors] = useState<SlugInputApiErrors>(null);
-  const appConfig = useAppConfiguration();
-  const locale = useLocale();
+  const methods = useForm({
+    mode: 'onBlur',
+    resolver: yupResolver(schema),
+  });
 
-  const handleTitleMultilocOnChange = (titleMultiloc: Multiloc) => {
-    const errors = {};
-
-    forOwn(titleMultiloc, (title, locale) => {
-      if (!title || title.length === 0) {
-        errors[locale] = 'broken';
-      }
-    });
-
-    setTitleMultiloc(titleMultiloc);
-    setTitleErrors(errors);
+  const onFormSubmit = async (formValues: CreateCustomPageFormValues) => {
+    try {
+      createCustomPageStream(formValues);
+    } catch (error) {
+      setError(error);
+    }
   };
-
-  const handleSlugOnChange = (slug: string) => {
-    setSlug(slug);
-    setIsSlugValid(validateSlug(slug));
-  };
-
-  if (isNilOrError(appConfig)) return null;
 
   return (
-    <SectionFormWrapper
-      breadcrumbs={[
-        {
-          label: formatMessage(pagesAndMenuBreadcrumb.label),
-          linkTo: pagesAndMenuBreadcrumb.linkTo,
-        },
-        {
-          label: 'Create custom page',
-        },
-      ]}
-      title={formatMessage(messages.pageTitle)}
-      stickyMenuContents={
-        <SubmitWrapper
-          status={'enabled'}
-          buttonStyle="primary"
-          // to be changed
-          loading={false}
-          // to be changed
-          onClick={() => {}}
-          messages={{
-            buttonSave: messages.saveButton,
-            buttonSuccess: messages.buttonSuccess,
-            messageSuccess: messages.messageSuccess,
-            messageError: messages.error,
-          }}
-        />
-      }
-    >
-      <StyledInputMultiloc
-        id="project-title"
-        type="text"
-        valueMultiloc={titleMultiloc}
-        label={<FormattedMessage {...messages.titleLabel} />}
-        onChange={handleTitleMultilocOnChange}
-        errorMultiloc={titleErrors}
-        labelTooltipText={<FormattedMessage {...messages.titleTooltip} />}
-      />
-      <StyledSlugInput
-        inputFieldId="custom-page-slug"
-        onSlugChange={handleSlugOnChange}
-        slug={slug}
-        previewUrlWithoutSlug={`${appConfig.data.attributes.host}/${locale}/pages`}
-        showSlugErrorMessage={!isSlugValid}
-        apiErrors={apiErrors}
-      />
-    </SectionFormWrapper>
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit(onFormSubmit)}>
+        <SectionFormWrapper
+          breadcrumbs={[
+            {
+              label: formatMessage(pagesAndMenuBreadcrumb.label),
+              linkTo: pagesAndMenuBreadcrumb.linkTo,
+            },
+            {
+              label: formatMessage(messages.createCustomPage),
+            },
+          ]}
+          title={formatMessage(messages.pageTitle)}
+          stickyMenuContents={
+            <Button type="submit" processing={methods.formState.isSubmitting}>
+              {formatMessage(messages.saveButton)}
+            </Button>
+          }
+        >
+          <SectionField>
+            <Feedback successMessage={formatMessage(messages.pageTitle)} />
+            <Box mb="20px">
+              <InputMultilocWithLocaleSwitcher
+                name="title_multiloc"
+                label={formatMessage(messages.titleLabel)}
+                type="text"
+                labelTooltipText={formatMessage(messages.titleTooltip)}
+              />
+            </Box>
+            <Input
+              label={formatMessage(messages.slugLabel)}
+              labelTooltipText={formatMessage(messages.slugTooltip)}
+              name="slug"
+              type="text"
+            />
+          </SectionField>
+        </SectionFormWrapper>
+      </form>
+    </FormProvider>
   );
 };
 
-export default injectIntl(NewCustomPage);
+export default injectIntl(CreateCustomPageHookForm);
