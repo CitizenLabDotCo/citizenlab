@@ -15,8 +15,8 @@
 #  index_custom_forms_on_participation_context  (participation_context_id,participation_context_type)
 #
 class CustomForm < ApplicationRecord
-  belongs_to :participation_context, polymorphic: true # TODO: add uniqueness constraint
+  belongs_to :participation_context, polymorphic: true
   has_many :custom_fields, as: :resource, dependent: :destroy
 
-  validates :participation_context, presence: true
+  validates :participation_context, presence: true, uniqueness: true
 end
