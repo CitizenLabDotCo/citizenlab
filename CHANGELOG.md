@@ -1,6 +1,9 @@
 # Changelog
 
-## Next release
+## 2022-08-18
+
+### Fixed
+ - [CL-1407] Quickfix for critical bug that made the 'Submit your idea' button disappear for projects with a timeline
 
 ### Added
 
