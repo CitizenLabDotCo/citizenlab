@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // typings
 import { Multiloc } from 'typings';
@@ -37,7 +37,7 @@ export interface CreateCustomPageFormValues {
 
 const StyledMultilocInput = styled(InputMultilocWithLocaleSwitcher)`
   margin-bottom: 20px;
-`
+`;
 
 type CreateCustomPageFormProps = {
   onSubmit: (formValues: CreateCustomPageFormValues) => void | Promise<void>;
@@ -49,6 +49,8 @@ const CreateCustomPageHookForm = ({
   defaultValues,
   intl: { formatMessage },
 }: CreateCustomPageFormProps) => {
+  // types still to change
+  const [_error, setError] = useState({});
   const schema = object({
     title_multiloc: validateMultiloc(formatMessage(messages.multilocError)),
     slug: string()
@@ -66,10 +68,8 @@ const CreateCustomPageHookForm = ({
     try {
       await onSubmit(formValues);
     } catch (error) {
-      console.log(error);
+      setError(error);
     }
-    console.log(onSubmit);
-    console.log(formValues);
   };
 
   return (
@@ -82,7 +82,7 @@ const CreateCustomPageHookForm = ({
               linkTo: pagesAndMenuBreadcrumb.linkTo,
             },
             {
-              label: 'Create custom page',
+              label: formatMessage(messages.createCustomPage),
             },
           ]}
           title={formatMessage(messages.pageTitle)}
