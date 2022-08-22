@@ -39,7 +39,7 @@ const RegistrationCustomFieldOptionsForm = ({
 }: Props) => {
   const { userCustomFieldId } = useParams() as { userCustomFieldId: string };
   const schema = object({
-    title_multiloc: validateMultiloc('Error message'),
+    title_multiloc: validateMultiloc(formatMessage(messages.answerOptionError)),
   });
 
   const methods = useForm({
@@ -60,16 +60,18 @@ const RegistrationCustomFieldOptionsForm = ({
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onFormSubmit)}>
         <SectionField>
-          <Feedback successMessage={'success message'} />
+          <Feedback
+            successMessage={formatMessage(messages.answerOptionSuccess)}
+          />
           <InputMultilocWithLocaleSwitcher
             name="title_multiloc"
-            label={'label'}
+            label={formatMessage(messages.answerOption)}
             type="text"
           />
         </SectionField>
         <Box display="flex">
           <Button type="submit" processing={methods.formState.isSubmitting}>
-            save
+            {formatMessage(messages.answerOptionSave)}
           </Button>
         </Box>
 
