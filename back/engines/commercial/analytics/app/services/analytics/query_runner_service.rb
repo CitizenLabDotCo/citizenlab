@@ -20,6 +20,10 @@ module Analytics
         results = query_groups(results)
       end
 
+      if @json_query.key?(:aggregations)
+        build_aggregations
+      end
+
       if @json_query.key?(:sort)
         results = query_order(results)
       end
@@ -71,20 +75,28 @@ module Analytics
     end
 
     def query_groups(results)
-      calculated_attributes = @query.calculated_attributes
-      count_all = 'count(all) as count_all'
-      if calculated_attributes.include? count_all
-        calculated_attributes.delete(count_all)
-        calculated_attributes.push(Arel.sql('COUNT(*) as count'))
-      end
-      @pluck_attributes = calculated_attributes + @query.groups_keys
+      @pluck_attributes = @query.groups_keys
+      results.group(@json_query[:groups])
+    end
 
-      results.group(@json_query[:groups][:key])
+    def build_aggregations
+      aggregations_sql = @query.aggregations_sql
+      count_all = 'count(all) as count_all'
+      if aggregations_sql.include? count_all
+        aggregations_sql.delete(count_all)
+        aggregations_sql.push(Arel.sql('COUNT(*) as count'))
+      end
+
+      if @json_query.key?(:groups)
+        @pluck_attributes += aggregations_sql
+      else
+        @pluck_attributes = aggregations_sql
+      end
     end
 
     def query_order(results)
       keys = @json_query[:sort].keys
-      @pluck_attributes += keys.filter { |key| @query.normalized_calculated_attributes.exclude?(key) }
+      @pluck_attributes += keys.filter { |key| @query.aggregations_names.exclude?(key) }
 
       order_query = []
       @json_query[:sort].each do |key, direction|
@@ -95,7 +107,7 @@ module Analytics
 
     def query_pluck(results)
       results = results.pluck(*@pluck_attributes)
-      response_attributes = @pluck_attributes.map { |key| @query.normalize_calulated_attribute(key) }
+      response_attributes = @pluck_attributes.map { |key| @query.extract_aggregation_name(key) }
       results.map { |result| response_attributes.zip(result).to_h }
     end
   end

@@ -30,49 +30,42 @@
       "additionalProperties": false
     },
     "groups" : {
+      "anyOf" : [
+        {
+          "type" : "string",
+          "pattern" : "^[a-z_]*\.[a-z_]*$"
+        }, 
+        {
+          "type": "array",
+          "items" : {
+            "type" : "string",
+            "pattern" : "^[a-z_]*\.[a-z_]*$"
+          },
+          "minLength" : 1
+        }
+      ]
+    },
+    "aggregations" : {
       "type" : "object",
-      "properties" : {
-        "key" : {
+      "minProperties" : 1,
+      "patternProperties" : {
+        "^[a-z_]*\.[a-z_]*$" : {
           "anyOf" : [
             {
               "type" : "string",
-              "pattern" : "^[a-z_]*\.[a-z_]*$"
+              "enum" : ["min", "max", "avg", "sum", "count"]
             }, 
             {
               "type": "array",
               "items" : {
                 "type" : "string",
-                "pattern" : "^[a-z_]*\.[a-z_]*$"
+                "enum" : ["min", "max", "avg", "sum", "count"]
               },
               "minLength" : 1
             }
           ]
-        },
-        "aggregations" : {
-          "type" : "object",
-          "minProperties" : 1,
-          "patternProperties" : {
-            "^[a-z_]*\.[a-z_]*$" : {
-              "anyOf" : [
-                {
-                  "type" : "string",
-                  "enum" : ["min", "max", "avg", "sum", "count"]
-                }, 
-                {
-                  "type": "array",
-                  "items" : {
-                    "type" : "string",
-                    "enum" : ["min", "max", "avg", "sum", "count"]
-                  },
-                  "minLength" : 1
-                }
-              ]
-            }
-          },
-          "additionalProperties" : false
         }
       },
-      "required" : ["key","aggregations"],
       "additionalProperties" : false
     },
     "sort" : {

@@ -24,8 +24,13 @@ module Analytics
         validate_dimensions
         validate_dates
       end
+
       if @json_query.key?(:groups)
         validate_groups
+      end
+
+      if @json_query.key?(:aggregations)
+        validate_aggregations
       end
 
       return unless @json_query.key?(:sort)
@@ -42,7 +47,8 @@ module Analytics
     end
 
     def validate_json
-      json_errors = JSON::Validator.fully_validate('engines/commercial/analytics/app/services/analytics/query_schema.json', @json_query.to_unsafe_hash)
+      query_schema = 'engines/commercial/analytics/app/services/analytics/query_schema.json'
+      json_errors = JSON::Validator.fully_validate(query_schema, @json_query.to_unsafe_hash)
       return if json_errors.empty?
 
       add_error(json_errors, 400)
@@ -90,7 +96,7 @@ module Analytics
           add_error("#{kind} dimension #{dimension} does not exist.", 422)
         end
 
-      elsif @query.normalized_calculated_attributes.exclude?(key) && @query.model.column_names.exclude?(key)
+      elsif @query.aggregations_names.exclude?(key) && @query.model.column_names.exclude?(key)
         add_error("#{kind} column #{key} does not exist in fact table.", 422)
       end
     end
@@ -100,7 +106,13 @@ module Analytics
         validate_dotted(key, 'Groups')
       end
 
-      @json_query[:groups][:aggregations].each do |key, aggregation|
+      return if @json_query.key?(:aggregations)
+
+      add_error('There must be aggregations when using groups.', 400)
+    end
+
+    def validate_aggregations
+      @json_query[:aggregations].each do |key, aggregation|
         if key == 'all'
           next if aggregation == 'count'
 

@@ -50,7 +50,11 @@ module Analytics
       used_dimensions = []
 
       if @json_query.key?(:groups)
-        used_dimensions += groups_keys + @json_query[:groups][:aggregations].keys
+        used_dimensions += groups_keys
+      end
+
+      if @json_query.key?(:aggregations)
+        used_dimensions += @json_query[:aggregations].keys
       end
 
       if @json_query.key?(:sort)
@@ -68,27 +72,27 @@ module Analytics
     end
 
     def groups_keys
-      if @json_query[:groups][:key].instance_of?(Array)
-        @json_query[:groups][:key]
+      if @json_query[:groups].instance_of?(Array)
+        @json_query[:groups]
       else
-        [@json_query[:groups][:key]]
+        [@json_query[:groups]]
       end
     end
 
-    def calculated_attribute(aggregation, column)
+    def aggregation_to_sql(aggregation, column)
       "#{aggregation}(#{column}) as #{aggregation}_#{column.tr('.', '_')}"
     end
 
-    def calculated_attributes
+    def aggregations_sql
       attribute = []
-      if @json_query.key?(:groups)
-        @json_query[:groups][:aggregations].each do |column, aggregation|
+      if @json_query.key?(:aggregations)
+        @json_query[:aggregations].each do |column, aggregation|
           if aggregation.instance_of?(Array)
             aggregation.each do |aggregation_|
-              attribute.push(calculated_attribute(aggregation_, column))
+              attribute.push(aggregation_to_sql(aggregation_, column))
             end
           else
-            attribute.push(calculated_attribute(aggregation, column))
+            attribute.push(aggregation_to_sql(aggregation, column))
           end
         end
       end
@@ -96,12 +100,12 @@ module Analytics
       attribute
     end
 
-    def normalize_calulated_attribute(attribute)
+    def extract_aggregation_name(attribute)
       attribute.include?(' as ') ? attribute.split(' as ')[1] : attribute
     end
 
-    def normalized_calculated_attributes
-      calculated_attributes.map { |key| normalize_calulated_attribute(key) }
+    def aggregations_names
+      aggregations_sql.map { |key| extract_aggregation_name(key) }
     end
   end
 end
