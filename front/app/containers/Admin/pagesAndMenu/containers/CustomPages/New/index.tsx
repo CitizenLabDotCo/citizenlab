@@ -20,9 +20,6 @@ import Input from 'components/HookForm/Input';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import { Box } from '@citizenlab/cl2-component-library';
 
-// constants
-import { pagesAndMenuBreadcrumb } from '../../../breadcrumbs';
-
 // intl
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
@@ -69,16 +66,6 @@ const CreateCustomPageHookForm = ({
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onFormSubmit)}>
         <SectionFormWrapper
-          breadcrumbs={[
-            {
-              label: formatMessage(pagesAndMenuBreadcrumb.label),
-              linkTo: pagesAndMenuBreadcrumb.linkTo,
-            },
-            {
-              label: formatMessage(messages.createCustomPage),
-            },
-          ]}
-          title={formatMessage(messages.pageTitle)}
           stickyMenuContents={
             <Button type="submit" processing={methods.formState.isSubmitting}>
               {formatMessage(messages.saveButton)}
