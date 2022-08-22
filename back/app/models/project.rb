@@ -29,7 +29,6 @@
 #  comments_count               :integer          default(0), not null
 #  default_assignee_id          :uuid
 #  poll_anonymous               :boolean          default(FALSE), not null
-#  custom_form_id               :uuid
 #  downvoting_enabled           :boolean          default(TRUE), not null
 #  ideas_order                  :string
 #  input_term                   :string           default("idea")
@@ -40,8 +39,7 @@
 #
 # Indexes
 #
-#  index_projects_on_custom_form_id  (custom_form_id)
-#  index_projects_on_slug            (slug) UNIQUE
+#  index_projects_on_slug  (slug) UNIQUE
 #
 # Foreign Keys
 #
@@ -79,8 +77,6 @@ class Project < ApplicationRecord
   before_validation :set_admin_publication
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
-
-  belongs_to :custom_form, optional: true, dependent: :destroy
 
   has_one :admin_publication, as: :publication, dependent: :destroy
   accepts_nested_attributes_for :admin_publication, update_only: true
