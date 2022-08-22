@@ -1,12 +1,8 @@
 import React from 'react';
 
-// routing
-import { useLocation } from 'react-router-dom';
-import Link from 'utils/cl-router/Link';
-
 // style
 import styled from 'styled-components';
-import { colors, fontSizes, isRtl } from 'utils/styleUtils';
+import { colors, isRtl } from 'utils/styleUtils';
 
 // typings
 import { ITab } from 'typings';
@@ -15,7 +11,7 @@ import { ITab } from 'typings';
 import FeatureFlag from 'components/FeatureFlag';
 import { SectionDescription } from 'components/admin/Section';
 import Title from 'components/admin/PageTitle';
-import { StatusLabel } from '@citizenlab/cl2-component-library';
+import Tab from './Tab';
 
 const ResourceHeader = styled.div`
   display: flex;
@@ -53,43 +49,6 @@ const TabbedNav = styled.nav`
   flex-wrap: wrap;
 `;
 
-const Tab = styled.div`
-  list-style: none;
-  cursor: pointer;
-  display: flex;
-  margin-bottom: -1px;
-
-  &:first-letter {
-    text-transform: uppercase;
-  }
-
-  &:not(:last-child) {
-    margin-right: 40px;
-  }
-
-  a {
-    color: ${colors.label};
-    font-size: ${fontSizes.base}px;
-    font-weight: 400;
-    line-height: 1.5rem;
-    padding: 0;
-    padding-top: 1em;
-    padding-bottom: 1em;
-    border-bottom: 3px solid transparent;
-    transition: all 100ms ease-out;
-  }
-
-  &:not(.active):hover a {
-    color: ${colors.adminTextColor};
-    border-color: #ddd;
-  }
-
-  &.active a {
-    color: ${colors.adminTextColor};
-    border-color: ${colors.adminTextColor};
-  }
-`;
-
 const ChildWrapper = styled.div`
   margin-bottom: 60px;
   padding: 42px;
@@ -103,10 +62,6 @@ const ChildWrapper = styled.div`
   }
 `;
 
-const StatusLabelWithMargin = styled(StatusLabel)`
-  margin-left: 12px;
-`;
-
 interface Props {
   resource: {
     title: string;
@@ -117,85 +72,30 @@ interface Props {
   childWrapper?: boolean;
 }
 
-function getRegularExpression(tabUrl: string) {
-  return new RegExp(`^/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)(${tabUrl})(/)?$`);
-}
-
-const FormattedTabLink = ({
-  tab: { url, label, statusLabel },
-}: {
-  tab: ITab;
-}) => {
-  if (statusLabel) {
-    return (
-      <Link to={url}>
-        {label}
-        <StatusLabelWithMargin
-          text={statusLabel}
-          backgroundColor={colors.adminBackground}
-          variant="outlined"
-        />
-      </Link>
-    );
-  }
-
-  return <Link to={url}>{label}</Link>;
-};
-
 const TabbedResource = ({
   children,
   resource: { title, subtitle },
   tabs,
   childWrapper = true,
 }: Props) => {
-  const { pathname } = useLocation();
-
-  const activeClassForTab = (tab: ITab) => {
-    return (
-      typeof tab.active === 'function'
-        ? tab.active(pathname)
-        : tab.active ||
-          (pathname && getRegularExpression(tab.url).test(location.pathname))
-    )
-      ? 'active'
-      : '';
-  };
-
   return (
     <>
       <ResourceHeader className="e2e-resource-header">
-        <div>
+        <>
           <Title>{title}</Title>
           {subtitle && <SectionDescription>{subtitle}</SectionDescription>}
-        </div>
+        </>
       </ResourceHeader>
 
       {tabs && tabs.length > 0 && (
         <TabbedNav className="e2e-resource-tabs">
           {tabs.map((tab) => {
-            if (tab.feature) {
-              return (
-                <FeatureFlag key={tab.url} name={tab.feature}>
-                  <Tab
-                    key={tab.url}
-                    className={`${tab.name} ${activeClassForTab(tab)}`}
-                    data-testid="resource-single-tab"
-                  >
-                    <FormattedTabLink tab={tab} />
-                  </Tab>
-                </FeatureFlag>
-              );
-            }
-
-            // no feature, just return tab with label
-            return (
-              <Tab
-                key={tab.url}
-                className={`${tab.name} ${activeClassForTab(tab)}`}
-                data-testid="resource-single-tab"
-              >
-                <FormattedTabLink tab={tab} />
-              </Tab>
+            return tab.feature ? (
+              <FeatureFlag key={tab.url} name={tab.feature}>
+                <Tab tab={tab} />
+              </FeatureFlag>
+            ) : (
+              <Tab tab={tab} />
             );
           })}
         </TabbedNav>
