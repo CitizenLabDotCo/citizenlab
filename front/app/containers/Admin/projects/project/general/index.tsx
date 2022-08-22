@@ -68,12 +68,12 @@ const AdminProjectsProjectGeneral = ({
 }: InjectedIntlProps) => {
   const locale = useLocale();
   const appConfig = useAppConfiguration();
-  const params = useParams();
-  const project = useProject({ projectId: params.projectId });
+  const { projectId } = useParams();
+  const project = useProject({ projectId });
   const appConfigLocales = useAppConfigurationLocales();
-  const remoteProjectFiles = useProjectFiles(params.projectId);
+  const remoteProjectFiles = useProjectFiles(projectId);
   const remoteProjectImages = useProjectImages({
-    projectId: params.projectId || null,
+    projectId: projectId || null,
   });
   const [submitState, setSubmitState] = useState<ISubmitState>('disabled');
   const [processing, setProcessing] =
@@ -280,8 +280,8 @@ const AdminProjectsProjectGeneral = ({
   ) {
     // Should be split. Same func for existing/new project
     // Makes things unnecessarily complicated (e.g. projectId below).
-    let projectId = params.projectId;
     let isNewProject = false;
+    let latestProjectId = isNewProject ? null : projectId;
     const isFormValid = validateForm();
 
     if (!isFormValid) {
@@ -300,33 +300,42 @@ const AdminProjectsProjectGeneral = ({
       try {
         setProcessing(true);
         if (!isEmpty(nextProjectAttributesDiff)) {
-          if (projectId) {
-            await updateProject(projectId, nextProjectAttributesDiff);
+          if (latestProjectId) {
+            await updateProject(latestProjectId, nextProjectAttributesDiff);
           } else {
             const project = await addProject(nextProjectAttributesDiff);
-            projectId = project.data.id;
+            latestProjectId = project.data.id;
             isNewProject = true;
           }
         }
 
-        if (isString(projectId)) {
+        if (latestProjectId) {
           const imagesToAddPromises = projectImages
             .filter((file) => !file.remote)
-            .map((file) => addProjectImage(projectId as string, file.base64));
+            .map(
+              (file) =>
+                latestProjectId && addProjectImage(latestProjectId, file.base64)
+            );
           const imagesToRemovePromises = projectImagesToRemove
             .filter((file) => file.remote === true && isString(file.id))
-            .map((file) =>
-              deleteProjectImage(projectId as string, file.id as string)
+            .map(
+              (file) =>
+                latestProjectId &&
+                deleteProjectImage(latestProjectId, file.id as string)
             );
           const filesToAddPromises = projectFiles
             .filter((file) => !file.remote)
-            .map((file) =>
-              addProjectFile(projectId as string, file.base64, file.name)
+            .map(
+              (file) =>
+                latestProjectId &&
+                addProjectFile(latestProjectId, file.base64, file.name)
             );
           const filesToRemovePromises = projectFilesToRemove
             .filter((file) => file.remote === true && isString(file.id))
-            .map((file) =>
-              deleteProjectFile(projectId as string, file.id as string)
+            .map(
+              (file) =>
+                latestProjectId &&
+                deleteProjectFile(latestProjectId, file.id as string)
             );
 
           await Promise.all([
@@ -341,9 +350,9 @@ const AdminProjectsProjectGeneral = ({
           setProjectFilesToRemove([]);
           setProcessing(false);
 
-          if (isNewProject && projectId) {
+          if (isNewProject && latestProjectId) {
             eventEmitter.emit<INewProjectCreatedEvent>('NewProjectCreated', {
-              projectId,
+              projectId: latestProjectId,
             });
           }
         }
@@ -459,7 +468,7 @@ const AdminProjectsProjectGeneral = ({
     return (
       <StyledForm className="e2e-project-general-form" onSubmit={onSubmit}>
         <Section>
-          {params.projectId && (
+          {projectId && (
             <>
               <SectionTitle>
                 <FormattedMessage {...messages.titleGeneral} />
