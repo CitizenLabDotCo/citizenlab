@@ -21,8 +21,8 @@ resource 'NavBarItems' do
       with_options scope: :nav_bar_item do
         code_desc = "The code uniquely identifies default NavBarItems. One of: #{NavBarItem::CODES}."
         parameter :code, code_desc, required: true
-        title_desc = 'The title of the NavBarItem, as a multiloc string.'\
-                     ' Falls back to the default copy for default NavBarItems when not provided'
+        title_desc = 'The title of the NavBarItem, as a multiloc string. ' \
+                     'Falls back to the default copy for default NavBarItems when not provided'
         parameter :title_multiloc, title_desc, required: false
         parameter :static_page_id, 'The ID of the static page for custom NavBarItems.', required: false
       end
@@ -81,8 +81,8 @@ resource 'NavBarItems' do
 
     patch 'web_api/v1/nav_bar_items/:id' do
       with_options scope: :nav_bar_item do
-        title_desc = 'The title of the NavBarItem, as a multiloc string.'\
-                     ' Falls back to the default copy for default NavBarItems when not provided'
+        title_desc = 'The title of the NavBarItem, as a multiloc string. ' \
+                     'Falls back to the default copy for default NavBarItems when not provided'
         parameter :title_multiloc, title_desc
       end
       ValidationErrorHelper.new.error_fields self, NavBarItem
@@ -103,8 +103,8 @@ resource 'NavBarItems' do
 
     patch 'web_api/v1/nav_bar_items/:id/reorder' do
       with_options scope: :nav_bar_item do
-        ordering_desc = 'The position, starting from 0, where the NavBarItem should be inserted at.'\
-                        ' Items after this position will move to the right.'
+        ordering_desc = 'The position, starting from 0, where the NavBarItem should be inserted at. ' \
+                        'Items after this position will move to the right.'
         parameter :ordering, ordering_desc, required: true
       end
 
