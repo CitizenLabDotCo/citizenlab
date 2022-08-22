@@ -18,24 +18,14 @@ const HeroBannerForm = lazy(() => import('./containers/HeroBanner'));
 const NewCustomPage = lazy(() => import('./containers/CustomPages/New'));
 
 // path utils
-const ADMIN_PAGE_PATH = 'pages-menu';
-const PATH_PREFIX = `admin/${ADMIN_PAGE_PATH}`;
+const PAGE_PATH = 'pages-menu';
+const ADMIN_PATH_PREFIX = 'admin';
+export const PAGES_MENU_PATH = `/${ADMIN_PATH_PREFIX}/${PAGE_PATH}`;
 const HOMEPAGE_PATH = 'homepage';
 const CUSTOM_PAGES_PATH = 'custom';
 
-function adminPagesMenuHomepagePath() {
-  // could use type checking, I initially edited it to /pages/edit...,
-  // which resulted in a 404
-  return `/${PATH_PREFIX}/${HOMEPAGE_PATH}`;
-}
-
-export { adminPagesMenuHomepagePath };
-
-// routes
-export const PAGES_MENU_PATH = '/admin/pages-menu';
-
 export default () => ({
-  path: ADMIN_PAGE_PATH, // pages-menu
+  path: PAGE_PATH, // pages-menu
   children: [
     {
       path: '',
