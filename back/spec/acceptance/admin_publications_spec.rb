@@ -420,6 +420,21 @@ resource 'AdminPublication' do
               folder.admin_publication.id
             )
           end
+
+          if CitizenLab.ee?
+            example_request 'Search project by content from content builder' do
+              project = create(:project, content_builder_layouts: [
+                build(:layout, craftjs_jsonmultiloc: { en: { someid: { props: { text: 'sometext' } } } })
+              ])
+              create(:project, content_builder_layouts: [
+                build(:layout, craftjs_jsonmultiloc: { en: { sometext: { props: { text: 'othertext' } } } })
+              ])
+              do_request search: 'sometext'
+
+              expect(response_data.size).to eq 1
+              expect(response_ids).to contain_exactly(project.admin_publication.id)
+            end
+          end
         end
       end
 
