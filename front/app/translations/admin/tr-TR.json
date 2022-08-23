@@ -670,7 +670,7 @@
   "app.containers.AdminPage.DashboardPage.noPhase": "No phase created for this project",
   "app.containers.AdminPage.DashboardPage.numberOfActiveParticipantsDescription": "The number of participants that have added a post, voted or commented.",
   "app.containers.AdminPage.DashboardPage.numberOfVotesDown": "Downvotes",
-  "app.containers.AdminPage.DashboardPage.numberOfVotesTotal": "Total votes",
+  "app.containers.AdminPage.DashboardPage.numberOfVotesTotal": "Toplam oy sayısı",
   "app.containers.AdminPage.DashboardPage.numberOfVotesUp": "Upvotes",
   "app.containers.AdminPage.DashboardPage.otherArea": "Başka bir yerde",
   "app.containers.AdminPage.DashboardPage.participationPerProject": "Participation per project",
