@@ -50,6 +50,14 @@ RSpec.describe StaticPage, type: :model do
     end
   end
 
+  describe 'before destroy' do
+    subject(:static_page) { build(:static_page, code: 'faq') }
+
+    it 'prevents destruction of static page with :code other than \'custom\'' do
+      expect { static_page.destroy! }.to raise_error ActiveRecord::RecordNotDestroyed
+    end
+  end
+
   describe 'image uploads' do
     subject(:static_page) { build(:static_page) }
 
