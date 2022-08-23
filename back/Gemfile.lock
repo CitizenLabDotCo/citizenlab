@@ -530,7 +530,7 @@ GEM
     annotate (3.2.0)
       activerecord (>= 3.2, < 8.0)
       rake (>= 10.4, < 14.0)
-    api-pagination (4.8.2)
+    api-pagination (5.0.0)
     ast (2.4.2)
     attr_required (1.0.1)
     awesome_nested_set (3.5.0)
@@ -1144,7 +1144,7 @@ DEPENDENCIES
   acts_as_list (~> 1.0)
   admin_api!
   annotate
-  api-pagination (~> 4.8.2)
+  api-pagination (~> 5.0.0)
   awesome_nested_set (~> 3.5.0)
   aws-sdk-s3 (~> 1)
   axlsx (= 3.0.0.pre)
