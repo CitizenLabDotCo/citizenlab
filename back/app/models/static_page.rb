@@ -53,7 +53,6 @@ class StaticPage < ApplicationRecord
   before_validation :sanitize_bottom_info_section_multiloc
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
-  validates :top_info_section_multiloc, multiloc: { presence: false, html: true }
   validates :slug, presence: true, uniqueness: true
   validates :code, inclusion: { in: CODES }
   validates :code, uniqueness: true, unless: :custom?
