@@ -177,10 +177,15 @@ resource 'Idea Custom Fields' do
         with_options scope: 'custom_fields[]' do
           parameter :id, 'The ID of an existing custom field to update. When the ID is not provided, a new field is created.', required: false
           parameter :input_type, 'The type of the input. Required when creating a new field.', required: false
-          parameter :required, 'Whether filling out the field is mandatory', required: true
-          parameter :enabled, 'Whether the field is active or not', required: true
-          parameter :title_multiloc, 'An optional title of the field, as shown to users, in multiple locales', required: true
+          parameter :required, 'Whether filling out the field is mandatory', required: false
+          parameter :enabled, 'Whether the field is active or not', required: false
+          parameter :title_multiloc, 'A title of the field, as shown to users, in multiple locales', required: false
           parameter :description_multiloc, 'An optional description of the field, as shown to users, in multiple locales', required: false
+          parameter :options, type: :array
+        end
+        with_options scope: 'options[]' do
+          parameter :id, 'The ID of an existing custom field option to update. When the ID is not provided, a new option is created.', required: false
+          parameter :title_multiloc, 'A title of the option, as shown to users, in multiple locales', required: false
         end
 
         let(:context) { create :continuous_project, participation_method: 'native_survey' }
@@ -202,6 +207,17 @@ resource 'Idea Custom Fields' do
                 title_multiloc: { 'en' => '' },
                 required: true,
                 enabled: true
+              },
+              {
+                input_type: 'select',
+                title_multiloc: { 'en' => 'Inserted field' },
+                required: false,
+                enabled: false,
+                options: [
+                  {
+                    title_multiloc: { 'en' => '' }
+                  }
+                ]
               }
             ]
           }
@@ -218,6 +234,13 @@ resource 'Idea Custom Fields' do
             },
             '1': {
               title_multiloc: [{ error: 'blank' }]
+            },
+            '2': {
+              options: {
+                '0': {
+                  title_multiloc: [{ error: 'blank' }]
+                }
+              }
             }
           })
         end
@@ -261,7 +284,8 @@ resource 'Idea Custom Fields' do
               updated_at: an_instance_of(String)
             },
             id: an_instance_of(String),
-            type: 'custom_field'
+            type: 'custom_field',
+            relationships: { options: { data: [] } }
           })
           expect(json_response[:data][1]).to match({
             attributes: {
@@ -277,7 +301,105 @@ resource 'Idea Custom Fields' do
               updated_at: an_instance_of(String)
             },
             id: an_instance_of(String),
-            type: 'custom_field'
+            type: 'custom_field',
+            relationships: { options: { data: [] } }
+          })
+        end
+
+        example 'Add, edit, delete and reorder options of an existing custom field' do
+          change_field = create :custom_field_select, :with_options, resource: custom_form
+          change_option = change_field.options.first
+          delete_option = change_field.options.last
+
+          request = {
+            custom_fields: [
+              {
+                id: change_field.id,
+                input_type: 'select',
+                title_multiloc: { en: 'Changed field' },
+                description_multiloc: {},
+                required: true,
+                enabled: true,
+                options: [
+                  {
+                    title_multiloc: { en: 'Option 1' }
+                  },
+                  {
+                    id: change_option.id,
+                    title_multiloc: { en: 'Changed option' }
+                  }
+                ]
+              }
+            ]
+          }
+          do_request request
+
+          assert_status 200
+          json_response = json_parse response_body
+
+          expect(json_response[:data].size).to eq 1
+          expect(json_response[:data].first).to match({
+            attributes: {
+              code: nil,
+              created_at: an_instance_of(String),
+              description_multiloc: {},
+              enabled: true,
+              input_type: 'select',
+              key: an_instance_of(String),
+              ordering: 0,
+              required: true,
+              title_multiloc: { en: 'Changed field' },
+              updated_at: an_instance_of(String)
+            },
+            id: an_instance_of(String),
+            type: 'custom_field',
+            relationships: {
+              options: {
+                data: [
+                  {
+                    id: an_instance_of(String),
+                    type: 'custom_field_option'
+                  },
+                  {
+                    id: an_instance_of(String),
+                    type: 'custom_field_option'
+                  }
+                ]
+              }
+            }
+          })
+          expect(CustomFieldOption.where(id: delete_option).count).to eq 0
+          included_json_options = json_response[:included].select do |json_option|
+            json_option[:type] == 'custom_field_option'
+          end
+          expect(included_json_options.size).to eq 2
+          json_option1 = included_json_options.find do |json_option|
+            json_option[:id] != change_option.id
+          end
+          json_option2 = included_json_options.find do |json_option|
+            json_option[:id] == change_option.id
+          end
+          expect(json_option1).to match({
+            id: an_instance_of(String),
+            type: 'custom_field_option',
+            attributes: {
+              key: an_instance_of(String),
+              title_multiloc: { en: 'Option 1' },
+              ordering: 0,
+              created_at: an_instance_of(String),
+              updated_at: an_instance_of(String)
+            }
+          })
+          expect(json_option2).to match({
+            id: change_option.id,
+            type: 'custom_field_option',
+            attributes: {
+              key: an_instance_of(String),
+              title_multiloc: { en: 'Changed option' },
+              ordering: 1,
+              created_at: an_instance_of(String),
+              updated_at: an_instance_of(String)
+            }
           })
         end
       end
@@ -316,49 +438,14 @@ resource 'Idea Custom Fields' do
         with_options scope: 'custom_fields[]' do
           parameter :id, 'The ID of an existing custom field to update. When the ID is not provided, a new field is created.', required: false
           parameter :input_type, 'The type of the input. Required when creating a new field.', required: false
-          parameter :required, 'Whether filling out the field is mandatory', required: true
-          parameter :enabled, 'Whether the field is active or not', required: true
-          parameter :title_multiloc, 'An optional title of the field, as shown to users, in multiple locales', required: true
+          parameter :required, 'Whether filling out the field is mandatory', required: false
+          parameter :enabled, 'Whether the field is active or not', required: false
+          parameter :title_multiloc, 'A title of the field, as shown to users, in multiple locales', required: false
           parameter :description_multiloc, 'An optional description of the field, as shown to users, in multiple locales', required: false
         end
 
         let(:custom_form) { create :custom_form, participation_context: context }
         let(:phase_id) { context.id }
-
-        example '[error] Invalid data' do
-          field_to_update = create(:custom_field, resource: custom_form, title_multiloc: { 'en' => 'Some field' })
-          request = {
-            custom_fields: [
-              {
-                # input_type is not given
-                title_multiloc: { 'en' => 'Inserted field' },
-                required: false,
-                enabled: false
-              },
-              {
-                id: field_to_update.id,
-                title_multiloc: { 'en' => '' },
-                required: true,
-                enabled: true
-              }
-            ]
-          }
-          do_request request
-
-          assert_status 422
-          json_response = json_parse(response_body)
-          expect(json_response[:errors]).to eq({
-            '0': {
-              input_type: [
-                { error: 'blank' },
-                { error: 'inclusion', value: nil }
-              ]
-            },
-            '1': {
-              title_multiloc: [{ error: 'blank' }]
-            }
-          })
-        end
 
         example 'Insert one field, update one field, and destroy one field' do
           field_to_update = create(:custom_field, resource: custom_form, title_multiloc: { 'en' => 'Some field' })
@@ -399,7 +486,8 @@ resource 'Idea Custom Fields' do
               updated_at: an_instance_of(String)
             },
             id: an_instance_of(String),
-            type: 'custom_field'
+            type: 'custom_field',
+            relationships: { options: { data: [] } }
           })
           expect(json_response[:data][1]).to match({
             attributes: {
@@ -415,7 +503,99 @@ resource 'Idea Custom Fields' do
               updated_at: an_instance_of(String)
             },
             id: an_instance_of(String),
-            type: 'custom_field'
+            type: 'custom_field',
+            relationships: { options: { data: [] } }
+          })
+        end
+
+        example 'Add a custom field with options and delete a field with options' do
+          delete_field = create :custom_field_select, :with_options, resource: custom_form
+          delete_options = delete_field.options
+
+          request = {
+            custom_fields: [
+              {
+                input_type: 'multiselect',
+                title_multiloc: { en: 'Inserted field' },
+                required: false,
+                enabled: true,
+                options: [
+                  {
+                    title_multiloc: { en: 'Option 1' }
+                  },
+                  {
+                    title_multiloc: { en: 'Option 2' }
+                  }
+                ]
+              }
+            ]
+          }
+          do_request request
+
+          assert_status 200
+          json_response = json_parse response_body
+
+          expect(CustomField.where(id: delete_field).count).to eq 0
+          expect(CustomFieldOption.where(id: delete_options).count).to eq 0
+          expect(json_response[:data].size).to eq 1
+          expect(json_response[:data].first).to match({
+            attributes: {
+              code: nil,
+              created_at: an_instance_of(String),
+              description_multiloc: {},
+              enabled: true,
+              input_type: 'multiselect',
+              key: 'inserted_field',
+              ordering: 0,
+              required: false,
+              title_multiloc: { en: 'Inserted field' },
+              updated_at: an_instance_of(String)
+            },
+            id: an_instance_of(String),
+            type: 'custom_field',
+            relationships: {
+              options: {
+                data: [
+                  {
+                    id: an_instance_of(String),
+                    type: 'custom_field_option'
+                  },
+                  {
+                    id: an_instance_of(String),
+                    type: 'custom_field_option'
+                  }
+                ]
+              }
+            }
+          })
+          options = CustomField.find(json_response.dig(:data, 0, :id)).options
+          json_option1 = json_response[:included].find do |json_option|
+            json_option[:id] == options.first.id
+          end
+          json_option2 = json_response[:included].find do |json_option|
+            json_option[:id] == options.last.id
+          end
+          expect(json_option1).to match({
+            id: options.first.id,
+            type: 'custom_field_option',
+            attributes: {
+              key: an_instance_of(String),
+              title_multiloc: { en: 'Option 1' },
+              ordering: 0,
+              created_at: an_instance_of(String),
+              updated_at: an_instance_of(String)
+            }
+          })
+          expect(json_option2).to match({
+            id: options.last.id,
+            type: 'custom_field_option',
+            attributes: {
+              key: an_instance_of(String),
+              title_multiloc: { en: 'Option 2' },
+              ordering: 1,
+              created_at: an_instance_of(String),
+              updated_at: an_instance_of(String)
+            }
           })
         end
       end

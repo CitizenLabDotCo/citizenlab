@@ -6,4 +6,6 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
   attribute :hidden, if: proc { |object, _params|
     object.resource_type == 'User'
   }
+
+  has_many :options, record_type: :custom_field_option, serializer: WebApi::V1::CustomFieldOptionSerializer
 end
