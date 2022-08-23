@@ -90,7 +90,6 @@ module SmartGroups
         end
 
         def _with_user(groups, user)
-          groups = groups.left_outer_joins(:users)
           smart_groups = groups.where(membership_type: 'rules')
           other_groups = groups.where.not(membership_type: 'rules')
 

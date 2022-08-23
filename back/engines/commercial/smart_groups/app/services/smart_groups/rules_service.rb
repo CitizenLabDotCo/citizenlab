@@ -51,6 +51,7 @@ module SmartGroups
       groups_in_common_for_users(user_relation_object, groups)
     end
 
+    # Executes the smart group query
     def filter(users_scope, group_json_rules)
       parse_json_rules(group_json_rules)
         .inject(users_scope) { |memo, rule| rule.filter(memo) }
