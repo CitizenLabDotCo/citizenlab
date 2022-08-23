@@ -50,6 +50,7 @@ const Legend = ({
             <g
               transform={`translate(${left},${top})`}
               key={`${rowIndex}-${itemIndex}`}
+              className="graph-legend-item"
             >
               <Icon {...item} />
               <text

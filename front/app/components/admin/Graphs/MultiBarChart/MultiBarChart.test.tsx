@@ -167,9 +167,9 @@ describe('<MultiBarChart />', () => {
       expect(bars[0]).toHaveAttribute('opacity', '0.8');
       expect(bars[1]).toHaveAttribute('opacity', '0.8');
       expect(bars[2]).toHaveAttribute('opacity', '0.8');
-      expect(bars[3]).not.toHaveAttribute('opacity');
-      expect(bars[4]).not.toHaveAttribute('opacity');
-      expect(bars[5]).not.toHaveAttribute('opacity');
+      expect(bars[3]).toHaveAttribute('opacity', '0.8');
+      expect(bars[4]).toHaveAttribute('opacity', '0.8');
+      expect(bars[5]).toHaveAttribute('opacity', '0.8');
     });
 
     it('renders correctly with opacity mapping', () => {
@@ -282,4 +282,42 @@ describe('<MultiBarChart />', () => {
       await waitFor(() => expect(screen.getByText('6.49')).toBeInTheDocument());
     });
   });
+
+  // describe('Legend', () => {
+  //   const legendItems: any = [
+  //     [
+  //       { icon: 'circle', label: 'item1', color: 'red' },
+  //       { icon: 'circle', label: 'item2', color: 'blue' }
+  //     ],
+  //     [
+  //       { icon: 'circle', label: 'item3', color: 'green' },
+  //     ]
+  //   ]
+  //   it('renders correct legend items (bottom-center)', () => {
+  //     const { container, debug } = render(
+  //       <MultiBarChart
+  //         width={400}
+  //         height={200}
+  //         data={data}
+  //         mapping={{ category: 'name', length: ['value1', 'value2'] }}
+  //         bars={{ isAnimationActive: false }}
+  //         legend={{
+  //           items: legendItems
+  //         }}
+  //       />
+  //     );
+
+  //     const items = container.querySelectorAll('.legend-item');
+  //     expect(items).toHaveLength(3);
+  //     debug()
+  //   })
+
+  //   // it('renders correct legend items (bottom-left)', () => {
+
+  //   // })
+
+  //   // it('renders correct legend items (bottom-right)', () => {
+
+  //   // })
+  // })
 });

@@ -28,13 +28,16 @@ export const getTooltipConfig = (
 };
 
 export const parseMargin = (
-  margin: Margin = {},
+  margin?: Margin,
   legendDimensions?: LegendDimensions
-): Margin => {
+): Margin | undefined => {
+  if (!margin && !legendDimensions) return;
   if (!legendDimensions) return margin;
 
+  const _margin = margin ?? {};
+
   return {
-    ...margin,
-    bottom: (margin.bottom ?? 0) + legendDimensions.height + LEGEND_OFFSET,
+    ..._margin,
+    bottom: (_margin.bottom ?? 0) + legendDimensions.height + LEGEND_OFFSET,
   };
 };
