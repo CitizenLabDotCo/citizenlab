@@ -43,17 +43,45 @@ class StaticPage < ApplicationRecord
   accepts_nested_attributes_for :nav_bar_item
   accepts_nested_attributes_for :text_images
 
-  validates :title_multiloc, presence: true, multiloc: { presence: true }
-  validates :top_info_section_multiloc, multiloc: { presence: false, html: true }
-  validates :slug, presence: true, uniqueness: true
-  validates :code, inclusion: { in: CODES }
-  validates :code, uniqueness: true, if: ->(page) { !page.custom? }
-
   before_validation :set_code, on: :create
   before_validation :generate_slug, on: :create
 
   before_validation :strip_title
   before_validation :sanitize_top_info_section_multiloc
+  before_validation :sanitize_bottom_info_section_multiloc
+
+  validates :title_multiloc, presence: true, multiloc: { presence: true }
+  validates :top_info_section_multiloc, multiloc: { presence: false, html: true }
+  validates :slug, presence: true, uniqueness: true
+  validates :code, inclusion: { in: CODES }
+  validates :code, uniqueness: true, unless: :custom?
+
+  validates :banner_enabled, inclusion: [true, false]
+  validates :banner_layout, inclusion: %w[full_width_banner_layout two_column_layout two_row_layout]
+  validates :banner_overlay_color, css_color: true
+  validates :banner_overlay_opacity, numericality: { only_integer: true,
+                                                     in: [0..100],
+                                                     allow_nil: true }
+  validates :banner_header_multiloc, multiloc: true
+  validates :banner_subheader_multiloc, multiloc: true
+  validates :banner_cta_button_type, inclusion: %w[customized_button no_button]
+  with_options if: -> { banner_cta_button_type == 'customized_button' } do
+    validates :banner_cta_button_multiloc, presence: true, multiloc: { presence: true }
+    validates :banner_cta_button_url, presence: true, url: true
+  end
+
+  validates :top_info_section_enabled, inclusion: [true, false]
+  validates :top_info_section_multiloc, multiloc: { presence: false, html: true }
+
+  validates :projects_enabled, inclusion: [true, false]
+  with_options if: -> { projects_enabled == true } do
+    validates :projects_filter_type, presence: true, inclusion: %w[area topics]
+  end
+
+  validates :events_widget_enabled, inclusion: [true, false]
+
+  validates :bottom_info_section_enabled, inclusion: [true, false]
+  validates :bottom_info_section_multiloc, multiloc: { presence: false, html: true }
 
   mount_base64_uploader :header_bg, HeaderBgUploader
 
@@ -85,6 +113,10 @@ class StaticPage < ApplicationRecord
     sanitize_info_section_multiloc(:bottom_info_section_multiloc)
   end
 
+  # Sanitizes an info section multiloc.
+  # - Removes invalid HTML
+  # - Removes empty trailing tags
+  # - Automatically links URLs
   def sanitize_info_section_multiloc(attribute)
     return if self[attribute].nil?
 
