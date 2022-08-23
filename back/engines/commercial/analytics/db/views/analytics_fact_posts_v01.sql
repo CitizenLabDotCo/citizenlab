@@ -4,7 +4,7 @@ SELECT
     i.author_id AS user_id,
     i.project_id,
     adt.id as type_id,
-    i.created_at::DATE AS created_date,
+    i.created_at::DATE AS created_date_id,
     abf.feedback_first_date::DATE as feedback_first_date,
     (abf.feedback_first_date - i.created_at) as feedback_time_taken,
     COALESCE(abf.feedback_official,0) AS feedback_official,
@@ -25,7 +25,7 @@ SELECT
     i.author_id AS user_id,
     null AS project_id, -- initiative has no project
     adt.id as type_id,
-    i.created_at::DATE AS created_date,
+    i.created_at::DATE AS created_date_id,
     abf.feedback_first_date::DATE as feedback_first_date, -- date
     (abf.feedback_first_date - i.created_at) as feedback_time_taken,
     COALESCE(abf.feedback_official,0) AS feedback_official,

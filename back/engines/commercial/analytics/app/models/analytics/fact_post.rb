@@ -8,7 +8,7 @@
 #  user_id                :uuid
 #  project_id             :uuid
 #  type_id                :uuid
-#  created_date           :date
+#  created_date_id        :date
 #  feedback_first_date    :date
 #  feedback_time_taken    :interval
 #  feedback_official      :integer
@@ -24,7 +24,7 @@ module Analytics
     self.primary_key = :id
     attribute :feedback_time_taken, :string
     belongs_to :type, class_name: 'DimensionType'
-    belongs_to :created_date_, class_name: 'DimensionDate', foreign_key: 'created_date', primary_key: 'date'
+    belongs_to :created_date, class_name: 'DimensionDate', primary_key: 'date'
     belongs_to :project, class_name: 'DimensionProject'
     belongs_to :status, class_name: 'DimensionStatus'
 

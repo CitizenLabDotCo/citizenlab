@@ -4,7 +4,7 @@
 #
 # Table name: analytics_dimension_statuses
 #
-#  id     :uuid             not null, primary key
+#  id             :uuid             primary key
 #  title_multiloc :jsonb
 #
 module Analytics
