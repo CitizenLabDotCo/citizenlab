@@ -643,6 +643,8 @@
   "app.containers.Comments.commentsSortTitle": "فرز التعليقات بحسب",
   "app.containers.Comments.confirmCommentDeletion": "هل تريد حذف هذا التعليق بالتأكيد؟ لا يمكن التراجع عن هذا الإجراء!",
   "app.containers.Comments.deleteComment": "حذف",
+  "app.containers.Comments.deleteReasonDescriptionError": "Provide more information on your reason",
+  "app.containers.Comments.deleteReasonError": "Provide a reason",
   "app.containers.Comments.deleteReason_inappropriate": "إنه غير لائق أو مسيء",
   "app.containers.Comments.deleteReason_irrelevant": "هذا لا ينتمي إلى هنا",
   "app.containers.Comments.deleteReason_other": "سبب آخر",
