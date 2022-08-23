@@ -29,7 +29,6 @@ export type IFlatCustomField = Omit<ICustomFieldResponse, 'attributes'> &
     isLocalOnly?: boolean;
   };
 
-//
 export type IFlatCustomFieldWithIndex = IFlatCustomField & {
   index: number;
 };
@@ -47,11 +46,6 @@ export type IFlatCreateCustomField = Optional<
 > & {
   isLocalOnly: boolean;
 };
-
-export type IFlatUpdateCustomField = Optional<
-  IFlatCreateCustomField,
-  'isLocalOnly' | 'input_type'
->;
 
 export interface ICustomFields {
   data: ICustomFieldResponse[];
