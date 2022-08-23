@@ -29,8 +29,8 @@ import { hasNoData, getTooltipConfig, parseMargin } from '../utils';
 // typings
 import { Props } from './typings';
 import {
-  LegendItemsDimensions,
   GraphDimensions,
+  LegendDimensions,
 } from '../_components/Legend/typings';
 
 const ITEMS: any = [
@@ -60,8 +60,8 @@ const MultiBarChart = <Row,>({
   const [graphDimensions, setGraphDimensions] = useState<
     GraphDimensions | undefined
   >();
-  const [legendItemsDimensions, setLegendItemsDimensions] = useState<
-    LegendItemsDimensions | undefined
+  const [legendDimensions, setLegendDimensions] = useState<
+    LegendDimensions | undefined
   >();
 
   if (hasNoData(data)) {
@@ -109,8 +109,8 @@ const MultiBarChart = <Row,>({
     if (node === null) return;
 
     setGraphDimensions({
-      graphWidth: node.clientWidth,
-      graphHeight: node.clientHeight,
+      width: node.clientWidth,
+      height: node.clientHeight,
     });
   };
 
@@ -120,17 +120,17 @@ const MultiBarChart = <Row,>({
         <RechartsBarChart
           data={data}
           layout={rechartsLayout}
-          margin={parseMargin(margin, legend ? legendItemsDimensions : undefined)}
+          margin={parseMargin(margin, legend ? legendDimensions : undefined)}
           ref={innerRef}
           barGap={0}
           barCategoryGap={bars?.categoryGap}
         >
-          {legend && graphDimensions && legendItemsDimensions && (
+          {legend && graphDimensions && legendDimensions && (
             <g className="graph-legend">
               <Legend
-                {...graphDimensions}
                 items={ITEMS}
-                legendItemsDimensions={legendItemsDimensions}
+                graphDimensions={graphDimensions}
+                legendDimensions={legendDimensions}
                 position="bottom-center"
                 margin={margin}
               />
@@ -181,10 +181,7 @@ const MultiBarChart = <Row,>({
       </ResponsiveContainer>
 
       {legend && (
-        <FakeLegend
-          items={ITEMS}
-          onCalculateDimensions={setLegendItemsDimensions}
-        />
+        <FakeLegend items={ITEMS} onCalculateDimensions={setLegendDimensions} />
       )}
     </>
   );

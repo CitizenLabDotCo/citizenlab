@@ -4,21 +4,19 @@ export interface Item {
   label: string;
 }
 
-interface ItemSize {
+interface ItemPosition {
   left: number;
+}
+
+export interface GraphDimensions {
   width: number;
   height: number;
 }
 
-export interface LegendItemsDimensions {
-  legendWidth: number;
-  legendHeight: number;
-  itemSizes: ItemSize[];
-}
-
-export interface GraphDimensions {
-  graphWidth: number;
-  graphHeight: number;
+export interface LegendDimensions {
+  width: number;
+  height: number;
+  itemPositions: ItemPosition[];
 }
 
 export type Position = 'bottom-left' | 'bottom-center' | 'bottom-right';

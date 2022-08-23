@@ -7,7 +7,7 @@ import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 // typings
 import { Tooltip, TooltipConfig, Margin } from './typings';
-import { LegendItemsDimensions } from './_components/Legend/typings';
+import { LegendDimensions } from './_components/Legend/typings';
 
 export const hasNoData = (
   data: Record<string, any>[] | NilOrError
@@ -28,15 +28,13 @@ export const getTooltipConfig = (
 };
 
 export const parseMargin = (
-  margin?: Margin,
-  legendItemsDimensions?: LegendItemsDimensions
+  margin: Margin = {},
+  legendDimensions?: LegendDimensions
 ): Margin => {
-  margin = margin ?? {}
-
-  if (!legendItemsDimensions) return margin;
+  if (!legendDimensions) return margin;
 
   return {
     ...margin,
-    bottom: (margin.bottom ?? 0) + legendItemsDimensions.legendHeight + LEGEND_OFFSET
-  }
-}
+    bottom: (margin.bottom ?? 0) + legendDimensions.height + LEGEND_OFFSET,
+  };
+};
