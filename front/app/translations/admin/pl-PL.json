@@ -1554,7 +1554,7 @@
   "app.modules.commercial.customizable_navbar.brokenURLWarning": "Jeśli zmienisz adres URL projektu, linki do strony projektu przy użyciu starego adresu URL nie będą już działać.",
   "app.modules.commercial.customizable_navbar.editContent": "Treść",
   "app.modules.commercial.customizable_navbar.emptyDescriptionError": "Provide content for all languages",
-  "app.modules.commercial.customizable_navbar.emptySlugError": "Provide a slug",
+  "app.modules.commercial.customizable_navbar.emptySlugError": "Podaj url",
   "app.modules.commercial.customizable_navbar.emptyTitleError": "Provide a title for all languages",
   "app.modules.commercial.customizable_navbar.fileUploadLabel": "Dodaj pliki do strony",
   "app.modules.commercial.customizable_navbar.fileUploadLabelTooltip": "Dodane pliki zostaną pokazane na dole tej strony.",
