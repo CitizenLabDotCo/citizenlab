@@ -14,6 +14,7 @@ const TextArea = ({ name, ...rest }: Props) => {
   const {
     formState: { errors },
     control,
+    trigger,
   } = useFormContext();
 
   const defaultValue = '';
@@ -31,7 +32,14 @@ const TextArea = ({ name, ...rest }: Props) => {
         control={control}
         defaultValue={defaultValue}
         render={({ field: { ref: _ref, ...field } }) => (
-          <TextareaComponent id={name} {...field} {...rest} />
+          <TextareaComponent
+            id={name}
+            {...field}
+            {...rest}
+            onBlur={() => {
+              trigger();
+            }}
+          />
         )}
       />
       {validationError && (

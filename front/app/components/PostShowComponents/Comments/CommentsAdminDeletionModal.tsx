@@ -155,7 +155,7 @@ const CommentsAdminDeletionForm = ({
               buttonStyle="primary"
               processing={methods.formState.isSubmitting}
             >
-              {formatMessage(messages.adminCommentDeletionCancelButton)}
+              {formatMessage(messages.adminCommentDeletionConfirmButton)}
             </Button>
           </ButtonsWrapper>
         </form>
