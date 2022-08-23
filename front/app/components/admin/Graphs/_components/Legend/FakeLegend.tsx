@@ -42,7 +42,7 @@ const FakeLegend = ({ items, onCalculateDimensions }: Props) => {
   return (
     <Box
       style={{ visibility: 'hidden' }}
-      width="5000px"
+      width="100%"
       display="flex"
       flexDirection="row"
     >
