@@ -22,8 +22,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import TabbedResource from 'components/admin/TabbedResource';
 
 // intl
-import messages from './messages';
-import indexMessages from '../messages';
+import messages from '../messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
@@ -71,12 +70,12 @@ const CreateCustomPageHookForm = ({
       }}
       tabs={[
         {
-          label: formatMessage(indexMessages.pageSettingsTab),
+          label: formatMessage(messages.pageSettingsTab),
           name: 'settings',
-          url: '/admin/pages-menu/custom/new/settings',
+          url: '/admin/pages-menu/custom/edit/settings',
         },
         {
-          label: formatMessage(indexMessages.pageContentTab),
+          label: formatMessage(messages.pageContentTab),
           name: 'content',
           url: '/admin/pages-menu/custom/edit/content',
         },
