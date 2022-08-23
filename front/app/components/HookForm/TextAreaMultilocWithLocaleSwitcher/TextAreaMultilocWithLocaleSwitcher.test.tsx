@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
-import InputMultilocWithLocaleSwitcher from './';
+import TextAreaMultilocWithLocaleSwitcher from './';
 import { useForm, FormProvider } from 'react-hook-form';
 import { object } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -12,6 +12,7 @@ const schema = object({
 });
 
 jest.mock('utils/cl-intl');
+jest.mock('hooks/useLocale');
 jest.mock('hooks/useAppConfigurationLocales', () =>
   jest.fn(() => ['en', 'nl-NL'])
 );
@@ -26,28 +27,24 @@ const Form = () => {
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit((formData) => onSubmit(formData))}>
-        <InputMultilocWithLocaleSwitcher
-          name="title"
-          placeholder="title"
-          type="text"
-        />
+        <TextAreaMultilocWithLocaleSwitcher name="title" label="title" />
         <button type="submit">Submit</button>
       </form>
     </FormProvider>
   );
 };
 
-describe('InputMultilocWithLocaleSwitcher', () => {
+describe('TextAreaMultilocWithLocaleSwitcher', () => {
   it('renders', () => {
     render(<Form />);
-    expect(screen.getByPlaceholderText(/title/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/title/i)).toBeInTheDocument();
   });
-  it('submits correct data from input', async () => {
+  it('submits correct data from TextArea', async () => {
     render(<Form />);
     const valueEN = 'en title';
     const valueNL = 'nl title';
 
-    fireEvent.change(screen.getByPlaceholderText(/title/i), {
+    fireEvent.change(screen.getByLabelText(/title/i), {
       target: {
         value: valueEN,
       },
@@ -55,7 +52,7 @@ describe('InputMultilocWithLocaleSwitcher', () => {
 
     fireEvent.click(screen.getByText(/nl-NL/i));
 
-    fireEvent.change(screen.getByPlaceholderText(/title/i), {
+    fireEvent.change(screen.getByLabelText(/title/i), {
       target: {
         value: valueNL,
       },
@@ -86,11 +83,7 @@ describe('InputMultilocWithLocaleSwitcher', () => {
               methods.setError('title', { error: 'blank' } as any)
             )}
           >
-            <InputMultilocWithLocaleSwitcher
-              name="title"
-              label="title"
-              type="text"
-            />
+            <TextAreaMultilocWithLocaleSwitcher name="title" label="title" />
             <button type="submit">Submit</button>
           </form>
         </FormProvider>

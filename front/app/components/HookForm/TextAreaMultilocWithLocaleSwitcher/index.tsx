@@ -1,27 +1,34 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import {
-  InputMultilocWithLocaleSwitcher as InputMultilocWithLocaleSwitcherComponent,
-  InputMultilocWithLocaleSwitcherProps,
-} from '@citizenlab/cl2-component-library';
+import TextAreaMultilocWithLocaleSwitcherComponent, {
+  Props as TextAreaMultilocWithLocaleSwitcherProps,
+} from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
 import Error, { TFieldName } from 'components/UI/Error';
-import { Controller, useFormContext, FieldError } from 'react-hook-form';
+import { Controller, FieldError, useFormContext } from 'react-hook-form';
 import { CLError, Locale } from 'typings';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import { isNilOrError } from 'utils/helperUtils';
 
-interface Props
+type TextAreaProps = Props & {
+  name: string;
+};
+
+export interface Props
   extends Omit<
-    InputMultilocWithLocaleSwitcherProps,
-    'locales' | 'valueMultiloc'
+    TextAreaMultilocWithLocaleSwitcherProps,
+    'onChange' | 'valueMultiloc'
   > {
   name: string;
 }
 
-const InputMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
+const TextAreaMultilocWithLocaleSwitcher = ({
+  name,
+  ...rest
+}: TextAreaProps) => {
   const {
     formState: { errors },
     control,
   } = useFormContext();
+
   const locales = useAppConfigurationLocales();
 
   if (isNilOrError(locales)) {
@@ -43,19 +50,17 @@ const InputMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
     ([errors[name]] as unknown as CLError[]);
 
   return (
-    <>
+    <div id={name}>
       <Controller
         name={name}
         control={control}
         defaultValue={defaultValue}
         render={({ field: { ref: _ref, ...field } }) => {
           return (
-            <InputMultilocWithLocaleSwitcherComponent
+            <TextAreaMultilocWithLocaleSwitcherComponent
               id={name}
               {...field}
               {...rest}
-              locales={locales}
-              type="text"
               valueMultiloc={{ ...defaultValue, ...field.value }}
             />
           );
@@ -78,8 +83,8 @@ const InputMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
           scrollIntoView={false}
         />
       )}
-    </>
+    </div>
   );
 };
 
-export default InputMultilocWithLocaleSwitcher;
+export default TextAreaMultilocWithLocaleSwitcher;
