@@ -1,13 +1,9 @@
 import React, { lazy } from 'react';
 import PageLoading from 'components/UI/PageLoading';
 import moduleConfiguration from 'modules';
-const CustomPages = lazy(() => import('./containers/CustomPages'));
-const CustomNavbarContainer = lazy(
-  () => import('containers/Admin/pagesAndMenu')
-);
-const CustomNavbarSettingsComponent = lazy(
-  () => import('./NavigationSettings')
-);
+const CustomPagesIndex = lazy(() => import('./containers/CustomPages'));
+const PagesAndMenuIndex = lazy(() => import('containers/Admin/pagesAndMenu'));
+const NavigationSettings = lazy(() => import('./NavigationSettings'));
 
 // homepage
 const EditHomepage = lazy(() => import('./EditHomepage'));
@@ -32,14 +28,17 @@ export default () => ({
       path: '',
       element: (
         <PageLoading>
-          <CustomNavbarContainer />
+          <PagesAndMenuIndex />
         </PageLoading>
       ),
       children: [
         {
           index: true,
-          // the main page with outlets and a visual container
-          element: <CustomNavbarSettingsComponent />,
+          element: (
+            <PageLoading>
+              <NavigationSettings />
+            </PageLoading>
+          ),
         },
       ],
     },
@@ -69,11 +68,15 @@ export default () => ({
     },
     {
       path: HOMEPAGE_PATH,
-      element: <EditHomepage />,
+      element: (
+        <PageLoading>
+          <EditHomepage />
+        </PageLoading>
+      ),
     },
     {
       path: CUSTOM_PAGES_PATH,
-      element: <CustomPages />,
+      element: <CustomPagesIndex />,
       children: [
         {
           path: 'new',
