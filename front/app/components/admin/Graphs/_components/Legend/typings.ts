@@ -1,11 +1,12 @@
-export interface Item {
+export interface LegendItem {
   icon: 'plain-line' | 'line' | 'rect' | 'circle';
   color: string;
   label: string;
 }
 
-interface ItemPosition {
+export interface ItemPosition {
   left: number;
+  top: number;
 }
 
 export interface GraphDimensions {
@@ -16,7 +17,7 @@ export interface GraphDimensions {
 export interface LegendDimensions {
   width: number;
   height: number;
-  itemPositions: ItemPosition[];
+  itemPositions: ItemPosition[][];
 }
 
 export type Position = 'bottom-left' | 'bottom-center' | 'bottom-right';

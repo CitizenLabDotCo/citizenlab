@@ -33,12 +33,6 @@ import {
   LegendDimensions,
 } from '../_components/Legend/typings';
 
-const ITEMS: any = [
-  { icon: 'rect', color: 'green', label: 'Apple' },
-  { icon: 'line', color: 'blue', label: 'Blueberry' },
-  { icon: 'circle', color: 'red', label: 'Cherry' },
-];
-
 const MultiBarChart = <Row,>({
   width,
   height,
@@ -128,10 +122,10 @@ const MultiBarChart = <Row,>({
           {legend && graphDimensions && legendDimensions && (
             <g className="graph-legend">
               <Legend
-                items={ITEMS}
+                items={legend.items}
                 graphDimensions={graphDimensions}
                 legendDimensions={legendDimensions}
-                position="bottom-center"
+                position={legend.position ?? 'bottom-center'}
                 margin={margin}
               />
             </g>
@@ -181,7 +175,10 @@ const MultiBarChart = <Row,>({
       </ResponsiveContainer>
 
       {legend && (
-        <FakeLegend items={ITEMS} onCalculateDimensions={setLegendDimensions} />
+        <FakeLegend
+          items={legend.items}
+          onCalculateDimensions={setLegendDimensions}
+        />
       )}
     </>
   );

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Item } from './typings';
+import { LegendItem } from './typings';
 
 // Adapted from https://github.com/recharts/recharts/blob/master/src/component/DefaultLegendContent.tsx
 const ICON_SIZE = 14;
@@ -68,7 +68,7 @@ const Circle = ({ fill }: PolygonProps) => (
   />
 );
 
-const Icon = ({ icon, color }: Item) => {
+const Icon = ({ icon, color }: LegendItem) => {
   if (icon === 'plain-line') {
     return <PlainLine stroke={color} />;
   }

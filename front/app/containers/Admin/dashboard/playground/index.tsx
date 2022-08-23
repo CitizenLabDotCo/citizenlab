@@ -19,6 +19,11 @@ const data: Row[] = [
   { value: 5, value2: 6, label: 'coconut' },
 ];
 
+const legendItems: any = [
+  { icon: 'rect', color: 'green', label: 'Apple' },
+  { icon: 'line', color: 'blue', label: 'Blueberry' },
+  { icon: 'circle', color: 'red', label: 'Cherry' },
+];
 
 const Playground = () => (
   <>
@@ -29,7 +34,9 @@ const Playground = () => (
           length: ['value', 'value2'],
           category: 'label',
         }}
-        legend
+        legend={{
+          items: [legendItems, legendItems.slice(0, 2)],
+        }}
       />
 
       {/* <MultiBarChart

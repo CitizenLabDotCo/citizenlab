@@ -4,11 +4,16 @@ import React from 'react';
 import Icon from './Icon';
 
 // typings
-import { Item, GraphDimensions, LegendDimensions, Position } from './typings';
+import {
+  LegendItem,
+  GraphDimensions,
+  LegendDimensions,
+  Position,
+} from './typings';
 import { Margin } from '../../typings';
 
 interface Props {
-  items: Item[];
+  items: LegendItem[][];
   graphDimensions: GraphDimensions;
   legendDimensions: LegendDimensions;
   position: Position;
@@ -49,18 +54,28 @@ const Legend = ({
       margin
     )}
   >
-    {items.map((item, i) => {
-      const { left } = legendDimensions.itemPositions[i];
+    {items.map((itemRow, rowIndex) =>
+      itemRow.map((item, itemIndex) => {
+        const { left, top } =
+          legendDimensions.itemPositions[rowIndex][itemIndex];
 
-      return (
-        <g transform={`translate(${left},0)`} key={i}>
-          <Icon {...item} />
-          <text transform="translate(18,12)" fontSize="14px" fill={item.color}>
-            {item.label}
-          </text>
-        </g>
-      );
-    })}
+        return (
+          <g
+            transform={`translate(${left},${top})`}
+            key={`${rowIndex}-${itemIndex}`}
+          >
+            <Icon {...item} />
+            <text
+              transform="translate(18,12)"
+              fontSize="14px"
+              fill={item.color}
+            >
+              {item.label}
+            </text>
+          </g>
+        );
+      })
+    )}
   </g>
 );
 
