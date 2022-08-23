@@ -3,6 +3,9 @@ import React from 'react';
 // components
 import Icon from './Icon';
 
+// utils
+import { itemsMatch, getLegendTranslate } from './utils';
+
 // typings
 import {
   LegendItem,
@@ -19,38 +22,6 @@ interface Props {
   position?: Position;
   margin?: Margin;
 }
-
-const getLegendTranslate = (
-  position: Position,
-  { width: graphWidth, height: graphHeight }: GraphDimensions,
-  { width: legendWidth, height: legendHeight }: LegendDimensions,
-  margin?: Margin
-) => {
-  const top = graphHeight - legendHeight - (margin?.bottom ?? 0);
-
-  if (position === 'bottom-left') return `translate(8,${top})`;
-
-  if (position === 'bottom-center') {
-    const left = (graphWidth - legendWidth) / 2 + 8;
-    return `translate(${left},${top})`;
-  }
-
-  const left = graphWidth - legendWidth + 8;
-  return `translate(${left},${top})`;
-};
-
-const itemsMatch = (
-  items: LegendItem[][],
-  { itemPositions }: LegendDimensions
-) => {
-  if (items.length !== itemPositions.length) return false;
-
-  for (let i = 0; i < items.length; i++) {
-    if (items[i].length !== itemPositions[i].length) return false;
-  }
-
-  return true;
-};
 
 const Legend = ({
   items,

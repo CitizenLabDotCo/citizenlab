@@ -4,13 +4,11 @@ import React, { useState, useEffect } from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import Icon from './Icon';
 
+// utils
+import { getJustifyContent, getLegendDimensions } from './utils';
+
 // typings
-import {
-  Position,
-  LegendItem,
-  ItemPosition,
-  LegendDimensions,
-} from './typings';
+import { Position, LegendItem, LegendDimensions } from './typings';
 
 interface Props {
   items: LegendItem[][];
@@ -24,12 +22,6 @@ const getId = () => {
   const id = `_fake-legend-${idNumber}`;
   idNumber++;
   return id;
-};
-
-const getJustifyContent = (position: Position) => {
-  if (position === 'bottom-center') return 'center';
-  if (position === 'bottom-left') return 'flex-start';
-  return 'flex-end';
 };
 
 const FakeLegend = ({
@@ -49,55 +41,8 @@ const FakeLegend = ({
       ...document.querySelectorAll(`#${id} > .fake-legend-row`),
     ];
 
-    const corner = itemRows.reduce(
-      (acc, itemRow) => {
-        let minLeft = Infinity;
-        let minTop = Infinity;
-
-        const items = itemRow.getElementsByClassName('fake-legend-item');
-
-        [...items].forEach((item) => {
-          const { left, top } = item.getBoundingClientRect();
-          minLeft = Math.min(minLeft, left);
-          minTop = Math.min(minTop, top);
-        });
-
-        return {
-          left: Math.min(acc.left, minLeft),
-          top: Math.min(acc.top, minTop),
-        };
-      },
-      { left: Infinity, top: Infinity }
-    );
-
-    let width = 0;
-    let height = 0;
-    const itemPositions: ItemPosition[][] = [];
-
-    itemRows.forEach((itemRow, rowIndex) => {
-      const items = itemRow.getElementsByClassName('fake-legend-item');
-
-      let rowWidth = 0;
-      let rowHeight = 0;
-      itemPositions.push([]);
-
-      [...items].forEach((item) => {
-        const { top, left, width, height } = item.getBoundingClientRect();
-
-        rowWidth += width;
-        rowHeight = Math.max(rowHeight, height);
-
-        itemPositions[rowIndex].push({
-          left: left - corner.left,
-          top: top - corner.top,
-        });
-      });
-
-      width = Math.max(width, rowWidth);
-      height += rowHeight;
-    });
-
-    onCalculateDimensions({ width, height, itemPositions });
+    const legendDimensions = getLegendDimensions(itemRows);
+    onCalculateDimensions(legendDimensions);
   }, [id, items, onCalculateDimensions]);
 
   return (
