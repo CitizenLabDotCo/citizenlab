@@ -1,5 +1,5 @@
 export interface Item {
-  icon: 'rect' | 'line' | 'plain-line',
+  icon: 'plain-line' | 'line' | 'rect' | 'circle';
   color: string;
   label: string;
 }
@@ -19,6 +19,6 @@ export interface LegendItemsDimensions {
 export interface GraphDimensions {
   graphWidth: number;
   graphHeight: number;
-};
+}
 
 export type Position = 'bottom-left' | 'bottom-center' | 'bottom-right';

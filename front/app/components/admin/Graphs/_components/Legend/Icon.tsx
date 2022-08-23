@@ -15,14 +15,14 @@ interface PlainLineProps {
 
 const PlainLine = ({ stroke, strokeDasharray }: PlainLineProps) => (
   <line
-    strokeWidth={2}
-    fill="none"
-    stroke={stroke}
-    strokeDasharray={strokeDasharray}
     x1={0}
     y1={halfSize}
     x2={ICON_SIZE}
     y2={halfSize}
+    fill="none"
+    stroke={stroke}
+    strokeWidth={2}
+    strokeDasharray={strokeDasharray}
     className="recharts-legend-icon"
   />
 );
@@ -33,40 +33,55 @@ interface LineProps {
 
 const Line = ({ stroke }: LineProps) => (
   <path
-    strokeWidth={2}
-    fill="none"
-    stroke={stroke}
     d={`M0,${halfSize}h${thirdSize}
             A${sixthSize},${sixthSize},0,1,1,${2 * thirdSize},${halfSize}
             H${ICON_SIZE}M${2 * thirdSize},${halfSize}
             A${sixthSize},${sixthSize},0,1,1,${thirdSize},${halfSize}`}
+    fill="none"
+    stroke={stroke}
+    strokeWidth={2}
     className="recharts-legend-icon"
   />
 );
 
-interface RectangleProps {
+interface PolygonProps {
   fill: string;
 }
 
-const Rectangle = ({ fill }: RectangleProps) => (
+const Rectangle = ({ fill }: PolygonProps) => (
   <path
-    stroke="none"
-    fill={fill}
     d={`M0,${ICON_SIZE / 8}h${ICON_SIZE}v${(ICON_SIZE * 3) / 4}h${-ICON_SIZE}z`}
+    fill={fill}
+    stroke="none"
+    className="recharts-legend-icon"
+  />
+);
+
+const Circle = ({ fill }: PolygonProps) => (
+  <circle
+    cx={halfSize}
+    cy={halfSize}
+    r={halfSize}
+    fill={fill}
+    stroke="none"
     className="recharts-legend-icon"
   />
 );
 
 const Icon = ({ icon, color }: Item) => {
-  if (icon === 'rect') {
-    return <Rectangle fill={color} />
+  if (icon === 'plain-line') {
+    return <PlainLine stroke={color} />;
   }
 
   if (icon === 'line') {
-    return <Line stroke={color} />
+    return <Line stroke={color} />;
   }
 
-  return <PlainLine stroke={color} />
-}
+  if (icon === 'rect') {
+    return <Rectangle fill={color} />;
+  }
+
+  return <Circle fill={color} />;
+};
 
 export default Icon;

@@ -36,7 +36,7 @@ import {
 const ITEMS: any = [
   { icon: 'rect', color: 'green', label: 'Apple' },
   { icon: 'line', color: 'blue', label: 'Blueberry' },
-  { icon: 'plain-line', color: 'red', label: 'Cherry' },
+  { icon: 'circle', color: 'red', label: 'Cherry' },
 ];
 
 const MultiBarChart = <Row,>({
