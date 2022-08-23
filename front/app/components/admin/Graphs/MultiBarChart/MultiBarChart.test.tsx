@@ -283,41 +283,55 @@ describe('<MultiBarChart />', () => {
     });
   });
 
-  // describe('Legend', () => {
-  //   const legendItems: any = [
-  //     [
-  //       { icon: 'circle', label: 'item1', color: 'red' },
-  //       { icon: 'circle', label: 'item2', color: 'blue' }
-  //     ],
-  //     [
-  //       { icon: 'circle', label: 'item3', color: 'green' },
-  //     ]
-  //   ]
-  //   it('renders correct legend items (bottom-center)', () => {
-  //     const { container, debug } = render(
-  //       <MultiBarChart
-  //         width={400}
-  //         height={200}
-  //         data={data}
-  //         mapping={{ category: 'name', length: ['value1', 'value2'] }}
-  //         bars={{ isAnimationActive: false }}
-  //         legend={{
-  //           items: legendItems
-  //         }}
-  //       />
-  //     );
+  describe('Legend', () => {
+    const legendItems: any = [
+      [
+        { icon: 'circle', label: 'item1', color: 'red' },
+        { icon: 'circle', label: 'item2', color: 'blue' },
+      ],
+      [{ icon: 'circle', label: 'item3', color: 'blue' }],
+    ];
 
-  //     const items = container.querySelectorAll('.legend-item');
-  //     expect(items).toHaveLength(3);
-  //     debug()
-  //   })
+    it('renders legend', async () => {
+      const { container } = render(
+        <MultiBarChart
+          width={400}
+          height={200}
+          data={data}
+          mapping={{ category: 'name', length: ['value1', 'value2'] }}
+          bars={{ isAnimationActive: false }}
+          legend={{ items: legendItems }}
+        />
+      );
 
-  //   // it('renders correct legend items (bottom-left)', () => {
+      const items = container.querySelectorAll('.graph-legend-item');
+      waitFor(() => {
+        expect(items).toHaveLength(3);
+      });
+    });
 
-  //   // })
+    it("doesn't throw error when rerendering with more items", () => {
+      const { rerender } = render(
+        <MultiBarChart
+          width={400}
+          height={200}
+          data={data}
+          mapping={{ category: 'name', length: ['value1', 'value2'] }}
+          bars={{ isAnimationActive: false }}
+          legend={{ items: [legendItems[0]] }}
+        />
+      );
 
-  //   // it('renders correct legend items (bottom-right)', () => {
-
-  //   // })
-  // })
+      rerender(
+        <MultiBarChart
+          width={400}
+          height={200}
+          data={data}
+          mapping={{ category: 'name', length: ['value1', 'value2'] }}
+          bars={{ isAnimationActive: false }}
+          legend={{ items: legendItems }}
+        />
+      );
+    });
+  });
 });
