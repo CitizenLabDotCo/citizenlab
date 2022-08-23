@@ -1,6 +1,6 @@
 import {
   Position,
-  ItemPosition,
+  ItemCoordinates,
   GraphDimensions,
   LegendDimensions,
   LegendItem,
@@ -28,12 +28,12 @@ export const getLegendTranslate = (
 
 export const itemsMatch = (
   items: LegendItem[][],
-  { itemPositions }: LegendDimensions
+  { itemCoordinates }: LegendDimensions
 ) => {
-  if (items.length !== itemPositions.length) return false;
+  if (items.length !== itemCoordinates.length) return false;
 
   for (let i = 0; i < items.length; i++) {
-    if (items[i].length !== itemPositions[i].length) return false;
+    if (items[i].length !== itemCoordinates[i].length) return false;
   }
 
   return true;
@@ -50,14 +50,14 @@ export const getLegendDimensions = (itemRows: Element[]) => {
 
   let width = 0;
   let height = 0;
-  const itemPositions: ItemPosition[][] = [];
+  const itemCoordinates: ItemCoordinates[][] = [];
 
   itemRows.forEach((itemRow, rowIndex) => {
     const items = itemRow.getElementsByClassName('fake-legend-item');
 
     let rowWidth = 0;
     let rowHeight = 0;
-    itemPositions.push([]);
+    itemCoordinates.push([]);
 
     [...items].forEach((item) => {
       const { top, left, width, height } = item.getBoundingClientRect();
@@ -65,7 +65,7 @@ export const getLegendDimensions = (itemRows: Element[]) => {
       rowWidth += width;
       rowHeight = Math.max(rowHeight, height);
 
-      itemPositions[rowIndex].push({
+      itemCoordinates[rowIndex].push({
         left: left - corner.left,
         top: top - corner.top,
       });
@@ -75,7 +75,7 @@ export const getLegendDimensions = (itemRows: Element[]) => {
     height += rowHeight;
   });
 
-  return { width, height, itemPositions };
+  return { width, height, itemCoordinates };
 };
 
 const getCorner = (itemRows: Element[]) => {

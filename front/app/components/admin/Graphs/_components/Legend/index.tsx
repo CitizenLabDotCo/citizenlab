@@ -44,7 +44,7 @@ const Legend = ({
       {items.map((itemRow, rowIndex) =>
         itemRow.map((item, itemIndex) => {
           const { left, top } =
-            legendDimensions.itemPositions[rowIndex][itemIndex];
+            legendDimensions.itemCoordinates[rowIndex][itemIndex];
 
           return (
             <g

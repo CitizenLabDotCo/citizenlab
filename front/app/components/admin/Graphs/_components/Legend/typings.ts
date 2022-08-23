@@ -4,7 +4,7 @@ export interface LegendItem {
   label: string;
 }
 
-export interface ItemPosition {
+export interface ItemCoordinates {
   left: number;
   top: number;
 }
@@ -17,7 +17,7 @@ export interface GraphDimensions {
 export interface LegendDimensions {
   width: number;
   height: number;
-  itemPositions: ItemPosition[][];
+  itemCoordinates: ItemCoordinates[][];
 }
 
 export type Position = 'bottom-left' | 'bottom-center' | 'bottom-right';
