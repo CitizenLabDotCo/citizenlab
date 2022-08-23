@@ -1419,7 +1419,7 @@
   "app.containers.AdminPage.widgets.fieldButtonText": "Text des Buttons",
   "app.containers.AdminPage.widgets.fieldButtonTextDefault": "Jetzt teilnehmen",
   "app.containers.AdminPage.widgets.fieldFont": "Schriftart",
-  "app.containers.AdminPage.widgets.fieldFontDescription": "Dies muss ein vorhandener Fontname aus {googleFontsLink} sein.",
+  "app.containers.AdminPage.widgets.fieldFontDescription": "Dies muss eine vorhandene Schriftart aus {googleFontsLink} sein.",
   "app.containers.AdminPage.widgets.fieldFontSize": "Schriftgröße (px)",
   "app.containers.AdminPage.widgets.fieldHeaderSubText": "Kopfzeile Untertitel",
   "app.containers.AdminPage.widgets.fieldHeaderSubTextDefault": "Sie können mitbestimmen",
