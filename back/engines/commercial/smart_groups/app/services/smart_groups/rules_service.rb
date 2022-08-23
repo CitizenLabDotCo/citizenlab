@@ -39,10 +39,13 @@ module SmartGroups
       }
     }.freeze
 
-    # Returns all the smart groupts the user is a member of. Accepts an
+    # Returns all the smart groups the user is a member of. Accepts an
     # optional `groups` scope to limit the groups to search in. This method
     # is very carefully written to do it all in 2 queries, so beware when
     # editing
+    # @param user[User]
+    # @param groups[ActiveRecord::Relation]
+    # @return [ActiveRecord::Relation]
     def groups_for_user(user, groups = ::Group.rules)
       # We're using `id: [user.id]` instead of `id: user.id` to
       # workaround this rails/arel issue:
