@@ -18,21 +18,22 @@ const CustomPages = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       }}
       tabs={[
         {
-          label: 'Page settings',
+          label: formatMessage(messages.pageSettingsTab),
           name: '',
           url: '',
         },
         {
-          label: 'Page content',
+          label: formatMessage(messages.pageContentTab),
           name: '',
           url: '',
         },
       ]}
+      contentWrapper={false}
     >
-      {/* <HelmetIntl
-        title={'messages.inputManagerMetaTitle'}
-        description={messages.inputManagerMetaDescription}
-      /> */}
+      <HelmetIntl
+        title={messages.metaTitle}
+        description={messages.metaDescription}
+      />
       <RouterOutlet />
     </TabbedResource>
   );
