@@ -5,6 +5,7 @@ import Icon from './Icon';
 
 // typings
 import { Item, LegendItemsDimensions, Position } from './typings';
+import { Margin } from '../../typings';
 
 interface Props {
   items: Item[];
@@ -12,15 +13,17 @@ interface Props {
   graphWidth: number;
   graphHeight: number;
   position: Position;
+  margin?: Margin;
 }
 
 const getLegendTranslate = (
   position: Position,
   graphWidth: number,
   graphHeight: number,
-  { legendWidth, legendHeight }: LegendItemsDimensions
+  { legendWidth, legendHeight }: LegendItemsDimensions,
+  margin?: Margin
 ) => {
-  const top = graphHeight - legendHeight;
+  const top = (graphHeight - legendHeight) - (margin?.bottom ?? 0);
 
   if (position === 'bottom-left') return `translate(8,${top})`
 
@@ -39,13 +42,15 @@ const Legend = ({
   graphWidth,
   graphHeight,
   position,
+  margin,
 }: Props) => (
   <g
     transform={getLegendTranslate(
       position,
       graphWidth,
       graphHeight,
-      legendItemsDimensions
+      legendItemsDimensions,
+      margin
     )}
   >
     {items.map((item, i) => {

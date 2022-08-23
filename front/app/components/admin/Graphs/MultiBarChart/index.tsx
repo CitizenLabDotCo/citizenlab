@@ -120,18 +120,19 @@ const MultiBarChart = <Row,>({
         <RechartsBarChart
           data={data}
           layout={rechartsLayout}
-          margin={parseMargin(margin, legendItemsDimensions)}
+          margin={parseMargin(margin, legend ? legendItemsDimensions : undefined)}
           ref={innerRef}
           barGap={0}
           barCategoryGap={bars?.categoryGap}
         >
-          {graphDimensions && legendItemsDimensions && (
+          {legend && graphDimensions && legendItemsDimensions && (
             <g className="graph-legend">
               <Legend
                 {...graphDimensions}
                 items={ITEMS}
                 legendItemsDimensions={legendItemsDimensions}
                 position="bottom-center"
+                margin={margin}
               />
             </g>
           )}
