@@ -13,6 +13,7 @@ const HeroBannerForm = lazy(() => import('./containers/HeroBanner'));
 
 // custom pages
 const NewCustomPage = lazy(() => import('./containers/CustomPages/New'));
+const EditCustomPage = lazy(() => import('./containers/CustomPages/Edit'));
 
 // path utils
 const PAGE_PATH = 'pages-menu';
@@ -81,6 +82,10 @@ export default () => ({
         {
           path: 'new',
           element: <NewCustomPage />,
+        },
+        {
+          path: 'edit',
+          element: <EditCustomPage />,
         },
       ],
     },
