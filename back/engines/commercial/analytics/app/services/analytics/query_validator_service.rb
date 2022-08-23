@@ -137,7 +137,7 @@ module Analytics
     def validate_order
       @json_query[:sort].each_key do |key|
         validate_dotted(key, 'Sort')
-        next if !@json_query.key?(:aggregations) && @query.aggregations_names.exclude?(key)
+        next if !@json_query.key?(:aggregations) || @query.aggregations_names.include?(key)
 
         add_error("Sorting column #{key} its not present in the aggregations.", 422)
       end

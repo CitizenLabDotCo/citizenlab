@@ -9,15 +9,16 @@ module Analytics
 
     def initialize(query)
       @json_query = query
-      @failed = nil
+    end
 
+    attr_reader :valid, :error_messages, :response_status, :results, :json_query, :failed
+
+    def validate
       validation = QueryValidatorService.new(self)
       @valid = validation.valid
       @error_messages = validation.messages
       @response_status = validation.response_status
     end
-
-    attr_reader :valid, :error_messages, :response_status, :results, :json_query, :failed
 
     def run
       return unless @valid
