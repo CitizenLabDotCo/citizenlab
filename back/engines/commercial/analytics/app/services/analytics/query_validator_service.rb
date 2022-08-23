@@ -62,10 +62,6 @@ module Analytics
       @query.fields.each do |key|
         validate_dotted(key, 'Fields')
       end
-
-      return unless @json_query.key?(:aggregations)
-
-      add_error('Fields and aggregations cannot be used together.', 422)
     end
 
     def validate_dimensions

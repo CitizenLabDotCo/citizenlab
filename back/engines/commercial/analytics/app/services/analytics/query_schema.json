@@ -101,5 +101,17 @@
     }
   },
   "additionalProperties" : false,
-  "required": ["fact"]
+  "required": ["fact"],
+  "oneOf": [
+    {
+        "required": [
+            "fields"
+        ]
+    },
+    {
+        "required": [
+            "aggregations"
+        ]
+    }
+  ]
 }
