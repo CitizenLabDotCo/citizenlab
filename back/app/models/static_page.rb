@@ -37,6 +37,8 @@
 class StaticPage < ApplicationRecord
   CODES = %w[about terms-and-conditions privacy-policy faq proposals custom].freeze
 
+  has_many :pins, as: :page, inverse_of: :page, dependent: :destroy
+  has_many :pinned_admin_publications, through: :pins, source: :admin_publication
   has_one :nav_bar_item, dependent: :destroy
   has_many :static_page_files, -> { order(:ordering) }, dependent: :destroy
   has_many :text_images, as: :imageable, dependent: :destroy
