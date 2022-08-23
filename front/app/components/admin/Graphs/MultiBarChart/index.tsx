@@ -28,13 +28,16 @@ import { hasNoData, getTooltipConfig } from '../utils';
 
 // typings
 import { Props } from './typings';
-import { LegendItemsDimensions, GraphDimensions } from '../_components/Legend/typings';
+import {
+  LegendItemsDimensions,
+  GraphDimensions,
+} from '../_components/Legend/typings';
 
 const ITEMS: any = [
   { icon: 'rect', color: 'green', label: 'Apple' },
   { icon: 'line', color: 'blue', label: 'Blueberry' },
-  { icon: 'plain-line', color: 'red', label: 'Cherry' }
-]
+  { icon: 'plain-line', color: 'red', label: 'Cherry' },
+];
 
 const MultiBarChart = <Row,>({
   width,
@@ -54,8 +57,12 @@ const MultiBarChart = <Row,>({
   onMouseOver,
   onMouseOut,
 }: Props<Row>) => {
-  const [graphDimensions, setGraphDimensions] = useState<GraphDimensions | undefined>();
-  const [legendItemsDimensions, setLegendItemsDimensions] = useState<LegendItemsDimensions | undefined>();
+  const [graphDimensions, setGraphDimensions] = useState<
+    GraphDimensions | undefined
+  >();
+  const [legendItemsDimensions, setLegendItemsDimensions] = useState<
+    LegendItemsDimensions | undefined
+  >();
 
   if (hasNoData(data)) {
     return <EmptyState emptyContainerContent={emptyContainerContent} />;
@@ -95,19 +102,17 @@ const MultiBarChart = <Row,>({
         );
     };
 
-  const handleRef = (ref: any) => {
-    if (graphDimensions) return;
-    if (ref === null) return;
+  const handleRef = (ref: React.RefObject<HTMLDivElement>) => {
+    if (graphDimensions || ref === null) return;
 
     const node = ref.current;
+    if (node === null) return;
 
     setGraphDimensions({
       graphWidth: node.clientWidth,
-      graphHeight: node.clientHeight
+      graphHeight: node.clientHeight,
     });
   };
-
-  console.log(graphDimensions)
 
   return (
     <>
@@ -121,7 +126,7 @@ const MultiBarChart = <Row,>({
           barCategoryGap={bars?.categoryGap}
         >
           {graphDimensions && legendItemsDimensions && (
-            <g>
+            <g className="graph-legend">
               <Legend
                 {...graphDimensions}
                 items={ITEMS}
