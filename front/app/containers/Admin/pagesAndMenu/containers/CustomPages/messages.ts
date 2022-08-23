@@ -17,10 +17,13 @@ export default defineMessages({
     id: 'app.containers.Admin.pagesAndMenu.containers.CustomPages.pageContentTab',
     defaultMessage: 'Page content',
   },
-
-  pageTitle: {
-    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.pageTitle',
+  newCustomPagePageTitle: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.newCustomPagePageTitle',
     defaultMessage: 'Create custom page',
+  },
+  editCustomPagePageTitle: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.editCustomPagePageTitle',
+    defaultMessage: 'Edit custom page',
   },
   contentEditorTitle: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.contentEditorTitle',

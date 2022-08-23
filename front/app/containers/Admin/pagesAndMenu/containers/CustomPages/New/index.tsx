@@ -66,7 +66,7 @@ const CreateCustomPageHookForm = ({
   return (
     <TabbedResource
       resource={{
-        title: formatMessage(messages.pageTitle),
+        title: formatMessage(messages.newCustomPagePageTitle),
       }}
       tabs={[
         {
@@ -87,7 +87,9 @@ const CreateCustomPageHookForm = ({
             }
           >
             <SectionField>
-              <Feedback successMessage={formatMessage(messages.pageTitle)} />
+              <Feedback
+                successMessage={formatMessage(messages.newCustomPagePageTitle)}
+              />
               <Box mb="20px">
                 <InputMultilocWithLocaleSwitcher
                   name="title_multiloc"
