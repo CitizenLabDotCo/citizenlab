@@ -49,7 +49,7 @@ const TabbedNav = styled.nav`
   flex-wrap: wrap;
 `;
 
-const ChildWrapper = styled.div`
+const ContentWrapper = styled.div`
   margin-bottom: 60px;
   padding: 42px;
   border: 1px solid ${colors.separation};
@@ -69,14 +69,14 @@ interface Props {
   };
   tabs: ITab[];
   children: React.ReactNode;
-  childWrapper?: boolean;
+  contentWrapper?: boolean;
 }
 
 const TabbedResource = ({
   children,
   resource: { title, subtitle },
   tabs,
-  childWrapper = true,
+  contentWrapper = true,
 }: Props) => {
   return (
     <>
@@ -100,9 +100,12 @@ const TabbedResource = ({
           })}
         </TabbedNav>
       )}
-      <ChildWrapper>{children}</ChildWrapper>
 
-      {childWrapper ? <ChildWrapper>{children}</ChildWrapper> : <>{children}</>}
+      {contentWrapper ? (
+        <ContentWrapper>{children}</ContentWrapper>
+      ) : (
+        <>{children}</>
+      )}
     </>
   );
 };
