@@ -643,6 +643,8 @@
   "app.containers.Comments.commentsSortTitle": "Yorumları sıralama ölçütü",
   "app.containers.Comments.confirmCommentDeletion": "Bu yorumu silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
   "app.containers.Comments.deleteComment": "Sil",
+  "app.containers.Comments.deleteReasonDescriptionError": "Provide more information on your reason",
+  "app.containers.Comments.deleteReasonError": "Provide a reason",
   "app.containers.Comments.deleteReason_inappropriate": "Uygunsuz veya küçük düşürücü",
   "app.containers.Comments.deleteReason_irrelevant": "Alakasız",
   "app.containers.Comments.deleteReason_other": "Başka neden",
