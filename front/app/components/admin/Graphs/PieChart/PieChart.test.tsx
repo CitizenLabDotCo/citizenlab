@@ -8,19 +8,21 @@ jest.mock('utils/cl-intl');
 
 type Row = { a: number; name: string };
 
-const data: Row[] = [
-  { a: 10, name: 'x' },
-  { a: 5, name: 'y' },
-];
-const getData = (): Row[] | NilOrError => data;
+// const data: Row[] = [
+//   { a: 10, name: 'x' },
+//   { a: 5, name: 'y' },
+// ];
+
+const getNilData = (): Row[] | NilOrError => null;
 const getErrorData = (): Row[] | NilOrError => new Error();
+// const getData = (): Row[] | NilOrError => data;
 
 describe('<PieChart />', () => {
   describe('Missing data', () => {
     it('renders empty state message if data is nil', () => {
       render(
         <PieChart
-          data={getData()}
+          data={getNilData()}
           mapping={{ angle: 'a', name: 'name' }}
           emptyContainerContent={'No data available'}
         />
