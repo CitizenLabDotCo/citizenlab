@@ -1,20 +1,16 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
-import InputMultilocWithLocaleSwitcher from './';
+import Select from './';
 import { useForm, FormProvider } from 'react-hook-form';
-import { object } from 'yup';
+import { string, object } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import validateMultiloc from 'utils/yup/validateMultiloc';
 import translationMessages from 'i18n/en';
 
 const schema = object({
-  title: validateMultiloc('Error message'),
+  select: string().required('Error message'),
 });
 
 jest.mock('utils/cl-intl');
-jest.mock('hooks/useAppConfigurationLocales', () =>
-  jest.fn(() => ['en', 'nl-NL'])
-);
 
 const onSubmit = jest.fn();
 
@@ -26,10 +22,13 @@ const Form = () => {
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit((formData) => onSubmit(formData))}>
-        <InputMultilocWithLocaleSwitcher
-          name="title"
-          placeholder="title"
-          type="text"
+        <Select
+          name="select"
+          options={[
+            { label: '1', value: '1' },
+            { label: '2', value: '2' },
+          ]}
+          label="select"
         />
         <button type="submit">Submit</button>
       </form>
@@ -37,40 +36,30 @@ const Form = () => {
   );
 };
 
-describe('InputMultilocWithLocaleSwitcher', () => {
+describe('Select', () => {
   it('renders', () => {
     render(<Form />);
-    expect(screen.getByPlaceholderText(/title/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/select/i)).toBeInTheDocument();
   });
-  it('submits correct data from input', async () => {
+  it('submits correct data from select', async () => {
     render(<Form />);
-    const valueEN = 'en title';
-    const valueNL = 'nl title';
+    const value = '1';
 
-    fireEvent.change(screen.getByPlaceholderText(/title/i), {
+    fireEvent.change(screen.getByLabelText(/select/i), {
       target: {
-        value: valueEN,
-      },
-    });
-
-    fireEvent.click(screen.getByText(/nl-NL/i));
-
-    fireEvent.change(screen.getByPlaceholderText(/title/i), {
-      target: {
-        value: valueNL,
+        value,
       },
     });
 
     fireEvent.click(screen.getByText(/submit/i));
     await waitFor(() =>
-      expect(onSubmit).toHaveBeenCalledWith({
-        title: { en: valueEN, 'nl-NL': valueNL },
-      })
+      expect(onSubmit).toHaveBeenCalledWith({ select: value })
     );
   });
   it('shows front-end validation error when there is one', async () => {
     render(<Form />);
     fireEvent.click(screen.getByText(/submit/i));
+    expect(onSubmit).not.toHaveBeenCalled();
     await waitFor(() => {
       expect(onSubmit).not.toHaveBeenCalled();
       expect(screen.getByText('Error message')).toBeInTheDocument();
@@ -83,14 +72,10 @@ describe('InputMultilocWithLocaleSwitcher', () => {
         <FormProvider {...methods}>
           <form
             onSubmit={methods.handleSubmit(() =>
-              methods.setError('title', { error: 'blank' } as any)
+              methods.setError('select', { error: 'blank' } as any)
             )}
           >
-            <InputMultilocWithLocaleSwitcher
-              name="title"
-              label="title"
-              type="text"
-            />
+            <Select name="select" label="select" options={[]} />
             <button type="submit">Submit</button>
           </form>
         </FormProvider>
