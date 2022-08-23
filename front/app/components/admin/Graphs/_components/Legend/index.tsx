@@ -39,44 +39,61 @@ const getLegendTranslate = (
   return `translate(${left},${top})`;
 };
 
+const dimensionsMatch = (
+  items: LegendItem[][],
+  { itemPositions }: LegendDimensions
+) => {
+  if (items.length !== itemPositions.length) return false;
+
+  for (let i = 0; i < items.length; i++) {
+    if (items[i].length !== itemPositions[i].length) return false;
+  }
+
+  return true;
+};
+
 const Legend = ({
   items,
   graphDimensions,
   legendDimensions,
   position,
   margin,
-}: Props) => (
-  <g
-    transform={getLegendTranslate(
-      position,
-      graphDimensions,
-      legendDimensions,
-      margin
-    )}
-  >
-    {items.map((itemRow, rowIndex) =>
-      itemRow.map((item, itemIndex) => {
-        const { left, top } =
-          legendDimensions.itemPositions[rowIndex][itemIndex];
+}: Props) => {
+  if (!dimensionsMatch(items, legendDimensions)) return null;
 
-        return (
-          <g
-            transform={`translate(${left},${top})`}
-            key={`${rowIndex}-${itemIndex}`}
-          >
-            <Icon {...item} />
-            <text
-              transform="translate(18,12)"
-              fontSize="14px"
-              fill={item.color}
+  return (
+    <g
+      transform={getLegendTranslate(
+        position,
+        graphDimensions,
+        legendDimensions,
+        margin
+      )}
+    >
+      {items.map((itemRow, rowIndex) =>
+        itemRow.map((item, itemIndex) => {
+          const { left, top } =
+            legendDimensions.itemPositions[rowIndex][itemIndex];
+
+          return (
+            <g
+              transform={`translate(${left},${top})`}
+              key={`${rowIndex}-${itemIndex}`}
             >
-              {item.label}
-            </text>
-          </g>
-        );
-      })
-    )}
-  </g>
-);
+              <Icon {...item} />
+              <text
+                transform="translate(18,12)"
+                fontSize="14px"
+                fill={item.color}
+              >
+                {item.label}
+              </text>
+            </g>
+          );
+        })
+      )}
+    </g>
+  );
+};
 
 export default Legend;
