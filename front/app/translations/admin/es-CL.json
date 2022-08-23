@@ -1362,7 +1362,7 @@
   "app.containers.AdminPage.groups.permissions.permissionAction_comment_questions": "Comentar preguntas",
   "app.containers.AdminPage.groups.permissions.permissionAction_post_proposal": "Publica una propuesta",
   "app.containers.AdminPage.groups.permissions.permissionAction_submit_contribution": "Envía tu contribución",
-  "app.containers.AdminPage.groups.permissions.permissionAction_submit_idea": "Envia tu idea",
+  "app.containers.AdminPage.groups.permissions.permissionAction_submit_idea": "Envía tu idea",
   "app.containers.AdminPage.groups.permissions.permissionAction_submit_issue": "Envía tu comentario",
   "app.containers.AdminPage.groups.permissions.permissionAction_submit_option": "Envía tu opción",
   "app.containers.AdminPage.groups.permissions.permissionAction_submit_project": "Envia tu proyecto",
