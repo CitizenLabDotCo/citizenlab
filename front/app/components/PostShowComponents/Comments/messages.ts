@@ -215,7 +215,7 @@ export default defineMessages({
     defaultMessage: 'Provide a reason',
   },
   deleteReasonDescriptionError: {
-    id: 'app.containers.Comments.deleteReasonError',
+    id: 'app.containers.Comments.deleteReasonDescriptionError',
     defaultMessage: 'Provide more information on your reason',
   },
   a11y_commentPosted: {
