@@ -111,7 +111,14 @@ module Analytics
       @pluck_attributes = @pluck_attributes.uniq
       results = results.pluck(*@pluck_attributes)
       response_attributes = @pluck_attributes.map { |key| @query.extract_aggregation_name(key) }
-      results.map { |result| response_attributes.zip(result).to_h }
+
+      results.map do |result|
+        unless result.instance_of?(Array)
+          result = [result]
+        end
+
+        response_attributes.zip(result).to_h
+      end
     end
   end
 end

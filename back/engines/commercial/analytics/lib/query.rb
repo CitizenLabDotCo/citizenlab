@@ -56,7 +56,7 @@ module Analytics
       used_dimensions = []
 
       if @json_query.key?(:fields)
-        used_dimensions += @json_query[:fields]
+        used_dimensions += fields
       end
 
       if @json_query.key?(:groups)
