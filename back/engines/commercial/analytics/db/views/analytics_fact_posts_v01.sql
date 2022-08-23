@@ -12,7 +12,8 @@ SELECT
     CASE WHEN abf.feedback_first_date IS NULL THEN 1 ELSE 0 END AS feedback_none,
     upvotes_count + downvotes_count as votes_count,
     upvotes_count,
-    downvotes_count
+    downvotes_count,
+    idea_status_id as status_id
 from ideas i
 INNER JOIN analytics_dimension_types adt ON adt.name = 'idea'
 LEFT JOIN analytics_build_feedbacks AS abf ON abf.post_id = i.id
@@ -32,7 +33,15 @@ SELECT
     CASE WHEN abf.feedback_first_date IS NULL THEN 1 ELSE 0 END AS feedback_none,
     upvotes_count + downvotes_count as votes_count,
     upvotes_count,
-    downvotes_count
+    downvotes_count,
+    isc.initiative_status_id as status_id
 FROM initiatives i
 INNER JOIN analytics_dimension_types adt ON adt.name = 'initiative'
-LEFT JOIN analytics_build_feedbacks AS abf ON abf.post_id = i.id;
+LEFT JOIN analytics_build_feedbacks AS abf ON abf.post_id = i.id
+LEFT JOIN initiative_status_changes AS isc
+    ON isc.initiative_id = i.id and 
+       isc.updated_at = (
+        select MAX(isc_.updated_at)
+        from initiative_status_changes as isc_
+        where isc_.initiative_id = i.id
+       );
