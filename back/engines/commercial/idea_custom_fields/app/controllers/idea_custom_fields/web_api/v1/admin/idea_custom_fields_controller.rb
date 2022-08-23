@@ -71,7 +71,7 @@ module IdeaCustomFields
     def update_fields
       errors = {}
       fields = IdeaCustomFieldsService.new(@custom_form).configurable_fields
-      field_index = fields.index_by(&:id)
+      fields_by_id = fields.index_by(&:id)
       given_ids = update_all_params.pluck(:id)
 
       ActiveRecord::Base.transaction do
@@ -82,9 +82,9 @@ module IdeaCustomFields
           SideFxCustomFieldService.new.after_destroy(field, current_user)
         end
         update_all_params.each_with_index do |field_params, index|
-          options = field_params.delete :options
+          options_params = field_params.delete :options
           if field_params[:id]
-            field = field_index[field_params[:id]]
+            field = fields_by_id[field_params[:id]]
             field.assign_attributes field_params
             SideFxCustomFieldService.new.before_update(field, current_user)
             unless field.save
@@ -101,7 +101,7 @@ module IdeaCustomFields
             end
             SideFxCustomFieldService.new.after_create(field, current_user)
           end
-          update_options field, options if options
+          update_options field, options_params, errors, index if options_params
           field.move_to_bottom
         end
         raise UpdateAllFailedError, errors if errors.present?
@@ -142,42 +142,44 @@ module IdeaCustomFields
       end
     end
 
-    def update_options(field, options_params)
-      errors = {}
+    def update_options(field, options_params, errors, field_index)
       options = field.options
-      option_index = options.index_by(&:id)
+      options_by_id = options.index_by(&:id)
       given_ids = options_params.pluck :id
 
-      ActiveRecord::Base.transaction do
-        deleted_options = options.reject { |option| given_ids.include? option.id }
-        deleted_options.each do |option|
-          SideFxCustomFieldOptionService.new.before_destroy option, current_user
-          option.destroy!
-          SideFxCustomFieldOptionService.new.after_destroy option, current_user
-        end
-        options_params.each_with_index do |option_params, index|
-          if option_params[:id]
-            option = option_index[option_params[:id]]
-            option.assign_attributes option_params
-            SideFxCustomFieldOptionService.new.before_update option, current_user
-            unless option.save
-              errors[index.to_s] = option.errors.details
-              next
-            end
-            SideFxCustomFieldOptionService.new.after_update option, current_user
-          else
-            option = CustomFieldOption.new option_params.merge(custom_field: field)
-            SideFxCustomFieldOptionService.new.before_create option, current_user
-            unless option.save
-              errors[index.to_s] = option.errors.details
-              next
-            end
-            SideFxCustomFieldOptionService.new.after_create option, current_user
-          end
-          option.move_to_bottom
-        end
-        raise UpdateAllFailedError, errors if errors.present?
+      deleted_options = options.reject { |option| given_ids.include? option.id }
+      deleted_options.each do |option|
+        SideFxCustomFieldOptionService.new.before_destroy option, current_user
+        option.destroy!
+        SideFxCustomFieldOptionService.new.after_destroy option, current_user
       end
+      options_params.each_with_index do |option_params, option_index|
+        if option_params[:id]
+          option = options_by_id[option_params[:id]]
+          option.assign_attributes option_params
+          SideFxCustomFieldOptionService.new.before_update option, current_user
+          unless option.save
+            add_options_errors option.errors.details, errors, field_index, option_index
+            next
+          end
+          SideFxCustomFieldOptionService.new.after_update option, current_user
+        else
+          option = CustomFieldOption.new option_params.merge(custom_field: field)
+          SideFxCustomFieldOptionService.new.before_create option, current_user
+          unless option.save
+            add_options_errors option.errors.details, errors, field_index, option_index
+            next
+          end
+          SideFxCustomFieldOptionService.new.after_create option, current_user
+        end
+        option.move_to_bottom
+      end
+    end
+
+    def add_options_errors(options_errors, errors, field_index, option_index)
+      errors[field_index.to_s] ||= {}
+      errors[field_index.to_s][:options] ||= {}
+      errors[field_index.to_s][:options][option_index.to_s] = options_errors
     end
 
     def assign_attributes_to(custom_field)
