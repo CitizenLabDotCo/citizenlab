@@ -5,12 +5,16 @@ module Analytics
     def run(query)
       @query = query
       @json_query = query.json_query
-      @pluck_attributes = @query.model.column_names
+      @pluck_attributes = []
       dimensions = @query.used_dimensions
 
       results = @query.model.includes(dimensions)
 
       results = include_dimensions(results)
+
+      if @json_query.key?(:fields)
+        @pluck_attributes += @query.fields
+      end
 
       if @json_query.key?(:dimensions)
         results = query_dimensions(results)

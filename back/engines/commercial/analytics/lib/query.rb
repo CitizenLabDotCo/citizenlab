@@ -49,6 +49,10 @@ module Analytics
     def used_dimensions
       used_dimensions = []
 
+      if @json_query.key?(:fields)
+        used_dimensions += @json_query[:fields]
+      end
+
       if @json_query.key?(:groups)
         used_dimensions += groups_keys
       end
@@ -76,6 +80,14 @@ module Analytics
         @json_query[:groups]
       else
         [@json_query[:groups]]
+      end
+    end
+
+    def fields
+      if @json_query[:fields].instance_of?(Array)
+        @json_query[:fields]
+      else
+        [@json_query[:fields]]
       end
     end
 

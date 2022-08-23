@@ -20,6 +20,10 @@ module Analytics
 
       return unless @valid
 
+      if @json_query.key?(:fields)
+        validate_fields
+      end
+
       if @json_query.key?(:dimensions)
         validate_dimensions
         validate_dates
@@ -52,6 +56,12 @@ module Analytics
       return if json_errors.empty?
 
       add_error(json_errors, 400)
+    end
+
+    def validate_fields
+      @query.fields.each do |key|
+        validate_dotted(key, 'Fields')
+      end
     end
 
     def validate_dimensions
