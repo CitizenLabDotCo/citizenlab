@@ -1,23 +1,26 @@
 import React from 'react';
-import {
-  Input as InputComponent,
-  InputProps,
-} from '@citizenlab/cl2-component-library';
+import { Toggle as ToggleComponent } from '@citizenlab/cl2-component-library';
 import Error, { TFieldName } from 'components/UI/Error';
 import { Controller, useFormContext } from 'react-hook-form';
 import { CLError } from 'typings';
 
-interface Props extends InputProps {
+export interface ToggleProps {
   name: string;
+  className?: string;
+  disabled?: boolean | undefined;
+  label?: string | JSX.Element | null | undefined;
+  labelTextColor?: string;
 }
 
-const Input = ({ name, ...rest }: Props) => {
+const Toggle = ({ name, ...rest }: ToggleProps) => {
   const {
     formState: { errors },
     control,
+    watch,
+    setValue,
   } = useFormContext();
 
-  const defaultValue = '';
+  const defaultValue = false;
 
   const validationError = errors[name]?.message as string | undefined;
 
@@ -25,15 +28,26 @@ const Input = ({ name, ...rest }: Props) => {
     (errors[name]?.error as string | undefined) &&
     ([errors[name]] as unknown as CLError[]);
 
+  const currentValue = watch(name);
   return (
     <>
       <Controller
         name={name}
         control={control}
         defaultValue={defaultValue}
-        render={({ field: { ref: _ref, ...field } }) => (
-          <InputComponent id={name} {...field} {...rest} />
-        )}
+        render={({ field: { ref: _ref, value, ...field } }) => {
+          return (
+            <ToggleComponent
+              id={name}
+              {...field}
+              {...rest}
+              checked={value}
+              onChange={() => {
+                setValue(name, !currentValue);
+              }}
+            />
+          );
+        }}
       />
       {validationError && (
         <Error
@@ -56,4 +70,4 @@ const Input = ({ name, ...rest }: Props) => {
   );
 };
 
-export default Input;
+export default Toggle;
