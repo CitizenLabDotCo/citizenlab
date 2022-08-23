@@ -39,7 +39,7 @@ const getLegendTranslate = (
   return `translate(${left},${top})`;
 };
 
-const dimensionsMatch = (
+const itemsMatch = (
   items: LegendItem[][],
   { itemPositions }: LegendDimensions
 ) => {
@@ -59,7 +59,7 @@ const Legend = ({
   position,
   margin,
 }: Props) => {
-  if (!dimensionsMatch(items, legendDimensions)) return null;
+  if (!itemsMatch(items, legendDimensions)) return null;
 
   return (
     <g
