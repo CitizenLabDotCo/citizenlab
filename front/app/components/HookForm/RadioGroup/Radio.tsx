@@ -6,6 +6,7 @@ import {
 import { Controller, useFormContext } from 'react-hook-form';
 
 interface Props extends Omit<RadioProps, 'onChange'> {
+  id: string;
   name: string;
 }
 
