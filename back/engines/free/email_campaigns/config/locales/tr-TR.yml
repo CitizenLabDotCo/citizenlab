@@ -214,34 +214,34 @@ tr:
       added_a_message: '%{organizationName} aşağıdaki mesajı yazdı:'
       cta_accept_invitation: 'Davetiyenizi kabul edin'
       invitation_header: 'Davet edildiniz!'
-      invitation_header_message: '%{organizationName} invited you to their participation platform.'
-      preheader: '%{organizationName} sent you an invite to join their participation platform.'
-      subject: 'You are invited to join the platform of %{organizationName}'
+      invitation_header_message: '%{organizationName} sizi katılım platformlarına davet etti.'
+      preheader: '%{organizationName} katılım platformlarına katılmanız için size bir davet gönderdi.'
+      subject: '%{organizationName} platformuna katılmaya davet edildiniz'
     initiative_published:
-      action_add_image: '%{addImageLink} to increase visibility'
-      action_published_initiative: 'Published proposal'
-      action_send_email: 'Send your contacts an %{sendEmailLink}'
-      action_share_fb: 'Let your friends know on %{fbLink}'
-      action_share_link: 'Share it via any channel by copying the %{link}'
-      action_share_twitter: 'Inform your followers on %{twitterLink}'
-      cta_view_initiative: 'Go to your proposal'
-      link: link
-      main_header: 'You posted a proposal! Let''s gather support for it.'
-      message_next_steps: '%{userFirstName}, your proposal has successfully been published on the participation platform of %{organizationName}. You will be notified when people interact with your proposal. Find out what next steps you can take below.'
-      message_get_votes: 'Reach the voting threshold:'
-      preheader: 'Thank you for sharing your proposal %{initiativeTitle} for %{organizationName}. The next step is to get support for your proposal by sharing it across your network.'
-      send_email: email
-      subject: 'Your proposal was published on the platform of %{organizationName}'
+      action_add_image: 'Görünürlüğünüzü artırmak için %{addImageLink}'
+      action_published_initiative: 'Yayımlanan teklif'
+      action_send_email: 'İlgili kişilerinize bir %{sendEmailLink} gönderin'
+      action_share_fb: '%{fbLink} arkadaşlarınıza haber verin'
+      action_share_link: '%{link} kopyalayarak her tür kanaldan paylaşın'
+      action_share_twitter: '%{twitterLink} takipçilerinize haber verin'
+      cta_view_initiative: 'Teklifinize gidin'
+      link: Bağlantı
+      main_header: 'Bir teklif yayınladınız. Şimdi destek toplayalım.'
+      message_next_steps: '%{userFirstName}, teklifiniz %{organizationName} katılım platformunda başarıyla yayımlandı. İnsanlar teklifinizle etkileşim kurduğunda bilgilendirilirsiniz. Şimdi neler yapabileceğinizi aşağıdan öğrenin.'
+      message_get_votes: 'Oylama eşiğine ulaşın:'
+      preheader: '%{organizationName} ile ilgili %{initiativeTitle} teklifinizi paylaştığınız için teşekkür ederiz. Bir sonraki adım, ağınızda paylaşıp teklifiniz için destek toplamak.'
+      send_email: e-posta
+      subject: 'Teklifiniz %{organizationName} platformunda yayımlandı'
     mention_in_official_feedback:
       by_author: '%{authorName} tarafından'
-      commented: '%{organizationName} wrote:'
-      cta_reply_to: 'Reply to %{organizationName}'
-      event_description: '%{organizationName} mentioned you in their feedback on the idea ''%{post}‘. Click the link below to enter the conversation with %{organizationName}'
-      main_header: 'You have been mentioned'
-      subject: '%{organizationName} mentioned you in their feedback'
-      preheader: '%{commentAuthor} mentioned you in feedback'
+      commented: '%{organizationName} şunu yazdı:'
+      cta_reply_to: '%{organizationName} yorumunu yanıtlayın'
+      event_description: '%{organizationName} ''%{post}‘ ile ilgili geri bildiriminde sizden bahsetti. %{organizationName} ile sohbete katılmak için aşağıdaki bağlantıya tıklayın'
+      main_header: 'Sizden bahsedildi'
+      subject: '%{organizationName} geri bildiriminde sizden bahsetti'
+      preheader: '%{commentAuthor} geri bildirimde sizden bahsetti'
     new_comment_on_commented_idea:
-      commented: '%{commentAuthor} wrote:'
+      commented: '%{commentAuthor} şunu yazdı:'
       cta_reply_to: '%{commentAuthor} yorumunu yanıtlayın'
       event_description: '%{commentAuthorFull} also wrote a comment on the idea ''%{ideaTitle}'' on the participation platform of %{organizationName}. Click the button below to start the conversation with %{commentAuthor}.'
       main_header: '%{commentAuthor} wrote a comment on the same idea'
@@ -249,7 +249,7 @@ tr:
       preheader: '%{commentAuthor} also left a comment on an idea for %{organizationName}'
     mention_in_comment:
       by_author: '%{authorName} tarafından'
-      commented: '%{commentAuthor} wrote:'
+      commented: '%{commentAuthor} şunu yazdı:'
       cta_reply_to: '%{commentAuthor} yorumunu yanıtlayın'
       event_description: '%{commentAuthorFull} has mentioned you in his comment on the idea ''%{post}‘. Click the link below to enter the conversation with %{commentAuthor}'
       main_header: 'People are talking about you'
@@ -270,7 +270,7 @@ tr:
       today_by_author: '%{author} tarafından bugün'
       x_days_ago_by_author: '%{author} tarafından %{x} gün önce'
     new_comment_on_commented_initiative:
-      commented: '%{commentAuthor} wrote:'
+      commented: '%{commentAuthor} şunu yazdı:'
       cta_reply_to: '%{commentAuthor} yorumunu yanıtlayın'
       event_description: '%{commentAuthorFull} also wrote a comment on the proposal ''%{initiativeTitle}'' on the participation platform of %{organizationName}. Click the button below to start the conversation with %{commentAuthor}.'
       main_header: '%{commentAuthor} wrote a comment on the same proposal'
@@ -296,7 +296,7 @@ tr:
       subject: '%{organizationName} platformunda bir yorum aldınız'
       preheader: '%{authorName} left a comment on your idea for %{organizationName}'
     new_comment_on_voted_initiative:
-      commented: '%{commentAuthor} wrote:'
+      commented: '%{commentAuthor} şunu yazdı:'
       cta_reply_to: 'View this proposal'
       event_description: '%{commentAuthor} has commented on the proposal ''%{initiativeTitle}'' on which you''ve voted. Join the discussion on the platform of %{organizationName}!'
       main_header: '%{firstName}, there''s a new comment on the proposal you''ve voted on'
@@ -380,7 +380,7 @@ tr:
       preheader: '%{officialName} left an official update on a proposal you voted on'
     official_feedback_on_your_initiative:
       updated: '%{officialName} wrote:'
-      cta_view: 'Go to your proposal'
+      cta_view: 'Teklifinize gidin'
       event_description: '%{officialName} gave an update on your proposal ''%{initiativeTitle}''. Click the button below to enter the conversation with %{organizationName}.'
       main_header: 'You received an update from %{officialName}'
       subject: 'You''ve received an official update on the platform of %{organizationName}'
@@ -466,7 +466,7 @@ tr:
       preheader: 'The status of a proposal you commented on has changed'
     status_change_of_your_initiative:
       status_change: 'The new status of your proposal is ''%{initiativeStatus}'''
-      cta_view_initiative: 'Go to your proposal'
+      cta_view_initiative: 'Teklifinize gidin'
       event_description: 'The status of the proposal ''%{initiativeTitle}'' has been updated on the digital participation platform of %{organizationName}.'
       main_header: 'Your proposal has a new status'
       subject: 'The status of your proposal has changed'
@@ -501,22 +501,22 @@ tr:
       subject: 'An initiative reached the voting threshold on your platform'
       preheader: 'Make sure to take the next steps'
     first_idea_published:
-      action_add_image: '%{addImageLink} to increase visibility'
+      action_add_image: 'Görünürlüğünüzü artırmak için %{addImageLink}'
       action_comment: '%{textComment} on existing ideas'
       action_published_idea: 'Published idea'
-      action_send_email: 'Send your contacts an %{sendEmailLink}'
-      action_share_fb: 'Let your friends know on %{fbLink}'
-      action_share_link: 'Share it via any channel by copying the %{link}'
-      action_share_twitter: 'Inform your followers on %{twitterLink}'
+      action_send_email: 'İlgili kişilerinize bir %{sendEmailLink} gönderin'
+      action_share_fb: '%{fbLink} arkadaşlarınıza haber verin'
+      action_share_link: '%{link} kopyalayarak her tür kanaldan paylaşın'
+      action_share_twitter: '%{twitterLink} takipçilerinize haber verin'
       add_image: 'Add an image'
       cta_view_idea: 'Go to your idea'
       event_description: '%{firstName}, congratulations with your first idea on the participation platform of %{organizationName}. You will be notified when people interact with your idea. Find out what next steps you can take below.'
-      link: link
+      link: Bağlantı
       main_header: '%{firstName}, you posted your first idea!'
       message_get_votes: 'Reach more people with your idea:'
       preheader: '%{firstName}, congratulations on posting your first idea on the platform of %{organizationName}. Now gather support for your idea'
       see_you: 'See you soon at the platform!'
-      send_email: email
+      send_email: e-posta
       subject: 'Your first idea on the platform of %{organizationName}'
     welcome:
       cta_join_platform: 'Discover the platform'
@@ -525,21 +525,21 @@ tr:
       message_welcome: 'Congratulations, you successfully signed up on the participation platform of %{organizationName}. You can now discover the platform and make your voice heard. You can also add a profile picture and a short description to tell others who you are.'
       preheader: 'Here''s what you can do on the platform of %{organizationName}'
     idea_published:
-      action_add_image: '%{addImageLink} to increase visibility'
+      action_add_image: 'Görünürlüğünüzü artırmak için %{addImageLink}'
       action_published_idea: 'Published idea'
-      action_send_email: 'Send your contacts an %{sendEmailLink}'
-      action_share_fb: 'Let your friends know on %{fbLink}'
-      action_share_link: 'Share it via any channel by copying the %{link}'
-      action_share_twitter: 'Inform your followers on %{twitterLink}'
+      action_send_email: 'İlgili kişilerinize bir %{sendEmailLink} gönderin'
+      action_share_fb: '%{fbLink} arkadaşlarınıza haber verin'
+      action_share_link: '%{link} kopyalayarak her tür kanaldan paylaşın'
+      action_share_twitter: '%{twitterLink} takipçilerinize haber verin'
       add_image: 'Add an image'
       cta_view_idea: 'Go to your idea'
       event_description: '%{firstName}, your idea has successfully been published on the participation platform of %{organizationName}. You will be notified when people interact with your idea. Find out what next steps you can take below.'
-      link: link
+      link: Bağlantı
       main_header: 'You posted an idea! Let''s make sure it gets read.'
       message_get_votes: 'Reach more people with your idea:'
       preheader: '%{firstName}, congratulations on posting your idea on the platform of %{organizationName}. Now gather support.'
       see_you: 'See you soon at the platform!'
-      send_email: email
+      send_email: e-posta
       subject: 'Your idea on the platform of %{organizationName}'
       message_next_steps: ""
     your_proposed_initiatives_digest:
