@@ -480,75 +480,75 @@ tr:
       cta_go_to_the_platform: "Platforma gidin"
       title_no_activity_past_week: "Geçen hafta etkinlik yoktu"
       title_proposals: "Başlatılan teklifler"
-      proposals_started_text: "Proposals are ideas that need to gain traction and support from others (people like you!) in order to move forward. Below is a list of proposals that have been put forward in the last week. Click on any of them to take a look and offer your support and feedback!"
-      title_successful_proposals: "Proposals that reached the threshold"
-      successful_proposals_text: "These proposals have gotten enough support to move to the next stage! Click on the proposal to learn more about what happens next."
+      proposals_started_text: "Teklifler, başka insanların (sizin gibi!) ilgisi ve desteği sayesinde hız kazanan fikirlerdir. Aşağıda geçtiğimiz hafta ileri sürülen tekliflerin bir listesi verilmiştir. Göz atmak istediğiniz ve desteğinizi ya da görüşlerinizi sunmak istediğiniz teklife tıklayın!"
+      title_successful_proposals: "Eşiğe ulaşan teklifler"
+      successful_proposals_text: "Bu teklifler, bir sonraki aşamaya geçmek için yeterli desteği aldı! Bundan sonra ne olacağı ile ilgili daha fazla bilgi için teklife tıklayın."
       today_by_author: "%{author} tarafından bugün"
       yesterday_by_author: "%{author} tarafından dün"
       x_days_ago_by_author: "%{author} tarafından %{x} gün önce"
-      trending_ideas: "Trending ideas"
-      trending_ideas_text: "Interested in what’s been happening on the platform? Here are the three most trending ideas and what people are saying about them."
-      no_notifications: "No notifications"
-      one_notification: "1 notification"
-      multiple_notifications: "%{notifCount} notifications"
-      no_unread_notifications: "You don't have any unread notifications. Visit the platform to contribute your input and generate new notifications!"
-      unread_notifications: "You have unread notifications. Visit the platform to discover what's happening!"
+      trending_ideas: "Popüler fikirler"
+      trending_ideas_text: "Platformda neler olup bittiğini öğrenmek ister misiniz? İşte en popüler üç fikir ve insanların bu fikirler hakkında neler söylediği."
+      no_notifications: "Bildirim yok"
+      one_notification: "1 bildirim"
+      multiple_notifications: "%{notifCount} bildirim"
+      no_unread_notifications: "Okunmamış bildiriminiz yok. Girdilerinizle katkı yapmak ve yeni bildirimler oluşturmak için platformu ziyaret edin."
+      unread_notifications: "Okunmamış bildirileriniz var. Neler olup bittiğini öğrenmek için platformu ziyaret edin."
     threshold_reached_for_admin:
       by_author: '%{authorName} tarafından'
-      cta_process_initiative: 'Take this initiative to the next steps'
-      event_description: 'An initiative reached the voting threshold on your platform. Click the button below to take it to the next steps!'
-      main_header: 'An initiative reached the voting threshold!'
-      subject: 'An initiative reached the voting threshold on your platform'
-      preheader: 'Make sure to take the next steps'
+      cta_process_initiative: 'Bu girişimi sonraki adımlara taşıyın'
+      event_description: 'Bir girişim, platformunuzdaki oylama eşiğine ulaştı. Onu sonraki adımlara taşımak için aşağıdaki düğmeye tıklayın.'
+      main_header: 'Bir girişim oylama eşiğine ulaştı.'
+      subject: 'Bir girişim, platformunuzdaki oylama eşiğine ulaştı'
+      preheader: 'Sonraki adımları mutlaka gerçekleştirin'
     first_idea_published:
       action_add_image: 'Görünürlüğünüzü artırmak için %{addImageLink}'
-      action_comment: '%{textComment} on existing ideas'
-      action_published_idea: 'Published idea'
+      action_comment: 'Mevcut fikirler için %{textComment}'
+      action_published_idea: 'Yayımlanan fikir'
       action_send_email: 'İlgili kişilerinize bir %{sendEmailLink} gönderin'
       action_share_fb: '%{fbLink} arkadaşlarınıza haber verin'
       action_share_link: '%{link} kopyalayarak her tür kanaldan paylaşın'
       action_share_twitter: '%{twitterLink} takipçilerinize haber verin'
-      add_image: 'Add an image'
+      add_image: 'Görsel ekleyin'
       cta_view_idea: 'Fikrinize gidin'
-      event_description: '%{firstName}, congratulations with your first idea on the participation platform of %{organizationName}. You will be notified when people interact with your idea. Find out what next steps you can take below.'
+      event_description: '%{firstName}, %{organizationName} katılım platformundaki ilk fikriniz için tebrik ederiz. İnsanlar fikrinizle etkileşim kurduğunda bilgilendirilirsiniz. Şimdi neler yapabileceğinizi aşağıdan öğrenin.'
       link: Bağlantı
-      main_header: '%{firstName}, you posted your first idea!'
-      message_get_votes: 'Reach more people with your idea:'
-      preheader: '%{firstName}, congratulations on posting your first idea on the platform of %{organizationName}. Now gather support for your idea'
-      see_you: 'See you soon at the platform!'
+      main_header: '%{firstName}, ilk fikrinizi yayınladınız!'
+      message_get_votes: 'Fikrinizi daha fazla kişiye ulaştırın:'
+      preheader: '%{firstName}, %{organizationName} platformunda ilk fikrinizi yayınladığınız için tebrik ederiz. Şimdi fikriniz için destek toplayın'
+      see_you: 'Platformda görüşmek üzere!'
       send_email: e-posta
-      subject: 'Your first idea on the platform of %{organizationName}'
+      subject: '%{organizationName} platformundaki ilk fikriniz'
     welcome:
-      cta_join_platform: 'Discover the platform'
-      subject: 'Welcome to the platform of %{organizationName}'
-      main_header: Welcome!
-      message_welcome: 'Congratulations, you successfully signed up on the participation platform of %{organizationName}. You can now discover the platform and make your voice heard. You can also add a profile picture and a short description to tell others who you are.'
-      preheader: 'Here''s what you can do on the platform of %{organizationName}'
+      cta_join_platform: 'Platformu keşfedin'
+      subject: '%{organizationName} platformuna hoş geldiniz'
+      main_header: Hoş geldiniz!
+      message_welcome: 'Tebrikler! %{organizationName} katılım platformunda başarıyla kaydoldunuz. Şimdi platformu keşfedebilir ve sesinizi duyurabilirsiniz. Ayrıca, kendinizi başkalarına tanıtmak için bir profil resmi ve kısa açıklama ekleyebilirsiniz.'
+      preheader: '%{organizationName} platformunda şunları yapabilirsiniz'
     idea_published:
       action_add_image: 'Görünürlüğünüzü artırmak için %{addImageLink}'
-      action_published_idea: 'Published idea'
+      action_published_idea: 'Yayımlanan fikir'
       action_send_email: 'İlgili kişilerinize bir %{sendEmailLink} gönderin'
       action_share_fb: '%{fbLink} arkadaşlarınıza haber verin'
       action_share_link: '%{link} kopyalayarak her tür kanaldan paylaşın'
       action_share_twitter: '%{twitterLink} takipçilerinize haber verin'
-      add_image: 'Add an image'
+      add_image: 'Görsel ekleyin'
       cta_view_idea: 'Fikrinize gidin'
-      event_description: '%{firstName}, your idea has successfully been published on the participation platform of %{organizationName}. You will be notified when people interact with your idea. Find out what next steps you can take below.'
+      event_description: '%{firstName}, fikriniz %{organizationName} katılım platformunda başarıyla yayımlandı. İnsanlar fikrinizle etkileşim kurduğunda bilgilendirilirsiniz. Şimdi neler yapabileceğinizi aşağıdan öğrenin.'
       link: Bağlantı
-      main_header: 'You posted an idea! Let''s make sure it gets read.'
-      message_get_votes: 'Reach more people with your idea:'
-      preheader: '%{firstName}, congratulations on posting your idea on the platform of %{organizationName}. Now gather support.'
-      see_you: 'See you soon at the platform!'
+      main_header: 'Bir fikir yayınladınız! Şimdi okunmasını sağlayalım.'
+      message_get_votes: 'Fikrinizi daha fazla kişiye ulaştırın:'
+      preheader: '%{firstName}, %{organizationName} platformunda fikrinizi yayınladığınız için tebrik ederiz. Şimdi destek toplayın.'
+      see_you: 'Platformda görüşmek üzere!'
       send_email: e-posta
-      subject: 'Your idea on the platform of %{organizationName}'
+      subject: '%{organizationName} platformundaki fikriniz'
       message_next_steps: ""
     your_proposed_initiatives_digest:
-      subject: 'Weekly update of your proposals'
-      preheader: 'What happened with your proposals in the past week?'
-      title_your_weekly_report: 'How have your proposals been doing?'
-      text_introduction: 'Find the key numbers below and go to the platform to take action and gather enough support in time.'
-      cta_see_your_initiative: 'Go to your proposals'
-      total_votes: 'Total votes'
-      new_votes: 'New votes'
-      remaining_votes: 'Votes remaining'
-      remaining_days: 'Days remaining'
+      subject: 'Tekliflerinizle ilgili haftalık bildirim'
+      preheader: 'Geçtiğimiz hafta tekliflerinizle ilgili ne oldu?'
+      title_your_weekly_report: 'Teklifleriniz ne durumdaydı?'
+      text_introduction: 'Aşağıda verilen performansla ilgili değerlere bakın, platforma gidin ve yeterli desteği zamanında toplamak için yapmanız gerekenleri yapın.'
+      cta_see_your_initiative: 'Tekliflerinize gidin'
+      total_votes: 'Toplam oy sayısı'
+      new_votes: 'Yeni oy sayısı'
+      remaining_votes: 'Kalan oy sayısı'
+      remaining_days: 'Kalan gün sayısı'
