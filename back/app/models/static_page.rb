@@ -52,9 +52,7 @@ class StaticPage < ApplicationRecord
   before_validation :sanitize_top_info_section_multiloc
   before_validation :sanitize_bottom_info_section_multiloc
 
-  before_destroy :confirm_is_custom, prepend: true do
-    throw(:abort) if errors.present?
-  end
+  before_destroy :confirm_is_custom, prepend: true
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :slug, presence: true, uniqueness: true
@@ -98,6 +96,7 @@ class StaticPage < ApplicationRecord
 
   def confirm_is_custom
     errors.add(:code, 'You cannot delete a page that does not have code: custom') unless custom?
+    throw(:abort) if errors.present?
   end
 
   def set_code
