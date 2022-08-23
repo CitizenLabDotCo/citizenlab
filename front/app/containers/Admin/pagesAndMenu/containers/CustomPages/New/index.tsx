@@ -19,9 +19,11 @@ import Button from 'components/UI/Button';
 import Input from 'components/HookForm/Input';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import { Box } from '@citizenlab/cl2-component-library';
+import TabbedResource from 'components/admin/TabbedResource';
 
 // intl
 import messages from './messages';
+import indexMessages from '../messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
@@ -63,35 +65,49 @@ const CreateCustomPageHookForm = ({
   };
 
   return (
-    <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onFormSubmit)}>
-        <SectionFormWrapper
-          stickyMenuContents={
-            <Button type="submit" processing={methods.formState.isSubmitting}>
-              {formatMessage(messages.saveButton)}
-            </Button>
-          }
-        >
-          <SectionField>
-            <Feedback successMessage={formatMessage(messages.pageTitle)} />
-            <Box mb="20px">
-              <InputMultilocWithLocaleSwitcher
-                name="title_multiloc"
-                label={formatMessage(messages.titleLabel)}
+    <TabbedResource
+      resource={{
+        title: formatMessage(messages.pageTitle),
+      }}
+      tabs={[
+        {
+          label: formatMessage(indexMessages.pageSettingsTab),
+          name: 'settings',
+          url: '/admin/pages-menu/custom/new',
+        },
+      ]}
+      contentWrapper={false}
+    >
+      <FormProvider {...methods}>
+        <form onSubmit={methods.handleSubmit(onFormSubmit)}>
+          <SectionFormWrapper
+            stickyMenuContents={
+              <Button type="submit" processing={methods.formState.isSubmitting}>
+                {formatMessage(messages.saveButton)}
+              </Button>
+            }
+          >
+            <SectionField>
+              <Feedback successMessage={formatMessage(messages.pageTitle)} />
+              <Box mb="20px">
+                <InputMultilocWithLocaleSwitcher
+                  name="title_multiloc"
+                  label={formatMessage(messages.titleLabel)}
+                  type="text"
+                  labelTooltipText={formatMessage(messages.titleTooltip)}
+                />
+              </Box>
+              <Input
+                label={formatMessage(messages.slugLabel)}
+                labelTooltipText={formatMessage(messages.slugTooltip)}
+                name="slug"
                 type="text"
-                labelTooltipText={formatMessage(messages.titleTooltip)}
               />
-            </Box>
-            <Input
-              label={formatMessage(messages.slugLabel)}
-              labelTooltipText={formatMessage(messages.slugTooltip)}
-              name="slug"
-              type="text"
-            />
-          </SectionField>
-        </SectionFormWrapper>
-      </form>
-    </FormProvider>
+            </SectionField>
+          </SectionFormWrapper>
+        </form>
+      </FormProvider>
+    </TabbedResource>
   );
 };
 
