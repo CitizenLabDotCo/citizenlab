@@ -42,7 +42,13 @@ module Analytics
       model
         .reflect_on_all_associations(:belongs_to)
         .to_h do |assoc|
-          [assoc.name.to_s, "Analytics::#{assoc.options[:class_name]}".constantize.new.attributes.keys]
+          [
+            assoc.name.to_s,
+            {
+              columns: "Analytics::#{assoc.options[:class_name]}".constantize.new.attributes.keys,
+              primary_key: assoc.options.key?(:primary_key) ? assoc.options[:primary_key] : nil
+            }
+          ]
         end
     end
 

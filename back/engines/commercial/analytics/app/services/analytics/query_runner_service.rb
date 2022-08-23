@@ -58,11 +58,6 @@ module Analytics
         end
       end
 
-      necesary_dimensions = @query.used_dimensions.reject { |dim| @json_query[:dimensions].keys.exclude?(dim) }
-      necesary_dimensions.each do |dimension|
-        results = results.where.not(dimension => { id: nil })
-      end
-
       results
     end
 
@@ -72,8 +67,11 @@ module Analytics
         dimensions = dimensions.reject { |dim| @json_query[:dimensions].key?(dim) }
       end
 
+      all_dimensions = @query.all_dimensions
       dimensions.each do |dimension|
-        results = results.where.not(dimension => { id: nil })
+        primary_key = all_dimensions[dimension][:primary_key]
+        primary_key ||= 'id'
+        results = results.where.not(dimension => { primary_key => nil })
       end
       results
     end
@@ -110,6 +108,7 @@ module Analytics
     end
 
     def query_pluck(results)
+      @pluck_attributes = @pluck_attributes.uniq
       results = results.pluck(*@pluck_attributes)
       response_attributes = @pluck_attributes.map { |key| @query.extract_aggregation_name(key) }
       results.map { |result| response_attributes.zip(result).to_h }

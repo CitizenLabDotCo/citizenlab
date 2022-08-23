@@ -24,7 +24,7 @@ module Analytics
     self.primary_key = :id
     attribute :feedback_time_taken, :string
     belongs_to :type, class_name: 'DimensionType'
-    belongs_to :created_date, class_name: 'DimensionDate', foreign_key: 'created_date'
+    belongs_to :created_date_, class_name: 'DimensionDate', foreign_key: 'created_date', primary_key: 'date'
     belongs_to :project, class_name: 'DimensionProject'
     belongs_to :status, class_name: 'DimensionStatus'
 

@@ -62,6 +62,10 @@ module Analytics
       @query.fields.each do |key|
         validate_dotted(key, 'Fields')
       end
+
+      return unless @json_query.key?(:aggregations)
+
+      add_error('Fields and aggregations cannot be used together.', 422)
     end
 
     def validate_dimensions
@@ -69,7 +73,7 @@ module Analytics
         query_dimensions = @query.all_dimensions
         if query_dimensions.key?(dimension)
           columns.each do |column, _value|
-            unless query_dimensions[dimension].include?(column)
+            unless query_dimensions[dimension][:columns].include?(column)
               add_error("Column #{column} does not exist in dimension #{dimension}.", 422)
             end
           end
@@ -99,7 +103,7 @@ module Analytics
         dimension, column = key.split('.')
         query_dimensions = @query.all_dimensions
         if query_dimensions.key?(dimension)
-          unless query_dimensions[dimension].include?(column)
+          unless query_dimensions[dimension][:columns].include?(column)
             add_error("#{kind} column #{column} does not exist in dimension #{dimension}.", 422)
           end
         else
