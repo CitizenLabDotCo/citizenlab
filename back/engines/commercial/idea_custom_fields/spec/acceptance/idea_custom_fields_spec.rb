@@ -378,7 +378,100 @@ resource 'Idea Custom Fields' do
         end
 
         example 'Add, edit, delete and reorder options of an existing custom field' do
-          expect(1+1).to eq 2
+          change_field = create :custom_field_select, :with_options, resource: custom_form
+          change_option = change_field.options.first
+          delete_option = change_field.options.last
+
+          request = {
+            custom_fields: [
+              {
+                id: change_field.id,
+                input_type: 'select',
+                title_multiloc: { en: 'Changed field' },
+                description_multiloc: {},
+                required: true,
+                enabled: true,
+                options: [
+                  {
+                    title_multiloc: { en: 'Option 1' }
+                  },
+                  {
+                    id: change_option.id,
+                    title_multiloc: { en: 'Changed option' }
+                  }
+                ]
+              }
+            ]
+          }
+          do_request request
+
+          assert_status 200
+          json_response = json_parse response_body
+
+          expect(json_response[:data].size).to eq 1
+          expect(json_response[:data].first).to match({
+            attributes: {
+              code: nil,
+              created_at: an_instance_of(String),
+              description_multiloc: {},
+              enabled: true,
+              input_type: 'select',
+              key: an_instance_of(String),
+              ordering: 0,
+              required: true,
+              title_multiloc: { en: 'Changed field' },
+              updated_at: an_instance_of(String)
+            },
+            id: an_instance_of(String),
+            type: 'custom_field',
+            relationships: {
+              options: {
+                data: [
+                  {
+                    id: an_instance_of(String),
+                    type: 'custom_field_option'
+                  },
+                  {
+                    id: an_instance_of(String),
+                    type: 'custom_field_option'
+                  }
+                ]
+              }
+            }
+          })
+          expect(CustomFieldOption.where(id: delete_option).count).to eq 0
+          included_json_options = json_response[:included].select do |json_option|
+            json_option[:type] == 'custom_field_option'
+          end
+          expect(included_json_options.size).to eq 2
+          json_option1 = included_json_options.find do |json_option|
+            json_option[:id] != change_option.id
+          end
+          json_option2 = included_json_options.find do |json_option|
+            json_option[:id] == change_option.id
+          end
+          expect(json_option1).to match({
+            id: an_instance_of(String),
+            type: 'custom_field_option',
+            attributes: {
+              key: an_instance_of(String),
+              title_multiloc: { en: 'Option 1' },
+              ordering: 0,
+              created_at: an_instance_of(String),
+              updated_at: an_instance_of(String)
+            }
+          })
+          expect(json_option2).to match({
+            id: change_option.id,
+            type: 'custom_field_option',
+            attributes: {
+              key: an_instance_of(String),
+              title_multiloc: { en: 'Changed option' },
+              ordering: 1,
+              created_at: an_instance_of(String),
+              updated_at: an_instance_of(String)
+            }
+          })
         end
       end
     end
