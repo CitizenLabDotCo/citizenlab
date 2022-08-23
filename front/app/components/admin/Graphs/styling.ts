@@ -1,6 +1,7 @@
 import { Margin } from './typings';
 import { colors as mainColors } from 'utils/styleUtils';
 
+// MARGIN
 export const DEFAULT_BAR_CHART_MARGIN: Margin = {
   top: 20,
   right: 30,
@@ -8,7 +9,7 @@ export const DEFAULT_BAR_CHART_MARGIN: Margin = {
   bottom: 5,
 };
 
-// colors
+// COLORS
 export const legacyColors = {
   chartFill: mainColors.clIconAccent,
   chartLabel: mainColors.adminSecondaryTextColor,
@@ -61,7 +62,10 @@ export const categoricalColorScheme = ({
   barIndex?: number;
 }) => DEFAULT_CATEGORICAL_COLORS[rowIndex];
 
-// other
+// LEGEND
+export const LEGEND_OFFSET = 10;
+
+// OTHER
 export const sizes = {
   chartLabel: 13,
   bar: 20,

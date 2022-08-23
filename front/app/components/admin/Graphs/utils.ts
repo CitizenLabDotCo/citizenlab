@@ -1,12 +1,13 @@
 // styling
-import { legacyColors } from './styling';
+import { legacyColors, LEGEND_OFFSET } from './styling';
 
 // utils
 import { isEmpty } from 'lodash-es';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 // typings
-import { Tooltip, TooltipConfig } from './typings';
+import { Tooltip, TooltipConfig, Margin } from './typings';
+import { LegendItemsDimensions } from './_components/Legend/typings';
 
 export const hasNoData = (
   data: Record<string, any>[] | NilOrError
@@ -25,3 +26,17 @@ export const getTooltipConfig = (
     ? { ...defaultTooltipConfig, ...tooltip }
     : defaultTooltipConfig;
 };
+
+export const parseMargin = (
+  margin?: Margin,
+  legendItemsDimensions?: LegendItemsDimensions
+): Margin => {
+  margin = margin ?? {}
+
+  if (!legendItemsDimensions) return margin;
+
+  return {
+    ...margin,
+    bottom: (margin.bottom ?? 0) + legendItemsDimensions.legendHeight + LEGEND_OFFSET
+  }
+}

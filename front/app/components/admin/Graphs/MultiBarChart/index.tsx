@@ -24,7 +24,7 @@ import FakeLegend from '../_components/Legend/FakeLegend';
 
 // utils
 import { getBarConfigs, getRechartsLayout, getLabelConfig } from './utils';
-import { hasNoData, getTooltipConfig } from '../utils';
+import { hasNoData, getTooltipConfig, parseMargin } from '../utils';
 
 // typings
 import { Props } from './typings';
@@ -120,7 +120,7 @@ const MultiBarChart = <Row,>({
         <RechartsBarChart
           data={data}
           layout={rechartsLayout}
-          margin={{ ...margin, bottom: 30 }}
+          margin={parseMargin(margin, legendItemsDimensions)}
           ref={innerRef}
           barGap={0}
           barCategoryGap={bars?.categoryGap}
