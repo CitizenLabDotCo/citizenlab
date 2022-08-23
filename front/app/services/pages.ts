@@ -17,7 +17,7 @@ export const STANDARD_PAGES: TStandardPage[] = ['about', 'faq'];
 // Policy pages of which only the content can be edited
 // in 'policy' tab in settings (both for non-commercial and
 // commercial customers). Their codes are the same as their slugs.
-type TPolicyPage = 'terms-and-conditions' | 'privacy-policy';
+export type TPolicyPage = 'terms-and-conditions' | 'privacy-policy';
 
 export const POLICY_PAGES: TPolicyPage[] = [
   'terms-and-conditions',

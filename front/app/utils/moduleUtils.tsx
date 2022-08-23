@@ -405,7 +405,7 @@ export interface OutletsPropertyMap {
     any
   >;
   'app.components.PageForm.index.top': {
-    hideNavbarItemTitle: boolean;
+    pageId: string | null;
   };
   'app.containers.Admin.pages-menu.containers.EditPageForm.index.onMount': {
     onMount: () => void;

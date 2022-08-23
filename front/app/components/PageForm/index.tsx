@@ -63,7 +63,6 @@ const PageForm = ({
   defaultValues,
   pageId,
   hideSlugInput = false,
-  hideNavbarItemTitle = false,
 }: PageFormProps) => {
   const locale = useLocale();
   const page = usePage({ pageId });
@@ -110,10 +109,7 @@ const PageForm = ({
           />
         </SectionField>
         <SectionField>
-          <Outlet
-            id="app.components.PageForm.index.top"
-            hideNavbarItemTitle={hideNavbarItemTitle}
-          />
+          <Outlet id="app.components.PageForm.index.top" pageId={pageId} />
         </SectionField>
         <SectionField>
           <InputMultilocWithLocaleSwitcher
