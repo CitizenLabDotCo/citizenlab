@@ -35,6 +35,7 @@ const Playground = () => (
           category: 'label',
         }}
         legend={{
+          position: 'bottom-center',
           items: [legendItems, legendItems.slice(0, 2)],
         }}
       />

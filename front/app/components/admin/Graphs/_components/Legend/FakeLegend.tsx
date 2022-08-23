@@ -5,10 +5,16 @@ import { Box } from '@citizenlab/cl2-component-library';
 import Icon from './Icon';
 
 // typings
-import { LegendItem, ItemPosition, LegendDimensions } from './typings';
+import {
+  Position,
+  LegendItem,
+  ItemPosition,
+  LegendDimensions,
+} from './typings';
 
 interface Props {
   items: LegendItem[][];
+  position?: Position;
   onCalculateDimensions: (dimensions: LegendDimensions) => void;
 }
 
@@ -20,7 +26,17 @@ const getId = () => {
   return id;
 };
 
-const FakeLegend = ({ items, onCalculateDimensions }: Props) => {
+const getJustifyContent = (position: Position) => {
+  if (position === 'bottom-center') return 'center';
+  if (position === 'bottom-left') return 'flex-start';
+  return 'flex-end';
+};
+
+const FakeLegend = ({
+  items,
+  position = 'bottom-center',
+  onCalculateDimensions,
+}: Props) => {
   const [id, setId] = useState<string | undefined>();
 
   useEffect(() => {
@@ -95,7 +111,7 @@ const FakeLegend = ({ items, onCalculateDimensions }: Props) => {
         <Box
           display="flex"
           flexDirection="row"
-          justifyContent="center"
+          justifyContent={getJustifyContent(position)}
           className="fake-legend-row"
           key={rowIndex}
         >

@@ -16,7 +16,7 @@ interface Props {
   items: LegendItem[][];
   graphDimensions: GraphDimensions;
   legendDimensions: LegendDimensions;
-  position: Position;
+  position?: Position;
   margin?: Margin;
 }
 
@@ -56,7 +56,7 @@ const Legend = ({
   items,
   graphDimensions,
   legendDimensions,
-  position,
+  position = 'bottom-center',
   margin,
 }: Props) => {
   if (!itemsMatch(items, legendDimensions)) return null;

@@ -125,7 +125,7 @@ const MultiBarChart = <Row,>({
                 items={legend.items}
                 graphDimensions={graphDimensions}
                 legendDimensions={legendDimensions}
-                position={legend.position ?? 'bottom-center'}
+                position={legend.position}
                 margin={margin}
               />
             </g>
@@ -177,6 +177,7 @@ const MultiBarChart = <Row,>({
       {legend && (
         <FakeLegend
           items={legend.items}
+          position={legend.position}
           onCalculateDimensions={setLegendDimensions}
         />
       )}
