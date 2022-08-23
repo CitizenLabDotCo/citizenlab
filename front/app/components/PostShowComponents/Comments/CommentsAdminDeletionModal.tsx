@@ -19,7 +19,8 @@ import Feedback from 'components/HookForm/Feedback';
 import RadioGroup, { Radio } from 'components/HookForm/RadioGroup';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // animation
@@ -68,19 +69,30 @@ const DeleteReason = styled.div`
   }
 `;
 
-export interface Props {
-  onDeleteComment: (values) => void;
+type FormValues = {
+  reason_code: keyof typeof DeleteReasonCode;
+  other_reason?: string;
+};
+
+type Props = {
+  onDeleteComment: (values: FormValues) => Promise<void>;
   onCloseDeleteModal: () => void;
-}
+} & InjectedIntlProps;
 
 const deleteReasonCodes = Object.keys(DeleteReasonCode);
 
-const CommentsAdminDeletionForm = ({ onDeleteComment, onCloseDeleteModal }) => {
+const CommentsAdminDeletionForm = ({
+  onDeleteComment,
+  onCloseDeleteModal,
+  intl: { formatMessage },
+}: Props) => {
   const schema = object({
-    reason_code: string().required('Provide a reason'),
+    reason_code: string().required(formatMessage(messages.deleteReasonError)),
     other_reason: string().when('reason_code', {
       is: 'other',
-      then: string().required('Provide a reason description'),
+      then: string().required(
+        formatMessage(messages.deleteReasonDescriptionError)
+      ),
     }),
   });
 
@@ -89,9 +101,9 @@ const CommentsAdminDeletionForm = ({ onDeleteComment, onCloseDeleteModal }) => {
     resolver: yupResolver(schema),
   });
 
-  const onFormSubmit = async () => {
+  const onFormSubmit = async (values: FormValues) => {
     try {
-      await onDeleteComment();
+      await onDeleteComment(values);
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);
     }
@@ -110,9 +122,7 @@ const CommentsAdminDeletionForm = ({ onDeleteComment, onCloseDeleteModal }) => {
                   value={code}
                   name="reason_code"
                   id={`reason_code-${code}`}
-                  label={
-                    <FormattedMessage {...messages[`deleteReason_${code}`]} />
-                  }
+                  label={formatMessage(messages[`deleteReason_${code}`])}
                   key={code}
                 />
               ))}
@@ -138,18 +148,14 @@ const CommentsAdminDeletionForm = ({ onDeleteComment, onCloseDeleteModal }) => {
 
           <ButtonsWrapper>
             <Button buttonStyle="secondary" onClick={onCloseDeleteModal}>
-              <FormattedMessage
-                {...messages.adminCommentDeletionCancelButton}
-              />
+              {formatMessage(messages.adminCommentDeletionCancelButton)}
             </Button>
             <Button
               type="submit"
               buttonStyle="primary"
               processing={methods.formState.isSubmitting}
             >
-              <FormattedMessage
-                {...messages.adminCommentDeletionConfirmButton}
-              />
+              {formatMessage(messages.adminCommentDeletionCancelButton)}
             </Button>
           </ButtonsWrapper>
         </form>
@@ -158,4 +164,4 @@ const CommentsAdminDeletionForm = ({ onDeleteComment, onCloseDeleteModal }) => {
   );
 };
 
-export default CommentsAdminDeletionForm;
+export default injectIntl(CommentsAdminDeletionForm);
