@@ -29,6 +29,11 @@ export type IFlatCustomField = Omit<ICustomFieldResponse, 'attributes'> &
     isLocalOnly?: boolean;
   };
 
+//
+export type IFlatCustomFieldWithIndex = IFlatCustomField & {
+  index: number;
+};
+
 type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
 
 export type IFlatCreateCustomField = Optional<

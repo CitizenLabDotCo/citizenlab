@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useWatch, Control } from 'react-hook-form';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -28,20 +29,26 @@ import { FormattedMessage } from 'utils/cl-intl';
 // routing
 import clHistory from 'utils/cl-router/history';
 import { useParams } from 'react-router-dom';
+
+// services
 import {
   IFlatCustomField,
   updateFormCustomFields,
 } from 'services/formCustomFields';
 
 interface FormBuilderTopBarProps {
-  formCustomFields: IFlatCustomField[] | undefined | Error;
+  control: Control;
 }
 
-const FormBuilderTopBar = ({ formCustomFields }: FormBuilderTopBarProps) => {
+const FormBuilderTopBar = ({ control }: FormBuilderTopBarProps) => {
   const localize = useLocalize();
   const { projectId } = useParams() as { projectId: string };
   const project = useProject({ projectId });
   const [loading, setLoading] = useState(false);
+  const formCustomFields: IFlatCustomField[] = useWatch({
+    control,
+    name: 'customFields',
+  });
 
   // TODO : Generalize this form builder and use new ParticipationMethod abstraction to control method specific copy, etc.
   const goBack = () => {

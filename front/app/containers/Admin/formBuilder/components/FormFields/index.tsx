@@ -1,6 +1,7 @@
 import React from 'react';
 import { DndProvider } from 'react-dnd-cjs';
 import HTML5Backend from 'react-dnd-html5-backend-cjs';
+import { useWatch, Control } from 'react-hook-form';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
@@ -15,27 +16,33 @@ import T from 'components/T';
 // styling
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
-import { IFlatCustomField } from 'services/formCustomFields';
+import {
+  IFlatCustomField,
+  IFlatCustomFieldWithIndex,
+} from 'services/formCustomFields';
 
 const StyledBadge = styled(Badge)`
   margin-left: 12px;
 `;
 
 interface FormFieldsProps {
-  onEditField: (field: IFlatCustomField) => void;
-  formCustomFields: IFlatCustomField[];
+  onEditField: (field: IFlatCustomFieldWithIndex) => void;
   handleDragRow: (fromIndex: number, toIndex: number) => void;
-  handleDropRow: (fieldId: string, toIndex: number) => void;
   selectedFieldId?: string;
+  control: Control;
 }
 
 const FormFields = ({
   onEditField,
-  formCustomFields,
   handleDragRow,
-  handleDropRow,
   selectedFieldId,
+  control,
 }: FormFieldsProps) => {
+  const formCustomFields: IFlatCustomField[] = useWatch({
+    control,
+    name: 'customFields',
+  });
+
   return (
     <DndProvider backend={HTML5Backend}>
       <Box p="32px" height="100%" overflowY="auto">
@@ -51,7 +58,9 @@ const FormFields = ({
                   id={field.id}
                   index={index}
                   moveRow={handleDragRow}
-                  dropRow={handleDropRow}
+                  dropRow={() => {
+                    // Do nothing, no need to handle dropping a row for now
+                  }}
                 >
                   <Box display="flex" className="expand">
                     <Box as="span" display="flex" alignItems="center">
@@ -67,7 +76,7 @@ const FormFields = ({
                     buttonStyle="secondary"
                     icon="edit"
                     onClick={() => {
-                      onEditField(field);
+                      onEditField({ ...field, index });
                     }}
                   >
                     <FormattedMessage {...messages.editButtonLabel} />
