@@ -2,7 +2,8 @@
 
 class AddFieldsAndRenameFieldInStaticPages < ActiveRecord::Migration[6.1]
   # rubocop:disable Rails/ApplicationRecord
-  class StaticPage < ActiveRecord::Base
+  class StubStaticPage < ActiveRecord::Base
+    self.table_name = 'static_pages'
   end
   # rubocop:enable Rails/ApplicationRecord
 
@@ -29,9 +30,9 @@ class AddFieldsAndRenameFieldInStaticPages < ActiveRecord::Migration[6.1]
 
     reversible do |dir|
       dir.up do
-        StaticPage.reset_column_information
-        StaticPage.update_all(banner_enabled: false, top_info_section_enabled: true)
-        StaticPage.where.not(code: %w[terms-and-conditions privacy-policy]).update_all(files_section_enabled: true)
+        StubStaticPage.reset_column_information
+        StubStaticPage.update_all(banner_enabled: false, top_info_section_enabled: true)
+        StubStaticPage.where.not(code: %w[terms-and-conditions privacy-policy]).update_all(files_section_enabled: true)
       end
     end
   end
