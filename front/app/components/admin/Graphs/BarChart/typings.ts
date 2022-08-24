@@ -3,7 +3,7 @@ import {
   Props as MultiBarChartProps,
   Bars as MultiBarChartBars,
 } from '../MultiBarChart/typings';
-import { KeyOfType } from '../typings';
+import { KeyOfType, BaseMapping } from '../typings';
 
 export interface Props<Row>
   extends Omit<
@@ -21,11 +21,9 @@ export interface Payload<Row> {
   rowIndex: number;
 }
 
-export interface Mapping<Row> {
+export interface Mapping<Row> extends BaseMapping<Payload<Row>> {
   category: KeyOfType<Row, string>;
   length: KeyOfType<Row, number>;
-  fill?: (payload: Payload<Row>) => string;
-  opacity?: (payload: Payload<Row>) => number;
 }
 
 export interface Bars extends Omit<MultiBarChartBars, 'names'> {
