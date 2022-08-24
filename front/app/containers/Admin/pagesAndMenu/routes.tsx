@@ -15,7 +15,7 @@ const HeroBannerForm = lazy(() => import('./containers/HeroBanner'));
 // custom pages
 const NewCustomPage = lazy(() => import('./containers/CustomPages/New'));
 const NewCustomPageSettings = lazy(
-  () => import('./containers/CustomPages/New/Settings')
+  () => import('./containers/CustomPages/New')
 );
 const EditCustomPage = lazy(() => import('./containers/CustomPages/Edit'));
 const EditCustomPageSettings = lazy(
