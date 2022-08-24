@@ -66,7 +66,7 @@ const Playground = () => (
 
     <Box width="50%" height="100px" mt="30px">
       <StackedBarChart
-        data={data.slice(0, 4)}
+        data={data.slice(0, 1)}
         mapping={{
           stack: ['value', 'value2', 'value'],
           category: 'label',
