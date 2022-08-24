@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, Box } from '@citizenlab/cl2-component-library';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { isArray, isEmpty, uniqBy } from 'lodash-es';
 import styled from 'styled-components';
@@ -246,7 +246,11 @@ const Error = (props: Props) => {
           {showIcon && <ErrorIcon name="error" data-testid="error-icon" />}
 
           <ErrorMessageText data-testid="error-message-text">
-            {text && <p>{text}</p>}
+            {typeof text === 'string' ? (
+              <p>{text}</p>
+            ) : (
+              <Box py="16px">{text}</Box>
+            )}
             {dedupApiErrors &&
               isArray(dedupApiErrors) &&
               !isEmpty(dedupApiErrors) && (

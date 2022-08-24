@@ -1,5 +1,16 @@
 # Changelog
 
+## Next
+
+### Fixed
+- [CL-1505] Posting ideas when there is no current phase
+
+## 2022-08-23
+
+### Added
+- The public API now supports phases, as well as additional project properties
+- The project search now also searches through content builder content
+
 ## 2022-08-18
 
 ### Fixed
