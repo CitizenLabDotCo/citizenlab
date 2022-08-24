@@ -63,7 +63,7 @@ const PostFeedback = ({
               .toLowerCase()
               .replace(' ', '_')}
             svgNode={[currentPieChart, currentProgressBarsChart]}
-            data={xlsxData}
+            xlsxData={xlsxData}
           />
         </GraphCardHeader>
         <Box

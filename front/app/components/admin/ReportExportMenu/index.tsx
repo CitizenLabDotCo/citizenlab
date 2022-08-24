@@ -50,7 +50,7 @@ interface ReportExportMenuProps {
   currentProjectFilterLabel?: string | undefined;
   currentGroupFilterLabel?: string | undefined;
   currentTopicFilterLabel?: string | undefined;
-  data?: object;
+  xlsxData?: object;
 }
 
 const ReportExportMenu = ({
@@ -68,7 +68,7 @@ const ReportExportMenu = ({
   currentTopicFilterLabel,
   currentProjectFilterLabel,
   intl: { formatMessage, formatDate },
-  data,
+  xlsxData,
 }: ReportExportMenuProps & InjectedIntlProps) => {
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const [exportingXls, setExportingXls] = useState(false);
@@ -213,9 +213,9 @@ const ReportExportMenu = ({
         reportError(error);
         setExportingXls(false);
       }
-    } else if (data) {
+    } else if (xlsxData) {
       const workbook = XLSX.utils.book_new();
-      Object.entries(data).forEach(([sheet_name, sheet_data]) => {
+      Object.entries(xlsxData).forEach(([sheet_name, sheet_data]) => {
         const worksheet = XLSX.utils.json_to_sheet(sheet_data);
         XLSX.utils.book_append_sheet(workbook, worksheet, sheet_name);
       });
@@ -264,7 +264,7 @@ const ReportExportMenu = ({
                 <FormattedMessage {...messages.downloadPng} />
               </StyledButton>
             )}
-            {(data || xlsxEndpoint) && (
+            {(xlsxData || xlsxEndpoint) && (
               <StyledButton
                 onClick={downloadXlsx}
                 buttonStyle="text"
