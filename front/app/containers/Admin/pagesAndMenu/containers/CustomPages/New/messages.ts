@@ -33,17 +33,14 @@ export default defineMessages({
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleLabel',
     defaultMessage: 'Title',
   },
-  titleTooltip: {
-    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleTooltip',
-    defaultMessage: 'Enter your title here',
-  },
   slugLabel: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.slugLabel',
-    defaultMessage: 'URL',
+    defaultMessage: 'Page slug',
   },
   slugTooltip: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.slugTooltip',
-    defaultMessage: 'You can set the URL for your new custom page here',
+    defaultMessage:
+      'The slug is the unique set of words at the end of the page’s web address, or URL.',
   },
   slugRegexError: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.slugRegexError',
