@@ -52,6 +52,7 @@ class WebApi::V1::StaticPagesController < ::ApplicationController
   def destroy
     page = @page.destroy
 
+    # If the page does not have code: 'custom' we abort the destroy in the model
     return head :forbidden if page.blank?
 
     if page.destroyed?
