@@ -27,6 +27,6 @@ export default defineMessages({
   },
   emptyTitleError: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.emptyTitleError',
-    defaultMessage: 'Provide title for all languages',
+    defaultMessage: 'Provide a title for all languages',
   },
 });

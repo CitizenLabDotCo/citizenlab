@@ -1,7 +1,7 @@
 import React from 'react';
 import { DndProvider } from 'react-dnd-cjs';
 import HTML5Backend from 'react-dnd-html5-backend-cjs';
-import { useWatch, Control } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
@@ -16,6 +16,7 @@ import T from 'components/T';
 // styling
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
+
 import {
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
@@ -29,19 +30,15 @@ interface FormFieldsProps {
   onEditField: (field: IFlatCustomFieldWithIndex) => void;
   handleDragRow: (fromIndex: number, toIndex: number) => void;
   selectedFieldId?: string;
-  control: Control;
 }
 
 const FormFields = ({
   onEditField,
   handleDragRow,
   selectedFieldId,
-  control,
 }: FormFieldsProps) => {
-  const formCustomFields: IFlatCustomField[] = useWatch({
-    control,
-    name: 'customFields',
-  });
+  const { watch } = useFormContext();
+  const formCustomFields: IFlatCustomField[] = watch('customFields');
 
   return (
     <DndProvider backend={HTML5Backend}>
