@@ -5,7 +5,7 @@ import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import usePage from 'hooks/usePage';
 import { isNilOrError } from 'utils/helperUtils';
-import { POLICY_PAGES, TPolicyPage } from 'services/pages';
+import { isPolicyPageSlug } from 'services/pages';
 
 type Props = {
   pageId: string | null;
@@ -16,10 +16,8 @@ const NavbarTitleField = ({
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const page = usePage({ pageId });
-  if (
-    isNilOrError(page) ||
-    POLICY_PAGES.includes(page.attributes.slug as TPolicyPage)
-  ) {
+
+  if (isNilOrError(page) || isPolicyPageSlug(page.attributes.slug)) {
     return null;
   }
 
