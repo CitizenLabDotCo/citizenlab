@@ -52,6 +52,8 @@ class WebApi::V1::StaticPagesController < ::ApplicationController
   def destroy
     page = @page.destroy
 
+    return head :forbidden if page.blank?
+
     if page.destroyed?
       SideFxStaticPageService.new.after_destroy page, current_user
       head :ok

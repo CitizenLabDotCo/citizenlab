@@ -97,8 +97,8 @@ class StaticPage < ApplicationRecord
   def confirm_is_custom
     return if custom?
 
-    Rails.logger.info 'Cannot destroy a default static page. Raising error: ActiveRecord::RecordNotDestroyed'
-    raise ActiveRecord::RecordNotDestroyed, 'Cannot destroy a default static page.'
+    Rails.logger.info 'Cannot destroy a default static page. Aborting destroy.'
+    throw(:abort)
   end
 
   def set_code
