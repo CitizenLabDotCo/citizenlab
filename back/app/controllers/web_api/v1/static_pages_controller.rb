@@ -50,14 +50,13 @@ class WebApi::V1::StaticPagesController < ::ApplicationController
   end
 
   def destroy
-    page = @page.destroy
+    destroyed = @page.destroy
 
-    # If the page does not have code: 'custom' we abort the destroy in the model
-    return head :forbidden if page.blank?
-
-    if page.destroyed?
-      SideFxStaticPageService.new.after_destroy page, current_user
+    if destroyed
+      SideFxStaticPageService.new.after_destroy destroyed, current_user
       head :ok
+    elsif @page.errors
+      render json: { errors: @page.errors.details }, status: :unprocessable_entity
     else
       head :internal_server_error
     end

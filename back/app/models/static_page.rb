@@ -97,8 +97,8 @@ class StaticPage < ApplicationRecord
   def confirm_is_custom
     return if custom?
 
-    Rails.logger.info 'Cannot destroy a default static page. Aborting destroy.'
-    throw(:abort)
+    errors.add(:base, 'Cannot destroy static_page that does not have code: \'custom\'')
+    throw :abort
   end
 
   def set_code
