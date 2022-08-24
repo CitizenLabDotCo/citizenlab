@@ -6,6 +6,7 @@ import messages from './messages';
 import usePage from 'hooks/usePage';
 import { isNilOrError } from 'utils/helperUtils';
 import { isPolicyPageSlug } from 'services/pages';
+import { SectionField } from 'components/admin/Section';
 
 type Props = {
   pageId: string | null;
@@ -22,11 +23,13 @@ const NavbarTitleField = ({
   }
 
   return (
-    <InputMultilocWithLocaleSwitcher
-      label={formatMessage(messages.navbarItemTitle)}
-      type="text"
-      name="nav_bar_item_title_multiloc"
-    />
+    <SectionField>
+      <InputMultilocWithLocaleSwitcher
+        label={formatMessage(messages.navbarItemTitle)}
+        type="text"
+        name="nav_bar_item_title_multiloc"
+      />
+    </SectionField>
   );
 };
 
