@@ -15,8 +15,9 @@ import Toggle from 'components/HookForm/Toggle';
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// Typings
 import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';
+
+// Typings
 import { MessageDescriptor } from 'typings';
 
 interface Props {
