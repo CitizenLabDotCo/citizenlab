@@ -16,7 +16,7 @@ import usePhases from 'hooks/usePhases';
 
 // Utils
 import { isNilOrError } from 'utils/helperUtils';
-import { getFormActionsConfig } from './utils';
+import { getFormActionsConfig } from 'containers/Admin/formBuilder/utils';
 
 const Forms = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const { projectId } = useParams() as { projectId: string };

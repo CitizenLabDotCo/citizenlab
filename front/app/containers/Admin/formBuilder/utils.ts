@@ -53,3 +53,14 @@ export const getFormActionsConfig = (
     },
   }));
 };
+
+export const getIsPostingEnabled = (
+  project: IProjectData | Error | null | undefined,
+  phase?: IPhaseData | Error | null | undefined
+) => {
+  if (!isNilOrError(phase)) {
+    return phase.attributes.posting_enabled;
+  }
+
+  return !isNilOrError(project) ? project.attributes.posting_enabled : false;
+};

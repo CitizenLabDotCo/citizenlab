@@ -4,6 +4,7 @@ import { useWatch, Control } from 'react-hook-form';
 // hooks
 import useProject from 'hooks/useProject';
 import useLocalize from 'hooks/useLocalize';
+import usePhase from 'hooks/usePhase';
 
 // components
 import GoBackButton from 'components/UI/GoBackButton';
@@ -23,6 +24,7 @@ import {
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { getIsPostingEnabled } from 'containers/Admin/formBuilder/utils';
 
 // i18n
 import messages from '../messages';
@@ -59,6 +61,8 @@ const FormBuilderTopBar = ({ control }: FormBuilderTopBarProps) => {
     control,
     name: 'customFields',
   });
+  const phase = usePhase(phaseId || null);
+  const isPostingEnabled = getIsPostingEnabled(project, phase);
 
   // TODO : Generalize this form builder and use new ParticipationMethod abstraction to control method specific copy, etc.
   const goBack = () => {
@@ -122,7 +126,7 @@ const FormBuilderTopBar = ({ control }: FormBuilderTopBarProps) => {
                 </Title>
                 <StyledStatusLabel
                   text={
-                    project?.attributes.posting_enabled === true ? (
+                    isPostingEnabled ? (
                       <span style={{ color: colors.clGreen }}>
                         <FormattedMessage {...messages.open} />
                       </span>
@@ -133,7 +137,7 @@ const FormBuilderTopBar = ({ control }: FormBuilderTopBarProps) => {
                     )
                   }
                   backgroundColor={
-                    project?.attributes.posting_enabled === true
+                    isPostingEnabled
                       ? colors.clGreenSuccessBackground
                       : colors.backgroundLightGrey
                   }
