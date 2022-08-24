@@ -31,9 +31,7 @@ interface CreateCustomPageFormValues {
   slug: string;
 }
 
-interface Props {
-  defaultValues?: CreateCustomPageFormValues;
-}
+interface Props {}
 
 const CustomPageSettingsForm = ({
   intl: { formatMessage },
