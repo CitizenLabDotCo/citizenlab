@@ -59,6 +59,7 @@ describe('AreaForm', () => {
     await waitFor(() => {
       expect(screen.getAllByTestId('error-message')).toHaveLength(2);
       expect(screen.getByTestId('feedbackErrorMessage')).toBeInTheDocument();
+      expect(defaultProps.onSubmit).not.toHaveBeenCalled();
     });
   });
 });
