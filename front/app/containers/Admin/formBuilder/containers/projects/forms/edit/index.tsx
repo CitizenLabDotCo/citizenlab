@@ -147,9 +147,13 @@ export const FormEdit = ({
 
 const FormBuilderPage = ({ intl }) => {
   const modalPortalElement = document.getElementById('modal-portal');
-  const { projectId } = useParams() as { projectId: string };
-  const { formCustomFields } = useFormCustomFields({
+  const { projectId, phaseId } = useParams() as {
+    projectId: string;
+    phaseId?: string;
+  };
+  const formCustomFields = useFormCustomFields({
     projectId,
+    phaseId,
   });
 
   if (isNilOrError(formCustomFields)) return null;

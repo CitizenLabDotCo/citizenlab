@@ -47,8 +47,5 @@ export default function useFormCustomFields({
     return () => subscription.unsubscribe();
   }, [inputTypes, projectId, phaseId]);
 
-  return {
-    formCustomFields,
-    setFormCustomFields,
-  };
+  return formCustomFields;
 }
