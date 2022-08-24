@@ -20,7 +20,7 @@ import RadioGroup, { Radio } from 'components/HookForm/RadioGroup';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, MessageDescriptor } from 'utils/cl-intl';
 import messages from './messages';
 
 // animation
@@ -29,6 +29,9 @@ import TransitionGroup from 'react-transition-group/TransitionGroup';
 
 // Styling
 import styled from 'styled-components';
+
+// utils
+import { keys } from 'utils/helperUtils';
 
 const ButtonsWrapper = styled.div`
   display: flex;
@@ -69,8 +72,10 @@ const DeleteReason = styled.div`
   }
 `;
 
+type ReasonCode = keyof typeof DeleteReasonCode;
+
 type FormValues = {
-  reason_code: keyof typeof DeleteReasonCode;
+  reason_code: ReasonCode;
   other_reason?: string;
 };
 
@@ -79,7 +84,13 @@ type Props = {
   onCloseDeleteModal: () => void;
 } & InjectedIntlProps;
 
-const deleteReasonCodes = Object.keys(DeleteReasonCode);
+const deleteReasonCodes = keys(DeleteReasonCode);
+
+const DELETE_REASON_MESSAGES: Record<ReasonCode, MessageDescriptor> = {
+  irrelevant: messages.deleteReason_irrelevant,
+  inappropriate: messages.deleteReason_inappropriate,
+  other: messages.deleteReason_other,
+};
 
 const CommentsAdminDeletionForm = ({
   onDeleteComment,
@@ -122,7 +133,7 @@ const CommentsAdminDeletionForm = ({
                   value={code}
                   name="reason_code"
                   id={`reason_code-${code}`}
-                  label={formatMessage(messages[`deleteReason_${code}`])}
+                  label={formatMessage(DELETE_REASON_MESSAGES[code])}
                   key={code}
                 />
               ))}
