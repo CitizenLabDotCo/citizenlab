@@ -4,7 +4,7 @@ import HelmetIntl from 'components/HelmetIntl';
 import messages from '../messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import NewCustomPage from './NewCustomPage';
+import CustomPagesNew from './CustomPagesNew';
 
 const CreateCustomPageHookForm = ({
   intl: { formatMessage },
@@ -28,7 +28,7 @@ const CreateCustomPageHookForm = ({
         ]}
         contentWrapper={false}
       >
-        <NewCustomPage />
+        <CustomPagesNew />
       </TabbedResource>
     </>
   );
