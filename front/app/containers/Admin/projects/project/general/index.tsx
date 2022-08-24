@@ -309,52 +309,59 @@ const AdminProjectsProjectGeneral = ({
           }
         }
 
-        if (latestProjectId) {
-          const imagesToAddPromises = projectImages
-            .filter((file) => !file.remote)
-            .map(
-              (file) =>
-                latestProjectId && addProjectImage(latestProjectId, file.base64)
-            );
-          const imagesToRemovePromises = projectImagesToRemove
-            .filter((file) => file.remote === true && isString(file.id))
-            .map(
-              (file) =>
-                latestProjectId &&
-                deleteProjectImage(latestProjectId, file.id as string)
-            );
-          const filesToAddPromises = projectFiles
-            .filter((file) => !file.remote)
-            .map(
-              (file) =>
-                latestProjectId &&
-                addProjectFile(latestProjectId, file.base64, file.name)
-            );
-          const filesToRemovePromises = projectFilesToRemove
-            .filter((file) => file.remote === true && isString(file.id))
-            .map(
-              (file) =>
-                latestProjectId &&
-                deleteProjectFile(latestProjectId, file.id as string)
-            );
+        const imagesToAddPromises = projectImages
+          .filter((file) => !file.remote)
+          .map((file) => {
+            if (latestProjectId) {
+              return addProjectImage(latestProjectId, file.base64);
+            }
 
-          await Promise.all([
-            ...imagesToAddPromises,
-            ...imagesToRemovePromises,
-            ...filesToAddPromises,
-            ...filesToRemovePromises,
-          ] as Promise<any>[]);
+            return;
+          });
+        const imagesToRemovePromises = projectImagesToRemove
+          .filter((file) => file.remote === true && isString(file.id))
+          .map((file) => {
+            if (latestProjectId && file.id) {
+              return deleteProjectImage(latestProjectId, file.id);
+            }
 
-          setSubmitState('success');
-          setProjectImagesToRemove([]);
-          setProjectFilesToRemove([]);
-          setProcessing(false);
+            return;
+          });
+        const filesToAddPromises = projectFiles
+          .filter((file) => !file.remote)
+          .map((file) => {
+            if (latestProjectId) {
+              return addProjectFile(latestProjectId, file.base64, file.name);
+            }
 
-          if (isNewProject && latestProjectId) {
-            eventEmitter.emit<INewProjectCreatedEvent>('NewProjectCreated', {
-              projectId: latestProjectId,
-            });
-          }
+            return;
+          });
+        const filesToRemovePromises = projectFilesToRemove
+          .filter((file) => file.remote === true && isString(file.id))
+          .map((file) => {
+            if (latestProjectId && file.id) {
+              return deleteProjectFile(latestProjectId, file.id);
+            }
+
+            return;
+          });
+
+        await Promise.all([
+          ...imagesToAddPromises,
+          ...imagesToRemovePromises,
+          ...filesToAddPromises,
+          ...filesToRemovePromises,
+        ] as Promise<any>[]);
+
+        setSubmitState('success');
+        setProjectImagesToRemove([]);
+        setProjectFilesToRemove([]);
+        setProcessing(false);
+
+        if (isNewProject && latestProjectId) {
+          eventEmitter.emit<INewProjectCreatedEvent>('NewProjectCreated', {
+            projectId: latestProjectId,
+          });
         }
       } catch (errors) {
         const apiErrors = get(
