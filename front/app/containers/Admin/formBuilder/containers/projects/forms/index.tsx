@@ -15,10 +15,20 @@ import messages from './messages';
 
 // hooks
 import useProject from 'hooks/useProject';
+import { updateProject } from 'services/projects';
+import { isNilOrError } from 'utils/helperUtils';
 
 const Forms = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const { projectId } = useParams() as { projectId: string };
   const project = useProject({ projectId });
+
+  const toggleSubmissionsEnabled = () => {
+    if (!isNilOrError(project)) {
+      updateProject(projectId, {
+        posting_enabled: !project?.attributes.posting_enabled,
+      });
+    }
+  };
 
   return (
     <Box width="100%">
@@ -33,13 +43,15 @@ const Forms = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           alignItems="center"
           justifyContent="center"
         >
-          <Toggle
-            checked
-            label={formatMessage(messages.openForSubmissions)}
-            onChange={() => {
-              // TODO: Handle open for submissions
-            }}
-          />
+          {project?.attributes.posting_enabled !== undefined && (
+            <Toggle
+              checked={project?.attributes.posting_enabled}
+              label={formatMessage(messages.openForSubmissions)}
+              onChange={() => {
+                toggleSubmissionsEnabled();
+              }}
+            />
+          )}
         </Box>
       </Box>
       <Box
