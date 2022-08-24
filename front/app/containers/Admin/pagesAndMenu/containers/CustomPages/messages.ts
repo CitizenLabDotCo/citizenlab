@@ -1,6 +1,26 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  newCustomPageMetaTitle: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.CustomPages.newCustomPageMetaTitle',
+    defaultMessage: 'Meta title',
+  },
+  newCustomPageMetaDescription: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.CustomPages.newCustomPageMetaDescription',
+    defaultMessage: 'Meta description',
+  },
+  pageSettingsTab: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.CustomPages.pageSettingsTab',
+    defaultMessage: 'Page settings',
+  },
+  newCustomPagePageTitle: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.newCustomPagePageTitle',
+    defaultMessage: 'Create custom page',
+  },
+  titleMultilocError: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleMultilocError',
+    defaultMessage: 'Enter a title in every language',
+  },
   pageTitle: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.pageTitle',
     defaultMessage: 'Create custom page',
