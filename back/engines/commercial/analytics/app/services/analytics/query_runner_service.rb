@@ -89,10 +89,22 @@ module Analytics
         aggregations_sql.push(Arel.sql('COUNT(*) as count'))
       end
 
+      handle_first_aggregation('first(', aggregations_sql) do |agg, substr|
+        aggregations_sql.delete(agg)
+        aggregations_sql.push(agg.gsub(substr, 'array_agg('))
+      end
+
       if @json_query.key?(:groups)
         @pluck_attributes += aggregations_sql
       else
         @pluck_attributes = aggregations_sql
+      end
+    end
+
+    def handle_first_aggregation(substring, agg_list, &_block)
+      first_aggregations = agg_list.select { |agg| agg[0, substring.length] == substring }
+      first_aggregations.each do |first_agg|
+        yield first_agg, substring
       end
     end
 
@@ -117,7 +129,13 @@ module Analytics
           result = [result]
         end
 
-        response_attributes.zip(result).to_h
+        response_row = response_attributes.zip(result).to_h
+
+        handle_first_aggregation('first_', response_attributes) do |agg, _|
+          response_row[agg] = response_row[agg][0]
+        end
+
+        response_row
       end
     end
   end

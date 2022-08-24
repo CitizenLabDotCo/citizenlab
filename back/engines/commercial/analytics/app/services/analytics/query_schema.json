@@ -69,13 +69,13 @@
           "anyOf" : [
             {
               "type" : "string",
-              "enum" : ["min", "max", "avg", "sum", "count"]
+              "enum" : ["min", "max", "avg", "sum", "count", "first"]
             }, 
             {
               "type": "array",
               "items" : {
                 "type" : "string",
-                "enum" : ["min", "max", "avg", "sum", "count"]
+                "enum" : ["min", "max", "avg", "sum", "count", "first"]
               },
               "minLength" : 1
             }

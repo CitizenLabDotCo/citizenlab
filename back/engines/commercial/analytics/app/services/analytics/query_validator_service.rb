@@ -95,9 +95,9 @@ module Analytics
     end
 
     def validate_dotted(key, kind)
+      query_dimensions = @query.all_dimensions
       if key.include? '.'
         dimension, column = key.split('.')
-        query_dimensions = @query.all_dimensions
         if query_dimensions.key?(dimension)
           unless query_dimensions[dimension][:columns].include?(column)
             add_error("#{kind} column #{column} does not exist in dimension #{dimension}.", 422)
@@ -106,7 +106,15 @@ module Analytics
           add_error("#{kind} dimension #{dimension} does not exist.", 422)
         end
 
-      elsif @query.aggregations_names.exclude?(key) && @query.model.column_names.exclude?(key)
+      elsif (
+              kind == 'Aggregations' &&
+              @query.aggregations_names.include?(key)
+            ) ||
+            (
+              @query.model.column_names.exclude?(key) &&
+              @query.aggregations_names.exclude?(key) &&
+              query_dimensions.keys.exclude?(key)
+            )
         add_error("#{kind} column #{key} does not exist in fact table.", 422)
       end
     end
