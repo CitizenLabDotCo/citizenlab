@@ -126,6 +126,7 @@ const MultiBarChart = <Row,>({
                 graphDimensions={graphDimensions}
                 legendDimensions={legendDimensions}
                 position={legend.position}
+                textColor={legend.textColor}
                 margin={margin}
               />
             </g>

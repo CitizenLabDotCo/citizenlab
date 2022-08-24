@@ -3,6 +3,9 @@ import React from 'react';
 // components
 import Icon from './Icon';
 
+// styling
+import { colors } from '../../styling';
+
 // utils
 import { itemsMatch, getLegendTranslate } from './utils';
 
@@ -20,6 +23,7 @@ interface Props {
   graphDimensions: GraphDimensions;
   legendDimensions: LegendDimensions;
   position?: Position;
+  textColor?: string;
   margin?: Margin;
 }
 
@@ -28,6 +32,7 @@ const Legend = ({
   graphDimensions,
   legendDimensions,
   position = 'bottom-center',
+  textColor = colors.legendText,
   margin,
 }: Props) => {
   if (!itemsMatch(items, legendDimensions)) return null;
@@ -56,7 +61,7 @@ const Legend = ({
               <text
                 transform="translate(18,12)"
                 fontSize="14px"
-                fill={item.color}
+                fill={textColor}
               >
                 {item.label}
               </text>
