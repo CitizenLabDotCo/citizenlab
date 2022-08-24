@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // styling
 import { animation } from '../styling';
@@ -13,15 +13,21 @@ import {
   Label,
 } from 'recharts';
 import EmptyState from '../_components/EmptyState';
+import Legend from '../_components/Legend';
+import FakeLegend from '../_components/Legend/FakeLegend';
 
 // utils
 import { getPieConfig } from './utils';
-import { hasNoData, getTooltipConfig } from '../utils';
+import { hasNoData, getTooltipConfig, parseMargin } from '../utils';
 
 // typings
 import { Props } from './typings';
+import {
+  GraphDimensions,
+  LegendDimensions,
+} from '../_components/Legend/typings';
 
-const PieChart = <T,>({
+const PieChart = <Row,>({
   width,
   height,
   data,
@@ -31,11 +37,19 @@ const PieChart = <T,>({
   annotations,
   tooltip,
   centerLabel,
+  legend,
   emptyContainerContent,
   innerRef,
   onMouseOver,
   onMouseOut,
-}: Props<T>) => {
+}: Props<Row>) => {
+  const [graphDimensions, setGraphDimensions] = useState<
+    GraphDimensions | undefined
+  >();
+  const [legendDimensions, setLegendDimensions] = useState<
+    LegendDimensions | undefined
+  >();
+
   if (hasNoData(data)) {
     return <EmptyState emptyContainerContent={emptyContainerContent} />;
   }
@@ -51,29 +65,67 @@ const PieChart = <T,>({
     onMouseOut && onMouseOut({ row: data[rowIndex], rowIndex }, event);
   };
 
-  return (
-    <ResponsiveContainer width={width} height={height}>
-      <RechartsPieChart margin={margin} ref={innerRef}>
-        {(typeof tooltip === 'object' || tooltip === true) && (
-          <Tooltip {...tooltipConfig} />
-        )}
-        {typeof tooltip === 'function' && tooltip(tooltipConfig)}
+  const handleRef = (ref: React.RefObject<HTMLDivElement>) => {
+    if (graphDimensions || ref === null) return;
 
-        <Pie
-          data={data}
-          animationDuration={animation.duration}
-          animationBegin={animation.begin}
-          {...pieConfig.props}
-          onMouseOver={handleMouseOver}
-          onMouseOut={handleMouseOut}
+    const node = ref.current;
+    if (node === null) return;
+
+    setGraphDimensions({
+      width: node.clientWidth,
+      height: node.clientHeight,
+    });
+  };
+
+  return (
+    <>
+      <ResponsiveContainer width={width} height={height} ref={handleRef}>
+        <RechartsPieChart
+          margin={parseMargin(margin, legend ? legendDimensions : undefined)}
+          ref={innerRef}
         >
-          {pieConfig.cells.map((cell, cellIndex) => (
-            <Cell key={`cell-${cellIndex}`} {...cell} />
-          ))}
-          <Label content={centerLabel} position="center" />
-        </Pie>
-      </RechartsPieChart>
-    </ResponsiveContainer>
+          {legend && graphDimensions && legendDimensions && (
+            <g className="graph-legend">
+              <Legend
+                items={legend.items}
+                graphDimensions={graphDimensions}
+                legendDimensions={legendDimensions}
+                position={legend.position}
+                textColor={legend.textColor}
+                margin={margin}
+              />
+            </g>
+          )}
+
+          {(typeof tooltip === 'object' || tooltip === true) && (
+            <Tooltip {...tooltipConfig} />
+          )}
+          {typeof tooltip === 'function' && tooltip(tooltipConfig)}
+
+          <Pie
+            data={data}
+            animationDuration={animation.duration}
+            animationBegin={animation.begin}
+            {...pieConfig.props}
+            onMouseOver={handleMouseOver}
+            onMouseOut={handleMouseOut}
+          >
+            {pieConfig.cells.map((cell, cellIndex) => (
+              <Cell key={`cell-${cellIndex}`} {...cell} />
+            ))}
+            <Label content={centerLabel} position="center" />
+          </Pie>
+        </RechartsPieChart>
+      </ResponsiveContainer>
+
+      {legend && (
+        <FakeLegend
+          items={legend.items}
+          position={legend.position}
+          onCalculateDimensions={setLegendDimensions}
+        />
+      )}
+    </>
   );
 };
 

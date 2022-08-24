@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from 'utils/testUtils/rtl';
+import { render, screen, waitFor } from 'utils/testUtils/rtl';
 import PieChart from './';
 import { NilOrError } from 'utils/helperUtils';
 
@@ -76,6 +76,34 @@ describe('<PieChart />', () => {
       );
       expect(pathSectors[0]).toHaveAttribute('fill', '#2F478A');
       expect(pathSectors[1]).toHaveAttribute('fill', '#4D85C6');
+    });
+  });
+
+  describe('Legend', () => {
+    const legendItems: any = [
+      [
+        { icon: 'circle', label: 'item1', color: 'red' },
+        { icon: 'circle', label: 'item2', color: 'blue' },
+      ],
+      [{ icon: 'circle', label: 'item3', color: 'blue' }],
+    ];
+
+    it('renders legend', async () => {
+      const { container } = render(
+        <PieChart
+          width={400}
+          height={200}
+          data={data}
+          mapping={{ angle: 'a', name: 'name' }}
+          pie={{ isAnimationActive: false }}
+          legend={{ items: legendItems }}
+        />
+      );
+
+      const items = container.querySelectorAll('.graph-legend-item');
+      waitFor(() => {
+        expect(items).toHaveLength(3);
+      });
     });
   });
 });
