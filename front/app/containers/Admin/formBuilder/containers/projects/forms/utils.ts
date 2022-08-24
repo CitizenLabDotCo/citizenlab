@@ -12,7 +12,7 @@ type FormActionsConfig = {
   editFormLink: string;
   heading?: Multiloc;
   postingEnabled: boolean;
-  toggleSubmissionsEnabled: () => void;
+  togglePostingEnabled: () => void;
 };
 
 const getSurveyPhases = (phases: IPhaseData[] | Error | null | undefined) => {
@@ -33,7 +33,7 @@ export const getFormActionsConfig = (
       {
         editFormLink: `/admin/projects/${project.id}/native-survey/edit`,
         postingEnabled: project?.attributes.posting_enabled,
-        toggleSubmissionsEnabled: () => {
+        togglePostingEnabled: () => {
           updateProject(project.id, {
             posting_enabled: !project.attributes.posting_enabled,
           });
@@ -46,7 +46,7 @@ export const getFormActionsConfig = (
     editFormLink: `/admin/projects/${project.id}/phases/${phase.id}/native-survey/edit`,
     heading: phase.attributes.title_multiloc,
     postingEnabled: phase.attributes.posting_enabled,
-    toggleSubmissionsEnabled: () => {
+    togglePostingEnabled: () => {
       updatePhase(phase.id, {
         posting_enabled: !phase.attributes.posting_enabled,
       });

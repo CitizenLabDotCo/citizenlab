@@ -38,7 +38,7 @@ const Forms = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         </Box>
         {formActionsConfigs.map(
           (
-            { editFormLink, heading, postingEnabled, toggleSubmissionsEnabled },
+            { editFormLink, heading, postingEnabled, togglePostingEnabled },
             index
           ) => {
             return (
@@ -48,7 +48,7 @@ const Forms = ({ intl: { formatMessage } }: InjectedIntlProps) => {
                   viewFormLink={`/projects/${project?.attributes.slug}/ideas/new`}
                   heading={heading}
                   postingEnabled={postingEnabled}
-                  toggleSubmissionsEnabled={toggleSubmissionsEnabled}
+                  togglePostingEnabled={togglePostingEnabled}
                 />
                 {index !== formActionsConfigs.length - 1 && (
                   <Box height="1px" border="1px solid #E0E0E0" />

@@ -20,7 +20,7 @@ type FormActionsProps = {
   viewFormLink: string;
   postingEnabled: boolean;
   heading?: Multiloc;
-  toggleSubmissionsEnabled: () => void;
+  togglePostingEnabled: () => void;
 } & InjectedIntlProps;
 
 const FormActions = ({
@@ -29,7 +29,7 @@ const FormActions = ({
   editFormLink,
   heading,
   postingEnabled,
-  toggleSubmissionsEnabled,
+  togglePostingEnabled,
 }: FormActionsProps) => {
   return (
     <Box width="100%" my="60px">
@@ -49,7 +49,7 @@ const FormActions = ({
             checked={postingEnabled}
             label={formatMessage(messages.openForSubmissions)}
             onChange={() => {
-              toggleSubmissionsEnabled();
+              togglePostingEnabled();
             }}
           />
         </Box>
