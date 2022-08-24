@@ -9,6 +9,14 @@ export default defineMessages({
     id: 'app.containers.Admin.pagesAndMenu.containers.CustomPages.editCustomPageMetaDescription',
     defaultMessage: 'Meta description',
   },
+  newCustomPageMetaTitle: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.CustomPages.newCustomPageMetaTitle',
+    defaultMessage: 'Meta title',
+  },
+  newCustomPageMetaDescription: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.CustomPages.newCustomPageMetaDescription',
+    defaultMessage: 'Meta description',
+  },
   pageSettingsTab: {
     id: 'app.containers.Admin.pagesAndMenu.containers.CustomPages.pageSettingsTab',
     defaultMessage: 'Page settings',

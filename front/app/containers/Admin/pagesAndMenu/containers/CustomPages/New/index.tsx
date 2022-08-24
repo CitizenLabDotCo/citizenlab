@@ -20,6 +20,7 @@ import Input from 'components/HookForm/Input';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import { Box } from '@citizenlab/cl2-component-library';
 import TabbedResource from 'components/admin/TabbedResource';
+import HelmetIntl from 'components/HelmetIntl';
 
 // intl
 import messages from '../messages';
@@ -64,51 +65,62 @@ const CreateCustomPageHookForm = ({
   };
 
   return (
-    <TabbedResource
-      resource={{
-        title: formatMessage(messages.newCustomPagePageTitle),
-      }}
-      tabs={[
-        {
-          label: formatMessage(messages.pageSettingsTab),
-          name: 'settings',
-          url: '/admin/pages-menu/custom/new',
-        },
-      ]}
-      contentWrapper={false}
-    >
-      <FormProvider {...methods}>
-        <form onSubmit={methods.handleSubmit(onFormSubmit)}>
-          <SectionFormWrapper
-            stickyMenuContents={
-              <Button type="submit" processing={methods.formState.isSubmitting}>
-                {formatMessage(messages.saveButton)}
-              </Button>
-            }
-          >
-            <SectionField>
-              <Feedback
-                successMessage={formatMessage(messages.newCustomPagePageTitle)}
-              />
-              <Box mb="20px">
-                <InputMultilocWithLocaleSwitcher
-                  name="title_multiloc"
-                  label={formatMessage(messages.titleLabel)}
-                  type="text"
-                  labelTooltipText={formatMessage(messages.titleTooltip)}
+    <>
+      <HelmetIntl
+        title={messages.newCustomPageMetaTitle}
+        description={messages.newCustomPageMetaDescription}
+      />
+      <TabbedResource
+        resource={{
+          title: formatMessage(messages.newCustomPagePageTitle),
+        }}
+        tabs={[
+          {
+            label: formatMessage(messages.pageSettingsTab),
+            name: 'settings',
+            url: '/admin/pages-menu/custom/new',
+          },
+        ]}
+        contentWrapper={false}
+      >
+        <FormProvider {...methods}>
+          <form onSubmit={methods.handleSubmit(onFormSubmit)}>
+            <SectionFormWrapper
+              stickyMenuContents={
+                <Button
+                  type="submit"
+                  processing={methods.formState.isSubmitting}
+                >
+                  {formatMessage(messages.saveButton)}
+                </Button>
+              }
+            >
+              <SectionField>
+                <Feedback
+                  successMessage={formatMessage(
+                    messages.newCustomPagePageTitle
+                  )}
                 />
-              </Box>
-              <Input
-                label={formatMessage(messages.slugLabel)}
-                labelTooltipText={formatMessage(messages.slugTooltip)}
-                name="slug"
-                type="text"
-              />
-            </SectionField>
-          </SectionFormWrapper>
-        </form>
-      </FormProvider>
-    </TabbedResource>
+                <Box mb="20px">
+                  <InputMultilocWithLocaleSwitcher
+                    name="title_multiloc"
+                    label={formatMessage(messages.titleLabel)}
+                    type="text"
+                    labelTooltipText={formatMessage(messages.titleTooltip)}
+                  />
+                </Box>
+                <Input
+                  label={formatMessage(messages.slugLabel)}
+                  labelTooltipText={formatMessage(messages.slugTooltip)}
+                  name="slug"
+                  type="text"
+                />
+              </SectionField>
+            </SectionFormWrapper>
+          </form>
+        </FormProvider>
+      </TabbedResource>
+    </>
   );
 };
 
