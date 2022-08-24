@@ -5,12 +5,16 @@ module Analytics
     def run(query)
       @query = query
       @json_query = query.json_query
-      @pluck_attributes = @query.model.column_names
+      @pluck_attributes = []
       dimensions = @query.used_dimensions
 
       results = @query.model.includes(dimensions)
 
       results = include_dimensions(results)
+
+      if @json_query.key?(:fields)
+        @pluck_attributes += @query.fields
+      end
 
       if @json_query.key?(:dimensions)
         results = query_dimensions(results)
@@ -18,6 +22,10 @@ module Analytics
 
       if @json_query.key?(:groups)
         results = query_groups(results)
+      end
+
+      if @json_query.key?(:aggregations)
+        build_aggregations
       end
 
       if @json_query.key?(:sort)
@@ -50,11 +58,6 @@ module Analytics
         end
       end
 
-      necesary_dimensions = @query.used_dimensions.reject { |dim| @json_query[:dimensions].keys.exclude?(dim) }
-      necesary_dimensions.each do |dimension|
-        results = results.where.not(dimension => { id: nil })
-      end
-
       results
     end
 
@@ -64,27 +67,50 @@ module Analytics
         dimensions = dimensions.reject { |dim| @json_query[:dimensions].key?(dim) }
       end
 
+      all_dimensions = @query.all_dimensions
       dimensions.each do |dimension|
-        results = results.where.not(dimension => { id: nil })
+        primary_key = all_dimensions[dimension][:primary_key]
+        primary_key ||= 'id'
+        results = results.where.not(dimension => { primary_key => nil })
       end
       results
     end
 
     def query_groups(results)
-      calculated_attributes = @query.calculated_attributes
-      count_all = 'count(all) as count_all'
-      if calculated_attributes.include? count_all
-        calculated_attributes.delete(count_all)
-        calculated_attributes.push(Arel.sql('COUNT(*) as count'))
-      end
-      @pluck_attributes = calculated_attributes + @query.groups_keys
+      @pluck_attributes = @query.groups_keys
+      results.group(@json_query[:groups])
+    end
 
-      results.group(@json_query[:groups][:key])
+    def build_aggregations
+      aggregations_sql = @query.aggregations_sql
+      count_all = 'count(all) as count_all'
+      if aggregations_sql.include? count_all
+        aggregations_sql.delete(count_all)
+        aggregations_sql.push(Arel.sql('COUNT(*) as count'))
+      end
+
+      handle_first_aggregation('first(', aggregations_sql) do |agg, substr|
+        aggregations_sql.delete(agg)
+        aggregations_sql.push(agg.gsub(substr, 'array_agg('))
+      end
+
+      if @json_query.key?(:groups)
+        @pluck_attributes += aggregations_sql
+      else
+        @pluck_attributes = aggregations_sql
+      end
+    end
+
+    def handle_first_aggregation(substring, agg_list, &_block)
+      first_aggregations = agg_list.select { |agg| agg[0, substring.length] == substring }
+      first_aggregations.each do |first_agg|
+        yield first_agg, substring
+      end
     end
 
     def query_order(results)
       keys = @json_query[:sort].keys
-      @pluck_attributes += keys.filter { |key| @query.normalized_calculated_attributes.exclude?(key) }
+      @pluck_attributes += keys.filter { |key| @query.aggregations_names.exclude?(key) }
 
       order_query = []
       @json_query[:sort].each do |key, direction|
@@ -94,9 +120,23 @@ module Analytics
     end
 
     def query_pluck(results)
+      @pluck_attributes = @pluck_attributes.uniq
       results = results.pluck(*@pluck_attributes)
-      response_attributes = @pluck_attributes.map { |key| @query.normalize_calulated_attribute(key) }
-      results.map { |result| response_attributes.zip(result).to_h }
+      response_attributes = @pluck_attributes.map { |key| @query.extract_aggregation_name(key) }
+
+      results.map do |result|
+        unless result.instance_of?(Array)
+          result = [result]
+        end
+
+        response_row = response_attributes.zip(result).to_h
+
+        handle_first_aggregation('first_', response_attributes) do |agg, _|
+          response_row[agg] = response_row[agg][0]
+        end
+
+        response_row
+      end
     end
   end
 end

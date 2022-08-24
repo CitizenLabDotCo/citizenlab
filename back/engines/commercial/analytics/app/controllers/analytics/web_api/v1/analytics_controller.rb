@@ -30,6 +30,7 @@ module Analytics
         success = nil
 
         query = Query.new(json_query)
+        query.validate
 
         if query.valid
           query.run
@@ -60,6 +61,7 @@ module Analytics
         json_queries.each_with_index do |json_query, index|
           query = Query.new(json_query)
           queries.push(query)
+          query.validate
           next if query.valid
 
           errors[index] = query.error_messages

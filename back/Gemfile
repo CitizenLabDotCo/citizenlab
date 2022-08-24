@@ -105,7 +105,7 @@ gem 'carrierwave', git: 'https://github.com/carrierwaveuploader/carrierwave.git'
 gem 'carrierwave-base64', '~> 2.10'
 gem 'fog-aws', '~> 3.12'
 
-gem 'api-pagination', '~> 4.8.2'
+gem 'api-pagination', '~> 5.0.0'
 gem 'kaminari', '~> 1.2'
 gem 'rails-i18n', '~> 6.0.0'
 gem 'awesome_nested_set', '~> 3.5.0'
@@ -189,5 +189,3 @@ require './lib/citizen_lab'
 CitizenLab.enabled_modules.each do |m|
   gem m.split('/').last, path: "engines/#{m}" if File.exist? "engines/#{m}"
 end
-
-gem 'bulk_import_ideas', path: 'engines/commercial/bulk_import_ideas'

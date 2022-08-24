@@ -11,9 +11,25 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.answerFormat',
     defaultMessage: 'Answer format',
   },
+  answerFormatError: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.answerFormatError',
+    defaultMessage: 'Provide an answer format',
+  },
   fieldName: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldName',
     defaultMessage: 'Field name',
+  },
+  fieldNameError: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldNameErrorMessage',
+    defaultMessage: 'Provide a field name for all languages',
+  },
+  saveField: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.saveField',
+    defaultMessage: 'Save field',
+  },
+  saveFieldSuccess: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.saveFieldSuccess',
+    defaultMessage: 'Field successfully saved',
   },
   fieldDescription: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldDescription',
@@ -121,5 +137,17 @@ export default defineMessages({
   answerOption: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOption',
     defaultMessage: 'Answer option',
+  },
+  answerOptionSuccess: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionSuccess',
+    defaultMessage: 'Answer option successfully saved',
+  },
+  answerOptionError: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionError',
+    defaultMessage: 'Provide an answer option for all languages',
+  },
+  answerOptionSave: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionSave',
+    defaultMessage: 'Save answer option',
   },
 });
