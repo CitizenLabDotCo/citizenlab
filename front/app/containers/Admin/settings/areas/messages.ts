@@ -34,6 +34,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.fieldTitle',
     defaultMessage: 'Area name',
   },
+  fieldTitleError: {
+    id: 'app.containers.AdminPage.SettingsPage.fieldTitleError',
+    defaultMessage: 'Provide an area name for all languages',
+  },
   fieldTitleTooltip: {
     id: 'app.containers.AdminPage.SettingsPage.fieldTitleTooltip',
     defaultMessage:
@@ -47,6 +51,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.fieldDescriptionTooltip',
     defaultMessage:
       'This description is only for internal collaboration with other administrators, to have a clear understanding what is meant by each area.',
+  },
+  saveArea: {
+    id: 'app.containers.AdminPage.SettingsPage.saveArea',
+    defaultMessage: 'Save area',
   },
   editFormTitle: {
     id: 'app.containers.AdminPage.SettingsPage.editFormTitle',
