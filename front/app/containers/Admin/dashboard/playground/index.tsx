@@ -7,6 +7,7 @@ import MultiBarChart from 'components/admin/Graphs/MultiBarChart';
 import StackedBarChart from 'components/admin/Graphs/StackedBarChart';
 // import PieChart from 'components/admin/Graphs/PieChart';
 // import ProgressBars from 'components/admin/Graphs/ProgressBars';
+import { LabelList } from 'recharts';
 
 type Row = {
   value: number;
@@ -34,6 +35,18 @@ const radii = {
   2: [0, 5, 5, 0],
 };
 
+const percentages = [0.3, 0.4, 0.3];
+const cumulativeValues = [3, 7, 10];
+
+const valueAccessor = (payload) => {
+  const i = cumulativeValues.indexOf(payload.value[1]);
+  return `${percentages[i] * 100}%`;
+};
+
+const centerLabels = () => (
+  <LabelList position="center" valueAccessor={valueAccessor} fill="white" />
+);
+
 const Playground = () => (
   <>
     <Box width="50%" height="400px">
@@ -53,7 +66,7 @@ const Playground = () => (
 
     <Box width="50%" height="100px" mt="30px">
       <StackedBarChart
-        data={data.slice(0, 1)}
+        data={data.slice(0, 4)}
         mapping={{
           stack: ['value', 'value2', 'value'],
           category: 'label',
@@ -61,6 +74,7 @@ const Playground = () => (
           cornerRadius: ({ stackIndex }) => radii[stackIndex],
         }}
         layout="horizontal"
+        labels={centerLabels}
         xaxis={{ hide: true, domain: [0, 'dataMax'] }}
         yaxis={{ hide: true }}
         legend={{
