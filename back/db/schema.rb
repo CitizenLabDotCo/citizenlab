@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_18_151214) do
+ActiveRecord::Schema.define(version: 2022_08_23_180531) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -48,6 +48,7 @@ ActiveRecord::Schema.define(version: 2022_08_18_151214) do
     t.index ["lft"], name: "index_admin_publications_on_lft"
     t.index ["ordering"], name: "index_admin_publications_on_ordering"
     t.index ["parent_id"], name: "index_admin_publications_on_parent_id"
+    t.index ["publication_type", "publication_id"], name: "index_admin_publications_on_publication_type_and_publication_id"
     t.index ["rgt"], name: "index_admin_publications_on_rgt"
   end
 
@@ -1445,6 +1446,15 @@ ActiveRecord::Schema.define(version: 2022_08_18_151214) do
        LEFT JOIN initiatives ON ((initiatives.id = comments.post_id)))
     WHERE ((comments.post_type)::text = 'Initiative'::text);
   SQL
+  create_view "analytics_dimension_statuses", sql_definition: <<-SQL
+      SELECT idea_statuses.id,
+      idea_statuses.title_multiloc
+     FROM idea_statuses
+  UNION ALL
+   SELECT initiative_statuses.id,
+      initiative_statuses.title_multiloc
+     FROM initiative_statuses;
+  SQL
   create_view "analytics_dimension_projects", sql_definition: <<-SQL
       SELECT projects.id,
       projects.title_multiloc
@@ -1476,7 +1486,7 @@ ActiveRecord::Schema.define(version: 2022_08_18_151214) do
       i.author_id AS user_id,
       i.project_id,
       adt.id AS type_id,
-      (i.created_at)::date AS created_date,
+      (i.created_at)::date AS created_date_id,
       (abf.feedback_first_date)::date AS feedback_first_date,
       (abf.feedback_first_date - i.created_at) AS feedback_time_taken,
       COALESCE(abf.feedback_official, 0) AS feedback_official,
@@ -1487,7 +1497,8 @@ ActiveRecord::Schema.define(version: 2022_08_18_151214) do
           END AS feedback_none,
       (i.upvotes_count + i.downvotes_count) AS votes_count,
       i.upvotes_count,
-      i.downvotes_count
+      i.downvotes_count,
+      i.idea_status_id AS status_id
      FROM ((ideas i
        JOIN analytics_dimension_types adt ON (((adt.name)::text = 'idea'::text)))
        LEFT JOIN analytics_build_feedbacks abf ON ((abf.post_id = i.id)))
@@ -1496,7 +1507,7 @@ ActiveRecord::Schema.define(version: 2022_08_18_151214) do
       i.author_id AS user_id,
       NULL::uuid AS project_id,
       adt.id AS type_id,
-      (i.created_at)::date AS created_date,
+      (i.created_at)::date AS created_date_id,
       (abf.feedback_first_date)::date AS feedback_first_date,
       (abf.feedback_first_date - i.created_at) AS feedback_time_taken,
       COALESCE(abf.feedback_official, 0) AS feedback_official,
@@ -1507,10 +1518,14 @@ ActiveRecord::Schema.define(version: 2022_08_18_151214) do
           END AS feedback_none,
       (i.upvotes_count + i.downvotes_count) AS votes_count,
       i.upvotes_count,
-      i.downvotes_count
-     FROM ((initiatives i
+      i.downvotes_count,
+      isc.initiative_status_id AS status_id
+     FROM (((initiatives i
        JOIN analytics_dimension_types adt ON (((adt.name)::text = 'initiative'::text)))
-       LEFT JOIN analytics_build_feedbacks abf ON ((abf.post_id = i.id)));
+       LEFT JOIN analytics_build_feedbacks abf ON ((abf.post_id = i.id)))
+       LEFT JOIN initiative_status_changes isc ON (((isc.initiative_id = i.id) AND (isc.updated_at = ( SELECT max(isc_.updated_at) AS max
+             FROM initiative_status_changes isc_
+            WHERE (isc_.initiative_id = i.id))))));
   SQL
   create_view "analytics_fact_participations", sql_definition: <<-SQL
       SELECT i.id,
