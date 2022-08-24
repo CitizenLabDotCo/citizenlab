@@ -1,78 +1,34 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 // styles
 import { colors } from 'utils/styleUtils';
 
 // components
-import {
-  Box,
-  Toggle,
-  Text,
-  stylingConsts,
-} from '@citizenlab/cl2-component-library';
+import { Box, Text, stylingConsts } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import { SectionField, SectionTitle } from 'components/admin/Section';
 import CloseIconButton from 'components/UI/CloseIconButton';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import Toggle from 'components/HookForm/Toggle';
 
 // intl
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// Types
-import { Multiloc } from 'typings';
-
-import {
-  IFlatCustomField,
-  IFlatUpdateCustomField,
-} from 'services/formCustomFields';
+import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';
 
 interface Props {
-  field: IFlatCustomField;
-  onDelete: (fieldId: string) => void;
-  onFieldChange: (field: IFlatUpdateCustomField) => void;
+  field: IFlatCustomFieldWithIndex;
+  onDelete: (fieldIndex: number) => void;
   onClose: () => void;
 }
 
-const FormBuilderSettings = ({
-  field,
-  onDelete,
-  onFieldChange,
-  onClose,
-}: Props) => {
-  // TODO I'm keeping this form as simple as possible using state pending form rework from (TEC-35)
-  const [fieldState, setFieldState] = useState({
-    isRequired: field.required || false,
-    questionTitle: field.title_multiloc || {},
-    questionDescription: field.description_multiloc || {},
-  });
-
-  useEffect(() => {
-    onFieldChange({
-      ...field,
-      id: field.id,
-      title_multiloc: fieldState.questionTitle,
-      description_multiloc: fieldState.questionDescription,
-      required: !!fieldState.isRequired,
-    });
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fieldState]);
-
+const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
   let translatedStringKey: ReactIntl.FormattedMessage.MessageDescriptor | null =
     null;
   if (field.input_type === 'text') {
     translatedStringKey = messages.shortAnswer;
   }
-
-  const onStateChange = (key: string, value: Multiloc | boolean) => {
-    setFieldState({
-      ...fieldState,
-      [key]: value,
-    });
-  };
-
-  const { isRequired, questionTitle, questionDescription } = fieldState;
 
   return (
     <Box
@@ -101,26 +57,21 @@ const FormBuilderSettings = ({
       )}
       <SectionField>
         <InputMultilocWithLocaleSwitcher
-          type="text"
+          name={`customFields.${field.index}.title_multiloc`}
           label={<FormattedMessage {...messages.questionTitle} />}
-          valueMultiloc={questionTitle}
-          onChange={(value: Multiloc) => onStateChange('questionTitle', value)}
+          type="text"
         />
       </SectionField>
       <SectionField>
         <InputMultilocWithLocaleSwitcher
-          type="text"
+          name={`customFields.${field.index}.description_multiloc`}
           label={<FormattedMessage {...messages.questionDescription} />}
-          valueMultiloc={questionDescription}
-          onChange={(value: Multiloc) =>
-            onStateChange('questionDescription', value)
-          }
+          type="text"
         />
       </SectionField>
       <SectionField>
         <Toggle
-          checked={!!isRequired}
-          onChange={() => onStateChange('isRequired', !isRequired)}
+          name={`customFields.${field.index}.required`}
           label={
             <Text as="span" color="adminTextColor" variant="bodyM" my="0px">
               <FormattedMessage {...messages.required} />
@@ -135,7 +86,7 @@ const FormBuilderSettings = ({
           borderColor={colors.red500}
           textColor={colors.red500}
           iconColor={colors.red500}
-          onClick={() => onDelete(field.id)}
+          onClick={() => onDelete(field.index)}
           minWidth="160px"
         >
           <FormattedMessage {...messages.delete} />

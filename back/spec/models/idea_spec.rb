@@ -25,7 +25,7 @@ RSpec.describe Idea, type: :model do
     context 'without custom form' do
       it 'can publish an idea without custom fields' do
         project = create :project
-        CustomForm.where(project: project).first&.destroy!
+        project.custom_form&.destroy!
         idea = build :idea, project: project, custom_field_values: {}
         expect(idea.save(context: :publication)).to be true
       end

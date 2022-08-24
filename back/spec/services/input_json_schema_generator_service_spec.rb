@@ -10,7 +10,7 @@ RSpec.describe InputJsonSchemaGeneratorService do
   describe '#generate_for' do
     let(:metaschema) { JSON::Validator.validator_for_name('draft4').metaschema }
     let(:project) { create(:project) }
-    let(:custom_form) { create(:custom_form, project: project) }
+    let(:custom_form) { create(:custom_form, participation_context: project) }
     let(:fields) { IdeaCustomFieldsService.new(custom_form).visible_fields }
 
     context 'when there are default fields only' do
@@ -298,7 +298,7 @@ RSpec.describe InputJsonSchemaGeneratorService do
         )
       end
       let(:topics) { project.allowed_input_topics }
-      let(:form) { create :custom_form, project: project }
+      let(:form) { create :custom_form, participation_context: project }
       let :field do
         create(
           :custom_field_select,

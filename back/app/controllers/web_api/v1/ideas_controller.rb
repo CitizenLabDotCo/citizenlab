@@ -182,7 +182,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def extract_custom_field_values_from_params!
     project = @idea&.project || Project.find(params.dig(:idea, :project_id))
-    custom_form = project.custom_form || CustomForm.new(project: project)
+    custom_form = project.custom_form || CustomForm.new(participation_context: project)
     all_fields = IdeaCustomFieldsService.new(custom_form).all_fields
     extra_field_values = all_fields.each_with_object({}) do |field, accu|
       next if field.built_in?
@@ -208,7 +208,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def idea_attributes
     project = @idea&.project || Project.find(params.dig(:idea, :project_id))
-    custom_form = project.custom_form || CustomForm.new(project: project)
+    custom_form = project.custom_form || CustomForm.new(participation_context: project)
     enabled_field_keys = IdeaCustomFieldsService.new(custom_form).enabled_fields.map { |field| field.key.to_sym }
 
     attributes = idea_simple_attributes(enabled_field_keys)
