@@ -17,7 +17,7 @@ import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 // hooks
-import usePostsWithFeedback from './usePostsFeedback';
+import usePostsWithFeedback from '../../../hooks/usePostsFeedback';
 
 // typings
 import { InjectedIntlProps } from 'react-intl';

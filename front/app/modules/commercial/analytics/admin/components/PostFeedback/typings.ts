@@ -1,11 +1,21 @@
 import { DataRow } from 'components/admin/Graphs/PieChart/typings';
+import { Multiloc } from 'typings';
 
-export type Response = {
-  'project.id'?: string;
+type ResponseFeedback = {
   sum_feedback_none: number;
   sum_feedback_official: number;
   sum_feedback_status_change: number;
   avg_feedback_time_taken: number;
+};
+
+type ResponseStatus = {
+  count: number;
+  'status.id': string;
+  first_status_title_multiloc: Multiloc;
+};
+
+export type Response = {
+  data: [ResponseFeedback[], ResponseStatus[]];
 };
 
 type ProgressBarsItem = {

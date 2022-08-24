@@ -1,29 +1,29 @@
 import { useState, useEffect } from 'react';
 
 // services
-import { analyticsStream, Query } from '../../../services/analyticsFacts';
+import { analyticsStream, Query } from '../services/analyticsFacts';
 
 // utils
 import { sum, roundPercentage } from 'utils/math';
 
 // typings
 import { InjectedIntlProps } from 'react-intl';
-import { Response, PostFeedback } from './typings';
+import {
+  Response,
+  PostFeedback,
+} from '../admin/components/PostFeedback/typings';
 
 // i18n
-import messages from './messages';
+import messages from '../admin/components/PostFeedback/messages';
 
-const query = (projectId?: string): Query => {
+const query = (projectId?: string): { query: Query[] } => {
   const groups = {
     fact: 'post',
-    groups: {
-      key: 'project.id',
-      aggregations: {
-        feedback_none: 'sum',
-        feedback_official: 'sum',
-        feedback_status_change: 'sum',
-        feedback_time_taken: 'avg',
-      },
+    aggregations: {
+      feedback_none: 'sum',
+      feedback_official: 'sum',
+      feedback_status_change: 'sum',
+      feedback_time_taken: 'avg',
     },
   };
 
@@ -31,9 +31,17 @@ const query = (projectId?: string): Query => {
     ? {}
     : { dimensions: { project: { id: projectId } } };
 
-  const query = { query: { ...groups, ...dimensions } };
+  const query_feedback = { ...groups, ...dimensions };
+  const query_status = {
+    fact: 'post',
+    groups: 'status.id',
+    aggregations: {
+      all: 'count',
+      'status.title_multiloc': 'first',
+    },
+  };
 
-  return query as Query;
+  return { query: [query_feedback, query_status] as Query[] };
 };
 
 export default function usePostsWithFeedback(
@@ -46,29 +54,16 @@ export default function usePostsWithFeedback(
   useEffect(() => {
     analyticsStream<Response>(query(projectId)).then((results) => {
       if (results && results.data.length > 0) {
-        const parsedResult = results.data.reduce(
-          (acc, e) => {
-            acc.sum_feedback_none += e.sum_feedback_none;
-            acc.sum_feedback_official += e.sum_feedback_official;
-            acc.sum_feedback_status_change += e.sum_feedback_status_change;
-            acc.avg_feedback_time_taken_ += e.avg_feedback_time_taken;
-            return acc;
-          },
-          {
-            sum_feedback_none: 0,
-            sum_feedback_official: 0,
-            sum_feedback_status_change: 0,
-            avg_feedback_time_taken_: 0,
-          }
-        );
+        const [response_feedback, _] = results.data;
+
+        const result_feedback = response_feedback[0];
+
         const {
           sum_feedback_none,
           sum_feedback_official,
           sum_feedback_status_change,
-          avg_feedback_time_taken_,
-        } = parsedResult as any;
-        const avg_feedback_time_taken =
-          avg_feedback_time_taken_ / results.data.length;
+          avg_feedback_time_taken,
+        } = result_feedback;
 
         const feedback_count = sum([
           sum_feedback_official,

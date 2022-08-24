@@ -5,32 +5,31 @@ type AnalyticsResponse<T> = {
   data: T[];
 };
 
+// Build automatically using json schema backend validator
 export interface Query {
-  query: {
-    dimensions?: {
-      [k: string]: {
-        [k: string]:
-          | string
-          | unknown[]
-          | {
-              from: number | string;
-              to: number | string;
-            };
-      };
+  fields?: string | string[];
+  fact: 'post' | 'participation';
+  dimensions?: {
+    [k: string]: {
+      [k: string]:
+        | string
+        | unknown[]
+        | {
+            from: number | string;
+            to: number | string;
+          };
     };
-    groups?: {
-      key: string | string[];
-      aggregations: {
-        [k: string]:
-          | ('min' | 'max' | 'avg' | 'sum' | 'count')
-          | ('min' | 'max' | 'avg' | 'sum' | 'count')[];
-      };
-    };
-    sort?: {
-      [k: string]: 'ASC' | 'DESC';
-    };
-    limit?: number;
   };
+  groups?: string | string[];
+  aggregations?: {
+    [k: string]:
+      | ('min' | 'max' | 'avg' | 'sum' | 'count' | 'first')
+      | ('min' | 'max' | 'avg' | 'sum' | 'count' | 'first')[];
+  };
+  sort?: {
+    [k: string]: 'ASC' | 'DESC';
+  };
+  limit?: number;
 }
 
 export async function analyticsStream<T>(queryObject) {
