@@ -1,12 +1,12 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  metaTitle: {
-    id: 'app.containers.Admin.pagesAndMenu.containers.CustomPages.metaTitle',
+  editCustomPageMetaTitle: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.CustomPages.editCustomPageMetaTitle',
     defaultMessage: 'Meta title',
   },
-  metaDescription: {
-    id: 'app.containers.Admin.pagesAndMenu.containers.CustomPages.metaDescription',
+  editCustomPageMetaDescription: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.CustomPages.editCustomPageMetaDescription',
     defaultMessage: 'Meta description',
   },
   pageSettingsTab: {
