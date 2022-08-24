@@ -11,12 +11,14 @@ import Button from 'components/UI/Button';
 
 // styling
 import { colors } from 'utils/styleUtils';
+import styled from 'styled-components';
 import {
   Box,
   stylingConsts,
   Spinner,
   Text,
   Title,
+  StatusLabel,
 } from '@citizenlab/cl2-component-library';
 
 // utils
@@ -35,6 +37,11 @@ import {
   IFlatCustomField,
   updateFormCustomFields,
 } from 'services/formCustomFields';
+
+const StyledStatusLabel = styled(StatusLabel)`
+  height: 20px;
+  margin-bottom: auto;
+`;
 
 interface FormBuilderTopBarProps {
   control: Control;
@@ -106,9 +113,29 @@ const FormBuilderTopBar = ({ control }: FormBuilderTopBarProps) => {
               <Text mb="0px" color="adminSecondaryTextColor">
                 {localize(project.attributes.title_multiloc)}
               </Text>
-              <Title variant="h4" as="h1">
-                <FormattedMessage {...messages.surveyTitle} />
-              </Title>
+              <Box display="flex" alignContent="center">
+                <Title marginRight="8px" marginTop="auto" variant="h4" as="h1">
+                  <FormattedMessage {...messages.surveyTitle} />
+                </Title>
+                <StyledStatusLabel
+                  text={
+                    project?.attributes.posting_enabled === true ? (
+                      <span style={{ color: colors.clGreen }}>
+                        <FormattedMessage {...messages.open} />
+                      </span>
+                    ) : (
+                      <span style={{ color: colors.grey }}>
+                        <FormattedMessage {...messages.closed} />
+                      </span>
+                    )
+                  }
+                  backgroundColor={
+                    project?.attributes.posting_enabled === true
+                      ? colors.clGreenSuccessBackground
+                      : colors.backgroundLightGrey
+                  }
+                />
+              </Box>
             </>
           )}
         </Box>

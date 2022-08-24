@@ -25,6 +25,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.newField',
     defaultMessage: 'New field',
   },
+  closed: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.closed',
+    defaultMessage: 'Closed',
+  },
+  open: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.open',
+    defaultMessage: 'Open',
+  },
   close: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.close',
     defaultMessage: 'Close',
