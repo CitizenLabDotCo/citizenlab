@@ -1,5 +1,10 @@
 # Changelog
 
+## Next
+
+### Fixed
+- [CL-1505] Posting ideas when there is no current phase
+
 ## 2022-08-23
 
 ### Added
