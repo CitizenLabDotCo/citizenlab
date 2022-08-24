@@ -4,7 +4,7 @@ import HelmetIntl from 'components/HelmetIntl';
 import messages from '../messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { Outlet as RouterOutlet } from 'react-router-dom';
+import NewCustomPage from './NewCustomPage';
 
 const CreateCustomPageHookForm = ({
   intl: { formatMessage },
@@ -23,12 +23,12 @@ const CreateCustomPageHookForm = ({
           {
             label: formatMessage(messages.pageSettingsTab),
             name: 'settings',
-            url: '/admin/pages-menu/custom/new/settings',
+            url: '/admin/pages-menu/custom/new',
           },
         ]}
         contentWrapper={false}
       >
-        <RouterOutlet />
+        <NewCustomPage />
       </TabbedResource>
     </>
   );
