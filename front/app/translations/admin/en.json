@@ -592,6 +592,8 @@
   "app.containers.Admin.messaging.helmetTitle": "Messaging",
   "app.containers.Admin.pagesAndMenu.containers.CustomPages.editCustomPageMetaDescription": "Meta description",
   "app.containers.Admin.pagesAndMenu.containers.CustomPages.editCustomPageMetaTitle": "Meta title",
+  "app.containers.Admin.pagesAndMenu.containers.CustomPages.newCustomPageMetaDescription": "Meta description",
+  "app.containers.Admin.pagesAndMenu.containers.CustomPages.newCustomPageMetaTitle": "Meta title",
   "app.containers.Admin.pagesAndMenu.containers.CustomPages.pageContentTab": "Page content",
   "app.containers.Admin.pagesAndMenu.containers.CustomPages.pageSettingsTab": "Page settings",
   "app.containers.Admin.projects.all.components.archived": "Archived",
