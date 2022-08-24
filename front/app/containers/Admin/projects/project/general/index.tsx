@@ -227,6 +227,23 @@ const AdminProjectsProjectGeneral = ({
     setProjectHeaderImage(null);
   };
 
+  const handleProjectImagesOnAdd = (projectImages: UploadFile[]) => {
+    setSubmitState('enabled');
+    setProjectImages(projectImages);
+  };
+
+  const handleProjectImageOnRemove = (projectImageToRemove: UploadFile) => {
+    setProjectImages((projectImages) => {
+      return projectImages.filter(
+        (image) => image.base64 !== projectImageToRemove.base64
+      );
+    });
+    setProjectImagesToRemove((projectImagesToRemove) => {
+      return [...projectImagesToRemove, projectImageToRemove];
+    });
+    setSubmitState('enabled');
+  };
+
   const handleProjectFileOnAdd = (newProjectFile: UploadFile) => {
     let isDuplicate = false;
 
@@ -250,23 +267,6 @@ const AdminProjectsProjectGeneral = ({
     ]);
   };
 
-  const handleProjectImagesOnAdd = (projectImages: UploadFile[]) => {
-    setSubmitState('enabled');
-    setProjectImages(projectImages);
-  };
-
-  const handleProjectImageOnRemove = (projectImageToRemove: UploadFile) => {
-    setProjectImages((projectImages) => {
-      return projectImages.filter(
-        (image) => image.base64 !== projectImageToRemove.base64
-      );
-    });
-    setProjectImagesToRemove((projectImagesToRemove) => {
-      return [...projectImagesToRemove, projectImageToRemove];
-    });
-    setSubmitState('enabled');
-  };
-
   const handleTopicsChange = (topicIds: string[]) => {
     setSubmitState('enabled');
     setProjectAttributesDiff((projectAttributesDiff) => ({
@@ -281,7 +281,7 @@ const AdminProjectsProjectGeneral = ({
     // Should be split. Same func for existing/new project
     // Makes things unnecessarily complicated (e.g. projectId below).
     let isNewProject = false;
-    let latestProjectId = isNewProject ? null : projectId;
+    let latestProjectId = projectId;
     const isFormValid = validateForm();
 
     if (!isFormValid) {
