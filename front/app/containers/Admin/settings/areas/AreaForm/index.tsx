@@ -58,7 +58,7 @@ const AreaForm = ({
 
   return (
     <FormProvider {...methods}>
-      <Section>
+      <Section data-testid="areaForm">
         <form onSubmit={methods.handleSubmit(onFormSubmit)}>
           <SectionField>
             <Feedback />
@@ -77,7 +77,11 @@ const AreaForm = ({
             />
           </SectionField>
           <Box display="flex">
-            <Button type="submit" processing={methods.formState.isSubmitting}>
+            <Button
+              type="submit"
+              processing={methods.formState.isSubmitting}
+              data-testid="saveArea"
+            >
               {formatMessage(messages.saveArea)}
             </Button>
           </Box>
