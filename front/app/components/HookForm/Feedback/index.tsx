@@ -13,6 +13,7 @@ import {
 import { scrollToElement } from 'utils/scroll';
 import CloseIconButton from 'components/UI/CloseIconButton';
 import messages from './messages';
+import { get } from 'lodash-es';
 
 type FeedbackProps = {
   successMessage?: string;
@@ -38,10 +39,10 @@ const Feedback = ({
     const errorMessages: Array<{ field: string; message?: string }> = [];
 
     for (const field in errors) {
-      const standardFieldError = errors[field]?.message;
-      const apiError = errors[field]?.error;
+      const standardFieldError = get(errors, field)?.message;
+      const apiError = get(errors, field)?.error;
       const multilocFieldFirstError = Object.values(
-        errors[field] as Record<string, any>
+        get(errors, field) as Record<string, any>
       )[0]?.message;
 
       if (standardFieldError) {

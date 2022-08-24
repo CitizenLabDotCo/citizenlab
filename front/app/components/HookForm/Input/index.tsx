@@ -6,6 +6,7 @@ import {
 import Error, { TFieldName } from 'components/UI/Error';
 import { Controller, useFormContext } from 'react-hook-form';
 import { CLError } from 'typings';
+import { get } from 'lodash-es';
 
 interface Props extends InputProps {
   name: string;
@@ -19,11 +20,11 @@ const Input = ({ name, ...rest }: Props) => {
 
   const defaultValue = '';
 
-  const validationError = errors[name]?.message as string | undefined;
+  const validationError = get(errors, name)?.message as string | undefined;
 
   const apiError =
-    (errors[name]?.error as string | undefined) &&
-    ([errors[name]] as unknown as CLError[]);
+    (get(errors, name)?.error as string | undefined) &&
+    ([get(errors, name)] as unknown as CLError[]);
 
   return (
     <>
