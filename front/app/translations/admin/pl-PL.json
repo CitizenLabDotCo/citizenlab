@@ -1059,7 +1059,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurveyResults": "Download survey results ({count})",
   "app.containers.AdminPage.ProjectEdit.survey.editButtonLabel": "Edycja",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent": "Edit survey content",
-  "app.containers.AdminPage.ProjectEdit.survey.newField": "New field",
+  "app.containers.AdminPage.ProjectEdit.survey.newField": "Nowe pole",
   "app.containers.AdminPage.ProjectEdit.survey.openForSubmissions": "Open for submissions",
   "app.containers.AdminPage.ProjectEdit.survey.questionDescription": "Question description",
   "app.containers.AdminPage.ProjectEdit.survey.questionTitle": "Question title",
