@@ -64,7 +64,7 @@ export const FormEdit = ({
     customFields: array().of(
       object().shape({
         title_multiloc: validateMultiloc(
-          formatMessage(messages.emptyTitleError)
+          formatMessage(messages.emptyTitleErrorMessage)
         ),
         description_multiloc: object(),
         required: boolean(),
