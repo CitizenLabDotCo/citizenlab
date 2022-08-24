@@ -5,6 +5,9 @@ import messages from '../messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import CustomPagesNew from './CustomPagesNew';
+import { Box } from '@citizenlab/cl2-component-library';
+import Breadcrumbs from 'components/UI/Breadcrumbs';
+import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 
 const CreateCustomPageHookForm = ({
   intl: { formatMessage },
@@ -15,6 +18,17 @@ const CreateCustomPageHookForm = ({
         title={messages.newCustomPageMetaTitle}
         description={messages.newCustomPageMetaDescription}
       />
+      <Box mb="16px">
+        <Breadcrumbs
+          breadcrumbs={[
+            {
+              label: formatMessage(pagesAndMenuBreadcrumb.label),
+              linkTo: pagesAndMenuBreadcrumb.linkTo,
+            },
+            { label: formatMessage(messages.newCustomPagePageTitle) },
+          ]}
+        />
+      </Box>
       <TabbedResource
         resource={{
           title: formatMessage(messages.newCustomPagePageTitle),
