@@ -1,8 +1,8 @@
 import React from 'react';
 import CustomPageSettingsForm from '../../CustomPageSettingsForm';
 
-const Component = () => {
+const CustomPagesNewSettings = () => {
   return <CustomPageSettingsForm />;
 };
 
-export default Component;
+export default CustomPagesNewSettings;

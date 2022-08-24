@@ -6,7 +6,7 @@ import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import HelmetIntl from 'components/HelmetIntl';
 
-const CreateCustomPageHookForm = ({
+const CustomPagesEditSettings = ({
   intl: { formatMessage },
 }: InjectedIntlProps) => {
   return (
@@ -39,4 +39,4 @@ const CreateCustomPageHookForm = ({
   );
 };
 
-export default injectIntl(CreateCustomPageHookForm);
+export default injectIntl(CustomPagesEditSettings);

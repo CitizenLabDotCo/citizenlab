@@ -1,7 +1,7 @@
 import React from 'react';
 
-const Component = () => {
+const CustomPagesEditContent = () => {
   return <div>Hello, world!</div>;
 };
 
-export default Component;
+export default CustomPagesEditContent;
