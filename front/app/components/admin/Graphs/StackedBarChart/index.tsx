@@ -72,26 +72,26 @@ const StackedBarChart = <Row,>({
   const tooltipConfig = getTooltipConfig(tooltip);
 
   const handleMouseOver =
-    (barIndex: number) => (_, rowIndex: number, event: React.MouseEvent) => {
+    (stackIndex: number) => (_, rowIndex: number, event: React.MouseEvent) => {
       onMouseOver &&
         onMouseOver(
           {
             row: data[rowIndex],
             rowIndex,
-            barIndex,
+            stackIndex,
           },
           event
         );
     };
 
   const handleMouseOut =
-    (barIndex: number) => (_, rowIndex: number, event: React.MouseEvent) => {
+    (stackIndex: number) => (_, rowIndex: number, event: React.MouseEvent) => {
       onMouseOut &&
         onMouseOut(
           {
             row: data[rowIndex],
             rowIndex,
-            barIndex,
+            stackIndex,
           },
           event
         );

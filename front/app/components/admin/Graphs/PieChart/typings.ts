@@ -3,13 +3,11 @@ import { BaseProps, KeyOfType, Cell, BaseMapping } from '../typings';
 import { Payload } from '../BarChart/typings';
 
 // PROPS
-export interface Props<Row> extends BaseProps<Row> {
+export interface Props<Row> extends BaseProps<Row, Payload<Row>> {
   mapping: Mapping<Row>;
   pie?: Pie;
   annotations?: boolean | ((row: Row) => string);
   centerLabel?: React.ReactElement;
-  onMouseOver?: (payload: Payload<Row>, event: React.MouseEvent) => void;
-  onMouseOut?: (payload: Payload<Row>, event: React.MouseEvent) => void;
 }
 
 export interface Mapping<Row> extends BaseMapping<Payload<Row>> {

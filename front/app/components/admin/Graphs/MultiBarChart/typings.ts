@@ -10,7 +10,7 @@ import {
 } from '../typings';
 
 // PROPS
-export interface Props<Row> extends BaseProps<Row> {
+export interface Props<Row> extends BaseProps<Row, Payload<Row>> {
   mapping: Mapping<Row>;
   bars?: Bars;
   layout?: Layout;
@@ -18,8 +18,6 @@ export interface Props<Row> extends BaseProps<Row> {
   xaxis?: AxisProps;
   yaxis?: AxisProps;
   labels?: boolean | Labels | ((props: LabelConfig) => React.ReactNode);
-  onMouseOver?: (payload: Payload<Row>, event: React.MouseEvent) => void;
-  onMouseOut?: (payload: Payload<Row>, event: React.MouseEvent) => void;
 }
 
 interface Payload<Row> {

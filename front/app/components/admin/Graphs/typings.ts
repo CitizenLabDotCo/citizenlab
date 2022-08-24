@@ -5,7 +5,7 @@ import { NilOrError } from 'utils/helperUtils';
 import { Position, LegendItem } from './_components/Legend/typings';
 
 // PROPS
-export interface BaseProps<Row> {
+export interface BaseProps<Row, Payload> {
   width?: Percentage | number;
   height?: Percentage | number;
   data: Row[] | NilOrError;
@@ -14,6 +14,8 @@ export interface BaseProps<Row> {
   legend?: Legend;
   emptyContainerContent?: React.ReactNode;
   innerRef?: RefObject<any>;
+  onMouseOver?: (payload: Payload, event: React.MouseEvent) => void;
+  onMouseOut?: (payload: Payload, event: React.MouseEvent) => void;
 }
 
 // STYLING
