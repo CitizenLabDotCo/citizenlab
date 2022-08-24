@@ -25,8 +25,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.viewSurveyText',
     defaultMessage: 'View survey',
   },
-  emptyTitleError: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.emptyTitleError',
-    defaultMessage: 'Provide title for all languages',
+  emptyTitleErrorMessage: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.emptyTitleErrorMessage',
+    defaultMessage: 'Provide a title for all languages',
   },
 });

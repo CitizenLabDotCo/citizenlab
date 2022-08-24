@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useWatch, Control } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -43,19 +43,13 @@ const StyledStatusLabel = styled(StatusLabel)`
   margin-bottom: auto;
 `;
 
-interface FormBuilderTopBarProps {
-  control: Control;
-}
-
-const FormBuilderTopBar = ({ control }: FormBuilderTopBarProps) => {
+const FormBuilderTopBar = () => {
   const localize = useLocalize();
   const { projectId } = useParams() as { projectId: string };
   const project = useProject({ projectId });
   const [loading, setLoading] = useState(false);
-  const formCustomFields: IFlatCustomField[] = useWatch({
-    control,
-    name: 'customFields',
-  });
+  const { watch } = useFormContext();
+  const formCustomFields: IFlatCustomField[] = watch('customFields');
 
   // TODO : Generalize this form builder and use new ParticipationMethod abstraction to control method specific copy, etc.
   const goBack = () => {
