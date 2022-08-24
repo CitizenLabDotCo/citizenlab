@@ -45,7 +45,9 @@ const CreateCustomPageHookForm = ({
   // types still to change
   const [_error, setError] = useState({});
   const schema = object({
-    title_multiloc: validateMultiloc(formatMessage(messages.multilocError)),
+    title_multiloc: validateMultiloc(
+      formatMessage(messages.titleMultilocError)
+    ),
     slug: string()
       .matches(slugRegEx, formatMessage(messages.slugRegexError))
       .required(formatMessage(messages.slugRequiredError)),

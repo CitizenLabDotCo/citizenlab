@@ -452,7 +452,6 @@
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.editCustomPagePageTitle": "Edit custom page",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.error": "Couldn't save custom page",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.messageSuccess": "Custom page saved",
-  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.multilocError": "Please enter a title in every language",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.newCustomPagePageTitle": "Create custom page",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.saveButton": "Save custom page",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.slugLabel": "URL",
