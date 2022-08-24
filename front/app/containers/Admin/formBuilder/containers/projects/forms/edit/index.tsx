@@ -50,10 +50,14 @@ export const FormEdit = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const [selectedField, setSelectedField] = useState<
     IFlatCustomFieldWithIndex | undefined
   >(undefined);
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId, phaseId } = useParams() as {
+    projectId: string;
+    phaseId?: string;
+  };
 
   const { formCustomFields } = useFormCustomFields({
     projectId,
+    phaseId,
   });
 
   const prevFormCustomFields = usePrevious(formCustomFields);

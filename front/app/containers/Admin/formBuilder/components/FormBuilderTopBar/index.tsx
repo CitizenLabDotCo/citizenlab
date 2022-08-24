@@ -49,7 +49,10 @@ interface FormBuilderTopBarProps {
 
 const FormBuilderTopBar = ({ control }: FormBuilderTopBarProps) => {
   const localize = useLocalize();
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId, phaseId } = useParams() as {
+    projectId: string;
+    phaseId?: string;
+  };
   const project = useProject({ projectId });
   const [loading, setLoading] = useState(false);
   const formCustomFields: IFlatCustomField[] = useWatch({
@@ -74,7 +77,7 @@ const FormBuilderTopBar = ({ control }: FormBuilderTopBarProps) => {
           title_multiloc: field.title_multiloc || {},
           description_multiloc: field.description_multiloc || {},
         }));
-        await updateFormCustomFields(projectId, finalResponseArray);
+        await updateFormCustomFields(projectId, finalResponseArray, phaseId);
       } catch {
         // TODO: Add error handling
       } finally {
