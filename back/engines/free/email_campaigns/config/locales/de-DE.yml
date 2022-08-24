@@ -2,7 +2,7 @@ de:
   email_campaigns:
     campaign_type_description:
       "manual": Offizielle Mitteilungen
-      "admin_rights_received": Administrator:innenrechte erhalten
+      "admin_rights_received": Admin-Rechte erhalten
       "comment_deleted_by_admin": Löschung meines Kommentars
       "comment_marked_as_spam": Spambericht kommentieren
       "comment_on_your_comment": Eine Antwort auf meinen Kommentar
@@ -43,7 +43,7 @@ de:
       "status_change_of_your_initiative": Statusänderung meines Vorschlags
       "threshold_reached_for_admin": Vorschlag hat die Abstimmungsschwelle erreicht
       "welcome": Nach der Registrierung
-      "admin_digest": Wöchentliche Übersicht für AdministratorInnen
+      "admin_digest": Wöchentliche Übersicht für Admins
       "moderator_digest": Wöchentliche Übersicht für Projektmanager:innen
       "assignee_digest": Wöchentliche Übersicht zugeteilter Ideen
       "user_digest": Wöchentliche Übersicht
@@ -133,17 +133,17 @@ de:
       x_days_ago_by_author: 'Vor %{x} Tagen von %{author}'
     admin_rights_received:
       cta_moderate_platform: 'Moderieren Sie Ihre Plattform'
-      message_you_became_administrator: 'Ihnen wurden Administrator:innenrechte für die Beteiligungsplattform von %{organizationName} gewährt.'
-      preheader: 'Ihnen wurden Administrator:innenrechte für die Beteiligungsplattform von %{organizationName} gewährt'
-      subject: 'Sie wurden soeben Administrator auf der Plattform von %{organizationName}'
-      text_create_participatory_process: 'Als AdministratorIn können Sie neue Beteiligungsprojekte erstellen und konfigurieren. Über die Zeitleiste können Sie neue Phasen hinzufügen. Jede dieser Phasen kann ihr eigenes Verhalten in Bezug auf das Posten von Ideen, das Kommentieren und das Abstimmen haben.'
+      message_you_became_administrator: 'Ihnen wurden Admin-Rechte für die Beteiligungsplattform von %{organizationName} gewährt.'
+      preheader: 'Ihnen wurden Admin-Rechte für die Beteiligungsplattform von %{organizationName} gewährt'
+      subject: 'Sie wurden soeben Admin auf der Plattform von %{organizationName}'
+      text_create_participatory_process: 'Als Admin können Sie neue Beteiligungsprojekte erstellen und konfigurieren. Über die Zeitleiste können Sie neue Phasen hinzufügen. Jede dieser Phasen kann ihr eigenes Verhalten in Bezug auf das Posten von Ideen, das Kommentieren und das Abstimmen haben.'
       text_moderate_analyse_input: 'Sobald die Projekte angelaufen sind, werden die ersten Ideen eintreffen. Sie erhalten wöchentliche Berichte mit allen wichtigen Aktivitäten, damit Sie den Überblick behalten. Die Ideenübersicht hilft Ihnen, den Input zu moderieren und zu bearbeiten.'
-      text_platform_setup: 'Als AdministratorIn können Sie Ihre Beteiligungsplattform einrichten. Wählen Sie ein Logo, Bilder und Farben, schreiben Sie eine persönliche Nachricht auf Ihre Homepage, verschicken Sie Einladungen, legen Sie fest, was Sie von Ihren Nutzer:innen wissen wollen, ...'
+      text_platform_setup: 'Als Admin können Sie Ihre Beteiligungsplattform einrichten. Wählen Sie ein Logo, Bilder und Farben, schreiben Sie eine persönliche Nachricht auf Ihre Homepage, verschicken Sie Einladungen, legen Sie fest, was Sie von Ihren Nutzer:innen wissen wollen, ...'
       title_create_participatory_process: 'Gestalten Sie den partizipativen Prozess'
       title_moderate_analyse_input: 'Moderieren und Analysieren Sie Beiträge'
       title_platform_setup: 'Richten Sie Ihre Plattform ein'
-      title_what_can_you_do_administrator: 'Was können Sie als AdministratorIn tun?'
-      title_you_became_administrator: 'Sie sind nun AdministratorIn'
+      title_what_can_you_do_administrator: 'Was können Sie als Admin tun?'
+      title_you_became_administrator: 'Sie sind nun Admin'
     comment_marked_as_spam:
       by_author: 'von %{authorName}'
       commented: '%{authorName} hat kommentiert:'
@@ -404,9 +404,9 @@ de:
       cta_view_folder_button: 'Diesen Ordner anzeigen'
       message_added_as_folderadmin: 'Sie haben Administrationsrechte auf der Beteiligungsplattform von %{organizationName} für den folgenden Ordner erhalten:'
       no_projects: 'Noch keine Projekte erhalten'
-      preheader: 'Ein:e Administrator:in der Beteiligungsplattform von %{organizationName} hat Sie soeben zu einer:einem Manager:in des folgenden Projektordners ernannt'
+      preheader: 'Ein Admin der Beteiligungsplattform von %{organizationName} hat Sie soeben zu einer:einem Manager:in des folgenden Projektordners ernannt'
       subject: 'Sie wurden zu einer:einem Ordnermanager:in auf der Plattform von %{organizationName} ernannt'
-      text_manage_folder: 'Mit einem Ordner können Sie mehrere Beteiligungsprojekte zusammen organisieren. Als Ordner-Manager:in können Sie den Ordner und die Ordnerbeschreibung bearbeiten und neue Projekte erstellen (um Projekte zu löschen, müssen Sie Ihre:n Plattform-Administrator:in kontaktieren). Sie werden außerdem Projektverwaltungsrechte für alle Projekte innerhalb des Ordners erhalten. So können Sie die Projekte bearbeiten, die Eingaben verwalten und E-Mails an Teilnehmende senden.'
+      text_manage_folder: 'Mit einem Ordner können Sie mehrere Beteiligungsprojekte zusammen organisieren. Als Ordner-Manager:in können Sie den Ordner und die Ordnerbeschreibung bearbeiten und neue Projekte erstellen (um Projekte zu löschen, müssen Sie Ihren Plattform-Admin kontaktieren). Sie werden außerdem Projektmanagementrechte für alle Projekte innerhalb des Ordners erhalten. So können Sie die Projekte bearbeiten, die Eingaben verwalten und E-Mails an Teilnehmende senden.'
       text_moderate_analyse_input: 'Sobald die Projekte gestartet wurden, werden die ersten Beiträge eingehen. Sie werden wöchentliche Berichte mit den wichtigsten Aktivitäten erhalten, damit Sie den Überblick behalten können. Mit dem Beitragsmanager in Ihrer Admin-Ansicht können Sie sich die Beiträge ansehen und sie verwalten (z. B. können Sie einen Status zuweisen und auf Beiträge und Kommentare antworten).'
       text_design_participatory_process: 'Sie können die verschiedenen Beteiligungsprojekte in Ihrem Ordner verwalten – konfigurieren Sie die Teilnahmemethode, fügen Sie eine Projektbeschreibung hinzu, hängen Sie Bilder an und informieren Sie über relevante Ereignisse. Sie können auch festlegen, wie Teilnehmende bei Ihren Projekten mitwirken können. Zum Beispiel können Sie die Zugriffsrechte festlegen und die Beitrags-, Abstimmungs- und Kommentareinstellungen konfigurieren.'
       title_design_participatory_process: 'Gestalten Sie den partizipativen Prozess'
@@ -520,10 +520,10 @@ de:
       subject: 'Deine erste Idee auf der Plattform von %{organizationName}'
     welcome:
       cta_join_platform: 'Entdecke die Plattform'
-      subject: 'Willkommen auf der Plattform von %{organizationName}'
+      subject: 'Ihre Registrierung für die Plattform von %{organizationName}'
       main_header: Herzlich Willkommen!
-      message_welcome: 'Herzlichen Glückwunsch, Sie haben sich erfolgreich auf der Beteiligungsplattform von %{organizationName} angemeldet. Sie können nun die Plattform erkunden und Ihrer Stimme Gehör verschaffen. Sie können auch ein Profilbild und eine kurze Beschreibung hinzufügen, um anderen mitzuteilen, wer Sie sind.'
-      preheader: 'Hier ist was du machen kannst auf der Plattform von %{organizationName}'
+      message_welcome: 'Sie haben sich erfolgreich auf der Beteiligungsplattform von %{organizationName} angemeldet. Hier können Sie im Dialog mit uns zu bestimmten Fragestellungen Ihre Gedanken austauschen, Ideen sammeln und Feedback geben.'
+      preheader: 'Das können Sie auf der Plattform von %{organizationName} tun:'
     idea_published:
       action_add_image: '%{addImageLink} um die Sichtbarkeit zu erhöhen'
       action_published_idea: 'Veröffentlichte Idee'
