@@ -54,7 +54,6 @@ class WebApi::V1::StaticPageSerializer < WebApi::V1::BaseSerializer
   end
 
   has_many :pins
-  has_many :pinned_admin_publications
   has_one :nav_bar_item
   has_many :static_page_files
   has_many :text_images
