@@ -3,7 +3,7 @@ import {
   Props as MultiBarChartProps,
   Bars as MultiBarChartBars,
 } from '../MultiBarChart/typings';
-import { KeyOfType, BaseMapping } from '../typings';
+import { KeyOfType, BaseMapping, CornerRadius } from '../typings';
 
 export interface Props<Row>
   extends Omit<
@@ -24,6 +24,7 @@ export interface Payload<Row> {
 export interface Mapping<Row> extends BaseMapping<Payload<Row>> {
   category: KeyOfType<Row, string>;
   length: KeyOfType<Row, number>;
+  cornerRadius?: (payload: Payload<Row>) => CornerRadius;
 }
 
 export interface Bars extends Omit<MultiBarChartBars, 'names'> {

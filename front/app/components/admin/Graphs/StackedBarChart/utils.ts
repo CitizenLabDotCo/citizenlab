@@ -12,13 +12,18 @@ export const getBarConfigs = <Row>(
   mapping: Mapping<Row>,
   bars?: Bars
 ) => {
-  const { stack, fill, opacity } = mapping;
+  const { stack, fill, opacity, cornerRadius } = mapping;
 
   const barConfigs: BarConfig[] = stack.map((stackColumn, stackIndex) => {
-    const cells = data.map((row, rowIndex) => ({
-      fill: (fill && fill({ row, rowIndex, stackIndex })) ?? FALLBACK_FILL,
-      opacity: opacity && opacity({ row, rowIndex, stackIndex }),
-    }));
+    const cells = data.map((row, rowIndex) => {
+      const payload = { row, rowIndex, stackIndex };
+
+      return {
+        fill: (fill && fill(payload)) ?? FALLBACK_FILL,
+        opacity: opacity && opacity(payload),
+        radius: cornerRadius && cornerRadius(payload),
+      };
+    });
 
     return {
       props: {

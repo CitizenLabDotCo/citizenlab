@@ -7,6 +7,7 @@ import {
   Cell,
   BaseLabels,
   BaseMapping,
+  CornerRadius,
 } from '../typings';
 
 // PROPS
@@ -29,6 +30,7 @@ interface Payload<Row> {
 export interface Mapping<Row> extends BaseMapping<Payload<Row>> {
   category: KeyOfType<Row, string>;
   length: KeyOfType<Row, number>[];
+  cornerRadius?: (payload: Payload<Row>) => CornerRadius;
 }
 
 export interface Bars {

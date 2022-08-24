@@ -37,6 +37,8 @@ export interface Cell {
   opacity?: number;
 }
 
+export type CornerRadius = number | [number, number, number, number];
+
 // AXES
 export interface AxisProps {
   tickFormatter?: (value: any) => string;

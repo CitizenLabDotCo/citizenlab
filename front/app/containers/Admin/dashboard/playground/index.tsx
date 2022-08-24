@@ -28,6 +28,12 @@ const legendItems: any = [
 
 const colors = ['red', 'blue', 'green'];
 
+const radii = {
+  0: [5, 0, 0, 5],
+  1: 0,
+  2: [0, 5, 5, 0],
+};
+
 const Playground = () => (
   <>
     <Box width="50%" height="400px">
@@ -45,13 +51,14 @@ const Playground = () => (
       />
     </Box>
 
-    <Box width="50%" height="200px" mt="30px">
+    <Box width="50%" height="100px" mt="30px">
       <StackedBarChart
         data={data.slice(0, 1)}
         mapping={{
           stack: ['value', 'value2', 'value'],
           category: 'label',
           fill: ({ stackIndex }) => colors[stackIndex],
+          cornerRadius: ({ stackIndex }) => radii[stackIndex],
         }}
         layout="horizontal"
         xaxis={{ hide: true, domain: [0, 'dataMax'] }}

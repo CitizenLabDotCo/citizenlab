@@ -18,13 +18,18 @@ export const getBarConfigs = <Row>(
   mapping: Mapping<Row>,
   bars?: Bars
 ) => {
-  const { length, fill, opacity } = mapping;
+  const { length, fill, opacity, cornerRadius } = mapping;
 
   const barConfigs: BarConfig[] = length.map((lengthColumn, barIndex) => {
-    const cells = data.map((row, rowIndex) => ({
-      fill: (fill && fill({ row, rowIndex, barIndex })) ?? FALLBACK_FILL,
-      opacity: opacity && opacity({ row, rowIndex, barIndex }),
-    }));
+    const cells = data.map((row, rowIndex) => {
+      const payload = { row, rowIndex, barIndex };
+
+      return {
+        fill: (fill && fill(payload)) ?? FALLBACK_FILL,
+        opacity: opacity && opacity(payload),
+        radius: cornerRadius && cornerRadius(payload),
+      };
+    });
 
     return {
       props: {
