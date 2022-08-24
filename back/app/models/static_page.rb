@@ -95,8 +95,10 @@ class StaticPage < ApplicationRecord
   private
 
   def confirm_is_custom
-    errors.add(:code, 'You cannot delete a page that does not have code: custom') unless custom?
-    throw(:abort) if errors.present?
+    return if custom?
+
+    Rails.logger.info 'Cannot destroy a default static page. Raising error: ActiveRecord::RecordNotDestroyed'
+    raise ActiveRecord::RecordNotDestroyed, 'Cannot destroy a default static page.'
   end
 
   def set_code
