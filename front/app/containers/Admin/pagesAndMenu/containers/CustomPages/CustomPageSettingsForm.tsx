@@ -81,7 +81,6 @@ const CustomPageSettingsForm = ({
                 name="title_multiloc"
                 label={formatMessage(messages.titleLabel)}
                 type="text"
-                labelTooltipText={formatMessage(messages.titleTooltip)}
               />
             </Box>
             <Input
