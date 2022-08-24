@@ -3,7 +3,7 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   pageTitle: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.pageTitle',
-    defaultMessage: 'New custom page',
+    defaultMessage: 'Create custom page',
   },
   contentEditorTitle: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.contentEditorTitle',

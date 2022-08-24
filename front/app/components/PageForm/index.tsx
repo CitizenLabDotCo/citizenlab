@@ -32,7 +32,7 @@ import Button from 'components/UI/Button';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { slugRexEx } from 'utils/textUtils';
+import { slugRegEx } from 'utils/textUtils';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 // hooks
@@ -72,7 +72,7 @@ const PageForm = ({
     ),
     ...(!hideSlugInput && {
       slug: string()
-        .matches(slugRexEx, formatMessage(messages.slugRegexError))
+        .matches(slugRegEx, formatMessage(messages.slugRegexError))
         .required(formatMessage(messages.blankSlugError)),
       local_page_files: mixed(),
     }),

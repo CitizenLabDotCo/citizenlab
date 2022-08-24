@@ -10,7 +10,7 @@ import { SectionField } from 'components/admin/Section';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, string } from 'yup';
 import validateMultiloc from 'utils/yup/validateMultiloc';
-import { slugRexEx } from 'utils/textUtils';
+import { slugRegEx } from 'utils/textUtils';
 // import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 // components
@@ -18,9 +18,7 @@ import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/Section
 import Button from 'components/UI/Button';
 import Input from 'components/HookForm/Input';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-
-// styling
-import styled from 'styled-components';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // constants
 import { pagesAndMenuBreadcrumb } from '../../../breadcrumbs';
@@ -30,43 +28,38 @@ import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
-export interface CreateCustomPageFormValues {
+// services
+import { createCustomPageStream } from 'services/customPages';
+
+interface CreateCustomPageFormValues {
   title_multiloc: Multiloc;
   slug: string;
 }
 
-const StyledMultilocInput = styled(InputMultilocWithLocaleSwitcher)`
-  margin-bottom: 20px;
-`;
-
-type CreateCustomPageFormProps = {
-  onSubmit: (formValues: CreateCustomPageFormValues) => void | Promise<void>;
+interface Props {
   defaultValues?: CreateCustomPageFormValues;
-} & InjectedIntlProps;
+}
 
 const CreateCustomPageHookForm = ({
-  onSubmit,
-  defaultValues,
   intl: { formatMessage },
-}: CreateCustomPageFormProps) => {
+}: Props & InjectedIntlProps) => {
   // types still to change
   const [_error, setError] = useState({});
   const schema = object({
     title_multiloc: validateMultiloc(formatMessage(messages.multilocError)),
     slug: string()
-      .matches(slugRexEx, formatMessage(messages.slugRegexError))
+      .matches(slugRegEx, formatMessage(messages.slugRegexError))
       .required(formatMessage(messages.slugRequiredError)),
   });
 
   const methods = useForm({
     mode: 'onBlur',
-    defaultValues,
     resolver: yupResolver(schema),
   });
 
   const onFormSubmit = async (formValues: CreateCustomPageFormValues) => {
     try {
-      await onSubmit(formValues);
+      createCustomPageStream(formValues);
     } catch (error) {
       setError(error);
     }
@@ -94,12 +87,14 @@ const CreateCustomPageHookForm = ({
         >
           <SectionField>
             <Feedback successMessage={formatMessage(messages.pageTitle)} />
-            <StyledMultilocInput
-              name="title_multiloc"
-              label={formatMessage(messages.titleLabel)}
-              type="text"
-              labelTooltipText={formatMessage(messages.titleTooltip)}
-            />
+            <Box mb="20px">
+              <InputMultilocWithLocaleSwitcher
+                name="title_multiloc"
+                label={formatMessage(messages.titleLabel)}
+                type="text"
+                labelTooltipText={formatMessage(messages.titleTooltip)}
+              />
+            </Box>
             <Input
               label={formatMessage(messages.slugLabel)}
               labelTooltipText={formatMessage(messages.slugTooltip)}
