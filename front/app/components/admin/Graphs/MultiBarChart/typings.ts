@@ -1,5 +1,13 @@
 import React from 'react';
-import { BaseProps, Margin, AxisProps, KeyOfType, Cell } from '../typings';
+import {
+  BaseProps,
+  Margin,
+  AxisProps,
+  KeyOfType,
+  Cell,
+  BaseLabels,
+  BaseMapping,
+} from '../typings';
 
 // PROPS
 export interface Props<Row> extends BaseProps<Row> {
@@ -20,11 +28,9 @@ interface Payload<Row> {
   barIndex: number;
 }
 
-export interface Mapping<Row> {
+export interface Mapping<Row> extends BaseMapping<Payload<Row>> {
   category: KeyOfType<Row, string>;
   length: KeyOfType<Row, number>[];
-  fill?: (payload: Payload<Row>) => string;
-  opacity?: (payload: Payload<Row>) => number;
 }
 
 export interface Bars {
@@ -34,11 +40,8 @@ export interface Bars {
   isAnimationActive?: boolean;
 }
 
-export interface Labels {
-  fill?: string;
-  fontSize?: number;
+interface Labels extends BaseLabels {
   position?: 'top' | 'right';
-  formatter?: (value: number) => string;
 }
 
 // PARSED CONFIGS

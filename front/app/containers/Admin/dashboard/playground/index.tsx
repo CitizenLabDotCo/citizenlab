@@ -4,6 +4,7 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 // import BarChart from 'components/admin/Graphs/BarChart';
 import MultiBarChart from 'components/admin/Graphs/MultiBarChart';
+import StackedBarChart from 'components/admin/Graphs/StackedBarChart';
 // import PieChart from 'components/admin/Graphs/PieChart';
 // import ProgressBars from 'components/admin/Graphs/ProgressBars';
 
@@ -25,6 +26,8 @@ const legendItems: any = [
   { icon: 'circle', color: 'red', label: 'Cherry' },
 ];
 
+const colors = ['red', 'blue', 'green'];
+
 const Playground = () => (
   <>
     <Box width="50%" height="400px">
@@ -33,33 +36,31 @@ const Playground = () => (
         mapping={{
           length: ['value', 'value2'],
           category: 'label',
+          fill: ({ barIndex }) => (barIndex === 0 ? 'blue' : 'red'),
         }}
         legend={{
           position: 'bottom-center',
           items: [legendItems, legendItems.slice(0, 2)],
         }}
       />
+    </Box>
 
-      {/* <MultiBarChart
-        height="100%"
-        data={data}
+    <Box width="50%" height="200px" mt="30px">
+      <StackedBarChart
+        data={data.slice(0, 1)}
         mapping={{
-          length: ['value', 'value2'],
+          stack: ['value', 'value2', 'value'],
           category: 'label',
+          fill: ({ stackIndex }) => colors[stackIndex],
         }}
-        tooltip
-        labels
-      /> */}
-
-      {/* <ProgressBars
-        height={200}
-        data={data}
-        mapping={{
-          name: 'label',
-          length: 'value',
-          total: 'value2',
+        layout="horizontal"
+        xaxis={{ hide: true, domain: [0, 'dataMax'] }}
+        yaxis={{ hide: true }}
+        legend={{
+          position: 'bottom-center',
+          items: [legendItems, legendItems.slice(0, 2)],
         }}
-      /> */}
+      />
     </Box>
   </>
 );

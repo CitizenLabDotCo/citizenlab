@@ -25,6 +25,11 @@ export interface Margin {
 }
 
 // MAPPING
+export interface BaseMapping<Payload> {
+  fill?: (payload: Payload) => string;
+  opacity?: (payload: Payload) => number;
+}
+
 export interface Cell {
   fill: string;
   opacity?: number;
@@ -37,6 +42,18 @@ export interface AxisProps {
   width?: number;
   tickLine?: boolean;
   hide?: boolean;
+  domain?: Domain;
+}
+
+type Domain = [d1: DomainBound, d2: DomainBound];
+
+type DomainBound = 'dataMin' | 'dataMax' | 'auto' | number;
+
+// LABELS
+export interface BaseLabels {
+  fill?: string;
+  fontSize?: number;
+  formatter?: (value: number) => string;
 }
 
 // TOOLTIP

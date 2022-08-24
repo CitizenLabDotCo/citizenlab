@@ -1,5 +1,5 @@
 import { Percentage } from 'typings';
-import { BaseProps, KeyOfType, Cell } from '../typings';
+import { BaseProps, KeyOfType, Cell, BaseMapping } from '../typings';
 import { Payload } from '../BarChart/typings';
 
 // PROPS
@@ -12,11 +12,9 @@ export interface Props<Row> extends BaseProps<Row> {
   onMouseOut?: (payload: Payload<Row>, event: React.MouseEvent) => void;
 }
 
-export interface Mapping<Row> {
+export interface Mapping<Row> extends BaseMapping<Payload<Row>> {
   name: KeyOfType<Row, string>;
   angle: KeyOfType<Row, number>;
-  fill?: (payload: Payload<Row>) => string;
-  opacity?: (payload: Payload<Row>) => number;
 }
 
 export interface Pie {
