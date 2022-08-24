@@ -24,6 +24,18 @@ export const POLICY_PAGES: TPolicyPage[] = [
   'privacy-policy',
 ];
 
+export enum POLICY_PAGE {
+  termsAndConditions = 'terms-and-conditions',
+  privacyPolicy = 'privacy-policy',
+}
+
+export function isPolicyPageSlug(slug: string): slug is TPolicyPage {
+  const termsAndConditionsSlug: TPolicyPage = POLICY_PAGE.termsAndConditions;
+  const privacyPolicySlug: TPolicyPage = POLICY_PAGE.privacyPolicy;
+
+  return slug === termsAndConditionsSlug || slug === privacyPolicySlug;
+}
+
 // Hardcoded pages don't actually exist in the database-
 // their codes are the same as their slugs, which are used to render
 // the footer. The slugs link to hard-coded components, see app/routes.ts.
