@@ -1,9 +1,10 @@
 # Changelog
 
-## Next
+## 2022-08-24
 
 ### Fixed
 - [CL-1505] Posting ideas when there is no current phase
+- [CL-1509] Bulk idea import works for special date cells
 
 ## 2022-08-23
 
