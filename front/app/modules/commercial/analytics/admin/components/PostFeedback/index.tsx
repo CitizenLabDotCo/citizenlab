@@ -1,5 +1,4 @@
 import React, { useRef } from 'react';
-
 // components
 import {
   GraphCardHeader,
@@ -8,13 +7,17 @@ import {
   GraphCardInner,
 } from 'components/admin/GraphWrappers';
 import ReportExportMenu from 'components/admin/ReportExportMenu';
-import { Box, Icon } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Icon,
+  Text,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import PieChart from 'components/admin/Graphs/PieChart';
 import ProgressBars from 'components/admin/Graphs/ProgressBars';
 
-// styling
-import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+// stylin
+import { colors } from 'utils/styleUtils';
 
 // hooks
 import usePostsWithFeedback from '../../../hooks/usePostsFeedback';
@@ -25,45 +28,6 @@ import { InjectedIntlProps } from 'react-intl';
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
-
-const CalendarIcon = styled(Icon)`
-  fill: #044d6c;
-  width: 13px;
-  height: 13px;
-  margin-right: 11px;
-`;
-
-const Text = styled.p`
-  margin: -2px 0 0 0;
-  color: #044d6c;
-  font-size: 14px;
-  display: block !important;
-`;
-
-const ProgressBarsBox = styled(Box)`
-  max-width: 257px;
-  margin: 30px 0 0 50px;
-  width: 100%;
-  ${media.smallerThan1280px`
-    margin: 30px 0 0 0;
-  `}
-`;
-
-const PieBox = styled(Box)`
-  max-width: 210px;
-  width: 100%;
-`;
-
-const WrapperBox = styled(Box)`
-  display: flex;
-  justify-content: center;
-  width: 100%;
-
-  ${media.smallerThan1280px`
-    flex-direction: column;
-    align-items: center;
-  `}
-`;
 
 interface Props {
   projectId?: string;
@@ -76,8 +40,8 @@ const PostFeedback = ({
   const currentPieChart = useRef();
   const currentProgressBarsChart = useRef();
   const data = usePostsWithFeedback(formatMessage, projectId);
+  const largeTablet = useBreakpoint('largeTablet');
   if (!data) return null;
-
   const {
     pieData,
     pieCenterValue,
@@ -102,8 +66,14 @@ const PostFeedback = ({
             data={xlsxData}
           />
         </GraphCardHeader>
-        <WrapperBox>
-          <PieBox>
+        <Box
+          display="flex"
+          justifyContent="space-around"
+          width="100%"
+          flexDirection={largeTablet ? 'column' : 'row'}
+          alignItems={largeTablet ? 'center' : 'flex-start'}
+        >
+          <Box maxWidth="210px" width="100%">
             <PieChart
               height={210}
               width="100%"
@@ -112,20 +82,34 @@ const PostFeedback = ({
               centerValue={pieCenterValue}
               innerRef={currentPieChart}
             />
-          </PieBox>
-          <ProgressBarsBox>
+          </Box>
+          <Box
+            maxWidth="257px"
+            width="100%"
+            mt="30px"
+            ml={largeTablet ? '50px' : '0'}
+            display="flex"
+            flexDirection="column"
+            alignItems="flex-start"
+          >
             <ProgressBars
               data={progressBarsData}
               width="100%"
               height={136}
               innerRef={currentProgressBarsChart}
             />
-            <Text>
-              <CalendarIcon name="calendar" />
+            <Text m="-2px 0 0 0" color="adminTextColor" fontSize="s">
+              <Icon
+                name="calendar"
+                fill={colors.adminTextColor}
+                width="13px"
+                height="13px"
+                mr="11px"
+              />
               {formatMessage(messages.averageTime, { days })}
             </Text>
-          </ProgressBarsBox>
-        </WrapperBox>
+          </Box>
+        </Box>
       </GraphCardInner>
     </GraphCard>
   );
