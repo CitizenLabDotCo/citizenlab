@@ -8,14 +8,14 @@ jest.mock('utils/cl-intl');
 
 type Row = { a: number; name: string };
 
-// const data: Row[] = [
-//   { a: 10, name: 'x' },
-//   { a: 5, name: 'y' },
-// ];
+const data: Row[] = [
+  { a: 15, name: 'x' },
+  { a: 5, name: 'y' },
+];
 
 const getNilData = (): Row[] | NilOrError => null;
 const getErrorData = (): Row[] | NilOrError => new Error();
-// const getData = (): Row[] | NilOrError => data;
+const getData = (): Row[] | NilOrError => data;
 
 describe('<PieChart />', () => {
   describe('Missing data', () => {
@@ -42,18 +42,40 @@ describe('<PieChart />', () => {
     });
   });
 
-  // describe('With data', () => {
-  //   it('renders correctly with non absolute data', () => {
-  //     const data = [
-  //       { name: 'a', color: '#000', value: 1 },
-  //       { name: 'b', color: '#000', value: 2 }
-  //     ];
-  //     const { container } = render(
-  //       <PieChart data={data} width={200} height={200} />
-  //     );
+  describe('With data', () => {
+    it('renders correctly data', () => {
+      const { container } = render(
+        <PieChart
+          width={200}
+          height={200}
+          data={getData()}
+          mapping={{ angle: 'a', name: 'name' }}
+          pie={{ isAnimationActive: false }}
+        />
+      );
 
-  //     const pathSectors = container.querySelectorAll('.recharts-pie-sector > path');
-  //     expect(pathSectors).toHaveLength(3);
-  //   });
-  // });
+      const pathSectors = container.querySelectorAll(
+        '.recharts-pie-sector > path'
+      );
+      expect(pathSectors).toHaveLength(2);
+    });
+
+    it('uses default color scheme if no fill mapping is used', () => {
+      const { container } = render(
+        <PieChart
+          width={200}
+          height={200}
+          data={getData()}
+          mapping={{ angle: 'a', name: 'name' }}
+          pie={{ isAnimationActive: false }}
+        />
+      );
+
+      const pathSectors = container.querySelectorAll(
+        '.recharts-pie-sector > path'
+      );
+      expect(pathSectors[0]).toHaveAttribute('fill', '#2F478A');
+      expect(pathSectors[1]).toHaveAttribute('fill', '#4D85C6');
+    });
+  });
 });
