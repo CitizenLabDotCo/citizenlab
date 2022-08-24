@@ -1,5 +1,5 @@
 import { Props as MultiBarChartProps } from '../MultiBarChart/typings';
-import { KeyOfType, BaseMapping, Cell, CornerRadius } from '../typings';
+import { KeyOfType, BaseMapping, CornerRadius } from '../typings';
 
 export interface Props<Row>
   extends Omit<
@@ -19,21 +19,6 @@ interface Payload<Row> {
 
 export interface Mapping<Row> extends BaseMapping<Payload<Row>> {
   category: KeyOfType<Row, string>;
-  stack: KeyOfType<Row, number>[];
+  stackedLength: KeyOfType<Row, number>[];
   cornerRadius?: (payload: Payload<Row>) => CornerRadius;
 }
-
-// PARSED CONFIGS
-export interface BarConfig {
-  props: {
-    name?: string;
-    dataKey: string;
-    isAnimationActive?: boolean;
-    // TODO
-  };
-  cells: Cell[];
-}
-
-// interface LabelConfig {
-//   // TODO
-// };

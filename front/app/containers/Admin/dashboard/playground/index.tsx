@@ -68,7 +68,7 @@ const Playground = () => (
       <StackedBarChart
         data={data.slice(0, 1)}
         mapping={{
-          stack: ['value', 'value2', 'value'],
+          stackedLength: ['value', 'value2', 'value'],
           category: 'label',
           fill: ({ stackIndex }) => colors[stackIndex],
           cornerRadius: ({ stackIndex }) => radii[stackIndex],
