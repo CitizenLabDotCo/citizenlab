@@ -123,13 +123,11 @@ export const FormEdit = ({
             <FormBuilderToolbox onAddField={onAddField} />
             <StyledRightColumn>
               <Box width="1000px" bgColor="white" minHeight="300px">
-                {!isNilOrError(fields) && (
-                  <FormFields
-                    onEditField={setSelectedField}
-                    handleDragRow={handleDragRow}
-                    selectedFieldId={selectedField?.id}
-                  />
-                )}
+                <FormFields
+                  onEditField={setSelectedField}
+                  handleDragRow={handleDragRow}
+                  selectedFieldId={selectedField?.id}
+                />
               </Box>
             </StyledRightColumn>
             {!isNilOrError(selectedField) && (
