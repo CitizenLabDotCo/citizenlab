@@ -79,7 +79,7 @@ const Forms = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     return null;
   }
 
-  const configs = getFormActionsConfig(project, phases);
+  const formActionsConfigs = getFormActionsConfig(project, phases);
 
   return (
     <>
@@ -88,19 +88,27 @@ const Forms = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           <Title>{formatMessage(messages.survey)}</Title>
           <Text>{formatMessage(messages.surveyDescription)}</Text>
         </Box>
-        {configs.map((config) => {
-          return (
-            <>
-              <FormActions
-                editFormLink={config.editFormLink}
-                viewFormLink={`/projects/${project?.attributes.slug}/ideas/new`}
-                heading={config.heading}
-                postingEnabled={config.postingEnabled}
-                toggleSubmissionsEnabled={config.toggleSubmissionsEnabled}
-              />
-            </>
-          );
-        })}
+        {formActionsConfigs.map(
+          (
+            { editFormLink, heading, postingEnabled, toggleSubmissionsEnabled },
+            index
+          ) => {
+            return (
+              <>
+                <FormActions
+                  editFormLink={editFormLink}
+                  viewFormLink={`/projects/${project?.attributes.slug}/ideas/new`}
+                  heading={heading}
+                  postingEnabled={postingEnabled}
+                  toggleSubmissionsEnabled={toggleSubmissionsEnabled}
+                />
+                {index !== formActionsConfigs.length - 1 && (
+                  <Box height="1px" border="1px solid #E0E0E0" />
+                )}
+              </>
+            );
+          }
+        )}
       </Box>
     </>
   );

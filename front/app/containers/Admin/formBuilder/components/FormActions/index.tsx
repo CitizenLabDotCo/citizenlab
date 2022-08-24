@@ -32,7 +32,7 @@ const FormActions = ({
   toggleSubmissionsEnabled,
 }: FormActionsProps) => {
   return (
-    <Box width="100%" mb="60px">
+    <Box width="100%" my="60px">
       <Box display="flex" flexDirection="row" width="100%" mb="48px">
         <Box width="100%">
           <Title variant="h4">
