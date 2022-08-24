@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import { useParams } from 'react-router-dom';
@@ -24,12 +24,12 @@ import validateMultiloc from 'utils/yup/validateMultiloc';
 
 import {
   IFlatCreateCustomField,
+  IFlatCustomField,
   IFlatCustomFieldWithIndex,
 } from 'services/formCustomFields';
 
 // hooks
 import useFormCustomFields from 'hooks/useFormCustomFields';
-import usePrevious from 'hooks/usePrevious';
 
 // intl
 import { InjectedIntlProps } from 'react-intl';
@@ -46,27 +46,25 @@ const StyledRightColumn = styled(RightColumn)`
   overflow-y: auto;
 `;
 
-export const FormEdit = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+type FormEditProps = {
+  defaultValues: {
+    customFields: IFlatCustomField[];
+  };
+} & InjectedIntlProps;
+
+export const FormEdit = ({
+  intl: { formatMessage },
+  defaultValues,
+}: FormEditProps) => {
   const [selectedField, setSelectedField] = useState<
     IFlatCustomFieldWithIndex | undefined
   >(undefined);
-  const { projectId, phaseId } = useParams() as {
-    projectId: string;
-    phaseId?: string;
-  };
-
-  const { formCustomFields } = useFormCustomFields({
-    projectId,
-    phaseId,
-  });
-
-  const prevFormCustomFields = usePrevious(formCustomFields);
 
   const schema = object().shape({
     customFields: array().of(
       object().shape({
         title_multiloc: validateMultiloc(
-          formatMessage(messages.emptyTitleError)
+          formatMessage(messages.emptyTitleErrorMessage)
         ),
         description_multiloc: object(),
         required: boolean(),
@@ -76,6 +74,7 @@ export const FormEdit = ({ intl: { formatMessage } }: InjectedIntlProps) => {
 
   const methods = useForm({
     mode: 'onBlur',
+    defaultValues,
     resolver: yupResolver(schema),
   });
 
@@ -84,24 +83,11 @@ export const FormEdit = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     control: methods.control,
   });
 
-  useEffect(() => {
-    if (
-      !isNilOrError(formCustomFields) &&
-      (prevFormCustomFields || []).length !== formCustomFields.length
-    ) {
-      formCustomFields.forEach((field) => {
-        append(field);
-      });
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formCustomFields]);
-
   const closeSettings = () => {
     setSelectedField(undefined);
   };
 
-  const handleDelete = async (fieldIndex: number) => {
+  const handleDelete = (fieldIndex: number) => {
     remove(fieldIndex);
     closeSettings();
   };
@@ -132,19 +118,16 @@ export const FormEdit = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     >
       <FocusOn>
         <FormProvider {...methods}>
-          <FormBuilderTopBar control={methods.control} />
+          <FormBuilderTopBar />
           <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
             <FormBuilderToolbox onAddField={onAddField} />
             <StyledRightColumn>
               <Box width="1000px" bgColor="white" minHeight="300px">
-                {!isNilOrError(formCustomFields) && (
-                  <FormFields
-                    onEditField={setSelectedField}
-                    handleDragRow={handleDragRow}
-                    selectedFieldId={selectedField?.id}
-                    control={methods.control}
-                  />
-                )}
+                <FormFields
+                  onEditField={setSelectedField}
+                  handleDragRow={handleDragRow}
+                  selectedFieldId={selectedField?.id}
+                />
               </Box>
             </StyledRightColumn>
             {!isNilOrError(selectedField) && (
@@ -164,8 +147,21 @@ export const FormEdit = ({ intl: { formatMessage } }: InjectedIntlProps) => {
 
 const FormBuilderPage = ({ intl }) => {
   const modalPortalElement = document.getElementById('modal-portal');
+  const { projectId } = useParams() as { projectId: string };
+  const { formCustomFields } = useFormCustomFields({
+    projectId,
+  });
+
+  if (isNilOrError(formCustomFields)) return null;
+
   return modalPortalElement
-    ? createPortal(<FormEdit intl={intl} />, modalPortalElement)
+    ? createPortal(
+        <FormEdit
+          intl={intl}
+          defaultValues={{ customFields: formCustomFields }}
+        />,
+        modalPortalElement
+      )
     : null;
 };
 

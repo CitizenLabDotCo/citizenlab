@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useWatch, Control } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -45,11 +45,7 @@ const StyledStatusLabel = styled(StatusLabel)`
   margin-bottom: auto;
 `;
 
-interface FormBuilderTopBarProps {
-  control: Control;
-}
-
-const FormBuilderTopBar = ({ control }: FormBuilderTopBarProps) => {
+const FormBuilderTopBar = () => {
   const localize = useLocalize();
   const { projectId, phaseId } = useParams() as {
     projectId: string;
@@ -57,10 +53,8 @@ const FormBuilderTopBar = ({ control }: FormBuilderTopBarProps) => {
   };
   const project = useProject({ projectId });
   const [loading, setLoading] = useState(false);
-  const formCustomFields: IFlatCustomField[] = useWatch({
-    control,
-    name: 'customFields',
-  });
+  const { watch } = useFormContext();
+  const formCustomFields: IFlatCustomField[] = watch('customFields');
   const phase = usePhase(phaseId || null);
   const isPostingEnabled = getIsPostingEnabled(project, phase);
 
