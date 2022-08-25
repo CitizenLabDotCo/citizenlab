@@ -86,7 +86,7 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
           }
         />
       </SectionField>
-      <ConfigMultiselectWithLocaleSwitcher // TODO: Only show for multiselect inputs, set locales as platform locales
+      <ConfigMultiselectWithLocaleSwitcher // TODO: Only show for multiselect inputs, set locales as platform locales (or do that within the component)
         name={`customFields.${field.index}.options`}
         locales={['en', 'nl-BE', 'fr-BE']}
       />

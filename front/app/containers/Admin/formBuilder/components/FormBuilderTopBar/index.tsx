@@ -66,12 +66,7 @@ const FormBuilderTopBar = ({ control }: FormBuilderTopBarProps) => {
           enabled: field.enabled,
           title_multiloc: field.title_multiloc || {},
           description_multiloc: field.description_multiloc || {},
-          options: [
-            // TODO: Options should only be sent if input_type = multiselect
-            {
-              title_multiloc: { en: 'Option 1' },
-            },
-          ],
+          options: field.options || {},
         }));
         await updateFormCustomFields(projectId, finalResponseArray);
       } catch {
