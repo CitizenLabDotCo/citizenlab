@@ -175,9 +175,9 @@ es-CL:
       title_no_assignment_past_week: 'La semana pasada no se te asignaron nuevas ideas'
       yesterday_by_author: 'Ayer por %{author}'
       today_by_author: 'Hoy por %{author}'
-      x_days_ago_by_author: '%{x} hace días por %{author}'
+      x_days_ago_by_author: '%{x} días atrás por %{author}'
       idea_section: Ideas
-      initiative_section: Iniciativas
+      initiative_section: Propuestas
       title_initiatives_past_week: 'Nuevas iniciativas asignadas a tu'
       title_successful_initiatives_past_week: 'Se le asignaron iniciativas que alcanzaron el umbral'
     idea_marked_as_spam:
@@ -242,7 +242,7 @@ es-CL:
       preheader: '%{commentAuthor} te mencionó en sus comentarios'
     new_comment_on_commented_idea:
       commented: '%{commentAuthor} escribió:'
-      cta_reply_to: 'Responder a%{commentAuthor}'
+      cta_reply_to: 'Responder a %{commentAuthor}'
       event_description: '%{commentAuthorFull} también escribió un comentario sobre la idea ''%{ideaTitle}'' en la plataforma de participación de %{organizationName}. Haga clic en el botón de abajo para iniciar la conversación con %{commentAuthor}.'
       main_header: '%{commentAuthor} escribió un comentario sobre la misma idea'
       subject: 'Hay un nuevo comentario sobre la idea que comentaste antes'
@@ -250,7 +250,7 @@ es-CL:
     mention_in_comment:
       by_author: 'por %{authorName}'
       commented: '%{commentAuthor} escribió:'
-      cta_reply_to: 'Responder a%{commentAuthor}'
+      cta_reply_to: 'Responder a %{commentAuthor}'
       event_description: '%{commentAuthorFull} te ha mencionado en su comentario sobre la idea ''%{post}''. Haga clic en el siguiente enlace para entrar en la conversación con %{commentAuthor}'
       main_header: 'La gente habla de ti'
       subject: 'Alguien te mencionó en la plataforma de %{organizationName}'
@@ -290,7 +290,7 @@ es-CL:
     comment_on_your_idea:
       by_author: 'por %{authorName}'
       commented: '%{authorFirstName} escribió:'
-      cta_reply_to: 'Responder a%{commentAuthor}'
+      cta_reply_to: 'Responder a %{commentAuthor}'
       event_description: '%{authorNameFull} ha puesto una reacción a tu idea ''%{ideaTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{authorName}.'
       main_header: '%{authorName} comentó tu idea'
       subject: 'Has recibido un comentario en la plataforma de %{organizationName}'
@@ -304,7 +304,7 @@ es-CL:
       preheader: '%{commentAuthor} dejó un comentario sobre la iniciativa por la que tu votaste en la plataforma de %{organizationName}'
     new_comment_on_voted_idea:
       commented: '%{commentAuthor} comentó:'
-      cta_reply_to: 'Responder a%{commentAuthor}'
+      cta_reply_to: 'Responder a %{commentAuthor}'
       days_ago: '%{numberOfDays} días atrás'
       event_description: '%{commentAuthor} ha comentado la idea ''%{ideaTitle}'' sobre la que has votado. Únete al debate en la plataforma de %{organizationName}!'
       main_header: '%{firstName}, hay un nuevo comentario sobre la idea por la que votaste'
@@ -322,9 +322,9 @@ es-CL:
       preheader: '%{authorName} publicó una nueva iniciativa en su plataforma'
     new_idea_for_admin:
       by_author: 'por %{authorName}'
-      commented: '%{authorFirstName} comentado:'
+      commented: '%{authorFirstName} comentó:'
       cta_reply_to: 'Envía tus comentarios a %{authorName}'
-      days_ago: '%{numberOfDays} hace días'
+      days_ago: '%{numberOfDays} días atrás'
       event_description: '%{authorName} ha publicado una nueva idea en tu plataforma. Descúbrelo ahora, haznos llegar tus comentarios o cambia su estado!'
       main_header: '%{firstName}, se ha publicado una nueva idea en tu plataforma'
       subject: 'Alguien publicó una nueva idea en la plataforma %{organizationName}'
@@ -394,8 +394,8 @@ es-CL:
       text_design_participatory_process: 'Como moderador del proyecto, puedes configurar la forma en que los usuarios interactúan dentro del proyecto. Puede añadir nuevas fases utilizando la línea de tiempo. Cada una de estas fases puede tener su propio comportamiento con respecto a la publicación de ideas, comentarios y votaciones.'
       text_moderate_analyse_input: 'Una vez que el proyecto sea lanzado, llegarán las primeras ideas. Recibirás informes semanales con todas las actividades clave para estar al tanto de todo. La visión general de las ideas en la vista del moderador de su proyecto te ayudará a entender qué ideas obtuvieron más votos a favor y en contra.'
       text_share_project_information: 'Para aumentar la calidad de las ideas que se obtienen, es fundamental compartir suficiente información: añadir una descripción del proyecto, adjuntar imágenes (incluyendo bocetos y planos) y comunicar todos los eventos relacionados que se están llevando a cabo. Recuerde: ¡una buena información precede a una buena participación!'
-      title_design_participatory_process: 'Diseñar el proceso participativo'
-      title_moderate_analyse_input: 'Moderar y analizar los datos de entrada'
+      title_design_participatory_process: 'Diseña el proceso participativo'
+      title_moderate_analyse_input: 'Modera y analiza los datos introducidos'
       title_share_project_information: 'Proporcionar información sobre el proyecto'
       title_what_can_you_do_moderator: '¿Qué puedes hacer como moderador del proyecto?'
       title_you_became_moderator: 'Te convertiste en moderador'
@@ -445,7 +445,7 @@ es-CL:
       preheader: '%{organizationName} cambió el estado de tu idea'
     status_change_of_voted_idea:
       status_change: 'El nuevo estado de esta idea es ''%{ideaStatus}'''
-      cta_view_idea: 'Ir a la idea'
+      cta_view_idea: 'Ir a esta idea'
       event_description: '%{organizationName} actualizó el estado de la idea ''%{ideaTitle}'' en su plataforma de participación digital.'
       main_header: 'Una idea que votó tiene un nuevo estado'
       subject: 'El estado de una idea por la que votaste ha cambiado'
@@ -525,7 +525,7 @@ es-CL:
       message_welcome: 'Felicidades, se ha registrado con éxito en la plataforma de participación de %{organizationName}. Ahora puede descubrir la plataforma y hacer que se escuche su voz. También puede añadir una foto de perfil y una breve descripción para darse a conocer.'
       preheader: 'Aquí lo que puedes hacer en la plataforma de %{organizationName}'
     idea_published:
-      action_add_image: '%{addImageLink} para aumentar la visibilidad'
+      action_add_image: '%{addImageLink} para aumentar visibilidad'
       action_published_idea: 'Idea publicada'
       action_send_email: 'Envía a sus contactos un %{sendEmailLink}'
       action_share_fb: 'Deja a tus amigos ahora en %{fbLink}'
