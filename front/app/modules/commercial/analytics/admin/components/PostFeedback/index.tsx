@@ -46,7 +46,7 @@ const Container = styled.div`
   `}
 `;
 
-const RadarChartContainer = styled.div`
+const DonutChartContainer = styled.div`
   width: 50%;
   height: 100%;
   padding: 8px;
@@ -106,7 +106,7 @@ const PostFeedback = ({
           />
         </GraphCardHeader>
         <Container>
-          <RadarChartContainer>
+          <DonutChartContainer>
             <PieChart
               data={pieData}
               mapping={{
@@ -126,7 +126,7 @@ const PostFeedback = ({
               )}
               innerRef={currentPieChart}
             />
-          </RadarChartContainer>
+          </DonutChartContainer>
           <ProgressBarsContainer>
             <Box
               width="100%"
