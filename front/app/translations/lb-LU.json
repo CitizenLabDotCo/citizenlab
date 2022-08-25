@@ -644,6 +644,8 @@
   "app.containers.Comments.commentsSortTitle": "Kommentare sortéiere no ",
   "app.containers.Comments.confirmCommentDeletion": "Sidd Dir sécher, datt Dir dëse Kommentar läsche wëllt? Et ass net méiglech dës Aktioun réckgängeg ze maachen!",
   "app.containers.Comments.deleteComment": "Läschen",
+  "app.containers.Comments.deleteReasonDescriptionError": "Provide more information on your reason",
+  "app.containers.Comments.deleteReasonError": "Provide a reason",
   "app.containers.Comments.deleteReason_inappropriate": "Et ass net ubruecht oder beleidegend",
   "app.containers.Comments.deleteReason_irrelevant": "Dat gehéiert net heihin",
   "app.containers.Comments.deleteReason_other": "Anere Grond",
