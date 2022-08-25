@@ -8,8 +8,9 @@ import messages from './messages';
 import { sum, roundPercentage } from 'utils/math';
 
 // typings
-import { FeedbackRow } from '../../services/analyticsFacts';
+import { FeedbackRow, StatusRow } from '../../services/analyticsFacts';
 import { InjectedIntlProps } from 'react-intl';
+// import { Localize } from 'hooks/useLocalize';
 
 interface Translations {
   statusChanged: string;
@@ -102,6 +103,48 @@ export const parseProgressBarsData = (
   return progressBarsData;
 };
 
+export const parseStackedBarsData = (statusRows: StatusRow[]) => {
+  return [
+    statusRows.reduce(
+      (acc, row) => ({
+        ...acc,
+        [row['status.id']]: row.count,
+      }),
+      {}
+    ),
+  ];
+};
+
+// export const parseStackedBarsLegendItems = (
+//   statusRows: StatusRow[],
+//   localize: Localize
+// ) => {
+//   // TODO
+// }
+
+export const getPieCenterValue = (feedbackRow: FeedbackRow) => {
+  const {
+    sum_feedback_none,
+    sum_feedback_official,
+    sum_feedback_status_change,
+  } = feedbackRow;
+
+  const feedbackCount = sum([
+    sum_feedback_official,
+    sum_feedback_status_change,
+  ]);
+
+  const totalFeedback = sum([feedbackCount, sum_feedback_none]);
+
+  return `${roundPercentage(feedbackCount, totalFeedback)}%`;
+};
+
+const SECONDS_PER_DAY = 86400;
+
+export const getDays = ({ avg_feedback_time_taken }: FeedbackRow) => {
+  return Math.round(avg_feedback_time_taken / SECONDS_PER_DAY);
+};
+
 export const parseExcelData = (
   feedbackRow: FeedbackRow,
   {
@@ -146,27 +189,4 @@ export const parseExcelData = (
   };
 
   return xlsxData;
-};
-
-export const getPieCenterValue = (feedbackRow: FeedbackRow) => {
-  const {
-    sum_feedback_none,
-    sum_feedback_official,
-    sum_feedback_status_change,
-  } = feedbackRow;
-
-  const feedbackCount = sum([
-    sum_feedback_official,
-    sum_feedback_status_change,
-  ]);
-
-  const totalFeedback = sum([feedbackCount, sum_feedback_none]);
-
-  return `${roundPercentage(feedbackCount, totalFeedback)}%`;
-};
-
-const SECONDS_PER_DAY = 86400;
-
-export const getDays = ({ avg_feedback_time_taken }: FeedbackRow) => {
-  return Math.round(avg_feedback_time_taken / SECONDS_PER_DAY);
 };

@@ -11,6 +11,7 @@ import ReportExportMenu from 'components/admin/ReportExportMenu';
 import { Box, Icon } from '@citizenlab/cl2-component-library';
 import PieChart from 'components/admin/Graphs/PieChart';
 import ProgressBars from 'components/admin/Graphs/ProgressBars';
+// import StackedBarChart from 'components/admin/Graphs/StackedBarChart';
 import CenterLabel from './CenterLabel';
 // import Button from 'components/UI/Button';
 
@@ -83,11 +84,12 @@ const PostFeedback = ({
 
   const {
     pieData,
+    progressBarsData,
+    // stackedBarsData,
     pieCenterValue,
     pieCenterLabel,
-    xlsxData,
     days,
-    progressBarsData,
+    xlsxData,
   } = data;
 
   return (
@@ -161,6 +163,25 @@ const PostFeedback = ({
             </Box>
           </ProgressBarsContainer>
         </Container>
+        <Box width="50%" height="100px" mt="30px">
+          {/* <StackedBarChart
+            data={stackedBarsData}
+            mapping={{
+              stackedLength: Object.keys(stackedBarsData[0]),
+              // category: 'label',
+              // fill: ({ stackIndex }) => colors[stackIndex],
+              // cornerRadius: ({ stackIndex }) => radii[stackIndex],
+            }}
+            layout="horizontal"
+            // labels={centerLabels}
+            xaxis={{ hide: true, domain: [0, 'dataMax'] }}
+            yaxis={{ hide: true }}
+            // legend={{
+            //   position: 'bottom-center',
+            //   items: [legendItems, legendItems.slice(0, 2)],
+            // }}
+          /> */}
+        </Box>
       </GraphCardInner>
 
       {/* <Button linkTo="/" /> */}

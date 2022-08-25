@@ -45,7 +45,7 @@ export interface FeedbackRow {
   avg_feedback_time_taken: number;
 }
 
-interface StatusRow {
+export interface StatusRow {
   count: number;
   'status.id': string;
   first_status_title_multiloc: Multiloc;
