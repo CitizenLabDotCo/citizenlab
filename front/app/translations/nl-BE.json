@@ -644,6 +644,8 @@
   "app.containers.Comments.commentsSortTitle": "Rangschik reacties volgens",
   "app.containers.Comments.confirmCommentDeletion": "Ben je zeker dat je deze reactie wil verwijderen? Er is geen weg terug!",
   "app.containers.Comments.deleteComment": "Verwijder",
+  "app.containers.Comments.deleteReasonDescriptionError": "Provide more information on your reason",
+  "app.containers.Comments.deleteReasonError": "Provide a reason",
   "app.containers.Comments.deleteReason_inappropriate": "Het is ongepast of aanstootgevend",
   "app.containers.Comments.deleteReason_irrelevant": "Dit hoort hier niet thuis",
   "app.containers.Comments.deleteReason_other": "Andere reden",
