@@ -80,7 +80,7 @@ const PostFeedback = ({
           flexDirection={largeTablet ? 'column' : 'row'}
           alignItems={largeTablet ? 'center' : 'flex-start'}
         >
-          <Box maxWidth="210px" width="100%">
+          <Box maxWidth="210px" width="50%">
             <PieChart
               height={210}
               width="100%"
@@ -105,12 +105,11 @@ const PostFeedback = ({
           </Box>
           <Box
             maxWidth="257px"
-            width="100%"
-            mt="30px"
-            ml={largeTablet ? '50px' : '0'}
+            width="50%"
+            mt={largeTablet ? '0px' : '24px'}
             display="flex"
             flexDirection="column"
-            alignItems="flex-start"
+            alignItems={largeTablet ? 'center' : 'flex-start'}
           >
             <ProgressBars
               data={progressBarsData}
