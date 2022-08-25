@@ -129,6 +129,7 @@
   "app.components.HookForm.Feedback.submissionErrorTitle": "Er ging iets mis aan onze kant, excuses",
   "app.components.HookForm.Feedback.successMessage": "Formulier succesvol verstuurd",
   "app.components.IdeaCards.showMore": "Toon meer",
+  "app.components.IdeaForm.adminFieldTooltip": "Field only visible to admins",
   "app.components.IdeaForm.author": "Auteur",
   "app.components.IdeaForm.authorPlaceholder": "Begin te typen om te zoeken op gebruikersnaam of -e-mail.",
   "app.components.IdeaForm.contributionFormGeneralSectionTitle": "Wat is je onderwerp?",
