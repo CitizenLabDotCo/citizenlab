@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { convertUrlToUploadFile } from 'utils/fileUtils';
-import { useParams } from 'react-router-dom';
+import { Multiloc, UploadFile } from 'typings';
+import { isEmpty, get, isString } from 'lodash-es';
+import CSSTransition from 'react-transition-group/CSSTransition';
+
+// components
 import ProjectStatusPicker from './components/ProjectStatusPicker';
 import ProjectNameInput from './components/ProjectNameInput';
 import SlugInput from 'components/admin/SlugInput';
@@ -27,20 +30,15 @@ import {
   StyledSectionField,
   ParticipationContextWrapper,
 } from './components/styling';
+
+// hooks
 import useProject from 'hooks/useProject';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
-import CSSTransition from 'react-transition-group/CSSTransition';
-import { validateSlug } from 'utils/textUtils';
-import validateTitle from './utils/validateTitle';
-import { Multiloc, UploadFile } from 'typings';
-import { isNilOrError } from 'utils/helperUtils';
 import useProjectFiles from 'hooks/useProjectFiles';
 import useProjectImages from 'hooks/useProjectImages';
-import { isEmpty, get, isString } from 'lodash-es';
-import eventEmitter from 'utils/eventEmitter';
+import { useParams } from 'react-router-dom';
+
+// services
 import {
   IUpdatedProjectProperties,
   addProject,
@@ -51,7 +49,18 @@ import {
 import { addProjectFile, deleteProjectFile } from 'services/projectFiles';
 import { addProjectImage, deleteProjectImage } from 'services/projectImages';
 
-// typings
+// i18n
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import messages from './messages';
+import { InjectedIntlProps } from 'react-intl';
+
+// utils
+import { validateSlug } from 'utils/textUtils';
+import validateTitle from './utils/validateTitle';
+import { isNilOrError } from 'utils/helperUtils';
+import eventEmitter from 'utils/eventEmitter';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
+
 import { INewProjectCreatedEvent } from '../../all/CreateProject';
 
 export const TIMEOUT = 350;
