@@ -42,7 +42,7 @@ import usePage from 'hooks/usePage';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 
 export interface FormValues {
-  nav_bar_item_title_multiloc: Multiloc;
+  nav_bar_item_title_multiloc?: Multiloc;
   title_multiloc: Multiloc;
   body_multiloc: Multiloc;
   slug?: string;
@@ -67,14 +67,23 @@ const PageForm = ({
   const page = usePage({ pageId });
   const appConfig = useAppConfiguration();
 
-  const schema = object({
-    nav_bar_item_title_multiloc: validateMultiloc(
-      formatMessage(messages.blankTitleError)
-    ),
+  const multilocFields = {
     title_multiloc: validateMultiloc(formatMessage(messages.blankTitleError)),
     body_multiloc: validateMultiloc(
       formatMessage(messages.blankDescriptionError)
     ),
+  };
+
+  // If we're creating a new page, there is no pageId
+  // And also no slug field yet.
+  if (pageId) {
+    multilocFields['nav_bar_item_title_multiloc'] = validateMultiloc(
+      formatMessage(messages.blankTitleError)
+    );
+  }
+
+  const schema = object({
+    ...multilocFields,
     ...(!hideSlugInput && {
       slug: string()
         .matches(slugRexEx, formatMessage(messages.slugRegexError))
