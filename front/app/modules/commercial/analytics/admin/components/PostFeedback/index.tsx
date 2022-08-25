@@ -91,7 +91,15 @@ const PostFeedback = ({
     progressBarsData,
   } = data;
 
-  const ideaStatusColors = ideaStatuses.map((ideaStatus) => ideaStatus.attributes.color);
+  console.log('idea statuses:')
+  console.log(ideaStatuses.map(({ attributes }) => attributes.title_multiloc.en));
+
+  // const ideaStatusColorsById = ideaStatuses.reduce((acc, { id, attributes }) => ({
+  //   ...acc,
+  //   [id]: attributes.color
+  // }), {});
+
+  // console.log(ideaStatusColorsById)
 
   return (
     <GraphCard className="fullWidth dynamicHeight">
