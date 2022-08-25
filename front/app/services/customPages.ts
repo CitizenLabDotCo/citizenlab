@@ -6,9 +6,6 @@ interface ICustomPage {}
 
 const customPagesEndpoint = `${API_PATH}/pages`;
 
-export function createCustomPageStream(pageData: {
-  title_multiloc: Multiloc;
-  slug?: string;
-}) {
+export function createCustomPageStream(pageData: { title_multiloc: Multiloc }) {
   return streams.add<ICustomPage>(`${customPagesEndpoint}`, pageData);
 }
