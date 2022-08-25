@@ -14,9 +14,7 @@ import {
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import useProjectFolderImages from '../../../hooks/useProjectFolderImages';
 import useProjectFolder from '../../../hooks/useProjectFolder';
-import useAppConfiguration from 'hooks/useAppConfiguration';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useLocale from 'hooks/useLocale';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import {
@@ -46,8 +44,6 @@ interface Props {
 }
 
 const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
-  const locale = useLocale();
-  const appConfig = useAppConfiguration();
   const projectFolder = useProjectFolder({ projectFolderId });
   const projectFolderFilesRemote = useProjectFolderFiles(projectFolderId);
   const projectFolderImagesRemote = useProjectFolderImages(projectFolderId);
@@ -407,10 +403,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   };
 
   // ---- Rendering
-  if (
-    (mode === 'edit' && isNilOrError(projectFolder)) ||
-    isNilOrError(appConfig)
-  ) {
+  if (mode === 'edit' && isNilOrError(projectFolder)) {
     return null;
   }
 
@@ -466,7 +459,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           <SlugInput
             inputFieldId="folder-slug"
             slug={slug}
-            previewUrlWithoutSlug={`${appConfig.data.attributes.host}/${locale}/folders/${slug}`}
+            pathnameWithoutSlug={'folders'}
             apiErrors={errors}
             showSlugErrorMessage={showSlugErrorMessage}
             onSlugChange={handleSlugOnChange}

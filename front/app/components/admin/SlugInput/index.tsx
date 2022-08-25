@@ -1,4 +1,6 @@
 import React from 'react';
+import useLocale from 'hooks/useLocale';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 
 // components
 import Error from 'components/UI/Error';
@@ -18,13 +20,14 @@ import messages from './messages';
 
 // typings
 import { CLErrors } from 'typings';
+import { isNilOrError } from 'utils/helperUtils';
 
 export type TApiErrors = CLErrors | null;
 
 export interface Props {
   inputFieldId?: string;
   slug: string | null;
-  previewUrlWithoutSlug: string;
+  pathnameWithoutSlug: string;
   apiErrors: CLErrors | null;
   showSlugErrorMessage: boolean;
   onSlugChange: (slug: string) => void;
@@ -33,60 +36,72 @@ export interface Props {
 const SlugInput = ({
   inputFieldId,
   slug,
-  previewUrlWithoutSlug,
+  pathnameWithoutSlug,
   apiErrors,
   showSlugErrorMessage,
   onSlugChange,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
-  const previewUrl = `${previewUrlWithoutSlug}/${slug}`;
+  const locale = useLocale();
+  const appConfig = useAppConfiguration();
 
-  return (
-    <StyledSectionField>
-      <SubSectionTitle>
-        <FormattedMessage {...messages.url} />
-        <IconTooltip
-          content={
-            // needs to change
-            <FormattedMessage
-              {...messages.urlSlugTooltip}
-              values={{
-                currentURL: (
-                  <em>
-                    <b>{previewUrl}</b>
-                  </em>
-                ),
-                currentSlug: (
-                  <em>
-                    <b>{slug}</b>
-                  </em>
-                ),
-              }}
-            />
-          }
+  if (!isNilOrError(locale) && !isNilOrError(appConfig)) {
+    const hostName = appConfig.data.attributes.host;
+    const previewUrl = slug
+      ? `${hostName}/${locale}/${pathnameWithoutSlug}/${slug}`
+      : null;
+
+    return (
+      <StyledSectionField>
+        <SubSectionTitle>
+          <FormattedMessage {...messages.url} />
+          <IconTooltip
+            content={
+              // needs to change
+              <FormattedMessage
+                {...messages.urlSlugTooltip}
+                values={{
+                  currentURL: (
+                    <em>
+                      <b>{previewUrl}</b>
+                    </em>
+                  ),
+                  currentSlug: (
+                    <em>
+                      <b>{slug}</b>
+                    </em>
+                  ),
+                }}
+              />
+            }
+          />
+        </SubSectionTitle>
+        <StyledWarning>
+          <FormattedMessage {...messages.urlSlugBrokenLinkWarning} />
+        </StyledWarning>
+        <StyledInput
+          id={inputFieldId}
+          type="text"
+          label={<FormattedMessage {...messages.urlSlugLabel} />}
+          onChange={onSlugChange}
+          value={slug}
         />
-      </SubSectionTitle>
-      <StyledWarning>
-        <FormattedMessage {...messages.urlSlugBrokenLinkWarning} />
-      </StyledWarning>
-      <StyledInput
-        id={inputFieldId}
-        type="text"
-        label={<FormattedMessage {...messages.urlSlugLabel} />}
-        onChange={onSlugChange}
-        value={slug}
-      />
-      <SlugPreview>
-        <b>{formatMessage(messages.resultingURL)}</b>: {previewUrl}
-      </SlugPreview>
-      {/* Backend error */}
-      {apiErrors && <Error fieldName="slug" apiErrors={apiErrors.slug} />}
-      {/* Frontend error */}
-      {showSlugErrorMessage && (
-        <Error text={formatMessage(messages.regexError)} />
-      )}
-    </StyledSectionField>
-  );
+        {previewUrl && (
+          <SlugPreview>
+            <b>{formatMessage(messages.resultingURL)}</b>: {previewUrl}
+          </SlugPreview>
+        )}
+        {/* Backend error */}
+        {apiErrors && <Error fieldName="slug" apiErrors={apiErrors.slug} />}
+        {/* Frontend error */}
+        {showSlugErrorMessage && (
+          <Error text={formatMessage(messages.regexError)} />
+        )}
+      </StyledSectionField>
+    );
+  }
+
+  return null;
 };
 
 export default injectIntl(SlugInput);

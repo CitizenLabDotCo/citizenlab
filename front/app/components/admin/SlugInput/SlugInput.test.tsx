@@ -14,7 +14,7 @@ const slug = 'my-folder';
 const defaultProps: Props = {
   apiErrors: {},
   onSlugChange: jest.mock,
-  previewUrlWithoutSlug: `localhost:3000/my-area-folder/${slug}`,
+  pathnameWithoutSlug: 'folders',
   showSlugErrorMessage: true,
   slug,
 };
