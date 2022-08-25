@@ -22,7 +22,7 @@ import { colors } from 'utils/styleUtils';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../../hooks/usePostsFeedback/messages';
 
 // hooks
 import usePostsWithFeedback from '../../hooks/usePostsFeedback';
@@ -50,8 +50,8 @@ const PostFeedback = ({
 
   const {
     pieData,
-    pieCenterValue,
-    pieCenterLabel,
+    // pieCenterValue,
+    // pieCenterLabel,
     xlsxData,
     days,
     progressBarsData,
@@ -84,8 +84,13 @@ const PostFeedback = ({
               height={210}
               width="100%"
               data={pieData}
-              centerLabel={pieCenterLabel}
-              centerValue={pieCenterValue}
+              mapping={{
+                angle: 'value',
+                name: 'name',
+                fill: ({ row: { color } }) => color,
+              }}
+              // centerLabel={pieCenterLabel}
+              // centerValue={pieCenterValue}
               innerRef={currentPieChart}
             />
           </Box>

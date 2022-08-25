@@ -1,11 +1,11 @@
 // i18n
-import messages from '../components/PostFeedback/messages';
+import messages from './messages';
 
 // utils
 import { sum, roundPercentage } from 'utils/math';
 
 // typings
-import { FeedbackRow } from '../services/analyticsFacts';
+import { FeedbackRow } from '../../services/analyticsFacts';
 import { InjectedIntlProps } from 'react-intl';
 
 interface Translations {

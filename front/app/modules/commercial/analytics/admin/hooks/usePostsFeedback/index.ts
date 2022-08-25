@@ -6,7 +6,7 @@ import {
   Query,
   QuerySchema,
   Response,
-} from '../services/analyticsFacts';
+} from '../../services/analyticsFacts';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
