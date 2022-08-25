@@ -62,10 +62,26 @@ resource 'StaticPages' do
 
     patch 'web_api/v1/static_pages/:id' do
       with_options scope: :static_page do
-        parameter :title_multiloc, 'The title of the static page, as a multiloc string', required: true
-        parameter :top_info_section_multiloc, 'The content of the static page, as a multiloc HTML string', required: true
-        parameter :bottom_info_section_multiloc, 'The content of the static page, as a multiloc HTML string', required: true
+        parameter :title_multiloc, 'The title of the static page, as a multiloc string'
         parameter :slug, 'The unique slug of the static page. If not given, it will be auto generated'
+        parameter :banner_enabled, 'if banner is enabled'
+        parameter :banner_layout, 'the specific layout for the banner, one of: full_width_banner_layout two_column_layout two_row_layout'
+        parameter :banner_overlay_color, 'color of the banner overlay'
+        parameter :banner_overlay_opacity, 'opacity of the banner overlay'
+        parameter :banner_cta_button_multiloc, 'multiloc content for the CTA button'
+        parameter :banner_cta_button_type, 'type of the CTA, one of: customized_button no_button'
+        parameter :banner_cta_button_url, 'url for the CTA'
+        parameter :banner_header_multiloc, 'multiloc content for the banner header'
+        parameter :banner_subheader_multiloc, 'multiloc content for the banner subheader'
+        parameter :top_info_section_enabled, 'if the top info section is enabled'
+        parameter :top_info_section_multiloc, 'The top content of the static page, as a multiloc HTML string'
+        parameter :files_section_enabled, 'if the files section is enabled'
+        parameter :projects_enabled, 'if the projects section is enabled'
+        parameter :projects_filter_type, 'the filter used to filter projects for the projects in the projects section, one of: area topics'
+        parameter :events_widget_enabled, 'if events section is enabled'
+        parameter :bottom_info_section_enabled, 'if the bottom info section is enabled'
+        parameter :bottom_info_section_multiloc, 'The bottom content of the static page, as a multiloc HTML string'
+        parameter :header_bg, 'image for the header background'
         parameter :pinned_admin_publication_ids, 'the IDs of admin publications that are pinned to the page', type: :array
       end
       ValidationErrorHelper.new.error_fields self, StaticPage
@@ -139,9 +155,27 @@ resource 'StaticPages' do
 
     post 'web_api/v1/static_pages' do
       with_options scope: :static_page do
-        parameter :title_multiloc, 'The title of the static page, as a multiloc string', required: true
-        parameter :top_info_section_multiloc, 'The content of the static page, as a multiloc HTML string', required: true
+        parameter :title_multiloc, 'The title of the static page, as a multiloc string'
         parameter :slug, 'The unique slug of the static page. If not given, it will be auto generated'
+        parameter :banner_enabled, 'if banner is enabled'
+        parameter :banner_layout, 'the specific layout for the banner, one of: full_width_banner_layout two_column_layout two_row_layout'
+        parameter :banner_overlay_color, 'color of the banner overlay'
+        parameter :banner_overlay_opacity, 'opacity of the banner overlay'
+        parameter :banner_cta_button_multiloc, 'multiloc content for the CTA button'
+        parameter :banner_cta_button_type, 'type of the CTA, one of: customized_button no_button'
+        parameter :banner_cta_button_url, 'url for the CTA'
+        parameter :banner_header_multiloc, 'multiloc content for the banner header'
+        parameter :banner_subheader_multiloc, 'multiloc content for the banner subheader'
+        parameter :top_info_section_enabled, 'if the top info section is enabled'
+        parameter :top_info_section_multiloc, 'The top content of the static page, as a multiloc HTML string'
+        parameter :files_section_enabled, 'if the files section is enabled'
+        parameter :projects_enabled, 'if the projects section is enabled'
+        parameter :projects_filter_type, 'the filter used to filter projects for the projects in the projects section, one of: area topics'
+        parameter :events_widget_enabled, 'if events section is enabled'
+        parameter :bottom_info_section_enabled, 'if the bottom info section is enabled'
+        parameter :bottom_info_section_multiloc, 'The bottom content of the static page, as a multiloc HTML string'
+        parameter :header_bg, 'image for the header background'
+        parameter :pinned_admin_publication_ids, 'the IDs of admin publications that are pinned to the page', type: :array
       end
       ValidationErrorHelper.new.error_fields self, StaticPage
 
