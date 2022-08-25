@@ -4,7 +4,7 @@ import { Multiloc } from 'typings';
 
 interface ICustomPage {}
 
-const customPagesEndpoint = `${API_PATH}/pages`;
+const customPagesEndpoint = `${API_PATH}/custom_pages`;
 
 export function createCustomPageStream(pageData: { title_multiloc: Multiloc }) {
   return streams.add<ICustomPage>(`${customPagesEndpoint}`, pageData);
