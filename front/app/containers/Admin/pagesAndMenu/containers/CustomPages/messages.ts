@@ -9,10 +9,6 @@ export default defineMessages({
     id: 'app.containers.Admin.pagesAndMenu.containers.CustomPages.newCustomPageMetaDescription',
     defaultMessage: 'Meta description',
   },
-  pageSettingsTab: {
-    id: 'app.containers.Admin.pagesAndMenu.containers.CustomPages.pageSettingsTab',
-    defaultMessage: 'Page settings',
-  },
   newCustomPagePageTitle: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.newCustomPagePageTitle',
     defaultMessage: 'Create custom page',
@@ -20,10 +16,6 @@ export default defineMessages({
   titleMultilocError: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleMultilocError',
     defaultMessage: 'Enter a title in every language',
-  },
-  pageTitle: {
-    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.pageTitle',
-    defaultMessage: 'Create custom page',
   },
   contentEditorTitle: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.contentEditorTitle',
@@ -40,14 +32,6 @@ export default defineMessages({
   messageSuccess: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.messageSuccess',
     defaultMessage: 'Custom page saved',
-  },
-  error: {
-    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.error',
-    defaultMessage: "Couldn't save custom page",
-  },
-  multilocError: {
-    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.multilocError',
-    defaultMessage: 'Please enter a title in every language',
   },
   titleLabel: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleLabel',
@@ -70,9 +54,5 @@ export default defineMessages({
   slugRequiredError: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.slugRequiredError',
     defaultMessage: 'You must enter a slug',
-  },
-  createCustomPage: {
-    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.createCustomPage',
-    defaultMessage: 'Create custom page',
   },
 });
