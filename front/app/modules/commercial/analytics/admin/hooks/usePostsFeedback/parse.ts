@@ -1,3 +1,6 @@
+// styling
+import { colors } from 'components/admin/Graphs/styling';
+
 // i18n
 import messages from './messages';
 
@@ -46,12 +49,12 @@ export const parsePieData = (feedbackRow: FeedbackRow) => {
     {
       name: 'sum_feedback',
       value: feedbackCount,
-      color: '#40B8C5',
+      color: colors.lightBlue,
     },
     {
       name: 'sum_no_feedback',
       value: sum_feedback_none,
-      color: '#E0E0E0',
+      color: colors.lightGrey,
     },
   ];
 
