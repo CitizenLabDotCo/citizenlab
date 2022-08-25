@@ -129,6 +129,7 @@
   "app.components.HookForm.Feedback.submissionErrorTitle": "Hubo un problema de nuestro parte, lo sentimos",
   "app.components.HookForm.Feedback.successMessage": "Formulario enviado con éxito",
   "app.components.IdeaCards.showMore": "Mostrar más",
+  "app.components.IdeaForm.adminFieldTooltip": "Field only visible to admins",
   "app.components.IdeaForm.author": "Autor",
   "app.components.IdeaForm.authorPlaceholder": "Empieza a escribir para buscar un correo electrónico o un nombre de usuario...",
   "app.components.IdeaForm.contributionFormGeneralSectionTitle": "¿Cuál es tu contribución?",
