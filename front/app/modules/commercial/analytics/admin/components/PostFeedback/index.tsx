@@ -8,13 +8,14 @@ import {
   GraphCardInner,
 } from 'components/admin/GraphWrappers';
 import ReportExportMenu from 'components/admin/ReportExportMenu';
-import { Box, Icon, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box, Icon } from '@citizenlab/cl2-component-library';
 import PieChart from 'components/admin/Graphs/PieChart';
 import ProgressBars from 'components/admin/Graphs/ProgressBars';
 import CenterLabel from './CenterLabel';
 
 // styling
-import { colors, fontSizes } from 'utils/styleUtils';
+import styled from 'styled-components';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -33,6 +34,41 @@ interface Props {
   projectId?: string;
 }
 
+const Container = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+
+  ${media.smallerThan1100px`
+    flex-direction: column;
+  `}
+`;
+
+const RadarChartContainer = styled.div`
+  width: 50%;
+  height: 100%;
+  padding: 8px;
+
+  ${media.smallerThan1100px`
+    width: 100%;
+    height: 50%;
+  `}
+`;
+
+const ProgressBarsContainer = styled.div`
+  width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+
+  ${media.smallerThan1100px`
+    width: 100%;
+    height: 50%;
+  `}
+`;
+
 const PostFeedback = ({
   projectId,
   intl: { formatMessage },
@@ -40,7 +76,6 @@ const PostFeedback = ({
   const currentPieChart = useRef();
   const currentProgressBarsChart = useRef();
   const data = usePostsWithFeedback(formatMessage, projectId);
-  const largeTablet = useBreakpoint('largeTablet');
 
   if (isNilOrError(data)) return null;
 
@@ -68,18 +103,9 @@ const PostFeedback = ({
             xlsxData={xlsxData}
           />
         </GraphCardHeader>
-        <Box
-          width="100%"
-          display="flex"
-          flexDirection={largeTablet ? 'column' : 'row'}
-          alignItems="center"
-          // justifyContent="center"
-          // alignItems={largeTablet ? 'center' : 'flex-start'}
-        >
-          <Box maxWidth="256px" width="50%">
+        <Container>
+          <RadarChartContainer>
             <PieChart
-              width="100%"
-              height={256}
               data={pieData}
               mapping={{
                 angle: 'value',
@@ -87,7 +113,7 @@ const PostFeedback = ({
                 fill: ({ row: { color } }) => color,
               }}
               pie={{
-                innerRadius: '68%',
+                innerRadius: '85%',
               }}
               centerLabel={({ viewBox: { cy } }) => (
                 <CenterLabel
@@ -98,37 +124,41 @@ const PostFeedback = ({
               )}
               innerRef={currentPieChart}
             />
-          </Box>
-          <Box
-            maxWidth="256px"
-            width="50%"
-            display="flex"
-            flexDirection="column"
-          >
-            <ProgressBars
-              data={progressBarsData}
-              width="100%"
-              height={136}
-              innerRef={currentProgressBarsChart}
-            />
+          </RadarChartContainer>
+          <ProgressBarsContainer>
             <Box
-              m="0 0 0 0"
-              style={{
-                color: colors.adminTextColor,
-                fontSize: fontSizes.s,
-              }}
+              width="100%"
+              maxWidth="256px"
+              display="flex"
+              flexDirection="column"
+              justifyContent="center"
+              alignItems="center"
             >
-              <Icon
-                name="calendar"
-                fill={colors.adminTextColor}
-                width="13px"
-                height="13px"
-                mr="11px"
+              <ProgressBars
+                height={136}
+                data={progressBarsData}
+                innerRef={currentProgressBarsChart}
               />
-              {formatMessage(messages.averageTime, { days })}
+              <Box
+                m="0 0 0 0"
+                style={{
+                  color: colors.adminTextColor,
+                  fontSize: fontSizes.s,
+                }}
+                width="100%"
+              >
+                <Icon
+                  name="calendar"
+                  fill={colors.adminTextColor}
+                  width="13px"
+                  height="13px"
+                  mr="11px"
+                />
+                {formatMessage(messages.averageTime, { days })}
+              </Box>
             </Box>
-          </Box>
-        </Box>
+          </ProgressBarsContainer>
+        </Container>
       </GraphCardInner>
     </GraphCard>
   );

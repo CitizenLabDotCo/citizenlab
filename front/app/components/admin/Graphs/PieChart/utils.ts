@@ -30,7 +30,7 @@ export const getPieConfig = <Row>(
       dataKey,
       isAnimationActive: pie?.isAnimationActive,
       innerRadius: pie?.innerRadius,
-      outerRadius: pie?.outerRadius,
+      outerRadius: pie?.outerRadius ?? '100%',
       startAngle: pie?.startAngle ?? DEFAULT_START_ANGLE,
       endAngle: pie?.endAngle ?? DEFAULT_END_ANGLE,
       label: getAnnotations(annotations, nameKey, dataKey),
