@@ -58,7 +58,10 @@ const NavbarItemForm = ({
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onFormSubmit)}>
+      <form
+        onSubmit={methods.handleSubmit(onFormSubmit)}
+        data-testid="navbarItemForm"
+      >
         <SectionField>
           <Feedback
             successMessage={formatMessage(messages.savePageSuccessMessage)}
