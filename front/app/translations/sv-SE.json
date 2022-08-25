@@ -129,6 +129,7 @@
   "app.components.HookForm.Feedback.submissionErrorTitle": "Ursäkta, det var ett problem hos oss",
   "app.components.HookForm.Feedback.successMessage": "Formuläret har skickats in",
   "app.components.IdeaCards.showMore": "Visa mer",
+  "app.components.IdeaForm.adminFieldTooltip": "Field only visible to admins",
   "app.components.IdeaForm.author": "Författare",
   "app.components.IdeaForm.authorPlaceholder": "Börja skriva för att söka efter användarnamn eller e-postadress...",
   "app.components.IdeaForm.contributionFormGeneralSectionTitle": "Vad är ditt bidrag?",
