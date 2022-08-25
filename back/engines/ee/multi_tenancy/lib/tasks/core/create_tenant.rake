@@ -178,7 +178,7 @@ namespace :cl2_back do
           allowed: true
         },
         events_widget: {
-          enabled: true
+          allowed: true
         },
         initiatives: {
           enabled: true,

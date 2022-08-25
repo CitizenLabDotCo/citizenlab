@@ -249,7 +249,7 @@ module MultiTenancy
               allowed: true
             },
             events_widget: {
-              enabled: true
+              allowed: true
             },
             initiatives: {
               enabled: true,
