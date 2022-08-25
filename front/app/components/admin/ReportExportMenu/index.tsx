@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { findDOMNode } from 'react-dom';
 import { trackEventByName } from 'utils/analytics';
 import { Canvg } from 'canvg';
+import XLSX from 'xlsx';
 
 // styling
 import styled from 'styled-components';
@@ -35,29 +36,10 @@ const StyledButton = styled(Button)`
   }
 `;
 
-const getSVGStringStart = (width: number, height: number) =>
-  `<svg xmlns="http://www.w3.org/2000/svg" class="recharts-surface" width="${width}" height="${height}"`;
-
-const replaceWH = (
-  svgContent: string,
-  width: number,
-  height: number,
-  newWidth: number,
-  newHeight: number
-) => {
-  const start = getSVGStringStart(width, height);
-  const contentWithoutStart = svgContent.split(start)[1];
-  const newStart = getSVGStringStart(
-    Math.round(newWidth),
-    Math.round(newHeight)
-  );
-  return `${newStart}${contentWithoutStart}`;
-};
-
 interface ReportExportMenuProps {
   className?: string;
   name: string;
-  svgNode?: React.RefObject<any>;
+  svgNode?: React.RefObject<any> | React.RefObject<any>[];
   xlsxEndpoint?: string;
   startAt?: string | null | undefined;
   endAt?: string | null;
@@ -68,6 +50,7 @@ interface ReportExportMenuProps {
   currentProjectFilterLabel?: string | undefined;
   currentGroupFilterLabel?: string | undefined;
   currentTopicFilterLabel?: string | undefined;
+  xlsxData?: object;
 }
 
 const ReportExportMenu = ({
@@ -85,6 +68,7 @@ const ReportExportMenu = ({
   currentTopicFilterLabel,
   currentProjectFilterLabel,
   intl: { formatMessage, formatDate },
+  xlsxData,
 }: ReportExportMenuProps & InjectedIntlProps) => {
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const [exportingXls, setExportingXls] = useState(false);
@@ -120,68 +104,81 @@ const ReportExportMenu = ({
   }`;
 
   const handleDownloadSvg = () => {
-    // eslint-disable-next-line react/no-find-dom-node
-    const node = findDOMNode(svgNode && svgNode.current.container.children[0]);
-    if (node) {
-      const svgContent = new XMLSerializer().serializeToString(node);
-      const svgBlob = new Blob([svgContent], {
-        type: 'image/svg+xml;charset=utf-8',
-      });
-      setDropdownOpened(false);
-      saveAs(svgBlob, `${fileName}.svg`);
-    }
+    const svgNodes =
+      svgNode instanceof Array ? svgNode : svgNode ? [svgNode] : [];
+
+    svgNodes.forEach((svgNode_, i) => {
+      // eslint-disable-next-line react/no-find-dom-node
+      const node = findDOMNode(
+        svgNode_ && svgNode_.current.container.children[0]
+      );
+      if (node) {
+        const svgContent = new XMLSerializer().serializeToString(node);
+        const svgBlob = new Blob([svgContent], {
+          type: 'image/svg+xml;charset=utf-8',
+        });
+        setDropdownOpened(false);
+        saveAs(svgBlob, `${fileName}${i === 0 ? '' : `_${i}`}.svg`);
+      }
+    });
 
     trackEventByName('Clicked export svg', { extra: { graph: name } });
   };
 
   const handleDownloadPng = async () => {
-    // eslint-disable-next-line react/no-find-dom-node
-    const node = findDOMNode(svgNode && svgNode.current.container.children[0]);
-    if (node) {
-      // Create copy of node to trick TS (doesn't seem to understand that this will be always be a SVG)
-      const copy = node as SVGElement;
+    const svgNodes =
+      svgNode instanceof Array ? svgNode : svgNode ? [svgNode] : [];
 
-      // Get aspect ratio
-      const width = copy.clientWidth;
-      const height = copy.clientHeight;
-
-      const aspectRatio = width / height;
-
-      // Increase width and height for better resolution
-      const newWidth = aspectRatio > 1 ? 4000 : aspectRatio * 4000;
-      const newHeight = aspectRatio <= 1 ? 4000 : (1 / aspectRatio) * 4000;
-
-      // Convert SVG to string
-      const svgContent = new XMLSerializer().serializeToString(node);
-
-      // Make SVG string with bigger width and height
-      const newSvgContent = replaceWH(
-        svgContent,
-        width,
-        height,
-        newWidth,
-        newHeight
+    svgNodes.forEach(async (svgNode_, i) => {
+      // eslint-disable-next-line react/no-find-dom-node
+      const node = findDOMNode(
+        svgNode_ && svgNode_.current.container.children[0]
       );
+      if (node) {
+        // Create copy of node to trick TS (doesn't seem to understand that this will be always be a SVG)
+        const copy = node.cloneNode(true) as SVGElement;
 
-      // Create canvas
-      const canvas = document.createElement('canvas');
+        // Get aspect ratio
+        const width = (node as SVGElement).clientWidth;
+        const height = (node as SVGElement).clientHeight;
 
-      const ctx = canvas.getContext('2d');
-      if (!ctx) return;
+        const aspectRatio = width / height;
 
-      // Start SVG rendering with animations and mouse handling
-      const v = await Canvg.fromString(ctx, newSvgContent);
-      v.start();
+        // Increase width and height for better resolution
+        const newWidth = aspectRatio > 1 ? 4000 : aspectRatio * 4000;
+        const newHeight = aspectRatio <= 1 ? 4000 : (1 / aspectRatio) * 4000;
 
-      // Convert the Canvas to an image
-      const link = document.createElement('a');
-      link.setAttribute('download', `${fileName}.png`);
-      link.setAttribute(
-        'href',
-        canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream')
-      );
-      link.click();
-    }
+        copy.setAttribute('width', String(newWidth));
+        copy.setAttribute('height', String(newHeight));
+
+        // Convert SVG to string
+        const svgContent = new XMLSerializer().serializeToString(copy);
+
+        // Create canvas
+        const canvas = document.createElement('canvas');
+
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        // Start SVG rendering with animations and mouse handling
+        const v = await Canvg.fromString(ctx, svgContent);
+        v.start();
+
+        // Convert the Canvas to an image
+        const link = document.createElement('a');
+        link.setAttribute(
+          'download',
+          `${fileName}${i === 0 ? '' : `_${i}`}.png`
+        );
+        link.setAttribute(
+          'href',
+          canvas
+            .toDataURL('image/png')
+            .replace('image/png', 'image/octet-stream')
+        );
+        link.click();
+      }
+    });
 
     trackEventByName('Clicked export png', { extra: { graph: name } });
   };
@@ -191,29 +188,38 @@ const ReportExportMenu = ({
   };
 
   const downloadXlsx = async () => {
-    try {
-      setExportingXls(true);
-      const blob = await requestBlob(
-        xlsxEndpoint,
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        {
-          start_at: startAt,
-          end_at: endAt,
-          interval: resolution,
-          project: currentProjectFilter,
-          group: currentGroupFilter,
-          topic: currentTopicFilter,
+    if (xlsxEndpoint) {
+      try {
+        setExportingXls(true);
+        const blob = await requestBlob(
+          xlsxEndpoint,
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          {
+            start_at: startAt,
+            end_at: endAt,
+            interval: resolution,
+            project: currentProjectFilter,
+            group: currentGroupFilter,
+            topic: currentTopicFilter,
+          }
+        );
+        if (blob.size <= 2467) {
+          throw new Error(`Empty xlsx : ${xlsxEndpoint}`);
         }
-      );
-      if (blob.size <= 2467) {
-        throw new Error(`Empty xlsx : ${xlsxEndpoint}`);
+        saveAs(blob, `${fileName}.xlsx`);
+        setExportingXls(false);
+        setDropdownOpened(false);
+      } catch (error) {
+        reportError(error);
+        setExportingXls(false);
       }
-      saveAs(blob, `${fileName}.xlsx`);
-      setExportingXls(false);
-      setDropdownOpened(false);
-    } catch (error) {
-      reportError(error);
-      setExportingXls(false);
+    } else if (xlsxData) {
+      const workbook = XLSX.utils.book_new();
+      Object.entries(xlsxData).forEach(([sheet_name, sheet_data]) => {
+        const worksheet = XLSX.utils.json_to_sheet(sheet_data);
+        XLSX.utils.book_append_sheet(workbook, worksheet, sheet_name);
+      });
+      XLSX.writeFile(workbook, `${fileName}.xlsx`);
     }
 
     // track this click for user analytics
@@ -258,7 +264,7 @@ const ReportExportMenu = ({
                 <FormattedMessage {...messages.downloadPng} />
               </StyledButton>
             )}
-            {xlsxEndpoint && (
+            {(xlsxData || xlsxEndpoint) && (
               <StyledButton
                 onClick={downloadXlsx}
                 buttonStyle="text"

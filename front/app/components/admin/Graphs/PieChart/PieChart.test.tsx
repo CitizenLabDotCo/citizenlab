@@ -27,6 +27,7 @@ describe('<PieChart />', () => {
           emptyContainerContent={'No data available'}
         />
       );
+
       expect(screen.getByText('No data available')).toBeInTheDocument();
     });
 

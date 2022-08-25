@@ -131,7 +131,7 @@ interface Props {
   onChangeTopics: (topics: string[]) => void;
   onChangeAreas: (areas: string[]) => void;
   onChangeTab: (tab: PublicationTab) => void;
-  onChangeSearch: (search: string) => void;
+  onChangeSearch: (search: string | null) => void;
 }
 
 const Header = ({
@@ -172,7 +172,7 @@ const Header = ({
   }, [searchParams, searchInputRef]);
 
   const handleOnSearchChange = React.useCallback(
-    (search: string) => {
+    (search: string | null) => {
       onChangeSearch(search);
     },
     [onChangeSearch]

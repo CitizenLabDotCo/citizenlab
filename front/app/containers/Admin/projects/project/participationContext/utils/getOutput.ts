@@ -26,7 +26,10 @@ export default ({
     output = {
       participation_method,
     };
-  } else if (participation_method === 'ideation') {
+  } else if (
+    participation_method === 'ideation' ||
+    participation_method === 'native_survey'
+  ) {
     output = omitBy(
       {
         participation_method,

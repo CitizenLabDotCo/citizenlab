@@ -42,3 +42,5 @@ secrets/*
 # VSCode settings files
 .vscode/
 .devcontainer/
+
+db/views/analytics_*

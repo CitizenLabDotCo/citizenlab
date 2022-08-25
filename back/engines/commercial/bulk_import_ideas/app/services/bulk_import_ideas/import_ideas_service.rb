@@ -156,6 +156,11 @@ module BulkImportIdeas
     def add_published_at(idea_row, idea_attributes)
       return if idea_row[:published_at].blank?
 
+      if idea_row[:published_at].acts_like? :date
+        idea_attributes[:published_at] = idea_row[:published_at]
+        return
+      end
+
       published_at = nil
       invalid_date_error = Error.new(
         'bulk_import_ideas_publication_date_invalid_format',

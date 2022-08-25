@@ -67,8 +67,22 @@ services:
   #   image: memcached:alpine
   #   command: memcached -m 64
 
+  postgres-analytics:
+    container_name: cl-postgres-analytics
+    image: "postgis/postgis:12-3.1"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - "postgres-analytics:/var/lib/postgresql/data"
+    profiles:
+      - analytics
+
 volumes:
   postgres:
+  postgres-analytics:
 
 networks:
   default:

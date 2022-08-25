@@ -108,7 +108,7 @@ class Project < ApplicationRecord
   end)
 
   scope :with_some_topics, (proc do |topic_ids|
-    joins(:projects_topics).where(projects_topics: { topic_id: topic_ids }).distinct
+    joins(:projects_topics).where(projects_topics: { topic_id: topic_ids })
   end)
 
   scope :is_participation_context, lambda {
@@ -133,12 +133,23 @@ class Project < ApplicationRecord
     where(id: project_ids)
   }
 
+  class << self
+    def search_ids_by_all_including_patches(term)
+      result = defined?(super) ? super : []
+      result + search_by_all(term).pluck(:id)
+    end
+  end
+
   def continuous?
     process_type == 'continuous'
   end
 
   def timeline?
     process_type == 'timeline'
+  end
+
+  def native_survey?
+    participation_method == 'native_survey'
   end
 
   def project

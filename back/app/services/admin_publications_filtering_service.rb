@@ -42,10 +42,10 @@ class AdminPublicationsFilteringService
     filtered_projects = ProjectsFilteringService.new.filter(projects, options)
 
     if options[:search].present?
-      filtered_projects = filtered_projects.search_by_all(options[:search])
+      project_ids = filtered_projects.search_ids_by_all_including_patches(options[:search])
     end
 
-    project_publications = scope.where(publication: filtered_projects)
+    project_publications = scope.where(publication: project_ids || filtered_projects)
     other_publications = scope.where.not(publication_type: Project.name)
     project_publications.or(other_publications)
   end
@@ -84,5 +84,11 @@ class AdminPublicationsFilteringService
 
   add_filter('top_level_only') do |scope, options|
     [0, '0'].include?(options[:depth]) ? scope.where(depth: 0) : scope
+  end
+
+  # Keep that as the last filter, this acts as a failsafe.
+  # If any of the filters before return duplicate admin publications, we remove them at the last step
+  add_filter('distinct') do |scope, _options|
+    scope.distinct
   end
 end

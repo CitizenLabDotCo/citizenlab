@@ -12,6 +12,7 @@ import {
 import ResolutionControl, {
   IResolution,
 } from 'components/admin/ResolutionControl';
+import Outlet from 'components/Outlet';
 import ChartFilters from '../components/ChartFilters';
 import TimeControl from '../components/TimeControl';
 import LineBarChart from './charts/LineBarChart';
@@ -291,6 +292,10 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 startAt={startAt}
                 endAt={endAt}
                 {...this.state}
+              />
+              <Outlet
+                id="app.containers.Admin.dashboard.summary.postStatus"
+                projectId={currentProjectFilter}
               />
               <SelectableResourceByTopicChart
                 className="fullWidth dynamicHeight e2e-resource-by-topic-chart"

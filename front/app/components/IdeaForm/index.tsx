@@ -647,7 +647,7 @@ class IdeaForm extends PureComponent<
   ) => {
     return ideaCustomFieldsSchemas.json_schema_multiloc[
       locale
-    ].required.includes(fieldCode);
+    ].required?.includes(fieldCode);
   };
 
   isFieldEnabled = (
