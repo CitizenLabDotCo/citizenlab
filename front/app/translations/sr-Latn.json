@@ -129,6 +129,7 @@
   "app.components.HookForm.Feedback.submissionErrorTitle": "Nažalost, postoji problem sa naše strane",
   "app.components.HookForm.Feedback.successMessage": "Obrazac je uspešno prosleđen",
   "app.components.IdeaCards.showMore": "Prikaži više",
+  "app.components.IdeaForm.adminFieldTooltip": "Field only visible to admins",
   "app.components.IdeaForm.author": "Autor",
   "app.components.IdeaForm.authorPlaceholder": "Započnite pretragu unosom korisničkog imena ili email adrese...",
   "app.components.IdeaForm.contributionFormGeneralSectionTitle": "Šta je to čime ćete doprineti?",
