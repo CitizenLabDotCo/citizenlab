@@ -18,6 +18,9 @@ import usePhases from 'hooks/usePhases';
 import { isNilOrError } from 'utils/helperUtils';
 import { getFormActionsConfig } from 'containers/Admin/formBuilder/utils';
 
+// Styles
+import { colors } from 'utils/styleUtils';
+
 const Forms = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const { projectId } = useParams() as { projectId: string };
   const project = useProject({ projectId });
@@ -51,7 +54,7 @@ const Forms = ({ intl: { formatMessage } }: InjectedIntlProps) => {
                   togglePostingEnabled={togglePostingEnabled}
                 />
                 {index !== formActionsConfigs.length - 1 && (
-                  <Box height="1px" border="1px solid #E0E0E0" />
+                  <Box height="1px" border={`1px solid ${colors.separation}`} />
                 )}
               </>
             );
