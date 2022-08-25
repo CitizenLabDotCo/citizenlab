@@ -57,6 +57,9 @@ const FormBuilderTopBar = () => {
   const formCustomFields: IFlatCustomField[] = watch('customFields');
   const phase = usePhase(phaseId || null);
   const isPostingEnabled = getIsPostingEnabled(project, phase);
+  const viewSurveyLInk = phaseId
+    ? `/projects/${project?.attributes.slug}/ideas/new?phase_id=${phaseId}`
+    : `/projects/${project?.attributes.slug}/ideas/new`;
 
   // TODO : Generalize this form builder and use new ParticipationMethod abstraction to control method specific copy, etc.
   const goBack = () => {
@@ -146,7 +149,7 @@ const FormBuilderTopBar = () => {
           icon="eye"
           mx="20px"
           disabled={!project}
-          linkTo={`/projects/${project?.attributes.slug}/ideas/new`}
+          linkTo={viewSurveyLInk}
           openLinkInNewTab
         >
           <FormattedMessage {...messages.viewSurvey} />
