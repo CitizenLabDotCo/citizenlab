@@ -14,6 +14,7 @@ const PagesMenu = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   return (
     <SectionFormWrapper
       title={formatMessage(messages.pageHeader)}
+      subtitle={formatMessage(messages.pageSubtitle)}
       rightSideCTA={
         <Button
           buttonStyle="admin-dark"

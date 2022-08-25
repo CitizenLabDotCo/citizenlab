@@ -27,7 +27,7 @@ interface Props {
 }
 
 const Breadcrumbs = ({ breadcrumbs }: Props) => {
-  if (!breadcrumbs || breadcrumbs.length === 0) {
+  if (breadcrumbs.length === 0) {
     return null;
   }
 
