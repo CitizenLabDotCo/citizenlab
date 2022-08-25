@@ -25,7 +25,7 @@ import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // hooks
-import usePostsWithFeedback from '../../../hooks/usePostsFeedback';
+import usePostsWithFeedback from '../../hooks/usePostsFeedback';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
