@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+
 // components
 import {
   GraphCardHeader,
@@ -16,7 +17,7 @@ import {
 import PieChart from 'components/admin/Graphs/PieChart';
 import ProgressBars from 'components/admin/Graphs/ProgressBars';
 
-// stylin
+// styling
 import { colors } from 'utils/styleUtils';
 
 // hooks
@@ -41,7 +42,9 @@ const PostFeedback = ({
   const currentProgressBarsChart = useRef();
   const data = usePostsWithFeedback(formatMessage, projectId);
   const largeTablet = useBreakpoint('largeTablet');
+
   if (!data) return null;
+
   const {
     pieData,
     pieCenterValue,

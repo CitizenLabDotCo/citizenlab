@@ -7,6 +7,10 @@ type AnalyticsResponse<T> = {
 
 // Build automatically using json schema backend validator
 export interface Query {
+  query: QuerySchema | QuerySchema[];
+}
+
+interface QuerySchema {
   fields?: string | string[];
   fact: 'post' | 'participation';
   dimensions?: {
@@ -22,15 +26,15 @@ export interface Query {
   };
   groups?: string | string[];
   aggregations?: {
-    [k: string]:
-      | ('min' | 'max' | 'avg' | 'sum' | 'count' | 'first')
-      | ('min' | 'max' | 'avg' | 'sum' | 'count' | 'first')[];
+    [k: string]: Aggregation | Aggregation[];
   };
   sort?: {
     [k: string]: 'ASC' | 'DESC';
   };
   limit?: number;
 }
+
+type Aggregation = 'min' | 'max' | 'avg' | 'sum' | 'count' | 'first';
 
 export async function analyticsStream<T>(queryObject) {
   return await streams.add<AnalyticsResponse<T>>(
