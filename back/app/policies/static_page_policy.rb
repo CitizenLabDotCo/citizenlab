@@ -55,7 +55,8 @@ class StaticPagePolicy < ApplicationPolicy
       :events_widget_enabled,
       :bottom_info_section_enabled,
       { bottom_info_section_multiloc: CL2_SUPPORTED_LOCALES },
-      :header_bg
+      :header_bg,
+      { pinned_admin_publication_ids: [] }
     ]
   end
 end

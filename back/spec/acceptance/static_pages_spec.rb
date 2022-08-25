@@ -60,6 +60,83 @@ resource 'StaticPages' do
       header 'Authorization', "Bearer #{token}"
     end
 
+    patch 'web_api/v1/static_pages/:id' do
+      with_options scope: :static_page do
+        parameter :title_multiloc, 'The title of the static page, as a multiloc string', required: true
+        parameter :top_info_section_multiloc, 'The content of the static page, as a multiloc HTML string', required: true
+        parameter :bottom_info_section_multiloc, 'The content of the static page, as a multiloc HTML string', required: true
+        parameter :slug, 'The unique slug of the static page. If not given, it will be auto generated'
+        parameter :pinned_admin_publication_ids, 'the IDs of admin publications that are pinned to the page', type: :array
+      end
+      ValidationErrorHelper.new.error_fields self, StaticPage
+
+      let(:page) { @pages.first }
+      let(:id) { page.id }
+      let(:title_multiloc) { { en: 'New title' } }
+      let(:top_info_section_multiloc) { { en: 'New top info section text' } }
+      let(:bottom_info_section_multiloc) { { en: 'New bottom info section text' } }
+
+      example_request 'Update a static page' do
+        assert_status 200
+
+        expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to match 'New title'
+        expect(json_response.dig(:data, :attributes, :top_info_section_multiloc, :en)).to match 'New top info section text'
+        expect(json_response.dig(:data, :attributes, :bottom_info_section_multiloc, :en)).to match 'New bottom info section text'
+        expect(json_response.dig(:data, :attributes, :code)).to eq 'custom'
+      end
+
+      describe 'updating pins' do
+        let(:project_one) { create(:project) }
+        let(:project_two) { create(:project) }
+        let(:pinned_admin_publication_ids) do
+          [project_one.admin_publication.id, project_two.admin_publication.id]
+        end
+
+        example_request 'set pins to a page' do
+          json_response = json_parse(response_body)
+          expect(response_status).to eq 200
+          expect(json_response.dig(:data, :relationships, :pinned_admin_publications, :data).length).to eq(2)
+        end
+
+        context 'when the page has pins already' do
+          before do
+            projects = create_list(:project, 3)
+            page.pinned_admin_publications = projects.map(&:admin_publication)
+            page.save!
+          end
+
+          example 'Update existing pins to a page', document: false do
+            do_request
+            json_response = json_parse(response_body)
+            expect(response_status).to eq 200
+            returned_ids = json_response.dig(:data, :relationships, :pinned_admin_publications, :data).pluck(:id)
+            expect(returned_ids).to eq([project_one.admin_publication.id, project_two.admin_publication.id])
+          end
+        end
+      end
+
+      describe 'destroying pins' do
+        let(:pinned_admin_publication_ids) do
+          []
+        end
+
+        context 'when the page has pins already' do
+          before do
+            projects = create_list(:project, 3)
+            page.pinned_admin_publications = projects.map(&:admin_publication)
+            page.save!
+          end
+
+          example 'Removing existing pins from a page', document: false do
+            do_request
+            json_response = json_parse(response_body)
+            expect(response_status).to eq 200
+            expect(json_response.dig(:data, :relationships, :pinned_admin_publications, :data).length).to eq(0)
+          end
+        end
+      end
+    end
+
     post 'web_api/v1/static_pages' do
       with_options scope: :static_page do
         parameter :title_multiloc, 'The title of the static page, as a multiloc string', required: true
