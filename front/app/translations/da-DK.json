@@ -644,6 +644,8 @@
   "app.containers.Comments.commentsSortTitle": "Sortér kommentarer efter",
   "app.containers.Comments.confirmCommentDeletion": "Er du sikker på at du vil slette denne kommentar? Der er ingen vej tilbage!",
   "app.containers.Comments.deleteComment": "Slet",
+  "app.containers.Comments.deleteReasonDescriptionError": "Provide more information on your reason",
+  "app.containers.Comments.deleteReasonError": "Provide a reason",
   "app.containers.Comments.deleteReason_inappropriate": "Det er upassende eller stødende",
   "app.containers.Comments.deleteReason_irrelevant": "Dette hører ikke til her",
   "app.containers.Comments.deleteReason_other": "Anden årsag",
