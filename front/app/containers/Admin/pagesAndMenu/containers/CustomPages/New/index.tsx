@@ -17,6 +17,7 @@ const CustomPagesNewSettings = ({
         title={messages.newCustomPageMetaTitle}
         description={messages.newCustomPageMetaDescription}
       />
+      {/* Title will come as part of TabbedResource */}
       <Box mb="16px">
         <Breadcrumbs
           breadcrumbs={[
@@ -28,7 +29,7 @@ const CustomPagesNewSettings = ({
           ]}
         />
       </Box>
-      <CustomPageSettingsForm />;
+      <CustomPageSettingsForm />
     </>
   );
 };
