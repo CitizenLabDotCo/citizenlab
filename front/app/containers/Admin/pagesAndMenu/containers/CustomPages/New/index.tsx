@@ -13,10 +13,7 @@ const CustomPagesNewSettings = ({
 }: InjectedIntlProps) => {
   return (
     <>
-      <HelmetIntl
-        title={messages.newCustomPageMetaTitle}
-        description={messages.newCustomPageMetaDescription}
-      />
+      <HelmetIntl title={messages.newCustomPageMetaTitle} />
       {/* Title will come as part of TabbedResource */}
       <Box mb="16px">
         <Breadcrumbs

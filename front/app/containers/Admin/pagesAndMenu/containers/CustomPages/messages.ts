@@ -3,11 +3,7 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   newCustomPageMetaTitle: {
     id: 'app.containers.Admin.pagesAndMenu.containers.CustomPages.newCustomPageMetaTitle',
-    defaultMessage: 'Meta title',
-  },
-  newCustomPageMetaDescription: {
-    id: 'app.containers.Admin.pagesAndMenu.containers.CustomPages.newCustomPageMetaDescription',
-    defaultMessage: 'Meta description',
+    defaultMessage: 'Create custom page | {orgName}',
   },
   newCustomPagePageTitle: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.newCustomPagePageTitle',
