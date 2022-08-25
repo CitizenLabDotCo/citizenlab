@@ -92,6 +92,10 @@ module ParticipationContext
     participation_method == 'budgeting'
   end
 
+  def native_survey?
+    participation_method == 'native_survey'
+  end
+
   def can_contain_ideas?
     ideation? || budgeting?
   end

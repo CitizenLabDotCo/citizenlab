@@ -4,6 +4,7 @@ class WebApi::V1::IdeasController < ApplicationController
   include BlockingProfanity
 
   before_action :set_idea, only: %i[show update destroy]
+  before_action :set_context!, only: %i[create update]
   before_action :authorize_project_or_ideas, only: %i[index_xlsx]
   skip_before_action :authenticate_user # TODO: temp fix to pass tests
   skip_after_action :verify_authorized, only: %i[index_xlsx index_mini index_idea_markers filter_counts]
@@ -106,7 +107,6 @@ class WebApi::V1::IdeasController < ApplicationController
     show
   end
 
-  # insert
   def create
     extract_custom_field_values_from_params!
 
@@ -133,8 +133,8 @@ class WebApi::V1::IdeasController < ApplicationController
     end
   end
 
-  # patch
   def update
+    # TODO: don't allow changing phases for native survey responses
     extract_custom_field_values_from_params!
     params[:idea][:topic_ids] ||= [] if params[:idea].key?(:topic_ids)
     params[:idea][:phase_ids] ||= [] if params[:idea].key?(:phase_ids)
@@ -181,13 +181,7 @@ class WebApi::V1::IdeasController < ApplicationController
   private
 
   def extract_custom_field_values_from_params!
-    project = @idea&.project || Project.find(params.dig(:idea, :project_id))
-    participation_context = ::ParticipationContextService.new.get_participation_context(project)
-    # TODO: (native surveys) The next line does not work because the participation_context may be nil.
-    # What should we do in that case? Return an error status code?
-    # How can we make the difference between an idea and a survey response if there is no current phase?
-    custom_form = participation_context.custom_form || CustomForm.new(participation_context: participation_context)
-    all_fields = IdeaCustomFieldsService.new(custom_form).all_fields
+    all_fields = IdeaCustomFieldsService.new(custom_form_from_context).all_fields
     extra_field_values = all_fields.each_with_object({}) do |field, accu|
       next if field.built_in?
 
@@ -211,11 +205,7 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def idea_attributes
-    project = @idea&.project || Project.find(params.dig(:idea, :project_id))
-    participation_context = ::ParticipationContextService.new.get_participation_context(project)
-    # TODO: (native surveys) The next line does not work because the participation_context may be nil.
-    # See the other TODO in this file.
-    custom_form = participation_context.custom_form || CustomForm.new(participation_context: participation_context)
+    custom_form = custom_form_from_context
     enabled_field_keys = IdeaCustomFieldsService.new(custom_form).enabled_fields.map { |field| field.key.to_sym }
 
     attributes = idea_simple_attributes(enabled_field_keys)
@@ -299,6 +289,22 @@ class WebApi::V1::IdeasController < ApplicationController
     (@idea.custom_field_values.keys - (params[:idea][:custom_field_values].keys || [])).each do |clear_key|
       params[:idea][:custom_field_values][clear_key] = nil
     end
+  end
+
+  def custom_form_from_context
+    custom_form_context = if @project.continuous? || @phases.none?(&:native_survey?)
+      @project
+    elsif @phases.size == 1 && @phases.first.native_survey?
+      @phases.first
+    else
+      raise 'Current context does not support saving input!'
+    end
+    custom_form_context.custom_form || CustomForm.new(participation_context: custom_form_context)
+  end
+
+  def set_context!
+    @project = @idea&.project || Project.find(params.dig(:idea, :project_id))
+    @phases = @idea&.phases || Phase.where(id: params.dig(:idea, :phase_ids))
   end
 end
 
