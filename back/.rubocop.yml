@@ -15,6 +15,10 @@ AllCops:
   - '**/bin/**/*'
   - 'engines/ee/**/*'
 
+Layout/HashAlignment:
+  EnforcedColonStyle: [key, table]
+  EnforcedHashRocketStyle: [key, table]
+
 Style/Documentation:
   # Most classes are not documented, so turn off this Cop.
   Enabled: false

@@ -8,6 +8,8 @@ module CitizenLab
           ACTIONS = {
             'information' => [],
             'ideation' => %w[posting_idea voting_idea commenting_idea],
+            # TODO: (native_survey) probably later it has to be something like %w[taking_native_survey]
+            'native_survey' => %w[posting_idea],
             'survey' => %w[taking_survey],
             'poll' => %w[taking_poll],
             'budgeting' => %w[commenting_idea budgeting],

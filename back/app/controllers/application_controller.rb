@@ -84,6 +84,10 @@ class ApplicationController < ActionController::API
     links
   end
 
+  def parse_bool(value)
+    ActiveModel::Type::Boolean.new.cast(value)
+  end
+
   private
 
   def build_link(number)

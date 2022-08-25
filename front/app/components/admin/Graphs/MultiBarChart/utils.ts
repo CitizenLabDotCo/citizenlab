@@ -1,6 +1,4 @@
-// DATA
-export type DataRow = { name: string; [key: string]: any };
-export type Data = DataRow[];
+import { DataRow } from '../typings';
 
 // MAPPING
 type MappingFunction<T> = (row: DataRow) => T[];
@@ -73,12 +71,3 @@ export type Layout = 'horizontal' | 'vertical';
 // we use the correct terminology
 export const getRechartsLayout = (layout: Layout) =>
   layout === 'vertical' ? 'horizontal' : 'vertical';
-
-// AXES
-export interface AxisProps {
-  tickFormatter?: (value: any) => string;
-  type?: 'number' | 'category';
-  width?: number;
-  tickLine?: boolean;
-  hide?: boolean;
-}

@@ -13,6 +13,7 @@ import messages from 'containers/Admin/dashboard/messages';
 
 // styling
 import { withTheme } from 'styled-components';
+import { animation } from 'components/admin/Graphs/styling';
 
 // components
 import ReportExportMenu from 'components/admin/ReportExportMenu';
@@ -131,8 +132,7 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { colorMain, animationDuration, animationBegin } =
-      this.props['theme'];
+    const { colorMain } = this.props['theme'];
     const {
       startAt,
       endAt,
@@ -172,8 +172,8 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
                 <PieChart ref={this.currentChart}>
                   <Pie
                     isAnimationActive={true}
-                    animationDuration={animationDuration}
-                    animationBegin={animationBegin}
+                    animationDuration={animation.duration}
+                    animationBegin={animation.begin}
                     data={serie}
                     dataKey="value"
                     outerRadius={60}

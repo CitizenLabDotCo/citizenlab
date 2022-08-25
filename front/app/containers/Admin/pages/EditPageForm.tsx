@@ -1,10 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { Formik, FormikProps } from 'formik';
 
 // components
-import PageForm, { validatePageForm, FormValues } from 'components/PageForm';
+import PageForm, { FormValues } from 'components/PageForm';
 import PageWrapper from 'components/admin/PageWrapper';
 import GoBackButton from 'components/UI/GoBackButton';
 import T from 'components/T';
@@ -46,35 +45,19 @@ const EditPageForm = ({ params: { pageId } }: WithRouterProps) => {
 
   const handleSubmit =
     (page: IPageData, remotePageFiles: RemoteFiles) =>
-    async (values: FormValues, { setSubmitting, setStatus }) => {
+    async (values: FormValues) => {
       const localPageFiles = values.local_page_files;
       const pageId = page.id;
 
-      try {
-        await updatePage(pageId, {
-          ...getInitialValues(page, remotePageFiles),
-          ...values,
-        });
-
-        if (!isNilOrError(localPageFiles)) {
-          handleAddPageFiles(pageId, localPageFiles, remotePageFiles);
-          handleRemovePageFiles(pageId, localPageFiles, remotePageFiles);
-        }
-
-        setStatus('success');
-        setSubmitting(false);
-      } catch (error) {
-        setStatus('error');
-        setSubmitting(false);
+      await updatePage(pageId, values);
+      if (!isNilOrError(localPageFiles)) {
+        handleAddPageFiles(pageId, localPageFiles, remotePageFiles);
+        handleRemovePageFiles(pageId, localPageFiles, remotePageFiles);
       }
     };
 
   const handleGoBack = () => {
     clHistory.push('/admin/pages');
-  };
-
-  const renderFn = (pageId: string) => (props: FormikProps<FormValues>) => {
-    return <PageForm {...props} pageId={pageId} hideSlugInput={false} />;
   };
 
   if (!isNilOrError(page) && !isNilOrError(appConfigurationLocales)) {
@@ -85,13 +68,10 @@ const EditPageForm = ({ params: { pageId } }: WithRouterProps) => {
           <T value={page.attributes.title_multiloc} />
         </Title>
         <PageWrapper>
-          <Formik
-            initialValues={getInitialValues(page, remotePageFiles)}
+          <PageForm
+            pageId={pageId}
             onSubmit={handleSubmit(page, remotePageFiles)}
-            render={renderFn(page.id)}
-            validate={validatePageForm(appConfigurationLocales)}
-            validateOnChange={false}
-            validateOnBlur={false}
+            defaultValues={getInitialValues(page, remotePageFiles)}
           />
         </PageWrapper>
       </div>

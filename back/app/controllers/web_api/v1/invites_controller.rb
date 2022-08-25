@@ -102,7 +102,7 @@ class WebApi::V1::InvitesController < ApplicationController
   def example_xlsx
     authorize :invite
     xlsx = InvitesService.new.generate_example_xlsx
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas.xlsx'
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'invites.xlsx'
   end
 
   def accept

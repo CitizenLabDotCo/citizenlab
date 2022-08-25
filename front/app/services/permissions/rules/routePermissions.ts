@@ -16,6 +16,7 @@ export const MODERATOR_ROUTES = [
   '/admin/projects',
   '/admin/messaging',
   '/admin/ideas',
+  '/admin/ideas/import',
   '/admin/workshops',
   '/admin/processing',
   '/admin/dashboard',

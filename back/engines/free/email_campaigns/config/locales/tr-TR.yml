@@ -1,7 +1,7 @@
 tr:
   email_campaigns:
     campaign_type_description:
-      "manual": Official messages
+      "manual": Resmi mesajlar
       "admin_rights_received": Admin rights received
       "comment_deleted_by_admin": Deletion of my comment
       "comment_marked_as_spam": Comment spam report
@@ -30,7 +30,7 @@ tr:
       "official_feedback_on_voted_initiative": Update on a proposal I voted on
       "official_feedback_on_your_idea": Update on my idea
       "official_feedback_on_your_initiative": Update on my proposal
-      "password_reset": Password reset
+      "password_reset": Parola sıfırla
       "project_moderation_rights_received": Project moderation rights received
       "project_folder_moderation_rights_received": Folder manager rights received
       "project_phase_started": New project phase
@@ -176,7 +176,7 @@ tr:
       yesterday_by_author: 'Yesterday by %{author}'
       today_by_author: 'Today by %{author}'
       x_days_ago_by_author: '%{x} days ago by %{author}'
-      idea_section: Ideas
+      idea_section: Fikirler
       initiative_section: Proposals
       title_initiatives_past_week: 'New proposals assigned to you'
       title_successful_initiatives_past_week: 'Proposals assigned to you that reached the threshold'

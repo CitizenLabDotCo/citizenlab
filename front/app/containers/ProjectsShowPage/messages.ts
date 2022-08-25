@@ -360,9 +360,9 @@ export default defineMessages({
     id: 'app.containers.Projects.readMore',
     defaultMessage: 'Read more',
   },
-  seeLess: {
-    id: 'app.containers.Projects.seeLess',
-    defaultMessage: 'See less',
+  readLess: {
+    id: 'app.containers.Projects.readLess',
+    defaultMessage: 'Read less',
   },
   xEvents: {
     id: 'app.containers.Projects.xEvents',

@@ -8,7 +8,11 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 
 // styling
-import { withTheme } from 'styled-components';
+import {
+  colors,
+  sizes,
+  DEFAULT_BAR_CHART_MARGIN,
+} from 'components/admin/Graphs/styling';
 
 // components
 import ReportExportMenu from 'components/admin/ReportExportMenu';
@@ -19,7 +23,6 @@ import {
   GraphCardInner,
 } from 'components/admin/GraphWrappers';
 import BarChart from 'components/admin/Graphs/BarChart';
-import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/constants';
 import { Tooltip, LabelList } from 'recharts';
 
 // resources
@@ -60,7 +63,6 @@ export class IdeasByStatusChart extends React.PureComponent<
   }
 
   render() {
-    const { chartFill, barSize } = this.props['theme'];
     const {
       startAt,
       endAt,
@@ -107,8 +109,8 @@ export class IdeasByStatusChart extends React.PureComponent<
             mapping={{ fill: 'color' }}
             bars={{
               name: unitName,
-              fill: chartFill,
-              size: barSize,
+              fill: colors.chartFill,
+              size: sizes.bar,
               opacity: 0.8,
             }}
             yaxis={{ width: 150, tickLine: false }}
@@ -121,9 +123,7 @@ export class IdeasByStatusChart extends React.PureComponent<
   }
 }
 
-const IdeasByStatusChartWithHoCs = injectIntl<Props>(
-  withTheme(IdeasByStatusChart as any) as any
-);
+const IdeasByStatusChartWithHoCs = injectIntl<Props>(IdeasByStatusChart);
 
 const WrappedIdeasByStatusChart = (
   inputProps: InputProps & InjectedLocalized

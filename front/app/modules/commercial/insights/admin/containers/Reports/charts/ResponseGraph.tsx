@@ -6,7 +6,8 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
 // styling
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
+import { colors } from 'components/admin/Graphs/styling';
 
 // resources
 import { isNilOrError } from 'utils/helperUtils';
@@ -49,7 +50,6 @@ const StyledGraphCardInner = styled(GraphCardInner)`
 
 export const ResponseGraph = memo(
   ({ graphTitleString, serie }: Props & InjectedIntlProps) => {
-    const { chartCategorySize, chartLabelColor }: any = useTheme();
     const currentChart: React.RefObject<any> = React.createRef();
 
     const NameLabel = (props) => {
@@ -61,8 +61,7 @@ export const ResponseGraph = memo(
             y={y}
             dx={30}
             dy={-6}
-            fill={chartLabelColor}
-            fontSize={chartCategorySize}
+            fill={colors.chartLabel}
             textAnchor="left"
           >
             {value}
@@ -80,8 +79,7 @@ export const ResponseGraph = memo(
             y={y}
             dx={5}
             dy={-6}
-            fill={chartLabelColor}
-            fontSize={chartCategorySize}
+            fill={colors.chartLabel}
             textAnchor="right"
             fontWeight={'800'}
           >

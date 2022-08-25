@@ -32,6 +32,7 @@ CL2_SUPPORTED_LOCALES = %i[
   sr-Latn
   sr-SP
   sv-SE
+  tr-TR
 ].freeze
 
 fallback_locales =
@@ -52,6 +53,7 @@ fallback_locales =
     pt
     ro
     sr
+    tr
   ].freeze
 
 I18n.available_locales = CL2_SUPPORTED_LOCALES + fallback_locales

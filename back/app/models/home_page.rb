@@ -34,18 +34,21 @@ class HomePage < ApplicationRecord
   has_many :pins, as: :page, inverse_of: :page, dependent: :destroy
   has_many :pinned_admin_publications, through: :pins, source: :admin_publication
 
+  has_many :text_images, as: :imageable, dependent: :destroy
+  accepts_nested_attributes_for :text_images
+
   accepts_nested_attributes_for :pinned_admin_publications, allow_destroy: true
 
-  before_validation :sanitize_top_info_section_multiloc, if: :top_info_section_enabled
-  before_validation :sanitize_bottom_info_section_multiloc, if: :bottom_info_section_enabled
+  before_validation :sanitize_top_info_section_multiloc
+  before_validation :sanitize_bottom_info_section_multiloc
 
   validate :only_one_home_page, on: :create
 
   validates :top_info_section_enabled, inclusion: [true, false]
-  validates :top_info_section_multiloc, presence: true, multiloc: { html: true, presence: true }, if: :top_info_section_enabled
+  validates :top_info_section_multiloc, multiloc: { presence: false, html: true }
 
   validates :bottom_info_section_enabled, inclusion: [true, false]
-  validates :bottom_info_section_multiloc, presence: true, multiloc: { html: true, presence: true }, if: :bottom_info_section_enabled
+  validates :bottom_info_section_multiloc, multiloc: { presence: false, html: true }
 
   validates :events_widget_enabled, inclusion: [true, false]
   validates :projects_enabled, inclusion: [true, false]

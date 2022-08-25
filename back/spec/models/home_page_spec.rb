@@ -25,18 +25,6 @@ RSpec.describe HomePage, type: :model do
       it { is_expected.to validate_presence_of(:banner_cta_signed_in_url) }
       it { is_expected.to validate_presence_of(:banner_cta_signed_in_text_multiloc) }
     end
-
-    context 'when top_info_section is enabled' do
-      subject { described_class.new(top_info_section_enabled: true) }
-
-      it { is_expected.to validate_presence_of(:top_info_section_multiloc) }
-    end
-
-    context 'when bottom_info_section is enabled' do
-      subject { described_class.new(bottom_info_section_enabled: true) }
-
-      it { is_expected.to validate_presence_of(:bottom_info_section_multiloc) }
-    end
   end
 
   describe 'image uploads' do
