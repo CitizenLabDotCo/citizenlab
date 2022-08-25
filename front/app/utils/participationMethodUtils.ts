@@ -56,7 +56,7 @@ export function getMethodConfig(
   return methodToConfig[participationMethod];
 }
 
-/** Given the project and phases, returns an array of all participation methods
+/** Given the project and its phases, returns an array of all participation methods
  * used in the project
  */
 export function getAllParticipationMethods(

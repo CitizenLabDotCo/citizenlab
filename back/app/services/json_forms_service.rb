@@ -56,20 +56,21 @@ class JsonFormsService
   def author_field_allowed?(field, current_user)
     AppConfiguration.instance.feature_activated?('idea_author_change') &&
       current_user &&
-      UserRoleService.new.can_moderate_project?(field.resource.project, current_user)
+      UserRoleService.new.can_moderate_project?(field.resource.participation_context.project, current_user)
   end
 
   def budget_field_allowed?(field, current_user)
+    project = field.resource.participation_context.project
     return false unless AppConfiguration.instance.feature_activated?('participatory_budgeting')
     return false unless current_user
-    return false unless UserRoleService.new.can_moderate_project?(field.resource.project, current_user)
+    return false unless UserRoleService.new.can_moderate_project?(project, current_user)
 
     (
-      field.resource.project&.process_type == 'continuous' &&
-      field.resource.project&.participation_method == 'budgeting'
+      project&.process_type == 'continuous' &&
+      project&.participation_method == 'budgeting'
     ) || (
-      field.resource.project&.process_type == 'timeline' &&
-      field.resource.project&.phases&.any? { |p| p.participation_method == 'budgeting' }
+      project&.process_type == 'timeline' &&
+      project&.phases&.any? { |p| p.participation_method == 'budgeting' }
     )
   end
 end

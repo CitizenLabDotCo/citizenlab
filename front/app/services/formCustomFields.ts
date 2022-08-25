@@ -53,9 +53,12 @@ export interface ICustomFields {
 
 export function formCustomFieldsStream(
   projectId: string,
-  streamParams: IStreamParams | null = null
+  streamParams: IStreamParams | null = null,
+  phaseId?: string
 ) {
-  const apiEndpoint = `${API_PATH}/admin/projects/${projectId}/custom_fields`;
+  const apiEndpoint = phaseId
+    ? `${API_PATH}/admin/phases/${phaseId}/custom_fields`
+    : `${API_PATH}/admin/projects/${projectId}/custom_fields`;
   return streams.get<ICustomFields>({
     apiEndpoint,
     cacheStream: false,
@@ -63,8 +66,14 @@ export function formCustomFieldsStream(
   });
 }
 
-export async function updateFormCustomFields(projectId: string, customFields) {
-  const apiEndpoint = `${API_PATH}/admin/projects/${projectId}/custom_fields/update_all`;
+export async function updateFormCustomFields(
+  projectId: string,
+  customFields,
+  phaseId?: string
+) {
+  const apiEndpoint = phaseId
+    ? `${API_PATH}/admin/phases/${phaseId}/custom_fields/update_all`
+    : `${API_PATH}/admin/projects/${projectId}/custom_fields/update_all`;
   return streams.update(apiEndpoint, `${projectId}/custom_fields`, {
     custom_fields: customFields,
   });

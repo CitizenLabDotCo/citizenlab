@@ -17,6 +17,9 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';
 
+// Typings
+import { MessageDescriptor } from 'typings';
+
 interface Props {
   field: IFlatCustomFieldWithIndex;
   onDelete: (fieldIndex: number) => void;
@@ -24,8 +27,7 @@ interface Props {
 }
 
 const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
-  let translatedStringKey: ReactIntl.FormattedMessage.MessageDescriptor | null =
-    null;
+  let translatedStringKey: MessageDescriptor | null = null;
   if (field.input_type === 'text') {
     translatedStringKey = messages.shortAnswer;
   }

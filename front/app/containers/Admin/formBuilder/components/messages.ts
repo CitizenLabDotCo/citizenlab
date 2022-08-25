@@ -61,4 +61,20 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.editButtonLabel',
     defaultMessage: 'Edit',
   },
+  downloadSurveyResults: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.downloadSurveyResults',
+    defaultMessage: 'Download survey results ({count})',
+  },
+  editSurveyContent: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.editSurveyContent',
+    defaultMessage: 'Edit survey content',
+  },
+  viewSurveyText: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.viewSurveyText',
+    defaultMessage: 'View survey',
+  },
+  openForSubmissions: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.openForSubmissions',
+    defaultMessage: 'Open for submissions',
+  },
 });
