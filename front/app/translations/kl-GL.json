@@ -644,6 +644,8 @@
   "app.containers.Comments.commentsSortTitle": "Uku malillugit oqaaseqaatit immikkoortitikkkt",
   "app.containers.Comments.confirmCommentDeletion": "Ilumut oqaaseqaatit peerniarpiuk? Peerniarukku allaqqissinnaanngilat!",
   "app.containers.Comments.deleteComment": "Piiaruk",
+  "app.containers.Comments.deleteReasonDescriptionError": "Provide more information on your reason",
+  "app.containers.Comments.deleteReasonError": "Provide a reason",
   "app.containers.Comments.deleteReason_inappropriate": "Tulluanngilaq naleqqunnaniluunniit",
   "app.containers.Comments.deleteReason_irrelevant": "Una maaniittussaanngilaq",
   "app.containers.Comments.deleteReason_other": "Allamik pissuteqarluni",
