@@ -1060,7 +1060,7 @@ ActiveRecord::Schema.define(version: 2022_08_22_140950) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "code", null: false
-    t.boolean "banner_enabled", default: true, null: false
+    t.boolean "banner_enabled", default: false, null: false
     t.string "banner_layout", default: "full_width_banner_layout", null: false
     t.string "banner_overlay_color"
     t.integer "banner_overlay_opacity"

@@ -10,7 +10,7 @@ class AddFieldsAndRenameFieldInStaticPages < ActiveRecord::Migration[6.1]
   def change
     rename_column :static_pages, :body_multiloc, :top_info_section_multiloc
     change_column_null :static_pages, :top_info_section_multiloc, false
-    add_column :static_pages, :banner_enabled, :boolean, default: true, null: false
+    add_column :static_pages, :banner_enabled, :boolean, default: false, null: false
     add_column :static_pages, :banner_layout, :string, default: 'full_width_banner_layout', null: false
     add_column :static_pages, :banner_overlay_color, :string
     add_column :static_pages, :banner_overlay_opacity, :integer

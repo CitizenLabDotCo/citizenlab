@@ -11,7 +11,7 @@
 #  created_at                   :datetime         not null
 #  updated_at                   :datetime         not null
 #  code                         :string           not null
-#  banner_enabled               :boolean          default(TRUE), not null
+#  banner_enabled               :boolean          default(FALSE), not null
 #  banner_layout                :string           default("full_width_banner_layout"), not null
 #  banner_overlay_color         :string
 #  banner_overlay_opacity       :integer
