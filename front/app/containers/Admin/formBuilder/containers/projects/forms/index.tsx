@@ -4,95 +4,64 @@ import { injectIntl } from 'utils/cl-intl';
 import { useParams } from 'react-router-dom';
 
 // components
-import { Toggle, Box, Title, Text } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-
-// routing
-import clHistory from 'utils/cl-router/history';
+import { Box, Title, Text } from '@citizenlab/cl2-component-library';
+import FormActions from 'containers/Admin/formBuilder/components/FormActions';
 
 // i18n
 import messages from './messages';
 
 // hooks
 import useProject from 'hooks/useProject';
-import { updateProject } from 'services/projects';
+import usePhases from 'hooks/usePhases';
+
+// Utils
 import { isNilOrError } from 'utils/helperUtils';
+import { getFormActionsConfig } from 'containers/Admin/formBuilder/utils';
+
+// Styles
+import { colors } from 'utils/styleUtils';
 
 const Forms = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const { projectId } = useParams() as { projectId: string };
   const project = useProject({ projectId });
+  const phases = usePhases(projectId);
 
-  const toggleSubmissionsEnabled = () => {
-    if (!isNilOrError(project)) {
-      updateProject(projectId, {
-        posting_enabled: !project?.attributes.posting_enabled,
-      });
-    }
-  };
+  if (isNilOrError(project)) {
+    return null;
+  }
+
+  const formActionsConfigs = getFormActionsConfig(project, phases);
 
   return (
-    <Box width="100%">
-      <Box display="flex" flexDirection="row" width="100%" mb="48px">
+    <>
+      <Box width="100%">
         <Box width="100%">
           <Title>{formatMessage(messages.survey)}</Title>
           <Text>{formatMessage(messages.surveyDescription)}</Text>
         </Box>
-        <Box
-          width="100%"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          {project?.attributes.posting_enabled !== undefined && (
-            <Toggle
-              checked={project?.attributes.posting_enabled}
-              label={formatMessage(messages.openForSubmissions)}
-              onChange={() => {
-                toggleSubmissionsEnabled();
-              }}
-            />
-          )}
-        </Box>
+        {formActionsConfigs.map(
+          (
+            { editFormLink, heading, postingEnabled, togglePostingEnabled },
+            index
+          ) => {
+            return (
+              <>
+                <FormActions
+                  editFormLink={editFormLink}
+                  viewFormLink={`/projects/${project?.attributes.slug}/ideas/new`}
+                  heading={heading}
+                  postingEnabled={postingEnabled}
+                  togglePostingEnabled={togglePostingEnabled}
+                />
+                {index !== formActionsConfigs.length - 1 && (
+                  <Box height="1px" border={`1px solid ${colors.separation}`} />
+                )}
+              </>
+            );
+          }
+        )}
       </Box>
-      <Box
-        display="flex"
-        flexDirection="row"
-        width="100%"
-        justifyContent="space-between"
-      >
-        <Button
-          icon="download"
-          buttonStyle="primary"
-          width="auto"
-          minWidth="312px"
-        >
-          {formatMessage(messages.downloadSurveyResults, {
-            count: 956, // TODO: Get this from the API
-          })}
-        </Button>
-        <Button
-          icon="edit"
-          buttonStyle="primary"
-          width="auto"
-          minWidth="312px"
-          onClick={() => {
-            clHistory.push(`/admin/projects/${projectId}/native-survey/edit`);
-          }}
-        >
-          {formatMessage(messages.editSurveyContent)}
-        </Button>
-        <Button
-          linkTo={`/projects/${project?.attributes.slug}/ideas/new`}
-          icon="eye"
-          openLinkInNewTab
-          buttonStyle="primary"
-          width="auto"
-          minWidth="312px"
-        >
-          {formatMessage(messages.viewSurveyText)}
-        </Button>
-      </Box>
-    </Box>
+    </>
   );
 };
 

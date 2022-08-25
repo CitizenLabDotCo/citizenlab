@@ -4,6 +4,7 @@ import { useFormContext } from 'react-hook-form';
 // hooks
 import useProject from 'hooks/useProject';
 import useLocalize from 'hooks/useLocalize';
+import usePhase from 'hooks/usePhase';
 
 // components
 import GoBackButton from 'components/UI/GoBackButton';
@@ -23,6 +24,7 @@ import {
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { getIsPostingEnabled } from 'containers/Admin/formBuilder/utils';
 
 // i18n
 import messages from '../messages';
@@ -45,11 +47,16 @@ const StyledStatusLabel = styled(StatusLabel)`
 
 const FormBuilderTopBar = () => {
   const localize = useLocalize();
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId, phaseId } = useParams() as {
+    projectId: string;
+    phaseId?: string;
+  };
   const project = useProject({ projectId });
   const [loading, setLoading] = useState(false);
   const { watch } = useFormContext();
   const formCustomFields: IFlatCustomField[] = watch('customFields');
+  const phase = usePhase(phaseId || null);
+  const isPostingEnabled = getIsPostingEnabled(project, phase);
 
   // TODO : Generalize this form builder and use new ParticipationMethod abstraction to control method specific copy, etc.
   const goBack = () => {
@@ -68,7 +75,7 @@ const FormBuilderTopBar = () => {
           title_multiloc: field.title_multiloc || {},
           description_multiloc: field.description_multiloc || {},
         }));
-        await updateFormCustomFields(projectId, finalResponseArray);
+        await updateFormCustomFields(projectId, finalResponseArray, phaseId);
       } catch {
         // TODO: Add error handling
       } finally {
@@ -113,7 +120,7 @@ const FormBuilderTopBar = () => {
                 </Title>
                 <StyledStatusLabel
                   text={
-                    project?.attributes.posting_enabled === true ? (
+                    isPostingEnabled ? (
                       <span style={{ color: colors.clGreen }}>
                         <FormattedMessage {...messages.open} />
                       </span>
@@ -124,7 +131,7 @@ const FormBuilderTopBar = () => {
                     )
                   }
                   backgroundColor={
-                    project?.attributes.posting_enabled === true
+                    isPostingEnabled
                       ? colors.clGreenSuccessBackground
                       : colors.backgroundLightGrey
                   }
