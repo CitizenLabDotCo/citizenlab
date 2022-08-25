@@ -65,5 +65,27 @@ describe Analytics::QueryRunnerService do
       results = runner.run(query)
       expect(results).to eq([{ 'count' => 5 }])
     end
+
+    it 'return first two sorted posts' do
+      ideas = create_list(:idea, 5)
+      initiatives = create_list(:initiative, 5)
+      create(:dimension_type_idea)
+      create(:dimension_type_initiative)
+
+      query_param = ActionController::Parameters.new(
+        fact: 'post',
+        fields: 'id',
+        sort: { id: 'ASC' },
+        limit: 3
+      )
+      query = Analytics::Query.new(query_param)
+
+      runner = described_class.new
+      results = runner.run(query)
+      posts = (ideas + initiatives)
+        .sort_by { |p| p[:id] }
+        .map { |p| { 'id' => p.id } }[0, 3]
+      expect(results).to eq(posts)
+    end
   end
 end
