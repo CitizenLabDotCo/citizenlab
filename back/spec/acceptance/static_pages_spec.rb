@@ -229,6 +229,18 @@ resource 'StaticPages' do
         assert_status 200
         expect { page.reload }.to raise_error ActiveRecord::RecordNotFound
       end
+
+      context 'when the page has a code other than \'custom\'' do
+        before do
+          page.code = 'faq'
+          page.save!
+        end
+
+        example_request 'Delete a static page' do
+          assert_status 422
+          expect { page.reload }.not_to raise_error ActiveRecord::RecordNotFound
+        end
+      end
     end
   end
 end
