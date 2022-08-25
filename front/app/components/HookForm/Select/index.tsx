@@ -1,23 +1,22 @@
 import React from 'react';
 import {
-  Input as InputComponent,
-  InputProps,
+  Select as SelectComponent,
+  SelectProps,
 } from '@citizenlab/cl2-component-library';
 import Error, { TFieldName } from 'components/UI/Error';
 import { Controller, useFormContext } from 'react-hook-form';
 import { CLError } from 'typings';
-
-interface Props extends InputProps {
+interface Props extends Omit<SelectProps, 'onChange'> {
   name: string;
 }
 
-const Input = ({ name, ...rest }: Props) => {
+const Select = ({ name, ...rest }: Props) => {
   const {
+    trigger,
+    setValue,
     formState: { errors },
     control,
   } = useFormContext();
-
-  const defaultValue = '';
 
   const validationError = errors[name]?.message as string | undefined;
 
@@ -30,10 +29,19 @@ const Input = ({ name, ...rest }: Props) => {
       <Controller
         name={name}
         control={control}
-        defaultValue={defaultValue}
-        render={({ field: { ref: _ref, ...field } }) => (
-          <InputComponent id={name} {...field} {...rest} />
-        )}
+        render={({ field: { ref: _ref, ...field } }) => {
+          return (
+            <SelectComponent
+              id={name}
+              {...field}
+              {...rest}
+              onChange={(option) => {
+                setValue(name, option.value);
+                trigger(name);
+              }}
+            />
+          );
+        }}
       />
       {validationError && (
         <Error
@@ -56,4 +64,4 @@ const Input = ({ name, ...rest }: Props) => {
   );
 };
 
-export default Input;
+export default Select;

@@ -346,7 +346,7 @@
   "app.components.ProjectCard.learnMore": "Aprende más",
   "app.components.ProjectCard.remaining": "queda(n) {timeRemaining}",
   "app.components.ProjectCard.submitAnIssue": "Envía tu respuesta",
-  "app.components.ProjectCard.submitYourIdea": "Envia tu idea",
+  "app.components.ProjectCard.submitYourIdea": "Envía tu idea",
   "app.components.ProjectCard.submitYourProject": "Envia tu proyecto",
   "app.components.ProjectCard.takeThePoll": "Responder la consulta ciudadana",
   "app.components.ProjectCard.takeTheSurvey": "Haz la consulta",
