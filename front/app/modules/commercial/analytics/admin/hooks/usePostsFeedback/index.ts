@@ -86,10 +86,8 @@ export default function usePostsWithFeedback(
         return;
       }
 
-      const [feedbackRows, statusRows] = results.data;
+      const [feedbackRows] = results.data;
       const feedbackRow = feedbackRows[0];
-      console.log('analytics endpoint:')
-      console.log(statusRows.map((row) => row.first_status_title_multiloc.en))
 
       const translations = getTranslations(formatMessage);
 

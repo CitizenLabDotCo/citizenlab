@@ -12,6 +12,7 @@ import { Box, Icon } from '@citizenlab/cl2-component-library';
 import PieChart from 'components/admin/Graphs/PieChart';
 import ProgressBars from 'components/admin/Graphs/ProgressBars';
 import CenterLabel from './CenterLabel';
+import Button from 'components/UI/Button';
 
 // styling
 import styled from 'styled-components';
@@ -23,7 +24,6 @@ import messages from '../../hooks/usePostsFeedback/messages';
 
 // hooks
 import usePostsWithFeedback from '../../hooks/usePostsFeedback';
-import useIdeaStatuses from 'hooks/useIdeaStatuses';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -78,9 +78,8 @@ const PostFeedback = ({
   const currentPieChart = useRef();
   const currentProgressBarsChart = useRef();
   const data = usePostsWithFeedback(formatMessage, projectId);
-  const ideaStatuses = useIdeaStatuses();
 
-  if (isNilOrError(data) || isNilOrError(ideaStatuses)) return null;
+  if (isNilOrError(data)) return null;
 
   const {
     pieData,
@@ -90,16 +89,6 @@ const PostFeedback = ({
     days,
     progressBarsData,
   } = data;
-
-  console.log('idea statuses:')
-  console.log(ideaStatuses.map(({ attributes }) => attributes.title_multiloc.en));
-
-  // const ideaStatusColorsById = ideaStatuses.reduce((acc, { id, attributes }) => ({
-  //   ...acc,
-  //   [id]: attributes.color
-  // }), {});
-
-  // console.log(ideaStatusColorsById)
 
   return (
     <GraphCard className="fullWidth dynamicHeight">
@@ -173,6 +162,8 @@ const PostFeedback = ({
           </ProgressBarsContainer>
         </Container>
       </GraphCardInner>
+
+      <Button linkTo="/" />
     </GraphCard>
   );
 };
