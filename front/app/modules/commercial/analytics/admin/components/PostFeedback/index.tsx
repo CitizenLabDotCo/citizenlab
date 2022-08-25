@@ -8,18 +8,13 @@ import {
   GraphCardInner,
 } from 'components/admin/GraphWrappers';
 import ReportExportMenu from 'components/admin/ReportExportMenu';
-import {
-  Box,
-  Icon,
-  Text,
-  useBreakpoint,
-} from '@citizenlab/cl2-component-library';
+import { Box, Icon, useBreakpoint } from '@citizenlab/cl2-component-library';
 import PieChart from 'components/admin/Graphs/PieChart';
 import ProgressBars from 'components/admin/Graphs/ProgressBars';
 import CenterLabel from './CenterLabel';
 
 // styling
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -74,16 +69,17 @@ const PostFeedback = ({
           />
         </GraphCardHeader>
         <Box
-          display="flex"
-          justifyContent="space-around"
           width="100%"
+          display="flex"
           flexDirection={largeTablet ? 'column' : 'row'}
-          alignItems={largeTablet ? 'center' : 'flex-start'}
+          alignItems="center"
+          // justifyContent="center"
+          // alignItems={largeTablet ? 'center' : 'flex-start'}
         >
-          <Box maxWidth="210px" width="50%">
+          <Box maxWidth="256px" width="50%">
             <PieChart
-              height={210}
               width="100%"
+              height={256}
               data={pieData}
               mapping={{
                 angle: 'value',
@@ -91,7 +87,7 @@ const PostFeedback = ({
                 fill: ({ row: { color } }) => color,
               }}
               pie={{
-                innerRadius: '65%',
+                innerRadius: '68%',
               }}
               centerLabel={({ viewBox: { cy } }) => (
                 <CenterLabel
@@ -104,12 +100,10 @@ const PostFeedback = ({
             />
           </Box>
           <Box
-            maxWidth="257px"
+            maxWidth="256px"
             width="50%"
-            mt={largeTablet ? '0px' : '24px'}
             display="flex"
             flexDirection="column"
-            alignItems={largeTablet ? 'center' : 'flex-start'}
           >
             <ProgressBars
               data={progressBarsData}
@@ -117,7 +111,13 @@ const PostFeedback = ({
               height={136}
               innerRef={currentProgressBarsChart}
             />
-            <Text m="-2px 0 0 0" color="adminTextColor" fontSize="s">
+            <Box
+              m="0 0 0 0"
+              style={{
+                color: colors.adminTextColor,
+                fontSize: fontSizes.s,
+              }}
+            >
               <Icon
                 name="calendar"
                 fill={colors.adminTextColor}
@@ -126,7 +126,7 @@ const PostFeedback = ({
                 mr="11px"
               />
               {formatMessage(messages.averageTime, { days })}
-            </Text>
+            </Box>
           </Box>
         </Box>
       </GraphCardInner>
