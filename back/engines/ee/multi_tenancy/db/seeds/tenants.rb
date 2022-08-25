@@ -130,6 +130,18 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            dynamic_idea_form: {
+              enabled: true,
+              allowed: true
+            },
+            idea_author_change: {
+              enabled: true,
+              allowed: true
+            },
+            idea_custom_copy: {
+              enabled: true,
+              allowed: true
+            },
             widgets: {
               enabled: true,
               allowed: true
