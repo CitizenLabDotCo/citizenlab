@@ -22,13 +22,13 @@ import messages from './messages';
 import { CLErrors } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 
-export type TApiErrors = CLErrors | null;
+type TApiErrors = CLErrors | null;
 
 export interface Props {
   inputFieldId?: string;
   slug: string | null;
   pathnameWithoutSlug: string;
-  apiErrors: CLErrors | null;
+  apiErrors: TApiErrors;
   showSlugErrorMessage: boolean;
   onSlugChange: (slug: string) => void;
 }
