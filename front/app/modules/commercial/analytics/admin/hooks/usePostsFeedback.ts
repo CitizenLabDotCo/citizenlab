@@ -17,7 +17,7 @@ import {
   parseExcelData,
   getPieCenterValue,
   getDays,
-} from './utils';
+} from './parse';
 
 // typings
 import { InjectedIntlProps } from 'react-intl';
