@@ -1,5 +1,8 @@
-import { DataRow } from 'components/admin/Graphs/PieChart/typings';
 import { Multiloc } from 'typings';
+
+export type Response = {
+  data: [ResponseFeedback[], ResponseStatus[]];
+};
 
 type ResponseFeedback = {
   sum_feedback_none: number;
@@ -14,22 +17,24 @@ type ResponseStatus = {
   first_status_title_multiloc: Multiloc;
 };
 
-export type Response = {
-  data: [ResponseFeedback[], ResponseStatus[]];
+export type PostFeedback = {
+  pieData: PieRow[];
+  pieCenterValue: string;
+  pieCenterLabel: string;
+  progressBarsData: ProgressBarsRow[];
+  days: number;
+  xlsxData: object;
 };
 
-type ProgressBarsItem = {
+interface PieRow {
+  name: string;
+  value: number;
+  color: string;
+};
+
+interface ProgressBarsRow {
   name: string;
   label: string;
   value: number;
   total: number;
-};
-
-export type PostFeedback = {
-  pieData: DataRow[];
-  pieCenterValue: string;
-  pieCenterLabel: string;
-  progressBarsData: ProgressBarsItem[];
-  days: number;
-  xlsxData: object;
 };

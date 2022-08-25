@@ -68,25 +68,25 @@ export default function usePostsWithFeedback(
         return;
       }
 
-      const [response_feedback, _] = results.data;
+      const [responseFeedback] = results.data;
 
-      const result_feedback = response_feedback[0];
+      const resultFeedback = responseFeedback[0];
 
       const {
         sum_feedback_none,
         sum_feedback_official,
         sum_feedback_status_change,
         avg_feedback_time_taken,
-      } = result_feedback;
+      } = resultFeedback;
 
-      const feedback_count = sum([
+      const feedbackCount = sum([
         sum_feedback_official,
         sum_feedback_status_change,
       ]);
-      const total = sum([feedback_count, sum_feedback_none]);
 
-      const feedbackPercent = feedback_count / total;
-      const pieCenterValue = `${Math.round(feedbackPercent * 100)}%`;
+      const total = sum([feedbackCount, sum_feedback_none]);
+
+      const pieCenterValue = `${roundPercentage(feedbackCount, total)}%`;
       const pieCenterLabel = formatMessage(messages.feedbackGiven);
 
       const days = Math.round(avg_feedback_time_taken / 86400);
@@ -95,7 +95,11 @@ export default function usePostsWithFeedback(
       const officialUpdate = formatMessage(messages.officialUpdate);
 
       const pieData = [
-        { name: 'sum_feedback', value: feedback_count, color: '#40B8C5' },
+        { 
+          name: 'sum_feedback',
+          value: feedbackCount,
+          color: '#40B8C5'
+        },
         {
           name: 'sum_no_feedback',
           value: sum_feedback_none,
@@ -126,7 +130,7 @@ export default function usePostsWithFeedback(
 
       const xlsxDataSheet1Row1 = {};
       xlsxDataSheet1Row1[formatMessage(messages.feedbackGiven)] =
-        feedback_count;
+        feedbackCount;
       xlsxDataSheet1Row1[formatMessage(messages.statusChanged)] =
         sum_feedback_status_change;
       xlsxDataSheet1Row1[formatMessage(messages.officialUpdate)] =

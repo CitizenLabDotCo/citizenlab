@@ -10,7 +10,7 @@ export interface Query {
   query: QuerySchema | QuerySchema[];
 }
 
-interface QuerySchema {
+export interface QuerySchema {
   fields?: string | string[];
   fact: 'post' | 'participation';
   dimensions?: {

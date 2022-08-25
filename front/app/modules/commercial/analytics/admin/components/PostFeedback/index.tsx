@@ -20,15 +20,18 @@ import ProgressBars from 'components/admin/Graphs/ProgressBars';
 // styling
 import { colors } from 'utils/styleUtils';
 
-// hooks
-import usePostsWithFeedback from '../../../hooks/usePostsFeedback';
-
-// typings
-import { InjectedIntlProps } from 'react-intl';
-
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
+
+// hooks
+import usePostsWithFeedback from '../../../hooks/usePostsFeedback';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+
+// typings
+import { InjectedIntlProps } from 'react-intl';
 
 interface Props {
   projectId?: string;
@@ -43,7 +46,7 @@ const PostFeedback = ({
   const data = usePostsWithFeedback(formatMessage, projectId);
   const largeTablet = useBreakpoint('largeTablet');
 
-  if (!data) return null;
+  if (isNilOrError(data)) return null;
 
   const {
     pieData,
