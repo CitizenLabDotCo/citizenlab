@@ -644,6 +644,8 @@
   "app.containers.Comments.commentsSortTitle": "Sortera kommentarer efter",
   "app.containers.Comments.confirmCommentDeletion": "Är du säker på att du vill ta bort den här kommentaren? Det går inte att ångra!",
   "app.containers.Comments.deleteComment": "Radera",
+  "app.containers.Comments.deleteReasonDescriptionError": "Provide more information on your reason",
+  "app.containers.Comments.deleteReasonError": "Provide a reason",
   "app.containers.Comments.deleteReason_inappropriate": "Det är olämpligt eller stötande",
   "app.containers.Comments.deleteReason_irrelevant": "Det här är inte relevant",
   "app.containers.Comments.deleteReason_other": "Annan orsak",
