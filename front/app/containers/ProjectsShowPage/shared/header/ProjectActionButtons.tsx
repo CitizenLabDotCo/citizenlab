@@ -128,9 +128,12 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     }
   };
 
-  const { process_type, participation_method, publication_status } =
-    project.attributes;
+  const { process_type, publication_status } = project.attributes;
+
   const isProcessTypeContinuous = process_type === 'continuous';
+  const participation_method = isProcessTypeContinuous
+    ? project.attributes.participation_method
+    : currentPhase?.attributes.participation_method;
   const ideas_count = isProcessTypeContinuous
     ? project.attributes.ideas_count
     : currentPhase?.attributes.ideas_count;
@@ -154,10 +157,9 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     isNumber(ideas_count) &&
     ideas_count > 0;
   const showIdeasButton =
-    (isProcessTypeContinuous &&
-      isParticipationMethodIdeation &&
-      publication_status !== 'archived') ||
+    (isParticipationMethodIdeation && publication_status !== 'archived') ||
     isParticipationMethodNativeSurvey;
+
   const showSurvey =
     (phases && participation_method === 'survey') ||
     (currentPhase?.attributes.participation_method === 'survey' &&

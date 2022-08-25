@@ -698,6 +698,7 @@
   "app.containers.IdeaButton.signUpLinkText": "Aschreiwen",
   "app.containers.IdeaButton.submitAnIssue": "E Kommentar ofginn",
   "app.containers.IdeaButton.submitYourIdea": "Reecht Är Iddi an",
+  "app.containers.IdeaButton.takeTheSurvey": "Un der Ëmfro deelhuelen",
   "app.containers.IdeaButton.verificationLinkText": "Iwwerpréift Är Identitéit elo.",
   "app.containers.IdeaCard.xComments": "{commentsCount, plural, =0 {keng Kommentaren} one {1 Kommentar} other {# Kommentaren}}",
   "app.containers.IdeaCards.a11y_totalInitiatives": "Gesamtzuel Virschléi: {initiativeCount}",

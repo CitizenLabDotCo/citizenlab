@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_17_144847) do
+ActiveRecord::Schema.define(version: 2022_08_18_165037) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -48,6 +48,7 @@ ActiveRecord::Schema.define(version: 2022_08_17_144847) do
     t.index ["lft"], name: "index_admin_publications_on_lft"
     t.index ["ordering"], name: "index_admin_publications_on_ordering"
     t.index ["parent_id"], name: "index_admin_publications_on_parent_id"
+    t.index ["publication_type", "publication_id"], name: "index_admin_publications_on_publication_type_and_publication_id"
     t.index ["rgt"], name: "index_admin_publications_on_rgt"
   end
 
@@ -194,7 +195,7 @@ ActiveRecord::Schema.define(version: 2022_08_17_144847) do
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "participation_context_id", null: false
     t.string "participation_context_type", null: false
-    t.index ["participation_context_id", "participation_context_type"], name: "index_custom_forms_on_participation_context"
+    t.index ["participation_context_id", "participation_context_type"], name: "index_custom_forms_on_participation_context", unique: true
   end
 
   create_table "email_campaigns_campaign_email_commands", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -961,7 +962,6 @@ ActiveRecord::Schema.define(version: 2022_08_17_144847) do
     t.integer "comments_count", default: 0, null: false
     t.uuid "default_assignee_id"
     t.boolean "poll_anonymous", default: false, null: false
-    t.uuid "custom_form_id"
     t.boolean "downvoting_enabled", default: true, null: false
     t.string "ideas_order"
     t.string "input_term", default: "idea"
@@ -969,7 +969,6 @@ ActiveRecord::Schema.define(version: 2022_08_17_144847) do
     t.string "downvoting_method", default: "unlimited", null: false
     t.integer "downvoting_limited_max", default: 10
     t.boolean "include_all_areas", default: false, null: false
-    t.index ["custom_form_id"], name: "index_projects_on_custom_form_id"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 

@@ -61,7 +61,8 @@ resource 'User Custom Fields' do
           updated_at: custom_field.updated_at.as_json
         },
         relationships: {
-          current_ref_distribution: expected_ref_distribution_linkage
+          current_ref_distribution: expected_ref_distribution_linkage,
+          options: an_instance_of(Hash)
         }
       }.deep_symbolize_keys
     end

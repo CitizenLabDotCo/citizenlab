@@ -5,11 +5,11 @@ import {
   InputMultilocWithLocaleSwitcher as InputMultilocWithLocaleSwitcherComponent,
   InputMultilocWithLocaleSwitcherProps,
 } from '@citizenlab/cl2-component-library';
-import Error from 'components/UI/Error';
+import Error, { TFieldName } from 'components/UI/Error';
 import { Controller, useFormContext, FieldError } from 'react-hook-form';
-import { Locale } from 'typings';
+import { CLError, Locale } from 'typings';
 
-export interface Props
+interface Props
   extends Omit<
     InputMultilocWithLocaleSwitcherProps,
     'locales' | 'valueMultiloc'
@@ -34,9 +34,13 @@ const InputMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
   );
 
   // Select the first error messages from the field's multiloc validation error
-  const errorMessage = Object.values(
+  const validationError = Object.values(
     (errors[name] as Record<Locale, FieldError> | undefined) || {}
   )[0]?.message;
+
+  const apiError =
+    (errors[name]?.error as string | undefined) &&
+    ([errors[name]] as unknown as CLError[]);
 
   return (
     <>
@@ -57,11 +61,20 @@ const InputMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
           );
         }}
       />
-      {errorMessage && (
+      {validationError && (
         <Error
           marginTop="8px"
           marginBottom="8px"
-          text={errorMessage}
+          text={validationError}
+          scrollIntoView={false}
+        />
+      )}
+      {apiError && (
+        <Error
+          fieldName={name as TFieldName}
+          apiErrors={apiError}
+          marginTop="8px"
+          marginBottom="8px"
           scrollIntoView={false}
         />
       )}
