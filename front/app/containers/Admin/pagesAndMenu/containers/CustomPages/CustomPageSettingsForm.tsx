@@ -81,6 +81,8 @@ const CustomPageSettingsForm = ({
                 type="text"
               />
             </Box>
+          </SectionField>
+          <SectionField>
             <Input
               label={formatMessage(messages.slugLabel)}
               labelTooltipText={formatMessage(messages.slugTooltip)}
