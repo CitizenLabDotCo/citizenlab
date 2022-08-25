@@ -3,30 +3,29 @@ import { Helmet } from 'react-helmet';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
-type Props = {
+interface Props {
   title: ReactIntl.FormattedMessage.MessageDescriptor;
-  description: ReactIntl.FormattedMessage.MessageDescriptor;
-};
-
-interface State {}
-
-export class HelmetIntl extends React.PureComponent<
-  Props & InjectedIntlProps,
-  State
-> {
-  render() {
-    const { formatMessage } = this.props.intl;
-    const { title, description } = this.props;
-
-    return (
-      <>
-        <Helmet
-          title={formatMessage(title)}
-          meta={[{ name: 'description', content: formatMessage(description) }]}
-        />
-      </>
-    );
-  }
+  // E.g. admin pages don't require a description
+  // because they're not indexed for SEO.
+  description?: ReactIntl.FormattedMessage.MessageDescriptor;
 }
 
-export default injectIntl<Props>(HelmetIntl);
+const HelmetIntl = ({
+  title,
+  description,
+  intl: { formatMessage },
+}: Props & InjectedIntlProps) => {
+  return (
+    <Helmet
+      title={formatMessage(title)}
+      meta={[
+        {
+          name: 'description',
+          content: description ? formatMessage(description) : '',
+        },
+      ]}
+    />
+  );
+};
+
+export default injectIntl(HelmetIntl);

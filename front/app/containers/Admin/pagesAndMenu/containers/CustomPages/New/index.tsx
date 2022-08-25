@@ -1,111 +1,34 @@
-import React, { useState } from 'react';
-
-// typings
-import { Multiloc } from 'typings';
-
-// form
-import Feedback from 'components/HookForm/Feedback';
-import { FormProvider, useForm } from 'react-hook-form';
-import { SectionField } from 'components/admin/Section';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { object, string } from 'yup';
-import validateMultiloc from 'utils/yup/validateMultiloc';
-import { slugRegEx } from 'utils/textUtils';
-// import { handleHookFormSubmissionError } from 'utils/errorUtils';
-
-// components
-import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
-import Button from 'components/UI/Button';
-import Input from 'components/HookForm/Input';
-import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import React from 'react';
+import CustomPageSettingsForm from '../CustomPageSettingsForm';
 import { Box } from '@citizenlab/cl2-component-library';
-
-// constants
-import { pagesAndMenuBreadcrumb } from '../../../breadcrumbs';
-
-// intl
-import messages from './messages';
+import Breadcrumbs from 'components/UI/Breadcrumbs';
+import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
+import HelmetIntl from 'components/HelmetIntl';
+import messages from '../messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
-// services
-import { createCustomPageStream } from 'services/customPages';
-
-interface CreateCustomPageFormValues {
-  title_multiloc: Multiloc;
-  slug: string;
-}
-
-interface Props {
-  defaultValues?: CreateCustomPageFormValues;
-}
-
-const CreateCustomPageHookForm = ({
+const CustomPagesNewSettings = ({
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
-  // types still to change
-  const [_error, setError] = useState({});
-  const schema = object({
-    title_multiloc: validateMultiloc(formatMessage(messages.multilocError)),
-    slug: string()
-      .matches(slugRegEx, formatMessage(messages.slugRegexError))
-      .required(formatMessage(messages.slugRequiredError)),
-  });
-
-  const methods = useForm({
-    mode: 'onBlur',
-    resolver: yupResolver(schema),
-  });
-
-  const onFormSubmit = async (formValues: CreateCustomPageFormValues) => {
-    try {
-      createCustomPageStream(formValues);
-    } catch (error) {
-      setError(error);
-    }
-  };
-
+}: InjectedIntlProps) => {
   return (
-    <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onFormSubmit)}>
-        <SectionFormWrapper
+    <>
+      <HelmetIntl title={messages.newCustomPageMetaTitle} />
+      {/* Title will come as part of TabbedResource */}
+      <Box mb="16px">
+        <Breadcrumbs
           breadcrumbs={[
             {
               label: formatMessage(pagesAndMenuBreadcrumb.label),
               linkTo: pagesAndMenuBreadcrumb.linkTo,
             },
-            {
-              label: formatMessage(messages.createCustomPage),
-            },
+            { label: formatMessage(messages.newCustomPagePageTitle) },
           ]}
-          title={formatMessage(messages.pageTitle)}
-          stickyMenuContents={
-            <Button type="submit" processing={methods.formState.isSubmitting}>
-              {formatMessage(messages.saveButton)}
-            </Button>
-          }
-        >
-          <SectionField>
-            <Feedback successMessage={formatMessage(messages.pageTitle)} />
-            <Box mb="20px">
-              <InputMultilocWithLocaleSwitcher
-                name="title_multiloc"
-                label={formatMessage(messages.titleLabel)}
-                type="text"
-                labelTooltipText={formatMessage(messages.titleTooltip)}
-              />
-            </Box>
-            <Input
-              label={formatMessage(messages.slugLabel)}
-              labelTooltipText={formatMessage(messages.slugTooltip)}
-              name="slug"
-              type="text"
-            />
-          </SectionField>
-        </SectionFormWrapper>
-      </form>
-    </FormProvider>
+        />
+      </Box>
+      <CustomPageSettingsForm />
+    </>
   );
 };
 
-export default injectIntl(CreateCustomPageHookForm);
+export default injectIntl(CustomPagesNewSettings);

@@ -1,9 +1,17 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  pageTitle: {
-    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.pageTitle',
+  newCustomPageMetaTitle: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.CustomPages.newCustomPageMetaTitle',
+    defaultMessage: 'Create custom page | {orgName}',
+  },
+  newCustomPagePageTitle: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.newCustomPagePageTitle',
     defaultMessage: 'Create custom page',
+  },
+  titleMultilocError: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleMultilocError',
+    defaultMessage: 'Enter a title in every language',
   },
   contentEditorTitle: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.contentEditorTitle',
@@ -21,29 +29,18 @@ export default defineMessages({
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.messageSuccess',
     defaultMessage: 'Custom page saved',
   },
-  error: {
-    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.error',
-    defaultMessage: "Couldn't save custom page",
-  },
-  multilocError: {
-    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.multilocError',
-    defaultMessage: 'Please enter a title in every language',
-  },
   titleLabel: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleLabel',
     defaultMessage: 'Title',
   },
-  titleTooltip: {
-    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleTooltip',
-    defaultMessage: 'Enter your title here',
-  },
   slugLabel: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.slugLabel',
-    defaultMessage: 'URL',
+    defaultMessage: 'Page slug',
   },
   slugTooltip: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.slugTooltip',
-    defaultMessage: 'You can set the URL for your new custom page here',
+    defaultMessage:
+      'The slug is the unique set of words at the end of the page’s web address, or URL.',
   },
   slugRegexError: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.slugRegexError',
@@ -53,9 +50,5 @@ export default defineMessages({
   slugRequiredError: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.slugRequiredError',
     defaultMessage: 'You must enter a slug',
-  },
-  createCustomPage: {
-    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.createCustomPage',
-    defaultMessage: 'Create custom page',
   },
 });
