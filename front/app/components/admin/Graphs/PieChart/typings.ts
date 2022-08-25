@@ -7,7 +7,9 @@ export interface Props<Row> extends BaseProps<Row, Payload<Row>> {
   mapping: Mapping<Row>;
   pie?: Pie;
   annotations?: boolean | ((row: Row) => string);
-  centerLabel?: React.ReactElement;
+  centerLabel?:
+    | React.ReactElement
+    | ((props: CenterLabelProps) => React.ReactElement);
 }
 
 export interface Mapping<Row> extends BaseMapping<Payload<Row>> {
@@ -21,6 +23,18 @@ export interface Pie {
   outerRadius?: Percentage | number;
   startAngle?: number;
   endAngle?: number;
+}
+
+interface CenterLabelProps {
+  offset: number;
+  viewBox: {
+    cx: number;
+    cy: number;
+    startAngle: number;
+    endAngle: number;
+    innerRadius: number;
+    outerRadius: number;
+  };
 }
 
 // PARSED CONFIG

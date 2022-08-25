@@ -90,9 +90,16 @@ const PostFeedback = ({
                 name: 'name',
                 fill: ({ row: { color } }) => color,
               }}
-              centerLabel={
-                <CenterLabel value={pieCenterValue} label={pieCenterLabel} />
-              }
+              pie={{
+                innerRadius: '65%',
+              }}
+              centerLabel={({ viewBox: { cy } }) => (
+                <CenterLabel
+                  y={cy - 5}
+                  value={pieCenterValue}
+                  label={pieCenterLabel}
+                />
+              )}
               innerRef={currentPieChart}
             />
           </Box>
