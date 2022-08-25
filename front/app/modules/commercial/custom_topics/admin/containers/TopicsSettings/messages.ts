@@ -25,11 +25,11 @@ export default defineMessages({
   },
   fieldTopicTitleError: {
     id: 'app.containers.AdminPage.SettingsPage.fieldTopicTitleError',
-    defaultMessage: 'Provide a topic name for all languages',
+    defaultMessage: 'Provide a tag name for all languages',
   },
   fieldTopicSave: {
     id: 'app.containers.AdminPage.SettingsPage.fieldTopicSave',
-    defaultMessage: 'Save topic',
+    defaultMessage: 'Save tag',
   },
   editTopicFormTitle: {
     id: 'app.containers.AdminPage.SettingsPage.editTopicFormTitle',
