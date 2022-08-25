@@ -72,17 +72,17 @@ const ConfigMultiselectWithLocaleSwitcher = ({
   // };
 
   // // TODO: Refactor to work with React hook forms
-  const handleDropRow = (fieldId: string, toIndex: number) => {
-    if (!isNilOrError(value)) {
-      const newValues = clone(value);
-      const [removed] = newValues.splice(
-        newValues.findIndex((field) => field.id === fieldId),
-        1
-      );
-      newValues.splice(toIndex, 0, removed);
-      setValue(name, newValues);
-    }
-  };
+  // const handleDropRow = (fieldId: string, toIndex: number) => {
+  //   if (!isNilOrError(value)) {
+  //     const newValues = clone(value);
+  //     const [removed] = newValues.splice(
+  //       newValues.findIndex((field) => field.id === fieldId),
+  //       1
+  //     );
+  //     newValues.splice(toIndex, 0, removed);
+  //     setValue(name, newValues);
+  //   }
+  // };
 
   const addOption = (value, name) => {
     const newValues = value;
@@ -115,7 +115,7 @@ const ConfigMultiselectWithLocaleSwitcher = ({
           name={name}
           control={control}
           defaultValue={defaultValsTemp}
-          render={({ field: { ref: _ref, value: options } }) => {
+          render={({ field: { ref: _ref, value: choices } }) => {
             return (
               <SectionField>
                 <Box display="flex" flexWrap="wrap" marginBottom="12px">
@@ -131,18 +131,18 @@ const ConfigMultiselectWithLocaleSwitcher = ({
                       locales={!isNilOrError(locales) ? locales : []}
                       selectedLocale={selectedLocale}
                       values={{
-                        input_field: options as Multiloc,
+                        input_field: choices as Multiloc,
                       }}
                     />
                   </Box>
                 </Box>
                 <DndProvider backend={HTML5Backend}>
-                  <List key={options?.length}>
-                    {options?.map((option, index) => {
+                  <List key={choices?.length}>
+                    {choices?.map((choice, index) => {
                       return (
-                        <Box key={option.id}>
+                        <Box key={choice.id}>
                           <SortableRow
-                            id={option.id}
+                            id={choice.id}
                             index={index}
                             moveRow={() => {}} // TODO: Refactor move function
                             dropRow={() => {}} // TODO: Refactor drop function
@@ -152,13 +152,13 @@ const ConfigMultiselectWithLocaleSwitcher = ({
                               <Input
                                 size="small"
                                 type="text"
-                                value={option.title_multiloc[selectedLocale]}
+                                value={choice.title_multiloc[selectedLocale]}
                                 onChange={(value) => {
-                                  const newValues = options;
-                                  newValues[index].title_multiloc[
+                                  const updatedChoices = choices;
+                                  updatedChoices[index].title_multiloc[
                                     selectedLocale
                                   ] = value;
-                                  setValue(name, newValues);
+                                  setValue(name, updatedChoices);
                                 }}
                               />
                             </Box>
@@ -166,7 +166,7 @@ const ConfigMultiselectWithLocaleSwitcher = ({
                               margin="0px"
                               padding="0px"
                               buttonStyle="text"
-                              onClick={() => removeOption(options, name, index)}
+                              onClick={() => removeOption(choices, name, index)}
                             >
                               <Icon name="trash" fill="grey" padding="0px" />
                             </Button>
@@ -178,7 +178,7 @@ const ConfigMultiselectWithLocaleSwitcher = ({
                 </DndProvider>
                 <Button
                   buttonStyle="secondary"
-                  onClick={() => addOption(options, name)}
+                  onClick={() => addOption(choices, name)}
                 >
                   Add answer
                 </Button>

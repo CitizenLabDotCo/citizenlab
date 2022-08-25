@@ -23,7 +23,7 @@ RSpec.describe Factory do
       let(:project) { create :project_with_past_phases }
 
       it 'returns an instance of ParticipationMethod::None' do
-        expect(participation_method).to be_an_instance_of(ParticipationMethod::None)
+        expect(participation_method).to be_an_instance_of(ParticipationMethod::Ideation)
       end
     end
 

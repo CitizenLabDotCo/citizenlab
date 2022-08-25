@@ -138,4 +138,16 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOption',
     defaultMessage: 'Answer option',
   },
+  answerOptionSuccess: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionSuccess',
+    defaultMessage: 'Answer option successfully saved',
+  },
+  answerOptionError: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionError',
+    defaultMessage: 'Provide an answer option for all languages',
+  },
+  answerOptionSave: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionSave',
+    defaultMessage: 'Save answer option',
+  },
 });

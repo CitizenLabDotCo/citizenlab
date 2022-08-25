@@ -13,7 +13,7 @@ import Toggle from 'components/HookForm/Toggle';
 
 // intl
 import messages from '../messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
 import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';
 import ConfigMultiselectWithLocaleSwitcher from './ConfigMultiselectWithLocaleSwitcher';
@@ -25,15 +25,13 @@ interface Props {
 }
 
 const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
-  let translatedTitleKey: ReactIntl.FormattedMessage.MessageDescriptor | null =
-    null;
-
+  let translatedStringKey: MessageDescriptor | null = null;
   switch (field.input_type) {
     case 'text':
-      translatedTitleKey = messages.shortAnswer;
+      translatedStringKey = messages.shortAnswer;
       break;
     case 'multiselect':
-      translatedTitleKey = messages.multipleChoice;
+      translatedStringKey = messages.multipleChoice;
       break;
   }
 
@@ -57,9 +55,9 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
           iconColorOnHover={'#000'}
         />
       </Box>
-      {translatedTitleKey && (
+      {translatedStringKey && (
         <SectionTitle>
-          <FormattedMessage {...translatedTitleKey} />
+          <FormattedMessage {...translatedStringKey} />
         </SectionTitle>
       )}
       <SectionField>
