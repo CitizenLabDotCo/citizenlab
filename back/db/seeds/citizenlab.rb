@@ -172,7 +172,6 @@ AppConfiguration.create!(
       allowed: true
     },
     events_widget: {
-      enabled: true,
       allowed: true
     },
     native_surveys: {
