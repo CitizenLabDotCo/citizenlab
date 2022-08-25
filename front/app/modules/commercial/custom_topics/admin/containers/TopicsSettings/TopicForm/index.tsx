@@ -40,7 +40,9 @@ const TopicForm = ({
   defaultValues,
 }: Props) => {
   const schema = object({
-    title_multiloc: validateMultiloc('error'),
+    title_multiloc: validateMultiloc(
+      formatMessage(messages.fieldTopicTitleError)
+    ),
   });
 
   const methods = useForm({
@@ -75,7 +77,7 @@ const TopicForm = ({
             </SectionField>
             <Box display="flex">
               <Button type="submit" processing={methods.formState.isSubmitting}>
-                save
+                {formatMessage(messages.fieldTopicSave)}
               </Button>
             </Box>
           </form>
