@@ -3,12 +3,17 @@ import streams, { IStreamParams } from 'utils/streams';
 import { Multiloc } from 'typings';
 
 // We can add more input types here when we support them
-export type ICustomFieldInputType = 'text';
+export type ICustomFieldInputType = 'text' | 'multiselect';
+export type IOptionsType = {
+  id?: string;
+  title_multiloc: Multiloc;
+};
 
 export interface IAttributes {
   key: string;
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
+  options: [IOptionsType];
   input_type: ICustomFieldInputType;
   required: boolean;
   enabled: boolean;
@@ -40,6 +45,7 @@ export type IFlatCreateCustomField = Optional<
   | 'description_multiloc'
   | 'type'
   | 'key'
+  | 'options'
   | 'ordering'
   | 'created_at'
   | 'updated_at'

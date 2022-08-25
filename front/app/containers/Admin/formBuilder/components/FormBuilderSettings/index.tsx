@@ -16,6 +16,7 @@ import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';
+import ConfigMultiselectWithLocaleSwitcher from './ConfigMultiselectWithLocaleSwitcher';
 
 interface Props {
   field: IFlatCustomFieldWithIndex;
@@ -24,10 +25,16 @@ interface Props {
 }
 
 const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
-  let translatedStringKey: ReactIntl.FormattedMessage.MessageDescriptor | null =
+  let translatedTitleKey: ReactIntl.FormattedMessage.MessageDescriptor | null =
     null;
-  if (field.input_type === 'text') {
-    translatedStringKey = messages.shortAnswer;
+
+  switch (field.input_type) {
+    case 'text':
+      translatedTitleKey = messages.shortAnswer;
+      break;
+    case 'multiselect':
+      translatedTitleKey = messages.multipleChoice;
+      break;
   }
 
   return (
@@ -50,9 +57,9 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
           iconColorOnHover={'#000'}
         />
       </Box>
-      {translatedStringKey && (
+      {translatedTitleKey && (
         <SectionTitle>
-          <FormattedMessage {...translatedStringKey} />
+          <FormattedMessage {...translatedTitleKey} />
         </SectionTitle>
       )}
       <SectionField>
@@ -79,6 +86,10 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
           }
         />
       </SectionField>
+      <ConfigMultiselectWithLocaleSwitcher // TODO: Only show for multiselect inputs, set locales as platform locales
+        name={`customFields.${field.index}.options`}
+        locales={['en', 'nl-BE', 'fr-BE']}
+      />
       <Box display="flex" justifyContent="space-between">
         <Button
           icon="delete"

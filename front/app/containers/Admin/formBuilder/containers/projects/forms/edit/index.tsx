@@ -65,6 +65,11 @@ export const FormEdit = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           formatMessage(messages.emptyTitleError)
         ),
         description_multiloc: object(),
+        options: array().of(
+          object().shape({
+            title_multiloc: object(),
+          })
+        ),
         required: boolean(),
       })
     ),
