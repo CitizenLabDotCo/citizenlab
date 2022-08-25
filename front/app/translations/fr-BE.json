@@ -644,6 +644,8 @@
   "app.containers.Comments.commentsSortTitle": "Trier les commentaires par",
   "app.containers.Comments.confirmCommentDeletion": "Êtes-vous sûr de vouloir supprimer ce commentaire ? L'action est définitive !",
   "app.containers.Comments.deleteComment": "Supprimer",
+  "app.containers.Comments.deleteReasonDescriptionError": "Provide more information on your reason",
+  "app.containers.Comments.deleteReasonError": "Provide a reason",
   "app.containers.Comments.deleteReason_inappropriate": "C'est inapproprié ou offensant",
   "app.containers.Comments.deleteReason_irrelevant": "Cela n'a pas sa place ici.",
   "app.containers.Comments.deleteReason_other": "Autre raison",
