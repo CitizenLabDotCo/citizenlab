@@ -63,7 +63,10 @@ const TopicForm = ({
     <Form>
       <Section>
         <FormProvider {...methods}>
-          <form onSubmit={methods.handleSubmit(onFormSubmit)}>
+          <form
+            onSubmit={methods.handleSubmit(onFormSubmit)}
+            data-testid="topicForm"
+          >
             <SectionField>
               <Feedback />
               <InputMultilocWithLocaleSwitcher
