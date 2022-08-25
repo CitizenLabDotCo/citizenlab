@@ -10,9 +10,14 @@ import {
 interface Props {
   inputTypes?: ICustomFieldInputType[];
   projectId: string;
+  phaseId?: string;
 }
 
-export default function useFormCustomFields({ inputTypes, projectId }: Props) {
+export default function useFormCustomFields({
+  inputTypes,
+  projectId,
+  phaseId,
+}: Props) {
   const [formCustomFields, setFormCustomFields] = useState<
     IFlatCustomField[] | undefined | Error
   >(undefined);
@@ -29,17 +34,18 @@ export default function useFormCustomFields({ inputTypes, projectId }: Props) {
       }));
     };
 
-    const subscription = formCustomFieldsStream(projectId, {
-      queryParameters: { input_types: inputTypes },
-    }).observable.subscribe((formCustomFields) => {
+    const subscription = formCustomFieldsStream(
+      projectId,
+      {
+        queryParameters: { input_types: inputTypes },
+      },
+      phaseId
+    ).observable.subscribe((formCustomFields) => {
       setFormCustomFields(flattenFormCustomFields(formCustomFields.data));
     });
 
     return () => subscription.unsubscribe();
-  }, [inputTypes, projectId]);
+  }, [inputTypes, projectId, phaseId]);
 
-  return {
-    formCustomFields,
-    setFormCustomFields,
-  };
+  return formCustomFields;
 }
