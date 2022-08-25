@@ -16,6 +16,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import PieChart from 'components/admin/Graphs/PieChart';
 import ProgressBars from 'components/admin/Graphs/ProgressBars';
+import CenterLabel from './CenterLabel';
 
 // styling
 import { colors } from 'utils/styleUtils';
@@ -50,8 +51,8 @@ const PostFeedback = ({
 
   const {
     pieData,
-    // pieCenterValue,
-    // pieCenterLabel,
+    pieCenterValue,
+    pieCenterLabel,
     xlsxData,
     days,
     progressBarsData,
@@ -89,8 +90,9 @@ const PostFeedback = ({
                 name: 'name',
                 fill: ({ row: { color } }) => color,
               }}
-              // centerLabel={pieCenterLabel}
-              // centerValue={pieCenterValue}
+              centerLabel={
+                <CenterLabel value={pieCenterValue} label={pieCenterLabel} />
+              }
               innerRef={currentPieChart}
             />
           </Box>

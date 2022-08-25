@@ -113,7 +113,8 @@ const PieChart = <Row,>({
             {pieConfig.cells.map((cell, cellIndex) => (
               <Cell key={`cell-${cellIndex}`} {...cell} />
             ))}
-            <Label content={centerLabel} position="center" />
+
+            {centerLabel && <Label content={centerLabel} position="center" />}
           </Pie>
         </RechartsPieChart>
       </ResponsiveContainer>
