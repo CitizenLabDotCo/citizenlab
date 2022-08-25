@@ -644,6 +644,8 @@
   "app.containers.Comments.commentsSortTitle": "Сортирајте коментаре према",
   "app.containers.Comments.confirmCommentDeletion": "Да ли сте сигурни да желите да обришете овај коментар? Оваква одлука је финална!",
   "app.containers.Comments.deleteComment": "Избриши",
+  "app.containers.Comments.deleteReasonDescriptionError": "Provide more information on your reason",
+  "app.containers.Comments.deleteReasonError": "Provide a reason",
   "app.containers.Comments.deleteReason_inappropriate": "Није прикладно",
   "app.containers.Comments.deleteReason_irrelevant": "Ово не припада овде",
   "app.containers.Comments.deleteReason_other": "Други разлог",
