@@ -38,6 +38,7 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
+  min-height: 240px;
 
   ${media.smallerThan1100px`
     flex-direction: column;
