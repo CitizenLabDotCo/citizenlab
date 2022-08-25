@@ -845,7 +845,7 @@
         "title": "Widgets",
         "description":  "Admins can generate platform widgets to embed on external websites.",
         "additionalProperties": false,
-        "required": ["allowed"],
+        "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true}
@@ -896,7 +896,6 @@
         "required": ["allowed"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false},
           "widget_title": {"$ref": "#/definitions/multiloc_string"}
         }
       },
