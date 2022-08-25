@@ -12,7 +12,7 @@ import { Box, Icon } from '@citizenlab/cl2-component-library';
 import PieChart from 'components/admin/Graphs/PieChart';
 import ProgressBars from 'components/admin/Graphs/ProgressBars';
 import CenterLabel from './CenterLabel';
-import Button from 'components/UI/Button';
+// import Button from 'components/UI/Button';
 
 // styling
 import styled from 'styled-components';
@@ -163,7 +163,7 @@ const PostFeedback = ({
         </Container>
       </GraphCardInner>
 
-      <Button linkTo="/" />
+      {/* <Button linkTo="/" /> */}
     </GraphCard>
   );
 };
