@@ -586,7 +586,7 @@ module MultiTenancy
         StaticPage.all.map do |p|
           yml_page = {
             'title_multiloc' => p.title_multiloc,
-            'body_multiloc' => p.body_multiloc,
+            'top_info_section_multiloc' => p.top_info_section_multiloc,
             'slug' => p.slug,
             'created_at' => p.created_at.to_s,
             'updated_at' => p.updated_at.to_s,
