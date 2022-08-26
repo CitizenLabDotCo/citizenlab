@@ -40,6 +40,8 @@ module SmartGroups::Rules
       self.predicate = predicate
     end
 
+    private
+
     def query(users_scope)
       custom_field = CustomField.find(custom_field_id)
       key = custom_field.key
@@ -54,8 +56,6 @@ module SmartGroups::Rules
         raise "Unsupported predicate #{predicate}"
       end
     end
-
-    private
 
     def needs_value?
       false

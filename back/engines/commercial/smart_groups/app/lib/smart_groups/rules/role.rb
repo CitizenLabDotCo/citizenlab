@@ -57,6 +57,8 @@ module SmartGroups::Rules
       [User.all.cache_key_with_version, predicate]
     end
 
+    private
+
     def query(users_scope)
       case predicate
       when 'is_admin'

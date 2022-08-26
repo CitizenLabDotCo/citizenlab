@@ -81,6 +81,26 @@ module SmartGroups::Rules
       MULTIVALUE_PREDICATES.include? predicate
     end
 
+    def description_value(locale)
+      if multivalue_predicate?
+        value.map do |v|
+          IdeaStatus.find(v).title_multiloc[locale]
+        end.join ', '
+      else
+        IdeaStatus.find(value).title_multiloc[locale]
+      end
+    end
+
+    def value_in_idea_statuses
+      if multivalue_predicate?
+        errors.add(:value, :has_invalid_idea_status) unless (value - IdeaStatus.ids).empty?
+      else
+        errors.add(:value, :has_invalid_idea_status) unless IdeaStatus.ids.include?(value)
+      end
+    end
+
+    private
+
     def query(users_scope)
       participants_service = ParticipantsService.new
 
@@ -117,24 +137,6 @@ module SmartGroups::Rules
         users_scope.where.not(id: participants)
       else
         raise "Unsupported predicate #{predicate}"
-      end
-    end
-
-    def description_value(locale)
-      if multivalue_predicate?
-        value.map do |v|
-          IdeaStatus.find(v).title_multiloc[locale]
-        end.join ', '
-      else
-        IdeaStatus.find(value).title_multiloc[locale]
-      end
-    end
-
-    def value_in_idea_statuses
-      if multivalue_predicate?
-        errors.add(:value, :has_invalid_idea_status) unless (value - IdeaStatus.ids).empty?
-      else
-        errors.add(:value, :has_invalid_idea_status) unless IdeaStatus.ids.include?(value)
       end
     end
   end

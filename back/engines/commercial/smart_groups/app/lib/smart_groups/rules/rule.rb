@@ -65,12 +65,6 @@ module SmartGroups::Rules
       end
     end
 
-    # The rule class that includes this concern must implement this method that executes the rule.
-    # @return ActiveRecord::Relation
-    def query(_users_scope)
-      nil
-    end
-
     # The rule class that includes this concern must override this to `true` if the query should be cached.
     # @return[Boolean] Returns true if the result is cached.
     # @see #{cache_key_fragment}
@@ -109,6 +103,14 @@ module SmartGroups::Rules
       raise "Cannot calculate cache key for rule #{self.class}, cache_key_fragments is empty" unless cache_key_fragments.any?
 
       Digest::SHA2.hexdigest(cache_key_fragments.join)
+    end
+
+    private
+
+    # The rule class that includes this concern must implement this method that executes the rule.
+    # @return ActiveRecord::Relation
+    def query(_users_scope)
+      raise NotImplementedError
     end
   end
 end

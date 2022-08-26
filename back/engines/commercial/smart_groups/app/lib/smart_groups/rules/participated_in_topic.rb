@@ -81,6 +81,18 @@ module SmartGroups::Rules
       MULTIVALUE_PREDICATES.include? predicate
     end
 
+    def description_value(locale)
+      if multivalue_predicate?
+        value.map do |v|
+          Topic.find(v).title_multiloc[locale]
+        end.join ', '
+      else
+        Topic.find(value).title_multiloc[locale]
+      end
+    end
+
+    private
+
     def query(users_scope)
       participants_service = ParticipantsService.new
 
@@ -119,18 +131,6 @@ module SmartGroups::Rules
         raise "Unsupported predicate #{predicate}"
       end
     end
-
-    def description_value(locale)
-      if multivalue_predicate?
-        value.map do |v|
-          Topic.find(v).title_multiloc[locale]
-        end.join ', '
-      else
-        Topic.find(value).title_multiloc[locale]
-      end
-    end
-
-    private
 
     def value_in_topics
       if multivalue_predicate?

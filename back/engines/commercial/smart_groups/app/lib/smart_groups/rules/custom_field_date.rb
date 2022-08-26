@@ -72,6 +72,17 @@ module SmartGroups::Rules
       end
     end
 
+    def description_value(locale)
+      return if value.blank?
+
+      locale ||= I18n.locale
+      I18n.with_locale(locale) do
+        I18n.l Date.parse(value), format: :default
+      end
+    end
+
+    private
+
     def query(users_scope)
       custom_field = CustomField.find(custom_field_id)
       key = custom_field.key
@@ -92,17 +103,6 @@ module SmartGroups::Rules
         raise "Unsupported predicate #{predicate}"
       end
     end
-
-    def description_value(locale)
-      return if value.blank?
-
-      locale ||= I18n.locale
-      I18n.with_locale(locale) do
-        I18n.l Date.parse(value), format: :default
-      end
-    end
-
-    private
 
     def needs_value?
       VALUELESS_PREDICATES.exclude?(predicate)

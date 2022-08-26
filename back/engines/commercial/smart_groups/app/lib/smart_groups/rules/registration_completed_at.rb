@@ -76,23 +76,6 @@ module SmartGroups::Rules
       [User.all.cache_key_with_version, predicate, value]
     end
 
-    def query(users_scope)
-      case predicate
-      when 'is_before'
-        users_scope.where('registration_completed_at::date < (?)::date', value)
-      when 'is_after'
-        users_scope.where('registration_completed_at::date > (?)::date', value)
-      when 'is_exactly'
-        users_scope.where("registration_completed_at::date >= (?)::date AND registration_completed_at::date < ((?)::date + '1 day'::interval)", value, value)
-      when 'is_empty'
-        users_scope.where(registration_completed_at: nil)
-      when 'not_is_empty'
-        users_scope.where.not(registration_completed_at: nil)
-      else
-        raise "Unsupported predicate #{predicate}"
-      end
-    end
-
     def description_property(locale)
       I18n.with_locale(locale) do
         I18n.t!('smart_group_rules.registration_completed_at.property')
@@ -113,6 +96,23 @@ module SmartGroups::Rules
     end
 
     private
+
+    def query(users_scope)
+      case predicate
+      when 'is_before'
+        users_scope.where('registration_completed_at::date < (?)::date', value)
+      when 'is_after'
+        users_scope.where('registration_completed_at::date > (?)::date', value)
+      when 'is_exactly'
+        users_scope.where("registration_completed_at::date >= (?)::date AND registration_completed_at::date < ((?)::date + '1 day'::interval)", value, value)
+      when 'is_empty'
+        users_scope.where(registration_completed_at: nil)
+      when 'not_is_empty'
+        users_scope.where.not(registration_completed_at: nil)
+      else
+        raise "Unsupported predicate #{predicate}"
+      end
+    end
 
     def needs_value?
       VALUELESS_PREDICATES.exclude?(predicate)

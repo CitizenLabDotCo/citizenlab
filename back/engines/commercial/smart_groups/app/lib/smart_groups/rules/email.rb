@@ -58,6 +58,18 @@ module SmartGroups::Rules
       [User.all.cache_key_with_version, predicate, value]
     end
 
+    def description_rule_type
+      CustomFieldText.rule_type
+    end
+
+    def description_property(locale)
+      I18n.with_locale(locale) do
+        I18n.t!('smart_group_rules.email.property')
+      end
+    end
+
+    private
+
     def query(users_scope)
       case predicate
       when 'is'
@@ -80,18 +92,6 @@ module SmartGroups::Rules
         raise "Unsupported predicate #{predicate}"
       end
     end
-
-    def description_rule_type
-      CustomFieldText.rule_type
-    end
-
-    def description_property(locale)
-      I18n.with_locale(locale) do
-        I18n.t!('smart_group_rules.email.property')
-      end
-    end
-
-    private
 
     def needs_value?
       true

@@ -93,6 +93,18 @@ module SmartGroups::Rules
       self.value = value
     end
 
+    def description_value(locale)
+      if value.is_a? Array
+        value.map do |v|
+          CustomFieldOption.find(v).title_multiloc[locale]
+        end.join ', '
+      else
+        CustomFieldOption.find(value).title_multiloc[locale]
+      end
+    end
+
+    private
+
     def query(users_scope)
       custom_field = CustomField.find(custom_field_id)
       key = custom_field.key
@@ -141,18 +153,6 @@ module SmartGroups::Rules
         end
       end
     end
-
-    def description_value(locale)
-      if value.is_a? Array
-        value.map do |v|
-          CustomFieldOption.find(v).title_multiloc[locale]
-        end.join ', '
-      else
-        CustomFieldOption.find(value).title_multiloc[locale]
-      end
-    end
-
-    private
 
     def needs_value?
       VALUELESS_PREDICATES.exclude?(predicate)

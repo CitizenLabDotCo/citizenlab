@@ -100,25 +100,6 @@ module SmartGroups::Rules
       [User.all.cache_key_with_version, predicate, value]
     end
 
-    def query(users_scope)
-      case predicate
-      when 'has_value'
-        users_scope.where("custom_field_values->>'domicile' = ?", value)
-      when 'not_has_value'
-        users_scope.where("custom_field_values->>'domicile' IS NULL or custom_field_values->>'domicile' != ?", value)
-      when 'is_one_of'
-        users_scope.where("custom_field_values->>'domicile' IN (?)", value)
-      when 'not_is_one_of'
-        users_scope.where("custom_field_values->>'domicile' IS NULL OR custom_field_values->>'domicile' NOT IN (?)", value)
-      when 'is_empty'
-        users_scope.where("custom_field_values->>'domicile' IS NULL")
-      when 'not_is_empty'
-        users_scope.where("custom_field_values->>'domicile' IS NOT NULL")
-      else
-        raise "Unsupported predicate #{predicate}"
-      end
-    end
-
     def description_property(locale)
       CustomField.with_resource_type('User').find_by(key: 'domicile').title_multiloc[locale]
     end
@@ -143,6 +124,25 @@ module SmartGroups::Rules
     end
 
     private
+
+    def query(users_scope)
+      case predicate
+      when 'has_value'
+        users_scope.where("custom_field_values->>'domicile' = ?", value)
+      when 'not_has_value'
+        users_scope.where("custom_field_values->>'domicile' IS NULL or custom_field_values->>'domicile' != ?", value)
+      when 'is_one_of'
+        users_scope.where("custom_field_values->>'domicile' IN (?)", value)
+      when 'not_is_one_of'
+        users_scope.where("custom_field_values->>'domicile' IS NULL OR custom_field_values->>'domicile' NOT IN (?)", value)
+      when 'is_empty'
+        users_scope.where("custom_field_values->>'domicile' IS NULL")
+      when 'not_is_empty'
+        users_scope.where("custom_field_values->>'domicile' IS NOT NULL")
+      else
+        raise "Unsupported predicate #{predicate}"
+      end
+    end
 
     def needs_value?
       VALUELESS_PREDICATES.exclude?(predicate)
