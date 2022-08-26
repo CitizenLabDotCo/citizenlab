@@ -37,7 +37,7 @@ const EditPageForm = ({ params: { pageId } }: WithRouterProps) => {
     resourceId: !isNilOrError(page) ? page.id : null,
   });
   const getInitialValues = (page: IPageData, remotePageFiles: RemoteFiles) => ({
-    nav_bar_item_title_multiloc: page.attributes.nav_bar_item_title_multiloc,
+    nav_bar_item_title_multiloc: undefined,
     title_multiloc: page.attributes.title_multiloc,
     body_multiloc: page.attributes.body_multiloc,
     slug: page.attributes.slug,

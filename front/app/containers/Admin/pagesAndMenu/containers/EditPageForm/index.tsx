@@ -89,10 +89,12 @@ const EditPageForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           pageId={pageId}
           onSubmit={handleSubmit}
           defaultValues={{
-            nav_bar_item_title_multiloc: truncateMultiloc(
-              page.attributes.nav_bar_item_title_multiloc,
-              MAX_TITLE_LENGTH
-            ),
+            nav_bar_item_title_multiloc: page.relationships.nav_bar_item.data
+              ? truncateMultiloc(
+                  page.attributes.nav_bar_item_title_multiloc,
+                  MAX_TITLE_LENGTH
+                )
+              : undefined,
             title_multiloc: page.attributes.title_multiloc,
             body_multiloc: page.attributes.body_multiloc,
             slug: page.attributes.slug,
