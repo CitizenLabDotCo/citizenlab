@@ -155,6 +155,7 @@ const ConfigMultiselectWithLocaleSwitcher = ({
                   </List>
                 </DndProvider>
                 <Button
+                  icon="plus-circle"
                   buttonStyle="secondary"
                   onClick={() => addOption(choices, name)}
                   text={formatMessage(messages.addAnswer)}
