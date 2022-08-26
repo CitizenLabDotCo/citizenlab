@@ -78,6 +78,40 @@ describe SmartGroups::Rules::CustomFieldNumber do
     end
   end
 
+  describe 'caching' do
+    let(:custom_field) { create(:custom_field_number) }
+
+    let(:valid_json_rule) do
+      {
+        'ruleType' => 'custom_field_checkbox',
+        'customFieldId' => custom_field.id,
+        'predicate' => 'is_checked'
+      }
+    end
+
+    let(:valid_rule) { described_class.from_json(valid_json_rule) }
+
+    it 'is enabled' do
+      expect(valid_rule).to be_cachable
+    end
+
+    it 'changes cache_key when predicate changes' do
+      expect { valid_rule.predicate = 'not_is' }.to change(valid_rule, :cache_key)
+    end
+
+    it 'changes cache_key when value changes' do
+      expect { valid_rule.value = 'example@example.com' }.to change(valid_rule, :cache_key)
+    end
+
+    it 'changes cache_key when custom_field_id changes' do
+      expect { valid_rule.value = 'abcdef' }.to change(valid_rule, :cache_key)
+    end
+
+    it 'changes cache_key when users table changes' do
+      expect { create(:user) }.to change(valid_rule, :cache_key)
+    end
+  end
+
   describe 'description_multiloc' do
     let(:number_picker) do
       create(:custom_field_number, title_multiloc: {

@@ -27,6 +27,10 @@ describe SmartGroups::Rules::Email do
   end
 
   describe 'caching' do
+    it 'is enabled' do
+      expect(valid_rule).to be_cachable
+    end
+
     it 'changes cache_key when predicate changes' do
       expect { valid_rule.predicate = 'not_is' }.to change(valid_rule, :cache_key)
     end
