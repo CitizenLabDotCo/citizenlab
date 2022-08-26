@@ -19,6 +19,9 @@ import {
   IFlatCreateCustomField,
 } from 'services/formCustomFields';
 
+// hooks
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+
 const DraggableElement = styled.div`
   cursor: move;
 `;
@@ -43,9 +46,7 @@ const FormBuilderToolbox = ({
         {
           // TODO: Remove this and use empty array (or ask Ben if we should have starter data)
           title_multiloc: {
-            en: 'Option 1 EN',
-            'nl-BE': 'Option 1 NL-BE',
-            'fr-BE': 'Option 1 FR-BE',
+            en: '',
           },
         },
       ],

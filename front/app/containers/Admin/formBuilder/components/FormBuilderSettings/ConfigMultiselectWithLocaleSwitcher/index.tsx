@@ -3,7 +3,7 @@ import { DndProvider } from 'react-dnd-cjs';
 import HTML5Backend from 'react-dnd-html5-backend-cjs';
 
 // react hook form
-import { Controller, useFormContext } from 'react-hook-form';
+import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 
 // components
 import {
@@ -18,16 +18,18 @@ import {
 import { SectionField } from 'components/admin/Section';
 import { List, SortableRow } from 'components/admin/ResourceList';
 
-// intl
+// i18n
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { Multiloc, Locale } from 'typings';
+import messages from './messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-
 interface Props {
   name: string;
-  locales: Locale[];
   onSelectedLocaleChange?: (locale: Locale) => void;
+  locales: Locale[];
 }
 
 export interface ISelectValue {
@@ -36,23 +38,23 @@ export interface ISelectValue {
 }
 
 const ConfigMultiselectWithLocaleSwitcher = ({
-  locales,
   onSelectedLocaleChange,
   name,
-}: Props) => {
+  locales,
+  intl: { formatMessage },
+}: Props & InjectedIntlProps) => {
   const {
     // formState: { errors }, // TODO: Error handling
     control,
     setValue,
   } = useFormContext();
-
   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
 
+  // Handles locale change
   useEffect(() => {
     setSelectedLocale(locales[0]);
     onSelectedLocaleChange?.(locales[0]);
   }, [locales, onSelectedLocaleChange]);
-
   const handleOnSelectedLocaleChange = useCallback(
     (newSelectedLocale: Locale) => {
       setSelectedLocale(newSelectedLocale);
@@ -61,29 +63,15 @@ const ConfigMultiselectWithLocaleSwitcher = ({
     [onSelectedLocaleChange]
   );
 
-  // // TODO: Refactor to work with React hook forms
-  // const handleDragRow = (fromIndex: number, toIndex: number) => {
-  //   if (!isNilOrError(value)) {
-  //     const newValues = clone(value);
-  //     const [removed] = newValues.splice(fromIndex, 1);
-  //     newValues.splice(toIndex, 0, removed);
-  //     setValue(name, newValues);
-  //   }
-  // };
+  // Handles drag and drop
+  const { move } = useFieldArray({
+    name,
+  });
+  const handleDragRow = (fromIndex: number, toIndex: number) => {
+    move(fromIndex, toIndex);
+  };
 
-  // // TODO: Refactor to work with React hook forms
-  // const handleDropRow = (fieldId: string, toIndex: number) => {
-  //   if (!isNilOrError(value)) {
-  //     const newValues = clone(value);
-  //     const [removed] = newValues.splice(
-  //       newValues.findIndex((field) => field.id === fieldId),
-  //       1
-  //     );
-  //     newValues.splice(toIndex, 0, removed);
-  //     setValue(name, newValues);
-  //   }
-  // };
-
+  // Handles add and remove fields
   const addOption = (value, name) => {
     const newValues = value;
     newValues.push({
@@ -91,22 +79,13 @@ const ConfigMultiselectWithLocaleSwitcher = ({
     });
     setValue(name, newValues);
   };
-
   const removeOption = (value, name, index) => {
     const newValues = value;
     newValues.splice(index, 1);
     setValue(name, newValues);
   };
 
-  const defaultValsTemp = [
-    {
-      title_multiloc: {
-        en: 'Option 1 EN',
-        'nl-BE': 'Option 1 NL-BE',
-        'fr-BE': 'Option 1 FR-BE',
-      },
-    },
-  ];
+  const defaultValues = [{}];
 
   if (selectedLocale) {
     return (
@@ -114,15 +93,17 @@ const ConfigMultiselectWithLocaleSwitcher = ({
         <Controller
           name={name}
           control={control}
-          defaultValue={defaultValsTemp}
+          defaultValue={defaultValues}
           render={({ field: { ref: _ref, value: choices } }) => {
             return (
               <SectionField>
                 <Box display="flex" flexWrap="wrap" marginBottom="12px">
-                  <Box marginRight="12px">
+                  <Box marginTop="4px" marginRight="12px">
                     <Label>
-                      Answer choices {/* // TODO Add to messages */}
-                      <IconTooltip content="Tooltip content" />
+                      {formatMessage(messages.fieldLabel)}
+                      <IconTooltip
+                        content={formatMessage(messages.fieldTooltip)}
+                      />
                     </Label>
                   </Box>
                   <Box>
@@ -144,11 +125,12 @@ const ConfigMultiselectWithLocaleSwitcher = ({
                           <SortableRow
                             id={choice.id}
                             index={index}
-                            moveRow={() => {}} // TODO: Refactor move function
-                            dropRow={() => {}} // TODO: Refactor drop function
+                            moveRow={handleDragRow}
+                            dropRow={() => {
+                              // Do nothing, no need to handle dropping a row for now
+                            }}
                           >
-                            <Box minWidth="80%">
-                              {/* // TODO: Set width better */}
+                            <Box width="300px">
                               <Input
                                 size="small"
                                 type="text"
@@ -162,10 +144,11 @@ const ConfigMultiselectWithLocaleSwitcher = ({
                                 }}
                               />
                             </Box>
-                            <Button // TODO: Add aria-label
+                            <Button
                               margin="0px"
                               padding="0px"
                               buttonStyle="text"
+                              aria-label={formatMessage(messages.removeOption)}
                               onClick={() => removeOption(choices, name, index)}
                             >
                               <Icon name="trash" fill="grey" padding="0px" />
@@ -179,10 +162,8 @@ const ConfigMultiselectWithLocaleSwitcher = ({
                 <Button
                   buttonStyle="secondary"
                   onClick={() => addOption(choices, name)}
-                >
-                  Add answer
-                </Button>
-                {/* // TODO Add to messages + add functionality */}
+                  text={formatMessage(messages.addAnswer)}
+                />
               </SectionField>
             );
           }}
@@ -190,8 +171,7 @@ const ConfigMultiselectWithLocaleSwitcher = ({
       </>
     );
   }
-
-  return <></>;
+  return null;
 };
 
-export default ConfigMultiselectWithLocaleSwitcher;
+export default injectIntl(ConfigMultiselectWithLocaleSwitcher);
