@@ -13,8 +13,8 @@ export interface Props<Row> extends BaseProps<Row, Payload<Row>> {
 }
 
 export interface Mapping<Row> extends BaseMapping<Payload<Row>> {
-  name: KeyOfType<Row, string>;
   angle: KeyOfType<Row, number>;
+  name?: KeyOfType<Row, string>;
 }
 
 export interface Pie {
@@ -40,7 +40,7 @@ interface CenterLabelProps {
 // PARSED CONFIG
 export interface PieConfig {
   props: {
-    nameKey: string;
+    nameKey?: string;
     dataKey: string;
     isAnimationActive?: boolean;
     innerRadius?: number | string;

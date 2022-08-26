@@ -64,7 +64,9 @@ const MultiBarChart = <Row,>({
 
   const barConfigs = getBarConfigs(data, mapping, bars);
   const rechartsLayout = getRechartsLayout(layout);
-  const category = mapping.category as string;
+
+  const category = mapping.category;
+  if (typeof category === 'symbol') return null;
 
   const labelPosition = layout === 'vertical' ? 'top' : 'right';
   const labelConfig = getLabelConfig(labels, labelPosition);

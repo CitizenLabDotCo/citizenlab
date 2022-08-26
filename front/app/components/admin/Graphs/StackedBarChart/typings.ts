@@ -18,7 +18,7 @@ interface Payload<Row> {
 }
 
 export interface Mapping<Row> extends BaseMapping<Payload<Row>> {
-  category: KeyOfType<Row, string>;
   stackedLength: KeyOfType<Row, number>[];
+  category?: KeyOfType<Row, string>;
   cornerRadius?: (payload: Payload<Row>) => CornerRadius;
 }

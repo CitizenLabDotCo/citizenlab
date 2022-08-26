@@ -5,7 +5,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 // import BarChart from 'components/admin/Graphs/BarChart';
 import MultiBarChart from 'components/admin/Graphs/MultiBarChart';
 import StackedBarChart from 'components/admin/Graphs/StackedBarChart';
-// import PieChart from 'components/admin/Graphs/PieChart';
+import PieChart from 'components/admin/Graphs/PieChart';
 // import ProgressBars from 'components/admin/Graphs/ProgressBars';
 import { LabelList } from 'recharts';
 
@@ -64,12 +64,24 @@ const Playground = () => (
       />
     </Box>
 
+    <Box width="50%" height="200px" mt="20px">
+      <PieChart
+        data={data}
+        mapping={{
+          angle: 'value',
+        }}
+        legend={{
+          position: 'bottom-center',
+          items: [legendItems, legendItems.slice(0, 2)],
+        }}
+      />
+    </Box>
+
     <Box width="50%" height="100px" mt="30px">
       <StackedBarChart
         data={data.slice(0, 1)}
         mapping={{
           stackedLength: ['value', 'value2', 'value'],
-          category: 'label',
           fill: ({ stackIndex }) => colors[stackIndex],
           cornerRadius: ({ stackIndex }) => radii[stackIndex],
         }}

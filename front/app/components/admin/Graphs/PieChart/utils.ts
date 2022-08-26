@@ -21,7 +21,7 @@ export const getPieConfig = <Row>(
     opacity: opacity && opacity({ row, rowIndex }),
   }));
 
-  const nameKey = name as string;
+  const nameKey = name as string | undefined;
   const dataKey = angle as string;
 
   const pieConfig: PieConfig = {
@@ -43,11 +43,13 @@ export const getPieConfig = <Row>(
 
 const getAnnotations = <Row>(
   annotations: undefined | boolean | ((row: Row) => string),
-  nameKey: string,
+  nameKey: string | undefined,
   dataKey: string
 ) => {
   if (annotations === true) {
-    return (row: Row) => `${row[nameKey]} : ${row[dataKey]}`;
+    return nameKey === undefined
+      ? (row: Row) => `${row[dataKey]}`
+      : (row: Row) => `${row[nameKey]} : ${row[dataKey]}`;
   }
 
   if (typeof annotations === 'function') return annotations;
