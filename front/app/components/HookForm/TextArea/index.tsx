@@ -1,20 +1,20 @@
 import React from 'react';
-import {
-  Input as InputComponent,
-  InputProps,
-} from '@citizenlab/cl2-component-library';
+import TextareaComponent, {
+  Props as TextAreaProps,
+} from 'components/UI/TextArea';
 import Error, { TFieldName } from 'components/UI/Error';
 import { Controller, useFormContext } from 'react-hook-form';
 import { CLError } from 'typings';
 
-interface Props extends InputProps {
+interface Props extends TextAreaProps {
   name: string;
 }
 
-const Input = ({ name, type = 'text', ...rest }: Props) => {
+const TextArea = ({ name, ...rest }: Props) => {
   const {
     formState: { errors },
     control,
+    trigger,
   } = useFormContext();
 
   const defaultValue = '';
@@ -32,7 +32,14 @@ const Input = ({ name, type = 'text', ...rest }: Props) => {
         control={control}
         defaultValue={defaultValue}
         render={({ field: { ref: _ref, ...field } }) => (
-          <InputComponent id={name} type={type} {...field} {...rest} />
+          <TextareaComponent
+            id={name}
+            {...field}
+            {...rest}
+            onBlur={() => {
+              trigger();
+            }}
+          />
         )}
       />
       {validationError && (
@@ -56,4 +63,4 @@ const Input = ({ name, type = 'text', ...rest }: Props) => {
   );
 };
 
-export default Input;
+export default TextArea;
