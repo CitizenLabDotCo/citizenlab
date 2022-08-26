@@ -55,4 +55,16 @@ export default defineMessages({
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.pageSettingsTab',
     defaultMessage: 'Page settings',
   },
+  editCustomPageMetaTitle: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.CustomPages.editCustomPageMetaTitle',
+    defaultMessage: 'Edit custom page | {orgName}',
+  },
+  pageContentTab: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.CustomPages.pageContentTab',
+    defaultMessage: 'Page content',
+  },
+  editCustomPagePageTitle: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.editCustomPagePageTitle',
+    defaultMessage: 'Edit custom page',
+  },
 });

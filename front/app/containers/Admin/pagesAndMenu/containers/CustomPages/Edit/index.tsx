@@ -11,10 +11,7 @@ const CreateCustomPageHookForm = ({
 }: InjectedIntlProps) => {
   return (
     <>
-      <HelmetIntl
-        title={messages.editCustomPageMetaTitle}
-        description={messages.editCustomPageMetaDescription}
-      />
+      <HelmetIntl title={messages.editCustomPageMetaTitle} />
       <TabbedResource
         resource={{
           title: formatMessage(messages.editCustomPagePageTitle),
