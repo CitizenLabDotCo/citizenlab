@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { convertUrlToUploadFile } from 'utils/fileUtils';
-import { useParams } from 'react-router-dom';
+import { Multiloc, UploadFile } from 'typings';
+import { isEmpty, get, isString } from 'lodash-es';
+import CSSTransition from 'react-transition-group/CSSTransition';
+
+// components
 import ProjectStatusPicker from './components/ProjectStatusPicker';
 import ProjectNameInput from './components/ProjectNameInput';
 import SlugInput from 'components/admin/SlugInput';
@@ -27,20 +30,15 @@ import {
   StyledSectionField,
   ParticipationContextWrapper,
 } from './components/styling';
+
+// hooks
 import useProject from 'hooks/useProject';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
-import CSSTransition from 'react-transition-group/CSSTransition';
-import { validateSlug } from 'utils/textUtils';
-import validateTitle from './utils/validateTitle';
-import { Multiloc, UploadFile } from 'typings';
-import { isNilOrError } from 'utils/helperUtils';
 import useProjectFiles from 'hooks/useProjectFiles';
 import useProjectImages from 'hooks/useProjectImages';
-import { isEmpty, get, isString } from 'lodash-es';
-import eventEmitter from 'utils/eventEmitter';
+import { useParams } from 'react-router-dom';
+
+// services
 import {
   IUpdatedProjectProperties,
   addProject,
@@ -50,10 +48,19 @@ import {
 } from 'services/projects';
 import { addProjectFile, deleteProjectFile } from 'services/projectFiles';
 import { addProjectImage, deleteProjectImage } from 'services/projectImages';
-import useAppConfiguration from 'hooks/useAppConfiguration';
-import useLocale from 'hooks/useLocale';
 
-// typings
+// i18n
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import messages from './messages';
+import { InjectedIntlProps } from 'react-intl';
+
+// utils
+import { validateSlug } from 'utils/textUtils';
+import validateTitle from './utils/validateTitle';
+import { isNilOrError } from 'utils/helperUtils';
+import eventEmitter from 'utils/eventEmitter';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
+
 import { INewProjectCreatedEvent } from '../../all/CreateProject';
 
 export const TIMEOUT = 350;
@@ -66,8 +73,6 @@ export type TOnProjectAttributesDiffChangeFunction = (
 const AdminProjectsProjectGeneral = ({
   intl: { formatMessage },
 }: InjectedIntlProps) => {
-  const locale = useLocale();
-  const appConfig = useAppConfiguration();
   const params = useParams();
   const project = useProject({ projectId: params.projectId });
   const appConfigLocales = useAppConfigurationLocales();
@@ -455,143 +460,139 @@ const AdminProjectsProjectGeneral = ({
     !isNilOrError(project) ? project : null
   );
 
-  if (!isNilOrError(appConfig)) {
-    return (
-      <StyledForm className="e2e-project-general-form" onSubmit={onSubmit}>
-        <Section>
-          {params.projectId && (
+  return (
+    <StyledForm className="e2e-project-general-form" onSubmit={onSubmit}>
+      <Section>
+        {params.projectId && (
+          <>
+            <SectionTitle>
+              <FormattedMessage {...messages.titleGeneral} />
+            </SectionTitle>
+            <SectionDescription>
+              <FormattedMessage {...messages.subtitleGeneral} />
+            </SectionDescription>
+          </>
+        )}
+
+        <ProjectStatusPicker
+          publicationStatus={publicationStatus}
+          handleStatusChange={handleStatusChange}
+        />
+
+        <ProjectNameInput
+          titleMultiloc={projectAttrs.title_multiloc}
+          titleError={titleError}
+          apiErrors={apiErrors}
+          handleTitleMultilocOnChange={handleTitleMultilocOnChange}
+        />
+
+        {/* Only show this field when slug is already saved to project (i.e. not when creating a new project, which uses this form as well) */}
+        {slug && (
+          <SlugInput
+            inputFieldId="project-slug"
+            slug={slug}
+            pathnameWithoutSlug={'projects'}
+            apiErrors={apiErrors}
+            showSlugErrorMessage={showSlugErrorMessage}
+            onSlugChange={handleSlugOnChange}
+          />
+        )}
+
+        <StyledSectionField>
+          {!project ? (
+            <ProjectTypePicker
+              projectType={projectType}
+              handleProjectTypeOnChange={handleProjectTypeOnChange}
+            />
+          ) : (
             <>
-              <SectionTitle>
-                <FormattedMessage {...messages.titleGeneral} />
-              </SectionTitle>
-              <SectionDescription>
-                <FormattedMessage {...messages.subtitleGeneral} />
-              </SectionDescription>
+              <SubSectionTitle>
+                <FormattedMessage {...messages.projectTypeTitle} />
+              </SubSectionTitle>
+              <ProjectType>
+                {<FormattedMessage {...messages[projectType]} />}
+              </ProjectType>
             </>
           )}
 
-          <ProjectStatusPicker
-            publicationStatus={publicationStatus}
-            handleStatusChange={handleStatusChange}
-          />
-
-          <ProjectNameInput
-            titleMultiloc={projectAttrs.title_multiloc}
-            titleError={titleError}
-            apiErrors={apiErrors}
-            handleTitleMultilocOnChange={handleTitleMultilocOnChange}
-          />
-
-          {/* Only show this field when slug is already saved to project (i.e. not when creating a new project, which uses this form as well) */}
-          {!isNilOrError(project) && project.attributes.slug && (
-            <SlugInput
-              inputFieldId="project-slug"
-              slug={slug}
-              previewUrlWithoutSlug={`${appConfig.data.attributes.host}/${locale}/projects/${slug}`}
-              apiErrors={apiErrors}
-              showSlugErrorMessage={showSlugErrorMessage}
-              onSlugChange={handleSlugOnChange}
-            />
+          {!project && (
+            <CSSTransition
+              classNames="participationcontext"
+              in={projectType === 'continuous'}
+              timeout={TIMEOUT}
+              mountOnEnter={true}
+              unmountOnExit={true}
+              enter={true}
+              exit={false}
+            >
+              <ParticipationContextWrapper>
+                <ParticipationContext
+                  onSubmit={handleParticipationContextOnSubmit}
+                  onChange={handleParticipationContextOnChange}
+                  apiErrors={apiErrors}
+                />
+              </ParticipationContextWrapper>
+            </CSSTransition>
           )}
+        </StyledSectionField>
 
-          <StyledSectionField>
-            {!project ? (
-              <ProjectTypePicker
-                projectType={projectType}
-                handleProjectTypeOnChange={handleProjectTypeOnChange}
-              />
-            ) : (
-              <>
-                <SubSectionTitle>
-                  <FormattedMessage {...messages.projectTypeTitle} />
-                </SubSectionTitle>
-                <ProjectType>
-                  {<FormattedMessage {...messages[projectType]} />}
-                </ProjectType>
-              </>
-            )}
-
-            {!project && (
-              <CSSTransition
-                classNames="participationcontext"
-                in={projectType === 'continuous'}
-                timeout={TIMEOUT}
-                mountOnEnter={true}
-                unmountOnExit={true}
-                enter={true}
-                exit={false}
-              >
-                <ParticipationContextWrapper>
-                  <ParticipationContext
-                    onSubmit={handleParticipationContextOnSubmit}
-                    onChange={handleParticipationContextOnChange}
-                    apiErrors={apiErrors}
-                  />
-                </ParticipationContextWrapper>
-              </CSSTransition>
-            )}
-          </StyledSectionField>
-
-          {!isNilOrError(project) && projectType === 'continuous' && (
-            <ParticipationContext
-              projectId={project.id}
-              onSubmit={handleParticipationContextOnSubmit}
-              onChange={handleParticipationContextOnChange}
-              apiErrors={apiErrors}
-            />
-          )}
-
-          <TopicInputs
-            selectedTopicIds={selectedTopicIds}
-            onChange={handleTopicsChange}
-          />
-
-          <GeographicAreaInputs
-            areaIds={projectAttrs.area_ids}
-            onProjectAttributesDiffChange={handleProjectAttributeDiffOnChange}
-          />
-
-          <Outlet
-            id="app.components.AdminPage.projects.form.additionalInputs.inputs"
-            projectAttrs={projectAttrs}
-            onProjectAttributesDiffChange={handleProjectAttributeDiffOnChange}
-          />
-
-          <HeaderImageDropzone
-            projectHeaderImage={projectHeaderImage}
-            handleHeaderOnAdd={handleHeaderOnAdd}
-            handleHeaderOnRemove={handleHeaderOnRemove}
-          />
-
-          <ProjectImageDropzone
-            projectImages={projectImages}
-            handleProjectImagesOnAdd={handleProjectImagesOnAdd}
-            handleProjectImageOnRemove={handleProjectImageOnRemove}
-          />
-
-          <AttachmentsDropzone
-            projectFiles={projectFiles}
+        {!isNilOrError(project) && projectType === 'continuous' && (
+          <ParticipationContext
+            projectId={project.id}
+            onSubmit={handleParticipationContextOnSubmit}
+            onChange={handleParticipationContextOnChange}
             apiErrors={apiErrors}
-            handleProjectFileOnAdd={handleProjectFileOnAdd}
-            handleProjectFileOnRemove={handleProjectFileOnRemove}
           />
+        )}
 
-          <SubmitWrapper
-            loading={processing}
-            status={submitState}
-            messages={{
-              buttonSave: messages.saveProject,
-              buttonSuccess: messages.saveSuccess,
-              messageError: messages.saveErrorMessage,
-              messageSuccess: messages.saveSuccessMessage,
-            }}
-          />
-        </Section>
-      </StyledForm>
-    );
-  }
+        <TopicInputs
+          selectedTopicIds={selectedTopicIds}
+          onChange={handleTopicsChange}
+        />
 
-  return null;
+        <GeographicAreaInputs
+          areaIds={projectAttrs.area_ids}
+          onProjectAttributesDiffChange={handleProjectAttributeDiffOnChange}
+        />
+
+        <Outlet
+          id="app.components.AdminPage.projects.form.additionalInputs.inputs"
+          projectAttrs={projectAttrs}
+          onProjectAttributesDiffChange={handleProjectAttributeDiffOnChange}
+        />
+
+        <HeaderImageDropzone
+          projectHeaderImage={projectHeaderImage}
+          handleHeaderOnAdd={handleHeaderOnAdd}
+          handleHeaderOnRemove={handleHeaderOnRemove}
+        />
+
+        <ProjectImageDropzone
+          projectImages={projectImages}
+          handleProjectImagesOnAdd={handleProjectImagesOnAdd}
+          handleProjectImageOnRemove={handleProjectImageOnRemove}
+        />
+
+        <AttachmentsDropzone
+          projectFiles={projectFiles}
+          apiErrors={apiErrors}
+          handleProjectFileOnAdd={handleProjectFileOnAdd}
+          handleProjectFileOnRemove={handleProjectFileOnRemove}
+        />
+
+        <SubmitWrapper
+          loading={processing}
+          status={submitState}
+          messages={{
+            buttonSave: messages.saveProject,
+            buttonSuccess: messages.saveSuccess,
+            messageError: messages.saveErrorMessage,
+            messageSuccess: messages.saveSuccessMessage,
+          }}
+        />
+      </Section>
+    </StyledForm>
+  );
 };
 
 export default injectIntl(AdminProjectsProjectGeneral);
