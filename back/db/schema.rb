@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_25_124438) do
+ActiveRecord::Schema.define(version: 2022_08_26_015244) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1448,11 +1448,13 @@ ActiveRecord::Schema.define(version: 2022_08_25_124438) do
   SQL
   create_view "analytics_dimension_statuses", sql_definition: <<-SQL
       SELECT idea_statuses.id,
-      idea_statuses.title_multiloc
+      idea_statuses.title_multiloc,
+      idea_statuses.color
      FROM idea_statuses
   UNION ALL
    SELECT initiative_statuses.id,
-      initiative_statuses.title_multiloc
+      initiative_statuses.title_multiloc,
+      initiative_statuses.color
      FROM initiative_statuses;
   SQL
   create_view "analytics_dimension_projects", sql_definition: <<-SQL

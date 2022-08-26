@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import moment from 'moment';
 
 // services
 import {
@@ -26,7 +27,13 @@ import {
 // typings
 import { InjectedIntlProps } from 'react-intl';
 
-type PostFeedback = {
+interface QueryProps {
+  projectId?: string;
+  startAt?: string;
+  endAt?: string;
+}
+
+interface PostFeedback {
   pieData: PieRow[];
   progressBarsData: ProgressBarsRow[];
   stackedBarsData: StackedBarsRow[];
@@ -34,7 +41,7 @@ type PostFeedback = {
   pieCenterLabel: string;
   days: number;
   xlsxData: object;
-};
+}
 
 interface PieRow {
   name: string;
@@ -51,7 +58,9 @@ interface ProgressBarsRow {
 
 type StackedBarsRow = Record<string, number>;
 
-const query = (projectId?: string): Query => {
+const toDate = (dateString: string) => moment(dateString).format('yyyy-MM-DD');
+
+const query = ({ projectId, startAt, endAt }: QueryProps): Query => {
   const queryFeedback: QuerySchema = {
     fact: 'post',
     aggregations: {
@@ -65,6 +74,13 @@ const query = (projectId?: string): Query => {
           dimensions: { project: { id: projectId } },
         }
       : {}),
+    ...(startAt && endAt
+      ? {
+          created_date: {
+            date: { from: toDate(startAt), to: toDate(endAt) },
+          },
+        }
+      : {}),
   };
 
   const queryStatus: QuerySchema = {
@@ -73,6 +89,7 @@ const query = (projectId?: string): Query => {
     aggregations: {
       all: 'count',
       'status.title_multiloc': 'first',
+      'status.color': 'first',
     },
   };
 
@@ -81,7 +98,7 @@ const query = (projectId?: string): Query => {
 
 export default function usePostsWithFeedback(
   formatMessage: InjectedIntlProps['intl']['formatMessage'],
-  projectId?: string
+  { projectId, startAt, endAt }: QueryProps
 ) {
   // const localize = useLocalize();
 
@@ -90,38 +107,43 @@ export default function usePostsWithFeedback(
   >(undefined);
 
   useEffect(() => {
-    analyticsStream(query(projectId)).then((results: Response | NilOrError) => {
-      if (isNilOrError(results)) {
-        setPostsWithFeedback(results);
-        return;
+    analyticsStream(query({ projectId, startAt, endAt })).then(
+      (results: Response | NilOrError) => {
+        if (isNilOrError(results)) {
+          setPostsWithFeedback(results);
+          return;
+        }
+
+        const [feedbackRows, statusRows] = results.data;
+        const feedbackRow = feedbackRows[0];
+
+        const translations = getTranslations(formatMessage);
+
+        const pieData = parsePieData(feedbackRow);
+        const progressBarsData = parseProgressBarsData(
+          feedbackRow,
+          translations
+        );
+        const stackedBarsData = parseStackedBarsData(statusRows);
+
+        const pieCenterValue = getPieCenterValue(feedbackRow);
+        const pieCenterLabel = translations.feedbackGiven;
+
+        const days = getDays(feedbackRow);
+        const xlsxData = parseExcelData(feedbackRow, translations);
+
+        setPostsWithFeedback({
+          pieData,
+          progressBarsData,
+          stackedBarsData,
+          pieCenterValue,
+          pieCenterLabel,
+          days,
+          xlsxData,
+        });
       }
-
-      const [feedbackRows, statusRows] = results.data;
-      const feedbackRow = feedbackRows[0];
-
-      const translations = getTranslations(formatMessage);
-
-      const pieData = parsePieData(feedbackRow);
-      const progressBarsData = parseProgressBarsData(feedbackRow, translations);
-      const stackedBarsData = parseStackedBarsData(statusRows);
-
-      const pieCenterValue = getPieCenterValue(feedbackRow);
-      const pieCenterLabel = translations.feedbackGiven;
-
-      const days = getDays(feedbackRow);
-      const xlsxData = parseExcelData(feedbackRow, translations);
-
-      setPostsWithFeedback({
-        pieData,
-        progressBarsData,
-        stackedBarsData,
-        pieCenterValue,
-        pieCenterLabel,
-        days,
-        xlsxData,
-      });
-    });
-  }, [projectId, formatMessage]);
+    );
+  }, [projectId, startAt, endAt, formatMessage]);
 
   return postsWithFeedback;
 }

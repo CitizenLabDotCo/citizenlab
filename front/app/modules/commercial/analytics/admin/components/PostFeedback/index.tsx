@@ -34,6 +34,8 @@ import { InjectedIntlProps } from 'react-intl';
 
 interface Props {
   projectId?: string;
+  startAt?: string;
+  endAt?: string;
 }
 
 const Container = styled.div`
@@ -74,11 +76,17 @@ const ProgressBarsContainer = styled.div`
 
 const PostFeedback = ({
   projectId,
+  startAt,
+  endAt,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const currentPieChart = useRef();
   const currentProgressBarsChart = useRef();
-  const data = usePostsWithFeedback(formatMessage, projectId);
+  const data = usePostsWithFeedback(formatMessage, {
+    projectId,
+    startAt,
+    endAt,
+  });
 
   if (isNilOrError(data)) return null;
 
