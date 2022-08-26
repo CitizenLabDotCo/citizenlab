@@ -93,12 +93,10 @@ interface IPageCreate {
 }
 
 export interface IPageUpdate {
+  nav_bar_item_title_multiloc: Multiloc;
   title_multiloc?: Multiloc;
   body_multiloc?: Multiloc;
   slug?: string;
-  nav_bar_item_attributes?: {
-    title_multiloc?: Multiloc;
-  };
 }
 
 export interface IPage {
