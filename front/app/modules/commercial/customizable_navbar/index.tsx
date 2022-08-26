@@ -59,9 +59,9 @@ const configuration: ModuleConfiguration = {
     'app.containers.Admin.pages-menu.containers.EditPageForm.index.onMount': (
       props
     ) => <ModuleActive {...props} />,
-    'app.components.PageForm.index.top': ({ pageId }) => (
+    'app.components.PageForm.index.top': (props) => (
       <FeatureFlag name="customizable_navbar">
-        <NavbarTitleField pageId={pageId} />
+        <NavbarTitleField {...props} />
       </FeatureFlag>
     ),
   },

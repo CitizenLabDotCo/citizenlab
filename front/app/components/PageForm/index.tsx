@@ -111,7 +111,15 @@ const PageForm = ({
             successMessage={formatMessage(messages.savePageSuccessMessage)}
           />
         </SectionField>
-        <Outlet id="app.components.PageForm.index.top" pageId={pageId} />
+        <Outlet
+          id="app.components.PageForm.index.top"
+          pageId={pageId}
+          navbarItemId={
+            !isNilOrError(page) && page.relationships.nav_bar_item.data
+              ? page.relationships.nav_bar_item.data.id
+              : null
+          }
+        />
         <SectionField>
           <InputMultilocWithLocaleSwitcher
             label={formatMessage(messages.pageTitle)}

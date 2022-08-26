@@ -7,23 +7,25 @@ import usePage from 'hooks/usePage';
 import { isNilOrError } from 'utils/helperUtils';
 import { isPolicyPageSlug } from 'services/pages';
 import { SectionField } from 'components/admin/Section';
+import useNavbarItem from '../../hooks/useNavbarItem';
 
 type Props = {
   pageId: string | null;
+  navbarItemId: string | null;
 };
 
 const NavbarTitleField = ({
   pageId,
+  navbarItemId,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const page = usePage({ pageId });
+  const navbarItem = useNavbarItem({ navbarItemId });
 
   if (
     isNilOrError(page) ||
     isPolicyPageSlug(page.attributes.slug) ||
-    // If item is not in the navbar, we don't show the field to update the nav bar title.
-    // If a page is not in the navbar, the backend removes the nav_bar_item relationship.
-    (!isNilOrError(page) && !page.relationships.nav_bar_item.data)
+    isNilOrError(navbarItem)
   ) {
     return null;
   }
