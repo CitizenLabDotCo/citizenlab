@@ -32,11 +32,6 @@ interface Props {
   locales: Locale[];
 }
 
-export interface ISelectValue {
-  id: string;
-  title_multiloc: Multiloc;
-}
-
 const ConfigMultiselectWithLocaleSwitcher = ({
   onSelectedLocaleChange,
   name,

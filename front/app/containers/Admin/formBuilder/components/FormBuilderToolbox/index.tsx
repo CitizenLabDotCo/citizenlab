@@ -44,7 +44,7 @@ const FormBuilderToolbox = ({
       title_multiloc: {},
       options: [
         {
-          // TODO: Remove this and use empty array (or ask Ben if we should have starter data)
+          // TODO: Ask Ben what the starter data should be
           title_multiloc: {
             en: '',
           },
