@@ -26,6 +26,7 @@ import FakeLegend from '../_components/Legend/FakeLegend';
 import { getBarConfigs } from './utils';
 import { getRechartsLayout, getLabelConfig } from '../MultiBarChart/utils';
 import { hasNoData, getTooltipConfig, parseMargin } from '../utils';
+import { DEFAULT_LEGEND_OFFSET } from '../MultiBarChart';
 
 // typings
 import { Props } from './typings';
@@ -117,7 +118,12 @@ const StackedBarChart = <Row,>({
         <RechartsBarChart
           data={data}
           layout={rechartsLayout}
-          margin={parseMargin(margin, legend ? legendDimensions : undefined)}
+          margin={parseMargin(
+            margin,
+            legend,
+            legendDimensions,
+            DEFAULT_LEGEND_OFFSET
+          )}
           ref={innerRef}
           barGap={0}
           barCategoryGap={bars?.categoryGap}

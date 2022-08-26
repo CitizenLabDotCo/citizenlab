@@ -88,7 +88,7 @@ const Playground = () => (
         layout="horizontal"
         labels={centerLabels}
         xaxis={{ hide: true, domain: [0, 'dataMax'] }}
-        yaxis={{ hide: true }}
+        yaxis={{ hide: true, domain: ['dataMin', 'dataMax'] }}
         legend={{
           position: 'bottom-center',
           items: [legendItems, legendItems.slice(0, 2)],

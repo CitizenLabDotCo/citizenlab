@@ -63,9 +63,6 @@ export const categoricalColorScheme = ({
   barIndex?: number;
 }) => DEFAULT_CATEGORICAL_COLORS[rowIndex];
 
-// LEGEND
-export const LEGEND_OFFSET = 10;
-
 // OTHER
 export const sizes = {
   chartLabel: 13,

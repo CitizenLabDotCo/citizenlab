@@ -33,6 +33,8 @@ import {
   LegendDimensions,
 } from '../_components/Legend/typings';
 
+export const DEFAULT_LEGEND_OFFSET = 10;
+
 const MultiBarChart = <Row,>({
   width,
   height,
@@ -116,7 +118,12 @@ const MultiBarChart = <Row,>({
         <RechartsBarChart
           data={data}
           layout={rechartsLayout}
-          margin={parseMargin(margin, legend ? legendDimensions : undefined)}
+          margin={parseMargin(
+            margin,
+            legend,
+            legendDimensions,
+            DEFAULT_LEGEND_OFFSET
+          )}
           ref={innerRef}
           barGap={0}
           barCategoryGap={bars?.categoryGap}

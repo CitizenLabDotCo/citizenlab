@@ -27,6 +27,8 @@ import {
   LegendDimensions,
 } from '../_components/Legend/typings';
 
+const DEFAULT_LEGEND_OFFSET = 16;
+
 const PieChart = <Row,>({
   width,
   height,
@@ -81,7 +83,12 @@ const PieChart = <Row,>({
     <>
       <ResponsiveContainer width={width} height={height} ref={handleRef}>
         <RechartsPieChart
-          margin={parseMargin(margin, legend ? legendDimensions : undefined)}
+          margin={parseMargin(
+            margin,
+            legend,
+            legendDimensions,
+            DEFAULT_LEGEND_OFFSET
+          )}
           ref={innerRef}
         >
           {legend && graphDimensions && legendDimensions && (
