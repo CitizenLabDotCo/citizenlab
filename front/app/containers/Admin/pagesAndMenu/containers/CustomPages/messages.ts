@@ -39,4 +39,16 @@ export default defineMessages({
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.slugRequiredError',
     defaultMessage: 'You must enter a slug',
   },
+  newCustomPagePageTitle: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.newCustomPagePageTitle',
+    defaultMessage: 'Create custom page',
+  },
+  pageSettingsTab: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.pageSettingsTab',
+    defaultMessage: 'Page settings',
+  },
+  newCustomPageMetaTitle: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.newCustomPageMetaTitle',
+    defaultMessage: 'Create custom page | {orgName}',
+  },
 });
