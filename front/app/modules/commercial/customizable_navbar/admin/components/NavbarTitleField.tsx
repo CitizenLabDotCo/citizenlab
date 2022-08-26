@@ -18,7 +18,13 @@ const NavbarTitleField = ({
 }: Props & InjectedIntlProps) => {
   const page = usePage({ pageId });
 
-  if (isNilOrError(page) || isPolicyPageSlug(page.attributes.slug)) {
+  if (
+    isNilOrError(page) ||
+    isPolicyPageSlug(page.attributes.slug) ||
+    // If item is not in the navbar, we don't show the field to update the nav bar title.
+    // If a page is not in the navbar, the backend removes the nav_bar_item relationship.
+    (!isNilOrError(page) && page.relationships.nav_bar_item.data)
+  ) {
     return null;
   }
 
