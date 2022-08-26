@@ -56,6 +56,7 @@ const query = ({ projectId, startAt, endAt }: Props): { query: Query[] } => {
     aggregations: {
       all: 'count',
       'status.title_multiloc': 'first',
+      'status.color': 'first',
     },
   };
 
