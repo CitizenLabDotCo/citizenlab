@@ -19,9 +19,6 @@ import {
   IFlatCreateCustomField,
 } from 'services/formCustomFields';
 
-// hooks
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-
 const DraggableElement = styled.div`
   cursor: move;
 `;
