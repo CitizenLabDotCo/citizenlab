@@ -6,7 +6,6 @@ import {
   analyticsStream,
   Query,
   QuerySchema,
-  Response,
 } from '../../services/analyticsFacts';
 
 // hooks
@@ -25,6 +24,7 @@ import {
 } from './parse';
 
 // typings
+import { Multiloc } from 'typings';
 import { InjectedIntlProps } from 'react-intl';
 
 interface QueryProps {
@@ -33,6 +33,25 @@ interface QueryProps {
   endAt?: string;
 }
 
+// Response
+export type Response = {
+  data: [FeedbackRow[], StatusRow[]];
+};
+
+export interface FeedbackRow {
+  sum_feedback_none: number;
+  sum_feedback_official: number;
+  sum_feedback_status_change: number;
+  avg_feedback_time_taken: number;
+}
+
+export interface StatusRow {
+  count: number;
+  'status.id': string;
+  first_status_title_multiloc: Multiloc;
+}
+
+// Hook return value
 interface PostFeedback {
   pieData: PieRow[];
   progressBarsData: ProgressBarsRow[];
@@ -107,7 +126,7 @@ export default function usePostsWithFeedback(
   >(undefined);
 
   useEffect(() => {
-    analyticsStream(query({ projectId, startAt, endAt })).then(
+    analyticsStream<Response>(query({ projectId, startAt, endAt })).then(
       (results: Response | NilOrError) => {
         if (isNilOrError(results)) {
           setPostsWithFeedback(results);
