@@ -18,7 +18,7 @@ import {
   getTranslations,
   parsePieData,
   parseProgressBarsData,
-  parseStackedBarsData,
+  // parseStackedBarsData,
   getPieCenterValue,
   getDays,
   parseExcelData,
@@ -114,7 +114,8 @@ export default function usePostsWithFeedback(
           return;
         }
 
-        const [feedbackRows, statusRows] = results.data;
+        // const [feedbackRows, statusRows] = results.data;
+        const [feedbackRows, _] = results.data;
         const feedbackRow = feedbackRows[0];
 
         const translations = getTranslations(formatMessage);
@@ -124,7 +125,7 @@ export default function usePostsWithFeedback(
           feedbackRow,
           translations
         );
-        const stackedBarsData = parseStackedBarsData(statusRows);
+        // const stackedBarsData = parseStackedBarsData(statusRows);
 
         const pieCenterValue = getPieCenterValue(feedbackRow);
         const pieCenterLabel = translations.feedbackGiven;
@@ -135,7 +136,7 @@ export default function usePostsWithFeedback(
         setPostsWithFeedback({
           pieData,
           progressBarsData,
-          stackedBarsData,
+          stackedBarsData: [],
           pieCenterValue,
           pieCenterLabel,
           days,
