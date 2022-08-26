@@ -296,6 +296,8 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
               <Outlet
                 id="app.containers.Admin.dashboard.summary.postStatus"
                 projectId={currentProjectFilter}
+                startAt={startAt}
+                endAt={endAt}
               />
               <SelectableResourceByTopicChart
                 className="fullWidth dynamicHeight e2e-resource-by-topic-chart"

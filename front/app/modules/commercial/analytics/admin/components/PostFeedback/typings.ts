@@ -1,6 +1,12 @@
 import { DataRow } from 'components/admin/Graphs/PieChart/typings';
 import { Multiloc } from 'typings';
 
+export interface Props {
+  projectId?: string;
+  startAt?: string;
+  endAt?: string;
+}
+
 type ResponseFeedback = {
   sum_feedback_none: number;
   sum_feedback_official: number;

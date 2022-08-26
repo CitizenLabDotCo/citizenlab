@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+
 // components
 import {
   GraphCardHeader,
@@ -24,22 +25,26 @@ import usePostsWithFeedback from '../../../hooks/usePostsFeedback';
 
 // typings
 import { InjectedIntlProps } from 'react-intl';
+import { Props } from './typings';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-interface Props {
-  projectId?: string;
-}
-
 const PostFeedback = ({
   projectId,
+  startAt,
+  endAt,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const currentPieChart = useRef();
   const currentProgressBarsChart = useRef();
-  const data = usePostsWithFeedback(formatMessage, projectId);
+  const data = usePostsWithFeedback({
+    projectId,
+    startAt,
+    endAt,
+    formatMessage,
+  });
   const largeTablet = useBreakpoint('largeTablet');
   if (!data) return null;
   const {
