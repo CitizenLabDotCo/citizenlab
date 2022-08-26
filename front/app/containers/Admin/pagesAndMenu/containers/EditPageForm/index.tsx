@@ -23,14 +23,12 @@ import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 import { MAX_TITLE_LENGTH } from 'services/navbar';
 
 // hooks
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useRemoteFiles from 'hooks/useRemoteFiles';
 import usePage from 'hooks/usePage';
 import { truncateMultiloc } from 'utils/textUtils';
 
 const EditPageForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const { pageId } = useParams() as { pageId: string };
-  const appConfigurationLocales = useAppConfigurationLocales();
   const localize = useLocalize();
   const page = usePage({ pageId });
   const remotePageFiles = useRemoteFiles({
@@ -38,10 +36,6 @@ const EditPageForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     resourceId: !isNilOrError(page) ? page.id : null,
   });
   const [navbarModuleActive, setNavbarModuleActive] = useState(false);
-
-  if (isNilOrError(page) || isNilOrError(appConfigurationLocales)) {
-    return null;
-  }
 
   const handleSubmit = async ({
     local_page_files,
@@ -67,6 +61,10 @@ const EditPageForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     await Promise.all(promises);
   };
 
+  if (isNilOrError(page)) {
+    return null;
+  }
+
   return (
     <>
       <Outlet
@@ -89,12 +87,12 @@ const EditPageForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           pageId={pageId}
           onSubmit={handleSubmit}
           defaultValues={{
-            nav_bar_item_title_multiloc: page.relationships.nav_bar_item.data
-              ? truncateMultiloc(
-                  page.attributes.nav_bar_item_title_multiloc,
-                  MAX_TITLE_LENGTH
-                )
-              : undefined,
+            ...(page.relationships.nav_bar_item.data && {
+              nav_bar_item_title_multiloc: truncateMultiloc(
+                page.attributes.nav_bar_item_title_multiloc,
+                MAX_TITLE_LENGTH
+              ),
+            }),
             title_multiloc: page.attributes.title_multiloc,
             body_multiloc: page.attributes.body_multiloc,
             slug: page.attributes.slug,
