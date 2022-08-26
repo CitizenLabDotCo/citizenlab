@@ -28,12 +28,20 @@ module IdeaCustomFields
 
     def index
       authorize CustomField.new(resource: @custom_form), :index?, policy_class: IdeaCustomFieldPolicy
-      fields = IdeaCustomFieldsService.new(@custom_form).configurable_fields
-      render json: ::WebApi::V1::CustomFieldSerializer.new(fields, params: fastjson_params).serialized_json
+      fields = IdeaCustomFieldsService.new(@custom_form).configurable_fields # TODO: include options
+      render json: ::WebApi::V1::CustomFieldSerializer.new(
+        fields,
+        params: fastjson_params,
+        include: [:options]
+      ).serialized_json
     end
 
     def show
-      render json: ::WebApi::V1::CustomFieldSerializer.new(@custom_field, params: fastjson_params).serialized_json
+      render json: ::WebApi::V1::CustomFieldSerializer.new(
+        @custom_field,
+        params: fastjson_params,
+        include: [:options]
+      ).serialized_json
     end
 
     # `update` by ID is not possible for default custom fields that have not been persisted yet,
@@ -190,8 +198,10 @@ module IdeaCustomFields
     end
 
     def update_all_params
-      params
-        .require(:custom_fields)
+      custom_fields_params = params.fetch :custom_fields, []
+      return [] if custom_fields_params.empty?
+
+      custom_fields_params
         .map do |field|
           field.permit(
             :id,

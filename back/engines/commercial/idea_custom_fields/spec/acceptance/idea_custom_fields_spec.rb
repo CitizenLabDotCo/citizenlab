@@ -598,6 +598,60 @@ resource 'Idea Custom Fields' do
             }
           })
         end
+
+        example 'Remove all custom fields' do
+          create_list :custom_field_select, 2, :with_options, resource: custom_form
+
+          do_request custom_fields: []
+
+          assert_status 200
+          json_response = json_parse response_body
+
+          expect(CustomField.where(resource: custom_form).count).to eq 0
+          expect(CustomFieldOption.where(custom_field: CustomField.where(resource: custom_form)).count).to eq 0
+          expect(json_response[:data].size).to eq 0
+        end
+
+        example 'Remove all options of a custom field' do
+          field = create :custom_field_select, :with_options, resource: custom_form
+
+          request = {
+            custom_fields: [
+              {
+                id: field.id,
+                title_multiloc: { 'en' => 'Updated field' },
+                required: true,
+                enabled: true,
+                options: []
+              }
+            ]
+          }
+          do_request request
+
+          assert_status 200
+          json_response = json_parse response_body
+
+          expect(CustomField.where(id: field).count).to eq 1
+          expect(field.reload.options.count).to eq 0
+          expect(json_response[:data].size).to eq 1
+          expect(json_response[:data].first).to match({
+            attributes: {
+              code: nil,
+              created_at: an_instance_of(String),
+              description_multiloc: an_instance_of(Hash),
+              enabled: true,
+              input_type: 'select',
+              key: field.key,
+              ordering: 0,
+              required: true,
+              title_multiloc: { en: 'Updated field' },
+              updated_at: an_instance_of(String)
+            },
+            id: an_instance_of(String),
+            type: 'custom_field',
+            relationships: { options: { data: [] } }
+          })
+        end
       end
     end
   end
