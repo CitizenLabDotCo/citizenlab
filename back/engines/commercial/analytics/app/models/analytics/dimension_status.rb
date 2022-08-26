@@ -6,6 +6,7 @@
 #
 #  id             :uuid             primary key
 #  title_multiloc :jsonb
+#  color          :string
 #
 module Analytics
   class DimensionStatus < Analytics::ApplicationRecord
