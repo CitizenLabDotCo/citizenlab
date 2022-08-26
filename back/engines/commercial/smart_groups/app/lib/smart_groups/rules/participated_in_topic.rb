@@ -81,7 +81,7 @@ module SmartGroups::Rules
       MULTIVALUE_PREDICATES.include? predicate
     end
 
-    def filter(users_scope)
+    def query(users_scope)
       participants_service = ParticipantsService.new
 
       case predicate

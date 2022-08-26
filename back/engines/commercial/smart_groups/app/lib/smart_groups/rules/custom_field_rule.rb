@@ -22,6 +22,14 @@ module SmartGroups::Rules
       def description_property(locale)
         CustomField.find(custom_field_id).title_multiloc[locale]
       end
+
+      def cachable?
+        true
+      end
+
+      def cache_key_fragments
+        [User.all.cache_key_with_version, predicate, value, custom_field_id]
+      end
     end
 
     class_methods do

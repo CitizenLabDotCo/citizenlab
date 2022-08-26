@@ -68,7 +68,15 @@ module SmartGroups::Rules
       self.value = value
     end
 
-    def filter(users_scope)
+    def cachable?
+      true
+    end
+
+    def cache_key_fragments
+      [User.all.cache_key_with_version, predicate, value]
+    end
+
+    def query(users_scope)
       case predicate
       when 'is_before'
         users_scope.where('registration_completed_at::date < (?)::date', value)

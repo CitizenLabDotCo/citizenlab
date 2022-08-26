@@ -72,7 +72,7 @@ module SmartGroups::Rules
       end
     end
 
-    def filter(users_scope)
+    def query(users_scope)
       custom_field = CustomField.find(custom_field_id)
       key = custom_field.key
       return unless custom_field.input_type == 'date'

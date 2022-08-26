@@ -63,7 +63,7 @@ module SmartGroups::Rules
       self.value = value
     end
 
-    def filter(users_scope)
+    def query(users_scope)
       custom_field = CustomField.find(custom_field_id)
       key = custom_field.key
       case predicate

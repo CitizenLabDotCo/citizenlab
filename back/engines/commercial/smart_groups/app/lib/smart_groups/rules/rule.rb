@@ -51,6 +51,33 @@ module SmartGroups::Rules
       nil
     end
 
+    # Filters the users by the rules.
+    # Saves the result in the Rails cache if #{cachable?} is true.
+    # @return ActiveRecord::Relation
+    def filter(users_scope)
+      if cachable?
+        member_ids = Rails.cache.fetch(cache_key) do
+          query(::User).pluck(:id)
+        end
+        users_scope.where(id: member_ids)
+      else
+        query(users_scope)
+      end
+    end
+
+    # The rule class that includes this concern must implement this method that executes the rule.
+    # @return ActiveRecord::Relation
+    def query(_users_scope)
+      nil
+    end
+
+    # The rule class that includes this concern must override this to `true` if the query should be cached.
+    # @return[Boolean] Returns true if the result is cached.
+    # @see #{cache_key_fragment}
+    def cachable?
+      false
+    end
+
     # The rule class that includes this concern should override this method if the SQL query should be cached.
     # It must return an array of strings that act as cache key fragments for Rails low level cache.
     # The cache key fragments must change whenever the cache becomes invalid.
@@ -61,9 +88,13 @@ module SmartGroups::Rules
     # - the `users` table changes (e.g. a user record has been updated)
     # - the predicate changes (e.g. `ends_on`)
     # - the value changes (e.g. `@example.com`)
-    # The overridden method can look like this:
+    # The implementation can look like this:
     #   def cache_key_fragments
     #     [User.all.cache_key_with_version, predicate, value]
+    #   end
+    #
+    #   def cachable?
+    #     true
     #   end
     # @see https://guides.rubyonrails.org/caching_with_rails.html#low-level-caching
     # @return Array[<String,nil>]
