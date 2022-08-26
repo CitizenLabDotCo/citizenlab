@@ -15,7 +15,7 @@ class AvatarsService
   def avatars_for_project(project, users: User.active, limit: 5)
     user_ids_and_count = Rails.cache.fetch("#{project.cache_key}/user_avatars", expires_in: 1.day) do
       participants = @participants_service.project_participants(project)
-      user_ids_and_count(participants, limit)
+      fetch_user_ids_and_count(participants, limit)
     end
     users_and_count(user_ids_and_count)
   end
@@ -28,7 +28,7 @@ class AvatarsService
   def avatars_for_group(group, users: User.active, limit: 5)
     user_ids_and_count = Rails.cache.fetch("#{group.cache_key}/user_avatars", expires_in: 1.day) do
       users_in_group = users.merge(group.members)
-      user_ids_and_count(users_in_group, limit)
+      fetch_user_ids_and_count(users_in_group, limit)
     end
     users_and_count(user_ids_and_count)
   end
@@ -43,7 +43,7 @@ class AvatarsService
     user_ids_and_count = Rails.cache.fetch("#{post.cache_key}/user_avatars", expires_in: 1.day) do
       commenters = users.joins(:comments).where(comments: { post_id: post.id, post_type: post_type, publication_status: 'published' })
       users_for_post = users.where(id: post.author).or(users.where(id: commenters))
-      user_ids_and_count(users_for_post, limit)
+      fetch_user_ids_and_count(users_for_post, limit)
     end
     users_and_count(user_ids_and_count)
   end
@@ -72,7 +72,7 @@ class AvatarsService
   # @return [Hash] A hash containing the users with avatars and total count of participants
   def some_avatars(users: User.active, limit: 5)
     user_ids_and_count = Rails.cache.fetch("#{users.cache_key}/user_avatars", expires_in: 1.day) do
-      user_ids_and_count(users, limit)
+      fetch_user_ids_and_count(users, limit)
     end
     users_and_count(user_ids_and_count)
   end
@@ -89,7 +89,7 @@ class AvatarsService
 
   # Returns the user ids of users with avatars and the total count of users (with and without avatars!)
   # Suitable for caching
-  def user_ids_and_count(users, limit)
+  def fetch_user_ids_and_count(users, limit)
     {
       user_ids: users_with_avatars(users).limit(limit).pluck(:id),
       total_count: users.count
