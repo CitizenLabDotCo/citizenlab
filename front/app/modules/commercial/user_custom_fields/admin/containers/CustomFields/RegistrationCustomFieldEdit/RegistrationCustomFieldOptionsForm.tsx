@@ -58,7 +58,10 @@ const RegistrationCustomFieldOptionsForm = ({
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onFormSubmit)}>
+      <form
+        onSubmit={methods.handleSubmit(onFormSubmit)}
+        data-testid="customFieldsOptionsForm"
+      >
         <SectionField>
           <Feedback
             successMessage={formatMessage(messages.answerOptionSuccess)}

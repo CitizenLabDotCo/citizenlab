@@ -21,7 +21,7 @@ resource 'Analytics API', use_transactional_fixtures: false do
 
     before do
       create(:idea) # Create one idea
-      create(:dimension_type) # Create the 'idea' type
+      create(:dimension_type_idea) # Create the 'idea' type
     end
 
     context 'When admin' do
@@ -29,23 +29,28 @@ resource 'Analytics API', use_transactional_fixtures: false do
         admin_header_token
       end
 
-      example 'Checks that query must contain the "fact" property' do
-        do_request(query: {})
-        messages = json_response_body[:messages]
-        assert_status 400
-        expect(messages.length).to eq(1)
-        expect(messages[0]).to include("did not contain a required property of 'fact'")
+      example 'Handles single query' do
+        do_request(query: {
+          fact: 'post',
+          aggregations: { all: 'count' }
+        })
+        assert_status 200
+        expect(json_response_body[:data]).to eq([{ count: 1 }])
       end
 
-      example 'Checks that fact name must be valid' do
-        do_request(query: { fact: 'none' })
-        assert_status 400
+      example 'Handles multiple queries' do
+        query = {
+          fact: 'post',
+          aggregations: { all: 'count' }
+        }
+        do_request(query: [query, query])
+        assert_status 200
+        expect(json_response_body[:data]).to eq([[{ count: 1 }], [{ count: 1 }]])
       end
-
     end
 
     context 'When not admin' do
-      example_request 'Checks that analytics API cannot be called if not logged in' do
+      example_request 'Checks that analytics API cannot be called if user is not admin' do
         assert_status 401
       end
     end
