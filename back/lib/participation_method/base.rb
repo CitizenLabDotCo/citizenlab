@@ -6,9 +6,16 @@ module ParticipationMethod
       @participation_context = participation_context
     end
 
-    def assign_slug!(input)
+    def validate_input(input); end
+
+    def assign_slug(input)
       # Default is to do nothing, because for some
       # participation methods the slug is generated.
+    end
+
+    def assign_idea_status(input)
+      # Default is to do nothing, because for some
+      # participation methods the idea status is assigned.
     end
 
     def validate_built_in_fields?

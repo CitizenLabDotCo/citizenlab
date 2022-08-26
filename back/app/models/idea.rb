@@ -83,6 +83,9 @@ class Idea < ApplicationRecord
 
   accepts_nested_attributes_for :text_images, :idea_images, :idea_files
 
+  validates :slug, presence: true
+  validate :validate_input
+
   with_options unless: :draft? do |post|
     post.validates :author, presence: true, on: :publication
     post.validates :author, presence: true, if: :author_id_changed?
@@ -101,11 +104,11 @@ class Idea < ApplicationRecord
   with_options unless: :draft? do
     validates :idea_status, presence: true
     validates :project, presence: true
-    before_validation :set_idea_status
     before_validation :sanitize_body_multiloc, if: :body_multiloc
   end
 
-  after_create :assign_slug!
+  before_validation :assign_slug
+  before_validation :assign_idea_status
   after_update :fix_comments_count_on_projects
 
   scope :with_some_topics, (proc do |topics|
@@ -162,12 +165,20 @@ class Idea < ApplicationRecord
     ::Factory.instance.participation_method_for(project)
   end
 
+  def validate_input
+    participation_method.validate_input self
+  end
+
   def validate_built_in_fields?
     !draft? && participation_method.validate_built_in_fields?
   end
 
-  def assign_slug!
-    participation_method.assign_slug! self
+  def assign_slug
+    participation_method.assign_slug self
+  end
+
+  def assign_idea_status
+    participation_method.assign_idea_status self
   end
 
   def sanitize_body_multiloc
@@ -178,10 +189,6 @@ class Idea < ApplicationRecord
     )
     self.body_multiloc = service.remove_multiloc_empty_trailing_tags(body_multiloc)
     self.body_multiloc = service.linkify_multiloc(body_multiloc)
-  end
-
-  def set_idea_status
-    self.idea_status ||= IdeaStatus.find_by!(code: 'proposed')
   end
 
   def fix_comments_count_on_projects

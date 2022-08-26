@@ -108,6 +108,7 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def create
+    # TODO: can we post native survey responses when there are no custom fields / custom field values?
     extract_custom_field_values_from_params!
 
     @idea = Idea.new idea_params
@@ -211,7 +212,7 @@ class WebApi::V1::IdeasController < ApplicationController
     attributes = idea_simple_attributes(enabled_field_keys)
     complex_attributes = idea_complex_attributes(custom_form, enabled_field_keys)
     attributes << complex_attributes if complex_attributes.any?
-    if UserRoleService.new.can_moderate_project?(project, current_user)
+    if UserRoleService.new.can_moderate_project?(@project, current_user)
       attributes.concat %i[idea_status_id budget] + [phase_ids: []]
     end
     attributes

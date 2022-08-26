@@ -76,7 +76,7 @@ class SideFxIdeaService
   end
 
   def after_publish(idea, user)
-    add_autovote idea
+    add_autovote idea # TODO: not for surveys
     log_activity_jobs_after_published idea, user
   end
 
