@@ -102,7 +102,8 @@ module SmartGroups::Rules
     def cache_key
       raise "Cannot calculate cache key for rule #{self.class}, cache_key_fragments is empty" unless cache_key_fragments.any?
 
-      Digest::SHA2.hexdigest(cache_key_fragments.join)
+      digest = Digest::SHA2.hexdigest(cache_key_fragments.join)
+      "smart_group_rules/#{digest}"
     end
 
     private
