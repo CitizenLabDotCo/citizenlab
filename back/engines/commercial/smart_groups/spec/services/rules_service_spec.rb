@@ -94,10 +94,6 @@ describe SmartGroups::RulesService do
       expect(groups.map(&:id)).to match_array [group1.id, group2.id]
     end
 
-    it 'uses a maximun of 2 queries' do
-      expect { service.groups_for_user(user) }.not_to exceed_query_limit(2)
-    end
-
     it 'accepts an optional scope to limit the groups to search in' do
       groups = Group.where(id: [group2, group3])
       expect(service.groups_for_user(user, groups)).to eq([group2])

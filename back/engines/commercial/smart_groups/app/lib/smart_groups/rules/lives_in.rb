@@ -3,7 +3,7 @@
 module SmartGroups::Rules
   class LivesIn
     include ActiveModel::Validations
-    include DescribableRule
+    include Rule
 
     PREDICATE_VALUES = %w[has_value not_has_value is_one_of not_is_one_of is_empty not_is_empty]
     VALUELESS_PREDICATES = %w[is_empty not_is_empty]

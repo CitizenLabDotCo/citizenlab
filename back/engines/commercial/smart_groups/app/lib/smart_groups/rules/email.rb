@@ -3,7 +3,7 @@
 module SmartGroups::Rules
   class Email
     include ActiveModel::Validations
-    include DescribableRule
+    include Rule
 
     PREDICATE_VALUES = %w[is not_is contains not_contains begins_with not_begins_with ends_on not_ends_on]
 
@@ -50,7 +50,18 @@ module SmartGroups::Rules
       self.value = value
     end
 
+    def cache_key_fragments
+      [User.all.cache_key_with_version, predicate, value]
+    end
+
     def filter(users_scope)
+      member_ids = Rails.cache.fetch(cache_key) do
+        query(::User).pluck(:id)
+      end
+      users_scope.where(id: member_ids)
+    end
+
+    def query(users_scope)
       case predicate
       when 'is'
         users_scope.where(email: value)

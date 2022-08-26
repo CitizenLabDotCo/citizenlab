@@ -6,7 +6,7 @@ module SmartGroups::Rules
 
     included do
       include ActiveModel::Validations
-      include DescribableRule
+      include Rule
 
       attr_accessor :custom_field_id, :predicate, :value
 

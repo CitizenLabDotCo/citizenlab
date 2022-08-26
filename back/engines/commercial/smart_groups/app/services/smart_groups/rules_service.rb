@@ -52,6 +52,7 @@ module SmartGroups
     end
 
     def filter(users_scope, group_json_rules)
+      # We could also cache here to cache all rules for one group if all of them are cachable?
       parse_json_rules(group_json_rules)
         .inject(users_scope) { |memo, rule| rule.filter(memo) }
     end
