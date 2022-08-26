@@ -67,23 +67,18 @@ const PageForm = ({
   const page = usePage({ pageId });
   const appConfig = useAppConfiguration();
 
-  const multilocFieldsValidation = {
+  const schema = object({
     title_multiloc: validateMultiloc(formatMessage(messages.blankTitleError)),
     body_multiloc: validateMultiloc(
       formatMessage(messages.blankDescriptionError)
     ),
-  };
-
-  // If we're creating a new page, there is no pageId
-  // And also no slug field yet.
-  if (pageId) {
-    multilocFieldsValidation['nav_bar_item_title_multiloc'] = validateMultiloc(
-      formatMessage(messages.blankTitleError)
-    );
-  }
-
-  const schema = object({
-    ...multilocFieldsValidation,
+    ...(pageId &&
+      !isNilOrError(page) &&
+      page.relationships.nav_bar_item.data && {
+        nav_bar_item_title_multiloc: validateMultiloc(
+          formatMessage(messages.blankTitleError)
+        ),
+      }),
     ...(!hideSlugInput && {
       slug: string()
         .matches(slugRexEx, formatMessage(messages.slugRegexError))
