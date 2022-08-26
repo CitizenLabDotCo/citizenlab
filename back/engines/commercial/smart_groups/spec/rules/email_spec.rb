@@ -26,6 +26,20 @@ describe SmartGroups::Rules::Email do
     end
   end
 
+  describe 'caching' do
+    it 'changes cache_key when predicate changes' do
+      expect { valid_rule.predicate = 'not_is' }.to change(valid_rule, :cache_key)
+    end
+
+    it 'changes cache_key when value changes' do
+      expect { valid_rule.value = 'example@example.com' }.to change(valid_rule, :cache_key)
+    end
+
+    it 'changes cache_key when users table changes' do
+      expect { create(:user) }.to change(valid_rule, :cache_key)
+    end
+  end
+
   describe 'filter' do
     let!(:users) do
       users = build_list(:user, 5)
