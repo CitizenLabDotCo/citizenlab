@@ -93,20 +93,6 @@
             "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
             "default": "#163A7D"
           },
-          "header_title": {
-            "title": "Homepage Title",
-            "description": "The header (title) shown on the main banner of the homepage (max 45 characters).",
-            "type": "object",
-            "allOf": [{"$ref": "#/definitions/multiloc_string"}],
-            "additionalProperties": {"maxLength": 45}
-          },
-          "header_slogan": {
-            "title": "Homepage Subtitle",
-            "description": "The sub-title shown on the main banner of the homepage (max 90 characters).",
-            "type": "object",
-            "allOf": [{"$ref": "#/definitions/multiloc_string"}],
-            "additionalProperties": {"maxLength": 90}
-          },
           "meta_title": {
             "title": "Page Title",
             "description": "The title of the homepage displayed on the browser tab in search engine results and when shared on social media.",
@@ -135,16 +121,6 @@
             "type": "string",
             "pattern": "^$|^/.*$",
             "private": true
-          },
-          "custom_onboarding_fallback_message": {
-            "title": "Header Banner Non-CTA Text",
-            "description": "Optional text shown on a banner on the top of the homepage for signed in users. If this field and the 'Header Banner Call-to-Action Text' field are both left blank, the banner text defaults to \"{orgName} is listening to you. It's your turn to make your voice heard!\".",
-            "$ref": "#/definitions/multiloc_string"
-          },
-          "currently_working_on_text": {
-            "title": "Project Overview Header Title",
-            "description": "Header title shown at the top of all of the projects on the homepage. If left blank, this field defaults to \"{orgName} is currently working on\".",
-            "$ref": "#/definitions/multiloc_string"
           },
           "signup_helper_text": {
             "title": "Sign-up Helper Text (Step 1)",
