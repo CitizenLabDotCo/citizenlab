@@ -533,7 +533,7 @@
   "app.components.form.ErrorDisplay.guidelinesLinkText": "yönergelerimiz",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Kullanıcı e-posta adresine veya adına göre aramak için yazmaya başlayın...",
   "app.components.form.blockedVerified": "Doğrulanmış bilgiler içerdiğinden bu alanı düzenleyemezsiniz",
-  "app.components.form.error": "Error",
+  "app.components.form.error": "Hata",
   "app.components.form.locationGoogleUnavailable": "Google Maps tarafından sağlanan konum alanı yüklenemedi.",
   "app.components.form.submit": "Gönder",
   "app.components.form.submitApiError": "Form gönderilirken bir sorun oluştu. Lütfen olası hataları düzeltip tekrar deneyin.",
