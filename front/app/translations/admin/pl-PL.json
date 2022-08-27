@@ -436,7 +436,7 @@
   "app.containers.Admin.PagesAndMenu.EditHomepage.projectsListTooltip": "Dostosuj sposób wyświetlania projektów na stronie głównej.",
   "app.containers.Admin.PagesAndMenu.EditHomepage.sectionDescription": "Strona główna Twojej platformy składa się z następujących sekcji. Możesz je włączać/wyłączać i edytować według potrzeb.",
   "app.containers.Admin.PagesAndMenu.EditHomepage.topInfoSection": "Top info section",
-  "app.containers.Admin.PagesAndMenu.EditHomepage.topInfoSectionTooltip": "Add your own content to the customizable section at the top of the homepage.",
+  "app.containers.Admin.PagesAndMenu.EditHomepage.topInfoSectionTooltip": "Dodaj własną treść do dostosowywanej sekcji na górze strony głównej.",
   "app.containers.Admin.PagesAndMenu.EditHomepage.viewPage": "Wyświetl stronę",
   "app.containers.Admin.PagesAndMenu.addButton": "Dodaj do nawigacji",
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.buttonSuccess": "Sukces",
