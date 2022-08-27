@@ -1,7 +1,7 @@
 {
-  "UI.FormComponents.required": "required",
-  "app.components.AdminPage.SettingsPage.allInputPageDescription": "Add a link to view all input to the navigation bar",
-  "app.components.AdminPage.SettingsPage.allInputPageSetting": "Add All input to navigation bar",
+  "UI.FormComponents.required": "gerekli",
+  "app.components.AdminPage.SettingsPage.allInputPageDescription": "Tüm girdileri gezinme çubuğunda görüntülemek için bağlantı ekleyin",
+  "app.components.AdminPage.SettingsPage.allInputPageSetting": "Tüm girdileri gezinme çubuğuna ekleyin",
   "app.components.AdminPage.SettingsPage.allInputSection": "Tüm girdiler",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Kayıtlı kullanıcılar için başlık metni",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Warning: the color you selected doesn't have a high enough contrast. This may result in text that's hard to read. Choose a darker color to optimize readability.",
