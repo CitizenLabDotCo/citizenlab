@@ -6,16 +6,6 @@ class CreateDimensionTypes < ActiveRecord::Migration[6.1]
       t.string :name
       t.string :parent
     end
-
-    # Insert the different types
-    execute("
-      INSERT INTO analytics_dimension_types (name, parent)
-      VALUES
-        ('idea', 'post'),
-        ('initiative', 'post'),
-        ('comment', null),
-        ('vote', null);
-    ")
   end
 
   def down

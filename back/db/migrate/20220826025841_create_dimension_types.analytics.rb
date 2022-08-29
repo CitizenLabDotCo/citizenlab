@@ -10,16 +10,6 @@ class CreateDimensionTypes < ActiveRecord::Migration[6.1]
       t.string :parent
     end
     # rubocop:enable Rails/CreateTableWithTimestamps
-
-    # Insert the different types
-    execute("
-      INSERT INTO analytics_dimension_types (name, parent)
-      VALUES
-        ('idea', 'post'),
-        ('initiative', 'post'),
-        ('comment', null),
-        ('vote', null);
-    ")
   end
 
   def down
