@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+# This migration comes from analytics (originally 20220624100104)
 
 class CreateDimensionDates < ActiveRecord::Migration[6.1]
   def up
@@ -12,11 +13,7 @@ class CreateDimensionDates < ActiveRecord::Migration[6.1]
     # Insert a series of dates - starting at the first activity for this tenant
     execute("
       INSERT INTO analytics_dimension_dates (date, year, month, day)
-      WITH dates AS (SELECT MIN(post_creations.created_at)::DATE AS earliest FROM (
-        SELECT created_at FROM ideas
-        UNION ALL
-        SELECT created_at FROM initiatives
-      ) post_creations)
+      WITH dates AS (SELECT MIN(created_at)::DATE AS earliest FROM activities)
       SELECT
           date,
           TO_CHAR(date, 'yyyy') AS year,

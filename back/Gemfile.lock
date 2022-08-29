@@ -781,7 +781,6 @@ GEM
       rake
     mini_magick (4.11.0)
     mini_mime (1.1.2)
-    mini_portile2 (2.8.0)
     minitest (5.16.3)
     mjml-rails (4.7.2)
     msgpack (1.5.2)
