@@ -5,18 +5,23 @@ import { Controller, useFormContext, FieldError } from 'react-hook-form';
 import { Locale } from 'typings';
 
 // components
-import QuillMultilocWithLocaleSwitcherComponent from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
+import QuillMultilocWithLocaleSwitcherComponent, {
+  Props as QuillMultilocWithLocaleSwitcherComponentProps,
+} from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import { isNilOrError } from 'utils/helperUtils';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // typings
 
-interface Props {
+type Props = {
   name: string;
   labelTooltipText?: string | JSX.Element | null;
   label?: string | JSX.Element | null;
   withCTAButton?: boolean;
-}
+} & Omit<
+  QuillMultilocWithLocaleSwitcherComponentProps,
+  'onChange' | 'valueMultiloc' | 'id'
+>;
 
 const QuillMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
   const {
@@ -47,9 +52,9 @@ const QuillMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
         defaultValue={defaultValue}
         render={({ field: { ref: _ref, ...field } }) => (
           <QuillMultilocWithLocaleSwitcherComponent
-            id={name}
             {...field}
             {...rest}
+            id={name}
             valueMultiloc={{ ...defaultValue, ...field.value }}
           />
         )}
