@@ -33,7 +33,7 @@ const MultipleSelect = ({ name, ...rest }: Props) => {
         render={({ field: { ref: _ref, ...field } }) => {
           return (
             <MultipleSelectComponent
-              id={name}
+              inputId={name}
               {...field}
               {...rest}
               onChange={(newOption: IOption[]) => {

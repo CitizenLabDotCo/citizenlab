@@ -74,7 +74,7 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
 
     return (
       <>
-        <Label htmlFor={id}>{label}</Label>
+        <Label htmlFor={inputId}>{label}</Label>
         <ReactSelect
           id={id}
           inputId={inputId}
