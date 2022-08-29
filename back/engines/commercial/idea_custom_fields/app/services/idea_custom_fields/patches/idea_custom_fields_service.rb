@@ -24,7 +24,7 @@ module IdeaCustomFields
 
       def custom_and_default_fields
         persisted_fields = if custom_form
-          custom_form.custom_fields # .includes(:options)
+          custom_form.custom_fields.includes(:options)
         else
           []
         end
