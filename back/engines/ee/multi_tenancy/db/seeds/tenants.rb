@@ -361,6 +361,10 @@ module MultiTenancy
             native_surveys: {
               enabled: true,
               allowed: true
+            },
+            analtyics: {
+              enabled: true,
+              allowed: true
             }
           })
         )

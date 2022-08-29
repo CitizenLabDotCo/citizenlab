@@ -45,6 +45,7 @@
     "commercial/user_custom_fields": true,
     "commercial/verification": true,
     "commercial/widgets": true,
-    "commercial/representativeness": true
+    "commercial/representativeness": true,
+    "commercial/analtyics": true
   }
 }
