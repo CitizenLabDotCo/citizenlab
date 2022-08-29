@@ -11,11 +11,9 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import GetCampaign from 'resources/GetCampaign';
 import { isNilOrError } from 'utils/helperUtils';
 
-interface DataProps {
+interface Props {
   campaign: ICampaignData;
 }
-
-interface Props extends DataProps {}
 
 const Edit = ({ campaign }: Props) => {
   const handleSubmit = async (values: FormValues) => {

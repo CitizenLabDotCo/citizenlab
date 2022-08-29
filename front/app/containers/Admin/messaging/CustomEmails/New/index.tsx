@@ -1,4 +1,6 @@
 import React from 'react';
+
+import useAuthUser from 'hooks/useAuthUser';
 import { createCampaign } from 'services/campaigns';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
@@ -8,13 +10,9 @@ import CampaignForm, { FormValues, PageTitle } from '../CampaignForm';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
-type Props = {
-  authUser: GetAuthUserChildProps;
-};
-
-const New = (props: Props) => {
+const New = () => {
+  const authUser = useAuthUser();
   const handleSubmit = async (values: FormValues) => {
     const response = await createCampaign({
       campaign_name: 'manual',
@@ -38,9 +36,7 @@ const New = (props: Props) => {
         defaultValues={{
           sender: 'author',
           reply_to:
-            (!isNilOrError(props.authUser) &&
-              props.authUser.attributes.email) ||
-            '',
+            (!isNilOrError(authUser) && authUser.attributes.email) || '',
         }}
         onSubmit={handleSubmit}
       />
@@ -48,8 +44,4 @@ const New = (props: Props) => {
   );
 };
 
-export default () => (
-  <GetAuthUser>
-    {(user) => (isNilOrError(user) ? null : <New authUser={user} />)}
-  </GetAuthUser>
-);
+export default New;
