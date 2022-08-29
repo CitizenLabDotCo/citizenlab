@@ -77,6 +77,10 @@ const FormBuilderTopBar = () => {
           enabled: field.enabled,
           title_multiloc: field.title_multiloc || {},
           description_multiloc: field.description_multiloc || {},
+          ...(field.input_type === 'multiselect' && {
+            // TODO: This will get messy with more field types, abstract this in some way
+            options: field.options || {},
+          }),
         }));
         await updateFormCustomFields(projectId, finalResponseArray, phaseId);
       } catch {

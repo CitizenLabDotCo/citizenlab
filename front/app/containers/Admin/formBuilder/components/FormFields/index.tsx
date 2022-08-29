@@ -7,6 +7,9 @@ import { useFormContext } from 'react-hook-form';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+
 // components
 import Button from 'components/UI/Button';
 import { List, SortableRow } from 'components/admin/ResourceList';
@@ -25,6 +28,18 @@ import {
 const StyledBadge = styled(Badge)`
   margin-left: 12px;
 `;
+
+// Assign field badge text
+const getTranslatedFieldType = (field) => {
+  switch (field) {
+    case 'text':
+      return messages.shortAnswer;
+    case 'multiselect':
+      return messages.multipleChoice;
+    default:
+      return messages.default;
+  }
+};
 
 interface FormFieldsProps {
   onEditField: (field: IFlatCustomFieldWithIndex) => void;
@@ -65,9 +80,13 @@ const FormFields = ({
                         <T value={field.title_multiloc} />
                       </Text>
                     </Box>
-                    <StyledBadge color={colors.adminSecondaryTextColor}>
-                      <FormattedMessage {...messages.shortAnswer} />
-                    </StyledBadge>
+                    {!isNilOrError(field.input_type) && (
+                      <StyledBadge color={colors.adminSecondaryTextColor}>
+                        <FormattedMessage
+                          {...getTranslatedFieldType(field.input_type)}
+                        />
+                      </StyledBadge>
+                    )}
                   </Box>
                   <Button
                     buttonStyle="secondary"

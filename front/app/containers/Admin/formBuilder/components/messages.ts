@@ -21,6 +21,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.shortAnswer',
     defaultMessage: 'Short answer',
   },
+  multipleChoice: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.multipleChoice',
+    defaultMessage: 'Multiple choice',
+  },
+  default: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.default',
+    defaultMessage: 'Default',
+  },
   newField: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.newField',
     defaultMessage: 'New field',
