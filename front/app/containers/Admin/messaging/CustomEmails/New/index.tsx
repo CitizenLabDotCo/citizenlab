@@ -41,9 +41,6 @@ const New = (props: Props) => {
             (!isNilOrError(props.authUser) &&
               props.authUser.attributes.email) ||
             '',
-          subject_multiloc: {},
-          body_multiloc: {},
-          group_ids: [],
         }}
         onSubmit={handleSubmit}
       />

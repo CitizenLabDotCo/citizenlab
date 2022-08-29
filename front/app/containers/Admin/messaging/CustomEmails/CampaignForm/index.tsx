@@ -66,7 +66,7 @@ export interface FormValues {
 
 type CampaignFormProps = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
-  defaultValues?: FormValues;
+  defaultValues?: Partial<FormValues>;
 } & InjectedIntlProps;
 
 const CampaignForm = ({
