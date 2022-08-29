@@ -576,7 +576,7 @@
   "app.containers.AccessibilityStatement.technologiesIntro": "Bu sitede erişilebilirlik özelliklerinin çalışması için şu teknolojilere ihtiyaç vardır:",
   "app.containers.AccessibilityStatement.technologiesTitle": "Teknolojiler",
   "app.containers.AccessibilityStatement.title": "Erişilebilirlik Beyanı",
-  "app.containers.Admin.Insights.helmetDescription": "Yönetici bilgileri sayfası",
+  "app.containers.Admin.Insights.helmetDescription": "Yönetici bilgi sayfası",
   "app.containers.Admin.Insights.helmetTitle": "Platform Bilgileri",
   "app.containers.Admin.Insights.tabInsights": "Bilgiler",
   "app.containers.Admin.Insights.tabReports": "Raporlar",
