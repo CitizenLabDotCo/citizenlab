@@ -62,7 +62,7 @@ resource 'User Custom Fields' do
         },
         relationships: {
           current_ref_distribution: expected_ref_distribution_linkage,
-          options: an_instance_of(Hash)
+          options: []
         }
       }.deep_symbolize_keys
     end
