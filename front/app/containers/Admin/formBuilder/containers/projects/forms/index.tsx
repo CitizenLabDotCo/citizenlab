@@ -41,14 +41,20 @@ const Forms = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         </Box>
         {formActionsConfigs.map(
           (
-            { editFormLink, heading, postingEnabled, togglePostingEnabled },
+            {
+              editFormLink,
+              viewFormLink,
+              heading,
+              postingEnabled,
+              togglePostingEnabled,
+            },
             index
           ) => {
             return (
               <>
                 <FormActions
                   editFormLink={editFormLink}
-                  viewFormLink={`/projects/${project?.attributes.slug}/ideas/new`}
+                  viewFormLink={viewFormLink}
                   heading={heading}
                   postingEnabled={postingEnabled}
                   togglePostingEnabled={togglePostingEnabled}

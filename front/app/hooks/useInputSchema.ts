@@ -8,7 +8,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import useAppConfigurationLocales from './useAppConfigurationLocales';
 import useLocale from './useLocale';
 
-export default (projectId: string | undefined) => {
+export default (projectId: string | undefined, phaseId?: string | null) => {
   const [schema, setSchema] = useState<JsonFormsSchema | null>(null);
   const [uiSchema, setUiSchema] = useState<Layout | null>(null);
   const [isError, setIsError] = useState(false);
@@ -18,7 +18,7 @@ export default (projectId: string | undefined) => {
   useEffect(() => {
     if (!projectId) return;
 
-    const observable = ideaJsonFormsSchemaStream(projectId).observable;
+    const observable = ideaJsonFormsSchemaStream(projectId, phaseId).observable;
 
     const subscription = observable.subscribe((response) => {
       if (isNilOrError(response)) {
@@ -43,7 +43,7 @@ export default (projectId: string | undefined) => {
     });
 
     return () => subscription.unsubscribe();
-  }, [projectId, locale, locales]);
+  }, [projectId, locale, locales, phaseId]);
 
   return { schema, uiSchema, inputSchemaError: isError };
 };
