@@ -7,14 +7,13 @@ import HelmetIntl from 'components/HelmetIntl';
 import messages from '../messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-
+import TabbedResource from 'components/admin/TabbedResource';
 const CustomPagesNewSettings = ({
   intl: { formatMessage },
 }: InjectedIntlProps) => {
   return (
     <>
       <HelmetIntl title={messages.newCustomPageMetaTitle} />
-      {/* Title will come as part of TabbedResource */}
       <Box mb="16px">
         <Breadcrumbs
           breadcrumbs={[
@@ -26,7 +25,21 @@ const CustomPagesNewSettings = ({
           ]}
         />
       </Box>
-      <CustomPageSettingsForm />
+      <TabbedResource
+        resource={{
+          title: formatMessage(messages.newCustomPagePageTitle),
+        }}
+        tabs={[
+          {
+            label: formatMessage(messages.pageSettingsTab),
+            name: 'settings',
+            url: '/admin/pages-menu/custom/new',
+          },
+        ]}
+        contentWrapper={false}
+      >
+        <CustomPageSettingsForm />
+      </TabbedResource>
     </>
   );
 };

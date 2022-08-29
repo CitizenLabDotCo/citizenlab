@@ -2,53 +2,69 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   newCustomPageMetaTitle: {
-    id: 'app.containers.Admin.pagesAndMenu.containers.CustomPages.newCustomPageMetaTitle',
+    id: 'app.containers.Admin.pagesAndMenu.containers.CreateCustomPage.newCustomPageMetaTitle',
     defaultMessage: 'Create custom page | {orgName}',
   },
   newCustomPagePageTitle: {
-    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.newCustomPagePageTitle',
+    id: 'app.containers.Admin.pagesAndMenu.containers.CreateCustomPage.newCustomPagePageTitle',
     defaultMessage: 'Create custom page',
   },
   titleMultilocError: {
-    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleMultilocError',
+    id: 'app.containers.Admin.pagesAndMenu.containers.CreateCustomPage.titleMultilocError',
     defaultMessage: 'Enter a title in every language',
   },
   contentEditorTitle: {
-    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.contentEditorTitle',
+    id: 'app.containers.Admin.pagesAndMenu.containers.CreateCustomPage.contentEditorTitle',
     defaultMessage: 'Content',
   },
   saveButton: {
-    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.saveButton',
+    id: 'app.containers.Admin.pagesAndMenu.containers.CreateCustomPage.saveButton',
     defaultMessage: 'Save custom page',
   },
   buttonSuccess: {
-    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.buttonSuccess',
+    id: 'app.containers.Admin.pagesAndMenu.containers.CreateCustomPage.buttonSuccess',
     defaultMessage: 'Success',
   },
   messageSuccess: {
-    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.messageSuccess',
+    id: 'app.containers.Admin.pagesAndMenu.containers.CreateCustomPage.messageSuccess',
     defaultMessage: 'Custom page saved',
   },
   titleLabel: {
-    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleLabel',
+    id: 'app.containers.Admin.pagesAndMenu.containers.CreateCustomPage.titleLabel',
     defaultMessage: 'Title',
   },
   slugLabel: {
-    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.slugLabel',
+    id: 'app.containers.Admin.pagesAndMenu.containers.CreateCustomPage.slugLabel',
     defaultMessage: 'Page slug',
   },
   slugTooltip: {
-    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.slugTooltip',
+    id: 'app.containers.Admin.pagesAndMenu.containers.CreateCustomPage.slugTooltip',
     defaultMessage:
       'The slug is the unique set of words at the end of the page’s web address, or URL.',
   },
   slugRegexError: {
-    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.slugRegexError',
+    id: 'app.containers.Admin.pagesAndMenu.containers.CreateCustomPage.slugRegexError',
     defaultMessage:
       'The slug can only contain regular, lowercase letters (a-z), numbers (0-9) and hyphens (-). The first and last characters cannot be hyphens. Consecutive hyphens (--) are forbidden.',
   },
   slugRequiredError: {
-    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.slugRequiredError',
+    id: 'app.containers.Admin.pagesAndMenu.containers.CreateCustomPage.slugRequiredError',
     defaultMessage: 'You must enter a slug',
+  },
+  pageSettingsTab: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.CreateCustomPage.pageSettingsTab',
+    defaultMessage: 'Page settings',
+  },
+  editCustomPageMetaTitle: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.CustomPages.editCustomPageMetaTitle',
+    defaultMessage: 'Edit custom page | {orgName}',
+  },
+  pageContentTab: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.CustomPages.pageContentTab',
+    defaultMessage: 'Page content',
+  },
+  editCustomPagePageTitle: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.CreateCustomPage.editCustomPagePageTitle',
+    defaultMessage: 'Edit custom page',
   },
 });
