@@ -362,7 +362,7 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            analtyics: {
+            analytics: {
               enabled: true,
               allowed: true
             }

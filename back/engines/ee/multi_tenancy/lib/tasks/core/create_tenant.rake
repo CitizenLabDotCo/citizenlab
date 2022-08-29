@@ -311,7 +311,7 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        analtyics: {
+        analytics: {
           enabled: true,
           allowed: true
         }
