@@ -1,9 +1,14 @@
 # Changelog
 
+## Next release
+
+/
+
 ## 2022-08-18
 
 ### Fixed
- - [CL-1407] Quickfix for critical bug that made the 'Submit your idea' button disappear for projects with a timeline
+
+- [CL-1407] Quickfix for critical bug that made the 'Submit your idea' button disappear for projects with a timeline
 
 ### Added
 
@@ -133,7 +138,6 @@
 ### Fixed
 
 - [CL-1083] XLSX export issues with custom fields
-
 
 ## 2022-07-04
 

@@ -1,12 +1,10 @@
 import React, { lazy } from 'react';
 import PageLoading from 'components/UI/PageLoading';
 import moduleConfiguration from 'modules';
-const CustomNavbarContainer = lazy(
-  () => import('containers/Admin/pagesAndMenu')
-);
-const CustomNavbarSettingsComponent = lazy(
-  () => import('./NavigationSettings')
-);
+import { Navigate } from 'react-router-dom';
+const CustomPagesIndex = lazy(() => import('./containers/CustomPages'));
+const PagesAndMenuIndex = lazy(() => import('containers/Admin/pagesAndMenu'));
+const NavigationSettings = lazy(() => import('./NavigationSettings'));
 
 // homepage
 const EditHomepage = lazy(() => import('./EditHomepage'));
@@ -16,6 +14,13 @@ const HeroBannerForm = lazy(() => import('./containers/HeroBanner'));
 
 // custom pages
 const NewCustomPage = lazy(() => import('./containers/CustomPages/New'));
+const EditCustomPage = lazy(() => import('./containers/CustomPages/Edit'));
+const EditCustomPageSettings = lazy(
+  () => import('./containers/CustomPages/Edit/Settings')
+);
+const EditCustomPageContent = lazy(
+  () => import('./containers/CustomPages/Edit/Content')
+);
 
 // path utils
 const PAGE_PATH = 'pages-menu';
@@ -31,14 +36,17 @@ export default () => ({
       path: '',
       element: (
         <PageLoading>
-          <CustomNavbarContainer />
+          <PagesAndMenuIndex />
         </PageLoading>
       ),
       children: [
         {
           index: true,
-          // the main page with outlets and a visual container
-          element: <CustomNavbarSettingsComponent />,
+          element: (
+            <PageLoading>
+              <NavigationSettings />
+            </PageLoading>
+          ),
         },
       ],
     },
@@ -68,11 +76,32 @@ export default () => ({
     },
     {
       path: HOMEPAGE_PATH,
-      element: <EditHomepage />,
+      element: (
+        <PageLoading>
+          <EditHomepage />
+        </PageLoading>
+      ),
     },
     {
-      path: `${CUSTOM_PAGES_PATH}/new`,
-      element: <NewCustomPage />,
+      path: CUSTOM_PAGES_PATH,
+      element: <CustomPagesIndex />,
+      children: [
+        {
+          path: 'new',
+          element: <NewCustomPage />,
+        },
+        {
+          path: 'edit',
+          // This is the final path
+          // path: 'edit/:customPageId',
+          element: <EditCustomPage />,
+          children: [
+            { path: '', element: <Navigate to="settings" /> },
+            { path: 'settings', element: <EditCustomPageSettings /> },
+            { path: 'content', element: <EditCustomPageContent /> },
+          ],
+        },
+      ],
     },
     ...moduleConfiguration.routes['admin.pages-menu'],
   ],
