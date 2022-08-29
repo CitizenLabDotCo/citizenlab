@@ -9,7 +9,7 @@ import {
 } from '../../services/analyticsFacts';
 
 // hooks
-// import useLocalize from 'hooks/useLocalize';
+import useLocalize from 'hooks/useLocalize';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
@@ -22,12 +22,14 @@ import {
   getDays,
   getStatusColorById,
   parseStackedBarsPercentages,
+  parseStackedBarsLegendItems,
   parseExcelData,
 } from './parse';
 
 // typings
 import { Multiloc } from 'typings';
 import { InjectedIntlProps } from 'react-intl';
+import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 
 interface QueryProps {
   projectId?: string;
@@ -65,6 +67,7 @@ interface PostFeedback {
   stackedBarColumns: string[];
   statusColorById: Record<string, string>;
   stackedBarPercentages: number[];
+  stackedBarsLegendItems: LegendItem[][]; 
   xlsxData: object;
 }
 
@@ -125,7 +128,7 @@ export default function usePostsWithFeedback(
   formatMessage: InjectedIntlProps['intl']['formatMessage'],
   { projectId, startAt, endAt }: QueryProps
 ) {
-  // const localize = useLocalize();
+  const localize = useLocalize();
 
   const [postsWithFeedback, setPostsWithFeedback] = useState<
     PostFeedback | NilOrError
@@ -161,6 +164,11 @@ export default function usePostsWithFeedback(
         const stackedBarColumns = statusRows.map((row) => row['status.id']);
         const stackedBarPercentages = parseStackedBarsPercentages(statusRows);
 
+        const stackedBarsLegendItems = parseStackedBarsLegendItems(
+          statusRows, 
+          localize
+        )
+
         const xlsxData = parseExcelData(feedbackRow, translations);
 
         setPostsWithFeedback({
@@ -173,6 +181,7 @@ export default function usePostsWithFeedback(
           stackedBarColumns,
           statusColorById,
           stackedBarPercentages,
+          stackedBarsLegendItems,
           xlsxData,
         });
       }

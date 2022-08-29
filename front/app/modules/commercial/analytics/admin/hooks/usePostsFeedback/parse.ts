@@ -10,7 +10,8 @@ import { sum, roundPercentage, roundPercentages } from 'utils/math';
 // typings
 import { FeedbackRow, StatusRow, StackedBarsRow } from '.';
 import { InjectedIntlProps } from 'react-intl';
-// import { Localize } from 'hooks/useLocalize';
+import { Localize } from 'hooks/useLocalize';
+import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 
 interface Translations {
   statusChanged: string;
@@ -132,14 +133,22 @@ export const getStatusColorById = (statusRows: StatusRow[]) => {
   );
 };
 
-// export const parseStackedBarsLegendItems = (
-//   statusRows: StatusRow[],
-//   localize: Localize
-// ) => {
-//   return [
+export const parseStackedBarsLegendItems = (
+  statusRows: StatusRow[],
+  localize: Localize
+): LegendItem[][] => {
+  const items: LegendItem[] = statusRows.map((statusRow) => ({
+    icon: 'circle',
+    color: statusRow.first_status_color,
+    label: localize(statusRow.first_status_title_multiloc)
+  }))
 
-//   ]
-// }
+  return [
+    items.slice(0, 4),
+    ...(items.length > 4 ? [items.slice(4, 8)] : []),
+    ...(items.length > 8 ? [items.slice(8, 12)] : [])
+  ]
+}
 
 export const getPieCenterValue = (feedbackRow: FeedbackRow) => {
   const {

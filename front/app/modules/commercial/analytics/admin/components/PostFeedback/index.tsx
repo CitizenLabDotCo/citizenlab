@@ -102,6 +102,7 @@ const PostFeedback = ({
     stackedBarColumns,
     statusColorById,
     stackedBarPercentages,
+    stackedBarsLegendItems,
     xlsxData,
   } = data;
 
@@ -193,10 +194,9 @@ const PostFeedback = ({
             )}
             xaxis={{ hide: true, domain: [0, 'dataMax'] }}
             yaxis={{ hide: true }}
-            // legend={{
-            //   position: 'bottom-center',
-            //   items: [legendItems, legendItems.slice(0, 2)],
-            // }}
+            legend={{
+              items: stackedBarsLegendItems,
+            }}
           />
         </Box>
       </GraphCardInner>
