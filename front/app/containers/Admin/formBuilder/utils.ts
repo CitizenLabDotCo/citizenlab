@@ -33,8 +33,8 @@ export const getFormActionsConfig = (
     return [
       {
         editFormLink: `/admin/projects/${project.id}/native-survey/edit`,
-        viewFormLink: `/projects/${project?.attributes.slug}/ideas/new`,
-        postingEnabled: project?.attributes.posting_enabled,
+        viewFormLink: `/projects/${project.attributes.slug}/ideas/new`,
+        postingEnabled: project.attributes.posting_enabled,
         togglePostingEnabled: () => {
           updateProject(project.id, {
             posting_enabled: !project.attributes.posting_enabled,
@@ -46,7 +46,7 @@ export const getFormActionsConfig = (
 
   return getSurveyPhases(phases).map((phase) => ({
     editFormLink: `/admin/projects/${project.id}/phases/${phase.id}/native-survey/edit`,
-    viewFormLink: `/projects/${project?.attributes.slug}/ideas/new?phase_id=${phase.id}`,
+    viewFormLink: `/projects/${project.attributes.slug}/ideas/new?phase_id=${phase.id}`,
     heading: phase.attributes.title_multiloc,
     postingEnabled: phase.attributes.posting_enabled,
     togglePostingEnabled: () => {
@@ -58,12 +58,12 @@ export const getFormActionsConfig = (
 };
 
 export const getIsPostingEnabled = (
-  project: IProjectData | Error | null | undefined,
+  project: IProjectData,
   phase?: IPhaseData | Error | null | undefined
 ) => {
   if (!isNilOrError(phase)) {
     return phase.attributes.posting_enabled;
   }
 
-  return !isNilOrError(project) ? project.attributes.posting_enabled : false;
+  return project.attributes.posting_enabled;
 };
