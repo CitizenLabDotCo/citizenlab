@@ -5,12 +5,13 @@ import messages from '../messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import HelmetIntl from 'components/HelmetIntl';
+import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
 
 const CreateCustomPageHookForm = ({
   intl: { formatMessage },
 }: InjectedIntlProps) => {
   return (
-    <>
+    <SectionFormWrapper>
       <HelmetIntl title={messages.editCustomPageMetaTitle} />
       <TabbedResource
         resource={{
@@ -32,7 +33,7 @@ const CreateCustomPageHookForm = ({
       >
         <RouterOutlet />
       </TabbedResource>
-    </>
+    </SectionFormWrapper>
   );
 };
 
