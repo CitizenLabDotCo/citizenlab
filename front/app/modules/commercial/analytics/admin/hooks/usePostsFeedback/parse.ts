@@ -8,7 +8,7 @@ import messages from './messages';
 import { sum, roundPercentage } from 'utils/math';
 
 // typings
-import { FeedbackRow, StatusRow } from '../../services/analyticsFacts';
+import { FeedbackRow, StatusRow } from '.';
 import { InjectedIntlProps } from 'react-intl';
 // import { Localize } from 'hooks/useLocalize';
 
