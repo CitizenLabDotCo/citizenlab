@@ -26,6 +26,7 @@ import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWi
 import Input from 'components/HookForm/Input';
 import Feedback from 'components/HookForm/Feedback';
 import Select from 'components/HookForm/Select';
+import MultipleSelect from 'components/HookForm/MultipleSelect';
 
 // resources
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
@@ -163,20 +164,20 @@ const CampaignForm = ({
             <GetGroups>
               {(groups) =>
                 isNilOrError(groups) ? null : (
-                  <Select
+                  <MultipleSelect
                     name="group_ids"
-                    //    placeholder={<FormattedMessage {...messages.allUsers} />}
+                    placeholder={<FormattedMessage {...messages.allUsers} />}
                     options={groupsOptions(groups)}
-                    label={
-                      <>
-                        <FormattedMessage {...messages.fieldTo} />
-                        <IconTooltip
-                          content={
-                            <FormattedMessage {...messages.fieldToTooltip} />
-                          }
-                        />
-                      </>
-                    }
+                    // label={
+                    //   <>
+                    //     <FormattedMessage {...messages.fieldTo} />
+                    //     <IconTooltip
+                    //       content={
+                    //         <FormattedMessage {...messages.fieldToTooltip} />
+                    //       }
+                    //     />
+                    //   </>
+                    // }
                   />
                 )
               }
