@@ -168,16 +168,16 @@ const CampaignForm = ({
                     name="group_ids"
                     placeholder={<FormattedMessage {...messages.allUsers} />}
                     options={groupsOptions(groups)}
-                    // label={
-                    //   <>
-                    //     <FormattedMessage {...messages.fieldTo} />
-                    //     <IconTooltip
-                    //       content={
-                    //         <FormattedMessage {...messages.fieldToTooltip} />
-                    //       }
-                    //     />
-                    //   </>
-                    // }
+                    label={
+                      <>
+                        <FormattedMessage {...messages.fieldTo} />
+                        <IconTooltip
+                          content={
+                            <FormattedMessage {...messages.fieldToTooltip} />
+                          }
+                        />
+                      </>
+                    }
                   />
                 )
               }

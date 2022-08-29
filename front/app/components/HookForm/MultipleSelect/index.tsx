@@ -6,7 +6,8 @@ import Error, { TFieldName } from 'components/UI/Error';
 import { Controller, useFormContext } from 'react-hook-form';
 import { CLError, IOption } from 'typings';
 
-interface Props extends Omit<MultipleSelectComponentProps, 'onChange'> {
+interface Props
+  extends Omit<MultipleSelectComponentProps, 'onChange' | 'value'> {
   name: string;
 }
 
