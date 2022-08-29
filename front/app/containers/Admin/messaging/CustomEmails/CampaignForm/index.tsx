@@ -79,10 +79,16 @@ const CampaignForm = ({
   const localize = useLocalize();
 
   const schema = object({
-    sender: string().oneOf(['author', 'organization']).required('error'),
-    reply_to: string().email().required('reply error'),
-    subject_multiloc: validateMultiloc('subject error'),
-    body_multiloc: validateMultiloc('body multiloc error'),
+    sender: string()
+      .oneOf(['author', 'organization'])
+      .required(formatMessage(messages.fieldSenderError)),
+    reply_to: string()
+      .email()
+      .required(formatMessage(messages.fieldReplyToError)),
+    subject_multiloc: validateMultiloc(
+      formatMessage(messages.fieldSubjectError)
+    ),
+    body_multiloc: validateMultiloc(formatMessage(messages.fieldBodyError)),
     group_ids: array(),
   });
 
@@ -223,7 +229,7 @@ const CampaignForm = ({
         </StyledSection>
         <Box display="flex">
           <Button type="submit" processing={methods.formState.isSubmitting}>
-            {'Save'}
+            {formatMessage(messages.formSave)}
           </Button>
         </Box>
       </form>
