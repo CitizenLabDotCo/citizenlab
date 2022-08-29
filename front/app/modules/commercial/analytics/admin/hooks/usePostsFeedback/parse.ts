@@ -5,10 +5,10 @@ import { colors } from 'components/admin/Graphs/styling';
 import messages from './messages';
 
 // utils
-import { sum, roundPercentage } from 'utils/math';
+import { sum, roundPercentage, roundPercentages } from 'utils/math';
 
 // typings
-import { FeedbackRow, StatusRow } from '.';
+import { FeedbackRow, StatusRow, StackedBarsRow } from '.';
 import { InjectedIntlProps } from 'react-intl';
 // import { Localize } from 'hooks/useLocalize';
 
@@ -103,7 +103,9 @@ export const parseProgressBarsData = (
   return progressBarsData;
 };
 
-export const parseStackedBarsData = (statusRows: StatusRow[]) => {
+export const parseStackedBarsData = (
+  statusRows: StatusRow[]
+): [StackedBarsRow] => {
   return [
     statusRows.reduce(
       (acc, row) => ({
@@ -115,11 +117,28 @@ export const parseStackedBarsData = (statusRows: StatusRow[]) => {
   ];
 };
 
+export const parseStackedBarsPercentages = (statusRows: StatusRow[]) => {
+  const counts = statusRows.map((statusRow) => statusRow.count);
+  return roundPercentages(counts);
+};
+
+export const getStatusColorById = (statusRows: StatusRow[]) => {
+  return statusRows.reduce(
+    (acc, row) => ({
+      ...acc,
+      [row['status.id']]: row.first_status_color,
+    }),
+    {}
+  );
+};
+
 // export const parseStackedBarsLegendItems = (
 //   statusRows: StatusRow[],
 //   localize: Localize
 // ) => {
-//   // TODO
+//   return [
+
+//   ]
 // }
 
 export const getPieCenterValue = (feedbackRow: FeedbackRow) => {

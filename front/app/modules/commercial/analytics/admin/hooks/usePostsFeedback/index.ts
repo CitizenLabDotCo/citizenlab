@@ -17,9 +17,11 @@ import {
   getTranslations,
   parsePieData,
   parseProgressBarsData,
-  // parseStackedBarsData,
+  parseStackedBarsData,
   getPieCenterValue,
   getDays,
+  getStatusColorById,
+  parseStackedBarsPercentages,
   parseExcelData,
 } from './parse';
 
@@ -49,16 +51,20 @@ export interface StatusRow {
   count: number;
   'status.id': string;
   first_status_title_multiloc: Multiloc;
+  first_status_color: string;
 }
 
 // Hook return value
 interface PostFeedback {
   pieData: PieRow[];
   progressBarsData: ProgressBarsRow[];
-  stackedBarsData: StackedBarsRow[];
+  stackedBarsData: [StackedBarsRow];
   pieCenterValue: string;
   pieCenterLabel: string;
   days: number;
+  stackedBarColumns: string[];
+  statusColorById: Record<string, string>;
+  stackedBarPercentages: number[];
   xlsxData: object;
 }
 
@@ -75,7 +81,7 @@ interface ProgressBarsRow {
   total: number;
 }
 
-type StackedBarsRow = Record<string, number>;
+export type StackedBarsRow = Record<string, number>;
 
 const toDate = (dateString: string) => moment(dateString).format('yyyy-MM-DD');
 
@@ -133,8 +139,7 @@ export default function usePostsWithFeedback(
           return;
         }
 
-        // const [feedbackRows, statusRows] = results.data;
-        const [feedbackRows, _] = results.data;
+        const [feedbackRows, statusRows] = results.data;
         const feedbackRow = feedbackRows[0];
 
         const translations = getTranslations(formatMessage);
@@ -144,21 +149,30 @@ export default function usePostsWithFeedback(
           feedbackRow,
           translations
         );
-        // const stackedBarsData = parseStackedBarsData(statusRows);
+
+        const stackedBarsData = parseStackedBarsData(statusRows);
 
         const pieCenterValue = getPieCenterValue(feedbackRow);
         const pieCenterLabel = translations.feedbackGiven;
 
         const days = getDays(feedbackRow);
+
+        const statusColorById = getStatusColorById(statusRows);
+        const stackedBarColumns = statusRows.map((row) => row['status.id']);
+        const stackedBarPercentages = parseStackedBarsPercentages(statusRows);
+
         const xlsxData = parseExcelData(feedbackRow, translations);
 
         setPostsWithFeedback({
           pieData,
           progressBarsData,
-          stackedBarsData: [],
+          stackedBarsData,
           pieCenterValue,
           pieCenterLabel,
           days,
+          stackedBarColumns,
+          statusColorById,
+          stackedBarPercentages,
           xlsxData,
         });
       }

@@ -11,8 +11,9 @@ import ReportExportMenu from 'components/admin/ReportExportMenu';
 import { Box, Icon } from '@citizenlab/cl2-component-library';
 import PieChart from 'components/admin/Graphs/PieChart';
 import ProgressBars from 'components/admin/Graphs/ProgressBars';
-// import StackedBarChart from 'components/admin/Graphs/StackedBarChart';
+import StackedBarChart from 'components/admin/Graphs/StackedBarChart';
 import CenterLabel from './CenterLabel';
+import { stackLabels } from './stackLabels';
 // import Button from 'components/UI/Button';
 
 // styling
@@ -28,6 +29,7 @@ import usePostsWithFeedback from '../../hooks/usePostsFeedback';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { getCornerRadius } from './utils';
 
 // typings
 import { InjectedIntlProps } from 'react-intl';
@@ -93,10 +95,13 @@ const PostFeedback = ({
   const {
     pieData,
     progressBarsData,
-    // stackedBarsData,
+    stackedBarsData,
     pieCenterValue,
     pieCenterLabel,
     days,
+    stackedBarColumns,
+    statusColorById,
+    stackedBarPercentages,
     xlsxData,
   } = data;
 
@@ -171,24 +176,28 @@ const PostFeedback = ({
             </Box>
           </ProgressBarsContainer>
         </Container>
-        <Box width="50%" height="100px" mt="30px">
-          {/* <StackedBarChart
+        <Box width="100%" height="100px" mt="30px" p="8px">
+          <StackedBarChart
             data={stackedBarsData}
             mapping={{
-              stackedLength: Object.keys(stackedBarsData[0]),
-              // category: 'label',
-              // fill: ({ stackIndex }) => colors[stackIndex],
-              // cornerRadius: ({ stackIndex }) => radii[stackIndex],
+              stackedLength: stackedBarColumns,
+              fill: ({ stackIndex }) =>
+                statusColorById[stackedBarColumns[stackIndex]],
+              cornerRadius: getCornerRadius(stackedBarColumns.length, 5),
             }}
             layout="horizontal"
-            // labels={centerLabels}
+            labels={stackLabels(
+              stackedBarsData,
+              stackedBarColumns,
+              stackedBarPercentages
+            )}
             xaxis={{ hide: true, domain: [0, 'dataMax'] }}
             yaxis={{ hide: true }}
             // legend={{
             //   position: 'bottom-center',
             //   items: [legendItems, legendItems.slice(0, 2)],
             // }}
-          /> */}
+          />
         </Box>
       </GraphCardInner>
 
