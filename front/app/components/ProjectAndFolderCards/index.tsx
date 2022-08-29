@@ -9,6 +9,8 @@ import ProjectAndFolderCardsInner from './ProjectAndFolderCardsInner';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { getCurrentTab } from './utils';
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
 
 // typings
 import { PublicationStatus } from 'services/projects';
@@ -56,6 +58,9 @@ const ProjectAndFolderCards = ({
     setSearch(search);
     // pass search term to useAdminPublicationsStatusCount hook
     onChangeSearch(search);
+
+    // analytics event for the updated search term
+    trackEventByName(tracks.searchTermChanged, { searchTerm: search });
   };
 
   const onChangeTab = (tab: PublicationTab) => {

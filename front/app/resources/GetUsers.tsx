@@ -1,5 +1,5 @@
 import React from 'react';
-import { isNil, omitBy, get } from 'lodash-es';
+import { isNil, omitBy } from 'lodash-es';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap, map } from 'rxjs/operators';
 import { usersStream, IUserData } from 'services/users';
@@ -118,6 +118,11 @@ export default class GetUsers extends React.Component<Props, State> {
           })
         )
         .subscribe(({ users, queryParameters }) => {
+          const currentPageNumberFromURL = getPageNumberFromUrl(
+            users.links.self
+          );
+          const lastPageNumberFromURL = getPageNumberFromUrl(users.links.last);
+
           this.setState({
             queryParameters,
             isLoading: false,
@@ -126,9 +131,8 @@ export default class GetUsers extends React.Component<Props, State> {
               queryParameters.sort
             ),
             sortDirection: getSortDirection<Sort>(queryParameters.sort),
-            currentPage:
-              getPageNumberFromUrl(get(users.links, 'self', null)) || 1,
-            lastPage: getPageNumberFromUrl(get(users.links, 'last', null)) || 1,
+            currentPage: currentPageNumberFromURL || 1,
+            lastPage: lastPageNumberFromURL || 1,
           });
         }),
     ];

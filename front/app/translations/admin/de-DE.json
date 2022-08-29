@@ -1315,7 +1315,7 @@
   "app.containers.AdminPage.SideBar.dashboard": "Dashboard",
   "app.containers.AdminPage.SideBar.emails": "E-Mails",
   "app.containers.AdminPage.SideBar.groups": "Gruppen",
-  "app.containers.AdminPage.SideBar.guide": "Anleitung",
+  "app.containers.AdminPage.SideBar.guide": "Hilfe",
   "app.containers.AdminPage.SideBar.initiatives": "Vorschläge",
   "app.containers.AdminPage.SideBar.inputManager": "Beitragsmanager",
   "app.containers.AdminPage.SideBar.insights": "Berichterstattung",
