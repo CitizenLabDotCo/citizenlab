@@ -1,30 +1,29 @@
 import React from 'react';
-import {
-  Input as InputComponent,
-  InputProps,
-} from '@citizenlab/cl2-component-library';
+import TextareaComponent, {
+  Props as TextAreaProps,
+} from 'components/UI/TextArea';
 import Error, { TFieldName } from 'components/UI/Error';
 import { Controller, useFormContext } from 'react-hook-form';
 import { CLError } from 'typings';
-import { get } from 'lodash-es';
 
-interface Props extends InputProps {
+interface Props extends TextAreaProps {
   name: string;
 }
 
-const Input = ({ name, type = 'text', ...rest }: Props) => {
+const TextArea = ({ name, ...rest }: Props) => {
   const {
     formState: { errors },
     control,
+    trigger,
   } = useFormContext();
 
   const defaultValue = '';
 
-  const validationError = get(errors, name)?.message as string | undefined;
+  const validationError = errors[name]?.message as string | undefined;
 
   const apiError =
-    (get(errors, name)?.error as string | undefined) &&
-    ([get(errors, name)] as unknown as CLError[]);
+    (errors[name]?.error as string | undefined) &&
+    ([errors[name]] as unknown as CLError[]);
 
   return (
     <>
@@ -33,7 +32,14 @@ const Input = ({ name, type = 'text', ...rest }: Props) => {
         control={control}
         defaultValue={defaultValue}
         render={({ field: { ref: _ref, ...field } }) => (
-          <InputComponent id={name} type={type} {...field} {...rest} />
+          <TextareaComponent
+            id={name}
+            {...field}
+            {...rest}
+            onBlur={() => {
+              trigger();
+            }}
+          />
         )}
       />
       {validationError && (
@@ -57,4 +63,4 @@ const Input = ({ name, type = 'text', ...rest }: Props) => {
   );
 };
 
-export default Input;
+export default TextArea;
