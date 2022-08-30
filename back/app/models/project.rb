@@ -36,13 +36,16 @@
 #  downvoting_method            :string           default("unlimited"), not null
 #  downvoting_limited_max       :integer          default(10)
 #  include_all_areas            :boolean          default(FALSE), not null
+#  custom_form_id               :uuid
 #
 # Indexes
 #
-#  index_projects_on_slug  (slug) UNIQUE
+#  index_projects_on_custom_form_id  (custom_form_id)
+#  index_projects_on_slug            (slug) UNIQUE
 #
 # Foreign Keys
 #
+#  fk_rails_...  (custom_form_id => custom_forms.id)
 #  fk_rails_...  (default_assignee_id => users.id)
 #
 class Project < ApplicationRecord

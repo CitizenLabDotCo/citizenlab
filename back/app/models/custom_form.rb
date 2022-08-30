@@ -4,15 +4,9 @@
 #
 # Table name: custom_forms
 #
-#  id                         :uuid             not null, primary key
-#  created_at                 :datetime         not null
-#  updated_at                 :datetime         not null
-#  participation_context_id   :uuid             not null
-#  participation_context_type :string           not null
-#
-# Indexes
-#
-#  index_custom_forms_on_participation_context  (participation_context_id,participation_context_type) UNIQUE
+#  id         :uuid             not null, primary key
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #
 class CustomForm < ApplicationRecord
   belongs_to :participation_context, polymorphic: true
