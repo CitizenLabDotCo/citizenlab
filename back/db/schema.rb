@@ -1435,8 +1435,6 @@ ActiveRecord::Schema.define(version: 2022_08_26_025846) do
        LEFT JOIN initiatives ON ((initiatives.id = comments.post_id)))
     WHERE ((comments.post_type)::text = 'Initiative'::text);
   SQL
-<<<<<<< HEAD
-=======
   create_view "analytics_dimension_statuses", sql_definition: <<-SQL
       SELECT idea_statuses.id,
       idea_statuses.title_multiloc,
@@ -1520,5 +1518,4 @@ ActiveRecord::Schema.define(version: 2022_08_26_025846) do
              FROM initiative_status_changes isc_
             WHERE (isc_.initiative_id = i.id))))));
   SQL
->>>>>>> CL-423-new-analytics-engine
 end
