@@ -96,8 +96,42 @@ export default () => ({
           element: <EditCustomPageIndex />,
           children: [
             { path: '', element: <Navigate to="settings" /> },
-            { path: 'settings', element: <EditCustomPageSettings /> },
-            { path: 'content', element: <EditCustomPageContent /> },
+            {
+              path: 'settings',
+              element: <EditCustomPageSettings />,
+            },
+            {
+              path: 'content',
+              element: <EditCustomPageContent />,
+            },
+            {
+              path: 'banner',
+              element: (
+                <PageLoading>
+                  <HeroBannerForm />
+                </PageLoading>
+              ),
+            },
+            {
+              path: 'top-info-section',
+              element: <PageLoading>{/* <TopInfoSection /> */}</PageLoading>,
+            },
+            // {
+            //   path: 'projects',
+            //   element: <></>,
+            // },
+            {
+              path: 'bottom-info-section',
+              element: (
+                <PageLoading>
+                  <BottomInfoForm />
+                </PageLoading>
+              ),
+            },
+            // {
+            //   path: 'attachments',
+            //   element: <></>,
+            // },
           ],
         },
       ],
