@@ -13,7 +13,7 @@ import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
 export interface Props {
   onChangeSectionToggle: () => void;
-  onClickEditButton?: (string) => void;
+  onClickEditButton?: (editLinkPath: string) => void;
   titleMessageDescriptor: MessageDescriptor;
   tooltipMessageDescriptor: MessageDescriptor;
   checked: boolean;
