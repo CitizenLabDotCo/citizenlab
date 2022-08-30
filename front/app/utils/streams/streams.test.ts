@@ -109,6 +109,4 @@ describe('streams.get', () => {
   });
 });
 
-// describe('streams.fetchAllWith', () => {
-
-// });
+describe('streams.fetchAllWith', () => {});
