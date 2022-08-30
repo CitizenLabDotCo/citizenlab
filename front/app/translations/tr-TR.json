@@ -1401,7 +1401,7 @@
   "app.errors.has_other_overlapping_phases": "Projelerde çakışan aşamalar olamaz.",
   "app.errors.invalid_email": "{row} satırında bulunan {value} geçerli bir e-posta adresi değil",
   "app.errors.invalid_row": "{row} satırı işlenmeye çalışılırken bilinmeyen bir hata oluştu",
-  "app.errors.is_not_timeline_project": "Mevcut proje, aşamaları desteklemez.",
+  "app.errors.is_not_timeline_project": "Geçerli proje, aşamaları desteklemiyor.",
   "app.errors.key_invalid": "Şifre yalnızca harf, rakam ve alt çizgi (_) içerebilir",
   "app.errors.last_name_blank": "Bu boş olamaz",
   "app.errors.locale_blank": "Lütfen bir dil seçin",
