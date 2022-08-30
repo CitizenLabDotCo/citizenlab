@@ -42,7 +42,7 @@ import styled, { withTheme } from 'styled-components';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { media, fontSizes, isRtl } from 'utils/styleUtils';
 import Outlet from 'components/Outlet';
-import { IHomepageSettings } from 'services/homepageSettings';
+import { IHomepageSettingsData } from 'services/homepageSettings';
 
 const contentTimeout = 350;
 const contentEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -285,7 +285,7 @@ export const StyledAvatar = styled(Avatar)`
 
 export interface InputProps {
   className?: string;
-  homepageSettings: Error | IHomepageSettings | null;
+  homepageSettings: Error | IHomepageSettingsData | null;
 }
 
 interface DataProps {
@@ -333,11 +333,11 @@ class SignedInHeader extends PureComponent<Props, State> {
       !isNilOrError(onboardingCampaigns) &&
       !isNilOrError(homepageSettings)
     ) {
-      const tenantHeaderImage = homepageSettings.data.attributes.header_bg
-        ? homepageSettings.data.attributes.header_bg.large
+      const tenantHeaderImage = homepageSettings.attributes.header_bg
+        ? homepageSettings.attributes.header_bg.large
         : null;
       const defaultMessage =
-        homepageSettings.data.attributes.banner_signed_in_header_multiloc;
+        homepageSettings.attributes.banner_signed_in_header_multiloc;
 
       const objectFitCoverSupported =
         window['CSS'] && CSS.supports('object-fit: cover');

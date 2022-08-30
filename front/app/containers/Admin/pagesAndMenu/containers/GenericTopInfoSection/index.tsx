@@ -7,6 +7,7 @@ import SectionFormWrapper from '../../components/SectionFormWrapper';
 import Error from 'components/UI/Error';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
+import { TBreadcrumbs } from 'components/UI/Breadcrumbs';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -18,18 +19,28 @@ import sectionToggleMessages from '../../components/SectionToggle/messages';
 import { Multiloc, CLError } from 'typings';
 
 // constants
-import { pagesAndMenuBreadcrumb, homeBreadcrumb } from '../../breadcrumbs';
+import { pagesAndMenuBreadcrumb } from '../../breadcrumbs';
 
 // services and hooks
-import useHomepageSettings from 'hooks/useHomepageSettings';
-import { updateHomepageSettings } from 'services/homepageSettings';
+import { ICustomPageData } from 'services/customPages';
+import { IHomepageSettingsData } from 'services/homepageSettings';
 
 // utils
 import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
-const TopInfoSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
-  const homepageSettings = useHomepageSettings();
+interface Props {
+  pageData: IHomepageSettingsData | ICustomPageData;
+  updatePage: (data: { top_info_section_multiloc: Multiloc }) => Promise<any>;
+  breadcrumbs: TBreadcrumbs;
+}
+
+const GenericTopInfoSection = ({
+  pageData,
+  updatePage,
+  breadcrumbs,
+  intl: { formatMessage },
+}: InjectedIntlProps & Props) => {
   const theme: any = useTheme();
 
   const [topInfoSectionMultiloc, setTopInfoSectionMultiloc] = useState<
@@ -40,12 +51,10 @@ const TopInfoSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const [formStatus, setFormStatus] = useState<ISubmitState>('disabled');
 
   useEffect(() => {
-    if (!isNilOrError(homepageSettings)) {
-      setTopInfoSectionMultiloc(
-        homepageSettings.data.attributes.top_info_section_multiloc
-      );
+    if (!isNilOrError(pageData)) {
+      setTopInfoSectionMultiloc(pageData.attributes.top_info_section_multiloc);
     }
-  }, [homepageSettings]);
+  }, [pageData]);
 
   const handleCustomSectionMultilocOnChange = (
     multilocFromEditor: Multiloc
@@ -66,7 +75,7 @@ const TopInfoSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     setFormStatus('disabled');
     try {
       if (topInfoSectionMultiloc) {
-        await updateHomepageSettings({
+        await updatePage({
           top_info_section_multiloc: topInfoSectionMultiloc,
         });
       }
@@ -90,10 +99,7 @@ const TopInfoSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           label: formatMessage(pagesAndMenuBreadcrumb.label),
           linkTo: pagesAndMenuBreadcrumb.linkTo,
         },
-        {
-          label: formatMessage(homeBreadcrumb.label),
-          linkTo: homeBreadcrumb.linkTo,
-        },
+        ...breadcrumbs,
         { label: formatMessage(messages.topInfoPageTitle) },
       ]}
       title={formatMessage(messages.topInfoPageTitle)}
@@ -127,4 +133,4 @@ const TopInfoSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   );
 };
 
-export default injectIntl(TopInfoSection);
+export default injectIntl(GenericTopInfoSection);
