@@ -11,9 +11,19 @@ class MoveCustomFormsToParticipationContext < ActiveRecord::Migration[6.1]
         WHERE projects.custom_form_id = t.id
       )
     SQL
+    delete_custom_form_results = ActiveRecord::Base.connection.execute <<~SQL.squish
+      SELECT id
+      FROM custom_forms
+      WHERE participation_context_id IS NULL
+    SQL
+    delete_custom_form_ids = delete_custom_form_results.pluck 'id'
     ActiveRecord::Base.connection.execute <<~SQL.squish
       DELETE FROM custom_forms
-      WHERE participation_context_id IS NULL
+      WHERE id IN (#{delete_custom_form_ids.join(', ')})
+    SQL
+    ActiveRecord::Base.connection.execute <<~SQL.squish
+      DELETE FROM custom_fields
+      WHERE resource_id IN (#{delete_custom_form_ids.join(', ')})
     SQL
     change_column_null :custom_forms, :participation_context_id, false
 
