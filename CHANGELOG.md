@@ -1,5 +1,8 @@
 # Changelog
 
+### Fixed
+- [CL-1308] Do not allow editing page slug when custom navbar is disabled
+
 ## 2022-08-29
 
 ### Fixed
