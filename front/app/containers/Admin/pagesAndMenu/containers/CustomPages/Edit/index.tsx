@@ -1,6 +1,10 @@
 import React from 'react';
+
+// components
 import TabbedResource from 'components/admin/TabbedResource';
-import { Outlet as RouterOutlet } from 'react-router-dom';
+import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
+
+// i18n
 import messages from '../messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
@@ -11,6 +15,9 @@ import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumb
 // import useLocalize from 'hooks/useLocalize';
 // import { isNilOrError } from 'utils/helperUtils';
 
+// routing
+import { Outlet as RouterOutlet, useParams } from 'react-router-dom';
+
 const CustomPagesEditSettings = ({
   intl: { formatMessage },
 }: InjectedIntlProps) => {
@@ -19,9 +26,14 @@ const CustomPagesEditSettings = ({
 
   // if (!isNilOrError(customPage)) {
   // const pageTitleMultiloc = customPage.attributes.title_multiloc;
+  const { customPageId } = useParams();
+
+  if (!customPageId) {
+    return null;
+  }
 
   return (
-    <>
+    <SectionFormWrapper>
       <HelmetIntl title={messages.editCustomPageMetaTitle} />
       <Box mb="16px">
         <Breadcrumbs
@@ -44,19 +56,19 @@ const CustomPagesEditSettings = ({
           {
             label: formatMessage(messages.pageSettingsTab),
             name: 'settings',
-            url: '/admin/pages-menu/custom/edit/settings',
+            url: `/admin/pages-menu/custom/${customPageId}/settings`,
           },
           {
             label: formatMessage(messages.pageContentTab),
             name: 'content',
-            url: '/admin/pages-menu/custom/edit/content',
+            url: `/admin/pages-menu/custom/${customPageId}/content`,
           },
         ]}
         contentWrapper={false}
       >
         <RouterOutlet />
       </TabbedResource>
-    </>
+    </SectionFormWrapper>
   );
   // }
 
