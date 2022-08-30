@@ -13,9 +13,9 @@ import { slugRegEx } from 'utils/textUtils';
 // components
 import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
 import Button from 'components/UI/Button';
-import Input from 'components/HookForm/Input';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import { Box } from '@citizenlab/cl2-component-library';
+import SlugInput from 'components/admin/SlugInput';
 
 // intl
 import messages from './messages';
@@ -24,7 +24,6 @@ import { injectIntl } from 'utils/cl-intl';
 
 // services
 import { createCustomPageStream } from 'services/customPages';
-import SlugInput from 'components/admin/SlugInput';
 
 // utils
 import clHistory from 'utils/cl-router/history';
@@ -95,13 +94,7 @@ const CustomPageSettingsForm = ({
                 type="text"
               />
             </Box>
-            <Input
-              label={formatMessage(messages.slugLabel)}
-              labelTooltipText={formatMessage(messages.slugTooltip)}
-              name="slug"
-              type="text"
-            />
-            {true && (
+            {slug && (
               <SlugInput
                 onSlugChange={handleOnSlugChange}
                 showSlugErrorMessage={showSlugErrorMessage}
