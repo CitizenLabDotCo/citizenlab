@@ -9,6 +9,7 @@ import Warning from 'components/UI/Warning';
 // i18n
 import messages from './messages';
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import sectionToggleMessages from 'containers/Admin/pagesAndMenu/SectionToggle/messages';
 
 // services
 import {
@@ -48,37 +49,37 @@ const CustomPagesEditContent = () => {
   const sectionTogglesData: TCustomPageSectionToggleData[] = [
     {
       name: 'banner_enabled',
-      titleMessageDescriptor: messages.heroBanner,
-      tooltipMessageDescriptor: messages.heroBannerTooltip,
+      titleMessageDescriptor: sectionToggleMessages.heroBanner,
+      tooltipMessageDescriptor: sectionToggleMessages.heroBannerTooltip,
       linkToPath: 'homepage-banner',
     },
     {
       name: 'top_info_section_enabled',
-      titleMessageDescriptor: messages.topInfoSection,
-      tooltipMessageDescriptor: messages.topInfoSectionTooltip,
+      titleMessageDescriptor: sectionToggleMessages.topInfoSection,
+      tooltipMessageDescriptor: sectionToggleMessages.topInfoSectionTooltip,
       linkToPath: 'top-info-section',
     },
     {
       name: 'projects_enabled',
-      titleMessageDescriptor: messages.projectsList,
-      tooltipMessageDescriptor: messages.projectsListTooltip,
+      titleMessageDescriptor: sectionToggleMessages.projectsList,
+      tooltipMessageDescriptor: sectionToggleMessages.projectsListTooltip,
       linkToPath: 'projects',
     },
     {
       name: 'events_enabled',
-      titleMessageDescriptor: messages.eventsList,
-      tooltipMessageDescriptor: messages.eventsListTooltip,
+      titleMessageDescriptor: sectionToggleMessages.eventsList,
+      tooltipMessageDescriptor: sectionToggleMessages.eventsListTooltip,
     },
     {
       name: 'bottom_info_section_enabled',
-      titleMessageDescriptor: messages.bottomInfoSection,
-      tooltipMessageDescriptor: messages.bottomInfoSectionTooltip,
+      titleMessageDescriptor: sectionToggleMessages.bottomInfoSection,
+      tooltipMessageDescriptor: sectionToggleMessages.bottomInfoSectionTooltip,
       linkToPath: 'bottom-info-section',
     },
     {
       name: 'attachments_enabled',
-      titleMessageDescriptor: messages.attachmentsSection,
-      tooltipMessageDescriptor: messages.attachmentsSectionTooltip,
+      titleMessageDescriptor: sectionToggleMessages.attachmentsSection,
+      tooltipMessageDescriptor: sectionToggleMessages.attachmentsSectionTooltip,
       linkToPath: 'attachments',
       // until things are typed properly
       hideToggle: false,
