@@ -80,9 +80,11 @@ const IdeaStatusForm = ({
 }: Props) => {
   const schema = object({
     color: string(),
-    title_multiloc: validateMultiloc('title error'),
-    description_multiloc: validateMultiloc('descriptionerror'),
-    code: string().required('Code error'),
+    title_multiloc: validateMultiloc(formatMessage(messages.fieldTitleError)),
+    description_multiloc: validateMultiloc(
+      formatMessage(messages.fieldDescriptionError)
+    ),
+    code: string().required(),
   });
 
   const methods = useForm({
@@ -188,7 +190,7 @@ const IdeaStatusForm = ({
         </StyledSection>
         <Box display="flex">
           <Button type="submit" processing={methods.formState.isSubmitting}>
-            Save
+            {formatMessage(messages.saveStatus)}
           </Button>
         </Box>
       </form>
