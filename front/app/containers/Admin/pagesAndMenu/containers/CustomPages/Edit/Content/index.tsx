@@ -24,7 +24,12 @@ import clHistory from 'utils/cl-router/history';
 
 // types
 const Component = () => {
-  const { customPageId } = useParams();
+  const { customPageId } = useParams() as { customPageId: string };
+  const customPage = useCustomPage(customPageId);
+
+  if (!customPage) {
+    return null;
+  }
   // to be typed
   const sectionTogglesData = [
     {
@@ -68,8 +73,8 @@ const Component = () => {
 
   const handleOnChangeToggle = (sectionName: string) => async () => {
     updateCustomPage(customPageId, {
-      [sectionName]: true
-    })    
+      [sectionName]: true,
+    });
     // console.log(sectionName);
     return sectionName;
   };
@@ -80,9 +85,6 @@ const Component = () => {
       clHistory.push(`/admin/pages-menu/custom/edit/${url}/`);
     }
   };
-
-  const customPage = useCustomPage(customPageId)
-  console.log({ customPage })
 
   return (
     <PageWrapper>
