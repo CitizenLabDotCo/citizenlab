@@ -74,6 +74,11 @@ export default defineMessages({
     defaultMessage:
       'Choose what email address should receive direct replies from users on your email.',
   },
+  fieldReplyToEmailError: {
+    id: 'app.containers.Admin.emails.fieldReplyToEmailError',
+    defaultMessage:
+      'Provide an email address in the correct format, for example name@provider.com',
+  },
   fieldReplyToError: {
     id: 'app.containers.Admin.emails.fieldReplyToError',
     defaultMessage: 'Provide an email address',
