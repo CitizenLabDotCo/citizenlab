@@ -8,6 +8,7 @@ const NavigationSettings = lazy(() => import('./NavigationSettings'));
 
 // homepage
 const EditHomepage = lazy(() => import('./EditHomepage'));
+import EditPageForm from './containers/EditPageForm';
 const BottomInfoForm = lazy(() => import('./containers/BottomInfoSection'));
 const TopInfoSection = lazy(() => import('./containers/TopInfoSection'));
 const HeroBannerForm = lazy(() => import('./containers/HeroBanner'));
@@ -100,6 +101,10 @@ export default () => ({
           ],
         },
       ],
+    },
+    {
+      path: 'pages/edit/:pageId',
+      element: <EditPageForm />,
     },
     ...moduleConfiguration.routes['admin.pages-menu'],
   ],

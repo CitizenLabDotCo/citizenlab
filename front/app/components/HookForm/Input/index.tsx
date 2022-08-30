@@ -7,11 +7,11 @@ import Error, { TFieldName } from 'components/UI/Error';
 import { Controller, useFormContext } from 'react-hook-form';
 import { CLError } from 'typings';
 
-export interface Props extends InputProps {
+interface Props extends InputProps {
   name: string;
 }
 
-const Input = ({ name, ...rest }: Props) => {
+const Input = ({ name, type = 'text', ...rest }: Props) => {
   const {
     formState: { errors },
     control,
@@ -32,7 +32,7 @@ const Input = ({ name, ...rest }: Props) => {
         control={control}
         defaultValue={defaultValue}
         render={({ field: { ref: _ref, ...field } }) => (
-          <InputComponent id={name} {...field} {...rest} />
+          <InputComponent id={name} type={type} {...field} {...rest} />
         )}
       />
       {validationError && (
