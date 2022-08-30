@@ -39,7 +39,6 @@ const Component = () => {
       name: 'events_enabled',
       titleMessageDescriptor: messages.eventsList,
       tooltipMessageDescriptor: messages.eventsListTooltip,
-      linkToPath: 'events',
     },
     {
       name: 'bottom_info_section_enabled',

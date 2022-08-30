@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Multiloc } from 'typings';
 
 // form
 import Feedback from 'components/HookForm/Feedback';
@@ -23,6 +22,12 @@ import { injectIntl } from 'utils/cl-intl';
 
 // services
 import { createCustomPageStream } from 'services/customPages';
+
+// utils
+import clHistory from 'utils/cl-router/history';
+
+// types
+import { Multiloc } from 'typings';
 
 interface CreateCustomPageFormValues {
   title_multiloc: Multiloc;
@@ -48,7 +53,8 @@ const CustomPageSettingsForm = ({
 
   const onFormSubmit = async (formValues: CreateCustomPageFormValues) => {
     try {
-      createCustomPageStream(formValues);
+      const { data } = await createCustomPageStream(formValues);
+      clHistory.push(`/admin/pages-menu/custom/${data.id}/content`);
     } catch (error) {
       setError(error);
     }

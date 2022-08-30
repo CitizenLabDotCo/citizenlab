@@ -91,9 +91,7 @@ export default () => ({
           element: <NewCustomPage />,
         },
         {
-          path: 'edit',
-          // This is the final path
-          // path: 'edit/:customPageId',
+          path: ':customPageId',
           element: <EditCustomPage />,
           children: [
             { path: '', element: <Navigate to="settings" /> },
