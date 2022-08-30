@@ -42,7 +42,7 @@ const CustomPagesEditContent = () => {
   const { customPageId } = useParams() as { customPageId: string };
   const customPage = useCustomPage(customPageId);
 
-  if (!customPage) {
+  if (isNilOrError(customPage)) {
     return null;
   }
 
@@ -66,7 +66,7 @@ const CustomPagesEditContent = () => {
       linkToPath: 'projects',
     },
     {
-      name: 'events_enabled',
+      name: 'events_widget_enabled',
       titleMessageDescriptor: sectionToggleMessages.eventsList,
       tooltipMessageDescriptor: sectionToggleMessages.eventsListTooltip,
     },
@@ -77,7 +77,7 @@ const CustomPagesEditContent = () => {
       linkToPath: 'bottom-info-section',
     },
     {
-      name: 'attachments_enabled',
+      name: 'files_section_enabled',
       titleMessageDescriptor: sectionToggleMessages.attachmentsSection,
       tooltipMessageDescriptor: sectionToggleMessages.attachmentsSectionTooltip,
       linkToPath: 'attachments',
@@ -103,16 +103,8 @@ const CustomPagesEditContent = () => {
       }
     };
 
-  // const handleOnChangeToggle = (sectionName: string) => async () => {
-  //   updateCustomPage(customPageId, {
-  //     [sectionName]: true,
-  //   });
-  //   return sectionName;
-  // };
-
   const handleOnClick = (sectionPath: string) => {
     if (sectionPath) {
-      // add in actual page ID to string here
       clHistory.push(
         `/admin/pages-menu/custom/${customPageId}/${sectionPath}/`
       );
@@ -142,7 +134,7 @@ const CustomPagesEditContent = () => {
               <SectionToggle
                 key={name}
                 name={name}
-                checked={true}
+                checked={customPage.attributes[name]}
                 onChangeSectionToggle={handleOnChangeToggle(name)}
                 onClickEditButton={handleOnClick}
                 editLinkPath={linkToPath}

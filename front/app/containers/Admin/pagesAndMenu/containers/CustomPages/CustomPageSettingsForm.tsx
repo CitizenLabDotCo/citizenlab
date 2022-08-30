@@ -5,9 +5,10 @@ import Feedback from 'components/HookForm/Feedback';
 import { FormProvider, useForm } from 'react-hook-form';
 import { SectionField } from 'components/admin/Section';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { object, string } from 'yup';
+// import { object, string } from 'yup';
+import { object } from 'yup';
 import validateMultiloc from 'utils/yup/validateMultiloc';
-import { slugRegEx } from 'utils/textUtils';
+// import { slugRegEx } from 'utils/textUtils';
 // import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 // components
@@ -52,9 +53,9 @@ const CustomPageSettingsForm = ({
     title_multiloc: validateMultiloc(
       formatMessage(messages.titleMultilocError)
     ),
-    slug: string()
-      .matches(slugRegEx, formatMessage(messages.slugRegexError))
-      .required(formatMessage(messages.slugRequiredError)),
+    // slug: string()
+    // .matches(slugRegEx, formatMessage(messages.slugRegexError))
+    // .required(formatMessage(messages.slugRequiredError)),
   });
 
   const methods = useForm({

@@ -20,9 +20,9 @@ export interface ICustomPageEnabledSettings {
   banner_enabled: boolean;
   bottom_info_section_enabled: boolean;
   top_info_section_enabled: boolean;
-  events_enabled: boolean;
+  events_widget_enabled: boolean;
   projects_enabled: boolean;
-  attachments_enabled: boolean;
+  files_section_enabled: boolean;
 }
 
 export interface ICustomPagesAttributes extends ICustomPageEnabledSettings {
