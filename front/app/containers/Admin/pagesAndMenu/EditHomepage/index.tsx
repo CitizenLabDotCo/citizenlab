@@ -10,6 +10,7 @@ import { pagesAndMenuBreadcrumb, homeBreadcrumb } from '../breadcrumbs';
 
 // i18n
 import messages from './messages';
+import sectionToggleMessages from 'containers/Admin/pagesAndMenu/SectionToggle/messages';
 import { FormattedMessage, injectIntl, MessageDescriptor } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
@@ -43,27 +44,27 @@ const EditHomepage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   >([
     {
       name: 'homepage_banner',
-      titleMessageDescriptor: messages.heroBanner,
-      tooltipMessageDescriptor: messages.heroBannerTooltip,
+      titleMessageDescriptor: sectionToggleMessages.heroBanner,
+      tooltipMessageDescriptor: sectionToggleMessages.heroBannerTooltip,
       linkToPath: 'homepage-banner',
       hideToggle: true,
     },
     {
       name: 'top_info_section_enabled',
-      titleMessageDescriptor: messages.topInfoSection,
-      tooltipMessageDescriptor: messages.topInfoSectionTooltip,
+      titleMessageDescriptor: sectionToggleMessages.topInfoSection,
+      tooltipMessageDescriptor: sectionToggleMessages.topInfoSectionTooltip,
       linkToPath: 'top-info-section',
     },
     // Should be enabled and extended again in i2
     // {
     //   name: 'projects_enabled',
-    //   titleMessageDescriptor: messages.projectsList,
-    //   tooltipMessageDescriptor: messages.projectsListTooltip,
+    //   titleMessageDescriptor: sectionToggleMessages.projectsList,
+    //   tooltipMessageDescriptor: sectionToggleMessages.projectsListTooltip,
     // },
     {
       name: 'bottom_info_section_enabled',
-      titleMessageDescriptor: messages.bottomInfoSection,
-      tooltipMessageDescriptor: messages.bottomInfoSectionTooltip,
+      titleMessageDescriptor: sectionToggleMessages.bottomInfoSection,
+      tooltipMessageDescriptor: sectionToggleMessages.bottomInfoSectionTooltip,
       linkToPath: 'bottom-info-section',
     },
   ]);
