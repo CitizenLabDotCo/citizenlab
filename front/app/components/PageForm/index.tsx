@@ -29,6 +29,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 import Button from 'components/UI/Button';
+import Outlet from 'components/Outlet';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -41,6 +42,7 @@ import usePage from 'hooks/usePage';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 
 export interface FormValues {
+  nav_bar_item_title_multiloc?: Multiloc;
   title_multiloc: Multiloc;
   body_multiloc: Multiloc;
   slug?: string;
@@ -59,7 +61,7 @@ const PageForm = ({
   onSubmit,
   defaultValues,
   pageId,
-  hideSlugInput,
+  hideSlugInput = false,
 }: PageFormProps) => {
   const locale = useLocale();
   const page = usePage({ pageId });
@@ -70,6 +72,13 @@ const PageForm = ({
     body_multiloc: validateMultiloc(
       formatMessage(messages.blankDescriptionError)
     ),
+    ...(pageId &&
+      !isNilOrError(page) &&
+      page.relationships.nav_bar_item.data && {
+        nav_bar_item_title_multiloc: validateMultiloc(
+          formatMessage(messages.blankTitleError)
+        ),
+      }),
     ...(!hideSlugInput && {
       slug: string()
         .matches(slugRegEx, formatMessage(messages.slugRegexError))
@@ -101,6 +110,17 @@ const PageForm = ({
           <Feedback
             successMessage={formatMessage(messages.savePageSuccessMessage)}
           />
+        </SectionField>
+        <Outlet
+          id="app.components.PageForm.index.top"
+          pageId={pageId}
+          navbarItemId={
+            !isNilOrError(page) && page.relationships.nav_bar_item.data
+              ? page.relationships.nav_bar_item.data.id
+              : null
+          }
+        />
+        <SectionField>
           <InputMultilocWithLocaleSwitcher
             label={formatMessage(messages.pageTitle)}
             type="text"

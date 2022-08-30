@@ -133,6 +133,13 @@ class Project < ApplicationRecord
     where(id: project_ids)
   }
 
+  class << self
+    def search_ids_by_all_including_patches(term)
+      result = defined?(super) ? super : []
+      result + search_by_all(term).pluck(:id)
+    end
+  end
+
   def continuous?
     process_type == 'continuous'
   end

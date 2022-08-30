@@ -1,10 +1,11 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
-import RHFInputMultilocWithLocaleSwitcher from './';
+import InputMultilocWithLocaleSwitcher from './';
 import { useForm, FormProvider } from 'react-hook-form';
 import { object } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import validateMultiloc from 'utils/yup/validateMultiloc';
+import translationMessages from 'i18n/en';
 
 const schema = object({
   title: validateMultiloc('Error message'),
@@ -25,7 +26,7 @@ const Form = () => {
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit((formData) => onSubmit(formData))}>
-        <RHFInputMultilocWithLocaleSwitcher
+        <InputMultilocWithLocaleSwitcher
           name="title"
           placeholder="title"
           type="text"
@@ -36,7 +37,7 @@ const Form = () => {
   );
 };
 
-describe('RHFInputMultilocWithLocaleSwitcher', () => {
+describe('InputMultilocWithLocaleSwitcher', () => {
   it('renders', () => {
     render(<Form />);
     expect(screen.getByPlaceholderText(/title/i)).toBeInTheDocument();
@@ -73,6 +74,40 @@ describe('RHFInputMultilocWithLocaleSwitcher', () => {
     await waitFor(() => {
       expect(onSubmit).not.toHaveBeenCalled();
       expect(screen.getByText('Error message')).toBeInTheDocument();
+    });
+  });
+  it('shows API validation error when there is one', async () => {
+    const FormWithAPIError = () => {
+      const methods = useForm();
+      return (
+        <FormProvider {...methods}>
+          <form
+            onSubmit={methods.handleSubmit(() =>
+              methods.setError('title', { error: 'blank' } as any)
+            )}
+          >
+            <InputMultilocWithLocaleSwitcher
+              name="title"
+              label="title"
+              type="text"
+            />
+            <button type="submit">Submit</button>
+          </form>
+        </FormProvider>
+      );
+    };
+
+    render(<FormWithAPIError />);
+
+    fireEvent.click(screen.getByText(/submit/i));
+    await waitFor(() => {
+      expect(
+        screen.getByText(
+          (translationMessages as Record<string, string>)[
+            'app.errors.generics.blank'
+          ]
+        )
+      ).toBeInTheDocument();
     });
   });
 });
