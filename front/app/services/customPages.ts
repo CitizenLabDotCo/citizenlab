@@ -14,11 +14,20 @@ export interface ICustomPageData {
   // relationships:
 }
 
-export interface ICustomPagesAttributes {
+export type TCustomPageEnabledSetting = keyof ICustomPageEnabledSettings;
+
+export interface ICustomPageEnabledSettings {
+  banner_enabled: boolean;
+  bottom_info_section_enabled: boolean;
   top_info_section_enabled: boolean;
+  events_enabled: boolean;
+  projects_enabled: boolean;
+  attachments_enabled: boolean;
+}
+
+export interface ICustomPagesAttributes extends ICustomPageEnabledSettings {
   top_info_section_multiloc: Multiloc;
   slug: string;
-  banner_enabled: boolean;
   banner_layout: THomepageBannerLayout | null;
   banner_overlay_color: string | null;
   banner_overlay_opacity: number | null;
@@ -27,12 +36,8 @@ export interface ICustomPagesAttributes {
   banner_cta_button_url: string | null;
   banner_header_multiloc: Multiloc;
   banner_subheader_multiloc: Multiloc;
-  files_section_enabled: boolean;
-  projects_enabled: boolean;
   // check
   projects_filter_type: 'area' | 'projects';
-  events_widget_enabled: boolean;
-  bottom_info_section_enabled: boolean;
   bottom_info_section_multiloc: Multiloc;
   header_bg: ImageSizes | null;
   // check on which are possible

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // components
 import PageWrapper from 'components/admin/PageWrapper';
@@ -8,10 +8,13 @@ import Warning from 'components/UI/Warning';
 
 // i18n
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
 // services
-import { updateCustomPage } from 'services/customPages';
+import {
+  updateCustomPage,
+  TCustomPageEnabledSetting,
+} from 'services/customPages';
 
 // hooks
 import useCustomPage from 'hooks/useCustomPage';
@@ -21,9 +24,19 @@ import { useParams } from 'react-router-dom';
 
 // utils
 import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
+
+export type TCustomPageSectionToggleData = {
+  name: TCustomPageEnabledSetting;
+  titleMessageDescriptor: MessageDescriptor;
+  tooltipMessageDescriptor: MessageDescriptor;
+  linkToPath?: string;
+  hideToggle?: boolean;
+};
 
 // types
 const CustomPagesEditContent = () => {
+  const [isLoading, setIsLoading] = useState(false);
   // to be typed
   const { customPageId } = useParams() as { customPageId: string };
   const customPage = useCustomPage(customPageId);
@@ -32,7 +45,7 @@ const CustomPagesEditContent = () => {
     return null;
   }
 
-  const sectionTogglesData = [
+  const sectionTogglesData: TCustomPageSectionToggleData[] = [
     {
       name: 'banner_enabled',
       titleMessageDescriptor: messages.heroBanner,
@@ -72,18 +85,34 @@ const CustomPagesEditContent = () => {
     },
   ];
 
-  const handleOnChangeToggle = (sectionName: string) => async () => {
-    updateCustomPage(customPageId, {
-      [sectionName]: true,
-    });
-    // console.log(sectionName);
-    return sectionName;
-  };
+  const handleOnChangeToggle =
+    (sectionName: TCustomPageEnabledSetting) => async () => {
+      if (isNilOrError(customPage)) {
+        return;
+      }
+      setIsLoading(true);
+      try {
+        await updateCustomPage(customPageId, {
+          [sectionName]: !customPage.attributes[sectionName],
+        });
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+  // const handleOnChangeToggle = (sectionName: string) => async () => {
+  //   updateCustomPage(customPageId, {
+  //     [sectionName]: true,
+  //   });
+  //   return sectionName;
+  // };
 
   const handleOnClick = (url: string) => {
     if (url) {
       // add in actual page ID to string here
-      clHistory.push(`/admin/pages-menu/custom/edit/${url}/`);
+      clHistory.push(`/admin/pages-menu/custom/${customPageId}/${url}/`);
     }
   };
 
@@ -116,7 +145,7 @@ const CustomPagesEditContent = () => {
                 editLinkPath={linkToPath}
                 titleMessageDescriptor={titleMessageDescriptor}
                 tooltipMessageDescriptor={tooltipMessageDescriptor}
-                disabled={false}
+                disabled={isLoading}
                 isLastItem={index === sectionTogglesData.length - 1}
                 hideToggle={hideToggle}
               />
