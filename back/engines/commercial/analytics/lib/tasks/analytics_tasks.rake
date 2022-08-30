@@ -55,9 +55,17 @@ end
 
 Rake::Task['analytics:install:migrations'].enhance(['analytics:copy_views'])
 
-Rake::Task['db:reset'].enhance do
+def populate_dimensions
   Tenant.not_deleted.each do |tenant|
     Rake::Task['analytics:populate_date_dimension'].execute(host: tenant.schema_name)
     Rake::Task['analytics:populate_type_dimension'].execute(host: tenant.schema_name, types: 'idea%post|initiative%post|comment%nil|vote%nil')
   end
+end
+
+Rake::Task['db:reset'].enhance do
+  populate_dimensions
+end
+
+Rake::Task['db:migrate'].enhance do
+  populate_dimensions
 end
