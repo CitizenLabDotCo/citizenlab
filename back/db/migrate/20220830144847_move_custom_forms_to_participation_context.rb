@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class MoveCustomFormsToParticipationContext < ActiveRecord::Migration[6.1]
-  def change
+  def up
     add_column :custom_forms, :participation_context_id, :uuid
     ActiveRecord::Base.connection.execute <<~SQL.squish
       UPDATE custom_forms t 
@@ -10,6 +10,10 @@ class MoveCustomFormsToParticipationContext < ActiveRecord::Migration[6.1]
         FROM projects
         WHERE projects.custom_form_id = t.id
       )
+    SQL
+    ActiveRecord::Base.connection.execute <<~SQL.squish
+      DELETE FROM custom_forms
+      WHERE participation_context_id IS NULL
     SQL
     change_column_null :custom_forms, :participation_context_id, false
 
@@ -28,5 +32,9 @@ class MoveCustomFormsToParticipationContext < ActiveRecord::Migration[6.1]
     )
 
     remove_column :projects, :custom_form_id
+  end
+
+  def down
+    add_column :projects, :custom_form
   end
 end
