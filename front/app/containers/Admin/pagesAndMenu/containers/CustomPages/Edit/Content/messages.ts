@@ -31,11 +31,11 @@ export default defineMessages({
     defaultMessage: 'Customize how projects are displayed on the custom page.',
   },
   eventsList: {
-    id: 'app.containers.Admin.PagesAndMenu.EditCustomPage.projectsList',
+    id: 'app.containers.Admin.PagesAndMenu.EditCustomPage.eventsList',
     defaultMessage: 'Events list',
   },
   eventsListTooltip: {
-    id: 'app.containers.Admin.PagesAndMenu.EditCustomPage.projectsListTooltip',
+    id: 'app.containers.Admin.PagesAndMenu.EditCustomPage.eventsListTooltip',
     defaultMessage: 'Customize which events are displayed on the custom page.',
   },
   bottomInfoSection: {
@@ -60,12 +60,8 @@ export default defineMessages({
     defaultMessage:
       'This page consists of the following sections. You can turn them on/off and edit them as required.',
   },
-  homepageTitle: {
-    id: 'app.containers.Admin.PagesAndMenu.EditCustomPage.homepageTitle',
-    defaultMessage: 'Home',
-  },
   sectionsTitle: {
-    id: 'app.containers.Admin.PagesAndMenu.EditCustomPage.homepageSectionsTitle',
+    id: 'app.containers.Admin.PagesAndMenu.EditCustomPage.sectionsTitle',
     defaultMessage: 'Sections',
   },
 });
