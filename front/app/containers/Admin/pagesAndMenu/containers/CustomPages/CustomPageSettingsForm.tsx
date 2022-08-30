@@ -25,6 +25,7 @@ import { injectIntl } from 'utils/cl-intl';
 
 // services
 import { createCustomPageStream } from 'services/customPages';
+import SlugInput from 'components/admin/SlugInput';
 
 interface CreateCustomPageFormValues {
   title_multiloc: Multiloc;
@@ -38,6 +39,9 @@ interface Props {
 const CustomPageSettingsForm = ({
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
+  const [slug, _setSlug] = useState<string | null>(null);
+  const [_titleErrors, _setTitleErrors] = useState<Multiloc>({});
+  const [showSlugErrorMessage, _setShowSlugErrorMessage] = useState(false);
   // types still to change
   const [_error, setError] = useState({});
   const schema = object({
@@ -61,6 +65,8 @@ const CustomPageSettingsForm = ({
       setError(error);
     }
   };
+
+  const handleOnSlugChange = () => {};
 
   return (
     <FormProvider {...methods}>
@@ -89,6 +95,15 @@ const CustomPageSettingsForm = ({
               name="slug"
               type="text"
             />
+            {true && (
+              <SlugInput
+                onSlugChange={handleOnSlugChange}
+                showSlugErrorMessage={showSlugErrorMessage}
+                apiErrors={null}
+                slug={slug}
+                pathnameWithoutSlug={'pages'}
+              />
+            )}
           </SectionField>
         </SectionFormWrapper>
       </form>
