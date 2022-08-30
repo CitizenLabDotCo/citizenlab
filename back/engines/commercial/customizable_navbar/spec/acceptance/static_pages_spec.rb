@@ -17,7 +17,7 @@ resource 'StaticPages' do
     post 'web_api/v1/static_pages' do
       with_options scope: :static_page do
         parameter :title_multiloc, 'The title of the page, as a multiloc string', required: true
-        parameter :body_multiloc, 'The content of the page, as a multiloc HTML string', required: true
+        parameter :top_info_section_multiloc, 'The content of the page, as a multiloc HTML string', required: true
         parameter :slug, 'The unique slug of the page. If not given, it will be auto generated'
       end
       with_options scope: %i[static_page nav_bar_item_attributes] do
@@ -33,7 +33,7 @@ resource 'StaticPages' do
         do_request(
           static_page: {
             title_multiloc: page.title_multiloc,
-            body_multiloc: page.body_multiloc,
+            top_info_section_multiloc: page.top_info_section_multiloc,
             nav_bar_item_attributes: { title_multiloc: item_title_multiloc }
           }
         )
@@ -46,7 +46,7 @@ resource 'StaticPages' do
     patch 'web_api/v1/static_pages/:id' do
       with_options scope: :static_page do
         parameter :title_multiloc, 'The title of the static page, as a multiloc string'
-        parameter :body_multiloc, 'The content of the static page, as a multiloc HTML string'
+        parameter :top_info_section_multiloc, 'The content of the static page, as a multiloc HTML string'
         parameter :slug, 'The unique slug of the static page'
       end
       with_options scope: %i[static_page nav_bar_item_attributes] do

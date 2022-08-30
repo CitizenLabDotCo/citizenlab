@@ -22,10 +22,7 @@ const CustomPagesEditSettings = ({
 
   return (
     <>
-      <HelmetIntl
-        title={messages.editCustomPageMetaTitle}
-        description={messages.editCustomPageMetaDescription}
-      />
+      <HelmetIntl title={messages.editCustomPageMetaTitle} />
       <Box mb="16px">
         <Breadcrumbs
           breadcrumbs={[

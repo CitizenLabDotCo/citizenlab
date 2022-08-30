@@ -1,23 +1,20 @@
 import React from 'react';
-import TabbedResource from 'components/admin/TabbedResource';
+import { Box } from '@citizenlab/cl2-component-library';
+import Breadcrumbs from 'components/UI/Breadcrumbs';
+import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 import HelmetIntl from 'components/HelmetIntl';
 import messages from '../messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import CustomPagesNew from './CustomPagesNew';
-import { Box } from '@citizenlab/cl2-component-library';
-import Breadcrumbs from 'components/UI/Breadcrumbs';
-import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
+import TabbedResource from 'components/admin/TabbedResource';
 
-const CreateCustomPageHookForm = ({
+const CustomPagesNewSettings = ({
   intl: { formatMessage },
 }: InjectedIntlProps) => {
   return (
     <>
-      <HelmetIntl
-        title={messages.newCustomPageMetaTitle}
-        description={messages.newCustomPageMetaDescription}
-      />
+      <HelmetIntl title={messages.newCustomPageMetaTitle} />
       <Box mb="16px">
         <Breadcrumbs
           breadcrumbs={[
@@ -48,4 +45,4 @@ const CreateCustomPageHookForm = ({
   );
 };
 
-export default injectIntl(CreateCustomPageHookForm);
+export default injectIntl(CustomPagesNewSettings);

@@ -28,7 +28,7 @@ import { createCustomPageStream } from 'services/customPages';
 
 interface CreateCustomPageFormValues {
   title_multiloc: Multiloc;
-  slug: string;
+  slug?: string;
 }
 
 interface Props {
@@ -81,7 +81,6 @@ const CustomPageSettingsForm = ({
                 name="title_multiloc"
                 label={formatMessage(messages.titleLabel)}
                 type="text"
-                labelTooltipText={formatMessage(messages.titleTooltip)}
               />
             </Box>
             <Input
