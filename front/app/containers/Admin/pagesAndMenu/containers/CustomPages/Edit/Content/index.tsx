@@ -59,12 +59,13 @@ const CustomPagesEditContent = () => {
       tooltipMessageDescriptor: sectionToggleMessages.topInfoSectionTooltip,
       linkToPath: 'top-info-section',
     },
-    {
-      name: 'projects_enabled',
-      titleMessageDescriptor: sectionToggleMessages.projectsList,
-      tooltipMessageDescriptor: sectionToggleMessages.projectsListTooltip,
-      linkToPath: 'projects',
-    },
+    // next iteration!
+    // {
+    //   name: 'projects_enabled',
+    //   titleMessageDescriptor: sectionToggleMessages.projectsList,
+    //   tooltipMessageDescriptor: sectionToggleMessages.projectsListTooltip,
+    //   linkToPath: 'projects',
+    // },
     {
       name: 'events_widget_enabled',
       titleMessageDescriptor: sectionToggleMessages.eventsList,

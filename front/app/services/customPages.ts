@@ -26,6 +26,7 @@ export interface ICustomPageEnabledSettings {
 }
 
 export interface ICustomPagesAttributes extends ICustomPageEnabledSettings {
+  title_multiloc: Multiloc;
   top_info_section_multiloc: Multiloc;
   slug: string;
   banner_layout: THomepageBannerLayout | null;

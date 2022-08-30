@@ -3,17 +3,22 @@ import React from 'react';
 // components
 import TabbedResource from 'components/admin/TabbedResource';
 import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
+import { Box } from '@citizenlab/cl2-component-library';
+import Breadcrumbs from 'components/UI/Breadcrumbs';
+import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 
 // i18n
 import messages from '../messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import HelmetIntl from 'components/HelmetIntl';
-import { Box } from '@citizenlab/cl2-component-library';
-import Breadcrumbs from 'components/UI/Breadcrumbs';
-import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
-// import useLocalize from 'hooks/useLocalize';
-// import { isNilOrError } from 'utils/helperUtils';
+import useLocalize from 'hooks/useLocalize';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+
+// hooks
+import useCustomPage from 'hooks/useCustomPage';
 
 // routing
 import { Outlet as RouterOutlet, useParams } from 'react-router-dom';
@@ -21,17 +26,15 @@ import { Outlet as RouterOutlet, useParams } from 'react-router-dom';
 const CustomPagesEditSettings = ({
   intl: { formatMessage },
 }: InjectedIntlProps) => {
-  // const localize = useLocalize();
-  // const customPage = useCustomPage(customPageId);
+  const localize = useLocalize();
+  const { customPageId } = useParams() as { customPageId: string };
+  const customPage = useCustomPage(customPageId);
 
-  // if (!isNilOrError(customPage)) {
-  // const pageTitleMultiloc = customPage.attributes.title_multiloc;
-  const { customPageId } = useParams();
-
-  if (!customPageId) {
+  if (isNilOrError(customPage)) {
     return null;
   }
 
+  const pageTitleMultiloc = customPage.attributes.title_multiloc;
   return (
     <SectionFormWrapper>
       <HelmetIntl title={messages.editCustomPageMetaTitle} />
@@ -42,15 +45,13 @@ const CustomPagesEditSettings = ({
               label: formatMessage(pagesAndMenuBreadcrumb.label),
               linkTo: pagesAndMenuBreadcrumb.linkTo,
             },
-            // { label: localize(pageTitleMultiloc) },
+            { label: localize(pageTitleMultiloc) },
           ]}
         />
       </Box>
       <TabbedResource
         resource={{
-          title: formatMessage(messages.editCustomPagePageTitle),
-          // The page title will be the final value here
-          // title: localize(pageTitleMultiloc),
+          title: localize(pageTitleMultiloc),
         }}
         tabs={[
           {
@@ -70,9 +71,6 @@ const CustomPagesEditSettings = ({
       </TabbedResource>
     </SectionFormWrapper>
   );
-  // }
-
-  // return null;
 };
 
 export default injectIntl(CustomPagesEditSettings);
