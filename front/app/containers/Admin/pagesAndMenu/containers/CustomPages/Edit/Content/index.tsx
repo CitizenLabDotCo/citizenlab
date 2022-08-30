@@ -110,10 +110,12 @@ const CustomPagesEditContent = () => {
   //   return sectionName;
   // };
 
-  const handleOnClick = (url: string) => {
-    if (url) {
+  const handleOnClick = (sectionPath: string) => {
+    if (sectionPath) {
       // add in actual page ID to string here
-      clHistory.push(`/admin/pages-menu/custom/${customPageId}/${url}/`);
+      clHistory.push(
+        `/admin/pages-menu/custom/${customPageId}/${sectionPath}/`
+      );
     }
   };
 
