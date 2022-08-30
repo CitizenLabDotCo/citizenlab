@@ -43,7 +43,7 @@ const configuration: ModuleConfiguration = {
   beforeMountApplication: () => {
     const allAppPaths = getAllPathsFromRoutes(createRoutes()[0]);
 
-    function tackMatomoPageview(path) {
+    function trackMatomoPageview(path) {
       const locale = getUrlLocale(path);
       locale && window._paq.push(['setCustomDimension', 3, locale]);
       window._paq.push(['setCustomUrl', path]);
@@ -61,32 +61,23 @@ const configuration: ModuleConfiguration = {
       }
     }
 
+    // Subscribe to changes in app configuration and users
     combineLatest([
       currentAppConfigurationStream().observable,
       authUserStream().observable,
       initializeFor('matomo'),
     ]).subscribe(([appConfiguration, user, _]) => {
+      // Don't set up tracking if no host or site_id found
       if (!MATOMO_HOST) return;
-
       if (
         !appConfiguration.data.attributes.settings.matomo?.product_site_id &&
         appConfiguration.data.attributes.settings.matomo?.tenant_site_id
       ) {
         return;
       }
+
       /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
       window._paq = window._paq || [];
-
-      window._paq.push(['enableLinkTracking']);
-      window._paq.push(['enableHeartBeatTimer']);
-      window._paq.push([
-        'setDomains',
-        `${appConfiguration.data.attributes.host}/*`,
-      ]);
-      window._paq.push([
-        'setCookieDomain',
-        `${appConfiguration.data.attributes.host}/*`,
-      ]);
 
       if (!isNilOrError(user)) {
         window._paq.push(['setUserId', user.data.id]);
@@ -94,50 +85,68 @@ const configuration: ModuleConfiguration = {
         window._paq.push(['resetUserId']);
       }
 
-      (function () {
-        // Send all of the tracking data to the global site used for product analytics
-        if (appConfiguration.data.attributes.settings.matomo?.product_site_id) {
-          window._paq.push(['setTrackerUrl', `${MATOMO_HOST}/matomo.php`]);
-          window._paq.push([
-            'setSiteId',
-            appConfiguration.data.attributes.settings.matomo?.product_site_id,
-          ]);
-        }
-        // Send tracking data to the tenant-specific site
-        if (appConfiguration.data.attributes.settings.matomo?.tenant_site_id) {
-          window._paq.push([
-            'addTracker',
-            `${MATOMO_HOST}/matomo.php`,
-            appConfiguration.data.attributes.settings.matomo?.tenant_site_id,
-          ]);
-        }
-
-        const d = document;
-        const g = d.createElement('script');
-        const s = d.getElementsByTagName('script')[0];
-        g.type = 'text/javascript';
-        g.async = true;
-        g.src = `${MATOMO_HOST}/matomo.js`;
-        g.id = 'internal_matomo_analytics';
-        s?.parentNode?.insertBefore(g, s);
-      })();
-
-      if (!isNilOrError(appConfiguration)) {
+      // Setup Matomo, but only do this initialisation once
+      if (Array.isArray(window._paq)) {
+        window._paq.push(['enableLinkTracking']);
+        window._paq.push(['enableHeartBeatTimer']);
         window._paq.push([
-          'setCustomDimension',
-          1,
-          appConfiguration.data.attributes.name,
+          'setDomains',
+          `${appConfiguration.data.attributes.host}/*`,
         ]);
-        window._paq.push(['setCustomDimension', 2, appConfiguration.data.id]);
-      }
+        window._paq.push([
+          'setCookieDomain',
+          `${appConfiguration.data.attributes.host}/*`,
+        ]);
 
-      tackMatomoPageview(window.location.pathname);
+        (function () {
+          // Configure tracking to the global site used for product analytics
+          if (
+            appConfiguration.data.attributes.settings.matomo?.product_site_id
+          ) {
+            window._paq.push(['setTrackerUrl', `${MATOMO_HOST}/matomo.php`]);
+            window._paq.push([
+              'setSiteId',
+              appConfiguration.data.attributes.settings.matomo?.product_site_id,
+            ]);
+          }
+          // Configure tracking data to the tenant-specific site
+          if (
+            appConfiguration.data.attributes.settings.matomo?.tenant_site_id
+          ) {
+            window._paq.push([
+              'addTracker',
+              `${MATOMO_HOST}/matomo.php`,
+              appConfiguration.data.attributes.settings.matomo?.tenant_site_id,
+            ]);
+          }
+
+          const d = document;
+          const g = d.createElement('script');
+          const s = d.getElementsByTagName('script')[0];
+          g.type = 'text/javascript';
+          g.async = true;
+          g.src = `${MATOMO_HOST}/matomo.js`;
+          g.id = 'internal_matomo_analytics';
+          s?.parentNode?.insertBefore(g, s);
+        })();
+
+        if (!isNilOrError(appConfiguration)) {
+          window._paq.push([
+            'setCustomDimension',
+            1,
+            appConfiguration.data.attributes.name,
+          ]);
+          window._paq.push(['setCustomDimension', 2, appConfiguration.data.id]);
+        }
+        trackMatomoPageview(window.location.pathname); // Track first path hit onload
+      }
     });
 
     shutdownFor('matomo').subscribe(() => {
       window._paq = undefined;
     });
 
+    // Subscribe to new events and post to Matomo
     combineLatest([
       bufferUntilInitialized('matomo', events$),
       currentAppConfigurationStream().observable,
@@ -157,12 +166,13 @@ const configuration: ModuleConfiguration = {
       }
     });
 
+    // Subscribe to new path changes and post to Matomo
     combineLatest([
       bufferUntilInitialized('matomo', pageChanges$),
       currentAppConfigurationStream().observable,
     ]).subscribe(([pageChange, _]) => {
       if (window._paq) {
-        tackMatomoPageview(pageChange.path);
+        trackMatomoPageview(pageChange.path);
       }
     });
 
