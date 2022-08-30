@@ -14,7 +14,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 // types
-const Component = () => {
+const CustomPagesEditContent = () => {
   // to be typed
   const sectionTogglesData = [
     {
@@ -108,4 +108,4 @@ const Component = () => {
   );
 };
 
-export default Component;
+export default CustomPagesEditContent;

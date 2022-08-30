@@ -1,7 +1,8 @@
 import React from 'react';
+import CustomPageSettingsForm from '../../CustomPageSettingsForm';
 
 const Component = () => {
-  return <div>Hello, world!</div>;
+  return <CustomPageSettingsForm />;
 };
 
 export default Component;

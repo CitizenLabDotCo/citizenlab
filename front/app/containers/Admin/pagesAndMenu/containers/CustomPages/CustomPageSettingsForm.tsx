@@ -5,8 +5,9 @@ import Feedback from 'components/HookForm/Feedback';
 import { FormProvider, useForm } from 'react-hook-form';
 import { SectionField } from 'components/admin/Section';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { object } from 'yup';
+import { object, string } from 'yup';
 import validateMultiloc from 'utils/yup/validateMultiloc';
+import { slugRegEx } from 'utils/textUtils';
 // import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 // components
@@ -14,6 +15,7 @@ import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/Section
 import Button from 'components/UI/Button';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import { Box } from '@citizenlab/cl2-component-library';
+import SlugInput from 'components/admin/SlugInput';
 
 // intl
 import messages from './messages';
@@ -31,19 +33,28 @@ import { Multiloc } from 'typings';
 
 interface CreateCustomPageFormValues {
   title_multiloc: Multiloc;
+  slug?: string;
 }
 
-interface Props {}
+interface Props {
+  defaultValues?: CreateCustomPageFormValues;
+}
 
 const CustomPageSettingsForm = ({
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
+  const [slug, _setSlug] = useState<string | null>(null);
+  const [_titleErrors, _setTitleErrors] = useState<Multiloc>({});
+  const [showSlugErrorMessage, _setShowSlugErrorMessage] = useState(false);
   // types still to change
   const [_error, setError] = useState({});
   const schema = object({
     title_multiloc: validateMultiloc(
       formatMessage(messages.titleMultilocError)
     ),
+    slug: string()
+      .matches(slugRegEx, formatMessage(messages.slugRegexError))
+      .required(formatMessage(messages.slugRequiredError)),
   });
 
   const methods = useForm({
@@ -59,6 +70,8 @@ const CustomPageSettingsForm = ({
       setError(error);
     }
   };
+
+  const handleOnSlugChange = () => {};
 
   return (
     <FormProvider {...methods}>
@@ -81,6 +94,15 @@ const CustomPageSettingsForm = ({
                 type="text"
               />
             </Box>
+            {slug && (
+              <SlugInput
+                onSlugChange={handleOnSlugChange}
+                showSlugErrorMessage={showSlugErrorMessage}
+                apiErrors={null}
+                slug={slug}
+                pathnameWithoutSlug={'pages'}
+              />
+            )}
           </SectionField>
         </SectionFormWrapper>
       </form>
