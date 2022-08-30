@@ -10,8 +10,6 @@ export interface ICustomPage {
 export interface ICustomPageData {
   id: string;
   attributes: ICustomPagesAttributes;
-  // type: ''
-  // relationships:
 }
 
 export type TCustomPageEnabledSetting = keyof ICustomPageEnabledSettings;
@@ -21,8 +19,10 @@ export interface ICustomPageEnabledSettings {
   bottom_info_section_enabled: boolean;
   top_info_section_enabled: boolean;
   events_widget_enabled: boolean;
-  projects_enabled: boolean;
   files_section_enabled: boolean;
+
+  // for a subsequent iteration
+  // projects_enabled: boolean;
 }
 
 export interface ICustomPagesAttributes extends ICustomPageEnabledSettings {
@@ -37,15 +37,17 @@ export interface ICustomPagesAttributes extends ICustomPageEnabledSettings {
   banner_cta_button_url: string | null;
   banner_header_multiloc: Multiloc;
   banner_subheader_multiloc: Multiloc;
-  // check
-  projects_filter_type: 'area' | 'projects';
   bottom_info_section_multiloc: Multiloc;
   header_bg: ImageSizes | null;
-  // check on which are possible
+
+  // check on this one
   code: string;
   // not sure about these
   // pinned_admin_publication_ids: string[],
   // static_page_file_id: string,
+
+  // for a subsequent iteration
+  projects_filter_type: 'area' | 'projects';
 }
 
 const customPagesEndpoint = `${API_PATH}/static_pages`;
@@ -62,15 +64,12 @@ export function customPageByIdStream(customPageId: string) {
 
 export async function updateCustomPage(
   customPageId: string,
-  // still to update, won't work for header_bg, which has different types when
-  // updating vs. getting the data.
-  updatedPageSettings
+  updatedPageSettings: Partial<ICustomPagesAttributes>
 ) {
   const customPageSettings = await streams.update(
     `${customPagesEndpoint}/${customPageId}`,
     customPageId,
     { static_page: updatedPageSettings }
   );
-  // is this needed?
   return customPageSettings;
 }
