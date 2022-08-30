@@ -132,7 +132,6 @@ exports.appGraphqlLocalePairs = {
   svSe: 'sv-SE',
   trTr: 'tr-TR',
 };
-
 exports.shortenedAppLocalePairs = {
   'ar-MA': 'عربي',
   'ar-SA': 'عربى',
