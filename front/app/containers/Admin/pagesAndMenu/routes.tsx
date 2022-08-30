@@ -13,8 +13,8 @@ const TopInfoSection = lazy(() => import('./containers/TopInfoSection'));
 const HeroBannerForm = lazy(() => import('./containers/HeroBanner'));
 
 // custom pages
-const NewCustomPage = lazy(() => import('./containers/CustomPages/New'));
-const EditCustomPage = lazy(() => import('./containers/CustomPages/Edit'));
+const NewCustomPageIndex = lazy(() => import('./containers/CustomPages/New'));
+const EditCustomPageIndex = lazy(() => import('./containers/CustomPages/Edit'));
 const EditCustomPageSettings = lazy(
   () => import('./containers/CustomPages/Edit/Settings')
 );
@@ -88,11 +88,11 @@ export default () => ({
       children: [
         {
           path: 'new',
-          element: <NewCustomPage />,
+          element: <NewCustomPageIndex />,
         },
         {
           path: ':customPageId',
-          element: <EditCustomPage />,
+          element: <EditCustomPageIndex />,
           children: [
             { path: '', element: <Navigate to="settings" /> },
             { path: 'settings', element: <EditCustomPageSettings /> },

@@ -23,14 +23,15 @@ import { useParams } from 'react-router-dom';
 import clHistory from 'utils/cl-router/history';
 
 // types
-const Component = () => {
+const CustomPagesEditContent = () => {
+  // to be typed
   const { customPageId } = useParams() as { customPageId: string };
   const customPage = useCustomPage(customPageId);
 
   if (!customPage) {
     return null;
   }
-  // to be typed
+
   const sectionTogglesData = [
     {
       name: 'banner_enabled',
@@ -127,4 +128,4 @@ const Component = () => {
   );
 };
 
-export default Component;
+export default CustomPagesEditContent;
