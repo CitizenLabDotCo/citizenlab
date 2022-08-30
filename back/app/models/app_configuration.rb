@@ -18,7 +18,6 @@
 #
 class AppConfiguration < ApplicationRecord
   include StyleSettings
-  include CustomizableHomepageBannerSettings
 
   mount_base64_uploader :logo, LogoUploader
   mount_base64_uploader :header_bg, AppHeaderBgUploader
