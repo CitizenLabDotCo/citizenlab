@@ -72,7 +72,7 @@ export interface IPageData {
   type: 'static_page';
   attributes: {
     title_multiloc: Multiloc;
-    body_multiloc: Multiloc;
+    top_info_section_multiloc: Multiloc;
     nav_bar_item_title_multiloc: Multiloc;
     code: TPageCode;
     slug: string;
@@ -88,14 +88,14 @@ export interface IPageData {
 
 interface IPageCreate {
   title_multiloc: Multiloc;
-  body_multiloc: Multiloc;
+  top_info_section_multiloc: Multiloc;
   slug?: string;
 }
 
 export interface IPageUpdate {
   nav_bar_item_title_multiloc?: Multiloc;
   title_multiloc?: Multiloc;
-  body_multiloc?: Multiloc;
+  top_info_section_multiloc?: Multiloc;
   slug?: string;
 }
 
