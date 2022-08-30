@@ -135,7 +135,9 @@ export default function usePostsWithFeedback(
   >(undefined);
 
   useEffect(() => {
-    analyticsStream<Response>(query({ projectId, startAt, endAt })).then(
+
+    const observable = analyticsStream<Response>(query({ projectId, startAt, endAt })).observable
+    const subscription = observable.subscribe(
       (results: Response | NilOrError) => {
         if (isNilOrError(results)) {
           setPostsWithFeedback(results);
@@ -186,6 +188,7 @@ export default function usePostsWithFeedback(
         });
       }
     );
+    return () => subscription.unsubscribe();
   }, [projectId, startAt, endAt, formatMessage]);
 
   return postsWithFeedback;

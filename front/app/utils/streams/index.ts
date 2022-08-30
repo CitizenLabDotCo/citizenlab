@@ -38,6 +38,7 @@ import {
   isSingleItemStream,
   getStreamId,
 } from './utils';
+import { API_PATH } from 'containers/App/constants';
 
 export type pureFn<T> = (arg: T) => T;
 
@@ -611,6 +612,97 @@ class Streams {
         this.streams[streamId].subscription =
           this.streams[streamId].observable.subscribe();
       }
+
+      return this.streams[streamId] as IStream<T>;
+    }
+
+    return this.streams[streamId] as IStream<T>;
+  }
+
+  analytics<T>(queryObject) {
+    const apiEndpoint = `${API_PATH}/analytics`
+    const streamId = JSON.stringify(queryObject)
+
+    if (!has(this.streams, streamId)) {
+      const observer: IObserver<T | null> = null as any;
+
+      const fetch = () => {
+        return request<any>(
+          apiEndpoint,
+          queryObject,
+          { method: 'POST' },
+          null
+        )
+          .then((response) => {
+            this.streams?.[streamId]?.observer?.next(response);
+            return response;
+          })
+          .catch((error) => {
+            this.streams[streamId].observer.next(error);
+            this.deleteStream(streamId, apiEndpoint);
+            reportError(error);
+
+            return null;
+          });
+      };
+      const observable = new Observable<T | null>((observer) => {
+        if (this.streams[streamId]) {
+          this.streams[streamId].observer = observer;
+        }
+        
+        fetch();
+        
+        return () => {
+          this.deleteStream(streamId, apiEndpoint);
+        };
+      }).pipe(
+        startWith('initial' as any),
+        scan((accumulated: T, current: T | pureFn<T>) => {
+          let data: any = accumulated;
+          const dataIds = {};
+
+          this.streams[streamId].type = 'unknown';
+
+          data = isFunction(current) ? current(data) : current;
+
+          const innerData = data['data'];
+          
+          const dataId = JSON.stringify(innerData);
+          dataIds[dataId] = true;
+          this.resourcesByDataId[dataId] = deepFreeze({
+            data: innerData,
+          });
+
+          this.addStreamIdByDataIdIndex(streamId, false, dataId);
+
+          this.streams[streamId].dataIds = dataIds;
+
+          return deepFreeze(data);
+        }),
+        filter((data) => data !== 'initial'),
+        distinctUntilChanged(),
+        publishReplay(1),
+        refCount()
+      );
+
+      this.streams[streamId] = {
+        params: {bodyData: queryObject, queryParameters: null, apiEndpoint},
+        fetch,
+        observer,
+        observable,
+        streamId,
+        isQueryStream: false,
+        isSearchQuery: false,
+        isSingleItemStream: true,
+        cacheStream: true,
+        type: 'unknown',
+        dataIds: {},
+      };
+
+      this.addStreamIdByApiEndpointIndex(apiEndpoint, streamId, false);
+
+      this.streams[streamId].subscription =
+        this.streams[streamId].observable.subscribe();
 
       return this.streams[streamId] as IStream<T>;
     }
