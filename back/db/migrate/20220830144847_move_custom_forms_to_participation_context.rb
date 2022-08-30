@@ -35,6 +35,17 @@ class MoveCustomFormsToParticipationContext < ActiveRecord::Migration[6.1]
   end
 
   def down
-    add_column :projects, :custom_form
+    add_reference :projects, :custom_form, foreign_key: true, type: :uuid
+    ActiveRecord::Base.connection.execute <<~SQL.squish
+      UPDATE projects t 
+      SET custom_form_id = (
+        SELECT id
+        FROM custom_forms
+        WHERE custom_forms.participation_context_id = t.id
+      )
+    SQL
+
+    remove_column :custom_forms, :participation_context_id
+    remove_column :custom_forms, :participation_context_type
   end
 end
