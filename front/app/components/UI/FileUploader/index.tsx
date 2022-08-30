@@ -52,7 +52,7 @@ const FileUploader = ({
 
   const fileNames = files ? files.map((file) => file.filename).join(', ') : '';
   return (
-    <Container className={className}>
+    <Container className={className} key={id}>
       <FileInput onAdd={handleFileOnAdd} id={id} />
       <Error fieldName="file" apiErrors={apiErrors?.file} />
 

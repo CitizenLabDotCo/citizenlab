@@ -83,7 +83,20 @@ class Idea < ApplicationRecord
 
   accepts_nested_attributes_for :text_images, :idea_images, :idea_files
 
-  validates :proposed_budget, numericality: { greater_than_or_equal_to: 0, if: :proposed_budget }
+  with_options unless: :draft? do |post|
+    post.validates :author, presence: true, on: :publication
+    post.validates :author, presence: true, if: :author_id_changed?
+
+    post.before_validation :strip_title
+    post.after_validation :set_published_at, if: ->(record) { record.published? && record.publication_status_changed? }
+    post.after_validation :set_assigned_at, if: ->(record) { record.assignee_id && record.assignee_id_changed? }
+  end
+
+  with_options if: :validate_built_in_fields? do
+    validates :title_multiloc, presence: true, multiloc: { presence: true }
+    validates :body_multiloc, presence: true, multiloc: { presence: true, html: true }
+    validates :proposed_budget, numericality: { greater_than_or_equal_to: 0, if: :proposed_budget }
+  end
 
   with_options unless: :draft? do
     validates :idea_status, presence: true
@@ -92,6 +105,7 @@ class Idea < ApplicationRecord
     before_validation :sanitize_body_multiloc, if: :body_multiloc
   end
 
+  after_create :assign_slug!
   after_update :fix_comments_count_on_projects
 
   scope :with_some_topics, (proc do |topics|
@@ -143,6 +157,18 @@ class Idea < ApplicationRecord
   end
 
   private
+
+  def participation_method
+    ::Factory.instance.participation_method_for(project)
+  end
+
+  def validate_built_in_fields?
+    !draft? && participation_method.validate_built_in_fields?
+  end
+
+  def assign_slug!
+    participation_method.assign_slug! self
+  end
 
   def sanitize_body_multiloc
     service = SanitizationService.new

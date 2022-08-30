@@ -1,3 +1,4 @@
+import { CLErrorsJSON } from 'typings';
 import messages from './messages';
 
 export function isCLErrorJSON(error) {
@@ -126,3 +127,18 @@ export function getDefaultAjvErrorMessage({
     messages[`ajv_error_invalid`]
   );
 }
+
+export const handleHookFormSubmissionError = (
+  error: Error | CLErrorsJSON,
+  handleError: (error: string, options: Record<string, any>) => void
+) => {
+  if ('json' in error && error.json.errors) {
+    Object.keys(error.json.errors).forEach((key) => {
+      handleError(key, error.json.errors[key][0]);
+    });
+  } else {
+    handleError('submissionError', {
+      type: 'server',
+    });
+  }
+};

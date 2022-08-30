@@ -16,6 +16,7 @@ export interface BaseProps {
   publicationStatusFilter: PublicationStatus[];
   rootLevelOnly?: boolean;
   removeNotAllowedParents?: boolean;
+  search?: string;
 }
 
 export interface InputProps extends BaseProps {
@@ -55,6 +56,7 @@ export interface IUseAdminPublicationsOutput {
   loadingMore: boolean;
   onLoadMore: () => void;
   onChangeTopics: (topics: string[]) => void;
+  onChangeSearch: (string: string | null) => void;
   onChangeAreas: (areas: string[]) => void;
   onChangePublicationStatus: (publicationStatuses: PublicationStatus[]) => void;
 }
@@ -75,6 +77,7 @@ export default function useAdminPublications({
   const [loadingInitial, setLoadingInitial] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
+  const [search, setSearch] = useState<string | null>(null);
   const [topics, setTopics] = useState<string[] | undefined>(topicFilter);
   const [areas, setAreas] = useState<string[] | undefined>(areaFilter);
   const [publicationStatuses, setPublicationStatuses] = useState<
@@ -98,6 +101,11 @@ export default function useAdminPublications({
     setPageNumber(1);
   }, []);
 
+  const onChangeSearch = useCallback((search: string | null) => {
+    setSearch(search);
+    setPageNumber(1);
+  }, []);
+
   const onChangePublicationStatus = useCallback((publicationStatuses) => {
     setPublicationStatuses(publicationStatuses);
     setPageNumber(1);
@@ -112,6 +120,7 @@ export default function useAdminPublications({
     const queryParameters = {
       'page[number]': pageNumber,
       'page[size]': pageSize,
+      search,
       depth: rootLevelOnly ? 0 : undefined,
       topics,
       areas,
@@ -172,6 +181,7 @@ export default function useAdminPublications({
   }, [
     pageNumber,
     pageSize,
+    search,
     topics,
     areas,
     publicationStatuses,
@@ -188,6 +198,7 @@ export default function useAdminPublications({
     onLoadMore,
     onChangeTopics,
     onChangeAreas,
+    onChangeSearch,
     onChangePublicationStatus,
   };
 }

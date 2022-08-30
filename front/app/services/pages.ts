@@ -17,12 +17,24 @@ export const STANDARD_PAGES: TStandardPage[] = ['about', 'faq'];
 // Policy pages of which only the content can be edited
 // in 'policy' tab in settings (both for non-commercial and
 // commercial customers). Their codes are the same as their slugs.
-type TPolicyPage = 'terms-and-conditions' | 'privacy-policy';
+export type TPolicyPage = 'terms-and-conditions' | 'privacy-policy';
 
 export const POLICY_PAGES: TPolicyPage[] = [
   'terms-and-conditions',
   'privacy-policy',
 ];
+
+export enum POLICY_PAGE {
+  termsAndConditions = 'terms-and-conditions',
+  privacyPolicy = 'privacy-policy',
+}
+
+export function isPolicyPageSlug(slug: string): slug is TPolicyPage {
+  const termsAndConditionsSlug: TPolicyPage = POLICY_PAGE.termsAndConditions;
+  const privacyPolicySlug: TPolicyPage = POLICY_PAGE.privacyPolicy;
+
+  return slug === termsAndConditionsSlug || slug === privacyPolicySlug;
+}
 
 // Hardcoded pages don't actually exist in the database-
 // their codes are the same as their slugs, which are used to render
@@ -81,12 +93,10 @@ interface IPageCreate {
 }
 
 export interface IPageUpdate {
+  nav_bar_item_title_multiloc?: Multiloc;
   title_multiloc?: Multiloc;
   body_multiloc?: Multiloc;
   slug?: string;
-  nav_bar_item_attributes?: {
-    title_multiloc?: Multiloc;
-  };
 }
 
 export interface IPage {
@@ -115,14 +125,14 @@ export function pageBySlugStream(
 }
 
 export function createPage(pageData: IPageCreate) {
-  return streams.add<IPage>(`${apiEndpoint}`, pageData);
+  return streams.add<IPage>(`${apiEndpoint}`, { static_page: pageData });
 }
 
 export async function updatePage(pageId: string, pageData: IPageUpdate) {
   const response = await streams.update<IPage>(
     `${apiEndpoint}/${pageId}`,
     pageId,
-    pageData
+    { static_page: pageData }
   );
 
   await streams.fetchAllWith({

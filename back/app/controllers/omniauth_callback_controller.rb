@@ -48,7 +48,6 @@ class OmniauthCallbackController < ApplicationController
         rescue ActiveRecord::RecordInvalid => e
           ErrorReporter.report(e)
           failure
-          return
         end
 
       else # !@user.invite_pending?

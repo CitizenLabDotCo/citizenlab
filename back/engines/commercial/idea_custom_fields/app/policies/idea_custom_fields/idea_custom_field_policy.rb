@@ -15,7 +15,11 @@ module IdeaCustomFields
     end
 
     def update?
-      upsert_by_code?
+      can_configure_custom_fields? record&.resource&.project
+    end
+
+    def update_all?
+      can_configure_custom_fields? record&.resource&.project
     end
 
     def permitted_attributes
