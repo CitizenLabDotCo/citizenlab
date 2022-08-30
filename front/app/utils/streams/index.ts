@@ -22,38 +22,51 @@ import {
   forEach,
   union,
   uniq,
-  isUndefined,
 } from 'lodash-es';
 import request from 'utils/request';
 import { authApiEndpoint } from 'services/auth';
 import { currentAppConfigurationEndpoint } from 'services/appConfiguration';
 import { currentOnboardingCampaignsApiEndpoint } from 'services/onboardingCampaigns';
-import stringify from 'json-stable-stringify';
 import { reportError } from 'utils/loggingUtils';
-import { isUUID } from 'utils/helperUtils';
 import modules from 'modules';
 
+// utils
+import {
+  deepFreeze,
+  sanitizeQueryParameters,
+  removeTrailingSlash,
+  isSingleItemStream,
+  getStreamId,
+} from './utils';
+
 export type pureFn<T> = (arg: T) => T;
+
 type fetchFn = () => Promise<any>;
-interface IObject {
+
+export interface IObject {
   [key: string]: any;
 }
+
 export type IObserver<T> = Observer<T | pureFn<T> | null>;
+
 export interface IStreamParams {
   bodyData?: IObject | null;
   queryParameters?: IObject | null;
   cacheStream?: boolean;
   skipSanitizationFor?: string[];
 }
-export interface IInputStreamParams extends IStreamParams {
+
+export interface IInputStreamParams extends Omit<IStreamParams, 'bodyData'> {
   apiEndpoint: string;
 }
+
 interface IExtendedStreamParams {
   apiEndpoint: string;
   cacheStream?: boolean;
   bodyData: IObject | null;
   queryParameters: IObject | null;
 }
+
 export interface IStream<T> {
   params: IExtendedStreamParams;
   streamId: string;
@@ -168,48 +181,6 @@ class Streams {
     }
   }
 
-  // Here we recursively freeze each property in the object provided
-  // as the argument so that the return object is immutable (=read-only).
-  // This is a safety mechanism we apply to all objects being put in
-  // the streams to make sure that any given stream can
-  // be simultaneously subscribed to in different components with the guarantee that
-  // each component will receive the exact same data for that stream.
-  // If the stream data would not be immutable, you could in theory
-  // overwrite it in one place and (unknowingly) affect the data in other
-  // places that subscribe to that stream as well.
-  // By making the stream data immutable, you avoid this scenario.
-  deepFreeze<T>(object: T): T {
-    let frozenObject = object;
-
-    if (frozenObject && !Object.isFrozen(frozenObject)) {
-      let property;
-      let propertyKey;
-
-      frozenObject = Object.freeze(object);
-
-      for (propertyKey in frozenObject) {
-        if (
-          // eslint-disable-next-line no-prototype-builtins
-          (frozenObject as Record<string, any>).hasOwnProperty(propertyKey)
-        ) {
-          property = frozenObject[propertyKey];
-
-          if (
-            typeof property !== 'object' ||
-            !(property instanceof Object) ||
-            Object.isFrozen(property)
-          ) {
-            continue;
-          }
-
-          this.deepFreeze(property);
-        }
-      }
-    }
-
-    return frozenObject;
-  }
-
   // Checks if a stream is subscribed to by one ore more currently mounted components.
   // To determine this, we use the internal rxjs refCount property, which keeps track
   // of the subscribe count for any given stream.
@@ -279,80 +250,6 @@ class Streams {
     }
 
     delete this.streams[streamId];
-  }
-
-  // Here we sanitize endpoints with query parameters
-  // to normalize them (e.g. make sure any null, undefined or '' params
-  // do not get taken into account when determining if a stream for the given params already exists).
-  // The 'skipSanitizationFor' parameter can be used to provide
-  // a list of query parameter names that should not be sanitized
-  sanitizeQueryParameters = (
-    queryParameters: IObject | null,
-    skipSanitizationFor?: string[]
-  ) => {
-    const sanitizedQueryParameters = cloneDeep(queryParameters);
-
-    forOwn(queryParameters, (value, key) => {
-      if (
-        !skipSanitizationFor?.includes(key) &&
-        (isUndefined(value) ||
-          (isString(value) && isEmpty(value)) ||
-          (isArray(value) && isEmpty(value)) ||
-          (isObject(value) && isEmpty(value)))
-      ) {
-        delete (sanitizedQueryParameters as IObject)[key];
-      }
-    });
-
-    return isObject(sanitizedQueryParameters) &&
-      !isEmpty(sanitizedQueryParameters)
-      ? sanitizedQueryParameters
-      : null;
-  };
-
-  // Determines wether the stream is associated with an endpoint
-  // that return a single object (e.g. an idea endpoint)
-  // or an endpoint that returns a collection of objects (e.g. the ideas endpoint)
-  isSingleItemStream(lastUrlSegment: string, isQueryStream: boolean) {
-    if (!isQueryStream) {
-      // When the endpoint url ends with a UUID we're dealing with a single-item endpoint
-      return isUUID(lastUrlSegment);
-    }
-
-    return false;
-  }
-
-  // Remove trailing slash to normalize the api endpoint names.
-  // This is needed to avoid the creation of redundant streams for the same endpoint
-  // (e.g. when providing the endpoint both with and without trailing slash)
-  removeTrailingSlash(apiEndpoint: string) {
-    return apiEndpoint.replace(/\/$/, '');
-  }
-
-  // The streamId is the unique identifier for a stream, and is composed by
-  // the following data:
-  // - The api endpoint
-  // - An optional cache parameter set to false
-  // when the stream is not cached (not included when cacheStream is true)
-  // - Normalized and stringified query parameters (if any are present)
-  // Together these parameters will return a streamId in the form of a string.
-  getStreamId(
-    apiEndpoint: string,
-    isQueryStream: boolean,
-    queryParameters: IObject | null,
-    cacheStream: boolean
-  ) {
-    let streamId = apiEndpoint;
-
-    if (!cacheStream) {
-      streamId = `${streamId}?cached=${cacheStream}`;
-    }
-
-    if (queryParameters !== null && isQueryStream) {
-      streamId = `${streamId}&${stringify(queryParameters)}`;
-    }
-
-    return streamId;
   }
 
   // addStreamIdByDataIdIndex will index a given streamId by the dataId(s) it includes.
@@ -455,11 +352,13 @@ class Streams {
       queryParameters: null,
       ...inputParams,
     };
-    const apiEndpoint = this.removeTrailingSlash(params.apiEndpoint);
-    const queryParameters = this.sanitizeQueryParameters(
+    const apiEndpoint = removeTrailingSlash(params.apiEndpoint);
+
+    const queryParameters = sanitizeQueryParameters(
       params.queryParameters,
       inputParams.skipSanitizationFor
     );
+
     const isQueryStream =
       isObject(queryParameters) && !isEmpty(queryParameters);
     // Check if the requested endpoint contains a search query param. See explanation below for more details.
@@ -479,7 +378,8 @@ class Streams {
     // up a lot amount of memory and even choke the system
     const cacheStream =
       isSearchQuery || inputParams.cacheStream === false ? false : true;
-    const streamId = this.getStreamId(
+
+    const streamId = getStreamId(
       apiEndpoint,
       isQueryStream,
       queryParameters,
@@ -492,9 +392,10 @@ class Streams {
       const lastUrlSegment = apiEndpoint.substr(
         apiEndpoint.lastIndexOf('/') + 1
       );
+
       // Use to last url segment of the requested endpoint and check if it's a UUID.
       // If so, we're dealing with a single-item endpoint (as opposed to an array)
-      const isSingleItemStream = this.isSingleItemStream(
+      const singleItemStream = isSingleItemStream(
         lastUrlSegment,
         isQueryStream
       );
@@ -570,7 +471,7 @@ class Streams {
         // If not, we fetch the endpoint and push the return value into the stream (see fetch()).
         if (
           cacheStream &&
-          isSingleItemStream &&
+          singleItemStream &&
           has(this.resourcesByDataId, dataId)
         ) {
           observer.next(this.resourcesByDataId[dataId]);
@@ -621,7 +522,7 @@ class Streams {
                   if (cacheStream) {
                     // write the endpoint response to the key-value object cache
                     // first deepfreeze it to guarantee immutability
-                    this.resourcesByDataId[dataId] = this.deepFreeze({
+                    this.resourcesByDataId[dataId] = deepFreeze({
                       data: item,
                     });
                   }
@@ -641,7 +542,7 @@ class Streams {
               if (cacheStream) {
                 // write the endpoint response to the key-value object cache
                 // first deepfreeze it to guarantee immutability
-                this.resourcesByDataId[dataId] = this.deepFreeze({
+                this.resourcesByDataId[dataId] = deepFreeze({
                   data: innerData,
                 });
               }
@@ -654,7 +555,7 @@ class Streams {
               data['included']
                 .filter((item) => item.id)
                 .forEach((item) => {
-                  this.resourcesByDataId[item.id] = this.deepFreeze({
+                  this.resourcesByDataId[item.id] = deepFreeze({
                     data: item,
                   });
                 });
@@ -677,7 +578,7 @@ class Streams {
 
           this.streams[streamId].dataIds = dataIds;
 
-          return this.deepFreeze(data);
+          return deepFreeze(data);
         }),
         filter((data) => data !== 'initial'),
         distinctUntilChanged(),
@@ -695,7 +596,7 @@ class Streams {
         streamId,
         isQueryStream,
         isSearchQuery,
-        isSingleItemStream,
+        isSingleItemStream: singleItemStream,
         cacheStream,
         type: 'unknown',
         dataIds: {},
@@ -724,7 +625,7 @@ class Streams {
     waitForRefetchesToResolve = false,
     updateCachedEndpoints = true
   ) {
-    const apiEndpoint = this.removeTrailingSlash(unsafeApiEndpoint);
+    const apiEndpoint = removeTrailingSlash(unsafeApiEndpoint);
 
     try {
       const promises: Promise<any>[] = [];
@@ -747,7 +648,7 @@ class Streams {
               !isEmpty(response?.['data']) &&
               !isArray(response?.['data'])
             ) {
-              stream.observer.next(this.deepFreeze(response));
+              stream.observer.next(deepFreeze(response));
             } else if (
               stream.cacheStream &&
               stream.type === 'arrayOfObjects' &&
@@ -762,7 +663,7 @@ class Streams {
                   data = [...previousResponseData, response['data']];
                 }
 
-                return this.deepFreeze({
+                return deepFreeze({
                   ...previous,
                   data,
                 });
@@ -797,7 +698,7 @@ class Streams {
     bodyData: Record<string, any>,
     waitForRefetchesToResolve = false
   ) {
-    const apiEndpoint = this.removeTrailingSlash(unsafeApiEndpoint);
+    const apiEndpoint = removeTrailingSlash(unsafeApiEndpoint);
 
     try {
       const promises: Promise<any>[] = [];
@@ -821,7 +722,7 @@ class Streams {
           stream.observer.next(response);
         } else if (streamHasDataId && stream.type === 'arrayOfObjects') {
           stream.observer.next((previous) =>
-            this.deepFreeze({
+            deepFreeze({
               ...previous,
               data: previous.data.map((child) =>
                 child.id === dataId ? response['data'] : child
@@ -858,7 +759,7 @@ class Streams {
     waitForRefetchesToResolve = false,
     bodyData: Record<string, any> | null = null
   ) {
-    const apiEndpoint = this.removeTrailingSlash(unsafeApiEndpoint);
+    const apiEndpoint = removeTrailingSlash(unsafeApiEndpoint);
 
     try {
       const promises: Promise<any>[] = [];
@@ -878,7 +779,7 @@ class Streams {
           stream.observer.next(undefined);
         } else if (streamHasDataId && stream.type === 'arrayOfObjects') {
           stream.observer.next((previous) =>
-            this.deepFreeze({
+            deepFreeze({
               ...previous,
               data: previous.data.filter((child) => child.id !== dataId),
             })
