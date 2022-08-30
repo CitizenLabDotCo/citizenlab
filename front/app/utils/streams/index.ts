@@ -898,4 +898,6 @@ class Streams {
 }
 
 const streams = new Streams();
+
+export { Streams };
 export default streams;
