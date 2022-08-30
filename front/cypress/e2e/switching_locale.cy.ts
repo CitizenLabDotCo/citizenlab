@@ -1,4 +1,5 @@
-describe('Locale switcher', () => {
+// to be fixed in https://citizenlab.atlassian.net/browse/CL-1409
+describe.skip('Locale switcher', () => {
   beforeEach(() => {
     cy.goToLandingPage();
   });
