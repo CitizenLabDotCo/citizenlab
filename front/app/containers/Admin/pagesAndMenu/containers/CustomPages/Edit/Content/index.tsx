@@ -10,15 +10,25 @@ import Warning from 'components/UI/Warning';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
+// services
+import { updateCustomPage } from 'services/customPages';
+
+// hooks
+import useCustomPage from 'hooks/useCustomPage';
+
+// routing
+import { useParams } from 'react-router-dom';
+
 // utils
 import clHistory from 'utils/cl-router/history';
 
 // types
 const Component = () => {
+  const { customPageId } = useParams();
   // to be typed
   const sectionTogglesData = [
     {
-      name: 'homepage_banner',
+      name: 'banner_enabled',
       titleMessageDescriptor: messages.heroBanner,
       tooltipMessageDescriptor: messages.heroBannerTooltip,
       linkToPath: 'homepage-banner',
@@ -48,14 +58,18 @@ const Component = () => {
     },
     {
       name: 'attachments_enabled',
-      titleMessageDescriptor: messages.bottomInfoSection,
-      tooltipMessageDescriptor: messages.bottomInfoSectionTooltip,
+      titleMessageDescriptor: messages.attachmentsSection,
+      tooltipMessageDescriptor: messages.attachmentsSectionTooltip,
       linkToPath: 'attachments',
+      // until things are typed properly
       hideToggle: false,
     },
   ];
 
   const handleOnChangeToggle = (sectionName: string) => async () => {
+    updateCustomPage(customPageId, {
+      [sectionName]: true
+    })    
     // console.log(sectionName);
     return sectionName;
   };
@@ -66,6 +80,9 @@ const Component = () => {
       clHistory.push(`/admin/pages-menu/custom/edit/${url}/`);
     }
   };
+
+  const customPage = useCustomPage(customPageId)
+  console.log({ customPage })
 
   return (
     <PageWrapper>
