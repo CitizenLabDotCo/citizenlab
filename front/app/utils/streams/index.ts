@@ -388,7 +388,6 @@ class Streams {
 
     // If a stream with the calculated streamId does not yet exist
     if (!has(this.streams, streamId)) {
-      const { bodyData } = params;
       const lastUrlSegment = apiEndpoint.substr(
         apiEndpoint.lastIndexOf('/') + 1
       );
@@ -407,7 +406,7 @@ class Streams {
       const fetch = () => {
         return request<any>(
           apiEndpoint,
-          bodyData,
+          null,
           { method: 'GET' },
           queryParameters
         )
