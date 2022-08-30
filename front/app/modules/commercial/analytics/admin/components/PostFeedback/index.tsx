@@ -177,7 +177,7 @@ const PostFeedback = ({
             </Box>
           </ProgressBarsContainer>
         </Container>
-        <Box width="100%" height="100px" mt="30px" p="8px">
+        <Box width="100%" height="128px" mt="30px" p="8px">
           <StackedBarChart
             data={stackedBarsData}
             mapping={{
@@ -196,6 +196,7 @@ const PostFeedback = ({
             yaxis={{ hide: true }}
             legend={{
               items: stackedBarsLegendItems,
+              marginTop: 0,
             }}
           />
         </Box>
