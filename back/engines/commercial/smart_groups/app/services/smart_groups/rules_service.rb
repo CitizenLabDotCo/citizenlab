@@ -56,24 +56,12 @@ module SmartGroups
       cache_enabled = all_rules_cachable_by_users_scope?(groups)
 
       if cache_enabled
-        puts '##################### CACHING ENABLED'
-        puts '##################### CACHING ENABLED'
-        puts '##################### CACHING ENABLED'
-        puts '##################### CACHING ENABLED'
-        puts '##################### CACHING ENABLED'
         cache_key = calculate_cache_key(user_relation_object, groups)
         group_ids = Rails.cache.fetch(cache_key) do
-          puts '################## CACHE WRITE'
-          puts '################## CACHE WRITE'
-          puts '################## CACHE WRITE'
-          puts '################## CACHE WRITE'
-          puts '################## CACHE WRITE'
-          puts '################## CACHE WRITE'
           groups_in_common_for_users(user_relation_object, groups).pluck(:id)
         end
         groups.where(id: group_ids)
       else
-        puts '################# CACHE DISABLED'
         groups_in_common_for_users(user_relation_object, groups)
       end
     end
