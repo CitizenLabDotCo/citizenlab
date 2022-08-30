@@ -44,7 +44,6 @@ class AppConfiguration < ApplicationRecord
   validates :homepage_info_multiloc, multiloc: { presence: false, html: true }
   validate :validate_locales, on: :update
   validate :validate_singleton, on: :create
-  validate :validate_customizable_homepage_banner
 
   before_validation :validate_missing_feature_dependencies
 
