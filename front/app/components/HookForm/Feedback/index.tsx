@@ -125,7 +125,7 @@ const Feedback = ({
                       </Text>
                     </>
                   ) : (
-                    <>
+                    <Box data-testid="feedbackErrorMessage">
                       <Title color="red600" variant="h4">
                         {formatMessage(messages.errorTitle)}
                       </Title>
@@ -149,7 +149,7 @@ const Feedback = ({
                           </Text>
                         );
                       })}
-                    </>
+                    </Box>
                   )}
                 </>
               }
