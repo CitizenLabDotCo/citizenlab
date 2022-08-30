@@ -52,6 +52,17 @@ ActiveRecord::Schema.define(version: 2022_08_26_025846) do
     t.index ["rgt"], name: "index_admin_publications_on_rgt"
   end
 
+  create_table "analytics_dimension_dates", primary_key: "date", id: :date, force: :cascade do |t|
+    t.string "year"
+    t.string "month"
+    t.string "day"
+  end
+
+  create_table "analytics_dimension_types", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "parent"
+  end
+
   create_table "app_configurations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "host"
