@@ -69,7 +69,14 @@ const RulesGroupForm = ({
     try {
       await onSubmit(formValues);
     } catch (error) {
-      handleHookFormSubmissionError(error, methods.setError);
+      if (error.json.errors.rules) {
+        methods.setError('rules', {
+          type: 'pattern',
+          message: formatMessage(messages.rulesError),
+        });
+      } else {
+        handleHookFormSubmissionError(error, methods.setError);
+      }
     }
   };
 
