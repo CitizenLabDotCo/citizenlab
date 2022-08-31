@@ -1,4 +1,3 @@
-import { Observer, Observable, Subscription } from 'rxjs';
 import {
   startWith,
   scan,
@@ -7,6 +6,9 @@ import {
   refCount,
   publishReplay,
 } from 'rxjs/operators';
+import modules from 'modules';
+
+// utils
 import {
   includes,
   flatten,
@@ -24,13 +26,7 @@ import {
   uniq,
 } from 'lodash-es';
 import request from 'utils/request';
-import { authApiEndpoint } from 'services/auth';
-import { currentAppConfigurationEndpoint } from 'services/appConfiguration';
-import { currentOnboardingCampaignsApiEndpoint } from 'services/onboardingCampaigns';
 import { reportError } from 'utils/loggingUtils';
-import modules from 'modules';
-
-// utils
 import {
   deepFreeze,
   sanitizeQueryParameters,
@@ -38,6 +34,15 @@ import {
   isSingleItemStream,
   getStreamId,
 } from './utils';
+
+// typings
+import { Observer, Observable, Subscription } from 'rxjs'; 
+
+// constants
+import { API_PATH } from 'containers/App/constants';
+import { authApiEndpoint } from 'services/auth';
+import { currentAppConfigurationEndpoint } from 'services/appConfiguration';
+import { currentOnboardingCampaignsApiEndpoint } from 'services/onboardingCampaigns';
 
 export type pureFn<T> = (arg: T) => T;
 
@@ -894,6 +899,13 @@ class Streams {
     });
 
     return await Promise.all(promises);
+  }
+
+  analytics(query: { data: IObject | IObject[] }) {
+    const apiEndpoint = `${API_PATH}/analytics`
+    const streamId = `${apiEndpoint}&${JSON.stringify(query)}`
+    
+    console.log(streamId)
   }
 }
 
