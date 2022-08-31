@@ -7,6 +7,3 @@ node_modules
 citizenlab.config.ee.json
 
 *.DS_Store
-
-# TODO REMOVE
-back/db/*
