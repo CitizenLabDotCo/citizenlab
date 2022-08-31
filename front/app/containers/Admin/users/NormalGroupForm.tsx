@@ -1,23 +1,31 @@
-// Libraries
 import React from 'react';
-import { isEmpty, values as getValues, every } from 'lodash-es';
 
-// Formik
-import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
-import FormikInputMultilocWithLocaleSwitcher from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
-import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
+// form
+import { useForm, FormProvider } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { object } from 'yup';
+import validateMultiloc from 'utils/yup/validateMultiloc';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import Feedback from 'components/HookForm/Feedback';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // Components
-import Error from 'components/UI/Error';
 import { SectionField } from 'components/admin/Section';
+import { Button } from '@citizenlab/cl2-component-library';
 
 // Typings
 import { Multiloc } from 'typings';
-export interface Props {}
+
+type Props = {
+  onSubmit: (formValues: NormalFormValues) => void | Promise<void>;
+  defaultValues?: Partial<NormalFormValues>;
+} & InjectedIntlProps;
+
 export interface NormalFormValues {
   title_multiloc: Multiloc;
   membership_type: MembershipType;
@@ -43,51 +51,55 @@ export const FooterContainer = styled.div`
   padding-bottom: 25px;
 `;
 
-export default class NormalGroupForm extends React.Component<
-  InjectedFormikProps<Props, NormalFormValues>
-> {
-  public static validate = (
-    values: NormalFormValues
-  ): FormikErrors<NormalFormValues> => {
-    const errors: FormikErrors<NormalFormValues> = {};
+const NormalGroupForm = ({
+  defaultValues,
+  onSubmit,
+  intl: { formatMessage },
+}: Props) => {
+  const schema = object({
+    title_multiloc: validateMultiloc('title error'),
+  });
 
-    if (every(getValues(values.title_multiloc), isEmpty)) {
-      errors.title_multiloc = [{ error: 'blank' }] as any;
+  const methods = useForm({
+    mode: 'onBlur',
+    defaultValues,
+    resolver: yupResolver(schema),
+  });
+
+  const onFormSubmit = async (formValues: NormalFormValues) => {
+    try {
+      await onSubmit(formValues);
+    } catch (error) {
+      handleHookFormSubmissionError(error, methods.setError);
     }
-    return errors;
   };
 
-  render() {
-    const { isSubmitting, errors, touched, status } = this.props;
-
-    return (
-      <Form>
+  return (
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit(onFormSubmit)}>
         <Fill>
           <SectionField>
-            <Field
-              id="group-title-field"
-              name="title_multiloc"
-              component={FormikInputMultilocWithLocaleSwitcher}
-              label={<FormattedMessage {...messages.fieldGroupName} />}
-            />
-            {touched.title_multiloc && (
-              <Error
-                fieldName="title_multiloc"
-                apiErrors={errors.title_multiloc as any}
+            <Feedback />
+          </SectionField>
+          <SectionField>
+            <SectionField>
+              <InputMultilocWithLocaleSwitcher
+                label={formatMessage(messages.fieldGroupName)}
+                type="text"
+                name="title_multiloc"
               />
-            )}
+            </SectionField>
           </SectionField>
         </Fill>
 
         <FooterContainer>
-          <FormikSubmitWrapper
-            buttonStyle="admin-dark"
-            isSubmitting={isSubmitting}
-            status={status}
-            touched={touched}
-          />
+          <Button type="submit" processing={methods.formState.isSubmitting}>
+            save
+          </Button>
         </FooterContainer>
-      </Form>
-    );
-  }
-}
+      </form>
+    </FormProvider>
+  );
+};
+
+export default injectIntl(NormalGroupForm);

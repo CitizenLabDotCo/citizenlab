@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { Formik, FormikActions } from 'formik';
 import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // Resources
@@ -65,9 +64,6 @@ import messages from './messages';
 // Services
 import { IGroupData, addGroup, MembershipType } from 'services/groups';
 
-// Typings
-import { CLErrorsJSON } from 'typings';
-import { isCLErrorJSON } from 'utils/errorUtils';
 import Outlet from 'components/Outlet';
 
 export interface Props {
@@ -111,26 +107,10 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
     this.setState({ groupCreationModal: groupType });
   };
 
-  handleSubmitForm = (
-    values: NormalFormValues,
-    { setErrors, setSubmitting, setStatus }: FormikActions<NormalFormValues>
-  ) => {
-    addGroup({ ...values })
-      .then(() => {
-        this.closeGroupCreationModal();
-      })
-      .catch((errorResponse) => {
-        if (isCLErrorJSON(errorResponse)) {
-          const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-          setErrors(apiErrors);
-        } else {
-          setStatus('error');
-        }
-        setSubmitting(false);
-      });
+  handleSubmitForm = async (values: NormalFormValues) => {
+    await addGroup({ ...values });
+    this.closeGroupCreationModal();
   };
-
-  renderNormalGroupForm = (props) => <NormalGroupForm {...props} />;
 
   renderModalHeader = () => {
     const { groupCreationModal } = this.state;
@@ -181,13 +161,10 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
             )}
 
             {groupCreationModal === 'manual' && (
-              <Formik
-                initialValues={{
-                  title_multiloc: {},
+              <NormalGroupForm
+                defaultValues={{
                   membership_type: 'manual',
                 }}
-                validate={NormalGroupForm.validate}
-                render={this.renderNormalGroupForm}
                 onSubmit={this.handleSubmitForm}
               />
             )}

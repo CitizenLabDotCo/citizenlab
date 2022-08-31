@@ -2,7 +2,6 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { Formik } from 'formik';
 import { isEmpty, isString } from 'lodash-es';
 
 // utils
@@ -40,9 +39,6 @@ import { deleteMembershipByUserId } from 'services/groupMemberships';
 import { injectTracks } from 'utils/analytics';
 import tracks from './tracks';
 
-// Typings
-import { CLErrorsJSON } from 'typings';
-import { isCLErrorJSON } from 'utils/errorUtils';
 import Outlet from 'components/Outlet';
 
 export interface InputProps {}
@@ -93,28 +89,16 @@ export class UsersGroup extends React.PureComponent<
     }
   };
 
-  handleSubmitForm =
-    (groupId: string) =>
-    (values: NormalFormValues, { setErrors, setSubmitting, setStatus }) => {
-      updateGroup(groupId, { ...values })
-        .then(() => {
-          streams.fetchAllWith({
-            dataId: [groupId],
-            apiEndpoint: [`${API_PATH}/users`, `${API_PATH}/groups`],
-            onlyFetchActiveStreams: true,
-          });
-          this.closeGroupEditionModal();
-        })
-        .catch((errorResponse) => {
-          if (isCLErrorJSON(errorResponse)) {
-            const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-            setErrors(apiErrors);
-          } else {
-            setStatus('error');
-          }
-          setSubmitting(false);
-        });
-    };
+  handleSubmitForm = (groupId: string) => async (values: NormalFormValues) => {
+    await updateGroup(groupId, { ...values });
+
+    await streams.fetchAllWith({
+      dataId: [groupId],
+      apiEndpoint: [`${API_PATH}/users`, `${API_PATH}/groups`],
+      onlyFetchActiveStreams: true,
+    });
+    this.closeGroupEditionModal();
+  };
 
   deleteGroup = (groupId: string) => () => {
     const deleteMessage = this.props.intl.formatMessage(
@@ -165,8 +149,6 @@ export class UsersGroup extends React.PureComponent<
     }
   };
 
-  renderNormalGroupForm = (props) => <NormalGroupForm {...props} />;
-
   renderModalHeader = () => {
     const { groupEditionModal } = this.state;
     if (groupEditionModal === 'manual') {
@@ -210,10 +192,8 @@ export class UsersGroup extends React.PureComponent<
           >
             <>
               {groupEditionModal === 'manual' && (
-                <Formik
-                  initialValues={group.attributes}
-                  validate={NormalGroupForm.validate}
-                  render={this.renderNormalGroupForm}
+                <NormalGroupForm
+                  defaultValues={group.attributes}
                   onSubmit={this.handleSubmitForm(group.id)}
                 />
               )}

@@ -14,6 +14,7 @@ import Input from 'components/HookForm/Input';
 import FileUploader from 'components/HookForm/FileUploader';
 import Feedback from 'components/HookForm/Feedback';
 import { SectionField } from 'components/admin/Section';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 // intl
 import messages from './messages';
@@ -34,7 +35,6 @@ import Outlet from 'components/Outlet';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { slugRexEx } from 'utils/textUtils';
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 // hooks
 import useLocale from 'hooks/useLocale';
