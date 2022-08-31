@@ -18,9 +18,8 @@ import tracks from 'containers/Admin/users/tracks';
 // styling
 import { colors } from 'utils/styleUtils';
 
-import Error, { TFieldName } from 'components/UI/Error';
+import Error from 'components/UI/Error';
 import { Controller, useFormContext } from 'react-hook-form';
-import { CLError } from 'typings';
 
 const Container = styled.div`
   width: 560px;
@@ -135,10 +134,6 @@ export const HookFormUserFilterConditions = ({ name }: { name: string }) => {
 
   const validationError = errors[name]?.message as string | undefined;
 
-  const apiError =
-    (errors[name]?.error as string | undefined) &&
-    ([errors[name]] as unknown as CLError[]);
-
   return (
     <>
       <Controller
@@ -157,15 +152,6 @@ export const HookFormUserFilterConditions = ({ name }: { name: string }) => {
           marginTop="8px"
           marginBottom="8px"
           text={validationError}
-          scrollIntoView={false}
-        />
-      )}
-      {apiError && (
-        <Error
-          fieldName={name as TFieldName}
-          apiErrors={apiError}
-          marginTop="8px"
-          marginBottom="8px"
           scrollIntoView={false}
         />
       )}
