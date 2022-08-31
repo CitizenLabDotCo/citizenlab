@@ -15,8 +15,8 @@ import validateMultiloc from 'utils/yup/validateMultiloc';
 import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
 import Button from 'components/UI/Button';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import SlugInput from 'components/HookForm/SlugInput';
 import { Box } from '@citizenlab/cl2-component-library';
-import SlugInput from 'components/admin/SlugInput';
 
 // intl
 import messages from './messages';
@@ -32,21 +32,22 @@ import clHistory from 'utils/cl-router/history';
 // types
 import { Multiloc } from 'typings';
 
-interface CreateCustomPageFormValues {
+interface FormValues {
   title_multiloc: Multiloc;
   slug?: string;
 }
 
 interface Props {
-  defaultValues?: CreateCustomPageFormValues;
+  defaultValues?: FormValues;
+  hideSlugInput?: boolean;
 }
 
 const CustomPageSettingsForm = ({
+  defaultValues,
   intl: { formatMessage },
+  hideSlugInput = false,
 }: Props & InjectedIntlProps) => {
-  const [slug, _setSlug] = useState<string | null>(null);
   const [_titleErrors, _setTitleErrors] = useState<Multiloc>({});
-  const [showSlugErrorMessage, _setShowSlugErrorMessage] = useState(false);
   // types still to change
   const [_error, setError] = useState({});
   const schema = object({
@@ -60,10 +61,12 @@ const CustomPageSettingsForm = ({
 
   const methods = useForm({
     mode: 'onBlur',
+    defaultValues,
     resolver: yupResolver(schema),
   });
+  const slug = methods.watch('slug');
 
-  const onFormSubmit = async (formValues: CreateCustomPageFormValues) => {
+  const onFormSubmit = async (formValues: FormValues) => {
     try {
       const { data } = await createCustomPageStream(formValues);
       clHistory.push(`/admin/pages-menu/custom/${data.id}/content`);
@@ -71,8 +74,6 @@ const CustomPageSettingsForm = ({
       setError(error);
     }
   };
-
-  const handleOnSlugChange = () => {};
 
   return (
     <FormProvider {...methods}>
@@ -95,14 +96,8 @@ const CustomPageSettingsForm = ({
                 type="text"
               />
             </Box>
-            {slug && (
-              <SlugInput
-                onSlugChange={handleOnSlugChange}
-                showSlugErrorMessage={showSlugErrorMessage}
-                apiErrors={null}
-                slug={slug}
-                pathnameWithoutSlug={'pages'}
-              />
+            {!hideSlugInput && (
+              <SlugInput slug={slug} pathnameWithoutSlug="pages" />
             )}
           </SectionField>
         </SectionFormWrapper>
