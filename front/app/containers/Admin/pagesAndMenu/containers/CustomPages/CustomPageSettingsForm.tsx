@@ -32,16 +32,17 @@ import clHistory from 'utils/cl-router/history';
 // types
 import { Multiloc } from 'typings';
 
-interface CreateCustomPageFormValues {
+interface FormValues {
   title_multiloc: Multiloc;
   slug?: string;
 }
 
 interface Props {
-  defaultValues?: CreateCustomPageFormValues;
+  defaultValues?: FormValues;
 }
 
 const CustomPageSettingsForm = ({
+  defaultValues,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const [slug, _setSlug] = useState<string | null>(null);
@@ -60,10 +61,11 @@ const CustomPageSettingsForm = ({
 
   const methods = useForm({
     mode: 'onBlur',
+    defaultValues,
     resolver: yupResolver(schema),
   });
 
-  const onFormSubmit = async (formValues: CreateCustomPageFormValues) => {
+  const onFormSubmit = async (formValues: FormValues) => {
     try {
       const { data } = await createCustomPageStream(formValues);
       clHistory.push(`/admin/pages-menu/custom/${data.id}/content`);
