@@ -17,17 +17,43 @@ let streams: Streams;
 const dummyAppConfig = {
   data: { id: 'auth-id', type: 'app_configuration', attributes: {} },
 };
-__setResponseFor(currentAppConfigurationEndpoint, dummyAppConfig);
+__setResponseFor(currentAppConfigurationEndpoint, null, dummyAppConfig);
 
 const dummyAuth = {
   data: { id: 'auth-id', type: 'user', attributes: {} },
 };
-__setResponseFor(authApiEndpoint, dummyAuth);
+__setResponseFor(authApiEndpoint, null, dummyAuth);
 
 const dummyTest = {
   data: { id: 'test-id', type: 'test', attributes: {} },
 };
-__setResponseFor('/web_api/v1/test', dummyTest);
+__setResponseFor('/web_api/v1/test', null, dummyTest);
+
+const dummyParamTestTrue = {
+  data: [
+    { id: 'param-id-1', type: 'param_test', attributes: {} },
+    { id: 'param-id-2', type: 'param_test', attributes: {} },
+  ],
+};
+
+__setResponseFor(
+  '/web_api/v1/param_test',
+  { some_param: true },
+  dummyParamTestTrue
+);
+
+const dummyParamTestFalse = {
+  data: [
+    { id: 'param-id-3', type: 'param_test', attributes: {} },
+    { id: 'param-id-4', type: 'param_test', attributes: {} },
+  ],
+};
+
+__setResponseFor(
+  '/web_api/v1/param_test',
+  { some_param: false },
+  dummyParamTestFalse
+);
 
 describe('streams.get', () => {
   beforeEach(async () => {
@@ -40,72 +66,182 @@ describe('streams.get', () => {
     jest.clearAllMocks();
   });
 
-  it('returns response in subscription of observable', async () => {
-    const { observable } = await streams.get({
-      apiEndpoint: '/web_api/v1/test',
+  describe('without params', () => {
+    it('returns response in subscription of observable', async () => {
+      const { observable } = await streams.get({
+        apiEndpoint: '/web_api/v1/test',
+      });
+
+      expect(observable).not.toBeUndefined();
+
+      let response;
+      observable.subscribe((data) => {
+        response = data;
+      });
+
+      expect(response).toEqual(dummyTest);
+      expect(request).toHaveBeenCalledTimes(1);
     });
 
-    expect(observable).not.toBeUndefined();
+    it('caches stream', async () => {
+      await streams.get({
+        apiEndpoint: '/web_api/v1/test',
+      });
 
-    let response;
-    observable.subscribe((data) => {
-      response = data;
+      await streams.get({
+        apiEndpoint: '/web_api/v1/test',
+      });
+
+      expect(request).toHaveBeenCalledTimes(1);
     });
 
-    expect(response).toEqual(dummyTest);
-    expect(request).toHaveBeenCalledTimes(1);
+    it('refetches when you reset and stream is active', async () => {
+      const { observable } = await streams.get({
+        apiEndpoint: '/web_api/v1/test',
+      });
+
+      expect(request.mock.calls).toEqual([
+        ['/web_api/v1/test', null, { method: 'GET' }, null],
+      ]);
+
+      // Make stream active by subscribing to it
+      observable.subscribe(() => {});
+
+      await streams.reset();
+
+      expect(request.mock.calls).toEqual([
+        ['/web_api/v1/test', null, { method: 'GET' }, null],
+        ['/web_api/v1/users/me', null, { method: 'GET' }, null],
+        ['/web_api/v1/app_configuration', null, { method: 'GET' }, null],
+        ['/web_api/v1/test', null, { method: 'GET' }, null],
+      ]);
+    });
+
+    it('does not refetch when you reset and stream is not active', async () => {
+      await streams.get({
+        apiEndpoint: '/web_api/v1/test',
+      });
+
+      expect(request.mock.calls).toEqual([
+        ['/web_api/v1/test', null, { method: 'GET' }, null],
+      ]);
+
+      await streams.reset();
+
+      expect(request.mock.calls).toEqual([
+        ['/web_api/v1/test', null, { method: 'GET' }, null],
+        ['/web_api/v1/users/me', null, { method: 'GET' }, null],
+        ['/web_api/v1/app_configuration', null, { method: 'GET' }, null],
+      ]);
+    });
   });
 
-  it('caches stream', async () => {
-    await streams.get({
-      apiEndpoint: '/web_api/v1/test',
+  describe('with params', () => {
+    it('returns response in subscription of observable', async () => {
+      const { observable: ob1 } = await streams.get({
+        apiEndpoint: '/web_api/v1/param_test',
+        queryParameters: {
+          some_param: true,
+        },
+      });
+
+      const { observable: ob2 } = await streams.get({
+        apiEndpoint: '/web_api/v1/param_test',
+        queryParameters: {
+          some_param: false,
+        },
+      });
+
+      let response1;
+      let response2;
+
+      ob1.subscribe((data) => {
+        response1 = data;
+      });
+      ob2.subscribe((data) => {
+        response2 = data;
+      });
+
+      expect(response1).toEqual(dummyParamTestTrue);
+      expect(response2).toEqual(dummyParamTestFalse);
     });
 
-    await streams.get({
-      apiEndpoint: '/web_api/v1/test',
+    it('caches stream with same params', async () => {
+      await streams.get({
+        apiEndpoint: '/web_api/v1/param_test',
+        queryParameters: {
+          some_param: true,
+        },
+      });
+
+      await streams.get({
+        apiEndpoint: '/web_api/v1/param_test',
+        queryParameters: {
+          some_param: true,
+        },
+      });
+
+      expect(request).toHaveBeenCalledTimes(1);
     });
 
-    expect(request).toHaveBeenCalledTimes(1);
-  });
+    it('does not cache stream with different params', async () => {
+      await streams.get({
+        apiEndpoint: '/web_api/v1/param_test',
+        queryParameters: {
+          some_param: true,
+        },
+      });
 
-  it('refetches when you reset and stream is active', async () => {
-    const { observable } = await streams.get({
-      apiEndpoint: '/web_api/v1/test',
+      await streams.get({
+        apiEndpoint: '/web_api/v1/param_test',
+        queryParameters: {
+          some_param: false,
+        },
+      });
+
+      expect(request).toHaveBeenCalledTimes(2);
     });
 
-    expect(request.mock.calls).toEqual([
-      ['/web_api/v1/test', null, { method: 'GET' }, null],
-    ]);
+    // it('refetches both active streams on reset', async () => {
+    //   const { observable: ob1 } = await streams.get({
+    //     apiEndpoint: '/web_api/v1/param_test',
+    //     queryParameters: {
+    //       some_param: true
+    //     }
+    //   });
 
-    // Make stream active by subscribing to it
-    observable.subscribe(() => {});
+    //   const { observable: ob2 } = await streams.get({
+    //     apiEndpoint: '/web_api/v1/param_test',
+    //     queryParameters: {
+    //       some_param: false
+    //     }
+    //   });
 
-    await streams.reset();
+    //   ob1.subscribe(() => {});
+    //   ob2.subscribe(() => {});
 
-    expect(request.mock.calls).toEqual([
-      ['/web_api/v1/test', null, { method: 'GET' }, null],
-      ['/web_api/v1/users/me', null, { method: 'GET' }, null],
-      ['/web_api/v1/app_configuration', null, { method: 'GET' }, null],
-      ['/web_api/v1/test', null, { method: 'GET' }, null],
-    ]);
-  });
+    //   expect(request.mock.calls).toEqual([
 
-  it('does not refetch when you reset and stream is not active', async () => {
-    await streams.get({
-      apiEndpoint: '/web_api/v1/test',
-    });
+    //   ]);
 
-    expect(request.mock.calls).toEqual([
-      ['/web_api/v1/test', null, { method: 'GET' }, null],
-    ]);
+    //   await streams.get({
+    //     apiEndpoint: '/web_api/v1/param_test',
+    //     queryParameters: {
+    //       some_param: true
+    //     }
+    //   });
 
-    await streams.reset();
+    //   await streams.get({
+    //     apiEndpoint: '/web_api/v1/param_test',
+    //     queryParameters: {
+    //       some_param: false
+    //     }
+    //   });
 
-    expect(request.mock.calls).toEqual([
-      ['/web_api/v1/test', null, { method: 'GET' }, null],
-      ['/web_api/v1/users/me', null, { method: 'GET' }, null],
-      ['/web_api/v1/app_configuration', null, { method: 'GET' }, null],
-    ]);
+    //   expect(request.mock.calls).toEqual([
+
+    //   ]);
+    // });
   });
 });
 
