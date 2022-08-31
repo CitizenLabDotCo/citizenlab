@@ -547,7 +547,9 @@ open_idea_project.project_images.create!(remote_image_url: 'https://res.cloudina
 open_idea_project.set_default_topics!
 
 # Create settings for Home Page.
-HomePage.create!
+HomePage.create!({
+  header_bg: Rails.root.join('spec/fixtures/header.jpg').open
+})
 
 User.find_each do |user|
   EmailCampaigns::UnsubscriptionToken.create!(user_id: user.id)
