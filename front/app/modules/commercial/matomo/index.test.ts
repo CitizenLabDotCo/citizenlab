@@ -13,9 +13,6 @@ jest.mock('routes', () => ({
 }));
 
 global.window = Object.create(window);
-Object.defineProperty(window, 'location', {
-  value: { pathname: '/en' },
-});
 
 describe('matomo', () => {
   beforeEach(() => {
@@ -29,19 +26,25 @@ describe('matomo', () => {
     expect(window._paq).toEqual([]);
   });
 
-  it('makes call for initial page after consent is given', () => {
+  // Note there is duplication in the values coming back from the array
+  // but Matomo deals with this and does not make duplicate requests
+  it('sets up matomo and makes call for initial page after consent is given', () => {
     (config as any).beforeMountApplication();
     eventEmitter.emit<any>('destinationConsentChanged', { matomo: true });
 
-    console.log(window._paq)
+    expect(window._paq).toContainEqual(['enableLinkTracking']);
+
+    trackPage('/en');
+    expect(window._paq).toContainEqual(['setCustomUrl', '/en']);
+    expect(window._paq).toContainEqual(['trackPageView', '/:locale']);
   });
 
-  it('tracks page change', () => {
+  it('tracks a page change', () => {
     (config as any).beforeMountApplication();
     eventEmitter.emit<any>('destinationConsentChanged', { matomo: true });
 
     trackPage('/en/sign-in');
 
-    console.log(window._paq)
-  })
+    expect(window._paq).toContainEqual(['trackPageView', '/:locale/sign-in']);
+  });
 });
