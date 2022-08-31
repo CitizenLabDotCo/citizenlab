@@ -39,11 +39,13 @@ interface FormValues {
 
 interface Props {
   defaultValues?: FormValues;
+  hideSlugInput?: boolean;
 }
 
 const CustomPageSettingsForm = ({
   defaultValues,
   intl: { formatMessage },
+  hideSlugInput = false,
 }: Props & InjectedIntlProps) => {
   const [_titleErrors, _setTitleErrors] = useState<Multiloc>({});
   // types still to change
@@ -62,6 +64,7 @@ const CustomPageSettingsForm = ({
     defaultValues,
     resolver: yupResolver(schema),
   });
+  const slug = methods.watch('slug');
 
   const onFormSubmit = async (formValues: FormValues) => {
     try {
@@ -72,7 +75,6 @@ const CustomPageSettingsForm = ({
     }
   };
 
-  const slug = methods.watch('slug');
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onFormSubmit)}>
@@ -94,7 +96,9 @@ const CustomPageSettingsForm = ({
                 type="text"
               />
             </Box>
-            <SlugInput slug={slug} pathnameWithoutSlug="pages" />
+            {!hideSlugInput && (
+              <SlugInput slug={slug} pathnameWithoutSlug="pages" />
+            )}
           </SectionField>
         </SectionFormWrapper>
       </form>
