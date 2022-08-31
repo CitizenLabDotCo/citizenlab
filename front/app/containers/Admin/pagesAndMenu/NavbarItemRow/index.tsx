@@ -107,8 +107,7 @@ export default ({
             ml="10px"
             data-testid="edit-button"
           >
-            Edit i2
-            {/* <FormattedMessage {...messages.editButton} /> */}
+            <FormattedMessage {...messages.editButton} />
           </Button>
         )}
 

@@ -19,10 +19,10 @@ const SlugInput = ({ slug, pathnameWithoutSlug }: Props) => {
   const locale = useLocale();
 
   if (!isNilOrError(appConfig)) {
-    const hostName = appConfig.data.attributes.host;
     const previewUrl = slug
-      ? `${hostName}/${locale}/${pathnameWithoutSlug}/${slug}`
+      ? `${appConfig.data.attributes.host}/${locale}/${pathnameWithoutSlug}/${slug}`
       : null;
+
     return (
       <SectionField>
         <Box mb="16px">

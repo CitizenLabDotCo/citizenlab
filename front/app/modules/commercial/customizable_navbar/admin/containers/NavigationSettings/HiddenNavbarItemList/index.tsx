@@ -38,7 +38,6 @@ const HiddenNavbarItemList = ({
   const removedDefaultNavbarItems = useRemovedDefaultNavbarItems();
   const pages = usePages();
   const pageSlugById = usePageSlugById();
-  const i2 = true;
 
   const notAllHooksRendered =
     isNilOrError(navbarItems) ||
@@ -64,9 +63,7 @@ const HiddenNavbarItemList = ({
   const handleClickEditButton = (item: IItemNotInNavbar) => () => {
     if (item.type !== 'page') return;
 
-    i2
-      ? clHistory.push(`${PAGES_MENU_PATH}/custom/${item.pageId}`)
-      : clHistory.push(`${PAGES_MENU_PATH}/pages/edit/${item.pageId}`);
+    clHistory.push(`${PAGES_MENU_PATH}/custom/${item.pageId}`);
   };
 
   const handleClickAdd = (item: IItemNotInNavbar) => () => {
