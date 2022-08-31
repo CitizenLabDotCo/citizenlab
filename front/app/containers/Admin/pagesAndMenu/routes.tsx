@@ -100,11 +100,19 @@ export default () => ({
             { path: '', element: <Navigate to="settings" /> },
             {
               path: 'settings',
-              element: <EditCustomPageSettings />,
+              element: (
+                <PageLoading>
+                  <EditCustomPageSettings />,
+                </PageLoading>
+              ),
             },
             {
               path: 'content',
-              element: <EditCustomPageContent />,
+              element: (
+                <PageLoading>
+                  <EditCustomPageContent />,
+                </PageLoading>
+              ),
             },
           ],
         },
