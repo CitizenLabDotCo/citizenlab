@@ -80,13 +80,7 @@ resource 'AppConfigurations' do
     ValidationErrorHelper.new.error_fields(self, AppConfiguration)
 
     let(:logo) { png_image_as_base64 'logo.png' }
-    let(:header_bg) { file_as_base64 'header.jpg', 'image/jpeg' }
     let(:favicon) { png_image_as_base64 'favicon.png' }
-    let(:homepage_info_multiloc) do
-      {
-        'en' => 'Awesome homepage info'
-      }
-    end
     let(:organization_name) do
       {
         'en' => 'TestTown',
@@ -110,7 +104,6 @@ resource 'AppConfigurations' do
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :attributes, :settings, :core, :organization_name, :en)).to eq 'TestTown'
       expect(json_response.dig(:data, :attributes, :favicon)).to be_present
-      expect(json_response.dig(:data, :attributes, :homepage_info_multiloc).stringify_keys).to match homepage_info_multiloc
       if CitizenLab.ee?
         expect(json_response.dig(:data, :attributes, :style, :signedOutHeaderOverlayColor)).to eq '#3467eb'
         expect(json_response.dig(:data, :attributes, :style, :signedInHeaderOverlayColor)).to eq '#db2577'
@@ -140,16 +133,6 @@ resource 'AppConfigurations' do
         assert_status 422
         json_response = json_parse(response_body)
         expect(json_response.dig(:errors, :settings)).to be_present
-      end
-    end
-
-    describe do
-      example 'The header image can be removed' do
-        configuration = AppConfiguration.instance
-        configuration.update(header_bg: Rails.root.join('spec/fixtures/header.jpg').open)
-        expect(configuration.reload.header_bg_url).to be_present
-        do_request app_configuration: { header_bg: nil }
-        expect(configuration.reload.header_bg_url).to be_nil
       end
     end
 
