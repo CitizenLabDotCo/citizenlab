@@ -69,23 +69,21 @@ export default ({
   onClickDeleteButton,
 }: Props) => {
   const handleOnClickEditButton = () => {
-    if (onClickEditButton) onClickEditButton();
+    onClickEditButton?.();
   };
 
   const handleOnClickAddButton = () => {
-    if (onClickAddButton && !addButtonDisabled) {
-      onClickAddButton();
+    if (!addButtonDisabled) {
+      onClickAddButton?.();
     }
   };
 
   const handleOnClickRemoveButton = () => {
-    if (onClickRemoveButton) onClickRemoveButton();
+    onClickRemoveButton?.();
   };
 
   const handleOnClickDeleteButton = () => {
-    if (onClickDeleteButton) {
-      onClickDeleteButton();
-    }
+    onClickDeleteButton?.();
   };
 
   return (
@@ -109,7 +107,8 @@ export default ({
             ml="10px"
             data-testid="edit-button"
           >
-            <FormattedMessage {...messages.editButton} />
+            Edit i2
+            {/* <FormattedMessage {...messages.editButton} /> */}
           </Button>
         )}
 

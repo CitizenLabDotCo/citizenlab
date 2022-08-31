@@ -36,6 +36,7 @@ const VisibleNavbarItemList = ({
 }: InjectedIntlProps) => {
   const navbarItems = useNavbarItems();
   const pageSlugById = usePageSlugById();
+  const i2 = true;
 
   if (isNilOrError(navbarItems) || isNilOrError(pageSlugById)) {
     return null;
@@ -51,7 +52,9 @@ const VisibleNavbarItemList = ({
     const pageData = navbarItem.relationships.static_page.data;
 
     pageData
-      ? clHistory.push(`${PAGES_MENU_PATH}/pages/edit/${pageData.id}`)
+      ? i2
+        ? clHistory.push(`${PAGES_MENU_PATH}/custom/${pageData.id}`)
+        : clHistory.push(`${PAGES_MENU_PATH}/pages/edit/${pageData.id}`)
       : clHistory.push(`${PAGES_MENU_PATH}/navbar-items/edit/${navbarItem.id}`);
   };
 
