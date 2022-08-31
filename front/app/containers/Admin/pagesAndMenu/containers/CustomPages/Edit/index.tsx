@@ -2,7 +2,6 @@ import React from 'react';
 
 // components
 import TabbedResource from 'components/admin/TabbedResource';
-import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
 import { Box } from '@citizenlab/cl2-component-library';
 import Breadcrumbs from 'components/UI/Breadcrumbs';
 import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
@@ -36,7 +35,7 @@ const CustomPagesEditSettings = ({
 
   const pageTitleMultiloc = customPage.attributes.title_multiloc;
   return (
-    <SectionFormWrapper>
+    <>
       <HelmetIntl title={messages.editCustomPageMetaTitle} />
       <Box mb="16px">
         <Breadcrumbs
@@ -69,7 +68,7 @@ const CustomPagesEditSettings = ({
       >
         <RouterOutlet />
       </TabbedResource>
-    </SectionFormWrapper>
+    </>
   );
 };
 
