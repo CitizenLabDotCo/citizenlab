@@ -24,8 +24,6 @@ class AppConfiguration < ApplicationRecord
   has_many :text_images, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :text_images
 
-  before_validation :sanitize_homepage_info_multiloc
-
   validates :settings, presence: true, json: {
     schema: -> { AppConfiguration::Settings.json_schema_str },
     message: lambda { |errors|
@@ -38,7 +36,6 @@ class AppConfiguration < ApplicationRecord
 
   validates :host, presence: true
   validate :validate_host_format
-  validates :homepage_info_multiloc, multiloc: { presence: false, html: true }
   validate :validate_locales, on: :update
   validate :validate_singleton, on: :create
 
@@ -167,18 +164,6 @@ class AppConfiguration < ApplicationRecord
   end
 
   private
-
-  def sanitize_homepage_info_multiloc
-    return if homepage_info_multiloc.blank?
-
-    service = SanitizationService.new
-    self.homepage_info_multiloc = service.sanitize_multiloc(
-      homepage_info_multiloc,
-      %i[title alignment list decoration link image video]
-    )
-    self.homepage_info_multiloc = service.remove_multiloc_empty_trailing_tags homepage_info_multiloc
-    self.homepage_info_multiloc = service.linkify_multiloc homepage_info_multiloc
-  end
 
   def validate_missing_feature_dependencies
     missing_dependencies = SettingsService.new.missing_dependencies(settings, Settings.json_schema)

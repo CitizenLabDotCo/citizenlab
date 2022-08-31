@@ -16,10 +16,4 @@ class WebApi::V1::AppConfigurationSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :settings, &:public_settings
-
-  attribute :homepage_info_multiloc, if: proc { |object, _|
-    object.homepage_info_multiloc.present?
-  } do |object|
-    TextImageService.new.render_data_images object, :homepage_info_multiloc
-  end
 end
