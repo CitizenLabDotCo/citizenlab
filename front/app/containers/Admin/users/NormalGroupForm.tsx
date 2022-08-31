@@ -78,7 +78,10 @@ const NormalGroupForm = ({
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onFormSubmit)}>
+      <form
+        onSubmit={methods.handleSubmit(onFormSubmit)}
+        data-testid="normalGroupForm"
+      >
         <Fill>
           <SectionField>
             <Feedback />
