@@ -25,7 +25,7 @@ const surveyConfig: ParticipationMethodConfig = {
 };
 
 const budgetingConfig: ParticipationMethodConfig = {
-  formEditor: null,
+  formEditor: 'simpleFormEditor',
 };
 
 const pollConfig: ParticipationMethodConfig = {
