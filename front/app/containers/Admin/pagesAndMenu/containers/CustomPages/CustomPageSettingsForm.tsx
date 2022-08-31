@@ -15,8 +15,8 @@ import validateMultiloc from 'utils/yup/validateMultiloc';
 import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
 import Button from 'components/UI/Button';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import SlugInput from 'components/HookForm/SlugInput';
 import { Box } from '@citizenlab/cl2-component-library';
-import SlugInput from 'components/admin/SlugInput';
 
 // intl
 import messages from './messages';
@@ -45,9 +45,7 @@ const CustomPageSettingsForm = ({
   defaultValues,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
-  const [slug, _setSlug] = useState<string | null>(null);
   const [_titleErrors, _setTitleErrors] = useState<Multiloc>({});
-  const [showSlugErrorMessage, _setShowSlugErrorMessage] = useState(false);
   // types still to change
   const [_error, setError] = useState({});
   const schema = object({
@@ -74,8 +72,7 @@ const CustomPageSettingsForm = ({
     }
   };
 
-  const handleOnSlugChange = () => {};
-
+  const slug = methods.watch('slug');
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onFormSubmit)}>
@@ -97,15 +94,7 @@ const CustomPageSettingsForm = ({
                 type="text"
               />
             </Box>
-            {slug && (
-              <SlugInput
-                onSlugChange={handleOnSlugChange}
-                showSlugErrorMessage={showSlugErrorMessage}
-                apiErrors={null}
-                slug={slug}
-                pathnameWithoutSlug={'pages'}
-              />
-            )}
+            <SlugInput slug={slug} pathnameWithoutSlug="pages" />
           </SectionField>
         </SectionFormWrapper>
       </form>
