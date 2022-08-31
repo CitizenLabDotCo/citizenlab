@@ -3,12 +3,7 @@ import Input from 'components/HookForm/Input';
 import { SectionField } from 'components/admin/Section';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import {
-  Label,
-  Box,
-  Text,
-  IconTooltip,
-} from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 import { isNilOrError } from 'utils/helperUtils';
 import useLocale from 'hooks/useLocale';
@@ -30,26 +25,18 @@ const SlugInput = ({ slug, pathnameWithoutSlug }: Props) => {
       : null;
     return (
       <SectionField>
-        <Box display="flex" alignItems="center">
-          <Label htmlFor="slug">
-            <FormattedMessage {...messages.pageUrl} />
-          </Label>
-          {/*
-            Adding this margin-bottom is bad, label shouldn't have default margin-bottom.
-            Or ideally have a tooltip prop.
-          */}
-          <Box mb="14px">
-            <IconTooltip
-              content={<FormattedMessage {...messages.slugTooltip} />}
-            />
-          </Box>
-        </Box>
         <Box mb="16px">
           <Warning>
             <FormattedMessage {...messages.brokenURLWarning} />
           </Warning>
         </Box>
-        <Input id="slug" name="slug" type="text" />
+        <Input
+          label={<FormattedMessage {...messages.pageUrl} />}
+          labelTooltipText={<FormattedMessage {...messages.slugTooltip} />}
+          id="slug"
+          name="slug"
+          type="text"
+        />
         <Text>
           <b>
             <FormattedMessage {...messages.resultingPageURL} />
