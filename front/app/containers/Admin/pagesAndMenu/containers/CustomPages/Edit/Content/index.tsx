@@ -51,7 +51,7 @@ const CustomPagesEditContent = () => {
       name: 'banner_enabled',
       titleMessageDescriptor: sectionToggleMessages.heroBanner,
       tooltipMessageDescriptor: sectionToggleMessages.heroBannerTooltip,
-      linkToPath: 'homepage-banner',
+      linkToPath: 'banner',
     },
     {
       name: 'top_info_section_enabled',
