@@ -1,4 +1,5 @@
 import { randomString, apiRemoveProject } from '../support/commands';
+import moment = require('moment');
 
 describe('Idea form settings', () => {
   const projectTitle = randomString();
@@ -182,6 +183,158 @@ describe('Idea form settings', () => {
           );
         });
       });
+    });
+  });
+
+  describe('Input form tab', () => {
+    const projectIds: string[] = [];
+    let continousIdeationProjectId: string;
+    let timelineIdeationProjectId: string;
+    let continousPollProjectId: string;
+    let timelineWithoutIdeationProjectId: string;
+    let continouusBudgetProjectId: string;
+
+    const projectTitle = randomString();
+    const projectDescriptionPreview = randomString();
+    const projectDescription = randomString();
+
+    before(() => {
+      // continous ideation project
+      cy.apiCreateProject({
+        type: 'continuous',
+        title: projectTitle,
+        descriptionPreview: projectDescriptionPreview,
+        description: projectDescription,
+        publicationStatus: 'published',
+        participationMethod: 'ideation',
+      }).then((project) => {
+        projectIds.push(project.body.data.id);
+        continousIdeationProjectId = project.body.data.id;
+      });
+      // Timeline ideation project
+      cy.apiCreateProject({
+        type: 'timeline',
+        title: projectTitle,
+        descriptionPreview: projectDescriptionPreview,
+        description: projectDescription,
+        publicationStatus: 'published',
+      }).then((project) => {
+        timelineIdeationProjectId = project.body.data.id;
+        cy.apiCreatePhase(
+          timelineIdeationProjectId,
+          'phaseTitle',
+          moment().subtract(2, 'month').format('DD/MM/YYYY'),
+          moment().add(2, 'days').format('DD/MM/YYYY'),
+          'ideation',
+          true,
+          true,
+          true
+        );
+      });
+
+      // continous poll project
+      cy.apiCreateProject({
+        type: 'continuous',
+        title: projectTitle,
+        descriptionPreview: projectDescriptionPreview,
+        description: projectDescription,
+        publicationStatus: 'draft',
+        participationMethod: 'poll',
+      }).then((project) => {
+        continousPollProjectId = project.body.data.id;
+        projectIds.push(continousPollProjectId);
+      });
+
+      // Continous budget project
+      cy.apiCreateProject({
+        type: 'continuous',
+        title: projectTitle,
+        descriptionPreview: projectDescriptionPreview,
+        description: projectDescription,
+        publicationStatus: 'draft',
+        participationMethod: 'budgeting',
+        maxBudget: 100,
+      }).then((project) => {
+        continouusBudgetProjectId = project.body.data.id;
+        projectIds.push(continouusBudgetProjectId);
+      });
+
+      // Timeline project without ideation phase
+      cy.apiCreateProject({
+        type: 'timeline',
+        title: projectTitle,
+        descriptionPreview: projectDescriptionPreview,
+        description: projectDescription,
+        publicationStatus: 'published',
+      }).then((project) => {
+        timelineWithoutIdeationProjectId = project.body.data.id;
+        cy.apiCreatePhase(
+          timelineWithoutIdeationProjectId,
+          'phaseTitle',
+          moment().subtract(2, 'month').format('DD/MM/YYYY'),
+          moment().add(2, 'days').format('DD/MM/YYYY'),
+          'poll',
+          true,
+          true,
+          true
+        );
+        cy.apiCreatePhase(
+          timelineWithoutIdeationProjectId,
+          'phaseTitle',
+          moment().add(3, 'days').format('DD/MM/YYYY'),
+          moment().add(2, 'month').format('DD/MM/YYYY'),
+          'ideation',
+          true,
+          true,
+          true
+        );
+        cy.apiCreatePhase(
+          timelineWithoutIdeationProjectId,
+          'phaseTitle',
+          moment().add(5, 'month').format('DD/MM/YYYY'),
+          moment().add(7, 'month').format('DD/MM/YYYY'),
+          'budgeting',
+          true,
+          true,
+          true,
+          projectDescription,
+          'Test',
+          'typeform',
+          400
+        );
+      });
+
+      cy.setAdminLoginCookie();
+    });
+
+    after(() => {
+      projectIds.forEach((id) => {
+        cy.apiRemoveProject(id);
+      });
+    });
+
+    it('is shown for projects with ideation', () => {
+      // Continous ideation project
+      cy.visit(`admin/projects/${continousIdeationProjectId}/ideaform`);
+      cy.get('#e2e-ideaform-settings-container').should('exist');
+
+      // Timeline project with ideation phase
+      cy.visit(`admin/projects/${timelineIdeationProjectId}/ideaform`);
+      cy.get('#e2e-ideaform-settings-container').should('exist');
+    });
+
+    it('is not shown for projects without an ideation phase', () => {
+      // Continous poll project
+      cy.visit(`admin/projects/${continousPollProjectId}/ideaform`);
+      cy.get('#e2e-ideaform-settings-container').should('not.exist');
+
+      // Timeline project without ideation
+      cy.visit(`admin/projects/${timelineWithoutIdeationProjectId}/ideaform`);
+      cy.get('#e2e-ideaform-settings-container').should('not.exist');
+
+      // Continous budget project
+      cy.visit(`admin/projects/${continouusBudgetProjectId}/ideaform`);
+      cy.get('#e2e-ideaform-settings-container').should('not.exist');
     });
   });
 
