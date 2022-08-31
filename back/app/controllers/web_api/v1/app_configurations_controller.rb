@@ -10,7 +10,6 @@ class WebApi::V1::AppConfigurationsController < ApplicationController
   def update
     update_configuration!(app_configuration, config_params)
     side_fx_service = SideFxAppConfigurationService.new
-    side_fx_service.before_update(app_configuration, current_user)
 
     if app_configuration.save
       side_fx_service.after_update(app_configuration, current_user)
