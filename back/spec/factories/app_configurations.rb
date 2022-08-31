@@ -23,12 +23,7 @@ FactoryBot.define do
           'color_secondary' => Faker::Color.hex_color,
           'color_text' => Faker::Color.hex_color
         },
-        'customizable_homepage_banner' => {
-          'allowed' => true,
-          'layout' => 'full_width_banner_layout',
-          'cta_signed_out_type' => 'sign_up_button',
-          'cta_signed_in_type' => 'no_button'
-        },
+        'customizable_homepage_banner' => { 'allowed' => true },
         'initiatives' => {
           'enabled' => true,
           'allowed' => true,
@@ -69,12 +64,7 @@ FactoryBot.define do
           'color_secondary' => Faker::Color.hex_color,
           'color_text' => Faker::Color.hex_color
         },
-        'customizable_homepage_banner' => {
-          'allowed' => true,
-          'layout' => 'full_width_banner_layout',
-          'cta_signed_out_type' => 'sign_up_button',
-          'cta_signed_in_type' => 'no_button'
-        },
+        'customizable_homepage_banner' => { 'allowed' => true },
         'initiatives' => {
           'enabled' => true,
           'allowed' => true,
