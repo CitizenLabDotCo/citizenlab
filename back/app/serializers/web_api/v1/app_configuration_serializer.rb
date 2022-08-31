@@ -7,10 +7,6 @@ class WebApi::V1::AppConfigurationSerializer < WebApi::V1::BaseSerializer
     object.logo && object.logo.versions.to_h { |k, v| [k.to_s, v.url] }
   end
 
-  attribute :header_bg do |object|
-    object.header_bg && object.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
-  end
-
   attribute :favicon do |object|
     object.favicon && object.favicon.versions.to_h { |k, v| [k.to_s, v.url] }
   end

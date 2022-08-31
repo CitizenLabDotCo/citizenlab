@@ -18,7 +18,6 @@ class AppConfiguration < ApplicationRecord
   include StyleSettings
 
   mount_base64_uploader :logo, LogoUploader
-  mount_base64_uploader :header_bg, AppHeaderBgUploader
   mount_base64_uploader :favicon, FaviconUploader
 
   has_many :text_images, as: :imageable, dependent: :destroy
