@@ -32,7 +32,11 @@ const configuration: ModuleConfiguration = {
         (method) => getMethodConfig(method).formEditor === 'simpleFormEditor'
       );
       if (showTab) {
-        return <Tab {...props} />;
+        return (
+          <div id="e2e-ideaform-settings-container">
+            <Tab {...props} />
+          </div>
+        );
       }
       return null;
     },

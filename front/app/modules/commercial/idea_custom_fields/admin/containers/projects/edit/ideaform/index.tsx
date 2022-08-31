@@ -210,10 +210,7 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(
 
     if (!isNilOrError(ideaCustomFields)) {
       return (
-        <Container
-          className={className || ''}
-          id="e2e-ideaform-settings-container"
-        >
+        <Container className={className || ''}>
           <Header>
             <TitleContainer>
               <StyledSectionTitle>
