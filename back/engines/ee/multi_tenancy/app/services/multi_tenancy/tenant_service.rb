@@ -156,7 +156,6 @@ module MultiTenancy
     # @param [Hash] attrs attributes (hash-like)
     def remove_images!(app_config, attrs)
       app_config.remove_logo! if attrs.include?('logo') && attrs['logo'].nil?
-      app_config.remove_header_bg! if attrs.include?('header_bg') && attrs['header_bg'].nil?
       app_config.remove_favicon! if attrs.include?('favicon') && attrs['favicon'].nil?
     end
   end
