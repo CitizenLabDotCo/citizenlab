@@ -27,7 +27,7 @@ export default function VisibleNavbarItemList() {
     const pageData = navbarItem.relationships.static_page.data;
 
     pageData
-      ? clHistory.push(`${PAGES_MENU_PATH}/pages/edit/${pageData.id}`)
+      ? clHistory.push(`${PAGES_MENU_PATH}/custom/${pageData.id}`)
       : clHistory.push(`${PAGES_MENU_PATH}/navbar-items/edit/${navbarItem.id}`);
   };
 
