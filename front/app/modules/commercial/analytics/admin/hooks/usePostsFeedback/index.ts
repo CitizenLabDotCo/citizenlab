@@ -67,7 +67,7 @@ interface PostFeedback {
   stackedBarColumns: string[];
   statusColorById: Record<string, string>;
   stackedBarPercentages: number[];
-  stackedBarsLegendItems: LegendItem[][]; 
+  stackedBarsLegendItems: LegendItem[][];
   xlsxData: object;
 }
 
@@ -165,9 +165,9 @@ export default function usePostsWithFeedback(
         const stackedBarPercentages = parseStackedBarsPercentages(statusRows);
 
         const stackedBarsLegendItems = parseStackedBarsLegendItems(
-          statusRows, 
+          statusRows,
           localize
-        )
+        );
 
         const xlsxData = parseExcelData(feedbackRow, translations);
 
@@ -186,7 +186,7 @@ export default function usePostsWithFeedback(
         });
       }
     );
-  }, [projectId, startAt, endAt, formatMessage]);
+  }, [projectId, startAt, endAt, formatMessage, localize]);
 
   return postsWithFeedback;
 }
