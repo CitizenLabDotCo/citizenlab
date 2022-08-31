@@ -43,7 +43,7 @@ const configuration: ModuleConfiguration = {
   beforeMountApplication: () => {
     const allAppPaths = getAllPathsFromRoutes(createRoutes()[0]);
 
-    function trackMatomoPageview(path: string) {
+    function trackMatomoPageView(path: string) {
       const locale = getUrlLocale(path);
       locale && window._paq.push(['setCustomDimension', 3, locale]);
       window._paq.push(['setCustomUrl', path]);
@@ -76,29 +76,29 @@ const configuration: ModuleConfiguration = {
         return;
       }
 
-      /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
       window._paq = window._paq || [];
 
+      // Logout / login
       if (!isNilOrError(user)) {
         window._paq.push(['setUserId', user.data.id]);
       } else {
         window._paq.push(['resetUserId']);
       }
 
-      // Setup Matomo, but only do this initialisation once
+      // Setup Matomo, all these _paq vars only need initialising once (before matomo.js is loaded)
       if (Array.isArray(window._paq)) {
-        window._paq.push(['enableLinkTracking']);
-        window._paq.push(['enableHeartBeatTimer']);
-        window._paq.push([
-          'setDomains',
-          `${appConfiguration.data.attributes.host}/*`,
-        ]);
-        window._paq.push([
-          'setCookieDomain',
-          `${appConfiguration.data.attributes.host}/*`,
-        ]);
-
         (function () {
+          window._paq.push(['enableLinkTracking']);
+          window._paq.push(['enableHeartBeatTimer']);
+          window._paq.push([
+            'setDomains',
+            `${appConfiguration.data.attributes.host}/*`,
+          ]);
+          window._paq.push([
+            'setCookieDomain',
+            `${appConfiguration.data.attributes.host}/*`,
+          ]);
+
           // Configure tracking to the global site used for product analytics
           if (
             appConfiguration.data.attributes.settings.matomo?.product_site_id
@@ -120,6 +120,21 @@ const configuration: ModuleConfiguration = {
             ]);
           }
 
+          // Tenant name & Tenant ID custom fields - stored at visit level
+          if (!isNilOrError(appConfiguration)) {
+            window._paq.push([
+              'setCustomDimension',
+              1,
+              appConfiguration.data.attributes.name,
+            ]);
+            window._paq.push([
+              'setCustomDimension',
+              2,
+              appConfiguration.data.id,
+            ]);
+          }
+
+          // Attach Matomo tracker
           const d = document;
           const g = d.createElement('script');
           const s = d.getElementsByTagName('script')[0];
@@ -129,16 +144,6 @@ const configuration: ModuleConfiguration = {
           g.id = 'internal_matomo_analytics';
           s?.parentNode?.insertBefore(g, s);
         })();
-
-        if (!isNilOrError(appConfiguration)) {
-          window._paq.push([
-            'setCustomDimension',
-            1,
-            appConfiguration.data.attributes.name,
-          ]);
-          window._paq.push(['setCustomDimension', 2, appConfiguration.data.id]);
-        }
-        trackMatomoPageview(window.location.pathname); // Track first path hit onload
       }
     });
 
@@ -172,7 +177,7 @@ const configuration: ModuleConfiguration = {
       currentAppConfigurationStream().observable,
     ]).subscribe(([pageChange, _]) => {
       if (window._paq) {
-        trackMatomoPageview(pageChange.path);
+        trackMatomoPageView(pageChange.path);
       }
     });
 
