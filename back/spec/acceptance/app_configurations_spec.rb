@@ -90,12 +90,7 @@ resource 'AppConfigurations' do
     end
 
     if CitizenLab.ee?
-      let(:style) do
-        {
-          'signedOutHeaderOverlayColor' => '#3467eb',
-          'signedInHeaderOverlayColor' => '#db2577'
-        }
-      end
+      let(:style) { { signedInHeaderOverlayColor: '#db2577' } }
     end
 
     example_request 'Update the app configuration' do
@@ -105,7 +100,6 @@ resource 'AppConfigurations' do
       expect(json_response.dig(:data, :attributes, :settings, :core, :organization_name, :en)).to eq 'TestTown'
       expect(json_response.dig(:data, :attributes, :favicon)).to be_present
       if CitizenLab.ee?
-        expect(json_response.dig(:data, :attributes, :style, :signedOutHeaderOverlayColor)).to eq '#3467eb'
         expect(json_response.dig(:data, :attributes, :style, :signedInHeaderOverlayColor)).to eq '#db2577'
       end
     end
