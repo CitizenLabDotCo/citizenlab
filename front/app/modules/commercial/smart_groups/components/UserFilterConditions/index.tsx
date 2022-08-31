@@ -57,7 +57,7 @@ const AddButton = styled(Button)`
 `;
 
 type Props = {
-  rules: TRule[];
+  groupRules: TRule[];
   onChange: (rules: TRule[]) => void;
 };
 
@@ -69,30 +69,30 @@ interface Tracks {
 
 class UserFilterConditions extends React.PureComponent<Props & Tracks, State> {
   handleOnChangeRule = (index) => (rule: TRule) => {
-    const newRules = clone(this.props.rules);
+    const newRules = clone(this.props.groupRules);
     newRules.splice(index, 1, rule);
     this.props.onChange(newRules);
   };
 
   handleOnRemoveRule = (index) => () => {
-    const newRules = clone(this.props.rules);
+    const newRules = clone(this.props.groupRules);
     newRules.splice(index, 1);
     this.props.onChange(newRules);
   };
 
   handleOnAddRule = () => {
     this.props.trackConditionAdd();
-    const newRules = clone(this.props.rules);
+    const newRules = clone(this.props.groupRules);
     newRules.push({});
     this.props.onChange(newRules);
   };
 
   render() {
-    const { rules } = this.props;
+    const { groupRules } = this.props;
     return (
       <Container>
         <RulesList>
-          {rules.map((rule, index) => (
+          {groupRules.map((rule, index) => (
             <Rule
               key={index}
               ruleName={`e2e-rule-${index}`}
@@ -121,29 +121,16 @@ const UserFilterConditionsWithHoc = injectTracks<Props>({
   trackConditionAdd: tracks.conditionAdd,
 })(UserFilterConditions);
 
-export const HookFormUserFilterConditions = ({
-  name,
-  isVerificationEnabled,
-}: {
-  name: string;
-  isVerificationEnabled: boolean;
-}) => {
+export const HookFormUserFilterConditions = ({ name }: { name: string }) => {
   const {
     formState: { errors },
     control,
     setValue,
     getValues,
-    setError,
   } = useFormContext();
 
-  const handleOnChange = (newValue) => {
+  const handleOnChange = (newValue: TRule[]) => {
     setValue(name, newValue);
-    if (
-      !isVerificationEnabled &&
-      newValue.find((rule: TRule) => rule.ruleType === 'verified')
-    ) {
-      setError(name, { type: 'pattern', message: 'verification error' });
-    }
   };
 
   const validationError = errors[name]?.message as string | undefined;
@@ -157,11 +144,11 @@ export const HookFormUserFilterConditions = ({
       <Controller
         name={name}
         control={control}
-        render={({ field: { ...field } }) => (
+        render={({ field: { ref: _ref, ...field } }) => (
           <UserFilterConditionsWithHoc
             {...field}
             onChange={handleOnChange}
-            rules={getValues(name)}
+            groupRules={getValues(name)}
           />
         )}
       />

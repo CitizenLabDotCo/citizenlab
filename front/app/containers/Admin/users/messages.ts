@@ -142,6 +142,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Users.GroupCreation.fieldGroupName',
     defaultMessage: 'Name of the group',
   },
+  fieldGroupNameError: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.fieldGroupNameError',
+    defaultMessage: 'Provide a group name for all languages',
+  },
+  saveGroup: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.saveGroup',
+    defaultMessage: 'Save group',
+  },
   select: {
     id: 'app.containers.AdminPage.Users.GroupsPanel.select',
     defaultMessage: 'Select',

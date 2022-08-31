@@ -15,4 +15,16 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Users.UsersGroup.rulesError',
     defaultMessage: 'Some conditions are incomplete',
   },
+  atLeastOneRuleError: {
+    id: 'app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError',
+    defaultMessage: 'Provide at least one rule',
+  },
+  titleFieldError: {
+    id: 'app.containers.AdminPage.Users.UsersGroup.titleFieldError',
+    defaultMessage: 'Provide group name for all languages',
+  },
+  saveGroup: {
+    id: 'app.containers.AdminPage.Users.UsersGroup.saveGroup',
+    defaultMessage: 'Save group',
+  },
 });

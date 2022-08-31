@@ -54,8 +54,22 @@ const RulesGroupForm = ({
   isVerificationEnabled,
 }: Props) => {
   const schema = object({
-    title_multiloc: validateMultiloc('title error'),
-    rules: array().required('add a rule'),
+    title_multiloc: validateMultiloc(formatMessage(messages.titleFieldError)),
+    rules: array()
+      .test(
+        'verificationEnabled',
+        formatMessage(messages.verificationDisabled),
+        function (rules: TRule[]) {
+          // Fails validation when a verification rule is added to a platform with disabled verification
+          if (
+            rules.find((rule) => rule.ruleType === 'verified') &&
+            !isVerificationEnabled
+          ) {
+            return false;
+          } else return true;
+        }
+      )
+      .min(1, formatMessage(messages.atLeastOneRuleError)),
     membership_type: string().oneOf(['rules']).required(),
   });
 
@@ -67,11 +81,13 @@ const RulesGroupForm = ({
 
   const onFormSubmit = async (formValues: RulesFormValues) => {
     try {
-      await onSubmit(formValues);
+      if (methods.formState.isValid) {
+        await onSubmit(formValues);
+      }
     } catch (error) {
       if (error.json.errors.rules) {
         methods.setError('rules', {
-          type: 'pattern',
+          type: 'custom',
           message: formatMessage(messages.rulesError),
         });
       } else {
@@ -100,27 +116,13 @@ const RulesGroupForm = ({
               <FormattedMessage {...messages.rulesExplanation} />
             </Label>
 
-            <HookFormUserFilterConditions
-              name="rules"
-              isVerificationEnabled={isVerificationEnabled}
-            />
-            {/* {touched.rules && errors.rules && (
-              <Error
-                text={
-                  (errors.rules as any) === 'verificationDisabled' ? (
-                    <FormattedMessage {...messages.verificationDisabled} />
-                  ) : (
-                    <FormattedMessage {...messages.rulesError} />
-                  )
-                }
-              />
-            )} */}
+            <HookFormUserFilterConditions name="rules" />
           </SSectionField>
         </Fill>
 
         <FooterContainer>
           <Button type="submit" processing={methods.formState.isSubmitting}>
-            save
+            {formatMessage(messages.saveGroup)}
           </Button>
         </FooterContainer>
       </form>

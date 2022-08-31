@@ -57,7 +57,9 @@ const NormalGroupForm = ({
   intl: { formatMessage },
 }: Props) => {
   const schema = object({
-    title_multiloc: validateMultiloc('title error'),
+    title_multiloc: validateMultiloc(
+      formatMessage(messages.fieldGroupNameError)
+    ),
   });
 
   const methods = useForm({
@@ -94,7 +96,7 @@ const NormalGroupForm = ({
 
         <FooterContainer>
           <Button type="submit" processing={methods.formState.isSubmitting}>
-            save
+            {formatMessage(messages.saveGroup)}
           </Button>
         </FooterContainer>
       </form>
