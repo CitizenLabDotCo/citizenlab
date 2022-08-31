@@ -57,6 +57,45 @@ __setResponseFor(
   dummyParamTestFalse
 );
 
+const dummyAnalyticsSingle = {
+  data: [
+    { a: 1, b: 2 },
+    { a: 3, b: 4 },
+  ],
+};
+
+__setResponseFor(
+  '/web_api/v1/analytics',
+  null,
+  { query: { fields: ['a', 'b'], fact: 'some_fact' } },
+  dummyAnalyticsSingle
+);
+
+const dummyAnalyticsCombined = {
+  data: [
+    [
+      { a: 1, b: 2 },
+      { a: 3, b: 4 },
+    ],
+    [
+      { c: 1, d: 2 },
+      { c: 3, d: 4 },
+    ],
+  ],
+};
+
+__setResponseFor(
+  '/web_api/v1/analytics',
+  null,
+  {
+    query: [
+      { fields: ['a', 'b'], fact: 'some_fact' },
+      { fields: ['c', 'd'], fact: 'another_fact' },
+    ],
+  },
+  dummyAnalyticsCombined
+);
+
 beforeEach(async () => {
   streams = new Streams();
 
@@ -164,7 +203,11 @@ describe('streams.get', () => {
   });
 });
 
-// describe('streams.analytics', () => { });
+describe('streams.analytics', () => {
+  describe('single query', () => {});
+
+  describe('combined query', () => {});
+});
 
 describe('streams.reset', () => {
   describe('without params', () => {
