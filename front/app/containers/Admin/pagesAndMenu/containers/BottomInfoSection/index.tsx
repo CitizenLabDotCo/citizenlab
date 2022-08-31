@@ -12,7 +12,7 @@ import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
-import homepageMessages from '../../EditHomepage/messages';
+import sectionToggleMessages from '../../SectionToggle/messages';
 
 // typings
 import { Multiloc, CLError } from 'typings';
@@ -102,7 +102,7 @@ const BottomInfoSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           id="custom-section"
           label={formatMessage(messages.contentEditorTitle)}
           labelTooltipText={formatMessage(
-            homepageMessages.bottomInfoSectionTooltip
+            sectionToggleMessages.bottomInfoSectionTooltip
           )}
           valueMultiloc={bottomInfoSectionMultilocState}
           onChange={handleCustomSectionMultilocOnChange}
