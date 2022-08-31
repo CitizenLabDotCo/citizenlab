@@ -9,7 +9,6 @@ import {
   Box,
   Button,
 } from '@citizenlab/cl2-component-library';
-// import Error from 'components/UI/Error';
 
 // i18n
 import messages from './messages';
