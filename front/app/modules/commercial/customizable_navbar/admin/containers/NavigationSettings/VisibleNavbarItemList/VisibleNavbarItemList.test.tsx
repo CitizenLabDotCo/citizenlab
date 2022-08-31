@@ -88,7 +88,7 @@ describe('<VisibleNavbarItemList />', () => {
     fireEvent.click(editButtons[6]);
 
     expect(clHistory.push).toHaveBeenCalledWith(
-      `${PAGES_MENU_PATH}/custom/${navbarItems[6].relationships.static_page.data?.id}`
+      `${PAGES_MENU_PATH}/pages/edit/${navbarItems[6].relationships.static_page.data?.id}`
     );
   });
 
