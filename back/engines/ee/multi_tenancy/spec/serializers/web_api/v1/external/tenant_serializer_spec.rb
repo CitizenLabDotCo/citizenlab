@@ -32,8 +32,7 @@ describe 'WebApi::V1::External::TenantSerializer' do
             'threshold_reached_message' => { 'en' => 'Threshold reached' } }
       },
       style: {},
-      logo: { 'small' => nil, 'medium' => nil, 'large' => nil },
-      header_bg: { 'large' => nil, 'medium' => nil, 'small' => nil } }
+      logo: { 'small' => nil, 'medium' => nil, 'large' => nil } }
   end
 
   it 'serializes Tenant correctly' do
