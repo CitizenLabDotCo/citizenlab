@@ -17,17 +17,17 @@ let streams: Streams;
 const dummyAppConfig = {
   data: { id: 'auth-id', type: 'app_configuration', attributes: {} },
 };
-__setResponseFor(currentAppConfigurationEndpoint, null, dummyAppConfig);
+__setResponseFor(currentAppConfigurationEndpoint, null, null, dummyAppConfig);
 
 const dummyAuth = {
   data: { id: 'auth-id', type: 'user', attributes: {} },
 };
-__setResponseFor(authApiEndpoint, null, dummyAuth);
+__setResponseFor(authApiEndpoint, null, null, dummyAuth);
 
 const dummyTest = {
   data: { id: 'test-id', type: 'test', attributes: {} },
 };
-__setResponseFor('/web_api/v1/test', null, dummyTest);
+__setResponseFor('/web_api/v1/test', null, null, dummyTest);
 
 const dummyParamTestTrue = {
   data: [
@@ -39,6 +39,7 @@ const dummyParamTestTrue = {
 __setResponseFor(
   '/web_api/v1/param_test',
   { some_param: true },
+  null,
   dummyParamTestTrue
 );
 
@@ -52,6 +53,7 @@ const dummyParamTestFalse = {
 __setResponseFor(
   '/web_api/v1/param_test',
   { some_param: false },
+  null,
   dummyParamTestFalse
 );
 
@@ -272,4 +274,4 @@ describe('streams.get', () => {
   });
 });
 
-describe('streams.fetchAllWith', () => {});
+describe('streams.analytics', () => {});
