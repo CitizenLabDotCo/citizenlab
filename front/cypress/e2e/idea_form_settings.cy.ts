@@ -188,18 +188,18 @@ describe('Idea form settings', () => {
 
   describe('Input form tab', () => {
     const projectIds: string[] = [];
-    let continousIdeationProjectId: string;
-    let timelineIdeationProjectId: string;
-    let continousPollProjectId: string;
+    let continuousIdeationProjectId: string;
+    let continuousBudgetProjectId: string;
+    let continuousPollProjectId: string;
+    let timelineWithIdeationProjectId: string;
     let timelineWithoutIdeationProjectId: string;
-    let continouusBudgetProjectId: string;
 
     const projectTitle = randomString();
     const projectDescriptionPreview = randomString();
     const projectDescription = randomString();
 
     before(() => {
-      // continous ideation project
+      // Continuous ideation project
       cy.apiCreateProject({
         type: 'continuous',
         title: projectTitle,
@@ -209,9 +209,9 @@ describe('Idea form settings', () => {
         participationMethod: 'ideation',
       }).then((project) => {
         projectIds.push(project.body.data.id);
-        continousIdeationProjectId = project.body.data.id;
+        continuousIdeationProjectId = project.body.data.id;
       });
-      // Timeline ideation project
+      // Timeline project with ideation phase
       cy.apiCreateProject({
         type: 'timeline',
         title: projectTitle,
@@ -219,9 +219,9 @@ describe('Idea form settings', () => {
         description: projectDescription,
         publicationStatus: 'published',
       }).then((project) => {
-        timelineIdeationProjectId = project.body.data.id;
+        timelineWithIdeationProjectId = project.body.data.id;
         cy.apiCreatePhase(
-          timelineIdeationProjectId,
+          timelineWithIdeationProjectId,
           'phaseTitle',
           moment().subtract(2, 'month').format('DD/MM/YYYY'),
           moment().add(2, 'days').format('DD/MM/YYYY'),
@@ -232,7 +232,7 @@ describe('Idea form settings', () => {
         );
       });
 
-      // continous poll project
+      // Continuous poll project
       cy.apiCreateProject({
         type: 'continuous',
         title: projectTitle,
@@ -241,11 +241,11 @@ describe('Idea form settings', () => {
         publicationStatus: 'draft',
         participationMethod: 'poll',
       }).then((project) => {
-        continousPollProjectId = project.body.data.id;
-        projectIds.push(continousPollProjectId);
+        continuousPollProjectId = project.body.data.id;
+        projectIds.push(continuousPollProjectId);
       });
 
-      // Continous budget project
+      // Continuous budget project
       cy.apiCreateProject({
         type: 'continuous',
         title: projectTitle,
@@ -255,8 +255,8 @@ describe('Idea form settings', () => {
         participationMethod: 'budgeting',
         maxBudget: 100,
       }).then((project) => {
-        continouusBudgetProjectId = project.body.data.id;
-        projectIds.push(continouusBudgetProjectId);
+        continuousBudgetProjectId = project.body.data.id;
+        projectIds.push(continuousBudgetProjectId);
       });
 
       // Timeline project without ideation phase
@@ -314,26 +314,26 @@ describe('Idea form settings', () => {
     });
 
     it('is shown for projects with ideation', () => {
-      // Continous ideation project
-      cy.visit(`admin/projects/${continousIdeationProjectId}/ideaform`);
+      // Continuous ideation project
+      cy.visit(`admin/projects/${continuousIdeationProjectId}/ideaform`);
       cy.get('#e2e-ideaform-settings-container').should('exist');
 
       // Timeline project with ideation phase
-      cy.visit(`admin/projects/${timelineIdeationProjectId}/ideaform`);
+      cy.visit(`admin/projects/${timelineWithIdeationProjectId}/ideaform`);
       cy.get('#e2e-ideaform-settings-container').should('exist');
     });
 
     it('is not shown for projects without an ideation phase', () => {
-      // Continous poll project
-      cy.visit(`admin/projects/${continousPollProjectId}/ideaform`);
+      // Continuous poll project
+      cy.visit(`admin/projects/${continuousPollProjectId}/ideaform`);
       cy.get('#e2e-ideaform-settings-container').should('not.exist');
 
       // Timeline project without ideation
       cy.visit(`admin/projects/${timelineWithoutIdeationProjectId}/ideaform`);
       cy.get('#e2e-ideaform-settings-container').should('not.exist');
 
-      // Continous budget project
-      cy.visit(`admin/projects/${continouusBudgetProjectId}/ideaform`);
+      // Continuous budget project
+      cy.visit(`admin/projects/${continuousBudgetProjectId}/ideaform`);
       cy.get('#e2e-ideaform-settings-container').should('not.exist');
     });
   });
