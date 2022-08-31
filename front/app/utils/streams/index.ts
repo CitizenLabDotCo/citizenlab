@@ -73,13 +73,10 @@ interface IExtendedStreamParams {
 }
 
 export interface IStream<T> {
-  params: IExtendedStreamParams;
+  apiEndpoint: string;
   streamId: string;
-  isQueryStream: boolean;
-  isSearchQuery: boolean;
-  isSingleItemStream: boolean;
   cacheStream?: boolean;
-  type: 'singleObject' | 'arrayOfObjects' | 'unknown';
+  type: 'singleObject' | 'arrayOfObjects' | 'analyticsData' | 'unknown';
   fetch: fetchFn;
   observer: IObserver<T>;
   observable: Observable<T>;
@@ -163,10 +160,7 @@ class Streams {
         ) {
           promises.push(this.streams[streamId].fetch());
         } else {
-          this.deleteStream(
-            streamId,
-            this.streams[streamId].params.apiEndpoint
-          );
+          this.deleteStream(streamId, this.streams[streamId].apiEndpoint);
         }
       }
     });
@@ -582,14 +576,11 @@ class Streams {
     // this is the container for the entire stream that holds both the 'pipe' (= observable),
     // the pump (= observer), utility functions (fetch) and metadata (params, streamId, isQueryStream, etc...)
     this.streams[streamId] = {
-      params,
+      apiEndpoint,
       fetch,
       observer,
       observable,
       streamId,
-      isQueryStream,
-      isSearchQuery,
-      isSingleItemStream: singleItemStream,
       cacheStream,
       type: 'unknown',
       dataIds: {},
@@ -905,6 +896,13 @@ class Streams {
     // queryStream than to not being a query stream. So we will treat it like that.
     const isQueryStream = true;
 
+    // We'll set this to false for now, kind of a misnomer (seems to be about)
+    // always keeping the stream active regardless of what happens, rather than
+    // it being cached
+    const cacheStream = false;
+
+    const observer: IObserver<T | null> = null as any;
+
     const fetch = () => {
       return request<any>(apiEndpoint, query, { method: 'POST' }, null)
         .then((response) => {
@@ -940,8 +938,6 @@ class Streams {
         let data: any = accumulated;
         const dataIds = {};
 
-        this.streams[streamId].type = 'singleObject';
-
         data = isFunction(current) ? current(data) : current;
 
         if (isObject(data) && !isEmpty(data)) {
@@ -967,16 +963,13 @@ class Streams {
     );
 
     this.streams[streamId] = {
-      params,
+      apiEndpoint,
       fetch,
       observer,
       observable,
       streamId,
-      isQueryStream,
-      isSearchQuery,
-      isSingleItemStream: singleItemStream,
       cacheStream,
-      type: 'unknown',
+      type: 'analyticsData',
       dataIds: {},
     };
 
