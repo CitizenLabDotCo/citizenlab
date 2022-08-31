@@ -57,7 +57,7 @@ const AddButton = styled(Button)`
 `;
 
 type Props = {
-  groupRules: TRule[];
+  rules: TRule[];
   onChange: (rules: TRule[]) => void;
 };
 
@@ -69,30 +69,30 @@ interface Tracks {
 
 class UserFilterConditions extends React.PureComponent<Props & Tracks, State> {
   handleOnChangeRule = (index) => (rule: TRule) => {
-    const newRules = clone(this.props.groupRules);
+    const newRules = clone(this.props.rules);
     newRules.splice(index, 1, rule);
     this.props.onChange(newRules);
   };
 
   handleOnRemoveRule = (index) => () => {
-    const newRules = clone(this.props.groupRules);
+    const newRules = clone(this.props.rules);
     newRules.splice(index, 1);
     this.props.onChange(newRules);
   };
 
   handleOnAddRule = () => {
     this.props.trackConditionAdd();
-    const newRules = clone(this.props.groupRules);
+    const newRules = clone(this.props.rules);
     newRules.push({});
     this.props.onChange(newRules);
   };
 
   render() {
-    const { groupRules } = this.props;
+    const { rules } = this.props;
     return (
       <Container>
         <RulesList>
-          {groupRules.map((rule, index) => (
+          {rules.map((rule, index) => (
             <Rule
               key={index}
               ruleName={`e2e-rule-${index}`}
@@ -148,7 +148,7 @@ export const HookFormUserFilterConditions = ({ name }: { name: string }) => {
           <UserFilterConditionsWithHoc
             {...field}
             onChange={handleOnChange}
-            groupRules={getValues(name)}
+            rules={getValues(name)}
           />
         )}
       />
