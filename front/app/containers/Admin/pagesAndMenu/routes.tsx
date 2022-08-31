@@ -22,6 +22,7 @@ const EditCustomPageSettings = lazy(
 const EditCustomPageContent = lazy(
   () => import('./containers/CustomPages/Edit/Content')
 );
+const AttachmentsForm = lazy(() => import('./containers/Attachments'));
 
 // path utils
 const PAGE_PATH = 'pages-menu';
@@ -29,6 +30,7 @@ const ADMIN_PATH_PREFIX = 'admin';
 export const PAGES_MENU_PATH = `/${ADMIN_PATH_PREFIX}/${PAGE_PATH}`;
 const HOMEPAGE_PATH = 'homepage';
 const CUSTOM_PAGES_PATH = 'custom';
+export const PAGES_MENU_CUSTOM_PATH = `${PAGES_MENU_PATH}/${CUSTOM_PAGES_PATH}`;
 
 export default () => ({
   path: PAGE_PATH, // pages-menu
@@ -104,35 +106,39 @@ export default () => ({
               path: 'content',
               element: <EditCustomPageContent />,
             },
-            {
-              path: 'banner',
-              element: (
-                <PageLoading>
-                  <HeroBannerForm />
-                </PageLoading>
-              ),
-            },
-            {
-              path: 'top-info-section',
-              element: <PageLoading>{/* <TopInfoSection /> */}</PageLoading>,
-            },
-            // {
-            //   path: 'projects',
-            //   element: <></>,
-            // },
-            {
-              path: 'bottom-info-section',
-              element: (
-                <PageLoading>
-                  <BottomInfoForm />
-                </PageLoading>
-              ),
-            },
-            // {
-            //   path: 'attachments',
-            //   element: <></>,
-            // },
           ],
+        },
+        {
+          path: ':customPageId/banner',
+          element: (
+            <PageLoading>
+              <HeroBannerForm />
+            </PageLoading>
+          ),
+        },
+        {
+          path: ':customPageId/top-info-section',
+          element: <PageLoading>{/* <TopInfoSection /> */}</PageLoading>,
+        },
+        // {
+        //   path: ':customPageId/projects',
+        //   element: <></>,
+        // },
+        {
+          path: ':customPageId/bottom-info-section',
+          element: (
+            <PageLoading>
+              <BottomInfoForm />
+            </PageLoading>
+          ),
+        },
+        {
+          path: ':customPageId/attachments',
+          element: (
+            <PageLoading>
+              <AttachmentsForm />
+            </PageLoading>
+          ),
         },
       ],
     },
