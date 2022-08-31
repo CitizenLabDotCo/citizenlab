@@ -11,7 +11,6 @@
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  logo                  :string
-#  header_bg             :string
 #  favicon               :string
 #  style                 :jsonb
 #  deleted_at            :datetime
