@@ -22,12 +22,7 @@ module MultiTenancy
               organization_name: runner.create_for_tenant_locales { Faker::Address.city },
               currency: CL2_SUPPORTED_CURRENCIES.sample
             },
-            customizable_homepage_banner: {
-              allowed: true,
-              layout: 'full_width_banner_layout',
-              cta_signed_out_type: 'sign_up_button',
-              cta_signed_in_type: 'no_button'
-            },
+            customizable_homepage_banner: { allowed: true },
             password_login: {
               allowed: true,
               enabled: true,
