@@ -27,7 +27,6 @@ class Tenant < ApplicationRecord
   include PublicApi::TenantDecorator
 
   mount_base64_uploader :logo, TenantLogoUploader
-  mount_base64_uploader :header_bg, TenantHeaderBgUploader
   mount_base64_uploader :favicon, TenantFaviconUploader
 
   attr_accessor :config_sync_enabled, :auto_config
@@ -252,7 +251,6 @@ class Tenant < ApplicationRecord
         name: name,
         host: host,
         logo: logo,
-        header_bg: header_bg,
         favicon: favicon,
         settings: settings,
         style: style,
@@ -270,7 +268,6 @@ class Tenant < ApplicationRecord
       config.attributes = attrs_delta
       config.remove_logo! if logo_previously_changed? && logo.blank?
       config.remove_favicon! if favicon_previously_changed? && favicon.blank?
-      config.remove_header_bg! if header_bg_previously_changed? && header_bg.blank?
       config.disable_tenant_sync.save
     end
   end
@@ -278,7 +275,7 @@ class Tenant < ApplicationRecord
   def attributes_delta(new_obj, old_obj)
     new_attributes = new_obj.attributes
     old_attributes = old_obj.attributes
-    carrierwave_attrs = %w[logo favicon header_bg]
+    carrierwave_attrs = %w[logo favicon]
     common_attrs = (old_attributes.keys & new_attributes.keys) - carrierwave_attrs
     new_attributes
       .slice(*common_attrs)
@@ -286,7 +283,6 @@ class Tenant < ApplicationRecord
       .tap do |attrs|
       attrs[:logo] = new_obj.logo if new_obj.logo_previously_changed?
       attrs[:favicon]   = new_obj.favicon   if new_obj.favicon_previously_changed?
-      attrs[:header_bg] = new_obj.header_bg if new_obj.header_bg_previously_changed?
     end
   end
 
