@@ -11,7 +11,6 @@ module MultiTenancy
           name: 'local',
           host: 'localhost',
           logo: Rails.root.join('spec/fixtures/logo.png').open,
-          header_bg: Rails.root.join('spec/fixtures/header.jpg').open,
           created_at: Faker::Date.between(from: 1.year.ago, to: Time.zone.now),
           settings: SettingsService.new.minimal_required_settings(
             locales: runner.seed_locales,
@@ -363,7 +362,6 @@ module MultiTenancy
           name: 'empty',
           host: 'empty.localhost',
           logo: Rails.root.join('spec/fixtures/logo.png').open,
-          header_bg: Rails.root.join('spec/fixtures/header.jpg').open,
           created_at: Faker::Date.between(from: 1.year.ago, to: Time.zone.now),
           settings: SettingsService.new.minimal_required_settings(locales: %w[en nl-BE], lifecycle_stage: 'active')
         )
