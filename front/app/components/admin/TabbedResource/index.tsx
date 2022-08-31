@@ -95,7 +95,7 @@ const TabbedResource = ({
                 <Tab tab={tab} />
               </FeatureFlag>
             ) : (
-              <Tab tab={tab} />
+              <Tab key={tab.url} tab={tab} />
             );
           })}
         </TabbedNav>
