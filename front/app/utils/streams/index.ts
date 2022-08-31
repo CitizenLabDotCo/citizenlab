@@ -36,7 +36,7 @@ import {
 } from './utils';
 
 // typings
-import { Observer, Observable, Subscription } from 'rxjs'; 
+import { Observer, Observable, Subscription } from 'rxjs';
 
 // constants
 import { API_PATH } from 'containers/App/constants';
@@ -391,233 +391,219 @@ class Streams {
       cacheStream
     );
 
-    // If a stream with the calculated streamId does not yet exist
-    if (!has(this.streams, streamId)) {
-      const lastUrlSegment = apiEndpoint.substr(
-        apiEndpoint.lastIndexOf('/') + 1
-      );
+    // If a stream with the calculated streamId already exists: return that
+    if (has(this.streams, streamId)) {
+      return this.streams[streamId] as IStream<T>;
+    }
 
-      // Use to last url segment of the requested endpoint and check if it's a UUID.
-      // If so, we're dealing with a single-item endpoint (as opposed to an array)
-      const singleItemStream = isSingleItemStream(
-        lastUrlSegment,
-        isQueryStream
-      );
-      // You can think of the observer as the 'pump' that takes data as input and pushes it,
-      // using its .next() method, into the stream it's associated with.
-      const observer: IObserver<T | null> = null as any;
+    const lastUrlSegment = apiEndpoint.substr(apiEndpoint.lastIndexOf('/') + 1);
 
-      // Here we fetch the data for the given andpoint and push it into the associated stream
-      const fetch = () => {
-        return request<any>(
-          apiEndpoint,
-          null,
-          { method: 'GET' },
-          queryParameters
-        )
-          .then((response) => {
-            // grab the response and push it into the stream
-            this.streams?.[streamId]?.observer?.next(response);
-            return response;
-          })
-          .catch((error) => {
-            // When the endpoint returns an error we destroy the stream
-            // so it can again be recreated afterwards and start of with
-            // a 'clean slate' to retry the endpoint.
-            // Note: streams.ts will first push the error object into
-            // the stream and only afterwards destroy it, so that any subscriber still gets the error object.
-            // When an unsuscribe -> resubscribe action occurs in the hook
-            // or component, streams.ts will create and fetch the stream from scratch again.
-            // Note: when we're dealing with either the authUser stream or
-            // the currentOnboardingCampaigns stream we do not destory the stream when an error occurs,
-            // because these 2 endpoints produce error responses whenever
-            // the user is not logged. There are however not 'true' errors
-            // (e.g. not similar to, for example, a connection failure error)
-            // but rather the back-end telling us the user needs to be logged in to use the endpoint.
-            // We can therefore view errors from these 2 endpoints as valid return values
-            // and exclude them from the error-handling logic.
-            if (
-              streamId !== authApiEndpoint &&
-              streamId !== currentOnboardingCampaignsApiEndpoint
-            ) {
-              // push the error reponse into the stream
-              this.streams[streamId].observer.next(error);
-              // destroy the stream
-              this.deleteStream(streamId, apiEndpoint);
-              reportError(error);
-            } else if (streamId === authApiEndpoint) {
-              this.streams[streamId].observer.next(null);
-            }
+    // Use to last url segment of the requested endpoint and check if it's a UUID.
+    // If so, we're dealing with a single-item endpoint (as opposed to an array)
+    const singleItemStream = isSingleItemStream(lastUrlSegment, isQueryStream);
+    // You can think of the observer as the 'pump' that takes data as input and pushes it,
+    // using its .next() method, into the stream it's associated with.
+    const observer: IObserver<T | null> = null as any;
 
-            return null;
-          });
-      };
-
-      // The observable constant here can be considered as the pipe
-      // that contains the stream (if that makes any sense :)).
-      // E.g. when data gets pushed into the stream by using observer.next(),
-      // you can think of it as the data being pushed into this observable pipe
-      // to which you can subscribe to capture any data that comes out of this pipe.
-      // To fully grasp the concepts invloved here I recommend to take
-      // a deep dive into RxJS (trust me, you won't regret doing so!).
-      const observable = new Observable<T | null>((observer) => {
-        const dataId = lastUrlSegment;
-
-        if (this.streams[streamId]) {
-          this.streams[streamId].observer = observer;
-        }
-
-        // When we know the stream represents a single-item endpoint,
-        // and cache for this stream is not turned of
-        // we first check the resourcesByDataId key-value store to check
-        // if it includes the object with the requested dataId.
-        // If so, we directly push it into the stream without making a request to the server.
-        // If not, we fetch the endpoint and push the return value into the stream (see fetch()).
-        if (
-          cacheStream &&
-          singleItemStream &&
-          has(this.resourcesByDataId, dataId)
-        ) {
-          observer.next(this.resourcesByDataId[dataId]);
-        } else {
-          fetch();
-        }
-
-        // clean-up function that gets triggered whenever there are no subscibers anymore to the stream
-        // Note: cahced streams will always have at least 1 subscriber,
-        // and therefore this function will only ever gets triggered for uncached streams
-        return () => {
-          this.deleteStream(streamId, apiEndpoint);
-        };
-      }).pipe(
-        // startsWith -> will push an initial value into a newly created stream
-        // as long as it's waiting for a proper respose. We check for this 'initial' string
-        // to determine if the valid response already took place.
-        // See https://www.learnrxjs.io/learn-rxjs/operators/combination/startwith for more info
-        // scan
-        // -> The RxJS documentation can probably explain it better than I can:
-        // https://www.learnrxjs.io/learn-rxjs/operators/transformation/scan
-        startWith('initial' as any),
-        scan((accumulated: T, current: T | pureFn<T>) => {
-          let data: any = accumulated;
-          const dataIds = {};
-
-          this.streams[streamId].type = 'unknown';
-
-          // I don't think we still have uss cases were current is a function
-          // instead of a value (was an early experiment)
-          // so I wouldn't worry too much about this line.
-          // It's safe to assume current will always be an object or an array, as opposed to a function.
-          // If you're feeling brave you could try removing it and try data = current instead :).
-          data = isFunction(current) ? current(data) : current;
-
-          if (isObject(data) && !isEmpty(data)) {
-            const innerData = data['data'];
-
-            // endpoints that return an array of objects
-            if (isArray(innerData)) {
-              this.streams[streamId].type = 'arrayOfObjects';
-              // loop through the array of objects
-              innerData
-                .filter((item) => has(item, 'id'))
-                .forEach((item) => {
-                  const dataId = item.id;
-                  dataIds[dataId] = true;
-                  if (cacheStream) {
-                    // write the endpoint response to the key-value object cache
-                    // first deepfreeze it to guarantee immutability
-                    this.resourcesByDataId[dataId] = deepFreeze({
-                      data: item,
-                    });
-                  }
-                  // create an index for the stream by its dataId
-                  this.addStreamIdByDataIdIndex(
-                    streamId,
-                    isQueryStream,
-                    dataId
-                  );
-                });
-            }
-            // endpoints that return a single object
-            else if (isObject(innerData) && has(innerData, 'id')) {
-              const dataId = innerData['id'];
-              this.streams[streamId].type = 'singleObject';
-              dataIds[dataId] = true;
-              if (cacheStream) {
-                // write the endpoint response to the key-value object cache
-                // first deepfreeze it to guarantee immutability
-                this.resourcesByDataId[dataId] = deepFreeze({
-                  data: innerData,
-                });
-              }
-              // create an index for the stream by its dataId
-              this.addStreamIdByDataIdIndex(streamId, isQueryStream, dataId);
-            }
-
-            // Important: also loop through any included data and put in it the key-value object cache
-            if (has(data, 'included')) {
-              data['included']
-                .filter((item) => item.id)
-                .forEach((item) => {
-                  this.resourcesByDataId[item.id] = deepFreeze({
-                    data: item,
-                  });
-                });
-
-              // Important: remove the included object after it's been cached!
-              // Note: We do this because we do never want to access data through
-              // the included attribute.
-              // Instead what we want to do is create a separate stream whenever
-              // we want to access data that migth already have been included in a previous response.
-              // When the stream gets initiated it will check if the data is already
-              // present in the cache. If so, it will use the cache and not make a redundant request.
-              // This way we can keep the 'clean' abstraction of having separate
-              // streams for separate pieces of data while limiting requests and being able to use
-              // included data to their full potential.
-              // TL;DR: always cache and remove included data, never read it directly
-              // from a response!
-              data = omit(data, 'included');
-            }
+    // Here we fetch the data for the given andpoint and push it into the associated stream
+    const fetch = () => {
+      return request<any>(apiEndpoint, null, { method: 'GET' }, queryParameters)
+        .then((response) => {
+          // grab the response and push it into the stream
+          this.streams?.[streamId]?.observer?.next(response);
+          return response;
+        })
+        .catch((error) => {
+          // When the endpoint returns an error we destroy the stream
+          // so it can again be recreated afterwards and start of with
+          // a 'clean slate' to retry the endpoint.
+          // Note: streams.ts will first push the error object into
+          // the stream and only afterwards destroy it, so that any subscriber still gets the error object.
+          // When an unsuscribe -> resubscribe action occurs in the hook
+          // or component, streams.ts will create and fetch the stream from scratch again.
+          // Note: when we're dealing with either the authUser stream or
+          // the currentOnboardingCampaigns stream we do not destory the stream when an error occurs,
+          // because these 2 endpoints produce error responses whenever
+          // the user is not logged. There are however not 'true' errors
+          // (e.g. not similar to, for example, a connection failure error)
+          // but rather the back-end telling us the user needs to be logged in to use the endpoint.
+          // We can therefore view errors from these 2 endpoints as valid return values
+          // and exclude them from the error-handling logic.
+          if (
+            streamId !== authApiEndpoint &&
+            streamId !== currentOnboardingCampaignsApiEndpoint
+          ) {
+            // push the error reponse into the stream
+            this.streams[streamId].observer.next(error);
+            // destroy the stream
+            this.deleteStream(streamId, apiEndpoint);
+            reportError(error);
+          } else if (streamId === authApiEndpoint) {
+            this.streams[streamId].observer.next(null);
           }
 
-          this.streams[streamId].dataIds = dataIds;
+          return null;
+        });
+    };
 
-          return deepFreeze(data);
-        }),
-        filter((data) => data !== 'initial'),
-        distinctUntilChanged(),
-        publishReplay(1),
-        refCount()
-      );
+    // The observable constant here can be considered as the pipe
+    // that contains the stream (if that makes any sense :)).
+    // E.g. when data gets pushed into the stream by using observer.next(),
+    // you can think of it as the data being pushed into this observable pipe
+    // to which you can subscribe to capture any data that comes out of this pipe.
+    // To fully grasp the concepts invloved here I recommend to take
+    // a deep dive into RxJS (trust me, you won't regret doing so!).
+    const observable = new Observable<T | null>((observer) => {
+      const dataId = lastUrlSegment;
 
-      // this is the container for the entire stream that holds both the 'pipe' (= observable),
-      // the pump (= observer), utility functions (fetch) and metadata (params, streamId, isQueryStream, etc...)
-      this.streams[streamId] = {
-        params,
-        fetch,
-        observer,
-        observable,
-        streamId,
-        isQueryStream,
-        isSearchQuery,
-        isSingleItemStream: singleItemStream,
-        cacheStream,
-        type: 'unknown',
-        dataIds: {},
-      };
-
-      this.addStreamIdByApiEndpointIndex(apiEndpoint, streamId, isQueryStream);
-
-      if (cacheStream) {
-        // here we subscribe to the stream if it should be cached,
-        // to make sure there at any give time at least 1 subscriber
-        // (you can kind of view this as being similar to a subscription to the stream in App.tsx...
-        // it will stay subscribed as long as the user is on the platform)
-        this.streams[streamId].subscription =
-          this.streams[streamId].observable.subscribe();
+      if (this.streams[streamId]) {
+        this.streams[streamId].observer = observer;
       }
 
-      return this.streams[streamId] as IStream<T>;
+      // When we know the stream represents a single-item endpoint,
+      // and cache for this stream is not turned of
+      // we first check the resourcesByDataId key-value store to check
+      // if it includes the object with the requested dataId.
+      // If so, we directly push it into the stream without making a request to the server.
+      // If not, we fetch the endpoint and push the return value into the stream (see fetch()).
+      if (
+        cacheStream &&
+        singleItemStream &&
+        has(this.resourcesByDataId, dataId)
+      ) {
+        observer.next(this.resourcesByDataId[dataId]);
+      } else {
+        fetch();
+      }
+
+      // clean-up function that gets triggered whenever there are no subscibers anymore to the stream
+      // Note: cahced streams will always have at least 1 subscriber,
+      // and therefore this function will only ever gets triggered for uncached streams
+      return () => {
+        this.deleteStream(streamId, apiEndpoint);
+      };
+    }).pipe(
+      // startsWith -> will push an initial value into a newly created stream
+      // as long as it's waiting for a proper respose. We check for this 'initial' string
+      // to determine if the valid response already took place.
+      // See https://www.learnrxjs.io/learn-rxjs/operators/combination/startwith for more info
+      // scan
+      // -> The RxJS documentation can probably explain it better than I can:
+      // https://www.learnrxjs.io/learn-rxjs/operators/transformation/scan
+      startWith('initial' as any),
+      scan((accumulated: T, current: T | pureFn<T>) => {
+        let data: any = accumulated;
+        const dataIds = {};
+
+        this.streams[streamId].type = 'unknown';
+
+        // I don't think we still have uss cases were current is a function
+        // instead of a value (was an early experiment)
+        // so I wouldn't worry too much about this line.
+        // It's safe to assume current will always be an object or an array, as opposed to a function.
+        // If you're feeling brave you could try removing it and try data = current instead :).
+        data = isFunction(current) ? current(data) : current;
+
+        if (isObject(data) && !isEmpty(data)) {
+          const innerData = data['data'];
+
+          // endpoints that return an array of objects
+          if (isArray(innerData)) {
+            this.streams[streamId].type = 'arrayOfObjects';
+            // loop through the array of objects
+            innerData
+              .filter((item) => has(item, 'id'))
+              .forEach((item) => {
+                const dataId = item.id;
+                dataIds[dataId] = true;
+                if (cacheStream) {
+                  // write the endpoint response to the key-value object cache
+                  // first deepfreeze it to guarantee immutability
+                  this.resourcesByDataId[dataId] = deepFreeze({
+                    data: item,
+                  });
+                }
+                // create an index for the stream by its dataId
+                this.addStreamIdByDataIdIndex(streamId, isQueryStream, dataId);
+              });
+          }
+          // endpoints that return a single object
+          else if (isObject(innerData) && has(innerData, 'id')) {
+            const dataId = innerData['id'];
+            this.streams[streamId].type = 'singleObject';
+            dataIds[dataId] = true;
+            if (cacheStream) {
+              // write the endpoint response to the key-value object cache
+              // first deepfreeze it to guarantee immutability
+              this.resourcesByDataId[dataId] = deepFreeze({
+                data: innerData,
+              });
+            }
+            // create an index for the stream by its dataId
+            this.addStreamIdByDataIdIndex(streamId, isQueryStream, dataId);
+          }
+
+          // Important: also loop through any included data and put in it the key-value object cache
+          if (has(data, 'included')) {
+            data['included']
+              .filter((item) => item.id)
+              .forEach((item) => {
+                this.resourcesByDataId[item.id] = deepFreeze({
+                  data: item,
+                });
+              });
+
+            // Important: remove the included object after it's been cached!
+            // Note: We do this because we do never want to access data through
+            // the included attribute.
+            // Instead what we want to do is create a separate stream whenever
+            // we want to access data that migth already have been included in a previous response.
+            // When the stream gets initiated it will check if the data is already
+            // present in the cache. If so, it will use the cache and not make a redundant request.
+            // This way we can keep the 'clean' abstraction of having separate
+            // streams for separate pieces of data while limiting requests and being able to use
+            // included data to their full potential.
+            // TL;DR: always cache and remove included data, never read it directly
+            // from a response!
+            data = omit(data, 'included');
+          }
+        }
+
+        this.streams[streamId].dataIds = dataIds;
+
+        return deepFreeze(data);
+      }),
+      filter((data) => data !== 'initial'),
+      distinctUntilChanged(),
+      publishReplay(1),
+      refCount()
+    );
+
+    // this is the container for the entire stream that holds both the 'pipe' (= observable),
+    // the pump (= observer), utility functions (fetch) and metadata (params, streamId, isQueryStream, etc...)
+    this.streams[streamId] = {
+      params,
+      fetch,
+      observer,
+      observable,
+      streamId,
+      isQueryStream,
+      isSearchQuery,
+      isSingleItemStream: singleItemStream,
+      cacheStream,
+      type: 'unknown',
+      dataIds: {},
+    };
+
+    this.addStreamIdByApiEndpointIndex(apiEndpoint, streamId, isQueryStream);
+
+    if (cacheStream) {
+      // here we subscribe to the stream if it should be cached,
+      // to make sure there at any give time at least 1 subscriber
+      // (you can kind of view this as being similar to a subscription to the stream in App.tsx...
+      // it will stay subscribed as long as the user is on the platform)
+      this.streams[streamId].subscription =
+        this.streams[streamId].observable.subscribe();
     }
 
     return this.streams[streamId] as IStream<T>;
@@ -901,14 +887,104 @@ class Streams {
     return await Promise.all(promises);
   }
 
-  analytics(query: { data: IObject | IObject[] }) {
-    const apiEndpoint = `${API_PATH}/analytics`
-    const streamId = `${apiEndpoint}&${JSON.stringify(query)}`
-    
-    console.log(streamId)
+  async analytics<T>(query: { data: IObject | IObject[] }) {
+    const apiEndpoint = `${API_PATH}/analytics`;
+    const streamId = `${apiEndpoint}&${JSON.stringify(query)}`;
+
+    // If a stream with the calculated streamId already exists: return that
+    if (has(this.streams, streamId)) {
+      return this.streams[streamId] as IStream<T>;
+    }
+
+    // For analytics queries, we simply use the streamId to cache the entire response.
+    // In the future we might want to consider caching combined queries seperately.
+    const dataId = streamId;
+
+    // Even though it is not exactly the same, since this endpoint
+    // uses a request body instead of query parameters, it is closer to being a
+    // queryStream than to not being a query stream. So we will treat it like that.
+    const isQueryStream = true;
+
+    const fetch = () => {
+      return request<any>(apiEndpoint, query, { method: 'POST' }, null)
+        .then((response) => {
+          this.streams?.[streamId]?.observer?.next(response);
+          return response;
+        })
+        .catch((error) => {
+          this.streams[streamId].observer.next(error);
+          this.deleteStream(streamId, apiEndpoint);
+          reportError(error);
+
+          return null;
+        });
+    };
+
+    const observable = new Observable<T | null>((observer) => {
+      if (this.streams[streamId]) {
+        this.streams[streamId].observer = observer;
+      }
+
+      if (has(this.resourcesByDataId, dataId)) {
+        observer.next(this.resourcesByDataId[dataId]);
+      } else {
+        fetch();
+      }
+
+      return () => {
+        this.deleteStream(streamId, apiEndpoint);
+      };
+    }).pipe(
+      startWith('initial' as any),
+      scan((accumulated: T, current: T | pureFn<T>) => {
+        let data: any = accumulated;
+        const dataIds = {};
+
+        this.streams[streamId].type = 'singleObject';
+
+        data = isFunction(current) ? current(data) : current;
+
+        if (isObject(data) && !isEmpty(data)) {
+          const innerData = data['data'];
+
+          dataIds[dataId] = true;
+
+          this.resourcesByDataId[dataId] = deepFreeze({
+            data: innerData,
+          });
+
+          this.addStreamIdByDataIdIndex(streamId, isQueryStream, dataId);
+        }
+
+        this.streams[streamId].dataIds = dataIds;
+
+        return deepFreeze(data);
+      }),
+      filter((data) => data !== 'initial'),
+      distinctUntilChanged(),
+      publishReplay(1),
+      refCount()
+    );
+
+    this.streams[streamId] = {
+      params,
+      fetch,
+      observer,
+      observable,
+      streamId,
+      isQueryStream,
+      isSearchQuery,
+      isSingleItemStream: singleItemStream,
+      cacheStream,
+      type: 'unknown',
+      dataIds: {},
+    };
+
+    this.addStreamIdByApiEndpointIndex(apiEndpoint, streamId, isQueryStream);
+
+    return this.streams[streamId] as IStream<T>;
   }
 }
-
 const streams = new Streams();
 
 export { Streams };
