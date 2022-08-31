@@ -282,7 +282,7 @@ class Tenant < ApplicationRecord
       .reject { |k, v| v == old_attributes[k] }
       .tap do |attrs|
       attrs[:logo] = new_obj.logo if new_obj.logo_previously_changed?
-      attrs[:favicon]   = new_obj.favicon   if new_obj.favicon_previously_changed?
+      attrs[:favicon] = new_obj.favicon if new_obj.favicon_previously_changed?
     end
   end
 
