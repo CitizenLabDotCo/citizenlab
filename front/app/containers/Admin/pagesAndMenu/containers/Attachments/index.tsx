@@ -1,14 +1,9 @@
 import React from 'react';
-import { useTheme } from 'styled-components';
 
 // components
 import SectionFormWrapper from '../../components/SectionFormWrapper';
-import {
-  IconTooltip,
-  Label,
-  Box,
-  Button,
-} from '@citizenlab/cl2-component-library';
+import { IconTooltip, Label, Button } from '@citizenlab/cl2-component-library';
+import { SectionField } from 'components/admin/Section';
 
 // i18n
 import messages from './messages';
@@ -22,7 +17,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { object, mixed } from 'yup';
 import FileUploader from 'components/HookForm/FileUploader';
 import Feedback from 'components/HookForm/Feedback';
-import { SectionField } from 'components/admin/Section';
 
 // typings
 import { UploadFile } from 'typings';
@@ -48,7 +42,6 @@ type FormValues = {
 };
 
 const AttachmentsForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
-  const theme: any = useTheme();
   const localize = useLocalize();
   const { customPageId } = useParams() as { customPageId: string };
   const customPage = useCustomPage(customPageId);
@@ -125,28 +118,24 @@ const AttachmentsForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
             </Button>
           }
         >
-          <Box maxWidth={`${theme.maxPageWidth - 100}px`} mb="24px">
-            <SectionField>
-              <Feedback
-                successMessage={formatMessage(messages.messageSuccess)}
+          <SectionField>
+            <Feedback successMessage={formatMessage(messages.messageSuccess)} />
+          </SectionField>
+          <SectionField>
+            <Label htmlFor="local_page_files">
+              <FormattedMessage {...messages.attachmentUploadLabel} />
+              <IconTooltip
+                content={
+                  <FormattedMessage {...messages.attachmentUploadTooltip} />
+                }
               />
-            </SectionField>
-            <SectionField>
-              <Label htmlFor="local_page_files">
-                <FormattedMessage {...messages.fileUploadLabel} />
-                <IconTooltip
-                  content={
-                    <FormattedMessage {...messages.fileUploadLabelTooltip} />
-                  }
-                />
-              </Label>
-              <FileUploader
-                name="local_page_files"
-                resourceId={customPageId}
-                resourceType="page"
-              />
-            </SectionField>
-          </Box>
+            </Label>
+            <FileUploader
+              name="local_page_files"
+              resourceId={customPageId}
+              resourceType="page"
+            />
+          </SectionField>
         </SectionFormWrapper>
       </form>
     </FormProvider>

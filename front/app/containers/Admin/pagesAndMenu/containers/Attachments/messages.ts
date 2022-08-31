@@ -25,13 +25,13 @@ export default defineMessages({
     id: 'app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.error',
     defaultMessage: "Couldn't save attachments",
   },
-  fileUploadLabel: {
-    id: 'app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.fileUploadLabel',
-    defaultMessage: 'Add files to this page',
+  attachmentUploadLabel: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.attachmentUploadLabel',
+    defaultMessage: 'Attachments (max 50MB)',
   },
-  fileUploadLabelTooltip: {
+  attachmentUploadTooltip: {
     id: 'app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.fileUploadLabelTooltip',
     defaultMessage:
-      'Files should not be larger than 50Mb. Added files will be shown on the bottom of this page',
+      'Attachments should not be larger than 50MB. Added files will be shown on the bottom of this page',
   },
 });
