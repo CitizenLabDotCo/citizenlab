@@ -38,7 +38,7 @@ describe('<VisibleNavbarItemList />', () => {
       )
     );
     expect(clHistory.push).toHaveBeenCalledWith(
-      `/admin/pages-menu/custom/${itemWithPage.relationships.static_page.data?.id}`
+      `/admin/pages-menu/pages/edit/${itemWithPage.relationships.static_page.data?.id}`
     );
   });
 
