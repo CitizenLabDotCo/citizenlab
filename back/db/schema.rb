@@ -52,6 +52,17 @@ ActiveRecord::Schema.define(version: 2022_08_26_025846) do
     t.index ["rgt"], name: "index_admin_publications_on_rgt"
   end
 
+  create_table "analytics_dimension_dates", primary_key: "date", id: :date, force: :cascade do |t|
+    t.string "year"
+    t.string "month"
+    t.string "day"
+  end
+
+  create_table "analytics_dimension_types", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "parent"
+  end
+
   create_table "app_configurations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "host"
@@ -1434,5 +1445,88 @@ ActiveRecord::Schema.define(version: 2022_08_26_025846) do
        LEFT JOIN moderation_moderation_statuses ON ((moderation_moderation_statuses.moderatable_id = comments.id)))
        LEFT JOIN initiatives ON ((initiatives.id = comments.post_id)))
     WHERE ((comments.post_type)::text = 'Initiative'::text);
+  SQL
+  create_view "analytics_dimension_statuses", sql_definition: <<-SQL
+      SELECT idea_statuses.id,
+      idea_statuses.title_multiloc,
+      idea_statuses.color
+     FROM idea_statuses
+  UNION ALL
+   SELECT initiative_statuses.id,
+      initiative_statuses.title_multiloc,
+      initiative_statuses.color
+     FROM initiative_statuses;
+  SQL
+  create_view "analytics_dimension_projects", sql_definition: <<-SQL
+      SELECT projects.id,
+      projects.title_multiloc
+     FROM projects;
+  SQL
+  create_view "analytics_build_feedbacks", sql_definition: <<-SQL
+      SELECT a.post_id,
+      min(a.feedback_first_date) AS feedback_first_date,
+      max(a.feedback_official) AS feedback_official,
+      max(a.feedback_status_change) AS feedback_status_change
+     FROM ( SELECT activities.item_id AS post_id,
+              min(activities.created_at) AS feedback_first_date,
+              0 AS feedback_official,
+              1 AS feedback_status_change
+             FROM activities
+            WHERE (((activities.action)::text = 'changed_status'::text) AND ((activities.item_type)::text = ANY (ARRAY[('Idea'::character varying)::text, ('Initiative'::character varying)::text])))
+            GROUP BY activities.item_id
+          UNION ALL
+           SELECT official_feedbacks.post_id,
+              min(official_feedbacks.created_at) AS feedback_first_date,
+              1 AS feedback_official,
+              0 AS feedback_status_change
+             FROM official_feedbacks
+            GROUP BY official_feedbacks.post_id) a
+    GROUP BY a.post_id;
+  SQL
+  create_view "analytics_fact_posts", sql_definition: <<-SQL
+      SELECT i.id,
+      i.author_id AS user_id,
+      i.project_id,
+      adt.id AS type_id,
+      (i.created_at)::date AS created_date_id,
+      (abf.feedback_first_date)::date AS feedback_first_date,
+      (abf.feedback_first_date - i.created_at) AS feedback_time_taken,
+      COALESCE(abf.feedback_official, 0) AS feedback_official,
+      COALESCE(abf.feedback_status_change, 0) AS feedback_status_change,
+          CASE
+              WHEN (abf.feedback_first_date IS NULL) THEN 1
+              ELSE 0
+          END AS feedback_none,
+      (i.upvotes_count + i.downvotes_count) AS votes_count,
+      i.upvotes_count,
+      i.downvotes_count,
+      i.idea_status_id AS status_id
+     FROM ((ideas i
+       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'idea'::text)))
+       LEFT JOIN analytics_build_feedbacks abf ON ((abf.post_id = i.id)))
+  UNION ALL
+   SELECT i.id,
+      i.author_id AS user_id,
+      NULL::uuid AS project_id,
+      adt.id AS type_id,
+      (i.created_at)::date AS created_date_id,
+      (abf.feedback_first_date)::date AS feedback_first_date,
+      (abf.feedback_first_date - i.created_at) AS feedback_time_taken,
+      COALESCE(abf.feedback_official, 0) AS feedback_official,
+      COALESCE(abf.feedback_status_change, 0) AS feedback_status_change,
+          CASE
+              WHEN (abf.feedback_first_date IS NULL) THEN 1
+              ELSE 0
+          END AS feedback_none,
+      (i.upvotes_count + i.downvotes_count) AS votes_count,
+      i.upvotes_count,
+      i.downvotes_count,
+      isc.initiative_status_id AS status_id
+     FROM (((initiatives i
+       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'initiative'::text)))
+       LEFT JOIN analytics_build_feedbacks abf ON ((abf.post_id = i.id)))
+       LEFT JOIN initiative_status_changes isc ON (((isc.initiative_id = i.id) AND (isc.updated_at = ( SELECT max(isc_.updated_at) AS max
+             FROM initiative_status_changes isc_
+            WHERE (isc_.initiative_id = i.id))))));
   SQL
 end

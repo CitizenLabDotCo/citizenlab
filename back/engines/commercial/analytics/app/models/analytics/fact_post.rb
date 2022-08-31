@@ -27,9 +27,5 @@ module Analytics
     belongs_to :created_date, class_name: 'DimensionDate', primary_key: 'date'
     belongs_to :project, class_name: 'DimensionProject'
     belongs_to :status, class_name: 'DimensionStatus'
-
-    def self.refresh
-      Scenic.database.refresh_materialized_view(table_name, concurrently: true, cascade: true)
-    end
   end
 end
