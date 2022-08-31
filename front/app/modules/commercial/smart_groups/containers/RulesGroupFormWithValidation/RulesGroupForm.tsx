@@ -81,9 +81,7 @@ const RulesGroupForm = ({
 
   const onFormSubmit = async (formValues: RulesFormValues) => {
     try {
-      if (methods.formState.isValid) {
-        await onSubmit(formValues);
-      }
+      await onSubmit(formValues);
     } catch (error) {
       if (error.json.errors.rules) {
         methods.setError('rules', {
