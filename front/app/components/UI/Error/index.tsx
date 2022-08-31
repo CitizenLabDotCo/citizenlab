@@ -246,11 +246,10 @@ const Error = (props: Props) => {
           {showIcon && <ErrorIcon name="error" data-testid="error-icon" />}
 
           <ErrorMessageText data-testid="error-message-text">
-            {typeof text === 'string' ? (
-              <p>{text}</p>
-            ) : (
-              <Box py="16px">{text}</Box>
-            )}
+            {/* When the error message is received as a string we put it in a paragraph */}
+            {text && typeof text === 'string' && <p>{text}</p>}
+            {/* When the error message is received as a JSX element we put it in a Box */}
+            {text && typeof text !== 'string' && <Box py="16px">{text}</Box>}
             {dedupApiErrors &&
               isArray(dedupApiErrors) &&
               !isEmpty(dedupApiErrors) && (

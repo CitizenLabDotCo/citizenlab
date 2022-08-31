@@ -18,6 +18,10 @@ import tracks from 'containers/Admin/users/tracks';
 // styling
 import { colors } from 'utils/styleUtils';
 
+import Error, { TFieldName } from 'components/UI/Error';
+import { Controller, useFormContext } from 'react-hook-form';
+import { CLError } from 'typings';
+
 const Container = styled.div`
   width: 560px;
 `;
@@ -117,24 +121,67 @@ const UserFilterConditionsWithHoc = injectTracks<Props>({
   trackConditionAdd: tracks.conditionAdd,
 })(UserFilterConditions);
 
-import { FieldProps } from 'formik';
+export const HookFormUserFilterConditions = ({
+  name,
+  isVerificationEnabled,
+}: {
+  name: string;
+  isVerificationEnabled: boolean;
+}) => {
+  const {
+    formState: { errors },
+    control,
+    setValue,
+    getValues,
+    setError,
+  } = useFormContext();
 
-export class FormikUserFilterConditions extends React.Component<
-  Props & FieldProps
-> {
-  handleOnChange = (newValue) => {
-    this.props.form.setFieldTouched(this.props.field.name, true);
-    this.props.form.setFieldValue(this.props.field.name, newValue);
+  const handleOnChange = (newValue) => {
+    setValue(name, newValue);
+    if (
+      !isVerificationEnabled &&
+      newValue.find((rule: TRule) => rule.ruleType === 'verified')
+    ) {
+      setError(name, { type: 'pattern', message: 'verification error' });
+    }
   };
 
-  render() {
-    const { value } = this.props.field;
-    return (
-      <UserFilterConditionsWithHoc
-        {...this.props}
-        onChange={this.handleOnChange}
-        rules={value}
+  const validationError = errors[name]?.message as string | undefined;
+
+  const apiError =
+    (errors[name]?.error as string | undefined) &&
+    ([errors[name]] as unknown as CLError[]);
+
+  return (
+    <>
+      <Controller
+        name={name}
+        control={control}
+        render={({ field: { ...field } }) => (
+          <UserFilterConditionsWithHoc
+            {...field}
+            onChange={handleOnChange}
+            rules={getValues(name)}
+          />
+        )}
       />
-    );
-  }
-}
+      {validationError && (
+        <Error
+          marginTop="8px"
+          marginBottom="8px"
+          text={validationError}
+          scrollIntoView={false}
+        />
+      )}
+      {apiError && (
+        <Error
+          fieldName={name as TFieldName}
+          apiErrors={apiError}
+          marginTop="8px"
+          marginBottom="8px"
+          scrollIntoView={false}
+        />
+      )}
+    </>
+  );
+};
