@@ -57,7 +57,7 @@ __setResponseFor(
   dummyParamTestFalse
 );
 
-const dummyAnalyticsSingle = {
+const dummyAnalytics = {
   data: [
     { a: 1, b: 2 },
     { a: 3, b: 4 },
@@ -68,32 +68,7 @@ __setResponseFor(
   '/web_api/v1/analytics',
   null,
   { query: { fields: ['a', 'b'], fact: 'some_fact' } },
-  dummyAnalyticsSingle
-);
-
-const dummyAnalyticsCombined = {
-  data: [
-    [
-      { a: 1, b: 2 },
-      { a: 3, b: 4 },
-    ],
-    [
-      { c: 1, d: 2 },
-      { c: 3, d: 4 },
-    ],
-  ],
-};
-
-__setResponseFor(
-  '/web_api/v1/analytics',
-  null,
-  {
-    query: [
-      { fields: ['a', 'b'], fact: 'some_fact' },
-      { fields: ['c', 'd'], fact: 'another_fact' },
-    ],
-  },
-  dummyAnalyticsCombined
+  dummyAnalytics
 );
 
 beforeEach(async () => {
@@ -204,9 +179,19 @@ describe('streams.get', () => {
 });
 
 describe('streams.analytics', () => {
-  describe('single query', () => {});
+  it('returns response in subscription of observable', async () => {
+    const { observable } = await streams.analytics({
+      query: { fields: ['a', 'b'], fact: 'some_fact' },
+    });
 
-  describe('combined query', () => {});
+    let response;
+    observable.subscribe((data) => {
+      response = data;
+    });
+
+    expect(response).toEqual(dummyAnalytics);
+    expect(request).toHaveBeenCalledTimes(1);
+  });
 });
 
 describe('streams.reset', () => {

@@ -878,7 +878,7 @@ class Streams {
     return await Promise.all(promises);
   }
 
-  async analytics<T>(query: { data: IObject | IObject[] }) {
+  analytics<T>(query: { query: IObject | IObject[] }) {
     const apiEndpoint = `${API_PATH}/analytics`;
     const streamId = `${apiEndpoint}&${JSON.stringify(query)}`;
 
