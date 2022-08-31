@@ -244,11 +244,11 @@ const Error = (props: Props) => {
           {showIcon && <ErrorIcon name="error" data-testid="error-icon" />}
 
           <ErrorMessageText data-testid="error-message-text">
-            {text && <Box py="16px">{text}</Box>}
-            {dedupApiErrors &&
-              isArray(dedupApiErrors) &&
-              !isEmpty(dedupApiErrors) && (
-                <Box py="16px">
+            <Box py="16px">
+              {text}
+              {dedupApiErrors &&
+                isArray(dedupApiErrors) &&
+                !isEmpty(dedupApiErrors) && (
                   <ErrorList>
                     {dedupApiErrors.map((error, index) => {
                       // If we have multiple possible errors for a certain input field,
@@ -310,8 +310,8 @@ const Error = (props: Props) => {
                       return null;
                     })}
                   </ErrorList>
-                </Box>
-              )}
+                )}
+            </Box>
           </ErrorMessageText>
         </ContainerInner>
       </Container>
