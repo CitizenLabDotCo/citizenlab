@@ -108,8 +108,6 @@ const ErrorList = styled.ul`
 const ErrorListItem = styled.li`
   display: flex;
   align-items: flex-start;
-  margin-top: 8px;
-  margin-bottom: 8px;
 `;
 
 const Bullet = styled.span`
@@ -246,72 +244,73 @@ const Error = (props: Props) => {
           {showIcon && <ErrorIcon name="error" data-testid="error-icon" />}
 
           <ErrorMessageText data-testid="error-message-text">
-            {/* When the error message is received as a string we put it in a paragraph */}
-            {text && typeof text === 'string' && <p>{text}</p>}
-            {/* When the error message is received as a JSX element we put it in a Box */}
-            {text && typeof text !== 'string' && <Box py="16px">{text}</Box>}
+            {text && <Box py="16px">{text}</Box>}
             {dedupApiErrors &&
               isArray(dedupApiErrors) &&
               !isEmpty(dedupApiErrors) && (
-                <ErrorList>
-                  {dedupApiErrors.map((error, index) => {
-                    // If we have multiple possible errors for a certain input field,
-                    // we can 'group' them in the messages.js file using the fieldName as a prefix
-                    // Check the implementation of findErrorMessage for details
-                    const errorMessage = findErrorMessage(
-                      fieldName,
-                      error.error
-                    );
+                <Box py="16px">
+                  <ErrorList>
+                    {dedupApiErrors.map((error, index) => {
+                      // If we have multiple possible errors for a certain input field,
+                      // we can 'group' them in the messages.js file using the fieldName as a prefix
+                      // Check the implementation of findErrorMessage for details
+                      const errorMessage = findErrorMessage(
+                        fieldName,
+                        error.error
+                      );
 
-                    if (errorMessage) {
-                      // Variables for inside messages.js
-                      const payload = error?.payload ?? null;
-                      const value = error?.value ?? null;
-                      const row = error?.row ?? null;
-                      const rows = error?.rows ?? null;
+                      if (errorMessage) {
+                        // Variables for inside messages.js
+                        const payload = error?.payload ?? null;
+                        const value = error?.value ?? null;
+                        const row = error?.row ?? null;
+                        const rows = error?.rows ?? null;
 
-                      let values = {
-                        row: <strong>{row}</strong>,
-                        rows: rows ? <strong>{rows.join(', ')}</strong> : null,
-                        // eslint-disable-next-line react/no-unescaped-entities
-                        value: <strong>'{value}'</strong>,
-                      };
+                        let values = {
+                          row: <strong>{row}</strong>,
+                          rows: rows ? (
+                            <strong>{rows.join(', ')}</strong>
+                          ) : null,
+                          // eslint-disable-next-line react/no-unescaped-entities
+                          value: <strong>'{value}'</strong>,
+                        };
 
-                      values = payload ? { ...payload, ...values } : values;
+                        values = payload ? { ...payload, ...values } : values;
 
-                      if (value || row || rows) {
+                        if (value || row || rows) {
+                          return (
+                            <ErrorListItem key={index}>
+                              {dedupApiErrors.length > 1 && (
+                                <Bullet aria-hidden>•</Bullet>
+                              )}
+
+                              <FormattedMessage
+                                {...errorMessage}
+                                values={values}
+                              />
+                            </ErrorListItem>
+                          );
+                        }
+
                         return (
                           <ErrorListItem key={index}>
                             {dedupApiErrors.length > 1 && (
                               <Bullet aria-hidden>•</Bullet>
                             )}
-
                             <FormattedMessage
                               {...errorMessage}
-                              values={values}
+                              values={{
+                                ideasCount: (error as CLError).ideas_count,
+                              }}
                             />
                           </ErrorListItem>
                         );
                       }
 
-                      return (
-                        <ErrorListItem key={index}>
-                          {dedupApiErrors.length > 1 && (
-                            <Bullet aria-hidden>•</Bullet>
-                          )}
-                          <FormattedMessage
-                            {...errorMessage}
-                            values={{
-                              ideasCount: (error as CLError).ideas_count,
-                            }}
-                          />
-                        </ErrorListItem>
-                      );
-                    }
-
-                    return null;
-                  })}
-                </ErrorList>
+                      return null;
+                    })}
+                  </ErrorList>
+                </Box>
               )}
           </ErrorMessageText>
         </ContainerInner>
