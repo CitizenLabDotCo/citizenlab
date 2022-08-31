@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_18_165037) do
+ActiveRecord::Schema.define(version: 2022_08_31_102114) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -56,13 +56,11 @@ ActiveRecord::Schema.define(version: 2022_08_18_165037) do
     t.string "name"
     t.string "host"
     t.string "logo"
-    t.string "header_bg"
     t.string "favicon"
     t.jsonb "settings", default: {}
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.jsonb "style", default: {}
-    t.jsonb "homepage_info_multiloc"
   end
 
   create_table "areas", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
