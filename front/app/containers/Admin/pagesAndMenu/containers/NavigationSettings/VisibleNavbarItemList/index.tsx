@@ -8,11 +8,14 @@ import { isNilOrError } from 'utils/helperUtils';
 import usePageSlugById from 'hooks/usePageSlugById';
 import clHistory from 'utils/cl-router/history';
 import { PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 export default function VisibleNavbarItemList() {
   const navbarItems = useNavbarItems({ onlyDefault: true });
   const pageSlugById = usePageSlugById();
-  const i2 = true;
+  const previewNewCustomPages = useFeatureFlag({
+    name: 'preview_new_custom_pages',
+  });
 
   if (isNilOrError(navbarItems) || isNilOrError(pageSlugById)) {
     return null;
@@ -28,7 +31,7 @@ export default function VisibleNavbarItemList() {
     const pageData = navbarItem.relationships.static_page.data;
 
     pageData
-      ? i2
+      ? previewNewCustomPages
         ? clHistory.push(`${PAGES_MENU_PATH}/custom/${pageData.id}`)
         : clHistory.push(`${PAGES_MENU_PATH}/pages/edit/${pageData.id}`)
       : clHistory.push(`${PAGES_MENU_PATH}/navbar-items/edit/${navbarItem.id}`);

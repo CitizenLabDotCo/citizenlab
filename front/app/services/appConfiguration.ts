@@ -116,6 +116,7 @@ export interface IAppConfigurationSettings {
   manual_project_sorting?: AppConfigurationFeature;
   admin_project_templates?: AppConfigurationFeature;
   pages?: AppConfigurationFeature;
+  preview_new_custom_pages?: AppConfigurationFeature;
   project_reports?: AppConfigurationFeature;
   private_projects?: AppConfigurationFeature;
   maps?: AppConfigurationMapSettings;
