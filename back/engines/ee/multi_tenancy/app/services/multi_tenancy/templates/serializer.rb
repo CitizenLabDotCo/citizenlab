@@ -14,12 +14,15 @@ module MultiTenancy
             'home_page'                            => yml_home_pages,
             'area'                                 => yml_areas,
             'topic'                                => yml_topics,
-            'user'                                 => yml_users,
-            'email_campaigns/unsubscription_token' => yml_unsubscription_tokens,
             'project_folders/folder'               => yml_project_folders,
             'project_folders/image'                => yml_project_folder_images,
             'project_folders/file'                 => yml_project_folder_files,
             'project'                              => yml_projects,
+            'custom_form'                          => yml_custom_forms,
+            'custom_field'                         => yml_custom_fields,
+            'custom_field_option'                  => yml_custom_field_options,
+            'user'                                 => yml_users,
+            'email_campaigns/unsubscription_token' => yml_unsubscription_tokens,
             'project_file'                         => yml_project_files,
             'project_image'                        => yml_project_images,
             'projects_allowed_input_topic'         => yml_projects_allowed_input_topics,
@@ -62,10 +65,7 @@ module MultiTenancy
             'volunteering/volunteer'               => yml_volunteering_volunteers,
             'custom_maps/map_config'               => yml_maps_map_configs,
             'custom_maps/layer'                    => yml_maps_layers,
-            'custom_maps/legend_item'              => yml_maps_legend_items,
-            'custom_form'                          => yml_custom_forms,
-            'custom_field'                         => yml_custom_fields,
-            'custom_field_option'                  => yml_custom_field_options
+            'custom_maps/legend_item'              => yml_maps_legend_items
           }
         end
         { 'models' => models }
