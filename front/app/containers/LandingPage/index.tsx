@@ -59,23 +59,22 @@ const LandingPage = () => {
         <Content>
           <Suspense fallback={<LoadingBox />}>
             {!isNilOrError(homepageSettings) &&
-              homepageSettings.data.attributes.top_info_section_enabled && (
+              homepageSettings.attributes.top_info_section_enabled && (
                 // top info section
                 <HomepageInfoSection
                   multilocContent={
-                    homepageSettings.data.attributes.top_info_section_multiloc
+                    homepageSettings.attributes.top_info_section_multiloc
                   }
                   fragmentName="pages/homepage_info/top-content"
                 />
               )}
             <MainContent />
             {!isNilOrError(homepageSettings) &&
-              homepageSettings.data.attributes.bottom_info_section_enabled && (
+              homepageSettings.attributes.bottom_info_section_enabled && (
                 // bottom info section
                 <HomepageInfoSection
                   multilocContent={
-                    homepageSettings.data.attributes
-                      .bottom_info_section_multiloc
+                    homepageSettings.attributes.bottom_info_section_multiloc
                   }
                   fragmentName="pages/homepage_info/content"
                 />

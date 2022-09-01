@@ -77,7 +77,7 @@ const EditHomepage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       setIsLoading(true);
       try {
         await updateHomepageSettings({
-          [sectionName]: !homepageSettings.data.attributes[sectionName],
+          [sectionName]: !homepageSettings.attributes[sectionName],
         });
       } catch (error) {
         console.error(error);
@@ -149,7 +149,7 @@ const EditHomepage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
               <SectionToggle
                 key={name}
                 name={name}
-                checked={homepageSettings.data.attributes[name]}
+                checked={homepageSettings.attributes[name]}
                 onChangeSectionToggle={handleOnChangeToggle(name)}
                 onClickEditButton={handleOnClick}
                 editLinkPath={linkToPath}

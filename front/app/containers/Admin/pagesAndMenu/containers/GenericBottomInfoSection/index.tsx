@@ -7,6 +7,7 @@ import SectionFormWrapper from '../../components/SectionFormWrapper';
 import Error from 'components/UI/Error';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
+import { TBreadcrumbs } from 'components/UI/Breadcrumbs';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -18,18 +19,30 @@ import sectionToggleMessages from '../../components/SectionToggle/messages';
 import { Multiloc, CLError } from 'typings';
 
 // constants
-import { pagesAndMenuBreadcrumb, homeBreadcrumb } from '../../breadcrumbs';
+import { pagesAndMenuBreadcrumb } from '../../breadcrumbs';
 
 // services and hooks
-import useHomepageSettings from 'hooks/useHomepageSettings';
-import { updateHomepageSettings } from 'services/homepageSettings';
+import { IHomepageSettingsData } from 'services/homepageSettings';
+import { ICustomPageData } from 'services/customPages';
 
 // utils
 import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
-const BottomInfoSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
-  const homepageSettings = useHomepageSettings();
+interface Props {
+  pageData: IHomepageSettingsData | ICustomPageData;
+  updatePage: (data: {
+    bottom_info_section_multiloc: Multiloc;
+  }) => Promise<any>;
+  breadcrumbs: TBreadcrumbs;
+}
+
+const GenericBottomInfoSection = ({
+  pageData,
+  updatePage,
+  breadcrumbs,
+  intl: { formatMessage },
+}: InjectedIntlProps & Props) => {
   const theme: any = useTheme();
 
   const [bottomInfoSectionMultilocState, setBottomInfoSectionMultilocState] =
@@ -39,12 +52,12 @@ const BottomInfoSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const [formStatus, setFormStatus] = useState<ISubmitState>('disabled');
 
   useEffect(() => {
-    if (!isNilOrError(homepageSettings)) {
+    if (!isNilOrError(pageData)) {
       setBottomInfoSectionMultilocState(
-        homepageSettings.data.attributes.bottom_info_section_multiloc
+        pageData.attributes.bottom_info_section_multiloc
       );
     }
-  }, [homepageSettings]);
+  }, [pageData]);
 
   const handleCustomSectionMultilocOnChange = (
     bottomInfoMultiloc: Multiloc
@@ -65,7 +78,7 @@ const BottomInfoSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     setFormStatus('disabled');
     try {
       if (bottomInfoSectionMultilocState) {
-        await updateHomepageSettings({
+        await updatePage({
           bottom_info_section_multiloc: bottomInfoSectionMultilocState,
         });
       }
@@ -89,10 +102,7 @@ const BottomInfoSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           label: formatMessage(pagesAndMenuBreadcrumb.label),
           linkTo: pagesAndMenuBreadcrumb.linkTo,
         },
-        {
-          label: formatMessage(homeBreadcrumb.label),
-          linkTo: homeBreadcrumb.linkTo,
-        },
+        ...breadcrumbs,
         { label: formatMessage(messages.pageTitle) },
       ]}
       title={formatMessage(messages.pageTitle)}
@@ -126,4 +136,4 @@ const BottomInfoSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   );
 };
 
-export default injectIntl(BottomInfoSection);
+export default injectIntl(GenericBottomInfoSection);

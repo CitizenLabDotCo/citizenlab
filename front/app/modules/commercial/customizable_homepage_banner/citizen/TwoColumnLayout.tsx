@@ -33,7 +33,7 @@ const TwoColumnLayout = () => {
   const homepageSettings = useHomepageSettings();
 
   if (!isNilOrError(homepageSettings)) {
-    const headerImage = homepageSettings.data.attributes.header_bg?.large;
+    const headerImage = homepageSettings.attributes.header_bg?.large;
 
     return (
       <Container data-cy="e2e-two-column-layout-container">

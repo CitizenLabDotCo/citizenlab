@@ -97,10 +97,9 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
 
     // copy homepage settings to local state
     setLocalHomepageSettings({
-      ...homepageSettings.data.attributes,
+      ...homepageSettings.attributes,
       banner_layout:
-        homepageSettings.data.attributes.banner_layout ??
-        'full_width_banner_layout',
+        homepageSettings.attributes.banner_layout ?? 'full_width_banner_layout',
     });
 
     // the image file sent from the API needs to be converted
@@ -118,7 +117,7 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       }
     };
 
-    const headerFileInfo = homepageSettings.data.attributes.header_bg?.large;
+    const headerFileInfo = homepageSettings.attributes.header_bg?.large;
     convertHeaderToUploadFile(headerFileInfo);
   }, [homepageSettings]);
 
@@ -127,7 +126,7 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       // only update the homepage settings if they have changed
       const diffedValues = {};
       forOwn(localHomepageSettings, (value, key) => {
-        if (!isEqual(value, homepageSettings.data.attributes[key])) {
+        if (!isEqual(value, homepageSettings.attributes[key])) {
           diffedValues[key] = value;
         }
       });
