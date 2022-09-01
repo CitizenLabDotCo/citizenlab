@@ -130,9 +130,7 @@ module Analytics
 
     def validate_aggregations
       @json_query[:aggregations].each do |key, aggregation|
-        if key == 'all'
-          next if aggregation == 'count'
-
+        if key == 'all' && aggregation != 'count'
           add_error("Aggregations on 'all' can only be 'count'.", 422)
           next
         end
