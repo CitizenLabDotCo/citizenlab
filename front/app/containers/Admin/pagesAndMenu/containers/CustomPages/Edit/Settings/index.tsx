@@ -11,6 +11,7 @@ const EditCustomPageSettings = () => {
   if (!isNilOrError(customPage)) {
     return (
       <CustomPageSettingsForm
+        mode="edit"
         defaultValues={{
           title_multiloc: customPage.attributes.title_multiloc,
           slug: customPage.attributes.slug,

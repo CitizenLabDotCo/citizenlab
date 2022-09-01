@@ -39,13 +39,13 @@ interface FormValues {
 
 interface Props {
   defaultValues?: FormValues;
-  hideSlugInput?: boolean;
+  mode: 'new' | 'edit';
 }
 
 const CustomPageSettingsForm = ({
   defaultValues,
   intl: { formatMessage },
-  hideSlugInput = false,
+  mode,
 }: Props & InjectedIntlProps) => {
   const [_titleErrors, _setTitleErrors] = useState<Multiloc>({});
   // types still to change
@@ -69,7 +69,9 @@ const CustomPageSettingsForm = ({
   const onFormSubmit = async (formValues: FormValues) => {
     try {
       const { data } = await createCustomPageStream(formValues);
-      clHistory.push(`/admin/pages-menu/custom/${data.id}/content`);
+
+      mode === 'new' &&
+        clHistory.push(`/admin/pages-menu/custom/${data.id}/content`);
     } catch (error) {
       setError(error);
     }
@@ -96,7 +98,7 @@ const CustomPageSettingsForm = ({
                 type="text"
               />
             </Box>
-            {!hideSlugInput && (
+            {mode === 'edit' && (
               <SlugInput slug={slug} pathnameWithoutSlug="pages" />
             )}
           </SectionField>
