@@ -23,29 +23,25 @@ import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
-// services
-import { createCustomPageStream } from 'services/customPages';
-
-// utils
-import clHistory from 'utils/cl-router/history';
-
 // types
 import { Multiloc } from 'typings';
 
-interface FormValues {
+export interface FormValues {
   title_multiloc: Multiloc;
   slug?: string;
 }
 
 interface Props {
   defaultValues?: FormValues;
-  hideSlugInput?: boolean;
+  mode: 'new' | 'edit';
+  onSubmit: (formValues: FormValues) => void;
 }
 
 const CustomPageSettingsForm = ({
   defaultValues,
   intl: { formatMessage },
-  hideSlugInput = false,
+  mode,
+  onSubmit,
 }: Props & InjectedIntlProps) => {
   const [_titleErrors, _setTitleErrors] = useState<Multiloc>({});
   // types still to change
@@ -68,8 +64,7 @@ const CustomPageSettingsForm = ({
 
   const onFormSubmit = async (formValues: FormValues) => {
     try {
-      const { data } = await createCustomPageStream(formValues);
-      clHistory.push(`/admin/pages-menu/custom/${data.id}/content`);
+      onSubmit(formValues);
     } catch (error) {
       setError(error);
     }
@@ -96,7 +91,7 @@ const CustomPageSettingsForm = ({
                 type="text"
               />
             </Box>
-            {!hideSlugInput && (
+            {mode === 'edit' && (
               <SlugInput slug={slug} pathnameWithoutSlug="pages" />
             )}
           </SectionField>
