@@ -61,7 +61,7 @@ module Analytics
           statuses.push(query.response_status)
         end
 
-        if errors == {}
+        if errors.blank?
           queries.each_with_index do |query, index|
             query.run
             if query.failed
