@@ -32,9 +32,9 @@ export interface Query {
   limit?: number;
 }
 
-export async function analyticsStream<T>(queryObject) {
-  return await streams.add<AnalyticsResponse<T>>(
-    `${API_PATH}/analytics`,
-    queryObject
-  );
+export function analyticsStream<T>(queryObject) {
+  return streams.get<AnalyticsResponse<T>>({
+    apiEndpoint: `${API_PATH}/analytics`,
+    queryParameters: queryObject,
+  });
 }
