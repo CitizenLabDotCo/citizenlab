@@ -312,7 +312,7 @@
   "app.containers.Admin.Insights.View.createCategoryTitle": "Eine neue Kategorie erstellen",
   "app.containers.Admin.Insights.View.inputsListExportButton": "Alle exportieren",
   "app.containers.Admin.Insights.View.inputsListExportFileName": "Beiträge",
-  "app.containers.Admin.Insights.View.saveAsCategory": "Als Kategorie speichern",
+  "app.containers.Admin.Insights.View.saveAsCategory": "Als Thema speichern",
   "app.containers.Admin.Insights.components.TopBar.delete": "Löschen",
   "app.containers.Admin.Insights.components.TopBar.deleteConfirmation": "Sind Sie sicher?",
   "app.containers.Admin.Insights.components.TopBar.duplicate": "Duplizieren",
