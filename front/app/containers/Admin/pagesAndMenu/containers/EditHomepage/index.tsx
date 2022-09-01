@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 
 // components
-import SectionToggle from '../SectionToggle';
+import SectionToggle from '../../components/SectionToggle';
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 import AdminViewButton from './AdminViewButton';
-import SectionFormWrapper from '../components/SectionFormWrapper';
-import { pagesAndMenuBreadcrumb, homeBreadcrumb } from '../breadcrumbs';
+import SectionFormWrapper from '../../components/SectionFormWrapper';
+import { pagesAndMenuBreadcrumb, homeBreadcrumb } from '../../breadcrumbs';
 
 // i18n
 import messages from './messages';
-import sectionToggleMessages from 'containers/Admin/pagesAndMenu/SectionToggle/messages';
+import sectionToggleMessages from 'containers/Admin/pagesAndMenu/components/SectionToggle/messages';
 import { FormattedMessage, injectIntl, MessageDescriptor } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 

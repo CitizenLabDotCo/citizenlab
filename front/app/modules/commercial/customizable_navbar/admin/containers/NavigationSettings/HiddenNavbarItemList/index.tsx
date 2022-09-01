@@ -13,7 +13,7 @@ import usePageSlugById from 'hooks/usePageSlugById';
 
 // components
 import { List, Row } from 'components/admin/ResourceList';
-import NavbarItemRow from 'containers/Admin/pagesAndMenu/NavbarItemRow';
+import NavbarItemRow from 'containers/Admin/pagesAndMenu/containers/NavigationSettings/NavbarItemRow';
 import Header from './Header';
 
 // i18n

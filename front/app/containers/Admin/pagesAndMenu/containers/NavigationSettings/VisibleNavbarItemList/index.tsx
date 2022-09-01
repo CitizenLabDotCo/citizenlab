@@ -2,7 +2,7 @@ import React from 'react';
 
 import useNavbarItems from 'hooks/useNavbarItems';
 import { getNavbarItemSlug, INavbarItem } from 'services/navbar';
-import NavbarItemRow from '../../NavbarItemRow';
+import NavbarItemRow from '../NavbarItemRow';
 import { List, Row } from 'components/admin/ResourceList';
 import { isNilOrError } from 'utils/helperUtils';
 import usePageSlugById from 'hooks/usePageSlugById';

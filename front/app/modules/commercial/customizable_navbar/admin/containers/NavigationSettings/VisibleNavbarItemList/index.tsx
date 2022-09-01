@@ -15,7 +15,7 @@ import {
   LockedRow,
 } from 'components/admin/ResourceList';
 import { SubSectionTitle } from 'components/admin/Section';
-import NavbarItemRow from 'containers/Admin/pagesAndMenu/NavbarItemRow';
+import NavbarItemRow from 'containers/Admin/pagesAndMenu/containers/NavigationSettings/NavbarItemRow';
 
 // hooks
 import useNavbarItems from 'hooks/useNavbarItems';

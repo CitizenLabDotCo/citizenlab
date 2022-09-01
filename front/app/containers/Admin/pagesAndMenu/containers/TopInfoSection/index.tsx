@@ -12,7 +12,7 @@ import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
-import sectionToggleMessages from '../../SectionToggle/messages';
+import sectionToggleMessages from '../../components/SectionToggle/messages';
 
 // typings
 import { Multiloc, CLError } from 'typings';
