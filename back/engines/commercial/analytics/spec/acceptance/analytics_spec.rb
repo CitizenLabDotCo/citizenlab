@@ -18,8 +18,8 @@ resource 'Analytics API', use_transactional_fixtures: false do
     parameter :query, 'The query object.', required: true
 
     before do
-      create(:idea) # Create one idea
-      create(:dimension_type_idea) # Create the 'idea' type
+      create(:idea)
+      create(:dimension_type_idea)
     end
 
     context 'When admin' do
