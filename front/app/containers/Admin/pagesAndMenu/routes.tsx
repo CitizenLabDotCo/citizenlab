@@ -4,7 +4,9 @@ import moduleConfiguration from 'modules';
 import { Navigate } from 'react-router-dom';
 const CustomPagesIndex = lazy(() => import('./containers/CustomPages'));
 const PagesAndMenuIndex = lazy(() => import('containers/Admin/pagesAndMenu'));
-const NavigationSettings = lazy(() => import('./NavigationSettings'));
+const NavigationSettings = lazy(
+  () => import('./containers/NavigationSettings')
+);
 
 // homepage
 const EditHomepage = lazy(() => import('./containers/EditHomepage'));

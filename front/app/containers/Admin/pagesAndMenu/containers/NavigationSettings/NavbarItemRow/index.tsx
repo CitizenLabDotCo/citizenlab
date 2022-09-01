@@ -55,7 +55,7 @@ interface Props {
   onClickDeleteButton?: () => void;
 }
 
-export default ({
+const NavbarItemRow = ({
   title,
   isDefaultPage,
   showEditButton,
@@ -154,3 +154,5 @@ export default ({
     </Container>
   );
 };
+
+export default NavbarItemRow;
