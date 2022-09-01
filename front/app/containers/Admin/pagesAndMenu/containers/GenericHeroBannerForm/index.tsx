@@ -93,7 +93,7 @@ type InputSettingsProps = {
   header_bg:
     | IHomepageSettingsAttributes['header_bg']
     | ICustomPagesAttributes['header_bg'];
-  // homepage only properties
+  // homepage only properties, optional
   banner_signed_in_header_multiloc?: IHomepageSettingsAttributes['banner_signed_in_header_multiloc'];
   banner_avatars_enabled?: IHomepageSettingsAttributes['banner_avatars_enabled'];
 };
@@ -214,7 +214,7 @@ const GenericHeroBannerForm = ({
     [debounceHandleOverlayOpacityOnChange]
   );
 
-  const handleSignedOutHeaderOnChange = (titleMultiloc: Multiloc) => {
+  const handleHeaderOnChange = (titleMultiloc: Multiloc) => {
     const signedOutHeaderErrors = {};
 
     forOwn(titleMultiloc, (title, locale) => {
@@ -225,14 +225,14 @@ const GenericHeroBannerForm = ({
       }
     });
 
-    updateValueInLocalState('banner_signed_out_header_multiloc', titleMultiloc);
+    updateValueInLocalState('banner', titleMultiloc);
     setHeaderAndSubheaderErrors((prevState) => ({
       ...prevState,
       ...signedOutHeaderErrors,
     }));
   };
 
-  const handleSignedOutSubheaderOnChange = (subtitleMultiloc: Multiloc) => {
+  const handleSubheaderOnChange = (subtitleMultiloc: Multiloc) => {
     const signedOutSubheaderErrors = {};
 
     forOwn(subtitleMultiloc, (subtitle, locale) => {
@@ -243,10 +243,7 @@ const GenericHeroBannerForm = ({
       }
     });
 
-    updateValueInLocalState(
-      'banner_signed_out_subheader_multiloc',
-      subtitleMultiloc
-    );
+    updateValueInLocalState('banner_subheader_multiloc', subtitleMultiloc);
     setHeaderAndSubheaderErrors((prevState) => ({
       ...prevState,
       ...signedOutSubheaderErrors,
@@ -254,7 +251,7 @@ const GenericHeroBannerForm = ({
   };
 
   const handleSignedInHeaderOnChange = (titleMultiloc: Multiloc) => {
-    // no length limit for signed-in header
+    // no length limit for signed-in header, only applies to homepage
     updateValueInLocalState('banner_signed_in_header_multiloc', titleMultiloc);
   };
 
@@ -271,6 +268,7 @@ const GenericHeroBannerForm = ({
   }, [localSettings?.header_bg, formatMessage]);
 
   return (
+    // move this to each specific form
     <SectionFormWrapper
       breadcrumbs={[
         {
@@ -421,7 +419,7 @@ const GenericHeroBannerForm = ({
               </Box>
             }
             maxCharCount={TITLE_MAX_CHAR_COUNT}
-            onChange={handleSignedOutHeaderOnChange}
+            onChange={handleHeaderOnChange}
             errorMultiloc={headerAndSubheaderErrors.signedOutHeaderErrors}
           />
         </SectionField>
@@ -431,7 +429,7 @@ const GenericHeroBannerForm = ({
             valueMultiloc={banner_subheader_multiloc}
             label={formatMessage(messages.bannerHeaderSignedOutSubtitle)}
             maxCharCount={SUBTITLE_MAX_CHAR_COUNT}
-            onChange={handleSignedOutSubheaderOnChange}
+            onChange={handleSubheaderOnChange}
             errorMultiloc={headerAndSubheaderErrors.signedOutSubheaderErrors}
           />
         </SectionField>

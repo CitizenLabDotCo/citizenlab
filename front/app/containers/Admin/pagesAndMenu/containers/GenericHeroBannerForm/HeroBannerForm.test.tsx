@@ -1,3 +1,5 @@
+// for dev purposes
+// @ts-nocheck
 import React from 'react';
 import { render, screen, act, fireEvent } from 'utils/testUtils/rtl';
 import HeroBannerForm from '.';

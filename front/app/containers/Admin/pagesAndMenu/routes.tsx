@@ -23,6 +23,9 @@ const EditCustomPageContent = lazy(
   () => import('./containers/CustomPages/Edit/Content')
 );
 const AttachmentsForm = lazy(() => import('./containers/Attachments'));
+const CustomPageHeroBannerForm = lazy(
+  () => import('./containers/CustomPages/Edit/HeroBanner')
+);
 
 // path utils
 const PAGE_PATH = 'pages-menu';
@@ -120,7 +123,7 @@ export default () => ({
           path: ':customPageId/banner',
           element: (
             <PageLoading>
-              <HeroBannerForm />
+              <CustomPageHeroBannerForm />
             </PageLoading>
           ),
         },
