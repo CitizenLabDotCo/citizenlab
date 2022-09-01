@@ -83,11 +83,7 @@ module Analytics
     end
 
     def groups_keys
-      if @json_query[:groups].instance_of?(Array)
-        @json_query[:groups]
-      else
-        [@json_query[:groups]]
-      end
+      Array.wrap(@json_query[:groups])
     end
 
     def fields
