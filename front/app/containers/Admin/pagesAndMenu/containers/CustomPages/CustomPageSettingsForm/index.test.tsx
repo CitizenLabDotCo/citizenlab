@@ -4,15 +4,10 @@ import CustomPageSettingsForm from './';
 
 const titleEN = 'title en';
 const titleNL = 'title nl';
+const editedTitleEN = 'edited title en';
+const editedTitleNL = 'edited title nl';
 // Slug computation takes primary title as base
 const slug = 'title-en';
-
-const defaultProps = {
-  onSubmit: jest.fn(),
-  defaultValues: {
-    title_multiloc: { en: '', 'nl-NL': '' },
-  },
-};
 
 jest.mock('utils/cl-intl');
 jest.mock('hooks/useLocale');
@@ -23,6 +18,12 @@ jest.mock('hooks/useAppConfigurationLocales', () =>
 describe('CustomPageSettingsForm', () => {
   describe('New custom page', () => {
     const mode = 'new';
+    const defaultProps = {
+      onSubmit: jest.fn(),
+      defaultValues: {
+        title_multiloc: { en: '', 'nl-NL': '' },
+      },
+    };
 
     it('renders', () => {
       render(<CustomPageSettingsForm mode={mode} {...defaultProps} />);
@@ -76,6 +77,13 @@ describe('CustomPageSettingsForm', () => {
 
   describe('Edit custom page', () => {
     const mode = 'edit';
+    const defaultProps = {
+      onSubmit: jest.fn(),
+      defaultValues: {
+        title_multiloc: { en: titleEN, 'nl-NL': titleNL },
+        slug,
+      },
+    };
 
     it('renders', () => {
       render(<CustomPageSettingsForm mode={mode} {...defaultProps} />);
@@ -87,20 +95,28 @@ describe('CustomPageSettingsForm', () => {
         <CustomPageSettingsForm mode={mode} {...defaultProps} />
       );
 
-      fireEvent.change(screen.getByRole('textbox'), {
+      // Set title field
+      fireEvent.change(screen.getByRole('textbox', { name: 'Title' }), {
         target: {
-          value: titleEN,
+          value: editedTitleEN,
         },
       });
 
       fireEvent.click(screen.getByText(/nl-NL/i));
-
-      fireEvent.change(screen.getByRole('textbox'), {
+      fireEvent.change(screen.getByRole('textbox', { name: 'Title' }), {
         target: {
-          value: titleNL,
+          value: editedTitleNL,
         },
       });
 
+      // Set slug field
+      fireEvent.change(screen.getByRole('textbox', { name: 'Page URL' }), {
+        target: {
+          value: 'new-slug',
+        },
+      });
+
+      // Submit form
       fireEvent.click(container.querySelector('button[type="submit"]'));
 
       await waitFor(() => {
@@ -119,6 +135,12 @@ describe('CustomPageSettingsForm', () => {
         <CustomPageSettingsForm mode={mode} {...defaultProps} />
       );
 
+      fireEvent.change(screen.getByRole('textbox', { name: 'Title' }), {
+        target: {
+          value: '',
+        },
+      });
+
       fireEvent.click(container.querySelector('button[type="submit"]'));
       await waitFor(() => {
         expect(screen.getAllByTestId('error-message')).toHaveLength(2);
@@ -131,6 +153,13 @@ describe('CustomPageSettingsForm', () => {
       const { container } = render(
         <CustomPageSettingsForm mode={mode} {...defaultProps} />
       );
+
+      fireEvent.change(screen.getByRole('textbox', { name: 'Page URL' }), {
+        target: {
+          // invalid slug
+          value: '%%%',
+        },
+      });
 
       fireEvent.click(container.querySelector('button[type="submit"]'));
       await waitFor(() => {

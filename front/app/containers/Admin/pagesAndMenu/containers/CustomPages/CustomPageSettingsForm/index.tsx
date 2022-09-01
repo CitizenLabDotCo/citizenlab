@@ -30,9 +30,10 @@ export interface FormValues {
   slug?: string;
 }
 
+type TMode = 'new' | 'edit';
 interface Props {
   defaultValues?: FormValues;
-  mode: 'new' | 'edit';
+  mode: TMode;
   onSubmit: (formValues: FormValues) => void;
 }
 
