@@ -8,7 +8,6 @@ module Analytics
       @messages = []
       @response_status = nil
 
-      @valid = true
       validate
       @valid = @messages.empty?
     end
