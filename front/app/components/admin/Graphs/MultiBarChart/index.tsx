@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
+import { useResizeDetector } from 'react-resize-detector'
+import { debounce } from 'lodash-es';
 
 // styling
 import {
@@ -32,6 +34,7 @@ import {
   GraphDimensions,
   LegendDimensions,
 } from '../_components/Legend/typings';
+import { isEqual } from 'lodash-es';
 
 export const DEFAULT_LEGEND_OFFSET = 10;
 
@@ -59,6 +62,16 @@ const MultiBarChart = <Row,>({
   const [legendDimensions, setLegendDimensions] = useState<
     LegendDimensions | undefined
   >();
+
+  const onResize = useCallback(debounce((width: number, height: number) => {
+    const newGraphDimensions = { width, height }
+
+    if (!isEqual(graphDimensions, newGraphDimensions)) {
+      setGraphDimensions(newGraphDimensions)
+    }
+  }, 50), []);
+
+  const { ref: resizeRef } = useResizeDetector({ onResize });
 
   if (hasNoData(data)) {
     return <EmptyState emptyContainerContent={emptyContainerContent} />;
@@ -102,14 +115,10 @@ const MultiBarChart = <Row,>({
 
   const handleRef = (ref: React.RefObject<HTMLDivElement>) => {
     if (graphDimensions || ref === null) return;
-
     const node = ref.current;
     if (node === null) return;
 
-    setGraphDimensions({
-      width: node.clientWidth,
-      height: node.clientHeight,
-    });
+    resizeRef.current = node;
   };
 
   return (
@@ -186,6 +195,7 @@ const MultiBarChart = <Row,>({
 
       {legend && (
         <FakeLegend
+          width={width}
           items={legend.items}
           position={legend.position}
           onCalculateDimensions={setLegendDimensions}
