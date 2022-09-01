@@ -360,6 +360,7 @@ class Streams {
 
     const isQueryStream =
       isObject(queryParameters) && !isEmpty(queryParameters);
+
     // Check if the requested endpoint contains a search query param. See explanation below for more details.
     const isSearchQuery =
       isQueryStream &&
@@ -367,6 +368,7 @@ class Streams {
       queryParameters['search'] &&
       isString(queryParameters['search']) &&
       !isEmpty(queryParameters['search']);
+
     // whenever the cacheStream argument is set to false or a search param
     // is included in the list of query params
     // the stream will not be cached.
@@ -896,11 +898,6 @@ class Streams {
     // queryStream than to not being a query stream. So we will treat it like that.
     const isQueryStream = true;
 
-    // We'll set this to false for now, kind of a misnomer (seems to be about)
-    // always keeping the stream active regardless of what happens, rather than
-    // it being cached
-    const cacheStream = false;
-
     const observer: IObserver<T | null> = null as any;
 
     const fetch = () => {
@@ -968,12 +965,15 @@ class Streams {
       observer,
       observable,
       streamId,
-      cacheStream,
+      cacheStream: true,
       type: 'analyticsData',
       dataIds: {},
     };
 
     this.addStreamIdByApiEndpointIndex(apiEndpoint, streamId, isQueryStream);
+
+    this.streams[streamId].subscription =
+      this.streams[streamId].observable.subscribe();
 
     return this.streams[streamId] as IStream<T>;
   }
