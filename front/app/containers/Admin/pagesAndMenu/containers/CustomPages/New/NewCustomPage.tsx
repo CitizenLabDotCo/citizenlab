@@ -8,7 +8,10 @@ const NewCustomPage = () => {
   const handleOnSubmit = async (formValues: FormValues) => {
     const { data } = await createCustomPage(formValues);
 
-    clHistory.push(`/admin/pages-menu/custom/${data.id}/content`);
+    setTimeout(
+      () => clHistory.push(`/admin/pages-menu/custom/${data.id}/content`),
+      1500
+    );
   };
 
   return <CustomPageSettingsForm mode="new" onSubmit={handleOnSubmit} />;
