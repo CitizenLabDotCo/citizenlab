@@ -24,6 +24,7 @@ import {
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { getIsPostingEnabled } from 'containers/Admin/formBuilder/utils';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 // i18n
 import messages from '../messages';
@@ -52,7 +53,7 @@ const FormBuilderTopBar = () => {
   };
   const project = useProject({ projectId });
   const [loading, setLoading] = useState(false);
-  const { watch } = useFormContext();
+  const { watch, setError, clearErrors } = useFormContext();
   const formCustomFields: IFlatCustomField[] = watch('customFields');
   const phase = usePhase(phaseId || null);
 
@@ -87,8 +88,9 @@ const FormBuilderTopBar = () => {
           }),
         }));
         await updateFormCustomFields(projectId, finalResponseArray, phaseId);
-      } catch {
-        // TODO: Add error handling
+        clearErrors();
+      } catch (error) {
+        handleHookFormSubmissionError(error, setError, 'customFields');
       } finally {
         setLoading(false);
       }

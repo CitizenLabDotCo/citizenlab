@@ -17,6 +17,7 @@ import FormBuilderTopBar from 'containers/Admin/formBuilder/components/FormBuild
 import FormBuilderToolbox from 'containers/Admin/formBuilder/components/FormBuilderToolbox';
 import FormBuilderSettings from 'containers/Admin/formBuilder/components/FormBuilderSettings';
 import FormFields from 'containers/Admin/formBuilder/components/FormFields';
+import Error from 'components/UI/Error';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -64,7 +65,7 @@ export const FormEdit = ({
     customFields: array().of(
       object().shape({
         title_multiloc: validateMultiloc(
-          formatMessage(messages.emptyTitleErrorMessage)
+          formatMessage(messages.emptyTitleMessage)
         ),
         description_multiloc: object(),
         options: array().of(
@@ -111,6 +112,8 @@ export const FormEdit = ({
     move(fromIndex, toIndex);
   };
 
+  const hasErrors = !!Object.keys(methods.formState.errors).length;
+
   return (
     <Box
       display="flex"
@@ -127,12 +130,24 @@ export const FormEdit = ({
           <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
             <FormBuilderToolbox onAddField={onAddField} />
             <StyledRightColumn>
-              <Box width="1000px" bgColor="white" minHeight="300px">
-                <FormFields
-                  onEditField={setSelectedField}
-                  handleDragRow={handleDragRow}
-                  selectedFieldId={selectedField?.id}
-                />
+              <Box width="1000px">
+                {hasErrors && (
+                  <Box mb="16px">
+                    <Error
+                      marginTop="8px"
+                      marginBottom="8px"
+                      text={formatMessage(messages.errorMessage)}
+                      scrollIntoView={false}
+                    />
+                  </Box>
+                )}
+                <Box bgColor="white" minHeight="300px">
+                  <FormFields
+                    onEditField={setSelectedField}
+                    handleDragRow={handleDragRow}
+                    selectedFieldId={selectedField?.id}
+                  />
+                </Box>
               </Box>
             </StyledRightColumn>
             {!isNilOrError(selectedField) && (
