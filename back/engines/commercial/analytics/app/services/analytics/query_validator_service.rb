@@ -3,6 +3,8 @@
 module Analytics
   class QueryValidatorService
     def initialize(query)
+      query_schema_file = 'engines/commercial/analytics/app/services/analytics/query_schema.json'
+      @query_schema = File.read(query_schema_file)
       @query = query
       @json_query = query.json_query
       @messages = []
@@ -51,8 +53,7 @@ module Analytics
     end
 
     def validate_json
-      query_schema = 'engines/commercial/analytics/app/services/analytics/query_schema.json'
-      json_errors = JSON::Validator.fully_validate(query_schema, @json_query.to_unsafe_hash)
+      json_errors = JSON::Validator.fully_validate(@query_schema, @json_query.to_unsafe_hash)
       return if json_errors.empty?
 
       add_error(json_errors, 400)
