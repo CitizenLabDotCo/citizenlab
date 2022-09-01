@@ -43,9 +43,7 @@ resource 'AppConfigurations' do
   patch 'web_api/v1/app_configuration' do
     with_options scope: :app_configuration do
       parameter :logo, 'Base64 encoded logo'
-      parameter :header_bg, 'Base64 encoded header'
       parameter :favicon, 'Base64 encoded favicon'
-      parameter :homepage_info_multiloc, 'HTML multiloc for the homepage info section at the bottom'
 
       # Settings parameters
       parameter :settings, <<~DESC, extra: ''
