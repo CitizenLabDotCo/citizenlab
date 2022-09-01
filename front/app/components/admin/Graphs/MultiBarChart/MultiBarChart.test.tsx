@@ -285,11 +285,9 @@ describe('<MultiBarChart />', () => {
 
   describe('Legend', () => {
     const legendItems: any = [
-      [
-        { icon: 'circle', label: 'item1', color: 'red' },
-        { icon: 'circle', label: 'item2', color: 'blue' },
-      ],
-      [{ icon: 'circle', label: 'item3', color: 'blue' }],
+      { icon: 'circle', label: 'item1', color: 'red' },
+      { icon: 'circle', label: 'item2', color: 'blue' },
+      { icon: 'circle', label: 'item3', color: 'blue' },
     ];
 
     it('renders legend', async () => {
@@ -318,7 +316,7 @@ describe('<MultiBarChart />', () => {
           data={data}
           mapping={{ category: 'name', length: ['value1', 'value2'] }}
           bars={{ isAnimationActive: false }}
-          legend={{ items: [legendItems[0]] }}
+          legend={{ items: legendItems.slice(0, 2) }}
         />
       );
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -47,55 +47,71 @@ const centerLabels = () => (
   <LabelList position="center" valueAccessor={valueAccessor} fill="white" />
 );
 
-const Playground = () => (
-  <>
-    <Box width="50%" height="400px">
-      <MultiBarChart
-        data={data}
-        mapping={{
-          length: ['value', 'value2'],
-          category: 'label',
-          fill: ({ barIndex }) => (barIndex === 0 ? 'blue' : 'red'),
-        }}
-        legend={{
-          position: 'bottom-center',
-          items: [legendItems, legendItems.slice(0, 2)],
-        }}
-      />
-    </Box>
+const Playground = () => {
+  const [changingItems, setChangingItems] = useState(legendItems);
 
-    <Box width="50%" height="200px" mt="20px">
-      <PieChart
-        data={data}
-        mapping={{
-          angle: 'value',
-        }}
-        legend={{
-          position: 'bottom-center',
-          items: [legendItems, legendItems.slice(0, 2)],
-        }}
-      />
-    </Box>
+  const toggleItems = () => {
+    if (changingItems.length === legendItems.length) {
+      setChangingItems([...legendItems, ...legendItems]);
+    } else {
+      setChangingItems([...legendItems]);
+    }
+  };
 
-    <Box width="50%" height="100px" mt="30px">
-      <StackedBarChart
-        data={data.slice(0, 1)}
-        mapping={{
-          stackedLength: ['value', 'value2', 'value'],
-          fill: ({ stackIndex }) => colors[stackIndex],
-          cornerRadius: ({ stackIndex }) => radii[stackIndex],
-        }}
-        layout="horizontal"
-        labels={centerLabels}
-        xaxis={{ hide: true, domain: [0, 'dataMax'] }}
-        yaxis={{ hide: true, domain: ['dataMin', 'dataMax'] }}
-        legend={{
-          position: 'bottom-center',
-          items: [legendItems, legendItems.slice(0, 2)],
-        }}
-      />
-    </Box>
-  </>
-);
+  return (
+    <>
+      <Box p="30px">
+        <button onClick={toggleItems}>Toggle</button>
+      </Box>
+
+      <Box width="50%" height="400px">
+        <MultiBarChart
+          data={data}
+          mapping={{
+            length: ['value', 'value2'],
+            category: 'label',
+            fill: ({ barIndex }) => (barIndex === 0 ? 'blue' : 'red'),
+          }}
+          legend={{
+            position: 'bottom-center',
+            items: changingItems,
+          }}
+        />
+      </Box>
+
+      <Box width="50%" height="200px" mt="20px">
+        <PieChart
+          data={data}
+          mapping={{
+            angle: 'value',
+          }}
+          legend={{
+            position: 'bottom-center',
+            items: [...legendItems, ...legendItems],
+          }}
+        />
+      </Box>
+
+      <Box width="50%" height="100px" mt="30px">
+        <StackedBarChart
+          data={data.slice(0, 1)}
+          mapping={{
+            stackedLength: ['value', 'value2', 'value'],
+            fill: ({ stackIndex }) => colors[stackIndex],
+            cornerRadius: ({ stackIndex }) => radii[stackIndex],
+          }}
+          layout="horizontal"
+          labels={centerLabels}
+          xaxis={{ hide: true, domain: [0, 'dataMax'] }}
+          yaxis={{ hide: true, domain: ['dataMin', 'dataMax'] }}
+          legend={{
+            position: 'bottom-center',
+            items: legendItems,
+          }}
+        />
+      </Box>
+    </>
+  );
+};
 
 export default Playground;

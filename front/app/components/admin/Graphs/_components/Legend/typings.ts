@@ -17,7 +17,7 @@ export interface GraphDimensions {
 export interface LegendDimensions {
   width: number;
   height: number;
-  itemCoordinates: ItemCoordinates[][];
+  itemCoordinates: ItemCoordinates[];
 }
 
 export type Position = 'bottom-left' | 'bottom-center' | 'bottom-right';

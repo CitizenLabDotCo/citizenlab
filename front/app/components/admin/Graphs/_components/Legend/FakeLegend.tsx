@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useResizeDetector } from 'react-resize-detector';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -6,6 +7,7 @@ import Icon from './Icon';
 
 // utils
 import { getJustifyContent, getLegendDimensions } from './utils';
+import { isEqual } from 'lodash-es';
 
 // typings
 import { Position, LegendItem, LegendDimensions } from './typings';
@@ -13,7 +15,7 @@ import { Percentage } from 'typings';
 
 interface Props {
   width?: number | Percentage;
-  items: LegendItem[][];
+  items: LegendItem[];
   position?: Position;
   onCalculateDimensions: (dimensions: LegendDimensions) => void;
 }
@@ -33,62 +35,87 @@ const FakeLegend = ({
   onCalculateDimensions,
 }: Props) => {
   const [id, setId] = useState<string | undefined>();
+  const [legendDimensions, setLegendDimensions] = useState<
+    LegendDimensions | undefined
+  >();
+  const [calculationScheduled, setCalculationScheduled] = useState(false);
+
+  const calculateDimensions = () => {
+    if (id === undefined) return;
+
+    const items = [...document.querySelectorAll(`#${id} > .fake-legend-item`)];
+
+    const newLegendDimensions = getLegendDimensions(items);
+
+    if (!isEqual(legendDimensions, newLegendDimensions)) {
+      setLegendDimensions(newLegendDimensions);
+      onCalculateDimensions(newLegendDimensions);
+    }
+
+    setCalculationScheduled(false);
+  };
+
+  const scheduleCalculation = () => setCalculationScheduled(true);
+
+  const { ref: resizeRef } = useResizeDetector({
+    onResize: scheduleCalculation,
+  });
+
+  useEffect(() => {
+    scheduleCalculation();
+  }, [items, position]);
 
   useEffect(() => {
     setId(getId());
+    scheduleCalculation();
   }, []);
 
+  // This is just to make sure that the component finishes
+  // rendering before calculateDimensions is called. Without this,
+  // react complains about two components rendering at the same time
+  // or something
   useEffect(() => {
-    if (id === undefined) return;
-    const itemRows = [
-      ...document.querySelectorAll(`#${id} > .fake-legend-row`),
-    ];
-
-    const legendDimensions = getLegendDimensions(itemRows);
-    onCalculateDimensions(legendDimensions);
-  }, [id, items, onCalculateDimensions]);
+    if (!calculationScheduled) return;
+    calculateDimensions();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [calculationScheduled]);
 
   const stringWidth =
     typeof width === 'number' ? `${width}px` : width ?? '100%';
+
+  const handleRef = (ref: HTMLDivElement | null) => {
+    if (ref === null) return;
+    resizeRef.current = ref;
+  };
 
   return (
     <Box
       style={{ visibility: 'hidden' }}
       display="flex"
-      flexDirection="column"
+      flexDirection="row"
+      flexWrap="wrap"
+      justifyContent={getJustifyContent(position)}
       id={id}
       width={stringWidth}
+      ref={handleRef}
     >
-      {items.map((itemRow, rowIndex) => (
+      {items.map((item, i) => (
         <Box
+          className="fake-legend-item"
           display="flex"
           flexDirection="row"
-          justifyContent={getJustifyContent(position)}
-          className="fake-legend-row"
-          key={rowIndex}
+          alignItems="center"
+          px="8px"
+          key={i}
+          maxWidth="100%"
         >
-          {itemRow.map((item, itemIndex) => (
-            <Box
-              className="fake-legend-item"
-              display="flex"
-              flexDirection="row"
-              alignItems="center"
-              px="8px"
-              key={`${rowIndex}-${itemIndex}`}
-            >
-              <svg width="14px" height="14px" style={{ marginRight: '4px' }}>
-                <Icon {...item} />
-              </svg>
+          <svg width="14px" height="14px" style={{ marginRight: '4px' }}>
+            <Icon {...item} />
+          </svg>
 
-              <Box
-                style={{ fontSize: '14px' }}
-                display="flex"
-                alignItems="center"
-              >
-                {item.label}
-              </Box>
-            </Box>
-          ))}
+          <Box style={{ fontSize: '14px' }} display="flex" alignItems="center">
+            {item.label}
+          </Box>
         </Box>
       ))}
     </Box>

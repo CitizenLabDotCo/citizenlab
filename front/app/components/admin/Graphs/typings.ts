@@ -79,7 +79,7 @@ export type TooltipProps =
   | ((props: TooltipConfig) => React.ReactNode);
 
 export interface Legend {
-  items: LegendItem[][];
+  items: LegendItem[];
   position?: Position;
   textColor?: string;
   marginTop?: number;

@@ -82,11 +82,9 @@ describe('<PieChart />', () => {
 
   describe('Legend', () => {
     const legendItems: any = [
-      [
-        { icon: 'circle', label: 'item1', color: 'red' },
-        { icon: 'circle', label: 'item2', color: 'blue' },
-      ],
-      [{ icon: 'circle', label: 'item3', color: 'blue' }],
+      { icon: 'circle', label: 'item1', color: 'red' },
+      { icon: 'circle', label: 'item2', color: 'blue' },
+      { icon: 'circle', label: 'item3', color: 'blue' },
     ];
 
     it('renders legend', async () => {

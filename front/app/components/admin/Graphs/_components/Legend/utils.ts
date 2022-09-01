@@ -27,16 +27,10 @@ export const getLegendTranslate = (
 };
 
 export const itemsMatch = (
-  items: LegendItem[][],
+  items: LegendItem[],
   { itemCoordinates }: LegendDimensions
 ) => {
-  if (items.length !== itemCoordinates.length) return false;
-
-  for (let i = 0; i < items.length; i++) {
-    if (items[i].length !== itemCoordinates[i].length) return false;
-  }
-
-  return true;
+  return items.length === itemCoordinates.length;
 };
 
 export const getJustifyContent = (position: Position) => {
@@ -45,56 +39,41 @@ export const getJustifyContent = (position: Position) => {
   return 'flex-end';
 };
 
-export const getLegendDimensions = (itemRows: Element[]) => {
-  const corner = getCorner(itemRows);
+export const getLegendDimensions = (items: Element[]) => {
+  const corner = getCorner(items);
 
   let width = 0;
   let height = 0;
-  const itemCoordinates: ItemCoordinates[][] = [];
+  const itemCoordinates: ItemCoordinates[] = [];
 
-  itemRows.forEach((itemRow, rowIndex) => {
-    const items = itemRow.getElementsByClassName('fake-legend-item');
+  items.forEach((item) => {
+    const bbox = item.getBoundingClientRect();
 
-    let rowWidth = 0;
-    let rowHeight = 0;
-    itemCoordinates.push([]);
+    const relativeLeft = bbox.left - corner.left;
+    const relativeTop = bbox.top - corner.top;
+    const relativeRight = relativeLeft + bbox.width;
+    const relativeBottom = relativeTop + bbox.height;
 
-    [...items].forEach((item) => {
-      const { top, left, width, height } = item.getBoundingClientRect();
-
-      rowWidth += width;
-      rowHeight = Math.max(rowHeight, height);
-
-      itemCoordinates[rowIndex].push({
-        left: left - corner.left,
-        top: top - corner.top,
-      });
+    itemCoordinates.push({
+      left: relativeLeft,
+      top: relativeTop,
     });
 
-    width = Math.max(width, rowWidth);
-    height += rowHeight;
+    width = Math.max(width, relativeRight);
+    height = Math.max(height, relativeBottom);
   });
 
   return { width, height, itemCoordinates };
 };
 
-const getCorner = (itemRows: Element[]) => {
-  return itemRows.reduce(
-    (acc, itemRow) => {
-      let minLeft = Infinity;
-      let minTop = Infinity;
-
-      const items = itemRow.getElementsByClassName('fake-legend-item');
-
-      [...items].forEach((item) => {
-        const { left, top } = item.getBoundingClientRect();
-        minLeft = Math.min(minLeft, left);
-        minTop = Math.min(minTop, top);
-      });
+const getCorner = (items: Element[]) => {
+  return items.reduce(
+    (acc, item) => {
+      const { left, top } = item.getBoundingClientRect();
 
       return {
-        left: Math.min(acc.left, minLeft),
-        top: Math.min(acc.top, minTop),
+        left: Math.min(acc.left, left),
+        top: Math.min(acc.top, top),
       };
     },
     { left: Infinity, top: Infinity }

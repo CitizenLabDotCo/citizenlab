@@ -19,7 +19,7 @@ import {
 import { Margin } from '../../typings';
 
 interface Props {
-  items: LegendItem[][];
+  items: LegendItem[];
   graphDimensions: GraphDimensions;
   legendDimensions: LegendDimensions;
   position?: Position;
@@ -46,29 +46,22 @@ const Legend = ({
         margin
       )}
     >
-      {items.map((itemRow, rowIndex) =>
-        itemRow.map((item, itemIndex) => {
-          const { left, top } =
-            legendDimensions.itemCoordinates[rowIndex][itemIndex];
+      {items.map((item, i) => {
+        const { left, top } = legendDimensions.itemCoordinates[i];
 
-          return (
-            <g
-              transform={`translate(${left},${top})`}
-              key={`${rowIndex}-${itemIndex}`}
-              className="graph-legend-item"
-            >
-              <Icon {...item} />
-              <text
-                transform="translate(18,12)"
-                fontSize="14px"
-                fill={textColor}
-              >
-                {item.label}
-              </text>
-            </g>
-          );
-        })
-      )}
+        return (
+          <g
+            transform={`translate(${left},${top})`}
+            key={i}
+            className="graph-legend-item"
+          >
+            <Icon {...item} />
+            <text transform="translate(18,12)" fontSize="14px" fill={textColor}>
+              {item.label}
+            </text>
+          </g>
+        );
+      })}
     </g>
   );
 };
