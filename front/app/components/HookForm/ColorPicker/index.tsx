@@ -33,7 +33,7 @@ const ColorPicker = ({ name, ...rest }: Props) => {
         control={control}
         defaultValue={defaultValue}
         render={({ field: { ref: _ref, ...field } }) => (
-          <ColorPickerInput type="text" {...field} {...rest} />
+          <ColorPickerInput type="text" id={name} {...field} {...rest} />
         )}
       />
       {validationError && (
