@@ -91,11 +91,7 @@ module Analytics
     end
 
     def fields
-      if @json_query[:fields].instance_of?(Array)
-        @json_query[:fields]
-      else
-        [@json_query[:fields]]
-      end
+      Array.wrap(@json_query[:fields])
     end
 
     def aggregation_to_sql(aggregation, column)
