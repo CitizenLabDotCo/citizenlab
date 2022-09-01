@@ -1,7 +1,6 @@
-import React, { PureComponent } from 'react';
+import React, { useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
-import { isEqual, isEmpty } from 'lodash-es';
 import streams from 'utils/streams';
 
 // services
@@ -32,7 +31,20 @@ import {
   FormSectionTitle,
 } from 'components/UI/FormComponents';
 
-import { Input, Select, IconTooltip } from '@citizenlab/cl2-component-library';
+// form
+import { useForm, FormProvider } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { string, object, mixed } from 'yup';
+import validateMultiloc from 'utils/yup/validateMultiloc';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
+import Input from 'components/HookForm/Input';
+import Select from 'components/HookForm/Select';
+import FileUploader from 'components/HookForm/FileUploader';
+import Feedback from 'components/HookForm/Feedback';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
+
+import { IconTooltip, Box, Button } from '@citizenlab/cl2-component-library';
 import QuillEditor from 'components/UI/QuillEditor';
 
 // i18n
@@ -43,12 +55,10 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
 
 // styling
-import SubmitWrapper from 'components/admin/SubmitWrapper';
 import styled from 'styled-components';
 
 // typings
 import { IOption, UploadFile, CLErrorsJSON } from 'typings';
-import { isCLErrorJSON } from 'utils/errorUtils';
 
 import Outlet from 'components/Outlet';
 import GetFeatureFlag, {
@@ -56,17 +66,8 @@ import GetFeatureFlag, {
 } from 'resources/GetFeatureFlag';
 import eventEmitter from 'utils/eventEmitter';
 
-const InputContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
 const StyledIconTooltip = styled(IconTooltip)`
   margin-left: 5px;
-`;
-
-const LabelContainer = styled.div`
-  display: flex;
-  align-items: center;
 `;
 
 const StyledPasswordInputIconTooltip = styled(PasswordInputIconTooltip)`
@@ -85,232 +86,223 @@ interface DataProps {
 
 export type ExtraFormDataKey = 'custom_field_values';
 
-interface State {
-  avatar: UploadFile[] | null;
-  extraFormData: {
-    [field in ExtraFormDataKey]?: Record<string, any>;
-  };
-  hasPasswordMinimumLengthError: boolean;
-}
-
 type Props = InputProps & DataProps & InjectedIntlProps & InjectedLocalized;
 
-class ProfileForm extends PureComponent<Props, State> {
-  localeOptions: IOption[] = [];
+const ProfileForm = ({
+  intl: { formatMessage },
+  disableBio,
+  tenantLocales,
+  lockedFields,
+  authUser,
+}: Props) => {
+  const localeOptions: IOption[] = tenantLocales.map((locale) => ({
+    value: locale,
+    label: appLocalePairs[locale],
+  }));
 
-  constructor(props: InputProps) {
-    super(props as any);
-    this.state = {
-      avatar: null,
-      extraFormData: {},
-      hasPasswordMinimumLengthError: false,
-    };
-  }
+  const [extraFormData, setExtraFormData] = useState({});
 
-  componentDidMount() {
-    // Create options arrays only once, avoid re-calculating them on each render
-    this.setLocaleOptions();
+  const schema = object({
+    first_name: string().required(),
+    last_name: string().required(),
+    email: string().email().required(),
+    ...(!disableBio && {
+      bio_multiloc: object(),
+    }),
+    language: string(),
+  });
 
-    this.transformAPIAvatar();
-  }
+  const methods = useForm({
+    mode: 'onBlur',
+    defaultValues: {
+      first_name: authUser?.attributes.first_name,
+      last_name: authUser?.attributes.last_name,
+      email: authUser?.attributes.email,
+      bio_multiloc: authUser?.attributes.bio_multiloc,
+      locale: authUser?.attributes.locale,
+    },
+    resolver: yupResolver(schema),
+  });
 
-  setLocaleOptions = () => {
-    this.localeOptions = this.props.tenantLocales.map((locale) => ({
-      value: locale,
-      label: appLocalePairs[locale],
-    }));
-  };
-
-  transformAPIAvatar = () => {
-    const { authUser } = this.props;
-    if (isNilOrError(authUser)) return;
-    const avatarUrl =
-      authUser.attributes.avatar && authUser.attributes.avatar.medium;
-    if (avatarUrl) {
-      convertUrlToUploadFile(avatarUrl, null, null).then((fileAvatar) => {
-        this.setState({ avatar: fileAvatar ? [fileAvatar] : null });
-      });
-    }
-  };
-
-  componentDidUpdate(prevProps: Props) {
-    const { tenantLocales, authUser } = this.props;
-
-    // update locale options if tenant locales would change
-    if (!isEqual(tenantLocales, prevProps.tenantLocales)) {
-      this.setLocaleOptions();
-    }
-
-    if (
-      authUser?.attributes.avatar?.medium !==
-      prevProps.authUser?.attributes.avatar?.medium
-    ) {
-      this.transformAPIAvatar();
-    }
-  }
-
-  handleFormikSubmit = async (values, formikActions) => {
-    const { setSubmitting, resetForm, setErrors, setStatus } = formikActions;
-    const { authUser } = this.props;
-
-    if (isNilOrError(authUser)) return;
-    eventEmitter.emit('customFieldsSubmitEvent');
-
-    const newValues = Object.entries(this.state.extraFormData).reduce(
-      (acc, [key, extraFormDataConfiguration]) => ({
-        ...acc,
-        [key]: extraFormDataConfiguration?.formData,
-      }),
-      values
-    );
-
-    setStatus('');
-
+  const onFormSubmit = async (formValues) => {
     try {
-      await updateUser(authUser.id, newValues);
-      streams.fetchAllWith({
-        apiEndpoint: [`${API_PATH}/onboarding_campaigns/current`],
-      });
-      resetForm();
-      setStatus('success');
-    } catch (errorResponse) {
-      if (isCLErrorJSON(errorResponse)) {
-        const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-        setErrors(apiErrors);
-      } else {
-        setStatus('error');
-      }
-      setSubmitting(false);
+      //    await onSubmit(formValues);
+    } catch (error) {
+      handleHookFormSubmissionError(error, methods.setError);
     }
   };
 
-  formikRender = (props) => {
-    const {
-      values,
-      errors,
-      setFieldValue,
-      setFieldTouched,
-      setStatus,
-      isSubmitting,
-      submitForm,
-      isValid,
-      status,
-      touched,
-    } = props;
-    const { lockedFields, authUser, disableBio } = this.props;
-    const { hasPasswordMinimumLengthError } = this.state;
+  // componentDidMount() {
+  //   // Create options arrays only once, avoid re-calculating them on each render
+  //   setLocaleOptions();
 
-    // Won't be called with a nil or error user.
-    if (isNilOrError(authUser)) return null;
+  //   transformAPIAvatar();
+  // }
 
-    const lockedFieldsNames = isNilOrError(lockedFields)
-      ? []
-      : lockedFields.map((field) => field.attributes.name);
+  // transformAPIAvatar = () => {
+  //   const { authUser } = props;
+  //   if (isNilOrError(authUser)) return;
+  //   const avatarUrl =
+  //     authUser.attributes.avatar && authUser.attributes.avatar.medium;
+  //   if (avatarUrl) {
+  //     convertUrlToUploadFile(avatarUrl, null, null).then((fileAvatar) => {
+  //       setState({ avatar: fileAvatar ? [fileAvatar] : null });
+  //     });
+  //   }
+  // };
 
-    const { formatMessage } = this.props.intl;
+  // componentDidUpdate(prevProps: Props) {
+  //   const { tenantLocales, authUser } = props;
 
-    const isExtraFormDataTouched = () =>
-      Object.values(this.state.extraFormData).some(
-        (value) => !isEmpty(value) && Object.keys(value ?? {}).length > 1
-      );
+  //   // update locale options if tenant locales would change
+  //   if (!isEqual(tenantLocales, prevProps.tenantLocales)) {
+  //     setLocaleOptions();
+  //   }
 
-    const getStatus = () => {
-      let returnValue: 'enabled' | 'disabled' | 'error' | 'success' = 'enabled';
+  //   if (
+  //     authUser?.attributes.avatar?.medium !==
+  //     prevProps.authUser?.attributes.avatar?.medium
+  //   ) {
+  //     transformAPIAvatar();
+  //   }
+  // }
 
-      if (isSubmitting) {
-        returnValue = 'disabled';
-      } else if (
-        (!isEmpty(touched) && !isValid && !isExtraFormDataTouched()) ||
-        status === 'error'
-      ) {
-        returnValue = 'error';
-      } else if (isEmpty(touched) && status === 'success') {
-        returnValue = 'success';
-      }
+  // const handleFormikSubmit = async (values, formikActions) => {
+  //   const { setSubmitting, resetForm, setErrors, setStatus } = formikActions;
+  //   const { authUser } = props;
 
-      return returnValue;
-    };
+  //   if (isNilOrError(authUser)) return;
+  //   eventEmitter.emit('customFieldsSubmitEvent');
 
-    const handleFormOnChange = ({
-      key,
-      formData,
-    }: {
-      key: ExtraFormDataKey;
-      formData: Record<string, any>;
-    }) => {
-      setStatus('enabled');
-      this.setState(({ extraFormData }) => ({
-        extraFormData: {
-          ...extraFormData,
-          [key]: { ...(extraFormData?.[key] ?? {}), formData },
-        },
-      }));
-    };
+  //   const newValues = Object.entries(extraFormData).reduce(
+  //     (acc, [key, extraFormDataConfiguration]) => ({
+  //       ...acc,
+  //       [key]: extraFormDataConfiguration?.formData,
+  //     }),
+  //     values
+  //   );
 
-    const handleOnSubmit = () => {
-      const { extraFormData } = this.state;
-      Object.values(extraFormData).forEach((configuration) =>
-        configuration?.submit?.()
-      );
-      submitForm();
-    };
+  //   try {
+  //     await updateUser(authUser.id, newValues);
+  //     streams.fetchAllWith({
+  //       apiEndpoint: [`${API_PATH}/onboarding_campaigns/current`],
+  //     });
+  //     resetForm();
+  //     setStatus('success');
+  //   } catch (errorResponse) {
+  //     if (isCLErrorJSON(errorResponse)) {
+  //       const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
+  //       setErrors(apiErrors);
+  //     } else {
+  //       setStatus('error');
+  //     }
+  //     setSubmitting(false);
+  //   }
+  // };
 
-    const createChangeHandler = (fieldName: string) => (value) => {
-      if (fieldName.endsWith('_multiloc')) {
-        setFieldValue(fieldName, { [this.props.locale]: value });
-      } else if (value && value.value) {
-        setFieldValue(fieldName, value.value);
-      } else {
-        setFieldValue(fieldName, value);
-      }
-    };
+  // const formikRender = (props) => {
+  //   const {
+  //     values,
+  //     errors,
+  //     setFieldValue,
+  //     setFieldTouched,
+  //     isSubmitting,
+  //     submitForm,
+  //   } = props;
 
-    const handlePasswordOnChange = (password: string) => {
-      const { tenant } = this.props;
+  // const { hasPasswordMinimumLengthError } = state;
 
-      this.setState({
-        hasPasswordMinimumLengthError: hasPasswordMinimumLength(
-          password,
-          !isNilOrError(tenant)
-            ? tenant.attributes.settings.password_login?.minimum_length
-            : undefined
-        ),
-      });
-      setFieldValue('password', password);
-    };
+  // Won't be called with a nil or error user.
+  if (isNilOrError(authUser)) return null;
 
-    const createBlurHandler = (fieldName: string) => () => {
-      setFieldTouched(fieldName);
-    };
+  const lockedFieldsNames = isNilOrError(lockedFields)
+    ? []
+    : lockedFields.map((field) => field.attributes.name);
 
-    const handleAvatarOnAdd = (newAvatar: UploadFile[]) => {
-      this.setState(() => ({ avatar: [newAvatar[0]] }));
-      setFieldValue('avatar', newAvatar[0].base64);
-      setFieldTouched('avatar');
-    };
+  // const handleFormOnChange = ({
+  //   key,
+  //   formData,
+  // }: {
+  //   key: ExtraFormDataKey;
+  //   formData: Record<string, any>;
+  // }) => {
+  //   setExtraFormData({
+  //     ...extraFormData,
+  //     [key]: { ...(extraFormData?.[key] ?? {}), formData },
+  //   });
+  // };
 
-    const handleAvatarOnRemove = async () => {
-      this.setState(() => ({ avatar: null }));
-      setFieldValue('avatar', null);
-      setFieldTouched('avatar');
-    };
+  // const handleOnSubmit = () => {
+  //   const { extraFormData } = state;
+  //   Object.values(extraFormData).forEach((configuration) =>
+  //     configuration?.submit?.()
+  //   );
+  //   submitForm();
+  // };
 
-    return (
-      <FormSection>
-        <form className="e2e-profile-edit-form">
+  // const createChangeHandler = (fieldName: string) => (value) => {
+  //   if (fieldName.endsWith('_multiloc')) {
+  //     setFieldValue(fieldName, { [props.locale]: value });
+  //   } else if (value && value.value) {
+  //     setFieldValue(fieldName, value.value);
+  //   } else {
+  //     setFieldValue(fieldName, value);
+  //   }
+  // };
+
+  // const handlePasswordOnChange = (password: string) => {
+  //   const { tenant } = props;
+
+  //   setState({
+  //     hasPasswordMinimumLengthError: hasPasswordMinimumLength(
+  //       password,
+  //       !isNilOrError(tenant)
+  //         ? tenant.attributes.settings.password_login?.minimum_length
+  //         : undefined
+  //     ),
+  //   });
+  //   setFieldValue('password', password);
+  // };
+
+  // const createBlurHandler = (fieldName: string) => () => {
+  //   setFieldTouched(fieldName);
+  // };
+
+  // const handleAvatarOnAdd = (newAvatar: UploadFile[]) => {
+  //   setState(() => ({ avatar: [newAvatar[0]] }));
+  //   setFieldValue('avatar', newAvatar[0].base64);
+  //   setFieldTouched('avatar');
+  // };
+
+  // const handleAvatarOnRemove = async () => {
+  //   setState(() => ({ avatar: null }));
+  //   setFieldValue('avatar', null);
+  //   setFieldTouched('avatar');
+  // };
+
+  const handleFormOnChange = (values) => {
+    console.log(values);
+  };
+
+  return (
+    <FormSection>
+      <FormProvider {...methods}>
+        <form onSubmit={methods.handleSubmit(onFormSubmit)}>
           <FormSectionTitle
             message={messages.h1}
             subtitleMessage={messages.h1sub}
           />
-
           <SectionField>
+            <Feedback successMessage={'success'} />
+          </SectionField>
+          {/* <SectionField>
             <FormLabel
               htmlFor="profile-form-avatar-dropzone"
               labelMessage={messages.image}
             />
             <ImagesDropzone
               id="profile-form-avatar-dropzone"
-              images={this.state.avatar}
+              images={state.avatar}
               imagePreviewRatio={1}
               maxImagePreviewWidth="170px"
               acceptedFileTypes={{
@@ -325,100 +317,66 @@ class ProfileForm extends PureComponent<Props, State> {
               borderRadius="50%"
             />
             <Error apiErrors={errors.avatar} />
+          </SectionField> */}
+
+          <SectionField>
+            <Input
+              type="text"
+              name="first_name"
+              label={formatMessage(messages.firstNames)}
+              autocomplete="given-name"
+              disabled={lockedFieldsNames.includes('first_name')}
+            />
+            {lockedFieldsNames.includes('first_name') && (
+              <StyledIconTooltip
+                content={<FormattedMessage {...messages.blockedVerified} />}
+                icon="lock"
+              />
+            )}
           </SectionField>
 
           <SectionField>
-            <FormLabel htmlFor="firstName" labelMessage={messages.firstNames} />
-            <InputContainer>
-              <Input
-                type="text"
-                autocomplete="given-name"
-                name="first_name"
-                id="firstName"
-                value={values.first_name}
-                onChange={createChangeHandler('first_name')}
-                onBlur={createBlurHandler('first_name')}
-                disabled={lockedFieldsNames.includes('first_name')}
+            <Input
+              type="text"
+              name="last_name"
+              label={formatMessage(messages.lastName)}
+              autocomplete="family-name"
+              disabled={lockedFieldsNames.includes('last_name')}
+            />
+            {lockedFieldsNames.includes('last_name') && (
+              <StyledIconTooltip
+                content={<FormattedMessage {...messages.blockedVerified} />}
+                icon="lock"
               />
-              {lockedFieldsNames.includes('first_name') && (
-                <StyledIconTooltip
-                  content={<FormattedMessage {...messages.blockedVerified} />}
-                  icon="lock"
-                />
-              )}
-            </InputContainer>
-            <Error apiErrors={errors.first_name} />
+            )}
           </SectionField>
 
           <SectionField>
-            <FormLabel htmlFor="lastName" labelMessage={messages.lastName} />
-            <InputContainer id="e2e-last-name-input">
-              <Input
-                type="text"
-                autocomplete="family-name"
-                name="last_name"
-                id="lastName"
-                value={values.last_name}
-                onChange={createChangeHandler('last_name')}
-                onBlur={createBlurHandler('last_name')}
-                disabled={lockedFieldsNames.includes('last_name')}
+            <Input
+              type="email"
+              name="email"
+              label={formatMessage(messages.email)}
+              autocomplete="email"
+              disabled={lockedFieldsNames.includes('email')}
+            />
+            {lockedFieldsNames.includes('email') && (
+              <StyledIconTooltip
+                content={<FormattedMessage {...messages.blockedVerified} />}
+                icon="lock"
               />
-              {lockedFieldsNames.includes('last_name') && (
-                <StyledIconTooltip
-                  content={<FormattedMessage {...messages.blockedVerified} />}
-                  icon="lock"
-                />
-              )}
-            </InputContainer>
-            <Error apiErrors={errors.last_name} />
-          </SectionField>
-
-          <SectionField>
-            <FormLabel htmlFor="email" labelMessage={messages.email} />
-            <InputContainer>
-              <Input
-                type="email"
-                autocomplete="email"
-                name="email"
-                id="email"
-                value={values.email}
-                onChange={createChangeHandler('email')}
-                onBlur={createBlurHandler('email')}
-                disabled={lockedFieldsNames.includes('email')}
-              />
-              {lockedFieldsNames.includes('email') && (
-                <StyledIconTooltip
-                  content={<FormattedMessage {...messages.blockedVerified} />}
-                  icon="lock"
-                  className="e2e-last-name-lock"
-                />
-              )}
-            </InputContainer>
-            <Error apiErrors={errors.email} />
+            )}
           </SectionField>
 
           {!disableBio && (
             <SectionField>
-              <FormLabel labelMessage={messages.bio} id="label-bio" />
-              <QuillEditor
-                id="bio_multiloc"
-                noImages={true}
-                noVideos={true}
-                limitedTextFormatting={true}
-                value={
-                  values.bio_multiloc
-                    ? this.props.localize(values.bio_multiloc)
-                    : ''
-                }
-                placeholder={formatMessage({ ...messages.bio_placeholder })}
-                onChange={createChangeHandler('bio_multiloc')}
-                onBlur={createBlurHandler('bio_multiloc')}
+              <QuillMultilocWithLocaleSwitcher
+                name="bio_multiloc"
+                label={formatMessage(messages.bio)}
               />
-              <Error apiErrors={errors.bio_multiloc} />
             </SectionField>
           )}
 
-          <SectionField>
+          {/* <SectionField>
             <LabelContainer>
               <FormLabel
                 width="max-content"
@@ -435,59 +393,30 @@ class ProfileForm extends PureComponent<Props, State> {
               onBlur={createBlurHandler('password')}
               errors={{ minimumLengthError: hasPasswordMinimumLengthError }}
             />
-          </SectionField>
+          </SectionField> */}
 
           <SectionField>
-            <FormLabel htmlFor="language" labelMessage={messages.language} />
             <Select
-              id="language"
-              onChange={createChangeHandler('locale')}
-              onBlur={createBlurHandler('locale')}
-              value={values.locale}
-              options={this.localeOptions}
+              name="locale"
+              options={localeOptions}
+              label={formatMessage(messages.language)}
             />
-            <Error apiErrors={errors.locale} />
           </SectionField>
+          <Outlet
+            id="app.containers.UserEditPage.ProfileForm.forms"
+            onChange={handleFormOnChange}
+            authUser={authUser}
+          />
+          <Box display="flex">
+            <Button type="submit" processing={methods.formState.isSubmitting}>
+              save
+            </Button>
+          </Box>
         </form>
-
-        <Outlet
-          id="app.containers.UserEditPage.ProfileForm.forms"
-          onChange={handleFormOnChange}
-          authUser={authUser}
-        />
-
-        <SubmitWrapper
-          status={getStatus()}
-          buttonStyle="primary"
-          loading={isSubmitting}
-          onClick={handleOnSubmit}
-          messages={{
-            buttonSave: messages.submit,
-            buttonSuccess: messages.buttonSuccessLabel,
-            messageSuccess: messages.messageSuccess,
-            messageError: messages.messageError,
-          }}
-        />
-      </FormSection>
-    );
-  };
-
-  render() {
-    const { authUser } = this.props;
-
-    if (!isNilOrError(authUser)) {
-      return (
-        <Formik
-          initialValues={mapUserToDiff(authUser)}
-          onSubmit={this.handleFormikSubmit}
-          render={this.formikRender as any}
-        />
-      );
-    }
-
-    return null;
-  }
-}
+      </FormProvider>
+    </FormSection>
+  );
+};
 
 const ProfileFormWithHocs = injectIntl<InputProps>(localize(ProfileForm));
 
