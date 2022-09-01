@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Currently debugging this mechanism in CL-1020
 module IdClaveUnica
   class ClaveUnicaOmniauth
     include ClaveUnicaVerification
