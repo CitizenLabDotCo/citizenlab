@@ -5,16 +5,15 @@ import { animation } from '../styling';
 
 // components
 import {
-  ResponsiveContainer,
   PieChart as RechartsPieChart,
   Tooltip,
   Pie,
   Cell,
   Label,
 } from 'recharts';
+import Container from '../_components/Container';
 import EmptyState from '../_components/EmptyState';
 import Legend from '../_components/Legend';
-import FakeLegend from '../_components/Legend/FakeLegend';
 
 // utils
 import { getPieConfig } from './utils';
@@ -67,73 +66,57 @@ const PieChart = <Row,>({
     onMouseOut && onMouseOut({ row: data[rowIndex], rowIndex }, event);
   };
 
-  const handleRef = (ref: React.RefObject<HTMLDivElement>) => {
-    if (graphDimensions || ref === null) return;
-
-    const node = ref.current;
-    if (node === null) return;
-
-    setGraphDimensions({
-      width: node.clientWidth,
-      height: node.clientHeight,
-    });
-  };
-
   return (
-    <>
-      <ResponsiveContainer width={width} height={height} ref={handleRef}>
-        <RechartsPieChart
-          margin={parseMargin(
-            margin,
-            legend,
-            legendDimensions,
-            DEFAULT_LEGEND_OFFSET
-          )}
-          ref={innerRef}
+    <Container
+      width={width}
+      height={height}
+      legend={legend}
+      onUpdateGraphDimensions={setGraphDimensions}
+      onUpdateLegendDimensions={setLegendDimensions}
+    >
+      <RechartsPieChart
+        margin={parseMargin(
+          margin,
+          legend,
+          legendDimensions,
+          DEFAULT_LEGEND_OFFSET
+        )}
+        ref={innerRef}
+      >
+        {legend && graphDimensions && legendDimensions && (
+          <g className="graph-legend">
+            <Legend
+              items={legend.items}
+              graphDimensions={graphDimensions}
+              legendDimensions={legendDimensions}
+              position={legend.position}
+              textColor={legend.textColor}
+              margin={margin}
+            />
+          </g>
+        )}
+
+        {(typeof tooltip === 'object' || tooltip === true) && (
+          <Tooltip {...tooltipConfig} />
+        )}
+        {typeof tooltip === 'function' && tooltip(tooltipConfig)}
+
+        <Pie
+          data={data}
+          animationDuration={animation.duration}
+          animationBegin={animation.begin}
+          {...pieConfig.props}
+          onMouseOver={handleMouseOver}
+          onMouseOut={handleMouseOut}
         >
-          {legend && graphDimensions && legendDimensions && (
-            <g className="graph-legend">
-              <Legend
-                items={legend.items}
-                graphDimensions={graphDimensions}
-                legendDimensions={legendDimensions}
-                position={legend.position}
-                textColor={legend.textColor}
-                margin={margin}
-              />
-            </g>
-          )}
+          {pieConfig.cells.map((cell, cellIndex) => (
+            <Cell key={`cell-${cellIndex}`} {...cell} />
+          ))}
 
-          {(typeof tooltip === 'object' || tooltip === true) && (
-            <Tooltip {...tooltipConfig} />
-          )}
-          {typeof tooltip === 'function' && tooltip(tooltipConfig)}
-
-          <Pie
-            data={data}
-            animationDuration={animation.duration}
-            animationBegin={animation.begin}
-            {...pieConfig.props}
-            onMouseOver={handleMouseOver}
-            onMouseOut={handleMouseOut}
-          >
-            {pieConfig.cells.map((cell, cellIndex) => (
-              <Cell key={`cell-${cellIndex}`} {...cell} />
-            ))}
-
-            {centerLabel && <Label content={centerLabel} position="center" />}
-          </Pie>
-        </RechartsPieChart>
-      </ResponsiveContainer>
-
-      {legend && (
-        <FakeLegend
-          items={legend.items}
-          position={legend.position}
-          onCalculateDimensions={setLegendDimensions}
-        />
-      )}
-    </>
+          {centerLabel && <Label content={centerLabel} position="center" />}
+        </Pie>
+      </RechartsPieChart>
+    </Container>
   );
 };
 

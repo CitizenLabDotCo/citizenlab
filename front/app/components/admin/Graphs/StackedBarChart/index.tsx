@@ -9,7 +9,6 @@ import {
 
 // components
 import {
-  ResponsiveContainer,
   BarChart as RechartsBarChart,
   Bar,
   XAxis,
@@ -18,9 +17,9 @@ import {
   LabelList,
   Tooltip,
 } from 'recharts';
+import Container from '../_components/Container';
 import EmptyState from '../_components/EmptyState';
 import Legend from '../_components/Legend';
-import FakeLegend from '../_components/Legend/FakeLegend';
 
 // utils
 import { getBarConfigs } from './utils';
@@ -100,99 +99,83 @@ const StackedBarChart = <Row,>({
         );
     };
 
-  const handleRef = (ref: React.RefObject<HTMLDivElement>) => {
-    if (graphDimensions || ref === null) return;
-
-    const node = ref.current;
-    if (node === null) return;
-
-    setGraphDimensions({
-      width: node.clientWidth,
-      height: node.clientHeight,
-    });
-  };
-
   return (
-    <>
-      <ResponsiveContainer width={width} height={height} ref={handleRef}>
-        <RechartsBarChart
-          data={data}
-          layout={rechartsLayout}
-          margin={parseMargin(
-            margin,
-            legend,
-            legendDimensions,
-            DEFAULT_LEGEND_OFFSET
-          )}
-          ref={innerRef}
-          barGap={0}
-          barCategoryGap={bars?.categoryGap}
-        >
-          {legend && graphDimensions && legendDimensions && (
-            <g className="graph-legend">
-              <Legend
-                items={legend.items}
-                graphDimensions={graphDimensions}
-                legendDimensions={legendDimensions}
-                position={legend.position}
-                textColor={legend.textColor}
-                margin={margin}
-              />
-            </g>
-          )}
+    <Container
+      width={width}
+      height={height}
+      legend={legend}
+      onUpdateGraphDimensions={setGraphDimensions}
+      onUpdateLegendDimensions={setLegendDimensions}
+    >
+      <RechartsBarChart
+        data={data}
+        layout={rechartsLayout}
+        margin={parseMargin(
+          margin,
+          legend,
+          legendDimensions,
+          DEFAULT_LEGEND_OFFSET
+        )}
+        ref={innerRef}
+        barGap={0}
+        barCategoryGap={bars?.categoryGap}
+      >
+        {legend && graphDimensions && legendDimensions && (
+          <g className="graph-legend">
+            <Legend
+              items={legend.items}
+              graphDimensions={graphDimensions}
+              legendDimensions={legendDimensions}
+              position={legend.position}
+              textColor={legend.textColor}
+              margin={margin}
+            />
+          </g>
+        )}
 
-          {(typeof tooltip === 'object' || tooltip === true) && (
-            <Tooltip {...tooltipConfig} />
-          )}
-          {typeof tooltip === 'function' && tooltip(tooltipConfig)}
+        {(typeof tooltip === 'object' || tooltip === true) && (
+          <Tooltip {...tooltipConfig} />
+        )}
+        {typeof tooltip === 'function' && tooltip(tooltipConfig)}
 
-          {barConfigs.map((barConfig, barIndex) => (
-            <Bar
-              key={barIndex}
-              animationDuration={animation.duration}
-              animationBegin={animation.begin}
-              {...barConfig.props}
-              onMouseOver={handleMouseOver(barIndex)}
-              onMouseOut={handleMouseOut(barIndex)}
-              stackId="a"
-            >
-              {(typeof labels === 'object' || labels === true) && (
-                <LabelList {...labelConfig} />
-              )}
-              {typeof labels === 'function' && labels(labelConfig)}
+        {barConfigs.map((barConfig, barIndex) => (
+          <Bar
+            key={barIndex}
+            animationDuration={animation.duration}
+            animationBegin={animation.begin}
+            {...barConfig.props}
+            onMouseOver={handleMouseOver(barIndex)}
+            onMouseOut={handleMouseOut(barIndex)}
+            stackId="a"
+          >
+            {(typeof labels === 'object' || labels === true) && (
+              <LabelList {...labelConfig} />
+            )}
+            {typeof labels === 'function' && labels(labelConfig)}
 
-              {barConfig.cells.map((cell, cellIndex) => (
-                <Cell key={`cell-${barIndex}-${cellIndex}`} {...cell} />
-              ))}
-            </Bar>
-          ))}
+            {barConfig.cells.map((cell, cellIndex) => (
+              <Cell key={`cell-${barIndex}-${cellIndex}`} {...cell} />
+            ))}
+          </Bar>
+        ))}
 
-          <XAxis
-            dataKey={layout === 'vertical' ? category : undefined}
-            type={layout === 'vertical' ? 'category' : 'number'}
-            stroke={legacyColors.chartLabel}
-            fontSize={sizes.chartLabel}
-            tick={{ transform: 'translate(0, 7)' }}
-            {...xaxis}
-          />
-          <YAxis
-            dataKey={layout === 'horizontal' ? category : undefined}
-            type={layout === 'horizontal' ? 'category' : 'number'}
-            stroke={legacyColors.chartLabel}
-            fontSize={sizes.chartLabel}
-            {...yaxis}
-          />
-        </RechartsBarChart>
-      </ResponsiveContainer>
-
-      {legend && (
-        <FakeLegend
-          items={legend.items}
-          position={legend.position}
-          onCalculateDimensions={setLegendDimensions}
+        <XAxis
+          dataKey={layout === 'vertical' ? category : undefined}
+          type={layout === 'vertical' ? 'category' : 'number'}
+          stroke={legacyColors.chartLabel}
+          fontSize={sizes.chartLabel}
+          tick={{ transform: 'translate(0, 7)' }}
+          {...xaxis}
         />
-      )}
-    </>
+        <YAxis
+          dataKey={layout === 'horizontal' ? category : undefined}
+          type={layout === 'horizontal' ? 'category' : 'number'}
+          stroke={legacyColors.chartLabel}
+          fontSize={sizes.chartLabel}
+          {...yaxis}
+        />
+      </RechartsBarChart>
+    </Container>
   );
 };
 
