@@ -50,7 +50,7 @@ resource 'Analytics API', use_transactional_fixtures: false do
     end
 
     context 'When not admin' do
-      example_request 'Checks that analytics API cannot be called if user is not admin' do
+      example_request 'returns 401 (unauthorized)' do
         assert_status 401
       end
     end
