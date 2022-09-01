@@ -3,25 +3,34 @@ import { useResizeDetector } from 'react-resize-detector';
 
 // components
 import { ResponsiveContainer } from 'recharts';
+import FakeLegend from './Legend/FakeLegend';
 
 // utils
 import { debounce, isEqual } from 'lodash-es';
 
 // typings
 import { Percentage } from 'typings';
-import { GraphDimensions } from '../_components/Legend/typings';
+import {
+  GraphDimensions,
+  LegendDimensions,
+} from '../_components/Legend/typings';
+import { Legend } from '../typings';
 
 interface Props {
   width?: number | Percentage;
   height?: number | Percentage;
-  onUpdateGraphDimensions: (graphDimensions: GraphDimensions) => void;
+  legend?: Legend;
+  onUpdateGraphDimensions?: (graphDimensions: GraphDimensions) => void;
+  onUpdateLegendDimensions?: (legendDimensions: LegendDimensions) => void;
   children: React.ReactElement;
 }
 
 const Container = ({
   width,
   height,
+  legend,
   onUpdateGraphDimensions,
+  onUpdateLegendDimensions,
   children,
 }: Props) => {
   const [graphDimensions, setGraphDimensions] = useState<
@@ -35,7 +44,10 @@ const Container = ({
 
       if (!isEqual(graphDimensions, newGraphDimensions)) {
         setGraphDimensions(newGraphDimensions);
-        onUpdateGraphDimensions(newGraphDimensions);
+
+        if (onUpdateGraphDimensions) {
+          onUpdateGraphDimensions(newGraphDimensions);
+        }
       }
     }, 50),
     []
@@ -53,9 +65,20 @@ const Container = ({
   };
 
   return (
-    <ResponsiveContainer width={width} height={height} ref={handleRef}>
-      {children}
-    </ResponsiveContainer>
+    <>
+      <ResponsiveContainer width={width} height={height} ref={handleRef}>
+        {children}
+      </ResponsiveContainer>
+
+      {legend && onUpdateLegendDimensions && (
+        <FakeLegend
+          width={width}
+          items={legend.items}
+          position={legend.position}
+          onCalculateDimensions={onUpdateLegendDimensions}
+        />
+      )}
+    </>
   );
 };
 
