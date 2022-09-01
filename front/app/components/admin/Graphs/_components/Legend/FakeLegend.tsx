@@ -9,8 +9,10 @@ import { getJustifyContent, getLegendDimensions } from './utils';
 
 // typings
 import { Position, LegendItem, LegendDimensions } from './typings';
+import { Percentage } from 'typings';
 
 interface Props {
+  width?: number | Percentage;
   items: LegendItem[][];
   position?: Position;
   onCalculateDimensions: (dimensions: LegendDimensions) => void;
@@ -25,6 +27,7 @@ const getId = () => {
 };
 
 const FakeLegend = ({
+  width,
   items,
   position = 'bottom-center',
   onCalculateDimensions,
@@ -45,12 +48,16 @@ const FakeLegend = ({
     onCalculateDimensions(legendDimensions);
   }, [id, items, onCalculateDimensions]);
 
+  const stringWidth =
+    typeof width === 'number' ? `${width}px` : width ?? '100%';
+
   return (
     <Box
       style={{ visibility: 'hidden' }}
       display="flex"
       flexDirection="column"
       id={id}
+      width={stringWidth}
     >
       {items.map((itemRow, rowIndex) => (
         <Box
