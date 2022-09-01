@@ -8,6 +8,8 @@ const NewCustomPage = () => {
   const handleOnSubmit = async (formValues: FormValues) => {
     const { data } = await createCustomPage(formValues);
 
+    // Without the redirect was too sudden
+    // (with a short flash of the success message in between)
     setTimeout(
       () => clHistory.push(`/admin/pages-menu/custom/${data.id}/content`),
       1500
