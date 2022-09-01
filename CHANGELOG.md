@@ -1,5 +1,15 @@
 # Changelog
 
+## 2022-08-30
+
+### Fixed
+- [CL-1308] Do not allow editing page slug when custom navbar is disabled
+
+## 2022-08-29
+
+### Fixed
+- [SLS-65] Fixed issue in citizenlab-ee to allow bulk import of custom field options
+
 ## 2022-08-24
 
 ### Fixed

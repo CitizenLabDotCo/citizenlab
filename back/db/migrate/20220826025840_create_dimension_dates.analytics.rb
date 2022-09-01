@@ -3,7 +3,7 @@
 # This migration comes from analytics (originally 20220624100104)
 
 class CreateDimensionDates < ActiveRecord::Migration[6.1]
-  def up
+  def change
     # rubocop:disable Rails/CreateTableWithTimestamps
     create_table :analytics_dimension_dates, id: false do |t|
       t.date :date, primary_key: true
@@ -12,9 +12,5 @@ class CreateDimensionDates < ActiveRecord::Migration[6.1]
       t.string :day
     end
     # rubocop:enable Rails/CreateTableWithTimestamps
-  end
-
-  def down
-    drop_table :analytics_dimension_dates
   end
 end
