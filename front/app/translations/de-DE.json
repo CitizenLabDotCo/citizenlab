@@ -129,7 +129,7 @@
   "app.components.HookForm.Feedback.submissionErrorTitle": "Es gab ein Problem auf unserer Seite, entschuldigen Sie",
   "app.components.HookForm.Feedback.successMessage": "Formular erfolgreich abgeschickt",
   "app.components.IdeaCards.showMore": "Mehr anzeigen",
-  "app.components.IdeaForm.adminFieldTooltip": "Field only visible to admins",
+  "app.components.IdeaForm.adminFieldTooltip": "Feld nur für Admins sichtbar",
   "app.components.IdeaForm.author": "Autor",
   "app.components.IdeaForm.authorPlaceholder": "Beginnen Sie mit der Eingabe, um nach Benutzernamen oder E-Mail zu suchen...",
   "app.components.IdeaForm.contributionFormGeneralSectionTitle": "Was ist Ihr Beitrag?",
