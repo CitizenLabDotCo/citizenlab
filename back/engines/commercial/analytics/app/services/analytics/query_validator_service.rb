@@ -10,7 +10,6 @@ module Analytics
       @messages = []
       @response_status = nil
 
-      @valid = true
       validate
       @valid = @messages.empty?
     end
@@ -132,9 +131,7 @@ module Analytics
 
     def validate_aggregations
       @json_query[:aggregations].each do |key, aggregation|
-        if key == 'all'
-          next if aggregation == 'count'
-
+        if key == 'all' && aggregation != 'count'
           add_error("Aggregations on 'all' can only be 'count'.", 422)
           next
         end
@@ -148,7 +145,7 @@ module Analytics
         validate_dotted(key, 'Sort')
         next if !@json_query.key?(:aggregations) || @query.aggregations_names.include?(key)
 
-        add_error("Sorting column #{key} its not present in the aggregations.", 422)
+        add_error("Sorting column #{key} is not present in the aggregations.", 422)
       end
     end
   end

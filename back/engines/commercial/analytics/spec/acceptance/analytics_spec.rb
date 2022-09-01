@@ -15,13 +15,11 @@ resource 'Analytics API', use_transactional_fixtures: false do
       Universal API for querying posts from the analytics database
     DESC
 
-    with_options required: true do
-      parameter :query, 'The query object.'
-    end
+    parameter :query, 'The query object.', required: true
 
     before do
-      create(:idea) # Create one idea
-      create(:dimension_type_idea) # Create the 'idea' type
+      create(:idea)
+      create(:dimension_type_idea)
     end
 
     context 'When admin' do
