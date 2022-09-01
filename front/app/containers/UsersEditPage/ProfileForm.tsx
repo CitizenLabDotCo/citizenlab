@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 import streams from 'utils/streams';
-import { isEmpty } from 'lodash-es';
+
 // services
 import { updateUser } from 'services/users';
 import GetLockedFields, {
@@ -14,15 +14,15 @@ import GetAppConfiguration, {
 } from 'resources/GetAppConfiguration';
 
 // components
-import PasswordInput, {
-  hasPasswordMinimumLength,
-} from 'components/UI/PasswordInput';
-import PasswordInputIconTooltip from 'components/UI/PasswordInput/PasswordInputIconTooltip';
+// import PasswordInput, {
+//   hasPasswordMinimumLength,
+// } from 'components/UI/PasswordInput';
+// import PasswordInputIconTooltip from 'components/UI/PasswordInput/PasswordInputIconTooltip';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { SectionField } from 'components/admin/Section';
 import {
   FormSection,
-  FormLabel,
+  // FormLabel,
   FormSectionTitle,
 } from 'components/UI/FormComponents';
 
@@ -62,9 +62,9 @@ const StyledIconTooltip = styled(IconTooltip)`
   margin-left: 5px;
 `;
 
-const StyledPasswordInputIconTooltip = styled(PasswordInputIconTooltip)`
-  margin-bottom: 4px;
-`;
+// const StyledPasswordInputIconTooltip = styled(PasswordInputIconTooltip)`
+//   margin-bottom: 4px;
+// `;
 
 // Types
 interface InputProps {}
@@ -144,7 +144,7 @@ const ProfileForm = ({
   if (isNilOrError(authUser)) return null;
 
   const onFormSubmit = async (formValues: FormValues) => {
-    const avatar = formValues.avatar ? formValues.avatar[0].base64 : undefined;
+    const avatar = formValues.avatar ? formValues.avatar[0].base64 : null;
     // Add custom fields values to form
     const newFormValues = Object.entries(extraFormData).reduce(
       (acc, [key, extraFormDataConfiguration]) => {
@@ -217,7 +217,7 @@ const ProfileForm = ({
             subtitleMessage={messages.h1sub}
           />
           <SectionField>
-            <Feedback successMessage={'success'} />
+            <Feedback successMessage={formatMessage(messages.messageSuccess)} />
           </SectionField>
           <SectionField>
             <ImagesDropzone
@@ -334,7 +334,7 @@ const ProfileForm = ({
             processing={methods.formState.isSubmitting}
             onClick={methods.handleSubmit(onFormSubmit)}
           >
-            save
+            {formatMessage(messages.submit)}
           </Button>
         </Box>
       </FormProvider>

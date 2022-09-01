@@ -184,8 +184,8 @@ export const findErrorMessage = (
   if (messages[error]) {
     return messages[error] as Message;
   }
-  // Return a generic error message
-  return messages.invalid;
+  // Return a empty error message
+  return '';
 };
 
 const Error = (props: Props) => {

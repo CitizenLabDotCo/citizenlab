@@ -57,7 +57,7 @@ const Feedback = ({
 
         errorMessages.push({
           field,
-          message: formatMessage(apiErrorMessage),
+          message: apiErrorMessage ? formatMessage(apiErrorMessage) : '',
         });
       } else if (multilocFieldFirstError) {
         errorMessages.push({
@@ -126,11 +126,11 @@ const Feedback = ({
                     </>
                   ) : (
                     <Box data-testid="feedbackErrorMessage">
-                      <Title color="red600" variant="h4">
+                      <Title color="red600" variant="h4" mt="0px" mb="0px">
                         {formatMessage(messages.errorTitle)}
                       </Title>
                       {getAllErrorMessages().map((error) => {
-                        return (
+                        return error.message ? (
                           <Text
                             key={error.field}
                             onClick={() => scrollToElement({ id: error.field })}
@@ -147,7 +147,7 @@ const Feedback = ({
                           >
                             {error.message}
                           </Text>
-                        );
+                        ) : null;
                       })}
                     </Box>
                   )}
