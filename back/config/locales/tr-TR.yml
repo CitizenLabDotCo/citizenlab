@@ -167,7 +167,7 @@ tr:
     education:
       ISCED2: Ortaokul
       ISCED3: Lise
-      ISCED4: Post-secondary non-tertiary education
+      ISCED4: Orta öğretim sonrası yüksek öğretim dışı eğitim
       ISCED5: Ön lisans
       ISCED6: Lisans veya eşdeğeri
       ISCED7: Yüksek lisans veya eşdeğeri
