@@ -46,7 +46,7 @@ const PoliciesTab = () => {
             {...messages.policiesSubtitleFree}
             values={{
               pagesLink: (
-                <StyledLink to="/admin/settings/pages">
+                <StyledLink to="/admin/pages-menu">
                   <FormattedMessage {...messages.linkToPages} />
                 </StyledLink>
               ),
