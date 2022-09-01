@@ -5,7 +5,8 @@ require 'query'
 module Analytics
   module WebApi::V1
     class AnalyticsController < ::ApplicationController
-      def create
+      skip_after_action :verify_policy_scoped, only: :index
+      def index
         authorize :analytics, policy_class: AnalyticsPolicy
 
         results, errors, response_status = if params[:query].instance_of?(Array)

@@ -2,7 +2,7 @@
 
 module Analytics
   class AnalyticsPolicy < ::ApplicationPolicy
-    def create?
+    def index?
       user&.active? && user&.admin?
     end
   end
