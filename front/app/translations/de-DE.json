@@ -1221,7 +1221,7 @@
   "app.containers.SignUp.privacyPolicyNotAcceptedError": "Akzeptieren Sie unsere Datenschutzbestimmungen, um fortzufahren",
   "app.containers.SignUp.signUp2": "Registrieren",
   "app.containers.SignUp.signUpButtonAltText": "Mit {loginMechanismName} einloggen",
-  "app.containers.SignUp.signUpSuccess": "Sie haben sich erfolgreich registriert!",
+  "app.containers.SignUp.signUpSuccess": "Sie haben sich erfolgreich registriert und angemeldet!",
   "app.containers.SignUp.signUpWithEmail": "Registrierung mit E-Mail und Passwort",
   "app.containers.SignUp.signUpWithPhoneOrEmail": "Anmeldung mit E-Mail oder Telefonnummer",
   "app.containers.SignUp.skip": "Diesen Schritt überspringen",
