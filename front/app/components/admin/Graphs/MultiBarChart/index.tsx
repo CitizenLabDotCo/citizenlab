@@ -1,6 +1,4 @@
-import React, { useState, useCallback } from 'react';
-import { useResizeDetector } from 'react-resize-detector'
-import { debounce } from 'lodash-es';
+import React, { useState } from 'react';
 
 // styling
 import {
@@ -11,7 +9,6 @@ import {
 
 // components
 import {
-  ResponsiveContainer,
   BarChart as RechartsBarChart,
   Bar,
   XAxis,
@@ -20,6 +17,7 @@ import {
   LabelList,
   Tooltip,
 } from 'recharts';
+import Container from '../_components/Container';
 import EmptyState from '../_components/EmptyState';
 import Legend from '../_components/Legend';
 import FakeLegend from '../_components/Legend/FakeLegend';
@@ -34,7 +32,6 @@ import {
   GraphDimensions,
   LegendDimensions,
 } from '../_components/Legend/typings';
-import { isEqual } from 'lodash-es';
 
 export const DEFAULT_LEGEND_OFFSET = 10;
 
@@ -62,16 +59,6 @@ const MultiBarChart = <Row,>({
   const [legendDimensions, setLegendDimensions] = useState<
     LegendDimensions | undefined
   >();
-
-  const onResize = useCallback(debounce((width: number, height: number) => {
-    const newGraphDimensions = { width, height }
-
-    if (!isEqual(graphDimensions, newGraphDimensions)) {
-      setGraphDimensions(newGraphDimensions)
-    }
-  }, 50), []);
-
-  const { ref: resizeRef } = useResizeDetector({ onResize });
 
   if (hasNoData(data)) {
     return <EmptyState emptyContainerContent={emptyContainerContent} />;
@@ -113,17 +100,13 @@ const MultiBarChart = <Row,>({
         );
     };
 
-  const handleRef = (ref: React.RefObject<HTMLDivElement>) => {
-    if (graphDimensions || ref === null) return;
-    const node = ref.current;
-    if (node === null) return;
-
-    resizeRef.current = node;
-  };
-
   return (
     <>
-      <ResponsiveContainer width={width} height={height} ref={handleRef}>
+      <Container
+        width={width}
+        height={height}
+        onUpdateGraphDimensions={setGraphDimensions}
+      >
         <RechartsBarChart
           data={data}
           layout={rechartsLayout}
@@ -191,7 +174,7 @@ const MultiBarChart = <Row,>({
             {...yaxis}
           />
         </RechartsBarChart>
-      </ResponsiveContainer>
+      </Container>
 
       {legend && (
         <FakeLegend
