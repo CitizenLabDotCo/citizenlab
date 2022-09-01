@@ -24,7 +24,7 @@ RSpec.describe ContentBuilder::Patches::Project, type: :model do
 
     describe '#destroy' do
       it 'destroys its layouts' do
-        expect { project.destroy }.to change { ContentBuilder::Layout.count }.by(-2)
+        expect { project.destroy }.to change(ContentBuilder::Layout, :count).by(-2)
       end
     end
   end
