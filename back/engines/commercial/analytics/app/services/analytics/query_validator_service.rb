@@ -144,7 +144,7 @@ module Analytics
         validate_dotted(key, 'Sort')
         next if !@json_query.key?(:aggregations) || @query.aggregations_names.include?(key)
 
-        add_error("Sorting column #{key} its not present in the aggregations.", 422)
+        add_error("Sorting column #{key} is not present in the aggregations.", 422)
       end
     end
   end
