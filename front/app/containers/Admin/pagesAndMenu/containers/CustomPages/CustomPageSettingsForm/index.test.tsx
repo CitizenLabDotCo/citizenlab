@@ -124,8 +124,8 @@ describe('CustomPageSettingsForm', () => {
 
       await waitFor(() => {
         expect(defaultProps.onSubmit).toHaveBeenCalledWith({
-          title_multiloc: { en: titleEN, 'nl-NL': titleNL },
-          slug,
+          title_multiloc: { en: editedTitleEN, 'nl-NL': editedTitleNL },
+          slug: 'new-slug',
         });
         expect(
           screen.getByTestId('feedbackSuccessMessage')
