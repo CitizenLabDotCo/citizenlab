@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 import streams from 'utils/streams';
-
+import { isEmpty } from 'lodash-es';
 // services
-import { updateUser, mapUserToDiff } from 'services/users';
+import { updateUser } from 'services/users';
 import GetLockedFields, {
   GetLockedFieldsChildProps,
 } from 'resources/GetLockedFields';
@@ -13,11 +13,7 @@ import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
 
-// utils
-import { Formik } from 'formik';
-
 // components
-import Error from 'components/UI/Error';
 import PasswordInput, {
   hasPasswordMinimumLength,
 } from 'components/UI/PasswordInput';
@@ -34,17 +30,14 @@ import {
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { string, object, mixed } from 'yup';
-import validateMultiloc from 'utils/yup/validateMultiloc';
 import ImagesDropzone from 'components/HookForm/ImagesDropzone';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import Input from 'components/HookForm/Input';
 import Select from 'components/HookForm/Select';
-import FileUploader from 'components/HookForm/FileUploader';
 import Feedback from 'components/HookForm/Feedback';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 import { IconTooltip, Box, Button } from '@citizenlab/cl2-component-library';
-import QuillEditor from 'components/UI/QuillEditor';
 
 // i18n
 import { appLocalePairs, API_PATH } from 'containers/App/constants';
@@ -57,7 +50,7 @@ import localize, { InjectedLocalized } from 'utils/localize';
 import styled from 'styled-components';
 
 // typings
-import { IOption, UploadFile, CLErrorsJSON, Multiloc } from 'typings';
+import { IOption, UploadFile, Multiloc } from 'typings';
 
 import Outlet from 'components/Outlet';
 import GetFeatureFlag, {
@@ -108,7 +101,9 @@ const ProfileForm = ({
     label: appLocalePairs[locale],
   }));
 
-  const [extraFormData, setExtraFormData] = useState({});
+  const [extraFormData, setExtraFormData] = useState<{
+    [field in ExtraFormDataKey]?: Record<string, any>;
+  }>({});
 
   const schema = object({
     first_name: string().required(),
@@ -150,8 +145,24 @@ const ProfileForm = ({
 
   const onFormSubmit = async (formValues: FormValues) => {
     const avatar = formValues.avatar ? formValues.avatar[0].base64 : undefined;
+    // Add custom fields values to form
+    const newFormValues = Object.entries(extraFormData).reduce(
+      (acc, [key, extraFormDataConfiguration]) => {
+        return {
+          ...acc,
+          [key]: extraFormDataConfiguration?.formData,
+        };
+      },
+      formValues
+    );
+
+    eventEmitter.emit('customFieldsSubmitEvent');
+    Object.values(extraFormData).forEach((configuration) => {
+      configuration?.submit?.();
+    });
+
     try {
-      await updateUser(authUser.id, { ...formValues, avatar });
+      await updateUser(authUser.id, { ...newFormValues, avatar });
       streams.fetchAllWith({
         apiEndpoint: [`${API_PATH}/onboarding_campaigns/current`],
       });
@@ -160,75 +171,24 @@ const ProfileForm = ({
     }
   };
 
-  // const handleFormikSubmit = async (values, formikActions) => {
-  //   const { setSubmitting, resetForm, setErrors, setStatus } = formikActions;
-  //   const { authUser } = props;
-
-  //   if (isNilOrError(authUser)) return;
-  //   eventEmitter.emit('customFieldsSubmitEvent');
-
-  //   const newValues = Object.entries(extraFormData).reduce(
-  //     (acc, [key, extraFormDataConfiguration]) => ({
-  //       ...acc,
-  //       [key]: extraFormDataConfiguration?.formData,
-  //     }),
-  //     values
-  //   );
-
-  //   try {
-  //     await updateUser(authUser.id, newValues);
-  //     streams.fetchAllWith({
-  //       apiEndpoint: [`${API_PATH}/onboarding_campaigns/current`],
-  //     });
-  //     resetForm();
-  //     setStatus('success');
-  //   } catch (errorResponse) {
-  //     if (isCLErrorJSON(errorResponse)) {
-  //       const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-  //       setErrors(apiErrors);
-  //     } else {
-  //       setStatus('error');
-  //     }
-  //     setSubmitting(false);
-  //   }
-  // };
-
   // const { hasPasswordMinimumLengthError } = state;
 
   const lockedFieldsNames = isNilOrError(lockedFields)
     ? []
     : lockedFields.map((field) => field.attributes.name);
 
-  // const handleFormOnChange = ({
-  //   key,
-  //   formData,
-  // }: {
-  //   key: ExtraFormDataKey;
-  //   formData: Record<string, any>;
-  // }) => {
-  //   setExtraFormData({
-  //     ...extraFormData,
-  //     [key]: { ...(extraFormData?.[key] ?? {}), formData },
-  //   });
-  // };
-
-  // const handleOnSubmit = () => {
-  //   const { extraFormData } = state;
-  //   Object.values(extraFormData).forEach((configuration) =>
-  //     configuration?.submit?.()
-  //   );
-  //   submitForm();
-  // };
-
-  // const createChangeHandler = (fieldName: string) => (value) => {
-  //   if (fieldName.endsWith('_multiloc')) {
-  //     setFieldValue(fieldName, { [props.locale]: value });
-  //   } else if (value && value.value) {
-  //     setFieldValue(fieldName, value.value);
-  //   } else {
-  //     setFieldValue(fieldName, value);
-  //   }
-  // };
+  const handleFormOnChange = ({
+    key,
+    formData,
+  }: {
+    key: ExtraFormDataKey;
+    formData: Record<string, any>;
+  }) => {
+    setExtraFormData({
+      ...extraFormData,
+      [key]: { ...(extraFormData?.[key] ?? {}), formData },
+    });
+  };
 
   // const handlePasswordOnChange = (password: string) => {
   //   const { tenant } = props;
@@ -248,14 +208,10 @@ const ProfileForm = ({
   //   setFieldTouched(fieldName);
   // };
 
-  const handleFormOnChange = (values) => {
-    console.log(values);
-  };
-
   return (
     <FormSection>
       <FormProvider {...methods}>
-        <form onSubmit={methods.handleSubmit(onFormSubmit)}>
+        <form>
           <FormSectionTitle
             message={messages.h1}
             subtitleMessage={messages.h1sub}
@@ -366,23 +322,27 @@ const ProfileForm = ({
               label={formatMessage(messages.language)}
             />
           </SectionField>
-          <Outlet
-            id="app.containers.UserEditPage.ProfileForm.forms"
-            onChange={handleFormOnChange}
-            authUser={authUser}
-          />
-          <Box display="flex">
-            <Button type="submit" processing={methods.formState.isSubmitting}>
-              save
-            </Button>
-          </Box>
         </form>
+        <Outlet
+          id="app.containers.UserEditPage.ProfileForm.forms"
+          onChange={handleFormOnChange}
+          authUser={authUser}
+        />
+        <Box display="flex">
+          <Button
+            type="submit"
+            processing={methods.formState.isSubmitting}
+            onClick={methods.handleSubmit(onFormSubmit)}
+          >
+            save
+          </Button>
+        </Box>
       </FormProvider>
     </FormSection>
   );
 };
 
-const ProfileFormWithHocs = injectIntl<InputProps>(localize(ProfileForm));
+const ProfileFormWithHocs = injectIntl(localize(ProfileForm));
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
