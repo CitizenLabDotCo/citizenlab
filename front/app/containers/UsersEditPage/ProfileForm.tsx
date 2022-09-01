@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 import streams from 'utils/streams';
@@ -22,7 +22,6 @@ import PasswordInput, {
   hasPasswordMinimumLength,
 } from 'components/UI/PasswordInput';
 import PasswordInputIconTooltip from 'components/UI/PasswordInput/PasswordInputIconTooltip';
-import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { SectionField } from 'components/admin/Section';
 import {
@@ -36,7 +35,7 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { string, object, mixed } from 'yup';
 import validateMultiloc from 'utils/yup/validateMultiloc';
-import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import ImagesDropzone from 'components/HookForm/ImagesDropzone';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import Input from 'components/HookForm/Input';
 import Select from 'components/HookForm/Select';
@@ -58,7 +57,7 @@ import localize, { InjectedLocalized } from 'utils/localize';
 import styled from 'styled-components';
 
 // typings
-import { IOption, UploadFile, CLErrorsJSON } from 'typings';
+import { IOption, UploadFile, CLErrorsJSON, Multiloc } from 'typings';
 
 import Outlet from 'components/Outlet';
 import GetFeatureFlag, {
@@ -88,6 +87,15 @@ export type ExtraFormDataKey = 'custom_field_values';
 
 type Props = InputProps & DataProps & InjectedIntlProps & InjectedLocalized;
 
+type FormValues = {
+  first_name?: string;
+  last_name?: string;
+  email?: string;
+  bio_multiloc?: Multiloc;
+  locale?: string;
+  avatar?: UploadFile[];
+};
+
 const ProfileForm = ({
   intl: { formatMessage },
   disableBio,
@@ -109,14 +117,15 @@ const ProfileForm = ({
     ...(!disableBio && {
       bio_multiloc: object(),
     }),
-    language: string(),
+    locale: string(),
+    avatar: mixed(),
   });
 
-  const methods = useForm({
+  const methods = useForm<FormValues>({
     mode: 'onBlur',
     defaultValues: {
       first_name: authUser?.attributes.first_name,
-      last_name: authUser?.attributes.last_name,
+      last_name: authUser?.attributes.last_name || undefined,
       email: authUser?.attributes.email,
       bio_multiloc: authUser?.attributes.bio_multiloc,
       locale: authUser?.attributes.locale,
@@ -124,48 +133,32 @@ const ProfileForm = ({
     resolver: yupResolver(schema),
   });
 
-  const onFormSubmit = async (formValues) => {
+  useEffect(() => {
+    if (isNilOrError(authUser)) return;
+    const avatarUrl =
+      authUser.attributes.avatar && authUser.attributes.avatar.medium;
+    if (avatarUrl) {
+      convertUrlToUploadFile(avatarUrl, null, null).then((fileAvatar) => {
+        if (fileAvatar) {
+          methods.setValue('avatar', [fileAvatar]);
+        }
+      });
+    }
+  }, [authUser, methods]);
+
+  if (isNilOrError(authUser)) return null;
+
+  const onFormSubmit = async (formValues: FormValues) => {
+    const avatar = formValues.avatar ? formValues.avatar[0].base64 : undefined;
     try {
-      //    await onSubmit(formValues);
+      await updateUser(authUser.id, { ...formValues, avatar });
+      streams.fetchAllWith({
+        apiEndpoint: [`${API_PATH}/onboarding_campaigns/current`],
+      });
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);
     }
   };
-
-  // componentDidMount() {
-  //   // Create options arrays only once, avoid re-calculating them on each render
-  //   setLocaleOptions();
-
-  //   transformAPIAvatar();
-  // }
-
-  // transformAPIAvatar = () => {
-  //   const { authUser } = props;
-  //   if (isNilOrError(authUser)) return;
-  //   const avatarUrl =
-  //     authUser.attributes.avatar && authUser.attributes.avatar.medium;
-  //   if (avatarUrl) {
-  //     convertUrlToUploadFile(avatarUrl, null, null).then((fileAvatar) => {
-  //       setState({ avatar: fileAvatar ? [fileAvatar] : null });
-  //     });
-  //   }
-  // };
-
-  // componentDidUpdate(prevProps: Props) {
-  //   const { tenantLocales, authUser } = props;
-
-  //   // update locale options if tenant locales would change
-  //   if (!isEqual(tenantLocales, prevProps.tenantLocales)) {
-  //     setLocaleOptions();
-  //   }
-
-  //   if (
-  //     authUser?.attributes.avatar?.medium !==
-  //     prevProps.authUser?.attributes.avatar?.medium
-  //   ) {
-  //     transformAPIAvatar();
-  //   }
-  // }
 
   // const handleFormikSubmit = async (values, formikActions) => {
   //   const { setSubmitting, resetForm, setErrors, setStatus } = formikActions;
@@ -200,20 +193,7 @@ const ProfileForm = ({
   //   }
   // };
 
-  // const formikRender = (props) => {
-  //   const {
-  //     values,
-  //     errors,
-  //     setFieldValue,
-  //     setFieldTouched,
-  //     isSubmitting,
-  //     submitForm,
-  //   } = props;
-
   // const { hasPasswordMinimumLengthError } = state;
-
-  // Won't be called with a nil or error user.
-  if (isNilOrError(authUser)) return null;
 
   const lockedFieldsNames = isNilOrError(lockedFields)
     ? []
@@ -268,18 +248,6 @@ const ProfileForm = ({
   //   setFieldTouched(fieldName);
   // };
 
-  // const handleAvatarOnAdd = (newAvatar: UploadFile[]) => {
-  //   setState(() => ({ avatar: [newAvatar[0]] }));
-  //   setFieldValue('avatar', newAvatar[0].base64);
-  //   setFieldTouched('avatar');
-  // };
-
-  // const handleAvatarOnRemove = async () => {
-  //   setState(() => ({ avatar: null }));
-  //   setFieldValue('avatar', null);
-  //   setFieldTouched('avatar');
-  // };
-
   const handleFormOnChange = (values) => {
     console.log(values);
   };
@@ -295,29 +263,22 @@ const ProfileForm = ({
           <SectionField>
             <Feedback successMessage={'success'} />
           </SectionField>
-          {/* <SectionField>
-            <FormLabel
-              htmlFor="profile-form-avatar-dropzone"
-              labelMessage={messages.image}
-            />
+          <SectionField>
             <ImagesDropzone
-              id="profile-form-avatar-dropzone"
-              images={state.avatar}
+              name="avatar"
               imagePreviewRatio={1}
               maxImagePreviewWidth="170px"
               acceptedFileTypes={{
                 'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
               }}
-              onAdd={handleAvatarOnAdd}
-              onRemove={handleAvatarOnRemove}
               label={formatMessage(messages.imageDropzonePlaceholder)}
+              inputLabel={formatMessage(messages.image)}
               removeIconAriaTitle={formatMessage(
                 messages.a11y_imageDropzoneRemoveIconAriaTitle
               )}
               borderRadius="50%"
             />
-            <Error apiErrors={errors.avatar} />
-          </SectionField> */}
+          </SectionField>
 
           <SectionField>
             <Input
@@ -371,6 +332,9 @@ const ProfileForm = ({
             <SectionField>
               <QuillMultilocWithLocaleSwitcher
                 name="bio_multiloc"
+                noImages
+                noVideos
+                limitedTextFormatting
                 label={formatMessage(messages.bio)}
               />
             </SectionField>
