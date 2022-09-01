@@ -3,7 +3,7 @@
 Analytics::Engine.routes.draw do
   namespace :web_api, defaults: { format: :json } do
     namespace :v1 do
-      resources :analytics, only: :index
+      resources :analytics, only: %i[index create]
     end
   end
 end

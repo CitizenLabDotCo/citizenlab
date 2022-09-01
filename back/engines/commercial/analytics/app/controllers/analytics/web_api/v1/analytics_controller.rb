@@ -7,6 +7,16 @@ module Analytics
     class AnalyticsController < ::ApplicationController
       skip_after_action :verify_policy_scoped, only: :index
       def index
+        handle_request
+      end
+
+      def create
+        handle_request
+      end
+
+      private
+
+      def handle_request
         authorize :analytics, policy_class: AnalyticsPolicy
 
         results, errors, response_status = if params[:query].instance_of?(Array)
@@ -21,8 +31,6 @@ module Analytics
           render json: { 'messages' => errors }, status: response_status
         end
       end
-
-      private
 
       def handle_single(json_query)
         query = Query.new(json_query)
