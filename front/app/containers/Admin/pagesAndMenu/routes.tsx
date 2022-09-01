@@ -7,7 +7,7 @@ const PagesAndMenuIndex = lazy(() => import('containers/Admin/pagesAndMenu'));
 const NavigationSettings = lazy(() => import('./NavigationSettings'));
 
 // homepage
-const EditHomepage = lazy(() => import('./EditHomepage'));
+const EditHomepage = lazy(() => import('./containers/EditHomepage'));
 import EditPageForm from './containers/EditPageForm';
 const BottomInfoForm = lazy(() => import('./containers/BottomInfoSection'));
 const TopInfoSection = lazy(() => import('./containers/TopInfoSection'));
