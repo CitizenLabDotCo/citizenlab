@@ -2,7 +2,6 @@ import React, { useState, useMemo, useEffect } from 'react';
 import styled, { useTheme } from 'styled-components';
 
 // components
-import SectionFormWrapper from '../../components/SectionFormWrapper';
 import {
   Section,
   SectionField,
@@ -31,7 +30,6 @@ import HeaderImageDropzone from './HeaderImageDropzone';
 import RangeInput from 'components/UI/RangeInput';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 // import Outlet from 'components/Outlet';
-import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -39,7 +37,7 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // typings
-import { UploadFile, Multiloc, CLErrors } from 'typings';
+import { UploadFile, Multiloc } from 'typings';
 type MultilocErrorType = {
   signedOutHeaderErrors: Multiloc;
   signedOutSubheaderErrors: Multiloc;
@@ -55,7 +53,6 @@ import { forOwn, size, trim, debounce } from 'lodash-es';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 
 // constants
-import { pagesAndMenuBreadcrumb, homeBreadcrumb } from '../../breadcrumbs';
 import Warning from 'components/UI/Warning';
 import { ICustomPagesAttributes } from 'services/customPages';
 const TITLE_MAX_CHAR_COUNT = 45;
@@ -68,13 +65,11 @@ const BgHeaderPreviewSelect = styled(Select)`
 // names differ slightly between HomePage and CustomPage
 type Props = {
   type: 'homePage' | 'customPage';
-  handleOnSave: (InputSettingsProps) => void;
-  // check
-  apiErrors?: CLErrors | null;
-  isLoading: boolean;
+  updateStateFromForm: (HeroBannerInputSettings) => void;
+  setFormStatus: (ISubmitState) => void;
 };
 
-type InputSettingsProps = {
+export type HeroBannerInputSettings = {
   banner_layout:
     | IHomepageSettingsAttributes['banner_layout']
     | ICustomPagesAttributes['banner_layout'];
@@ -100,9 +95,7 @@ type InputSettingsProps = {
 
 const GenericHeroBannerForm = ({
   type,
-  handleOnSave,
-  // apiErrors,
-  isLoading = false,
+  updateStateFromForm,
   banner_layout,
   banner_overlay_color,
   banner_overlay_opacity,
@@ -111,12 +104,12 @@ const GenericHeroBannerForm = ({
   banner_signed_in_header_multiloc,
   banner_avatars_enabled,
   header_bg,
+  setFormStatus,
   intl: { formatMessage },
-}: Props & InputSettingsProps & InjectedIntlProps) => {
+}: Props & HeroBannerInputSettings & InjectedIntlProps) => {
   const theme: any = useTheme();
 
   // component state
-  const [formStatus, setFormStatus] = useState<ISubmitState>('disabled');
   const [headerLocalDisplayImage, setHeaderLocalDisplayImage] = useState<
     UploadFile[] | null
   >(null);
@@ -126,9 +119,10 @@ const GenericHeroBannerForm = ({
       signedOutSubheaderErrors: {},
     });
   const [bannerError, setBannerError] = useState<string | null>(null);
-  const [localSettings, setLocalSettings] = useState<InputSettingsProps | null>(
-    null
+  const [localSettings, setLocalSettings] = useState<HeroBannerInputSettings | null>(
+    {} as HeroBannerInputSettings
   );
+
   const [previewDevice, setPreviewDevice] = useState<PreviewDevice>('desktop');
 
   useEffect(() => {
@@ -164,21 +158,19 @@ const GenericHeroBannerForm = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [header_bg]);
 
-  const onSave = async () => {
-    handleOnSave(localSettings);
-  };
+  useEffect(() => {
+    updateStateFromForm(localSettings)
+  }, [localSettings])
 
-  const updateValueInLocalState = (key: string, value: any) => {
+  const updateValueInLocalState = (key: keyof HeroBannerInputSettings, value: any) => {
     if (localSettings) {
       setLocalSettings({
         ...localSettings,
         [key]: value,
       });
-
-      if (formStatus !== 'enabled') {
-        setFormStatus('enabled');
-      }
     }
+
+    setFormStatus('enabled');
   };
 
   const bannerImageAddHandler = (newImage: UploadFile[]) => {
@@ -194,12 +186,12 @@ const GenericHeroBannerForm = ({
   };
 
   const handleOverlayColorOnChange = (color: string) => {
-    updateValueInLocalState('banner_signed_out_header_overlay_color', color);
+    updateValueInLocalState('banner_overlay_color', color);
   };
 
   const handleOverlayOpacityOnChange = (opacity: number) => {
     updateValueInLocalState(
-      'banner_signed_out_header_overlay_opacity',
+      'banner_overlay_opacity',
       opacity
     );
   };
@@ -225,7 +217,7 @@ const GenericHeroBannerForm = ({
       }
     });
 
-    updateValueInLocalState('banner', titleMultiloc);
+    updateValueInLocalState('banner_header_multiloc', titleMultiloc);
     setHeaderAndSubheaderErrors((prevState) => ({
       ...prevState,
       ...signedOutHeaderErrors,
@@ -267,36 +259,11 @@ const GenericHeroBannerForm = ({
     setBannerError(null);
   }, [localSettings?.header_bg, formatMessage]);
 
+  if (isNilOrError(localSettings)) { 
+    return null;
+  }
+  
   return (
-    // move this to each specific form
-    <SectionFormWrapper
-      breadcrumbs={[
-        {
-          label: formatMessage(pagesAndMenuBreadcrumb.label),
-          linkTo: pagesAndMenuBreadcrumb.linkTo,
-        },
-        {
-          label: formatMessage(homeBreadcrumb.label),
-          linkTo: homeBreadcrumb.linkTo,
-        },
-        { label: formatMessage(messages.heroBannerTitle) },
-      ]}
-      title={formatMessage(messages.heroBannerTitle)}
-      stickyMenuContents={
-        <SubmitWrapper
-          status={formStatus}
-          buttonStyle="primary"
-          loading={isLoading}
-          onClick={onSave}
-          messages={{
-            buttonSave: messages.heroBannerSaveButton,
-            buttonSuccess: messages.heroBannerButtonSuccess,
-            messageSuccess: messages.heroBannerMessageSuccess,
-            messageError: messages.heroBannerError,
-          }}
-        />
-      }
-    >
       <Section key={'header'}>
         <Warning>
           <FormattedMessage {...messages.heroBannerInfoBar} />
@@ -365,7 +332,7 @@ const GenericHeroBannerForm = ({
             header_bg={headerLocalDisplayImage}
             previewDevice={previewDevice}
             // check on default
-            layout={banner_layout || 'full_width_banner_layout'}
+            layout={localSettings.banner_layout || 'full_width_banner_layout'}
           />
         </SectionField>
 
@@ -381,7 +348,7 @@ const GenericHeroBannerForm = ({
                   type="text"
                   value={
                     // default values come from the theme
-                    banner_overlay_color ?? theme.colorMain
+                    localSettings.banner_overlay_color ?? theme.colorMain
                   }
                   onChange={handleOverlayColorOnChange}
                 />
@@ -395,7 +362,7 @@ const GenericHeroBannerForm = ({
                   min={0}
                   max={100}
                   value={
-                    banner_overlay_opacity ||
+                    localSettings.banner_overlay_opacity ||
                     theme.signedOutHeaderOverlayOpacity
                   }
                   onChange={debouncedHandleOverlayOpacityOnChange}
@@ -412,7 +379,7 @@ const GenericHeroBannerForm = ({
           </SubSectionTitle>
           <InputMultilocWithLocaleSwitcher
             type="text"
-            valueMultiloc={banner_header_multiloc}
+            valueMultiloc={localSettings.banner_header_multiloc}
             label={
               <Box display="flex" mr="20px">
                 <FormattedMessage {...messages.bannerHeaderSignedOut} />
@@ -426,7 +393,7 @@ const GenericHeroBannerForm = ({
         <SectionField data-cy="e2e-signed-out-subheader-section">
           <InputMultilocWithLocaleSwitcher
             type="text"
-            valueMultiloc={banner_subheader_multiloc}
+            valueMultiloc={localSettings.banner_subheader_multiloc}
             label={formatMessage(messages.bannerHeaderSignedOutSubtitle)}
             maxCharCount={SUBTITLE_MAX_CHAR_COUNT}
             onChange={handleSubheaderOnChange}
@@ -438,7 +405,7 @@ const GenericHeroBannerForm = ({
             <SectionField>
               <InputMultilocWithLocaleSwitcher
                 type="text"
-                valueMultiloc={banner_signed_in_header_multiloc}
+                valueMultiloc={localSettings.banner_signed_in_header_multiloc}
                 label={formatMessage(messages.bannerHeaderSignedIn)}
                 onChange={handleSignedInHeaderOnChange}
               />
@@ -453,7 +420,7 @@ const GenericHeroBannerForm = ({
               <Setting>
                 <ToggleLabel>
                   <StyledToggle
-                    checked={!!banner_avatars_enabled}
+                    checked={!!localSettings.banner_avatars_enabled}
                     onChange={() => {
                       updateValueInLocalState(
                         'banner_avatars_enabled',
@@ -476,7 +443,6 @@ const GenericHeroBannerForm = ({
             </SectionField>
           </>
         )}
-        {/* // move this to the homepage form */}
         {/* <Outlet
           id="app.containers.Admin.settings.customize.headerSectionEnd"
           homepageSettings={{
@@ -486,7 +452,6 @@ const GenericHeroBannerForm = ({
           errors={apiErrors}
         /> */}
       </Section>
-    </SectionFormWrapper>
   );
 };
 

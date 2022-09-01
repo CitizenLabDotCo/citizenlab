@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 
-import { useParams } from 'react-router-dom';
-import useCustomPage from 'hooks/useCustomPage';
-import { updateCustomPage } from 'services/customPages';
-import GenericHeroBannerForm, {
-  HeroBannerInputSettings,
-} from '../../../GenericHeroBannerForm';
+
+import useHomepageSettings from 'hooks/useHomepageSettings';
+import {
+    IHomepageSettingsAttributes,
+    updateHomepageSettings,
+  } from 'services/homepageSettings';
+
+import GenericHeroBannerForm, { HeroBannerInputSettings } from '../../containers/GenericHeroBannerForm';
 import { isNilOrError } from 'utils/helperUtils';
 // change
-import messages from '../../../HeroBanner/messages';
+import messages from 'containers/Admin/pagesAndMenu/containers/HeroBanner/messages';
 import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
 import { forOwn, isEqual } from 'lodash-es';
 
@@ -21,7 +23,7 @@ import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 
-const EditCustomPageHeroBannerForm = ({
+const EditHomepageHeroBannerForm = ({
   intl: { formatMessage },
 }: InjectedIntlProps) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -29,24 +31,33 @@ const EditCustomPageHeroBannerForm = ({
     useState<HeroBannerInputSettings | null>(null);
   const [formStatus, setFormStatus] = useState<ISubmitState>('disabled');
   
-  const { customPageId } = useParams() as { customPageId: string };
-  const customPage = useCustomPage(customPageId);
-  
-  if (isNilOrError(customPage)) {
+  const homepageSettings = useHomepageSettings();
+
+  if (isNilOrError(homepageSettings)) {
     return null;
   }
 
-  const { attributes } = customPage;
+  const { attributes } = homepageSettings.data;
   const updateStateFromForm = (formState: HeroBannerInputSettings) => {
     setStateFromForm(formState);
   };
 
   const handleSave = async () => {
     if (!stateFromForm) return;
+
+    const propsMappedToHomepageSettingsNames: Partial<IHomepageSettingsAttributes> = {
+        banner_signed_out_header_overlay_opacity: stateFromForm.banner_overlay_opacity,
+        banner_signed_out_header_overlay_color: stateFromForm.banner_overlay_color,
+        banner_signed_out_header_multiloc: stateFromForm.banner_header_multiloc,
+        banner_signed_out_subheader_multiloc: stateFromForm.banner_subheader_multiloc,
+        // the rest are the same as used in the form
+        ...stateFromForm,
+    }
+
     // only update the page settings if they have changed
     const diffedValues = {};
-    forOwn(stateFromForm, (value, key) => {
-      if (!isEqual(value, customPage.attributes[key])) {
+    forOwn(propsMappedToHomepageSettingsNames, (value, key) => {
+      if (!isEqual(value, attributes[key])) {
         diffedValues[key] = value;
       }
     });
@@ -54,7 +65,7 @@ const EditCustomPageHeroBannerForm = ({
     setIsLoading(true);
     setFormStatus('disabled');
     try {
-      await updateCustomPage(customPageId, stateFromForm);
+      await updateHomepageSettings(diffedValues);
       setIsLoading(false);
       setFormStatus('success');
     } catch (error) {
@@ -95,10 +106,12 @@ const EditCustomPageHeroBannerForm = ({
       <GenericHeroBannerForm
         type="customPage"
         banner_layout={attributes.banner_layout}
-        banner_overlay_color={attributes.banner_overlay_color}
-        banner_overlay_opacity={attributes.banner_overlay_opacity}
-        banner_header_multiloc={attributes.banner_header_multiloc}
-        banner_subheader_multiloc={attributes.banner_subheader_multiloc}
+        banner_overlay_color={attributes.banner_signed_out_header_overlay_color}
+        banner_overlay_opacity={attributes.banner_signed_out_header_overlay_opacity}
+        banner_header_multiloc={attributes.banner_signed_out_header_multiloc}
+        banner_subheader_multiloc={attributes.banner_signed_out_header_multiloc}
+        banner_signed_in_header_multiloc={attributes.banner_signed_in_header_multiloc}
+        banner_avatars_enabled={attributes.banner_avatars_enabled}
         header_bg={attributes.header_bg}
         updateStateFromForm={updateStateFromForm}
         setFormStatus={setFormStatus}
@@ -107,4 +120,4 @@ const EditCustomPageHeroBannerForm = ({
   );
 };
 
-export default injectIntl(EditCustomPageHeroBannerForm);
+export default injectIntl(EditHomepageHeroBannerForm);

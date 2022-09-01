@@ -11,7 +11,7 @@ const EditHomepage = lazy(() => import('./EditHomepage'));
 import EditPageForm from './containers/EditPageForm';
 const BottomInfoForm = lazy(() => import('./containers/BottomInfoSection'));
 const TopInfoSection = lazy(() => import('./containers/TopInfoSection'));
-const HeroBannerForm = lazy(() => import('./containers/HeroBanner'));
+const HomepageHeroBannerForm = lazy(() => import('./EditHomepage/HeroBanner'));
 
 // custom pages
 const NewCustomPageIndex = lazy(() => import('./containers/CustomPages/New'));
@@ -76,7 +76,7 @@ export default () => ({
       path: 'homepage-banner',
       element: (
         <PageLoading>
-          <HeroBannerForm />
+          <HomepageHeroBannerForm />
         </PageLoading>
       ),
     },
