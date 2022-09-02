@@ -96,7 +96,7 @@ const AdminPage = memo<Props & WithRouterProps>(
     const [adminFullWidth, setAdminFullWidth] = useState(false);
     const [adminNoPadding, setAdminNoPadding] = useState(false);
 
-    const userCanViewAdmin = usePermission({
+    const userCanViewPath = usePermission({
       item: { type: 'route', path: location.pathname },
       action: 'access',
     });
@@ -116,12 +116,12 @@ const AdminPage = memo<Props & WithRouterProps>(
     }, []);
 
     useEffect(() => {
-      if (authUser === null || (authUser !== undefined && !userCanViewAdmin)) {
+      if (authUser === null || (authUser !== undefined && !userCanViewPath)) {
         clHistory.push('/');
       }
-    }, [authUser, userCanViewAdmin]);
+    }, [authUser, userCanViewPath]);
 
-    if (!userCanViewAdmin) {
+    if (!userCanViewPath) {
       return null;
     }
 
