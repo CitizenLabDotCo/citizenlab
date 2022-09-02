@@ -6,6 +6,7 @@ import messages from './messages';
 
 // utils
 import { sum, roundPercentage, roundPercentages } from 'utils/math';
+import { capitalize } from 'lodash-es';
 
 // typings
 import { FeedbackRow, StatusRow, StackedBarsRow } from '.';
@@ -140,7 +141,7 @@ export const parseStackedBarsLegendItems = (
   return statusRows.map((statusRow) => ({
     icon: 'circle',
     color: statusRow.first_status_color,
-    label: localize(statusRow.first_status_title_multiloc),
+    label: capitalize(localize(statusRow.first_status_title_multiloc)),
   }));
 };
 
