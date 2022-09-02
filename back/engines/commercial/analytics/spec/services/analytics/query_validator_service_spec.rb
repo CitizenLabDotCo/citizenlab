@@ -10,17 +10,28 @@ describe Analytics::QueryValidatorService do
       query = Analytics::Query.new(query_param)
 
       validator = described_class.new(query)
+      all_messages = validator.messages.join(' ')
+      required_keys = [
+        'did not contain a required property of \'aggregations\'',
+        'did not contain a required property of \'fact\'',
+        'did not contain a required property of \'fields\''
+      ]
+      expect(required_keys.all? { |msg| all_messages.include? msg }).to be true
       expect(validator.valid).to be false
-      expect(validator.messages).to include 'The property \'#/\' did not contain a required property of \'fact\' in schema file:///cl2_back/engines/commercial/analytics/app/services/analytics/query_schema.json'
     end
 
     it 'fails on inexistent query attribute' do
-      query_param = ActionController::Parameters.new(fact: 'post', other: 'value')
+      query_param = ActionController::Parameters.new(
+        fact: 'post',
+        fields: 'id',
+        other: 'value'
+      )
       query = Analytics::Query.new(query_param)
 
       validator = described_class.new(query)
+
+      expect(validator.messages[0]).to include 'contains additional properties ["other"] outside of the schema when none are allowed'
       expect(validator.valid).to be false
-      expect(validator.messages).to include 'The property \'#/\' contains additional properties ["other"] outside of the schema when none are allowed in schema file:///cl2_back/engines/commercial/analytics/app/services/analytics/query_schema.json'
     end
 
     it 'fails on inexistent column reference' do
@@ -32,7 +43,23 @@ describe Analytics::QueryValidatorService do
       expect(validator.messages).to include 'Fields column some_field does not exist in fact table.'
     end
 
-    it 'fails on invalid dates' do
+    it 'fails on invalid characters' do
+      query_param = ActionController::Parameters.new(
+        fact: 'post',
+        fields: 'id',
+        'A' => '',
+        '%' => '',
+        '//' => '',
+        ' ' => ''
+      )
+      query = Analytics::Query.new(query_param)
+
+      validator = described_class.new(query)
+      expect(validator.valid).to be false
+      expect(validator.messages[0]).to include 'contains additional properties ["A", "%", "//", " "] outside of the schema when none are allowed'
+    end
+
+    it 'fails on invalid date' do
       query_param = ActionController::Parameters.new(
         fact: 'post',
         fields: 'id',
@@ -47,6 +74,22 @@ describe Analytics::QueryValidatorService do
       validator = described_class.new(query)
       expect(validator.valid).to be false
       expect(validator.messages).to include 'Invalid \'from\' date in created_date dimension.'
+    end
+
+    it 'pass on valid query' do
+      query_param = ActionController::Parameters.new(
+        fact: 'post',
+        fields: 'id',
+        dimensions: {
+          created_date: {
+            date: { from: '2021-01-01', to: '2022-01-01' }
+          }
+        }
+      )
+      query = Analytics::Query.new(query_param)
+
+      validator = described_class.new(query)
+      expect(validator.valid).to be true
     end
   end
 end

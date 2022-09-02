@@ -19,7 +19,7 @@ module Analytics
     def validate
       validate_json
 
-      return unless @valid
+      return if @valid == false
 
       if @json_query.key?(:fields)
         validate_fields
