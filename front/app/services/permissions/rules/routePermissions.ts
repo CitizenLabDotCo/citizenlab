@@ -12,6 +12,7 @@ import { IUser } from 'services/users';
 import { IAppConfigurationData } from 'services/appConfiguration';
 
 const MODERATOR_ROUTES = [
+  '/admin', // currently redirects to /admin/dashboard
   '/admin/dashboard',
   '/admin/projects',
   '/admin/messaging',
@@ -19,7 +20,6 @@ const MODERATOR_ROUTES = [
   '/admin/ideas/import',
   '/admin/workshops',
   '/admin/processing',
-  '/admin/dashboard',
   '/admin/moderation',
   '/admin/insights',
   '/admin/content-builder',
@@ -27,7 +27,7 @@ const MODERATOR_ROUTES = [
 
 export const isModeratorRoute = (item: IRouteItem) => {
   return MODERATOR_ROUTES.some((moderatorRoute) => {
-    return item.path.includes(moderatorRoute);
+    return item.path === moderatorRoute;
   });
 };
 export const isAdminRoute = (path: string) => {
