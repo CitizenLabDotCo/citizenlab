@@ -31,7 +31,7 @@ import {
 import HeaderImageDropzone from './HeaderImageDropzone';
 import RangeInput from 'components/UI/RangeInput';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-// import Outlet from 'components/Outlet';
+import Outlet from 'components/Outlet';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -46,8 +46,6 @@ type MultilocErrorType = {
 };
 export type PreviewDevice = 'mobile' | 'tablet' | 'desktop';
 import { TBreadcrumbs } from 'components/UI/Breadcrumbs';
-
-import Outlet from 'components/Outlet';
 
 // resources
 import { IHomepageSettingsAttributes } from 'services/homepageSettings';

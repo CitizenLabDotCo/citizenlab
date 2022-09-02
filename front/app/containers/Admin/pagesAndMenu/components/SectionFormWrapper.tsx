@@ -15,7 +15,7 @@ type Props = {
   children: JSX.Element | JSX.Element[];
   stickyMenuContents?: JSX.Element | JSX.Element[];
   rightSideCTA?: JSX.Element | JSX.Element[];
-}
+};
 
 const SectionFormWrapper = ({
   breadcrumbs,
