@@ -32,11 +32,9 @@ export const isModeratorRoute = (item: IRouteItem) => {
       return true;
     }
 
-    // In front/app/containers/Admin/routes.tsx we inform
-    // that a moderator has access to the index route as we specify here.
     // We need this separate check because we can't let /admin
     // be part of the MODERATOR_ROUTES because it'll return true
-    // for item.path.startsWith for every path in the admin.
+    // for item.path.startsWith for every item.path value when in the admin.
     if (item.path === '/admin') {
       return true;
     }
