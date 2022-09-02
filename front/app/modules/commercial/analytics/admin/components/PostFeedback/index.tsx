@@ -84,6 +84,8 @@ const PostFeedback = ({
 }: Props & InjectedIntlProps) => {
   const currentPieChart = useRef();
   const currentProgressBarsChart = useRef();
+  const currentStackedBarChart = useRef();
+
   const data = usePostsWithFeedback(formatMessage, {
     projectId,
     startAt,
@@ -117,7 +119,11 @@ const PostFeedback = ({
             name={formatMessage(messages.postFeedback)
               .toLowerCase()
               .replace(' ', '_')}
-            svgNode={[currentPieChart, currentProgressBarsChart]}
+            svgNode={[
+              currentPieChart,
+              currentProgressBarsChart,
+              currentStackedBarChart,
+            ]}
             xlsxData={xlsxData}
           />
         </GraphCardHeader>
@@ -199,6 +205,7 @@ const PostFeedback = ({
               items: stackedBarsLegendItems,
               marginTop: 15,
             }}
+            innerRef={currentStackedBarChart}
           />
         </Box>
       </GraphCardInner>
