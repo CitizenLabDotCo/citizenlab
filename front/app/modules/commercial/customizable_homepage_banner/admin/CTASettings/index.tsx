@@ -8,6 +8,8 @@ import CTASignedInSettings from './CTASignedInSettings';
 import { CLErrors } from 'typings';
 import 'utils/moduleUtils';
 
+import { isNilOrError } from 'utils/helperUtils';
+
 // only these keys will be used in CTA settings
 export type BannerSettingKeyType = Extract<
   keyof IHomepageSettingsAttributes,
@@ -26,6 +28,10 @@ interface Props {
 }
 
 const CTASettings = ({ homepageSettings, handleOnChange, errors }: Props) => {
+  if (isNilOrError(homepageSettings)) {
+    return null;
+  }
+
   return (
     <Section>
       <SubSectionTitle>

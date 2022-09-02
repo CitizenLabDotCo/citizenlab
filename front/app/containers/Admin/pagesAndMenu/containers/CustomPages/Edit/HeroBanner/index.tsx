@@ -8,7 +8,7 @@ import GenericHeroBannerForm, {
 } from '../../../GenericHeroBannerForm';
 import { isNilOrError } from 'utils/helperUtils';
 // change
-import messages from '../../../HeroBanner/messages';
+import messages from '../../../GenericHeroBannerForm/messages';
 import { forOwn, isEqual } from 'lodash-es';
 
 import {
@@ -57,6 +57,15 @@ const EditCustomPageHeroBannerForm = ({
     }
   };
 
+  const mappedInputSettings = {
+    banner_layout: attributes.banner_layout,
+    banner_overlay_color: attributes.banner_overlay_color,
+    banner_overlay_opacity: attributes.banner_overlay_opacity,
+    banner_header_multiloc: attributes.banner_header_multiloc,
+    banner_subheader_multiloc: attributes.banner_subheader_multiloc,
+    header_bg: attributes.header_bg,
+  };
+
   return (
     <GenericHeroBannerForm
       onSave={handleSave}
@@ -75,12 +84,7 @@ const EditCustomPageHeroBannerForm = ({
         { label: formatMessage(messages.heroBannerTitle) },
       ]}
       title={formatMessage(messages.heroBannerTitle)}
-      banner_layout={attributes.banner_layout}
-      banner_overlay_color={attributes.banner_overlay_color}
-      banner_overlay_opacity={attributes.banner_overlay_opacity}
-      banner_header_multiloc={attributes.banner_header_multiloc}
-      banner_subheader_multiloc={attributes.banner_subheader_multiloc}
-      header_bg={attributes.header_bg}
+      inputSettings={mappedInputSettings}
       setFormStatus={setFormStatus}
     />
   );

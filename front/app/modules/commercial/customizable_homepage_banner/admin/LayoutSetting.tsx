@@ -18,7 +18,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 import {
-  IHomepageSettingsAttributes,
   THomepageBannerLayout,
 } from 'services/homepageSettings';
 
@@ -45,16 +44,16 @@ const LayoutOptionTextWrapper = styled.div`
 `;
 
 interface Props {
-  homepageSettings: IHomepageSettingsAttributes;
+  bannerLayout: THomepageBannerLayout;
   handleOnChange: (settingKey: 'banner_layout', settingValue: string) => void;
 }
 
-const LayoutSetting = ({ homepageSettings, handleOnChange }: Props) => {
+const LayoutSetting = ({ bannerLayout, handleOnChange }: Props) => {
   const handleLayoutOnChange = (layout: THomepageBannerLayout) => {
     handleOnChange('banner_layout', layout);
   };
 
-  const homepageBannerLayout = homepageSettings.banner_layout;
+  const homepageBannerLayout = bannerLayout;
   return (
     <SectionField key="layout">
       <SubSectionTitle>

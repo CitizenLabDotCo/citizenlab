@@ -39,13 +39,15 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // typings
-import { UploadFile, Multiloc } from 'typings';
+import { UploadFile, Multiloc, CLErrors } from 'typings';
 type MultilocErrorType = {
   signedOutHeaderErrors: Multiloc;
   signedOutSubheaderErrors: Multiloc;
 };
 export type PreviewDevice = 'mobile' | 'tablet' | 'desktop';
 import { TBreadcrumbs } from 'components/UI/Breadcrumbs';
+
+import Outlet from 'components/Outlet';
 
 // resources
 import { IHomepageSettingsAttributes } from 'services/homepageSettings';
@@ -75,6 +77,8 @@ type Props = {
   setFormStatus: (ISubmitState) => void;
   onSave: (HeroBannerInputSettings) => void;
   isLoading: boolean;
+  inputSettings: HeroBannerInputSettings;
+  apiErrors?: CLErrors | null;
 };
 
 export type HeroBannerInputSettings = {
@@ -96,30 +100,34 @@ export type HeroBannerInputSettings = {
   header_bg:
     | IHomepageSettingsAttributes['header_bg']
     | ICustomPagesAttributes['header_bg'];
+
   // homepage only properties, optional
   banner_signed_in_header_multiloc?: IHomepageSettingsAttributes['banner_signed_in_header_multiloc'];
   banner_avatars_enabled?: IHomepageSettingsAttributes['banner_avatars_enabled'];
+  // cta settings, only on homepage
+  banner_cta_signed_in_text_multiloc?: IHomepageSettingsAttributes['banner_cta_signed_in_text_multiloc'];
+  banner_cta_signed_in_type?: IHomepageSettingsAttributes['banner_cta_signed_in_type']
+  banner_cta_signed_in_url?: IHomepageSettingsAttributes['banner_cta_signed_in_url']
+  // cta_signed_out
+  banner_cta_signed_out_text_multiloc?: IHomepageSettingsAttributes['banner_cta_signed_out_text_multiloc']
+  banner_cta_signed_out_type?: IHomepageSettingsAttributes['banner_cta_signed_out_type']
+  banner_cta_signed_out_url?: IHomepageSettingsAttributes['banner_cta_signed_out_url']
 };
+
 import { ISubmitState } from 'components/admin/SubmitWrapper';
 
 const GenericHeroBannerForm = ({
   type,
   onSave,
-  banner_layout,
-  banner_overlay_color,
-  banner_overlay_opacity,
-  banner_header_multiloc,
-  banner_subheader_multiloc,
-  banner_signed_in_header_multiloc,
-  banner_avatars_enabled,
-  header_bg,
+  inputSettings,
   setFormStatus,
   formStatus,
   isLoading,
   title,
   breadcrumbs,
+  apiErrors,
   intl: { formatMessage },
-}: Props & HeroBannerInputSettings & InjectedIntlProps) => {
+}: Props & InjectedIntlProps) => {
   const theme: any = useTheme();
 
   // component state
@@ -140,14 +148,7 @@ const GenericHeroBannerForm = ({
   useEffect(() => {
     // copy input settings to local state
     setLocalSettings({
-      header_bg,
-      banner_layout,
-      banner_overlay_color,
-      banner_overlay_opacity,
-      banner_header_multiloc,
-      banner_subheader_multiloc,
-      banner_signed_in_header_multiloc,
-      banner_avatars_enabled,
+      ...inputSettings
     });
 
     // the image file sent from the API needs to be converted
@@ -165,10 +166,10 @@ const GenericHeroBannerForm = ({
       }
     };
 
-    const headerFileInfo = header_bg?.large;
+    const headerFileInfo = inputSettings.header_bg?.large;
     convertHeaderToUploadFile(headerFileInfo);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [header_bg]);
+  }, [inputSettings.header_bg]);
 
   const updateValueInLocalState = (
     key: keyof HeroBannerInputSettings,
@@ -294,11 +295,11 @@ const GenericHeroBannerForm = ({
           <FormattedMessage {...messages.heroBannerInfoBar} />
         </Warning>
         {/* // move to homepage form */}
-        {/* <Outlet
+        <Outlet
           id="app.containers.Admin.settings.customize.headerSectionStart"
-          inputSettings={homepageSettings}
-          handleOnChange={handleSettingOnChange}
-        /> */}
+          bannerLayout={localSettings.banner_layout ?? 'two_column_layout'}
+          handleOnChange={updateValueInLocalState}
+        />
         <SubSectionTitle>
           <FormattedMessage {...messages.header_bg} />
           <IconTooltip
@@ -351,8 +352,8 @@ const GenericHeroBannerForm = ({
           <HeaderImageDropzone
             onAdd={bannerImageAddHandler}
             onRemove={bannerImageRemoveHandler}
-            overlayColor={banner_overlay_color}
-            overlayOpacity={banner_overlay_opacity}
+            overlayColor={localSettings.banner_overlay_color}
+            overlayOpacity={localSettings.banner_overlay_opacity}
             headerError={bannerError}
             header_bg={headerLocalDisplayImage}
             previewDevice={previewDevice}
@@ -362,7 +363,7 @@ const GenericHeroBannerForm = ({
         </SectionField>
 
         {/* We only allow the overlay for the full-width banner layout for the moment. */}
-        {banner_layout === 'full_width_banner_layout' &&
+        {localSettings.banner_layout === 'full_width_banner_layout' &&
           headerLocalDisplayImage && (
             <>
               <SectionField>
@@ -449,7 +450,7 @@ const GenericHeroBannerForm = ({
                     onChange={() => {
                       updateValueInLocalState(
                         'banner_avatars_enabled',
-                        !banner_avatars_enabled
+                        !localSettings.banner_avatars_enabled
                       );
                     }}
                   />
@@ -468,14 +469,12 @@ const GenericHeroBannerForm = ({
             </SectionField>
           </>
         )}
-        {/* <Outlet
+        <Outlet
           id="app.containers.Admin.settings.customize.headerSectionEnd"
-          homepageSettings={{
-            ...localSettings
-          }}
-          handleOnChange={handleSettingOnChange}
+          homepageSettings={localSettings}
+          handleOnChange={updateValueInLocalState}
           errors={apiErrors}
-        /> */}
+        />
       </Section>
     </SectionFormWrapper>
   );

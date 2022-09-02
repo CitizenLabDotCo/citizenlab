@@ -46,9 +46,10 @@ import {
   TAppConfigurationSettingCore,
 } from 'services/appConfiguration';
 import {
-  THomepageBannerLayout,
   IHomepageSettingsAttributes,
+  THomepageBannerLayout,
 } from 'services/homepageSettings';
+import { HeroBannerInputSettings } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm';
 import { ManagerType } from 'components/admin/PostManager';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaHeaderRow';
@@ -365,19 +366,19 @@ export interface OutletsPropertyMap {
     onMount: () => void;
   };
   'app.containers.Admin.settings.customize.headerSectionStart': {
-    homepageSettings: IHomepageSettingsAttributes;
+    bannerLayout: THomepageBannerLayout;
     handleOnChange: (
-      settingKey: keyof IHomepageSettingsAttributes,
-      settingValue: any
+      settingKey: 'banner_layout',
+      settingValue: THomepageBannerLayout
     ) => void;
   };
   'app.containers.Admin.settings.customize.headerSectionEnd': {
-    homepageSettings: IHomepageSettingsAttributes;
+    homepageSettings: Partial<IHomepageSettingsAttributes>
     handleOnChange: (
-      settingKey: keyof IHomepageSettingsAttributes,
+      settingKey: keyof HeroBannerInputSettings,
       settingValue: any
     ) => void;
-    errors: CLErrors | null;
+    errors: CLErrors | null | undefined;
   };
   'app.containers.LandingPage.SignedOutHeader.index': {
     homepageBannerLayout: THomepageBannerLayout;
