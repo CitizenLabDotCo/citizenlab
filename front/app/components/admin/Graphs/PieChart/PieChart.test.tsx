@@ -17,6 +17,14 @@ const getNilData = (): Row[] | NilOrError => null;
 const getErrorData = (): Row[] | NilOrError => new Error();
 const getData = (): Row[] | NilOrError => data;
 
+class FakeResizeObserver {
+  observe() {}
+  disconnect() {}
+}
+
+// @ts-ignore
+window.ResizeObserver = FakeResizeObserver;
+
 describe('<PieChart />', () => {
   describe('Missing data', () => {
     it('renders empty state message if data is nil', () => {
