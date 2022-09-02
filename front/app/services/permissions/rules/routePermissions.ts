@@ -12,7 +12,6 @@ import { IUser } from 'services/users';
 import { IAppConfigurationData } from 'services/appConfiguration';
 
 const MODERATOR_ROUTES = [
-  '/admin', // currently redirects to /admin/dashboard
   '/admin/dashboard',
   '/admin/projects',
   '/admin/messaging',
@@ -27,7 +26,12 @@ const MODERATOR_ROUTES = [
 
 export const isModeratorRoute = (item: IRouteItem) => {
   return MODERATOR_ROUTES.some((moderatorRoute) => {
-    return item.path === moderatorRoute;
+    // In front/app/containers/Admin/routes.tsx we inform
+    // that a moderator has access to the index route as we specify here
+    // We can't let /admin be part of the MODERATOR_ROUTES
+    // because it'll reture true for item.path.startsWith for every path
+    // in the admin.
+    return item.path === '/admin' || item.path.startsWith(moderatorRoute);
   });
 };
 export const isAdminRoute = (path: string) => {

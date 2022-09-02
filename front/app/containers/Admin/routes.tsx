@@ -106,6 +106,8 @@ const createAdminRoutes = () => {
     element: <IndexElement />,
     children: [
       {
+        // Careful: moderators currently have access to the admin index route
+        // Adjust isModerator in routePermissions.ts if needed.
         path: '',
         element: <Navigate to="dashboard" />,
       },
