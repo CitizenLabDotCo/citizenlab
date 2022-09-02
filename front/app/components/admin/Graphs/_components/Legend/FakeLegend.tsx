@@ -90,7 +90,11 @@ const FakeLegend = ({
 
   return (
     <Box
-      style={{ visibility: 'hidden' }}
+      style={{
+        visibility: 'hidden',
+        // transform: `translate(0,-${legendDimensions?.height ?? 0}px)`
+        marginTop: `-${legendDimensions?.height ?? 0}px`,
+      }}
       display="flex"
       flexDirection="row"
       flexWrap="wrap"

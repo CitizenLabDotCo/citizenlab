@@ -184,7 +184,7 @@ const PostFeedback = ({
             </Box>
           </ProgressBarsContainer>
         </Container>
-        <Box width="100%" mt="30px" p="8px">
+        <Box width="100%" height="initial" mt="30px" p="8px">
           <StackedBarChart
             data={stackedBarsData}
             height={80}
@@ -217,6 +217,7 @@ const PostFeedback = ({
           iconSize="13px"
           fontSize={`${fontSizes.s}px`}
           padding="0px"
+          marginTop="20px"
           textDecorationHover="underline"
           text={formatMessage(messages.goToInputManager)}
           linkTo="/admin/ideas"
