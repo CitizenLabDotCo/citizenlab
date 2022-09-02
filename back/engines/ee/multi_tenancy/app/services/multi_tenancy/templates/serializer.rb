@@ -583,14 +583,32 @@ module MultiTenancy
       end
 
       def yml_static_pages
-        StaticPage.all.map do |p|
+        StaticPage.all.map do |sp|
           yml_page = {
-            'title_multiloc' => p.title_multiloc,
-            'top_info_section_multiloc' => p.top_info_section_multiloc,
-            'slug' => p.slug,
-            'created_at' => p.created_at.to_s,
-            'updated_at' => p.updated_at.to_s,
-            'text_images_attributes' => p.text_images.map do |ti|
+            'title_multiloc' => sp.title_multiloc,
+            'top_info_section_multiloc' => sp.top_info_section_multiloc,
+            'slug' => sp.slug,
+            'created_at' => sp.created_at.to_s,
+            'updated_at' => sp.updated_at.to_s,
+            'code' => sp.code,
+            'banner_enabled' => sp.banner_enabled,
+            'banner_layout' => sp.banner_layout,
+            'banner_overlay_color' => sp.banner_overlay_color,
+            'banner_overlay_opacity' => sp.banner_overlay_opacity,
+            'banner_cta_button_multiloc' => sp.banner_cta_button_multiloc,
+            'banner_cta_button_type' => sp.banner_cta_button_type,
+            'banner_cta_button_url' => sp.banner_cta_button_url,
+            'banner_header_multiloc' => sp.banner_header_multiloc,
+            'banner_subheader_multiloc' => sp.banner_subheader_multiloc,
+            'top_info_section_enabled' => sp.top_info_section_enabled,
+            'files_section_enabled' => sp.files_section_enabled,
+            'projects_enabled' => sp.projects_enabled,
+            'projects_filter_type' => sp.projects_filter_type,
+            'events_widget_enabled' => sp.events_widget_enabled,
+            'bottom_info_section_enabled' => sp.bottom_info_section_enabled,
+            'bottom_info_section_multiloc' => sp.bottom_info_section_enabled,
+            'remote_header_bg_url' => sp.header_bg_url,
+            'text_images_attributes' => sp.text_images.map do |ti|
               {
                 'imageable_field' => ti.imageable_field,
                 'remote_image_url' => ti.image_url,
@@ -600,7 +618,7 @@ module MultiTenancy
               }
             end
           }
-          store_ref yml_page, p.id, :static_page
+          store_ref yml_page, sp.id, :static_page
           yml_page
         end
       end

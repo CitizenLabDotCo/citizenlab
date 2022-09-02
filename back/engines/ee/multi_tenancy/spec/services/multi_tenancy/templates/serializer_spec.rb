@@ -93,5 +93,15 @@ describe MultiTenancy::Templates::Serializer do
       expect(template['models']).to be_present
       expect(template.dig('models', 'home_page', 0, 'remote_header_bg_url')).to match(%r{/uploads/.*/home_page/header_bg/.*.jpg})
     end
+
+    it 'includes a reference to an existing static_page header_bg' do
+      create(:static_page, header_bg: File.open(Rails.root.join('spec/fixtures/header.jpg')))
+
+      serializer = described_class.new(Tenant.current)
+      template = serializer.run
+
+      expect(template['models']).to be_present
+      expect(template.dig('models', 'static_page', 0, 'remote_header_bg_url')).to match(%r{/uploads/.*/static_page/header_bg/.*.jpg})
+    end
   end
 end
