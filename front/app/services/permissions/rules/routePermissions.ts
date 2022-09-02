@@ -28,10 +28,21 @@ export const isModeratorRoute = (item: IRouteItem) => {
   return MODERATOR_ROUTES.some((moderatorRoute) => {
     // In front/app/containers/Admin/routes.tsx we inform
     // that a moderator has access to the index route as we specify here
+
     // We can't let /admin be part of the MODERATOR_ROUTES
     // because it'll reture true for item.path.startsWith for every path
     // in the admin.
-    return item.path === '/admin' || item.path.startsWith(moderatorRoute);
+    if (item.path === '/admin') {
+      return true;
+    }
+
+    // We need to check with startsWith because we
+    // wouldn't match nested routes with === checks
+    if (item.path.startsWith(moderatorRoute)) {
+      return true;
+    }
+
+    return false;
   });
 };
 export const isAdminRoute = (path: string) => {
