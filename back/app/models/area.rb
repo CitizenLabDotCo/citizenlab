@@ -35,8 +35,8 @@ class Area < ApplicationRecord
   before_validation :sanitize_description_multiloc
   before_validation :strip_title
 
-  # If the domicile custom field exists, area are associated to its options.
-  # The two associated resources are kept in sync: changes mode to the
+  # If the domicile custom field exists, each area is associated to one of its options.
+  # The two associated resources are kept in sync: changes to the
   # area are reflected in the option, and vice versa.
   belongs_to :custom_field_option, optional: true
   after_create :create_custom_field_option
