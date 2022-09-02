@@ -100,7 +100,7 @@ module UserCustomFields
 
         def user_counts_by_area_id
           @user_counts_by_area_id ||= FieldValueCounter.counts_by_field_option(
-            find_users, custom_field, by_area_id: true
+            find_users, custom_field, by: :area_id
           )
         end
 
