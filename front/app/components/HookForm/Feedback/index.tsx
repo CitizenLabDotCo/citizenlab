@@ -25,7 +25,12 @@ const Feedback = ({
 }: FeedbackProps) => {
   const [successMessageIsVisible, setSuccessMessageIsVisible] = useState(true);
   const {
-    formState: { errors, isSubmitSuccessful, isSubmitted, submitCount },
+    formState: {
+      errors: formContextErrors,
+      isSubmitSuccessful,
+      isSubmitted,
+      submitCount,
+    },
   } = useFormContext();
 
   useEffect(() => {
@@ -38,11 +43,12 @@ const Feedback = ({
   const getAllErrorMessages = () => {
     const errorMessages: Array<{ field: string; message?: string }> = [];
 
-    for (const field in errors) {
-      const standardFieldError = get(errors, field)?.message;
-      const apiError = get(errors, field)?.error;
+    for (const field in formContextErrors) {
+      const errors = get(formContextErrors, field);
+      const standardFieldError = errors?.message;
+      const apiError = errors?.error;
       const multilocFieldFirstError = Object.values(
-        get(errors, field) as Record<string, any>
+        errors as Record<string, any>
       )[0]?.message;
 
       if (standardFieldError) {
@@ -74,7 +80,7 @@ const Feedback = ({
   const closeSuccessMessage = () => setSuccessMessageIsVisible(false);
   const successMessageIsShown = isSubmitSuccessful && successMessageIsVisible;
   const errorMessageIsShown =
-    (getAllErrorMessages().length > 0 || errors.submissionError) &&
+    (getAllErrorMessages().length > 0 || formContextErrors.submissionError) &&
     !isSubmitSuccessful;
 
   return (
@@ -113,7 +119,7 @@ const Feedback = ({
               marginBottom="12px"
               text={
                 <>
-                  {errors.submissionError ? (
+                  {formContextErrors.submissionError ? (
                     <>
                       <Title color="red600" variant="h4">
                         {formatMessage(messages.submissionErrorTitle)}

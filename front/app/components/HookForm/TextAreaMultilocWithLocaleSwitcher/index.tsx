@@ -26,7 +26,7 @@ const TextAreaMultilocWithLocaleSwitcher = ({
   ...rest
 }: TextAreaProps) => {
   const {
-    formState: { errors },
+    formState: { errors: formContextErrors },
     control,
   } = useFormContext();
 
@@ -41,14 +41,15 @@ const TextAreaMultilocWithLocaleSwitcher = ({
     {}
   );
 
+  const errors = get(formContextErrors, name);
+
   // Select the first error messages from the field's multiloc validation error
   const validationError = Object.values(
-    (get(errors, name) as Record<Locale, FieldError> | undefined) || {}
+    (errors as Record<Locale, FieldError> | undefined) || {}
   )[0]?.message;
 
   const apiError =
-    (get(errors, name)?.error as string | undefined) &&
-    ([get(errors, name)] as unknown as CLError[]);
+    (errors?.error as string | undefined) && ([errors] as unknown as CLError[]);
 
   return (
     <div id={name}>
