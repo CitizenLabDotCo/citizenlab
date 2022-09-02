@@ -17,5 +17,13 @@ module Analytics
     def self.feature_description
       'New analytics coming from a data warehouse.'
     end
+
+    def self.allowed_by_default
+      false
+    end
+
+    def self.enabled_by_default
+      false
+    end
   end
 end

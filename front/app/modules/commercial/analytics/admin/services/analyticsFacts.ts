@@ -1,3 +1,4 @@
+import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 
 // Query
@@ -32,5 +33,8 @@ export interface QuerySchema {
 type Aggregation = 'min' | 'max' | 'avg' | 'sum' | 'count' | 'first';
 
 export function analyticsStream<Response>(query: Query) {
-  return streams.analytics<Response>(query);
+  return streams.get<Response>({
+    apiEndpoint: `${API_PATH}/analytics`,
+    queryParameters: query
+  });
 }

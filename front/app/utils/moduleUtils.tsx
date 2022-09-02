@@ -409,6 +409,13 @@ export interface OutletsPropertyMap {
     string,
     any
   >;
+  'app.components.PageForm.index.top': {
+    pageId: string | null;
+    navbarItemId: string | null;
+  };
+  'app.containers.Admin.pages-menu.containers.EditPageForm.index.onMount': {
+    onMount: () => void;
+  };
 }
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];
