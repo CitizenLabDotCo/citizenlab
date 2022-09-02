@@ -26,7 +26,7 @@ import hookMessages from '../../hooks/usePostsFeedback/messages';
 import messages from './messages';
 
 // hooks
-import usePostsWithFeedback from '../../hooks/usePostsFeedback';
+import usePostsFeedback from '../../hooks/usePostsFeedback';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -36,9 +36,9 @@ import { getCornerRadius } from './utils';
 import { InjectedIntlProps } from 'react-intl';
 
 interface Props {
-  projectId?: string;
-  startAt?: string;
-  endAt?: string;
+  projectId: string | undefined;
+  startAt: string | null | undefined;
+  endAt: string | null;
 }
 
 const Container = styled.div`
@@ -88,7 +88,7 @@ const PostFeedback = ({
   const currentProgressBarsChart = useRef();
   const currentStackedBarChart = useRef();
 
-  const data = usePostsWithFeedback(formatMessage, {
+  const data = usePostsFeedback(formatMessage, {
     projectId,
     startAt,
     endAt,
