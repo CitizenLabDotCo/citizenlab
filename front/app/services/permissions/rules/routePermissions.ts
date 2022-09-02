@@ -11,7 +11,7 @@ import {
 import { IUser } from 'services/users';
 import { IAppConfigurationData } from 'services/appConfiguration';
 
-export const MODERATOR_ROUTES = [
+const MODERATOR_ROUTES = [
   '/admin/dashboard',
   '/admin/projects',
   '/admin/messaging',
