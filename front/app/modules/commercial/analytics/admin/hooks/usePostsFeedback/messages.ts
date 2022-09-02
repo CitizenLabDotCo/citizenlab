@@ -33,4 +33,20 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.components.PostFeedback.total',
     defaultMessage: 'Total',
   },
+  postsByStatus: {
+    id: 'app.containers.AdminPage.DashboardPage.components.PostFeedback.postsByStatus',
+    defaultMessage: 'Posts by status',
+  },
+  status: {
+    id: 'app.containers.AdminPage.DashboardPage.components.PostFeedback.status',
+    defaultMessage: 'Status',
+  },
+  numberOfPosts: {
+    id: 'app.containers.AdminPage.DashboardPage.components.PostFeedback.numberOfPosts',
+    defaultMessage: 'Number of posts',
+  },
+  percentageOfPosts: {
+    id: 'app.containers.AdminPage.DashboardPage.components.PostFeedback.percentageOfPosts',
+    defaultMessage: 'Percentage of posts',
+  },
 });

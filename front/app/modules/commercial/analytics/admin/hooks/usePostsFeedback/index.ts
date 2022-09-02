@@ -172,7 +172,13 @@ export default function usePostsWithFeedback(
           localize
         );
 
-        const xlsxData = parseExcelData(feedbackRow, translations);
+        const xlsxData = parseExcelData(
+          feedbackRow,
+          statusRows,
+          stackedBarPercentages,
+          translations,
+          localize
+        );
 
         setPostsWithFeedback({
           pieData,

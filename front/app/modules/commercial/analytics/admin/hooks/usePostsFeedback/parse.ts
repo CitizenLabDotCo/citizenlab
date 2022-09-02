@@ -22,6 +22,10 @@ interface Translations {
   averageTimeColumnName: string;
   postFeedback: string;
   responseTime: string;
+  postsByStatus: string;
+  status: string;
+  numberOfPosts: string;
+  percentageOfPosts: string;
 }
 
 export const getTranslations = (
@@ -34,6 +38,10 @@ export const getTranslations = (
   averageTimeColumnName: formatMessage(messages.averageTimeColumnName),
   postFeedback: formatMessage(messages.postFeedback),
   responseTime: formatMessage(messages.responseTime),
+  postsByStatus: formatMessage(messages.postsByStatus),
+  status: formatMessage(messages.status),
+  numberOfPosts: formatMessage(messages.numberOfPosts),
+  percentageOfPosts: formatMessage(messages.percentageOfPosts),
 });
 
 export const parsePieData = (feedbackRow: FeedbackRow) => {
@@ -170,6 +178,8 @@ export const getDays = ({ avg_feedback_time_taken }: FeedbackRow) => {
 
 export const parseExcelData = (
   feedbackRow: FeedbackRow,
+  statusRows: StatusRow[],
+  percentages: number[],
   {
     feedbackGiven,
     statusChanged,
@@ -178,7 +188,12 @@ export const parseExcelData = (
     averageTimeColumnName,
     postFeedback,
     responseTime,
-  }: Translations
+    postsByStatus,
+    status,
+    numberOfPosts,
+    percentageOfPosts,
+  }: Translations,
+  localize: Localize
 ) => {
   const {
     sum_feedback_none,
@@ -206,9 +221,16 @@ export const parseExcelData = (
     [averageTimeColumnName]: days,
   };
 
+  const xlsxDataSheet3 = statusRows.map((statusRow, i) => ({
+    [status]: localize(statusRow.first_status_title_multiloc),
+    [numberOfPosts]: statusRow.count,
+    [percentageOfPosts]: percentages[i],
+  }));
+
   const xlsxData = {
     [postFeedback]: [xlsxDataSheet1Row1],
     [responseTime]: [xlsxDataSheet2Row1],
+    [postsByStatus]: xlsxDataSheet3,
   };
 
   return xlsxData;
