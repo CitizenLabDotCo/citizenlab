@@ -15,11 +15,12 @@ import {
   LockedRow,
 } from 'components/admin/ResourceList';
 import { SubSectionTitle } from 'components/admin/Section';
-import NavbarItemRow from 'containers/Admin/pagesAndMenu/NavbarItemRow';
+import NavbarItemRow from 'containers/Admin/pagesAndMenu/containers/NavigationSettings/NavbarItemRow';
 
 // hooks
 import useNavbarItems from 'hooks/useNavbarItems';
 import usePageSlugById from 'hooks/usePageSlugById';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -36,7 +37,9 @@ const VisibleNavbarItemList = ({
 }: InjectedIntlProps) => {
   const navbarItems = useNavbarItems();
   const pageSlugById = usePageSlugById();
-  const i2 = true;
+  const previewNewCustomPages = useFeatureFlag({
+    name: 'preview_new_custom_pages',
+  });
 
   if (isNilOrError(navbarItems) || isNilOrError(pageSlugById)) {
     return null;
@@ -52,7 +55,7 @@ const VisibleNavbarItemList = ({
     const pageData = navbarItem.relationships.static_page.data;
 
     pageData
-      ? i2
+      ? previewNewCustomPages
         ? clHistory.push(`${PAGES_MENU_PATH}/custom/${pageData.id}`)
         : clHistory.push(`${PAGES_MENU_PATH}/pages/edit/${pageData.id}`)
       : clHistory.push(`${PAGES_MENU_PATH}/navbar-items/edit/${navbarItem.id}`);

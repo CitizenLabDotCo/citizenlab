@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 
 // components
 import PageWrapper from 'components/admin/PageWrapper';
-import SectionToggle from 'containers/Admin/pagesAndMenu/SectionToggle';
+import SectionToggle from 'containers/Admin/pagesAndMenu/components/SectionToggle';
 import { Box } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 
 // i18n
 import messages from './messages';
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
-import sectionToggleMessages from 'containers/Admin/pagesAndMenu/SectionToggle/messages';
+import sectionToggleMessages from 'containers/Admin/pagesAndMenu/components/SectionToggle/messages';
 
 // services
 import {

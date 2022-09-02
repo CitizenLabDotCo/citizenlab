@@ -19,16 +19,16 @@ const CTA = ({ buttonStyle, signUpIn, signedIn }: Props) => {
 
   if (!isNilOrError(homepageSettings)) {
     const ctaType = signedIn
-      ? homepageSettings.data.attributes.banner_cta_signed_in_type
-      : homepageSettings.data.attributes.banner_cta_signed_out_type;
+      ? homepageSettings.attributes.banner_cta_signed_in_type
+      : homepageSettings.attributes.banner_cta_signed_out_type;
 
     const customButtonText = signedIn
-      ? homepageSettings.data.attributes.banner_cta_signed_in_text_multiloc
-      : homepageSettings.data.attributes.banner_cta_signed_out_text_multiloc;
+      ? homepageSettings.attributes.banner_cta_signed_in_text_multiloc
+      : homepageSettings.attributes.banner_cta_signed_out_text_multiloc;
 
     const customButtonUrl = signedIn
-      ? homepageSettings.data.attributes.banner_cta_signed_in_url
-      : homepageSettings.data.attributes.banner_cta_signed_out_url;
+      ? homepageSettings.attributes.banner_cta_signed_in_url
+      : homepageSettings.attributes.banner_cta_signed_out_url;
 
     switch (ctaType) {
       case 'sign_up_button':

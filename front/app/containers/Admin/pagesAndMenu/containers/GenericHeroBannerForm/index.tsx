@@ -146,9 +146,32 @@ const GenericHeroBannerForm = ({
   const [previewDevice, setPreviewDevice] = useState<PreviewDevice>('desktop');
 
   useEffect(() => {
+<<<<<<< HEAD:front/app/containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/index.tsx
     // copy input settings to local state
     setLocalSettings({
       ...inputSettings
+||||||| 1b77dd3e84:front/app/containers/Admin/pagesAndMenu/containers/HeroBanner/index.tsx
+    if (isNilOrError(homepageSettings)) {
+      return;
+    }
+
+    // copy homepage settings to local state
+    setLocalHomepageSettings({
+      ...homepageSettings.data.attributes,
+      banner_layout:
+        homepageSettings.data.attributes.banner_layout ??
+        'full_width_banner_layout',
+=======
+    if (isNilOrError(homepageSettings)) {
+      return;
+    }
+
+    // copy homepage settings to local state
+    setLocalHomepageSettings({
+      ...homepageSettings.attributes,
+      banner_layout:
+        homepageSettings.attributes.banner_layout ?? 'full_width_banner_layout',
+>>>>>>> 474d1ea6781bed8acdc17e1ab7a39a7b8ec66d2a:front/app/containers/Admin/pagesAndMenu/containers/HeroBanner/index.tsx
     });
 
     // the image file sent from the API needs to be converted
@@ -166,10 +189,82 @@ const GenericHeroBannerForm = ({
       }
     };
 
+<<<<<<< HEAD:front/app/containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/index.tsx
     const headerFileInfo = inputSettings.header_bg?.large;
+||||||| 1b77dd3e84:front/app/containers/Admin/pagesAndMenu/containers/HeroBanner/index.tsx
+    const headerFileInfo = homepageSettings.data.attributes.header_bg?.large;
+=======
+    const headerFileInfo = homepageSettings.attributes.header_bg?.large;
+>>>>>>> 474d1ea6781bed8acdc17e1ab7a39a7b8ec66d2a:front/app/containers/Admin/pagesAndMenu/containers/HeroBanner/index.tsx
     convertHeaderToUploadFile(headerFileInfo);
+<<<<<<< HEAD:front/app/containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/index.tsx
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputSettings.header_bg]);
+||||||| 1b77dd3e84:front/app/containers/Admin/pagesAndMenu/containers/HeroBanner/index.tsx
+  }, [homepageSettings]);
+
+  const onSave = async () => {
+    if (localHomepageSettings && !isNilOrError(homepageSettings)) {
+      // only update the homepage settings if they have changed
+      const diffedValues = {};
+      forOwn(localHomepageSettings, (value, key) => {
+        if (!isEqual(value, homepageSettings.data.attributes[key])) {
+          diffedValues[key] = value;
+        }
+      });
+
+      setIsLoading(true);
+      setFormStatus('disabled');
+      try {
+        await updateHomepageSettings(diffedValues);
+        setApiErrors(null);
+        setIsLoading(false);
+        setFormStatus('success');
+      } catch (error) {
+        setIsLoading(false);
+        setFormStatus('error');
+        if (isCLErrorJSON(error)) {
+          setApiErrors(error.json.errors);
+        } else {
+          setApiErrors(error);
+        }
+        setIsLoading(false);
+      }
+    }
+  };
+=======
+  }, [homepageSettings]);
+
+  const onSave = async () => {
+    if (localHomepageSettings && !isNilOrError(homepageSettings)) {
+      // only update the homepage settings if they have changed
+      const diffedValues = {};
+      forOwn(localHomepageSettings, (value, key) => {
+        if (!isEqual(value, homepageSettings.attributes[key])) {
+          diffedValues[key] = value;
+        }
+      });
+
+      setIsLoading(true);
+      setFormStatus('disabled');
+      try {
+        await updateHomepageSettings(diffedValues);
+        setApiErrors(null);
+        setIsLoading(false);
+        setFormStatus('success');
+      } catch (error) {
+        setIsLoading(false);
+        setFormStatus('error');
+        if (isCLErrorJSON(error)) {
+          setApiErrors(error.json.errors);
+        } else {
+          setApiErrors(error);
+        }
+        setIsLoading(false);
+      }
+    }
+  };
+>>>>>>> 474d1ea6781bed8acdc17e1ab7a39a7b8ec66d2a:front/app/containers/Admin/pagesAndMenu/containers/HeroBanner/index.tsx
 
   const updateValueInLocalState = (
     key: keyof HeroBannerInputSettings,

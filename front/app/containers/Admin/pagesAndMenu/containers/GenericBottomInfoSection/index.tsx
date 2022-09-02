@@ -7,56 +7,68 @@ import SectionFormWrapper from '../../components/SectionFormWrapper';
 import Error from 'components/UI/Error';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
+import { TBreadcrumbs } from 'components/UI/Breadcrumbs';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
-import sectionToggleMessages from '../../SectionToggle/messages';
+import sectionToggleMessages from '../../components/SectionToggle/messages';
 
 // typings
 import { Multiloc, CLError } from 'typings';
 
 // constants
-import { pagesAndMenuBreadcrumb, homeBreadcrumb } from '../../breadcrumbs';
+import { pagesAndMenuBreadcrumb } from '../../breadcrumbs';
 
 // services and hooks
-import useHomepageSettings from 'hooks/useHomepageSettings';
-import { updateHomepageSettings } from 'services/homepageSettings';
+import { IHomepageSettingsData } from 'services/homepageSettings';
+import { ICustomPageData } from 'services/customPages';
 
 // utils
 import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
-const TopInfoSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
-  const homepageSettings = useHomepageSettings();
+interface Props {
+  pageData: IHomepageSettingsData | ICustomPageData;
+  updatePage: (data: {
+    bottom_info_section_multiloc: Multiloc;
+  }) => Promise<any>;
+  breadcrumbs: TBreadcrumbs;
+}
+
+const GenericBottomInfoSection = ({
+  pageData,
+  updatePage,
+  breadcrumbs,
+  intl: { formatMessage },
+}: InjectedIntlProps & Props) => {
   const theme: any = useTheme();
 
-  const [topInfoSectionMultiloc, setTopInfoSectionMultiloc] = useState<
-    Multiloc | null | undefined
-  >(null);
+  const [bottomInfoSectionMultilocState, setBottomInfoSectionMultilocState] =
+    useState<Multiloc | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [apiErrors, setApiErrors] = useState<CLError[] | null>(null);
   const [formStatus, setFormStatus] = useState<ISubmitState>('disabled');
 
   useEffect(() => {
-    if (!isNilOrError(homepageSettings)) {
-      setTopInfoSectionMultiloc(
-        homepageSettings.data.attributes.top_info_section_multiloc
+    if (!isNilOrError(pageData)) {
+      setBottomInfoSectionMultilocState(
+        pageData.attributes.bottom_info_section_multiloc
       );
     }
-  }, [homepageSettings]);
+  }, [pageData]);
 
   const handleCustomSectionMultilocOnChange = (
-    multilocFromEditor: Multiloc
+    bottomInfoMultiloc: Multiloc
   ) => {
     if (formStatus !== 'enabled') {
       setFormStatus('enabled');
     }
 
-    setTopInfoSectionMultiloc(multilocFromEditor);
+    setBottomInfoSectionMultilocState(bottomInfoMultiloc);
 
-    if (isEmptyMultiloc(multilocFromEditor)) {
+    if (isEmptyMultiloc(bottomInfoMultiloc)) {
       setFormStatus('disabled');
     }
   };
@@ -65,9 +77,9 @@ const TopInfoSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     setIsLoading(true);
     setFormStatus('disabled');
     try {
-      if (topInfoSectionMultiloc) {
-        await updateHomepageSettings({
-          top_info_section_multiloc: topInfoSectionMultiloc,
+      if (bottomInfoSectionMultilocState) {
+        await updatePage({
+          bottom_info_section_multiloc: bottomInfoSectionMultilocState,
         });
       }
       setIsLoading(false);
@@ -90,22 +102,19 @@ const TopInfoSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           label: formatMessage(pagesAndMenuBreadcrumb.label),
           linkTo: pagesAndMenuBreadcrumb.linkTo,
         },
-        {
-          label: formatMessage(homeBreadcrumb.label),
-          linkTo: homeBreadcrumb.linkTo,
-        },
-        { label: formatMessage(messages.topInfoPageTitle) },
+        ...breadcrumbs,
+        { label: formatMessage(messages.pageTitle) },
       ]}
-      title={formatMessage(messages.topInfoPageTitle)}
+      title={formatMessage(messages.pageTitle)}
     >
       <Box maxWidth={`${theme.maxPageWidth - 100}px`} mb="24px">
         <QuillMultilocWithLocaleSwitcher
           id="custom-section"
-          label={formatMessage(messages.topInfoContentEditorTitle)}
+          label={formatMessage(messages.contentEditorTitle)}
           labelTooltipText={formatMessage(
-            sectionToggleMessages.topInfoSectionTooltip
+            sectionToggleMessages.bottomInfoSectionTooltip
           )}
-          valueMultiloc={topInfoSectionMultiloc}
+          valueMultiloc={bottomInfoSectionMultilocState}
           onChange={handleCustomSectionMultilocOnChange}
           withCTAButton
         />
@@ -117,14 +126,14 @@ const TopInfoSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         loading={isLoading}
         onClick={onSave}
         messages={{
-          buttonSave: messages.topInfoSaveButton,
-          buttonSuccess: messages.topInfoButtonSuccess,
-          messageSuccess: messages.topInfoMessageSuccess,
-          messageError: messages.topInfoError,
+          buttonSave: messages.saveButton,
+          buttonSuccess: messages.buttonSuccess,
+          messageSuccess: messages.messageSuccess,
+          messageError: messages.error,
         }}
       />
     </SectionFormWrapper>
   );
 };
 
-export default injectIntl(TopInfoSection);
+export default injectIntl(GenericBottomInfoSection);

@@ -4,13 +4,25 @@ import moduleConfiguration from 'modules';
 import { Navigate } from 'react-router-dom';
 const CustomPagesIndex = lazy(() => import('./containers/CustomPages'));
 const PagesAndMenuIndex = lazy(() => import('containers/Admin/pagesAndMenu'));
-const NavigationSettings = lazy(() => import('./NavigationSettings'));
+const NavigationSettings = lazy(
+  () => import('./containers/NavigationSettings')
+);
 
 // homepage
-const EditHomepage = lazy(() => import('./EditHomepage'));
+const EditHomepage = lazy(() => import('./containers/EditHomepage'));
 import EditPageForm from './containers/EditPageForm';
-const BottomInfoForm = lazy(() => import('./containers/BottomInfoSection'));
-const TopInfoSection = lazy(() => import('./containers/TopInfoSection'));
+const HomepageBottomInfoForm = lazy(
+  () => import('./EditHomepage/BottomInfoSection')
+);
+const HomepageTopInfoSection = lazy(
+  () => import('./EditHomepage/TopInfoSection')
+);
+const CustomPageTopInfoSection = lazy(
+  () => import('./containers/CustomPages/Edit/Content/TopInfoSection')
+);
+const CustomPageBottomInfoSection = lazy(
+  () => import('./containers/CustomPages/Edit/Content/BottomInfoSection')
+);
 const HomepageHeroBannerForm = lazy(() => import('./EditHomepage/HeroBanner'));
 
 // custom pages
@@ -60,7 +72,7 @@ export default () => ({
       path: 'bottom-info-section',
       element: (
         <PageLoading>
-          <BottomInfoForm />
+          <HomepageBottomInfoForm />
         </PageLoading>
       ),
     },
@@ -68,7 +80,7 @@ export default () => ({
       path: 'top-info-section',
       element: (
         <PageLoading>
-          <TopInfoSection />
+          <HomepageTopInfoSection />
         </PageLoading>
       ),
     },
@@ -129,7 +141,11 @@ export default () => ({
         },
         {
           path: ':customPageId/top-info-section',
-          element: <PageLoading>{/* <TopInfoSection /> */}</PageLoading>,
+          element: (
+            <PageLoading>
+              <CustomPageTopInfoSection />
+            </PageLoading>
+          ),
         },
         // {
         //   path: ':customPageId/projects',
@@ -139,7 +155,7 @@ export default () => ({
           path: ':customPageId/bottom-info-section',
           element: (
             <PageLoading>
-              <BottomInfoForm />
+              <CustomPageBottomInfoSection />
             </PageLoading>
           ),
         },
