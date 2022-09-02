@@ -97,7 +97,7 @@ const AdminPage = memo<Props & WithRouterProps>(
     const [adminNoPadding, setAdminNoPadding] = useState(false);
 
     const userCanViewAdmin = usePermission({
-      item: { type: 'route', path: '/admin' },
+      item: { type: 'route', path: location.pathname },
       action: 'access',
     });
 
