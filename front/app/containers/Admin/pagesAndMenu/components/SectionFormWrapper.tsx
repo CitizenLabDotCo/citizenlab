@@ -8,7 +8,7 @@ import PageTitle from 'components/admin/PageTitle';
 import PageWrapper from 'components/admin/PageWrapper';
 import { SectionDescription } from 'components/admin/Section';
 
-export type SectionFormWrapperProps = {
+type Props = {
   breadcrumbs?: TBreadcrumbs;
   title?: string | JSX.Element;
   subtitle?: string | JSX.Element;
@@ -24,7 +24,7 @@ const SectionFormWrapper = ({
   children,
   stickyMenuContents,
   rightSideCTA,
-}: SectionFormWrapperProps) => {
+}: Props) => {
   return (
     <>
       {breadcrumbs && (

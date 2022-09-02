@@ -475,7 +475,7 @@ const GenericHeroBannerForm = ({
         {type === 'homePage' && (
           <Outlet
             id="app.containers.Admin.settings.customize.headerSectionEnd"
-            ctaSettings={localSettings}
+            homepageSettings={localSettings}
             handleOnChange={updateValueInLocalState}
             errors={apiErrors}
           />
