@@ -25,10 +25,10 @@ module Analytics
           handle_single(params[:query])
         end
 
-        if [{}, []].include? errors
-          render json: { 'data' => results }
-        else
+        if errors.present?
           render json: { 'messages' => errors }, status: response_status
+        else
+          render json: { 'data' => results }
         end
       end
 
