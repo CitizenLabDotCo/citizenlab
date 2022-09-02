@@ -1,5 +1,6 @@
 import 'cypress-file-upload';
 import './dnd';
+import { ParticipationMethod } from '../../app/services/participationContexts';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -704,12 +705,7 @@ export function apiCreateProject({
   descriptionPreview: string;
   description: string;
   publicationStatus?: 'draft' | 'published' | 'archived';
-  participationMethod?:
-    | 'ideation'
-    | 'information'
-    | 'survey'
-    | 'budgeting'
-    | 'poll';
+  participationMethod?: ParticipationMethod;
   assigneeId?: string;
   surveyUrl?: string;
   maxBudget?: number;
@@ -900,12 +896,7 @@ export function apiCreatePhase(
   title: string,
   startAt: string,
   endAt: string,
-  participationMethod:
-    | 'ideation'
-    | 'information'
-    | 'survey'
-    | 'budgeting'
-    | 'poll',
+  participationMethod: ParticipationMethod,
   canPost: boolean,
   canVote: boolean,
   canComment: boolean,

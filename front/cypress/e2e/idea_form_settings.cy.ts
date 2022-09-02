@@ -193,6 +193,7 @@ describe('Idea form settings', () => {
     let continuousPollProjectId: string;
     let timelineWithIdeationProjectId: string;
     let timelineWithBudgetProjectId: string;
+    let timelineWithNativeSurveyProjectId: string;
     let timelineWithoutIdeationOrBudgetProjectId: string;
 
     const projectTitle = randomString();
@@ -246,6 +247,31 @@ describe('Idea form settings', () => {
           moment().add(5, 'month').format('DD/MM/YYYY'),
           moment().add(7, 'month').format('DD/MM/YYYY'),
           'budgeting',
+          true,
+          true,
+          true,
+          description,
+          'https://lifeship.typeform.com/to/YWeOlPu7?typeform-source=clickydrip.com',
+          'typeform',
+          400
+        );
+      });
+
+      // Timeline project with native_survey phase
+      cy.apiCreateProject({
+        type: 'timeline',
+        title: projectTitle,
+        descriptionPreview: projectDescriptionPreview,
+        description,
+        publicationStatus: 'published',
+      }).then((project) => {
+        timelineWithNativeSurveyProjectId = project.body.data.id;
+        cy.apiCreatePhase(
+          timelineWithNativeSurveyProjectId,
+          'phaseTitle',
+          moment().add(5, 'month').format('DD/MM/YYYY'),
+          moment().add(7, 'month').format('DD/MM/YYYY'),
+          'native_survey',
           true,
           true,
           true,
@@ -353,6 +379,10 @@ describe('Idea form settings', () => {
       cy.visit(
         `admin/projects/${timelineWithoutIdeationOrBudgetProjectId}/ideaform`
       );
+      cy.get('#e2e-ideaform-settings-container').should('not.exist');
+
+      // Timeline project with native survey phase
+      cy.visit(`admin/projects/${timelineWithNativeSurveyProjectId}/ideaform`);
       cy.get('#e2e-ideaform-settings-container').should('not.exist');
     });
   });
