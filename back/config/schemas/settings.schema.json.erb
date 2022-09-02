@@ -888,6 +888,18 @@
         }
       },
 
+      "preview_new_custom_pages": {
+        "type": "object",
+        "title": "Preview New Custom Pages",
+        "description":	"Allow new custom pages to be created. Don't enable if you're not sure what is it.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "events_widget": {
         "type": "object",
         "title": "Events Landing Page Widget",
