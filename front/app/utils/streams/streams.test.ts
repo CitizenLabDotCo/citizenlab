@@ -57,24 +57,6 @@ __setResponseFor(
   dummyParamTestFalse
 );
 
-const analyticsQuery = {
-  query: { fields: ['a', 'b'], fact: 'some_fact' },
-};
-
-const dummyAnalytics = {
-  data: [
-    { a: 1, b: 2 },
-    { a: 3, b: 4 },
-  ],
-};
-
-__setResponseFor(
-  '/web_api/v1/analytics',
-  null,
-  { query: { fields: ['a', 'b'], fact: 'some_fact' } },
-  dummyAnalytics
-);
-
 beforeEach(async () => {
   streams = new Streams();
 
@@ -179,29 +161,6 @@ describe('streams.get', () => {
 
       expect(request).toHaveBeenCalledTimes(2);
     });
-  });
-});
-
-describe('streams.analytics', () => {
-  it('returns response in subscription of observable', async () => {
-    const { observable } = await streams.analytics(analyticsQuery);
-
-    let response;
-    observable.subscribe((data) => {
-      response = data;
-    });
-
-    expect(response).toEqual(dummyAnalytics);
-    expect(request).toHaveBeenCalledTimes(1);
-  });
-
-  it('caches stream', async () => {
-    await streams.analytics(analyticsQuery);
-    await streams.analytics(analyticsQuery);
-
-    expect(request.mock.calls).toEqual([
-      ['/web_api/v1/analytics', analyticsQuery, { method: 'POST' }, null],
-    ]);
   });
 });
 
@@ -314,44 +273,6 @@ describe('streams.reset', () => {
           { method: 'GET' },
           { some_param: false },
         ],
-      ]);
-    });
-  });
-
-  describe('.analytics', () => {
-    it('refetches when you reset and stream is active', async () => {
-      const { observable } = await streams.analytics(analyticsQuery);
-
-      expect(request.mock.calls).toEqual([
-        ['/web_api/v1/analytics', analyticsQuery, { method: 'POST' }, null],
-      ]);
-
-      // Make stream active by subscribing to it
-      observable.subscribe(() => {});
-
-      jest.clearAllMocks();
-      await streams.reset();
-
-      expect(request.mock.calls).toEqual([
-        ['/web_api/v1/users/me', null, { method: 'GET' }, null],
-        ['/web_api/v1/app_configuration', null, { method: 'GET' }, null],
-        ['/web_api/v1/analytics', analyticsQuery, { method: 'POST' }, null],
-      ]);
-    });
-
-    it('does not refetch when you reset and stream is not active', async () => {
-      await streams.analytics(analyticsQuery);
-
-      expect(request.mock.calls).toEqual([
-        ['/web_api/v1/analytics', analyticsQuery, { method: 'POST' }, null],
-      ]);
-
-      jest.clearAllMocks();
-      await streams.reset();
-
-      expect(request.mock.calls).toEqual([
-        ['/web_api/v1/users/me', null, { method: 'GET' }, null],
-        ['/web_api/v1/app_configuration', null, { method: 'GET' }, null],
       ]);
     });
   });
@@ -484,44 +405,6 @@ describe('streams.fetchAllWith', () => {
           { method: 'GET' },
           { some_param: false },
         ],
-      ]);
-    });
-  });
-
-  describe('.analytics', () => {
-    it('does not refetch stream if dataId does not match', async () => {
-      await streams.analytics(analyticsQuery);
-
-      jest.clearAllMocks();
-
-      await streams.fetchAllWith({ dataId: ['app-config-id'] });
-
-      expect(request.mock.calls).toEqual([
-        ['/web_api/v1/app_configuration', null, { method: 'GET' }, null],
-      ]);
-    });
-
-    it('refetches stream if apiEndpoint matches', async () => {
-      await streams.analytics(analyticsQuery);
-
-      jest.clearAllMocks();
-
-      await streams.fetchAllWith({ apiEndpoint: ['/web_api/v1/analytics'] });
-
-      expect(request.mock.calls).toEqual([
-        ['/web_api/v1/analytics', analyticsQuery, { method: 'POST' }, null],
-      ]);
-    });
-
-    it('refetches stream if partialApiEndpoint matches', async () => {
-      await streams.analytics(analyticsQuery);
-
-      jest.clearAllMocks();
-
-      await streams.fetchAllWith({ partialApiEndpoint: ['analyt'] });
-
-      expect(request.mock.calls).toEqual([
-        ['/web_api/v1/analytics', analyticsQuery, { method: 'POST' }, null],
       ]);
     });
   });

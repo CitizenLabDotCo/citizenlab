@@ -39,7 +39,6 @@ import {
 import { Observer, Observable, Subscription } from 'rxjs';
 
 // constants
-import { API_PATH } from 'containers/App/constants';
 import { authApiEndpoint } from 'services/auth';
 import { currentAppConfigurationEndpoint } from 'services/appConfiguration';
 import { currentOnboardingCampaignsApiEndpoint } from 'services/onboardingCampaigns';
@@ -878,104 +877,6 @@ class Streams {
     });
 
     return await Promise.all(promises);
-  }
-
-  analytics<T>(query: { query: IObject | IObject[] }) {
-    const apiEndpoint = `${API_PATH}/analytics`;
-    const streamId = `${apiEndpoint}&${JSON.stringify(query)}`;
-
-    // If a stream with the calculated streamId already exists: return that
-    if (has(this.streams, streamId)) {
-      return this.streams[streamId] as IStream<T>;
-    }
-
-    // For analytics queries, we simply use the streamId to cache the entire response.
-    // In the future we might want to consider caching combined queries seperately.
-    const dataId = streamId;
-
-    // Even though it is not exactly the same, since this endpoint
-    // uses a request body instead of query parameters, it is closer to being a
-    // queryStream than to not being a query stream. So we will treat it like that.
-    const isQueryStream = true;
-
-    const observer: IObserver<T | null> = null as any;
-
-    const fetch = () => {
-      return request<any>(apiEndpoint, query, { method: 'POST' }, null)
-        .then((response) => {
-          this.streams?.[streamId]?.observer?.next(response);
-          return response;
-        })
-        .catch((error) => {
-          this.streams[streamId].observer.next(error);
-          this.deleteStream(streamId, apiEndpoint);
-          reportError(error);
-
-          return null;
-        });
-    };
-
-    const observable = new Observable<T | null>((observer) => {
-      if (this.streams[streamId]) {
-        this.streams[streamId].observer = observer;
-      }
-
-      if (has(this.resourcesByDataId, dataId)) {
-        observer.next(this.resourcesByDataId[dataId]);
-      } else {
-        fetch();
-      }
-
-      return () => {
-        this.deleteStream(streamId, apiEndpoint);
-      };
-    }).pipe(
-      startWith('initial' as any),
-      scan((accumulated: T, current: T | pureFn<T>) => {
-        let data: any = accumulated;
-        const dataIds = {};
-
-        data = isFunction(current) ? current(data) : current;
-
-        if (isObject(data) && !isEmpty(data)) {
-          const innerData = data['data'];
-
-          dataIds[dataId] = true;
-
-          this.resourcesByDataId[dataId] = deepFreeze({
-            data: innerData,
-          });
-
-          this.addStreamIdByDataIdIndex(streamId, isQueryStream, dataId);
-        }
-
-        this.streams[streamId].dataIds = dataIds;
-
-        return deepFreeze(data);
-      }),
-      filter((data) => data !== 'initial'),
-      distinctUntilChanged(),
-      publishReplay(1),
-      refCount()
-    );
-
-    this.streams[streamId] = {
-      apiEndpoint,
-      fetch,
-      observer,
-      observable,
-      streamId,
-      cacheStream: true,
-      type: 'analyticsData',
-      dataIds: {},
-    };
-
-    this.addStreamIdByApiEndpointIndex(apiEndpoint, streamId, isQueryStream);
-
-    this.streams[streamId].subscription =
-      this.streams[streamId].observable.subscribe();
-
-    return this.streams[streamId] as IStream<T>;
   }
 }
 const streams = new Streams();
