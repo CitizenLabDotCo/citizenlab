@@ -16,6 +16,8 @@ import {
   LabelTitle,
   LabelDescription,
 } from 'containers/Admin/settings/general';
+import SectionFormWrapper from '../../components/SectionFormWrapper';
+import SubmitWrapper from 'components/admin/SubmitWrapper';
 
 import {
   Box,
@@ -43,6 +45,7 @@ type MultilocErrorType = {
   signedOutSubheaderErrors: Multiloc;
 };
 export type PreviewDevice = 'mobile' | 'tablet' | 'desktop';
+import { TBreadcrumbs } from 'components/UI/Breadcrumbs';
 
 // resources
 import { IHomepageSettingsAttributes } from 'services/homepageSettings';
@@ -62,11 +65,16 @@ const BgHeaderPreviewSelect = styled(Select)`
   margin-bottom: 20px;
 `;
 
+
 // names differ slightly between HomePage and CustomPage
 type Props = {
   type: 'homePage' | 'customPage';
-  updateStateFromForm: (HeroBannerInputSettings) => void;
+  breadcrumbs: TBreadcrumbs;
+  title?: string | JSX.Element;
+  formStatus: ISubmitState;
   setFormStatus: (ISubmitState) => void;
+  onSave: (HeroBannerInputSettings) => void;
+  isLoading: boolean;
 };
 
 export type HeroBannerInputSettings = {
@@ -92,10 +100,11 @@ export type HeroBannerInputSettings = {
   banner_signed_in_header_multiloc?: IHomepageSettingsAttributes['banner_signed_in_header_multiloc'];
   banner_avatars_enabled?: IHomepageSettingsAttributes['banner_avatars_enabled'];
 };
+import { ISubmitState } from 'components/admin/SubmitWrapper';
 
 const GenericHeroBannerForm = ({
   type,
-  updateStateFromForm,
+  onSave,
   banner_layout,
   banner_overlay_color,
   banner_overlay_opacity,
@@ -105,6 +114,10 @@ const GenericHeroBannerForm = ({
   banner_avatars_enabled,
   header_bg,
   setFormStatus,
+  formStatus,
+  isLoading,
+  title,
+  breadcrumbs,
   intl: { formatMessage },
 }: Props & HeroBannerInputSettings & InjectedIntlProps) => {
   const theme: any = useTheme();
@@ -119,9 +132,8 @@ const GenericHeroBannerForm = ({
       signedOutSubheaderErrors: {},
     });
   const [bannerError, setBannerError] = useState<string | null>(null);
-  const [localSettings, setLocalSettings] = useState<HeroBannerInputSettings | null>(
-    {} as HeroBannerInputSettings
-  );
+  const [localSettings, setLocalSettings] =
+    useState<HeroBannerInputSettings | null>({} as HeroBannerInputSettings);
 
   const [previewDevice, setPreviewDevice] = useState<PreviewDevice>('desktop');
 
@@ -158,11 +170,10 @@ const GenericHeroBannerForm = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [header_bg]);
 
-  useEffect(() => {
-    updateStateFromForm(localSettings)
-  }, [localSettings])
-
-  const updateValueInLocalState = (key: keyof HeroBannerInputSettings, value: any) => {
+  const updateValueInLocalState = (
+    key: keyof HeroBannerInputSettings,
+    value: any
+  ) => {
     if (localSettings) {
       setLocalSettings({
         ...localSettings,
@@ -190,10 +201,7 @@ const GenericHeroBannerForm = ({
   };
 
   const handleOverlayOpacityOnChange = (opacity: number) => {
-    updateValueInLocalState(
-      'banner_overlay_opacity',
-      opacity
-    );
+    updateValueInLocalState('banner_overlay_opacity', opacity);
   };
 
   const debounceHandleOverlayOpacityOnChange = debounce(
@@ -259,11 +267,28 @@ const GenericHeroBannerForm = ({
     setBannerError(null);
   }, [localSettings?.header_bg, formatMessage]);
 
-  if (isNilOrError(localSettings)) { 
+  if (isNilOrError(localSettings)) {
     return null;
   }
-  
+
   return (
+    <SectionFormWrapper 
+      breadcrumbs={breadcrumbs}
+      title={title}
+      stickyMenuContents={
+      <SubmitWrapper
+        status={formStatus}
+        buttonStyle="primary"
+        loading={isLoading}
+        onClick={() => onSave(localSettings)}
+        messages={{
+          buttonSave: messages.heroBannerSaveButton,
+          buttonSuccess: messages.heroBannerButtonSuccess,
+          messageSuccess: messages.heroBannerMessageSuccess,
+          messageError: messages.heroBannerError,
+        }}
+      />}
+    >
       <Section key={'header'}>
         <Warning>
           <FormattedMessage {...messages.heroBannerInfoBar} />
@@ -452,6 +477,7 @@ const GenericHeroBannerForm = ({
           errors={apiErrors}
         /> */}
       </Section>
+    </SectionFormWrapper>
   );
 };
 

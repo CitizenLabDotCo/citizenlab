@@ -9,7 +9,6 @@ import GenericHeroBannerForm, {
 import { isNilOrError } from 'utils/helperUtils';
 // change
 import messages from '../../../HeroBanner/messages';
-import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
 import { forOwn, isEqual } from 'lodash-es';
 
 import {
@@ -19,33 +18,28 @@ import {
 // i18n
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
+import { ISubmitState } from 'components/admin/SubmitWrapper';
 
 const EditCustomPageHeroBannerForm = ({
   intl: { formatMessage },
 }: InjectedIntlProps) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [stateFromForm, setStateFromForm] =
-    useState<HeroBannerInputSettings | null>(null);
   const [formStatus, setFormStatus] = useState<ISubmitState>('disabled');
-  
+
   const { customPageId } = useParams() as { customPageId: string };
   const customPage = useCustomPage(customPageId);
-  
+
   if (isNilOrError(customPage)) {
     return null;
   }
 
   const { attributes } = customPage;
-  const updateStateFromForm = (formState: HeroBannerInputSettings) => {
-    setStateFromForm(formState);
-  };
 
-  const handleSave = async () => {
-    if (!stateFromForm) return;
+  const handleSave = async (newSettings: HeroBannerInputSettings) => {
+    if (!newSettings) return;
     // only update the page settings if they have changed
     const diffedValues = {};
-    forOwn(stateFromForm, (value, key) => {
+    forOwn(newSettings, (value, key) => {
       if (!isEqual(value, customPage.attributes[key])) {
         diffedValues[key] = value;
       }
@@ -54,7 +48,7 @@ const EditCustomPageHeroBannerForm = ({
     setIsLoading(true);
     setFormStatus('disabled');
     try {
-      await updateCustomPage(customPageId, stateFromForm);
+      await updateCustomPage(customPageId, diffedValues);
       setIsLoading(false);
       setFormStatus('success');
     } catch (error) {
@@ -64,7 +58,11 @@ const EditCustomPageHeroBannerForm = ({
   };
 
   return (
-    <SectionFormWrapper
+    <GenericHeroBannerForm
+      onSave={handleSave}
+      type="customPage"
+      formStatus={formStatus}
+      isLoading={isLoading}
       breadcrumbs={[
         {
           label: formatMessage(pagesAndMenuBreadcrumb.label),
@@ -77,33 +75,14 @@ const EditCustomPageHeroBannerForm = ({
         { label: formatMessage(messages.heroBannerTitle) },
       ]}
       title={formatMessage(messages.heroBannerTitle)}
-      stickyMenuContents={
-        <SubmitWrapper
-          status={formStatus}
-          buttonStyle="primary"
-          loading={isLoading}
-          onClick={handleSave}
-          messages={{
-            buttonSave: messages.heroBannerSaveButton,
-            buttonSuccess: messages.heroBannerButtonSuccess,
-            messageSuccess: messages.heroBannerMessageSuccess,
-            messageError: messages.heroBannerError,
-          }}
-        />
-      }
-    >
-      <GenericHeroBannerForm
-        type="customPage"
-        banner_layout={attributes.banner_layout}
-        banner_overlay_color={attributes.banner_overlay_color}
-        banner_overlay_opacity={attributes.banner_overlay_opacity}
-        banner_header_multiloc={attributes.banner_header_multiloc}
-        banner_subheader_multiloc={attributes.banner_subheader_multiloc}
-        header_bg={attributes.header_bg}
-        updateStateFromForm={updateStateFromForm}
-        setFormStatus={setFormStatus}
-      />
-    </SectionFormWrapper>
+      banner_layout={attributes.banner_layout}
+      banner_overlay_color={attributes.banner_overlay_color}
+      banner_overlay_opacity={attributes.banner_overlay_opacity}
+      banner_header_multiloc={attributes.banner_header_multiloc}
+      banner_subheader_multiloc={attributes.banner_subheader_multiloc}
+      header_bg={attributes.header_bg}
+      setFormStatus={setFormStatus}
+    />
   );
 };
 
