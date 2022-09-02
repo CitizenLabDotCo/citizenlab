@@ -51,6 +51,10 @@ module Analytics
         end
     end
 
+    def all_attributes
+      all_dimensions.keys + model.column_names + aggregations_names
+    end
+
     def used_dimensions
       used_dimensions = []
 
