@@ -14,7 +14,7 @@ import ProgressBars from 'components/admin/Graphs/ProgressBars';
 import StackedBarChart from 'components/admin/Graphs/StackedBarChart';
 import CenterLabel from './CenterLabel';
 import { stackLabels } from './stackLabels';
-// import Button from 'components/UI/Button';
+import Button from 'components/UI/Button';
 
 // styling
 import styled from 'styled-components';
@@ -22,7 +22,8 @@ import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import messages from '../../hooks/usePostsFeedback/messages';
+import hookMessages from '../../hooks/usePostsFeedback/messages';
+import messages from './messages';
 
 // hooks
 import usePostsWithFeedback from '../../hooks/usePostsFeedback';
@@ -113,10 +114,10 @@ const PostFeedback = ({
       <GraphCardInner>
         <GraphCardHeader>
           <GraphCardTitle>
-            {formatMessage(messages.postFeedback)}
+            {formatMessage(hookMessages.postFeedback)}
           </GraphCardTitle>
           <ReportExportMenu
-            name={formatMessage(messages.postFeedback)
+            name={formatMessage(hookMessages.postFeedback)
               .toLowerCase()
               .replace(' ', '_')}
             svgNode={[
@@ -178,7 +179,7 @@ const PostFeedback = ({
                   height="13px"
                   mr="11px"
                 />
-                {formatMessage(messages.averageTime, { days })}
+                {formatMessage(hookMessages.averageTime, { days })}
               </Box>
             </Box>
           </ProgressBarsContainer>
@@ -208,9 +209,19 @@ const PostFeedback = ({
             innerRef={currentStackedBarChart}
           />
         </Box>
-      </GraphCardInner>
 
-      {/* <Button linkTo="/" /> */}
+        <Button
+          icon="arrowLeft"
+          iconPos="right"
+          buttonStyle="text"
+          iconSize="13px"
+          fontSize={`${fontSizes.s}px`}
+          padding="0px"
+          textDecorationHover="underline"
+          text={formatMessage(messages.goToInputManager)}
+          linkTo="/admin/ideas"
+        />
+      </GraphCardInner>
     </GraphCard>
   );
 };
