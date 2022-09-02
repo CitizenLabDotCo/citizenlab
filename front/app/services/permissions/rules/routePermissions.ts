@@ -26,19 +26,18 @@ const MODERATOR_ROUTES = [
 
 export const isModeratorRoute = (item: IRouteItem) => {
   return MODERATOR_ROUTES.some((moderatorRoute) => {
-    // In front/app/containers/Admin/routes.tsx we inform
-    // that a moderator has access to the index route as we specify here
-
-    // We can't let /admin be part of the MODERATOR_ROUTES
-    // because it'll reture true for item.path.startsWith for every path
-    // in the admin.
-    if (item.path === '/admin') {
-      return true;
-    }
-
     // We need to check with startsWith because we
     // wouldn't match nested routes with === checks
     if (item.path.startsWith(moderatorRoute)) {
+      return true;
+    }
+
+    // In front/app/containers/Admin/routes.tsx we inform
+    // that a moderator has access to the index route as we specify here.
+    // We need this separate check because we can't let /admin
+    // be part of the MODERATOR_ROUTES because it'll return true
+    // for item.path.startsWith for every path in the admin.
+    if (item.path === '/admin') {
       return true;
     }
 
