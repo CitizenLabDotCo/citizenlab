@@ -105,7 +105,7 @@ const FakeLegend = ({
           display="flex"
           flexDirection="row"
           alignItems="center"
-          px="8px"
+          px="4px"
           key={i}
           maxWidth="100%"
         >

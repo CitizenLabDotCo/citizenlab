@@ -61,7 +61,7 @@ const Circle = ({ fill }: PolygonProps) => (
   <circle
     cx={halfSize}
     cy={halfSize}
-    r={halfSize}
+    r={4}
     fill={fill}
     stroke="none"
     className="recharts-legend-icon"
