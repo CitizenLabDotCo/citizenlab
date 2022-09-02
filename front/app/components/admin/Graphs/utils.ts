@@ -9,9 +9,7 @@ import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { Tooltip, TooltipConfig, Margin, Legend } from './typings';
 import { LegendDimensions } from './_components/Legend/typings';
 
-export const hasNoData = (
-  data: Record<string, any>[] | NilOrError
-): data is NilOrError =>
+export const hasNoData = (data: any[] | NilOrError): data is NilOrError =>
   isNilOrError(data) || data.every(isEmpty) || data.length <= 0;
 
 export const getTooltipConfig = (

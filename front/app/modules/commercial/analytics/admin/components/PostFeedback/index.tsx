@@ -43,6 +43,7 @@ interface Props {
 
 const Container = styled.div`
   width: 100%;
+  max-width: 600px;
   display: flex;
   flex-direction: row;
   min-height: 240px;
@@ -184,15 +185,15 @@ const PostFeedback = ({
             </Box>
           </ProgressBarsContainer>
         </Container>
-        <Box width="100%" height="initial" mt="30px" p="8px">
+        <Box width="100%" maxWidth="600px" height="initial" mt="30px" p="8px">
           <StackedBarChart
             data={stackedBarsData}
-            height={80}
+            height={40}
             mapping={{
               stackedLength: stackedBarColumns,
               fill: ({ stackIndex }) =>
                 statusColorById[stackedBarColumns[stackIndex]],
-              cornerRadius: getCornerRadius(stackedBarColumns.length, 5),
+              cornerRadius: getCornerRadius(stackedBarColumns.length, 3),
             }}
             layout="horizontal"
             labels={stackLabels(
@@ -205,6 +206,7 @@ const PostFeedback = ({
             legend={{
               items: stackedBarsLegendItems,
               marginTop: 15,
+              maintainGraphHeight: true,
             }}
             innerRef={currentStackedBarChart}
           />

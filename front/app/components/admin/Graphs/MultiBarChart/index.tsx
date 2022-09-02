@@ -104,6 +104,8 @@ const MultiBarChart = <Row,>({
       width={width}
       height={height}
       legend={legend}
+      graphDimensions={graphDimensions}
+      legendDimensions={legendDimensions}
       onUpdateGraphDimensions={setGraphDimensions}
       onUpdateLegendDimensions={setLegendDimensions}
     >

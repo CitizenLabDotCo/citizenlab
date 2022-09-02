@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { useResizeDetector } from 'react-resize-detector';
 
 // components
@@ -20,6 +20,8 @@ interface Props {
   width?: number | Percentage;
   height?: number | Percentage;
   legend?: Legend;
+  graphDimensions: GraphDimensions | undefined;
+  legendDimensions: LegendDimensions | undefined;
   onUpdateGraphDimensions?: (graphDimensions: GraphDimensions) => void;
   onUpdateLegendDimensions?: (legendDimensions: LegendDimensions) => void;
   children: React.ReactElement;
@@ -29,22 +31,18 @@ const Container = ({
   width,
   height,
   legend,
+  graphDimensions,
+  legendDimensions,
   onUpdateGraphDimensions,
   onUpdateLegendDimensions,
   children,
 }: Props) => {
-  const [graphDimensions, setGraphDimensions] = useState<
-    GraphDimensions | undefined
-  >();
-
   /* eslint-disable */
-  const onResize = useCallback(
+  const handleResize = useCallback(
     debounce((width: number, height: number) => {
       const newGraphDimensions = { width, height };
 
       if (!isEqual(graphDimensions, newGraphDimensions)) {
-        setGraphDimensions(newGraphDimensions);
-
         if (onUpdateGraphDimensions) {
           onUpdateGraphDimensions(newGraphDimensions);
         }
@@ -54,7 +52,7 @@ const Container = ({
   );
   /* eslint-enable */
 
-  const { ref: resizeRef } = useResizeDetector({ onResize });
+  const { ref: resizeRef } = useResizeDetector({ onResize: handleResize });
 
   const handleRef = (ref: React.RefObject<HTMLDivElement>) => {
     if (ref === null) return;
@@ -64,9 +62,14 @@ const Container = ({
     resizeRef.current = node;
   };
 
+  const parsedHeight =
+    typeof height === 'number' && legend?.maintainGraphHeight
+      ? height + (legendDimensions?.height ?? 0)
+      : height;
+
   return (
     <>
-      <ResponsiveContainer width={width} height={height} ref={handleRef}>
+      <ResponsiveContainer width={width} height={parsedHeight} ref={handleRef}>
         {children}
       </ResponsiveContainer>
 

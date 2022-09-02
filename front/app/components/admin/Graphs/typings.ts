@@ -83,6 +83,7 @@ export interface Legend {
   position?: Position;
   textColor?: string;
   marginTop?: number;
+  maintainGraphHeight?: boolean;
 }
 
 // UTILS
