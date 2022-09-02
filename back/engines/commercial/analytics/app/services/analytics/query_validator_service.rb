@@ -45,17 +45,16 @@ module Analytics
 
     private
 
-    def add_error(messages, status)
+    def add_error(messages)
       @valid = false
       @messages.push(*messages)
-      @response_status = status
     end
 
     def validate_json
       json_errors = JSON::Validator.fully_validate(@query_schema, @json_query.to_unsafe_hash)
       return if json_errors.empty?
 
-      add_error(json_errors, 400)
+      add_error(json_errors)
     end
 
     def validate_fields
@@ -70,11 +69,11 @@ module Analytics
         if query_dimensions.key?(dimension)
           columns.each do |column, _value|
             unless query_dimensions[dimension][:columns].include?(column)
-              add_error("Column #{column} does not exist in dimension #{dimension}.", 422)
+              add_error("Column #{column} does not exist in dimension #{dimension}.")
             end
           end
         else
-          add_error("Dimension #{dimension} does not exist.", 422)
+          add_error("Dimension #{dimension} does not exist.")
         end
       end
     end
@@ -88,7 +87,7 @@ module Analytics
           dates_attrs.each do |date|
             Date.parse(value[date])
           rescue ArgumentError
-            add_error("Invalid '#{date}' date in #{dimension} dimension.", 422)
+            add_error("Invalid '#{date}' date in #{dimension} dimension.")
           end
         end
       end
@@ -100,10 +99,10 @@ module Analytics
         dimension, column = key.split('.')
         if query_dimensions.key?(dimension)
           unless query_dimensions[dimension][:columns].include?(column)
-            add_error("#{kind} column #{column} does not exist in dimension #{dimension}.", 422)
+            add_error("#{kind} column #{column} does not exist in dimension #{dimension}.")
           end
         else
-          add_error("#{kind} dimension #{dimension} does not exist.", 422)
+          add_error("#{kind} dimension #{dimension} does not exist.")
         end
 
       elsif (
@@ -115,7 +114,7 @@ module Analytics
               @query.aggregations_names.exclude?(key) &&
               query_dimensions.keys.exclude?(key)
             )
-        add_error("#{kind} column #{key} does not exist in fact table.", 422)
+        add_error("#{kind} column #{key} does not exist in fact table.")
       end
     end
 
@@ -126,13 +125,13 @@ module Analytics
 
       return if @json_query.key?(:aggregations)
 
-      add_error('There must be aggregations when using groups.', 400)
+      add_error('There must be aggregations when using groups.')
     end
 
     def validate_aggregations
       @json_query[:aggregations].each do |key, aggregation|
         if key == 'all' && aggregation != 'count'
-          add_error("Aggregations on 'all' can only be 'count'.", 422)
+          add_error("Aggregations on 'all' can only be 'count'.")
           next
         end
 
@@ -145,7 +144,7 @@ module Analytics
         validate_dotted(key, 'Sort')
         next if !@json_query.key?(:aggregations) || @query.aggregations_names.include?(key)
 
-        add_error("Sorting column #{key} is not present in the aggregations.", 422)
+        add_error("Sorting column #{key} is not present in the aggregations.")
       end
     end
   end

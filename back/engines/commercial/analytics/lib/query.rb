@@ -11,13 +11,12 @@ module Analytics
       @json_query = query
     end
 
-    attr_reader :valid, :error_messages, :response_status, :results, :json_query, :failed
+    attr_reader :valid, :error_messages, :results, :json_query, :failed
 
     def validate
       validation = QueryValidatorService.new(self)
       @valid = validation.valid
       @error_messages = validation.messages
-      @response_status = validation.response_status
     end
 
     def run
@@ -29,7 +28,6 @@ module Analytics
       rescue ActiveRecord::StatementInvalid => e
         @error_messages.push(e.message)
         @failed = true
-        @response_status = 500
       else
         @results = results
       end
