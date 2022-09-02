@@ -96,6 +96,8 @@ const AdminPage = memo<Props & WithRouterProps>(
     const [adminFullWidth, setAdminFullWidth] = useState(false);
     const [adminNoPadding, setAdminNoPadding] = useState(false);
 
+    // The check in front/app/containers/Admin/routes.tsx already should do the same.
+    // TODO: double check it and remove `userCanViewAdmin`
     const userCanViewPath = usePermission({
       // If we're in this component, we're sure
       // that the path is an admin path
