@@ -67,7 +67,7 @@ interface PostFeedback {
   stackedBarColumns: string[];
   statusColorById: Record<string, string>;
   stackedBarPercentages: number[];
-  stackedBarsLegendItems: LegendItem[][];
+  stackedBarsLegendItems: LegendItem[];
   xlsxData: object;
 }
 

@@ -136,19 +136,13 @@ export const getStatusColorById = (statusRows: StatusRow[]) => {
 export const parseStackedBarsLegendItems = (
   statusRows: StatusRow[],
   localize: Localize
-): LegendItem[][] => {
-  const items: LegendItem[] = statusRows.map((statusRow) => ({
+): LegendItem[] => {
+  return statusRows.map((statusRow) => ({
     icon: 'circle',
     color: statusRow.first_status_color,
-    label: localize(statusRow.first_status_title_multiloc)
-  }))
-
-  return [
-    items.slice(0, 4),
-    ...(items.length > 4 ? [items.slice(4, 8)] : []),
-    ...(items.length > 8 ? [items.slice(8, 12)] : [])
-  ]
-}
+    label: localize(statusRow.first_status_title_multiloc),
+  }));
+};
 
 export const getPieCenterValue = (feedbackRow: FeedbackRow) => {
   const {

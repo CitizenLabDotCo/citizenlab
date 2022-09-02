@@ -195,7 +195,7 @@ const PostFeedback = ({
             xaxis={{ hide: true, domain: [0, 'dataMax'] }}
             yaxis={{ hide: true }}
             legend={{
-              items: stackedBarsLegendItems[0],
+              items: stackedBarsLegendItems,
               marginTop: 0,
             }}
           />
