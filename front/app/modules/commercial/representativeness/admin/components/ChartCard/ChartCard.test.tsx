@@ -25,6 +25,14 @@ const generateData = (n: number) => {
 
 let mockData = generateData(4);
 
+class FakeResizeObserver {
+  observe() {}
+  disconnect() {}
+}
+
+// @ts-ignore
+window.ResizeObserver = FakeResizeObserver;
+
 jest.mock('../../hooks/useRScore', () => () => ({
   attributes: {
     score: 0.8,

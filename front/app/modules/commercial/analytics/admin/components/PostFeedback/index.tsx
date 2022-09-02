@@ -8,28 +8,75 @@ import {
   GraphCardInner,
 } from 'components/admin/GraphWrappers';
 import ReportExportMenu from 'components/admin/ReportExportMenu';
-import {
-  Box,
-  Icon,
-  Text,
-  useBreakpoint,
-} from '@citizenlab/cl2-component-library';
+import { Box, Icon } from '@citizenlab/cl2-component-library';
 import PieChart from 'components/admin/Graphs/PieChart';
 import ProgressBars from 'components/admin/Graphs/ProgressBars';
+import StackedBarChart from 'components/admin/Graphs/StackedBarChart';
+import CenterLabel from './CenterLabel';
+import { stackLabels } from './stackLabels';
+import Button from 'components/UI/Button';
 
-// stylin
-import { colors } from 'utils/styleUtils';
-
-// hooks
-import usePostsWithFeedback from '../../../hooks/usePostsFeedback';
-
-// typings
-import { InjectedIntlProps } from 'react-intl';
-import { Props } from './typings';
+// styling
+import styled from 'styled-components';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
+import hookMessages from '../../hooks/usePostsFeedback/messages';
 import messages from './messages';
+
+// hooks
+import usePostsWithFeedback from '../../hooks/usePostsFeedback';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import { getCornerRadius } from './utils';
+
+// typings
+import { InjectedIntlProps } from 'react-intl';
+
+interface Props {
+  projectId?: string;
+  startAt?: string;
+  endAt?: string;
+}
+
+const Container = styled.div`
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: row;
+  min-height: 240px;
+
+  ${media.smallerThan1100px`
+    flex-direction: column;
+  `}
+`;
+
+const DonutChartContainer = styled.div`
+  width: 50%;
+  height: 100%;
+  padding: 8px;
+
+  ${media.smallerThan1100px`
+    width: 100%;
+    height: 50%;
+  `}
+`;
+
+const ProgressBarsContainer = styled.div`
+  width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+
+  ${media.smallerThan1100px`
+    width: 100%;
+    height: 50%;
+  `}
+`;
 
 const PostFeedback = ({
   projectId,
@@ -39,21 +86,28 @@ const PostFeedback = ({
 }: Props & InjectedIntlProps) => {
   const currentPieChart = useRef();
   const currentProgressBarsChart = useRef();
-  const data = usePostsWithFeedback({
+  const currentStackedBarChart = useRef();
+
+  const data = usePostsWithFeedback(formatMessage, {
     projectId,
     startAt,
     endAt,
-    formatMessage,
   });
-  const largeTablet = useBreakpoint('largeTablet');
-  if (!data) return null;
+
+  if (isNilOrError(data)) return null;
+
   const {
     pieData,
+    progressBarsData,
+    stackedBarsData,
     pieCenterValue,
     pieCenterLabel,
-    xlsxData,
     days,
-    progressBarsData,
+    stackedBarColumns,
+    statusColorById,
+    stackedBarPercentages,
+    stackedBarsLegendItems,
+    xlsxData,
   } = data;
 
   return (
@@ -61,60 +115,115 @@ const PostFeedback = ({
       <GraphCardInner>
         <GraphCardHeader>
           <GraphCardTitle>
-            {formatMessage(messages.postFeedback)}
+            {formatMessage(hookMessages.postFeedback)}
           </GraphCardTitle>
           <ReportExportMenu
-            name={formatMessage(messages.postFeedback)
+            name={formatMessage(hookMessages.postFeedback)
               .toLowerCase()
               .replace(' ', '_')}
-            svgNode={[currentPieChart, currentProgressBarsChart]}
+            svgNode={[
+              currentPieChart,
+              currentProgressBarsChart,
+              currentStackedBarChart,
+            ]}
             xlsxData={xlsxData}
           />
         </GraphCardHeader>
-        <Box
-          display="flex"
-          justifyContent="space-around"
-          width="100%"
-          flexDirection={largeTablet ? 'column' : 'row'}
-          alignItems={largeTablet ? 'center' : 'flex-start'}
-        >
-          <Box maxWidth="210px" width="100%">
+        <Container>
+          <DonutChartContainer>
             <PieChart
-              height={210}
-              width="100%"
               data={pieData}
-              centerLabel={pieCenterLabel}
-              centerValue={pieCenterValue}
+              mapping={{
+                angle: 'value',
+                name: 'name',
+                fill: ({ row: { color } }) => color,
+              }}
+              pie={{
+                innerRadius: '85%',
+              }}
+              centerLabel={({ viewBox: { cy } }) => (
+                <CenterLabel
+                  y={cy - 5}
+                  value={pieCenterValue}
+                  label={pieCenterLabel}
+                />
+              )}
               innerRef={currentPieChart}
             />
-          </Box>
-          <Box
-            maxWidth="257px"
-            width="100%"
-            mt="30px"
-            ml={largeTablet ? '50px' : '0'}
-            display="flex"
-            flexDirection="column"
-            alignItems="flex-start"
-          >
-            <ProgressBars
-              data={progressBarsData}
+          </DonutChartContainer>
+          <ProgressBarsContainer>
+            <Box
               width="100%"
-              height={136}
-              innerRef={currentProgressBarsChart}
-            />
-            <Text m="-2px 0 0 0" color="adminTextColor" fontSize="s">
-              <Icon
-                name="calendar"
-                fill={colors.adminTextColor}
-                width="13px"
-                height="13px"
-                mr="11px"
+              maxWidth="256px"
+              display="flex"
+              flexDirection="column"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <ProgressBars
+                height={136}
+                data={progressBarsData}
+                innerRef={currentProgressBarsChart}
               />
-              {formatMessage(messages.averageTime, { days })}
-            </Text>
-          </Box>
+              <Box
+                m="0 0 0 0"
+                style={{
+                  color: colors.adminTextColor,
+                  fontSize: fontSizes.s,
+                }}
+                width="100%"
+              >
+                <Icon
+                  name="calendar"
+                  fill={colors.adminTextColor}
+                  width="13px"
+                  height="13px"
+                  mr="11px"
+                />
+                {formatMessage(hookMessages.averageTime, { days })}
+              </Box>
+            </Box>
+          </ProgressBarsContainer>
+        </Container>
+        <Box width="100%" maxWidth="600px" height="initial" mt="30px" p="8px">
+          <StackedBarChart
+            data={stackedBarsData}
+            height={40}
+            mapping={{
+              stackedLength: stackedBarColumns,
+              fill: ({ stackIndex }) =>
+                statusColorById[stackedBarColumns[stackIndex]],
+              cornerRadius: getCornerRadius(stackedBarColumns.length, 3),
+            }}
+            layout="horizontal"
+            labels={stackLabels(
+              stackedBarsData,
+              stackedBarColumns,
+              stackedBarPercentages
+            )}
+            xaxis={{ hide: true, domain: [0, 'dataMax'] }}
+            yaxis={{ hide: true, domain: ['dataMin', 'dataMax'] }}
+            legend={{
+              items: stackedBarsLegendItems,
+              marginTop: 15,
+              maintainGraphHeight: true,
+            }}
+            innerRef={currentStackedBarChart}
+          />
         </Box>
+
+        <Button
+          icon="arrowLeft"
+          iconPos="right"
+          buttonStyle="text"
+          iconSize="13px"
+          fontSize={`${fontSizes.s}px`}
+          padding="0px"
+          marginTop="20px"
+          textDecorationHover="underline"
+          text={formatMessage(messages.goToInputManager)}
+          linkTo="/admin/ideas"
+        />
       </GraphCardInner>
     </GraphCard>
   );

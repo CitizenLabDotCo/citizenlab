@@ -18,7 +18,6 @@ import GetSerieFromStream from 'resources/GetSerieFromStream';
 
 // components
 import ReportExportMenu from 'components/admin/ReportExportMenu';
-import { Tooltip, LabelList } from 'recharts';
 import {
   GraphCard,
   GraphCardInner,
@@ -199,14 +198,16 @@ const SelectableResourceChart = ({
           innerRef={currentChart}
           margin={DEFAULT_BAR_CHART_MARGIN}
           mapping={{
+            category: 'name',
+            length: 'value',
             opacity: currentFilter
-              ? (row) => (row.code === currentFilter ? 1 : 0.5)
-              : undefined,
+              ? ({ row }) => (row.code === currentFilter ? 1 : 0.5)
+              : () => 1,
           }}
           bars={{ name: unitName, size: sizes.bar }}
           yaxis={{ width: 150, tickLine: false }}
-          renderLabels={(props) => <LabelList {...props} />}
-          renderTooltip={(props) => <Tooltip {...props} />}
+          labels
+          tooltip
         />
       </GraphCardInner>
     </GraphCard>

@@ -1,68 +1,125 @@
-import React from 'react';
+import React, { useState } from 'react';
+
+// styling
+import { animation } from '../styling';
 
 // components
-import { PieChart, Pie, Cell, Label, ResponsiveContainer } from 'recharts';
 import {
-  NoDataContainer,
-  PieChartStyleFixesDiv,
-} from 'components/admin/GraphWrappers';
-import CustomLabel from './CustomLabel';
-
-// i18n
-import messages from '../messages';
-import { FormattedMessage } from 'utils/cl-intl';
+  PieChart as RechartsPieChart,
+  Tooltip,
+  Pie,
+  Cell,
+  Label,
+} from 'recharts';
+import Container from '../_components/Container';
+import EmptyState from '../_components/EmptyState';
+import Legend from '../_components/Legend';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
-import { isEmpty } from 'lodash-es';
+import { getPieConfig } from './utils';
+import { hasNoData, getTooltipConfig, parseMargin } from '../utils';
 
 // typings
-import { PieProps } from './typings';
+import { Props } from './typings';
+import {
+  GraphDimensions,
+  LegendDimensions,
+} from '../_components/Legend/typings';
 
-export default function ({
-  data,
-  centerLabel,
-  centerValue,
-  emptyContainerContent,
+const DEFAULT_LEGEND_OFFSET = 16;
+
+const PieChart = <Row,>({
   width,
   height,
+  data,
+  mapping,
+  pie,
+  margin,
+  annotations,
+  tooltip,
+  centerLabel,
+  legend,
+  emptyContainerContent,
   innerRef,
-}: PieProps) {
-  const noData = isNilOrError(data) || data.every(isEmpty) || data.length <= 0;
+  onMouseOver,
+  onMouseOut,
+}: Props<Row>) => {
+  const [graphDimensions, setGraphDimensions] = useState<
+    GraphDimensions | undefined
+  >();
+  const [legendDimensions, setLegendDimensions] = useState<
+    LegendDimensions | undefined
+  >();
 
-  if (noData) {
-    return (
-      <NoDataContainer>
-        {emptyContainerContent ? (
-          <>{emptyContainerContent}</>
-        ) : (
-          <FormattedMessage {...messages.noData} />
-        )}
-      </NoDataContainer>
-    );
+  if (hasNoData(data)) {
+    return <EmptyState emptyContainerContent={emptyContainerContent} />;
   }
 
+  const pieConfig = getPieConfig(data, mapping, pie, annotations);
+  const tooltipConfig = getTooltipConfig(tooltip);
+
+  const handleMouseOver = (_, rowIndex: number, event: React.MouseEvent) => {
+    onMouseOver && onMouseOver({ row: data[rowIndex], rowIndex }, event);
+  };
+
+  const handleMouseOut = (_, rowIndex: number, event: React.MouseEvent) => {
+    onMouseOut && onMouseOut({ row: data[rowIndex], rowIndex }, event);
+  };
+
   return (
-    <PieChartStyleFixesDiv>
-      <ResponsiveContainer width={width} height={height}>
-        <PieChart ref={innerRef}>
-          <Pie
-            isAnimationActive={true}
-            data={data}
-            dataKey="value"
-            innerRadius={88}
-            outerRadius={104}
-          >
-            {data.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={entry.color} />
-            ))}
-            <Label
-              content={<CustomLabel value={centerValue} label={centerLabel} />}
-              position="center"
+    <Container
+      width={width}
+      height={height}
+      legend={legend}
+      graphDimensions={graphDimensions}
+      legendDimensions={legendDimensions}
+      onUpdateGraphDimensions={setGraphDimensions}
+      onUpdateLegendDimensions={setLegendDimensions}
+    >
+      <RechartsPieChart
+        margin={parseMargin(
+          margin,
+          legend,
+          legendDimensions,
+          DEFAULT_LEGEND_OFFSET
+        )}
+        ref={innerRef}
+      >
+        {legend && graphDimensions && legendDimensions && (
+          <g className="graph-legend">
+            <Legend
+              items={legend.items}
+              graphDimensions={graphDimensions}
+              legendDimensions={legendDimensions}
+              position={legend.position}
+              textColor={legend.textColor}
+              margin={margin}
             />
-          </Pie>
-        </PieChart>
-      </ResponsiveContainer>
-    </PieChartStyleFixesDiv>
+          </g>
+        )}
+
+        {(typeof tooltip === 'object' || tooltip === true) && (
+          <Tooltip {...tooltipConfig} />
+        )}
+        {typeof tooltip === 'function' && tooltip(tooltipConfig)}
+
+        <Pie
+          data={data}
+          animationDuration={animation.duration}
+          animationBegin={animation.begin}
+          {...pieConfig.props}
+          onMouseOver={handleMouseOver}
+          onMouseOut={handleMouseOut}
+        >
+          {pieConfig.cells.map((cell, cellIndex) => (
+            <Cell key={`cell-${cellIndex}`} {...cell} />
+          ))}
+
+          {centerLabel && <Label content={centerLabel} position="center" />}
+        </Pie>
+      </RechartsPieChart>
+    </Container>
   );
-}
+};
+
+export default PieChart;

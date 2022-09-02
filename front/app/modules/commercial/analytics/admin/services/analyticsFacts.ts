@@ -1,12 +1,12 @@
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 
-type AnalyticsResponse<T> = {
-  data: T[];
-};
-
-// Build automatically using json schema backend validator
+// Query
 export interface Query {
+  query: QuerySchema | QuerySchema[];
+}
+
+export interface QuerySchema {
   fields?: string | string[];
   fact: 'post' | 'participation';
   dimensions?: {
@@ -22,9 +22,7 @@ export interface Query {
   };
   groups?: string | string[];
   aggregations?: {
-    [k: string]:
-      | ('min' | 'max' | 'avg' | 'sum' | 'count' | 'first')
-      | ('min' | 'max' | 'avg' | 'sum' | 'count' | 'first')[];
+    [k: string]: Aggregation | Aggregation[];
   };
   sort?: {
     [k: string]: 'ASC' | 'DESC';
@@ -32,9 +30,11 @@ export interface Query {
   limit?: number;
 }
 
-export function analyticsStream<T>(queryObject) {
-  return streams.get<AnalyticsResponse<T>>({
+type Aggregation = 'min' | 'max' | 'avg' | 'sum' | 'count' | 'first';
+
+export function analyticsStream<Response>(query: Query) {
+  return streams.get<Response>({
     apiEndpoint: `${API_PATH}/analytics`,
-    queryParameters: queryObject,
+    queryParameters: query
   });
 }

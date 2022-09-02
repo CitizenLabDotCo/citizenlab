@@ -4,7 +4,11 @@ import { Subscription, combineLatest } from 'rxjs';
 import { map, isEmpty } from 'lodash-es';
 
 // styling
-import { colors, sizes, animation } from 'components/admin/Graphs/styling';
+import {
+  legacyColors,
+  sizes,
+  animation,
+} from 'components/admin/Graphs/styling';
 
 // services
 import {
@@ -292,20 +296,20 @@ class LineBarChartVotesByTime extends React.PureComponent<
                 ref={this.currentChart}
               >
                 <CartesianGrid
-                  stroke={colors.cartesianGrid}
+                  stroke={legacyColors.cartesianGrid}
                   strokeWidth={0.5}
                 />
                 <XAxis
                   dataKey="date"
                   interval="preserveStartEnd"
-                  stroke={colors.chartLabel}
+                  stroke={legacyColors.chartLabel}
                   fontSize={sizes.chartLabel}
                   tick={{ transform: 'translate(0, 7)' }}
                   tickFormatter={this.formatTick}
                   tickLine={false}
                 />
                 <YAxis
-                  stroke={colors.chartLabel}
+                  stroke={legacyColors.chartLabel}
                   fontSize={sizes.chartLabel}
                   yAxisId="cumulatedTotal"
                   tickLine={false}
@@ -335,7 +339,7 @@ class LineBarChartVotesByTime extends React.PureComponent<
                 <Bar
                   dataKey="up"
                   name={formatMessage(messages.numberOfVotesUp)}
-                  fill={colors.barFill}
+                  fill={legacyColors.barFill}
                   animationDuration={animation.duration}
                   animationBegin={animation.begin}
                   stackId="1"
@@ -345,7 +349,7 @@ class LineBarChartVotesByTime extends React.PureComponent<
                 <Bar
                   dataKey="down"
                   name={formatMessage(messages.numberOfVotesDown)}
-                  fill={colors.barFillLighter}
+                  fill={legacyColors.barFillLighter}
                   stackId="1"
                   animationDuration={animation.duration}
                   animationBegin={animation.begin}
@@ -358,8 +362,8 @@ class LineBarChartVotesByTime extends React.PureComponent<
                   dataKey="cumulatedTotal"
                   name={formatMessage(messages.total)}
                   dot={serie && serie?.length < 31}
-                  stroke={colors.line}
-                  fill={colors.line}
+                  stroke={legacyColors.line}
+                  fill={legacyColors.line}
                   strokeWidth={1}
                   yAxisId="cumulatedTotal"
                 />
