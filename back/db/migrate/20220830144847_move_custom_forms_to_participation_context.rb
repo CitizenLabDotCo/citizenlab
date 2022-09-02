@@ -20,6 +20,7 @@ class MoveCustomFormsToParticipationContext < ActiveRecord::Migration[6.1]
 
     change_column_null :custom_forms, :participation_context_id, false
     change_column_null :custom_forms, :participation_context_type, false
+
     add_index(
       :custom_forms,
       %i[participation_context_id participation_context_type],
