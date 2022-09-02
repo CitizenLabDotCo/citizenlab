@@ -36,6 +36,8 @@ describe('Project topics', () => {
       cy.get('#title_multiloc').type(topicTitle);
       cy.get('.nl-BE').click();
       cy.get('#title_multiloc').type(topicTitle);
+      cy.get('.nl-NL').click();
+      cy.get('#title_multiloc').type(topicTitle);
       cy.get('.fr-BE').click();
       cy.get('#title_multiloc').type(topicTitle);
       cy.get('#e2e-submit-wrapper-button').click();
@@ -55,6 +57,8 @@ describe('Project topics', () => {
       cy.get('#e2e-add-custom-topic-button').click();
       cy.get('#title_multiloc').type(topicTitle);
       cy.get('.nl-BE').click();
+      cy.get('#title_multiloc').type(topicTitle);
+      cy.get('.nl-NL').click();
       cy.get('#title_multiloc').type(topicTitle);
       cy.get('.fr-BE').click();
       cy.get('#title_multiloc').type(topicTitle);
@@ -94,6 +98,8 @@ describe('Project topics', () => {
       cy.get('#title_multiloc').type(topicTitle);
       cy.get('.nl-BE').click();
       cy.get('#title_multiloc').type(topicTitle);
+      cy.get('.nl-NL').click();
+      cy.get('#title_multiloc').type(topicTitle);
       cy.get('.fr-BE').click();
       cy.get('#title_multiloc').type(topicTitle);
       cy.get('#e2e-submit-wrapper-button').click();
@@ -114,6 +120,8 @@ describe('Project topics', () => {
         .click();
       cy.get('#title_multiloc').clear().type(editedTopicTitle);
       cy.get('.nl-BE').click();
+      cy.get('#title_multiloc').clear().type(editedTopicTitle);
+      cy.get('.nl-NL').click();
       cy.get('#title_multiloc').clear().type(editedTopicTitle);
       cy.get('.fr-BE').click();
       cy.get('#title_multiloc').clear().type(editedTopicTitle);
@@ -138,6 +146,8 @@ describe('Project topics', () => {
       cy.get('#e2e-add-custom-topic-button').click();
       cy.get('#title_multiloc').type(topicTitle);
       cy.get('.nl-BE').click();
+      cy.get('#title_multiloc').type(topicTitle);
+      cy.get('.nl-NL').click();
       cy.get('#title_multiloc').type(topicTitle);
       cy.get('.fr-BE').click();
       cy.get('#title_multiloc').type(topicTitle);
@@ -171,6 +181,8 @@ describe('Project topics', () => {
       cy.get('#e2e-add-custom-topic-button').click();
       cy.get('#title_multiloc').type(topicTitle);
       cy.get('.nl-BE').click();
+      cy.get('#title_multiloc').type(topicTitle);
+      cy.get('.nl-NL').click();
       cy.get('#title_multiloc').type(topicTitle);
       cy.get('.fr-BE').click();
       cy.get('#title_multiloc').type(topicTitle);
@@ -228,6 +240,8 @@ describe('Project topics', () => {
       cy.get('#title_multiloc').type(topicTitle);
       cy.get('.nl-BE').click();
       cy.get('#title_multiloc').type(topicTitle);
+      cy.get('.nl-NL').click();
+      cy.get('#title_multiloc').type(topicTitle);
       cy.get('.fr-BE').click();
       cy.get('#title_multiloc').type(topicTitle);
       cy.get('#e2e-submit-wrapper-button').click();
@@ -261,6 +275,8 @@ describe('Project topics', () => {
       cy.get('#e2e-add-custom-topic-button').click();
       cy.get('#title_multiloc').type(topicTitle);
       cy.get('.nl-BE').click();
+      cy.get('#title_multiloc').type(topicTitle);
+      cy.get('.nl-NL').click();
       cy.get('#title_multiloc').type(topicTitle);
       cy.get('.fr-BE').click();
       cy.get('#title_multiloc').type(topicTitle);
