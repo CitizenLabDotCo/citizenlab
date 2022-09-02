@@ -67,7 +67,6 @@ const BgHeaderPreviewSelect = styled(Select)`
   margin-bottom: 20px;
 `;
 
-
 // names differ slightly between HomePage and CustomPage
 type Props = {
   type: 'homePage' | 'customPage';
@@ -106,12 +105,12 @@ export type HeroBannerInputSettings = {
   banner_avatars_enabled?: IHomepageSettingsAttributes['banner_avatars_enabled'];
   // cta settings, only on homepage
   banner_cta_signed_in_text_multiloc?: IHomepageSettingsAttributes['banner_cta_signed_in_text_multiloc'];
-  banner_cta_signed_in_type?: IHomepageSettingsAttributes['banner_cta_signed_in_type']
-  banner_cta_signed_in_url?: IHomepageSettingsAttributes['banner_cta_signed_in_url']
+  banner_cta_signed_in_type?: IHomepageSettingsAttributes['banner_cta_signed_in_type'];
+  banner_cta_signed_in_url?: IHomepageSettingsAttributes['banner_cta_signed_in_url'];
   // cta_signed_out
-  banner_cta_signed_out_text_multiloc?: IHomepageSettingsAttributes['banner_cta_signed_out_text_multiloc']
-  banner_cta_signed_out_type?: IHomepageSettingsAttributes['banner_cta_signed_out_type']
-  banner_cta_signed_out_url?: IHomepageSettingsAttributes['banner_cta_signed_out_url']
+  banner_cta_signed_out_text_multiloc?: IHomepageSettingsAttributes['banner_cta_signed_out_text_multiloc'];
+  banner_cta_signed_out_type?: IHomepageSettingsAttributes['banner_cta_signed_out_type'];
+  banner_cta_signed_out_url?: IHomepageSettingsAttributes['banner_cta_signed_out_url'];
 };
 
 import { ISubmitState } from 'components/admin/SubmitWrapper';
@@ -146,32 +145,9 @@ const GenericHeroBannerForm = ({
   const [previewDevice, setPreviewDevice] = useState<PreviewDevice>('desktop');
 
   useEffect(() => {
-<<<<<<< HEAD:front/app/containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/index.tsx
     // copy input settings to local state
     setLocalSettings({
-      ...inputSettings
-||||||| 1b77dd3e84:front/app/containers/Admin/pagesAndMenu/containers/HeroBanner/index.tsx
-    if (isNilOrError(homepageSettings)) {
-      return;
-    }
-
-    // copy homepage settings to local state
-    setLocalHomepageSettings({
-      ...homepageSettings.data.attributes,
-      banner_layout:
-        homepageSettings.data.attributes.banner_layout ??
-        'full_width_banner_layout',
-=======
-    if (isNilOrError(homepageSettings)) {
-      return;
-    }
-
-    // copy homepage settings to local state
-    setLocalHomepageSettings({
-      ...homepageSettings.attributes,
-      banner_layout:
-        homepageSettings.attributes.banner_layout ?? 'full_width_banner_layout',
->>>>>>> 474d1ea6781bed8acdc17e1ab7a39a7b8ec66d2a:front/app/containers/Admin/pagesAndMenu/containers/HeroBanner/index.tsx
+      ...inputSettings,
     });
 
     // the image file sent from the API needs to be converted
@@ -189,82 +165,10 @@ const GenericHeroBannerForm = ({
       }
     };
 
-<<<<<<< HEAD:front/app/containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/index.tsx
     const headerFileInfo = inputSettings.header_bg?.large;
-||||||| 1b77dd3e84:front/app/containers/Admin/pagesAndMenu/containers/HeroBanner/index.tsx
-    const headerFileInfo = homepageSettings.data.attributes.header_bg?.large;
-=======
-    const headerFileInfo = homepageSettings.attributes.header_bg?.large;
->>>>>>> 474d1ea6781bed8acdc17e1ab7a39a7b8ec66d2a:front/app/containers/Admin/pagesAndMenu/containers/HeroBanner/index.tsx
     convertHeaderToUploadFile(headerFileInfo);
-<<<<<<< HEAD:front/app/containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/index.tsx
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputSettings.header_bg]);
-||||||| 1b77dd3e84:front/app/containers/Admin/pagesAndMenu/containers/HeroBanner/index.tsx
-  }, [homepageSettings]);
-
-  const onSave = async () => {
-    if (localHomepageSettings && !isNilOrError(homepageSettings)) {
-      // only update the homepage settings if they have changed
-      const diffedValues = {};
-      forOwn(localHomepageSettings, (value, key) => {
-        if (!isEqual(value, homepageSettings.data.attributes[key])) {
-          diffedValues[key] = value;
-        }
-      });
-
-      setIsLoading(true);
-      setFormStatus('disabled');
-      try {
-        await updateHomepageSettings(diffedValues);
-        setApiErrors(null);
-        setIsLoading(false);
-        setFormStatus('success');
-      } catch (error) {
-        setIsLoading(false);
-        setFormStatus('error');
-        if (isCLErrorJSON(error)) {
-          setApiErrors(error.json.errors);
-        } else {
-          setApiErrors(error);
-        }
-        setIsLoading(false);
-      }
-    }
-  };
-=======
-  }, [homepageSettings]);
-
-  const onSave = async () => {
-    if (localHomepageSettings && !isNilOrError(homepageSettings)) {
-      // only update the homepage settings if they have changed
-      const diffedValues = {};
-      forOwn(localHomepageSettings, (value, key) => {
-        if (!isEqual(value, homepageSettings.attributes[key])) {
-          diffedValues[key] = value;
-        }
-      });
-
-      setIsLoading(true);
-      setFormStatus('disabled');
-      try {
-        await updateHomepageSettings(diffedValues);
-        setApiErrors(null);
-        setIsLoading(false);
-        setFormStatus('success');
-      } catch (error) {
-        setIsLoading(false);
-        setFormStatus('error');
-        if (isCLErrorJSON(error)) {
-          setApiErrors(error.json.errors);
-        } else {
-          setApiErrors(error);
-        }
-        setIsLoading(false);
-      }
-    }
-  };
->>>>>>> 474d1ea6781bed8acdc17e1ab7a39a7b8ec66d2a:front/app/containers/Admin/pagesAndMenu/containers/HeroBanner/index.tsx
 
   const updateValueInLocalState = (
     key: keyof HeroBannerInputSettings,
@@ -368,33 +272,36 @@ const GenericHeroBannerForm = ({
   }
 
   return (
-    <SectionFormWrapper 
+    <SectionFormWrapper
       breadcrumbs={breadcrumbs}
       title={title}
       stickyMenuContents={
-      <SubmitWrapper
-        status={formStatus}
-        buttonStyle="primary"
-        loading={isLoading}
-        onClick={() => onSave(localSettings)}
-        messages={{
-          buttonSave: messages.heroBannerSaveButton,
-          buttonSuccess: messages.heroBannerButtonSuccess,
-          messageSuccess: messages.heroBannerMessageSuccess,
-          messageError: messages.heroBannerError,
-        }}
-      />}
+        <SubmitWrapper
+          status={formStatus}
+          buttonStyle="primary"
+          loading={isLoading}
+          onClick={() => onSave(localSettings)}
+          messages={{
+            buttonSave: messages.heroBannerSaveButton,
+            buttonSuccess: messages.heroBannerButtonSuccess,
+            messageSuccess: messages.heroBannerMessageSuccess,
+            messageError: messages.heroBannerError,
+          }}
+        />
+      }
     >
       <Section key={'header'}>
         <Warning>
           <FormattedMessage {...messages.heroBannerInfoBar} />
         </Warning>
-        {/* // move to homepage form */}
-        <Outlet
-          id="app.containers.Admin.settings.customize.headerSectionStart"
-          bannerLayout={localSettings.banner_layout ?? 'two_column_layout'}
-          handleOnChange={updateValueInLocalState}
-        />
+
+        {type === 'homePage' && (
+          <Outlet
+            id="app.containers.Admin.settings.customize.headerSectionStart"
+            bannerLayout={localSettings.banner_layout ?? 'two_column_layout'}
+            handleOnChange={updateValueInLocalState}
+          />
+        )}
         <SubSectionTitle>
           <FormattedMessage {...messages.header_bg} />
           <IconTooltip
@@ -564,12 +471,15 @@ const GenericHeroBannerForm = ({
             </SectionField>
           </>
         )}
-        <Outlet
-          id="app.containers.Admin.settings.customize.headerSectionEnd"
-          homepageSettings={localSettings}
-          handleOnChange={updateValueInLocalState}
-          errors={apiErrors}
-        />
+        {/* // CTA settings, only applicable on homepage */}
+        {type === 'homePage' && (
+          <Outlet
+            id="app.containers.Admin.settings.customize.headerSectionEnd"
+            ctaSettings={localSettings}
+            handleOnChange={updateValueInLocalState}
+            errors={apiErrors}
+          />
+        )}
       </Section>
     </SectionFormWrapper>
   );
