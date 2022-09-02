@@ -30,22 +30,18 @@ export const isModeratorRoute = (item: IRouteItem) => {
     return item.path.includes(moderatorRoute);
   });
 };
+export const isAdminRoute = (path: string) => {
+  return /^\/admin/.test(path);
+};
 
-export const isModeratedProjectRoute = (
-  item: IRouteItem,
-  user: IUser | null
-) => {
+const isModeratedProjectRoute = (item: IRouteItem, user: IUser | null) => {
   const idRegexp = /^\/admin\/projects\/([a-z0-9-]+)\/?/;
   const matches = idRegexp.exec(item.path);
   const pathProjectId = matches && matches[1];
   return (pathProjectId && isProjectModerator(user, pathProjectId)) || false;
 };
 
-export const isAdminRoute = (path: string) => {
-  return /^\/admin/.test(path);
-};
-
-export const tenantIsChurned = (tenant: IAppConfigurationData) => {
+const tenantIsChurned = (tenant: IAppConfigurationData) => {
   return tenant.attributes.settings.core.lifecycle_stage === 'churned';
 };
 
