@@ -33,9 +33,11 @@ RSpec.describe CustomField, type: :model do
     let(:domicile_field) { create(:custom_field_domicile) }
 
     it 'creates custom field options from areas', :aggregate_failures do
-      expect(domicile_field.options.count).to eq(3)
-      expect(domicile_field.options.take(2).pluck(:id, :ordering, :title_multiloc))
+      expect(domicile_field.options.count).to eq(Area.count)
+      expect(domicile_field.options.take(Area.count).pluck(:id, :ordering, :title_multiloc))
         .to match_array(Area.pluck(:custom_field_option_id, :ordering, :title_multiloc))
+      
+      # 'somewhere else' option should be the last.
       expect(domicile_field.options.last.area).to be_nil
     end
   end

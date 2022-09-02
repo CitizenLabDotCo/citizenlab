@@ -23,7 +23,7 @@ RSpec.describe CustomFieldOption, type: :model do
 
       option.update(title_multiloc: new_title, ordering: 0)
 
-      expect(option.title_multiloc).to eq('en' => 'new title')
+      expect(option.title_multiloc).to eq(new_title)
       expect(option.ordering).to eq(0)
     end
   end
