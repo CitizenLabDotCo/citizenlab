@@ -43,7 +43,10 @@ module UserCustomFields
       #
       # We have to run a data migration to update the user custom field values to use the
       # option key for domicile before we can remove the following conversion step.
-      convert_area_ids_to_option_keys!(counts, custom_field) if custom_field.domicile? && by != :area_id
+      convert_area_ids_to_option_keys!(counts, custom_field) if by != :area_id && custom_field.domicile?
+      raise ArgumentError, <<~MSG if by == :area_id && !custom_field.domicile?
+        'by: :area_id' option can only be used with domicile custom field.
+      MSG
 
       convert_keys_to_option_ids!(counts, custom_field) if by == :option_id
       counts.with_indifferent_access
