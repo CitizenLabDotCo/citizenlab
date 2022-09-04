@@ -54,10 +54,15 @@ namespace :templates do
     templates = MultiTenancy::TenantTemplateService.new.available_templates(
       external_subfolder: 'test'
     )[:external]
-    max_time = 3.hours / templates.size unless templates.empty?
     templates.in_groups_of(pool_size).map(&:compact).map do |pool_templates|
       futures = pool_templates.index_with do |template|
-        max_time = MAX_VERIFICATION_TIMES[template].minutes if MAX_VERIFICATION_TIMES.key?(template)
+        unless templates.empty?
+          if MAX_VERIFICATION_TIMES.key?(template)
+            max_time = MAX_VERIFICATION_TIMES[template].minutes
+          else
+            max_time = 3.hours / templates.size
+          end
+        end
         Concurrent::Future.execute { verify_template template, max_time }
       end
       sleep 1 until futures.values.all?(&:complete?)
