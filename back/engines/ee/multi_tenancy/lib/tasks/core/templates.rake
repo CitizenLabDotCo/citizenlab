@@ -2,6 +2,15 @@
 
 require 'yaml'
 
+# Estimated maximum times in minutes needed to verify specific templates.
+MAX_VERIFICATION_TIMES = {
+  'fr-be_template' => 20,
+  'insights_template' => 19,
+  'trial-en_template' => 16,
+  'global-demo_template' => 15,
+  'mi-municipio_template' => 10
+}.freeze
+
 namespace :templates do
   desc 'Importing and exporting tenants as yaml files'
 
@@ -46,6 +55,7 @@ namespace :templates do
     max_time = 3.hours / templates.size unless templates.empty?
     templates.in_groups_of(pool_size).map(&:compact).map do |pool_templates|
       futures = pool_templates.index_with do |template|
+        max_time = MAX_VERIFICATION_TIMES[template].minutes if MAX_VERIFICATION_TIMES.key?(template)
         Concurrent::Future.execute { verify_template template, max_time }
       end
       sleep 1 until futures.values.all?(&:complete?)
