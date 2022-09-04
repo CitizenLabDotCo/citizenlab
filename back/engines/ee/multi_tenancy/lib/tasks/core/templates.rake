@@ -2,7 +2,7 @@
 
 require 'yaml'
 
-# Estimated maximum times in minutes needed to verify specific templates on CI (locally, allow +25%).
+# Estimated maximum times in minutes needed to verify specific templates on CI.
 # Interim solution. We should find better. For discussion and ideas, see:
 # https://citizenlab.atlassian.net/browse/CL-1588
 MAX_VERIFICATION_TIMES = {
