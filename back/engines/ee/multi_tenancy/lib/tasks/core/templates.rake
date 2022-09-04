@@ -2,13 +2,15 @@
 
 require 'yaml'
 
-# Estimated maximum times in minutes needed to verify specific templates.
+# Estimated maximum times in minutes needed to verify specific templates on CI (locally, allow +25%).
+# Interim solution. We should find better. For discussion and ideas, see:
+# https://citizenlab.atlassian.net/browse/CL-1588
 MAX_VERIFICATION_TIMES = {
-  'fr-be_template' => 20,
-  'insights_template' => 19,
-  'trial-en_template' => 16,
-  'global-demo_template' => 15,
-  'mi-municipio_template' => 10
+  'fr-be_template' => 53,
+  'insights_template' => 28,
+  'trial-en_template' => 23,
+  'global-demo_template' => 14,
+  'mi-municipio_template' => 15
 }.freeze
 
 namespace :templates do
