@@ -57,10 +57,10 @@ namespace :templates do
     templates.in_groups_of(pool_size).map(&:compact).map do |pool_templates|
       futures = pool_templates.index_with do |template|
         unless templates.empty?
-          if MAX_VERIFICATION_TIMES.key?(template)
-            max_time = MAX_VERIFICATION_TIMES[template].minutes
+          max_time = if MAX_VERIFICATION_TIMES.key?(template)
+            MAX_VERIFICATION_TIMES[template].minutes
           else
-            max_time = 3.hours / templates.size
+            3.hours / templates.size
           end
         end
         Concurrent::Future.execute { verify_template template, max_time }
