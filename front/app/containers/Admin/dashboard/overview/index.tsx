@@ -184,6 +184,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                   hideLabel
                   placeholder={formatMessage(messages.selectProject)}
                   width="100%"
+                  padding="11px"
                   onProjectFilter={this.handleOnProjectFilter}
                 />
               </Box>
