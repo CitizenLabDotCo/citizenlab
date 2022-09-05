@@ -33,7 +33,8 @@ export interface ICustomPagesAttributes extends ICustomPageEnabledSettings {
   banner_overlay_color: string | null;
   banner_overlay_opacity: number | null;
   banner_cta_button_multiloc: Multiloc;
-  banner_cta_button_type: 'customized_button' | 'no_button' | null;
+  // check if this can be null
+  banner_cta_button_type: 'customized_button' | 'no_button';
   banner_cta_button_url: string | null;
   banner_header_multiloc: Multiloc;
   banner_subheader_multiloc: Multiloc;

@@ -37,9 +37,18 @@ const EditCustomPageHeroBannerForm = ({
 
   const handleSave = async (newSettings: HeroBannerInputSettings) => {
     if (!newSettings) return;
+
+    // necessary because the CTA module uses 
+    const mappedSettings = {
+      ...newSettings,
+      ...newSettings.banner_cta_signed_out_url && { banner_cta_button_url: newSettings.banner_cta_signed_out_url },
+      ...newSettings.banner_cta_signed_out_type && { banner_cta_button_type: newSettings.banner_cta_signed_out_type },
+      ...newSettings.banner_cta_signed_out_text_multiloc && { banner_cta_button_multiloc: newSettings.banner_cta_signed_out_text_multiloc }
+    }
+
     // only update the page settings if they have changed
     const diffedValues = {};
-    forOwn(newSettings, (value, key) => {
+    forOwn(mappedSettings, (value, key) => {
       if (!isEqual(value, customPage.attributes[key])) {
         diffedValues[key] = value;
       }
@@ -64,6 +73,9 @@ const EditCustomPageHeroBannerForm = ({
     banner_header_multiloc: attributes.banner_header_multiloc,
     banner_subheader_multiloc: attributes.banner_subheader_multiloc,
     header_bg: attributes.header_bg,
+    banner_cta_signed_out_url: attributes.banner_cta_button_url,
+    banner_cta_signed_out_text_multiloc: attributes.banner_cta_button_multiloc,
+    banner_cta_signed_out_type: attributes.banner_cta_button_type
   };
 
   return (
