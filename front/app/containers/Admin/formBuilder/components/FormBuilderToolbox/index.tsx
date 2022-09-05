@@ -85,7 +85,7 @@ const FormBuilderToolbox = ({
             onClick={() => addAnswer('text')}
           />
           <ToolboxItem
-            icon="info"
+            icon="multiple-choice"
             label={formatMessage(messages.multipleChoice)}
             onClick={() => addAnswer('multiselect')}
           />
