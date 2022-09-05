@@ -92,33 +92,47 @@ module Analytics
       Array.wrap(@json_query[:fields])
     end
 
-    def aggregation_to_sql(aggregation, column)
-      "#{aggregation}(#{column}) as #{aggregation}_#{column.tr('.', '_')}"
-    end
-
-    def aggregations_sql
-      attribute = []
+    def aggregations
+      attributes = []
       if @json_query.key?(:aggregations)
         @json_query[:aggregations].each do |column, aggregation|
           if aggregation.instance_of?(Array)
             aggregation.each do |aggregation_|
-              attribute.push(aggregation_to_sql(aggregation_, column))
+              attributes.push([column, aggregation_])
             end
           else
-            attribute.push(aggregation_to_sql(aggregation, column))
+            attributes.push([column, aggregation])
           end
         end
       end
 
-      attribute
+      attributes
+    end
+
+    def aggregation_alias(column, aggregation)
+      "#{aggregation}_#{column.tr('.', '_')}"
     end
 
     def extract_aggregation_name(attribute)
       attribute.include?(' as ') ? attribute.split(' as ')[1] : attribute
     end
 
+    def aggregations_sql
+      aggregations.map do |column, aggregation|
+        if aggregation == 'count' && column == 'all'
+          Arel.sql('COUNT(*) as count')
+        elsif aggregation == 'first'
+          "array_agg(#{column}) as #{aggregation_alias(column, aggregation)}"
+        else
+          "#{aggregation}(#{column}) as #{aggregation_alias(column, aggregation)}"
+        end
+      end
+    end
+
     def aggregations_names
-      aggregations_sql.map { |key| extract_aggregation_name(key) }
+      aggregations.map do |column, aggregation|
+        aggregation_alias(column, aggregation)
+      end
     end
   end
 end
