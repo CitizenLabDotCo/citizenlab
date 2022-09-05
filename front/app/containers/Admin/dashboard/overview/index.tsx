@@ -67,18 +67,12 @@ interface State {
   endAtMoment: Moment | null;
   currentProjectFilter: string | undefined;
   currentProjectFilterLabel: string | undefined;
-  currentGroupFilter: string | undefined;
-  currentGroupFilterLabel: string | undefined;
-  currentTopicFilter: string | undefined;
-  currentTopicFilterLabel: string | undefined;
   currentResourceByTopic: IResource;
   currentResourceByProject: IResource;
 }
 
 interface Tracks {
-  trackFilterOnGroup: (args: { extra: Record<string, string> }) => void;
   trackFilterOnProject: (args: { extra: Record<string, string> }) => void;
-  trackFilterOnTopic: (args: { extra: Record<string, string> }) => void;
   trackResourceChange: (args: { extra: Record<string, string> }) => void;
 }
 
@@ -101,10 +95,6 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
       endAtMoment: moment(),
       currentProjectFilter: undefined,
       currentProjectFilterLabel: undefined,
-      currentGroupFilter: undefined,
-      currentGroupFilterLabel: undefined,
-      currentTopicFilter: undefined,
-      currentTopicFilterLabel: undefined,
       currentResourceByTopic: 'ideas',
       currentResourceByProject: 'ideas',
     };
@@ -146,22 +136,6 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
     });
   };
 
-  handleOnGroupFilter = (filter) => {
-    this.props.trackFilterOnGroup({ extra: { group: filter } });
-    this.setState({
-      currentGroupFilter: filter.value,
-      currentGroupFilterLabel: filter.label,
-    });
-  };
-
-  handleOnTopicFilter = (filter) => {
-    this.props.trackFilterOnTopic({ extra: { topic: filter } });
-    this.setState({
-      currentTopicFilter: filter.value,
-      currentTopicFilterLabel: filter.label,
-    });
-  };
-
   onResourceByTopicChange = (option) => {
     this.props.trackResourceChange({
       extra: { newResource: option, graph: 'resourceByTopic' },
@@ -177,14 +151,8 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
   };
 
   render() {
-    const {
-      resolution,
-      startAtMoment,
-      endAtMoment,
-      currentProjectFilter,
-      currentGroupFilter,
-      currentTopicFilter,
-    } = this.state;
+    const { resolution, startAtMoment, endAtMoment, currentProjectFilter } =
+      this.state;
 
     const startAt = startAtMoment && startAtMoment.toISOString();
     const endAt = endAtMoment && endAtMoment.toISOString();
@@ -215,11 +183,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
           </ControlBar>
           <ChartFilters
             currentProjectFilter={currentProjectFilter}
-            currentGroupFilter={currentGroupFilter}
-            currentTopicFilter={currentTopicFilter}
             onProjectFilter={this.handleOnProjectFilter}
-            onGroupFilter={this.handleOnGroupFilter}
-            onTopicFilter={this.handleOnTopicFilter}
           />
           <GraphsContainer>
             <LineBarChart
@@ -332,9 +296,7 @@ const Data = adopt<DataProps>({
 });
 
 const DashboardPageSummaryWithHOCs = injectTracks<Props>({
-  trackFilterOnGroup: tracks.filteredOnGroup,
   trackFilterOnProject: tracks.filteredOnProject,
-  trackFilterOnTopic: tracks.filteredOnTopic,
   trackResourceChange: tracks.choseResource,
 })(localize<Props & Tracks>(injectIntl(DashboardPageSummary)));
 

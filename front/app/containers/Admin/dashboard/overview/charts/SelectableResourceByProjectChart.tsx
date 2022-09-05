@@ -24,8 +24,6 @@ import { IResolution } from 'components/admin/ResolutionControl';
 interface QueryProps {
   startAt: string | null | undefined;
   endAt: string | null;
-  currentTopicFilter: string | undefined;
-  currentGroupFilter: string | undefined;
 }
 
 interface InputProps {
@@ -37,11 +35,7 @@ interface InputProps {
   startAt: string | null | undefined;
   endAt: string | null;
   resolution: IResolution;
-  currentGroupFilter: string | undefined;
-  currentTopicFilter: string | undefined;
   currentProjectFilterLabel: string | undefined;
-  currentGroupFilterLabel: string | undefined;
-  currentTopicFilterLabel: string | undefined;
 }
 
 interface Props extends InputProps, QueryProps {}
