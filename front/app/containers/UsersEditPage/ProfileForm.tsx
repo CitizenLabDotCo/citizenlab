@@ -109,9 +109,11 @@ const ProfileForm = ({
     0;
 
   const schema = object({
-    first_name: string().required(),
-    last_name: string().required(),
-    email: string().email().required(),
+    first_name: string().required(formatMessage(messages.firstNamesEmptyError)),
+    last_name: string().required(formatMessage(messages.lastNameEmptyError)),
+    email: string()
+      .email(formatMessage(messages.emailInvalidError))
+      .required(formatMessage(messages.emailEmptyError)),
     ...(!disableBio && {
       bio_multiloc: object(),
     }),
