@@ -1,11 +1,18 @@
 import React from 'react';
+
+// components
 import { Tooltip } from 'recharts';
 import { Box } from '@citizenlab/cl2-component-library';
-import { StackedBarsRow } from '../../hooks/usePostsFeedback';
+
+// styling
+import { colors } from 'utils/styleUtils';
 
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+
+// typings
+import { StackedBarsRow } from '../../hooks/usePostsFeedback';
 
 export const stackedBarTooltip =
   (
@@ -28,10 +35,26 @@ export const stackedBarTooltip =
           const percentage = percentages[stackIndex];
 
           return (
-            <Box p="8px" background="white">
-              {label}
-              {<FormattedMessage {...messages.inputs} />}: {value} ({percentage}
-              %)
+            <Box
+              p="8px"
+              background="white"
+              color={colors.adminTextColor}
+              border={`1px solid ${colors.separation}`}
+            >
+              <Box
+                display="flex"
+                justifyContent="center"
+                style={{
+                  fontWeight: '700',
+                }}
+                mb="4px"
+              >
+                {label}
+              </Box>
+              <Box display="flex" justifyContent="center">
+                <FormattedMessage {...messages.inputs} />: {value} ({percentage}
+                %)
+              </Box>
             </Box>
           );
         }}
