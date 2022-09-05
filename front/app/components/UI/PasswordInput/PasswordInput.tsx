@@ -74,9 +74,9 @@ const PasswordInputComponent = ({
     onChange(password);
   };
 
-  const handleOnBlur = () => {
+  const handleOnBlur = (e) => {
     if (onBlur) {
-      onBlur();
+      onBlur(e);
     }
   };
 

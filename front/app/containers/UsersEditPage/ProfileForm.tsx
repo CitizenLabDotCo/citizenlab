@@ -13,18 +13,17 @@ import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
 
-// components
-// import PasswordInput, {
-//   hasPasswordMinimumLength,
-// } from 'components/UI/PasswordInput';
-// import PasswordInputIconTooltip from 'components/UI/PasswordInput/PasswordInputIconTooltip';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
+
+// components
+import { IconTooltip, Box, Button } from '@citizenlab/cl2-component-library';
 import { SectionField } from 'components/admin/Section';
 import {
   FormSection,
-  // FormLabel,
+  FormLabel,
   FormSectionTitle,
 } from 'components/UI/FormComponents';
+import PasswordInputIconTooltip from 'components/UI/PasswordInput/PasswordInputIconTooltip';
 
 // form
 import { useForm, FormProvider } from 'react-hook-form';
@@ -33,11 +32,10 @@ import { string, object, mixed } from 'yup';
 import ImagesDropzone from 'components/HookForm/ImagesDropzone';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import Input from 'components/HookForm/Input';
+import PasswordInput from 'components/HookForm/PasswordInput';
 import Select from 'components/HookForm/Select';
 import Feedback from 'components/HookForm/Feedback';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
-
-import { IconTooltip, Box, Button } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { appLocalePairs, API_PATH } from 'containers/App/constants';
@@ -62,11 +60,10 @@ const StyledIconTooltip = styled(IconTooltip)`
   margin-left: 5px;
 `;
 
-// const StyledPasswordInputIconTooltip = styled(PasswordInputIconTooltip)`
-//   margin-bottom: 4px;
-// `;
+const StyledPasswordInputIconTooltip = styled(PasswordInputIconTooltip)`
+  margin-bottom: 4px;
+`;
 
-// Types
 interface InputProps {}
 
 interface DataProps {
@@ -92,6 +89,7 @@ type FormValues = {
 const ProfileForm = ({
   intl: { formatMessage },
   disableBio,
+  tenant,
   tenantLocales,
   lockedFields,
   authUser,
@@ -112,6 +110,13 @@ const ProfileForm = ({
     ...(!disableBio && {
       bio_multiloc: object(),
     }),
+    password: string().min(
+      !isNilOrError(tenant) &&
+        tenant.attributes.settings.password_login?.minimum_length
+        ? tenant.attributes.settings.password_login.minimum_length
+        : 0,
+      '' // The component handles it's own error messaging
+    ),
     locale: string(),
     avatar: mixed(),
   });
@@ -171,8 +176,6 @@ const ProfileForm = ({
     }
   };
 
-  // const { hasPasswordMinimumLengthError } = state;
-
   const lockedFieldsNames = isNilOrError(lockedFields)
     ? []
     : lockedFields.map((field) => field.attributes.name);
@@ -189,24 +192,6 @@ const ProfileForm = ({
       [key]: { ...(extraFormData?.[key] ?? {}), formData },
     });
   };
-
-  // const handlePasswordOnChange = (password: string) => {
-  //   const { tenant } = props;
-
-  //   setState({
-  //     hasPasswordMinimumLengthError: hasPasswordMinimumLength(
-  //       password,
-  //       !isNilOrError(tenant)
-  //         ? tenant.attributes.settings.password_login?.minimum_length
-  //         : undefined
-  //     ),
-  //   });
-  //   setFieldValue('password', password);
-  // };
-
-  // const createBlurHandler = (fieldName: string) => () => {
-  //   setFieldTouched(fieldName);
-  // };
 
   return (
     <FormSection>
@@ -296,8 +281,8 @@ const ProfileForm = ({
             </SectionField>
           )}
 
-          {/* <SectionField>
-            <LabelContainer>
+          <SectionField>
+            <Box display="flex" alignItems="center">
               <FormLabel
                 width="max-content"
                 margin-right="5px"
@@ -305,15 +290,9 @@ const ProfileForm = ({
                 htmlFor="password"
               />
               <StyledPasswordInputIconTooltip />
-            </LabelContainer>
-            <PasswordInput
-              id="password"
-              password={values.password}
-              onChange={handlePasswordOnChange}
-              onBlur={createBlurHandler('password')}
-              errors={{ minimumLengthError: hasPasswordMinimumLengthError }}
-            />
-          </SectionField> */}
+            </Box>
+            <PasswordInput name="password" />
+          </SectionField>
 
           <SectionField>
             <Select

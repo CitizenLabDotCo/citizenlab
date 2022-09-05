@@ -16,7 +16,7 @@ export interface Props {
   id: string;
   password: string | null;
   onChange: (password: string) => void;
-  onBlur?: () => void;
+  onBlur?: (e: React.FormEvent<HTMLInputElement>) => void;
   setRef?: (element: HTMLInputElement) => void;
   autocomplete?: 'current-password' | 'new-password';
   placeholder?: string;
