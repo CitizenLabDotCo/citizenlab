@@ -357,7 +357,6 @@ const GenericHeroBannerForm = ({
             headerError={bannerError}
             header_bg={headerLocalDisplayImage}
             previewDevice={previewDevice}
-            // check on default
             layout={localSettings.banner_layout || 'full_width_banner_layout'}
           />
         </SectionField>
