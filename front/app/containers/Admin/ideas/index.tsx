@@ -29,8 +29,9 @@ const IdeasPage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     subtitle: formatMessage(messages.inputManagerPageSubtitle),
   };
 
-  const handleData = (data: InsertConfigurationOptions<ITab>) =>
-    setTabs(insertConfiguration(data));
+  const handleData = (data: InsertConfigurationOptions<ITab>) => {
+    setTabs((tabs) => insertConfiguration(data)(tabs));
+  };
 
   return (
     <>

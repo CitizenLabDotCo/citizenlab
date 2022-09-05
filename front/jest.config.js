@@ -30,7 +30,7 @@ module.exports = {
   ],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
   transformIgnorePatterns: [
-    '<rootDir>/node_modules/(?!(lodash-es|d3-format)).+\\.js$',
+    '<rootDir>/node_modules/(?!(lodash-es|d3-format|@hookform/resolvers)).+\\.js$',
   ],
   snapshotSerializers: ['enzyme-to-json/serializer'],
   reporters: ['default', 'jest-junit'],

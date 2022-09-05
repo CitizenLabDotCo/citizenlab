@@ -20,16 +20,9 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     # scope.
 
     @projects = Project.where(id: publications.select(:publication_id))
+      .ordered
       .includes(:project_images, :phases, :areas, admin_publication: [:children])
     @projects = paginate @projects
-
-    @projects = if params[:search].present?
-      @projects.search_by_all(params[:search])
-    else
-      @projects.ordered
-    end
-
-    LogActivityJob.perform_later(current_user, 'searched_projects', current_user, Time.now.to_i, payload: { search_query: params[:search] }) if params[:search].present?
 
     user_baskets = current_user&.baskets
       &.where(participation_context_type: 'Project')

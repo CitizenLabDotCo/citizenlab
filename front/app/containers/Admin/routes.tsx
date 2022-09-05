@@ -71,6 +71,9 @@ const getRedirectURL = (
   }
 
   // if not, redirect them to the sign-in page
+  // TO DO: Here we need to redirect to index
+  // if the user is already signed in. If I want to access the admin as a signed in user
+  // I get redirect => sign in => then index (because I'm already signed in)
   return `${localeSegment}/sign-in`;
 };
 
@@ -106,6 +109,8 @@ const createAdminRoutes = () => {
     element: <IndexElement />,
     children: [
       {
+        // Careful: moderators currently have access to the admin index route
+        // Adjust isModerator in routePermissions.ts if needed.
         path: '',
         element: <Navigate to="dashboard" />,
       },

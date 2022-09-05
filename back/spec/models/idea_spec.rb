@@ -71,6 +71,20 @@ RSpec.describe Idea, type: :model do
       idea = create(:idea, slug: nil)
       expect(idea.slug).to be_present
     end
+
+    it 'should generate a slug when there is no current phase' do
+      project = create :project, process_type: 'timeline'
+      create :phase, project: project, start_at: (Time.zone.today - 10), end_at: (Time.zone.today - 5)
+      create :phase, project: project, start_at: (Time.zone.today + 5), end_at: (Time.zone.today + 10)
+      idea = create :idea, slug: nil, project: project.reload
+      expect(idea.slug).to be_present
+    end
+
+    it 'should generate a slug for a timeline project with no phases' do
+      project = create :project, process_type: 'timeline'
+      idea = create :idea, slug: nil, project: project
+      expect(idea.slug).to be_present
+    end
   end
 
   context 'feedback_needed' do
