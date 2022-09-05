@@ -4,12 +4,7 @@ import HTML5Backend from 'react-dnd-html5-backend-cjs';
 import { get } from 'lodash-es';
 
 // react hook form
-import {
-  Controller,
-  useFieldArray,
-  useFormContext,
-  FieldError,
-} from 'react-hook-form';
+import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 
 // components
 import {
@@ -94,12 +89,10 @@ const ConfigMultiselectWithLocaleSwitcher = ({
 
   // Select the first error messages from the field's multiloc validation error
   const errors = get(formContextErrors, name);
-  const validationError = Object.values(
-    (errors as Record<Locale, FieldError> | undefined) || {}
-  )[0]?.message;
-
+  const titleMultilocError = (errors?.title_multiloc || {})[0];
   const apiError =
-    (errors?.error as string | undefined) && ([errors] as unknown as CLError[]);
+    (titleMultilocError?.error as string | undefined) &&
+    ([titleMultilocError] as unknown as CLError[]);
 
   if (selectedLocale) {
     return (
@@ -183,14 +176,6 @@ const ConfigMultiselectWithLocaleSwitcher = ({
             );
           }}
         />
-        {validationError && (
-          <Error
-            marginTop="8px"
-            marginBottom="8px"
-            text={validationError}
-            scrollIntoView={false}
-          />
-        )}
         {apiError && (
           <Error
             fieldName={name as TFieldName}
