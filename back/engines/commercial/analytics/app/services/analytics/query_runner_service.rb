@@ -9,7 +9,6 @@ module Analytics
       dimensions = @query.used_dimensions
 
       results = @query.model.includes(dimensions)
-
       results = include_dimensions(results)
 
       if @json_query.key?(:fields)
@@ -17,7 +16,7 @@ module Analytics
       end
 
       if @json_query.key?(:filters)
-        results = query_dimensions(results)
+        results = query_filters(results)
       end
 
       if @json_query.key?(:groups)
@@ -40,7 +39,7 @@ module Analytics
 
     private
 
-    def query_dimensions(results)
+    def query_filters(results)
       @json_query[:filters].each do |dimension, columns|
         columns.each do |column, value|
           if [Array, String].include? value.class

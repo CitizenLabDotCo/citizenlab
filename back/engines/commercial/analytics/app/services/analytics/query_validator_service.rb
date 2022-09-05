@@ -26,7 +26,7 @@ module Analytics
       end
 
       if @json_query.key?(:filters)
-        validate_dimensions
+        validate_filters
       end
 
       if @json_query.key?(:groups)
@@ -57,14 +57,13 @@ module Analytics
     end
 
     def validate_attributes(attributes, kind)
-      query_dimensions = @query.all_dimensions
       attributes.each do |attribute|
         field, subfield = attribute.include?('.') ? attribute.split('.') : [attribute, nil]
         if @query.all_attributes.include?(field)
           if subfield && @query.all_dimensions.exclude?(field)
             add_error("#{kind} field #{field} does not contain #{subfield} because is not a dimension.")
 
-          elsif subfield && query_dimensions[field][:columns].exclude?(subfield)
+          elsif subfield && @query.all_dimensions[field][:columns].exclude?(subfield)
             add_error("#{kind} column #{subfield} does not exist in dimension #{field}.")
           end
         else
@@ -73,7 +72,7 @@ module Analytics
       end
     end
 
-    def validate_dimensions
+    def validate_filters
       dates_attrs = %w[from to]
       @json_query[:filters].each do |dimension, columns|
         columns.each do |column, value|
