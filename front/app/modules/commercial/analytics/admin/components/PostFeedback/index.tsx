@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 
 // components
 import {
@@ -14,6 +14,7 @@ import ProgressBars from 'components/admin/Graphs/ProgressBars';
 import StackedBarChart from 'components/admin/Graphs/StackedBarChart';
 import CenterLabel from './CenterLabel';
 import { stackLabels } from './stackLabels';
+import { stackedBarTooltip } from './stackedBarTooltip';
 import Button from 'components/UI/Button';
 
 // styling
@@ -87,6 +88,17 @@ const PostFeedback = ({
   const currentPieChart = useRef();
   const currentProgressBarsChart = useRef();
   const currentStackedBarChart = useRef();
+  const [stackedBarHoverIndex, setStackedBarHoverIndex] = useState<
+    number | undefined
+  >();
+
+  const onMouseOverStackedBar = ({ stackIndex }) => {
+    setStackedBarHoverIndex(stackIndex);
+  };
+
+  const onMouseOutStackedBar = () => {
+    setStackedBarHoverIndex(undefined);
+  };
 
   const data = usePostsFeedback(formatMessage, {
     projectId,
@@ -194,6 +206,10 @@ const PostFeedback = ({
               fill: ({ stackIndex }) =>
                 statusColorById[stackedBarColumns[stackIndex]],
               cornerRadius: getCornerRadius(stackedBarColumns.length, 3),
+              opacity: ({ stackIndex }) => {
+                if (stackedBarHoverIndex === undefined) return 1;
+                return stackedBarHoverIndex === stackIndex ? 1 : 0.3;
+              },
             }}
             layout="horizontal"
             labels={stackLabels(
@@ -203,12 +219,21 @@ const PostFeedback = ({
             )}
             xaxis={{ hide: true, domain: [0, 'dataMax'] }}
             yaxis={{ hide: true, domain: ['dataMin', 'dataMax'] }}
+            tooltip={stackedBarTooltip(
+              stackedBarHoverIndex,
+              stackedBarsData,
+              stackedBarColumns,
+              stackedBarPercentages,
+              stackedBarsLegendItems.map((item) => item.label)
+            )}
             legend={{
               items: stackedBarsLegendItems,
               marginTop: 15,
               maintainGraphHeight: true,
             }}
             innerRef={currentStackedBarChart}
+            onMouseOver={onMouseOverStackedBar}
+            onMouseOut={onMouseOutStackedBar}
           />
         </Box>
 
