@@ -21,7 +21,7 @@ import Error from 'components/UI/Error';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import validateMultiloc from 'utils/yup/validateMultiloc';
+import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
 import {
   IFlatCreateCustomField,
@@ -64,8 +64,8 @@ export const FormEdit = ({
   const schema = object().shape({
     customFields: array().of(
       object().shape({
-        title_multiloc: validateMultiloc(
-          formatMessage(messages.emptyTitleMessage)
+        title_multiloc: validateAtLeastOneLocale(
+          formatMessage(messages.emptyTitleError)
         ),
         description_multiloc: object(),
         options: array().of(
