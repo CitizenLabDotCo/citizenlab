@@ -5,7 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 type TNavbarItemsState = INavbarItem | undefined | null | Error;
 
 interface IParams {
-  navbarItemId: string;
+  navbarItemId: string | null;
 }
 
 export default function useNavbarItem({ navbarItemId }: IParams) {

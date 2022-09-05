@@ -64,7 +64,7 @@ RSpec.describe Area, type: :model do
 
       it 'creates the corresponding domicile option' do
         area = nil
-        expect { area = create(:area) }.to change { CustomFieldOption.count }.by(1)
+        expect { area = create(:area) }.to change(CustomFieldOption, :count).by(1)
 
         expect(area.title_multiloc).to eq(area.custom_field_option.title_multiloc)
         expect(area.ordering).to eq(area.custom_field_option.ordering)

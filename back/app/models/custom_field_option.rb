@@ -35,7 +35,7 @@ class CustomFieldOption < ApplicationRecord
   before_validation :generate_key, on: :create
 
   # Options of the domicile custom field are associated with an area.
-  # The two associated resources are kept in sync: changes mode to the
+  # The two associated resources are kept in sync: changes to the
   # area are reflected in the option, and vice versa.
   has_one :area, dependent: :nullify
   after_update :update_area
@@ -65,7 +65,10 @@ class CustomFieldOption < ApplicationRecord
   def generate_key
     return if key
 
-    self.key = CustomFieldService.new.generate_key(self, title_multiloc.values.first) do |key_proposal|
+    title = title_multiloc.values.first
+    return unless title
+
+    self.key = CustomFieldService.new.generate_key(self, title) do |key_proposal|
       self.class.find_by(key: key_proposal, custom_field: custom_field)
     end
   end

@@ -13,9 +13,12 @@ module UserCustomFields
     #
     # @param [ActiveRecord::Relation] users
     # @param [UserCustomField] user_custom_field
-    # @param [Boolean] by_option_id index the counts by the option id instead of the option key
+    # @param [Symbol] by index the counts by
+    #   - option id if +by+ is +:option_id+
+    #   - area id if +by+ is +:area_id+ (only for domicile field)
+    #   - option key otherwise.
     # @return [ActiveSupport::HashWithIndifferentAccess]
-    def self.counts_by_field_option(users, custom_field, by_option_id: false, by_area_id: false)
+    def self.counts_by_field_option(users, custom_field, by: :option_key)
       field_values = select_field_values(users, custom_field)
 
       # Warning: The method +count+ cannot be used here because it introduces a SQL syntax
@@ -40,9 +43,12 @@ module UserCustomFields
       #
       # We have to run a data migration to update the user custom field values to use the
       # option key for domicile before we can remove the following conversion step.
-      convert_area_ids_to_option_keys!(counts, custom_field) if custom_field.domicile? && !by_area_id
+      convert_area_ids_to_option_keys!(counts, custom_field) if by != :area_id && custom_field.domicile?
+      raise ArgumentError, <<~MSG if by == :area_id && !custom_field.domicile?
+        'by: :area_id' option can only be used with domicile custom field.
+      MSG
 
-      convert_keys_to_option_ids!(counts, custom_field) if by_option_id
+      convert_keys_to_option_ids!(counts, custom_field) if by == :option_id
       counts.with_indifferent_access
     end
 
