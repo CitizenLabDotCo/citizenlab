@@ -71,8 +71,8 @@ type Props = {
   breadcrumbs: TBreadcrumbs;
   title?: string | JSX.Element;
   formStatus: ISubmitState;
-  setFormStatus: (ISubmitState) => void;
-  onSave: (HeroBannerInputSettings) => void;
+  setFormStatus: (submitState: ISubmitState) => void;
+  onSave: (inputSettingParameters: HeroBannerInputSettings) => void;
   isLoading: boolean;
   inputSettings: HeroBannerInputSettings;
   apiErrors?: CLErrors | null;
