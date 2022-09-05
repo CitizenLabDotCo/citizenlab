@@ -58,10 +58,16 @@ import eventEmitter from 'utils/eventEmitter';
 
 const StyledIconTooltip = styled(IconTooltip)`
   margin-left: 5px;
+  margin-top: 20px;
 `;
 
 const StyledPasswordInputIconTooltip = styled(PasswordInputIconTooltip)`
   margin-bottom: 4px;
+`;
+
+const InputContainer = styled.div`
+  display: flex;
+  flex-direction: row;
 `;
 
 interface InputProps {}
@@ -238,51 +244,57 @@ const ProfileForm = ({
           </SectionField>
 
           <SectionField>
-            <Input
-              type="text"
-              name="first_name"
-              label={formatMessage(messages.firstNames)}
-              autocomplete="given-name"
-              disabled={lockedFieldsNames.includes('first_name')}
-            />
-            {lockedFieldsNames.includes('first_name') && (
-              <StyledIconTooltip
-                content={<FormattedMessage {...messages.blockedVerified} />}
-                icon="lock"
+            <InputContainer>
+              <Input
+                type="text"
+                name="first_name"
+                label={formatMessage(messages.firstNames)}
+                autocomplete="given-name"
+                disabled={lockedFieldsNames.includes('first_name')}
               />
-            )}
+              {lockedFieldsNames.includes('first_name') && (
+                <StyledIconTooltip
+                  content={<FormattedMessage {...messages.blockedVerified} />}
+                  icon="lock"
+                />
+              )}
+            </InputContainer>
           </SectionField>
 
           <SectionField>
-            <Input
-              type="text"
-              name="last_name"
-              label={formatMessage(messages.lastName)}
-              autocomplete="family-name"
-              disabled={lockedFieldsNames.includes('last_name')}
-            />
-            {lockedFieldsNames.includes('last_name') && (
-              <StyledIconTooltip
-                content={<FormattedMessage {...messages.blockedVerified} />}
-                icon="lock"
+            <InputContainer>
+              <Input
+                type="text"
+                name="last_name"
+                label={formatMessage(messages.lastName)}
+                autocomplete="family-name"
+                disabled={lockedFieldsNames.includes('last_name')}
               />
-            )}
+              {lockedFieldsNames.includes('last_name') && (
+                <StyledIconTooltip
+                  content={<FormattedMessage {...messages.blockedVerified} />}
+                  icon="lock"
+                />
+              )}
+            </InputContainer>
           </SectionField>
 
           <SectionField>
-            <Input
-              type="email"
-              name="email"
-              label={formatMessage(messages.email)}
-              autocomplete="email"
-              disabled={lockedFieldsNames.includes('email')}
-            />
-            {lockedFieldsNames.includes('email') && (
-              <StyledIconTooltip
-                content={<FormattedMessage {...messages.blockedVerified} />}
-                icon="lock"
+            <InputContainer>
+              <Input
+                type="email"
+                name="email"
+                label={formatMessage(messages.email)}
+                autocomplete="email"
+                disabled={lockedFieldsNames.includes('email')}
               />
-            )}
+              {lockedFieldsNames.includes('email') && (
+                <StyledIconTooltip
+                  content={<FormattedMessage {...messages.blockedVerified} />}
+                  icon="lock"
+                />
+              )}
+            </InputContainer>
           </SectionField>
 
           {!disableBio && (
