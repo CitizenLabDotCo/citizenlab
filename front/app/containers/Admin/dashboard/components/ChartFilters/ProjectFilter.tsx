@@ -28,6 +28,7 @@ interface DataProps {
 interface InputProps {
   currentProjectFilter?: string | null;
   onProjectFilter: (filter: IOption) => void;
+  hideLabel?: boolean;
 }
 
 interface Props extends DataProps, InputProps {}
@@ -51,6 +52,7 @@ const generateProjectOptions = (
 const ProjectFilter = ({
   projects: { projectsList },
   currentProjectFilter,
+  hideLabel,
   onProjectFilter,
   intl,
 }: Props & InjectedIntlProps) => {
@@ -68,7 +70,11 @@ const ProjectFilter = ({
     <Box width="32%">
       <Select
         id="projectFilter"
-        label={<FormattedMessage {...messages.labelProjectFilter} />}
+        label={
+          !hideLabel ? (
+            <FormattedMessage {...messages.labelProjectFilter} />
+          ) : undefined
+        }
         onChange={onProjectFilter}
         value={currentProjectFilter || ''}
         options={projectFilterOptions}

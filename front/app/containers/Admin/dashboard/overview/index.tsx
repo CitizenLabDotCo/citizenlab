@@ -13,7 +13,7 @@ import ResolutionControl, {
   IResolution,
 } from 'components/admin/ResolutionControl';
 import Outlet from 'components/Outlet';
-import ChartFilters from '../components/ChartFilters';
+import ProjectFilter from '../components/ChartFilters/ProjectFilter';
 import TimeControl from '../components/TimeControl';
 import LineBarChart from './charts/LineBarChart';
 import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
@@ -176,15 +176,16 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
               endAtMoment={endAtMoment}
               onChange={this.handleChangeTimeRange}
             />
+            <ProjectFilter
+              currentProjectFilter={currentProjectFilter}
+              hideLabel
+              onProjectFilter={this.handleOnProjectFilter}
+            />
             <ResolutionControl
               value={resolution}
               onChange={this.handleChangeResolution}
             />
           </ControlBar>
-          <ChartFilters
-            currentProjectFilter={currentProjectFilter}
-            onProjectFilter={this.handleOnProjectFilter}
-          />
           <GraphsContainer>
             <LineBarChart
               graphUnit="users"
