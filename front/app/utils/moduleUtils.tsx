@@ -189,7 +189,6 @@ export interface OutletsPropertyMap {
     projectId: string | undefined;
     startAt: string | null | undefined;
     endAt: string | null;
-    onMount: () => void;
   };
   'app.components.SignUpIn.SignUp.step': SignUpStepOutletProps;
   'app.containers.Admin.dashboard.reports.ProjectReport.graphs': {
