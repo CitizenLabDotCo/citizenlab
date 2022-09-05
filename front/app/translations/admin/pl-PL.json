@@ -1199,7 +1199,7 @@
   "app.containers.AdminPage.SideBar.dashboard": "Statystyki",
   "app.containers.AdminPage.SideBar.emails": "Wiadomości",
   "app.containers.AdminPage.SideBar.groups": "Grupy",
-  "app.containers.AdminPage.SideBar.guide": "Instrukcja",
+  "app.containers.AdminPage.SideBar.guide": "Przewodnik",
   "app.containers.AdminPage.SideBar.initiatives": "Propozycje",
   "app.containers.AdminPage.SideBar.inputManager": "Zarządzanie inicjatywami",
   "app.containers.AdminPage.SideBar.insights": "Raportowanie",
