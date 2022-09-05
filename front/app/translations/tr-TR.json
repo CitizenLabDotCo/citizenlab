@@ -1246,7 +1246,7 @@
   "app.containers.SpamReport.otherReasonPlaceholder": "Açıklama",
   "app.containers.SpamReport.wrong_content": "Alakasız",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "Profil resmini kaldır",
-  "app.containers.UsersEditPage.becomeVerifiedSubtitle": "To participate in projects requiring verification.",
+  "app.containers.UsersEditPage.becomeVerifiedSubtitle": "Doğrulama gerektiren projelere katılmak.",
   "app.containers.UsersEditPage.becomeVerifiedTitle": "Kimliğinizi doğrulayın",
   "app.containers.UsersEditPage.bio": "Hakkınızda",
   "app.containers.UsersEditPage.bio_placeholder": " ",
