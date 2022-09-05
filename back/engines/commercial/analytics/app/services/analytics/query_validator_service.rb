@@ -59,8 +59,7 @@ module Analytics
     def validate_attributes(attributes, kind)
       query_dimensions = @query.all_dimensions
       attributes.each do |attribute|
-        field, subfield = attribute.include?('.') ? attribute.split(attribute) : [attribute, nil]
-
+        field, subfield = attribute.include?('.') ? attribute.split('.') : [attribute, nil]
         if @query.all_attributes.include?(field)
           if subfield && @query.all_dimensions.exclude?(field)
             add_error("#{kind} field #{field} does not contain #{subfield} because is not a dimension.")
@@ -100,10 +99,16 @@ module Analytics
     end
 
     def validate_aggregations
-      # TODO calculated aggregation fields should not be allowed in aggregations
       @json_query[:aggregations].each do |key, aggregation|
-        if key == 'all' && aggregation != 'count'
-          add_error("Aggregations on 'all' can only be 'count'.")
+        if key == 'all'
+          if aggregation != 'count'
+            add_error("Aggregations on 'all' can only be 'count'.")
+          end
+          next
+        end
+
+        if @query.aggregations_names.include? key
+          add_error("Aggregations column #{key} does not exist.")
           next
         end
 
