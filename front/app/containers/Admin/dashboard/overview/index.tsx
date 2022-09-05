@@ -4,6 +4,7 @@ import { adopt } from 'react-adopt';
 import moment, { Moment } from 'moment';
 
 // components
+import { Box } from '@citizenlab/cl2-component-library';
 import {
   GraphsContainer,
   ControlBar,
@@ -171,16 +172,21 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
       return (
         <>
           <ControlBar>
-            <TimeControl
-              startAtMoment={startAtMoment}
-              endAtMoment={endAtMoment}
-              onChange={this.handleChangeTimeRange}
-            />
-            <ProjectFilter
-              currentProjectFilter={currentProjectFilter}
-              hideLabel
-              onProjectFilter={this.handleOnProjectFilter}
-            />
+            <Box display="flex" flexDirection="row">
+              <TimeControl
+                startAtMoment={startAtMoment}
+                endAtMoment={endAtMoment}
+                onChange={this.handleChangeTimeRange}
+              />
+              <Box ml="16px" mr="16px" maxWidth="320px">
+                <ProjectFilter
+                  currentProjectFilter={currentProjectFilter}
+                  hideLabel
+                  width="100%"
+                  onProjectFilter={this.handleOnProjectFilter}
+                />
+              </Box>
+            </Box>
             <ResolutionControl
               value={resolution}
               onChange={this.handleChangeResolution}

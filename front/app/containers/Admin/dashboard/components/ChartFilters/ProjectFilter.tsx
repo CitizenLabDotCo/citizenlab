@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 
 // resources
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
@@ -21,14 +22,19 @@ import messages from './messages';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
+const StyledSelect = styled(Select)`
+  padding: 0px !important;
+`;
+
 interface DataProps {
   projects: GetProjectsChildProps;
 }
 
 interface InputProps {
   currentProjectFilter?: string | null;
-  onProjectFilter: (filter: IOption) => void;
   hideLabel?: boolean;
+  width?: string;
+  onProjectFilter: (filter: IOption) => void;
 }
 
 interface Props extends DataProps, InputProps {}
@@ -53,6 +59,7 @@ const ProjectFilter = ({
   projects: { projectsList },
   currentProjectFilter,
   hideLabel,
+  width,
   onProjectFilter,
   intl,
 }: Props & InjectedIntlProps) => {
@@ -67,8 +74,8 @@ const ProjectFilter = ({
   );
 
   return (
-    <Box width="32%">
-      <Select
+    <Box width={width ?? '32%'}>
+      <StyledSelect
         id="projectFilter"
         label={
           !hideLabel ? (
