@@ -83,7 +83,7 @@ const CampaignForm = ({
       .oneOf(['author', 'organization'])
       .required(formatMessage(messages.fieldSenderError)),
     reply_to: string()
-      .email(formatMessage(messages.fieldReplyToError))
+      .email(formatMessage(messages.fieldReplyToEmailError))
       .required(formatMessage(messages.fieldReplyToError)),
     subject_multiloc: validateMultiloc(
       formatMessage(messages.fieldSubjectError)

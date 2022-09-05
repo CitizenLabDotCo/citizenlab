@@ -102,7 +102,7 @@ export default defineMessages({
   },
   fieldSubjectError: {
     id: 'app.containers.Admin.emails.fieldSubjectError',
-    defaultMessage: 'Provide an email subject',
+    defaultMessage: 'Provide an email subject for all languages',
   },
   fieldBody: {
     id: 'app.containers.Admin.emails.fieldBody',
@@ -110,7 +110,7 @@ export default defineMessages({
   },
   fieldBodyError: {
     id: 'app.containers.Admin.emails.fieldBodyError',
-    defaultMessage: 'Provide an email message',
+    defaultMessage: 'Provide an email message for all languages',
   },
   addCampaignTitle: {
     id: 'app.containers.Admin.emails.addCampaignTitle',
