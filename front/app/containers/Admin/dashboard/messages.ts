@@ -7,9 +7,9 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   // Index
-  tabSummary: {
-    id: 'app.containers.AdminPage.DashboardPage.tabSummary',
-    defaultMessage: 'Summary',
+  tabOverview: {
+    id: 'app.containers.AdminPage.DashboardPage.tabOverview',
+    defaultMessage: 'Overview',
   },
   tabUsers: {
     id: 'app.containers.AdminPage.DashboardPage.tabUsers',
