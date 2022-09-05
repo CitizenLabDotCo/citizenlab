@@ -16,7 +16,6 @@ import styled from 'styled-components';
 import {
   Box,
   stylingConsts,
-  Spinner,
   Text,
   Title,
   StatusLabel,
@@ -56,7 +55,15 @@ const FormBuilderTopBar = () => {
   const { watch } = useFormContext();
   const formCustomFields: IFlatCustomField[] = watch('customFields');
   const phase = usePhase(phaseId || null);
+
+  if (isNilOrError(project)) {
+    return null;
+  }
+
   const isPostingEnabled = getIsPostingEnabled(project, phase);
+  const viewSurveyLInk = phaseId
+    ? `/projects/${project?.attributes.slug}/ideas/new?phase_id=${phaseId}`
+    : `/projects/${project?.attributes.slug}/ideas/new`;
 
   // TODO : Generalize this form builder and use new ParticipationMethod abstraction to control method specific copy, etc.
   const goBack = () => {
@@ -74,6 +81,10 @@ const FormBuilderTopBar = () => {
           enabled: field.enabled,
           title_multiloc: field.title_multiloc || {},
           description_multiloc: field.description_multiloc || {},
+          ...(field.input_type === 'multiselect' && {
+            // TODO: This will get messy with more field types, abstract this in some way
+            options: field.options || {},
+          }),
         }));
         await updateFormCustomFields(projectId, finalResponseArray, phaseId);
       } catch {
@@ -107,38 +118,32 @@ const FormBuilderTopBar = () => {
       </Box>
       <Box display="flex" p="16px" flexGrow={1} alignItems="center">
         <Box flexGrow={2}>
-          {isNilOrError(project) ? (
-            <Spinner />
-          ) : (
-            <>
-              <Text mb="0px" color="adminSecondaryTextColor">
-                {localize(project.attributes.title_multiloc)}
-              </Text>
-              <Box display="flex" alignContent="center">
-                <Title marginRight="8px" marginTop="auto" variant="h4" as="h1">
-                  <FormattedMessage {...messages.surveyTitle} />
-                </Title>
-                <StyledStatusLabel
-                  text={
-                    isPostingEnabled ? (
-                      <span style={{ color: colors.clGreen }}>
-                        <FormattedMessage {...messages.open} />
-                      </span>
-                    ) : (
-                      <span style={{ color: colors.grey }}>
-                        <FormattedMessage {...messages.closed} />
-                      </span>
-                    )
-                  }
-                  backgroundColor={
-                    isPostingEnabled
-                      ? colors.clGreenSuccessBackground
-                      : colors.backgroundLightGrey
-                  }
-                />
-              </Box>
-            </>
-          )}
+          <Text mb="0px" color="adminSecondaryTextColor">
+            {localize(project.attributes.title_multiloc)}
+          </Text>
+          <Box display="flex" alignContent="center">
+            <Title marginRight="8px" marginTop="auto" variant="h4" as="h1">
+              <FormattedMessage {...messages.surveyTitle} />
+            </Title>
+            <StyledStatusLabel
+              text={
+                isPostingEnabled ? (
+                  <span style={{ color: colors.clGreen }}>
+                    <FormattedMessage {...messages.open} />
+                  </span>
+                ) : (
+                  <span style={{ color: colors.grey }}>
+                    <FormattedMessage {...messages.closed} />
+                  </span>
+                )
+              }
+              backgroundColor={
+                isPostingEnabled
+                  ? colors.clGreenSuccessBackground
+                  : colors.backgroundLightGrey
+              }
+            />
+          </Box>
         </Box>
         <Box ml="24px" />
         <Button
@@ -146,7 +151,7 @@ const FormBuilderTopBar = () => {
           icon="eye"
           mx="20px"
           disabled={!project}
-          linkTo={`/projects/${project?.attributes.slug}/ideas/new`}
+          linkTo={viewSurveyLInk}
           openLinkInNewTab
         >
           <FormattedMessage {...messages.viewSurvey} />

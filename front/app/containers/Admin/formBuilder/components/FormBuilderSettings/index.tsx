@@ -10,15 +10,18 @@ import { SectionField, SectionTitle } from 'components/admin/Section';
 import CloseIconButton from 'components/UI/CloseIconButton';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import Toggle from 'components/HookForm/Toggle';
+import ConfigMultiselectWithLocaleSwitcher from './ConfigMultiselectWithLocaleSwitcher';
 
 // intl
 import messages from '../messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
+// types
 import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';
 
-// Typings
-import { MessageDescriptor } from 'typings';
+// hooks
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   field: IFlatCustomFieldWithIndex;
@@ -27,9 +30,20 @@ interface Props {
 }
 
 const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
+  const locales = useAppConfigurationLocales();
+
+  if (isNilOrError(locales)) {
+    return null;
+  }
+
   let translatedStringKey: MessageDescriptor | null = null;
-  if (field.input_type === 'text') {
-    translatedStringKey = messages.shortAnswer;
+  switch (field.input_type) {
+    case 'text':
+      translatedStringKey = messages.shortAnswer;
+      break;
+    case 'multiselect':
+      translatedStringKey = messages.multipleChoice;
+      break;
   }
 
   return (
@@ -81,6 +95,12 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
           }
         />
       </SectionField>
+      {field.input_type === 'multiselect' && (
+        <ConfigMultiselectWithLocaleSwitcher // TODO: Abstract logic to somewhere else? Could be messy with more field types.
+          name={`customFields.${field.index}.options`}
+          locales={locales}
+        />
+      )}
       <Box display="flex" justifyContent="space-between">
         <Button
           icon="delete"

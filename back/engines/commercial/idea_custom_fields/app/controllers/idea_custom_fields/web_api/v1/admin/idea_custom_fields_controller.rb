@@ -28,7 +28,7 @@ module IdeaCustomFields
 
     def index
       authorize CustomField.new(resource: @custom_form), :index?, policy_class: IdeaCustomFieldPolicy
-      fields = IdeaCustomFieldsService.new(@custom_form).configurable_fields # TODO: include options
+      fields = IdeaCustomFieldsService.new(@custom_form).configurable_fields
       render json: ::WebApi::V1::CustomFieldSerializer.new(
         fields,
         params: fastjson_params,
@@ -58,7 +58,7 @@ module IdeaCustomFields
       update_fields
       @custom_form.reload
       render json: ::WebApi::V1::CustomFieldSerializer.new(
-        IdeaCustomFieldsService.new(@custom_form).configurable_fields, # TODO: include options
+        IdeaCustomFieldsService.new(@custom_form).configurable_fields,
         params: fastjson_params,
         include: [:options]
       ).serialized_json

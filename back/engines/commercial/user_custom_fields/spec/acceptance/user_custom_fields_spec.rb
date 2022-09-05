@@ -62,7 +62,11 @@ resource 'User Custom Fields' do
         },
         relationships: {
           current_ref_distribution: expected_ref_distribution_linkage,
-          options: an_instance_of(Hash)
+          options: {
+            data: custom_field.options.map do |option|
+              { id: option.id, type: 'custom_field_option' }
+            end
+          }
         }
       }.deep_symbolize_keys
     end

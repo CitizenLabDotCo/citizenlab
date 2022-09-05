@@ -67,6 +67,11 @@ export const FormEdit = ({
           formatMessage(messages.emptyTitleErrorMessage)
         ),
         description_multiloc: object(),
+        options: array().of(
+          object().shape({
+            title_multiloc: object(),
+          })
+        ),
         required: boolean(),
       })
     ),

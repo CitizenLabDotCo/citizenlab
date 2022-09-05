@@ -7,5 +7,5 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
     object.resource_type == 'User'
   }
 
-  has_many :options, record_type: :custom_field_option, serializer: WebApi::V1::CustomFieldOptionSerializer
+  has_many :options, record_type: :custom_field_option, serializer: ::WebApi::V1::CustomFieldOptionSerializer
 end

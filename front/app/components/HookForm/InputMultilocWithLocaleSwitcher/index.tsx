@@ -8,6 +8,7 @@ import {
 import Error, { TFieldName } from 'components/UI/Error';
 import { Controller, useFormContext, FieldError } from 'react-hook-form';
 import { CLError, Locale } from 'typings';
+import { get } from 'lodash-es';
 
 interface Props
   extends Omit<
@@ -19,7 +20,7 @@ interface Props
 
 const InputMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
   const {
-    formState: { errors },
+    formState: { errors: formContextErrors },
     control,
   } = useFormContext();
   const locales = useAppConfigurationLocales();
@@ -34,13 +35,13 @@ const InputMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
   );
 
   // Select the first error messages from the field's multiloc validation error
+  const errors = get(formContextErrors, name);
   const validationError = Object.values(
-    (errors[name] as Record<Locale, FieldError> | undefined) || {}
+    (errors as Record<Locale, FieldError> | undefined) || {}
   )[0]?.message;
 
   const apiError =
-    (errors[name]?.error as string | undefined) &&
-    ([errors[name]] as unknown as CLError[]);
+    (errors?.error as string | undefined) && ([errors] as unknown as CLError[]);
 
   return (
     <>
