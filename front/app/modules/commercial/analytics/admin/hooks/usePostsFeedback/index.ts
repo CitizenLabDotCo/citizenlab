@@ -32,9 +32,9 @@ import { InjectedIntlProps } from 'react-intl';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 
 interface QueryProps {
-  projectId?: string;
-  startAt?: string;
-  endAt?: string;
+  projectId: string | undefined;
+  startAt: string | null | undefined;
+  endAt: string | null;
 }
 
 // Response

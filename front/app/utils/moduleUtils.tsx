@@ -187,7 +187,7 @@ export interface OutletsPropertyMap {
   };
   'app.containers.Admin.dashboard.summary.postStatus': {
     projectId: string | undefined;
-    startAt?: string | null;
+    startAt: string | null | undefined;
     endAt: string | null;
   };
   'app.components.SignUpIn.SignUp.step': SignUpStepOutletProps;
