@@ -1240,7 +1240,7 @@
   "app.containers.AdminPage.Users.GroupCreation.step1TypeNameSmart": "Intelligente Gruppe",
   "app.containers.AdminPage.Users.GroupsPanel.emptyGroup": "Es gibt noch niemanden in dieser Gruppe",
   "app.containers.AdminPage.Users.GroupsPanel.goToAllUsers": "Gehen Sie zu {allUsersLink}, um einige BenutzerInnen manuell hinzuzufügen.",
-  "app.containers.AdminPage.Users.GroupsPanel.noUserMatchesYourSearch": "Kein(e) Benutzer entsprechen Ihrer Suche",
+  "app.containers.AdminPage.Users.GroupsPanel.noUserMatchesYourSearch": "Kein:e Benutzer:in entspricht Ihrer Suche",
   "app.containers.AdminPage.Users.GroupsPanel.select": "Auswählen",
   "app.containers.AdminPage.Users.UsersGroup.exportAllUsers": "Exportieren Sie die Daten aller BenutzerInnen",
   "app.containers.AdminPage.Users.UsersGroup.exportGroup": "Exportieren Sie die Daten der BenutzerInnen in dieser Gruppe",
