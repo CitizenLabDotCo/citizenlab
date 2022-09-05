@@ -33,6 +33,7 @@ interface DataProps {
 interface InputProps {
   currentProjectFilter?: string | null;
   hideLabel?: boolean;
+  placeholder?: string;
   width?: string;
   onProjectFilter: (filter: IOption) => void;
 }
@@ -59,6 +60,7 @@ const ProjectFilter = ({
   projects: { projectsList },
   currentProjectFilter,
   hideLabel,
+  placeholder,
   width,
   onProjectFilter,
   intl,
@@ -85,6 +87,7 @@ const ProjectFilter = ({
         onChange={onProjectFilter}
         value={currentProjectFilter || ''}
         options={projectFilterOptions}
+        placeholder={placeholder}
       />
     </Box>
   );

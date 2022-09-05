@@ -27,6 +27,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.helmetDescription',
     defaultMessage: 'Dashboard for activities on the platform',
   },
+  selectProject: {
+    id: 'app.containers.AdminPage.DashboardPage.selectProject',
+    defaultMessage: 'Select project',
+  },
   // All tabs
   day: {
     id: 'app.containers.AdminPage.DashboardPage.day',

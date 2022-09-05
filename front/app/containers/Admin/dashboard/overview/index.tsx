@@ -182,6 +182,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 <ProjectFilter
                   currentProjectFilter={currentProjectFilter}
                   hideLabel
+                  placeholder={formatMessage(messages.selectProject)}
                   width="100%"
                   onProjectFilter={this.handleOnProjectFilter}
                 />
