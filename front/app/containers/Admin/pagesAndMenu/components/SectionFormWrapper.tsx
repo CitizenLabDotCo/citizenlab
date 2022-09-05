@@ -8,7 +8,7 @@ import PageTitle from 'components/admin/PageTitle';
 import PageWrapper from 'components/admin/PageWrapper';
 import { SectionDescription } from 'components/admin/Section';
 
-type Props = {
+interface Props {
   breadcrumbs?: TBreadcrumbs;
   title?: string | JSX.Element;
   subtitle?: string | JSX.Element;
