@@ -1,4 +1,8 @@
 # Changelog
+## 2022-09-02
+
+### Fixed
+- [CL-1580] Do not show full admin panel to moderators
 
 ## 2022-08-30
 
