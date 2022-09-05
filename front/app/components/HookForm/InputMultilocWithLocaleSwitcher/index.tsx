@@ -40,6 +40,7 @@ const InputMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
     (errors as Record<Locale, FieldError> | undefined) || {}
   )[0]?.message;
 
+  // If an API error with a matching name has been returned from the API response, apiError is set to an array with the error message as the only item
   const apiError =
     (errors?.error as string | undefined) && ([errors] as unknown as CLError[]);
 
