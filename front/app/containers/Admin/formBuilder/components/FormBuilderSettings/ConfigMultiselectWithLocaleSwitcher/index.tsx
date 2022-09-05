@@ -1,9 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { DndProvider } from 'react-dnd-cjs';
 import HTML5Backend from 'react-dnd-html5-backend-cjs';
+import { get } from 'lodash-es';
 
 // react hook form
-import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
+import {
+  Controller,
+  useFieldArray,
+  useFormContext,
+  FieldError,
+} from 'react-hook-form';
 
 // components
 import {
@@ -17,15 +23,19 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { SectionField } from 'components/admin/Section';
 import { List, SortableRow } from 'components/admin/ResourceList';
+import Error, { TFieldName } from 'components/UI/Error';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import { Multiloc, Locale } from 'typings';
 import messages from './messages';
+
+// Typings
+import { Multiloc, Locale, CLError } from 'typings';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+
 interface Props {
   name: string;
   onSelectedLocaleChange?: (locale: Locale) => void;
@@ -39,8 +49,8 @@ const ConfigMultiselectWithLocaleSwitcher = ({
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const {
-    // formState: { errors }, // TODO: Error handling
     control,
+    formState: { errors: formContextErrors },
     setValue,
   } = useFormContext();
   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
@@ -81,6 +91,15 @@ const ConfigMultiselectWithLocaleSwitcher = ({
   };
 
   const defaultValues = [{}];
+
+  // Select the first error messages from the field's multiloc validation error
+  const errors = get(formContextErrors, name);
+  const validationError = Object.values(
+    (errors as Record<Locale, FieldError> | undefined) || {}
+  )[0]?.message;
+
+  const apiError =
+    (errors?.error as string | undefined) && ([errors] as unknown as CLError[]);
 
   if (selectedLocale) {
     return (
@@ -164,6 +183,23 @@ const ConfigMultiselectWithLocaleSwitcher = ({
             );
           }}
         />
+        {validationError && (
+          <Error
+            marginTop="8px"
+            marginBottom="8px"
+            text={validationError}
+            scrollIntoView={false}
+          />
+        )}
+        {apiError && (
+          <Error
+            fieldName={name as TFieldName}
+            apiErrors={apiError}
+            marginTop="8px"
+            marginBottom="8px"
+            scrollIntoView={false}
+          />
+        )}
       </>
     );
   }
