@@ -14,17 +14,16 @@ interface Props extends InputProps {
 
 const Input = ({ name, type = 'text', ...rest }: Props) => {
   const {
-    formState: { errors },
+    formState: { errors: formContextErrors },
     control,
   } = useFormContext();
 
   const defaultValue = '';
-
-  const validationError = get(errors, name)?.message as string | undefined;
+  const errors = get(formContextErrors, name);
+  const validationError = errors?.message as string | undefined;
 
   const apiError =
-    (get(errors, name)?.error as string | undefined) &&
-    ([get(errors, name)] as unknown as CLError[]);
+    (errors?.error as string | undefined) && ([errors] as unknown as CLError[]);
 
   return (
     <>
