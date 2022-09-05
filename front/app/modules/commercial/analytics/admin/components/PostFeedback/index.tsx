@@ -127,10 +127,10 @@ const PostFeedback = ({
       <GraphCardInner>
         <GraphCardHeader>
           <GraphCardTitle>
-            {formatMessage(hookMessages.postFeedback)}
+            {formatMessage(hookMessages.inputStatus)}
           </GraphCardTitle>
           <ReportExportMenu
-            name={formatMessage(hookMessages.postFeedback)
+            name={formatMessage(hookMessages.inputStatus)
               .toLowerCase()
               .replace(' ', '_')}
             svgNode={[

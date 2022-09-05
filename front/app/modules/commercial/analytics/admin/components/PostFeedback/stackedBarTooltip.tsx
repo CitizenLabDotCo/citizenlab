@@ -3,6 +3,10 @@ import { Tooltip } from 'recharts';
 import { Box } from '@citizenlab/cl2-component-library';
 import { StackedBarsRow } from '../../hooks/usePostsFeedback';
 
+// i18n
+import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
+
 export const stackedBarTooltip =
   (
     stackIndex: number | undefined,
@@ -26,8 +30,8 @@ export const stackedBarTooltip =
           return (
             <Box p="8px" background="white">
               {label}
-              Value: {value} <br />
-              Percentage: {percentage}
+              {<FormattedMessage {...messages.inputs} />}: {value} ({percentage}
+              %)
             </Box>
           );
         }}
