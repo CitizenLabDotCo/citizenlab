@@ -17,6 +17,9 @@ import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWi
 import SlugInput from 'components/HookForm/SlugInput';
 import { Box } from '@citizenlab/cl2-component-library';
 
+// utils
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
+
 // intl
 import messages from '../messages';
 import { InjectedIntlProps } from 'react-intl';
@@ -44,8 +47,6 @@ const CustomPageSettingsForm = ({
   onSubmit,
 }: Props & InjectedIntlProps) => {
   const [_titleErrors, _setTitleErrors] = useState<Multiloc>({});
-  // types still to change
-  const [_error, setError] = useState({});
   const schema = object({
     title_multiloc: validateMultiloc(
       formatMessage(messages.titleMultilocError)
@@ -66,9 +67,9 @@ const CustomPageSettingsForm = ({
 
   const onFormSubmit = async (formValues: FormValues) => {
     try {
-      onSubmit(formValues);
+      await onSubmit(formValues);
     } catch (error) {
-      setError(error);
+      handleHookFormSubmissionError(error, methods.setError);
     }
   };
 
