@@ -702,7 +702,6 @@
   "app.containers.AdminPage.DashboardPage.tabMap": "Karta",
   "app.containers.AdminPage.DashboardPage.tabReports": "Projekt",
   "app.containers.AdminPage.DashboardPage.tabRepresentativeness2": "Representation",
-  "app.containers.AdminPage.DashboardPage.tabSummary": "Sammanfattning",
   "app.containers.AdminPage.DashboardPage.tabUsers": "Användare",
   "app.containers.AdminPage.DashboardPage.thenLoadingMessage": "Kul fakta: det kommer nog gå mycket snabbare nästa gång du kommer hit!",
   "app.containers.AdminPage.DashboardPage.timelineType": "Tidslinje",

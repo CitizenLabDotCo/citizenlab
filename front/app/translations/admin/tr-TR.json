@@ -702,7 +702,6 @@
   "app.containers.AdminPage.DashboardPage.tabMap": "Harita",
   "app.containers.AdminPage.DashboardPage.tabReports": "Raporlar",
   "app.containers.AdminPage.DashboardPage.tabRepresentativeness2": "Temsil Gücü",
-  "app.containers.AdminPage.DashboardPage.tabSummary": "Özet",
   "app.containers.AdminPage.DashboardPage.tabUsers": "Kullanıcılar",
   "app.containers.AdminPage.DashboardPage.thenLoadingMessage": "Eğlenceli Bilgi: Bir dahaki sefere muhtemelen çok daha hızlı olacaktır!",
   "app.containers.AdminPage.DashboardPage.timelineType": "Zaman Çizelgesi",
