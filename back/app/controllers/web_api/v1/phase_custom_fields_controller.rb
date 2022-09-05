@@ -24,10 +24,6 @@ class WebApi::V1::PhaseCustomFieldsController < ApplicationController
   end
 
   def custom_form
-    if phase
-      phase.custom_form || CustomForm.new(participation_context: phase)
-    else
-      project.custom_form || CustomForm.new(participation_context: project)
-    end
+    phase.custom_form || CustomForm.new(participation_context: phase)
   end
 end
