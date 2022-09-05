@@ -19,7 +19,7 @@ RSpec.describe CustomFieldOption, type: :model do
 
     it 'updates the associated area (if any)', :aggregate_failures do
       new_title = { 'en' => 'new title' }
-      expect(option.title_multiloc).to_not eq new_title # sanity check
+      expect(option.title_multiloc).not_to eq new_title # sanity check
 
       option.update(title_multiloc: new_title, ordering: 0)
 
