@@ -39,7 +39,7 @@ module Analytics
 
       return unless @json_query.key?(:sort)
 
-      validate_attributes(@json_query[:sort], 'Sort')
+      validate_attributes(@json_query[:sort].keys, 'Sort')
     end
 
     private
