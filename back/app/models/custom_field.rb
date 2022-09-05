@@ -146,7 +146,7 @@ class CustomField < ApplicationRecord
   end
 
   def create_domicile_options
-    Area.all.find_each(&:create_custom_field_option)
+    Area.all.map(&:create_custom_field_option)
     create_somewhere_else_domicile_option
   end
 
