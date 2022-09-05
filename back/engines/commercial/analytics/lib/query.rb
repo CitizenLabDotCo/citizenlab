@@ -74,8 +74,8 @@ module Analytics
         used_dimensions += @json_query[:sort].keys
       end
 
-      if @json_query.key?(:dimensions)
-        used_dimensions += @json_query[:dimensions].keys
+      if @json_query.key?(:filters)
+        used_dimensions += @json_query[:filters].keys
       end
 
       used_dimensions = used_dimensions.map { |key| key.include?('.') ? key.split('.')[0] : key }

@@ -16,7 +16,7 @@ module Analytics
         @pluck_attributes += @query.fields
       end
 
-      if @json_query.key?(:dimensions)
+      if @json_query.key?(:filters)
         results = query_dimensions(results)
       end
 
@@ -41,7 +41,7 @@ module Analytics
     private
 
     def query_dimensions(results)
-      @json_query[:dimensions].each do |dimension, columns|
+      @json_query[:filters].each do |dimension, columns|
         columns.each do |column, value|
           if [Array, String].include? value.class
             results = results.where(dimension => { column => value })
@@ -63,8 +63,8 @@ module Analytics
 
     def include_dimensions(results)
       dimensions = @query.used_dimensions
-      if @json_query.key?(:dimensions)
-        dimensions = dimensions.reject { |dim| @json_query[:dimensions].key?(dim) }
+      if @json_query.key?(:filters)
+        dimensions = dimensions.reject { |dim| @json_query[:filters].key?(dim) }
       end
 
       all_dimensions = @query.all_dimensions

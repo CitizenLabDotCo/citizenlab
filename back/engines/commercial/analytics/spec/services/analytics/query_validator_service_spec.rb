@@ -40,7 +40,7 @@ describe Analytics::QueryValidatorService do
 
       validator = described_class.new(query)
       expect(validator.valid).to be false
-      expect(validator.messages).to include 'Fields column some_field does not exist in fact table.'
+      expect(validator.messages).to include 'Fields field some_field does not exist.'
     end
 
     it 'fails on invalid characters' do
@@ -63,7 +63,7 @@ describe Analytics::QueryValidatorService do
       query_param = ActionController::Parameters.new(
         fact: 'post',
         fields: 'id',
-        dimensions: {
+        filters: {
           created_date: {
             date: { from: 'xxxx', to: '2022-01-01' }
           }
@@ -73,14 +73,14 @@ describe Analytics::QueryValidatorService do
 
       validator = described_class.new(query)
       expect(validator.valid).to be false
-      expect(validator.messages).to include 'Invalid \'from\' date in created_date dimension.'
+      expect(validator.messages).to include 'Invalid \'from\' date in created_date dimension on column date.'
     end
 
     it 'pass on valid query' do
       query_param = ActionController::Parameters.new(
         fact: 'post',
         fields: 'id',
-        dimensions: {
+        filters: {
           created_date: {
             date: { from: '2021-01-01', to: '2022-01-01' }
           }

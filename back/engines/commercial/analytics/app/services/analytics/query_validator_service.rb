@@ -25,7 +25,7 @@ module Analytics
         validate_attributes(@query.fields, 'Fields')
       end
 
-      if @json_query.key?(:dimensions)
+      if @json_query.key?(:filters)
         validate_dimensions
       end
 
@@ -75,11 +75,11 @@ module Analytics
 
     def validate_dimensions
       dates_attrs = %w[from to]
-      @json_query[:dimensions].each do |dimension, columns|
+      @json_query[:filters].each do |dimension, columns|
         columns.each do |column, value|
           validate_attributes(["#{dimension}.#{column}"], 'Filters')
 
-          next unless column == 'date' && value.is_a?(Hash)
+          next unless column == 'date' && value.is_a?(ActionController::Parameters)
 
           dates_attrs.each do |date|
             Date.parse(value[date])
