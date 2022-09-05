@@ -10,7 +10,12 @@ import scrollToComponent from 'react-scroll-to-component';
 import bowser from 'bowser';
 
 // components
-import { Input, LocationInput } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  IconTooltip,
+  Input,
+  LocationInput,
+} from '@citizenlab/cl2-component-library';
 import QuillEditor from 'components/UI/QuillEditor';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import UserSelect from 'components/UI/UserSelect';
@@ -749,6 +754,26 @@ class IdeaForm extends PureComponent<
         phases
       );
 
+      const AdminBudgetFieldLabel = () => {
+        return (
+          <>
+            <FormattedMessage
+              {...messages.budgetLabel}
+              values={{
+                currency: tenantCurrency,
+                maxBudget: pbContext?.attributes.max_budget,
+              }}
+            />
+            <IconTooltip
+              iconColor="black"
+              marginLeft="4px"
+              icon="admin"
+              content={<FormattedMessage {...messages.adminFieldTooltip} />}
+            />
+          </>
+        );
+      };
+
       return (
         <Form id="idea-form" className={className}>
           <StyledFormSection>
@@ -883,15 +908,13 @@ class IdeaForm extends PureComponent<
                   context={{ projectId }}
                 >
                   <FormElement>
-                    <FormLabel
-                      labelMessage={messages.budgetLabel}
-                      labelMessageValues={{
-                        currency: tenantCurrency,
-                        maxBudget: pbContext?.attributes.max_budget,
-                      }}
-                      htmlFor="budget"
-                      iconName="admin"
-                    />
+                    <Box display="flex">
+                      <FormLabel
+                        width="auto"
+                        labelValue={<AdminBudgetFieldLabel />}
+                        htmlFor="budget"
+                      />
+                    </Box>
                     <Input
                       id="budget"
                       error={budgetError}
