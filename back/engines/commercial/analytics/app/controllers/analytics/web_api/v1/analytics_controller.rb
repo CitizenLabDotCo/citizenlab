@@ -19,10 +19,11 @@ module Analytics
       def handle_request
         authorize :analytics, policy_class: AnalyticsPolicy
 
-        results, errors = if params[:query].instance_of?(Array)
-          handle_multiple(params[:query])
-        else
-          handle_single(params[:query])
+        results, errors = handle_multiple(Array.wrap(params[:query]))
+
+        unless params[:query].instance_of?(Array)
+          results = results.empty? ? results : results[0]
+          errors = errors.key?(0) ? errors[0] : errors
         end
 
         if errors.present?
@@ -30,18 +31,6 @@ module Analytics
         else
           render json: { 'data' => results }
         end
-      end
-
-      def handle_single(json_query)
-        query = Query.new(json_query)
-        query.validate
-
-        query.run if query.valid
-
-        results = query.results
-        errors = query.error_messages
-
-        [results, errors]
       end
 
       def handle_multiple(json_queries)
