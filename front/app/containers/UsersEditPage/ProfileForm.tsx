@@ -116,7 +116,7 @@ const ProfileForm = ({
       bio_multiloc: object(),
     }),
     password: string().test(
-      'len',
+      'length',
       'Value can be empty or contain a string at with least the minimum password length',
       (value, { createError, path }) => {
         if (value && value.length > 0 && value.length < minimumPasswordLength) {
