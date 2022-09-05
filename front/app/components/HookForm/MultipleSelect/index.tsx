@@ -1,27 +1,26 @@
 import React from 'react';
-import TextareaComponent, {
-  Props as TextAreaProps,
-} from 'components/UI/TextArea';
+import MultipleSelectComponent, {
+  Props as MultipleSelectComponentProps,
+} from 'components/UI/MultipleSelect';
 import Error, { TFieldName } from 'components/UI/Error';
 import { Controller, useFormContext } from 'react-hook-form';
-import { CLError } from 'typings';
+import { CLError, IOption } from 'typings';
 
-interface Props extends TextAreaProps {
+interface Props
+  extends Omit<MultipleSelectComponentProps, 'onChange' | 'value'> {
   name: string;
 }
 
-const TextArea = ({ name, ...rest }: Props) => {
+const MultipleSelect = ({ name, ...rest }: Props) => {
   const {
+    trigger,
+    setValue,
     formState: { errors },
     control,
-    trigger,
   } = useFormContext();
-
-  const defaultValue = '';
 
   const validationError = errors[name]?.message as string | undefined;
 
-  // If an API error with a matching name has been returned from the API response, apiError is set to an array with the error message as the only item
   const apiError =
     (errors[name]?.error as string | undefined) &&
     ([errors[name]] as unknown as CLError[]);
@@ -31,17 +30,22 @@ const TextArea = ({ name, ...rest }: Props) => {
       <Controller
         name={name}
         control={control}
-        defaultValue={defaultValue}
-        render={({ field: { ref: _ref, ...field } }) => (
-          <TextareaComponent
-            id={name}
-            {...field}
-            {...rest}
-            onBlur={() => {
-              trigger();
-            }}
-          />
-        )}
+        render={({ field: { ref: _ref, ...field } }) => {
+          return (
+            <MultipleSelectComponent
+              inputId={name}
+              {...field}
+              {...rest}
+              onChange={(newOption: IOption[]) => {
+                setValue(
+                  name,
+                  newOption.map((o) => o.value)
+                );
+                trigger();
+              }}
+            />
+          );
+        }}
       />
       {validationError && (
         <Error
@@ -64,4 +68,4 @@ const TextArea = ({ name, ...rest }: Props) => {
   );
 };
 
-export default TextArea;
+export default MultipleSelect;
