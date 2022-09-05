@@ -95,4 +95,3 @@ class Area < ApplicationRecord
     SideFxCustomFieldOptionService.new.after_destroy(custom_field_option, nil)
   end
 end
-

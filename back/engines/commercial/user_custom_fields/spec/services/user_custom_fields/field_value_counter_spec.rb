@@ -47,7 +47,7 @@ RSpec.describe UserCustomFields::FieldValueCounter do
       context 'and custom field is not domicile' do
         let(:custom_field) { create(:custom_field_gender, :with_options) }
 
-        specify { expect{ counts }.to raise_error(ArgumentError) }
+        specify { expect { counts }.to raise_error(ArgumentError) }
       end
     end
   end
