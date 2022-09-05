@@ -142,7 +142,12 @@ module MultiTenancy
       end
 
       def yml_custom_field_options
-        CustomFieldOption.all.map do |c|
+        # Options of the domicile field do not need to be serialized.
+        # They will be recreated from areas when loading the template.
+        domicile_field = CustomField.find_by(code: 'domicile')
+        options = domicile_field ? CustomFieldOption.where.not(custom_field: domicile_field) : CustomFieldOption
+
+        options.all.map do |c|
           yml_custom_field_option = {
             'custom_field_ref' => lookup_ref(c.custom_field_id, :custom_field),
             'key' => c.key,
