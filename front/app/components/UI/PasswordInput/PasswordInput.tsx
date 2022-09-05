@@ -53,7 +53,7 @@ const PasswordInputComponent = ({
   minimumPasswordLength,
   isLoginPasswordInput,
   setRef,
-  errors,
+  errors = {},
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const locale = useLocale();

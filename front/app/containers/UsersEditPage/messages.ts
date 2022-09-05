@@ -57,6 +57,11 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.password',
     defaultMessage: 'Password',
   },
+  minimumPasswordLengthError: {
+    id: 'app.components.PasswordInput.minimumPasswordLengthError',
+    defaultMessage:
+      'Provide a password that is at least {minimumPasswordLength} characters long',
+  },
   language: {
     id: 'app.containers.UsersEditPage.language',
     defaultMessage: 'Language',

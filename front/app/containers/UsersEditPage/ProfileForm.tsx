@@ -83,7 +83,7 @@ type FormValues = {
   email?: string;
   bio_multiloc?: Multiloc;
   locale?: string;
-  avatar?: UploadFile[];
+  avatar?: UploadFile[] | null;
 };
 
 const ProfileForm = ({
@@ -103,6 +103,11 @@ const ProfileForm = ({
     [field in ExtraFormDataKey]?: Record<string, any>;
   }>({});
 
+  const minimumPasswordLength =
+    (!isNilOrError(tenant) &&
+      tenant.attributes.settings.password_login?.minimum_length) ||
+    0;
+
   const schema = object({
     first_name: string().required(),
     last_name: string().required(),
@@ -110,15 +115,22 @@ const ProfileForm = ({
     ...(!disableBio && {
       bio_multiloc: object(),
     }),
-    password: string().min(
-      !isNilOrError(tenant) &&
-        tenant.attributes.settings.password_login?.minimum_length
-        ? tenant.attributes.settings.password_login.minimum_length
-        : 0,
-      '' // The component handles it's own error messaging
+    password: string().test(
+      'len',
+      'Value can be empty or contain a string at with least the minimum password length',
+      (value, { createError, path }) => {
+        if (value && value.length > 0 && value.length < minimumPasswordLength) {
+          return createError({
+            path,
+            message: formatMessage(messages.minimumPasswordLengthError, {
+              minimumPasswordLength,
+            }),
+          });
+        } else return true;
+      }
     ),
     locale: string(),
-    avatar: mixed(),
+    avatar: mixed().nullable(),
   });
 
   const methods = useForm<FormValues>({
@@ -143,6 +155,8 @@ const ProfileForm = ({
           methods.setValue('avatar', [fileAvatar]);
         }
       });
+    } else {
+      methods.setValue('avatar', null);
     }
   }, [authUser, methods]);
 

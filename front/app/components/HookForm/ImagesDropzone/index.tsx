@@ -44,7 +44,7 @@ const ImagesDropzone = ({ name, inputLabel, ...rest }: Props) => {
                   shouldDirty: true,
                 });
               }}
-              onRemove={() => setValue(name, undefined, { shouldDirty: true })}
+              onRemove={() => setValue(name, null, { shouldDirty: true })}
             />
           );
         }}

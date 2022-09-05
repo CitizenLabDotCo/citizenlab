@@ -21,7 +21,7 @@ export interface Props {
   autocomplete?: 'current-password' | 'new-password';
   placeholder?: string;
   isLoginPasswordInput?: boolean;
-  errors: PasswordErrors;
+  errors?: PasswordErrors;
 }
 
 const DEFAULT_MINIMUM_PASSWORD_LENGTH = 8;

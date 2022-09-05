@@ -5,11 +5,8 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { CLError } from 'typings';
 
 import PasswordInputComponent, {
-  hasPasswordMinimumLength,
   Props as PasswordInputComponentProps,
 } from 'components/UI/PasswordInput';
-import useAppConfiguration from 'hooks/useAppConfiguration';
-import { isNilOrError } from 'utils/helperUtils';
 
 interface Props
   extends Omit<
@@ -20,23 +17,13 @@ interface Props
 }
 
 const PasswordInput = ({ name, ...rest }: Props) => {
-  const appConfig = useAppConfiguration();
   const {
     getValues,
-    formState: { errors, touchedFields },
+    formState: { errors },
     control,
   } = useFormContext();
 
   const defaultValue = '';
-
-  const passwordHasPasswordMinimumLengthError =
-    touchedFields[name] &&
-    hasPasswordMinimumLength(
-      getValues(name) || '',
-      !isNilOrError(appConfig)
-        ? appConfig.data.attributes.settings.password_login?.minimum_length
-        : undefined
-    );
 
   const validationError = errors[name]?.message as string | undefined;
 
@@ -57,9 +44,6 @@ const PasswordInput = ({ name, ...rest }: Props) => {
             {...rest}
             id={name}
             password={getValues(name)}
-            errors={{
-              minimumLengthError: passwordHasPasswordMinimumLengthError,
-            }}
           />
         )}
       />
