@@ -119,18 +119,6 @@ const query = ({ projectId, startAt, endAt }: QueryProps): Query => {
       'status.title_multiloc': 'first',
       'status.color': 'first',
     },
-    ...(projectId
-      ? {
-          dimensions: { project: { id: projectId } },
-        }
-      : {}),
-    ...(startAt && endAt
-      ? {
-          created_date: {
-            date: { from: toDate(startAt), to: toDate(endAt) },
-          },
-        }
-      : {}),
   };
 
   return { query: [queryFeedback, queryStatus] };
