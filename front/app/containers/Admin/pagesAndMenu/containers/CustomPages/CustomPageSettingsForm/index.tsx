@@ -18,7 +18,7 @@ import SlugInput from 'components/HookForm/SlugInput';
 import { Box } from '@citizenlab/cl2-component-library';
 
 // intl
-import messages from './messages';
+import messages from '../messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
@@ -30,9 +30,10 @@ export interface FormValues {
   slug?: string;
 }
 
+type TMode = 'new' | 'edit';
 interface Props {
   defaultValues?: FormValues;
-  mode: 'new' | 'edit';
+  mode: TMode;
   onSubmit: (formValues: FormValues) => void;
 }
 
@@ -73,7 +74,10 @@ const CustomPageSettingsForm = ({
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onFormSubmit)}>
+      <form
+        onSubmit={methods.handleSubmit(onFormSubmit)}
+        data-testid="customPageSettingsForm"
+      >
         <SectionFormWrapper
           stickyMenuContents={
             <Button type="submit" processing={methods.formState.isSubmitting}>
