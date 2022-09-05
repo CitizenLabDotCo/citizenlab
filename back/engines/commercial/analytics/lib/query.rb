@@ -38,7 +38,7 @@ module Analytics
     end
 
     def all_dimensions
-      model
+      @all_dimensions ||= model
         .reflect_on_all_associations(:belongs_to)
         .to_h do |assoc|
           [
