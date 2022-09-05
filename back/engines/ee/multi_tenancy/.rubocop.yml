@@ -12,6 +12,10 @@ AllCops:
   - 'db/schema.rb'
   - 'bin/**/*'
 
+Layout/HashAlignment:
+  EnforcedColonStyle: [key, table]
+  EnforcedHashRocketStyle: [key, table]
+
 Style/Documentation:
   # Most classes are not documented, so turn off this Cop.
   Enabled: false
@@ -81,7 +85,7 @@ Layout/MultilineMethodCallIndentation:
 
 Metrics/MethodLength:
   CountAsOne: ['array', 'hash', 'heredoc']
-  IgnoredMethods: ['included', 'prepended', 'extended']
+  AllowedMethods: ['included', 'prepended', 'extended']
   Exclude:
   - '**/db/migrate/**/*'
 
@@ -97,7 +101,7 @@ RSpec/DescribeClass:
   Exclude:
     - 'spec/db/seedfile_spec.rb'
     - 'spec/tasks/email_campaigns_task_spec.rb'
-    
+
 RSpec/BeforeAfterAll:
   Exclude:
     - 'spec/tasks/email_campaigns_task_spec.rb'

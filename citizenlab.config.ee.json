@@ -3,6 +3,7 @@
     "ee/multi_tenancy": true,
     "commercial/admin_api": true,
     "commercial/admin_project_templates": true,
+    "commercial/bulk_import_ideas": true,
     "commercial/content_builder": true,
     "commercial/custom_idea_statuses": true,
     "commercial/custom_maps": true,

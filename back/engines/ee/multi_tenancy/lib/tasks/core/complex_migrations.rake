@@ -110,63 +110,61 @@ namespace :complex_migrations do
 
         # Merge subtopics (e.g. Sports -> Culture)
         tenant_sub_mapping = sub_mapping[tenant.id]
-        if tenant_sub_mapping
-          tenant_sub_mapping&.each do |topic_id, value|
-            code = value['code']
-            if value['merge']
-              parent_topic = Topic.find_by code: code
-              topic = Topic.find topic_id
-              if parent_topic && topic
-                ideas = Idea.where(id: IdeasTopic.where(topic_id: topic_id).select(:idea_id))
-                ideas.each do |idea|
-                  already_assigned = false
-                  if idea.topic_ids.include? parent_topic.id
-                    already_assigned = true
-                  else
-                    idea.topics << parent_topic
-                    idea.save!
-                  end
-                  changed_associations += [{
-                    tenant_host: tenant.host,
-                    post_type: 'Idea',
-                    post_id: idea.id,
-                    merged_topic_id: topic.id,
-                    merged_topic_code: topic.code,
-                    merged_topic_name: topic.title_multiloc.values.first,
-                    parent_topic_id: parent_topic.id,
-                    parent_topic_code: parent_topic.code,
-                    parent_topic_name: parent_topic.title_multiloc.values.first,
-                    already_assigned: already_assigned
-                  }]
+        tenant_sub_mapping&.each do |topic_id, value|
+          code = value['code']
+          if value['merge']
+            parent_topic = Topic.find_by code: code
+            topic = Topic.find topic_id
+            if parent_topic && topic
+              ideas = Idea.where(id: IdeasTopic.where(topic_id: topic_id).select(:idea_id))
+              ideas.each do |idea|
+                already_assigned = false
+                if idea.topic_ids.include? parent_topic.id
+                  already_assigned = true
+                else
+                  idea.topics << parent_topic
+                  idea.save!
                 end
-
-                initiatives = Initiative.where(id: InitiativesTopic.where(topic_id: topic_id).select(:initiative_id))
-                initiatives.each do |initiative|
-                  already_assigned = false
-                  if initiative.topic_ids.include? parent_topic.id
-                    already_assigned = true
-                  else
-                    initiative.topics << parent_topic
-                    initiative.save!
-                  end
-                  changed_associations += [{
-                    tenant_host: tenant.host,
-                    post_type: 'Initiative',
-                    post_id: initiative.id,
-                    merged_topic_id: topic.id,
-                    merged_topic_code: topic.code,
-                    merged_topic_name: topic.title_multiloc.values.first,
-                    parent_topic_id: parent_topic.id,
-                    parent_topic_code: parent_topic.code,
-                    parent_topic_name: parent_topic.title_multiloc.values.first,
-                    already_assigned: already_assigned
-                  }]
-                end
-
-                topic.destroy!
-              else
-                errors += ["Couldn't find topic #{code} to merge with for #{tenant.host}"]
+                changed_associations += [{
+                  tenant_host: tenant.host,
+                  post_type: 'Idea',
+                  post_id: idea.id,
+                  merged_topic_id: topic.id,
+                  merged_topic_code: topic.code,
+                  merged_topic_name: topic.title_multiloc.values.first,
+                  parent_topic_id: parent_topic.id,
+                  parent_topic_code: parent_topic.code,
+                  parent_topic_name: parent_topic.title_multiloc.values.first,
+                  already_assigned: already_assigned
+                }]
               end
+
+              initiatives = Initiative.where(id: InitiativesTopic.where(topic_id: topic_id).select(:initiative_id))
+              initiatives.each do |initiative|
+                already_assigned = false
+                if initiative.topic_ids.include? parent_topic.id
+                  already_assigned = true
+                else
+                  initiative.topics << parent_topic
+                  initiative.save!
+                end
+                changed_associations += [{
+                  tenant_host: tenant.host,
+                  post_type: 'Initiative',
+                  post_id: initiative.id,
+                  merged_topic_id: topic.id,
+                  merged_topic_code: topic.code,
+                  merged_topic_name: topic.title_multiloc.values.first,
+                  parent_topic_id: parent_topic.id,
+                  parent_topic_code: parent_topic.code,
+                  parent_topic_name: parent_topic.title_multiloc.values.first,
+                  already_assigned: already_assigned
+                }]
+              end
+
+              topic.destroy!
+            else
+              errors += ["Couldn't find topic #{code} to merge with for #{tenant.host}"]
             end
           end
         end
