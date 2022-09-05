@@ -6,11 +6,10 @@ import { ICauseData } from 'services/causes';
 
 // resource hooks
 import useAuthUser from 'hooks/useAuthUser';
-import useWindowSize from 'hooks/useWindowSize';
 
 // components
 import Image from 'components/UI/Image';
-import { Icon } from 'cl2-component-library';
+import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Warning from 'components/UI/Warning';
@@ -18,6 +17,7 @@ import Warning from 'components/UI/Warning';
 // utils
 import { isEmptyMultiloc } from 'utils/helperUtils';
 import { openSignUpInModal } from 'components/SignUpIn/events';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -155,7 +155,7 @@ const VolunteersCountIcon = styled(Icon)`
 
 const VolunteersCountText = styled.span`
   color: #fff;
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 300;
 `;
 
@@ -190,6 +190,7 @@ const CauseCard = memo<Props>(({ cause, className }) => {
       flow: 'signin',
       action: () => handleOnVolunteerButtonClick(),
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const signUp = useCallback(() => {
@@ -197,6 +198,7 @@ const CauseCard = memo<Props>(({ cause, className }) => {
       flow: 'signup',
       action: () => handleOnVolunteerButtonClick(),
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const isVolunteer = !!cause.relationships?.user_volunteer?.data;
@@ -220,7 +222,7 @@ const CauseCard = memo<Props>(({ cause, className }) => {
             <StyledImage src={cause.attributes.image.medium} alt="" />
             <VolunteersCount>
               <VolunteersCountIcon name="volunteer-hand" />
-              <VolunteersCountText>
+              <VolunteersCountText aria-hidden="true">
                 <FormattedMessage
                   {...messages.xVolunteers}
                   values={{ x: cause.attributes.volunteers_count }}
@@ -233,7 +235,7 @@ const CauseCard = memo<Props>(({ cause, className }) => {
             <PlaceholderIcon name="volunteer-hand" />
             <VolunteersCount>
               <VolunteersCountIcon name="volunteer-hand" />
-              <VolunteersCountText>
+              <VolunteersCountText aria-hidden="true">
                 <FormattedMessage
                   {...messages.xVolunteers}
                   values={{ x: cause.attributes.volunteers_count }}
@@ -249,7 +251,12 @@ const CauseCard = memo<Props>(({ cause, className }) => {
           <Title>
             <T value={cause.attributes.title_multiloc} />
           </Title>
-
+          <ScreenReaderOnly>
+            <FormattedMessage
+              {...messages.xVolunteers}
+              values={{ x: cause.attributes.volunteers_count }}
+            />
+          </ScreenReaderOnly>
           {!isEmptyMultiloc(cause.attributes.description_multiloc) && (
             <Description>
               <QuillEditedContent textColor={theme.colorText}>

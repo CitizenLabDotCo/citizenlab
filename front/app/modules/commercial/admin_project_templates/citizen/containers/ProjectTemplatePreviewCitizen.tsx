@@ -1,11 +1,11 @@
 import React, { memo } from 'react';
 import { get } from 'lodash-es';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
 
 // components
 import ProjectTemplatePreview from '../../components/ProjectTemplatePreview';
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -120,8 +120,11 @@ const ProjectTemplatePreviewCitizen = memo<Props & WithRouterProps>(
         clHistory.push(`/admin/projects/templates/${projectTemplateId}`);
       } else {
         const link = (
-          // tslint:disable-next-line
-          <a href="mailto:support@citizenlab.co" target="_blank">
+          <a
+            href="mailto:support@citizenlab.co"
+            target="_blank"
+            rel="noreferrer"
+          >
             <FormattedMessage {...messages.citizenlabExpert} />
           </a>
         );

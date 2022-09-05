@@ -1,16 +1,16 @@
+# frozen_string_literal: true
+
 module EmailCampaigns
   class WebApi::V1::ConsentsController < EmailCampaignsController
-
-    before_action :set_consent, only: [:update]
-    before_action :ensure_consents, only: [:index, :update, :update_by_campaign_id]
+    before_action :set_consent, only: :update
+    before_action :ensure_consents, only: %i[index update update_by_campaign_id]
+    skip_before_action :authenticate_user
 
     def index
       authorize Consent
-      
-      @consents = policy_scope(Consent)
-        .where(user: current_user_by_unsubscription_token)
-        .page(params.dig(:page, :number))
-        .per(params.dig(:page, :size))
+
+      @consents = policy_scope(Consent).where(user: current_user_by_unsubscription_token)
+      @consents = paginate @consents
 
       render json: linked_json(@consents, WebApi::V1::ConsentSerializer, params: fastjson_params)
     end
@@ -34,7 +34,6 @@ module EmailCampaigns
       update
     end
 
-
     def current_user_by_unsubscription_token
       token = UnsubscriptionToken.find_by(token: params[:unsubscription_token])
       if token
@@ -48,16 +47,12 @@ module EmailCampaigns
       current_user_by_unsubscription_token
     end
 
-    def secure_controller?
-      false
-    end
-
     private
 
     def ensure_consents
-      if current_user_by_unsubscription_token
-        Consent.create_all_for_user!(current_user_by_unsubscription_token)
-      end
+      return unless current_user_by_unsubscription_token
+
+      Consent.create_all_for_user!(current_user_by_unsubscription_token)
     end
 
     def set_consent

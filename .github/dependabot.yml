@@ -1,0 +1,18 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/front"
+    schedule:
+      interval: "monthly"
+      time: "04:00"
+    rebase-strategy: "disabled"
+    open-pull-requests-limit: 10
+    assignees:
+      - "IvaKop"
+    reviewers:
+      - "IvaKop"
+  - package-ecosystem: "bundler"
+    directory: "/back"
+    open-pull-requests-limit: 3
+    schedule:
+      interval: "weekly"

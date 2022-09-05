@@ -23,7 +23,7 @@ import {
 
 // components
 import { ButtonWrapper } from 'components/admin/PageWrapper';
-import { IconTooltip } from 'cl2-component-library';
+import { IconTooltip } from '@citizenlab/cl2-component-library';
 import {
   Section,
   SectionTitle,
@@ -188,7 +188,7 @@ const IdeaStatuses = () => {
                   key={ideaStatus.id}
                   id={ideaStatus.id}
                   index={index}
-                  lastItem={index === itemsList.length - 1}
+                  isLastItem={index === itemsList.length - 1}
                   moveRow={handleDragRow}
                   dropRow={handleDropRow}
                 >
@@ -221,8 +221,8 @@ const IdeaStatuses = () => {
                           buttonStyle="text"
                           disabled={!isDeletable(ideaStatus)}
                           icon="delete"
-                          iconHoverColor={colors.clRedError}
-                          textHoverColor={colors.clRedError}
+                          iconHoverColor={colors.red600}
+                          textHoverColor={colors.red600}
                         >
                           <FormattedMessage {...messages.deleteButtonLabel} />
                         </DeleteButton>

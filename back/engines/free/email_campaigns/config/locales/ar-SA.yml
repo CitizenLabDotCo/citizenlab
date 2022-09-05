@@ -9,7 +9,6 @@ ar:
       "comment_on_your_idea": تعليق على فكرتي
       "comment_on_your_initiative": تعليق على مُقترحي
       "first_idea_published": نشر فكرتي الأولى
-      "idea_assigned_to_you": تعيين فكرة إلي
       "idea_marked_as_spam": الإبلاغ عن الفكرة كـ مزعجة
       "idea_published": نشر فكرتي
       "initiative_assigned_to_you": تعيين مُقترح إلي
@@ -58,7 +57,6 @@ ar:
       "comment_on_your_idea": التعليق على فكرتك - جميع المستخدمين
       "comment_on_your_initiative": التعليق على مُقترحك - جميع المستخدمين
       "first_idea_published": نشر فكرتك الأولى - جميع المستخدمين
-      "idea_assigned_to_you": تعيين الفكرة - المسؤولين ومديري المشاريع
       "idea_marked_as_spam": الإبلاغ عن الفكرة كـ مزعجة - المسؤولين ومديري المشاريع
       "idea_published": نشر فكرتك - جميع المستخدمين
       "initiative_assigned_to_you": تعيين المُقترح - المسؤولين
@@ -98,7 +96,7 @@ ar:
       "moderator_digest": نظرة عامة أسبوعية - مديري المشاريع
       "assignee_digest": نظرة عامة أسبوعية على الأفكار المعيّنة - المسؤولين ومديري المشاريع
       "user_digest": نظرة عامة أسبوعية - جميع المستخدمين
-      "your_proposed_initiatives_digest": Weekly overview of your own proposals - all users
+      "your_proposed_initiatives_digest": نظرة عامة أسبوعية على مقترحاتك الخاصة - جميع المستخدمين
     footer:
       "link_privacy_policy": "سياسة الخصوصية"
       "link_terms_conditions": "الشروط والأحكام"
@@ -167,13 +165,6 @@ ar:
       main_header: 'علّق %{commentAuthor} على مبادرتك'
       subject: 'لقد استلمت تعليقًا على المنصة الخاصة بـ %{organizationName}'
       preheader: 'ترك %{authorName} تعليقًا على مبادرتك لـ %{organizationName}'
-    idea_assigned_to_you:
-      by_author: 'بواسطة %{authorName}'
-      cta_reply_to: 'قدّم ملاحظاتك لـ %{authorName}'
-      event_description_idea: 'تم تعيين فكرة إليك. قدّم ملاحظاتك من خلال كتابة تحديث رسمي أو بتغيير حالتها.'
-      main_header: '%{firstName}، لديك مهمة جديدة'
-      subject: 'لديك مهمة على المنصة الخاصة بـ %{organizationName}'
-      preheader_idea: 'تم تعيين فكرة %{authorName} إليك'
     assignee_digest:
       subject: 'أفكار بانتظار ملاحظاتك: %{numberIdeas}'
       preheader: 'ملخص التعيين لـ %{organizationName}'
@@ -200,9 +191,9 @@ ar:
       title_spam_report: 'أبلغ %{firstName}%{lastName} عن إزعاج'
     initiative_marked_as_spam:
       by_author: 'بواسطة %{authorName}'
-      cta_review_initiative: 'Review proposal'
+      cta_review_initiative: 'مراجعة المُقترح'
       report_inappropriate_offensive_content: 'أجد هذا المحتوى مسيئًا أو غير لائق.'
-      report_not_an_initiative: 'This content is not a proposal and does not belong here.'
+      report_not_an_initiative: 'هذا المحتوى ليس مقترحًا وليس مناسبًا هنا.'
       subject: 'لديك تقرير إزعاج على المنصة الخاصة بـ %{organizationName}'
       preheader: 'تصرف بناءً على تقرير الإزعاج هذا'
       reported_this_because: 'قام %{reporterFirstName} بالإبلاغ لأن:'
@@ -424,12 +415,6 @@ ar:
       title_what_can_you_do_folderadmin: 'ماذا يمكنك أن تفعل كمسؤول مجلد؟'
       title_added_as_folderadmin: 'لقد تمت إضافتك كمسؤول مجلد'
       x_projects: '%{numberOfProjects} مشاريع'
-    password_reset:
-      cta_reset_password: 'إعادة تعيين كلمة المرور'
-      message_you_reset_your_password: 'لقد طلبت إعادة تعيين كلمة المرور لمنصة مشاركة %{organizationName}. انقر فوق الزر أدناه لاختيار كلمة مرور جديدة وآمنة. تنتهي صلاحية الرابط خلال ساعة واحدة.'
-      preheader: 'هذا هو الرابط الذي طلبته لإعادة تعيين كلمة المرور الخاصة بك'
-      subject: '%{organizationName}: إعادة تعيين كلمة المرور'
-      title_reset_your_password: 'اختر كلمة مرور جديدة'
     project_phase_started:
       cta_view_phase: 'اكتشف هذه المرحلة الجديدة'
       event_description: 'دخل هذا المشروع مرحلة جديدة على المنصة الخاصة بـ %{organizationName}. انقر على الرابط أدناه لمعرفة المزيد!'
@@ -567,4 +552,3 @@ ar:
       new_votes: 'الأصوات الجديدة'
       remaining_votes: 'الأصوات المتبقية'
       remaining_days: 'الأيام المتبقية'
-

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Be sure to restart your server when you modify this file.
 
 # Add new mime types for use in respond_to blocks:
@@ -9,4 +11,4 @@ MIME::Types.add(
   end
 )
 
-Mime::Type.register "text/html", :mjml
+Mime::Type.register 'text/html', :mjml

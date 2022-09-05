@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SmartGroups
   module Patches
     module User
@@ -11,12 +13,26 @@ module SmartGroups
         end
       end
 
+      def smart_groups
+        rules_service.groups_for_user(self)
+      end
+
       def groups
-        super + SmartGroups::RulesService.new.groups_for_user(self)
+        super + smart_groups
       end
 
       def group_ids
-        super + SmartGroups::RulesService.new.groups_for_user(self).pluck(:id)
+        super + smart_groups.pluck(:id)
+      end
+
+      def in_any_groups?(groups)
+        super || rules_service.groups_for_user(self, groups.rules).exists?
+      end
+
+      private
+
+      def rules_service
+        @rules_service ||= SmartGroups::RulesService.new
       end
     end
   end

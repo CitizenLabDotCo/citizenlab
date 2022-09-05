@@ -1,16 +1,16 @@
 // Libraries
 import React, { PureComponent } from 'react';
-import { isAdmin } from 'services/permissions/roles';
+import { isAdmin, TRole } from 'services/permissions/roles';
 import { includes, get, isArray } from 'lodash-es';
 
 // Components
 import Table from 'components/UI/Table';
 import SortableTableHeaderCell from 'components/UI/Table/SortableTableHeaderCell';
-import Pagination from 'components/admin/Pagination/Pagination';
+import Pagination from 'components/Pagination';
 import UserTableRow from './UserTableRow';
 
 // Services
-import { IUserData, IRole, updateUser } from 'services/users';
+import { IUserData, updateUser } from 'services/users';
 
 // Resources
 import { GetUsersChildProps, SortAttribute } from 'resources/GetUsers';
@@ -79,10 +79,10 @@ interface Props extends InputProps, GetUsersChildProps {}
 interface State {}
 
 interface Tracks {
-  trackPagination: Function;
-  trackToggleOneUser: Function;
-  trackAdminToggle: Function;
-  trackSortChange: Function;
+  trackPagination: () => void;
+  trackToggleOneUser: () => void;
+  trackAdminToggle: () => void;
+  trackSortChange: ({ extra: { sortAttribute: SortAttribute } }) => void;
 }
 
 class UsersTable extends PureComponent<Props & Tracks, State> {
@@ -91,7 +91,7 @@ class UsersTable extends PureComponent<Props & Tracks, State> {
   };
 
   handleAdminRoleOnChange = (user: IUserData) => () => {
-    let newRoles: IRole[] = [];
+    let newRoles: TRole[] = [];
     const { authUser, trackAdminToggle } = this.props;
 
     trackAdminToggle();

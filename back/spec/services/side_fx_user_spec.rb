@@ -1,25 +1,11 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe SideFxUserService do
-  let(:service) { SideFxUserService.new }
+  let(:service) { described_class.new }
   let(:current_user) { create(:user) }
   let(:user) { create(:user) }
-
-  describe 'before_create' do
-    it "set registration_completed_at if there's no user custom fields and the user is not invited" do
-      user.update(registration_completed_at: nil)
-      create(:custom_field, resource_type: 'CustomForm')
-      service.before_create(user, current_user)
-      expect(user.registration_completed_at).to be_present
-    end
-
-    it "doesn't set registration_completed_at if there's a custom fields" do
-      user.update(registration_completed_at: nil)
-      create(:custom_field)
-      service.before_create(user, current_user)
-      expect(user.registration_completed_at).to be_blank
-    end
-  end
 
   describe 'after_create' do
     it "logs a 'created' action when a user is created" do
@@ -83,6 +69,16 @@ describe SideFxUserService do
 
     it 'logs a UpdateMemberCountJob' do
       expect { service.after_destroy(user, current_user) }.to have_enqueued_job(UpdateMemberCountJob)
+    end
+
+    it 'successfully enqueues PII data deletion job for Intercom' do
+      expect { service.after_destroy(user, current_user) }
+        .to have_enqueued_job(RemoveUserFromIntercomJob).with(user.id)
+    end
+
+    it 'successfully enqueues PII data deletion job for Segment' do
+      expect { service.after_destroy(user, current_user) }
+        .to have_enqueued_job(RemoveUsersFromSegmentJob).with([user.id])
     end
   end
 end

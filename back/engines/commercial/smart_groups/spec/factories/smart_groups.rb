@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :smart_group, parent: :group do
     membership_type { 'rules' }

@@ -9,13 +9,13 @@ module Finder
 
         attr_accessor :_sort_method
 
-        delegate :_default_sort, :_default_sort_order, :_sortable_attributes, :_sort_scopes, to: :class
+        delegate :_default_sort, :_sortable_attributes, :_sort_scopes, to: :class
       end
     end
 
     # Finder::Sortable::ClassMethods
     module ClassMethods
-      attr_reader :_default_sort, :_default_sort_order
+      attr_reader :_default_sort
 
       def sort_scopes(scopes)
         _sort_scopes.merge!(scopes.with_indifferent_access)
@@ -26,10 +26,8 @@ module Finder
       end
 
       def default_sort(scope)
-        @_default_sort, @_default_sort_order = scope.first if scope.is_a? Hash
-
-        @_default_sort_order = scope.to_s.delete_prefix!('-') ? :asc : :desc
-        @_default_sort       = scope.to_s
+        @_default_sort = scope.first if scope.is_a? Hash
+        @_default_sort = scope.to_s
       end
 
       def sortable_attributes(*attributes)
@@ -52,7 +50,7 @@ module Finder
     private
 
     def _sort_records
-      @_sort_method = params.delete(:sort) || _default_sort
+      @_sort_method = params[:sort] || _default_sort
       return unless _sort_method
 
       if _sort_scopes&.key? _sort_method
@@ -66,11 +64,17 @@ module Finder
       sort_option = _sort_scopes[_sort_method.to_sym]
 
       @records = case sort_option
-                 when ->(so) { so.respond_to?(:call) } then  sort_option.call(@records)
-                 when Hash                             then  _sort_from_hash(sort_option)
-                 when Symbol                           then  @records.send(sort_option)
-                 else                                        @records.order(sort_option)
-                 end
+      when ->(so) { so.respond_to?(:call) } then  sort_option.call(@records)
+      when Hash                             then  _sort_from_hash(sort_option)
+      when Symbol                           then  @records.send(sort_option)
+      else @records.order(sort_option)
+      end
+    end
+
+    def _sort_with_attribute
+      attribute = _sort_method_suffix.include?('.') ? _sort_method_suffix : "#{table_name}.#{_sort_method_suffix}"
+
+      @records = order(attribute => _sort_order)
     end
 
     def _sort_from_hash(hash)
@@ -81,12 +85,6 @@ module Finder
       else
         @records.order(hash)
       end
-    end
-
-    def _sort_with_attribute
-      attribute = _sort_method_suffix.include?('.') ? _sort_method_suffix : "#{table_name}.#{_sort_method_suffix}"
-
-      order(attribute => _sort_order)
     end
 
     def _sort_method_suffix

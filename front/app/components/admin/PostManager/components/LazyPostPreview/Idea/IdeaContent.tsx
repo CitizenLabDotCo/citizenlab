@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { isNilOrError, getFormattedBudget } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 import { get } from 'lodash-es';
 
@@ -14,7 +14,7 @@ import Comments from 'components/PostShowComponents/Comments';
 import FileAttachments from 'components/UI/FileAttachments';
 import FeedbackSettings from './FeedbackSettings';
 import VotePreview from './VotePreview';
-import { IconTooltip } from 'cl2-component-library';
+import { IconTooltip } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import Link from 'utils/cl-router/Link';
 import T from 'components/T';
@@ -32,20 +32,21 @@ import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetIdeaImages, {
   GetIdeaImagesChildProps,
 } from 'resources/GetIdeaImages';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPermission, {
   GetPermissionChildProps,
 } from 'resources/GetPermission';
 
+// utils
+import { getAddressOrFallbackDMS } from 'utils/map';
+
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps, FormattedNumber } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
+import FormattedBudget from 'utils/currency/FormattedBudget';
 
 // style
 import styled from 'styled-components';
@@ -108,7 +109,7 @@ const StyledBody = styled(Body)`
 `;
 
 const BodySectionTitle = styled.h2`
-  font-size: ${(props) => props.theme.fontSizes.medium}px;
+  font-size: ${(props) => props.theme.fontSizes.m}px;
   font-weight: 400;
   line-height: 28px;
 `;
@@ -148,7 +149,7 @@ const BudgetBox = styled.div`
   border-radius: 5px;
   background: ${colors.background};
   border: solid 1px ${colors.adminTextColor};
-  font-size: ${fontSizes.large}px;
+  font-size: ${fontSizes.l}px;
   font-weight: 500;
 `;
 
@@ -171,7 +172,6 @@ interface DataProps {
   idea: GetIdeaChildProps;
   ideaImages: GetIdeaImagesChildProps;
   ideaFiles: GetResourceFilesChildProps;
-  tenant: GetAppConfigurationChildProps;
   locale: GetLocaleChildProps;
   project: GetProjectChildProps;
   postOfficialFeedbackPermission: GetPermissionChildProps;
@@ -209,7 +209,6 @@ export class IdeaContent extends PureComponent<
       localize,
       ideaImages,
       ideaFiles,
-      tenant,
       locale,
       handleClickEdit,
     } = this.props;
@@ -217,7 +216,6 @@ export class IdeaContent extends PureComponent<
     if (
       !isNilOrError(idea) &&
       !isNilOrError(locale) &&
-      !isNilOrError(tenant) &&
       !isNilOrError(project)
     ) {
       const ideaId = idea.id;
@@ -227,11 +225,13 @@ export class IdeaContent extends PureComponent<
           ? get(ideaImages[0], 'attributes.versions.large', null)
           : null;
       const ideaGeoPosition = idea.attributes.location_point_geojson || null;
-      const ideaAddress = idea.attributes.location_description || null;
+      const ideaAddress = getAddressOrFallbackDMS(
+        idea.attributes.location_description,
+        idea.attributes.location_point_geojson
+      );
       // AuthorId can be null if user has been deleted
       const authorId = idea.relationships.author.data?.id || null;
       const proposedBudget = idea.attributes.proposed_budget;
-      const currency = tenant.attributes.settings.core.currency;
       const processType = project.attributes.process_type;
 
       return (
@@ -284,13 +284,7 @@ export class IdeaContent extends PureComponent<
                     <BodySectionTitle>
                       <FormattedMessage {...messages.proposedBudgetTitle} />
                     </BodySectionTitle>
-                    <IdeaProposedBudget
-                      formattedBudget={getFormattedBudget(
-                        locale,
-                        proposedBudget,
-                        currency
-                      )}
-                    />
+                    <IdeaProposedBudget proposedBudget={proposedBudget} />
                     <BodySectionTitle>
                       <FormattedMessage {...messages.bodyTitle} />
                     </BodySectionTitle>
@@ -330,13 +324,7 @@ export class IdeaContent extends PureComponent<
                 {idea.attributes.budget && (
                   <>
                     <BudgetBox>
-                      <FormattedNumber
-                        value={idea.attributes.budget}
-                        style="currency"
-                        currency={currency}
-                        minimumFractionDigits={0}
-                        maximumFractionDigits={0}
-                      />
+                      <FormattedBudget value={idea.attributes.budget} />
                       <Picks>
                         <FormattedMessage
                           {...messages.picks}
@@ -369,7 +357,6 @@ export class IdeaContent extends PureComponent<
 }
 
 const Data = adopt<DataProps, InputProps>({
-  tenant: <GetAppConfiguration />,
   locale: <GetLocale />,
   idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
   project: ({ idea, render }) => (

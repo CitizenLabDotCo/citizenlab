@@ -7,7 +7,7 @@ import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import FeatureFlag from 'components/FeatureFlag';
 import Link from 'utils/cl-router/Link';
 
@@ -67,7 +67,7 @@ const AvatarIcon = styled(Icon)<{
   size: number;
   fillColor: string | undefined;
   fillHoverColor: string | undefined;
-  padding: number;
+  paddingValue: number;
   bgColor: string | undefined;
   borderColor: string | undefined;
   borderThickness: number;
@@ -77,7 +77,7 @@ const AvatarIcon = styled(Icon)<{
   width: ${({ size }) => size}px;
   height: ${({ size }) => size}px;
   fill: ${({ fillColor }) => fillColor || ''};
-  padding: ${({ padding }) => padding}px;
+  padding: ${({ paddingValue }) => paddingValue}px;
   border-radius: 50%;
   border-style: ${({ borderThickness }) =>
     borderThickness === 0 ? 'none' : 'solid'};
@@ -143,12 +143,12 @@ const Avatar = memo(
       // while !isNilOrError(user) passes... To be solved properly
       const hasValidProfileLink = profileLink !== '/profile/undefined';
       const avatarSize = props.size;
-      const padding = props.padding || 3;
+      const paddingValue = props.padding || 3;
       const borderThickness = props.borderThickness || 1;
       const hasHoverEffect = (isLinkToProfile && hasValidProfileLink) || false;
       const imageSizeLabel = avatarSize > 160 ? 'large' : 'medium';
       const avatarSrc = avatar ? avatar[imageSizeLabel] : null;
-      const containerSize = avatarSize + padding * 2 + borderThickness * 2;
+      const containerSize = avatarSize + paddingValue * 2 + borderThickness * 2;
       const badgeSize = avatarSize / (avatarSize < 40 ? 1.8 : 2.3);
       const fillColor = props.fillColor || lighten(0.2, colors.label);
       const fillHoverColor = colors.label;
@@ -172,11 +172,9 @@ const Avatar = memo(
               size={containerSize}
               borderThickness={borderThickness}
               borderColor={borderColor}
-              borderHoverColor={
-                moderator ? colors.clRedError : borderHoverColor
-              }
+              borderHoverColor={moderator ? colors.red600 : borderHoverColor}
               bgColor={bgColor}
-              padding={padding}
+              padding={paddingValue}
             />
           )}
 
@@ -189,20 +187,14 @@ const Avatar = memo(
               fillHoverColor={fillHoverColor}
               borderThickness={borderThickness}
               borderColor={borderColor}
-              borderHoverColor={
-                moderator ? colors.clRedError : borderHoverColor
-              }
+              borderHoverColor={moderator ? colors.red600 : borderHoverColor}
               bgColor={bgColor}
-              padding={padding}
+              paddingValue={paddingValue}
             />
           )}
 
           {moderator && (
-            <BadgeIcon
-              name="clShield"
-              size={badgeSize}
-              fill={colors.clRedError}
-            />
+            <BadgeIcon name="clShield" size={badgeSize} fill={colors.red600} />
           )}
 
           {verified && addVerificationBadge && (

@@ -1,8 +1,10 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
+import { removeFocusAfterMouseClick } from 'utils/helperUtils';
+
 // https://www.w3.org/TR/2016/WD-wai-aria-practices-1.1-20160317/examples/checkbox/checkbox-2.html
 
 const Container = styled.div<{ size: string }>`
@@ -102,6 +104,7 @@ type Props = DefaultProps &
     className?: string;
     notFocusable?: boolean;
     disabled?: boolean;
+    'data-testid'?: string;
   };
 
 export default class CheckboxWithPartialCheck extends PureComponent<Props> {
@@ -156,17 +159,20 @@ export default class CheckboxWithPartialCheck extends PureComponent<Props> {
     }
   };
 
-  removeFocus = (event: React.FormEvent) => {
-    event.preventDefault();
-  };
-
   render() {
-    const { label, size, checked, className, notFocusable } = this.props;
+    const {
+      label,
+      size,
+      checked,
+      className,
+      notFocusable,
+      'data-testid': testid,
+    } = this.props;
 
     return (
       <Container
         size={size as string}
-        onMouseDown={this.removeFocus}
+        onMouseDown={removeFocusAfterMouseClick}
         onClick={this.handleOnClick}
         onKeyDown={this.handleOnKeyDown}
         className={`${className ? className : ''} ${
@@ -175,6 +181,7 @@ export default class CheckboxWithPartialCheck extends PureComponent<Props> {
         role="checkbox"
         aria-checked={checked}
         tabIndex={notFocusable ? -1 : 0}
+        data-testid={testid}
       >
         <CustomInputWrapper size={size as string} checked={checked}>
           {checked === 'mixed' ? (

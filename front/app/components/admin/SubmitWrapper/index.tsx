@@ -43,7 +43,7 @@ const Message = styled.p`
   margin-left: 20px;
 
   &.error {
-    color: ${colors.clRedError};
+    color: ${colors.red600};
   }
 
   &.success {
@@ -125,18 +125,14 @@ export default class SubmitWrapper extends PureComponent<Props> {
       'onClick',
       'setSubmitButtonRef',
       'messages',
+      'loading',
     ]);
-    const {
-      loading,
-      status,
-      onClick,
-      messages,
-      animate,
-      customError,
-    } = this.props;
+
+    const { loading, status, onClick, messages, animate, customError } =
+      this.props;
 
     return (
-      <Wrapper fullWidth={!!buttonProps.fullWidth}>
+      <Wrapper aria-live="polite" fullWidth={!!buttonProps.fullWidth}>
         <Button
           className="e2e-submit-wrapper-button"
           buttonStyle={style}

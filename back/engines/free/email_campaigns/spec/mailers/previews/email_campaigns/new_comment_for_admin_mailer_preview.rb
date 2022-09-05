@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EmailCampaigns
   class NewCommentForAdminMailerPreview < ActionMailer::Preview
     def campaign_mail
@@ -6,19 +8,19 @@ module EmailCampaigns
       command = {
         recipient: recipient,
         event_payload: {
-          "initiating_user_first_name": "Chewbacca",
-          "initiating_user_last_name": nil,
-          "comment_author_name": "Chewbacca",
-          "comment_body_multiloc": {
-            "en": "Ruh roooarrgh yrroonn wyaaaaaa ahuma hnn-rowr ma"
+          initiating_user_first_name: 'Chewbacca',
+          initiating_user_last_name: nil,
+          comment_author_name: 'Chewbacca',
+          comment_body_multiloc: {
+            en: 'Ruh roooarrgh yrroonn wyaaaaaa ahuma hnn-rowr ma'
           },
-          "comment_url": "http:\/\/localhost:3000\/en\/initiatives\/wiki-roulette",
-          "post_published_at": "2019-08-23T14:04:13Z",
-          "post_title_multiloc": {
-            "en": "Wiki Roulette"
+          comment_url: "http:\/\/localhost:3000\/en\/initiatives\/wiki-roulette",
+          post_published_at: '2019-08-23T14:04:13Z',
+          post_title_multiloc: {
+            en: 'Wiki Roulette'
           },
-          "post_author_name": "K\u00c3\u00bcn Gremmelpret",
-          "post_type": "Initiative"
+          post_author_name: "K\u00c3\u00bcn Gremmelpret",
+          post_type: 'Initiative'
         }
       }
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddAssigneeToIdeas < ActiveRecord::Migration[5.2]
   def change
     return if column_exists? :ideas, :assignee_id

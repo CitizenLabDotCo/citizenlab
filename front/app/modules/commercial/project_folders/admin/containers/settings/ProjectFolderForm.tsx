@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import clHistory from 'utils/cl-router/history';
 import { isEmpty, isEqual } from 'lodash-es';
-
-import { Multiloc, UploadFile } from 'typings';
-
+import { CLErrors, Multiloc, UploadFile } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 import {
   addProjectFolder,
@@ -13,14 +11,12 @@ import {
   addProjectFolderImage,
   deleteProjectFolderImage,
 } from '../../../services/projectFolderImages';
-import { convertUrlToUploadFile } from 'utils/fileTools';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
 import useProjectFolderImages from '../../../hooks/useProjectFolderImages';
 import useProjectFolder from '../../../hooks/useProjectFolder';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
-
 import {
   SectionField,
   Section,
@@ -31,7 +27,7 @@ import SubmitWrapper from 'components/admin/SubmitWrapper';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import { IconTooltip, Radio } from 'cl2-component-library';
+import { IconTooltip, Radio } from '@citizenlab/cl2-component-library';
 import FileUploader from 'components/UI/FileUploader';
 import {
   addProjectFolderFile,
@@ -39,6 +35,8 @@ import {
 } from '../../../services/projectFolderFiles';
 import useProjectFolderFiles from '../../../hooks/useProjectFolderFiles';
 import useAdminPublication from 'hooks/useAdminPublication';
+import SlugInput from 'components/admin/SlugInput';
+import { validateSlug } from 'utils/textUtils';
 
 interface Props {
   mode: 'edit' | 'new';
@@ -59,6 +57,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     (async () => {
       if (mode === 'edit' && !isNilOrError(projectFolder)) {
         setTitleMultiloc(projectFolder.attributes.title_multiloc);
+        setSlug(projectFolder.attributes.slug);
         setDescriptionMultiloc(projectFolder.attributes.description_multiloc);
         setShortDescriptionMultiloc(
           projectFolder.attributes.description_preview_multiloc
@@ -119,15 +118,16 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   }, [mode, projectFolderFilesRemote]);
 
   // input handling
+
+  const [errors, setErrors] = useState<CLErrors>({});
   const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
-  const [
-    shortDescriptionMultiloc,
-    setShortDescriptionMultiloc,
-  ] = useState<Multiloc | null>(null);
-  const [
-    descriptionMultiloc,
-    setDescriptionMultiloc,
-  ] = useState<Multiloc | null>(null);
+  const [slug, setSlug] = useState<string | null>(null);
+  const [showSlugErrorMessage, setShowSlugErrorMessage] =
+    useState<boolean>(false);
+  const [shortDescriptionMultiloc, setShortDescriptionMultiloc] =
+    useState<Multiloc | null>(null);
+  const [descriptionMultiloc, setDescriptionMultiloc] =
+    useState<Multiloc | null>(null);
   const [headerBg, setHeaderBg] = useState<UploadFile | null>(null);
   const [publicationStatus, setPublicationStatus] = useState<
     'published' | 'draft' | 'archived'
@@ -136,10 +136,8 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const [projectFolderImages, setProjectFolderImages] = useState<UploadFile[]>(
     []
   );
-  const [
-    projectFolderImagesToRemove,
-    setProjectFolderImagesToRemove,
-  ] = useState<string[]>([]);
+  const [projectFolderImagesToRemove, setProjectFolderImagesToRemove] =
+    useState<string[]>([]);
   const [projectFolderFiles, setProjectFolderFiles] = useState<UploadFile[]>(
     []
   );
@@ -154,6 +152,18 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     },
     []
   );
+
+  const handleSlugOnChange = useCallback((slug: string) => {
+    setStatus('enabled');
+    setSlug(slug);
+
+    if (validateSlug(slug)) {
+      setShowSlugErrorMessage(false);
+    } else {
+      setShowSlugErrorMessage(true);
+      setStatus('error');
+    }
+  }, []);
 
   const handleHeaderBgOnAdd = useCallback((newImage: UploadFile[]) => {
     setStatus('enabled');
@@ -258,8 +268,9 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             descriptionMultiloc &&
             shortDescriptionMultiloc
           ) {
-            const res = await addProjectFolder({
+            const projectFolder = await addProjectFolder({
               title_multiloc: titleMultiloc,
+              slug,
               description_multiloc: descriptionMultiloc,
               description_preview_multiloc: shortDescriptionMultiloc,
               header_bg: headerBg?.base64,
@@ -267,12 +278,12 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                 publication_status: publicationStatus,
               },
             });
-            if (!isNilOrError(res)) {
+            if (!isNilOrError(projectFolder)) {
               const imagesToAddPromises = projectFolderImages.map((file) =>
-                addProjectFolderImage(res.id, file.base64)
+                addProjectFolderImage(projectFolder.id, file.base64)
               );
               const filesToAddPromises = projectFolderFiles.map((file) =>
-                addProjectFolderFile(res.id, file.base64, file.name)
+                addProjectFolderFile(projectFolder.id, file.base64, file.name)
               );
 
               (imagesToAddPromises || filesToAddPromises) &&
@@ -280,11 +291,11 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                   ...imagesToAddPromises,
                   ...filesToAddPromises,
                 ]));
-
-              clHistory.push(`/admin/projects/folders/${res.id}`);
+              clHistory.push(`/admin/projects/folders/${projectFolder.id}`);
             }
           }
-        } finally {
+        } catch (errors) {
+          setErrors(errors.json.errors);
           setStatus('apiError');
         }
       } else {
@@ -336,6 +347,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               shortDescriptionMultiloc,
               projectFolder.attributes.description_preview_multiloc
             );
+            const changedSlug = !isEqual(slug, projectFolder.attributes.slug);
             const changedPublicationStatus =
               isNilOrError(adminPublication) ||
               !isEqual(
@@ -345,6 +357,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
 
             if (
               changedTitleMultiloc ||
+              changedSlug ||
               changedDescriptionMultiloc ||
               changedShortDescriptionMultiloc ||
               changedHeaderBg ||
@@ -356,6 +369,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                   title_multiloc: changedTitleMultiloc
                     ? titleMultiloc
                     : undefined,
+                  slug: changedSlug ? slug : undefined,
                   description_multiloc: changedDescriptionMultiloc
                     ? descriptionMultiloc
                     : undefined,
@@ -380,7 +394,8 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           } else {
             setStatus('apiError');
           }
-        } catch {
+        } catch (errors) {
+          setErrors(errors.json.errors);
           setStatus('apiError');
         }
       }
@@ -439,6 +454,15 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           />
         </SectionField>
         <SectionField>
+          <SlugInput
+            slug={slug}
+            resource="folder"
+            apiErrors={errors}
+            showSlugErrorMessage={showSlugErrorMessage}
+            handleSlugOnChange={handleSlugOnChange}
+          />
+        </SectionField>
+        <SectionField>
           <TextAreaMultilocWithLocaleSwitcher
             valueMultiloc={shortDescriptionMultiloc}
             name="textAreaMultiloc"
@@ -475,9 +499,9 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             />
           </SubSectionTitle>
           <ImagesDropzone
-            acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-            maxNumberOfImages={1}
-            maxImageFileSize={5000000}
+            acceptedFileTypes={{
+              'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+            }}
             images={headerBg ? [headerBg] : null}
             imagePreviewRatio={250 / 1380}
             onAdd={handleHeaderBgOnAdd}
@@ -498,9 +522,9 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             images={projectFolderImages}
             imagePreviewRatio={960 / 1440}
             maxImagePreviewWidth="240px"
-            acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-            maxImageFileSize={5000000}
-            maxNumberOfImages={1}
+            acceptedFileTypes={{
+              'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+            }}
             onAdd={getHandler(setProjectFolderImages)}
             onRemove={handleProjectFolderImageOnRemove}
           />
@@ -515,6 +539,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             />
           </SubSectionTitle>
           <FileUploader
+            id="project-folder-form-file-uploader"
             onFileAdd={handleProjectFolderFileOnAdd}
             onFileRemove={handleProjectFolderFileOnRemove}
             files={projectFolderFiles}

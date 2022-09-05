@@ -1,8 +1,8 @@
 import FormattedMessage from './FormattedMessage';
 import injectIntl from './injectIntl';
-// tslint:disable-next-line:no-vanilla-formatted-messages
 import {
   Messages,
+  // eslint-disable-next-line no-restricted-imports
   FormattedMessage as OriginalFormattedMessage,
 } from 'react-intl';
 
@@ -11,4 +11,6 @@ type IMessageInfo = {
   values?: OriginalFormattedMessage.Props['values'];
 };
 
-export { FormattedMessage, injectIntl, IMessageInfo };
+type MessageDescriptor = OriginalFormattedMessage.MessageDescriptor;
+
+export { FormattedMessage, injectIntl, IMessageInfo, MessageDescriptor };

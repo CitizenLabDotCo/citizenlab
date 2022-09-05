@@ -1,10 +1,11 @@
 import React, { memo, useState, useEffect } from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { globalState } from 'services/globalState';
+import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // permissions
 import useAuthUser from 'hooks/useAuthUser';
-import { hasPermission } from 'services/permissions';
+import { usePermission } from 'services/permissions';
 import HasPermission from 'components/HasPermission';
 
 // components
@@ -51,7 +52,7 @@ const Container = styled.div`
   }
 `;
 
-const RightColumn = styled.div`
+export const RightColumn = styled.div`
   flex-grow: 1;
   flex-shrink: 1;
   flex-basis: 0;
@@ -86,15 +87,23 @@ const RightColumn = styled.div`
 
 type Props = {
   className?: string;
-  children: React.ReactNode;
 };
 
 const AdminPage = memo<Props & WithRouterProps>(
-  ({ className, children, location: { pathname } }) => {
+  ({ className, location: { pathname } }) => {
     const authUser = useAuthUser();
 
     const [adminFullWidth, setAdminFullWidth] = useState(false);
     const [adminNoPadding, setAdminNoPadding] = useState(false);
+
+    // The check in front/app/containers/Admin/routes.tsx already should do the same.
+    // TODO: double check it and remove `userCanViewAdmin`
+    const userCanViewPath = usePermission({
+      // If we're in this component, we're sure
+      // that the path is an admin path
+      item: { type: 'route', path: pathname },
+      action: 'access',
+    });
 
     useEffect(() => {
       const subscriptions = [
@@ -110,39 +119,28 @@ const AdminPage = memo<Props & WithRouterProps>(
       };
     }, []);
 
-    const userCanViewAdmin = () =>
-      hasPermission({
-        action: 'access',
-        item: { type: 'route', path: '/admin' },
-      });
-
     useEffect(() => {
-      if (
-        authUser === null ||
-        (authUser !== undefined && !userCanViewAdmin())
-      ) {
+      if (authUser === null || (authUser !== undefined && !userCanViewPath)) {
         clHistory.push('/');
       }
-    }, [authUser]);
+    }, [authUser, userCanViewPath]);
 
-    if (!userCanViewAdmin()) {
+    if (!userCanViewPath) {
       return null;
     }
 
     const noPadding =
       adminNoPadding ||
       pathname.includes('admin/dashboard') ||
-      pathname.includes('admin/processing');
+      pathname.includes('admin/insights');
 
     const fullWidth =
       adminFullWidth === true ||
       endsWith(pathname, 'admin/moderation') ||
       pathname.includes('admin/dashboard') ||
-      pathname.includes('admin/processing');
-    const whiteBg =
-      endsWith(pathname, 'admin/moderation') ||
-      pathname.includes('admin/dashboard') ||
-      pathname.includes('admin/processing');
+      pathname.includes('admin/insights');
+
+    const whiteBg = endsWith(pathname, 'admin/moderation');
 
     return (
       <HasPermission
@@ -156,7 +154,7 @@ const AdminPage = memo<Props & WithRouterProps>(
               noPadding && 'noPadding'
             }`}
           >
-            {children}
+            <RouterOutlet />
           </RightColumn>
         </Container>
       </HasPermission>
@@ -164,4 +162,4 @@ const AdminPage = memo<Props & WithRouterProps>(
   }
 );
 
-export default withRouter<Props>(AdminPage);
+export default withRouter(AdminPage);

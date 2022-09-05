@@ -106,16 +106,16 @@ class ProjectGroupsList extends PureComponent<
     const locale$ = localeStream().observable;
     const currentTenant$ = currentAppConfigurationStream().observable;
     const groups$ = getGroups().observable;
-    const groupsProjects$ = groupsProjectsByProjectIdStream(projectId)
-      .observable;
+    const groupsProjects$ =
+      groupsProjectsByProjectIdStream(projectId).observable;
 
     this.subscriptions = [
-      combineLatest(
+      combineLatest([
         locale$,
         currentTenant$,
         groups$,
-        groupsProjects$
-      ).subscribe(([locale, currentTenant, groups, groupsProjects]) => {
+        groupsProjects$,
+      ]).subscribe(([locale, currentTenant, groups, groupsProjects]) => {
         const currentTenantLocales =
           currentTenant.data.attributes.settings.core.locales;
         const projectGroups = map(groupsProjects.data, (groupProject) => {
@@ -176,6 +176,7 @@ class ProjectGroupsList extends PureComponent<
         this.setState({ selectedGroups: null });
         this.props.onAddButtonClicked();
       } catch (error) {
+        // eslint-disable-next-line no-console
         if (process.env.NODE_ENV === 'development') console.log(error);
       }
     }
@@ -224,12 +225,8 @@ class ProjectGroupsList extends PureComponent<
 
   render() {
     const { formatMessage } = this.props.intl;
-    const {
-      groupsOptions,
-      projectGroups,
-      selectedGroups,
-      loading,
-    } = this.state;
+    const { groupsOptions, projectGroups, selectedGroups, loading } =
+      this.state;
     const groupsMultipleSelectPlaceholder = formatMessage(
       messages.groupsMultipleSelectPlaceholder
     );

@@ -9,7 +9,7 @@ import bowser from 'bowser';
 import Link from 'utils/cl-router/Link';
 
 // components
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import Image from 'components/UI/Image';
 import AvatarBubbles from 'components/AvatarBubbles';
 
@@ -275,7 +275,7 @@ const Countdown = styled.div`
 
 const TimeRemaining = styled.div`
   color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 400;
   margin-bottom: 7px;
 `;
@@ -292,7 +292,7 @@ const ProgressBarOverlay: any = styled.div`
   width: 0px;
   height: 100%;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  background: ${colors.clRed};
+  background: ${colors.red500};
   transition: width 1000ms cubic-bezier(0.19, 1, 0.22, 1);
   will-change: width;
 
@@ -304,7 +304,7 @@ const ProgressBarOverlay: any = styled.div`
 const ProjectLabel = styled.div`
   // darkened to have higher chances of solid color contrast
   color: ${({ theme }) => darken(0.05, theme.colorSecondary)};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 400;
   text-align: center;
   white-space: nowrap;
@@ -404,7 +404,7 @@ const ContentFooterRight = styled(ContentFooterSection)``;
 const ContentHeaderLabel = styled.span`
   height: ${ContentHeaderHeight}px;
   color: ${colors.label};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 500;
   text-transform: uppercase;
   display: flex;
@@ -518,18 +518,9 @@ const ProjectCard = memo<Props>(
         ? phase.attributes.participation_method
         : project.attributes.participation_method;
       const canPost = !!postingPermission.enabled;
-      const canVote = !!(
-        (!isNilOrError(phase)
-          ? phase.attributes.voting_enabled
-          : project.attributes.voting_enabled) &&
-        get(project, 'attributes.action_descriptor.voting.enabled')
-      );
-      const canComment = !!(
-        (!isNilOrError(phase)
-          ? phase.attributes.commenting_enabled
-          : project.attributes.commenting_enabled) &&
-        get(project, 'attributes.action_descriptor.commenting_idea.enabled')
-      );
+      const canVote = project.attributes.action_descriptor.voting_idea.enabled;
+      const canComment =
+        project.attributes.action_descriptor.commenting_idea.enabled;
       const imageUrl =
         !isNilOrError(projectImages) && projectImages.length > 0
           ? projectImages[0].attributes.versions.medium
@@ -710,11 +701,13 @@ const ProjectCard = memo<Props>(
           {size !== 'large' && contentHeader}
 
           <ProjectImageContainer className={size}>
-            <ProjectImagePlaceholder>
-              <ProjectImagePlaceholderIcon name="project" />
-            </ProjectImagePlaceholder>
-
-            {imageUrl && <ProjectImage src={imageUrl} alt="" cover={true} />}
+            {imageUrl ? (
+              <ProjectImage src={imageUrl} alt="" cover={true} />
+            ) : (
+              <ProjectImagePlaceholder>
+                <ProjectImagePlaceholderIcon name="project" />
+              </ProjectImagePlaceholder>
+            )}
           </ProjectImageContainer>
 
           <ProjectContent className={size}>
@@ -801,6 +794,4 @@ const ProjectCard = memo<Props>(
   }
 );
 
-const ProjectCardWithHoC = injectIntl(ProjectCard);
-
-export default ProjectCardWithHoC;
+export default injectIntl(ProjectCard);

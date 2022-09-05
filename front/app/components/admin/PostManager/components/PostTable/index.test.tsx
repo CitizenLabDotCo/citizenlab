@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import { shallow } from 'enzyme';
 
@@ -232,9 +233,8 @@ describe('<PostTable />', () => {
       />
     );
 
-    const toggleSelectAll = Wrapper.find('IdeaHeaderRow').prop(
-      'toggleSelectAll'
-    );
+    const toggleSelectAll =
+      Wrapper.find('IdeaHeaderRow').prop('toggleSelectAll');
 
     expect(Wrapper.find('IdeaHeaderRow').prop('allSelected')).toBe(false);
 

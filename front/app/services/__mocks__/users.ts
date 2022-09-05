@@ -1,6 +1,6 @@
 import { IUser } from 'services/users';
 
-export const makeUser = (attributes = {}, id?: string) : IUser => {
+export const makeUser = (attributes = {}, id?: string): IUser => {
   return {
     data: {
       id: id ? id : '522ae8cc-a5ed-4d31-9aa0-470904934ec6',
@@ -13,7 +13,7 @@ export const makeUser = (attributes = {}, id?: string) : IUser => {
         avatar: {
           small: null,
           medium: null,
-          large: null
+          large: null,
         },
         roles: [],
         highest_role: 'user',
@@ -23,25 +23,26 @@ export const makeUser = (attributes = {}, id?: string) : IUser => {
         created_at: '2018-11-26T15:41:19.782Z',
         updated_at: '2018-11-26T15:41:19.782Z',
         email: 'test@citizenlab.co',
+        confirmation_required: false,
         custom_field_values: {
           birthyear: 1990,
           domicile: 'outside',
           gender: 'female',
-          politician: 'retired_politician'
+          politician: 'retired_politician',
         },
         unread_notifications: 0,
-        ...attributes
+        ...attributes,
       },
       relationships: {
         granted_permissions: {
-          data: []
-        }
-      }
-    }
+          data: [],
+        },
+      },
+    },
   } as IUser;
 };
 
-export const makeAdmin = (attributes = {}) : IUser => {
+export const makeAdmin = (attributes = {}): IUser => {
   return makeUser({
     roles: [{ type: 'admin' }],
     highest_role: 'admin',
@@ -49,9 +50,9 @@ export const makeAdmin = (attributes = {}) : IUser => {
   });
 };
 
-export const makeSuperAdmin = (attributes = {}) : IUser => {
+export const makeSuperAdmin = (attributes = {}): IUser => {
   return makeAdmin({
     highest_role: 'super_admin',
-    ...attributes
+    ...attributes,
   });
 };

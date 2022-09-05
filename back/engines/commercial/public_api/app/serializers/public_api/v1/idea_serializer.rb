@@ -1,14 +1,16 @@
+# frozen_string_literal: true
+
 class PublicApi::V1::IdeaSerializer < ActiveModel::Serializer
   @@multiloc_service = MultilocService.new
 
-  attributes :id, 
-    :title, 
-    :body_html, 
-    :author_name, 
-    :upvotes_count, 
-    :downvotes_count, 
-    :comments_count, 
-    :published_at, 
+  attributes :id,
+    :title,
+    :body_html,
+    :author_name,
+    :upvotes_count,
+    :downvotes_count,
+    :comments_count,
+    :published_at,
     :images,
     :href,
     :project_id,
@@ -25,7 +27,7 @@ class PublicApi::V1::IdeaSerializer < ActiveModel::Serializer
 
   def images
     object.idea_images.map do |idea_image|
-      idea_image.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
+      idea_image.image.versions.to_h { |k, v| [k.to_s, v.url] }
     end
   end
 
@@ -40,5 +42,4 @@ class PublicApi::V1::IdeaSerializer < ActiveModel::Serializer
   def href
     Frontend::UrlService.new.model_to_url object
   end
-
 end

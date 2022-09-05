@@ -7,7 +7,7 @@ import bowser from 'bowser';
 import Link from 'utils/cl-router/Link';
 
 // components
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import Image from 'components/UI/Image';
 
 // i18n
@@ -240,7 +240,7 @@ const ContentBody = styled.div`
 const ContentHeaderLabel = styled.span`
   height: ${ContentHeaderHeight}px;
   color: ${colors.label};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 500;
   text-transform: uppercase;
   display: flex;

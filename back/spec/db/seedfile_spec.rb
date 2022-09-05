@@ -1,26 +1,28 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
+describe AppConfiguration, slow_test: true do
+  unless CitizenLab.ee?
+    it 'generates a valid app configuration, user and initial data' do
+      described_class.first.destroy!
 
-describe "seedfile", slow_test: true do
-  if !CitizenLab.ee?
-    it "generates a valid app configuration, user and initial data" do
-      AppConfiguration.first.destroy!
+      load Rails.root.join('db', 'seeds.rb')
 
-      load Rails.root.join("db","seeds.rb")
-      expect(AppConfiguration.count).to be(1)
-        
+      expect(described_class.count).to be(1)
+      expect(HomePage.count).to be(1)
+
       expect(User.admin.count).to be > 0
-      expect(Page.count).to be 6 # 0 generated + 5 legal pages + 1 initiatives + 0 success stories
+      expect(StaticPage.count).to be > 3
       expect(IdeaStatus.count).to be > 0
       expect(InitiativeStatus.count).to be > 0
       expect(Topic.count).to be > 0
       expect(Project.count).to be > 0
       expect(ProjectImage.count).to be > 0
-      expect(ProjectsTopic.count).to be > 0
+      expect(ProjectsAllowedInputTopic.count).to be > 0
 
       expect(EmailCampaigns::UnsubscriptionToken.count).to be > 0
       expect(EmailCampaigns::Campaign.count).to be > 0
     end
   end
-
 end

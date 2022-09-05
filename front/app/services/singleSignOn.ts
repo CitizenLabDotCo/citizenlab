@@ -4,11 +4,14 @@ import { stringify } from 'qs';
 import { omitBy, isNil } from 'lodash-es';
 import { isProjectContext } from 'components/Verification/verificationModalEvents';
 
-export type SSOProvider =
-  | 'google'
-  | 'facebook'
-  | 'azureactivedirectory'
-  | 'franceconnect';
+export interface SSOProviderMap {
+  azureactivedirectory: 'azureactivedirectory';
+  facebook: 'facebook';
+  franceconnect: 'franceconnect';
+  google: 'google';
+}
+
+export type SSOProvider = SSOProviderMap[keyof SSOProviderMap];
 
 // Note: these are url parameters so therefore all typed as strings
 export interface SSOParams {
@@ -23,13 +26,19 @@ export interface SSOParams {
 
 export const handleOnSSOClick = (
   provider: SSOProvider,
-  metaData: ISignUpInMetaData
+  metaData: ISignUpInMetaData,
+  setHrefFromModule?: () => void
 ) => {
+  setHrefFromModule ? setHrefFromModule() : setHref(provider, metaData);
+};
+
+function setHref(provider: SSOProvider, metaData: ISignUpInMetaData) {
   const { pathname, verification, verificationContext } = metaData;
+
   const ssoParams: SSOParams = {
     sso_response: 'true',
     sso_flow: metaData.flow,
-    sso_pathname: pathname,
+    sso_pathname: pathname, // Also used by back-end to set user.locale following succesful signup
     sso_verification: verification === true ? 'true' : undefined,
     sso_verification_action: verificationContext?.action,
     sso_verification_id: isProjectContext(verificationContext)
@@ -39,4 +48,4 @@ export const handleOnSSOClick = (
   };
   const urlSearchParams = stringify(omitBy(ssoParams, isNil));
   window.location.href = `${AUTH_PATH}/${provider}?${urlSearchParams}`;
-};
+}

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-## IdeasFinder.find
 class IdeasFinder < ApplicationFinder
   sortable_attributes 'upvotes_count', 'downvotes_count', 'baskets_count'
 
@@ -13,8 +12,16 @@ class IdeasFinder < ApplicationFinder
   sort_scope '-author_name', ['users.first_name DESC', 'users.last_name DESC']
   sort_scope 'status',       order_status: :asc
   sort_scope '-status',      order_status: :desc
-  sort_scope 'trending',     ->(ideas) { Idea.where(id: TrendingIdeaService.new.sort_trending(ideas).map(&:id)) }
-  sort_scope '-trending',    ->(ideas) { Idea.where(id: TrendingIdeaService.new.sort_trending(ideas).reverse.map(&:id)) }
+
+  sort_scope 'trending',     lambda { |ideas|
+    ids = TrendingIdeaService.new.sort_trending(ideas).map(&:id)
+    Idea.unscoped.where(id: ids).order_as_specified(id: ids)
+  }
+
+  sort_scope '-trending', lambda { |ideas|
+    ids = TrendingIdeaService.new.sort_trending(ideas).map(&:id).reverse
+    Idea.unscoped.where(id: ids).order_as_specified(id: ids)
+  }
 
   private
 
@@ -37,13 +44,6 @@ class IdeasFinder < ApplicationFinder
     scope(:with_some_topics, topics)
   end
   alias topic_condition topics_condition
-
-  def areas_condition(areas)
-    return if areas.blank?
-
-    @records.includes(:areas)
-    scope(:with_some_areas, areas)
-  end
 
   def phase_condition(phase)
     scope(:in_phase, phase) if phase.present?
@@ -89,6 +89,26 @@ class IdeasFinder < ApplicationFinder
 
   def _search_restricted?
     UserDisplayNameService.new(AppConfiguration.instance, current_user).restricted?
+  end
+
+  def location_required_condition(location_required)
+    return unless location_required
+
+    @records.where.not(location_point: nil)
+  end
+
+  def filter_can_moderate_condition(can_moderate)
+    return unless can_moderate
+
+    if current_user
+      where(project: user_role_service.moderatable_projects(current_user))
+    else
+      records.none
+    end
+  end
+
+  def user_role_service
+    @user_role_service ||= UserRoleService.new
   end
 end
 

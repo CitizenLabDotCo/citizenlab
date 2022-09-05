@@ -14,7 +14,7 @@ export const __setMockIdeasCount = (ideasCount: IIdeasCount) => {
 export const ideasCount = jest.fn((_ideasCount) => {
   const observable = new BehaviorSubject(mockIdeasCount);
   return {
-    observable
+    observable,
   };
 });
 
@@ -25,12 +25,16 @@ export const __setMockUsersByTimeCumulativeStream = (data: IUsersByTime) => {
   mockUsersByTimeCumulativeStreamVariable = data;
 };
 
-export const usersByTimeCumulativeStream = jest.fn((_streamParams: IStreamParams) => {
-  const observable = new BehaviorSubject(mockUsersByTimeCumulativeStreamVariable);
-  return {
-    observable
-  };
-});
+export const usersByTimeCumulativeStream = jest.fn(
+  (_streamParams: IStreamParams) => {
+    const observable = new BehaviorSubject(
+      mockUsersByTimeCumulativeStreamVariable
+    );
+    return {
+      observable,
+    };
+  }
+);
 
 export const mockUsersByTimeCumulative = {
   series: {
@@ -64,7 +68,7 @@ export const mockUsersByTimeCumulative = {
       '2018-11-27': 10,
       '2018-11-28': 10,
       '2018-11-29': 10,
-      '2018-11-30': 10
-    }
-  }
+      '2018-11-30': 10,
+    },
+  },
 };

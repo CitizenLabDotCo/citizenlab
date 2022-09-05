@@ -36,17 +36,6 @@ export function projectFilesStream(
   });
 }
 
-export function projectFileStream(
-  projectId: string,
-  fileId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IProjectFile>({
-    apiEndpoint: `${apiEndpoint}/${projectId}/files/${fileId}`,
-    ...streamParams,
-  });
-}
-
 export async function addProjectFile(
   projectId: string,
   base64: string,

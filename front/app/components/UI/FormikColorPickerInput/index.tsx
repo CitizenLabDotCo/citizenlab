@@ -2,17 +2,24 @@ import React from 'react';
 import {
   ColorPickerInput,
   ColorPickerInputProps as VanillaInputProps,
-} from 'cl2-component-library';
+} from '@citizenlab/cl2-component-library';
 import { FieldProps } from 'formik';
 
-type State = {};
+interface State {}
 
 class FormikColorPickerInput extends React.Component<
   FieldProps & VanillaInputProps,
   State
 > {
   handleOnChange = (newValue) => {
-    this.props.form.setFieldValue(this.props.field.name, newValue);
+    const {
+      form,
+      field: { name },
+    } = this.props;
+    form.setFieldValue(name, newValue);
+    form.setStatus('enabled');
+    form.setFieldTouched(name, true);
+    form.setFieldError(name, '');
   };
 
   render() {

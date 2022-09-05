@@ -3,7 +3,7 @@ import bowser from 'bowser';
 import { trackEventByName } from 'utils/analytics';
 
 // components
-import { Dropdown } from 'cl2-component-library';
+import { Dropdown } from '@citizenlab/cl2-component-library';
 
 // styling
 import styled from 'styled-components';
@@ -52,6 +52,7 @@ const ButtonWithDropdown = ({
     trackEventByName(trackName);
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (ref.current) {
       setButtonWidth(ref.current.offsetWidth);

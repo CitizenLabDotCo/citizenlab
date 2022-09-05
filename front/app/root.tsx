@@ -3,38 +3,40 @@ import 'regenerator-runtime/runtime';
 import React, { useEffect } from 'react';
 import { render } from 'react-dom';
 // tslint:disable-next-line:no-vanilla-routing
-import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
-import { useScroll } from 'react-router-scroll';
+
 import 'assets/css/reset.min.css';
 import 'assets/fonts/fonts.css';
 import 'tippy.js/dist/tippy.css';
 import 'tippy.js/themes/light.css';
 import App from 'containers/App';
 import LanguageProvider from 'containers/LanguageProvider';
-import 'file-loader?name=[name].[ext]!./.htaccess';
 import createRoutes from './routes';
 import { init } from '@sentry/browser';
 import OutletsProvider from 'containers/OutletsProvider';
 import modules from 'modules';
+import history from 'utils/browserHistory';
 
-const rootRoute = {
-  component: App,
-  childRoutes: createRoutes(),
-};
+import {
+  unstable_HistoryRouter as HistoryRouter,
+  useRoutes,
+} from 'react-router-dom';
 
-const Root = () => {
+const Routes = () => {
+  const importedRoutes = createRoutes();
+  const routes = useRoutes(importedRoutes);
   useEffect(() => {
     modules.afterMountApplication();
   }, []);
 
+  return <App>{routes}</App>;
+};
+const Root = () => {
   return (
     <OutletsProvider>
       <LanguageProvider>
-        <Router
-          history={browserHistory}
-          routes={rootRoute}
-          render={applyRouterMiddleware(useScroll())}
-        />
+        <HistoryRouter history={history}>
+          <Routes />
+        </HistoryRouter>
       </LanguageProvider>
     </OutletsProvider>
   );
@@ -54,7 +56,7 @@ if (process.env.SENTRY_DSN) {
   import('@sentry/integrations').then((Integrations) => {
     init({
       dsn: process.env.SENTRY_DSN,
-      environment: process.env.NODE_ENV,
+      environment: process.env.SENTRY_ENV,
       release: process.env.CIRCLE_BUILD_NUM,
       integrations: [new Integrations.RewriteFrames()],
     });

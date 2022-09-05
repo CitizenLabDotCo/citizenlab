@@ -10,14 +10,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.titleTopicManager',
     defaultMessage: 'Topic manager',
   },
-  deleteButtonLabel: {
-    id: 'app.containers.AdminPage.SettingsPage.deleteTopicButtonLabel',
-    defaultMessage: 'Delete',
-  },
-  editButtonLabel: {
-    id: 'app.containers.AdminPage.SettingsPage.editTopicButtonLabel',
-    defaultMessage: 'Edit',
-  },
   addTopicButton: {
     id: 'app.containers.AdminPage.SettingsPage.addTopicButton',
     defaultMessage: 'Add topic',
@@ -31,13 +23,17 @@ export default defineMessages({
     defaultMessage:
       'The name you choose for each topic will be visible for citizens during signup and when filtering projects.',
   },
+  fieldTopicTitleError: {
+    id: 'app.containers.AdminPage.SettingsPage.fieldTopicTitleError',
+    defaultMessage: 'Provide a tag name for all languages',
+  },
+  fieldTopicSave: {
+    id: 'app.containers.AdminPage.SettingsPage.fieldTopicSave',
+    defaultMessage: 'Save tag',
+  },
   editTopicFormTitle: {
     id: 'app.containers.AdminPage.SettingsPage.editTopicFormTitle',
     defaultMessage: 'Edit topic',
-  },
-  defaultTopic: {
-    id: 'app.containers.AdminPage.SettingsPage.defaultTopic',
-    defaultMessage: 'Default topic',
   },
   confirmHeader: {
     id: 'app.containers.AdminPage.SettingsPage.confirmHeader',

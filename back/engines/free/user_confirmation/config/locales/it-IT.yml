@@ -1,0 +1,13 @@
+it:
+  user_confirmation:
+    confirmations_mailer:
+      send_confirmation_code:
+        subject: "Conferma il tuo indirizzo email per la piattaforma di partecipazione di %{organizationName}"
+        header: "Il tuo codice di conferma"
+        header_message: "Ciao %{firstName}!"
+        thanks_for_signing_up: "Grazie per esserti iscritto alla piattaforma di partecipazione di %{organizationName}."
+        please_confirm_your_email_address: "Per favore, conferma il tuo indirizzo email per completare la tua registrazione."
+        copy_paste_the_link_below: "Copia e incolla il codice qui sotto nel tuo modulo di registrazione."
+        the_link_is_valid_for: "Questo link è valido per 24 ore. Se il link è scaduto, puoi <a href=\"%{link}\">richiedere un nuovo codice</a>."
+        did_you_receive_this_email_in_error: "Hai ricevuto questa e-mail per errore? <a href=\"%{link}\">Facci sapere</a>."
+

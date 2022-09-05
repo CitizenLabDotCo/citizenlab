@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Onboarding
   module WebApi
     module V1
@@ -28,12 +30,6 @@ module Onboarding
           })
 
           render json: WebApi::V1::CampaignSerializer.new(campaign, params: fastjson_params)
-        end
-
-        private
-
-        def secure_controller?
-          true
         end
       end
     end

@@ -45,12 +45,40 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.emails',
     defaultMessage: 'Emails',
   },
+  messaging: {
+    id: 'app.containers.AdminPage.SideBar.messaging',
+    defaultMessage: 'Messaging',
+  },
   processing: {
     id: 'app.containers.AdminPage.SideBar.processing',
     defaultMessage: 'Processing',
   },
+  insights: {
+    id: 'app.containers.AdminPage.SideBar.insights',
+    defaultMessage: 'Reporting',
+  },
+  menu: {
+    id: 'app.containers.AdminPage.SideBar.menu',
+    defaultMessage: 'Pages & menu',
+  },
+  pages: {
+    id: 'app.containers.AdminPage.SideBar.pages',
+    defaultMessage: 'Pages',
+  },
+  academy: {
+    id: 'app.containers.AdminPage.SideBar.academy',
+    defaultMessage: 'Academy',
+  },
+  linkToAcademy: {
+    id: 'app.containers.AdminPage.SideBar.linkToAcademy',
+    defaultMessage: 'https://academy.citizenlab.co/',
+  },
   guide: {
     id: 'app.containers.AdminPage.SideBar.guide',
     defaultMessage: 'Guide',
+  },
+  linkToGuide: {
+    id: 'app.containers.AdminPage.SideBar.linkToGuide',
+    defaultMessage: 'https://community.citizenlab.co/en/folders/guide',
   },
 });

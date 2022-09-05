@@ -1,3 +1,4 @@
+// @ts-nocheck
 // libraries
 import React from 'react';
 import { shallow } from 'enzyme';
@@ -12,7 +13,7 @@ import Container from './Container';
 jest.mock('./Banner', () => 'Banner');
 jest.mock('./PreferencesDialog', () => 'PreferencesDialog');
 jest.mock('./Footer', () => 'Footer');
-jest.mock('components/Loadable/Modal', () => 'LoadableModal');
+jest.mock('components/UI/Modal', () => 'Modal');
 
 jest.mock('utils/cl-intl');
 const Intl = require('utils/cl-intl/__mocks__/');
@@ -34,6 +35,8 @@ const categorizedDestinations = {
   advertising: [],
 };
 
+const emptyFunction = () => {};
+
 describe('<Container />', () => {
   beforeEach(() => {
     setPreferences = jest.fn();
@@ -51,7 +54,7 @@ describe('<Container />', () => {
         isConsentRequired={false}
         preferences={initialPreferences}
         categorizedDestinations={categorizedDestinations}
-        onToggleModal={() => {}}
+        onToggleModal={emptyFunction}
       />
     );
 
@@ -71,7 +74,7 @@ describe('<Container />', () => {
         isConsentRequired={true}
         preferences={initialPreferences}
         categorizedDestinations={categorizedDestinations}
-        onToggleModal={() => {}}
+        onToggleModal={emptyFunction}
       />
     );
 
@@ -95,7 +98,7 @@ describe('<Container />', () => {
           isConsentRequired={true}
           preferences={initialPreferences}
           categorizedDestinations={categorizedDestinations}
-          onToggleModal={() => {}}
+          onToggleModal={emptyFunction}
         />
       );
       expect(wrapper.find('Banner').exists()).toBeTruthy();
@@ -110,7 +113,7 @@ describe('<Container />', () => {
           isConsentRequired={false}
           preferences={initialPreferences}
           categorizedDestinations={categorizedDestinations}
-          onToggleModal={() => {}}
+          onToggleModal={emptyFunction}
         />
       );
       expect(wrapper.find('Banner').exists()).toBeFalsy();
@@ -128,10 +131,10 @@ describe('<Container />', () => {
           isConsentRequired={true}
           preferences={initialPreferences}
           categorizedDestinations={categorizedDestinations}
-          onToggleModal={() => {}}
+          onToggleModal={emptyFunction}
         />
       );
-      expect(wrapper.find('LoadableModal').props().opened).toBe(false);
+      expect(wrapper.find('Modal').props().opened).toBe(false);
     });
     it("modal is initially closed when consent is't required", () => {
       const wrapper = shallow(
@@ -143,10 +146,10 @@ describe('<Container />', () => {
           isConsentRequired={false}
           preferences={initialPreferences}
           categorizedDestinations={categorizedDestinations}
-          onToggleModal={() => {}}
+          onToggleModal={emptyFunction}
         />
       );
-      expect(wrapper.find('LoadableModal').props().opened).toBe(false);
+      expect(wrapper.find('Modal').props().opened).toBe(false);
     });
     it('passes down to Banner a handler that opens the modal', () => {
       const wrapper = shallow(
@@ -158,12 +161,12 @@ describe('<Container />', () => {
           isConsentRequired={true}
           preferences={initialPreferences}
           categorizedDestinations={categorizedDestinations}
-          onToggleModal={() => {}}
+          onToggleModal={emptyFunction}
         />
       );
-      expect(wrapper.find('LoadableModal').props().opened).toBe(false);
+      expect(wrapper.find('Modal').props().opened).toBe(false);
       wrapper.find('Banner').props().onChangePreferences();
-      expect(wrapper.find('LoadableModal').props().opened).toBe(true);
+      expect(wrapper.find('Modal').props().opened).toBe(true);
     });
 
     it('passes down to Modal a handler that closes the modal', () => {
@@ -176,13 +179,13 @@ describe('<Container />', () => {
           isConsentRequired={true}
           preferences={initialPreferences}
           categorizedDestinations={categorizedDestinations}
-          onToggleModal={() => {}}
+          onToggleModal={emptyFunction}
         />
       );
       wrapper.instance().setState({ isDialogOpen: true });
-      expect(wrapper.find('LoadableModal').props().opened).toBe(true);
-      wrapper.find('LoadableModal').props().close();
-      expect(wrapper.find('LoadableModal').props().opened).toBe(false);
+      expect(wrapper.find('Modal').props().opened).toBe(true);
+      wrapper.find('Modal').props().close();
+      expect(wrapper.find('Modal').props().opened).toBe(false);
     });
 
     it('reacts to openConsentManager events by opening the modal', () => {
@@ -195,12 +198,12 @@ describe('<Container />', () => {
           isConsentRequired={true}
           preferences={initialPreferences}
           categorizedDestinations={categorizedDestinations}
-          onToggleModal={() => {}}
+          onToggleModal={emptyFunction}
         />
       );
-      expect(wrapper.find('LoadableModal').props().opened).toBe(false);
+      expect(wrapper.find('Modal').props().opened).toBe(false);
       eventEmitter.emit('openConsentManager');
-      expect(wrapper.find('LoadableModal').props().opened).toBe(true);
+      expect(wrapper.find('Modal').props().opened).toBe(true);
     });
   });
 
@@ -237,7 +240,7 @@ describe('<Container />', () => {
             advertising: false,
           }}
           categorizedDestinations={categorizedDestinations}
-          onToggleModal={() => {}}
+          onToggleModal={emptyFunction}
         />
       );
       expect((wrapper.instance() as any).validate()).toBeTruthy();
@@ -255,16 +258,16 @@ describe('<Container />', () => {
           isConsentRequired={true}
           preferences={initialPreferences}
           categorizedDestinations={categorizedDestinations}
-          onToggleModal={() => {}}
+          onToggleModal={emptyFunction}
         />
       );
       wrapper.instance().setState({ isDialogOpen: true });
 
       expect(wrapper.find('Banner').exists()).toBeTruthy();
-      expect(wrapper.find('LoadableModal').props().opened).toBe(true);
-      const { footer } = wrapper.find('LoadableModal').props();
+      expect(wrapper.find('Modal').props().opened).toBe(true);
+      const { footer } = wrapper.find('Modal').props();
       shallow(footer).props().handleCancel();
-      expect(wrapper.find('LoadableModal').props().opened).toBe(false);
+      expect(wrapper.find('Modal').props().opened).toBe(false);
       expect(wrapper.find('Banner').exists()).toBeTruthy();
       expect(setPreferences).not.toHaveBeenCalled();
       expect(saveConsent).not.toHaveBeenCalled();
@@ -285,16 +288,16 @@ describe('<Container />', () => {
             advertising: null,
           }}
           categorizedDestinations={categorizedDestinations}
-          onToggleModal={() => {}}
+          onToggleModal={emptyFunction}
         />
       );
       wrapper.instance().setState({ isDialogOpen: true });
 
       expect(wrapper.find('Banner').exists()).toBeTruthy();
-      expect(wrapper.find('LoadableModal').props().opened).toBe(true);
-      const { footer } = wrapper.find('LoadableModal').props();
+      expect(wrapper.find('Modal').props().opened).toBe(true);
+      const { footer } = wrapper.find('Modal').props();
       shallow(footer).props().handleCancel();
-      expect(wrapper.find('LoadableModal').props().opened).toBe(true);
+      expect(wrapper.find('Modal').props().opened).toBe(true);
       expect(wrapper.state().isCancelling).toBe(true);
       expect(wrapper.find('Banner').exists()).toBeTruthy();
       expect(setPreferences).not.toHaveBeenCalled();
@@ -316,15 +319,15 @@ describe('<Container />', () => {
             advertising: null,
           }}
           categorizedDestinations={categorizedDestinations}
-          onToggleModal={() => {}}
+          onToggleModal={emptyFunction}
         />
       );
       wrapper.instance().setState({ isDialogOpen: true, isCancelling: true });
 
       expect(wrapper.find('Banner').exists()).toBeTruthy();
-      const { footer } = wrapper.find('LoadableModal').props();
+      const { footer } = wrapper.find('Modal').props();
       shallow(footer).props().handleCancelConfirm();
-      expect(wrapper.find('LoadableModal').props().opened).toBe(false);
+      expect(wrapper.find('Modal').props().opened).toBe(false);
       expect(wrapper.find('Banner').exists()).toBeTruthy();
       expect(setPreferences).not.toHaveBeenCalled();
       expect(saveConsent).not.toHaveBeenCalled();
@@ -345,15 +348,15 @@ describe('<Container />', () => {
             advertising: null,
           }}
           categorizedDestinations={categorizedDestinations}
-          onToggleModal={() => {}}
+          onToggleModal={emptyFunction}
         />
       );
       wrapper.instance().setState({ isDialogOpen: true, isCancelling: true });
 
       expect(wrapper.find('Banner').exists()).toBeTruthy();
-      const { footer } = wrapper.find('LoadableModal').props();
+      const { footer } = wrapper.find('Modal').props();
       shallow(footer).props().handleCancelBack();
-      expect(wrapper.find('LoadableModal').props().opened).toBe(true);
+      expect(wrapper.find('Modal').props().opened).toBe(true);
       expect(wrapper.find('Banner').exists()).toBeTruthy();
       expect(setPreferences).not.toHaveBeenCalled();
       expect(saveConsent).not.toHaveBeenCalled();

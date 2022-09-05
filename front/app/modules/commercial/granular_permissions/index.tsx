@@ -4,28 +4,24 @@ import { ModuleConfiguration } from 'utils/moduleUtils';
 import InitiativeSettingsTab from './admin/components/InitiativeSettingsTab';
 import ProjectSettingsTab from './admin/components/ProjectSettingsTab';
 import Granular from './admin/containers/Granular';
+import FeatureFlag from 'components/FeatureFlag';
 
-type RenderOnFeatureFlagProps = {
-  children: ReactNode;
-};
+const AdminGranularPermissionsComponent = React.lazy(
+  () => import('./admin/containers/permissions')
+);
 
 type RenderOnTabHideConditionProps = {
   children: ReactNode;
 };
 
-const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {
-  const isGranularPermissionsEnabled = useFeatureFlag('granular_permissions');
-  if (isGranularPermissionsEnabled) {
-    return <>{children}</>;
-  }
-  return null;
-};
-
 const RenderOnTabHideCondition = ({
   children,
 }: RenderOnTabHideConditionProps) => {
-  // could be the same as, but might diverge from RenderOnFeatureFlag
-  const isGranularPermissionsEnabled = useFeatureFlag('granular_permissions');
+  // Could be more than just a feature flag check,
+  // hence we're not using the FeatureFlag component
+  const isGranularPermissionsEnabled = useFeatureFlag({
+    name: 'granular_permissions',
+  });
   if (isGranularPermissionsEnabled) {
     return <>{children}</>;
   }
@@ -37,7 +33,7 @@ const configuration: ModuleConfiguration = {
     'admin.initiatives': [
       {
         path: 'permissions',
-        container: () => import('./admin/containers/permissions'),
+        element: <AdminGranularPermissionsComponent />,
       },
     ],
   },
@@ -45,9 +41,9 @@ const configuration: ModuleConfiguration = {
     'app.containers.Admin.project.edit.permissions.participationRights': (
       props
     ) => (
-      <RenderOnFeatureFlag>
+      <FeatureFlag name="granular_permissions">
         <Granular {...props} />
-      </RenderOnFeatureFlag>
+      </FeatureFlag>
     ),
     'app.containers.Admin.initiatives.tabs': (props) => (
       <InitiativeSettingsTab {...props} />

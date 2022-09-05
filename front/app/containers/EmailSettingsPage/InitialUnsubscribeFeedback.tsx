@@ -15,7 +15,7 @@ import T from 'components/T';
 
 const Message = styled.div<{ status: 'error' | 'success' | 'loading' }>`
   color: ${colors.clBlueDarker};
-  font-size: ${fontSizes.large}px;
+  font-size: ${fontSizes.l}px;
 `;
 
 interface Props {

@@ -9,7 +9,6 @@ nl-BE:
       "comment_on_your_idea": Een reactie op mijn idee
       "comment_on_your_initiative": Een reactie op mijn voorstel
       "first_idea_published": Posten van mijn eerste idee
-      "idea_assigned_to_you": Toewijzing van een idee aan mij
       "idea_marked_as_spam": Idee spammelding
       "idea_published": Posten van mijn idee
       "initiative_assigned_to_you": Toewijzing van een voorstel aan mij
@@ -58,7 +57,6 @@ nl-BE:
       "comment_on_your_idea": Reactie op jouw idee - alle gebruikers
       "comment_on_your_initiative": Reactie op jouw voorstel - alle gebruikers
       "first_idea_published": Posten van je eerste idee - alle gebruikers
-      "idea_assigned_to_you": Toewijzing van een idee - admins en projectbeheerders
       "idea_marked_as_spam": Spammeldinig idee - admins en projectbeheerders
       "idea_published": Posten van je idee - alle gebruikers
       "initiative_assigned_to_you": Toewijzing van een voorstel - admins
@@ -167,13 +165,6 @@ nl-BE:
       main_header: '%{commentAuthor} heeft gereageerd op je voorstel'
       subject: 'Je hebt een reactie gekregen op het platform van %{organizationName}'
       preheader: '%{authorName} reageerde op jouw voorstel voor %{organizationName}'
-    idea_assigned_to_you:
-      by_author: 'door %{authorName}'
-      cta_reply_to: 'Geef %{authorName} feedback'
-      event_description_idea: 'Je kreeg een idee toegewezen. Geef feedback door het schrijven van een officiële update of door het wijzigen van de status van het idee.'
-      main_header: '%{firstName}, je hebt een nieuwe toewijzing'
-      subject: 'Je hebt een toewijzing op het platform van %{organizationName}'
-      preheader_idea: 'Je kreeg het idee van %{authorName} toegewezen'
     assignee_digest:
       subject: 'Aantal ideeën die je feedback nodig hebben: %{numberIdeas}'
       preheader: 'Overzicht van %{organizationName}'
@@ -424,12 +415,6 @@ nl-BE:
       title_what_can_you_do_folderadmin: 'Wat kan je doen als mapbeheerder?'
       title_added_as_folderadmin: 'Je werd net mapbeheerder'
       x_projects: '%{numberOfProjects} projecten'
-    password_reset:
-      cta_reset_password: 'Stel je wachtwoord opnieuw in'
-      message_you_reset_your_password: 'Je vroeg een reset van je wachtwoord om je aan te melden op het participatieplatform van %{organizationName}. Klik op onderstaande knop om een nieuw, veilig wachtwoord in te stellen. De link is 1 uur geldig.'
-      preheader: 'Hier is de link die je gevraagd hebt om je wachtwoord opnieuw in te stellen'
-      subject: 'Reset je wachtwoord voor het participatieplatform van %{organizationName}'
-      title_reset_your_password: 'Kies een nieuw wachtwoord'
     project_phase_started:
       cta_view_phase: 'Ontdek deze nieuwe fase'
       event_description: 'Dit project ging een nieuwe fase in op het platform van %{organizationName}. Klik op de link hieronder om meer te weten te komen!'
@@ -501,7 +486,7 @@ nl-BE:
       today_by_author: "Vandaag door %{author}"
       yesterday_by_author: "Gisteren door %{author}"
       x_days_ago_by_author: "%{x} dagen geleden door %{author}"
-      trending_ideas: "Populaire ideeën"
+      trending_ideas: "Populaire bijdrages"
       trending_ideas_text: "Geïnteresseerd in wat er is gebeurd op het platform? Bekijk de drie meest populaire ideeën, wat mensen erover te zeggen hebben en neem deel aan het gesprek."
       no_notifications: "Geen meldingen"
       one_notification: "1 melding"
@@ -567,4 +552,3 @@ nl-BE:
       new_votes: 'Nieuwe stemmen'
       remaining_votes: 'Resterende stemmen'
       remaining_days: 'Resterende dagen'
-

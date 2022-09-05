@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { Input } from 'cl2-component-library';
+import { Input } from '@citizenlab/cl2-component-library';
 
 type Props = {
   value: string;
   onChange: (string) => void;
 };
 
-type State = {};
+interface State {}
 
 class TextValueSelector extends React.PureComponent<Props, State> {
   handleOnChange = (value) => {

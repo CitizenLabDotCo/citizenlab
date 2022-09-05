@@ -1,3 +1,31 @@
+# frozen_string_literal: true
+
+# == Schema Information
+#
+# Table name: email_campaigns_campaigns
+#
+#  id               :uuid             not null, primary key
+#  type             :string           not null
+#  author_id        :uuid
+#  enabled          :boolean
+#  sender           :string
+#  reply_to         :string
+#  schedule         :jsonb
+#  subject_multiloc :jsonb
+#  body_multiloc    :jsonb
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  deliveries_count :integer          default(0), not null
+#
+# Indexes
+#
+#  index_email_campaigns_campaigns_on_author_id  (author_id)
+#  index_email_campaigns_campaigns_on_type       (type)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (author_id => users.id)
+#
 module EmailCampaigns
   class Campaigns::IdeaMarkedAsSpam < Campaign
     include Consentable
@@ -6,12 +34,12 @@ module EmailCampaigns
     include Disableable
     include LifecycleStageRestrictable
     include Trackable
-    allow_lifecycle_stages only: ['trial','active']
+    allow_lifecycle_stages only: %w[trial active]
 
     recipient_filter :filter_notification_recipient
 
     def self.consentable_roles
-      ['admin', 'project_moderator']
+      %w[admin project_moderator]
     end
 
     def mailer_class
@@ -19,10 +47,10 @@ module EmailCampaigns
     end
 
     def activity_triggers
-      {'Notifications::IdeaMarkedAsSpam' => {'created' => true}}
+      { 'Notifications::IdeaMarkedAsSpam' => { 'created' => true } }
     end
 
-    def filter_notification_recipient users_scope, activity:, time: nil
+    def filter_notification_recipient(users_scope, activity:, time: nil)
       users_scope.where(id: activity.item.recipient.id)
     end
 
@@ -30,7 +58,7 @@ module EmailCampaigns
       'admin'
     end
 
-    def generate_commands recipient:, activity:, time: nil
+    def generate_commands(recipient:, activity:, time: nil)
       notification = activity.item
       [{
         event_payload: {

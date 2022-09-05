@@ -1,11 +1,12 @@
 import React, { memo, useEffect, useState } from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isEqual } from 'lodash-es';
+import { combineLatest } from 'rxjs';
 
 // components
 import Map from 'components/Map';
 import MapConfigOverview from './MapConfigOverview';
-import { Spinner } from 'cl2-component-library';
+import { Spinner } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import Tippy from '@tippyjs/react';
 
@@ -20,10 +21,15 @@ import {
 } from '../../../services/mapConfigs';
 
 // events
-import { setMapLatLngZoom, mapCenter$, mapZoom$ } from 'components/Map/events';
+import {
+  leafletMapCenter$,
+  leafletMapZoom$,
+  setLeafletMapCenter,
+  setLeafletMapZoom,
+} from 'components/UI/LeafletMap/events';
 
 // utils
-import { getCenter, getZoomLevel, getTileProvider } from '../../../utils/map';
+import { getCenter, getZoomLevel } from '../../../utils/map';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
@@ -86,13 +92,12 @@ const ProjectCustomMapConfigPage = memo<
   const mapConfig = useMapConfig({ projectId });
 
   const defaultLatLng = getCenter(undefined, appConfig, mapConfig);
-  const defaultLat = parseFloat(defaultLatLng[0]);
-  const defaultLng = parseFloat(defaultLatLng[1]);
+  const defaultLat = defaultLatLng[0];
+  const defaultLng = defaultLatLng[1];
   const defaultZoom = getZoomLevel(undefined, appConfig, mapConfig);
-  const defaultTileProvider = getTileProvider(appConfig, mapConfig);
 
-  const [currentLat, setCurrentLat] = useState<number | null>(null);
-  const [currentLng, setCurrentLng] = useState<number | null>(null);
+  const [currentLat, setCurrentLat] = useState<number | undefined>(undefined);
+  const [currentLng, setCurrentLng] = useState<number | undefined>(undefined);
   const [currentZoom, setCurrentZoom] = useState<number | null>(null);
 
   const disabled = isEqual(
@@ -102,17 +107,13 @@ const ProjectCustomMapConfigPage = memo<
 
   useEffect(() => {
     const subscriptions = [
-      mapCenter$.subscribe((center) => {
-        if (center) {
-          setCurrentLat(center[0]);
-          setCurrentLng(center[1]);
-        }
-      }),
-      mapZoom$.subscribe((zoom) => {
-        if (zoom !== null) {
+      combineLatest([leafletMapCenter$, leafletMapZoom$]).subscribe(
+        ([center, zoom]) => {
+          setCurrentLat(center?.[0]);
+          setCurrentLng(center?.[1]);
           setCurrentZoom(zoom);
         }
-      }),
+      ),
     ];
 
     return () =>
@@ -120,11 +121,8 @@ const ProjectCustomMapConfigPage = memo<
   }, []);
 
   const goToDefaultMapView = () => {
-    setMapLatLngZoom({
-      lat: defaultLat,
-      lng: defaultLng,
-      zoom: defaultZoom,
-    });
+    setLeafletMapCenter([defaultLat, defaultLng]);
+    setLeafletMapZoom(defaultZoom);
   };
 
   const setAsDefaultMapView = async (event: React.FormEvent) => {
@@ -132,8 +130,8 @@ const ProjectCustomMapConfigPage = memo<
 
     if (
       mapConfig &&
-      currentLat !== null &&
-      currentLng !== null &&
+      currentLat !== undefined &&
+      currentLng !== undefined &&
       currentZoom !== null
     ) {
       updateProjectMapConfig(projectId, mapConfig.id, {
@@ -150,7 +148,6 @@ const ProjectCustomMapConfigPage = memo<
     // create project mapConfig if it doesn't yet exist
     if (projectId && !isNilOrError(appConfig) && mapConfig === null) {
       createProjectMapConfig(projectId, {
-        tile_provider: defaultTileProvider,
         center_geojson: {
           type: 'Point',
           coordinates: [defaultLng, defaultLat],
@@ -158,6 +155,7 @@ const ProjectCustomMapConfigPage = memo<
         zoom_level: defaultZoom.toString(),
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projectId, appConfig, mapConfig]);
 
   if (projectId && mapConfig?.id) {

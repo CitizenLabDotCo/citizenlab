@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::Notifications::NotificationSerializer < WebApi::V1::BaseSerializer
   attributes :read_at, :created_at
 

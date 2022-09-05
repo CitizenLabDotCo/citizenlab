@@ -10,7 +10,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 
 // components
 import Button from 'components/UI/Button';
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import { ManagerType } from '../..';
 
 export const NoPostPage = styled.div`
@@ -59,7 +59,7 @@ export const NoPostPage = styled.div`
 `;
 
 export const NoPostHeader = styled.h2`
-  font-size: ${fontSizes.medium}px;
+  font-size: ${fontSizes.m}px;
   font-weight: 600;
   margin-top: 0;
   margin-bottom: 5px;
@@ -68,7 +68,7 @@ export const NoPostHeader = styled.h2`
 export const NoPostDescription = styled.p`
   color: ${colors.adminSecondaryTextColor};
   font-weight: 400;
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   margin-bottom: 30px;
   max-width: 450px;
 `;

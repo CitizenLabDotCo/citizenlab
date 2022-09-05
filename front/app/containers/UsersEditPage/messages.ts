@@ -61,6 +61,10 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.language',
     defaultMessage: 'Language',
   },
+  image: {
+    id: 'app.containers.UsersEditPage.image',
+    defaultMessage: 'Avatar image',
+  },
   /*
    * Deletion
    */
@@ -80,15 +84,6 @@ export default defineMessages({
   deleteYourAccount: {
     id: 'app.containers.UsersEditPage.deleteYourAccount',
     defaultMessage: 'Delete your account',
-  },
-  deleteProfileError: {
-    id: 'app.containers.UsersEditPage.deleteProfileError',
-    defaultMessage:
-      'There was an issue deleting your profile, please try again later.',
-  },
-  logoAltText: {
-    id: 'app.containers.UsersEditPage.logoAltText',
-    defaultMessage: 'Logo of {tenantName}',
   },
   deleteAccountSubtext: {
     id: 'app.containers.UsersEditPage.deleteAccountSubtext',
@@ -137,10 +132,6 @@ export default defineMessages({
   /*
    * Details
    */
-  gender: {
-    id: 'app.containers.UsersEditPage.gender',
-    defaultMessage: 'Gender',
-  },
   bio: {
     id: 'app.containers.UsersEditPage.bio',
     defaultMessage: 'Bio',
@@ -148,10 +139,6 @@ export default defineMessages({
   bio_placeholder: {
     id: 'app.containers.UsersEditPage.bio_placeholder',
     defaultMessage: 'Write a short description of yourself',
-  },
-  domicile: {
-    id: 'app.containers.UsersEditPage.domicile',
-    defaultMessage: 'Domicile',
   },
   imageDropzonePlaceholder: {
     id: 'app.containers.UsersEditPage.imageDropzonePlaceholder',

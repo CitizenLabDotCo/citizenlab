@@ -1,20 +1,17 @@
-import React, { PureComponent, Suspense, lazy } from 'react';
+import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isUndefined } from 'lodash-es';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import { Helmet } from 'react-helmet';
 import ContentContainer from 'components/ContentContainer';
-import { Icon, Spinner } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import Fragment from 'components/Fragment';
 import FileAttachments from 'components/UI/FileAttachments';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-const PagesFooterNavigation = lazy(() =>
-  import('containers/PagesShowPage/PagesFooterNavigation')
-);
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -22,7 +19,6 @@ import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
 } from 'resources/GetAppConfigurationLocales';
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
-import GetPageLinks, { GetPageLinksChildProps } from 'resources/GetPageLinks';
 import GetResourceFiles, {
   GetResourceFilesChildProps,
 } from 'resources/GetResourceFiles';
@@ -36,7 +32,13 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { media, colors, fontSizes, defaultCardStyle } from 'utils/styleUtils';
+import {
+  media,
+  colors,
+  fontSizes,
+  defaultCardStyle,
+  isRtl,
+} from 'utils/styleUtils';
 import ResolveTextVariables from 'components/ResolveTextVariables';
 
 export const Container = styled.div`
@@ -74,7 +76,7 @@ export const PageContent = styled.main`
   flex-grow: 1;
   background: #fff;
   padding-top: 60px;
-  padding-bottom: 60px;
+  padding-bottom: 100px;
 `;
 
 export const PageTitle = styled.h1`
@@ -91,13 +93,17 @@ export const PageTitle = styled.h1`
   ${media.smallerThanMaxTablet`
     font-size: ${fontSizes.xxxl};
   `}
+  ${isRtl`
+    text-align: right;
+    direction: rtl;
+  `}
 `;
 
 export const PageDescription = styled.div``;
 
 export const StyledLink = styled(Link)`
   color: #666;
-  font-size: ${fontSizes.large}px;
+  font-size: ${fontSizes.l}px;
   font-weight: 400;
   display: flex;
   align-items: center;
@@ -125,7 +131,6 @@ interface DataProps {
   tenantLocales: GetAppConfigurationLocalesChildProps;
   page: GetPageChildProps;
   pageFiles: GetResourceFilesChildProps;
-  pageLinks: GetPageLinksChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -138,13 +143,12 @@ class PagesShowPage extends PureComponent<
 > {
   render() {
     const { formatMessage } = this.props.intl;
-    const { locale, tenantLocales, page, pageFiles, pageLinks } = this.props;
+    const { locale, tenantLocales, page, pageFiles } = this.props;
 
     if (
       !isNilOrError(locale) &&
       !isNilOrError(tenantLocales) &&
-      !isUndefined(page) &&
-      !isUndefined(pageLinks)
+      !isUndefined(page)
     ) {
       let seoTitle: string;
       let seoDescription: string;
@@ -161,7 +165,7 @@ class PagesShowPage extends PureComponent<
         );
         seoDescription = '';
         blockIndexing = false;
-        pageSlug = page.attributes.slug;
+        pageSlug = page.attributes.slug || '';
         pageTitle = <T value={page.attributes.title_multiloc} />;
         pageDescription = (
           <ResolveTextVariables value={page.attributes.body_multiloc}>
@@ -206,10 +210,6 @@ class PagesShowPage extends PureComponent<
               </AttachmentsContainer>
             )}
           </PageContent>
-
-          <Suspense fallback={<Spinner />}>
-            <PagesFooterNavigation currentPageSlug={pageSlug} />
-          </Suspense>
         </Container>
       );
     }
@@ -229,11 +229,6 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
     >
       {render}
     </GetResourceFiles>
-  ),
-  pageLinks: ({ page, render }) => (
-    <GetPageLinks pageId={!isNilOrError(page) ? page.id : null}>
-      {render}
-    </GetPageLinks>
   ),
 });
 

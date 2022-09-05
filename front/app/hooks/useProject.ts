@@ -14,9 +14,9 @@ interface Props {
 }
 
 export default function useProject({ projectId, projectSlug }: Props) {
-  const [project, setProject] = useState<
-    IProjectData | undefined | null | Error
-  >(undefined);
+  const [project, setProject] = useState<IProjectData | undefined | null>(
+    undefined
+  );
 
   useEffect(() => {
     setProject(undefined);
@@ -30,8 +30,12 @@ export default function useProject({ projectId, projectSlug }: Props) {
     }
 
     const subscription = observable.subscribe((response) => {
-      const project = !isNilOrError(response) ? response.data : response;
-      setProject(project);
+      if (isNilOrError(response)) {
+        setProject(response);
+        return;
+      }
+
+      setProject(response.data);
     });
 
     return () => subscription.unsubscribe();

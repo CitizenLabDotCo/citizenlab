@@ -13,9 +13,10 @@ import messages from 'containers/Admin/dashboard/messages';
 
 // styling
 import { withTheme } from 'styled-components';
+import { animation } from 'components/admin/Graphs/styling';
 
 // components
-import ExportMenu from 'containers/Admin/dashboard/components/ExportMenu';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 
 import {
   NoDataContainer,
@@ -24,14 +25,14 @@ import {
   GraphCard,
   GraphCardInner,
   PieChartStyleFixesDiv,
-} from 'containers/Admin/dashboard';
+} from 'components/admin/GraphWrappers';
 
 import { PieChart, Pie, Tooltip, Cell, ResponsiveContainer } from 'recharts';
 
 // services
 import {
   usersByGenderStream,
-  IUsersByGender,
+  IUsersByRegistrationField,
   usersByGenderXlsxEndpoint,
 } from 'modules/commercial/user_custom_fields/services/stats';
 
@@ -117,7 +118,7 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
-  convertToGraphFormat = (data: IUsersByGender) => {
+  convertToGraphFormat = (data: IUsersByRegistrationField) => {
     const res = Object.keys(labelColors).map((gender) => ({
       value: data.series.users[gender] || 0,
       name: this.props.intl.formatMessage(messages[gender]),
@@ -131,10 +132,10 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { colorMain, animationDuration, animationBegin } = this.props[
-      'theme'
-    ];
+    const { colorMain } = this.props['theme'];
     const {
+      startAt,
+      endAt,
       className,
       intl: { formatMessage },
       currentGroupFilter,
@@ -150,12 +151,14 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
               <FormattedMessage {...messages.usersByGenderTitle} />
             </GraphCardTitle>
             {serie && (
-              <ExportMenu
+              <ReportExportMenu
                 name={formatMessage(messages.usersByGenderTitle)}
                 svgNode={this.currentChart}
                 xlsxEndpoint={usersByGenderXlsxEndpoint}
                 currentGroupFilterLabel={currentGroupFilterLabel}
                 currentGroupFilter={currentGroupFilter}
+                startAt={startAt}
+                endAt={endAt}
               />
             )}
           </GraphCardHeader>
@@ -169,8 +172,8 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
                 <PieChart ref={this.currentChart}>
                   <Pie
                     isAnimationActive={true}
-                    animationDuration={animationDuration}
-                    animationBegin={animationBegin}
+                    animationDuration={animation.duration}
+                    animationBegin={animation.begin}
                     data={serie}
                     dataKey="value"
                     outerRadius={60}

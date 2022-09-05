@@ -22,8 +22,8 @@ class InitiativePolicy < ApplicationPolicy
     return true if record.draft?
     return true if active? && admin?
 
-    reason = posting_denied?(user)
-    raise_not_authorized(reason) if reason
+    reason = posting_denied_reason user
+    raise_not_authorized reason if reason
 
     active? && owner?
   end
@@ -67,18 +67,12 @@ class InitiativePolicy < ApplicationPolicy
     admin? ? [:assignee_id, *shared] : shared
   end
 
-  # Helper method that is not part of the pundit conventions but is used
-  # publicly
-  def moderate?
-    active? && admin?
-  end
-
   private
 
-  def posting_denied?(user)
+  def posting_denied_reason(user)
     'not_signed_in' unless user
   end
-  
+
   def owner?
     user && record.author_id == user.id
   end

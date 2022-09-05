@@ -5,9 +5,9 @@ import { formatTranslationMessages } from './';
 
 addLocaleData(localeData);
 
-const translationMessages = formatTranslationMessages(
-  'mi',
-  require('translations/mi.json')
-);
+const translationMessages = formatTranslationMessages('mi', {
+  ...require('translations/mi.json'),
+  ...require('translations/admin/mi.json'),
+});
 
 export default translationMessages;

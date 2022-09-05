@@ -6,7 +6,7 @@ import streams from 'utils/streams';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import { Input, IconTooltip } from 'cl2-component-library';
+import { Input, IconTooltip } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 import Collapse from 'components/UI/Collapse';
 import {
@@ -35,14 +35,12 @@ import messages from '../messages';
 
 // images
 import helpImage from './COWHelpImage.png';
-import { IVerificationMethod } from 'services/verificationMethods';
 
 interface Props {
   onCancel: () => void;
   onVerified: () => void;
   showHeader?: boolean;
   inModal: boolean;
-  method: IVerificationMethod;
   className?: string;
 }
 
@@ -69,7 +67,7 @@ const VerificationFormCOW = memo<Props & InjectedIntlProps>(
     }, []);
 
     const onSubmit = useCallback(
-      async (event: React.FormEvent<HTMLButtonElement>) => {
+      async (event: React.MouseEvent) => {
         event.preventDefault();
 
         const { formatMessage } = intl;
@@ -141,6 +139,7 @@ const VerificationFormCOW = memo<Props & InjectedIntlProps>(
           }
         }
       },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       [run, idSerial, processing, intl]
     );
 
@@ -206,7 +205,10 @@ const VerificationFormCOW = memo<Props & InjectedIntlProps>(
               onToggle={onToggleHelpButtonClick}
               label={intl.formatMessage(messages.showCOWHelp)}
             >
-              <HelpImage src={helpImage} alt="help" />
+              <HelpImage
+                src={helpImage}
+                alt={intl.formatMessage(messages.helpImageAltText)}
+              />
             </Collapse>
           </FormField>
 

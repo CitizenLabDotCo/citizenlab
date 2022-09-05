@@ -1,64 +1,97 @@
 import React from 'react';
 
 // i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import { InjectedIntlProps } from 'react-intl';
 
-import { Form, Field, InjectedFormikProps } from 'formik';
-import FormikInputMultilocWithLocaleSwitcher from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
-import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
+// components
+import { Form } from 'formik';
 
 import { Section, SectionField } from 'components/admin/Section';
-import Error from 'components/UI/Error';
 
 // typings
 import { Multiloc } from 'typings';
 
-export interface Props {}
+// components
+import { Box, Button } from '@citizenlab/cl2-component-library';
+
+// form
+import { FormProvider, useForm } from 'react-hook-form';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import Feedback from 'components/HookForm/Feedback';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { object } from 'yup';
+import validateMultiloc from 'utils/yup/validateMultiloc';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 export interface FormValues {
   title_multiloc: Multiloc;
-  description_multiloc: Multiloc;
 }
 
-class TopicForm extends React.Component<
-  InjectedFormikProps<Props & InjectedIntlProps, FormValues>
-> {
-  render() {
-    const {
-      isSubmitting,
-      errors,
-      isValid,
-      touched,
-      status,
-      intl: { formatMessage },
-    } = this.props;
+type Props = {
+  onSubmit: (formValues: FormValues) => void | Promise<void>;
+  defaultValues?: FormValues;
+} & InjectedIntlProps;
 
-    return (
-      <Form>
-        <Section>
-          <SectionField>
-            <Field
-              name="title_multiloc"
-              component={FormikInputMultilocWithLocaleSwitcher}
-              label={<FormattedMessage {...messages.fieldTopicTitle} />}
-              labelTooltipText={formatMessage(messages.fieldTopicTitleTooltip)}
-              id="e2e-topic-name"
-            />
-            {touched.title_multiloc && (
-              <Error
-                fieldName="title_multiloc"
-                apiErrors={errors.title_multiloc as any}
+const TopicForm = ({
+  intl: { formatMessage },
+  onSubmit,
+  defaultValues,
+}: Props) => {
+  const schema = object({
+    title_multiloc: validateMultiloc(
+      formatMessage(messages.fieldTopicTitleError)
+    ),
+  });
+
+  const methods = useForm({
+    mode: 'onBlur',
+    defaultValues,
+    resolver: yupResolver(schema),
+  });
+
+  const onFormSubmit = async (formValues: FormValues) => {
+    try {
+      await onSubmit(formValues);
+    } catch (error) {
+      handleHookFormSubmissionError(error, methods.setError);
+    }
+  };
+
+  return (
+    <Form>
+      <Section>
+        <FormProvider {...methods}>
+          <form
+            onSubmit={methods.handleSubmit(onFormSubmit)}
+            data-testid="topicForm"
+          >
+            <SectionField>
+              <Feedback />
+              <InputMultilocWithLocaleSwitcher
+                name="title_multiloc"
+                label={formatMessage(messages.fieldTopicTitle)}
+                labelTooltipText={formatMessage(
+                  messages.fieldTopicTitleTooltip
+                )}
+                type="text"
               />
-            )}
-          </SectionField>
-        </Section>
-
-        <FormikSubmitWrapper {...{ isValid, isSubmitting, status, touched }} />
-      </Form>
-    );
-  }
-}
+            </SectionField>
+            <Box display="flex">
+              <Button
+                type="submit"
+                processing={methods.formState.isSubmitting}
+                id="e2e-submit-wrapper-button"
+              >
+                {formatMessage(messages.fieldTopicSave)}
+              </Button>
+            </Box>
+          </form>
+        </FormProvider>
+      </Section>
+    </Form>
+  );
+};
 
 export default injectIntl<Props>(TopicForm);

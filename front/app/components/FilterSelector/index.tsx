@@ -76,6 +76,7 @@ interface DefaultProps {
   right?: string;
   mobileRight?: string;
   last?: boolean;
+  textColor?: string;
 }
 
 interface Props extends DefaultProps {
@@ -83,9 +84,10 @@ interface Props extends DefaultProps {
   title: string | JSX.Element;
   name: string;
   values: IFilterSelectorValue[];
-  onChange?: (value: any) => void;
+  onChange?: (values: string[]) => void;
   multipleSelectionAllowed: boolean;
   selected: string[];
+  className?: string;
 }
 
 interface State {
@@ -129,13 +131,11 @@ export default class FilterSelector extends PureComponent<Props, State> {
       if (isString(title)) {
         newTitle = `${title} (${selection.length})`;
       } else {
-        newTitle = [
-          title,
-          ' ',
-          <span key={Math.floor(Math.random() * 10000000)}>
-            ({selection.length})
-          </span>,
-        ];
+        newTitle = (
+          <>
+            {title} ({selection.length})
+          </>
+        );
       }
     } else {
       newTitle = title;
@@ -177,7 +177,7 @@ export default class FilterSelector extends PureComponent<Props, State> {
   };
 
   render() {
-    const className = this.props['className'];
+    const { className, textColor } = this.props;
     const { opened } = this.state;
     const {
       id,
@@ -217,6 +217,7 @@ export default class FilterSelector extends PureComponent<Props, State> {
           opened={opened}
           onClick={this.toggleExpanded}
           baseID={this.baseID}
+          textColor={textColor}
         />
         <ValuesList
           title={currentTitle}

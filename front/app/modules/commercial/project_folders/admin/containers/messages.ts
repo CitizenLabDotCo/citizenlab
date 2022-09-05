@@ -36,8 +36,7 @@ export default defineMessages({
     defaultMessage: 'Short description',
   },
   shortDescriptionInputLabelTooltip: {
-    id:
-      'app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabelTooltip',
+    id: 'app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabelTooltip',
     defaultMessage: 'shown in the landing page',
   },
   descriptionInputLabel: {
@@ -49,8 +48,7 @@ export default defineMessages({
     defaultMessage: 'Header image',
   },
   projectFolderHeaderImageLabelTooltip: {
-    id:
-      'app.containers.AdminPage.ProjectEdit.projectFolderHeaderImageLabelTooltip',
+    id: 'app.containers.AdminPage.ProjectEdit.projectFolderHeaderImageLabelTooltip',
     defaultMessage:
       'This is the image displayed in the header on the folder page. The ideal dimensions for this image are a width between 1480 and 1280 pixels, and a height of 250 pixels.',
   },

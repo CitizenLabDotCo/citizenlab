@@ -8,7 +8,11 @@ module Verification
       end
 
       def users_xlsx_columns
-        super << { header: 'verified', f: ->(u) { u.verified }, skip_sanitization: true }
+        if AppConfiguration.instance.feature_activated?('verification')
+          super << { header: 'verified', f: ->(u) { u.verified }, skip_sanitization: true }
+        else
+          super
+        end
       end
     end
   end

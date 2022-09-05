@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe IdeaPolicy do
@@ -9,8 +11,8 @@ describe IdeaPolicy do
     let!(:user) { create(:user, email: 'not-user@test.com') }
     let!(:group) do
       create(:smart_group, rules: [
-               { ruleType: 'email', predicate: 'is', value: 'user@test.com' }
-             ])
+        { ruleType: 'email', predicate: 'is', value: 'user@test.com' }
+      ])
     end
 
     let!(:project) do
@@ -32,8 +34,8 @@ describe IdeaPolicy do
     let!(:user) { create(:user, email: 'user@test.com') }
     let!(:group) do
       create(:smart_group, rules: [
-               { ruleType: 'email', predicate: 'is', value: 'user@test.com' }
-             ])
+        { ruleType: 'email', predicate: 'is', value: 'user@test.com' }
+      ])
     end
     let!(:project) { create(:project, visible_to: 'groups', groups: [group]) }
     let!(:idea) { create(:idea, project: project) }

@@ -1,7 +1,7 @@
 // Libraries
 import React from 'react';
 import { adopt } from 'react-adopt';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { Formik } from 'formik';
 import { isEmpty, isString } from 'lodash-es';
 
@@ -60,7 +60,7 @@ export interface State {
 }
 
 interface Tracks {
-  trackEditGroup: Function;
+  trackEditGroup: ({ extra: { groupType: MembershipType } }) => void;
 }
 
 export class UsersGroup extends React.PureComponent<
@@ -93,29 +93,28 @@ export class UsersGroup extends React.PureComponent<
     }
   };
 
-  handleSubmitForm = (groupId: string) => (
-    values: NormalFormValues,
-    { setErrors, setSubmitting, setStatus }
-  ) => {
-    updateGroup(groupId, { ...values })
-      .then(() => {
-        streams.fetchAllWith({
-          dataId: [groupId],
-          apiEndpoint: [`${API_PATH}/users`, `${API_PATH}/groups`],
-          onlyFetchActiveStreams: true,
+  handleSubmitForm =
+    (groupId: string) =>
+    (values: NormalFormValues, { setErrors, setSubmitting, setStatus }) => {
+      updateGroup(groupId, { ...values })
+        .then(() => {
+          streams.fetchAllWith({
+            dataId: [groupId],
+            apiEndpoint: [`${API_PATH}/users`, `${API_PATH}/groups`],
+            onlyFetchActiveStreams: true,
+          });
+          this.closeGroupEditionModal();
+        })
+        .catch((errorResponse) => {
+          if (isCLErrorJSON(errorResponse)) {
+            const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
+            setErrors(apiErrors);
+          } else {
+            setStatus('error');
+          }
+          setSubmitting(false);
         });
-        this.closeGroupEditionModal();
-      })
-      .catch((errorResponse) => {
-        if (isCLErrorJSON(errorResponse)) {
-          const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-          setErrors(apiErrors);
-        } else {
-          setStatus('error');
-        }
-        setSubmitting(false);
-      });
-  };
+    };
 
   deleteGroup = (groupId: string) => () => {
     const deleteMessage = this.props.intl.formatMessage(
@@ -236,11 +235,9 @@ export class UsersGroup extends React.PureComponent<
   }
 }
 
-const UsersGroupWithHoCs = withRouter(
-  injectTracks<Props>({
-    trackEditGroup: tracks.editGroup,
-  })(injectIntl<Props>(UsersGroup))
-);
+const UsersGroupWithHoCs = injectTracks<Props>({
+  trackEditGroup: tracks.editGroup,
+})(injectIntl(UsersGroup));
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   group: ({ params, render }) => (
@@ -249,8 +246,8 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   isVerificationEnabled: <GetFeatureFlag name="verification" />,
 });
 
-export default (inputProps: InputProps & WithRouterProps) => (
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>
     {(dataProps) => <UsersGroupWithHoCs {...inputProps} {...dataProps} />}
   </Data>
-);
+));

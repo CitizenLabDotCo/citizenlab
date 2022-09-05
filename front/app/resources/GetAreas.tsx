@@ -1,6 +1,6 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
-import { IAreaData, areasStream } from 'services/areas';
+import { IAreaData, areasStream, IAreasQueryParams } from 'services/areas';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {}
@@ -15,15 +15,10 @@ interface State {
   areas: IAreaData[] | undefined | null | Error;
 }
 
-export interface IQueryParameters {
-  'page[number]': number;
-  'page[size]': number;
-}
-
 export type GetAreasChildProps = IAreaData[] | undefined | null | Error;
 
 export default class GetAreas extends React.Component<Props, State> {
-  defaultQueryParameters: IQueryParameters;
+  defaultQueryParameters: IAreasQueryParams;
   private subscriptions: Subscription[];
 
   constructor(props: Props) {

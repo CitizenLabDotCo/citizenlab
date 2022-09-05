@@ -6,7 +6,7 @@ import messages from './messages';
 
 // components
 import { Title } from './styles';
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 
 // style
 import styled from 'styled-components';
@@ -25,7 +25,7 @@ const StyledIcon = styled(Icon)`
   flex: 0 0 60px;
   width: 60px;
   height: 60px;
-  fill: ${colors.clRedError};
+  fill: ${colors.red600};
   margin-bottom: 30px;
 `;
 
@@ -33,7 +33,7 @@ const Subtitle = styled.h2`
   width: 100%;
   max-width: 500px;
   color: ${colors.text};
-  font-size: ${fontSizes.medium}px;
+  font-size: ${fontSizes.m}px;
   line-height: normal;
   font-weight: 300;
   text-align: center;

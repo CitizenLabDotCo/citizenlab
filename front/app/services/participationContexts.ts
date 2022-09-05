@@ -6,15 +6,21 @@ import {
 } from 'services/projects';
 import { getPhaseInputTerm, IPhaseData } from 'services/phases';
 
-export type SurveyServices =
+export type TSurveyService =
   | 'typeform'
+  | 'survey_xact'
   | 'survey_monkey'
   | 'google_forms'
-  | 'enalyzer';
+  | 'enalyzer'
+  | 'qualtrics'
+  | 'smart_survey'
+  | 'microsoft_forms'
+  | 'snap_survey';
 
 export type ParticipationMethod =
   | 'ideation'
   | 'information'
+  | 'native_survey'
   | 'survey'
   | 'budgeting'
   | 'poll'
@@ -43,6 +49,10 @@ export type InputTerm =
   | 'question'
   | 'issue'
   | 'contribution';
+
+export type VotingMethod = 'limited' | 'unlimited';
+
+export type PresentationMode = 'card' | 'map';
 
 export function getInputTerm(
   processType: ProcessType,

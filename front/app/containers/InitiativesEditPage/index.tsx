@@ -3,7 +3,7 @@ import React from 'react';
 // libraries
 import clHistory from 'utils/cl-router/history';
 import { adopt } from 'react-adopt';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // services
 import { isAdmin, isSuperAdmin, isModerator } from 'services/permissions/roles';
@@ -19,15 +19,14 @@ import GetInitiative, {
 import GetInitiativeImages, {
   GetInitiativeImagesChildProps,
 } from 'resources/GetInitiativeImages';
-import GetResourceFileObjects, {
-  GetResourceFileObjectsChildProps,
-} from 'resources/GetResourceFileObjects';
+import GetRemoteFiles, {
+  GetRemoteFilesChildProps,
+} from 'resources/GetRemoteFiles';
 import { PreviousPathnameContext } from 'context';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
-import { isError } from 'util';
+import { isNilOrError, isError } from 'utils/helperUtils';
 
 // components
 import InitiativesEditMeta from './InitiativesEditMeta';
@@ -50,7 +49,7 @@ const StyledInitiativesEditFormWrapper = styled(InitiativesEditFormWrapper)`
 interface DataProps {
   initiative: GetInitiativeChildProps;
   initiativeImages: GetInitiativeImagesChildProps;
-  initiativeFiles: GetResourceFileObjectsChildProps;
+  initiativeFiles: GetRemoteFilesChildProps;
   authUser: GetAuthUserChildProps;
   locale: GetLocaleChildProps;
   previousPathName: string | null;
@@ -142,7 +141,7 @@ export class InitiativesEditPage extends React.PureComponent<Props> {
 const Data = adopt<DataProps, WithRouterProps>({
   authUser: <GetAuthUser />,
   locale: <GetLocale />,
-  topics: <GetTopics exclude_code={'custom'} />,
+  topics: <GetTopics excludeCode={'custom'} />,
   initiative: ({ params, render }) => (
     <GetInitiative id={params.initiativeId}>{render}</GetInitiative>
   ),
@@ -152,12 +151,9 @@ const Data = adopt<DataProps, WithRouterProps>({
     </GetInitiativeImages>
   ),
   initiativeFiles: ({ params, render }) => (
-    <GetResourceFileObjects
-      resourceId={params.initiativeId}
-      resourceType="initiative"
-    >
+    <GetRemoteFiles resourceId={params.initiativeId} resourceType="initiative">
       {render}
-    </GetResourceFileObjects>
+    </GetRemoteFiles>
   ),
   previousPathName: ({ render }) => (
     <PreviousPathnameContext.Consumer>

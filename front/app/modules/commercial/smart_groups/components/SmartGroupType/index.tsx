@@ -2,7 +2,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import React, { FC } from 'react';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import { transparentize } from 'polished';
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 
@@ -81,7 +81,7 @@ const SmartGroupType: FC<SmartGroupTypeProps> = ({
   formattedLink,
   onClick,
 }) => {
-  const isSmartGroupsEnabled = useFeatureFlag('smart_groups');
+  const isSmartGroupsEnabled = useFeatureFlag({ name: 'smart_groups' });
 
   return (
     <GroupType className="rules">

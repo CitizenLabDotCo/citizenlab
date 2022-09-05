@@ -50,7 +50,7 @@ export default function request<T>(
         ? json.error
         : response.statusText || 'unknown error';
       const error = new Error(`error for ${urlWithParams}: ${errorMessage}`);
-      if (!!json) {
+      if (json) {
         // The error reasons may be encoded in the
         // json content (this happens e.g. for
         // xlsx invites).
@@ -84,28 +84,5 @@ export function requestBlob(url, type, queryParametersObject?): Promise<Blob> {
       }
     };
     xhr.send(undefined);
-  });
-}
-
-// we use xhr rather than fetch API, to enforce response type
-export function requestBlobPost(url, type, data): Promise<Blob> {
-  const urlWithParams = `${url}`;
-
-  return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', urlWithParams, true);
-    xhr.responseType = 'blob';
-    xhr.setRequestHeader('Content-Type', type);
-    xhr.setRequestHeader('Authorization', `Bearer ${getJwt()}`);
-    xhr.onload = () => {
-      if (xhr.status >= 200 && xhr.status < 300) {
-        const blob = new Blob([xhr.response], { type });
-        resolve(blob);
-      } else {
-        const error = new Error(xhr.statusText);
-        reject(error);
-      }
-    };
-    xhr.send(data);
   });
 }

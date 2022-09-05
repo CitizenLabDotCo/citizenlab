@@ -8,25 +8,20 @@ import messages from '../../messages';
 
 // styling
 import { withTheme } from 'styled-components';
+import { animation, piechartColors } from 'components/admin/Graphs/styling';
 
 // components
-import ExportMenu from '../../components/ExportMenu';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
+import { PieChart, Pie, Tooltip, Cell, ResponsiveContainer } from 'recharts';
 import {
   IGraphUnit,
-  PieChart,
-  Pie,
-  Tooltip,
-  Cell,
-  ResponsiveContainer,
-} from 'recharts';
-import {
   NoDataContainer,
   GraphCardHeader,
   GraphCardTitle,
   GraphCard,
   GraphCardInner,
   PieChartStyleFixesDiv,
-} from '../..';
+} from 'components/admin/GraphWrappers';
 
 // resources
 import GetSerieFromStream from 'resources/GetSerieFromStream';
@@ -42,7 +37,8 @@ interface DataProps {
 
 export interface ISupportedDataTypeMap {}
 
-export type ISupportedDataType = ISupportedDataTypeMap[keyof ISupportedDataTypeMap];
+export type ISupportedDataType =
+  ISupportedDataTypeMap[keyof ISupportedDataTypeMap];
 
 interface InputProps {
   stream: (
@@ -63,8 +59,6 @@ interface InputProps {
 
 interface Props extends InputProps, DataProps {}
 
-const labelColors = ['#C37281 ', '#5D99C6', '#B0CDC4 ', '#C0C2CE'];
-
 class PieChartByCategory extends React.PureComponent<
   Props & InjectedIntlProps
 > {
@@ -79,10 +73,10 @@ class PieChartByCategory extends React.PureComponent<
     return `${entry.name} : ${entry.value}`;
   };
   render() {
-    const { colorMain, animationBegin, animationDuration } = this.props[
-      'theme'
-    ];
+    const { colorMain } = this.props['theme'];
     const {
+      startAt,
+      endAt,
       className,
       graphTitleString,
       serie,
@@ -97,12 +91,14 @@ class PieChartByCategory extends React.PureComponent<
           <GraphCardHeader>
             <GraphCardTitle>{graphTitleString}</GraphCardTitle>
             {serie && (
-              <ExportMenu
+              <ReportExportMenu
                 name={graphTitleString}
                 svgNode={this.currentChart}
                 xlsxEndpoint={xlsxEndpoint}
                 currentGroupFilter={currentGroupFilter}
                 currentGroupFilterLabel={currentGroupFilterLabel}
+                startAt={startAt}
+                endAt={endAt}
               />
             )}
           </GraphCardHeader>
@@ -115,8 +111,8 @@ class PieChartByCategory extends React.PureComponent<
               <ResponsiveContainer height={175} width="100%" minWidth={175}>
                 <PieChart>
                   <Pie
-                    animationDuration={animationDuration}
-                    animationBegin={animationBegin}
+                    animationDuration={animation.duration}
+                    animationBegin={animation.begin}
                     isAnimationActive={true}
                     data={serie}
                     dataKey="value"
@@ -126,7 +122,10 @@ class PieChartByCategory extends React.PureComponent<
                     ref={this.currentChart}
                   >
                     {serie.map((_, index) => (
-                      <Cell key={`cell-${index}`} fill={labelColors[index]} />
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={piechartColors[index]}
+                      />
                     ))}
                   </Pie>
                   <Tooltip isAnimationActive={false} />

@@ -2,9 +2,23 @@ import React, { ReactNode } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import ProjectEditTab from './admin/components/ProjectEditTab';
 import SettingsTab from './admin/components/SettingsTab';
+import TopicInputsTooltipExtraCopy from './admin/components/TopicInputsTooltipExtraCopy';
 import { isNilOrError } from 'utils/helperUtils';
 import { IProjectData } from 'services/projects';
 import { IPhaseData } from 'services/phases';
+
+const AdminAllowedTopicsComponent = React.lazy(
+  () => import('./admin/containers/ProjectAllowedInputTopics')
+);
+const AdminTopicsIndexComponent = React.lazy(
+  () => import('./admin/containers/TopicsSettings/all')
+);
+const AdminTopicsNewComponent = React.lazy(
+  () => import('./admin/containers/TopicsSettings/New')
+);
+const AdminTopicsEditComponent = React.lazy(
+  () => import('./admin/containers/TopicsSettings/Edit')
+);
 
 type RenderOnHideTabConditionProps = {
   project: IProjectData;
@@ -38,28 +52,24 @@ const RenderOnHideTabCondition = (props: RenderOnHideTabConditionProps) => {
 
 const configuration: ModuleConfiguration = {
   routes: {
-    'admin.projects': [
+    'admin.projects.project': [
       {
-        path: '/:locale/admin/projects/:projectId/topics',
-        name: 'topics',
-        container: () => import('./admin/containers/ProjectTopics'),
+        path: 'allowed-input-topics',
+        element: <AdminAllowedTopicsComponent />,
       },
     ],
     'admin.settings': [
       {
-        path: '/:locale/admin/settings/topics',
-        name: 'admin topics index',
-        container: () => import('./admin/containers/TopicsSettings/all'),
+        path: 'topics',
+        element: <AdminTopicsIndexComponent />,
       },
       {
-        path: '/:locale/admin/settings/topics/new',
-        name: 'admin topics new',
-        container: () => import('./admin/containers/TopicsSettings/New'),
+        path: 'topics/new',
+        element: <AdminTopicsNewComponent />,
       },
       {
-        path: '/:locale/admin/settings/topics/:topicId/edit',
-        name: 'admin topic edit',
-        container: () => import('./admin/containers/TopicsSettings/Edit'),
+        path: 'topics/:topicId/edit',
+        element: <AdminTopicsEditComponent />,
       },
     ],
   },
@@ -70,6 +80,8 @@ const configuration: ModuleConfiguration = {
       </RenderOnHideTabCondition>
     ),
     'app.containers.Admin.settings.tabs': (props) => <SettingsTab {...props} />,
+    'app.containers.Admin.projects.edit.general.components.TopicInputs.tooltipExtraCopy':
+      () => <TopicInputsTooltipExtraCopy />,
   },
 };
 

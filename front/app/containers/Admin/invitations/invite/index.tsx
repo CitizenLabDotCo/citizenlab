@@ -6,7 +6,12 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import TextArea from 'components/UI/TextArea';
 import Error from 'components/UI/Error';
-import { Radio, IconTooltip, Toggle, Label } from 'cl2-component-library';
+import {
+  Radio,
+  IconTooltip,
+  Toggle,
+  Label,
+} from '@citizenlab/cl2-component-library';
 import Tabs from 'components/UI/Tabs';
 import Collapse from 'components/UI/Collapse';
 import MultipleSelect from 'components/UI/MultipleSelect';
@@ -41,7 +46,7 @@ import { API_PATH, appLocalePairs } from 'containers/App/constants';
 import { getLocalized } from 'utils/i18n';
 
 // utils
-import { getBase64FromFile } from 'utils/fileTools';
+import { getBase64FromFile } from 'utils/fileUtils';
 import { saveAs } from 'file-saver';
 import { requestBlob } from 'utils/request';
 
@@ -87,7 +92,7 @@ const Processing = styled.div`
 
 const StyledSectionTitle = styled(SectionTitle)`
   margin-bottom: 15px;
-  font-size: ${fontSizes.large}px;
+  font-size: ${fontSizes.l}px;
   font-weight: bold;
 `;
 
@@ -526,12 +531,12 @@ class Invitations extends React.PureComponent<
               {...messages.importOptionsInfo}
               values={{
                 supportPageLink: (
-                  // tslint:disable-next-line
                   <a
                     href={this.props.intl.formatMessage(
                       messages.invitesSupportPageURL
                     )}
                     target="_blank"
+                    rel="noreferrer"
                   >
                     <FormattedMessage {...messages.supportPage} />
                   </a>
@@ -567,12 +572,12 @@ class Invitations extends React.PureComponent<
                       {...messages.moderatorLabelTooltip}
                       values={{
                         moderatorLabelTooltipLink: (
-                          // tslint:disable-next-line
                           <a
                             href={formatMessage(
                               messages.moderatorLabelTooltipLink
                             )}
                             target="_blank"
+                            rel="noreferrer"
                           >
                             <FormattedMessage
                               {...messages.moderatorLabelTooltipLinkText}
@@ -696,12 +701,12 @@ class Invitations extends React.PureComponent<
                         {...messages.visitSupportPage}
                         values={{
                           supportPageLink: (
-                            // tslint:disable-next-line
                             <a
                               href={this.props.intl.formatMessage(
                                 messages.invitesSupportPageURL
                               )}
                               target="_blank"
+                              rel="noreferrer"
                             >
                               <FormattedMessage
                                 {...messages.supportPageLinkText}
@@ -741,7 +746,7 @@ class Invitations extends React.PureComponent<
             {selectedView === 'text' && (
               <>
                 <SectionField>
-                  <Label>
+                  <Label htmlFor="e2e-emails">
                     <FormattedMessage {...messages.emailListLabel} />
                   </Label>
                   <TextArea
@@ -793,7 +798,7 @@ class Invitations extends React.PureComponent<
 
 const InvitationsWithIntl = injectIntl(Invitations);
 
-const Data = adopt<DataProps, {}>({
+const Data = adopt<DataProps>({
   projects: (
     <GetProjects publicationStatuses={['draft', 'published', 'archived']} />
   ),

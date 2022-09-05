@@ -4,7 +4,7 @@ module Frontend
   # The main purpose of this service is to decouple all assumptions the backend
   # makes about the frontend URLs into a single location.
   class UrlService
-    def model_to_url(model_instance, options = {})
+    def model_to_path(model_instance)
       case model_instance
       when Project
         subroute = 'projects'
@@ -18,19 +18,24 @@ module Frontend
       when Initiative
         subroute = 'initiatives'
         slug = model_instance.slug
-      when Page
+      when StaticPage
         subroute = 'pages'
         slug = model_instance.slug
-      when Comment ### comments do not have a URL yet, we return the post URL for now
-        return model_to_url(model_instance.post, options)
-      when OfficialFeedback ### official feedbacks do not have a URL yet, we return the post URL for now
-        return model_to_url(model_instance.post, options)
+      when User
+        subroute = 'profile'
+        slug = model_instance.slug
+      when Comment, OfficialFeedback ### comments and official feedbacks do not have a path yet, we return the post path for now
+        return model_to_path(model_instance.post)
       else
         subroute = nil
         slug = nil
       end
 
-      subroute && slug && "#{home_url(options)}/#{subroute}/#{slug}"
+      subroute && slug && "/#{subroute}/#{slug}"
+    end
+
+    def model_to_url(model_instance, options = {})
+      "#{home_url(options)}#{model_to_path(model_instance)}"
     end
 
     def slug_to_url(slug, classname, options = {})
@@ -141,12 +146,17 @@ module Frontend
     def config_from_options(options)
       tenant = options[:tenant]
       if tenant # Show a deprecation message is tenant options is used
-        ActiveSupport::Deprecation.warn(":tenant options is deprecated, use :app_configuration instead.") # MT_TODO to be removed
+        ActiveSupport::Deprecation.warn(':tenant options is deprecated, use :app_configuration instead.') # MT_TODO to be removed
       end
-      options[:app_configuration] || tenant&.configuration || AppConfiguration.instance # TODO OS remove: tenant&.configuration
+      options[:app_configuration] || tenant&.configuration || app_config_instance # TODO: OS remove: tenant&.configuration
     end
 
+    # Memoized database query
+    def app_config_instance
+      @app_config_instance ||= AppConfiguration.instance
+    end
   end
 end
 
+Frontend::UrlService.include(UserConfirmation::Patches::Frontend::UrlService)
 Frontend::UrlService.prepend_if_ee('ProjectFolders::Patches::Frontend::UrlService')

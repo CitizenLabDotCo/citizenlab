@@ -2,7 +2,7 @@ import React, { createElement } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Multiloc, Locale } from 'typings';
-import { getLocalized } from 'utils/i18n';
+import { getLocalizedWithFallback } from 'utils/i18n';
 import { localeStream } from 'services/locale';
 import { currentAppConfigurationStream } from 'services/appConfiguration';
 
@@ -16,12 +16,19 @@ type Props = {
   maxLength?: number;
   supportHtml?: boolean;
   graphql?: boolean;
+  onClick?: () => void;
+  wrapInDiv?: boolean;
+  /** fallback string if undefined multiloc, missing locale or empty string */
+  fallback?: string;
 };
 
 type State = {
   locale: Locale | null;
   currentTenantLocales: Locale[] | null;
+  innerRef: any;
 };
+
+const wrapTextInDiv = (text: string) => `<div>${text}</div>`;
 
 export default class T extends React.PureComponent<Props, State> {
   subscriptions: Subscription[];
@@ -31,20 +38,22 @@ export default class T extends React.PureComponent<Props, State> {
     this.state = {
       locale: null,
       currentTenantLocales: null,
+      innerRef: React.createRef(),
     };
     this.subscriptions = [];
   }
 
   componentDidMount() {
     const locale$ = localeStream().observable;
-    const currentTenantLocales$ = currentAppConfigurationStream().observable.pipe(
-      map(
-        (currentTenant) => currentTenant.data.attributes.settings.core.locales
-      )
-    );
+    const currentTenantLocales$ =
+      currentAppConfigurationStream().observable.pipe(
+        map(
+          (currentTenant) => currentTenant.data.attributes.settings.core.locales
+        )
+      );
 
     this.subscriptions = [
-      combineLatest(locale$, currentTenantLocales$).subscribe(
+      combineLatest([locale$, currentTenantLocales$]).subscribe(
         ([locale, currentTenantLocales]) => {
           this.setState({ locale, currentTenantLocales });
         }
@@ -67,12 +76,17 @@ export default class T extends React.PureComponent<Props, State> {
         maxLength,
         className,
         supportHtml,
+        onClick,
+        wrapInDiv,
+        fallback,
       } = this.props;
-      const localizedText = getLocalized(
+
+      const localizedText = getLocalizedWithFallback(
         value,
         locale,
         currentTenantLocales,
-        maxLength
+        maxLength,
+        fallback
       );
 
       if (children) {
@@ -82,12 +96,19 @@ export default class T extends React.PureComponent<Props, State> {
       if (supportHtml) {
         return createElement(as || 'span', {
           className,
-          dangerouslySetInnerHTML: { __html: localizedText },
+          onClick,
+          ref: this.state.innerRef,
+          dangerouslySetInnerHTML: {
+            __html: wrapInDiv ? wrapTextInDiv(localizedText) : localizedText,
+          },
         });
       } else {
+        // eslint-disable-next-line react/no-children-prop
         return createElement(as || 'span', {
           className,
-          children: localizedText,
+          onClick,
+          ref: this.state.innerRef,
+          children: wrapInDiv ? wrapTextInDiv(localizedText) : localizedText,
         });
       }
     }

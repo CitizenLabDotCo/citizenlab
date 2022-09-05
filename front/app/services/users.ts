@@ -1,50 +1,40 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { ImageSizes, Multiloc, Locale } from 'typings';
+import { authApiEndpoint } from './auth';
+import { TRole } from 'services/permissions/roles';
 
 const apiEndpoint = `${API_PATH}/users`;
 
-export type IProjectModeratorRole = {
-  type: 'project_moderator';
-  project_id: string;
-};
-
-type IAdminRole = {
-  type: 'admin';
-};
-
-export type IRole =
-  | IAdminRole
-  | IProjectModeratorRole
-  | IProjectFolderModeratorRole;
+export interface IUserAttributes {
+  first_name: string;
+  // CL1 legacy: last names used to not be required
+  // or when signing up with Google, it can be null too
+  last_name: string | null;
+  slug: string;
+  locale: Locale;
+  avatar?: ImageSizes;
+  roles?: TRole[];
+  highest_role: 'super_admin' | 'admin' | 'project_moderator' | 'user';
+  bio_multiloc: Multiloc;
+  registration_completed_at: string | null;
+  created_at: string;
+  updated_at: string;
+  email?: string;
+  gender?: 'male' | 'female' | 'unspecified';
+  birthyear?: number;
+  domicile?: string;
+  education?: string;
+  unread_notifications?: number;
+  custom_field_values?: Record<string, any>;
+  invite_status: 'pending' | 'accepted' | null;
+  verified?: boolean;
+}
 
 export interface IUserData {
   id: string;
   type: string;
-  attributes: {
-    first_name: string;
-    // CL1 legacy: last names used to not be required
-    // or when signing up with Google, it can be null too
-    last_name: string | null;
-    slug: string;
-    locale: Locale;
-    avatar?: ImageSizes;
-    roles?: IRole[];
-    highest_role: 'super_admin' | 'admin' | 'project_moderator' | 'user';
-    bio_multiloc: Multiloc;
-    registration_completed_at: string | null;
-    created_at: string;
-    updated_at: string;
-    email?: string;
-    gender?: 'male' | 'female' | 'unspecified';
-    birthyear?: number;
-    domicile?: string;
-    education?: string;
-    unread_notifications?: number;
-    custom_field_values?: object;
-    invite_status: 'pending' | 'accepted' | null;
-    verified?: boolean;
-  };
+  attributes: IUserAttributes;
 }
 
 export interface IUserLinks {
@@ -71,13 +61,13 @@ export interface IUserUpdate {
   password?: string;
   locale?: string;
   avatar?: string;
-  roles?: IRole[];
+  roles?: TRole[];
   birthyear?: number;
   gender?: string;
   domicile?: string;
   education?: string;
   bio_multiloc?: Multiloc;
-  custom_field_values?: object;
+  custom_field_values?: Record<string, any>;
 }
 
 export function usersStream(streamParams: IStreamParams | null = null) {
@@ -130,12 +120,18 @@ export async function deleteUser(userId: string) {
   return response;
 }
 
-export async function completeRegistration(customFieldValues: object) {
+export async function completeRegistration(
+  customFieldValues?: Record<string, any>
+) {
   const authUser = await streams.add<IUser>(
     `${apiEndpoint}/complete_registration`,
-    { user: { custom_field_values: customFieldValues } }
+    { user: { custom_field_values: customFieldValues || {} } }
   );
-  await streams.reset(authUser);
+  await streams.reset();
+  await streams.fetchAllWith({
+    apiEndpoint: [authApiEndpoint],
+  });
+
   return authUser;
 }
 

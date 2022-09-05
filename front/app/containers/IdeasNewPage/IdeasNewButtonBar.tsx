@@ -92,7 +92,7 @@ export default class IdeasNewButtonBar extends PureComponent<Props, State> {
     const { fileOrImageError, submitError } = this.state;
 
     if (submitError) {
-      return <FormattedMessage {...messages.submitError} />;
+      return <FormattedMessage {...messages.submitApiError} />;
     } else if (fileOrImageError) {
       return <FormattedMessage {...messages.fileUploadError} />;
     }

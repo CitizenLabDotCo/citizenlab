@@ -1,4 +1,4 @@
-import { Label } from 'cl2-component-library';
+import { Label, Image } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import styled from 'styled-components';
 import { fontSizes, media } from 'utils/styleUtils';
@@ -35,7 +35,7 @@ export const Title = styled.h1`
 
 export const Subtitle = styled.h2`
   color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.large}px;
+  font-size: ${fontSizes.l}px;
   font-weight: 600;
   line-height: normal;
 `;
@@ -79,6 +79,6 @@ export const SubmitButton = styled(Button)`
 
 export const CancelButton = styled(Button)``;
 
-export const HelpImage = styled.img`
+export const HelpImage = styled(Image)`
   width: 100%;
 `;

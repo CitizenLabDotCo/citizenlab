@@ -1,25 +1,28 @@
+# frozen_string_literal: true
+
 class WebApi::V1::ProjectsController < ::ApplicationController
-  before_action :set_project, only: [:show, :update, :reorder, :destroy]
-  skip_after_action :verify_policy_scoped, only: [:index]
+  before_action :set_project, only: %i[show update reorder destroy]
+  skip_before_action :authenticate_user
+  skip_after_action :verify_policy_scoped, only: :index
 
   define_callbacks :save_project
 
   def index
-    params["moderator"] = current_user if params[:filter_can_moderate]
+    params['moderator'] = current_user if params[:filter_can_moderate]
 
     publications = policy_scope(AdminPublication)
     publications = AdminPublicationsFilteringService.new.filter(publications, params)
-                                                 .where(publication_type: Project.name)
+      .where(publication_type: Project.name)
 
     # Not very satisfied with this ping-pong of SQL queries (knowing that the
     # AdminPublicationsFilteringService is also making a request on projects).
     # But could not find a way to eager-load the polymorphic type in the publication
     # scope.
-    @projects = Project.where(id:publications.select(:publication_id))
-                       .ordered
-                       .includes(:project_images, :phases, :areas, projects_topics: [:topic], admin_publication: [:children])
-                       .page(params.dig(:page, :number))
-                       .per(params.dig(:page, :size))
+
+    @projects = Project.where(id: publications.select(:publication_id))
+      .ordered
+      .includes(:project_images, :phases, :areas, admin_publication: [:children])
+    @projects = paginate @projects
 
     user_baskets = current_user&.baskets
       &.where(participation_context_type: 'Project')
@@ -39,16 +42,16 @@ class WebApi::V1::ProjectsController < ::ApplicationController
       @projects,
       WebApi::V1::ProjectSerializer,
       params: fastjson_params(instance_options),
-      include: [:admin_publication, :project_images, :current_phase, :avatars, :topics, :projects_topics]
-      )
+      include: %i[admin_publication project_images current_phase]
+    )
   end
 
   def show
     render json: WebApi::V1::ProjectSerializer.new(
       @project,
       params: fastjson_params,
-      include: [:admin_publication, :project_images, :current_phase, :avatars, :topics, :projects_topics]
-      ).serialized_json
+      include: %i[admin_publication project_images current_phase]
+    ).serialized_json
   end
 
   def by_slug
@@ -67,15 +70,18 @@ class WebApi::V1::ProjectsController < ::ApplicationController
       render json: WebApi::V1::ProjectSerializer.new(
         @project,
         params: fastjson_params,
-        include: [:admin_publication],
-        ).serialized_json, status: :created
+        include: [:admin_publication]
+      ).serialized_json, status: :created
     else
-      render json: {errors: @project.errors.details}, status: :unprocessable_entity
+      render json: { errors: @project.errors.details }, status: :unprocessable_entity
     end
   end
 
   def update
+    sidefx = SideFxProjectService.new
+
     params[:project][:area_ids] ||= [] if params[:project].key?(:area_ids)
+    params[:project][:topic_ids] ||= [] if params[:project].key?(:topic_ids)
 
     project_params = permitted_attributes(Project)
 
@@ -84,17 +90,17 @@ class WebApi::V1::ProjectsController < ::ApplicationController
       # setting the header image attribute to nil will not remove the header image
       @project.remove_header_bg!
     end
-    SideFxProjectService.new.before_update(@project, current_user)
+    sidefx.before_update(@project, current_user)
 
     if save_project
-      SideFxProjectService.new.after_update(@project, current_user)
+      sidefx.after_update(@project, current_user)
       render json: WebApi::V1::ProjectSerializer.new(
         @project,
         params: fastjson_params,
-        include: [:admin_publication],
-        ).serialized_json, status: :ok
+        include: [:admin_publication]
+      ).serialized_json, status: :ok
     else
-      render json: {errors: @project.errors.details}, status: :unprocessable_entity, include: ['project_images']
+      render json: { errors: @project.errors.details }, status: :unprocessable_entity, include: ['project_images']
     end
   end
 
@@ -104,7 +110,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
       SideFxProjectService.new.after_destroy(@project, current_user)
       head :ok
     else
-      head 500
+      head :internal_server_error
     end
   end
 
@@ -119,10 +125,6 @@ class WebApi::V1::ProjectsController < ::ApplicationController
         @project.save
       end
     end
-  end
-
-  def secure_controller?
-    false
   end
 
   def set_project

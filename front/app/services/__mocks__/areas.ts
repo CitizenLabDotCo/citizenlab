@@ -10,6 +10,6 @@ export const __setMockArea = (area: IArea) => {
 export const areaByIdStream = jest.fn((_areaId) => {
   const observable = new BehaviorSubject(mockArea);
   return {
-    observable
+    observable,
   };
 });

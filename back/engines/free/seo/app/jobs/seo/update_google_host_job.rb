@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 module Seo
   class UpdateGoogleHostJob < ApplicationJob
     def run
-      return unless Rails.env.production?
+      return unless Rails.env.production? && AppConfiguration.instance.settings('core', 'lifecycle_stage') == 'active'
 
       host = AppConfiguration.instance.host
       url  = "https://#{host}"

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SideFxIdeaService
   include SideFxHelper
 
@@ -28,19 +30,34 @@ class SideFxIdeaService
     end
 
     if idea.idea_status_id_previously_changed?
-      LogActivityJob.perform_later(idea, 'changed_status', user, idea.updated_at.to_i,
-                                   payload: { change: idea.idea_status_id_previous_change })
+      LogActivityJob.perform_later(
+        idea,
+        'changed_status',
+        user,
+        idea.updated_at.to_i,
+        payload: { change: idea.idea_status_id_previous_change }
+      )
     end
 
     if idea.title_multiloc_previously_changed?
-      LogActivityJob.perform_later(idea, 'changed_title', user, idea.updated_at.to_i,
-                                   payload: { change: idea.title_multiloc_previous_change })
+      LogActivityJob.perform_later(
+        idea,
+        'changed_title',
+        user,
+        idea.updated_at.to_i,
+        payload: { change: idea.title_multiloc_previous_change }
+      )
     end
 
-    if idea.body_multiloc_previously_changed?
-      LogActivityJob.perform_later(idea, 'changed_body', user, idea.updated_at.to_i,
-                                   payload: { change: idea.body_multiloc_previous_change })
-    end
+    return unless idea.body_multiloc_previously_changed?
+
+    LogActivityJob.perform_later(
+      idea,
+      'changed_body',
+      user,
+      idea.updated_at.to_i,
+      payload: { change: idea.body_multiloc_previous_change }
+    )
   end
 
   def before_destroy(idea, _user); end
@@ -49,7 +66,7 @@ class SideFxIdeaService
     serialized_idea = clean_time_attributes(frozen_idea.attributes)
     serialized_idea['location_point'] = serialized_idea['location_point'].to_s
     LogActivityJob.perform_later(encode_frozen_resource(frozen_idea), 'deleted', user, Time.now.to_i,
-                                 payload: { idea: serialized_idea })
+      payload: { idea: serialized_idea })
   end
 
   private
@@ -74,7 +91,7 @@ class SideFxIdeaService
 
   def add_autovote(idea)
     pcs = ParticipationContextService.new
-    return if pcs.voting_disabled_reason_for_idea(idea, idea.author)
+    return if pcs.idea_voting_disabled_reason_for idea, idea.author, mode: 'up'
 
     idea.votes.create!(mode: 'up', user: idea.author)
     idea.reload
@@ -94,9 +111,10 @@ class SideFxIdeaService
 
   def scrape_facebook(idea)
     url = Frontend::UrlService.new.model_to_url(idea)
-    Seo::ScrapeFacebookJob.perform_later(url)
+    url_with_utm = "#{url}?utm_source=share_idea&utm_campaign=share_content&utm_medium=facebook"
+    Seo::ScrapeFacebookJob.perform_later(url_with_utm)
   end
 end
 
+::SideFxIdeaService.prepend_if_ee('FlagInappropriateContent::Patches::SideFxIdeaService')
 ::SideFxIdeaService.prepend_if_ee('IdeaAssignment::Patches::SideFxIdeaService')
-::SideFxIdeaService.prepend_if_ee('Tagging::Patches::SideFxIdeaService')

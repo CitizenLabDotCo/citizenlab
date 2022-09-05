@@ -1,3 +1,31 @@
+# frozen_string_literal: true
+
+# == Schema Information
+#
+# Table name: email_campaigns_campaigns
+#
+#  id               :uuid             not null, primary key
+#  type             :string           not null
+#  author_id        :uuid
+#  enabled          :boolean
+#  sender           :string
+#  reply_to         :string
+#  schedule         :jsonb
+#  subject_multiloc :jsonb
+#  body_multiloc    :jsonb
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  deliveries_count :integer          default(0), not null
+#
+# Indexes
+#
+#  index_email_campaigns_campaigns_on_author_id  (author_id)
+#  index_email_campaigns_campaigns_on_type       (type)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (author_id => users.id)
+#
 module EmailCampaigns
   class Campaigns::ProjectPhaseUpcoming < Campaign
     include Consentable
@@ -15,22 +43,22 @@ module EmailCampaigns
     end
 
     def self.consentable_roles
-      ['admin', 'project_moderator']
+      %w[admin project_moderator]
     end
 
     def activity_triggers
-      {'Notifications::ProjectPhaseUpcoming' => {'created' => true}}
+      { 'Notifications::ProjectPhaseUpcoming' => { 'created' => true } }
     end
 
     def self.category
       'admin'
     end
 
-    def filter_notification_recipient users_scope, activity:, time: nil
+    def filter_notification_recipient(users_scope, activity:, time: nil)
       users_scope.where(id: activity.item.recipient.id)
     end
 
-    def generate_commands recipient:, activity:, time: nil
+    def generate_commands(recipient:, activity:, time: nil)
       notification = activity.item
       [{
         event_payload: {

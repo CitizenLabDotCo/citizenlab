@@ -15,6 +15,10 @@ declare module 'components/ConsentManager/destinations' {
   export interface IDestinationMap {
     google_tag_manager: 'google_tag_manager';
   }
+
+  interface IConsentManagerFeatureMap {
+    google_tag_manager: 'google_tag_manager';
+  }
 }
 
 const destinationConfig: IDestinationConfig = {
@@ -49,7 +53,7 @@ const configuration: ModuleConfiguration = {
         const dl = l !== 'dataLayer' ? `&l=${l}` : '';
         j.async = true;
         j.src = `https://www.googletagmanager.com/gtm.js?id=${i}${dl}`;
-        f.parentNode?.insertBefore(j, f);
+        f?.parentNode?.insertBefore(j, f);
       })(
         window,
         document,

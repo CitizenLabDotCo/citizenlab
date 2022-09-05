@@ -2,25 +2,33 @@ import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { ImageSizes, Multiloc, Locale } from 'typings';
 import { TCategory } from 'components/ConsentManager/destinations';
-
+import { THomepageSettingKeyMap } from 'services/homepageSettings';
 export const currentAppConfigurationEndpoint = `${API_PATH}/app_configuration`;
 
-interface AppConfigurationFeature {
+export interface AppConfigurationFeature {
   allowed: boolean;
   enabled: boolean;
 }
 
-export type ISuccessStory = {
-  image_url: string;
-  location: string;
-  page_slug: string;
-};
-export type AppConfigurationSettingsFeatureNames = keyof IAppConfigurationSettings;
+export type TAppConfigurationSetting = keyof IAppConfigurationSettings;
+
+// Settings that have their enabled values in homepageSettings.
+// Their allowed value is still in appConfiguration.
+export type THomepageSetting = keyof THomepageSettingKeyMap;
+
+// All appConfig setting names except those in THomepageSetting
+export type TAppConfigurationSettingWithEnabled = Exclude<
+  TAppConfigurationSetting,
+  THomepageSetting
+>;
+
+export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
 
 export type IAppConfigurationSettingsCore = {
   allowed: boolean;
   enabled: boolean;
   locales: Locale[];
+  weglot_api_key: string | null;
   timezone: string;
   organization_name: Multiloc;
   organization_site?: string;
@@ -32,8 +40,6 @@ export type IAppConfigurationSettingsCore = {
     | 'active'
     | 'churned'
     | 'not_applicable';
-  header_title?: Multiloc | null;
-  header_slogan?: Multiloc | null;
   meta_title?: Multiloc | null;
   meta_description?: Multiloc | null;
   signup_helper_text?: Multiloc | null;
@@ -42,9 +48,8 @@ export type IAppConfigurationSettingsCore = {
   color_secondary: string | null;
   color_text: string | null;
   color_menu_bg?: string | null;
-  currency: string;
+  currency: TCurrency;
   reply_to_email: string;
-  custom_onboarding_fallback_message?: Multiloc | null;
   custom_onboarding_message?: Multiloc | null;
   custom_onboarding_button?: Multiloc | null;
   custom_onboarding_link?: string | null;
@@ -52,10 +57,16 @@ export type IAppConfigurationSettingsCore = {
   segment_destinations_blacklist: string[] | null;
   areas_term?: Multiloc;
   area_term?: Multiloc;
+  topics_term?: Multiloc;
+  topic_term?: Multiloc;
 };
 
 export interface IAppConfigurationSettings {
   core: IAppConfigurationSettingsCore;
+  customizable_homepage_banner: {
+    allowed: boolean;
+    enabled: boolean;
+  };
   demographic_fields?: {
     allowed: boolean;
     enabled: boolean;
@@ -114,7 +125,6 @@ export interface IAppConfigurationSettings {
     enabled: boolean;
     days_limit: number;
     eligibility_criteria: Multiloc;
-    success_stories?: ISuccessStory[];
     threshold_reached_message: Multiloc;
     voting_threshold: number;
   };
@@ -128,15 +138,16 @@ export interface IAppConfigurationSettings {
     enabled: boolean;
     verification_methods: string[];
   };
+  dynamic_idea_form?: AppConfigurationFeature;
+  jsonforms_custom_fields?: AppConfigurationFeature;
   idea_custom_fields?: AppConfigurationFeature;
   user_custom_fields?: AppConfigurationFeature;
   volunteering?: AppConfigurationFeature;
   workshops?: AppConfigurationFeature;
-  ideas_overview?: AppConfigurationFeature;
   smart_groups?: AppConfigurationFeature;
   manual_emailing?: AppConfigurationFeature;
-  manual_tagging?: AppConfigurationFeature;
-  automatic_tagging?: AppConfigurationFeature;
+  insights_manual_flow?: AppConfigurationFeature;
+  insights_nlp_flow?: AppConfigurationFeature;
   automated_emailing_control?: AppConfigurationFeature;
   typeform_surveys?: {
     allowed: boolean;
@@ -147,8 +158,13 @@ export interface IAppConfigurationSettings {
   google_forms_surveys?: AppConfigurationFeature;
   surveymonkey_surveys?: AppConfigurationFeature;
   enalyzer_surveys?: AppConfigurationFeature;
+  qualtrics_surveys?: AppConfigurationFeature;
+  smart_survey_surveys?: AppConfigurationFeature;
+  microsoft_forms_surveys?: AppConfigurationFeature;
+  survey_xact_surveys?: AppConfigurationFeature;
+  snap_survey_surveys?: AppConfigurationFeature;
   project_folders?: AppConfigurationFeature;
-  clustering?: AppConfigurationFeature;
+  bulk_import_ideas?: AppConfigurationFeature;
   geographic_dashboard?: AppConfigurationFeature;
   widgets?: AppConfigurationFeature;
   granular_permissions?: AppConfigurationFeature;
@@ -160,11 +176,14 @@ export interface IAppConfigurationSettings {
   similar_ideas?: AppConfigurationFeature;
   polls?: AppConfigurationFeature;
   moderation?: AppConfigurationFeature;
+  flag_inappropriate_content?: AppConfigurationFeature;
   disable_downvoting?: AppConfigurationFeature;
   project_visibility?: AppConfigurationFeature;
   project_management?: AppConfigurationFeature;
   idea_assignment?: AppConfigurationFeature;
+  blocking_profanity?: AppConfigurationFeature;
   custom_idea_statuses?: AppConfigurationFeature;
+  idea_author_change?: AppConfigurationFeature;
   idea_custom_copy?: AppConfigurationFeature;
   intercom?: AppConfigurationFeature;
   satismeter?: AppConfigurationFeature & {
@@ -185,14 +204,19 @@ export interface IAppConfigurationSettings {
     tenant_site_id: string;
     product_site_id: string;
   };
-  redirects?: {
-    enabled: boolean;
-    allowed: boolean;
+  redirects?: AppConfigurationFeature & {
     rules: {
       path: string;
       target: string;
     }[];
   };
+  disable_user_bios?: AppConfigurationFeature;
+  customizable_navbar?: AppConfigurationFeature;
+  texting?: AppConfigurationFeature;
+  content_builder?: AppConfigurationFeature;
+  representativeness?: AppConfigurationFeature;
+  remove_vendor_branding?: AppConfigurationFeature;
+  native_surveys?: AppConfigurationFeature;
 }
 
 interface AppConfigurationMapSettings extends AppConfigurationFeature {
@@ -205,21 +229,21 @@ interface AppConfigurationMapSettings extends AppConfigurationFeature {
 }
 
 export interface IAppConfigurationStyle {
-  invertedNavbarColors: boolean;
+  invertedNavbarColors?: boolean;
   navbarBackgroundColor?: string;
   navbarActiveItemBackgroundColor?: string;
   navbarActiveItemBorderColor?: string;
   navbarTextColor?: string;
   navbarHighlightedItemBackgroundColor?: string;
   navbarBorderColor?: string;
-  signedOutHeaderOverlayColor?: string;
   signedOutHeaderTitleFontSize?: number;
   signedOutHeaderTitleFontWeight?: number;
-  signedOutHeaderOverlayOpacity?: number;
   signedInHeaderOverlayColor?: string;
+  // Number between 0 and 100, inclusive
   signedInHeaderOverlayOpacity?: number;
   customFontName?: string;
   customFontAdobeId?: string;
+  customFontURL?: string;
   projectNavbarBackgroundColor?: string;
   projectNavbarTextColor?: string;
   projectNavbarIdeaButtonBackgroundColor?: string;
@@ -231,10 +255,8 @@ export interface IAppConfigurationAttributes {
   host: string;
   settings: IAppConfigurationSettings;
   logo: ImageSizes | null;
-  header_bg: ImageSizes | null;
   favicon?: ImageSizes | null;
   style?: IAppConfigurationStyle;
-  homepage_info?: Multiloc;
 }
 
 export interface IAppConfigurationData {
@@ -248,16 +270,14 @@ export interface IAppConfiguration {
 }
 
 export interface IUpdatedAppConfigurationProperties {
-  settings?: Partial<
-    {
-      [P in keyof IAppConfigurationSettings]: Partial<
-        IAppConfigurationSettings[P]
-      >;
-    }
-  >;
+  settings?: Partial<{
+    [P in keyof IAppConfigurationSettings]: Partial<
+      IAppConfigurationSettings[P]
+    >;
+  }>;
   logo?: string;
-  header_bg?: string;
   favicon?: string;
+  style?: IAppConfigurationStyle;
 }
 
 export function currentAppConfigurationStream() {
@@ -277,3 +297,192 @@ export async function updateAppConfiguration(
   await currentAppConfigurationStream().fetch();
   return tenant;
 }
+
+export const coreSettings = (appConfiguration: IAppConfiguration) =>
+  appConfiguration.data.attributes.settings.core;
+
+type TCurrency = TCustomCurrency | TCountryCurrency;
+type TCustomCurrency =
+  // token, credit
+  'TOK' | 'CRE';
+type TCountryCurrency =
+  // currencies associated with countries, e.g. EUR and USD
+  // list is based on the currencies.rb file
+  | 'AED'
+  | 'AFN'
+  | 'ALL'
+  | 'AMD'
+  | 'ANG'
+  | 'AOA'
+  | 'ARS'
+  | 'AUD'
+  | 'AWG'
+  | 'AZN'
+  | 'BAM'
+  | 'BBD'
+  | 'BDT'
+  | 'BGN'
+  | 'BHD'
+  | 'BIF'
+  | 'BMD'
+  | 'BND'
+  | 'BOB'
+  | 'BOV'
+  | 'BRL'
+  | 'BSD'
+  | 'BTN'
+  | 'BWP'
+  | 'BYR'
+  | 'BZD'
+  | 'CAD'
+  | 'CDF'
+  | 'CHE'
+  | 'CHF'
+  | 'CHW'
+  | 'CLF'
+  | 'CLP'
+  | 'CNY'
+  | 'COP'
+  | 'COU'
+  | 'CRC'
+  | 'CUC'
+  | 'CUP'
+  | 'CVE'
+  | 'CZK'
+  | 'DJF'
+  | 'DKK'
+  | 'DOP'
+  | 'DZD'
+  | 'EGP'
+  | 'ERN'
+  | 'ETB'
+  | 'EUR'
+  | 'FJD'
+  | 'FKP'
+  | 'GBP'
+  | 'GEL'
+  | 'GHS'
+  | 'GIP'
+  | 'GMD'
+  | 'GNF'
+  | 'GTQ'
+  | 'GYD'
+  | 'HKD'
+  | 'HNL'
+  | 'HRK'
+  | 'HTG'
+  | 'HUF'
+  | 'IDR'
+  | 'ILS'
+  | 'INR'
+  | 'IQD'
+  | 'IRR'
+  | 'ISK'
+  | 'JMD'
+  | 'JOD'
+  | 'JPY'
+  | 'KES'
+  | 'KGS'
+  | 'KHR'
+  | 'KMF'
+  | 'KPW'
+  | 'KRW'
+  | 'KWD'
+  | 'KYD'
+  | 'KZT'
+  | 'LAK'
+  | 'LBP'
+  | 'LKR'
+  | 'LRD'
+  | 'LSL'
+  | 'LTL'
+  | 'LVL'
+  | 'LYD'
+  | 'MAD'
+  | 'MDL'
+  | 'MGA'
+  | 'MKD'
+  | 'MMK'
+  | 'MNT'
+  | 'MOP'
+  | 'MRO'
+  | 'MUR'
+  | 'MVR'
+  | 'MWK'
+  | 'MXN'
+  | 'MXV'
+  | 'MYR'
+  | 'MZN'
+  | 'NAD'
+  | 'NGN'
+  | 'NIO'
+  | 'NOK'
+  | 'NPR'
+  | 'NZD'
+  | 'OMR'
+  | 'PAB'
+  | 'PEN'
+  | 'PGK'
+  | 'PHP'
+  | 'PKR'
+  | 'PLN'
+  | 'PYG'
+  | 'QAR'
+  | 'RON'
+  | 'RSD'
+  | 'RUB'
+  | 'RWF'
+  | 'SAR'
+  | 'SBD'
+  | 'SCR'
+  | 'SDG'
+  | 'SEK'
+  | 'SGD'
+  | 'SHP'
+  | 'SLL'
+  | 'SOS'
+  | 'SRD'
+  | 'SSP'
+  | 'STD'
+  | 'SYP'
+  | 'SZL'
+  | 'THB'
+  | 'TJS'
+  | 'TMT'
+  | 'TND'
+  | 'TOP'
+  | 'TRY'
+  | 'TTD'
+  | 'TWD'
+  | 'TZS'
+  | 'UAH'
+  | 'UGX'
+  | 'USD'
+  | 'USN'
+  | 'USS'
+  | 'UYI'
+  | 'UYU'
+  | 'UZS'
+  | 'VEF'
+  | 'VND'
+  | 'VUV'
+  | 'WST'
+  | 'XAF'
+  | 'XAG'
+  | 'XAU'
+  | 'XBA'
+  | 'XBB'
+  | 'XBC'
+  | 'XBD'
+  | 'XCD'
+  | 'XDR'
+  | 'XFU'
+  | 'XOF'
+  | 'XPD'
+  | 'XPF'
+  | 'XPT'
+  | 'XTS'
+  | 'XXX'
+  | 'YER'
+  | 'ZAR'
+  | 'ZMW';

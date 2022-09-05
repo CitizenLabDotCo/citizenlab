@@ -10,7 +10,7 @@ import useAppConfiguration from 'hooks/useAppConfiguration';
 import useMapConfig from '../../../hooks/useMapConfig';
 
 // components
-import { Input, IconTooltip, Icon } from 'cl2-component-library';
+import { Input, IconTooltip, Icon } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import { SubSectionTitle } from 'components/admin/Section';
@@ -19,7 +19,10 @@ import { SubSectionTitle } from 'components/admin/Section';
 import { getCenter, getZoomLevel } from '../../../utils/map';
 
 // events
-import { setMapLatLngZoom } from 'components/Map/events';
+import {
+  setLeafletMapCenter,
+  setLeafletMapZoom,
+} from 'components/UI/LeafletMap/events';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -104,9 +107,9 @@ const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
     const [processing, setProcessing] = useState(false);
     const [errors, setErrors] = useState<{ [key: string]: any }>({});
     const [formValues, setFormValues] = useState<IFormValues>({
-      defaultLat,
-      defaultLng,
       defaultZoom,
+      defaultLat: defaultLat.toString(),
+      defaultLng: defaultLng.toString(),
     });
 
     useEffect(() => {
@@ -118,9 +121,9 @@ const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
 
         formChange(
           {
-            defaultLat,
-            defaultLng,
             defaultZoom,
+            defaultLat: defaultLat.toString(),
+            defaultLng: defaultLng.toString(),
           },
           false
         );
@@ -199,11 +202,9 @@ const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
             },
             zoom_level: defaultZoom,
           });
-          setMapLatLngZoom({
-            lat: defaultLat,
-            lng: defaultLng,
-            zoom: parseInt(defaultZoom, 10),
-          });
+
+          setLeafletMapCenter([defaultLat, defaultLng]);
+          setLeafletMapZoom(parseInt(defaultZoom, 10));
           formSuccess();
         } catch (error) {
           formError(error);

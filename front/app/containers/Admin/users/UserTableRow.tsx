@@ -3,10 +3,11 @@ import React, { PureComponent, FormEvent } from 'react';
 import { isAdmin } from 'services/permissions/roles';
 import moment from 'moment';
 import clHistory from 'utils/cl-router/history';
+import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // Components
 import Avatar from 'components/Avatar';
-import { Toggle, Icon } from 'cl2-component-library';
+import { Toggle, Icon } from '@citizenlab/cl2-component-library';
 import Checkbox from 'components/UI/Checkbox';
 import Tippy from '@tippyjs/react';
 
@@ -80,7 +81,7 @@ const DropdownListButton = styled.button`
   align-items: center;
   justify-content: space-between;
   color: ${colors.adminLightText};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 400;
   white-space: nowrap;
   padding: 10px;
@@ -186,10 +187,6 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
     clHistory.push(`/profile/${slug}`);
   };
 
-  removeFocus = (event: React.MouseEvent) => {
-    event.preventDefault();
-  };
-
   render() {
     const { user, selected } = this.props;
     const { isAdmin } = this.state;
@@ -244,7 +241,7 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
                 </DropdownList>
               }
             >
-              <MoreOptionsButton onMouseDown={this.removeFocus}>
+              <MoreOptionsButton onMouseDown={removeFocusAfterMouseClick}>
                 <MoreOptionsIcon name="more-options" />
               </MoreOptionsButton>
             </Tippy>

@@ -9,33 +9,22 @@ import IdeaRowCell from './admin/components/IdeaRowCell';
 import Tab from './admin/components/Tab';
 import InputAssignment from './admin/containers/';
 
+import FeatureFlag from 'components/FeatureFlag';
+
 const StyledAssigneeFilter = styled(AssigneeFilter)`
   margin-right: 20px;
 `;
-
-type RenderOnFeatureFlagProps = {
-  children: ReactNode;
-};
 
 type RenderOnTabHideConditionProps = {
   children: ReactNode;
 };
 
-const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {
-  const isEnabled = useFeatureFlag('idea_assignment');
-
-  if (isEnabled) {
-    return <>{children}</>;
-  }
-
-  return null;
-};
-
 const RenderOnTabHideCondition = ({
   children,
 }: RenderOnTabHideConditionProps) => {
-  // could be the same as, but might diverge from RenderOnFeatureFlag
-  const isEnabled = useFeatureFlag('idea_assignment');
+  // Could be more than just a feature flag check,
+  // hence we're not using the FeatureFlag component
+  const isEnabled = useFeatureFlag({ name: 'idea_assignment' });
   if (isEnabled) {
     return <>{children}</>;
   }
@@ -47,14 +36,16 @@ const configuration: ModuleConfiguration = {
     'app.components.admin.PostManager.topActionBar': (props) => (
       <StyledAssigneeFilter {...props} />
     ),
-    'app.components.admin.PostManager.components.PostTable.IdeaRow.cells': IdeaRowCell,
-    'app.components.admin.PostManager.components.PostTable.IdeaHeaderRow.cells': IdeaHeaderCell,
+    'app.components.admin.PostManager.components.PostTable.IdeaRow.cells':
+      IdeaRowCell,
+    'app.components.admin.PostManager.components.PostTable.IdeaHeaderRow.cells':
+      IdeaHeaderCell,
     'app.containers.Admin.project.edit.permissions.moderatorRights': (
       props
     ) => (
-      <RenderOnFeatureFlag>
+      <FeatureFlag name="idea_assignment">
         <InputAssignment {...props} />
-      </RenderOnFeatureFlag>
+      </FeatureFlag>
     ),
     'app.containers.Admin.projects.edit': (props) => {
       return (

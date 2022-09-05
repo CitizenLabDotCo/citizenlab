@@ -1,10 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  error: {
-    id: 'app.errors.error',
-    defaultMessage: 'Error: ',
-  },
   blank: {
     id: 'app.errors.generics.blank',
     defaultMessage: 'This field cannot be empty.',
@@ -42,6 +38,25 @@ export default defineMessages({
     id: 'app.errors.too_common',
     defaultMessage:
       'This password can be easily guessed. Please choose a stronger password.',
+  },
+  confirmation_code_invalid: {
+    id: 'app.errors.confirmation_code_invalid',
+    defaultMessage:
+      "Wrong code. Please check your email for the correct code or try 'Send New Code'",
+  },
+  confirmation_code_expired: {
+    id: 'app.errors.confirmation_code_expired',
+    defaultMessage: 'Code expired. Please resend a new code.',
+  },
+  confirmation_code_too_many_retries: {
+    id: 'app.errors.confirmation_code_too_many_retries',
+    defaultMessage:
+      "You've tried too many times. Please resend a code or try changing your email.",
+  },
+  confirmation_code_too_many_resets: {
+    id: 'app.errors.confirmation_code_too_many_resets',
+    defaultMessage:
+      "You've resent the confirmation code too many times. Please contact us to receive an invitation code instead.",
   },
   after_end_at: {
     id: 'app.errors.after_end_at',
@@ -137,7 +152,7 @@ export default defineMessages({
   slug_taken: {
     id: 'app.errors.slug_taken',
     defaultMessage:
-      'This project URL already exists. Please change the project slug to something else.',
+      'This URL already exists. Please change the slug to something else.',
   },
   avatar_extension_whitelist_error: {
     id: 'app.errors.avatar_extension_whitelist_error',
@@ -207,5 +222,86 @@ export default defineMessages({
   password_too_short: {
     id: 'app.errors.password_too_short',
     defaultMessage: 'The password must be at least 8 characters long',
+  },
+  view_name_taken: {
+    id: 'app.errors.view_name_taken',
+    defaultMessage: 'A view with this name already exists',
+  },
+  category_name_taken: {
+    id: 'app.errors.category_name_taken',
+    defaultMessage: 'A category with this name already exists',
+  },
+  bulk_import_ideas_maximum_ideas_exceeded: {
+    id: 'app.errors.bulk_import_ideas_maximum_ideas_exceeded',
+    defaultMessage: 'The maximum of {value} ideas has been exceeded.',
+  },
+  bulk_import_ideas_idea_not_valid: {
+    id: 'app.errors.bulk_import_ideas_idea_not_valid',
+    defaultMessage: 'The resulting idea is not valid: {value}.',
+  },
+  bulk_import_ideas_blank_title: {
+    id: 'app.errors.bulk_import_ideas_blank_title',
+    defaultMessage:
+      'Idea with empty title. This issue occurs in the row with ID {row}.',
+  },
+  bulk_import_ideas_blank_body: {
+    id: 'app.errors.bulk_import_ideas_blank_body',
+    defaultMessage:
+      'Idea with empty body. This issue occurs in the row with ID {row}.',
+  },
+  bulk_import_ideas_blank_project: {
+    id: 'app.errors.bulk_import_ideas_blank_project',
+    defaultMessage:
+      'Idea without project. This issue occurs in the row with ID {row}.',
+  },
+  bulk_import_ideas_project_not_found: {
+    id: 'app.errors.bulk_import_ideas_project_not_found',
+    defaultMessage:
+      'No project with title "{value}" exists. This issue occurs in the row with ID {row}.',
+  },
+  bulk_import_ideas_blank_email: {
+    id: 'app.errors.bulk_import_ideas_blank_email',
+    defaultMessage:
+      'Idea without user email. This issue occurs in the row with ID {row}.',
+  },
+  bulk_import_ideas_email_not_found: {
+    id: 'app.errors.bulk_import_ideas_email_not_found',
+    defaultMessage:
+      'No user exists with email "{value}". This issue occurs in the row with ID {row}.',
+  },
+  bulk_import_ideas_publication_date_invalid_format: {
+    id: 'app.errors.bulk_import_ideas_publication_date_invalid_format',
+    defaultMessage:
+      'Idea with invalid publication date format "{value}". This issue occurs in the row with ID {row}.',
+  },
+  bulk_import_ideas_location_point_blank_coordinate: {
+    id: 'app.errors.bulk_import_ideas_location_point_blank_coordinate',
+    defaultMessage:
+      'Idea location with a missing coordinate in {value}. This issue occurs in the row with ID {row}.',
+  },
+  bulk_import_ideas_location_point_non_numeric_coordinate: {
+    id: 'app.errors.bulk_import_ideas_location_point_non_numeric_coordinate',
+    defaultMessage:
+      'Idea location with a non-numeric coordinate in {value}. This issue occurs in the row with ID {row}.',
+  },
+  bulk_import_ideas_non_numeric_phase_rank: {
+    id: 'app.errors.bulk_import_ideas_non_numeric_phase_rank',
+    defaultMessage:
+      'Non-numeric phase rank in {value}. This issue occurs in the row with ID {row}.',
+  },
+  bulk_import_ideas_maximum_phase_rank_exceeded: {
+    id: 'app.errors.bulk_import_ideas_maximum_phase_rank_exceeded',
+    defaultMessage:
+      'Idea project has less phases than the requested phase {value}. This issue occurs in the row with ID {row}.',
+  },
+  bulk_import_ideas_project_phase_not_found: {
+    id: 'app.errors.bulk_import_ideas_project_phase_not_found',
+    defaultMessage:
+      'No phase {value} found in project. This issue occurs in the row with ID {row}.',
+  },
+  bulk_import_ideas_image_url_not_valid: {
+    id: 'app.errors.bulk_import_ideas_image_url_not_valid',
+    defaultMessage:
+      'No image could be downloaded from {value}. Make sure the URL is valid and ends with a file extension such as .png or .jpg. This issue occurs in the row with ID {row}.',
   },
 });

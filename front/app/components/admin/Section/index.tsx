@@ -1,12 +1,18 @@
 import styled from 'styled-components';
 import { remCalc, colors, fontSizes, isRtl } from 'utils/styleUtils';
 import Link from 'utils/cl-router/Link';
+import { Box } from '@citizenlab/cl2-component-library';
 
 export const Section = styled.div`
   margin-bottom: 0;
+  ${isRtl`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  `}
 `;
 
-export const SectionField = styled.div`
+export const SectionField = styled(Box)`
   margin-bottom: 35px;
   transition: all 200ms ease-in-out;
   width: 100%;
@@ -27,6 +33,18 @@ export const SectionField = styled.div`
   `}
 `;
 
+export const SectionFieldPageContent = styled.div`
+  margin-bottom: 35px;
+  transition: all 200ms ease-in-out;
+  max-width: calc(${(props) => props.theme.maxPageWidth}px - 118px);
+  display: flex;
+  flex-direction: column;
+
+  ${isRtl`
+    align-items: flex-end;
+  `}
+`;
+
 export const PageTitle = styled.h1`
   font-size: ${fontSizes.xxxl}px;
   line-height: 40px;
@@ -41,11 +59,15 @@ export const SectionTitle = styled.h2`
   font-weight: 500;
   line-height: ${remCalc(32)};
   margin-bottom: ${remCalc(45)};
+  ${isRtl`
+    direction: rtl;
+    text-align: right;
+  `}
 `;
 
 export const SubSectionTitle = styled.h3`
   color: ${colors.adminTextColor};
-  font-size: ${fontSizes.large}px;
+  font-size: ${fontSizes.l}px;
   font-weight: 500;
   line-height: ${remCalc(30)};
   display: flex;
@@ -54,6 +76,11 @@ export const SubSectionTitle = styled.h3`
   & > :not(last-child) {
     margin-right: 7px;
   }
+
+  ${isRtl`
+    direction: rtl;
+    text-align: right;
+  `}
 `;
 
 export const SubSectionTitleWithDescription = styled(SubSectionTitle)`
@@ -70,6 +97,12 @@ export const SectionDescription = styled.p`
   ${SectionTitle} + & {
     margin-top: -2rem;
   }
+
+  ${isRtl`
+    direction: rtl;
+    text-align: right;
+    max-width: 100%;
+  `}
 `;
 
 export const StyledLink = styled(Link)`

@@ -1,6 +1,6 @@
 import { FC, useEffect } from 'react';
 import { InsertConfigurationOptions, ITab } from 'typings';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -27,6 +27,7 @@ const Tab: FC<Props & WithRouterProps & InjectedIntlProps> = ({
         },
         insertAfterName: 'manage',
       }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
   return null;

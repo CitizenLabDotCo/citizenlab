@@ -6,7 +6,7 @@ import useLocalize from 'hooks/useLocalize';
 // components
 import ProjectTemplateCard from './ProjectTemplateCard';
 import SearchInput from 'components/UI/SearchInput';
-import { Spinner } from 'cl2-component-library';
+import { Spinner } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import DepartmentFilter from '../components/DepartmentFilter';
 import PurposeFilter from './PurposeFilter';
@@ -109,7 +109,7 @@ interface Props {
     pageInfo: {
       hasNextPage: boolean;
     };
-  };
+  } | null;
 }
 
 const ProjectTemplateCards = memo<Props & InjectedIntlProps>(
@@ -147,6 +147,7 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(
               placeholder={searchPlaceholder}
               ariaLabel={searchAriaLabel}
               onChange={onSearchChange}
+              a11y_numberOfSearchResults={templates?.edges.length || 0}
             />
           </Right>
         </Filters>

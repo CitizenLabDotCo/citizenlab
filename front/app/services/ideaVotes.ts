@@ -2,11 +2,13 @@ import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { uuidRegExp } from 'utils/helperUtils';
 
+export type TVoteMode = 'up' | 'down';
+
 export interface IIdeaVoteData {
   id: string;
   type: 'vote';
   attributes: {
-    mode: 'up' | 'down';
+    mode: TVoteMode;
   };
   relationships: {
     votable: {
@@ -77,7 +79,7 @@ export async function addVote(
   );
 
   if (refetchAllActiveIdeas) {
-    const ideaEndpointRegexp = new RegExp(`\/ideas\/${uuidRegExp}$`);
+    const ideaEndpointRegexp = new RegExp(`/ideas/${uuidRegExp}$`);
     streams.fetchAllWith({
       regexApiEndpoint: [ideaEndpointRegexp],
       onlyFetchActiveStreams: true,
@@ -95,7 +97,7 @@ export async function deleteVote(
   const response = await streams.delete(`${API_PATH}/votes/${voteId}`, voteId);
 
   if (refetchAllActiveIdeas) {
-    const ideaEndpointRegexp = new RegExp(`\/ideas\/${uuidRegExp}$`);
+    const ideaEndpointRegexp = new RegExp(`/ideas/${uuidRegExp}$`);
     streams.fetchAllWith({
       regexApiEndpoint: [ideaEndpointRegexp],
       onlyFetchActiveStreams: true,

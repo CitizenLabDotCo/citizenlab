@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useState, Suspense } from 'react';
 
 // components
-import { Icon, IconNames } from 'cl2-component-library';
+import { Icon, IconNames } from '@citizenlab/cl2-component-library';
 
 // animations
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -149,7 +149,7 @@ const CollapsibleBox = memo<Props>((props) => {
   return (
     <Container className={className}>
       <ContentToggleButton
-        id={e2eId || ''}
+        id={e2eId}
         aria-expanded={showContent}
         onClick={handleContentToggle}
       >

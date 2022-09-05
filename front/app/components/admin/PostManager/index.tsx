@@ -3,7 +3,7 @@ import { isFunction } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import styled from 'styled-components';
 import HTML5Backend from 'react-dnd-html5-backend-cjs';
-import { DragDropContext } from 'react-dnd-cjs';
+import { DndProvider } from 'react-dnd-cjs';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
@@ -13,7 +13,7 @@ import {
   IGlobalStateService,
 } from 'services/globalState';
 import { IProjectData } from 'services/projects';
-import { ITopicData } from 'services/topics';
+import { getTopicIds } from 'services/projectAllowedInputTopics';
 
 // resources
 import GetIdeaStatuses, {
@@ -28,6 +28,7 @@ import GetInitiatives, {
 } from 'resources/GetInitiatives';
 import { GetPhasesChildProps } from 'resources/GetPhases';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
+import GetProjectAllowedInputTopics from 'resources/GetProjectAllowedInputTopics';
 
 // components
 import ActionBar from './components/ActionBar';
@@ -105,6 +106,7 @@ interface InputProps {
   // filters settings
   // the filters needed for this view, in the order they'll be shown, first one active by default
   visibleFilterMenus: TFilterMenu[]; // cannot be empty.
+  defaultFilterMenu: TFilterMenu;
   phases?: GetPhasesChildProps;
   // When the PostManager is used in admin/posts, the parent component passes
   // down the array of projects the current user can moderate.
@@ -137,7 +139,7 @@ export class PostManager extends React.PureComponent<Props, State> {
     super(props);
     this.state = {
       selection: new Set(),
-      activeFilterMenu: props.visibleFilterMenus[0],
+      activeFilterMenu: props.defaultFilterMenu,
       searchTerm: undefined,
       previewPostId: null,
       previewMode: 'view',
@@ -158,7 +160,10 @@ export class PostManager extends React.PureComponent<Props, State> {
 
     if (
       prevProps.visibleFilterMenus !== visibleFilterMenus &&
-      !visibleFilterMenus.find((item) => item === this.state.activeFilterMenu)
+      !visibleFilterMenus.find(
+        (item) => item === this.state.activeFilterMenu
+      ) &&
+      visibleFilterMenus[0]
     ) {
       this.setState({ activeFilterMenu: visibleFilterMenus[0] });
     }
@@ -226,8 +231,9 @@ export class PostManager extends React.PureComponent<Props, State> {
 
   openPreviewEdit = () => {
     const { selection } = this.state;
-    if (selection.size === 1) {
-      this.setState({ previewPostId: [...selection][0], previewMode: 'edit' });
+    const previewPostId = [...selection][0];
+    if (selection.size === 1 && previewPostId) {
+      this.setState({ previewPostId, previewMode: 'edit' });
     }
   };
 
@@ -253,7 +259,7 @@ export class PostManager extends React.PureComponent<Props, State> {
         selectedPhase: undefined,
         selectedStatus: posts.queryParameters.initiative_status,
       };
-    } else if (type === 'AllIdeas' || 'ProjectIdeas') {
+    } else if (type === 'AllIdeas' || type === 'ProjectIdeas') {
       const posts = this.props.posts as GetIdeasChildProps;
       return {
         onChangePhase: posts.onChangePhase,
@@ -302,17 +308,10 @@ export class PostManager extends React.PureComponent<Props, State> {
 
     const selectedProject = this.getSelectedProject();
 
-    const {
-      onChangePhase,
-      selectedPhase,
-      selectedStatus,
-    } = this.getNonSharedParams();
+    const { onChangePhase, selectedPhase, selectedStatus } =
+      this.getNonSharedParams();
 
     if (!isNilOrError(topics)) {
-      const filteredTopics = topics.filter(
-        (topic) => !isNilOrError(topic)
-      ) as ITopicData[];
-
       return (
         <>
           <TopActionBar>
@@ -383,7 +382,7 @@ export class PostManager extends React.PureComponent<Props, State> {
                   phases={!isNilOrError(phases) ? phases : undefined}
                   projects={!isNilOrError(projects) ? projects : undefined}
                   statuses={!isNilOrError(postStatuses) ? postStatuses : []}
-                  topics={filteredTopics}
+                  topics={topics}
                   selectedPhase={selectedPhase}
                   selectedTopics={selectedTopics}
                   selectedStatus={selectedStatus}
@@ -442,7 +441,7 @@ export class PostManager extends React.PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  posts: ({ type, projectId, projects, render }) => {
+  posts: ({ type, projectId, render }) => {
     if (type === 'Initiatives') {
       return (
         <GetInitiatives type="paginated" pageSize={10} sort="new">
@@ -465,15 +464,12 @@ const Data = adopt<DataProps, InputProps>({
     }
 
     if (type === 'AllIdeas') {
-      const projectIds = !!(projects && projects.length > 0)
-        ? projects.map((project) => project.id)
-        : undefined;
       return (
         <GetIdeas
           type="paginated"
           pageSize={10}
           sort="new"
-          projectIds={projectIds}
+          filterCanModerate={true}
         >
           {render}
         </GetIdeas>
@@ -490,11 +486,19 @@ const Data = adopt<DataProps, InputProps>({
     ),
   topics: ({ type, projectId, render }) => {
     if (type === 'Initiatives') {
-      return <GetTopics exclude_code="custom">{render}</GetTopics>;
+      return <GetTopics excludeCode="custom">{render}</GetTopics>;
     }
 
     if (type === 'ProjectIdeas' && projectId) {
-      return <GetTopics projectId={projectId}>{render}</GetTopics>;
+      return (
+        <GetProjectAllowedInputTopics projectId={projectId}>
+          {(projectAllowedInputTopics) => {
+            const topicIds = getTopicIds(projectAllowedInputTopics);
+
+            return <GetTopics topicIds={topicIds}>{render}</GetTopics>;
+          }}
+        </GetProjectAllowedInputTopics>
+      );
     }
 
     if (type === 'AllIdeas') {
@@ -505,16 +509,12 @@ const Data = adopt<DataProps, InputProps>({
   },
 });
 
-const PostManagerWithDragDropContext = DragDropContext(HTML5Backend)(
-  PostManager
-);
-
 export default (inputProps: InputProps) => {
   return (
-    <Data {...inputProps}>
-      {(dataProps) => (
-        <PostManagerWithDragDropContext {...inputProps} {...dataProps} />
-      )}
-    </Data>
+    <DndProvider backend={HTML5Backend}>
+      <Data {...inputProps}>
+        {(dataProps) => <PostManager {...inputProps} {...dataProps} />}
+      </Data>
+    </DndProvider>
   );
 };

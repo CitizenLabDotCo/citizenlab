@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react';
-import Dropzone from 'react-dropzone';
+import Dropzone, { Accept } from 'react-dropzone';
 import { size, isEmpty, uniqBy, forEach } from 'lodash-es';
 import { reportError } from 'utils/loggingUtils';
+import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // components
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 
 // i18n
@@ -13,7 +14,7 @@ import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // utils
-import { getBase64FromFile } from 'utils/fileTools';
+import { getBase64FromFile } from 'utils/fileUtils';
 
 // style
 import styled from 'styled-components';
@@ -21,6 +22,7 @@ import { colors, fontSizes, defaultOutline } from 'utils/styleUtils';
 
 // typings
 import { UploadFile } from 'typings';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 const Container = styled.div`
   width: 100%;
@@ -58,7 +60,7 @@ const DropzoneLabelIcon = styled(Icon)`
 
 const DropzoneImagesRemaining = styled.div`
   color: ${colors.label};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   line-height: normal;
   font-weight: 400;
   text-align: center;
@@ -141,12 +143,12 @@ const Image = styled.div<{
   border-radius: ${(props) =>
     props.borderRadius ? props.borderRadius : props.theme.borderRadius};
   border: solid 1px #ccc;
+  transition: all 100ms ease-out;
 `;
 
 const Box = styled.div<{ maxWidth: string | undefined; ratio: number }>`
   width: 100%;
   max-width: ${({ maxWidth }) => (maxWidth ? maxWidth : '100%')};
-  margin-bottom: 16px;
   position: relative;
 
   &.hasRightMargin {
@@ -179,7 +181,7 @@ const RemoveButton = styled.button`
   position: absolute;
   top: 8px;
   right: 8px;
-  z-index: 0;
+  z-index: 1;
   cursor: pointer;
   border-radius: 50%;
   border: solid 1px transparent;
@@ -199,11 +201,11 @@ const RemoveButton = styled.button`
 interface Props {
   id?: string;
   images: UploadFile[] | null;
-  acceptedFileTypes?: string | null | undefined;
+  acceptedFileTypes?: Accept;
   imagePreviewRatio: number;
   maxImagePreviewWidth?: string;
   maxImageFileSize?: number;
-  maxNumberOfImages: number;
+  maxNumberOfImages?: number;
   label?: string | JSX.Element | null | undefined;
   errorMessage?: string | null | undefined;
   objectFit?: 'cover' | 'contain' | undefined;
@@ -212,6 +214,7 @@ interface Props {
   borderRadius?: string;
   removeIconAriaTitle?: string;
   className?: string;
+  previewOverlayElement?: JSX.Element | null;
 }
 
 interface State {
@@ -222,6 +225,12 @@ interface State {
 }
 
 class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
+  static defaultProps = {
+    maxNumberOfImages: 1,
+    maxImageFileSize: 10000000,
+    addImageOverlay: false,
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -255,25 +264,23 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   removeExcessImages = () => {
+    const {
+      maxNumberOfImages = ImagesDropzone.defaultProps.maxNumberOfImages,
+      images,
+      onRemove,
+    } = this.props;
     // Logic to automatically trigger removal of the images that exceed the maxNumberOfImages treshold
     // E.g. the maxNumberOfImages has been reduced from 5 to 1, but the server still returns 5 images and so this.props.images
     // array will have a length of 5 instead of the new max. allowed length of 1. In this case onRemove() will be triggered
     // for this.props.images[1] up to this.props.images[4] when this.props.images is loaded
-    if (
-      this.props.images &&
-      this.props.images.length > this.props.maxNumberOfImages
-    ) {
-      for (
-        let step = this.props.maxNumberOfImages;
-        step < this.props.images.length;
-        step += 1
-      ) {
-        this.props.onRemove(this.props.images[step]);
+    if (images && images.length > maxNumberOfImages) {
+      for (let step = maxNumberOfImages; step < images.length; step += 1) {
+        onRemove(images[step]);
       }
     }
   };
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     forEach(this.state.urlObjects, (urlObject) =>
       window.URL.revokeObjectURL(urlObject)
     );
@@ -366,24 +373,24 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
     this.props.onRemove(removedImage);
   };
 
-  removeFocus = (event: React.MouseEvent) => {
-    event.preventDefault();
-  };
-
   getMaxImageSizeInMb = () => {
-    return (this.props.maxImageFileSize || 5000000) / 1000000;
+    const { maxImageFileSize = ImagesDropzone.defaultProps.maxImageFileSize } =
+      this.props;
+
+    return maxImageFileSize / 1000000;
   };
 
   render() {
     const {
       id,
       images,
-      maxImageFileSize,
-      maxNumberOfImages,
+      maxImageFileSize = ImagesDropzone.defaultProps.maxImageFileSize,
+      maxNumberOfImages = ImagesDropzone.defaultProps.maxNumberOfImages,
       maxImagePreviewWidth,
       imagePreviewRatio,
       borderRadius,
       className,
+      previewOverlayElement,
     } = this.props;
     const { formatMessage } = this.props.intl;
     const { errorMessage } = this.state;
@@ -394,7 +401,6 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
           )})`
         : null;
     const maxImageSizeInMb = this.getMaxImageSizeInMb();
-    const acceptedFileTypes = this.props.acceptedFileTypes || '*';
     const label =
       this.props.label ||
       (maxNumberOfImages && maxNumberOfImages === 1
@@ -417,7 +423,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
               }
             >
               <Dropzone
-                accept={acceptedFileTypes}
+                accept={this.props.acceptedFileTypes}
                 maxSize={maxImageFileSize}
                 disabled={!!(images && maxNumberOfImages === images.length)}
                 onDrop={this.onDrop as any}
@@ -434,7 +440,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
                           : ''
                       }
                     >
-                      <DropzoneInput {...getInputProps()} id={id || ''} />
+                      <DropzoneInput {...getInputProps()} id={id} />
                       <DropzoneContentInner>
                         <DropzoneLabelIcon name="upload" ariaHidden />
                         <DropzoneLabelText>{label}</DropzoneLabelText>
@@ -470,19 +476,18 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
                   objectFit={objectFit}
                 >
                   <RemoveButton
-                    onMouseDown={this.removeFocus}
+                    onMouseDown={removeFocusAfterMouseClick}
                     onClick={this.removeImage(image)}
                     className="remove-button"
                   >
-                    <RemoveIcon
-                      name="close"
-                      title={
-                        this.props.removeIconAriaTitle ||
-                        formatMessage(messages.a11y_removeImage)
-                      }
-                    />
+                    <RemoveIcon name="close" />
+                    <ScreenReaderOnly>
+                      {this.props.removeIconAriaTitle ||
+                        formatMessage(messages.a11y_removeImage)}
+                    </ScreenReaderOnly>
                   </RemoveButton>
                 </Image>
+                {previewOverlayElement}
               </Box>
             ))}
         </ContentWrapper>
@@ -495,4 +500,4 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default injectIntl<Props>(ImagesDropzone);
+export default injectIntl(ImagesDropzone);

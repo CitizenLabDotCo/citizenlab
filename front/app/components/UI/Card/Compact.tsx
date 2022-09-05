@@ -136,8 +136,8 @@ interface Props {
   } | null;
   title: JSX.Element | string;
   body: JSX.Element | string;
-  footer: JSX.Element | string;
-  onClick: (event: MouseEvent<HTMLDivElement>) => void;
+  footer: JSX.Element | null;
+  onClick: (event: MouseEvent<HTMLAnchorElement>) => void;
   className?: string;
 }
 
@@ -147,8 +147,8 @@ export const Card = memo<Props>(
     onClick,
     image,
     imagePlaceholder,
-    hideImage,
-    hideImagePlaceholder,
+    hideImage = false,
+    hideImagePlaceholder = false,
     title,
     body,
     footer,

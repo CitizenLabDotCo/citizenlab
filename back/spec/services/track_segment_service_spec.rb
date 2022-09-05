@@ -22,11 +22,6 @@ describe TrackSegmentService do
       expect(service.integrations(user)[:Intercom]).to be true
     end
 
-    it 'includes intercom for a project moderator' do
-      user = build_stubbed(:moderator)
-      expect(service.integrations(user)[:Intercom]).to be true
-    end
-
     it "doesn't include intercom for a normal user" do
       user = build_stubbed(:user)
       expect(service.integrations(user)[:Intercom]).to be false
@@ -39,11 +34,6 @@ describe TrackSegmentService do
 
     it 'includes SatisMeter for an admin' do
       user = build_stubbed(:admin)
-      expect(service.integrations(user)[:SatisMeter]).to be true
-    end
-
-    it 'includes SatisMeter for a project moderator' do
-      user = build_stubbed(:moderator)
       expect(service.integrations(user)[:SatisMeter]).to be true
     end
 
@@ -70,7 +60,6 @@ describe TrackSegmentService do
           gender: nil,
           isSuperAdmin: false,
           isAdmin: false,
-          isProjectModerator: false,
           highestRole: :user,
           timezone: 'Brussels'
         ),

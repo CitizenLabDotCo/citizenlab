@@ -1,20 +1,30 @@
 import { useState, useEffect } from 'react';
+
+// utils
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
+
+// typings
 import {
   userCustomFieldStream,
+  IUserCustomField,
   IUserCustomFieldData,
 } from '../services/userCustomFields';
 
 export default function useUserCustomField(userCustomFieldId: string) {
   const [userCustomField, setUserCustomField] = useState<
-    IUserCustomFieldData | undefined | null | Error
+    IUserCustomFieldData | NilOrError
   >(undefined);
 
   useEffect(() => {
-    const subscription = userCustomFieldStream(
-      userCustomFieldId
-    ).observable.subscribe((userCustomField) => {
-      setUserCustomField(userCustomField.data);
-    });
+    const observable = userCustomFieldStream(userCustomFieldId).observable;
+
+    const subscription = observable.subscribe(
+      (userCustomField: IUserCustomField | NilOrError) => {
+        isNilOrError(userCustomField)
+          ? setUserCustomField(userCustomField)
+          : setUserCustomField(userCustomField.data);
+      }
+    );
 
     return () => subscription.unsubscribe();
   }, [userCustomFieldId]);

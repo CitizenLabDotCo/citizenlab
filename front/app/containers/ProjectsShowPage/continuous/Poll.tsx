@@ -6,10 +6,10 @@ import ContentContainer from 'components/ContentContainer';
 import Poll from '../shared/poll';
 import { ScreenReaderOnly } from 'utils/a11y';
 import {
-  SectionContainer,
   ProjectPageSectionTitle,
   maxPageWidth,
 } from 'containers/ProjectsShowPage/styles';
+import SectionContainer from 'components/SectionContainer';
 
 // hooks
 import useProject from 'hooks/useProject';

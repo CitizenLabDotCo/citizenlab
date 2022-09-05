@@ -1,8 +1,10 @@
 import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
+// utils
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+
 // services
-import { IUserCustomFieldData } from '../../../../services/userCustomFields';
 import {
   IUserCustomFieldOptionData,
   reorderUserCustomFieldOption,
@@ -27,15 +29,13 @@ import messages from '../messages';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
-export interface Props {
-  customField: IUserCustomFieldData;
-}
-
 const RegistrationCustomFieldOptions = memo(
-  ({ customField, intl: { formatMessage } }: Props & InjectedIntlProps) => {
-    const userCustomFieldOptions = useUserCustomFieldOptions(customField.id);
+  ({
+    intl: { formatMessage },
+    params: { userCustomFieldId },
+  }: InjectedIntlProps & WithRouterProps) => {
+    const userCustomFieldOptions = useUserCustomFieldOptions(userCustomFieldId);
     const localize = useLocalize();
-    const userCustomFieldId = customField.id;
 
     const handleReorderCustomFieldOption = (
       customFieldOptionId: string,
@@ -46,18 +46,20 @@ const RegistrationCustomFieldOptions = memo(
       });
     };
 
-    const handleDeleteClick = (userCustomFieldOptionId: string) => (
-      event: React.FormEvent<any>
-    ) => {
-      const deleteMessage = formatMessage(
-        messages.customFieldOptionDeletionConfirmation
-      );
-      event.preventDefault();
+    const handleDeleteClick =
+      (userCustomFieldOptionId: string) => (event: React.FormEvent<any>) => {
+        const deleteMessage = formatMessage(
+          messages.customFieldOptionDeletionConfirmation
+        );
+        event.preventDefault();
 
-      if (window.confirm(deleteMessage)) {
-        deleteUserCustomFieldOption(userCustomFieldId, userCustomFieldOptionId);
-      }
-    };
+        if (window.confirm(deleteMessage)) {
+          deleteUserCustomFieldOption(
+            userCustomFieldId,
+            userCustomFieldOptionId
+          );
+        }
+      };
 
     if (!isNilOrError(userCustomFieldOptions)) {
       return (
@@ -93,7 +95,7 @@ const RegistrationCustomFieldOptions = memo(
                         index={index}
                         moveRow={handleDragRow}
                         dropRow={handleDropRow}
-                        lastItem={index === userCustomFieldOptions.length - 1}
+                        isLastItem={index === userCustomFieldOptions.length - 1}
                       >
                         <TextCell className="expand">
                           {localize(
@@ -129,4 +131,4 @@ const RegistrationCustomFieldOptions = memo(
   }
 );
 
-export default injectIntl(RegistrationCustomFieldOptions);
+export default withRouter(injectIntl(RegistrationCustomFieldOptions));

@@ -1,10 +1,12 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import styled from 'styled-components';
-import { WithRouterProps } from 'react-router';
 import AsyncSelect from 'react-select/async';
 import { first } from 'rxjs/operators';
 import { IOption } from 'typings';
-import { isProjectFolderModerator } from '../../../permissions/roles';
+import {
+  isProjectFolderModerator,
+  userModeratesFolder,
+} from '../../../permissions/roles';
 
 // utils
 import { isNilOrError, isNonEmptyString } from 'utils/helperUtils';
@@ -25,12 +27,13 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 // components
 import { SubSectionTitle } from 'components/admin/Section';
-import { IconTooltip } from 'cl2-component-library';
+import { IconTooltip } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import { List, Row } from 'components/admin/ResourceList';
 import Avatar from 'components/Avatar';
 import selectStyles from 'components/UI/MultipleSelect/styles';
 import { isAdmin } from 'services/permissions/roles';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 const Container = styled.div`
   width: 100%;
@@ -57,9 +60,9 @@ const UserSelectButton = styled(Button)`
 `;
 
 const FolderPermissions = ({
-  params: { projectFolderId },
   intl: { formatMessage },
-}: WithRouterProps & InjectedIntlProps) => {
+  params: { projectFolderId },
+}: InjectedIntlProps & WithRouterProps) => {
   const authUser = useAuthUser();
   const folderModerators = useProjectFolderModerators(projectFolderId);
 
@@ -83,14 +86,13 @@ const FolderPermissions = ({
     );
     setProcessing(false);
     setSelectedUserOptions([]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedUserOptions]);
 
-  const handleDeleteFolderModeratorClick = (
-    projectFolderId: string,
-    moderatorId: string
-  ) => () => {
-    deleteFolderModerator(projectFolderId, moderatorId);
-  };
+  const handleDeleteFolderModeratorClick =
+    (projectFolderId: string, moderatorId: string) => () => {
+      deleteFolderModerator(projectFolderId, moderatorId);
+    };
 
   const loadUsers = (inputValue: string, callback) => {
     if (inputValue) {
@@ -114,7 +116,7 @@ const FolderPermissions = ({
     if (!isNilOrError(users)) {
       return users.data
         .filter(
-          (user: IUserData) => !isProjectFolderModerator(user, projectFolderId)
+          (user: IUserData) => !userModeratesFolder(user, projectFolderId)
         )
         .map((user: IUserData) => {
           return {
@@ -138,9 +140,10 @@ const FolderPermissions = ({
     return null;
   };
 
-  const isDropdownIconHidden = useMemo(() => !isNonEmptyString(searchInput), [
-    searchInput,
-  ]);
+  const isDropdownIconHidden = useMemo(
+    () => !isNonEmptyString(searchInput),
+    [searchInput]
+  );
 
   const userName = (user: IUserData) => {
     return `${user.attributes.first_name} ${user.attributes.last_name}`;
@@ -233,4 +236,4 @@ const FolderPermissions = ({
   );
 };
 
-export default injectIntl(FolderPermissions);
+export default withRouter(injectIntl(FolderPermissions));

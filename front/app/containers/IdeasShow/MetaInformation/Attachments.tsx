@@ -16,20 +16,22 @@ const StyledAttachment = styled(Attachment)<{ isLastItem: boolean }>`
 `;
 
 interface Props {
-  className?: string;
   ideaId: string;
+  compact?: boolean;
+  className?: string;
 }
 
 const Attachments = ({
-  className,
   ideaId,
+  compact,
+  className,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const files = useResourceFiles({ resourceType: 'idea', resourceId: ideaId });
 
   if (!isNilOrError(files) && files.length > 0) {
     return (
-      <Item>
+      <Item className={className || ''} compact={compact}>
         <Header>{formatMessage(messages.attachments)}</Header>
         <Container className={className}>
           {Array.isArray(files) &&

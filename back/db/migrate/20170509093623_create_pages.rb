@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreatePages < ActiveRecord::Migration[5.0]
   def change
     create_table :pages, id: :uuid do |t|

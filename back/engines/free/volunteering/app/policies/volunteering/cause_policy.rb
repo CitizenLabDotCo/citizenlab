@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Volunteering
   class CausePolicy < ApplicationPolicy
     class Scope
@@ -18,7 +20,7 @@ module Volunteering
     end
 
     def create?
-      user&.active? && (user.admin? || user.project_moderator?(record.participation_context.project.id))
+      user&.active? && (user&.admin? || user&.project_moderator?(record.participation_context.project.id))
     end
 
     def show?
@@ -26,7 +28,7 @@ module Volunteering
     end
 
     def update?
-      user&.active? && (user.admin? || user.project_moderator?(record.participation_context.project.id))
+      user&.active? && (user&.admin? || user&.project_moderator?(record.participation_context.project.id))
     end
 
     def reorder?

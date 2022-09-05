@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This migration comes from idea_assignment (originally 20190318145229)
 class AddAssigneeToIdeas < ActiveRecord::Migration[5.2]
   def change

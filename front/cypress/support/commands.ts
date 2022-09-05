@@ -1,6 +1,8 @@
 import 'cypress-file-upload';
+import './dnd';
 
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
     interface Chainable {
       unregisterServiceWorkers: typeof unregisterServiceWorkers;
@@ -41,11 +43,16 @@ declare global {
       apiRemoveCustomField: typeof apiRemoveCustomField;
       apiAddPoll: typeof apiAddPoll;
       apiVerifyBogus: typeof apiVerifyBogus;
+      apiCreateEvent: typeof apiCreateEvent;
+      apiEnableContentBuilder: typeof apiEnableContentBuilder;
+      intersectsViewport: typeof intersectsViewport;
+      notIntersectsViewport: typeof notIntersectsViewport;
+      apiUpdateHomepageSettings: typeof apiUpdateHomepageSettings;
     }
   }
 }
 
-export function randomString(length: number = 15) {
+export function randomString(length = 15) {
   let text = '';
   const possible = 'abcdefghijklmnopqrstuvwxyz0123456789';
 
@@ -116,7 +123,7 @@ export function apiLogin(email: string, password: string) {
 }
 
 export function setLoginCookie(email: string, password: string) {
-  cy.apiLogin(email, password).then((res) => {
+  return cy.apiLogin(email, password).then((res) => {
     cy.setCookie('cl2_jwt', res.body.jwt);
   });
 }
@@ -125,7 +132,7 @@ export function setAdminLoginCookie() {
   cy.setLoginCookie('admin@citizenlab.co', 'democracy2.0');
 }
 
-export function apiSignup(
+function emailSignup(
   firstName: string,
   lastName: string,
   email: string,
@@ -146,6 +153,57 @@ export function apiSignup(
         last_name: lastName,
       },
     },
+  });
+}
+
+function emailConfirmation(jwt: any) {
+  return cy.request({
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${jwt}`,
+    },
+    method: 'POST',
+    url: 'web_api/v1/user/confirm',
+    body: {
+      confirmation: { code: '1234' },
+    },
+  });
+}
+
+function completeRegistration(jwt: any) {
+  return cy.request({
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${jwt}`,
+    },
+    method: 'POST',
+    url: 'web_api/v1/users/complete_registration',
+    body: {
+      user: { custom_field_values: {} },
+    },
+  });
+}
+
+export function apiSignup(
+  firstName: string,
+  lastName: string,
+  email: string,
+  password: string,
+  options?: { skipCustomFields: boolean }
+) {
+  let originalResponse: Cypress.Response<any>;
+
+  return emailSignup(firstName, lastName, email, password).then((response) => {
+    originalResponse = response;
+
+    return cy.apiLogin(email, password).then((response) => {
+      const jwt = response.body.jwt;
+
+      return emailConfirmation(jwt).then(() => {
+        if (options?.skipCustomFields) return originalResponse;
+        return completeRegistration(jwt).then(() => originalResponse);
+      });
+    });
   });
 }
 
@@ -944,6 +1002,181 @@ export function apiVerifyBogus(jwt: string, error?: string) {
   });
 }
 
+export function apiCreateEvent({
+  projectId,
+  title,
+  description,
+  location,
+  startDate,
+  endDate,
+}: {
+  projectId: string;
+  title: string;
+  description: string;
+  location: string;
+  startDate: Date;
+  endDate: Date;
+}) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: `web_api/v1/projects/${projectId}/events`,
+      body: {
+        event: {
+          project_id: projectId,
+          title_multiloc: {
+            en: title,
+            'nl-BE': title,
+          },
+          description_multiloc: {
+            en: description,
+            'nl-BE': description,
+          },
+          location_multiloc: {
+            en: location,
+            'nl-BE': location,
+          },
+          start_at: startDate.toJSON(),
+          end_at: endDate.toJSON(),
+        },
+      },
+    });
+  });
+}
+
+export function apiEnableContentBuilder({ projectId }: { projectId: string }) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: `web_api/v1/projects/${projectId}/content_builder_layouts/project_description/upsert`,
+      body: {
+        content_builder_layout: {
+          enabled: true,
+        },
+      },
+    });
+  });
+}
+
+export function apiUpdateHomepageSettings({
+  top_info_section_enabled,
+  bottom_info_section_enabled,
+  banner_avatars_enabled,
+  events_widget_enabled,
+  banner_layout,
+  banner_signed_out_header_multiloc,
+  banner_signed_out_subheader_multiloc,
+  banner_signed_in_header_multiloc,
+  banner_cta_signed_out_text_multiloc,
+  banner_signed_out_header_overlay_color,
+  banner_signed_out_header_overlay_opacity,
+  banner_cta_signed_out_type,
+  banner_cta_signed_in_type,
+}: {
+  top_info_section_enabled?: boolean;
+  bottom_info_section_enabled?: boolean;
+  banner_avatars_enabled?: boolean;
+  events_widget_enabled?: boolean;
+  banner_layout?: string;
+  banner_signed_out_header_multiloc?: Record<string, string>;
+  banner_signed_out_subheader_multiloc?: Record<string, string>;
+  banner_signed_in_header_multiloc?: Record<string, string>;
+  banner_cta_signed_out_text_multiloc?: Record<string, string>;
+  banner_signed_out_header_overlay_color?: string;
+  banner_signed_out_header_overlay_opacity?: number;
+  banner_cta_signed_out_type?: string;
+  banner_cta_signed_in_type?: string;
+}) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'PATCH',
+      url: `web_api/v1/home_page/`,
+      body: {
+        home_page: {
+          top_info_section_enabled,
+          bottom_info_section_enabled,
+          banner_avatars_enabled,
+          events_widget_enabled,
+          banner_layout,
+          banner_signed_out_header_multiloc,
+          banner_signed_out_subheader_multiloc,
+          banner_signed_in_header_multiloc,
+          banner_cta_signed_out_text_multiloc,
+          banner_signed_out_header_overlay_color,
+          banner_signed_out_header_overlay_opacity,
+          banner_cta_signed_in_type,
+          banner_cta_signed_out_type,
+        },
+      },
+    });
+  });
+}
+
+// https://stackoverflow.com/a/16012490
+interface Bbox {
+  left: number;
+  right: number;
+  top: number;
+  bottom: number;
+}
+
+function bboxesIntersect(a: Bbox, b: Bbox) {
+  return (
+    a.right >= b.left &&
+    a.left <= b.right &&
+    a.top <= b.bottom &&
+    a.bottom >= b.top
+  );
+}
+
+export function intersectsViewport(subject?: any) {
+  const viewportWidth = Cypress.config('viewportWidth');
+  const viewportHeight = Cypress.config('viewportHeight');
+
+  const bboxElement: Bbox = subject[0].getBoundingClientRect();
+  const bboxViewport: Bbox = {
+    left: 0,
+    right: viewportWidth,
+    top: 0,
+    bottom: viewportHeight,
+  };
+
+  expect(bboxesIntersect(bboxElement, bboxViewport)).to.be.true;
+}
+
+export function notIntersectsViewport(subject?: any) {
+  const viewportWidth = Cypress.config('viewportWidth');
+  const viewportHeight = Cypress.config('viewportHeight');
+
+  const bboxElement: Bbox = subject[0].getBoundingClientRect();
+  const bboxViewport: Bbox = {
+    left: 0,
+    right: viewportWidth,
+    top: 0,
+    bottom: viewportHeight,
+  };
+
+  expect(bboxesIntersect(bboxElement, bboxViewport)).to.be.false;
+}
+
 Cypress.Commands.add('unregisterServiceWorkers', unregisterServiceWorkers);
 Cypress.Commands.add('goToLandingPage', goToLandingPage);
 Cypress.Commands.add('login', login);
@@ -988,3 +1221,16 @@ Cypress.Commands.add('apiAddPoll', apiAddPoll);
 Cypress.Commands.add('setAdminLoginCookie', setAdminLoginCookie);
 Cypress.Commands.add('setLoginCookie', setLoginCookie);
 Cypress.Commands.add('apiVerifyBogus', apiVerifyBogus);
+Cypress.Commands.add('apiCreateEvent', apiCreateEvent);
+Cypress.Commands.add('apiEnableContentBuilder', apiEnableContentBuilder);
+Cypress.Commands.add(
+  'intersectsViewport',
+  { prevSubject: true },
+  intersectsViewport
+);
+Cypress.Commands.add(
+  'notIntersectsViewport',
+  { prevSubject: true },
+  notIntersectsViewport
+);
+Cypress.Commands.add('apiUpdateHomepageSettings', apiUpdateHomepageSettings);

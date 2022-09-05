@@ -9,7 +9,6 @@ kl:
       "comment_on_your_idea": Isumassarsiannut oqaaseqaat
       "comment_on_your_initiative": Innuttaasutut siunnersuutinnut oqaaseqaat
       "first_idea_published": Isumassarsiannik siullermik avammut saqqummiineq
-      "idea_assigned_to_you": Uannut isumassarsiamik tunniussineq
       "idea_marked_as_spam": Spam pillugit isumassarsianut nalunaarusiorneq
       "idea_published": Isumassarsiannik avammut saqqummiineq
       "initiative_assigned_to_you": Innuttaasut siunnersuutaannik uannut tunniussineq
@@ -33,7 +32,7 @@ kl:
       "official_feedback_on_your_initiative": Innutaasutut siunnersuutigisimasannik nutarterineq
       "password_reset": Kodemik isissutissamik allannguineq
       "project_moderation_rights_received": Suliniummik ingerlataqarsinnaasutut pisinnaatitaaffiit tiguneqarput
-      "project_folder_moderation_rights_received": Folder manager rights received
+      "project_folder_moderation_rights_received": Mappinut aqutsisutut pisinnaatitaaffeqalerpoq
       "project_phase_started": Suliniummut nikeriarfik nutaaq
       "project_phase_upcoming": Suliniummut nikeriarfik nutaaq takkuttussaq
       "status_change_of_commented_idea": Isumasssarsiap oqaaseqarfigisimasama killiffiani allanngorneq
@@ -50,55 +49,54 @@ kl:
       "user_digest": Sapaatip akunneranut takussutissaq
       "your_proposed_initiatives_digest": Sapaatip akunnikkaartumik innuttaasutut siunnersuusiannut takussutissaq
     admin_campaign_type_description:
-      "manual": Official message - all users
-      "admin_rights_received": Admin rights received - admins
-      "comment_deleted_by_admin": Deletion of your comment - all users
-      "comment_marked_as_spam": Comment spam report - admins and project managers
-      "comment_on_your_comment": Reply on your comment - all users
-      "comment_on_your_idea": Comment on your idea - all users
-      "comment_on_your_initiative": Comment on your proposal - all users
-      "first_idea_published": Publication of your first idea - all users
-      "idea_assigned_to_you": Assignment of an idea - admins and project managers
-      "idea_marked_as_spam": Idea spam report - admins and project managers
-      "idea_published": Publication of your idea - all users
-      "initiative_assigned_to_you": Assignment of a proposal - admins
-      "initiative_marked_as_spam": Proposal spam report - admins
-      "initiative_published": Publication of your proposal - all users
-      "invite_received": Invitation - all users
-      "invite_reminder": Invitation reminder - all users
-      "mention_in_comment": Mention in a comment - all users
-      "mention_in_official_feedback": Mention in an update - all users
-      "new_comment_for_admin": New comment - admins and project managers
-      "new_comment_on_commented_idea": New comment on an idea you commented on - all users
-      "new_comment_on_commented_initiative": New comment on a proposal you commented on - all users
-      "new_comment_on_voted_idea": New comment on an idea you voted for - all users
-      "new_comment_on_voted_initiative": New comment on a proposal you voted for - all users
-      "new_idea_for_admin": New idea - admins and project managers
-      "new_initiative_for_admin": New proposal - admins
-      "official_feedback_on_commented_idea": Update on an idea you commented on - all users
-      "official_feedback_on_commented_initiative": Update on a proposal you commented on - all users
-      "official_feedback_on_voted_idea": Update on an idea you voted on - all users
-      "official_feedback_on_voted_initiative": Update on a proposal you voted on - all users
-      "official_feedback_on_your_idea": Update on your idea - all users
-      "official_feedback_on_your_initiative": Update on your proposal - all users
-      "password_reset": Password reset - all users
-      "project_moderation_rights_received": Project moderation rights received - project managers
-      "project_folder_moderation_rights_received": Folder manager rights received
-      "project_phase_started": New project phase - all users
-      "project_phase_upcoming": Upcoming new project phase - admins and project managers
-      "status_change_of_commented_idea": Status change of an idea you commented on - all users
-      "status_change_of_commented_initiative": Status change of a proposal you commented on - all users
-      "status_change_of_voted_idea": Status change of an idea you voted on - all users
-      "status_change_of_voted_initiative": Status change of a proposal you voted on - all users
-      "status_change_of_your_idea": Status change of your idea - all users
-      "status_change_of_your_initiative": Status change of your proposal - all users
-      "threshold_reached_for_admin": Proposal reached the voting threshold - admins
-      "welcome": New user - admins
-      "admin_digest": Weekly overview - admins
-      "moderator_digest": Weekly overview - project managers
-      "assignee_digest": Weekly overview of assigned ideas - admins and project managers
-      "user_digest": Weekly overview - all users
-      "your_proposed_initiatives_digest": Weekly overview of your own proposals - all users
+      "manual": Pisortatigoortumik nalunaarut - atuisunut tamanut
+      "admin_rights_received": Naleqqussaanissamut pisinnaatitaaffiit tiguneqarput - administrator-it
+      "comment_deleted_by_admin": Oqaaseqaativit peernera - atuisut tamaasa
+      "comment_marked_as_spam": Oqaaseqaatit spam-iunerinik nalunaaruteqarneq - administrator-it aamma suliniutinik aqutsisut
+      "comment_on_your_comment": Oqaaseqaatinnut akissut - atuisut tamaasa
+      "comment_on_your_idea": Isumassarsiat oqaaseqaatileruk - atuisut tamaasa
+      "comment_on_your_initiative": Siunnersuutit oqaaseqaatileruk - atuisut tamaasa
+      "first_idea_published": Isumassarsiavit siulliup saqqummersinnera - atuisut tamaasa
+      "idea_marked_as_spam": Isumassarsiat spam-iunerinik nalunaaruteqarneq - administrator-it aamma suliniutinut aqutsisut
+      "idea_published": Isumassarsiavit saqqummersinnera - atuisut tamaasa
+      "initiative_assigned_to_you": Siunnersuummik siammarterineq - administrator-it
+      "initiative_marked_as_spam": Siunnersuutit spam-iunerinik nalunaaruteqarneq - administrator-it
+      "initiative_published": Siunnersuutivit saqqummersinnera - administratorer-it
+      "invite_received": Aggersaaneq - atuisut tamaasa
+      "invite_reminder": Aggersaanermut eqqaasissut - atuisut tamaasa
+      "mention_in_comment": Oqaaseqaammi taaneqarpoq - atuisut tamaasa
+      "mention_in_official_feedback": Nutartikkami taaneqarpoq - atuisut tamaasa
+      "new_comment_for_admin": Oqaaseqaat nutaaq - administrator-it aamma suliniutinik aqutsisut
+      "new_comment_on_commented_idea": Isumassarsiamut oqaaseqaateqarfigisannut oqaaseqaat nutaaq - atuisut tamaasa
+      "new_comment_on_commented_initiative": Siunnersuummut oqaaseqaateqarfigisannut oqaaseqaat nutaaq - atuisut tamaasa
+      "new_comment_on_voted_idea": Isumassarsiamut taasimasannut oqaaseqaat nutaaq - atuisut tamaasa
+      "new_comment_on_voted_initiative": Siunnersuummut taasimasannut oqaaseqaat nutaaq - atuisut tamaasa
+      "new_idea_for_admin": Isumassarsiaq nutaaq - administrator-it aamma suliniutinik aqutsisut
+      "new_initiative_for_admin": Siunnersuut nutaaq - administrator-it
+      "official_feedback_on_commented_idea": Isumassarsiap oqaaseqaateqarfigisavit nutarternera - atuisut tamaasa
+      "official_feedback_on_commented_initiative": Siunnersuutip oqaaseqaateqarfigisavit nutarternera - atuisut tamaasa
+      "official_feedback_on_voted_idea": Isumassarsiap taasimasavit nutarternera - atuisut tamaasa
+      "official_feedback_on_voted_initiative": Siunnersuutip taasimasavit nutarternera - atuisut tamaasa
+      "official_feedback_on_your_idea": Isumassarsiavit nutarternera - atuisut tamaasa
+      "official_feedback_on_your_initiative": Siunnersuutivit nutarternera - atuisut tamaasa
+      "password_reset": Isissutitut kode aallaqqaataaniit aallartittussanngorlugu aaqqiguk - atuisut tamaasa
+      "project_moderation_rights_received": Suliniummi nakkutilliisussatut pisinnaatitaaffilerneqarputit - suliniummi aqutsisut
+      "project_folder_moderation_rights_received": Mappinut aqutsisutut pisinnaatitaaffeqalerpoq
+      "project_phase_started": Suliniummut immikkoortoq nutaaq - atuisut tamaasa
+      "project_phase_upcoming": Suliniummut immikkoortussaq - administrator-it aamma suliniutinik aqutsisut
+      "status_change_of_commented_idea": Isumassarsiap oqaaseqaateqarfigisavit killiffia allanngortoq - atuisut tamaasa
+      "status_change_of_commented_initiative": Siunnersuutip oqaaseqaateqarfigisavit killiffia allanngortoq - atuisut tamaasa
+      "status_change_of_voted_idea": Isumassarsiap taasiffigisavit killiffia allanngortoq - atuisut tamaasa
+      "status_change_of_voted_initiative": Siunnersuutip taasiffigisavit killiffia allanngortoq - atuisut tamaasa
+      "status_change_of_your_idea": Isumassarsiavit killiffia allanngortoq - atuisut tamaasa
+      "status_change_of_your_initiative": Siunnersuutivit killiffia allanngortoq - atuisut tamaasa
+      "threshold_reached_for_admin": Siunnersuutip taaneqarsinnaaneranut amerlassutsit naammatsipput - administrator-it
+      "welcome": Atuisunut nutaanut mailikkut tikilluaqqussut - atuisut tamaasa
+      "admin_digest": Sap. ak. pisut - administrator-it
+      "moderator_digest": Sap. ak. pisut - suliniutinik aqutsisut
+      "assignee_digest": Isumassarsiatut siammarterneqartut sap. ak. takussutissartai - administrator-it aamma suliniutinik aqutsisut
+      "user_digest": Sap. ak. pisut - atuisut tamaasa
+      "your_proposed_initiatives_digest": Siunnersuutitit sap. ak. ingerlanerani takussutissartai - atuisut tamaasa
     footer:
       "link_privacy_policy": "Kinaasutsimik isertuusinermi politikki"
       "link_terms_conditions": "Piumasaqaatit atugassarititaasullu"
@@ -167,13 +165,6 @@ kl:
       main_header: '%{commentAuthor} innuttaasunut siunnersuutit oqaaseqarfigaa'
       subject: '%{organizationName}p platformiani oqaaseqaammik tigusaqarputit'
       preheader: '%{authorName} innuttaasunut siunnersuutinnut %{organizationName} oqaaseqaateqarpoq'
-    idea_assigned_to_you:
-      by_author: 'uannga %{authorName}'
-      cta_reply_to: '%{authorName} utertitsiffigiuk'
-      event_description_idea: 'Isumassarsiamik tunineqarputit. Tamanut paasittutissat kingulliit ilanngullugit takussutissiinikkut imaluunniit isumassarsiap killiffiata allanngortinneratigut utimut tunniussigit.'
-      main_header: '%{firstName}, nutaamik tunineqarputit'
-      subject: 'Platformimi %{organizationName}mi nutaamik tunineqarputit'
-      preheader_idea: '%{authorName}p isumassarsiaanik tunineqarputit'
     assignee_digest:
       subject: 'Isumassarsiat utimut nalunaarnissannik piumasaqaatitallit: %{numberIdeas}'
       preheader: '%{organizationName}mut aallartitamit eqikkaaneq'
@@ -202,7 +193,7 @@ kl:
       by_author: 'uannga %{authorName}'
       cta_review_initiative: 'Innuttaasunut siunnersuut unnerluutigiuk'
       report_inappropriate_offensive_content: 'Imarisai tulluutinngitsutut narrujuumminartutullu isigaakka.'
-      report_not_an_initiative: 'This content is not a proposal and does not belong here.'
+      report_not_an_initiative: 'Imarisaq una siunnersuutaanngilaq uaniittussaananilu.'
       subject: 'Platformimi %{organizationName}mi spam-imik nalunaaruteqarputit'
       preheader: 'Spamimik nalunaarut iliuuseqarfigiuk'
       reported_this_because: '%{reporterFirstName} nalunaarutiginnippoq pissutigalugu:'
@@ -410,26 +401,20 @@ kl:
       title_you_became_moderator: 'Aqutsisunngorputit'
       x_ideas: '%{numberOfIdeas} isumassarsiat'
     project_folder_moderation_rights_received:
-      cta_view_folder_button: 'View this folder'
-      message_added_as_folderadmin: 'You''ve been given folder manager rights on %{organizationName}''s participation platform for the following folder:'
-      no_projects: 'No projects yet'
-      preheader: 'An administrator of the participation platform of %{organizationName} just made you a manager of the following folder'
-      subject: 'You became a project folder manager on the participation platform of %{organizationName}'
-      text_manage_folder: 'A folder is way to organize several participation projects together. As a folder manager, you can edit the folder and folder description and create new projects (to delete projects, contact your platform administrator). You will also have project management rights over all projects within the folder, allowing you to edit the projects, manage the inputs and email participants.'
-      text_moderate_analyse_input: 'Once the projects are launched, the first inputs will start coming in. You''ll receive weekly reports with the key activities so that you can stay on top of what’s happening. The Input Manager in your ''Manage Platform'' panel allows you to see and manage the input, including assigning statuses and responding to posts and comments.'
-      text_design_participatory_process: 'You can manage the different participation projects within your folder - configure the participation method, add a project description, attach images, and communicate related events. You can also manage how participants interact with your projects, including setting access rights and configuring the posting, voting and commenting settings.'
+      cta_view_folder_button: 'Mappi nuisiuguk '
+      message_added_as_folderadmin: '%{organizationName}-ip peqataasitsinermut nittartagaani mappimut tulliuttumut aqutsinissannut pisinnaatitaaffeqalerputit:'
+      no_projects: 'Suli projekteqanngilaq'
+      preheader: 'Peqataasitsinermut nittartakkami %{organizationName}imi ingerlatsisup mappimut tulliuttumut aqutsisunngortippaatit'
+      subject: 'Peqataasitsinermut nittartakkami %{organizationName}imi projekt mappinut aqutsisunngorputit'
+      text_manage_folder: 'Mappi peqataasitsinermut suliutinut arlalinnut aaqqissuussiffiuvoq. Mappimik aqutsisutut mappi aaqqissorsinnaavat, allamik atserlugu allanillu projektiliorlutit (projektimik piigaqarniaruit nittartakkami ingerlatsisoq attavigiuk). Aammalu projektit mappimiittut tamarmik aqutsisuuffigisinnaatitaavatit, taamatullu aamma projektinik aaqqissuisinnaallutit, emailikkullu peqataasut ikkussaannik aqutsillutit.'
+      text_moderate_analyse_input: 'Projektit ingerlaleriarpata ikkussat siulliit puttussuukkumaarput. Susoqarneranik malinnaanissat pillugu sapaatip akunneri tamaasa pingaarnersuinikkut killiffik pillugu saqqumiiffigineqartarumaarputit. ‘Manage Platform’-inni Input Manageri atorlugu ikkussat takusunnaavatit aqullugillu, tamatuma saniatigut aamma allaaserisat kiminngaaneernersut aaqqissorlugit, ikkussanut oqaaseqaatinullu akisinnaalersillutit. '
+      text_design_participatory_process: 'Mappinni peqataasitsinermut projektit assigiinngitsut aqussinnaavatit – peqataasitsinermik periuutsimik sanallutit, projektip nassuiarneqarneranut ilasillutit, assinik ikkussillutit pisunullu attuumassuteqartunut attaveqartitsillutit. Peqataasut projektinnut qanoq atuinerat aammaaqussinnaavat, soorlu kikkut isersinnaatitaanersut aaqqissorlugit, ikkussisarneq ilusilersorlugu, inissitsitikkanik toqqaallutit oqaasertaliillutillu.  '
       title_design_participatory_process: 'Peqataanissamut ingerlariusissaq aaqqissuuguk'
       title_moderate_analyse_input: 'Nassiunneqartut aqukkit misissuataarlugillu'
-      title_manage_folder: 'Manage the folder settings and create new projects.'
-      title_what_can_you_do_folderadmin: 'What can you do as a folder manager?'
-      title_added_as_folderadmin: 'You''ve been added as a folder manager'
-      x_projects: '%{numberOfProjects} projects'
-    password_reset:
-      cta_reset_password: 'Kode isissutit allanngortiguk'
-      message_you_reset_your_password: 'Isissutivit allanngortinnissaanut %{organizationName}p ilaasortat saaffiginnittarfianut ikioqquvutit. Nutaamik qularnaatsumik kodemik isissutissamik toqqaanissannut ataani tuugassaq tooruk.'
-      preheader: 'Kode isissutivit allanngortinnissaanut aajuna linki qinnutigisat.'
-      subject: '%{organizationName}: Kode isissutissat aallaqqaataaneeruk'
-      title_reset_your_password: 'Kode isissutissat nutaaq allaguk'
+      title_manage_folder: 'Mappimi inissitsitigaq aaqqisoruk, nutaanillu projektiliorlutit'
+      title_what_can_you_do_folderadmin: 'Mappinik aqutsisutut suna suliarisinnaaviuk?'
+      title_added_as_folderadmin: 'Mappinik aqutsisussatut ilanngunneqarputit'
+      x_projects: 'Projektit %{numberOfProjects}it '
     project_phase_started:
       cta_view_phase: 'Fase nutaaq paasiuk'
       event_description: 'Una suliniut %{organizationName}p platformiani fasemut nutaamut pivoq. Ataani linki tooruk paasisaqarnerorusukkuit'
@@ -567,4 +552,3 @@ kl:
       new_votes: 'Taasinerit nutaat'
       remaining_votes: 'Taasinerit sinneruttut'
       remaining_days: 'Ullut sinneruttut'
-

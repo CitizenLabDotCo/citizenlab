@@ -1,3 +1,4 @@
+// @ts-nocheck
 // libraries
 import React from 'react';
 import { shallow } from 'enzyme';
@@ -29,7 +30,12 @@ describe('<GetIdeas sort="new" />', () => {
 
   it('calls the ideasStream stream whith the passed in parameters', () => {
     shallow(
-      <GetIdeas sort="new" assignee="User_ID" feedbackNeeded={true}>
+      <GetIdeas
+        sort="new"
+        assignee="User_ID"
+        feedbackNeeded={true}
+        filterCanModerate={true}
+      >
         {child}
       </GetIdeas>
     );
@@ -38,6 +44,9 @@ describe('<GetIdeas sort="new" />', () => {
     );
     expect(
       ideasStream.mock.calls[0][0].queryParameters.feedback_needed
+    ).toEqual(true);
+    expect(
+      ideasStream.mock.calls[0][0].queryParameters.filter_can_moderate
     ).toEqual(true);
     expect(ideasStream.mock.calls[0][0].queryParameters.project_id).toEqual(
       undefined
@@ -91,7 +100,7 @@ describe('<GetIdeas sort="new" />', () => {
       data: [],
     };
     __setMockIdeas(mockIdeas);
-    const component = shallow(<GetIdeas sort="new">{child}</GetIdeas>);
+    shallow(<GetIdeas sort="new">{child}</GetIdeas>);
     expect(ideasStream.mock.calls[0][0].queryParameters.assignee).toEqual(
       undefined
     );
@@ -109,7 +118,7 @@ describe('<GetIdeas sort="new" />', () => {
       data: [],
     };
     __setMockIdeas(mockIdeas);
-    const component = shallow(<GetIdeas sort="new">{child}</GetIdeas>);
+    shallow(<GetIdeas sort="new">{child}</GetIdeas>);
     expect(
       ideasStream.mock.calls[0][0].queryParameters['page[number]']
     ).toEqual(1);

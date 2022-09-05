@@ -7,6 +7,6 @@ export const mockProposalStatusData = {
     color: '#687782',
     code: 'proposed',
     ordering: 100,
-    transition_type: 'automatic'
-  }
+    transition_type: 'automatic',
+  },
 };

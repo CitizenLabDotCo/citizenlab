@@ -1,17 +1,13 @@
-import React, {
-  memo,
-  useState,
-  useCallback,
-  useEffect,
-  MouseEvent,
-} from 'react';
+import React, { memo, useState, useCallback, useEffect } from 'react';
+import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
+import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 import { insertConfiguration } from 'utils/moduleUtils';
 import { InsertConfigurationOptions } from 'typings';
 // components
 import Outlet from 'components/Outlet';
-import { Icon } from 'cl2-component-library';
-import AdminProjectEditGeneral from 'containers/Admin/projects/edit/general';
+import { Icon } from '@citizenlab/cl2-component-library';
+import AdminProjectsProjectGeneral from 'containers/Admin/projects/project/general';
 import { HeaderTitle } from './StyledComponents';
 import Tabs, { ITabItem } from 'components/UI/Tabs';
 
@@ -174,15 +170,15 @@ const CreateProject = memo<Props & InjectedIntlProps>(
     ]);
     const tabValues = tabs.map((tab) => tab.name) as TTabName[];
 
-    const [selectedTabValue, setSelectedTabValue] = useState<TTabName>(
-      'scratch'
-    );
+    const [selectedTabValue, setSelectedTabValue] =
+      useState<TTabName>('scratch');
     const [expanded, setExpanded] = useState(false);
 
     useEffect(() => {
       // when inserting tabs, always reset the default selected tab
       // to the first tab
       setSelectedTabValue(tabValues[0]);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [tabs]);
 
     useEffect(() => {
@@ -194,17 +190,13 @@ const CreateProject = memo<Props & InjectedIntlProps>(
           if (projectId) {
             setTimeout(() => {
               clHistory.push({
-                pathname: `/admin/projects/${projectId}/edit`,
+                pathname: adminProjectsProjectPath(projectId),
               });
             }, 1000);
           }
         });
 
       return () => subscription.unsubscribe();
-    }, []);
-
-    const removeFocus = useCallback((event: MouseEvent<HTMLElement>) => {
-      event.preventDefault();
     }, []);
 
     const handleExpandCollapse = useCallback(() => {
@@ -228,7 +220,9 @@ const CreateProject = memo<Props & InjectedIntlProps>(
     );
 
     const handleData = (data: InsertConfigurationOptions<ITabItem>) =>
-      setTabs(insertConfiguration(data));
+      setTabs((tabs) => {
+        return insertConfiguration(data)(tabs);
+      });
 
     return (
       <Container className={className}>
@@ -237,7 +231,7 @@ const CreateProject = memo<Props & InjectedIntlProps>(
             expanded ? 'expanded' : 'collapsed'
           }`}
           aria-label={formatMessage(messages.createAProjectFromATemplate)}
-          onMouseDown={removeFocus}
+          onMouseDown={removeFocusAfterMouseClick}
           onClick={handleExpandCollapse}
         >
           <HeaderTitle>
@@ -280,7 +274,9 @@ const CreateProject = memo<Props & InjectedIntlProps>(
                 id="app.containers.Admin.projects.all.createProject"
                 selectedTabValue={selectedTabValue}
               />
-              {selectedTabValue === 'scratch' && <AdminProjectEditGeneral />}
+              {selectedTabValue === 'scratch' && (
+                <AdminProjectsProjectGeneral />
+              )}
             </CreateProjectContentInner>
           </CreateProjectContent>
         </CSSTransition>

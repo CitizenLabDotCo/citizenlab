@@ -21,11 +21,6 @@ import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
 } from 'resources/GetInitiativesPermissions';
 
-// i18n
-import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
-import messages from './messages';
-
 // style
 import styled from 'styled-components';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
@@ -51,36 +46,25 @@ const Left = styled.ul`
   margin: 0;
   padding: 0;
 
-  ${isRtl`
-    flex-direction: row-reverse;
-  `}
-
   & li {
     margin-right: 12px;
 
     &:after {
       color: ${colors.label};
-      font-size: ${fontSizes.small}px;
+      font-size: ${fontSizes.s}px;
       font-weight: 400;
       content: '•';
       margin-left: 12px;
     }
 
     ${isRtl`
-        margin-left: 0;
-        margin-right: 12px;
+        margin-left: 12px;
+        margin-right: auto;
 
         &:after {
-          content: '';
-        }
-
-        &:before {
-          color: ${colors.label};
-          font-size: ${fontSizes.small}px;
-          font-weight: 400;
-          content: '•';
           margin-right: 12px;
         }
+
     `}
 
     &:last-child {
@@ -138,7 +122,7 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
+class CommentFooter extends PureComponent<Props, State> {
   onCommentEdit = () => {
     this.props.onEditing();
   };
@@ -157,7 +141,6 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
       tenantLocales,
       locale,
       post,
-      intl: { formatMessage },
       commentingPermissionInitiative,
     } = this.props;
     if (
@@ -198,7 +181,6 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
               projectId={projectId}
               comment={comment}
               onCommentEdit={this.onCommentEdit}
-              ariaLabel={formatMessage(messages.showMoreActions)}
             />
           </Right>
         </Container>
@@ -231,10 +213,8 @@ const Data = adopt<DataProps, InputProps>({
   ),
 });
 
-const CommentFooterWithHoCs = injectIntl<Props>(CommentFooter);
-
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <CommentFooterWithHoCs {...inputProps} {...dataProps} />}
+    {(dataProps: DataProps) => <CommentFooter {...inputProps} {...dataProps} />}
   </Data>
 );

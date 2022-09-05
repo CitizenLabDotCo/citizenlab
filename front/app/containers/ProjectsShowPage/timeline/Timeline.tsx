@@ -1,11 +1,5 @@
-import React, {
-  memo,
-  useCallback,
-  useEffect,
-  useState,
-  FormEvent,
-} from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import React, { useCallback, FormEvent, KeyboardEvent, useRef } from 'react';
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import moment from 'moment';
 
 // tracking
@@ -13,36 +7,45 @@ import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
 
 // components
-import { Icon } from 'cl2-component-library';
+import { Icon, Box } from '@citizenlab/cl2-component-library';
+import PhaseDescriptions from './PhaseDescriptions';
 
 // hooks
-import useLocale from 'hooks/useLocale';
-import useAppConfiguration from 'hooks/useAppConfiguration';
 import usePhases from 'hooks/usePhases';
+import useLocalize from 'hooks/useLocalize';
 
 // services
 import { IPhaseData, getCurrentPhase } from 'services/phases';
 
 // events
-import { selectedPhase$, selectPhase } from './events';
+import { selectPhase } from './events';
 
 // i18n
 import messages from 'containers/ProjectsShowPage/messages';
-import { getLocalized } from 'utils/i18n';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
-import { getIsoDate } from 'utils/dateUtils';
+import { getIsoDateUtc } from 'utils/dateUtils';
 
 // style
 import styled, { css } from 'styled-components';
 import { media, colors, fontSizes, isRtl } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { darken, rgba, transparentize } from 'polished';
+import { darken, rgba } from 'polished';
 
-const greyOpaque = `${colors.label}`;
-const greenTransparent = `${rgba(colors.clGreen, 0.15)}`;
-const greenOpaque = `${colors.clGreen}`;
+const MIN_PHASE_WIDTH_PX = 110;
+const CONTAINER_PADDING_PX = 20;
+
+const grey = colors.label;
+const greenTransparent = rgba(colors.clGreen, 0.15);
+const green = colors.clGreen;
+const darkGreen = colors.clGreenDark;
+
+const RtlBox = styled(Box)`
+  ${isRtl`
+    flex-direction: row-reverse;
+  `};
+`;
 
 const Container = styled.div<{ isHidden: boolean }>`
   width: 100%;
@@ -63,12 +66,8 @@ const Phases = styled.div`
   margin-left: auto;
   margin-right: auto;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: nowrap;
-
-  ${isRtl`
-    flex-direction: row-reverse;
-  `}
 `;
 
 const phaseBarHeight = '24px';
@@ -77,7 +76,7 @@ const PhaseBar = styled.button`
   width: 100%;
   height: calc(${phaseBarHeight} - 1px);
   color: ${darken(0.1, colors.label)};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 500;
   display: flex;
   align-items: center;
@@ -110,7 +109,7 @@ const PhaseArrow = styled(Icon)`
 
 const PhaseText = styled.div<{ current: boolean; selected: boolean }>`
   color: ${darken(0.1, colors.label)};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 400;
   text-align: center;
   overflow: hidden;
@@ -137,47 +136,48 @@ const PhaseText = styled.div<{ current: boolean; selected: boolean }>`
 
 const selectedPhaseBar = css`
   ${PhaseBar} {
-    background: ${greyOpaque};
+    background: ${grey};
     color: #fff;
   }
   ${PhaseText} {
-    color: ${greyOpaque};
+    color: ${grey};
   }
 `;
 
 const currentPhaseBar = css`
   ${PhaseBar} {
     background: ${greenTransparent};
-    color: ${transparentize(0.25, greenOpaque)};
+    color: ${darkGreen};
   }
   ${PhaseText} {
-    color: ${transparentize(0.25, greenOpaque)};
+    color: ${darkGreen};
   }
 `;
 
 const currentSelectedPhaseBar = css`
   ${PhaseBar} {
-    background: ${greenOpaque};
+    background: ${green};
     color: #fff;
   }
   ${PhaseText} {
-    color: ${greenOpaque};
+    color: ${darkGreen};
   }
 `;
 
-const PhaseContainer = styled.div<{ width: number }>`
+const PhaseContainer = styled.div<{ width: number; breakpoint: number }>`
   width: ${(props) => props.width}%;
-  min-width: 80px;
+  min-width: ${MIN_PHASE_WIDTH_PX}px;
   display: flex;
   flex-direction: column;
   position: relative;
   cursor: pointer;
   margin-right: ${(props: any) => (!props.last ? '1px' : '0px')};
 
-  ${media.smallerThanMinTablet`
+  @media (max-width: ${({ breakpoint }) =>
+      breakpoint + CONTAINER_PADDING_PX * 2}px) {
     width: 100%;
     min-width: unset;
-  `}
+  }
 
   &.first ${PhaseBar} {
     border-radius: ${(props: any) => props.theme.borderRadius} 0px 0px
@@ -214,22 +214,19 @@ const PhaseContainer = styled.div<{ width: number }>`
 interface Props {
   projectId: string;
   className?: string;
+  selectedPhase: IPhaseData;
+  setSelectedPhase: (phase: IPhaseData) => void;
 }
 
-const Timeline = memo<Props>(({ projectId, className }) => {
-  const locale = useLocale();
-  const currentTenant = useAppConfiguration();
+const Timeline = ({
+  projectId,
+  className,
+  selectedPhase,
+  setSelectedPhase,
+}: Props) => {
   const phases = usePhases(projectId);
-
-  const [selectedPhase, setSelectedPhase] = useState<IPhaseData | null>(null);
-
-  useEffect(() => {
-    const subscription = selectedPhase$.subscribe((selectedPhase) => {
-      setSelectedPhase(selectedPhase);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
+  const localize = useLocalize();
+  const tabsRef = useRef<HTMLButtonElement[]>([]);
 
   const handleOnPhaseSelection = useCallback(
     (phase: IPhaseData | null) => (event: FormEvent) => {
@@ -240,105 +237,127 @@ const Timeline = memo<Props>(({ projectId, className }) => {
     []
   );
 
-  const removeFocus = useCallback((event: React.MouseEvent) => {
-    event.preventDefault();
-  }, []);
+  const handleTabListOnKeyDown = (e: KeyboardEvent) => {
+    const arrowLeftPressed = e.key === 'ArrowLeft';
+    const arrowRightPressed = e.key === 'ArrowRight';
 
-  if (
-    !isNilOrError(locale) &&
-    !isNilOrError(currentTenant) &&
-    !isNilOrError(phases) &&
-    phases.length > 0
-  ) {
+    if ((arrowLeftPressed || arrowRightPressed) && !isNilOrError(phases)) {
+      const currentPhaseIndex = phases.indexOf(selectedPhase);
+
+      if (arrowRightPressed) {
+        // if we're at the end of the timeline, go to start (index 0),
+        // otherwise on to the right (index + 1)
+        const selectedPhaseIndex =
+          currentPhaseIndex === phases.length - 1 ? 0 : currentPhaseIndex + 1;
+        setSelectedPhase(phases[selectedPhaseIndex]);
+        tabsRef.current[selectedPhaseIndex].focus();
+
+        // Move left
+      } else if (arrowLeftPressed) {
+        // if we're at the beginning of the timeline, go to end (array length - 1),
+        // otherwise on to the left (index - 1)
+        const selectedPhaseIndex =
+          currentPhaseIndex === 0 ? phases.length - 1 : currentPhaseIndex - 1;
+        setSelectedPhase(phases[selectedPhaseIndex]);
+        tabsRef.current[selectedPhaseIndex].focus();
+      }
+    }
+  };
+
+  if (!isNilOrError(phases) && phases.length > 0) {
     const currentPhase = getCurrentPhase(phases);
     const currentPhaseId = currentPhase ? currentPhase.id : null;
-    const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
-    const currentTenantLocales =
-      currentTenant.data.attributes.settings.core.locales;
+    const selectedPhaseId = selectedPhase.id;
+
     const totalNumberOfDays = phases
-      .map((phaseData) => {
-        const startIsoDate = getIsoDate(phaseData.attributes.start_at);
-        const endIsoDate = getIsoDate(phaseData.attributes.end_at);
-        const startMoment = moment(startIsoDate, 'YYYY-MM-DD');
-        const endMoment = moment(endIsoDate, 'YYYY-MM-DD');
-        const numberOfDays = Math.abs(startMoment.diff(endMoment, 'days')) + 1;
-        return numberOfDays;
-      })
+      .map(getNumberOfDays)
       .reduce((accumulator, numberOfDays) => {
         return accumulator + numberOfDays;
       });
+
+    const phasesBreakpoint = phases.length * MIN_PHASE_WIDTH_PX;
 
     return (
       <Container
         id="project-timeline"
         className={className || ''}
-        isHidden={phases.length === 1}
+        isHidden={phases.length === 0}
       >
         <ContainerInner>
-          <Phases className="e2e-phases">
-            <ScreenReaderOnly>
-              <FormattedMessage {...messages.a11y_phasesOverview} />
-            </ScreenReaderOnly>
-            {phases.map((phase, index) => {
-              const phaseNumber = index + 1;
-              const phaseTitle = getLocalized(
-                phase.attributes.title_multiloc,
-                locale,
-                currentTenantLocales
-              );
-              const isFirst = index === 0;
-              const isLast = index === phases.length - 1;
-              const isCurrentPhase = phase.id === currentPhaseId;
-              const isSelectedPhase = phase.id === selectedPhaseId;
-              const startIsoDate = getIsoDate(phase.attributes.start_at);
-              const endIsoDate = getIsoDate(phase.attributes.end_at);
-              const startMoment = moment(startIsoDate, 'YYYY-MM-DD');
-              const endMoment = moment(endIsoDate, 'YYYY-MM-DD');
-              const numberOfDays =
-                Math.abs(startMoment.diff(endMoment, 'days')) + 1;
-              const width = Math.round(
-                (numberOfDays / totalNumberOfDays) * 100
-              );
-              const classNames = [
-                isFirst ? 'first' : null,
-                isLast ? 'last' : null,
-                isCurrentPhase ? 'currentPhase' : null,
-                isSelectedPhase ? 'selectedPhase' : null,
-              ]
-                .filter((className) => className)
-                .join(' ');
+          <ScreenReaderOnly>
+            <FormattedMessage {...messages.a11y_phasesOverview} />
+          </ScreenReaderOnly>
+          <Phases className="e2e-phases" role="tablist">
+            <RtlBox display="flex" mb="20px">
+              {phases.map((phase, phaseIndex) => {
+                const phaseNumber = phaseIndex + 1;
+                const phaseTitle = localize(phase.attributes.title_multiloc);
+                const isFirst = phaseIndex === 0;
+                const isLast = phaseIndex === phases.length - 1;
+                const isCurrentPhase = phase.id === currentPhaseId;
+                const isSelectedPhase = phase.id === selectedPhaseId;
 
-              return (
-                <PhaseContainer
-                  className={classNames}
-                  key={index}
-                  width={width}
-                  onMouseDown={removeFocus}
-                  onClick={handleOnPhaseSelection(phase)}
-                >
-                  <PhaseBar>
-                    <span aria-hidden>{phaseNumber}</span>
-                    <ScreenReaderOnly>
-                      <FormattedMessage
-                        {...messages.a11y_phaseX}
-                        values={{
-                          phaseNumber,
-                          phaseTitle,
-                        }}
-                      />
-                    </ScreenReaderOnly>
-                    {!isLast && <PhaseArrow name="phase_arrow" ariaHidden />}
-                  </PhaseBar>
-                  <PhaseText
-                    current={isCurrentPhase}
-                    selected={isSelectedPhase}
-                    aria-hidden
+                const numberOfDays = getNumberOfDays(phase);
+
+                const width = Math.round(
+                  (numberOfDays / totalNumberOfDays) * 100
+                );
+
+                const classNames = [
+                  isFirst ? 'first' : null,
+                  isLast ? 'last' : null,
+                  isCurrentPhase ? 'currentPhase' : null,
+                  isSelectedPhase ? 'selectedPhase' : null,
+                ]
+                  .filter((className) => className)
+                  .join(' ');
+
+                return (
+                  <PhaseContainer
+                    className={classNames}
+                    key={phaseIndex}
+                    width={width}
+                    breakpoint={phasesBreakpoint}
                   >
-                    {phaseTitle}
-                  </PhaseText>
-                </PhaseContainer>
-              );
-            })}
+                    <PhaseBar
+                      onMouseDown={removeFocusAfterMouseClick}
+                      onKeyDown={handleTabListOnKeyDown}
+                      onClick={handleOnPhaseSelection(phase)}
+                      aria-current={isCurrentPhase}
+                      // Implementation details: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/tab_role
+                      aria-selected={isSelectedPhase}
+                      aria-controls={`phase-description-panel-${phaseNumber}`}
+                      role="tab"
+                      ref={(el) => el && (tabsRef.current[phaseIndex] = el)}
+                      tabIndex={isSelectedPhase ? 0 : -1}
+                      id={`phase-tab-${phaseNumber}`}
+                    >
+                      <span aria-hidden>{phaseNumber}</span>
+                      <ScreenReaderOnly>
+                        <FormattedMessage
+                          {...messages.a11y_phase}
+                          values={{
+                            phaseNumber,
+                            phaseTitle,
+                          }}
+                        />
+                      </ScreenReaderOnly>
+                      {!isLast && <PhaseArrow name="phase_arrow" ariaHidden />}
+                    </PhaseBar>
+                    <PhaseText
+                      current={isCurrentPhase}
+                      selected={isSelectedPhase}
+                    >
+                      {phaseTitle}
+                    </PhaseText>
+                  </PhaseContainer>
+                );
+              })}
+            </RtlBox>
+            <PhaseDescriptions
+              projectId={projectId}
+              selectedPhaseId={selectedPhaseId}
+            />
           </Phases>
         </ContainerInner>
       </Container>
@@ -346,6 +365,17 @@ const Timeline = memo<Props>(({ projectId, className }) => {
   }
 
   return null;
-});
+};
 
 export default Timeline;
+
+function getNumberOfDays(phase: IPhaseData) {
+  // we can ignore user timezone to compare start/end dates,
+  // since all we care about is the amount of time between the two
+  const startIsoDate = getIsoDateUtc(phase.attributes.start_at);
+  const endIsoDate = getIsoDateUtc(phase.attributes.end_at);
+  const startMoment = moment(startIsoDate, 'YYYY-MM-DD');
+  const endMoment = moment(endIsoDate, 'YYYY-MM-DD');
+  const numberOfDays = Math.abs(startMoment.diff(endMoment, 'days')) + 1;
+  return numberOfDays;
+}

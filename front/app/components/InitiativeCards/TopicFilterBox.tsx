@@ -34,6 +34,7 @@ const TopicFilterBox = memo<Props>(
       (newsSelectedTopicIds: string[] | null) => {
         onChange(newsSelectedTopicIds);
       },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       []
     );
 
@@ -59,7 +60,7 @@ const TopicFilterBox = memo<Props>(
 );
 
 const Data = adopt<DataProps, InputProps>({
-  topics: <GetTopics />,
+  topics: <GetTopics excludeCode="custom" />,
 });
 
 export default (inputProps: InputProps) => (

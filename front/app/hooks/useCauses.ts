@@ -24,6 +24,7 @@ export default function useCauses(input: Input) {
     });
 
     return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return causes;

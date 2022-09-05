@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 
 // resources
 import GetIdeaVotesCount, {
@@ -57,12 +57,12 @@ const UpvoteIcon = styled(VoteIcon)`
 `;
 
 const DownvoteIcon = styled(VoteIcon)`
-  fill: ${colors.clRed};
+  fill: ${colors.red500};
   margin-top: 6px;
 `;
 
 const VotesCount = styled.div`
-  font-size: ${fontSizes.large};
+  font-size: ${fontSizes.l};
   font-weight: 600;
 `;
 
@@ -71,7 +71,7 @@ const UpvotesCount = styled(VotesCount)`
 `;
 
 const DownvotesCount = styled(VotesCount)`
-  color: ${colors.clRed};
+  color: ${colors.red500};
 `;
 
 interface DataProps {

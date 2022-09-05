@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { Section, SubSectionTitle } from 'components/admin/Section';
-import { IconTooltip } from 'cl2-component-library';
+import { IconTooltip } from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
 import AssigneeSelector from '../components/AssigneeSelector';
 

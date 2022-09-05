@@ -14,6 +14,13 @@ export interface IPollQuestion {
   id: string;
   type: string;
   attributes: IPollQuestionAttributes;
+  relationships: {
+    options: {
+      data: {
+        id: string;
+      }[];
+    };
+  };
 }
 
 export function pollQuestionsStream(

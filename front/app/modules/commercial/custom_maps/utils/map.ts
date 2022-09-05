@@ -1,70 +1,85 @@
-import { isUndefinedOrError } from 'utils/helperUtils';
-import { IOutput as IMapConfig } from '../hooks/useMapConfig';
+import { isNilOrError } from 'utils/helperUtils';
+import { IMapConfigState } from '../hooks/useMapConfig';
 import { IAppConfiguration } from 'services/appConfiguration';
 import { IMapLayerAttributes } from '../services/mapLayers';
 import { Locale } from 'typings';
+import { LatLngTuple } from 'leaflet';
+import { isNumber } from 'lodash-es';
 import {
   getCenter as baseGetCenter,
   getZoomLevel as baseGetZoomLevel,
   getTileProvider as baseGetTileProvider,
+  getTileOptions as baseGetTileOptions,
 } from 'utils/map';
+import {
+  MAPTILER_DEFAULT_OPTIONS,
+  BASEMAP_AT_DEFAULT_OPTIONS,
+} from './tileProviderDefaultOptions';
 
 export const getCenter = (
-  centerCoordinates: GeoJSON.Position | undefined,
+  centerLatLng: LatLngTuple | null | undefined,
   appConfig: IAppConfiguration | undefined | null | Error,
-  mapConfig: IMapConfig
+  mapConfig: IMapConfigState
 ) => {
-  if (centerCoordinates) {
-    return centerCoordinates as L.LatLngExpression;
+  const mapConfigLat = !isNilOrError(mapConfig)
+    ? mapConfig?.attributes.center_geojson?.coordinates[1]
+    : null;
+  const mapConfigLng = !isNilOrError(mapConfig)
+    ? mapConfig?.attributes.center_geojson?.coordinates[0]
+    : null;
+
+  if (centerLatLng) {
+    return centerLatLng as LatLngTuple;
+  } else if (!isNilOrError(mapConfigLng) && !isNilOrError(mapConfigLat)) {
+    return [mapConfigLat, mapConfigLng] as LatLngTuple;
   }
 
-  const projectCenterLong =
-    mapConfig?.attributes.center_geojson?.coordinates[0];
-  const projectCenterLat = mapConfig?.attributes.center_geojson?.coordinates[1];
-
-  if (
-    isUndefinedOrError(projectCenterLong) ||
-    isUndefinedOrError(projectCenterLat)
-  ) {
-    return baseGetCenter(centerCoordinates, appConfig);
-  }
-
-  const center: L.LatLngExpression = [projectCenterLat, projectCenterLong];
-
-  return center;
+  return baseGetCenter(undefined, appConfig);
 };
 
 export const getZoomLevel = (
   zoom: number | undefined,
   appConfig: IAppConfiguration | undefined | null | Error,
-  mapConfig: IMapConfig
+  mapConfig: IMapConfigState
 ) => {
-  if (zoom) {
+  const mapConfigZoom = !isNilOrError(mapConfig)
+    ? mapConfig?.attributes.zoom_level
+    : null;
+
+  if (isNumber(zoom)) {
     return zoom;
+  } else if (!isNilOrError(mapConfigZoom)) {
+    return parseInt(mapConfigZoom, 10);
   }
 
-  if (isUndefinedOrError(mapConfig?.attributes.zoom_level)) {
-    return baseGetZoomLevel(zoom, appConfig);
-  }
-
-  const mapConfigZoomLevel = mapConfig?.attributes.zoom_level;
-
-  return parseInt(mapConfigZoomLevel || '16', 10);
+  return baseGetZoomLevel(undefined, appConfig);
 };
-
-const DEFAULT_MAPS_TILE_PROVIDER =
-  process.env.DEFAULT_MAPS_TILE_PROVIDER ||
-  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 
 export const getTileProvider = (
   appConfig: IAppConfiguration | undefined | null | Error,
-  mapConfig: IMapConfig
-): string => {
-  if (isUndefinedOrError(mapConfig?.attributes?.tile_provider)) {
-    return baseGetTileProvider(appConfig) || DEFAULT_MAPS_TILE_PROVIDER;
+  mapConfig: IMapConfigState
+) => {
+  const mapConfigTileProvider = !isNilOrError(mapConfig)
+    ? mapConfig?.attributes.tile_provider
+    : null;
+
+  if (!isNilOrError(mapConfigTileProvider)) {
+    return mapConfigTileProvider;
   }
 
-  return mapConfig?.attributes?.tile_provider || DEFAULT_MAPS_TILE_PROVIDER;
+  return baseGetTileProvider(appConfig);
+};
+
+export const getTileOptions = (tileProvider: string) => {
+  if (tileProvider?.includes('maptiler')) {
+    return MAPTILER_DEFAULT_OPTIONS;
+  }
+
+  if (tileProvider?.includes('wien.gv.at/basemap')) {
+    return BASEMAP_AT_DEFAULT_OPTIONS;
+  }
+
+  return baseGetTileOptions();
 };
 
 export const getLayerType = (mapLayer: IMapLayerAttributes | undefined) => {

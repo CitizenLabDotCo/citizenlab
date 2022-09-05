@@ -15,8 +15,8 @@ describe CommentVotePolicy do
 
     before do
       project.permissions
-             .find_by(action: 'commenting_idea')
-             .update!(permitted_by: 'admins_moderators')
+        .find_by(action: 'commenting_idea')
+        .update!(permitted_by: 'admins_moderators')
     end
 
     it { is_expected.to permit(:show) }

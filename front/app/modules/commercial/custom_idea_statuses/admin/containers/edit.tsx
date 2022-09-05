@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { CLErrorsJSON } from 'typings';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
@@ -66,12 +66,8 @@ const Edit = ({ params }: WithRouterProps) => {
   };
 
   if (!isNilOrError(ideaStatus) && !isNilOrError(tenantLocales)) {
-    const {
-      color,
-      title_multiloc,
-      description_multiloc,
-      code,
-    } = ideaStatus.attributes;
+    const { color, title_multiloc, description_multiloc, code } =
+      ideaStatus.attributes;
     return (
       <>
         <StyledGoBackButton onClick={goBack} />

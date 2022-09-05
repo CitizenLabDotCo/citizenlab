@@ -5,8 +5,9 @@ import {
   IParticipationContextType,
   CLErrorsJSON,
 } from 'typings';
-import { trim } from 'lodash-es';
+import { trim, isUndefined } from 'lodash-es';
 import { removeUrlLocale } from 'services/locale';
+import { viewportWidths } from 'utils/styleUtils';
 
 export function capitalizeParticipationContextType(
   type: IParticipationContextType
@@ -18,8 +19,19 @@ export function capitalizeParticipationContextType(
   }
 }
 
-export function isNilOrError(obj: any): obj is undefined | null | Error {
-  return obj === undefined || obj === null || obj instanceof Error;
+type Nil = undefined | null;
+export type NilOrError = Nil | Error;
+
+export function isNilOrError(obj: any): obj is NilOrError {
+  return isNil(obj) || isError(obj);
+}
+
+export function isNil(obj: any): obj is Nil {
+  return obj === undefined || obj === null;
+}
+
+export function isError(obj: any): obj is Error {
+  return obj instanceof Error;
 }
 
 export function isApiError(obj: any): obj is CLErrorsJSON {
@@ -43,49 +55,13 @@ export function isEmptyMultiloc(multiloc: Multiloc) {
 
   return !validTranslation;
 }
-export function isFullMultiloc(multiloc: Multiloc) {
-  for (const lang in multiloc) {
-    if (Object.prototype.hasOwnProperty.call(multiloc, lang)) {
-      if (multiloc[lang].length === 0) {
-        return false;
-      }
-    }
-  }
-
-  return true;
-}
 
 export function isNonEmptyString(str: string) {
   return isString(str) && trim(str) !== '';
 }
 
-export function returnFileSize(number) {
-  if (number < 1024) {
-    return `${number} bytes`;
-  } else if (number >= 1024 && number < 1048576) {
-    return `${(number / 1024).toFixed(1)} KB`;
-  } else if (number >= 1048576) {
-    return `${(number / 1048576).toFixed(1)} MB`;
-  }
-  return;
-}
-
 export function sum(a, b) {
   return a + b;
-}
-export function getFormattedBudget(
-  locale: Locale,
-  budget: number,
-  currency: string
-) {
-  return new Intl.NumberFormat(locale, {
-    currency,
-    localeMatcher: 'best fit',
-    style: 'currency',
-    currencyDisplay: 'symbol',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(budget);
 }
 
 export function getDisplayName(Component) {
@@ -98,6 +74,7 @@ type pageKeys =
   | 'initiative_form'
   | 'idea_edit'
   | 'initiative_edit'
+  | 'native_survey'
   | 'sign_in'
   | 'sign_up'
   | 'email-settings';
@@ -129,6 +106,8 @@ export function isPage(pageKey: pageKeys, pathName: string) {
       return pathnameWithoutLocale.startsWith('/ideas/edit/');
     case 'initiative_edit':
       return pathnameWithoutLocale.startsWith('/initiatives/edit/');
+    case 'native_survey':
+      return pathnameWithoutLocale.endsWith('/survey');
     case 'sign_in':
       return pathnameWithoutLocale.startsWith('/sign-in');
     case 'sign_up':
@@ -163,7 +142,8 @@ export const uuidRegExp =
   '[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}';
 
 export function isUUID(value: string) {
-  const uuidRegExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/i;
+  const uuidRegExp =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/i;
   return uuidRegExp.test(value);
 }
 
@@ -192,26 +172,57 @@ export function endsWith(
   return false;
 }
 
-export function getUrlSegments(pathname: string | null) {
-  if (pathname) {
-    return pathname?.replace(/^\/+/g, '').split('/');
-  }
-
-  return [];
-}
-
+// eslint-disable-next-line @typescript-eslint/ban-types
 export function isFunction(f): f is Function {
   return f instanceof Function;
 }
 
-export function isString(s): s is string {
+export function isString(s: unknown): s is string {
   return typeof s === 'string';
 }
 
-export function isObject(s): s is object {
-  return typeof s === 'object';
-}
-
+// eslint-disable-next-line @typescript-eslint/ban-types
 export function isOrReturnsString(s: any, ...args: any[]): s is Function {
   return isString(s) || (isFunction(s) && isString(s(...args)));
 }
+
+export function matchPathToUrl(tabUrl: string) {
+  return new RegExp(`^/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)(${tabUrl})(/)?$`);
+}
+
+export const anyIsUndefined = (...args) => args.some(isUndefined);
+export const anyIsDefined = (...args) => args.some((arg) => !isUndefined(arg));
+
+export function removeFocusAfterMouseClick(event: React.MouseEvent) {
+  event.preventDefault();
+}
+
+export function isDesktop(windowWidth: number) {
+  return windowWidth > viewportWidths.largeTablet;
+}
+
+export const keys = <T>(obj: T) => Object.keys(obj) as Array<keyof T>;
+
+export const reduceErrors =
+  <T>(setter: (data: T[] | NilOrError) => void) =>
+  (data: (NilOrError | T)[] | NilOrError) => {
+    if (isNilOrError(data)) {
+      setter(data);
+      return;
+    }
+
+    const nilOrErrorData = data.filter(isNilOrError);
+    nilOrErrorData.length > 0 ? setter(nilOrErrorData[0]) : setter(data as T[]);
+  };
+
+interface ObjectWithId {
+  id: string;
+}
+
+export const byId = (array: ObjectWithId[]) =>
+  array.reduce((acc, curr) => {
+    acc[curr.id] = curr;
+    return acc;
+  }, {});
+
+export const indices = (n: number) => [...Array(n)].map((_, i) => i);

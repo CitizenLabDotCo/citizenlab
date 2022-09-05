@@ -1,61 +1,40 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { IOption } from 'typings';
-import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
-import { Select } from 'cl2-component-library';
-import localize, { InjectedLocalized } from 'utils/localize';
+import useTopics from 'hooks/useTopics';
+import { Select } from '@citizenlab/cl2-component-library';
+import useLocalize from 'hooks/useLocalize';
 import { isNilOrError } from 'utils/helperUtils';
 import { ITopicData } from 'services/topics';
 
-type Props = {
+export interface Props {
   value: string;
-  onChange: (string) => void;
-  topics: GetTopicsChildProps;
-};
-
-type State = {};
-
-class TopicValueSelector extends React.PureComponent<
-  Props & InjectedLocalized,
-  State
-> {
-  generateOptions = (): IOption[] => {
-    const { topics, localize } = this.props;
-
-    if (!isNilOrError(topics)) {
-      return topics
-        .filter((topic) => !isNilOrError(topic))
-        .map((topic: ITopicData) => {
-          return {
-            value: topic.id,
-            label: localize(topic.attributes.title_multiloc),
-          };
-        });
-    } else {
-      return [];
-    }
-  };
-
-  handleOnChange = (option: IOption) => {
-    this.props.onChange(option.value);
-  };
-
-  render() {
-    const { value } = this.props;
-
-    return (
-      <Select
-        value={value}
-        options={this.generateOptions()}
-        onChange={this.handleOnChange}
-      />
-    );
-  }
+  onChange: (value: string) => void;
 }
 
-const TopicValueSelectorWithHOC = localize(TopicValueSelector);
+const TopicValueSelector = memo(({ value, onChange }: Props) => {
+  const topics = useTopics({});
+  const localize = useLocalize();
 
-export default (inputProps) => (
-  <GetTopics>
-    {(topics) => <TopicValueSelectorWithHOC {...inputProps} topics={topics} />}
-  </GetTopics>
-);
+  const generateOptions = (): IOption[] => {
+    return isNilOrError(topics)
+      ? []
+      : topics.map((topic: ITopicData) => ({
+          value: topic.id,
+          label: localize(topic.attributes.title_multiloc),
+        }));
+  };
+
+  const handleOnChange = (option: IOption) => {
+    onChange(option.value);
+  };
+
+  return (
+    <Select
+      value={value}
+      options={generateOptions()}
+      onChange={handleOnChange}
+    />
+  );
+});
+
+export default TopicValueSelector;

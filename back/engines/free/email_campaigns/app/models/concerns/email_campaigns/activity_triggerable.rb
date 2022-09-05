@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EmailCampaigns
   module ActivityTriggerable
     extend ActiveSupport::Concern
@@ -6,7 +8,7 @@ module EmailCampaigns
       before_send :filter_activity_triggered
     end
 
-    def filter_activity_triggered activity:, time: nil
+    def filter_activity_triggered(activity:, time: nil)
       activity && activity_triggers.dig(activity.item_type, activity.action)
     end
   end

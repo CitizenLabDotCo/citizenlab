@@ -1,3 +1,44 @@
+# frozen_string_literal: true
+
+# == Schema Information
+#
+# Table name: phases
+#
+#  id                     :uuid             not null, primary key
+#  project_id             :uuid
+#  title_multiloc         :jsonb
+#  description_multiloc   :jsonb
+#  start_at               :date
+#  end_at                 :date
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  participation_method   :string           default("ideation"), not null
+#  posting_enabled        :boolean          default(TRUE)
+#  commenting_enabled     :boolean          default(TRUE)
+#  voting_enabled         :boolean          default(TRUE), not null
+#  upvoting_method        :string           default("unlimited"), not null
+#  upvoting_limited_max   :integer          default(10)
+#  survey_embed_url       :string
+#  survey_service         :string
+#  presentation_mode      :string           default("card")
+#  max_budget             :integer
+#  poll_anonymous         :boolean          default(FALSE), not null
+#  downvoting_enabled     :boolean          default(TRUE), not null
+#  ideas_count            :integer          default(0), not null
+#  ideas_order            :string
+#  input_term             :string           default("idea")
+#  min_budget             :integer          default(0)
+#  downvoting_method      :string           default("unlimited"), not null
+#  downvoting_limited_max :integer          default(10)
+#
+# Indexes
+#
+#  index_phases_on_project_id  (project_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (project_id => projects.id)
+#
 class Phase < ApplicationRecord
   include ParticipationContext
 
@@ -9,20 +50,20 @@ class Phase < ApplicationRecord
   has_many :text_images, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :text_images
   has_many :phase_files, -> { order(:ordering) }, dependent: :destroy
-  before_destroy :remove_notifications
+
+  before_validation :sanitize_description_multiloc
+  before_validation :strip_title
+  before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
 
   validates :project, presence: true
   validates :title_multiloc, presence: true, multiloc: { presence: true }
-  validates :description_multiloc, multiloc: { presence: false }
+  validates :description_multiloc, multiloc: { presence: false, html: true }
   validates :start_at, :end_at, presence: true
   validate :validate_start_at_before_end_at
   validate :validate_belongs_to_timeline_project
   validate :validate_no_other_overlapping_phases
   validate :validate_no_other_budgeting_phases
-
-  before_validation :sanitize_description_multiloc
-  before_validation :strip_title
 
   scope :starting_on, lambda { |date|
     where(start_at: date)
@@ -52,7 +93,7 @@ class Phase < ApplicationRecord
   def ends_before?(date)
     end_at.iso8601 < date.to_date.iso8601
   end
-  
+
   def permission_scope
     self
   end
@@ -87,7 +128,7 @@ class Phase < ApplicationRecord
       next unless start_at.present? && end_at.present? && ts.overlaps?(self, other_phase)
 
       errors.add(:base, :has_other_overlapping_phases,
-                 message: 'has other phases which overlap in start and end date')
+        message: 'has other phases which overlap in start and end date')
     end
   end
 
@@ -108,7 +149,9 @@ class Phase < ApplicationRecord
 
   def remove_notifications
     notifications.each do |notification|
-      notification.destroy! unless notification.update phase_id: nil
+      unless notification.update phase: nil
+        notification.destroy!
+      end
     end
   end
 end

@@ -21,6 +21,7 @@ export default function useUserCustomFieldOption(
     });
 
     return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userCustomFieldOptionId]);
 
   return userCustomFieldOption;

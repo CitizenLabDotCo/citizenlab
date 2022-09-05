@@ -62,7 +62,7 @@ export interface InputProps {
   rows: number;
   postId?: string;
   postType?: 'idea' | 'initiative';
-  error?: string | null;
+  error?: JSX.Element | string | null;
   onChange?: (arg: string, locale: Locale | undefined) => void;
   onFocus?: () => void;
   onBlur?: () => void;
@@ -84,8 +84,8 @@ interface Props extends InputProps {
 }
 
 interface State {
-  style: object | null;
-  mentionStyle: object | null;
+  style: Record<string, unknown> | null;
+  mentionStyle: Record<string, unknown> | null;
 }
 
 class MentionsTextArea extends PureComponent<Props, State> {

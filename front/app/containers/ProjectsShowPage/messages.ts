@@ -86,8 +86,7 @@ export default defineMessages({
     defaultMessage: 'There is no project here.',
   },
   thisProjectIsNotPubliclyVisibleVisitHomePageToDiscover: {
-    id:
-      'app.containers.Projects.thisProjectIsNotPubliclyVisibleVisitHomePageToDiscover',
+    id: 'app.containers.Projects.thisProjectIsNotPubliclyVisibleVisitHomePageToDiscover',
     defaultMessage:
       'This project is not publicly visible. Visit the homepage to discover other engagement opportunities.',
   },
@@ -99,54 +98,57 @@ export default defineMessages({
     id: 'app.containers.Projects.archived',
     defaultMessage: 'Archived',
   },
-  myExpenses: {
-    id: 'app.containers.Projects.myExpenses',
-    defaultMessage: 'My expenses',
+  myBasket: {
+    id: 'app.containers.Projects.myBasket',
+    defaultMessage: 'My basket',
   },
-  budgetValidated: {
-    id: 'app.containers.Projects.budgetValidated',
-    defaultMessage: 'Expenses validated, congratulations!',
+  basketSubmitted: {
+    id: 'app.containers.Projects.basketSubmitted',
+    defaultMessage: 'Your basket has been submitted!',
   },
-  budgetExceeded: {
-    id: 'app.containers.Projects.budgetExceeded',
-    defaultMessage: 'Your expenses exceed the total assignable budget',
+  selectionExceedsBudget: {
+    id: 'app.containers.Projects.selectionExceedsBudget',
+    defaultMessage: 'Your selection exceeds your budget.',
   },
-  totalBudget: {
-    id: 'app.containers.Projects.totalBudget',
-    defaultMessage: 'Total budget',
+  requiredSelectionExceeded: {
+    id: 'app.containers.Projects.requiredSelectionExceeded',
+    defaultMessage: "You've exceeded the required selection.",
   },
-  spentBudget: {
-    id: 'app.containers.Projects.spentBudget',
-    defaultMessage: 'Spent budget',
+  yourBudget: {
+    id: 'app.containers.Projects.yourBudget',
+    defaultMessage: 'Your budget',
   },
-  manageBudget: {
-    id: 'app.containers.Projects.manageBudget',
-    defaultMessage: 'Manage budget',
+  requiredSelection: {
+    id: 'app.containers.Projects.requiredSelection',
+    defaultMessage: 'Required selection',
   },
-  submitMyExpenses: {
-    id: 'app.containers.Projects.submitMyExpenses',
-    defaultMessage: 'Submit my expenses',
+  addedToBasket: {
+    id: 'app.containers.Projects.addedToBasket',
+    defaultMessage: 'Added to your basket',
   },
-  noExpenses: {
-    id: 'app.containers.Projects.noExpenses',
-    defaultMessage: "You don't have any expenses yet",
+  minBudgetRequired: {
+    id: 'app.containers.Projects.minBudgetRequired',
+    defaultMessage: 'Minimum budget required',
+  },
+  manageBasket: {
+    id: 'app.containers.Projects.manageBasket',
+    defaultMessage: 'Manage basket',
+  },
+  submitMyBasket: {
+    id: 'app.containers.Projects.submitMyBasket',
+    defaultMessage: 'Submit my basket',
+  },
+  noItems: {
+    id: 'app.containers.Projects.noItems',
+    defaultMessage: "You haven't selected any items yet",
   },
   removeItem: {
     id: 'app.containers.Projects.removeItem',
     defaultMessage: 'Remove item',
   },
-  a11y_phaseX: {
-    id: 'app.containers.Projects.a11y_phase',
-    defaultMessage: 'Phase {phaseNumber}: {phaseTitle}',
-  },
   a11y_phasesOverview: {
     id: 'app.containers.Projects.a11y_phasesOverview',
     defaultMessage: 'Phases overview',
-  },
-  a11y_selectedPhaseX: {
-    id: 'app.containers.Projects.a11y_selectedPhaseX',
-    defaultMessage:
-      'Selected phase. Phase {selectedPhaseNumber}: {selectedPhaseTitle}',
   },
   projectTwitterMessage: {
     id: 'app.containers.Projects.projectTwitterMessage',
@@ -155,6 +157,11 @@ export default defineMessages({
   },
   whatsAppMessage: {
     id: 'app.containers.Projects.whatsAppMessage',
+    defaultMessage:
+      '{projectName} | from the participation platform of {orgName}',
+  },
+  facebookMessage: {
+    id: 'app.containers.Projects.facebookMessage',
     defaultMessage:
       '{projectName} | from the participation platform of {orgName}',
   },
@@ -337,6 +344,10 @@ export default defineMessages({
     id: 'app.containers.Projects.timeline',
     defaultMessage: 'Timeline',
   },
+  phases: {
+    id: 'app.containers.Projects.phases',
+    defaultMessage: 'Phases',
+  },
   share: {
     id: 'app.containers.Projects.share',
     defaultMessage: 'Share',
@@ -349,17 +360,9 @@ export default defineMessages({
     id: 'app.containers.Projects.readMore',
     defaultMessage: 'Read more',
   },
-  seeLess: {
-    id: 'app.containers.Projects.seeLess',
-    defaultMessage: 'See less',
-  },
-  startsAt: {
-    id: 'app.containers.Projects.startsAt',
-    defaultMessage: 'Starts at',
-  },
-  endsAt: {
-    id: 'app.containers.Projects.endsAt',
-    defaultMessage: 'Ends at',
+  readLess: {
+    id: 'app.containers.Projects.readLess',
+    defaultMessage: 'Read less',
   },
   xEvents: {
     id: 'app.containers.Projects.xEvents',
@@ -388,5 +391,26 @@ export default defineMessages({
   seeTheContributions: {
     id: 'app.containers.Projects.seeTheContributions',
     defaultMessage: 'See the contributions',
+  },
+  meetMinBudgetRequirement: {
+    id: 'app.containers.Projects.meetMinBudgetRequirement',
+    defaultMessage: 'Meet the minimum budget to submit your basket.',
+  },
+  meetMinSelectionRequirement: {
+    id: 'app.containers.Projects.meetMinSelectionRequirement',
+    defaultMessage: 'Meet the required selection to submit your basket.',
+  },
+  a11y_phase: {
+    id: 'app.containers.Projects.a11y_phase',
+    defaultMessage: 'Phase {phaseNumber}: {phaseTitle}',
+  },
+  emailSharingSubject: {
+    id: 'app.containers.Projects.emailSharingSubject',
+    defaultMessage: '{projectName}: join the discussion',
+  },
+  emailSharingBody: {
+    id: 'app.containers.Projects.emailSharingBody',
+    defaultMessage:
+      'What do you think of this project? Join the discussion at {projectUrl} to make your voice heard!',
   },
 });

@@ -56,12 +56,14 @@ const ActionsForm = memo(
   ({ permissions, postType, onChange, projectId }: Props) => {
     const project = useProject({ projectId });
     const phases = usePhases(projectId);
-    const handlePermissionChange = (permission: IPermissionData) => (
-      permittedBy: IPermissionData['attributes']['permitted_by'],
-      groupIds: string[]
-    ) => {
-      onChange(permission, permittedBy, groupIds);
-    };
+    const handlePermissionChange =
+      (permission: IPermissionData) =>
+      (
+        permittedBy: IPermissionData['attributes']['permitted_by'],
+        groupIds: string[]
+      ) => {
+        onChange(permission, permittedBy, groupIds);
+      };
 
     const getPermissionActionMessage = (
       permissionAction: IPCPermissionAction | IGlobalPermissionAction

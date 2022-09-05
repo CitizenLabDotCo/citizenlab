@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Moderation
   class ModerationPolicy < ApplicationPolicy
     class Scope
@@ -9,11 +11,10 @@ module Moderation
       end
 
       def resolve
-        if user&.active? && user.admin?
+        if user&.active? && user&.admin?
           scope.all
-        elsif user&.active? && user.project_moderator?
-          projects = Project.where(id: user.moderatable_project_ids)
-          scope.where(project_id: projects)
+        elsif user&.active?
+          scope.where(project_id: ::UserRoleService.new.moderatable_projects(user))
         else
           scope.none
         end
@@ -21,7 +22,7 @@ module Moderation
     end
 
     def update?
-     user&.active? && (user.admin? || user.project_moderator?(record.project_id))
+      user&.active? && ::UserRoleService.new.can_moderate?(record.source_record, user)
     end
   end
 end

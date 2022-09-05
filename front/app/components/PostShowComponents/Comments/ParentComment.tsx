@@ -1,4 +1,4 @@
-import React, { PureComponent, FormEvent, MouseEvent } from 'react';
+import React, { PureComponent, FormEvent } from 'react';
 import { get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
@@ -8,7 +8,7 @@ import { distinctUntilChanged, switchMap, filter, tap } from 'rxjs/operators';
 // components
 import Comment from './Comment';
 import ChildCommentForm from './ChildCommentForm';
-import { Spinner } from 'cl2-component-library';
+import { Spinner } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 
 // services
@@ -145,10 +145,6 @@ class ParentComment extends PureComponent<Props, State> {
     }
   };
 
-  removeFocus = (event: MouseEvent) => {
-    event.preventDefault();
-  };
-
   render() {
     const {
       postId,
@@ -161,12 +157,8 @@ class ParentComment extends PureComponent<Props, State> {
       commentingPermissionInitiative,
       theme,
     } = this.props;
-    const {
-      canLoadMore,
-      isLoadingMore,
-      hasLoadedMore,
-      childComments,
-    } = this.state;
+    const { canLoadMore, isLoadingMore, hasLoadedMore, childComments } =
+      this.state;
 
     if (!isNilOrError(comment) && !isNilOrError(post)) {
       const projectId: string | null = get(
@@ -206,8 +198,7 @@ class ParentComment extends PureComponent<Props, State> {
 
       return (
         <Container
-          id="e2e-parent-and-childcomments"
-          className={className || ''}
+          className={`${className || ''} e2e-parent-and-childcomments`}
         >
           <ParentCommentContainer className={commentDeleted ? 'deleted' : ''}>
             <Comment

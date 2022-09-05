@@ -1,13 +1,13 @@
 import React, { PureComponent } from 'react';
 
 // components
-import { Label } from 'cl2-component-library';
+import { Label } from '@citizenlab/cl2-component-library';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { Section, SectionField } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 
 // utils
-import { convertUrlToUploadFile } from 'utils/fileTools';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
 import getSubmitState from 'utils/getSubmitState';
 
 // services
@@ -145,9 +145,7 @@ class Favicon extends PureComponent<Props, State> {
               <Label>Favicon</Label>
               <FormattedMessage {...messages.faviconExplaination} />
               <MainDropzone
-                acceptedFileTypes="image/png"
-                maxNumberOfImages={1}
-                maxImageFileSize={5000000}
+                acceptedFileTypes={{ 'image/*': ['.png'] }}
                 images={favicon}
                 imagePreviewRatio={1}
                 maxImagePreviewWidth="152px"
@@ -158,9 +156,7 @@ class Favicon extends PureComponent<Props, State> {
                 errorMessage={faviconError}
               />
               <Preview
-                acceptedFileTypes="image/png"
-                maxNumberOfImages={1}
-                maxImageFileSize={5000000}
+                acceptedFileTypes={{ 'image/*': ['.png'] }}
                 images={favicon}
                 imagePreviewRatio={1}
                 maxImagePreviewWidth="32px"
@@ -171,9 +167,7 @@ class Favicon extends PureComponent<Props, State> {
                 errorMessage={faviconError}
               />
               <Preview
-                acceptedFileTypes="image/png"
-                maxNumberOfImages={1}
-                maxImageFileSize={5000000}
+                acceptedFileTypes={{ 'image/*': ['.png'] }}
                 images={favicon}
                 imagePreviewRatio={1}
                 maxImagePreviewWidth="16px"

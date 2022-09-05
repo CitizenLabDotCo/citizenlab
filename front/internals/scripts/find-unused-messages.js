@@ -10,12 +10,14 @@ const { execSync } = require('child_process');
 //   but this is false because the message keys are generated programatically (resulting in the problem described in the first bullet point).
 //   However, some of them could be unused, but it's time consuming to check whether they're used. (edited)
 
-Object.keys(translationMessages).forEach(messageKey => {
+Object.keys(translationMessages).forEach((messageKey) => {
   const lastPartMessageKey = messageKey.match(/[^.]+$/)[0];
 
   try {
     // requires linux environment
-    execSync(`grep -rn --exclude=messages.*s 'app' -e 'messages.${lastPartMessageKey}'`);
+    execSync(
+      `grep -rn --exclude=messages.*s 'app' -e 'messages.${lastPartMessageKey}'`
+    );
   } catch (err) {
     console.log(`unused: ${messageKey}`);
   }

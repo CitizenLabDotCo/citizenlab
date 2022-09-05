@@ -27,7 +27,7 @@ class SettingsService
       required_settings.each do |setting|
         if settings.dig(feature, setting).nil?
           default_value = schema.dig('properties', feature, 'properties', setting, 'default')
-          res[feature][setting] = default_value if default_value
+          res[feature][setting] = default_value unless default_value.nil?
         end
       end
     end
@@ -72,5 +72,37 @@ class SettingsService
       end
     end
     res
+  end
+
+  def activate_feature!(feature, config: nil)
+    config ||= AppConfiguration.instance
+    feature_settings = config.settings[feature] || {}
+    config.settings[feature] = feature_settings.merge({ 'allowed' => true, 'enabled' => true })
+    config.save!
+  end
+
+  def deactivate_feature!(feature, config: nil)
+    config ||= AppConfiguration.instance
+    feature_settings = config.settings[feature]
+    feature_settings['enabled'] = false if feature_settings
+    config.save!
+  end
+
+  def minimal_required_settings(locales: ['en'], lifecycle_stage: 'demo')
+    {
+      core: {
+        enabled: true,
+        allowed: true,
+        organization_type: 'generic',
+        timezone: 'Brussels',
+        currency: 'EUR',
+        locales: locales,
+        color_main: '#0A5159',
+        color_secondary: '#008292',
+        color_text: '#333',
+        lifecycle_stage: lifecycle_stage,
+        display_header_avatars: true
+      }
+    }
   end
 end

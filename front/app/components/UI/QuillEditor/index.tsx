@@ -8,7 +8,7 @@ import BlotFormatter from 'quill-blot-formatter';
 import 'quill/dist/quill.snow.css';
 
 // components
-import { Label, IconTooltip } from 'cl2-component-library';
+import { Label, IconTooltip } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -27,8 +27,15 @@ import {
   media,
   fontSizes,
   defaultStyles,
+  isRtl,
 } from 'utils/styleUtils';
 
+import {
+  ImageBlot,
+  AltTextToImagesModule,
+  KeepHTML,
+  attributes,
+} from './altTextToImagesModule';
 // typings
 import { Locale } from 'typings';
 import Tippy from '@tippyjs/react';
@@ -47,7 +54,7 @@ const DropdownListItem = styled.button`
   align-items: center;
   justify-content: space-between;
   color: ${colors.text};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 400;
   white-space: nowrap;
   width: auto !important;
@@ -72,24 +79,100 @@ const Container = styled.div<{
   save: string;
   edit: string;
   remove: string;
+  maxHeight?: string;
+  minHeight?: string;
 }>`
-  .ql-snow.ql-toolbar button:hover .ql-stroke, .ql-snow .ql-toolbar button:hover .ql-stroke, .ql-snow.ql-toolbar button:focus .ql-stroke, .ql-snow .ql-toolbar button:focus .ql-stroke, .ql-snow.ql-toolbar button.ql-active .ql-stroke, .ql-snow .ql-toolbar button.ql-active .ql-stroke, .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke, .ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke, .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke, .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke, .ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke, .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke, .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke, .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke, .ql-snow.ql-toolbar button:hover .ql-stroke-miter, .ql-snow .ql-toolbar button:hover .ql-stroke-miter, .ql-snow.ql-toolbar button:focus .ql-stroke-miter, .ql-snow .ql-toolbar button:focus .ql-stroke-miter, .ql-snow.ql-toolbar button.ql-active .ql-stroke-miter, .ql-snow .ql-toolbar button.ql-active .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter, .ql-picker-label:focus .ql-stroke, .ql-picker-item:focus .ql-stroke {
+  .ql-snow.ql-toolbar button:hover .ql-stroke,
+  .ql-snow .ql-toolbar button:hover .ql-stroke,
+  .ql-snow.ql-toolbar button:focus .ql-stroke,
+  .ql-snow .ql-toolbar button:focus .ql-stroke,
+  .ql-snow.ql-toolbar button.ql-active .ql-stroke,
+  .ql-snow .ql-toolbar button.ql-active .ql-stroke,
+  .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke,
+  .ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke,
+  .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke,
+  .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke,
+  .ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke,
+  .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke,
+  .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke,
+  .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke,
+  .ql-snow.ql-toolbar button:hover .ql-stroke-miter,
+  .ql-snow .ql-toolbar button:hover .ql-stroke-miter,
+  .ql-snow.ql-toolbar button:focus .ql-stroke-miter,
+  .ql-snow .ql-toolbar button:focus .ql-stroke-miter,
+  .ql-snow.ql-toolbar button.ql-active .ql-stroke-miter,
+  .ql-snow .ql-toolbar button.ql-active .ql-stroke-miter,
+  .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke-miter,
+  .ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke-miter,
+  .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter,
+  .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter,
+  .ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke-miter,
+  .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke-miter,
+  .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter,
+  .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter,
+  .ql-picker-label:focus .ql-stroke,
+  .ql-picker-item:focus .ql-stroke {
     stroke: ${colors.clBlue};
   }
 
-  .ql-snow.ql-toolbar button:hover .ql-fill, .ql-snow .ql-toolbar button:hover .ql-fill, .ql-snow.ql-toolbar button:focus .ql-fill, .ql-snow .ql-toolbar button:focus .ql-fill, .ql-snow.ql-toolbar button.ql-active .ql-fill, .ql-snow .ql-toolbar button.ql-active .ql-fill, .ql-snow.ql-toolbar .ql-picker-label:hover .ql-fill, .ql-snow .ql-toolbar .ql-picker-label:hover .ql-fill, .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-fill, .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-fill, .ql-snow.ql-toolbar .ql-picker-item:hover .ql-fill, .ql-snow .ql-toolbar .ql-picker-item:hover .ql-fill, .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-fill, .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-fill, .ql-snow.ql-toolbar button:hover .ql-stroke.ql-fill, .ql-snow .ql-toolbar button:hover .ql-stroke.ql-fill, .ql-snow.ql-toolbar button:focus .ql-stroke.ql-fill, .ql-snow .ql-toolbar button:focus .ql-stroke.ql-fill, .ql-snow.ql-toolbar button.ql-active .ql-stroke.ql-fill, .ql-snow .ql-toolbar button.ql-active .ql-stroke.ql-fill, .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke.ql-fill, .ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke.ql-fill, .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke.ql-fill, .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke.ql-fill, .ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke.ql-fill, .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke.ql-fill, .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke.ql-fill, .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke.ql-fill, .ql-snow.ql-toolbar .ql-picker-label:focus .ql-stroke.ql-fill, .ql-snow.ql-toolbar .ql-picker-item:focus .ql-stroke.ql-fill {
+  .ql-snow.ql-toolbar button:hover .ql-fill,
+  .ql-snow .ql-toolbar button:hover .ql-fill,
+  .ql-snow.ql-toolbar button:focus .ql-fill,
+  .ql-snow .ql-toolbar button:focus .ql-fill,
+  .ql-snow.ql-toolbar button.ql-active .ql-fill,
+  .ql-snow .ql-toolbar button.ql-active .ql-fill,
+  .ql-snow.ql-toolbar .ql-picker-label:hover .ql-fill,
+  .ql-snow .ql-toolbar .ql-picker-label:hover .ql-fill,
+  .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-fill,
+  .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-fill,
+  .ql-snow.ql-toolbar .ql-picker-item:hover .ql-fill,
+  .ql-snow .ql-toolbar .ql-picker-item:hover .ql-fill,
+  .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-fill,
+  .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-fill,
+  .ql-snow.ql-toolbar button:hover .ql-stroke.ql-fill,
+  .ql-snow .ql-toolbar button:hover .ql-stroke.ql-fill,
+  .ql-snow.ql-toolbar button:focus .ql-stroke.ql-fill,
+  .ql-snow .ql-toolbar button:focus .ql-stroke.ql-fill,
+  .ql-snow.ql-toolbar button.ql-active .ql-stroke.ql-fill,
+  .ql-snow .ql-toolbar button.ql-active .ql-stroke.ql-fill,
+  .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke.ql-fill,
+  .ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke.ql-fill,
+  .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke.ql-fill,
+  .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke.ql-fill,
+  .ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke.ql-fill,
+  .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke.ql-fill,
+  .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke.ql-fill,
+  .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke.ql-fill,
+  .ql-snow.ql-toolbar .ql-picker-label:focus .ql-stroke.ql-fill,
+  .ql-snow.ql-toolbar .ql-picker-item:focus .ql-stroke.ql-fill {
     fill: ${colors.clBlue};
   }
 
-  .ql-snow.ql-toolbar button:hover, .ql-snow .ql-toolbar button:hover, .ql-snow.ql-toolbar button:focus, .ql-snow .ql-toolbar button:focus, .ql-snow.ql-toolbar button.ql-active, .ql-snow .ql-toolbar button.ql-active, .ql-snow.ql-toolbar .ql-picker-label:hover,  .ql-snow.ql-toolbar .ql-picker-label:focus, .ql-snow .ql-toolbar .ql-picker-label:hover, .ql-snow.ql-toolbar .ql-picker-label.ql-active, .ql-snow .ql-toolbar .ql-picker-label.ql-active,  .ql-snow .ql-toolbar .ql-picker-label:focus, .ql-snow.ql-toolbar .ql-picker-item:hover, .ql-snow .ql-toolbar .ql-picker-item:hover, .ql-snow.ql-toolbar .ql-picker-item.ql-selected, .ql-snow.ql-toolbar .ql-picker-item:focus, .ql-snow .ql-toolbar .ql-picker-item.ql-selected {
+  .ql-snow.ql-toolbar button:hover,
+  .ql-snow .ql-toolbar button:hover,
+  .ql-snow.ql-toolbar button:focus,
+  .ql-snow .ql-toolbar button:focus,
+  .ql-snow.ql-toolbar button.ql-active,
+  .ql-snow .ql-toolbar button.ql-active,
+  .ql-snow.ql-toolbar .ql-picker-label:hover,
+  .ql-snow.ql-toolbar .ql-picker-label:focus,
+  .ql-snow .ql-toolbar .ql-picker-label:hover,
+  .ql-snow.ql-toolbar .ql-picker-label.ql-active,
+  .ql-snow .ql-toolbar .ql-picker-label.ql-active,
+  .ql-snow .ql-toolbar .ql-picker-label:focus,
+  .ql-snow.ql-toolbar .ql-picker-item:hover,
+  .ql-snow .ql-toolbar .ql-picker-item:hover,
+  .ql-snow.ql-toolbar .ql-picker-item.ql-selected,
+  .ql-snow.ql-toolbar .ql-picker-item:focus,
+  .ql-snow .ql-toolbar .ql-picker-item.ql-selected {
     color: ${colors.clBlue};
   }
 
-  .ql-tooltip[data-mode=link]::before {
+  .ql-tooltip[data-mode='link']::before {
     content: '${(props) => props.linkPrompt}' !important;
   }
 
-  .ql-tooltip[data-mode=video]::before {
+  .ql-tooltip[data-mode='video']::before {
     content: '${(props) => props.videoPrompt}' !important;
   }
 
@@ -120,8 +203,8 @@ const Container = styled.div<{
 
   .ql-toolbar.ql-snow {
     background: #f8f8f8;
-    border-radius: ${({ theme }) => theme.borderRadius} ${({ theme }) =>
-  theme.borderRadius} 0 0;
+    border-radius: ${({ theme }) => theme.borderRadius}
+      ${({ theme }) => theme.borderRadius} 0 0;
     box-shadow: none;
     border: 1px solid ${colors.border};
     border-bottom: 0;
@@ -134,29 +217,36 @@ const Container = styled.div<{
   }
 
   &.error .ql-toolbar.ql-snow + .ql-container.ql-snow {
-    border-color: ${colors.clRedError};
+    border-color: ${colors.red600};
   }
 
   &.error.focus .ql-toolbar.ql-snow + .ql-container.ql-snow {
-    border-color: ${colors.clRedError};
+    border-color: ${colors.red600};
     box-shadow: inset ${defaultStyles.boxShadowError};
   }
 
   .ql-toolbar.ql-snow + .ql-container.ql-snow {
     width: 100%;
     height: 100%;
-    max-height: ${({ theme: { menuHeight } }) =>
-      `calc(80vh - ${menuHeight}px)`};
     cursor: text;
-    border-radius: 0 0 ${({ theme }) => theme.borderRadius} ${({ theme }) =>
-  theme.borderRadius};
+    border-radius: 0 0 ${({ theme }) => theme.borderRadius}
+      ${({ theme }) => theme.borderRadius};
     border: 1px solid ${colors.border};
     box-shadow: none;
     overflow-y: auto;
     ${(props: any) => quillEditedContent(props.theme.colorMain)};
 
     .ql-editor {
-      min-height: 300px;
+      min-height: ${(props) => (props.minHeight ? props.minHeight : '300px')};
+    }
+      max-height: ${(props) =>
+        props.maxHeight
+          ? props.maxHeight
+          : ({ theme: { menuHeight } }) => `calc(80vh - ${menuHeight}px)`};
+      ${isRtl`
+	direction: rtl;
+	text-align: right;
+    `}
     }
 
     ${media.smallerThanMaxTablet`
@@ -180,6 +270,8 @@ export interface Props {
   limitedTextFormatting?: boolean;
   hasError?: boolean;
   className?: string;
+  maxHeight?: string;
+  minHeight?: string;
   onChange?: (html: string, locale: Locale | undefined) => void;
   onFocus?: () => void;
   onBlur?: () => void;
@@ -189,37 +281,8 @@ export interface Props {
 
 Quill.register('modules/blotFormatter', BlotFormatter);
 
-// BEGIN allow image alignment styles
-const attributes = ['alt', 'width', 'height', 'style'];
-
-const BaseImageFormat = Quill.import('formats/image');
+// BEGIN allow video resizing styles
 const BaseVideoFormat = Quill.import('formats/video');
-
-class ImageFormat extends BaseImageFormat {
-  static formats(domNode) {
-    return attributes.reduce((formats, attribute) => {
-      if (domNode.hasAttribute(attribute)) {
-        formats[attribute] = domNode.getAttribute(attribute);
-      }
-      return formats;
-    }, {});
-  }
-  format(name, value) {
-    if (attributes.indexOf(name) > -1) {
-      if (value) {
-        this.domNode.setAttribute(name, value);
-      } else {
-        this.domNode.removeAttribute(name);
-      }
-    } else {
-      super.format(name, value);
-    }
-  }
-}
-ImageFormat.blotName = 'image';
-ImageFormat.tagName = 'img';
-Quill.register(ImageFormat, true);
-
 class VideoFormat extends BaseVideoFormat {
   static formats(domNode) {
     return attributes.reduce((formats, attribute) => {
@@ -244,16 +307,53 @@ class VideoFormat extends BaseVideoFormat {
 VideoFormat.blotName = 'video';
 VideoFormat.tagName = 'iframe';
 Quill.register(VideoFormat, true);
-// END allow image & video resizing styles
+// END allow video resizing styles
+
+// BEGIN function to detect whether urls are external
+// inspired by https://github.com/quilljs/quill/blob/develop/formats/link.js#L33
+const ALLOWED_PROTOCOLS = new Set(['http', 'https', 'mailto', 'tel']);
+
+function isExternal(url: string) {
+  const protocol = url.slice(0, url.indexOf(':'));
+  return ALLOWED_PROTOCOLS.has(protocol);
+}
+// END function to detect whether urls are external
+
+// BEGIN custom link implementation
+const Link = Quill.import('formats/link');
+
+class CustomLink extends Link {
+  static create(url) {
+    const node = super.create(url);
+    node.setAttribute('rel', 'noreferrer noopener nofollow');
+
+    // The default behavior of the Link is to add a target="_blank" attribute
+    // So for internal urls we have to remove this
+    if (!isExternal(url)) {
+      node.removeAttribute('target');
+    }
+
+    return node;
+  }
+}
+
+Quill.register('formats/link', CustomLink);
+// END custom link implementation
 
 // BEGIN custom button implementation
 const Inline = Quill.import('blots/inline');
 
 class CustomButton extends Inline {
-  static create(value) {
+  static create(url) {
     const node = super.create();
-    node.setAttribute('href', value);
+    node.setAttribute('href', url);
     node.setAttribute('rel', 'noorefferer');
+
+    if (isExternal(url)) {
+      node.setAttribute('target', '_blank');
+      node.setAttribute('rel', 'noreferrer noopener nofollow');
+    }
+
     return node;
   }
 
@@ -268,6 +368,16 @@ CustomButton.className = 'custom-button';
 Quill.register(CustomButton);
 // END custom button implementation
 
+Quill.register(
+  {
+    'formats/image': ImageBlot,
+    'modules/altTextToImages': AltTextToImagesModule,
+  },
+  true
+);
+
+Quill.register(KeepHTML);
+
 const QuillEditor = memo<Props & InjectedIntlProps>(
   ({
     id,
@@ -281,6 +391,8 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
     noImages,
     noVideos,
     limitedTextFormatting,
+    maxHeight,
+    minHeight,
     hasError,
     className,
     setRef,
@@ -329,6 +441,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
           theme: 'snow',
           placeholder: placeholder || '',
           modules: {
+            altTextToImages: true,
             blotFormatter: !noImages || !noVideos ? true : false,
             toolbar: toolbarId ? `#${toolbarId}` : false,
             keyboard: {
@@ -336,7 +449,10 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
                 // overwrite default tab behavior
                 tab: {
                   key: 9,
-                  handler: () => true, // do nothing
+                  handler: () => {
+                    onBlur && onBlur();
+                    return true;
+                  }, // do nothing
                 },
                 'remove tab': {
                   key: 9,
@@ -355,6 +471,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
 
         setEditor(new Quill(editorRef.current, editorOptions));
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
       placeholder,
       noAlign,
@@ -364,6 +481,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
       toolbarId,
       editor,
       editorRef,
+      onBlur,
     ]);
 
     useEffect(() => {
@@ -389,10 +507,11 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
         (!prevEditor && editor && value) ||
         (prevEditor && editor && value !== contentRef.current)
       ) {
-        const delta = editor.clipboard.convert(value);
+        const delta = editor.clipboard.convert(value as any);
         editor.setContents(delta);
         contentRef.current = editor.root.innerHTML;
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [editor, value]);
 
     useEffect(() => {
@@ -436,6 +555,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
           editor.off('selection-change', selectionChangeHandler);
         }
       };
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [editor, locale, onChange]);
 
     useEffect(() => {
@@ -446,18 +566,38 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
       if (prevFocussed && !focussed && onBlur) {
         onBlur();
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [focussed, onFocus, onBlur]);
 
-    const trackAdvanced = (type, option) => (
-      _event: React.MouseEvent<HTMLElement>
-    ) => {
-      trackEventByName(tracks.advancedEditing.name, {
-        extra: {
-          type,
-          option,
-        },
-      });
-    };
+    useEffect(() => {
+      if (editor) {
+        const altInputs = document.getElementsByClassName(
+          'ql-alt-text-input'
+        ) as HTMLCollectionOf<HTMLInputElement>;
+        for (const input of altInputs) {
+          if (!input.placeholder) {
+            input.setAttribute(
+              'placeholder',
+              formatMessage(messages.altTextPlaceholder)
+            );
+            input.setAttribute(
+              'aria-label',
+              formatMessage(messages.altTextPlaceholder)
+            );
+          }
+        }
+      }
+    }, [editor, formatMessage, value]);
+
+    const trackAdvanced =
+      (type, option) => (_event: React.MouseEvent<HTMLElement>) => {
+        trackEventByName(tracks.advancedEditing.name, {
+          extra: {
+            type,
+            option,
+          },
+        });
+      };
 
     const trackClickDropdown = (event: React.MouseEvent<HTMLElement>) => {
       if (
@@ -515,6 +655,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
         editor.format('button', value);
         setIsButtonsMenuVisible(false);
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [editor]);
 
     const handleNormalLink = useCallback(() => {
@@ -541,6 +682,8 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
 
     return (
       <Container
+        maxHeight={maxHeight}
+        minHeight={minHeight}
         className={classNames}
         videoPrompt={formatMessage(messages.videoPrompt)}
         linkPrompt={formatMessage(messages.linkPrompt)}
@@ -557,7 +700,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
         )}
 
         {!noToolbar && (
-          <div id={toolbarId || ''}>
+          <div id={toolbarId || undefined}>
             {!limitedTextFormatting && (
               <span
                 className="ql-formats"

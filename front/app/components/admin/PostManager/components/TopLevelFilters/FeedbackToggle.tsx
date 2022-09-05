@@ -86,7 +86,7 @@ const ToggleContainer: any = styled.div`
 `;
 
 const StyledLabel = styled.label`
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 400;
   line-height: 20px;
   padding-left: 10px;
@@ -114,7 +114,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-type State = {};
+interface State {}
 
 export class FeedbackToggle extends React.PureComponent<Props, State> {
   componentDidUpdate(prevProps) {

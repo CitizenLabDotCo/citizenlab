@@ -1,5 +1,5 @@
 import { API_PATH } from 'containers/App/constants';
-import streams, { IStreamParams, IInputStreamParams } from 'utils/streams';
+import streams, { IStreamParams } from 'utils/streams';
 import { ImageSizes } from 'typings';
 // import { getGroups, getGroup } from 'services/groups';
 // import { usersStream } from 'services/users';
@@ -37,10 +37,6 @@ export interface IGroupMembershipsFoundUserData {
   };
 }
 
-export interface IGroupMembershipsFoundUsers {
-  data: IGroupMembershipsFoundUserData[];
-}
-
 export function getGroupMemberships(
   groupId: string,
   streamParams: IStreamParams | null = null
@@ -50,40 +46,6 @@ export function getGroupMemberships(
     ...streamParams,
     cacheStream: false,
   });
-}
-
-export function searchGroupMemberships(
-  groupId: string,
-  search: string,
-  streamParams: IStreamParams | null = null
-) {
-  const apiEndpoint = `${API_PATH}/groups/${groupId}/memberships/users_search`;
-
-  const mergedStreamParams: IStreamParams = {
-    ...streamParams,
-    queryParameters: {
-      ...(streamParams && streamParams.queryParameters
-        ? streamParams.queryParameters
-        : null),
-      search,
-    },
-  };
-
-  const streamInputParams: IInputStreamParams = {
-    apiEndpoint,
-    ...mergedStreamParams,
-    cacheStream: false,
-  };
-
-  return streams.get<IGroupMembershipsFoundUsers>(streamInputParams);
-}
-
-export async function deleteGroupMembership(membershipId: string) {
-  const response = await streams.delete(
-    `${API_PATH}/memberships/${membershipId}`,
-    membershipId
-  );
-  return response;
 }
 
 export async function addGroupMembership(groupId: string, user_id: string) {

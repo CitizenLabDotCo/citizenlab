@@ -27,7 +27,7 @@ import injectLocalize, { InjectedLocalized } from 'utils/localize';
 // utils
 import { stripHtml } from 'utils/textUtils';
 import { isNilOrError } from 'utils/helperUtils';
-import { imageSizes } from 'utils/fileTools';
+import { imageSizes } from 'utils/fileUtils';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 
@@ -64,7 +64,7 @@ const InitiativeMeta = memo<Props & InjectedIntlProps & InjectedLocalized>(
     ) {
       const { title_multiloc, body_multiloc } = initiative.attributes;
       const tenantLocales = tenant.attributes.settings.core.locales;
-      const localizedTitle = localize(title_multiloc, 50);
+      const localizedTitle = localize(title_multiloc, { maxChar: 50 });
       const initiativeTitle = formatMessage(messages.metaTitle, {
         initiativeTitle: localizedTitle,
       });

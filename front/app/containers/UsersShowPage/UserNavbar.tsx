@@ -1,6 +1,6 @@
-import React, { memo, useCallback, MouseEvent } from 'react';
+import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // resources
 import GetUserStats, { GetUserStatsChildProps } from 'resources/GetUserStats';
@@ -11,7 +11,7 @@ import styled from 'styled-components';
 import { rgba } from 'polished';
 
 // components
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import { UserTab } from './';
 
 // i18n
@@ -115,14 +115,10 @@ interface Props extends InputProps, DataProps {}
 const UserNavbar = memo<Props>((props) => {
   const { currentTab, selectTab, ideasCount, commentsCount } = props;
 
-  const removeFocus = useCallback((event: MouseEvent<HTMLElement>) => {
-    event.preventDefault();
-  }, []);
-
   return (
     <UserNavbarWrapper role="tablist">
       <UserNavbarButton
-        onMouseDown={removeFocus}
+        onMouseDown={removeFocusAfterMouseClick}
         onClick={selectTab('ideas')}
         className={currentTab === 'ideas' ? 'active' : ''}
         role="tab"
@@ -138,7 +134,7 @@ const UserNavbar = memo<Props>((props) => {
         )}
       </UserNavbarButton>
       <UserNavbarButton
-        onMouseDown={removeFocus}
+        onMouseDown={removeFocusAfterMouseClick}
         onClick={selectTab('comments')}
         className={`e2e-comment-section-nav ${
           currentTab === 'comments' ? 'active' : ''

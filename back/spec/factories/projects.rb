@@ -31,13 +31,13 @@ FactoryBot.define do
       end
     end
 
-    factory :project_with_topics do
+    factory :project_with_allowed_input_topics do
       transient do
-        topics_count { 5 }
+        allowed_input_topics_count { 5 }
       end
 
       after(:create) do |project, evaluator|
-        evaluator.topics_count.times { project.topics << create(:topic) }
+        evaluator.allowed_input_topics_count.times { project.allowed_input_topics << create(:topic) }
       end
     end
 
@@ -92,6 +92,22 @@ FactoryBot.define do
       end
     end
 
+    # Example usage: Create a project with 4 timeline phases, for which the 2nd
+    # is the current phase. The first phase has posting_enabled, the last 2 have
+    # voting_disabled
+    # create(
+    #   :project_with_current_phase,
+    #   phases_config: {
+    #     sequence: 'xcyy',
+    #     x: { posting_enabled: false },
+    #     y: { voting_enabled: false }
+    #   },
+    #   current_phase_attrs: {
+    #     participation_method: 'budgeting',
+    #     max_budget: 1200
+    #   }
+    # )
+
     factory :project_with_current_phase do
       transient do
         current_phase_attrs { {} }
@@ -100,23 +116,24 @@ FactoryBot.define do
 
       after(:create) do |project, evaluator|
         phase_config = evaluator.current_phase_attrs.merge((evaluator.phases_config[:c].clone || {}))
-        active_phase = create(:phase,
+
+        active_phase = create(
+          :phase,
           start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
-          end_at: Faker::Date.between(from: Time.zone.now + 1.day, to: 6.months.from_now),
+          end_at: Faker::Date.between(from: 1.day.from_now, to: 6.months.from_now),
           project: project,
           **phase_config
         )
 
         phases_before, phases_after = evaluator.phases_config[:sequence].split('c')
         end_at = active_phase.start_at
-        phases_before.to_s.chars.map(&:to_sym).reverse.each do |sequence_char|
+        phases_before.to_s.chars.map(&:to_sym).reverse_each do |sequence_char|
           phase_config = evaluator.phases_config[sequence_char].clone || {}
           project.phases << create(:phase,
             end_at: end_at - 1,
             start_at: end_at -= rand(1..120).days,
             project: project,
-            **phase_config
-          )
+            **phase_config)
         end
 
         start_at = active_phase.end_at
@@ -126,8 +143,7 @@ FactoryBot.define do
             start_at: start_at + 1,
             end_at: start_at += rand(1..120).days,
             project: project,
-            **phase_config
-          )
+            **phase_config)
         end
       end
     end
@@ -151,11 +167,10 @@ FactoryBot.define do
     factory :project_xl do
       transient do
         ideas_count { 10 }
-        topics_count { 3 }
+        allowed_input_topics_count { 3 }
         areas_count { 3 }
         phases_count { 3 }
         events_count { 3 }
-        pages_count { 3 }
         images_count { 3 }
         files_count { 3 }
         groups_count { 3 }
@@ -164,8 +179,8 @@ FactoryBot.define do
         evaluator.ideas_count.times do
           project.ideas << create(:idea, project: project)
         end
-        evaluator.topics_count.times do
-          project.topics << create(:topic)
+        evaluator.allowed_input_topics_count.times do
+          project.allowed_input_topics << create(:topic)
         end
         evaluator.areas_count.times do
           project.areas << create(:area)
@@ -175,9 +190,6 @@ FactoryBot.define do
         end
         evaluator.events_count.times do
           project.events << create(:event, project: project)
-        end
-        evaluator.pages_count.times do
-          project.pages << create(:page, project: project)
         end
         evaluator.images_count.times do
           project.project_images << create(:project_image, project: project)
@@ -221,8 +233,13 @@ FactoryBot.define do
     factory :continuous_project do
       process_type { 'continuous' }
       participation_method { 'ideation' }
-      voting_method { 'unlimited' }
-      voting_limited_max { 7 }
+      upvoting_method { 'unlimited' }
+      upvoting_limited_max { 7 }
+    end
+
+    factory :continuous_native_survey_project do
+      process_type { 'continuous' }
+      participation_method { 'native_survey' }
     end
 
     factory :continuous_survey_project do

@@ -1,4 +1,4 @@
-import React, { PureComponent, FormEvent } from 'react';
+import React, { PureComponent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 import { get } from 'lodash-es';
@@ -10,7 +10,7 @@ import { IOpenPostPageModalEvent } from 'containers/App';
 // components
 import T from 'components/T';
 import Button from 'components/UI/Button';
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import Body from 'components/PostShowComponents/Body';
 
 // resources
@@ -63,7 +63,7 @@ const Address = styled.div`
   margin-top: 20px;
 
   ${media.smallerThanMinTablet`
-    font-size: ${fontSizes.small}px;
+    font-size: ${fontSizes.s}px;
     margin-top: 18px;
   `}
 `;
@@ -152,7 +152,7 @@ class InitiativePreview extends PureComponent<
   Props & InjectedLocalized,
   State
 > {
-  createInitiativeClickHandler = (event: FormEvent<HTMLButtonElement>) => {
+  createInitiativeClickHandler = (event: React.MouseEvent) => {
     event.preventDefault();
 
     const { initiative } = this.props;

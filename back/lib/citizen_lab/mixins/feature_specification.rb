@@ -7,7 +7,7 @@ module CitizenLab
     module FeatureSpecification
       extend SettingsSpecification
 
-      def json_schema # rubocop:disable Metrics/MethodLength
+      def json_schema
         {
           'type' => 'object',
           'title' => feature_title,
@@ -16,8 +16,8 @@ module CitizenLab
           'required' => %w[allowed enabled],
           'required-settings' => required_settings.presence,
           'properties' => {
-            'allowed' => { 'type' => 'boolean', 'default' => true },
-            'enabled' => { 'type' => 'boolean', 'default' => true }
+            'allowed' => { 'type' => 'boolean', 'default' => allowed_by_default },
+            'enabled' => { 'type' => 'boolean', 'default' => enabled_by_default }
           }.merge(settings_props)
         }.compact
       end
@@ -38,6 +38,20 @@ module CitizenLab
         nil
       end
 
+      def dependencies
+        []
+      end
+
+      # @return [Boolean]
+      def allowed_by_default
+        true
+      end
+
+      # @return [Boolean]
+      def enabled_by_default
+        true
+      end
+
       # @return [Array<Setting>]
       def settings
         @settings ||= []
@@ -54,11 +68,11 @@ module CitizenLab
       def required_settings
         settings.select(&:required).map(&:name)
       end
-      
-      # Mapping from setting name to setting json schema. 
+
+      # Mapping from setting name to setting json schema.
       # @return [Hash<String, Hash>]
       def settings_props
-        Hash[settings.map { |setting| [setting.name, setting.schema] }]
+        settings.to_h { |setting| [setting.name, setting.schema] }
       end
     end
 

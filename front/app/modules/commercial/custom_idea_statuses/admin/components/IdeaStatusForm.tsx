@@ -11,7 +11,7 @@ import FormikRadio from 'components/UI/FormikRadio';
 import Error from 'components/UI/Error';
 import { Section, SectionField } from 'components/admin/Section';
 import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
-import { Label, IconTooltip } from 'cl2-component-library';
+import { Label, IconTooltip } from '@citizenlab/cl2-component-library';
 import FormikTextAreaMultilocWithLocaleSwitcher from 'components/UI/FormikTextAreaMultilocWithLocaleSwitcher';
 import FormikInputMultilocWithLocaleSwitcher from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
 
@@ -92,7 +92,6 @@ export function validate(tenantLocales: Locale[]) {
 const IdeaStatusForm = ({
   isSubmitting,
   errors,
-  isValid,
   touched,
   status,
   intl: { formatMessage },
@@ -192,7 +191,11 @@ const IdeaStatusForm = ({
         </SectionField>
       </StyledSection>
 
-      <FormikSubmitWrapper {...{ isValid, isSubmitting, status, touched }} />
+      <FormikSubmitWrapper
+        isSubmitting={isSubmitting}
+        status={status}
+        touched={touched}
+      />
     </Form>
   );
 };

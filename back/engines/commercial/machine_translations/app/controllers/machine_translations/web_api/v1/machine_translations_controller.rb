@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 module MachineTranslations
   module WebApi
     module V1
       class MachineTranslationsController < ApplicationController
+        skip_before_action :authenticate_user
 
         CONSTANTIZER = {
           'Idea' => {
@@ -23,42 +26,39 @@ module MachineTranslations
           @translation = MachineTranslation.find_by @translation_attributes
 
           # create translation if it doesn't exist
-          if !@translation
+          if @translation
+            authorize @translation
+          else
             begin
               @translation = MachineTranslationService.new.build_translation_for @translation_attributes
               authorize @translation
             rescue ClErrors::TransactionError => e
-              if e.error_key == :translatable_blank
-                render json: { errors: { base: [{ error: 'translatable_blank' }] } }, status: :unprocessable_entity
-                return
-              else
-                raise e
-              end
+              raise e unless e.error_key == :translatable_blank
+
+              render json: { errors: { base: [{ error: 'translatable_blank' }] } }, status: :unprocessable_entity
+              return
             end
-            if !@translation.save
+            unless @translation.save
               render json: { errors: @translation.errors.details }, status: :unprocessable_entity
               return
             end
-          else
-            authorize @translation
           end
-          
+
           # update translation if the original text may have changed
           if @translation.updated_at < @translation.translatable.updated_at
             MachineTranslationService.new.assign_new_translation @translation
             authorize @translation
-            if !@translation.save
+            unless @translation.save
               render json: { errors: @translation.errors.details }, status: :unprocessable_entity
               return
             end
           end
 
           render json: ::WebApi::V1::MachineTranslationSerializer.new(
-            @translation, 
+            @translation,
             params: fastjson_params
-            ).serialized_json
+          ).serialized_json
         end
-
 
         private
 
@@ -69,14 +69,9 @@ module MachineTranslations
           }.merge params.require(:machine_translation).permit(:attribute_name, :locale_to).to_h.symbolize_keys
         end
 
-        def secure_controller?
-          false
-        end
-
-        def secure_constantize key
+        def secure_constantize(key)
           CONSTANTIZER.fetch(params[:translatable_type])[key]
         end
-
       end
     end
   end

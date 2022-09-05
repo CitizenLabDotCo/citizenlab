@@ -9,13 +9,48 @@ import CustomFieldsStep from './citizen/components/CustomFieldsStep';
 import UserCustomFieldsForm from './citizen/components/UserCustomFieldsForm';
 import useUserCustomFieldsSchema from './hooks/useUserCustomFieldsSchema';
 import RegistrationQuestions from './admin/components/RegistrationQuestions';
-import { userCustomFieldsSchemaApiEndpoint } from './services/userCustomFields';
 import {
   IUsersByBirthyear,
   IUsersByDomicile,
   IUsersByRegistrationField,
 } from './services/stats';
-import UserCustomFieldsSignUpInModal from './citizen/components/UserCustomFieldsSignUpInModal';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import UserCustomFieldsFormMigrated from './citizen/components/UserCustomFieldsFormMigrated';
+
+// lazy components for routes
+const AdminCustomFieldsContainer = React.lazy(
+  () => import('./admin/containers/CustomFields/')
+);
+const AdminNewCustomFieldComponent = React.lazy(
+  () => import('./admin/containers/CustomFields/RegistrationCustomFieldNew')
+);
+const AdminCustomFieldEditComponent = React.lazy(
+  () => import('./admin/containers/CustomFields/RegistrationCustomFieldEdit')
+);
+const AdminCustomFieldRegistrationSettingsComponent = React.lazy(
+  () =>
+    import(
+      './admin/containers/CustomFields/RegistrationCustomFieldEdit/RegistrationCustomFieldSettings'
+    )
+);
+const AdminCustomFieldRegistrationOptionsComponent = React.lazy(
+  () =>
+    import(
+      './admin/containers/CustomFields/RegistrationCustomFieldEdit/RegistrationCustomFieldOptions'
+    )
+);
+const AdminCustomFieldRegistrationOptionsNewComponent = React.lazy(
+  () =>
+    import(
+      './admin/containers/CustomFields/RegistrationCustomFieldEdit/RegistrationCustomFieldOptionsNew'
+    )
+);
+const AdminCustomFieldRegistrationOptionsEditComponent = React.lazy(
+  () =>
+    import(
+      './admin/containers/CustomFields/RegistrationCustomFieldEdit/RegistrationCustomFieldOptionsEdit'
+    )
+);
 
 declare module 'resources/GetSerieFromStream' {
   export interface ISupportedDataTypeMap {
@@ -59,54 +94,35 @@ const RenderOnCustomFields = ({ children }) => {
 };
 
 const configuration: ModuleConfiguration = {
-  streamsToReset: [userCustomFieldsSchemaApiEndpoint],
   routes: {
     admin: [
       {
         path: 'settings/registration/custom-fields',
-        container: () => import('./admin/containers/CustomFields/'),
-        childRoutes: [
+        element: <AdminCustomFieldsContainer />,
+        children: [
           {
             path: 'new',
-            container: () =>
-              import(
-                './admin/containers/CustomFields/RegistrationCustomFieldNew'
-              ),
+            element: <AdminNewCustomFieldComponent />,
           },
           {
             path: ':userCustomFieldId',
-            container: () =>
-              import(
-                './admin/containers/CustomFields/RegistrationCustomFieldEdit'
-              ),
-            childRoutes: [
+            element: <AdminCustomFieldEditComponent />,
+            children: [
               {
                 path: 'field-settings',
-                container: () =>
-                  import(
-                    './admin/containers/CustomFields/RegistrationCustomFieldEdit/RegistrationCustomFieldSettings'
-                  ),
+                element: <AdminCustomFieldRegistrationSettingsComponent />,
               },
               {
                 path: 'options',
-                container: () =>
-                  import(
-                    './admin/containers/CustomFields/RegistrationCustomFieldEdit/RegistrationCustomFieldOptions'
-                  ),
+                element: <AdminCustomFieldRegistrationOptionsComponent />,
               },
               {
                 path: 'options/new',
-                container: () =>
-                  import(
-                    './admin/containers/CustomFields/RegistrationCustomFieldEdit/RegistrationCustomFieldOptionsNew'
-                  ),
+                element: <AdminCustomFieldRegistrationOptionsNewComponent />,
               },
               {
                 path: 'options/:userCustomFieldOptionId',
-                container: () =>
-                  import(
-                    './admin/containers/CustomFields/RegistrationCustomFieldEdit/RegistrationCustomFieldOptionsEdit'
-                  ),
+                element: <AdminCustomFieldRegistrationOptionsEditComponent />,
               },
             ],
           },
@@ -116,20 +132,30 @@ const configuration: ModuleConfiguration = {
   },
   outlets: {
     'app.containers.Admin.dashboard.users.graphs': RegistrationFieldsToGraphs,
-    'app.components.SignUpIn.SignUp.step': ({ metaData, ...props }) => (
-      <CustomFieldsStep {...props} />
-    ),
-    'app.containers.Admin.dashboard.reports.ProjectReport.graphs': CustomFieldGraphs,
-    'app.containers.UserEditPage.ProfileForm.forms': (props) => (
-      <RenderOnCustomFields>
-        <UserCustomFieldsForm {...props} />
-      </RenderOnCustomFields>
-    ),
-    'app.containers.Admin.settings.registration': AllCustomFields,
-    'app.containers.Admin.settings.registrationHelperText': RegistrationQuestions,
-    'app.containers.App.signUpInModal': (props) => (
-      <UserCustomFieldsSignUpInModal {...props} />
-    ),
+    'app.components.SignUpIn.SignUp.step': ({
+      metaData: _metaData,
+      ...props
+    }) => <CustomFieldsStep {...props} />,
+    'app.containers.Admin.dashboard.reports.ProjectReport.graphs':
+      CustomFieldGraphs,
+    'app.containers.UserEditPage.ProfileForm.forms': (props) => {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const useJSONForm = useFeatureFlag({
+        name: 'jsonforms_custom_fields',
+      });
+      return useJSONForm ? (
+        <RenderOnCustomFields>
+          <UserCustomFieldsFormMigrated {...props} />
+        </RenderOnCustomFields>
+      ) : (
+        <RenderOnCustomFields>
+          <UserCustomFieldsForm {...props} />
+        </RenderOnCustomFields>
+      );
+    },
+    'app.containers.Admin.settings.registrationTabEnd': AllCustomFields,
+    'app.containers.Admin.settings.registrationSectionEnd':
+      RegistrationQuestions,
   },
 };
 

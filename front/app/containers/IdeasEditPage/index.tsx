@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { isString, isEmpty } from 'lodash-es';
 import { Subscription, combineLatest, of } from 'rxjs';
 import { switchMap, map, first } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
@@ -13,10 +12,13 @@ import IdeaForm, { IIdeaFormOutput } from 'components/IdeaForm';
 import IdeasEditButtonBar from './IdeasEditButtonBar';
 import IdeasEditMeta from './IdeasEditMeta';
 
+// feature flag variant
+import IdeasEditPageWithJSONForm from './WithJSONForm';
+
 // services
 import { localeStream } from 'services/locale';
 import { currentAppConfigurationStream } from 'services/appConfiguration';
-import { ideaByIdStream, updateIdea } from 'services/ideas';
+import { ideaByIdStream, IIdeaData, updateIdea } from 'services/ideas';
 import {
   ideaImageStream,
   addIdeaImage,
@@ -34,8 +36,8 @@ import { getInputTermMessage } from 'utils/i18n';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
-import { convertUrlToUploadFileObservable } from 'utils/fileTools';
-import { convertToGeoJson } from 'utils/locationTools';
+import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
+import { geocode } from 'utils/locationTools';
 
 // typings
 import { UploadFile, Multiloc, Locale } from 'typings';
@@ -45,12 +47,22 @@ import { media, fontSizes, colors } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 // resource components
-import GetResourceFileObjects, {
-  GetResourceFileObjectsChildProps,
-} from 'resources/GetResourceFileObjects';
+import GetRemoteFiles, {
+  GetRemoteFilesChildProps,
+} from 'resources/GetRemoteFiles';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
+
+// tracks
+import tracks from './tracks';
+import { trackEventByName } from 'utils/analytics';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const Container = styled.div`
   background: ${colors.background};
@@ -103,10 +115,12 @@ interface InputProps {
 }
 
 interface DataProps {
-  remoteIdeaFiles: GetResourceFileObjectsChildProps;
+  remoteIdeaFiles: GetRemoteFilesChildProps;
   project: GetProjectChildProps;
   idea: GetIdeaChildProps;
+  appConfiguration: GetAppConfigurationChildProps;
   phases: GetPhasesChildProps;
+  authUser: GetAuthUserChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -121,8 +135,16 @@ interface State {
   proposedBudget: number | null;
   address: string | null;
   imageFile: UploadFile[];
+  imageFileIsChanged: boolean;
+  ideaFiles: UploadFile[];
   imageId: string | null;
   loaded: boolean;
+  submitError: boolean;
+  titleProfanityError: boolean;
+  descriptionProfanityError: boolean;
+  fileOrImageError: boolean;
+  processing: boolean;
+  authorId: string | null;
 }
 
 class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
@@ -140,8 +162,16 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
       proposedBudget: null,
       address: null,
       imageFile: [],
+      imageFileIsChanged: false,
+      ideaFiles: [],
       imageId: null,
       loaded: false,
+      submitError: false,
+      titleProfanityError: false,
+      descriptionProfanityError: false,
+      fileOrImageError: false,
+      processing: false,
+      authorId: null,
     };
     this.subscriptions = [];
   }
@@ -149,17 +179,18 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
   componentDidMount() {
     const { ideaId } = this.props.params;
     const locale$ = localeStream().observable;
-    const currentTenantLocales$ = currentAppConfigurationStream().observable.pipe(
-      map(
-        (currentTenant) => currentTenant.data.attributes.settings.core.locales
-      )
-    );
+    const currentTenantLocales$ =
+      currentAppConfigurationStream().observable.pipe(
+        map(
+          (currentTenant) => currentTenant.data.attributes.settings.core.locales
+        )
+      );
     const idea$ = ideaByIdStream(ideaId).observable;
-    const ideaWithRelationships$ = combineLatest(
+    const ideaWithRelationships$ = combineLatest([
       locale$,
       currentTenantLocales$,
-      idea$
-    ).pipe(
+      idea$,
+    ]).pipe(
       switchMap(([_locale, _currentTenantLocales, idea]) => {
         const ideaId = idea.data.id;
         const ideaImages = idea.data.relationships.idea_images.data;
@@ -190,7 +221,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
           context: idea.data,
         });
 
-        return combineLatest(locale$, idea$, ideaImage$, granted$);
+        return combineLatest([locale$, idea$, ideaImage$, granted$]);
       })
     );
 
@@ -208,6 +239,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
             descriptionMultiloc: idea.data.attributes.body_multiloc,
             address: idea.data.attributes.location_description,
             budget: idea.data.attributes.budget,
+            authorId: idea.data.relationships.author.data?.id || null,
             proposedBudget: idea.data.attributes.proposed_budget,
             imageFile: ideaImage ? [ideaImage] : [],
             imageId: ideaImage && ideaImage.id ? ideaImage.id : null,
@@ -229,35 +261,33 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
 
   handleIdeaFormOutput = async (ideaFormOutput: IIdeaFormOutput) => {
     const { ideaId } = this.props.params;
+    const { project, authUser, appConfiguration } = this.props;
     const {
       locale,
+      imageFileIsChanged,
       titleMultiloc,
       descriptionMultiloc,
       ideaSlug,
       imageId,
-      imageFile,
-      address: savedAddress,
     } = this.state;
     const {
       title,
       description,
       selectedTopics,
-      address: ideaFormAddress,
       budget,
       proposedBudget,
       ideaFiles,
       ideaFilesToRemove,
+      address,
     } = ideaFormOutput;
     const oldImageId = imageId;
-    const oldImage = imageFile && imageFile.length > 0 ? imageFile[0] : null;
-    const oldImageBase64 = oldImage ? oldImage.base64 : null;
     const newImage =
       ideaFormOutput.imageFile && ideaFormOutput.imageFile.length > 0
         ? ideaFormOutput.imageFile[0]
         : null;
     const newImageBase64 = newImage ? newImage.base64 : null;
     const imageToAddPromise =
-      newImageBase64 && oldImageBase64 !== newImageBase64
+      imageFileIsChanged && newImageBase64
         ? addIdeaImage(ideaId, newImageBase64, 0)
         : Promise.resolve(null);
     const filesToAddPromises = ideaFiles
@@ -266,17 +296,15 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
     const filesToRemovePromises = ideaFilesToRemove
       .filter((file) => !!(file.remote && file.id))
       .map((file) => deleteIdeaFile(ideaId, file.id as string));
+    const finalAuthorId = ideaFormOutput?.authorId || this.state.authorId;
+    const addressDiff: Partial<IIdeaData['attributes']> = {
+      location_point_geojson: null,
+      location_description: null,
+    };
 
-    const addressDiff = {};
-    if (
-      isString(ideaFormAddress) &&
-      !isEmpty(ideaFormAddress) &&
-      ideaFormAddress !== savedAddress
-    ) {
-      addressDiff['location_point_geojson'] = await convertToGeoJson(
-        ideaFormAddress
-      );
-      addressDiff['location_description'] = ideaFormAddress;
+    if (address && address.length > 0) {
+      addressDiff.location_point_geojson = await geocode(address);
+      addressDiff.location_description = address;
     }
 
     const updateIdeaPromise = updateIdea(ideaId, {
@@ -291,11 +319,14 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
         [locale]: description,
       },
       topic_ids: selectedTopics,
+      author_id: finalAuthorId,
       ...addressDiff,
     });
 
+    this.setState({ submitError: false, processing: true });
+
     try {
-      if (oldImageId && oldImageBase64 !== newImageBase64) {
+      if (oldImageId && imageFileIsChanged) {
         await deleteIdeaImage(ideaId, oldImageId);
       }
 
@@ -307,7 +338,102 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
       ] as Promise<any>[]);
 
       clHistory.push(`/ideas/${ideaSlug}`);
-    } catch {}
+    } catch (error) {
+      const apiErrors = error.json.errors;
+      const profanityApiError = apiErrors.base.find(
+        (apiError) => apiError.error === 'includes_banned_words'
+      );
+
+      if (profanityApiError) {
+        const titleProfanityError = profanityApiError.blocked_words.some(
+          (blockedWord) => blockedWord.attribute === 'title_multiloc'
+        );
+        const descriptionProfanityError = profanityApiError.blocked_words.some(
+          (blockedWord) => blockedWord.attribute === 'body_multiloc'
+        );
+
+        if (titleProfanityError) {
+          trackEventByName(tracks.titleProfanityError.name, {
+            ideaId,
+            locale,
+            projectId: !isNilOrError(project) ? project.id : null,
+            profaneMessage: title,
+            location: 'IdeasEditPage (citizen side)',
+            userId: !isNilOrError(authUser) ? authUser.id : null,
+            host: !isNilOrError(appConfiguration)
+              ? appConfiguration.attributes.host
+              : null,
+          });
+
+          this.setState({
+            titleProfanityError,
+          });
+        }
+
+        if (descriptionProfanityError) {
+          trackEventByName(tracks.descriptionProfanityError.name, {
+            ideaId,
+            locale,
+            projectId: !isNilOrError(project) ? project.id : null,
+            profaneMessage: title,
+            location: 'IdeasEditPage (citizen side)',
+          });
+
+          this.setState({
+            descriptionProfanityError,
+          });
+        }
+      }
+
+      if (apiErrors && (apiErrors.image || apiErrors.file)) {
+        this.setState({
+          fileOrImageError: true,
+        });
+      }
+
+      this.setState({ submitError: true });
+    }
+
+    this.setState({ processing: false });
+  };
+
+  onTitleChange = (title: string) => {
+    const { locale } = this.props;
+    const titleMultiloc = { ...this.state.titleMultiloc, [locale]: title };
+
+    this.setState({ titleMultiloc, titleProfanityError: false });
+  };
+
+  onImageFileAdd = (imageFile: UploadFile[]) => {
+    this.setState({ imageFile: [imageFile[0]], imageFileIsChanged: true });
+  };
+
+  onImageFileRemove = () => {
+    this.setState({ imageFile: [], imageFileIsChanged: true });
+  };
+
+  onTagsChange = (selectedTopics: string[]) => {
+    this.setState({ selectedTopics });
+  };
+
+  onAddressChange = (address: string) => {
+    this.setState({ address });
+  };
+
+  onDescriptionChange = (description: string) => {
+    const { locale } = this.props;
+    const descriptionMultiloc = {
+      ...this.state.descriptionMultiloc,
+      [locale]: description,
+    };
+
+    this.setState({ descriptionMultiloc, descriptionProfanityError: false });
+  };
+
+  onIdeaFilesChange = (ideaFiles: UploadFile[]) => {
+    this.setState({
+      ideaFiles,
+    });
   };
 
   render() {
@@ -320,9 +446,17 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
         selectedTopics,
         address,
         imageFile,
+        ideaFiles,
         budget,
         proposedBudget,
+        titleProfanityError,
+        descriptionProfanityError,
+        submitError,
+        fileOrImageError,
+        processing,
+        authorId,
       } = this.state;
+
       const title = locale && titleMultiloc ? titleMultiloc[locale] || '' : '';
       const description =
         locale && descriptionMultiloc
@@ -356,6 +490,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
               </Title>
 
               <IdeaForm
+                authorId={authorId}
                 projectId={projectId}
                 title={title}
                 description={description}
@@ -364,16 +499,28 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
                 proposedBudget={proposedBudget}
                 address={address || ''}
                 imageFile={imageFile}
+                ideaFiles={ideaFiles}
                 onSubmit={this.handleIdeaFormOutput}
                 remoteIdeaFiles={
                   !isNilOrError(remoteIdeaFiles) ? remoteIdeaFiles : null
                 }
+                hasTitleProfanityError={titleProfanityError}
+                hasDescriptionProfanityError={descriptionProfanityError}
+                onImageFileAdd={this.onImageFileAdd}
+                onImageFileRemove={this.onImageFileRemove}
+                onTagsChange={this.onTagsChange}
+                onTitleChange={this.onTitleChange}
+                onDescriptionChange={this.onDescriptionChange}
+                onAddressChange={this.onAddressChange}
+                onIdeaFilesChange={this.onIdeaFilesChange}
               />
 
               <ButtonBarContainer>
                 <IdeasEditButtonBar
-                  elementId="e2e-idea-edit-save-button"
                   form="idea-form"
+                  submitError={submitError}
+                  processing={processing}
+                  fileOrImageError={fileOrImageError}
                 />
               </ButtonBarContainer>
             </FormContainer>
@@ -387,10 +534,12 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
+  authUser: <GetAuthUser />,
+  appConfiguration: <GetAppConfiguration />,
   remoteIdeaFiles: ({ params: { ideaId }, render }) => (
-    <GetResourceFileObjects resourceId={ideaId} resourceType="idea">
+    <GetRemoteFiles resourceId={ideaId} resourceType="idea">
       {render}
-    </GetResourceFileObjects>
+    </GetRemoteFiles>
   ),
   idea: ({ params: { ideaId }, render }) => {
     return <GetIdea ideaId={ideaId}>{render}</GetIdea>;
@@ -416,10 +565,18 @@ const Data = adopt<DataProps, InputProps>({
 });
 const IdeaEditPageWithHOCs = injectLocalize<Props>(IdeaEditPage);
 
-export default (inputProps: InputProps) => {
+export default withRouter((inputProps: InputProps & WithRouterProps) => {
+  const isDynamicIdeaFormEnabled = useFeatureFlag({
+    name: 'dynamic_idea_form',
+  });
+
+  if (isDynamicIdeaFormEnabled) {
+    return <IdeasEditPageWithJSONForm {...inputProps} />;
+  }
+
   return (
     <Data {...inputProps}>
       {(dataProps) => <IdeaEditPageWithHOCs {...inputProps} {...dataProps} />}
     </Data>
   );
-};
+});

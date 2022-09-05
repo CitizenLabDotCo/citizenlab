@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class TrackSegmentService
-
   def initialize(segment_client = SEGMENT_CLIENT)
     @tracking_service = TrackingService.new
     @segment_client = segment_client
@@ -37,6 +36,7 @@ class TrackSegmentService
 
   def track_activity(activity)
     return unless @segment_client
+
     event = event_from_activity(activity)
     @segment_client.track(event)
   end
@@ -44,9 +44,19 @@ class TrackSegmentService
   def integrations(user)
     {
       All: true,
-      Intercom: [:admin, :project_moderator].include?(user.highest_role),
-      SatisMeter: [:admin, :project_moderator].include?(user.highest_role),
+      Intercom: intercom_integration_enabled?(user.highest_role),
+      SatisMeter: satismeter_integration_enabled?(user.highest_role)
     }
+  end
+
+  # @param [Symbol] role
+  def intercom_integration_enabled?(role)
+    role == :admin
+  end
+
+  # @param [Symbol] role
+  def satismeter_integration_enabled?(role)
+    role == :admin
   end
 
   # @param [User] user
@@ -63,9 +73,8 @@ class TrackSegmentService
       gender: user.gender,
       isSuperAdmin: user.super_admin?,
       isAdmin: user.admin?,
-      isProjectModerator: user.project_moderator?,
       highestRole: user.highest_role,
-      timezone: AppConfiguration.instance.settings('core', 'timezone'),
+      timezone: AppConfiguration.instance.settings('core', 'timezone')
     }
   end
 
@@ -79,7 +88,7 @@ class TrackSegmentService
     }
   end
 
-  # @return [{Symbol=>Anything}] 
+  # @return [{Symbol=>Anything}]
   def tenant_traits(tenant)
     raise NotImplementedError
   end
@@ -112,3 +121,5 @@ class TrackSegmentService
     SecureRandom.base64
   end
 end
+
+TrackSegmentService.prepend_if_ee('ProjectManagement::Patches::TrackSegmentService')

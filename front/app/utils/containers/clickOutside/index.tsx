@@ -16,7 +16,7 @@ type Props = {
   ariaLabelledBy?: string;
 };
 
-type State = {};
+interface State {}
 
 export default class ClickOutside extends PureComponent<Props, State> {
   container: HTMLDivElement | null = null;
@@ -110,17 +110,11 @@ export default class ClickOutside extends PureComponent<Props, State> {
   };
 
   render() {
-    const {
-      id,
-      role,
-      children,
-      className,
-      onClick,
-      isModal,
-      ariaLabelledBy,
-    } = this.props;
+    const { id, role, children, className, onClick, isModal, ariaLabelledBy } =
+      this.props;
 
     return (
+      // eslint-disable-next-line jsx-a11y/no-static-element-interactions
       <div
         id={id}
         ref={this.handleRef}

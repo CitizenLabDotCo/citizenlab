@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UserPolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
@@ -8,16 +10,28 @@ class UserPolicy < ApplicationPolicy
     end
 
     def resolve
-      scope.all
+      if user&.admin?
+        scope.all
+      elsif user && !user.normal_user?
+        role_service = UserRoleService.new
+        scope_for_moderator = scope.none
+        projects = role_service.moderatable_projects user
+        projects.each do |project|
+          scope_for_moderator = scope_for_moderator.or role_service.moderators_for_project(project, scope)
+        end
+        scope_for_moderator.or scope.where(id: ParticipantsService.new.projects_participants(projects))
+      else
+        scope.none
+      end
     end
   end
 
   def index?
-    user&.active? && user.admin?
+    user&.active? && !user.normal_user?
   end
 
   def index_xlsx?
-    user&.active? && user.admin?
+    user&.active? && user&.admin?
   end
 
   def create?
@@ -37,7 +51,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def update?
-    user&.active? && (record.id == user.id || user.admin?)
+    user&.active? && (record.id == user.id || user&.admin?)
   end
 
   def complete_registration?
@@ -45,7 +59,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def destroy?
-     record.id == user&.id || (user&.active? && user.admin?)
+    record.id == user&.id || (user&.active? && user&.admin?)
   end
 
   def ideas_count?
@@ -73,7 +87,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def permitted_attributes
-    shared = [:first_name, :last_name, :email, :password, :avatar, :locale, custom_field_values: allowed_custom_field_keys, bio_multiloc: CL2_SUPPORTED_LOCALES]
+    shared = [:first_name, :last_name, :email, :password, :avatar, :locale, { custom_field_values: allowed_custom_field_keys, bio_multiloc: CL2_SUPPORTED_LOCALES }]
     admin? ? shared + role_permitted_params : shared
   end
 
@@ -91,7 +105,7 @@ class UserPolicy < ApplicationPolicy
     enabled_fields = enabled_custom_fields
     simple_keys = enabled_fields.support_single_value.pluck(:key).map(&:to_sym)
     array_keys = enabled_fields.support_multiple_values.pluck(:key).map(&:to_sym)
-    [*simple_keys, array_keys.map{|k| [k, []]}.to_h]
+    [*simple_keys, array_keys.index_with { |_k| [] }]
   end
 
   def enabled_custom_fields

@@ -1,43 +1,35 @@
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import Tab from './admin/components/Tab';
+import FeatureFlag from 'components/FeatureFlag';
 
-type RenderOnFeatureFlagProps = {
-  children: ReactNode;
-};
-
-const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {
-  const isEnabled = useFeatureFlag('custom_idea_statuses');
-  if (isEnabled) {
-    return <>{children}</>;
-  }
-  return null;
-};
+const StatusesComponent = React.lazy(() => import('./admin/containers/'));
+const NewStatusComponent = React.lazy(() => import('./admin/containers/new'));
+const StatusShowComponent = React.lazy(() => import('./admin/containers/edit'));
 
 const configuration: ModuleConfiguration = {
   routes: {
     'admin.ideas': [
       {
         path: 'statuses',
-        container: () => import('./admin/containers/'),
+        element: <StatusesComponent />,
       },
       {
         path: 'statuses/new',
-        container: () => import('./admin/containers/new'),
+        element: <NewStatusComponent />,
       },
       {
         path: 'statuses/:id',
-        container: () => import('./admin/containers/edit'),
+        element: <StatusShowComponent />,
       },
     ],
   },
   outlets: {
     'app.containers.Admin.ideas.tabs': (props) => {
       return (
-        <RenderOnFeatureFlag>
+        <FeatureFlag name="custom_idea_statuses">
           <Tab {...props} />
-        </RenderOnFeatureFlag>
+        </FeatureFlag>
       );
     },
   },

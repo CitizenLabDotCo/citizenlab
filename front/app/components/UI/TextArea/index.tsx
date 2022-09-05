@@ -4,7 +4,7 @@ import { isEmpty } from 'lodash-es';
 // components
 import Error from 'components/UI/Error';
 import TextareaAutosize from 'react-autosize-textarea';
-import { IconTooltip, Label } from 'cl2-component-library';
+import { IconTooltip, Label } from '@citizenlab/cl2-component-library';
 
 // style
 import styled from 'styled-components';
@@ -40,7 +40,7 @@ const CharacterCount = styled.p`
   right: 0;
 
   &.error {
-    color: ${colors.clRedError};
+    color: ${colors.red600};
   }
 `;
 
@@ -53,6 +53,7 @@ export type Props = {
   value?: string | null;
   placeholder?: string | null | undefined;
   rows?: number | undefined;
+  maxRows?: number | undefined;
   error?: string | null | undefined;
   onChange?: (value: string, locale: Locale | undefined) => void;
   onFocus?: () => void | undefined;
@@ -64,7 +65,7 @@ export type Props = {
   className?: string;
 };
 
-type State = {};
+interface State {}
 
 export default class TextArea extends React.PureComponent<Props, State> {
   textareaElement: HTMLTextAreaElement | null = null;
@@ -123,6 +124,7 @@ export default class TextArea extends React.PureComponent<Props, State> {
       labelTooltipText,
       value,
       rows,
+      maxRows,
       placeholder,
       error,
       children,
@@ -146,6 +148,7 @@ export default class TextArea extends React.PureComponent<Props, State> {
             className={`textarea ${!isEmpty(error) ? 'error' : ''}`}
             name={name || ''}
             rows={rows || 5}
+            maxRows={maxRows || undefined}
             value={value || ''}
             placeholder={placeholder || undefined}
             onChange={this.handleOnChange}

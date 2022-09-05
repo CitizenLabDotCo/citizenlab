@@ -1,15 +1,16 @@
+# frozen_string_literal: true
+
 module Volunteering
   module WebApi
     module V1
       class VolunteersController < VolunteeringController
-        before_action :set_cause, only: [:index, :create, :destroy]
-        before_action :set_participation_context, only: [:index_xlsx]
+        before_action :set_cause, only: %i[index create destroy]
+        before_action :set_participation_context, only: :index_xlsx
+        skip_before_action :authenticate_user
+
         def index
-          @volunteers = policy_scope(Volunteer)
-            .where(cause: @cause)
-            .includes(:user)
-            .page(params.dig(:page, :number))
-            .per(params.dig(:page, :size))
+          @volunteers = policy_scope(Volunteer).where(cause: @cause).includes(:user)
+          @volunteers = paginate @volunteers
 
           render json: linked_json(
             @volunteers,
@@ -22,11 +23,11 @@ module Volunteering
         # GET projects/:project_id/volunteers/as_xlsx
         # GET phases/:phase_id/volunteers/as_xlsx
         def index_xlsx
-          authorize [:volunteering, :volunteer], :index_xlsx?
+          authorize %i[volunteering volunteer], :index_xlsx?
 
           @volunteers = policy_scope(Volunteer)
             .joins(:cause)
-            .where(volunteering_causes: {participation_context_id: @participation_context})
+            .where(volunteering_causes: { participation_context_id: @participation_context })
             .includes(:user, :cause)
 
           I18n.with_locale(current_user&.locale) do
@@ -44,8 +45,8 @@ module Volunteering
             SideFxVolunteerService.new.after_create(@volunteer, current_user)
             render json: WebApi::V1::VolunteerSerializer.new(
               @volunteer,
-              params: fastjson_params,
-              ).serialized_json, status: :created
+              params: fastjson_params
+            ).serialized_json, status: :created
           else
             render json: { errors: @volunteer.errors.details }, status: :unprocessable_entity
           end
@@ -61,7 +62,7 @@ module Volunteering
             SideFxVolunteerService.new.after_destroy(volunteer, current_user)
             head :ok
           else
-            head 500
+            head :internal_server_error
           end
         end
 
@@ -77,12 +78,8 @@ module Volunteering
           elsif params[:phase_id]
             @participation_context = Phase.find(params[:phase_id])
           else
-            head 404
+            head :not_found
           end
-        end
-
-        def secure_controller?
-          true
         end
       end
     end

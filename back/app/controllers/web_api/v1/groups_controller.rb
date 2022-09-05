@@ -1,13 +1,14 @@
-class WebApi::V1::GroupsController < ApplicationController
+# frozen_string_literal: true
 
-  before_action :set_group, only: [:show, :update, :destroy]
+class WebApi::V1::GroupsController < ApplicationController
+  before_action :set_group, only: %i[show update destroy]
 
   def index
     @groups = policy_scope(Group)
     @groups = @groups.where(membership_type: params[:membership_type]) if params[:membership_type]
     @groups = @groups.order_new
-    @groups = @groups.page(params.dig(:page, :number)).per(params.dig(:page, :size))
-  	render json: linked_json(@groups, WebApi::V1::GroupSerializer, params: fastjson_params)
+    @groups = paginate @groups
+    render json: linked_json(@groups, WebApi::V1::GroupSerializer, params: fastjson_params)
   end
 
   def show
@@ -31,7 +32,7 @@ class WebApi::V1::GroupsController < ApplicationController
       render json: WebApi::V1::GroupSerializer.new(
         @group.reload,
         params: fastjson_params
-        ).serialized_json, status: :created
+      ).serialized_json, status: :created
     else
       render json: { errors: @group.errors.details }, status: :unprocessable_entity
     end
@@ -47,7 +48,7 @@ class WebApi::V1::GroupsController < ApplicationController
       render json: WebApi::V1::GroupSerializer.new(
         @group.reload,
         params: fastjson_params
-        ).serialized_json, status: :ok
+      ).serialized_json, status: :ok
     else
       render json: { errors: @group.errors.details }, status: :unprocessable_entity
     end
@@ -61,7 +62,7 @@ class WebApi::V1::GroupsController < ApplicationController
       SideFxGroupService.new.after_destroy(@group, current_user)
       head :ok
     else
-      head 500
+      head :internal_server_error
     end
   end
 

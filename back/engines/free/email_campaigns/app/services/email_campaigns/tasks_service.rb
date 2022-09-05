@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EmailCampaigns
   class TasksService
     def schedule_email_campaigns
@@ -25,7 +27,7 @@ module EmailCampaigns
         consentable_campaign_types.each do |campaign_type|
           EmailCampaigns::Consent
             .find_or_initialize_by(user_id: user.id, campaign_type: campaign_type)
-            .update_attributes!(consented: false)
+            .update!(consented: false)
         end
       end
     end
@@ -33,14 +35,14 @@ module EmailCampaigns
     def ensure_unsubscription_tokens
       User
         .left_joins(:email_campaigns_unsubscription_token)
-        .where(email_campaigns_unsubscription_tokens: {token: nil}).ids.each do |user_id|
+        .where(email_campaigns_unsubscription_tokens: { token: nil }).ids.each do |user_id|
         EmailCampaigns::UnsubscriptionToken.create!(user_id: user_id)
       end
     end
 
     def update_user_digest_schedules
       camp = EmailCampaigns::Campaigns::UserDigest.first
-      camp.update(ic_schedule: camp.class.default_schedule) if camp
+      camp&.update(ic_schedule: camp.class.default_schedule)
     end
   end
 end

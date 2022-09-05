@@ -24,6 +24,7 @@ tests_output/*
 browserstack.err
 .babel-cache/*
 .cache-loader/*
+app/tsconfig.tsbuildinfo
 
 cypress/videos/
 cypress/screenshots/

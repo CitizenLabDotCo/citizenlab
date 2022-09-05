@@ -24,6 +24,7 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { colors, fontSizes, media, viewportWidths } from 'utils/styleUtils';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const Container = styled.div`
   background-color: white;
@@ -97,6 +98,9 @@ interface Props extends InputProps, DataProps {}
 
 export const UserHeader = memo<Props>((props) => {
   const { user, authUser, windowSize } = props;
+
+  const hideBio = useFeatureFlag({ name: 'disable_user_bios' });
+
   const smallerThanSmallTablet = windowSize
     ? windowSize <= viewportWidths.smallTablet
     : false;
@@ -127,21 +131,25 @@ export const UserHeader = memo<Props>((props) => {
               values={{ date: memberSinceMoment }}
             />
           </JoinedAt>
-          {!isEmpty(user.attributes.bio_multiloc) && hasDescription && (
-            <Bio>
-              <QuillEditedContent>
-                {user.attributes.bio_multiloc && (
-                  <T value={user.attributes.bio_multiloc} supportHtml={true} />
-                )}
-              </QuillEditedContent>
-            </Bio>
-          )}
+          {!hideBio &&
+            !isEmpty(user.attributes.bio_multiloc) &&
+            hasDescription && (
+              <Bio>
+                <QuillEditedContent>
+                  {user.attributes.bio_multiloc && (
+                    <T
+                      value={user.attributes.bio_multiloc}
+                      supportHtml={true}
+                    />
+                  )}
+                </QuillEditedContent>
+              </Bio>
+            )}
           {!isNilOrError(authUser) && authUser.id === user.id && (
             <EditProfileButton
               linkTo="/profile/edit"
               buttonStyle="text"
               icon="pencil"
-              iconAriaHidden
               className="e2e-edit-profile"
               bgHoverColor={colors.background}
             >

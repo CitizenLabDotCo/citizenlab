@@ -41,7 +41,7 @@ export default defineMessages({
   explanationContent: {
     id: 'app.containers.InitiativesIndexPage.explanationContent',
     defaultMessage:
-      'You have an idea to improve or change Vancouver, but it doesn’t fit one of the existing consultations? Start your own initiative, get {constraints} and Vancouver will get back to you. {link}',
+      'Want to submit a proposal to {orgName}? Curious whether other people would support it? Post your proposal here and if it gets {constraints} votes within 90 days, {orgName} will get back to you. {link}',
   },
   startInitiative: {
     id: 'app.containers.InitiativesIndexPage.startInitiative',
@@ -67,5 +67,9 @@ export default defineMessages({
     id: 'app.containers.InitiativesIndexPage.postingDisabledExplanation',
     defaultMessage:
       'New proposals are currently on hold. Please browse and lend your feedback and support to existing proposals!',
+  },
+  newProposalsNotPermitted: {
+    id: 'app.containers.InitiativesIndexPage.newProposalsNotPermitted',
+    defaultMessage: 'New proposals are not currently being accepted.',
   },
 });

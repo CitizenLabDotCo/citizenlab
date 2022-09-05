@@ -108,17 +108,14 @@ export class Poll extends PureComponent<Props> {
       openSignUpInModal({
         flow,
         verification: takingPollDisabledReason === 'not_verified',
-        verificationContext: !!(
-          takingPollDisabledReason === 'not_verified' &&
-          pcId &&
-          pcType
-        )
-          ? {
-              action: 'taking_poll',
-              id: pcId,
-              type: pcType,
-            }
-          : undefined,
+        verificationContext:
+          takingPollDisabledReason === 'not_verified' && pcId && pcType
+            ? {
+                action: 'taking_poll',
+                id: pcId,
+                type: pcType,
+              }
+            : undefined,
       });
     }
   };

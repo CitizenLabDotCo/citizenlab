@@ -55,7 +55,7 @@ const Container = styled.div`
 
 const PostContainer = styled(Container)`
   white-space: pre-line;
-  background: ${transparentize(0.94, colors.clRedError)};
+  background: ${transparentize(0.94, colors.red600)};
   position: relative;
 `;
 
@@ -196,6 +196,7 @@ export class OfficialFeedbackPost extends PureComponent<
       switch (postType) {
         case 'idea':
           deleteOfficialFeedbackFromIdea(postId);
+        // eslint-disable-next-line no-fallthrough
         case 'initiative':
           deleteOfficialFeedbackFromInitiative(postId);
       }
@@ -239,12 +240,8 @@ export class OfficialFeedbackPost extends PureComponent<
       a11y_pronounceLatestOfficialFeedbackPost,
     } = this.props;
     const { showEditForm } = this.state;
-    const {
-      body_multiloc,
-      author_multiloc,
-      created_at,
-      updated_at,
-    } = officialFeedbackPost.attributes;
+    const { body_multiloc, author_multiloc, created_at, updated_at } =
+      officialFeedbackPost.attributes;
 
     if (showEditForm && !isNilOrError(locale) && !isNilOrError(tenantLocales)) {
       return (
@@ -344,7 +341,7 @@ export class OfficialFeedbackPost extends PureComponent<
   }
 }
 
-const Data = adopt<DataProps, {}>({
+const Data = adopt<DataProps>({
   locale: <GetLocale />,
   tenantLocales: <GetAppConfigurationLocales />,
 });

@@ -1,36 +1,27 @@
+# frozen_string_literal: true
+
 module NLP
   class TagSuggestionService
-
     def suggest(ideas, locale)
-
-      @api ||= NLP::API.new ENV.fetch('CL2_NLP_HOST')
+      @api ||= NLP::Api.new
       @texts = parse_ideas ideas, locale
-
-      suggestions = @texts.any? ? @api.tag_suggestions({
-        locale: locale,
-        max_number_of_suggestions: 20,
-        texts: @texts
-      }.freeze) : []
-
-      Raven.capture_message("Nil suggestion", {
-        :extra => {
-          'texts' => @texts
-        }
-      }) if suggestions.nil?
-
-      suggestions
+      if @texts.any?
+        @api.tag_suggestions({
+          locale: locale,
+          max_number_of_suggestions: 20,
+          texts: @texts
+        }.freeze)
+      else
+        []
+      end
     end
 
     private
 
     def parse_ideas(ideas, locale)
-      ideas.map { |idea|
-        {
-          body: ActionView::Base.full_sanitizer.sanitize(idea.body_multiloc[locale]),
-          id: idea.id,
-          title: ActionView::Base.full_sanitizer.sanitize(idea.body_multiloc[locale])
-        }
-      }.reject { |item| item[:body].blank? }
+      ideas.map do |idea|
+        ActionView::Base.full_sanitizer.sanitize(idea.body_multiloc[locale])
+      end.compact_blank
     end
   end
 end

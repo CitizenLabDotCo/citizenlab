@@ -1,11 +1,4 @@
 import React from 'react';
+import { Outlet as RouterOutlet } from 'react-router-dom';
 
-type Props = {};
-
-type State = {};
-
-export default class PagesDashboard extends React.PureComponent<Props, State> {
-  render() {
-    return <>{this.props.children}</>;
-  }
-}
+export default () => <RouterOutlet />;

@@ -9,14 +9,14 @@ import {
   SubSectionTitle,
   SectionField,
 } from 'components/admin/Section';
-import { Radio } from 'cl2-component-library';
+import { Radio } from '@citizenlab/cl2-component-library';
 import ProjectGroupsList from '../components/ProjectGroupsList';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import permissionsMessages from 'containers/Admin/projects/edit/permissions/messages';
+import permissionsMessages from 'containers/Admin/projects/project/permissions/messages';
 
 // services
 import { updateProject } from 'services/projects';

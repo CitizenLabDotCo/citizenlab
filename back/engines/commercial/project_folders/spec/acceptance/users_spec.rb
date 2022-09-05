@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
@@ -21,7 +23,7 @@ resource 'Users' do
       ValidationErrorHelper.new.error_fields(self, User)
 
       let!(:folder) { create(:project_folder) }
-      let!(:user) { create(:project_folder_moderator, project_folder: folder) }
+      let!(:user) { create(:project_folder_moderator, project_folders: [folder]) }
 
       let(:id) { user.id }
       let(:roles) { user.roles + [{ 'type' => 'admin' }] }

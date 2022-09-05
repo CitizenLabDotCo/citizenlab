@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { Observable, of } from 'rxjs';
 import {
   ResourceType,
-  IResourceFileData,
-  IResourceFiles,
+  TResourceFileData,
+  TResourceFiles,
 } from 'resources/GetResourceFiles';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -19,31 +19,30 @@ interface Props {
   resourceType: ResourceType;
 }
 
-function getResourceStream(resourceType: ResourceType) {
-  switch (resourceType) {
-    case 'project':
-      return projectFilesStream;
-    case 'phase':
-      return phaseFilesStream;
-    case 'event':
-      return eventFilesStream;
-    case 'page':
-      return pageFilesStream;
-    case 'idea':
-      return ideaFilesStream;
-    case 'initiative':
-      return initiativeFilesStream;
-  }
-}
-
 export default function useResourceFiles({ resourceId, resourceType }: Props) {
   const [files, setFiles] = useState<
-    IResourceFileData[] | undefined | null | Error
+    TResourceFileData[] | undefined | null | Error
   >(undefined);
-  const stream = getResourceStream(resourceType);
 
   useEffect(() => {
-    let observable: Observable<IResourceFiles | null> = of(null);
+    const getResourceStream = (resourceType: ResourceType) => {
+      switch (resourceType) {
+        case 'project':
+          return projectFilesStream;
+        case 'phase':
+          return phaseFilesStream;
+        case 'event':
+          return eventFilesStream;
+        case 'page':
+          return pageFilesStream;
+        case 'idea':
+          return ideaFilesStream;
+        case 'initiative':
+          return initiativeFilesStream;
+      }
+    };
+    const stream = getResourceStream(resourceType);
+    let observable: Observable<TResourceFiles | null> = of(null);
 
     if (resourceId) {
       observable = stream(resourceId).observable;

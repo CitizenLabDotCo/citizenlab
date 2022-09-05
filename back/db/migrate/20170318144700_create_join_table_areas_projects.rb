@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateJoinTableAreasProjects < ActiveRecord::Migration[5.0]
   def change
     create_table :areas_projects, id: false do |t|

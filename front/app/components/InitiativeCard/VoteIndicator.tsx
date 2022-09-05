@@ -11,8 +11,8 @@ import GetInitiativeStatus, {
   GetInitiativeStatusChildProps,
 } from 'resources/GetInitiativeStatus';
 
-import { Icon } from 'cl2-component-library';
-import ProgressBar from 'components/UI/ProgressBar';
+import { Icon } from '@citizenlab/cl2-component-library';
+import ProposalProgressBar from 'containers/InitiativesShow/VoteControl/ProposalProgressBar';
 
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
@@ -29,7 +29,7 @@ import { get } from 'lodash-es';
 const Container = styled.div``;
 
 const StatusBadge = styled.div<{ color: string }>`
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   line-height: 18px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   padding: 8px 12px;
@@ -73,7 +73,7 @@ const CustomStatusBadge = styled(StatusBadge)`
   color: ${colors.clGreyOnGreyBackground};
 `;
 
-const StyledProgressBar = styled(ProgressBar)`
+const StyledProposalProgressBar = styled(ProposalProgressBar)`
   height: 9px;
   width: 120px;
 `;
@@ -85,8 +85,8 @@ const VoteCounter = styled.div`
 `;
 
 const VoteText = styled.div`
-  color: ${colors.mediumGrey};
-  font-size: ${fontSizes.small}px;
+  color: ${colors.label};
+  font-size: ${fontSizes.s}px;
 
   b {
     font-weight: 600;
@@ -109,7 +109,7 @@ const VoteIcon = styled(Icon)`
 const ExpiredText = styled.div`
   display: flex;
   align-items: center;
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   text-transform: capitalize;
   padding-bottom: 5px;
   color: ${colors.label};
@@ -161,11 +161,10 @@ class VoteIndicator extends PureComponent<Props & { theme: any }> {
                 {voteLimit}
               </VoteText>
             </VoteCounter>
-            <StyledProgressBar
-              progress={voteCount / voteLimit}
-              color="linear-gradient(270deg, #DE7756 -30.07%, #FF672F 100%)"
-              bgColor={colors.lightGreyishBlue}
-              bgShaded={false}
+            <StyledProposalProgressBar
+              voteCount={voteCount}
+              voteLimit={voteLimit}
+              barColor="linear-gradient(270deg, #DE7756 -30.07%, #FF672F 100%)"
             />
             <ScreenReaderOnly>
               <FormattedMessage
@@ -182,11 +181,12 @@ class VoteIndicator extends PureComponent<Props & { theme: any }> {
               <ExpiredIcon name="clock" ariaHidden />
               <T value={initiativeStatus.attributes.title_multiloc} />
             </ExpiredText>
-            <StyledProgressBar
-              progress={voteCount / voteLimit}
-              color={colors.label}
-              bgColor={colors.lightGreyishBlue}
-              bgShaded={true}
+
+            <StyledProposalProgressBar
+              voteCount={voteCount}
+              voteLimit={voteLimit}
+              barColor={colors.label}
+              bgShaded
             />
           </div>
         )}
@@ -200,18 +200,12 @@ class VoteIndicator extends PureComponent<Props & { theme: any }> {
                 <span className="division-bar">/</span>
                 {voteLimit}
               </VoteText>
-              <ScreenReaderOnly>
-                <FormattedMessage
-                  {...messages.xVotesOfY}
-                  values={{ xVotes: voteCount, votingThreshold: voteLimit }}
-                />
-              </ScreenReaderOnly>
             </VoteCounter>
-            <StyledProgressBar
-              progress={voteCount / voteLimit}
-              color={theme.colorMain}
-              bgColor={colors.lightGreyishBlue}
-              bgShaded={false}
+
+            <StyledProposalProgressBar
+              voteCount={voteCount}
+              voteLimit={voteLimit}
+              barColor={theme.colorMain}
             />
           </div>
         )}

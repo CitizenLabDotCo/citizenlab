@@ -14,7 +14,7 @@ describe IdeaCommentPolicy do
     let!(:project) do
       create(:continuous_budgeting_project).tap do |project|
         project.permissions.find_by(action: 'commenting_idea')
-               .update!(permitted_by: 'admins_moderators')
+          .update!(permitted_by: 'admins_moderators')
       end
     end
 

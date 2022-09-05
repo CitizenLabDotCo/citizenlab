@@ -33,17 +33,6 @@ export function projectImagesStream(
   });
 }
 
-export function projectImageStream(
-  projectId: string,
-  imageId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IProjectImage>({
-    apiEndpoint: `${apiEndpoint}/${projectId}/images/${imageId}`,
-    ...streamParams,
-  });
-}
-
 export function addProjectImage(projectId: string, base64: string) {
   return streams.add<IProjectImage>(`${apiEndpoint}/${projectId}/images`, {
     image: { image: base64 },

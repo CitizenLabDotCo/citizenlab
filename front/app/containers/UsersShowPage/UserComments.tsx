@@ -50,7 +50,7 @@ const MessageContainer = styled.div`
   align-items: center;
   justify-content: center;
   color: ${colors.label};
-  font-size: ${fontSizes.medium}px;
+  font-size: ${fontSizes.m}px;
   font-weight: 400;
 `;
 
@@ -139,7 +139,6 @@ export const UserComments = memo<Props>(
                   onClick={comments.loadMore}
                   processing={comments.loadingMore}
                   icon="showMore"
-                  iconAriaHidden
                   textColor={theme.colorText}
                   textHoverColor={darken(0.1, theme.colorText)}
                   bgColor={rgba(theme.colorText, 0.08)}

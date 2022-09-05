@@ -2,7 +2,7 @@
 
 exports[`<Container /> renders correclty when no destinations are allowed by the tenant 1`] = `
 <Fragment>
-  <LoadableModal
+  <Modal
     close={[Function]}
     footer={
       <Footer
@@ -43,6 +43,6 @@ exports[`<Container /> renders correclty when no destinations are allowed by the
         }
       }
     />
-  </LoadableModal>
+  </Modal>
 </Fragment>
 `;

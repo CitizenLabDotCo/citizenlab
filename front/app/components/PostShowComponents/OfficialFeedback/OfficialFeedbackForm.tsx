@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import { forOwn, isEmpty } from 'lodash-es';
 
 // components
-import { Input, LocaleSwitcher } from 'cl2-component-library';
+import { Input, LocaleSwitcher } from '@citizenlab/cl2-component-library';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import { Section } from 'components/admin/Section';
 import Error from 'components/UI/Error';
@@ -47,7 +47,7 @@ const FormLabel = styled.div`
 
 const AddOfficialUpdateTitle = styled.h2`
   color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.medium}px;
+  font-size: ${fontSizes.m}px;
   line-height: normal;
   font-weight: 600;
   padding: 0;
@@ -264,7 +264,7 @@ class OfficialFeedbackForm extends PureComponent<
 
       forOwn(formValues.bodyMultiloc, (bodyText, locale) => {
         feedbackValues.body_multiloc[locale] = (bodyText || '').replace(
-          /\@\[(.*?)\]\((.*?)\)/gi,
+          /@\[(.*?)\]\((.*?)\)/gi,
           '@$2'
         );
       });
@@ -318,13 +318,8 @@ class OfficialFeedbackForm extends PureComponent<
       tenantLocales,
       intl: { formatMessage },
     } = this.props;
-    const {
-      selectedLocale,
-      formValues,
-      processing,
-      error,
-      success,
-    } = this.state;
+    const { selectedLocale, formValues, processing, error, success } =
+      this.state;
     const errorMessage = error
       ? formatMessage(messages.updateButtonError)
       : null;
@@ -380,7 +375,7 @@ class OfficialFeedbackForm extends PureComponent<
             <SubmitButton
               className="e2e-official-feedback-form-submit-button"
               bgColor={
-                formType === 'edit' ? colors.adminTextColor : colors.clRed
+                formType === 'edit' ? colors.adminTextColor : colors.red500
               }
               icon="pen"
               textColor="white"
@@ -405,7 +400,7 @@ class OfficialFeedbackForm extends PureComponent<
                 buttonStyle="secondary"
                 onClick={onClose}
                 textColor={
-                  formType === 'edit' ? colors.adminTextColor : colors.clRed
+                  formType === 'edit' ? colors.adminTextColor : colors.red500
                 }
               >
                 <FormattedMessage {...messages.cancel} />

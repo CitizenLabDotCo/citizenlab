@@ -1,4 +1,4 @@
-FROM node:12-alpine
+FROM cypress/browsers:node16.14.0-chrome99-ff97
 
 WORKDIR /front
 

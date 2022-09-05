@@ -51,6 +51,10 @@ export default defineMessages({
     defaultMessage:
       'You cannot delete your own account via the user admin page',
   },
+  userExportFileName: {
+    id: 'app.containers.Admin.Users.userExportFileName',
+    defaultMessage: 'user_export',
+  },
   youCantUnadminYourself: {
     id: 'app.containers.Admin.Users.youCantUnadminYourself',
     defaultMessage: 'You cannot give up your role as an admin now',
@@ -101,13 +105,11 @@ export default defineMessages({
     defaultMessage: 'Smart group',
   },
   step1TypeDescriptionNormal: {
-    id:
-      'app.containers.AdminPage.Users.GroupCreation.step1TypeDescriptionNormal',
+    id: 'app.containers.AdminPage.Users.GroupCreation.step1TypeDescriptionNormal',
     defaultMessage: 'You manually specify which users are part of this group.',
   },
   step1TypeDescriptionSmart: {
-    id:
-      'app.containers.AdminPage.Users.GroupCreation.step1TypeDescriptionSmart',
+    id: 'app.containers.AdminPage.Users.GroupCreation.step1TypeDescriptionSmart',
     defaultMessage:
       'You specify conditions that automatically and continuously make people part of this group.',
   },
@@ -166,8 +168,7 @@ export default defineMessages({
     defaultMessage: 'Remove from group',
   },
   membershipDeleteConfirmation: {
-    id:
-      'app.containers.AdminPage.Users.UsersGroup.membershipDeleteConfirmation',
+    id: 'app.containers.AdminPage.Users.UsersGroup.membershipDeleteConfirmation',
     defaultMessage: 'Delete selected users from this group?',
   },
   membershipDeleteFailed: {

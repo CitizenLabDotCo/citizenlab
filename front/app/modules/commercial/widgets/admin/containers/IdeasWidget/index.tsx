@@ -36,7 +36,7 @@ const StyledWidgetPreview = styled(WidgetPreview)`
   margin-bottom: 40px;
 `;
 
-type Props = {};
+interface Props {}
 
 type State = {
   widgetParams: Partial<FormValues>;

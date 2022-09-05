@@ -1,0 +1,13 @@
+tr:
+  user_confirmation:
+    confirmations_mailer:
+      send_confirmation_code:
+        subject: "%{organizationName} katılım platformu için e-posta adresinizi doğrulayın"
+        header: "Onay Kodunuz"
+        header_message: "Merhaba %{firstName}!"
+        thanks_for_signing_up: "%{organizationName} katılım platformuna kaydolduğunuz için teşekkür ederiz."
+        please_confirm_your_email_address: "Kayıt işlemini tamamlamak için lütfen e-posta adresinizi doğrulayın."
+        copy_paste_the_link_below: "Aşağıdaki kodu kopyalayıp platformdaki kayıt formuna yapıştırın."
+        the_link_is_valid_for: "Bu bağlantı 24 saat geçerlidir. Bağlantının süresi dolarsa <a href=\"%{link}\">yeni bir kod isteyebilirsiniz</a>."
+        did_you_receive_this_email_in_error: "Bu e-postayı yanlışlıkla aldığınızı mı düşünüyorsunuz? <a href=\"%{link}\">Bize haber verin</a>."
+

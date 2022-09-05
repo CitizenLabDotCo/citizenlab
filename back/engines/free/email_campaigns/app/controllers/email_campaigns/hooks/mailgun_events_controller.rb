@@ -4,10 +4,11 @@ require 'openssl'
 
 module EmailCampaigns
   class Hooks::MailgunEventsController < EmailCampaignsController
+    skip_before_action :authenticate_user
     skip_after_action :verify_policy_scoped
     skip_after_action :verify_authorized
 
-    before_action :verify, only: [:create]
+    before_action :verify, only: :create
 
     MAILGUN_STATUS_MAPPING = {
       'accepted' => 'accepted',
@@ -30,7 +31,7 @@ module EmailCampaigns
           if campaigns_recipient.save
             head :ok
           else
-            head 500
+            head :internal_server_error
           end
         else
           # we're not supporting this event
@@ -42,25 +43,21 @@ module EmailCampaigns
       end
     end
 
-    def secure_controller?
-      false
-    end
-
     private
 
     # from https://documentation.mailgun.com/en/latest/user_manual.html#webhooks
     def verify
-      if ENV.fetch('MAILGUN_API_KEY', false)
-        api_key = ENV.fetch('MAILGUN_API_KEY')
-        token = params[:signature][:token]
-        timestamp = params[:signature][:timestamp]
-        signature = params[:signature][:signature]
+      return unless ENV.fetch('MAILGUN_API_KEY', false)
 
-        digest = OpenSSL::Digest.new('SHA256')
-        data = [timestamp, token].join
+      api_key = ENV.fetch('MAILGUN_API_KEY')
+      token = params[:signature][:token]
+      timestamp = params[:signature][:timestamp]
+      signature = params[:signature][:signature]
 
-        head :not_acceptable if signature != OpenSSL::HMAC.hexdigest(digest, api_key, data)
-      end
+      digest = OpenSSL::Digest.new('SHA256')
+      data = [timestamp, token].join
+
+      head :not_acceptable if signature != OpenSSL::HMAC.hexdigest(digest, api_key, data)
     end
   end
 end

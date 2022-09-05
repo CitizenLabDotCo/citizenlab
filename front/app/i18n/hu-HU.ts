@@ -6,9 +6,10 @@ import { formatTranslationMessages } from './';
 addLocaleData(huLocaleData);
 
 const huHUTranslationMessages = require('translations/hu-HU.json');
-const translationMessages = formatTranslationMessages(
-  'hu-HU',
-  huHUTranslationMessages
-);
+const huHUAdminTranslationMessages = require('translations/admin/hu-HU.json');
+const translationMessages = formatTranslationMessages('hu-HU', {
+  ...huHUTranslationMessages,
+  ...huHUAdminTranslationMessages,
+});
 
 export default translationMessages;

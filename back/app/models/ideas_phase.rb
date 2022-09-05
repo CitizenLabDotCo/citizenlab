@@ -1,32 +1,44 @@
+# frozen_string_literal: true
+
+# == Schema Information
+#
+# Table name: ideas_phases
+#
+#  id         :uuid             not null, primary key
+#  idea_id    :uuid
+#  phase_id   :uuid
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+# Indexes
+#
+#  index_ideas_phases_on_idea_id               (idea_id)
+#  index_ideas_phases_on_idea_id_and_phase_id  (idea_id,phase_id) UNIQUE
+#  index_ideas_phases_on_phase_id              (phase_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (idea_id => ideas.id)
+#  fk_rails_...  (phase_id => phases.id)
+#
 class IdeasPhase < ApplicationRecord
   belongs_to :idea, touch: true
   belongs_to :phase, touch: true
   counter_culture :phase, column_name: :ideas_count
 
   validates :idea, :phase, presence: true
-  validates :phase_id, uniqueness: {scope: :idea_id}
+  validates :phase_id, uniqueness: { scope: :idea_id }
   validate :idea_and_phase_same_project
-  validate :phase_is_ideation
 
   private
 
   def idea_and_phase_same_project
-    unless idea.project_id == phase.project_id
-      self.errors.add(
-        :base,
-        :idea_and_phase_not_same_project,
-        message: 'The idea and the phase do not belong to the same project'
-      )
-    end
-  end
+    return if idea.project_id == phase.project_id
 
-  def phase_is_ideation
-    unless phase.can_contain_ideas?
-      self.errors.add(
-        :phase_id,
-        :phase_not_ideation,
-        message: 'You can\'t add an idea to a non-ideation phase'
-      )
-    end
+    errors.add(
+      :base,
+      :idea_and_phase_not_same_project,
+      message: 'The idea and the phase do not belong to the same project'
+    )
   end
 end

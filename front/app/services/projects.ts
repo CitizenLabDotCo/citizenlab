@@ -2,13 +2,12 @@ import { API_PATH } from 'containers/App/constants';
 
 // typings
 import { ISubmitState } from 'components/admin/SubmitWrapper';
-import { Locale } from 'cl2-component-library/dist/utils/typings';
+import { Locale } from '@citizenlab/cl2-component-library';
 import {
   IRelationship,
   Multiloc,
   ImageSizes,
   UploadFile,
-  IOption,
   CLError,
 } from 'typings';
 import { IAreaData } from './areas';
@@ -16,13 +15,13 @@ import { IAppConfiguration } from 'services/appConfiguration';
 
 import streams, { IStreamParams } from 'utils/streams';
 import {
-  SurveyServices,
+  TSurveyService,
   ParticipationMethod,
   IdeaDefaultSortMethod,
   InputTerm,
 } from './participationContexts';
 
-const apiEndpoint = `${API_PATH}/projects`;
+export const apiEndpoint = `${API_PATH}/projects`;
 
 type Visibility = 'public' | 'groups' | 'admins';
 export type ProcessType = 'continuous' | 'timeline';
@@ -54,13 +53,16 @@ export type CommentingDisabledReason =
   | 'not_permitted'
   | 'not_signed_in';
 
-export type VotingDisabledReason =
+export type ProjectVotingDisabledReason =
   | 'project_inactive'
   | 'not_ideation'
   | 'voting_disabled'
+  | 'downvoting_disabled'
+  | 'not_signed_in'
+  | 'upvoting_limited_max_reached'
+  | 'downvoting_limited_max_reached'
   | 'not_permitted'
-  | 'voting_limited_max_reached'
-  | 'not_signed_in';
+  | 'not_verified';
 
 export type SurveyDisabledReason =
   | 'project_inactive'
@@ -92,23 +94,34 @@ export interface IProjectAttributes {
   process_type: ProcessType;
   timeline_active?: 'past' | 'present' | 'future' | null;
   participants_count: number;
-  participation_method: ParticipationMethod | null;
+  participation_method: ParticipationMethod;
   posting_enabled: boolean;
   commenting_enabled: boolean;
+  // voting_enabled should be used to update the project setting
+  // and as a read value if we don't know if the user is doing an up/down vote
+  // (although the action_descriptor might be better for that too, to be checked).
+  //
+  // voting_enabled doesn't take downvoting_enabled into account
+  // or upvoting_limited_max/downvoting_limited_max.
+  // For more specific values, see the voting_idea action_descriptor
   voting_enabled: boolean;
-  voting_method: 'limited' | 'unlimited';
-  voting_limited_max: number;
+  upvoting_method: 'limited' | 'unlimited';
+  upvoting_limited_max: number;
   downvoting_enabled: boolean;
+  downvoting_method: 'limited' | 'unlimited';
+  downvoting_limited_max: number;
   presentation_mode: PresentationMode;
   internal_role: 'open_idea_box' | null;
   publication_status: PublicationStatus;
+  min_budget?: number;
   max_budget?: number;
-  survey_service?: SurveyServices;
+  survey_service?: TSurveyService;
   survey_embed_url?: string;
   ordering: number;
   poll_anonymous?: boolean;
   ideas_order?: IdeaDefaultSortMethod;
   input_term: InputTerm;
+  include_all_areas: boolean;
   action_descriptor: {
     posting_idea: {
       enabled: boolean;
@@ -120,8 +133,17 @@ export interface IProjectAttributes {
       disabled_reason: CommentingDisabledReason | null;
     };
     voting_idea: {
+      // the two values below are implemented but can be deleted if not needed
       enabled: boolean;
-      disabled_reason: VotingDisabledReason | null;
+      disabled_reason: ProjectVotingDisabledReason | null;
+      up: {
+        enabled: boolean;
+        disabled_reason: ProjectVotingDisabledReason | null;
+      };
+      down: {
+        enabled: boolean;
+        disabled_reason: ProjectVotingDisabledReason | null;
+      };
     };
     taking_survey: {
       enabled: boolean;
@@ -148,6 +170,9 @@ export interface IProjectData {
     avatars?: {
       data?: IRelationship[];
     };
+    topics: {
+      data: IRelationship[];
+    };
     current_phase?: {
       data: IRelationship | null;
     };
@@ -160,14 +185,19 @@ export interface IProjectData {
     admin_publication: {
       data: IRelationship | null;
     };
-    topics: {
-      data: IRelationship[] | null;
-    };
   };
 }
 
 export interface IUpdatedProjectProperties {
-  header_bg?: string | { small: string; medium: string; large: string } | null;
+  // header_bg is only a string or null when it's
+  // in IUpdatedProjectProperties. The ImageSizes needed
+  // to be added because we go from string here to ImageSizes
+  // in IProjectAttributes (also in this file) when we save an image
+  // selected for upload. ImageSizes needs to be here, because
+  // Otherwise TS will complain about this mismatch in
+  // front/app/containers/Admin/projects/general/index.tsx
+  // This oddity needs to be dealt with
+  header_bg?: string | ImageSizes | null;
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
   description_preview_multiloc?: Multiloc;
@@ -178,22 +208,27 @@ export interface IUpdatedProjectProperties {
   posting_enabled?: boolean | null;
   commenting_enabled?: boolean | null;
   voting_enabled?: boolean | null;
-  voting_method?: 'limited' | 'unlimited' | null;
-  voting_limited_max?: number | null;
+  upvoting_method?: 'limited' | 'unlimited' | null;
+  downvoting_method?: 'limited' | 'unlimited' | null;
+  upvoting_limited_max?: number | null;
   downvoting_enabled?: boolean | null;
+  downvoting_limited_max?: number | null;
   presentation_mode?: PresentationMode | null;
   admin_publication_attributes?: {
     publication_status?: PublicationStatus;
   };
   publication_status?: PublicationStatus;
+  min_budget?: number | null;
   max_budget?: number | null;
-  survey_service?: SurveyServices | null;
+  survey_service?: TSurveyService | null;
   survey_embed_url?: string | null;
   default_assignee_id?: string | null;
   poll_anonymous?: boolean;
   ideas_order?: IdeaDefaultSortMethod;
   input_term?: InputTerm;
   slug?: string;
+  topic_ids?: string[];
+  include_all_areas?: boolean;
 }
 
 export interface IProjectFormState {
@@ -212,10 +247,8 @@ export interface IProjectFormState {
   apiErrors: { [fieldName: string]: CLError[] };
   saved: boolean;
   areas: IAreaData[];
-  areaType: 'all' | 'selection';
   locale: Locale;
   currentTenant: IAppConfiguration | null;
-  areasOptions: IOption[];
   submitState: ISubmitState;
   slug: string | null;
   showSlugErrorMessage: boolean;
@@ -278,6 +311,8 @@ export async function addProject(projectData: IUpdatedProjectProperties) {
       `${API_PATH}/projects`,
       `${API_PATH}/admin_publications`,
       `${API_PATH}/users/me`,
+      `${API_PATH}/topics`,
+      `${API_PATH}/areas`,
     ],
   });
   return response;
@@ -292,29 +327,20 @@ export async function updateProject(
     projectId,
     { project: projectData }
   );
-  streams.fetchAllWith({
+
+  await streams.fetchAllWith({
     dataId: [projectId],
     apiEndpoint: [
       `${API_PATH}/projects`,
       `${API_PATH}/admin_publications`,
+      `${API_PATH}/admin_publications/status_counts`,
       `${API_PATH}/users/me`,
+      `${API_PATH}/topics`,
+      `${API_PATH}/areas`,
     ],
   });
 
-  // TODO: clear partial cache
-
   return response;
-}
-
-export function reorderProject(
-  projectId: IProjectData['id'],
-  newOrder: number
-) {
-  return streams.update<IProject>(
-    `${apiEndpoint}/${projectId}/reorder`,
-    projectId,
-    { project: { ordering: newOrder } }
-  );
 }
 
 export async function deleteProject(projectId: string) {
@@ -330,23 +356,6 @@ export async function deleteProject(projectId: string) {
 
 export function getProjectUrl(project: IProjectData) {
   return `/projects/${project.attributes.slug}`;
-}
-
-export function getProjectIdeasUrl(project: IProjectData) {
-  let projectUrl: string;
-  const projectType = project.attributes.process_type;
-  const projectMethod = project.attributes.participation_method;
-  const rootProjectUrl = `/projects/${project.attributes.slug}`;
-
-  if (projectType === 'timeline') {
-    projectUrl = `${rootProjectUrl}/process`;
-  } else if (projectMethod === 'ideation' || projectMethod === 'budgeting') {
-    projectUrl = `${rootProjectUrl}/ideas`;
-  } else {
-    projectUrl = getProjectUrl(project);
-  }
-
-  return projectUrl;
 }
 
 export function getProjectInputTerm(project: IProjectData) {

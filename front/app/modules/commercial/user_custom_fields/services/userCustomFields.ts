@@ -1,8 +1,10 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { IRelationship, Multiloc } from 'typings';
+import { IRelationship, Locale, Multiloc } from 'typings';
+import { JsonSchema7, Layout } from '@jsonforms/core';
 
 export const userCustomFieldsSchemaApiEndpoint = `${API_PATH}/users/custom_fields/schema`;
+export const userCustomFieldsJSONSchemaApiEndpoint = `${API_PATH}/users/custom_fields/json_forms_schema`;
 
 export type IUserCustomFieldInputType =
   | 'text'
@@ -13,6 +15,19 @@ export type IUserCustomFieldInputType =
   | 'checkbox'
   | 'date';
 
+export type TCustomFieldCode =
+  | 'gender'
+  | 'birthyear'
+  | 'domicile'
+  | 'education'
+  | 'title'
+  | 'body'
+  | 'topic_ids'
+  | 'location'
+  | 'proposed_budget'
+  | 'images'
+  | 'attachments';
+
 export interface IUserCustomFieldData {
   id: string;
   type: string;
@@ -22,7 +37,7 @@ export interface IUserCustomFieldData {
     description_multiloc: Multiloc;
     input_type: IUserCustomFieldInputType;
     required: boolean;
-    code: string | null;
+    code: TCustomFieldCode | null;
     enabled: boolean;
     ordering: number;
     hidden: boolean;
@@ -31,6 +46,9 @@ export interface IUserCustomFieldData {
   };
   relationships?: {
     custom_field_options: {
+      data: IRelationship;
+    };
+    current_ref_distribution: {
       data: IRelationship;
     };
   };
@@ -49,6 +67,13 @@ export interface UserCustomFieldsInfos {
   uiSchema: any;
   hasRequiredFields: boolean;
   hasCustomFields: boolean;
+}
+
+export interface IUserJsonFormSchemas {
+  json_schema_multiloc: {
+    [key in Locale]?: JsonSchema7;
+  };
+  ui_schema_multiloc: { [key in Locale]?: Layout };
 }
 
 export function isBuiltInField(field: IUserCustomFieldData) {
@@ -91,6 +116,15 @@ export function customFieldsSchemaForUsersStream(
 ) {
   return streams.get<any>({
     apiEndpoint: userCustomFieldsSchemaApiEndpoint,
+    ...streamParams,
+  });
+}
+
+export function userJsonFormSchemasStream(
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<IUserJsonFormSchemas>({
+    apiEndpoint: userCustomFieldsJSONSchemaApiEndpoint,
     ...streamParams,
   });
 }

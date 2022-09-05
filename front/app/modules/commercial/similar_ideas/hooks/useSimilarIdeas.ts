@@ -13,14 +13,16 @@ export default function useSimilarIdeas({ ideaId, pageSize = 5 }: Parameters) {
   const queryParameters = { pageSize };
 
   useEffect(() => {
-    const observable = similarIdeasStream(ideaId, { queryParameters })
-      .observable;
+    const observable = similarIdeasStream(ideaId, {
+      queryParameters,
+    }).observable;
 
     const subscription = observable.subscribe((response) => {
       setSimilarIdeas(response.data);
     });
 
     return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ideaId, pageSize]);
 
   return similarIdeas;

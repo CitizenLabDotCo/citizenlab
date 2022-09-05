@@ -1,17 +1,19 @@
+# frozen_string_literal: true
+
 module Verification
   class VerificationService
-
     @all_methods = []
 
     class << self
       attr_reader :all_methods
 
-      def add_method verification_method
+      def add_method(verification_method)
+        @all_methods.reject! { |m| m.id == verification_method.id }
         @all_methods << verification_method
       end
     end
 
-    def initialize sfxv_service=SideFxVerificationService.new
+    def initialize(sfxv_service = SideFxVerificationService.new)
       @sfxv_service = sfxv_service
     end
 
@@ -19,18 +21,17 @@ module Verification
       self.class.all_methods
     end
 
-    def method_by_name name
-      all_methods.find{|m| m.name == name}
+    def method_by_name(name)
+      all_methods.find { |m| m.name == name }
     end
 
-    def find_verification_group groups
-      groups.select{|group| group.membership_type == 'rules'}.find do |group|
+    def find_verification_group(groups)
+      groups.select { |group| group.membership_type == 'rules' }.find do |group|
         group.rules.find do |rule|
           rule['ruleType'] == 'verified' && rule['predicate'] == 'is_verified'
         end
       end
     end
-
 
     # @param [AppConfiguration] app_configuration
     def active_methods(app_configuration)
@@ -43,16 +44,26 @@ module Verification
 
     # @param [AppConfiguration] configuration
     # @return [Boolean]
-    def is_active?(configuration, method_name)
+    def active?(configuration, method_name)
       active_methods(configuration).include? method_by_name(method_name)
     end
 
     class NoMatchError < StandardError; end
-    class NotEntitledError < StandardError; end
+
+    class NotEntitledError < StandardError
+      attr_reader :why
+
+      def initialize(why = nil)
+        super
+        @why = why
+      end
+    end
+
     class VerificationTakenError < StandardError; end
+
     class ParameterInvalidError < StandardError; end
 
-    def verify_sync user:, method_name:, verification_parameters:
+    def verify_sync(user:, method_name:, verification_parameters:)
       method = method_by_name(method_name)
       response = method.verify_sync verification_parameters
       uid = response[:uid]
@@ -65,11 +76,10 @@ module Verification
       make_verification(user: user, method_name: method_name, uid: uid)
     end
 
-    def verify_omniauth user:, auth:
+    def verify_omniauth(user:, auth:)
       method = method_by_name(auth.provider)
-      if method.respond_to?(:entitled?) && !method.entitled?(auth)
-        raise NotEntitledError.new
-      end
+      raise NotEntitledError if method.respond_to?(:entitled?) && !method.entitled?(auth)
+
       uid = if method.respond_to?(:profile_to_uid)
         method.profile_to_uid(auth)
       else
@@ -78,7 +88,7 @@ module Verification
       make_verification(user: user, method_name: method.name, uid: uid)
     end
 
-    def locked_attributes user
+    def locked_attributes(user)
       method_names = user.verifications.active.pluck(:method_name).uniq || []
       attributes = method_names.flat_map do |method_name|
         ver_method = method_by_name(method_name)
@@ -91,7 +101,7 @@ module Verification
       attributes.uniq
     end
 
-    def locked_custom_fields user
+    def locked_custom_fields(user)
       method_names = user.verifications.active.pluck(:method_name).uniq || []
       custom_fields = method_names.flat_map do |method_name|
         ver_method = method_by_name(method_name)
@@ -106,10 +116,8 @@ module Verification
 
     private
 
-    def make_verification user:, method_name:, uid:
-      if taken?(user, uid, method_name)
-        raise VerificationTakenError.new
-      end
+    def make_verification(user:, method_name:, uid:)
+      raise VerificationTakenError if taken?(user, uid, method_name)
 
       verification = ::Verification::Verification.new(
         method_name: method_name,
@@ -132,13 +140,12 @@ module Verification
         active: true,
         hashed_uid: hashed_uid(uid, method_name)
       )
-      .where.not(user: user)
-      .exists?
+        .where.not(user: user)
+        .exists?
     end
 
     def hashed_uid(uid, method_name)
       Digest::SHA256.hexdigest "#{method_name}-#{uid}"
     end
-
   end
 end

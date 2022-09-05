@@ -1,17 +1,20 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { adopt } from 'react-adopt';
-import { isString, isEmpty, isNumber, get } from 'lodash-es';
+import { isEmpty, isNumber, get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { parse } from 'qs';
 
 // libraries
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
 
 // components
 import IdeasNewButtonBar from './IdeasNewButtonBar';
 import NewIdeaForm from './NewIdeaForm';
 import IdeasNewMeta from './IdeasNewMeta';
+
+// feature flag variant
+import IdeasNewPageWithJSONForm from './WithJSONForm';
 
 // services
 import { addIdea, IIdeaAdd } from 'services/ideas';
@@ -31,11 +34,21 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import { PreviousPathnameContext } from 'context';
 
 // utils
-import { convertToGeoJson, reverseGeocode } from 'utils/locationTools';
+import { geocode, reverseGeocode } from 'utils/locationTools';
 
 // style
 import { media, colors } from 'utils/styleUtils';
 import styled from 'styled-components';
+
+// tracks
+import tracks from './tracks';
+import { trackEventByName } from 'utils/analytics';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import { UploadFile } from 'typings';
+import useProject from 'hooks/useProject';
 
 const Container = styled.div`
   background: ${colors.background};
@@ -80,6 +93,7 @@ interface InputProps {}
 
 interface DataProps {
   locale: GetLocaleChildProps;
+  appConfiguration: GetAppConfigurationChildProps;
   authUser: GetAuthUserChildProps;
   project: GetProjectChildProps;
   previousPathName: string | null;
@@ -89,7 +103,7 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
+class IdeasNewPage extends React.Component<Props & WithRouterProps, State> {
   globalState: IGlobalStateService<IIdeasPageGlobalState>;
 
   constructor(props) {
@@ -103,6 +117,8 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
       position: '',
       position_coordinates: null,
       submitError: false,
+      titleProfanityError: false,
+      descriptionProfanityError: false,
       fileOrImageError: false,
       processing: false,
       ideaId: null,
@@ -110,6 +126,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
       imageFile: [],
       imageId: null,
       ideaFiles: [],
+      authorId: null,
     };
     this.globalState = globalState.init('IdeasNewPage', initialGlobalState);
   }
@@ -126,12 +143,12 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
     this.redirectIfNotPermittedOnPage();
 
     if (isNumber(lat) && isNumber(lng)) {
-      reverseGeocode([lat, lng]).then((position) => {
+      reverseGeocode(lat, lng).then((address) => {
         this.globalState.set({
           // When an idea is posted through the map, Google Maps gets an approximate address,
           // but we also keep the exact coordinates from the click so the location indicator keeps its initial position on the map
           // and doesn't read just together with the address correction/approximation
-          position,
+          position: address,
           position_coordinates: {
             type: 'Point',
             coordinates: [lng, lat],
@@ -170,7 +187,19 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
   };
 
   handleOnIdeaSubmit = async () => {
-    const { locale, authUser, project } = this.props;
+    const { locale, authUser, project, appConfiguration } = this.props;
+    const {
+      title,
+      description,
+      selectedTopics,
+      budget,
+      proposedBudget,
+      position,
+      position_coordinates,
+      imageFile,
+      ideaFiles,
+      authorId,
+    } = await this.globalState.get();
 
     if (
       !isNilOrError(locale) &&
@@ -180,27 +209,19 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
       this.globalState.set({ submitError: false, processing: true });
 
       try {
-        const {
-          title,
-          description,
-          selectedTopics,
-          budget,
-          proposedBudget,
-          position,
-          position_coordinates,
-          imageFile,
-          ideaFiles,
-        } = await this.globalState.get();
         const ideaTitle = { [locale]: title as string };
         const ideaDescription = { [locale]: description || '' };
-        const locationGeoJSON =
-          position_coordinates || (await convertToGeoJson(position));
-        const locationDescription =
-          isString(position) && !isEmpty(position) ? position : null;
+        const locationDescription = !isEmpty(position) ? position : null;
+        let locationGeoJSON: GeoJSON.Point | null = position_coordinates;
+
+        if (!locationGeoJSON) {
+          locationGeoJSON = await geocode(position);
+        }
+
         const ideaObject: IIdeaAdd = {
           budget,
           proposed_budget: proposedBudget,
-          author_id: authUser.id,
+          author_id: authorId,
           publication_status: 'published',
           title_multiloc: ideaTitle,
           body_multiloc: ideaDescription,
@@ -211,14 +232,15 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
         };
 
         const idea = await addIdea(ideaObject);
+        const ideaId = idea.data.id;
 
         try {
           const imageToAddPromise =
             imageFile && imageFile[0]
-              ? addIdeaImage(idea.data.id, imageFile[0].base64, 0)
+              ? addIdeaImage(ideaId, imageFile[0].base64, 0)
               : Promise.resolve(null);
           const filesToAddPromises = ideaFiles.map((file) =>
-            addIdeaFile(idea.data.id, file.base64, file.name)
+            addIdeaFile(ideaId, file.base64, file.name)
           );
 
           await Promise.all([
@@ -227,33 +249,120 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
           ] as Promise<any>[]);
         } catch (error) {
           const apiErrors = get(error, 'json.errors');
+          // eslint-disable-next-line no-console
           if (process.env.NODE_ENV === 'development') console.log(error);
-          if (apiErrors && !apiErrors.idea) {
+
+          if (apiErrors && apiErrors.image) {
             this.globalState.set({
-              submitError: false,
               fileOrImageError: true,
             });
           }
         }
 
         const { fileOrImageError } = await this.globalState.get();
+        const newUrl = `/ideas/${idea.data.attributes.slug}?new_idea_id=${ideaId}`;
         if (fileOrImageError) {
           setTimeout(() => {
-            clHistory.push({
-              pathname: `/ideas/${idea.data.attributes.slug}`,
-              search: `?new_idea_id=${idea.data.id}`,
-            });
+            clHistory.push(newUrl);
           }, 4000);
         } else {
-          clHistory.push({
-            pathname: `/ideas/${idea.data.attributes.slug}`,
-            search: `?new_idea_id=${idea.data.id}`,
-          });
+          clHistory.push(newUrl);
         }
       } catch (error) {
+        // eslint-disable-next-line no-console
+        if (process.env.NODE_ENV === 'development') console.log(error);
+        const apiErrors = get(error, 'json.errors');
+        const profanityApiError = apiErrors.base.find(
+          (apiError) => apiError.error === 'includes_banned_words'
+        );
+
+        if (profanityApiError) {
+          const titleProfanityError = profanityApiError.blocked_words.some(
+            (blockedWord) => blockedWord.attribute === 'title_multiloc'
+          );
+          const descriptionProfanityError =
+            profanityApiError.blocked_words.some(
+              (blockedWord) => blockedWord.attribute === 'body_multiloc'
+            );
+
+          if (titleProfanityError) {
+            trackEventByName(tracks.titleProfanityError.name, {
+              locale,
+              ideaId: null,
+              projectId: !isNilOrError(project) ? project.id : null,
+              profaneMessage: title,
+              location: 'IdeasNewPage (citizen side)',
+              userId: !isNilOrError(authUser) ? authUser.id : null,
+              host: !isNilOrError(appConfiguration)
+                ? appConfiguration.attributes.host
+                : null,
+            });
+            this.globalState.set({
+              titleProfanityError,
+            });
+          }
+
+          if (descriptionProfanityError) {
+            trackEventByName(tracks.descriptionProfanityError.name, {
+              locale,
+              ideaId: null,
+              projectId: !isNilOrError(project) ? project.id : null,
+              profaneMessage: title,
+              location: 'IdeasNewPage (citizen side)',
+              userId: !isNilOrError(authUser) ? authUser.id : null,
+              host: !isNilOrError(appConfiguration)
+                ? appConfiguration.attributes.host
+                : null,
+            });
+            this.globalState.set({
+              descriptionProfanityError,
+            });
+          }
+        }
+
         this.globalState.set({ processing: false, submitError: true });
       }
     }
+  };
+
+  onTitleChange = (title: string) => {
+    this.globalState.set({
+      title,
+      titleProfanityError: false,
+    });
+  };
+
+  onTagsChange = (selectedTopics: string[]) => {
+    this.globalState.set({ selectedTopics });
+  };
+
+  onAddressChange = (address: string) => {
+    this.globalState.set({ position: address });
+  };
+
+  onImageFileAdd = (imageFile: UploadFile[]) => {
+    this.globalState.set({
+      imageFile: [imageFile[0]],
+    });
+  };
+
+  onImageFileRemove = () => {
+    this.globalState.set({
+      imageFile: [],
+    });
+  };
+
+  onDescriptionChange = (description: string) => {
+    this.globalState.set({
+      description,
+      descriptionProfanityError: false,
+    });
+  };
+
+  onIdeaFilesChange = (ideaFiles: UploadFile[]) => {
+    this.globalState.set({
+      ideaFiles,
+    });
   };
 
   render() {
@@ -267,6 +376,13 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
             <NewIdeaForm
               onSubmit={this.handleOnIdeaSubmit}
               projectId={project.id}
+              onTitleChange={this.onTitleChange}
+              onDescriptionChange={this.onDescriptionChange}
+              onImageFileAdd={this.onImageFileAdd}
+              onImageFileRemove={this.onImageFileRemove}
+              onTagsChange={this.onTagsChange}
+              onAddressChange={this.onAddressChange}
+              onIdeaFilesChange={this.onIdeaFilesChange}
             />
           </PageContainer>
           <ButtonBarContainer>
@@ -285,6 +401,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   locale: <GetLocale />,
+  appConfiguration: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
   project: ({ params, render }) => (
     <GetProject projectSlug={params.slug}>{render}</GetProject>
@@ -296,8 +413,23 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   ),
 });
 
-export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <IdeasNewPage {...inputProps} {...dataProps} />}
-  </Data>
-));
+export default withRouter((inputProps: InputProps & WithRouterProps) => {
+  const isDynamicIdeaFormEnabled = useFeatureFlag({
+    name: 'dynamic_idea_form',
+  });
+
+  const project = useProject({ projectSlug: inputProps.params.slug });
+
+  if (
+    isDynamicIdeaFormEnabled ||
+    project?.attributes.participation_method === 'native_survey'
+  ) {
+    return <IdeasNewPageWithJSONForm {...inputProps} />;
+  }
+
+  return (
+    <Data {...inputProps}>
+      {(dataProps) => <IdeasNewPage {...inputProps} {...dataProps} />}
+    </Data>
+  );
+});

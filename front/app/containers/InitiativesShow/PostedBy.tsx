@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 
 // components
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import UserName from 'components/UI/UserName';
 import Link from 'utils/cl-router/Link';
 
@@ -42,7 +42,7 @@ const PostedByText = styled.div`
 `;
 
 const AboutInitiativesLink = styled(Link)`
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   color: ${colors.clGreyOnGreyBackground};
   text-decoration: underline;
 

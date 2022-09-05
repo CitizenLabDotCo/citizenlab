@@ -1,16 +1,20 @@
 import React, { memo } from 'react';
 import { isError } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { adopt } from 'react-adopt';
 
 // components
 import IdeasShow from 'containers/IdeasShow';
 import Button from 'components/UI/Button';
 import IdeaShowPageTopBar from './IdeaShowPageTopBar';
+import Link from 'utils/cl-router/Link';
 
 // resources
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+
+// hooks
+import { useWindowSize } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -18,7 +22,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { fontSizes, colors, media } from 'utils/styleUtils';
+import { media, fontSizes, colors, viewportWidths } from 'utils/styleUtils';
 
 const IdeaNotFoundWrapper = styled.div`
   height: calc(
@@ -28,7 +32,7 @@ const IdeaNotFoundWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 4rem;
-  font-size: ${fontSizes.large}px;
+  font-size: ${fontSizes.l}px;
   color: ${colors.label};
 `;
 
@@ -44,12 +48,31 @@ const StyledIdeaShowPageTopBar = styled(IdeaShowPageTopBar)`
   z-index: 1000;
 `;
 
+// note: StyledIdeasShow styles defined here should match that in PostPageFullscreenModal!
 const StyledIdeasShow = styled(IdeasShow)`
-  background: #fff;
+  min-height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
+  padding-top: 40px;
+  padding-left: 60px;
+  padding-right: 60px;
 
-  ${media.biggerThanMaxTablet`
-    margin-top: 0px;
+  ${media.smallerThanMaxTablet`
+    min-height: calc(100vh - ${({
+      theme: { mobileMenuHeight, mobileTopBarHeight },
+    }) => mobileMenuHeight + mobileTopBarHeight}px);
+    padding-top: 35px;
   `}
+
+  ${media.smallerThanMinTablet`
+    padding-top: 25px;
+    padding-left: 15px;
+    padding-right: 15px;
+  `}
+`;
+
+const StyledSignInButton = styled(Button)`
+  margin-bottom: 20px;
 `;
 
 interface InputProps {}
@@ -60,16 +83,23 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const goBackToListMessage = <FormattedMessage {...messages.goBackToList} />;
-
 const IdeasShowPage = memo<Props>(({ idea }) => {
+  const { windowWidth } = useWindowSize();
+  const smallerThanMaxTablet = windowWidth <= viewportWidths.largeTablet;
+
   if (isError(idea)) {
     return (
       <IdeaNotFoundWrapper>
         <p>
-          <FormattedMessage {...messages.noResultsFound} />
+          <FormattedMessage {...messages.sorryNoAccess} />
         </p>
-        <Button linkTo="/ideas" text={goBackToListMessage} icon="arrow-back" />
+        <StyledSignInButton
+          linkTo="/sign-up"
+          text={<FormattedMessage {...messages.signUp} />}
+        />
+        <Link to="/sign-in">
+          <FormattedMessage {...messages.signIn} />
+        </Link>
       </IdeaNotFoundWrapper>
     );
   }
@@ -77,7 +107,13 @@ const IdeasShowPage = memo<Props>(({ idea }) => {
   if (!isNilOrError(idea)) {
     return (
       <Container>
-        <StyledIdeaShowPageTopBar ideaId={idea.id} />
+        {smallerThanMaxTablet && (
+          <StyledIdeaShowPageTopBar
+            projectId={idea.relationships.project.data.id}
+            ideaId={idea.id}
+            insideModal={false}
+          />
+        )}
         <StyledIdeasShow
           ideaId={idea.id}
           projectId={idea.relationships.project.data.id}
@@ -96,10 +132,8 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   ),
 });
 
-export default withRouter<InputProps>(
-  (inputProps: InputProps & WithRouterProps) => (
-    <Data {...inputProps}>
-      {(dataProps) => <IdeasShowPage {...inputProps} {...dataProps} />}
-    </Data>
-  )
-);
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
+  <Data {...inputProps}>
+    {(dataProps) => <IdeasShowPage {...inputProps} {...dataProps} />}
+  </Data>
+));

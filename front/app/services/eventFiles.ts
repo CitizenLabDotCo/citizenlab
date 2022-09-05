@@ -36,17 +36,6 @@ export function eventFilesStream(
   });
 }
 
-export function eventFileStream(
-  eventId: string,
-  fileId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IEventFile>({
-    apiEndpoint: `${apiEndpoint}/${eventId}/files/${fileId}`,
-    ...streamParams,
-  });
-}
-
 export function addEventFile(
   eventId: string,
   base64: string,

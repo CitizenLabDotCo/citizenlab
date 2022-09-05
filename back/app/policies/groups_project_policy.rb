@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class GroupsProjectPolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
@@ -17,15 +19,14 @@ class GroupsProjectPolicy < ApplicationPolicy
   end
 
   def create?
-    user&.active? && user.admin?
+    user&.active? && user&.admin?
   end
 
   def show?
-    user&.active? && user.admin?
+    user&.active? && user&.admin?
   end
 
   def destroy?
-    user&.active? && user.admin?
+    user&.active? && user&.admin?
   end
-
 end

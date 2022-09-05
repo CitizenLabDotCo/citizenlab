@@ -30,6 +30,10 @@ declare module 'components/ConsentManager/destinations' {
   export interface IDestinationMap {
     segment: 'segment';
   }
+
+  interface IConsentManagerFeatureMap {
+    segment: 'segment';
+  }
 }
 
 const destinationConfig: IDestinationConfig = {
@@ -68,7 +72,7 @@ const configuration: ModuleConfiguration = {
         apiKey: CL_SEGMENT_API_KEY,
       });
 
-      // tslint:disable-next-line: no-eval
+      // eslint-disable-next-line no-eval
       eval(code);
     });
 

@@ -1,33 +1,20 @@
-import React, { memo } from 'react';
-import { adopt } from 'react-adopt';
+import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { isEmpty } from 'lodash-es';
 
 // components
 import FileAttachments from 'components/UI/FileAttachments';
 import PhaseTitle from './PhaseTitle';
-import PhaseNavigation from './PhaseNavigation';
-
-// resources
-import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
-import GetResourceFiles, {
-  GetResourceFilesChildProps,
-} from 'resources/GetResourceFiles';
+import ReadMoreWrapper from 'containers/ProjectsShowPage/shared/header/ReadMoreWrapper';
 
 // hooks
-import useWindowSize from 'hooks/useWindowSize';
 import useLocalize from 'hooks/useLocalize';
+import usePhase from 'hooks/usePhase';
+import useResourceFiles from 'hooks/useResourceFiles';
 
 // style
-import styled, { useTheme } from 'styled-components';
-import {
-  defaultCardStyle,
-  media,
-  viewportWidths,
-  isRtl,
-} from 'utils/styleUtils';
-import T from 'components/T';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
+import styled from 'styled-components';
+import { defaultCardStyle, media } from 'utils/styleUtils';
 
 const Container = styled.div`
   padding: 30px;
@@ -39,87 +26,67 @@ const Container = styled.div`
   `}
 `;
 
-const Header = styled.div<{ hasContent: boolean }>`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: ${(props) => (props.hasContent ? '30px' : '0px')};
-
-  ${isRtl`
-    flex-direction: row-reverse;
-  `}
-`;
-
 const StyledFileAttachments = styled(FileAttachments)`
   margin-top: 20px;
   max-width: 520px;
 `;
 
-interface InputProps {
-  projectId: string;
+interface Props {
   phaseId: string | null;
+  phaseNumber: number;
   className?: string;
+  hidden: boolean;
 }
 
-interface DataProps {
-  phase: GetPhaseChildProps;
-  phaseFiles: GetResourceFilesChildProps;
-}
+const PhaseDescription = ({
+  phaseId,
+  phaseNumber,
+  className,
+  hidden,
+}: Props) => {
+  const localize = useLocalize();
+  const phase = usePhase(phaseId);
+  const phaseFiles = useResourceFiles({
+    resourceId: phaseId,
+    resourceType: 'phase',
+  });
 
-interface Props extends InputProps, DataProps {}
+  const content = !isNilOrError(phase)
+    ? localize(phase.attributes.description_multiloc)
+    : '';
+  const contentIsEmpty =
+    content === '' || content === '<p></p>' || content === '<p><br></p>';
+  const descriptionHasContent = !contentIsEmpty || !isEmpty(phaseFiles);
 
-const PhaseDescription = memo<Props>(
-  ({ projectId, phaseId, phase, phaseFiles, className }) => {
-    const theme: any = useTheme();
-    const { windowWidth } = useWindowSize();
-    const localize = useLocalize();
+  return (
+    <Container
+      className={`e2e-phase-description ${className || ''}`}
+      role="tabpanel"
+      tabIndex={0}
+      id={`phase-description-panel-${phaseNumber}`}
+      aria-labelledby={`phase-tab-${phaseNumber}`}
+      hidden={hidden}
+    >
+      <PhaseTitle
+        phaseNumber={phaseNumber}
+        phaseId={phaseId}
+        descriptionHasContent={descriptionHasContent}
+      />
+      {!isNilOrError(phase) && descriptionHasContent && (
+        <>
+          <ReadMoreWrapper
+            fontSize="base"
+            contentId="phase-description"
+            value={phase?.attributes?.description_multiloc}
+          />
 
-    const smallerThanSmallTablet = windowWidth <= viewportWidths.smallTablet;
-    const content = !isNilOrError(phase)
-      ? localize(phase.attributes.description_multiloc)
-      : '';
-    const contentIsEmpty =
-      content === '' || content === '<p></p>' || content === '<p><br></p>';
-    const hasContent = !contentIsEmpty || !isEmpty(phaseFiles);
+          {!isNilOrError(phaseFiles) && !isEmpty(phaseFiles) && (
+            <StyledFileAttachments files={phaseFiles} />
+          )}
+        </>
+      )}
+    </Container>
+  );
+};
 
-    return (
-      <Container className={`e2e-phase-description ${className || ''}`}>
-        <Header hasContent={hasContent}>
-          <PhaseTitle projectId={projectId} selectedPhaseId={phaseId} />
-          {!smallerThanSmallTablet && <PhaseNavigation projectId={projectId} />}
-        </Header>
-        {hasContent && (
-          <>
-            <QuillEditedContent fontSize="base" textColor={theme.colorText}>
-              <T
-                value={phase?.attributes?.description_multiloc}
-                supportHtml={true}
-              />
-            </QuillEditedContent>
-
-            {!isNilOrError(phaseFiles) && !isEmpty(phaseFiles) && (
-              <StyledFileAttachments files={phaseFiles} />
-            )}
-          </>
-        )}
-      </Container>
-    );
-  }
-);
-
-const Data = adopt<DataProps, InputProps>({
-  phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>,
-  phaseFiles: ({ phaseId, render }) => (
-    <GetResourceFiles resourceType="phase" resourceId={phaseId}>
-      {render}
-    </GetResourceFiles>
-  ),
-});
-
-const PhaseDescriptionWithHoCAndData = (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <PhaseDescription {...inputProps} {...dataProps} />}
-  </Data>
-);
-
-export default PhaseDescriptionWithHoCAndData;
+export default PhaseDescription;

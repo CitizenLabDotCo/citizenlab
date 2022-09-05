@@ -1,9 +1,10 @@
 import React, { PureComponent } from 'react';
 import { includes, isNil } from 'lodash-es';
+import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // components
 import Checkbox from 'components/UI/Checkbox';
-import { Dropdown } from 'cl2-component-library';
+import { Dropdown } from '@citizenlab/cl2-component-library';
 
 // style
 import styled from 'styled-components';
@@ -149,25 +150,20 @@ export default class ValuesList extends PureComponent<Props, State> {
     mobileRight: undefined,
   };
 
-  removeFocus = (event: React.MouseEvent) => {
-    event.preventDefault();
-  };
-
   handleOnToggleCheckbox = (entry) => (_event: React.ChangeEvent) => {
     this.props.onChange(entry.value);
   };
 
-  handleOnSelectSingleValue = (entry) => (
-    event: React.MouseEvent | React.KeyboardEvent
-  ) => {
-    if (
-      event.type === 'click' ||
-      (event.type === 'keydown' && event['key'] === 'Enter')
-    ) {
-      event.preventDefault();
-      this.props.onChange(entry.value);
-    }
-  };
+  handleOnSelectSingleValue =
+    (entry) => (event: React.MouseEvent | React.KeyboardEvent) => {
+      if (
+        event.type === 'click' ||
+        (event.type === 'keydown' && event['key'] === 'Enter')
+      ) {
+        event.preventDefault();
+        this.props.onChange(entry.value);
+      }
+    };
 
   handleOnClickOutside = (event: React.FormEvent) => {
     this.props.onClickOutside && this.props.onClickOutside(event);
@@ -234,7 +230,7 @@ export default class ValuesList extends PureComponent<Props, State> {
                     aria-posinset={index + 1}
                     aria-selected={checked}
                     key={entry.value}
-                    onMouseDown={this.removeFocus}
+                    onMouseDown={removeFocusAfterMouseClick}
                     className={classNames}
                   >
                     <Checkbox
@@ -251,7 +247,7 @@ export default class ValuesList extends PureComponent<Props, State> {
                     aria-posinset={index + 1}
                     aria-selected={checked}
                     key={entry.value}
-                    onMouseDown={this.removeFocus}
+                    onMouseDown={removeFocusAfterMouseClick}
                     className={classNames}
                     onClick={this.handleOnSelectSingleValue(entry)}
                     onKeyDown={this.handleOnSelectSingleValue(entry)}

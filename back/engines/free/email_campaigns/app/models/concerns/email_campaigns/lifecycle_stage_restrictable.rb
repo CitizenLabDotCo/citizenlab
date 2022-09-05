@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EmailCampaigns
   module LifecycleStageRestrictable
     extend ActiveSupport::Concern
@@ -8,7 +10,7 @@ module EmailCampaigns
       private
 
       def allow_lifecycle_stages(except: nil, only: nil)
-        all = ["trial", "expired_trial", "demo", "active", "churned", "not_applicable"]
+        all = %w[trial expired_trial demo active churned not_applicable]
         only ||= all
         except ||= []
 
@@ -20,7 +22,7 @@ module EmailCampaigns
       before_send :allowed_lifecycle_stage?
     end
 
-    def allowed_lifecycle_stage? options={}
+    def allowed_lifecycle_stage?(_options = {})
       self.class.allowed_lifecycle_stages.include?(AppConfiguration.instance.settings('core', 'lifecycle_stage'))
     end
   end

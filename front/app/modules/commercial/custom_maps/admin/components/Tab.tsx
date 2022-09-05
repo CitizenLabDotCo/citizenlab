@@ -23,6 +23,7 @@ const Tab: FC<Props & InjectedIntlProps> = ({
       },
       insertBeforeName: 'phases',
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return null;

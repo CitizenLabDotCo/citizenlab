@@ -6,7 +6,7 @@ import FormikMultipleSelect from 'components/UI/FormikMultipleSelect';
 import { Section, SectionField } from 'components/admin/Section';
 import { default as ErrorxBox } from 'components/UI/Error';
 import FormikInput from 'components/UI/FormikInput';
-import { Label } from 'cl2-component-library';
+import { Label } from '@citizenlab/cl2-component-library';
 import Collapse from 'components/UI/Collapse';
 import FormikToggle from 'components/UI/FormikToggle';
 import FormikColorPickerInput from 'components/UI/FormikColorPickerInput';
@@ -253,7 +253,11 @@ class WidgetForm extends PureComponent<
                   {...messages.fieldFontDescription}
                   values={{
                     googleFontsLink: (
-                      <a href="https://fonts.google.com" target="_blank">
+                      <a
+                        href="https://fonts.google.com"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
                         Google Fonts
                       </a>
                     ),

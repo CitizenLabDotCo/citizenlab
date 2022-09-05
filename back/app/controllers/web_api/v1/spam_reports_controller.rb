@@ -1,25 +1,24 @@
+# frozen_string_literal: true
+
 class WebApi::V1::SpamReportsController < ApplicationController
-
-  before_action :set_spam_report, only: [:show, :update, :destroy]
-  before_action :set_spam_reportable_type_and_id, only: [:index, :create]
-
+  before_action :set_spam_report, only: %i[show update destroy]
+  before_action :set_spam_reportable_type_and_id, only: %i[index create]
 
   def index
     @spam_reports = policy_scope(SpamReport)
       .where(spam_reportable_type: @spam_reportable_type, spam_reportable_id: @spam_reportable_id)
       .includes(:user)
-      .page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
-      
+    @spam_reports = paginate @spam_reports
+
     render json: linked_json(@spam_reports, WebApi::V1::SpamReportSerializer, params: fastjson_params, include: [:user])
   end
 
   def show
     render json: WebApi::V1::SpamReportSerializer.new(
-      @spam_report, 
+      @spam_report,
       params: fastjson_params,
       include: [:user]
-      ).serialized_json
+    ).serialized_json
   end
 
   def create
@@ -32,9 +31,9 @@ class WebApi::V1::SpamReportsController < ApplicationController
     if @spam_report.save
       SideFxSpamReportService.new.after_create(@spam_report, current_user)
       render json: WebApi::V1::SpamReportSerializer.new(
-        @spam_report, 
+        @spam_report,
         params: fastjson_params
-        ).serialized_json, status: :created
+      ).serialized_json, status: :created
     else
       render json: { errors: @spam_report.errors.details }, status: :unprocessable_entity
     end
@@ -48,14 +47,14 @@ class WebApi::V1::SpamReportsController < ApplicationController
         authorize @spam_report
         SideFxSpamReportService.new.after_update(@spam_report, current_user)
         render json: WebApi::V1::SpamReportSerializer.new(
-          @spam_report.reload, 
+          @spam_report.reload,
           params: fastjson_params,
           include: [:user]
         ).serialized_json, status: :ok
       else
         render json: { errors: @spam_report.errors.details }, status: :unprocessable_entity
       end
-    end 
+    end
   end
 
   # delete
@@ -65,17 +64,16 @@ class WebApi::V1::SpamReportsController < ApplicationController
       SideFxSpamReportService.new.after_destroy(spam_report, current_user)
       head :ok
     else
-      head 500
+      head :internal_server_error
     end
   end
-
 
   private
 
   def set_spam_reportable_type_and_id
     @spam_reportable_type = params[:spam_reportable]
     @spam_reportable_id = params[:"#{@spam_reportable_type.underscore}_id"]
-    raise RuntimeError, "must not be blank" if @spam_reportable_type.blank? or @spam_reportable_id.blank?
+    raise 'must not be blank' if @spam_reportable_type.blank? || @spam_reportable_id.blank?
   end
 
   def set_spam_report
@@ -90,5 +88,4 @@ class WebApi::V1::SpamReportsController < ApplicationController
       :user_id
     )
   end
-
 end

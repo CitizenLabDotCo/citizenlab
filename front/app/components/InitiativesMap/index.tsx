@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { popup, LatLng, Map as LeafletMap } from 'leaflet';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
+import { Subscription } from 'rxjs';
 
 // Utils
 import { trackEventByName } from 'utils/analytics';
@@ -13,6 +14,12 @@ import Map, { Point } from 'components/Map';
 import Warning from 'components/UI/Warning';
 import InitiativePreview from './InitiativePreview';
 
+// Events
+import {
+  leafletMapSelectedMarker$,
+  leafletMapClicked$,
+} from 'components/UI/LeafletMap/events';
+
 // Resources
 import GetInitiativeMarkers, {
   GetInitiativeMarkersChildProps,
@@ -20,6 +27,9 @@ import GetInitiativeMarkers, {
 import GetWindowSize, {
   GetWindowSizeChildProps,
 } from 'resources/GetWindowSize';
+import GetInitiativesPermissions, {
+  GetInitiativesPermissionsChildProps,
+} from 'resources/GetInitiativesPermissions';
 
 // i18n
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
@@ -44,11 +54,14 @@ const StyledWarning = styled(Warning)`
 
 interface InputProps {
   className?: string;
+  id?: string;
+  ariaLabelledBy?: string;
 }
 
 interface DataProps {
   initiativeMarkers: GetInitiativeMarkersChildProps;
   windowSize: GetWindowSizeChildProps;
+  initiativePermissions: GetInitiativesPermissionsChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -58,6 +71,7 @@ interface State {
   points: Point[];
   lat?: number | null;
   lng?: number | null;
+  map?: LeafletMap | null;
 }
 
 export class InitiativesMap extends PureComponent<
@@ -65,6 +79,7 @@ export class InitiativesMap extends PureComponent<
   State
 > {
   private addInitiativeButtonElement: HTMLElement;
+  private subscriptions: Subscription[];
 
   constructor(props) {
     super(props);
@@ -72,9 +87,21 @@ export class InitiativesMap extends PureComponent<
       selectedInitiativeId: null,
       points: [],
     };
+    this.subscriptions = [];
   }
 
   componentDidMount() {
+    this.subscriptions = [
+      leafletMapSelectedMarker$.subscribe((InitiativeId) => {
+        if (InitiativeId) {
+          this.handleInitiativeMarkerSelected(InitiativeId);
+        }
+      }),
+      leafletMapClicked$.subscribe((latLng) => {
+        this.handleMapClicked(latLng);
+      }),
+    ];
+
     const points = this.getPoints(this.props.initiativeMarkers);
     this.setState({ points });
   }
@@ -84,6 +111,10 @@ export class InitiativesMap extends PureComponent<
       const points = this.getPoints(this.props.initiativeMarkers);
       this.setState({ points });
     }
+  }
+
+  componentWillUnmount() {
+    this.subscriptions?.forEach((subscription) => subscription.unsubscribe());
   }
 
   bindInitiativeCreationButton = (element: HTMLDivElement) => {
@@ -114,7 +145,15 @@ export class InitiativesMap extends PureComponent<
     return InitiativePoints;
   };
 
-  toggleInitiative = (InitiativeId: string) => {
+  deselectInitiative = () => {
+    this.setState({ selectedInitiativeId: null });
+  };
+
+  handleMapOnInit = (map: LeafletMap) => {
+    this.setState({ map });
+  };
+
+  handleInitiativeMarkerSelected = (InitiativeId: string) => {
     trackEventByName(tracks.clickOnInitiativeMapMarker, {
       extra: { InitiativeId },
     });
@@ -127,15 +166,13 @@ export class InitiativesMap extends PureComponent<
     });
   };
 
-  deselectInitiative = () => {
-    this.setState({ selectedInitiativeId: null });
-  };
-
-  onMapClick = (map: LeafletMap, position: LatLng) => {
+  handleMapClicked = (position: LatLng) => {
     const { lat, lng } = position;
+    const { map } = this.state;
+
     this.setState({ lat, lng });
 
-    if (this.addInitiativeButtonElement) {
+    if (this.addInitiativeButtonElement && position && map) {
       popup()
         .setLatLng(position)
         .setContent(this.addInitiativeButtonElement)
@@ -150,43 +187,69 @@ export class InitiativesMap extends PureComponent<
   );
 
   render() {
-    const { initiativeMarkers, className } = this.props;
+    const {
+      initiativeMarkers,
+      className,
+      initiativePermissions,
+      ariaLabelledBy,
+      id,
+    } = this.props;
     const { selectedInitiativeId, points, lat, lng } = this.state;
 
-    return (
-      <Container className={className}>
-        {initiativeMarkers &&
-          initiativeMarkers.length > 0 &&
-          points.length === 0 && (
-            <StyledWarning text={this.noInitiativesWithLocationMessage} />
-          )}
+    if (!isNilOrError(initiativePermissions)) {
+      const { enabled } = initiativePermissions;
+      const proposalSubmissionEnabled = enabled === true || enabled === 'maybe';
 
-        <Map
-          points={points}
-          onMarkerClick={this.toggleInitiative}
-          boxContent={
-            selectedInitiativeId ? (
-              <InitiativePreview initiativeId={selectedInitiativeId} />
-            ) : null
-          }
-          onBoxClose={this.deselectInitiative}
-          onMapClick={this.onMapClick}
-        />
-
-        <div
-          className="create-initiative-wrapper"
-          ref={this.bindInitiativeCreationButton}
+      return (
+        <Container
+          className={className}
+          aria-labelledby={ariaLabelledBy}
+          id={id}
+          tabIndex={0}
         >
-          <InitiativeButton location="in_map" inMap lat={lat} lng={lng} />
-        </div>
-      </Container>
-    );
+          {initiativeMarkers &&
+            initiativeMarkers.length > 0 &&
+            points.length === 0 && (
+              <StyledWarning text={this.noInitiativesWithLocationMessage} />
+            )}
+
+          <Map
+            onInit={this.handleMapOnInit}
+            points={points}
+            boxContent={
+              selectedInitiativeId ? (
+                <InitiativePreview initiativeId={selectedInitiativeId} />
+              ) : null
+            }
+            onBoxClose={this.deselectInitiative}
+          />
+
+          <div
+            className="create-initiative-wrapper"
+            ref={this.bindInitiativeCreationButton}
+          >
+            {proposalSubmissionEnabled ? (
+              <InitiativeButton location="in_map" lat={lat} lng={lng} />
+            ) : (
+              <Warning>
+                <FormattedMessage {...messages.newProposalsNotPermitted} />
+              </Warning>
+            )}
+          </div>
+        </Container>
+      );
+    }
+
+    return null;
   }
 }
 
 const Data = adopt<DataProps, InputProps>({
   initiativeMarkers: <GetInitiativeMarkers />,
   windowSize: <GetWindowSize />,
+  initiativePermissions: (
+    <GetInitiativesPermissions action="posting_initiative" />
+  ),
 });
 
 const InitiativesMapWithRouter = withRouter(InitiativesMap);

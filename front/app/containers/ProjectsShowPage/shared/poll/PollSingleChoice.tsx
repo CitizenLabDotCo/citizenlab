@@ -5,7 +5,7 @@ import GetPollOptions, {
 import { adopt } from 'react-adopt';
 import { IPollQuestion } from 'services/pollQuestions';
 import styled from 'styled-components';
-import { Radio } from 'cl2-component-library';
+import { Radio } from '@citizenlab/cl2-component-library';
 import {
   QuestionContainer,
   Question,

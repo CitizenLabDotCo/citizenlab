@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 // Hook
-const useKeyPress = (targetKey) => {
+const useKeyPress = (targetKey: string) => {
   // State for keeping track of whether key is pressed
   const [keyPressed, setKeyPressed] = useState(false);
 
@@ -28,6 +28,7 @@ const useKeyPress = (targetKey) => {
       window.removeEventListener('keydown', downHandler);
       window.removeEventListener('keyup', upHandler);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Empty array ensures that effect is only run on mount and unmount
 
   return keyPressed;

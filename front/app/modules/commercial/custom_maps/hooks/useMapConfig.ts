@@ -14,9 +14,9 @@ export interface Props {
   prefetchMapLayers?: boolean;
 }
 
-export type IOutput = IMapConfigData | undefined | null;
+export type IMapConfigState = IMapConfigData | undefined | null;
 
-export default ({ projectId, prefetchMapLayers }: Props): IOutput => {
+export default ({ projectId, prefetchMapLayers }: Props): IMapConfigState => {
   const [mapConfig, setMapConfig] = useState<IMapConfigData | undefined | null>(
     undefined
   );
@@ -55,6 +55,7 @@ export default ({ projectId, prefetchMapLayers }: Props): IOutput => {
     });
 
     return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projectId]);
 
   return mapConfig;

@@ -26,24 +26,16 @@ import { ProcessType } from 'services/projects';
 
 // styling
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
 
 const Container = styled.div``;
 
 const MoreActionsMenuWrapper = styled.div`
   display: flex;
   align-items: center;
-
-  &.hasLeftMargin {
-    ${media.biggerThanMaxTablet`
-      margin-left: 35px;
-    `}
-  }
 `;
 
 interface Props {
   idea: IIdeaData;
-  hasLeftMargin: boolean;
   className?: string;
   projectId: string;
 }
@@ -51,14 +43,12 @@ interface Props {
 const IdeaMoreActions = memo(
   ({
     idea,
-    hasLeftMargin,
     className,
     projectId,
     intl: { formatMessage },
   }: Props & InjectedIntlProps) => {
-    const [isSpamModalVisible, setIsSpamModalVisible] = useState<boolean>(
-      false
-    );
+    const [isSpamModalVisible, setIsSpamModalVisible] =
+      useState<boolean>(false);
     const authUser = useAuthUser();
     const project = useProject({ projectId });
 
@@ -96,12 +86,11 @@ const IdeaMoreActions = memo(
 
       return (
         <Container className={className}>
-          <MoreActionsMenuWrapper
-            className={hasLeftMargin ? 'hasLeftMargin' : ''}
-          >
+          <MoreActionsMenuWrapper>
             <HasPermission item={idea} action="edit" context={idea}>
               <MoreActionsMenu
-                ariaLabel={<FormattedMessage {...messages.moreOptions} />}
+                label={<FormattedMessage {...messages.moreOptions} />}
+                showLabel={false}
                 id="e2e-idea-more-actions"
                 actions={[
                   {
@@ -127,7 +116,8 @@ const IdeaMoreActions = memo(
                       handler: openSpamModal,
                     },
                   ]}
-                  ariaLabel={<FormattedMessage {...messages.moreOptions} />}
+                  label={<FormattedMessage {...messages.moreOptions} />}
+                  showLabel={false}
                 />
               </HasPermission.No>
             </HasPermission>

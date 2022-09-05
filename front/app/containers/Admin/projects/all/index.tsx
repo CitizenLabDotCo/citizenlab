@@ -16,11 +16,11 @@ import CreateProject from './CreateProject';
 import PageWrapper from 'components/admin/PageWrapper';
 import { PageTitle, SectionDescription } from 'components/admin/Section';
 import HasPermission from 'components/HasPermission';
-import { Spinner } from 'cl2-component-library';
+import { Spinner } from '@citizenlab/cl2-component-library';
 import Outlet from 'components/Outlet';
 
-const ModeratorProjectList = React.lazy(() =>
-  import('./Lists/ModeratorProjectList')
+const ModeratorProjectList = React.lazy(
+  () => import('./Lists/ModeratorProjectList')
 );
 const AdminProjectList = React.lazy(() => import('./Lists/AdminProjectList'));
 
@@ -79,7 +79,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
 
         <SectionDescription>
           <HasPermission
-            item={{ type: 'route', path: '/admin/projects/new' }}
+            item={{ type: 'route', path: '/admin/projects' }}
             action="access"
           >
             <FormattedMessage {...messages.overviewPageSubtitle} />

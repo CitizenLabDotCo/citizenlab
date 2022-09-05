@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module AdminApi
   class Types::InitiativeType < GraphQL::Schema::Object
-    description "Single unit of citizen input"
+    description 'Single unit of citizen input'
 
     class InitiativePublicationStatus < GraphQL::Schema::Enum
       Initiative::PUBLICATION_STATUSES.each do |ps|
@@ -9,7 +11,7 @@ module AdminApi
     end
 
     class InitiativeImage < GraphQL::Schema::Object
-      description "An image associates with an initiative"
+      description 'An image associates with an initiative'
 
       field :id, ID, null: false
       field :ordering, Integer, null: true
@@ -29,7 +31,6 @@ module AdminApi
       field :created_at, String, null: false
     end
 
-
     field :id, ID, null: false
     field :title_multiloc, Types::MultilocType, null: false
     field :slug, String, null: false
@@ -45,11 +46,8 @@ module AdminApi
       object.initiative_images
     end
 
-
-    @@frontend_service = Frontend::UrlService.new
     def href
-      @@frontend_service.model_to_url(object)
+      Frontend::UrlService.new.model_to_url(object)
     end
-
   end
 end

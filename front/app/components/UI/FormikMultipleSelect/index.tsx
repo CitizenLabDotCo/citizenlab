@@ -5,17 +5,24 @@ import MultipleSelect, {
 import { FieldProps } from 'formik';
 import { IOption } from 'typings';
 
-type State = {};
+interface State {}
 
 class FormikMultipleSelect extends React.Component<
   FieldProps & VanillaInputProps,
   State
 > {
   handleOnChange = (newOption: IOption[]) => {
-    this.props.form.setFieldValue(
-      this.props.field.name,
+    const {
+      form,
+      field: { name },
+    } = this.props;
+    form.setFieldValue(
+      name,
       newOption.map((o) => o.value)
     );
+    form.setStatus('enabled');
+    form.setFieldTouched(name, true);
+    form.setFieldError(name, '');
   };
 
   render() {

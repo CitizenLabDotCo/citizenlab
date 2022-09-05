@@ -6,9 +6,10 @@ import { isNilOrError } from 'utils/helperUtils';
 // router
 import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
+import { parse } from 'qs';
 
 // components
-import { Success } from 'cl2-component-library';
+import { Success } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import PasswordInput, {
   hasPasswordMinimumLength,
@@ -83,11 +84,6 @@ const LabelContainer = styled.div`
   align-items: center;
 `;
 
-const StyledFormLabel = styled(FormLabel)`
-  width: max-content;
-  margin-right: 5px;
-`;
-
 const StyledPasswordIconTooltip = styled(PasswordIconTooltip)`
   margin-bottom: 6px;
 `;
@@ -125,7 +121,7 @@ class PasswordReset extends React.PureComponent<
 
   constructor(props) {
     super(props);
-    const query = clHistory.getCurrentLocation().query;
+    const query = parse(clHistory.location.search, { ignoreQueryPrefix: true });
     const token = isString(query.token) ? query.token : null;
     this.state = {
       token,
@@ -237,13 +233,8 @@ class PasswordReset extends React.PureComponent<
 
   render() {
     const { formatMessage } = this.props.intl;
-    const {
-      password,
-      processing,
-      success,
-      apiErrors,
-      minimumLengthError,
-    } = this.state;
+    const { password, processing, success, apiErrors, minimumLengthError } =
+      this.state;
     const helmetTitle = formatMessage(messages.helmetTitle);
     const helmetDescription = formatMessage(messages.helmetDescription);
     const title = formatMessage(messages.title);
@@ -266,7 +257,9 @@ class PasswordReset extends React.PureComponent<
 
             <Form onSubmit={this.handleOnSubmit}>
               <LabelContainer>
-                <StyledFormLabel
+                <FormLabel
+                  width="max-content"
+                  margin-right="5px"
                   labelMessage={messages.passwordLabel}
                   htmlFor="password-reset-input"
                 />
@@ -274,6 +267,7 @@ class PasswordReset extends React.PureComponent<
               </LabelContainer>
               <PasswordInput
                 id="password"
+                autocomplete="new-password"
                 password={password}
                 placeholder={passwordPlaceholder}
                 onChange={this.handlePasswordOnChange}

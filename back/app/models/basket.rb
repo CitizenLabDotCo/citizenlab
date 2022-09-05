@@ -1,3 +1,25 @@
+# frozen_string_literal: true
+
+# == Schema Information
+#
+# Table name: baskets
+#
+#  id                         :uuid             not null, primary key
+#  submitted_at               :datetime
+#  user_id                    :uuid
+#  participation_context_id   :uuid
+#  participation_context_type :string
+#  created_at                 :datetime         not null
+#  updated_at                 :datetime         not null
+#
+# Indexes
+#
+#  index_baskets_on_user_id  (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (user_id => users.id)
+#
 class Basket < ApplicationRecord
   belongs_to :user
   belongs_to :participation_context, polymorphic: true
@@ -6,30 +28,30 @@ class Basket < ApplicationRecord
   has_many :ideas, through: :baskets_ideas
 
   validates :user, :participation_context, presence: true
-  validate :in_budgeting_participation_context
-  validate :submitted_and_exceeds_limit, on: :basket_submission
+  validate :basket_submission, on: :basket_submission
 
   scope :submitted, -> { where.not(submitted_at: nil) }
 
   def total_budget
-  	self.ideas.pluck(:budget).compact.inject(0){|sum,x| sum + x }
+    ideas.pluck(:budget).compact.sum
   end
 
   def budget_exceeds_limit?
-  	self.total_budget > self.participation_context.max_budget
+    total_budget > participation_context.max_budget
   end
-
 
   private
 
-  def in_budgeting_participation_context
-  	if !participation_context.budgeting?
-  		errors.add(:participation_context, :is_not_budgeting, message: 'is not a in budgeting method')
-  	end
+  def less_than_min_budget?
+    total_budget < participation_context.min_budget
   end
 
-  def submitted_and_exceeds_limit
-    if submitted_at && budget_exceeds_limit?
+  def basket_submission
+    return unless submitted_at
+
+    if less_than_min_budget?
+      errors.add(:ideas, :less_than_min_budget, message: 'less than the min budget while the basket is submitted')
+    elsif budget_exceeds_limit?
       errors.add(:ideas, :exceed_budget_limit, message: 'exceed the budget limit while the basket is submitted')
     end
   end

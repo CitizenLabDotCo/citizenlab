@@ -7,9 +7,8 @@ fr:
       "comment_marked_as_spam": Commenter le rapport de spam
       "comment_on_your_comment": Une réponse à mon commentaire
       "comment_on_your_idea": Un commentaire sur mon idée
-      "comment_on_your_initiative": Un commentaire sur mon proposition
+      "comment_on_your_initiative": Un commentaire sur ma proposition
       "first_idea_published": Publication de ma première idée
-      "idea_assigned_to_you": Attribution en ma faveur d'une idée
       "idea_marked_as_spam": Rapport sur le spam d'idées
       "idea_published": Publication de mon idée
       "initiative_assigned_to_you": Attribution en ma faveur d'une proposition
@@ -58,7 +57,6 @@ fr:
       "comment_on_your_idea": Commentez votre idée (tous les utilisateurs)
       "comment_on_your_initiative": Commentez votre proposition - tous les utilisateurs
       "first_idea_published": Publication de votre première idée (tous les utilisateurs)
-      "idea_assigned_to_you": Attribution d'une idée - administrateurs et administrateurs projet
       "idea_marked_as_spam": Rapport de spam d'idées - administrateurs et administrateurs projet
       "idea_published": Publication de votre idée (tous les utilisateurs)
       "initiative_assigned_to_you": Attribution d'une proposition - admins
@@ -93,7 +91,7 @@ fr:
       "status_change_of_your_idea": Changement de statut de votre idée (tous les utilisateurs)
       "status_change_of_your_initiative": Changement de statut de votre proposition - tous les utilisateurs
       "threshold_reached_for_admin": La proposition a atteint le seuil de vote - admins
-      "welcome": Nouvel utilisateur (administrateurs)
+      "welcome": Courriel de bienvenue aux nouveaux utilisateurs (tous les utilisateurs)
       "admin_digest": Vue d'ensemble hebdomadaire - administrateurs
       "moderator_digest": Aperçu hebdomadaire - administrateurs projet
       "assignee_digest": Aperçu hebdomadaire des idées attribuées - administrateurs et administrateurs projet
@@ -167,13 +165,6 @@ fr:
       main_header: '%{commentAuthor} a commenté votre proposition'
       subject: 'Vous avez reçu un commentaire sur la plateforme de %{organizationName}'
       preheader: '%{authorName} a commenté votre proposition pour %{organizationName}'
-    idea_assigned_to_you:
-      by_author: 'par %{authorName}'
-      cta_reply_to: 'Faites vos retours à %{authorName}'
-      event_description_idea: 'Une idée vous a été attribuée. Envoyer une mise à jour en écrivant un commentaire officiel ou en changeant son statut.'
-      main_header: '%{firstName}, vous avez une nouvelle attribution'
-      subject: 'Vous avez une attribution sur la plate-forme de %{organizationName}'
-      preheader_idea: 'L’idée de %{authorName} vous a été attribuée'
     assignee_digest:
       subject: 'Idées en attente de mise à jour: %{numberIdeas}'
       preheader: 'Rapport de gestion de %{organizationName}'
@@ -217,13 +208,13 @@ fr:
     invite_reminder:
       cta_accept_invitation: 'Accepter votre invitation'
       invitation_header: 'Votre invitation est en attente'
-      preheader: 'Il y a quelques jours, %{organizationName} vous a invité à rejoindre sa plateforme de participation.'
+      preheader: 'Il y a quelques jours, %{organizationName} vous a invité.e à rejoindre sa plateforme de participation.'
       subject: 'Une invitation en attente pour la plate-forme de participation de %{organizationName}'
     invite_received:
       added_a_message: '%{organizationName} a écrit le message suivant :'
       cta_accept_invitation: 'Accepter votre invitation'
-      invitation_header: 'Vous êtes invités !'
-      invitation_header_message: '%{organizationName} vous a invité à rejoindre sa plateforme de participation.'
+      invitation_header: 'Vous êtes invité.e !'
+      invitation_header_message: '%{organizationName} vous a invité.e à rejoindre sa plateforme de participation.'
       preheader: '%{organizationName} vous a envoyé une invitation à rejoindre leur plateforme de participation.'
       subject: 'Vous avez reçu une invitation pour rejoindre la plateforme de %{organizationName}'
     initiative_published:
@@ -424,18 +415,12 @@ fr:
       title_what_can_you_do_folderadmin: 'Que pouvez-vous faire en tant qu''administrateur de dossiers ?'
       title_added_as_folderadmin: 'Vous êtes à présent administrateur de dossiers'
       x_projects: '%{numberOfProjects} projets'
-    password_reset:
-      cta_reset_password: 'Réinitialisez votre mot de passe'
-      message_you_reset_your_password: 'Vous avez demandé une réinitialisation du mot de passe pour la plateforme de participation de %{organizationName}. Cliquez sur le bouton ci-dessous pour choisir un nouveau mot de passe sécurisé. Le lien expire dans 1 heure.'
-      preheader: 'Voici le lien que vous avez demandé pour réinitialiser votre mot de passe'
-      subject: '%{organizationName}: réinitialisez votre mot de passe'
-      title_reset_your_password: 'Choisissez un nouveau mot de passe'
     project_phase_started:
       cta_view_phase: 'Découvrez cette nouvelle phase'
       event_description: 'Ce projet est entré dans une nouvelle phase sur la plate-forme de %{organizationName}. Cliquez sur le lien ci-dessous pour en savoir plus !'
       main_header: 'Une nouvelle phase a commencé pour le projet ''%{projectName}'''
       new_phase: 'Ce projet est entré dans la phase ''%{phaseTitle}'''
-      subject: '%{projectName} est entré dans une nouvelle phase'
+      subject: '%{projectName} est entré.e dans une nouvelle phase'
       preheader: 'Une nouvelle phase a commencé pour %{projectName}'
     project_phase_upcoming:
       cta_view_phase: 'Configurer cette nouvelle phase'
@@ -567,4 +552,3 @@ fr:
       new_votes: 'Nouveaux votes'
       remaining_votes: 'Votes restants'
       remaining_days: 'Jours restants'
-

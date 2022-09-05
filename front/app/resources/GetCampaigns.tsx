@@ -48,12 +48,8 @@ export default class GetCampaigns extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const {
-      campaignNames,
-      withoutCampaignNames,
-      pageSize,
-      pageNumber,
-    } = this.props;
+    const { campaignNames, withoutCampaignNames, pageSize, pageNumber } =
+      this.props;
 
     this.inputProps$ = new BehaviorSubject({
       campaignNames,
@@ -63,7 +59,7 @@ export default class GetCampaigns extends React.Component<Props, State> {
     this.pageChanges$ = new BehaviorSubject(pageNumber || 1);
 
     this.subscriptions = [
-      combineLatest(this.inputProps$, this.pageChanges$)
+      combineLatest([this.inputProps$, this.pageChanges$])
         .pipe(
           map(([inputProps, pageNumber]) => ({ ...inputProps, pageNumber })),
           distinctUntilChanged((prev, next) => isEqual(prev, next)),

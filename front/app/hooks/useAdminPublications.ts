@@ -10,12 +10,25 @@ import { isNilOrError } from 'utils/helperUtils';
 import { unionBy, isString } from 'lodash-es';
 import { IRelationship } from 'typings';
 
-export interface InputProps {
-  pageSize?: number;
+export interface BaseProps {
+  topicFilter?: string[];
   areaFilter?: string[];
   publicationStatusFilter: PublicationStatus[];
   rootLevelOnly?: boolean;
   removeNotAllowedParents?: boolean;
+  search?: string;
+}
+
+export interface InputProps extends BaseProps {
+  pageSize?: number;
+  /**
+   * childrenOfId is an id of a folder that we want
+   * child admin publications of.
+   * Folders are the only admin publication type that can have
+   * children at the moment.
+   * Their children can only be projects at the moment.
+   */
+  childrenOfId?: string;
 }
 
 export type IAdminPublicationContent = {
@@ -36,37 +49,36 @@ export type IAdminPublicationContent = {
   };
 };
 
-export interface ChildrenOfProps {
-  id?: string;
-}
 export interface IUseAdminPublicationsOutput {
-  list: IAdminPublicationContent[] | undefined | null;
+  list: IAdminPublicationContent[] | undefined | null | Error;
   hasMore: boolean;
   loadingInitial: boolean;
   loadingMore: boolean;
   onLoadMore: () => void;
-  childrenOf: ({ id }: ChildrenOfProps) => IAdminPublicationContent[];
-  onChangeAreas: (areas: string[] | null) => void;
+  onChangeTopics: (topics: string[]) => void;
+  onChangeSearch: (string: string | null) => void;
+  onChangeAreas: (areas: string[]) => void;
   onChangePublicationStatus: (publicationStatuses: PublicationStatus[]) => void;
 }
 
 export default function useAdminPublications({
   pageSize = 1000,
+  topicFilter,
   areaFilter,
   publicationStatusFilter,
   rootLevelOnly = false,
   removeNotAllowedParents = false,
-}: InputProps) {
-  const [all, setAll] = useState<IAdminPublicationContent[] | undefined | null>(
-    undefined
-  );
+  childrenOfId,
+}: InputProps): IUseAdminPublicationsOutput {
   const [list, setList] = useState<
-    IAdminPublicationContent[] | undefined | null
+    IAdminPublicationContent[] | undefined | null | Error
   >(undefined);
   const [hasMore, setHasMore] = useState(false);
   const [loadingInitial, setLoadingInitial] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
+  const [search, setSearch] = useState<string | null>(null);
+  const [topics, setTopics] = useState<string[] | undefined>(topicFilter);
   const [areas, setAreas] = useState<string[] | undefined>(areaFilter);
   const [publicationStatuses, setPublicationStatuses] = useState<
     PublicationStatus[]
@@ -79,8 +91,18 @@ export default function useAdminPublications({
     }
   }, [hasMore]);
 
+  const onChangeTopics = useCallback((topics) => {
+    setTopics(topics);
+    setPageNumber(1);
+  }, []);
+
   const onChangeAreas = useCallback((areas) => {
     setAreas(areas);
+    setPageNumber(1);
+  }, []);
+
+  const onChangeSearch = useCallback((search: string | null) => {
+    setSearch(search);
     setPageNumber(1);
   }, []);
 
@@ -96,12 +118,15 @@ export default function useAdminPublications({
 
   useEffect(() => {
     const queryParameters = {
-      areas,
-      publication_statuses: publicationStatuses,
       'page[number]': pageNumber,
       'page[size]': pageSize,
+      search,
+      depth: rootLevelOnly ? 0 : undefined,
+      topics,
+      areas,
+      publication_statuses: publicationStatuses,
       remove_not_allowed_parents: removeNotAllowedParents,
-      depth: rootLevelOnly && 0,
+      folder: childrenOfId,
     };
 
     const subscription = listAdminPublications({
@@ -110,7 +135,7 @@ export default function useAdminPublications({
       .observable.pipe(distinctUntilChanged())
       .subscribe((adminPublications) => {
         if (isNilOrError(adminPublications)) {
-          setList(null);
+          setList(adminPublications);
           setHasMore(false);
         } else {
           const selfLink = adminPublications?.links?.self;
@@ -133,7 +158,7 @@ export default function useAdminPublications({
                 },
               };
             })
-            .filter((item) => item) as IAdminPublicationContent[];
+            .filter((item) => item);
 
           const hasMore = !!(
             isString(selfLink) &&
@@ -152,72 +177,28 @@ export default function useAdminPublications({
       });
 
     return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     pageNumber,
     pageSize,
+    search,
+    topics,
     areas,
     publicationStatuses,
     rootLevelOnly,
     removeNotAllowedParents,
+    childrenOfId,
   ]);
-
-  useEffect(() => {
-    const queryParameters = {
-      areas,
-      publication_statuses: publicationStatuses,
-    };
-
-    const subscription = listAdminPublications({ queryParameters })
-      .observable.pipe(distinctUntilChanged())
-      .subscribe((adminPublications) => {
-        const receivedItems = adminPublications.data
-          .map((adminPublication) => {
-            const publicationType =
-              adminPublication.relationships.publication.data.type;
-            const publicationId =
-              adminPublication.relationships.publication.data.id;
-
-            return {
-              publicationId,
-              publicationType,
-              id: adminPublication.id,
-              relationships: adminPublication.relationships,
-              attributes: {
-                ...adminPublication.attributes,
-              },
-            };
-          })
-          .filter((item) => item) as IAdminPublicationContent[];
-
-        setAll(receivedItems);
-      });
-
-    return () => subscription.unsubscribe();
-  }, [areas, publicationStatuses]);
-
-  const childrenOf = useCallback(
-    ({ id: publicationId }: ChildrenOfProps) => {
-      if (isNilOrError(all)) {
-        return [];
-      }
-
-      return all.filter(
-        (publication) =>
-          !isNilOrError(publication.relationships.parent.data) &&
-          publication.relationships.parent.data.id === publicationId
-      );
-    },
-    [all]
-  );
 
   return {
     list,
     hasMore,
     loadingInitial,
     loadingMore,
-    childrenOf,
     onLoadMore,
+    onChangeTopics,
     onChangeAreas,
+    onChangeSearch,
     onChangePublicationStatus,
   };
 }

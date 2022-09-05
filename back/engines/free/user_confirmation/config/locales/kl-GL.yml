@@ -1,0 +1,13 @@
+kl:
+  user_confirmation:
+    confirmations_mailer:
+      send_confirmation_code:
+        subject: "%{organizationName} peqataatitsinikkut nittartagaanut emailit uppernarsaruk"
+        header: "Uppernarsaaninnut isissutissat"
+        header_message: "Aluu %{firstName}!"
+        thanks_for_signing_up: "Qujanaq, %{organizationName} peqataatitsinikkut nittartagaanut ilaasortanngoravit."
+        please_confirm_your_email_address: "Ilaasortanngornissat naammassiniarlugu, emailit uppernarsaruk."
+        copy_paste_the_link_below: "Isissutissaq ataaniittoq ilaasortanngornissamut immersugassamut ikkuguk."
+        the_link_is_valid_for: "Una linkeq nalunaaquttap akunneri 24-it atuutissaaq. <a href=\"%{link}\"> qaangiuppat isissutissamik nutaamik qinusinnaavutit."
+        did_you_receive_this_email_in_error: "Ajornartoornermi una emaili pissarsiaraajuk? <a href=\"%{link}\">."
+

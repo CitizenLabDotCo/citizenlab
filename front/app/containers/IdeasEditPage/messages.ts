@@ -29,9 +29,10 @@ export default defineMessages({
     id: 'app.containers.IdeasEditPage.save',
     defaultMessage: 'Save',
   },
-  submitError: {
-    id: 'app.containers.IdeasEditPage.submitError',
-    defaultMessage: 'Something went wrong. Please try again later.',
+  submitApiError: {
+    id: 'app.containers.IdeasEditPage.submitApiError',
+    defaultMessage:
+      'There was an issue submitting the form. Please check for any errors and try again.',
   },
   editedPostSave: {
     id: 'app.containers.IdeasEditPage.editedPostSave',

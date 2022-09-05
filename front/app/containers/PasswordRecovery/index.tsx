@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Input, Success } from 'cl2-component-library';
+import { Input, Success } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import { Helmet } from 'react-helmet';
 import ContentContainer from 'components/ContentContainer';
@@ -76,7 +76,7 @@ const Form = styled.form`
   flex-direction: column;
 `;
 
-type Props = {};
+interface Props {}
 
 type State = {
   email: string | null;
@@ -203,15 +203,14 @@ class PasswordRecovery extends React.PureComponent<
               <FormLabel htmlFor="email" labelMessage={messages.emailLabel} />
               <StyledInput
                 id="email"
-                type="text"
+                type="email"
+                autocomplete="email"
                 value={email}
                 error={errorMessage}
                 placeholder={emailPlaceholder}
                 onChange={this.handleEmailOnChange}
                 setRef={this.handleEmailInputSetRef}
               />
-
-              {/* <Error fieldName="title_multiloc" apiErrors={this.state.errors.title_multiloc} /> */}
 
               <StyledButton
                 size="2"

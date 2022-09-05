@@ -101,7 +101,6 @@ const UsersHeader = memo(
             <T as="h1" value={title} />
             <Buttons>
               <EditGroupButton
-                iconTitle={<FormattedMessage {...messages.editGroup} />}
                 hiddenText={<FormattedMessage {...messages.editGroup} />}
                 padding=".65em"
                 icon="edit"
@@ -109,7 +108,6 @@ const UsersHeader = memo(
                 onClick={onEdit}
               />
               <DeleteGroupButton
-                iconTitle={<FormattedMessage {...messages.deleteGroup} />}
                 hiddenText={<FormattedMessage {...messages.deleteGroup} />}
                 padding=".65em"
                 icon="delete"
@@ -119,7 +117,16 @@ const UsersHeader = memo(
             </Buttons>
           </TextAndButtons>
           <Spacer />
-          <StyledSearchInput onChange={handleSearchChange} />
+          <StyledSearchInput
+            onChange={handleSearchChange}
+            // Not important here. Requires quite some refactoring
+            // to get users here in a nice and consistent manner.
+            // This a11y_... prop needs to be a required one
+            // so we always have it on the citizen side.
+            // Whenever this components is touched,
+            // you can give it the right value (number of users resulting from the search) here.
+            a11y_numberOfSearchResults={0}
+          />
         </OnlyRow>
       );
     }
@@ -131,7 +138,15 @@ const UsersHeader = memo(
             <FormattedMessage tagName="h1" {...messages.allUsers} />
           </TextAndButtons>
           <Spacer />
-          <StyledSearchInput onChange={handleSearchChange} />
+          <StyledSearchInput
+            onChange={handleSearchChange}
+            // Not important here. Requires quite some refactoring
+            // to get users here in a nice and consistent manner.
+            // This a11y_... prop needs to be required so we always have it
+            // on the citizen side. Whenever this components is touched,
+            // you can give it the right value (number of users resulting from the search) here.
+            a11y_numberOfSearchResults={0}
+          />
         </FirstRow>
         <FormattedMessage tagName="h2" {...messages.usersSubtitle} />
       </TitleWrapper>

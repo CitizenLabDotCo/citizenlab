@@ -6,19 +6,11 @@ import Legend from './shared/components/Map/Legend';
 import { isNilOrError } from 'utils/helperUtils';
 import { IProjectData } from 'services/projects';
 import { IPhaseData } from 'services/phases';
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import FeatureFlag from 'components/FeatureFlag';
 
-type RenderOnFeatureFlagProps = {
-  children: ReactNode;
-};
-
-const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {
-  const isEnabled = useFeatureFlag('custom_maps');
-  if (isEnabled) {
-    return <>{children}</>;
-  }
-  return null;
-};
+const CustomMapConfigComponent = React.lazy(
+  () => import('./admin/containers/ProjectCustomMapConfigPage')
+);
 
 type RenderOnHideTabConditionProps = {
   project: IProjectData;
@@ -52,25 +44,23 @@ const RenderOnHideTabCondition = (props: RenderOnHideTabConditionProps) => {
 
 const configuration: ModuleConfiguration = {
   routes: {
-    'admin.projects': [
+    'admin.projects.project': [
       {
-        path: '/:locale/admin/projects/:projectId/map',
-        name: 'map',
-        container: () =>
-          import('./admin/containers/ProjectCustomMapConfigPage'),
+        path: 'map',
+        element: <CustomMapConfigComponent />,
       },
     ],
   },
   outlets: {
     'app.components.Map.leafletConfig': (props) => (
-      <RenderOnFeatureFlag>
+      <FeatureFlag name="custom_maps">
         <LeafletConfig {...props} />
-      </RenderOnFeatureFlag>
+      </FeatureFlag>
     ),
     'app.components.Map.Legend': (props) => (
-      <RenderOnFeatureFlag>
+      <FeatureFlag name="custom_maps">
         <Legend {...props} />
-      </RenderOnFeatureFlag>
+      </FeatureFlag>
     ),
     'app.containers.Admin.projects.edit': (props) => {
       return (

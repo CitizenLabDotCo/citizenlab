@@ -10,6 +10,7 @@ import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import useHomepageSettings from 'hooks/useHomepageSettings';
 
 // i18n
 import messages from './messages';
@@ -19,7 +20,7 @@ import { injectIntl } from 'utils/cl-intl';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { imageSizes } from 'utils/fileTools';
+import { imageSizes } from 'utils/fileUtils';
 import { API_PATH } from 'containers/App/constants';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
@@ -40,12 +41,18 @@ const Meta: React.SFC<Props & InjectedIntlProps> = ({
   authUser,
   intl,
 }) => {
-  if (!isNilOrError(locale) && !isNilOrError(tenant)) {
+  const homepageSettings = useHomepageSettings();
+  if (
+    !isNilOrError(locale) &&
+    !isNilOrError(tenant) &&
+    !isNilOrError(homepageSettings)
+  ) {
     const { formatMessage } = intl;
     const tenantLocales = tenant.attributes.settings.core.locales;
     const headerBg =
-      tenant.attributes.header_bg && tenant.attributes.header_bg.large
-        ? tenant.attributes.header_bg.large
+      homepageSettings.data.attributes.header_bg &&
+      homepageSettings.data.attributes.header_bg.large
+        ? homepageSettings.data.attributes.header_bg.large
         : '';
     const organizationNameMultiLoc =
       tenant.attributes.settings.core.organization_name;

@@ -8,7 +8,7 @@ import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
 
 // components
-import { Button } from 'cl2-component-library';
+import { Button } from '@citizenlab/cl2-component-library';
 
 // services
 import { IPhaseData, getCurrentPhase } from 'services/phases';
@@ -17,7 +17,6 @@ import { IPhaseData, getCurrentPhase } from 'services/phases';
 import { selectedPhase$, selectPhase } from './events';
 
 // hooks
-import useLocale from 'hooks/useLocale';
 import usePhases from 'hooks/usePhases';
 
 // i18n
@@ -71,7 +70,6 @@ interface Props {
 
 const PhaseNavigation = memo<Props & InjectedIntlProps>(
   ({ projectId, buttonStyle, className, intl: { formatMessage } }) => {
-    const locale = useLocale();
     const phases = usePhases(projectId);
 
     const [selectedPhase, setSelectedPhase] = useState<IPhaseData | null>(null);
@@ -124,7 +122,7 @@ const PhaseNavigation = memo<Props & InjectedIntlProps>(
       }
     }, [phases]);
 
-    if (!isNilOrError(locale) && !isNilOrError(phases) && phases.length > 1) {
+    if (!isNilOrError(phases) && phases.length > 1) {
       const navButtonSize = '34px';
       const navButtonStyle = buttonStyle || 'secondary';
       const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
@@ -146,7 +144,6 @@ const PhaseNavigation = memo<Props & InjectedIntlProps>(
           >
             <div>
               <PreviousPhaseButton
-                locale={locale}
                 onClick={goToPreviousPhase}
                 icon="chevron-left"
                 iconSize="12px"
@@ -173,7 +170,6 @@ const PhaseNavigation = memo<Props & InjectedIntlProps>(
             >
               <div>
                 <CurrentPhaseButton
-                  locale={locale}
                   onClick={goToCurrentPhase}
                   icon="dot"
                   iconSize="8px"
@@ -200,7 +196,6 @@ const PhaseNavigation = memo<Props & InjectedIntlProps>(
           >
             <div>
               <NextPhaseButton
-                locale={locale}
                 onClick={goToNextPhase}
                 icon="chevron-right"
                 iconSize="12px"
@@ -211,6 +206,7 @@ const PhaseNavigation = memo<Props & InjectedIntlProps>(
                 padding="0px"
                 disabled={selectedPhaseId === phases[phases.length - 1].id}
                 ariaLabel={formatMessage(messages.nextPhase)}
+                className="e2e-next-phase"
               />
             </div>
           </Tippy>

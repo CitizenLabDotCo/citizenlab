@@ -27,11 +27,11 @@ const TimelineProject = ({ project, phases }: Props) => {
         <li>
           <FormattedMessage {...messages.timeline} />
           <ul>
-            {phases.map((phase) => (
+            {phases.map((phase, i) => (
               <li key={phase.id}>
                 <Link
                   to={{
-                    pathname: `/projects/${project.attributes.slug}/process`,
+                    pathname: `/projects/${project.attributes.slug}/${i + 1}`,
                   }}
                 >
                   <T value={phase.attributes.title_multiloc} />
@@ -46,9 +46,7 @@ const TimelineProject = ({ project, phases }: Props) => {
     if (phases.length === 1) {
       return (
         <li key={phases[0].id}>
-          <Link
-            to={{ pathname: `/projects/${project.attributes.slug}/process` }}
-          >
+          <Link to={{ pathname: `/projects/${project.attributes.slug}/1` }}>
             <T value={phases[0].attributes.title_multiloc} />
           </Link>
         </li>

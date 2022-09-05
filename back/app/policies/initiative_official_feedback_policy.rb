@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class InitiativeOfficialFeedbackPolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
@@ -12,7 +14,7 @@ class InitiativeOfficialFeedbackPolicy < ApplicationPolicy
     end
   end
 
-  def create? 
+  def create?
     user&.admin?
   end
 
@@ -27,5 +29,4 @@ class InitiativeOfficialFeedbackPolicy < ApplicationPolicy
   def destroy?
     create?
   end
-
 end

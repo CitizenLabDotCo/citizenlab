@@ -1,3 +1,4 @@
+// @ts-nocheck
 // libraries
 import React from 'react';
 import { shallow } from 'enzyme';
@@ -78,7 +79,7 @@ describe('<GetIdeasCount />', () => {
       count: 6,
     };
     __setMockIdeasCount(mockIdeasCount);
-    const component = shallow(<GetIdeasCount>{child}</GetIdeasCount>);
+    shallow(<GetIdeasCount>{child}</GetIdeasCount>);
     expect(ideasCount.mock.calls[0][0].queryParameters.assignee).toEqual(
       undefined
     );

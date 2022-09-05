@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe ProjectFolders::EmailCampaigns::ProjectFolderModerationRightsReceivedMailer, type: :mailer do
   describe 'campaign_mail' do
     let(:project_folder) { create(:project_folder) }
-    let!(:recipient) { create(:project_folder_moderator, locale: 'en', project_folder: project_folder) }
+    let!(:recipient) { create(:project_folder_moderator, locale: 'en', project_folders: [project_folder]) }
     let!(:campaign) { ProjectFolders::EmailCampaigns::Campaigns::ProjectFolderModerationRightsReceived.create! }
     let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 

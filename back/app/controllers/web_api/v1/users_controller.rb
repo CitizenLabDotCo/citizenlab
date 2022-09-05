@@ -1,15 +1,15 @@
-class WebApi::V1::UsersController < ::ApplicationController
+# frozen_string_literal: true
 
-  # before_action :authenticate_user, except: [:create]
-  before_action :set_user, only: [:show, :update, :destroy, :ideas_count, :initiatives_count, :comments_count]
-  skip_after_action :verify_authorized, only: [:index_xlsx]
+class WebApi::V1::UsersController < ::ApplicationController
+  before_action :set_user, only: %i[show update destroy ideas_count initiatives_count comments_count]
+  skip_before_action :authenticate_user, only: %i[create show by_slug by_invite ideas_count initiatives_count comments_count]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
-
   def index
     authorize :user, :index?
-    @users = policy_scope(User)
+
+    @users = policy_scope User
 
     @users = @users.search_by_all(params[:search]) if params[:search].present?
 
@@ -19,41 +19,44 @@ class WebApi::V1::UsersController < ::ApplicationController
     @users = @users.admin.or(@users.project_moderator) if params[:can_moderate].present?
     @users = @users.admin if params[:can_admin].present?
 
-    @users = case params[:sort]
-      when "created_at"
+    if params[:search].blank?
+      @users = case params[:sort]
+      when 'created_at'
         @users.order(created_at: :asc)
-      when "-created_at"
+      when '-created_at'
         @users.order(created_at: :desc)
-      when "last_name"
+      when 'last_name'
         @users.order(last_name: :asc)
-      when "-last_name"
+      when '-last_name'
         @users.order(last_name: :desc)
-      when "email"
+      when 'email'
         @users.order(email: :asc) if view_private_attributes?
-      when "-email"
+      when '-email'
         @users.order(email: :desc) if view_private_attributes?
-      when "role"
+      when 'role'
         @users.order_role(:asc)
-      when "-role"
+      when '-role'
         @users.order_role(:desc)
       when nil
         @users
       else
-        raise "Unsupported sort method"
+        raise 'Unsupported sort method'
+      end
     end
 
-    @users = @users
-      .page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
+    @users = paginate @users
 
-    LogActivityJob.perform_later(current_user, 'searched_users', current_user, Time.now.to_i, payload: {search_query: params[:search]}) if params[:search].present?
+    LogActivityJob.perform_later(current_user, 'searched_users', current_user, Time.now.to_i, payload: { search_query: params[:search] }) if params[:search].present?
 
     render json: linked_json(@users, WebApi::V1::UserSerializer, params: fastjson_params)
   end
 
   def index_xlsx
     authorize :user, :index_xlsx?
-    @users = policy_scope(User).all
+
+    @users = policy_scope User
+    @users = @users.active unless params[:include_inactive]
+
     @users = @users.in_group(Group.find(params[:group])) if params[:group]
     @users = @users.where(id: params[:users]) if params[:users]
     xlsx = XlsxService.new.generate_users_xlsx @users, view_private_attributes: view_private_attributes?
@@ -71,7 +74,7 @@ class WebApi::V1::UsersController < ::ApplicationController
       params = fastjson_params unread_notifications: @user.notifications.unread.size
       render json: WebApi::V1::UserSerializer.new(@user, params: params).serialized_json
     else
-      head 404
+      head :not_found
     end
   end
 
@@ -86,9 +89,9 @@ class WebApi::V1::UsersController < ::ApplicationController
   end
 
   def by_invite
-   @user = Invite.find_by!(token: params[:token])&.invitee
-   authorize @user
-   show
+    @user = Invite.find_by!(token: params[:token])&.invitee
+    authorize @user
+    show
   end
 
   def create
@@ -104,14 +107,14 @@ class WebApi::V1::UsersController < ::ApplicationController
       render json: WebApi::V1::UserSerializer.new(
         @user,
         params: fastjson_params(granted_permissions: permissions)
-        ).serialized_json, status: :created
+      ).serialized_json, status: :created
     else
       render json: { errors: @user.errors.details }, status: :unprocessable_entity
     end
   end
 
   def update
-    permissions_before = Permission.for_user(@user)
+    permissions_before = Permission.for_user(@user).load
     mark_custom_field_values_to_clear!
     user_params = permitted_attributes @user
     user_params[:custom_field_values] = @user.custom_field_values.merge(user_params[:custom_field_values] || {})
@@ -119,7 +122,7 @@ class WebApi::V1::UsersController < ::ApplicationController
     CustomFieldService.new.cleanup_custom_field_values! user_params[:custom_field_values]
     @user.assign_attributes user_params
 
-    if user_params.keys.include?('avatar') && user_params['avatar'] == nil
+    if user_params.key?('avatar') && user_params['avatar'].nil?
       # setting the avatar attribute to nil will not remove the avatar
       @user.remove_avatar!
     end
@@ -130,8 +133,8 @@ class WebApi::V1::UsersController < ::ApplicationController
       render json: WebApi::V1::UserSerializer.new(
         @user,
         params: fastjson_params(granted_permissions: permissions),
-        include: [:granted_permissions, :'granted_permissions.permission_scope']
-        ).serialized_json, status: :ok
+        include: %i[granted_permissions granted_permissions.permission_scope]
+      ).serialized_json, status: :ok
     else
       render json: { errors: @user.errors.details }, status: :unprocessable_entity
     end
@@ -152,28 +155,23 @@ class WebApi::V1::UsersController < ::ApplicationController
       render json: WebApi::V1::UserSerializer.new(
         @user,
         params: fastjson_params
-        ).serialized_json, status: :ok
+      ).serialized_json, status: :ok
     else
       render json: { errors: @user.errors.details }, status: :unprocessable_entity
     end
   end
 
   def destroy
-    user = @user.destroy
-    if user.destroyed?
-      SideFxUserService.new.after_destroy(user, current_user)
-      head :ok
-    else
-      head 500
-    end
+    DeleteUserJob.perform_now(@user.id, current_user)
+    head :ok
   end
 
   def ideas_count
-    render json: {count: policy_scope(@user.ideas.published).count}, status: :ok
+    render json: { count: policy_scope(@user.ideas.published).count }, status: :ok
   end
 
   def initiatives_count
-    render json: {count: policy_scope(@user.initiatives.published).count}, status: :ok
+    render json: { count: policy_scope(@user.initiatives.published).count }, status: :ok
   end
 
   def comments_count
@@ -183,22 +181,18 @@ class WebApi::V1::UsersController < ::ApplicationController
       count += policy_scope(
         published_comments.where(post_type: 'Idea'),
         policy_scope_class: IdeaCommentPolicy::Scope
-        ).count
+      ).count
     end
     if !params[:post_type] || params[:post_type] == 'Initiative'
       count += policy_scope(
         published_comments.where(post_type: 'Initiative'),
         policy_scope_class: InitiativeCommentPolicy::Scope
-        ).count
+      ).count
     end
-    render json: {count: count}, status: :ok
+    render json: { count: count }, status: :ok
   end
 
   private
-  # TODO: temp fix to pass tests
-  def secure_controller?
-    false
-  end
 
   def set_user
     @user = User.find params[:id]
@@ -213,15 +207,14 @@ class WebApi::V1::UsersController < ::ApplicationController
     # the custom field value updates cleared out by the
     # policy (which should stay like before instead of
     # being cleared out).
-    if current_user&.custom_field_values && params[:user][:custom_field_values]
-      (current_user.custom_field_values.keys - (params[:user][:custom_field_values].keys || [])).each do |clear_key|
-        params[:user][:custom_field_values][clear_key] = nil
-      end
+    return unless current_user&.custom_field_values && params[:user][:custom_field_values]
+
+    (current_user.custom_field_values.keys - (params[:user][:custom_field_values].keys || [])).each do |clear_key|
+      params[:user][:custom_field_values][clear_key] = nil
     end
   end
 
   def view_private_attributes?
     Pundit.policy!(current_user, (@user || User)).view_private_attributes?
   end
-
 end

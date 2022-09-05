@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import { shallow } from 'enzyme';
 import { makeUser } from '../../services/__mocks__/users';
@@ -20,7 +21,7 @@ describe('InitiativesNewPage', () => {
   it('redirects unauthenticated users', () => {
     const topics = [mockTopicData];
 
-    const Wrapper = shallow(
+    shallow(
       <InitiativesNewPage
         locale="en"
         topics={topics}

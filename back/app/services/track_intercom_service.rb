@@ -6,9 +6,10 @@ class TrackIntercomService
   end
 
   # Here's how to add new attributes to the contact model
-  # @intercom.data_attributes.create({ name: "isProjectModerator", model: "contact", data_type: "boolean" })
+  # @intercom.data_attributes.create({ name: "isAdmin", model: "contact", data_type: "boolean" })
 
   # @param [User] user
+  # @return [Intercom::Contact,NilClass]
   def identify_user(user)
     return unless @intercom && track_user?(user)
 
@@ -20,17 +21,24 @@ class TrackIntercomService
   end
 
   # @param [User] user
+  # @return [Intercom::Contact,NilClass]
+  def forget_user(user_id)
+    contact = search_contact(user_id)
+    @intercom.contacts.delete(contact) if contact
+  end
+
+  # @param [User] user
   # @return [Boolean]
   def track_user?(user)
     return false if user.super_admin?
 
-    user.admin? || user.project_moderator?
+    user.admin?
   end
 
   def identify_tenant(tenant)
     return unless @intercom
 
-    company = @intercom.companies.find(id: tenant.id)
+    company = @intercom.companies.find(company_id: tenant.id)
   rescue Intercom::ResourceNotFound
     create_company(tenant)
   else
@@ -71,7 +79,6 @@ class TrackIntercomService
       locale: user.locale,
       isAdmin: user.admin?,
       isSuperAdmin: user.super_admin?,
-      isProjectModerator: user.project_moderator?,
       highestRole: user.highest_role.to_s
     }
   end
@@ -85,14 +92,17 @@ class TrackIntercomService
 
   # Search for the intercom contact corresponding to a user.
   #
-  # @param [User] user
+  # @param [User, String] user either a user or a user id
+  # @return [Intercom::Contact,NilClass]
   def search_contact(user)
-    contact_query = { field: 'external_id', operator: '=', value: user.id }.stringify_keys
-    search_results = @intercom.contacts.search("query": contact_query)
+    user_id = user.respond_to?(:id) ? user.id : user
+    contact_query = { field: 'external_id', operator: '=', value: user_id }.stringify_keys
+    search_results = @intercom.contacts.search(query: contact_query)
     search_results[0] if search_results.count.positive?
   end
 
   # @param [User] user
+  # @return [Intercom::Contact]
   def create_contact(user)
     @intercom.contacts.create(
       role: 'user',
@@ -105,6 +115,7 @@ class TrackIntercomService
   end
 
   # @param [User] user
+  # @return [Intercom::Contact]
   def update_contact(contact, user)
     contact.email = user.email
     contact.name = user.full_name
@@ -131,3 +142,5 @@ class TrackIntercomService
     @intercom.companies.save(company)
   end
 end
+
+TrackIntercomService.prepend_if_ee('ProjectManagement::Patches::TrackIntercomService')

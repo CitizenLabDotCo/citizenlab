@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <% if (process.env.NODE_ENV==="production") { %>
     <link
       rel="preload"
       crossorigin="anonymous"
@@ -38,6 +39,7 @@
       as="font"
       type="font/woff2"
     />
+    <% } %>
     <style>
       html,
       body {

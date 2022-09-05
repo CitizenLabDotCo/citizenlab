@@ -1,7 +1,7 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship, Multiloc } from 'typings';
-import { first } from 'rxjs/operators';
+import { firstValueFrom } from 'rxjs';
 import { get } from 'lodash-es';
 import { CommentingDisabledReason } from './projects';
 
@@ -20,7 +20,8 @@ export type IdeaVotingDisabledReason =
   | 'voting_disabled'
   | 'downvoting_disabled'
   | 'not_signed_in'
-  | 'voting_limited_max_reached'
+  | 'upvoting_limited_max_reached'
+  | 'downvoting_limited_max_reached'
   | 'idea_not_in_current_phase'
   | 'not_permitted'
   | 'not_verified';
@@ -51,7 +52,7 @@ export interface IIdeaData {
     downvotes_count: number;
     comments_count: number;
     baskets_count: number;
-    location_point_geojson: GeoJSON.Point;
+    location_point_geojson: GeoJSON.Point | null;
     location_description: string | null;
     budget: number | null;
     proposed_budget: number | null;
@@ -61,10 +62,18 @@ export interface IIdeaData {
     action_descriptor: {
       voting_idea: {
         enabled: boolean;
-        future_enabled: string | null;
         disabled_reason: IdeaVotingDisabledReason | null;
         cancelling_enabled: boolean;
-        downvoting_enabled: boolean | null;
+        up: {
+          enabled: boolean;
+          disabled_reason: IdeaVotingDisabledReason | null;
+          future_enabled: string | null;
+        };
+        down: {
+          enabled: boolean;
+          disabled_reason: IdeaVotingDisabledReason | null;
+          future_enabled: string | null;
+        };
       };
       commenting_idea: {
         enabled: boolean;
@@ -83,9 +92,6 @@ export interface IIdeaData {
   };
   relationships: {
     topics?: {
-      data: IRelationship[];
-    };
-    areas: {
       data: IRelationship[];
     };
     idea_images: {
@@ -131,6 +137,21 @@ export interface IGeotaggedIdeaData {
   };
 }
 
+export interface IIdeaMarkerData {
+  id: string;
+  type: string;
+  attributes: {
+    slug: string;
+    title_multiloc: Multiloc;
+    location_point_geojson: GeoJSON.Point;
+    location_description: string;
+    upvotes_count: number;
+    downvotes_count: number;
+    comments_count: number;
+    budget: number | null;
+  };
+}
+
 export interface IIdeaLinks {
   self: string;
   first: string;
@@ -147,20 +168,6 @@ export interface IIdeas {
   data: IIdeaData[];
   links: IIdeaLinks;
 }
-
-export interface IdeaActivity {
-  id: string;
-  type: 'activity';
-  attributes: {
-    action: string;
-    acted_at: string;
-    change: string[] | { [key: string]: string }[] | null;
-  };
-  relationships: {
-    user: { data: IRelationship };
-  };
-}
-
 export interface IIdeaAdd {
   author_id: string | null;
   project_id: string | null;
@@ -170,7 +177,6 @@ export interface IIdeaAdd {
   title_multiloc: Multiloc;
   body_multiloc: Multiloc;
   topic_ids: string[] | null;
-  area_ids?: string[] | null;
   phase_ids?: string[] | null;
   location_point_geojson: GeoJSON.Point | null;
   location_description: string | null;
@@ -180,9 +186,6 @@ export interface IIdeaAdd {
 
 export interface IIdeasFilterCounts {
   idea_status_id: {
-    [key: string]: number;
-  };
-  area_id: {
     [key: string]: number;
   };
   topic_id: {
@@ -226,7 +229,7 @@ export function ideasFilterCountsStream(
 }
 
 export function ideasMarkersStream(streamParams: IStreamParams | null = null) {
-  return streams.get<{ data: IGeotaggedIdeaData[]; links: IIdeaLinks }>({
+  return streams.get<{ data: IIdeaMarkerData[]; links: IIdeaLinks }>({
     apiEndpoint: `${API_PATH}/ideas/as_markers`,
     ...streamParams,
     cacheStream: false,
@@ -278,13 +281,14 @@ export async function updateIdea(ideaId: string, object: Partial<IIdeaAdd>) {
       `${API_PATH}/ideas`,
       `${API_PATH}/ideas/${ideaId}/activities`,
     ],
+    partialApiEndpoint: [`${API_PATH}/ideas/${ideaId}/images`],
   });
   return response;
 }
 
 export async function deleteIdea(ideaId: string) {
   const [idea, response] = await Promise.all([
-    ideaByIdStream(ideaId).observable.pipe(first()).toPromise(),
+    firstValueFrom(ideaByIdStream(ideaId).observable),
     streams.delete(`${API_PATH}/ideas/${ideaId}`, ideaId),
   ]);
 
@@ -302,10 +306,4 @@ export async function deleteIdea(ideaId: string) {
   });
 
   return response;
-}
-
-export function ideaActivities(ideaId: string) {
-  return streams.get<{ data: IdeaActivity[] }>({
-    apiEndpoint: `${API_PATH}/ideas/${ideaId}/activities`,
-  });
 }

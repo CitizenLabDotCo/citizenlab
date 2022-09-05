@@ -1,0 +1,13 @@
+tr:
+  email_campaigns:
+    campaign_type_description:
+      "idea_assigned_to_you": Bana fikir atanması
+    admin_campaign_type_description:
+      "idea_assigned_to_you": Fikir atanması - yöneticiler ve proje yöneticileri
+    idea_assigned_to_you:
+      by_author: '%{authorName} tarafından'
+      cta_reply_to: '%{authorName} için geri bildirim sağlayın'
+      event_description_idea: 'Size bir fikir atandı. Resmi bilgilendirme yazarak veya fikrin durumunu değiştirerek geri bildirim sağlayın.'
+      main_header: '%{firstName}, yeni bir atamanız var'
+      subject: '%{organizationName} platformunda bir atamanız var'
+      preheader_idea: '%{authorName} adlı kişinin fikri size atandı'

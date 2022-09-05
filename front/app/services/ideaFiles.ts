@@ -36,17 +36,6 @@ export function ideaFilesStream(
   });
 }
 
-export function ideaFileStream(
-  ideaId: string,
-  fileId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IIdeaFile>({
-    apiEndpoint: `${apiEndpoint}/${ideaId}/files/${fileId}`,
-    ...streamParams,
-  });
-}
-
 export function addIdeaFile(
   ideaId: string,
   base64: string,
@@ -55,6 +44,12 @@ export function addIdeaFile(
 ) {
   return streams.add<IIdeaFile>(`${apiEndpoint}/${ideaId}/files`, {
     file: { name, ordering, file: base64 },
+  });
+}
+
+export function addIdeaImportFile(base64: string) {
+  return streams.add<IIdeaFile>(`${API_PATH}/import_ideas/bulk_create_xlsx`, {
+    import_ideas: { xlsx: base64 },
   });
 }
 

@@ -3,10 +3,6 @@ import streams, { IStreamParams } from 'utils/streams';
 import { IUsers } from 'services/users';
 import { IGroupMembershipsFoundUserData } from 'services/groupMemberships';
 
-export interface IModeratorsFoundUsers {
-  data: IGroupMembershipsFoundUserData[];
-}
-
 export function projectModeratorsStream(projectId: string) {
   return streams.get<IUsers>({
     apiEndpoint: `${API_PATH}/projects/${projectId}/moderators`,

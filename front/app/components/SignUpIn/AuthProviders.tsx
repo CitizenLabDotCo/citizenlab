@@ -5,9 +5,10 @@ import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 
 // components
-import AuthProviderButton from './AuthProviderButton';
+import AuthProviderButton, { TOnContinueFunction } from './AuthProviderButton';
 import Or from 'components/UI/Or';
 import FranceConnectButton from 'components/UI/FranceConnectButton';
+import Outlet from 'components/Outlet';
 
 // resources
 import GetAppConfiguration, {
@@ -34,24 +35,25 @@ const Container = styled.div`
   align-items: stretch;
 `;
 
-const StyledAuthProviderButton = styled(AuthProviderButton)`
+export const StyledAuthProviderButton = styled(AuthProviderButton)`
   margin-bottom: 18px;
 `;
 
 interface InputProps {
   metaData: ISignUpInMetaData;
   className?: string;
-  onAuthProviderSelected: (selectedMethod: AuthProvider) => void;
+  onAuthProviderSelected: TOnContinueFunction;
   goToOtherFlow: () => void;
 }
 
 interface DataProps {
-  tenant: GetAppConfigurationChildProps;
-  passwordLoginEnabled: boolean | null;
-  googleLoginEnabled: boolean | null;
-  facebookLoginEnabled: boolean | null;
   azureAdLoginEnabled: boolean | null;
+  facebookLoginEnabled: boolean | null;
   franceconnectLoginEnabled: boolean | null;
+  googleLoginEnabled: boolean | null;
+  passwordLoginEnabled: boolean | null;
+  tenant: GetAppConfigurationChildProps;
+  viennaLoginEnabled: boolean | null;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -60,17 +62,18 @@ export type AuthProvider = 'email' | SSOProvider;
 
 const AuthProviders = memo<Props & InjectedIntlProps>(
   ({
-    metaData,
-    className,
-    onAuthProviderSelected,
-    goToOtherFlow,
-    tenant,
-    passwordLoginEnabled,
-    googleLoginEnabled,
-    facebookLoginEnabled,
     azureAdLoginEnabled,
+    className,
+    facebookLoginEnabled,
     franceconnectLoginEnabled,
+    goToOtherFlow,
+    googleLoginEnabled,
     intl: { formatMessage },
+    metaData,
+    onAuthProviderSelected,
+    passwordLoginEnabled,
+    tenant,
+    viennaLoginEnabled,
   }) => {
     const { flow, inModal, noPushLinks } = metaData;
     const azureProviderName = !isNilOrError(tenant)
@@ -83,7 +86,8 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
         isBoolean(googleLoginEnabled) &&
         isBoolean(facebookLoginEnabled) &&
         isBoolean(azureAdLoginEnabled) &&
-        isBoolean(franceconnectLoginEnabled)
+        isBoolean(franceconnectLoginEnabled) &&
+        isBoolean(viennaLoginEnabled)
       ) {
         const enabledProviders = [
           passwordLoginEnabled,
@@ -91,6 +95,7 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
           facebookLoginEnabled,
           azureAdLoginEnabled,
           franceconnectLoginEnabled,
+          viennaLoginEnabled,
         ].filter((provider) => provider === true);
 
         if (enabledProviders.length === 1 && passwordLoginEnabled) {
@@ -103,15 +108,9 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
       facebookLoginEnabled,
       azureAdLoginEnabled,
       franceconnectLoginEnabled,
+      viennaLoginEnabled,
       onAuthProviderSelected,
     ]);
-
-    const handleOnAuthProviderSelected = useCallback(
-      (authProvider: AuthProvider) => {
-        onAuthProviderSelected(authProvider);
-      },
-      [onAuthProviderSelected]
-    );
 
     const handleOnFranceConnectSelected = useCallback(
       (event: React.FormEvent) => {
@@ -131,6 +130,7 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
           clHistory.push(flow === 'signin' ? '/sign-up' : '/sign-in');
         }
       },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       [goToOtherFlow]
     );
 
@@ -156,8 +156,9 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
         {passwordLoginEnabled && (
           <StyledAuthProviderButton
             flow={flow}
+            icon="email"
             authProvider="email"
-            onContinue={handleOnAuthProviderSelected}
+            onContinue={onAuthProviderSelected}
             id="e2e-login-with-email"
           >
             {flow === 'signup' ? (
@@ -179,8 +180,9 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
         {googleLoginEnabled && (
           <StyledAuthProviderButton
             flow={flow}
+            icon="google"
             authProvider="google"
-            onContinue={handleOnAuthProviderSelected}
+            onContinue={onAuthProviderSelected}
           >
             <FormattedMessage {...messages.continueWithGoogle} />
           </StyledAuthProviderButton>
@@ -188,9 +190,10 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
 
         {facebookLoginEnabled && (
           <StyledAuthProviderButton
+            icon="facebook"
             flow={flow}
             authProvider="facebook"
-            onContinue={handleOnAuthProviderSelected}
+            onContinue={onAuthProviderSelected}
           >
             <FormattedMessage {...messages.continueWithFacebook} />
           </StyledAuthProviderButton>
@@ -198,9 +201,10 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
 
         {azureAdLoginEnabled && (
           <StyledAuthProviderButton
+            icon="azureactivedirectory"
             flow={flow}
             authProvider="azureactivedirectory"
-            onContinue={handleOnAuthProviderSelected}
+            onContinue={onAuthProviderSelected}
           >
             <FormattedMessage
               {...messages.continueWithAzure}
@@ -208,6 +212,11 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
             />
           </StyledAuthProviderButton>
         )}
+        <Outlet
+          id="app.components.SignUpIn.AuthProviders.ContainerEnd"
+          flow={flow}
+          onContinue={onAuthProviderSelected}
+        />
 
         <Options>
           <Option>
@@ -234,17 +243,20 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
 
 const AuthProvidersWithHoC = injectIntl(AuthProviders);
 
-const Data = adopt<DataProps, {}>({
+const Data = adopt<DataProps>({
   tenant: <GetAppConfiguration />,
-  passwordLoginEnabled: <GetFeatureFlag name="password_login" />,
-  googleLoginEnabled: <GetFeatureFlag name="google_login" />,
-  facebookLoginEnabled: <GetFeatureFlag name="facebook_login" />,
   azureAdLoginEnabled: <GetFeatureFlag name="azure_ad_login" />,
+  facebookLoginEnabled: <GetFeatureFlag name="facebook_login" />,
   franceconnectLoginEnabled: <GetFeatureFlag name="franceconnect_login" />,
+  googleLoginEnabled: <GetFeatureFlag name="google_login" />,
+  passwordLoginEnabled: <GetFeatureFlag name="password_login" />,
+  viennaLoginEnabled: <GetFeatureFlag name="vienna_login" />,
 });
 
 export default (inputProps: InputProps) => (
   <Data>
-    {(dataProps) => <AuthProvidersWithHoC {...inputProps} {...dataProps} />}
+    {(dataProps: DataProps) => (
+      <AuthProvidersWithHoC {...inputProps} {...dataProps} />
+    )}
   </Data>
 );

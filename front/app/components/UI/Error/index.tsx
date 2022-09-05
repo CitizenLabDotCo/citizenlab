@@ -1,5 +1,5 @@
-import React, { PureComponent } from 'react';
-import { Icon } from 'cl2-component-library';
+import React, { useRef, useEffect } from 'react';
+import { Icon, Box } from '@citizenlab/cl2-component-library';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { isArray, isEmpty, uniqBy } from 'lodash-es';
 import styled from 'styled-components';
@@ -14,18 +14,18 @@ const timeout = 350;
 
 const ErrorMessageText = styled.div`
   flex: 1 1 100%;
-  color: ${colors.clRedError};
+  color: ${colors.red600};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 400;
 
   a {
-    color: ${colors.clRedError};
+    color: ${colors.red600};
     font-weight: 500;
     text-decoration: underline;
 
     &:hover {
-      color: ${darken(0.2, colors.clRedError)};
+      color: ${darken(0.2, colors.red600)};
       text-decoration: underline;
     }
   }
@@ -39,7 +39,7 @@ const ErrorIcon = styled(Icon)`
   flex: 0 0 20px;
   width: 20px;
   height: 20px;
-  fill: ${colors.clRedError};
+  fill: ${colors.red600};
   padding: 0px;
   margin: 0px;
   margin-right: 10px;
@@ -54,11 +54,11 @@ const ContainerInner = styled.div<{ showBackground: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 13px;
+  padding: 0px 13px;
   border-radius: ${(props) => props.theme.borderRadius};
-  background: ${colors.clRedErrorBackground};
+  background: ${colors.red100};
   background: ${(props) =>
-    props.showBackground ? colors.clRedErrorBackground : 'transparent'};
+    props.showBackground ? colors.red100 : 'transparent'};
 
   ${isRtl`
     flex-direction: row-reverse;
@@ -119,27 +119,22 @@ const Bullet = styled.span`
   margin-right: 8px;
 `;
 
-interface DefaultProps {
-  marginTop: string;
-  marginBottom: string;
-  showIcon: boolean;
-  showBackground: boolean;
-  className: string;
-  animate: boolean | undefined;
-}
-
-interface Props extends DefaultProps {
+interface Props {
+  marginTop?: string;
+  marginBottom?: string;
+  showIcon?: boolean;
+  showBackground?: boolean;
+  className?: string;
+  animate?: boolean | undefined;
   text?: string | JSX.Element | null;
   fieldName?: TFieldName | undefined;
   apiErrors?: (CLError | IInviteError)[] | null;
   id?: string;
+  scrollIntoView?: boolean;
 }
 
-interface State {
-  mounted: boolean;
-}
-
-type TFieldName =
+export type TFieldName =
+  | 'base'
   | 'title_multiloc'
   | 'sender'
   | 'group_ids'
@@ -170,180 +165,160 @@ type TFieldName =
   | 'limit'
   | 'width'
   | 'height'
-  | 'homepage-info'
   | 'first_name'
   | 'last_name'
-  | 'email';
+  | 'confirmation_code'
+  | 'email'
+  | 'view_name'
+  | 'category_name'
+  | 'nav_bar_item_title_multiloc';
 
-export default class Error extends PureComponent<Props, State> {
-  static defaultProps: DefaultProps = {
-    marginTop: '3px',
-    marginBottom: '0px',
-    showIcon: true,
-    showBackground: true,
-    className: '',
-    animate: true,
-  };
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      mounted: false,
-    };
+export const findErrorMessage = (
+  fieldName: TFieldName | undefined,
+  error: string
+) => {
+  if (fieldName && messages[`${fieldName}_${error}`]) {
+    return messages[`${fieldName}_${error}`] as Message;
   }
 
-  componentDidMount() {
-    this.setState({ mounted: true });
+  if (messages[error]) {
+    return messages[error] as Message;
   }
+  // Return a generic error message
+  return messages.invalid;
+};
 
-  componentWillUnmount() {
-    this.setState({ mounted: false });
-  }
+const Error = (props: Props) => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
-  findMessage = (fieldName: TFieldName | undefined, error: string) => {
-    if (fieldName && messages[`${fieldName}_${error}`]) {
-      const fieldErrorMessages = {
-        title_multiloc_blank: messages.title_multiloc_blank,
-        token_invalid: messages.token_invalid,
-        email_taken: messages.email_taken,
-        email_taken_by_invite: messages.email_taken_by_invite,
-        email_invalid: messages.email_invalid,
-        email_domain_blacklisted: messages.email_domain_blacklisted,
-        email_blank: messages.email_blank,
-        first_name_blank: messages.first_name_blank,
-        last_name_blank: messages.last_name_blank,
-        password_blank: messages.password_blank,
-        password_too_short: messages.password_too_short,
-      };
+  const {
+    text,
+    apiErrors,
+    fieldName,
+    marginTop = '3px',
+    marginBottom = '0px',
+    showIcon = true,
+    showBackground = true,
+    className = '',
+    animate = true,
+    id,
+    scrollIntoView = true,
+  } = props;
 
-      return fieldErrorMessages[`${fieldName}_${error}`] as Message;
+  useEffect(() => {
+    if (scrollIntoView) {
+      containerRef.current?.scrollIntoView &&
+        containerRef.current.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        });
     }
+  }, [scrollIntoView]);
 
-    if (messages[error]) {
-      return messages[error] as Message;
-    }
+  const dedupApiErrors =
+    apiErrors && isArray(apiErrors) && !isEmpty(apiErrors)
+      ? uniqBy(apiErrors, 'error')
+      : undefined;
 
-    return null;
-  };
-
-  render() {
-    const { mounted } = this.state;
-    const {
-      text,
-      apiErrors,
-      fieldName,
-      marginTop,
-      marginBottom,
-      showIcon,
-      showBackground,
-      className,
-      animate,
-      id,
-    } = this.props;
-
-    const dedupApiErrors =
-      apiErrors && isArray(apiErrors) && !isEmpty(apiErrors)
-        ? uniqBy(apiErrors, 'error')
-        : undefined;
-    return (
-      <CSSTransition
-        classNames="error"
-        in={!!(mounted && (text || apiErrors))}
-        timeout={timeout}
-        mounOnEnter={true}
-        unmountOnExit={true}
-        enter={animate}
-        exit={animate}
+  return (
+    <CSSTransition
+      classNames="error"
+      in={!!(text || apiErrors)}
+      timeout={timeout}
+      mounOnEnter={true}
+      unmountOnExit={true}
+      enter={animate}
+      exit={animate}
+    >
+      <Container
+        className={`e2e-error-message ${className}`}
+        id={id}
+        marginTop={marginTop}
+        marginBottom={marginBottom}
+        role="alert"
+        data-testid="error-message"
       >
-        <Container
-          className={`e2e-error-message ${className}`}
-          id={id}
-          marginTop={marginTop}
-          marginBottom={marginBottom}
-          role="alert"
+        <ContainerInner
+          ref={containerRef}
+          showBackground={showBackground}
+          className={`${apiErrors && apiErrors.length > 1 && 'isList'}`}
         >
-          <ContainerInner
-            showBackground={showBackground}
-            className={`${apiErrors && apiErrors.length > 1 && 'isList'}`}
-          >
-            {showIcon && (
-              <ErrorIcon
-                title={<FormattedMessage {...messages.error} />}
-                name="error"
-                ariaHidden
-              />
+          {showIcon && <ErrorIcon name="error" data-testid="error-icon" />}
+
+          <ErrorMessageText data-testid="error-message-text">
+            {typeof text === 'string' ? (
+              <p>{text}</p>
+            ) : (
+              <Box py="16px">{text}</Box>
             )}
+            {dedupApiErrors &&
+              isArray(dedupApiErrors) &&
+              !isEmpty(dedupApiErrors) && (
+                <ErrorList>
+                  {dedupApiErrors.map((error, index) => {
+                    // If we have multiple possible errors for a certain input field,
+                    // we can 'group' them in the messages.js file using the fieldName as a prefix
+                    // Check the implementation of findErrorMessage for details
+                    const errorMessage = findErrorMessage(
+                      fieldName,
+                      error.error
+                    );
 
-            <ErrorMessageText>
-              {text && <p>{text}</p>}
-              {dedupApiErrors &&
-                isArray(dedupApiErrors) &&
-                !isEmpty(dedupApiErrors) && (
-                  <ErrorList>
-                    {dedupApiErrors.map((error, index) => {
-                      // If we have multiple possible errors for a certain input field,
-                      // we can 'group' them in the messages.js file using the fieldName as a prefix
-                      // Check the implementation of findMessage for details
-                      const errorMessage = this.findMessage(
-                        fieldName,
-                        error.error
-                      );
+                    if (errorMessage) {
+                      // Variables for inside messages.js
+                      const payload = error?.payload ?? null;
+                      const value = error?.value ?? null;
+                      const row = error?.row ?? null;
+                      const rows = error?.rows ?? null;
 
-                      if (errorMessage) {
-                        // Variables for inside messages.js
-                        const payload = error?.payload ?? null;
-                        const value = error?.value ?? null;
-                        const row = error?.row ?? null;
-                        const rows = error?.rows ?? null;
+                      let values = {
+                        row: <strong>{row}</strong>,
+                        rows: rows ? <strong>{rows.join(', ')}</strong> : null,
+                        // eslint-disable-next-line react/no-unescaped-entities
+                        value: <strong>'{value}'</strong>,
+                      };
 
-                        let values = {
-                          row: <strong>{row}</strong>,
-                          rows: rows ? (
-                            <strong>{rows.join(', ')}</strong>
-                          ) : null,
-                          value: <strong>'{value}'</strong>,
-                        };
+                      values = payload ? { ...payload, ...values } : values;
 
-                        values = payload ? { ...payload, ...values } : values;
-
-                        if (value || row || rows) {
-                          return (
-                            <ErrorListItem key={index}>
-                              {dedupApiErrors.length > 1 && (
-                                <Bullet aria-hidden>•</Bullet>
-                              )}
-
-                              <FormattedMessage
-                                {...errorMessage}
-                                values={values}
-                              />
-                            </ErrorListItem>
-                          );
-                        }
-
+                      if (value || row || rows) {
                         return (
                           <ErrorListItem key={index}>
                             {dedupApiErrors.length > 1 && (
                               <Bullet aria-hidden>•</Bullet>
                             )}
+
                             <FormattedMessage
                               {...errorMessage}
-                              values={{
-                                ideasCount: (error as CLError).ideas_count,
-                              }}
+                              values={values}
                             />
                           </ErrorListItem>
                         );
                       }
 
-                      return null;
-                    })}
-                  </ErrorList>
-                )}
-            </ErrorMessageText>
-          </ContainerInner>
-        </Container>
-      </CSSTransition>
-    );
-  }
-}
+                      return (
+                        <ErrorListItem key={index}>
+                          {dedupApiErrors.length > 1 && (
+                            <Bullet aria-hidden>•</Bullet>
+                          )}
+                          <FormattedMessage
+                            {...errorMessage}
+                            values={{
+                              ideasCount: (error as CLError).ideas_count,
+                            }}
+                          />
+                        </ErrorListItem>
+                      );
+                    }
+
+                    return null;
+                  })}
+                </ErrorList>
+              )}
+          </ErrorMessageText>
+        </ContainerInner>
+      </Container>
+    </CSSTransition>
+  );
+};
+
+export default Error;

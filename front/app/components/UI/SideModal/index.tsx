@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { FocusOn } from 'react-focus-on';
 
 // components
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import clickOutside from 'utils/containers/clickOutside';
 
 // animations
@@ -26,7 +26,9 @@ const exitTimeout = 350;
 const exitDelay = 0;
 const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
 
-const ModalContainer = styled(clickOutside)`
+const ModalWrapper = styled(clickOutside)``;
+
+const ModalContainer = styled.div`
   width: 940px;
   height: 100vh;
   background: white;
@@ -178,6 +180,7 @@ export default class SideModal extends PureComponent<Props, State> {
 
   componentDidMount() {
     if (!this.ModalPortal) {
+      // eslint-disable-next-line no-console
       console.log(
         'There was no Portal to insert the modal. Please make sure you have a Portal root'
       );
@@ -197,6 +200,7 @@ export default class SideModal extends PureComponent<Props, State> {
 
   componentWillUnmount() {
     if (!this.ModalPortal) {
+      // eslint-disable-next-line no-console
       console.log(
         'There was no Portal to insert the modal. Please make sure you have a Portal root'
       );
@@ -206,10 +210,6 @@ export default class SideModal extends PureComponent<Props, State> {
 
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
-
-  manuallyCloseModal = () => {
-    this.props.close();
-  };
 
   clickOutsideModal = () => {
     this.props.close();
@@ -221,7 +221,7 @@ export default class SideModal extends PureComponent<Props, State> {
     this.props.close();
   };
 
-  render() {
+  render(): React.ReactNode {
     const { children, opened, label } = this.props;
     const modalPortalElement = document?.getElementById('modal-portal');
 
@@ -246,26 +246,27 @@ export default class SideModal extends PureComponent<Props, State> {
             role="dialog"
             aria-label={label}
           >
-            <FocusOn>
-              <ModalContainer
-                onClickOutside={this.manuallyCloseModal}
-                closeOnClickOutsideEnabled={!this.state.innerModalOpened}
-              >
-                <ModalContent id="e2e-side-modal-content">
-                  {children}
-                </ModalContent>
-              </ModalContainer>
-
-              <CloseButton
-                className="e2e-modal-close-button"
-                onClick={this.clickCloseButton}
-              >
-                <HiddenSpan>
-                  <FormattedMessage {...messages.closeButtonAria} />
-                </HiddenSpan>
-                <CloseIcon name="close" />
-              </CloseButton>
-            </FocusOn>
+            <ModalWrapper
+              onClickOutside={this.clickOutsideModal}
+              closeOnClickOutsideEnabled={!this.state.innerModalOpened}
+            >
+              <FocusOn>
+                <ModalContainer>
+                  <ModalContent id="e2e-side-modal-content">
+                    {children}
+                  </ModalContent>
+                </ModalContainer>
+                <CloseButton
+                  className="e2e-modal-close-button"
+                  onClick={this.clickCloseButton}
+                >
+                  <HiddenSpan>
+                    <FormattedMessage {...messages.closeButtonAria} />
+                  </HiddenSpan>
+                  <CloseIcon name="close" />
+                </CloseButton>
+              </FocusOn>
+            </ModalWrapper>
           </Overlay>
         </CSSTransition>,
         modalPortalElement

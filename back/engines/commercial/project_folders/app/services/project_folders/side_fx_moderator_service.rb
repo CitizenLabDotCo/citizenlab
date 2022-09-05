@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ProjectFolders
   class SideFxModeratorService
     include SideFxHelper
@@ -15,9 +17,10 @@ module ProjectFolders
     end
 
     def after_create(moderator, folder, current_user)
+      ::SideFxUserService.new.after_update moderator, current_user
       LogActivityJob.set(wait: 5.seconds).perform_later(
         moderator,
-        'project_folder_moderation_rights_given',
+        'project_folder_moderation_rights_received',
         current_user,
         Time.now.to_i,
         payload: { project_folder_id: folder.id }
@@ -25,6 +28,7 @@ module ProjectFolders
     end
 
     def after_destroy(moderator, folder, current_user)
+      ::SideFxUserService.new.after_update moderator, current_user
       LogActivityJob.perform_later(
         moderator,
         'project_folder_moderation_rights_removed',

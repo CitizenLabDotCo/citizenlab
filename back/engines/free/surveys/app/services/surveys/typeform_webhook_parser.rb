@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module Surveys
   class TypeformWebhookParser
     include TypeformParser
 
-    def body_to_response body
+    def body_to_response(body)
       Response.new(
         **parse_root(body),
         user: parse_user(body),
@@ -12,7 +14,7 @@ module Surveys
 
     private
 
-    def parse_root body
+    def parse_root(body)
       {
         survey_service: 'typeform',
         external_survey_id: body.dig(:form_response, :form_id),
@@ -22,8 +24,8 @@ module Surveys
       }
     end
 
-    def parse_answers body
-      body.dig(:form_response,:answers).map do |answer|
+    def parse_answers(body)
+      body.dig(:form_response, :answers).map do |answer|
         question_id = answer.dig(:field, :id)
         field_definition = find_field_definition(body, question_id)
         value = extract_value_from_answer(answer)
@@ -35,15 +37,14 @@ module Surveys
       end
     end
 
-    def parse_user body
+    def parse_user(_body)
       nil
     end
 
-    def find_field_definition body, field_id
+    def find_field_definition(body, field_id)
       body.dig(:form_response, :definition, :fields).find do |field|
         field[:id] == field_id
       end
     end
-
   end
 end

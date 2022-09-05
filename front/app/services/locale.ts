@@ -39,6 +39,7 @@ import { updateUser } from 'services/users';
 import { Locale } from 'typings';
 import { locales } from 'containers/App/constants';
 import { setCookieLocale, getCookieLocale } from 'utils/localeCookie';
+import clHistory from 'utils/cl-router/history';
 
 const LocaleSubject: BehaviorSubject<Locale> = new BehaviorSubject(null as any);
 const $tenantLocales = currentAppConfigurationStream().observable.pipe(
@@ -55,44 +56,46 @@ const $locale = LocaleSubject.pipe(
 // main functionalities - 3 parts
 
 // 1. Setting locale depending on user, cookie and tenant
-combineLatest($authUser, $tenantLocales).subscribe(([user, tenantLocales]) => {
-  // gets the current user's locale of choice if they both exist
-  // and checks if it's a possible locale to have on this tenant
-  const userLocale: Locale | null =
-    user &&
-    user.data.attributes.locale &&
-    includes(tenantLocales, user.data.attributes.locale)
-      ? user.data.attributes.locale
-      : null;
+combineLatest([$authUser, $tenantLocales]).subscribe(
+  ([user, tenantLocales]) => {
+    // gets the current user's locale of choice if they both exist
+    // and checks if it's a possible locale to have on this tenant
+    const userLocale: Locale | null =
+      user &&
+      user.data.attributes.locale &&
+      includes(tenantLocales, user.data.attributes.locale)
+        ? user.data.attributes.locale
+        : null;
 
-  // gets the locale in the cookie
-  const cookieLocale = getCookieLocale();
-  // and checks if it's a possible locale to have on this tenant
-  // the tenant only allows Locales so we can cast the Locale type safely here
-  const safeCookieLocale: Locale | false =
-    includes(tenantLocales, cookieLocale) && (cookieLocale as Locale);
+    // gets the locale in the cookie
+    const cookieLocale = getCookieLocale();
+    // and checks if it's a possible locale to have on this tenant
+    // the tenant only allows Locales so we can cast the Locale type safely here
+    const safeCookieLocale: Locale | false =
+      includes(tenantLocales, cookieLocale) && (cookieLocale as Locale);
 
-  // gets the first part of the url if it resembles a locale enough (cf getUrlLocale's comments)
-  const urlLocale: string | null = getUrlLocale(location.pathname);
-  // and checks if it's a possible locale to have on this tenant
-  // the tenant only allows Locales so we can cast the Locale type safely here
-  const safeUrlLocale: Locale | false =
-    includes(tenantLocales, urlLocale) && (urlLocale as Locale);
+    // gets the first part of the url if it resembles a locale enough (cf getUrlLocale's comments)
+    const urlLocale: string | null = getUrlLocale(location.pathname);
+    // and checks if it's a possible locale to have on this tenant
+    // the tenant only allows Locales so we can cast the Locale type safely here
+    const safeUrlLocale: Locale | false =
+      includes(tenantLocales, urlLocale) && (urlLocale as Locale);
 
-  // - use userLocale if it's valid and supported
-  // - else use cookieLocale if it's valid and supported
-  // - else, use urlLocale if it's valid and supported
-  // - fall back to the first tenant locale
-  if (userLocale) {
-    LocaleSubject.next(userLocale);
-  } else if (safeCookieLocale) {
-    LocaleSubject.next(safeCookieLocale);
-  } else if (safeUrlLocale) {
-    LocaleSubject.next(safeUrlLocale);
-  } else if (tenantLocales && tenantLocales.length > 0) {
-    LocaleSubject.next(tenantLocales[0]);
+    // - use userLocale if it's valid and supported
+    // - else use cookieLocale if it's valid and supported
+    // - else, use urlLocale if it's valid and supported
+    // - fall back to the first tenant locale
+    if (userLocale) {
+      LocaleSubject.next(userLocale);
+    } else if (safeCookieLocale) {
+      LocaleSubject.next(safeCookieLocale);
+    } else if (safeUrlLocale) {
+      LocaleSubject.next(safeUrlLocale);
+    } else if (tenantLocales && tenantLocales.length > 0) {
+      LocaleSubject.next(tenantLocales[0]);
+    }
   }
-});
+);
 
 // 2. Pushing a locale to the stream
 
@@ -102,10 +105,10 @@ combineLatest($authUser, $tenantLocales).subscribe(([user, tenantLocales]) => {
  */
 export function updateLocale(locale: Locale) {
   // "gets" the tenants locale and authUser
-  combineLatest(
+  combineLatest([
     $tenantLocales.pipe(first()),
-    $authUser.pipe(first())
-  ).subscribe(([tenantLocales, authUser]) => {
+    $authUser.pipe(first()),
+  ]).subscribe(([tenantLocales, authUser]) => {
     // if the locale is supported on this tenant
     if (includes(tenantLocales, locale)) {
       // if there is an authenticated user
@@ -157,7 +160,7 @@ export function getUrlLocale(pathname: string): string | null {
   const firstUrlSegment = pathname.replace(/^\/|\/$/g, '').split('/')[0];
   // check first items appartenance to predefined locales obj
   const isLocale = includes(locales, firstUrlSegment);
-  return isLocale ? firstUrlSegment : null;
+  return isLocale && firstUrlSegment ? firstUrlSegment : null;
 }
 
 /*  @param pathname : the pathname you want to extract the locale from
@@ -185,7 +188,7 @@ function setUrlLocale(locale: Locale): void {
     locale,
     location.search
   );
-  window.history.replaceState({ path: newLocalizedUrl }, '', newLocalizedUrl);
+  clHistory.replace(newLocalizedUrl);
 }
 
 /*  @param pathname: a string representing a pathname, without a starting locale. pathname must tart with /, and final / will not be moved
@@ -215,7 +218,7 @@ function replaceUrlLocale(locale: Locale) {
     location.search
   );
   // replaces current location with updated url
-  window.history.replaceState({ path: newLocalizedUrl }, '', newLocalizedUrl);
+  clHistory.replace(newLocalizedUrl);
 }
 
 /*  @param pathname: a string representing a pathname, with a first part we want to replace

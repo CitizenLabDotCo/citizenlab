@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This migration comes from email_campaigns (originally 20191218144731)
 class CreateUnsubscriptionTokens < ActiveRecord::Migration[5.2]
   def change

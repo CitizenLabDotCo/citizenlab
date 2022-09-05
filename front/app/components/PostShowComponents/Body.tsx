@@ -1,5 +1,5 @@
-import React, { memo /*, useState */ } from 'react';
-import useWindowSize from 'hooks/useWindowSize';
+import React, { memo } from 'react';
+import { useWindowSize } from '@citizenlab/cl2-component-library';
 
 // components
 import QuillEditedContent from 'components/UI/QuillEditedContent';
@@ -44,7 +44,7 @@ const Body = memo<Props>(
       <Container id={`e2e-${postType}-description`} className={className}>
         <QuillEditedContent
           textColor={color || theme.colorText}
-          fontSize={smallerThanSmallTablet ? 'base' : 'large'}
+          fontSize={smallerThanSmallTablet ? 'base' : 'l'}
           fontWeight={400}
         >
           <div aria-live="polite">
@@ -60,7 +60,7 @@ const Body = memo<Props>(
                 outletComponents.length > 0 ? (
                   <>{outletComponents}</>
                 ) : (
-                  <span dangerouslySetInnerHTML={{ __html: body }} />
+                  <div dangerouslySetInnerHTML={{ __html: body }} />
                 )
               }
             </Outlet>

@@ -2,7 +2,7 @@ import React, { memo, useEffect, useMemo, useState } from 'react';
 
 // components
 import ParentComment from './ParentComment';
-import { Spinner } from 'cl2-component-library';
+import { Spinner } from '@citizenlab/cl2-component-library';
 
 // services
 import { ICommentData } from 'services/comments';
@@ -19,7 +19,7 @@ import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // a11y
-import { LiveMessage } from 'react-aria-live';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 const Container = styled.div`
   position: relative;
@@ -78,6 +78,7 @@ const CommentsSection = memo<Props & InjectedIntlProps>(
 
       return () =>
         subscriptions.forEach((subscription) => subscription.unsubscribe());
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const parentComments = useMemo(() => {
@@ -88,10 +89,9 @@ const CommentsSection = memo<Props & InjectedIntlProps>(
 
     return (
       <Container className={`e2e-comments-container ${className}`}>
-        <LiveMessage
-          message={commentPostedMessage || commentDeletedMessage}
-          aria-live="polite"
-        />
+        <ScreenReaderOnly aria-live="polite">
+          {commentPostedMessage || commentDeletedMessage}
+        </ScreenReaderOnly>
 
         {loading && (
           <SpinnerWrapper>

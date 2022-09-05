@@ -1,23 +1,45 @@
-class ProjectFile < ApplicationRecord
-  EXTENSION_WHITELIST = %w(pdf doc docx pages odt xls xlsx numbers ods ppt pptx key odp txt csv mp3 mp4 avi mkv)
+# frozen_string_literal: true
 
-	attr_accessor :filename
+# == Schema Information
+#
+# Table name: project_files
+#
+#  id         :uuid             not null, primary key
+#  project_id :uuid
+#  file       :string
+#  ordering   :integer
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  name       :string
+#
+# Indexes
+#
+#  index_project_files_on_project_id  (project_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (project_id => projects.id)
+#
+class ProjectFile < ApplicationRecord
+  EXTENSION_WHITELIST = %w[pdf doc docx pages odt xls xlsx numbers ods ppt pptx key odp txt csv mp3 mp4 avi mkv]
+
+  attr_accessor :filename
+
   mount_base64_file_uploader :file, ProjectFileUploader
   belongs_to :project
 
   validates :project, :file, :name, presence: true
   validate :extension_whitelist
 
-
-  private 
+  private
 
   def extension_whitelist
-    if !EXTENSION_WHITELIST.include? self.name.split('.').last.downcase
-      self.errors.add(
-        :file,
-        :extension_whitelist_error,
-        message: 'Unsupported file extension'
-      )
-    end
+    return if EXTENSION_WHITELIST.include? name.split('.').last.downcase
+
+    errors.add(
+      :file,
+      :extension_whitelist_error,
+      message: 'Unsupported file extension'
+    )
   end
 end

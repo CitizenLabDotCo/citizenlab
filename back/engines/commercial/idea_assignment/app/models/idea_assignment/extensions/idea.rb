@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module IdeaAssignment
   module Extensions
     module Idea
@@ -9,7 +11,7 @@ module IdeaAssignment
       end
 
       def assignee_can_moderate_project
-        return unless assignee && project && !::ProjectPolicy.new(assignee, project).moderate?
+        return unless assignee && project && !UserRoleService.new.can_moderate_project?(project, assignee)
 
         errors.add(
           :assignee_id,

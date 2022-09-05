@@ -57,10 +57,10 @@ type Props = {
   onChange: (rules: TRule[]) => void;
 };
 
-type State = {};
+interface State {}
 
 interface Tracks {
-  trackConditionAdd: Function;
+  trackConditionAdd: () => void;
 }
 
 class UserFilterConditions extends React.PureComponent<Props & Tracks, State> {
@@ -116,8 +116,6 @@ class UserFilterConditions extends React.PureComponent<Props & Tracks, State> {
 const UserFilterConditionsWithHoc = injectTracks<Props>({
   trackConditionAdd: tracks.conditionAdd,
 })(UserFilterConditions);
-
-export default UserFilterConditionsWithHoc;
 
 import { FieldProps } from 'formik';
 

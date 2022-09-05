@@ -1,13 +1,12 @@
-import React, { memo } from 'react';
+import React from 'react';
 
 // i18n
-import localize, { InjectedLocalized } from 'utils/localize';
 import { injectIntl, FormattedMessage, IMessageInfo } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // components
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
 
 // styles
@@ -17,6 +16,9 @@ import { darken } from 'polished';
 
 // typings
 import { Multiloc } from 'typings';
+
+// hooks
+import useLocalize from 'hooks/useLocalize';
 
 const Container = styled.div`
   width: 100%;
@@ -41,7 +43,7 @@ const HomeIcon = styled(Icon)`
 
 const Separator = styled.div`
   margin: 0 15px;
-  font-size: ${fontSizes.large}px;
+  font-size: ${fontSizes.l}px;
   font-weight: 300;
   line-height: normal;
 
@@ -51,7 +53,7 @@ const Separator = styled.div`
 `;
 
 const StyledLink = styled(Link)`
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   color: ${colors.label};
   text-decoration: none;
   white-space: nowrap;
@@ -81,44 +83,44 @@ interface Props {
   postType: 'idea' | 'initiative';
 }
 
-const Breadcrumbs = memo(
-  ({
-    localize,
-    intl,
-    className,
-    links,
-    postType,
-  }: Props & InjectedLocalized & InjectedIntlProps) => {
-    return (
-      <Container className={className}>
-        <HomeLink id="e2e-home-page-link" to="/">
-          <HomeIcon
-            title={intl.formatMessage(messages.linkToHomePage)}
-            name="homeFilled"
-          />
-        </HomeLink>
-        <Separator>/</Separator>
-        {links.map((link) => (
-          <StyledLink
-            key={link.to}
-            id={`e2e-${postType}-other-link`}
-            to={link.to}
-          >
-            <LinkText>
-              {isIMessageInfo(link.text) ? (
-                <FormattedMessage
-                  {...link.text.message}
-                  values={link.text.values}
-                />
-              ) : (
-                localize(link.text)
-              )}
-            </LinkText>
-          </StyledLink>
-        ))}
-      </Container>
-    );
-  }
-);
+const Breadcrumbs = ({
+  intl: { formatMessage },
+  className,
+  links,
+  postType,
+}: Props & InjectedIntlProps) => {
+  const localize = useLocalize();
 
-export default injectIntl(localize<Props & InjectedIntlProps>(Breadcrumbs));
+  return (
+    <Container className={className}>
+      <HomeLink id="e2e-home-page-link" to="/">
+        <HomeIcon
+          title={formatMessage(messages.linkToHomePage)}
+          name="homeFilled"
+          ariaHidden={false}
+        />
+      </HomeLink>
+      <Separator>/</Separator>
+      {links.map((link) => (
+        <StyledLink
+          key={link.to}
+          id={`e2e-${postType}-other-link`}
+          to={link.to}
+        >
+          <LinkText>
+            {isIMessageInfo(link.text) ? (
+              <FormattedMessage
+                {...link.text.message}
+                values={link.text.values}
+              />
+            ) : (
+              localize(link.text)
+            )}
+          </LinkText>
+        </StyledLink>
+      ))}
+    </Container>
+  );
+};
+
+export default injectIntl(Breadcrumbs);

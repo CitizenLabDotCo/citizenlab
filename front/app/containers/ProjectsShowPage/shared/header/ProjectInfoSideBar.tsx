@@ -10,29 +10,32 @@ import { isNumber } from 'lodash-es';
 import moment from 'moment';
 
 // hooks
-import useAppConfiguration from 'hooks/useAppConfiguration';
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 import useEvents from 'hooks/useEvents';
 import useAuthUser from 'hooks/useAuthUser';
 
+// router
+import clHistory from 'utils/cl-router/history';
+
 // services
 import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
 
 // components
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import ProjectSharingModal from './ProjectSharingModal';
 import ProjectActionBar from './ProjectActionBar';
 import ProjectActionButtons from './ProjectActionButtons';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
+import { scrollToElement } from 'utils/scroll';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import { FormattedNumber } from 'react-intl';
 import messages from 'containers/ProjectsShowPage/messages';
 import { getInputTermMessage } from 'utils/i18n';
+import FormattedBudget from 'utils/currency/FormattedBudget';
 
 // style
 import styled from 'styled-components';
@@ -133,10 +136,12 @@ interface Props {
 }
 
 const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
-  const tenant = useAppConfiguration();
   const project = useProject({ projectId });
   const phases = usePhases(projectId);
-  const events = useEvents(projectId);
+  const { events } = useEvents({
+    projectIds: [projectId],
+    sort: 'newest',
+  });
   const authUser = useAuthUser();
 
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
@@ -147,24 +152,16 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   }, [phases]);
 
   const scrollTo = useCallback(
-    (id: string, shouldSelectCurrentPhase: boolean = true) => (
-      event: FormEvent
-    ) => {
-      event.preventDefault();
+    (id: string, shouldSelectCurrentPhase = true) =>
+      (event: FormEvent) => {
+        event.preventDefault();
 
-      currentPhase && shouldSelectCurrentPhase && selectPhase(currentPhase);
+        currentPhase && shouldSelectCurrentPhase && selectPhase(currentPhase);
 
-      setTimeout(() => {
-        const element = document.getElementById(id);
-
-        if (element) {
-          const top =
-            element.getBoundingClientRect().top + window.pageYOffset - 100;
-          const behavior = 'smooth';
-          window.scrollTo({ top, behavior });
-        }
-      }, 100);
-    },
+        setTimeout(() => {
+          scrollToElement({ id, shouldFocus: true });
+        }, 100);
+      },
     [currentPhase]
   );
 
@@ -177,14 +174,13 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
     setShareModalOpened(false);
   }, []);
 
-  if (!isNilOrError(tenant) && !isNilOrError(project)) {
+  if (!isNilOrError(project)) {
     const projectType = project.attributes.process_type;
     const projectParticipantsCount = project.attributes.participants_count;
-    const currency = tenant.data.attributes.settings.core.currency;
-    const totalBudget =
+    const maxBudget =
       currentPhase?.attributes?.max_budget ||
       project?.attributes?.max_budget ||
-      0;
+      null;
     const hasProjectEnded = currentPhase
       ? pastPresentOrFuture([
           currentPhase.attributes.start_at,
@@ -334,27 +330,14 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
             {((projectType === 'continuous' &&
               projectParticipationMethod === 'budgeting') ||
               currentPhase?.attributes.participation_method === 'budgeting') &&
-              totalBudget > 0 && (
+              maxBudget && (
                 <ListItem>
-                  <ListItemIcon ariaHidden name="moneybag" />
+                  <ListItemIcon ariaHidden name="coin-stack" />
                   <ListItemButton
                     id="e2e-project-sidebar-pb-budget"
                     onClick={scrollTo('project-ideas')}
                   >
-                    <FormattedMessage
-                      {...messages.budget}
-                      values={{
-                        amount: (
-                          <FormattedNumber
-                            value={totalBudget}
-                            style="currency"
-                            currency={currency}
-                            minimumFractionDigits={0}
-                            maximumFractionDigits={0}
-                          />
-                        ),
-                      }}
-                    />
+                    <FormattedBudget value={maxBudget} />
                   </ListItemButton>
                 </ListItem>
               )}
@@ -367,6 +350,37 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                   <ListItemButton
                     id="e2e-project-sidebar-surveys-count"
                     onClick={scrollTo('project-survey')}
+                  >
+                    <FormattedMessage
+                      {...(projectType === 'continuous'
+                        ? messages.xSurveys
+                        : messages.xSurveysInCurrentPhase)}
+                      values={{ surveysCount: 1 }}
+                    />
+                  </ListItemButton>
+                ) : (
+                  <FormattedMessage
+                    {...(projectType === 'continuous'
+                      ? messages.xSurveys
+                      : messages.xSurveysInCurrentPhase)}
+                    values={{ surveysCount: 1 }}
+                  />
+                )}
+              </ListItem>
+            )}
+            {((projectType === 'continuous' &&
+              projectParticipationMethod === 'native_survey') ||
+              currentPhaseParticipationMethod === 'native_survey') && (
+              <ListItem>
+                <ListItemIcon ariaHidden name="survey" />
+                {!isNilOrError(authUser) ? (
+                  <ListItemButton
+                    id="e2e-project-sidebar-surveys-count"
+                    onClick={() => {
+                      clHistory.push(
+                        `/projects/${project.attributes.slug}/ideas/new`
+                      );
+                    }}
                   >
                     <FormattedMessage
                       {...(projectType === 'continuous'

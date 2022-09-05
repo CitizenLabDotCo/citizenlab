@@ -13,8 +13,8 @@ export const mockOfficialFeedback = {
           en: 'Update: Do Not Keep Calm, please panic now. End of transmission.',
         },
         created_at: '2012-01-01T04:06:07.000Z',
-        updated_at: '2011-01-01T04:26:07.000Z'
-      }
+        updated_at: '2011-01-01T04:26:07.000Z',
+      },
     },
     {
       type: 'official_feedback',
@@ -27,8 +27,8 @@ export const mockOfficialFeedback = {
           en: 'This is an important official communication from the testing department. Keep calm and read on.',
         },
         created_at: '2010-01-01T04:06:07.000Z',
-        updated_at: '2000-01-01T04:06:07.000Z'
-      }
-    }
-  ]
+        updated_at: '2000-01-01T04:06:07.000Z',
+      },
+    },
+  ],
 } as IOfficialFeedbacks;

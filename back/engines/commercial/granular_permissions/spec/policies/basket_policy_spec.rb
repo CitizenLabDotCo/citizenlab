@@ -13,7 +13,7 @@ describe BasketPolicy do
     let!(:project) do
       create(:continuous_budgeting_project).tap do |project|
         project.permissions.find_by(action: 'budgeting')
-               .update!(permitted_by: 'admins_moderators')
+          .update!(permitted_by: 'admins_moderators')
       end
     end
 

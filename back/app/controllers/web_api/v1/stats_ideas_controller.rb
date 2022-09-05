@@ -1,41 +1,43 @@
-class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
+# frozen_string_literal: true
 
+class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   @@multiloc_service = MultilocService.new
 
-  before_action :render_no_data, only: [
-    :ideas_by_time,
-    :ideas_by_time_cumulative,
+  before_action :render_no_data, only: %i[
+    ideas_by_time
+    ideas_by_time_cumulative
   ]
 
-  before_action :render_no_data_as_xlsx, only: [
-    :ideas_by_time_as_xlsx,
-    :ideas_by_time_cumulative_as_xlsx,
+  before_action :render_no_data_as_xlsx, only: %i[
+    ideas_by_time_as_xlsx
+    ideas_by_time_cumulative_as_xlsx
   ]
 
   def ideas_count
     ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
-                                 .where(published_at: @start_at..@end_at)
-    @result = IdeasFinder.find(params, scope: ideas, current_user: current_user)
-
-    render json: { count: @result.count }
+      .where(published_at: @start_at..@end_at)
+    result = IdeasFinder.new(params, scope: ideas, current_user: current_user, paginate: false).find_records
+    render json: { count: result.count }
   end
 
   def ideas_by_topic_serie
     ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
-    ideas = IdeasFinder.find(params, scope: ideas, current_user: current_user).records
+    ideas = IdeasFinder.new(params, scope: ideas, current_user: current_user).find_records
 
     ideas
       .where(published_at: @start_at..@end_at)
       .joins(:ideas_topics)
-      .group("ideas_topics.topic_id")
-      .order("ideas_topics.topic_id")
+      .group('ideas_topics.topic_id')
+      .order('ideas_topics.topic_id')
       .count
   end
 
   def ideas_by_topic
     serie = ideas_by_topic_serie
-    topics = Topic.pluck :id, :title_multiloc
-    render json: {series: {ideas: serie}, topics: topics.map{|id, title_multiloc| [id, {title_multiloc: title_multiloc}]}.to_h}
+    topics = Topic.pluck(:id, :title_multiloc).map do |id, title_multiloc|
+      [id, { title_multiloc: title_multiloc }]
+    end
+    render json: { series: { ideas: serie }, topics: topics.to_h }
   end
 
   def ideas_by_topic_as_xlsx
@@ -44,22 +46,22 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
     topics = Topic.where(id: serie.keys).select(:id, :title_multiloc)
 
     res = []
-    serie.each {|topic_id, count|
+    serie.each do |topic_id, count|
       res.push({
-        "topic" => @@multiloc_service.t(topics.find(topic_id).title_multiloc),
-        "topic_id" => topic_id,
-        "ideas" => count
+        'topic' => @@multiloc_service.t(topics.find(topic_id).title_multiloc),
+        'topic_id' => topic_id,
+        'ideas' => count
       })
-    }
+    end
 
-    xlsx = XlsxService.new.generate_res_stats_xlsx res, "ideas", "topic"
+    xlsx = XlsxService.new.generate_res_stats_xlsx res, 'ideas', 'topic'
 
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: "ideas_by_topic.xlsx"
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas_by_topic.xlsx'
   end
 
   def ideas_by_project_serie
     ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
-    ideas = IdeasFinder.find(params, scope: ideas, current_user: current_user).records
+    ideas = IdeasFinder.new(params, scope: ideas, current_user: current_user).find_records
 
     ideas
       .where(published_at: @start_at..@end_at)
@@ -71,62 +73,29 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   def ideas_by_project
     serie = ideas_by_project_serie
     projects = Project.where(id: serie.keys).select(:id, :title_multiloc)
-    render json: {series: {ideas: serie}, projects: projects.map{|t| [t.id, t.attributes.except('id')]}.to_h}
+    render json: { series: { ideas: serie }, projects: projects.to_h { |t| [t.id, t.attributes.except('id')] } }
   end
 
   def ideas_by_project_as_xlsx
     serie = ideas_by_project_serie
     projects = Project.where(id: serie.keys).select(:id, :title_multiloc)
 
-    res = serie.map {|project_id, count|
+    res = serie.map do |project_id, count|
       {
-        "project" => @@multiloc_service.t(projects.find(project_id).title_multiloc),
-        "project_id" => project_id,
-        "ideas" => count
+        'project' => @@multiloc_service.t(projects.find(project_id).title_multiloc),
+        'project_id' => project_id,
+        'ideas' => count
       }
-    }
+    end
 
-    xlsx = XlsxService.new.generate_res_stats_xlsx res, "ideas", "project"
+    xlsx = XlsxService.new.generate_res_stats_xlsx res, 'ideas', 'project'
 
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: "ideas_by_project.xlsx"
-  end
-
-  def ideas_by_area_serie
-    ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
-    ideas = IdeasFinder.find(params, scope: ideas, current_user: current_user).records
-
-    ideas
-      .where(published_at: @start_at..@end_at)
-      .joins(:areas_ideas)
-      .group("areas_ideas.area_id")
-      .order("areas_ideas.area_id")
-      .count
-  end
-
-  def ideas_by_area
-    serie = ideas_by_area_serie
-    areas = Area.where(id: serie.keys).select(:id, :title_multiloc)
-    render json: {series: {ideas: serie}, areas: areas.map{|a| [a.id, a.attributes.except('id')]}.to_h}
-  end
-
-  def ideas_by_area_as_xlsx
-    res = []
-    ideas_by_area_serie.each {|area_id, count|
-      res.push({
-        "area" => @@multiloc_service.t(Area.find(area_id).title_multiloc),
-        "area_id" => area_id,
-        "ideas" => count
-      })
-    }
-
-    xlsx = XlsxService.new.generate_res_stats_xlsx res, "ideas", "area"
-
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: "ideas_by_area.xlsx"
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas_by_project.xlsx'
   end
 
   def ideas_by_status_serie
     ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
-    ideas = IdeasFinder.find(params, scope: ideas, current_user: current_user).records
+    ideas = IdeasFinder.new(params, scope: ideas, current_user: current_user).find_records
 
     ideas
       .where(published_at: @start_at..@end_at)
@@ -138,49 +107,49 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   def ideas_by_status
     serie = ideas_by_status_serie
     idea_statuses = IdeaStatus.all.select(:id, :title_multiloc, :color, :ordering).order(:ordering)
-    render json: {series: {ideas: serie}, idea_status: idea_statuses.map{|a| [a.id, a.attributes.except('id')]}.to_h}
+    render json: { series: { ideas: serie }, idea_status: idea_statuses.to_h { |a| [a.id, a.attributes.except('id')] } }
   end
 
   def ideas_by_status_as_xlsx
     res = []
-    ideas_by_status_serie.each {|status_id, count|
+    ideas_by_status_serie.each do |status_id, count|
       res.push({
-        "status" => @@multiloc_service.t(IdeaStatus.find(status_id).title_multiloc),
-        "status_id" => status_id,
-        "ideas" => count
+        'status' => @@multiloc_service.t(IdeaStatus.find(status_id).title_multiloc),
+        'status_id' => status_id,
+        'ideas' => count
       })
-    }
+    end
 
-    xlsx = XlsxService.new.generate_res_stats_xlsx res, "ideas", "status"
+    xlsx = XlsxService.new.generate_res_stats_xlsx res, 'ideas', 'status'
 
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: "ideas_by_status.xlsx"
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas_by_status.xlsx'
   end
 
   def ideas_by_time
-    render json: {series: {ideas: ideas_by_time_serie}}
+    render json: { series: { ideas: ideas_by_time_serie } }
   end
 
   def ideas_by_time_as_xlsx
     name = 'ideas_by_time'
     xlsx = XlsxService.new.generate_time_stats_xlsx ideas_by_time_serie, name
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: name + '.xlsx'
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: "#{name}.xlsx"
   end
 
   def ideas_by_time_cumulative
-    render json: {series: {ideas: ideas_by_time_cumulative_serie}}
+    render json: { series: { ideas: ideas_by_time_cumulative_serie } }
   end
 
   def ideas_by_time_cumulative_as_xlsx
     name = 'ideas_by_time_cumulative'
     xlsx = XlsxService.new.generate_time_stats_xlsx ideas_by_time_cumulative_serie, name
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: name + '.xlsx'
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: "#{name}.xlsx"
   end
 
   private
 
   def ideas_by_time_cumulative_serie
     ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
-    ideas = IdeasFinder.find(params, scope: ideas, current_user: current_user).records
+    ideas = IdeasFinder.new(params, scope: ideas, current_user: current_user).find_records
 
     @@stats_service.group_by_time_cumulative(
       ideas,
@@ -193,7 +162,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
 
   def ideas_by_time_serie
     ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
-    ideas = IdeasFinder.find(params, scope: ideas, current_user: current_user).records
+    ideas = IdeasFinder.new(params, scope: ideas, current_user: current_user).find_records
 
     @@stats_service.group_by_time(
       ideas,
@@ -205,15 +174,15 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   end
 
   def render_no_data
-    if @no_data
-      render json: {series: {ideas: {}}}
-    end
+    return unless @no_data
+
+    render json: { series: { ideas: {} } }
   end
 
   def render_no_data_as_xlsx
-    if @no_data
-      render json: {errors: "no data for this period"}, status: :unprocessable_entity
-    end
+    return unless @no_data
+
+    render json: { errors: 'no data for this period' }, status: :unprocessable_entity
   end
 
   def do_authorize

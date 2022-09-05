@@ -3,40 +3,46 @@ import React from 'react';
 import { isEmpty } from 'lodash-es';
 
 // intl
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 
 // styling
-import { withTheme } from 'styled-components';
+import {
+  sizes,
+  DEFAULT_BAR_CHART_MARGIN,
+} from 'components/admin/Graphs/styling';
 
 // components
-import { Bar, BarChart, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import {
   IGraphUnit,
-  NoDataContainer,
   GraphCardHeader,
   GraphCardTitle,
   GraphCard,
   GraphCardInner,
-} from '../..';
+} from 'components/admin/GraphWrappers';
+import BarChart from 'components/admin/Graphs/BarChart';
+import { LabelList } from 'recharts';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 
 // resources
 import GetSerieFromStream from 'resources/GetSerieFromStream';
 
 // types
 import { IStreamParams, IStream } from 'utils/streams';
-
 import { IGraphFormat } from 'typings';
-import ExportMenu from '../../components/ExportMenu';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
 
 interface DataProps {
-  serie: IGraphFormat;
+  serie?: IGraphFormat | null | Error;
 }
 
 export interface ISupportedDataTypeMap {}
 
-export type ISupportedDataType = ISupportedDataTypeMap[keyof ISupportedDataTypeMap];
+export type ISupportedDataType =
+  ISupportedDataTypeMap[keyof ISupportedDataTypeMap];
 
 interface InputProps {
   stream: (
@@ -67,14 +73,8 @@ export class HorizontalBarChart extends React.PureComponent<
   }
   render() {
     const {
-      chartLabelSize,
-      chartLabelColor,
-      barFill,
-      animationBegin,
-      animationDuration,
-      newBarFill,
-    } = this.props['theme'];
-    const {
+      startAt,
+      endAt,
       className,
       graphTitleString,
       serie,
@@ -84,7 +84,9 @@ export class HorizontalBarChart extends React.PureComponent<
     } = this.props;
 
     const noData =
-      !serie || serie.every((item) => isEmpty(item)) || serie.length <= 0;
+      isNilOrError(serie) ||
+      serie.every((item) => isEmpty(item)) ||
+      serie.length <= 0;
 
     const unitName = formatMessage(messages[graphUnit]);
 
@@ -94,85 +96,40 @@ export class HorizontalBarChart extends React.PureComponent<
           <GraphCardHeader>
             <GraphCardTitle>{graphTitleString}</GraphCardTitle>
             {!noData && (
-              <ExportMenu
+              <ReportExportMenu
                 svgNode={this.currentChart}
                 xlsxEndpoint={xlsxEndpoint}
                 name={graphTitleString}
+                startAt={startAt}
+                endAt={endAt}
               />
             )}
           </GraphCardHeader>
-          {noData ? (
-            <NoDataContainer>
-              <FormattedMessage {...messages.noData} />
-            </NoDataContainer>
-          ) : (
-            <ResponsiveContainer
-              height={serie.length > 1 ? serie.length * 50 : 100}
-            >
-              <BarChart data={serie} layout="vertical" ref={this.currentChart}>
-                <Bar
-                  dataKey="value"
-                  name={unitName}
-                  fill={newBarFill}
-                  label={{
-                    fill: barFill,
-                    fontSize: chartLabelSize,
-                    position: 'insideLeft',
-                  }}
-                  barSize={graphUnit === 'ideas' ? 5 : 20}
-                  animationDuration={animationDuration}
-                  animationBegin={animationBegin}
-                />
-                <YAxis
-                  dataKey="name"
-                  type="category"
-                  width={150}
-                  stroke={chartLabelColor}
-                  fontSize={chartLabelSize}
-                  tickLine={false}
-                />
-                <XAxis
-                  stroke={chartLabelColor}
-                  fontSize={chartLabelSize}
-                  type="number"
-                  tick={{ transform: 'translate(0, 7)' }}
-                />
-              </BarChart>
-            </ResponsiveContainer>
-          )}
+          <BarChart
+            innerRef={this.currentChart}
+            height={!noData && serie.length > 1 ? serie.length * 50 : 100}
+            data={serie}
+            layout="horizontal"
+            margin={DEFAULT_BAR_CHART_MARGIN}
+            bars={{
+              name: unitName,
+              size: graphUnit === 'ideas' ? 5 : sizes.bar,
+            }}
+            yaxis={{ width: 150, tickLine: false }}
+            renderLabels={(props) => <LabelList {...props} />}
+          />
         </GraphCardInner>
       </GraphCard>
     );
   }
 }
 
-const HorizontalBarChartWithHoCs = injectIntl<Props>(
-  withTheme(HorizontalBarChart as any) as any
-);
+const HorizontalBarChartWithHoCs = injectIntl<Props>(HorizontalBarChart);
 
 const WrappedHorizontalBarChart = (inputProps: InputProps) => (
   <GetSerieFromStream {...inputProps}>
     {(serie) => <HorizontalBarChartWithHoCs {...serie} {...inputProps} />}
   </GetSerieFromStream>
 );
-
-export const CustomizedLabel = (props) => {
-  const { x, y, value } = props;
-  return (
-    <text
-      x={x}
-      y={y}
-      dx={20}
-      dy={-6}
-      fontFamily="sans-serif"
-      fill={props.fill}
-      fontSize={props.fontSize}
-      textAnchor="middle"
-    >
-      {' '}
-      {value}{' '}
-    </text>
-  );
-};
 
 export default WrappedHorizontalBarChart;

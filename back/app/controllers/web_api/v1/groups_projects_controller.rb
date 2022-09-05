@@ -1,6 +1,7 @@
-class WebApi::V1::GroupsProjectsController < ApplicationController
+# frozen_string_literal: true
 
-  before_action :set_groups_project, only: [:show, :destroy]
+class WebApi::V1::GroupsProjectsController < ApplicationController
+  before_action :set_groups_project, only: %i[show destroy]
 
   def index
     @groups_projects = policy_scope(GroupsProject)
@@ -8,33 +9,31 @@ class WebApi::V1::GroupsProjectsController < ApplicationController
       .includes(:group)
 
     @groups_projects = case params[:sort]
-      when "new"
-        @groups_projects.order_new
-      when "-new"
-        @groups_projects.order_new(:asc)
-      when nil
-        @groups_projects
-      else
-        raise "Unsupported sort method"
+    when 'new'
+      @groups_projects.order_new
+    when '-new'
+      @groups_projects.order_new(:asc)
+    when nil
+      @groups_projects
+    else
+      raise 'Unsupported sort method'
     end
 
-    @groups_projects = @groups_projects
-      .page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
+    @groups_projects = paginate @groups_projects
     render json: linked_json(
-      @groups_projects, 
-      WebApi::V1::GroupsProjectSerializer, 
+      @groups_projects,
+      WebApi::V1::GroupsProjectSerializer,
       params: fastjson_params,
       include: [:group]
-      )
+    )
   end
 
   def show
     render json: WebApi::V1::GroupsProjectSerializer.new(
-      @groups_project, 
+      @groups_project,
       params: fastjson_params,
       include: [:group]
-      ).serialized_json
+    ).serialized_json
   end
 
   # insert
@@ -44,10 +43,10 @@ class WebApi::V1::GroupsProjectsController < ApplicationController
     authorize @groups_project
     if @groups_project.save
       render json: WebApi::V1::GroupsProjectSerializer.new(
-        @groups_project.reload, 
+        @groups_project.reload,
         params: fastjson_params,
         include: [:group]
-        ).serialized_json, status: :created
+      ).serialized_json, status: :created
     else
       render json: { errors: @groups_project.errors.details }, status: :unprocessable_entity
     end
@@ -59,7 +58,7 @@ class WebApi::V1::GroupsProjectsController < ApplicationController
     if groups_project.destroyed?
       head :ok
     else
-      head 500
+      head :internal_server_error
     end
   end
 
@@ -73,5 +72,4 @@ class WebApi::V1::GroupsProjectsController < ApplicationController
       :group_id
     )
   end
-
 end

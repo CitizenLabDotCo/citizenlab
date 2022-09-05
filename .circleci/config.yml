@@ -28,7 +28,7 @@ executors:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_HOST: localhost
-      - image: 'postgis/postgis:12-3.1'
+      - image: "postgis/postgis:12-3.1"
         environment:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -49,7 +49,7 @@ commands:
 
 jobs:
   trigger-workflows:
-    docker: 
+    docker:
       - image: cimg/base:stable
     steps:
       - checkout
@@ -66,8 +66,16 @@ jobs:
       - run: |
           chmod +x .circleci/private-trigger.sh && .circleci/private-trigger.sh << pipeline.parameters.back >> << pipeline.parameters.front >>
 
+  danger-check:
+    resource_class: small
+    docker:
+      - image: ghcr.io/danger/danger-js:10.6.6
+    steps:
+      - checkout
+      - run: danger ci
+
   # *************** back ***************
-  
+
   back-build-essential-docker-image:
     working_directory: /citizenlab
     docker:
@@ -85,6 +93,31 @@ jobs:
           docker login -u $DOCKER_USER -p $DOCKER_PASS
           docker push citizenlabdotco/back-essential:$CIRCLE_SHA1
 
+  back-lint:
+    resource_class: small
+    executor:
+      name: cl2-back
+      image-tag: $CIRCLE_SHA1
+    working_directory: /cl2_back
+    environment:
+      RAILS_ENV: development
+    steps:
+      - run: bundle exec rubocop -P --format simple
+
+  back-bundle-audit:
+    resource_class: small
+    executor:
+      name: cl2-back
+      image-tag: $CIRCLE_SHA1
+    working_directory: /cl2_back
+    environment:
+      RAILS_ENV: development
+    steps:
+      # CVE-2015-9284 is "CSRF vulnerability in OmniAuth's request phase"
+      # Solution: upgrade to '>= 2.0.0'
+      # But we can't, due to unmaintained gems that don't work with Omniauth 2.0.
+      # See https://github.com/rubysec/bundler-audit
+      - run: bundle exec bundle-audit check --update --ignore CVE-2015-9284
 
   back-test:
     resource_class: small
@@ -114,7 +147,7 @@ jobs:
       image-tag: $CIRCLE_SHA1
     working_directory: /cl2_back
     steps:
-      - run: license_finder
+      - run: bundle exec license_finder
 
   back-web-api-docs:
     resource_class: small
@@ -157,9 +190,9 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-npm-cache-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-npm-cache-
+            - v1-npm-cache-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-npm-cache-
       - run: npm ci
       - save_cache:
           paths:
@@ -175,6 +208,27 @@ jobs:
       - store_artifacts:
           path: ./reports/junit
 
+  front-detect-deadcode:
+    docker:
+      - image: citizenlabdotco/cl2-devops-front-buildenv
+    working_directory: /citizenlab/front
+    steps:
+      - checkout:
+          path: /citizenlab
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-npm-cache-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-npm-cache-
+      - run: npm ci
+      - save_cache:
+          paths:
+            - /root/.npm
+          key: v1-npm-cache-{{ checksum "package.json" }}
+      - run: npm run detect-deadcode
+
+
   front-lint:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
@@ -185,15 +239,15 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-npm-cache-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-npm-cache-
+            - v1-npm-cache-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-npm-cache-
       - run: npm ci
       - save_cache:
           paths:
             - /root/.npm
           key: v1-npm-cache-{{ checksum "package.json" }}
-      - run: npm run lint:ts --silent
+      - run: npm run lint
 
   front-license-check:
     docker:
@@ -205,9 +259,9 @@ jobs:
           path: /citizenlab
       - restore_cache:
           keys:
-          - v1-npm-cache-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-npm-cache-
+            - v1-npm-cache-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-npm-cache-
       - run: npm ci
       - run: /bin/bash -lc "cd /citizenlab/front && license_finder"
 
@@ -222,9 +276,9 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-npm-cache-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-npm-cache-
+            - v1-npm-cache-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-npm-cache-
       - run: npm ci
       - save_cache:
           paths:
@@ -232,7 +286,7 @@ jobs:
           key: v1-npm-cache-{{ checksum "package.json" }}
       - run:
           command: TEST_BUILD="true" npm run build
-          no_output_timeout: '30m'
+          no_output_timeout: "30m"
 
   front-extract-intl:
     docker:
@@ -244,9 +298,9 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-npm-cache-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-npm-cache-
+            - v1-npm-cache-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-npm-cache-
       - run: npm ci
       - save_cache:
           paths:
@@ -254,6 +308,7 @@ jobs:
           key: v1-npm-cache-{{ checksum "package.json" }}
       - run: npm run extract-intl
       - run: git add app/translations/*.json
+      - run: git add app/translations/admin/*.json
       - run: git config --global user.email "hello@citizenlab.co"
       - run: git config --global user.name "CircleCI"
       - add_ssh_keys:
@@ -268,7 +323,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker:
-        # https://support.circleci.com/hc/en-us/articles/360050934711
+          # https://support.circleci.com/hc/en-us/articles/360050934711
           version: 19.03.13
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run: |
@@ -287,7 +342,7 @@ workflows:
             branches:
               ignore:
                 - crowdin_master
-                - production
+                - /l10n_.*/
 
   private-ci:
     when:
@@ -301,6 +356,19 @@ workflows:
             branches:
               ignore:
                 - crowdin_master
+                - /l10n_.*/
+
+  global-checks:
+    when: << pipeline.parameters.trigger >>
+    jobs:
+      - danger-check:
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
+                - master
+                - production
 
   # *************** back ***************
   back:
@@ -312,6 +380,25 @@ workflows:
             branches:
               ignore:
                 - crowdin_master
+                - /l10n_.*/
+      - back-lint:
+          context: docker-hub-access
+          requires:
+            - back-build-essential-docker-image
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
+      - back-bundle-audit:
+          context: docker-hub-access
+          requires:
+            - back-build-essential-docker-image
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
       - back-test:
           context: docker-hub-access
           requires:
@@ -320,6 +407,7 @@ workflows:
             branches:
               ignore:
                 - crowdin_master
+                - /l10n_.*/
       - back-license-check:
           context: docker-hub-access
           requires:
@@ -328,6 +416,7 @@ workflows:
             branches:
               ignore:
                 - crowdin_master
+                - /l10n_.*/
       - back-web-api-docs:
           context: docker-hub-access
           requires:
@@ -336,6 +425,7 @@ workflows:
             branches:
               ignore:
                 - crowdin_master
+                - /l10n_.*/
   # *************** front ***************
   front:
     when: << pipeline.parameters.front >>
@@ -348,6 +438,13 @@ workflows:
                 - /l10n_.*/
                 - master
       - front-lint:
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
+                - master
+      - front-detect-deadcode:
           filters:
             branches:
               ignore:
@@ -376,12 +473,18 @@ workflows:
                 - master
                 - production
 
+
   # *************** release ***************
 
   release:
     when: << pipeline.parameters.trigger >>
     jobs:
       - front-test:
+          filters:
+            branches:
+              only:
+                - production
+      - front-detect-deadcode:
           filters:
             branches:
               only:
@@ -403,6 +506,22 @@ workflows:
                 - production
       - back-build-essential-docker-image:
           context: docker-hub-access
+          filters:
+            branches:
+              only:
+                - production
+      - back-lint:
+          context: docker-hub-access
+          requires:
+            - back-build-essential-docker-image
+          filters:
+            branches:
+              only:
+                - production
+      - back-bundle-audit:
+          context: docker-hub-access
+          requires:
+            - back-build-essential-docker-image
           filters:
             branches:
               only:
@@ -429,8 +548,11 @@ workflows:
             - front-test
             - front-license-check
             - front-build
+            - front-detect-deadcode
             - front-lint
+            - back-lint
             - back-test
+            - back-bundle-audit
             - back-license-check
           filters:
             branches:
@@ -442,8 +564,11 @@ workflows:
             - front-test
             - front-license-check
             - front-build
+            - front-detect-deadcode
             - front-lint
+            - back-lint
             - back-test
+            - back-bundle-audit
             - back-license-check
           filters:
             branches:

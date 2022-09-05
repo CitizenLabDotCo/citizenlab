@@ -10,9 +10,37 @@ import PlatformFooter from 'containers/PlatformFooter';
 
 // hooks
 import useIdea from 'hooks/useIdea';
+import { useWindowSize } from '@citizenlab/cl2-component-library';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+
+// style
+import styled from 'styled-components';
+import { media, viewportWidths } from 'utils/styleUtils';
+
+// note: StyledIdeasShow styles defined here should match that in IdeasShowPage!
+const StyledIdeasShow = styled(IdeasShow)`
+  min-height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
+  padding-top: 40px;
+  padding-left: 60px;
+  padding-right: 60px;
+
+  ${media.smallerThanMaxTablet`
+    min-height: calc(100vh - ${({
+      theme: { mobileMenuHeight, mobileTopBarHeight },
+    }) => mobileMenuHeight + mobileTopBarHeight}px);
+    padding-top: 35px;
+  `}
+
+  ${media.smallerThanMinTablet`
+    padding-top: 25px;
+    padding-left: 15px;
+    padding-right: 15px;
+  `}
+`;
 
 interface Props {
   type: 'idea' | 'initiative' | null;
@@ -25,9 +53,8 @@ interface Props {
 
 const PostPageFullscreenModal = memo<Props>(
   ({ postId, slug, type, navbarRef, mobileNavbarRef, close }) => {
-    const onClose = useCallback(() => {
-      close();
-    }, [close]);
+    const { windowWidth } = useWindowSize();
+    const smallerThanMaxTablet = windowWidth <= viewportWidths.largeTablet;
 
     // Far from ideal to always try to load the idea, but
     // has to happen for hooks to work.
@@ -35,8 +62,21 @@ const PostPageFullscreenModal = memo<Props>(
     const idea = useIdea({ ideaId: postId });
 
     const topBar = useMemo(() => {
-      if (postId && type === 'idea') {
-        return <IdeaShowPageTopBar ideaId={postId} insideModal />;
+      if (
+        postId &&
+        type === 'idea' &&
+        smallerThanMaxTablet &&
+        !isNilOrError(idea)
+      ) {
+        const projectId = idea.relationships.project.data.id;
+
+        return (
+          <IdeaShowPageTopBar
+            ideaId={postId}
+            projectId={projectId}
+            insideModal
+          />
+        );
       }
 
       if (postId && type === 'initiative') {
@@ -44,7 +84,7 @@ const PostPageFullscreenModal = memo<Props>(
       }
 
       return null;
-    }, [postId, type]);
+    }, [postId, type, smallerThanMaxTablet, idea]);
 
     const content = useMemo(() => {
       if (postId) {
@@ -53,7 +93,11 @@ const PostPageFullscreenModal = memo<Props>(
 
           return (
             <>
-              <IdeasShow ideaId={postId} projectId={projectId} insideModal />
+              <StyledIdeasShow
+                ideaId={postId}
+                projectId={projectId}
+                insideModal={true}
+              />
               <PlatformFooter insideModal />
             </>
           );
@@ -70,7 +114,12 @@ const PostPageFullscreenModal = memo<Props>(
       }
 
       return null;
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [postId, idea]);
+
+    const onClose = useCallback(() => {
+      close();
+    }, [close]);
 
     return (
       <FullscreenModal

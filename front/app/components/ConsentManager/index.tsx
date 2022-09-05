@@ -217,9 +217,8 @@ export class ConsentManager extends PureComponent<Props, State> {
 
     const activeDestinations = this.getActiveDestinations();
 
-    const activeCategorizedDestinations = this.categorizeDestinations(
-      activeDestinations
-    );
+    const activeCategorizedDestinations =
+      this.categorizeDestinations(activeDestinations);
 
     const isConsentRequired =
       !cookieConsent ||

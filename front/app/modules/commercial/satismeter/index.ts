@@ -18,6 +18,10 @@ declare module 'components/ConsentManager/destinations' {
   export interface IDestinationMap {
     satismeter: 'satismeter';
   }
+
+  interface IConsentManagerFeatureMap {
+    satismeter: 'satismeter';
+  }
 }
 
 const destinationConfig: IDestinationConfig = {
@@ -44,6 +48,7 @@ const configuration: ModuleConfiguration = {
         window.satismeter =
           window.satismeter ||
           function () {
+            // eslint-disable-next-line prefer-rest-params
             (window.satismeter.q = window.satismeter.q || []).push(arguments);
           };
         window.satismeter.l = new Date();

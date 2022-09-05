@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useEffect, useState } from 'react';
 import { get } from 'lodash-es';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
 
 // components
@@ -50,15 +50,18 @@ const ProjectTemplatePreviewAdmin = memo<Props & WithRouterProps>(
     const onOpenModal = useCallback(() => {
       trackEventByName(tracks.useTemplateButtonClicked, { projectTemplateId });
       setModalOpened(true);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const onCloseModal = useCallback(() => {
       trackEventByName(tracks.useTemplateModalClosed, { projectTemplateId });
       setModalOpened(false);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const onGoBack = useCallback(() => {
       goBack ? goBack() : clHistory.push('/admin/projects');
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {

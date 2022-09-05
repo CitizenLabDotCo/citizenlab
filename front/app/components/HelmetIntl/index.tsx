@@ -8,7 +8,7 @@ type Props = {
   description: ReactIntl.FormattedMessage.MessageDescriptor;
 };
 
-type State = {};
+interface State {}
 
 export class HelmetIntl extends React.PureComponent<
   Props & InjectedIntlProps,

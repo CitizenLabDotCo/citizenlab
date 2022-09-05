@@ -38,7 +38,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-type State = {};
+interface State {}
 
 export class IdeasCount extends React.PureComponent<Props, State> {
   componentDidUpdate(prevProps) {

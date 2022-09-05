@@ -1,12 +1,11 @@
-import React, { PureComponent } from 'react';
+import React, { useEffect, ReactElement, useState } from 'react';
 import { adopt } from 'react-adopt';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
-import { Subscription } from 'rxjs';
 
 // components
-import SignUpIn from 'components/SignUpIn';
 import SignUpInPageMeta from './SignUpInPageMeta';
+import SignUpIn, { ISignUpInMetaData } from 'components/SignUpIn';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -16,7 +15,10 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import { isNilOrError, endsWith } from 'utils/helperUtils';
 
 // events
-import { signUpActiveStepChange$ } from 'components/SignUpIn/events';
+import {
+  signUpActiveStepChange$,
+  openSignUpInModal$,
+} from 'components/SignUpIn/events';
 
 // context
 import { PreviousPathnameContext } from 'context';
@@ -99,92 +101,85 @@ const RightInner = styled.div`
   `}
 `;
 
-export interface InputProps {}
-
 export interface DataProps {
   authUser: GetAuthUserChildProps;
   locale: GetLocaleChildProps;
   previousPathName: string | null;
 }
 
-export interface Props extends InputProps, DataProps {}
+export interface Props extends DataProps, WithRouterProps {}
 
-interface State {}
+const SignUpPage = ({
+  authUser,
+  location,
+  previousPathName,
+}: Props): ReactElement => {
+  const { pathname } = location;
+  const flow = endsWith(pathname, 'sign-in') ? 'signin' : 'signup';
 
-class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
-  subscriptions: Subscription[] = [];
+  const [metaData, setMetaData] = useState<ISignUpInMetaData | undefined>({
+    flow,
+    pathname,
+    inModal: false,
+  });
 
-  static getDerivedStateFromProps(
-    props: Props & WithRouterProps,
-    _state: State
-  ) {
-    const { authUser, previousPathName } = props;
-    const isLoggedIn =
-      !isNilOrError(authUser) && authUser.attributes.registration_completed_at;
+  const isLoggedIn =
+    !isNilOrError(authUser) && authUser.attributes.registration_completed_at;
 
-    if (isLoggedIn) {
-      clHistory.replace(previousPathName || '/');
-    }
-
-    return null;
+  if (isLoggedIn) {
+    clHistory.replace(previousPathName || '/');
   }
 
-  componentDidMount() {
-    this.subscriptions = [
+  useEffect(() => {
+    const subscriptions = [
+      openSignUpInModal$.subscribe(({ eventValue: newMetaData }) => {
+        if (newMetaData) {
+          setMetaData(newMetaData);
+        }
+      }),
       signUpActiveStepChange$.subscribe(() => {
         window.scrollTo(0, 0);
       }),
     ];
-  }
+    return () => {
+      subscriptions.forEach((subscription) => subscription.unsubscribe());
+    };
+  }, []);
 
-  componentWillUnmount() {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-  }
-
-  onSignUpInCompleted = () => {
-    clHistory.push(this.props.previousPathName || '/');
+  const onSignUpInCompleted = () => {
+    clHistory.push(previousPathName || '/');
   };
 
-  render() {
-    const {
-      location: { pathname },
-    } = this.props;
-    const flow = endsWith(pathname, 'sign-in') ? 'signin' : 'signup';
+  return (
+    <>
+      <SignUpInPageMeta />
 
-    return (
-      <>
-        <SignUpInPageMeta />
-
-        <Container id="e2e-sign-up-in-page">
-          <Left>
-            <Banner>
-              <Slogan>
-                <FormattedMessage {...messages.slogan} />
-              </Slogan>
-            </Banner>
-          </Left>
-          <Right>
-            <RightInner>
+      <Container id="e2e-sign-up-in-page">
+        <Left>
+          <Banner>
+            <Slogan>
+              <FormattedMessage {...messages.slogan} />
+            </Slogan>
+          </Banner>
+        </Left>
+        <Right>
+          <RightInner>
+            {metaData && (
               <SignUpIn
-                metaData={{
-                  flow,
-                  pathname,
-                  inModal: false,
-                  verification: undefined,
-                }}
-                onSignUpInCompleted={this.onSignUpInCompleted}
+                metaData={metaData}
+                onSignUpInCompleted={onSignUpInCompleted}
               />
-            </RightInner>
-          </Right>
-        </Container>
-      </>
-    );
-  }
-}
+            )}
+          </RightInner>
+        </Right>
+      </Container>
+    </>
+  );
+};
 
 const SignUpPageWithHoC = withRouter(SignUpPage);
 
-const Data = adopt<DataProps, InputProps & WithRouterProps>({
+const Data = adopt<DataProps, WithRouterProps>({
   authUser: <GetAuthUser />,
   locale: <GetLocale />,
   previousPathName: ({ render }) => (
@@ -194,7 +189,7 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   ),
 });
 
-export default (inputProps: InputProps & WithRouterProps) => (
+export default (inputProps) => (
   <Data {...inputProps}>
     {(dataProps) => <SignUpPageWithHoC {...inputProps} {...dataProps} />}
   </Data>

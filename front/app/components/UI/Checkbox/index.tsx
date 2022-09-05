@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { colors, defaultOutline, isRtl } from 'utils/styleUtils';
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import { isBoolean } from 'lodash-es';
 import { darken, hideVisually } from 'polished';
 
@@ -34,10 +34,6 @@ const Label = styled.label<{ disabled: boolean }>`
   display: flex;
   align-items: center;
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
-
-  ${isRtl`
-    flex-direction: row-reverse;
-  `}
 `;
 
 const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
@@ -114,7 +110,7 @@ export default class Checkbox extends PureComponent<Props> {
 
     if (size && isBoolean(disabled) && isBoolean(indeterminate)) {
       return (
-        <Label id={id || ''} className={className || ''} disabled={disabled}>
+        <Label id={id} className={className || ''} disabled={disabled}>
           <CheckboxContainer hasLabel={hasLabel}>
             <HiddenCheckbox
               onChange={onChange}

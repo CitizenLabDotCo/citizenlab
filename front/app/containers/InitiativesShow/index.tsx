@@ -8,12 +8,12 @@ import { trackEvent } from 'utils/analytics';
 import tracks from './tracks';
 
 // router
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // components
 import Modal from 'components/UI/Modal';
 import FileAttachments from 'components/UI/FileAttachments';
-import { Spinner } from 'cl2-component-library';
+import { Spinner } from '@citizenlab/cl2-component-library';
 import SharingButtons from 'components/Sharing/SharingButtons';
 import FeatureFlag from 'components/FeatureFlag';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
@@ -56,6 +56,10 @@ import GetPermission, {
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
+
+// utils
+import { getAddressOrFallbackDMS } from 'utils/map';
+import clHistory from 'utils/cl-router/history';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -352,16 +356,16 @@ export class InitiativesShow extends PureComponent<
   }
 
   componentDidMount() {
-    const newInitiativeId = this.props.location.query?.['new_initiative_id'];
+    const queryParams = new URLSearchParams(window.location.search);
+    const newInitiativeId = queryParams.get('new_initiative_id');
 
     this.setLoaded();
-
     if (isString(newInitiativeId)) {
       setTimeout(() => {
         this.setState({ initiativeIdForSocialSharing: newInitiativeId });
       }, 1500);
 
-      window.history.replaceState(null, '', window.location.pathname);
+      clHistory.replace(window.location.pathname);
     }
   }
 
@@ -465,7 +469,10 @@ export class InitiativesShow extends PureComponent<
         initiativeImages?.[0]?.attributes?.versions?.large;
       const initiativeGeoPosition =
         initiative?.attributes?.location_point_geojson;
-      const initiativeAddress = initiative?.attributes?.location_description;
+      const initiativeAddress = getAddressOrFallbackDMS(
+        initiative?.attributes?.location_description,
+        initiative?.attributes?.location_point_geojson
+      );
       const topicIds =
         initiative?.relationships?.topics?.data?.map((item) => item.id) || [];
       const initiativeUrl = location.href;
@@ -628,6 +635,9 @@ export class InitiativesShow extends PureComponent<
                     twitterMessage={formatMessage(messages.twitterMessage, {
                       initiativeTitle,
                     })}
+                    facebookMessage={formatMessage(messages.facebookMessage, {
+                      initiativeTitle,
+                    })}
                     whatsAppMessage={formatMessage(messages.whatsAppMessage, {
                       initiativeTitle,
                     })}
@@ -664,6 +674,12 @@ export class InitiativesShow extends PureComponent<
                         id="e2e-initiative-sharing-component"
                         context="initiative"
                         url={initiativeUrl}
+                        facebookMessage={formatMessage(
+                          messages.facebookMessage,
+                          {
+                            initiativeTitle,
+                          }
+                        )}
                         twitterMessage={formatMessage(messages.twitterMessage, {
                           initiativeTitle,
                         })}
@@ -694,7 +710,6 @@ export class InitiativesShow extends PureComponent<
         </>
       );
     }
-
     return (
       <>
         {!loaded && (
@@ -744,7 +759,7 @@ export class InitiativesShow extends PureComponent<
 }
 
 const InitiativesShowWithHOCs = injectLocalize<Props>(
-  injectIntl(withRouter(InitiativesShow))
+  withRouter(injectIntl(InitiativesShow))
 );
 
 const Data = adopt<DataProps, InputProps>({

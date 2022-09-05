@@ -42,7 +42,7 @@ const Fallback = styled.div<{ src: string | undefined }>`
 interface Props {
   id?: string;
   src: HTMLImageElement['src'];
-  alt?: HTMLImageElement['alt'];
+  alt: HTMLImageElement['alt'];
   role?: string;
   cover?: boolean;
   fadeIn?: boolean;
@@ -113,7 +113,7 @@ export default class Image extends PureComponent<Props, State> {
         placeholderBg={placeholderBg}
         loaded={loaded}
         onLoad={this.handleImageLoaded}
-        id={id || ''}
+        id={id}
         className={className || ''}
       />
     );

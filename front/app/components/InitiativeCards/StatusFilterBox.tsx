@@ -47,6 +47,7 @@ const StatusFilterBox = memo<Props>(
       (nextSelectedStatusId: string | null) => {
         onChange(nextSelectedStatusId);
       },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       []
     );
 

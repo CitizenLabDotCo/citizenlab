@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Polls
   class ResponsePolicy < ApplicationPolicy
     class Scope
@@ -9,7 +11,9 @@ module Polls
       end
 
       def resolve
-        moderatable_projects = ProjectPolicy::Scope.new(user, Project).moderatable
+        return scope.none unless user
+
+        moderatable_projects = ::UserRoleService.new.moderatable_projects user
         moderatable_phases = Phase.where(project: moderatable_projects)
         scope
           .where(participation_context: moderatable_projects)
@@ -17,13 +21,17 @@ module Polls
       end
     end
 
+    def responses_count?
+      active? && admin?
+    end
+
     def index_xlsx?
-      user&.active? && user.admin?
+      active? && admin?
     end
 
     def create?
       (
-        user&.active? && 
+        active? &&
         (record.user_id == user.id) &&
         ProjectPolicy.new(user, record.participation_context.project).show? &&
         check_responding_allowed(record, user)
@@ -32,7 +40,7 @@ module Polls
 
     private
 
-    def check_responding_allowed response, user
+    def check_responding_allowed(response, user)
       pcs = ParticipationContextService.new
       !pcs.taking_poll_disabled_reason_for_context response.participation_context, user
     end

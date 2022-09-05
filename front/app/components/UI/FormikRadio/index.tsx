@@ -1,7 +1,7 @@
 // Libraries
 import React, { PureComponent } from 'react';
 import { FormikConsumer, FormikContext } from 'formik';
-import { Radio, RadioProps } from 'cl2-component-library';
+import { Radio, RadioProps } from '@citizenlab/cl2-component-library';
 
 // Typings
 type Props = RadioProps & {
@@ -10,7 +10,11 @@ type Props = RadioProps & {
 
 class FormikRadio extends PureComponent<Props> {
   handleOnChange = (formikContext: FormikContext<any>) => (value: string) => {
-    formikContext.setFieldValue(this.props.name, value);
+    const { name } = this.props;
+    formikContext.setFieldValue(name, value);
+    formikContext.setStatus('enabled');
+    formikContext.setFieldTouched(name, true);
+    formikContext.setFieldError(name, '');
   };
 
   render() {

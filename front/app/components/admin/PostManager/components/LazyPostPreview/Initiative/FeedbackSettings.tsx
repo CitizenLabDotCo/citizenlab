@@ -17,7 +17,7 @@ import { IOption } from 'typings';
 import styled from 'styled-components';
 
 // components
-import { Select, Label } from 'cl2-component-library';
+import { Select, Label } from '@citizenlab/cl2-component-library';
 
 // services
 import { updateInitiative } from 'services/initiatives';

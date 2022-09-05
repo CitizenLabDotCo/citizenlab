@@ -1,10 +1,16 @@
+# frozen_string_literal: true
+
 class WebApi::V1::AreasController < ApplicationController
   before_action :set_area, except: %i[index create]
   before_action :set_side_effects_service, only: %i[create update reorder destroy]
+  skip_before_action :authenticate_user, only: %i[index show]
 
   def index
-    @areas = policy_scope(Area).order(created_at: :desc)
-    @areas = @areas.page(params.dig(:page, :number)).per(params.dig(:page, :size))
+    areas_filterer = AreasFilteringService.new
+    @areas = policy_scope(Area)
+    @areas = areas_filterer.filter(@areas, params: params, current_user: current_user)
+    @areas = @areas.order(created_at: :desc)
+    @areas = paginate @areas
 
     render json: linked_json(@areas, WebApi::V1::AreaSerializer, params: fastjson_params)
   end
@@ -23,7 +29,7 @@ class WebApi::V1::AreasController < ApplicationController
       render json: WebApi::V1::AreaSerializer.new(
         @area,
         params: fastjson_params
-        ).serialized_json, status: :created
+      ).serialized_json, status: :created
     else
       render json: { errors: @area.errors.details }, status: :unprocessable_entity
     end
@@ -38,7 +44,7 @@ class WebApi::V1::AreasController < ApplicationController
       render json: WebApi::V1::AreaSerializer.new(
         @area,
         params: fastjson_params
-        ).serialized_json, status: :ok
+      ).serialized_json, status: :ok
     else
       render json: { errors: @area.errors.details }, status: :unprocessable_entity
     end
@@ -51,7 +57,7 @@ class WebApi::V1::AreasController < ApplicationController
       @side_fx_service.after_destroy(area, current_user)
       head :ok
     else
-      head 500
+      head :internal_server_error
     end
   end
 
@@ -78,10 +84,6 @@ class WebApi::V1::AreasController < ApplicationController
       title_multiloc: CL2_SUPPORTED_LOCALES,
       description_multiloc: CL2_SUPPORTED_LOCALES
     )
-  end
-
-  def secure_controller?
-    false
   end
 
   def set_side_effects_service

@@ -11,10 +11,14 @@ import messages from './messages';
 
 interface Props {
   ideaId: string;
+  compact?: boolean;
+  className?: string;
 }
 
 const IdeaTopics = ({
   ideaId,
+  compact,
+  className,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const idea = useIdea({ ideaId });
@@ -25,7 +29,7 @@ const IdeaTopics = ({
 
     if (topicIds.length > 0) {
       return (
-        <Item>
+        <Item className={className || ''} compact={compact}>
           <Header>{formatMessage(messages.topics)}</Header>
           <Topics postType="idea" topicIds={topicIds} />
         </Item>

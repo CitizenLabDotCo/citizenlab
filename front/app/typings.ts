@@ -8,13 +8,14 @@ declare global {
     displayName?: string;
   }
   interface Window {
-    _paq: any;
-    googleMaps?: boolean;
     Intercom?: any;
-    intercomSettings: any;
+    Weglot?: any;
+    _paq: any;
     attachEvent?: any;
-    satismeter?: any;
     dataLayer?: any[];
+    googleMaps?: boolean;
+    intercomSettings: any;
+    satismeter?: any;
   }
 }
 
@@ -29,7 +30,7 @@ export interface IHttpMethod {
 
 export type ILocationInfo =
   | {
-      location_description: string;
+      location_description: string | undefined;
       location_point_geojson: {
         type: 'Point';
         coordinates: number[];
@@ -48,28 +49,20 @@ export type IParticipationContextType = 'project' | 'phase';
 
 export type IPCAction = IProjectAction | IIdeaAction;
 
-export interface ITheme {
-  theme: {
-    color: {
-      main: string;
-      menuBg: string;
-    };
-  };
-}
-
 export interface ITab {
   name: string;
   label: string;
   url: string;
   active?: boolean | ((pathname: string) => boolean);
-  feature?: AppConfigurationSettingsFeatureNames;
+  feature?: TAppConfigurationSetting;
+  statusLabel?: string;
 }
 
 export type CellConfiguration<ComponentProps> = {
   name: string;
   onChange?: (event: unknown) => void;
   onClick?: (event: unknown) => void;
-  featureFlag?: AppConfigurationSettingsFeatureNames;
+  featureFlag?: TAppConfigurationSetting;
   cellProps?: TableCellProps;
   Component: FC<ComponentProps>;
 };
@@ -89,10 +82,10 @@ export interface ILinks {
 }
 
 export interface UploadFile extends File {
+  id?: string;
   filename: string;
   base64: string;
   url: string;
-  id?: string;
   remote: boolean;
   extension?: string;
   error?: string[];
@@ -102,6 +95,15 @@ export interface IOption {
   value: any;
   label: string;
   disabled?: boolean;
+}
+
+export function isIOption(
+  maybeOption: {
+    value: string;
+    label: string;
+  } | null
+): maybeOption is IOption {
+  return maybeOption !== null;
 }
 
 export interface Message {
@@ -115,16 +117,13 @@ import { IIdeaAction } from 'services/ideas';
 import { FormikActions } from 'formik';
 import { FC } from 'react';
 import { TableCellProps } from 'semantic-ui-react';
-import { AppConfigurationSettingsFeatureNames } from 'services/appConfiguration';
+import { TAppConfigurationSetting } from 'services/appConfiguration';
+import { TFieldName } from 'components/UI/Error';
 export type MessageDescriptor = Messages['key'];
 
 export type Locale = keyof typeof appLocalePairs;
 
 export type GraphqlLocale = keyof typeof appGraphqlLocalePairs;
-
-export const isLocale = (test: any) => {
-  return Object.keys(appLocalePairs).includes(test);
-};
 
 export type Multiloc = {
   [key in Locale]?: string;
@@ -134,10 +133,6 @@ export type GraphqlMultiloc = {
   content: string;
   locale: Locale;
 }[];
-
-export type MultilocStringOrJSX = {
-  [key in Locale]?: string | JSX.Element;
-};
 
 export type MultilocFormValues = {
   [field: string]: Multiloc | null | undefined;
@@ -149,11 +144,12 @@ export interface CLError {
   row?: number;
   rows?: number[];
   ideas_count?: number;
-  payload?: Object;
+  blocked_words?: any;
+  payload?: Record<string, any>;
 }
 
 export interface CLErrors {
-  [fieldName: string]: CLError[];
+  [fieldName: TFieldName | string]: CLError[];
 }
 
 export interface CLErrorsJSON {
@@ -180,7 +176,7 @@ export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 export type IGraphPoint = {
   name: string;
   value: number;
-  code: string;
+  code?: string;
   color?: string;
   ordering?: number;
 };

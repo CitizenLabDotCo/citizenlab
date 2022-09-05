@@ -26,5 +26,5 @@
   },
   "files": ["custom.d.ts"],
   "include": ["**/*"],
-  "exclude": ["node_modules", "**/*.test.tsx", "**/*.test.ts"]
+  "exclude": ["node_modules"]
 }

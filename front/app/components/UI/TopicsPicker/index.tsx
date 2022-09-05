@@ -1,5 +1,5 @@
-import React, { memo, useCallback, MouseEvent } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import React, { memo } from 'react';
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 // styles
 import styled from 'styled-components';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
@@ -30,7 +30,7 @@ const TopicsContainer = styled.div`
 
 const TopicSwitch = styled.button`
   color: ${colors.label};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 400;
   line-height: normal;
   text-align: left;
@@ -80,7 +80,7 @@ export interface InputProps {
   id?: string;
   className?: string;
   setRef?: (element: HTMLButtonElement) => void;
-  availableTopics: ITopicData[];
+  availableTopics: ITopicData[] | { const: string; title: string }[];
 }
 
 interface Props extends InputProps {}
@@ -118,15 +118,10 @@ const TopicsPicker = memo(
       }
     };
 
-    const removeFocus = useCallback((event: MouseEvent<HTMLElement>) => {
-      event.preventDefault();
-    }, []);
-
     if (!isNilOrError(availableTopics)) {
       const numberOfSelectedTopics = selectedTopicIds.length;
       const selectedTopicNames = !isNilOrError(selectedTopics)
         ? selectedTopics
-            .filter((topic) => !isNilOrError(topic))
             .map((topic: ITopicData) =>
               localize(topic.attributes.title_multiloc)
             )
@@ -139,23 +134,29 @@ const TopicsPicker = memo(
             className={`${className} e2e-topics-picker`}
           >
             {availableTopics.map((topic, index) => {
-              const isSelected = selectedTopicIds.includes(topic.id);
+              const topicId = topic.id || topic.const;
+              const topicTitle = topic?.attributes?.title_multiloc ? (
+                <T value={topic.attributes.title_multiloc} />
+              ) : (
+                topic.title
+              );
+              const isSelected = selectedTopicIds.includes(topicId);
 
               return (
                 <TopicSwitch
-                  key={topic.id}
-                  onClick={handleOnChange(topic.id)}
+                  key={topicId}
+                  onClick={handleOnChange(topicId)}
                   className={[
                     'e2e-topics-picker-item',
                     isSelected ? 'selected' : null,
                   ]
                     .filter((item) => item)
                     .join(' ')}
-                  onMouseDown={removeFocus}
+                  onMouseDown={removeFocusAfterMouseClick}
                   ref={index === 0 ? setRef : undefined}
                   disabled={false}
                 >
-                  <T value={topic.attributes.title_multiloc} />
+                  {topicTitle}
                 </TopicSwitch>
               );
             })}

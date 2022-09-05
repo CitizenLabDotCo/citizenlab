@@ -29,20 +29,12 @@ export interface IBasket {
   data: IBasketData;
 }
 
-export interface IBaskets {
-  data: IBasketData[];
-}
-
 export interface INewBasket {
   user_id: string;
   participation_context_id: string;
   participation_context_type: 'Project' | 'Phase';
   idea_ids?: string[];
   submitted_at?: string | null;
-}
-
-export function basketsStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IBaskets>({ apiEndpoint, ...streamParams });
 }
 
 export function basketByIdStream(
@@ -65,8 +57,4 @@ export function updateBasket(basketId: string, object: Partial<INewBasket>) {
   return streams.update<IBasket>(`${apiEndpoint}/${basketId}`, basketId, {
     basket: object,
   });
-}
-
-export function deleteBasket(basketId: string) {
-  return streams.delete(`${apiEndpoint}/${basketId}`, basketId);
 }

@@ -1,5 +1,18 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: topics
+#
+#  id                   :uuid             not null, primary key
+#  title_multiloc       :jsonb
+#  description_multiloc :jsonb
+#  icon                 :string
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  ordering             :integer
+#  code                 :string           default("custom"), not null
+#
 class Topic < ApplicationRecord
   DEFAULT_CODES = %w[nature waste sustainability mobility technology economy housing public_space safety education culture health inclusion community services other].freeze
 
@@ -10,7 +23,8 @@ class Topic < ApplicationRecord
   acts_as_list column: :ordering, top_of_list: 0, add_new_at: :top
 
   has_many :projects_topics, dependent: :destroy
-  has_many :projects, through: :projects_topics
+  has_many :projects_allowed_input_topics, dependent: :destroy
+  has_many :projects, through: :projects_allowed_input_topics
   has_many :ideas_topics, dependent: :destroy
   has_many :ideas, through: :ideas_topics
   has_many :initiatives_topics, dependent: :destroy

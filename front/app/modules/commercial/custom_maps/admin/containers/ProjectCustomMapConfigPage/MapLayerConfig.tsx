@@ -21,7 +21,7 @@ import {
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import { ColorPickerInput, Select } from 'cl2-component-library';
+import { ColorPickerInput, Select } from '@citizenlab/cl2-component-library';
 
 // utils
 import {
@@ -292,6 +292,7 @@ const MapLayerConfig = memo<Props & InjectedIntlProps>(
                         <a
                           href="https://github.com/olistik/maki-icons-list"
                           target="_blank"
+                          rel="noreferrer"
                         >
                           {formatMessage(messages.here)}
                         </a>

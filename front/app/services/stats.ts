@@ -2,7 +2,7 @@ import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { Multiloc } from 'typings';
 
-const apiEndpoint = `${API_PATH}/stats`;
+export const apiEndpoint = `${API_PATH}/stats`;
 
 export type IResourceByTime =
   | IIdeasByTime
@@ -75,8 +75,6 @@ export function ideasByStatusStream(streamParams: IStreamParams | null = null) {
 }
 export const ideasByStatusXlsxEndpoint = `${apiEndpoint}/ideas_by_status_as_xlsx`;
 
-export const ideasByTimeXlsxEndpoint = `${apiEndpoint}/ideas_by_time_as_xlsx`;
-
 export function ideasByTimeStream(streamParams: IStreamParams | null = null) {
   return streams.get<IIdeasByTime>({
     apiEndpoint: `${apiEndpoint}/ideas_by_time`,
@@ -141,27 +139,6 @@ export interface IUsersByTime {
     };
   };
 }
-export interface IUserEngagementScores {
-  data: IUserEngagementScore[];
-}
-
-export interface IUserEngagementScore {
-  id: string;
-  type: string;
-  attributes: {
-    sum_score: number;
-  };
-  relationships: {
-    user: {
-      data: {
-        id: string;
-        type: 'user';
-      };
-    };
-  };
-}
-
-export const userXlsxEndpoint = `${apiEndpoint}/users_count_as_xlsx`;
 
 export function usersCount(streamParams: IStreamParams | null = null) {
   return streams.get<IUsersCount>({
@@ -188,8 +165,6 @@ export function commentsByTimeStream(
   });
 }
 
-export const usersByTimeCumulativeXlsxEndpoint = `${apiEndpoint}/users_by_time_cumulative_as_xlsx`;
-
 export function usersByTimeCumulativeStream(
   streamParams: IStreamParams | null = null
 ) {
@@ -211,24 +186,6 @@ export function activeUsersByTimeStream(
 }
 
 export const activeUsersByTimeCumulativeXlsxEndpoint = `${apiEndpoint}/active_users_by_time_cumulative_as_xlsx`;
-
-export function activeUsersByTimeCumulativeStream(
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IUsersByTime>({
-    apiEndpoint: `${apiEndpoint}/active_users_by_time_cumulative`,
-    ...streamParams,
-  });
-}
-
-export function userEngagementScoresStream(
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IUserEngagementScores>({
-    apiEndpoint: `${apiEndpoint}/users_engagement_scores`,
-    ...streamParams,
-  });
-}
 
 // Comments
 export interface ICommentsByTime {
@@ -346,8 +303,6 @@ export interface IVotesByTimeCumulative {
     total: { [key: string]: number };
   };
 }
-
-export const votesByTimeCumulativeXlsxEndpoint = `${apiEndpoint}/votes_by_time_cumulative_as_xlsx`;
 
 export function votesByTimeCumulativeStream(
   streamParams: IStreamParams | null = null

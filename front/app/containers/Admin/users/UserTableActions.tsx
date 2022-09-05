@@ -6,12 +6,12 @@ import { saveAs } from 'file-saver';
 
 // Components
 import Checkbox from 'components/UI/Checkbox';
-import { Icon, Dropdown } from 'cl2-component-library';
+import { Icon, Dropdown } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 
 // Services
-import { IGroupData } from 'services/groups';
+import { IGroupData, MembershipType } from 'services/groups';
 import {
   addGroupMembership,
   IGroupMembership,
@@ -27,17 +27,14 @@ import eventEmitter from 'utils/eventEmitter';
 import events, { MembershipAdd } from './events';
 
 // tracking
-import { injectTracks } from 'utils/analytics';
+import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // Resources
-import GetGroups, {
-  GetGroupsChildProps,
-  MembershipType,
-} from 'resources/GetGroups';
+import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 
 // I18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // Styling
@@ -59,7 +56,7 @@ const TableOptions = styled.div`
 
 const UserCount = styled.span`
   color: ${colors.label};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 400;
   white-space: nowrap;
   margin-left: 5px;
@@ -93,40 +90,6 @@ const ActionButtons = styled.div`
   display: flex;
   align-items: center;
   margin-left: 30px;
-`;
-
-const ActionButton = styled.button`
-  min-height: 42px;
-  display: flex;
-  align-items: center;
-  margin: 0px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-left: 10px;
-  padding-right: 10px;
-  position: relative;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  cursor: pointer;
-
-  span {
-    white-space: normal;
-    text-align: left;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    word-break: break-word;
-    hyphens: auto;
-  }
-
-  &.hasLeftMargin {
-    margin-left: 30px;
-  }
-
-  &:hover,
-  &:focus {
-    background: ${rgba(colors.adminTextColor, 0.1)};
-    color: ${colors.adminTextColor};
-    outline: none;
-  }
 `;
 
 const StyledIcon = styled(Icon)`
@@ -197,6 +160,7 @@ const DropdownFooterButton = styled(Button)`
 // Typings
 import { CLErrorsJSON } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
+import { InjectedIntlProps } from 'react-intl';
 
 interface InputProps {
   groupType?: MembershipType;
@@ -220,13 +184,7 @@ interface State {
   processing: boolean;
 }
 
-interface Tracks {
-  trackToggleAllUsers: Function;
-  trackAddUsersToGroups: Function;
-  trackAddedRedundantUserToGroup: Function;
-}
-
-class UserTableActions extends PureComponent<Props & Tracks, State> {
+class UserTableActions extends PureComponent<Props & InjectedIntlProps, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -237,15 +195,21 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
   }
 
   toggleAllUsers = () => {
-    this.props.trackToggleAllUsers();
+    trackEventByName(tracks.toggleAllUsers.name);
     this.props.toggleSelectAll();
   };
 
   exportUsers = async (event: FormEvent) => {
     event.preventDefault();
 
+    // eslint-disable-next-line no-useless-catch
     try {
-      const { allUsersIds, selectedUsers, groupId } = this.props;
+      const {
+        allUsersIds,
+        selectedUsers,
+        groupId,
+        intl: { formatDate, formatMessage },
+      } = this.props;
       const usersIds = selectedUsers === 'all' ? allUsersIds : selectedUsers;
       const apiPath = `${API_PATH}/users/as_xlsx`;
       const fileType =
@@ -254,7 +218,12 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
       const users = isArray(usersIds) ? usersIds : null;
       const queryParameters = omitBy({ group, users }, isNil);
       const blob = await requestBlob(apiPath, fileType, queryParameters);
-      saveAs(blob, 'users-export.xlsx');
+      saveAs(
+        blob,
+        `${formatMessage(messages.userExportFileName)}_${formatDate(
+          Date.now()
+        )}.xlsx`
+      );
     } catch (error) {
       throw error;
     }
@@ -276,36 +245,30 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
     }));
   };
 
-  toggleGroup = (groupId: string) => (
-    event: React.ChangeEvent | React.MouseEvent
-  ) => {
-    event.preventDefault();
+  toggleGroup =
+    (groupId: string) => (event: React.ChangeEvent | React.MouseEvent) => {
+      event.preventDefault();
 
-    const { selectedGroupIds } = this.state;
+      const { selectedGroupIds } = this.state;
 
-    if (!includes(selectedGroupIds, groupId)) {
-      this.setState({
-        selectedGroupIds: [...this.state.selectedGroupIds, groupId],
-      });
-    } else {
-      this.setState({
-        selectedGroupIds: selectedGroupIds.filter(
-          (selectedGroupId) => selectedGroupId !== groupId
-        ),
-      });
-    }
-  };
+      if (!includes(selectedGroupIds, groupId)) {
+        this.setState({
+          selectedGroupIds: [...this.state.selectedGroupIds, groupId],
+        });
+      } else {
+        this.setState({
+          selectedGroupIds: selectedGroupIds.filter(
+            (selectedGroupId) => selectedGroupId !== groupId
+          ),
+        });
+      }
+    };
 
   addUsersToGroups = async () => {
     const { selectedGroupIds } = this.state;
 
     if (selectedGroupIds && selectedGroupIds.length > 0) {
-      const {
-        allUsersIds,
-        selectedUsers,
-        trackAddUsersToGroups,
-        trackAddedRedundantUserToGroup,
-      } = this.props;
+      const { allUsersIds, selectedUsers } = this.props;
       const usersIds = selectedUsers === 'all' ? allUsersIds : selectedUsers;
       const promises: Promise<IGroupMembership | CLErrorsJSON>[] = [];
       const timeout = (ms) => new Promise((res) => setTimeout(res, ms));
@@ -328,7 +291,7 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
         this.setState({ processing: false });
       };
 
-      trackAddUsersToGroups({
+      trackEventByName(tracks.addUsersToGroup.name, {
         extra: {
           usersIds,
           selectedGroupIds,
@@ -351,7 +314,7 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
         success();
         return true;
       } catch (error) {
-        trackAddedRedundantUserToGroup({
+        trackEventByName(tracks.addedRedundantUserToGroup.name, {
           extra: {
             errorResponse: error,
           },
@@ -428,13 +391,14 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
         <ActionButtons>
           {selectedUsers !== 'none' && !isNilOrError(groupsList) && (
             <ActionButtonWrapper>
-              <ActionButton
+              <Button
                 className="e2e-move-users"
                 onClick={this.toggleDropdown}
+                buttonStyle="admin-dark-text"
               >
                 <StyledIcon name="moveFolder" />
                 <FormattedMessage {...messages.moveUsersTableAction} />
-              </ActionButton>
+              </Button>
 
               <Dropdown
                 width="300px"
@@ -482,33 +446,31 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
           )}
 
           {groupType === 'manual' && selectedUsers !== 'none' && (
-            <ActionButton
+            <Button
               onClick={this.handleGroupsDeleteClick}
               className="hasLeftMargin"
+              buttonStyle="admin-dark-text"
             >
               <StyledIcon name="trash" />
               <FormattedMessage {...messages.membershipDelete} />
-            </ActionButton>
+            </Button>
           )}
 
-          <ActionButton
+          <Button
             onClick={this.exportUsers}
             className={`export e2e-${exportType} hasLeftMargin`}
+            buttonStyle="admin-dark-text"
           >
             <StyledIcon name="userExport" />
             <FormattedMessage {...messages[exportType]} />
-          </ActionButton>
+          </Button>
         </ActionButtons>
       </TableOptions>
     );
   }
 }
 
-const UserTableActionsWithHocs = injectTracks<Props>({
-  trackToggleAllUsers: tracks.toggleAllUsers,
-  trackAddUsersToGroups: tracks.addUsersToGroup,
-  trackAddedRedundantUserToGroup: tracks.addedRedundantUserToGroup,
-})(UserTableActions);
+const UserTableActionsWithHocs = injectIntl(UserTableActions);
 
 export default (inputProps: InputProps) => (
   <GetGroups membershipType="manual">

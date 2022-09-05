@@ -20,26 +20,25 @@ import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 import GetIdeaList, { GetIdeaListChildProps } from 'resources/GetIdeaList';
 
 // styles
-import { ScreenReaderOnly } from 'utils/a11y';
 import { colors, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
-import { darken } from 'polished';
 
 // components
-import { Icon } from 'cl2-component-library';
+import Button from 'components/UI/Button';
 import T from 'components/T';
 
 // tracking
-import { injectTracks } from 'utils/analytics';
 import tracks from './tracks';
+import { trackEventByName } from 'utils/analytics';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import { FormattedNumber } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from 'containers/ProjectsShowPage/messages';
+import FormattedBudget from 'utils/currency/FormattedBudget';
 
 // typings
 import { IIdeaData } from 'services/ideas';
@@ -109,27 +108,17 @@ const IdeaTitle = styled.div`
 
 const IdeaBudget = styled.div`
   color: ${colors.label};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 400;
   line-height: 18px;
   text-align: left;
 `;
 
-const RemoveIconButton = styled.button`
+const RemoveIconButton = styled(Button)`
   display: flex;
   align-items: center;
   justify-content: center;
   margin-left: 15px;
-`;
-
-const RemoveIcon = styled(Icon)`
-  height: 20px;
-  fill: ${colors.clIconSecondary};
-  cursor: pointer;
-
-  &:hover {
-    fill: ${darken(0.2, colors.clIconSecondary)};
-  }
 `;
 
 interface InputProps {
@@ -147,50 +136,48 @@ interface DataProps {
   ideaList: GetIdeaListChildProps;
 }
 
-interface Tracks {
-  ideaRemovedFromBasket: () => void;
-  ideaAddedToBasket: () => void;
-}
-
 interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class PBBasket extends PureComponent<Props & Tracks, State> {
-  ideaRemovedFromBasket = (ideaIdToRemove: string) => async (
-    event: FormEvent<any>
-  ) => {
-    event.preventDefault();
+class PBBasket extends PureComponent<Props & InjectedIntlProps, State> {
+  ideaRemovedFromBasket =
+    (ideaIdToRemove: string) => async (event: FormEvent<any>) => {
+      event.preventDefault();
 
-    const {
-      authUser,
-      basket,
-      participationContextId,
-      participationContextType,
-    } = this.props;
+      const {
+        authUser,
+        basket,
+        participationContextId,
+        participationContextType,
+      } = this.props;
 
-    if (
-      !isNilOrError(basket) &&
-      !isNilOrError(authUser) &&
-      participationContextId
-    ) {
-      const newIdeas = basket.relationships.ideas.data
-        .filter((idea) => idea.id !== ideaIdToRemove)
-        .map((idea) => idea.id);
+      if (
+        !isNilOrError(basket) &&
+        !isNilOrError(authUser) &&
+        participationContextId
+      ) {
+        const newIdeas = basket.relationships.ideas.data
+          .filter((idea) => idea.id !== ideaIdToRemove)
+          .map((idea) => idea.id);
 
-      await updateBasket(basket.id, {
-        user_id: authUser.id,
-        participation_context_id: participationContextId,
-        participation_context_type: capitalizeParticipationContextType(
-          participationContextType
-        ),
-        idea_ids: newIdeas,
-        submitted_at: null,
-      });
+        try {
+          await updateBasket(basket.id, {
+            user_id: authUser.id,
+            participation_context_id: participationContextId,
+            participation_context_type: capitalizeParticipationContextType(
+              participationContextType
+            ),
+            idea_ids: newIdeas,
+            submitted_at: null,
+          });
+        } catch {
+          // Do nothing
+        }
 
-      this.props.ideaRemovedFromBasket();
-    }
-  };
+        trackEventByName(tracks.ideaRemovedFromBasket);
+      }
+    };
 
   render() {
     const {
@@ -220,7 +207,7 @@ class PBBasket extends PureComponent<Props & Tracks, State> {
       }
 
       return (
-        <Container className={className} aria-live="polite">
+        <Container className={className || ''} aria-live="polite">
           {ideas &&
             ideas.length > 0 &&
             ideas.map((idea, index) => (
@@ -234,25 +221,22 @@ class PBBasket extends PureComponent<Props & Tracks, State> {
                   </IdeaTitle>
                   {idea.attributes.budget && (
                     <IdeaBudget>
-                      <FormattedNumber
-                        value={idea.attributes.budget}
-                        style="currency"
-                        currency={tenant.attributes.settings.core.currency}
-                        minimumFractionDigits={0}
-                        maximumFractionDigits={0}
-                      />
+                      <FormattedBudget value={idea.attributes.budget} />
                     </IdeaBudget>
                   )}
                 </DropdownListItemContent>
                 {!budgetingDisabled && (
                   <RemoveIconButton
+                    icon="basket-minus"
+                    buttonStyle="text"
+                    iconSize="21px"
+                    iconColor={colors.label}
+                    padding="0"
                     onClick={this.ideaRemovedFromBasket(idea.id)}
-                  >
-                    <RemoveIcon ariaHidden name="remove" />
-                    <ScreenReaderOnly>
-                      <FormattedMessage {...messages.removeItem} />
-                    </ScreenReaderOnly>
-                  </RemoveIconButton>
+                    ariaLabel={this.props.intl.formatMessage(
+                      messages.removeItem
+                    )}
+                  />
                 )}
               </DropdownListItem>
             ))}
@@ -298,7 +282,7 @@ class PBBasket extends PureComponent<Props & Tracks, State> {
                 />
               </EmptyIcon>
               <EmptyText>
-                <FormattedMessage {...messages.noExpenses} />
+                <FormattedMessage {...messages.noItems} />
               </EmptyText>
             </Empty>
           )}
@@ -359,10 +343,7 @@ const Data = adopt<DataProps, InputProps>({
   ),
 });
 
-const PBBasketWithHoCs = injectTracks<Props>({
-  ideaRemovedFromBasket: tracks.ideaRemovedFromBasket,
-  ideaAddedToBasket: tracks.ideaAddedToBasket,
-})(PBBasket);
+const PBBasketWithHoCs = injectIntl<Props>(PBBasket);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

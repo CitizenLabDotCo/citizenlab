@@ -4,7 +4,7 @@ import { isNumber } from 'lodash-es';
 // libraries
 import clHistory from 'utils/cl-router/history';
 import { adopt } from 'react-adopt';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { reverseGeocode } from 'utils/locationTools';
 import { parse } from 'qs';
 
@@ -68,31 +68,17 @@ export class InitiativesNewPage extends React.PureComponent<
       // When an idea is posted through the map, we Google Maps gets an approximate address,
       // but we also keep the exact coordinates from the click so the location indicator keeps its initial position on the map
       // and doesn't readjust together with the address correction/approximation
-      reverseGeocode([lat, lng])
-        .then((location_description) => {
-          this.setState({
-            locationInfo: {
-              location_description,
-              location_point_geojson: {
-                type: 'Point',
-                coordinates: [lng, lat],
-              },
+      reverseGeocode(lat, lng).then((address) => {
+        this.setState({
+          locationInfo: {
+            location_description: address,
+            location_point_geojson: {
+              type: 'Point',
+              coordinates: [lng, lat],
             },
-          });
-        })
-        // todo handle this error better in the form /display
-        .catch(() => {
-          this.setState({
-            locationInfo: {
-              location_description: undefined,
-              error: 'not_found',
-              location_point_geojson: {
-                type: 'Point',
-                coordinates: [lng, lat],
-              },
-            },
-          });
+          },
         });
+      });
     } else {
       this.setState({ locationInfo: null });
     }
@@ -161,7 +147,7 @@ export class InitiativesNewPage extends React.PureComponent<
 const Data = adopt<DataProps>({
   authUser: <GetAuthUser />,
   locale: <GetLocale />,
-  topics: <GetTopics exclude_code={'custom'} />,
+  topics: <GetTopics excludeCode={'custom'} />,
   previousPathName: ({ render }) => (
     <PreviousPathnameContext.Consumer>
       {render as any}

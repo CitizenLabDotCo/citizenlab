@@ -16,13 +16,14 @@ const ProjectEditTab: FC<Props & InjectedIntlProps> = ({
   useEffect(() => {
     onData({
       configuration: {
-        label: formatMessage(messages.topicsTab),
+        label: formatMessage(messages.allowedInputTopicsTab),
         name: tabName,
-        url: 'topics',
+        url: 'allowed-input-topics',
         feature: 'custom_topics',
       },
       insertBeforeName: 'phases',
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return null;

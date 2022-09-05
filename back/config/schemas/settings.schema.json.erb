@@ -1,5 +1,6 @@
 {
   "description": "Schema for validating the settings on a tenant",
+  "$schema": "<%= TenantSchema::ExtendedSchema::SCHEMA_URL %>",
   "type": "object",
   "required": ["core"],
   "additionalProperties": false,
@@ -9,9 +10,9 @@
         "type": "object",
         "title": "Core system",
         "description": "The container for general settings. The core system should always be enabled.",
-        "required-settings": ["organization_type", "timezone", "currency", "locales", "color_main", "color_secondary","color_text", "lifecycle_stage"],
+        "required-settings": ["organization_type", "timezone", "currency", "locales", "color_main", "color_secondary","color_text", "lifecycle_stage", "display_header_avatars"],
         "additionalProperties": false,
-        "required": ["allowed", "enabled"],
+        "required": ["allowed", "enabled", "lifecycle_stage"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true},
@@ -37,8 +38,7 @@
             "title": "Lifecycle Stage",
             "description": "The lifecycle stage of the customer.",
             "type": "string",
-            "enum": ["trial", "expired_trial", "demo", "active", "churned", "not_applicable"],
-            "default": "demo"
+            "enum": ["trial", "expired_trial", "demo", "active", "churned", "not_applicable"]
           },
           "timezone": {
             "title": "Time Zone",
@@ -60,11 +60,17 @@
             "type": "array",
             "items": {
               "type": "string",
-              "enum": [<%= CL2_SUPPORTED_LOCALES.map{|l| "\"#{l}\""}.join(",") %>]
+              "enum": [<%= CL2_SUPPORTED_LOCALES.map { |locale| "\"#{locale}\"" }.join(",") %>],
+              "enumNames": [<%= CL2_SUPPORTED_LOCALES.map { |locale| locale.to_s == 'en' ? '"en-US"' : "\"#{locale}\"" }.join(",") %>]
             },
             "uniqueItems": true,
             "minItems": 1,
             "default": ["en"]
+          },
+          "weglot_api_key": {
+            "title": "Weglot API key",
+            "description": "Set the API key of Weglot to enable automatic page translations.",
+            "type": "string"
           },
           "color_main": {
             "title": "Main Colour",
@@ -100,6 +106,12 @@
             "type": "object",
             "allOf": [{"$ref": "#/definitions/multiloc_string"}],
             "additionalProperties": {"maxLength": 90}
+          },
+          "display_header_avatars": {
+            "title": "Display Header Avatars",
+            "description": "Display avatars in homepage banner.",
+            "type": "boolean",
+            "default": true
           },
           "meta_title": {
             "title": "Page Title",
@@ -160,12 +172,88 @@
             "description": "What a geographic unit should be called on this platform (e.g., neighbourhood, district, etc.)? Input the singular form here with all lowercase letters. If left blank, this field defaults to 'area'.",
             "$ref": "#/definitions/multiloc_string"
           },
+          "topics_term": {
+            "title": "Tag Units",
+            "description": "What a tag unit should be called on this platform (e.g., departments, themes, etc.). Input the plural form here with all lowercase letters. If left blank, this field defaults to 'tags'.",
+            "$ref": "#/definitions/multiloc_string"
+          },
+          "topic_term": {
+            "title": "Tag Unit",
+            "description": "What a tag unit should be called on this platform (e.g., department, theme, etc.). Input the singular form here with all lowercase letters. If left blank, this field defaults to 'tag'.",
+            "$ref": "#/definitions/multiloc_string"
+          },
           "reply_to_email": {
             "title": "Reply-to email",
             "description": "The email used in the reply-to field when users receive emails from automated campaigns.",
             "type": "string",
             "format": "email",
             "default": "support@citizenlab.co"
+          }
+        }
+      },
+
+      "dynamic_idea_form": {
+        "type": "object",
+        "title": "Dynamic idea form (experimental)",
+        "description":  "Changes the idea form from the hard-coded version, to the experimental generated version. Don't turn this on unless you know what you're doing.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+      "jsonforms_custom_fields": {
+        "type": "object",
+        "title": "Rework of user custom fields (experimental)",
+        "description":  "Replaces react-json-forms with jsonforms for user custom fields form. Don't turn this on unless you know what you're doing.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
+      "customizable_homepage_banner": {
+        "type": "object",
+        "title": "Customizable homepage banner",
+        "description": "Customizable homepage banner.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "required-settings": [
+          "layout",
+          "cta_signed_out_type",
+          "cta_signed_in_type"
+        ],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false },
+
+          "layout": {
+            "title": "Homepage banner layout",
+            "description": "Choose between different layouts for the homepage banner on the landing page.",
+            "type": "string",
+            "enum": ["full_width_banner_layout", "two_column_layout", "two_row_layout"],
+            "default": "full_width_banner_layout"
+          },
+
+          "cta_signed_out_type": {
+            "type": "string",
+            "enum": ["sign_up_button", "customized_button", "no_button"],
+            "default": "sign_up_button"
+          },
+          "cta_signed_out_customized_button": {
+            "$ref": "#/definitions/customized_button"
+          },
+
+          "cta_signed_in_type": {
+            "type": "string",
+            "enum": ["customized_button", "no_button"],
+            "default": "no_button"
+          },
+          "cta_signed_in_customized_button": {
+            "$ref": "#/definitions/customized_button"
           }
         }
       },
@@ -199,6 +287,7 @@
             "description": "Specify how phone numbers should be stored in the database (needs to be in email format - e.g., 'phone+__PHONE__@test.com' stores the phone number as 'phone+32478637483@test.com'.",
             "type": "string",
             "format": "email",
+            "default": "phone+__PHONE__@test.com",
             "pattern": "^.*__PHONE__.*@.*$",
             "private": true
           }
@@ -211,7 +300,6 @@
         "description":	"Allow users to register and sign in through their Facebook account.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
-        "required-settings": ["app_id"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false},
@@ -233,7 +321,6 @@
         "description":  "Allow users to register and sign in through their Google account.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
-        "required-settings": ["client_id", "client_secret"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false},
@@ -255,7 +342,6 @@
         "description":  "Allow users to register and sign in with Azure Active Directory.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
-        "required-settings": ["tenant", "client_id", "logo_url", "login_mechanism_name"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false},
@@ -317,7 +403,7 @@
           "enabled": { "type": "boolean", "default": true},
           "tile_provider": {
             "title": "Tile provider",
-            "description": "The OSM compatible tile provider URL pattern (https is required).",
+            "description": "The OSM or basemap.at compatible tile provider URL pattern (https is required).",
             "type": "string",
             "pattern": "^https:\/\/.+",
             "default": "<%= ENV.fetch('DEFAULT_MAPS_TILE_PROVIDER', 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')%>"
@@ -365,6 +451,7 @@
           "enabled": { "type": "boolean", "default": true}
         }
       },
+
       "segment": {
         "type": "object",
         "title": "Segment Integration",
@@ -445,9 +532,9 @@
       "initiatives": {
         "type": "object",
         "title": "Proposals",
-        "description":  "Allow proposals.",
+        "description":  "Allow proposals. Disabling this feature doesn't remove the corresponding item from the navbar",
         "additionalProperties": false,
-        "required-settings": ["voting_threshold", "days_limit", "threshold_reached_message", "eligibility_criteria","success_stories"],
+        "required-settings": ["voting_threshold", "days_limit", "threshold_reached_message", "eligibility_criteria"],
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true },
@@ -483,22 +570,6 @@
             'initiatives.default_eligibility_criteria',
             locales: CL2_SUPPORTED_LOCALES).to_json
             %>
-          },
-          "success_stories": {
-            "type": "array",
-            "title": "Proposal Success Stories",
-            "description": "Link to other pages that highlight prior success stories and examples that users can refer to.",
-            "default": [],
-            "items": {
-              "type": "object",
-              "additionalProperties": false,
-              "required": ["page_slug", "location", "image_url"],
-              "properties": {
-                "page_slug": {"type": "string"},
-                "location": {"type": "string"},
-                "image_url": {"type": "string", "format": "uri"}
-              }
-            }
           }
         }
       },
@@ -558,10 +629,70 @@
         }
       },
 
+      "survey_xact_surveys": {
+        "type": "object",
+        "title": "Survey Xact Forms Surveys",
+        "description":  "Allow Survey Xact surveys to be embedded.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
       "surveymonkey_surveys": {
         "type": "object",
         "title": "Surveymonkey Surveys",
         "description":  "Allow the embedding of Surveymonkey surveys. Deprecated, since not supported on mobile.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
+      "snap_survey_surveys": {
+        "type": "object",
+        "title": "Snap Survey Surveys",
+        "description":  "Allow the embedding of Snap Survey surveys.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
+      "qualtrics_surveys": {
+        "type": "object",
+        "title": "Qualtrics Surveys",
+        "description":  "Allow Qualtrics surveys to be embedded.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
+      "microsoft_forms_surveys": {
+        "type": "object",
+        "title": "Microsoft Forms Surveys",
+        "description":  "Allow Microsoft Forms surveys to be embedded.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
+      "smart_survey_surveys": {
+        "type": "object",
+        "title": "SmartSurvey Surveys",
+        "description":  "Allow SmartSurvey surveys to be embedded.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -602,6 +733,18 @@
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
+      "blocking_profanity": {
+        "type": "object",
+        "title": "Block Profanity",
+        "description": "Prevent input with profanity in it from being posted (can be turned on/off from the platform)",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": false}
         }
       },
@@ -661,34 +804,10 @@
         }
       },
 
-      "idea_custom_fields": {
-        "type": "object",
-        "title": "Custom Idea Fields",
-        "description":  "Admin and project managers can specify which idea form fields to enable/disable or make mandatory.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "ideas_overview": {
-        "type": "object",
-        "title": "Idea Overview",
-        "description":  "Create a page with all the ideas in a single overview page (mobile and desktop).",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": false}
-        }
-      },
-
       "disable_downvoting": {
         "type": "object",
-        "title": "Disable Downvoting",
-        "description": "Ideas and proposals cannot be downvoted, only upvoted.",
+        "title": "Downvoting Toggle",
+        "description": "Display toggle in Project settings or Project’s timeline phase settings, that permits the disabling and re-enabling of downvoting. By default, downvoting is enabled.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -769,6 +888,19 @@
         }
       },
 
+      "events_widget": {
+        "type": "object",
+        "title": "Events Landing Page Widget",
+        "description":	"Display a widget of the next upcoming events in your landing page.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false},
+          "widget_title": {"$ref": "#/definitions/multiloc_string"}
+        }
+      },
+
       "redirects": {
         "type": "object",
         "title": "URL redirection rules",
@@ -806,34 +938,22 @@
         }
       },
 
-      "manual_tagging": {
-        "type": "object",
-        "title": "Manual Tagging",
-        "description": "Allows to manually analyze text inputs",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false}
-        }
-      },
-
-      "automatic_tagging": {
-        "type": "object",
-        "title": "Automatic Tagging",
-        "description": "Allows to automatically analyze text inputs",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false}
-        }
-      },
-
       "idea_custom_copy": {
         "type": "object",
         "title": "Idea Custom Copy",
         "description": "Allows the changing of the word `idea` as the default term of input.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
+      "idea_author_change": {
+        "type": "object",
+        "title": "Idea Author Change",
+        "description": "Allows city admins to create ideas and assign users as their authors.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -851,6 +971,18 @@
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "disable_user_bios": {
+        "type": "object",
+        "title": "Disable User Biographies",
+        "description":  "When this is enabled, the user biographies get disabled on the platform.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
         }
       },
 
@@ -874,14 +1006,51 @@
             }
           }
         }
+      },
+
+      "representativeness": {
+        "type": "object",
+        "title": "Representativeness (experimental)",
+        "description":  "Enables the representativeness dashboard. Don't turn this on unless you know what you're doing.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "native_surveys": {
+        "type": "object",
+        "title": "Allow in-platform surveys",
+        "description":  "DO NOT ENABLE THIS FEATURE BECAUSE IT IS STILL UNDER DEVELOPMENT !!!",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
       }
     },
   "dependencies": {
     "typeform_surveys": ["surveys"],
     "google_forms_surveys": ["surveys"],
     "enalyzer_surveys": ["surveys"],
+    "survey_xact_surveys": ["surveys"],
     "surveymonkey_surveys": ["surveys"],
-    "automatic_tagging": ["manual_tagging"]
+    "qualtrics_surveys": ["surveys"],
+    "snap_survey_surveys": ["surveys"],
+    "microsoft_forms_surveys": ["surveys"],
+    "smart_survey_surveys": ["surveys"],
+
+    "id_auth0": ["verification"],
+    "id_bogus": ["verification"],
+    "id_bosa_fas": ["verification"],
+    "id_clave_unica": ["verification"],
+    "id_cow": ["verification"],
+    "id_franceconnect": ["verification"],
+    "id_gent_rrn": ["verification"],
+    "id_id_card_lookup": ["verification"]
   },
   "definitions": {
     "multiloc_string": {
@@ -889,6 +1058,24 @@
       "additionalProperties": false,
       "properties": {
         <%= CL2_SUPPORTED_LOCALES.map{|l| "\"#{l.to_s}\": {\"type\": \"string\"}"}.join(",") %>
+      }
+    },
+    "customized_button": {
+      "type": "object",
+      "title": "Customized button",
+      "description": "Configure the customized button.",
+      "additionalProperties": false,
+      "properties": {
+        "text": {
+          "title": "Button text",
+          "description": "The text of the button.",
+          "allOf": [{"$ref": "#/definitions/multiloc_string"}]
+        },
+        "url": {
+          "type": "string",
+          "title": "Button URL",
+          "description": "The URL of the button."
+        }
       }
     }
   }

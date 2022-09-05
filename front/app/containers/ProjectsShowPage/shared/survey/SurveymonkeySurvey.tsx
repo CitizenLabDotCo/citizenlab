@@ -4,13 +4,22 @@ import styled from 'styled-components';
 const SurveyContainer = styled.div`
   display: flex;
   justify-content: center;
+  .smcx-widget {
+    max-width: none;
+    z-index: 1;
+    min-height: 800px;
+  }
+  .smcx-embed > .smcx-iframe-container {
+    max-width: none;
+    min-height: 800px;
+  }
 `;
 
 type Props = {
   surveymonkeyUrl: string;
 };
 
-type State = {};
+interface State {}
 
 class SurveymonekySurvey extends React.PureComponent<Props, State> {
   surveyContainer: HTMLElement | null = null;

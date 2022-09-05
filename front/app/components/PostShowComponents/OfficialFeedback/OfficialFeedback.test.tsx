@@ -1,7 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import useLocale from 'hooks/useLocale';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+
 import OfficialFeedback from './';
 
 jest.mock('./OfficialFeedbackForm', () => 'OfficialFeedbackForm');
@@ -12,9 +11,6 @@ jest.mock('modules', () => ({ streamsToReset: [] }));
 
 describe('<OfficialFeedback />', () => {
   it('matches the snapshot for none-admins', () => {
-    useLocale.mockReturnValue('en');
-    useAppConfigurationLocales.mockReturnValue(['en']);
-
     const wrapper = shallow(
       <OfficialFeedback
         postId="ideaId"
@@ -27,9 +23,6 @@ describe('<OfficialFeedback />', () => {
   });
 
   it('renders correctly for none-admins', () => {
-    useLocale.mockReturnValue('en');
-    useAppConfigurationLocales.mockReturnValue(['en']);
-
     const wrapper = shallow(
       <OfficialFeedback
         postId="ideaId"
@@ -43,9 +36,6 @@ describe('<OfficialFeedback />', () => {
   });
 
   it('renders correctly for admins', () => {
-    useLocale.mockReturnValue('en');
-    useAppConfigurationLocales.mockReturnValue(['en']);
-
     const wrapper = shallow(
       <OfficialFeedback
         postId="ideaId"

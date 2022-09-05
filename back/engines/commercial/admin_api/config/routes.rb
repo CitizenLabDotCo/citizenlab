@@ -1,8 +1,11 @@
+# frozen_string_literal: true
+
 AdminApi::Engine.routes.draw do
   resources :tenants do
     get :settings_schema, on: :collection
     get :style_schema, on: :collection
     get :templates, on: :collection
+    patch :remove_locale, on: :member
   end
 
   resources :projects, only: [:index] do
@@ -11,8 +14,9 @@ AdminApi::Engine.routes.draw do
     resources :phases, only: [:index]
   end
 
-  resources :users, only: [:index, :create, :update, :show] do
+  resources :users, only: %i[index create update show] do
     get :by_email, on: :collection
+    delete :bulk_delete_by_emails, on: :collection
   end
 
   resources :areas, only: [:index]
@@ -21,9 +25,9 @@ AdminApi::Engine.routes.draw do
 
   resources :ideas, only: [:show]
 
-  post "/graphql", to: "graphql#execute"
+  post '/graphql', to: 'graphql#execute'
 end
 
 Rails.application.routes.draw do
-  mount AdminApi::Engine => "/admin_api", as: 'admin_api', defaults: {format: :json}
+  mount AdminApi::Engine => '/admin_api', as: 'admin_api', defaults: { format: :json }
 end

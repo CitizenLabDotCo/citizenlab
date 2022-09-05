@@ -1,13 +1,15 @@
-class WebApi::V1::AvatarsController < ApplicationController
+# frozen_string_literal: true
 
+class WebApi::V1::AvatarsController < ApplicationController
+  skip_before_action :authenticate_user
   skip_after_action :verify_policy_scoped
   before_action :set_avatar, only: [:show]
-  
+
   def index
     avatars_service = AvatarsService.new
 
     limit = [params[:limit]&.to_i || 5, 10].min
-    users = policy_scope(User).active
+    users = User.active
 
     avatars = case params[:context_type]
     when 'project'
@@ -27,12 +29,13 @@ class WebApi::V1::AvatarsController < ApplicationController
       authorize initiative, :show?
       avatars_service.avatars_for_initiative(initiative, users: users, limit: limit)
     when nil
+      users = User.none unless AppConfiguration.instance.settings.dig('core', 'display_header_avatars')
       avatars_service.some_avatars(users: users, limit: limit)
     end
 
-    render json: { 
-      **WebApi::V1::AvatarSerializer.new(avatars[:users], params: fastjson_params).serializable_hash, 
-      meta: { total: avatars[:total_count] } 
+    render json: {
+      **WebApi::V1::AvatarSerializer.new(avatars[:users], params: fastjson_params).serializable_hash,
+      meta: { total: avatars[:total_count] }
     }
   end
 
@@ -45,9 +48,5 @@ class WebApi::V1::AvatarsController < ApplicationController
   def set_avatar
     @user = User.find params[:id]
     authorize @user
-  end
-
-  def secure_controller?
-    false
   end
 end

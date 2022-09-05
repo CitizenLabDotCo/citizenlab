@@ -1,5 +1,6 @@
-class InitiativeVotePolicy < ApplicationPolicy
+# frozen_string_literal: true
 
+class InitiativeVotePolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
 
@@ -20,9 +21,9 @@ class InitiativeVotePolicy < ApplicationPolicy
   end
 
   def create?
-    return unless user&.active? && owner?
+    return if !user&.active? || !owner?
 
-    reason = voting_denied?(user)
+    reason = voting_denied_reason user
     reason ? raise_not_authorized(reason) : true
   end
 
@@ -44,7 +45,7 @@ class InitiativeVotePolicy < ApplicationPolicy
 
   private
 
-  def voting_denied?(user)
+  def voting_denied_reason(user)
     :not_signed_in unless user
   end
 end

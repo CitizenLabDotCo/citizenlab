@@ -7,6 +7,7 @@ import { map, isEmpty } from 'lodash-es';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
+import moment from 'moment';
 
 // typings
 import { IStreamParams, IStream } from 'utils/streams';
@@ -19,7 +20,7 @@ import {
 } from 'services/stats';
 
 // components
-import ExportMenu from '../../components/ExportMenu';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
   ComposedChart,
   CartesianGrid,
@@ -34,7 +35,6 @@ import {
 } from 'recharts';
 import {
   IGraphUnit,
-  IResolution,
   GraphCard,
   NoDataContainer,
   GraphCardInner,
@@ -43,12 +43,15 @@ import {
   GraphCardFigureContainer,
   GraphCardFigure,
   GraphCardFigureChange,
-} from '../..';
+} from 'components/admin/GraphWrappers';
 import { Popup } from 'semantic-ui-react';
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
+import { IResolution } from 'components/admin/ResolutionControl';
+import { isNilOrError } from 'utils/helperUtils';
 
 // styling
-import styled, { withTheme } from 'styled-components';
+import styled from 'styled-components';
+import { colors, sizes } from 'components/admin/Graphs/styling';
 
 const InfoIcon = styled(Icon)`
   display: flex;
@@ -75,7 +78,7 @@ type IComposedGraphFormat = {
 }[];
 
 interface State {
-  serie: IComposedGraphFormat | null;
+  serie: IComposedGraphFormat | undefined;
 }
 
 type IStreams =
@@ -103,7 +106,6 @@ interface Props {
   currentTopicFilterLabel?: string;
   xlsxEndpoint: string;
 }
-
 class LineBarChart extends React.PureComponent<
   Props & InjectedIntlProps,
   State
@@ -114,7 +116,7 @@ class LineBarChart extends React.PureComponent<
   constructor(props: Props) {
     super(props as any);
     this.state = {
-      serie: null,
+      serie: undefined,
     };
 
     this.currentChart = React.createRef();
@@ -168,7 +170,7 @@ class LineBarChart extends React.PureComponent<
         code: key,
       }));
     } else {
-      return null;
+      return undefined;
     }
 
     return convertedSerie;
@@ -203,10 +205,10 @@ class LineBarChart extends React.PureComponent<
 
     const barStreamObservable = barStream(queryParameters).observable;
     const lineStreamObservable = lineStream(queryParameters).observable;
-    this.combined$ = combineLatest(
+    this.combined$ = combineLatest([
       barStreamObservable,
-      lineStreamObservable
-    ).subscribe(([barSerie, lineSerie]) => {
+      lineStreamObservable,
+    ]).subscribe(([barSerie, lineSerie]) => {
       const convertedAndMergedSeries = this.convertAndMergeSeries(
         barSerie,
         lineSerie
@@ -217,23 +219,16 @@ class LineBarChart extends React.PureComponent<
 
   formatTick = (date: string) => {
     const { resolution } = this.props;
-    const { formatDate } = this.props.intl;
-
-    return formatDate(date, {
-      day: resolution === 'month' ? undefined : '2-digit',
-      month: 'short',
-    });
+    return moment
+      .utc(date, 'YYYY-MM-DD')
+      .format(resolution === 'month' ? 'MMM' : 'DD MMM');
   };
 
   formatLabel = (date: string) => {
     const { resolution } = this.props;
-    const { formatDate } = this.props.intl;
-
-    return formatDate(date, {
-      day: resolution === 'month' ? undefined : '2-digit',
-      month: 'long',
-      year: 'numeric',
-    });
+    return moment
+      .utc(date, 'YYYY-MM-DD')
+      .format(resolution === 'month' ? 'MMMM YYYY' : 'MMMM DD, YYYY');
   };
 
   formatSerieChange = (serieChange: number) => {
@@ -277,23 +272,14 @@ class LineBarChart extends React.PureComponent<
     const { className, graphTitle, infoMessage, resolution } = this.props;
     const { serie } = this.state;
 
-    const {
-      chartLabelSize,
-      chartLabelColor,
-      cartesianGridColor,
-      newBarFill,
-      newLineColor,
-    } = this.props['theme'];
-
     const formattedNumbers = this.getFormattedNumbers(serie);
-    const {
-      totalNumber,
-      formattedSerieChange,
-      typeOfChange,
-    } = formattedNumbers;
+    const { totalNumber, formattedSerieChange, typeOfChange } =
+      formattedNumbers;
 
     const noData =
-      !serie || serie.every((item) => isEmpty(item)) || serie.length <= 0;
+      isNilOrError(serie) ||
+      serie.every((item) => isEmpty(item)) ||
+      serie.length <= 0;
 
     return (
       <GraphCard className={className}>
@@ -323,7 +309,7 @@ class LineBarChart extends React.PureComponent<
             </GraphCardTitle>
 
             {!noData && (
-              <ExportMenu
+              <ReportExportMenu
                 svgNode={this.currentChart}
                 name={graphTitle}
                 {...this.props}
@@ -341,20 +327,23 @@ class LineBarChart extends React.PureComponent<
                 reverseStackOrder={true}
                 ref={this.currentChart}
               >
-                <CartesianGrid stroke={cartesianGridColor} strokeWidth={0.5} />
+                <CartesianGrid
+                  stroke={colors.cartesianGrid}
+                  strokeWidth={0.5}
+                />
                 <XAxis
                   dataKey="name"
                   interval="preserveStartEnd"
-                  stroke={chartLabelColor}
-                  fontSize={chartLabelSize}
+                  stroke={colors.chartLabel}
+                  fontSize={sizes.chartLabel}
                   tick={{ transform: 'translate(0, 7)' }}
                   tickFormatter={this.formatTick}
                   tickLine={false}
                 />
                 <YAxis
                   yAxisId="total"
-                  stroke={chartLabelColor}
-                  fontSize={chartLabelSize}
+                  stroke={colors.chartLabel}
+                  fontSize={sizes.chartLabel}
                   tickLine={false}
                 >
                   <Label
@@ -388,8 +377,8 @@ class LineBarChart extends React.PureComponent<
                 <Bar
                   dataKey="barValue"
                   yAxisId="barValue"
-                  barSize={20}
-                  fill={newBarFill}
+                  barSize={sizes.bar}
+                  fill={colors.barFill}
                   fillOpacity={1}
                   name={formatMessage(messages.totalForPeriod, {
                     period: formatMessage(messages[resolution]),
@@ -399,9 +388,9 @@ class LineBarChart extends React.PureComponent<
                   type="monotone"
                   yAxisId="total"
                   dataKey="total"
-                  dot={serie && serie?.length < 31}
-                  stroke={newLineColor}
-                  fill={newLineColor}
+                  activeDot={Boolean(serie && serie?.length < 31)}
+                  stroke={colors.line}
+                  fill={colors.line}
                   strokeWidth={1}
                   name={formatMessage(messages.total)}
                 />
@@ -419,4 +408,4 @@ class LineBarChart extends React.PureComponent<
   }
 }
 
-export default injectIntl<Props>(withTheme(LineBarChart as any) as any);
+export default injectIntl<Props>(LineBarChart);

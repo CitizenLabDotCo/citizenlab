@@ -3,7 +3,11 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import TextArea, { Props as TextAreaProps } from 'components/UI/TextArea';
-import { IconTooltip, LocaleSwitcher, Label } from 'cl2-component-library';
+import {
+  IconTooltip,
+  LocaleSwitcher,
+  Label,
+} from '@citizenlab/cl2-component-library';
 
 // hooks
 import useLocale from 'hooks/useLocale';

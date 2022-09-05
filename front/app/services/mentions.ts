@@ -13,10 +13,6 @@ export interface IMentionData {
   };
 }
 
-export interface IMention {
-  data: IMentionData;
-}
-
 export interface IMentions {
   data: IMentionData[];
 }
@@ -25,17 +21,6 @@ export function mentionsStream(streamParams: IStreamParams | null = null) {
   return streams.get<IMentions>({
     apiEndpoint: `${API_PATH}/mentions/users`,
     ...streamParams,
-    cacheStream: false,
-  });
-}
-
-export function getMentionUsers(name: string, ideaId: string | null = null) {
-  return streams.get<IMentions>({
-    apiEndpoint: `${API_PATH}/mentions/users`,
-    queryParameters: {
-      mention: name,
-      idea_id: ideaId,
-    },
     cacheStream: false,
   });
 }

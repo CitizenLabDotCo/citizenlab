@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
 import { get, isEmpty, transform } from 'lodash-es';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import streams from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
 import { convertToGraphqlLocale, isNilOrError } from 'utils/helperUtils';
@@ -19,7 +19,7 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 
 // components
-import { Input, Icon } from 'cl2-component-library';
+import { Input, Icon } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import Modal from 'components/UI/Modal';
@@ -73,7 +73,7 @@ const SuccessIcon = styled(Icon)`
 
 const SuccessText = styled.div`
   color: ${colors.clGreenSuccess};
-  font-size: ${fontSizes.medium}px;
+  font-size: ${fontSizes.m}px;
   font-weight: 400;
   text-align: center;
   display: flex;
@@ -247,10 +247,12 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(
           setResponseError(error);
         }
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [tenantLocales, titleMultiloc, startDate, selectedLocale]);
 
     const onClose = useCallback(() => {
       close();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const onTitleChange = useCallback((titleMultiloc: Multiloc | null) => {
@@ -377,4 +379,4 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(
   }
 );
 
-export default withRouter<Props>(injectIntl(UseTemplateModal));
+export default injectIntl(withRouter(UseTemplateModal));

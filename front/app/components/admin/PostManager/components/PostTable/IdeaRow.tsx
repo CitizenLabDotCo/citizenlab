@@ -259,6 +259,7 @@ class IdeaRow extends React.PureComponent<
           as={StyledRow}
           active={active}
           ref={(instance) => {
+            // eslint-disable-next-line react/no-find-dom-node
             instance && connectDragSource(findDOMNode(instance));
           }}
         >

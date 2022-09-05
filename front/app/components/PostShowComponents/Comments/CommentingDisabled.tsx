@@ -47,11 +47,8 @@ interface Props extends InputProps, DataProps {}
 
 class CommentingDisabled extends PureComponent<Props> {
   calculateMessageDescriptor = () => {
-    const {
-      authUser,
-      commentingEnabled,
-      commentingDisabledReason,
-    } = this.props;
+    const { authUser, commentingEnabled, commentingDisabledReason } =
+      this.props;
     const isLoggedIn = !isNilOrError(authUser);
     if (commentingEnabled) {
       return null;
@@ -98,17 +95,14 @@ class CommentingDisabled extends PureComponent<Props> {
     openSignUpInModal({
       flow,
       verification: commentingDisabledReason === 'not_verified',
-      verificationContext: !!(
-        commentingDisabledReason === 'not_verified' &&
-        pcId &&
-        pcType
-      )
-        ? {
-            action: 'commenting_idea',
-            id: pcId,
-            type: pcType,
-          }
-        : undefined,
+      verificationContext:
+        commentingDisabledReason === 'not_verified' && pcId && pcType
+          ? {
+              action: 'commenting_idea',
+              id: pcId,
+              type: pcType,
+            }
+          : undefined,
     });
   };
 

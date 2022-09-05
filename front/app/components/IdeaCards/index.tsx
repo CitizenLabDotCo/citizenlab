@@ -1,8 +1,10 @@
 import React, { lazy, Suspense, memo } from 'react';
 
 // components
-const WithFiltersSidebar = lazy(() => import('./WithFiltersSidebar'));
-const WithoutFiltersSidebar = lazy(() => import('./WithoutFiltersSidebar'));
+const IdeasWithFiltersSidebar = lazy(() => import('./IdeasWithFiltersSidebar'));
+const IdeasWithoutFiltersSidebar = lazy(
+  () => import('./IdeasWithoutFiltersSidebar')
+);
 
 // styling
 import styled from 'styled-components';
@@ -33,21 +35,29 @@ interface Props extends GetIdeasInputProps {
   allowProjectsFilter?: boolean;
   showFiltersSidebar?: boolean;
   className?: string;
-  invisibleTitleMessage: MessageDescriptor;
+  invisibleTitleMessage?: MessageDescriptor;
+  projectId?: string;
 }
 
 const IdeaCards = memo<Props>(
-  ({ className, invisibleTitleMessage, ...props }) => {
+  ({
+    className,
+    invisibleTitleMessage,
+    showFiltersSidebar = false,
+    ...props
+  }) => {
     return (
       <Container className={className || ''}>
-        <ScreenReaderOnly>
-          <FormattedMessage tagName="h2" {...invisibleTitleMessage} />
-        </ScreenReaderOnly>
+        {invisibleTitleMessage && (
+          <ScreenReaderOnly>
+            <FormattedMessage tagName="h2" {...invisibleTitleMessage} />
+          </ScreenReaderOnly>
+        )}
         <Suspense fallback={null}>
-          {props.showFiltersSidebar ? (
-            <WithFiltersSidebar {...props} />
+          {showFiltersSidebar ? (
+            <IdeasWithFiltersSidebar {...props} />
           ) : (
-            <WithoutFiltersSidebar {...props} />
+            <IdeasWithoutFiltersSidebar {...props} />
           )}
         </Suspense>
       </Container>

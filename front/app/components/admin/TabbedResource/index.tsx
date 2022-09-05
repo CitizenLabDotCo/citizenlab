@@ -1,23 +1,21 @@
 import React from 'react';
 
-import { withRouter, WithRouterProps } from 'react-router';
+// routing
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import Link from 'utils/cl-router/Link';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-
-// localisation
-import { FormattedMessage } from 'utils/cl-intl';
+import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 
 // typings
-import { Message, ITab } from 'typings';
+import { ITab } from 'typings';
 
 // components
 import FeatureFlag from 'components/FeatureFlag';
-import Button from 'components/UI/Button';
 import { SectionDescription } from 'components/admin/Section';
 import Title from 'components/admin/PageTitle';
+import { StatusLabel } from '@citizenlab/cl2-component-library';
 
 const ResourceHeader = styled.div`
   display: flex;
@@ -47,6 +45,12 @@ const TabbedNav = styled.nav`
     padding: 0;
     margin-bottom: 10px;
   }
+  ${isRtl`
+    padding-right: 44px;
+    padding-left: auto;
+    justify-content: flex-end;
+ `}
+  flex-wrap: wrap;
 `;
 
 const Tab = styled.div`
@@ -99,23 +103,45 @@ const ChildWrapper = styled.div`
   }
 `;
 
+const StatusLabelWithMargin = styled(StatusLabel)`
+  margin-left: 12px;
+`;
+
 type Props = {
   resource: {
     title: string;
-    publicLink?: string;
     subtitle?: string;
   };
-  messages?: {
-    viewPublicResource: Message;
-  };
   tabs?: ITab[];
+  children?: React.ReactNode;
 };
 
-type State = {};
+interface State {}
 
 function getRegularExpression(tabUrl: string) {
-  return new RegExp(`^\/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)(${tabUrl})(\/)?$`);
+  return new RegExp(`^/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)(${tabUrl})(/)?$`);
 }
+
+const FormattedTabLink = ({
+  tab: { url, label, statusLabel },
+}: {
+  tab: ITab;
+}) => {
+  if (statusLabel) {
+    return (
+      <Link to={url}>
+        {label}
+        <StatusLabelWithMargin
+          text={statusLabel}
+          backgroundColor={colors.adminBackground}
+          variant="outlined"
+        />
+      </Link>
+    );
+  }
+
+  return <Link to={url}>{label}</Link>;
+};
 
 class TabbedResource extends React.PureComponent<
   Props & WithRouterProps,
@@ -139,8 +165,7 @@ class TabbedResource extends React.PureComponent<
   render() {
     const {
       children,
-      resource: { title, subtitle, publicLink },
-      messages,
+      resource: { title, subtitle },
       tabs,
     } = this.props;
 
@@ -151,12 +176,6 @@ class TabbedResource extends React.PureComponent<
             <Title>{title}</Title>
             {subtitle && <SectionDescription>{subtitle}</SectionDescription>}
           </div>
-
-          {publicLink && messages && (
-            <Button buttonStyle="cl-blue" icon="eye" linkTo={publicLink}>
-              <FormattedMessage {...messages.viewPublicResource} />
-            </Button>
-          )}
         </ResourceHeader>
 
         {tabs && tabs.length > 0 && (
@@ -168,21 +187,24 @@ class TabbedResource extends React.PureComponent<
                     <Tab
                       key={tab.url}
                       className={`${tab.name} ${this.activeClassForTab(tab)}`}
+                      data-testid="resource-single-tab"
                     >
-                      <Link to={tab.url}>{tab.label}</Link>
+                      <FormattedTabLink tab={tab} />
                     </Tab>
                   </FeatureFlag>
                 );
-              } else {
-                return (
-                  <Tab
-                    key={tab.url}
-                    className={`${tab.name} ${this.activeClassForTab(tab)}`}
-                  >
-                    <Link to={tab.url}>{tab.label}</Link>
-                  </Tab>
-                );
               }
+
+              // no feature, just return tab with label
+              return (
+                <Tab
+                  key={tab.url}
+                  className={`${tab.name} ${this.activeClassForTab(tab)}`}
+                  data-testid="resource-single-tab"
+                >
+                  <FormattedTabLink tab={tab} />
+                </Tab>
+              );
             })}
           </TabbedNav>
         )}

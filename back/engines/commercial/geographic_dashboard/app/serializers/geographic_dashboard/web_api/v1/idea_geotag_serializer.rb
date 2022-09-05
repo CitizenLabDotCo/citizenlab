@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module GeographicDashboard
   class WebApi::V1::IdeaGeotagSerializer < ::WebApi::V1::BaseSerializer
     attribute :title_multiloc

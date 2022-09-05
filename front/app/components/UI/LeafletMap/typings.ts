@@ -14,10 +14,6 @@ export type IMarkerLayerFunction = (
   latlng: L.LatLng
 ) => string;
 
-export type IOnMapClickHandler = (map: L.Map, latlng: L.LatLng) => void;
-
-export type IMarkerMapFunction = (latlng: [number, number]) => string;
-
 export type ILayerOverlayFunction = (geojsonLayer: GeoJSONLayer) => string;
 
 export type IPopupFunction = (
@@ -32,11 +28,6 @@ export type ITooltipFunction = (
 
 export type IMarkerStringOrObjectOrFunctionForLayer =
   | IMarkerLayerFunction
-  | string
-  | MarkerIconProps;
-
-export type IMarkerStringOrObjectOrFunctionForMap =
-  | IMarkerMapFunction
   | string
   | MarkerIconProps;
 

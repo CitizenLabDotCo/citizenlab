@@ -1,32 +1,37 @@
-require "bunny"
+# frozen_string_literal: true
+
+return if Rails.const_defined? :Console
+
+require 'citizen_lab/bunny'
+require 'nlp/text_network_analysis_service'
+require 'nlp/text_network_analysis_result'
 require 'json'
 
+return unless (rabbitmq_uri = ENV['RABBITMQ_URI'])
 
-if (ENV.fetch("RABBITMQ_URI", false))
-  begin
-    retries ||= 0
-    connection = Bunny.new(ENV.fetch("RABBITMQ_URI"), automatically_recover: true, continuation_timeout: 20000)
-    connection.start
+BUNNY_CON ||= CitizenLab::Bunny.connect(rabbitmq_uri)
+QUEUE_NAME = 'cl2_back.insights.text_network_analysis'
+ROUTING_KEY = 'text_network_analysis.results'
 
-    channel = connection.create_channel
-    exchange = channel.topic('cl2nlp', :durable => true)
-    queue = channel.queue('cl2_back.zeroshot_results', :durable => true)
+channel = BUNNY_CON.create_channel
+exchange = channel.topic('cl2nlp', durable: true)
 
-    queue.bind(exchange, routing_key: 'zeroshot.inference')
+queue = channel.queue(QUEUE_NAME, durable: true)
+  .bind(exchange, routing_key: ROUTING_KEY)
 
-    puts '[*] Waiting for automatic taggings'
+queue.subscribe do |_delivery_info, _properties, payload|
+  payload = JSON.parse(payload)
 
-    queue.subscribe do |_delivery_info, _properties, payload|
-      puts "Received #{payload}"
-      Tagging::AutomaticTaggingService.new.save_tags_from_prediction(JSON.parse(payload))
-    end
+  puts({
+    time: Time.now.iso8601,
+    message: 'received rabbitmq message',
+    queue: QUEUE_NAME,
+    routing_key: ROUTING_KEY,
+    payload: payload
+  }.to_json)
 
-    rescue Bunny::TCPConnectionFailedForAllHosts => e
-      sleep 5
-      if (retries += 1) < 10
-        retry
-      else
-        raise e
-      end
-    end
+  tna_result = NLP::TextNetworkAnalysisResult.from_json(payload)
+  NLP::TextNetworkAnalysisService.handle_result(tna_result)
+rescue StandardError => e
+  ErrorReporter.report e
 end

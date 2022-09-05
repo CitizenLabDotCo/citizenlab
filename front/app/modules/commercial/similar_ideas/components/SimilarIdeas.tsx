@@ -31,7 +31,7 @@ const IdeaList = styled.ul`
 
 const IdeaListItem = styled.li`
   color: ${colors.label};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   line-height: normal;
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -45,7 +45,7 @@ const IdeaListItem = styled.li`
 
 const IdeaLink = styled(Link)`
   color: ${colors.label};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   line-height: normal;
   text-decoration: underline;
 
@@ -56,12 +56,13 @@ const IdeaLink = styled(Link)`
 `;
 
 interface Props {
-  className?: string;
   ideaId: string;
+  compact?: boolean;
+  className?: string;
 }
 
 const SimilarIdeas = memo<Props & InjectedIntlProps>(
-  ({ className, ideaId, intl: { formatMessage } }) => {
+  ({ ideaId, compact, className, intl: { formatMessage } }) => {
     const similarIdeas = useSimilarIdeas({ ideaId, pageSize: 5 });
     const onClickIdeaLink = (index: number) => () => {
       trackEventByName(tracks.clickSimilarIdeaLink.name, { extra: { index } });
@@ -69,7 +70,7 @@ const SimilarIdeas = memo<Props & InjectedIntlProps>(
 
     if (!isNilOrError(similarIdeas) && similarIdeas.length > 0) {
       return (
-        <Item>
+        <Item className={className || ''} compact={compact}>
           <Header>{formatMessage(messages.similarInputs)}</Header>
           <IdeaList className={className}>
             {similarIdeas.map((similarIdea, index) => (

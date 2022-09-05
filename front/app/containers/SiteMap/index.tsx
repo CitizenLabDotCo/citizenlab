@@ -1,20 +1,24 @@
 import React, { useRef } from 'react';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import scrollToComponent from 'react-scroll-to-component';
+
+// hooks
+import usePages from 'hooks/usePages';
+import useNavbarItems from 'hooks/useNavbarItems';
+import useLocalize from 'hooks/useLocalize';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // components
-import { Spinner } from 'cl2-component-library';
+import { Spinner } from '@citizenlab/cl2-component-library';
 import FeatureFlag from 'components/FeatureFlag';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import ContentContainer from 'components/ContentContainer';
 import SiteMapMeta from './SiteMapMeta';
-import ProjectsSection from './ProjectsSection';
-import StoryLink from './StoryLink';
+import ProjectsAndFoldersSection from './ProjectsAndFoldersSection';
 import Link from 'utils/cl-router/Link';
 
 // styles
@@ -23,10 +27,10 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 
 // resources
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+
+// services
+import { DEFAULT_PAGE_SLUGS } from 'services/navbar';
 
 const Container = styled.div`
   min-height: calc(
@@ -102,7 +106,7 @@ export const H3 = styled.h3`
 `;
 
 export const H4 = styled.h4`
-  font-size: ${fontSizes.large}px !important;
+  font-size: ${fontSizes.l}px !important;
 `;
 
 const NavItem = styled.button`
@@ -115,17 +119,16 @@ const NavItem = styled.button`
 
 interface DataProps {
   projects: GetProjectsChildProps;
-  tenant: GetAppConfigurationChildProps;
   authUser: GetAuthUserChildProps;
 }
 
 interface Props extends DataProps {}
 
-const SiteMap = ({ projects, tenant, authUser }: Props) => {
+const SiteMap = ({ projects, authUser }: Props) => {
   const loaded = projects !== undefined;
-  const successStories = !isNilOrError(tenant)
-    ? tenant.attributes.settings?.initiatives?.success_stories
-    : [];
+  const navBarItems = useNavbarItems();
+  const localize = useLocalize();
+  const pages = usePages();
 
   const scrollTo = (component) => (event: any) => {
     // if the event is synthetic, it's a key event and we move focus
@@ -140,10 +143,6 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
     });
   };
 
-  const removeFocus = (event: React.MouseEvent<HTMLElement>) => {
-    event.preventDefault();
-  };
-
   const homeSection = useRef(null);
   const projectsSection = useRef(null);
   const archivedSection = useRef(null);
@@ -151,6 +150,7 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
   const draftSection = useRef(null);
   const initiativesSection = useRef(null);
   const userSpaceSection = useRef(null);
+  const customPagesSection = useRef(null);
   const hasProjectSubsection =
     archivedSection.current || draftSection.current || currentSection.current;
 
@@ -170,14 +170,14 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                 <FormattedMessage {...messages.siteMapTitle} />
               </Title>
 
-              <TOC aria-labelledby="nav-header">
-                <Header id="nav-header">
+              <TOC>
+                <Header>
                   <FormattedMessage {...messages.pageContents} />
                 </Header>
                 <Ul>
                   <li>
                     <NavItem
-                      onMouseDown={removeFocus}
+                      onMouseDown={removeFocusAfterMouseClick}
                       onClick={scrollTo(homeSection)}
                     >
                       <FormattedMessage {...messages.homeSection} />
@@ -185,7 +185,7 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                   </li>
                   <li>
                     <NavItem
-                      onMouseDown={removeFocus}
+                      onMouseDown={removeFocusAfterMouseClick}
                       onClick={scrollTo(userSpaceSection)}
                     >
                       <FormattedMessage {...messages.userSpaceSection} />
@@ -194,7 +194,7 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                   {!isNilOrError(projects) && (
                     <li>
                       <NavItem
-                        onMouseDown={removeFocus}
+                        onMouseDown={removeFocusAfterMouseClick}
                         onClick={scrollTo(projectsSection)}
                       >
                         <FormattedMessage {...messages.projectsSection} />
@@ -204,7 +204,7 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                           {currentSection.current && (
                             <li>
                               <NavItem
-                                onMouseDown={removeFocus}
+                                onMouseDown={removeFocusAfterMouseClick}
                                 onClick={scrollTo(currentSection)}
                               >
                                 <FormattedMessage
@@ -216,7 +216,7 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                           {archivedSection.current && (
                             <li>
                               <NavItem
-                                onMouseDown={removeFocus}
+                                onMouseDown={removeFocusAfterMouseClick}
                                 onClick={scrollTo(archivedSection)}
                               >
                                 <FormattedMessage
@@ -228,7 +228,7 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                           {draftSection.current && (
                             <li>
                               <NavItem
-                                onMouseDown={removeFocus}
+                                onMouseDown={removeFocusAfterMouseClick}
                                 onClick={scrollTo(draftSection)}
                               >
                                 <FormattedMessage {...messages.projectsDraft} />
@@ -242,13 +242,21 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                   <FeatureFlag name="initiatives">
                     <li>
                       <NavItem
-                        onMouseDown={removeFocus}
+                        onMouseDown={removeFocusAfterMouseClick}
                         onClick={scrollTo(initiativesSection)}
                       >
                         <FormattedMessage {...messages.initiativesSection} />
                       </NavItem>
                     </li>
                   </FeatureFlag>
+                  <li>
+                    <NavItem
+                      onMouseDown={removeFocusAfterMouseClick}
+                      onClick={scrollTo(customPagesSection)}
+                    >
+                      <FormattedMessage {...messages.customPageSection} />
+                    </NavItem>
+                  </li>
                 </Ul>
               </TOC>
 
@@ -256,38 +264,30 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                 <FormattedMessage {...messages.homeSection} />
               </H2>
               <ul>
-                <li>
-                  <Link to="/">
-                    <FormattedMessage {...messages.homePage} />
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/pages/information">
-                    <FormattedMessage {...messages.aboutLink} />
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/pages/cookie-policy">
-                    <FormattedMessage {...messages.cookiePolicyLink} />
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/pages/terms-and-conditions">
-                    <FormattedMessage {...messages.termsAndConditionsLink} />
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/pages/privacy-policy">
-                    <FormattedMessage {...messages.privacyPolicyLink} />
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/pages/accessibility-statement">
-                    <FormattedMessage
-                      {...messages.accessibilityStatementLink}
-                    />
-                  </Link>
-                </li>
+                {/* Nav bar items that are not included in pages */}
+                {!isNilOrError(navBarItems) &&
+                  navBarItems
+                    .filter(
+                      (item) => item.relationships.static_page.data === null
+                    )
+                    .map((item) => (
+                      <li key={item.id}>
+                        <Link to={DEFAULT_PAGE_SLUGS[item.attributes.code]}>
+                          {localize(item.attributes.title_multiloc)}
+                        </Link>
+                      </li>
+                    ))}
+                {/* Non-custom static pages */}
+                {!isNilOrError(pages) &&
+                  pages
+                    .filter((page) => page.attributes.code !== 'custom')
+                    .map((item) => (
+                      <li key={item.id}>
+                        <Link to={`/pages/${item.attributes.slug}`}>
+                          {localize(item.attributes.title_multiloc)}
+                        </Link>
+                      </li>
+                    ))}
               </ul>
 
               <H2 ref={userSpaceSection} tabIndex={-1}>
@@ -323,12 +323,12 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                 )}
               </ul>
 
-              <ProjectsSection projectsSectionRef={projectsSection} />
+              <ProjectsAndFoldersSection projectsSectionRef={projectsSection} />
               <FeatureFlag name="initiatives">
                 <H2 ref={initiativesSection} tabIndex={-1}>
                   <FormattedMessage {...messages.initiativesSection} />
                 </H2>
-                <Ul>
+                <ul>
                   <li>
                     <Link to="/initiatives">
                       <FormattedMessage {...messages.initiativesList} />
@@ -339,20 +339,25 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                       <FormattedMessage {...messages.initiativesInfo} />
                     </Link>
                   </li>
-                  {successStories && successStories.length === 3 && (
-                    <li>
-                      <FormattedMessage {...messages.successStories} />
-                      <ul>
-                        {successStories.map((story) => (
-                          <li key={story.page_slug}>
-                            <StoryLink story={story} />
-                          </li>
-                        ))}
-                      </ul>
-                    </li>
-                  )}
-                </Ul>
+                </ul>
               </FeatureFlag>
+
+              <H2 ref={customPagesSection} tabIndex={-1}>
+                <FormattedMessage {...messages.customPageSection} />
+              </H2>
+              <Ul>
+                {/* Custom static pages */}
+                {!isNilOrError(pages) &&
+                  pages
+                    .filter((page) => page.attributes.code === 'custom')
+                    .map((item) => (
+                      <li key={item.id}>
+                        <Link to={`/pages/${item.attributes.slug}`}>
+                          {localize(item.attributes.title_multiloc)}
+                        </Link>
+                      </li>
+                    ))}
+              </Ul>
             </QuillEditedContent>
           </StyledContentContainer>
         </PageContent>
@@ -365,7 +370,6 @@ const Data = adopt<DataProps>({
   projects: (
     <GetProjects publicationStatuses={['draft', 'published', 'archived']} />
   ),
-  tenant: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
 });
 

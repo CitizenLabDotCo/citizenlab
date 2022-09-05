@@ -5,7 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
 // components
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import Author from 'components/Author';
 import Link from 'utils/cl-router/Link';
 
@@ -33,7 +33,7 @@ const Container = styled.div`
   flex-direction: column;
 
   h4 {
-    font-size: ${fontSizes.medium}px;
+    font-size: ${fontSizes.m}px;
   }
 `;
 

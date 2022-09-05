@@ -1,0 +1,215 @@
+{
+  "text_network": {
+    "directed": true,
+    "graph": {},
+    "nodes": [
+      {
+        "pagerank": 0.038601107465701875,
+        "id": "perspective"
+      },
+      {
+        "pagerank": 0.004670920076477459,
+        "id": "publisher"
+      },
+      {
+        "pagerank": 0.025079454277241963,
+        "id": "platform"
+      },
+      {
+        "pagerank": 0.014641749386164641,
+        "id": "individual"
+      },
+      {
+        "pagerank": 0.008410118989895368,
+        "id": "power"
+      },
+      {
+        "pagerank": 0.011683493871609829,
+        "id": "comment"
+      },
+      {
+        "pagerank": 0.024352288110485145,
+        "id": "conversation"
+      },
+      {
+        "pagerank": 0.006795732992506835,
+        "id": "developer"
+      },
+      {
+        "pagerank": 0.00789219959029364,
+        "id": "audience"
+      },
+      {
+        "pagerank": 0.015873258032563908,
+        "id": "language"
+      },
+      {
+        "pagerank": 0.013412464363807029,
+        "id": "api"
+      },
+      {
+        "pagerank": 0.006444081992031546,
+        "id": "free"
+      }
+    ],
+    "links": [
+      {
+        "weight": 4,
+        "source": "perspective",
+        "target": "developer"
+      },
+      {
+        "weight": 0,
+        "source": "publisher",
+        "target": "language"
+      },
+      {
+        "weight": 4,
+        "source": "comment",
+        "target": "developer"
+      },
+      {
+        "weight": 3,
+        "source": "comment",
+        "target": "free"
+      },
+      {
+        "weight": 4,
+        "source": "perspective",
+        "target": "free"
+      },
+      {
+        "weight": 1,
+        "source": "power",
+        "target": "free"
+      },
+      {
+        "weight": 4,
+        "source": "api",
+        "target": "free"
+      },
+      {
+        "weight": 4,
+        "source": "developer",
+        "target": "api"
+      },
+      {
+        "weight": 1,
+        "source": "perspective",
+        "target": "language"
+      },
+      {
+        "weight": 3,
+        "source": "perspective",
+        "target": "conversation"
+      },
+      {
+        "weight": 0,
+        "source": "platform",
+        "target": "api"
+      },
+      {
+        "weight": 3,
+        "source": "individual",
+        "target": "audience"
+      },
+      {
+        "weight": 3,
+        "source": "power",
+        "target": "comment"
+      },
+      {
+        "weight": 4,
+        "source": "power",
+        "target": "developer"
+      },
+      {
+        "weight": 1,
+        "source": "conversation",
+        "target": "language"
+      },
+      {
+        "weight": 1,
+        "source": "individual",
+        "target": "language"
+      },
+      {
+        "weight": 4,
+        "source": "platform",
+        "target": "power"
+      },
+      {
+        "weight": 3,
+        "source": "developer",
+        "target": "free"
+      },
+      {
+        "weight": 2,
+        "source": "publisher",
+        "target": "individual"
+      },
+      {
+        "weight": 0,
+        "source": "perspective",
+        "target": "audience"
+      },
+      {
+        "weight": 4,
+        "source": "language",
+        "target": "api"
+      },
+      {
+        "weight": 1,
+        "source": "audience",
+        "target": "free"
+      },
+      {
+        "weight": 3,
+        "source": "comment",
+        "target": "api"
+      },
+      {
+        "weight": 3,
+        "source": "perspective",
+        "target": "individual"
+      },
+      {
+        "weight": 0,
+        "source": "publisher",
+        "target": "platform"
+      }
+    ]
+  },
+  "communities": [
+    {
+      "partitions_id": 1,
+      "influent_nodes": [
+        "perspective",
+        "publisher",
+        "platform",
+        "individual"
+      ],
+      "relative_size": 10.5
+    },
+    {
+      "partitions_id": 2,
+      "influent_nodes": [
+        "power",
+        "comment",
+        "conversation",
+        "developer"
+      ],
+      "relative_size": 7.9
+    },
+    {
+      "partitions_id": 3,
+      "influent_nodes": [
+        "audience",
+        "language",
+        "api",
+        "free"
+      ],
+      "relative_size": 5.3
+    }
+  ]
+}

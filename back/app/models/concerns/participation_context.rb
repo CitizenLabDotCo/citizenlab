@@ -13,13 +13,12 @@ module ParticipationContext
   include Polls::PollParticipationContext
   include Volunteering::VolunteeringParticipationContext
 
-  PARTICIPATION_METHODS = %w[information ideation survey budgeting poll volunteering].freeze
+  PARTICIPATION_METHODS = %w[information ideation survey budgeting poll volunteering native_survey].freeze
   PRESENTATION_MODES    = %w[card map].freeze
   VOTING_METHODS        = %w[unlimited limited].freeze
   IDEAS_ORDERS          = %w[trending random popular -new new].freeze
   INPUT_TERMS           = %w[idea question contribution project issue option].freeze
 
-  # rubocop:disable Metrics/BlockLength
   included do
     has_many :baskets, as: :participation_context, dependent: :destroy
     has_many :permissions, as: :permission_scope, dependent: :destroy
@@ -28,37 +27,52 @@ module ParticipationContext
     with_options unless: :timeline_project? do
       validates :participation_method, inclusion: { in: PARTICIPATION_METHODS }
 
-      with_options if: :ideation? do
-        validates :presentation_mode, presence: true
-      end
+      before_validation :set_participation_method, on: :create
+      before_validation :set_presentation_mode, on: :create
 
-      with_options if: :budgeting? do
-        validates :max_budget, presence: true
-      end
-
+      # ideation? or budgeting?
       with_options if: :ideation_or_budgeting? do
-        validates :voting_enabled, boolean: true
-        validates :posting_enabled, boolean: true
         validates :presentation_mode,
-                  inclusion: { in: PRESENTATION_MODES }, allow_nil: true
-        validates :voting_method, presence: true, inclusion: { in: VOTING_METHODS }
-        validates :commenting_enabled, boolean: true
-        validates :voting_limited_max,
-                  presence: true,
-                  numericality: { only_integer: true, greater_than: 0 },
-                  if: %i[ideation? voting_limited?]
+          inclusion: { in: PRESENTATION_MODES }, allow_nil: true
+
+        validates :posting_enabled, inclusion: { in: [true, false] }
+        validates :commenting_enabled, inclusion: { in: [true, false] }
+        validates :voting_enabled, inclusion: { in: [true, false] }
+        validates :upvoting_method, presence: true, inclusion: { in: VOTING_METHODS }
+        validates :downvoting_enabled, inclusion: { in: [true, false] }
+        validates :downvoting_method, presence: true, inclusion: { in: VOTING_METHODS }
+
         validates :ideas_order, inclusion: { in: IDEAS_ORDERS }, allow_nil: true
         validates :input_term, inclusion: { in: INPUT_TERMS }
 
         before_validation :set_ideas_order
         before_validation :set_input_term
       end
+      validates :upvoting_limited_max, presence: true,
+        numericality: { only_integer: true, greater_than: 0 },
+        if: %i[ideation_or_budgeting? upvoting_limited?]
+      validates :downvoting_limited_max, presence: true,
+        numericality: { only_integer: true, greater_than: 0 },
+        if: %i[ideation_or_budgeting? downvoting_limited?]
 
-      before_validation :set_participation_method, on: :create
-      before_validation :set_presentation_mode, on: :create
+      # ideation?
+      with_options if: :ideation? do
+        validates :presentation_mode, presence: true
+      end
+
+      # budgeting?
+      with_options if: :budgeting? do
+        validates :min_budget, presence: true
+        validates :max_budget, presence: true
+      end
+      validates :min_budget,
+        numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: :max_budget,
+                        if: %i[budgeting? max_budget] }
+      validates :max_budget,
+        numericality: { greater_than_or_equal_to: :min_budget,
+                        if: %i[budgeting? min_budget] }
     end
   end
-  # rubocop:enable Metrics/BlockLength
 
   def ideation_or_budgeting?
     ideation? || budgeting?
@@ -80,12 +94,12 @@ module ParticipationContext
     ideation? || budgeting?
   end
 
-  def voting_limited?
-    voting_method == 'limited'
+  def upvoting_limited?
+    upvoting_method == 'limited'
   end
 
-  def voting_unlimited?
-    voting_method == 'unlimited'
+  def downvoting_limited?
+    downvoting_method == 'limited'
   end
 
   def votes
@@ -96,10 +110,14 @@ module ParticipationContext
     !timeline_project?
   end
 
+  def native_survey?
+    participation_method == 'native_survey'
+  end
+
   private
 
   def timeline_project?
-    self.class == Project && timeline?
+    instance_of?(Project) && timeline?
   end
 
   def set_participation_method

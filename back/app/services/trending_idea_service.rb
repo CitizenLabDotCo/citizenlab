@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TrendingIdeaService
   def filter_trending(ideas = Idea.all)
     with_trending_score(ideas)
@@ -14,7 +16,7 @@ class TrendingIdeaService
       .joins(:idea_status)
       .joins(:idea_trending_info)
       .select(
-        <<-SQL
+        <<-SQL.squish
           ideas.id,
           NOT (
             ideas.upvotes_count - ideas.downvotes_count < 0 OR
@@ -28,20 +30,18 @@ class TrendingIdeaService
     ideas
       .joins("INNER JOIN (#{sub_query.to_sql}) sub ON ideas.id = sub.id")
       .select(
-        <<-SQL
+        <<-SQL.squish
           ideas.*,
           CASE WHEN sub.is_trending THEN sub.score_abs ELSE (-1/sub.score_abs) END as trending_score
         SQL
       )
   end
 
-
   def trending_score(idea)
     # used for testing purposes
     upvotes_ago = activity_ago idea.upvotes # .select { |v| v.user&.id != idea.author&.id }
     comments_ago = activity_ago idea.comments # .select { |c| c.author&.id != idea.author&.id }
-    last_activity_at = (upvotes_ago+comments_ago+[(Time.now.to_i - idea.published_at.to_i)]).min
-    mean_activity_at = mean(upvotes_ago+comments_ago+[(Time.now.to_i - idea.published_at.to_i)])
+    mean_activity_at = mean(upvotes_ago + comments_ago + [(Time.now.to_i - idea.published_at.to_i)])
     score = trending_score_formula (idea.upvotes_count - idea.downvotes_count), mean_activity_at
     if (idea.upvotes_count - idea.downvotes_count) < 0
       return -1 / score
@@ -52,19 +52,19 @@ class TrendingIdeaService
     if (Time.now.to_i - idea.created_at.to_i) > IdeaTrendingInfo::TREND_SINCE_ACTIVITY
       return -1 / score
     end
+
     score
   end
 
-  def trending? idea
+  def trending?(idea)
     # used for testing purposes
     trending_score(idea) >= 0
   end
 
-
   private
 
   def trending_score_formula(votes_diff, mean_activity_at)
-    [(1 + votes_diff), 1].max / [mean_activity_at,1].max
+    [(1 + votes_diff), 1].max / [mean_activity_at, 1].max
   end
 
   def activity_ago(iteratables)

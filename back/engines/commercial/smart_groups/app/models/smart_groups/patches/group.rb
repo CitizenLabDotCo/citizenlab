@@ -1,18 +1,41 @@
+# frozen_string_literal: true
+
 module SmartGroups
   module Patches
     module Group
       def self.prepended(base)
+        base.singleton_class.prepend(ClassMethods)
         base.class_eval do
-          def self.membership_types
-            %w[manual rules]
-          end
+          validates :rules, if: :rules?, json: {
+            schema: -> { SmartGroups::RulesService.new.generate_rules_json_schema },
+            message: lambda { |errors|
+              errors.map do |e|
+                { fragment: e[:fragment], error: e[:failed_attribute], human_message: e[:message] }
+              end
+            },
+            options: {
+              errors_as_objects: true
+            }
+          }
+
+          scope :using_custom_field, lambda { |custom_field|
+            subquery = ::Group.select('jsonb_array_elements(rules) as rule, id')
+            where(membership_type: 'rules')
+              .joins("LEFT OUTER JOIN (#{subquery.to_sql}) as r ON groups.id = r.id")
+              .where("r.rule->>'customFieldId' = ?", custom_field.id)
+              .distinct
+          }
+
+          scope :using_custom_field_option, lambda { |custom_field_option|
+            subquery = ::Group.select('jsonb_array_elements(rules) as rule, id')
+            where(membership_type: 'rules')
+              .joins("LEFT OUTER JOIN (#{subquery.to_sql}) as r ON groups.id = r.id")
+              .where("r.rule->>'value' = ?", custom_field_option.id)
+              .distinct
+          }
+
+          scope :rules, -> { where(membership_type: 'rules') }
         end
-      end
-
-      def member?(user)
-        return SmartGroups::RulesService.new.groups_for_user(user).exists?(id: id) if rules?
-
-        super
       end
 
       def add_member(user)
@@ -55,6 +78,24 @@ module SmartGroups
         return update(memberships_count: members.active.count) if rules?
 
         super
+      end
+
+      def rules?
+        membership_type == 'rules'
+      end
+
+      module ClassMethods
+        def membership_types
+          super + ['rules']
+        end
+
+        def _with_user(groups, user)
+          groups = groups.left_outer_joins(:users)
+          smart_groups = groups.where(membership_type: 'rules')
+          other_groups = groups.where.not(membership_type: 'rules')
+
+          super(other_groups, user).or(SmartGroups::RulesService.new.groups_for_user(user, smart_groups))
+        end
       end
     end
   end

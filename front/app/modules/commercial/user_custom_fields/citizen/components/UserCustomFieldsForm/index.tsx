@@ -21,18 +21,23 @@ import GetUserCustomFieldsSchema, {
   GetUserCustomFieldsSchemaChildProps,
 } from '../../../resources/GetUserCustomFieldsSchema';
 
+// For DateInput to work
+import 'react-dates/initialize';
+import 'react-dates/lib/css/_datepicker.css';
+
 // components
-import { FormLabelValue } from 'components/UI/FormComponents';
+import { FormLabel } from 'components/UI/FormComponents';
 import TextArea from 'components/UI/TextArea';
-import { Input, IconTooltip, Select, DateInput } from 'cl2-component-library';
+import {
+  Input,
+  IconTooltip,
+  Select,
+  DateInput,
+} from '@citizenlab/cl2-component-library';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import Checkbox from 'components/UI/Checkbox';
 import { SectionField } from 'components/admin/Section';
 import Error from 'components/UI/Error';
-import {
-  ExtraFormDataConfiguration,
-  ExtraFormDataKey,
-} from 'containers/UsersEditPage/ProfileForm';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -53,11 +58,6 @@ const Container = styled.div``;
 
 const StyledSectionField = styled(SectionField)`
   margin-bottom: 30px;
-`;
-
-const StyledFormLabelValue = styled(FormLabelValue)`
-  display: block;
-  margin-bottom: 10px;
 `;
 
 const InvisibleSubmitButton = styled.button`
@@ -89,18 +89,15 @@ const StyledDateInput = styled(DateInput)`
   flex-grow: 1;
 `;
 
+type FormData = Record<string, any> | null;
 export interface InputProps {
   authUser: IUserData;
-  onSubmit: (data: { key: string; formData: Object | null }) => void;
-  onChange?: () => void;
-  onData?: (data: {
-    key: ExtraFormDataKey;
-    data: ExtraFormDataConfiguration;
-  }) => void;
+  onSubmit?: (data: { key: string; formData: FormData }) => void;
+  onChange?: (data: { key: string; formData: FormData }) => void;
 }
 
 interface State {
-  formData: Object | null;
+  formData: FormData;
 }
 
 interface DataProps {
@@ -127,18 +124,9 @@ class UserCustomFieldsForm extends PureComponent<
   componentDidMount() {
     this.subscriptions = [
       eventEmitter.observeEvent('customFieldsSubmitEvent').subscribe(() => {
-        if (this.submitbuttonElement) {
-          this.submitbuttonElement?.click?.();
-        }
+        this.submitbuttonElement?.click?.();
       }),
     ];
-
-    this.props.onData?.({
-      key: 'custom_field_values',
-      data: {
-        submit: () => this?.submitbuttonElement?.click?.(),
-      },
-    });
   }
 
   componentWillUnmount() {
@@ -159,7 +147,10 @@ class UserCustomFieldsForm extends PureComponent<
     });
 
     this.setState({ formData: sanitizedFormData }, () =>
-      this.props.onChange?.()
+      this.props.onChange?.({
+        formData: sanitizedFormData,
+        key: 'custom_field_values',
+      })
     );
   };
 
@@ -171,7 +162,7 @@ class UserCustomFieldsForm extends PureComponent<
     });
 
     this.setState({ formData: sanitizedFormData }, () =>
-      this.props.onSubmit({
+      this.props.onSubmit?.({
         key: 'custom_field_values',
         formData: this.state.formData,
       })
@@ -189,7 +180,7 @@ class UserCustomFieldsForm extends PureComponent<
       const { schema, uiSchema } = userCustomFieldsSchema;
       const requiredFieldNames = get(schema, 'required', []);
       const disabledFieldNames = get(uiSchema, 'ui:disabled', []);
-      const fieldNames = get(schema, 'properties', null) as object;
+      const fieldNames = get(schema, 'properties', null);
       const requiredErrorMessage = this.props.intl.formatMessage(
         messages.requiredError
       );
@@ -247,6 +238,7 @@ class UserCustomFieldsForm extends PureComponent<
           onChange={onChange}
           key={props.id}
           id={props.id}
+          className={`input_field_${props.id}`}
           disabled={props.disabled}
         />
         {props.options.verificationLocked && (
@@ -379,7 +371,13 @@ class UserCustomFieldsForm extends PureComponent<
       return (
         <>
           {title && (
-            <StyledFormLabelValue noSpace htmlFor={id} labelValue={title} />
+            <FormLabel
+              noSpace
+              htmlFor={id}
+              labelValue={title}
+              display="block"
+              margin-bottom="10px"
+            />
           )}
           <InputContainer>
             <Checkbox
@@ -525,7 +523,7 @@ class UserCustomFieldsForm extends PureComponent<
 function renderLabel(id, label, required, descriptionJSX) {
   if (label && label.length > 0) {
     return (
-      <FormLabelValue
+      <FormLabel
         htmlFor={id}
         labelValue={label}
         optional={!required}

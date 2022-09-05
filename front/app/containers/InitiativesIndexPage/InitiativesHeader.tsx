@@ -5,6 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import AvatarBubbles from 'components/AvatarBubbles';
 import InitiativeInfoContent from './InitiativeInfoContent';
+import Warning from 'components/UI/Warning';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -107,7 +108,10 @@ class InitiativesHeader extends PureComponent<Props, State> {
   render() {
     const { className, tenant, postingPermission } = this.props;
 
-    if (isNilOrError(tenant)) return null;
+    if (isNilOrError(tenant) || isNilOrError(postingPermission)) return null;
+
+    const { enabled } = postingPermission;
+    const proposalSubmissionEnabled = enabled === true || enabled === 'maybe';
 
     return (
       <Container className={`e2e-initiatives-header ${className || ''}`}>
@@ -119,7 +123,7 @@ class InitiativesHeader extends PureComponent<Props, State> {
         </ScreenReaderOnly>
         <Content>
           <Title>
-            {postingPermission?.enabled ? (
+            {proposalSubmissionEnabled ? (
               <FormattedMessage
                 {...messages.header}
                 values={{
@@ -145,7 +149,13 @@ class InitiativesHeader extends PureComponent<Props, State> {
           </Title>
           <StyledAvatarBubbles />
           <StyledInitiativeInfoContent />
-          <InitiativeButton location="initiatives_header" />
+          {proposalSubmissionEnabled ? (
+            <InitiativeButton location="initiatives_header" />
+          ) : (
+            <Warning>
+              <FormattedMessage {...messages.newProposalsNotPermitted} />
+            </Warning>
+          )}
         </Content>
       </Container>
     );

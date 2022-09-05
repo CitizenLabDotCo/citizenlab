@@ -1,18 +1,19 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { isEmpty } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import ProjectCard from 'components/ProjectCard';
 
 // hooks
-import useWindowSize from 'hooks/useWindowSize';
+import useAdminPublications from 'hooks/useAdminPublications';
 
 // style
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
-// typins
-import { IAdminPublicationContent } from 'hooks/useAdminPublications';
+// typings
+import { PublicationStatus } from 'services/projects';
 
 const Container = styled.div`
   display: flex;
@@ -25,12 +26,10 @@ const StyledProjectCard = styled(ProjectCard)<{ isEven: boolean }>`
   margin: 0px;
   margin-right: ${(props) => (props.isEven ? '20px' : '0px')};
   margin-bottom: 20px;
-
   &.oneCardPerRow {
     width: 100%;
     margin-right: 0px;
   }
-
   ${media.smallerThanMinTablet`
     width: 100%;
     margin: 0;
@@ -38,43 +37,44 @@ const StyledProjectCard = styled(ProjectCard)<{ isEven: boolean }>`
   `};
 `;
 
-const ProjectFolderProjectCards = memo<{
-  list: IAdminPublicationContent[] | undefined | null;
+interface Props {
   className?: string;
-}>(({ list, className }) => {
-  const { windowWidth } = useWindowSize();
+  folderId: string;
+}
 
-  const filteredList = list?.filter(
-    (item) => item.publicationType === 'project'
-  );
-  const hasNoDescriptionPreviews = filteredList?.every((item) =>
-    isEmpty(item.attributes.publication_description_preview_multiloc)
-  );
-  const hideDescriptionPreview = hasNoDescriptionPreviews;
+const publicationStatuses: PublicationStatus[] = ['published', 'archived'];
 
-  if (filteredList && filteredList?.length > 0) {
-    return (
-      <Container className={className || ''}>
-        {filteredList.map((item, index) => (
-          <StyledProjectCard
-            key={item.publicationId}
-            projectId={item.publicationId}
-            size="small"
-            isEven={index % 2 !== 1}
-            hideDescriptionPreview={hideDescriptionPreview}
-            className={
-              filteredList.length === 1 ||
-              (windowWidth > 1000 && windowWidth < 1350)
-                ? 'oneCardPerRow'
-                : ''
-            }
-          />
-        ))}
-      </Container>
+const ProjectFolderProjectCards = ({ folderId, className }: Props) => {
+  const { list: adminPublications } = useAdminPublications({
+    childrenOfId: folderId,
+    publicationStatusFilter: publicationStatuses,
+  });
+
+  if (!isNilOrError(adminPublications)) {
+    const hasNoDescriptionPreviews = adminPublications.every((item) =>
+      isEmpty(item.attributes.publication_description_preview_multiloc)
     );
+    const hideDescriptionPreview = hasNoDescriptionPreviews;
+
+    if (adminPublications && adminPublications.length > 0) {
+      return (
+        <Container className={className}>
+          {adminPublications.map((item, index) => (
+            <StyledProjectCard
+              key={item.publicationId}
+              projectId={item.publicationId}
+              size="small"
+              isEven={index % 2 !== 1}
+              hideDescriptionPreview={hideDescriptionPreview}
+              className={adminPublications.length === 1 ? 'oneCardPerRow' : ''}
+            />
+          ))}
+        </Container>
+      );
+    }
   }
 
   return null;
-});
+};
 
 export default ProjectFolderProjectCards;

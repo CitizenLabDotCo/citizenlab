@@ -22,20 +22,6 @@ export interface ICommentVoteData {
     };
   };
 }
-
-interface ILinks {
-  self: string;
-  first: string;
-  prev: string;
-  next: string;
-  last: string;
-}
-
-export interface ICommentVotes {
-  data: ICommentVoteData[];
-  links: ILinks;
-}
-
 export interface ICommentVote {
   data: ICommentVoteData;
 }
@@ -51,16 +37,6 @@ export function commentVoteStream(
 ) {
   return streams.get<ICommentVote>({
     apiEndpoint: `${API_PATH}/votes/${voteId}`,
-    ...streamParams,
-  });
-}
-
-export function commentVotesStream(
-  commentId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<ICommentVote>({
-    apiEndpoint: `${API_PATH}/comments/${commentId}/votes`,
     ...streamParams,
   });
 }

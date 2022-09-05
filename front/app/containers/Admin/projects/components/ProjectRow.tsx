@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
+import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -16,7 +18,7 @@ import {
 } from './StyledComponents';
 import DeleteProjectButton from './DeleteProjectButton';
 import PublicationStatusLabel from './PublicationStatusLabel';
-import { IconNames, StatusLabel } from 'cl2-component-library';
+import { IconNames, StatusLabel } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 
 // resources
@@ -74,7 +76,7 @@ export default ({
       className={`
         e2e-admin-edit-publication
       `}
-      linkTo={`/admin/projects/${publication.publicationId}/edit`}
+      linkTo={adminProjectsProjectPath(publication.publicationId)}
       buttonStyle="secondary"
       icon="edit"
       type="button"
@@ -138,14 +140,14 @@ export default ({
                     <FormattedMessage {...messages.onlyAdminsCanView} />
                   )
                 }
-                backgroundColor="clBlue"
+                backgroundColor={colors.clBlueDark}
                 icon="lock"
               />
             )}
           {publication.attributes?.publication_visible_to === 'admins' && (
             <StyledStatusLabel
               text={<FormattedMessage {...messages.onlyAdminsCanView} />}
-              backgroundColor="clBlue"
+              backgroundColor={colors.clBlueDark}
               icon="lock"
             />
           )}

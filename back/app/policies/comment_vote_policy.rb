@@ -1,5 +1,6 @@
-class CommentVotePolicy < ApplicationPolicy
+# frozen_string_literal: true
 
+class CommentVotePolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
 
@@ -23,13 +24,13 @@ class CommentVotePolicy < ApplicationPolicy
     return unless active? && owner?
 
     reason = case record.votable&.post_type
-             when 'Idea'
-               ParticipationContextService.new.voting_disabled_reason_for_idea_comment(record.votable, user)
-             when 'Initiative'
-               denied_for_initiative?(user)
-             else
-               raise ArgumentError, "Comment voting policy not implemented for #{record.votable&.post_type}"
-             end
+    when 'Idea'
+      ParticipationContextService.new.voting_disabled_reason_for_idea_comment(record.votable, user)
+    when 'Initiative'
+      denied_for_initiative_reason user
+    else
+      raise ArgumentError, "Comment voting policy not implemented for #{record.votable&.post_type}"
+    end
 
     reason ? raise_not_authorized(reason) : true
   end
@@ -52,10 +53,9 @@ class CommentVotePolicy < ApplicationPolicy
 
   private
 
-  def denied_for_initiative?(user)
+  def denied_for_initiative_reason(user)
     :not_signed_in unless user
   end
 end
 
 CommentVotePolicy.prepend_if_ee('GranularPermissions::Patches::CommentVotePolicy')
-

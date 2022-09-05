@@ -1,22 +1,43 @@
+# frozen_string_literal: true
+
+# == Schema Information
+#
+# Table name: idea_files
+#
+#  id         :uuid             not null, primary key
+#  idea_id    :uuid
+#  file       :string
+#  ordering   :integer
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  name       :string
+#
+# Indexes
+#
+#  index_idea_files_on_idea_id  (idea_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (idea_id => ideas.id)
+#
 class IdeaFile < ApplicationRecord
-  EXTENSION_WHITELIST = %w(pdf doc docx pages odt xls xlsx numbers ods ppt pptx key odp txt csv mp3 mp4 avi mkv)
+  EXTENSION_WHITELIST = %w[pdf doc docx pages odt xls xlsx numbers ods ppt pptx key odp txt csv mp3 mp4 avi mkv]
 
   mount_base64_file_uploader :file, IdeaFileUploader
-  belongs_to :idea
+  belongs_to :idea, inverse_of: :idea_files
 
-  validates :idea, :file, :name, presence: true
+  validates :idea, :name, presence: true
   validate :extension_whitelist
 
-
-  private 
+  private
 
   def extension_whitelist
-    if !EXTENSION_WHITELIST.include? self.name.split('.').last.downcase
-      self.errors.add(
-        :file,
-        :extension_whitelist_error,
-        message: 'Unsupported file extension'
-      )
-    end
+    return if EXTENSION_WHITELIST.include? name.split('.').last.downcase
+
+    errors.add(
+      :file,
+      :extension_whitelist_error,
+      message: 'Unsupported file extension'
+    )
   end
 end

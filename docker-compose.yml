@@ -49,7 +49,7 @@ services:
 
   rabbitmq:
     container_name: cl-back-rabbit
-    image: "rabbitmq:3.7-management"
+    image: "rabbitmq:3.8-management"
     ports:
       - "8088:15672"
     volumes:
@@ -59,19 +59,6 @@ services:
     image: "schickling/mailcatcher"
     ports:
       - "1080:1080"
-
-  front:
-    build:
-      context: .
-      dockerfile: front/Dockerfile
-    ports:
-      - "3000:3000"
-    env_file:
-      - ".env-front"
-    volumes:
-      - "./front:/front"
-      - /front/node_modules
-    command: npm start
 
   # Include this and uncomment :mem_cache_store in
   # `config/environments/development.rb` if you want to enable caching in

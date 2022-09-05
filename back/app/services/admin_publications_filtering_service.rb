@@ -1,7 +1,16 @@
+# frozen_string_literal: true
+
 class AdminPublicationsFilteringService
   include Filterer
 
   attr_reader :visible_children_counts_by_parent_id
+
+  class << self
+    def for_homepage_filter(scope)
+      scope ||= AdminPublication.all
+      scope.where.not(publication_status: :draft).where(depth: 0)
+    end
+  end
 
   # NOTE: This service is very fragile and the ORDER of filters matters for the Front-End, do not change it.
 
@@ -18,8 +27,8 @@ class AdminPublicationsFilteringService
     non_parents                   = visible_publications.where(children_allowed: false)
 
     parents_with_visible_children.or(parents_without_any_children)
-                                 .or(non_parents)
-                                 .or(public_project_publications)
+      .or(non_parents)
+      .or(public_project_publications)
   end
 
   add_filter('by_publication_status') do |scope, options|
@@ -32,9 +41,23 @@ class AdminPublicationsFilteringService
     projects = Project.where(id: scope.where(publication_type: Project.name).select(:publication_id))
     filtered_projects = ProjectsFilteringService.new.filter(projects, options)
 
-    project_publications = scope.where(publication: filtered_projects)
+    if options[:search].present?
+      project_ids = filtered_projects.search_ids_by_all_including_patches(options[:search])
+    end
+
+    project_publications = scope.where(publication: project_ids || filtered_projects)
     other_publications = scope.where.not(publication_type: Project.name)
     project_publications.or(other_publications)
+  end
+
+  add_filter('filter_folders') do |scope, options|
+    next scope if options[:search].blank?
+
+    matching_folders = ProjectFolders::Folder.search_by_all(options[:search])
+    folder_publications_in_scope = scope.where(publication: matching_folders)
+    projects_still_in_scope = scope.where.not(publication_type: ProjectFolders::Folder.name)
+
+    folder_publications_in_scope.or(projects_still_in_scope)
   end
 
   add_filter('compute_visible_children_counts') do |scope, _|
@@ -48,7 +71,24 @@ class AdminPublicationsFilteringService
     scope
   end
 
+  # We remove childless parents if any filter is applied
+  add_filter('remove_childless_parents') do |scope, options|
+    filter_params = ProjectsFilteringService::HOMEPAGE_FILTER_PARAMS
+    next scope unless filter_params.any? { |param| options[param].present? }
+
+    parents_with_children = scope.where(id: scope.select(:parent_id).where.not(parent_id: nil).distinct)
+    non_parents           = scope.where(children_allowed: false)
+
+    parents_with_children.or(non_parents)
+  end
+
   add_filter('top_level_only') do |scope, options|
     [0, '0'].include?(options[:depth]) ? scope.where(depth: 0) : scope
+  end
+
+  # Keep that as the last filter, this acts as a failsafe.
+  # If any of the filters before return duplicate admin publications, we remove them at the last step
+  add_filter('distinct') do |scope, _options|
+    scope.distinct
   end
 end

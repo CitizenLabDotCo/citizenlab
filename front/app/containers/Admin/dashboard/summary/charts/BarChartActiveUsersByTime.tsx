@@ -4,9 +4,9 @@ import { Subscription } from 'rxjs';
 import { map, isEmpty } from 'lodash-es';
 
 // intl
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from '../../messages';
+import moment from 'moment';
 
 // typings
 import { IStreamParams, IStream } from 'utils/streams';
@@ -14,29 +14,23 @@ import { IResourceByTime, IUsersByTime } from 'services/stats';
 import { IGraphFormat } from 'typings';
 
 // components
-import ExportMenu from '../../components/ExportMenu';
-import {
-  BarChart,
-  Bar,
-  Tooltip,
-  XAxis,
-  YAxis,
-  ResponsiveContainer,
-} from 'recharts';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
   IGraphUnit,
   GraphCard,
   GraphCardInner,
   GraphCardHeader,
   GraphCardTitle,
-  NoDataContainer,
-  IResolution,
-} from '../..';
+} from 'components/admin/GraphWrappers';
+import BarChart from 'components/admin/Graphs/BarChart';
+import { Tooltip } from 'recharts';
+import { IResolution } from 'components/admin/ResolutionControl';
 import { Popup } from 'semantic-ui-react';
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 
 // styling
-import styled, { withTheme } from 'styled-components';
+import styled from 'styled-components';
+import { isNilOrError } from 'utils/helperUtils';
 
 const InfoIcon = styled(Icon)`
   display: flex;
@@ -47,7 +41,7 @@ const InfoIcon = styled(Icon)`
   margin-left: 10px;
 `;
 
-const StyledResponsiveContainer = styled(ResponsiveContainer)`
+const StyledBarChart = styled(BarChart)`
   .recharts-wrapper {
     @media print {
       margin: 0 auto;
@@ -191,39 +185,25 @@ class BarChartActiveUsersByTime extends React.PureComponent<
 
   formatTick = (date: string) => {
     const { resolution } = this.props;
-    const { formatDate } = this.props.intl;
-
-    return formatDate(date, {
-      day: resolution === 'month' ? undefined : '2-digit',
-      month: 'short',
-    });
+    return moment
+      .utc(date, 'YYYY-MM-DD')
+      .format(resolution === 'month' ? 'MMM' : 'DD MMM');
   };
 
   formatLabel = (date: string) => {
     const { resolution } = this.props;
-    const { formatDate } = this.props.intl;
-
-    return formatDate(date, {
-      day: resolution === 'month' ? undefined : '2-digit',
-      month: 'long',
-      year: 'numeric',
-    });
+    return moment
+      .utc(date, 'YYYY-MM-DD')
+      .format(resolution === 'month' ? 'MMMM YYYY' : 'MMMM DD, YYYY');
   };
-
   render() {
     const { className, graphTitle, infoMessage } = this.props;
     const { serie } = this.state;
-    const {
-      chartLabelSize,
-      chartLabelColor,
-      barHoverColor,
-      animationBegin,
-      animationDuration,
-      newBarFill,
-    } = this.props['theme'];
 
     const noData =
-      !serie || serie.every((item) => isEmpty(item)) || serie.length <= 0;
+      isNilOrError(serie) ||
+      serie.every((item) => isEmpty(item)) ||
+      serie.length <= 0;
 
     return (
       <GraphCard className={className}>
@@ -245,50 +225,25 @@ class BarChartActiveUsersByTime extends React.PureComponent<
               )}
             </GraphCardTitle>
             {!noData && (
-              <ExportMenu
+              <ReportExportMenu
                 svgNode={this.currentChart}
                 name={graphTitle}
                 {...this.props}
               />
             )}
           </GraphCardHeader>
-          {noData ? (
-            <NoDataContainer>
-              <FormattedMessage {...messages.noData} />
-            </NoDataContainer>
-          ) : (
-            <StyledResponsiveContainer>
-              <BarChart data={serie} ref={this.currentChart}>
-                <Bar
-                  dataKey="value"
-                  name={graphTitle}
-                  fill={newBarFill}
-                  animationDuration={animationDuration}
-                  animationBegin={animationBegin}
-                  isAnimationActive={true}
-                />
-                <XAxis
-                  dataKey="name"
-                  stroke={chartLabelColor}
-                  fontSize={chartLabelSize}
-                  tick={{ transform: 'translate(0, 7)' }}
-                  tickFormatter={this.formatTick}
-                />
-                <YAxis stroke={chartLabelColor} fontSize={chartLabelSize} />
-                <Tooltip
-                  isAnimationActive={false}
-                  labelFormatter={this.formatLabel}
-                  cursor={{ fill: barHoverColor }}
-                />
-              </BarChart>
-            </StyledResponsiveContainer>
-          )}
+          <StyledBarChart
+            data={serie}
+            innerRef={this.currentChart}
+            xaxis={{ tickFormatter: this.formatTick }}
+            renderTooltip={(props) => (
+              <Tooltip {...props} labelFormatter={this.formatLabel} />
+            )}
+          />
         </GraphCardInner>
       </GraphCard>
     );
   }
 }
 
-export default injectIntl<Props>(
-  withTheme(BarChartActiveUsersByTime as any) as any
-);
+export default injectIntl<Props>(BarChartActiveUsersByTime);

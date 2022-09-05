@@ -1,20 +1,8 @@
+# frozen_string_literal: true
+
 module EmailCampaigns
   class DeliveryService
-    class << self
-      def campaign_classes
-        @campaign_types.map(&:constantize)
-      end
-
-      def campaign_types
-        @campaign_types ||= []
-      end
-
-      def add_campaign_types(*campaign_classes)
-        @campaign_types = campaign_types.concat(campaign_classes.map(&:name).uniq)
-      end
-    end
-
-    add_campaign_types(
+    CAMPAIGN_CLASSES = [
       Campaigns::AdminDigest,
       Campaigns::AdminRightsReceived,
       Campaigns::AssigneeDigest,
@@ -47,7 +35,6 @@ module EmailCampaigns
       Campaigns::OfficialFeedbackOnVotedInitiative,
       Campaigns::OfficialFeedbackOnYourIdea,
       Campaigns::OfficialFeedbackOnYourInitiative,
-      Campaigns::PasswordReset,
       Campaigns::ProjectModerationRightsReceived,
       Campaigns::ProjectPhaseStarted,
       Campaigns::ProjectPhaseUpcoming,
@@ -61,12 +48,18 @@ module EmailCampaigns
       Campaigns::UserDigest,
       Campaigns::Welcome,
       Campaigns::YourProposedInitiativesDigest
-    )
+    ].freeze
 
-    delegate :campaign_types, :campaign_classes, to: :class
+    def campaign_types
+      campaign_classes.map(&:name)
+    end
+
+    def campaign_classes
+      CAMPAIGN_CLASSES
+    end
 
     def consentable_campaign_types_for(user)
-      consentable_types = Consentable.consentable_campaign_types(campaign_classes, user)
+      consentable_types = Consentable.consentable_campaign_types(campaign_classes, user, self)
       disabled_types = Disableable.enabled_campaign_types(Campaign.where(type: campaign_types))
       consentable_types - disabled_types
     end
@@ -106,7 +99,7 @@ module EmailCampaigns
       return unless command
 
       mail = campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
-      mail.parts[1].body.to_s
+      mail.body.to_s
     end
 
     private
@@ -136,8 +129,8 @@ module EmailCampaigns
     def assign_campaigns_command(campaigns_with_recipients, options)
       campaigns_with_recipients.flat_map do |(recipient, campaign)|
         campaign.generate_commands(recipient: recipient, **options)
-                .map { |command| command.merge(recipient: recipient) }
-                .zip([campaign].cycle)
+          .map { |command| command.merge(recipient: recipient) }
+          .zip([campaign].cycle)
       end
     end
 
@@ -164,9 +157,13 @@ module EmailCampaigns
     # out through the interal Rails mailing stack
     def send_command_internal(campaign, command)
       campaign.mailer_class
-              .with(campaign: campaign, command: command)
-              .campaign_mail
-              .deliver_later(wait: command[:delay] || 0)
+        .with(campaign: campaign, command: command)
+        .campaign_mail
+        .deliver_later(wait: command[:delay] || 0)
     end
   end
 end
+
+EmailCampaigns::DeliveryService.prepend_if_ee('FlagInappropriateContent::Patches::EmailCampaigns::DeliveryService')
+EmailCampaigns::DeliveryService.prepend_if_ee('IdeaAssignment::Patches::EmailCampaigns::DeliveryService')
+EmailCampaigns::DeliveryService.prepend_if_ee('ProjectFolders::Patches::EmailCampaigns::DeliveryService')

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This migration comes from polls (originally 20191209172704)
 class AddQuestionTypeToQuestions < ActiveRecord::Migration[5.2]
   def change

@@ -2,13 +2,28 @@ import { useState, useEffect } from 'react';
 import {
   currentAppConfigurationStream,
   IAppConfiguration,
-  AppConfigurationSettingsFeatureNames,
+  TAppConfigurationSettingWithEnabled,
+  THomepageSetting,
 } from 'services/appConfiguration';
-import { get } from 'lodash-es';
 
-export default function useFeatureFlag(
-  name: AppConfigurationSettingsFeatureNames
-) {
+export type Parameters = HomepageSettingProps | AppConfigSettingProps;
+
+// For THomepageSetting, you can only use
+// this hook to check the allowed value, which still resides in appConfiguration
+type HomepageSettingProps = {
+  name: THomepageSetting;
+  onlyCheckAllowed: true;
+};
+
+type AppConfigSettingProps = {
+  name: TAppConfigurationSettingWithEnabled;
+  onlyCheckAllowed?: boolean;
+};
+
+export default function useFeatureFlag({
+  name,
+  onlyCheckAllowed = false,
+}: Parameters) {
   const [tenantSettings, setTenantSettings] = useState<
     | IAppConfiguration['data']['attributes']['settings']
     | undefined
@@ -23,10 +38,10 @@ export default function useFeatureFlag(
     );
 
     return subscription.unsubscribe();
-  });
+  }, []);
 
   return (
-    get(tenantSettings, `${name}.allowed`) === true &&
-    get(tenantSettings, `${name}.enabled`) === true
+    tenantSettings?.[name]?.allowed &&
+    (onlyCheckAllowed || tenantSettings?.[name]?.enabled)
   );
 }

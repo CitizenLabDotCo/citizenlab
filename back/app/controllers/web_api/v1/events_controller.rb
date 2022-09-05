@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 class WebApi::V1::EventsController < ApplicationController
-  before_action :set_event, only: [:show, :update, :destroy]
+  before_action :set_event, only: %i[show update destroy]
+  skip_before_action :authenticate_user
 
   def index
-    @events = policy_scope(Event).where(project_id: params[:project_id]).order(start_at: :desc)
-                                 .page(params.dig(:page, :number)).per(params.dig(:page, :size))
-    render json: linked_json(@events, WebApi::V1::EventSerializer, params: fastjson_params)
+    events = EventsFinder.new(params, scope: policy_scope(Event), current_user: current_user).find_records
+    render json: linked_json(events, WebApi::V1::EventSerializer, params: fastjson_params)
   end
 
   def show
@@ -45,7 +47,7 @@ class WebApi::V1::EventsController < ApplicationController
       SideFxEventService.new.after_destroy(@event, current_user)
       head :ok
     else
-      head 500
+      head :internal_server_error
     end
   end
 
@@ -65,9 +67,5 @@ class WebApi::V1::EventsController < ApplicationController
       title_multiloc: CL2_SUPPORTED_LOCALES,
       description_multiloc: CL2_SUPPORTED_LOCALES
     )
-  end
-
-  def secure_controller?
-    false
   end
 end

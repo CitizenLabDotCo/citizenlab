@@ -17,6 +17,7 @@ interface Props extends InputProps {
 
 export type GetInitiativesPermissionsChildProps =
   | ActionPermission<IInitiativeDisabledReason>
+  | null
   | undefined;
 
 export default ({ children, action }: Props) => {

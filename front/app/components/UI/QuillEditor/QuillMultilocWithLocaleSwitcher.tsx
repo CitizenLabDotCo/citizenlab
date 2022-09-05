@@ -5,7 +5,11 @@ import { isNilOrError } from 'utils/helperUtils';
 import QuillEditor, {
   Props as QuillEditorProps,
 } from 'components/UI/QuillEditor';
-import { IconTooltip, LocaleSwitcher, Label } from 'cl2-component-library';
+import {
+  IconTooltip,
+  LocaleSwitcher,
+  Label,
+} from '@citizenlab/cl2-component-library';
 
 // hooks
 import useLocale from 'hooks/useLocale';
@@ -44,7 +48,7 @@ const StyledLocaleSwitcher = styled(LocaleSwitcher)`
 export interface Props
   extends Omit<
     QuillEditorProps,
-    'value' | 'onChange' | 'locale' | 'labelTooltip'
+    'value' | 'onChange' | 'locale' | 'labelTooltipText'
   > {
   valueMultiloc: Multiloc | null | undefined;
   labelTooltipText?: string | JSX.Element | null;
@@ -93,7 +97,7 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
     const id = `${props.id}-${selectedLocale}`;
 
     return (
-      <Container className={className}>
+      <Container className={className} id={props.id}>
         <LabelContainer>
           {label && (
             <StyledLabel htmlFor={id}>

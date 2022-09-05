@@ -48,7 +48,7 @@ const AdminProjectList = memo<Props>((_props) => {
     publicationStatusFilter: ['published', 'archived', 'draft'],
     rootLevelOnly: true,
   });
-  const isProjectFoldersEnabled = useFeatureFlag('project_folders');
+  const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
 
   if (
     !isNilOrError(rootLevelAdminPublications) &&
@@ -70,7 +70,7 @@ const AdminProjectList = memo<Props>((_props) => {
           items={rootLevelAdminPublications}
           onReorder={handleReorderAdminPublication}
           className="projects-list e2e-admin-projects-list"
-          id="e2e-admin-published-projects-list"
+          id="e2e-admin-projects-list-unsortable"
           key={rootLevelAdminPublications.length}
         >
           {({ itemsList, handleDragRow, handleDropRow }) => {
@@ -79,29 +79,27 @@ const AdminProjectList = memo<Props>((_props) => {
                 {itemsList.map(
                   (item: IAdminPublicationContent, index: number) => {
                     return (
-                      <>
-                        <StyledSortableRow
-                          key={item.id}
-                          id={item.id}
-                          index={index}
-                          moveRow={handleDragRow}
-                          dropRow={handleDropRow}
-                          lastItem={
-                            index === rootLevelAdminPublications.length - 1
-                          }
-                        >
-                          {item.publicationType === 'project' && (
-                            <ProjectRow
-                              actions={['delete', 'manage']}
-                              publication={item}
-                            />
-                          )}
-                          <Outlet
-                            id="app.containers.AdminPage.projects.all.projectsAndFolders.row"
+                      <StyledSortableRow
+                        key={item.id}
+                        id={item.id}
+                        index={index}
+                        moveRow={handleDragRow}
+                        dropRow={handleDropRow}
+                        isLastItem={
+                          index === rootLevelAdminPublications.length - 1
+                        }
+                      >
+                        {item.publicationType === 'project' && (
+                          <ProjectRow
+                            actions={['delete', 'manage']}
                             publication={item}
                           />
-                        </StyledSortableRow>
-                      </>
+                        )}
+                        <Outlet
+                          id="app.containers.AdminPage.projects.all.projectsAndFolders.row"
+                          publication={item}
+                        />
+                      </StyledSortableRow>
                     );
                   }
                 )}

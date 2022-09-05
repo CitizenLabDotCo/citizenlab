@@ -1,29 +1,30 @@
+# frozen_string_literal: true
+
 class WebApi::V1::MembershipsController < ApplicationController
-  before_action :set_membership, only: [:show, :destroy]
-  before_action :set_membership_from_group_and_user, only: [:destroy_by_user_id, :show_by_user_id]
+  before_action :set_membership, only: %i[show destroy]
+  before_action :set_membership_from_group_and_user, only: %i[destroy_by_user_id show_by_user_id]
   skip_after_action :verify_authorized, only: [:users_search]
 
   def index
     @memberships = policy_scope(Membership)
       .where(group_id: params[:group_id])
       .includes(user: [:unread_notifications])
-      .page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
+    @memberships = paginate @memberships
 
     render json: linked_json(
-      @memberships, 
-      WebApi::V1::MembershipSerializer, 
-      params: fastjson_params, 
+      @memberships,
+      WebApi::V1::MembershipSerializer,
+      params: fastjson_params,
       include: [:user]
-      )
+    )
   end
 
   def show
     render json: WebApi::V1::MembershipSerializer.new(
-      @membership, 
-      params: fastjson_params, 
+      @membership,
+      params: fastjson_params,
       include: [:user]
-      ).serialized_json
+    ).serialized_json
   end
 
   def show_by_user_id
@@ -37,10 +38,10 @@ class WebApi::V1::MembershipsController < ApplicationController
     authorize @membership
     if @membership.save
       render json: WebApi::V1::MembershipSerializer.new(
-        @membership.reload, 
-        params: fastjson_params, 
+        @membership.reload,
+        params: fastjson_params,
         include: [:user]
-        ).serialized_json, status: :created
+      ).serialized_json, status: :created
     else
       render json: { errors: @membership.errors.details }, status: :unprocessable_entity
     end
@@ -52,7 +53,7 @@ class WebApi::V1::MembershipsController < ApplicationController
     if membership.destroyed?
       head :ok
     else
-      head 500
+      head :internal_server_error
     end
   end
 
@@ -71,7 +72,6 @@ class WebApi::V1::MembershipsController < ApplicationController
     render json: linked_json(@users, WebApi::V1::MemberSerializer, params: fastjson_params(group_id: params[:group_id]))
   end
 
-
   def set_membership
     @membership = Membership.find params[:id]
     authorize @membership
@@ -83,9 +83,6 @@ class WebApi::V1::MembershipsController < ApplicationController
   end
 
   def membership_params
-    params.require(:membership).permit(
-      :user_id
-    )
+    params.require(:membership).permit(:user_id)
   end
-
 end

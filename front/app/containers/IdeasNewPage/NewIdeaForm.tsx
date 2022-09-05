@@ -69,6 +69,13 @@ const Title = styled.h1`
 interface InputProps {
   onSubmit: () => void;
   projectId: string;
+  onTitleChange: (title: string) => void;
+  onDescriptionChange: (description: string) => void;
+  onImageFileAdd: (imageFile: UploadFile[]) => void;
+  onImageFileRemove: () => void;
+  onTagsChange: (selectedTopics: string[]) => void;
+  onAddressChange: (address: string) => void;
+  onIdeaFilesChange: (ideaFiles: UploadFile[]) => void;
 }
 
 interface DataProps {
@@ -86,9 +93,13 @@ interface GlobalState {
   proposedBudget: number | null;
   position: string;
   imageFile: UploadFile[];
+  ideaFiles: UploadFile[];
   submitError: boolean;
   processing: boolean;
   fileOrImageError: boolean;
+  titleProfanityError: boolean;
+  descriptionProfanityError: boolean;
+  authorId: string | null;
 }
 
 interface State extends GlobalState {}
@@ -101,15 +112,19 @@ class NewIdeaForm extends PureComponent<Props, State> {
     super(props);
     this.state = {
       title: null,
+      authorId: null,
       description: null,
       selectedTopics: [],
       budget: null,
       proposedBudget: null,
       position: '',
       imageFile: [],
+      ideaFiles: [],
       submitError: false,
       processing: false,
       fileOrImageError: false,
+      titleProfanityError: false,
+      descriptionProfanityError: false,
     };
     this.globalState = globalState.init('IdeasNewPage');
     this.subscriptions = [];
@@ -128,9 +143,13 @@ class NewIdeaForm extends PureComponent<Props, State> {
           proposedBudget,
           position,
           imageFile,
+          ideaFiles,
           submitError,
           processing,
           fileOrImageError,
+          titleProfanityError,
+          descriptionProfanityError,
+          authorId,
         }) => {
           const newState: State = {
             title,
@@ -140,11 +159,14 @@ class NewIdeaForm extends PureComponent<Props, State> {
             proposedBudget,
             position,
             imageFile,
+            ideaFiles,
             submitError,
             processing,
             fileOrImageError,
+            titleProfanityError,
+            descriptionProfanityError,
+            authorId,
           };
-
           this.setState(newState);
         }
       ),
@@ -165,7 +187,9 @@ class NewIdeaForm extends PureComponent<Props, State> {
       address: position,
       imageFile,
       ideaFiles,
+      authorId,
     } = ideaFormOutput;
+
     this.globalState.set({
       title,
       description,
@@ -175,7 +199,9 @@ class NewIdeaForm extends PureComponent<Props, State> {
       position,
       imageFile,
       ideaFiles,
+      authorId,
     });
+
     this.props.onSubmit();
   };
 
@@ -188,8 +214,23 @@ class NewIdeaForm extends PureComponent<Props, State> {
       proposedBudget,
       position,
       imageFile,
+      ideaFiles,
+      titleProfanityError,
+      descriptionProfanityError,
+      authorId,
     } = this.state;
-    const { projectId, project, phases } = this.props;
+    const {
+      projectId,
+      project,
+      phases,
+      onTitleChange,
+      onDescriptionChange,
+      onImageFileAdd,
+      onImageFileRemove,
+      onTagsChange,
+      onAddressChange,
+      onIdeaFilesChange,
+    } = this.props;
 
     if (!isNilOrError(project)) {
       const inputTerm = getInputTerm(
@@ -214,6 +255,7 @@ class NewIdeaForm extends PureComponent<Props, State> {
           </Title>
 
           <IdeaForm
+            authorId={authorId}
             projectId={projectId}
             title={title}
             description={description}
@@ -222,7 +264,17 @@ class NewIdeaForm extends PureComponent<Props, State> {
             proposedBudget={proposedBudget}
             address={position}
             imageFile={imageFile}
+            ideaFiles={ideaFiles}
+            hasTitleProfanityError={titleProfanityError}
+            hasDescriptionProfanityError={descriptionProfanityError}
             onSubmit={this.handleIdeaFormOutput}
+            onTitleChange={onTitleChange}
+            onDescriptionChange={onDescriptionChange}
+            onImageFileAdd={onImageFileAdd}
+            onImageFileRemove={onImageFileRemove}
+            onTagsChange={onTagsChange}
+            onAddressChange={onAddressChange}
+            onIdeaFilesChange={onIdeaFilesChange}
           />
         </Container>
       );

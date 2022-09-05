@@ -6,8 +6,7 @@ export default defineMessages({
     defaultMessage: 'Participation Rights',
   },
   projectPermissionsTab: {
-    id:
-      'app.modules.granular_permissions.admin.components.projectPermissionsTab',
+    id: 'app.modules.granular_permissions.admin.components.projectPermissionsTab',
     defaultMessage: 'Access rights',
   },
 });

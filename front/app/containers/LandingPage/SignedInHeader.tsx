@@ -6,7 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import Button from 'components/UI/Button';
 import Avatar from 'components/Avatar';
-import { Icon } from 'cl2-component-library';
+import { Icon, Image } from '@citizenlab/cl2-component-library';
 
 // services
 import {
@@ -42,6 +42,7 @@ import styled, { withTheme } from 'styled-components';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { media, fontSizes, isRtl } from 'utils/styleUtils';
 import Outlet from 'components/Outlet';
+import { IHomepageSettings } from 'services/homepageSettings';
 
 const contentTimeout = 350;
 const contentEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -81,7 +82,7 @@ const HeaderImageContainerInner = styled.div`
   `}
 `;
 
-const HeaderImage = styled.img`
+const HeaderImage = styled(Image)`
   width: 100%;
   height: auto;
 
@@ -102,7 +103,7 @@ const HeaderImage = styled.img`
 const HeaderImageOverlay = styled.div`
   background: ${({ theme }) =>
     theme.signedInHeaderOverlayColor || theme.colorMain};
-  opacity: ${({ theme }) => theme.signedInHeaderOverlayOpacity};
+  opacity: ${({ theme }) => theme.signedInHeaderOverlayOpacity / 100};
   position: absolute;
   top: 0;
   bottom: 0;
@@ -224,7 +225,11 @@ const CompleteProfileIcon = styled(Icon)`
   margin-left: -3px;
 `;
 
-export const Text = styled.div``;
+export const Text = styled.div`
+  ${isRtl`
+    direction: rtl;
+  `}
+`;
 
 export const Right = styled.div`
   flex-shrink: 0;
@@ -280,6 +285,7 @@ export const StyledAvatar = styled(Avatar)`
 
 export interface InputProps {
   className?: string;
+  homepageSettings: Error | IHomepageSettings | null;
 }
 
 interface DataProps {
@@ -317,24 +323,25 @@ class SignedInHeader extends PureComponent<Props, State> {
       className,
       theme,
       onboardingCampaigns,
+      homepageSettings,
     } = this.props;
 
     if (
       !isNilOrError(locale) &&
       !isNilOrError(tenant) &&
       !isNilOrError(authUser) &&
-      !isNilOrError(onboardingCampaigns)
+      !isNilOrError(onboardingCampaigns) &&
+      !isNilOrError(homepageSettings)
     ) {
-      const tenantHeaderImage = tenant.attributes.header_bg
-        ? tenant.attributes.header_bg.large
+      const tenantHeaderImage = homepageSettings.data.attributes.header_bg
+        ? homepageSettings.data.attributes.header_bg.large
         : null;
       const defaultMessage =
-        tenant.attributes.settings.core.custom_onboarding_fallback_message;
+        homepageSettings.data.attributes.banner_signed_in_header_multiloc;
+
       const objectFitCoverSupported =
         window['CSS'] && CSS.supports('object-fit: cover');
 
-      // translate header title into a h1 with a fallback
-      const headerTitleMultiLoc = tenant.attributes.settings.core.header_title;
       const genericTitle = (
         <FormattedMessage tagName="h1" {...messages.titleCity} />
       );
@@ -345,8 +352,8 @@ class SignedInHeader extends PureComponent<Props, State> {
           id="hook-header"
         >
           <ScreenReaderOnly>
-            {headerTitleMultiLoc ? (
-              <T as="h1" value={headerTitleMultiLoc}>
+            {defaultMessage ? (
+              <T as="h1" value={defaultMessage}>
                 {(translatedTitle) =>
                   translatedTitle ? <h1>{translatedTitle}</h1> : genericTitle
                 }
@@ -359,6 +366,7 @@ class SignedInHeader extends PureComponent<Props, State> {
             <HeaderImageContainerInner>
               {tenantHeaderImage && (
                 <HeaderImage
+                  alt="" // Image is decorative, so alt tag is empty
                   src={tenantHeaderImage}
                   className={
                     objectFitCoverSupported ? 'objectFitCoverSupported' : ''
@@ -499,15 +507,23 @@ class SignedInHeader extends PureComponent<Props, State> {
             exit={true}
           >
             <HeaderContentDefault id="e2e-signed-in-header-default-cta">
-              {defaultMessage && !isEmpty(defaultMessage) ? (
-                <T as="h2" value={defaultMessage} supportHtml />
-              ) : (
-                <FormattedMessage
-                  {...messages.defaultSignedInMessage}
-                  tagName="h2"
-                  values={{ firstName: authUser.attributes.first_name }}
+              <Left>
+                {defaultMessage && !isEmpty(defaultMessage) ? (
+                  <T as="h2" value={defaultMessage} supportHtml />
+                ) : (
+                  <FormattedMessage
+                    {...messages.defaultSignedInMessage}
+                    tagName="h2"
+                    values={{ firstName: authUser.attributes.first_name }}
+                  />
+                )}
+              </Left>
+              <Right>
+                <Outlet
+                  id="app.containers.LandingPage.SignedInHeader.CTA"
+                  buttonStyle="primary-inverse"
                 />
-              )}
+              </Right>
             </HeaderContentDefault>
           </CSSTransition>
         </Header>

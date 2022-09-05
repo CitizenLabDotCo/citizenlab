@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import { shallow } from 'enzyme';
 jest.mock('utils/cl-intl');
@@ -11,7 +12,7 @@ import {
   Props,
 } from './RegistrationFieldsToGraphs';
 import { mockGetUserCustomFields } from '../../resources/__mocks__/GetUserCustomFields';
-import { mockUsersByRegFields } from '../../services/__mocks__/userCustomFIeldsStats';
+import { mockUsersByRegFields } from '../../services/__mocks__/userCustomFieldsStats';
 import { localizeProps } from 'utils/testUtils/localizeProps';
 import { intl } from 'utils/cl-intl';
 
@@ -44,7 +45,7 @@ describe('<RegistrationFieldsToGraphs />', () => {
     );
     const convertToGraphFormat = wrapper
       .find('WrappedBarChartByCategory')
-      .prop('convertToGraphFormat') as Function;
+      .prop('convertToGraphFormat');
     expect(convertToGraphFormat(mockUsersByRegFields)).toMatchSnapshot();
   });
 });

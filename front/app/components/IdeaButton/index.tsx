@@ -23,7 +23,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 // components
 import Button, { Props as ButtonProps } from 'components/UI/Button';
 import Tippy from '@tippyjs/react';
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -148,19 +148,19 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
       notActivePhase: messages.postingInNonActivePhases,
       maybeNotPermitted: messages.postingMayNotBePermitted,
     };
-    const { show, enabled, disabledReason, action } = getIdeaPostingRules({
+    const { enabled, show, disabledReason, action } = getIdeaPostingRules({
       project,
       phase,
       authUser,
     });
 
-    const onClick = (event: React.FormEvent<HTMLButtonElement>) => {
+    const onClick = (event: React.MouseEvent) => {
       event.preventDefault();
 
       trackEventByName(tracks.postYourIdeaButtonClicked);
 
       // if not logged in
-      if (action === 'sign_in_up' || 'sign_in_up_and_verify') {
+      if (action === 'sign_in_up' || action === 'sign_in_up_and_verify') {
         signUp();
       }
 
@@ -217,32 +217,31 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
       signUpIn('signup')(event);
     };
 
-    const signUpIn = (flow: 'signup' | 'signin') => (
-      event?: React.MouseEvent
-    ) => {
-      event?.preventDefault();
+    const signUpIn =
+      (flow: 'signup' | 'signin') => (event?: React.MouseEvent) => {
+        event?.preventDefault();
 
-      const pcType = participationContextType;
-      const pcId = pcType === 'phase' ? phaseId : projectId;
+        const pcType = participationContextType;
+        const pcId = pcType === 'phase' ? phaseId : projectId;
+        const shouldVerify = action === 'sign_in_up_and_verify';
 
-      const shouldVerify = action === 'sign_in_up_and_verify';
-
-      if (isNilOrError(authUser) && !isNilOrError(project)) {
-        trackEventByName(tracks.signUpInModalOpened);
-        openSignUpInModal({
-          flow,
-          verification: shouldVerify,
-          verificationContext: !!(shouldVerify && pcId && pcType)
-            ? {
-                action: 'posting_idea',
-                id: pcId,
-                type: pcType,
-              }
-            : undefined,
-          action: () => redirectToIdeaForm(),
-        });
-      }
-    };
+        if (isNilOrError(authUser) && !isNilOrError(project)) {
+          trackEventByName(tracks.signUpInModalOpened);
+          openSignUpInModal({
+            flow,
+            verification: shouldVerify,
+            verificationContext:
+              shouldVerify && pcId && pcType
+                ? {
+                    action: 'posting_idea',
+                    id: pcId,
+                    type: pcType,
+                  }
+                : undefined,
+            action: () => redirectToIdeaForm(),
+          });
+        }
+      };
 
     const verificationLink = (
       <button onClick={verify}>
@@ -301,8 +300,20 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
           phases
         );
 
+        const buttonMessage =
+          project.attributes.participation_method === 'native_survey'
+            ? messages.takeTheSurvey
+            : getInputTermMessage(inputTerm, {
+                idea: messages.submitYourIdea,
+                option: messages.addAnOption,
+                project: messages.addAProject,
+                question: messages.addAQuestion,
+                issue: messages.submitAnIssue,
+                contribution: messages.addAContribution,
+              });
+
         return (
-          <Container id={id || ''} className={className || ''}>
+          <Container id={id} className={className || ''}>
             <Tippy
               disabled={!tippyContent}
               interactive={true}
@@ -324,16 +335,7 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
                   disabled={!enabled}
                   ariaDisabled={false}
                 >
-                  <FormattedMessage
-                    {...getInputTermMessage(inputTerm, {
-                      idea: messages.submitYourIdea,
-                      option: messages.addAnOption,
-                      project: messages.addAProject,
-                      question: messages.addAQuestion,
-                      issue: messages.submitAnIssue,
-                      contribution: messages.addAContribution,
-                    })}
-                  />
+                  <FormattedMessage {...buttonMessage} />
                 </Button>
               </ButtonWrapper>
             </Tippy>

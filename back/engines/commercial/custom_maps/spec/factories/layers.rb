@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :layer, class: 'CustomMaps::Layer' do
     map_config

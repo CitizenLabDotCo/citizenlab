@@ -65,9 +65,9 @@ interface VoteControlComponentProps {
 
 type TComponentMap = {
   [key in InitiativeStatusCode]: {
-    [key in 'voted' | 'notVoted']: React.ComponentType<
-      VoteControlComponentProps
-    >;
+    [key in
+      | 'voted'
+      | 'notVoted']: React.ComponentType<VoteControlComponentProps>;
   };
 };
 
@@ -223,7 +223,7 @@ class VoteControl extends PureComponent<Props, State> {
     const initiativeSettings = tenant.attributes.settings.initiatives;
 
     return (
-      <Container id={id || ''} className={className || ''} aria-live="polite">
+      <Container id={id} className={className || ''} aria-live="polite">
         <ScreenReaderOnly>
           <FormattedMessage tagName="h3" {...messages.invisibleTitle} />
         </ScreenReaderOnly>

@@ -8,7 +8,7 @@ import FormikInputMultilocWithLocaleSwitcher from 'components/UI/FormikInputMult
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import { FooterContainer, Fill } from 'containers/Admin/users/NormalGroupForm';
 import Error from 'components/UI/Error';
-import { Label } from 'cl2-component-library';
+import { Label } from '@citizenlab/cl2-component-library';
 import { FormikUserFilterConditions } from '../../components/UserFilterConditions';
 
 // i18n
@@ -38,7 +38,7 @@ export class RulesGroupForm extends React.PureComponent<
   InjectedFormikProps<Props, RulesFormValues>
 > {
   render() {
-    const { isSubmitting, errors, isValid, touched, status } = this.props;
+    const { isSubmitting, errors, touched, status } = this.props;
 
     return (
       <Form>
@@ -80,8 +80,10 @@ export class RulesGroupForm extends React.PureComponent<
 
         <FooterContainer>
           <FormikSubmitWrapper
-            {...{ isValid, isSubmitting, status, touched }}
             buttonStyle="admin-dark"
+            isSubmitting={isSubmitting}
+            status={status}
+            touched={touched}
           />
         </FooterContainer>
       </Form>

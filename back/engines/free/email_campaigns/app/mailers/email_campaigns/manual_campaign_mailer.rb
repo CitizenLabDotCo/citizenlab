@@ -1,38 +1,29 @@
+# frozen_string_literal: true
+
 module EmailCampaigns
   class ManualCampaignMailer < ApplicationMailer
-    layout false
+    helper_method :body, :body_text
 
-    attr_reader :command, :campaign, :recipient, :app_configuration
+    layout 'campaign_mailer_minimal'
 
-    def campaign_mail
-      @recipient = command[:recipient]
+    def body
       multiloc_service = MultilocService.new
-      frontend_service = Frontend::UrlService.new
       @app_configuration = AppConfiguration.instance
 
       body_html_with_liquid = multiloc_service.t(command[:body_multiloc], recipient)
       template = Liquid::Template.parse(body_html_with_liquid)
-      @body_html = template.render(liquid_params(recipient))
-      @body_text = ActionView::Base.full_sanitizer.sanitize(@body_html)
+      template.render(liquid_params(recipient))
+    end
 
-      url = frontend_service.unsubscribe_url_template(app_configuration, campaign.id)
-      url_template = Liquid::Template.parse(url)
-      @unsubscribe_url = url_template.render(liquid_params(recipient))
-
-      @logo_url = app_configuration.logo.versions[:medium].url
-      @terms_conditions_url = frontend_service.terms_conditions_url(app_configuration)
-      @privacy_policy_url = frontend_service.privacy_policy_url(app_configuration)
-      @host_url = frontend_service.home_url(app_configuration: app_configuration)
-      @organization_name = multiloc_service.t(app_configuration.settings('core', 'organization_name'), recipient)
-
-      I18n.with_locale(locale) do
-        mail(default_config).tap do |message|
-          message.mailgun_headers = mailgun_headers if self.class.delivery_method == :mailgun
-        end
-      end
+    def body_text
+      ActionView::Base.full_sanitizer.sanitize(body)
     end
 
     protected
+
+    def header_logo_only?
+      true
+    end
 
     def subject
       multiloc_service.t(command[:subject_multiloc], recipient)
@@ -44,15 +35,16 @@ module EmailCampaigns
 
     private
 
-    def from_name sender_type, author, recipient
-      if sender_type == 'author'
+    def from_name(sender_type, author, recipient)
+      case sender_type
+      when 'author'
         "#{author.first_name} #{author.last_name}"
-      elsif sender_type == 'organization'
+      when 'organization'
         MultilocService.new.t(AppConfiguration.instance.settings('core', 'organization_name'), recipient)
       end
     end
 
-    def liquid_params user
+    def liquid_params(user)
       {
         'first_name' => user.first_name,
         'last_name' => user.last_name,

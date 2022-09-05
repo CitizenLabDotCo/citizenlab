@@ -1,0 +1,15 @@
+"no":
+  email_campaigns:
+    campaign_type_description:
+      "inappropriate_content_flagged": Inappropriate content flagged
+    admin_campaign_type_description:
+      "inappropriate_content_flagged": Inappropriate content flagged - admins
+    inappropriate_content_flagged:
+      subject: 'A post on your platform has been flagged for review'
+      header_title: 'A post on your platform has been flagged for review'
+      comment_author: '%{authorName} kommenterte:'
+      idea_author: '%{authorName} sendte inn et innlegg:'
+      initiative_author: '%{authorName} sendte inn et forslag:'
+      this_post_was_flagged: >
+        <p>This post was automatically detected as potentially containing inappropriate content. We’re sending you this notification so that you can review the post in accordance with your own moderation guidelines.</p><p>If the post does not contain inappropriate content, you can remove the warning via your platform in the Activity tab in the admin panel.</p>
+      cta_review_post: 'Gjennomgå innlegg'

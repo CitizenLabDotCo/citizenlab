@@ -1,7 +1,8 @@
 import React from 'react';
 
 // router
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
@@ -55,9 +56,9 @@ class SettingsPage extends React.PureComponent<
           url: '/admin/settings/areas',
         },
         {
-          name: 'pages',
-          label: formatMessage(messages.tabPages),
-          url: '/admin/settings/pages',
+          name: 'policies',
+          label: formatMessage(messages.tabPolicies),
+          url: '/admin/settings/policies',
         },
       ],
     };
@@ -70,7 +71,6 @@ class SettingsPage extends React.PureComponent<
   };
 
   render() {
-    const { children } = this.props;
     const { formatMessage } = this.props.intl;
 
     const resource = {
@@ -88,7 +88,9 @@ class SettingsPage extends React.PureComponent<
             title={messages.helmetTitle}
             description={messages.helmetDescription}
           />
-          {children}
+          <div id="e2e-settings-container">
+            <RouterOutlet />
+          </div>
         </TabbedResource>
       </>
     );

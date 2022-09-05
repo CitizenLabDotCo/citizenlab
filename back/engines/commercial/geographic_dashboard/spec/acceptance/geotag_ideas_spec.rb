@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
@@ -21,7 +23,6 @@ resource 'GeotagIdeas' do
     let!(:ideas) do
       create_list(:idea, 2, title_multiloc: { 'nl-BE' => 'Een fietspad in het Prinsenbos van Grimbergen' })
     end
-
 
     before do
       allow_any_instance_of(GeographicDashboard::GeotagService).to receive(:geotag).and_return(geocoded)

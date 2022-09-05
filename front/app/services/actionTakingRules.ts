@@ -10,6 +10,9 @@ import { GetPhaseChildProps } from 'resources/GetPhase';
 import { isNilOrError } from 'utils/helperUtils';
 import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { IPhaseData } from './phases';
+import { isAdmin, isProjectModerator } from 'services/permissions/roles';
+import { TAuthUser } from 'hooks/useAuthUser';
+import { TPhase } from 'hooks/usePhase';
 
 interface ActionPermissionHide {
   show: false;
@@ -42,7 +45,7 @@ export type ActionPermission<DisabledReasons> =
   | ActionPermissionEnabled
   | ActionPermissionDisabled<DisabledReasons>;
 
-/*----------- Idea Posting ------------*/
+/* ----------- Idea Posting ------------ */
 
 // When disabled, these are the reasons to explain to the user
 export type IIdeaPostingDisabledReason =
@@ -118,17 +121,26 @@ export const getIdeaPostingRules = ({
   authUser,
 }: {
   project: GetProjectChildProps;
-  phase: GetPhaseChildProps;
-  authUser: GetAuthUserChildProps;
+  phase: GetPhaseChildProps | TPhase;
+  authUser: GetAuthUserChildProps | TAuthUser;
 }): ActionPermission<IIdeaPostingDisabledReason> => {
   const signedIn = !isNilOrError(authUser);
 
   if (!isNilOrError(project)) {
-    const {
-      disabled_reason,
-      future_enabled,
-      enabled,
-    } = project.attributes.action_descriptor.posting_idea;
+    const { disabled_reason, future_enabled, enabled } =
+      project.attributes.action_descriptor.posting_idea;
+
+    if (
+      !isNilOrError(authUser) &&
+      (isAdmin({ data: authUser }) || isProjectModerator({ data: authUser }))
+    ) {
+      return {
+        show: true,
+        enabled: true,
+        disabledReason: null,
+        action: null,
+      };
+    }
 
     // timeline
     if (!isNilOrError(phase)) {
@@ -222,7 +234,7 @@ export const getIdeaPostingRules = ({
   };
 };
 
-/*----------- Poll Taking ------------*/
+/* ----------- Poll Taking ------------ */
 
 export type IPollTakingDisabledReason =
   | 'notPermitted'
@@ -268,10 +280,8 @@ export const getPollTakingRules = ({
   phaseContext?: IPhaseData | null;
   signedIn: boolean;
 }): ActionPermission<IPollTakingDisabledReason> => {
-  const {
-    enabled,
-    disabled_reason,
-  } = project.attributes.action_descriptor.taking_poll;
+  const { enabled, disabled_reason } =
+    project.attributes.action_descriptor.taking_poll;
 
   if (phaseContext) {
     if (
@@ -354,10 +364,8 @@ export const getSurveyTakingRules = ({
         phaseContext.attributes.start_at,
         phaseContext.attributes.end_at,
       ]) === 'present';
-    const {
-      disabled_reason,
-      enabled,
-    } = project.attributes.action_descriptor.taking_survey;
+    const { disabled_reason, enabled } =
+      project.attributes.action_descriptor.taking_survey;
 
     if (inCurrentPhase) {
       return {
@@ -381,10 +389,8 @@ export const getSurveyTakingRules = ({
     }
   } else {
     // if not in phase context
-    const {
-      enabled,
-      disabled_reason,
-    } = project.attributes.action_descriptor.taking_survey;
+    const { enabled, disabled_reason } =
+      project.attributes.action_descriptor.taking_survey;
     return {
       enabled,
       disabledReason: enabled

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CustomMaps
   class ApplicationController < ::ApplicationController
     before_action :set_project
@@ -7,7 +9,6 @@ module CustomMaps
 
     def set_project
       @project = Project.find(params[:project_id])
-      authorize @project
     end
   end
 end

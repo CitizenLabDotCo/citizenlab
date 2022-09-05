@@ -1,3 +1,31 @@
+# frozen_string_literal: true
+
+# == Schema Information
+#
+# Table name: email_campaigns_campaigns
+#
+#  id               :uuid             not null, primary key
+#  type             :string           not null
+#  author_id        :uuid
+#  enabled          :boolean
+#  sender           :string
+#  reply_to         :string
+#  schedule         :jsonb
+#  subject_multiloc :jsonb
+#  body_multiloc    :jsonb
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  deliveries_count :integer          default(0), not null
+#
+# Indexes
+#
+#  index_email_campaigns_campaigns_on_author_id  (author_id)
+#  index_email_campaigns_campaigns_on_type       (type)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (author_id => users.id)
+#
 module EmailCampaigns
   class Campaigns::InviteReceived < Campaign
     include ActivityTriggerable
@@ -8,16 +36,15 @@ module EmailCampaigns
     before_send :check_send_invite_email_toggle
     recipient_filter :filter_recipient
 
-
     def mailer_class
       InviteReceivedMailer
     end
 
     def activity_triggers
-      {'Invite' => {'created' => true}}
+      { 'Invite' => { 'created' => true } }
     end
 
-    def filter_recipient users_scope, activity:, time: nil
+    def filter_recipient(users_scope, activity:, time: nil)
       if activity.item&.invitee_id
         users_scope.where(id: activity.item.invitee_id)
       else
@@ -25,7 +52,7 @@ module EmailCampaigns
       end
     end
 
-    def generate_commands recipient:, activity:
+    def generate_commands(recipient:, activity:)
       [{
         event_payload: {
           inviter_first_name: activity.item.inviter&.first_name,
@@ -38,7 +65,7 @@ module EmailCampaigns
       }]
     end
 
-    def check_send_invite_email_toggle activity:, time: nil
+    def check_send_invite_email_toggle(activity:, time: nil)
       !!activity.item&.send_invite_email
     end
   end

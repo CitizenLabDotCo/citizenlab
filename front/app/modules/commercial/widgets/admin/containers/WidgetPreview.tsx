@@ -10,7 +10,7 @@ type Props = {
   className?: string;
 };
 
-type State = {};
+interface State {}
 
 class WidgetPreview extends React.Component<Props, State> {
   render() {

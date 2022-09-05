@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import { shallow } from 'enzyme';
 import { localizeProps } from 'utils/testUtils/localizeProps';
@@ -22,7 +23,10 @@ jest.mock(
 jest.mock('components/PostShowComponents/Comments', () => 'Comments');
 jest.mock('components/UI/FileAttachments', () => 'FileAttachments');
 jest.mock('components/UI/Button', () => 'Button');
-jest.mock('cl2-component-library', () => ({ IconTooltip: 'IconTooltip' }));
+jest.mock('@citizenlab/cl2-component-library', () => ({
+  IconTooltip: 'IconTooltip',
+  Icon: 'Icon',
+}));
 jest.mock('../PostPreview', () => ({
   Top: 'Top',
   Content: 'Content',

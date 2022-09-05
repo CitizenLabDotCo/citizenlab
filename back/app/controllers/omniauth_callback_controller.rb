@@ -2,6 +2,7 @@
 
 class OmniauthCallbackController < ApplicationController
   include ActionController::Cookies
+  skip_before_action :authenticate_user
   skip_after_action :verify_authorized
 
   def create
@@ -22,9 +23,11 @@ class OmniauthCallbackController < ApplicationController
     auth = request.env['omniauth.auth']
     omniauth_params = request.env['omniauth.params']
     provider = auth['provider']
+    user_attrs = authver_method.profile_to_user_attrs(auth)
 
-    @identity = Identity.find_with_omniauth(auth) || Identity.create_with_omniauth(auth)
-    @user = @identity.user || User.find_by_cimail(auth.info.email)
+    @identity = Identity.find_or_create_with_omniauth(auth, authver_method)
+
+    @user = @identity.user || User.find_by_cimail(user_attrs.fetch(:email))
 
     if @user
       @identity.update(user: @user) unless @identity.user
@@ -35,7 +38,7 @@ class OmniauthCallbackController < ApplicationController
           failure
           return
         end
-        @user.assign_attributes(authver_method.profile_to_user_attrs(auth).merge(invite_status: 'accepted'))
+        @user.assign_attributes(user_attrs.merge(invite_status: 'accepted'))
         ActiveRecord::Base.transaction do
           SideFxInviteService.new.before_accept @invite
           @user.save!
@@ -43,16 +46,15 @@ class OmniauthCallbackController < ApplicationController
           SideFxInviteService.new.after_accept @invite
           redirect_to(add_uri_params(Frontend::UrlService.new.signup_success_url(locale: @user.locale), omniauth_params))
         rescue ActiveRecord::RecordInvalid => e
-          Raven.capture_exception e
+          ErrorReporter.report(e)
           failure
-          return
         end
 
       else # !@user.invite_pending?
         begin
           update_user!(auth, @user, authver_method)
         rescue ActiveRecord::RecordInvalid => e
-          Raven.capture_exception e
+          ErrorReporter.report(e)
           failure
           return
         end
@@ -63,8 +65,11 @@ class OmniauthCallbackController < ApplicationController
       handle_verification(auth, @user) if verify
 
     else # New user
-      @user = User.new(authver_method.profile_to_user_attrs(auth))
+      @user = User.new(user_attrs)
+      @user.locale = selected_locale(omniauth_params) if selected_locale(omniauth_params)
+
       SideFxUserService.new.before_create(@user, nil)
+
       @user.identities << @identity
       begin
         @user.save!
@@ -73,6 +78,8 @@ class OmniauthCallbackController < ApplicationController
         handle_verification(auth, @user) if verify
         redirect_to(add_uri_params(Frontend::UrlService.new.signup_success_url(locale: @user.locale), omniauth_params))
       rescue ActiveRecord::RecordInvalid => e
+        Sentry.configure_scope { |scope| scope.set_context('auth object', auth) }
+        Sentry.capture_message("#{authver_method.class.name.demodulize} auth - ActiveRecord::RecordInvalid error: '#{e.message}' in create_def rescue block")
         Rails.logger.info "Social signup failed: #{e.message}"
         redirect_to(add_uri_params(Frontend::UrlService.new.signin_failure_url, omniauth_params))
       end
@@ -93,12 +100,8 @@ class OmniauthCallbackController < ApplicationController
     url = auth_service.logout_url(provider, user)
 
     redirect_to url
-  rescue ActiveRecord::RecordNotFound => e
+  rescue ActiveRecord::RecordNotFound
     redirect_to Frontend::UrlService.new.home_url
-  end
-
-  def secure_controller?
-    false
   end
 
   def add_uri_params(uri, params = {})
@@ -132,14 +135,24 @@ class OmniauthCallbackController < ApplicationController
   end
 
   def update_user!(auth, user, authver_method)
-    if authver_method.respond_to? :updateable_user_attrs
-      attrs = authver_method.updateable_user_attrs
-      update_hash = authver_method.profile_to_user_attrs(auth).slice(*attrs).compact
-      user.update!(update_hash)
-    end
+    return unless authver_method.respond_to? :updateable_user_attrs
+
+    attrs = authver_method.updateable_user_attrs
+    update_hash = authver_method.profile_to_user_attrs(auth).slice(*attrs).compact
+    user.update!(update_hash)
   end
 
   private
+
+  # Return locale if a locale can be parsed from pathname which matches an app locale
+  # and is not the default locale, otherwise return nil.
+  def selected_locale(omniauth_params)
+    return unless omniauth_params['sso_pathname']
+
+    locales = AppConfiguration.instance.settings.dig('core', 'locales')
+    selected_locale = omniauth_params['sso_pathname'].split('/', 2)[1].split('/')[0]
+    return selected_locale if selected_locale != locales.first && locales.include?(selected_locale)
+  end
 
   def get_verification_method(_provider)
     nil

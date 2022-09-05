@@ -1,8 +1,8 @@
+// @ts-nocheck
 import React from 'react';
 import { shallow } from 'enzyme';
 
 import { FeedbackToggle } from './FeedbackToggle';
-import { makeIdeasCount } from 'services/stats';
 
 jest.mock('services/stats');
 jest.mock('utils/cl-intl');
@@ -91,8 +91,8 @@ describe('<FeedbackToggle />', () => {
   it('reacts to search change', () => {
     const onChangeSearchTerm = jest.fn();
     const ideasCount = {
-      count: 6,
       onChangeSearchTerm,
+      count: 6,
     };
 
     const wrapper = shallow(

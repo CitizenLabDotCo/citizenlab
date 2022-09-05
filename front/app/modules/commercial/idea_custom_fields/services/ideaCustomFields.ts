@@ -4,14 +4,26 @@ import { Multiloc } from 'typings';
 import { CustomFieldCodes } from 'services/ideaCustomFieldsSchemas';
 
 export type Visibility = 'admins' | 'public';
-type CustomFieldKeys = CustomFieldCodes;
 
 export interface IIdeaCustomFieldData {
   id: string;
   type: 'custom_field';
   attributes: {
-    key: CustomFieldKeys;
-    input_type: 'text' | 'multiselect' | 'custom';
+    key: string;
+    input_type:
+      | 'text'
+      | 'number'
+      | 'multiline_text'
+      | 'html'
+      | 'text_multiloc'
+      | 'multiline_text_multiloc'
+      | 'html_multiloc'
+      | 'select'
+      | 'multiselect'
+      | 'checkbox'
+      | 'date'
+      | 'files'
+      | 'image_files';
     title_multiloc: Multiloc;
     description_multiloc: Multiloc;
     required: boolean;
@@ -43,39 +55,28 @@ export function ideaCustomFieldsStream(
   projectId: string,
   streamParams: IStreamParams | null = null
 ) {
-  const apiEndpoint = `${API_PATH}/projects/${projectId}/custom_fields`;
+  const apiEndpoint = `${API_PATH}/admin/projects/${projectId}/custom_fields`;
   return streams.get<IIdeaCustomFields>({ apiEndpoint, ...streamParams });
 }
 
-export function ideaCustomFieldByCodeStream(
-  projectId: string,
-  customFieldCode: CustomFieldCodes,
-  streamParams: IStreamParams | null = null
-) {
-  const apiEndpoint = `${API_PATH}/projects/${projectId}/custom_fields/by_code/${customFieldCode}`;
-  return streams.get<IIdeaCustomField>({ apiEndpoint, ...streamParams });
-}
-
-export function ideaCustomFieldStream(
+export async function updateIdeaCustomField(
   projectId: string,
   ideaCustomFieldId: string,
-  streamParams: IStreamParams | null = null
-) {
-  const apiEndpoint = `${API_PATH}/projects/${projectId}/custom_fields/${ideaCustomFieldId}`;
-  return streams.get<IIdeaCustomField>({ apiEndpoint, ...streamParams });
-}
-
-export function updateIdeaCustomField(
-  projectId: string,
-  ideaCustomFieldId: string,
-  code: string,
+  code: string | undefined,
   object: IUpdatedIdeaCustomFieldProperties
 ) {
-  const apiEndpoint = `${API_PATH}/projects/${projectId}/custom_fields/by_code/${code}`;
+  const apiEndpoint = code
+    ? `${API_PATH}/admin/projects/${projectId}/custom_fields/by_code/${code}`
+    : `${API_PATH}/admin/projects/${projectId}/custom_fields/update/${ideaCustomFieldId}`;
   const updateObject = { custom_field: object };
   return streams.update<IIdeaCustomField>(
     apiEndpoint,
     ideaCustomFieldId,
     updateObject
   );
+}
+
+export async function refetchCustomFields(projectId) {
+  const apiEndpoint = `${API_PATH}/admin/projects/${projectId}/custom_fields`;
+  streams.fetchAllWith({ apiEndpoint: [apiEndpoint] });
 }

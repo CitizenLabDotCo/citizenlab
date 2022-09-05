@@ -1,3 +1,31 @@
+# frozen_string_literal: true
+
+# == Schema Information
+#
+# Table name: email_campaigns_campaigns
+#
+#  id               :uuid             not null, primary key
+#  type             :string           not null
+#  author_id        :uuid
+#  enabled          :boolean
+#  sender           :string
+#  reply_to         :string
+#  schedule         :jsonb
+#  subject_multiloc :jsonb
+#  body_multiloc    :jsonb
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  deliveries_count :integer          default(0), not null
+#
+# Indexes
+#
+#  index_email_campaigns_campaigns_on_author_id  (author_id)
+#  index_email_campaigns_campaigns_on_type       (type)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (author_id => users.id)
+#
 module EmailCampaigns
   class Campaigns::NewCommentForAdmin < Campaign
     include Consentable
@@ -6,23 +34,23 @@ module EmailCampaigns
     include Disableable
     include Trackable
     include LifecycleStageRestrictable
-    allow_lifecycle_stages only: ['trial','active']
+    allow_lifecycle_stages only: %w[trial active]
 
     recipient_filter :filter_recipient
 
     def activity_triggers
-      {'Comment' => {'created' => true}}
+      { 'Comment' => { 'created' => true } }
     end
 
     def self.consentable_roles
-      ['admin', 'project_moderator']
+      %w[admin project_moderator]
     end
 
-    def filter_recipient users_scope, activity:, time: nil
+    def filter_recipient(users_scope, activity:, time: nil)
       comment = activity.item
       initiator = comment.author
 
-      recipient_ids = [] 
+      recipient_ids = []
       unless initiator&.admin?
         recipients = User.admin
         if comment.post_type == 'Idea' && !initiator.project_moderator?(comment.post.project.id)
@@ -43,7 +71,7 @@ module EmailCampaigns
       NewCommentForAdminMailer
     end
 
-    def generate_commands recipient:, activity:, time: nil
+    def generate_commands(recipient:, activity:, time: nil)
       comment = activity.item
       post = comment.post
       [{
@@ -61,11 +89,10 @@ module EmailCampaigns
       }]
     end
 
-
     protected
 
     def set_enabled
-      self.enabled = false if self.enabled.nil?
+      self.enabled = false if enabled.nil?
     end
   end
 end

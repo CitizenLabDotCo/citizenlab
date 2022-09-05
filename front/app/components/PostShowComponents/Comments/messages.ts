@@ -174,10 +174,6 @@ export default defineMessages({
     id: 'app.containers.Comments.loadingMoreComments',
     defaultMessage: 'Loading more comments...',
   },
-  emptyCommentError: {
-    id: 'app.containers.Comments.emptyCommentError',
-    defaultMessage: "The comment can't be empty",
-  },
   loadMoreComments: {
     id: 'app.containers.Comments.loadMoreComments',
     defaultMessage: 'Load more comments',
@@ -214,6 +210,14 @@ export default defineMessages({
     id: 'app.containers.Comments.deleteReason_irrelevant',
     defaultMessage: 'This does not belong here',
   },
+  deleteReasonError: {
+    id: 'app.containers.Comments.deleteReasonError',
+    defaultMessage: 'Provide a reason',
+  },
+  deleteReasonDescriptionError: {
+    id: 'app.containers.Comments.deleteReasonDescriptionError',
+    defaultMessage: 'Provide more information on your reason',
+  },
   a11y_commentPosted: {
     id: 'app.containers.Comments.a11y_commentPosted',
     defaultMessage: 'Comment posted',
@@ -230,5 +234,14 @@ export default defineMessages({
   a11y_undoUpvote: {
     id: 'app.containers.Comments.a11y_undoUpvote',
     defaultMessage: 'Undo upvote',
+  },
+  profanityError: {
+    id: 'app.containers.Comments.profanityError',
+    defaultMessage:
+      'You may have used one or more words that are considered profanity by {guidelinesLink}. Please alter your text to remove any profanities that might be present.',
+  },
+  guidelinesLinkText: {
+    id: 'app.containers.Comments.guidelinesLinkText',
+    defaultMessage: 'our guidelines',
   },
 });

@@ -36,17 +36,6 @@ export function phaseFilesStream(
   });
 }
 
-export function phaseFileStream(
-  phaseId: string,
-  fileId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IPhaseFile>({
-    apiEndpoint: `${apiEndpoint}/${phaseId}/files/${fileId}`,
-    ...streamParams,
-  });
-}
-
 export async function addPhaseFile(
   phaseId: string,
   base64: string,

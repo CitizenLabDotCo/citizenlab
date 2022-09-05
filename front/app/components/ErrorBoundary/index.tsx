@@ -16,7 +16,7 @@ const Container = styled.div`
   width: 100%;
   text-align: center;
   margin-top: 50px;
-  font-size: ${fontSizes.large}px;
+  font-size: ${fontSizes.l}px;
 `;
 
 const StyledButton = styled.button`
@@ -108,7 +108,6 @@ class ErrorBoundary extends Component<Props & InjectedIntlProps, State> {
 
   render() {
     const { children } = this.props;
-
     if (this.state.hasError) {
       return (
         <Container>
@@ -125,7 +124,6 @@ class ErrorBoundary extends Component<Props & InjectedIntlProps, State> {
         </Container>
       );
     }
-
     return children;
   }
 }

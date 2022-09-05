@@ -7,8 +7,8 @@ export function makeStatus(id) {
       color: 'blue',
       code: id,
       ordering: 0,
-      description_multiloc: { en: 'The status of an idea that has a status' }
-    }
+      description_multiloc: { en: 'The status of an idea that has a status' },
+    },
   };
 }
 
@@ -21,5 +21,5 @@ export const mockIdeaStatusData = {
     color: '#687782',
     code: 'proposed',
     ordering: 100,
-  }
+  },
 };

@@ -2,15 +2,15 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# This file is the source Rails uses to define your schema when running `rails
-# db:schema:load`. When creating a new database, `rails db:schema:load` tends to
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
 # be faster and is potentially less error prone than running all of your
 # migrations from scratch. Old migrations may fail to apply correctly if those
 # migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_02_103419) do
+ActiveRecord::Schema.define(version: 2022_08_18_165037) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 2021_04_02_103419) do
     t.datetime "acted_at", null: false
     t.datetime "created_at", null: false
     t.index ["acted_at"], name: "index_activities_on_acted_at"
-    t.index ["item_type", "item_id"], name: "index_activities_on_item_type_and_item_id"
+    t.index ["item_type", "item_id"], name: "index_activities_on_item"
     t.index ["user_id"], name: "index_activities_on_user_id"
   end
 
@@ -48,6 +48,7 @@ ActiveRecord::Schema.define(version: 2021_04_02_103419) do
     t.index ["lft"], name: "index_admin_publications_on_lft"
     t.index ["ordering"], name: "index_admin_publications_on_ordering"
     t.index ["parent_id"], name: "index_admin_publications_on_parent_id"
+    t.index ["publication_type", "publication_id"], name: "index_admin_publications_on_publication_type_and_publication_id"
     t.index ["rgt"], name: "index_admin_publications_on_rgt"
   end
 
@@ -61,6 +62,7 @@ ActiveRecord::Schema.define(version: 2021_04_02_103419) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.jsonb "style", default: {}
+    t.jsonb "homepage_info_multiloc"
   end
 
   create_table "areas", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -69,6 +71,8 @@ ActiveRecord::Schema.define(version: 2021_04_02_103419) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "ordering"
+    t.uuid "custom_field_option_id"
+    t.index ["custom_field_option_id"], name: "index_areas_on_custom_field_option_id"
   end
 
   create_table "areas_ideas", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -113,13 +117,6 @@ ActiveRecord::Schema.define(version: 2021_04_02_103419) do
     t.index ["idea_id"], name: "index_baskets_ideas_on_idea_id"
   end
 
-  create_table "clusterings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.jsonb "title_multiloc", default: {}
-    t.jsonb "structure", default: {}
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "comments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "author_id"
     t.uuid "post_id"
@@ -147,6 +144,24 @@ ActiveRecord::Schema.define(version: 2021_04_02_103419) do
   create_table "common_passwords", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "password"
     t.index ["password"], name: "index_common_passwords_on_password"
+  end
+
+  create_table "content_builder_layout_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "image"
+    t.string "code"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "content_builder_layouts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.jsonb "craftjs_jsonmultiloc", default: {}
+    t.string "content_buildable_type", null: false
+    t.uuid "content_buildable_id", null: false
+    t.string "code", null: false
+    t.boolean "enabled", default: false, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["content_buildable_type", "content_buildable_id", "code"], name: "index_content_builder_layouts_content_buidable_type_id_code", unique: true
   end
 
   create_table "custom_field_options", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -281,6 +296,16 @@ ActiveRecord::Schema.define(version: 2021_04_02_103419) do
     t.index ["project_id"], name: "index_events_on_project_id"
   end
 
+  create_table "flag_inappropriate_content_inappropriate_content_flags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "flaggable_id", null: false
+    t.string "flaggable_type", null: false
+    t.datetime "deleted_at"
+    t.string "toxicity_label"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["flaggable_id", "flaggable_type"], name: "inappropriate_content_flags_flaggable"
+  end
+
   create_table "groups", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.jsonb "title_multiloc", default: {}
     t.string "slug"
@@ -309,6 +334,32 @@ ActiveRecord::Schema.define(version: 2021_04_02_103419) do
     t.index ["group_id", "project_id"], name: "index_groups_projects_on_group_id_and_project_id", unique: true
     t.index ["group_id"], name: "index_groups_projects_on_group_id"
     t.index ["project_id"], name: "index_groups_projects_on_project_id"
+  end
+
+  create_table "home_pages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.boolean "top_info_section_enabled", default: false, null: false
+    t.jsonb "top_info_section_multiloc", default: {}, null: false
+    t.boolean "bottom_info_section_enabled", default: false, null: false
+    t.jsonb "bottom_info_section_multiloc", default: {}, null: false
+    t.boolean "events_widget_enabled", default: false, null: false
+    t.boolean "projects_enabled", default: true, null: false
+    t.jsonb "projects_header_multiloc", default: {}, null: false
+    t.boolean "banner_avatars_enabled", default: true, null: false
+    t.string "banner_layout", default: "full_width_banner_layout", null: false
+    t.jsonb "banner_signed_in_header_multiloc", default: {}, null: false
+    t.jsonb "banner_cta_signed_in_text_multiloc", default: {}, null: false
+    t.string "banner_cta_signed_in_type", default: "no_button", null: false
+    t.string "banner_cta_signed_in_url"
+    t.jsonb "banner_signed_out_header_multiloc", default: {}, null: false
+    t.jsonb "banner_signed_out_subheader_multiloc", default: {}, null: false
+    t.string "banner_signed_out_header_overlay_color"
+    t.integer "banner_signed_out_header_overlay_opacity"
+    t.jsonb "banner_cta_signed_out_text_multiloc", default: {}, null: false
+    t.string "banner_cta_signed_out_type", default: "sign_up_button", null: false
+    t.string "banner_cta_signed_out_url"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "header_bg"
   end
 
   create_table "id_id_card_lookup_id_cards", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -368,6 +419,7 @@ ActiveRecord::Schema.define(version: 2021_04_02_103419) do
     t.uuid "assignee_id"
     t.datetime "assigned_at"
     t.integer "proposed_budget"
+    t.jsonb "custom_field_values", default: {}, null: false
     t.index "((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))", name: "index_ideas_search", using: :gin
     t.index ["author_id"], name: "index_ideas_on_author_id"
     t.index ["idea_status_id"], name: "index_ideas_on_idea_status_id"
@@ -467,7 +519,7 @@ ActiveRecord::Schema.define(version: 2021_04_02_103419) do
     t.index "((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))", name: "index_initiatives_search", using: :gin
     t.index ["author_id"], name: "index_initiatives_on_author_id"
     t.index ["location_point"], name: "index_initiatives_on_location_point", using: :gist
-    t.index ["slug"], name: "index_initiatives_on_slug"
+    t.index ["slug"], name: "index_initiatives_on_slug", unique: true
   end
 
   create_table "initiatives_topics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -476,6 +528,108 @@ ActiveRecord::Schema.define(version: 2021_04_02_103419) do
     t.index ["initiative_id", "topic_id"], name: "index_initiatives_topics_on_initiative_id_and_topic_id", unique: true
     t.index ["initiative_id"], name: "index_initiatives_topics_on_initiative_id"
     t.index ["topic_id"], name: "index_initiatives_topics_on_topic_id"
+  end
+
+  create_table "insights_categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.uuid "view_id", null: false
+    t.integer "position"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "inputs_count", default: 0, null: false
+    t.string "source_type"
+    t.uuid "source_id"
+    t.index ["source_type", "source_id"], name: "index_insights_categories_on_source"
+    t.index ["source_type"], name: "index_insights_categories_on_source_type"
+    t.index ["view_id", "name"], name: "index_insights_categories_on_view_id_and_name", unique: true
+    t.index ["view_id"], name: "index_insights_categories_on_view_id"
+  end
+
+  create_table "insights_category_assignments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "category_id", null: false
+    t.string "input_type", null: false
+    t.uuid "input_id", null: false
+    t.boolean "approved", default: true, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["approved"], name: "index_insights_category_assignments_on_approved"
+    t.index ["category_id", "input_id", "input_type"], name: "index_single_category_assignment", unique: true
+    t.index ["category_id"], name: "index_insights_category_assignments_on_category_id"
+    t.index ["input_type", "input_id"], name: "index_insights_category_assignments_on_input_type_and_input_id"
+  end
+
+  create_table "insights_data_sources", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "view_id", null: false
+    t.string "origin_type", null: false
+    t.uuid "origin_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["origin_type", "origin_id"], name: "index_insights_data_sources_on_origin"
+    t.index ["view_id", "origin_type", "origin_id"], name: "index_insights_data_sources_on_view_and_origin", unique: true
+    t.index ["view_id"], name: "index_insights_data_sources_on_view_id"
+  end
+
+  create_table "insights_processed_flags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "input_type", null: false
+    t.uuid "input_id", null: false
+    t.uuid "view_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["input_id", "input_type", "view_id"], name: "index_single_processed_flags", unique: true
+    t.index ["input_type", "input_id"], name: "index_processed_flags_on_input"
+    t.index ["view_id"], name: "index_insights_processed_flags_on_view_id"
+  end
+
+  create_table "insights_text_network_analysis_tasks_views", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "task_id", null: false
+    t.uuid "view_id", null: false
+    t.string "language", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["task_id"], name: "index_insights_text_network_analysis_tasks_views_on_task_id"
+    t.index ["view_id"], name: "index_insights_text_network_analysis_tasks_views_on_view_id"
+  end
+
+  create_table "insights_text_networks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "view_id", null: false
+    t.string "language", null: false
+    t.jsonb "json_network", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["language"], name: "index_insights_text_networks_on_language"
+    t.index ["view_id", "language"], name: "index_insights_text_networks_on_view_id_and_language", unique: true
+    t.index ["view_id"], name: "index_insights_text_networks_on_view_id"
+  end
+
+  create_table "insights_views", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_insights_views_on_name"
+  end
+
+  create_table "insights_zeroshot_classification_tasks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "task_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["task_id"], name: "index_insights_zeroshot_classification_tasks_on_task_id", unique: true
+  end
+
+  create_table "insights_zeroshot_classification_tasks_categories", id: false, force: :cascade do |t|
+    t.uuid "category_id", null: false
+    t.uuid "task_id", null: false
+    t.index ["category_id", "task_id"], name: "index_insights_zsc_tasks_categories_on_category_id_and_task_id", unique: true
+    t.index ["category_id"], name: "index_insights_zsc_tasks_categories_on_category_id"
+    t.index ["task_id"], name: "index_insights_zsc_tasks_categories_on_task_id"
+  end
+
+  create_table "insights_zeroshot_classification_tasks_inputs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "task_id", null: false
+    t.string "input_type", null: false
+    t.uuid "input_id", null: false
+    t.index ["input_id", "input_type", "task_id"], name: "index_insights_zsc_tasks_inputs_on_input_and_task_id", unique: true
+    t.index ["input_type", "input_id"], name: "index_insights_zsc_tasks_inputs_on_input"
+    t.index ["task_id"], name: "index_insights_zeroshot_classification_tasks_inputs_on_task_id"
   end
 
   create_table "invites", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -555,6 +709,26 @@ ActiveRecord::Schema.define(version: 2021_04_02_103419) do
     t.index ["moderatable_type", "moderatable_id"], name: "moderation_statuses_moderatable", unique: true
   end
 
+  create_table "nav_bar_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "code", null: false
+    t.integer "ordering"
+    t.jsonb "title_multiloc"
+    t.uuid "static_page_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["code"], name: "index_nav_bar_items_on_code"
+    t.index ["ordering"], name: "index_nav_bar_items_on_ordering"
+    t.index ["static_page_id"], name: "index_nav_bar_items_on_static_page_id"
+  end
+
+  create_table "nlp_text_network_analysis_tasks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "task_id", null: false
+    t.string "handler_class", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["task_id"], name: "index_nlp_text_network_analysis_tasks_on_task_id", unique: true
+  end
+
   create_table "notifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "type"
     t.datetime "read_at"
@@ -575,7 +749,9 @@ ActiveRecord::Schema.define(version: 2021_04_02_103419) do
     t.string "post_type"
     t.string "post_status_type"
     t.uuid "project_folder_id"
+    t.uuid "inappropriate_content_flag_id"
     t.index ["created_at"], name: "index_notifications_on_created_at"
+    t.index ["inappropriate_content_flag_id"], name: "index_notifications_on_inappropriate_content_flag_id"
     t.index ["initiating_user_id"], name: "index_notifications_on_initiating_user_id"
     t.index ["invite_id"], name: "index_notifications_on_invite_id"
     t.index ["official_feedback_id"], name: "index_notifications_on_official_feedback_id"
@@ -610,36 +786,6 @@ ActiveRecord::Schema.define(version: 2021_04_02_103419) do
     t.index ["user_id"], name: "index_onboarding_campaign_dismissals_on_user_id"
   end
 
-  create_table "page_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "page_id"
-    t.string "file"
-    t.integer "ordering"
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["page_id"], name: "index_page_files_on_page_id"
-  end
-
-  create_table "page_links", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "linking_page_id", null: false
-    t.uuid "linked_page_id", null: false
-    t.integer "ordering"
-    t.index ["linked_page_id"], name: "index_page_links_on_linked_page_id"
-    t.index ["linking_page_id"], name: "index_page_links_on_linking_page_id"
-  end
-
-  create_table "pages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.jsonb "title_multiloc", default: {}
-    t.jsonb "body_multiloc", default: {}
-    t.string "slug"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.uuid "project_id"
-    t.string "publication_status", default: "published", null: false
-    t.index ["project_id"], name: "index_pages_on_project_id"
-    t.index ["slug"], name: "index_pages_on_slug", unique: true
-  end
-
   create_table "permissions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "action", null: false
     t.string "permitted_by", null: false
@@ -672,9 +818,9 @@ ActiveRecord::Schema.define(version: 2021_04_02_103419) do
     t.string "participation_method", default: "ideation", null: false
     t.boolean "posting_enabled", default: true
     t.boolean "commenting_enabled", default: true
-    t.boolean "voting_enabled", default: true
-    t.string "voting_method", default: "unlimited"
-    t.integer "voting_limited_max", default: 10
+    t.boolean "voting_enabled", default: true, null: false
+    t.string "upvoting_method", default: "unlimited", null: false
+    t.integer "upvoting_limited_max", default: 10
     t.string "survey_embed_url"
     t.string "survey_service"
     t.string "presentation_mode", default: "card"
@@ -684,7 +830,20 @@ ActiveRecord::Schema.define(version: 2021_04_02_103419) do
     t.integer "ideas_count", default: 0, null: false
     t.string "ideas_order"
     t.string "input_term", default: "idea"
+    t.integer "min_budget", default: 0
+    t.string "downvoting_method", default: "unlimited", null: false
+    t.integer "downvoting_limited_max", default: 10
     t.index ["project_id"], name: "index_phases_on_project_id"
+  end
+
+  create_table "pins", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "admin_publication_id", null: false
+    t.string "page_type", null: false
+    t.uuid "page_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["admin_publication_id"], name: "index_pins_on_admin_publication_id"
+    t.index ["page_id", "admin_publication_id"], name: "index_pins_on_page_id_and_admin_publication_id", unique: true
   end
 
   create_table "polls_options", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -791,9 +950,9 @@ ActiveRecord::Schema.define(version: 2021_04_02_103419) do
     t.string "participation_method", default: "ideation"
     t.boolean "posting_enabled", default: true
     t.boolean "commenting_enabled", default: true
-    t.boolean "voting_enabled", default: true
-    t.string "voting_method", default: "unlimited"
-    t.integer "voting_limited_max", default: 10
+    t.boolean "voting_enabled", default: true, null: false
+    t.string "upvoting_method", default: "unlimited", null: false
+    t.integer "upvoting_limited_max", default: 10
     t.string "process_type", default: "timeline", null: false
     t.string "internal_role"
     t.string "survey_embed_url"
@@ -806,16 +965,29 @@ ActiveRecord::Schema.define(version: 2021_04_02_103419) do
     t.boolean "downvoting_enabled", default: true, null: false
     t.string "ideas_order"
     t.string "input_term", default: "idea"
+    t.integer "min_budget", default: 0
+    t.string "downvoting_method", default: "unlimited", null: false
+    t.integer "downvoting_limited_max", default: 10
+    t.boolean "include_all_areas", default: false, null: false
     t.index ["custom_form_id"], name: "index_projects_on_custom_form_id"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
-  create_table "projects_topics", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+  create_table "projects_allowed_input_topics", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "project_id"
     t.uuid "topic_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "ordering"
+    t.index ["project_id"], name: "index_projects_allowed_input_topics_on_project_id"
+    t.index ["topic_id"], name: "index_projects_allowed_input_topics_on_topic_id"
+  end
+
+  create_table "projects_topics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "topic_id", null: false
+    t.uuid "project_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.index ["project_id"], name: "index_projects_topics_on_project_id"
     t.index ["topic_id"], name: "index_projects_topics_on_topic_id"
   end
@@ -873,6 +1045,27 @@ ActiveRecord::Schema.define(version: 2021_04_02_103419) do
     t.index ["user_id"], name: "index_spam_reports_on_user_id"
   end
 
+  create_table "static_page_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "static_page_id"
+    t.string "file"
+    t.integer "ordering"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["static_page_id"], name: "index_static_page_files_on_static_page_id"
+  end
+
+  create_table "static_pages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.jsonb "title_multiloc", default: {}
+    t.jsonb "body_multiloc", default: {}
+    t.string "slug"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "code", null: false
+    t.index ["code"], name: "index_static_pages_on_code"
+    t.index ["slug"], name: "index_static_pages_on_slug", unique: true
+  end
+
   create_table "surveys_responses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "participation_context_id", null: false
     t.string "participation_context_type", null: false
@@ -889,48 +1082,6 @@ ActiveRecord::Schema.define(version: 2021_04_02_103419) do
     t.index ["user_id"], name: "index_surveys_responses_on_user_id"
   end
 
-  create_table "tagging_pending_tasks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "nlp_task_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "tagging_pending_tasks_ideas", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "idea_id"
-    t.uuid "pending_task_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["idea_id"], name: "index_tagging_pending_tasks_ideas_on_idea_id"
-    t.index ["pending_task_id"], name: "index_tagging_pending_tasks_ideas_on_pending_task_id"
-  end
-
-  create_table "tagging_pending_tasks_tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "tag_id"
-    t.uuid "pending_task_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["pending_task_id"], name: "index_tagging_pending_tasks_tags_on_pending_task_id"
-    t.index ["tag_id"], name: "index_tagging_pending_tasks_tags_on_tag_id"
-  end
-
-  create_table "tagging_taggings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.integer "assignment_method", default: 0
-    t.uuid "idea_id"
-    t.uuid "tag_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.float "confidence_score"
-    t.index ["idea_id", "tag_id"], name: "index_tagging_taggings_on_idea_id_and_tag_id", unique: true
-    t.index ["idea_id"], name: "index_tagging_taggings_on_idea_id"
-    t.index ["tag_id"], name: "index_tagging_taggings_on_tag_id"
-  end
-
-  create_table "tagging_tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.jsonb "title_multiloc", default: {}
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "tenants", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "host"
@@ -941,6 +1092,10 @@ ActiveRecord::Schema.define(version: 2021_04_02_103419) do
     t.string "header_bg"
     t.string "favicon"
     t.jsonb "style", default: {}
+    t.datetime "deleted_at"
+    t.datetime "creation_finalized_at"
+    t.index ["creation_finalized_at"], name: "index_tenants_on_creation_finalized_at"
+    t.index ["deleted_at"], name: "index_tenants_on_deleted_at"
     t.index ["host"], name: "index_tenants_on_host"
   end
 
@@ -954,6 +1109,15 @@ ActiveRecord::Schema.define(version: 2021_04_02_103419) do
     t.string "text_reference", null: false
   end
 
+  create_table "texting_campaigns", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "phone_numbers", default: [], null: false, array: true
+    t.text "message", null: false
+    t.datetime "sent_at"
+    t.string "status", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "topics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.jsonb "title_multiloc", default: {}
     t.jsonb "description_multiloc", default: {}
@@ -962,6 +1126,15 @@ ActiveRecord::Schema.define(version: 2021_04_02_103419) do
     t.datetime "updated_at", null: false
     t.integer "ordering"
     t.string "code", default: "custom", null: false
+  end
+
+  create_table "user_custom_fields_representativeness_ref_distributions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "custom_field_id", null: false
+    t.jsonb "distribution", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "type"
+    t.index ["custom_field_id"], name: "index_ucf_representativeness_ref_distributions_on_custom_field"
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -982,6 +1155,12 @@ ActiveRecord::Schema.define(version: 2021_04_02_103419) do
     t.jsonb "custom_field_values", default: {}
     t.datetime "registration_completed_at"
     t.boolean "verified", default: false, null: false
+    t.datetime "email_confirmed_at"
+    t.string "email_confirmation_code"
+    t.integer "email_confirmation_retry_count", default: 0, null: false
+    t.integer "email_confirmation_code_reset_count", default: 0, null: false
+    t.datetime "email_confirmation_code_sent_at"
+    t.boolean "confirmation_required", default: true, null: false
     t.index "lower((email)::text)", name: "users_unique_lower_email_idx", unique: true
     t.index ["email"], name: "index_users_on_email"
     t.index ["slug"], name: "index_users_on_slug", unique: true
@@ -1017,7 +1196,7 @@ ActiveRecord::Schema.define(version: 2021_04_02_103419) do
     t.uuid "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["cause_id"], name: "index_volunteering_volunteers_on_cause_id"
+    t.index ["cause_id", "user_id"], name: "index_volunteering_volunteers_on_cause_id_and_user_id", unique: true
     t.index ["user_id"], name: "index_volunteering_volunteers_on_user_id"
   end
 
@@ -1034,6 +1213,7 @@ ActiveRecord::Schema.define(version: 2021_04_02_103419) do
   end
 
   add_foreign_key "activities", "users"
+  add_foreign_key "areas", "custom_field_options"
   add_foreign_key "areas_ideas", "areas"
   add_foreign_key "areas_ideas", "ideas"
   add_foreign_key "areas_initiatives", "areas"
@@ -1072,13 +1252,24 @@ ActiveRecord::Schema.define(version: 2021_04_02_103419) do
   add_foreign_key "initiatives", "users", column: "author_id"
   add_foreign_key "initiatives_topics", "initiatives"
   add_foreign_key "initiatives_topics", "topics"
+  add_foreign_key "insights_categories", "insights_views", column: "view_id"
+  add_foreign_key "insights_category_assignments", "insights_categories", column: "category_id"
+  add_foreign_key "insights_data_sources", "insights_views", column: "view_id"
+  add_foreign_key "insights_text_network_analysis_tasks_views", "insights_views", column: "view_id"
+  add_foreign_key "insights_text_network_analysis_tasks_views", "nlp_text_network_analysis_tasks", column: "task_id"
+  add_foreign_key "insights_text_networks", "insights_views", column: "view_id"
+  add_foreign_key "insights_zeroshot_classification_tasks_categories", "insights_categories", column: "category_id"
+  add_foreign_key "insights_zeroshot_classification_tasks_categories", "insights_zeroshot_classification_tasks", column: "task_id"
+  add_foreign_key "insights_zeroshot_classification_tasks_inputs", "insights_zeroshot_classification_tasks", column: "task_id"
   add_foreign_key "invites", "users", column: "invitee_id"
   add_foreign_key "invites", "users", column: "inviter_id"
   add_foreign_key "maps_layers", "maps_map_configs", column: "map_config_id"
   add_foreign_key "maps_legend_items", "maps_map_configs", column: "map_config_id"
   add_foreign_key "memberships", "groups"
   add_foreign_key "memberships", "users"
+  add_foreign_key "nav_bar_items", "static_pages"
   add_foreign_key "notifications", "comments"
+  add_foreign_key "notifications", "flag_inappropriate_content_inappropriate_content_flags", column: "inappropriate_content_flag_id"
   add_foreign_key "notifications", "invites"
   add_foreign_key "notifications", "official_feedbacks"
   add_foreign_key "notifications", "phases"
@@ -1087,12 +1278,9 @@ ActiveRecord::Schema.define(version: 2021_04_02_103419) do
   add_foreign_key "notifications", "users", column: "initiating_user_id"
   add_foreign_key "notifications", "users", column: "recipient_id"
   add_foreign_key "official_feedbacks", "users"
-  add_foreign_key "page_files", "pages"
-  add_foreign_key "page_links", "pages", column: "linked_page_id"
-  add_foreign_key "page_links", "pages", column: "linking_page_id"
-  add_foreign_key "pages", "projects"
   add_foreign_key "phase_files", "phases"
   add_foreign_key "phases", "projects"
+  add_foreign_key "pins", "admin_publications"
   add_foreign_key "polls_options", "polls_questions", column: "question_id"
   add_foreign_key "polls_response_options", "polls_options", column: "option_id"
   add_foreign_key "polls_response_options", "polls_responses", column: "response_id"
@@ -1101,16 +1289,14 @@ ActiveRecord::Schema.define(version: 2021_04_02_103419) do
   add_foreign_key "project_folders_images", "project_folders_folders", column: "project_folder_id"
   add_foreign_key "project_images", "projects"
   add_foreign_key "projects", "users", column: "default_assignee_id"
+  add_foreign_key "projects_allowed_input_topics", "projects"
+  add_foreign_key "projects_allowed_input_topics", "topics"
   add_foreign_key "projects_topics", "projects"
   add_foreign_key "projects_topics", "topics"
   add_foreign_key "public_api_api_clients", "tenants"
   add_foreign_key "spam_reports", "users"
-  add_foreign_key "tagging_pending_tasks_ideas", "ideas"
-  add_foreign_key "tagging_pending_tasks_ideas", "tagging_pending_tasks", column: "pending_task_id"
-  add_foreign_key "tagging_pending_tasks_tags", "tagging_pending_tasks", column: "pending_task_id"
-  add_foreign_key "tagging_pending_tasks_tags", "tagging_tags", column: "tag_id"
-  add_foreign_key "tagging_taggings", "ideas"
-  add_foreign_key "tagging_taggings", "tagging_tags", column: "tag_id"
+  add_foreign_key "static_page_files", "static_pages"
+  add_foreign_key "user_custom_fields_representativeness_ref_distributions", "custom_fields"
   add_foreign_key "volunteering_volunteers", "volunteering_causes", column: "cause_id"
   add_foreign_key "votes", "users"
 

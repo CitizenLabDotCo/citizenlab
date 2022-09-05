@@ -7,7 +7,7 @@ import request from 'utils/request';
 import streams from 'utils/streams';
 import clHistory from 'utils/cl-router/history';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
-import eventEmitter from 'utils/eventEmitter';
+
 export const authApiEndpoint = `${API_PATH}/users/me`;
 
 export interface IUserToken {
@@ -44,7 +44,7 @@ export async function signIn(email: string, password: string) {
     );
     setJwt(jwt);
     const authUser = await getAuthUserAsync();
-    await streams.reset(authUser);
+    await streams.reset();
     return authUser;
   } catch (error) {
     signOut();
@@ -73,6 +73,7 @@ export async function signUp(
     method: 'POST',
   };
 
+  // eslint-disable-next-line no-useless-catch
   try {
     const signUpEndpoint =
       isInvitation === true
@@ -87,7 +88,7 @@ export async function signUp(
   }
 }
 
-export function signOut() {
+export async function signOut() {
   const jwt = getJwt();
 
   if (jwt) {
@@ -100,7 +101,7 @@ export function signOut() {
       const url = `${AUTH_PATH}/${provider}/logout?user_id=${sub}`;
       window.location.href = url;
     } else {
-      streams.reset(null);
+      await streams.reset();
       const { pathname } = removeLocale(location.pathname);
 
       if (
@@ -113,12 +114,7 @@ export function signOut() {
   }
 }
 
-export function signOutAndDeleteAccountPart1() {
-  setTimeout(() => eventEmitter.emit('tryAndDeleteProfile'), 500);
-  clHistory.push('/');
-}
-
-export function signOutAndDeleteAccountPart2() {
+export function signOutAndDeleteAccount() {
   return new Promise((resolve, _reject) => {
     const jwt = getJwt();
 
@@ -134,7 +130,7 @@ export function signOutAndDeleteAccountPart2() {
             const url = `${AUTH_PATH}/${provider}/logout?user_id=${sub}`;
             window.location.href = url;
           } else {
-            streams.reset(null);
+            streams.reset();
           }
           clHistory.push('/');
           resolve(true);
@@ -162,6 +158,7 @@ export async function getAuthUserAsync() {
 }
 
 export async function sendPasswordResetMail(email: string) {
+  // eslint-disable-next-line no-useless-catch
   try {
     const bodyData = {
       user: {
@@ -182,6 +179,7 @@ export async function sendPasswordResetMail(email: string) {
 }
 
 export async function resetPassword(password: string, token: string) {
+  // eslint-disable-next-line no-useless-catch
   try {
     const bodyData = {
       user: {

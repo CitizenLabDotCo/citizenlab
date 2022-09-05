@@ -2,10 +2,9 @@ import React, { PureComponent, MouseEvent } from 'react';
 import { adopt } from 'react-adopt';
 import { cloneDeep, isNumber, get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
-import { LiveMessage } from 'react-aria-live';
 
 // components
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 
 // services
 import { addCommentVote, deleteCommentVote } from 'services/commentVotes';
@@ -36,7 +35,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
 // a11y
@@ -61,7 +60,7 @@ const UpvoteIcon = styled(Icon)`
 
 const UpvoteButton = styled.button`
   color: ${colors.label};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 400;
   display: flex;
   align-items: center;
@@ -111,6 +110,10 @@ const UpvoteButton = styled.button`
 
 const UpvoteCount = styled.div`
   margin-left: 6px;
+  ${isRtl`
+    margin-right: 6px;
+    margin-left: auto;
+  `}
 `;
 
 interface InputProps {
@@ -255,12 +258,8 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
   handleVoteClick = async (event?: MouseEvent) => {
     event?.preventDefault();
 
-    const {
-      post,
-      postType,
-      authUser,
-      commentVotingPermissionInitiative,
-    } = this.props;
+    const { post, postType, authUser, commentVotingPermissionInitiative } =
+      this.props;
 
     const commentingDisabledReason = get(
       post,
@@ -349,18 +348,20 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
                 ${disabled ? 'disabled' : 'enabled'}
               `}
             >
-              <UpvoteIcon
-                name="upvote"
-                className={`
+              <>
+                <UpvoteIcon
+                  name="upvote"
+                  className={`
                   ${voted ? 'voted' : 'notVoted'}
                   ${disabled ? 'disabled' : 'enabled'}
                 `}
-                title={
-                  !voted
+                />
+                <ScreenReaderOnly>
+                  {!voted
                     ? formatMessage(messages.upvoteComment)
-                    : formatMessage(messages.a11y_undoUpvote)
-                }
-              />
+                    : formatMessage(messages.a11y_undoUpvote)}
+                </ScreenReaderOnly>
+              </>
               {upvoteCount > 0 && (
                 <UpvoteCount
                   className={`
@@ -372,21 +373,11 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
                 </UpvoteCount>
               )}
             </UpvoteButton>
-
-            {!disabled && (
-              <ScreenReaderOnly>
-                {!voted
-                  ? formatMessage(messages.upvoteComment)
-                  : formatMessage(messages.a11y_undoUpvote)}
-              </ScreenReaderOnly>
-            )}
-
-            <LiveMessage
-              message={formatMessage(messages.a11y_upvoteCount, {
+            <ScreenReaderOnly aria-live="polite">
+              {formatMessage(messages.a11y_upvoteCount, {
                 upvoteCount,
               })}
-              aria-live="polite"
-            />
+            </ScreenReaderOnly>
           </Container>
         );
       }

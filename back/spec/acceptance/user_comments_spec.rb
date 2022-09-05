@@ -21,10 +21,10 @@ resource 'Comments' do
     describe do
       before do
         @i1 = create(:idea, published_at: Time.zone.now)
-        @i2 = create(:initiative, published_at: Time.zone.now - 1.day)
-        @i3 = create(:idea, published_at: Time.zone.now - 3.days)
+        @i2 = create(:initiative, published_at: 1.day.ago)
+        @i3 = create(:idea, published_at: 3.days.ago)
         @user = create(:user)
-        @c1 = create(:comment, post: @i2, author: @user, created_at: Time.zone.now - 1.hour)
+        @c1 = create(:comment, post: @i2, author: @user, created_at: 1.hour.ago)
         @c2 = create(:comment, post: @i1, author: @user)
         @c3 = create(:comment, post: @i2, author: @user, created_at: Time.zone.now)
         @c4 = create(:comment)

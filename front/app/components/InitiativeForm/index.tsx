@@ -10,25 +10,26 @@ import {
   FormSection,
   FormSectionTitle,
   FormLabel,
-  FormSubmitFooter,
 } from 'components/UI/FormComponents';
 import { SectionField } from 'components/admin/Section';
 import TopicsPicker from 'components/UI/TopicsPicker';
-import { Input, LocationInput } from 'cl2-component-library';
+import { Input, LocationInput } from '@citizenlab/cl2-component-library';
 import QuillEditor from 'components/UI/QuillEditor';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import FileUploader from 'components/UI/FileUploader';
 import Error from 'components/UI/Error';
+import Link from 'utils/cl-router/Link';
 
 // intl
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
-import { IMessageInfo, injectIntl } from 'utils/cl-intl';
+import { IMessageInfo, injectIntl, FormattedMessage } from 'utils/cl-intl';
 
 // typings
 import { Multiloc, Locale, UploadFile } from 'typings';
 import bowser from 'bowser';
 import { ITopicData } from 'services/topics';
+import { FormSubmitFooter } from './SubmitFooter';
 
 const Form = styled.form`
   display: flex;
@@ -76,6 +77,8 @@ interface Props extends FormValues, FormProps {
   publishError: boolean;
   apiErrors: any;
   topics: ITopicData[];
+  titleProfanityError: boolean;
+  descriptionProfanityError: boolean;
 }
 
 interface State {
@@ -350,6 +353,8 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
       intl: { formatMessage },
       apiErrors,
       topics,
+      titleProfanityError,
+      descriptionProfanityError,
     } = this.props;
 
     const { touched, errors } = this.state;
@@ -368,6 +373,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
 
             <SectionField id="e2e-initiative-form-title-section">
               <FormLabel
+                htmlFor="e2e-initiative-title-input"
                 labelMessage={messages.titleLabel}
                 subtextMessage={messages.titleLabelSubtext2}
               >
@@ -394,6 +400,22 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                   )
                 )}
               </FormLabel>
+              {titleProfanityError && (
+                <Error
+                  text={
+                    <FormattedMessage
+                      {...messages.profanityError}
+                      values={{
+                        guidelinesLink: (
+                          <Link to="/pages/faq" target="_blank">
+                            {formatMessage(messages.guidelinesLinkText)}
+                          </Link>
+                        ),
+                      }}
+                    />
+                  }
+                />
+              )}
             </SectionField>
 
             <SectionField id="e2e-initiative-form-description-section">
@@ -420,6 +442,22 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 apiErrors.body_multiloc && (
                   <Error apiErrors={apiErrors.body_multiloc} />
                 )
+              )}
+              {descriptionProfanityError && (
+                <Error
+                  text={
+                    <FormattedMessage
+                      {...messages.profanityError}
+                      values={{
+                        guidelinesLink: (
+                          <Link to="/pages/faq" target="_blank">
+                            {formatMessage(messages.guidelinesLinkText)}
+                          </Link>
+                        ),
+                      }}
+                    />
+                  }
+                />
               )}
             </SectionField>
           </StyledFormSection>
@@ -452,9 +490,11 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 <FormLabel
                   labelMessage={messages.locationLabel}
                   subtextMessage={messages.locationLabelSubtext}
+                  htmlFor="initiative-location-picker"
                   optional
                 >
                   <LocationInput
+                    id="initiative-location-picker"
                     className="e2e-initiative-location-input"
                     value={position || ''}
                     onChange={onChangePosition}
@@ -478,8 +518,9 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 id="initiative-banner-dropzone"
                 images={banner ? [banner] : null}
                 imagePreviewRatio={360 / 1440}
-                maxNumberOfImages={1}
-                acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+                acceptedFileTypes={{
+                  'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+                }}
                 onAdd={this.addBanner}
                 onRemove={this.removeBanner}
               />
@@ -498,8 +539,9 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 id="initiative-image-dropzone"
                 images={image ? [image] : null}
                 imagePreviewRatio={135 / 298}
-                maxNumberOfImages={1}
-                acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+                acceptedFileTypes={{
+                  'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+                }}
                 onAdd={this.addImage}
                 onRemove={this.removeImage}
               />
@@ -511,6 +553,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
               <FormLabel
                 labelMessage={messages.fileUploadLabel}
                 subtextMessage={messages.fileUploadLabelSubtext}
+                htmlFor="e2e-initiative-file-upload"
                 optional
               >
                 <FileUploader
@@ -518,7 +561,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                   onFileAdd={onAddFile}
                   onFileRemove={onRemoveFile}
                   files={files}
-                  errors={apiErrors}
+                  apiErrors={apiErrors}
                 />
               </FormLabel>
             </SectionField>
@@ -527,7 +570,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
             className="e2e-initiative-publish-button"
             message={messages.publishButton}
             error={publishError}
-            errorMessage={messages.publishUnknownError}
+            errorMessage={messages.submitApiError}
             processing={publishing}
             onSubmit={this.handleOnPublish}
           />

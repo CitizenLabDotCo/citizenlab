@@ -23,7 +23,7 @@ const CodeSnippet = styled.textarea`
 `;
 
 interface Props {
-  path: String;
+  path: string;
   width: number;
   height: number;
 }

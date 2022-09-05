@@ -5,27 +5,33 @@ const Intl = jest.requireActual('react-intl');
 // need to reimplement any internals
 const defaultProps = {
   locale: 'en',
-  defaultLocale: 'en'
+  defaultLocale: 'en',
 };
 const intlProvider = new Intl.IntlProvider(defaultProps, {});
 
 // The exact same `intl` object the real code receives ;-)
 const { intl } = intlProvider.getChildContext();
 
-const formatMessageReplacement = (messageDescriptor: ReactIntl.FormattedMessage.MessageDescriptor, values?: { [key: string]: string | number | boolean | Date } | undefined) => {
-  return intl.formatMessage(messageDescriptor, { tenantName: 'The Test', orgName: 'Test Town', orgType: 'testing', ...values || {} });
+const formatMessageReplacement = (
+  messageDescriptor: ReactIntl.FormattedMessage.MessageDescriptor,
+  values?: { [key: string]: string | number | boolean | Date } | undefined
+) => {
+  return intl.formatMessage(messageDescriptor, {
+    tenantName: 'The Test',
+    orgName: 'Test Town',
+    orgType: 'testing',
+    ...(values || {}),
+  });
 };
 
 const intlReplacement = {
-  ...(intl as object),
-  formatMessage: formatMessageReplacement
+  ...intl,
+  formatMessage: formatMessageReplacement,
 };
 
 const injectIntlReplacement = (Node) => {
-  const renderWrapped = props => <Node {...props} intl={intl} />;
-  renderWrapped.displayName = Node.displayName
-    || Node.name
-    || 'Component';
+  const renderWrapped = (props) => <Node {...props} intl={intl} />;
+  renderWrapped.displayName = Node.displayName || Node.name || 'Component';
   return renderWrapped;
 };
 
@@ -41,25 +47,40 @@ const {
   FormattedNumber,
   FormattedPlural,
   FormattedMessage,
-  FormattedHTMLMessage
+  FormattedHTMLMessage,
 } = Intl;
 
-Intl.FormattedDate = props =>
-  <IntlProvider {...defaultProps}><FormattedDate {...props} /></IntlProvider>;
-Intl.FormattedTime = props =>
-  <IntlProvider {...defaultProps}><FormattedTime {...props} /></IntlProvider>;
-Intl.FormattedRelative = props => (
+Intl.FormattedDate = (props) => (
+  <IntlProvider {...defaultProps}>
+    <FormattedDate {...props} />
+  </IntlProvider>
+);
+Intl.FormattedTime = (props) => (
+  <IntlProvider {...defaultProps}>
+    <FormattedTime {...props} />
+  </IntlProvider>
+);
+Intl.FormattedRelative = (props) => (
   <IntlProvider {...defaultProps}>
     <FormattedRelative {...props} />
   </IntlProvider>
 );
-Intl.FormattedNumber = props =>
-  <IntlProvider {...defaultProps}><FormattedNumber {...props} /></IntlProvider>;
-Intl.FormattedPlural = props =>
-  <IntlProvider {...defaultProps}><FormattedPlural {...props} /></IntlProvider>;
-Intl.FormattedMessage = props =>
-  <IntlProvider {...defaultProps}><FormattedMessage {...props} /></IntlProvider>;
-Intl.FormattedHTMLMessage = props => (
+Intl.FormattedNumber = (props) => (
+  <IntlProvider {...defaultProps}>
+    <FormattedNumber {...props} />
+  </IntlProvider>
+);
+Intl.FormattedPlural = (props) => (
+  <IntlProvider {...defaultProps}>
+    <FormattedPlural {...props} />
+  </IntlProvider>
+);
+Intl.FormattedMessage = (props) => (
+  <IntlProvider {...defaultProps}>
+    <FormattedMessage {...props} />
+  </IntlProvider>
+);
+Intl.FormattedHTMLMessage = (props) => (
   <IntlProvider {...defaultProps}>
     <FormattedHTMLMessage {...props} />
   </IntlProvider>

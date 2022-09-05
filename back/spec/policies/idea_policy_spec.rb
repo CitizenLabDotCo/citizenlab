@@ -15,7 +15,7 @@ describe IdeaPolicy do
       let(:user) { nil }
 
       it { is_expected.to permit(:show) }
-      it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
+      it { is_expected.not_to permit(:create) }
       it { is_expected.not_to permit(:update)  }
       it { is_expected.not_to permit(:destroy) }
 
@@ -38,7 +38,10 @@ describe IdeaPolicy do
     end
 
     context 'for a user who did not complete registration who is the idea author' do
-      let(:user) { idea.author.update(registration_completed_at: nil); idea.author }
+      let :user do
+        idea.author.update(registration_completed_at: nil)
+        idea.author
+      end
 
       it { is_expected.to     permit(:show)    }
       it { is_expected.not_to permit(:create)  }
@@ -75,19 +78,6 @@ describe IdeaPolicy do
         expect(scope.resolve.size).to eq 1
       end
     end
-
-    context 'for a moderator' do
-      let(:user) { create(:moderator, project: project) }
-
-      it { is_expected.to permit(:show)    }
-      it { is_expected.to permit(:create)  }
-      it { is_expected.to permit(:update)  }
-      it { is_expected.to permit(:destroy) }
-
-      it 'indexes the idea' do
-        expect(scope.resolve.size).to eq 1
-      end
-    end
   end
 
   context 'on idea in a private admins project' do
@@ -98,7 +88,7 @@ describe IdeaPolicy do
       let(:user) { nil }
 
       it { is_expected.not_to permit(:show) }
-      it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
+      it { is_expected.not_to permit(:create) }
       it { is_expected.not_to permit(:update)  }
       it { is_expected.not_to permit(:destroy) }
 
@@ -132,19 +122,6 @@ describe IdeaPolicy do
         expect(scope.resolve.size).to eq 1
       end
     end
-
-    context 'for a moderator' do
-      let(:user) { create(:moderator, project: project) }
-
-      it { is_expected.to permit(:show)    }
-      it { is_expected.to permit(:create)  }
-      it { is_expected.to permit(:update)  }
-      it { is_expected.to permit(:destroy) }
-
-      it 'indexes the idea' do
-        expect(scope.resolve.size).to eq 1
-      end
-    end
   end
 
   context 'for a visitor on an idea in a private groups project' do
@@ -153,7 +130,7 @@ describe IdeaPolicy do
     let!(:idea) { create(:idea, project: project) }
 
     it { is_expected.not_to permit(:show) }
-    it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
+    it { is_expected.not_to permit(:create)  }
     it { is_expected.not_to permit(:update)  }
     it { is_expected.not_to permit(:destroy) }
 
@@ -192,7 +169,7 @@ describe IdeaPolicy do
     end
   end
 
-  context "for an admin on an idea in a private groups project" do
+  context 'for an admin on an idea in a private groups project' do
     let!(:user) { create(:admin) }
     let!(:project) { create(:private_groups_project) }
     let!(:idea) { create(:idea, project: project) }
@@ -216,7 +193,7 @@ describe IdeaPolicy do
       let(:user) { nil }
 
       it { is_expected.not_to permit(:show) }
-      it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
+      it { is_expected.not_to permit(:create)  }
       it { is_expected.not_to permit(:update)  }
       it { is_expected.not_to permit(:destroy) }
 
@@ -252,8 +229,8 @@ describe IdeaPolicy do
     end
   end
 
-  context 'on idea for a survey project' do
-    let(:project) { create(:continuous_survey_project) }
+  context 'on idea for a budgeting project' do
+    let(:project) { create(:continuous_budgeting_project) }
     let(:author) { create(:user) }
     let!(:idea) { create(:idea, project: project, author: author) }
 
@@ -261,7 +238,7 @@ describe IdeaPolicy do
       let(:user) { nil }
 
       it { is_expected.to permit(:show) }
-      it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
+      it { is_expected.not_to permit(:create)  }
       it { is_expected.not_to permit(:update)  }
       it { is_expected.not_to permit(:destroy) }
 
@@ -310,7 +287,7 @@ describe IdeaPolicy do
       let(:user) { nil }
 
       it { is_expected.to permit(:show) }
-      it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
+      it { is_expected.not_to permit(:create)  }
       it { is_expected.not_to permit(:update)  }
       it { is_expected.not_to permit(:destroy) }
 

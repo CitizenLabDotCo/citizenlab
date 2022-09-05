@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class PermissionsService
-
   class << self
     def register_scope_type(scope_spec)
       scope_spec_hash[scope_spec.scope_type] = scope_spec
@@ -57,23 +56,18 @@ class PermissionsService
     Permission.select(&:invalid?).each(&:destroy!)
   end
 
-  # +resource+ is +nil+ for actions that are run within the global scope and
-  # are not tied to any resource.
-  #
-  # @param [#permission_scope, NilClass] resource
-  # @return [String, nil] Reason if denied, nil otherwise.
-  def denied?(user, action, resource = nil)
+  def denied_reason(user, action, resource = nil)
     scope = resource&.permission_scope
     permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
 
     if permission.blank? && self.class.actions(scope)
-      update_permissions_for_scope(scope)
+      update_permissions_for_scope scope
       permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
     end
 
     raise "Unknown action '#{action}' for resource: #{resource}" unless permission
 
-    permission.denied?(user)
+    permission.denied_reason user
   end
 
   private
@@ -81,14 +75,14 @@ class PermissionsService
   def remove_extras_actions(scope, actions = nil)
     actions ||= self.class.actions(scope)
     Permission.where(permission_scope: scope)
-              .where.not(action: actions)
-              .destroy_all
+      .where.not(action: actions)
+      .destroy_all
   end
 
   def add_missing_actions(scope, actions = nil)
     missing_actions = missing_actions(scope, actions)
     permissions_hashes = missing_actions.map { |action| { action: action } }
-    Permission.create(permissions_hashes) { |p| p.permission_scope = scope }
+    Permission.create!(permissions_hashes) { |p| p.permission_scope = scope }
   end
 
   def missing_actions(scope, actions = nil)

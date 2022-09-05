@@ -1,176 +1,207 @@
 import React from 'react';
-import { isEmpty, values as getValues, every } from 'lodash-es';
-import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
-import styled from 'styled-components';
 
-// Components
-import FormikInput from 'components/UI/FormikInput';
-import FormikInputMultilocWithLocaleSwitcher from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
-import FormikQuillMultiloc from 'components/UI/QuillEditor/FormikQuillMultiloc';
-import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
-import { Section, SectionField } from 'components/admin/Section';
-import ErrorComponent from 'components/UI/Error';
-import { Label, IconTooltip } from 'cl2-component-library';
-import Warning from 'components/UI/Warning';
-import FileUploader from 'components/UI/FileUploader';
-
-// I18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// Typings
+// types
 import { Multiloc, UploadFile } from 'typings';
 
-const StyledSection = styled(Section)`
-  margin-bottom: 30px;
-`;
+// form
+import { useForm, FormProvider } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { string, object, mixed } from 'yup';
+import validateMultiloc from 'utils/yup/validateMultiloc';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
+import Input from 'components/HookForm/Input';
+import FileUploader from 'components/HookForm/FileUploader';
+import Feedback from 'components/HookForm/Feedback';
+import { SectionField } from 'components/admin/Section';
+
+// intl
+import messages from './messages';
+import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+
+// components
+import {
+  IconTooltip,
+  Label,
+  Box,
+  Text,
+} from '@citizenlab/cl2-component-library';
+import Warning from 'components/UI/Warning';
+import Button from 'components/UI/Button';
+import Outlet from 'components/Outlet';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import { slugRexEx } from 'utils/textUtils';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
+
+// hooks
+import useLocale from 'hooks/useLocale';
+import usePage from 'hooks/usePage';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 
 export interface FormValues {
+  nav_bar_item_title_multiloc?: Multiloc;
   title_multiloc: Multiloc;
   body_multiloc: Multiloc;
-  local_page_files: UploadFile[] | [];
-  slug?: any;
-}
-
-export interface Props {
   slug?: string;
-  mode: 'simple' | 'edit';
-  hideTitle?: boolean;
-  pageId?: string;
+  local_page_files: UploadFile[] | null;
 }
 
-class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
-  public static validate = (values: FormValues): FormikErrors<FormValues> => {
-    const errors: FormikErrors<FormValues> = {};
+type PageFormProps = {
+  onSubmit: (formValues: FormValues) => void | Promise<void>;
+  defaultValues?: FormValues;
+  pageId: string | null;
+  hideSlugInput?: boolean;
+} & InjectedIntlProps;
 
-    if (every(getValues(values.title_multiloc), isEmpty)) {
-      errors.title_multiloc = [{ error: 'blank' }] as any;
+const PageForm = ({
+  intl: { formatMessage },
+  onSubmit,
+  defaultValues,
+  pageId,
+  hideSlugInput = false,
+}: PageFormProps) => {
+  const locale = useLocale();
+  const page = usePage({ pageId });
+  const appConfig = useAppConfiguration();
+
+  const schema = object({
+    title_multiloc: validateMultiloc(formatMessage(messages.blankTitleError)),
+    body_multiloc: validateMultiloc(
+      formatMessage(messages.blankDescriptionError)
+    ),
+    ...(pageId &&
+      !isNilOrError(page) &&
+      page.relationships.nav_bar_item.data && {
+        nav_bar_item_title_multiloc: validateMultiloc(
+          formatMessage(messages.blankTitleError)
+        ),
+      }),
+    ...(!hideSlugInput && {
+      slug: string()
+        .matches(slugRexEx, formatMessage(messages.slugRegexError))
+        .required(formatMessage(messages.blankSlugError)),
+      local_page_files: mixed(),
+    }),
+  });
+
+  const methods = useForm({
+    mode: 'onBlur',
+    defaultValues,
+    resolver: yupResolver(schema),
+  });
+
+  if (isNilOrError(appConfig)) return null;
+
+  const onFormSubmit = async (formValues: FormValues) => {
+    try {
+      await onSubmit(formValues);
+    } catch (error) {
+      handleHookFormSubmissionError(error, methods.setError);
     }
-
-    if (every(getValues(values.body_multiloc), isEmpty)) {
-      errors.body_multiloc = [{ error: 'blank' }] as any;
-    }
-
-    return errors;
   };
 
-  renderQuill = (props) => {
-    return (
-      <FormikQuillMultiloc
-        label={<FormattedMessage {...messages.editContent} />}
-        id={`${this.props.slug}-${props.fieldName}`}
-        {...props}
-        withCTAButton
-      />
-    );
-  };
-
-  renderFileUploader = (values: FormValues) => () => {
-    const { local_page_files } = values;
-
-    return (
-      <FileUploader
-        onFileAdd={this.handlePageFileOnAdd}
-        onFileRemove={this.handlePageFileOnRemove}
-        files={local_page_files}
-      />
-    );
-  };
-
-  handlePageFileOnAdd = (fileToAdd: UploadFile) => {
-    const { setFieldValue, setStatus, values } = this.props;
-    setFieldValue('local_page_files', [...values.local_page_files, fileToAdd]);
-    setStatus('enabled');
-  };
-
-  handlePageFileOnRemove = (fileToRemove: UploadFile) => {
-    const { setFieldValue, setStatus, values } = this.props;
-    const localPageFiles = [...values.local_page_files];
-    const filteredLocalPageFiles = localPageFiles.filter(
-      (file) => file !== fileToRemove
-    );
-    setFieldValue('local_page_files', filteredLocalPageFiles);
-    setStatus('enabled');
-  };
-
-  render() {
-    const {
-      isSubmitting,
-      errors,
-      isValid,
-      touched,
-      mode,
-      hideTitle,
-      values,
-      status,
-    } = this.props;
-    return (
-      <Form>
-        <StyledSection>
-          {!hideTitle && (
-            <SectionField>
-              <Field
-                name="title_multiloc"
-                component={FormikInputMultilocWithLocaleSwitcher}
-                label={<FormattedMessage {...messages.pageTitle} />}
-              />
-              {touched.title_multiloc && (
-                <ErrorComponent
-                  fieldName="title_multiloc"
-                  apiErrors={errors.title_multiloc as any}
-                />
-              )}
-            </SectionField>
-          )}
-
-          <SectionField className="fullWidth">
-            <Field name="body_multiloc" render={this.renderQuill} />
-            {touched.body_multiloc && (
-              <ErrorComponent
-                fieldName="body_multiloc"
-                apiErrors={errors.body_multiloc as any}
-              />
-            )}
-          </SectionField>
-
-          {mode === 'edit' && (
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.pageSlug} />
-              </Label>
-              <Field
-                name="slug"
-                component={FormikInput}
-                label={<FormattedMessage {...messages.pageSlug} />}
-              />
-              {touched.slug && (
-                <ErrorComponent
-                  fieldName="slug"
-                  apiErrors={errors.slug as any}
-                />
-              )}
-              <Warning>
-                <FormattedMessage {...messages.dontChange} />
-              </Warning>
-            </SectionField>
-          )}
+  return (
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit(onFormSubmit)}>
+        <SectionField>
+          <Feedback
+            successMessage={formatMessage(messages.savePageSuccessMessage)}
+          />
+        </SectionField>
+        <Outlet
+          id="app.components.PageForm.index.top"
+          pageId={pageId}
+          navbarItemId={
+            !isNilOrError(page) && page.relationships.nav_bar_item.data
+              ? page.relationships.nav_bar_item.data.id
+              : null
+          }
+        />
+        <SectionField>
+          <InputMultilocWithLocaleSwitcher
+            label={formatMessage(messages.pageTitle)}
+            type="text"
+            name="title_multiloc"
+          />
+        </SectionField>
+        <SectionField>
+          <QuillMultilocWithLocaleSwitcher
+            name="body_multiloc"
+            label={formatMessage(messages.editContent)}
+          />
+        </SectionField>
+        {!hideSlugInput && (
           <SectionField>
-            <Label>
-              <FormattedMessage {...messages.fileUploadLabel} />
-              <IconTooltip
-                content={
-                  <FormattedMessage {...messages.fileUploadLabelTooltip} />
-                }
-              />
+            <Label htmlFor="slug">
+              <FormattedMessage {...messages.pageUrl} />
+              {!isNilOrError(page) && (
+                <IconTooltip
+                  content={
+                    <FormattedMessage
+                      {...messages.slugLabelTooltip}
+                      values={{
+                        currentPageURL: (
+                          <em>
+                            <b>
+                              {appConfig.data.attributes.host}/{locale}
+                              /pages/{page.attributes.slug}
+                            </b>
+                          </em>
+                        ),
+                        currentPageSlug: (
+                          <em>
+                            <b>{page.attributes.slug}</b>
+                          </em>
+                        ),
+                      }}
+                    />
+                  }
+                />
+              )}
             </Label>
-            <Field name="page_files" render={this.renderFileUploader(values)} />
+            {!isNilOrError(page) && (
+              <Box mb="16px">
+                <Warning>
+                  <FormattedMessage {...messages.brokenURLWarning} />
+                </Warning>
+              </Box>
+            )}
+            <Input id="slug" name="slug" type="text" />
+            <Text>
+              <b>
+                <FormattedMessage {...messages.resultingPageURL} />
+              </b>
+              : {appConfig.data.attributes.host}/{locale}/pages/
+              {methods.getValues('slug')}
+            </Text>
           </SectionField>
-        </StyledSection>
+        )}
+        <SectionField>
+          <Label htmlFor="local_page_files">
+            <FormattedMessage {...messages.fileUploadLabel} />
+            <IconTooltip
+              content={
+                <FormattedMessage {...messages.fileUploadLabelTooltip} />
+              }
+            />
+          </Label>
+          <FileUploader
+            name="local_page_files"
+            resourceId={pageId}
+            resourceType="page"
+          />
+        </SectionField>
+        <Box display="flex">
+          <Button type="submit" processing={methods.formState.isSubmitting}>
+            {formatMessage(messages.savePage)}
+          </Button>
+        </Box>
+      </form>
+    </FormProvider>
+  );
+};
 
-        <FormikSubmitWrapper {...{ isValid, isSubmitting, status, touched }} />
-      </Form>
-    );
-  }
-}
-
-export default PageForm;
+export default injectIntl(PageForm);

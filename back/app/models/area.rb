@@ -1,41 +1,97 @@
+# frozen_string_literal: true
+
+# == Schema Information
+#
+# Table name: areas
+#
+#  id                     :uuid             not null, primary key
+#  title_multiloc         :jsonb
+#  description_multiloc   :jsonb
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  ordering               :integer
+#  custom_field_option_id :uuid
+#
+# Indexes
+#
+#  index_areas_on_custom_field_option_id  (custom_field_option_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (custom_field_option_id => custom_field_options.id)
+#
 class Area < ApplicationRecord
   acts_as_list column: :ordering, top_of_list: 0
   default_scope -> { order(ordering: :asc) }
 
   has_many :areas_projects, dependent: :destroy
   has_many :projects, through: :areas_projects
-  has_many :areas_ideas, dependent: :destroy
-  has_many :ideas, through: :areas_ideas
   has_many :areas_initiatives, dependent: :destroy
   has_many :initiatives, through: :areas_initiatives
 
-  validates :title_multiloc, presence: true, multiloc: {presence: true}
-  validates :description_multiloc, multiloc: {presence: false}
+  validates :title_multiloc, presence: true, multiloc: { presence: true }
+  validates :description_multiloc, multiloc: { presence: false, html: true }
 
   before_validation :sanitize_description_multiloc
   before_validation :strip_title
 
+  # If the domicile custom field exists, each area is associated to one of its options.
+  # The two associated resources are kept in sync: changes to the
+  # area are reflected in the option, and vice versa.
+  belongs_to :custom_field_option, optional: true
+  after_create :create_custom_field_option
+  after_update :update_custom_field_option
+  before_destroy :destroy_custom_field_option
+
   validates :ordering, numericality: {
     only_integer: true,
-    greater_than_or_equal_to: 0,
+    greater_than_or_equal_to: 0
   }, unless: ->(area) { area.ordering.nil? }
+
+  def create_custom_field_option
+    return unless (domicile_field = CustomField.find_by(key: 'domicile'))
+
+    create_custom_field_option!(
+      custom_field: domicile_field,
+      title_multiloc: title_multiloc,
+      ordering: ordering
+    )
+  end
 
   private
 
   def sanitize_description_multiloc
     service = SanitizationService.new
     self.description_multiloc = service.sanitize_multiloc(
-      self.description_multiloc,
-      %i{title alignment list decoration link image video}
+      description_multiloc,
+      %i[title alignment list decoration link image video]
     )
-    self.description_multiloc = service.remove_multiloc_empty_trailing_tags(self.description_multiloc)
-    self.description_multiloc = service.linkify_multiloc(self.description_multiloc)
+    self.description_multiloc = service.remove_multiloc_empty_trailing_tags description_multiloc
+    self.description_multiloc = service.linkify_multiloc description_multiloc
   end
 
   def strip_title
-    self.title_multiloc.each do |key, value|
-      self.title_multiloc[key] = value.strip
+    title_multiloc.each do |key, value|
+      title_multiloc[key] = value.strip
     end
   end
 
+  def update_custom_field_option
+    return unless custom_field_option
+    return unless ordering_previously_changed? || title_multiloc_previously_changed?
+
+    custom_field_option.update(
+      title_multiloc: title_multiloc,
+      ordering: ordering
+    )
+  end
+
+  def destroy_custom_field_option
+    return unless custom_field_option
+
+    # TODO: (tech debt) Rework to log the user responsible for the deletion.
+    SideFxCustomFieldOptionService.new.before_destroy(custom_field_option, nil)
+    custom_field_option.destroy
+    SideFxCustomFieldOptionService.new.after_destroy(custom_field_option, nil)
+  end
 end

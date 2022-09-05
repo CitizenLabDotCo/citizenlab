@@ -8,7 +8,7 @@ import { get } from 'lodash-es';
 import CommentHeader from './CommentHeader';
 import CommentBody from './CommentBody';
 import CommentFooter from './CommentFooter';
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 
 // services
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
@@ -50,7 +50,7 @@ const DeletedComment = styled.div`
   color: ${colors.label};
   display: flex;
   align-items: center;
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 400;
   font-style: italic;
 `;

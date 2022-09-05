@@ -58,7 +58,7 @@ export default class NormalGroupForm extends React.Component<
   };
 
   render() {
-    const { isSubmitting, errors, isValid, touched, status } = this.props;
+    const { isSubmitting, errors, touched, status } = this.props;
 
     return (
       <Form>
@@ -81,8 +81,10 @@ export default class NormalGroupForm extends React.Component<
 
         <FooterContainer>
           <FormikSubmitWrapper
-            {...{ isValid, isSubmitting, status, touched }}
             buttonStyle="admin-dark"
+            isSubmitting={isSubmitting}
+            status={status}
+            touched={touched}
           />
         </FooterContainer>
       </Form>

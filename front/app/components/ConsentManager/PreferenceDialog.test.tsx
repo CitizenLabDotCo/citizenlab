@@ -1,7 +1,7 @@
+// @ts-nocheck
 // libraries
 import React from 'react';
 import { shallow } from 'enzyme';
-import { mountWithTheme } from 'utils/testUtils/withTheme';
 
 import 'jest-styled-components';
 
@@ -15,8 +15,6 @@ jest.mock('modules', () => ({ streamsToReset: [] }));
 
 describe('<ConsentManager />', () => {
   let onChange: Jest.Mock;
-  const isConsentRequired = true;
-  const implyConsentOnInteraction = false;
 
   const categoryDestinations = {
     analytics: [
@@ -58,8 +56,8 @@ describe('<ConsentManager />', () => {
   };
   const preferences = {
     analytics: true,
-    advertising: null,
-    functional: null,
+    advertising: false,
+    functional: true,
   };
 
   beforeEach(() => {

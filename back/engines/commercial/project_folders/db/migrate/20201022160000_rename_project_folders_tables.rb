@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RenameProjectFoldersTables < ActiveRecord::Migration[6.0]
   def change
     rename_table :project_folders, :project_folders_project_folders

@@ -4,15 +4,11 @@ import { isNilOrError } from 'utils/helperUtils';
 import { get } from 'lodash-es';
 
 // router
-import { withRouter, WithRouterProps } from 'react-router';
-import Link from 'utils/cl-router/Link';
-import { getUrlLocale } from 'services/locale';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // components
-import { Icon, IconNames } from 'cl2-component-library';
-import FeatureFlag from 'components/FeatureFlag';
+import { Icon, IconNames } from '@citizenlab/cl2-component-library';
 import MenuItem from './MenuItem';
-import HasPermission from 'components/HasPermission';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -25,18 +21,20 @@ import { media, colors, fontSizes, stylingConsts } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
 // resources
-import GetFeatureFlag from 'resources/GetFeatureFlag';
 import GetIdeasCount, {
   GetIdeasCountChildProps,
 } from 'resources/GetIdeasCount';
 import GetInitiativesCount, {
   GetInitiativesCountChildProps,
 } from 'resources/GetInitiativesCount';
+import GetFeatureFlag, {
+  GetFeatureFlagChildProps,
+} from 'resources/GetFeatureFlag';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import Outlet from 'components/Outlet';
 import { InsertConfigurationOptions } from 'typings';
 import { insertConfiguration } from 'utils/moduleUtils';
-import { AppConfigurationSettingsFeatureNames } from 'services/appConfiguration';
+import { TAppConfigurationSetting } from 'services/appConfiguration';
 
 const Menu = styled.div`
   z-index: 10;
@@ -95,7 +93,7 @@ const Spacer = styled.div`
   flex-grow: 1;
 `;
 
-const GetStartedLink = styled(Link)`
+const MenuLink = styled.a`
   flex: 0 0 auto;
   width: 210px;
   display: flex;
@@ -103,15 +101,13 @@ const GetStartedLink = styled(Link)`
   justify-content: space-between;
   padding-left: 5px;
   padding-right: 15px;
-  padding-bottom: 1px;
-  margin-bottom: 25px;
   cursor: pointer;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  background: ${lighten(0.05, colors.adminMenuBackground)};
   transition: all 100ms ease-out;
 
-  &:hover {
-    background: ${lighten(0.1, colors.adminMenuBackground)};
+  &:hover,
+  &.focus-visible {
+    background: rgba(0, 0, 0, 0.36);
 
     ${Text} {
       color: #fff;
@@ -128,11 +124,22 @@ const GetStartedLink = styled(Link)`
   `}
 `;
 
+const GetStartedLink = styled(MenuLink)`
+  padding-bottom: 1px;
+  margin-bottom: 25px;
+  background: ${lighten(0.05, colors.adminMenuBackground)};
+
+  &:hover {
+    background: ${lighten(0.1, colors.adminMenuBackground)};
+  }
+`;
+
 interface InputProps {}
 interface DataProps {
   authUser: GetAuthUserChildProps;
   ideasCount: GetIdeasCountChildProps;
   initiativesCount: GetInitiativesCountChildProps;
+  customizableNavbarFeatureFlag: GetFeatureFlagChildProps;
 }
 interface Props extends InputProps, DataProps {}
 
@@ -145,135 +152,89 @@ export type NavItem = {
   link: string;
   iconName: IconNames;
   message: string;
-  featureName?: AppConfigurationSettingsFeatureNames;
-  isActive: (pathname: string) => boolean;
+  featureNames?: TAppConfigurationSetting[];
   count?: number;
   onlyCheckAllowed?: boolean;
 };
 
-type Tracks = {
-  trackFakeDoor: Function;
-};
-
 class Sidebar extends PureComponent<
-  Props & InjectedIntlProps & WithRouterProps & Tracks,
+  Props & InjectedIntlProps & WithRouterProps,
   State
 > {
-  constructor(props: Props & InjectedIntlProps & WithRouterProps & Tracks) {
+  constructor(props: Props & InjectedIntlProps & WithRouterProps) {
     super(props);
 
     this.state = {
       navItems: [
         {
-          name: 'insights',
+          name: 'dashboard',
           link: '/admin/dashboard',
           iconName: 'stats',
           message: 'dashboard',
-          isActive: (pathName) =>
-            pathName.startsWith(
-              `${
-                getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
-              }/admin/dashboard`
-            ),
         },
         {
           name: 'projects',
           link: '/admin/projects',
           iconName: 'folder',
           message: 'projects',
-          isActive: (pathName) =>
-            pathName.startsWith(
-              `${
-                getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
-              }/admin/projects`
-            ),
         },
         {
           name: 'workshops',
           link: '/admin/workshops',
           iconName: 'workshops',
           message: 'workshops',
-          featureName: 'workshops',
-          isActive: (pathName) =>
-            pathName.startsWith(
-              `${
-                getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
-              }/admin/workshops`
-            ),
+          featureNames: ['workshops'],
         },
         {
           name: 'ideas',
           link: '/admin/ideas',
           iconName: 'idea2',
           message: 'inputManager',
-          isActive: (pathName) =>
-            pathName.startsWith(
-              `${
-                getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
-              }/admin/ideas`
-            ),
         },
         {
           name: 'initiatives',
           link: '/admin/initiatives',
           iconName: 'initiativesAdminMenuIcon',
           message: 'initiatives',
-          featureName: 'initiatives',
+          featureNames: ['initiatives'],
           onlyCheckAllowed: true,
-          isActive: (pathName) =>
-            pathName.startsWith(
-              `${
-                getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
-              }/admin/initiatives`
-            ),
         },
         {
           name: 'userinserts',
           link: '/admin/users',
           iconName: 'users',
           message: 'users',
-          isActive: (pathName) =>
-            pathName.startsWith(
-              `${
-                getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
-              }/admin/users`
-            ),
         },
         {
           name: 'invitations',
           link: '/admin/invitations',
           iconName: 'invitations',
           message: 'invitations',
-          isActive: (pathName) =>
-            pathName.startsWith(
-              `${
-                getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
-              }/admin/invitations`
-            ),
         },
         {
-          name: 'emails',
-          link: '/admin/emails',
+          name: 'messaging',
+          link: '/admin/messaging',
           iconName: 'emails',
-          message: 'emails',
-          isActive: (pathName) =>
-            pathName.startsWith(
-              `${
-                getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
-              }/admin/emails`
-            ),
+          message: 'messaging',
+          featureNames: [
+            'manual_emailing',
+            'automated_emailing_control',
+            'texting',
+          ],
+        },
+        {
+          name: 'menu',
+          link: '/admin/pages-menu',
+          iconName: 'blankPage',
+          // It's better to avoid using this feature flag in the core
+          // https://github.com/CitizenLabDotCo/citizenlab/pull/2162#discussion_r916512426
+          message: props.customizableNavbarFeatureFlag ? 'menu' : 'pages',
         },
         {
           name: 'settings',
           link: '/admin/settings/general',
           iconName: 'setting',
           message: 'settings',
-          isActive: (pathName) =>
-            pathName.startsWith(
-              `${
-                getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
-              }/admin/settings`
-            ),
         },
       ],
     };
@@ -332,47 +293,30 @@ class Sidebar extends PureComponent<
           onData={this.handleData}
         />
         <MenuInner id="sidebar">
-          {navItems.map((navItem) => {
-            if (navItem.name === 'emails') {
-              return (
-                <GetFeatureFlag name="manual_emailing" key={navItem.name}>
-                  {(manualEmailing) => (
-                    <GetFeatureFlag name="automated_emailing_control">
-                      {(automatedEmailing) =>
-                        manualEmailing || automatedEmailing ? (
-                          <MenuItem route={navItem} key={navItem.name} />
-                        ) : null
-                      }
-                    </GetFeatureFlag>
-                  )}
-                </GetFeatureFlag>
-              );
-            } else if (navItem.featureName) {
-              return (
-                <FeatureFlag
-                  name={navItem.featureName}
-                  onlyCheckAllowed={navItem.onlyCheckAllowed}
-                  key={navItem.name}
-                >
-                  <MenuItem route={navItem} key={navItem.name} />
-                </FeatureFlag>
-              );
-            } else {
-              return <MenuItem route={navItem} key={navItem.name} />;
-            }
-          })}
+          {navItems.map((navItem) => (
+            <MenuItem navItem={navItem} key={navItem.name} />
+          ))}
           <Spacer />
-          <HasPermission
-            item={{ type: 'route', path: '/admin/guide' }}
-            action="access"
+
+          <MenuLink
+            href={formatMessage(messages.linkToAcademy)}
+            target="_blank"
           >
-            <GetStartedLink to="/admin/guide">
-              <IconWrapper>
-                <Icon name="circleInfo" />
-              </IconWrapper>
-              <Text>{formatMessage({ ...messages.guide })}</Text>
-            </GetStartedLink>
-          </HasPermission>
+            <IconWrapper>
+              <Icon name="academy" />
+            </IconWrapper>
+            <Text>{formatMessage({ ...messages.academy })}</Text>
+          </MenuLink>
+
+          <GetStartedLink
+            href={formatMessage(messages.linkToGuide)}
+            target="_blank"
+          >
+            <IconWrapper>
+              <Icon name="circleInfo" />
+            </IconWrapper>
+            <Text>{formatMessage({ ...messages.guide })}</Text>
+          </GetStartedLink>
         </MenuInner>
       </Menu>
     );
@@ -380,6 +324,7 @@ class Sidebar extends PureComponent<
 }
 
 const Data = adopt<DataProps, InputProps>({
+  customizableNavbarFeatureFlag: <GetFeatureFlag name="customizable_navbar" />,
   authUser: <GetAuthUser />,
   ideasCount: ({ authUser, render }) => (
     <GetIdeasCount feedbackNeeded={true} assignee={get(authUser, 'id')}>
@@ -393,7 +338,7 @@ const Data = adopt<DataProps, InputProps>({
   ),
 });
 
-const SideBarWithHocs = withRouter<Props>(injectIntl(Sidebar));
+const SideBarWithHocs = withRouter(injectIntl(Sidebar));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

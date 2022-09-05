@@ -6,7 +6,7 @@ import streams from 'utils/streams';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import { Input, IconTooltip } from 'cl2-component-library';
+import { Input, IconTooltip } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 import Collapse from 'components/UI/Collapse';
 import {
@@ -61,7 +61,7 @@ const VerificationFormLookup = memo<Props & InjectedIntlProps>(
     }, []);
 
     const onSubmit = useCallback(
-      async (event: React.FormEvent<HTMLButtonElement>) => {
+      async (event: React.MouseEvent) => {
         event.preventDefault();
 
         const { formatMessage } = intl;
@@ -115,11 +115,13 @@ const VerificationFormLookup = memo<Props & InjectedIntlProps>(
           }
         }
       },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       [cardId, authUser]
     );
 
     const onCancelButtonClicked = useCallback(() => {
       onCancel();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const onToggleHelpButtonClick = useCallback(() => {
@@ -164,7 +166,7 @@ const VerificationFormLookup = memo<Props & InjectedIntlProps>(
             >
               <HelpImage
                 src={method.attributes.explainer_image_url}
-                alt="help"
+                alt={intl.formatMessage(messages.helpImageAltText)}
               />
             </Collapse>
           </FormField>

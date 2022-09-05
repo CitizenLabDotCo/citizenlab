@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CustomMaps
   module WebApi
     module V1
@@ -5,6 +7,7 @@ module CustomMaps
         before_action :set_map_config, only: %i[update destroy]
 
         def create
+          authorize @project, :update?
           @map_config = @project.build_map_config(map_config_params)
 
           if @map_config.save
@@ -40,12 +43,13 @@ module CustomMaps
         private
 
         def set_map_config
+          authorize @project, :update?
           @map_config = CustomMaps::MapConfig.find_by!(project_id: params[:project_id])
         end
 
         def serialized_map_config
           CustomMaps::WebApi::V1::MapConfigSerializer.new(@map_config, params: fastjson_params)
-                                               .serialized_json
+            .serialized_json
         end
 
         def map_config_params

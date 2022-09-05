@@ -8,7 +8,7 @@ import eventEmitter from 'utils/eventEmitter';
 import Banner from './Banner';
 import PreferencesDialog, { ContentContainer } from './PreferencesDialog';
 import Footer from './Footer';
-import LoadableModal from 'components/Loadable/Modal';
+import Modal from 'components/UI/Modal';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
@@ -25,7 +25,7 @@ export const ButtonContainer = styled.div`
 `;
 
 interface Props {
-  setPreferences: Function;
+  setPreferences: (arg: Record<string, unknown>) => void;
   resetPreferences: () => void;
   accept: () => void;
   saveConsent: () => void;
@@ -141,12 +141,8 @@ export default class Container extends PureComponent<Props, State> {
   };
 
   render() {
-    const {
-      preferences,
-      isConsentRequired,
-      categorizedDestinations,
-      accept,
-    } = this.props;
+    const { preferences, isConsentRequired, categorizedDestinations, accept } =
+      this.props;
     const { isDialogOpen, isCancelling } = this.state;
     const noDestinations = Object.values(categorizedDestinations).every(
       (array) => array.length === 0
@@ -159,7 +155,7 @@ export default class Container extends PureComponent<Props, State> {
 
     return (
       <>
-        <LoadableModal
+        <Modal
           opened={isDialogOpen}
           close={this.closeDialog}
           header={<FormattedMessage {...messages.title} />}
@@ -185,7 +181,7 @@ export default class Container extends PureComponent<Props, State> {
               <FormattedMessage {...messages.confirmation} tagName="h1" />
             </ContentContainer>
           )}
-        </LoadableModal>
+        </Modal>
 
         {isConsentRequired && (
           <Banner onAccept={accept} onChangePreferences={this.openDialog} />

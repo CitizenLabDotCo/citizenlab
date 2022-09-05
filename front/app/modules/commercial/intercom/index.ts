@@ -14,13 +14,17 @@ import {
   IDestinationConfig,
   registerDestination,
 } from 'components/ConsentManager/destinations';
-import { isAdmin, isModerator, isSuperAdmin } from 'services/permissions/roles';
+import { isAdmin, isModerator } from 'services/permissions/roles';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
 export const INTERCOM_APP_ID = process.env.INTERCOM_APP_ID;
 
 declare module 'components/ConsentManager/destinations' {
   export interface IDestinationMap {
+    intercom: 'intercom';
+  }
+
+  interface IConsentManagerFeatureMap {
     intercom: 'intercom';
   }
 }
@@ -30,9 +34,7 @@ const destinationConfig: IDestinationConfig = {
   category: 'functional',
   feature_flag: 'intercom',
   hasPermission: (user) =>
-    !!user &&
-    (isAdmin({ data: user }) || isModerator({ data: user })) &&
-    !isSuperAdmin({ data: user }),
+    !!user && (isAdmin({ data: user }) || isModerator({ data: user })),
   name: () => 'Intercom',
 };
 
@@ -54,6 +56,7 @@ const configuration: ModuleConfiguration = {
         } else {
           const d = document;
           const i = function () {
+            // eslint-disable-next-line prefer-rest-params
             i.c(arguments);
           };
           i.q = [];
@@ -67,7 +70,7 @@ const configuration: ModuleConfiguration = {
             s.async = true;
             s.src = `https://widget.intercom.io/widget/'${INTERCOM_APP_ID}`;
             const x = d.getElementsByTagName('script')[0];
-            x.parentNode?.insertBefore(s, x);
+            x?.parentNode?.insertBefore(s, x);
           };
           if (document.readyState === 'complete') {
             l();

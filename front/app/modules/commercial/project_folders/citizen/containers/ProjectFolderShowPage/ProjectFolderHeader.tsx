@@ -5,7 +5,7 @@ import Image from 'components/UI/Image';
 import ProjectFolderShareButton from '../../../citizen/components/ProjectFolderShareButton';
 
 // hooks
-import useWindowSize from 'hooks/useWindowSize';
+import { useWindowSize } from '@citizenlab/cl2-component-library';
 
 // style
 import styled from 'styled-components';

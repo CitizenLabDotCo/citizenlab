@@ -7,6 +7,10 @@ import TypeformSurvey from './TypeformSurvey';
 import SurveymonkeySurvey from './SurveymonkeySurvey';
 import GoogleFormsSurvey from './GoogleFormsSurvey';
 import EnalyzerSurvey from './EnalyzerSurvey';
+import QualtricsSurvey from './QualtricsSurvey';
+import SmartSurvey from './SmartSurvey';
+import MicrosoftFormsSurvey from './MicrosoftFormsSurvey';
+import SnapSurvey from './SnapSurvey';
 import Warning from 'components/UI/Warning';
 import SignUpIn from 'components/SignUpIn';
 import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
@@ -33,6 +37,7 @@ import { openSignUpInModal } from 'components/SignUpIn/events';
 import styled from 'styled-components';
 import { defaultCardStyle, fontSizes, media } from 'utils/styleUtils';
 import { openVerificationModal } from 'components/Verification/verificationModalEvents';
+import SurveyXact from './SurveyXact';
 
 const Container = styled.div`
   position: relative;
@@ -132,17 +137,14 @@ class Survey extends PureComponent<Props, State> {
       openSignUpInModal({
         flow,
         verification: takingSurveyDisabledReason === 'not_verified',
-        verificationContext: !!(
-          takingSurveyDisabledReason === 'not_verified' &&
-          pcId &&
-          pcType
-        )
-          ? {
-              action: 'taking_survey',
-              id: pcId,
-              type: pcType,
-            }
-          : undefined,
+        verificationContext:
+          takingSurveyDisabledReason === 'not_verified' && pcId && pcType
+            ? {
+                action: 'taking_survey',
+                id: pcId,
+                type: pcType,
+              }
+            : undefined,
       });
     }
   };
@@ -200,12 +202,6 @@ class Survey extends PureComponent<Props, State> {
       ) {
         return (
           <Container className={className || ''}>
-            {/*
-            <ProjectPageSectionTitle>
-              <FormattedMessage {...messages.survey} />
-            </ProjectPageSectionTitle>
-            */}
-
             <SignUpInWrapper>
               <StyledSignUpIn
                 metaData={{
@@ -236,7 +232,7 @@ class Survey extends PureComponent<Props, State> {
       if (enabled) {
         const email = authUser ? authUser.attributes.email : null;
         const user_id = authUser ? authUser.id : null;
-
+        const language = authUser ? authUser.attributes.locale : undefined;
         return (
           <Container
             id="project-survey"
@@ -251,6 +247,7 @@ class Survey extends PureComponent<Props, State> {
                 typeformUrl={surveyEmbedUrl}
                 email={email || null}
                 user_id={user_id}
+                language={language || undefined}
               />
             )}
 
@@ -264,6 +261,30 @@ class Survey extends PureComponent<Props, State> {
 
             {surveyService === 'enalyzer' && (
               <EnalyzerSurvey enalyzerUrl={surveyEmbedUrl} />
+            )}
+
+            {surveyService === 'qualtrics' && (
+              <QualtricsSurvey qualtricsUrl={surveyEmbedUrl} />
+            )}
+
+            {surveyService === 'smart_survey' && (
+              <SmartSurvey
+                smartSurveyUrl={surveyEmbedUrl}
+                email={email || null}
+                user_id={user_id}
+              />
+            )}
+
+            {surveyService === 'microsoft_forms' && (
+              <MicrosoftFormsSurvey microsoftFormsUrl={surveyEmbedUrl} />
+            )}
+
+            {surveyService === 'survey_xact' && (
+              <SurveyXact surveyXactUrl={surveyEmbedUrl} />
+            )}
+
+            {surveyService === 'snap_survey' && (
+              <SnapSurvey snapSurveyUrl={surveyEmbedUrl} />
             )}
           </Container>
         );

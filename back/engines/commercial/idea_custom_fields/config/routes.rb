@@ -1,9 +1,15 @@
+# frozen_string_literal: true
+
 IdeaCustomFields::Engine.routes.draw do
   namespace :web_api, defaults: { format: :json } do
     namespace :v1 do
-      resources :projects, only: [] do
-        resources :custom_fields, only: %i[index show], controller: 'idea_custom_fields' do
-          patch 'by_code/:code', action: 'upsert_by_code', on: :collection
+      namespace :admin do
+        resources :projects, only: [] do
+          resources :custom_fields, only: %i[index show], controller: 'idea_custom_fields' do
+            patch 'by_code/:code', action: 'upsert_by_code', on: :collection
+            patch 'update/:id', action: 'update', on: :collection
+            patch 'update_all', on: :collection
+          end
         end
       end
     end

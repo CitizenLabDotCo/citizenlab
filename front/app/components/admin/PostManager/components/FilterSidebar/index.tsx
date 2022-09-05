@@ -12,7 +12,7 @@ import StatusesMenu from './FilterSidebarStatuses';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../../messages';
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 import { ITopicData } from 'services/topics';

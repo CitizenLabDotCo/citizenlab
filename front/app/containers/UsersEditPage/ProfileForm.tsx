@@ -24,7 +24,7 @@ import PasswordInput, {
 } from 'components/UI/PasswordInput';
 import PasswordInputIconTooltip from 'components/UI/PasswordInput/PasswordInputIconTooltip';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import { convertUrlToUploadFile } from 'utils/fileTools';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { SectionField } from 'components/admin/Section';
 import {
   FormSection,
@@ -32,7 +32,7 @@ import {
   FormSectionTitle,
 } from 'components/UI/FormComponents';
 
-import { Input, Select, IconTooltip } from 'cl2-component-library';
+import { Input, Select, IconTooltip } from '@citizenlab/cl2-component-library';
 import QuillEditor from 'components/UI/QuillEditor';
 
 // i18n
@@ -51,6 +51,10 @@ import { IOption, UploadFile, CLErrorsJSON } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
 import Outlet from 'components/Outlet';
+import GetFeatureFlag, {
+  GetFeatureFlagChildProps,
+} from 'resources/GetFeatureFlag';
+import eventEmitter from 'utils/eventEmitter';
 
 const InputContainer = styled.div`
   display: flex;
@@ -65,11 +69,6 @@ const LabelContainer = styled.div`
   align-items: center;
 `;
 
-const StyledFormLabel = styled(FormLabel)`
-  width: max-content;
-  margin-right: 5px;
-`;
-
 const StyledPasswordInputIconTooltip = styled(PasswordInputIconTooltip)`
   margin-bottom: 4px;
 `;
@@ -81,19 +80,15 @@ interface DataProps {
   authUser: GetAuthUserChildProps;
   tenant: GetAppConfigurationChildProps;
   lockedFields: GetLockedFieldsChildProps;
+  disableBio: GetFeatureFlagChildProps;
 }
 
 export type ExtraFormDataKey = 'custom_field_values';
 
-export interface ExtraFormDataConfiguration {
-  formData?: Object;
-  submit?: () => void;
-}
-
 interface State {
   avatar: UploadFile[] | null;
   extraFormData: {
-    [field in ExtraFormDataKey]?: ExtraFormDataConfiguration;
+    [field in ExtraFormDataKey]?: Record<string, any>;
   };
   hasPasswordMinimumLengthError: boolean;
 }
@@ -159,6 +154,7 @@ class ProfileForm extends PureComponent<Props, State> {
     const { authUser } = this.props;
 
     if (isNilOrError(authUser)) return;
+    eventEmitter.emit('customFieldsSubmitEvent');
 
     const newValues = Object.entries(this.state.extraFormData).reduce(
       (acc, [key, extraFormDataConfiguration]) => ({
@@ -201,7 +197,7 @@ class ProfileForm extends PureComponent<Props, State> {
       status,
       touched,
     } = props;
-    const { lockedFields, authUser } = this.props;
+    const { lockedFields, authUser, disableBio } = this.props;
     const { hasPasswordMinimumLengthError } = this.state;
 
     // Won't be called with a nil or error user.
@@ -235,24 +231,20 @@ class ProfileForm extends PureComponent<Props, State> {
       return returnValue;
     };
 
-    const handleFormOnChange = () => setStatus('enabled');
-
-    const handleFormOnSubmit = ({
+    const handleFormOnChange = ({
       key,
       formData,
     }: {
       key: ExtraFormDataKey;
-      formData: Object;
+      formData: Record<string, any>;
     }) => {
-      this.setState(
-        ({ extraFormData }) => ({
-          extraFormData: {
-            ...extraFormData,
-            [key]: { ...(extraFormData?.[key] ?? {}), formData },
-          },
-        }),
-        () => submitForm()
-      );
+      setStatus('enabled');
+      this.setState(({ extraFormData }) => ({
+        extraFormData: {
+          ...extraFormData,
+          [key]: { ...(extraFormData?.[key] ?? {}), formData },
+        },
+      }));
     };
 
     const handleOnSubmit = () => {
@@ -261,18 +253,6 @@ class ProfileForm extends PureComponent<Props, State> {
         configuration?.submit?.()
       );
       submitForm();
-    };
-
-    const handleOutletData = ({
-      key,
-      data,
-    }: {
-      key: ExtraFormDataKey;
-      data: ExtraFormDataConfiguration;
-    }) => {
-      this.setState(({ extraFormData }) => ({
-        extraFormData: { ...extraFormData, [key]: data },
-      }));
     };
 
     const createChangeHandler = (fieldName: string) => (value) => {
@@ -324,14 +304,18 @@ class ProfileForm extends PureComponent<Props, State> {
           />
 
           <SectionField>
+            <FormLabel
+              htmlFor="profile-form-avatar-dropzone"
+              labelMessage={messages.image}
+            />
             <ImagesDropzone
               id="profile-form-avatar-dropzone"
               images={this.state.avatar}
               imagePreviewRatio={1}
               maxImagePreviewWidth="170px"
-              acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-              maxImageFileSize={5000000}
-              maxNumberOfImages={1}
+              acceptedFileTypes={{
+                'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+              }}
               onAdd={handleAvatarOnAdd}
               onRemove={handleAvatarOnRemove}
               label={formatMessage(messages.imageDropzonePlaceholder)}
@@ -348,6 +332,7 @@ class ProfileForm extends PureComponent<Props, State> {
             <InputContainer>
               <Input
                 type="text"
+                autocomplete="given-name"
                 name="first_name"
                 id="firstName"
                 value={values.first_name}
@@ -370,6 +355,7 @@ class ProfileForm extends PureComponent<Props, State> {
             <InputContainer id="e2e-last-name-input">
               <Input
                 type="text"
+                autocomplete="family-name"
                 name="last_name"
                 id="lastName"
                 value={values.last_name}
@@ -392,6 +378,7 @@ class ProfileForm extends PureComponent<Props, State> {
             <InputContainer>
               <Input
                 type="email"
+                autocomplete="email"
                 name="email"
                 id="email"
                 value={values.email}
@@ -410,30 +397,34 @@ class ProfileForm extends PureComponent<Props, State> {
             <Error apiErrors={errors.email} />
           </SectionField>
 
-          <SectionField>
-            <FormLabel labelMessage={messages.bio} id="label-bio" />
-            <QuillEditor
-              id="bio_multiloc"
-              noImages={true}
-              noVideos={true}
-              limitedTextFormatting={true}
-              value={
-                values.bio_multiloc
-                  ? this.props.localize(values.bio_multiloc)
-                  : ''
-              }
-              placeholder={formatMessage({ ...messages.bio_placeholder })}
-              onChange={createChangeHandler('bio_multiloc')}
-              onBlur={createBlurHandler('bio_multiloc')}
-            />
-            <Error apiErrors={errors.bio_multiloc} />
-          </SectionField>
+          {!disableBio && (
+            <SectionField>
+              <FormLabel labelMessage={messages.bio} id="label-bio" />
+              <QuillEditor
+                id="bio_multiloc"
+                noImages={true}
+                noVideos={true}
+                limitedTextFormatting={true}
+                value={
+                  values.bio_multiloc
+                    ? this.props.localize(values.bio_multiloc)
+                    : ''
+                }
+                placeholder={formatMessage({ ...messages.bio_placeholder })}
+                onChange={createChangeHandler('bio_multiloc')}
+                onBlur={createBlurHandler('bio_multiloc')}
+              />
+              <Error apiErrors={errors.bio_multiloc} />
+            </SectionField>
+          )}
 
           <SectionField>
             <LabelContainer>
-              <StyledFormLabel
+              <FormLabel
+                width="max-content"
+                margin-right="5px"
                 labelMessage={messages.password}
-                htmlFor="profile-password-input"
+                htmlFor="password"
               />
               <StyledPasswordInputIconTooltip />
             </LabelContainer>
@@ -461,10 +452,8 @@ class ProfileForm extends PureComponent<Props, State> {
 
         <Outlet
           id="app.containers.UserEditPage.ProfileForm.forms"
-          authUser={authUser}
           onChange={handleFormOnChange}
-          onSubmit={handleFormOnSubmit}
-          onData={handleOutletData}
+          authUser={authUser}
         />
 
         <SubmitWrapper
@@ -506,6 +495,7 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   tenant: <GetAppConfiguration />,
   lockedFields: <GetLockedFields />,
+  disableBio: <GetFeatureFlag name="disable_user_bios" />,
 });
 
 export default (inputProps: InputProps) => (

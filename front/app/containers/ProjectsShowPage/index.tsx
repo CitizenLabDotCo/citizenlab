@@ -1,7 +1,6 @@
 import React, { memo, useMemo } from 'react';
-import { isError, isUndefined } from 'lodash-es';
-import { isNilOrError, isApiError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'react-router';
+import { isError } from 'lodash-es';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
 
 // components
@@ -15,7 +14,7 @@ import ContinuousSurvey from './continuous/Survey';
 import ContinuousPoll from './continuous/Poll';
 import ContinuousVolunteering from './continuous/Volunteering';
 import TimelineContainer from './timeline';
-import { Spinner } from 'cl2-component-library';
+import { Spinner } from '@citizenlab/cl2-component-library';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
 
 // hooks
@@ -32,6 +31,10 @@ import { media, colors } from 'utils/styleUtils';
 
 // typings
 import { IProjectData } from 'services/projects';
+
+// other
+import { isValidPhase } from './phaseParam';
+import { anyIsUndefined, isNilOrError, isApiError } from 'utils/helperUtils';
 
 const Container = styled.main<{ background: string }>`
   flex: 1 0 auto;
@@ -70,9 +73,10 @@ const ContentWrapper = styled.div`
 
 interface Props {
   project: IProjectData | Error | null | undefined;
+  scrollToEventId?: string;
 }
 
-const ProjectsShowPage = memo<Props>(({ project }) => {
+const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
   const projectId = !isNilOrError(project) ? project.id : undefined;
   const projectNotFound = isError(project);
   const processType = !isNilOrError(project)
@@ -82,23 +86,20 @@ const ProjectsShowPage = memo<Props>(({ project }) => {
   const locale = useLocale();
   const tenant = useAppConfiguration();
   const phases = usePhases(projectId);
-  const events = useEvents(projectId);
+  const { events } = useEvents({
+    projectIds: projectId ? [projectId] : undefined,
+    sort: 'newest',
+  });
   const user = useAuthUser();
 
   const loading = useMemo(() => {
-    return (
-      isUndefined(locale) ||
-      isUndefined(tenant) ||
-      isUndefined(project) ||
-      isUndefined(phases) ||
-      isUndefined(events)
-    );
+    return anyIsUndefined(locale, tenant, project, phases, events);
   }, [locale, tenant, project, phases, events]);
 
   const isUnauthorized = useMemo(() => {
     if (!isApiError(project)) return false;
 
-    return project.json.errors.base[0].error === 'Unauthorized!';
+    return project.json.errors?.base[0].error === 'Unauthorized!';
   }, [project]);
 
   const userSignedInButUnauthorized = !isNilOrError(user) && isUnauthorized;
@@ -132,7 +133,10 @@ const ProjectsShowPage = memo<Props>(({ project }) => {
         ) : (
           <TimelineContainer projectId={projectId} />
         )}
-        <ProjectEvents projectId={projectId} />
+        <ProjectEvents
+          projectId={projectId}
+          scrollToEventId={scrollToEventId}
+        />
       </ContentWrapper>
     );
   }
@@ -149,16 +153,35 @@ const ProjectsShowPage = memo<Props>(({ project }) => {
 });
 
 const ProjectsShowPageWrapper = memo<WithRouterProps>(
-  ({ location: { pathname }, params: { slug } }) => {
+  ({ location: { pathname, query }, params: { slug, phaseNumber } }) => {
     const project = useProject({ projectSlug: slug });
+    const phases = usePhases(project?.id);
+    const { scrollToEventId } = query;
+    const processType = project?.attributes?.process_type;
 
     const urlSegments = pathname
       .replace(/^\/|\/$/g, '')
       .split('/')
       .filter((segment) => segment !== '');
 
-    if (urlSegments.length > 3 && urlSegments[1] === 'projects') {
-      // redirect old childRoutes (e.g. /info, /process, ...) to the project index location
+    // If processType is 'timeline' but the phases aren't loaded yet: don't render yet
+    if (processType === 'timeline' && isNilOrError(phases)) return null;
+
+    if (
+      processType === 'timeline' &&
+      urlSegments.length === 4 &&
+      !isNilOrError(phases) &&
+      isValidPhase(phaseNumber, phases)
+    ) {
+      // If this is a timeline project and a valid phase param was passed: continue
+      return <ProjectsShowPage project={project} />;
+    } else if (scrollToEventId) {
+      // If an event id was passed as a query param, pass it on
+      return (
+        <ProjectsShowPage project={project} scrollToEventId={scrollToEventId} />
+      );
+    } else if (urlSegments.length > 3 && urlSegments[1] === 'projects') {
+      // Redirect old childRoutes (e.g. /info, /process, ...) to the project index location
       clHistory.replace(`/${urlSegments.slice(1, 3).join('/')}`);
     } else if (slug) {
       return <ProjectsShowPage project={project} />;

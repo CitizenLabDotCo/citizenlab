@@ -1,11 +1,10 @@
-import React, { PureComponent } from 'react';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import React from 'react';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import ContentContainer from 'components/ContentContainer';
 import Link from 'utils/cl-router/Link';
 import Button from 'components/UI/Button';
-import { Icon } from 'cl2-component-library';
+import CloseIconButton from 'components/UI/CloseIconButton';
 import styled from 'styled-components';
 import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
 import { rgba } from 'polished';
@@ -104,7 +103,7 @@ const ButtonContainer = styled.div`
   `}
 `;
 
-const PreferencesButton = styled(Button)`
+const AcceptButton = styled(Button)`
   margin-right: 10px;
 
   ${media.smallerThanMinTablet`
@@ -113,42 +112,29 @@ const PreferencesButton = styled(Button)`
   `}
 
   ${isRtl`
-    margin-right: 0;
+    margin-right: 0px;
     margin-left: 10px;
 
     ${media.smallerThanMinTablet`
-        margin-left: 0px;
+      margin-left: 0px;
     `}
   `}
 `;
 
-const AcceptButton = styled(Button)`
+const PreferencesButton = styled(Button)`
   ${media.smallerThanMinTablet`
     margin-right: 10px;
     order: 1;
   `}
 `;
 
-const CloseIcon = styled(Icon)`
-  width: 15px;
-  height: 15px;
-  fill: rgba(255, 255, 255, 0.7);
-`;
-
-const CloseButton = styled.button`
+const StyledCloseIconButton = styled(CloseIconButton)`
   position: absolute;
   right: 15px;
   top: 50%;
   transform: translateY(-50%);
   border: none;
   background: none;
-  cursor: pointer;
-
-  &:hover {
-    ${CloseIcon} {
-      fill: #fff;
-    }
-  }
 
   ${media.smallerThan1280px`
     display: none;
@@ -160,71 +146,58 @@ interface Props {
   onChangePreferences: () => void;
 }
 
-class Banner extends PureComponent<Props & InjectedIntlProps> {
-  render() {
-    const {
-      onAccept,
-      onChangePreferences,
-      intl: { formatMessage },
-    } = this.props;
+const Banner = ({ onAccept, onChangePreferences }: Props) => {
+  return (
+    <Container tabIndex={0} role="dialog" id="e2e-cookie-banner">
+      <ContentContainer mode="page">
+        <ContentContainerInner>
+          <Left>
+            <Line className="first">
+              <FormattedMessage
+                {...messages.mainText}
+                values={{
+                  policyLink: (
+                    <StyledLink to="/pages/cookie-policy">
+                      <FormattedMessage {...messages.policyLink} />
+                    </StyledLink>
+                  ),
+                }}
+              />
+            </Line>
+            <Line className="second">
+              <FormattedMessage {...messages.subText} />
+            </Line>
+          </Left>
+          <ButtonContainer>
+            <AcceptButton
+              className="e2e-accept-cookies-btn"
+              buttonStyle="primary-inverse"
+              textColor={colors.adminTextColor}
+              textHoverColor={colors.adminTextColor}
+              onClick={onAccept}
+            >
+              <FormattedMessage {...messages.accept} />
+            </AcceptButton>
+            <PreferencesButton
+              className="integration-open-modal"
+              buttonStyle="primary-inverse"
+              textColor={colors.adminTextColor}
+              textHoverColor={colors.adminTextColor}
+              onClick={onChangePreferences}
+            >
+              <FormattedMessage {...messages.manage} />
+            </PreferencesButton>
+          </ButtonContainer>
+        </ContentContainerInner>
+      </ContentContainer>
+      <StyledCloseIconButton
+        a11y_buttonActionMessage={messages.ariaButtonClose}
+        onClick={onAccept}
+        iconColor={rgba(255, 255, 255, 0.7)}
+        iconColorOnHover={'#fff'}
+      />
+    </Container>
+  );
+};
 
-    const policyLink = (
-      <StyledLink to="/pages/cookie-policy">
-        <FormattedMessage {...messages.policyLink} />
-      </StyledLink>
-    );
-
-    return (
-      <Container role="dialog" id="e2e-cookie-banner">
-        <ContentContainer mode="page">
-          <ContentContainerInner>
-            <Left>
-              <Line className="first">
-                <FormattedMessage
-                  {...messages.mainText}
-                  values={{ policyLink }}
-                />
-              </Line>
-              <Line className="second">
-                <FormattedMessage {...messages.subText} />
-              </Line>
-            </Left>
-            <ButtonContainer>
-              <PreferencesButton
-                borderColor="transparent"
-                textColor="#fff"
-                bgColor={colors.adminTextColor}
-                bgHoverColor={rgba(255, 255, 255, 0.15)}
-                onClick={onChangePreferences}
-                className="integration-open-modal"
-              >
-                <FormattedMessage {...messages.manage} />
-              </PreferencesButton>
-              <AcceptButton
-                className="e2e-accept-cookies-btn"
-                buttonStyle="primary-inverse"
-                textColor={colors.adminTextColor}
-                textHoverColor={colors.adminTextColor}
-                onClick={onAccept}
-              >
-                <FormattedMessage {...messages.accept} />
-              </AcceptButton>
-            </ButtonContainer>
-          </ContentContainerInner>
-        </ContentContainer>
-
-        <CloseButton
-          type="button"
-          className="integration-button-close"
-          title={formatMessage(messages.ariaButtonClose)}
-          aria-label={formatMessage(messages.ariaButtonClose)}
-          onClick={onAccept}
-        >
-          <CloseIcon name="close" />
-        </CloseButton>
-      </Container>
-    );
-  }
-}
-
-export default injectIntl(Banner);
+export default Banner;

@@ -35,8 +35,7 @@ describe Onboarding::OnboardingService do
 
       context 'when verification is not active' do
         before do
-          @app_config.settings['verification']['enabled'] = false
-          @app_config.save!
+          SettingsService.new.deactivate_feature! 'verification'
         end
 
         it 'does not return :verification' do
@@ -44,7 +43,6 @@ describe Onboarding::OnboardingService do
           expect(service.current_campaign(not_verified)).not_to eq :verification
         end
       end
-
     end
   end
 end

@@ -1,21 +1,19 @@
+# frozen_string_literal: true
+
 module IdeaAssignment
   module Patches
     module SideFxUserService
-      def after_update(user, current_user)
+      private
+
+      def after_roles_changed(current_user, user)
         super
-        remove_idea_assignments(user)
+        clean_project_default_assignee_for_user! user
+        IdeaAssignmentService.new.clean_idea_assignees_for_user! user
       end
 
-      def remove_idea_assignments(user)
-        return unless lost_roles(user).any? { |role| role['type'] == 'admin' }
-
-        moderatable_projects = ::ProjectPolicy::Scope.new(user, Project).moderatable
-        user.assigned_ideas
-            .where.not(project: moderatable_projects)
-            .update(assignee_id: nil, updated_at: DateTime.now)
-        user.default_assigned_projects
-            .where.not(id: moderatable_projects)
-            .update(default_assignee_id: nil, updated_at: DateTime.now)
+      def clean_project_default_assignee_for_user!(user)
+        moderatable_projects = UserRoleService.new.moderatable_projects user
+        user.default_assigned_projects.where.not(id: moderatable_projects).update_all(default_assignee_id: nil)
       end
     end
   end

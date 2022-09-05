@@ -9,7 +9,6 @@ pl:
       "comment_on_your_idea": Komentarz do mojego pomysłu
       "comment_on_your_initiative": Komentarz do mojej propozycji
       "first_idea_published": Publikacja mojego pierwszego pomysłu
-      "idea_assigned_to_you": Przydzielenie mi pomysłu
       "idea_marked_as_spam": Raport dot. pomysłów oznaczonych jako spam
       "idea_published": Publikacja mojego pomysłu
       "initiative_assigned_to_you": Przydzielenie mi propozycji
@@ -19,8 +18,8 @@ pl:
       "invite_reminder": Przypomnienie o zaproszeniu
       "mention_in_official_feedback": Wzmianka w aktualizacji
       "new_comment_for_admin": Nowy komentarz w projekcie, który moderuję
-      "new_comment_on_commented_idea": Nowy komentarz do pomysłu, który skomentowałem
-      "new_comment_on_commented_initiative": Nowy komentarz do propozycji, którą skomentowałem
+      "new_comment_on_commented_idea": Nowy komentarz do pomysłu, który skomentowałem(am)
+      "new_comment_on_commented_initiative": Nowy komentarz do propozycji, którą skomentowałem(am)
       "new_comment_on_voted_idea": Nowy komentarz do pomysłu, nad którym głosowałem
       "new_comment_on_voted_initiative": Nowy komentarz do pomysłu, nad którym głosowałem
       "new_idea_for_admin": Nowy pomysł w projekcie, który moderuję
@@ -33,7 +32,7 @@ pl:
       "official_feedback_on_your_initiative": Aktualizacja mojej propozycji
       "password_reset": Zmiana hasła
       "project_moderation_rights_received": Przyznanie prawa do moderacji projektu
-      "project_folder_moderation_rights_received": Folder manager rights received
+      "project_folder_moderation_rights_received": Przydzielono uprawnienia menedżera folderów
       "project_phase_started": Nowy etap projektu
       "project_phase_upcoming": Nadchodzący nowy etap projektu
       "status_change_of_commented_idea": Zmiana statusu pomysłu, który skomentowałem
@@ -58,7 +57,6 @@ pl:
       "comment_on_your_idea": Komentowanie Twojego pomysłu - wszyscy użytkownicy
       "comment_on_your_initiative": Komentowanie Twojej propozycji - wszyscy użytkownicy
       "first_idea_published": Publikacja Twojego pierwszego pomysłu - wszyscy użytkownicy
-      "idea_assigned_to_you": Przydzielenie pomysłu - administratorzy i menadżerowie projektu
       "idea_marked_as_spam": Zgłaszania pomysłu jako spamu - administratorzy i menadżerowie projektu
       "idea_published": Publikacja Twojego pomysłu - wszyscy użytkownicy
       "initiative_assigned_to_you": Przydzielenie propozycji - administratorzy
@@ -83,7 +81,7 @@ pl:
       "official_feedback_on_your_initiative": Aktualizacja Twojej propozycji - wszyscy użytkownicy
       "password_reset": Zmiana hasła - wszyscy użytkownicy
       "project_moderation_rights_received": Otrzymanie prawa do zarządzania projektem - menadżerowie projektu
-      "project_folder_moderation_rights_received": Folder manager rights received
+      "project_folder_moderation_rights_received": Przydzielono uprawnienia menedżera folderów
       "project_phase_started": Nowy etap projektu - wszyscy użytkownicy
       "project_phase_upcoming": Nowy etap projektu - administratorzy i menadżerowie projektu
       "status_change_of_commented_idea": Zmiana statusu pomysłu, który skomentowałeś - wszyscy użytkownicy
@@ -167,13 +165,6 @@ pl:
       main_header: '%{commentAuthor} skomentował Twoją inicjatywę'
       subject: 'Otrzymałeś komentarz na platformie %{organizationName}'
       preheader: '%{authorName} skomentował Twoją inicjatywę na platformie %{organizationName}'
-    idea_assigned_to_you:
-      by_author: 'wg %{authorName}'
-      cta_reply_to: 'Przekaż informację zwrotną do %{authorName}'
-      event_description_idea: 'Przydzielono ci pomysł. Przekaż informację zwrotną, pisząc oficjalną aktualizację lub zmieniając jej status.'
-      main_header: '%{firstName}, masz nowe zadanie'
-      subject: 'Zostałeś przypisany na platformie %{organizationName}'
-      preheader_idea: 'Został do ciebie przypisany pomysł %{authorName}'
     assignee_digest:
       subject: 'Pomysły wymagające Twojej opinii: %{numberIdeas}'
       preheader: 'Skrót dla pełnomocnika %{organizationName}'
@@ -410,26 +401,20 @@ pl:
       title_you_became_moderator: 'Zostałeś moderatorem'
       x_ideas: 'ilość pomysłów: %{numberOfIdeas}'
     project_folder_moderation_rights_received:
-      cta_view_folder_button: 'View this folder'
-      message_added_as_folderadmin: 'You''ve been given folder manager rights on %{organizationName}''s participation platform for the following folder:'
-      no_projects: 'No projects yet'
-      preheader: 'An administrator of the participation platform of %{organizationName} just made you a manager of the following folder'
-      subject: 'You became a project folder manager on the participation platform of %{organizationName}'
-      text_manage_folder: 'A folder is way to organize several participation projects together. As a folder manager, you can edit the folder and folder description and create new projects (to delete projects, contact your platform administrator). You will also have project management rights over all projects within the folder, allowing you to edit the projects, manage the inputs and email participants.'
-      text_moderate_analyse_input: 'Once the projects are launched, the first inputs will start coming in. You''ll receive weekly reports with the key activities so that you can stay on top of what’s happening. The Input Manager in your ''Manage Platform'' panel allows you to see and manage the input, including assigning statuses and responding to posts and comments.'
-      text_design_participatory_process: 'You can manage the different participation projects within your folder - configure the participation method, add a project description, attach images, and communicate related events. You can also manage how participants interact with your projects, including setting access rights and configuring the posting, voting and commenting settings.'
+      cta_view_folder_button: 'Zobacz ten pomysł'
+      message_added_as_folderadmin: 'Otrzymałeś uprawnienia menedżera folderów na platformie partycypacyjnej %{organizationName}dla następującego folderu:'
+      no_projects: 'Nie ma jeszcze projektów'
+      preheader: 'Administrator platformy partycypacyjnej %{organizationName} właśnie ustanowił Cię moderatorem poniższego folderu'
+      subject: 'Zostałeś managerem folderu projektu na platformie uczestnictwa %{organizationName}'
+      text_manage_folder: 'Folder jest sposobem na zorganizowanie kilku projektów razem. Jako administrator folderu, możesz edytować folder i jego opis oraz tworzyć nowe projekty (aby usunąć projekty, skontaktuj się z administratorem platformy). Będziesz miał również prawa do zarządzania wszystkimi projektami w ramach folderu, co pozwoli Ci na edycję projektów, zarządzanie wkładem i wysyłanie maili do uczestników.'
+      text_moderate_analyse_input: 'Gdy projekty zostaną uruchomione, zaczną napływać pierwsze dane wejściowe. Będziesz otrzymywać cotygodniowe raporty z kluczowymi działaniami, abyś mógł być na bieżąco z tym, co się dzieje. Pomysły w panelu administracyjnym pozwalają na przeglądanie i zarządzanie wkładem, w tym nadawanie statusów i odpowiadanie na posty i komentarze.'
+      text_design_participatory_process: 'Możesz zarządzać różnymi projektami uczestnictwa w ramach swojego folderu - konfigurować metody uczestnictwa, dodawać opis projektu, załączać zdjęcia i informować o powiązanych wydarzeniach. Możesz również zarządzać sposobem, w jaki uczestnicy wchodzą w interakcję z Twoimi projektami, w tym ustawiać prawa dostępu i konfigurować ustawienia wysyłania postów, głosowania i komentowania.'
       title_design_participatory_process: 'Zaprojektuj proces partycypacyjny'
       title_moderate_analyse_input: 'Moderuj i analizuj dane'
-      title_manage_folder: 'Manage the folder settings and create new projects.'
-      title_what_can_you_do_folderadmin: 'What can you do as a folder manager?'
-      title_added_as_folderadmin: 'You''ve been added as a folder manager'
-      x_projects: '%{numberOfProjects} projects'
-    password_reset:
-      cta_reset_password: 'Zresetuj swoje hasło'
-      message_you_reset_your_password: 'Poprosiłeś o zresetowanie hasła do platformy uczestnictwa %{organizationName}. Kliknij przycisk poniżej, aby wybrać nowe, bezpieczne hasło. Link wygasa za 1 godzinę.'
-      preheader: 'Link do zresetowanie hasła, o który poprosiłeś'
-      subject: '%{organizationName}: Zresetuj swoje hasło'
-      title_reset_your_password: 'Wybierz nowe hasło'
+      title_manage_folder: 'Zarządzaj ustawieniami folderów i twórz nowe projekty.'
+      title_what_can_you_do_folderadmin: 'Co możesz zrobić jako menedżer folderów?'
+      title_added_as_folderadmin: 'Zostałeś dodany jako menedżer folderów'
+      x_projects: '%{numberOfProjects} projekty'
     project_phase_started:
       cta_view_phase: 'Odkryj nowy etap'
       event_description: 'Ten projekt wszedł w nowy etap na platformie %{organizationName}. Kliknij na poniższy link, aby dowiedzieć się więcej!'
@@ -438,7 +423,7 @@ pl:
       subject: '%{projectName} wszedł w nowy etap'
       preheader: 'Rozpoczął się nowy etap projektu %{projectName}'
     project_phase_upcoming:
-      cta_view_phase: 'Ustawić ten nowy etap'
+      cta_view_phase: 'Sprawdź następny etap'
       event_description: 'Projekt "%{projectName}" wkrótce wejdzie w nowy etap. Upewnij się, że wszystko jest przygotowane: Czy opis jest odpowiedni? Czy wybrane pomysły zostały przeniesione do nowego etapu? Czy chcesz poinformować swoich obywateli o specyfice tego etapu poprzez specjalną kampanię e-mailową?'
       main_header: '%{firstName}, projekt wkrótce przejdzie do nowego etapu'
       new_phase: 'Projekt wejdzie w etap "%{phaseTitle}"'
@@ -491,7 +476,7 @@ pl:
       commented: "%{authorFirstName} skomentował:"
       preheader: "Tygodniowy przegląd %{organizationName}"
       title_your_weekly_report: "Dowiedz się, co wydarzyło się w zeszłym tygodniu"
-      intro_text: "Here's a summary of what happened on the participation platform of %{organizationName}."
+      intro_text: "Oto podsumowanie tego, co wydarzyło się na platformie uczestnictwa %{organizationName}."
       cta_go_to_the_platform: "Przejdź na platformę"
       title_no_activity_past_week: "Brak aktywności w ciągu ostatniego tygodnia"
       title_proposals: "Proposals started"
@@ -501,13 +486,13 @@ pl:
       today_by_author: "Dzisiaj wg %{author}"
       yesterday_by_author: "Wczoraj przez %{author}"
       x_days_ago_by_author: "%{x} dni temu wg %{author}"
-      trending_ideas: "Trending ideas"
-      trending_ideas_text: "Interested in what’s been happening on the platform? Here are the three most trending ideas and what people are saying about them."
-      no_notifications: "No notifications"
-      one_notification: "1 notification"
-      multiple_notifications: "%{notifCount} notifications"
-      no_unread_notifications: "You've got no unread notifications. However, we invite you to visit the platform to discover what’s happening."
-      unread_notifications: "You've got unread notifications. We invite you to visit the platform to discover what’s happening."
+      trending_ideas: "Modne pomysły"
+      trending_ideas_text: "Interesuje Cię, co się dzieje na platformie? Oto trzy najmodniejsze pomysły i to, co ludzie o nich mówią."
+      no_notifications: "Brak powiadomień"
+      one_notification: "1 powiadomienie"
+      multiple_notifications: "Powiadomienia: %{notifCount}"
+      no_unread_notifications: "Nie masz żadnych nieprzeczytanych powiadomień. Odwiedź platformę, aby wnieść swój wkład i wygenerować nowe powiadomienia!"
+      unread_notifications: "Masz nieprzeczytane powiadomienia. Odwiedź platformę, aby dowiedzieć się, co się dzieje!"
     threshold_reached_for_admin:
       by_author: 'wg %{authorName}'
       cta_process_initiative: 'Skieruj tę inicjatywę do dalszych kroków'
@@ -567,4 +552,3 @@ pl:
       new_votes: 'Nowe głosy'
       remaining_votes: 'Pozostało głosów'
       remaining_days: 'Pozostało dni'
-

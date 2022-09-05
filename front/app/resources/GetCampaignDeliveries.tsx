@@ -54,7 +54,7 @@ export default class GetCampaignDeliveries extends React.Component<
     this.pageChanges$ = new BehaviorSubject(pageNumber || 1);
 
     this.subscriptions = [
-      combineLatest(this.inputProps$, this.pageChanges$)
+      combineLatest([this.inputProps$, this.pageChanges$])
         .pipe(
           map(([inputProps, pageNumber]) => ({ ...inputProps, pageNumber })),
           distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
@@ -72,14 +72,19 @@ export default class GetCampaignDeliveries extends React.Component<
           })
         )
         .subscribe((deliveries) => {
+          const currentPageNumberFromURL = !isNilOrError(deliveries)
+            ? getPageNumberFromUrl(deliveries.links.self)
+            : null;
+          const lastPageNumberFromURL = !isNilOrError(deliveries)
+            ? getPageNumberFromUrl(deliveries.links.last)
+            : null;
+
           this.setState({
             deliveries: !isNilOrError(deliveries)
               ? deliveries.data
               : deliveries,
-            currentPage:
-              getPageNumberFromUrl(deliveries && deliveries.links.self) || 1,
-            lastPage:
-              getPageNumberFromUrl(deliveries && deliveries.links.last) || 1,
+            currentPage: currentPageNumberFromURL || 1,
+            lastPage: lastPageNumberFromURL || 1,
           });
         }),
     ];

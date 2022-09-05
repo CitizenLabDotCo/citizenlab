@@ -34,6 +34,7 @@ const TopicFilterBox = memo<Props>(
       (newsSelectedTopicIds: string[] | null) => {
         onChange(newsSelectedTopicIds);
       },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       []
     );
 

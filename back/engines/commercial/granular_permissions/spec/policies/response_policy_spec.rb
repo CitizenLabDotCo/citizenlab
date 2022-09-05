@@ -15,7 +15,7 @@ describe Polls::ResponsePolicy do
     let!(:project) do
       create(:continuous_poll_project).tap do |project|
         project.permissions.find_by(action: 'taking_poll')
-               .update!(permitted_by: 'admins_moderators')
+          .update!(permitted_by: 'admins_moderators')
       end
     end
 
