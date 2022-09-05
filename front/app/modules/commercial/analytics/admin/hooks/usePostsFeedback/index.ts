@@ -97,18 +97,20 @@ const query = ({ projectId, startAt, endAt }: QueryProps): Query => {
       feedback_status_change: 'sum',
       feedback_time_taken: 'avg',
     },
-    ...(projectId
-      ? {
-          dimensions: { project: { id: projectId } },
-        }
-      : {}),
-    ...(startAt && endAt
-      ? {
-          created_date: {
-            date: { from: toDate(startAt), to: toDate(endAt) },
-          },
-        }
-      : {}),
+    dimensions: {
+      type: { name: 'idea' },
+      ...(projectId ? { project: { id: projectId } } : {}),
+      ...(startAt && endAt
+        ? {
+            created_date: {
+              date: {
+                from: toDate(startAt),
+                to: toDate(endAt),
+              },
+            },
+          }
+        : {}),
+    },
   };
 
   const queryStatus: QuerySchema = {
@@ -118,6 +120,20 @@ const query = ({ projectId, startAt, endAt }: QueryProps): Query => {
       all: 'count',
       'status.title_multiloc': 'first',
       'status.color': 'first',
+    },
+    dimensions: {
+      type: { name: 'idea' },
+      ...(projectId ? { project: { id: projectId } } : {}),
+      ...(startAt && endAt
+        ? {
+            created_date: {
+              date: {
+                from: toDate(startAt),
+                to: toDate(endAt),
+              },
+            },
+          }
+        : {}),
     },
   };
 
