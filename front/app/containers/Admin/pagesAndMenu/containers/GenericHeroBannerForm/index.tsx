@@ -481,8 +481,8 @@ const GenericHeroBannerForm = ({
           banner_cta_signed_out_url={localSettings.banner_cta_signed_out_url}
           banner_cta_signed_out_type={localSettings.banner_cta_signed_out_type}
           handleOnChange={updateValueInLocalState}
-          // signed in only applies to 
-          showSignedInSettings={type === "homePage"}
+          // signed in only applies to
+          showSignedInSettings={type === 'homePage'}
           errors={apiErrors}
         />
       </Section>

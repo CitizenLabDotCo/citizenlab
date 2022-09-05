@@ -45,9 +45,7 @@ import {
   TAppConfigurationSetting,
   TAppConfigurationSettingCore,
 } from 'services/appConfiguration';
-import {
-  THomepageBannerLayout,
-} from 'services/homepageSettings';
+import { THomepageBannerLayout } from 'services/homepageSettings';
 import { ManagerType } from 'components/admin/PostManager';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaHeaderRow';
@@ -379,10 +377,7 @@ export interface OutletsPropertyMap {
     banner_cta_signed_out_type: any;
     banner_cta_signed_in_type: any;
     showSignedInSettings: boolean;
-    handleOnChange: (
-      settingKey: any,
-      settingValue: any
-    ) => void;
+    handleOnChange: (settingKey: any, settingValue: any) => void;
     errors: CLErrors | undefined | null;
   };
   'app.containers.LandingPage.SignedOutHeader.index': {

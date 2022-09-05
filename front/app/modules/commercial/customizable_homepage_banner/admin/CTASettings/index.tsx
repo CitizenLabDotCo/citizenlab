@@ -9,7 +9,6 @@ import CTASignedInSettings from './CTASignedInSettings';
 import { CLErrors, Multiloc } from 'typings';
 import 'utils/moduleUtils';
 
-
 // only these keys will be used in CTA settings
 
 export type BannerSettingKeyType = Extract<
@@ -57,13 +56,15 @@ const CTASettings = ({
         handleSettingOnChange={handleOnChange}
         errors={errors}
       />
-      { showSignedInSettings && <CTASignedInSettings
-        ctaType={banner_cta_signed_in_type}
-        ctaButtonMultiloc={banner_cta_signed_in_text_multiloc}
-        ctaButtonUrl={banner_cta_signed_in_url}
-        handleSettingOnChange={handleOnChange}
-        errors={errors}
-      /> }
+      {showSignedInSettings && (
+        <CTASignedInSettings
+          ctaType={banner_cta_signed_in_type}
+          ctaButtonMultiloc={banner_cta_signed_in_text_multiloc}
+          ctaButtonUrl={banner_cta_signed_in_url}
+          handleSettingOnChange={handleOnChange}
+          errors={errors}
+        />
+      )}
     </Section>
   );
 };
