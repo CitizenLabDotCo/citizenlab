@@ -71,6 +71,8 @@ ActiveRecord::Schema.define(version: 2022_08_18_165037) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "ordering"
+    t.uuid "custom_field_option_id"
+    t.index ["custom_field_option_id"], name: "index_areas_on_custom_field_option_id"
   end
 
   create_table "areas_ideas", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -1211,6 +1213,7 @@ ActiveRecord::Schema.define(version: 2022_08_18_165037) do
   end
 
   add_foreign_key "activities", "users"
+  add_foreign_key "areas", "custom_field_options"
   add_foreign_key "areas_ideas", "areas"
   add_foreign_key "areas_ideas", "ideas"
   add_foreign_key "areas_initiatives", "areas"
