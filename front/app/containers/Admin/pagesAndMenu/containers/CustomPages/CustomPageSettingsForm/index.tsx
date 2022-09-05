@@ -37,7 +37,7 @@ type TMode = 'new' | 'edit';
 interface Props {
   defaultValues?: FormValues;
   mode: TMode;
-  onSubmit: (formValues: FormValues) => void;
+  onSubmit: (formValues: FormValues) => void | Promise<void>;
 }
 
 const CustomPageSettingsForm = ({
