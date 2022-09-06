@@ -310,6 +310,10 @@ namespace :cl2_back do
         native_surveys: {
           enabled: true,
           allowed: true
+        },
+        analytics: {
+          enabled: true,
+          allowed: true
         }
       }
     )
