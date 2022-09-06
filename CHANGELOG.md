@@ -1,5 +1,9 @@
 # Changelog
 
+## 2022-09-06
+
+### Added
+- [CL-423] Added input feedback dashboard card with new analytics endpoint
 ## 2022-09-05
 
 ### Added
