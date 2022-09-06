@@ -9,7 +9,7 @@ export interface Query {
 export interface QuerySchema {
   fields?: string | string[];
   fact: 'post' | 'participation';
-  dimensions?: {
+  filters?: {
     [k: string]: {
       [k: string]:
         | string
@@ -35,6 +35,6 @@ type Aggregation = 'min' | 'max' | 'avg' | 'sum' | 'count' | 'first';
 export function analyticsStream<Response>(query: Query) {
   return streams.get<Response>({
     apiEndpoint: `${API_PATH}/analytics`,
-    queryParameters: query
+    queryParameters: query,
   });
 }

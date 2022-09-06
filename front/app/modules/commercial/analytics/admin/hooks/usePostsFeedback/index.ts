@@ -110,7 +110,7 @@ const query = ({ projectId, startAt, endAt }: QueryProps): Query => {
       feedback_status_change: 'sum',
       feedback_time_taken: 'avg',
     },
-    dimensions: {
+    filters: {
       type: { name: 'idea' },
       ...(projectId ? { project: { id: projectId } } : {}),
       ...(startAt && endAt
@@ -134,7 +134,7 @@ const query = ({ projectId, startAt, endAt }: QueryProps): Query => {
       'status.title_multiloc': 'first',
       'status.color': 'first',
     },
-    dimensions: {
+    filters: {
       type: { name: 'idea' },
       ...(projectId ? { project: { id: projectId } } : {}),
       ...(startAt && endAt
