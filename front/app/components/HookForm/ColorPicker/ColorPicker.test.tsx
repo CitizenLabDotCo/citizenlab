@@ -1,60 +1,61 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
-import QuillMultilocWithLocaleSwitcher from './';
+import ColorPicker from './';
 import { useForm, FormProvider } from 'react-hook-form';
-import { object } from 'yup';
+import { string, object } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import validateMultiloc from 'utils/yup/validateMultiloc';
 import translationMessages from 'i18n/en';
 
 const schema = object({
-  description: validateMultiloc('Error message'),
+  color: string().required('Error message'),
 });
 
 jest.mock('utils/cl-intl');
-jest.mock('hooks/useAppConfigurationLocales', () =>
-  jest.fn(() => ['en', 'nl-NL'])
-);
-jest.mock('hooks/useLocale');
 
 const onSubmit = jest.fn();
 
-const Form = ({ defaultValue }: { defaultValue?: Record<string, string> }) => {
+const defaultFormValues = {
+  color: '',
+};
+
+const Form = ({
+  defaultValues,
+}: {
+  defaultValues?: typeof defaultFormValues;
+}) => {
   const methods = useForm({
+    defaultValues,
     resolver: yupResolver(schema),
-    defaultValues: { description: defaultValue },
   });
 
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit((formData) => onSubmit(formData))}>
-        <QuillMultilocWithLocaleSwitcher name="description" />
+        <ColorPicker name="color" label="color" />
         <button type="submit">Submit</button>
       </form>
     </FormProvider>
   );
 };
 
-describe('QuillMultilocWithLocaleSwitcher', () => {
+describe('ColorPicker', () => {
   it('renders', () => {
-    const { container } = render(<Form />);
-    expect(container.querySelector('.ql-editor')).toBeInTheDocument();
+    render(<Form />);
+    expect(screen.getByRole('textbox')).toBeInTheDocument();
   });
-  it('submits correct data from input', async () => {
-    const defaultValue = { en: 'en description', 'nl-NL': 'nl description' };
-    render(<Form defaultValue={defaultValue} />);
+  it('submits correct data from color', async () => {
+    const value = '#000000';
+    render(<Form defaultValues={{ color: value }} />);
 
     fireEvent.click(screen.getByText(/submit/i));
-
     await waitFor(() =>
-      expect(onSubmit).toHaveBeenCalledWith({
-        description: defaultValue,
-      })
+      expect(onSubmit).toHaveBeenCalledWith({ color: value })
     );
   });
   it('shows front-end validation error when there is one', async () => {
     render(<Form />);
     fireEvent.click(screen.getByText(/submit/i));
+    expect(onSubmit).not.toHaveBeenCalled();
     await waitFor(() => {
       expect(onSubmit).not.toHaveBeenCalled();
       expect(screen.getByText('Error message')).toBeInTheDocument();
@@ -67,10 +68,10 @@ describe('QuillMultilocWithLocaleSwitcher', () => {
         <FormProvider {...methods}>
           <form
             onSubmit={methods.handleSubmit(() =>
-              methods.setError('title', { error: 'blank' } as any)
+              methods.setError('slug', { error: 'taken' } as any)
             )}
           >
-            <QuillMultilocWithLocaleSwitcher name="title" />
+            <ColorPicker name="slug" label="slug" />
             <button type="submit">Submit</button>
           </form>
         </FormProvider>
@@ -79,12 +80,19 @@ describe('QuillMultilocWithLocaleSwitcher', () => {
 
     render(<FormWithAPIError />);
 
+    const value = 'slug';
+    fireEvent.change(screen.getByRole('textbox'), {
+      target: {
+        value,
+      },
+    });
+
     fireEvent.click(screen.getByText(/submit/i));
     await waitFor(() => {
       expect(
         screen.getByText(
           (translationMessages as Record<string, string>)[
-            'app.errors.generics.blank'
+            'app.errors.slug_taken'
           ]
         )
       ).toBeInTheDocument();

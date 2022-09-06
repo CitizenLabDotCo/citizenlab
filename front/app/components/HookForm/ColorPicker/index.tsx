@@ -1,27 +1,27 @@
 import React from 'react';
-import TextareaComponent, {
-  Props as TextAreaProps,
-} from 'components/UI/TextArea';
+import {
+  ColorPickerInput,
+  ColorPickerInputProps,
+} from '@citizenlab/cl2-component-library';
 import Error, { TFieldName } from 'components/UI/Error';
 import { Controller, useFormContext } from 'react-hook-form';
 import { CLError } from 'typings';
 
-interface Props extends TextAreaProps {
+interface Props
+  extends Omit<ColorPickerInputProps, 'value' | 'onChange' | 'type'> {
   name: string;
 }
 
-const TextArea = ({ name, ...rest }: Props) => {
+const ColorPicker = ({ name, ...rest }: Props) => {
   const {
     formState: { errors },
     control,
-    trigger,
   } = useFormContext();
 
   const defaultValue = '';
 
   const validationError = errors[name]?.message as string | undefined;
 
-  // If an API error with a matching name has been returned from the API response, apiError is set to an array with the error message as the only item
   const apiError =
     (errors[name]?.error as string | undefined) &&
     ([errors[name]] as unknown as CLError[]);
@@ -33,14 +33,7 @@ const TextArea = ({ name, ...rest }: Props) => {
         control={control}
         defaultValue={defaultValue}
         render={({ field: { ref: _ref, ...field } }) => (
-          <TextareaComponent
-            id={name}
-            {...field}
-            {...rest}
-            onBlur={() => {
-              trigger();
-            }}
-          />
+          <ColorPickerInput type="text" id={name} {...field} {...rest} />
         )}
       />
       {validationError && (
@@ -64,4 +57,4 @@ const TextArea = ({ name, ...rest }: Props) => {
   );
 };
 
-export default TextArea;
+export default ColorPicker;
