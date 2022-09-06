@@ -12,7 +12,7 @@ import { stackLabels } from './stackLabels';
 import { stackedBarTooltip } from './stackedBarTooltip';
 import Button from 'components/UI/Button';
 
-// styling
+// stylings
 import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 
