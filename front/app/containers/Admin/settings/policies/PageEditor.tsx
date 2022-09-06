@@ -13,7 +13,6 @@ import { updatePage } from 'services/pages';
 import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 
 // hooks
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useRemoteFiles, { RemoteFiles } from 'hooks/useRemoteFiles';
 import usePage from 'hooks/usePage';
 
@@ -100,7 +99,6 @@ interface Props {
 }
 
 const PageEditor = ({ className, pageSlug }: Props) => {
-  const appConfigurationLocales = useAppConfigurationLocales();
   const page = usePage({ pageSlug });
   const remotePageFiles = useRemoteFiles({
     resourceType: 'page',
@@ -129,7 +127,7 @@ const PageEditor = ({ className, pageSlug }: Props) => {
       }
     };
 
-  if (!isNilOrError(page) && !isNilOrError(appConfigurationLocales)) {
+  if (!isNilOrError(page)) {
     const pageId = page.id;
     return (
       <EditorWrapper
@@ -157,6 +155,8 @@ const PageEditor = ({ className, pageSlug }: Props) => {
             <PageForm
               pageId={pageId}
               defaultValues={{
+                nav_bar_item_title_multiloc:
+                  page.attributes.nav_bar_item_title_multiloc,
                 title_multiloc: page.attributes.title_multiloc,
                 body_multiloc: page.attributes.body_multiloc,
                 slug: page.attributes.slug,

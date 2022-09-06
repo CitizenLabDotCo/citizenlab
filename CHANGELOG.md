@@ -1,5 +1,37 @@
 # Changelog
 
+## 2022-09-05
+
+### Added
+- [CL-1157] Added domicile fields to representation dashboard
+
+## 2022-09-02
+
+### Fixed
+- [CL-1580] Do not show full admin panel to moderators
+
+## 2022-08-30
+
+### Fixed
+- [CL-1308] Do not allow editing page slug when custom navbar is disabled
+
+## 2022-08-29
+
+### Fixed
+- [SLS-65] Fixed issue in citizenlab-ee to allow bulk import of custom field options
+
+## 2022-08-24
+
+### Fixed
+- [CL-1505] Posting ideas when there is no current phase
+- [CL-1509] Bulk idea import works for special date cells
+
+## 2022-08-23
+
+### Added
+- The public API now supports phases, as well as additional project properties
+- The project search now also searches through content builder content
+
 ## 2022-08-18
 
 ### Fixed
@@ -12,6 +44,7 @@
 ### Changed
 
 - Improve error handling and user feedback in the forms for creating pages and custom navigation items
+- [CL-854] Added tooltip to admin budget field in idea form for clarity
 
 ## 2022-08-11
 
