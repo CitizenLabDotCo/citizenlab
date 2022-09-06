@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
-import { omitBy, isNil, isEmpty, isString } from 'lodash-es';
+import { omitBy, isNil, isEmpty, isString, debounce } from 'lodash-es';
 import { stringify } from 'qs';
 
 import Form, { FormValues } from './Form';
@@ -61,6 +61,7 @@ const schema = object({
 
 const IdeasWidget = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const [codeModalOpened, setCodeModalOpened] = useState(false);
+  const [widgetParams, setWidgetParams] = useState('');
 
   const initialValues = (): FormValues => {
     return {
@@ -92,14 +93,21 @@ const IdeasWidget = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     resolver: yupResolver(schema),
   });
 
-  const generateWidgetParams = () => {
-    const widgetParams = methods.watch();
-    const cleanedParams = omitBy(
-      widgetParams,
-      (v) => isNil(v) || (isString(v) && isEmpty(v))
-    );
-    return stringify(cleanedParams);
-  };
+  const formValues = methods.watch();
+
+  useEffect(() => {}, [formValues]);
+
+  const getWidgetParams = useMemo(() => {
+    return debounce((formValues: FormValues) => {
+      const cleanedParams = omitBy(
+        formValues,
+        (v) => isNil(v) || (isString(v) && isEmpty(v))
+      );
+      setWidgetParams(stringify(cleanedParams));
+    }, 500);
+  }, []);
+
+  useEffect(() => getWidgetParams(formValues), [getWidgetParams, formValues]);
 
   const handleCloseCodeModal = () => {
     setCodeModalOpened(false);
@@ -127,7 +135,7 @@ const IdeasWidget = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           <FormattedMessage {...messages.previewTitle} />
         </WidgetTitle>
         <StyledWidgetPreview
-          path={`/ideas?${generateWidgetParams()}`}
+          path={`/ideas?${widgetParams}`}
           width={methods.getValues('width') || 300}
           height={methods.getValues('height') || 400}
         />
@@ -142,7 +150,7 @@ const IdeasWidget = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         fixedHeight={true}
       >
         <WidgetCode
-          path={`/ideas?${generateWidgetParams()}`}
+          path={`/ideas?${widgetParams}`}
           width={methods.getValues('width') || 300}
           height={methods.getValues('height') || 400}
         />

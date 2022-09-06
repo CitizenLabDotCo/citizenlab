@@ -47,8 +47,6 @@ const StyledSection = styled(Section)`
   background: #fff;
 `;
 
-export interface Props {}
-
 export interface FormValues {
   width: number;
   height: number;
@@ -158,7 +156,7 @@ const WidgetForm = ({
             <Input
               name="fontSize"
               type="number"
-              label={formatMessage(messages.fieldFont)}
+              label={formatMessage(messages.fieldFontSize)}
             />
           </SectionField>
         </StyledSection>
