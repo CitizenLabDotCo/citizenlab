@@ -127,3 +127,28 @@ const EditHomepageHeroBannerForm = ({
 };
 
 export default injectIntl(EditHomepageHeroBannerForm);
+
+export interface HomepageHeroBannerInputSettings {
+  banner_layout: IHomepageSettingsAttributes['banner_layout'];
+  banner_overlay_opacity:
+    | IHomepageSettingsAttributes['banner_signed_out_header_overlay_opacity'];
+  banner_overlay_color:
+    | IHomepageSettingsAttributes['banner_signed_out_header_overlay_color'];
+  banner_header_multiloc:
+    | IHomepageSettingsAttributes['banner_signed_out_header_multiloc'];
+  banner_subheader_multiloc:
+    | IHomepageSettingsAttributes['banner_signed_out_header_multiloc'];
+  header_bg: IHomepageSettingsAttributes['header_bg'];
+  // homepage only properties, optional
+  banner_signed_in_header_multiloc?: IHomepageSettingsAttributes['banner_signed_in_header_multiloc'];
+  banner_avatars_enabled?: IHomepageSettingsAttributes['banner_avatars_enabled'];
+  // cta settings, only on homepage
+  banner_cta_signed_in_text_multiloc?: IHomepageSettingsAttributes['banner_cta_signed_in_text_multiloc'];
+  banner_cta_signed_in_type?: IHomepageSettingsAttributes['banner_cta_signed_in_type'];
+  banner_cta_signed_in_url?: IHomepageSettingsAttributes['banner_cta_signed_in_url'];
+  // cta_signed_out
+  // this can be retyped since it exists on custom page too
+  banner_cta_signed_out_text_multiloc: IHomepageSettingsAttributes['banner_cta_signed_out_text_multiloc'];
+  banner_cta_signed_out_type: IHomepageSettingsAttributes['banner_cta_signed_out_type'];
+  banner_cta_signed_out_url: IHomepageSettingsAttributes['banner_cta_signed_out_url'];
+}

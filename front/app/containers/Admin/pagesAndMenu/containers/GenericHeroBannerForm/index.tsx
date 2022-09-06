@@ -46,9 +46,8 @@ type MultilocErrorType = {
 };
 export type PreviewDevice = 'mobile' | 'tablet' | 'desktop';
 import { TBreadcrumbs } from 'components/UI/Breadcrumbs';
-
-// resources
-import { IHomepageSettingsAttributes } from 'services/homepageSettings';
+import { HomepageHeroBannerInputSettings } from 'containers/Admin/pagesAndMenu/EditHomepage/HeroBanner';
+import { CustomPageHeroBannerInputSettings } from 'containers/Admin/pagesAndMenu/containers/CustomPages/Edit/HeroBanner';
 
 // utils
 import { isNil, isNilOrError } from 'utils/helperUtils';
@@ -57,7 +56,6 @@ import { convertUrlToUploadFile } from 'utils/fileUtils';
 
 // constants
 import Warning from 'components/UI/Warning';
-import { ICustomPagesAttributes } from 'services/customPages';
 const TITLE_MAX_CHAR_COUNT = 45;
 const SUBTITLE_MAX_CHAR_COUNT = 90;
 
@@ -67,7 +65,6 @@ const BgHeaderPreviewSelect = styled(Select)`
 
 // names differ slightly between HomePage and CustomPage
 type Props = {
-  type: 'homePage' | 'customPage';
   breadcrumbs: TBreadcrumbs;
   title?: string | JSX.Element;
   formStatus: ISubmitState;
@@ -81,42 +78,11 @@ type Props = {
   hideAvatarsFields?: boolean;
 };
 
-export type HeroBannerInputSettings = {
-  banner_layout:
-    | IHomepageSettingsAttributes['banner_layout']
-    | ICustomPagesAttributes['banner_layout'];
-  banner_overlay_opacity:
-    | IHomepageSettingsAttributes['banner_signed_out_header_overlay_opacity']
-    | ICustomPagesAttributes['banner_overlay_opacity'];
-  banner_overlay_color:
-    | IHomepageSettingsAttributes['banner_signed_out_header_overlay_color']
-    | ICustomPagesAttributes['banner_overlay_color'];
-  banner_header_multiloc:
-    | IHomepageSettingsAttributes['banner_signed_out_header_multiloc']
-    | ICustomPagesAttributes['banner_header_multiloc'];
-  banner_subheader_multiloc:
-    | IHomepageSettingsAttributes['banner_signed_out_header_multiloc']
-    | ICustomPagesAttributes['banner_header_multiloc'];
-  header_bg:
-    | IHomepageSettingsAttributes['header_bg']
-    | ICustomPagesAttributes['header_bg'];
-
-  // homepage only properties, optional
-  banner_signed_in_header_multiloc?: IHomepageSettingsAttributes['banner_signed_in_header_multiloc'];
-  banner_avatars_enabled?: IHomepageSettingsAttributes['banner_avatars_enabled'];
-  // cta settings, only on homepage
-  banner_cta_signed_in_text_multiloc?: IHomepageSettingsAttributes['banner_cta_signed_in_text_multiloc'];
-  banner_cta_signed_in_type?: IHomepageSettingsAttributes['banner_cta_signed_in_type'];
-  banner_cta_signed_in_url?: IHomepageSettingsAttributes['banner_cta_signed_in_url'];
-  // cta_signed_out
-  // this can be retyped since it exists on custom page too
-  banner_cta_signed_out_text_multiloc: IHomepageSettingsAttributes['banner_cta_signed_out_text_multiloc'];
-  banner_cta_signed_out_type: IHomepageSettingsAttributes['banner_cta_signed_out_type'];
-  banner_cta_signed_out_url: IHomepageSettingsAttributes['banner_cta_signed_out_url'];
-};
+export type HeroBannerInputSettings =
+  | HomepageHeroBannerInputSettings
+  | CustomPageHeroBannerInputSettings;
 
 const GenericHeroBannerForm = ({
-  type,
   onSave,
   inputSettings,
   setFormStatus,

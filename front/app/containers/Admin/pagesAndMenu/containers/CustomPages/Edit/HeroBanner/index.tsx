@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { ICustomPagesAttributes } from 'services/customPages';
 
 import { useParams } from 'react-router-dom';
 import useCustomPage from 'hooks/useCustomPage';
@@ -112,3 +113,12 @@ const EditCustomPageHeroBannerForm = ({
 };
 
 export default injectIntl(EditCustomPageHeroBannerForm);
+
+export interface CustomPageHeroBannerInputSettings {
+  banner_layout: ICustomPagesAttributes['banner_layout'];
+  banner_overlay_opacity: ICustomPagesAttributes['banner_overlay_opacity'];
+  banner_overlay_color: ICustomPagesAttributes['banner_overlay_color'];
+  banner_header_multiloc: ICustomPagesAttributes['banner_header_multiloc'];
+  banner_subheader_multiloc: ICustomPagesAttributes['banner_header_multiloc'];
+  header_bg: ICustomPagesAttributes['header_bg'];
+}
