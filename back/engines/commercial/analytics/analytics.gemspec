@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.version     = Analytics::VERSION
   s.authors     = ['CitizenLab']
   s.licenses    = ['CitizenLab Commercial License V1']
-  s.summary     = 'Dedicated endpoints for dashboards and analytics'
+  s.summary     = 'Dedicated endpoints for dashboards and analytics.'
 
   s.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']
 
