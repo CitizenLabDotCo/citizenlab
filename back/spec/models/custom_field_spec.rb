@@ -58,6 +58,10 @@ class TestVisitor < FieldVisitorService
   def visit_point(_field)
     'point from visitor'
   end
+
+  def visit_linear_scale(_field)
+    'linear_scale from visitor'
+  end
 end
 
 RSpec.describe CustomField, type: :model do
@@ -136,115 +140,13 @@ RSpec.describe CustomField, type: :model do
   describe '#accept' do
     let(:visitor) { TestVisitor.new }
 
-    context 'for a text field' do
-      subject(:field) { build :custom_field, input_type: 'text' }
+    described_class::INPUT_TYPES.each do |input_type|
+      context "for a #{input_type} field" do
+        subject(:field) { build :custom_field, input_type: input_type }
 
-      it 'returns the value returned by the visitor' do
-        expect(field.accept(visitor)).to eq 'text from visitor'
-      end
-    end
-
-    context 'for a number field' do
-      subject(:field) { build :custom_field, input_type: 'number' }
-
-      it 'returns the value returned by the visitor' do
-        expect(field.accept(visitor)).to eq 'number from visitor'
-      end
-    end
-
-    context 'for a multiline_text field' do
-      subject(:field) { build :custom_field, input_type: 'multiline_text' }
-
-      it 'returns the value returned by the visitor' do
-        expect(field.accept(visitor)).to eq 'multiline_text from visitor'
-      end
-    end
-
-    context 'for a html field' do
-      subject(:field) { build :custom_field, input_type: 'html' }
-
-      it 'returns the value returned by the visitor' do
-        expect(field.accept(visitor)).to eq 'html from visitor'
-      end
-    end
-
-    context 'for a text_multiloc field' do
-      subject(:field) { build :custom_field, input_type: 'text_multiloc' }
-
-      it 'returns the value returned by the visitor' do
-        expect(field.accept(visitor)).to eq 'text_multiloc from visitor'
-      end
-    end
-
-    context 'for a multiline_text_multiloc field' do
-      subject(:field) { build :custom_field, input_type: 'multiline_text_multiloc' }
-
-      it 'returns the value returned by the visitor' do
-        expect(field.accept(visitor)).to eq 'multiline_text_multiloc from visitor'
-      end
-    end
-
-    context 'for a html_multiloc field' do
-      subject(:field) { build :custom_field, input_type: 'html_multiloc' }
-
-      it 'returns the value returned by the visitor' do
-        expect(field.accept(visitor)).to eq 'html_multiloc from visitor'
-      end
-    end
-
-    context 'for a select field' do
-      subject(:field) { build :custom_field, input_type: 'select' }
-
-      it 'returns the value returned by the visitor' do
-        expect(field.accept(visitor)).to eq 'select from visitor'
-      end
-    end
-
-    context 'for a multiselect field' do
-      subject(:field) { build :custom_field, input_type: 'multiselect' }
-
-      it 'returns the value returned by the visitor' do
-        expect(field.accept(visitor)).to eq 'multiselect from visitor'
-      end
-    end
-
-    context 'for a checkbox field' do
-      subject(:field) { build :custom_field, input_type: 'checkbox' }
-
-      it 'returns the value returned by the visitor' do
-        expect(field.accept(visitor)).to eq 'checkbox from visitor'
-      end
-    end
-
-    context 'for a date field' do
-      subject(:field) { build :custom_field, input_type: 'date' }
-
-      it 'returns the value returned by the visitor' do
-        expect(field.accept(visitor)).to eq 'date from visitor'
-      end
-    end
-
-    context 'for a files field' do
-      subject(:field) { build :custom_field, input_type: 'files' }
-
-      it 'returns the value returned by the visitor' do
-        expect(field.accept(visitor)).to eq 'files from visitor'
-      end
-    end
-
-    context 'for an image_files field' do
-      subject(:field) { build :custom_field, input_type: 'image_files' }
-
-      it 'returns the value returned by the visitor' do
-        expect(field.accept(visitor)).to eq 'image_files from visitor'
-      end
-    end
-
-    context 'for a point field' do
-      subject(:field) { build :custom_field, input_type: 'point' }
-
-      it 'returns the value returned by the visitor' do
-        expect(field.accept(visitor)).to eq 'point from visitor'
+        it 'returns the value returned by the visitor' do
+          expect(field.accept(visitor)).to eq "#{input_type} from visitor"
+        end
       end
     end
 

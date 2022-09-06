@@ -90,6 +90,7 @@ module IdeaCustomFields
           SideFxCustomFieldService.new.after_destroy(field, current_user)
         end
         update_all_params.each_with_index do |field_params, index|
+          options_given = field_params.key? :options
           options_params = field_params.delete :options
           if field_params[:id]
             field = fields_by_id[field_params[:id]]
@@ -109,7 +110,7 @@ module IdeaCustomFields
             end
             SideFxCustomFieldService.new.after_create(field, current_user)
           end
-          update_options field, options_params, errors, index if options_params
+          update_options field, options_params, errors, index if options_given
           field.move_to_bottom
         end
         raise UpdateAllFailedError, errors if errors.present?
