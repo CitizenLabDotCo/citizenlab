@@ -9,7 +9,7 @@ import PostFeedback from '../components/PostFeedback';
 interface Props {
   projectId: string | undefined;
   startAt: string | null | undefined;
-  endAt: string | null;
+  endAt: string | null | undefined;
 }
 
 export default (props: Props) => {

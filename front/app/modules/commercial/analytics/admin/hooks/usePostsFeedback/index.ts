@@ -34,7 +34,7 @@ import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 interface QueryProps {
   projectId: string | undefined;
   startAt: string | null | undefined;
-  endAt: string | null;
+  endAt: string | null | undefined;
 }
 
 // Response

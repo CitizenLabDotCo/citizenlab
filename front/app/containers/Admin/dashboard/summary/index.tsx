@@ -20,6 +20,7 @@ import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
 import SelectableResourceByProjectChart from './charts/SelectableResourceByProjectChart';
 import SelectableResourceByTopicChart from './charts/SelectableResourceByTopicChart';
 import LineBarChartVotesByTime from './charts/LineBarChartVotesByTime';
+import IdeasByStatusChart from './charts/IdeasByStatusChart';
 
 // typings
 import { IOption } from 'typings';
@@ -286,6 +287,12 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
               />
             </Column>
             <Column>
+              <IdeasByStatusChart
+                className="fullWidth dynamicHeight"
+                startAt={startAt}
+                endAt={endAt}
+                {...this.state}
+              />
               <Outlet
                 id="app.containers.Admin.dashboard.summary.postStatus"
                 projectId={currentProjectFilter}

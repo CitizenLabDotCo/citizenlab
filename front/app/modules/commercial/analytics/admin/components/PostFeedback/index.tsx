@@ -38,7 +38,7 @@ import { InjectedIntlProps } from 'react-intl';
 interface Props {
   projectId: string | undefined;
   startAt: string | null | undefined;
-  endAt: string | null;
+  endAt: string | null | undefined;
 }
 
 const Container = styled.div`
