@@ -5,9 +5,13 @@ import PagesMenu from '.';
 const header = 'Pages';
 
 jest.mock('services/locale');
+jest.mock('utils/cl-intl');
 jest.mock('hooks/useFeatureFlag', () => jest.fn(() => false));
 jest.mock('./messages', () => ({
-  pageHeader: { id: 'id', defaultMessage: header },
+  pageHeader: { id: 'header', defaultMessage: header },
+  pagesMenuTitle: { id: 'tile', defaultMessage: 'menu title' },
+  pagesMenuMetaTitle: { id: 'id', defaultMessage: 'menu meta title' },
+  pagesMetaTitle: { id: 'header', defaultMessage: 'meta' },
 }));
 
 describe('<VisibleNavbarItemList />', () => {
