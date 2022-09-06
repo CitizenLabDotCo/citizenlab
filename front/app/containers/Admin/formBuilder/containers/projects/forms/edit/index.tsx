@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import { useParams } from 'react-router-dom';
 import { useForm, useFieldArray, FormProvider } from 'react-hook-form';
-import { object, boolean, array } from 'yup';
+import { object, boolean, array, number } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 // styles
@@ -72,6 +72,9 @@ export const FormEdit = ({
             title_multiloc: object(),
           })
         ),
+        maximum: number(),
+        minimum_label_multiloc: object(),
+        maximum_label_multiloc: object(),
         required: boolean(),
       })
     ),

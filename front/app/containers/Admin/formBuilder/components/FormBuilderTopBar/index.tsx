@@ -87,9 +87,9 @@ const FormBuilderTopBar = () => {
           }),
           ...(field.input_type === 'linear_scale' && {
             // TODO: This will get messy with more field types, abstract this in some way
-            minimum_label_multiloc: field.title_multiloc || {},
-            maximum_label_multiloc: field.title_multiloc || {},
-            maximum: 5,
+            minimum_label_multiloc: field.minimum_label_multiloc || {},
+            maximum_label_multiloc: field.maximum_label_multiloc || {},
+            maximum: field.maximum,
           }),
         }));
         await updateFormCustomFields(projectId, finalResponseArray, phaseId);

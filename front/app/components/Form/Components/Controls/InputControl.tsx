@@ -36,12 +36,13 @@ export const InputControl = ({
     [schema.type, handleChange, path]
   );
 
-  const schemaType =
-    schema.type === 'number'
-      ? 'number'
-      : schema.type === 'email'
-      ? 'email'
-      : 'text';
+  const schemaType = schema.type === 'number' ? 'number' : 'text';
+
+  console.log('path: ', path);
+  console.log('data: ', data);
+  console.log('errors: ', errors);
+  console.log('schema: ', schema);
+  console.log('ui schema: ', uischema);
 
   return (
     <>

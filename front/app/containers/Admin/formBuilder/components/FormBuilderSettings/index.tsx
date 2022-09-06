@@ -48,9 +48,6 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
     case 'number':
       translatedStringKey = messages.number;
       break;
-    case 'email':
-      translatedStringKey = messages.email;
-      break;
     case 'linear_scale':
       translatedStringKey = messages.linearScale;
       break;
@@ -113,7 +110,6 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
       )}
       {field.input_type === 'linear_scale' && ( // TODO: Remove this - just temporary for testing
         <LinearScaleSettings // TODO: Abstract logic to somewhere else
-          name={`customFields.${field.index}.options`}
           maximumName={`customFields.${field.index}.maximum`}
           minimumLabelName={`customFields.${field.index}.minimum_label_multiloc`}
           maximumLabelName={`customFields.${field.index}.maximum_label_multiloc`}

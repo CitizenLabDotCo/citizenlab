@@ -5,7 +5,7 @@ import {
   rankWith,
   scopeEndsWith,
 } from '@jsonforms/core';
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import ErrorDisplay from '../ErrorDisplay';
 import { Box, Label, Radio } from '@citizenlab/cl2-component-library';
 import { FormLabel } from 'components/UI/FormComponents';
@@ -22,24 +22,7 @@ const LinearScaleControl = ({
   handleChange,
   id,
 }: ControlProps) => {
-  const [didBlur, setDidBlur] = useState(false);
-  const options = schema?.oneOf?.map((o) => ({
-    value: o.const,
-    label: o.title || o.const,
-  }));
-
-  console.log('data: ', data);
-  console.log('options: ', options);
-  console.log('path: ', path);
-  console.log('ui schema: ', uischema);
-  console.log('json schema: ', schema);
-
-  const onChange = useCallback(
-    (value: string) => {
-      handleChange(path, value);
-    },
-    [handleChange, path]
-  );
+  const maximum = schema?.properties?.rating?.maximum;
 
   return (
     <>
@@ -51,28 +34,27 @@ const LinearScaleControl = ({
         subtextSupportsHtml
       />
       <Box display="flex" flexDirection="row" gap="8px" overflow="visible">
-        <Label value={'Label before'} />
-        {/* {options?.map((item) => (
-          <>
-            <Box style={{ lineHeight: '0px' }}>
-              <Label value={item.label} />
+        <Label value={uischema.options?.minimum_label} />
+        <>
+          {[...Array(maximum)].map((x, i) => (
+            <Box key={i} style={{ lineHeight: '0px' }}>
+              <Label value={(i + 1).toString()} />
               <br />
               <Radio
                 name="linear_scale"
-                currentValue={data}
-                value={item.value}
-                key={item.label}
-                id={item.label}
-                label={''}
-                onChange={onChange}
+                currentValue={data?.rating}
+                value={i + 1}
+                key={i}
+                id={x}
+                onChange={(value) => handleChange(path, { rating: value })}
               />
             </Box>
-          </>
-        ))} */}
-        <Label value={'Label after'} />
+          ))}
+        </>
+        <Label value={uischema.options?.maximum_label} />
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
-      <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
+      <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={false} />
     </>
   );
 };

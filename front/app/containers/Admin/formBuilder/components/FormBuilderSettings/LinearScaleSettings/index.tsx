@@ -12,7 +12,6 @@ import {
   Input,
   Text,
 } from '@citizenlab/cl2-component-library';
-import { SectionField } from 'components/admin/Section';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -23,7 +22,6 @@ import messages from './messages';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 interface Props {
-  name: string;
   maximumName: string;
   minimumLabelName: string;
   maximumLabelName: string;
@@ -33,7 +31,6 @@ interface Props {
 
 const LinearScaleSettings = ({
   onSelectedLocaleChange,
-  name,
   maximumName,
   minimumLabelName,
   maximumLabelName,
@@ -71,7 +68,7 @@ const LinearScaleSettings = ({
           defaultValue={defaultValues}
           render={({ field: { ref: _ref, value } }) => {
             return (
-              <SectionField>
+              <>
                 <Box marginBottom="8px">
                   <Label>
                     {formatMessage(messages.range)}
@@ -112,39 +109,43 @@ const LinearScaleSettings = ({
                     />
                   </Box>
                 </Box>
-                <Controller
-                  name={minimumLabelName}
-                  control={control}
-                  defaultValue={defaultValues}
-                  render={({ field: { ref: _ref, value } }) => {
-                    return (
-                      <Input
-                        type="text"
-                        value={value}
-                        onChange={(value) => {
-                          setValue(minimumLabelName, value);
-                        }}
-                      />
-                    );
-                  }}
-                />
-                <Controller
-                  name={maximumLabelName}
-                  control={control}
-                  defaultValue={defaultValues}
-                  render={({ field: { ref: _ref, value } }) => {
-                    return (
-                      <Input
-                        type="text"
-                        value={value}
-                        onChange={(value) => {
-                          setValue(name, value);
-                        }}
-                      />
-                    );
-                  }}
-                />
-              </SectionField>
+              </>
+            );
+          }}
+        />
+        <Controller
+          name={minimumLabelName}
+          control={control}
+          defaultValue={defaultValues}
+          render={({ field: { ref: _ref, value: minLabelMultiloc } }) => {
+            return (
+              <Input
+                type="text"
+                value={minLabelMultiloc[selectedLocale]}
+                onChange={(value) => {
+                  const updatedMultiloc = minLabelMultiloc;
+                  updatedMultiloc[selectedLocale] = value;
+                  setValue(minimumLabelName, updatedMultiloc);
+                }}
+              />
+            );
+          }}
+        />
+        <Controller
+          name={maximumLabelName}
+          control={control}
+          defaultValue={defaultValues}
+          render={({ field: { ref: _ref, value: maxLabelMultiloc } }) => {
+            return (
+              <Input
+                type="text"
+                value={maxLabelMultiloc[selectedLocale]}
+                onChange={(value) => {
+                  const updatedMultiloc = maxLabelMultiloc;
+                  updatedMultiloc[selectedLocale] = value;
+                  setValue(maximumLabelName, updatedMultiloc);
+                }}
+              />
             );
           }}
         />

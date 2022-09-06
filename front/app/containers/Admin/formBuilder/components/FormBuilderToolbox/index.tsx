@@ -39,6 +39,9 @@ const FormBuilderToolbox = ({
       input_type: inputType,
       required: false,
       title_multiloc: {},
+      maximum_label_multiloc: {},
+      minimum_label_multiloc: {},
+      maximum: 5,
       options: [
         {
           // TODO: Ask Ben what the starter data should be
@@ -93,11 +96,6 @@ const FormBuilderToolbox = ({
             icon="info"
             label={formatMessage(messages.number)}
             onClick={() => addAnswer('number')}
-          />
-          <ToolboxItem
-            icon="info"
-            label={formatMessage(messages.email)}
-            onClick={() => addAnswer('email')}
           />
           <ToolboxItem
             icon="info"
