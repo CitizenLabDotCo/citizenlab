@@ -106,9 +106,10 @@ export type HeroBannerInputSettings = {
   banner_cta_signed_in_type?: IHomepageSettingsAttributes['banner_cta_signed_in_type'];
   banner_cta_signed_in_url?: IHomepageSettingsAttributes['banner_cta_signed_in_url'];
   // cta_signed_out
-  banner_cta_signed_out_text_multiloc?: IHomepageSettingsAttributes['banner_cta_signed_out_text_multiloc'];
-  banner_cta_signed_out_type?: IHomepageSettingsAttributes['banner_cta_signed_out_type'];
-  banner_cta_signed_out_url?: IHomepageSettingsAttributes['banner_cta_signed_out_url'];
+  // this can be retyped since it exists on custom page too
+  banner_cta_signed_out_text_multiloc: IHomepageSettingsAttributes['banner_cta_signed_out_text_multiloc'];
+  banner_cta_signed_out_type: IHomepageSettingsAttributes['banner_cta_signed_out_type'];
+  banner_cta_signed_out_url: IHomepageSettingsAttributes['banner_cta_signed_out_url'];
 };
 
 import { ISubmitState } from 'components/admin/SubmitWrapper';
@@ -293,13 +294,11 @@ const GenericHeroBannerForm = ({
           <FormattedMessage {...messages.heroBannerInfoBar} />
         </Warning>
 
-        {type === 'homePage' && (
-          <Outlet
-            id="app.containers.Admin.settings.customize.headerSectionStart"
-            bannerLayout={localSettings.banner_layout ?? 'two_column_layout'}
-            handleOnChange={updateValueInLocalState}
-          />
-        )}
+        <Outlet
+          id="app.containers.Admin.settings.customize.headerSectionStart"
+          bannerLayout={localSettings.banner_layout ?? 'two_column_layout'}
+          handleOnChange={updateValueInLocalState}
+        />
         <SubSectionTitle>
           <FormattedMessage {...messages.header_bg} />
           <IconTooltip
@@ -469,14 +468,23 @@ const GenericHeroBannerForm = ({
           </>
         )}
         {/* // CTA settings, only applicable on homepage */}
-        {type === 'homePage' && (
-          <Outlet
-            id="app.containers.Admin.settings.customize.headerSectionEnd"
-            homepageSettings={localSettings}
-            handleOnChange={updateValueInLocalState}
-            errors={apiErrors}
-          />
-        )}
+        <Outlet
+          id="app.containers.Admin.settings.customize.headerSectionEnd"
+          banner_cta_signed_in_text_multiloc={
+            localSettings.banner_cta_signed_in_text_multiloc
+          }
+          banner_cta_signed_in_url={localSettings.banner_cta_signed_in_url}
+          banner_cta_signed_in_type={localSettings.banner_cta_signed_in_type}
+          banner_cta_signed_out_text_multiloc={
+            localSettings.banner_cta_signed_out_text_multiloc
+          }
+          banner_cta_signed_out_url={localSettings.banner_cta_signed_out_url}
+          banner_cta_signed_out_type={localSettings.banner_cta_signed_out_type}
+          handleOnChange={updateValueInLocalState}
+          // signed in only applies to
+          showSignedInSettings={type === 'homePage'}
+          errors={apiErrors}
+        />
       </Section>
     </SectionFormWrapper>
   );
