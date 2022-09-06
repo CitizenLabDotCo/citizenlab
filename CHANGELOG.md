@@ -1,4 +1,10 @@
 # Changelog
+
+## 2022-09-05
+
+### Added
+- [CL-1157] Added domicile fields to representation dashboard
+
 ## 2022-09-02
 
 ### Fixed
