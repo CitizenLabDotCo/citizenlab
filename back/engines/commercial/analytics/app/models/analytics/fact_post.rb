@@ -20,7 +20,7 @@
 #  status_id              :uuid
 #
 module Analytics
-  class FactPost < Analytics::ApplicationView
+  class FactPost < Analytics::ApplicationRecordView
     self.primary_key = :id
     attribute :feedback_time_taken, :string
     belongs_to :type, class_name: 'DimensionType'
