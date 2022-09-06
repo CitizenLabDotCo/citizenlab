@@ -1,18 +1,20 @@
 import { object, lazy, string } from 'yup';
 
-// Show error message if all locales are empty
 const validateAtLeastOneLocale = (message: string) => {
   return lazy((obj) => {
     const keys = Object.keys(obj);
 
+    if (Object.values(obj).every((val) => val === '')) {
+      return object(
+        keys.reduce(
+          (acc, curr) => ((acc[curr] = string().required(message)), acc),
+          {}
+        )
+      );
+    }
     return object(
-      keys.reduce(
-        (acc, curr) => ((acc[curr] = string().required(message)), acc),
-        {}
-      )
-    ).test('all-empty', message, (value) => {
-      return Object.values(value).every((v) => v === '');
-    });
+      keys.reduce((acc, curr) => ((acc[curr] = string()), acc), {})
+    );
   });
 };
 
