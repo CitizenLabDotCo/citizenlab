@@ -3,38 +3,36 @@ import React from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 import { map, isEmpty } from 'lodash-es';
 
-// intl
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
-import messages from '../../messages';
-import moment from 'moment';
-
-// typings
-import { IStreamParams, IStream } from 'utils/streams';
+// styling
 import {
-  IResourceByTime,
+  legacyColors,
+  sizes,
+  animation,
+} from 'components/admin/Graphs/styling';
+
+// services
+import {
+  votesByTimeStream,
+  votesByTimeCumulativeStream,
+  votesByTimeXlsxEndpoint,
   IVotesByTime,
-  IUsersByTime,
-  IIdeasByTime,
-  ICommentsByTime,
 } from 'services/stats';
 
 // components
 import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
-  ComposedChart,
-  CartesianGrid,
-  Tooltip,
   Line,
-  Legend,
+  Label,
   Bar,
+  Tooltip,
   XAxis,
   YAxis,
-  Label,
   ResponsiveContainer,
+  CartesianGrid,
+  Legend,
+  ComposedChart,
 } from 'recharts';
 import {
-  IGraphUnit,
   GraphCard,
   NoDataContainer,
   GraphCardInner,
@@ -44,69 +42,41 @@ import {
   GraphCardFigure,
   GraphCardFigureChange,
 } from 'components/admin/GraphWrappers';
-import { Popup } from 'semantic-ui-react';
-import { Icon } from '@citizenlab/cl2-component-library';
 import { IResolution } from 'components/admin/ResolutionControl';
-import { isNilOrError } from 'utils/helperUtils';
 
-// styling
-import styled from 'styled-components';
-import { colors, sizes } from 'components/admin/Graphs/styling';
+// i18n
+import messages from '../../messages';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import moment from 'moment';
 
-const InfoIcon = styled(Icon)`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  width: 20px;
-  height: 22px;
-  margin-left: 10px;
-`;
-
-const StyledResponsiveContainer = styled(ResponsiveContainer)`
-  .recharts-wrapper {
-    @media print {
-      margin: 0 auto;
-    }
-  }
-`;
-
-type IComposedGraphFormat = {
-  total: number | string;
-  name: string;
+type ISerie = {
+  cumulatedTotal: number;
+  date: string | number;
+  up: number;
+  down: number;
+  total: number;
   code: string;
-  barValue: number | string;
 }[];
 
-interface State {
-  serie: IComposedGraphFormat | undefined;
-}
+type State = {
+  serie: ISerie | null;
+};
 
-type IStreams =
-  | IStream<IUsersByTime>
-  | IStream<IIdeasByTime>
-  | IStream<ICommentsByTime>
-  | IStream<IVotesByTime>;
-
-interface Props {
+type Props = {
   className?: string;
-  graphUnit: IGraphUnit;
-  graphUnitMessageKey: string;
-  graphTitle: string;
   startAt: string | null | undefined;
   endAt: string | null;
   resolution: IResolution;
   currentProjectFilter?: string;
   currentGroupFilter?: string;
   currentTopicFilter?: string;
-  barStream: (streamParams: IStreamParams | null) => IStreams;
-  lineStream: (streamParams: IStreamParams | null) => IStreams;
-  infoMessage?: string;
   currentProjectFilterLabel?: string;
   currentGroupFilterLabel?: string;
   currentTopicFilterLabel?: string;
-  xlsxEndpoint: string;
-}
-class LineBarChart extends React.PureComponent<
+};
+
+class LineBarChartVotesByTime extends React.PureComponent<
   Props & InjectedIntlProps,
   State
 > {
@@ -116,14 +86,30 @@ class LineBarChart extends React.PureComponent<
   constructor(props: Props) {
     super(props as any);
     this.state = {
-      serie: undefined,
+      serie: null,
     };
 
     this.currentChart = React.createRef();
   }
 
   componentDidMount() {
-    this.resubscribe();
+    const {
+      startAt,
+      endAt,
+      resolution,
+      currentGroupFilter,
+      currentTopicFilter,
+      currentProjectFilter,
+    } = this.props;
+
+    this.resubscribe(
+      startAt,
+      endAt,
+      resolution,
+      currentGroupFilter,
+      currentTopicFilter,
+      currentProjectFilter
+    );
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -144,7 +130,14 @@ class LineBarChart extends React.PureComponent<
       currentTopicFilter !== prevProps.currentTopicFilter ||
       currentProjectFilter !== prevProps.currentProjectFilter
     ) {
-      this.resubscribe();
+      this.resubscribe(
+        startAt,
+        endAt,
+        resolution,
+        currentGroupFilter,
+        currentTopicFilter,
+        currentProjectFilter
+      );
     }
   }
 
@@ -152,42 +145,34 @@ class LineBarChart extends React.PureComponent<
     this.combined$.unsubscribe();
   }
 
-  convertAndMergeSeries = (
-    barSerie: IResourceByTime,
-    lineSerie: IResourceByTime
-  ) => {
-    const { graphUnit } = this.props;
+  convertAndMergeSeries(barSerie: IVotesByTime, lineSerie: IVotesByTime) {
+    const { up, down, total } = barSerie.series;
     let convertedSerie;
 
-    if (
-      !isEmpty(lineSerie.series[graphUnit]) &&
-      !isEmpty(barSerie.series[graphUnit])
-    ) {
-      convertedSerie = map(lineSerie.series[graphUnit], (value, key) => ({
+    if (!isEmpty(total) && !isEmpty(lineSerie.series.total)) {
+      convertedSerie = map(total, (value, key) => ({
         total: value,
-        barValue: barSerie.series[graphUnit][key],
-        name: key,
+        down: down[key],
+        up: up[key],
+        date: key,
         code: key,
+        cumulatedTotal: lineSerie.series.total[key],
       }));
     } else {
-      return undefined;
+      return null;
     }
 
     return convertedSerie;
-  };
+  }
 
-  resubscribe() {
-    const {
-      barStream,
-      lineStream,
-      startAt,
-      endAt,
-      resolution,
-      currentProjectFilter,
-      currentGroupFilter,
-      currentTopicFilter,
-    } = this.props;
-
+  resubscribe(
+    startAt: string | null | undefined,
+    endAt: string | null,
+    resolution: IResolution,
+    currentGroupFilter: string | undefined,
+    currentTopicFilter: string | undefined,
+    currentProjectFilter: string | undefined
+  ) {
     if (this.combined$) {
       this.combined$.unsubscribe();
     }
@@ -203,8 +188,9 @@ class LineBarChart extends React.PureComponent<
       },
     };
 
-    const barStreamObservable = barStream(queryParameters).observable;
-    const lineStreamObservable = lineStream(queryParameters).observable;
+    const barStreamObservable = votesByTimeStream(queryParameters).observable;
+    const lineStreamObservable =
+      votesByTimeCumulativeStream(queryParameters).observable;
     this.combined$ = combineLatest([
       barStreamObservable,
       lineStreamObservable,
@@ -240,10 +226,10 @@ class LineBarChart extends React.PureComponent<
     return null;
   };
 
-  getFormattedNumbers(serie) {
-    if (serie) {
-      const firstSerieValue = serie && serie[0].total;
-      const lastSerieValue = serie && serie[serie.length - 1].total;
+  getFormattedNumbers(serie: ISerie | null) {
+    if (serie && serie.length > 0) {
+      const firstSerieValue = serie[0].cumulatedTotal;
+      const lastSerieValue = serie[serie.length - 1].cumulatedTotal;
       const serieChange = lastSerieValue - firstSerieValue;
       let typeOfChange: 'increase' | 'decrease' | '' = '';
 
@@ -269,37 +255,18 @@ class LineBarChart extends React.PureComponent<
 
   render() {
     const { formatMessage } = this.props.intl;
-    const { className, graphTitle, infoMessage, resolution } = this.props;
     const { serie } = this.state;
-
     const formattedNumbers = this.getFormattedNumbers(serie);
+    const { className, resolution } = this.props;
     const { totalNumber, formattedSerieChange, typeOfChange } =
       formattedNumbers;
-
-    const noData =
-      isNilOrError(serie) ||
-      serie.every((item) => isEmpty(item)) ||
-      serie.length <= 0;
 
     return (
       <GraphCard className={className}>
         <GraphCardInner>
           <GraphCardHeader>
             <GraphCardTitle>
-              {graphTitle}
-              {infoMessage && (
-                <Popup
-                  basic
-                  trigger={
-                    <div>
-                      <InfoIcon name="info" />
-                    </div>
-                  }
-                  content={infoMessage}
-                  position="top left"
-                />
-              )}
-
+              <FormattedMessage {...messages.votes} />
               <GraphCardFigureContainer>
                 <GraphCardFigure>{totalNumber}</GraphCardFigure>
                 <GraphCardFigureChange className={typeOfChange}>
@@ -308,42 +275,43 @@ class LineBarChart extends React.PureComponent<
               </GraphCardFigureContainer>
             </GraphCardTitle>
 
-            {!noData && (
+            {serie && (
               <ReportExportMenu
                 svgNode={this.currentChart}
-                name={graphTitle}
+                xlsxEndpoint={votesByTimeXlsxEndpoint}
+                name={formatMessage(messages.votes)}
                 {...this.props}
               />
             )}
           </GraphCardHeader>
-          {noData ? (
+          {!serie ? (
             <NoDataContainer>
               <FormattedMessage {...messages.noData} />
             </NoDataContainer>
           ) : (
-            <StyledResponsiveContainer>
+            <ResponsiveContainer>
               <ComposedChart
                 data={serie}
-                reverseStackOrder={true}
+                margin={{ right: 40 }}
                 ref={this.currentChart}
               >
                 <CartesianGrid
-                  stroke={colors.cartesianGrid}
+                  stroke={legacyColors.cartesianGrid}
                   strokeWidth={0.5}
                 />
                 <XAxis
-                  dataKey="name"
+                  dataKey="date"
                   interval="preserveStartEnd"
-                  stroke={colors.chartLabel}
+                  stroke={legacyColors.chartLabel}
                   fontSize={sizes.chartLabel}
                   tick={{ transform: 'translate(0, 7)' }}
                   tickFormatter={this.formatTick}
                   tickLine={false}
                 />
                 <YAxis
-                  yAxisId="total"
-                  stroke={colors.chartLabel}
+                  stroke={legacyColors.chartLabel}
                   fontSize={sizes.chartLabel}
+                  yAxisId="cumulatedTotal"
                   tickLine={false}
                 >
                   <Label
@@ -353,12 +321,7 @@ class LineBarChart extends React.PureComponent<
                     dx={-15}
                   />
                 </YAxis>
-                <YAxis
-                  yAxisId="barValue"
-                  orientation="right"
-                  allowDecimals={false}
-                  tickLine={false}
-                >
+                <YAxis yAxisId="barValue" orientation="right" tickLine={false}>
                   <Label
                     value={formatMessage(messages.perPeriod, {
                       period: formatMessage(messages[resolution]),
@@ -371,36 +334,47 @@ class LineBarChart extends React.PureComponent<
                 <Tooltip
                   isAnimationActive={false}
                   labelFormatter={this.formatLabel}
-                  cursor={{ strokeWidth: 1 }}
                 />
 
                 <Bar
-                  dataKey="barValue"
+                  dataKey="up"
+                  name={formatMessage(messages.numberOfVotesUp)}
+                  fill={legacyColors.barFill}
+                  animationDuration={animation.duration}
+                  animationBegin={animation.begin}
+                  stackId="1"
                   yAxisId="barValue"
                   barSize={sizes.bar}
-                  fill={colors.barFill}
-                  fillOpacity={1}
-                  name={formatMessage(messages.totalForPeriod, {
-                    period: formatMessage(messages[resolution]),
-                  })}
+                />
+                <Bar
+                  dataKey="down"
+                  name={formatMessage(messages.numberOfVotesDown)}
+                  fill={legacyColors.barFillLighter}
+                  stackId="1"
+                  animationDuration={animation.duration}
+                  animationBegin={animation.begin}
+                  stroke="none"
+                  yAxisId="barValue"
+                  barSize={sizes.bar}
                 />
                 <Line
                   type="monotone"
-                  yAxisId="total"
-                  dataKey="total"
-                  activeDot={Boolean(serie && serie?.length < 31)}
-                  stroke={colors.line}
-                  fill={colors.line}
-                  strokeWidth={1}
+                  dataKey="cumulatedTotal"
                   name={formatMessage(messages.total)}
+                  dot={serie && serie?.length < 31}
+                  stroke={legacyColors.line}
+                  fill={legacyColors.line}
+                  strokeWidth={1}
+                  yAxisId="cumulatedTotal"
                 />
+
                 <Legend
                   wrapperStyle={{
                     paddingTop: '20px',
                   }}
                 />
               </ComposedChart>
-            </StyledResponsiveContainer>
+            </ResponsiveContainer>
           )}
         </GraphCardInner>
       </GraphCard>
@@ -408,4 +382,4 @@ class LineBarChart extends React.PureComponent<
   }
 }
 
-export default injectIntl<Props>(LineBarChart);
+export default injectIntl<Props>(LineBarChartVotesByTime);

@@ -4,6 +4,7 @@ import { adopt } from 'react-adopt';
 import moment, { Moment } from 'moment';
 
 // components
+import { Box } from '@citizenlab/cl2-component-library';
 import {
   GraphsContainer,
   ControlBar,
@@ -12,7 +13,8 @@ import {
 import ResolutionControl, {
   IResolution,
 } from 'components/admin/ResolutionControl';
-import ChartFilters from '../components/ChartFilters';
+import Outlet from 'components/Outlet';
+import ProjectFilter from '../components/ChartFilters/ProjectFilter';
 import TimeControl from '../components/TimeControl';
 import LineBarChart from './charts/LineBarChart';
 import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
@@ -66,18 +68,13 @@ interface State {
   endAtMoment: Moment | null;
   currentProjectFilter: string | undefined;
   currentProjectFilterLabel: string | undefined;
-  currentGroupFilter: string | undefined;
-  currentGroupFilterLabel: string | undefined;
-  currentTopicFilter: string | undefined;
-  currentTopicFilterLabel: string | undefined;
   currentResourceByTopic: IResource;
   currentResourceByProject: IResource;
+  ideasByStatusChartHidden: boolean;
 }
 
 interface Tracks {
-  trackFilterOnGroup: (args: { extra: Record<string, string> }) => void;
   trackFilterOnProject: (args: { extra: Record<string, string> }) => void;
-  trackFilterOnTopic: (args: { extra: Record<string, string> }) => void;
   trackResourceChange: (args: { extra: Record<string, string> }) => void;
 }
 
@@ -100,12 +97,9 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
       endAtMoment: moment(),
       currentProjectFilter: undefined,
       currentProjectFilterLabel: undefined,
-      currentGroupFilter: undefined,
-      currentGroupFilterLabel: undefined,
-      currentTopicFilter: undefined,
-      currentTopicFilterLabel: undefined,
       currentResourceByTopic: 'ideas',
       currentResourceByProject: 'ideas',
+      ideasByStatusChartHidden: false,
     };
 
     this.resourceOptions = [
@@ -145,22 +139,6 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
     });
   };
 
-  handleOnGroupFilter = (filter) => {
-    this.props.trackFilterOnGroup({ extra: { group: filter } });
-    this.setState({
-      currentGroupFilter: filter.value,
-      currentGroupFilterLabel: filter.label,
-    });
-  };
-
-  handleOnTopicFilter = (filter) => {
-    this.props.trackFilterOnTopic({ extra: { topic: filter } });
-    this.setState({
-      currentTopicFilter: filter.value,
-      currentTopicFilterLabel: filter.label,
-    });
-  };
-
   onResourceByTopicChange = (option) => {
     this.props.trackResourceChange({
       extra: { newResource: option, graph: 'resourceByTopic' },
@@ -175,14 +153,17 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
     this.setState({ currentResourceByProject: option.value });
   };
 
+  hideIdeasByStatusChart = () => {
+    this.setState({ ideasByStatusChartHidden: true });
+  };
+
   render() {
     const {
       resolution,
       startAtMoment,
       endAtMoment,
       currentProjectFilter,
-      currentGroupFilter,
-      currentTopicFilter,
+      ideasByStatusChartHidden,
     } = this.state;
 
     const startAt = startAtMoment && startAtMoment.toISOString();
@@ -202,24 +183,28 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
       return (
         <>
           <ControlBar>
-            <TimeControl
-              startAtMoment={startAtMoment}
-              endAtMoment={endAtMoment}
-              onChange={this.handleChangeTimeRange}
-            />
+            <Box display="flex" flexDirection="row">
+              <TimeControl
+                startAtMoment={startAtMoment}
+                endAtMoment={endAtMoment}
+                onChange={this.handleChangeTimeRange}
+              />
+              <Box ml="16px" mr="16px" maxWidth="320px">
+                <ProjectFilter
+                  currentProjectFilter={currentProjectFilter}
+                  hideLabel
+                  placeholder={formatMessage(messages.selectProject)}
+                  width="100%"
+                  padding="11px"
+                  onProjectFilter={this.handleOnProjectFilter}
+                />
+              </Box>
+            </Box>
             <ResolutionControl
               value={resolution}
               onChange={this.handleChangeResolution}
             />
           </ControlBar>
-          <ChartFilters
-            currentProjectFilter={currentProjectFilter}
-            currentGroupFilter={currentGroupFilter}
-            currentTopicFilter={currentTopicFilter}
-            onProjectFilter={this.handleOnProjectFilter}
-            onGroupFilter={this.handleOnGroupFilter}
-            onTopicFilter={this.handleOnTopicFilter}
-          />
           <GraphsContainer>
             <LineBarChart
               graphUnit="users"
@@ -286,11 +271,20 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
               />
             </Column>
             <Column>
-              <IdeasByStatusChart
-                className="fullWidth dynamicHeight"
+              {!ideasByStatusChartHidden && (
+                <IdeasByStatusChart
+                  className="fullWidth dynamicHeight"
+                  startAt={startAt}
+                  endAt={endAt}
+                  {...this.state}
+                />
+              )}
+              <Outlet
+                id="app.containers.Admin.dashboard.summary.postStatus"
+                projectId={currentProjectFilter}
                 startAt={startAt}
                 endAt={endAt}
-                {...this.state}
+                onMount={this.hideIdeasByStatusChart}
               />
               <SelectableResourceByTopicChart
                 className="fullWidth dynamicHeight e2e-resource-by-topic-chart"
@@ -325,9 +319,7 @@ const Data = adopt<DataProps>({
 });
 
 const DashboardPageSummaryWithHOCs = injectTracks<Props>({
-  trackFilterOnGroup: tracks.filteredOnGroup,
   trackFilterOnProject: tracks.filteredOnProject,
-  trackFilterOnTopic: tracks.filteredOnTopic,
   trackResourceChange: tracks.choseResource,
 })(localize<Props & Tracks>(injectIntl(DashboardPageSummary)));
 

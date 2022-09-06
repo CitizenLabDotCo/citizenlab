@@ -9,7 +9,7 @@ import messages from '../../messages';
 
 // styling
 import {
-  colors,
+  legacyColors,
   sizes,
   DEFAULT_BAR_CHART_MARGIN,
 } from 'components/admin/Graphs/styling';
@@ -23,7 +23,6 @@ import {
   GraphCardInner,
 } from 'components/admin/GraphWrappers';
 import BarChart from 'components/admin/Graphs/BarChart';
-import { Tooltip, LabelList } from 'recharts';
 
 // resources
 import GetSerieFromStream from 'resources/GetSerieFromStream';
@@ -106,16 +105,19 @@ export class IdeasByStatusChart extends React.PureComponent<
             layout="horizontal"
             innerRef={this.currentChart}
             margin={DEFAULT_BAR_CHART_MARGIN}
-            mapping={{ fill: 'color' }}
+            mapping={{
+              category: 'name',
+              length: 'value',
+              fill: ({ row: { color } }) => color ?? legacyColors.chartFill,
+              opacity: () => 0.8,
+            }}
             bars={{
               name: unitName,
-              fill: colors.chartFill,
               size: sizes.bar,
-              opacity: 0.8,
             }}
             yaxis={{ width: 150, tickLine: false }}
-            renderLabels={(props) => <LabelList {...props} position="right" />}
-            renderTooltip={(props) => <Tooltip {...props} />}
+            labels
+            tooltip
           />
         </GraphCardInner>
       </GraphCard>
