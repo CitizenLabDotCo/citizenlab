@@ -30,7 +30,13 @@ const PagesAndMenuIndex = ({ intl: { formatMessage } }: InjectedIntlProps) => {
 
   return (
     <>
-      <HelmetIntl title={messages.pagesMenuMetaTitle} />
+      <HelmetIntl
+        title={
+          customizableNavbarEnabled
+            ? messages.pagesMenuMetaTitle
+            : messages.pagesMetaTitle
+        }
+      />
       <div id="e2e-pages-menu-container">
         <Outlet id="app.containers.Admin.pages-menu.index" />
         {!customizableNavbarEnabled && (
