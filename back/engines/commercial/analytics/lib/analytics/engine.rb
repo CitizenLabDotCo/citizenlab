@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
-require 'factory_bot_rails'
+# rubocop:disable Lint/SuppressedException
+begin
+  require 'factory_bot_rails'
+rescue LoadError
+end
+# rubocop:enable Lint/SuppressedException
 
 module Analytics
   class Engine < ::Rails::Engine
