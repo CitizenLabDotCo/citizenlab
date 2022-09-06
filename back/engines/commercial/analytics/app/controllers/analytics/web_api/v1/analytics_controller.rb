@@ -6,6 +6,7 @@ module Analytics
   module WebApi::V1
     class AnalyticsController < ::ApplicationController
       skip_after_action :verify_policy_scoped, only: :index
+      after_action :verify_authorized, only: :index
       def index
         handle_request
       end
