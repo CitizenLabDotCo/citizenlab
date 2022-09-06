@@ -17,8 +17,6 @@ const Input = ({ name, type = 'text', ...rest }: Props) => {
     control,
   } = useFormContext();
 
-  const defaultValue = '';
-
   const validationError = errors[name]?.message as string | undefined;
 
   // If an API error with a matching name has been returned from the API response, apiError is set to an array with the error message as the only item
@@ -31,7 +29,6 @@ const Input = ({ name, type = 'text', ...rest }: Props) => {
       <Controller
         name={name}
         control={control}
-        defaultValue={defaultValue}
         render={({ field: { ref: _ref, ...field } }) => (
           <InputComponent id={name} type={type} {...field} {...rest} />
         )}
