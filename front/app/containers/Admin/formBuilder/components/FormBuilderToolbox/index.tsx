@@ -89,6 +89,16 @@ const FormBuilderToolbox = ({
             label={formatMessage(messages.multipleChoice)}
             onClick={() => addAnswer('multiselect')}
           />
+          <ToolboxItem
+            icon="info"
+            label={formatMessage(messages.number)}
+            onClick={() => addAnswer('number')}
+          />
+          <ToolboxItem
+            icon="info"
+            label={formatMessage(messages.email)}
+            onClick={() => addAnswer('email')}
+          />
         </DraggableElement>
       </Box>
     </Box>

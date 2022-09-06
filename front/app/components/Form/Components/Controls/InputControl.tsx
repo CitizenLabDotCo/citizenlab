@@ -35,6 +35,14 @@ export const InputControl = ({
     },
     [schema.type, handleChange, path]
   );
+
+  const schemaType =
+    schema.type === 'number'
+      ? 'number'
+      : schema.type === 'email'
+      ? 'email'
+      : 'text';
+
   return (
     <>
       <FormLabel
@@ -49,7 +57,7 @@ export const InputControl = ({
           data-testid="inputControl"
           id={sanitizeForClassname(id)}
           className={`input_field_root_${label}`}
-          type={schema.type === 'number' ? 'number' : 'text'}
+          type={schemaType}
           value={data}
           onChange={onChange}
           maxCharCount={schema?.maxLength}

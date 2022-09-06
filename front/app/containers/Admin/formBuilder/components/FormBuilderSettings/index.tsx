@@ -44,6 +44,12 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
     case 'multiselect':
       translatedStringKey = messages.multipleChoice;
       break;
+    case 'number':
+      translatedStringKey = messages.number;
+      break;
+    case 'email':
+      translatedStringKey = messages.email;
+      break;
   }
 
   return (
