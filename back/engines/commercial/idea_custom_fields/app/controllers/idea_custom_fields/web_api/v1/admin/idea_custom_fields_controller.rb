@@ -209,8 +209,11 @@ module IdeaCustomFields
             :input_type,
             :required,
             :enabled,
+            :maximum, 
             { title_multiloc: CL2_SUPPORTED_LOCALES,
               description_multiloc: CL2_SUPPORTED_LOCALES,
+              minimum_label_multiloc: CL2_SUPPORTED_LOCALES,
+              maximum_label_multiloc: CL2_SUPPORTED_LOCALES,
               options: [:id, { title_multiloc: CL2_SUPPORTED_LOCALES }] }
           )
         end
