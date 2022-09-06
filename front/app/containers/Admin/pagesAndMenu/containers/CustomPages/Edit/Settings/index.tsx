@@ -10,8 +10,8 @@ const EditCustomPageSettings = () => {
   const { customPageId } = useParams() as { customPageId: string };
   const customPage = useCustomPage(customPageId);
 
-  const handleOnSubmit = (formValues: FormValues) => {
-    updateCustomPage(customPageId, formValues);
+  const handleOnSubmit = async (formValues: FormValues) => {
+    await updateCustomPage(customPageId, formValues);
   };
 
   if (!isNilOrError(customPage)) {
