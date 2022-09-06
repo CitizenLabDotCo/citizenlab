@@ -73,6 +73,7 @@ interface State {
   currentTopicFilterLabel: string | undefined;
   currentResourceByTopic: IResource;
   currentResourceByProject: IResource;
+  ideasByStatusChartHidden: boolean;
 }
 
 interface Tracks {
@@ -107,6 +108,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
       currentTopicFilterLabel: undefined,
       currentResourceByTopic: 'ideas',
       currentResourceByProject: 'ideas',
+      ideasByStatusChartHidden: false,
     };
 
     this.resourceOptions = [
@@ -176,6 +178,10 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
     this.setState({ currentResourceByProject: option.value });
   };
 
+  hideIdeasByStatusChart = () => {
+    this.setState({ ideasByStatusChartHidden: true });
+  };
+
   render() {
     const {
       resolution,
@@ -184,6 +190,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
       currentProjectFilter,
       currentGroupFilter,
       currentTopicFilter,
+      ideasByStatusChartHidden,
     } = this.state;
 
     const startAt = startAtMoment && startAtMoment.toISOString();
@@ -287,17 +294,20 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
               />
             </Column>
             <Column>
-              <IdeasByStatusChart
-                className="fullWidth dynamicHeight"
-                startAt={startAt}
-                endAt={endAt}
-                {...this.state}
-              />
+              {!ideasByStatusChartHidden && (
+                <IdeasByStatusChart
+                  className="fullWidth dynamicHeight"
+                  startAt={startAt}
+                  endAt={endAt}
+                  {...this.state}
+                />
+              )}
               <Outlet
                 id="app.containers.Admin.dashboard.summary.postStatus"
                 projectId={currentProjectFilter}
                 startAt={startAt}
                 endAt={endAt}
+                onMount={this.hideIdeasByStatusChart}
               />
               <SelectableResourceByTopicChart
                 className="fullWidth dynamicHeight e2e-resource-by-topic-chart"
