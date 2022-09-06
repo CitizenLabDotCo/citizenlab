@@ -10,6 +10,7 @@ import {
   IconTooltip,
   LocaleSwitcher,
   Input,
+  Text,
 } from '@citizenlab/cl2-component-library';
 import { SectionField } from 'components/admin/Section';
 
@@ -23,6 +24,9 @@ import messages from './messages';
 import { isNilOrError } from 'utils/helperUtils';
 interface Props {
   name: string;
+  maximumName: string;
+  minimumLabelName: string;
+  maximumLabelName: string;
   onSelectedLocaleChange?: (locale: Locale) => void;
   locales: Locale[];
 }
@@ -30,6 +34,9 @@ interface Props {
 const LinearScaleSettings = ({
   onSelectedLocaleChange,
   name,
+  maximumName,
+  minimumLabelName,
+  maximumLabelName,
   locales,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
@@ -59,10 +66,10 @@ const LinearScaleSettings = ({
     return (
       <>
         <Controller
-          name={name}
+          name={maximumName}
           control={control}
           defaultValue={defaultValues}
-          render={({ field: { ref: _ref, value: choices } }) => {
+          render={({ field: { ref: _ref, value } }) => {
             return (
               <SectionField>
                 <Box marginBottom="8px">
@@ -72,16 +79,17 @@ const LinearScaleSettings = ({
                       content={formatMessage(messages.rangeTooltip)}
                     />
                   </Label>
-                  <Box width="40px" display="flex">
-                    <Input
-                      size="small"
-                      type="number"
-                      value={'test'}
-                      onChange={(value) => {
-                        const updatedChoices = choices;
-                        setValue(name, updatedChoices);
-                      }}
-                    />
+                  <Box>
+                    <Text>{formatMessage(messages.rangeToLabel)}</Text>
+                    <Box width="60px">
+                      <Input
+                        type="number"
+                        value={value}
+                        onChange={(value) => {
+                          setValue(maximumName, value);
+                        }}
+                      />
+                    </Box>
                   </Box>
                 </Box>
                 <Box display="flex" flexWrap="wrap" marginBottom="12px">
@@ -99,30 +107,42 @@ const LinearScaleSettings = ({
                       locales={!isNilOrError(locales) ? locales : []}
                       selectedLocale={selectedLocale}
                       values={{
-                        input_field: choices as Multiloc,
+                        input_field: value as Multiloc,
                       }}
                     />
                   </Box>
                 </Box>
-                <Input
-                  size="small"
-                  type="text"
-                  value={'test'}
-                  onChange={(value) => {
-                    const updatedChoices = choices;
-                    setValue(name, updatedChoices);
+                <Controller
+                  name={minimumLabelName}
+                  control={control}
+                  defaultValue={defaultValues}
+                  render={({ field: { ref: _ref, value } }) => {
+                    return (
+                      <Input
+                        type="text"
+                        value={value}
+                        onChange={(value) => {
+                          setValue(minimumLabelName, value);
+                        }}
+                      />
+                    );
                   }}
-                  label={'1'}
                 />
-                <Input
-                  size="small"
-                  type="text"
-                  value={'test'}
-                  onChange={(value) => {
-                    const updatedChoices = choices;
-                    setValue(name, updatedChoices);
+                <Controller
+                  name={maximumLabelName}
+                  control={control}
+                  defaultValue={defaultValues}
+                  render={({ field: { ref: _ref, value } }) => {
+                    return (
+                      <Input
+                        type="text"
+                        value={value}
+                        onChange={(value) => {
+                          setValue(name, value);
+                        }}
+                      />
+                    );
                   }}
-                  label={'5'}
                 />
               </SectionField>
             );

@@ -114,6 +114,8 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
       {field.input_type === 'linear_scale' && ( // TODO: Remove this - just temporary for testing
         <LinearScaleSettings // TODO: Abstract logic to somewhere else
           name={`customFields.${field.index}.options`}
+          maximumName={`customFields.${field.index}.maximum`}
+          minimumLabelName={`customFields.${field.index}.minimum_label_multiloc`}
           locales={locales}
         />
       )}

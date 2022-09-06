@@ -17,4 +17,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.rangeTooltip',
     defaultMessage: 'Range tooltip content',
   },
+    rangeToLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.rangeToLabel',
+    defaultMessage: '1 to',
+  },
 });
