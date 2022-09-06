@@ -13,6 +13,7 @@ import useLocalize from 'hooks/useLocalize';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import { isEmptyResponse } from './utils';
 import {
   getTranslations,
   parsePieData,
@@ -39,7 +40,19 @@ interface QueryProps {
 
 // Response
 export type Response = {
-  data: [FeedbackRow[], StatusRow[]];
+  data: [[FeedbackRow], StatusRow[]];
+};
+
+export type EmptyResponse = {
+  data: [
+    {
+      sum_feedback_none: null;
+      sum_feedback_official: null;
+      sum_feedback_status_change: null;
+      avg_feedback_time_taken: null;
+    },
+    []
+  ];
 };
 
 export interface FeedbackRow {
@@ -151,17 +164,22 @@ export default function usePostsWithFeedback(
   >(undefined);
 
   useEffect(() => {
-    const { observable } = analyticsStream<Response>(
+    const { observable } = analyticsStream<Response | EmptyResponse>(
       query({ projectId, startAt, endAt })
     );
     const subscription = observable.subscribe(
-      (results: Response | NilOrError) => {
-        if (isNilOrError(results)) {
-          setPostsWithFeedback(results);
+      (response: Response | EmptyResponse | NilOrError) => {
+        if (isNilOrError(response)) {
+          setPostsWithFeedback(response);
           return;
         }
 
-        const [feedbackRows, statusRows] = results.data;
+        if (isEmptyResponse(response)) {
+          setPostsWithFeedback(null);
+          return;
+        }
+
+        const [feedbackRows, statusRows] = response.data;
         const feedbackRow = feedbackRows[0];
 
         const translations = getTranslations(formatMessage);
