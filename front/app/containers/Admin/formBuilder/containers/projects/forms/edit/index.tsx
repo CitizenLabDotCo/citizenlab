@@ -95,7 +95,6 @@ export const FormEdit = ({
   });
 
   const {
-    clearErrors,
     setError,
     handleSubmit,
     control,
@@ -146,8 +145,8 @@ export const FormEdit = ({
           options: field.options || {},
         }),
       }));
+
       await updateFormCustomFields(projectId, finalResponseArray, phaseId);
-      clearErrors();
     } catch (error) {
       handleHookFormSubmissionError(error, setError, 'customFields');
     }
