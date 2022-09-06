@@ -36,7 +36,7 @@ const StyledButton = styled(Button)`
   }
 `;
 
-interface ReportExportMenuProps {
+export interface ReportExportMenuProps {
   className?: string;
   name: string;
   svgNode?: React.RefObject<any> | React.RefObject<any>[];

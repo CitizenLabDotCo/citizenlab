@@ -13,6 +13,7 @@ import useLocalize from 'hooks/useLocalize';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import { isEmptyResponse } from './utils';
 import {
   getTranslations,
   parsePieData,
@@ -32,14 +33,26 @@ import { InjectedIntlProps } from 'react-intl';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 
 interface QueryProps {
-  projectId?: string;
-  startAt?: string;
-  endAt?: string;
+  projectId: string | undefined;
+  startAt: string | null | undefined;
+  endAt: string | null | undefined;
 }
 
 // Response
 export type Response = {
-  data: [FeedbackRow[], StatusRow[]];
+  data: [[FeedbackRow], StatusRow[]];
+};
+
+export type EmptyResponse = {
+  data: [
+    {
+      sum_feedback_none: null;
+      sum_feedback_official: null;
+      sum_feedback_status_change: null;
+      avg_feedback_time_taken: null;
+    },
+    []
+  ];
 };
 
 export interface FeedbackRow {
@@ -97,18 +110,20 @@ const query = ({ projectId, startAt, endAt }: QueryProps): Query => {
       feedback_status_change: 'sum',
       feedback_time_taken: 'avg',
     },
-    ...(projectId
-      ? {
-          dimensions: { project: { id: projectId } },
-        }
-      : {}),
-    ...(startAt && endAt
-      ? {
-          created_date: {
-            date: { from: toDate(startAt), to: toDate(endAt) },
-          },
-        }
-      : {}),
+    dimensions: {
+      type: { name: 'idea' },
+      ...(projectId ? { project: { id: projectId } } : {}),
+      ...(startAt && endAt
+        ? {
+            created_date: {
+              date: {
+                from: toDate(startAt),
+                to: toDate(endAt),
+              },
+            },
+          }
+        : {}),
+    },
   };
 
   const queryStatus: QuerySchema = {
@@ -118,6 +133,20 @@ const query = ({ projectId, startAt, endAt }: QueryProps): Query => {
       all: 'count',
       'status.title_multiloc': 'first',
       'status.color': 'first',
+    },
+    dimensions: {
+      type: { name: 'idea' },
+      ...(projectId ? { project: { id: projectId } } : {}),
+      ...(startAt && endAt
+        ? {
+            created_date: {
+              date: {
+                from: toDate(startAt),
+                to: toDate(endAt),
+              },
+            },
+          }
+        : {}),
     },
   };
 
@@ -135,17 +164,22 @@ export default function usePostsWithFeedback(
   >(undefined);
 
   useEffect(() => {
-    const { observable } = analyticsStream<Response>(
+    const { observable } = analyticsStream<Response | EmptyResponse>(
       query({ projectId, startAt, endAt })
     );
     const subscription = observable.subscribe(
-      (results: Response | NilOrError) => {
-        if (isNilOrError(results)) {
-          setPostsWithFeedback(results);
+      (response: Response | EmptyResponse | NilOrError) => {
+        if (isNilOrError(response)) {
+          setPostsWithFeedback(response);
           return;
         }
 
-        const [feedbackRows, statusRows] = results.data;
+        if (isEmptyResponse(response)) {
+          setPostsWithFeedback(null);
+          return;
+        }
+
+        const [feedbackRows, statusRows] = response.data;
         const feedbackRow = feedbackRows[0];
 
         const translations = getTranslations(formatMessage);

@@ -1030,6 +1030,18 @@
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false }
         }
+      },
+
+      "analytics": {
+        "type": "object",
+        "title": "Analytics",
+        "description":  "Enables the new Analytics API and graphs",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
+        }
       }
     },
   "dependencies": {

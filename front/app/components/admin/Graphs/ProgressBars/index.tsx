@@ -18,6 +18,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { isEmpty } from 'lodash-es';
+import { parseData } from './utils';
 
 // typings
 import { ProgressBarsProps } from './typings';
@@ -107,10 +108,12 @@ export default function ({
     );
   }
 
+  const parsedData = parseData(data);
+
   return (
     <ResponsiveContainer width={width} height={height}>
       <BarChart
-        data={data}
+        data={parsedData}
         layout="vertical"
         stackOffset="expand"
         barSize={8}
@@ -133,7 +136,7 @@ export default function ({
           />
         </Bar>
         <Bar
-          dataKey="total"
+          dataKey="remainder"
           stackId="a"
           fill="#E0E0E0"
           isAnimationActive={false}

@@ -9,9 +9,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.components.PostFeedback.officialUpdate',
     defaultMessage: 'Official update',
   },
-  postFeedback: {
-    id: 'app.containers.AdminPage.DashboardPage.components.PostFeedback.postFeedback',
-    defaultMessage: 'Post feedback',
+  inputStatus: {
+    id: 'app.containers.AdminPage.DashboardPage.components.PostFeedback.inputStatus',
+    defaultMessage: 'Input status',
   },
   feedbackGiven: {
     id: 'app.containers.AdminPage.DashboardPage.components.PostFeedback.feedbackGiven',
@@ -33,20 +33,20 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.components.PostFeedback.total',
     defaultMessage: 'Total',
   },
-  postsByStatus: {
-    id: 'app.containers.AdminPage.DashboardPage.components.PostFeedback.postsByStatus',
-    defaultMessage: 'Posts by status',
+  inputsByStatus: {
+    id: 'app.containers.AdminPage.DashboardPage.components.PostFeedback.inputsByStatus',
+    defaultMessage: 'Inputs by status',
   },
   status: {
     id: 'app.containers.AdminPage.DashboardPage.components.PostFeedback.status',
     defaultMessage: 'Status',
   },
-  numberOfPosts: {
-    id: 'app.containers.AdminPage.DashboardPage.components.PostFeedback.numberOfPosts',
-    defaultMessage: 'Number of posts',
+  numberOfInputs: {
+    id: 'app.containers.AdminPage.DashboardPage.components.PostFeedback.numberOfInputs',
+    defaultMessage: 'Number of inputs',
   },
-  percentageOfPosts: {
-    id: 'app.containers.AdminPage.DashboardPage.components.PostFeedback.percentageOfPosts',
-    defaultMessage: 'Percentage of posts',
+  percentageOfInputs: {
+    id: 'app.containers.AdminPage.DashboardPage.components.PostFeedback.percentageOfInputs',
+    defaultMessage: 'Percentage of inputs',
   },
 });

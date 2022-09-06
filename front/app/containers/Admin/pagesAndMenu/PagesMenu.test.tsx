@@ -10,7 +10,7 @@ jest.mock('./messages', () => ({
   pageHeader: { id: 'id', defaultMessage: header },
 }));
 
-describe.skip('<VisibleNavbarItemList />', () => {
+describe('<VisibleNavbarItemList />', () => {
   it('renders header', async () => {
     render(<PagesMenu />);
 

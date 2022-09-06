@@ -20,12 +20,12 @@ interface Translations {
   feedbackGiven: string;
   total: string;
   averageTimeColumnName: string;
-  postFeedback: string;
+  inputStatus: string;
   responseTime: string;
-  postsByStatus: string;
+  inputsByStatus: string;
   status: string;
-  numberOfPosts: string;
-  percentageOfPosts: string;
+  numberOfInputs: string;
+  percentageOfInputs: string;
 }
 
 export const getTranslations = (
@@ -36,12 +36,12 @@ export const getTranslations = (
   feedbackGiven: formatMessage(messages.feedbackGiven),
   total: formatMessage(messages.total),
   averageTimeColumnName: formatMessage(messages.averageTimeColumnName),
-  postFeedback: formatMessage(messages.postFeedback),
+  inputStatus: formatMessage(messages.inputStatus),
   responseTime: formatMessage(messages.responseTime),
-  postsByStatus: formatMessage(messages.postsByStatus),
+  inputsByStatus: formatMessage(messages.inputsByStatus),
   status: formatMessage(messages.status),
-  numberOfPosts: formatMessage(messages.numberOfPosts),
-  percentageOfPosts: formatMessage(messages.percentageOfPosts),
+  numberOfInputs: formatMessage(messages.numberOfInputs),
+  percentageOfInputs: formatMessage(messages.percentageOfInputs),
 });
 
 export const parsePieData = (feedbackRow: FeedbackRow) => {
@@ -186,12 +186,12 @@ export const parseExcelData = (
     officialUpdate,
     total,
     averageTimeColumnName,
-    postFeedback,
+    inputStatus,
     responseTime,
-    postsByStatus,
+    inputsByStatus,
     status,
-    numberOfPosts,
-    percentageOfPosts,
+    numberOfInputs,
+    percentageOfInputs,
   }: Translations,
   localize: Localize
 ) => {
@@ -223,14 +223,14 @@ export const parseExcelData = (
 
   const xlsxDataSheet3 = statusRows.map((statusRow, i) => ({
     [status]: localize(statusRow.first_status_title_multiloc),
-    [numberOfPosts]: statusRow.count,
-    [percentageOfPosts]: percentages[i],
+    [numberOfInputs]: statusRow.count,
+    [percentageOfInputs]: percentages[i],
   }));
 
   const xlsxData = {
-    [postFeedback]: [xlsxDataSheet1Row1],
+    [inputStatus]: [xlsxDataSheet1Row1],
     [responseTime]: [xlsxDataSheet2Row1],
-    [postsByStatus]: xlsxDataSheet3,
+    [inputsByStatus]: xlsxDataSheet3,
   };
 
   return xlsxData;

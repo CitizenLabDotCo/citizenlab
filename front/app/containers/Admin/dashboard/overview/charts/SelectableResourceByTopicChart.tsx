@@ -24,12 +24,9 @@ import { IOption } from 'typings';
 interface QueryProps {
   startAt: string | null | undefined;
   endAt: string | null;
-  currentProjectFilter: string | undefined;
-  currentGroupFilter: string | undefined;
 }
 
 interface InputProps {
-  currentTopicFilter: string | undefined;
   className: string;
   onResourceByTopicChange: (option: IOption) => void;
   currentResourceByTopic: IResource;
@@ -37,10 +34,7 @@ interface InputProps {
   startAt: string | null | undefined;
   endAt: string | null;
   resolution: IResolution;
-  currentGroupFilter: string | undefined;
   currentProjectFilterLabel: string | undefined;
-  currentGroupFilterLabel: string | undefined;
-  currentTopicFilterLabel: string | undefined;
 }
 
 interface Props extends InputProps, QueryProps {}
@@ -58,7 +52,6 @@ const getCurrentStream = (currentResourceByTopic: IResource) => {
 const SelectableResourceByTopicChart = ({
   currentResourceByTopic,
   onResourceByTopicChange,
-  currentTopicFilter,
   ...otherProps
 }: Props) => {
   const localize = useLocalize();
@@ -86,7 +79,7 @@ const SelectableResourceByTopicChart = ({
       currentSelectedResource={currentResourceByTopic}
       stream={getCurrentStream(currentResourceByTopic)}
       convertToGraphFormat={convertToGraphFormat}
-      currentFilter={currentTopicFilter}
+      currentFilter={undefined}
       byWhat="Topic"
       {...otherProps}
     />

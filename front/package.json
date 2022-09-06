@@ -59,7 +59,7 @@
   "dependencies": {
     "@apollo/client": "^3.5.6",
     "@babel/runtime": "7.x",
-    "@citizenlab/cl2-component-library": "^0.9.82",
+    "@citizenlab/cl2-component-library": "^0.9.84",
     "@craftjs/core": "^0.2.0-beta.5",
     "@hookform/resolvers": "^2.9.5",
     "@jsonforms/core": "3.0.0-beta.0",
@@ -143,8 +143,8 @@
     "util": "^0.12.4",
     "webfontloader": "1.6.28",
     "whatwg-fetch": "3.6.2",
-    "yup": "^0.32.11",
-    "xlsx": "https://cdn.sheetjs.com/xlsx-0.18.10/xlsx-0.18.10.tgz"
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.18.10/xlsx-0.18.10.tgz",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@babel/cli": "7.x",
