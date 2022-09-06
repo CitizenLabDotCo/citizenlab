@@ -487,6 +487,7 @@
   "app.containers.Admin.PagesAndMenu.homeTitle": "Home",
   "app.containers.Admin.PagesAndMenu.pageHeader": "Pages",
   "app.containers.Admin.PagesAndMenu.pagesMenuMetaTitle": "Pages & menu | {orgName}",
+  "app.containers.Admin.PagesAndMenu.pagesMetaTitle": "Pages | {orgName}",
   "app.containers.Admin.PagesAndMenu.removeButton": "Remove from navbar",
   "app.containers.Admin.PagesAndMenu.title": "Pages & menu",
   "app.containers.Admin.PagesAndMenu.topInfoButtonSuccess": "Success",
