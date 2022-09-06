@@ -61,9 +61,9 @@ module Analytics
     end
 
     # creates a dummy where statement in the active record query
-    # for dimensions that are not being filtered
+    # for dimensions that are not being used in filters
     # so that an alias is automatically created
-    # to be used elsewhere in the query
+    # and can be used elsewhere in the query
     def include_dimensions(results)
       dimensions = @query.used_dimensions
       if @json_query.key?(:filters)
