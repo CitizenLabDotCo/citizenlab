@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // components
 import GenericHeroBannerForm, {
@@ -8,7 +8,7 @@ import {
   pagesAndMenuBreadcrumb,
   homeBreadcrumb,
 } from 'containers/Admin/pagesAndMenu/breadcrumbs';
-
+import AvatarsField from '../../containers/GenericHeroBannerForm/AvatarsField';
 // resources
 import useHomepageSettings from 'hooks/useHomepageSettings';
 import {
@@ -32,8 +32,18 @@ const EditHomepageHeroBannerForm = ({
 }: InjectedIntlProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [formStatus, setFormStatus] = useState<ISubmitState>('disabled');
+  const [localSettings, setLocalSettings] =
+    useState<IHomepageSettingsAttributes | null>(null);
 
   const homepageSettings = useHomepageSettings();
+
+  useEffect(() => {
+    if (!isNilOrError(homepageSettings)) {
+      setLocalSettings({
+        ...homepageSettings.attributes,
+      });
+    }
+  }, []);
 
   if (isNilOrError(homepageSettings)) {
     return null;
@@ -103,27 +113,46 @@ const EditHomepageHeroBannerForm = ({
     banner_cta_signed_in_url: attributes.banner_cta_signed_in_url,
   };
 
-  return (
-    <GenericHeroBannerForm
-      onSave={handleSave}
-      title={formatMessage(messages.heroBannerTitle)}
-      isLoading={isLoading}
-      formStatus={formStatus}
-      breadcrumbs={[
-        {
-          label: formatMessage(pagesAndMenuBreadcrumb.label),
-          linkTo: pagesAndMenuBreadcrumb.linkTo,
-        },
-        {
-          label: formatMessage(homeBreadcrumb.label),
-          linkTo: homeBreadcrumb.linkTo,
-        },
-        { label: formatMessage(messages.heroBannerTitle) },
-      ]}
-      inputSettings={mappedInputSettings}
-      setFormStatus={setFormStatus}
-    />
-  );
+  const handleOnChange = (key: 'banner_avatars_enabled') => () => {
+    if (!isNilOrError(localSettings)) {
+      setLocalSettings({
+        ...localSettings,
+        [key]: !localSettings.banner_avatars_enabled,
+      });
+    }
+  };
+
+  if (!isNilOrError(localSettings)) {
+    return (
+      <GenericHeroBannerForm
+        onSave={handleSave}
+        title={formatMessage(messages.heroBannerTitle)}
+        isLoading={isLoading}
+        formStatus={formStatus}
+        breadcrumbs={[
+          {
+            label: formatMessage(pagesAndMenuBreadcrumb.label),
+            linkTo: pagesAndMenuBreadcrumb.linkTo,
+          },
+          {
+            label: formatMessage(homeBreadcrumb.label),
+            linkTo: homeBreadcrumb.linkTo,
+          },
+          { label: formatMessage(messages.heroBannerTitle) },
+        ]}
+        inputSettings={mappedInputSettings}
+        setFormStatus={setFormStatus}
+        avatarsFieldComponent={
+          <AvatarsField
+            checked={localSettings.banner_avatars_enabled}
+            onChange={handleOnChange('banner_avatars_enabled')}
+          />
+        }
+      />
+    );
+  }
+
+  return null;
 };
 
 export default injectIntl(EditHomepageHeroBannerForm);
@@ -140,12 +169,12 @@ export interface HomepageHeroBannerInputSettings {
     | IHomepageSettingsAttributes['banner_signed_out_header_multiloc'];
   header_bg: IHomepageSettingsAttributes['header_bg'];
   // homepage only properties, optional
-  banner_signed_in_header_multiloc?: IHomepageSettingsAttributes['banner_signed_in_header_multiloc'];
-  banner_avatars_enabled?: IHomepageSettingsAttributes['banner_avatars_enabled'];
+  banner_signed_in_header_multiloc: IHomepageSettingsAttributes['banner_signed_in_header_multiloc'];
+  banner_avatars_enabled: IHomepageSettingsAttributes['banner_avatars_enabled'];
   // cta settings, only on homepage
-  banner_cta_signed_in_text_multiloc?: IHomepageSettingsAttributes['banner_cta_signed_in_text_multiloc'];
-  banner_cta_signed_in_type?: IHomepageSettingsAttributes['banner_cta_signed_in_type'];
-  banner_cta_signed_in_url?: IHomepageSettingsAttributes['banner_cta_signed_in_url'];
+  banner_cta_signed_in_text_multiloc: IHomepageSettingsAttributes['banner_cta_signed_in_text_multiloc'];
+  banner_cta_signed_in_type: IHomepageSettingsAttributes['banner_cta_signed_in_type'];
+  banner_cta_signed_in_url: IHomepageSettingsAttributes['banner_cta_signed_in_url'];
   // cta_signed_out
   // this can be retyped since it exists on custom page too
   banner_cta_signed_out_text_multiloc: IHomepageSettingsAttributes['banner_cta_signed_out_text_multiloc'];

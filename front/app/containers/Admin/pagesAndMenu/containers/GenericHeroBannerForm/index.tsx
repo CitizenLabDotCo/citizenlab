@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, ReactElement } from 'react';
 import styled, { useTheme } from 'styled-components';
 
 // components
@@ -8,14 +8,6 @@ import {
   SubSectionTitle,
 } from 'components/admin/Section';
 
-import {
-  Setting,
-  ToggleLabel,
-  StyledToggle,
-  LabelContent,
-  LabelTitle,
-  LabelDescription,
-} from 'containers/Admin/settings/general';
 import SectionFormWrapper from '../../components/SectionFormWrapper';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 
@@ -64,7 +56,7 @@ const BgHeaderPreviewSelect = styled(Select)`
 `;
 
 // names differ slightly between HomePage and CustomPage
-type Props = {
+interface Props {
   breadcrumbs: TBreadcrumbs;
   title?: string | JSX.Element;
   formStatus: ISubmitState;
@@ -75,8 +67,8 @@ type Props = {
   apiErrors?: CLErrors | null;
   hideSignedInCTASettings?: boolean;
   hideSignedInHeaderField?: boolean;
-  hideAvatarsFields?: boolean;
-};
+  avatarsFieldComponent?: ReactElement;
+}
 
 export type HeroBannerInputSettings =
   | HomepageHeroBannerInputSettings
@@ -94,7 +86,7 @@ const GenericHeroBannerForm = ({
   intl: { formatMessage },
   hideSignedInCTASettings = false,
   hideSignedInHeaderField = false,
-  hideAvatarsFields = false,
+  avatarsFieldComponent,
 }: Props & InjectedIntlProps) => {
   const theme: any = useTheme();
 
@@ -109,7 +101,7 @@ const GenericHeroBannerForm = ({
     });
   const [bannerError, setBannerError] = useState<string | null>(null);
   const [localSettings, setLocalSettings] =
-    useState<HeroBannerInputSettings | null>({} as HeroBannerInputSettings);
+    useState<HeroBannerInputSettings | null>(null);
 
   const [previewDevice, setPreviewDevice] = useState<PreviewDevice>('desktop');
 
@@ -404,37 +396,7 @@ const GenericHeroBannerForm = ({
             />
           </SectionField>
         )}
-        {!hideAvatarsFields && (
-          <SectionField
-            key="avatars"
-            data-cy="e2e-banner-avatar-toggle-section"
-          >
-            <SubSectionTitle>
-              <FormattedMessage {...messages.avatarsTitle} />
-            </SubSectionTitle>
-            <Setting>
-              <ToggleLabel>
-                <StyledToggle
-                  checked={!!localSettings.banner_avatars_enabled}
-                  onChange={() => {
-                    updateValueInLocalState(
-                      'banner_avatars_enabled',
-                      !localSettings.banner_avatars_enabled
-                    );
-                  }}
-                />
-                <LabelContent>
-                  <LabelTitle>
-                    {formatMessage(messages.bannerDisplayHeaderAvatars)}
-                  </LabelTitle>
-                  <LabelDescription>
-                    {formatMessage(messages.bannerDisplayHeaderAvatarsSubtitle)}
-                  </LabelDescription>
-                </LabelContent>
-              </ToggleLabel>
-            </Setting>
-          </SectionField>
-        )}
+        {avatarsFieldComponent}
         {/* // CTA settings, only applicable on homepage */}
         <Outlet
           id="app.containers.Admin.settings.customize.headerSectionEnd"
