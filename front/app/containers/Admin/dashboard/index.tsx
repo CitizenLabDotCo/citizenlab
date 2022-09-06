@@ -31,9 +31,9 @@ export const DashboardsPage = memo(
   ({ authUser, intl: { formatMessage } }: Props & InjectedIntlProps) => {
     const [tabs, setTabs] = useState<ITab[]>([
       {
-        label: formatMessage(messages.tabSummary),
+        label: formatMessage(messages.tabOverview),
         url: '/admin/dashboard',
-        name: 'dashboard',
+        name: 'overview',
       },
       {
         label: formatMessage(messages.tabUsers),
@@ -44,9 +44,9 @@ export const DashboardsPage = memo(
 
     const moderatorTabs: ITab[] = [
       {
-        label: formatMessage(messages.tabSummary),
+        label: formatMessage(messages.tabOverview),
         url: '/admin/dashboard',
-        name: 'dashboard',
+        name: 'overview',
       },
     ];
 

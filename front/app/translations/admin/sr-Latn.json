@@ -702,7 +702,6 @@
   "app.containers.AdminPage.DashboardPage.tabMap": "Mapa",
   "app.containers.AdminPage.DashboardPage.tabReports": "Projekti",
   "app.containers.AdminPage.DashboardPage.tabRepresentativeness2": "Reprezentacija",
-  "app.containers.AdminPage.DashboardPage.tabSummary": "Sažetak",
   "app.containers.AdminPage.DashboardPage.tabUsers": "Korisnici",
   "app.containers.AdminPage.DashboardPage.thenLoadingMessage": "Zanimljiva činjenica: ovo će verovatno biti mnogo brže prilikom vaše sledeće posete!",
   "app.containers.AdminPage.DashboardPage.timelineType": "Vremenski okviri",

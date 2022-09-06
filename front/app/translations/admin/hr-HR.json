@@ -702,7 +702,6 @@
   "app.containers.AdminPage.DashboardPage.tabMap": "Karta",
   "app.containers.AdminPage.DashboardPage.tabReports": "Izvješća",
   "app.containers.AdminPage.DashboardPage.tabRepresentativeness2": "Reprezentativnost",
-  "app.containers.AdminPage.DashboardPage.tabSummary": "Sažetak",
   "app.containers.AdminPage.DashboardPage.tabUsers": "Korisnici",
   "app.containers.AdminPage.DashboardPage.thenLoadingMessage": "Zanimljiva činjenica: ovo će vjerojatno biti mnogo brže prilikom vašeg sljedećeg posjeta!",
   "app.containers.AdminPage.DashboardPage.timelineType": "Vremenska traka",

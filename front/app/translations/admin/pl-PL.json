@@ -702,7 +702,6 @@
   "app.containers.AdminPage.DashboardPage.tabMap": "Mapa",
   "app.containers.AdminPage.DashboardPage.tabReports": "Projekty",
   "app.containers.AdminPage.DashboardPage.tabRepresentativeness2": "Reprezentatywność",
-  "app.containers.AdminPage.DashboardPage.tabSummary": "Podsumowanie",
   "app.containers.AdminPage.DashboardPage.tabUsers": "Użytkownicy",
   "app.containers.AdminPage.DashboardPage.thenLoadingMessage": "Zabawny fakt: następnym razem, gdy tu wrócisz, będzie prawdopodobnie znacznie szybciej!",
   "app.containers.AdminPage.DashboardPage.timelineType": "Oś czasu",
