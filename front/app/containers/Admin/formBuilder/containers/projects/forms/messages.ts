@@ -9,8 +9,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.surveyDescription',
     defaultMessage: "Create and edit the questions in this projects's survey.",
   },
-  emptyTitleMessage: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.emptyTitleErrorMessage',
+  emptyTitleError: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.emptyTitleError',
     defaultMessage: 'Provide a question title',
   },
   errorMessage: {
