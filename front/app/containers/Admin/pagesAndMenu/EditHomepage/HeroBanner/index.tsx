@@ -105,7 +105,6 @@ const EditHomepageHeroBannerForm = ({
 
   return (
     <GenericHeroBannerForm
-      type="homePage"
       onSave={handleSave}
       title={formatMessage(messages.heroBannerTitle)}
       isLoading={isLoading}

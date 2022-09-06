@@ -88,7 +88,6 @@ const EditCustomPageHeroBannerForm = ({
   return (
     <GenericHeroBannerForm
       onSave={handleSave}
-      type="customPage"
       formStatus={formStatus}
       isLoading={isLoading}
       breadcrumbs={[
@@ -105,6 +104,9 @@ const EditCustomPageHeroBannerForm = ({
       title={formatMessage(messages.heroBannerTitle)}
       inputSettings={mappedInputSettings}
       setFormStatus={setFormStatus}
+      hideSignedInCTASettings
+      hideSignedInHeaderField
+      hideAvatarsFields
     />
   );
 };

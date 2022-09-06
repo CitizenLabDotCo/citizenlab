@@ -76,6 +76,9 @@ type Props = {
   isLoading: boolean;
   inputSettings: HeroBannerInputSettings;
   apiErrors?: CLErrors | null;
+  hideSignedInCTASettings?: boolean;
+  hideSignedInHeaderField?: boolean;
+  hideAvatarsFields?: boolean;
 };
 
 export type HeroBannerInputSettings = {
@@ -123,6 +126,9 @@ const GenericHeroBannerForm = ({
   breadcrumbs,
   apiErrors,
   intl: { formatMessage },
+  hideSignedInCTASettings = false,
+  hideSignedInHeaderField = false,
+  hideAvatarsFields = false,
 }: Props & InjectedIntlProps) => {
   const theme: any = useTheme();
 
@@ -422,48 +428,46 @@ const GenericHeroBannerForm = ({
             errorMultiloc={headerAndSubheaderErrors.signedOutSubheaderErrors}
           />
         </SectionField>
-        {type === 'homePage' && (
-          <>
-            <SectionField>
-              <InputMultilocWithLocaleSwitcher
-                type="text"
-                valueMultiloc={localSettings.banner_signed_in_header_multiloc}
-                label={formatMessage(messages.bannerHeaderSignedIn)}
-                onChange={handleSignedInHeaderOnChange}
-              />
-            </SectionField>
-            <SectionField
-              key="avatars"
-              data-cy="e2e-banner-avatar-toggle-section"
-            >
-              <SubSectionTitle>
-                <FormattedMessage {...messages.avatarsTitle} />
-              </SubSectionTitle>
-              <Setting>
-                <ToggleLabel>
-                  <StyledToggle
-                    checked={!!localSettings.banner_avatars_enabled}
-                    onChange={() => {
-                      updateValueInLocalState(
-                        'banner_avatars_enabled',
-                        !localSettings.banner_avatars_enabled
-                      );
-                    }}
-                  />
-                  <LabelContent>
-                    <LabelTitle>
-                      {formatMessage(messages.bannerDisplayHeaderAvatars)}
-                    </LabelTitle>
-                    <LabelDescription>
-                      {formatMessage(
-                        messages.bannerDisplayHeaderAvatarsSubtitle
-                      )}
-                    </LabelDescription>
-                  </LabelContent>
-                </ToggleLabel>
-              </Setting>
-            </SectionField>
-          </>
+        {!hideSignedInHeaderField && (
+          <SectionField>
+            <InputMultilocWithLocaleSwitcher
+              type="text"
+              valueMultiloc={localSettings.banner_signed_in_header_multiloc}
+              label={formatMessage(messages.bannerHeaderSignedIn)}
+              onChange={handleSignedInHeaderOnChange}
+            />
+          </SectionField>
+        )}
+        {!hideAvatarsFields && (
+          <SectionField
+            key="avatars"
+            data-cy="e2e-banner-avatar-toggle-section"
+          >
+            <SubSectionTitle>
+              <FormattedMessage {...messages.avatarsTitle} />
+            </SubSectionTitle>
+            <Setting>
+              <ToggleLabel>
+                <StyledToggle
+                  checked={!!localSettings.banner_avatars_enabled}
+                  onChange={() => {
+                    updateValueInLocalState(
+                      'banner_avatars_enabled',
+                      !localSettings.banner_avatars_enabled
+                    );
+                  }}
+                />
+                <LabelContent>
+                  <LabelTitle>
+                    {formatMessage(messages.bannerDisplayHeaderAvatars)}
+                  </LabelTitle>
+                  <LabelDescription>
+                    {formatMessage(messages.bannerDisplayHeaderAvatarsSubtitle)}
+                  </LabelDescription>
+                </LabelContent>
+              </ToggleLabel>
+            </Setting>
+          </SectionField>
         )}
         {/* // CTA settings, only applicable on homepage */}
         <Outlet
@@ -480,7 +484,7 @@ const GenericHeroBannerForm = ({
           banner_cta_signed_out_type={localSettings.banner_cta_signed_out_type}
           handleOnChange={updateValueInLocalState}
           // signed in only applies to
-          showSignedInSettings={type === 'homePage'}
+          showSignedInSettings={!hideSignedInCTASettings}
           errors={apiErrors}
         />
       </Section>
