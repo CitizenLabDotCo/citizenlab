@@ -2,6 +2,17 @@
 
 require 'yaml'
 
+# Estimated maximum times in minutes needed to verify specific templates on CI.
+# Interim solution. We should find better. For discussion and ideas, see:
+# https://citizenlab.atlassian.net/browse/CL-1588
+MAX_VERIFICATION_TIMES = {
+  'fr-be_template' => 53,
+  'insights_template' => 28,
+  'trial-en_template' => 23,
+  'global-demo_template' => 14,
+  'mi-municipio_template' => 15
+}.freeze
+
 namespace :templates do
   desc 'Importing and exporting tenants as yaml files'
 
@@ -43,9 +54,15 @@ namespace :templates do
     templates = MultiTenancy::TenantTemplateService.new.available_templates(
       external_subfolder: 'test'
     )[:external]
-    max_time = 3.hours / templates.size unless templates.empty?
     templates.in_groups_of(pool_size).map(&:compact).map do |pool_templates|
       futures = pool_templates.index_with do |template|
+        unless templates.empty?
+          max_time = if MAX_VERIFICATION_TIMES.key?(template)
+            MAX_VERIFICATION_TIMES[template].minutes
+          else
+            3.hours / templates.size
+          end
+        end
         Concurrent::Future.execute { verify_template template, max_time }
       end
       sleep 1 until futures.values.all?(&:complete?)
