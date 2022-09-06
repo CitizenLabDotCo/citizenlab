@@ -20,6 +20,9 @@ export interface IAttributes {
   ordering: number;
   created_at: string;
   updated_at: string;
+  minimum_label_multiloc: Multiloc;
+  maximum_label_multiloc: Multiloc;
+  maximum: number;
 }
 
 export interface ICustomFieldResponse {
@@ -49,6 +52,9 @@ export type IFlatCreateCustomField = Optional<
   | 'ordering'
   | 'created_at'
   | 'updated_at'
+  | 'minimum_label_multiloc'
+  | 'maximum_label_multiloc'
+  | 'maximum'
 > & {
   isLocalOnly: boolean;
 };

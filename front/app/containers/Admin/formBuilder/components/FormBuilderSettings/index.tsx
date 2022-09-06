@@ -11,6 +11,7 @@ import CloseIconButton from 'components/UI/CloseIconButton';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import Toggle from 'components/HookForm/Toggle';
 import ConfigMultiselectWithLocaleSwitcher from './ConfigMultiselectWithLocaleSwitcher';
+import LinearScaleSettings from './LinearScaleSettings';
 
 // intl
 import messages from '../messages';
@@ -104,9 +105,14 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
           }
         />
       </SectionField>
-      {(field.input_type === 'multiselect' ||
-        field.input_type === 'linear_scale') && ( // TODO: Remove this - just temporary for testing
-        <ConfigMultiselectWithLocaleSwitcher // TODO: Abstract logic to somewhere else? Could be messy with more field types.
+      {field.input_type === 'multiselect' && ( // TODO: Remove this - just temporary for testing
+        <ConfigMultiselectWithLocaleSwitcher // TODO: Abstract logic to somewhere else
+          name={`customFields.${field.index}.options`}
+          locales={locales}
+        />
+      )}
+      {field.input_type === 'linear_scale' && ( // TODO: Remove this - just temporary for testing
+        <LinearScaleSettings // TODO: Abstract logic to somewhere else
           name={`customFields.${field.index}.options`}
           locales={locales}
         />

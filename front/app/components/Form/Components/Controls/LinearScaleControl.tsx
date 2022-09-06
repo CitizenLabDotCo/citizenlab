@@ -1,7 +1,6 @@
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import {
   ControlProps,
-  isPrimitiveArrayControl,
   RankedTester,
   rankWith,
   scopeEndsWith,
@@ -53,7 +52,7 @@ const LinearScaleControl = ({
       />
       <Box display="flex" flexDirection="row" gap="8px" overflow="visible">
         <Label value={'Label before'} />
-        {options?.map((item) => (
+        {/* {options?.map((item) => (
           <>
             <Box style={{ lineHeight: '0px' }}>
               <Label value={item.label} />
@@ -69,7 +68,7 @@ const LinearScaleControl = ({
               />
             </Box>
           </>
-        ))}
+        ))} */}
         <Label value={'Label after'} />
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
