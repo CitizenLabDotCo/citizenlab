@@ -45,6 +45,16 @@ resource 'Analytics API', use_transactional_fixtures: false do
         assert_status 200
         expect(json_response_body[:data]).to eq([[{ count: 1 }], [{ count: 1 }]])
       end
+
+      example 'Handles error in query' do
+        query = {
+          fact: 'post',
+          aggregations: { all: 'max' }
+        }
+        do_request(query: query)
+        assert_status 400
+        expect(json_response_body[:messages]).to eq(["Aggregations on 'all' can only be 'count'."])
+      end
     end
 
     context 'When not admin' do

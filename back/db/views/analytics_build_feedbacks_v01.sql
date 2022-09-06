@@ -1,5 +1,4 @@
 -- Calculate the first feedback date
--- TODO: Need an index on activities.action
 
 SELECT
     post_id,

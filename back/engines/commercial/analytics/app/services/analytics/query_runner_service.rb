@@ -9,15 +9,14 @@ module Analytics
       dimensions = @query.used_dimensions
 
       results = @query.model.includes(dimensions)
-
       results = include_dimensions(results)
 
       if @json_query.key?(:fields)
         @pluck_attributes += @query.fields
       end
 
-      if @json_query.key?(:dimensions)
-        results = query_dimensions(results)
+      if @json_query.key?(:filters)
+        results = query_filters(results)
       end
 
       if @json_query.key?(:groups)
@@ -40,8 +39,8 @@ module Analytics
 
     private
 
-    def query_dimensions(results)
-      @json_query[:dimensions].each do |dimension, columns|
+    def query_filters(results)
+      @json_query[:filters].each do |dimension, columns|
         columns.each do |column, value|
           if [Array, String].include? value.class
             results = results.where(dimension => { column => value })
@@ -61,10 +60,14 @@ module Analytics
       results
     end
 
+    # creates a dummy where statement in the active record query
+    # for dimensions that are not being filtered
+    # so that an alias is automatically created
+    # to be used elsewhere in the query
     def include_dimensions(results)
       dimensions = @query.used_dimensions
-      if @json_query.key?(:dimensions)
-        dimensions = dimensions.reject { |dim| @json_query[:dimensions].key?(dim) }
+      if @json_query.key?(:filters)
+        dimensions = dimensions.reject { |dim| @json_query[:filters].key?(dim) }
       end
 
       all_dimensions = @query.all_dimensions
@@ -83,28 +86,11 @@ module Analytics
 
     def build_aggregations
       aggregations_sql = @query.aggregations_sql
-      count_all = 'count(all) as count_all'
-      if aggregations_sql.include? count_all
-        aggregations_sql.delete(count_all)
-        aggregations_sql.push(Arel.sql('COUNT(*) as count'))
-      end
-
-      handle_first_aggregation('first(', aggregations_sql) do |agg, substr|
-        aggregations_sql.delete(agg)
-        aggregations_sql.push(agg.gsub(substr, 'array_agg('))
-      end
 
       if @json_query.key?(:groups)
         @pluck_attributes += aggregations_sql
       else
         @pluck_attributes = aggregations_sql
-      end
-    end
-
-    def handle_first_aggregation(substring, agg_list, &_block)
-      first_aggregations = agg_list.select { |agg| agg[0, substring.length] == substring }
-      first_aggregations.each do |first_agg|
-        yield first_agg, substring
       end
     end
 
@@ -125,14 +111,14 @@ module Analytics
       response_attributes = @pluck_attributes.map { |key| @query.extract_aggregation_name(key) }
 
       results.map do |result|
-        unless result.instance_of?(Array)
-          result = [result]
-        end
+        result = Array.wrap(result)
 
         response_row = response_attributes.zip(result).to_h
 
-        handle_first_aggregation('first_', response_attributes) do |agg, _|
-          response_row[agg] = response_row[agg][0]
+        substring = 'first_'
+        first_aggregations = response_attributes.select { |agg| agg[0, substring.length] == substring }
+        first_aggregations.each do |first_agg|
+          response_row[first_agg] = response_row[first_agg][0]
         end
 
         response_row

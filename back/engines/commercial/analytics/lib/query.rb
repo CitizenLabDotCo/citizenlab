@@ -11,13 +11,12 @@ module Analytics
       @json_query = query
     end
 
-    attr_reader :valid, :error_messages, :response_status, :results, :json_query, :failed
+    attr_reader :valid, :error_messages, :results, :json_query, :failed
 
     def validate
       validation = QueryValidatorService.new(self)
       @valid = validation.valid
       @error_messages = validation.messages
-      @response_status = validation.response_status
     end
 
     def run
@@ -29,7 +28,6 @@ module Analytics
       rescue ActiveRecord::StatementInvalid => e
         @error_messages.push(e.message)
         @failed = true
-        @response_status = 500
       else
         @results = results
       end
@@ -40,7 +38,7 @@ module Analytics
     end
 
     def all_dimensions
-      model
+      @all_dimensions ||= model
         .reflect_on_all_associations(:belongs_to)
         .to_h do |assoc|
           [
@@ -51,6 +49,10 @@ module Analytics
             }
           ]
         end
+    end
+
+    def all_attributes
+      all_dimensions.keys + model.column_names + aggregations_names
     end
 
     def used_dimensions
@@ -72,8 +74,8 @@ module Analytics
         used_dimensions += @json_query[:sort].keys
       end
 
-      if @json_query.key?(:dimensions)
-        used_dimensions += @json_query[:dimensions].keys
+      if @json_query.key?(:filters)
+        used_dimensions += @json_query[:filters].keys
       end
 
       used_dimensions = used_dimensions.map { |key| key.include?('.') ? key.split('.')[0] : key }
@@ -90,33 +92,47 @@ module Analytics
       Array.wrap(@json_query[:fields])
     end
 
-    def aggregation_to_sql(aggregation, column)
-      "#{aggregation}(#{column}) as #{aggregation}_#{column.tr('.', '_')}"
-    end
-
-    def aggregations_sql
-      attribute = []
+    def aggregations
+      attributes = []
       if @json_query.key?(:aggregations)
         @json_query[:aggregations].each do |column, aggregation|
           if aggregation.instance_of?(Array)
             aggregation.each do |aggregation_|
-              attribute.push(aggregation_to_sql(aggregation_, column))
+              attributes.push([column, aggregation_])
             end
           else
-            attribute.push(aggregation_to_sql(aggregation, column))
+            attributes.push([column, aggregation])
           end
         end
       end
 
-      attribute
+      attributes
+    end
+
+    def aggregation_alias(column, aggregation)
+      "#{aggregation}_#{column.tr('.', '_')}"
     end
 
     def extract_aggregation_name(attribute)
       attribute.include?(' as ') ? attribute.split(' as ')[1] : attribute
     end
 
+    def aggregations_sql
+      aggregations.map do |column, aggregation|
+        if aggregation == 'count' && column == 'all'
+          Arel.sql('COUNT(*) as count')
+        elsif aggregation == 'first'
+          "array_agg(#{column}) as #{aggregation_alias(column, aggregation)}"
+        else
+          "#{aggregation}(#{column}) as #{aggregation_alias(column, aggregation)}"
+        end
+      end
+    end
+
     def aggregations_names
-      aggregations_sql.map { |key| extract_aggregation_name(key) }
+      aggregations.map do |column, aggregation|
+        aggregation_alias(column, aggregation)
+      end
     end
   end
 end
