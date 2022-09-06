@@ -15,13 +15,11 @@ resource 'Analytics API', use_transactional_fixtures: false do
       Universal API for querying posts from the analytics database
     DESC
 
-    with_options required: true do
-      parameter :query, 'The query object.'
-    end
+    parameter :query, 'The query object.', required: true
 
     before do
-      create(:idea) # Create one idea
-      create(:dimension_type_idea) # Create the 'idea' type
+      create(:idea)
+      create(:dimension_type_idea)
     end
 
     context 'When admin' do
@@ -47,10 +45,20 @@ resource 'Analytics API', use_transactional_fixtures: false do
         assert_status 200
         expect(json_response_body[:data]).to eq([[{ count: 1 }], [{ count: 1 }]])
       end
+
+      example 'Handles error in query' do
+        query = {
+          fact: 'post',
+          aggregations: { all: 'max' }
+        }
+        do_request(query: query)
+        assert_status 400
+        expect(json_response_body[:messages]).to eq(["Aggregations on 'all' can only be 'count'."])
+      end
     end
 
     context 'When not admin' do
-      example_request 'Checks that analytics API cannot be called if user is not admin' do
+      example_request 'returns 401 (unauthorized)' do
         assert_status 401
       end
     end

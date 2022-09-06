@@ -17,17 +17,18 @@ describe Analytics::QueryRunnerService do
     end
 
     it 'return groups with aggregations' do
-      create_list(:idea, 5)
-      create_list(:initiative, 5)
+      idea = create(:idea)
+      initiative = create(:initiative)
+      create_list(:vote, 2, votable: idea)
+      create_list(:vote, 1, votable: initiative)
       create(:dimension_type_idea)
       create(:dimension_type_initiative)
-      create_list(:vote, 10)
 
       query_param = ActionController::Parameters.new(
         fact: 'post',
         groups: 'type.name',
         aggregations: {
-          votes_count: %w[sum max]
+          votes_count: %w[sum]
         }
       )
       query = Analytics::Query.new(query_param)
@@ -36,21 +37,21 @@ describe Analytics::QueryRunnerService do
       results = runner.run(query)
 
       expected_result = [
-        { 'type.name' => 'initiative', 'sum_votes_count' => 0, 'max_votes_count' => 0.0 },
-        { 'type.name' => 'idea', 'sum_votes_count' => 10, 'max_votes_count' => 1 }
+        { 'type.name' => 'initiative', 'sum_votes_count' => 1 },
+        { 'type.name' => 'idea', 'sum_votes_count' => 2 }
       ]
       expect(results).to eq expected_result
     end
 
     it 'return filtered ideas count' do
-      create_list(:idea, 5)
-      create_list(:initiative, 5)
+      create(:idea)
+      create(:initiative)
       create(:dimension_type_idea)
       create(:dimension_type_initiative)
 
       query_param = ActionController::Parameters.new(
         fact: 'post',
-        dimensions: {
+        filters: {
           type: {
             name: 'idea'
           }
@@ -63,7 +64,7 @@ describe Analytics::QueryRunnerService do
 
       runner = described_class.new
       results = runner.run(query)
-      expect(results).to eq([{ 'count' => 5 }])
+      expect(results).to eq([{ 'count' => 1 }])
     end
 
     it 'return first two sorted posts' do

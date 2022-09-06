@@ -1,6 +1,6 @@
 {
   "type" : "object",
-  "$schema": "http://citizenlab.co/tenant_settings_spec.json",
+  "$schema": "http://json-schema.org/draft-04/schema#",
   "properties" : {
     "fields": {
       "anyOf" : [
@@ -22,7 +22,7 @@
       "type" : "string",
       "enum" : ["post", "participation"]
     },
-    "dimensions" : {
+    "filters" : {
       "type" : "object",
       "minProperties" : 1,
       "patternProperties" : {

@@ -3,12 +3,13 @@
 module Analytics
   class QueryValidatorService
     def initialize(query)
+      query_schema_file = 'engines/commercial/analytics/app/services/analytics/query_schema.json'
+      @query_schema = File.read(query_schema_file)
       @query = query
       @json_query = query.json_query
       @messages = []
       @response_status = nil
 
-      @valid = true
       validate
       @valid = @messages.empty?
     end
@@ -18,15 +19,14 @@ module Analytics
     def validate
       validate_json
 
-      return unless @valid
+      return if @valid == false
 
       if @json_query.key?(:fields)
-        validate_fields
+        validate_attributes(@query.fields, 'Fields')
       end
 
-      if @json_query.key?(:dimensions)
-        validate_dimensions
-        validate_dates
+      if @json_query.key?(:filters)
+        validate_filters
       end
 
       if @json_query.key?(:groups)
@@ -39,115 +39,79 @@ module Analytics
 
       return unless @json_query.key?(:sort)
 
-      validate_order
+      validate_attributes(@json_query[:sort].keys, 'Sort')
     end
 
     private
 
-    def add_error(messages, status)
+    def add_error(messages)
       @valid = false
       @messages.push(*messages)
-      @response_status = status
     end
 
     def validate_json
-      query_schema = 'engines/commercial/analytics/app/services/analytics/query_schema.json'
-      json_errors = JSON::Validator.fully_validate(query_schema, @json_query.to_unsafe_hash)
+      json_errors = JSON::Validator.fully_validate(@query_schema, @json_query.to_unsafe_hash)
       return if json_errors.empty?
 
-      add_error(json_errors, 400)
+      add_error(json_errors)
     end
 
-    def validate_fields
-      @query.fields.each do |key|
-        validate_dotted(key, 'Fields')
-      end
-    end
+    def validate_attributes(attributes, kind)
+      attributes.each do |attribute|
+        field, subfield = attribute.include?('.') ? attribute.split('.') : [attribute, nil]
+        if @query.all_attributes.include?(field)
+          if subfield && @query.all_dimensions.exclude?(field)
+            add_error("#{kind} field #{field} does not contain #{subfield} because is not a dimension.")
 
-    def validate_dimensions
-      @json_query[:dimensions].each do |dimension, columns|
-        query_dimensions = @query.all_dimensions
-        if query_dimensions.key?(dimension)
-          columns.each do |column, _value|
-            unless query_dimensions[dimension][:columns].include?(column)
-              add_error("Column #{column} does not exist in dimension #{dimension}.", 422)
-            end
+          elsif subfield && @query.all_dimensions[field][:columns].exclude?(subfield)
+            add_error("#{kind} column #{subfield} does not exist in dimension #{field}.")
           end
         else
-          add_error("Dimension #{dimension} does not exist.", 422)
+          add_error("#{kind} field #{field} does not exist.")
         end
       end
     end
 
-    def validate_dates
+    def validate_filters
       dates_attrs = %w[from to]
-      @json_query[:dimensions].each do |dimension, columns|
+      @json_query[:filters].each do |dimension, columns|
         columns.each do |column, value|
-          next unless [Array, String].exclude?(value.class) && (column == 'date')
+          validate_attributes(["#{dimension}.#{column}"], 'Filters')
+
+          next unless column == 'date' && value.is_a?(ActionController::Parameters)
 
           dates_attrs.each do |date|
             Date.parse(value[date])
           rescue ArgumentError
-            add_error("Invalid '#{date}' date in #{dimension} dimension.", 422)
+            add_error("Invalid '#{date}' date in #{dimension} dimension on column #{column}.")
           end
         end
-      end
-    end
-
-    def validate_dotted(key, kind)
-      query_dimensions = @query.all_dimensions
-      if key.include? '.'
-        dimension, column = key.split('.')
-        if query_dimensions.key?(dimension)
-          unless query_dimensions[dimension][:columns].include?(column)
-            add_error("#{kind} column #{column} does not exist in dimension #{dimension}.", 422)
-          end
-        else
-          add_error("#{kind} dimension #{dimension} does not exist.", 422)
-        end
-
-      elsif (
-              kind == 'Aggregations' &&
-              @query.aggregations_names.include?(key)
-            ) ||
-            (
-              @query.model.column_names.exclude?(key) &&
-              @query.aggregations_names.exclude?(key) &&
-              query_dimensions.keys.exclude?(key)
-            )
-        add_error("#{kind} column #{key} does not exist in fact table.", 422)
       end
     end
 
     def validate_groups
-      @query.groups_keys.each do |key|
-        validate_dotted(key, 'Groups')
-      end
+      validate_attributes(@query.groups_keys, 'Groups')
 
       return if @json_query.key?(:aggregations)
 
-      add_error('There must be aggregations when using groups.', 400)
+      add_error('There must be aggregations when using groups.')
     end
 
     def validate_aggregations
       @json_query[:aggregations].each do |key, aggregation|
         if key == 'all'
-          next if aggregation == 'count'
-
-          add_error("Aggregations on 'all' can only be 'count'.", 422)
+          if aggregation != 'count'
+            add_error("Aggregations on 'all' can only be 'count'.")
+          end
           next
         end
 
-        validate_dotted(key, 'Aggregations')
-      end
-    end
+        if @query.aggregations_names.include? key
+          add_error("Aggregations column #{key} does not exist.")
+          next
+        end
 
-    def validate_order
-      @json_query[:sort].each_key do |key|
-        validate_dotted(key, 'Sort')
-        next if !@json_query.key?(:aggregations) || @query.aggregations_names.include?(key)
-
-        add_error("Sorting column #{key} its not present in the aggregations.", 422)
+        validate_attributes([key], 'Aggregations')
       end
     end
   end

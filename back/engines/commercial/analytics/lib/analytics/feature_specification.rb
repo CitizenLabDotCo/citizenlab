@@ -15,7 +15,7 @@ module Analytics
     end
 
     def self.feature_description
-      'New analytics coming from a data warehouse.'
+      'Dedicated endpoints for dashboards and analytics.'
     end
 
     def self.allowed_by_default

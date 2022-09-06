@@ -14,10 +14,10 @@
 #  downvotes_count :integer
 #
 module Analytics
-  class FactParticipation < Analytics::ApplicationView
+  class FactParticipation < Analytics::ApplicationRecordView
     self.primary_key = :id
     belongs_to :type, class_name: 'DimensionType'
-    belongs_to :created_date, class_name: 'DimensionDate', foreign_key: 'created_date'
+    belongs_to :created_date, class_name: 'DimensionDate', primary_key: 'created_date'
     belongs_to :project, class_name: 'DimensionProject'
   end
 end
