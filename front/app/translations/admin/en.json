@@ -1077,6 +1077,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.questionDescription": "Question description",
   "app.containers.AdminPage.ProjectEdit.survey.questionTitle": "Question title",
   "app.containers.AdminPage.ProjectEdit.survey.range": "Range",
+  "app.containers.AdminPage.ProjectEdit.survey.rangeToLabel": "1 to",
   "app.containers.AdminPage.ProjectEdit.survey.rangeTooltip": "Range tooltip content",
   "app.containers.AdminPage.ProjectEdit.survey.removeOption": "Remove option",
   "app.containers.AdminPage.ProjectEdit.survey.required": "Required",
