@@ -5,6 +5,7 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { object } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import validateMultiloc from 'utils/yup/validateMultiloc';
+import translationMessages from 'i18n/en';
 
 const schema = object({
   description: validateMultiloc('Error message'),
@@ -57,6 +58,36 @@ describe('QuillMultilocWithLocaleSwitcher', () => {
     await waitFor(() => {
       expect(onSubmit).not.toHaveBeenCalled();
       expect(screen.getByText('Error message')).toBeInTheDocument();
+    });
+  });
+  it('shows API validation error when there is one', async () => {
+    const FormWithAPIError = () => {
+      const methods = useForm();
+      return (
+        <FormProvider {...methods}>
+          <form
+            onSubmit={methods.handleSubmit(() =>
+              methods.setError('title', { error: 'blank' } as any)
+            )}
+          >
+            <QuillMultilocWithLocaleSwitcher name="title" />
+            <button type="submit">Submit</button>
+          </form>
+        </FormProvider>
+      );
+    };
+
+    render(<FormWithAPIError />);
+
+    fireEvent.click(screen.getByText(/submit/i));
+    await waitFor(() => {
+      expect(
+        screen.getByText(
+          (translationMessages as Record<string, string>)[
+            'app.errors.generics.blank'
+          ]
+        )
+      ).toBeInTheDocument();
     });
   });
 });
