@@ -84,8 +84,6 @@ const CustomPagesEditContent = () => {
       titleMessageDescriptor: sectionToggleMessages.attachmentsSection,
       tooltipMessageDescriptor: sectionToggleMessages.attachmentsSectionTooltip,
       linkToPath: 'attachments',
-      // until things are typed properly
-      hideToggle: false,
     },
   ];
 
