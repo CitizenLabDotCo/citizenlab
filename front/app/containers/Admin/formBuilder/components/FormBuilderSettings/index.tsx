@@ -116,6 +116,7 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
           name={`customFields.${field.index}.options`}
           maximumName={`customFields.${field.index}.maximum`}
           minimumLabelName={`customFields.${field.index}.minimum_label_multiloc`}
+          maximumLabelName={`customFields.${field.index}.maximum_label_multiloc`}
           locales={locales}
         />
       )}
