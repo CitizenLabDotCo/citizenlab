@@ -8,6 +8,7 @@ import Outlet from 'components/Outlet';
 import styled from 'styled-components';
 import PageTitle from 'components/admin/PageTitle';
 import { Box } from '@citizenlab/cl2-component-library';
+import HelmetIntl from 'components/HelmetIntl';
 
 const Container = styled.div`
   display: flex;
@@ -28,19 +29,28 @@ const PagesAndMenuIndex = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   });
 
   return (
-    <div id="e2e-pages-menu-container">
-      <Outlet id="app.containers.Admin.pages-menu.index" />
-      {!customizableNavbarEnabled && (
-        <>
-          <Box mb="20px">
-            <PageTitle>{formatMessage(messages.pageHeader)}</PageTitle>
-          </Box>
-          <Container>
-            <RouterOutlet />
-          </Container>
-        </>
-      )}
-    </div>
+    <>
+      <HelmetIntl
+        title={
+          customizableNavbarEnabled
+            ? messages.pagesMenuMetaTitle
+            : messages.pagesMetaTitle
+        }
+      />
+      <div id="e2e-pages-menu-container">
+        <Outlet id="app.containers.Admin.pages-menu.index" />
+        {!customizableNavbarEnabled && (
+          <>
+            <Box mb="20px">
+              <PageTitle>{formatMessage(messages.pageHeader)}</PageTitle>
+            </Box>
+            <Container>
+              <RouterOutlet />
+            </Container>
+          </>
+        )}
+      </div>
+    </>
   );
 };
 
