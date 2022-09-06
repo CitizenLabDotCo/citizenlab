@@ -40,6 +40,8 @@ const getTranslatedFieldType = (field) => {
       return messages.number;
     case 'email':
       return messages.email;
+    case 'linear_scale':
+      return messages.linearScale;
     default:
       return messages.default;
   }

@@ -50,6 +50,9 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
     case 'email':
       translatedStringKey = messages.email;
       break;
+    case 'linear_scale':
+      translatedStringKey = messages.linearScale;
+      break;
   }
 
   return (
@@ -101,7 +104,8 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
           }
         />
       </SectionField>
-      {field.input_type === 'multiselect' && (
+      {(field.input_type === 'multiselect' ||
+        field.input_type === 'linear_scale') && ( // TODO: Remove this - just temporary for testing
         <ConfigMultiselectWithLocaleSwitcher // TODO: Abstract logic to somewhere else? Could be messy with more field types.
           name={`customFields.${field.index}.options`}
           locales={locales}

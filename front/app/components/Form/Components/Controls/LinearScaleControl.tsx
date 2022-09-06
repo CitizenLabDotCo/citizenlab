@@ -4,6 +4,7 @@ import {
   isPrimitiveArrayControl,
   RankedTester,
   rankWith,
+  scopeEndsWith,
 } from '@jsonforms/core';
 import React, { useCallback, useState } from 'react';
 import ErrorDisplay from '../ErrorDisplay';
@@ -23,13 +24,10 @@ const LinearScaleControl = ({
   id,
 }: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
-  const options =
-    (!Array.isArray(schema.items) &&
-      schema.items?.oneOf?.map((o) => ({
-        value: o.const as string,
-        label: (o.title || o.const) as string,
-      }))) ||
-    null;
+  const options = schema?.oneOf?.map((o) => ({
+    value: o.const,
+    label: o.title || o.const,
+  }));
 
   console.log('data: ', data);
   console.log('options: ', options);
@@ -84,5 +82,5 @@ export default withJsonFormsControlProps(LinearScaleControl);
 
 export const linearScaleControlTester: RankedTester = rankWith(
   10,
-  isPrimitiveArrayControl
+  scopeEndsWith('linear_scale')
 );

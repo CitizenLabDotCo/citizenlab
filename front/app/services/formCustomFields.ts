@@ -3,7 +3,7 @@ import streams, { IStreamParams } from 'utils/streams';
 import { Multiloc } from 'typings';
 
 // We can add more input types here when we support them
-export type ICustomFieldInputType = 'text' | 'multiselect' | 'number' | 'email';
+export type ICustomFieldInputType = 'text' | 'multiselect' | 'number' | 'email' | 'linear_scale';
 export type IOptionsType = {
   id?: string;
   title_multiloc: Multiloc;

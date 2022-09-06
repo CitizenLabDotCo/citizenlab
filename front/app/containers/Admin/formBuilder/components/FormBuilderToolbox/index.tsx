@@ -99,6 +99,11 @@ const FormBuilderToolbox = ({
             label={formatMessage(messages.email)}
             onClick={() => addAnswer('email')}
           />
+          <ToolboxItem
+            icon="info"
+            label={formatMessage(messages.linearScale)}
+            onClick={() => addAnswer('linear_scale')}
+          />
         </DraggableElement>
       </Box>
     </Box>

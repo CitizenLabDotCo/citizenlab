@@ -33,6 +33,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.email',
     defaultMessage: 'Email',
   },
+    linearScale: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.linearScale',
+    defaultMessage: 'Linear scale',
+  },
   default: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.default',
     defaultMessage: 'Default',
