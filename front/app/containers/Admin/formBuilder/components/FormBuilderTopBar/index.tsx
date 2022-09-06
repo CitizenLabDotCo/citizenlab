@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { useFormContext } from 'react-hook-form';
+import React from 'react';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -24,7 +23,6 @@ import {
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { getIsPostingEnabled } from 'containers/Admin/formBuilder/utils';
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 // i18n
 import messages from '../messages';
@@ -34,27 +32,22 @@ import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { useParams } from 'react-router-dom';
 
-// services
-import {
-  IFlatCustomField,
-  updateFormCustomFields,
-} from 'services/formCustomFields';
-
 const StyledStatusLabel = styled(StatusLabel)`
   height: 20px;
   margin-bottom: auto;
 `;
 
-const FormBuilderTopBar = () => {
+type FormBuilderTopBarProps = {
+  isSubmitting: boolean;
+};
+
+const FormBuilderTopBar = ({ isSubmitting }: FormBuilderTopBarProps) => {
   const localize = useLocalize();
   const { projectId, phaseId } = useParams() as {
     projectId: string;
     phaseId?: string;
   };
   const project = useProject({ projectId });
-  const [loading, setLoading] = useState(false);
-  const { watch, setError, clearErrors } = useFormContext();
-  const formCustomFields: IFlatCustomField[] = watch('customFields');
   const phase = usePhase(phaseId || null);
 
   if (isNilOrError(project)) {
@@ -71,32 +64,6 @@ const FormBuilderTopBar = () => {
     clHistory.push(`/admin/projects/${projectId}/native-survey`);
   };
 
-  const save = async () => {
-    if (!isNilOrError(formCustomFields)) {
-      try {
-        setLoading(true);
-        const finalResponseArray = formCustomFields.map((field) => ({
-          ...(!field.isLocalOnly && { id: field.id }),
-          input_type: field.input_type,
-          required: field.required,
-          enabled: field.enabled,
-          title_multiloc: field.title_multiloc || {},
-          description_multiloc: field.description_multiloc || {},
-          ...(field.input_type === 'multiselect' && {
-            // TODO: This will get messy with more field types, abstract this in some way
-            options: field.options || {},
-          }),
-        }));
-        await updateFormCustomFields(projectId, finalResponseArray, phaseId);
-        clearErrors();
-      } catch (error) {
-        handleHookFormSubmissionError(error, setError, 'customFields');
-      } finally {
-        setLoading(false);
-      }
-    }
-  };
-
   return (
     <Box
       position="fixed"
@@ -107,6 +74,7 @@ const FormBuilderTopBar = () => {
       display="flex"
       background={`${colors.adminContentBackground}`}
       borderBottom={`1px solid ${colors.mediumGrey}`}
+      top="0px"
     >
       <Box
         p="16px"
@@ -162,8 +130,8 @@ const FormBuilderTopBar = () => {
           buttonStyle="primary"
           mx="20px"
           disabled={!project}
-          processing={loading}
-          onClick={save}
+          processing={isSubmitting}
+          type="submit"
         >
           <FormattedMessage {...messages.save} />
         </Button>

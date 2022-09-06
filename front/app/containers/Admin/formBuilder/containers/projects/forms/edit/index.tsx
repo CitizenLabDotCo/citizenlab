@@ -22,11 +22,13 @@ import Error from 'components/UI/Error';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 import {
   IFlatCreateCustomField,
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
+  updateFormCustomFields,
 } from 'services/formCustomFields';
 
 // hooks
@@ -47,15 +49,23 @@ const StyledRightColumn = styled(RightColumn)`
   overflow-y: auto;
 `;
 
+interface FormValues {
+  customFields: IFlatCustomField[];
+}
+
 type FormEditProps = {
   defaultValues: {
     customFields: IFlatCustomField[];
   };
+  projectId: string;
+  phaseId?: string;
 } & InjectedIntlProps;
 
 export const FormEdit = ({
   intl: { formatMessage },
   defaultValues,
+  phaseId,
+  projectId,
 }: FormEditProps) => {
   const [selectedField, setSelectedField] = useState<
     IFlatCustomFieldWithIndex | undefined
@@ -84,9 +94,17 @@ export const FormEdit = ({
     resolver: yupResolver(schema),
   });
 
+  const {
+    clearErrors,
+    setError,
+    handleSubmit,
+    control,
+    formState: { isSubmitting, errors },
+  } = methods;
+
   const { fields, append, remove, move } = useFieldArray({
     name: 'customFields',
-    control: methods.control,
+    control,
   });
 
   const closeSettings = () => {
@@ -112,7 +130,28 @@ export const FormEdit = ({
     move(fromIndex, toIndex);
   };
 
-  const hasErrors = !!Object.keys(methods.formState.errors).length;
+  const hasErrors = !!Object.keys(errors).length;
+
+  const onFormSubmit = async ({ customFields }: FormValues) => {
+    try {
+      const finalResponseArray = customFields.map((field) => ({
+        ...(!field.isLocalOnly && { id: field.id }),
+        input_type: field.input_type,
+        required: field.required,
+        enabled: field.enabled,
+        title_multiloc: field.title_multiloc || {},
+        description_multiloc: field.description_multiloc || {},
+        ...(field.input_type === 'multiselect' && {
+          // TODO: This will get messy with more field types, abstract this in some way
+          options: field.options || {},
+        }),
+      }));
+      await updateFormCustomFields(projectId, finalResponseArray, phaseId);
+      clearErrors();
+    } catch (error) {
+      handleHookFormSubmissionError(error, setError, 'customFields');
+    }
+  };
 
   return (
     <Box
@@ -126,39 +165,41 @@ export const FormEdit = ({
     >
       <FocusOn>
         <FormProvider {...methods}>
-          <FormBuilderTopBar />
-          <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
-            <FormBuilderToolbox onAddField={onAddField} />
-            <StyledRightColumn>
-              <Box width="1000px">
-                {hasErrors && (
-                  <Box mb="16px">
-                    <Error
-                      marginTop="8px"
-                      marginBottom="8px"
-                      text={formatMessage(messages.errorMessage)}
-                      scrollIntoView={false}
+          <form onSubmit={handleSubmit(onFormSubmit)}>
+            <FormBuilderTopBar isSubmitting={isSubmitting} />
+            <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
+              <FormBuilderToolbox onAddField={onAddField} />
+              <StyledRightColumn>
+                <Box width="1000px">
+                  {hasErrors && (
+                    <Box mb="16px">
+                      <Error
+                        marginTop="8px"
+                        marginBottom="8px"
+                        text={formatMessage(messages.errorMessage)}
+                        scrollIntoView={false}
+                      />
+                    </Box>
+                  )}
+                  <Box bgColor="white" minHeight="300px">
+                    <FormFields
+                      onEditField={setSelectedField}
+                      handleDragRow={handleDragRow}
+                      selectedFieldId={selectedField?.id}
                     />
                   </Box>
-                )}
-                <Box bgColor="white" minHeight="300px">
-                  <FormFields
-                    onEditField={setSelectedField}
-                    handleDragRow={handleDragRow}
-                    selectedFieldId={selectedField?.id}
-                  />
                 </Box>
-              </Box>
-            </StyledRightColumn>
-            {!isNilOrError(selectedField) && (
-              <FormBuilderSettings
-                key={selectedField.id}
-                field={selectedField}
-                onDelete={handleDelete}
-                onClose={closeSettings}
-              />
-            )}
-          </Box>
+              </StyledRightColumn>
+              {!isNilOrError(selectedField) && (
+                <FormBuilderSettings
+                  key={selectedField.id}
+                  field={selectedField}
+                  onDelete={handleDelete}
+                  onClose={closeSettings}
+                />
+              )}
+            </Box>
+          </form>
         </FormProvider>
       </FocusOn>
     </Box>
@@ -183,6 +224,8 @@ const FormBuilderPage = ({ intl }) => {
         <FormEdit
           intl={intl}
           defaultValues={{ customFields: formCustomFields }}
+          phaseId={phaseId}
+          projectId={projectId}
         />,
         modalPortalElement
       )
