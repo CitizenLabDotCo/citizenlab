@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import { useParams } from 'react-router-dom';
 import { useForm, useFieldArray, FormProvider } from 'react-hook-form';
-import { object, boolean, array } from 'yup';
+import { object, boolean, array, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 // styles
@@ -22,6 +22,7 @@ import Error from 'components/UI/Error';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
+import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 import {
@@ -78,10 +79,9 @@ export const FormEdit = ({
           formatMessage(messages.emptyTitleError)
         ),
         description_multiloc: object(),
-        options: array().of(
-          object().shape({
-            title_multiloc: object(),
-          })
+        input_type: string(),
+        options: validateOneOptionForMultiSelect(
+          formatMessage(messages.emptyOptionError)
         ),
         required: boolean(),
       })

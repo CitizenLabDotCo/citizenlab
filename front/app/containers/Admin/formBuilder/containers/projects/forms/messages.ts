@@ -18,4 +18,8 @@ export default defineMessages({
     defaultMessage:
       'There is a problem, please fix the issue to be able to save your changes',
   },
+  emptyOptionError: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.emptyOptionError',
+    defaultMessage: 'Provide at least 1 answer',
+  },
 });
