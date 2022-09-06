@@ -21,6 +21,7 @@ import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
 import SelectableResourceByProjectChart from './charts/SelectableResourceByProjectChart';
 import SelectableResourceByTopicChart from './charts/SelectableResourceByTopicChart';
 import LineBarChartVotesByTime from './charts/LineBarChartVotesByTime';
+import IdeasByStatusChart from './charts/IdeasByStatusChart';
 
 // typings
 import { IOption } from 'typings';
@@ -69,6 +70,7 @@ interface State {
   currentProjectFilterLabel: string | undefined;
   currentResourceByTopic: IResource;
   currentResourceByProject: IResource;
+  ideasByStatusChartHidden: boolean;
 }
 
 interface Tracks {
@@ -97,6 +99,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
       currentProjectFilterLabel: undefined,
       currentResourceByTopic: 'ideas',
       currentResourceByProject: 'ideas',
+      ideasByStatusChartHidden: false,
     };
 
     this.resourceOptions = [
@@ -150,9 +153,18 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
     this.setState({ currentResourceByProject: option.value });
   };
 
+  hideIdeasByStatusChart = () => {
+    this.setState({ ideasByStatusChartHidden: true });
+  };
+
   render() {
-    const { resolution, startAtMoment, endAtMoment, currentProjectFilter } =
-      this.state;
+    const {
+      resolution,
+      startAtMoment,
+      endAtMoment,
+      currentProjectFilter,
+      ideasByStatusChartHidden,
+    } = this.state;
 
     const startAt = startAtMoment && startAtMoment.toISOString();
     const endAt = endAtMoment && endAtMoment.toISOString();
@@ -259,11 +271,20 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
               />
             </Column>
             <Column>
+              {!ideasByStatusChartHidden && (
+                <IdeasByStatusChart
+                  className="fullWidth dynamicHeight"
+                  startAt={startAt}
+                  endAt={endAt}
+                  {...this.state}
+                />
+              )}
               <Outlet
                 id="app.containers.Admin.dashboard.summary.postStatus"
                 projectId={currentProjectFilter}
                 startAt={startAt}
                 endAt={endAt}
+                onMount={this.hideIdeasByStatusChart}
               />
               <SelectableResourceByTopicChart
                 className="fullWidth dynamicHeight e2e-resource-by-topic-chart"
