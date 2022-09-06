@@ -1,5 +1,15 @@
 # Changelog
 
+## 2022-09-05
+
+### Added
+- [CL-1157] Added domicile fields to representation dashboard
+
+## 2022-09-02
+
+### Fixed
+- [CL-1580] Do not show full admin panel to moderators
+
 ## 2022-08-30
 
 ### Fixed
