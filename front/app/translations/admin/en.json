@@ -1066,6 +1066,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.emptyTitleErrorMessage": "Provide a title for all languages",
   "app.containers.AdminPage.ProjectEdit.survey.fieldLabel": "Answer choices",
   "app.containers.AdminPage.ProjectEdit.survey.fieldTooltip": "Field tooltip content",
+  "app.containers.AdminPage.ProjectEdit.survey.linearScale": "Linear scale",
   "app.containers.AdminPage.ProjectEdit.survey.multipleChoice": "Multiple choice",
   "app.containers.AdminPage.ProjectEdit.survey.newField": "New field",
   "app.containers.AdminPage.ProjectEdit.survey.number": "Number",
