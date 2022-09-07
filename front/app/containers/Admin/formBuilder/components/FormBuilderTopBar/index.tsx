@@ -81,11 +81,9 @@ const FormBuilderTopBar = () => {
           title_multiloc: field.title_multiloc || {},
           description_multiloc: field.description_multiloc || {},
           ...(field.input_type === 'multiselect' && {
-            // TODO: This will get messy with more field types, abstract this in some way
             options: field.options || {},
           }),
           ...(field.input_type === 'linear_scale' && {
-            // TODO: This will get messy with more field types, abstract this in some way
             minimum_label_multiloc: field.minimum_label_multiloc || {},
             maximum_label_multiloc: field.maximum_label_multiloc || {},
             maximum: field.maximum,
