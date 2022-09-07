@@ -54,27 +54,11 @@ const EditHomepageHeroBannerForm = ({
 
   const { attributes } = homepageSettings;
 
-  const handleSave = async (newSettings: HeroBannerInputSettings) => {
-    if (!newSettings) return;
-
-    // some names in the generic form are different from the property on Homepage
-    const propsMappedToHomepageSettingsNames: Partial<IHomepageSettingsAttributes> =
-      {
-        banner_signed_out_header_overlay_opacity:
-          newSettings.banner_overlay_opacity,
-        banner_signed_out_header_overlay_color:
-          newSettings.banner_overlay_color,
-        banner_signed_out_header_multiloc: newSettings.banner_header_multiloc,
-        banner_signed_out_subheader_multiloc:
-          newSettings.banner_subheader_multiloc,
-        // the rest are the same as used in the form
-        ...newSettings,
-      };
-
+  const handleSave = async () => {
     // only update the page settings if they have changed
     const diffedValues = {};
-    forOwn(propsMappedToHomepageSettingsNames, (value, key) => {
-      if (!isEqual(value, attributes[key])) {
+    forOwn(localSettings, (value, key) => {
+      if (!isEqual(value, homepageSettings.attributes[key])) {
         diffedValues[key] = value;
       }
     });
