@@ -65,7 +65,6 @@ const FormBuilderTopBar = () => {
     ? `/projects/${project?.attributes.slug}/ideas/new?phase_id=${phaseId}`
     : `/projects/${project?.attributes.slug}/ideas/new`;
 
-  // TODO : Generalize this form builder and use new ParticipationMethod abstraction to control method specific copy, etc.
   const goBack = () => {
     clHistory.push(`/admin/projects/${projectId}/native-survey`);
   };

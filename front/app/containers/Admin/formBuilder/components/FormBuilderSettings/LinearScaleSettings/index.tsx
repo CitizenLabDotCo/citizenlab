@@ -16,7 +16,7 @@ import {
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import { Multiloc, Locale } from 'typings';
+import { Locale } from 'typings';
 import messages from './messages';
 
 // utils
@@ -125,7 +125,9 @@ const LinearScaleSettings = ({
                         />
                       </Box>
                       <Box display="flex" gap="36px" marginBottom="16px">
-                        <Label value={'1'} />
+                        <Box mt="12px">
+                          <Label value="1" />
+                        </Box>
                         <Input
                           type="text"
                           value={minLabelMultiloc[selectedLocale]}
@@ -137,7 +139,9 @@ const LinearScaleSettings = ({
                         />
                       </Box>
                       <Box display="flex" gap="36px" marginBottom="16px">
-                        <Label value={getValues(maximumName)} />
+                        <Box mt="12px">
+                          <Label value={getValues(maximumName)} />
+                        </Box>
                         <Input
                           type="text"
                           value={maxLabelMultiloc[selectedLocale]}

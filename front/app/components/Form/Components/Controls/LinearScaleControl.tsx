@@ -1,3 +1,6 @@
+import React from 'react';
+
+// JSON forms
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import {
   ControlProps,
@@ -5,12 +8,13 @@ import {
   rankWith,
   scopeEndsWith,
 } from '@jsonforms/core';
-import React from 'react';
-import ErrorDisplay from '../ErrorDisplay';
-import { Box, Label, Radio } from '@citizenlab/cl2-component-library';
-import { FormLabel } from 'components/UI/FormComponents';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
+
+// Components
+import { Box, Text, Radio } from '@citizenlab/cl2-component-library';
+import { FormLabel } from 'components/UI/FormComponents';
 import VerificationIcon from '../VerificationIcon';
+import ErrorDisplay from '../ErrorDisplay';
 
 const LinearScaleControl = ({
   data,
@@ -34,11 +38,15 @@ const LinearScaleControl = ({
         subtextSupportsHtml
       />
       <Box display="flex" flexDirection="row" gap="8px" overflow="visible">
-        <Label value={uischema.options?.minimum_label} />
+        <Text mt="42px" mr="8px" fontWeight="bold">
+          {uischema.options?.minimum_label}
+        </Text>
         <>
           {[...Array(maximum)].map((x, i) => (
             <Box key={i} style={{ lineHeight: '0px' }}>
-              <Label value={(i + 1).toString()} />
+              <Text mb="4px" ml="4px">
+                {i + 1}
+              </Text>
               <br />
               <Radio
                 name="linear_scale"
@@ -51,7 +59,9 @@ const LinearScaleControl = ({
             </Box>
           ))}
         </>
-        <Label value={uischema.options?.maximum_label} />
+        <Text mt="42px" fontWeight="bold">
+          {uischema.options?.maximum_label}
+        </Text>
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
       <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={false} />

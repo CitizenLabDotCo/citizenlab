@@ -280,7 +280,6 @@ const Form = memo(
     );
     const layoutType = isCategorization(uiSchema) ? 'fullpage' : 'inline';
 
-    console.log('Form Data: ', data);
     return (
       <Box
         as="form"

@@ -38,11 +38,7 @@ const ConfigMultiselectWithLocaleSwitcher = ({
   locales,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
-  const {
-    // formState: { errors }, // TODO: Error handling
-    control,
-    setValue,
-  } = useFormContext();
+  const { control, setValue } = useFormContext();
   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
 
   // Handles locale change

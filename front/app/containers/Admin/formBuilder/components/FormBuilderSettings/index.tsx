@@ -10,8 +10,6 @@ import { SectionField, SectionTitle } from 'components/admin/Section';
 import CloseIconButton from 'components/UI/CloseIconButton';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import Toggle from 'components/HookForm/Toggle';
-import ConfigMultiselectWithLocaleSwitcher from './ConfigMultiselectWithLocaleSwitcher';
-import LinearScaleSettings from './LinearScaleSettings';
 
 // intl
 import messages from '../messages';
@@ -23,6 +21,9 @@ import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';
 // hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { isNilOrError } from 'utils/helperUtils';
+
+// utils
+import { getAdditionalSettings } from './utils';
 
 interface Props {
   field: IFlatCustomFieldWithIndex;
@@ -102,20 +103,7 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
           }
         />
       </SectionField>
-      {field.input_type === 'multiselect' && ( // TODO: Remove this - just temporary for testing
-        <ConfigMultiselectWithLocaleSwitcher // TODO: Abstract logic to somewhere else
-          name={`customFields.${field.index}.options`}
-          locales={locales}
-        />
-      )}
-      {field.input_type === 'linear_scale' && ( // TODO: Remove this - just temporary for testing
-        <LinearScaleSettings // TODO: Abstract logic to somewhere else
-          maximumName={`customFields.${field.index}.maximum`}
-          minimumLabelName={`customFields.${field.index}.minimum_label_multiloc`}
-          maximumLabelName={`customFields.${field.index}.maximum_label_multiloc`}
-          locales={locales}
-        />
-      )}
+      {getAdditionalSettings(field.input_type, locales, field.index)}
       <Box display="flex" justifyContent="space-between">
         <Button
           icon="delete"
