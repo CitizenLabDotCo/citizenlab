@@ -2,12 +2,7 @@ import React from 'react';
 
 // JSON forms
 import { withJsonFormsControlProps } from '@jsonforms/react';
-import {
-  ControlProps,
-  RankedTester,
-  rankWith,
-  scopeEndsWith,
-} from '@jsonforms/core';
+import { ControlProps } from '@jsonforms/core';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 
 // Components
@@ -75,7 +70,9 @@ const LinearScaleControl = ({
 
 export default withJsonFormsControlProps(LinearScaleControl);
 
-export const linearScaleControlTester: RankedTester = rankWith(
-  10,
-  scopeEndsWith('linear_scale')
-);
+export const linearScaleControlTester = (schema) => {
+  if (schema?.options?.minimum_label?.length >= 0) {
+    return 100;
+  }
+  return -1;
+};
