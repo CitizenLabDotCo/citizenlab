@@ -1,5 +1,12 @@
 # Changelog
 
+### 2022-09-07_2
+
+### Changed
+
+- Custom forms can be associated with projects and phases.
+- Survey form builder improvements.
+
 ### 2022-09-07
 
 ### Fixed
