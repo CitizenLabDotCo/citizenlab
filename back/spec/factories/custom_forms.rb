@@ -2,6 +2,6 @@
 
 FactoryBot.define do
   factory :custom_form do
-    project
+    participation_context { create :continuous_project }
   end
 end

@@ -219,7 +219,7 @@ describe JsonFormsService do
         config.save!
 
         project = create :project
-        form = create :custom_form, project: project
+        form = create :custom_form, participation_context: project
         required_field = create :custom_field, :for_custom_form, resource: form, required: true, input_type: 'number'
         optional_field = create :custom_field_select, :for_custom_form, resource: form, required: false
         create :custom_field_option, custom_field: optional_field, key: 'option1', title_multiloc: { 'en' => 'Rabbit' }
