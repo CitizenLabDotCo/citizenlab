@@ -70,7 +70,7 @@ const LinearScaleSettings = ({
                   <Label>
                     {formatMessage(messages.range)}
                     <IconTooltip
-                      content={formatMessage(messages.rangeTooltipContent)}
+                      content={formatMessage(messages.selectRangeTooltip)}
                     />
                   </Label>
                   <Box display="flex" gap={'16px'}>
