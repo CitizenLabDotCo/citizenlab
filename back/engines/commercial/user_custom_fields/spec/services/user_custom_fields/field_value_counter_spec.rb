@@ -40,7 +40,7 @@ RSpec.describe UserCustomFields::FieldValueCounter do
         let(:custom_field) { @domicile_field }
 
         it 'returns counts indexed by area id' do
-          expect(counts.keys).to contain_exactly(area.id, described_class::UNKNOWN_VALUE_LABEL)
+          expect(counts.keys).to contain_exactly(area.id, 'outside', described_class::UNKNOWN_VALUE_LABEL)
         end
       end
 
@@ -48,6 +48,26 @@ RSpec.describe UserCustomFields::FieldValueCounter do
         let(:custom_field) { create(:custom_field_gender, :with_options) }
 
         specify { expect { counts }.to raise_error(ArgumentError) }
+      end
+    end
+
+    context 'when custom field is domicile' do
+      let_it_be(:custom_field) { create(:custom_field_domicile)}
+      let_it_be(:areas) { create_list(:area, 2) }
+
+      it 'do not report about inconsistent option keys to Sentry' do
+        # Regression test. For the test to be effective, we need at least one user with
+        # domicile. The code expected option keys, while domicile field uses area ids in
+        # custom_field_values. This resulted in warnings about unknown option keys.
+        create(:user, domicile: areas.first.id)
+        expect(ErrorReporter).not_to receive(:report)
+        counts
+      end
+
+      it 'add missing areas with a null count', :aggregate_failures do
+        expected_keys = custom_field.options.pluck(:key) << described_class::UNKNOWN_VALUE_LABEL
+        expect(counts.keys).to match_array(expected_keys)
+        expect(counts.values).to all eq(0)
       end
     end
   end

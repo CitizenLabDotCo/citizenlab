@@ -113,9 +113,14 @@ module UserCustomFields
     #   custom field options. That is if the custom field values reference options that
     #   do not exist.
     private_class_method def self.add_missing_options!(counts, custom_field)
-      return counts if custom_field.options.empty?
+      if custom_field.domicile?
+        option_keys = Area.ids << 'outside'
+      elsif custom_field.options.present?
+        option_keys = custom_field.options.pluck(:key)
+      else
+        return counts
+      end
 
-      option_keys = custom_field.options.pluck(:key)
       unknown_option_keys = counts.keys - option_keys - [UNKNOWN_VALUE_LABEL]
       raise ArgumentError, <<~MSG.squish if unknown_option_keys.present?
         The `counts` hash keys are inconsistent with the custom field options
