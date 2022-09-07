@@ -46,7 +46,7 @@ const EditHomepageHeroBannerForm = ({
         ...homepageSettings.attributes,
       });
     }
-  }, []);
+  }, [homepageSettings]);
 
   if (isNilOrError(homepageSettings)) {
     return null;
@@ -120,10 +120,11 @@ const EditHomepageHeroBannerForm = ({
     handleOnChange('banner_signed_in_header_multiloc')(headerMultiloc);
   };
 
-  const handleOnChangeBannerAvatarsEnabled = (bannerAvatarsEnabled: boolean) => {
+  const handleOnChangeBannerAvatarsEnabled = (
+    bannerAvatarsEnabled: boolean
+  ) => {
     handleOnChange('banner_avatars_enabled')(bannerAvatarsEnabled);
-
-  }
+  };
   const handleOnChange =
     (key: keyof IHomepageSettingsAttributes) => (value: unknown) => {
       if (!isNilOrError(localSettings)) {
