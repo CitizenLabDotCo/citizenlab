@@ -28,7 +28,7 @@ ActiveRecord::Schema.define(version: 2022_08_31_171634) do
     t.datetime "created_at", null: false
     t.index ["acted_at"], name: "index_activities_on_acted_at"
     t.index ["action"], name: "index_activities_on_action"
-    t.index ["item_type", "item_id"], name: "index_activities_on_item_type_and_item_id"
+    t.index ["item_type", "item_id"], name: "index_activities_on_item"
     t.index ["user_id"], name: "index_activities_on_user_id"
   end
 
@@ -1029,11 +1029,6 @@ ActiveRecord::Schema.define(version: 2022_08_31_171634) do
     t.index ["args"], name: "que_jobs_args_gin_idx", opclass: :jsonb_path_ops, using: :gin
     t.index ["data"], name: "que_jobs_data_gin_idx", opclass: :jsonb_path_ops, using: :gin
     t.index ["queue", "priority", "run_at", "id"], name: "que_poll_idx", where: "((finished_at IS NULL) AND (expired_at IS NULL))"
-    t.check_constraint "(char_length(last_error_message) <= 500) AND (char_length(last_error_backtrace) <= 10000)", name: "error_length"
-    t.check_constraint "(jsonb_typeof(data) = 'object'::text) AND ((NOT (data ? 'tags'::text)) OR ((jsonb_typeof((data -> 'tags'::text)) = 'array'::text) AND (jsonb_array_length((data -> 'tags'::text)) <= 5) AND que_validate_tags((data -> 'tags'::text))))", name: "valid_data"
-    t.check_constraint "char_length(queue) <= 100", name: "queue_length"
-    t.check_constraint "jsonb_typeof(args) = 'array'::text", name: "valid_args"
-    t.check_constraint nil, name: "job_class_length"
   end
 
   create_table "que_lockers", primary_key: "pid", id: :integer, default: nil, force: :cascade do |t|
@@ -1043,13 +1038,10 @@ ActiveRecord::Schema.define(version: 2022_08_31_171634) do
     t.text "ruby_hostname", null: false
     t.text "queues", null: false, array: true
     t.boolean "listening", null: false
-    t.check_constraint "(array_ndims(queues) = 1) AND (array_length(queues, 1) IS NOT NULL)", name: "valid_queues"
-    t.check_constraint "(array_ndims(worker_priorities) = 1) AND (array_length(worker_priorities, 1) IS NOT NULL)", name: "valid_worker_priorities"
   end
 
   create_table "que_values", primary_key: "key", id: :text, force: :cascade do |t|
     t.jsonb "value", default: {}, null: false
-    t.check_constraint "jsonb_typeof(value) = 'object'::text", name: "valid_value"
   end
 
   create_table "spam_reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1485,7 +1477,7 @@ ActiveRecord::Schema.define(version: 2022_08_31_171634) do
               0 AS feedback_official,
               1 AS feedback_status_change
              FROM activities
-            WHERE (((activities.action)::text = 'changed_status'::text) AND ((activities.item_type)::text = ANY ((ARRAY['Idea'::character varying, 'Initiative'::character varying])::text[])))
+            WHERE (((activities.action)::text = 'changed_status'::text) AND ((activities.item_type)::text = ANY (ARRAY[('Idea'::character varying)::text, ('Initiative'::character varying)::text])))
             GROUP BY activities.item_id
           UNION ALL
            SELECT official_feedbacks.post_id,
@@ -1541,61 +1533,5 @@ ActiveRecord::Schema.define(version: 2022_08_31_171634) do
        LEFT JOIN initiative_status_changes isc ON (((isc.initiative_id = i.id) AND (isc.updated_at = ( SELECT max(isc_.updated_at) AS max
              FROM initiative_status_changes isc_
             WHERE (isc_.initiative_id = i.id))))));
-  SQL
-  create_view "analytics_fact_participations", sql_definition: <<-SQL
-      SELECT i.id,
-      i.author_id AS user_id,
-      i.project_id,
-      adt.id AS type_id,
-      (i.created_at)::date AS created_date,
-      (i.upvotes_count + i.downvotes_count) AS votes_count,
-      i.upvotes_count,
-      i.downvotes_count
-     FROM (ideas i
-       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'idea'::text)))
-  UNION ALL
-   SELECT i.id,
-      i.author_id AS user_id,
-      NULL::uuid AS project_id,
-      adt.id AS type_id,
-      (i.created_at)::date AS created_date,
-      (i.upvotes_count + i.downvotes_count) AS votes_count,
-      i.upvotes_count,
-      i.downvotes_count
-     FROM (initiatives i
-       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'initiative'::text)))
-  UNION ALL
-   SELECT c.id,
-      c.author_id AS user_id,
-      i.project_id,
-      adt.id AS type_id,
-      (c.created_at)::date AS created_date,
-      (c.upvotes_count + c.downvotes_count) AS votes_count,
-      c.upvotes_count,
-      c.downvotes_count
-     FROM (((comments c
-       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'comment'::text)))
-       JOIN analytics_dimension_dates add ON ((add.date = (c.created_at)::date)))
-       LEFT JOIN ideas i ON ((c.post_id = i.id)))
-  UNION ALL
-   SELECT v.id,
-      v.user_id,
-      COALESCE(i.project_id, ic.project_id) AS project_id,
-      adt.id AS type_id,
-      (v.created_at)::date AS created_date,
-      1 AS votes_count,
-          CASE
-              WHEN ((v.mode)::text = 'up'::text) THEN 1
-              ELSE 0
-          END AS upvotes_count,
-          CASE
-              WHEN ((v.mode)::text = 'down'::text) THEN 1
-              ELSE 0
-          END AS downvotes_count
-     FROM ((((votes v
-       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'vote'::text)))
-       LEFT JOIN ideas i ON ((i.id = v.votable_id)))
-       LEFT JOIN comments c ON ((c.id = v.votable_id)))
-       LEFT JOIN ideas ic ON ((ic.id = c.post_id)));
   SQL
 end
