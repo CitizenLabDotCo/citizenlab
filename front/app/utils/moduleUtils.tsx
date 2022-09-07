@@ -32,7 +32,6 @@ import {
   MessageDescriptor,
   Multiloc,
   Locale,
-  CLErrors,
 } from 'typings';
 import { LatLngTuple } from 'leaflet';
 import { Point } from 'components/UI/LeafletMap/typings';
@@ -360,25 +359,6 @@ export interface OutletsPropertyMap {
   };
   'app.containers.Admin.initiatives.settings.EnableSwitch': {
     onMount: () => void;
-  };
-  'app.containers.Admin.settings.customize.headerSectionStart': {
-    bannerLayout: THomepageBannerLayout;
-    handleOnChange: (
-      settingKey: 'banner_layout',
-      settingValue: THomepageBannerLayout
-    ) => void;
-  };
-  'app.containers.Admin.settings.customize.headerSectionEnd': {
-    banner_cta_signed_in_text_multiloc: any;
-    banner_cta_signed_out_text_multiloc: any;
-    banner_cta_signed_in_url: any;
-    banner_cta_signed_out_url: any;
-    // todo: type these better, probably means moving CTA types to main app
-    banner_cta_signed_out_type: any;
-    banner_cta_signed_in_type: any;
-    showSignedInSettings: boolean;
-    handleOnChange: (settingKey: any, settingValue: any) => void;
-    errors: CLErrors | undefined | null;
   };
   'app.containers.LandingPage.SignedOutHeader.index': {
     homepageBannerLayout: THomepageBannerLayout;

@@ -17,9 +17,7 @@ import styled from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-import {
-  THomepageBannerLayout,
-} from 'services/homepageSettings';
+import { THomepageBannerLayout } from 'services/homepageSettings';
 
 const LayoutPreview = styled.img`
   width: 200px;
@@ -45,7 +43,16 @@ const LayoutOptionTextWrapper = styled.div`
 
 interface Props {
   bannerLayout: THomepageBannerLayout;
-  handleOnChange: (settingKey: 'banner_layout', settingValue: string) => void;
+  handleOnChange: (
+    settingKey: 'banner_layout',
+    settingValue: THomepageBannerLayout
+  ) => void;
+}
+
+declare module 'utils/moduleUtils' {
+  export interface OutletsPropertyMap {
+    'app.containers.Admin.settings.customize.headerSectionStart': Props;
+  }
 }
 
 const LayoutSetting = ({ bannerLayout, handleOnChange }: Props) => {
