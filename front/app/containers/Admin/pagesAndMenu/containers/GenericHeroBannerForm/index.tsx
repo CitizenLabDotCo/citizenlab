@@ -1,5 +1,4 @@
-import React, { useState, useMemo, useEffect, ReactElement } from 'react';
-import { useTheme } from 'styled-components';
+import React, { useState, ReactElement } from 'react';
 
 // components
 import {
@@ -11,23 +10,17 @@ import {
 import SectionFormWrapper from '../../components/SectionFormWrapper';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 
-import {
-  Box,
-  ColorPickerInput,
-  IconTooltip,
-  Label,
-} from '@citizenlab/cl2-component-library';
+import { Box, IconTooltip } from '@citizenlab/cl2-component-library';
 
-import RangeInput from 'components/UI/RangeInput';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import BannerImageField from './BannerImageField';
+import BannerImageFields from './BannerImageFields';
 // i18n
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // typings
-import { UploadFile, Multiloc } from 'typings';
+import { Multiloc } from 'typings';
 type MultilocErrorType = {
   signedOutHeaderErrors: Multiloc;
   signedOutSubheaderErrors: Multiloc;
@@ -38,8 +31,7 @@ import { CustomPageHeroBannerInputSettings } from 'containers/Admin/pagesAndMenu
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { forOwn, size, trim, debounce } from 'lodash-es';
-import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { forOwn, size, trim } from 'lodash-es';
 
 // constants
 import Warning from 'components/UI/Warning';
@@ -49,6 +41,8 @@ const SUBTITLE_MAX_CHAR_COUNT = 90;
 export interface HeaderImageProps {
   onAddImage: (newImageBase64: string) => void;
   onRemoveImage: () => void;
+  onOverlayColorChange: (color: string) => void;
+  onOverlayOpacityChange: (color: number) => void;
 }
 
 // names differ slightly between HomePage and CustomPage
@@ -72,7 +66,6 @@ export type HeroBannerInputSettings =
 
 const GenericHeroBannerForm = ({
   onSave,
-  inputSettings,
   setFormStatus,
   formStatus,
   isLoading,
@@ -85,13 +78,10 @@ const GenericHeroBannerForm = ({
   bannerMultilocFieldComponent,
   onAddImage,
   onRemoveImage,
+  onOverlayColorChange,
+  onOverlayOpacityChange,
 }: Props & InjectedIntlProps) => {
-  const theme: any = useTheme();
-
   // component state
-  const [headerLocalDisplayImage, setHeaderLocalDisplayImage] = useState<
-    UploadFile[] | null
-  >(null);
   const [headerAndSubheaderErrors, setHeaderAndSubheaderErrors] =
     useState<MultilocErrorType>({
       signedOutHeaderErrors: {},
@@ -99,31 +89,6 @@ const GenericHeroBannerForm = ({
     });
   const [localSettings, setLocalSettings] =
     useState<HeroBannerInputSettings | null>(null);
-
-  useEffect(() => {
-    // copy input settings to local state
-    setLocalSettings({
-      ...inputSettings,
-    });
-
-    // the image file sent from the API needs to be converted
-    // to a format that can be displayed. this is done locally
-    // when the image is changed but needs to be done manually
-    // to process the initial API response
-    const convertHeaderToUploadFile = async (fileInfo) => {
-      if (fileInfo) {
-        const tenantHeaderBg = await convertUrlToUploadFile(fileInfo);
-        const headerBgUploadFile = !isNilOrError(tenantHeaderBg)
-          ? [tenantHeaderBg]
-          : [];
-        setHeaderLocalDisplayImage(headerBgUploadFile);
-      }
-    };
-
-    const headerFileInfo = inputSettings.header_bg?.large;
-    convertHeaderToUploadFile(headerFileInfo);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [inputSettings.header_bg]);
 
   const updateValueInLocalState = (
     key: keyof HeroBannerInputSettings,
@@ -138,24 +103,6 @@ const GenericHeroBannerForm = ({
 
     setFormStatus('enabled');
   };
-
-  const handleOverlayColorOnChange = (color: string) => {
-    updateValueInLocalState('banner_overlay_color', color);
-  };
-
-  const handleOverlayOpacityOnChange = (opacity: number) => {
-    updateValueInLocalState('banner_overlay_opacity', opacity);
-  };
-
-  const debounceHandleOverlayOpacityOnChange = debounce(
-    handleOverlayOpacityOnChange,
-    15
-  );
-
-  const debouncedHandleOverlayOpacityOnChange = useMemo(
-    () => debounceHandleOverlayOpacityOnChange,
-    [debounceHandleOverlayOpacityOnChange]
-  );
 
   const handleHeaderOnChange = (titleMultiloc: Multiloc) => {
     const signedOutHeaderErrors = {};
@@ -245,7 +192,7 @@ const GenericHeroBannerForm = ({
           />
         </SubSectionTitle>
 
-        <BannerImageField
+        <BannerImageFields
           bannerLayout={localSettings.banner_layout}
           bannerOverlayColor={localSettings.banner_overlay_color}
           bannerOverlayOpacity={localSettings.banner_overlay_opacity}
@@ -253,42 +200,10 @@ const GenericHeroBannerForm = ({
           onAddImage={onAddImage}
           onRemoveImage={onRemoveImage}
           setFormStatus={setFormStatus}
+          onOverlayColorChange={onOverlayColorChange}
+          onOverlayOpacityChange={onOverlayOpacityChange}
         />
 
-        {/* We only allow the overlay for the full-width banner layout for the moment. */}
-        {localSettings.banner_layout === 'full_width_banner_layout' &&
-          headerLocalDisplayImage && (
-            <>
-              <SectionField>
-                <Label>
-                  <FormattedMessage {...messages.imageOverlayColor} />
-                </Label>
-                <ColorPickerInput
-                  type="text"
-                  value={
-                    // default values come from the theme
-                    localSettings.banner_overlay_color ?? theme.colorMain
-                  }
-                  onChange={handleOverlayColorOnChange}
-                />
-              </SectionField>
-              <SectionField>
-                <Label>
-                  <FormattedMessage {...messages.imageOverlayOpacity} />
-                </Label>
-                <RangeInput
-                  step={1}
-                  min={0}
-                  max={100}
-                  value={
-                    localSettings.banner_overlay_opacity ||
-                    theme.signedOutHeaderOverlayOpacity
-                  }
-                  onChange={debouncedHandleOverlayOpacityOnChange}
-                />
-              </SectionField>
-            </>
-          )}
         <SectionField
           key={'banner_text'}
           data-cy="e2e-signed-out-header-section"

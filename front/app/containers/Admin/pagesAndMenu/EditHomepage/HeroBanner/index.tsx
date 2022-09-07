@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Multiloc } from 'typings';
 
 // components
-import GenericHeroBannerForm, {
-  HeroBannerInputSettings,
-} from '../../containers/GenericHeroBannerForm';
+import GenericHeroBannerForm from '../../containers/GenericHeroBannerForm';
 import {
   pagesAndMenuBreadcrumb,
   homeBreadcrumb,
@@ -117,6 +115,13 @@ const EditHomepageHeroBannerForm = ({
     handleOnChange('header_bg', null);
   };
 
+  const handleOverlayColorOnChange = (color: string) => {
+    handleOnChange('banner_signed_out_header_overlay_color', color);
+  };
+  const handleOverlayOpacityOnChange = () => {
+    handleOnChange('banner_signed_out_header_overlay_opacity', null);
+  };
+
   const handleOnChange = (
     key: keyof IHomepageSettingsAttributes,
     value: unknown
@@ -188,6 +193,8 @@ const EditHomepageHeroBannerForm = ({
         }
         onAddImage={handleOnBannerImageAdd}
         onRemoveImage={handleOnBannerImageRemove}
+        onOverlayColorChange={handleOverlayColorOnChange}
+        onOverlayOpacityChange={handleOverlayOpacityOnChange}
       />
     );
   }

@@ -1,10 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { SectionField } from 'components/admin/Section';
-
-import { Box, IOption, Label, Select } from '@citizenlab/cl2-component-library';
+import { useTheme } from 'styled-components';
+import {
+  Box,
+  IOption,
+  ColorPickerInput,
+  Label,
+  Select,
+} from '@citizenlab/cl2-component-library';
 import HeaderImageDropzone from './HeaderImageDropzone';
 import { UploadFile } from 'typings';
 import { ISubmitState } from 'components/admin/SubmitWrapper';
+import { debounce } from 'lodash-es';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -18,6 +25,7 @@ import { HeaderImageProps } from '.';
 import { ICustomPagesAttributes } from 'services/customPages';
 import { IHomepageSettingsAttributes } from 'services/homepageSettings';
 
+import RangeInput from 'components/UI/RangeInput';
 export type PreviewDevice = 'mobile' | 'tablet' | 'desktop';
 
 interface Props extends HeaderImageProps {
@@ -35,6 +43,7 @@ interface Props extends HeaderImageProps {
     | IHomepageSettingsAttributes['header_bg']
     | ICustomPagesAttributes['header_bg'];
   setFormStatus: (submitState: ISubmitState) => void;
+
 }
 
 const BannerImageField = ({
@@ -46,7 +55,10 @@ const BannerImageField = ({
   onAddImage,
   onRemoveImage,
   setFormStatus,
+  onOverlayColorChange,
+  onOverlayOpacityChange
 }: Props & InjectedIntlProps) => {
+  const theme: any = useTheme();
   const [previewDevice, setPreviewDevice] = useState<PreviewDevice>('desktop');
   const [headerLocalDisplayImage, setHeaderLocalDisplayImage] = useState<
     UploadFile[] | null
@@ -98,46 +110,98 @@ const BannerImageField = ({
     setHeaderLocalDisplayImage(null);
   };
 
+  const handleOverlayColorOnChange = (color: string) => {
+    onOverlayColorChange(color);
+  };
+
+  const handleOverlayOpacityOnChange = (opacity: number) => {
+    onOverlayOpacityChange(opacity);
+  };
+
+  const debounceHandleOverlayOpacityOnChange = debounce(
+    handleOverlayOpacityOnChange,
+    15
+  );
+
+  const debouncedHandleOverlayOpacityOnChange = useMemo(
+    () => debounceHandleOverlayOpacityOnChange,
+    [debounceHandleOverlayOpacityOnChange]
+  );
+
   return (
-    <SectionField>
-      {!isNilOrError(headerLocalDisplayImage) && (
+    <>
+      <SectionField>
+        {!isNilOrError(headerLocalDisplayImage) && (
+          <>
+            <Label>
+              <FormattedMessage {...messages.bgHeaderPreviewSelectLabel} />
+            </Label>
+            <Box mb="20px">
+              <Select
+                options={[
+                  {
+                    value: 'desktop',
+                    label: formatMessage(messages.desktop),
+                  },
+                  {
+                    value: 'tablet',
+                    label: formatMessage(messages.tablet),
+                  },
+                  {
+                    value: 'phone',
+                    label: formatMessage(messages.phone),
+                  },
+                ]}
+                onChange={(option: IOption) => setPreviewDevice(option.value)}
+                value={previewDevice}
+              />
+            </Box>
+          </>
+        )}
+        <HeaderImageDropzone
+          onAdd={bannerImageAddHandler}
+          onRemove={bannerImageRemoveHandler}
+          overlayColor={bannerOverlayColor}
+          overlayOpacity={bannerOverlayOpacity}
+          headerError={bannerError}
+          header_bg={headerLocalDisplayImage}
+          previewDevice={previewDevice}
+          layout={bannerLayout || 'full_width_banner_layout'}
+        />
+      </SectionField>
+      {/*We only allow the overlay for the full-width banner layout for the moment. */}
+      {bannerLayout === 'full_width_banner_layout' && headerLocalDisplayImage && (
         <>
-          <Label>
-            <FormattedMessage {...messages.bgHeaderPreviewSelectLabel} />
-          </Label>
-          <Box mb="20px">
-            <Select
-              options={[
-                {
-                  value: 'desktop',
-                  label: formatMessage(messages.desktop),
-                },
-                {
-                  value: 'tablet',
-                  label: formatMessage(messages.tablet),
-                },
-                {
-                  value: 'phone',
-                  label: formatMessage(messages.phone),
-                },
-              ]}
-              onChange={(option: IOption) => setPreviewDevice(option.value)}
-              value={previewDevice}
+          <SectionField>
+            <Label>
+              <FormattedMessage {...messages.imageOverlayColor} />
+            </Label>
+            <ColorPickerInput
+              type="text"
+              value={
+                // default values come from the theme
+                bannerOverlayColor ?? theme.colorMain
+              }
+              onChange={handleOverlayColorOnChange}
             />
-          </Box>
+          </SectionField>
+          <SectionField>
+            <Label>
+              <FormattedMessage {...messages.imageOverlayOpacity} />
+            </Label>
+            <RangeInput
+              step={1}
+              min={0}
+              max={100}
+              value={
+                bannerOverlayOpacity || theme.signedOutHeaderOverlayOpacity
+              }
+              onChange={debouncedHandleOverlayOpacityOnChange}
+            />
+          </SectionField>
         </>
       )}
-      <HeaderImageDropzone
-        onAdd={bannerImageAddHandler}
-        onRemove={bannerImageRemoveHandler}
-        overlayColor={bannerOverlayColor}
-        overlayOpacity={bannerOverlayOpacity}
-        headerError={bannerError}
-        header_bg={headerLocalDisplayImage}
-        previewDevice={previewDevice}
-        layout={bannerLayout || 'full_width_banner_layout'}
-      />
-    </SectionField>
+    </>
   );
 };
 
