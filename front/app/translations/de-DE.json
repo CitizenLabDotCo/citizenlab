@@ -307,7 +307,7 @@
   "app.components.PostComponents.OfficialFeedback.showPreviousUpdates": "Frühere Updates anzeigen",
   "app.components.PostComponents.OfficialFeedback.textAreaPlaceholder": "Ein Update geben...",
   "app.components.PostComponents.OfficialFeedback.updateButtonError": "Leider hat es ein Problem gegeben",
-  "app.components.PostComponents.OfficialFeedback.updateButtonSaveEditForm": "Update-Nachricht",
+  "app.components.PostComponents.OfficialFeedback.updateButtonSaveEditForm": "Nachricht aktualisieren",
   "app.components.PostComponents.OfficialFeedback.updateMessageSuccess": "Das Update wurde erfolgreich veröffentlicht!",
   "app.components.PostComponents.SharingModalContent.contributionEmailSharingBody": "Unterstützen Sie meinen Beitrag „{postTitle}“ unter {postUrl}!",
   "app.components.PostComponents.SharingModalContent.contributionEmailSharingSubject": "Unterstützen Sie meinen Beitrag: {postTitle}.",
