@@ -10,8 +10,7 @@ import QuillMultilocWithLocaleSwitcherComponent, {
 } from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import { isNilOrError } from 'utils/helperUtils';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-
-// typings
+import { get } from 'lodash-es';
 
 type Props = {
   name: string;
@@ -41,7 +40,7 @@ const QuillMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
 
   // Select the first error messages from the field's multiloc validation error
   const validationError = Object.values(
-    (errors[name] as Record<Locale, FieldError> | undefined) || {}
+    (get(errors, name) as Record<Locale, FieldError> | undefined) || {}
   )[0]?.message;
 
   // If an API error with a matching name has been returned from the API response, apiError is set to an array with the error message as the only item
