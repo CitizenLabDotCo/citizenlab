@@ -90,7 +90,7 @@ module UserCustomFields
       area_id_to_option_key['outside'] = somewhere_else_option.key
       area_id_to_option_key[FieldValueCounter::UNKNOWN_VALUE_LABEL] = FieldValueCounter::UNKNOWN_VALUE_LABEL
 
-      counts.transform_keys!(&area_id_to_option_key)
+      counts.transform_keys! { |key| area_id_to_option_key.fetch(key) }
     end
 
     private_class_method def self.convert_keys_to_option_ids!(counts, custom_field)
