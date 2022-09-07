@@ -117,24 +117,33 @@ const EditHomepageHeroBannerForm = ({
   };
 
   const handleOnChangeaSignedInHeader = (headerMultiloc: Multiloc) => {
-    handleOnChange('banner_signed_in_header_multiloc')(headerMultiloc);
+    handleOnChange('banner_signed_in_header_multiloc', headerMultiloc);
   };
 
   const handleOnChangeBannerAvatarsEnabled = (
     bannerAvatarsEnabled: boolean
   ) => {
-    handleOnChange('banner_avatars_enabled')(bannerAvatarsEnabled);
+    handleOnChange('banner_avatars_enabled', bannerAvatarsEnabled);
   };
 
-  const handleOnChange =
-    (key: keyof IHomepageSettingsAttributes) => (value: unknown) => {
-      if (!isNilOrError(localSettings)) {
-        setLocalSettings({
-          ...localSettings,
-          [key]: value,
-        });
-      }
-    };
+  const handleOnBannerImageAdd = (newImageBase64: string) => {
+    handleOnChange('header_bg', newImageBase64);
+  };
+  const handleOnBannerImageRemove = () => {
+    handleOnChange('header_bg', null);
+  };
+
+  const handleOnChange = (
+    key: keyof IHomepageSettingsAttributes,
+    value: unknown
+  ) => {
+    if (!isNilOrError(localSettings)) {
+      setLocalSettings({
+        ...localSettings,
+        [key]: value,
+      });
+    }
+  };
 
   if (!isNilOrError(localSettings)) {
     return (
@@ -193,6 +202,8 @@ const EditHomepageHeroBannerForm = ({
             handleOnChange={handleOnChange}
           />
         }
+        onAddImage={handleOnBannerImageAdd}
+        onRemoveImage={handleOnBannerImageRemove}
       />
     );
   }

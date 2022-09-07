@@ -3,7 +3,7 @@ import React from 'react';
 // components and theming
 import styled, { useTheme } from 'styled-components';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import { PreviewDevice } from './index';
+import { PreviewDevice } from './BannerImageField';
 
 // types
 import {

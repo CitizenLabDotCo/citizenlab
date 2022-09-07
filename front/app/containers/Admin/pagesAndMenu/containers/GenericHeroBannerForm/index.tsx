@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect, ReactElement } from 'react';
-import styled, { useTheme } from 'styled-components';
+import { useTheme } from 'styled-components';
 
 // components
 import {
@@ -15,15 +15,12 @@ import {
   Box,
   ColorPickerInput,
   IconTooltip,
-  IOption,
   Label,
-  Select,
 } from '@citizenlab/cl2-component-library';
 
-import HeaderImageDropzone from './HeaderImageDropzone';
 import RangeInput from 'components/UI/RangeInput';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-
+import BannerImageField from './BannerImageField';
 // i18n
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -35,13 +32,12 @@ type MultilocErrorType = {
   signedOutHeaderErrors: Multiloc;
   signedOutSubheaderErrors: Multiloc;
 };
-export type PreviewDevice = 'mobile' | 'tablet' | 'desktop';
 import { TBreadcrumbs } from 'components/UI/Breadcrumbs';
 import { HomepageHeroBannerInputSettings } from 'containers/Admin/pagesAndMenu/EditHomepage/HeroBanner';
 import { CustomPageHeroBannerInputSettings } from 'containers/Admin/pagesAndMenu/containers/CustomPages/Edit/HeroBanner';
 
 // utils
-import { isNil, isNilOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { forOwn, size, trim, debounce } from 'lodash-es';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 
@@ -50,12 +46,13 @@ import Warning from 'components/UI/Warning';
 const TITLE_MAX_CHAR_COUNT = 45;
 const SUBTITLE_MAX_CHAR_COUNT = 90;
 
-const BgHeaderPreviewSelect = styled(Select)`
-  margin-bottom: 20px;
-`;
+export interface HeaderImageProps {
+  onAddImage: (newImageBase64: string) => void;
+  onRemoveImage: () => void;
+}
 
 // names differ slightly between HomePage and CustomPage
-interface Props {
+interface Props extends HeaderImageProps {
   breadcrumbs: TBreadcrumbs;
   title?: string | JSX.Element;
   formStatus: ISubmitState;
@@ -86,6 +83,8 @@ const GenericHeroBannerForm = ({
   avatarsFieldComponent,
   outletSectionEnd,
   bannerMultilocFieldComponent,
+  onAddImage,
+  onRemoveImage,
 }: Props & InjectedIntlProps) => {
   const theme: any = useTheme();
 
@@ -98,11 +97,8 @@ const GenericHeroBannerForm = ({
       signedOutHeaderErrors: {},
       signedOutSubheaderErrors: {},
     });
-  const [bannerError, setBannerError] = useState<string | null>(null);
   const [localSettings, setLocalSettings] =
     useState<HeroBannerInputSettings | null>(null);
-
-  const [previewDevice, setPreviewDevice] = useState<PreviewDevice>('desktop');
 
   useEffect(() => {
     // copy input settings to local state
@@ -121,7 +117,6 @@ const GenericHeroBannerForm = ({
           ? [tenantHeaderBg]
           : [];
         setHeaderLocalDisplayImage(headerBgUploadFile);
-        setBannerError(null);
       }
     };
 
@@ -142,18 +137,6 @@ const GenericHeroBannerForm = ({
     }
 
     setFormStatus('enabled');
-  };
-
-  const bannerImageAddHandler = (newImage: UploadFile[]) => {
-    // this base64 value is sent to the API
-    updateValueInLocalState('header_bg', newImage[0].base64);
-    // this value is used for local display
-    setHeaderLocalDisplayImage([newImage[0]]);
-  };
-
-  const bannerImageRemoveHandler = () => {
-    updateValueInLocalState('header_bg', null);
-    setHeaderLocalDisplayImage(null);
   };
 
   const handleOverlayColorOnChange = (color: string) => {
@@ -210,18 +193,6 @@ const GenericHeroBannerForm = ({
     }));
   };
 
-  // set error and disable save button if header is removed,
-  // the form cannot be saved without an image
-  useEffect(() => {
-    if (isNil(localSettings?.header_bg)) {
-      setBannerError(formatMessage(messages.noHeader));
-      setFormStatus('disabled');
-      return;
-    }
-
-    setBannerError(null);
-  }, [localSettings?.header_bg, formatMessage, setFormStatus]);
-
   if (isNilOrError(localSettings)) {
     return null;
   }
@@ -273,43 +244,16 @@ const GenericHeroBannerForm = ({
             }
           />
         </SubSectionTitle>
-        <SectionField>
-          {!isNilOrError(headerLocalDisplayImage) && (
-            <>
-              <Label>
-                <FormattedMessage {...messages.bgHeaderPreviewSelectLabel} />
-              </Label>
-              <BgHeaderPreviewSelect
-                options={[
-                  {
-                    value: 'desktop',
-                    label: formatMessage(messages.desktop),
-                  },
-                  {
-                    value: 'tablet',
-                    label: formatMessage(messages.tablet),
-                  },
-                  {
-                    value: 'phone',
-                    label: formatMessage(messages.phone),
-                  },
-                ]}
-                onChange={(option: IOption) => setPreviewDevice(option.value)}
-                value={previewDevice}
-              />
-            </>
-          )}
-          <HeaderImageDropzone
-            onAdd={bannerImageAddHandler}
-            onRemove={bannerImageRemoveHandler}
-            overlayColor={localSettings.banner_overlay_color}
-            overlayOpacity={localSettings.banner_overlay_opacity}
-            headerError={bannerError}
-            header_bg={headerLocalDisplayImage}
-            previewDevice={previewDevice}
-            layout={localSettings.banner_layout || 'full_width_banner_layout'}
-          />
-        </SectionField>
+
+        <BannerImageField
+          bannerLayout={localSettings.banner_layout}
+          bannerOverlayColor={localSettings.banner_overlay_color}
+          bannerOverlayOpacity={localSettings.banner_overlay_opacity}
+          headerBg={localSettings.header_bg}
+          onAddImage={onAddImage}
+          onRemoveImage={onRemoveImage}
+          setFormStatus={setFormStatus}
+        />
 
         {/* We only allow the overlay for the full-width banner layout for the moment. */}
         {localSettings.banner_layout === 'full_width_banner_layout' &&
