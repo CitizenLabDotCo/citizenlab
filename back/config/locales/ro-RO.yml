@@ -25,6 +25,8 @@ ro:
     answered_description: a primit răspuns
     ineligible: neeligibil
     ineligible_description: neeligibil
+    implemented: implementată
+    implemented_description: This proposal has been implemented
   topics:
     nature: Natură și biodiversitate
     nature_description: Natură și biodiversitate
@@ -159,7 +161,7 @@ ro:
     gender:
       male: Masculin
       female: Femeie
-      unspecified: Nespecificat
+      unspecified: Alte
     domicile:
       outside: Altundeva
     education:
