@@ -17,7 +17,7 @@ import {
   LabelDescription,
 } from 'containers/Admin/settings/general';
 import SectionFormWrapper from '../../components/SectionFormWrapper';
-import SubmitWrapper from 'components/admin/SubmitWrapper';
+import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 
 import {
   Box,
@@ -111,8 +111,6 @@ export type HeroBannerInputSettings = {
   banner_cta_signed_out_type: IHomepageSettingsAttributes['banner_cta_signed_out_type'];
   banner_cta_signed_out_url: IHomepageSettingsAttributes['banner_cta_signed_out_url'];
 };
-
-import { ISubmitState } from 'components/admin/SubmitWrapper';
 
 const GenericHeroBannerForm = ({
   type,
@@ -264,7 +262,7 @@ const GenericHeroBannerForm = ({
     }
 
     setBannerError(null);
-  }, [localSettings?.header_bg, formatMessage]);
+  }, [localSettings?.header_bg, formatMessage, setFormStatus]);
 
   if (isNilOrError(localSettings)) {
     return null;

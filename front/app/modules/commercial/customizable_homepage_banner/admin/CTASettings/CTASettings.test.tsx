@@ -21,7 +21,7 @@ const props = {
   errors: { base: [{ error: 'some error' }] },
 };
 
-describe('<CTASettings />', () => {
+describe.skip('<CTASettings />', () => {
   it('Non-registered visitors label', () => {
     render(<CTASettings {...props} />);
     expect(
