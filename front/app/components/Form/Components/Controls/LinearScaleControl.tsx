@@ -38,9 +38,11 @@ const LinearScaleControl = ({
         subtextSupportsHtml
       />
       <Box display="flex" flexDirection="row" gap="8px" overflow="visible">
-        <Text mt="42px" mr="8px" fontWeight="bold">
-          {uischema.options?.minimum_label}
-        </Text>
+        <Box alignSelf="flex-end">
+          <Text mr="8px" fontWeight="bold">
+            {uischema.options?.minimum_label}
+          </Text>
+        </Box>
         <>
           {[...Array(maximum)].map((x, i) => (
             <Box key={i} style={{ lineHeight: '0px' }}>
@@ -59,9 +61,11 @@ const LinearScaleControl = ({
             </Box>
           ))}
         </>
-        <Text mt="42px" fontWeight="bold">
-          {uischema.options?.maximum_label}
-        </Text>
+        <Box mt="28px" alignSelf="flex-end">
+          <Text mr="8px" fontWeight="bold">
+            {uischema.options?.maximum_label}
+          </Text>
+        </Box>
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
       <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={false} />
