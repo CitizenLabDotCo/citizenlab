@@ -573,11 +573,6 @@ workflows:
           context: docker-hub-access
           requires:
             - back-build-ee-docker-image
-          filters:
-            branches:
-              only:
-                - master
-                - production
       - back-trigger-deploy:
           context: circleci-api-token
           requires:

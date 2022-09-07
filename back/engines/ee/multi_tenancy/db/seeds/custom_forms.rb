@@ -17,7 +17,7 @@ module MultiTenancy
 
           next unless project
 
-          custom_form = project.custom_form || CustomForm.create!(project: project)
+          custom_form = project.custom_form || CustomForm.create!(participation_context: project)
           built_in_custom_field = IdeaCustomFieldsService.new(custom_form).find_or_build_field %w[title_multiloc body_multiloc location_description].sample
           built_in_custom_field.description_multiloc = runner.create_for_some_locales { Faker::Lorem.sentence }
           built_in_custom_field.save!
