@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState, useCallback } from 'react';
 import { PreviousPathnameContext } from 'context';
+import { useSearchParams } from 'react-router-dom';
 
 import { WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
@@ -32,9 +33,14 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
   const authUser = useAuthUser();
   const project = useProject({ projectSlug: params.slug });
+  const [searchParams] = useSearchParams();
+  const phaseId = searchParams.get('phase_id');
 
   const phases = usePhases(project?.id);
-  const { schema, uiSchema, inputSchemaError } = useInputSchema(project?.id);
+  const { schema, uiSchema, inputSchemaError } = useInputSchema(
+    project?.id,
+    phaseId
+  );
 
   useEffect(() => {
     const isPrivilegedUser =
@@ -103,6 +109,7 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
       location_point_geojson,
       project_id: project?.id,
       publication_status: 'published',
+      phase_ids: phaseId ? [phaseId] : null,
     });
     const ideaId = idea.data.id;
 

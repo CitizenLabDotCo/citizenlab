@@ -8,6 +8,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { UploadFile } from 'typings';
 import useRemoteFiles from 'hooks/useRemoteFiles';
 import { TResourceType } from 'resources/GetRemoteFiles';
+import { get } from 'lodash-es';
 
 interface Props
   extends Omit<
@@ -37,7 +38,7 @@ const FileUploader = ({ name, resourceId, resourceType, ...rest }: Props) => {
     }
   }, [setValue, remoteFiles, name]);
 
-  const errorMessage = errors[name]?.message as string | undefined;
+  const errorMessage = get(errors, name)?.message as string | undefined;
 
   return (
     <>

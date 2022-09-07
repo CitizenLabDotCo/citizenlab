@@ -218,6 +218,7 @@ export interface IAppConfigurationSettings {
   representativeness?: AppConfigurationFeature;
   remove_vendor_branding?: AppConfigurationFeature;
   native_surveys?: AppConfigurationFeature;
+  analytics?: AppConfigurationFeature;
 }
 
 interface AppConfigurationMapSettings extends AppConfigurationFeature {

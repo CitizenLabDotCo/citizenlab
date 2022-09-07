@@ -134,7 +134,12 @@ export const handleHookFormSubmissionError = (
 ) => {
   if ('json' in error && error.json.errors) {
     Object.keys(error.json.errors).forEach((key) => {
-      handleError(key, error.json.errors[key][0]);
+      handleError(
+        key,
+        typeof error.json.errors[key][0] === 'string'
+          ? { error: error.json.errors[key][0] }
+          : error.json.errors[key][0]
+      );
     });
   } else {
     handleError('submissionError', {
