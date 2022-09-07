@@ -125,6 +125,7 @@ const EditHomepageHeroBannerForm = ({
   ) => {
     handleOnChange('banner_avatars_enabled')(bannerAvatarsEnabled);
   };
+
   const handleOnChange =
     (key: keyof IHomepageSettingsAttributes) => (value: unknown) => {
       if (!isNilOrError(localSettings)) {
@@ -155,6 +156,13 @@ const EditHomepageHeroBannerForm = ({
         ]}
         inputSettings={mappedInputSettings}
         setFormStatus={setFormStatus}
+        outletSectionStart={
+          <Outlet
+            id="app.containers.Admin.settings.customize.headerSectionStart"
+            bannerLayout={localSettings.banner_layout ?? 'two_column_layout'}
+            handleOnChange={handleOnChange}
+          />
+        }
         bannerMultilocFieldComponent={
           <BannerHeaderMultilocField
             onChange={handleOnChangeaSignedInHeader}

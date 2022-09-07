@@ -23,7 +23,6 @@ import {
 import HeaderImageDropzone from './HeaderImageDropzone';
 import RangeInput from 'components/UI/RangeInput';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import Outlet from 'components/Outlet';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -64,6 +63,7 @@ interface Props {
   onSave: (inputSettingParameters: HeroBannerInputSettings) => void;
   isLoading: boolean;
   inputSettings: HeroBannerInputSettings;
+  outletSectionStart?: ReactElement;
   avatarsFieldComponent?: ReactElement;
   outletSectionEnd?: ReactElement;
   bannerMultilocFieldComponent?: ReactElement;
@@ -82,6 +82,7 @@ const GenericHeroBannerForm = ({
   title,
   breadcrumbs,
   intl: { formatMessage },
+  outletSectionStart,
   avatarsFieldComponent,
   outletSectionEnd,
   bannerMultilocFieldComponent,
@@ -248,12 +249,7 @@ const GenericHeroBannerForm = ({
         <Warning>
           <FormattedMessage {...messages.heroBannerInfoBar} />
         </Warning>
-
-        <Outlet
-          id="app.containers.Admin.settings.customize.headerSectionStart"
-          bannerLayout={localSettings.banner_layout ?? 'two_column_layout'}
-          handleOnChange={updateValueInLocalState}
-        />
+        {outletSectionStart}
         <SubSectionTitle>
           <FormattedMessage {...messages.header_bg} />
           <IconTooltip
