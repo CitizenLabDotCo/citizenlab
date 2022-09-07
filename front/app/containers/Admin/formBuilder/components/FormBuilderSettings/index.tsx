@@ -65,7 +65,7 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
       background="white"
       boxShadow="-2px 0px 1px 0px rgba(0, 0, 0, 0.06)"
     >
-      <Box position="absolute" right="8px" mb="20px">
+      <Box position="absolute" right="8px" mt="8px" mb="20px">
         <CloseIconButton
           a11y_buttonActionMessage={messages.close}
           onClick={onClose}

@@ -44,10 +44,7 @@ const FormBuilderToolbox = ({
       maximum: 5,
       options: [
         {
-          // TODO: Ask Ben what the starter data should be
-          title_multiloc: {
-            en: '',
-          },
+          title_multiloc: {},
         },
       ],
       enabled: true,

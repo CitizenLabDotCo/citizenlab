@@ -5,20 +5,20 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.labels',
     defaultMessage: 'Labels',
   },
-    labelsTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.labelsTooltip',
-    defaultMessage: 'Labels tooltip content',
+    labelsTooltipContent: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.labelsTooltipContent',
+    defaultMessage: 'Choose optional labels for your minimum and maximum values.',
   },
     range: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.range',
     defaultMessage: 'Range',
   },
-    rangeTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.rangeTooltip',
-    defaultMessage: 'Range tooltip content',
+    rangeTooltipContent: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.rangeTooltipContent',
+    defaultMessage: 'Choose the minimum and maximum values for your scale.',
   },
-    rangeToLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.rangeToLabel',
-    defaultMessage: '1 to',
+    toLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.toLabel',
+    defaultMessage: 'to',
   },
 });
