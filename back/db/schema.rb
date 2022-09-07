@@ -1477,7 +1477,7 @@ ActiveRecord::Schema.define(version: 2022_08_31_171634) do
               0 AS feedback_official,
               1 AS feedback_status_change
              FROM activities
-            WHERE (((activities.action)::text = 'changed_status'::text) AND ((activities.item_type)::text = ANY (ARRAY[('Idea'::character varying)::text, ('Initiative'::character varying)::text])))
+            WHERE (((activities.action)::text = 'changed_status'::text) AND ((activities.item_type)::text = ANY ((ARRAY['Idea'::character varying, 'Initiative'::character varying])::text[])))
             GROUP BY activities.item_id
           UNION ALL
            SELECT official_feedbacks.post_id,
@@ -1533,5 +1533,61 @@ ActiveRecord::Schema.define(version: 2022_08_31_171634) do
        LEFT JOIN initiative_status_changes isc ON (((isc.initiative_id = i.id) AND (isc.updated_at = ( SELECT max(isc_.updated_at) AS max
              FROM initiative_status_changes isc_
             WHERE (isc_.initiative_id = i.id))))));
+  SQL
+  create_view "analytics_fact_participations", sql_definition: <<-SQL
+      SELECT i.id,
+      i.author_id AS user_id,
+      i.project_id,
+      adt.id AS type_id,
+      (i.created_at)::date AS created_date,
+      (i.upvotes_count + i.downvotes_count) AS votes_count,
+      i.upvotes_count,
+      i.downvotes_count
+     FROM (ideas i
+       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'idea'::text)))
+  UNION ALL
+   SELECT i.id,
+      i.author_id AS user_id,
+      NULL::uuid AS project_id,
+      adt.id AS type_id,
+      (i.created_at)::date AS created_date,
+      (i.upvotes_count + i.downvotes_count) AS votes_count,
+      i.upvotes_count,
+      i.downvotes_count
+     FROM (initiatives i
+       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'initiative'::text)))
+  UNION ALL
+   SELECT c.id,
+      c.author_id AS user_id,
+      i.project_id,
+      adt.id AS type_id,
+      (c.created_at)::date AS created_date,
+      (c.upvotes_count + c.downvotes_count) AS votes_count,
+      c.upvotes_count,
+      c.downvotes_count
+     FROM (((comments c
+       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'comment'::text)))
+       JOIN analytics_dimension_dates add ON ((add.date = (c.created_at)::date)))
+       LEFT JOIN ideas i ON ((c.post_id = i.id)))
+  UNION ALL
+   SELECT v.id,
+      v.user_id,
+      COALESCE(i.project_id, ic.project_id) AS project_id,
+      adt.id AS type_id,
+      (v.created_at)::date AS created_date,
+      1 AS votes_count,
+          CASE
+              WHEN ((v.mode)::text = 'up'::text) THEN 1
+              ELSE 0
+          END AS upvotes_count,
+          CASE
+              WHEN ((v.mode)::text = 'down'::text) THEN 1
+              ELSE 0
+          END AS downvotes_count
+     FROM ((((votes v
+       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'vote'::text)))
+       LEFT JOIN ideas i ON ((i.id = v.votable_id)))
+       LEFT JOIN comments c ON ((c.id = v.votable_id)))
+       LEFT JOIN ideas ic ON ((ic.id = c.post_id)));
   SQL
 end
