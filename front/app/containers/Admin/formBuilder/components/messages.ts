@@ -69,9 +69,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.editButtonLabel',
     defaultMessage: 'Edit',
   },
-  downloadSurveyResults: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.downloadSurveyResults',
-    defaultMessage: 'Download survey results ({count})',
+  viewSurveyResults: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.viewSurveyResults',
+    defaultMessage: 'View survey results ({count})',
   },
   editSurveyContent: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.editSurveyContent',

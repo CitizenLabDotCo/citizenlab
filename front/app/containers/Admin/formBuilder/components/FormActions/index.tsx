@@ -66,7 +66,7 @@ const FormActions = ({
           width="auto"
           minWidth="312px"
         >
-          {formatMessage(messages.downloadSurveyResults, {
+          {formatMessage(messages.viewSurveyResults, {
             count: 956, // TODO: Get this from the API
           })}
         </Button>
