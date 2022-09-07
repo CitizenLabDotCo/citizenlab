@@ -121,6 +121,10 @@ Rails.application.routes.draw do
       resources :phases, only: %i[show edit update destroy] do
         resources :files, defaults: { container_type: 'Phase' }, shallow: false
         get 'survey_results', on: :member
+        resources :custom_fields, controller: 'phase_custom_fields', only: %i[] do
+          get 'schema', on: :collection
+          get 'json_forms_schema', on: :collection
+        end
       end
 
       resources :projects do
