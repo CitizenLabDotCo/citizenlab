@@ -61,7 +61,7 @@ const FormActions = ({
         justifyContent="space-between"
       >
         <Button
-          icon="download"
+          icon="charts"
           buttonStyle="primary"
           width="auto"
           minWidth="312px"
