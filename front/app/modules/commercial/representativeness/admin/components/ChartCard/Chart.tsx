@@ -1,13 +1,15 @@
 import React from 'react';
 
+// styling
+import {
+  colors,
+  DEFAULT_BAR_CHART_MARGIN,
+} from 'components/admin/Graphs/styling';
+
 // components
 import MultiBarChart from 'components/admin/Graphs/MultiBarChart';
-import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/styling';
-import { LabelList, Tooltip } from 'recharts';
+import { Tooltip } from 'recharts';
 import CustomTooltip from './CustomTooltip';
-
-// styling
-import { colors } from 'utils/styleUtils';
 
 // utils
 import { formatPercentage, emptyString } from './utils';
@@ -22,6 +24,8 @@ interface Props {
   hideTicks: boolean;
 }
 
+const BAR_FILLS = [colors.blue, colors.lightBlue];
+
 const Chart = ({ currentChartRef, data, barNames, hideTicks }: Props) => {
   const hideLabels = data.length > 10;
   const slicedData = data.slice(0, 24);
@@ -31,10 +35,13 @@ const Chart = ({ currentChartRef, data, barNames, hideTicks }: Props) => {
       height={300}
       innerRef={currentChartRef}
       data={slicedData}
-      mapping={{ length: ['actualPercentage', 'referencePercentage'] }}
+      mapping={{
+        category: 'name',
+        length: ['actualPercentage', 'referencePercentage'],
+        fill: ({ barIndex }) => BAR_FILLS[barIndex],
+      }}
       bars={{
-        name: barNames,
-        fill: [colors.adminTextColor, colors.clBlueLight],
+        names: barNames,
         categoryGap: '20%',
       }}
       margin={DEFAULT_BAR_CHART_MARGIN}
@@ -42,12 +49,8 @@ const Chart = ({ currentChartRef, data, barNames, hideTicks }: Props) => {
         hideTicks ? { tickFormatter: emptyString, tickLine: false } : undefined
       }
       yaxis={{ tickFormatter: formatPercentage }}
-      renderLabels={
-        hideLabels
-          ? undefined
-          : (props) => <LabelList {...props} formatter={formatPercentage} />
-      }
-      renderTooltip={(props) => (
+      labels={hideLabels ? undefined : { formatter: formatPercentage }}
+      tooltip={(props) => (
         <Tooltip
           {...props}
           content={(props) => (

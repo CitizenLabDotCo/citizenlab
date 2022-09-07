@@ -1,4 +1,23 @@
 # Changelog
+
+### 2022-09-07
+
+### Fixed
+
+- Input status dashboard card now updates immediately (not just after refresh) when changing idea status in input manager
+
+## 2022-09-06
+
+### Added
+
+- [CL-423] Added input feedback dashboard card with new analytics endpoint
+
+## 2022-09-05
+
+### Added
+
+- [CL-1157] Added domicile fields to representation dashboard
+
 ## 2022-09-02
 
 ### Fixed

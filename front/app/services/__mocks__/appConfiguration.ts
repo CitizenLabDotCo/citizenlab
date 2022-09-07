@@ -78,3 +78,5 @@ export const currentAppConfigurationStream = jest.fn(() => {
     observable,
   };
 });
+
+export const currentAppConfigurationEndpoint = '/web_api/v1/app_configuration';
