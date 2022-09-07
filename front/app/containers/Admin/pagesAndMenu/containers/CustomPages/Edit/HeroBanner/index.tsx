@@ -105,9 +105,7 @@ const EditCustomPageHeroBannerForm = ({
       title={formatMessage(messages.heroBannerTitle)}
       inputSettings={mappedInputSettings}
       setFormStatus={setFormStatus}
-      hideSignedInCTASettings
       hideSignedInHeaderField
-      hideAvatarsFields
     />
   );
 };
