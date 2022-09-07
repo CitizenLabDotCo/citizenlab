@@ -137,13 +137,18 @@ export const handleHookFormSubmissionError = (
     Object.keys(error.json.errors).forEach((key) => {
       if (fieldArrayKey) {
         Object.keys(error.json.errors[key]).forEach((errorKey) => {
+          const errorValue = error.json.errors[key][errorKey][0];
           handleError(
             `${fieldArrayKey}.${key}.${errorKey}`,
-            error.json.errors[key][errorKey][0]
+            errorValue === 'string' ? { error: errorValue } : errorValue
           );
         });
       } else {
-        handleError(key, error.json.errors[key][0]);
+        const errorValue = error.json.errors[key][0];
+        handleError(
+          key,
+          typeof errorValue === 'string' ? { error: errorValue } : errorValue
+        );
       }
     });
   } else {
