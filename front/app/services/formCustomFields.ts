@@ -3,12 +3,17 @@ import streams, { IStreamParams } from 'utils/streams';
 import { Multiloc } from 'typings';
 
 // We can add more input types here when we support them
-export type ICustomFieldInputType = 'text';
+export type ICustomFieldInputType = 'text' | 'multiselect';
+export type IOptionsType = {
+  id?: string;
+  title_multiloc: Multiloc;
+};
 
 export interface IAttributes {
   key: string;
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
+  options: [IOptionsType];
   input_type: ICustomFieldInputType;
   required: boolean;
   enabled: boolean;
@@ -29,6 +34,10 @@ export type IFlatCustomField = Omit<ICustomFieldResponse, 'attributes'> &
     isLocalOnly?: boolean;
   };
 
+export type IFlatCustomFieldWithIndex = IFlatCustomField & {
+  index: number;
+};
+
 type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
 
 export type IFlatCreateCustomField = Optional<
@@ -36,6 +45,7 @@ export type IFlatCreateCustomField = Optional<
   | 'description_multiloc'
   | 'type'
   | 'key'
+  | 'options'
   | 'ordering'
   | 'created_at'
   | 'updated_at'
@@ -43,20 +53,18 @@ export type IFlatCreateCustomField = Optional<
   isLocalOnly: boolean;
 };
 
-export type IFlatUpdateCustomField = Optional<
-  IFlatCreateCustomField,
-  'isLocalOnly' | 'input_type'
->;
-
 export interface ICustomFields {
   data: ICustomFieldResponse[];
 }
 
 export function formCustomFieldsStream(
   projectId: string,
-  streamParams: IStreamParams | null = null
+  streamParams: IStreamParams | null = null,
+  phaseId?: string
 ) {
-  const apiEndpoint = `${API_PATH}/admin/projects/${projectId}/custom_fields`;
+  const apiEndpoint = phaseId
+    ? `${API_PATH}/admin/phases/${phaseId}/custom_fields`
+    : `${API_PATH}/admin/projects/${projectId}/custom_fields`;
   return streams.get<ICustomFields>({
     apiEndpoint,
     cacheStream: false,
@@ -64,8 +72,14 @@ export function formCustomFieldsStream(
   });
 }
 
-export async function updateFormCustomFields(projectId: string, customFields) {
-  const apiEndpoint = `${API_PATH}/admin/projects/${projectId}/custom_fields/update_all`;
+export async function updateFormCustomFields(
+  projectId: string,
+  customFields,
+  phaseId?: string
+) {
+  const apiEndpoint = phaseId
+    ? `${API_PATH}/admin/phases/${phaseId}/custom_fields/update_all`
+    : `${API_PATH}/admin/projects/${projectId}/custom_fields/update_all`;
   return streams.update(apiEndpoint, `${projectId}/custom_fields`, {
     custom_fields: customFields,
   });
