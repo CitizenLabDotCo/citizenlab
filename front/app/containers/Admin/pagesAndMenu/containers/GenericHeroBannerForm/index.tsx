@@ -64,10 +64,9 @@ interface Props {
   onSave: (inputSettingParameters: HeroBannerInputSettings) => void;
   isLoading: boolean;
   inputSettings: HeroBannerInputSettings;
-  apiErrors?: CLErrors | null;
-  hideSignedInCTASettings?: boolean;
   hideSignedInHeaderField?: boolean;
   avatarsFieldComponent?: ReactElement;
+  outletSectionEnd?: ReactElement;
 }
 
 export type HeroBannerInputSettings =
@@ -82,11 +81,10 @@ const GenericHeroBannerForm = ({
   isLoading,
   title,
   breadcrumbs,
-  apiErrors,
   intl: { formatMessage },
-  hideSignedInCTASettings = false,
   hideSignedInHeaderField = false,
   avatarsFieldComponent,
+  outletSectionEnd
 }: Props & InjectedIntlProps) => {
   const theme: any = useTheme();
 
@@ -398,23 +396,7 @@ const GenericHeroBannerForm = ({
         )}
         {avatarsFieldComponent}
         {/* // CTA settings, only applicable on homepage */}
-        <Outlet
-          id="app.containers.Admin.settings.customize.headerSectionEnd"
-          banner_cta_signed_in_text_multiloc={
-            localSettings.banner_cta_signed_in_text_multiloc
-          }
-          banner_cta_signed_in_url={localSettings.banner_cta_signed_in_url}
-          banner_cta_signed_in_type={localSettings.banner_cta_signed_in_type}
-          banner_cta_signed_out_text_multiloc={
-            localSettings.banner_cta_signed_out_text_multiloc
-          }
-          banner_cta_signed_out_url={localSettings.banner_cta_signed_out_url}
-          banner_cta_signed_out_type={localSettings.banner_cta_signed_out_type}
-          handleOnChange={updateValueInLocalState}
-          // signed in only applies to
-          showSignedInSettings={!hideSignedInCTASettings}
-          errors={apiErrors}
-        />
+        {outletSectionEnd}
       </Section>
     </SectionFormWrapper>
   );

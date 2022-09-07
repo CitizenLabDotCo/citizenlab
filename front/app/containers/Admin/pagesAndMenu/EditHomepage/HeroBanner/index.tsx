@@ -15,6 +15,7 @@ import {
   IHomepageSettingsAttributes,
   updateHomepageSettings,
 } from 'services/homepageSettings';
+import Outlet from 'components/Outlet';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -113,7 +114,7 @@ const EditHomepageHeroBannerForm = ({
     banner_cta_signed_in_url: attributes.banner_cta_signed_in_url,
   };
 
-  const handleOnChange = (key: 'banner_avatars_enabled') => () => {
+  const handleOnChange = (key: keyof IHomepageSettingsAttributes) => () => {
     if (!isNilOrError(localSettings)) {
       setLocalSettings({
         ...localSettings,
@@ -146,6 +147,24 @@ const EditHomepageHeroBannerForm = ({
           <AvatarsField
             checked={localSettings.banner_avatars_enabled}
             onChange={handleOnChange('banner_avatars_enabled')}
+          />
+        }
+        outletSectionEnd={
+          <Outlet
+            id="app.containers.Admin.settings.customize.headerSectionEnd"
+            banner_cta_signed_in_text_multiloc={
+              localSettings.banner_cta_signed_in_text_multiloc
+            }
+            banner_cta_signed_in_url={localSettings.banner_cta_signed_in_url}
+            banner_cta_signed_in_type={localSettings.banner_cta_signed_in_type}
+            banner_cta_signed_out_text_multiloc={
+              localSettings.banner_cta_signed_out_text_multiloc
+            }
+            banner_cta_signed_out_url={localSettings.banner_cta_signed_out_url}
+            banner_cta_signed_out_type={
+              localSettings.banner_cta_signed_out_type
+            }
+            handleOnChange={handleOnChange}
           />
         }
       />
