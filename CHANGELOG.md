@@ -1,5 +1,9 @@
 # Changelog
 
+### Fixed
+
+- [CL-1586] Fix deleting folder and cause images
+
 ## 2022-09-08
 
 ### Fixed
