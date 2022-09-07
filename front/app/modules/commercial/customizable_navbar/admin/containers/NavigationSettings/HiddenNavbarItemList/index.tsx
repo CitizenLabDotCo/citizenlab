@@ -96,7 +96,7 @@ const HiddenNavbarItemList = ({
 
   return (
     <>
-      <Header />
+      <Header itemsNotInNavbarPresent={itemsNotInNavbar.length > 0} />
 
       <List key={itemsNotInNavbar.length}>
         {itemsNotInNavbar.map((item, i) => (
