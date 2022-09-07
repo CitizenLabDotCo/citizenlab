@@ -23,7 +23,7 @@ const CustomPageTopInfoSection = lazy(
 const CustomPageBottomInfoSection = lazy(
   () => import('./containers/CustomPages/Edit/Content/BottomInfoSection')
 );
-const HeroBannerForm = lazy(() => import('./containers/HeroBanner'));
+const HomepageHeroBannerForm = lazy(() => import('./EditHomepage/HeroBanner'));
 
 // custom pages
 const NewCustomPageIndex = lazy(() => import('./containers/CustomPages/New'));
@@ -35,6 +35,9 @@ const EditCustomPageContent = lazy(
   () => import('./containers/CustomPages/Edit/Content')
 );
 const AttachmentsForm = lazy(() => import('./containers/Attachments'));
+const CustomPageHeroBannerForm = lazy(
+  () => import('./containers/CustomPages/Edit/HeroBanner')
+);
 
 // path utils
 const PAGE_PATH = 'pages-menu';
@@ -85,7 +88,7 @@ export default () => ({
       path: 'homepage-banner',
       element: (
         <PageLoading>
-          <HeroBannerForm />
+          <HomepageHeroBannerForm />
         </PageLoading>
       ),
     },
@@ -132,7 +135,7 @@ export default () => ({
           path: ':customPageId/banner',
           element: (
             <PageLoading>
-              <HeroBannerForm />
+              <CustomPageHeroBannerForm />
             </PageLoading>
           ),
         },

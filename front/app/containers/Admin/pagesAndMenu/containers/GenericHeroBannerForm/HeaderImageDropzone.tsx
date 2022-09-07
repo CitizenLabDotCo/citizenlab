@@ -10,6 +10,7 @@ import {
   IHomepageSettingsAttributes,
   THomepageBannerLayout,
 } from 'services/homepageSettings';
+import { ICustomPagesAttributes } from 'services/customPages';
 import { UploadFile } from 'typings';
 
 const HeaderImageOverlay = styled.div<{
@@ -26,8 +27,12 @@ const HeaderImageOverlay = styled.div<{
 `;
 
 interface Props {
-  homepageSettingsOverlayOpacity: IHomepageSettingsAttributes['banner_signed_out_header_overlay_opacity'];
-  homepageSettingsOverlayColor: IHomepageSettingsAttributes['banner_signed_out_header_overlay_color'];
+  overlayOpacity:
+    | IHomepageSettingsAttributes['banner_signed_out_header_overlay_opacity']
+    | ICustomPagesAttributes['banner_overlay_opacity'];
+  overlayColor:
+    | IHomepageSettingsAttributes['banner_signed_out_header_overlay_color']
+    | ICustomPagesAttributes['banner_overlay_color'];
   onAdd: (newImage: UploadFile[]) => void;
   onRemove: () => void;
   headerError: string | null;
@@ -56,8 +61,8 @@ export const homepageBannerLayoutHeights = {
 };
 
 const HeaderImageDropzone = ({
-  homepageSettingsOverlayColor,
-  homepageSettingsOverlayOpacity,
+  overlayColor,
+  overlayOpacity,
   onAdd,
   onRemove,
   headerError,
@@ -80,14 +85,19 @@ const HeaderImageDropzone = ({
   };
 
   const theme: any = useTheme();
-  const overlayColor = homepageSettingsOverlayColor ?? theme.colorMain;
-  const overlayOpacity =
-    homepageSettingsOverlayOpacity ?? theme.signedOutHeaderOverlayOpacity;
+
+  //
+  const displayOverlayColor = overlayColor ?? theme.colorMain;
+  const displayOverlayOpacity =
+    overlayOpacity ?? theme.signedOutHeaderOverlayOpacity;
+
   const previewOverlayElement =
-    layout === 'full_width_banner_layout' && overlayColor && overlayOpacity ? (
+    layout === 'full_width_banner_layout' &&
+    displayOverlayColor &&
+    displayOverlayOpacity ? (
       <HeaderImageOverlay
-        overlayColor={overlayColor}
-        overlayOpacity={overlayOpacity}
+        overlayColor={displayOverlayColor}
+        overlayOpacity={displayOverlayOpacity}
       />
     ) : null;
 

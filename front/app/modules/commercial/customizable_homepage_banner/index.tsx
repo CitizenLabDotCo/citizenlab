@@ -10,18 +10,10 @@ import FeatureFlag from 'components/FeatureFlag';
 const configuration: ModuleConfiguration = {
   outlets: {
     'app.containers.Admin.settings.customize.headerSectionStart': (props) => {
-      return (
-        <FeatureFlag name="customizable_homepage_banner">
-          <LayoutSetting {...props} />
-        </FeatureFlag>
-      );
+      return <LayoutSetting {...props} />;
     },
     'app.containers.Admin.settings.customize.headerSectionEnd': (props) => {
-      return (
-        <FeatureFlag name="customizable_homepage_banner">
-          <CTASettings {...props} />
-        </FeatureFlag>
-      );
+      return <CTASettings {...props} />;
     },
     'app.containers.LandingPage.SignedOutHeader.CTA': (props) => {
       return (

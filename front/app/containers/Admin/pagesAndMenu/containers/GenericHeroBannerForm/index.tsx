@@ -2,7 +2,6 @@ import React, { useState, useMemo, useEffect } from 'react';
 import styled, { useTheme } from 'styled-components';
 
 // components
-import SectionFormWrapper from '../../components/SectionFormWrapper';
 import {
   Section,
   SectionField,
@@ -17,6 +16,8 @@ import {
   LabelTitle,
   LabelDescription,
 } from 'containers/Admin/settings/general';
+import SectionFormWrapper from '../../components/SectionFormWrapper';
+import SubmitWrapper from 'components/admin/SubmitWrapper';
 
 import {
   Box,
@@ -31,7 +32,6 @@ import HeaderImageDropzone from './HeaderImageDropzone';
 import RangeInput from 'components/UI/RangeInput';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import Outlet from 'components/Outlet';
-import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -45,23 +45,19 @@ type MultilocErrorType = {
   signedOutSubheaderErrors: Multiloc;
 };
 export type PreviewDevice = 'mobile' | 'tablet' | 'desktop';
+import { TBreadcrumbs } from 'components/UI/Breadcrumbs';
 
 // resources
-import {
-  IHomepageSettingsAttributes,
-  updateHomepageSettings,
-} from 'services/homepageSettings';
-import useHomepageSettings from 'hooks/useHomepageSettings';
+import { IHomepageSettingsAttributes } from 'services/homepageSettings';
 
 // utils
 import { isNil, isNilOrError } from 'utils/helperUtils';
-import { isCLErrorJSON } from 'utils/errorUtils';
-import { forOwn, size, trim, debounce, isEqual } from 'lodash-es';
+import { forOwn, size, trim, debounce } from 'lodash-es';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 
 // constants
-import { pagesAndMenuBreadcrumb, homeBreadcrumb } from '../../breadcrumbs';
 import Warning from 'components/UI/Warning';
+import { ICustomPagesAttributes } from 'services/customPages';
 const TITLE_MAX_CHAR_COUNT = 45;
 const SUBTITLE_MAX_CHAR_COUNT = 90;
 
@@ -69,37 +65,88 @@ const BgHeaderPreviewSelect = styled(Select)`
   margin-bottom: 20px;
 `;
 
-const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+// names differ slightly between HomePage and CustomPage
+type Props = {
+  type: 'homePage' | 'customPage';
+  breadcrumbs: TBreadcrumbs;
+  title?: string | JSX.Element;
+  formStatus: ISubmitState;
+  setFormStatus: (submitState: ISubmitState) => void;
+  onSave: (inputSettingParameters: HeroBannerInputSettings) => void;
+  isLoading: boolean;
+  inputSettings: HeroBannerInputSettings;
+  apiErrors?: CLErrors | null;
+};
+
+export type HeroBannerInputSettings = {
+  banner_layout:
+    | IHomepageSettingsAttributes['banner_layout']
+    | ICustomPagesAttributes['banner_layout'];
+  banner_overlay_opacity:
+    | IHomepageSettingsAttributes['banner_signed_out_header_overlay_opacity']
+    | ICustomPagesAttributes['banner_overlay_opacity'];
+  banner_overlay_color:
+    | IHomepageSettingsAttributes['banner_signed_out_header_overlay_color']
+    | ICustomPagesAttributes['banner_overlay_color'];
+  banner_header_multiloc:
+    | IHomepageSettingsAttributes['banner_signed_out_header_multiloc']
+    | ICustomPagesAttributes['banner_header_multiloc'];
+  banner_subheader_multiloc:
+    | IHomepageSettingsAttributes['banner_signed_out_header_multiloc']
+    | ICustomPagesAttributes['banner_header_multiloc'];
+  header_bg:
+    | IHomepageSettingsAttributes['header_bg']
+    | ICustomPagesAttributes['header_bg'];
+
+  // homepage only properties, optional
+  banner_signed_in_header_multiloc?: IHomepageSettingsAttributes['banner_signed_in_header_multiloc'];
+  banner_avatars_enabled?: IHomepageSettingsAttributes['banner_avatars_enabled'];
+  // cta settings, only on homepage
+  banner_cta_signed_in_text_multiloc?: IHomepageSettingsAttributes['banner_cta_signed_in_text_multiloc'];
+  banner_cta_signed_in_type?: IHomepageSettingsAttributes['banner_cta_signed_in_type'];
+  banner_cta_signed_in_url?: IHomepageSettingsAttributes['banner_cta_signed_in_url'];
+  // cta_signed_out
+  // this can be retyped since it exists on custom page too
+  banner_cta_signed_out_text_multiloc: IHomepageSettingsAttributes['banner_cta_signed_out_text_multiloc'];
+  banner_cta_signed_out_type: IHomepageSettingsAttributes['banner_cta_signed_out_type'];
+  banner_cta_signed_out_url: IHomepageSettingsAttributes['banner_cta_signed_out_url'];
+};
+
+import { ISubmitState } from 'components/admin/SubmitWrapper';
+
+const GenericHeroBannerForm = ({
+  type,
+  onSave,
+  inputSettings,
+  setFormStatus,
+  formStatus,
+  isLoading,
+  title,
+  breadcrumbs,
+  apiErrors,
+  intl: { formatMessage },
+}: Props & InjectedIntlProps) => {
   const theme: any = useTheme();
-  const homepageSettings = useHomepageSettings();
 
   // component state
-  const [isLoading, setIsLoading] = useState(false);
-  const [formStatus, setFormStatus] = useState<ISubmitState>('disabled');
   const [headerLocalDisplayImage, setHeaderLocalDisplayImage] = useState<
     UploadFile[] | null
   >(null);
-  const [apiErrors, setApiErrors] = useState<CLErrors | null>({});
   const [headerAndSubheaderErrors, setHeaderAndSubheaderErrors] =
     useState<MultilocErrorType>({
       signedOutHeaderErrors: {},
       signedOutSubheaderErrors: {},
     });
   const [bannerError, setBannerError] = useState<string | null>(null);
-  const [localHomepageSettings, setLocalHomepageSettings] =
-    useState<IHomepageSettingsAttributes | null>(null);
+  const [localSettings, setLocalSettings] =
+    useState<HeroBannerInputSettings | null>({} as HeroBannerInputSettings);
+
   const [previewDevice, setPreviewDevice] = useState<PreviewDevice>('desktop');
 
   useEffect(() => {
-    if (isNilOrError(homepageSettings)) {
-      return;
-    }
-
-    // copy homepage settings to local state
-    setLocalHomepageSettings({
-      ...homepageSettings.attributes,
-      banner_layout:
-        homepageSettings.attributes.banner_layout ?? 'full_width_banner_layout',
+    // copy input settings to local state
+    setLocalSettings({
+      ...inputSettings,
     });
 
     // the image file sent from the API needs to be converted
@@ -117,84 +164,43 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       }
     };
 
-    const headerFileInfo = homepageSettings.attributes.header_bg?.large;
+    const headerFileInfo = inputSettings.header_bg?.large;
     convertHeaderToUploadFile(headerFileInfo);
-  }, [homepageSettings]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inputSettings.header_bg]);
 
-  const onSave = async () => {
-    if (localHomepageSettings && !isNilOrError(homepageSettings)) {
-      // only update the homepage settings if they have changed
-      const diffedValues = {};
-      forOwn(localHomepageSettings, (value, key) => {
-        if (!isEqual(value, homepageSettings.attributes[key])) {
-          diffedValues[key] = value;
-        }
-      });
-
-      setIsLoading(true);
-      setFormStatus('disabled');
-      try {
-        await updateHomepageSettings(diffedValues);
-        setApiErrors(null);
-        setIsLoading(false);
-        setFormStatus('success');
-      } catch (error) {
-        setIsLoading(false);
-        setFormStatus('error');
-        if (isCLErrorJSON(error)) {
-          setApiErrors(error.json.errors);
-        } else {
-          setApiErrors(error);
-        }
-        setIsLoading(false);
-      }
-    }
-  };
-
-  const updateValueInLocalHomepageSettings = (key: string, value: any) => {
-    if (localHomepageSettings) {
-      setLocalHomepageSettings({
-        ...localHomepageSettings,
-        [key]: value,
-      });
-
-      if (formStatus !== 'enabled') {
-        setFormStatus('enabled');
-      }
-    }
-  };
-
-  const handleSettingOnChange = (
-    key: keyof IHomepageSettingsAttributes,
+  const updateValueInLocalState = (
+    key: keyof HeroBannerInputSettings,
     value: any
   ) => {
-    updateValueInLocalHomepageSettings(key, value);
+    if (localSettings) {
+      setLocalSettings({
+        ...localSettings,
+        [key]: value,
+      });
+    }
+
+    setFormStatus('enabled');
   };
 
   const bannerImageAddHandler = (newImage: UploadFile[]) => {
     // this base64 value is sent to the API
-    updateValueInLocalHomepageSettings('header_bg', newImage[0].base64);
+    updateValueInLocalState('header_bg', newImage[0].base64);
     // this value is used for local display
     setHeaderLocalDisplayImage([newImage[0]]);
   };
 
   const bannerImageRemoveHandler = () => {
-    updateValueInLocalHomepageSettings('header_bg', null);
+    updateValueInLocalState('header_bg', null);
     setHeaderLocalDisplayImage(null);
   };
 
   const handleOverlayColorOnChange = (color: string) => {
-    updateValueInLocalHomepageSettings(
-      'banner_signed_out_header_overlay_color',
-      color
-    );
+    updateValueInLocalState('banner_overlay_color', color);
   };
 
   const handleOverlayOpacityOnChange = (opacity: number) => {
-    updateValueInLocalHomepageSettings(
-      'banner_signed_out_header_overlay_opacity',
-      opacity
-    );
+    updateValueInLocalState('banner_overlay_opacity', opacity);
   };
 
   const debounceHandleOverlayOpacityOnChange = debounce(
@@ -207,7 +213,7 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     [debounceHandleOverlayOpacityOnChange]
   );
 
-  const handleSignedOutHeaderOnChange = (titleMultiloc: Multiloc) => {
+  const handleHeaderOnChange = (titleMultiloc: Multiloc) => {
     const signedOutHeaderErrors = {};
 
     forOwn(titleMultiloc, (title, locale) => {
@@ -218,17 +224,14 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       }
     });
 
-    updateValueInLocalHomepageSettings(
-      'banner_signed_out_header_multiloc',
-      titleMultiloc
-    );
+    updateValueInLocalState('banner_header_multiloc', titleMultiloc);
     setHeaderAndSubheaderErrors((prevState) => ({
       ...prevState,
       ...signedOutHeaderErrors,
     }));
   };
 
-  const handleSignedOutSubheaderOnChange = (subtitleMultiloc: Multiloc) => {
+  const handleSubheaderOnChange = (subtitleMultiloc: Multiloc) => {
     const signedOutSubheaderErrors = {};
 
     forOwn(subtitleMultiloc, (subtitle, locale) => {
@@ -239,10 +242,7 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       }
     });
 
-    updateValueInLocalHomepageSettings(
-      'banner_signed_out_subheader_multiloc',
-      subtitleMultiloc
-    );
+    updateValueInLocalState('banner_subheader_multiloc', subtitleMultiloc);
     setHeaderAndSubheaderErrors((prevState) => ({
       ...prevState,
       ...signedOutSubheaderErrors,
@@ -250,59 +250,36 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   };
 
   const handleSignedInHeaderOnChange = (titleMultiloc: Multiloc) => {
-    // no length limit for signed-in header
-    updateValueInLocalHomepageSettings(
-      'banner_signed_in_header_multiloc',
-      titleMultiloc
-    );
+    // no length limit for signed-in header, only applies to homepage
+    updateValueInLocalState('banner_signed_in_header_multiloc', titleMultiloc);
   };
 
   // set error and disable save button if header is removed,
   // the form cannot be saved without an image
   useEffect(() => {
-    if (isNil(localHomepageSettings?.header_bg)) {
+    if (isNil(localSettings?.header_bg)) {
       setBannerError(formatMessage(messages.noHeader));
       setFormStatus('disabled');
       return;
     }
 
     setBannerError(null);
-  }, [localHomepageSettings?.header_bg, formatMessage]);
+  }, [localSettings?.header_bg, formatMessage]);
 
-  if (isNilOrError(localHomepageSettings)) {
+  if (isNilOrError(localSettings)) {
     return null;
   }
 
-  const {
-    banner_layout,
-    banner_avatars_enabled,
-    banner_signed_out_header_overlay_opacity,
-    banner_signed_out_header_overlay_color,
-    banner_signed_out_header_multiloc,
-    banner_signed_out_subheader_multiloc,
-    banner_signed_in_header_multiloc,
-  } = localHomepageSettings;
-
   return (
     <SectionFormWrapper
-      breadcrumbs={[
-        {
-          label: formatMessage(pagesAndMenuBreadcrumb.label),
-          linkTo: pagesAndMenuBreadcrumb.linkTo,
-        },
-        {
-          label: formatMessage(homeBreadcrumb.label),
-          linkTo: homeBreadcrumb.linkTo,
-        },
-        { label: formatMessage(messages.heroBannerTitle) },
-      ]}
-      title={formatMessage(messages.heroBannerTitle)}
+      breadcrumbs={breadcrumbs}
+      title={title}
       stickyMenuContents={
         <SubmitWrapper
           status={formStatus}
           buttonStyle="primary"
           loading={isLoading}
-          onClick={onSave}
+          onClick={() => onSave(localSettings)}
           messages={{
             buttonSave: messages.heroBannerSaveButton,
             buttonSuccess: messages.heroBannerButtonSuccess,
@@ -316,10 +293,11 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         <Warning>
           <FormattedMessage {...messages.heroBannerInfoBar} />
         </Warning>
+
         <Outlet
           id="app.containers.Admin.settings.customize.headerSectionStart"
-          homepageSettings={localHomepageSettings}
-          handleOnChange={handleSettingOnChange}
+          bannerLayout={localSettings.banner_layout ?? 'two_column_layout'}
+          handleOnChange={updateValueInLocalState}
         />
         <SubSectionTitle>
           <FormattedMessage {...messages.header_bg} />
@@ -373,22 +351,17 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           <HeaderImageDropzone
             onAdd={bannerImageAddHandler}
             onRemove={bannerImageRemoveHandler}
-            homepageSettingsOverlayColor={
-              banner_signed_out_header_overlay_color
-            }
-            homepageSettingsOverlayOpacity={
-              banner_signed_out_header_overlay_opacity
-            }
+            overlayColor={localSettings.banner_overlay_color}
+            overlayOpacity={localSettings.banner_overlay_opacity}
             headerError={bannerError}
             header_bg={headerLocalDisplayImage}
             previewDevice={previewDevice}
-            // check on default
-            layout={banner_layout || 'full_width_banner_layout'}
+            layout={localSettings.banner_layout || 'full_width_banner_layout'}
           />
         </SectionField>
 
         {/* We only allow the overlay for the full-width banner layout for the moment. */}
-        {banner_layout === 'full_width_banner_layout' &&
+        {localSettings.banner_layout === 'full_width_banner_layout' &&
           headerLocalDisplayImage && (
             <>
               <SectionField>
@@ -399,7 +372,7 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
                   type="text"
                   value={
                     // default values come from the theme
-                    banner_signed_out_header_overlay_color ?? theme.colorMain
+                    localSettings.banner_overlay_color ?? theme.colorMain
                   }
                   onChange={handleOverlayColorOnChange}
                 />
@@ -413,7 +386,7 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
                   min={0}
                   max={100}
                   value={
-                    banner_signed_out_header_overlay_opacity ||
+                    localSettings.banner_overlay_opacity ||
                     theme.signedOutHeaderOverlayOpacity
                   }
                   onChange={debouncedHandleOverlayOpacityOnChange}
@@ -430,65 +403,86 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           </SubSectionTitle>
           <InputMultilocWithLocaleSwitcher
             type="text"
-            valueMultiloc={banner_signed_out_header_multiloc}
+            valueMultiloc={localSettings.banner_header_multiloc}
             label={
               <Box display="flex" mr="20px">
                 <FormattedMessage {...messages.bannerHeaderSignedOut} />
               </Box>
             }
             maxCharCount={TITLE_MAX_CHAR_COUNT}
-            onChange={handleSignedOutHeaderOnChange}
+            onChange={handleHeaderOnChange}
             errorMultiloc={headerAndSubheaderErrors.signedOutHeaderErrors}
           />
         </SectionField>
         <SectionField data-cy="e2e-signed-out-subheader-section">
           <InputMultilocWithLocaleSwitcher
             type="text"
-            valueMultiloc={banner_signed_out_subheader_multiloc}
+            valueMultiloc={localSettings.banner_subheader_multiloc}
             label={formatMessage(messages.bannerHeaderSignedOutSubtitle)}
             maxCharCount={SUBTITLE_MAX_CHAR_COUNT}
-            onChange={handleSignedOutSubheaderOnChange}
+            onChange={handleSubheaderOnChange}
             errorMultiloc={headerAndSubheaderErrors.signedOutSubheaderErrors}
           />
         </SectionField>
-        <SectionField>
-          <InputMultilocWithLocaleSwitcher
-            type="text"
-            valueMultiloc={banner_signed_in_header_multiloc}
-            label={formatMessage(messages.bannerHeaderSignedIn)}
-            onChange={handleSignedInHeaderOnChange}
-          />
-        </SectionField>
-        <SectionField key="avatars" data-cy="e2e-banner-avatar-toggle-section">
-          <SubSectionTitle>
-            <FormattedMessage {...messages.avatarsTitle} />
-          </SubSectionTitle>
-          <Setting>
-            <ToggleLabel>
-              <StyledToggle
-                checked={!!banner_avatars_enabled}
-                onChange={() => {
-                  updateValueInLocalHomepageSettings(
-                    'banner_avatars_enabled',
-                    !banner_avatars_enabled
-                  );
-                }}
+        {type === 'homePage' && (
+          <>
+            <SectionField>
+              <InputMultilocWithLocaleSwitcher
+                type="text"
+                valueMultiloc={localSettings.banner_signed_in_header_multiloc}
+                label={formatMessage(messages.bannerHeaderSignedIn)}
+                onChange={handleSignedInHeaderOnChange}
               />
-              <LabelContent>
-                <LabelTitle>
-                  {formatMessage(messages.bannerDisplayHeaderAvatars)}
-                </LabelTitle>
-                <LabelDescription>
-                  {formatMessage(messages.bannerDisplayHeaderAvatarsSubtitle)}
-                </LabelDescription>
-              </LabelContent>
-            </ToggleLabel>
-          </Setting>
-        </SectionField>
+            </SectionField>
+            <SectionField
+              key="avatars"
+              data-cy="e2e-banner-avatar-toggle-section"
+            >
+              <SubSectionTitle>
+                <FormattedMessage {...messages.avatarsTitle} />
+              </SubSectionTitle>
+              <Setting>
+                <ToggleLabel>
+                  <StyledToggle
+                    checked={!!localSettings.banner_avatars_enabled}
+                    onChange={() => {
+                      updateValueInLocalState(
+                        'banner_avatars_enabled',
+                        !localSettings.banner_avatars_enabled
+                      );
+                    }}
+                  />
+                  <LabelContent>
+                    <LabelTitle>
+                      {formatMessage(messages.bannerDisplayHeaderAvatars)}
+                    </LabelTitle>
+                    <LabelDescription>
+                      {formatMessage(
+                        messages.bannerDisplayHeaderAvatarsSubtitle
+                      )}
+                    </LabelDescription>
+                  </LabelContent>
+                </ToggleLabel>
+              </Setting>
+            </SectionField>
+          </>
+        )}
+        {/* // CTA settings, only applicable on homepage */}
         <Outlet
           id="app.containers.Admin.settings.customize.headerSectionEnd"
-          homepageSettings={localHomepageSettings}
-          handleOnChange={handleSettingOnChange}
+          banner_cta_signed_in_text_multiloc={
+            localSettings.banner_cta_signed_in_text_multiloc
+          }
+          banner_cta_signed_in_url={localSettings.banner_cta_signed_in_url}
+          banner_cta_signed_in_type={localSettings.banner_cta_signed_in_type}
+          banner_cta_signed_out_text_multiloc={
+            localSettings.banner_cta_signed_out_text_multiloc
+          }
+          banner_cta_signed_out_url={localSettings.banner_cta_signed_out_url}
+          banner_cta_signed_out_type={localSettings.banner_cta_signed_out_type}
+          handleOnChange={updateValueInLocalState}
+          // signed in only applies to
+          showSignedInSettings={type === 'homePage'}
           errors={apiErrors}
         />
       </Section>
@@ -496,4 +490,4 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   );
 };
 
-export default injectIntl(HeroBannerForm);
+export default injectIntl(GenericHeroBannerForm);

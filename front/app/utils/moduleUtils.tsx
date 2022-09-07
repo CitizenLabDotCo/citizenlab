@@ -45,10 +45,7 @@ import {
   TAppConfigurationSetting,
   TAppConfigurationSettingCore,
 } from 'services/appConfiguration';
-import {
-  THomepageBannerLayout,
-  IHomepageSettingsAttributes,
-} from 'services/homepageSettings';
+import { THomepageBannerLayout } from 'services/homepageSettings';
 import { ManagerType } from 'components/admin/PostManager';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaHeaderRow';
@@ -365,19 +362,23 @@ export interface OutletsPropertyMap {
     onMount: () => void;
   };
   'app.containers.Admin.settings.customize.headerSectionStart': {
-    homepageSettings: IHomepageSettingsAttributes;
+    bannerLayout: THomepageBannerLayout;
     handleOnChange: (
-      settingKey: keyof IHomepageSettingsAttributes,
-      settingValue: any
+      settingKey: 'banner_layout',
+      settingValue: THomepageBannerLayout
     ) => void;
   };
   'app.containers.Admin.settings.customize.headerSectionEnd': {
-    homepageSettings: IHomepageSettingsAttributes;
-    handleOnChange: (
-      settingKey: keyof IHomepageSettingsAttributes,
-      settingValue: any
-    ) => void;
-    errors: CLErrors | null;
+    banner_cta_signed_in_text_multiloc: any;
+    banner_cta_signed_out_text_multiloc: any;
+    banner_cta_signed_in_url: any;
+    banner_cta_signed_out_url: any;
+    // todo: type these better, probably means moving CTA types to main app
+    banner_cta_signed_out_type: any;
+    banner_cta_signed_in_type: any;
+    showSignedInSettings: boolean;
+    handleOnChange: (settingKey: any, settingValue: any) => void;
+    errors: CLErrors | undefined | null;
   };
   'app.containers.LandingPage.SignedOutHeader.index': {
     homepageBannerLayout: THomepageBannerLayout;

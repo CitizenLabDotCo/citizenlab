@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 import Image from 'components/UI/Image';
 import useHomepageSettings from 'hooks/useHomepageSettings';
-import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/HeroBanner/HeaderImageDropzone';
+import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/HeaderImageDropzone';
 
 const Container = styled.div`
   width: 100%;
