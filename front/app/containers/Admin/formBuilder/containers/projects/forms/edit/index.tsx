@@ -18,6 +18,7 @@ import FormBuilderToolbox from 'containers/Admin/formBuilder/components/FormBuil
 import FormBuilderSettings from 'containers/Admin/formBuilder/components/FormBuilderSettings';
 import FormFields from 'containers/Admin/formBuilder/components/FormFields';
 import Error from 'components/UI/Error';
+import Feedback from 'components/HookForm/Feedback';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -180,6 +181,7 @@ export const FormEdit = ({
                       />
                     </Box>
                   )}
+                  <Feedback />
                   <Box bgColor="white" minHeight="300px">
                     <FormFields
                       onEditField={setSelectedField}
