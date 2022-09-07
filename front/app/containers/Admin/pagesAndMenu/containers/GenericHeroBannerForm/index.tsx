@@ -31,7 +31,7 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // typings
-import { UploadFile, Multiloc, CLErrors } from 'typings';
+import { UploadFile, Multiloc } from 'typings';
 type MultilocErrorType = {
   signedOutHeaderErrors: Multiloc;
   signedOutSubheaderErrors: Multiloc;
@@ -64,9 +64,9 @@ interface Props {
   onSave: (inputSettingParameters: HeroBannerInputSettings) => void;
   isLoading: boolean;
   inputSettings: HeroBannerInputSettings;
-  hideSignedInHeaderField?: boolean;
   avatarsFieldComponent?: ReactElement;
   outletSectionEnd?: ReactElement;
+  bannerMultilocFieldComponent?: ReactElement;
 }
 
 export type HeroBannerInputSettings =
@@ -82,9 +82,9 @@ const GenericHeroBannerForm = ({
   title,
   breadcrumbs,
   intl: { formatMessage },
-  hideSignedInHeaderField = false,
   avatarsFieldComponent,
-  outletSectionEnd
+  outletSectionEnd,
+  bannerMultilocFieldComponent,
 }: Props & InjectedIntlProps) => {
   const theme: any = useTheme();
 
@@ -207,11 +207,6 @@ const GenericHeroBannerForm = ({
       ...prevState,
       ...signedOutSubheaderErrors,
     }));
-  };
-
-  const handleSignedInHeaderOnChange = (titleMultiloc: Multiloc) => {
-    // no length limit for signed-in header, only applies to homepage
-    updateValueInLocalState('banner_signed_in_header_multiloc', titleMultiloc);
   };
 
   // set error and disable save button if header is removed,
@@ -384,18 +379,8 @@ const GenericHeroBannerForm = ({
             errorMultiloc={headerAndSubheaderErrors.signedOutSubheaderErrors}
           />
         </SectionField>
-        {!hideSignedInHeaderField && (
-          <SectionField>
-            <InputMultilocWithLocaleSwitcher
-              type="text"
-              valueMultiloc={localSettings.banner_signed_in_header_multiloc}
-              label={formatMessage(messages.bannerHeaderSignedIn)}
-              onChange={handleSignedInHeaderOnChange}
-            />
-          </SectionField>
-        )}
+        {bannerMultilocFieldComponent}
         {avatarsFieldComponent}
-        {/* // CTA settings, only applicable on homepage */}
         {outletSectionEnd}
       </Section>
     </SectionFormWrapper>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Multiloc } from 'typings';
 
 // components
 import GenericHeroBannerForm, {
@@ -9,6 +10,7 @@ import {
   homeBreadcrumb,
 } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 import AvatarsField from '../../containers/GenericHeroBannerForm/AvatarsField';
+import BannerHeaderMultilocField from '../../containers/GenericHeroBannerForm/BannerHeaderMultilocField';
 // resources
 import useHomepageSettings from 'hooks/useHomepageSettings';
 import {
@@ -114,14 +116,23 @@ const EditHomepageHeroBannerForm = ({
     banner_cta_signed_in_url: attributes.banner_cta_signed_in_url,
   };
 
-  const handleOnChange = (key: keyof IHomepageSettingsAttributes) => () => {
-    if (!isNilOrError(localSettings)) {
-      setLocalSettings({
-        ...localSettings,
-        [key]: !localSettings.banner_avatars_enabled,
-      });
-    }
+  const handleOnChangeaSignedInHeader = (headerMultiloc: Multiloc) => {
+    handleOnChange('banner_signed_in_header_multiloc')(headerMultiloc);
   };
+
+  const handleOnChangeBannerAvatarsEnabled = (bannerAvatarsEnabled: boolean) => {
+    handleOnChange('banner_avatars_enabled')(bannerAvatarsEnabled);
+
+  }
+  const handleOnChange =
+    (key: keyof IHomepageSettingsAttributes) => (value: unknown) => {
+      if (!isNilOrError(localSettings)) {
+        setLocalSettings({
+          ...localSettings,
+          [key]: value,
+        });
+      }
+    };
 
   if (!isNilOrError(localSettings)) {
     return (
@@ -143,10 +154,16 @@ const EditHomepageHeroBannerForm = ({
         ]}
         inputSettings={mappedInputSettings}
         setFormStatus={setFormStatus}
+        bannerMultilocFieldComponent={
+          <BannerHeaderMultilocField
+            onChange={handleOnChangeaSignedInHeader}
+            headerMultiloc={localSettings.banner_signed_in_header_multiloc}
+          />
+        }
         avatarsFieldComponent={
           <AvatarsField
             checked={localSettings.banner_avatars_enabled}
-            onChange={handleOnChange('banner_avatars_enabled')}
+            onChange={handleOnChangeBannerAvatarsEnabled}
           />
         }
         outletSectionEnd={

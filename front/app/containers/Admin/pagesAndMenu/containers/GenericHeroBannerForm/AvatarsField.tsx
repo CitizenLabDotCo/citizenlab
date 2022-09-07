@@ -17,7 +17,7 @@ import messages from './messages';
 
 interface Props {
   checked: boolean;
-  onChange: () => void;
+  onChange: (bannerAvatarsEnabled: boolean) => void;
 }
 
 const AvatarsField = ({
@@ -25,6 +25,10 @@ const AvatarsField = ({
   onChange,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
+  const handleOnChange = () => {
+    onChange(!checked);
+  };
+
   return (
     <SectionField key="avatars" data-cy="e2e-banner-avatar-toggle-section">
       <SubSectionTitle>
@@ -32,7 +36,7 @@ const AvatarsField = ({
       </SubSectionTitle>
       <Setting>
         <ToggleLabel>
-          <StyledToggle checked={checked} onChange={onChange} />
+          <StyledToggle checked={checked} onChange={handleOnChange} />
           <LabelContent>
             <LabelTitle>
               {formatMessage(messages.bannerDisplayHeaderAvatars)}
