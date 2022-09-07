@@ -249,7 +249,13 @@ resource 'Stats - Users' do
         expect(json_response_body).to match({
           areas: Area.all.to_h { |area| [area.id, area.attributes.slice('title_multiloc')] },
           series: {
-            users: { @area1.id => 2, @area2.id => 1, _blank: 1 }
+            users: {
+              @area1.id => 2,
+              @area2.id => 1,
+              @area3.id => 0,
+              outside: 0,
+              _blank: 1
+            }
           }
         }.deep_symbolize_keys)
       end
