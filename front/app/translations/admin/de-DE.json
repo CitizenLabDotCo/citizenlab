@@ -645,7 +645,7 @@
   "app.containers.AdminPage.DashboardPage.components.PostFeedback.averageTime": "Durchschnittliche Antwortzeit: {days} Tag(e)",
   "app.containers.AdminPage.DashboardPage.components.PostFeedback.averageTimeColumnName": "Durchschnittliche Dauer der Antwortzeit (in Tagen)",
   "app.containers.AdminPage.DashboardPage.components.PostFeedback.feedbackGiven": "Feedback gegeben",
-  "app.containers.AdminPage.DashboardPage.components.PostFeedback.inputStatus": "Beitragsstatus",
+  "app.containers.AdminPage.DashboardPage.components.PostFeedback.inputStatus": "Status der Beiträge ",
   "app.containers.AdminPage.DashboardPage.components.PostFeedback.inputsByStatus": "Beiträge nach Status",
   "app.containers.AdminPage.DashboardPage.components.PostFeedback.numberOfInputs": "Anzahl der Beiträge",
   "app.containers.AdminPage.DashboardPage.components.PostFeedback.officialUpdate": "Offizielles Update",
