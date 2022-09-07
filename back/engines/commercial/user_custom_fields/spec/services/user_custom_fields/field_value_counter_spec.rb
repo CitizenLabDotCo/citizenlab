@@ -52,7 +52,7 @@ RSpec.describe UserCustomFields::FieldValueCounter do
     end
 
     context 'when custom field is domicile' do
-      let_it_be(:custom_field) { create(:custom_field_domicile)}
+      let_it_be(:custom_field) { create(:custom_field_domicile) }
       let_it_be(:areas) { create_list(:area, 2) }
 
       it 'do not report about inconsistent option keys to Sentry' do
