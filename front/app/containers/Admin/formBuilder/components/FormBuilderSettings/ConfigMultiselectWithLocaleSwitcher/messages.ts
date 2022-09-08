@@ -5,15 +5,15 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.removeOption',
     defaultMessage: 'Remove option',
   },
-    addAnswer: {
+  addAnswer: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.addAnswer',
     defaultMessage: 'Add answer',
   },
-    fieldLabel: {
+  fieldLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.fieldLabel',
     defaultMessage: 'Answer choices',
   },
-    fieldTooltip: {
+  fieldTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.fieldTooltip',
     defaultMessage: 'Field tooltip content',
   },

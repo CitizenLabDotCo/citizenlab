@@ -1,6 +1,16 @@
 # Changelog
 
-### 2022-09-07_2
+### Fixed
+
+- [CL-1586] Fix deleting folder and cause images
+
+## 2022-09-08
+
+### Fixed
+
+- Save button text in representation data input interface is now translated.
+
+## 2022-09-07_2
 
 ### Changed
 
