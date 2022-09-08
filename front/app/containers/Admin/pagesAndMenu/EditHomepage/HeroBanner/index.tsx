@@ -16,6 +16,7 @@ import {
   updateHomepageSettings,
 } from 'services/homepageSettings';
 import Outlet from 'components/Outlet';
+import BannerHeaderFields from '../../containers/GenericHeroBannerForm/BannerHeaderFields';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -98,8 +99,28 @@ const EditHomepageHeroBannerForm = ({
     banner_cta_signed_in_url: attributes.banner_cta_signed_in_url,
   };
 
-  const handleOnChangeaSignedInHeader = (headerMultiloc: Multiloc) => {
-    handleOnChange('banner_signed_in_header_multiloc', headerMultiloc);
+  const handleBannerSignedInMultilocOnChange = (
+    signedInHeaderMultiloc: Multiloc
+  ) => {
+    handleOnChange('banner_signed_in_header_multiloc', signedInHeaderMultiloc);
+  };
+
+  const handleHeaderSignedOutMultilocOnChange = (
+    signedOutHeaderMultiloc: Multiloc
+  ) => {
+    handleOnChange(
+      'banner_signed_out_header_multiloc',
+      signedOutHeaderMultiloc
+    );
+  };
+
+  const handleSubheaderSignedOutMultilocOnChange = (
+    signedOutHeaderMultiloc: Multiloc
+  ) => {
+    handleOnChange(
+      'banner_signed_out_subheader_multiloc',
+      signedOutHeaderMultiloc
+    );
   };
 
   const handleOnChangeBannerAvatarsEnabled = (
@@ -118,8 +139,8 @@ const EditHomepageHeroBannerForm = ({
   const handleOverlayColorOnChange = (color: string) => {
     handleOnChange('banner_signed_out_header_overlay_color', color);
   };
-  const handleOverlayOpacityOnChange = () => {
-    handleOnChange('banner_signed_out_header_overlay_opacity', null);
+  const handleOverlayOpacityOnChange = (opacity: number) => {
+    handleOnChange('banner_signed_out_header_overlay_opacity', opacity);
   };
 
   const handleOnChange = (
@@ -154,6 +175,20 @@ const EditHomepageHeroBannerForm = ({
         ]}
         inputSettings={mappedInputSettings}
         setFormStatus={setFormStatus}
+        bannerHeaderFieldsComponent={
+          <BannerHeaderFields
+            bannerHeaderMultiloc={
+              localSettings.banner_signed_out_header_multiloc
+            }
+            bannerSubheaderMultiloc={
+              localSettings.banner_signed_out_subheader_multiloc
+            }
+            onHeaderChange={handleHeaderSignedOutMultilocOnChange}
+            onSubheaderChange={handleSubheaderSignedOutMultilocOnChange}
+            titleMessage={messages.bannerTextTitle}
+            inputLabelMessage={messages.bannerHeaderSignedOut}
+          />
+        }
         outletSectionStart={
           <Outlet
             id="app.containers.Admin.settings.customize.headerSectionStart"
@@ -163,7 +198,7 @@ const EditHomepageHeroBannerForm = ({
         }
         bannerMultilocFieldComponent={
           <BannerHeaderMultilocField
-            onChange={handleOnChangeaSignedInHeader}
+            onChange={handleBannerSignedInMultilocOnChange}
             headerMultiloc={localSettings.banner_signed_in_header_multiloc}
           />
         }
