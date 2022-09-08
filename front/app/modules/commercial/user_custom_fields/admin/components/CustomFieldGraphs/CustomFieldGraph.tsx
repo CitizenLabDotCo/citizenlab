@@ -23,7 +23,7 @@ import {
   GraphCard,
   GraphCardInner,
 } from 'components/admin/GraphWrappers';
-import { Tooltip, LabelList } from 'recharts';
+import { Tooltip } from 'recharts';
 import BarChart from 'components/admin/Graphs/BarChart';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
@@ -225,16 +225,20 @@ const CustomFieldsGraph = ({
         <BarChart
           height={serie && serie.length > 1 ? serie.length * 50 : 100}
           data={serie}
+          mapping={{
+            category: 'name',
+            length: 'participants',
+          }}
+          bars={{ name: formatMessage(messages.participants), size: sizes.bar }}
           layout="horizontal"
           innerRef={currentChartRef}
           margin={{
             ...DEFAULT_BAR_CHART_MARGIN,
             left: 20,
           }}
-          bars={{ name: formatMessage(messages.participants), size: sizes.bar }}
-          mapping={{ length: 'participants' }}
           yaxis={{ width: 150, tickLine: false }}
-          renderTooltip={() => (
+          labels
+          tooltip={() => (
             <>
               <Tooltip
                 content={({ active, payload, label }: TooltipProps) => (
@@ -248,7 +252,6 @@ const CustomFieldsGraph = ({
               />
             </>
           )}
-          renderLabels={(props) => <LabelList {...props} />}
         />
       </GraphCardInner>
     </GraphCard>

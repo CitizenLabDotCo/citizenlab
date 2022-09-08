@@ -79,7 +79,11 @@ const TopicForm = ({
               />
             </SectionField>
             <Box display="flex">
-              <Button type="submit" processing={methods.formState.isSubmitting}>
+              <Button
+                type="submit"
+                processing={methods.formState.isSubmitting}
+                id="e2e-submit-wrapper-button"
+              >
                 {formatMessage(messages.fieldTopicSave)}
               </Button>
             </Box>

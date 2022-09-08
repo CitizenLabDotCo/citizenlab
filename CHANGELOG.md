@@ -1,5 +1,35 @@
 # Changelog
 
+### 2022-09-07_2
+
+### Changed
+
+- Custom forms can be associated with projects and phases.
+- Survey form builder improvements.
+
+### 2022-09-07
+
+### Fixed
+
+- Input status dashboard card now updates immediately (not just after refresh) when changing idea status in input manager
+
+## 2022-09-06
+
+### Added
+
+- [CL-423] Added input feedback dashboard card with new analytics endpoint
+
+## 2022-09-05
+
+### Added
+
+- [CL-1157] Added domicile fields to representation dashboard
+
+## 2022-09-02
+
+### Fixed
+- [CL-1580] Do not show full admin panel to moderators
+
 ## 2022-08-30
 
 ### Fixed
