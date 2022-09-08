@@ -121,6 +121,8 @@ const EditHomepageHeroBannerForm = ({
     key: keyof IHomepageSettingsAttributes,
     value: unknown
   ) => {
+    setFormStatus('enabled');
+
     if (!isNilOrError(localSettings)) {
       setLocalSettings({
         ...localSettings,
