@@ -6,7 +6,7 @@ import { ControlProps } from '@jsonforms/core';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 
 // Components
-import { Box, Text, Radio } from '@citizenlab/cl2-component-library';
+import { Box, Text, Radio, Label } from '@citizenlab/cl2-component-library';
 import { FormLabel } from 'components/UI/FormComponents';
 import VerificationIcon from '../VerificationIcon';
 import ErrorDisplay from '../ErrorDisplay';
@@ -22,7 +22,6 @@ const LinearScaleControl = ({
   id,
 }: ControlProps) => {
   const maximum = schema?.properties?.rating?.maximum;
-
   return (
     <>
       <FormLabel
@@ -45,18 +44,18 @@ const LinearScaleControl = ({
           </Text>
         </Box>
         <>
-          {[...Array(maximum)].map((x, i) => (
+          {[...Array(maximum)].map((_x, i) => (
             <Box key={i} style={{ lineHeight: '0px' }}>
-              <Text mb="4px" ml="4px">
-                {i + 1}
-              </Text>
+              <Box mt="16px" mx="4px">
+                <Label htmlFor={`${path}-radio-${i}`}>{i + 1}</Label>
+              </Box>
               <br />
               <Radio
                 name="linear_scale"
                 currentValue={data?.rating}
                 value={i + 1}
                 key={i}
-                id={x}
+                id={`${path}-radio-${i}`}
                 onChange={(value) => handleChange(path, { rating: value })}
               />
             </Box>
