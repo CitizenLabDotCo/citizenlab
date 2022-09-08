@@ -608,7 +608,7 @@
   "app.containers.AdminPage.Users.UsersGroup.rulesError": "Some conditions are incomplete",
   "app.containers.AdminPage.Users.UsersGroup.saveGroup": "Save group",
   "app.containers.AdminPage.Users.UsersGroup.smartGroupsAvailability": "Grupurile inteligente sunt disponibile în planurile Standard și Premium.",
-  "app.containers.AdminPage.Users.UsersGroup.titleFieldError": "Provide group name for all languages",
+  "app.containers.AdminPage.Users.UsersGroup.titleFieldEmptyError": "Provide a group name",
   "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "Verificarea este dezactivată pentru platforma dvs., eliminați regula de verificare sau apelați serviciul de asistență tehnică.",
   "app.containers.App.appMetaDescription": "Bine ați venit pe platforma online de participare civică a {orgName}.\nExplorează proiectele locale și implică-te în discuție!",
   "app.containers.App.loading": "Se încarcă...",
