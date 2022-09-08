@@ -18,6 +18,7 @@ import { Multiloc } from 'typings';
 type FormActionsProps = {
   editFormLink: string;
   viewFormLink: string;
+  viewFormResults: string;
   postingEnabled: boolean;
   heading?: Multiloc;
   togglePostingEnabled: () => void;
@@ -27,6 +28,7 @@ const FormActions = ({
   intl: { formatMessage },
   viewFormLink,
   editFormLink,
+  viewFormResults,
   heading,
   postingEnabled,
   togglePostingEnabled,
@@ -65,6 +67,9 @@ const FormActions = ({
           buttonStyle="primary"
           width="auto"
           minWidth="312px"
+          onClick={() => {
+            clHistory.push(viewFormResults);
+          }}
         >
           {formatMessage(messages.viewSurveyResults, {
             count: 956, // TODO: Get this from the API

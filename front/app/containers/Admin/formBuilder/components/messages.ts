@@ -85,4 +85,21 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.openForSubmissions',
     defaultMessage: 'Open for submissions',
   },
+  surveyResults: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.surveyResults',
+    defaultMessage: 'Survey results',
+  },
+  totalSurveyResponses: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.totalSurveyResponses',
+    defaultMessage: 'Total {count} responses',
+  },
+  downloadSurveyResults: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.downloadSurveyResults',
+    defaultMessage: 'Download survey results',
+  },
+  informationText: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.informationText',
+    defaultMessage:
+      'Responses to short and long answer questions are currently only available in the survey download',
+  },
 });
