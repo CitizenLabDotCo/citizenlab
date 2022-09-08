@@ -43,6 +43,7 @@ import widgetsConfiguration from './commercial/widgets';
 import eventsWidgetConfiguration from './commercial/events_widget';
 
 import insightsConfiguration from './commercial/insights';
+import analyticsConfiguration from './commercial/analytics';
 import customizableNavbarConfiguration from './commercial/customizable_navbar';
 
 import userConfirmationConfiguration from './free/user_confirmation';
@@ -205,6 +206,10 @@ export default loadModules([
   {
     configuration: insightsConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/insights'],
+  },
+  {
+    configuration: analyticsConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/analytics'],
   },
   {
     configuration: customizableNavbarConfiguration,

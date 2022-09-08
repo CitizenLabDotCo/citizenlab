@@ -135,7 +135,6 @@ const WidgetForm = ({
           <SectionField>
             <Feedback />
           </SectionField>
-
           <SectionField>
             <Input
               name="width"
@@ -143,7 +142,6 @@ const WidgetForm = ({
               label={formatMessage(messages.fieldWidth)}
             />
           </SectionField>
-
           <SectionField>
             <Input
               name="height"
@@ -243,14 +241,12 @@ const WidgetForm = ({
                 }
               </GetProjects>
             </SectionField>
-
             <SectionField>
               <Toggle
                 name="showHeader"
                 label={<FormattedMessage {...messages.fieldShowHeader} />}
               />
             </SectionField>
-
             {methods.getValues('showHeader') && (
               <Section>
                 <SectionField>
@@ -278,7 +274,6 @@ const WidgetForm = ({
               </Section>
             )}
           </StyledSection>
-
           <StyledSection>
             <SectionField>
               <Toggle
@@ -286,7 +281,6 @@ const WidgetForm = ({
                 label={<FormattedMessage {...messages.fieldShowFooter} />}
               />
             </SectionField>
-
             {methods.getValues('showFooter') && (
               <Section>
                 <SectionField>
@@ -323,7 +317,6 @@ const WidgetForm = ({
               }
             </GetProjects>
           </SectionField>
-
           <SectionField>
             <Label htmlFor="topics">
               <FormattedMessage {...messages.fieldTopics} />
@@ -339,7 +332,6 @@ const WidgetForm = ({
               }
             </GetTopics>
           </SectionField>
-
           <SectionField>
             <Select
               name="sort"
@@ -347,7 +339,6 @@ const WidgetForm = ({
               options={sortOptions()}
             />
           </SectionField>
-
           <SectionField>
             <Input
               type="number"
