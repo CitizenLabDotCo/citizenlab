@@ -1,16 +1,13 @@
 import React, { ReactElement } from 'react';
 
 // components
-import { Section, SubSectionTitle } from 'components/admin/Section';
+import { Section } from 'components/admin/Section';
 
 import SectionFormWrapper from '../../components/SectionFormWrapper';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 
-import { IconTooltip } from '@citizenlab/cl2-component-library';
-
 // i18n
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // typings
@@ -28,12 +25,12 @@ interface Props {
   onSave: () => void;
   isLoading: boolean;
   outletSectionStart?: ReactElement;
+  layoutSettingFieldComponent?: ReactElement;
+  bannerImageFieldsComponent: ReactElement;
+  bannerHeaderFieldsComponent: ReactElement;
+  bannerMultilocFieldComponent?: ReactElement;
   avatarsFieldComponent?: ReactElement;
   outletSectionEnd?: ReactElement;
-  bannerMultilocFieldComponent?: ReactElement;
-  bannerHeaderFieldsComponent: ReactElement;
-  bannerImageFieldsComponent: ReactElement;
-  layoutSettingFieldComponent?: ReactElement;
 }
 
 const GenericHeroBannerForm = ({
@@ -42,7 +39,6 @@ const GenericHeroBannerForm = ({
   isLoading,
   title,
   breadcrumbs,
-  intl: { formatMessage },
   outletSectionStart,
   avatarsFieldComponent,
   outletSectionEnd,
@@ -50,7 +46,7 @@ const GenericHeroBannerForm = ({
   bannerHeaderFieldsComponent,
   bannerImageFieldsComponent,
   layoutSettingFieldComponent,
-}: Props & InjectedIntlProps) => {
+}: Props) => {
   return (
     <SectionFormWrapper
       breadcrumbs={breadcrumbs}
@@ -76,29 +72,6 @@ const GenericHeroBannerForm = ({
         </Warning>
         {outletSectionStart}
         {layoutSettingFieldComponent}
-        <SubSectionTitle>
-          <FormattedMessage {...messages.header_bg} />
-          <IconTooltip
-            content={
-              <FormattedMessage
-                {...messages.headerBgTooltip}
-                values={{
-                  supportPageLink: (
-                    <a
-                      href={formatMessage(messages.headerImageSupportPageURL)}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <FormattedMessage
-                        {...messages.headerImageSupportPageText}
-                      />
-                    </a>
-                  ),
-                }}
-              />
-            }
-          />
-        </SubSectionTitle>
         {bannerImageFieldsComponent}
         {bannerHeaderFieldsComponent}
         {bannerMultilocFieldComponent}
@@ -109,4 +82,4 @@ const GenericHeroBannerForm = ({
   );
 };
 
-export default injectIntl(GenericHeroBannerForm);
+export default GenericHeroBannerForm;
