@@ -124,4 +124,20 @@ export default defineMessages({
     id: 'app.containers.Admin.PagesAndMenu.heroBannerError',
     defaultMessage: "Couldn't save hero banner",
   },
+  chooseLayout: {
+    id: 'app.containers.Admin.PagesAndMenu.chooseLayout',
+    defaultMessage: 'Layout',
+  },
+  fullWidthBannerLayout: {
+    id: 'app.containers.Admin.PagesAndMenu.fullWidthBannerLayout',
+    defaultMessage: 'Full-width banner',
+  },
+  TwoColumnLayout: {
+    id: 'app.containers.Admin.PagesAndMenu.TwoColumnLayout',
+    defaultMessage: 'Two columns',
+  },
+  twoRowLayout: {
+    id: 'app.containers.Admin.PagesAndMenu.twoRowLayout',
+    defaultMessage: 'Two rows',
+  },
 });

@@ -17,6 +17,8 @@ import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import { ISubmitState } from 'components/admin/SubmitWrapper';
 import { Multiloc } from 'typings';
+import LayoutSettingField from '../../../GenericHeroBannerForm/LayoutField';
+import { THomepageBannerLayout } from 'services/homepageSettings';
 
 const EditCustomPageHeroBannerForm = ({
   intl: { formatMessage },
@@ -88,6 +90,10 @@ const EditCustomPageHeroBannerForm = ({
     handleOnChange('banner_overlay_opacity', opacity);
   };
 
+  const handleLayoutOnChange = (bannerLayout: THomepageBannerLayout) => {
+    handleOnChange('banner_layout', bannerLayout);
+  };
+
   const handleOnChange = (key: keyof ICustomPageAttributes, value: unknown) => {
     setFormStatus('enabled');
 
@@ -118,6 +124,12 @@ const EditCustomPageHeroBannerForm = ({
         ]}
         title={formatMessage(messages.heroBannerTitle)}
         setFormStatus={setFormStatus}
+        layoutSettingFieldComponent={
+          <LayoutSettingField
+            bannerLayout={localSettings.banner_layout}
+            onChange={handleLayoutOnChange}
+          />
+        }
         bannerImageFieldsComponent={
           <BannerImageFields
             bannerLayout={localSettings.banner_layout}

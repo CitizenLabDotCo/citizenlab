@@ -33,6 +33,7 @@ interface Props {
   bannerMultilocFieldComponent?: ReactElement;
   bannerHeaderFieldsComponent: ReactElement;
   bannerImageFieldsComponent: ReactElement;
+  layoutSettingFieldComponent?: ReactElement;
 }
 
 const GenericHeroBannerForm = ({
@@ -48,6 +49,7 @@ const GenericHeroBannerForm = ({
   bannerMultilocFieldComponent,
   bannerHeaderFieldsComponent,
   bannerImageFieldsComponent,
+  layoutSettingFieldComponent,
 }: Props & InjectedIntlProps) => {
   return (
     <SectionFormWrapper
@@ -73,6 +75,7 @@ const GenericHeroBannerForm = ({
           <FormattedMessage {...messages.heroBannerInfoBar} />
         </Warning>
         {outletSectionStart}
+        {layoutSettingFieldComponent}
         <SubSectionTitle>
           <FormattedMessage {...messages.header_bg} />
           <IconTooltip
