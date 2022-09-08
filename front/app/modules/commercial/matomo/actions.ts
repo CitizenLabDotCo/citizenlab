@@ -45,10 +45,13 @@ export const trackPageChange = (path: string) => {
     window._paq.push(['setCustomDimension', 3, locale]);
   }
 
-  // Update project id custom dimension if relevant
-  // if (isProjectPage(path)) {
-  //   // TODO
-  // }
+  // Update project id custom dimension if project page
+  if (isProjectPage(path)) {
+    const slug = extractProjectSlug(path)
+    console.log(slug)
+  }
+
+  // TODO ideas
 
   // Set custom URL (override default behavior)
   window._paq.push(['setCustomUrl', path]);
@@ -66,6 +69,13 @@ export const trackPageChange = (path: string) => {
   }
 };
 
-// const isProjectPage = (path: string) => {
+const projectPageRegex = /\/projects\/([^\s!?\/.*#|]+)/;
 
-// }
+const isProjectPage = (path: string) => {
+  return projectPageRegex.test(path);
+}
+
+const extractProjectSlug = (path: string) => {
+  const matches = path.match(projectPageRegex);
+  return matches && matches[1];
+}
