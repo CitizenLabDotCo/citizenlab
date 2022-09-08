@@ -54,6 +54,7 @@ const RulesGroupForm = ({
   isVerificationEnabled,
 }: Props) => {
   const schema = object({
+    // Ensure a value is entered for at least one language
     title_multiloc: lazy((obj) => {
       const keys = Object.keys(obj);
       const values = Object.values(obj);
