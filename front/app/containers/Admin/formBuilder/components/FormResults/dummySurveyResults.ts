@@ -33,64 +33,70 @@ export const surveyResults = {
         ],
       },
       {
-        inputType: 'multiselect',
+        inputType: 'linear_scale',
         question: {
-          en: 'What is your favorite color?',
-          fr: 'Quelle est votre couleur préférée?',
+          en: 'Do you agree / disagree with the draft Vision?',
+          fr: 'Êtes-vous d’accord / en désaccord avec la vision provisoire?',
         },
-        totalResponses: 91,
+        totalResponses: 1308,
         answers: [
           {
             answer: {
-              en: 'Red',
-              fr: 'Rouge',
+              en: '5 - Strongly agree',
+              fr: '5 - Très d’accord',
             },
-            responses: 10,
+            responses: 567,
           },
           {
             answer: {
-              en: 'Blue',
-              fr: 'Bleu',
+              en: '4',
+              fr: '4',
             },
-            responses: 11,
+            responses: 408,
           },
           {
             answer: {
-              en: 'Green',
-              fr: 'Vert',
+              en: '3',
+              fr: '3',
             },
-            responses: 70,
+            responses: 149,
+          },
+          {
+            answer: {
+              en: '2',
+              fr: '2',
+            },
+            responses: 92,
+          },
+          {
+            answer: {
+              en: '1 - Strongly disagree',
+              fr: '1 - Très en désaccord',
+            },
+            responses: 92,
           },
         ],
       },
       {
         inputType: 'multiselect',
         question: {
-          en: 'What is your favorite color?',
-          fr: 'Quelle est votre couleur préférée?',
+          en: 'Have you already contacted us about the problem you reported our Contact Centre?',
         },
-        totalResponses: 91,
+        totalResponses: 1308,
         answers: [
           {
             answer: {
-              en: 'Red',
-              fr: 'Rouge',
+              en: 'No',
+              fr: 'Non',
             },
-            responses: 10,
+            responses: 968,
           },
           {
             answer: {
-              en: 'Blue',
-              fr: 'Bleu',
+              en: 'Yes',
+              fr: 'Oui',
             },
-            responses: 11,
-          },
-          {
-            answer: {
-              en: 'Green',
-              fr: 'Vert',
-            },
-            responses: 70,
+            responses: 340,
           },
         ],
       },
