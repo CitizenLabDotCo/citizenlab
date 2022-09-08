@@ -82,7 +82,9 @@ export default function useFormCustomFields({
             }
           );
 
-          return combineLatest(fieldsWithOptions$);
+          return fieldsWithOptions$.length
+            ? combineLatest(fieldsWithOptions$)
+            : of([]);
         })
       )
       .subscribe((formCustomFields) => {
