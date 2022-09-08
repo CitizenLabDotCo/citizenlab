@@ -639,6 +639,7 @@
   "app.containers.AdminPage.DashboardPage.components.Field.incomplete": "Ofullständig",
   "app.containers.AdminPage.DashboardPage.components.Field.numberOfTotalResidents": "Totalantal invånare",
   "app.containers.AdminPage.DashboardPage.components.Field.options": "Alternativ",
+  "app.containers.AdminPage.DashboardPage.components.Field.save": "Spara",
   "app.containers.AdminPage.DashboardPage.components.Field.saved": "Sparad",
   "app.containers.AdminPage.DashboardPage.components.Field.setAgeGroups": "{setAgeGroupsLink} först för att börja mata in basdata.",
   "app.containers.AdminPage.DashboardPage.components.Field.setAgeGroupsLink": "ange åldersgrupper",
