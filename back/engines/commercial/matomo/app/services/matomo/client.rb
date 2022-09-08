@@ -91,6 +91,27 @@ module Matomo
       )
     end
 
+    # @return [HTTParty::Response]
+    def create_custom_dimension(name, scope, site_id)
+      query = {
+        'module' => 'API',
+        'method' => 'CustomDimensions.configureNewCustomDimension',
+        'idSite' => site_id,
+        'name' => name,
+        'scope' => scope,
+        'active' => 1,
+        'caseSensitive' => '1',
+        'format' => 'JSON'
+      }
+
+      HTTParty.post(
+        @index_php_uri,
+        query: query,
+        headers: headers,
+        body: authorization_body
+      )
+    end
+
     def headers
       { 'Content-Type' => 'application/x-www-form-urlencoded' }
     end

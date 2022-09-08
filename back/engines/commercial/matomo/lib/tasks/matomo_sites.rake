@@ -20,4 +20,13 @@ namespace :matomo_sites do
       end
     end
   end
+
+  desc 'Create custom dimension'
+  task :create_custom_dimension, %i[site_id] => [:environment] do |_t, args|
+    service = Matomo::Client.new
+    service.create_custom_dimension('tenant_name', 'visit', args[:site_id])
+    service.create_custom_dimension('host_id', 'visit', args[:site_id])
+    service.create_custom_dimension('locale', 'action', args[:site_id])
+    service.create_custom_dimension('project_id', 'action', args[:site_id])
+  end
 end
