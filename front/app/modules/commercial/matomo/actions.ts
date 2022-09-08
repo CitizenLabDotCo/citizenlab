@@ -1,0 +1,56 @@
+// routes
+import createRoutes from 'routes';
+import matchPath, { getAllPathsFromRoutes } from './matchPath';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import { tenantInfo, IEvent } from 'utils/analytics';
+import { getUrlLocale } from 'services/locale';
+
+// typings
+import { IAppConfiguration } from 'services/appConfiguration';
+
+export const trackEvent = (
+  event: IEvent,
+  appConfiguration: IAppConfiguration
+) => {
+  if (!isNilOrError(appConfiguration) && window._paq) {
+    const properties = {
+      ...tenantInfo(appConfiguration.data),
+      ...event.properties,
+    };
+    window._paq.push([
+      'trackEvent',
+      event.name,
+      ...(Object.values(properties || {}) || []).filter(
+        (item) => typeof item === 'string'
+      ),
+    ]);
+  }
+};
+
+let allAppPaths: string[] | undefined;
+
+export const trackPageChange = (path: string) => {
+  if (!window._paq) return;
+
+  if (allAppPaths === undefined) {
+    allAppPaths = getAllPathsFromRoutes(createRoutes()[0]);
+  }
+
+  const locale = getUrlLocale(path);
+  locale && window._paq.push(['setCustomDimension', 3, locale]);
+  window._paq.push(['setCustomUrl', path]);
+
+  // sorts out path and params for this pathname
+  const routeMatch = matchPath(path, {
+    path: allAppPaths,
+    exact: true,
+  });
+
+  if (routeMatch?.isExact) {
+    window._paq.push(['trackPageView', routeMatch.path]);
+  } else {
+    window._paq.push(['trackPageView']);
+  }
+};
