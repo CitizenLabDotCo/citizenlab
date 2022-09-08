@@ -12,7 +12,6 @@ import BannerHeaderMultilocField from 'containers/Admin/pagesAndMenu/containers/
 import Outlet from 'components/Outlet';
 import BannerHeaderFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerHeaderFields';
 import BannerImageFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerImageFields';
-
 import { ISubmitState } from 'components/admin/SubmitWrapper';
 
 // resources

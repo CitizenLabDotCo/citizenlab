@@ -170,7 +170,7 @@ const BannerImageField = ({
           layout={bannerLayout || 'full_width_banner_layout'}
         />
       </SectionField>
-      {/*We only allow the overlay for the full-width banner layout for the moment. */}
+      {/* We only allow the overlay for the full-width banner layout for the moment. */}
       {bannerLayout === 'full_width_banner_layout' && headerLocalDisplayImage && (
         <>
           <SectionField>

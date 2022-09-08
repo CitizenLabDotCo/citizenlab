@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import { Box } from '@citizenlab/cl2-component-library';
 import { ICustomPageAttributes } from 'services/customPages';
 import { IHomepageSettingsAttributes } from 'services/homepageSettings';
 import { Multiloc } from 'typings';
 import { forOwn, size, trim } from 'lodash-es';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 interface Props {
