@@ -38,7 +38,7 @@ import { TRule } from '../../components/UserFilterConditions/rules';
 export interface RulesFormValues {
   rules: TRule[];
   title_multiloc: Multiloc;
-  membership_type: 'rules' | 'manual';
+  membership_type: 'rules';
 }
 
 type Props = {
