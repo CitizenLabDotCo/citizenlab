@@ -106,7 +106,7 @@ const LinearScaleSettings = ({
                 render={({ field: { ref: _ref, value: maxLabelMultiloc } }) => {
                   return (
                     <>
-                      <Box display="flex" mr="12px" my="16px">
+                      <Box display="flex" mr="0px" my="16px">
                         <Label>
                           {formatMessage(messages.labels)}
                           <IconTooltip

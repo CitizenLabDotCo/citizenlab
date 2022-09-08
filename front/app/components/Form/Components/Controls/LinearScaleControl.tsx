@@ -32,7 +32,13 @@ const LinearScaleControl = ({
         subtextValue={uischema.options?.description}
         subtextSupportsHtml
       />
-      <Box display="flex" flexDirection="row" gap="8px" overflow="visible">
+      <Box
+        data-testid="linearScaleControl"
+        display="flex"
+        flexDirection="row"
+        gap="8px"
+        overflow="visible"
+      >
         <Box alignSelf="flex-end">
           <Text mr="8px" fontWeight="bold">
             {uischema.options?.minimum_label}
