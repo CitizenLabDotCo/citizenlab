@@ -30,7 +30,7 @@ interface Props {
   outletSectionStart?: ReactElement;
   avatarsFieldComponent?: ReactElement;
   outletSectionEnd?: ReactElement;
-  bannerMultilocFieldComponent: ReactElement;
+  bannerMultilocFieldComponent?: ReactElement;
   bannerHeaderFieldsComponent: ReactElement;
   bannerImageFieldsComponent: ReactElement;
 }

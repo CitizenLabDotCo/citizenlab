@@ -2,16 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { Multiloc } from 'typings';
 
 // components
-import GenericHeroBannerForm from '../../containers/GenericHeroBannerForm';
+import GenericHeroBannerForm from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm';
 import {
   pagesAndMenuBreadcrumb,
   homeBreadcrumb,
 } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 import AvatarsField from '../../containers/GenericHeroBannerForm/AvatarsField';
-import BannerHeaderMultilocField from '../../containers/GenericHeroBannerForm/BannerHeaderMultilocField';
+import BannerHeaderMultilocField from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerHeaderMultilocField';
 import Outlet from 'components/Outlet';
-import BannerHeaderFields from '../../containers/GenericHeroBannerForm/BannerHeaderFields';
-import BannerImageFields from '../../containers/GenericHeroBannerForm/BannerImageFields';
+import BannerHeaderFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerHeaderFields';
+import BannerImageFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerImageFields';
+
 import { ISubmitState } from 'components/admin/SubmitWrapper';
 
 // resources

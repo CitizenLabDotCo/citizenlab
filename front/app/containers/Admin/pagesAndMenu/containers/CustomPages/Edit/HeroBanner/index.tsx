@@ -4,10 +4,10 @@ import useCustomPage from 'hooks/useCustomPage';
 import { updateCustomPage, ICustomPageAttributes } from 'services/customPages';
 import GenericHeroBannerForm from '../../../GenericHeroBannerForm';
 import { isNilOrError } from 'utils/helperUtils';
-// change
 import messages from '../../../GenericHeroBannerForm/messages';
 import { forOwn, isEqual } from 'lodash-es';
-
+import BannerHeaderFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerHeaderFields';
+import BannerImageFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerImageFields';
 import {
   pagesAndMenuBreadcrumb,
   homeBreadcrumb,
@@ -16,6 +16,7 @@ import {
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import { ISubmitState } from 'components/admin/SubmitWrapper';
+import { Multiloc } from 'typings';
 
 const EditCustomPageHeroBannerForm = ({
   intl: { formatMessage },
@@ -40,8 +41,6 @@ const EditCustomPageHeroBannerForm = ({
     return null;
   }
 
-  const { attributes } = customPage;
-
   const handleSave = async () => {
     // only update the page settings if they have changed
     const diffedValues = {};
@@ -63,48 +62,90 @@ const EditCustomPageHeroBannerForm = ({
     }
   };
 
-  const mappedInputSettings = {
-    banner_layout: attributes.banner_layout,
-    banner_overlay_color: attributes.banner_overlay_color,
-    banner_overlay_opacity: attributes.banner_overlay_opacity,
-    banner_header_multiloc: attributes.banner_header_multiloc,
-    banner_subheader_multiloc: attributes.banner_subheader_multiloc,
-    header_bg: attributes.header_bg,
-    banner_cta_signed_out_url: attributes.banner_cta_button_url,
-    banner_cta_signed_out_text_multiloc: attributes.banner_cta_button_multiloc,
-    banner_cta_signed_out_type: attributes.banner_cta_button_type,
+  const handleHeaderSignedOutMultilocOnChange = (
+    signedOutHeaderMultiloc: Multiloc
+  ) => {
+    handleOnChange('banner_header_multiloc', signedOutHeaderMultiloc);
   };
 
-  return (
-    <GenericHeroBannerForm
-      onSave={handleSave}
-      formStatus={formStatus}
-      isLoading={isLoading}
-      breadcrumbs={[
-        {
-          label: formatMessage(pagesAndMenuBreadcrumb.label),
-          linkTo: pagesAndMenuBreadcrumb.linkTo,
-        },
-        {
-          label: formatMessage(homeBreadcrumb.label),
-          linkTo: homeBreadcrumb.linkTo,
-        },
-        { label: formatMessage(messages.heroBannerTitle) },
-      ]}
-      title={formatMessage(messages.heroBannerTitle)}
-      setFormStatus={setFormStatus}
-      
-    />
-  );
+  const handleSubheaderSignedOutMultilocOnChange = (
+    signedOutHeaderMultiloc: Multiloc
+  ) => {
+    handleOnChange('banner_subheader_multiloc', signedOutHeaderMultiloc);
+  };
+
+  const handleOnBannerImageAdd = (newImageBase64: string) => {
+    handleOnChange('header_bg', newImageBase64);
+  };
+  const handleOnBannerImageRemove = () => {
+    handleOnChange('header_bg', null);
+  };
+
+  const handleOverlayColorOnChange = (color: string) => {
+    handleOnChange('banner_overlay_color', color);
+  };
+  const handleOverlayOpacityOnChange = (opacity: number) => {
+    handleOnChange('banner_overlay_opacity', opacity);
+  };
+
+  const handleOnChange = (key: keyof ICustomPageAttributes, value: unknown) => {
+    setFormStatus('enabled');
+
+    if (!isNilOrError(localSettings)) {
+      setLocalSettings({
+        ...localSettings,
+        [key]: value,
+      });
+    }
+  };
+
+  if (!isNilOrError(localSettings)) {
+    return (
+      <GenericHeroBannerForm
+        onSave={handleSave}
+        formStatus={formStatus}
+        isLoading={isLoading}
+        breadcrumbs={[
+          {
+            label: formatMessage(pagesAndMenuBreadcrumb.label),
+            linkTo: pagesAndMenuBreadcrumb.linkTo,
+          },
+          {
+            label: formatMessage(homeBreadcrumb.label),
+            linkTo: homeBreadcrumb.linkTo,
+          },
+          { label: formatMessage(messages.heroBannerTitle) },
+        ]}
+        title={formatMessage(messages.heroBannerTitle)}
+        setFormStatus={setFormStatus}
+        bannerImageFieldsComponent={
+          <BannerImageFields
+            bannerLayout={localSettings.banner_layout}
+            bannerOverlayColor={localSettings.banner_overlay_color}
+            bannerOverlayOpacity={localSettings.banner_overlay_opacity}
+            headerBg={localSettings.header_bg}
+            setFormStatus={setFormStatus}
+            onAddImage={handleOnBannerImageAdd}
+            onRemoveImage={handleOnBannerImageRemove}
+            onOverlayColorChange={handleOverlayColorOnChange}
+            onOverlayOpacityChange={handleOverlayOpacityOnChange}
+          />
+        }
+        bannerHeaderFieldsComponent={
+          <BannerHeaderFields
+            bannerHeaderMultiloc={localSettings.banner_header_multiloc}
+            bannerSubheaderMultiloc={localSettings.banner_subheader_multiloc}
+            onHeaderChange={handleHeaderSignedOutMultilocOnChange}
+            onSubheaderChange={handleSubheaderSignedOutMultilocOnChange}
+            titleMessage={messages.bannerTextTitle}
+            inputLabelMessage={messages.bannerHeaderSignedOut}
+          />
+        }
+      />
+    );
+  }
+
+  return null;
 };
 
 export default injectIntl(EditCustomPageHeroBannerForm);
-
-export interface CustomPageHeroBannerInputSettings {
-  banner_layout: ICustomPageAttributes['banner_layout'];
-  banner_overlay_opacity: ICustomPageAttributes['banner_overlay_opacity'];
-  banner_overlay_color: ICustomPageAttributes['banner_overlay_color'];
-  banner_header_multiloc: ICustomPageAttributes['banner_header_multiloc'];
-  banner_subheader_multiloc: ICustomPageAttributes['banner_header_multiloc'];
-  header_bg: ICustomPageAttributes['header_bg'];
-}
