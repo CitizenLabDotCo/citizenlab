@@ -46,8 +46,8 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     <Box width="100%">
       <Box width="100%" display="flex" alignItems="center">
         <Box width="100%">
-          <Title>{formatMessage(messages.surveyResults)}</Title>
-          <Text>
+          <Title variant="h2">{formatMessage(messages.surveyResults)}</Title>
+          <Text variant="bodyM" color="clBlueDarker">
             {formatMessage(messages.totalSurveyResponses, {
               count: totalSubmissions,
             })}
@@ -60,15 +60,13 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
             width="auto"
             minWidth="312px"
           >
-            {formatMessage(messages.downloadSurveyResults, {
-              count: totalSubmissions,
-            })}
+            {formatMessage(messages.downloadResults)}
           </Button>
         </Box>
       </Box>
 
       <Box
-        bgColor={colors.clGreenSuccessBackground}
+        bgColor={colors.clBlueDarkBg}
         borderRadius="3px"
         px="12px"
         py="4px"
@@ -78,12 +76,13 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         justifyContent="space-between"
         alignItems="center"
         data-testid="feedbackSuccessMessage"
+        mt="32px"
       >
         <Box display="flex" gap="16px" alignItems="center">
-          <Icon name="info" width="24px" height="24px" />
-          <Title color="clGreenSuccess" variant="h4" as="h3">
+          <Icon name="info" width="24px" height="24px" fill="clBlueDarker" />
+          <Text variant="bodyM" color="clBlueDarker">
             {formatMessage(messages.informationText)}
-          </Title>
+          </Text>
         </Box>
       </Box>
       <StyledBox mt="12px">

@@ -93,8 +93,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.totalSurveyResponses',
     defaultMessage: 'Total {count} responses',
   },
-  downloadSurveyResults: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.downloadSurveyResults',
+  downloadResults: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.downloadResults',
     defaultMessage: 'Download survey results',
   },
   informationText: {
