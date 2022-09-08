@@ -464,6 +464,8 @@
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.buttonSuccess": "Success",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.contentEditorTitle": "Content",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.editCustomPagePageTitle": "Edit custom page",
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.messageCreatedSuccess": "Page successfully created",
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.messageEditSuccess": "Page successfully saved",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.messageSuccess": "Custom page saved",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.newCustomPageMetaTitle": "Create custom page | {orgName}",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.newCustomPagePageTitle": "Create custom page",
