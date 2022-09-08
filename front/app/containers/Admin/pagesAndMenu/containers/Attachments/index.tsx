@@ -2,7 +2,12 @@ import React from 'react';
 
 // components
 import SectionFormWrapper from '../../components/SectionFormWrapper';
-import { IconTooltip, Label, Button } from '@citizenlab/cl2-component-library';
+import {
+  IconTooltip,
+  Label,
+  Button,
+  Box,
+} from '@citizenlab/cl2-component-library';
 import { SectionField } from 'components/admin/Section';
 
 // i18n
@@ -112,11 +117,6 @@ const AttachmentsForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
               label: formatMessage(messages.pageTitle),
             },
           ]}
-          stickyMenuContents={
-            <Button type="submit" processing={methods.formState.isSubmitting}>
-              <FormattedMessage {...messages.saveButton} />
-            </Button>
-          }
         >
           <SectionField>
             <Feedback successMessage={formatMessage(messages.messageSuccess)} />
@@ -136,6 +136,11 @@ const AttachmentsForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
               resourceType="page"
             />
           </SectionField>
+          <Box display="flex">
+            <Button type="submit" processing={methods.formState.isSubmitting}>
+              <FormattedMessage {...messages.saveButton} />
+            </Button>
+          </Box>
         </SectionFormWrapper>
       </form>
     </FormProvider>

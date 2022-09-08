@@ -79,16 +79,14 @@ const CustomPageSettingsForm = ({
         onSubmit={methods.handleSubmit(onFormSubmit)}
         data-testid="customPageSettingsForm"
       >
-        <SectionFormWrapper
-          stickyMenuContents={
-            <Button type="submit" processing={methods.formState.isSubmitting}>
-              {formatMessage(messages.saveButton)}
-            </Button>
-          }
-        >
+        <SectionFormWrapper>
           <SectionField>
             <Feedback
-              successMessage={formatMessage(messages.newCustomPagePageTitle)}
+              successMessage={
+                mode === 'edit'
+                  ? formatMessage(messages.messageEditSuccess)
+                  : formatMessage(messages.messageCreatedSuccess)
+              }
             />
             <Box mb="20px">
               <InputMultilocWithLocaleSwitcher
@@ -100,6 +98,11 @@ const CustomPageSettingsForm = ({
             {mode === 'edit' && (
               <SlugInput slug={slug} pathnameWithoutSlug="pages" />
             )}
+            <Box display="flex">
+              <Button type="submit" processing={methods.formState.isSubmitting}>
+                {formatMessage(messages.saveButton)}
+              </Button>
+            </Box>
           </SectionField>
         </SectionFormWrapper>
       </form>

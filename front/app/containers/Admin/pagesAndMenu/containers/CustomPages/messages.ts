@@ -25,6 +25,14 @@ export default defineMessages({
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.buttonSuccess',
     defaultMessage: 'Success',
   },
+  messageEditSuccess: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.messageEditSuccess',
+    defaultMessage: 'Page successfully saved',
+  },
+  messageCreatedSuccess: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.messageCreatedSuccess',
+    defaultMessage: 'Page successfully created',
+  },
   messageSuccess: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.messageSuccess',
     defaultMessage: 'Custom page saved',
