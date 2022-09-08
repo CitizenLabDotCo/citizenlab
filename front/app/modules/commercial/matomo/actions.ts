@@ -38,11 +38,22 @@ export const trackPageChange = (path: string) => {
     allAppPaths = getAllPathsFromRoutes(createRoutes()[0]);
   }
 
+  // Update locale custom dimension if URL contains locale
   const locale = getUrlLocale(path);
-  locale && window._paq.push(['setCustomDimension', 3, locale]);
+
+  if (locale) {
+    window._paq.push(['setCustomDimension', 3, locale]);
+  }
+
+  // Update project id custom dimension if relevant
+  // if (isProjectPage(path)) {
+  //   // TODO
+  // }
+
+  // Set custom URL (override default behavior)
   window._paq.push(['setCustomUrl', path]);
 
-  // sorts out path and params for this pathname
+  // Sort out path and params for this pathname
   const routeMatch = matchPath(path, {
     path: allAppPaths,
     exact: true,
@@ -54,3 +65,7 @@ export const trackPageChange = (path: string) => {
     window._paq.push(['trackPageView']);
   }
 };
+
+// const isProjectPage = (path: string) => {
+
+// }
