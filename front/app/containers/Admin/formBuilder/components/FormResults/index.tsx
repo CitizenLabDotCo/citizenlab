@@ -87,14 +87,16 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         </Box>
       </Box>
       <StyledBox mt="12px">
-        {results.map((result, index) => {
-          const { question, answers, totalResponses } = result;
+        {results.map(({ question, answers, totalResponses }, index) => {
+          const sortedAnswers = answers.sort(
+            (a, b) => b.responses - a.responses
+          );
           return (
             <Box key={index}>
               <Text>
                 <T value={question} />
               </Text>
-              {answers.map(({ answer, responses }, index) => {
+              {sortedAnswers.map(({ answer, responses }, index) => {
                 const percentage =
                   Math.round((responses / totalResponses) * 1000) / 10;
 
