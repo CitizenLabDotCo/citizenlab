@@ -8,7 +8,6 @@ import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 
 import { IconTooltip } from '@citizenlab/cl2-component-library';
 
-import BannerImageFields from './BannerImageFields';
 // i18n
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -22,15 +21,8 @@ import { CustomPageHeroBannerInputSettings } from 'containers/Admin/pagesAndMenu
 // constants
 import Warning from 'components/UI/Warning';
 
-export interface HeaderImageProps {
-  onAddImage: (newImageBase64: string) => void;
-  onRemoveImage: () => void;
-  onOverlayColorChange: (color: string) => void;
-  onOverlayOpacityChange: (color: number) => void;
-}
-
 // names differ slightly between HomePage and CustomPage
-interface Props extends HeaderImageProps {
+interface Props {
   breadcrumbs: TBreadcrumbs;
   title?: string | JSX.Element;
   formStatus: ISubmitState;
@@ -43,6 +35,7 @@ interface Props extends HeaderImageProps {
   outletSectionEnd?: ReactElement;
   bannerMultilocFieldComponent?: ReactElement;
   bannerHeaderFieldsComponent?: ReactElement;
+  bannerImageFieldsComponent?: ReactElement;
 }
 
 export type HeroBannerInputSettings =
@@ -51,7 +44,6 @@ export type HeroBannerInputSettings =
 
 const GenericHeroBannerForm = ({
   onSave,
-  setFormStatus,
   formStatus,
   isLoading,
   title,
@@ -62,10 +54,7 @@ const GenericHeroBannerForm = ({
   outletSectionEnd,
   bannerMultilocFieldComponent,
   bannerHeaderFieldsComponent,
-  onAddImage,
-  onRemoveImage,
-  onOverlayColorChange,
-  onOverlayOpacityChange,
+  bannerImageFieldsComponent,
 }: Props & InjectedIntlProps) => {
   return (
     <SectionFormWrapper
@@ -114,18 +103,7 @@ const GenericHeroBannerForm = ({
             }
           />
         </SubSectionTitle>
-
-        <BannerImageFields
-          bannerLayout={localSettings.banner_layout}
-          bannerOverlayColor={localSettings.banner_overlay_color}
-          bannerOverlayOpacity={localSettings.banner_overlay_opacity}
-          headerBg={localSettings.header_bg}
-          onAddImage={onAddImage}
-          onRemoveImage={onRemoveImage}
-          setFormStatus={setFormStatus}
-          onOverlayColorChange={onOverlayColorChange}
-          onOverlayOpacityChange={onOverlayOpacityChange}
-        />
+        {bannerImageFieldsComponent}
         {bannerHeaderFieldsComponent}
         {bannerMultilocFieldComponent}
         {avatarsFieldComponent}

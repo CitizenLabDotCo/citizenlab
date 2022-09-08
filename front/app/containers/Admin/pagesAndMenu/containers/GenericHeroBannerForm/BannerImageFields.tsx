@@ -20,7 +20,6 @@ import messages from './messages';
 
 import { isNil, isNilOrError } from 'utils/helperUtils';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
-import { HeaderImageProps } from '.';
 
 import { ICustomPagesAttributes } from 'services/customPages';
 import { IHomepageSettingsAttributes } from 'services/homepageSettings';
@@ -28,8 +27,11 @@ import { IHomepageSettingsAttributes } from 'services/homepageSettings';
 import RangeInput from 'components/UI/RangeInput';
 export type PreviewDevice = 'mobile' | 'tablet' | 'desktop';
 
-interface Props extends HeaderImageProps {
-  // replace with references to home/custom page?
+interface Props {
+  onAddImage: (newImageBase64: string) => void;
+  onRemoveImage: () => void;
+  onOverlayColorChange: (color: string) => void;
+  onOverlayOpacityChange: (color: number) => void;
   bannerOverlayColor:
     | IHomepageSettingsAttributes['banner_signed_out_header_overlay_color']
     | ICustomPagesAttributes['banner_overlay_color'];
@@ -43,7 +45,6 @@ interface Props extends HeaderImageProps {
     | IHomepageSettingsAttributes['header_bg']
     | ICustomPagesAttributes['header_bg'];
   setFormStatus: (submitState: ISubmitState) => void;
-
 }
 
 const BannerImageField = ({
@@ -56,7 +57,7 @@ const BannerImageField = ({
   onRemoveImage,
   setFormStatus,
   onOverlayColorChange,
-  onOverlayOpacityChange
+  onOverlayOpacityChange,
 }: Props & InjectedIntlProps) => {
   const theme: any = useTheme();
   const [previewDevice, setPreviewDevice] = useState<PreviewDevice>('desktop');

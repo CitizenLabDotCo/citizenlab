@@ -17,6 +17,7 @@ import {
 } from 'services/homepageSettings';
 import Outlet from 'components/Outlet';
 import BannerHeaderFields from '../../containers/GenericHeroBannerForm/BannerHeaderFields';
+import BannerImageFields from '../../containers/GenericHeroBannerForm/BannerImageFields';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -175,6 +176,23 @@ const EditHomepageHeroBannerForm = ({
         ]}
         inputSettings={mappedInputSettings}
         setFormStatus={setFormStatus}
+        bannerImageFieldsComponent={
+          <BannerImageFields
+            bannerLayout={localSettings.banner_layout}
+            bannerOverlayColor={
+              localSettings.banner_signed_out_header_overlay_color
+            }
+            bannerOverlayOpacity={
+              localSettings.banner_signed_out_header_overlay_opacity
+            }
+            headerBg={localSettings.header_bg}
+            setFormStatus={setFormStatus}
+            onAddImage={handleOnBannerImageAdd}
+            onRemoveImage={handleOnBannerImageRemove}
+            onOverlayColorChange={handleOverlayColorOnChange}
+            onOverlayOpacityChange={handleOverlayOpacityOnChange}
+          />
+        }
         bannerHeaderFieldsComponent={
           <BannerHeaderFields
             bannerHeaderMultiloc={
@@ -226,10 +244,6 @@ const EditHomepageHeroBannerForm = ({
             handleOnChange={handleOnChange}
           />
         }
-        onAddImage={handleOnBannerImageAdd}
-        onRemoveImage={handleOnBannerImageRemove}
-        onOverlayColorChange={handleOverlayColorOnChange}
-        onOverlayOpacityChange={handleOverlayOpacityOnChange}
       />
     );
   }
