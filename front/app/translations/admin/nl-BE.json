@@ -689,7 +689,7 @@
   "app.containers.AdminPage.DashboardPage.representativeness.pageTitle3": "Vertegenwoordiging van de gemeenschap",
   "app.containers.AdminPage.DashboardPage.representativeness.referenceDataInterface.backToDashboard": "Terug naar dashboard",
   "app.containers.AdminPage.DashboardPage.representativeness.referenceDataInterface.noEnabledFieldsSupported": "Geen van de ingeschakelde registratievelden wordt momenteel ondersteund.",
-  "app.containers.AdminPage.DashboardPage.representativeness.referenceDataInterface.pageDescription": "Hier kun je artikelen weergeven/verbergen op het dashboard en de basisdata invoeren. Enkel de ingeschakelde velden voor {userRegistrationLink} zullen hier verschijnen.",
+  "app.containers.AdminPage.DashboardPage.representativeness.referenceDataInterface.pageDescription": "Hier kun je items weergeven/verbergen op het dashboard en de basisdata invoeren. Enkel de ingeschakelde velden voor {userRegistrationLink} zullen hier verschijnen.",
   "app.containers.AdminPage.DashboardPage.representativeness.referenceDataInterface.pageTitle2": "Wijzig basisdataset",
   "app.containers.AdminPage.DashboardPage.representativeness.referenceDataInterface.userRegistrationLink": "gebruikersregistratie",
   "app.containers.AdminPage.DashboardPage.representativeness.submitBaseDataButton": "Geef basisdataset op",
