@@ -28,7 +28,7 @@ class WebApi::V1::PhaseCustomFieldsController < ApplicationController
   end
 
   def custom_fields
-    @custom_fields ||= IdeaCustomFieldsService.new(custom_form).all_fields
+    IdeaCustomFieldsService.new(custom_form).all_fields
   end
 
   def custom_form
