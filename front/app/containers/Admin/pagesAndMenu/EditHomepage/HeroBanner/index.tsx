@@ -184,8 +184,10 @@ const EditHomepageHeroBannerForm = ({
         outletSectionStart={
           <Outlet
             id="app.containers.Admin.settings.customize.headerSectionStart"
-            bannerLayout={localSettings.banner_layout ?? 'two_column_layout'}
-            handleOnChange={handleOnChange}
+            bannerLayout={
+              localSettings.banner_layout ?? 'full_width_banner_layout'
+            }
+            onChange={handleOnChange}
           />
         }
         bannerMultilocFieldComponent={

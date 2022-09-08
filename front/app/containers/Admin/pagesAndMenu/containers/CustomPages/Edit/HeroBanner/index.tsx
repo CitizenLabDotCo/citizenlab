@@ -17,7 +17,7 @@ import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import { ISubmitState } from 'components/admin/SubmitWrapper';
 import { Multiloc } from 'typings';
-import LayoutSettingField from '../../../GenericHeroBannerForm/LayoutField';
+import LayoutSettingField from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/LayoutSettingField';
 import { THomepageBannerLayout } from 'services/homepageSettings';
 
 const EditCustomPageHeroBannerForm = ({

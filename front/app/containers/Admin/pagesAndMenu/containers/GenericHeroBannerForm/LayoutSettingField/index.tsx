@@ -18,6 +18,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 import { THomepageBannerLayout } from 'services/homepageSettings';
+import { ICustomPageAttributes } from 'services/customPages';
 
 const LayoutPreview = styled.img`
   width: 200px;
@@ -41,26 +42,12 @@ const LayoutOptionTextWrapper = styled.div`
   margin-bottom: 9px;
 `;
 
-interface Props {
-  bannerLayout: THomepageBannerLayout;
-  handleOnChange: (
-    settingKey: 'banner_layout',
-    settingValue: THomepageBannerLayout
-  ) => void;
+export interface Props {
+  bannerLayout: ICustomPageAttributes['banner_layout'];
+  onChange: (bannerLayout: THomepageBannerLayout) => void;
 }
 
-declare module 'utils/moduleUtils' {
-  export interface OutletsPropertyMap {
-    'app.containers.Admin.settings.customize.headerSectionStart': Props;
-  }
-}
-
-const LayoutSetting = ({ bannerLayout, handleOnChange }: Props) => {
-  const handleLayoutOnChange = (layout: THomepageBannerLayout) => {
-    handleOnChange('banner_layout', layout);
-  };
-
-  const homepageBannerLayout = bannerLayout;
+const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
   return (
     <SectionField key="layout">
       <SubSectionTitle>
@@ -70,11 +57,11 @@ const LayoutSetting = ({ bannerLayout, handleOnChange }: Props) => {
         <LayoutOption>
           <LayoutOptionTop>
             <Radio
-              onChange={handleLayoutOnChange}
-              currentValue={homepageBannerLayout}
+              onChange={onChange}
+              currentValue={bannerLayout}
               value="full_width_banner_layout"
-              name="homepage-banner-layout"
-              id="homepage-banner-full-width-banner-layout"
+              name="banner-layout"
+              id="banner-full-width-banner-layout"
             />
             <LayoutOptionTextWrapper>
               <FormattedMessage {...messages.fullWidthBannerLayout} />
@@ -82,7 +69,7 @@ const LayoutSetting = ({ bannerLayout, handleOnChange }: Props) => {
           </LayoutOptionTop>
           <LayoutPreview
             src={
-              homepageBannerLayout === 'full_width_banner_layout'
+              bannerLayout === 'full_width_banner_layout'
                 ? FullWidthBannerLayoutActive
                 : FullWidthBannerLayoutInactive
             }
@@ -91,11 +78,11 @@ const LayoutSetting = ({ bannerLayout, handleOnChange }: Props) => {
         <LayoutOption>
           <LayoutOptionTop data-cy="e2e-two-column-layout-option">
             <Radio
-              onChange={handleLayoutOnChange}
-              currentValue={homepageBannerLayout}
+              onChange={onChange}
+              currentValue={bannerLayout}
               value="two_column_layout"
-              name="homepage-banner-layout"
-              id="homepage-banner-two-column-layout"
+              name="banner-layout"
+              id="banner-two-column-layout"
             />
             <LayoutOptionTextWrapper>
               <FormattedMessage {...messages.TwoColumnLayout} />
@@ -103,7 +90,7 @@ const LayoutSetting = ({ bannerLayout, handleOnChange }: Props) => {
           </LayoutOptionTop>
           <LayoutPreview
             src={
-              homepageBannerLayout === 'two_column_layout'
+              bannerLayout === 'two_column_layout'
                 ? TwoColumnLayoutActive
                 : TwoColumnLayoutInactive
             }
@@ -112,11 +99,11 @@ const LayoutSetting = ({ bannerLayout, handleOnChange }: Props) => {
         <LayoutOption>
           <LayoutOptionTop>
             <Radio
-              onChange={handleLayoutOnChange}
-              currentValue={homepageBannerLayout}
+              onChange={onChange}
+              currentValue={bannerLayout}
               value="two_row_layout"
-              name="homepage-banner-layout"
-              id="homepage-banner-two-row-layout"
+              name="banner-layout"
+              id="banner-two-row-layout"
             />
             <LayoutOptionTextWrapper>
               <FormattedMessage {...messages.twoRowLayout} />
@@ -124,7 +111,7 @@ const LayoutSetting = ({ bannerLayout, handleOnChange }: Props) => {
           </LayoutOptionTop>
           <LayoutPreview
             src={
-              homepageBannerLayout === 'two_row_layout'
+              bannerLayout === 'two_row_layout'
                 ? TwoRowLayoutActive
                 : TwoRowLayoutInactive
             }
@@ -135,4 +122,4 @@ const LayoutSetting = ({ bannerLayout, handleOnChange }: Props) => {
   );
 };
 
-export default LayoutSetting;
+export default LayoutSettingField;
