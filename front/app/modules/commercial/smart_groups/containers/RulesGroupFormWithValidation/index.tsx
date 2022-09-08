@@ -1,12 +1,11 @@
 import React from 'react';
 
 import RulesGroupForm, { RulesFormValues } from './RulesGroupForm';
-import { IGroupDataAttributes } from 'services/groups';
 
 interface Props {
   onSubmit: (values: RulesFormValues) => Promise<void>;
   isVerificationEnabled: boolean;
-  initialValues: Partial<IGroupDataAttributes>;
+  initialValues: Partial<RulesFormValues>;
 }
 
 const RulesGroupFormWithValidation = ({

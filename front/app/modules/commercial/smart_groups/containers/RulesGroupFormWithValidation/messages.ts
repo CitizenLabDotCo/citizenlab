@@ -19,9 +19,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError',
     defaultMessage: 'Provide at least one rule',
   },
-  titleFieldError: {
-    id: 'app.containers.AdminPage.Users.UsersGroup.titleFieldError',
-    defaultMessage: 'Provide group name for all languages',
+  titleFieldEmptyError: {
+    id: 'app.containers.AdminPage.Users.UsersGroup.titleFieldEmptyError',
+    defaultMessage: 'Provide a group name',
   },
   saveGroup: {
     id: 'app.containers.AdminPage.Users.UsersGroup.saveGroup',

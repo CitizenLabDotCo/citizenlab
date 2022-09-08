@@ -21,7 +21,7 @@ import styled from 'styled-components';
 // form
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { string, object, array } from 'yup';
+import { string, object, array, number } from 'yup';
 import validateMultiloc from 'utils/yup/validateMultiloc';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import Feedback from 'components/HookForm/Feedback';
@@ -39,6 +39,7 @@ export interface RulesFormValues {
   rules: TRule[];
   title_multiloc: Multiloc;
   membership_type: 'rules';
+  memberships_count: number;
 }
 
 type Props = {
@@ -54,7 +55,9 @@ const RulesGroupForm = ({
   isVerificationEnabled,
 }: Props) => {
   const schema = object({
-    title_multiloc: validateMultiloc(formatMessage(messages.titleFieldError)),
+    title_multiloc: validateMultiloc(
+      formatMessage(messages.titleFieldEmptyError)
+    ),
     rules: array()
       .test(
         'verificationEnabled',
@@ -71,6 +74,7 @@ const RulesGroupForm = ({
       )
       .min(1, formatMessage(messages.atLeastOneRuleError)),
     membership_type: string().oneOf(['rules']).required(),
+    memberships_count: number(),
   });
 
   const methods = useForm({
