@@ -65,7 +65,7 @@ const configuration: ModuleConfiguration = {
       trackEvent(event, appConfiguration);
     });
 
-    // Subscribe to new path changes and app configuration changes
+    // Subscribe to new page changes and app configuration changes
     // and post to Matomo
     combineLatest([
       bufferUntilInitialized('matomo', pageChanges$),
