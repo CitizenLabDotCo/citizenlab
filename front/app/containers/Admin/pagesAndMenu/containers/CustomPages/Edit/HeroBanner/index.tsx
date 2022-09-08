@@ -36,7 +36,7 @@ const EditCustomPageHeroBannerForm = ({
 
   const { attributes } = customPage;
 
-  const handleSave = async (newSettings: HeroBannerInputSettings) => {
+  const handleSave = async (newSettings) => {
     if (!newSettings) return;
 
     // necessary because the CTA module uses

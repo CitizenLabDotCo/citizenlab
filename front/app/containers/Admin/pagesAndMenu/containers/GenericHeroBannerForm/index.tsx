@@ -15,8 +15,6 @@ import messages from './messages';
 
 // typings
 import { TBreadcrumbs } from 'components/UI/Breadcrumbs';
-import { HomepageHeroBannerInputSettings } from 'containers/Admin/pagesAndMenu/EditHomepage/HeroBanner';
-import { CustomPageHeroBannerInputSettings } from 'containers/Admin/pagesAndMenu/containers/CustomPages/Edit/HeroBanner';
 
 // constants
 import Warning from 'components/UI/Warning';
@@ -29,18 +27,13 @@ interface Props {
   setFormStatus: (submitState: ISubmitState) => void;
   onSave: () => void;
   isLoading: boolean;
-  inputSettings: HeroBannerInputSettings;
   outletSectionStart?: ReactElement;
   avatarsFieldComponent?: ReactElement;
   outletSectionEnd?: ReactElement;
-  bannerMultilocFieldComponent?: ReactElement;
-  bannerHeaderFieldsComponent?: ReactElement;
-  bannerImageFieldsComponent?: ReactElement;
+  bannerMultilocFieldComponent: ReactElement;
+  bannerHeaderFieldsComponent: ReactElement;
+  bannerImageFieldsComponent: ReactElement;
 }
-
-export type HeroBannerInputSettings =
-  | HomepageHeroBannerInputSettings
-  | CustomPageHeroBannerInputSettings;
 
 const GenericHeroBannerForm = ({
   onSave,
