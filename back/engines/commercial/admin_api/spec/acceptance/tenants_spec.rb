@@ -116,6 +116,13 @@ resource 'Tenants', admin_api: true do
     end
   end
 
+  delete 'admin_api/tenants/:tenant_id' do
+    example_request 'Deleting a tenant', document: false do
+      assert_status 200
+      expect(tenant.reload.deleted_at).not_to be_nil
+    end
+  end
+
   get 'admin_api/tenants/settings_schema' do
     example_request 'Get the json schema for settings' do
       assert_status 200
