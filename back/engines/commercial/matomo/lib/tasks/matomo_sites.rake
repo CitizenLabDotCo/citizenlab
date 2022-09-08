@@ -21,12 +21,21 @@ namespace :matomo_sites do
     end
   end
 
-  desc 'Create custom dimension'
-  task :create_custom_dimension, %i[site_id] => [:environment] do |_t, args|
+  desc 'Create default custom dimensions'
+  task create_default_custom_dimensions: :environment do |_t, _args|
+    site_id = ENV.fetch('DEFAULT_MATOMO_TENANT_SITE_ID')
     service = Matomo::Client.new
-    service.create_custom_dimension('tenant_name', 'visit', args[:site_id])
-    service.create_custom_dimension('host_id', 'visit', args[:site_id])
-    service.create_custom_dimension('locale', 'action', args[:site_id])
-    service.create_custom_dimension('project_id', 'action', args[:site_id])
+    service.create_default_custom_dimensions(site_id)
+  end
+
+  desc 'Create default custom dimensions for all tenants'
+  task create_default_custom_dimensions_for_each_tenant: :environment do |_t, _args|
+    Tenant.not_deleted.each do |tenant|
+      Apartment::Tenant.switch(tenant.schema_name) do
+        site_id = tenant.configuration.settings('matomo', 'tenant_site_id')
+        service = Matomo::Client.new
+        service.create_default_custom_dimensions(site_id)
+      end
+    end
   end
 end

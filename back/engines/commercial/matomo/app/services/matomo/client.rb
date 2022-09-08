@@ -91,6 +91,29 @@ module Matomo
       )
     end
 
+    def create_default_custom_dimensions(site_id)
+      return if !site_id || site_id == ''
+
+      custom_dimensions = get_custom_dimensions(site_id)
+      default_custom_dimensions = [
+        { name: 'tenant_name', scope: 'visit' },
+        { name: 'host_id', scope: 'visit' },
+        { name: 'locale', scope: 'action' },
+        { name: 'project_id', scope: 'action' }
+      ]
+
+      default_custom_dimensions.each do |default_dim|
+        next if custom_dimensions.any? do |dim|
+          default_dim[:name] == dim['name'] && default_dim[:scope] == dim['scope']
+        end
+
+        create_custom_dimension(default_dim[:name], default_dim[:scope], site_id)
+      end
+    end
+
+    # @param [String] name
+    # @param [String] scope
+    # @param [String] site_id
     # @return [HTTParty::Response]
     def create_custom_dimension(name, scope, site_id)
       query = {
@@ -101,6 +124,24 @@ module Matomo
         'scope' => scope,
         'active' => 1,
         'caseSensitive' => '1',
+        'format' => 'JSON'
+      }
+
+      HTTParty.post(
+        @index_php_uri,
+        query: query,
+        headers: headers,
+        body: authorization_body
+      )
+    end
+
+    # @param [String] site_id
+    # @param [Array<Hash>] visits
+    def get_custom_dimensions(site_id)
+      query = {
+        'module' => 'API',
+        'method' => 'CustomDimensions.getConfiguredCustomDimensions',
+        'idSite' => site_id,
         'format' => 'JSON'
       }
 
