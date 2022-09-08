@@ -81,6 +81,7 @@ export const surveyResults = {
         inputType: 'multiselect',
         question: {
           en: 'Have you already contacted us about the problem you reported our Contact Centre?',
+          fr: 'Avez-vous déjà communiqué avec nous au sujet du problème que vous avez signalé à notre centre de contact?',
         },
         totalResponses: 1308,
         answers: [
