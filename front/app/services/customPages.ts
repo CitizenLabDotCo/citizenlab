@@ -9,7 +9,7 @@ export interface ICustomPage {
 
 export interface ICustomPageData {
   id: string;
-  attributes: ICustomPagesAttributes;
+  attributes: ICustomPageAttributes;
 }
 
 export type TCustomPageEnabledSetting = keyof ICustomPageEnabledSettings;
@@ -25,7 +25,7 @@ export interface ICustomPageEnabledSettings {
   // projects_enabled: boolean;
 }
 
-export interface ICustomPagesAttributes extends ICustomPageEnabledSettings {
+export interface ICustomPageAttributes extends ICustomPageEnabledSettings {
   title_multiloc: Multiloc;
   top_info_section_multiloc: Multiloc;
   slug: string;
@@ -65,7 +65,7 @@ export function customPageByIdStream(customPageId: string) {
 
 export async function updateCustomPage(
   customPageId: string,
-  updatedPageSettings: Partial<ICustomPagesAttributes>
+  updatedPageSettings: Partial<ICustomPageAttributes>
 ) {
   const customPageSettings = await streams.update(
     `${customPagesEndpoint}/${customPageId}`,

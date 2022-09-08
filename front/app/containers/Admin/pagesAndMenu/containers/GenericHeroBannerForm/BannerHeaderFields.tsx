@@ -3,7 +3,7 @@ import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import { FormattedMessage } from 'utils/cl-intl';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import { Box } from '@citizenlab/cl2-component-library';
-import { ICustomPagesAttributes } from 'services/customPages';
+import { ICustomPageAttributes } from 'services/customPages';
 import { IHomepageSettingsAttributes } from 'services/homepageSettings';
 import { Multiloc } from 'typings';
 import { forOwn, size, trim } from 'lodash-es';
@@ -13,10 +13,10 @@ import messages from './messages';
 interface Props {
   bannerHeaderMultiloc:
     | IHomepageSettingsAttributes['banner_signed_out_header_multiloc']
-    | ICustomPagesAttributes['banner_header_multiloc'];
+    | ICustomPageAttributes['banner_header_multiloc'];
   bannerSubheaderMultiloc:
     | IHomepageSettingsAttributes['banner_signed_out_subheader_multiloc']
-    | ICustomPagesAttributes['banner_subheader_multiloc'];
+    | ICustomPageAttributes['banner_subheader_multiloc'];
   onHeaderChange: (headerMultiloc: Multiloc) => void;
   onSubheaderChange: (subheaderMultiloc: Multiloc) => void;
   titleMessage: ReactIntl.FormattedMessage.MessageDescriptor;

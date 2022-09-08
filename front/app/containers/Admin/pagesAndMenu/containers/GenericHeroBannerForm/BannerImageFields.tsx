@@ -21,7 +21,7 @@ import messages from './messages';
 import { isNil, isNilOrError } from 'utils/helperUtils';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 
-import { ICustomPagesAttributes } from 'services/customPages';
+import { ICustomPageAttributes } from 'services/customPages';
 import { IHomepageSettingsAttributes } from 'services/homepageSettings';
 
 import RangeInput from 'components/UI/RangeInput';
@@ -34,16 +34,16 @@ interface Props {
   onOverlayOpacityChange: (color: number) => void;
   bannerOverlayColor:
     | IHomepageSettingsAttributes['banner_signed_out_header_overlay_color']
-    | ICustomPagesAttributes['banner_overlay_color'];
+    | ICustomPageAttributes['banner_overlay_color'];
   bannerOverlayOpacity:
     | IHomepageSettingsAttributes['banner_signed_out_header_overlay_opacity']
-    | ICustomPagesAttributes['banner_overlay_opacity'];
+    | ICustomPageAttributes['banner_overlay_opacity'];
   bannerLayout:
     | IHomepageSettingsAttributes['banner_layout']
-    | ICustomPagesAttributes['banner_layout'];
+    | ICustomPageAttributes['banner_layout'];
   headerBg:
     | IHomepageSettingsAttributes['header_bg']
-    | ICustomPagesAttributes['header_bg'];
+    | ICustomPageAttributes['header_bg'];
   setFormStatus: (submitState: ISubmitState) => void;
 }
 
