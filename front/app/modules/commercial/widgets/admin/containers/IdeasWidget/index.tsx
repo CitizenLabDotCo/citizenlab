@@ -53,7 +53,7 @@ const schema = object({
   headerSubText: string(),
   showFooter: boolean(),
   buttonText: string(),
-  sort: string().oneOf(['trending', 'popular', 'newest']),
+  sort: string().oneOf(['trending', 'popular', 'new']),
   topics: array().of(string()),
   projects: array().of(string()),
   limit: number(),
