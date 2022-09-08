@@ -1072,7 +1072,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.default": "Por defecto",
   "app.containers.AdminPage.ProjectEdit.survey.delete": "Eliminar",
   "app.containers.AdminPage.ProjectEdit.survey.deleteButtonLabel": "Eliminar",
-  "app.containers.AdminPage.ProjectEdit.survey.downloadSurveyResults": "Descargar los resultados de la encuesta ({count})",
   "app.containers.AdminPage.ProjectEdit.survey.editButtonLabel": "Editar",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent": "Editar el contenido de la encuesta",
   "app.containers.AdminPage.ProjectEdit.survey.emptyTitleErrorMessage": "Proporcionar un título para todos los idiomas",

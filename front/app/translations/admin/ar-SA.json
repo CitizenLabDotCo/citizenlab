@@ -1072,7 +1072,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.default": "افتراضي",
   "app.containers.AdminPage.ProjectEdit.survey.delete": "حذف",
   "app.containers.AdminPage.ProjectEdit.survey.deleteButtonLabel": "حذف",
-  "app.containers.AdminPage.ProjectEdit.survey.downloadSurveyResults": "تنزيل نتائج الاستبيان ({count})",
   "app.containers.AdminPage.ProjectEdit.survey.editButtonLabel": "تعديل",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent": "تعديل محتوى الاستبيان",
   "app.containers.AdminPage.ProjectEdit.survey.emptyTitleErrorMessage": "أدخل العنوان بجميع اللغات",

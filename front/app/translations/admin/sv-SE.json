@@ -1072,7 +1072,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.default": "Standard",
   "app.containers.AdminPage.ProjectEdit.survey.delete": "Radera",
   "app.containers.AdminPage.ProjectEdit.survey.deleteButtonLabel": "Radera",
-  "app.containers.AdminPage.ProjectEdit.survey.downloadSurveyResults": "Ladda ner undersökningsresultat ({count})",
   "app.containers.AdminPage.ProjectEdit.survey.editButtonLabel": "Redigera",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent": "Redigera innehåll i undersökningen",
   "app.containers.AdminPage.ProjectEdit.survey.emptyTitleErrorMessage": "Ange titel för alla språk",

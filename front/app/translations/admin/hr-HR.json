@@ -1072,7 +1072,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.default": "Zadano",
   "app.containers.AdminPage.ProjectEdit.survey.delete": "Izbriši",
   "app.containers.AdminPage.ProjectEdit.survey.deleteButtonLabel": "Izbriši",
-  "app.containers.AdminPage.ProjectEdit.survey.downloadSurveyResults": "Preuzimanje sadržaja upitnika ({count})",
   "app.containers.AdminPage.ProjectEdit.survey.editButtonLabel": "Uredi",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent": "Uređivanje sadržaja upitnika",
   "app.containers.AdminPage.ProjectEdit.survey.emptyTitleErrorMessage": "Navedite naslov za sve jezike",
