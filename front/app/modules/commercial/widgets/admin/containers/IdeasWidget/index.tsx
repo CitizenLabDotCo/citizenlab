@@ -95,8 +95,6 @@ const IdeasWidget = ({ intl: { formatMessage } }: InjectedIntlProps) => {
 
   const formValues = methods.watch();
 
-  useEffect(() => {}, [formValues]);
-
   const getWidgetParams = useMemo(() => {
     return debounce((formValues: FormValues) => {
       const cleanedParams = omitBy(
@@ -107,7 +105,9 @@ const IdeasWidget = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     }, 500);
   }, []);
 
-  useEffect(() => getWidgetParams(formValues), [getWidgetParams, formValues]);
+  useEffect(() => {
+    getWidgetParams(formValues);
+  }, [getWidgetParams, formValues]);
 
   const handleCloseCodeModal = () => {
     setCodeModalOpened(false);
