@@ -12,7 +12,7 @@ import { canModerateProject } from 'services/permissions/rules/projectPermission
 import useUser from 'hooks/useUser';
 
 // i18n
-import { FormattedRelative } from 'react-intl';
+import { FormattedRelativeTime } from 'react-intl';
 
 // style
 import styled from 'styled-components';
@@ -169,7 +169,7 @@ const Author = memo(
 
             {createdAt && (
               <TimeAgo className={horizontalLayout ? 'horizontalLayout' : ''}>
-                <FormattedRelative value={createdAt} />
+                <FormattedRelativeTime value={-10} />
               </TimeAgo>
             )}
           </AuthorMeta>

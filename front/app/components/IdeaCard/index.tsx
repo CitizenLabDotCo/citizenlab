@@ -20,7 +20,7 @@ import useProject from 'hooks/useProject';
 import useLocalize from 'hooks/useLocalize';
 
 // i18n
-import { FormattedRelative } from 'react-intl';
+import { FormattedRelativeTime } from 'react-intl';
 
 // utils
 import { get } from 'lodash-es';
@@ -223,9 +223,10 @@ const CompactIdeaCard = memo<Props>(
               <StyledUserName userId={authorId || null} />
               <Separator aria-hidden>&bull;</Separator>
               <TimeAgo>
-                <FormattedRelative
-                  value={idea.attributes.created_at}
-                  style="numeric"
+                <FormattedRelativeTime
+                  value={0}
+                  numeric="auto"
+                  updateIntervalInSeconds={1}
                 />
               </TimeAgo>
               <span aria-hidden> {bodyText}</span>

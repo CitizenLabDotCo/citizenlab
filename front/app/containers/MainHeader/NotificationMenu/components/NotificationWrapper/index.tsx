@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormattedRelative } from 'react-intl';
+import { FormattedRelativeTime } from 'react-intl';
 import styled from 'styled-components';
 import { darken } from 'polished';
 import { fontSizes, colors, media } from 'utils/styleUtils';
@@ -113,7 +113,7 @@ class NotificationWrapper extends React.PureComponent<Props> {
           <Message isRead={isRead}>{children}</Message>
           {timing && (
             <Timing>
-              <FormattedRelative value={timing} />
+              <FormattedRelativeTime value={-1} />
             </Timing>
           )}
         </Body>

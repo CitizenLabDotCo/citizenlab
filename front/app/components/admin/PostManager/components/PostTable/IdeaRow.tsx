@@ -22,7 +22,7 @@ import FeatureFlag from 'components/FeatureFlag';
 import localize, { InjectedLocalized } from 'utils/localize';
 
 // i18n
-import { FormattedRelative, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
@@ -39,6 +39,7 @@ import {
 } from 'typings';
 import { insertConfiguration } from 'utils/moduleUtils';
 import Outlet from 'components/Outlet';
+import FormattedRelativeTime from 'react-intl/src/components/relative';
 
 type InputProps = {
   type: ManagerType;
@@ -120,7 +121,11 @@ class IdeaRow extends React.PureComponent<
         {
           name: 'published_on',
           Component: ({ idea }) => {
-            return <FormattedRelative value={idea.attributes.published_at} />;
+            return (
+              <FormattedRelativeTime
+                value={parseInt(idea.attributes.created_at, 10)}
+              />
+            );
           },
         },
         {
