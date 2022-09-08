@@ -1,6 +1,7 @@
 import React from 'react';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
+import { get } from 'lodash-es';
 
 // components
 import {
@@ -86,32 +87,36 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         </Box>
       </Box>
       <StyledBox mt="12px">
-        {results.map(({ question, answers, totalResponses }, index) => {
-          const sortedAnswers = answers.sort(
-            (a, b) => b.responses - a.responses
-          );
-          return (
-            <Box key={index}>
-              <Text>
-                <T value={question} />
-              </Text>
-              {sortedAnswers.map(({ answer, responses }, index) => {
-                const percentage =
-                  Math.round((responses / totalResponses) * 1000) / 10;
+        {results.map(
+          ({ question, inputType, answers, totalResponses }, index) => {
+            const sortedAnswers = answers.sort(
+              (a, b) => b.responses - a.responses
+            );
+            const inputTypeText = get(messages, inputType, '');
+            return (
+              <Box key={index}>
+                <Text>
+                  <T value={question} />
+                </Text>
+                {inputTypeText && <Text>{formatMessage(inputTypeText)}</Text>}
+                {sortedAnswers.map(({ answer, responses }, index) => {
+                  const percentage =
+                    Math.round((responses / totalResponses) * 1000) / 10;
 
-                return (
-                  <CompletionBar
-                    key={index}
-                    bgColor={colors.adminTextColor}
-                    completed={percentage}
-                    leftLabel={answer}
-                    rightLabel={`${percentage}% (${responses}) choices`}
-                  />
-                );
-              })}
-            </Box>
-          );
-        })}
+                  return (
+                    <CompletionBar
+                      key={index}
+                      bgColor={colors.adminTextColor}
+                      completed={percentage}
+                      leftLabel={answer}
+                      rightLabel={`${percentage}% (${responses}) choices`}
+                    />
+                  );
+                })}
+              </Box>
+            );
+          }
+        )}
       </StyledBox>
     </Box>
   );

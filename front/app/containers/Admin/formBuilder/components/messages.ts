@@ -102,4 +102,12 @@ export default defineMessages({
     defaultMessage:
       'Responses to short and long answer questions are currently only available in the survey download',
   },
+  multiselect: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.multiselectText',
+    defaultMessage: 'Multiple choice - choose many',
+  },
+  linear_scale: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.linear_scale',
+    defaultMessage: 'Linear scale',
+  },
 });
