@@ -1,5 +1,5 @@
 import config from '.';
-import { mockRoutes } from './matchPath.test';
+import { mockRoutes } from './mockRoutes.mock';
 import eventEmitter from 'utils/eventEmitter';
 import { trackPage } from 'utils/analytics';
 
