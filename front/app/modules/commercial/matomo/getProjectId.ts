@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
 export const getProjectId = async (path: string) => {
   if (isProjectPage(path)) {
     const slug = extractProjectSlug(path)
-    if (!slug) return;
+    if (!slug) return null;
 
     const projectId = await getProjectIdFromProjectSlug(slug);
     projectSubscriptions[slug].unsubscribe();
@@ -23,7 +23,7 @@ export const getProjectId = async (path: string) => {
 
   if (isIdeaPage(path)) {
     const slug = extractIdeaSlug(path)
-    if (!slug) return;
+    if (!slug) return null;
 
     const projectId = await getProjectIdFromIdeaSlug(slug);
     ideaSubscriptions[slug].unsubscribe();
@@ -50,7 +50,7 @@ const extractProjectSlug = (path: string) => {
 
 const projectSubscriptions: Record<string, Subscription> = {};
 
-const getProjectIdFromProjectSlug = (slug: string) => {
+const getProjectIdFromProjectSlug = (slug: string): Promise<string | null> => {
   return new Promise((resolve) => {
     const observable = projectBySlugStream(slug).observable
 
@@ -78,7 +78,7 @@ export const extractIdeaSlug = (path: string) => {
 
 const ideaSubscriptions: Record<string, Subscription> = {};
 
-const getProjectIdFromIdeaSlug = (slug: string) => {
+const getProjectIdFromIdeaSlug = (slug: string): Promise<string | null> => {
   return new Promise((resolve) => {
     const observable = ideaBySlugStream(slug).observable
 

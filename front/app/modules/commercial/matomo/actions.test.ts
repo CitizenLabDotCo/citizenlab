@@ -70,11 +70,6 @@ describe('trackPageChange', () => {
     expect(window._paq[1]).toEqual(['setCustomDimension', 4, 'project-id']);
   })
 
-  // it('gets project id if path is ideas/edit/:id', async () => {
-  //   await trackPageChange('/en/ideas/edit/e12629af-ebe3-48fb-a320-5f142d996381');
-  //   expect(window._paq[1]).toEqual(['setCustomDimension', 4, 'project-id3']);
-  // })
-
   it('removes project id when navigation away from project page', async () => {
     await trackPageChange('/en/projects/some-project');
     window._paq = [];
