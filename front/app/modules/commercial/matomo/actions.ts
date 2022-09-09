@@ -81,8 +81,7 @@ export const trackPageChange = async (path: string) => {
   }
 };
 
-const slugRegExSource = slugRegEx.source
-  .slice(1, slugRegEx.source.length - 2)
+const slugRegExSource = slugRegEx.source.slice(1, slugRegEx.source.length - 2)
 
 const projectPageDetectRegex = RegExp(`\/projects\/(${slugRegExSource})`);
 const projectPageExtractRegex = /\/projects\/([^\s!?\/.*#|]+)/;
