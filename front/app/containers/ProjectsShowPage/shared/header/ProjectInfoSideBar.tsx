@@ -41,6 +41,7 @@ import FormattedBudget from 'utils/currency/FormattedBudget';
 import styled from 'styled-components';
 import { fontSizes, colors, isRtl, media } from 'utils/styleUtils';
 import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
+import { getFormActionsConfig } from 'containers/Admin/formBuilder/utils';
 
 const Container = styled.div``;
 
@@ -175,6 +176,11 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   }, []);
 
   if (!isNilOrError(project)) {
+    const projectFormActions = getFormActionsConfig(project, phases);
+    let postingIsEnabled = false;
+    projectFormActions.map(({ postingEnabled }) => {
+      postingIsEnabled = postingEnabled;
+    });
     const projectType = project.attributes.process_type;
     const projectParticipantsCount = project.attributes.participants_count;
     const maxBudget =
@@ -370,35 +376,36 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
             )}
             {((projectType === 'continuous' &&
               projectParticipationMethod === 'native_survey') ||
-              currentPhaseParticipationMethod === 'native_survey') && (
-              <ListItem>
-                <ListItemIcon ariaHidden name="survey" />
-                {!isNilOrError(authUser) ? (
-                  <ListItemButton
-                    id="e2e-project-sidebar-surveys-count"
-                    onClick={() => {
-                      clHistory.push(
-                        `/projects/${project.attributes.slug}/ideas/new`
-                      );
-                    }}
-                  >
+              currentPhaseParticipationMethod === 'native_survey') &&
+              postingIsEnabled && (
+                <ListItem>
+                  <ListItemIcon ariaHidden name="survey" />
+                  {!isNilOrError(authUser) ? (
+                    <ListItemButton
+                      id="e2e-project-sidebar-surveys-count"
+                      onClick={() => {
+                        clHistory.push(
+                          `/projects/${project.attributes.slug}/ideas/new`
+                        );
+                      }}
+                    >
+                      <FormattedMessage
+                        {...(projectType === 'continuous'
+                          ? messages.xSurveys
+                          : messages.xSurveysInCurrentPhase)}
+                        values={{ surveysCount: 1 }}
+                      />
+                    </ListItemButton>
+                  ) : (
                     <FormattedMessage
                       {...(projectType === 'continuous'
                         ? messages.xSurveys
                         : messages.xSurveysInCurrentPhase)}
                       values={{ surveysCount: 1 }}
                     />
-                  </ListItemButton>
-                ) : (
-                  <FormattedMessage
-                    {...(projectType === 'continuous'
-                      ? messages.xSurveys
-                      : messages.xSurveysInCurrentPhase)}
-                    values={{ surveysCount: 1 }}
-                  />
-                )}
-              </ListItem>
-            )}
+                  )}
+                </ListItem>
+              )}
             {((projectType === 'continuous' &&
               projectParticipationMethod === 'poll') ||
               currentPhaseParticipationMethod === 'poll') && (
