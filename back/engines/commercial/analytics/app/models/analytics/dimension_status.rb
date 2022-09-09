@@ -11,6 +11,5 @@
 module Analytics
   class DimensionStatus < Analytics::ApplicationRecord
     self.primary_key = :id
-    has_many :posts, class_name: 'PostActivity'
   end
 end
