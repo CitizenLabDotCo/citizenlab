@@ -60,11 +60,6 @@ Intl.FormattedTime = (props) => (
     <FormattedTime {...props} />
   </IntlProvider>
 );
-// Intl.FormattedRelative = (props) => (
-//   <IntlProvider {...defaultProps}>
-//     <FormattedRelative {...props} />
-//   </IntlProvider>
-// );
 Intl.FormattedNumber = (props) => (
   <IntlProvider {...defaultProps}>
     <FormattedNumber {...props} />

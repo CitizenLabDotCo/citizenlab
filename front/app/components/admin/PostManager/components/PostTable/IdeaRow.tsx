@@ -20,6 +20,7 @@ import FeatureFlag from 'components/FeatureFlag';
 
 // utils
 import localize, { InjectedLocalized } from 'utils/localize';
+import { TimeAgo } from 'utils/dateUtils';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -39,7 +40,6 @@ import {
 } from 'typings';
 import { insertConfiguration } from 'utils/moduleUtils';
 import Outlet from 'components/Outlet';
-import FormattedRelativeTime from 'react-intl/src/components/relative';
 
 type InputProps = {
   type: ManagerType;
@@ -121,11 +121,7 @@ class IdeaRow extends React.PureComponent<
         {
           name: 'published_on',
           Component: ({ idea }) => {
-            return (
-              <FormattedRelativeTime
-                value={parseInt(idea.attributes.created_at, 10)}
-              />
-            );
+            return <> {TimeAgo(Date.parse(idea.attributes.created_at))}</>;
           },
         },
         {

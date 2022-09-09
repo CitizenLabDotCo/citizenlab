@@ -1,5 +1,4 @@
 import React from 'react';
-import { FormattedRelativeTime } from 'react-intl';
 import styled from 'styled-components';
 import { darken } from 'polished';
 import { fontSizes, colors, media } from 'utils/styleUtils';
@@ -7,6 +6,7 @@ import { Icon } from '@citizenlab/cl2-component-library';
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../tracks';
 import clHistory from 'utils/cl-router/history';
+import { TimeAgo } from 'utils/dateUtils';
 
 const Container = styled.button`
   display: flex;
@@ -103,7 +103,6 @@ class NotificationWrapper extends React.PureComponent<Props> {
 
   render() {
     const { icon, children, timing, isRead } = this.props;
-
     return (
       <Container role="link" onClick={this.navigate}>
         <IconContainer>
@@ -111,11 +110,7 @@ class NotificationWrapper extends React.PureComponent<Props> {
         </IconContainer>
         <Body>
           <Message isRead={isRead}>{children}</Message>
-          {timing && (
-            <Timing>
-              <FormattedRelativeTime value={-1} />
-            </Timing>
-          )}
+          {timing && <Timing>{TimeAgo(timing)}</Timing>}
         </Body>
       </Container>
     );

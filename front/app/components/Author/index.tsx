@@ -10,9 +10,7 @@ import { canModerateProject } from 'services/permissions/rules/projectPermission
 
 // hooks
 import useUser from 'hooks/useUser';
-
-// i18n
-import { FormattedRelativeTime } from 'react-intl';
+import useLocale from 'hooks/useLocale';
 
 // style
 import styled from 'styled-components';
@@ -20,6 +18,7 @@ import { media, colors, fontSizes, isRtl } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { ScreenReaderOnly } from 'utils/a11y';
+import { timeAgo } from 'utils/dateUtils';
 
 const Container = styled.div`
   display: flex;
@@ -130,6 +129,7 @@ const Author = memo(
     color,
     underline,
   }: Props) => {
+    const locale = useLocale();
     const author = useUser({ userId: authorId });
     const authorCanModerate =
       !isNilOrError(author) &&
@@ -169,7 +169,7 @@ const Author = memo(
 
             {createdAt && (
               <TimeAgo className={horizontalLayout ? 'horizontalLayout' : ''}>
-                <FormattedRelativeTime value={-10} />
+                {timeAgo(Date.parse(createdAt), locale)}
               </TimeAgo>
             )}
           </AuthorMeta>
