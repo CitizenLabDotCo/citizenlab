@@ -1,13 +1,18 @@
+// services
+import { projectBySlugStream, IProject } from 'services/projects';
+
 // routes
 import createRoutes from 'routes';
 import matchPath, { getAllPathsFromRoutes } from './matchPath';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { tenantInfo, IEvent } from 'utils/analytics';
 import { getUrlLocale } from 'services/locale';
+import { slugRegEx } from 'utils/textUtils';
 
 // typings
+import { Subscription } from 'rxjs';
 import { IAppConfiguration } from 'services/appConfiguration';
 
 export const trackEvent = (
@@ -31,7 +36,7 @@ export const trackEvent = (
 
 let allAppPaths: string[] | undefined;
 
-export const trackPageChange = (path: string) => {
+export const trackPageChange = async (path: string) => {
   if (!window._paq) return;
 
   if (allAppPaths === undefined) {
@@ -48,7 +53,14 @@ export const trackPageChange = (path: string) => {
   // Update project id custom dimension if project page
   if (isProjectPage(path)) {
     const slug = extractProjectSlug(path)
-    console.log(slug)
+    if (!slug) return;
+
+    const projectId = await getProjectId(slug);
+    subscriptions[slug].unsubscribe();
+    
+    window._paq.push(['setCustomDimension', 4, projectId])
+  } else {
+    window._paq.push(['setCustomDimension', 4, undefined])
   }
 
   // TODO ideas
@@ -69,13 +81,33 @@ export const trackPageChange = (path: string) => {
   }
 };
 
-const projectPageRegex = /\/projects\/([^\s!?\/.*#|]+)/;
+const slugRegExSource = slugRegEx.source
+  .slice(1, slugRegEx.source.length - 2)
+
+const projectPageDetectRegex = RegExp(`\/projects\/(${slugRegExSource})`);
+const projectPageExtractRegex = /\/projects\/([^\s!?\/.*#|]+)/;
 
 const isProjectPage = (path: string) => {
-  return projectPageRegex.test(path);
+  return projectPageDetectRegex.test(path);
 }
 
 const extractProjectSlug = (path: string) => {
-  const matches = path.match(projectPageRegex);
+  const matches = path.match(projectPageExtractRegex);
   return matches && matches[1];
+}
+
+const subscriptions: Record<string, Subscription> = {};
+
+const getProjectId = (slug: string) => {
+  return new Promise((resolve, reject) => {
+    const observable = projectBySlugStream(slug).observable
+
+    subscriptions[slug] = observable.subscribe((project: IProject | NilOrError) => {
+      if (isNilOrError(project)) {
+        reject(project)
+      } else {
+        resolve(project.data.id)
+      }
+    })
+  })
 }
