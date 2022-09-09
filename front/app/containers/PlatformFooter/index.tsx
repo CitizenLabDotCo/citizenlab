@@ -249,8 +249,8 @@ const PlatformFooter = ({
       !isNilOrError(appConfiguration) &&
       customizedA11yHrefEnabled &&
       !isEmpty(
-        appConfiguration.data.attributes.settings
-          .custom_accessibility_statement_link.url
+        appConfiguration.attributes.settings.custom_accessibility_statement_link
+          .url
       )
     );
   };
@@ -260,7 +260,7 @@ const PlatformFooter = ({
       return null;
     }
 
-    return appConfiguration.data.attributes.settings
+    return appConfiguration.attributes.settings
       .custom_accessibility_statement_link.url;
   };
 
