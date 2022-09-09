@@ -8,8 +8,8 @@ class CreateFactVisits < ActiveRecord::Migration[6.1]
       t.string :visitor_id, null: false
 
       # Dimension FKs
-      t.string :user_id, null: true
-      t.string :channel_id # analytics_dimension_channels
+      t.uuid :user_id, null: true
+      t.uuid :channel_id # analytics_dimension_channels
       t.date :first_action_date_id # analytics_dimension_dates
       t.date :last_action_date_id # analytics_dimension_dates
 
@@ -33,13 +33,13 @@ class CreateFactVisits < ActiveRecord::Migration[6.1]
     end
 
     create_table :analytics_join_locale_visits, id: false, primary_key: [:dimension_locale_id, :fact_visit_id] do |t|
-      t.string :dimension_locale_id, index: true, foreign_key: true
-      t.string :fact_visit_id, index: true, foreign_key: true
+      t.uuid :dimension_locale_id, index: true, foreign_key: true
+      t.uuid :fact_visit_id, index: true, foreign_key: true
     end
 
     create_table :analytics_join_project_visits, id: false, primary_key: [:dimension_project_id, :fact_visit_id] do |t|
-      t.string :dimension_project_id, index: true, foreign_key: true
-      t.string :fact_visit_id, index: true, foreign_key: true
+      t.uuid :dimension_project_id, index: true, foreign_key: true
+      t.uuid :fact_visit_id, index: true, foreign_key: true
     end
 
   end

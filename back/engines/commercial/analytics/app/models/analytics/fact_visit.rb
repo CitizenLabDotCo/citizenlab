@@ -4,8 +4,8 @@
 #
 #  id                    :uuid             not null, primary key
 #  visitor_id            :string           not null
-#  user_id               :string
-#  channel_id            :string
+#  user_id               :uuid
+#  channel_id            :uuid
 #  first_action_date_id  :date
 #  last_action_date_id   :date
 #  duration              :integer

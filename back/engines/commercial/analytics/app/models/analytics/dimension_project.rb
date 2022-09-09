@@ -29,7 +29,6 @@
 #  comments_count               :integer          default(0), not null
 #  default_assignee_id          :uuid
 #  poll_anonymous               :boolean          default(FALSE), not null
-#  custom_form_id               :uuid
 #  downvoting_enabled           :boolean          default(TRUE), not null
 #  ideas_order                  :string
 #  input_term                   :string           default("idea")
@@ -40,8 +39,7 @@
 #
 # Indexes
 #
-#  index_projects_on_custom_form_id  (custom_form_id)
-#  index_projects_on_slug            (slug) UNIQUE
+#  index_projects_on_slug  (slug) UNIQUE
 #
 # Foreign Keys
 #
