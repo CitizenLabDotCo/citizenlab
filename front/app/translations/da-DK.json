@@ -575,7 +575,7 @@
   "app.containers.AccessibilityStatement.statusPageText": "statusside",
   "app.containers.AccessibilityStatement.technologiesIntro": "Tilgængeligheden af denne platform er afhængig af, at følgende teknologier fungerer:",
   "app.containers.AccessibilityStatement.technologiesTitle": "Teknologier",
-  "app.containers.AccessibilityStatement.title": "Erklæring om webtilgængelighed",
+  "app.containers.AccessibilityStatement.title": "Tilgængelighedserklæring",
   "app.containers.Admin.Insights.helmetDescription": "Indsigt side for administratorer",
   "app.containers.Admin.Insights.helmetTitle": "Platform indsigt",
   "app.containers.Admin.Insights.tabInsights": "Indsigt",
