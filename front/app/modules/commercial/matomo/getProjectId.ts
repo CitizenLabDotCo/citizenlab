@@ -51,12 +51,12 @@ const extractProjectSlug = (path: string) => {
 const projectSubscriptions: Record<string, Subscription> = {};
 
 const getProjectIdFromProjectSlug = (slug: string) => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     const observable = projectBySlugStream(slug).observable
 
     projectSubscriptions[slug] = observable.subscribe((project: IProject | NilOrError) => {
       if (isNilOrError(project)) {
-        reject(project)
+        resolve(null)
       } else {
         resolve(project.data.id)
       } 
@@ -79,12 +79,12 @@ export const extractIdeaSlug = (path: string) => {
 const ideaSubscriptions: Record<string, Subscription> = {};
 
 const getProjectIdFromIdeaSlug = (slug: string) => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     const observable = ideaBySlugStream(slug).observable
 
     ideaSubscriptions[slug] = observable.subscribe((idea: IIdea | NilOrError) => {
       if (isNilOrError(idea)) {
-        reject(idea)
+        resolve(null)
       } else {
         resolve(idea.data.relationships.project.data.id)
       }

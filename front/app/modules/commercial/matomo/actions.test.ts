@@ -11,10 +11,7 @@ jest.mock('routes', () => ({
   default: jest.fn(() => [mockRoutes]),
 }));
 
-const mockProject = {
-  data: { id: 'project-id' },
-};
-
+let mockProject;
 const mockProjectObservable = new Observable((subscriber) => {
   subscriber.next(mockProject);
 }).pipe(delay(1));
@@ -25,9 +22,7 @@ jest.mock('services/projects', () => ({
   })),
 }));
 
-const mockIdea = {
-  data: { relationships: { project: { data: { id: 'project-id2' } } } },
-};
+let mockIdea;
 
 const mockIdeaObservable = new Observable((subscriber) => {
   subscriber.next(mockIdea);
@@ -42,36 +37,42 @@ jest.mock('services/ideas', () => ({
 describe('trackPageChange', () => {
   beforeEach(() => {
     window._paq = [];
+    mockProject = {
+      data: { id: 'project-id' },
+    }
+    mockIdea = {
+      data: { relationships: { project: { data: { id: 'project-id2' } } } },
+    }
   });
 
-  it('sets locale custom dimension if locale in path', async () => {
+  it('sets locale if locale in path', async () => {
     await trackPageChange('/nl-NL/projects');
     expect(window._paq[0]).toEqual(['setCustomDimension', 3, 'nl-NL']);
   });
 
-  it('does not set locale custom dimension if locale not in path', async () => {
+  it('does not set locale if locale not in path', async () => {
     await trackPageChange('/projects');
     expect(window._paq[0]).not.toEqual(['setCustomDimension', 3, 'nl-NL']);
   });
 
-  it('gets project id if path is project page', async () => {
+  it('sets project id if path is project page', async () => {
     await trackPageChange('/en/projects/some-project');
     expect(window._paq[1]).toEqual(['setCustomDimension', 4, 'project-id']);
   });
 
-  it('gets project id path is idea', async () => {
+  it('sets project id path is idea', async () => {
     await trackPageChange('/en/ideas/some-idea');
     expect(window._paq[1]).toEqual(['setCustomDimension', 4, 'project-id2']);
   });
 
-  it('gets project id if path is projects/:slug/ideas/new', async () => {
+  it('sets project id if path is projects/:slug/ideas/new', async () => {
     await trackPageChange('/en/projects/some-project/ideas/new');
     expect(window._paq[1]).toEqual(['setCustomDimension', 4, 'project-id']);
   })
 
   // it('gets project id if path is ideas/edit/:id', async () => {
   //   await trackPageChange('/en/ideas/edit/e12629af-ebe3-48fb-a320-5f142d996381');
-  //   expect(window._paq[1]).toEqual(['setCustomDimension', 4, 'project-id']);
+  //   expect(window._paq[1]).toEqual(['setCustomDimension', 4, 'project-id3']);
   // })
 
   it('removes project id when navigation away from project page', async () => {
@@ -81,5 +82,15 @@ describe('trackPageChange', () => {
     expect(window._paq[1]).toEqual(['setCustomDimension', 4]);
   })
 
-  // TODO test errors/null responses
+  it('does not set project id if stream returns null', async () => {
+    mockProject = null
+    await trackPageChange('/en/projects/some-project');
+    expect(window._paq[1]).not.toEqual(['setCustomDimension', 4, 'project-id']);
+  })
+
+  it('does not set project id if stream returns error', async () => {
+    mockProject = new Error();
+    await trackPageChange('/en/projects/some-project');
+    expect(window._paq[1]).not.toEqual(['setCustomDimension', 4, 'project-id']);
+  })
 });
