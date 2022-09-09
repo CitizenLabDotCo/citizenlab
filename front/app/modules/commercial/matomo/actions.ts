@@ -57,6 +57,7 @@ export const trackPageChange = async (path: string) => {
 
     const projectId = await getProjectId(slug);
     subscriptions[slug].unsubscribe();
+    delete subscriptions[slug]
     
     window._paq.push(['setCustomDimension', 4, projectId])
   } else {
