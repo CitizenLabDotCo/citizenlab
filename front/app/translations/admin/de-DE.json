@@ -921,7 +921,7 @@
   "app.containers.AdminPage.ProjectEdit.adminProjectFolderSelectTooltip": "Sie können Ihr Projekt zu einem bestehenden Ordner hinzufügen. Sie können dies auch später über der Registerkarte \"Projekte\" tun.",
   "app.containers.AdminPage.ProjectEdit.allowedInputTopicsTab": "Themen",
   "app.containers.AdminPage.ProjectEdit.anonymousPolling": "Anonyme Abstimmung",
-  "app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip": "Wenn sie aktiviert ist, ist es unmöglich zu sehen, wer über was abgestimmt hat. Benutzer benötigen weiterhin ein Konto und können nur einmal abstimmen.",
+  "app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip": "Wenn diese Funktion aktiviert ist, ist es unmöglich zu sehen, wer über was abgestimmt hat. Die NutzerInnen benötigen weiterhin ein Konto und können nur einmal abstimmen.",
   "app.containers.AdminPage.ProjectEdit.archived": "Archiviert",
   "app.containers.AdminPage.ProjectEdit.archivedStatus": "Archiviert",
   "app.containers.AdminPage.ProjectEdit.areasAllLabel": "Alle Gebiete",
