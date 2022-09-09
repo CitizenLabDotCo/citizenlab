@@ -4,7 +4,8 @@ module Analytics
   class Query
     MODELS = {
       post: FactPost,
-      participation: FactParticipation
+      participation: FactParticipation,
+      visit: FactVisit
     }.freeze
 
     def initialize(query)
@@ -44,7 +45,8 @@ module Analytics
           [
             assoc.name.to_s,
             {
-              columns: "Analytics::#{assoc.options[:class_name]}".constantize.new.attributes.keys,
+              # Note: Changed this to remove 'Analytics::'
+              columns: assoc.options[:class_name].constantize.new.attributes.keys,
               primary_key: assoc.options.key?(:primary_key) ? assoc.options[:primary_key] : nil
             }
           ]
