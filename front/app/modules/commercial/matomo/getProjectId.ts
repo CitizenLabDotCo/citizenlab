@@ -59,21 +59,21 @@ const getProjectIdFromProjectSlug = (slug: string) => {
         reject(project)
       } else {
         resolve(project.data.id)
-      }
+      } 
     })
   })
 }
 
-const ideaPageDetectRegex = RegExp(`\/ideas\/(${slugRegExSource})`);
-const ideaPageExtractRegex = /\/ideas\/([^\s!?\/.*#|]+)/;
+const ideaPageDetectRegex = RegExp(`\/ideas\/(${slugRegExSource})$`);
+const ideaPageExtractRegex = /\/ideas\/([^\s!?\/.*#|]+)$/;
 
 const isIdeaPage = (path: string) => {
   return ideaPageDetectRegex.test(path);
 }
 
-const extractIdeaSlug = (path: string) => {
-  const matches = path.match(ideaPageExtractRegex);
-  return matches && matches[1];
+export const extractIdeaSlug = (path: string) => {
+  const ideaPageMatches = path.match(ideaPageExtractRegex);
+  return ideaPageMatches && ideaPageMatches[1];
 }
 
 const ideaSubscriptions: Record<string, Subscription> = {};

@@ -26,7 +26,7 @@ jest.mock('services/projects', () => ({
 }));
 
 const mockIdea = {
-  data: { relationships: { project: { data: { id: 'project-id' } } } },
+  data: { relationships: { project: { data: { id: 'project-id2' } } } },
 };
 
 const mockIdeaObservable = new Observable((subscriber) => {
@@ -51,8 +51,7 @@ describe('trackPageChange', () => {
 
   it('does not set locale custom dimension if locale not in path', async () => {
     await trackPageChange('/projects');
-    expect(window._paq[0][0]).not.toEqual('setCustomDimension');
-    expect(window._paq[0][1]).not.toEqual(3);
+    expect(window._paq[0]).not.toEqual(['setCustomDimension', 3, 'nl-NL']);
   });
 
   it('gets project id if path is project page', async () => {
@@ -62,10 +61,25 @@ describe('trackPageChange', () => {
 
   it('gets project id path is idea', async () => {
     await trackPageChange('/en/ideas/some-idea');
-    expect(window._paq[1]).toEqual(['setCustomDimension', 4, 'project-id']);
+    expect(window._paq[1]).toEqual(['setCustomDimension', 4, 'project-id2']);
   });
 
-  // TODO test new idea, edit idea etc paths
+  it('gets project id if path is projects/:slug/ideas/new', async () => {
+    await trackPageChange('/en/projects/some-project/ideas/new');
+    expect(window._paq[1]).toEqual(['setCustomDimension', 4, 'project-id']);
+  })
+
+  // it('gets project id if path is ideas/edit/:id', async () => {
+  //   await trackPageChange('/en/ideas/edit/e12629af-ebe3-48fb-a320-5f142d996381');
+  //   expect(window._paq[1]).toEqual(['setCustomDimension', 4, 'project-id']);
+  // })
+
+  it('removes project id when navigation away from project page', async () => {
+    await trackPageChange('/en/projects/some-project');
+    window._paq = [];
+    await trackPageChange('/en');
+    expect(window._paq[1]).toEqual(['setCustomDimension', 4]);
+  })
 
   // TODO test errors/null responses
 });
