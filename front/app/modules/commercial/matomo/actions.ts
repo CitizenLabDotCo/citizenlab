@@ -1,5 +1,6 @@
 // services
 import { projectBySlugStream, IProject } from 'services/projects';
+import { ideaBySlugStream, IIdea } from 'services/ideas';
 
 // routes
 import createRoutes from 'routes';
@@ -55,16 +56,28 @@ export const trackPageChange = async (path: string) => {
     const slug = extractProjectSlug(path)
     if (!slug) return;
 
-    const projectId = await getProjectId(slug);
-    subscriptions[slug].unsubscribe();
-    delete subscriptions[slug]
+    const projectId = await getProjectIdFromProjectSlug(slug);
+    projectSubscriptions[slug].unsubscribe();
+    delete projectSubscriptions[slug]
     
     window._paq.push(['setCustomDimension', 4, projectId])
   } else {
     window._paq.push(['setCustomDimension', 4, undefined])
   }
 
-  // TODO ideas
+  // Update project id custom dimension if idea page
+  if (isIdeaPage(path)) {
+    const slug = extractIdeaSlug(path)
+    if (!slug) return;
+
+    const projectId = await getProjectIdFromIdeaSlug(slug);
+    ideaSubscriptions[slug].unsubscribe();
+    delete ideaSubscriptions[slug]
+    
+    window._paq.push(['setCustomDimension', 4, projectId])
+  } else {
+    window._paq.push(['setCustomDimension', 4, undefined])
+  }
 
   // Set custom URL (override default behavior)
   window._paq.push(['setCustomUrl', path]);
@@ -96,17 +109,45 @@ const extractProjectSlug = (path: string) => {
   return matches && matches[1];
 }
 
-const subscriptions: Record<string, Subscription> = {};
+const projectSubscriptions: Record<string, Subscription> = {};
 
-const getProjectId = (slug: string) => {
+const getProjectIdFromProjectSlug = (slug: string) => {
   return new Promise((resolve, reject) => {
     const observable = projectBySlugStream(slug).observable
 
-    subscriptions[slug] = observable.subscribe((project: IProject | NilOrError) => {
+    projectSubscriptions[slug] = observable.subscribe((project: IProject | NilOrError) => {
       if (isNilOrError(project)) {
         reject(project)
       } else {
         resolve(project.data.id)
+      }
+    })
+  })
+}
+
+const ideaPageDetectRegex = RegExp(`\/ideas\/(${slugRegExSource})`);
+const ideaPageExtractRegex = /\/ideas\/([^\s!?\/.*#|]+)/;
+
+const isIdeaPage = (path: string) => {
+  return ideaPageDetectRegex.test(path);
+}
+
+const extractIdeaSlug = (path: string) => {
+  const matches = path.match(ideaPageExtractRegex);
+  return matches && matches[1];
+}
+
+const ideaSubscriptions: Record<string, Subscription> = {};
+
+const getProjectIdFromIdeaSlug = (slug: string) => {
+  return new Promise((resolve, reject) => {
+    const observable = ideaBySlugStream(slug).observable
+
+    ideaSubscriptions[slug] = observable.subscribe((idea: IIdea | NilOrError) => {
+      if (isNilOrError(idea)) {
+        reject(idea)
+      } else {
+        resolve(idea.data.relationships.project.data.id)
       }
     })
   })
