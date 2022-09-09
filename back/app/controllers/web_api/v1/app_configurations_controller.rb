@@ -30,9 +30,9 @@ class WebApi::V1::AppConfigurationsController < ApplicationController
   end
 
   def remove_images!(configuration, config_params)
-    configuration.remove_logo!      if config_params.include?('logo')      && config_params['logo'].nil?
-    configuration.remove_header_bg! if config_params.include?('header_bg') && config_params['header_bg'].nil?
-    configuration.remove_favicon!   if config_params.include?('favicon')   && config_params['favicon'].nil?
+    remove_image_if_requested!(configuration, config_params, 'logo')
+    remove_image_if_requested!(configuration, config_params, 'header_bg')
+    remove_image_if_requested!(configuration, config_params, 'favicon')
   end
 
   def app_configuration
