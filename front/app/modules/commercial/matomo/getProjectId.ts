@@ -1,0 +1,93 @@
+// services
+import { projectBySlugStream, IProject } from 'services/projects';
+import { ideaBySlugStream, IIdea } from 'services/ideas';
+
+// utils
+import { slugRegEx } from 'utils/textUtils';
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
+
+// typings
+import { Subscription } from 'rxjs';
+
+export const getProjectId = async (path: string) => {
+  if (isProjectPage(path)) {
+    const slug = extractProjectSlug(path)
+    if (!slug) return;
+
+    const projectId = await getProjectIdFromProjectSlug(slug);
+    projectSubscriptions[slug].unsubscribe();
+    delete projectSubscriptions[slug]
+    
+    return projectId
+  }
+
+  if (isIdeaPage(path)) {
+    const slug = extractIdeaSlug(path)
+    if (!slug) return;
+
+    const projectId = await getProjectIdFromIdeaSlug(slug);
+    ideaSubscriptions[slug].unsubscribe();
+    delete ideaSubscriptions[slug]
+    
+    return projectId
+  }
+
+  return null;
+}
+const slugRegExSource = slugRegEx.source.slice(1, slugRegEx.source.length - 2)
+
+const projectPageDetectRegex = RegExp(`\/projects\/(${slugRegExSource})`);
+const projectPageExtractRegex = /\/projects\/([^\s!?\/.*#|]+)/;
+
+const isProjectPage = (path: string) => {
+  return projectPageDetectRegex.test(path);
+}
+
+const extractProjectSlug = (path: string) => {
+  const matches = path.match(projectPageExtractRegex);
+  return matches && matches[1];
+}
+
+const projectSubscriptions: Record<string, Subscription> = {};
+
+const getProjectIdFromProjectSlug = (slug: string) => {
+  return new Promise((resolve, reject) => {
+    const observable = projectBySlugStream(slug).observable
+
+    projectSubscriptions[slug] = observable.subscribe((project: IProject | NilOrError) => {
+      if (isNilOrError(project)) {
+        reject(project)
+      } else {
+        resolve(project.data.id)
+      }
+    })
+  })
+}
+
+const ideaPageDetectRegex = RegExp(`\/ideas\/(${slugRegExSource})`);
+const ideaPageExtractRegex = /\/ideas\/([^\s!?\/.*#|]+)/;
+
+const isIdeaPage = (path: string) => {
+  return ideaPageDetectRegex.test(path);
+}
+
+const extractIdeaSlug = (path: string) => {
+  const matches = path.match(ideaPageExtractRegex);
+  return matches && matches[1];
+}
+
+const ideaSubscriptions: Record<string, Subscription> = {};
+
+const getProjectIdFromIdeaSlug = (slug: string) => {
+  return new Promise((resolve, reject) => {
+    const observable = ideaBySlugStream(slug).observable
+
+    ideaSubscriptions[slug] = observable.subscribe((idea: IIdea | NilOrError) => {
+      if (isNilOrError(idea)) {
+        reject(idea)
+      } else {
+        resolve(idea.data.relationships.project.data.id)
+      }
+    })
+  })
+}
