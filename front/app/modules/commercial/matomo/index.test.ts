@@ -29,34 +29,17 @@ describe('matomo', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-  });
-
-  describe('without consent', () => {
-    beforeAll(() => {
-      eventEmitter.emit<any>('destinationConsentChanged', { matomo: false });
-    });
-
-    it('does not call setupMatomo', () => {
-      expect(setupMatomo).not.toHaveBeenCalled();
-    });
-
-    it('does not register page changes', () => {
-      trackPage('/en');
-      trackPage('/en/projects');
-      expect(trackPageChange).not.toHaveBeenCalled();
-    });
+    eventEmitter.emit<any>('destinationConsentChanged', { matomo: false });
   });
 
   describe('with consent from beginning', () => {
-    beforeAll(() => {
-      eventEmitter.emit<any>('destinationConsentChanged', { matomo: true });
-    });
-
     it('calls setupMatomo', () => {
+      eventEmitter.emit<any>('destinationConsentChanged', { matomo: true });
       expect(setupMatomo).toHaveBeenCalledTimes(1);
     });
 
     it('registers page changes', () => {
+      eventEmitter.emit<any>('destinationConsentChanged', { matomo: true });
       trackPage('/en');
       trackPage('/en/projects');
 
@@ -66,12 +49,23 @@ describe('matomo', () => {
     });
   });
 
-  // it('tracks a page change', () => {
-  //   (config as any).beforeMountApplication();
-  //   eventEmitter.emit<any>('destinationConsentChanged', { matomo: true });
+  describe('with consent given later', () => {
+    it('calls setupMatomo when consent is given', () => {
+      expect(setupMatomo).toHaveBeenCalledTimes(0);
+      eventEmitter.emit<any>('destinationConsentChanged', { matomo: true });
+      expect(setupMatomo).toHaveBeenCalledTimes(1);
+    });
 
-  //   trackPage('/en/sign-in');
+    it('registers page changes when consent is given', () => {
+      trackPage('/en');
+      trackPage('/en/projects');
+      expect(trackPageChange).not.toHaveBeenCalled();
 
-  //   expect(window._paq).toContainEqual(['trackPageView', '/:locale/sign-in']);
-  // });
+      eventEmitter.emit<any>('destinationConsentChanged', { matomo: true });
+
+      expect(trackPageChange).toHaveBeenCalledTimes(2);
+      expect(trackPageChange).toHaveBeenCalledWith('/en');
+      expect(trackPageChange).toHaveBeenCalledWith('/en/projects');
+    });
+  });
 });
