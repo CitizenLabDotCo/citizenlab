@@ -76,7 +76,6 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         display="flex"
         justifyContent="space-between"
         alignItems="center"
-        data-testid="feedbackSuccessMessage"
         mt="32px"
       >
         <Box display="flex" gap="16px" alignItems="center">
