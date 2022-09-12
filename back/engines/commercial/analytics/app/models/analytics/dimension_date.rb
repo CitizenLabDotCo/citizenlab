@@ -7,7 +7,7 @@
 #  date  :date             not null, primary key
 #  year  :string
 #  month :string
-#  day   :string
+#  week  :date
 #
 module Analytics
   class DimensionDate < Analytics::ApplicationRecord
