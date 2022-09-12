@@ -123,6 +123,8 @@ module Analytics
       aggregations.map do |column, aggregation|
         if aggregation == 'count' && column == 'all'
           Arel.sql('COUNT(*) as count')
+        elsif aggregation == 'count'
+          Arel.sql("COUNT(DISTINCT #{column}) as #{aggregation_alias(column, aggregation)}")
         elsif aggregation == 'first'
           "array_agg(#{column}) as #{aggregation_alias(column, aggregation)}"
         else
