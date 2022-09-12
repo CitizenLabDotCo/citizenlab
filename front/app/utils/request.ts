@@ -2,19 +2,23 @@ import 'whatwg-fetch';
 import { stringify } from 'qs';
 import { getJwt } from 'utils/auth/jwt';
 import { isString } from 'lodash-es';
+import { IHttpMethod } from 'typings';
+import { IObject } from 'utils/streams';
 
 export default function request<T>(
-  url,
-  data,
-  options,
-  queryParameters
+  url: string,
+  bodyData: Record<string, any> | null,
+  options: IHttpMethod | null,
+  queryParameters: IObject | null
 ): Promise<T> {
   const urlParams = stringify(queryParameters, {
     arrayFormat: 'brackets',
     addQueryPrefix: true,
   });
+
   const urlWithParams = `${url}${urlParams}`;
   const jwt = getJwt();
+
   const defaultOptions: { [key: string]: any } = {
     headers: {
       'Content-Type': 'application/json',
@@ -25,8 +29,8 @@ export default function request<T>(
     defaultOptions.headers['Authorization'] = `Bearer ${jwt}`;
   }
 
-  if (data) {
-    defaultOptions.body = JSON.stringify(data);
+  if (bodyData) {
+    defaultOptions.body = JSON.stringify(bodyData);
   }
 
   return fetch(urlWithParams, { ...defaultOptions, ...options })

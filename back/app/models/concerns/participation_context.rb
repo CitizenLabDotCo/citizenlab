@@ -18,10 +18,12 @@ module ParticipationContext
   VOTING_METHODS        = %w[unlimited limited].freeze
   IDEAS_ORDERS          = %w[trending random popular -new new].freeze
   INPUT_TERMS           = %w[idea question contribution project issue option].freeze
+  DEFAULT_INPUT_TERM    = 'idea'
 
   included do
     has_many :baskets, as: :participation_context, dependent: :destroy
     has_many :permissions, as: :permission_scope, dependent: :destroy
+    has_one :custom_form, as: :participation_context, dependent: :destroy
 
     # for timeline projects, the phases are the participation contexts, so nothing applies
     with_options unless: :timeline_project? do
@@ -133,6 +135,6 @@ module ParticipationContext
   end
 
   def set_input_term
-    self.input_term ||= 'idea'
+    self.input_term ||= DEFAULT_INPUT_TERM
   end
 end
