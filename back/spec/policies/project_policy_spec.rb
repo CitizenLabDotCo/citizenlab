@@ -19,6 +19,8 @@ describe ProjectPolicy do
       it { is_expected.not_to permit(:update)  }
       it { is_expected.not_to permit(:reorder) }
       it { is_expected.not_to permit(:destroy) }
+      it { is_expected.not_to permit(:index_xlsx) }
+      it { is_expected.not_to permit(:survey_results) }
 
       it 'should index the project' do
         expect(scope.resolve.size).to eq 1
@@ -33,6 +35,8 @@ describe ProjectPolicy do
       it { is_expected.not_to permit(:update)  }
       it { is_expected.not_to permit(:reorder) }
       it { is_expected.not_to permit(:destroy) }
+      it { is_expected.not_to permit(:index_xlsx) }
+      it { is_expected.not_to permit(:survey_results) }
 
       it 'should index the project' do
         expect(scope.resolve.size).to eq 1
@@ -51,6 +55,8 @@ describe ProjectPolicy do
       it { is_expected.to permit(:update)  }
       it { is_expected.to permit(:reorder) }
       it { is_expected.to permit(:destroy) }
+      it { is_expected.to permit(:index_xlsx) }
+      it { is_expected.to permit(:survey_results) }
 
       it 'should index the project' do
         expect(scope.resolve.size).to eq 1
@@ -73,6 +79,8 @@ describe ProjectPolicy do
       it { is_expected.not_to permit(:update)  }
       it { is_expected.not_to permit(:reorder) }
       it { is_expected.not_to permit(:destroy) }
+      it { is_expected.not_to permit(:index_xlsx) }
+      it { is_expected.not_to permit(:survey_results) }
 
       it 'should not index the project'  do
         expect(scope.resolve.size).to eq 0
@@ -87,6 +95,8 @@ describe ProjectPolicy do
       it { is_expected.not_to permit(:update)  }
       it { is_expected.not_to permit(:reorder) }
       it { is_expected.not_to permit(:destroy) }
+      it { is_expected.not_to permit(:index_xlsx) }
+      it { is_expected.not_to permit(:survey_results) }
 
       it 'should not index the project'  do
         expect(scope.resolve.size).to eq 0
@@ -105,6 +115,8 @@ describe ProjectPolicy do
       it { is_expected.to permit(:update)  }
       it { is_expected.to permit(:reorder) }
       it { is_expected.to permit(:destroy) }
+      it { is_expected.to permit(:index_xlsx) }
+      it { is_expected.to permit(:survey_results) }
 
       it 'should index the project' do
         expect(scope.resolve.size).to eq 1
@@ -125,6 +137,8 @@ describe ProjectPolicy do
     it { is_expected.not_to permit(:update)  }
     it { is_expected.not_to permit(:reorder) }
     it { is_expected.not_to permit(:destroy) }
+    it { is_expected.not_to permit(:index_xlsx) }
+    it { is_expected.not_to permit(:survey_results) }
 
     it 'should not index the project'  do
       expect(scope.resolve.size).to eq 0
@@ -140,6 +154,8 @@ describe ProjectPolicy do
     it { is_expected.not_to permit(:update)  }
     it { is_expected.not_to permit(:reorder) }
     it { is_expected.not_to permit(:destroy) }
+    it { is_expected.not_to permit(:index_xlsx) }
+    it { is_expected.not_to permit(:survey_results) }
 
     it 'should not index the project'  do
       expect(scope.resolve.size).to eq 0
@@ -159,6 +175,8 @@ describe ProjectPolicy do
     it { is_expected.not_to permit(:update)  }
     it { is_expected.not_to permit(:reorder) }
     it { is_expected.not_to permit(:destroy) }
+    it { is_expected.not_to permit(:index_xlsx) }
+    it { is_expected.not_to permit(:survey_results) }
 
     it 'should index the project' do
       expect(scope.resolve.size).to eq 1
@@ -178,6 +196,8 @@ describe ProjectPolicy do
     it { is_expected.to permit(:update)  }
     it { is_expected.to permit(:reorder) }
     it { is_expected.to permit(:destroy) }
+    it { is_expected.to permit(:index_xlsx) }
+    it { is_expected.to permit(:survey_results) }
 
     it 'should index the project' do
       expect(scope.resolve.size).to eq 1
@@ -199,6 +219,8 @@ describe ProjectPolicy do
       it { is_expected.not_to permit(:update)  }
       it { is_expected.not_to permit(:reorder) }
       it { is_expected.not_to permit(:destroy) }
+      it { is_expected.not_to permit(:index_xlsx) }
+      it { is_expected.not_to permit(:survey_results) }
 
       it 'should not index the project'  do
         expect(scope.resolve.size).to eq 0
@@ -213,6 +235,8 @@ describe ProjectPolicy do
       it { is_expected.not_to permit(:update)  }
       it { is_expected.not_to permit(:reorder) }
       it { is_expected.not_to permit(:destroy) }
+      it { is_expected.not_to permit(:index_xlsx) }
+      it { is_expected.not_to permit(:survey_results) }
 
       it 'should not index the project'  do
         expect(scope.resolve.size).to eq 0
@@ -231,6 +255,8 @@ describe ProjectPolicy do
       it { is_expected.to permit(:update)  }
       it { is_expected.to permit(:reorder) }
       it { is_expected.to permit(:destroy) }
+      it { is_expected.to permit(:index_xlsx) }
+      it { is_expected.to permit(:survey_results) }
 
       it 'should index the project' do
         expect(scope.resolve.size).to eq 1
