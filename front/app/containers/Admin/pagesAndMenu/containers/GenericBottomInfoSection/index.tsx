@@ -1,22 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useTheme } from 'styled-components';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 import SectionFormWrapper from '../../components/SectionFormWrapper';
-import Error from 'components/UI/Error';
-import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 import { TBreadcrumbs } from 'components/UI/Breadcrumbs';
+import { SectionField } from 'components/admin/Section';
+import Button from 'components/UI/Button';
+
+// form
+import { useForm, FormProvider } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { object } from 'yup';
+import Feedback from 'components/HookForm/Feedback';
+import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
-import sectionToggleMessages from '../../components/SectionToggle/messages';
 
 // typings
-import { Multiloc, CLError } from 'typings';
+import { Multiloc } from 'typings';
 
 // constants
 import { pagesAndMenuBreadcrumb } from '../../breadcrumbs';
@@ -26,8 +31,8 @@ import { IHomepageSettingsData } from 'services/homepageSettings';
 import { ICustomPageData } from 'services/customPages';
 
 // utils
-import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
-import { isCLErrorJSON } from 'utils/errorUtils';
+import validateMultiloc from 'utils/yup/validateMultiloc';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 interface Props {
   pageData: IHomepageSettingsData | ICustomPageData;
@@ -35,6 +40,10 @@ interface Props {
     bottom_info_section_multiloc: Multiloc;
   }) => Promise<any>;
   breadcrumbs: TBreadcrumbs;
+}
+
+interface FormValues {
+  bottom_info_section_multiloc: Multiloc;
 }
 
 const GenericBottomInfoSection = ({
@@ -45,94 +54,61 @@ const GenericBottomInfoSection = ({
 }: InjectedIntlProps & Props) => {
   const theme: any = useTheme();
 
-  const [bottomInfoSectionMultilocState, setBottomInfoSectionMultilocState] =
-    useState<Multiloc | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [apiErrors, setApiErrors] = useState<CLError[] | null>(null);
-  const [formStatus, setFormStatus] = useState<ISubmitState>('disabled');
-
-  useEffect(() => {
-    if (!isNilOrError(pageData)) {
-      setBottomInfoSectionMultilocState(
-        pageData.attributes.bottom_info_section_multiloc
-      );
-    }
-  }, [pageData]);
-
-  const handleCustomSectionMultilocOnChange = (
-    bottomInfoMultiloc: Multiloc
-  ) => {
-    if (formStatus !== 'enabled') {
-      setFormStatus('enabled');
-    }
-
-    setBottomInfoSectionMultilocState(bottomInfoMultiloc);
-
-    if (isEmptyMultiloc(bottomInfoMultiloc)) {
-      setFormStatus('disabled');
-    }
-  };
-
-  const onSave = async () => {
-    setIsLoading(true);
-    setFormStatus('disabled');
+  const onFormSubmit = async (formValues: FormValues) => {
     try {
-      if (bottomInfoSectionMultilocState) {
-        await updatePage({
-          bottom_info_section_multiloc: bottomInfoSectionMultilocState,
-        });
-      }
-      setIsLoading(false);
-      setFormStatus('success');
+      await updatePage(formValues);
     } catch (error) {
-      setIsLoading(false);
-      setFormStatus('error');
-      if (isCLErrorJSON(error)) {
-        setApiErrors(error.json.errors);
-      } else {
-        setApiErrors(error);
-      }
+      handleHookFormSubmissionError(error, methods.setError);
     }
   };
+
+  const schema = object({
+    bottom_info_section_multiloc: validateMultiloc(
+      formatMessage(messages.blankDescriptionError)
+    ),
+  });
+
+  const methods = useForm({
+    mode: 'onBlur',
+    defaultValues: {
+      bottom_info_section_multiloc:
+        pageData.attributes.bottom_info_section_multiloc,
+    },
+    resolver: yupResolver(schema),
+  });
 
   return (
-    <SectionFormWrapper
-      breadcrumbs={[
-        {
-          label: formatMessage(pagesAndMenuBreadcrumb.label),
-          linkTo: pagesAndMenuBreadcrumb.linkTo,
-        },
-        ...breadcrumbs,
-        { label: formatMessage(messages.pageTitle) },
-      ]}
-      title={formatMessage(messages.pageTitle)}
-    >
-      <Box maxWidth={`${theme.maxPageWidth - 100}px`} mb="24px">
-        <QuillMultilocWithLocaleSwitcher
-          id="custom-section"
-          label={formatMessage(messages.contentEditorTitle)}
-          labelTooltipText={formatMessage(
-            sectionToggleMessages.bottomInfoSectionTooltip
-          )}
-          valueMultiloc={bottomInfoSectionMultilocState}
-          onChange={handleCustomSectionMultilocOnChange}
-          withCTAButton
-        />
-      </Box>
-      <Error apiErrors={apiErrors} />
-      <SubmitWrapper
-        status={formStatus}
-        buttonStyle="primary"
-        loading={isLoading}
-        onClick={onSave}
-        messages={{
-          buttonSave: messages.saveButton,
-          buttonSuccess: messages.buttonSuccess,
-          messageSuccess: messages.messageSuccess,
-          messageError: messages.error,
-        }}
-      />
-    </SectionFormWrapper>
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit(onFormSubmit)}>
+        <SectionFormWrapper
+          breadcrumbs={[
+            {
+              label: formatMessage(pagesAndMenuBreadcrumb.label),
+              linkTo: pagesAndMenuBreadcrumb.linkTo,
+            },
+            ...breadcrumbs,
+            { label: formatMessage(messages.pageTitle) },
+          ]}
+          title={formatMessage(messages.pageTitle)}
+        >
+          <SectionField>
+            <Feedback successMessage={formatMessage(messages.messageSuccess)} />
+          </SectionField>
+          <Box maxWidth={`${theme.maxPageWidth - 100}px`} mb="24px">
+            <QuillMultilocWithLocaleSwitcher
+              name="bottom_info_section_multiloc"
+              label={formatMessage(messages.contentEditorTitle)}
+              withCTAButton
+            />
+          </Box>
+          <Box display="flex">
+            <Button type="submit" processing={methods.formState.isSubmitting}>
+              {formatMessage(messages.saveButton)}
+            </Button>
+          </Box>
+        </SectionFormWrapper>
+      </form>
+    </FormProvider>
   );
 };
 

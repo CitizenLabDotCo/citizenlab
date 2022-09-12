@@ -25,4 +25,8 @@ export default defineMessages({
     id: 'app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.error',
     defaultMessage: "Couldn't save bottom info section",
   },
+  blankDescriptionError: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.blankDescriptionError',
+    defaultMessage: 'Provide content for all languages',
+  },
 });
