@@ -1077,6 +1077,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.editButtonLabel": "Edit",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent": "Edit survey content",
   "app.containers.AdminPage.ProjectEdit.survey.emptyTitleErrorMessage": "Provide a title for all languages",
+  "app.containers.AdminPage.ProjectEdit.survey.errorMessage": "There is a problem, please fix the issue to be able to save your changes",
   "app.containers.AdminPage.ProjectEdit.survey.fieldLabel": "Answer choices",
   "app.containers.AdminPage.ProjectEdit.survey.fieldTooltip": "Field tooltip content",
   "app.containers.AdminPage.ProjectEdit.survey.multipleChoice": "Multiple choice",
