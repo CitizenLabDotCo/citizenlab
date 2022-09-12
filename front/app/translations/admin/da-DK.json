@@ -639,6 +639,7 @@
   "app.containers.AdminPage.DashboardPage.components.Field.incomplete": "Ufuldstændig",
   "app.containers.AdminPage.DashboardPage.components.Field.numberOfTotalResidents": "Antal indbyggere i alt",
   "app.containers.AdminPage.DashboardPage.components.Field.options": "Muligheder",
+  "app.containers.AdminPage.DashboardPage.components.Field.save": "Gem",
   "app.containers.AdminPage.DashboardPage.components.Field.saved": "Gemte",
   "app.containers.AdminPage.DashboardPage.components.Field.setAgeGroups": "Vær venlig at {setAgeGroupsLink} først for at begynde at indtaste basisdata.",
   "app.containers.AdminPage.DashboardPage.components.Field.setAgeGroupsLink": "Indstil aldersgrupper",

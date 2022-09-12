@@ -639,6 +639,7 @@
   "app.containers.AdminPage.DashboardPage.components.Field.incomplete": "Incompleto",
   "app.containers.AdminPage.DashboardPage.components.Field.numberOfTotalResidents": "Número de residentes totales",
   "app.containers.AdminPage.DashboardPage.components.Field.options": "Opciones",
+  "app.containers.AdminPage.DashboardPage.components.Field.save": "Guardar",
   "app.containers.AdminPage.DashboardPage.components.Field.saved": "Guardado",
   "app.containers.AdminPage.DashboardPage.components.Field.setAgeGroups": "Por favor, {setAgeGroupsLink} primero para empezar a introducir los datos base.",
   "app.containers.AdminPage.DashboardPage.components.Field.setAgeGroupsLink": "establecer grupos de edad",

@@ -18,7 +18,6 @@ const Input = ({ name, type = 'text', ...rest }: Props) => {
     control,
   } = useFormContext();
 
-  const defaultValue = '';
   const errors = get(formContextErrors, name);
   const validationError = errors?.message as string | undefined;
 
@@ -31,7 +30,6 @@ const Input = ({ name, type = 'text', ...rest }: Props) => {
       <Controller
         name={name}
         control={control}
-        defaultValue={defaultValue}
         render={({ field: { ref: _ref, ...field } }) => (
           <InputComponent id={name} type={type} {...field} {...rest} />
         )}

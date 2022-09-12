@@ -639,6 +639,7 @@
   "app.containers.AdminPage.DashboardPage.components.Field.incomplete": "غير مكتمل",
   "app.containers.AdminPage.DashboardPage.components.Field.numberOfTotalResidents": "إجمالي عدد النزلاء",
   "app.containers.AdminPage.DashboardPage.components.Field.options": "الخيارات",
+  "app.containers.AdminPage.DashboardPage.components.Field.save": "حفظ",
   "app.containers.AdminPage.DashboardPage.components.Field.saved": "تم الحفظ",
   "app.containers.AdminPage.DashboardPage.components.Field.setAgeGroups": "يرجى {setAgeGroupsLink} أولاً لبدء إدخال البيانات الأساسية.",
   "app.containers.AdminPage.DashboardPage.components.Field.setAgeGroupsLink": "تعيين فئات عمرية",

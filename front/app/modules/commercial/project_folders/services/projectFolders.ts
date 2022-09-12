@@ -12,7 +12,7 @@ export interface IProjectFolderDiff {
   slug: string | null;
   description_multiloc: Multiloc; // HTML
   description_preview_multiloc: Multiloc; // Text
-  header_bg?: string;
+  header_bg?: string | null;
   admin_publication_attributes: {
     publication_status: PublicationStatus;
   };
