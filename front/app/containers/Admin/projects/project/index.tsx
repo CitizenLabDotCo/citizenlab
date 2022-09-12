@@ -119,7 +119,7 @@ export class AdminProjectsProjectIndex extends PureComponent<
           label: formatMessage(messages.surveyTab),
           url: 'native-survey',
           name: 'survey',
-          active: (url) =>
+          active: (url: string) =>
             url.endsWith('native-survey') ||
             url.endsWith('native-survey/results'),
         },

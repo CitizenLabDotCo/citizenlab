@@ -34,7 +34,7 @@ const CompletionBar = ({
       </Box>
     )}
     <Box
-      height="15px"
+      height="16px"
       width="100%"
       borderRadius="3px"
       border={`1px solid ${colors.separation};`}
