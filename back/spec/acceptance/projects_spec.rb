@@ -548,6 +548,54 @@ resource 'Projects' do
         expect(moderator.reload.project_moderator?(id)).to be false
       end
     end
+
+    get 'web_api/v1/projects/:id/survey_results' do
+      let(:project) { create(:continuous_native_survey_project) }
+      let(:form) { create(:custom_form, participation_context: project) }
+      let(:id) { project.id }
+      let(:multiselect_field) do
+        create(
+          :custom_field_multiselect,
+          resource: form,
+          title_multiloc: { 'en' => 'What are your favourite pets?' },
+          description_multiloc: {}
+        )
+      end
+      let!(:cat_option) do
+        create(:custom_field_option, custom_field: multiselect_field, key: 'cat', title_multiloc: { 'en' => 'Cat' })
+      end
+      let!(:dog_option) do
+        create(:custom_field_option, custom_field: multiselect_field, key: 'dog', title_multiloc: { 'en' => 'Dog' })
+      end
+
+      before do
+        create(:idea, project: project, custom_field_values: { multiselect_field.key => %w[cat dog] })
+        create(:idea, project: project, custom_field_values: { multiselect_field.key => %w[cat] })
+      end
+
+      example_request 'Get survey results' do
+        expect(status).to eq 200
+
+        expect(json_response).to eq(
+          {
+            data: {
+              results: [
+                {
+                  inputType: 'multiselect',
+                  question: { en: 'What are your favourite pets?' },
+                  totalResponses: 3,
+                  answers: [
+                    { answer: { en: 'Cat' }, responses: 2 },
+                    { answer: { en: 'Dog' }, responses: 1 }
+                  ]
+                }
+              ]
+            },
+            totalSubmissions: 2
+          }
+        )
+      end
+    end
   end
 
   get 'web_api/v1/projects' do
