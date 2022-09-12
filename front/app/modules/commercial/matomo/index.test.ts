@@ -3,6 +3,10 @@ import { mockRoutes } from './mockRoutes.mock';
 import eventEmitter from 'utils/eventEmitter';
 // import { trackPage } from 'utils/analytics';
 
+// mocked inputs
+import { setupMatomo } from './setup';
+// import { trackPageChange } from './actions';
+
 jest.mock('services/appConfiguration');
 jest.mock('services/auth');
 jest.mock('services/locale');
@@ -11,33 +15,35 @@ jest.mock('routes', () => ({
   __esModule: true,
   default: jest.fn(() => [mockRoutes]),
 }));
+jest.mock('./setup', () => ({
+  setupMatomo: jest.fn(),
+}));
+jest.mock('./actions', () => ({
+  // trackEvent: jest.fn(),
+  trackPageChange: jest.fn(),
+}));
 
-global.window = Object.create(window);
-
-describe('matomo', () => {
+describe('matomo: no cookies accepted', () => {
   beforeEach(() => {
-    window._paq = [];
+    jest.clearAllMocks();
   });
 
   it('does not make any calls if no consent given', () => {
     (config as any).beforeMountApplication();
     eventEmitter.emit<any>('destinationConsentChanged', { matomo: false });
 
-    expect(window._paq).toEqual([]);
+    expect(setupMatomo).not.toHaveBeenCalled();
   });
 
-  // Note there is duplication in the values coming back from the array
-  // but Matomo deals with this and does not make duplicate requests
-  // it('sets up matomo and makes call for initial page after consent is given', () => {
-  //   (config as any).beforeMountApplication();
-  //   eventEmitter.emit<any>('destinationConsentChanged', { matomo: true });
+  it('sets up matomo and makes call for initial page after consent is given', () => {
+    (config as any).beforeMountApplication();
+    // trackPage('/en');
+    eventEmitter.emit<any>('destinationConsentChanged', { matomo: true });
 
-  //   expect(window._paq).toContainEqual(['enableLinkTracking']);
-
-  //   trackPage('/en');
-  //   expect(window._paq).toContainEqual(['setCustomUrl', '/en']);
-  //   expect(window._paq).toContainEqual(['trackPageView', '/:locale']);
-  // });
+    expect(setupMatomo).toHaveBeenCalledTimes(1);
+    // expect(trackPageChange).toHaveBeenCalledTimes(1);
+    // expect(trackPageChange).toHaveBeenCalledWith('/en');
+  });
 
   // it('tracks a page change', () => {
   //   (config as any).beforeMountApplication();
@@ -48,3 +54,5 @@ describe('matomo', () => {
   //   expect(window._paq).toContainEqual(['trackPageView', '/:locale/sign-in']);
   // });
 });
+
+describe('matomo: cookies already accepted', () => {});
