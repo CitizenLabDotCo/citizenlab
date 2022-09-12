@@ -92,10 +92,14 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
             const inputTypeText = get(messages, inputType, '');
             return (
               <Box key={index}>
-                <Text>
+                <Text fontWeight="bold">
                   <T value={question} />
                 </Text>
-                {inputTypeText && <Text>{formatMessage(inputTypeText)}</Text>}
+                {inputTypeText && (
+                  <Text variant="bodyS" color="adminSecondaryTextColor">
+                    {formatMessage(inputTypeText)}
+                  </Text>
+                )}
                 {answers.map(({ answer, responses }, index) => {
                   const percentage =
                     Math.round((responses / totalResponses) * 1000) / 10;
