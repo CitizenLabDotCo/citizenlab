@@ -10,7 +10,7 @@ require 'rails_helper'
 #   * Results are ordered in descending order.
 #   * Result generation is supported for projects and phases.
 
-RSpec.describe SurveyResultsGeneratorService do
+RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
   subject(:generator) { described_class.new participation_context }
 
   let(:text_field) do
@@ -78,7 +78,6 @@ RSpec.describe SurveyResultsGeneratorService do
   end
 
   before do
-    SettingsService.new.activate_feature! 'dynamic_idea_form'
     create(
       :idea,
       project: project,
