@@ -1,16 +1,15 @@
 import config from '.';
 import { mockRoutes } from './mockRoutes.mock';
 import eventEmitter from 'utils/eventEmitter';
-// import { trackPage } from 'utils/analytics';
+import { trackPage } from 'utils/analytics';
 
 // mocked inputs
 import { setupMatomo } from './setup';
-// import { trackPageChange } from './actions';
+import { trackPageChange } from './actions';
 
 jest.mock('services/appConfiguration');
 jest.mock('services/auth');
 jest.mock('services/locale');
-jest.mock('modules', () => ({ streamsToReset: [] }));
 jest.mock('routes', () => ({
   __esModule: true,
   default: jest.fn(() => [mockRoutes]),
@@ -23,26 +22,48 @@ jest.mock('./actions', () => ({
   trackPageChange: jest.fn(),
 }));
 
-describe('matomo: no cookies accepted', () => {
+describe('matomo', () => {
+  beforeAll(() => {
+    (config as any).beforeMountApplication();
+  });
+
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  it('does not make any calls if no consent given', () => {
-    (config as any).beforeMountApplication();
-    eventEmitter.emit<any>('destinationConsentChanged', { matomo: false });
+  describe('without consent', () => {
+    beforeAll(() => {
+      eventEmitter.emit<any>('destinationConsentChanged', { matomo: false });
+    });
 
-    expect(setupMatomo).not.toHaveBeenCalled();
+    it('does not call setupMatomo', () => {
+      expect(setupMatomo).not.toHaveBeenCalled();
+    });
+
+    it('does not register page changes', () => {
+      trackPage('/en');
+      trackPage('/en/projects');
+      expect(trackPageChange).not.toHaveBeenCalled();
+    });
   });
 
-  it('sets up matomo and makes call for initial page after consent is given', () => {
-    (config as any).beforeMountApplication();
-    // trackPage('/en');
-    eventEmitter.emit<any>('destinationConsentChanged', { matomo: true });
+  describe('with consent from beginning', () => {
+    beforeAll(() => {
+      eventEmitter.emit<any>('destinationConsentChanged', { matomo: true });
+    });
 
-    expect(setupMatomo).toHaveBeenCalledTimes(1);
-    // expect(trackPageChange).toHaveBeenCalledTimes(1);
-    // expect(trackPageChange).toHaveBeenCalledWith('/en');
+    it('calls setupMatomo', () => {
+      expect(setupMatomo).toHaveBeenCalledTimes(1);
+    });
+
+    it('registers page changes', () => {
+      trackPage('/en');
+      trackPage('/en/projects');
+
+      expect(trackPageChange).toHaveBeenCalledTimes(2);
+      expect(trackPageChange).toHaveBeenCalledWith('/en');
+      expect(trackPageChange).toHaveBeenCalledWith('/en/projects');
+    });
   });
 
   // it('tracks a page change', () => {
@@ -54,5 +75,3 @@ describe('matomo: no cookies accepted', () => {
   //   expect(window._paq).toContainEqual(['trackPageView', '/:locale/sign-in']);
   // });
 });
-
-describe('matomo: cookies already accepted', () => {});
