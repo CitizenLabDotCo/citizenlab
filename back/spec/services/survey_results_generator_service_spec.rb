@@ -78,6 +78,8 @@ RSpec.describe SurveyResultsGeneratorService do
   end
 
   before do
+    SettingsService.new.activate_feature! 'idea_custom_fields'
+    SettingsService.new.activate_feature! 'dynamic_idea_form'
     create(
       :idea,
       project: project,
