@@ -353,7 +353,8 @@ resource 'Phases' do
         )
       end
 
-      example_request 'Get survey results' do
+      example 'Get survey results', skip: !CitizenLab.ee? do
+        do_request
         expect(status).to eq 200
 
         json_response = json_parse(response_body)

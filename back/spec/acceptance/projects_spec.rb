@@ -573,7 +573,8 @@ resource 'Projects' do
         create(:idea, project: project, custom_field_values: { multiselect_field.key => %w[cat] })
       end
 
-      example_request 'Get survey results' do
+      example 'Get survey results', skip: !CitizenLab.ee? do
+        do_request
         expect(status).to eq 200
 
         expect(json_response).to eq(
