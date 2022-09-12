@@ -89,9 +89,6 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       <StyledBox mt="12px">
         {results.map(
           ({ question, inputType, answers, totalResponses }, index) => {
-            const sortedAnswers = answers.sort(
-              (a, b) => b.responses - a.responses
-            );
             const inputTypeText = get(messages, inputType, '');
             return (
               <Box key={index}>
@@ -99,7 +96,7 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
                   <T value={question} />
                 </Text>
                 {inputTypeText && <Text>{formatMessage(inputTypeText)}</Text>}
-                {sortedAnswers.map(({ answer, responses }, index) => {
+                {answers.map(({ answer, responses }, index) => {
                   const percentage =
                     Math.round((responses / totalResponses) * 1000) / 10;
 

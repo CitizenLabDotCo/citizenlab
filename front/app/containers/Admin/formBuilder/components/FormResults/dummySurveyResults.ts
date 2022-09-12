@@ -11,10 +11,10 @@ export const surveyResults = {
         answers: [
           {
             answer: {
-              en: 'Red',
-              fr: 'Rouge',
+              en: 'Green',
+              fr: 'Vert',
             },
-            responses: 10,
+            responses: 70,
           },
           {
             answer: {
@@ -25,10 +25,10 @@ export const surveyResults = {
           },
           {
             answer: {
-              en: 'Green',
-              fr: 'Vert',
+              en: 'Red',
+              fr: 'Rouge',
             },
-            responses: 70,
+            responses: 10,
           },
         ],
       },
