@@ -608,7 +608,7 @@
   "app.containers.AdminPage.Users.UsersGroup.rulesError": "Неки од услова нису потпуни",
   "app.containers.AdminPage.Users.UsersGroup.saveGroup": "Сачувајте групу",
   "app.containers.AdminPage.Users.UsersGroup.smartGroupsAvailability": "Паметне групе доступне су за планове Standard и Premium.",
-  "app.containers.AdminPage.Users.UsersGroup.titleFieldEmptyError": "Provide a group name",
+  "app.containers.AdminPage.Users.UsersGroup.titleFieldEmptyError": "Наведи назив групе",
   "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "Верификација је онемогућена за вашу платформу, уклоните правило верификације или контактирајте подршку.",
   "app.containers.App.appMetaDescription": "Добродошли на партиципативну платформу {orgName}. \nОткријте локалне пројекте и прикључите се дискусији!",
   "app.containers.App.loading": "Учитавање...",
