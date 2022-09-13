@@ -1073,7 +1073,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.default": "Standard",
   "app.containers.AdminPage.ProjectEdit.survey.delete": "Löschen",
   "app.containers.AdminPage.ProjectEdit.survey.deleteButtonLabel": "Löschen",
-  "app.containers.AdminPage.ProjectEdit.survey.downloadSurveyResults": "Umfrageergebnisse herunterladen ({count})",
   "app.containers.AdminPage.ProjectEdit.survey.editButtonLabel": "Bearbeiten",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent": "Inhalt der Umfrage bearbeiten",
   "app.containers.AdminPage.ProjectEdit.survey.fieldLabel": "Antwortmöglichkeiten",

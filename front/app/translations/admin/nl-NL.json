@@ -1073,7 +1073,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.default": "Standaard",
   "app.containers.AdminPage.ProjectEdit.survey.delete": "Verwijder",
   "app.containers.AdminPage.ProjectEdit.survey.deleteButtonLabel": "Verwijder",
-  "app.containers.AdminPage.ProjectEdit.survey.downloadSurveyResults": "Download enquêteresultaten ({count})",
   "app.containers.AdminPage.ProjectEdit.survey.editButtonLabel": "Bewerk",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent": "Enquête-inhoud wijzigen",
   "app.containers.AdminPage.ProjectEdit.survey.fieldLabel": "Antwoordmogelijkheden",
