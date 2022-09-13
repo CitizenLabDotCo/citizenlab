@@ -2,11 +2,11 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   labels: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.labels',
+    id: 'app.containers.AdminPage.ProjectEdit.survey.formBuilder.labels',
     defaultMessage: 'Labels',
   },
   labelsTooltipContent: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.labelsTooltipContent',
+    id: 'app.containers.AdminPage.ProjectEdit.survey.formBuilder.labelsTooltipContent',
     defaultMessage:
       'Choose optional labels for your minimum and maximum values.',
   },
@@ -15,11 +15,11 @@ export default defineMessages({
     defaultMessage: 'Range',
   },
   selectRangeTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.selectRangeTooltip',
+    id: 'app.containers.AdminPage.ProjectEdit.survey.formBuilder.selectRangeTooltip',
     defaultMessage: 'Choose the maximum value for your scale.',
   },
   toLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.toLabel',
+    id: 'app.containers.AdminPage.ProjectEdit.survey.formBuilder.toLabel',
     defaultMessage: 'to',
   },
 });

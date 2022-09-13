@@ -44,22 +44,26 @@ const LinearScaleControl = ({
           </Text>
         </Box>
         <>
-          {[...Array(maximum)].map((_x, i) => (
-            <Box key={i} style={{ lineHeight: '0px' }}>
-              <Box mt="16px" mx="4px">
-                <Label htmlFor={`${path}-radio-${i}`}>{i + 1}</Label>
+          {[...Array(maximum).keys()].map((i) => {
+            const rowId = `${path}-radio-${i}`;
+            const visualIndex = i + 1;
+            return (
+              <Box key={i} style={{ lineHeight: '0px' }}>
+                <Box mt="16px" mx="4px">
+                  <Label htmlFor={rowId}>{visualIndex}</Label>
+                </Box>
+                <br />
+                <Radio
+                  name="linear_scale"
+                  currentValue={data?.rating}
+                  value={visualIndex}
+                  key={i}
+                  id={rowId}
+                  onChange={(value) => handleChange(path, { rating: value })}
+                />
               </Box>
-              <br />
-              <Radio
-                name="linear_scale"
-                currentValue={data?.rating}
-                value={i + 1}
-                key={i}
-                id={`${path}-radio-${i}`}
-                onChange={(value) => handleChange(path, { rating: value })}
-              />
-            </Box>
-          ))}
+            );
+          })}
         </>
         <Box mt="28px" alignSelf="flex-end">
           <Text mr="8px" fontWeight="bold">
