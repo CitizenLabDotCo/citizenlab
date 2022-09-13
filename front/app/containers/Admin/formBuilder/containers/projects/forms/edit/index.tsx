@@ -148,6 +148,11 @@ export const FormEdit = ({
           // TODO: This will get messy with more field types, abstract this in some way
           options: field.options || {},
         }),
+        ...(field.input_type === 'linear_scale' && {
+          minimum_label_multiloc: field.minimum_label_multiloc || {},
+          maximum_label_multiloc: field.maximum_label_multiloc || {},
+          maximum: field.maximum.toString(),
+        }),
       }));
 
       await updateFormCustomFields(projectId, finalResponseArray, phaseId);
