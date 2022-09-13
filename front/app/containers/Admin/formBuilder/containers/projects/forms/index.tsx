@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import { useParams, useLocation } from 'react-router-dom';
@@ -60,7 +60,7 @@ const Forms = ({ intl: { formatMessage } }: InjectedIntlProps) => {
             index
           ) => {
             return (
-              <>
+              <Fragment key={index}>
                 <FormActions
                   editFormLink={editFormLink}
                   viewFormLink={viewFormLink}
@@ -72,7 +72,7 @@ const Forms = ({ intl: { formatMessage } }: InjectedIntlProps) => {
                 {index !== formActionsConfigs.length - 1 && (
                   <Box height="1px" border={`1px solid ${colors.separation}`} />
                 )}
-              </>
+              </Fragment>
             );
           }
         )}
