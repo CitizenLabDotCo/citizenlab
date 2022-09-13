@@ -14,8 +14,10 @@ class SurveyResultsGeneratorService < FieldVisitorService
       visit field
     end
     {
-      data: { results: results },
-      totalSubmissions: inputs.size
+      data: {
+        results: results,
+        totalSubmissions: inputs.size
+      }
     }
   end
 

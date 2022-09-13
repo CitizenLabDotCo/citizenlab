@@ -189,9 +189,9 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
                 }
               ]
             }
-          ]
-        },
-        totalSubmissions: 23
+          ],
+          totalSubmissions: 23
+        }
       }
     end
 
