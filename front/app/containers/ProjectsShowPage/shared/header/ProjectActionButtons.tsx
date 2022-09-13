@@ -96,6 +96,10 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     return null;
   }
 
+  const postingIsEnabled =
+    project.attributes.posting_enabled ||
+    currentPhase?.attributes.posting_enabled;
+
   const { enabled, disabledReason } = getSurveyTakingRules({
     project,
     phaseContext: currentPhase,
@@ -148,28 +152,40 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     project,
     phases
   );
+
   const isParticipationMethodIdeation = participation_method === 'ideation';
+
   const isParticipationMethodNativeSurvey =
-    participation_method === 'native_survey';
+    participation_method === 'native_survey' ||
+    currentPhase?.attributes.participation_method === 'native_survey';
+
   const showSeeIdeasButton =
     ((isProcessTypeContinuous && isParticipationMethodIdeation) ||
       currentPhase?.attributes.participation_method === 'ideation') &&
     isNumber(ideas_count) &&
     ideas_count > 0;
+
   const showIdeasButton =
-    (isParticipationMethodIdeation && publication_status !== 'archived') ||
-    isParticipationMethodNativeSurvey;
+    isParticipationMethodIdeation && publication_status !== 'archived';
+
+  const showNativeSurvey =
+    isParticipationMethodNativeSurvey && publication_status !== 'archived';
 
   const showSurvey =
     (phases && participation_method === 'survey') ||
     (currentPhase?.attributes.participation_method === 'survey' &&
       !hasProjectEnded);
+
   const showPoll =
     ((isProcessTypeContinuous && participation_method === 'poll') ||
       currentPhase?.attributes.participation_method === 'poll') &&
     !hasProjectEnded;
+
   const isPhaseIdeation =
     currentPhase?.attributes.participation_method === 'ideation';
+
+  const isPhaseNativeSurvey =
+    currentPhase?.attributes.participation_method === 'native_survey';
 
   return (
     <Container className={className || ''}>
@@ -198,6 +214,15 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           projectId={project.id}
           participationContextType={isPhaseIdeation ? 'phase' : 'project'}
           phaseId={isPhaseIdeation ? currentPhase.id : ''}
+          fontWeight="500"
+        />
+      )}
+      {showNativeSurvey && !hasProjectEnded && postingIsEnabled && (
+        <IdeaButton
+          id="project-survey-button"
+          projectId={project.id}
+          participationContextType={isPhaseNativeSurvey ? 'phase' : 'project'}
+          phaseId={isPhaseNativeSurvey ? currentPhase.id : ''}
           fontWeight="500"
         />
       )}
