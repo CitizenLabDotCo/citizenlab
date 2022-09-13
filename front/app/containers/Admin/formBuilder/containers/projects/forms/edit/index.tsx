@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import { useParams } from 'react-router-dom';
 import { useForm, useFieldArray, FormProvider } from 'react-hook-form';
-import { object, boolean, array, string } from 'yup';
+import { object, boolean, array, string, number } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 // styles
@@ -84,6 +84,9 @@ export const FormEdit = ({
         options: validateOneOptionForMultiSelect(
           formatMessage(messages.emptyOptionError)
         ),
+        maximum: number(),
+        minimum_label_multiloc: object(),
+        maximum_label_multiloc: object(),
         required: boolean(),
       })
     ),
@@ -144,6 +147,11 @@ export const FormEdit = ({
         ...(field.input_type === 'multiselect' && {
           // TODO: This will get messy with more field types, abstract this in some way
           options: field.options || {},
+        }),
+        ...(field.input_type === 'linear_scale' && {
+          minimum_label_multiloc: field.minimum_label_multiloc || {},
+          maximum_label_multiloc: field.maximum_label_multiloc || {},
+          maximum: field.maximum.toString(),
         }),
       }));
 

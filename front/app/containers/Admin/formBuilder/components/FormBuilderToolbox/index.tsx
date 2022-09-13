@@ -51,12 +51,12 @@ const FormBuilderToolbox = ({
       title_multiloc: {
         [locale]: '',
       },
+      maximum_label_multiloc: {},
+      minimum_label_multiloc: {},
+      maximum: 5,
       options: [
         {
-          // TODO: Ask Ben what the starter data should be
-          title_multiloc: {
-            [locale]: '',
-          },
+          title_multiloc: {},
         },
       ],
       enabled: true,
@@ -100,6 +100,16 @@ const FormBuilderToolbox = ({
             icon="multiple-choice"
             label={formatMessage(messages.multipleChoice)}
             onClick={() => addAnswer('multiselect')}
+          />
+          <ToolboxItem
+            icon="info"
+            label={formatMessage(messages.number)}
+            onClick={() => addAnswer('number')}
+          />
+          <ToolboxItem
+            icon="info"
+            label={formatMessage(messages.linearScale)}
+            onClick={() => addAnswer('linear_scale')}
           />
         </DraggableElement>
       </Box>
