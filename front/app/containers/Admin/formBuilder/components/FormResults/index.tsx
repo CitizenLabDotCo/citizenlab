@@ -62,11 +62,13 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       <Box width="100%" display="flex" alignItems="center">
         <Box width="100%">
           <Title variant="h2">{formatMessage(messages.surveyResults)}</Title>
-          <Text variant="bodyM" color="clBlueDarker">
-            {formatMessage(messages.totalSurveyResponses, {
-              count: totalSubmissions,
-            })}
-          </Text>
+          {totalSubmissions && (
+            <Text variant="bodyM" color="clBlueDarker">
+              {formatMessage(messages.totalSurveyResponses, {
+                count: totalSubmissions,
+              })}
+            </Text>
+          )}
         </Box>
         <Box>
           <Button
