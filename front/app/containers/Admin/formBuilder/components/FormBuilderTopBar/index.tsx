@@ -59,37 +59,9 @@ const FormBuilderTopBar = ({ isSubmitting }: FormBuilderTopBarProps) => {
     ? `/projects/${project?.attributes.slug}/ideas/new?phase_id=${phaseId}`
     : `/projects/${project?.attributes.slug}/ideas/new`;
 
+  // TODO : Generalize this form builder and use new ParticipationMethod abstraction to control method specific copy, etc.
   const goBack = () => {
     clHistory.push(`/admin/projects/${projectId}/native-survey`);
-  };
-
-  const save = async () => {
-    if (!isNilOrError(formCustomFields)) {
-      try {
-        setLoading(true);
-        const finalResponseArray = formCustomFields.map((field) => ({
-          ...(!field.isLocalOnly && { id: field.id }),
-          input_type: field.input_type,
-          required: field.required,
-          enabled: field.enabled,
-          title_multiloc: field.title_multiloc || {},
-          description_multiloc: field.description_multiloc || {},
-          ...(field.input_type === 'multiselect' && {
-            options: field.options || {},
-          }),
-          ...(field.input_type === 'linear_scale' && {
-            minimum_label_multiloc: field.minimum_label_multiloc || {},
-            maximum_label_multiloc: field.maximum_label_multiloc || {},
-            maximum: field.maximum.toString(),
-          }),
-        }));
-        await updateFormCustomFields(projectId, finalResponseArray, phaseId);
-      } catch {
-        // TODO: Add error handling
-      } finally {
-        setLoading(false);
-      }
-    }
   };
 
   return (
