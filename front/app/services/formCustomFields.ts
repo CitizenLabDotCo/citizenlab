@@ -124,3 +124,39 @@ export function formCustomFieldOptionStream(
     ...streamParams,
   });
 }
+
+export interface Answer {
+  answer: Multiloc;
+  responses: number;
+}
+
+export interface Result {
+  inputType: string;
+  question: Multiloc;
+  totalResponses: number;
+  answers: Answer[];
+}
+
+export interface SurveyResultData {
+  results: Result[];
+  totalSubmissions: number;
+}
+
+export interface SurveyResultsType {
+  data: SurveyResultData;
+}
+
+export function formCustomFieldsResultsStream(
+  projectId: string,
+  streamParams: IStreamParams | null = null,
+  phaseId?: string
+) {
+  const apiEndpoint = phaseId
+    ? `${API_PATH}/phases/${phaseId}/survey_results`
+    : `${API_PATH}/projects/${projectId}/survey_results`;
+  return streams.get<SurveyResultsType>({
+    apiEndpoint,
+    cacheStream: false,
+    ...streamParams,
+  });
+}

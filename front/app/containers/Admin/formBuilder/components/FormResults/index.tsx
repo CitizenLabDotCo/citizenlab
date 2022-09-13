@@ -2,6 +2,7 @@ import React from 'react';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import { get } from 'lodash-es';
+import { useParams } from 'react-router-dom';
 
 // components
 import {
@@ -23,9 +24,10 @@ import styled from 'styled-components';
 
 // utils
 import { media } from 'utils/styleUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
-// Dummy data
-import { surveyResults } from './dummySurveyResults';
+// hooks
+import useFormResults from 'hooks/useFormResults';
 
 const StyledBox = styled(Box)`
   display: grid;
@@ -39,9 +41,21 @@ const StyledBox = styled(Box)`
 `;
 
 const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
-  const {
-    data: { totalSubmissions, results },
-  } = surveyResults;
+  const { projectId, phaseId } = useParams() as {
+    projectId: string;
+    phaseId?: string;
+  };
+
+  const formResults = useFormResults({
+    projectId,
+    phaseId,
+  });
+
+  if (isNilOrError(formResults)) {
+    return null;
+  }
+
+  const { totalSubmissions, results } = formResults;
 
   return (
     <Box width="100%">
@@ -109,7 +123,7 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
                       bgColor={colors.adminTextColor}
                       completed={percentage}
                       leftLabel={answer}
-                      rightLabel={`${percentage}% (${responses}) choices`}
+                      rightLabel={`${percentage}% (${responses} choices)`}
                     />
                   );
                 })}
