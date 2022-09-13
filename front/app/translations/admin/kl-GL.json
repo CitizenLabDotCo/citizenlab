@@ -1075,7 +1075,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.deleteButtonLabel": "Piiaruk",
   "app.containers.AdminPage.ProjectEdit.survey.editButtonLabel": "Aaqqiissuteqarfigiuk",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent": "Edit survey content",
-  "app.containers.AdminPage.ProjectEdit.survey.emptyTitleErrorMessage": "Provide a title for all languages",
   "app.containers.AdminPage.ProjectEdit.survey.fieldLabel": "Akissuteqarnissamut periarfissat",
   "app.containers.AdminPage.ProjectEdit.survey.fieldTooltip": "Field tooltip content",
   "app.containers.AdminPage.ProjectEdit.survey.multipleChoice": "Arlalinnik toqqagassalik",

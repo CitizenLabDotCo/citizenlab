@@ -1075,7 +1075,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.deleteButtonLabel": "Slet",
   "app.containers.AdminPage.ProjectEdit.survey.editButtonLabel": "Rediger",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent": "Rediger undersøgelsesindhold",
-  "app.containers.AdminPage.ProjectEdit.survey.emptyTitleErrorMessage": "Angiv titel for alle sprog",
   "app.containers.AdminPage.ProjectEdit.survey.fieldLabel": "Svarvalg",
   "app.containers.AdminPage.ProjectEdit.survey.fieldTooltip": "Field tooltip content",
   "app.containers.AdminPage.ProjectEdit.survey.multipleChoice": "Flere valg",

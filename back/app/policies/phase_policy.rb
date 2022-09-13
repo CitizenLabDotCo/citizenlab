@@ -30,4 +30,8 @@ class PhasePolicy < ApplicationPolicy
   def destroy?
     ProjectPolicy.new(user, record.project).update?
   end
+
+  def survey_results?
+    ProjectPolicy.new(user, record.project).survey_results?
+  end
 end

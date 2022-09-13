@@ -1075,7 +1075,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.deleteButtonLabel": "Supprimer",
   "app.containers.AdminPage.ProjectEdit.survey.editButtonLabel": "Modifier",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent": "Modifier le contenu de l'enquête",
-  "app.containers.AdminPage.ProjectEdit.survey.emptyTitleErrorMessage": "Veuillez indiquer le titre pour toutes les langues.",
   "app.containers.AdminPage.ProjectEdit.survey.fieldLabel": "Options de réponses",
   "app.containers.AdminPage.ProjectEdit.survey.fieldTooltip": "Field tooltip content",
   "app.containers.AdminPage.ProjectEdit.survey.multipleChoice": "Réponses multiples",

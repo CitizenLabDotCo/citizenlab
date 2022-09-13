@@ -1075,7 +1075,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.deleteButtonLabel": "Izbriši",
   "app.containers.AdminPage.ProjectEdit.survey.editButtonLabel": "Izmenite",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent": "Uredi sadržaj ankete",
-  "app.containers.AdminPage.ProjectEdit.survey.emptyTitleErrorMessage": "Obezbedite naslov za sve jezike",
   "app.containers.AdminPage.ProjectEdit.survey.fieldLabel": "Opcije odgovora",
   "app.containers.AdminPage.ProjectEdit.survey.fieldTooltip": "Field tooltip content",
   "app.containers.AdminPage.ProjectEdit.survey.multipleChoice": "Višestruki izbor",

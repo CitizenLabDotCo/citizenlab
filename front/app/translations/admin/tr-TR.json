@@ -1075,7 +1075,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.deleteButtonLabel": "Sil",
   "app.containers.AdminPage.ProjectEdit.survey.editButtonLabel": "Düzenle",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent": "Anket içeriğini düzenleyin",
-  "app.containers.AdminPage.ProjectEdit.survey.emptyTitleErrorMessage": "Tüm diller için bir başlık girin",
   "app.containers.AdminPage.ProjectEdit.survey.fieldLabel": "Yanıt seçenekleri",
   "app.containers.AdminPage.ProjectEdit.survey.fieldTooltip": "Field tooltip content",
   "app.containers.AdminPage.ProjectEdit.survey.multipleChoice": "Çoktan seçmeli",

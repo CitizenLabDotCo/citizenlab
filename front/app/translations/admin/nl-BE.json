@@ -1075,7 +1075,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.deleteButtonLabel": "Verwijder",
   "app.containers.AdminPage.ProjectEdit.survey.editButtonLabel": "Bewerk",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent": "Enquête-inhoud wijzigen",
-  "app.containers.AdminPage.ProjectEdit.survey.emptyTitleErrorMessage": "Voer voor alle talen een titel in",
   "app.containers.AdminPage.ProjectEdit.survey.fieldLabel": "Antwoordmogelijkheden",
   "app.containers.AdminPage.ProjectEdit.survey.fieldTooltip": "Field tooltip content",
   "app.containers.AdminPage.ProjectEdit.survey.multipleChoice": "Meerdere keuzes",
