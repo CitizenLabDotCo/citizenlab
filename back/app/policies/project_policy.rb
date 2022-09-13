@@ -62,6 +62,10 @@ class ProjectPolicy < ApplicationPolicy
     active_moderator?
   end
 
+  def survey_results?
+    active_moderator?
+  end
+
   def create?
     active? && admin?
   end

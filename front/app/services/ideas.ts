@@ -274,15 +274,18 @@ export async function updateIdea(ideaId: string, object: Partial<IIdeaAdd>) {
     ideaId,
     { idea: object }
   );
+
   streams.fetchAllWith({
     dataId: [response.data.relationships.project.data.id],
     apiEndpoint: [
       `${API_PATH}/stats/ideas_count`,
       `${API_PATH}/ideas`,
       `${API_PATH}/ideas/${ideaId}/activities`,
+      `${API_PATH}/analytics`,
     ],
     partialApiEndpoint: [`${API_PATH}/ideas/${ideaId}/images`],
   });
+
   return response;
 }
 
