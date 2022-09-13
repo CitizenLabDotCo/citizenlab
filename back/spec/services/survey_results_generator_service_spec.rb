@@ -7,7 +7,8 @@ require 'rails_helper'
 #     not have a visit_xxx method on the described class.
 #   * Results are generated only for reportable fields (i.e. enabled).
 #   * Missing values for fields are not counted.
-#   * Results are ordered in descending order.
+#   * The order of the results is the same as the field order in the form.
+#   * Results for one field are ordered in descending order.
 #   * Result generation is supported for projects and phases.
 
 RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
@@ -38,8 +39,8 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
       resource: form,
       title_multiloc: {
         'en' => 'What are your favourite pets?',
-        'fr-BE' => 'Quels sont vos animaux de compagnie préférés ?',
-        'nl-BE' => 'Wat zijn je favoriete huisdieren?'
+        'fr-FR' => 'Quels sont vos animaux de compagnie préférés ?',
+        'nl-NL' => 'Wat zijn je favoriete huisdieren?'
       },
       description_multiloc: {}
     )
@@ -49,7 +50,7 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
       :custom_field_option,
       custom_field: multiselect_field,
       key: 'cat',
-      title_multiloc: { 'en' => 'Cat', 'fr-BE' => 'Chat', 'nl-BE' => 'Kat' }
+      title_multiloc: { 'en' => 'Cat', 'fr-FR' => 'Chat', 'nl-NL' => 'Kat' }
     )
   end
   let!(:dog_option) do
@@ -57,7 +58,7 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
       :custom_field_option,
       custom_field: multiselect_field,
       key: 'dog',
-      title_multiloc: { 'en' => 'Dog', 'fr-BE' => 'Chien', 'nl-BE' => 'Hond' }
+      title_multiloc: { 'en' => 'Dog', 'fr-FR' => 'Chien', 'nl-NL' => 'Hond' }
     )
   end
   let!(:cow_option) do
@@ -65,7 +66,7 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
       :custom_field_option,
       custom_field: multiselect_field,
       key: 'cow',
-      title_multiloc: { 'en' => 'Cow', 'fr-BE' => 'Vache', 'nl-BE' => 'Koe' }
+      title_multiloc: { 'en' => 'Cow', 'fr-FR' => 'Vache', 'nl-NL' => 'Koe' }
     )
   end
   let!(:pig_option) do
@@ -73,7 +74,29 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
       :custom_field_option,
       custom_field: multiselect_field,
       key: 'pig',
-      title_multiloc: { 'en' => 'Pig', 'fr-BE' => 'Porc', 'nl-BE' => 'Varken' }
+      title_multiloc: { 'en' => 'Pig', 'fr-FR' => 'Porc', 'nl-NL' => 'Varken' }
+    )
+  end
+  let!(:linear_scale_field) do
+    create(
+      :custom_field_linear_scale,
+      resource: form,
+      title_multiloc: {
+        'en' => 'Do you agree with the vision?',
+        'fr-FR' => "Êtes-vous d'accord avec la vision? ?",
+        'nl-NL' => 'Ben je het eens met de visie?'
+      },
+      maximum: 5,
+      minimum_label_multiloc: {
+        'en' => 'Strongly disagree',
+        'fr-FR' => "Pas du tout d'accord",
+        'nl-NL' => 'Helemaal niet mee eens'
+      },
+      maximum_label_multiloc: {
+        'en' => 'Strongly agree',
+        'fr-FR' => "Tout à fait d'accord",
+        'nl-NL' => 'Strerk mee eens'
+      }
     )
   end
 
@@ -103,6 +126,17 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
       custom_field_values: { text_field.key => 'Pink', multiselect_field.key => %w[dog cat cow] }
     )
     create(:idea, project: project, phases: phases_of_inputs, custom_field_values: {})
+
+    { 1 => 2, 2 => 5, 3 => 7, 4 => 3, 5 => 1 }.each do |value, count|
+      count.times do
+        create(
+          :idea,
+          project: project,
+          phases: phases_of_inputs,
+          custom_field_values: { linear_scale_field.key => value }
+        )
+      end
+    end
   end
 
   describe '#generate' do
@@ -114,20 +148,50 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
               inputType: 'multiselect',
               question: {
                 'en' => 'What are your favourite pets?',
-                'fr-BE' => 'Quels sont vos animaux de compagnie préférés ?',
-                'nl-BE' => 'Wat zijn je favoriete huisdieren?'
+                'fr-FR' => 'Quels sont vos animaux de compagnie préférés ?',
+                'nl-NL' => 'Wat zijn je favoriete huisdieren?'
               },
               totalResponses: 10,
               answers: [
-                { answer: { 'en' => 'Cat', 'fr-BE' => 'Chat', 'nl-BE' => 'Kat' }, responses: 4 },
-                { answer: { 'en' => 'Dog', 'fr-BE' => 'Chien', 'nl-BE' => 'Hond' }, responses: 3 },
-                { answer: { 'en' => 'Cow', 'fr-BE' => 'Vache', 'nl-BE' => 'Koe' }, responses: 2 },
-                { answer: { 'en' => 'Pig', 'fr-BE' => 'Porc', 'nl-BE' => 'Varken' }, responses: 1 }
+                { answer: { 'en' => 'Cat', 'fr-FR' => 'Chat', 'nl-NL' => 'Kat' }, responses: 4 },
+                { answer: { 'en' => 'Dog', 'fr-FR' => 'Chien', 'nl-NL' => 'Hond' }, responses: 3 },
+                { answer: { 'en' => 'Cow', 'fr-FR' => 'Vache', 'nl-NL' => 'Koe' }, responses: 2 },
+                { answer: { 'en' => 'Pig', 'fr-FR' => 'Porc', 'nl-NL' => 'Varken' }, responses: 1 }
+              ]
+            },
+            {
+              inputType: 'linear_scale',
+              question: {
+                'en' => 'Do you agree with the vision?',
+                'fr-FR' => "Êtes-vous d'accord avec la vision? ?",
+                'nl-NL' => 'Ben je het eens met de visie?'
+              },
+              totalResponses: 18,
+              answers: [
+                { answer: { 'en' => '3', 'fr-FR' => '3', 'nl-NL' => '3' }, responses: 7 },
+                { answer: { 'en' => '2', 'fr-FR' => '2', 'nl-NL' => '2' }, responses: 5 },
+                { answer: { 'en' => '4', 'fr-FR' => '4', 'nl-NL' => '4' }, responses: 3 },
+                {
+                  answer: {
+                    'en' => 'Strongly disagree',
+                    'fr-FR' => "Pas du tout d'accord",
+                    'nl-NL' => 'Helemaal niet mee eens'
+                  },
+                  responses: 2
+                },
+                {
+                  answer: {
+                    'en' => 'Strongly agree',
+                    'fr-FR' => "Tout à fait d'accord",
+                    'nl-NL' => 'Strerk mee eens'
+                  },
+                  responses: 1
+                }
               ]
             }
           ]
         },
-        totalSubmissions: 5
+        totalSubmissions: 23
       }
     end
 
@@ -138,6 +202,9 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
       let(:phases_of_inputs) { [] }
 
       it 'returns the results' do
+        # These locales are a prerequisite for the test.
+        expect(AppConfiguration.instance.settings('core', 'locales')).to eq(%w[en fr-FR nl-NL])
+
         expect(generator.generate).to eq expected_result
       end
     end
@@ -150,6 +217,9 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
       let(:phases_of_inputs) { [active_phase] }
 
       it 'returns the results' do
+        # These locales are a prerequisite for the test.
+        expect(AppConfiguration.instance.settings('core', 'locales')).to eq(%w[en fr-FR nl-NL])
+
         expect(generator.generate).to eq expected_result
       end
     end
