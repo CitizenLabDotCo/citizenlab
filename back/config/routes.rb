@@ -125,6 +125,7 @@ Rails.application.routes.draw do
           get 'schema', on: :collection
           get 'json_forms_schema', on: :collection
         end
+        get 'survey_results', on: :member
       end
 
       resources :projects do
@@ -141,6 +142,7 @@ Rails.application.routes.draw do
         end
 
         get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'
+        get 'survey_results', on: :member
       end
 
       resources :projects_allowed_input_topics, only: %i[show create destroy] do
