@@ -41,7 +41,6 @@ import FormattedBudget from 'utils/currency/FormattedBudget';
 import styled from 'styled-components';
 import { fontSizes, colors, isRtl, media } from 'utils/styleUtils';
 import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
-import { getFormActionsConfig } from 'containers/Admin/formBuilder/utils';
 
 const Container = styled.div``;
 
@@ -176,11 +175,9 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   }, []);
 
   if (!isNilOrError(project)) {
-    const projectFormActions = getFormActionsConfig(project, phases);
-    let postingIsEnabled = false;
-    projectFormActions.map(({ postingEnabled }) => {
-      postingIsEnabled = postingEnabled;
-    });
+    const postingIsEnabled =
+      project.attributes.posting_enabled ||
+      currentPhase?.attributes.posting_enabled;
     const projectType = project.attributes.process_type;
     const projectParticipantsCount = project.attributes.participants_count;
     const maxBudget =

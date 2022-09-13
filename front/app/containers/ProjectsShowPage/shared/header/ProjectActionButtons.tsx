@@ -40,7 +40,6 @@ import clHistory from 'utils/cl-router/history';
 import { useLocation } from 'react-router-dom';
 
 import { openSignUpInModal } from 'components/SignUpIn/events';
-import { getFormActionsConfig } from 'containers/Admin/formBuilder/utils';
 
 const Container = styled.div``;
 
@@ -97,11 +96,9 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     return null;
   }
 
-  const projectFormActions = getFormActionsConfig(project, phases);
-  let postingIsEnabled = false;
-  projectFormActions.map(({ postingEnabled }) => {
-    postingIsEnabled = postingEnabled;
-  });
+  const postingIsEnabled =
+    project.attributes.posting_enabled ||
+    currentPhase?.attributes.posting_enabled;
 
   const { enabled, disabledReason } = getSurveyTakingRules({
     project,
