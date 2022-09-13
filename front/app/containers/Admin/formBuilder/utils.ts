@@ -11,6 +11,7 @@ import { isNilOrError } from 'utils/helperUtils';
 type FormActionsConfig = {
   editFormLink: string;
   viewFormLink: string;
+  viewFormResults: string;
   heading?: Multiloc;
   postingEnabled: boolean;
   togglePostingEnabled: () => void;
@@ -34,6 +35,7 @@ export const getFormActionsConfig = (
       {
         editFormLink: `/admin/projects/${project.id}/native-survey/edit`,
         viewFormLink: `/projects/${project.attributes.slug}/ideas/new`,
+        viewFormResults: `/admin/projects/${project.id}/native-survey/results`,
         postingEnabled: project.attributes.posting_enabled,
         togglePostingEnabled: () => {
           updateProject(project.id, {
@@ -47,6 +49,7 @@ export const getFormActionsConfig = (
   return getSurveyPhases(phases).map((phase) => ({
     editFormLink: `/admin/projects/${project.id}/phases/${phase.id}/native-survey/edit`,
     viewFormLink: `/projects/${project.attributes.slug}/ideas/new?phase_id=${phase.id}`,
+    viewFormResults: `/admin/projects/${project.id}/native-survey/results?phase_id=${phase.id}`,
     heading: phase.attributes.title_multiloc,
     postingEnabled: phase.attributes.posting_enabled,
     togglePostingEnabled: () => {

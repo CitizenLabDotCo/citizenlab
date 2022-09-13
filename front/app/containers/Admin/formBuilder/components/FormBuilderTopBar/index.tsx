@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { useFormContext } from 'react-hook-form';
+import React from 'react';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -33,27 +32,22 @@ import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { useParams } from 'react-router-dom';
 
-// services
-import {
-  IFlatCustomField,
-  updateFormCustomFields,
-} from 'services/formCustomFields';
-
 const StyledStatusLabel = styled(StatusLabel)`
   height: 20px;
   margin-bottom: auto;
 `;
 
-const FormBuilderTopBar = () => {
+type FormBuilderTopBarProps = {
+  isSubmitting: boolean;
+};
+
+const FormBuilderTopBar = ({ isSubmitting }: FormBuilderTopBarProps) => {
   const localize = useLocalize();
   const { projectId, phaseId } = useParams() as {
     projectId: string;
     phaseId?: string;
   };
   const project = useProject({ projectId });
-  const [loading, setLoading] = useState(false);
-  const { watch } = useFormContext();
-  const formCustomFields: IFlatCustomField[] = watch('customFields');
   const phase = usePhase(phaseId || null);
 
   if (isNilOrError(project)) {
@@ -108,6 +102,7 @@ const FormBuilderTopBar = () => {
       display="flex"
       background={`${colors.adminContentBackground}`}
       borderBottom={`1px solid ${colors.mediumGrey}`}
+      top="0px"
     >
       <Box
         p="16px"
@@ -163,8 +158,8 @@ const FormBuilderTopBar = () => {
           buttonStyle="primary"
           mx="20px"
           disabled={!project}
-          processing={loading}
-          onClick={save}
+          processing={isSubmitting}
+          type="submit"
         >
           <FormattedMessage {...messages.save} />
         </Button>

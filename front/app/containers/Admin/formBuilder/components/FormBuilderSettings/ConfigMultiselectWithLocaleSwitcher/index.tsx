@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { DndProvider } from 'react-dnd-cjs';
 import HTML5Backend from 'react-dnd-html5-backend-cjs';
+import { get } from 'lodash-es';
 
 // react hook form
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
@@ -17,19 +18,24 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { SectionField } from 'components/admin/Section';
 import { List, SortableRow } from 'components/admin/ResourceList';
+import Error, { TFieldName } from 'components/UI/Error';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import { Multiloc, Locale } from 'typings';
 import messages from './messages';
+
+// Typings
+import { Multiloc, Locale, CLError } from 'typings';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+
 interface Props {
   name: string;
   onSelectedLocaleChange?: (locale: Locale) => void;
   locales: Locale[];
+  allowDeletingAllOptions?: boolean;
 }
 
 const ConfigMultiselectWithLocaleSwitcher = ({
@@ -37,8 +43,15 @@ const ConfigMultiselectWithLocaleSwitcher = ({
   name,
   locales,
   intl: { formatMessage },
+  allowDeletingAllOptions = false,
 }: Props & InjectedIntlProps) => {
-  const { control, setValue } = useFormContext();
+
+  const {
+    control,
+    formState: { errors: formContextErrors },
+    setValue,
+    trigger,
+  } = useFormContext();
   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
 
   // Handles locale change
@@ -77,6 +90,10 @@ const ConfigMultiselectWithLocaleSwitcher = ({
   };
 
   const defaultValues = [{}];
+  const errors = get(formContextErrors, name);
+  const apiError =
+    (errors?.error as string | undefined) && ([errors] as unknown as CLError[]);
+  const validationError = errors?.message as string | undefined;
 
   if (selectedLocale) {
     return (
@@ -85,81 +102,121 @@ const ConfigMultiselectWithLocaleSwitcher = ({
           name={name}
           control={control}
           defaultValue={defaultValues}
-          render={({ field: { ref: _ref, value: choices } }) => {
+          render={({ field: { ref: _ref, value: choices, onBlur } }) => {
+            const canDeleteLastOption =
+              allowDeletingAllOptions || choices.length > 1;
+
             return (
-              <SectionField>
-                <Box display="flex" flexWrap="wrap" marginBottom="12px">
-                  <Box marginTop="4px" marginRight="12px">
-                    <Label>
-                      {formatMessage(messages.fieldLabel)}
-                      <IconTooltip
-                        content={formatMessage(messages.fieldTooltip)}
+              <Box
+                as="fieldset"
+                border="none"
+                onBlur={() => {
+                  onBlur();
+                  trigger();
+                }}
+              >
+                <SectionField>
+                  <Box display="flex" flexWrap="wrap" marginBottom="12px">
+                    <Box marginTop="4px" marginRight="12px">
+                      <Label>
+                        {formatMessage(messages.fieldLabel)}
+                        <IconTooltip
+                          content={formatMessage(messages.fieldTooltip)}
+                        />
+                      </Label>
+                    </Box>
+                    <Box>
+                      <LocaleSwitcher
+                        onSelectedLocaleChange={handleOnSelectedLocaleChange}
+                        locales={!isNilOrError(locales) ? locales : []}
+                        selectedLocale={selectedLocale}
+                        values={{
+                          input_field: choices as Multiloc,
+                        }}
                       />
-                    </Label>
+                    </Box>
                   </Box>
-                  <Box>
-                    <LocaleSwitcher
-                      onSelectedLocaleChange={handleOnSelectedLocaleChange}
-                      locales={!isNilOrError(locales) ? locales : []}
-                      selectedLocale={selectedLocale}
-                      values={{
-                        input_field: choices as Multiloc,
-                      }}
-                    />
-                  </Box>
-                </Box>
-                <DndProvider backend={HTML5Backend}>
-                  <List key={choices?.length}>
-                    {choices?.map((choice, index) => {
-                      return (
-                        <Box key={choice.id}>
-                          <SortableRow
-                            id={choice.id}
-                            index={index}
-                            moveRow={handleDragRow}
-                            dropRow={() => {
-                              // Do nothing, no need to handle dropping a row for now
-                            }}
-                          >
-                            <Box width="300px">
-                              <Input
-                                size="small"
-                                type="text"
-                                value={choice.title_multiloc[selectedLocale]}
-                                onChange={(value) => {
-                                  const updatedChoices = choices;
-                                  updatedChoices[index].title_multiloc[
-                                    selectedLocale
-                                  ] = value;
-                                  setValue(name, updatedChoices);
-                                }}
-                              />
-                            </Box>
-                            <Button
-                              margin="0px"
-                              padding="0px"
-                              buttonStyle="text"
-                              aria-label={formatMessage(messages.removeOption)}
-                              onClick={() => removeOption(choices, name, index)}
+                  <DndProvider backend={HTML5Backend}>
+                    <List key={choices?.length}>
+                      {choices?.map((choice, index) => {
+                        return (
+                          <Box key={choice.id}>
+                            <SortableRow
+                              id={choice.id}
+                              index={index}
+                              moveRow={handleDragRow}
+                              dropRow={() => {
+                                // Do nothing, no need to handle dropping a row for now
+                              }}
                             >
-                              <Icon name="trash" fill="grey" padding="0px" />
-                            </Button>
-                          </SortableRow>
-                        </Box>
-                      );
-                    })}
-                  </List>
-                </DndProvider>
-                <Button
-                  icon="plus-circle"
-                  buttonStyle="secondary"
-                  onClick={() => addOption(choices, name)}
-                  text={formatMessage(messages.addAnswer)}
-                />
-              </SectionField>
+                              <Box width="300px">
+                                <Input
+                                  size="small"
+                                  type="text"
+                                  value={choice.title_multiloc[selectedLocale]}
+                                  onChange={(value) => {
+                                    const updatedChoices = choices;
+                                    updatedChoices[index].title_multiloc[
+                                      selectedLocale
+                                    ] = value;
+                                    setValue(name, updatedChoices);
+                                  }}
+                                />
+                              </Box>
+                              {canDeleteLastOption && (
+                                <Button
+                                  margin="0px"
+                                  padding="0px"
+                                  buttonStyle="text"
+                                  aria-label={formatMessage(
+                                    messages.removeOption
+                                  )}
+                                  onClick={() => {
+                                    removeOption(choices, name, index);
+                                    trigger();
+                                  }}
+                                >
+                                  <Icon
+                                    name="trash"
+                                    fill="grey"
+                                    padding="0px"
+                                  />
+                                </Button>
+                              )}
+                            </SortableRow>
+                          </Box>
+                        );
+                      })}
+                    </List>
+                  </DndProvider>
+                  <Button
+                    icon="plus-circle"
+                    buttonStyle="secondary"
+                    onClick={() => addOption(choices, name)}
+                    text={formatMessage(messages.addAnswer)}
+                  />
+                </SectionField>
+              </Box>
             );
           }}
         />
+        {validationError && (
+          <Error
+            marginTop="8px"
+            marginBottom="8px"
+            text={validationError}
+            scrollIntoView={false}
+          />
+        )}
+        {apiError && (
+          <Error
+            fieldName={name as TFieldName}
+            apiErrors={apiError}
+            marginTop="8px"
+            marginBottom="8px"
+            scrollIntoView={false}
+          />
+        )}
       </>
     );
   }

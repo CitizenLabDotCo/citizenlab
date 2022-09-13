@@ -19,6 +19,12 @@ import {
   IFlatCreateCustomField,
 } from 'services/formCustomFields';
 
+// Hooks
+import useLocale from 'hooks/useLocale';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+
 const DraggableElement = styled.div`
   cursor: move;
 `;
@@ -31,6 +37,10 @@ const FormBuilderToolbox = ({
   intl: { formatMessage },
   onAddField,
 }: FormBuilderToolboxProps & InjectedIntlProps) => {
+  const locale = useLocale();
+
+  if (isNilOrError(locale)) return null;
+
   const addAnswer = (inputType: ICustomFieldInputType) => {
     onAddField({
       id: `${Math.floor(Date.now() * Math.random())}`,
@@ -38,7 +48,9 @@ const FormBuilderToolbox = ({
       description_multiloc: {},
       input_type: inputType,
       required: false,
-      title_multiloc: {},
+      title_multiloc: {
+        [locale]: '',
+      },
       maximum_label_multiloc: {},
       minimum_label_multiloc: {},
       maximum: 5,
@@ -85,7 +97,7 @@ const FormBuilderToolbox = ({
             onClick={() => addAnswer('text')}
           />
           <ToolboxItem
-            icon="info"
+            icon="multiple-choice"
             label={formatMessage(messages.multipleChoice)}
             onClick={() => addAnswer('multiselect')}
           />

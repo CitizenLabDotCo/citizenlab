@@ -56,7 +56,10 @@ const FormFields = ({
   handleDragRow,
   selectedFieldId,
 }: FormFieldsProps) => {
-  const { watch } = useFormContext();
+  const {
+    watch,
+    formState: { errors },
+  } = useFormContext();
   const formCustomFields: IFlatCustomField[] = watch('customFields');
 
   return (
@@ -64,10 +67,14 @@ const FormFields = ({
       <Box p="32px" height="100%" overflowY="auto">
         <List key={formCustomFields.length}>
           {formCustomFields.map((field, index) => {
-            const border =
-              selectedFieldId === field.id
-                ? `1px solid ${colors.clBlueLight}`
-                : 'none';
+            const hasErrors = !!errors.customFields?.[index];
+            let border = 'none';
+            if (hasErrors) {
+              border = '1px solid red';
+            } else if (selectedFieldId === field.id) {
+              border = `1px solid ${colors.clBlueLight}`;
+            }
+
             return (
               <Box border={border} key={field.id}>
                 <SortableRow
