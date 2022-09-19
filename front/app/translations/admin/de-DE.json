@@ -1564,7 +1564,7 @@
   "app.containers.admin.ideaStatuses.form.viewedFieldCodeDescription": "Gesehen, aber noch nicht weiterverarbeitet",
   "app.containers.admin.ideaStatuses.form.viewedFieldCodeTitle": "Angesehen",
   "app.containers.admin.ideas.all.inputManagerMetaDescription": "Verwalten Sie Eingaben und Status.",
-  "app.containers.admin.ideas.all.inputManagerMetaTitle": "Eintragsmanager | Beteiligungsplattform von {orgName}",
+  "app.containers.admin.ideas.all.inputManagerMetaTitle": "Beitragsmanager | Beteiligungsplattform {orgName}",
   "app.containers.admin.ideas.all.inputManagerPageSubtitle": "Feedback geben, Themen hinzufügen und Beiträge von einem Projekt in ein anderes verschieben",
   "app.containers.admin.ideas.all.inputManagerPageTitle": "Beitragsmanager",
   "app.containers.admin.ideas.all.tabManage": "Bearbeiten",
