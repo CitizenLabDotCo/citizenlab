@@ -39,29 +39,8 @@ describe('matomo', () => {
     });
 
     it('registers page changes', () => {
-      eventEmitter.emit<any>('destinationConsentChanged', { matomo: true });
       trackPage('/en');
       trackPage('/en/projects');
-
-      expect(trackPageChange).toHaveBeenCalledTimes(2);
-      expect(trackPageChange).toHaveBeenCalledWith('/en');
-      expect(trackPageChange).toHaveBeenCalledWith('/en/projects');
-    });
-  });
-
-  describe('with consent given later', () => {
-    it('calls setupMatomo when consent is given', () => {
-      expect(setupMatomo).toHaveBeenCalledTimes(0);
-      eventEmitter.emit<any>('destinationConsentChanged', { matomo: true });
-      expect(setupMatomo).toHaveBeenCalledTimes(1);
-    });
-
-    it('registers page changes when consent is given', () => {
-      trackPage('/en');
-      trackPage('/en/projects');
-      expect(trackPageChange).not.toHaveBeenCalled();
-
-      eventEmitter.emit<any>('destinationConsentChanged', { matomo: true });
 
       expect(trackPageChange).toHaveBeenCalledTimes(2);
       expect(trackPageChange).toHaveBeenCalledWith('/en');
