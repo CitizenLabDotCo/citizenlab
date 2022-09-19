@@ -38,7 +38,7 @@ export default function useHomepageSettingsFeatureFlag({
 
   // It only makes sense to have appConfigSetting if there's an appConfigSettingName
   const appConfigSetting = appSettingNameandConfigExist
-    ? appConfig.data.attributes.settings?.[appConfigSettingName]
+    ? appConfig.attributes.settings?.[appConfigSettingName]
     : null;
 
   // if the named setting is enabled in homepageSettings

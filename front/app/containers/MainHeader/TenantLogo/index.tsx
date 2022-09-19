@@ -34,7 +34,7 @@ const TenantLogo = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const appConfiguration = useAppConfiguration();
 
   if (!isNilOrError(appConfiguration)) {
-    const tenantLogo = appConfiguration.data.attributes.logo?.medium;
+    const tenantLogo = appConfiguration.attributes.logo?.medium;
 
     if (tenantLogo) {
       return (
