@@ -24,12 +24,8 @@ import { isNilOrError } from 'utils/helperUtils';
 // typings
 import { InsertConfigurationOptions, ITab } from 'typings';
 
-interface Props {
-  children: JSX.Element;
-}
-
 export const DashboardsPage = memo(
-  ({ intl: { formatMessage } }: Props & InjectedIntlProps) => {
+  ({ intl: { formatMessage } }: InjectedIntlProps) => {
     const authUser = useAuthUser();
 
     const [tabs, setTabs] = useState<ITab[]>([
