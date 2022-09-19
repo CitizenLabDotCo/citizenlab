@@ -1,7 +1,8 @@
 import React from 'react';
 
-const Visitors = () => {
-  return <div>Hello!</div>;
-};
+// components
+import { Box } from '@citizenlab/cl2-component-library';
+
+const Visitors = () => <Box width="100%">Bla</Box>;
 
 export default Visitors;
