@@ -1582,6 +1582,7 @@
   "app.containers.admin.project.permissions.viewingRightsTitle": "Who can see this project?",
   "app.modules.commercial.analytics.admin.components.PostFeedback.goToInputManager": "Go to Input Manager",
   "app.modules.commercial.analytics.admin.components.PostFeedback.inputs": "Inputs",
+  "app.modules.commercial.analytics.admin.components.Tab": "Visitors",
   "app.modules.commercial.customizable_navbar.admin.components.NavbarTitleField.emptyNavbarItemTitleError": "The 'Name in navbar' field is required. If your platform has multiple languages, check that all languages are filled in.",
   "app.modules.commercial.customizable_navbar.admin.components.NavbarTitleField.navbarItemTitle": "Name in navbar",
   "app.modules.commercial.customizable_navbar.admin.components.NavbarTitleField.savePage": "Save page",
