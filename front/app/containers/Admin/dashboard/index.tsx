@@ -57,8 +57,6 @@ export const DashboardsPage = memo(
       ) {
         setTabs(moderatorTabs);
       }
-
-      return () => setTabs([]);
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [authUser]);
 
