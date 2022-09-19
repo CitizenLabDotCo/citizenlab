@@ -55,7 +55,7 @@ const SettingsRegistrationTab = (_props: Props) => {
 
   useEffect(() => {
     if (!isNilOrError(appConfig)) {
-      setLatestAppConfigSettings(appConfig.data.attributes.settings);
+      setLatestAppConfigSettings(appConfig.attributes.settings);
     }
   }, [appConfig]);
 
