@@ -132,7 +132,7 @@ const EditCause = memo<Props & InjectedIntlProps & WithRouterProps>((props) => {
       updateCause(causeId, {
         description_multiloc,
         title_multiloc,
-        image: image?.base64,
+        image: image?.base64 || null,
       })
         .then(() => {
           setProcessing(false);

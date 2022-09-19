@@ -46,7 +46,7 @@ const SlugInput = ({
   const appConfig = useAppConfiguration();
 
   if (!isNilOrError(locale) && !isNilOrError(appConfig)) {
-    const hostName = appConfig.data.attributes.host;
+    const hostName = appConfig.attributes.host;
     const previewUrl = slug
       ? `${hostName}/${locale}/${pathnameWithoutSlug}/${slug}`
       : null;

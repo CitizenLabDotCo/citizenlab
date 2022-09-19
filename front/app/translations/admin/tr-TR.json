@@ -630,6 +630,7 @@
   "app.containers.AdminPage.DashboardPage.components.Field.incomplete": "Eksik",
   "app.containers.AdminPage.DashboardPage.components.Field.numberOfTotalResidents": "Toplam ikamet eden kişi sayısı",
   "app.containers.AdminPage.DashboardPage.components.Field.options": "Seçenekler",
+  "app.containers.AdminPage.DashboardPage.components.Field.save": "Kaydet",
   "app.containers.AdminPage.DashboardPage.components.Field.saved": "Kaydedildi",
   "app.containers.AdminPage.DashboardPage.components.Field.setAgeGroups": "Temel alınacak verileri girmeye başlamak için lütfen önce {setAgeGroupsLink}.",
   "app.containers.AdminPage.DashboardPage.components.Field.setAgeGroupsLink": "yaş grupları belirleyin",

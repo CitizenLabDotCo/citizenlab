@@ -376,7 +376,9 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                   description_preview_multiloc: changedShortDescriptionMultiloc
                     ? shortDescriptionMultiloc
                     : undefined,
-                  header_bg: changedHeaderBg ? headerBg?.base64 : undefined,
+                  header_bg: changedHeaderBg
+                    ? headerBg?.base64 || null
+                    : undefined,
                   admin_publication_attributes: {
                     publication_status: publicationStatus,
                   },

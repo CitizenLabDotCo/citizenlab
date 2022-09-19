@@ -34,8 +34,7 @@ const AreaTermConfig = ({ className }: Props) => {
     });
   };
 
-  const { areas_term, area_term } =
-    appConfiguration.data.attributes.settings.core;
+  const { areas_term, area_term } = appConfiguration.attributes.settings.core;
 
   return (
     <TerminologyConfig
