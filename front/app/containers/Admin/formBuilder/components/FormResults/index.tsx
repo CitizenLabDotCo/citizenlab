@@ -41,10 +41,16 @@ const StyledBox = styled(Box)`
 `;
 
 const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
-  const { projectId, phaseId } = useParams() as {
+  const { projectId } = useParams() as {
     projectId: string;
-    phaseId?: string;
   };
+
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  let phaseId = urlParams.get('phase_id');
+  if (phaseId === null) {
+    phaseId = '';
+  }
 
   const formResults = useFormResults({
     projectId,
