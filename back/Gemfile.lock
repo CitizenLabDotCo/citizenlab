@@ -792,7 +792,9 @@ GEM
       ruby2_keywords (~> 0.0.1)
     netrc (0.11.0)
     nio4r (2.5.8)
-    nokogiri (1.13.8-aarch64-linux)
+    nokogiri (1.13.8-x86_64-darwin)
+      racc (~> 1.4)
+    nokogiri (1.13.8-x86_64-linux)
       racc (~> 1.4)
     nori (2.6.0)
     oauth2 (1.4.9)
@@ -1118,6 +1120,7 @@ GEM
     validate_url (1.0.13)
       activemodel (>= 3.0.0)
       public_suffix
+    vcr (6.1.0)
     wasabi (3.7.0)
       addressable
       httpi (~> 2.0)
@@ -1139,7 +1142,8 @@ GEM
     zeitwerk (2.6.0)
 
 PLATFORMS
-  aarch64-linux
+  x86_64-darwin-21
+  x86_64-linux
 
 DEPENDENCIES
   actionpack-cloudfront!
@@ -1284,9 +1288,10 @@ DEPENDENCIES
   texting!
   user_confirmation!
   user_custom_fields!
+  vcr (~> 6.1)
   verification!
   volunteering!
   webmock (~> 3.14)
 
 BUNDLED WITH
-   2.3.20
+   2.3.16

@@ -91,6 +91,31 @@ module Matomo
       )
     end
 
+    # @param [String] site_id
+    # @param [String] period
+    # @param [String] date
+    # @param [Integer,nil] filter_limit
+    # @param [Integer,nil] filter_offset
+    def get_last_visits_details(site_id, period, date, filter_limit: nil, filter_offset: nil)
+      query = {
+        'module' => 'API',
+        'method' => 'Live.getLastVisitsDetails',
+        'idSite' => site_id,
+        'period' => period,
+        'date' => date,
+        'filter_limit' => filter_limit,
+        'filter_offset' => filter_offset,
+        'format' => 'JSON'
+      }.compact
+
+      HTTParty.get(
+        @index_php_uri,
+        query: query,
+        headers: headers,
+        body: authorization_body
+      )
+    end
+
     def headers
       { 'Content-Type' => 'application/x-www-form-urlencoded' }
     end
