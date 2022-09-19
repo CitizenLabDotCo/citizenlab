@@ -299,8 +299,8 @@ export async function updateAppConfiguration(
   return tenant;
 }
 
-export const coreSettings = (appConfiguration: IAppConfiguration) =>
-  appConfiguration.data.attributes.settings.core;
+export const coreSettings = (appConfiguration: IAppConfigurationData) =>
+  appConfiguration.attributes.settings.core;
 
 type TCurrency = TCustomCurrency | TCountryCurrency;
 type TCustomCurrency =

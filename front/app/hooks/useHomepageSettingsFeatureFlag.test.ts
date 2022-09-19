@@ -17,10 +17,8 @@ jest.mock('hooks/useHomepageSettings', () => {
 
 jest.mock('hooks/useAppConfiguration', () =>
   jest.fn(() => ({
-    data: {
-      attributes: {
-        settings: { events_widget: { allowed: true } },
-      },
+    attributes: {
+      settings: { events_widget: { allowed: true } },
     },
   }))
 );
@@ -69,10 +67,8 @@ describe('useHomepageSettingsFeatureFlag', () => {
 
   it('should return false when widget is enabled but not allowed', () => {
     (useAppConfiguration as jest.Mock).mockReturnValue({
-      data: {
-        attributes: {
-          settings: { events_widget: { allowed: false } },
-        },
+      attributes: {
+        settings: { events_widget: { allowed: false } },
       },
     });
     const { result } = renderHook(() =>
@@ -89,10 +85,8 @@ describe('useHomepageSettingsFeatureFlag', () => {
       data: { attributes: { events_widget_enabled: false } },
     });
     (useAppConfiguration as jest.Mock).mockReturnValue({
-      data: {
-        attributes: {
-          settings: { events_widget: { allowed: false } },
-        },
+      attributes: {
+        settings: { events_widget: { allowed: false } },
       },
     });
     const { result } = renderHook(() =>
