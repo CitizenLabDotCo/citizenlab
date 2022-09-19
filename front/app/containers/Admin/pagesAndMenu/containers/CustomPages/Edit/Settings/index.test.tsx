@@ -5,7 +5,7 @@ import EditCustomPageSettings from './';
 jest.mock('utils/cl-intl');
 jest.mock('hooks/useLocale');
 jest.mock('hooks/useAppConfiguration', () => () => ({
-  data: { attributes: { name: 'orgName', host: 'localhost' } },
+  attributes: { name: 'orgName', host: 'localhost' },
 }));
 
 jest.mock('hooks/useCustomPage', () =>
