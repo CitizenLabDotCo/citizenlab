@@ -3,7 +3,11 @@ import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship, Multiloc } from 'typings';
 
 // We can add more input types here when we support them
-export type ICustomFieldInputType = 'text' | 'multiselect';
+export type ICustomFieldInputType =
+  | 'text'
+  | 'multiselect'
+  | 'number'
+  | 'linear_scale';
 export type IOptionsType = {
   id?: string;
   title_multiloc: Multiloc;
@@ -19,6 +23,9 @@ export interface IAttributes {
   ordering: number;
   created_at: string;
   updated_at: string;
+  minimum_label_multiloc: Multiloc;
+  maximum_label_multiloc: Multiloc;
+  maximum: number;
 }
 
 export interface ICustomFieldResponse {
@@ -57,6 +64,9 @@ export type IFlatCreateCustomField = Optional<
   | 'ordering'
   | 'created_at'
   | 'updated_at'
+  | 'minimum_label_multiloc'
+  | 'maximum_label_multiloc'
+  | 'maximum'
 > & {
   isLocalOnly: boolean;
 };
@@ -121,6 +131,42 @@ export function formCustomFieldOptionStream(
 
   return streams.get<IFormCustomFieldOption>({
     apiEndpoint,
+    ...streamParams,
+  });
+}
+
+export interface Answer {
+  answer: Multiloc;
+  responses: number;
+}
+
+export interface Result {
+  inputType: string;
+  question: Multiloc;
+  totalResponses: number;
+  answers: Answer[];
+}
+
+export interface SurveyResultData {
+  results: Result[];
+  totalSubmissions: number;
+}
+
+export interface SurveyResultsType {
+  data: SurveyResultData;
+}
+
+export function formCustomFieldsResultsStream(
+  projectId: string,
+  streamParams: IStreamParams | null = null,
+  phaseId?: string
+) {
+  const apiEndpoint = phaseId
+    ? `${API_PATH}/phases/${phaseId}/survey_results`
+    : `${API_PATH}/projects/${projectId}/survey_results`;
+  return streams.get<SurveyResultsType>({
+    apiEndpoint,
+    cacheStream: false,
     ...streamParams,
   });
 }

@@ -371,9 +371,9 @@ resource 'Phases' do
                     { answer: { en: 'Dog' }, responses: 1 }
                   ]
                 }
-              ]
-            },
-            totalSubmissions: 2
+              ],
+              totalSubmissions: 2
+            }
           }
         )
       end

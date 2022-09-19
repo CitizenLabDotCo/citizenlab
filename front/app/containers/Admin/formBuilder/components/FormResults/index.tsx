@@ -2,6 +2,7 @@ import React from 'react';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import { get } from 'lodash-es';
+import { useParams } from 'react-router-dom';
 
 // components
 import {
@@ -23,9 +24,10 @@ import styled from 'styled-components';
 
 // utils
 import { media } from 'utils/styleUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
-// Dummy data
-import { surveyResults } from './dummySurveyResults';
+// hooks
+import useFormResults from 'hooks/useFormResults';
 
 const StyledBox = styled(Box)`
   display: grid;
@@ -39,20 +41,40 @@ const StyledBox = styled(Box)`
 `;
 
 const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
-  const {
-    data: { totalSubmissions, results },
-  } = surveyResults;
+  const { projectId } = useParams() as {
+    projectId: string;
+  };
+
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  let phaseId = urlParams.get('phase_id');
+  if (phaseId === null) {
+    phaseId = '';
+  }
+
+  const formResults = useFormResults({
+    projectId,
+    phaseId,
+  });
+
+  if (isNilOrError(formResults)) {
+    return null;
+  }
+
+  const { totalSubmissions, results } = formResults;
 
   return (
     <Box width="100%">
       <Box width="100%" display="flex" alignItems="center">
         <Box width="100%">
           <Title variant="h2">{formatMessage(messages.surveyResults)}</Title>
-          <Text variant="bodyM" color="clBlueDarker">
-            {formatMessage(messages.totalSurveyResponses, {
-              count: totalSubmissions,
-            })}
-          </Text>
+          {totalSubmissions && (
+            <Text variant="bodyM" color="clBlueDarker">
+              {formatMessage(messages.totalSurveyResponses, {
+                count: totalSubmissions,
+              })}
+            </Text>
+          )}
         </Box>
         <Box>
           <Button
@@ -109,7 +131,7 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
                       bgColor={colors.adminTextColor}
                       completed={percentage}
                       leftLabel={answer}
-                      rightLabel={`${percentage}% (${responses}) choices`}
+                      rightLabel={`${percentage}% (${responses} choices)`}
                     />
                   );
                 })}

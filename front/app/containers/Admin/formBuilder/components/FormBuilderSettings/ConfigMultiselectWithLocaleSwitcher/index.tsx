@@ -45,6 +45,7 @@ const ConfigMultiselectWithLocaleSwitcher = ({
   intl: { formatMessage },
   allowDeletingAllOptions = false,
 }: Props & InjectedIntlProps) => {
+
   const {
     control,
     formState: { errors: formContextErrors },
