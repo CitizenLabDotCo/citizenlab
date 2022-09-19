@@ -60,6 +60,7 @@ group :development, :test do
   gem 'simplecov'
   gem 'simplecov-rcov'
   gem 'test-prof', '~> 1.0'
+  gem 'vcr', '~> 6.1'
 end
 
 group :development do

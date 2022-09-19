@@ -1,11 +1,17 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'vcr'
+
+VCR.configure do |config|
+  config.cassette_library_dir = Matomo::Engine.root / 'spec' / 'fixtures' / 'vcr_cassettes'
+  config.hook_into :webmock
+end
 
 RSpec.describe Matomo::Client do
   subject(:service) { described_class.new(base_uri, auth_token) }
 
-  let(:base_uri) { 'matomo-host.citizenlab.co' }
+  let(:base_uri) { 'https://demo.matomo.cloud' }
   let(:auth_token) { 'auth-token' }
 
   describe '.new' do
@@ -63,6 +69,26 @@ RSpec.describe Matomo::Client do
           'visits[1][idvisit]' => 4,
           'token_auth' => auth_token
         })
+      end
+    end
+  end
+
+  describe '#get_last_visits_details' do
+    it 'retrieves visits details' do
+      site_id = 1
+      period = 'day'
+      date = 'yesterday'
+      filter_limit = 3
+      filter_offset = 2
+
+      VCR.use_cassette('matomo') do
+        response = service.get_last_visits_details(
+          site_id, period, date, filter_limit: filter_limit, filter_offset: filter_offset
+        )
+
+        expect(response.code).to eq(200)
+        expect(response.pluck('idSite')).to all eq('1')
+        expect(response.count).to eq(filter_limit)
       end
     end
   end
