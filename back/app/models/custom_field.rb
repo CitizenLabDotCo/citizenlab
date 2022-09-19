@@ -52,6 +52,7 @@ class CustomField < ApplicationRecord
   before_validation :set_default_enabled
   before_validation :generate_key, on: :create
   before_validation :sanitize_description_multiloc
+  after_create :create_domicile_options, if: :domicile?
 
   scope :with_resource_type, ->(resource_type) { where(resource_type: resource_type) }
   scope :enabled, -> { where(enabled: true) }
@@ -81,6 +82,45 @@ class CustomField < ApplicationRecord
     required
   end
 
+  def domicile?
+    key == 'domicile' && code == 'domicile'
+  end
+
+  def accept(visitor)
+    case input_type
+    when 'text'
+      visitor.visit_text self
+    when 'number'
+      visitor.visit_number self
+    when 'multiline_text'
+      visitor.visit_multiline_text self
+    when 'html'
+      visitor.visit_html self
+    when 'text_multiloc'
+      visitor.visit_text_multiloc self
+    when 'multiline_text_multiloc'
+      visitor.visit_multiline_text_multiloc self
+    when 'html_multiloc'
+      visitor.visit_html_multiloc self
+    when 'select'
+      visitor.visit_select self
+    when 'multiselect'
+      visitor.visit_multiselect self
+    when 'checkbox'
+      visitor.visit_checkbox self
+    when 'date'
+      visitor.visit_date self
+    when 'files'
+      visitor.visit_files self
+    when 'image_files'
+      visitor.visit_image_files self
+    when 'point'
+      visitor.visit_point self
+    else
+      raise "Unsupported input type: #{input_type}"
+    end
+  end
+
   private
 
   def set_default_enabled
@@ -90,7 +130,10 @@ class CustomField < ApplicationRecord
   def generate_key
     return if key
 
-    self.key = CustomFieldService.new.generate_key(self, title_multiloc.values.first) do |key_proposal|
+    title = title_multiloc.values.first
+    return unless title
+
+    self.key = CustomFieldService.new.generate_key(self, title) do |key_proposal|
       self.class.find_by(key: key_proposal, resource_type: resource_type)
     end
   end
@@ -100,6 +143,19 @@ class CustomField < ApplicationRecord
     self.description_multiloc = service.sanitize_multiloc description_multiloc, %i[decoration link list title]
     self.description_multiloc = service.remove_multiloc_empty_trailing_tags description_multiloc
     self.description_multiloc = service.linkify_multiloc description_multiloc
+  end
+
+  def create_domicile_options
+    Area.all.map(&:create_custom_field_option)
+    create_somewhere_else_domicile_option
+  end
+
+  def create_somewhere_else_domicile_option
+    title_multiloc = CL2_SUPPORTED_LOCALES.index_with do |locale|
+      I18n.t('custom_field_options.domicile.outside', locale: locale)
+    end
+
+    options.create!(title_multiloc: title_multiloc)
   end
 end
 
