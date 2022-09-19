@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { MouseEvent, KeyboardEvent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { IInitiativeAssignedToYouNotificationData } from 'services/notifications';
 
@@ -16,7 +16,7 @@ type Props = {
 };
 
 const InitiativeAssignedToYouNotification = ({ notification }: Props) => {
-  const onClickUserName = (event) => {
+  const onClickUserName = (event: MouseEvent | KeyboardEvent) => {
     event.stopPropagation();
   };
 
