@@ -118,9 +118,7 @@ const AttachmentsForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
             </Button>
           }
         >
-          <SectionField>
-            <Feedback successMessage={formatMessage(messages.messageSuccess)} />
-          </SectionField>
+          <Feedback successMessage={formatMessage(messages.messageSuccess)} />
           <SectionField>
             <Label htmlFor="local_page_files">
               <FormattedMessage {...messages.attachmentUploadLabel} />
