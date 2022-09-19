@@ -86,10 +86,8 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     project_params = permitted_attributes(Project)
 
     @project.assign_attributes project_params
-    if project_params.key?(:header_bg) && project_params[:header_bg].nil?
-      # setting the header image attribute to nil will not remove the header image
-      @project.remove_header_bg!
-    end
+    remove_image_if_requested!(@project, project_params, :header_bg)
+
     sidefx.before_update(@project, current_user)
 
     if save_project

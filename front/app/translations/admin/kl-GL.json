@@ -630,6 +630,7 @@
   "app.containers.AdminPage.DashboardPage.components.Field.incomplete": "Naammassineqanngitsoq",
   "app.containers.AdminPage.DashboardPage.components.Field.numberOfTotalResidents": "Najugaqartut amerlassusaat katillugit",
   "app.containers.AdminPage.DashboardPage.components.Field.options": "Periarfissat",
+  "app.containers.AdminPage.DashboardPage.components.Field.save": "Toqqoruk",
   "app.containers.AdminPage.DashboardPage.components.Field.saved": "Toqqoqqapput",
   "app.containers.AdminPage.DashboardPage.components.Field.setAgeGroups": "Tunngaviusumik paasissutissat nalunaarsorniarlugit {setAgeGroupsLink} toqqakkit.",
   "app.containers.AdminPage.DashboardPage.components.Field.setAgeGroupsLink": "ukioqatigiiaat toqqakkit",

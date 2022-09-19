@@ -134,6 +134,15 @@ resource 'ProjectFolder' do
         expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
         expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :publication_status)).to eq 'archived'
       end
+
+      describe do
+        example 'The header image can be removed' do
+          project_folder.update!(header_bg: Rails.root.join('spec/fixtures/header.jpg').open)
+          expect(project_folder.reload.header_bg_url).to be_present
+          do_request project_folder: { header_bg: nil }
+          expect(project_folder.reload.header_bg_url).to be_nil
+        end
+      end
     end
 
     delete 'web_api/v1/project_folders/:id' do

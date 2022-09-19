@@ -146,7 +146,7 @@ const PageForm = ({
                         currentPageURL: (
                           <em>
                             <b>
-                              {appConfig.data.attributes.host}/{locale}
+                              {appConfig.attributes.host}/{locale}
                               /pages/{page.attributes.slug}
                             </b>
                           </em>
@@ -174,7 +174,7 @@ const PageForm = ({
               <b>
                 <FormattedMessage {...messages.resultingPageURL} />
               </b>
-              : {appConfig.data.attributes.host}/{locale}/pages/
+              : {appConfig.attributes.host}/{locale}/pages/
               {methods.getValues('slug')}
             </Text>
           </SectionField>

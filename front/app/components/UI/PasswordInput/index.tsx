@@ -50,7 +50,7 @@ const PasswordInput = ({
 
   if (!isNilOrError(tenant)) {
     const minimumPasswordLength =
-      tenant.data.attributes.settings.password_login?.minimum_length ||
+      tenant.attributes.settings.password_login?.minimum_length ||
       DEFAULT_MINIMUM_PASSWORD_LENGTH;
 
     return (

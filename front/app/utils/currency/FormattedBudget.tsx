@@ -28,7 +28,7 @@ const FormattedBudget = ({
   const appConfiguration = useAppConfiguration();
 
   if (!isNilOrError(appConfiguration)) {
-    const currency = appConfiguration.data.attributes.settings.core.currency;
+    const currency = appConfiguration.attributes.settings.core.currency;
 
     // custom implementations for custom currencies
     // see appConfiguration.ts for all currencies

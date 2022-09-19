@@ -630,6 +630,7 @@
   "app.containers.AdminPage.DashboardPage.components.Field.incomplete": "Nepotpuno",
   "app.containers.AdminPage.DashboardPage.components.Field.numberOfTotalResidents": "Ukupan broj rezidenata",
   "app.containers.AdminPage.DashboardPage.components.Field.options": "Solucije",
+  "app.containers.AdminPage.DashboardPage.components.Field.save": "Sačuvajte",
   "app.containers.AdminPage.DashboardPage.components.Field.saved": "Sačuvano",
   "app.containers.AdminPage.DashboardPage.components.Field.setAgeGroups": "Najpre {setAgeGroupsLink} da biste počeli sa unosom osnovnih podataka.",
   "app.containers.AdminPage.DashboardPage.components.Field.setAgeGroupsLink": "postavi starosne grupe",

@@ -51,4 +51,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.components.Field.birthyearCustomTitle',
     defaultMessage: 'Age groups (Year of birth)',
   },
+  save: {
+    id: 'app.containers.AdminPage.DashboardPage.components.Field.save',
+    defaultMessage: 'Save',
+  },
 });
