@@ -2,9 +2,9 @@ import React from 'react';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import ProjectFilter from './ProjectFilter';
-import GroupFilter from './GroupFilter';
-import TopicFilter from './TopicFilter';
+import ProjectFilter from '../components/filters/ProjectFilter';
+import GroupFilter from '../components/filters/GroupFilter';
+import TopicFilter from '../components/filters/TopicFilter';
 
 // typings
 import { IOption } from 'typings';

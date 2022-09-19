@@ -4,18 +4,9 @@ import { adopt } from 'react-adopt';
 import moment, { Moment } from 'moment';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
-import {
-  GraphsContainer,
-  ControlBar,
-  Column,
-} from 'components/admin/GraphWrappers';
-import ResolutionControl, {
-  IResolution,
-} from 'components/admin/ResolutionControl';
+import { GraphsContainer, Column } from 'components/admin/GraphWrappers';
 import Outlet from 'components/Outlet';
-import ProjectFilter from '../components/ChartFilters/ProjectFilter';
-import TimeControl from '../components/TimeControl';
+import ChartFilters from './ChartFilters';
 import LineBarChart from './charts/LineBarChart';
 import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
 import SelectableResourceByProjectChart from './charts/SelectableResourceByProjectChart';
@@ -25,6 +16,7 @@ import IdeasByStatusChart from './charts/IdeasByStatusChart';
 
 // typings
 import { IOption } from 'typings';
+import { IResolution } from 'components/admin/ResolutionControl';
 
 // tracking
 import { injectTracks } from 'utils/analytics';
@@ -182,29 +174,15 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
     if (projects && !isNilOrError(projectsList)) {
       return (
         <>
-          <ControlBar>
-            <Box display="flex" flexDirection="row">
-              <TimeControl
-                startAtMoment={startAtMoment}
-                endAtMoment={endAtMoment}
-                onChange={this.handleChangeTimeRange}
-              />
-              <Box ml="16px" mr="16px" maxWidth="320px">
-                <ProjectFilter
-                  currentProjectFilter={currentProjectFilter}
-                  hideLabel
-                  placeholder={formatMessage(messages.selectProject)}
-                  width="100%"
-                  padding="11px"
-                  onProjectFilter={this.handleOnProjectFilter}
-                />
-              </Box>
-            </Box>
-            <ResolutionControl
-              value={resolution}
-              onChange={this.handleChangeResolution}
-            />
-          </ControlBar>
+          <ChartFilters
+            startAtMoment={startAtMoment}
+            endAtMoment={endAtMoment}
+            currentProjectFilter={currentProjectFilter}
+            resolution={resolution}
+            onChangeTimeRange={this.handleChangeTimeRange}
+            onProjectFilter={this.handleOnProjectFilter}
+            onChangeResolution={this.handleChangeResolution}
+          />
           <GraphsContainer>
             <LineBarChart
               graphUnit="users"
