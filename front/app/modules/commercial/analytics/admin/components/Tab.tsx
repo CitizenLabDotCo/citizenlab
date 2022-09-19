@@ -16,7 +16,7 @@ const Tab = ({ onData, formatMessage }: ITabsOutlet) => {
           url: '/admin/dashboard/visitors',
           feature: 'analytics',
         },
-        insertAfterName: 'users',
+        insertAfterName: 'overview',
       }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
