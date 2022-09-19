@@ -1,50 +1,50 @@
 import config from '.';
 import { mockRoutes } from './mockRoutes.mock';
 import eventEmitter from 'utils/eventEmitter';
-// import { trackPage } from 'utils/analytics';
+import { trackPage } from 'utils/analytics';
+
+// mocked inputs
+import { setupMatomo } from './setup';
+import { trackPageChange } from './actions';
 
 jest.mock('services/appConfiguration');
 jest.mock('services/auth');
 jest.mock('services/locale');
-jest.mock('modules', () => ({ streamsToReset: [] }));
 jest.mock('routes', () => ({
   __esModule: true,
   default: jest.fn(() => [mockRoutes]),
 }));
-
-global.window = Object.create(window);
+jest.mock('./setup', () => ({
+  setupMatomo: jest.fn(),
+}));
+jest.mock('./actions', () => ({
+  // trackEvent: jest.fn(),
+  trackPageChange: jest.fn(),
+}));
 
 describe('matomo', () => {
-  beforeEach(() => {
-    window._paq = [];
-  });
-
-  it('does not make any calls if no consent given', () => {
+  beforeAll(() => {
     (config as any).beforeMountApplication();
-    eventEmitter.emit<any>('destinationConsentChanged', { matomo: false });
-
-    expect(window._paq).toEqual([]);
   });
 
-  // Note there is duplication in the values coming back from the array
-  // but Matomo deals with this and does not make duplicate requests
-  // it('sets up matomo and makes call for initial page after consent is given', () => {
-  //   (config as any).beforeMountApplication();
-  //   eventEmitter.emit<any>('destinationConsentChanged', { matomo: true });
+  beforeEach(() => {
+    jest.clearAllMocks();
+    eventEmitter.emit<any>('destinationConsentChanged', { matomo: false });
+  });
 
-  //   expect(window._paq).toContainEqual(['enableLinkTracking']);
+  describe('with consent from beginning', () => {
+    it('calls setupMatomo', () => {
+      eventEmitter.emit<any>('destinationConsentChanged', { matomo: true });
+      expect(setupMatomo).toHaveBeenCalledTimes(1);
+    });
 
-  //   trackPage('/en');
-  //   expect(window._paq).toContainEqual(['setCustomUrl', '/en']);
-  //   expect(window._paq).toContainEqual(['trackPageView', '/:locale']);
-  // });
+    it('registers page changes', () => {
+      trackPage('/en');
+      trackPage('/en/projects');
 
-  // it('tracks a page change', () => {
-  //   (config as any).beforeMountApplication();
-  //   eventEmitter.emit<any>('destinationConsentChanged', { matomo: true });
-
-  //   trackPage('/en/sign-in');
-
-  //   expect(window._paq).toContainEqual(['trackPageView', '/:locale/sign-in']);
-  // });
+      expect(trackPageChange).toHaveBeenCalledTimes(2);
+      expect(trackPageChange).toHaveBeenCalledWith('/en');
+      expect(trackPageChange).toHaveBeenCalledWith('/en/projects');
+    });
+  });
 });
