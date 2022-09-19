@@ -5,7 +5,6 @@ import { useTheme } from 'styled-components';
 import { Box } from '@citizenlab/cl2-component-library';
 import SectionFormWrapper from '../../components/SectionFormWrapper';
 import { TBreadcrumbs } from 'components/UI/Breadcrumbs';
-import { SectionField } from 'components/admin/Section';
 import Button from 'components/UI/Button';
 
 // form
@@ -91,9 +90,7 @@ const GenericBottomInfoSection = ({
           ]}
           title={formatMessage(messages.pageTitle)}
         >
-          <SectionField>
-            <Feedback successMessage={formatMessage(messages.messageSuccess)} />
-          </SectionField>
+          <Feedback successMessage={formatMessage(messages.messageSuccess)} />
           <Box maxWidth={`${theme.maxPageWidth - 100}px`} mb="24px">
             <QuillMultilocWithLocaleSwitcher
               name="bottom_info_section_multiloc"
