@@ -36,8 +36,7 @@ const Messenger = ({
     trackEventByName(tracks.shareButtonClicked.name, properties);
   };
   if (!isNilOrError(tenant)) {
-    const facebookAppId =
-      tenant.data.attributes.settings.facebook_login?.app_id;
+    const facebookAppId = tenant.attributes.settings.facebook_login?.app_id;
     const messengerHref = facebookAppId
       ? `fb-messenger://share/?link=${url}&app_id=${facebookAppId}`
       : null;

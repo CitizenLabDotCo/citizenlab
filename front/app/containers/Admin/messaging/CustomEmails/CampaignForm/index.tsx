@@ -121,7 +121,7 @@ const CampaignForm = ({
       {
         value: 'organization',
         label: !isNilOrError(appConfig)
-          ? localize(appConfig.data.attributes.settings.core.organization_name)
+          ? localize(appConfig.attributes.settings.core.organization_name)
           : '',
       },
     ];

@@ -31,7 +31,7 @@ import { isNilOrError, isUUID } from 'utils/helperUtils';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 
 // typings
-import { IAppConfiguration } from 'services/appConfiguration';
+import { IAppConfigurationData } from 'services/appConfiguration';
 
 const isTemplatePreviewPage = (urlSegments: string[]) =>
   urlSegments.length === 4 &&
@@ -41,16 +41,14 @@ const isTemplatePreviewPage = (urlSegments: string[]) =>
   isUUID(urlSegments[3]);
 
 const getRedirectURL = (
-  appConfiguration: IAppConfiguration,
+  appConfiguration: IAppConfigurationData,
   authUser: TAuthUser,
   pathname: string | undefined,
   urlLocale: string | null
 ) => {
   const localeSegment = urlLocale ? `/${urlLocale}` : '';
 
-  if (
-    appConfiguration.data.attributes.settings.core.lifecycle_stage === 'churned'
-  ) {
+  if (appConfiguration.attributes.settings.core.lifecycle_stage === 'churned') {
     return `${localeSegment}/subscription-ended`;
   }
 
