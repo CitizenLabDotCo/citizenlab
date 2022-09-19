@@ -60,15 +60,16 @@ export const DashboardsPage = memo(
 
       return () => setTabs([]);
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isProjectModerator, authUser]);
+    }, [authUser]);
 
     const resource = {
       title: formatMessage(messages.titleDashboard),
       subtitle: formatMessage(messages.subtitleDashboard),
     };
 
-    const handleData = (data: InsertConfigurationOptions<ITab>) =>
+    const handleData = (data: InsertConfigurationOptions<ITab>) => {
       setTabs((tabs) => insertConfiguration(data)(tabs));
+    };
 
     if (
       isNilOrError(authUser) ||
