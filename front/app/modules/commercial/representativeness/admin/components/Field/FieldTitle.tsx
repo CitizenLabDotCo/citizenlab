@@ -19,7 +19,8 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // typings
-import { Multiloc, MessageDescriptor } from 'typings';
+import { Multiloc } from 'typings';
+import { MessageDescriptor } from 'react-intl';
 import { Status } from './utils';
 
 const DefaultStatusLabel = styled(StatusLabel)`

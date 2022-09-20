@@ -139,7 +139,7 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
     ...buttonContainerProps
   }) => {
     const disabledMessages: {
-      [key in IIdeaPostingDisabledReason]: ReactIntl.FormattedMessage.MessageDescriptor;
+      [key in IIdeaPostingDisabledReason]: MessageDescriptor;
     } = {
       notPermitted: messages.postingNoPermission,
       postingDisabled: messages.postingDisabled,

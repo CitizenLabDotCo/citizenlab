@@ -97,12 +97,9 @@ class SharingModalContent extends PureComponent<
 
   getIdeaMessages = () => {
     const { project, phases } = this.props;
-    let emailSharingSubject: ReactIntl.FormattedMessage.MessageDescriptor | null =
-      null;
-    let emailSharingBody: ReactIntl.FormattedMessage.MessageDescriptor | null =
-      null;
-    let whatsAppMessage: ReactIntl.FormattedMessage.MessageDescriptor | null =
-      null;
+    let emailSharingSubject: MessageDescriptor | null = null;
+    let emailSharingBody: MessageDescriptor | null = null;
+    let whatsAppMessage: MessageDescriptor | null = null;
 
     if (!isNilOrError(project)) {
       const inputTerm = getInputTerm(

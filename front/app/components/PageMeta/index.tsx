@@ -4,8 +4,8 @@ import { Helmet } from 'react-helmet';
 import { isError } from 'lodash-es';
 
 // i18n
-import { injectIntl, MessageDescriptor } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps, MessageDescriptor} from 'react-intl';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';

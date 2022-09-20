@@ -7,7 +7,7 @@ import { InjectedIntlProps } from 'react-intl';
 
 interface Props {
   onClick: (event?: MouseEvent | KeyboardEvent) => void;
-  a11y_buttonActionMessage: ReactIntl.FormattedMessage.MessageDescriptor;
+  a11y_buttonActionMessage: MessageDescriptor;
   iconColor: string;
   iconColorOnHover: string;
   className?: string;
