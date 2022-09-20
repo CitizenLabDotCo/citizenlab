@@ -20,6 +20,7 @@ export type TSurveyService =
 export type ParticipationMethod =
   | 'ideation'
   | 'information'
+  | 'native_survey'
   | 'survey'
   | 'budgeting'
   | 'poll'

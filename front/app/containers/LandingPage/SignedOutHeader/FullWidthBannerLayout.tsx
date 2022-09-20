@@ -1,6 +1,6 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { homepageBannerLayoutHeights } from 'containers/Admin/settings/customize/Header/HeaderImageDropzone';
+import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/HeroBanner/HeaderImageDropzone';
 
 // components
 import HeaderContent from './HeaderContent';
@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 // hooks
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import useHomepageSettings from 'hooks/useHomepageSettings';
 
 const Container = styled.div`
   width: 100%;
@@ -58,10 +58,13 @@ const HeaderImageBackground = styled.div<{ src: string | null }>`
   background-image: url(${({ src }) => src});
 `;
 
-const HeaderImageOverlay = styled.div`
-  background: ${({ theme }) =>
-    theme.signedOutHeaderOverlayColor || theme.colorMain};
-  opacity: ${({ theme }) => theme.signedOutHeaderOverlayOpacity / 100};
+const HeaderImageOverlay = styled.div<{
+  overlayColor: string | null;
+  overlayOpacity: number | null;
+}>`
+  background: ${({ overlayColor, theme }) => overlayColor ?? theme.colorMain};
+  opacity: ${({ overlayOpacity, theme }) =>
+    (overlayOpacity ?? theme.signedOutHeaderOverlayOpacity) / 100};
   position: absolute;
   top: 0;
   bottom: 0;
@@ -74,17 +77,24 @@ export interface Props {
 }
 
 const FullWidthBannerLayout = ({ className }: Props) => {
-  const appConfiguration = useAppConfiguration();
+  const homepageSettings = useHomepageSettings();
 
-  if (!isNilOrError(appConfiguration)) {
-    const headerImage = appConfiguration.data.attributes.header_bg?.large;
-
+  if (!isNilOrError(homepageSettings)) {
+    const headerImage = homepageSettings.data.attributes.header_bg?.large;
+    const homepageSettingColor =
+      homepageSettings.data.attributes.banner_signed_out_header_overlay_color;
+    const homepageSettingOpacity =
+      homepageSettings.data.attributes.banner_signed_out_header_overlay_opacity;
     return (
       <Container className={`e2e-signed-out-header ${className}`}>
         <Header id="hook-header">
           <HeaderImage id="hook-header-image">
             <HeaderImageBackground src={headerImage || null} />
-            <HeaderImageOverlay />
+            <HeaderImageOverlay
+              data-cy="e2e-full-width-layout-header-image-overlay"
+              overlayColor={homepageSettingColor}
+              overlayOpacity={homepageSettingOpacity}
+            />
           </HeaderImage>
 
           <HeaderContent fontColors="light" />

@@ -102,6 +102,8 @@ const MenuItemLink = styled(Link)`
   `}
 `;
 
+// We should not set the height for a blankPage icon in the admin navigation like this
+// https://github.com/CitizenLabDotCo/citizenlab/pull/2162#discussion_r916039349
 const IconWrapper = styled.div`
   flex: 0 0 auto;
   width: 45px;
@@ -112,6 +114,10 @@ const IconWrapper = styled.div`
 
   &.processing svg {
     height: 31px;
+  }
+
+  &.blankPage svg {
+    height: 22px;
   }
 `;
 

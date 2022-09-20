@@ -1,10 +1,12 @@
 import React from 'react';
-import useAppConfiguration from 'hooks/useAppConfiguration';
-import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
+import { isEmptyMultiloc } from 'utils/helperUtils';
 import T from 'components/T';
 import ContentContainer from 'components/ContentContainer';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Fragment from 'components/Fragment';
+
+// typings
+import { Multiloc } from 'typings';
 
 // style
 import styled from 'styled-components';
@@ -37,27 +39,29 @@ const StyledQuillEditedContent = styled(QuillEditedContent)`
   }
 `;
 
-const HomepageInfoSection = () => {
-  const appConfiguration = useAppConfiguration();
+type Props = {
+  multilocContent: Multiloc;
+  // pages/homepage_info/content was the previous bottom info section fragment key,
+  // leaving it as such for backwards compatibility
+  fragmentName:
+    | 'pages/homepage_info/content'
+    | 'pages/homepage_info/top-content';
+};
 
-  if (!isNilOrError(appConfiguration)) {
-    const homepageInfoMultiloc =
-      appConfiguration.data.attributes.homepage_info_multiloc;
-
-    if (homepageInfoMultiloc && !isEmptyMultiloc(homepageInfoMultiloc)) {
-      return (
-        <CustomSectionContentContainer>
-          <StyledQuillEditedContent>
-            <Fragment name={'pages/homepage_info/content'}>
-              <T value={homepageInfoMultiloc} supportHtml={true} />
-            </Fragment>
-          </StyledQuillEditedContent>
-        </CustomSectionContentContainer>
-      );
-    }
+const HomepageInfoSection = ({ multilocContent, fragmentName }: Props) => {
+  if (!multilocContent || isEmptyMultiloc(multilocContent)) {
+    return null;
   }
 
-  return null;
+  return (
+    <CustomSectionContentContainer>
+      <StyledQuillEditedContent>
+        <Fragment name={fragmentName}>
+          <T value={multilocContent} supportHtml={true} />
+        </Fragment>
+      </StyledQuillEditedContent>
+    </CustomSectionContentContainer>
+  );
 };
 
 export default HomepageInfoSection;

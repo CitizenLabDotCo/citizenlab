@@ -1,5 +1,4 @@
-import React, { useState, lazy, Suspense } from 'react';
-import { Formik, FormikProps } from 'formik';
+import React, { useState } from 'react';
 
 // i18n
 import messages from './messages';
@@ -7,15 +6,13 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
-import { FormValues, validatePageForm } from 'components/PageForm';
-const PageForm = lazy(() => import('components/PageForm'));
+import PageForm, { FormValues } from 'components/PageForm';
 
 // services
 import { updatePage } from 'services/pages';
 import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 
 // hooks
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useRemoteFiles, { RemoteFiles } from 'hooks/useRemoteFiles';
 import usePage from 'hooks/usePage';
 
@@ -102,7 +99,6 @@ interface Props {
 }
 
 const PageEditor = ({ className, pageSlug }: Props) => {
-  const appConfigurationLocales = useAppConfigurationLocales();
   const page = usePage({ pageSlug });
   const remotePageFiles = useRemoteFiles({
     resourceType: 'page',
@@ -116,30 +112,23 @@ const PageEditor = ({ className, pageSlug }: Props) => {
 
   const handleSubmit =
     (pageId: string, remotePageFiles: RemoteFiles) =>
-    async (
-      { slug, title_multiloc, body_multiloc, local_page_files }: FormValues,
-      { setSubmitting, setStatus }
-    ) => {
-      try {
-        const fieldValues = { slug, title_multiloc, body_multiloc };
-        await updatePage(pageId, fieldValues);
+    async ({
+      slug,
+      title_multiloc,
+      body_multiloc,
+      local_page_files,
+    }: FormValues) => {
+      const fieldValues = { slug, title_multiloc, body_multiloc };
+      await updatePage(pageId, fieldValues);
 
-        if (!isNilOrError(local_page_files)) {
-          handleAddPageFiles(pageId, local_page_files, remotePageFiles);
-          handleRemovePageFiles(pageId, local_page_files, remotePageFiles);
-        }
-
-        setStatus('success');
-        setSubmitting(false);
-      } catch (errorResponse) {
-        setStatus('error');
-        setSubmitting(false);
+      if (!isNilOrError(local_page_files)) {
+        handleAddPageFiles(pageId, local_page_files, remotePageFiles);
+        handleRemovePageFiles(pageId, local_page_files, remotePageFiles);
       }
     };
 
-  if (!isNilOrError(page) && !isNilOrError(appConfigurationLocales)) {
+  if (!isNilOrError(page)) {
     const pageId = page.id;
-
     return (
       <EditorWrapper
         className={`${className} e2e-page-editor editor-${pageSlug}`}
@@ -163,26 +152,19 @@ const PageEditor = ({ className, pageSlug }: Props) => {
           classNames="page"
         >
           <EditionForm>
-            <Formik
-              initialValues={{
+            <PageForm
+              pageId={pageId}
+              defaultValues={{
+                nav_bar_item_title_multiloc:
+                  page.attributes.nav_bar_item_title_multiloc,
                 title_multiloc: page.attributes.title_multiloc,
                 body_multiloc: page.attributes.body_multiloc,
                 slug: page.attributes.slug,
                 local_page_files: remotePageFiles,
               }}
+              hideSlugInput
               onSubmit={handleSubmit(pageId, remotePageFiles)}
-              validate={validatePageForm(appConfigurationLocales)}
-              validateOnChange={false}
-              validateOnBlur={false}
-            >
-              {(props: FormikProps<FormValues>) => {
-                return (
-                  <Suspense fallback={null}>
-                    <PageForm {...props} pageId={pageId} hideSlugInput />
-                  </Suspense>
-                );
-              }}
-            </Formik>
+            />
           </EditionForm>
         </CSSTransition>
       </EditorWrapper>

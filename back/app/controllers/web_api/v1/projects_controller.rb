@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ProjectsController < ::ApplicationController
-  before_action :set_project, only: %i[show update reorder destroy]
+  before_action :set_project, only: %i[show update reorder destroy survey_results]
   skip_before_action :authenticate_user
   skip_after_action :verify_policy_scoped, only: :index
 
@@ -20,16 +20,9 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     # scope.
 
     @projects = Project.where(id: publications.select(:publication_id))
+      .ordered
       .includes(:project_images, :phases, :areas, admin_publication: [:children])
     @projects = paginate @projects
-
-    @projects = if params[:search].present?
-      @projects.search_by_all(params[:search])
-    else
-      @projects.ordered
-    end
-
-    LogActivityJob.perform_later(current_user, 'searched_projects', current_user, Time.now.to_i, payload: { search_query: params[:search] }) if params[:search].present?
 
     user_baskets = current_user&.baskets
       &.where(participation_context_type: 'Project')
@@ -93,10 +86,8 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     project_params = permitted_attributes(Project)
 
     @project.assign_attributes project_params
-    if project_params.key?(:header_bg) && project_params[:header_bg].nil?
-      # setting the header image attribute to nil will not remove the header image
-      @project.remove_header_bg!
-    end
+    remove_image_if_requested!(@project, project_params, :header_bg)
+
     sidefx.before_update(@project, current_user)
 
     if save_project
@@ -119,6 +110,11 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     else
       head :internal_server_error
     end
+  end
+
+  def survey_results
+    results = SurveyResultsGeneratorService.new(@project).generate
+    render json: results
   end
 
   private
