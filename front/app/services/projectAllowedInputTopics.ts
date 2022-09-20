@@ -24,7 +24,7 @@ export interface IProjectAllowedInputTopic {
   };
 }
 
-export interface IProjectAllowedInputTopicsData {
+export interface IProjectAllowedInputTopics {
   data: IProjectAllowedInputTopic[];
 }
 
@@ -61,7 +61,7 @@ export async function addProjectAllowedInputTopic(
 }
 
 export function listProjectAllowedInputTopics(projectId: string) {
-  return streams.get<IProjectAllowedInputTopicsData>({
+  return streams.get<IProjectAllowedInputTopics>({
     apiEndpoint: getListEndpoint(projectId),
   });
 }
