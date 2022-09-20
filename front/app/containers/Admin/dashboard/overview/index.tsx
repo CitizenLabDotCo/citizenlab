@@ -1,4 +1,3 @@
-// libraries
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import moment, { Moment } from 'moment';
@@ -45,6 +44,9 @@ import {
   ideasByTimeStream,
   usersByTimeXlsxEndpoint,
 } from 'services/stats';
+
+// utils
+import { getSensibleResolution } from './getSensibleResolution';
 
 export type IResource = 'ideas' | 'comments' | 'votes';
 
@@ -109,17 +111,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
     startAtMoment: Moment | null,
     endAtMoment: Moment | null
   ) => {
-    const timeDiff =
-      endAtMoment &&
-      startAtMoment &&
-      moment.duration(endAtMoment.diff(startAtMoment));
-    const resolution = timeDiff
-      ? timeDiff.asMonths() > 6
-        ? 'month'
-        : timeDiff.asWeeks() > 4
-        ? 'week'
-        : 'day'
-      : 'month';
+    const resolution = getSensibleResolution(startAtMoment, endAtMoment);
     this.setState({ startAtMoment, endAtMoment, resolution });
   };
 
