@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 
 // intl
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps, MessageDescriptor } from 'react-intl';
 import messages from '../../messages';
 
 // styling
