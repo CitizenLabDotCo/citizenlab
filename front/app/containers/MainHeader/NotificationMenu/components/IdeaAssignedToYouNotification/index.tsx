@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { MouseEvent, KeyboardEvent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import { IIdeaAssignedToYouNotificationData } from 'services/notifications';
@@ -38,7 +38,7 @@ const IdeaAssignedToYouNotification = ({
   project,
   notification,
 }: Props) => {
-  const onClickUserName = (event) => {
+  const onClickUserName = (event: MouseEvent | KeyboardEvent) => {
     event.stopPropagation();
   };
 
