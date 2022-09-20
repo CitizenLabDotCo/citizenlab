@@ -41,7 +41,7 @@ const FormBuilderToolbox = ({
 
   if (isNilOrError(locale)) return null;
 
-  const addAnswer = (inputType: ICustomFieldInputType) => {
+  const addField = (inputType: ICustomFieldInputType) => {
     onAddField({
       id: `${Math.floor(Date.now() * Math.random())}`,
       isLocalOnly: true,
@@ -94,22 +94,22 @@ const FormBuilderToolbox = ({
           <ToolboxItem
             icon="short-answer"
             label={formatMessage(messages.shortAnswer)}
-            onClick={() => addAnswer('text')}
+            onClick={() => addField('text')}
           />
           <ToolboxItem
             icon="multiple-choice"
             label={formatMessage(messages.multipleChoice)}
-            onClick={() => addAnswer('multiselect')}
+            onClick={() => addField('multiselect')}
           />
           <ToolboxItem
-            icon="info"
+            icon="number-field"
             label={formatMessage(messages.number)}
-            onClick={() => addAnswer('number')}
+            onClick={() => addField('number')}
           />
           <ToolboxItem
-            icon="info"
+            icon="linear-scale"
             label={formatMessage(messages.linearScale)}
-            onClick={() => addAnswer('linear_scale')}
+            onClick={() => addField('linear_scale')}
           />
         </DraggableElement>
       </Box>
