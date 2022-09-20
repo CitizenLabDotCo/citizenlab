@@ -20,7 +20,7 @@ const SlugInput = ({ slug, pathnameWithoutSlug }: Props) => {
 
   if (!isNilOrError(appConfig)) {
     const previewUrl = slug
-      ? `${appConfig.data.attributes.host}/${locale}/${pathnameWithoutSlug}/${slug}`
+      ? `${appConfig.attributes.host}/${locale}/${pathnameWithoutSlug}/${slug}`
       : null;
 
     return (

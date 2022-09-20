@@ -25,4 +25,8 @@ export default defineMessages({
     id: 'app.containers.Admin.PagesAndMenu.topInfoError',
     defaultMessage: "Couldn't save top info section",
   },
+  blankDescriptionError: {
+    id: 'app.containers.Admin.PagesAndMenu.blankDescriptionError',
+    defaultMessage: 'Provide content for all languages',
+  },
 });
