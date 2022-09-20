@@ -8,16 +8,14 @@ import { Box } from '@citizenlab/cl2-component-library';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-const VisitorsCard = () => {
-  return (
-    <GraphCard
-      title={<FormattedMessage {...messages.cardTitle} />}
-    >
-      <Box width="100%" display="flex" flexDirection="row">
-        
-      </Box>
-    </GraphCard>
-  )
-}
+const VisitorsCard = () => (
+  <GraphCard
+    title={<FormattedMessage {...messages.cardTitle} />}
+  >
+    <Box width="100%" display="flex" flexDirection="row">
+
+    </Box>
+  </GraphCard>
+)
 
 export default VisitorsCard;
