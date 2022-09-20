@@ -12,7 +12,7 @@ import ReportExportMenu, {
 } from 'components/admin/ReportExportMenu';
 
 interface Props {
-  title?: string;
+  title?: string | React.ReactNode;
   exportMenu?: ReportExportMenuProps;
   children?: React.ReactNode;
 }

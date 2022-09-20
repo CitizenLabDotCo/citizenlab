@@ -1,5 +1,8 @@
 import React from 'react';
 
+// components
+import VisitorsCard from '../../components/VisitorsCard';
+
 // typings
 import { Moment } from 'moment';
 import { IResolution } from 'components/admin/ResolutionControl';
@@ -13,7 +16,7 @@ interface Props {
 
 const Charts = ({ }: Props) => (
   <>
-    Bla
+    <VisitorsCard />
   </>
 )
 
