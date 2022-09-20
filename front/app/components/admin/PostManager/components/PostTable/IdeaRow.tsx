@@ -20,7 +20,7 @@ import FeatureFlag from 'components/FeatureFlag';
 
 // utils
 import localize, { InjectedLocalized } from 'utils/localize';
-import { TimeAgo } from 'utils/dateUtils';
+import { timeAgo } from 'utils/dateUtils';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -121,7 +121,7 @@ class IdeaRow extends React.PureComponent<
         {
           name: 'published_on',
           Component: ({ idea }) => {
-            return <> {TimeAgo(Date.parse(idea.attributes.created_at))}</>;
+            return <>{timeAgo(Date.parse(idea.attributes.created_at), 'en')}</>;
           },
         },
         {

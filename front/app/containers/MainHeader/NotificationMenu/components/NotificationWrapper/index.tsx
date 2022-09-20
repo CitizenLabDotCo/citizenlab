@@ -6,7 +6,7 @@ import { Icon } from '@citizenlab/cl2-component-library';
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../tracks';
 import clHistory from 'utils/cl-router/history';
-import { TimeAgo } from 'utils/dateUtils';
+import { timeAgo } from 'utils/dateUtils';
 
 const Container = styled.button`
   display: flex;
@@ -110,7 +110,7 @@ class NotificationWrapper extends React.PureComponent<Props> {
         </IconContainer>
         <Body>
           <Message isRead={isRead}>{children}</Message>
-          {timing && <Timing>{TimeAgo(timing)}</Timing>}
+          {timing && <Timing>{timeAgo(timing, 'en')}</Timing>}
         </Body>
       </Container>
     );
