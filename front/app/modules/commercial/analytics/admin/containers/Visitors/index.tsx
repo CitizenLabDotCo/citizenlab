@@ -4,6 +4,7 @@ import moment, { Moment } from 'moment';
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 import ChartFilters from 'containers/Admin/dashboard/overview/ChartFilters';
+import Charts from './Charts';
 
 // utils
 import { getSensibleResolution } from 'containers/Admin/dashboard/overview/getSensibleResolution';
@@ -13,9 +14,7 @@ import { IResolution } from 'components/admin/ResolutionControl';
 import { IOption } from 'typings';
 
 const Visitors = () => {
-  const [startAtMoment, setStartAtMoment] = useState<
-    Moment | null | undefined
-  >();
+  const [startAtMoment, setStartAtMoment] = useState<Moment | null>(null);
   const [endAtMoment, setEndAtMoment] = useState<Moment | null>(moment());
   const [projectFilter, setProjectFilter] = useState<string | undefined>();
   const [resolution, setResolution] = useState<IResolution>('month');
@@ -35,17 +34,26 @@ const Visitors = () => {
   };
 
   return (
-    <Box width="100%">
-      <ChartFilters
+    <>
+      <Box width="100%">
+        <ChartFilters
+          startAtMoment={startAtMoment}
+          endAtMoment={endAtMoment}
+          currentProjectFilter={projectFilter}
+          resolution={resolution}
+          onChangeTimeRange={handleChangeTimeRange}
+          onProjectFilter={handleProjectFilter}
+          onChangeResolution={setResolution}
+        />
+      </Box>
+
+      <Charts 
         startAtMoment={startAtMoment}
         endAtMoment={endAtMoment}
-        currentProjectFilter={projectFilter}
+        projectFilter={projectFilter}
         resolution={resolution}
-        onChangeTimeRange={handleChangeTimeRange}
-        onProjectFilter={handleProjectFilter}
-        onChangeResolution={setResolution}
       />
-    </Box>
+    </>
   );
 };
 
