@@ -5,7 +5,6 @@ import {
   // eslint-disable-next-line no-restricted-imports
   injectIntl as originalInjectIntl,
   InjectedIntlProps,
-  InjectIntlConfig,
 } from 'react-intl';
 import { localeStream } from 'services/locale';
 import { getLocalized } from 'utils/i18n';
@@ -99,11 +98,9 @@ function buildComponent<P>(
 }
 
 export default function injectIntl<P>(
-  component: React.ComponentType<P & InjectedIntlProps>,
-  options?: InjectIntlConfig
+  component: React.ComponentType<P & InjectedIntlProps>
 ) {
   return originalInjectIntl<P & InjectedIntlProps>(
-    buildComponent<P & InjectedIntlProps>(component),
-    options
+    buildComponent<P & InjectedIntlProps>(component)
   );
 }
