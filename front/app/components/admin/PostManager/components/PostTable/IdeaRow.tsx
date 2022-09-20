@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { uniq, isEmpty, get } from 'lodash-es';
@@ -66,128 +66,112 @@ type Props = InputProps & {
   connectDragSource: any;
 };
 
-type State = {
-  cells: CellConfiguration<IdeaCellComponentProps>[];
-};
+const IdeaRow = ({
+  connectDragSource,
+  onClickCheckbox,
+  onClickTitle,
+  className,
+  activeFilterMenu,
+  phases,
+  statuses,
+  idea,
+  selection,
+}: Props & InjectedIntlProps & InjectedLocalized) => {
+  const [cells, setCells] = useState<
+    CellConfiguration<IdeaCellComponentProps>[]
+  >([
+    {
+      name: 'selection',
+      cellProps: { collapsing: true },
+      onChange: onClickCheckbox,
+      Component: ({
+        selection,
+        idea,
+        onChange,
+      }: Override<
+        IdeaCellComponentProps,
+        {
+          onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+        }
+      >) => {
+        return (
+          <Checkbox
+            checked={!!selection.has(idea.id)}
+            onChange={onChange}
+            size="21px"
+          />
+        );
+      },
+    },
+    {
+      name: 'title',
+      onClick: onClickTitle,
+      Component: ({ idea, onClick }) => {
+        return (
+          <TitleLink className="e2e-idea-manager-idea-title" onClick={onClick}>
+            <T value={idea.attributes.title_multiloc} />
+          </TitleLink>
+        );
+      },
+    },
+    {
+      name: 'published_on',
+      Component: ({ idea }) => {
+        return <>{timeAgo(Date.parse(idea.attributes.created_at), 'en')}</>;
+      },
+    },
+    {
+      name: 'up',
+      cellProps: { singleLine: true },
+      Component: ({ idea }) => {
+        return (
+          <>
+            <Icon name="thumbs up" />
+            {idea.attributes.upvotes_count}
+          </>
+        );
+      },
+    },
+    {
+      name: 'down',
+      cellProps: { singleLine: true },
+      Component: ({ idea }: IdeaCellComponentProps) => {
+        return (
+          <>
+            <Icon name="thumbs down" />
+            {idea.attributes.downvotes_count}
+          </>
+        );
+      },
+    },
+    {
+      name: 'picks',
+      cellProps: { singleLine: true },
+      featureFlag: 'participatory_budgeting',
+      Component: ({ idea }: IdeaCellComponentProps) => {
+        return <>{idea.attributes.baskets_count}</>;
+      },
+    },
+  ]);
 
-class IdeaRow extends React.PureComponent<
-  Props & InjectedIntlProps & InjectedLocalized,
-  State
-> {
-  constructor(props) {
-    super(props);
-
-    const { onClickCheckbox, onClickTitle } = props;
-
-    this.state = {
-      cells: [
-        {
-          name: 'selection',
-          cellProps: { collapsing: true },
-          onChange: onClickCheckbox,
-          Component: ({
-            selection,
-            idea,
-            onChange,
-          }: Override<
-            IdeaCellComponentProps,
-            {
-              onChange: (event: ChangeEvent<HTMLInputElement>) => void;
-            }
-          >) => {
-            return (
-              <Checkbox
-                checked={!!selection.has(idea.id)}
-                onChange={onChange}
-                size="21px"
-              />
-            );
-          },
-        },
-        {
-          name: 'title',
-          onClick: onClickTitle,
-          Component: ({ idea, onClick }) => {
-            return (
-              <TitleLink
-                className="e2e-idea-manager-idea-title"
-                onClick={onClick}
-              >
-                <T value={idea.attributes.title_multiloc} />
-              </TitleLink>
-            );
-          },
-        },
-        {
-          name: 'published_on',
-          Component: ({ idea }) => {
-            return <>{timeAgo(Date.parse(idea.attributes.created_at), 'en')}</>;
-          },
-        },
-        {
-          name: 'up',
-          cellProps: { singleLine: true },
-          Component: ({ idea }) => {
-            return (
-              <>
-                <Icon name="thumbs up" />
-                {idea.attributes.upvotes_count}
-              </>
-            );
-          },
-        },
-        {
-          name: 'down',
-          cellProps: { singleLine: true },
-          Component: ({ idea }: IdeaCellComponentProps) => {
-            return (
-              <>
-                <Icon name="thumbs down" />
-                {idea.attributes.downvotes_count}
-              </>
-            );
-          },
-        },
-        {
-          name: 'picks',
-          cellProps: { singleLine: true },
-          featureFlag: 'participatory_budgeting',
-          Component: ({ idea }: IdeaCellComponentProps) => {
-            return <>{idea.attributes.baskets_count}</>;
-          },
-        },
-      ],
-    };
-  }
-
-  onUpdateIdeaPhases = (selectedPhases) => {
-    updateIdea(this.props.idea.id, {
-      phase_ids: selectedPhases,
-    });
+  const handleData = (
+    insertCellOptions: InsertConfigurationOptions<
+      CellConfiguration<IdeaCellComponentProps>
+    >
+  ) => {
+    setCells((cells) => insertConfiguration(insertCellOptions)(cells));
   };
 
-  onUpdateIdeaTopics = (selectedTopics) => {
-    updateIdea(this.props.idea.id, {
-      topic_ids: selectedTopics,
-    });
-  };
+  const selectedPhases = idea.relationships.phases.data.map((p) => p.id);
+  const selectedTopics = idea.relationships.topics?.data.map((p) => p.id);
+  const active = selection.has(idea.id);
+  const projectId = get(idea, 'relationships.project.data.id');
+  const selectedStatus: string | undefined = get(
+    idea,
+    'relationships.idea_status.data.id'
+  );
 
-  onUpdateIdeaStatus = (statusId) => {
-    const { idea } = this.props;
-    const ideaId = idea.id;
-
-    updateIdea(ideaId, {
-      idea_status_id: statusId,
-    });
-
-    trackEventByName(tracks.ideaStatusChange, {
-      location: 'Idea overview',
-      method: 'Clicked on the squares representing the statuses',
-      idea: ideaId,
-    });
-  };
-
-  renderCell = (
+  const renderCell = (
     { idea, selection }: IdeaCellComponentProps,
     {
       cellProps = {},
@@ -217,79 +201,72 @@ class IdeaRow extends React.PureComponent<
     );
   };
 
-  handleData = (
-    insertCellOptions: InsertConfigurationOptions<
-      CellConfiguration<IdeaCellComponentProps>
-    >
-  ) => {
-    this.setState(({ cells }) => ({
-      cells: insertConfiguration(insertCellOptions)(cells),
-    }));
+  const onUpdateIdeaPhases = (selectedPhases) => {
+    updateIdea(idea.id, {
+      phase_ids: selectedPhases,
+    });
   };
 
-  render() {
-    const {
-      idea,
-      selection,
-      connectDragSource,
-      activeFilterMenu,
-      phases,
-      statuses,
-      className,
-    } = this.props;
+  const onUpdateIdeaTopics = (selectedTopics) => {
+    updateIdea(idea.id, {
+      topic_ids: selectedTopics,
+    });
+  };
 
-    const { cells } = this.state;
+  const onUpdateIdeaStatus = (statusId: string) => {
+    const ideaId = idea.id;
 
-    const selectedStatus: string | undefined = get(
-      idea,
-      'relationships.idea_status.data.id'
-    );
-    const selectedPhases = idea.relationships.phases.data.map((p) => p.id);
-    const selectedTopics = idea.relationships.topics?.data.map((p) => p.id);
-    const active = selection.has(idea.id);
-    const projectId = get(idea, 'relationships.project.data.id');
+    updateIdea(ideaId, {
+      idea_status_id: statusId,
+    });
 
-    return (
-      <>
-        <Outlet
-          id="app.components.admin.PostManager.components.PostTable.IdeaRow.cells"
-          onData={this.handleData}
-        />
-        <WrappedRow
-          className={`${className} e2e-idea-manager-idea-row`}
-          as={StyledRow}
-          active={active}
-          ref={(instance) => {
-            // eslint-disable-next-line react/no-find-dom-node
-            instance && connectDragSource(findDOMNode(instance));
-          }}
-        >
-          {cells.map((cellConfiguration) =>
-            this.renderCell({ idea, selection }, cellConfiguration)
-          )}
-        </WrappedRow>
-        <SubRow
-          {...{
-            active,
-            className,
-            activeFilterMenu,
-            selectedPhases,
-            phases,
-            selectedTopics,
-            projectId,
-            statuses,
-            selectedStatus,
-          }}
-          allowedTransitions={null}
-          onUpdatePhases={this.onUpdateIdeaPhases}
-          onUpdateTopics={this.onUpdateIdeaTopics}
-          onUpdateStatus={this.onUpdateIdeaStatus}
-          postType="idea"
-        />
-      </>
-    );
-  }
-}
+    trackEventByName(tracks.ideaStatusChange, {
+      location: 'Idea overview',
+      method: 'Clicked on the squares representing the statuses',
+      idea: ideaId,
+    });
+  };
+
+  return (
+    <>
+      <Outlet
+        id="app.components.admin.PostManager.components.PostTable.IdeaRow.cells"
+        onData={handleData}
+      />
+      <WrappedRow
+        className={`${className} e2e-idea-manager-idea-row`}
+        as={StyledRow}
+        active={active}
+        ref={(instance) => {
+          // eslint-disable-next-line react/no-find-dom-node
+          instance && connectDragSource(findDOMNode(instance));
+        }}
+      >
+        {cells.map((cellConfiguration) =>
+          renderCell({ idea, selection }, cellConfiguration)
+        )}
+      </WrappedRow>
+      <SubRow
+        {...{
+          active,
+          className,
+          activeFilterMenu,
+          selectedPhases,
+          phases,
+          selectedTopics,
+          projectId,
+          statuses,
+          selectedStatus,
+        }}
+        allowedTransitions={null}
+        onUpdatePhases={onUpdateIdeaPhases}
+        onUpdateTopics={onUpdateIdeaTopics}
+        onUpdateStatus={onUpdateIdeaStatus}
+        postType="idea"
+      />
+    </>
+  );
+};
 
 const ideaSource = {
   beginDrag(props: Props) {
