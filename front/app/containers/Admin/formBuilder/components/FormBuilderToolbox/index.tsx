@@ -102,12 +102,12 @@ const FormBuilderToolbox = ({
             onClick={() => addField('multiselect')}
           />
           <ToolboxItem
-            icon="info"
+            icon="number-field"
             label={formatMessage(messages.number)}
             onClick={() => addField('number')}
           />
           <ToolboxItem
-            icon="info"
+            icon="linear-scale"
             label={formatMessage(messages.linearScale)}
             onClick={() => addField('linear_scale')}
           />
