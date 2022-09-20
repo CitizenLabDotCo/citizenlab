@@ -19,6 +19,7 @@ export interface Props {
   // This prop will ensure that screen readers
   // get notified when the number of results have changed.
   a11y_numberOfSearchResults: number;
+  setInputRef?: (ref: HTMLInputElement | null) => void;
 }
 
 const SearchInputWrapper = ({
@@ -30,6 +31,7 @@ const SearchInputWrapper = ({
   size,
   intl: { formatMessage },
   a11y_numberOfSearchResults,
+  setInputRef,
 }: Props & InjectedIntlProps) => (
   <>
     <Label htmlFor="search-input" hidden>
@@ -44,6 +46,7 @@ const SearchInputWrapper = ({
       onChange={onChange}
       a11y_closeIconTitle={formatMessage(messages.removeSearchTerm)}
       size={size}
+      setInputRef={setInputRef}
     />
     <ScreenReaderOnly aria-live="assertive">
       {formatMessage(messages.a11y_searchResultsHaveChanged, {

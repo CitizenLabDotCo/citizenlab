@@ -1,15 +1,12 @@
 import React from 'react';
-import {
-  CTASignedOutType,
-  CTASignedInType,
-  CustomizedButtonConfig,
-} from 'services/appConfiguration';
+import { Multiloc, CLErrors } from 'typings';
+import { CTASignedOutType, CTASignedInType } from 'services/homepageSettings';
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { Radio } from '@citizenlab/cl2-component-library';
 import CustomizedButtonSettings from './CustomizedButtonSettings';
-import { CLErrors } from 'typings';
 import styled from 'styled-components';
+import { BannerSettingKeyType } from '.';
 
 const StyledCustomizedButtonSettings = styled(CustomizedButtonSettings)`
   margin-left: 28px;
@@ -20,34 +17,51 @@ type SettingRadioButtonsProps =
       signInStatus: 'signed_out';
       ctaTypes: CTASignedOutType[];
       ctaType: CTASignedOutType;
-      customizedButtonConfig?: CustomizedButtonConfig;
-      handleSettingOnChange: (settingKey: string, settingValue: any) => void;
-      errors: CLErrors;
+      ctaButtonMultiloc: Multiloc;
+      ctaButtonUrl: string | null;
+      handleSettingOnChange: (
+        settingKey: BannerSettingKeyType,
+        settingValue: any
+      ) => void;
+      errors: CLErrors | undefined | null;
     }
   | {
       signInStatus: 'signed_in';
       ctaTypes: CTASignedInType[];
       ctaType: CTASignedInType;
-      customizedButtonConfig?: CustomizedButtonConfig;
-      handleSettingOnChange: (settingKey: string, settingValue: any) => void;
-      errors: CLErrors;
+      ctaButtonMultiloc: Multiloc;
+      ctaButtonUrl: string | null;
+      handleSettingOnChange: (
+        settingKey: BannerSettingKeyType,
+        settingValue: any
+      ) => void;
+      errors: CLErrors | undefined | null;
     };
 
 const SettingRadioButtons = ({
   ctaTypes,
   ctaType,
   signInStatus,
-  customizedButtonConfig,
+  ctaButtonMultiloc,
+  ctaButtonUrl,
   handleSettingOnChange,
   errors,
 }: SettingRadioButtonsProps) => {
-  const handleOnChange = (value: string) => {
-    handleSettingOnChange(`cta_${signInStatus}_type`, value);
+  const handleOnChange = (value: CTASignedOutType | CTASignedInType) => {
+    const ctaTypeToToggle =
+      signInStatus === 'signed_out'
+        ? 'banner_cta_signed_out_type'
+        : 'banner_cta_signed_in_type';
+    handleSettingOnChange(ctaTypeToToggle, value);
   };
+
   return (
     <>
       {ctaTypes.map((option: CTASignedOutType | CTASignedInType) => (
-        <div key={option}>
+        <div
+          data-cy={`e2e-cta-settings-${signInStatus}-${option}`}
+          key={option}
+        >
           <Radio
             key={`cta-type-${option}`}
             onChange={handleOnChange}
@@ -68,7 +82,8 @@ const SettingRadioButtons = ({
           {option === 'customized_button' &&
             ctaType === 'customized_button' && (
               <StyledCustomizedButtonSettings
-                buttonConfig={customizedButtonConfig}
+                buttonMultiloc={ctaButtonMultiloc}
+                buttonUrl={ctaButtonUrl}
                 handleSettingOnChange={handleSettingOnChange}
                 signInStatus={signInStatus}
                 errors={errors}

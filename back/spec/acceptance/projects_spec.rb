@@ -32,7 +32,6 @@ resource 'Projects' do
       parameter :publication_statuses, 'Return only projects with the specified publication statuses (i.e. given an array of publication statuses); returns all projects by default', required: false
       parameter :filter_can_moderate, 'Filter out the projects the user is allowed to moderate. False by default', required: false
       parameter :filter_ids, 'Filter out only projects with the given list of IDs', required: false
-      parameter :search, 'Filter by searching in title_multiloc, description_multiloc and description_preview_multiloc', required: false
 
       parameter :folder, 'Filter by folder (project folder id)', required: false if CitizenLab.ee?
 
@@ -121,18 +120,6 @@ resource 'Projects' do
         do_request filter_can_moderate: true, publication_statuses: ['published']
         assert_status 200
         expect(json_response[:data].size).to eq 4
-      end
-
-      example 'Search for projects' do
-        p1 = create(:project, title_multiloc: {
-          en: 'super-specific-title-string',
-          'fr-BE': 'a title',
-          'nl-BE': 'a title'
-        })
-
-        do_request search: 'super-specific-title-string'
-        expect(response_data.size).to eq 1
-        expect(response_ids).to eq [p1.id]
       end
     end
 
@@ -561,6 +548,55 @@ resource 'Projects' do
         expect(moderator.reload.project_moderator?(id)).to be false
       end
     end
+
+    get 'web_api/v1/projects/:id/survey_results' do
+      let(:project) { create(:continuous_native_survey_project) }
+      let(:form) { create(:custom_form, participation_context: project) }
+      let(:id) { project.id }
+      let(:multiselect_field) do
+        create(
+          :custom_field_multiselect,
+          resource: form,
+          title_multiloc: { 'en' => 'What are your favourite pets?' },
+          description_multiloc: {}
+        )
+      end
+      let!(:cat_option) do
+        create(:custom_field_option, custom_field: multiselect_field, key: 'cat', title_multiloc: { 'en' => 'Cat' })
+      end
+      let!(:dog_option) do
+        create(:custom_field_option, custom_field: multiselect_field, key: 'dog', title_multiloc: { 'en' => 'Dog' })
+      end
+
+      before do
+        create(:idea, project: project, custom_field_values: { multiselect_field.key => %w[cat dog] })
+        create(:idea, project: project, custom_field_values: { multiselect_field.key => %w[cat] })
+      end
+
+      example 'Get survey results', skip: !CitizenLab.ee? do
+        do_request
+        expect(status).to eq 200
+
+        expect(json_response).to eq(
+          {
+            data: {
+              results: [
+                {
+                  inputType: 'multiselect',
+                  question: { en: 'What are your favourite pets?' },
+                  totalResponses: 3,
+                  answers: [
+                    { answer: { en: 'Cat' }, responses: 2 },
+                    { answer: { en: 'Dog' }, responses: 1 }
+                  ]
+                }
+              ],
+              totalSubmissions: 2
+            }
+          }
+        )
+      end
+    end
   end
 
   get 'web_api/v1/projects' do
@@ -615,32 +651,6 @@ resource 'Projects' do
         do_request
         assert_status 200
         expect(json_response[:data].size).to eq 1
-      end
-
-      example 'Search for projects does not return projects with draft status' do
-        p1 = create(
-          :project,
-          admin_publication_attributes: { publication_status: 'published' },
-          title_multiloc: {
-            en: 'super-specific-title-string-1',
-            'fr-BE': 'a title',
-            'nl-BE': 'a title'
-          }
-        )
-
-        create(
-          :project,
-          admin_publication_attributes: { publication_status: 'draft' },
-          title_multiloc: {
-            en: 'super-specific-title-string-2',
-            'fr-BE': 'a title',
-            'nl-BE': 'a title'
-          }
-        )
-
-        do_request search: 'super-specific-title-string'
-        expect(response_data.size).to eq 1
-        expect(response_ids).to eq [p1.id]
       end
 
       example 'Normal users cannot moderate any projects', document: false, skip: !CitizenLab.ee? do

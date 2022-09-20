@@ -18,10 +18,9 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 import {
+  IHomepageSettingsAttributes,
   THomepageBannerLayout,
-  TAppConfigurationSetting,
-  IAppConfigurationSettings,
-} from 'services/appConfiguration';
+} from 'services/homepageSettings';
 
 const LayoutPreview = styled.img`
   width: 200px;
@@ -46,21 +45,16 @@ const LayoutOptionTextWrapper = styled.div`
 `;
 
 interface Props {
-  latestAppConfigSettings:
-    | IAppConfigurationSettings
-    | Partial<IAppConfigurationSettings>;
-  handleOnChange: (
-    settingName: TAppConfigurationSetting
-  ) => (settingKey: string, settingValue: any) => void;
+  homepageSettings: IHomepageSettingsAttributes;
+  handleOnChange: (settingKey: 'banner_layout', settingValue: string) => void;
 }
 
-const LayoutSetting = ({ latestAppConfigSettings, handleOnChange }: Props) => {
+const LayoutSetting = ({ homepageSettings, handleOnChange }: Props) => {
   const handleLayoutOnChange = (layout: THomepageBannerLayout) => {
-    handleOnChange('customizable_homepage_banner')('layout', layout);
+    handleOnChange('banner_layout', layout);
   };
 
-  const homepageBannerLayout =
-    latestAppConfigSettings.customizable_homepage_banner?.layout;
+  const homepageBannerLayout = homepageSettings.banner_layout;
   return (
     <SectionField key="layout">
       <SubSectionTitle>
@@ -89,7 +83,7 @@ const LayoutSetting = ({ latestAppConfigSettings, handleOnChange }: Props) => {
           />
         </LayoutOption>
         <LayoutOption>
-          <LayoutOptionTop>
+          <LayoutOptionTop data-cy="e2e-two-column-layout-option">
             <Radio
               onChange={handleLayoutOnChange}
               currentValue={homepageBannerLayout}

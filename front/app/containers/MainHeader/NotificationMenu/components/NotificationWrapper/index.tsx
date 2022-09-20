@@ -92,34 +92,35 @@ type Props = {
   isRead: boolean;
 };
 
-class NotificationWrapper extends React.PureComponent<Props> {
-  navigate = () => {
-    const { linkTo } = this.props;
+const NotificationWrapper = ({
+  icon,
+  children,
+  timing,
+  isRead,
+  linkTo,
+}: Props) => {
+  const navigate = () => {
     if (linkTo) {
       trackEventByName(tracks.clickNotification.name, { extra: { linkTo } });
       clHistory.push(linkTo);
     }
   };
 
-  render() {
-    const { icon, children, timing, isRead } = this.props;
-
-    return (
-      <Container role="link" onClick={this.navigate}>
-        <IconContainer>
-          {icon && <StyledIcon name={icon} isRead={isRead} />}
-        </IconContainer>
-        <Body>
-          <Message isRead={isRead}>{children}</Message>
-          {timing && (
-            <Timing>
-              <FormattedRelative value={timing} />
-            </Timing>
-          )}
-        </Body>
-      </Container>
-    );
-  }
-}
+  return (
+    <Container role="link" onClick={navigate}>
+      <IconContainer>
+        {icon && <StyledIcon name={icon} isRead={isRead} />}
+      </IconContainer>
+      <Body>
+        <Message isRead={isRead}>{children}</Message>
+        {timing && (
+          <Timing>
+            <FormattedRelative value={timing} />
+          </Timing>
+        )}
+      </Body>
+    </Container>
+  );
+};
 
 export default NotificationWrapper;

@@ -71,8 +71,6 @@ export interface InsertConfigurationOptions<T extends { name: string }> {
   configuration: T;
   insertAfterName?: string;
   insertBeforeName?: string;
-  reinsertAfterUpdate?: boolean;
-  removeName?: string;
 }
 
 export interface ILinks {
@@ -197,3 +195,5 @@ export type FormikSubmitHandler<V> = (
 ) => void;
 
 export type Override<T, U> = Pick<T, Exclude<keyof T, keyof U>> & U;
+
+export type Percentage = `${number}%`;

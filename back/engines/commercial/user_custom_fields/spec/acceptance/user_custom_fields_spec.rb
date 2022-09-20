@@ -61,16 +61,21 @@ resource 'User Custom Fields' do
           updated_at: custom_field.updated_at.as_json
         },
         relationships: {
-          current_ref_distribution: expected_ref_distribution_linkage
+          current_ref_distribution: expected_ref_distribution_linkage,
+          options: {
+            data: custom_field.options.map do |option|
+              { id: option.id, type: 'custom_field_option' }
+            end
+          }
         }
       }.deep_symbolize_keys
     end
 
     context 'when the custom field has a reference distribution' do
-      let(:ref_distribution) { create(:ref_distribution) }
+      let(:ref_distribution) { create(:categorical_distribution) }
       let(:custom_field) { ref_distribution.custom_field }
       let(:expected_ref_distribution_linkage) do
-        { data: { type: 'reference_distribution', id: ref_distribution.id } }
+        { data: { type: 'categorical_distribution', id: ref_distribution.id } }
       end
 
       example_request 'Get one custom field by id' do

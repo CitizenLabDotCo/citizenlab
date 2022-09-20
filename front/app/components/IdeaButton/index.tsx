@@ -300,6 +300,19 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
           phases
         );
 
+        const buttonMessage =
+          project.attributes.participation_method === 'native_survey' ||
+          phase?.attributes.participation_method === 'native_survey'
+            ? messages.takeTheSurvey
+            : getInputTermMessage(inputTerm, {
+                idea: messages.submitYourIdea,
+                option: messages.addAnOption,
+                project: messages.addAProject,
+                question: messages.addAQuestion,
+                issue: messages.submitAnIssue,
+                contribution: messages.addAContribution,
+              });
+
         return (
           <Container id={id} className={className || ''}>
             <Tippy
@@ -323,16 +336,7 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
                   disabled={!enabled}
                   ariaDisabled={false}
                 >
-                  <FormattedMessage
-                    {...getInputTermMessage(inputTerm, {
-                      idea: messages.submitYourIdea,
-                      option: messages.addAnOption,
-                      project: messages.addAProject,
-                      question: messages.addAQuestion,
-                      issue: messages.submitAnIssue,
-                      contribution: messages.addAContribution,
-                    })}
-                  />
+                  <FormattedMessage {...buttonMessage} />
                 </Button>
               </ButtonWrapper>
             </Tippy>
