@@ -43,7 +43,6 @@ const {
   IntlProvider,
   FormattedDate,
   FormattedTime,
-  // FormattedRelative,
   FormattedNumber,
   FormattedPlural,
   FormattedMessage,
