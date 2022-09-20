@@ -6,21 +6,29 @@ class WebApi::V1::PhaseCustomFieldsController < ApplicationController
   skip_before_action :authenticate_user
 
   def schema
-    render json: CustomFieldService.new.ui_and_json_multiloc_schemas(AppConfiguration.instance, custom_fields)
+    if phase
+      render json: CustomFieldService.new.ui_and_json_multiloc_schemas(AppConfiguration.instance, custom_fields)
+    else
+      send_not_found
+    end
   end
 
   def json_forms_schema
-    render json: JsonFormsService.new.input_ui_and_json_multiloc_schemas(custom_fields, current_user)
+    if phase
+      render json: JsonFormsService.new.input_ui_and_json_multiloc_schemas(custom_fields, current_user)
+    else
+      send_not_found
+    end
   end
 
   private
 
   def phase
-    @phase ||= Phase.find params[:phase_id]
+    @phase ||= Phase.find_by id: params[:phase_id]
   end
 
   def custom_fields
-    @custom_fields ||= IdeaCustomFieldsService.new(custom_form).all_fields
+    IdeaCustomFieldsService.new(custom_form).all_fields
   end
 
   def custom_form
