@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
-import PostFeedback from '../components/PostFeedback';
+import PostFeedbackCard from '../components/PostFeedbackCard';
 
 interface Props {
   projectId: string | undefined;
@@ -23,5 +23,5 @@ export default ({ onMount, ...otherProps }: Props) => {
 
   if (!analyticsActive) return null;
 
-  return <PostFeedback {...otherProps} />;
+  return <PostFeedbackCard {...otherProps} />;
 };
