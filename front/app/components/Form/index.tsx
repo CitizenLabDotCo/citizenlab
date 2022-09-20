@@ -69,6 +69,9 @@ import DateControl, {
 import MultilocInputLayout, {
   multilocInputTester,
 } from './Components/Controls/MultilocInputLayout';
+import LinearScaleControl, {
+  linearScaleControlTester,
+} from './Components/Controls/LinearScaleControl';
 
 import {
   Box,
@@ -149,6 +152,7 @@ interface Props {
   inputId?: string;
 }
 const renderers = [
+  { tester: linearScaleControlTester, renderer: LinearScaleControl },
   { tester: inputControlTester, renderer: InputControl },
   { tester: textAreaControlTester, renderer: TextAreaControl },
   { tester: checkboxControlTester, renderer: CheckboxControl },
@@ -275,10 +279,11 @@ const Form = memo(
       [formatMessage, getAjvErrorMessage]
     );
     const layoutType = isCategorization(uiSchema) ? 'fullpage' : 'inline';
+
     return (
       <Box
         as="form"
-        height="100%"
+        height={layoutType === 'fullpage' ? '100vh' : '100%'}
         display="flex"
         flexDirection="column"
         maxHeight={

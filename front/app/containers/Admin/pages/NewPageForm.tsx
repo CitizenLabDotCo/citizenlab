@@ -1,12 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Locale } from 'typings';
 import clHistory from 'utils/cl-router/history';
 
 import GoBackButton from 'components/UI/GoBackButton';
 import PageWrapper from 'components/admin/PageWrapper';
-import PageForm, { FormValues, validatePageForm } from 'components/PageForm';
-import { Formik, FormikProps } from 'formik';
+import PageForm, { FormValues } from 'components/PageForm';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
@@ -24,48 +22,18 @@ const PageTitle = styled.h1`
   margin: 1rem 0 3rem 0;
 `;
 
-export interface Props {}
-
-const NewPageForm = (_props: Props) => {
+const NewPageForm = () => {
   const appConfigurationLocales = useAppConfigurationLocales();
-  const handleSubmit = async (
-    values: FormValues,
-    { setSubmitting, setStatus }
-  ) => {
+  const handleSubmit = async (values: FormValues) => {
     const localPageFiles = values.local_page_files;
 
-    try {
-      const page = await createPage(values);
+    const page = await createPage(values);
 
-      if (!isNilOrError(page) && !isNilOrError(localPageFiles)) {
-        handleAddPageFiles(page.data.id, localPageFiles, null);
-      }
-
-      clHistory.push('/admin/pages');
-    } catch (error) {
-      setStatus('error');
-      setSubmitting(false);
+    if (!isNilOrError(page) && !isNilOrError(localPageFiles)) {
+      handleAddPageFiles(page.data.id, localPageFiles, null);
     }
-  };
 
-  const getInitialValues = (appConfigurationLocales: Locale[]): FormValues => {
-    const titleMultiloc = {};
-    const bodyMultiloc = {};
-
-    appConfigurationLocales.forEach((locale) => {
-      titleMultiloc[locale] = '';
-      bodyMultiloc[locale] = '';
-    });
-
-    return {
-      title_multiloc: titleMultiloc,
-      body_multiloc: bodyMultiloc,
-      local_page_files: null,
-    };
-  };
-
-  const renderFn = (props: FormikProps<FormValues>) => {
-    return <PageForm {...props} pageId={null} hideSlugInput />;
+    clHistory.push('/admin/pages');
   };
 
   const goBack = () => {
@@ -80,14 +48,7 @@ const NewPageForm = (_props: Props) => {
           <FormattedMessage {...messages.addPageButton} />
         </PageTitle>
         <PageWrapper>
-          <Formik
-            initialValues={getInitialValues(appConfigurationLocales)}
-            onSubmit={handleSubmit}
-            render={renderFn}
-            validate={validatePageForm(appConfigurationLocales)}
-            validateOnChange={false}
-            validateOnBlur={false}
-          />
+          <PageForm pageId={null} hideSlugInput onSubmit={handleSubmit} />
         </PageWrapper>
       </div>
     );

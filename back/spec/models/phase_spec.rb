@@ -156,4 +156,16 @@ RSpec.describe Phase, type: :model do
       end
     end
   end
+
+  describe '#native_survey?' do
+    it 'returns true when the participation method is native_survey' do
+      phase = create :native_survey_phase
+      expect(phase.native_survey?).to be true
+    end
+
+    it 'returns false otherwise' do
+      phase = create :poll_phase
+      expect(phase.native_survey?).to be false
+    end
+  end
 end

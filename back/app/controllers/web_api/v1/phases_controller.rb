@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::PhasesController < ApplicationController
-  before_action :set_phase, only: %i[show update destroy]
+  before_action :set_phase, only: %i[show update destroy survey_results]
   skip_before_action :authenticate_user
 
   def index
@@ -51,6 +51,11 @@ class WebApi::V1::PhasesController < ApplicationController
     else
       head :internal_server_error
     end
+  end
+
+  def survey_results
+    results = SurveyResultsGeneratorService.new(@phase).generate
+    render json: results
   end
 
   private

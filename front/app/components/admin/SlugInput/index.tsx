@@ -45,7 +45,7 @@ const SlugInput = ({
 
   if (isNilOrError(currentTenant)) return null;
 
-  const previewUrl = `${currentTenant.data.attributes.host}/${locale}/${
+  const previewUrl = `${currentTenant.attributes.host}/${locale}/${
     resource === 'folder' ? 'folders' : 'projects'
   }/${slug}`;
 

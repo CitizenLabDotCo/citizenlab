@@ -85,4 +85,16 @@ RSpec.describe Project, type: :model do
       expect(p.save).to be true
     end
   end
+
+  describe '#native_survey?' do
+    it 'returns true when the participation method is native_survey' do
+      project = create :continuous_native_survey_project
+      expect(project.native_survey?).to be true
+    end
+
+    it 'returns false otherwise' do
+      project = create :continuous_project
+      expect(project.native_survey?).to be false
+    end
+  end
 end

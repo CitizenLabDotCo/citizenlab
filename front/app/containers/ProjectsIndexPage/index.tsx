@@ -49,11 +49,11 @@ const PageTitle = styled.h1`
   text-align: center;
   padding: 0;
   margin: 0;
-  margin-bottom: 0px;
+  margin-bottom: 40px;
 
   ${media.smallerThanMaxTablet`
     text-align: left;
-    margin-bottom: 0px;
+    margin-bottom: 20px;
   `}
 
   ${media.smallerThanMinTablet`
@@ -61,21 +61,27 @@ const PageTitle = styled.h1`
   `}
 `;
 
-export default React.memo(() => (
-  <>
-    <ProjectsIndexMeta />
-    <Container>
-      <StyledContentContainer mode="page">
-        <PageTitle>
-          <FormattedMessage {...messages.pageTitle} />
-        </PageTitle>
-        <ProjectAndFolderCards
-          showTitle={false}
-          layout="threecolumns"
-          publicationStatusFilter={['published', 'archived']}
-        />
-      </StyledContentContainer>
-      <CityLogoSection />
-    </Container>
-  </>
-));
+const ProjectsIndex = () => {
+  return (
+    <>
+      <ProjectsIndexMeta />
+      <Container>
+        <StyledContentContainer mode="page">
+          <PageTitle>
+            <FormattedMessage {...messages.pageTitle} />
+          </PageTitle>
+
+          <ProjectAndFolderCards
+            showTitle={false}
+            showSearch={true}
+            layout="threecolumns"
+            publicationStatusFilter={['published', 'archived']}
+          />
+        </StyledContentContainer>
+        <CityLogoSection />
+      </Container>
+    </>
+  );
+};
+
+export default ProjectsIndex;

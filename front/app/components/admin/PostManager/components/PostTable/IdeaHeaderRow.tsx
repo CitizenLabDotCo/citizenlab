@@ -206,7 +206,7 @@ export default ({
       CellConfiguration<IdeaHeaderCellComponentProps>
     >
   ) => {
-    setCells(insertConfiguration(insertCellOptions)(cells));
+    setCells((cells) => insertConfiguration(insertCellOptions)(cells));
   };
 
   return (

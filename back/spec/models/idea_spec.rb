@@ -25,7 +25,7 @@ RSpec.describe Idea, type: :model do
     context 'without custom form' do
       it 'can publish an idea without custom fields' do
         project = create :project
-        CustomForm.where(project: project).first&.destroy!
+        project.custom_form&.destroy!
         idea = build :idea, project: project, custom_field_values: {}
         expect(idea.save(context: :publication)).to be true
       end
@@ -69,6 +69,20 @@ RSpec.describe Idea, type: :model do
 
     it 'should generate a slug on creation' do
       idea = create(:idea, slug: nil)
+      expect(idea.slug).to be_present
+    end
+
+    it 'should generate a slug when there is no current phase' do
+      project = create :project, process_type: 'timeline'
+      create :phase, project: project, start_at: (Time.zone.today - 10), end_at: (Time.zone.today - 5)
+      create :phase, project: project, start_at: (Time.zone.today + 5), end_at: (Time.zone.today + 10)
+      idea = create :idea, slug: nil, project: project.reload
+      expect(idea.slug).to be_present
+    end
+
+    it 'should generate a slug for a timeline project with no phases' do
+      project = create :project, process_type: 'timeline'
+      idea = create :idea, slug: nil, project: project
       expect(idea.slug).to be_present
     end
   end

@@ -220,7 +220,9 @@ const CreateProject = memo<Props & InjectedIntlProps>(
     );
 
     const handleData = (data: InsertConfigurationOptions<ITabItem>) =>
-      setTabs(insertConfiguration(data));
+      setTabs((tabs) => {
+        return insertConfiguration(data)(tabs);
+      });
 
     return (
       <Container className={className}>
