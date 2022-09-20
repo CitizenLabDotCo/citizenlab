@@ -146,5 +146,21 @@ describe IdeaCustomFields::IdeaCustomFieldPolicy do
         ]
       end
     end
+
+    describe 'for a linear_scale field' do
+      let!(:idea_custom_field) { create(:custom_field_linear_scale, resource: custom_form) }
+
+      it 'allows all changes' do
+        expect(policy.permitted_attributes).to match_array [
+          :required, :enabled, :maximum,
+          {
+            title_multiloc: CL2_SUPPORTED_LOCALES,
+            description_multiloc: CL2_SUPPORTED_LOCALES,
+            minimum_label_multiloc: CL2_SUPPORTED_LOCALES,
+            maximum_label_multiloc: CL2_SUPPORTED_LOCALES
+          }
+        ]
+      end
+    end
   end
 end
