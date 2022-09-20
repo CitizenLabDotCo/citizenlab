@@ -1,106 +1,42 @@
-import React, { PureComponent } from 'react';
-import { Subscription, combineLatest } from 'rxjs';
-import { currentAppConfigurationStream } from 'services/appConfiguration';
-import {
-  // eslint-disable-next-line no-restricted-imports
-  injectIntl as originalInjectIntl,
-  InjectedIntlProps,
-} from 'react-intl';
-import { localeStream } from 'services/locale';
-import { getLocalized } from 'utils/i18n';
-import { getDisplayName, isNilOrError } from 'utils/helperUtils';
+import React from 'react';
+import { useIntl, MessageDescriptor } from 'react-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import useLocale from 'hooks/useLocale';
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import useLocalize from 'hooks/useLocalize';
 
-type State = {
-  tenantName: string | null;
-  orgName: string | null;
-  orgType: string | null;
-  loaded: boolean;
-};
+function buildComponent<P>(Component: React.ComponentType<P>) {
+  return (props: P) => {
+    const locale = useLocale();
+    const localize = useLocalize();
+    const appConfig = useAppConfiguration();
+    const intl = useIntl();
 
-function buildComponent<P>(
-  Component: React.ComponentType<P & InjectedIntlProps>
-) {
-  return class NewFormatMessageComponent extends PureComponent<
-    P & InjectedIntlProps,
-    State
-  > {
-    subscriptions: Subscription[];
-    static displayName = `WithIntl(${getDisplayName(Component)})`;
+    if (isNilOrError(appConfig) || isNilOrError(locale)) return null;
 
-    constructor(props) {
-      super(props);
-      this.state = {
-        tenantName: null,
-        orgName: null,
-        orgType: null,
-        loaded: false,
-      };
-      this.subscriptions = [];
-    }
-
-    componentDidMount() {
-      const locale$ = localeStream().observable;
-      const currentTenant$ = currentAppConfigurationStream().observable;
-
-      this.subscriptions = [
-        combineLatest([locale$, currentTenant$]).subscribe(
-          ([locale, tenant]) => {
-            if (!isNilOrError(locale) && !isNilOrError(tenant)) {
-              const tenantLocales =
-                tenant.data.attributes.settings.core.locales;
-              const tenantName = tenant.data.attributes.name;
-              const orgName = getLocalized(
-                tenant.data.attributes.settings.core.organization_name,
-                locale,
-                tenantLocales
-              );
-              const orgType =
-                tenant.data.attributes.settings.core.organization_type;
-              this.setState({ tenantName, orgName, orgType, loaded: true });
-            }
-          }
-        ),
-      ];
-    }
-
-    componentWillUnmount() {
-      this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-    }
-
-    formatMessageReplacement = (
-      messageDescriptor: ReactIntl.FormattedMessage.MessageDescriptor,
+    const formatMessageReplacement = (
+      messageDescriptor: MessageDescriptor,
       values?: { [key: string]: string | number | boolean | Date } | undefined
     ) => {
-      return this.props.intl.formatMessage(messageDescriptor, {
-        tenantName: this.state.tenantName,
-        orgName: this.state.orgName,
-        orgType: this.state.orgType,
+      return intl.formatMessage(messageDescriptor, {
+        tenantName: appConfig.data.attributes.name,
+        orgName: localize(
+          appConfig.data.attributes.settings.core.organization_name
+        ),
+        orgType: appConfig.data.attributes.settings.core.organization_type,
         ...(values || {}),
       });
     };
 
-    render() {
-      const { loaded } = this.state;
+    const intlReplacement = {
+      ...intl,
+      formatMessage: formatMessageReplacement,
+    };
 
-      if (loaded) {
-        const { intl } = this.props;
-        const intlReplacement = {
-          ...(intl as Record<string, any>),
-          formatMessage: this.formatMessageReplacement,
-        };
-
-        return <Component {...this.props} intl={intlReplacement} />;
-      }
-
-      return null;
-    }
+    return <Component {...props} intl={intlReplacement} />;
   };
 }
 
-export default function injectIntl<P>(
-  component: React.ComponentType<P & InjectedIntlProps>
-) {
-  return originalInjectIntl<P & InjectedIntlProps>(
-    buildComponent<P & InjectedIntlProps>(component)
-  );
+export default function injectIntl<P>(component: React.ComponentType<P>) {
+  return buildComponent(component);
 }
