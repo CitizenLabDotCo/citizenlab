@@ -8,7 +8,7 @@ import { Moment } from 'moment';
 import { IResolution } from 'components/admin/ResolutionControl';
 
 interface Props {
-  startAtMoment: Moment | null;
+  startAtMoment: Moment | null | undefined;
   endAtMoment: Moment | null;
   projectFilter: string | undefined;
   resolution: IResolution

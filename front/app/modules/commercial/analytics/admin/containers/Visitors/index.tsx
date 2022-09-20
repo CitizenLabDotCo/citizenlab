@@ -14,7 +14,7 @@ import { IResolution } from 'components/admin/ResolutionControl';
 import { IOption } from 'typings';
 
 const Visitors = () => {
-  const [startAtMoment, setStartAtMoment] = useState<Moment | null>(null);
+  const [startAtMoment, setStartAtMoment] = useState<Moment | null | undefined>(undefined);
   const [endAtMoment, setEndAtMoment] = useState<Moment | null>(moment());
   const [projectFilter, setProjectFilter] = useState<string | undefined>();
   const [resolution, setResolution] = useState<IResolution>('month');
