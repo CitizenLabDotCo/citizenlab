@@ -54,7 +54,12 @@ module MultiTenancy
               identifier: '***REMOVED***',
               secret: '***REMOVED***'
             },
-            vienna_login: {
+            vienna_citizen_login: {
+              allowed: true,
+              enabled: true,
+              environment: 'test'
+            },
+            vienna_employee_login: {
               allowed: true,
               enabled: true,
               environment: 'test'
