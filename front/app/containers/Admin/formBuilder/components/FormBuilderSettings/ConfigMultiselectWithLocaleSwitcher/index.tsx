@@ -45,7 +45,6 @@ const ConfigMultiselectWithLocaleSwitcher = ({
   intl: { formatMessage },
   allowDeletingAllOptions = false,
 }: Props & InjectedIntlProps) => {
-
   const {
     control,
     formState: { errors: formContextErrors },
@@ -117,7 +116,7 @@ const ConfigMultiselectWithLocaleSwitcher = ({
               >
                 <SectionField>
                   <Box display="flex" flexWrap="wrap" marginBottom="12px">
-                    <Box marginTop="4px" marginRight="12px">
+                    <Box marginTop="4px" marginRight="8px">
                       <Label>
                         {formatMessage(messages.fieldLabel)}
                         <IconTooltip
@@ -149,7 +148,7 @@ const ConfigMultiselectWithLocaleSwitcher = ({
                                 // Do nothing, no need to handle dropping a row for now
                               }}
                             >
-                              <Box width="300px">
+                              <Box width="280px">
                                 <Input
                                   size="small"
                                   type="text"
