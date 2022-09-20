@@ -1,6 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps, MessageDescriptor } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
 type Props = {

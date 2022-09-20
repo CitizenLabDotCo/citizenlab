@@ -28,7 +28,7 @@ import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import { PostType } from 'resources/GetPost';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps, MessageDescriptor } from 'react-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import localize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
