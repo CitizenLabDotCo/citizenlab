@@ -31,7 +31,7 @@ interface Props {
   bannerMultilocFieldComponent?: ReactElement;
   avatarsFieldComponent?: ReactElement;
   outletSectionEnd?: ReactElement;
-}
+};
 
 const GenericHeroBannerForm = ({
   onSave,

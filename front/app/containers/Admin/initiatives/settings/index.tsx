@@ -64,12 +64,12 @@ const InitiativesSettingsPage = () => {
   const remoteProposalsSettings = useMemo(() => {
     if (
       isNilOrError(appConfiguration) ||
-      !appConfiguration.data.attributes.settings.initiatives
+      !appConfiguration.attributes.settings.initiatives
     ) {
       return null;
     }
 
-    return omit(appConfiguration.data.attributes.settings.initiatives, [
+    return omit(appConfiguration.attributes.settings.initiatives, [
       'allowed',
       'enabled',
     ]);
@@ -119,8 +119,7 @@ const InitiativesSettingsPage = () => {
   }
 
   const validate = () => {
-    const tenantLocales =
-      appConfiguration.data.attributes.settings.core.locales;
+    const tenantLocales = appConfiguration.attributes.settings.core.locales;
     let validated = false;
 
     const proposalsSettingsChanged = !isEqual(

@@ -39,6 +39,14 @@ const FormBuilderToolbox = ({
       input_type: inputType,
       required: false,
       title_multiloc: {},
+      options: [
+        {
+          // TODO: Ask Ben what the starter data should be
+          title_multiloc: {
+            en: '',
+          },
+        },
+      ],
       enabled: true,
     });
   };
@@ -75,6 +83,11 @@ const FormBuilderToolbox = ({
             icon="short-answer"
             label={formatMessage(messages.shortAnswer)}
             onClick={() => addAnswer('text')}
+          />
+          <ToolboxItem
+            icon="info"
+            label={formatMessage(messages.multipleChoice)}
+            onClick={() => addAnswer('multiselect')}
           />
         </DraggableElement>
       </Box>

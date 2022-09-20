@@ -4,7 +4,7 @@ import SlugInput, { Props } from '.';
 
 jest.mock('utils/cl-intl');
 jest.mock('hooks/useAppConfiguration', () => () => ({
-  data: { attributes: { name: 'orgName', host: 'localhost' } },
+  attributes: { name: 'orgName', host: 'localhost' },
 }));
 jest.mock('hooks/useLocale');
 jest.mock('services/locale');

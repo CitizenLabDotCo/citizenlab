@@ -126,7 +126,7 @@ const FieldContent = ({
             <Button
               disabled={!allowSubmit}
               processing={submitting}
-              text="Save"
+              text={<FormattedMessage {...messages.save} />}
               mt="20px"
               width="auto"
               data-testid="representativeness-field-save-button"

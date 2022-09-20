@@ -20,6 +20,6 @@ class WebApi::V1::IdeaCustomFieldsController < ApplicationController
 
   def set_custom_form
     @project = Project.find(params[:project_id])
-    @custom_form = @project.custom_form || CustomForm.new(project: @project)
+    @custom_form = @project.custom_form || CustomForm.new(participation_context: @project)
   end
 end

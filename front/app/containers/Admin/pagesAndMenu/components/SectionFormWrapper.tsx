@@ -39,7 +39,7 @@ const SectionFormWrapper = ({
             {subtitle && <SectionDescription>{subtitle}</SectionDescription>}
           </Box>
         )}
-        {rightSideCTA && <Box ml="auto">{rightSideCTA}</Box>}
+        {rightSideCTA && <Box ml="60px">{rightSideCTA}</Box>}
       </Box>
       <Box>
         <PageWrapper>

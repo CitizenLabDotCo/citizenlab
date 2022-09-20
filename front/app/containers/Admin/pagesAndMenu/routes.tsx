@@ -117,7 +117,7 @@ export default () => ({
               path: 'settings',
               element: (
                 <PageLoading>
-                  <EditCustomPageSettings />,
+                  <EditCustomPageSettings />
                 </PageLoading>
               ),
             },
@@ -125,7 +125,7 @@ export default () => ({
               path: 'content',
               element: (
                 <PageLoading>
-                  <EditCustomPageContent />,
+                  <EditCustomPageContent />
                 </PageLoading>
               ),
             },

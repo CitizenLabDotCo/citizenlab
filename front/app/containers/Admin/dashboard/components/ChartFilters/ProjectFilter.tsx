@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 
 // resources
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
@@ -21,12 +22,27 @@ import messages from './messages';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
+const StyledSelect = styled(Select)<{ padding?: string }>`
+  ${({ padding }) =>
+    padding
+      ? `
+    select {
+      padding: ${padding};
+    }
+  `
+      : ''}
+`;
+
 interface DataProps {
   projects: GetProjectsChildProps;
 }
 
 interface InputProps {
   currentProjectFilter?: string | null;
+  hideLabel?: boolean;
+  placeholder?: string;
+  width?: string;
+  padding?: string;
   onProjectFilter: (filter: IOption) => void;
 }
 
@@ -51,6 +67,10 @@ const generateProjectOptions = (
 const ProjectFilter = ({
   projects: { projectsList },
   currentProjectFilter,
+  hideLabel,
+  placeholder,
+  width,
+  padding,
   onProjectFilter,
   intl,
 }: Props & InjectedIntlProps) => {
@@ -65,13 +85,19 @@ const ProjectFilter = ({
   );
 
   return (
-    <Box width="32%">
-      <Select
+    <Box width={width ?? '32%'}>
+      <StyledSelect
         id="projectFilter"
-        label={<FormattedMessage {...messages.labelProjectFilter} />}
+        label={
+          !hideLabel ? (
+            <FormattedMessage {...messages.labelProjectFilter} />
+          ) : undefined
+        }
         onChange={onProjectFilter}
         value={currentProjectFilter || ''}
         options={projectFilterOptions}
+        placeholder={placeholder}
+        padding={padding}
       />
     </Box>
   );

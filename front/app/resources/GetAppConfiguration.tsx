@@ -1,62 +1,23 @@
-import React from 'react';
-import { Subscription } from 'rxjs';
-import {
-  currentAppConfigurationStream,
-  IAppConfigurationData,
-} from 'services/appConfiguration';
-import { isNilOrError } from 'utils/helperUtils';
+// hooks
+import useAppConfiguration from 'hooks/useAppConfiguration';
 
-interface InputProps {}
+// typings
+import { IAppConfigurationData } from 'services/appConfiguration';
+import { NilOrError } from 'utils/helperUtils';
+
+export type GetAppConfigurationChildProps = IAppConfigurationData | NilOrError;
 
 type children = (
   renderProps: GetAppConfigurationChildProps
 ) => JSX.Element | null;
 
-interface Props extends InputProps {
+interface Props {
   children?: children;
 }
 
-interface State {
-  tenant: IAppConfigurationData | undefined | null | Error;
-}
+const GetAppConfiguration = ({ children }: Props) => {
+  const appConfiguration = useAppConfiguration();
+  return (children as children)(appConfiguration);
+};
 
-export type GetAppConfigurationChildProps =
-  | IAppConfigurationData
-  | undefined
-  | null
-  | Error;
-
-export default class GetAppConfiguration extends React.Component<Props, State> {
-  private subscriptions: Subscription[];
-
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      tenant: undefined,
-    };
-  }
-
-  componentDidMount() {
-    const currentTenant$ = currentAppConfigurationStream().observable;
-
-    this.subscriptions = [
-      currentTenant$.subscribe((currentTenant) => {
-        this.setState({
-          tenant: !isNilOrError(currentTenant)
-            ? currentTenant.data
-            : currentTenant,
-        });
-      }),
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-  }
-
-  render() {
-    const { children } = this.props;
-    const { tenant } = this.state;
-    return (children as children)(tenant);
-  }
-}
+export default GetAppConfiguration;

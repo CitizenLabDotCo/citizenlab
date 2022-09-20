@@ -15,7 +15,7 @@ jest.mock('hooks/useAppConfigurationLocales', () =>
   jest.fn(() => ['en', 'nl-NL'])
 );
 jest.mock('hooks/useAppConfiguration', () => () => ({
-  data: { attributes: { name: 'orgName', host: 'localhost' } },
+  attributes: { name: 'orgName', host: 'localhost' },
 }));
 
 describe('CustomPageSettingsForm', () => {

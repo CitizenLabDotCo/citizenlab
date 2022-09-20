@@ -1,3 +1,4 @@
+// @ts-nocheck
 // for dev purposes
 import React from 'react';
 import { render, screen, act, fireEvent } from 'utils/testUtils/rtl';

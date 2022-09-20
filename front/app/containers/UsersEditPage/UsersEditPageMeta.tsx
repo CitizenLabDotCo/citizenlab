@@ -44,7 +44,7 @@ const UsersEditPageMeta = React.memo<Props & InjectedIntlProps>(
       const firstName = user.attributes.first_name;
       const lastName = user.attributes.last_name;
       const organizationNameMultiLoc =
-        tenant.data.attributes.settings.core.organization_name;
+        tenant.attributes.settings.core.organization_name;
       const tenantName = getLocalized(
         organizationNameMultiLoc,
         locale,

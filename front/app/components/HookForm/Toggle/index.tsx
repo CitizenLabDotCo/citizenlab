@@ -3,6 +3,7 @@ import { Toggle as ToggleComponent } from '@citizenlab/cl2-component-library';
 import Error, { TFieldName } from 'components/UI/Error';
 import { Controller, useFormContext } from 'react-hook-form';
 import { CLError } from 'typings';
+import { get } from 'lodash-es';
 
 export interface ToggleProps {
   name: string;
@@ -14,19 +15,19 @@ export interface ToggleProps {
 
 const Toggle = ({ name, ...rest }: ToggleProps) => {
   const {
-    formState: { errors },
+    formState: { errors: formContextErrors },
     control,
     watch,
     setValue,
   } = useFormContext();
 
   const defaultValue = false;
+  const errors = get(formContextErrors, name);
+  const validationError = errors?.message as string | undefined;
 
-  const validationError = errors[name]?.message as string | undefined;
-
+  // If an API error with a matching name has been returned from the API response, apiError is set to an array with the error message as the only item
   const apiError =
-    (errors[name]?.error as string | undefined) &&
-    ([errors[name]] as unknown as CLError[]);
+    (errors?.error as string | undefined) && ([errors] as unknown as CLError[]);
 
   const currentValue = watch(name);
   return (
