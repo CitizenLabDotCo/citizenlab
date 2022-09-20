@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ProjectsController < ::ApplicationController
-  before_action :set_project, only: %i[show update reorder destroy]
+  before_action :set_project, only: %i[show update reorder destroy survey_results]
   skip_before_action :authenticate_user
   skip_after_action :verify_policy_scoped, only: :index
 
@@ -110,6 +110,11 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     else
       head :internal_server_error
     end
+  end
+
+  def survey_results
+    results = SurveyResultsGeneratorService.new(@project).generate
+    render json: results
   end
 
   private

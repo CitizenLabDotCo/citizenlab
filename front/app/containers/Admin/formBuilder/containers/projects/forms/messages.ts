@@ -9,8 +9,17 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.surveyDescription',
     defaultMessage: "Create and edit the questions in this projects's survey.",
   },
-  emptyTitleErrorMessage: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.emptyTitleErrorMessage',
-    defaultMessage: 'Provide a title for all languages',
+  emptyTitleError: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.emptyTitleError',
+    defaultMessage: 'Provide a question title',
+  },
+  errorMessage: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.errorMessage',
+    defaultMessage:
+      'There is a problem, please fix the issue to be able to save your changes',
+  },
+  emptyOptionError: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.emptyOptionError',
+    defaultMessage: 'Provide at least 1 answer',
   },
 });
