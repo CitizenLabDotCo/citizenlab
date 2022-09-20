@@ -3,19 +3,19 @@
 require 'citizen_lab/mixins/feature_specification'
 
 module IdViennaSaml
-  module FeatureSpecification
+  module CitizenFeatureSpecification
     extend CitizenLab::Mixins::FeatureSpecification
 
     def self.feature_name
-      'vienna_login'
+      'vienna_citizen_login'
     end
 
     def self.feature_title
-      'Vienna Standardportal Login'
+      'Vienna citizen Single sign-on'
     end
 
     def self.feature_description
-      'Allow users to authenticate with a Vienna Standardportal account.'
+      'Allow vienna citizens to authenticate via StandardPortal Single sign-on.'
     end
 
     add_setting 'environment', required: true, schema: {

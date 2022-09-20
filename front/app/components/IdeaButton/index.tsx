@@ -301,7 +301,8 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
         );
 
         const buttonMessage =
-          project.attributes.participation_method === 'native_survey'
+          project.attributes.participation_method === 'native_survey' ||
+          phase?.attributes.participation_method === 'native_survey'
             ? messages.takeTheSurvey
             : getInputTermMessage(inputTerm, {
                 idea: messages.submitYourIdea,

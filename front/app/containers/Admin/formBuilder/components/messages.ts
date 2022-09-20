@@ -25,6 +25,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.multipleChoice',
     defaultMessage: 'Multiple choice',
   },
+  number: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.number',
+    defaultMessage: 'Number',
+  },
+    linearScale: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.linearScale',
+    defaultMessage: 'Linear scale',
+  },
   default: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.default',
     defaultMessage: 'Default',
@@ -69,9 +77,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.editButtonLabel',
     defaultMessage: 'Edit',
   },
-  downloadSurveyResults: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.downloadSurveyResults',
-    defaultMessage: 'Download survey results ({count})',
+  viewSurveyResults: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.viewSurveyResults',
+    defaultMessage: 'View survey results ({count})',
   },
   editSurveyContent: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.editSurveyContent',
@@ -84,5 +92,30 @@ export default defineMessages({
   openForSubmissions: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.openForSubmissions',
     defaultMessage: 'Open for submissions',
+  },
+  surveyResults: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.surveyResults',
+    defaultMessage: 'Survey results',
+  },
+  totalSurveyResponses: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.totalSurveyResponses',
+    defaultMessage: 'Total {count} responses',
+  },
+  downloadResults: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.downloadResults',
+    defaultMessage: 'Download survey results',
+  },
+  informationText: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.informationText',
+    defaultMessage:
+      'Responses to short and long answer questions are currently only available in the survey download',
+  },
+  multiselect: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.multiselectText',
+    defaultMessage: 'Multiple choice - choose many',
+  },
+  linear_scale: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.linear_scale',
+    defaultMessage: 'Linear scale',
   },
 });
