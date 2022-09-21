@@ -602,7 +602,7 @@
   "app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription": "Die Rangliste basiert auf der Anzahl der Beiträge (5 Punkte pro Beitrag), Kommentare (3 Punkte pro Kommentar) und Stimmen (1 Punkt pro Stimme), die von jedem Teilnehmenden abgegeben wurden.",
   "app.containers.AdminPage.DashboardPage.noData": "Es können keine Daten angezeigt werden.",
   "app.containers.AdminPage.DashboardPage.noPhase": "Keine Phase für dieses Projekt erstellt",
-  "app.containers.AdminPage.DashboardPage.numberOfActiveParticipantsDescription": "Die Anzahl der Teilnehmenden, die Beiträge gemacht, abgestimmt oder kommentiert haben.",
+  "app.containers.AdminPage.DashboardPage.numberOfActiveParticipantsDescription": "Die Anzahl der Teilnehmenden, die einen Beitrag hinzugefügt, abgestimmt oder kommentiert haben.",
   "app.containers.AdminPage.DashboardPage.numberOfVotesDown": "Ablehnung",
   "app.containers.AdminPage.DashboardPage.numberOfVotesTotal": "Gesamtzahl der Stimmen",
   "app.containers.AdminPage.DashboardPage.numberOfVotesUp": "Zustimmungen",
