@@ -29,4 +29,9 @@ export default defineMessages({
     id: 'app.modules.commercial.analytics.admin.components.VisitorsCard.yesterday',
     defaultMessage: 'Yesterday:',
   },
+  tooltipWarning: {
+    id: 'app.modules.commercial.analytics.admin.components.VisitorsCard.tooltipWarning',
+    defaultMessage:
+      'No data is available for the pages of the selected project only.',
+  },
 });

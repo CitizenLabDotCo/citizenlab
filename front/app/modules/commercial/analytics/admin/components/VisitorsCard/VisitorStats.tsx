@@ -36,36 +36,40 @@ const VisitorStats = ({
   const { stats } = useVisitorsData();
   if (isNilOrError(stats)) return null;
 
+  const bottomLabel = formatMessage(BOTTOM_LABEL_COPY[resolution]);
+
   return (
     <Box display="flex" flexDirection="row" pl="20px">
       <Box>
         <Statistic
           name={formatMessage(messages.visitors)}
-          value={stats.visitors.value}
-          bottomLabel={formatMessage(BOTTOM_LABEL_COPY[resolution])}
+          value={stats.visitors.value.toLocaleString()}
+          bottomLabel={bottomLabel}
           bottomLabelValue={`+${stats.visitors.lastPeriod}`}
         />
         <Box mt="32px">
           <Statistic
             name={formatMessage(messages.visitDuration)}
-            value={stats.visitDuration.value}
-            bottomLabel={formatMessage(BOTTOM_LABEL_COPY[resolution])}
+            value={stats.visitDuration.value.toLocaleString()}
+            bottomLabel={bottomLabel}
             bottomLabelValue={`+${stats.visitDuration.lastPeriod}`}
+            showEmptyTooltip
+            emptyTooltipContent={formatMessage(messages.tooltipWarning)}
           />
         </Box>
       </Box>
       <Box ml="28px">
         <Statistic
           name={formatMessage(messages.visits)}
-          value={stats.visits.value}
-          bottomLabel={formatMessage(BOTTOM_LABEL_COPY[resolution])}
+          value={stats.visits.value.toLocaleString()}
+          bottomLabel={bottomLabel}
           bottomLabelValue={`+${stats.visits.lastPeriod}`}
         />
         <Box mt="32px">
           <Statistic
             name={formatMessage(messages.pageViews)}
-            value={stats.pageViews.value}
-            bottomLabel={formatMessage(BOTTOM_LABEL_COPY[resolution])}
+            value={stats.pageViews.value.toLocaleString()}
+            bottomLabel={bottomLabel}
             bottomLabelValue={`+${stats.pageViews.lastPeriod}`}
           />
         </Box>
