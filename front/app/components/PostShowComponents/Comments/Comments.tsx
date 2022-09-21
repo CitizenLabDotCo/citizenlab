@@ -15,7 +15,7 @@ import styled from 'styled-components';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import messages from './messages';
 
 // a11y

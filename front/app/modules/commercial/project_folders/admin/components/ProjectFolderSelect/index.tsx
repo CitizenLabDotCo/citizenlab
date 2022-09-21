@@ -27,7 +27,8 @@ import { isNilOrError, isNil } from 'utils/helperUtils';
 import { IOption } from 'typings';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 import useAuthUser from 'hooks/useAuthUser';

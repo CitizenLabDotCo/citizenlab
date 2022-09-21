@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { useParams, useLocation } from 'react-router-dom';
 
 // components

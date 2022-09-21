@@ -29,7 +29,8 @@ import eventEmitter from 'utils/eventEmitter';
 import clHistory from 'utils/cl-router/history';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 

@@ -1,7 +1,8 @@
 import React, { useRef } from 'react';
 
 // intl
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 import messages from '../../messages';
 
@@ -202,9 +203,7 @@ const SelectableResourceChart = ({
   );
 };
 
-const SelectableResourceChartWithHoCs = injectIntl<Props>(
-  SelectableResourceChart
-);
+const SelectableResourceChartWithHoCs = injectIntl(SelectableResourceChart);
 
 export default (inputProps: InputProps) => (
   <GetSerieFromStream {...inputProps}>

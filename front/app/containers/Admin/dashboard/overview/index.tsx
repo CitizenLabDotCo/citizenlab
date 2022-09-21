@@ -32,7 +32,7 @@ import tracks from '../tracks';
 
 // i18n
 import messages from '../messages';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
 

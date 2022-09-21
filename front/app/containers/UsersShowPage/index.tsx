@@ -12,7 +12,7 @@ import UsersShowPageMeta from './UsersShowPageMeta';
 import Button from 'components/UI/Button';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 

@@ -1,7 +1,8 @@
 // libraries
 import React from 'react';
 import styled from 'styled-components';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 import { isNilOrError } from 'utils/helperUtils';

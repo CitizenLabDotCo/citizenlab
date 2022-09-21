@@ -1,6 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import messages from './messages';
 
 const SiteMapMeta = ({ intl }) => (

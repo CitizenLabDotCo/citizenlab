@@ -2,7 +2,7 @@
 import React from 'react';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from 'containers/Admin/dashboard/messages';
 
@@ -49,4 +49,4 @@ const AgeChart = (props: Props & WrappedComponentProps) => {
   );
 };
 
-export default injectIntl<Props>(AgeChart);
+export default injectIntl(AgeChart);

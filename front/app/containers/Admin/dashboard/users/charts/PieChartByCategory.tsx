@@ -2,7 +2,8 @@
 import React from 'react';
 
 // intl
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 
@@ -136,7 +137,7 @@ class PieChartByCategory extends React.PureComponent<
   }
 }
 
-const PieChartByCategoryWithHoCs = injectIntl<Props>(
+const PieChartByCategoryWithHoCs = injectIntl(
   withTheme(PieChartByCategory as any) as any
 );
 

@@ -15,7 +15,7 @@ import { isValidEmail } from 'utils/validate';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 
 // style
 import styled from 'styled-components';
@@ -232,4 +232,4 @@ class PasswordRecovery extends React.PureComponent<
   }
 }
 
-export default injectIntl<Props>(PasswordRecovery);
+export default injectIntl(PasswordRecovery);

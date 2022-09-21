@@ -18,7 +18,7 @@ import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 // i18n
 import { getLocalized } from 'utils/i18n';
 import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 
 // typings

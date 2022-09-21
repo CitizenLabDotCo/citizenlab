@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { InsertConfigurationOptions } from 'typings';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 import { ITabItem } from 'components/UI/Tabs';

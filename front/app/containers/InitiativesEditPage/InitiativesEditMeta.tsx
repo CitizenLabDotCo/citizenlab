@@ -6,7 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 
 // resources
@@ -74,7 +74,7 @@ const InitiativesNewMeta = React.memo<Props & WrappedComponentProps>(
   }
 );
 
-const InitiativesNewMetaWithHoc = injectIntl<Props>(InitiativesNewMeta);
+const InitiativesNewMetaWithHoc = injectIntl(InitiativesNewMeta);
 
 const Data = adopt<DataProps, InputProps>({
   tenantLocales: <GetAppConfigurationLocales />,

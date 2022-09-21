@@ -17,7 +17,8 @@ import { IParticipationByTopic } from 'typings';
 import { fontSizes, colors } from 'utils/styleUtils';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from '../messages';
 import useLocalize from 'hooks/useLocalize';

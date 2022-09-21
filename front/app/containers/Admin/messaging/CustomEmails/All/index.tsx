@@ -5,7 +5,8 @@ import styled from 'styled-components';
 import GetCampaigns, { GetCampaignsChildProps } from 'resources/GetCampaigns';
 import { isDraft } from 'services/campaigns';
 
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 
 import { List } from 'components/admin/ResourceList';
@@ -107,7 +108,7 @@ class Campaigns extends React.Component<Props & WrappedComponentProps, State> {
   }
 }
 
-const CampaignsWithInjectedIntl = injectIntl<Props>(Campaigns);
+const CampaignsWithInjectedIntl = injectIntl(Campaigns);
 
 export default () => (
   <GetCampaigns campaignNames={['manual']} pageSize={10}>

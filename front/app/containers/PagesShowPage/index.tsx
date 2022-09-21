@@ -25,7 +25,8 @@ import GetResourceFiles, {
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { getLocalized } from 'utils/i18n';
 import T from 'components/T';
 import messages from './messages';
@@ -232,7 +233,7 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   ),
 });
 
-const PagesShowPageWithHOCs = injectIntl<InputProps & WithRouterProps>(
+const PagesShowPageWithHOCs = injectIntl(
   PagesShowPage
 );
 

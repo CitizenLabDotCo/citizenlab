@@ -3,7 +3,7 @@ import React from 'react';
 import { orderBy } from 'lodash-es';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
 import messages from 'containers/Admin/dashboard/messages';
@@ -71,7 +71,7 @@ const AreaChart = (
   );
 };
 
-const WrappedAreaChart = injectIntl<Props>(
+const WrappedAreaChart = injectIntl(
   localize<Props & WrappedComponentProps>(AreaChart)
 );
 

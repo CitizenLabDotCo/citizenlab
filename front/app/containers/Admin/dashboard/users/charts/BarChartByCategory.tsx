@@ -3,7 +3,7 @@ import React from 'react';
 import { isEmpty } from 'lodash-es';
 
 // intl
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 
@@ -122,7 +122,7 @@ export class BarChartByCategory extends React.PureComponent<
   }
 }
 
-const BarChartByCategoryWithHoCs = injectIntl<Props>(BarChartByCategory);
+const BarChartByCategoryWithHoCs = injectIntl(BarChartByCategory);
 
 const WrappedBarChartByCategory = (inputProps: InputProps) => (
   <GetSerieFromStream {...inputProps}>

@@ -1,8 +1,8 @@
 import React from 'react';
 
 // i18n
-import { injectIntl, FormattedMessage, IMessageInfo } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, IMessageInfo } from 'utils/cl-intl';
+import { WrappedComponentProps, injectIntl } from 'react-intl';
 import messages from './messages';
 
 // components

@@ -7,7 +7,7 @@ import { get } from 'lodash-es';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import injectIntl from 'utils/cl-intl/injectIntl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 
 // Services

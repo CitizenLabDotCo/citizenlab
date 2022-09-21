@@ -29,7 +29,7 @@ import useProjectImages from 'hooks/useProjectImages';
 import T from 'components/T';
 import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
-import injectIntl from 'utils/cl-intl/injectIntl';
+import { injectIntl } from 'react-intl';
 import messages from './messages';
 
 // tracking

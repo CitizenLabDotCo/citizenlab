@@ -9,7 +9,7 @@ import tracks from '../tracks';
 import { openSignUpInModal } from 'components/SignUpIn/events';
 import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import Outlet from 'components/Outlet';
 import SignUpButton from '../SignUpButton';
 import useHomepageSettings from 'hooks/useHomepageSettings';

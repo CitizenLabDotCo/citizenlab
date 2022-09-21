@@ -3,7 +3,8 @@ import React from 'react';
 import { isEmpty, map, orderBy } from 'lodash-es';
 
 // intl
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
@@ -129,7 +130,7 @@ export class IdeasByStatusChart extends React.PureComponent<
   }
 }
 
-const IdeasByStatusChartWithHoCs = injectIntl<Props>(IdeasByStatusChart);
+const IdeasByStatusChartWithHoCs = injectIntl(IdeasByStatusChart);
 
 const WrappedIdeasByStatusChart = (
   inputProps: InputProps & InjectedLocalized

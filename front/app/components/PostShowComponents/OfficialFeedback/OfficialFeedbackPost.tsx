@@ -19,7 +19,8 @@ import { transparentize } from 'polished';
 
 // i18n
 import messages from './messages';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { FormattedDate, WrappedComponentProps } from 'react-intl';
 import { getLocalized } from 'utils/i18n';
 
@@ -346,7 +347,7 @@ const Data = adopt<DataProps>({
   tenantLocales: <GetAppConfigurationLocales />,
 });
 
-const OfficialFeedbackPostWithIntl = injectIntl<Props>(OfficialFeedbackPost);
+const OfficialFeedbackPostWithIntl = injectIntl(OfficialFeedbackPost);
 
 export default (inputProps: InputProps) => (
   <Data>

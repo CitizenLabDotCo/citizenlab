@@ -2,7 +2,7 @@ import React from 'react';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import messages from '../messages';
 
 // components
@@ -91,4 +91,4 @@ const AreaForm = ({
   );
 };
 
-export default injectIntl<Props>(AreaForm);
+export default injectIntl(AreaForm);

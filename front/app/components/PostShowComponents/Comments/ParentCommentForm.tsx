@@ -16,7 +16,8 @@ import tracks from './tracks';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import messages from './messages';
 
 // services
@@ -443,7 +444,7 @@ const Data = adopt<DataProps, InputProps>({
   ),
 });
 
-const ParentCommentFormWithHoCs = injectIntl<Props>(ParentCommentForm);
+const ParentCommentFormWithHoCs = injectIntl(ParentCommentForm);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

@@ -8,7 +8,7 @@ import { Outlet as RouterOutlet } from 'react-router-dom';
 // i18n
 import messages from './messages';
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 
 const InvitationsPage = (props: WrappedComponentProps) => {
   const tabs = [

@@ -19,7 +19,7 @@ import { colors } from 'utils/styleUtils';
 import clHistory from 'utils/cl-router/history';
 import { stringify } from 'qs';
 import { isNilOrError } from 'utils/helperUtils';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 
 // components
 import Modal from 'components/UI/Modal';

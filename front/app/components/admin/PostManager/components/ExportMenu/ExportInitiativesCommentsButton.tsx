@@ -4,7 +4,8 @@ import { fontSizes } from 'utils/styleUtils';
 
 // i18n
 import messages from '../../messages';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { isString } from 'lodash-es';
 import { trackEventByName } from 'utils/analytics';
 import { requestBlob } from 'utils/request';

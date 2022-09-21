@@ -5,9 +5,7 @@ import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useLocalize from 'hooks/useLocalize';
 
-export default function injectIntl<Props>(
-  Component: React.ComponentType<Props>
-) {
+export default function injectIntl<Props>(Component: React.ComponentType<Props>) {
   return (props: Props) => {
     const locale = useLocale();
     const localize = useLocalize();
@@ -33,7 +31,7 @@ export default function injectIntl<Props>(
 
     const propsWithIntl: Props = {
       ...props,
-      intl
+      intl: intlReplacement,
     };
 
     return <Component {...propsWithIntl} />;

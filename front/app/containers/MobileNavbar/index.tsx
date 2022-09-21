@@ -8,7 +8,7 @@ import ShowFullMenuButton from './ShowFullMenuButton';
 const FullMobileNavMenu = lazy(() => import('./FullMobileNavMenu'));
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 import useNavbarItems from 'hooks/useNavbarItems';
 import { isNilOrError } from 'utils/helperUtils';

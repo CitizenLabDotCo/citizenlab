@@ -11,7 +11,7 @@ import TabbedResource from 'components/admin/TabbedResource';
 // i18n
 import messages from './messages';
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 
 import { InsertConfigurationOptions, ITab } from 'typings';
 import { insertConfiguration } from 'utils/moduleUtils';

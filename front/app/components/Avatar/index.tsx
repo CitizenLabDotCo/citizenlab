@@ -15,7 +15,7 @@ import Link from 'utils/cl-router/Link';
 import useUser from 'hooks/useUser';
 
 // i18n
-import injectIntl from 'utils/cl-intl/injectIntl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 
 // styles

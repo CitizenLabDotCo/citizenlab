@@ -14,7 +14,7 @@ import useAppConfiguration from 'hooks/useAppConfiguration';
 // i18n
 import T from 'components/T';
 import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 

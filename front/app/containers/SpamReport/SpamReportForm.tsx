@@ -14,7 +14,7 @@ import TextArea from 'components/UI/TextArea';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
@@ -150,4 +150,4 @@ class SpamReportForm extends React.PureComponent<
   }
 }
 
-export default injectIntl<Props>(SpamReportForm);
+export default injectIntl(SpamReportForm);

@@ -21,7 +21,8 @@ import {
 import { isPage, isNilOrError } from 'utils/helperUtils';
 
 // i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import messages from './messages';
 import { WrappedComponentProps } from 'react-intl';
 
@@ -415,4 +416,4 @@ class OfficialFeedbackForm extends PureComponent<
   }
 }
 
-export default injectIntl<Props>(OfficialFeedbackForm);
+export default injectIntl(OfficialFeedbackForm);

@@ -14,7 +14,7 @@ import Button from 'components/UI/Button';
 import Link from 'utils/cl-router/Link';
 
 // intl
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 

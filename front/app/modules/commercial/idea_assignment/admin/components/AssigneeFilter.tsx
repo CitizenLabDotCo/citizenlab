@@ -10,7 +10,7 @@ import { Dropdown } from 'semantic-ui-react';
 import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 import postManagerMessages from 'components/admin/PostManager/messages';
@@ -131,7 +131,7 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
 });
 
-const AssigneeFilterWithHocs = injectIntl<Props>(AssigneeFilter);
+const AssigneeFilterWithHocs = injectIntl(AssigneeFilter);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

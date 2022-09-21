@@ -8,7 +8,7 @@ import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 
@@ -102,7 +102,7 @@ const Data = adopt<DataProps, InputProps>({
     ),
 });
 
-const AssigneeSelectWithHocs = injectIntl<Props>(AssigneeSelect);
+const AssigneeSelectWithHocs = injectIntl(AssigneeSelect);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

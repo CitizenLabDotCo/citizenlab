@@ -1,6 +1,6 @@
 import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { get } from 'lodash-es';
 import { useParams } from 'react-router-dom';
 

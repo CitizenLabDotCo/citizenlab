@@ -7,7 +7,8 @@ import HTML5Backend from 'react-dnd-html5-backend-cjs';
 import { isEqual, clone } from 'lodash-es';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 import customfieldMessages from '../../../../admin/containers/CustomFields/messages';
@@ -317,7 +318,7 @@ class CustomFields extends Component<Props & WrappedComponentProps, State> {
   }
 }
 
-const CustomFieldsListWithHoCs = injectIntl<Props>(CustomFields);
+const CustomFieldsListWithHoCs = injectIntl(CustomFields);
 
 export default (inputProps: InputProps) => (
   <GetUserCustomFields>

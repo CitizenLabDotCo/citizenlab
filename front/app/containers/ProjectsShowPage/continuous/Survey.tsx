@@ -13,7 +13,7 @@ import useProject from 'hooks/useProject';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-import injectIntl from 'utils/cl-intl/injectIntl';
+import { injectIntl } from 'react-intl';
 import messages from 'containers/ProjectsShowPage/messages';
 
 // styling

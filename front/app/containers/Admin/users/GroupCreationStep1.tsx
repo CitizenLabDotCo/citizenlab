@@ -7,7 +7,7 @@ import Button from 'components/UI/Button';
 
 // i18n
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
@@ -136,4 +136,4 @@ const GroupCreationStep1 = memo(
   }
 );
 
-export default injectIntl<Props>(GroupCreationStep1);
+export default injectIntl(GroupCreationStep1);

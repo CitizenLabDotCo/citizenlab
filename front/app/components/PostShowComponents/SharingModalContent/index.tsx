@@ -29,7 +29,7 @@ import { PostType } from 'resources/GetPost';
 
 // i18n
 import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
-import injectIntl from 'utils/cl-intl/injectIntl';
+import { injectIntl } from 'react-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
 import { getInputTermMessage } from 'utils/i18n';
@@ -249,9 +249,7 @@ class SharingModalContent extends PureComponent<
   }
 }
 
-const SharingModalContentWithHoCs = injectIntl<Props>(
-  localize(SharingModalContent)
-);
+const SharingModalContentWithHoCs = injectIntl(localize(SharingModalContent));
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,

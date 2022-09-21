@@ -15,7 +15,7 @@ import useUserCustomFieldsSchema from '../../hooks/useUserCustomFieldsSchema';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import messages from 'components/SignUpIn/SignUp/messages';
 
 // utils
@@ -211,6 +211,6 @@ const CustomFieldsStep: FC<Props & WrappedComponentProps> = memo(
   }
 );
 
-const CustomFieldsWithHoC = injectIntl<Props>(CustomFieldsStep);
+const CustomFieldsWithHoC = injectIntl(CustomFieldsStep);
 
 export default CustomFieldsWithHoC;

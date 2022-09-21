@@ -5,7 +5,7 @@ import { adopt } from 'react-adopt';
 
 // i18n
 import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 
 // resources
@@ -104,7 +104,7 @@ const UsersShowPageMeta: React.SFC<Props & WrappedComponentProps> = ({
   return null;
 };
 
-const UsersShowPageMetaWithHoc = injectIntl<Props>(UsersShowPageMeta);
+const UsersShowPageMetaWithHoc = injectIntl(UsersShowPageMeta);
 
 const Data = adopt<DataProps, InputProps>({
   tenantLocales: <GetAppConfigurationLocales />,

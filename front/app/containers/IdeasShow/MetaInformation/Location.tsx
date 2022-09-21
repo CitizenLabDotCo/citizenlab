@@ -15,7 +15,7 @@ import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
 import { getAddressOrFallbackDMS } from 'utils/map';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 

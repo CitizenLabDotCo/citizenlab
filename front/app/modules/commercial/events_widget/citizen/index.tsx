@@ -11,8 +11,7 @@ import VerticalCenterer from 'components/VerticalCenterer';
 import useEvents from 'hooks/useEvents';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl } from 'react-intl';
 
 // styling
 import styled from 'styled-components';
@@ -68,7 +67,7 @@ const StyledEventCard = styled(EventCard)`
   padding: 20px;
 `;
 
-export default injectIntl<WrappedComponentProps>(({ intl }) => {
+export default injectIntl(({ intl }) => {
   const { events } = useEvents({
     projectPublicationStatuses: ['published'],
     currentAndFutureOnly: true,

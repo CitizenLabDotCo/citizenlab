@@ -39,7 +39,8 @@ import QuillEditor from 'components/UI/QuillEditor';
 import { appLocalePairs, API_PATH } from 'containers/App/constants';
 import messages from './messages';
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
 
 // styling
@@ -489,7 +490,7 @@ class ProfileForm extends PureComponent<Props, State> {
   }
 }
 
-const ProfileFormWithHocs = injectIntl<InputProps>(localize(ProfileForm));
+const ProfileFormWithHocs = injectIntl(localize(ProfileForm));
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,

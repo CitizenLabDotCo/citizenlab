@@ -9,7 +9,7 @@ import useProjectAllowedInputTopics from 'hooks/useProjectAllowedInputTopics';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import messages from './messages';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
@@ -143,6 +143,4 @@ const ProjectTopicSelector = memo(
   }
 );
 
-export default injectIntl<Props>(
-  withRouter(injectLocalize(ProjectTopicSelector))
-);
+export default injectIntl(withRouter(injectLocalize(ProjectTopicSelector)));

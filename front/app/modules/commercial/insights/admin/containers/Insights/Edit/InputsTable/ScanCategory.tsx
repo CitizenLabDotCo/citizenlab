@@ -6,7 +6,7 @@ import { fontSizes, colors } from 'utils/styleUtils';
 
 // intl
 import messages from '../../messages';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 
 // components

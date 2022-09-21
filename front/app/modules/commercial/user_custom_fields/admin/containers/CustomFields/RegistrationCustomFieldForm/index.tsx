@@ -3,7 +3,7 @@ import { IUserCustomFieldInputType } from '../../../../services/userCustomFields
 
 import { Button, Box } from '@citizenlab/cl2-component-library';
 
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 import { Multiloc } from 'typings';
 import messages from '../messages';

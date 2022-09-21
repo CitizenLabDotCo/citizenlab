@@ -17,7 +17,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import getNavbarItemPropsArray from './getNavbarItemPropsArray';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import messages from '../messages';
 import { WrappedComponentProps } from 'react-intl';
 
