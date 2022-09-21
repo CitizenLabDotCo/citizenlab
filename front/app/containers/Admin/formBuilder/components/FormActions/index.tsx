@@ -45,7 +45,7 @@ const FormActions = ({
           width="100%"
           display="flex"
           alignItems="center"
-          justifyContent="center"
+          justifyContent="flex-end"
         >
           <Toggle
             checked={postingEnabled}
