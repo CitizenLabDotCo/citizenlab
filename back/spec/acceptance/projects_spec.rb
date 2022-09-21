@@ -597,6 +597,39 @@ resource 'Projects' do
         )
       end
     end
+
+    get 'web_api/v1/projects/:id/submission_count' do
+      let(:project) { create(:continuous_native_survey_project) }
+      let(:form) { create(:custom_form, participation_context: project) }
+      let(:id) { project.id }
+      let(:multiselect_field) do
+        create(
+          :custom_field_multiselect,
+          resource: form,
+          title_multiloc: { 'en' => 'What are your favourite pets?' },
+          description_multiloc: {}
+        )
+      end
+      let!(:cat_option) do
+        create(:custom_field_option, custom_field: multiselect_field, key: 'cat', title_multiloc: { 'en' => 'Cat' })
+      end
+      let!(:dog_option) do
+        create(:custom_field_option, custom_field: multiselect_field, key: 'dog', title_multiloc: { 'en' => 'Dog' })
+      end
+
+      before do
+        create(:idea, project: project, custom_field_values: { multiselect_field.key => %w[cat dog] })
+        create(:idea, project: project, custom_field_values: { multiselect_field.key => %w[cat] })
+        create(:idea, project: project, custom_field_values: { multiselect_field.key => %w[dog] })
+      end
+
+      example 'Get submission count', skip: !CitizenLab.ee? do
+        do_request
+        expect(status).to eq 200
+
+        expect(json_response).to eq({ data: { totalSubmissions: 3 } })
+      end
+    end
   end
 
   get 'web_api/v1/projects' do
