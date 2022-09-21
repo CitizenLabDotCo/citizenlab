@@ -15,7 +15,7 @@ import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -39,7 +39,7 @@ const SlugInput = ({
   showSlugErrorMessage,
   handleSlugOnChange,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const locale = useLocale();
   const currentTenant = useAppConfiguration();
 

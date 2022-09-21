@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // intl
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 import { injectIntl } from 'utils/cl-intl';
 
@@ -55,7 +55,7 @@ const ButtonContainer = styled.div`
 type RenameCategoryProps = {
   closeRenameModal: () => void;
   originalCategoryName: string;
-} & InjectedIntlProps &
+} & WrappedComponentProps &
   WithRouterProps;
 
 const RenameCategory = ({

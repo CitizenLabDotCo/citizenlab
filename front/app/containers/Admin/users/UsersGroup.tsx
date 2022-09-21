@@ -24,7 +24,7 @@ import events from './events';
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // Resources
 import GetGroup, { GetGroupChildProps } from 'resources/GetGroup';
@@ -64,10 +64,10 @@ interface Tracks {
 }
 
 export class UsersGroup extends React.PureComponent<
-  Props & InjectedIntlProps & Tracks,
+  Props & WrappedComponentProps & Tracks,
   State
 > {
-  constructor(props: Props & InjectedIntlProps & Tracks) {
+  constructor(props: Props & WrappedComponentProps & Tracks) {
     super(props);
     this.state = {
       groupEditionModal: false,

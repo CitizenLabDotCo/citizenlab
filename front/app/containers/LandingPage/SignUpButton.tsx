@@ -4,7 +4,7 @@ import BannerButton, { BannerButtonStyle } from './BannerButton';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 interface Props {
   signUpIn: (event: MouseEvent | KeyboardEvent) => void;
@@ -15,7 +15,7 @@ const SignUpButton = ({
   signUpIn,
   buttonStyle,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => (
+}: Props & WrappedComponentProps) => (
   <BannerButton
     buttonStyle={buttonStyle}
     onClick={signUpIn}

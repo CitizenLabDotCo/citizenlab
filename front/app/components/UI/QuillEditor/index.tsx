@@ -12,7 +12,7 @@ import { Label, IconTooltip } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // analytics
@@ -378,7 +378,7 @@ Quill.register(
 
 Quill.register(KeepHTML);
 
-const QuillEditor = memo<Props & InjectedIntlProps>(
+const QuillEditor = memo<Props & WrappedComponentProps>(
   ({
     id,
     value,

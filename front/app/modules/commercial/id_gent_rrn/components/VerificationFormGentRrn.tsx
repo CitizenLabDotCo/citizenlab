@@ -28,7 +28,7 @@ import useAuthUser from 'hooks/useAuthUser';
 import { verifyGentRrn } from '../services/verify';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
@@ -44,7 +44,7 @@ interface Props {
   className?: string;
 }
 
-const VerificationFormGentRrn = memo<Props & InjectedIntlProps>(
+const VerificationFormGentRrn = memo<Props & WrappedComponentProps>(
   ({ onCancel, onVerified, showHeader, inModal, className, intl }) => {
     const authUser = useAuthUser();
 
