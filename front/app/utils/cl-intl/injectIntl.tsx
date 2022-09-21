@@ -19,11 +19,11 @@ function buildComponent<P>(Component: React.ComponentType<P>) {
       values?: { [key: string]: string | number | boolean | Date } | undefined
     ) => {
       return intl.formatMessage(messageDescriptor, {
-        tenantName: appConfig.data.attributes.name,
+        tenantName: appConfig.attributes.name,
         orgName: localize(
-          appConfig.data.attributes.settings.core.organization_name
+          appConfig.attributes.settings.core.organization_name
         ),
-        orgType: appConfig.data.attributes.settings.core.organization_type,
+        orgType: appConfig.attributes.settings.core.organization_type,
         ...(values || {}),
       });
     };

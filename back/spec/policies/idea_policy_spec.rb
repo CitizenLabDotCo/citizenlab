@@ -229,8 +229,8 @@ describe IdeaPolicy do
     end
   end
 
-  context 'on idea for a survey project' do
-    let(:project) { create(:continuous_survey_project) }
+  context 'on idea for a budgeting project' do
+    let(:project) { create(:continuous_budgeting_project) }
     let(:author) { create(:user) }
     let!(:idea) { create(:idea, project: project, author: author) }
 

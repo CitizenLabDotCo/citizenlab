@@ -1,5 +1,6 @@
 import 'cypress-file-upload';
 import './dnd';
+import { ParticipationMethod } from '../../app/services/participationContexts';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -47,6 +48,7 @@ declare global {
       apiEnableContentBuilder: typeof apiEnableContentBuilder;
       intersectsViewport: typeof intersectsViewport;
       notIntersectsViewport: typeof notIntersectsViewport;
+      apiUpdateHomepageSettings: typeof apiUpdateHomepageSettings;
     }
   }
 }
@@ -696,20 +698,17 @@ export function apiCreateProject({
   assigneeId,
   surveyUrl,
   surveyService,
+  maxBudget,
 }: {
   type: 'timeline' | 'continuous';
   title: string;
   descriptionPreview: string;
   description: string;
   publicationStatus?: 'draft' | 'published' | 'archived';
-  participationMethod?:
-    | 'ideation'
-    | 'information'
-    | 'survey'
-    | 'budgeting'
-    | 'poll';
+  participationMethod?: ParticipationMethod;
   assigneeId?: string;
   surveyUrl?: string;
+  maxBudget?: number;
   surveyService?: 'typeform' | 'survey_monkey' | 'google_forms';
 }) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
@@ -747,6 +746,7 @@ export function apiCreateProject({
               : participationMethod,
           survey_embed_url: surveyUrl,
           survey_service: surveyService,
+          max_budget: maxBudget,
         },
       },
     });
@@ -896,18 +896,14 @@ export function apiCreatePhase(
   title: string,
   startAt: string,
   endAt: string,
-  participationMethod:
-    | 'ideation'
-    | 'information'
-    | 'survey'
-    | 'budgeting'
-    | 'poll',
+  participationMethod: ParticipationMethod,
   canPost: boolean,
   canVote: boolean,
   canComment: boolean,
   description?: string,
   surveyUrl?: string,
-  surveyService?: 'typeform' | 'survey_monkey' | 'google_forms'
+  surveyService?: 'typeform' | 'survey_monkey' | 'google_forms',
+  maxBudget?: number
 ) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -934,6 +930,7 @@ export function apiCreatePhase(
           description_multiloc: { en: description },
           survey_embed_url: surveyUrl,
           survey_service: surveyService,
+          max_budget: maxBudget,
         },
       },
     });
@@ -1042,7 +1039,7 @@ export function apiCreateEvent({
             'nl-BE': location,
           },
           start_at: startDate.toJSON(),
-          end_at: startDate.toJSON(),
+          end_at: endDate.toJSON(),
         },
       },
     });
@@ -1063,6 +1060,66 @@ export function apiEnableContentBuilder({ projectId }: { projectId: string }) {
       body: {
         content_builder_layout: {
           enabled: true,
+        },
+      },
+    });
+  });
+}
+
+export function apiUpdateHomepageSettings({
+  top_info_section_enabled,
+  bottom_info_section_enabled,
+  banner_avatars_enabled,
+  events_widget_enabled,
+  banner_layout,
+  banner_signed_out_header_multiloc,
+  banner_signed_out_subheader_multiloc,
+  banner_signed_in_header_multiloc,
+  banner_cta_signed_out_text_multiloc,
+  banner_signed_out_header_overlay_color,
+  banner_signed_out_header_overlay_opacity,
+  banner_cta_signed_out_type,
+  banner_cta_signed_in_type,
+}: {
+  top_info_section_enabled?: boolean;
+  bottom_info_section_enabled?: boolean;
+  banner_avatars_enabled?: boolean;
+  events_widget_enabled?: boolean;
+  banner_layout?: string;
+  banner_signed_out_header_multiloc?: Record<string, string>;
+  banner_signed_out_subheader_multiloc?: Record<string, string>;
+  banner_signed_in_header_multiloc?: Record<string, string>;
+  banner_cta_signed_out_text_multiloc?: Record<string, string>;
+  banner_signed_out_header_overlay_color?: string;
+  banner_signed_out_header_overlay_opacity?: number;
+  banner_cta_signed_out_type?: string;
+  banner_cta_signed_in_type?: string;
+}) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'PATCH',
+      url: `web_api/v1/home_page/`,
+      body: {
+        home_page: {
+          top_info_section_enabled,
+          bottom_info_section_enabled,
+          banner_avatars_enabled,
+          events_widget_enabled,
+          banner_layout,
+          banner_signed_out_header_multiloc,
+          banner_signed_out_subheader_multiloc,
+          banner_signed_in_header_multiloc,
+          banner_cta_signed_out_text_multiloc,
+          banner_signed_out_header_overlay_color,
+          banner_signed_out_header_overlay_opacity,
+          banner_cta_signed_in_type,
+          banner_cta_signed_out_type,
         },
       },
     });
@@ -1172,3 +1229,4 @@ Cypress.Commands.add(
   { prevSubject: true },
   notIntersectsViewport
 );
+Cypress.Commands.add('apiUpdateHomepageSettings', apiUpdateHomepageSettings);

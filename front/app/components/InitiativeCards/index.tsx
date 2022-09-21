@@ -21,7 +21,7 @@ import Button from 'components/UI/Button';
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 
 //  Typings
-import { MessageDescriptor } from 'typings';
+import { MessageDescriptor } from 'react-intl';
 
 // resources
 import GetInitiatives, {

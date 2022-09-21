@@ -41,9 +41,10 @@ export interface INavbarItem {
   };
 }
 
-export function navbarItemsStream() {
+export function navbarItemsStream({ onlyDefault } = { onlyDefault: false }) {
   return streams.get<{ data: INavbarItem[] }>({
     apiEndpoint,
+    queryParameters: { only_default: onlyDefault },
   });
 }
 
@@ -61,14 +62,6 @@ export async function toggleAllInput({ enabled }: { enabled: boolean }) {
 
 export async function toggleProposals({ enabled }: { enabled: boolean }) {
   const response = await streams.add(`${apiEndpoint}/toggle_proposals`, {
-    enabled,
-  });
-  await streams.fetchAllWith({ partialApiEndpoint: [apiEndpoint] });
-  return response;
-}
-
-export async function toggleEvents({ enabled }: { enabled: boolean }) {
-  const response = await streams.add(`${apiEndpoint}/toggle_events`, {
     enabled,
   });
   await streams.fetchAllWith({ partialApiEndpoint: [apiEndpoint] });

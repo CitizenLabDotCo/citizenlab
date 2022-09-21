@@ -27,6 +27,9 @@ import GetIdeasCount, {
 import GetInitiativesCount, {
   GetInitiativesCountChildProps,
 } from 'resources/GetInitiativesCount';
+import GetFeatureFlag, {
+  GetFeatureFlagChildProps,
+} from 'resources/GetFeatureFlag';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import Outlet from 'components/Outlet';
 import { InsertConfigurationOptions } from 'typings';
@@ -136,6 +139,7 @@ interface DataProps {
   authUser: GetAuthUserChildProps;
   ideasCount: GetIdeasCountChildProps;
   initiativesCount: GetInitiativesCountChildProps;
+  customizableNavbarFeatureFlag: GetFeatureFlagChildProps;
 }
 interface Props extends InputProps, DataProps {}
 
@@ -217,6 +221,14 @@ class Sidebar extends PureComponent<
             'automated_emailing_control',
             'texting',
           ],
+        },
+        {
+          name: 'menu',
+          link: '/admin/pages-menu',
+          iconName: 'blankPage',
+          // It's better to avoid using this feature flag in the core
+          // https://github.com/CitizenLabDotCo/citizenlab/pull/2162#discussion_r916512426
+          message: props.customizableNavbarFeatureFlag ? 'menu' : 'pages',
         },
         {
           name: 'settings',
@@ -312,6 +324,7 @@ class Sidebar extends PureComponent<
 }
 
 const Data = adopt<DataProps, InputProps>({
+  customizableNavbarFeatureFlag: <GetFeatureFlag name="customizable_navbar" />,
   authUser: <GetAuthUser />,
   ideasCount: ({ authUser, render }) => (
     <GetIdeasCount feedbackNeeded={true} assignee={get(authUser, 'id')}>

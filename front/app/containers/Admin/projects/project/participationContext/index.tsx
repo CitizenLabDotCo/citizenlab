@@ -351,7 +351,7 @@ class ParticipationContext extends PureComponent<
   getInputTermOptions = () => {
     return INPUT_TERMS.map((inputTerm: InputTerm) => {
       const labelMessages: {
-        [key in InputTerm]: ReactIntl.FormattedMessage.MessageDescriptor;
+        [key in InputTerm]: MessageDescriptor;
       } = {
         idea: messages.ideaTerm,
         contribution: messages.contributionTerm,

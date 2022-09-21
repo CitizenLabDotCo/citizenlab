@@ -26,8 +26,8 @@ import {
   commentsByTimeCumulativeStream,
   commentsByTimeStream,
 } from 'services/stats';
-import { InjectedIntlProps } from 'react-intl';
 import { colors } from 'utils/styleUtils';
+import { MessageDescriptor } from 'react-intl';
 
 // services
 import { ParticipationMethod } from 'services/participationContexts';
@@ -89,10 +89,11 @@ interface Props {
 
 const PARTICIPATION_METHOD_MESSAGES: Record<
   ParticipationMethod,
-  ReactIntl.FormattedMessage.MessageDescriptor
+  MessageDescriptor
 > = {
   ideation: messages.ideationAndFeedback,
   information: messages.information,
+  native_survey: messages.native_survey,
   survey: messages.survey,
   budgeting: messages.budgeting,
   poll: messages.poll,

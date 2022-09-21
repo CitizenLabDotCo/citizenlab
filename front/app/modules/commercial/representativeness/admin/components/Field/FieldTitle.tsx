@@ -19,8 +19,9 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // typings
-import { Multiloc, MessageDescriptor } from 'typings';
-import { Status } from './utils';
+import { Multiloc } from 'typings';
+import { MessageDescriptor } from 'react-intl';
+import { Status } from '../../utils/form';
 
 const DefaultStatusLabel = styled(StatusLabel)`
   color: ${colors.clGreyOnGreyBackground};
@@ -37,6 +38,7 @@ interface Props {
   titleMultiloc: Multiloc;
   isDefault: boolean;
   isComingSoon: boolean;
+  isBirthyear: boolean;
   status: Status | null;
   className?: string;
 }
@@ -59,6 +61,7 @@ const FieldTitle = ({
   titleMultiloc,
   isDefault,
   isComingSoon,
+  isBirthyear,
   status,
   className,
 }: Props) => {
@@ -75,7 +78,11 @@ const FieldTitle = ({
     >
       <Box display="flex" alignItems="center">
         <Title variant="h4" as="h3" mt="0px" mb="0px" ml="12px">
-          {localize(titleMultiloc)}
+          {isBirthyear ? (
+            <FormattedMessage {...messages.birthyearCustomTitle} />
+          ) : (
+            <>{localize(titleMultiloc)}</>
+          )}
         </Title>
         {isDefault && !isComingSoon && (
           <DefaultStatusLabel

@@ -16,7 +16,6 @@ import { withTheme } from 'styled-components';
 
 // components
 import ReportExportMenu from 'components/admin/ReportExportMenu';
-
 import {
   NoDataContainer,
   GraphCardHeader,
@@ -25,8 +24,7 @@ import {
   GraphCardInner,
   PieChartStyleFixesDiv,
 } from 'components/admin/GraphWrappers';
-
-import { PieChart, Pie, Tooltip, Cell, ResponsiveContainer } from 'recharts';
+import PieChart from 'components/admin/Graphs/PieChart';
 
 // services
 import {
@@ -126,13 +124,8 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
     return res.length > 0 ? res : null;
   };
 
-  formatEntry(entry) {
-    return `${entry.name} : ${entry.value}`;
-  }
-
   render() {
-    const { colorMain, animationDuration, animationBegin } =
-      this.props['theme'];
+    const { colorMain } = this.props['theme'];
     const {
       startAt,
       endAt,
@@ -168,28 +161,21 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
             </NoDataContainer>
           ) : (
             <PieChartStyleFixesDiv>
-              <ResponsiveContainer height={175} width="100%" minWidth={175}>
-                <PieChart ref={this.currentChart}>
-                  <Pie
-                    isAnimationActive={true}
-                    animationDuration={animationDuration}
-                    animationBegin={animationBegin}
-                    data={serie}
-                    dataKey="value"
-                    outerRadius={60}
-                    fill={colorMain}
-                    label={this.formatEntry}
-                  >
-                    {serie.map((entry, index) => (
-                      <Cell
-                        key={`cell-${index}`}
-                        fill={labelColors[entry.code]}
-                      />
-                    ))}
-                  </Pie>
-                  <Tooltip isAnimationActive={false} />
-                </PieChart>
-              </ResponsiveContainer>
+              <PieChart
+                data={serie}
+                mapping={{
+                  angle: 'value',
+                  name: 'name',
+                  fill: ({ row }) => labelColors[row.code] ?? colorMain,
+                }}
+                pie={{
+                  startAngle: 0,
+                  endAngle: 360,
+                  outerRadius: 60,
+                }}
+                innerRef={this.currentChart}
+                annotations
+              />
             </PieChartStyleFixesDiv>
           )}
         </GraphCardInner>

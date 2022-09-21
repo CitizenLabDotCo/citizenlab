@@ -1,4 +1,5 @@
 import React from 'react';
+import { MessageDescriptor } from 'react-intl';
 const Intl = jest.requireActual('react-intl');
 
 // Initialise the real provider so that we don't
@@ -13,7 +14,7 @@ const intlProvider = new Intl.IntlProvider(defaultProps, {});
 const { intl } = intlProvider.getChildContext();
 
 const formatMessageReplacement = (
-  messageDescriptor: ReactIntl.FormattedMessage.MessageDescriptor,
+  messageDescriptor: MessageDescriptor,
   values?: { [key: string]: string | number | boolean | Date } | undefined
 ) => {
   return intl.formatMessage(messageDescriptor, {
