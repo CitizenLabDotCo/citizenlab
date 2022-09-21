@@ -94,12 +94,19 @@ module Matomo
     # See https://developer.matomo.org/api-reference/reporting-api#Live
     #
     # @param [String] site_id
-    # @param [String] period
-    # @param [String] date
-    # @param [String] min_timestamp minimum value of visits' lastActionTimestamp
+    # @param [String,nil] period
+    # @param [String,nil] date
+    # @param [Integer,nil] min_timestamp minimum value of visits' lastActionTimestamp
     # @param [Integer,nil] filter_limit
     # @param [Integer,nil] filter_offset
-    def get_last_visits_details(site_id, period, date, min_timestamp: nil, filter_limit: nil, filter_offset: nil)
+    def get_last_visits_details(
+      site_id,
+      period: nil,
+      date: nil,
+      min_timestamp: nil,
+      filter_limit: nil,
+      filter_offset: nil
+    )
       query = {
         'module' => 'API',
         'method' => 'Live.getLastVisitsDetails',
