@@ -7,7 +7,9 @@ import SharingButtons from 'components/Sharing/SharingButtons';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
+import useLocalize from 'hooks/useLocalize';
 import useProjectFolder from '../../../hooks/useProjectFolder';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 
 // i18n
 import T from 'components/T';
@@ -30,6 +32,8 @@ const ProjectFolderSharingModal = memo<
   Props & WrappedComponentProps & InjectedLocalized
 >(({ projectFolderId, className, opened, close, intl: { formatMessage } }) => {
   const authUser = useAuthUser();
+  const appConfig = useAppConfiguration();
+  const localize = useLocalize();
   const projectFolder = useProjectFolder({ projectFolderId });
 
   const folderUrl = location.href;
@@ -48,7 +52,7 @@ const ProjectFolderSharingModal = memo<
     close();
   }, [close]);
 
-  if (!isNilOrError(projectFolder)) {
+  if (!isNilOrError(projectFolder) && !isNilOrError(appConfig)) {
     return (
       <Modal
         width={550}
@@ -75,17 +79,26 @@ const ProjectFolderSharingModal = memo<
                       url={folderUrl}
                       facebookMessage={formatMessage(messages.facebookMessage, {
                         projectFolderName,
+                        orgName: localize(
+                          appConfig.attributes.settings.core.organization_name
+                        ),
                       })}
                       twitterMessage={formatMessage(messages.twitterMessage, {
                         projectFolderName,
                       })}
                       whatsAppMessage={formatMessage(messages.whatsAppMessage, {
                         projectFolderName,
+                        orgName: localize(
+                          appConfig.attributes.settings.core.organization_name
+                        ),
                       })}
                       emailSubject={formatMessage(
                         messages.emailSharingSubject,
                         {
                           projectFolderName: projectFolderName.toString(),
+                          orgName: localize(
+                            appConfig.attributes.settings.core.organization_name
+                          ),
                         }
                       )}
                       emailBody={formatMessage(messages.emailSharingBody, {

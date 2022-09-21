@@ -65,7 +65,11 @@ const CityLogoSection = ({
 
       return (
         <Fragment
-          title={formatMessage(messages.iframeTitle)}
+          title={formatMessage(messages.iframeTitle, {
+            orgName: localize(
+              appConfiguration.attributes.settings.core.organization_name
+            ),
+          })}
           name={footerLocale}
         >
           <Container id="hook-footer-logo">
