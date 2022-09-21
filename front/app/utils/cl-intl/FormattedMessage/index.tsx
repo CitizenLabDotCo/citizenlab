@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Subscription, combineLatest } from 'rxjs';
+import { combineLatest } from 'rxjs';
 // eslint-disable-next-line no-restricted-imports
 import { FormattedMessage as OriginalFormattedMessage } from 'react-intl';
 import { currentAppConfigurationStream } from 'services/appConfiguration';
@@ -22,14 +22,13 @@ const FormattedMessage = ({ values, ...props }: Props) => {
   const [orgType, setOrgType] = useState('');
   const [orgName, setOrgName] = useState('');
   const [loaded, setLoaded] = useState(false);
-  const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
+  const [localValues] = useState(values || {});
 
   useEffect(() => {
-    // ComponentDidMount
     const locale$ = localeStream().observable;
     const currentTenant$ = currentAppConfigurationStream().observable;
 
-    setSubscriptions([
+    const subscriptions = [
       combineLatest([locale$, currentTenant$]).subscribe(([locale, tenant]) => {
         if (!isNilOrError(locale) && !isNilOrError(tenant)) {
           const tenantLocales = tenant.data.attributes.settings.core.locales;
@@ -47,35 +46,29 @@ const FormattedMessage = ({ values, ...props }: Props) => {
           setLoaded(true);
         }
       }),
-    ]);
-
-    console.log('Variables: ', tenantName, orgName, loaded, orgType);
-    console.log('Subscriptions: ', subscriptions);
+    ];
 
     return () => {
-      // ComponentWillUnmount
-      // subscriptions.forEach((subscription) => subscription.unsubscribe());
+      subscriptions.forEach((subscription) => subscription.unsubscribe());
     };
   }, []);
 
-  if (loaded && values !== undefined) {
+  if (loaded) {
     if (tenantName) {
-      values.tenantName = tenantName;
+      localValues.tenantName = tenantName;
     }
 
     if (orgType) {
-      values.orgType = orgType;
+      localValues.orgType = orgType;
     }
 
     if (orgName) {
-      values.orgName = orgName;
+      localValues.orgName = orgName;
     }
 
-    console.log('Props: ', props);
-    console.log('Values: ', values);
     return (
       <RtlBox>
-        <OriginalFormattedMessage {...props} values={values} />
+        <OriginalFormattedMessage {...props} values={localValues} />
       </RtlBox>
     );
   }
