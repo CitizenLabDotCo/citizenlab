@@ -23,8 +23,7 @@ import events from './events';
 // i18n
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import messages from './messages';
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 
 // Resources
 import GetGroup, { GetGroupChildProps } from 'resources/GetGroup';
@@ -37,8 +36,8 @@ import { deleteGroup, updateGroup, MembershipType } from 'services/groups';
 import { deleteMembershipByUserId } from 'services/groupMemberships';
 
 // tracking
-import { injectTracks } from 'utils/analytics';
 import tracks from './tracks';
+import { trackEventByName } from 'utils/analytics';
 
 // Typings
 import { CLErrorsJSON } from 'typings';
@@ -59,15 +58,11 @@ export interface State {
   search: string | undefined;
 }
 
-interface Tracks {
-  trackEditGroup: ({ extra: { groupType: MembershipType } }) => void;
-}
-
 export class UsersGroup extends React.PureComponent<
-  Props & WrappedComponentProps & Tracks,
+  Props & WrappedComponentProps,
   State
 > {
-  constructor(props: Props & WrappedComponentProps & Tracks) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       groupEditionModal: false,
@@ -80,11 +75,11 @@ export class UsersGroup extends React.PureComponent<
   };
 
   openGroupEditionModal = () => {
-    const { group, trackEditGroup } = this.props;
+    const { group } = this.props;
 
     if (!isNilOrError(group)) {
       const groupType = group.attributes.membership_type;
-      trackEditGroup({
+      trackEventByName(tracks.editGroup.name, {
         extra: {
           groupType,
         },
@@ -235,9 +230,7 @@ export class UsersGroup extends React.PureComponent<
   }
 }
 
-const UsersGroupWithHoCs = injectTracks<Props>({
-  trackEditGroup: tracks.editGroup,
-})(injectIntl(UsersGroup));
+const UsersGroupWithHoCs = injectIntl(UsersGroup);
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   group: ({ params, render }) => (

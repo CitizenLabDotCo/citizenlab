@@ -24,7 +24,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 
 // intl
 import messages from '../../messages';
-import { injectIntl, WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'react-intl';
 
 import { IInsightsCategoryData } from 'modules/commercial/insights/services/insightsCategories';
 import {
@@ -47,17 +47,17 @@ const EmptyStateTitle = styled.p`
 export const visibleCategoriesNumber = 6;
 
 interface Props {
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 const Categories = ({
   location: { pathname, query },
   params: { viewId },
-  intl: { formatMessage },
   children,
-}: Props & WithRouterProps & WrappedComponentProps) => {
+}: Props & WithRouterProps) => {
   const [seeAllCategories, setSeeAllCategories] = useState(false);
   const categories = useInsightsCategories(viewId);
+  const { formatMessage } = useIntl();
 
   if (isNilOrError(categories)) {
     return null;
@@ -199,4 +199,4 @@ const Categories = ({
   );
 };
 
-export default withRouter(injectIntl(Categories));
+export default withRouter(Categories);
