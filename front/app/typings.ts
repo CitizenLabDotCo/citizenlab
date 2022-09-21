@@ -111,7 +111,6 @@ export interface Message {
   defaultMessage: string;
 }
 
-import { Messages } from 'react-intl';
 import { IProjectAction } from 'services/projects';
 import { IIdeaAction } from 'services/ideas';
 import { FormikActions } from 'formik';
@@ -119,7 +118,6 @@ import { FC } from 'react';
 import { TableCellProps } from 'semantic-ui-react';
 import { TAppConfigurationSetting } from 'services/appConfiguration';
 import { TFieldName } from 'components/UI/Error';
-export type MessageDescriptor = Messages['key'];
 
 export type Locale = keyof typeof appLocalePairs;
 

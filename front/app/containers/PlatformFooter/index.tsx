@@ -11,8 +11,8 @@ import SendFeedback from 'components/SendFeedback';
 import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 
 // i18n
-import { FormattedMessage, MessageDescriptor, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps, MessageDescriptor } from 'react-intl';
 import messages from './messages';
 
 // services

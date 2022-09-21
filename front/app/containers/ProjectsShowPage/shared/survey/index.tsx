@@ -160,7 +160,7 @@ class Survey extends PureComponent<Props, State> {
   noOp = () => {};
 
   disabledMessage: {
-    [key in ISurveyTakingDisabledReason]: ReactIntl.FormattedMessage.MessageDescriptor;
+    [key in ISurveyTakingDisabledReason]: MessageDescriptor;
   } = {
     projectInactive: messages.surveyDisabledProjectInactive,
     maybeNotPermitted: messages.surveyDisabledMaybeNotPermitted,

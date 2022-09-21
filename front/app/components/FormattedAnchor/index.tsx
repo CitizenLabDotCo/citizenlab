@@ -1,11 +1,5 @@
 import React, { memo } from 'react';
-import {
-  Messages,
-  // eslint-disable-next-line no-restricted-imports
-  FormattedMessage as OriginalFormattedMessage,
-  InjectedIntlProps,
-  MessageValue,
-} from 'react-intl';
+import { MessageDescriptor, InjectedIntlProps, MessageValue } from 'react-intl';
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import styled from 'styled-components';
 import { injectIntl } from 'utils/cl-intl';
@@ -14,17 +8,17 @@ const Anchor = styled.a``;
 
 type Props = {
   // root message that contains a mutilingual anchor link
-  mainMessage: Messages['key'];
+  mainMessage: MessageDescriptor;
   mainMessageLinkKey?: string; // key to be replaced by link, defaults to 'link'
   // the rest of the values for the keys present in the message
   mainMessageValues?: OriginalFormattedMessage.Props['values'];
 
   // message representing the url
-  urlMessage: Messages['key'];
+  urlMessage: MessageDescriptor;
   urlMessageValues?: { [key: string]: MessageValue };
 
   // message representing the text inside the link, clickable part.
-  linkTextMessage: Messages['key'];
+  linkTextMessage: MessageDescriptor;
   linkTextMessageValues?: OriginalFormattedMessage.Props['values'];
 
   // handy anchor Props

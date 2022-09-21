@@ -6,6 +6,7 @@ import {
   injectIntl as originalInjectIntl,
   InjectedIntlProps,
   InjectIntlConfig,
+  MessageDescriptor
 } from 'react-intl';
 import { localeStream } from 'services/locale';
 import { getLocalized } from 'utils/i18n';
@@ -69,7 +70,7 @@ function buildComponent<P>(
     }
 
     formatMessageReplacement = (
-      messageDescriptor: ReactIntl.FormattedMessage.MessageDescriptor,
+      messageDescriptor: MessageDescriptor,
       values?: { [key: string]: string | number | boolean | Date } | undefined
     ) => {
       return this.props.intl.formatMessage(messageDescriptor, {

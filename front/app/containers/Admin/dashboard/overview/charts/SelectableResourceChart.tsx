@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 
 // intl
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps, MessageDescriptor } from 'react-intl';
 import messages from '../../messages';
 
 // styling
@@ -106,35 +106,23 @@ interface InputProps extends QueryProps {
 
 interface Props extends InputProps, DataProps {}
 
-const RESOURCE_MESSAGES: Record<
-  IResource,
-  ReactIntl.FormattedMessage.MessageDescriptor
-> = {
+const RESOURCE_MESSAGES: Record<IResource, MessageDescriptor> = {
   ideas: messages.inputs,
   comments: messages.comments,
   votes: messages.votes,
 };
 
-const TITLE_MESSAGES: Record<
-  ByWhat,
-  ReactIntl.FormattedMessage.MessageDescriptor
-> = {
+const TITLE_MESSAGES: Record<ByWhat, MessageDescriptor> = {
   Topic: messages.participationPerTopic,
   Project: messages.participationPerProject,
 };
 
-const HIDDEN_LABEL_MESSAGES: Record<
-  ByWhat,
-  ReactIntl.FormattedMessage.MessageDescriptor
-> = {
+const HIDDEN_LABEL_MESSAGES: Record<ByWhat, MessageDescriptor> = {
   Topic: messages.hiddenLabelPickResourceByTopic,
   Project: messages.hiddenLabelPickResourceByProject,
 };
 
-const REPORT_EXPORT_MENU_NAME_MESSAGES: Record<
-  ByWhat,
-  ReactIntl.FormattedMessage.MessageDescriptor
-> = {
+const REPORT_EXPORT_MENU_NAME_MESSAGES: Record<ByWhat, MessageDescriptor> = {
   Topic: messages.participationPerTopic,
   Project: messages.participationPerProject,
 };

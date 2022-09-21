@@ -27,7 +27,7 @@ import { Icon } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps, MessageDescriptor } from 'react-intl';
 import messages from './messages';
 import { getInputTermMessage } from 'utils/i18n';
 
@@ -139,7 +139,7 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
     ...buttonContainerProps
   }) => {
     const disabledMessages: {
-      [key in IIdeaPostingDisabledReason]: ReactIntl.FormattedMessage.MessageDescriptor;
+      [key in IIdeaPostingDisabledReason]: MessageDescriptor;
     } = {
       notPermitted: messages.postingNoPermission,
       postingDisabled: messages.postingDisabled,

@@ -6,8 +6,8 @@ import { fontSizes, colors } from 'utils/styleUtils';
 
 // intl
 import messages from '../../messages';
-import { injectIntl, MessageDescriptor } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps, MessageDescriptor } from 'react-intl';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
