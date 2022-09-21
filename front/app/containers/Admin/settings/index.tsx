@@ -10,8 +10,7 @@ import TabbedResource from 'components/admin/TabbedResource';
 
 // i18n
 import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 
 import { InsertConfigurationOptions, ITab } from 'typings';
 import { insertConfiguration } from 'utils/moduleUtils';
@@ -29,7 +28,7 @@ class SettingsPage extends React.PureComponent<
   Props & WrappedComponentProps & WithRouterProps,
   State
 > {
-  constructor(props) {
+  constructor(props: Props & WrappedComponentProps & WithRouterProps) {
     super(props);
     const { formatMessage } = this.props.intl;
 

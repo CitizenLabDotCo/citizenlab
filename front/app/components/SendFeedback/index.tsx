@@ -10,9 +10,8 @@ import { ScreenReaderOnly } from 'utils/a11y';
 
 // import i18n
 import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
+import { WrappedComponentProps, injectIntl } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
-import { injectIntl } from 'react-intl';
 
 const SendFeedbackText = styled.span`
   color: ${colors.label};
@@ -55,33 +54,28 @@ interface Props {
   className?: string;
 }
 
-const SendFeedbackComponent = React.memo<Props>(
-  (props: Props & WrappedComponentProps) => {
-    const {
-      showFeedbackText,
-      className,
-      intl: { formatMessage },
-    } = props;
-
-    return (
-      <Container
-        className={className}
-        target="_blank"
-        href={formatMessage(messages.sendFeedbackLink, { url: location.href })}
-      >
-        <SendFeedbackIcon name="questionMark" className="send-feedback-icon" />
-        <SendFeedbackText>
-          {showFeedbackText ? (
-            <FormattedMessage {...messages.sendFeedback} />
-          ) : (
-            <ScreenReaderOnly>
-              {formatMessage(messages.sendFeedback)}
-            </ScreenReaderOnly>
-          )}
-        </SendFeedbackText>
-      </Container>
-    );
-  }
-);
-
+const SendFeedbackComponent = ({
+  showFeedbackText,
+  className,
+  intl: { formatMessage },
+}: Props & WrappedComponentProps) => {
+  return (
+    <Container
+      className={className}
+      target="_blank"
+      href={formatMessage(messages.sendFeedbackLink, { url: location.href })}
+    >
+      <SendFeedbackIcon name="questionMark" className="send-feedback-icon" />
+      <SendFeedbackText>
+        {showFeedbackText ? (
+          <FormattedMessage {...messages.sendFeedback} />
+        ) : (
+          <ScreenReaderOnly>
+            {formatMessage(messages.sendFeedback)}
+          </ScreenReaderOnly>
+        )}
+      </SendFeedbackText>
+    </Container>
+  );
+};
 export default injectIntl(SendFeedbackComponent);

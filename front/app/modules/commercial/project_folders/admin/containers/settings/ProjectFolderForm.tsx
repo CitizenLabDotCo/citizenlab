@@ -16,7 +16,6 @@ import useProjectFolderImages from '../../../hooks/useProjectFolderImages';
 import useProjectFolder from '../../../hooks/useProjectFolder';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { FormattedMessage } from 'utils/cl-intl';
-import { injectIntl } from 'react-intl';
 import messages from '../messages';
 import {
   SectionField,
@@ -573,4 +572,4 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   );
 };
 
-export default injectIntl(ProjectFolderForm);
+export default ProjectFolderForm;

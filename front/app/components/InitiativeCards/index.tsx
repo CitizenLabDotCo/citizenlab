@@ -38,9 +38,12 @@ import GetAppConfiguration, {
 
 // i18n
 import messages from './messages';
-import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
+import {
+  WrappedComponentProps,
+  MessageDescriptor,
+  injectIntl,
+} from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
-import { injectIntl } from 'react-intl';
 
 // style
 import styled, { withTheme } from 'styled-components';
@@ -652,12 +655,12 @@ const Data = adopt<DataProps, InputProps>({
 });
 
 const WithFiltersSidebarWithHoCs = withTheme(
-  injectIntl(injectLocalize(InitiativeCards))
+  injectLocalize(injectIntl(InitiativeCards))
 );
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => (
+    {(dataProps: DataProps) => (
       <WithFiltersSidebarWithHoCs {...inputProps} {...dataProps} />
     )}
   </Data>

@@ -3,8 +3,7 @@ import React, { memo } from 'react';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 // styling
@@ -237,7 +236,7 @@ export const HorizontalBarChartWithoutStream: React.SFC<
 });
 
 const HorizontalBarChartWithoutStreamWithHoCs = injectIntl(
-  HorizontalBarChartWithoutStream as any
+  HorizontalBarChartWithoutStream
 );
 
 export default HorizontalBarChartWithoutStreamWithHoCs;

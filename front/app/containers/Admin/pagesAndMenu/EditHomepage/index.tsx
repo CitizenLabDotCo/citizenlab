@@ -10,8 +10,12 @@ import { pagesAndMenuBreadcrumb, homeBreadcrumb } from '../breadcrumbs';
 
 // i18n
 import messages from './messages';
-import { FormattedMessage, injectIntl, MessageDescriptor } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import {
+  WrappedComponentProps,
+  injectIntl,
+  MessageDescriptor,
+} from 'react-intl';
 
 // services, hooks, resources, and types
 import Outlet from 'components/Outlet';

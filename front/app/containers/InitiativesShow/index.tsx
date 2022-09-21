@@ -62,9 +62,8 @@ import { getAddressOrFallbackDMS } from 'utils/map';
 import clHistory from 'utils/cl-router/history';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
+import { WrappedComponentProps, injectIntl } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
-import { injectIntl } from 'react-intl';
 import messages from './messages';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
@@ -344,7 +343,9 @@ export class InitiativesShow extends PureComponent<
   officialFeedbackElement = createRef<HTMLDivElement>();
   timeoutRef: NodeJS.Timeout;
 
-  constructor(props) {
+  constructor(
+    props: Props & WrappedComponentProps & InjectedLocalized & WithRouterProps
+  ) {
     super(props);
     this.state = {
       loaded: false,

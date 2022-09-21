@@ -7,7 +7,11 @@ import { isEqual } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';
 import { FormattedMessage } from 'utils/cl-intl';
-import { injectIntl } from 'react-intl';
+import {
+  injectIntl,
+  WrappedComponentProps,
+  MessageDescriptor,
+} from 'react-intl';
 import styled from 'styled-components';
 import messages from './messages';
 import ResolutionControl, {
@@ -28,7 +32,6 @@ import {
   commentsByTimeStream,
 } from 'services/stats';
 import { colors } from 'utils/styleUtils';
-import { MessageDescriptor } from 'react-intl';
 
 // services
 import { ParticipationMethod } from 'services/participationContexts';

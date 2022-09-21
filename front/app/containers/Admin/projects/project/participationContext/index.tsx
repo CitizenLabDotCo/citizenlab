@@ -29,8 +29,11 @@ import GetFeatureFlag, {
 } from 'resources/GetFeatureFlag';
 
 // i18n
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
+import {
+  WrappedComponentProps,
+  MessageDescriptor,
+  injectIntl,
+} from 'react-intl';
 import messages from '../messages';
 
 // typings

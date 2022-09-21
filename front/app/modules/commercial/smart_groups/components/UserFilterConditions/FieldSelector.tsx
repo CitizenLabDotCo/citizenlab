@@ -17,9 +17,12 @@ import {
   IUserCustomFieldInputType,
 } from 'modules/commercial/user_custom_fields/services/userCustomFields';
 
-import { injectIntl } from 'react-intl';
 import messages from './messages';
-import { MessageDescriptor } from 'react-intl';
+import {
+  MessageDescriptor,
+  WrappedComponentProps,
+  injectIntl,
+} from 'react-intl';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';

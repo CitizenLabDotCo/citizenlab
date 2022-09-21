@@ -5,8 +5,7 @@ import { map, isEmpty } from 'lodash-es';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 import moment from 'moment';
 
@@ -114,8 +113,8 @@ class LineBarChart extends React.PureComponent<
   combined$: Subscription;
   currentChart: React.RefObject<any>;
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props: Props & WrappedComponentProps) {
+    super(props);
     this.state = {
       serie: undefined,
     };

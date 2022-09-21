@@ -8,8 +8,7 @@ import { StyledA, StyledWarning, SurveyServiceRadio } from './styling';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 
 // typings
@@ -34,7 +33,7 @@ export default injectIntl(
     surveyProviders,
     handleSurveyProviderChange,
     handleSurveyEmbedUrlChange,
-  }) => (
+  }: Props & WrappedComponentProps) => (
     <>
       <SectionField>
         <SubSectionTitle>

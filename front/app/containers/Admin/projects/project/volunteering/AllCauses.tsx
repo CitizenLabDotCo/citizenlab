@@ -13,10 +13,9 @@ import { ButtonWrapper } from 'components/admin/PageWrapper';
 import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { injectIntl } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 import T from 'components/T';
-import { WrappedComponentProps } from 'react-intl';
 
 const Container = styled.div``;
 
@@ -34,7 +33,12 @@ interface InputProps {
 interface Props extends InputProps, WrappedComponentProps {}
 
 const AllCauses = injectIntl(
-  ({ participationContextType, participationContextId, projectId, intl }) => {
+  ({
+    participationContextType,
+    participationContextId,
+    projectId,
+    intl,
+  }: Props) => {
     const phaseId =
       participationContextType === 'phase' ? participationContextId : null;
     const causes = useCauses({ projectId, phaseId });
@@ -156,7 +160,7 @@ const AllCauses = injectIntl(
   }
 );
 
-export default (props) => (
+export default (props: InputProps) => (
   <DndProvider backend={HTML5Backend}>
     <AllCauses {...props} />
   </DndProvider>

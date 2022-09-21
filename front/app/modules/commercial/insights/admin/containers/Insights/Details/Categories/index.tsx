@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, ReactNode } from 'react';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // utils
@@ -24,16 +24,13 @@ import { colors, fontSizes } from 'utils/styleUtils';
 
 // intl
 import messages from '../../messages';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 
 import { IInsightsCategoryData } from 'modules/commercial/insights/services/insightsCategories';
 import {
   TooltipContent,
   SectionTitle,
 } from 'modules/commercial/insights/admin/components/StyledTextComponents';
-
-type CategoryProps = WithRouterProps & WrappedComponentProps;
 
 const StyledTag = styled(Tag)`
   margin-right: 8px;
@@ -49,12 +46,16 @@ const EmptyStateTitle = styled.p`
 
 export const visibleCategoriesNumber = 6;
 
-const Categories: React.FC<CategoryProps> = ({
+interface Props {
+  children: ReactNode;
+}
+
+const Categories = ({
   location: { pathname, query },
   params: { viewId },
   intl: { formatMessage },
   children,
-}) => {
+}: Props & WithRouterProps & WrappedComponentProps) => {
   const [seeAllCategories, setSeeAllCategories] = useState(false);
   const categories = useInsightsCategories(viewId);
 
