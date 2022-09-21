@@ -25,12 +25,16 @@ import {
   LegendDimensions,
 } from '../_components/Legend/typings';
 
+export const DEFAULT_LEGEND_OFFSET = 10;
+
 const LineChart = <Row,>({
   width,
   height,
   data,
+  margin,
   legend,
-  emptyContainerContent
+  emptyContainerContent,
+  innerRef
 }: Props<Row>) => {
   const [graphDimensions, setGraphDimensions] = useState<
     GraphDimensions | undefined
@@ -53,7 +57,16 @@ const LineChart = <Row,>({
       onUpdateGraphDimensions={setGraphDimensions}
       onUpdateLegendDimensions={setLegendDimensions}
     >
-      <RechartsLineChart>
+      <RechartsLineChart
+        data={data}
+        margin={parseMargin(
+          margin,
+          legend,
+          legendDimensions,
+          DEFAULT_LEGEND_OFFSET
+        )}
+        ref={innerRef}
+      >
         <CartesianGrid />
 
       </RechartsLineChart>
