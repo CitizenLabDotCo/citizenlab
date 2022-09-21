@@ -20,7 +20,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import sharedSettingsMessages from '../messages';
@@ -76,7 +76,7 @@ export const StyledSectionTitle = styled(SectionTitle)`
 `;
 
 class SettingsCustomizeTab extends PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   subscriptions: Subscription[];

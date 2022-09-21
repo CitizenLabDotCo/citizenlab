@@ -6,7 +6,7 @@ import Fragment from 'components/Fragment';
 import { Image } from '@citizenlab/cl2-component-library';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -39,7 +39,7 @@ interface Props {}
 
 const CityLogoSection = ({
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const locale = useLocale();
   const appConfiguration = useAppConfiguration();
   const localize = useLocalize();

@@ -6,7 +6,7 @@ import Link from 'utils/cl-router/Link';
 // i18n
 import messages from 'containers/LandingPage/messages';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // styling
 import styled from 'styled-components';
@@ -49,7 +49,7 @@ const EventPageLink = styled(Link)`
   margin-top: auto;
 `;
 
-export default injectIntl<InjectedIntlProps>(({ intl }) => (
+export default injectIntl<WrappedComponentProps>(({ intl }) => (
   <Header>
     <Title>{intl.formatMessage(messages.upcomingEventsWidgetTitle)}</Title>
     <EventPageLink to="/events">

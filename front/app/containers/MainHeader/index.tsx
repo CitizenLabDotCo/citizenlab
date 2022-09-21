@@ -30,7 +30,7 @@ import clHistory from 'utils/cl-router/history';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // style
@@ -253,7 +253,7 @@ interface Props {
 const MainHeader = ({
   setRef,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const appConfiguration = useAppConfiguration();
   const authUser = useAuthUser();

@@ -20,9 +20,7 @@ function buildComponent<P>(Component: React.ComponentType<P>) {
     ) => {
       return intl.formatMessage(messageDescriptor, {
         tenantName: appConfig.attributes.name,
-        orgName: localize(
-          appConfig.attributes.settings.core.organization_name
-        ),
+        orgName: localize(appConfig.attributes.settings.core.organization_name),
         orgType: appConfig.attributes.settings.core.organization_type,
         ...(values || {}),
       });

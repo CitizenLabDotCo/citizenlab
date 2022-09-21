@@ -18,7 +18,7 @@ import {
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 // hooks
@@ -38,7 +38,7 @@ const RegistrationCustomFieldEdit = memo(
   ({
     intl: { formatMessage },
     params: { userCustomFieldId },
-  }: Props & WithRouterProps & InjectedIntlProps) => {
+  }: Props & WithRouterProps & WrappedComponentProps) => {
     const localize = useLocalize();
     const userCustomField = useUserCustomField(userCustomFieldId);
     const hasOptions = (inputType: IUserCustomFieldInputType) => {

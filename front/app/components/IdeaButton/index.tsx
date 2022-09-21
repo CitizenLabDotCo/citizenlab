@@ -27,7 +27,7 @@ import { Icon } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps, MessageDescriptor } from 'react-intl';
+import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 import messages from './messages';
 import { getInputTermMessage } from 'utils/i18n';
 
@@ -122,7 +122,7 @@ interface InputProps extends Omit<ButtonProps, 'onClick'> {
 
 interface Props extends InputProps, DataProps {}
 
-const IdeaButton = memo<Props & InjectedIntlProps>(
+const IdeaButton = memo<Props & WrappedComponentProps>(
   ({
     id,
     project,

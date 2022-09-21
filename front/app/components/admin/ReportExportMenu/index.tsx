@@ -15,7 +15,7 @@ import { Dropdown } from '@citizenlab/cl2-component-library';
 import { requestBlob } from 'utils/request';
 import { reportError } from 'utils/loggingUtils';
 import { saveAs } from 'file-saver';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { IResolution } from 'components/admin/ResolutionControl';
@@ -69,7 +69,7 @@ const ReportExportMenu = ({
   currentProjectFilterLabel,
   intl: { formatMessage, formatDate },
   xlsxData,
-}: ReportExportMenuProps & InjectedIntlProps) => {
+}: ReportExportMenuProps & WrappedComponentProps) => {
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const [exportingXls, setExportingXls] = useState(false);
 

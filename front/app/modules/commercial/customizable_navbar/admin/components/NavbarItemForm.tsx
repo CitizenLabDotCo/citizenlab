@@ -18,7 +18,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 // intl
 import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
@@ -29,7 +29,7 @@ export interface FormValues {
 type PageFormProps = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
   defaultValues?: FormValues;
-} & InjectedIntlProps;
+} & WrappedComponentProps;
 
 const NavbarItemForm = ({
   onSubmit,

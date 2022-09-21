@@ -3,7 +3,7 @@ import React from 'react';
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // components
 import { Form } from 'formik';
@@ -32,7 +32,7 @@ export interface FormValues {
 type Props = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
   defaultValues?: FormValues;
-} & InjectedIntlProps;
+} & WrappedComponentProps;
 
 const TopicForm = ({
   intl: { formatMessage },

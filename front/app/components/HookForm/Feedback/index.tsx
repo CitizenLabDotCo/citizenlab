@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import Error, { findErrorMessage, TFieldName } from 'components/UI/Error';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import {
   Text,
   Title,
@@ -15,14 +15,14 @@ import CloseIconButton from 'components/UI/CloseIconButton';
 import messages from './messages';
 import { get } from 'lodash-es';
 
-type FeedbackProps = {
+interface FeedbackProps {
   successMessage?: string;
-} & InjectedIntlProps;
+}
 
 const Feedback = ({
   successMessage,
   intl: { formatMessage },
-}: FeedbackProps) => {
+}: FeedbackProps & WrappedComponentProps) => {
   const [successMessageIsVisible, setSuccessMessageIsVisible] = useState(true);
   const {
     formState: {

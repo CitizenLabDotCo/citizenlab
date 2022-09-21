@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet';
 // i18n
 import messages from './messages';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
@@ -41,7 +41,7 @@ const StyledButton = styled.button`
   }
 `;
 
-const CookiePolicy = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+const CookiePolicy = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const openConsentManager = () => {
     eventEmitter.emit('openConsentManager');
   };
