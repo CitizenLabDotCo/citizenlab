@@ -53,8 +53,6 @@ const VisitorStats = ({
             value={stats.visitDuration.value.toLocaleString()}
             bottomLabel={bottomLabel}
             bottomLabelValue={`+${stats.visitDuration.lastPeriod}`}
-            showEmptyTooltip
-            emptyTooltipContent={formatMessage(messages.tooltipWarning)}
           />
         </Box>
       </Box>
