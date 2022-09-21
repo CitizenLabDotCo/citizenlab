@@ -176,7 +176,7 @@ pt:
       yesterday_by_author: 'Ontem por %{author}'
       today_by_author: 'Hoje por %{author}'
       x_days_ago_by_author: '%{x} días atrás por %{author}'
-      idea_section: Idéias
+      idea_section: Ideias
       initiative_section: Propostas
       title_initiatives_past_week: 'Novas propostas atribuídas a você'
       title_successful_initiatives_past_week: 'Propostas atribuídas a você que estouraram o limite'
@@ -192,10 +192,10 @@ pt:
     initiative_marked_as_spam:
       by_author: 'por %{authorName}'
       cta_review_initiative: 'Verificar a proposta'
-      report_inappropriate_offensive_content: 'Acho este conteúdo é inapropriado ou ofensivo.'
+      report_inappropriate_offensive_content: 'Conteúdo inapropriado ou ofensivo.'
       report_not_an_initiative: 'Este conteúdo não é uma proposta e não pertence a este espaço.'
       subject: 'Você tem um relatório como spam na plataforma de %{organizationName}'
-      preheader: 'Ação no relatório identificado no spam'
+      preheader: 'Ação a ser realizada no relatório de spam'
       reported_this_because: '%{reporterFirstName} denunciou isto porque:'
       title_spam_report: '%{firstName} %{lastName} spam reportado'
     initiative_assigned_to_you:
@@ -315,7 +315,7 @@ pt:
     new_initiative_for_admin:
       by_author: 'por %{authorName}'
       commented: '%{authorFirstName} escreveu:'
-      cta_reply_to: 'Dar opinião a %{authorName}'
+      cta_reply_to: 'Dê uma opinião a %{authorName}'
       event_description: '%{authorName} Postou uma nova proposta na sua plataforma. Descubra-a agora, dê alguma opinião ou mude o seu status!'
       main_header: '%{firstName}, uma nova proposta foi postada na sua plataforma'
       subject: 'Alguém postou uma nova proposta na plataforma de %{organizationName}'
@@ -323,7 +323,7 @@ pt:
     new_idea_for_admin:
       by_author: 'por %{authorName}'
       commented: '%{authorFirstName} comentado:'
-      cta_reply_to: 'Dar opinião a %{authorName}'
+      cta_reply_to: 'Dê uma opinião a %{authorName}'
       days_ago: '%{numberOfDays} dias atrás'
       event_description: '%{authorName} publicou uma nova idéia na sua plataforma. Descubra-a agora, dê alguma opinião ou mude o seu status!'
       main_header: '%{firstName}, uma nova idéia foi postada na sua plataforma'
@@ -395,7 +395,7 @@ pt:
       text_moderate_analyse_input: 'Uma vez lançado o projecto, as primeiras idéias chegarão. Você receberá relatórios semanais com todas as atividades chave para que você fique a par das coisas. A visão geral das ideias irá ajudá-lo à compreender quais obtiveram mais votos favoráveis e desfavoráveis.'
       text_share_project_information: 'A fim de aumentar a qualidade das idéias que você está recebendo, é fundamental compartilhar informações: adicionar a descrição do projeto, anexar imagens (incluindo esboços e planos), e comunicar todos os eventos que estão acontecendo. Lembre-se: uma boa informação antecede uma boa participação!'
       title_design_participatory_process: 'Desenhar o processo participativo'
-      title_moderate_analyse_input: 'Moderar e analisar os dados introduzidos'
+      title_moderate_analyse_input: 'Dirigir e analisar os dados introduzidos'
       title_share_project_information: 'Fornecer informações sobre o projeto'
       title_what_can_you_do_moderator: 'O que você pode fazer como administrador do projeto?'
       title_you_became_moderator: 'Você se tornou um administrador de projeto'
@@ -485,7 +485,7 @@ pt:
       successful_proposals_text: "Essas propostas receberam apoio suficiente para avançar para a próxima fase! Clique na proposta para saber mais sobre o que acontece a seguir."
       today_by_author: "Hoje por %{author}"
       yesterday_by_author: "Ontem por %{author}"
-      x_days_ago_by_author: "%{x} dias atrás por %{author}"
+      x_days_ago_by_author: "%{x} días atrás por %{author}"
       trending_ideas: "Ideias populares"
       trending_ideas_text: "Interessado no que está acontecendo na plataforma? Confira as três principais ideias em alta, veja o que as pessoas estão dizendo sobre elas e participe da conversa."
       no_notifications: "Sem notificações"
@@ -504,14 +504,14 @@ pt:
       action_add_image: '%{addImageLink} aumentar a visibilidade'
       action_comment: '%{textComment} sobre ideias existentes'
       action_published_idea: 'Idea posteada'
-      action_send_email: 'Envie para seus contatos um %{sendEmailLink}'
-      action_share_fb: 'Aceitar seus amigos agora em %{fbLink}'
+      action_send_email: 'Envie para seus contactos um %{sendEmailLink}'
+      action_share_fb: 'Avise seus amigos em %{fbLink}'
       action_share_link: 'Compartilhar através de qualquer canal, copiando o %{link}'
-      action_share_twitter: 'Informe os seus seguidores em %{twitterLink}'
+      action_share_twitter: 'Informe para os seus seguidores em %{twitterLink}'
       add_image: 'Adicionar uma imagem'
       cta_view_idea: 'Ir para a sua proposta'
       event_description: '%{firstName}, parabéns sobre a sua primeira ideia sobre a plataforma de participação de %{organizationName}. Você será notificado quando as pessoas interagirem com a sua ideia. Descubra abaixo os próximos passos que você pode realizar.'
-      link: link
+      link: Link
       main_header: '%{firstName}, você postou a sua primeira ideia!'
       message_get_votes: 'Alcance mais pessoas com a sua ideia:'
       preheader: '%{firstName}, parabéns por postar a sua primeira ideia na plataforma de %{organizationName}. Agora mobilize apoio para ela'
@@ -526,17 +526,17 @@ pt:
       preheader: 'Aqui esta o que você pode fazer na plataforma de %{organizationName}'
     idea_published:
       action_add_image: '%{addImageLink} aumentar a visibilidade'
-      action_published_idea: 'Idea postada'
-      action_send_email: 'Envie seus contactos para %{sendEmailLink}'
-      action_share_fb: 'Aceite seus amigos agora em %{fbLink}'
+      action_published_idea: 'Idea posteada'
+      action_send_email: 'Envie para seus contactos um %{sendEmailLink}'
+      action_share_fb: 'Avise seus amigos em %{fbLink}'
       action_share_link: 'Compartilhar através de qualquer canal, copiando o %{link}'
-      action_share_twitter: 'Informe os seus seguidores em %{twitterLink}'
+      action_share_twitter: 'Informe para os seus seguidores em %{twitterLink}'
       add_image: 'Adicionar uma imagem'
       cta_view_idea: 'Ir para a sua proposta'
       event_description: '%{firstName}, a sua idéia foi postada com sucesso na plataforma de participação de %{organizationName}. Você será notificado quando as pessoas interagirem com a sua idéia. Descubra os próximos passos de interação com a plataforma abaixo.'
       link: Link
       main_header: 'Você postou uma idéia! Vamos garantir que ela seja lida.'
-      message_get_votes: 'Alcance mais pessoas com a sua idéia:'
+      message_get_votes: 'Alcance mais pessoas com a sua ideia:'
       preheader: '%{firstName}, parabéns por postar a sua idéia na plataforma de %{organizationName}. Agora mobilize apoio.'
       see_you: 'Te vejo em breve na plataforma!'
       send_email: e-mail
