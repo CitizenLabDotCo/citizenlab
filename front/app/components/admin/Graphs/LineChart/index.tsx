@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import {
   legacyColors,
   sizes,
-  // animation,
+  animation,
 } from 'components/admin/Graphs/styling';
 
 // components
@@ -100,7 +100,12 @@ Props<Row>) => {
         <CartesianGrid />
 
         {lineConfigs.map((lineConfig, lineIndex) => (
-          <Line {...lineConfig.props} key={lineIndex} />
+          <Line
+            {...lineConfig.props}
+            animationDuration={animation.duration}
+            animationBegin={animation.begin}
+            key={lineIndex}
+          />
         ))}
 
         <XAxis
