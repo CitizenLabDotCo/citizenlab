@@ -1,6 +1,5 @@
 import {
   BaseProps,
-  Margin,
   AxisProps,
   KeyOfType,
   // Cell,
@@ -12,7 +11,6 @@ import {
 export interface Props<Row> extends BaseProps<Row, Payload<Row>> {
   mapping: Mapping<Row>;
   lines?: Lines;
-  margin?: Margin;
   xaxis?: AxisProps;
   yaxis?: AxisProps;
 }
@@ -32,4 +30,3 @@ interface Lines {
   names?: string[];
   isAnimationActive?: boolean;
 }
-
