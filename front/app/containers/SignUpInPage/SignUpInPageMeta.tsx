@@ -80,12 +80,14 @@ const SignUpInPageMeta = memo<Props & WrappedComponentProps & WithRouterProps>(
 
 const SignUpInPageMetaWithHoC = withRouter(injectIntl(SignUpInPageMeta));
 
-const Data = adopt<DataProps>({
+const Data = adopt<Props>({
   tenantLocales: <GetAppConfigurationLocales />,
   tenant: <GetAppConfiguration />,
   locale: <GetLocale />,
 });
 
 export default () => (
-  <Data>{(dataprops) => <SignUpInPageMetaWithHoC {...dataprops} />}</Data>
+  <Data>
+    {(dataProps: DataProps) => <SignUpInPageMetaWithHoC {...dataProps} />}
+  </Data>
 );

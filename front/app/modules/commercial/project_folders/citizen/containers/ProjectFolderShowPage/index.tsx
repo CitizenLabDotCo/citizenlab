@@ -160,7 +160,7 @@ const ProjectFolderShowPage = memo<{
 }>(({ projectFolder }) => {
   const authUser = useAuthUser();
   const locale = useLocale();
-  const tenant = useAppConfiguration();
+  const appConfig = useAppConfiguration();
 
   const { list: adminPublicationsList } = useAdminPublications({
     publicationStatusFilter: publicationStatuses,
@@ -171,13 +171,16 @@ const ProjectFolderShowPage = memo<{
 
   const loading =
     isUndefined(locale) ||
-    isUndefined(tenant) ||
+    isUndefined(appConfig) ||
     isUndefined(projectFolder) ||
     isUndefined(adminPublicationsList);
 
   const userCanEditFolder =
     !isNilOrError(authUser) && userModeratesFolder(authUser, projectFolder.id);
 
+  if (isNilOrError(appConfig)) {
+    return null;
+  }
   return (
     <>
       <ProjectFolderShowPageMeta projectFolder={projectFolder} />
@@ -185,7 +188,10 @@ const ProjectFolderShowPage = memo<{
         {folderNotFound ? (
           <NotFoundWrapper>
             <p>
-              <FormattedMessage {...messages.noFolderFoundHere} />
+              <FormattedMessage
+                {...messages.noFolderFoundHere}
+                values={{ tenantName: appConfig.attributes.name }}
+              />
             </p>
             <Button
               linkTo="/projects"
