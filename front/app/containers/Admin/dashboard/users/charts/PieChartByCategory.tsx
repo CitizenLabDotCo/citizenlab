@@ -3,7 +3,7 @@ import React from 'react';
 
 // intl
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 
 // styling
@@ -67,11 +67,11 @@ export const piechartColors = [
 ];
 
 class PieChartByCategory extends React.PureComponent<
-  Props & WrappedComponentProps
+  Props & InjectedIntlProps
 > {
   currentChart: React.RefObject<any>;
 
-  constructor(props: Props & WrappedComponentProps) {
+  constructor(props: Props & InjectedIntlProps) {
     super(props as any);
     this.currentChart = React.createRef();
   }

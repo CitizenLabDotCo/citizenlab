@@ -10,7 +10,7 @@ import { capitalize } from 'lodash-es';
 
 // typings
 import { FeedbackRow, StatusRow, StackedBarsRow } from '.';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { Localize } from 'hooks/useLocalize';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 
@@ -29,7 +29,7 @@ interface Translations {
 }
 
 export const getTranslations = (
-  formatMessage: WrappedComponentProps['intl']['formatMessage']
+  formatMessage: InjectedIntlProps['intl']['formatMessage']
 ): Translations => ({
   statusChanged: formatMessage(messages.statusChanged),
   officialUpdate: formatMessage(messages.officialUpdate),

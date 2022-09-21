@@ -22,7 +22,7 @@ import tracks from './tracks';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from 'containers/ProjectsShowPage/messages';
 import FormattedBudget from 'utils/currency/FormattedBudget';
@@ -272,7 +272,7 @@ const PBExpenses = ({
   className,
   viewMode,
   intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
+}: Props & InjectedIntlProps) => {
   const [processing, setProcessing] = useState(false);
   const locale = useLocale();
   const appConfiguration = useAppConfiguration();

@@ -3,7 +3,7 @@ import IdeaCTAButton from './IdeaCTAButton';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
 interface Props {
@@ -15,7 +15,7 @@ const SharingButtonComponent = ({
   intl: { formatMessage },
   onClick,
   ariaExpanded,
-}: Props & WrappedComponentProps) => {
+}: Props & InjectedIntlProps) => {
   return (
     <IdeaCTAButton
       iconName="share-arrow"

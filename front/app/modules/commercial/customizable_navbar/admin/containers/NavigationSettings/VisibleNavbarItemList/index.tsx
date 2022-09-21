@@ -23,7 +23,7 @@ import usePageSlugById from 'hooks/usePageSlugById';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // utils
@@ -33,7 +33,7 @@ import { PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 
 const VisibleNavbarItemList = ({
   intl: { formatMessage },
-}: WrappedComponentProps) => {
+}: InjectedIntlProps) => {
   const navbarItems = useNavbarItems();
   const pageSlugById = usePageSlugById();
 

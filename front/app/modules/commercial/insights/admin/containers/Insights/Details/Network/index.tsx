@@ -43,7 +43,7 @@ import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks
 
 // intl
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 // styles
 import styled from 'styled-components';
@@ -80,7 +80,7 @@ const Network = ({
   params: { viewId },
   intl: { formatMessage, formatDate },
   location: { query, pathname },
-}: WithRouterProps & WrappedComponentProps) => {
+}: WithRouterProps & InjectedIntlProps) => {
   const [initialRender, setInitialRender] = useState(true);
   const [height, setHeight] = useState(0);
   const [width, setWidth] = useState(0);

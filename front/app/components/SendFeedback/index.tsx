@@ -10,7 +10,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 
 // import i18n
 import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 const SendFeedbackText = styled.span`
@@ -55,7 +55,7 @@ interface Props {
 }
 
 const SendFeedbackComponent = React.memo<Props>(
-  (props: Props & WrappedComponentProps) => {
+  (props: Props & InjectedIntlProps) => {
     const {
       showFeedbackText,
       className,

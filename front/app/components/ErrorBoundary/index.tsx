@@ -8,7 +8,7 @@ import messages from './messages';
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 import { isNilOrError } from 'utils/helperUtils';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { reportError } from 'utils/loggingUtils';
 
@@ -42,7 +42,7 @@ type State = {
   hasError: boolean;
 };
 
-class ErrorBoundary extends Component<Props & WrappedComponentProps, State> {
+class ErrorBoundary extends Component<Props & InjectedIntlProps, State> {
   constructor(props) {
     super(props);
     this.state = { hasError: false };

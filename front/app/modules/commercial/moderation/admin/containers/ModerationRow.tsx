@@ -11,7 +11,7 @@ import Link from 'utils/cl-router/Link';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 import useLocalize from 'hooks/useLocalize';
 
@@ -96,7 +96,7 @@ const ideasPath = '/ideas';
 const initiativesPath = '/initiatives';
 const projectsPath = '/projects';
 
-const ModerationRow = memo<Props & WrappedComponentProps>(
+const ModerationRow = memo<Props & InjectedIntlProps>(
   ({
     moderation,
     selected,

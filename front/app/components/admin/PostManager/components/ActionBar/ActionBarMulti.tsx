@@ -1,6 +1,6 @@
 import React from 'react';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { deleteIdea } from 'services/ideas';
 import { deleteInitiative } from 'services/initiatives';
 import { Button, Icon } from 'semantic-ui-react';
@@ -14,9 +14,7 @@ interface Props {
   resetSelection: () => void;
 }
 
-class ActionBarMulti extends React.PureComponent<
-  Props & WrappedComponentProps
-> {
+class ActionBarMulti extends React.PureComponent<Props & InjectedIntlProps> {
   handleClickDeleteIdeas = () => {
     const {
       selection,

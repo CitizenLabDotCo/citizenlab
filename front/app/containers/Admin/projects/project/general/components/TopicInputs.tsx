@@ -17,7 +17,7 @@ import Outlet from 'components/Outlet';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
 // utils
@@ -32,7 +32,7 @@ const TopicInputs = ({
   selectedTopicIds,
   onChange,
   intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
+}: Props & InjectedIntlProps) => {
   const availableTopics = useTopics();
   const appConfiguration = useAppConfiguration();
   const localize = useLocalize();

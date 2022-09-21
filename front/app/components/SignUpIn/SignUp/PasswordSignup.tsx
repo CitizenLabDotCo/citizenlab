@@ -36,7 +36,7 @@ import GetAppConfiguration, {
 import GetFeatureFlag from 'resources/GetFeatureFlag';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -129,16 +129,13 @@ type State = {
   apiErrors: CLErrorsJSON | null | Error;
 };
 
-class PasswordSignup extends PureComponent<
-  Props & WrappedComponentProps,
-  State
-> {
+class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
   firstNameInputElement: HTMLInputElement | null;
   lastNameInputElement: HTMLInputElement | null;
   emailInputElement: HTMLInputElement | null;
   passwordInputElement: HTMLInputElement | null;
 
-  constructor(props: Props & WrappedComponentProps) {
+  constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
       token: props.metaData.token,

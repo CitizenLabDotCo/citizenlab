@@ -7,7 +7,7 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 // i18n
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 // resources
 import GetAppConfigurationLocales, {
@@ -32,7 +32,7 @@ interface DataProps {
 
 interface Props extends DataProps {}
 
-const SignUpInPageMeta = memo<Props & WrappedComponentProps & WithRouterProps>(
+const SignUpInPageMeta = memo<Props & InjectedIntlProps & WithRouterProps>(
   ({ intl, location: { pathname }, tenantLocales, tenant, locale }) => {
     if (
       !isNilOrError(tenantLocales) &&

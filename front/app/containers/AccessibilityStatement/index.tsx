@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet';
 // i18n
 import messages from './messages';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 // components
 import Fragment from 'components/Fragment';
@@ -19,7 +19,7 @@ import {
 } from 'containers/PagesShowPage';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
-const CookiePolicy = memo((props: WrappedComponentProps) => {
+const CookiePolicy = memo((props: InjectedIntlProps) => {
   const { formatMessage } = props.intl;
 
   return (

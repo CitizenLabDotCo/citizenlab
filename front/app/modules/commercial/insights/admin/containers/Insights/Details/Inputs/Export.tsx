@@ -10,7 +10,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 // intl
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../../messages';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 // utils
 import { colors } from 'utils/styleUtils';
@@ -23,7 +23,7 @@ import useInsightsView from 'modules/commercial/insights/hooks/useInsightsView';
 // services
 import { getInsightsInputsEndpoint } from 'modules/commercial/insights/services/insightsInputs';
 
-type ExportProps = WithRouterProps & WrappedComponentProps;
+type ExportProps = WithRouterProps & InjectedIntlProps;
 
 const Export = ({
   params: { viewId },

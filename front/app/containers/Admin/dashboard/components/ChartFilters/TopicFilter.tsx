@@ -15,7 +15,7 @@ import { ITopicData } from 'services/topics';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // utils
@@ -35,7 +35,7 @@ interface Props extends DataProps, InputProps {}
 const generateTopicOptions = (
   topics: ITopicData[],
   localize: Localize,
-  { formatMessage }: WrappedComponentProps['intl']
+  { formatMessage }: InjectedIntlProps['intl']
 ) => {
   const topicOptions = topics.map((topic) => ({
     value: topic.id,
@@ -53,7 +53,7 @@ const TopicFilter = ({
   currentTopicFilter,
   onTopicFilter,
   intl,
-}: Props & WrappedComponentProps) => {
+}: Props & InjectedIntlProps) => {
   const localize = useLocalize();
 
   if (isNilOrError(topics)) return null;

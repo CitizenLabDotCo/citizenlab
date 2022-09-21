@@ -30,7 +30,7 @@ import GetFeatureFlag, {
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
 // typings
@@ -99,12 +99,12 @@ export interface State extends IParticipationContextConfig {
 }
 
 class ParticipationContext extends PureComponent<
-  Props & WrappedComponentProps,
+  Props & InjectedIntlProps,
   State
 > {
   subscriptions: Subscription[];
 
-  constructor(props: Props & WrappedComponentProps) {
+  constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
       participation_method: 'ideation',

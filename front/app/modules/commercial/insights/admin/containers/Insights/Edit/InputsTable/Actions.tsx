@@ -99,7 +99,7 @@ const DropdownFooterButton = styled(Button)`
 `;
 
 // Typings
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 interface Props {
@@ -113,7 +113,7 @@ const Actions = ({
   params: { viewId },
   location: { query },
   intl: { formatMessage },
-}: Props & WrappedComponentProps & WithRouterProps) => {
+}: Props & InjectedIntlProps & WithRouterProps) => {
   const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
   const categories = useInsightsCategories(viewId);
   const selectedInputsIds = selectedInputs.map((input) => input.id);

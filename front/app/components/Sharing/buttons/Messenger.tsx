@@ -7,7 +7,7 @@ import useAppConfiguration from 'hooks/useAppConfiguration';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 import { Button } from '@citizenlab/cl2-component-library';
 
@@ -24,7 +24,7 @@ interface Props {
 const Messenger = ({
   url,
   intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
+}: Props & InjectedIntlProps) => {
   const tenant = useAppConfiguration();
   const handleClick = (href: string) => () => {
     clickSocialSharingLink(href);

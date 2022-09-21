@@ -4,7 +4,7 @@ import { isEmpty } from 'lodash-es';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 
 // components
@@ -59,10 +59,10 @@ interface InputProps {
 interface Props extends InputProps, DataProps {}
 
 export class BarChartByCategory extends React.PureComponent<
-  Props & WrappedComponentProps
+  Props & InjectedIntlProps
 > {
   currentChart: React.RefObject<any>;
-  constructor(props: Props & WrappedComponentProps) {
+  constructor(props: Props & InjectedIntlProps) {
     super(props as any);
     this.currentChart = React.createRef();
   }

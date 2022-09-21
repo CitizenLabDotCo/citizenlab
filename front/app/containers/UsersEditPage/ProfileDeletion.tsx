@@ -11,7 +11,7 @@ import Modal from 'components/UI/Modal';
 
 // intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // utils
@@ -32,10 +32,7 @@ interface State {
   dialogOpened: boolean;
 }
 
-class ProfileDeletion extends PureComponent<
-  Props & WrappedComponentProps,
-  State
-> {
+class ProfileDeletion extends PureComponent<Props & InjectedIntlProps, State> {
   constructor(props) {
     super(props);
     this.state = {

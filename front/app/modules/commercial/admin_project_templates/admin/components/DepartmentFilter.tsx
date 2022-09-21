@@ -15,14 +15,14 @@ import FilterSelector, {
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 interface Props {
   onChange: (value: string[]) => void;
 }
 
-const DepartmentFilter = memo<Props & WrappedComponentProps>(
+const DepartmentFilter = memo<Props & InjectedIntlProps>(
   ({ intl: { formatMessage }, onChange }) => {
     const localize = useLocalize();
     const graphqlTenantLocales = useGraphqlTenantLocales();

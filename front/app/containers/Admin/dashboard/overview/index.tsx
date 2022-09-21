@@ -33,7 +33,7 @@ import tracks from '../tracks';
 // i18n
 import messages from '../messages';
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
 
 // resources
@@ -80,7 +80,7 @@ interface Tracks {
 
 interface PropsHithHoCs
   extends Props,
-    WrappedComponentProps,
+    InjectedIntlProps,
     InjectedLocalized,
     Tracks {}
 

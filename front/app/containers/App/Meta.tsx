@@ -15,7 +15,7 @@ import useHomepageSettings from 'hooks/useHomepageSettings';
 // i18n
 import messages from './messages';
 import { getLocalized } from 'utils/i18n';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
 // utils
@@ -35,7 +35,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const Meta: React.SFC<Props & WrappedComponentProps> = ({
+const Meta: React.SFC<Props & InjectedIntlProps> = ({
   locale,
   tenant,
   authUser,

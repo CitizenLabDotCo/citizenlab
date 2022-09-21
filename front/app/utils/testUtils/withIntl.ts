@@ -1,4 +1,4 @@
-import { IntlProvider, WrappedComponentProps } from 'react-intl';
+import { IntlProvider, InjectedIntlProps } from 'react-intl';
 import { shallow, ShallowRendererProps, ShallowWrapper } from 'enzyme';
 import React from 'react';
 
@@ -12,7 +12,7 @@ const intlProvider = new IntlProvider(
 
 // You customize the intl object here:
 const { intl: originalIntl } =
-  intlProvider.getChildContext() as WrappedComponentProps;
+  intlProvider.getChildContext() as InjectedIntlProps;
 const intl = {
   ...originalIntl,
   formatMessage: ({ id, defaultMessage }, values?) =>
@@ -33,7 +33,7 @@ const intl = {
 function nodeWithIntlProp<P>(node: React.ReactElement<P>) {
   return React.cloneElement(node as React.ReactElement<any>, {
     intl,
-  }) as React.ReactElement<P & WrappedComponentProps>;
+  }) as React.ReactElement<P & InjectedIntlProps>;
 }
 
 // shallow() with React Intl context
@@ -49,5 +49,5 @@ export function shallowWithIntl<
       ...context,
       intl,
     },
-  }) as ShallowWrapper<P & WrappedComponentProps, S, C>;
+  }) as ShallowWrapper<P & InjectedIntlProps, S, C>;
 }

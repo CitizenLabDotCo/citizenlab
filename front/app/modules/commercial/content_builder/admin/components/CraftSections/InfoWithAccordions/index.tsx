@@ -15,11 +15,11 @@ import Container from '../../CraftComponents/Container';
 // intl
 import messages from '../../../messages';
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 type InfoWithAccordionsProps = {
   projectId: string;
-} & WrappedComponentProps;
+} & InjectedIntlProps;
 
 const InfoWithAccordions: UserComponent = ({
   intl: { formatMessage },

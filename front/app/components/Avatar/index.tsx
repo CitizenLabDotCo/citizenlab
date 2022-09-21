@@ -16,7 +16,7 @@ import useUser from 'hooks/useUser';
 
 // i18n
 import injectIntl from 'utils/cl-intl/injectIntl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 // styles
 import styled from 'styled-components';
@@ -133,7 +133,7 @@ const Avatar = memo(
     userId,
     hideIfNoAvatar,
     ...props
-  }: Props & WrappedComponentProps) => {
+  }: Props & InjectedIntlProps) => {
     const user = useUser({ userId });
 
     if (!isNilOrError(user)) {

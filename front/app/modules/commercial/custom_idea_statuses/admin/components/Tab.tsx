@@ -4,14 +4,14 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 interface Props {
   onData: (data: InsertConfigurationOptions<ITab>) => void;
 }
 
-const Tab: FC<Props & WithRouterProps & WrappedComponentProps> = ({
+const Tab: FC<Props & WithRouterProps & InjectedIntlProps> = ({
   onData,
   intl: { formatMessage },
   location,

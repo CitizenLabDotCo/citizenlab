@@ -8,7 +8,7 @@ import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps, FormattedDate } from 'react-intl';
+import { InjectedIntlProps, FormattedDate } from 'react-intl';
 import messages from './messages';
 
 // hooks
@@ -48,7 +48,7 @@ export interface Props {
   className?: string;
 }
 
-const PostedBy = memo<Props & WrappedComponentProps>(
+const PostedBy = memo<Props & InjectedIntlProps>(
   ({ authorId, ideaId, compact, className, intl: { formatMessage } }) => {
     const idea = useIdea({ ideaId });
 

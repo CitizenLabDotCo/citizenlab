@@ -43,7 +43,7 @@ import FileUploader from 'components/UI/FileUploader';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // Styling
@@ -86,7 +86,7 @@ interface State {
 }
 
 class AdminProjectTimelineEdit extends PureComponent<
-  Props & WrappedComponentProps & WithRouterProps,
+  Props & InjectedIntlProps & WithRouterProps,
   State
 > {
   params$: BehaviorSubject<IParams | null>;

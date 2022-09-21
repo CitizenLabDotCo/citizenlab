@@ -23,7 +23,7 @@ import Footer from './Footer';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 import fieldMessages from '../Field/messages';
 
@@ -69,7 +69,7 @@ const ChartCard = injectIntl(
     userCustomField,
     projectFilter,
     intl: { formatMessage },
-  }: Props & WrappedComponentProps) => {
+  }: Props & InjectedIntlProps) => {
     const rScore = useRScore(userCustomField.id, projectFilter);
     const { referenceData, includedUsers } = useReferenceData(
       userCustomField,

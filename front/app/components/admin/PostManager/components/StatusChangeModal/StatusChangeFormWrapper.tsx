@@ -32,7 +32,7 @@ import {
 
 // intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 import T from 'components/T';
 
@@ -80,10 +80,10 @@ interface State {
 }
 
 class StatusChangeFormWrapper extends PureComponent<
-  Props & WrappedComponentProps,
+  Props & InjectedIntlProps,
   State
 > {
-  constructor(props: Props & WrappedComponentProps) {
+  constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
       mode: 'new',

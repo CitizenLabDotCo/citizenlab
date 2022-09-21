@@ -27,7 +27,7 @@ import useProjectImages from 'hooks/useProjectImages';
 
 // i18n
 import T from 'components/T';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from './messages';
@@ -462,7 +462,7 @@ export interface InputProps {
   className?: string;
 }
 
-interface Props extends InputProps, WrappedComponentProps {}
+interface Props extends InputProps, InjectedIntlProps {}
 
 const ProjectCard = memo<Props>(
   ({

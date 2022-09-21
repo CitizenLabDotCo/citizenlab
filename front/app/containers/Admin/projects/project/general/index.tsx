@@ -34,7 +34,7 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 // animation
 import CSSTransition from 'react-transition-group/CSSTransition';
 
@@ -72,7 +72,7 @@ export type TOnProjectAttributesDiffChangeFunction = (
 
 const AdminProjectsProjectGeneral = ({
   intl: { formatMessage },
-}: WrappedComponentProps) => {
+}: InjectedIntlProps) => {
   const params = useParams();
   const project = useProject({ projectId: params.projectId });
   const appConfigLocales = useAppConfigurationLocales();

@@ -27,7 +27,7 @@ import {
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 
 // types
@@ -68,7 +68,7 @@ type InputsProps = {
   hasMore: boolean | null;
   onLoadMore: () => void;
 } & WithRouterProps &
-  WrappedComponentProps;
+  InjectedIntlProps;
 
 const Inputs = ({
   params: { viewId },

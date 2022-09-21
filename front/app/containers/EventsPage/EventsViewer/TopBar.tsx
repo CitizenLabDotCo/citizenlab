@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
 // components
@@ -53,7 +53,7 @@ interface Props {
   setProjectIds: (projectIds: string[]) => void;
 }
 
-const TopBar = memo<Props & WrappedComponentProps>(
+const TopBar = memo<Props & InjectedIntlProps>(
   ({ title, setProjectIds, intl }) => {
     const theme: any = useTheme();
 

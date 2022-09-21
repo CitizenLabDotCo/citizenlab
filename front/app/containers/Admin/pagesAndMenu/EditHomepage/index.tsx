@@ -11,7 +11,7 @@ import { pagesAndMenuBreadcrumb, homeBreadcrumb } from '../breadcrumbs';
 // i18n
 import messages from './messages';
 import { FormattedMessage, injectIntl, MessageDescriptor } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 // services, hooks, resources, and types
 import Outlet from 'components/Outlet';
@@ -35,7 +35,7 @@ export type TSectionToggleData = {
   hideToggle?: boolean;
 };
 
-const EditHomepage = ({ intl: { formatMessage } }: WrappedComponentProps) => {
+const EditHomepage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const homepageSettings = useHomepageSettings();
   const [isLoading, setIsLoading] = useState(false);
   const [sectionTogglesData, setSectionTogglesData] = useState<

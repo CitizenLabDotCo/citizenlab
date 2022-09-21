@@ -11,7 +11,7 @@ import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 import postManagerMessages from 'components/admin/PostManager/messages';
 
@@ -37,7 +37,7 @@ interface Props extends InputProps, DataProps {}
 interface State {}
 
 export class AssigneeFilter extends PureComponent<
-  Props & WrappedComponentProps,
+  Props & InjectedIntlProps,
   State
 > {
   getAssigneeOptions = memoize((prospectAssignees, authUser) => {

@@ -23,7 +23,7 @@ import { isPage, isNilOrError } from 'utils/helperUtils';
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -114,7 +114,7 @@ interface State {
 }
 
 class OfficialFeedbackForm extends PureComponent<
-  Props & WrappedComponentProps,
+  Props & InjectedIntlProps,
   State
 > {
   constructor(props) {

@@ -7,7 +7,7 @@ import {
 } from '@jsonforms/core';
 import React from 'react';
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import ErrorDisplay from '../ErrorDisplay';
 import UserSelect from 'components/UI/UserSelect';
 import messages from '../../messages';
@@ -24,7 +24,7 @@ const UserPickerControl = ({
   id,
   schema,
   required,
-}: ControlProps & WrappedComponentProps) => {
+}: ControlProps & InjectedIntlProps) => {
   return (
     <>
       <FormLabel

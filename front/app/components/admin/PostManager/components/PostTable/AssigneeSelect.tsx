@@ -9,7 +9,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 
 // utils
@@ -28,7 +28,7 @@ interface InputProps {
 
 interface Props extends InputProps, DataProps {}
 
-class AssigneeSelect extends PureComponent<Props & WrappedComponentProps> {
+class AssigneeSelect extends PureComponent<Props & InjectedIntlProps> {
   getAssigneeOptions = memoize((prospectAssignees, authUser) => {
     const {
       intl: { formatMessage },

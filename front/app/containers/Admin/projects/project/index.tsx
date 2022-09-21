@@ -21,7 +21,7 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import { PreviousPathnameContext } from 'context';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
@@ -83,7 +83,7 @@ interface State {
 interface Props extends InputProps, DataProps {}
 
 export class AdminProjectsProjectIndex extends PureComponent<
-  Props & WrappedComponentProps & InjectedLocalized & WithRouterProps,
+  Props & InjectedIntlProps & InjectedLocalized & WithRouterProps,
   State
 > {
   constructor(props) {

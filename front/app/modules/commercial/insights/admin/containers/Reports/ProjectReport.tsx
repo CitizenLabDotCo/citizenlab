@@ -117,7 +117,7 @@ const ProjectReport = memo(
     phases,
     mostVotedIdeas,
     intl: { formatMessage, formatDate },
-  }: Props & WrappedComponentProps & WithRouterProps) => {
+  }: Props & InjectedIntlProps & WithRouterProps) => {
     const localize = useLocalize();
 
     // set time boundaries

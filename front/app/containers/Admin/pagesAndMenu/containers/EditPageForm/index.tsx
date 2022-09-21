@@ -14,7 +14,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import useLocalize from 'hooks/useLocalize';
 
 // services
@@ -27,7 +27,7 @@ import useRemoteFiles from 'hooks/useRemoteFiles';
 import usePage from 'hooks/usePage';
 import { truncateMultiloc } from 'utils/textUtils';
 
-const EditPageForm = ({ intl: { formatMessage } }: WrappedComponentProps) => {
+const EditPageForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const { pageId } = useParams() as { pageId: string };
   const localize = useLocalize();
   const page = usePage({ pageId });

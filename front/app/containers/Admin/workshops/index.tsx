@@ -8,7 +8,7 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // styling
@@ -30,7 +30,7 @@ const ButtonWrapper = styled.div`
   margin-bottom: 25px;
 `;
 
-const WorkshopPage = memo<WrappedComponentProps>(({ intl }) => {
+const WorkshopPage = memo<InjectedIntlProps>(({ intl }) => {
   return (
     <>
       <HeaderContainer>

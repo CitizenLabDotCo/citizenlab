@@ -11,7 +11,7 @@ import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // hooks
@@ -31,7 +31,7 @@ const SelectAreas = ({
   selectedAreas,
   onChangeAreas,
   intl: { formatMessage },
-}: SelectAreasProps & WrappedComponentProps) => {
+}: SelectAreasProps & InjectedIntlProps) => {
   const localize = useLocalize();
   const areas = useAreas({ forHomepageFilter: true });
   const appConfig = useAppConfiguration();

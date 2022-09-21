@@ -35,8 +35,8 @@ import GetWindowSize, {
 
 // i18n
 import messages from './messages';
+import { InjectedIntlProps, MessageDescriptor } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
 
 // style
 import styled, { withTheme } from 'styled-components';
@@ -220,14 +220,11 @@ interface State {
   previouslySelectedInitiativeFilters: Partial<IQueryParameters> | null;
 }
 
-class InitiativeCards extends PureComponent<
-  Props & WrappedComponentProps,
-  State
-> {
+class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
   desktopSearchInputClearButton: HTMLButtonElement | null = null;
   mobileSearchInputClearButton: HTMLButtonElement | null = null;
 
-  constructor(props: Props & WrappedComponentProps) {
+  constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
       selectedView: 'card',

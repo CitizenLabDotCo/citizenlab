@@ -9,7 +9,7 @@ import messages from '../messages';
 import genericMessages from 'components/UI/Error/messages';
 import settingsMessages from 'containers/Admin/settings/messages';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
@@ -103,7 +103,7 @@ const CustomizedButtonSettings = ({
   errors,
   className,
   intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
+}: Props & InjectedIntlProps) => {
   const tenantLocales = useAppConfigurationLocales();
   const [textErrors, setTextError] = useState<Multiloc>({});
 

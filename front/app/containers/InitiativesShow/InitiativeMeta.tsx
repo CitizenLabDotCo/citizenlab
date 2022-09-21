@@ -21,7 +21,7 @@ import GetInitiativeImages, {
 // i18n
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 // utils
@@ -46,7 +46,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const InitiativeMeta = memo<Props & WrappedComponentProps & InjectedLocalized>(
+const InitiativeMeta = memo<Props & InjectedIntlProps & InjectedLocalized>(
   ({
     initiative,
     locale,
@@ -200,7 +200,7 @@ const Data = adopt<DataProps, InputProps>({
 });
 
 const InitiativeMetaWithHoc = injectIntl<Props>(
-  injectLocalize<Props & WrappedComponentProps>(InitiativeMeta)
+  injectLocalize<Props & InjectedIntlProps>(InitiativeMeta)
 );
 
 export default (inputProps: InputProps) => (

@@ -24,7 +24,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 
 // intl
 import messages from '../../messages';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
 import { IInsightsCategoryData } from 'modules/commercial/insights/services/insightsCategories';
@@ -33,7 +33,7 @@ import {
   SectionTitle,
 } from 'modules/commercial/insights/admin/components/StyledTextComponents';
 
-type CategoryProps = WithRouterProps & WrappedComponentProps;
+type CategoryProps = WithRouterProps & InjectedIntlProps;
 
 const StyledTag = styled(Tag)`
   margin-right: 8px;

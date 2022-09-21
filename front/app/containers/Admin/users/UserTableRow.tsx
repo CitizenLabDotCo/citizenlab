@@ -13,7 +13,7 @@ import Tippy from '@tippyjs/react';
 
 // Translation
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // Events --- For error handling
@@ -129,8 +129,8 @@ interface State {
   createdAt: string;
 }
 
-class UserTableRow extends PureComponent<Props & WrappedComponentProps, State> {
-  constructor(props: Props & WrappedComponentProps) {
+class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
+  constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
       isAdmin: isAdmin({ data: this.props.user }),

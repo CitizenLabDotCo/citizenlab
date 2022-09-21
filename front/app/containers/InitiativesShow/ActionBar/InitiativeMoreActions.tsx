@@ -14,7 +14,7 @@ import SpamReportForm from 'containers/SpamReport';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
 
 // services
@@ -51,7 +51,7 @@ interface State {
 }
 
 class InitiativeMoreActions extends PureComponent<
-  Props & WrappedComponentProps,
+  Props & InjectedIntlProps,
   State
 > {
   constructor(props) {

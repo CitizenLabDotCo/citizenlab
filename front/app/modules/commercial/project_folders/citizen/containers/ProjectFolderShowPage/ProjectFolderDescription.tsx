@@ -14,7 +14,7 @@ import { useWindowSize } from '@citizenlab/cl2-component-library';
 // i18n
 import T from 'components/T';
 import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 
 // style
@@ -107,7 +107,7 @@ interface Props {
   className?: string;
 }
 
-const ProjectFolderDescription = memo<Props & WrappedComponentProps>(
+const ProjectFolderDescription = memo<Props & InjectedIntlProps>(
   ({ projectFolder, className, intl: { formatMessage } }) => {
     const projectFolderFiles = useProjectFolderFiles(projectFolder.id);
     const { windowWidth } = useWindowSize();

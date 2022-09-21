@@ -6,7 +6,7 @@ import { adopt } from 'react-adopt';
 // i18n
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -27,7 +27,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const InitiativesIndexMeta = React.memo<Props & WrappedComponentProps>(
+const InitiativesIndexMeta = React.memo<Props & InjectedIntlProps>(
   ({ intl, authUser, tenantLocales }) => {
     const { formatMessage } = intl;
     const { location } = window;

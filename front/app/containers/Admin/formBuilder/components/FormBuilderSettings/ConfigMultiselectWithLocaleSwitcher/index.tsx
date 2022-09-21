@@ -22,7 +22,7 @@ import Error, { TFieldName } from 'components/UI/Error';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // Typings
@@ -44,7 +44,7 @@ const ConfigMultiselectWithLocaleSwitcher = ({
   locales,
   intl: { formatMessage },
   allowDeletingAllOptions = false,
-}: Props & WrappedComponentProps) => {
+}: Props & InjectedIntlProps) => {
   const {
     control,
     formState: { errors: formContextErrors },

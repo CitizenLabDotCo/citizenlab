@@ -20,7 +20,7 @@ import { transparentize } from 'polished';
 // i18n
 import messages from './messages';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { FormattedDate, WrappedComponentProps } from 'react-intl';
+import { FormattedDate, InjectedIntlProps } from 'react-intl';
 import { getLocalized } from 'utils/i18n';
 
 // services
@@ -167,7 +167,7 @@ interface State {
 }
 
 export class OfficialFeedbackPost extends PureComponent<
-  Props & WrappedComponentProps,
+  Props & InjectedIntlProps,
   State
 > {
   constructor(props) {

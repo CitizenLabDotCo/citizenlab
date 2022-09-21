@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 
 // intl
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
+import { InjectedIntlProps, MessageDescriptor } from 'react-intl';
 import messages from '../../messages';
 
 // styling
@@ -146,7 +146,7 @@ const SelectableResourceChart = ({
   serie,
   intl: { formatMessage },
   ...reportExportMenuProps
-}: Props & WrappedComponentProps) => {
+}: Props & InjectedIntlProps) => {
   const currentChart = useRef();
 
   const unitName = formatMessage(RESOURCE_MESSAGES[currentSelectedResource]);

@@ -2,7 +2,7 @@ import React from 'react';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
 // components
@@ -91,7 +91,7 @@ type InsightsList = {
   openCreateModal: () => void;
 };
 
-const InsightsList: React.FC<InsightsList & WrappedComponentProps> = ({
+const InsightsList: React.FC<InsightsList & InjectedIntlProps> = ({
   intl: { formatMessage, formatDate },
   data,
   openCreateModal,

@@ -3,7 +3,7 @@ import Button from 'components/UI/Button';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
 interface Props {
@@ -15,7 +15,7 @@ const MobileSharingButtonComponent = ({
   onClick,
   ariaExpanded,
   intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
+}: Props & InjectedIntlProps) => {
   return (
     <Button
       buttonStyle="white"

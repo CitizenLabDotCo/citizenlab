@@ -8,7 +8,7 @@ import { useParams } from 'react-router-dom';
 
 // intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 // components
 import ToolboxItem from './ToolboxItem';
@@ -41,7 +41,7 @@ const DraggableElement = styled.div`
 
 type ContentBuilderToolboxProps = {
   selectedLocale: Locale;
-} & WrappedComponentProps;
+} & InjectedIntlProps;
 
 const ContentBuilderToolbox = ({
   selectedLocale,

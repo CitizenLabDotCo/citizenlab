@@ -62,7 +62,7 @@ import { getAddressOrFallbackDMS } from 'utils/map';
 import clHistory from 'utils/cl-router/history';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from './messages';
@@ -338,7 +338,7 @@ interface State {
 }
 
 export class InitiativesShow extends PureComponent<
-  Props & WrappedComponentProps & InjectedLocalized & WithRouterProps,
+  Props & InjectedIntlProps & InjectedLocalized & WithRouterProps,
   State
 > {
   officialFeedbackElement = createRef<HTMLDivElement>();

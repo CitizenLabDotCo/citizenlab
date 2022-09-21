@@ -35,7 +35,7 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
 // style
@@ -121,7 +121,7 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 export class InitiativeContent extends PureComponent<
-  Props & InjectedLocalized & WrappedComponentProps,
+  Props & InjectedLocalized & InjectedIntlProps,
   State
 > {
   handleClickDelete = () => {

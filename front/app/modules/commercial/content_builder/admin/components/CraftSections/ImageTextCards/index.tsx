@@ -13,12 +13,12 @@ import Text from '../../CraftComponents/Text';
 // intl
 import messages from '../../../messages';
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import WhiteSpace from '../../CraftComponents/WhiteSpace';
 
 const ImageTextCards: UserComponent = ({
   intl: { formatMessage },
-}: WrappedComponentProps) => {
+}: InjectedIntlProps) => {
   return (
     <Element id="image-text-cards" is={Box} canvas>
       <TwoColumn columnLayout="1-2">

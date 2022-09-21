@@ -8,7 +8,7 @@ import Button from 'components/UI/Button';
 // i18n
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // Styling
@@ -94,7 +94,7 @@ export interface Props {
 }
 
 const GroupCreationStep1 = memo(
-  ({ intl, onOpenStep2 }: Props & WrappedComponentProps) => {
+  ({ intl, onOpenStep2 }: Props & InjectedIntlProps) => {
     const formattedLink = intl.formatMessage(messages.readMoreLink);
 
     const createStep2Handler = (groupType: MembershipType) => () => {

@@ -3,14 +3,14 @@ import { InsertConfigurationOptions, ITab } from 'typings';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 type Props = {
   onData: (data: InsertConfigurationOptions<ITab>) => void;
 };
 
-const Tab: FC<Props & WrappedComponentProps> = ({
+const Tab: FC<Props & InjectedIntlProps> = ({
   onData,
   intl: { formatMessage },
 }) => {

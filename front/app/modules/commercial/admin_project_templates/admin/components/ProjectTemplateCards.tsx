@@ -14,7 +14,7 @@ import ParticipationLevelFilter from './ParticipationLevelFilter';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // style
@@ -112,7 +112,7 @@ interface Props {
   } | null;
 }
 
-const ProjectTemplateCards = memo<Props & WrappedComponentProps>(
+const ProjectTemplateCards = memo<Props & InjectedIntlProps>(
   ({
     intl,
     className,

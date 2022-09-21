@@ -1,6 +1,6 @@
 import React from 'react';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import usePage from 'hooks/usePage';
@@ -18,7 +18,7 @@ const NavbarTitleField = ({
   pageId,
   navbarItemId,
   intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
+}: Props & InjectedIntlProps) => {
   const page = usePage({ pageId });
   const navbarItem = useNavbarItem({ navbarItemId });
 

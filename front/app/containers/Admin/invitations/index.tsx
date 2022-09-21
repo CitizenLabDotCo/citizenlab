@@ -7,10 +7,10 @@ import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // i18n
 import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
-const InvitationsPage = (props: WrappedComponentProps) => {
+const InvitationsPage = (props: InjectedIntlProps) => {
   const tabs = [
     {
       label: props.intl.formatMessage(messages.tabInviteUsers),

@@ -1,7 +1,7 @@
 import React from 'react';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
@@ -30,7 +30,7 @@ export interface FormValues {
 type Props = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
   defaultValues?: FormValues;
-} & WrappedComponentProps;
+} & InjectedIntlProps;
 
 const AreaForm = ({
   intl: { formatMessage },

@@ -22,7 +22,7 @@ import FeatureFlag from 'components/FeatureFlag';
 import localize, { InjectedLocalized } from 'utils/localize';
 
 // i18n
-import { FormattedRelative, WrappedComponentProps } from 'react-intl';
+import { FormattedRelative, InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
@@ -70,7 +70,7 @@ type State = {
 };
 
 class IdeaRow extends React.PureComponent<
-  Props & WrappedComponentProps & InjectedLocalized,
+  Props & InjectedIntlProps & InjectedLocalized,
   State
 > {
   constructor(props) {
@@ -297,7 +297,7 @@ const ideaSource = {
       id: props.idea.id,
     };
   },
-  endDrag(props: Props & WrappedComponentProps & InjectedLocalized, monitor) {
+  endDrag(props: Props & InjectedIntlProps & InjectedLocalized, monitor) {
     const item = monitor.getItem();
     const dropResult = monitor.getDropResult();
     const { selection } = props;

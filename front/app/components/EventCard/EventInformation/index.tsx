@@ -18,7 +18,7 @@ import { IEventData } from 'services/events';
 // i18n
 import T from 'components/T';
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
 // styling
@@ -165,7 +165,7 @@ interface Props {
   onClickTitleGoToProjectAndScrollToEvent?: boolean;
 }
 
-const EventInformation = memo<Props & WrappedComponentProps>((props) => {
+const EventInformation = memo<Props & InjectedIntlProps>((props) => {
   const {
     event,
     isMultiDayEvent,

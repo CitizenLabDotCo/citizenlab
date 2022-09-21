@@ -9,7 +9,7 @@ import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMult
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import homepageMessages from '../../EditHomepage/messages';
@@ -28,7 +28,7 @@ import { updateHomepageSettings } from 'services/homepageSettings';
 import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
-const TopInfoSection = ({ intl: { formatMessage } }: WrappedComponentProps) => {
+const TopInfoSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const homepageSettings = useHomepageSettings();
   const theme: any = useTheme();
 

@@ -47,7 +47,7 @@ import { IResolution } from 'components/admin/ResolutionControl';
 // i18n
 import messages from '../../messages';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import moment from 'moment';
 
 type ISerie = {
@@ -77,7 +77,7 @@ type Props = {
 };
 
 class LineBarChartVotesByTime extends React.PureComponent<
-  Props & WrappedComponentProps,
+  Props & InjectedIntlProps,
   State
 > {
   combined$: Subscription;

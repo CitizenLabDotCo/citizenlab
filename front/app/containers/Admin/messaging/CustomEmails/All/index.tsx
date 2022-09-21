@@ -6,7 +6,7 @@ import GetCampaigns, { GetCampaignsChildProps } from 'resources/GetCampaigns';
 import { isDraft } from 'services/campaigns';
 
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 import { List } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
@@ -48,7 +48,7 @@ export interface Props extends DataProps {}
 
 interface State {}
 
-class Campaigns extends React.Component<Props & WrappedComponentProps, State> {
+class Campaigns extends React.Component<Props & InjectedIntlProps, State> {
   render() {
     const { campaigns, currentPage, lastPage } = this.props;
 

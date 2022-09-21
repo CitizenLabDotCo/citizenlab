@@ -26,7 +26,7 @@ import GetFeatureFlag from 'resources/GetFeatureFlag';
 import { signIn } from 'services/auth';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -98,10 +98,7 @@ type State = {
   hasEmptyPasswordError: boolean;
 };
 
-class PasswordSignin extends PureComponent<
-  Props & WrappedComponentProps,
-  State
-> {
+class PasswordSignin extends PureComponent<Props & InjectedIntlProps, State> {
   emailInputElement: HTMLInputElement | null;
   passwordInputElement: HTMLInputElement | null;
 

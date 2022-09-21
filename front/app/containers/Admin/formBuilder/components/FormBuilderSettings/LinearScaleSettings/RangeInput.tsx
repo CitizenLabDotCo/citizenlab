@@ -15,7 +15,7 @@ import {
 // i18n
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 interface Props {
   maximumName: string;
@@ -24,7 +24,7 @@ interface Props {
 const RangeInput = ({
   maximumName,
   intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
+}: Props & InjectedIntlProps) => {
   const { control, setValue } = useFormContext();
   const defaultValues = [{}];
 

@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import { ITabItem } from 'components/UI/Tabs';
@@ -9,7 +9,7 @@ type Props = {
   onData: (data: InsertConfigurationOptions<ITabItem>) => void;
 };
 
-const Tab: FC<Props & WrappedComponentProps> = ({
+const Tab: FC<Props & InjectedIntlProps> = ({
   onData,
   intl: { formatMessage },
 }) => {

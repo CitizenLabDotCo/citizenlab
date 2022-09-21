@@ -7,7 +7,7 @@ import {
   RankedTester,
   rankWith,
 } from '@jsonforms/core';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import ErrorDisplay from '../ErrorDisplay';
 import { FormLabel } from 'components/UI/FormComponents';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
@@ -22,7 +22,7 @@ const CheckboxControl = ({
   id,
   required,
   uischema,
-}: ControlProps & WrappedComponentProps) => {
+}: ControlProps & InjectedIntlProps) => {
   return (
     <>
       <FormLabel

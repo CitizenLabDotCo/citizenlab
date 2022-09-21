@@ -13,7 +13,7 @@ import {
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
 import messages from 'containers/Admin/dashboard/messages';
 
@@ -49,7 +49,7 @@ type GraphOption = {
 export interface Props extends InputProps, DataProps {}
 
 export class RegistrationFieldsToGraphs extends PureComponent<
-  Props & WrappedComponentProps & InjectedLocalized
+  Props & InjectedIntlProps & InjectedLocalized
 > {
   convertToGraphFormat = (data: IUsersByRegistrationField) => {
     const {

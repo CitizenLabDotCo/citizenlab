@@ -4,7 +4,7 @@ import { combineLatest } from 'rxjs';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from 'containers/Admin/dashboard/messages';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import T from 'components/T';
@@ -83,7 +83,7 @@ interface InputProps {
   className?: string;
 }
 
-type Props = InputProps & WrappedComponentProps & InjectedLocalized;
+type Props = InputProps & InjectedIntlProps & InjectedLocalized;
 
 interface TooltipProps {
   payload?: { name?: string; value?: string; payload?: { total: number } }[];

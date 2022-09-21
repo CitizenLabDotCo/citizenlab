@@ -12,7 +12,7 @@ import GetAppConfigurationLocales, {
 
 // intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 
 // components
@@ -82,11 +82,8 @@ interface State {
   selectedLocale: Locale;
 }
 
-class StatusChangeForm extends PureComponent<
-  Props & WrappedComponentProps,
-  State
-> {
-  constructor(props: Props & WrappedComponentProps) {
+class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
+  constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
       selectedLocale: props.intl.locale as Locale,

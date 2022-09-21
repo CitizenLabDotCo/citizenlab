@@ -15,7 +15,7 @@ import SectionContainer from 'components/SectionContainer';
 import useProject from 'hooks/useProject';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from 'containers/ProjectsShowPage/messages';
 
@@ -34,7 +34,7 @@ interface Props {
   className?: string;
 }
 
-const PollContainer = memo<Props & WrappedComponentProps>(
+const PollContainer = memo<Props & InjectedIntlProps>(
   ({ projectId, className, intl: { formatMessage } }) => {
     const project = useProject({ projectId });
 

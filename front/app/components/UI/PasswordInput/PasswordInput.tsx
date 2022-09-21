@@ -14,7 +14,7 @@ import Error from 'components/UI/Error';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 const Container = styled.div`
@@ -55,7 +55,7 @@ const PasswordInputComponent = ({
   setRef,
   errors,
   intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
+}: Props & InjectedIntlProps) => {
   const locale = useLocale();
   const tenant = useAppConfiguration();
   const [showPassword, setShowPassword] = useState(false);

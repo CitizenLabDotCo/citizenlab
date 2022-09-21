@@ -59,7 +59,7 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import { getInputTermMessage } from 'utils/i18n';
@@ -178,7 +178,7 @@ interface State {
 }
 
 class IdeaForm extends PureComponent<
-  Props & WrappedComponentProps & WithRouterProps,
+  Props & InjectedIntlProps & WithRouterProps,
   State
 > {
   subscriptions: Subscription[];

@@ -3,7 +3,7 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // intl
 import messages from '../../messages';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 // hooks
 import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
@@ -50,7 +50,7 @@ const TableTitle = ({
   intl: { formatMessage },
   params: { viewId },
   location: { query, pathname },
-}: WrappedComponentProps & WithRouterProps) => {
+}: InjectedIntlProps & WithRouterProps) => {
   const categories = useInsightsCategories(viewId);
 
   const [renameCategoryModalOpened, setRenameCategoryModalOpened] =

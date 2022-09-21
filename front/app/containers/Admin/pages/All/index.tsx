@@ -15,7 +15,7 @@ import usePages from 'hooks/usePages';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import T from 'components/T';
 import messages from '../messages';
 
@@ -47,7 +47,7 @@ const NON_DELETEABLE_PAGES = new Set<TPageCode>([
 const isDeletablePage = ({ attributes: { code } }: IPageData) =>
   !NON_DELETEABLE_PAGES.has(code);
 
-const Pages = ({ intl: { formatMessage } }: WrappedComponentProps) => {
+const Pages = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const pages = usePages();
 
   const handleOnDeleteClick = (pageId: string) => (event) => {

@@ -15,7 +15,7 @@ import { exportPollResponses } from 'services/pollResponses';
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { snakeCase } from 'lodash-es';
 
 interface Props {
@@ -30,10 +30,10 @@ interface State {
 }
 
 class ExportPollButton extends React.PureComponent<
-  Props & WrappedComponentProps,
+  Props & InjectedIntlProps,
   State
 > {
-  constructor(props: Props & WrappedComponentProps) {
+  constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
       exporting: false,

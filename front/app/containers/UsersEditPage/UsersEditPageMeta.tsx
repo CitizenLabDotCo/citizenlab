@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet';
 // i18n
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 // hooks
 import useLocale from 'hooks/useLocale';
@@ -26,7 +26,7 @@ interface Props {
   user: IUserData;
 }
 
-const UsersEditPageMeta = React.memo<Props & WrappedComponentProps>(
+const UsersEditPageMeta = React.memo<Props & InjectedIntlProps>(
   ({ intl, user }) => {
     const locale = useLocale();
     const tenantLocales = useAppConfigurationLocales();

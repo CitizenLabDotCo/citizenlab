@@ -1,5 +1,5 @@
 import React from 'react';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
 // components
@@ -22,7 +22,7 @@ type FormActionsProps = {
   postingEnabled: boolean;
   heading?: Multiloc;
   togglePostingEnabled: () => void;
-} & WrappedComponentProps;
+} & InjectedIntlProps;
 
 const FormActions = ({
   intl: { formatMessage },

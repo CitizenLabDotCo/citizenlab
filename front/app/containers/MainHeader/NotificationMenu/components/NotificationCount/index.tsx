@@ -3,7 +3,7 @@ import { isNumber } from 'lodash-es';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 
 // components
@@ -56,7 +56,7 @@ const NotificationCount = ({
   dropdownOpened,
   onToggleDropdown,
   intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
+}: Props & InjectedIntlProps) => {
   const theme: any = useTheme();
 
   return (

@@ -4,7 +4,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { find, map } from 'lodash-es';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { getLocalized } from 'utils/i18n';
 import messages from './messages';
@@ -83,7 +83,7 @@ interface State {
 }
 
 class ProjectGroupsList extends PureComponent<
-  Props & WrappedComponentProps,
+  Props & InjectedIntlProps,
   State
 > {
   subscriptions: Subscription[];

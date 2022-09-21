@@ -30,7 +30,7 @@ import { openVerificationModal } from 'components/Verification/verificationModal
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // style
@@ -139,7 +139,7 @@ interface State {
   upvoteCount: number;
 }
 
-class CommentVote extends PureComponent<Props & WrappedComponentProps, State> {
+class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
   constructor(props) {
     super(props);
     this.state = {

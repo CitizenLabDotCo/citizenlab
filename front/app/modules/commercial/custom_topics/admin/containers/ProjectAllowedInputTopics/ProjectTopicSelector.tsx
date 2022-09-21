@@ -8,7 +8,7 @@ import useTopics from 'hooks/useTopics';
 import useProjectAllowedInputTopics from 'hooks/useProjectAllowedInputTopics';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
@@ -56,9 +56,7 @@ const StyledMultipleSelect = styled(MultipleSelect)`
 interface Props {}
 
 const ProjectTopicSelector = memo(
-  (
-    props: Props & WrappedComponentProps & WithRouterProps & InjectedLocalized
-  ) => {
+  (props: Props & InjectedIntlProps & WithRouterProps & InjectedLocalized) => {
     const {
       intl: { formatMessage },
       localize,

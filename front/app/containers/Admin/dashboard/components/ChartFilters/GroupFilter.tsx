@@ -15,7 +15,7 @@ import { IGroupData } from 'services/groups';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // utils
@@ -35,7 +35,7 @@ interface Props extends DataProps, InputProps {}
 const generateGroupOptions = (
   groupsList: IGroupData[],
   localize: Localize,
-  { formatMessage }: WrappedComponentProps['intl']
+  { formatMessage }: InjectedIntlProps['intl']
 ) => {
   const groupOptions = groupsList.map((group) => ({
     value: group.id,
@@ -53,7 +53,7 @@ const GroupFilter = ({
   currentGroupFilter,
   onGroupFilter,
   intl,
-}: Props & WrappedComponentProps) => {
+}: Props & InjectedIntlProps) => {
   const localize = useLocalize();
 
   if (isNilOrError(groupsList)) return null;

@@ -37,7 +37,7 @@ import { colors } from 'utils/styleUtils';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 
 const Inputs = styled.div`
@@ -108,7 +108,7 @@ const InputsTable = ({
   params: { viewId },
   location: { pathname, query },
   intl: { formatMessage },
-}: WithRouterProps & WrappedComponentProps) => {
+}: WithRouterProps & InjectedIntlProps) => {
   // State
   const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
   const [isSideModalOpen, setIsSideModalOpen] = useState(false);

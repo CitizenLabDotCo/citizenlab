@@ -13,7 +13,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from '../../tracks';
 import { saveAs } from 'file-saver';
 import { reportError } from 'utils/loggingUtils';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 interface Props {
   exportQueryParameter: 'all' | string | string[];
@@ -25,7 +25,7 @@ interface State {
 }
 
 class ExportIdeasButton extends React.PureComponent<
-  Props & WrappedComponentProps,
+  Props & InjectedIntlProps,
   State
 > {
   constructor(props) {

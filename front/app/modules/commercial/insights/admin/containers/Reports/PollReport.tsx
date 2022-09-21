@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import GetPollQuestions, {
   GetPollQuestionsChildProps,
 } from 'resources/GetPollQuestions';
@@ -33,7 +33,7 @@ const PollReport = memo(
     participationContextType,
     pollQuestions,
     participationContextTitle,
-  }: Props & WrappedComponentProps) => {
+  }: Props & InjectedIntlProps) => {
     return (
       <div>
         {!isNilOrError(participationContextTitle) &&

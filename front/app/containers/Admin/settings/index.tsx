@@ -10,7 +10,7 @@ import TabbedResource from 'components/admin/TabbedResource';
 
 // i18n
 import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
 import { InsertConfigurationOptions, ITab } from 'typings';
@@ -26,7 +26,7 @@ interface State {
 }
 
 class SettingsPage extends React.PureComponent<
-  Props & WrappedComponentProps & WithRouterProps,
+  Props & InjectedIntlProps & WithRouterProps,
   State
 > {
   constructor(props) {

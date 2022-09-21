@@ -28,7 +28,7 @@ export type ISupportedDataType =
   | IUsersByBirthyear;
 
 interface IParameters {
-  formatMessage: WrappedComponentProps['intl']['formatMessage'];
+  formatMessage: InjectedIntlProps['intl']['formatMessage'];
   localize: InjectedLocalized['localize'];
 }
 

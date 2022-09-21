@@ -3,7 +3,7 @@ import React, { memo } from 'react';
 
 // intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
 // styling
@@ -67,7 +67,7 @@ const StyledResponsiveContainer = styled(ResponsiveContainer)`
 `;
 
 export const HorizontalBarChartWithoutStream: React.SFC<
-  Props & WrappedComponentProps
+  Props & InjectedIntlProps
 > = memo(({ className, graphTitleString, serie, graphUnit }) => {
   const currentChart: React.RefObject<any> = React.createRef();
 

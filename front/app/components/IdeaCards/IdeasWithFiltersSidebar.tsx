@@ -35,7 +35,7 @@ import GetWindowSize, {
 
 // i18n
 import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 // style
@@ -232,11 +232,11 @@ interface State {
   previouslySelectedIdeaFilters: Partial<IQueryParameters> | null;
 }
 
-class IdeaCards extends PureComponent<Props & WrappedComponentProps, State> {
+class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
   desktopSearchInputClearButton: HTMLButtonElement | null = null;
   mobileSearchInputClearButton: HTMLButtonElement | null = null;
 
-  constructor(props: Props & WrappedComponentProps) {
+  constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
       filtersModalOpened: false,

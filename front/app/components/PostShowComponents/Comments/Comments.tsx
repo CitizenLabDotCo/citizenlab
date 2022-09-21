@@ -14,7 +14,7 @@ import { commentAdded$, commentDeleted$ } from './events';
 import styled from 'styled-components';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -52,7 +52,7 @@ interface Props {
   className?: string;
 }
 
-const CommentsSection = memo<Props & WrappedComponentProps>(
+const CommentsSection = memo<Props & InjectedIntlProps>(
   ({
     postId,
     postType,

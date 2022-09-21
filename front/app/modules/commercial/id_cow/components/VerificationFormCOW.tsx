@@ -29,7 +29,7 @@ import useAuthUser from 'hooks/useAuthUser';
 import { verifyCOW } from '../services/verify';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
@@ -44,7 +44,7 @@ interface Props {
   className?: string;
 }
 
-const VerificationFormCOW = memo<Props & WrappedComponentProps>(
+const VerificationFormCOW = memo<Props & InjectedIntlProps>(
   ({ onCancel, onVerified, showHeader, inModal, className, intl }) => {
     const authUser = useAuthUser();
 

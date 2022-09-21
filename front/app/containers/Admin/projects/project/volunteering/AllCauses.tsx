@@ -15,7 +15,7 @@ import Button from 'components/UI/Button';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import T from 'components/T';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 const Container = styled.div``;
 
@@ -30,7 +30,7 @@ interface InputProps {
   projectId: string;
 }
 
-interface Props extends InputProps, WrappedComponentProps {}
+interface Props extends InputProps, InjectedIntlProps {}
 
 const AllCauses = injectIntl<Props>(
   ({ participationContextType, participationContextId, projectId, intl }) => {

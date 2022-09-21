@@ -17,7 +17,7 @@ import { SectionField } from 'components/admin/Section';
 
 // intl
 import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 // components
@@ -54,7 +54,7 @@ type PageFormProps = {
   defaultValues?: FormValues;
   pageId: string | null;
   hideSlugInput?: boolean;
-} & WrappedComponentProps;
+} & InjectedIntlProps;
 
 const PageForm = ({
   intl: { formatMessage },

@@ -14,7 +14,7 @@ import WidgetCode from '../WidgetCode';
 import Button from 'components/UI/Button';
 
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 
 import { trackEventByName } from 'utils/analytics';
@@ -59,7 +59,7 @@ const schema = object({
   limit: number(),
 });
 
-const IdeasWidget = ({ intl: { formatMessage } }: WrappedComponentProps) => {
+const IdeasWidget = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const [codeModalOpened, setCodeModalOpened] = useState(false);
   const [widgetParams, setWidgetParams] = useState('');
 

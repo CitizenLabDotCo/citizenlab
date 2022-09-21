@@ -23,7 +23,7 @@ import { media, isRtl, fontSizes, colors } from 'utils/styleUtils';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // utils
@@ -148,7 +148,7 @@ const Header = ({
   onChangeTab,
   onChangeSearch,
   intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
+}: Props & InjectedIntlProps) => {
   const appConfiguration = useAppConfiguration();
   const smallerThanXlPhone = useBreakpoint('xlPhone');
   const smallerThanMinTablet = useBreakpoint('smallTablet');

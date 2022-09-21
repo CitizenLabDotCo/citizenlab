@@ -22,7 +22,7 @@ import { Select } from '@citizenlab/cl2-component-library';
 // i18n
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 const StyledSelect = styled(Select)`
   width: 300px;
@@ -39,9 +39,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-class IdeaAssignment extends React.PureComponent<
-  Props & WrappedComponentProps
-> {
+class IdeaAssignment extends React.PureComponent<Props & InjectedIntlProps> {
   getOptions = () => {
     const { adminsAndMods } = this.props;
     const prospectAssignees = adminsAndMods.usersList;

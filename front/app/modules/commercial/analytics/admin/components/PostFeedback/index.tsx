@@ -29,7 +29,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { getCornerRadius } from './utils';
 
 // typings
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 interface Props {
   projectId: string | undefined;
@@ -79,7 +79,7 @@ const PostFeedback = ({
   startAt,
   endAt,
   intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
+}: Props & InjectedIntlProps) => {
   const currentPieChart = useRef();
   const currentProgressBarsChart = useRef();
   const currentStackedBarChart = useRef();

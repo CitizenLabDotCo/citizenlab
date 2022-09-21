@@ -42,7 +42,7 @@ const FieldSelector = memo(
     onChange,
     field,
     fieldName,
-  }: Props & WrappedComponentProps) => {
+  }: Props & InjectedIntlProps) => {
     const localize = useLocalize();
     const userCustomFields = useUserCustomFields({});
 

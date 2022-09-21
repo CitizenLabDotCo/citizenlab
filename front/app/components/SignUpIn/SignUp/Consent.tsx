@@ -6,7 +6,7 @@ import Checkbox from 'components/UI/Checkbox';
 import Error from 'components/UI/Error';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -68,7 +68,7 @@ const Consent = memo(
     privacyPolicyAccepted,
     onTacAcceptedChange,
     onPrivacyAcceptedChange,
-  }: Props & WrappedComponentProps) => {
+  }: Props & InjectedIntlProps) => {
     const handleTermsAndConditionsOnChange = () => {
       onTacAcceptedChange(!termsAndConditionsAccepted);
     };

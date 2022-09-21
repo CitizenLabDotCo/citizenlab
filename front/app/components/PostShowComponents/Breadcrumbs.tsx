@@ -2,7 +2,7 @@ import React from 'react';
 
 // i18n
 import { injectIntl, FormattedMessage, IMessageInfo } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // components
@@ -88,7 +88,7 @@ const Breadcrumbs = ({
   className,
   links,
   postType,
-}: Props & WrappedComponentProps) => {
+}: Props & InjectedIntlProps) => {
   const localize = useLocalize();
 
   return (

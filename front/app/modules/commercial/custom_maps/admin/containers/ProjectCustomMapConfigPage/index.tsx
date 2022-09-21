@@ -34,7 +34,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // styling
@@ -86,7 +86,7 @@ interface Props {
 }
 
 const ProjectCustomMapConfigPage = memo<
-  Props & WithRouterProps & WrappedComponentProps
+  Props & WithRouterProps & InjectedIntlProps
 >(({ params: { projectId }, className, intl: { formatMessage } }) => {
   const appConfig = useAppConfiguration();
   const mapConfig = useMapConfig({ projectId });

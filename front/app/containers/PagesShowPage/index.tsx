@@ -24,7 +24,7 @@ import GetResourceFiles, {
 } from 'resources/GetResourceFiles';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { getLocalized } from 'utils/i18n';
 import T from 'components/T';
@@ -138,7 +138,7 @@ interface Props extends InputProps, DataProps {}
 interface State {}
 
 class PagesShowPage extends PureComponent<
-  Props & WithRouterProps & WrappedComponentProps,
+  Props & WithRouterProps & InjectedIntlProps,
   State
 > {
   render() {

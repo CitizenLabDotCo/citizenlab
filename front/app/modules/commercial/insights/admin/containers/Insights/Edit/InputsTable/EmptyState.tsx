@@ -8,7 +8,7 @@ import { fontSizes, colors } from 'utils/styleUtils';
 // intl
 import messages from '../../messages';
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
@@ -41,7 +41,7 @@ const StyledEmptyState = styled.div`
 const EmptyState = ({
   intl: { formatMessage },
   location: { query },
-}: WrappedComponentProps & WithRouterProps) => {
+}: InjectedIntlProps & WithRouterProps) => {
   const inputsCategoryFilter = getInputsCategoryFilter(
     query.category,
     query.processed

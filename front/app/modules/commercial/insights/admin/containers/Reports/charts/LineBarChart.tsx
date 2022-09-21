@@ -5,7 +5,7 @@ import { map, isEmpty } from 'lodash-es';
 
 // intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
 // typings
@@ -108,7 +108,7 @@ interface Props {
 }
 
 class LineBarChart extends React.PureComponent<
-  Props & WrappedComponentProps,
+  Props & InjectedIntlProps,
   State
 > {
   combined$: Subscription;
