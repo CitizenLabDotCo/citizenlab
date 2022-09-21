@@ -9,7 +9,7 @@ import PhasesMenu from './FilterSidebarPhases';
 import TopicsMenu from './FilterSidebarTopics';
 import ProjectsMenu from './FilterSidebarProjects';
 import StatusesMenu from './FilterSidebarStatuses';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 import { Icon } from '@citizenlab/cl2-component-library';
@@ -46,7 +46,7 @@ interface Props {
   visibleFilterMenus: string[];
 }
 
-class FilterSidebar extends React.PureComponent<Props & InjectedIntlProps> {
+class FilterSidebar extends React.PureComponent<Props & WrappedComponentProps> {
   handleItemClick = (_event, data) => {
     this.props.onChangeActiveFilterMenu(data.id);
   };

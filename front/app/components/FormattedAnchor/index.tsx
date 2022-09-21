@@ -1,5 +1,9 @@
 import React, { memo } from 'react';
-import { MessageDescriptor, InjectedIntlProps, MessageValue } from 'react-intl';
+import {
+  MessageDescriptor,
+  WrappedComponentProps,
+  MessageValue,
+} from 'react-intl';
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import styled from 'styled-components';
 import { injectIntl } from 'utils/cl-intl';
@@ -36,7 +40,7 @@ const FormattedAnchor = memo(
     linkTextMessageValues,
     intl: { formatMessage },
     target,
-  }: Props & InjectedIntlProps) => {
+  }: Props & WrappedComponentProps) => {
     const allValues = mainMessageValues ? { ...mainMessageValues } : {};
     allValues[mainMessageLinkKey || 'link'] = (
       <Anchor

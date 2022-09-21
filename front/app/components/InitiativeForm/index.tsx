@@ -22,7 +22,7 @@ import Link from 'utils/cl-router/Link';
 
 // intl
 import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { IMessageInfo, injectIntl, FormattedMessage } from 'utils/cl-intl';
 
 // typings
@@ -90,7 +90,10 @@ interface State {
   };
 }
 
-class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
+class InitiativeForm extends React.Component<
+  Props & WrappedComponentProps,
+  State
+> {
   static titleMinLength = 10;
   static titleMaxLength = 72;
   static bodyMinLength = process.env.NODE_ENV === 'development' ? 10 : 30;

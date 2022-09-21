@@ -5,7 +5,7 @@ import { map, isEmpty } from 'lodash-es';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // typings
 import { IStreamParams, IStream } from 'utils/streams';
@@ -64,7 +64,7 @@ type Props = {
 };
 
 class BarChartActiveUsersByTime extends React.PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   subscription: Subscription;

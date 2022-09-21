@@ -18,7 +18,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -123,7 +123,10 @@ interface State {
   hasApiError: boolean;
 }
 
-class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
+class ChildCommentForm extends PureComponent<
+  Props & WrappedComponentProps,
+  State
+> {
   textareaElement: HTMLTextAreaElement;
   subscriptions: Subscription[] = [];
 

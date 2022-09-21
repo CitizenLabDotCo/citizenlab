@@ -1,6 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { InjectedIntlProps, MessageDescriptor } from 'react-intl';
+import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
 type Props = {
@@ -11,7 +11,7 @@ type Props = {
 interface State {}
 
 export class HelmetIntl extends React.PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   render() {

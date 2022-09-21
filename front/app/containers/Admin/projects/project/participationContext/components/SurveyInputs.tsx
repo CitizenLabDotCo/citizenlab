@@ -8,7 +8,7 @@ import { StyledA, StyledWarning, SurveyServiceRadio } from './styling';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 
 // typings
@@ -24,7 +24,7 @@ interface Props {
   handleSurveyEmbedUrlChange: (survey_embed_url: string) => void;
 }
 
-export default injectIntl<Props & InjectedIntlProps>(
+export default injectIntl<Props & WrappedComponentProps>(
   ({
     intl: { formatMessage },
     survey_service,

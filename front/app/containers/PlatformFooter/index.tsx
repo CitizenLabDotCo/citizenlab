@@ -12,7 +12,7 @@ import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps, MessageDescriptor } from 'react-intl';
+import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 import messages from './messages';
 
 // services
@@ -233,7 +233,7 @@ const PlatformFooter = ({
   className,
   insideModal,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const appConfiguration = useAppConfiguration();
   const windowSize = useWindowSize();
   const customizedA11yHrefEnabled = useFeatureFlag({

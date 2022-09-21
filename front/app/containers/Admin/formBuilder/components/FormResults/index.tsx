@@ -1,5 +1,5 @@
 import React from 'react';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import { get } from 'lodash-es';
 import { useParams } from 'react-router-dom';
@@ -40,7 +40,7 @@ const StyledBox = styled(Box)`
   grid-template-columns: 1fr 1fr;
 `;
 
-const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const { projectId } = useParams() as {
     projectId: string;
   };
