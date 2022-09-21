@@ -9,8 +9,7 @@ import messages from '../messages';
 import genericMessages from 'components/UI/Error/messages';
 import settingsMessages from 'containers/Admin/settings/messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, IntlFormatters, WrappedComponentProps } from 'react-intl';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
@@ -42,7 +41,7 @@ const TextSettings = styled.div`
 const getTextErrors = (
   textMultiloc: Multiloc | undefined,
   errors: CLErrors | undefined | null,
-  formatMessage: (messageDescriptor, values?) => string,
+  formatMessage: IntlFormatters['formatMessage'],
   tenantLocales: Locale[] | undefined | null | Error
 ) => {
   const textErrors: Multiloc = {};
@@ -66,7 +65,7 @@ const getTextErrors = (
 const getUrlErrors = (
   url: string | undefined | null,
   errors: CLErrors | undefined | null,
-  formatMessage: (messageDescriptor, values?) => string
+  formatMessage: IntlFormatters['formatMessage']
 ) => {
   // Prevent displaying errors on the first render.
   if (isEmpty(errors)) {

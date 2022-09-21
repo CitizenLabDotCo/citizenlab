@@ -29,7 +29,7 @@ import {
 
 // typings
 import { Multiloc } from 'typings';
-import { WrappedComponentProps } from 'react-intl';
+import { IntlFormatters } from 'react-intl';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 
 interface QueryProps {
@@ -154,7 +154,7 @@ const query = ({ projectId, startAt, endAt }: QueryProps): Query => {
 };
 
 export default function usePostsWithFeedback(
-  formatMessage: WrappedComponentProps['intl']['formatMessage'],
+  formatMessage: IntlFormatters['formatMessage'],
   { projectId, startAt, endAt }: QueryProps
 ) {
   const localize = useLocalize();
