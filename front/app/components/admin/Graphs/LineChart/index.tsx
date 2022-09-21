@@ -7,13 +7,12 @@ import {
 } from 'components/admin/Graphs/styling';
 
 // components
-import { 
+import {
   LineChart as RechartsLineChart,
   CartesianGrid,
   Line,
   XAxis,
   YAxis,
-  // Cell,
   // LabelList,
   // Tooltip,
 } from 'recharts';
@@ -22,6 +21,7 @@ import EmptyState from '../_components/EmptyState';
 import Legend from '../_components/Legend';
 
 // utils
+import { getLineConfigs } from './utils';
 import { hasNoData, /* getTooltipConfig, */ parseMargin } from '../utils';
 
 // typings
@@ -37,15 +37,17 @@ const LineChart = <Row,>({
   width,
   height,
   data,
+  mapping,
+  lines,
   margin,
   legend,
   emptyContainerContent,
   innerRef,
   xaxis,
   yaxis,
-  // onMouseOver,
-  // onMouseOut,
-}: Props<Row>) => {
+}: // onMouseOver,
+// onMouseOut,
+Props<Row>) => {
   const [graphDimensions, setGraphDimensions] = useState<
     GraphDimensions | undefined
   >();
@@ -56,6 +58,11 @@ const LineChart = <Row,>({
   if (hasNoData(data)) {
     return <EmptyState emptyContainerContent={emptyContainerContent} />;
   }
+
+  const x = mapping.x;
+  if (typeof x === 'symbol') return null;
+
+  const lineConfigs = getLineConfigs(mapping, lines);
 
   return (
     <Container
@@ -92,8 +99,12 @@ const LineChart = <Row,>({
 
         <CartesianGrid />
 
+        {lineConfigs.map((lineConfig, lineIndex) => (
+          <Line {...lineConfig.props} key={lineIndex} />
+        ))}
+
         <XAxis
-          // dataKey={layout === 'vertical' ? category : undefined}
+          dataKey={x}
           type="category"
           stroke={legacyColors.chartLabel}
           fontSize={sizes.chartLabel}
@@ -101,7 +112,6 @@ const LineChart = <Row,>({
           {...xaxis}
         />
         <YAxis
-          // dataKey={layout === 'horizontal' ? category : undefined}
           type="number"
           stroke={legacyColors.chartLabel}
           fontSize={sizes.chartLabel}
@@ -109,7 +119,7 @@ const LineChart = <Row,>({
         />
       </RechartsLineChart>
     </Container>
-  )
-}
+  );
+};
 
 export default LineChart;

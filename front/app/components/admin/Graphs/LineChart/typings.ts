@@ -33,8 +33,13 @@ export interface Lines {
 
 // PARSED CONFIGS
 export interface LineConfig {
-  dot: false;
-  activeDot: false;
-  stroke: string;
-  strokeWidth?: number;
+  props: {
+    name?: string;
+    dataKey: string;
+    dot: false;
+    activeDot: false;
+    stroke: string;
+    strokeWidth?: number;
+    isAnimationActive?: boolean;
+  };
 }
