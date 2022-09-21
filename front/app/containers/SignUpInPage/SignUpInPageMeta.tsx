@@ -43,7 +43,7 @@ const SignUpInPageMeta = memo<Props & WrappedComponentProps & WithRouterProps>(
       const method = endsWith(pathname, 'sign-in') ? 'signin' : 'signup';
       const organizationNameMultiLoc =
         tenant.attributes.settings.core.organization_name;
-      const tenantName = getLocalized(
+      const orgName = getLocalized(
         organizationNameMultiLoc,
         locale,
         tenantLocales
@@ -52,12 +52,13 @@ const SignUpInPageMeta = memo<Props & WrappedComponentProps & WithRouterProps>(
         method === 'signin'
           ? messages.signInMetaTitle
           : messages.signUpMetaTitle,
-        { tenantName }
+        { tenantName: orgName }
       );
       const pageMetaDescription = formatMessage(
         method === 'signin'
           ? messages.signInPageMetaDescription
-          : messages.signUpPageMetaDescription
+          : messages.signUpPageMetaDescription,
+        { orgName }
       );
 
       return (

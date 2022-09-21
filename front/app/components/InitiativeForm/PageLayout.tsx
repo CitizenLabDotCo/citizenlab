@@ -165,14 +165,9 @@ const PageLayout = ({ children, className, isAdmin }: Props) => {
               values={{
                 styledOrgName: (
                   <ColoredText>
-                    <FormattedMessage
-                      {...messages.orgName}
-                      values={{
-                        orgName: localize(
-                          appConfig.attributes.settings.core.organization_name
-                        ),
-                      }}
-                    />
+                    {localize(
+                      appConfig.attributes.settings.core.organization_name
+                    )}
                   </ColoredText>
                 ),
               }}

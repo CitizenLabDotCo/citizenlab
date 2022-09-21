@@ -74,7 +74,7 @@ const UsersShowPageMeta: React.SFC<Props & WrappedComponentProps> = ({
       {
         firstName,
         lastName,
-        tenantName,
+        orgName: tenantName,
       }
     );
 

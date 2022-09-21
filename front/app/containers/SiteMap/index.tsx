@@ -31,6 +31,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // services
 import { DEFAULT_PAGE_SLUGS } from 'services/navbar';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 
 const Container = styled.div`
   min-height: calc(
@@ -129,6 +130,7 @@ const SiteMap = ({ projects, authUser }: Props) => {
   const navBarItems = useNavbarItems();
   const localize = useLocalize();
   const pages = usePages();
+  const appConfig = useAppConfiguration();
 
   const scrollTo = (component) => (event: any) => {
     // if the event is synthetic, it's a key event and we move focus
@@ -154,216 +156,232 @@ const SiteMap = ({ projects, authUser }: Props) => {
   const hasProjectSubsection =
     archivedSection.current || draftSection.current || currentSection.current;
 
-  return (
-    <Container>
-      <SiteMapMeta />
-      {!loaded && (
-        <Loading>
-          <Spinner />
-        </Loading>
-      )}
-      {loaded && (
-        <PageContent>
-          <StyledContentContainer>
-            <QuillEditedContent>
-              <Title>
-                <FormattedMessage {...messages.siteMapTitle} />
-              </Title>
+  if (!isNilOrError(appConfig)) {
+    return (
+      <Container>
+        <SiteMapMeta />
+        {!loaded && (
+          <Loading>
+            <Spinner />
+          </Loading>
+        )}
+        {loaded && (
+          <PageContent>
+            <StyledContentContainer>
+              <QuillEditedContent>
+                <Title>
+                  <FormattedMessage {...messages.siteMapTitle} />
+                </Title>
 
-              <TOC>
-                <Header>
-                  <FormattedMessage {...messages.pageContents} />
-                </Header>
-                <Ul>
-                  <li>
-                    <NavItem
-                      onMouseDown={removeFocusAfterMouseClick}
-                      onClick={scrollTo(homeSection)}
-                    >
-                      <FormattedMessage {...messages.homeSection} />
-                    </NavItem>
-                  </li>
-                  <li>
-                    <NavItem
-                      onMouseDown={removeFocusAfterMouseClick}
-                      onClick={scrollTo(userSpaceSection)}
-                    >
-                      <FormattedMessage {...messages.userSpaceSection} />
-                    </NavItem>
-                  </li>
-                  {!isNilOrError(projects) && (
+                <TOC>
+                  <Header>
+                    <FormattedMessage {...messages.pageContents} />
+                  </Header>
+                  <Ul>
                     <li>
                       <NavItem
                         onMouseDown={removeFocusAfterMouseClick}
-                        onClick={scrollTo(projectsSection)}
+                        onClick={scrollTo(homeSection)}
                       >
-                        <FormattedMessage {...messages.projectsSection} />
+                        <FormattedMessage {...messages.homeSection} />
                       </NavItem>
-                      {hasProjectSubsection && (
-                        <ProjectsSubsectionUl>
-                          {currentSection.current && (
-                            <li>
-                              <NavItem
-                                onMouseDown={removeFocusAfterMouseClick}
-                                onClick={scrollTo(currentSection)}
-                              >
-                                <FormattedMessage
-                                  {...messages.projectsCurrent}
-                                />
-                              </NavItem>
-                            </li>
-                          )}
-                          {archivedSection.current && (
-                            <li>
-                              <NavItem
-                                onMouseDown={removeFocusAfterMouseClick}
-                                onClick={scrollTo(archivedSection)}
-                              >
-                                <FormattedMessage
-                                  {...messages.projectsArchived}
-                                />
-                              </NavItem>
-                            </li>
-                          )}
-                          {draftSection.current && (
-                            <li>
-                              <NavItem
-                                onMouseDown={removeFocusAfterMouseClick}
-                                onClick={scrollTo(draftSection)}
-                              >
-                                <FormattedMessage {...messages.projectsDraft} />
-                              </NavItem>
-                            </li>
-                          )}
-                        </ProjectsSubsectionUl>
-                      )}
                     </li>
-                  )}
-                  <FeatureFlag name="initiatives">
                     <li>
                       <NavItem
                         onMouseDown={removeFocusAfterMouseClick}
-                        onClick={scrollTo(initiativesSection)}
+                        onClick={scrollTo(userSpaceSection)}
                       >
-                        <FormattedMessage {...messages.initiativesSection} />
+                        <FormattedMessage {...messages.userSpaceSection} />
                       </NavItem>
                     </li>
-                  </FeatureFlag>
-                  <li>
-                    <NavItem
-                      onMouseDown={removeFocusAfterMouseClick}
-                      onClick={scrollTo(customPagesSection)}
-                    >
-                      <FormattedMessage {...messages.customPageSection} />
-                    </NavItem>
-                  </li>
-                </Ul>
-              </TOC>
-
-              <H2 ref={homeSection} tabIndex={-1}>
-                <FormattedMessage {...messages.homeSection} />
-              </H2>
-              <ul>
-                {/* Nav bar items that are not included in pages */}
-                {!isNilOrError(navBarItems) &&
-                  navBarItems
-                    .filter(
-                      (item) => item.relationships.static_page.data === null
-                    )
-                    .map((item) => (
-                      <li key={item.id}>
-                        <Link to={DEFAULT_PAGE_SLUGS[item.attributes.code]}>
-                          {localize(item.attributes.title_multiloc)}
-                        </Link>
+                    {!isNilOrError(projects) && (
+                      <li>
+                        <NavItem
+                          onMouseDown={removeFocusAfterMouseClick}
+                          onClick={scrollTo(projectsSection)}
+                        >
+                          <FormattedMessage
+                            {...messages.projectsSection}
+                            values={{
+                              orgName: localize(
+                                appConfig.attributes.settings.core
+                                  .organization_name
+                              ),
+                            }}
+                          />
+                        </NavItem>
+                        {hasProjectSubsection && (
+                          <ProjectsSubsectionUl>
+                            {currentSection.current && (
+                              <li>
+                                <NavItem
+                                  onMouseDown={removeFocusAfterMouseClick}
+                                  onClick={scrollTo(currentSection)}
+                                >
+                                  <FormattedMessage
+                                    {...messages.projectsCurrent}
+                                  />
+                                </NavItem>
+                              </li>
+                            )}
+                            {archivedSection.current && (
+                              <li>
+                                <NavItem
+                                  onMouseDown={removeFocusAfterMouseClick}
+                                  onClick={scrollTo(archivedSection)}
+                                >
+                                  <FormattedMessage
+                                    {...messages.projectsArchived}
+                                  />
+                                </NavItem>
+                              </li>
+                            )}
+                            {draftSection.current && (
+                              <li>
+                                <NavItem
+                                  onMouseDown={removeFocusAfterMouseClick}
+                                  onClick={scrollTo(draftSection)}
+                                >
+                                  <FormattedMessage
+                                    {...messages.projectsDraft}
+                                  />
+                                </NavItem>
+                              </li>
+                            )}
+                          </ProjectsSubsectionUl>
+                        )}
                       </li>
-                    ))}
-                {/* Non-custom static pages */}
-                {!isNilOrError(pages) &&
-                  pages
-                    .filter((page) => page.attributes.code !== 'custom')
-                    .map((item) => (
-                      <li key={item.id}>
-                        <Link to={`/pages/${item.attributes.slug}`}>
-                          {localize(item.attributes.title_multiloc)}
-                        </Link>
+                    )}
+                    <FeatureFlag name="initiatives">
+                      <li>
+                        <NavItem
+                          onMouseDown={removeFocusAfterMouseClick}
+                          onClick={scrollTo(initiativesSection)}
+                        >
+                          <FormattedMessage {...messages.initiativesSection} />
+                        </NavItem>
                       </li>
-                    ))}
-              </ul>
+                    </FeatureFlag>
+                    <li>
+                      <NavItem
+                        onMouseDown={removeFocusAfterMouseClick}
+                        onClick={scrollTo(customPagesSection)}
+                      >
+                        <FormattedMessage {...messages.customPageSection} />
+                      </NavItem>
+                    </li>
+                  </Ul>
+                </TOC>
 
-              <H2 ref={userSpaceSection} tabIndex={-1}>
-                <FormattedMessage {...messages.userSpaceSection} />
-              </H2>
-              <ul>
-                {isNilOrError(authUser) ? (
-                  <>
-                    <li>
-                      <Link to="/sign-in">
-                        <FormattedMessage {...messages.signInPage} />
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/sign-up">
-                        <FormattedMessage {...messages.signUpPage} />
-                      </Link>
-                    </li>
-                  </>
-                ) : (
-                  <>
-                    <li>
-                      <Link to={`/profile/${authUser.attributes.slug}`}>
-                        <FormattedMessage {...messages.profilePage} />
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/profile/edit">
-                        <FormattedMessage {...messages.profileSettings} />
-                      </Link>
-                    </li>
-                  </>
-                )}
-              </ul>
-
-              <ProjectsAndFoldersSection projectsSectionRef={projectsSection} />
-              <FeatureFlag name="initiatives">
-                <H2 ref={initiativesSection} tabIndex={-1}>
-                  <FormattedMessage {...messages.initiativesSection} />
+                <H2 ref={homeSection} tabIndex={-1}>
+                  <FormattedMessage {...messages.homeSection} />
                 </H2>
                 <ul>
-                  <li>
-                    <Link to="/initiatives">
-                      <FormattedMessage {...messages.initiativesList} />
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/pages/initiatives">
-                      <FormattedMessage {...messages.initiativesInfo} />
-                    </Link>
-                  </li>
+                  {/* Nav bar items that are not included in pages */}
+                  {!isNilOrError(navBarItems) &&
+                    navBarItems
+                      .filter(
+                        (item) => item.relationships.static_page.data === null
+                      )
+                      .map((item) => (
+                        <li key={item.id}>
+                          <Link to={DEFAULT_PAGE_SLUGS[item.attributes.code]}>
+                            {localize(item.attributes.title_multiloc)}
+                          </Link>
+                        </li>
+                      ))}
+                  {/* Non-custom static pages */}
+                  {!isNilOrError(pages) &&
+                    pages
+                      .filter((page) => page.attributes.code !== 'custom')
+                      .map((item) => (
+                        <li key={item.id}>
+                          <Link to={`/pages/${item.attributes.slug}`}>
+                            {localize(item.attributes.title_multiloc)}
+                          </Link>
+                        </li>
+                      ))}
                 </ul>
-              </FeatureFlag>
 
-              <H2 ref={customPagesSection} tabIndex={-1}>
-                <FormattedMessage {...messages.customPageSection} />
-              </H2>
-              <Ul>
-                {/* Custom static pages */}
-                {!isNilOrError(pages) &&
-                  pages
-                    .filter((page) => page.attributes.code === 'custom')
-                    .map((item) => (
-                      <li key={item.id}>
-                        <Link to={`/pages/${item.attributes.slug}`}>
-                          {localize(item.attributes.title_multiloc)}
+                <H2 ref={userSpaceSection} tabIndex={-1}>
+                  <FormattedMessage {...messages.userSpaceSection} />
+                </H2>
+                <ul>
+                  {isNilOrError(authUser) ? (
+                    <>
+                      <li>
+                        <Link to="/sign-in">
+                          <FormattedMessage {...messages.signInPage} />
                         </Link>
                       </li>
-                    ))}
-              </Ul>
-            </QuillEditedContent>
-          </StyledContentContainer>
-        </PageContent>
-      )}
-    </Container>
-  );
+                      <li>
+                        <Link to="/sign-up">
+                          <FormattedMessage {...messages.signUpPage} />
+                        </Link>
+                      </li>
+                    </>
+                  ) : (
+                    <>
+                      <li>
+                        <Link to={`/profile/${authUser.attributes.slug}`}>
+                          <FormattedMessage {...messages.profilePage} />
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to="/profile/edit">
+                          <FormattedMessage {...messages.profileSettings} />
+                        </Link>
+                      </li>
+                    </>
+                  )}
+                </ul>
+
+                <ProjectsAndFoldersSection
+                  projectsSectionRef={projectsSection}
+                />
+                <FeatureFlag name="initiatives">
+                  <H2 ref={initiativesSection} tabIndex={-1}>
+                    <FormattedMessage {...messages.initiativesSection} />
+                  </H2>
+                  <ul>
+                    <li>
+                      <Link to="/initiatives">
+                        <FormattedMessage {...messages.initiativesList} />
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/pages/initiatives">
+                        <FormattedMessage {...messages.initiativesInfo} />
+                      </Link>
+                    </li>
+                  </ul>
+                </FeatureFlag>
+
+                <H2 ref={customPagesSection} tabIndex={-1}>
+                  <FormattedMessage {...messages.customPageSection} />
+                </H2>
+                <Ul>
+                  {/* Custom static pages */}
+                  {!isNilOrError(pages) &&
+                    pages
+                      .filter((page) => page.attributes.code === 'custom')
+                      .map((item) => (
+                        <li key={item.id}>
+                          <Link to={`/pages/${item.attributes.slug}`}>
+                            {localize(item.attributes.title_multiloc)}
+                          </Link>
+                        </li>
+                      ))}
+                </Ul>
+              </QuillEditedContent>
+            </StyledContentContainer>
+          </PageContent>
+        )}
+      </Container>
+    );
+  }
+
+  return null;
 };
 
 const Data = adopt<DataProps>({

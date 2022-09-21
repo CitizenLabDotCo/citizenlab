@@ -5,8 +5,10 @@ import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useLocalize from 'hooks/useLocalize';
 
-function buildComponent<P>(Component: React.ComponentType<P>) {
-  return (props: P) => {
+export default function injectIntl<Props>(
+  Component: React.ComponentType<Props>
+) {
+  return (props: Props) => {
     const locale = useLocale();
     const localize = useLocalize();
     const appConfig = useAppConfiguration();
@@ -19,9 +21,7 @@ function buildComponent<P>(Component: React.ComponentType<P>) {
       values?: { [key: string]: string | number | boolean | Date } | undefined
     ) => {
       return intl.formatMessage(messageDescriptor, {
-        tenantName: appConfig.attributes.name,
         orgName: localize(appConfig.attributes.settings.core.organization_name),
-        orgType: appConfig.attributes.settings.core.organization_type,
         ...(values || {}),
       });
     };
@@ -31,12 +31,11 @@ function buildComponent<P>(Component: React.ComponentType<P>) {
       formatMessage: formatMessageReplacement,
     };
 
-    return <Component {...props} intl={intlReplacement} />;
-  };
-}
+    const propsWithIntl: Props = {
+      ...props,
+      intl
+    };
 
-export default function injectIntl<P>(
-  component: React.ComponentType<P & WrappedComponentProps>
-) {
-  return buildComponent<P & WrappedComponentProps>(component);
+    return <Component {...propsWithIntl} />;
+  };
 }

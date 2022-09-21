@@ -1,5 +1,7 @@
 import React, { lazy, Suspense, memo } from 'react';
-
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import useLocalize from 'hooks/useLocalize';
+import { isNilOrError } from 'utils/helperUtils';
 // components
 const IdeasWithFiltersSidebar = lazy(() => import('./IdeasWithFiltersSidebar'));
 const IdeasWithoutFiltersSidebar = lazy(
@@ -47,22 +49,37 @@ const IdeaCards = memo<Props>(
     showFiltersSidebar = false,
     ...props
   }) => {
-    return (
-      <Container className={className || ''}>
-        {invisibleTitleMessage && (
-          <ScreenReaderOnly>
-            <FormattedMessage tagName="h2" {...invisibleTitleMessage} />
-          </ScreenReaderOnly>
-        )}
-        <Suspense fallback={null}>
-          {showFiltersSidebar ? (
-            <IdeasWithFiltersSidebar {...props} />
-          ) : (
-            <IdeasWithoutFiltersSidebar {...props} />
+    const localize = useLocalize();
+    const appConfig = useAppConfiguration();
+
+    if (!isNilOrError(appConfig)) {
+      return (
+        <Container className={className || ''}>
+          {invisibleTitleMessage && (
+            <ScreenReaderOnly>
+              <FormattedMessage
+                tagName="h2"
+                {...invisibleTitleMessage}
+                values={{
+                  orgName: localize(
+                    appConfig.attributes.settings.core.organization_name
+                  ),
+                }}
+              />
+            </ScreenReaderOnly>
           )}
-        </Suspense>
-      </Container>
-    );
+          <Suspense fallback={null}>
+            {showFiltersSidebar ? (
+              <IdeasWithFiltersSidebar {...props} />
+            ) : (
+              <IdeasWithoutFiltersSidebar {...props} />
+            )}
+          </Suspense>
+        </Container>
+      );
+    }
+
+    return null;
   }
 );
 

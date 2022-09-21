@@ -18,6 +18,9 @@ import GetAppConfigurationLocales, {
 } from 'resources/GetAppConfigurationLocales';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 
 // utils
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
@@ -31,6 +34,7 @@ interface InputProps {}
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
+  appConfig: GetAppConfigurationChildProps;
   locales: GetAppConfigurationLocalesChildProps;
   project: GetProjectChildProps;
   phases: GetPhasesChildProps;
@@ -50,10 +54,11 @@ const IdeasNewMeta = React.memo<Props>(
     localize,
     intl: { formatMessage },
     phases,
+    appConfig,
   }) => {
     const { location } = window;
 
-    if (!isNilOrError(project)) {
+    if (!isNilOrError(project) && !isNilOrError(appConfig)) {
       const projectName = localize(project.attributes.title_multiloc);
       const inputTerm = getInputTerm(
         project.attributes.process_type,
@@ -75,6 +80,9 @@ const IdeasNewMeta = React.memo<Props>(
         messages.ideaNewMetaDescription,
         {
           projectName,
+          orgName: localize(
+            appConfig.attributes.settings.core.organization_name
+          ),
         }
       );
 
@@ -108,6 +116,7 @@ const IdeasNewMeta = React.memo<Props>(
 const IdeasNewMetaWithHoc = injectIntl(injectLocalize(IdeasNewMeta));
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
+  appConfig: <GetAppConfiguration />,
   locales: <GetAppConfigurationLocales />,
   authUser: <GetAuthUser />,
   project: ({ params, render }) => (
