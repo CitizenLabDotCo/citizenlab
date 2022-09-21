@@ -76,6 +76,32 @@ export const GraphCardInner = styled.div`
   }
 `;
 
+// The same as GraphCardInner, but without the
+// annoying p selector inside of it messing with
+// other CSS. Once we move all our graphs to the new
+// GraphCard component we can think about removing the
+// old GraphCardInner. For now let's keep it to make
+// sure we don't break anything
+export const GraphCardInnerClean = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 35px;
+  ${defaultCardStyle}
+  @media print {
+    position: relative;
+    display: block;
+    page-break-inside: avoid;
+    width: 100%;
+    padding: 0 10px;
+    border: none;
+  }
+`;
+
 export const GraphCard = styled.div`
   padding: 10px;
   height: 350px;

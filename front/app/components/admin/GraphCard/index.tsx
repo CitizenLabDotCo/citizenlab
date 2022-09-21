@@ -5,7 +5,7 @@ import {
   GraphCard as GraphCardContainer,
   GraphCardHeader,
   GraphCardTitle,
-  GraphCardInner,
+  GraphCardInnerClean,
 } from 'components/admin/GraphWrappers';
 import ReportExportMenu, {
   ReportExportMenuProps,
@@ -19,13 +19,13 @@ interface Props {
 
 const GraphCard = ({ title, exportMenu, children }: Props) => (
   <GraphCardContainer className="fullWidth dynamicHeight">
-    <GraphCardInner>
+    <GraphCardInnerClean>
       <GraphCardHeader>
         <GraphCardTitle>{title}</GraphCardTitle>
         {exportMenu && <ReportExportMenu {...exportMenu} />}
       </GraphCardHeader>
       {children}
-    </GraphCardInner>
+    </GraphCardInnerClean>
   </GraphCardContainer>
 );
 
