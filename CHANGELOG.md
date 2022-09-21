@@ -1,5 +1,11 @@
 # Changelog
 
+## Next release
+
+### Fixed
+
+- [DISP-185] Fix 'Age group' copy not being translated
+
 ### Fixed
 
 - [CL-1586] Fix deleting folder and cause images
