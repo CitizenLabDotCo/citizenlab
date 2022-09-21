@@ -1,7 +1,5 @@
 # Changelog
 
-/
-
 ### Fixed
 
 - [CL-1586] Fix deleting folder and cause images
