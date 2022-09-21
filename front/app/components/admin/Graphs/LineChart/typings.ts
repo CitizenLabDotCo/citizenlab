@@ -2,9 +2,7 @@ import {
   BaseProps,
   AxisProps,
   KeyOfType,
-  // Cell,
   // BaseLabels,
-  BaseMapping,
 } from '../typings';
 
 // PROPS
@@ -21,12 +19,22 @@ interface Payload<Row> {
   lineIndex: number;
 }
 
-export interface Mapping<Row> extends BaseMapping<Payload<Row>> {
-  value: KeyOfType<Row, number>[];
-  category?: KeyOfType<Row, string>;
+export interface Mapping<Row> {
+  x: KeyOfType<Row, string>;
+  y: KeyOfType<Row, number>[];
 }
 
-interface Lines {
+export interface Lines {
   names?: string[];
   isAnimationActive?: boolean;
+  strokes?: string[];
+  strokeWidths?: number[];
+}
+
+// PARSED CONFIGS
+export interface LineConfig {
+  dot: false;
+  activeDot: false;
+  stroke: string;
+  strokeWidth?: number;
 }

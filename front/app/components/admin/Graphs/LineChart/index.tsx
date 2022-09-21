@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
 
+import {
+  legacyColors,
+  sizes,
+  // animation,
+} from 'components/admin/Graphs/styling';
+
 // components
 import { 
   LineChart as RechartsLineChart,
@@ -7,16 +13,16 @@ import {
   Line,
   XAxis,
   YAxis,
-  Cell,
-  LabelList,
-  Tooltip,
+  // Cell,
+  // LabelList,
+  // Tooltip,
 } from 'recharts';
 import Container from '../_components/Container';
 import EmptyState from '../_components/EmptyState';
 import Legend from '../_components/Legend';
 
 // utils
-import { hasNoData, getTooltipConfig, parseMargin } from '../utils';
+import { hasNoData, /* getTooltipConfig, */ parseMargin } from '../utils';
 
 // typings
 import { Props } from './typings';
@@ -34,7 +40,11 @@ const LineChart = <Row,>({
   margin,
   legend,
   emptyContainerContent,
-  innerRef
+  innerRef,
+  xaxis,
+  yaxis,
+  // onMouseOver,
+  // onMouseOut,
 }: Props<Row>) => {
   const [graphDimensions, setGraphDimensions] = useState<
     GraphDimensions | undefined
@@ -67,8 +77,36 @@ const LineChart = <Row,>({
         )}
         ref={innerRef}
       >
+        {legend && graphDimensions && legendDimensions && (
+          <g className="graph-legend">
+            <Legend
+              items={legend.items}
+              graphDimensions={graphDimensions}
+              legendDimensions={legendDimensions}
+              position={legend.position}
+              textColor={legend.textColor}
+              margin={margin}
+            />
+          </g>
+        )}
+
         <CartesianGrid />
 
+        <XAxis
+          // dataKey={layout === 'vertical' ? category : undefined}
+          type="category"
+          stroke={legacyColors.chartLabel}
+          fontSize={sizes.chartLabel}
+          tick={{ transform: 'translate(0, 7)' }}
+          {...xaxis}
+        />
+        <YAxis
+          // dataKey={layout === 'horizontal' ? category : undefined}
+          type="number"
+          stroke={legacyColors.chartLabel}
+          fontSize={sizes.chartLabel}
+          {...yaxis}
+        />
       </RechartsLineChart>
     </Container>
   )
