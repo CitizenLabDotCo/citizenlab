@@ -4,6 +4,7 @@ import React from 'react';
 import GraphCard from 'components/admin/GraphCard';
 import { Box } from '@citizenlab/cl2-component-library';
 import VisitorStats from './VisitorStats';
+import Chart from './Chart';
 
 // i18n
 import messages from './messages';
@@ -20,6 +21,7 @@ const VisitorsCard = ({ resolution }: Props) => (
   <GraphCard title={<FormattedMessage {...messages.visitors} />}>
     <Box width="100%" display="flex" flexDirection="row">
       <VisitorStats resolution={resolution} />
+      <Chart />
     </Box>
   </GraphCard>
 );

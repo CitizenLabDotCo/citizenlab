@@ -1,6 +1,7 @@
 import { Mapping, Lines, LineConfig } from './typings';
+import { colors } from '../styling';
 
-const DEFAULT_STROKE = 'TODO';
+const DEFAULT_STROKE = colors.categorical01;
 
 export const getLineConfigs = <Row>(mapping: Mapping<Row>, lines?: Lines) => {
   const { y } = mapping;
