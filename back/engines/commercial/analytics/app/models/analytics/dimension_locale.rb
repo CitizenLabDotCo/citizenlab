@@ -7,6 +7,5 @@
 #
 module Analytics
   class DimensionLocale < Analytics::ApplicationRecord
-    # has_and_belongs_to_many :visits, class_name: 'FactVisit'
   end
 end

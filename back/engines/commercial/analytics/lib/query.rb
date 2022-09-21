@@ -40,7 +40,7 @@ module Analytics
 
     def all_dimensions
       @all_dimensions ||= model
-        .reflect_on_all_associations()
+        .reflect_on_all_associations
         .to_h do |assoc|
           [
             assoc.name.to_s,

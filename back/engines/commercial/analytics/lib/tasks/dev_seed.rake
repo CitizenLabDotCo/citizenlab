@@ -8,63 +8,63 @@ namespace :analytics do
       puts "Seeding some visits data for localhost"
 
       # delete any we've already created
+      Analytics::FactVisit.delete_all
       Analytics::DimensionChannel.delete_all
       Analytics::DimensionLocale.delete_all
-      Analytics::FactVisit.delete_all
 
       # Create static dimensions - locale / channel
       Rake::Task['analytics:populate_locale_dimension'].execute(host: 'localhost')
       locale = Analytics::DimensionLocale.first
-      channel = Analytics::DimensionChannel.create!(name_multiloc: '{"en": "Website", "fr-BE": "Website", "nl-BE": "Website"}')
+      channel = Analytics::DimensionChannel.create!(name_multiloc: {"en": "Website", "fr-BE": "Website", "nl-BE": "Website"})
 
       # Get some other dimensions
       project = Analytics::DimensionProject.first
-      user_id = User.first.id
+      user = Analytics::DimensionUser.first
       date1 = Analytics::DimensionDate.first
       date2 = Analytics::DimensionDate.find('2022-09-05')
 
       # Insert 2 visits (same user)
       visit = Analytics::FactVisit.create!(
         visitor_id: '1',
-        user_id: user_id,
-        channel: channel,
-        first_action_date: date1,
-        last_action_date: date1,
+        dimension_user: user,
+        dimension_channel: channel,
+        dimension_date_first_action: date1,
+        dimension_date_last_action: date1,
         duration: 300,
         pages_visited: 5,
-        matomo_visit_id: '101',
-        last_action_timestamp: 1255256326,
+        matomo_visit_id: 101,
+        matomo_last_action_time: '2022-09-05 18:08:39.0'
       )
-      visit.project << project
-      visit.locale << locale
+      visit.dimension_project << project
+      visit.dimension_locale << locale
 
       # Visit 2
       visit = Analytics::FactVisit.create!(
         visitor_id: '1',
-        user_id: user_id,
-        channel: channel,
-        first_action_date: date1,
-        last_action_date: date1,
+        dimension_user: user,
+        dimension_channel: channel,
+        dimension_date_first_action: date1,
+        dimension_date_last_action: date1,
         duration: 600,
         pages_visited: 10,
-        matomo_visit_id: '102',
-        last_action_timestamp: 1255259999,
+        matomo_visit_id: 102,
+        matomo_last_action_time: '2022-09-05 18:08:39.0'
         )
-      visit.project << project
-      visit.locale << locale
+      visit.dimension_project << project
+      visit.dimension_locale << locale
 
-      # Visit 3 - no project
+      # Visit 3 - no user, no project
       visit = Analytics::FactVisit.create!(
         visitor_id: '2',
-        channel: channel,
-        first_action_date: date2,
-        last_action_date: date2,
+        dimension_channel: channel,
+        dimension_date_first_action: date2,
+        dimension_date_last_action: date2,
         duration: 900,
         pages_visited: 15,
-        matomo_visit_id: '103',
-        last_action_timestamp: 1255259999,
+        matomo_visit_id: 103,
+        matomo_last_action_time: '2022-09-05 18:08:39.0'
         )
-      visit.locale << locale
+      visit.dimension_locale << locale
 
     end
   end
