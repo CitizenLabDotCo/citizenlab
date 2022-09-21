@@ -1,5 +1,6 @@
 import moment from 'moment';
 import { isString } from 'lodash-es';
+import { Locale } from 'typings';
 
 export function getIsoDateForToday(): string {
   // this is based on the user's timezone in moment, so
@@ -29,8 +30,8 @@ type RelativeTimeFormatUnit =
 // this function returns a string representing "time since" the input date in the appropriate format.
 // Relative Time Format is used for internationalization.
 // Adapted from: Stas Parshin https://jsfiddle.net/tv9701uf
-export function timeAgo(dateInput, locale) {
-  const date = dateInput instanceof Date ? dateInput : new Date(dateInput);
+export function timeAgo(dateInput: number, locale: Locale) {
+  const date = new Date(dateInput);
   const formatter = new Intl.RelativeTimeFormat(locale);
   const ranges = {
     years: 3600 * 24 * 365,

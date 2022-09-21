@@ -136,46 +136,49 @@ const Author = memo(
       showModeration &&
       canModerateProject(projectId, { data: author });
 
-    return (
-      <Container className={className}>
-        <AuthorContainer>
-          {showAvatar && (
-            <StyledAvatar
-              userId={authorId}
-              size={size}
-              isLinkToProfile={isLinkToProfile}
-              moderator={authorCanModerate}
-              bgColor={avatarBadgeBgColor}
-            />
-          )}
-
-          <AuthorMeta className={horizontalLayout ? 'horizontalLayout' : ''}>
-            <AuthorNameContainer
-              className={horizontalLayout ? 'horizontalLayout' : ''}
-            >
-              <ScreenReaderOnly>
-                <FormattedMessage {...messages.a11y_postedBy} />:
-              </ScreenReaderOnly>
-              <UserName
+    if (!isNilOrError(locale)) {
+      return (
+        <Container className={className}>
+          <AuthorContainer>
+            {showAvatar && (
+              <StyledAvatar
                 userId={authorId}
+                size={size}
                 isLinkToProfile={isLinkToProfile}
-                canModerate={authorCanModerate}
-                fontWeight={fontWeight}
-                fontSize={fontSize}
-                color={color}
-                underline={underline}
+                moderator={authorCanModerate}
+                bgColor={avatarBadgeBgColor}
               />
-            </AuthorNameContainer>
-
-            {createdAt && (
-              <TimeAgo className={horizontalLayout ? 'horizontalLayout' : ''}>
-                {timeAgo(Date.parse(createdAt), locale)}
-              </TimeAgo>
             )}
-          </AuthorMeta>
-        </AuthorContainer>
-      </Container>
-    );
+
+            <AuthorMeta className={horizontalLayout ? 'horizontalLayout' : ''}>
+              <AuthorNameContainer
+                className={horizontalLayout ? 'horizontalLayout' : ''}
+              >
+                <ScreenReaderOnly>
+                  <FormattedMessage {...messages.a11y_postedBy} />:
+                </ScreenReaderOnly>
+                <UserName
+                  userId={authorId}
+                  isLinkToProfile={isLinkToProfile}
+                  canModerate={authorCanModerate}
+                  fontWeight={fontWeight}
+                  fontSize={fontSize}
+                  color={color}
+                  underline={underline}
+                />
+              </AuthorNameContainer>
+
+              {createdAt && (
+                <TimeAgo className={horizontalLayout ? 'horizontalLayout' : ''}>
+                  {timeAgo(Date.parse(createdAt), locale)}
+                </TimeAgo>
+              )}
+            </AuthorMeta>
+          </AuthorContainer>
+        </Container>
+      );
+    }
+    return null;
   }
 );
 

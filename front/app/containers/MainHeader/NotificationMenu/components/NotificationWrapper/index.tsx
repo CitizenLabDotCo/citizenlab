@@ -1,12 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
 import { darken } from 'polished';
-import { fontSizes, colors, media } from 'utils/styleUtils';
 import { Icon } from '@citizenlab/cl2-component-library';
-import { trackEventByName } from 'utils/analytics';
-import tracks from '../../tracks';
+
+// utils
+import { fontSizes, colors, media } from 'utils/styleUtils';
 import clHistory from 'utils/cl-router/history';
 import { timeAgo } from 'utils/dateUtils';
+import { trackEventByName } from 'utils/analytics';
+import tracks from '../../tracks';
+
+// hooks
+import useLocale from 'hooks/useLocale';
+import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.button`
   display: flex;
@@ -99,6 +105,7 @@ const NotificationWrapper = ({
   isRead,
   linkTo,
 }: Props) => {
+  const locale = useLocale();
   const navigate = () => {
     if (linkTo) {
       trackEventByName(tracks.clickNotification.name, { extra: { linkTo } });
@@ -106,17 +113,20 @@ const NotificationWrapper = ({
     }
   };
 
-  return (
-    <Container role="link" onClick={navigate}>
-      <IconContainer>
-        {icon && <StyledIcon name={icon} isRead={isRead} />}
-      </IconContainer>
-      <Body>
-        <Message isRead={isRead}>{children}</Message>
-        {timing && <Timing>{timeAgo(timing, 'en')}</Timing>}
-      </Body>
-    </Container>
-  );
+  if (!isNilOrError(locale)) {
+    return (
+      <Container role="link" onClick={navigate}>
+        <IconContainer>
+          {icon && <StyledIcon name={icon} isRead={isRead} />}
+        </IconContainer>
+        <Body>
+          <Message isRead={isRead}>{children}</Message>
+          {timing && <Timing>{timeAgo(Date.parse(timing), locale)}</Timing>}
+        </Body>
+      </Container>
+    );
+  }
+  return null;
 };
 
 export default NotificationWrapper;

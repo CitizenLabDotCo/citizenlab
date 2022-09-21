@@ -41,6 +41,10 @@ import {
 import { insertConfiguration } from 'utils/moduleUtils';
 import Outlet from 'components/Outlet';
 
+// hooks
+import useLocale from 'hooks/useLocale';
+import { isNilOrError } from 'utils/helperUtils';
+
 type InputProps = {
   type: ManagerType;
   idea: IIdeaData;
@@ -77,6 +81,7 @@ const IdeaRow = ({
   idea,
   selection,
 }: Props & InjectedIntlProps & InjectedLocalized) => {
+  const locale = useLocale();
   const [cells, setCells] = useState<
     CellConfiguration<IdeaCellComponentProps>[]
   >([
@@ -117,7 +122,10 @@ const IdeaRow = ({
     {
       name: 'published_on',
       Component: ({ idea }) => {
-        return <>{timeAgo(Date.parse(idea.attributes.created_at), 'en')}</>;
+        if (!isNilOrError(locale)) {
+          return <>{timeAgo(Date.parse(idea.attributes.created_at), locale)}</>;
+        }
+        return null;
       },
     },
     {
@@ -201,7 +209,7 @@ const IdeaRow = ({
     );
   };
 
-  const onUpdateIdeaPhases = (selectedPhases) => {
+  const onUpdateIdeaPhases = (selectedPhases: string[]) => {
     updateIdea(idea.id, {
       phase_ids: selectedPhases,
     });
