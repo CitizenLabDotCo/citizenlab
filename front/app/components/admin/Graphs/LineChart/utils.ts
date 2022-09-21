@@ -2,6 +2,7 @@ import { Mapping, Lines, LineConfig } from './typings';
 import { colors } from '../styling';
 
 const DEFAULT_STROKE = colors.categorical01;
+const DEFAULT_STROKE_WIDTH = 2;
 
 export const getLineConfigs = <Row>(mapping: Mapping<Row>, lines?: Lines) => {
   const { y } = mapping;
@@ -13,7 +14,7 @@ export const getLineConfigs = <Row>(mapping: Mapping<Row>, lines?: Lines) => {
       dot: false,
       activeDot: false,
       stroke: lines?.strokes?.[lineIndex] ?? DEFAULT_STROKE,
-      strokeWidth: lines?.strokeWidths?.[lineIndex],
+      strokeWidth: lines?.strokeWidths?.[lineIndex] ?? DEFAULT_STROKE_WIDTH,
       isAnimationActive: lines?.isAnimationActive,
     },
   }));
