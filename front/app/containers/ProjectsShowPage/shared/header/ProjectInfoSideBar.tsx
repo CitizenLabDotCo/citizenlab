@@ -175,6 +175,9 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   }, []);
 
   if (!isNilOrError(project)) {
+    const postingIsEnabled =
+      project.attributes.posting_enabled ||
+      currentPhase?.attributes.posting_enabled;
     const projectType = project.attributes.process_type;
     const projectParticipantsCount = project.attributes.participants_count;
     const maxBudget =
@@ -370,35 +373,36 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
             )}
             {((projectType === 'continuous' &&
               projectParticipationMethod === 'native_survey') ||
-              currentPhaseParticipationMethod === 'native_survey') && (
-              <ListItem>
-                <ListItemIcon ariaHidden name="survey" />
-                {!isNilOrError(authUser) ? (
-                  <ListItemButton
-                    id="e2e-project-sidebar-surveys-count"
-                    onClick={() => {
-                      clHistory.push(
-                        `/projects/${project.attributes.slug}/ideas/new`
-                      );
-                    }}
-                  >
+              currentPhaseParticipationMethod === 'native_survey') &&
+              postingIsEnabled && (
+                <ListItem>
+                  <ListItemIcon ariaHidden name="survey" />
+                  {!isNilOrError(authUser) ? (
+                    <ListItemButton
+                      id="e2e-project-sidebar-surveys-count"
+                      onClick={() => {
+                        clHistory.push(
+                          `/projects/${project.attributes.slug}/ideas/new`
+                        );
+                      }}
+                    >
+                      <FormattedMessage
+                        {...(projectType === 'continuous'
+                          ? messages.xSurveys
+                          : messages.xSurveysInCurrentPhase)}
+                        values={{ surveysCount: 1 }}
+                      />
+                    </ListItemButton>
+                  ) : (
                     <FormattedMessage
                       {...(projectType === 'continuous'
                         ? messages.xSurveys
                         : messages.xSurveysInCurrentPhase)}
                       values={{ surveysCount: 1 }}
                     />
-                  </ListItemButton>
-                ) : (
-                  <FormattedMessage
-                    {...(projectType === 'continuous'
-                      ? messages.xSurveys
-                      : messages.xSurveysInCurrentPhase)}
-                    values={{ surveysCount: 1 }}
-                  />
-                )}
-              </ListItem>
-            )}
+                  )}
+                </ListItem>
+              )}
             {((projectType === 'continuous' &&
               projectParticipationMethod === 'poll') ||
               currentPhaseParticipationMethod === 'poll') && (

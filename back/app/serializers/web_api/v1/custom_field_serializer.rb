@@ -7,5 +7,9 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
     object.resource_type == 'User'
   }
 
+  attributes :maximum, :minimum_label_multiloc, :maximum_label_multiloc, if: proc { |object, _params|
+    object.input_type == 'linear_scale'
+  }
+
   has_many :options, record_type: :custom_field_option, serializer: ::WebApi::V1::CustomFieldOptionSerializer
 end

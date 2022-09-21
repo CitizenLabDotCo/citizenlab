@@ -75,6 +75,12 @@ FactoryBot.define do
       end
     end
 
+    factory :project_with_active_native_survey_phase do
+      after(:create) do |project, _evaluator|
+        project.phases << create(:active_phase, project: project, participation_method: 'native_survey')
+      end
+    end
+
     factory :project_with_past_phases do
       transient do
         phases_count { 5 }
