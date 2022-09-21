@@ -16,6 +16,7 @@ namespace :analytics do
       Rake::Task['analytics:populate_locale_dimension'].execute(host: 'localhost')
       locale = Analytics::DimensionLocale.first
       channel = Analytics::DimensionChannel.create!(name_multiloc: {"en": "Website", "fr-BE": "Website", "nl-BE": "Website"})
+      channel2 = Analytics::DimensionChannel.create!(name_multiloc: {"en": "Social", "fr-BE": "Social", "nl-BE": "Social"})
 
       # Get some other dimensions
       project = Analytics::DimensionProject.first
@@ -56,7 +57,7 @@ namespace :analytics do
       # Visit 3 - no user, no project
       visit = Analytics::FactVisit.create!(
         visitor_id: '2',
-        dimension_channel: channel,
+        dimension_channel: channel2,
         dimension_date_first_action: date2,
         dimension_date_last_action: date2,
         duration: 900,
