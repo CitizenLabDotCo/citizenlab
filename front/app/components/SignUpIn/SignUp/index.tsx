@@ -117,7 +117,7 @@ const SignUp = ({
   onSignUpCompleted,
   onGoToSignIn,
   className,
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const authUser = useAuthUser();
   const tenant = useAppConfiguration();
   const theme: any = useTheme();

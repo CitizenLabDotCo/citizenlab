@@ -16,7 +16,7 @@ import useAuthUser from 'hooks/useAuthUser';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from 'containers/ProjectsShowPage/messages';
 
 // style
@@ -86,7 +86,7 @@ interface Props {
   className?: string;
 }
 
-const ProjectHeader = memo<Props & InjectedIntlProps>(
+const ProjectHeader = memo<Props & WrappedComponentProps>(
   ({ projectId, className, intl: { formatMessage } }) => {
     const [moduleActive, setModuleActive] = useState(false);
 

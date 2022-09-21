@@ -28,7 +28,7 @@ import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import { PostType } from 'resources/GetPost';
 
 // i18n
-import { InjectedIntlProps, MessageDescriptor } from 'react-intl';
+import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import localize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
@@ -65,7 +65,7 @@ interface Props extends InputProps, DataProps {}
 interface State {}
 
 class SharingModalContent extends PureComponent<
-  Props & InjectedIntlProps & InjectedLocalized,
+  Props & WrappedComponentProps & InjectedLocalized,
   State
 > {
   componentDidMount() {

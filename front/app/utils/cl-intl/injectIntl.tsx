@@ -1,5 +1,5 @@
 import React from 'react';
-import { useIntl, MessageDescriptor } from 'react-intl';
+import { useIntl, MessageDescriptor, WrappedComponentProps } from 'react-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'hooks/useAppConfiguration';
@@ -35,6 +35,8 @@ function buildComponent<P>(Component: React.ComponentType<P>) {
   };
 }
 
-export default function injectIntl<P>(component: React.ComponentType<P>) {
-  return buildComponent(component);
+export default function injectIntl<P>(
+  component: React.ComponentType<P & WrappedComponentProps>
+) {
+  return buildComponent<P & WrappedComponentProps>(component);
 }

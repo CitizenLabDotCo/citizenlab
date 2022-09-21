@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import Error, { findErrorMessage, TFieldName } from 'components/UI/Error';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import {
   Text,
   Title,
@@ -17,7 +17,7 @@ import { get } from 'lodash-es';
 
 type FeedbackProps = {
   successMessage?: string;
-} & InjectedIntlProps;
+} & WrappedComponentProps;
 
 const Feedback = ({
   successMessage,
