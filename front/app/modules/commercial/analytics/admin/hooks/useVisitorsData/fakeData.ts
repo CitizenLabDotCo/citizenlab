@@ -9,7 +9,7 @@ export const fakeStats = {
     value: 5432,
     lastPeriod: 423,
   },
-  duration: {
+  visitDuration: {
     value: 312,
     lastPeriod: 373,
   },

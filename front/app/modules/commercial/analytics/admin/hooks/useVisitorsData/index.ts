@@ -12,7 +12,7 @@ interface Stat {
 interface Stats {
   visitors: Stat;
   visits: Stat;
-  duration: Stat;
+  visitDuration: Stat;
   pageViews: Stat;
 }
 

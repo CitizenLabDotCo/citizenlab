@@ -11,13 +11,13 @@ interface Props {
   startAtMoment: Moment | null | undefined;
   endAtMoment: Moment | null;
   projectFilter: string | undefined;
-  resolution: IResolution
+  resolution: IResolution;
 }
 
-const Charts = ({ }: Props) => (
+const Charts = ({ resolution }: Props) => (
   <>
-    <VisitorsCard />
+    <VisitorsCard resolution={resolution} />
   </>
-)
+);
 
 export default Charts;

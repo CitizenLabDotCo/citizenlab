@@ -7,18 +7,71 @@ import useVisitorsData from '../../hooks/useVisitorsData';
 import { Box } from '@citizenlab/cl2-component-library';
 import Statistic from 'components/admin/Graphs/Statistic';
 
+// i18n
+import messages from './messages';
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
-const VisitorStats = () => {
+// typings
+import { IResolution } from 'components/admin/ResolutionControl';
+import { MessageDescriptor } from 'typings';
+
+interface Props {
+  resolution: IResolution;
+}
+
+const BOTTOM_LABEL_COPY: Record<IResolution, MessageDescriptor> = {
+  month: messages.last30Days,
+  week: messages.last7Days,
+  day: messages.yesterday,
+};
+
+const VisitorStats = ({
+  resolution,
+  intl: { formatMessage },
+}: Props & InjectedIntlProps) => {
   const { stats } = useVisitorsData();
   if (isNilOrError(stats)) return null;
 
   return (
-    <Box>
-      <Statistic name={'Test'} value={1000} bottomLabel={'blabla'} />
+    <Box display="flex" flexDirection="row" pl="20px">
+      <Box>
+        <Statistic
+          name={formatMessage(messages.visitors)}
+          value={stats.visitors.value}
+          bottomLabel={formatMessage(BOTTOM_LABEL_COPY[resolution])}
+          bottomLabelValue={`+${stats.visitors.lastPeriod}`}
+        />
+        <Box mt="32px">
+          <Statistic
+            name={formatMessage(messages.visitDuration)}
+            value={stats.visitDuration.value}
+            bottomLabel={formatMessage(BOTTOM_LABEL_COPY[resolution])}
+            bottomLabelValue={`+${stats.visitDuration.lastPeriod}`}
+          />
+        </Box>
+      </Box>
+      <Box ml="28px">
+        <Statistic
+          name={formatMessage(messages.visits)}
+          value={stats.visits.value}
+          bottomLabel={formatMessage(BOTTOM_LABEL_COPY[resolution])}
+          bottomLabelValue={`+${stats.visits.lastPeriod}`}
+        />
+        <Box mt="32px">
+          <Statistic
+            name={formatMessage(messages.pageViews)}
+            value={stats.pageViews.value}
+            bottomLabel={formatMessage(BOTTOM_LABEL_COPY[resolution])}
+            bottomLabelValue={`+${stats.pageViews.lastPeriod}`}
+          />
+        </Box>
+      </Box>
     </Box>
   );
 };
 
-export default VisitorStats;
+export default injectIntl(VisitorStats);

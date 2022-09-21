@@ -9,12 +9,17 @@ import VisitorStats from './VisitorStats';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-const VisitorsCard = () => (
-  <GraphCard title={<FormattedMessage {...messages.cardTitle} />}>
+// typings
+import { IResolution } from 'components/admin/ResolutionControl';
+
+interface Props {
+  resolution: IResolution;
+}
+
+const VisitorsCard = ({ resolution }: Props) => (
+  <GraphCard title={<FormattedMessage {...messages.visitors} />}>
     <Box width="100%" display="flex" flexDirection="row">
-      <Box width="30%">
-        <VisitorStats />
-      </Box>
+      <VisitorStats resolution={resolution} />
     </Box>
   </GraphCard>
 );

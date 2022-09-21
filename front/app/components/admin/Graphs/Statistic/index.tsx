@@ -12,22 +12,32 @@ interface Props {
 
 const Statistic = ({ name, value, bottomLabel, bottomLabelValue }: Props) => (
   <Box>
-    <Text color="adminTextColor" fontSize="s">
+    <Text color="adminTextColor" fontSize="s" mt="0px" mb="0px">
       {name}
     </Text>
-    <Text color="text" fontSize="xl">
-      {value}
+    <Text color="text" fontSize="xl" mt="2px" mb="0px">
+      {value.toLocaleString()}
     </Text>
     {bottomLabel && (
-      <Text color="label" fontSize="xs">
-        {bottomLabel}
+      <Box mt="3px">
+        <Text color="label" fontSize="s" mt="0px" mb="0px" display="inline">
+          {bottomLabel}
+        </Text>
 
         {bottomLabelValue && (
-          <Text display="inline" fontWeight="bold" fontSize="s">
+          <Text
+            color="label"
+            display="inline"
+            fontWeight="bold"
+            fontSize="s"
+            mt="0px"
+            mb="0px"
+            ml="4px"
+          >
             {bottomLabelValue}
           </Text>
         )}
-      </Text>
+      </Box>
     )}
   </Box>
 );
