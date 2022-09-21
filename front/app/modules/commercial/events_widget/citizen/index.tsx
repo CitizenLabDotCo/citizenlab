@@ -12,7 +12,7 @@ import useEvents from 'hooks/useEvents';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // styling
 import styled from 'styled-components';
@@ -68,7 +68,7 @@ const StyledEventCard = styled(EventCard)`
   padding: 20px;
 `;
 
-export default injectIntl<InjectedIntlProps>(({ intl }) => {
+export default injectIntl<WrappedComponentProps>(({ intl }) => {
   const { events } = useEvents({
     projectPublicationStatuses: ['published'],
     currentAndFutureOnly: true,

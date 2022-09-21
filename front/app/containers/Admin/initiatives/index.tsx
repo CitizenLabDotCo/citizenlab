@@ -9,7 +9,7 @@ import Button from 'components/UI/Button';
 
 // i18n
 import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
 // tracks
@@ -39,7 +39,7 @@ const ActionsContainer = styled.div`
     margin-right: 15px;
   }
 `;
-const InitiativesPage = memo<InjectedIntlProps & WithRouterProps>(
+const InitiativesPage = memo<WrappedComponentProps & WithRouterProps>(
   ({ intl: { formatMessage }, location }) => {
     const [tabs, setTabs] = useState<ITab[]>([
       {

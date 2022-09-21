@@ -19,7 +19,7 @@ import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // style
@@ -84,7 +84,7 @@ interface State {
   editing: boolean;
 }
 
-class Comment extends PureComponent<Props & InjectedIntlProps, State> {
+class Comment extends PureComponent<Props & WrappedComponentProps, State> {
   static defaultProps = {
     hasChildComment: false,
     last: false,

@@ -10,7 +10,7 @@ import { ButtonWrapper } from 'components/admin/PageWrapper';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps, MessageDescriptor} from 'react-intl';
+import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 import messages from './messages';
 
 // styling
@@ -65,7 +65,7 @@ const TerminologyConfig = ({
   pluralPlaceholderMessage,
   onSave,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const [submitState, setSubmitState] = useState<TSubmitState>('enabled');
   const [opened, setOpened] = useState<boolean>(false);
   const [singular, setSingular] = useState<Multiloc | undefined>();

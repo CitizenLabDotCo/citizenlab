@@ -26,7 +26,7 @@ import { StatusLabel } from '@citizenlab/cl2-component-library';
 import localize, { InjectedLocalized } from 'utils/localize';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
 // style
@@ -77,7 +77,7 @@ interface Props extends InputProps, DataProps {
 }
 
 class InitiativeRow extends React.PureComponent<
-  Props & InjectedIntlProps & InjectedLocalized
+  Props & WrappedComponentProps & InjectedLocalized
 > {
   onUpdateInitiativePhases = (selectedPhases) => {
     updateInitiative(this.props.initiative.id, {
@@ -245,7 +245,7 @@ const initiativeSource = {
       id: props.initiative.id,
     };
   },
-  endDrag(props: Props & InjectedIntlProps & InjectedLocalized, monitor) {
+  endDrag(props: Props & WrappedComponentProps & InjectedLocalized, monitor) {
     const item = monitor.getItem();
     const dropResult = monitor.getDropResult();
     const { selection } = props;

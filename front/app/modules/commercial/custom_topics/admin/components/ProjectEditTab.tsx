@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { InsertConfigurationOptions, ITab } from 'typings';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
@@ -8,7 +8,7 @@ type Props = {
   onData: (data: InsertConfigurationOptions<ITab>) => void;
 };
 
-const ProjectEditTab: FC<Props & InjectedIntlProps> = ({
+const ProjectEditTab: FC<Props & WrappedComponentProps> = ({
   onData,
   intl: { formatMessage },
 }) => {

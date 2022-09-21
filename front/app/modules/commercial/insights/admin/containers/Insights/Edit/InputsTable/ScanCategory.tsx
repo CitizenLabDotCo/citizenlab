@@ -7,7 +7,7 @@ import { fontSizes, colors } from 'utils/styleUtils';
 // intl
 import messages from '../../messages';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps, MessageDescriptor } from 'react-intl';
+import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -70,7 +70,7 @@ type ScanCategoryProps = {
   triggerScan: () => void;
   onClose: () => void;
   cancelScan: () => void;
-} & InjectedIntlProps;
+} & WrappedComponentProps;
 
 const ScanCategory = ({
   intl: { formatMessage },
