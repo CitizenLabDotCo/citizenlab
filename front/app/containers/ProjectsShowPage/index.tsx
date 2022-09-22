@@ -1,4 +1,4 @@
-import React, { memo, useMemo } from 'react';
+import React, { memo, useEffect, useMemo, useState } from 'react';
 import { isError } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
@@ -16,6 +16,7 @@ import ContinuousVolunteering from './continuous/Volunteering';
 import TimelineContainer from './timeline';
 import { Spinner } from '@citizenlab/cl2-component-library';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
+import Modal from 'components/UI/Modal';
 
 // hooks
 import useLocale from 'hooks/useLocale';
@@ -83,6 +84,18 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
     ? project.attributes.process_type
     : undefined;
 
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const showModal = queryParams.get('show_modal');
+    if (!isNilOrError(showModal)) {
+      setTimeout(() => {
+        setShowModal(JSON.parse(showModal));
+      }, 1500);
+      clHistory.replace(window.location.pathname);
+    }
+  }, []);
+
+  const [showModal, setShowModal] = useState(false);
   const locale = useLocale();
   const tenant = useAppConfiguration();
   const phases = usePhases(projectId);
@@ -137,6 +150,15 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
           projectId={projectId}
           scrollToEventId={scrollToEventId}
         />
+        <Modal
+          opened={showModal}
+          close={() => {
+            setShowModal(false);
+          }}
+          hasSkipButton={false}
+        >
+          <h1>Modal Content</h1>
+        </Modal>
       </ContentWrapper>
     );
   }

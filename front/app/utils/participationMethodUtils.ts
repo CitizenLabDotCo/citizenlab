@@ -1,19 +1,33 @@
 import { ParticipationMethod } from 'services/participationContexts';
 import { IPhaseData } from 'services/phases';
 import { IProjectData } from 'services/projects';
+import clHistory from 'utils/cl-router/history';
 
 type ParticipationMethodConfig = {
   /** We currently have 2 UIs for admins to edit the form definition. This
    * defines which UI, if any, the method uses */
   formEditor: 'simpleFormEditor' | 'surveyEditor' | null;
+  onFormSubmission?: any;
 };
 
 const ideationConfig: ParticipationMethodConfig = {
   formEditor: 'simpleFormEditor',
+  onFormSubmission: (_project, _ideaId, _idea) => {
+    clHistory.push({
+      pathname: `/ideas/${_idea.data.attributes.slug}`,
+      search: `?new_idea_id=${_ideaId}`,
+    });
+  },
 };
 
 const nativeSurveyConfig: ParticipationMethodConfig = {
   formEditor: 'surveyEditor',
+  onFormSubmission: (_project, _ideaId, _idea) => {
+    clHistory.push({
+      pathname: `/projects/${_project?.attributes.slug}`,
+      search: `?show_modal=true`,
+    });
+  },
 };
 
 const informationConfig: ParticipationMethodConfig = {

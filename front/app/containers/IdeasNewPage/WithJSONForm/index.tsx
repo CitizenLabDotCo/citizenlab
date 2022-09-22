@@ -28,6 +28,8 @@ import { geocode, reverseGeocode } from 'utils/locationTools';
 // for getting inital state from previous page
 import { parse } from 'qs';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
+import { getLatestRelevantPhase } from 'services/phases';
+import { getMethodConfig } from 'utils/participationMethodUtils';
 
 const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
@@ -113,10 +115,23 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
     });
     const ideaId = idea.data.id;
 
-    clHistory.push({
-      pathname: `/ideas/${idea.data.attributes.slug}`,
-      search: `?new_idea_id=${ideaId}`,
-    });
+    // Check ParticipationMethodConfig for form submission action
+    if (!isNilOrError(phases)) {
+      const phaseParticipationMethod =
+        getLatestRelevantPhase(phases)?.attributes.participation_method;
+      if (!isNilOrError(phaseParticipationMethod)) {
+        getMethodConfig(phaseParticipationMethod).onFormSubmission(
+          project,
+          ideaId,
+          idea
+        );
+      }
+    }
+    if (!isNilOrError(project)) {
+      getMethodConfig(
+        project?.attributes.participation_method
+      ).onFormSubmission(project, ideaId, idea);
+    }
   };
 
   const getApiErrorMessage: ApiErrorGetter = useCallback(
