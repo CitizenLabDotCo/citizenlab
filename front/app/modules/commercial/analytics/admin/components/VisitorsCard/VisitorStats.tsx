@@ -39,7 +39,7 @@ const VisitorStats = ({
   const bottomLabel = formatMessage(BOTTOM_LABEL_COPY[resolution]);
 
   return (
-    <Box display="flex" flexDirection="row" pl="20px">
+    <>
       <Box>
         <Statistic
           name={formatMessage(messages.visitors)}
@@ -72,7 +72,7 @@ const VisitorStats = ({
           />
         </Box>
       </Box>
-    </Box>
+    </>
   );
 };
 

@@ -20,8 +20,13 @@ interface Props {
 const VisitorsCard = ({ resolution }: Props) => (
   <GraphCard title={<FormattedMessage {...messages.visitors} />}>
     <Box width="100%" display="flex" flexDirection="row">
-      <VisitorStats resolution={resolution} />
-      <Chart resolution={resolution} />
+      <Box display="flex" flexDirection="row" pl="20px">
+        <VisitorStats resolution={resolution} />
+      </Box>
+
+      <Box flexGrow={1}>
+        <Chart resolution={resolution} />
+      </Box>
     </Box>
   </GraphCard>
 );

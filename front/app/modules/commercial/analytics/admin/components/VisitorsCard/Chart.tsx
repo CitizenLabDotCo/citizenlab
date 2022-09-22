@@ -53,7 +53,7 @@ const Chart = ({
   };
 
   return (
-    <Box flexGrow={1} pt="2px" pl="52px">
+    <Box pt="12px" minHeight="300px" width="100%" maxWidth="900px">
       <LineChart
         width="100%"
         height="100%"
