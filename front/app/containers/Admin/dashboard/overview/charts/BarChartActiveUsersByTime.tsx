@@ -5,7 +5,6 @@ import { isEmpty } from 'lodash-es';
 // intl
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import moment from 'moment';
 
 // typings
 import { IStreamParams, IStream } from 'utils/streams';
@@ -26,7 +25,7 @@ import { Popup } from 'semantic-ui-react';
 import { Icon } from '@citizenlab/cl2-component-library';
 
 // utils
-import { toThreeLetterMonth } from 'utils/dateUtils';
+import { toThreeLetterMonth, toFullMonth } from 'utils/dateUtils';
 
 // styling
 import styled from 'styled-components';
@@ -182,11 +181,9 @@ class BarChartActiveUsersByTime extends React.PureComponent<
   };
 
   formatLabel = (date: string) => {
-    const { resolution } = this.props;
-    return moment
-      .utc(date, 'YYYY-MM-DD')
-      .format(resolution === 'month' ? 'MMMM YYYY' : 'MMMM DD, YYYY');
+    return toFullMonth(date, this.props.resolution);
   };
+
   render() {
     const { className, graphTitle, infoMessage } = this.props;
     const { serie } = this.state;

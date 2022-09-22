@@ -6,7 +6,6 @@ import { map, isEmpty } from 'lodash-es';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
-import moment from 'moment';
 
 // typings
 import { IStreamParams, IStream } from 'utils/streams';
@@ -53,7 +52,7 @@ import styled from 'styled-components';
 import { legacyColors, sizes } from 'components/admin/Graphs/styling';
 
 // utils
-import { toThreeLetterMonth } from 'utils/dateUtils';
+import { toThreeLetterMonth, toFullMonth } from 'utils/dateUtils';
 
 const InfoIcon = styled(Icon)`
   display: flex;
@@ -224,10 +223,7 @@ class LineBarChart extends React.PureComponent<
   };
 
   formatLabel = (date: string) => {
-    const { resolution } = this.props;
-    return moment
-      .utc(date, 'YYYY-MM-DD')
-      .format(resolution === 'month' ? 'MMMM YYYY' : 'MMMM DD, YYYY');
+    return toFullMonth(date, this.props.resolution);
   };
 
   formatSerieChange = (serieChange: number) => {

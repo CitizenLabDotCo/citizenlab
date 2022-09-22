@@ -81,3 +81,9 @@ export function toThreeLetterMonth(date: string, resolution: IResolution) {
     .utc(date, 'YYYY-MM-DD')
     .format(resolution === 'month' ? 'MMM' : 'DD MMM');
 }
+
+export function toFullMonth(date: string, resolution: IResolution) {
+  return moment
+    .utc(date, 'YYYY-MM-DD')
+    .format(resolution === 'month' ? 'MMMM YYYY' : 'MMMM DD, YYYY');
+}

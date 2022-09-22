@@ -47,10 +47,9 @@ import { IResolution } from 'components/admin/ResolutionControl';
 import messages from '../../messages';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import moment from 'moment';
 
 // utils
-import { toThreeLetterMonth } from 'utils/dateUtils';
+import { toThreeLetterMonth, toFullMonth } from 'utils/dateUtils';
 
 type ISerie = {
   cumulatedTotal: number;
@@ -210,10 +209,7 @@ class LineBarChartVotesByTime extends React.PureComponent<
   };
 
   formatLabel = (date: string) => {
-    const { resolution } = this.props;
-    return moment
-      .utc(date, 'YYYY-MM-DD')
-      .format(resolution === 'month' ? 'MMMM YYYY' : 'MMMM DD, YYYY');
+    return toFullMonth(date, this.props.resolution);
   };
 
   formatSerieChange = (serieChange: number) => {
