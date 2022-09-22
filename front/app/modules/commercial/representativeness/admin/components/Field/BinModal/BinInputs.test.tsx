@@ -3,7 +3,6 @@ import { fireEvent, render, screen } from 'utils/testUtils/rtl';
 import BinInputs from './BinInputs';
 
 jest.mock('services/appConfiguration');
-jest.mock('utils/cl-intl');
 
 const bins = [18, 25, 35, 55, null];
 

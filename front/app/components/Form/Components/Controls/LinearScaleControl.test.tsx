@@ -4,7 +4,6 @@ import { render, screen } from 'utils/testUtils/rtl';
 
 import LinearScaleControl from './LinearScaleControl';
 
-jest.mock('utils/cl-intl');
 jest.mock('services/locale');
 
 const intl = getDummyIntlObject();

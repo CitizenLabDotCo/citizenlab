@@ -7,7 +7,7 @@ import { NotificationMenu } from './';
 import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // mock utilities
-jest.mock('utils/cl-intl');
+
 jest.mock('utils/analytics', () => ({ trackEventByName: () => {} }));
 
 import { makeUser } from 'services/__mocks__/users';

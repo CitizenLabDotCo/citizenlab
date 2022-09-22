@@ -3,8 +3,6 @@ import eventEmitter from 'utils/eventEmitter';
 import { fireEvent, render, screen } from 'utils/testUtils/rtl';
 import CookiePolicy from '../CookiePolicy';
 
-jest.mock('utils/cl-intl');
-
 jest.mock('utils/eventEmitter');
 jest.mock('hooks/useAppConfiguration', () => () => ({
   data: { attributes: { name: 'orgName' } },

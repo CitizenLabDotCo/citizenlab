@@ -11,8 +11,6 @@ const schema = object({
   multiSelect: array().required('Error message'),
 });
 
-jest.mock('utils/cl-intl');
-
 const onSubmit = jest.fn();
 
 const Form = () => {

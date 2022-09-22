@@ -6,7 +6,6 @@ jest.mock('modules/commercial/insights/services/insightsViews', () => ({
   addInsightsView: jest.fn(),
 }));
 
-jest.mock('utils/cl-intl');
 jest.mock('utils/cl-router/Link', () => 'Link');
 jest.mock('resources/GetProjects', () => {});
 jest.mock('hooks/useLocalize');

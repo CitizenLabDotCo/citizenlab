@@ -9,7 +9,6 @@ import { CommentDeletedByAdminNotification } from './';
 // mock utilities
 import { getIdea } from 'services/__mocks__/ideas';
 
-jest.mock('utils/cl-intl');
 jest.mock('utils/analytics', () => ({ trackEventByName: () => {} }));
 jest.mock('modules', () => ({ streamsToReset: [] }));
 

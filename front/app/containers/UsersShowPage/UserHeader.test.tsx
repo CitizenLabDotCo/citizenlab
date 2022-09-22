@@ -7,7 +7,7 @@ import { shallow } from 'enzyme';
 import { UserHeader } from './UserHeader';
 
 // mock utilities
-jest.mock('utils/cl-intl');
+
 jest.mock('services/comments');
 jest.mock('modules', () => ({ streamsToReset: [] }));
 

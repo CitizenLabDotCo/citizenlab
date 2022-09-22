@@ -11,8 +11,6 @@ let mockDetectedCategoriesData = categories;
 
 const viewId = '1';
 
-jest.mock('utils/cl-intl');
-
 jest.mock('modules/commercial/insights/services/insightsCategories', () => ({
   addInsightsCategory: jest.fn(),
   deleteInsightsCategories: jest.fn(),

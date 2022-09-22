@@ -7,8 +7,6 @@ import TableTitle from './TableTitle';
 
 const mockData = categories;
 
-jest.mock('utils/cl-intl');
-
 jest.mock('modules/commercial/insights/services/insightsCategories', () => ({
   addInsightsCategory: jest.fn(),
   deleteInsightsCategory: jest.fn(),
