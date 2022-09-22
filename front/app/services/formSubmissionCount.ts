@@ -6,10 +6,6 @@ export interface IFormSubmissionCountData {
   totalSubmissions: string;
 }
 
-export interface FormSubmissionCountData {
-  totalSubmissions: string;
-}
-
 export interface IFormSubmissionCount {
   data: IFormSubmissionCountData;
 }
@@ -28,6 +24,7 @@ export function formSubmissionCountStream(
   } else {
     return streams.get<IFormSubmissionCount>({
       apiEndpoint: `${API_PATH}/projects/${projectId}/submission_count`,
+      cacheStream: false,
       ...streamParams,
     });
   }
