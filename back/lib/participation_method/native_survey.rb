@@ -11,6 +11,5 @@ module ParticipationMethod
       new_slug = SlugService.new.generate_slug input, input.id
       input.update_column :slug, new_slug
     end
-    end
   end
 end
