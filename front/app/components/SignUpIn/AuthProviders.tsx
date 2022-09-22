@@ -53,7 +53,7 @@ interface DataProps {
   googleLoginEnabled: boolean | null;
   passwordLoginEnabled: boolean | null;
   tenant: GetAppConfigurationChildProps;
-  viennaLoginEnabled: boolean | null;
+  viennaCitizenLoginEnabled: boolean | null;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -73,7 +73,7 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
     onAuthProviderSelected,
     passwordLoginEnabled,
     tenant,
-    viennaLoginEnabled,
+    viennaCitizenLoginEnabled,
   }) => {
     const { flow, inModal, noPushLinks } = metaData;
     const azureProviderName = !isNilOrError(tenant)
@@ -87,7 +87,7 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
         isBoolean(facebookLoginEnabled) &&
         isBoolean(azureAdLoginEnabled) &&
         isBoolean(franceconnectLoginEnabled) &&
-        isBoolean(viennaLoginEnabled)
+        isBoolean(viennaCitizenLoginEnabled)
       ) {
         const enabledProviders = [
           passwordLoginEnabled,
@@ -95,7 +95,7 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
           facebookLoginEnabled,
           azureAdLoginEnabled,
           franceconnectLoginEnabled,
-          viennaLoginEnabled,
+          viennaCitizenLoginEnabled,
         ].filter((provider) => provider === true);
 
         if (enabledProviders.length === 1 && passwordLoginEnabled) {
@@ -108,7 +108,7 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
       facebookLoginEnabled,
       azureAdLoginEnabled,
       franceconnectLoginEnabled,
-      viennaLoginEnabled,
+      viennaCitizenLoginEnabled,
       onAuthProviderSelected,
     ]);
 
@@ -250,7 +250,7 @@ const Data = adopt<DataProps>({
   franceconnectLoginEnabled: <GetFeatureFlag name="franceconnect_login" />,
   googleLoginEnabled: <GetFeatureFlag name="google_login" />,
   passwordLoginEnabled: <GetFeatureFlag name="password_login" />,
-  viennaLoginEnabled: <GetFeatureFlag name="vienna_login" />,
+  viennaCitizenLoginEnabled: <GetFeatureFlag name="vienna_citizen_login" />,
 });
 
 export default (inputProps: InputProps) => (

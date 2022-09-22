@@ -252,10 +252,13 @@ resource 'Idea Custom Fields' do
             custom_fields: [
               # Inserted field first to test reordering of fields.
               {
-                input_type: 'text',
+                input_type: 'linear_scale',
                 title_multiloc: { 'en' => 'Inserted field' },
                 required: false,
-                enabled: false
+                enabled: false,
+                maximum: 7,
+                minimum_label_multiloc: { 'en' => 'Disagree' },
+                maximum_label_multiloc: { 'en' => 'Agree' }
               },
               {
                 id: field_to_update.id,
@@ -276,12 +279,15 @@ resource 'Idea Custom Fields' do
               created_at: an_instance_of(String),
               description_multiloc: {},
               enabled: false,
-              input_type: 'text',
+              input_type: 'linear_scale',
               key: 'inserted_field',
               ordering: 0,
               required: false,
               title_multiloc: { en: 'Inserted field' },
-              updated_at: an_instance_of(String)
+              updated_at: an_instance_of(String),
+              maximum: 7,
+              minimum_label_multiloc: { en: 'Disagree' },
+              maximum_label_multiloc: { en: 'Agree' }
             },
             id: an_instance_of(String),
             type: 'custom_field',
