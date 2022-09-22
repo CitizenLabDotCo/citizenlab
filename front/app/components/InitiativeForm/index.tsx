@@ -22,8 +22,12 @@ import Link from 'utils/cl-router/Link';
 
 // intl
 import messages from './messages';
-import { WrappedComponentProps, injectIntl } from 'react-intl';
-import { IMessageInfo, FormattedMessage } from 'utils/cl-intl';
+import {
+  WrappedComponentProps,
+  injectIntl,
+  MessageDescriptor,
+} from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // typings
 import { Multiloc, Locale, UploadFile } from 'typings';
@@ -86,7 +90,11 @@ interface State {
     [key in keyof FormValues]?: boolean | undefined;
   };
   errors: {
-    [key in keyof FormValues]?: IMessageInfo | undefined;
+    [key in keyof FormValues]?:
+      | {
+          message: MessageDescriptor;
+        }
+      | undefined;
   };
 }
 
