@@ -5,6 +5,9 @@ import { Box, Icon } from '@citizenlab/cl2-component-library';
 import { Tooltip } from 'recharts';
 import TooltipOutline from 'components/admin/Graphs/utilities/TooltipOutline';
 
+// styling
+import { colors } from 'components/admin/Graphs/styling';
+
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -61,6 +64,7 @@ const renderTooltip = (resolution: IResolution) => (props) =>
   (
     <Tooltip
       {...props}
+      cursor={{ stroke: colors.gridHoverColor }}
       content={(props) => (
         <CustomTooltip
           label={props.label}

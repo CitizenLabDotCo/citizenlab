@@ -19,6 +19,9 @@ import Container from '../_components/Container';
 import EmptyState from '../_components/EmptyState';
 import Legend from '../_components/Legend';
 
+// styling
+import { colors } from '../styling';
+
 // utils
 import { getLineConfigs } from './utils';
 import { hasNoData, getTooltipConfig, parseMargin } from '../utils';
@@ -118,6 +121,7 @@ const LineChart = <Row,>({
           <CartesianGrid
             horizontal={!!grid.horizontal}
             vertical={!!grid.vertical}
+            stroke={colors.gridColor}
           />
         )}
 
