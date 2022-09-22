@@ -6,16 +6,14 @@ import {
 } from '../typings';
 
 // PROPS
-export interface Props<Row> extends BaseProps<Row, Payload<Row>> {
+export interface Props<Row> extends BaseProps<Row, Payload> {
   mapping: Mapping<Row>;
   lines?: Lines;
   xaxis?: AxisProps;
   yaxis?: AxisProps;
 }
 
-interface Payload<Row> {
-  row: Row;
-  rowIndex: number;
+interface Payload {
   lineIndex: number;
 }
 

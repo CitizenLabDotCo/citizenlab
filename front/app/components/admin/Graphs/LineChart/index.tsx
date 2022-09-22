@@ -45,9 +45,9 @@ const LineChart = <Row,>({
   innerRef,
   xaxis,
   yaxis,
-}: // onMouseOver,
-// onMouseOut,
-Props<Row>) => {
+  onMouseOver,
+  onMouseOut,
+}: Props<Row>) => {
   const [graphDimensions, setGraphDimensions] = useState<
     GraphDimensions | undefined
   >();
@@ -63,6 +63,16 @@ Props<Row>) => {
   if (typeof x === 'symbol') return null;
 
   const lineConfigs = getLineConfigs(mapping, lines);
+
+  const handleMouseOver =
+    (lineIndex: number) => (_, event: React.MouseEvent) => {
+      onMouseOver && onMouseOver({ lineIndex }, event);
+    };
+
+  const handleMouseOut =
+    (lineIndex: number) => (_, event: React.MouseEvent) => {
+      onMouseOut && onMouseOut({ lineIndex }, event);
+    };
 
   return (
     <Container
@@ -105,6 +115,8 @@ Props<Row>) => {
             animationDuration={animation.duration}
             animationBegin={animation.begin}
             key={lineIndex}
+            onMouseOver={handleMouseOver(lineIndex)}
+            onMouseOut={handleMouseOut(lineIndex)}
           />
         ))}
 
