@@ -14,7 +14,7 @@ import { UploadFile } from 'typings';
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 const Container = styled.div<{ error: boolean }>`
   display: flex;
@@ -83,7 +83,7 @@ const FileDisplay = ({
   file,
   intl: { formatMessage },
   onDeleteClick,
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const { error, url, filename, size } = file;
   return (
     <Container error={!!file.error}>

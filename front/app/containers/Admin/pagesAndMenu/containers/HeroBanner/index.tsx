@@ -34,7 +34,7 @@ import Outlet from 'components/Outlet';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -69,7 +69,7 @@ const BgHeaderPreviewSelect = styled(Select)`
   margin-bottom: 20px;
 `;
 
-const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+const HeroBannerForm = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const theme: any = useTheme();
   const homepageSettings = useHomepageSettings();
 

@@ -14,7 +14,7 @@ import messages from '../messages';
 // components
 import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 const Container = styled.div`
   background-color: ${colors.adminContentBackground};
@@ -40,7 +40,7 @@ interface Props {
 const EmptyState = ({
   openCreateModal,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   return (
     <Container data-testid="insightsListEmptyState">
       <div>

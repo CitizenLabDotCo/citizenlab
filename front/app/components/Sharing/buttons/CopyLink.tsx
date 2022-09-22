@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 import { Button, Box } from '@citizenlab/cl2-component-library';
 
@@ -15,7 +15,7 @@ interface Props {
 const CopyLink = ({
   copyLink,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const [linkIsCopied, setLinkCopied] = useState(false);
 
   const handleClick = () => () => {

@@ -23,7 +23,7 @@ import localize, { InjectedLocalized } from 'utils/localize';
 import { timeAgo } from 'utils/dateUtils';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
@@ -283,7 +283,7 @@ const ideaSource = {
       id: props.idea.id,
     };
   },
-  endDrag(props: Props & InjectedIntlProps & InjectedLocalized, monitor) {
+  endDrag(props: Props & WrappedComponentProps & InjectedLocalized, monitor) {
     const item = monitor.getItem();
     const dropResult = monitor.getDropResult();
     const { selection } = props;

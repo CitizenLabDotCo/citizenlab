@@ -160,7 +160,7 @@ const DropdownFooterButton = styled(Button)`
 // Typings
 import { CLErrorsJSON } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 interface InputProps {
   groupType?: MembershipType;
@@ -184,7 +184,10 @@ interface State {
   processing: boolean;
 }
 
-class UserTableActions extends PureComponent<Props & InjectedIntlProps, State> {
+class UserTableActions extends PureComponent<
+  Props & WrappedComponentProps,
+  State
+> {
   constructor(props) {
     super(props);
     this.state = {

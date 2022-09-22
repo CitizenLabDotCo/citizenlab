@@ -4,8 +4,9 @@ import { currentAppConfigurationStream } from 'services/appConfiguration';
 import {
   // eslint-disable-next-line no-restricted-imports
   injectIntl as originalInjectIntl,
-  InjectedIntlProps,
+  WrappedComponentProps,
   InjectIntlConfig,
+  MessageDescriptor,
 } from 'react-intl';
 import { localeStream } from 'services/locale';
 import { getLocalized } from 'utils/i18n';
@@ -19,10 +20,10 @@ type State = {
 };
 
 function buildComponent<P>(
-  Component: React.ComponentType<P & InjectedIntlProps>
+  Component: React.ComponentType<P & WrappedComponentProps>
 ) {
   return class NewFormatMessageComponent extends PureComponent<
-    P & InjectedIntlProps,
+    P & WrappedComponentProps,
     State
   > {
     subscriptions: Subscription[];
@@ -69,7 +70,7 @@ function buildComponent<P>(
     }
 
     formatMessageReplacement = (
-      messageDescriptor: ReactIntl.FormattedMessage.MessageDescriptor,
+      messageDescriptor: MessageDescriptor,
       values?: { [key: string]: string | number | boolean | Date } | undefined
     ) => {
       return this.props.intl.formatMessage(messageDescriptor, {
@@ -99,11 +100,11 @@ function buildComponent<P>(
 }
 
 export default function injectIntl<P>(
-  component: React.ComponentType<P & InjectedIntlProps>,
+  component: React.ComponentType<P & WrappedComponentProps>,
   options?: InjectIntlConfig
 ) {
-  return originalInjectIntl<P & InjectedIntlProps>(
-    buildComponent<P & InjectedIntlProps>(component),
+  return originalInjectIntl<P & WrappedComponentProps>(
+    buildComponent<P & WrappedComponentProps>(component),
     options
   );
 }

@@ -9,11 +9,7 @@ import {
   isRtl,
 } from 'utils/styleUtils';
 import { FormattedMessage, IMessageInfo } from 'utils/cl-intl';
-import {
-  Messages,
-  // eslint-disable-next-line no-restricted-imports
-  FormattedMessage as OriginalFormattedMessage,
-} from 'react-intl';
+import { MessageDescriptor } from 'react-intl';
 import messages from './messages';
 import { isString } from 'utils/helperUtils';
 import {
@@ -71,7 +67,7 @@ const StyledSpan = styled.span`
 `;
 
 interface FormSectionTitleProps extends IMessageInfo {
-  subtitleMessage?: Messages['key'];
+  subtitleMessage?: MessageDescriptor;
 }
 
 export const FormSectionTitle = memo(
@@ -155,14 +151,14 @@ interface FormLabelGenericProps {
   noSpace?: boolean;
   optional?: boolean;
   iconName?: IconNames;
-  subtextMessage?: Messages['key'];
+  subtextMessage?: MessageDescriptor;
   subtextMessageValues?: OriginalFormattedMessage.Props['values'];
   subtextValue?: JSX.Element | string;
   subtextSupportsHtml?: boolean;
 }
 
 interface FormLabelPropsMessages extends FormLabelGenericProps {
-  labelMessage: Messages['key'];
+  labelMessage: MessageDescriptor;
   labelMessageValues?: OriginalFormattedMessage.Props['values'];
 }
 
