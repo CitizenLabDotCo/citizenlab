@@ -33,6 +33,14 @@ module.exports = function (api) {
     ],
     '@babel/plugin-transform-modules-commonjs',
     '@babel/plugin-transform-runtime',
+    // https://formatjs.io/docs/tooling/babel-plugin/
+    [
+      'formatjs',
+      {
+        removeDefaultMessage: true,
+        ast: true,
+      },
+    ],
   ];
 
   const env = {
