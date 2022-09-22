@@ -39,7 +39,7 @@ exports[`<FormOptionRow /> matches the snapshot 1`] = `
     className="e2e-form-option-save"
     onClick={[Function]}
   >
-    <FormattedMessage
+    <MemoizedFormattedMessage
       defaultMessage="Save"
       id="app.containers.AdminPage.ProjectEdit.PollTab.saveOption"
     />
@@ -49,7 +49,7 @@ exports[`<FormOptionRow /> matches the snapshot 1`] = `
     className="e2e-form-option-cancel"
     onClick={[MockFunction]}
   >
-    <FormattedMessage
+    <MemoizedFormattedMessage
       defaultMessage="Cancel"
       id="app.containers.AdminPage.ProjectEdit.PollTab.cancelOption"
     />
