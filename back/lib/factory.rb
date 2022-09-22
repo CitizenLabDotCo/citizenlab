@@ -6,22 +6,25 @@ class Factory
     @instance ||= new
   end
 
-  def participation_method_for(project)
-    participation_context = ::ParticipationContextService.new.get_participation_context(project)
-    return ::ParticipationMethod::Ideation.new(project) unless participation_context
-
-    participation_method = participation_context.participation_method
-    method_class = case participation_method
-    # when 'ideation'
-    #   ::ParticipationMethod::Ideation
+  def participation_method_for(participation_context)
+    case participation_context&.participation_method
+    when 'information'
+      ::ParticipationMethod::Information.new(participation_context)
+    when 'ideation'
+      ::ParticipationMethod::Ideation.new(participation_context)
+    when 'survey'
+      ::ParticipationMethod::Survey.new(participation_context)
     when 'budgeting'
-      ::ParticipationMethod::Budgeting
+      ::ParticipationMethod::Budgeting.new(participation_context)
+    when 'poll'
+      ::ParticipationMethod::Poll.new(participation_context)
+    when 'volunteering'
+      ::ParticipationMethod::Volunteering.new(participation_context)
     when 'native_survey'
-      ::ParticipationMethod::NativeSurvey
-    else # TODO: Introduce participation method for every participation_method
-      ::ParticipationMethod::Ideation
+      ::ParticipationMethod::NativeSurvey.new(participation_context)
+    else
+      ::ParticipationMethod::None.new
     end
-    method_class.new(project)
   end
 
   private_class_method :new
