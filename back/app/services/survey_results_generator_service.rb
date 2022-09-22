@@ -9,7 +9,11 @@ class SurveyResultsGeneratorService < FieldVisitorService
     @locales = AppConfiguration.instance.settings('core', 'locales')
   end
 
-  def generate
+  def generate_submission_count
+    { data: { totalSubmissions: inputs.size } }
+  end
+
+  def generate_results
     results = fields.filter_map do |field|
       visit field
     end
