@@ -12,7 +12,7 @@ import Modal from 'components/UI/Modal';
 import SpamReportForm from 'containers/SpamReport';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from '../messages';
 import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'react-intl';

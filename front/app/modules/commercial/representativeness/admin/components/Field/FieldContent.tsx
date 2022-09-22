@@ -17,7 +17,7 @@ import { colors } from 'utils/styleUtils';
 
 // i18n
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 
 // utils
 import { isSubmittingAllowed, FormValues } from '../../utils/form';

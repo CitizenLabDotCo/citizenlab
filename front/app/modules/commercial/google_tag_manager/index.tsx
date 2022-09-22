@@ -4,7 +4,7 @@ import {
   registerDestination,
 } from 'components/ConsentManager/destinations';
 import { initializeFor } from 'utils/analytics';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 import { combineLatest } from 'rxjs';
 import { currentAppConfigurationStream } from 'services/appConfiguration';

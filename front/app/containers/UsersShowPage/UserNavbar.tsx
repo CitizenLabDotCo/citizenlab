@@ -15,7 +15,7 @@ import { Icon } from '@citizenlab/cl2-component-library';
 import { UserTab } from './';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 const UserNavbarWrapper = styled.div`

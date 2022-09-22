@@ -37,7 +37,7 @@ import GetFeatureFlag from 'resources/GetFeatureFlag';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import { injectIntl } from 'react-intl';
 import messages from './messages';
 
@@ -578,7 +578,10 @@ class PasswordSignup extends PureComponent<
           >
             {isInvitation && !this.props.metaData.token && (
               <FormElement id="e2e-token-container">
-                <FormLabel labelText={formatMessage(messages.tokenLabel)} htmlFor="token" />
+                <FormLabel
+                  labelText={formatMessage(messages.tokenLabel)}
+                  htmlFor="token"
+                />
                 <Input
                   id="token"
                   type="text"
@@ -649,7 +652,7 @@ class PasswordSignup extends PureComponent<
                   isPhoneSignupEnabled
                     ? messages.emailOrPhoneLabel
                     : messages.emailLabel
-    )}
+                )}
                 htmlFor="email"
               />
               <Input

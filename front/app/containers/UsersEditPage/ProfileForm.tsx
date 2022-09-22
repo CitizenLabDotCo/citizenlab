@@ -39,7 +39,7 @@ import QuillEditor from 'components/UI/QuillEditor';
 import { appLocalePairs, API_PATH } from 'containers/App/constants';
 import messages from './messages';
 import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import { injectIntl } from 'react-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
 
@@ -329,7 +329,10 @@ class ProfileForm extends PureComponent<Props, State> {
           </SectionField>
 
           <SectionField>
-            <FormLabel htmlFor="firstName" labelText={formatMessage(messages.firstNames)} />
+            <FormLabel
+              htmlFor="firstName"
+              labelText={formatMessage(messages.firstNames)}
+            />
             <InputContainer>
               <Input
                 type="text"
@@ -352,7 +355,10 @@ class ProfileForm extends PureComponent<Props, State> {
           </SectionField>
 
           <SectionField>
-            <FormLabel htmlFor="lastName" labelText={formatMessage(messages.lastName)} />
+            <FormLabel
+              htmlFor="lastName"
+              labelText={formatMessage(messages.lastName)}
+            />
             <InputContainer id="e2e-last-name-input">
               <Input
                 type="text"
@@ -375,7 +381,10 @@ class ProfileForm extends PureComponent<Props, State> {
           </SectionField>
 
           <SectionField>
-            <FormLabel htmlFor="email" labelText={formatMessage(messages.email)} />
+            <FormLabel
+              htmlFor="email"
+              labelText={formatMessage(messages.email)}
+            />
             <InputContainer>
               <Input
                 type="email"
@@ -400,7 +409,10 @@ class ProfileForm extends PureComponent<Props, State> {
 
           {!disableBio && (
             <SectionField>
-              <FormLabel labelText={formatMessage(messages.bio)} id="label-bio" />
+              <FormLabel
+                labelText={formatMessage(messages.bio)}
+                id="label-bio"
+              />
               <QuillEditor
                 id="bio_multiloc"
                 noImages={true}
@@ -439,7 +451,10 @@ class ProfileForm extends PureComponent<Props, State> {
           </SectionField>
 
           <SectionField>
-            <FormLabel htmlFor="language" labelText={formatMessage(messages.language)} />
+            <FormLabel
+              htmlFor="language"
+              labelText={formatMessage(messages.language)}
+            />
             <Select
               id="language"
               onChange={createChangeHandler('locale')}

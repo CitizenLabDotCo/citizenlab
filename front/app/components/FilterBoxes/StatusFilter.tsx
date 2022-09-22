@@ -3,7 +3,7 @@ import { capitalize, get } from 'lodash-es';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // components

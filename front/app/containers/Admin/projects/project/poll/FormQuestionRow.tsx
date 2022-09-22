@@ -14,7 +14,7 @@ import GetAppConfigurationLocales, {
 } from 'resources/GetAppConfigurationLocales';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // Typings

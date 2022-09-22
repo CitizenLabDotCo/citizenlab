@@ -12,7 +12,7 @@ import Button from 'components/UI/Button';
 import T from 'components/T';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // typings

@@ -14,7 +14,7 @@ import { ListHeader, HeaderTitle } from '../StyledComponents';
 import Outlet from 'components/Outlet';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from '../messages';
 
 interface Props {}

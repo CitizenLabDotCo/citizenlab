@@ -3,7 +3,7 @@ import IdeasWidget from './IdeasWidget';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
 
 import messages from '../messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 
 export default class AdminSettingsWidgets extends PureComponent {
   render() {

@@ -23,7 +23,7 @@ import FormQuestionRow from './FormQuestionRow';
 import OptionForm from './OptionForm';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // Typings

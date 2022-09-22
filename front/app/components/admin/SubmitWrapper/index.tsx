@@ -7,7 +7,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import styled, { css } from 'styled-components';
 
 // components
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import Button, {
   ButtonStyles,
   Props as OriginalButtonProps,

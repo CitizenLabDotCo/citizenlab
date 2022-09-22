@@ -8,7 +8,7 @@ import Survey from '../shared/survey';
 import usePhase from 'hooks/usePhase';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from 'containers/ProjectsShowPage/messages';
 
 // styling

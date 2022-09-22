@@ -28,7 +28,7 @@ import useProjectImages from 'hooks/useProjectImages';
 // i18n
 import T from 'components/T';
 import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import { injectIntl } from 'react-intl';
 import messages from './messages';
 

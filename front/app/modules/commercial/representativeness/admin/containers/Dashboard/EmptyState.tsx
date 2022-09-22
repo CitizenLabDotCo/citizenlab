@@ -10,7 +10,7 @@ import Button from 'components/UI/Button';
 
 // i18n
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 
 // styling
 import styled from 'styled-components';

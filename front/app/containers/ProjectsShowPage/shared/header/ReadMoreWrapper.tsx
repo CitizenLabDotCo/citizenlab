@@ -10,7 +10,7 @@ import { useWindowSize, Box } from '@citizenlab/cl2-component-library';
 
 // i18n
 import T from 'components/T';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from 'containers/ProjectsShowPage/messages';
 
 // style

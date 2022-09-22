@@ -20,7 +20,7 @@ import { commentTranslateButtonClicked$ } from './events';
 
 // i18n
 import { getLocalized } from 'utils/i18n';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // Components

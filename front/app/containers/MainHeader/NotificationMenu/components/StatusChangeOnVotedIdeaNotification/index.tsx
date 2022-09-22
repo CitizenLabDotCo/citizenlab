@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { IStatusChangeOnVotedIdeaNotificationData } from 'services/notifications';
 import messages from '../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import T from 'components/T';
 import NotificationWrapper from '../NotificationWrapper';
 import useIdea from 'hooks/useIdea';

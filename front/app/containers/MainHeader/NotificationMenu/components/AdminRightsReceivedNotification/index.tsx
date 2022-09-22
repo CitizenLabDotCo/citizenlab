@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { IAdminRightsReceivedNotificationData } from 'services/notifications';
 import messages from '../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import NotificationWrapper from '../NotificationWrapper';
 
 interface Props {

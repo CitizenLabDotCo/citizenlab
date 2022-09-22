@@ -10,7 +10,7 @@ import { rgba } from 'polished';
 
 // i18n
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 
 // typings
 import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';

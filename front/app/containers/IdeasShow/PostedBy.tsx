@@ -6,7 +6,7 @@ import UserName from 'components/UI/UserName';
 import Avatar from 'components/Avatar';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 import { FormattedDate } from 'react-intl';
 

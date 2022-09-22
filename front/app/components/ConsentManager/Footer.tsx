@@ -1,6 +1,6 @@
 import React, { FormEvent } from 'react';
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import Button from 'components/UI/Button';
 import { ButtonContainer } from './Container';
 import { colors } from 'utils/styleUtils';

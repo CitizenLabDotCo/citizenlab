@@ -5,7 +5,7 @@ import {
   Box,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import { colors } from 'utils/styleUtils';
 import messages from './messages';
 import styled from 'styled-components';

@@ -21,7 +21,7 @@ import {
 import SectionContainer from 'components/SectionContainer';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from 'containers/ProjectsShowPage/messages';
 
 // services

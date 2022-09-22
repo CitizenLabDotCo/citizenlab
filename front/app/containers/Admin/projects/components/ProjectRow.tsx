@@ -5,7 +5,7 @@ import { colors } from 'utils/styleUtils';
 import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from '../messages';
 
 // components

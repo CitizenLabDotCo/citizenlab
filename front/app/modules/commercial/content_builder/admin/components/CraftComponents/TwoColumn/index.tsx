@@ -14,7 +14,7 @@ import { useNode, UserComponent, Element } from '@craftjs/core';
 import Container from '../Container';
 
 // Intl
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from '../../../messages';
 
 type TwoColumnProps = {

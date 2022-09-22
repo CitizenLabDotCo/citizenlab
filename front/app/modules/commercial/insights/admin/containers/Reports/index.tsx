@@ -3,7 +3,7 @@ import { adopt } from 'react-adopt';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 import { PublicationStatus } from 'services/projects';
 import { isNilOrError } from 'utils/helperUtils';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 import { SectionTitle } from 'components/admin/Section';
 import { List, Row } from 'components/admin/ResourceList';

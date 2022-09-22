@@ -24,7 +24,7 @@ import eventEmitter from 'utils/eventEmitter';
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 
 // styles
 import styled from 'styled-components';

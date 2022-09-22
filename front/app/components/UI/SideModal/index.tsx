@@ -13,7 +13,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // Translation
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 
 // style
 import styled from 'styled-components';

@@ -16,7 +16,7 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 // intl
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // hooks

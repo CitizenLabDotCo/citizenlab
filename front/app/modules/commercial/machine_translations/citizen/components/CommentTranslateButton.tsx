@@ -5,7 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import FeatureFlag from 'components/FeatureFlag';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from 'components/PostShowComponents/Comments/messages';
 
 // events

@@ -7,7 +7,7 @@ import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 
 // intl
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from 'containers/Admin/dashboard/messages';
 

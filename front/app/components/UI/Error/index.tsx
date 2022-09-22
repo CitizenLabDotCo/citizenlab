@@ -3,7 +3,7 @@ import { Icon, Box } from '@citizenlab/cl2-component-library';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { isArray, isEmpty, uniqBy } from 'lodash-es';
 import styled from 'styled-components';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import { darken } from 'polished';
 import { CLError, Message } from 'typings';
 import { IInviteError } from 'services/invites';

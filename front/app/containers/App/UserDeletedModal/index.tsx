@@ -1,7 +1,7 @@
 import React from 'react';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 import { injectIntl } from 'react-intl';
 

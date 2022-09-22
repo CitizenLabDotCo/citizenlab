@@ -13,7 +13,7 @@ import Outlet from 'components/Outlet';
 import { ListHeader, HeaderTitle } from '../StyledComponents';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from '../messages';
 
 // services

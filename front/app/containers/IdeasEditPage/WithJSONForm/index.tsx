@@ -11,7 +11,7 @@ import usePhases from 'hooks/usePhases';
 import useInputSchema from 'hooks/useInputSchema';
 import { getInputTerm } from 'services/participationContexts';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from '../messages';
 import ideaFormMessages from 'containers/IdeasNewPage/messages';
 

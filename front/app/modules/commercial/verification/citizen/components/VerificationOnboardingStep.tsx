@@ -17,7 +17,7 @@ import {
 } from 'containers/LandingPage/SignedInHeader';
 import messages from 'containers/LandingPage/messages';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 
 const ShieldIcon = styled(Icon)`
   fill: ${colors.label};

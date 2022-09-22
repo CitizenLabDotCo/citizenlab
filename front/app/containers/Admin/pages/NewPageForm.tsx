@@ -6,7 +6,7 @@ import GoBackButton from 'components/UI/GoBackButton';
 import PageWrapper from 'components/admin/PageWrapper';
 import PageForm, { FormValues } from 'components/PageForm';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 import { createPage } from 'services/pages';

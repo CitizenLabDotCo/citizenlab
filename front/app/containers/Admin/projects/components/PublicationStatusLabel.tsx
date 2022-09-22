@@ -7,7 +7,7 @@ import { StatusLabel } from '@citizenlab/cl2-component-library';
 import { colors } from 'utils/styleUtils';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // types

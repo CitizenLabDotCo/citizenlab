@@ -10,7 +10,7 @@ import { TTextingCampaignStatus } from 'services/textingCampaigns';
 import { StatusLabel } from '@citizenlab/cl2-component-library';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 
 // styling
 import { colors } from 'utils/styleUtils';

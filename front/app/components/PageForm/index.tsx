@@ -18,7 +18,7 @@ import { SectionField } from 'components/admin/Section';
 // intl
 import messages from './messages';
 import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import { injectIntl } from 'react-intl';
 
 // components

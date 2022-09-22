@@ -6,7 +6,7 @@ import { isEqual } from 'lodash-es';
 // resources
 import { isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import {
   injectIntl,
   WrappedComponentProps,

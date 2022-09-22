@@ -40,7 +40,7 @@ import streams from 'utils/streams';
 import { openSignUpInModal } from 'components/SignUpIn/events';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 import FormattedBudget from 'utils/currency/FormattedBudget';
 

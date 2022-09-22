@@ -9,7 +9,7 @@ import ExportButtons from './ExportButtons';
 import styled from 'styled-components';
 
 // typings
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from '../../messages';
 import { ManagerType } from '../../';
 

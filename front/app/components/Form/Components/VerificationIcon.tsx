@@ -1,6 +1,6 @@
 import { IconTooltip } from '@citizenlab/cl2-component-library';
 import React from 'react';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from '../messages';
 
 export default ({ show }: { show: boolean }) => {

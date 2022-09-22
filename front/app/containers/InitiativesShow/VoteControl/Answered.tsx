@@ -12,7 +12,7 @@ import Button from 'components/UI/Button';
 
 import T from 'components/T';
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import useLocalize from 'hooks/useLocalize';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 

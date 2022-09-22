@@ -10,7 +10,7 @@ import PreferencesDialog, { ContentContainer } from './PreferencesDialog';
 import Footer from './Footer';
 import Modal from 'components/UI/Modal';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 import { CategorizedDestinations, IPreferences } from './';

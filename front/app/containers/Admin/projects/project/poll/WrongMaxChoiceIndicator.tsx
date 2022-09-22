@@ -5,7 +5,7 @@ import GetPollOptions, {
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import { StyledIconTooltip, Indicator } from './WrongOptionsIndicator';
 import styled from 'styled-components';
 

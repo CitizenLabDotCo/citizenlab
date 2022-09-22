@@ -14,7 +14,7 @@ import {
 } from './PollForm';
 import { isNilOrError } from 'utils/helperUtils';
 import T from 'components/T';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 const StyledFieldSet = styled.fieldset`

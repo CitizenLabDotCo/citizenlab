@@ -13,7 +13,7 @@ import useEvents from 'hooks/useEvents';
 import useProject from 'hooks/useProject';
 
 // intl
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 interface Props {

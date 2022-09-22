@@ -11,7 +11,7 @@ import GetNotifications, {
   GetNotificationsChildProps,
 } from 'resources/GetNotifications';
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 
 const LoadingContainer = styled.div`
   display: flex;

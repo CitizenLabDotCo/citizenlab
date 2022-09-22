@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 import { transparentize } from 'polished';
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import { Radio } from '@citizenlab/cl2-component-library';
 import { getDestinationConfig, IDestination, TCategory } from './destinations';
 import useAppConfiguration from 'hooks/useAppConfiguration';

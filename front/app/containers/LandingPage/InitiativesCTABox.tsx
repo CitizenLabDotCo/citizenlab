@@ -23,7 +23,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { openSignUpInModal } from 'components/SignUpIn/events';
 
 // intl
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 const Container = styled.div``;

@@ -16,7 +16,7 @@ import { getComponentNameMessage } from '../RenderNode';
 
 // intl
 import messages from '../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 
 // events
 import eventEmitter from 'utils/eventEmitter';

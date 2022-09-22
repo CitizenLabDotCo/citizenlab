@@ -9,7 +9,7 @@ import useNavbarItems from 'hooks/useNavbarItems';
 import useLocalize from 'hooks/useLocalize';
 
 // intl
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // components

@@ -7,7 +7,7 @@ import Project from './Project';
 import Link from 'utils/cl-router/Link';
 
 // intl
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 import useAdminPublications from 'hooks/useAdminPublications';

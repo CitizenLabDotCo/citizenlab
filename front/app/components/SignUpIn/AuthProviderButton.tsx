@@ -7,7 +7,7 @@ import Button from 'components/UI/Button';
 import Consent from 'components/SignUpIn/SignUp/Consent';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // analytics

@@ -5,7 +5,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { get } from 'lodash-es';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';

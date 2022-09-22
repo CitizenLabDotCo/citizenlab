@@ -8,7 +8,7 @@ import Warning from 'components/UI/Warning';
 import FieldInfo, { Props as FieldInfoProps } from './FieldInfo';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // styling

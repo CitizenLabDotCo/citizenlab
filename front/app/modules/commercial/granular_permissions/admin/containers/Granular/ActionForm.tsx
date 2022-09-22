@@ -8,7 +8,7 @@ import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import { Radio } from '@citizenlab/cl2-component-library';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 import permissionsMessages from 'containers/Admin/projects/project/permissions/messages';
 import { IPermissionData } from 'services/actionPermissions';

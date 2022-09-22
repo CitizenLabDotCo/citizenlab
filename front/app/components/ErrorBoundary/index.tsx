@@ -2,7 +2,7 @@
 // https://github.com/facebook/react/issues/10474
 
 import React, { Component } from 'react';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import { injectIntl } from 'react-intl';
 import { withScope, showReportDialog } from '@sentry/browser';
 import messages from './messages';

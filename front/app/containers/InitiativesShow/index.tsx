@@ -63,7 +63,7 @@ import clHistory from 'utils/cl-router/history';
 
 // i18n
 import { WrappedComponentProps, injectIntl } from 'react-intl';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
