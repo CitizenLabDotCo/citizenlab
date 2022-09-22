@@ -42,6 +42,7 @@ const Chart = ({ resolution }: Props) => {
         }}
         lines={{
           strokes: [colors.categorical01, colors.categorical03],
+          activeDot: { r: 4 },
         }}
         grid={{ vertical: true }}
         xaxis={{ tickFormatter: formatTick }}

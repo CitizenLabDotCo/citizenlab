@@ -12,7 +12,7 @@ export const getLineConfigs = <Row>(mapping: Mapping<Row>, lines?: Lines) => {
       name: lines?.names?.[lineIndex],
       dataKey: yColumn as string,
       dot: false,
-      activeDot: false,
+      activeDot: lines?.activeDot ?? false,
       stroke: lines?.strokes?.[lineIndex] ?? DEFAULT_STROKE,
       strokeWidth: lines?.strokeWidths?.[lineIndex] ?? DEFAULT_STROKE_WIDTH,
       isAnimationActive: lines?.isAnimationActive,

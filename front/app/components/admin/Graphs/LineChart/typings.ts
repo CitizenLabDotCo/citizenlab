@@ -28,6 +28,11 @@ export interface Lines {
   isAnimationActive?: boolean;
   strokes?: string[];
   strokeWidths?: number[];
+  activeDot?: ActiveDot;
+}
+
+interface ActiveDot {
+  r: number;
 }
 
 interface GridProps {
@@ -41,7 +46,7 @@ export interface LineConfig {
     name?: string;
     dataKey: string;
     dot: false;
-    activeDot: false;
+    activeDot: false | ActiveDot;
     stroke: string;
     strokeWidth?: number;
     isAnimationActive?: boolean;
