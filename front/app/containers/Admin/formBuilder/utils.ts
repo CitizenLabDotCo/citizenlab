@@ -34,7 +34,6 @@ export const getFormActionsConfig = (
   if (processType === 'continuous') {
     return [
       {
-        phaseId: '',
         editFormLink: `/admin/projects/${project.id}/native-survey/edit`,
         viewFormLink: `/projects/${project.attributes.slug}/ideas/new`,
         viewFormResults: `/admin/projects/${project.id}/native-survey/results`,
