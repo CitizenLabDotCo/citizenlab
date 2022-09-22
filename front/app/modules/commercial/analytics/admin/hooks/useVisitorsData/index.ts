@@ -16,7 +16,7 @@ interface Stats {
   pageViews: Stat;
 }
 
-interface TimeSeriesRow {
+export interface TimeSeriesRow {
   /* Date format: YYYY-MM-DD */
   date: `${number}-${number}-${number}`;
   visits: number;

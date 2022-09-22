@@ -9,6 +9,7 @@ import { colors } from 'components/admin/Graphs/styling';
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 import LineChart from 'components/admin/Graphs/LineChart';
+import renderTooltip from './renderTooltip';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -43,8 +44,8 @@ const Chart = ({ resolution }: Props) => {
           strokes: [colors.categorical01, colors.categorical03],
         }}
         grid={{ vertical: true }}
-        tooltip
         xaxis={{ tickFormatter: formatTick }}
+        tooltip={renderTooltip}
       />
     </Box>
   );
