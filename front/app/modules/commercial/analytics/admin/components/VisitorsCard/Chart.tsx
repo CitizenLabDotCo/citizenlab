@@ -45,7 +45,7 @@ const Chart = ({ resolution }: Props) => {
         }}
         grid={{ vertical: true }}
         xaxis={{ tickFormatter: formatTick }}
-        tooltip={renderTooltip}
+        tooltip={renderTooltip(resolution)}
       />
     </Box>
   );

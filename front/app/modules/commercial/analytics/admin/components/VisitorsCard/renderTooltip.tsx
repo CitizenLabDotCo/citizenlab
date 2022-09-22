@@ -1,38 +1,74 @@
 import React from 'react';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Icon } from '@citizenlab/cl2-component-library';
 import { Tooltip } from 'recharts';
+import TooltipOutline from 'components/admin/Graphs/utilities/TooltipOutline';
+
+// i18n
+import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
+
+// utils
+import { toFullMonth } from 'utils/dateUtils';
 
 // typings
-import { TimeSeriesRow } from '../../hooks/useVisitorsData'
+import { TimeSeriesRow } from '../../hooks/useVisitorsData';
+import { IResolution } from 'components/admin/ResolutionControl';
+import { MessageDescriptor } from 'typings';
+
+type DataKey = 'visitors' | 'visits';
 
 interface CustomTooltipProps {
   label?: string;
   payload?: {
     name: string;
-    dataKey: string;
+    dataKey: DataKey;
     payload: TimeSeriesRow;
+    stroke: string;
   }[];
+  resolution: IResolution;
 }
 
-const CustomTooltip = ({ label, payload }: CustomTooltipProps) => {
-  if (!payload) return null;
+const MESSAGES_MAP: Record<DataKey, MessageDescriptor> = {
+  visitors: messages.visitors,
+  visits: messages.visits,
+};
+
+const CustomTooltip = ({ label, payload, resolution }: CustomTooltipProps) => {
+  if (!payload || !label) return null;
 
   return (
-    <Box>
-      TEST
-    </Box>
-  )
-}
+    <TooltipOutline label={toFullMonth(label, resolution)}>
+      {payload.map(({ stroke, dataKey, payload }) => (
+        <Box py="2px" key={dataKey}>
+          <Icon
+            name="dot"
+            width="8px"
+            height="8px"
+            fill={stroke}
+            mr="6px"
+            mt="-2px"
+          />
+          <FormattedMessage {...MESSAGES_MAP[dataKey]} />: {payload[dataKey]}
+        </Box>
+      ))}
+    </TooltipOutline>
+  );
+};
 
-const renderTooltip = (props) => (
-  <Tooltip
-    {...props}
-    content={(props) => (
-      <CustomTooltip label={props.label} payload={props.payload as any} />
-    )}
-  />
-);
+const renderTooltip = (resolution: IResolution) => (props) =>
+  (
+    <Tooltip
+      {...props}
+      content={(props) => (
+        <CustomTooltip
+          label={props.label}
+          payload={props.payload as any}
+          resolution={resolution}
+        />
+      )}
+    />
+  );
 
 export default renderTooltip;
