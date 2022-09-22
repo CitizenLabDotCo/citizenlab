@@ -5,7 +5,7 @@ import CookiePolicy from '../CookiePolicy';
 
 jest.mock('utils/eventEmitter');
 jest.mock('hooks/useAppConfiguration', () => () => ({
-  data: { attributes: { name: 'orgName' } },
+  attributes: { settings: { core: { organization_name: { en: 'orgName' } } } },
 }));
 jest.mock('modules', () => ({ streamsToReset: [] }));
 jest.mock('components/Fragment', () => ({ children }) => {
