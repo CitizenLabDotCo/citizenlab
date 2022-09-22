@@ -11,6 +11,7 @@ export interface Props<Row> extends BaseProps<Row, Payload> {
   lines?: Lines;
   xaxis?: AxisProps;
   yaxis?: AxisProps;
+  grid?: GridProps;
 }
 
 interface Payload {
@@ -27,6 +28,11 @@ export interface Lines {
   isAnimationActive?: boolean;
   strokes?: string[];
   strokeWidths?: number[];
+}
+
+interface GridProps {
+  horizontal?: boolean;
+  vertical?: boolean;
 }
 
 // PARSED CONFIGS

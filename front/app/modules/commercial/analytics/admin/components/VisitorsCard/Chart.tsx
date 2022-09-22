@@ -28,6 +28,7 @@ const Chart = () => {
         lines={{
           strokes: [colors.categorical01, colors.categorical03],
         }}
+        grid={{ vertical: true }}
       />
     </Box>
   );

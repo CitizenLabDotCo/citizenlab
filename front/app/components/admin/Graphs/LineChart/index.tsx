@@ -45,6 +45,7 @@ const LineChart = <Row,>({
   innerRef,
   xaxis,
   yaxis,
+  grid,
   onMouseOver,
   onMouseOut,
 }: Props<Row>) => {
@@ -107,7 +108,12 @@ const LineChart = <Row,>({
           </g>
         )}
 
-        <CartesianGrid />
+        {grid && (
+          <CartesianGrid
+            horizontal={!!grid.horizontal}
+            vertical={!!grid.vertical}
+          />
+        )}
 
         {lineConfigs.map((lineConfig, lineIndex) => (
           <Line
