@@ -151,7 +151,7 @@ interface FormLabelGenericProps {
   noSpace?: boolean;
   optional?: boolean;
   iconName?: IconNames;
-  subtextMessage?: string;
+  subtext?: string;
   subtextValue?: JSX.Element | string;
   subtextSupportsHtml?: boolean;
 }
@@ -198,7 +198,7 @@ export const FormLabel = memo<
     optional,
     iconName,
     iconAriaHidden,
-    subtextMessage,
+    subtext,
     subtextSupportsHtml,
     subtextValue,
     ...remainingProps
@@ -253,9 +253,7 @@ export const FormLabel = memo<
           )}
         </FormSubtextStyled>
       ) : (
-        subtextMessage && (
-          <FormSubtextStyled>{subtextMessage}</FormSubtextStyled>
-        )
+        subtext && <FormSubtextStyled>{subtext}</FormSubtextStyled>
       )}
       {!noSpace && <Spacer />}
       {children}

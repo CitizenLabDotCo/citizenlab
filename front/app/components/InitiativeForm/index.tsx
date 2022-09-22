@@ -378,7 +378,7 @@ class InitiativeForm extends React.Component<
               <FormLabel
                 htmlFor="e2e-initiative-title-input"
                 labelMessage={messages.titleLabel}
-                subtextMessage={formatMessage(messages.titleLabelSubtext2)}
+                subtext={formatMessage(messages.titleLabelSubtext2)}
               >
                 <Input
                   type="text"
@@ -426,7 +426,7 @@ class InitiativeForm extends React.Component<
                 id="description-label-id"
                 htmlFor="body"
                 labelMessage={messages.descriptionLabel}
-                subtextMessage={formatMessage(messages.descriptionLabelSubtext)}
+                subtext={formatMessage(messages.descriptionLabelSubtext)}
               />
               <QuillEditor
                 id="body"
@@ -471,7 +471,7 @@ class InitiativeForm extends React.Component<
             <SectionField aria-live="polite">
               <FormLabel
                 labelMessage={messages.topicsLabel}
-                subtextMessage={formatMessage(messages.topicsLabelDescription)}
+                subtext={formatMessage(messages.topicsLabelDescription)}
                 htmlFor="field-topic-multiple-picker"
               />
               <TopicsPicker
@@ -492,7 +492,7 @@ class InitiativeForm extends React.Component<
               <SectionField>
                 <FormLabel
                   labelMessage={messages.locationLabel}
-                  subtextMessage={formatMessage(messages.locationLabelSubtext)}
+                  subtext={formatMessage(messages.locationLabelSubtext)}
                   htmlFor="initiative-location-picker"
                   optional
                 >
@@ -513,9 +513,7 @@ class InitiativeForm extends React.Component<
             <SectionField id="e2e-iniatiative-banner-dropzone">
               <FormLabel
                 labelMessage={messages.bannerUploadLabel}
-                subtextMessage={formatMessage(
-                  messages.bannerUploadLabelSubtext
-                )}
+                subtext={formatMessage(messages.bannerUploadLabelSubtext)}
                 htmlFor="initiative-banner-dropzone"
                 optional
               />
@@ -536,7 +534,7 @@ class InitiativeForm extends React.Component<
             <SectionField id="e2e-iniatiative-img-dropzone">
               <FormLabel
                 labelMessage={messages.imageUploadLabel}
-                subtextMessage={formatMessage(messages.imageUploadLabelSubtext)}
+                subtext={formatMessage(messages.imageUploadLabelSubtext)}
                 htmlFor="initiative-image-dropzone"
                 optional
               />
@@ -557,7 +555,7 @@ class InitiativeForm extends React.Component<
             <SectionField>
               <FormLabel
                 labelMessage={messages.fileUploadLabel}
-                subtextMessage={formatMessage(messages.fileUploadLabelSubtext)}
+                subtext={formatMessage(messages.fileUploadLabelSubtext)}
                 htmlFor="e2e-initiative-file-upload"
                 optional
               >
