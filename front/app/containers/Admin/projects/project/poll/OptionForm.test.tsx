@@ -1,9 +1,9 @@
-import React from 'react';
 import { shallow } from 'enzyme';
-import { OptionForm } from './OptionForm';
+import React from 'react';
 import { IPollOption } from 'services/pollOptions';
-import { mockQuestion } from 'services/__mocks__/pollQuestions';
 import { mockOption } from 'services/__mocks__/pollOptions';
+import { mockQuestion } from 'services/__mocks__/pollQuestions';
+import { OptionForm } from './OptionForm';
 
 jest.mock('components/T', () => 'T');
 jest.mock('components/UI/Button', () => 'Button');
@@ -16,7 +16,7 @@ jest.mock('components/admin/ResourceList', () => ({
 jest.mock('./FormOptionRow', () => 'FormOptionRow');
 jest.mock('./OptionRow', () => 'OptionRow');
 jest.mock('./QuestionDetailsForm', () => 'QuestionDetailsForm');
-jest.mock('utils/cl-intl', () => ({ FormattedMessage: 'FormattedMessage' }));
+
 jest.mock('modules', () => ({ streamsToReset: [] }));
 
 const question = mockQuestion(

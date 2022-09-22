@@ -15,9 +15,6 @@ jest.mock('services/pollResponses', () => ({
 }));
 const addPollResponseSpy = jest.spyOn(responseServices, 'addPollResponse');
 
-jest.mock('utils/cl-intl', () => ({
-  FormattedMessage: () => 'FormattedMessage',
-}));
 jest.mock('./PollSingleChoice', () => 'PollSingleChoice');
 jest.mock('./PollMultipleChoice', () => 'PollMultipleChoice');
 jest.mock('components/UI/Button', () => 'Button');

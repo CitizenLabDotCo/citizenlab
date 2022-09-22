@@ -7,7 +7,6 @@ import { WrongMaxChoiceIndicator } from './WrongMaxChoiceIndicator';
 
 import { mockOption } from 'services/__mocks__/pollOptions';
 
-jest.mock('utils/cl-intl', () => ({ FormattedMessage: 'FormattedMessage' }));
 jest.mock('services/pollOptions');
 jest.mock('./WrongOptionsIndicator', () => ({
   StyledIconTooltip: 'StyledIconTooltip',
