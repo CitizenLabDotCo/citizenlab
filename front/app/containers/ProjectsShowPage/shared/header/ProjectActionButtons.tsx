@@ -134,7 +134,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
 
   const { process_type, publication_status } = project.attributes;
 
-  const isArchivedProject =
+  const isProjectArchived =
     project.attributes.publication_status === 'archived';
   const isProcessTypeContinuous = process_type === 'continuous';
   const participation_method = isProcessTypeContinuous
@@ -174,7 +174,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     isParticipationMethodNativeSurvey && publication_status !== 'archived';
 
   const showSurvey =
-    (!isArchivedProject && phases && participation_method === 'survey') ||
+    (!isProjectArchived && phases && participation_method === 'survey') ||
     (currentPhase?.attributes.participation_method === 'survey' &&
       !hasProjectEnded);
 
