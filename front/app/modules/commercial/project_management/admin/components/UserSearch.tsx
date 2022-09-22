@@ -15,7 +15,7 @@ import { IGroupMembershipsFoundUserData } from 'services/groupMemberships';
 import useProjectModerators from 'modules/commercial/project_management/hooks/useProjectModerators';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -63,7 +63,7 @@ function isModerator(user: IGroupMembershipsFoundUserData) {
 }
 
 const UserSearch = memo(
-  ({ projectId, intl: { formatMessage } }: Props & InjectedIntlProps) => {
+  ({ projectId, intl: { formatMessage } }: Props & WrappedComponentProps) => {
     const [selection, setSelection] = useState<IOption[]>([]);
     const [loading, setLoading] = useState(false);
     const [processing, setProcessing] = useState(false);

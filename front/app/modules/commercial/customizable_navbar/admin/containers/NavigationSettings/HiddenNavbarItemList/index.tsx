@@ -18,7 +18,7 @@ import Header from './Header';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // utils
@@ -33,7 +33,7 @@ const removeFixedPages = (page: IPageData) =>
 
 const HiddenNavbarItemList = ({
   intl: { formatMessage },
-}: InjectedIntlProps) => {
+}: WrappedComponentProps) => {
   const navbarItems = useNavbarItems();
   const removedDefaultNavbarItems = useRemovedDefaultNavbarItems();
   const pages = usePages();

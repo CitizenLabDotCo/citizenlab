@@ -3,12 +3,12 @@ import { colors, IconButton } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 import messages from './messages';
 
 interface Props {
   onClick: (event?: MouseEvent | KeyboardEvent) => void;
-  a11y_buttonActionMessage?: ReactIntl.FormattedMessage.MessageDescriptor;
+  a11y_buttonActionMessage?: MessageDescriptor;
   iconColor?: string;
   iconColorOnHover?: string;
   className?: string;
@@ -25,7 +25,7 @@ const CloseIconButton = ({
   className,
   iconWidth = '15px',
   iconHeight = '15px',
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   return (
     <IconButton
       className={className ?? ''}

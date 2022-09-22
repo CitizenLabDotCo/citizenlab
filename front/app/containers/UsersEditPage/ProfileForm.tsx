@@ -38,7 +38,7 @@ import QuillEditor from 'components/UI/QuillEditor';
 // i18n
 import { appLocalePairs, API_PATH } from 'containers/App/constants';
 import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
 
@@ -93,7 +93,7 @@ interface State {
   hasPasswordMinimumLengthError: boolean;
 }
 
-type Props = InputProps & DataProps & InjectedIntlProps & InjectedLocalized;
+type Props = InputProps & DataProps & WrappedComponentProps & InjectedLocalized;
 
 class ProfileForm extends PureComponent<Props, State> {
   localeOptions: IOption[] = [];

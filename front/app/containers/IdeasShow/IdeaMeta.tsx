@@ -18,7 +18,7 @@ import GetIdeaImages, {
 } from 'resources/GetIdeaImages';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 // utils
@@ -44,7 +44,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const IdeaMeta = memo<Props & InjectedIntlProps & InjectedLocalized>(
+const IdeaMeta = memo<Props & WrappedComponentProps & InjectedLocalized>(
   ({
     idea,
     locale,

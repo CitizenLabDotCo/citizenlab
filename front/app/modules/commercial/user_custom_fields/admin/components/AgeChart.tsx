@@ -3,7 +3,7 @@ import React from 'react';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from 'containers/Admin/dashboard/messages';
 
 // services
@@ -28,7 +28,7 @@ interface Props {
   className?: string;
 }
 
-const AgeChart = (props: Props & InjectedIntlProps) => {
+const AgeChart = (props: Props & WrappedComponentProps) => {
   const convertToGraphFormat = (data: IUsersByBirthyear) => {
     if (isNilOrError(data)) return null;
 

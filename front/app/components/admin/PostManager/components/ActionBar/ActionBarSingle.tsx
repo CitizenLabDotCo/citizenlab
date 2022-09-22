@@ -4,7 +4,7 @@ import { deleteInitiative } from 'services/initiatives';
 
 import { Icon, Button } from 'semantic-ui-react';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 import { ManagerType } from '../..';
 
@@ -15,7 +15,9 @@ interface Props {
   handleClickEdit: () => void;
 }
 
-class ActionBarSingle extends React.PureComponent<Props & InjectedIntlProps> {
+class ActionBarSingle extends React.PureComponent<
+  Props & WrappedComponentProps
+> {
   handleClickDeleteIdea = () => {
     const {
       postId,

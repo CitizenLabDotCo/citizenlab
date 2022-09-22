@@ -11,7 +11,7 @@ import { Icon, IconNames } from '@citizenlab/cl2-component-library';
 import MenuItem from './MenuItem';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -158,10 +158,10 @@ export type NavItem = {
 };
 
 class Sidebar extends PureComponent<
-  Props & InjectedIntlProps & WithRouterProps,
+  Props & WrappedComponentProps & WithRouterProps,
   State
 > {
-  constructor(props: Props & InjectedIntlProps & WithRouterProps) {
+  constructor(props: Props & WrappedComponentProps & WithRouterProps) {
     super(props);
 
     this.state = {

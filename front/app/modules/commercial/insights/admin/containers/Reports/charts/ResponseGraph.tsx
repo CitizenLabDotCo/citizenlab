@@ -3,7 +3,7 @@ import React, { memo } from 'react';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // styling
 import styled from 'styled-components';
@@ -40,7 +40,7 @@ const StyledGraphCardInner = styled(GraphCardInner)`
 `;
 
 export const ResponseGraph = memo(
-  ({ graphTitleString, serie }: Props & InjectedIntlProps) => {
+  ({ graphTitleString, serie }: Props & WrappedComponentProps) => {
     const currentChart: React.RefObject<any> = React.createRef();
 
     const NameLabel = (props) => {

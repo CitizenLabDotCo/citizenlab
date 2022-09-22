@@ -36,7 +36,7 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from 'containers/ProjectsShowPage/messages';
 import FormattedBudget from 'utils/currency/FormattedBudget';
 
@@ -140,7 +140,7 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class PBBasket extends PureComponent<Props & InjectedIntlProps, State> {
+class PBBasket extends PureComponent<Props & WrappedComponentProps, State> {
   ideaRemovedFromBasket =
     (ideaIdToRemove: string) => async (event: FormEvent<any>) => {
       event.preventDefault();

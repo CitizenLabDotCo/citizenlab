@@ -30,7 +30,7 @@ import GetFeatureFlag, {
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 // typings
@@ -99,12 +99,12 @@ export interface State extends IParticipationContextConfig {
 }
 
 class ParticipationContext extends PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   subscriptions: Subscription[];
 
-  constructor(props: Props & InjectedIntlProps) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       participation_method: 'ideation',
@@ -351,7 +351,7 @@ class ParticipationContext extends PureComponent<
   getInputTermOptions = () => {
     return INPUT_TERMS.map((inputTerm: InputTerm) => {
       const labelMessages: {
-        [key in InputTerm]: ReactIntl.FormattedMessage.MessageDescriptor;
+        [key in InputTerm]: MessageDescriptor;
       } = {
         idea: messages.ideaTerm,
         contribution: messages.contributionTerm,

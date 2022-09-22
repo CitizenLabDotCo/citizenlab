@@ -151,7 +151,7 @@ interface InputProps {
 interface Props extends InputProps {}
 
 const disabledMessages: {
-  [key in IInitiativeDisabledReason]: ReactIntl.FormattedMessage.MessageDescriptor;
+  [key in IInitiativeDisabledReason]: MessageDescriptor;
 } = {
   notPermitted: messages.votingNotPermitted,
 };

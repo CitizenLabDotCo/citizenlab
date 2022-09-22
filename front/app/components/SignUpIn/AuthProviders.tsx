@@ -18,7 +18,7 @@ import GetFeatureFlag from 'resources/GetFeatureFlag';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './SignUp/messages';
 
 // styling
@@ -60,7 +60,7 @@ interface Props extends InputProps, DataProps {}
 
 export type AuthProvider = 'email' | SSOProvider;
 
-const AuthProviders = memo<Props & InjectedIntlProps>(
+const AuthProviders = memo<Props & WrappedComponentProps>(
   ({
     azureAdLoginEnabled,
     className,

@@ -35,7 +35,7 @@ import { signUpActiveStepChange } from 'components/SignUpIn/events';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { MessageDescriptor } from 'react-intl';
 import T from 'components/T';
 import messages from './messages';
 
@@ -48,7 +48,7 @@ import styled, { useTheme } from 'styled-components';
 
 // typings
 import { ISignUpInMetaData } from 'components/SignUpIn';
-import { Multiloc, MessageDescriptor } from 'typings';
+import { Multiloc } from 'typings';
 import { IAppConfigurationData } from 'services/appConfiguration';
 
 const Container = styled.div`
@@ -117,7 +117,7 @@ const SignUp = ({
   onSignUpCompleted,
   onGoToSignIn,
   className,
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const authUser = useAuthUser();
   const tenant = useAppConfiguration();
   const theme: any = useTheme();

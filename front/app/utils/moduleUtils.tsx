@@ -29,7 +29,6 @@ import {
   FormikSubmitHandler,
   InsertConfigurationOptions,
   ITab,
-  MessageDescriptor,
   Multiloc,
   Locale,
   CLErrors,
@@ -37,7 +36,7 @@ import {
 import { LatLngTuple } from 'leaflet';
 import { Point } from 'components/UI/LeafletMap/typings';
 import { IUserData } from 'services/users';
-import { MessageValue } from 'react-intl';
+import { MessageValue, MessageDescriptor } from 'react-intl';
 import { NavItem } from 'containers/Admin/sideBar';
 import {
   AppConfigurationFeature,
