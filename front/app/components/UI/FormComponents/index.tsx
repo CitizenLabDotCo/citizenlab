@@ -152,7 +152,6 @@ interface FormLabelGenericProps {
   optional?: boolean;
   iconName?: IconNames;
   subtextMessage?: MessageDescriptor;
-  subtextMessageValues?: OriginalFormattedMessage.Props['values'];
   subtextValue?: JSX.Element | string;
   subtextSupportsHtml?: boolean;
 }
@@ -200,7 +199,6 @@ export const FormLabel = memo<
     iconName,
     iconAriaHidden,
     subtextMessage,
-    subtextMessageValues,
     subtextSupportsHtml,
     subtextValue,
     ...remainingProps
@@ -257,10 +255,7 @@ export const FormLabel = memo<
       ) : (
         subtextMessage && (
           <FormSubtextStyled>
-            <FormattedMessage
-              {...subtextMessage}
-              values={subtextMessageValues}
-            />
+            <FormattedMessage {...subtextMessage} />
           </FormSubtextStyled>
         )
       )}
