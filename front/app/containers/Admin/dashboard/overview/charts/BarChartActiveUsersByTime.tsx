@@ -1,4 +1,3 @@
-// libraries
 import React from 'react';
 import { Subscription } from 'rxjs';
 import { isEmpty } from 'lodash-es';
@@ -25,6 +24,9 @@ import BarChart from 'components/admin/Graphs/BarChart';
 import { IResolution } from 'components/admin/ResolutionControl';
 import { Popup } from 'semantic-ui-react';
 import { Icon } from '@citizenlab/cl2-component-library';
+
+// utils
+import { toThreeLetterMonth } from 'utils/dateUtils';
 
 // styling
 import styled from 'styled-components';
@@ -176,10 +178,7 @@ class BarChartActiveUsersByTime extends React.PureComponent<
   }
 
   formatTick = (date: string) => {
-    const { resolution } = this.props;
-    return moment
-      .utc(date, 'YYYY-MM-DD')
-      .format(resolution === 'month' ? 'MMM' : 'DD MMM');
+    return toThreeLetterMonth(date, this.props.resolution);
   };
 
   formatLabel = (date: string) => {

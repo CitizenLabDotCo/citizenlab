@@ -1,4 +1,3 @@
-// libraries
 import React from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 import { map, isEmpty } from 'lodash-es';
@@ -52,6 +51,9 @@ import { isNilOrError } from 'utils/helperUtils';
 // styling
 import styled from 'styled-components';
 import { legacyColors, sizes } from 'components/admin/Graphs/styling';
+
+// utils
+import { toThreeLetterMonth } from 'utils/dateUtils';
 
 const InfoIcon = styled(Icon)`
   display: flex;
@@ -218,10 +220,7 @@ class LineBarChart extends React.PureComponent<
   }
 
   formatTick = (date: string) => {
-    const { resolution } = this.props;
-    return moment
-      .utc(date, 'YYYY-MM-DD')
-      .format(resolution === 'month' ? 'MMM' : 'DD MMM');
+    return toThreeLetterMonth(date, this.props.resolution);
   };
 
   formatLabel = (date: string) => {

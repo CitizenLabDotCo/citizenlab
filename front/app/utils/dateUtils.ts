@@ -1,5 +1,6 @@
 import moment from 'moment';
 import { isString } from 'lodash-es';
+import { IResolution } from 'components/admin/ResolutionControl';
 
 export function getIsoDateForToday(): string {
   // this is based on the user's timezone in moment, so
@@ -73,4 +74,10 @@ export function convertSecondsToDDHHMM(seconds: number) {
   const formattedMinutesLeft =
     minutesLeft < 10 ? `0${minutesLeft}` : minutesLeft;
   return `${formattedDaysLeft}:${formattedHoursLeft}:${formattedMinutesLeft}`;
+}
+
+export function toThreeLetterMonth(date: string, resolution: IResolution) {
+  return moment
+    .utc(date, 'YYYY-MM-DD')
+    .format(resolution === 'month' ? 'MMM' : 'DD MMM');
 }
