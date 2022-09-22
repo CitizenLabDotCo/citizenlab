@@ -8,7 +8,7 @@ import {
   defaultCardStyle,
   isRtl,
 } from 'utils/styleUtils';
-import { FormattedMessage, IMessageInfo } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import { MessageDescriptor } from 'react-intl';
 import messages from './messages';
 import { isString } from 'utils/helperUtils';
@@ -66,23 +66,25 @@ const StyledSpan = styled.span`
   margin-right: 3px;
 `;
 
-interface FormSectionTitleProps extends IMessageInfo {
+interface FormSectionTitleProps {
   subtitleMessage?: MessageDescriptor;
+  message: MessageDescriptor;
 }
 
-export const FormSectionTitle = memo(
-  ({ message, values, subtitleMessage }: FormSectionTitleProps) => (
-    <TitleContainer>
-      <FormSectionTitleStyled>
-        <FormattedMessage {...message} values={values} />
-      </FormSectionTitleStyled>
-      {subtitleMessage && (
-        <FormSectionDescriptionStyled>
-          <FormattedMessage {...subtitleMessage} />
-        </FormSectionDescriptionStyled>
-      )}
-    </TitleContainer>
-  )
+export const FormSectionTitle = ({
+  message,
+  subtitleMessage,
+}: FormSectionTitleProps) => (
+  <TitleContainer>
+    <FormSectionTitleStyled>
+      <FormattedMessage {...message} />
+    </FormSectionTitleStyled>
+    {subtitleMessage && (
+      <FormSectionDescriptionStyled>
+        <FormattedMessage {...subtitleMessage} />
+      </FormSectionDescriptionStyled>
+    )}
+  </TitleContainer>
 );
 
 export const FormLabelStyled = styled(Box)`
