@@ -571,9 +571,7 @@ class InitiativeForm extends React.Component<
           </StyledFormSection>
           <FormSubmitFooter
             className="e2e-initiative-publish-button"
-            message={messages.publishButton}
             error={publishError}
-            errorMessage={messages.submitApiError}
             processing={publishing}
             onSubmit={this.handleOnPublish}
           />
