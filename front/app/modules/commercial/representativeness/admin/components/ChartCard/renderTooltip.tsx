@@ -2,6 +2,7 @@ import React from 'react';
 
 // components
 import { Box, Text, TextProps } from '@citizenlab/cl2-component-library';
+import { Tooltip } from 'recharts';
 
 // styling
 import { colors } from 'utils/styleUtils';
@@ -88,4 +89,13 @@ const CustomTooltip = ({ label, payload }: CustomTooltipProps) => {
   );
 };
 
-export default CustomTooltip;
+const renderTooltip = (props) => (
+  <Tooltip
+    {...props}
+    content={(props) => (
+      <CustomTooltip label={props.label} payload={props.payload as any} />
+    )}
+  />
+);
+
+export default renderTooltip;
