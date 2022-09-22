@@ -11,20 +11,42 @@ import { Box } from '@citizenlab/cl2-component-library';
 import LineChart from 'components/admin/Graphs/LineChart';
 import renderTooltip from './renderTooltip';
 
+// i18n
+import messages from './messages';
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { toThreeLetterMonth } from 'utils/dateUtils';
 
 // typings
 import { IResolution } from 'components/admin/ResolutionControl';
+import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 
 interface Props {
   resolution: IResolution;
 }
 
-const Chart = ({ resolution }: Props) => {
+const Chart = ({
+  resolution,
+  intl: { formatMessage },
+}: Props & InjectedIntlProps) => {
   const { timeSeries } = useVisitorsData();
   if (isNilOrError(timeSeries)) return null;
+
+  const legendItems: LegendItem[] = [
+    {
+      icon: 'circle',
+      color: colors.categorical01,
+      label: formatMessage(messages.visitors),
+    },
+    {
+      icon: 'circle',
+      color: colors.categorical03,
+      label: formatMessage(messages.visits),
+    },
+  ];
 
   const formatTick = (date: string) => {
     return toThreeLetterMonth(date, resolution);
@@ -47,9 +69,13 @@ const Chart = ({ resolution }: Props) => {
         grid={{ vertical: true }}
         xaxis={{ tickFormatter: formatTick }}
         tooltip={renderTooltip(resolution)}
+        legend={{
+          marginTop: 16,
+          items: legendItems,
+        }}
       />
     </Box>
   );
 };
 
-export default Chart;
+export default injectIntl(Chart);
