@@ -18,7 +18,7 @@ exports[`<UserHeader /> renders correctly on some user with a bio 1`] = `
 exports[`<UserHeader /> renders correctly on some user without a bio 1`] = `
 <UserHeader__Container>
   <UserHeader__UserAvatar>
-    <InjectIntl(WithIntl(Component))
+    <injectIntl(Component)
       size={150}
       userId="522ae8cc-a5ed-4d31-9aa0-470904934ec6"
     />
@@ -32,7 +32,7 @@ exports[`<UserHeader /> renders correctly on some user without a bio 1`] = `
       Citizenlab
     </UserHeader__FullName>
     <UserHeader__JoinedAt>
-      <FormattedMessage
+      <MemoizedFormattedMessage
         defaultMessage="Member since {date}"
         id="app.containers.UsersShowPage.memberSince"
         values={
