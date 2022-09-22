@@ -28,7 +28,6 @@ describe('timeAgo is reported correctly', () => {
   it('should accurately return minutes passed since a date', () => {
     let date = new Date();
     date.setMinutes(date.getMinutes() - 1);
-    date.setSeconds(date.getSeconds() - 1);
     let timeAgoResponse = timeAgo(date.valueOf(), 'en') || '';
     expect(timeAgoResponse).toEqual('1 minute ago');
 
@@ -41,7 +40,6 @@ describe('timeAgo is reported correctly', () => {
   it('should accurately return hours passed since a date', () => {
     let date = new Date();
     date.setHours(date.getHours() - 1);
-    date.setSeconds(date.getSeconds() - 1);
     let timeAgoResponse = timeAgo(date.valueOf(), 'en') || '';
     expect(timeAgoResponse).toEqual('1 hour ago');
 
@@ -54,7 +52,6 @@ describe('timeAgo is reported correctly', () => {
   it('should accurately return days passed since a date', () => {
     let date = new Date();
     date.setHours(date.getHours() - 24);
-    date.setSeconds(date.getSeconds() - 1);
     let timeAgoResponse = timeAgo(date.valueOf(), 'en') || '';
     expect(timeAgoResponse).toEqual('1 day ago');
 
@@ -67,7 +64,6 @@ describe('timeAgo is reported correctly', () => {
   it('should accurately return weeks passed since a date', () => {
     let date = new Date();
     date.setHours(date.getHours() - 168);
-    date.setSeconds(date.getSeconds() - 1);
     let timeAgoResponse = timeAgo(date.valueOf(), 'en') || '';
     expect(timeAgoResponse).toEqual('1 week ago');
 
@@ -80,7 +76,6 @@ describe('timeAgo is reported correctly', () => {
   it('should accurately return months passed since a date', () => {
     let date = new Date();
     date.setMonth(date.getMonth() - 1);
-    date.setSeconds(date.getSeconds() - 1);
     let timeAgoResponse = timeAgo(date.valueOf(), 'en') || '';
     expect(timeAgoResponse).toEqual('1 month ago');
 
@@ -93,7 +88,6 @@ describe('timeAgo is reported correctly', () => {
   it('should accurately return years passed since a date', () => {
     let date = new Date();
     date.setMonth(date.getMonth() - 12);
-    date.setSeconds(date.getSeconds() - 1);
     let timeAgoResponse = timeAgo(date.valueOf(), 'en') || '';
     expect(timeAgoResponse).toEqual('1 year ago');
 
@@ -106,7 +100,6 @@ describe('timeAgo is reported correctly', () => {
   it('should accurately return time passed since a date in specified language', () => {
     let date = new Date();
     date.setMonth(date.getMonth() - 12);
-    date.setSeconds(date.getSeconds() - 1);
     let timeAgoResponse = timeAgo(date.valueOf(), 'fr-BE') || '';
     expect(timeAgoResponse).toEqual('il y a 1 an');
 
