@@ -13,7 +13,6 @@ import {
   Line,
   XAxis,
   YAxis,
-  // LabelList,
   Tooltip,
 } from 'recharts';
 import Container from '../_components/Container';
@@ -40,13 +39,13 @@ const LineChart = <Row,>({
   mapping,
   lines,
   margin,
-  legend,
-  emptyContainerContent,
-  innerRef,
   xaxis,
   yaxis,
   tooltip,
+  legend,
   grid,
+  emptyContainerContent,
+  innerRef,
   onMouseOver,
   onMouseOut,
 }: Props<Row>) => {
