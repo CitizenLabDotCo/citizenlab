@@ -21,10 +21,9 @@ import { isNilOrError } from 'utils/helperUtils';
 import { useParams } from 'react-router-dom';
 import useProject from 'hooks/useProject';
 import useFormSubmissionCount from 'hooks/useFormSubmissionCount';
-import { getCurrentPhase } from 'services/phases';
-import usePhases from 'hooks/usePhases';
 
 type FormActionsProps = {
+  phaseId?: string;
   editFormLink: string;
   viewFormLink: string;
   viewFormResults: string;
@@ -34,6 +33,7 @@ type FormActionsProps = {
 } & InjectedIntlProps;
 
 const FormActions = ({
+  phaseId,
   intl: { formatMessage },
   viewFormLink,
   editFormLink,
@@ -45,9 +45,7 @@ const FormActions = ({
   const { projectId } = useParams() as {
     projectId: string;
   };
-
   const project = useProject({ projectId });
-  const phaseId = getCurrentPhase(usePhases(projectId))?.id;
 
   const submissionCount = useFormSubmissionCount({
     projectId,

@@ -50,6 +50,7 @@ const Forms = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         {formActionsConfigs.map(
           (
             {
+              phaseId,
               editFormLink,
               viewFormLink,
               viewFormResults,
@@ -62,6 +63,7 @@ const Forms = ({ intl: { formatMessage } }: InjectedIntlProps) => {
             return (
               <Fragment key={index}>
                 <FormActions
+                  phaseId={phaseId}
                   editFormLink={editFormLink}
                   viewFormLink={viewFormLink}
                   viewFormResults={viewFormResults}
