@@ -14,7 +14,7 @@ import ContinuousSurvey from './continuous/Survey';
 import ContinuousPoll from './continuous/Poll';
 import ContinuousVolunteering from './continuous/Volunteering';
 import TimelineContainer from './timeline';
-import { Spinner } from '@citizenlab/cl2-component-library';
+import { Box, Spinner, Title, Image } from '@citizenlab/cl2-component-library';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import Modal from 'components/UI/Modal';
 
@@ -29,6 +29,7 @@ import useAuthUser from 'hooks/useAuthUser';
 // style
 import styled from 'styled-components';
 import { media, colors } from 'utils/styleUtils';
+import rocket from './rocket.png';
 
 // typings
 import { IProjectData } from 'services/projects';
@@ -36,6 +37,9 @@ import { IProjectData } from 'services/projects';
 // other
 import { isValidPhase } from './phaseParam';
 import { anyIsUndefined, isNilOrError, isApiError } from 'utils/helperUtils';
+
+import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
 
 const Container = styled.main<{ background: string }>`
   flex: 1 0 auto;
@@ -150,6 +154,7 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
           projectId={projectId}
           scrollToEventId={scrollToEventId}
         />
+        {/* TODO Tomorrow: Abstract into ParticipationMethodConfig */}
         <Modal
           opened={showModal}
           close={() => {
@@ -157,7 +162,18 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
           }}
           hasSkipButton={false}
         >
-          <h1>Modal Content</h1>
+          <Box
+            width="100%"
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Image width="80px" height="80px" src={rocket} alt="" />
+            <Title variant="h2" textAlign="center">
+              <FormattedMessage {...messages.surveySubmissionMessage} />
+            </Title>
+          </Box>
         </Modal>
       </ContentWrapper>
     );

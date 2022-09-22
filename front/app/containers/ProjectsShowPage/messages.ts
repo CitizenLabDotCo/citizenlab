@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'app.containers.Projects.a11y_titleInputsPhase',
     defaultMessage: 'All inputs submitted to this phase',
   },
+  surveySubmissionMessage: {
+    id: 'app.containers.Projects.surveySubmissionMessage',
+    defaultMessage: 'Thanks for responding to the survey',
+  },
   invisibleTitleSurvey: {
     id: 'app.containers.Projects.invisibleTitleSurvey',
     defaultMessage: 'Take the survey',
