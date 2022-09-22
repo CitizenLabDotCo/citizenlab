@@ -1123,6 +1123,7 @@
   "app.containers.Projects.shareThisProject": "Share this project",
   "app.containers.Projects.submitMyBasket": "Submit my basket",
   "app.containers.Projects.survey": "Survey",
+  "app.containers.Projects.surveySubmissionMessage": "Thanks for responding to the survey",
   "app.containers.Projects.takeThePoll": "Take the poll",
   "app.containers.Projects.takeTheSurvey": "Take the survey",
   "app.containers.Projects.thisProjectIsNotPubliclyVisibleVisitHomePageToDiscover": "This project is not publicly visible. Visit the homepage to discover other engagement opportunities.",
