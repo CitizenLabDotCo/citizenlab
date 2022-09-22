@@ -3,9 +3,7 @@ import React from 'react';
 // components
 import { Box, Text, TextProps } from '@citizenlab/cl2-component-library';
 import { Tooltip } from 'recharts';
-
-// styling
-import { colors } from 'utils/styleUtils';
+import TooltipOutline from 'components/admin/Graphs/utilities/TooltipOutline';
 
 // utils
 import { formatPercentage } from './utils';
@@ -32,7 +30,7 @@ interface RowProps {
 }
 
 const Row = ({ name, percentage, number, colorName }: RowProps) => (
-  <Box pb="8px">
+  <Box py="2px">
     <Text color={colorName} fontSize="s" display="inline">
       {name}: {formatPercentage(percentage)}
     </Text>
@@ -43,20 +41,10 @@ const Row = ({ name, percentage, number, colorName }: RowProps) => (
 );
 
 const CustomTooltip = ({ label, payload }: CustomTooltipProps) => {
-  if (!payload) return null;
+  if (!payload || !label) return null;
 
   return (
-    <Box background="white" px="8px" border={`1px solid ${colors.separation}`}>
-      <Text
-        color="adminTextColor"
-        fontWeight="bold"
-        textAlign="center"
-        fontSize="s"
-        mb="8px"
-      >
-        {label}
-      </Text>
-
+    <TooltipOutline label={label}>
       {payload.map(({ name, dataKey, payload }) => {
         const {
           actualPercentage,
@@ -85,7 +73,7 @@ const CustomTooltip = ({ label, payload }: CustomTooltipProps) => {
           />
         );
       })}
-    </Box>
+    </TooltipOutline>
   );
 };
 
