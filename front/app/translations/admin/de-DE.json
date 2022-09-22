@@ -1601,7 +1601,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last30Days": "Letzte 30 Tage:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last7Days": "Letzte 7 Tage:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.pageViews": "Seitenaufrufe pro Besuch",
-  "app.modules.commercial.analytics.admin.components.VisitorsCard.tooltipMessage": "Data is not available when the project filter is active.",
+  "app.modules.commercial.analytics.admin.components.VisitorsCard.tooltipMessage": "Die Daten sind nicht verfügbar, wenn der Projektfilter aktiv ist.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visitDuration": "Dauer des Besuchs",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visitors": "BesucherInnen",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visits": "Besuche",
