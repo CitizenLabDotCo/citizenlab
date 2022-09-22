@@ -23,7 +23,7 @@ import GetAppConfiguration, {
 
 // intl
 import messages from './messages';
-import FormattedMessage from 'utils/cl-intl/FormattedMessage';
+import { FormattedMessage } from 'react-intl';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

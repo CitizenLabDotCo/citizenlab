@@ -21,9 +21,12 @@ import eventEmitter from 'utils/eventEmitter';
 import events from './events';
 
 // i18n
-import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import messages from './messages';
-import { injectIntl, WrappedComponentProps } from 'react-intl';
+import {
+  injectIntl,
+  WrappedComponentProps,
+  FormattedMessage,
+} from 'react-intl';
 
 // Resources
 import GetGroup, { GetGroupChildProps } from 'resources/GetGroup';

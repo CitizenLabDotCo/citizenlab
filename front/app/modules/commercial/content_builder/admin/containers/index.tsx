@@ -35,7 +35,7 @@ import eventEmitter from 'utils/eventEmitter';
 
 // intl
 import messages from '../messages';
-import FormattedMessage from 'utils/cl-intl/FormattedMessage';
+import { FormattedMessage } from 'react-intl';
 
 const StyledRightColumn = styled(RightColumn)`
   height: calc(100vh - ${stylingConsts.menuHeight}px);

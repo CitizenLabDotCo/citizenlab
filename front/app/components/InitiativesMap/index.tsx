@@ -32,7 +32,7 @@ import GetInitiativesPermissions, {
 } from 'resources/GetInitiativesPermissions';
 
 // i18n
-import FormattedMessage from 'utils/cl-intl/FormattedMessage';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // Styling
