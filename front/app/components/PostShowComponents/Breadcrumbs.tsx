@@ -1,8 +1,12 @@
 import React from 'react';
 
 // i18n
-import { FormattedMessage, IMessageInfo } from 'utils/cl-intl';
-import { WrappedComponentProps, injectIntl } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import {
+  WrappedComponentProps,
+  injectIntl,
+  MessageDescriptor,
+} from 'react-intl';
 import messages from './messages';
 
 // components
@@ -13,12 +17,6 @@ import Link from 'utils/cl-router/Link';
 import styled from 'styled-components';
 import { fontSizes, colors, media } from 'utils/styleUtils';
 import { darken } from 'polished';
-
-// typings
-import { Multiloc } from 'typings';
-
-// hooks
-import useLocalize from 'hooks/useLocalize';
 
 const Container = styled.div`
   width: 100%;
@@ -70,11 +68,7 @@ const LinkText = styled.span``;
 
 interface ILink {
   to: string;
-  text: Multiloc | IMessageInfo;
-}
-
-function isIMessageInfo(text: IMessageInfo | Multiloc): text is IMessageInfo {
-  return (text as IMessageInfo).message !== undefined;
+  message: MessageDescriptor;
 }
 
 interface Props {
@@ -89,8 +83,6 @@ const Breadcrumbs = ({
   links,
   postType,
 }: Props & WrappedComponentProps) => {
-  const localize = useLocalize();
-
   return (
     <Container className={className}>
       <HomeLink id="e2e-home-page-link" to="/">
@@ -108,14 +100,7 @@ const Breadcrumbs = ({
           to={link.to}
         >
           <LinkText>
-            {isIMessageInfo(link.text) ? (
-              <FormattedMessage
-                {...link.text.message}
-                values={link.text.values}
-              />
-            ) : (
-              localize(link.text)
-            )}
+            <FormattedMessage {...link.message} />
           </LinkText>
         </StyledLink>
       ))}
