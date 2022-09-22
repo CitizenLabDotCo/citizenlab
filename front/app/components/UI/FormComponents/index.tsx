@@ -157,8 +157,7 @@ interface FormLabelGenericProps {
 }
 
 interface FormLabelPropsMessages extends FormLabelGenericProps {
-  labelMessage: MessageDescriptor;
-  labelMessageValues?: OriginalFormattedMessage.Props['values'];
+  labelText: string;
 }
 
 interface FormLabelPropsValue extends FormLabelGenericProps {
@@ -212,22 +211,11 @@ export const FormLabel = memo<
         .filter((item) => item)
         .join(' ')}
       htmlFor={htmlFor}
-      {...omit(remainingProps, [
-        'labelMessage',
-        'labelMessageValues',
-        'labelValue',
-      ])}
+      {...omit(remainingProps, ['labelText', 'labelValue'])}
     >
       <LabelContainer>
         <StyledSpan>
-          {propsHasValues(props) ? (
-            props.labelValue
-          ) : (
-            <FormattedMessage
-              {...props.labelMessage}
-              values={props.labelMessageValues}
-            />
-          )}
+          {propsHasValues(props) ? props.labelValue : props.labelText}
         </StyledSpan>
         {optional && (
           <OptionalText>

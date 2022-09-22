@@ -200,7 +200,7 @@ class PasswordRecovery extends React.PureComponent<
             <Subtitle>{subtitle}</Subtitle>
 
             <Form onSubmit={this.handleOnSubmit}>
-              <FormLabel htmlFor="email" labelMessage={messages.emailLabel} />
+              <FormLabel htmlFor="email" labelText={formatMessage(messages.emailLabel)} />
               <StyledInput
                 id="email"
                 type="email"

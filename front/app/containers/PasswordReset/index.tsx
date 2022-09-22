@@ -261,7 +261,7 @@ class PasswordReset extends React.PureComponent<
                 <FormLabel
                   width="max-content"
                   margin-right="5px"
-                  labelMessage={messages.passwordLabel}
+                  labelText={formatMessage(messages.passwordLabel)}
                   htmlFor="password-reset-input"
                 />
                 <StyledPasswordIconTooltip />
