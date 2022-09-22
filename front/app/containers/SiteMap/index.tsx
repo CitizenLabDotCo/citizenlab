@@ -1,12 +1,12 @@
 import React, { useRef } from 'react';
 import { adopt } from 'react-adopt';
-import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import scrollToComponent from 'react-scroll-to-component';
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // hooks
-import usePages from 'hooks/usePages';
-import useNavbarItems from 'hooks/useNavbarItems';
 import useLocalize from 'hooks/useLocalize';
+import useNavbarItems from 'hooks/useNavbarItems';
+import usePages from 'hooks/usePages';
 
 // intl
 import { FormattedMessage } from 'react-intl';
@@ -14,24 +14,24 @@ import messages from './messages';
 
 // components
 import { Spinner } from '@citizenlab/cl2-component-library';
+import ContentContainer from 'components/ContentContainer';
 import FeatureFlag from 'components/FeatureFlag';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-import ContentContainer from 'components/ContentContainer';
-import SiteMapMeta from './SiteMapMeta';
-import ProjectsAndFoldersSection from './ProjectsAndFoldersSection';
 import Link from 'utils/cl-router/Link';
+import ProjectsAndFoldersSection from './ProjectsAndFoldersSection';
+import SiteMapMeta from './SiteMapMeta';
 
 // styles
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // resources
-import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
 // services
-import { DEFAULT_PAGE_SLUGS } from 'services/navbar';
 import useAppConfiguration from 'hooks/useAppConfiguration';
+import { DEFAULT_PAGE_SLUGS } from 'services/navbar';
 
 const Container = styled.div`
   min-height: calc(

@@ -1,6 +1,6 @@
 import React from 'react';
+import { fireEvent, render, screen, waitFor } from 'utils/testUtils/rtl';
 import BinModal from '.';
-import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
 
 jest.mock('services/appConfiguration');
 jest.mock('utils/cl-intl');

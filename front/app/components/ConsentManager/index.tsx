@@ -16,19 +16,19 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 
 // resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import Container from './Container';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import { IAppConfigurationData } from 'services/appConfiguration';
+import eventEmitter from 'utils/eventEmitter';
 import {
   getConsent,
   IConsentCookie,
   ISavedDestinations,
   setConsent,
 } from './consent';
-import eventEmitter from 'utils/eventEmitter';
-import { IAppConfigurationData } from 'services/appConfiguration';
+import Container from './Container';
 
 // the format in which the user will make its choices,
 export type IPreferences = Partial<Record<TCategory, boolean>>;

@@ -4,16 +4,16 @@ import { isNilOrError } from 'utils/helperUtils';
 import isFieldEnabled from '../isFieldEnabled';
 
 // components
-import Status from './Status';
-import Location from './Location';
 import Attachments from './Attachments';
 import IdeaTopics from './IdeaTopics';
+import Location from './Location';
 import PostedBy from './PostedBy';
+import Status from './Status';
 
 // hooks
-import useLocale from 'hooks/useLocale';
-import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
 import Outlet from 'components/Outlet';
+import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
+import useLocale from 'hooks/useLocale';
 
 const Container = styled.div`
   width: 100%;

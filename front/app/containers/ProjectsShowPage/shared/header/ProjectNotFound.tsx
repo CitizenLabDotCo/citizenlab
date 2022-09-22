@@ -4,12 +4,12 @@ import React, { memo } from 'react';
 import Button from 'components/UI/Button';
 
 // i18n
-import { FormattedMessage } from 'react-intl';
 import messages from 'containers/ProjectsShowPage/messages';
+import { FormattedMessage } from 'react-intl';
 
 // style
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   height: 100%;

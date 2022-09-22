@@ -1,20 +1,20 @@
 // Libraries
+import { get, includes, isArray } from 'lodash-es';
 import React, { PureComponent } from 'react';
 import { isAdmin, TRole } from 'services/permissions/roles';
-import { includes, get, isArray } from 'lodash-es';
 
 // Components
+import Pagination from 'components/Pagination';
 import Table from 'components/UI/Table';
 import SortableTableHeaderCell from 'components/UI/Table/SortableTableHeaderCell';
-import Pagination from 'components/Pagination';
 import UserTableRow from './UserTableRow';
 
 // Services
 import { IUserData, updateUser } from 'services/users';
 
 // Resources
-import { GetUsersChildProps, SortAttribute } from 'resources/GetUsers';
 import { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import { GetUsersChildProps, SortAttribute } from 'resources/GetUsers';
 
 // Events --- For error handling
 import eventEmitter from 'utils/eventEmitter';

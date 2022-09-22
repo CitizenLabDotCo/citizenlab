@@ -1,36 +1,35 @@
-import React, { useState, useEffect } from 'react';
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
+import React, { useEffect, useState } from 'react';
 
 // services
 import { coreSettings } from 'services/appConfiguration';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
-import useTopics from 'hooks/useTopics';
 import useAreas from 'hooks/useAreas';
 import useLocalize from 'hooks/useLocalize';
+import useTopics from 'hooks/useTopics';
 
 // components
-import Tabs from './Tabs';
-import { ScreenReaderOnly } from 'utils/a11y';
-import SelectTopics from './SelectTopics';
-import SelectAreas from './SelectAreas';
 import SearchInput from 'components/UI/SearchInput';
+import { ScreenReaderOnly } from 'utils/a11y';
+import SelectAreas from './SelectAreas';
+import SelectTopics from './SelectTopics';
+import Tabs from './Tabs';
 
 // styling
 import styled from 'styled-components';
-import { media, isRtl, fontSizes, colors } from 'utils/styleUtils';
+import { colors, fontSizes, isRtl, media } from 'utils/styleUtils';
 
 // i18n
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
-import { getShowFilters, getShowFiltersLabel } from './show';
 import { useSearchParams } from 'react-router-dom';
 import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
+import { getShowFilters, getShowFiltersLabel } from './show';
 
 // typings
 import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';

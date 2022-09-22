@@ -2,28 +2,27 @@ import React, { useEffect, useState } from 'react';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // styles
-import { colors, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // components
 import {
+  Button,
   Dropdown,
   DropdownListItem,
-  Button,
 } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
-import RenameInsightsView from './RenameInsightsView';
 import ProjectButton from './ProjectButton';
 import ProjectsDropdown from './ProjectsDropdown';
+import RenameInsightsView from './RenameInsightsView';
 
 // intl
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // utils
 import clHistory from 'utils/cl-router/history';
-import { injectIntl } from 'react-intl';
-import { isNilOrError, isError } from 'utils/helperUtils';
+import { isError, isNilOrError } from 'utils/helperUtils';
 
 // services
 import { deleteInsightsView } from '../../../services/insightsViews';

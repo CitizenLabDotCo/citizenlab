@@ -1,6 +1,6 @@
+import { colors, IconTooltip } from '@citizenlab/cl2-component-library';
 import React from 'react';
 import styled from 'styled-components';
-import { colors, IconTooltip } from '@citizenlab/cl2-component-library';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
@@ -10,8 +10,7 @@ import { getFlagType } from '../../utils';
 import useInappropriateContentFlag from '../../hooks/useInappropriateContentFlag';
 
 // i18n
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 const Container = styled.div`

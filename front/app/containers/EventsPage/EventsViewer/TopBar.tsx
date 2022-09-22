@@ -1,13 +1,12 @@
 import React, { memo } from 'react';
 
 // i18n
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 // components
-import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
 import { Icon } from '@citizenlab/cl2-component-library';
+import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
 
 // styling
 import styled, { useTheme } from 'styled-components';

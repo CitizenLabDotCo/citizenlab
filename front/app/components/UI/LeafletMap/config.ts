@@ -1,7 +1,7 @@
-import defaultMarker from './default-marker.svg';
-import defaultHoverMarker from './default-marker-hover.svg';
-import defaultActiveMarker from './default-marker-active.svg';
 import { LatLngTuple } from 'leaflet';
+import defaultActiveMarker from './default-marker-active.svg';
+import defaultHoverMarker from './default-marker-hover.svg';
+import defaultMarker from './default-marker.svg';
 
 export const DEFAULT_CENTER = [0, 0] as LatLngTuple;
 

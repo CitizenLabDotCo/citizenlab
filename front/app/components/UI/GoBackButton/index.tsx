@@ -1,7 +1,7 @@
-import React, { PureComponent, FormEvent } from 'react';
-import styled from 'styled-components';
 import Button from 'components/UI/Button';
+import React, { FormEvent, PureComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
+import styled from 'styled-components';
 import messages from './messages';
 
 const Container = styled.div`

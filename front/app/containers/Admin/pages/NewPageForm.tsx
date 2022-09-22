@@ -2,15 +2,15 @@ import React from 'react';
 import styled from 'styled-components';
 import clHistory from 'utils/cl-router/history';
 
-import GoBackButton from 'components/UI/GoBackButton';
 import PageWrapper from 'components/admin/PageWrapper';
 import PageForm, { FormValues } from 'components/PageForm';
+import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
-import { createPage } from 'services/pages';
 import { handleAddPageFiles } from 'services/pageFiles';
+import { createPage } from 'services/pages';
 
 import { isNilOrError } from 'utils/helperUtils';
 

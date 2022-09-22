@@ -1,8 +1,7 @@
-import React from 'react';
 import Button from 'components/UI/Button';
+import React from 'react';
 // i18n
-import { FormattedMessage } from 'react-intl';
-import { MessageDescriptor } from 'react-intl';
+import { FormattedMessage, MessageDescriptor } from 'react-intl';
 
 interface Props {
   linkTo: string;

@@ -1,9 +1,9 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import messages from './messages';
-import Illustration from './Illustration';
 import styled from 'styled-components';
-import { fontSizes, media, defaultCardStyle } from 'utils/styleUtils';
+import { defaultCardStyle, fontSizes, media } from 'utils/styleUtils';
+import Illustration from './Illustration';
+import messages from './messages';
 
 const Container = styled.div`
   font-size: ${fontSizes.xl}px;

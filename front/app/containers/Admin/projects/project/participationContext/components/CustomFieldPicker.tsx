@@ -9,8 +9,8 @@ import { FormattedMessage } from 'react-intl';
 import messages from '../../messages';
 
 // typings
-import { InputTerm } from 'services/participationContexts';
 import { IOption } from '@citizenlab/cl2-component-library';
+import { InputTerm } from 'services/participationContexts';
 
 interface Props {
   input_term: InputTerm | undefined;

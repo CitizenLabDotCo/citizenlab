@@ -1,11 +1,10 @@
-import React from 'react';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import { Outlet as RouterOutlet } from 'react-router-dom';
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
 import TabbedResource from 'components/admin/TabbedResource';
-import messages from './messages';
 import Outlet from 'components/Outlet';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import React from 'react';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
+import { Outlet as RouterOutlet } from 'react-router-dom';
+import messages from './messages';
 
 const Containers = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   // It's better to avoid using this feature flag in the core

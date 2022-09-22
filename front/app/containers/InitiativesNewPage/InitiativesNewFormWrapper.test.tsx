@@ -2,8 +2,8 @@
 import React from 'react';
 
 import { shallow } from 'enzyme';
-import { makeUser } from '../../services/__mocks__/users';
 import { getAppConfiguration } from '../../services/__mocks__/appConfiguration';
+import { makeUser } from '../../services/__mocks__/users';
 
 jest.mock('components/InitiativeForm', () => 'InitiativeForm');
 jest.mock('services/initiatives'); // TODO

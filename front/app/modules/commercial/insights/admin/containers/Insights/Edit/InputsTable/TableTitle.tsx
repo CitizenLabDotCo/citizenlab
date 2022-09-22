@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // intl
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
-import { WrappedComponentProps } from 'react-intl';
 
 // hooks
 import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
@@ -16,23 +16,22 @@ import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 // utils
-import clHistory from 'utils/cl-router/history';
 import { stringify } from 'qs';
+import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
-import { injectIntl } from 'react-intl';
 
 // components
-import Modal from 'components/UI/Modal';
 import {
   Dropdown,
   DropdownListItem,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
-import {
-  TooltipContent,
-  SectionTitle,
-} from 'modules/commercial/insights/admin/components/StyledTextComponents';
 import Button from 'components/UI/Button';
+import Modal from 'components/UI/Modal';
+import {
+  SectionTitle,
+  TooltipContent,
+} from 'modules/commercial/insights/admin/components/StyledTextComponents';
 import RenameCategory from '../RenameCategory';
 
 import getInputsCategoryFilter from 'modules/commercial/insights/utils/getInputsCategoryFilter';

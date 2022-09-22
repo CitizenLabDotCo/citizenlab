@@ -1,18 +1,18 @@
-import React from 'react';
-import {
-  render,
-  screen,
-  fireEvent,
-  within,
-  act,
-  waitFor,
-} from 'utils/testUtils/rtl';
-import * as service from 'modules/commercial/insights/services/insightsInputs';
+import categories from 'modules/commercial/insights/fixtures/categories';
+import inputs from 'modules/commercial/insights/fixtures/inputs';
+import views from 'modules/commercial/insights/fixtures/views';
 import useInsightsInputs from 'modules/commercial/insights/hooks/useInsightsInputs';
 import * as batchService from 'modules/commercial/insights/services/batchAssignment';
-import inputs from 'modules/commercial/insights/fixtures/inputs';
-import categories from 'modules/commercial/insights/fixtures/categories';
-import views from 'modules/commercial/insights/fixtures/views';
+import * as service from 'modules/commercial/insights/services/insightsInputs';
+import React from 'react';
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from 'utils/testUtils/rtl';
 
 import clHistory from 'utils/cl-router/history';
 

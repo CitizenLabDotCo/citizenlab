@@ -1,9 +1,12 @@
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import useLocalize from 'hooks/useLocalize';
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
-import { injectIntl } from 'react-intl';
-import useLocalize from 'hooks/useLocalize';
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import {
+  injectIntl,
+  MessageDescriptor,
+  WrappedComponentProps,
+} from 'react-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {

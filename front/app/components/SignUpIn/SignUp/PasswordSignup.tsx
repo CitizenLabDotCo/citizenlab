@@ -1,58 +1,60 @@
+import { API_PATH } from 'containers/App/constants';
+import { difference, get, keys, set } from 'lodash-es';
 import React, { PureComponent } from 'react';
-import { set, keys, difference, get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import clHistory from 'utils/cl-router/history';
-import { API_PATH } from 'containers/App/constants';
 import request from 'utils/request';
 
 // components
 import { Input } from '@citizenlab/cl2-component-library';
+import Consent from 'components/SignUpIn/SignUp/Consent';
+import { Option, Options } from 'components/SignUpIn/styles';
 import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
+import { FormLabel } from 'components/UI/FormComponents';
 import PasswordInput, {
   hasPasswordMinimumLength,
 } from 'components/UI/PasswordInput';
 import PasswordInputIconTooltip from 'components/UI/PasswordInput/PasswordInputIconTooltip';
-import Error from 'components/UI/Error';
-import { FormLabel } from 'components/UI/FormComponents';
-import Consent from 'components/SignUpIn/SignUp/Consent';
-import { Options, Option } from 'components/SignUpIn/styles';
 
 // utils
-import { isValidEmail, isValidPhoneNumber } from 'utils/validate';
 import { isCLErrorJSON } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { isValidEmail, isValidPhoneNumber } from 'utils/validate';
 
 // services
 import { signUp } from 'services/auth';
 
 // resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetWindowSize, {
-  GetWindowSizeChildProps,
-} from 'resources/GetWindowSize';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
 import GetFeatureFlag from 'resources/GetFeatureFlag';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetWindowSize, {
+  GetWindowSizeChildProps,
+} from 'resources/GetWindowSize';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage } from 'react-intl';
-import { injectIntl } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from './messages';
 
 // analytics
-import { trackEventByName } from 'utils/analytics';
 import tracks from 'components/SignUpIn/tracks';
+import { trackEventByName } from 'utils/analytics';
 
 // style
 import styled from 'styled-components';
 import { viewportWidths } from 'utils/styleUtils';
 
 // typings
-import { CLErrorsJSON } from 'typings';
 import { ISignUpInMetaData } from 'components/SignUpIn';
 import { IUser } from 'services/users';
+import { CLErrorsJSON } from 'typings';
 
 const Container = styled.div``;
 

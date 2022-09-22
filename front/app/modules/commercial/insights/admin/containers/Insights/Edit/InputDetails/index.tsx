@@ -1,40 +1,39 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
-import { addInsightsInputCategory } from 'modules/commercial/insights/services/insightsInputs';
 import { addInsightsCategory } from 'modules/commercial/insights/services/insightsCategories';
+import { addInsightsInputCategory } from 'modules/commercial/insights/services/insightsInputs';
 
 // components
+import { Box, Icon, Label, Spinner } from '@citizenlab/cl2-component-library';
+import selectStyles from 'components/UI/MultipleSelect/styles';
 import Category from 'modules/commercial/insights/admin/components/Category';
 import Idea from 'modules/commercial/insights/admin/components/Idea';
-import { Label, Spinner, Icon, Box } from '@citizenlab/cl2-component-library';
-import Creatable from 'react-select/creatable';
-import selectStyles from 'components/UI/MultipleSelect/styles';
 import Navigation, {
   NavigationProps,
 } from 'modules/commercial/insights/admin/components/Navigation';
+import Creatable from 'react-select/creatable';
 
 // hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
 import useInsightsInput from 'modules/commercial/insights/hooks/useInsightsInput';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // styles
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 // intl
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 
 // tracking
-import { trackEventByName } from 'utils/analytics';
 import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
+import { trackEventByName } from 'utils/analytics';
 
 type InputDetailsProps = {
   previewedInputId: string;

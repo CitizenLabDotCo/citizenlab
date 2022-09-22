@@ -5,22 +5,22 @@ import useReferenceDistribution from '../../hooks/useReferenceDistribution';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import Header from './Header';
-import Options from './Options';
 import Tippy from '@tippyjs/react';
 import Button from 'components/UI/Button';
 import Warning from 'components/UI/Warning';
 import BinModal from './BinModal';
+import Header from './Header';
+import Options from './Options';
 
 // styling
 import { colors } from 'utils/styleUtils';
 
 // i18n
-import messages from './messages';
 import { FormattedMessage } from 'react-intl';
+import messages from './messages';
 
 // utils
-import { isSubmittingAllowed, FormValues } from '../../utils/form';
+import { FormValues, isSubmittingAllowed } from '../../utils/form';
 
 // typings
 import { Bins } from '../../services/referenceDistribution';

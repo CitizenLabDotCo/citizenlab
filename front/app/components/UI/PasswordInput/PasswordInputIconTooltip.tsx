@@ -1,9 +1,8 @@
-import React from 'react';
 import { IconTooltip } from '@citizenlab/cl2-component-library';
+import React from 'react';
 
 // i18n
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 interface Props {

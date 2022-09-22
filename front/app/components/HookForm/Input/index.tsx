@@ -1,12 +1,12 @@
-import React from 'react';
 import {
   Input as InputComponent,
   InputProps,
 } from '@citizenlab/cl2-component-library';
 import Error, { TFieldName } from 'components/UI/Error';
+import { get } from 'lodash-es';
+import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { CLError } from 'typings';
-import { get } from 'lodash-es';
 
 interface Props extends InputProps {
   name: string;

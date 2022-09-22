@@ -1,12 +1,14 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
+import { Button, Icon } from 'semantic-ui-react';
 import { deleteIdea } from 'services/ideas';
 import { deleteInitiative } from 'services/initiatives';
-import { Button, Icon } from 'semantic-ui-react';
-import messages from '../../messages';
 import { ManagerType } from '../..';
+import messages from '../../messages';
 
 interface Props {
   type: ManagerType;

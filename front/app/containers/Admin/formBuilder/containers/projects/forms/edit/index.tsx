@@ -1,30 +1,30 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
+import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
-import { useForm, useFieldArray, FormProvider } from 'react-hook-form';
-import { object, boolean, array, string, number } from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { array, boolean, number, object, string } from 'yup';
 
 // styles
 import styled from 'styled-components';
-import { stylingConsts, colors } from 'utils/styleUtils';
+import { colors, stylingConsts } from 'utils/styleUtils';
 
 // components
-import { RightColumn } from 'containers/Admin';
 import { Box } from '@citizenlab/cl2-component-library';
-import FormBuilderTopBar from 'containers/Admin/formBuilder/components/FormBuilderTopBar';
-import FormBuilderToolbox from 'containers/Admin/formBuilder/components/FormBuilderToolbox';
-import FormBuilderSettings from 'containers/Admin/formBuilder/components/FormBuilderSettings';
-import FormFields from 'containers/Admin/formBuilder/components/FormFields';
-import Error from 'components/UI/Error';
 import Feedback from 'components/HookForm/Feedback';
+import Error from 'components/UI/Error';
+import { RightColumn } from 'containers/Admin';
+import FormBuilderSettings from 'containers/Admin/formBuilder/components/FormBuilderSettings';
+import FormBuilderToolbox from 'containers/Admin/formBuilder/components/FormBuilderToolbox';
+import FormBuilderTopBar from 'containers/Admin/formBuilder/components/FormBuilderTopBar';
+import FormFields from 'containers/Admin/formBuilder/components/FormFields';
 
 // utils
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 import {
   IFlatCreateCustomField,
@@ -37,8 +37,7 @@ import {
 import useFormCustomFields from 'hooks/useFormCustomFields';
 
 // intl
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 const StyledRightColumn = styled(RightColumn)`

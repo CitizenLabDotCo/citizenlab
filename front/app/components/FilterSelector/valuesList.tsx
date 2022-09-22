@@ -1,10 +1,10 @@
-import React, { PureComponent } from 'react';
 import { includes, isNil } from 'lodash-es';
+import React, { PureComponent } from 'react';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // components
-import Checkbox from 'components/UI/Checkbox';
 import { Dropdown } from '@citizenlab/cl2-component-library';
+import Checkbox from 'components/UI/Checkbox';
 
 // style
 import styled from 'styled-components';

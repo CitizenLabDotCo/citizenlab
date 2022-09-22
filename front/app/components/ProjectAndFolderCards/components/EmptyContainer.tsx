@@ -2,14 +2,13 @@ import React from 'react';
 
 // styling
 import styled from 'styled-components';
-import { defaultCardStyle, media, fontSizes } from 'utils/styleUtils';
+import { defaultCardStyle, fontSizes, media } from 'utils/styleUtils';
 
 // components
 import { Image } from '@citizenlab/cl2-component-library';
 
 // i18n
-import { FormattedMessage } from 'react-intl';
-import { MessageDescriptor } from 'react-intl';
+import { FormattedMessage, MessageDescriptor } from 'react-intl';
 
 // svg
 import EmptyProjectsImageSrc from 'assets/img/landingpage/no_projects_image.svg';

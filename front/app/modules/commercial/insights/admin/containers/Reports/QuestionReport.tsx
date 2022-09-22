@@ -3,9 +3,8 @@ import useLocalize from 'hooks/useLocalize';
 import usePollOptions from 'hooks/usePollOptions';
 import usePollResponses from 'hooks/usePollResponses';
 import React, { memo } from 'react';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import { IPollQuestion } from 'services/pollQuestions';
-import { injectIntl } from 'react-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import ResponseGraph from './charts/ResponseGraph';
 

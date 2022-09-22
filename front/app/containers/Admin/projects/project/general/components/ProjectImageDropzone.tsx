@@ -4,8 +4,8 @@ import styled from 'styled-components';
 // components
 import { IconTooltip } from '@citizenlab/cl2-component-library';
 import { SubSectionTitle } from 'components/admin/Section';
-import { StyledSectionField } from './styling';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
+import { StyledSectionField } from './styling';
 
 // i18n
 import { FormattedMessage } from 'react-intl';

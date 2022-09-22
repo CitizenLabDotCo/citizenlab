@@ -7,41 +7,41 @@ import InitiativeForm, {
 } from 'components/InitiativeForm';
 
 // services
-import { Locale, Multiloc, UploadFile } from 'typings';
 import {
-  updateInitiative,
-  IInitiativeData,
-  IInitiativeAdd,
-} from 'services/initiatives';
+  addInitiativeFile,
+  deleteInitiativeFile,
+} from 'services/initiativeFiles';
 import {
   addInitiativeImage,
   deleteInitiativeImage,
   IInitiativeImageData,
 } from 'services/initiativeImages';
 import {
-  deleteInitiativeFile,
-  addInitiativeFile,
-} from 'services/initiativeFiles';
+  IInitiativeAdd,
+  IInitiativeData,
+  updateInitiative,
+} from 'services/initiatives';
 import { ITopicData } from 'services/topics';
+import { Locale, Multiloc, UploadFile } from 'typings';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
-import { isEqual, pick, get, omitBy } from 'lodash-es';
+import { get, isEqual, omitBy, pick } from 'lodash-es';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // geoJson
-import { geocode } from 'utils/locationTools';
 import { Point } from 'geojson';
+import { geocode } from 'utils/locationTools';
 
 // tracks
-import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
 
 // resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 interface DataProps {
   authUser: GetAuthUserChildProps;

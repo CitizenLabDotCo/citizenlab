@@ -1,13 +1,13 @@
 import React from 'react';
 
 // styling
-import styled from 'styled-components';
 import { darken } from 'polished';
+import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // components
-import Link from 'utils/cl-router/Link';
 import { Icon, IconNames } from '@citizenlab/cl2-component-library';
+import Link from 'utils/cl-router/Link';
 
 const MenuItem = styled.li`
   font-size: ${fontSizes.base}px;

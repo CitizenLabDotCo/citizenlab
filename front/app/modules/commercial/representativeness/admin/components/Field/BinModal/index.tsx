@@ -1,30 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // components
+import { Box, Button, Icon, Text } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
-import { Box, Icon, Text, Button } from '@citizenlab/cl2-component-library';
-import BinInputs from './BinInputs';
 import Warning from 'components/UI/Warning';
+import BinInputs from './BinInputs';
 
 // i18n
-import messages from './messages';
 import { FormattedMessage } from 'react-intl';
+import messages from './messages';
 
 // styling
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 // utils
+import { isEqual } from 'lodash-es';
 import {
+  addBin,
   getExampleBins,
   isExampleBins,
-  validateBins,
+  removeBin,
   updateLowerBound,
   updateUpperBound,
-  removeBin,
-  addBin,
+  validateBins,
 } from '../../../utils/bins';
-import { isEqual } from 'lodash-es';
 
 // typings
 import { Bins } from '../../../services/referenceDistribution';

@@ -1,9 +1,9 @@
-import React from 'react';
-import { render, screen, fireEvent, act } from 'utils/testUtils/rtl';
-import * as insightsService from 'modules/commercial/insights/services/insightsInputs';
-import * as categoryService from 'modules/commercial/insights/services/insightsCategories';
-import inputs from 'modules/commercial/insights/fixtures/inputs';
 import categories from 'modules/commercial/insights/fixtures/categories';
+import inputs from 'modules/commercial/insights/fixtures/inputs';
+import * as categoryService from 'modules/commercial/insights/services/insightsCategories';
+import * as insightsService from 'modules/commercial/insights/services/insightsInputs';
+import React from 'react';
+import { act, fireEvent, render, screen } from 'utils/testUtils/rtl';
 
 import selectEvent from 'react-select-event';
 import InputDetails from './';

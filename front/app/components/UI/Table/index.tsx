@@ -1,7 +1,7 @@
+import { darken } from 'polished';
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
-import { darken } from 'polished';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 const StyledTable = styled.table`
   width: 100%;

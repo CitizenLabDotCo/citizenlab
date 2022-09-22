@@ -3,18 +3,17 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import ContentContainer from 'components/ContentContainer';
-import Survey from '../shared/survey';
-import { ScreenReaderOnly } from 'utils/a11y';
-import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 import SectionContainer from 'components/SectionContainer';
+import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
+import { ScreenReaderOnly } from 'utils/a11y';
+import Survey from '../shared/survey';
 
 // hooks
 import useProject from 'hooks/useProject';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'react-intl';
 import messages from 'containers/ProjectsShowPage/messages';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 
 // styling
 import styled from 'styled-components';

@@ -9,18 +9,18 @@ import Warning from 'components/UI/Warning';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // i18n
-import messages from './messages';
 import { FormattedMessage } from 'react-intl';
+import messages from './messages';
 
 // events
-import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 import { openSignUpInModal } from 'components/SignUpIn/events';
+import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 
 // styling
-import styled from 'styled-components';
 import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
 } from 'resources/GetInitiativesPermissions';
+import styled from 'styled-components';
 
 const Container = styled.div`
   margin-bottom: 30px;

@@ -3,10 +3,12 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { isNilOrError } from 'utils/helperUtils';
 // i18n
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from './messages';
-import { FormattedMessage } from 'react-intl';
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
@@ -16,17 +18,17 @@ import Fragment from 'components/Fragment';
 
 import {
   Container,
-  StyledContentContainer,
   PageContent,
-  PageTitle,
   PageDescription,
+  PageTitle,
+  StyledContentContainer,
 } from 'containers/PagesShowPage';
 
 // styles
+import QuillEditedContent from 'components/UI/QuillEditedContent';
+import { darken } from 'polished';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
-import { darken } from 'polished';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';

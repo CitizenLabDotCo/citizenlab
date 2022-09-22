@@ -1,10 +1,11 @@
 // PollForm save method uses .flat() which is es6, importing corejs here lets jest use save.
 import 'core-js';
-import React from 'react';
 import { shallow } from 'enzyme';
+import React from 'react';
 
 import { PollForm } from './PollForm';
 
+import * as responseServices from 'services/pollResponses';
 import { mockQuestion } from 'services/__mocks__/pollQuestions';
 
 jest.mock('services/pollResponses', () => ({
@@ -12,7 +13,6 @@ jest.mock('services/pollResponses', () => ({
     return new Promise((resolve) => resolve);
   }),
 }));
-import * as responseServices from 'services/pollResponses';
 const addPollResponseSpy = jest.spyOn(responseServices, 'addPollResponse');
 
 jest.mock('utils/cl-intl', () => ({

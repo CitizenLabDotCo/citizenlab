@@ -1,33 +1,35 @@
 import React, { useState } from 'react';
 
 // Components
-import { Section, SectionField } from 'components/admin/Section';
 import { Label } from '@citizenlab/cl2-component-library';
+import { Section, SectionField } from 'components/admin/Section';
 import Collapse from 'components/UI/Collapse';
 
 // form
-import { useFormContext } from 'react-hook-form';
-import Toggle from 'components/HookForm/Toggle';
-import Select from 'components/HookForm/Select';
-import MultipleSelect from 'components/HookForm/MultipleSelect';
-import Input from 'components/HookForm/Input';
 import ColorPicker from 'components/HookForm/ColorPicker';
 import Feedback from 'components/HookForm/Feedback';
+import Input from 'components/HookForm/Input';
+import MultipleSelect from 'components/HookForm/MultipleSelect';
+import Select from 'components/HookForm/Select';
+import Toggle from 'components/HookForm/Toggle';
+import { useFormContext } from 'react-hook-form';
 
 // I18n
-import { FormattedMessage } from 'react-intl';
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
 import messages from '../../messages';
 
 // Resources
-import GetTopics from 'resources/GetTopics';
 import GetProjects from 'resources/GetProjects';
+import GetTopics from 'resources/GetTopics';
 
 // Utils
-import { isNilOrError } from 'utils/helperUtils';
 import { IProjectData } from 'services/projects';
+import { isNilOrError } from 'utils/helperUtils';
 
 // Styling
 import styled from 'styled-components';

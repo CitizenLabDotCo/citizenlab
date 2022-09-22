@@ -1,23 +1,25 @@
 import React from 'react';
 
 // components
-import Error from 'components/UI/Error';
 import { IconTooltip } from '@citizenlab/cl2-component-library';
 import { SubSectionTitle } from 'components/admin/Section';
+import Error from 'components/UI/Error';
 import {
+  SlugPreview,
+  StyledInput,
   StyledSectionField,
   StyledWarning,
-  StyledInput,
-  SlugPreview,
 } from './styling';
 
-import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'hooks/useAppConfiguration';
+import useLocale from 'hooks/useLocale';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage } from 'react-intl';
-import { injectIntl } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from './messages';
 
 // typings

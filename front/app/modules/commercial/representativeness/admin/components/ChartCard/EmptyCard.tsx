@@ -9,16 +9,16 @@ import useLocalize from 'hooks/useLocalize';
 // components
 import {
   Box,
-  Title,
-  Text,
   StatusLabel,
+  Text,
+  Title,
 } from '@citizenlab/cl2-component-library';
-import { StyledBackgroundImage } from '../../containers/Dashboard/EmptyState';
 import Button from 'components/UI/Button';
+import { StyledBackgroundImage } from '../../containers/Dashboard/EmptyState';
 
 // i18n
-import messages from './messages';
 import { FormattedMessage } from 'react-intl';
+import messages from './messages';
 
 // styling
 import styled from 'styled-components';

@@ -1,13 +1,13 @@
-import React from 'react';
-import { FormattedMessage } from 'react-intl';
-import messages from './messages';
 import ContentContainer from 'components/ContentContainer';
-import Link from 'utils/cl-router/Link';
 import Button from 'components/UI/Button';
 import CloseIconButton from 'components/UI/CloseIconButton';
-import styled from 'styled-components';
-import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
 import { rgba } from 'polished';
+import React from 'react';
+import { FormattedMessage } from 'react-intl';
+import styled from 'styled-components';
+import Link from 'utils/cl-router/Link';
+import { colors, fontSizes, isRtl, media } from 'utils/styleUtils';
+import messages from './messages';
 
 const Container = styled.div`
   position: fixed;

@@ -3,9 +3,9 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import ContentContainer from 'components/ContentContainer';
-import Volunteering from '../shared/volunteering';
-import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 import SectionContainer from 'components/SectionContainer';
+import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
+import Volunteering from '../shared/volunteering';
 
 // hooks
 import useProject from 'hooks/useProject';

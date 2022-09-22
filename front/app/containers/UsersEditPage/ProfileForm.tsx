@@ -1,54 +1,56 @@
+import { isEmpty, isEqual } from 'lodash-es';
 import React, { PureComponent } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
-import { isEqual, isEmpty } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
 import streams from 'utils/streams';
 
 // services
-import { updateUser, mapUserToDiff } from 'services/users';
-import GetLockedFields, {
-  GetLockedFieldsChildProps,
-} from 'resources/GetLockedFields';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetLockedFields, {
+  GetLockedFieldsChildProps,
+} from 'resources/GetLockedFields';
+import { mapUserToDiff, updateUser } from 'services/users';
 
 // utils
 import { Formik } from 'formik';
 
 // components
+import { SectionField } from 'components/admin/Section';
 import Error from 'components/UI/Error';
+import {
+  FormLabel,
+  FormSection,
+  FormSectionTitle,
+} from 'components/UI/FormComponents';
+import ImagesDropzone from 'components/UI/ImagesDropzone';
 import PasswordInput, {
   hasPasswordMinimumLength,
 } from 'components/UI/PasswordInput';
 import PasswordInputIconTooltip from 'components/UI/PasswordInput/PasswordInputIconTooltip';
-import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
-import { SectionField } from 'components/admin/Section';
-import {
-  FormSection,
-  FormLabel,
-  FormSectionTitle,
-} from 'components/UI/FormComponents';
 
-import { Input, Select, IconTooltip } from '@citizenlab/cl2-component-library';
+import { IconTooltip, Input, Select } from '@citizenlab/cl2-component-library';
 import QuillEditor from 'components/UI/QuillEditor';
 
 // i18n
-import { appLocalePairs, API_PATH } from 'containers/App/constants';
-import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage } from 'react-intl';
-import { injectIntl } from 'react-intl';
+import { API_PATH, appLocalePairs } from 'containers/App/constants';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
+import messages from './messages';
 
 // styling
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import styled from 'styled-components';
 
 // typings
-import { IOption, UploadFile, CLErrorsJSON } from 'typings';
+import { CLErrorsJSON, IOption, UploadFile } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
 import Outlet from 'components/Outlet';

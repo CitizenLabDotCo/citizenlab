@@ -2,19 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 
 // components
-import {
-  Box,
-  Title,
-  Text,
-  // IconTooltip,
-} from '@citizenlab/cl2-component-library';
+import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 // import RepresentativenessArticleLink from '../RepresentativenessArticleLink';
 import ReportExportMenu from 'components/admin/ReportExportMenu';
 import Tabs, { ITabItem } from 'components/UI/Tabs';
 
 // i18n
-import messages from './messages';
 import { FormattedMessage } from 'react-intl';
+import messages from './messages';
 
 // typings
 import { ViewState } from '.';

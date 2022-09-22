@@ -2,9 +2,9 @@ import React, { PureComponent } from 'react';
 
 // components
 import { Label } from '@citizenlab/cl2-component-library';
-import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { Section, SectionField } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
+import ImagesDropzone from 'components/UI/ImagesDropzone';
 
 // utils
 import { convertUrlToUploadFile } from 'utils/fileUtils';
@@ -12,8 +12,8 @@ import getSubmitState from 'utils/getSubmitState';
 
 // services
 import {
-  updateAppConfiguration,
   IUpdatedAppConfigurationProperties,
+  updateAppConfiguration,
 } from 'services/appConfiguration';
 
 // resources
@@ -22,8 +22,8 @@ import GetAppConfiguration, {
 } from 'resources/GetAppConfiguration';
 
 // intl
-import messages from './messages';
 import { FormattedMessage } from 'react-intl';
+import messages from './messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

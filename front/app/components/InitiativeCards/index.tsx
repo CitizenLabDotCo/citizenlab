@@ -1,6 +1,6 @@
+import { get, isNumber } from 'lodash-es';
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { get, isNumber } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // tracks
@@ -8,23 +8,26 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // components
-import InitiativesMap from 'components/InitiativesMap';
 import { Spinner } from '@citizenlab/cl2-component-library';
+import BottomBar from 'components/FiltersModal/BottomBar';
+import TopBar from 'components/FiltersModal/TopBar';
+import InitiativesMap from 'components/InitiativesMap';
+import ViewButtons from 'components/PostCardsComponents/ViewButtons';
+import Button from 'components/UI/Button';
+import FullscreenModal from 'components/UI/FullscreenModal';
+import SearchInput from 'components/UI/SearchInput';
 import SortFilterDropdown from './SortFilterDropdown';
 import StatusFilterBox from './StatusFilterBox';
 import TopicFilterBox from './TopicFilterBox';
-import SearchInput from 'components/UI/SearchInput';
-import TopBar from 'components/FiltersModal/TopBar';
-import BottomBar from 'components/FiltersModal/BottomBar';
-import FullscreenModal from 'components/UI/FullscreenModal';
-import Button from 'components/UI/Button';
-import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 
 // resources
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 import GetInitiatives, {
-  Sort,
   GetInitiativesChildProps,
   IQueryParameters,
+  Sort,
 } from 'resources/GetInitiatives';
 import GetInitiativesFilterCounts, {
   GetInitiativesFilterCountsChildProps,
@@ -32,32 +35,29 @@ import GetInitiativesFilterCounts, {
 import GetWindowSize, {
   GetWindowSizeChildProps,
 } from 'resources/GetWindowSize';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
 
 // i18n
-import messages from './messages';
 import {
-  WrappedComponentProps,
-  MessageDescriptor,
+  FormattedMessage,
   injectIntl,
+  MessageDescriptor,
+  WrappedComponentProps,
 } from 'react-intl';
-import { FormattedMessage } from 'react-intl';
+import messages from './messages';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import {
-  media,
-  colors,
-  fontSizes,
-  viewportWidths,
-  defaultCardStyle,
-} from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import {
+  colors,
+  defaultCardStyle,
+  fontSizes,
+  media,
+  viewportWidths,
+} from 'utils/styleUtils';
 import EmptyProposals from './EmptyProposals';
 import ProposalsList from './ProposalsList';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 const gapWidth = 35;
 

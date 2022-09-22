@@ -1,21 +1,24 @@
-import React, { useCallback, useState } from 'react';
-import styled from 'styled-components';
 import { clone } from 'lodash-es';
+import React, { useCallback, useState } from 'react';
 import { DndProvider } from 'react-dnd-cjs';
 import HTML5Backend from 'react-dnd-html5-backend-cjs';
+import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 
 import useCauses from 'hooks/useCauses';
-import { ICauseData, reorderCause, deleteCause } from 'services/causes';
+import { deleteCause, ICauseData, reorderCause } from 'services/causes';
 
-import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
+import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 
-import { FormattedMessage } from 'react-intl';
-import { injectIntl, WrappedComponentProps } from 'react-intl';
-import messages from './messages';
 import T from 'components/T';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
+import messages from './messages';
 
 const Container = styled.div``;
 

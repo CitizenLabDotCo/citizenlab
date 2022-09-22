@@ -1,19 +1,19 @@
-import React, { memo, useCallback, useState, useEffect } from 'react';
 import * as clipboard from 'clipboard-polyfill';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 
 // hooks
-import useLocalize from 'hooks/useLocalize';
 import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
+import useLocalize from 'hooks/useLocalize';
 
 // graphql
 import { gql, useQuery } from '@apollo/client';
 import { client } from '../utils/apolloUtils';
 
 // components
-import Button from 'components/UI/Button';
 import { Icon, Spinner } from '@citizenlab/cl2-component-library';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
 import T from 'components/T';
+import Button from 'components/UI/Button';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 // i18n
 import { FormattedMessage } from 'react-intl';
@@ -24,9 +24,9 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from '../tracks';
 
 // style
+import { lighten } from 'polished';
 import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
-import { lighten } from 'polished';
 
 const Container = styled.div`
   width: 100%;

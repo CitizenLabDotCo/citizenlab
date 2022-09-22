@@ -1,15 +1,17 @@
-import useAppConfiguration from 'hooks/useAppConfiguration';
-import messages from './messages';
-import React, { ReactElement } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import Link from 'utils/cl-router/Link';
-import styled from 'styled-components';
 import { IconTooltip, Toggle } from '@citizenlab/cl2-component-library';
-import { FormattedMessage } from 'react-intl';
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import React, { ReactElement } from 'react';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
+import styled from 'styled-components';
 import { trackEventByName } from 'utils/analytics';
+import Link from 'utils/cl-router/Link';
+import { isNilOrError } from 'utils/helperUtils';
 import tracks from '../../../tracks';
+import messages from './messages';
 
 const StyledToggle = styled(Toggle)`
   margin-right: 15px;

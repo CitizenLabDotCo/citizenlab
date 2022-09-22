@@ -1,23 +1,22 @@
 // libraries
-import React from 'react';
 import { isEmpty } from 'lodash-es';
+import React from 'react';
 
 // intl
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 
 // components
-import ReportExportMenu from 'components/admin/ReportExportMenu';
-import {
-  IGraphUnit,
-  GraphCardHeader,
-  GraphCardTitle,
-  GraphCard,
-  GraphCardInner,
-} from 'components/admin/GraphWrappers';
 import BarChart from 'components/admin/Graphs/BarChart';
 import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/styling';
+import {
+  GraphCard,
+  GraphCardHeader,
+  GraphCardInner,
+  GraphCardTitle,
+  IGraphUnit,
+} from 'components/admin/GraphWrappers';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 
 // resources
 import GetSerieFromStream from 'resources/GetSerieFromStream';
@@ -26,7 +25,7 @@ import GetSerieFromStream from 'resources/GetSerieFromStream';
 import { isNilOrError } from 'utils/helperUtils';
 
 // types
-import { IStreamParams, IStream } from 'utils/streams';
+import { IStream, IStreamParams } from 'utils/streams';
 
 import { IGraphFormat } from 'typings';
 

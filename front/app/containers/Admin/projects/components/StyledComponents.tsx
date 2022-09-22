@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 // components
-import Button from 'components/UI/Button';
 import T from 'components/T';
+import Button from 'components/UI/Button';
 
 export const RowContent = styled.div`
   flex: 1;

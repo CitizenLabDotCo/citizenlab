@@ -1,19 +1,19 @@
+import { Radio } from '@citizenlab/cl2-component-library';
+import T from 'components/T';
 import React from 'react';
+import { adopt } from 'react-adopt';
 import GetPollOptions, {
   GetPollOptionsChildProps,
 } from 'resources/GetPollOptions';
-import { adopt } from 'react-adopt';
 import { IPollQuestion } from 'services/pollQuestions';
 import styled from 'styled-components';
-import { Radio } from '@citizenlab/cl2-component-library';
+import { isNilOrError } from 'utils/helperUtils';
 import {
-  QuestionContainer,
   Question,
+  QuestionContainer,
   QuestionNumber,
   QuestionText,
 } from './PollForm';
-import { isNilOrError } from 'utils/helperUtils';
-import T from 'components/T';
 
 const StyledFieldSet = styled.fieldset`
   width: 100%;

@@ -1,8 +1,8 @@
+import { Icon } from '@citizenlab/cl2-component-library';
+import { isString } from 'lodash-es';
 import React from 'react';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
-import { Icon } from '@citizenlab/cl2-component-library';
-import { isString } from 'lodash-es';
 
 const StyledIcon = styled(Icon)`
   height: 7px;

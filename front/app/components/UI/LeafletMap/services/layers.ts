@@ -1,11 +1,11 @@
-import {
-  isNilOrError,
-  isFunction,
-  isString,
-  isOrReturnsString,
-} from 'utils/helperUtils';
 import L from 'leaflet';
-import { isEmpty, cloneDeep, reverse } from 'lodash-es';
+import { cloneDeep, isEmpty, reverse } from 'lodash-es';
+import {
+  isFunction,
+  isNilOrError,
+  isOrReturnsString,
+  isString,
+} from 'utils/helperUtils';
 
 import { getMarkerIcon } from './markers';
 
@@ -13,8 +13,8 @@ import {
   GeoJSONLayer,
   IMarkerStringOrObjectOrFunctionForLayer,
   IOverlayStringOrObjectOrFunctionForLayer,
-  ITooltipStringOrObjectOrFunctionForLayer,
   IPopupStringOrObjectOrFunctionForLayer,
+  ITooltipStringOrObjectOrFunctionForLayer,
 } from '../typings';
 
 import { DEFAULT_MARKER_ICON } from '../config';

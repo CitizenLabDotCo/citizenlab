@@ -6,24 +6,23 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import {
-  usersByRegFieldStream,
   IUsersByRegistrationField,
+  usersByRegFieldStream,
   usersByRegFieldXlsxEndpoint,
 } from 'modules/commercial/user_custom_fields/services/stats';
 
 // intl
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
-import localize, { InjectedLocalized } from 'utils/localize';
 import messages from 'containers/Admin/dashboard/messages';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
+import localize, { InjectedLocalized } from 'utils/localize';
 
 // components
 import BarChartByCategory from 'containers/Admin/dashboard/users/charts/BarChartByCategory';
 import PieChartByCategory from 'containers/Admin/dashboard/users/charts/PieChartByCategory';
 
+import AgeChart from 'modules/commercial/user_custom_fields/admin/components/AgeChart';
 import AreaChart from 'modules/commercial/user_custom_fields/admin/components/AreaChart';
 import GenderChart from 'modules/commercial/user_custom_fields/admin/components/GenderChart';
-import AgeChart from 'modules/commercial/user_custom_fields/admin/components/AgeChart';
 
 import GetUserCustomFields, {
   GetUserCustomFieldsChildProps,

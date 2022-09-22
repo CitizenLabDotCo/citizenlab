@@ -1,7 +1,7 @@
 // Libraries
 import React, { memo } from 'react';
-import clHistory from 'utils/cl-router/history';
 import { adopt } from 'react-adopt';
+import clHistory from 'utils/cl-router/history';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // Services
@@ -11,22 +11,24 @@ import { isAdmin } from 'services/permissions/roles';
 import { isNilOrError } from 'utils/helperUtils';
 
 // Components
-import GoBackButton from 'components/UI/GoBackButton';
 import TabbedResource from 'components/admin/TabbedResource';
 import Button from 'components/UI/Button';
+import GoBackButton from 'components/UI/GoBackButton';
 import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // Localisation
-import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage } from 'react-intl';
-import { injectIntl } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from './messages';
 
 // Resources
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetProjectFolder, {
   GetProjectFolderChildProps,
 } from '../../resources/GetProjectFolder';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // style
 import styled from 'styled-components';

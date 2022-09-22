@@ -1,13 +1,13 @@
 import React from 'react';
 
 // components
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import {
   Section,
   SectionDescription,
   SectionField,
   SectionTitle,
 } from 'components/admin/Section';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 // i18n
 import { FormattedMessage } from 'react-intl';

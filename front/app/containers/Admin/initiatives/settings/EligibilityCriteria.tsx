@@ -13,7 +13,7 @@ import { FormattedMessage } from 'react-intl';
 import messages from '../messages';
 
 // typings
-import { Multiloc, Locale } from 'typings';
+import { Locale, Multiloc } from 'typings';
 
 interface Props {
   value: Multiloc;

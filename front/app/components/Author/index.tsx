@@ -12,14 +12,13 @@ import { canModerateProject } from 'services/permissions/rules/projectPermission
 import useUser from 'hooks/useUser';
 
 // i18n
-import { FormattedRelative } from 'react-intl';
+import { FormattedMessage, FormattedRelative } from 'react-intl';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes, isRtl } from 'utils/styleUtils';
-import { FormattedMessage } from 'react-intl';
-import messages from './messages';
 import { ScreenReaderOnly } from 'utils/a11y';
+import { colors, fontSizes, isRtl, media } from 'utils/styleUtils';
+import messages from './messages';
 
 const Container = styled.div`
   display: flex;

@@ -1,41 +1,43 @@
-import React, { useState, useEffect } from 'react';
-import { convertUrlToUploadFile } from 'utils/fileUtils';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
 // components
-import ProjectStatusPicker from './components/ProjectStatusPicker';
-import ProjectNameInput from './components/ProjectNameInput';
-import SlugInput from 'components/admin/SlugInput';
-import ProjectTypePicker from './components/ProjectTypePicker';
-import TopicInputs from './components/TopicInputs';
-import GeographicAreaInputs from './components/GeographicAreaInputs';
-import HeaderImageDropzone from './components/HeaderImageDropzone';
-import ProjectImageDropzone from './components/ProjectImageDropzone';
-import AttachmentsDropzone from './components/AttachmentsDropzone';
-import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 import {
   Section,
-  SectionTitle,
   SectionDescription,
+  SectionTitle,
   SubSectionTitle,
 } from 'components/admin/Section';
+import SlugInput from 'components/admin/SlugInput';
+import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
+import Outlet from 'components/Outlet';
 import ParticipationContext, {
   IParticipationContextConfig,
 } from '../participationContext';
-import Outlet from 'components/Outlet';
+import AttachmentsDropzone from './components/AttachmentsDropzone';
+import GeographicAreaInputs from './components/GeographicAreaInputs';
+import HeaderImageDropzone from './components/HeaderImageDropzone';
+import ProjectImageDropzone from './components/ProjectImageDropzone';
+import ProjectNameInput from './components/ProjectNameInput';
+import ProjectStatusPicker from './components/ProjectStatusPicker';
+import ProjectTypePicker from './components/ProjectTypePicker';
 import {
-  StyledForm,
-  ProjectType,
-  StyledSectionField,
   ParticipationContextWrapper,
+  ProjectType,
+  StyledForm,
+  StyledSectionField,
 } from './components/styling';
+import TopicInputs from './components/TopicInputs';
 // hooks
-import useProject from 'hooks/useProject';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useProject from 'hooks/useProject';
 // i18n
-import { FormattedMessage } from 'react-intl';
-import { injectIntl } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
 // animation
 import CSSTransition from 'react-transition-group/CSSTransition';
 
@@ -43,23 +45,23 @@ import { validateSlug } from 'utils/textUtils';
 import validateTitle from './utils/validateTitle';
 
 // typings
-import { Multiloc, UploadFile } from 'typings';
-import { isNilOrError } from 'utils/helperUtils';
 import useProjectFiles from 'hooks/useProjectFiles';
 import useProjectImages from 'hooks/useProjectImages';
-import { isEmpty, get, isString } from 'lodash-es';
+import { get, isEmpty, isString } from 'lodash-es';
+import { Multiloc, UploadFile } from 'typings';
 import eventEmitter from 'utils/eventEmitter';
+import { isNilOrError } from 'utils/helperUtils';
 
 // services
-import {
-  IUpdatedProjectProperties,
-  addProject,
-  updateProject,
-  IProjectFormState,
-  IProjectData,
-} from 'services/projects';
 import { addProjectFile, deleteProjectFile } from 'services/projectFiles';
 import { addProjectImage, deleteProjectImage } from 'services/projectImages';
+import {
+  addProject,
+  IProjectData,
+  IProjectFormState,
+  IUpdatedProjectProperties,
+  updateProject,
+} from 'services/projects';
 
 // typings
 import { INewProjectCreatedEvent } from '../../all/CreateProject';

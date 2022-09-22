@@ -3,18 +3,17 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { isNilOrError } from 'utils/helperUtils';
 // i18n
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from './messages';
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
 
 // utils
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 
 // resources
-import useAuthUser from 'hooks/useAuthUser';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useAuthUser from 'hooks/useAuthUser';
 import useLocalize from 'hooks/useLocalize';
 
 interface Props {}

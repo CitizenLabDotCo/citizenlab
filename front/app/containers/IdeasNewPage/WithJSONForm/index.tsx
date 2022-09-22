@@ -1,27 +1,27 @@
-import React, { useContext, useEffect, useState, useCallback } from 'react';
 import { PreviousPathnameContext } from 'context';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-import { WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
+import { WithRouterProps } from 'utils/cl-router/withRouter';
 
 import { isAdmin, isModerator, isSuperAdmin } from 'services/permissions/roles';
 
-import { isError, isNilOrError } from 'utils/helperUtils';
 import useAuthUser from 'hooks/useAuthUser';
-import useProject from 'hooks/useProject';
-import usePhases from 'hooks/usePhases';
 import useInputSchema from 'hooks/useInputSchema';
+import usePhases from 'hooks/usePhases';
+import useProject from 'hooks/useProject';
 import { getInputTerm } from 'services/participationContexts';
+import { isError, isNilOrError } from 'utils/helperUtils';
 
 import { FormattedMessage } from 'react-intl';
 import messages from '../messages';
 
-import IdeasNewMeta from '../IdeasNewMeta';
 import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
+import IdeasNewMeta from '../IdeasNewMeta';
 
-import PageContainer from 'components/UI/PageContainer';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
+import PageContainer from 'components/UI/PageContainer';
 import { addIdea } from 'services/ideas';
 import { geocode, reverseGeocode } from 'utils/locationTools';
 

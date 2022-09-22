@@ -13,8 +13,8 @@ import { Section, SectionTitle } from 'components/admin/Section';
 import useProject from 'hooks/useProject';
 
 // style
-import styled from 'styled-components';
 import Outlet from 'components/Outlet';
+import styled from 'styled-components';
 
 const StyledSection = styled(Section)`
   margin-bottom: 50px;

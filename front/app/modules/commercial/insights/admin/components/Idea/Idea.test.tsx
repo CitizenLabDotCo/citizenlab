@@ -1,6 +1,6 @@
+import useIdea from 'hooks/useIdea';
 import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
-import useIdea from 'hooks/useIdea';
 
 import Idea from './';
 

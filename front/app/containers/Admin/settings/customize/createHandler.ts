@@ -1,5 +1,5 @@
 import { get } from 'lodash-es';
-import { UploadFile, Multiloc } from 'typings';
+import { Multiloc, UploadFile } from 'typings';
 
 type TUploadType = 'logo' | 'header_bg';
 

@@ -1,11 +1,11 @@
+import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
 import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
 
 // styles
+import { darken } from 'polished';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import { darken } from 'polished';
 
 // components
 import T from 'components/T';
@@ -19,8 +19,7 @@ import tracks from '../tracks';
 import useSimilarIdeas from '../hooks/useSimilarIdeas';
 
 // i18n
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 const IdeaList = styled.ul`

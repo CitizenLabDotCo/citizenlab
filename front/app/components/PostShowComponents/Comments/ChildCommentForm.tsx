@@ -1,26 +1,28 @@
 // libraries
+import { get } from 'lodash-es';
 import React, { PureComponent } from 'react';
+import { adopt } from 'react-adopt';
 import { Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
-import { get } from 'lodash-es';
-import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
+import Avatar from 'components/Avatar';
 import Button from 'components/UI/Button';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
-import Avatar from 'components/Avatar';
-import clickOutside from 'utils/containers/clickOutside';
 import Link from 'utils/cl-router/Link';
+import clickOutside from 'utils/containers/clickOutside';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage } from 'react-intl';
-import { injectIntl } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from './messages';
 
 // services
@@ -31,21 +33,21 @@ import {
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 
 // resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetWindowSize, {
-  GetWindowSizeChildProps,
-} from 'resources/GetWindowSize';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetWindowSize, {
+  GetWindowSizeChildProps,
+} from 'resources/GetWindowSize';
 
 // events
-import { commentReplyButtonClicked$, commentAdded } from './events';
+import { commentAdded, commentReplyButtonClicked$ } from './events';
 
 // style
-import styled from 'styled-components';
 import { hideVisually } from 'polished';
+import styled from 'styled-components';
 import { colors, defaultStyles, viewportWidths } from 'utils/styleUtils';
 
 const Container = styled.div`

@@ -1,21 +1,20 @@
-import React from 'react';
+import { Icon } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-import { IPhaseData } from 'services/phases';
-import { IProjectData } from 'services/projects';
+import React from 'react';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
+import { Menu, Popup, Segment } from 'semantic-ui-react';
 import { IIdeaStatusData } from 'services/ideaStatuses';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
-import { Segment, Menu, Popup } from 'semantic-ui-react';
-import PhasesMenu from './FilterSidebarPhases';
-import TopicsMenu from './FilterSidebarTopics';
-import ProjectsMenu from './FilterSidebarProjects';
-import StatusesMenu from './FilterSidebarStatuses';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'react-intl';
-import messages from '../../messages';
-import { Icon } from '@citizenlab/cl2-component-library';
+import { IPhaseData } from 'services/phases';
+import { IProjectData } from 'services/projects';
+import { ITopicData } from 'services/topics';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
-import { ITopicData } from 'services/topics';
+import messages from '../../messages';
+import PhasesMenu from './FilterSidebarPhases';
+import ProjectsMenu from './FilterSidebarProjects';
+import StatusesMenu from './FilterSidebarStatuses';
+import TopicsMenu from './FilterSidebarTopics';
 
 const InfoIcon = styled(Icon)`
   fill: ${colors.clBlueDarker};

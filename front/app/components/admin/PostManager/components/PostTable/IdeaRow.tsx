@@ -1,44 +1,47 @@
+import { get, isEmpty, uniq } from 'lodash-es';
 import React, { ChangeEvent } from 'react';
+import { DragSource } from 'react-dnd-cjs';
+import { findDOMNode } from 'react-dom';
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { uniq, isEmpty, get } from 'lodash-es';
-import { findDOMNode } from 'react-dom';
-import { DragSource } from 'react-dnd-cjs';
 
 // services
-import { IIdeaData, updateIdea, ideaByIdStream } from 'services/ideas';
-import { IPhaseData } from 'services/phases';
+import { ideaByIdStream, IIdeaData, updateIdea } from 'services/ideas';
 import { IIdeaStatusData } from 'services/ideaStatuses';
+import { IPhaseData } from 'services/phases';
 
 // components
-import { Table, Icon } from 'semantic-ui-react';
-import WrappedRow from './WrappedRow';
 import T from 'components/T';
+import { Icon, Table } from 'semantic-ui-react';
+import WrappedRow from './WrappedRow';
 
-import Checkbox from 'components/UI/Checkbox';
 import FeatureFlag from 'components/FeatureFlag';
+import Checkbox from 'components/UI/Checkbox';
 
 // utils
 import localize, { InjectedLocalized } from 'utils/localize';
 
 // i18n
-import { FormattedRelative, WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'react-intl';
+import {
+  FormattedRelative,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from '../../messages';
 
 // analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from '../../tracks';
-import { TFilterMenu, ManagerType } from '../..';
-import { TitleLink, StyledRow } from './Row';
-import SubRow from './SubRow';
+import Outlet from 'components/Outlet';
 import {
   CellConfiguration,
   InsertConfigurationOptions,
   Override,
 } from 'typings';
+import { trackEventByName } from 'utils/analytics';
 import { insertConfiguration } from 'utils/moduleUtils';
-import Outlet from 'components/Outlet';
+import { ManagerType, TFilterMenu } from '../..';
+import tracks from '../../tracks';
+import { StyledRow, TitleLink } from './Row';
+import SubRow from './SubRow';
 
 type InputProps = {
   type: ManagerType;

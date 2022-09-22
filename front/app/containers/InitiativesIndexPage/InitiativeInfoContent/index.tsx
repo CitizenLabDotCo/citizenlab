@@ -1,11 +1,11 @@
-import React, { memo } from 'react';
 import useAppConfiguration from 'hooks/useAppConfiguration';
+import React, { memo } from 'react';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 
 // style
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // i18n
 import { FormattedMessage } from 'react-intl';

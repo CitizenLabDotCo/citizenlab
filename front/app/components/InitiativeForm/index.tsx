@@ -1,38 +1,38 @@
-import * as React from 'react';
 import { get } from 'lodash-es';
-import { stripHtmlTags, isNilOrError } from 'utils/helperUtils';
-import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import * as React from 'react';
 import scrollToComponent from 'react-scroll-to-component';
+import styled from 'styled-components';
+import { isNilOrError, stripHtmlTags } from 'utils/helperUtils';
+import { media } from 'utils/styleUtils';
 
 // Components
+import { Input, LocationInput } from '@citizenlab/cl2-component-library';
+import { SectionField } from 'components/admin/Section';
+import Error from 'components/UI/Error';
+import FileUploader from 'components/UI/FileUploader';
 import {
+  FormLabel,
   FormSection,
   FormSectionTitle,
-  FormLabel,
 } from 'components/UI/FormComponents';
-import { SectionField } from 'components/admin/Section';
-import TopicsPicker from 'components/UI/TopicsPicker';
-import { Input, LocationInput } from '@citizenlab/cl2-component-library';
-import QuillEditor from 'components/UI/QuillEditor';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import FileUploader from 'components/UI/FileUploader';
-import Error from 'components/UI/Error';
+import QuillEditor from 'components/UI/QuillEditor';
+import TopicsPicker from 'components/UI/TopicsPicker';
 import Link from 'utils/cl-router/Link';
 
 // intl
-import messages from './messages';
 import {
-  WrappedComponentProps,
+  FormattedMessage,
   injectIntl,
   MessageDescriptor,
+  WrappedComponentProps,
 } from 'react-intl';
-import { FormattedMessage } from 'react-intl';
+import messages from './messages';
 
 // typings
-import { Multiloc, Locale, UploadFile } from 'typings';
 import bowser from 'bowser';
 import { ITopicData } from 'services/topics';
+import { Locale, Multiloc, UploadFile } from 'typings';
 import { FormSubmitFooter } from './SubmitFooter';
 
 const Form = styled.form`

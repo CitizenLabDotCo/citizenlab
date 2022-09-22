@@ -1,9 +1,9 @@
+import { Icon, IconNames } from '@citizenlab/cl2-component-library';
+import { darken } from 'polished';
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { darken } from 'polished';
-import { Icon, IconNames } from '@citizenlab/cl2-component-library';
-import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 import { isPage } from 'utils/helperUtils';
+import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;

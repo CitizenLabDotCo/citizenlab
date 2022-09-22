@@ -1,24 +1,24 @@
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import useLocalize from 'hooks/useLocalize';
 import React from 'react';
 import styled, { useTheme } from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
-import useLocalize from 'hooks/useLocalize';
-import useAppConfiguration from 'hooks/useAppConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
+import { fontSizes } from 'utils/styleUtils';
 
 // services
+import { IAppConfigurationSettings } from 'services/appConfiguration';
 import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
-import { IAppConfigurationSettings } from 'services/appConfiguration';
 
 // components
 import { Icon, IconTooltip } from '@citizenlab/cl2-component-library';
-import { StatusWrapper, StatusExplanation } from './SharedStyles';
 import Button from 'components/UI/Button';
+import { StatusExplanation, StatusWrapper } from './SharedStyles';
 
 // i18n
 import T from 'components/T';
-import messages from './messages';
 import { FormattedMessage } from 'react-intl';
+import messages from './messages';
 
 const Container = styled.div``;
 

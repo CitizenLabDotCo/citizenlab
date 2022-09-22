@@ -5,14 +5,16 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
 // components
-import { FormSection, FormSectionTitle } from 'components/UI/FormComponents';
 import Button from 'components/UI/Button';
+import { FormSection, FormSectionTitle } from 'components/UI/FormComponents';
 import Modal from 'components/UI/Modal';
 
 // intl
-import { FormattedMessage } from 'react-intl';
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from './messages';
 
 // utils

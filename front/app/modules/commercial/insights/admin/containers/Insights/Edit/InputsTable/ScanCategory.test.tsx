@@ -1,8 +1,8 @@
 import React from 'react';
-import { render, screen, fireEvent } from 'utils/testUtils/rtl';
+import { fireEvent, render, screen } from 'utils/testUtils/rtl';
 
-import ScanCategory from './ScanCategory';
 import { ScanStatus } from 'modules/commercial/insights/hooks/useScanInsightsCategory';
+import ScanCategory from './ScanCategory';
 
 let mockFeatureFlagData = true;
 

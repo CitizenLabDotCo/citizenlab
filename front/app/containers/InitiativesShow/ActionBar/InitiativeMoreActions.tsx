@@ -1,21 +1,23 @@
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
 import { adopt } from 'react-adopt';
+import styled from 'styled-components';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import HasPermission from 'components/HasPermission';
-import MoreActionsMenu from 'components/UI/MoreActionsMenu';
 import Modal from 'components/UI/Modal';
+import MoreActionsMenu from 'components/UI/MoreActionsMenu';
 import SpamReportForm from 'containers/SpamReport';
 
 // i18n
-import { FormattedMessage } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from '../messages';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'react-intl';
 
 // services
 import { deleteInitiative, IInitiativeData } from 'services/initiatives';

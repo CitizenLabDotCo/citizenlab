@@ -2,12 +2,15 @@ import React from 'react';
 
 // styles
 import styled, { css, keyframes } from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // intl
+import {
+  injectIntl,
+  MessageDescriptor,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from '../../messages';
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';

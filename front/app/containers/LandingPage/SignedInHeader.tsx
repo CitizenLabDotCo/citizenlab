@@ -1,13 +1,13 @@
+import useLocalize from 'hooks/useLocalize';
+import { isEmpty } from 'lodash-es';
 import React from 'react';
 import { adopt } from 'react-adopt';
-import { isEmpty } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
-import useLocalize from 'hooks/useLocalize';
 
 // components
-import Button from 'components/UI/Button';
-import Avatar from 'components/Avatar';
 import { Icon, Image } from '@citizenlab/cl2-component-library';
+import Avatar from 'components/Avatar';
+import Button from 'components/UI/Button';
 
 // services
 import {
@@ -16,34 +16,34 @@ import {
 } from 'services/onboardingCampaigns';
 
 // resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetOnboardingCampaigns, {
   GetOnboardingCampaignsChildProps,
 } from 'resources/GetOnboardingCampaigns';
 
 // utils
-import CSSTransition from 'react-transition-group/CSSTransition';
 import { openVerificationModal } from 'components/Verification/verificationModalEvents';
+import CSSTransition from 'react-transition-group/CSSTransition';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // i18n
+import T from 'components/T';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
-import T from 'components/T';
 
 // style
-import styled, { withTheme } from 'styled-components';
-import { ScreenReaderOnly } from 'utils/a11y';
-import { media, fontSizes, isRtl } from 'utils/styleUtils';
 import Outlet from 'components/Outlet';
 import { IHomepageSettings } from 'services/homepageSettings';
+import styled, { withTheme } from 'styled-components';
+import { ScreenReaderOnly } from 'utils/a11y';
+import { fontSizes, isRtl, media } from 'utils/styleUtils';
 
 const contentTimeout = 350;
 const contentEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';

@@ -1,10 +1,10 @@
+import T from 'components/T';
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
+import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import { IProjectData } from 'services/projects';
 import Link from 'utils/cl-router/Link';
-import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
-import T from 'components/T';
+import { isNilOrError } from 'utils/helperUtils';
 
 // intl
 import { FormattedMessage } from 'react-intl';

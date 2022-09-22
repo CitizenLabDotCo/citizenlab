@@ -1,9 +1,9 @@
 import React from 'react';
 import Inputs from './';
 
-import { render, screen } from 'utils/testUtils/rtl';
-import inputs from 'modules/commercial/insights/fixtures/inputs';
 import categories from 'modules/commercial/insights/fixtures/categories';
+import inputs from 'modules/commercial/insights/fixtures/inputs';
+import { render, screen } from 'utils/testUtils/rtl';
 
 const viewId = '1';
 

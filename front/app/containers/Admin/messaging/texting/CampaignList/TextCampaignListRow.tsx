@@ -11,7 +11,7 @@ import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 // i18n
-import { FormattedTime, FormattedDate } from 'react-intl';
+import { FormattedDate, FormattedTime } from 'react-intl';
 
 // utils
 import clHistory from 'utils/cl-router/history';

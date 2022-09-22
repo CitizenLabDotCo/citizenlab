@@ -1,11 +1,11 @@
 import React from 'react';
-import Field from '.';
-import { render, screen, fireEvent, waitFor, act } from 'utils/testUtils/rtl';
 import { indices } from 'utils/helperUtils';
+import { act, fireEvent, render, screen, waitFor } from 'utils/testUtils/rtl';
+import Field from '.';
 import {
   createReferenceDistribution,
-  replaceReferenceDistribution,
   deleteReferenceDistribution,
+  replaceReferenceDistribution,
 } from '../../services/referenceDistribution';
 
 jest.mock('services/appConfiguration');

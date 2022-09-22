@@ -4,8 +4,8 @@ import Link from 'utils/cl-router/Link';
 
 // i18n
 import { FormattedMessage } from 'react-intl';
-import messages from './messages';
 import { getInputTermMessage } from 'utils/i18n';
+import messages from './messages';
 
 interface InputProps {
   project: IProjectData;

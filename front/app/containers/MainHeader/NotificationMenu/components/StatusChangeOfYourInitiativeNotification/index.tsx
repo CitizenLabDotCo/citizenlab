@@ -1,8 +1,8 @@
+import T from 'components/T';
 import React, { memo } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { IStatusChangeOfYourInitiativeNotificationData } from 'services/notifications';
 import messages from '../../messages';
-import { FormattedMessage } from 'react-intl';
-import T from 'components/T';
 import NotificationWrapper from '../NotificationWrapper';
 
 interface Props {

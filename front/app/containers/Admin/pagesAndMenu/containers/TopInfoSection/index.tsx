@@ -1,32 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTheme } from 'styled-components';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import SectionFormWrapper from '../../components/SectionFormWrapper';
+import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 import Error from 'components/UI/Error';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
+import SectionFormWrapper from '../../components/SectionFormWrapper';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'react-intl';
-import messages from './messages';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import homepageMessages from '../../EditHomepage/messages';
+import messages from './messages';
 
 // typings
-import { Multiloc, CLError } from 'typings';
+import { CLError, Multiloc } from 'typings';
 
 // constants
-import { pagesAndMenuBreadcrumb, homeBreadcrumb } from '../../breadcrumbs';
+import { homeBreadcrumb, pagesAndMenuBreadcrumb } from '../../breadcrumbs';
 
 // services and hooks
 import useHomepageSettings from 'hooks/useHomepageSettings';
 import { updateHomepageSettings } from 'services/homepageSettings';
 
 // utils
-import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
 import { isCLErrorJSON } from 'utils/errorUtils';
+import { isEmptyMultiloc, isNilOrError } from 'utils/helperUtils';
 
 const TopInfoSection = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const homepageSettings = useHomepageSettings();

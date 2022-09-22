@@ -1,28 +1,27 @@
-import React, { useState, memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
+import React, { memo, useState } from 'react';
+import { canModerateProject } from 'services/permissions/rules/projectPermissions';
+import { isNilOrError } from 'utils/helperUtils';
 // components
 import ContentContainer from 'components/ContentContainer';
-import ProjectInfo from './ProjectInfo';
+import Outlet from 'components/Outlet';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 import Button from 'components/UI/Button';
 import Image from 'components/UI/Image';
-import Outlet from 'components/Outlet';
+import ProjectInfo from './ProjectInfo';
 
 // hooks
-import useProject from 'hooks/useProject';
 import useAuthUser from 'hooks/useAuthUser';
+import useProject from 'hooks/useProject';
 
 // i18n
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
 import messages from 'containers/ProjectsShowPage/messages';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 
 // style
-import styled from 'styled-components';
-import { media, isRtl } from 'utils/styleUtils';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
+import styled from 'styled-components';
+import { isRtl, media } from 'utils/styleUtils';
 
 const Container = styled.div`
   padding-top: 30px;

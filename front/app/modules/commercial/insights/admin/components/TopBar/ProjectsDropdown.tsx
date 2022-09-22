@@ -14,13 +14,12 @@ import Button from 'components/UI/Button';
 import Link from 'utils/cl-router/Link';
 
 // intl
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // hooks
-import useProject from 'hooks/useProject';
 import useLocalize from 'hooks/useLocalize';
+import useProject from 'hooks/useProject';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

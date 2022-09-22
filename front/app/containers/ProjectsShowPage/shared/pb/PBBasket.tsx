@@ -1,10 +1,10 @@
-import React, { PureComponent, FormEvent } from 'react';
+import { get, isEmpty, isUndefined } from 'lodash-es';
+import React, { FormEvent, PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import {
-  isNilOrError,
   capitalizeParticipationContextType,
+  isNilOrError,
 } from 'utils/helperUtils';
-import { get, isEmpty, isUndefined } from 'lodash-es';
 
 // services
 import { updateBasket } from 'services/baskets';
@@ -15,30 +15,32 @@ import GetAppConfiguration, {
 } from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetBasket, { GetBasketChildProps } from 'resources/GetBasket';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 import GetIdeaList, { GetIdeaListChildProps } from 'resources/GetIdeaList';
+import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
 // styles
-import { colors, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // components
-import Button from 'components/UI/Button';
 import T from 'components/T';
+import Button from 'components/UI/Button';
 
 // tracking
-import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // i18n
-import { FormattedMessage } from 'react-intl';
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
 import messages from 'containers/ProjectsShowPage/messages';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import FormattedBudget from 'utils/currency/FormattedBudget';
 
 // typings

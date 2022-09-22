@@ -1,13 +1,13 @@
-import React, { memo } from 'react';
 import { isBoolean } from 'lodash-es';
+import React, { memo } from 'react';
 
 // resource hooks
-import useLocale from 'hooks/useLocale';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useLocale from 'hooks/useLocale';
 
 // components
-import OfficialFeedbackForm from './OfficialFeedbackForm';
 import OfficialFeedbackFeed from './OfficialFeedbackFeed';
+import OfficialFeedbackForm from './OfficialFeedbackForm';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

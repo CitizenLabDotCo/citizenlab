@@ -1,37 +1,39 @@
 import * as React from 'react';
+import { adopt } from 'react-adopt';
 import styled from 'styled-components';
 import clHistory from 'utils/cl-router/history';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { adopt } from 'react-adopt';
 
 // services & resources
-import {
-  sendCampaign,
-  sendCampaignPreview,
-  ICampaignData,
-  isDraft,
-} from 'services/campaigns';
-import GetCampaign from 'resources/GetCampaign';
-import GetGroup from 'resources/GetGroup';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetCampaign from 'resources/GetCampaign';
+import GetGroup from 'resources/GetGroup';
+import {
+  ICampaignData,
+  isDraft,
+  sendCampaign,
+  sendCampaignPreview,
+} from 'services/campaigns';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage } from 'react-intl';
-import { injectIntl } from 'react-intl';
-import messages from '../../messages';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
+import messages from '../../messages';
 
 // components
+import { IconTooltip, StatusLabel } from '@citizenlab/cl2-component-library';
+import T from 'components/T';
 import Button from 'components/UI/Button';
-import { StatusLabel, IconTooltip } from '@citizenlab/cl2-component-library';
+import Modal from 'components/UI/Modal';
 import DraftCampaignDetails from './DraftCampaignDetails';
 import SentCampaignDetails from './SentCampaignDetails';
-import T from 'components/T';
-import Modal from 'components/UI/Modal';
 import Stamp from './Stamp';
 
 // utils

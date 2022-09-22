@@ -1,10 +1,10 @@
 // @ts-nocheck
-import React from 'react';
 import { shallow } from 'enzyme';
+import React from 'react';
+import { mockTopicData } from 'services/__mocks__/topics';
 import { makeUser } from '../../services/__mocks__/users';
 import clHistory from '../../utils/cl-router/history';
 import { InitiativesNewPage } from './';
-import { mockTopicData } from 'services/__mocks__/topics';
 
 jest.mock('resources/GetAuthUser', () => 'GetAuthUser');
 jest.mock('resources/GetLocale', () => 'GetLocale');

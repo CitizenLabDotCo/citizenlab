@@ -1,10 +1,10 @@
+import { SectionDescription, SectionTitle } from 'components/admin/Section';
 import React, { PureComponent } from 'react';
-import { SectionTitle, SectionDescription } from 'components/admin/Section';
 
-import { FormattedMessage } from 'react-intl';
-import messages from '../messages';
-import styled from 'styled-components';
 import PostManager, { TFilterMenu } from 'components/admin/PostManager';
+import { FormattedMessage } from 'react-intl';
+import styled from 'styled-components';
+import messages from '../messages';
 
 const StyledDiv = styled.div`
   margin-bottom: 30px;

@@ -1,19 +1,19 @@
-import React from 'react';
 import {
-  fontSizes,
-  Toggle,
   Box,
+  fontSizes,
   IconTooltip,
+  Toggle,
 } from '@citizenlab/cl2-component-library';
+import { SubSectionTitle } from 'components/admin/Section';
+import React from 'react';
 import { FormattedMessage } from 'react-intl';
+import {
+  AppConfigurationFeature,
+  TAppConfigurationSetting,
+} from 'services/appConfiguration';
+import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 import messages from './messages';
-import styled from 'styled-components';
-import { SubSectionTitle } from 'components/admin/Section';
-import {
-  TAppConfigurationSetting,
-  AppConfigurationFeature,
-} from 'services/appConfiguration';
 
 const StyledToggle = styled(Toggle)`
   flex-direction: row-reverse;

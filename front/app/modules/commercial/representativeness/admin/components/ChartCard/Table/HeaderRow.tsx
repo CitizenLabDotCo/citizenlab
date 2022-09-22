@@ -1,8 +1,8 @@
 import React from 'react';
 
 // components
-import { Table } from 'semantic-ui-react';
 import { Box } from '@citizenlab/cl2-component-library';
+import { Table } from 'semantic-ui-react';
 
 interface Props {
   columns: string[];

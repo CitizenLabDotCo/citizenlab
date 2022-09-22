@@ -1,13 +1,16 @@
+import { get, memoize } from 'lodash-es';
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { get, memoize } from 'lodash-es';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
-import { FormattedMessage } from 'react-intl';
-import { injectIntl } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from '../messages';
 
@@ -18,37 +21,36 @@ import { IOption } from 'typings';
 import styled from 'styled-components';
 
 // components
-import { Select, Label } from '@citizenlab/cl2-component-library';
+import { Label, Select } from '@citizenlab/cl2-component-library';
 
 // services
 import { updateInitiative } from 'services/initiatives';
 
 // resources
-import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
-import GetInitiativeStatuses, {
-  GetInitiativeStatusesChildProps,
-} from 'resources/GetInitiativeStatuses';
-import GetInitiativeAllowedTransitions, {
-  GetInitiativeAllowedTransitionsChildProps,
-} from 'resources/GetInitiativeAllowedTransitions';
-import GetInitiative, {
-  GetInitiativeChildProps,
-} from 'resources/GetInitiative';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetInitiative, {
+  GetInitiativeChildProps,
+} from 'resources/GetInitiative';
+import GetInitiativeAllowedTransitions, {
+  GetInitiativeAllowedTransitionsChildProps,
+} from 'resources/GetInitiativeAllowedTransitions';
+import GetInitiativeStatuses, {
+  GetInitiativeStatusesChildProps,
+} from 'resources/GetInitiativeStatuses';
+import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../../tracks';
-import { WrappedComponentProps } from 'react-intl';
 
 // events
-import eventEmitter from 'utils/eventEmitter';
 import events, {
   StatusChangeModalOpen,
 } from 'components/admin/PostManager/events';
+import eventEmitter from 'utils/eventEmitter';
 
 const StyledLabel = styled(Label)`
   margin-top: 20px;

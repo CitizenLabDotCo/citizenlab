@@ -1,23 +1,22 @@
+import { capitalize } from 'lodash-es';
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { capitalize } from 'lodash-es';
 
 // components
 import FilterSelector from 'components/FilterSelector';
 
 // styling
-import { colors } from 'utils/styleUtils';
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
+import { colors } from 'utils/styleUtils';
 
 // i18n
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // hooks
-import useLocalize from 'hooks/useLocalize';
-import useAreas from 'hooks/useAreas';
 import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAreas from 'hooks/useAreas';
+import useLocalize from 'hooks/useLocalize';
 
 // services
 import { coreSettings } from 'services/appConfiguration';

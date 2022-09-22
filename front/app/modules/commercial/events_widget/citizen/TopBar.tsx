@@ -5,12 +5,11 @@ import Link from 'utils/cl-router/Link';
 
 // i18n
 import messages from 'containers/LandingPage/messages';
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 
 // styling
 import styled from 'styled-components';
-import { media, colors, isRtl, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, isRtl, media } from 'utils/styleUtils';
 
 const Header = styled.div`
   width: 100%;

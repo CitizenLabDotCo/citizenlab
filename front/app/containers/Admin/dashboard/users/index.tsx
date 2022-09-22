@@ -1,12 +1,12 @@
 // libraries
-import React, { PureComponent } from 'react';
 import moment, { Moment } from 'moment';
+import React, { PureComponent } from 'react';
 
 // components
-import ChartFilters from '../components/ChartFilters';
-import { GraphsContainer, ControlBar } from 'components/admin/GraphWrappers';
-import TimeControl from '../components/TimeControl';
+import { ControlBar, GraphsContainer } from 'components/admin/GraphWrappers';
 import Outlet from 'components/Outlet';
+import ChartFilters from '../components/ChartFilters';
+import TimeControl from '../components/TimeControl';
 
 // tracking
 import { injectTracks } from 'utils/analytics';

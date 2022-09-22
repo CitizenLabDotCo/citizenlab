@@ -5,9 +5,8 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // intl
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from './messages';
-import { injectIntl } from 'react-intl';
 
 // components
 import { Button, Input } from '@citizenlab/cl2-component-library';

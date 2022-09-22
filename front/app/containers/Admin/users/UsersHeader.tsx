@@ -3,8 +3,8 @@ import React, { memo } from 'react';
 import { Multiloc } from 'typings';
 
 // Components
-import Button from 'components/UI/Button';
 import T from 'components/T';
+import Button from 'components/UI/Button';
 import SearchInput from 'components/UI/SearchInput';
 
 // i18n
@@ -12,10 +12,10 @@ import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // Styling
-import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
 import Outlet from 'components/Outlet';
 import { MembershipType } from 'services/groups';
+import styled from 'styled-components';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 const TitleWrapper = styled.div`
   min-height: 105px;

@@ -3,17 +3,17 @@ import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import TypeformSurvey from './TypeformSurvey';
-import SurveymonkeySurvey from './SurveymonkeySurvey';
-import GoogleFormsSurvey from './GoogleFormsSurvey';
+import SignUpIn from 'components/SignUpIn';
+import Warning from 'components/UI/Warning';
+import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 import EnalyzerSurvey from './EnalyzerSurvey';
+import GoogleFormsSurvey from './GoogleFormsSurvey';
+import MicrosoftFormsSurvey from './MicrosoftFormsSurvey';
 import QualtricsSurvey from './QualtricsSurvey';
 import SmartSurvey from './SmartSurvey';
-import MicrosoftFormsSurvey from './MicrosoftFormsSurvey';
 import SnapSurvey from './SnapSurvey';
-import Warning from 'components/UI/Warning';
-import SignUpIn from 'components/SignUpIn';
-import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
+import SurveymonkeySurvey from './SurveymonkeySurvey';
+import TypeformSurvey from './TypeformSurvey';
 
 // services
 import {
@@ -23,21 +23,20 @@ import {
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
 // i18n
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, MessageDescriptor } from 'react-intl';
 import messages from './messages';
-import { MessageDescriptor } from 'react-intl';
 
 // events
 import { openSignUpInModal } from 'components/SignUpIn/events';
 
 // styling
+import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 import styled from 'styled-components';
 import { defaultCardStyle, fontSizes, media } from 'utils/styleUtils';
-import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 import SurveyXact from './SurveyXact';
 
 const Container = styled.div`

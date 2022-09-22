@@ -1,17 +1,19 @@
 import React from 'react';
 
 // components
-import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import { Input } from '@citizenlab/cl2-component-library';
+import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import errorMessages from 'components/UI/Error/messages';
 import { StyledWarning } from '.';
 
 // i18n
-import { FormattedMessage } from 'react-intl';
-import { injectIntl } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from '../messages';
-import { WrappedComponentProps } from 'react-intl';
 
 interface Props {
   value: number;
