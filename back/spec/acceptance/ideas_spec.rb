@@ -490,7 +490,7 @@ resource 'Ideas' do
     end
 
     with_options scope: :idea do
-      parameter :project_id, 'The identifier of the project that hosts the idea', extra: ''
+      parameter :project_id, 'The identifier of the project that hosts the idea', required: true
       parameter :phase_ids, 'The phases the idea is part of, defaults to the current only, only allowed by admins'
       parameter :author_id, 'The user id of the user owning the idea', extra: 'Required if not draft'
       parameter :idea_status_id, 'The status of the idea, only allowed for admins', extra: "Defaults to status with code 'proposed'"
