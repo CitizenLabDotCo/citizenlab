@@ -49,7 +49,7 @@ const Statistic = ({
                 name="error"
                 width={`${fontSizes.s}px`}
                 height={`${fontSizes.s}px`}
-                fill={colors.red600}
+                fill={colors.clBlueLight}
               />
             </Box>
           </Tippy>
