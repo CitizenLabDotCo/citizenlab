@@ -27,13 +27,13 @@ Array [
 
 exports[`<RegistrationFieldsToGraphs /> renders correctly 1`] = `
 Array [
-  <WithTheme(GenderChart)
+  <WithTheme(injectIntl(GenderChart))
     currentGroupFilter={null}
     endAt="now"
     key="0"
     startAt="someTimeAgo"
   />,
-  <WithLocalize(AreaChart)
+  <injectIntl(WithLocalize(AreaChart))
     currentGroupFilter={null}
     endAt="now"
     key="1"
