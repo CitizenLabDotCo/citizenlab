@@ -12,10 +12,22 @@ import LineChart from 'components/admin/Graphs/LineChart';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { toThreeLetterMonth } from 'utils/dateUtils';
 
-const Chart = () => {
+// typings
+import { IResolution } from 'components/admin/ResolutionControl';
+
+interface Props {
+  resolution: IResolution;
+}
+
+const Chart = ({ resolution }: Props) => {
   const { timeSeries } = useVisitorsData();
   if (isNilOrError(timeSeries)) return null;
+
+  const formatTick = (date: string) => {
+    return toThreeLetterMonth(date, resolution);
+  };
 
   return (
     <Box flexGrow={1} pt="2px" pl="52px">
@@ -32,6 +44,7 @@ const Chart = () => {
         }}
         grid={{ vertical: true }}
         tooltip
+        xaxis={{ tickFormatter: formatTick }}
       />
     </Box>
   );

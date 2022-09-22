@@ -21,7 +21,7 @@ const VisitorsCard = ({ resolution }: Props) => (
   <GraphCard title={<FormattedMessage {...messages.visitors} />}>
     <Box width="100%" display="flex" flexDirection="row">
       <VisitorStats resolution={resolution} />
-      <Chart />
+      <Chart resolution={resolution} />
     </Box>
   </GraphCard>
 );
