@@ -14,7 +14,7 @@ import {
   XAxis,
   YAxis,
   // LabelList,
-  // Tooltip,
+  Tooltip,
 } from 'recharts';
 import Container from '../_components/Container';
 import EmptyState from '../_components/EmptyState';
@@ -22,7 +22,7 @@ import Legend from '../_components/Legend';
 
 // utils
 import { getLineConfigs } from './utils';
-import { hasNoData, /* getTooltipConfig, */ parseMargin } from '../utils';
+import { hasNoData, getTooltipConfig, parseMargin } from '../utils';
 
 // typings
 import { Props } from './typings';
@@ -45,6 +45,7 @@ const LineChart = <Row,>({
   innerRef,
   xaxis,
   yaxis,
+  tooltip,
   grid,
   onMouseOver,
   onMouseOut,
@@ -64,6 +65,7 @@ const LineChart = <Row,>({
   if (typeof x === 'symbol') return null;
 
   const lineConfigs = getLineConfigs(mapping, lines);
+  const tooltipConfig = getTooltipConfig(tooltip);
 
   const handleMouseOver =
     (lineIndex: number) => (_, event: React.MouseEvent) => {
@@ -107,6 +109,11 @@ const LineChart = <Row,>({
             />
           </g>
         )}
+
+        {(typeof tooltip === 'object' || tooltip === true) && (
+          <Tooltip {...tooltipConfig} />
+        )}
+        {typeof tooltip === 'function' && tooltip(tooltipConfig)}
 
         {grid && (
           <CartesianGrid

@@ -29,6 +29,7 @@ const Chart = () => {
           strokes: [colors.categorical01, colors.categorical03],
         }}
         grid={{ vertical: true }}
+        tooltip
       />
     </Box>
   );
