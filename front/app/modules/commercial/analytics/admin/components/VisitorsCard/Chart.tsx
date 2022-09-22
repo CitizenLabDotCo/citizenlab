@@ -18,8 +18,10 @@ const Chart = () => {
   if (isNilOrError(timeSeries)) return null;
 
   return (
-    <Box flexGrow={1}>
+    <Box flexGrow={1} pt="2px" pl="52px">
       <LineChart
+        width="100%"
+        height="100%"
         data={timeSeries}
         mapping={{
           x: 'date',
