@@ -29,7 +29,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.number',
     defaultMessage: 'Number',
   },
-    linearScale: {
+  linearScale: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.linearScale',
     defaultMessage: 'Linear scale',
   },

@@ -121,6 +121,7 @@ Rails.application.routes.draw do
       resources :phases, only: %i[show edit update destroy] do
         resources :files, defaults: { container_type: 'Phase' }, shallow: false
         get 'survey_results', on: :member
+        get 'submission_count', on: :member
       end
 
       resources :projects do
@@ -138,6 +139,7 @@ Rails.application.routes.draw do
 
         get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'
         get 'survey_results', on: :member
+        get 'submission_count', on: :member
       end
 
       resources :projects_allowed_input_topics, only: %i[show create destroy] do
