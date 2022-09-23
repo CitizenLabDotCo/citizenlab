@@ -1,7 +1,7 @@
 import React from 'react';
 
 // hooks
-import useVisitorsData from '../../hooks/useVisitorsData';
+import useVisitorsData, { Stats } from '../../hooks/useVisitorsData';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -29,12 +29,22 @@ const BOTTOM_LABEL_COPY: Record<IResolution, MessageDescriptor> = {
   day: messages.yesterday,
 };
 
+const EMPTY_STAT = { value: '-', lastPeriod: '-' };
+const EMPTY_DATA: Stats = {
+  visitors: EMPTY_STAT,
+  visits: EMPTY_STAT,
+  visitDuration: EMPTY_STAT,
+  pageViews: EMPTY_STAT,
+};
+
 const VisitorStats = ({
   resolution,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
-  const { stats } = useVisitorsData();
-  if (isNilOrError(stats)) return null;
+  const visitorData = useVisitorsData();
+  const stats = isNilOrError(visitorData.stats)
+    ? EMPTY_DATA
+    : visitorData.stats;
 
   const bottomLabel = formatMessage(BOTTOM_LABEL_COPY[resolution]);
 
