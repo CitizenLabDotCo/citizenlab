@@ -14,11 +14,11 @@ RSpec.describe Analytics::FactVisit, type: :model do
     dimension_project2 = Analytics::DimensionProject.last
 
     visit = create(:fact_visit)
-    visit.dimension_project << dimension_project1
-    visit.dimension_project << dimension_project2
+    visit.dimension_projects << dimension_project1
+    visit.dimension_projects << dimension_project2
 
-    assert(visit.dimension_project[0].id == project1.id)
-    assert(visit.dimension_project[1].id == project2.id)
+    assert(visit.dimension_projects[0].id == project1.id)
+    assert(visit.dimension_projects[1].id == project2.id)
   end
 
   it 'Can associate a visit with multiple locales' do
@@ -26,11 +26,11 @@ RSpec.describe Analytics::FactVisit, type: :model do
     locale_nl = create(:dimension_locale_nl)
 
     visit = create(:fact_visit)
-    visit.dimension_locale << locale_en
-    visit.dimension_locale << locale_nl
+    visit.dimension_locales << locale_en
+    visit.dimension_locales << locale_nl
 
-    assert(visit.dimension_locale[0].id == locale_en.id)
-    assert(visit.dimension_locale[1].id == locale_nl.id)
+    assert(visit.dimension_locales[0].id == locale_en.id)
+    assert(visit.dimension_locales[1].id == locale_nl.id)
   end
 
   it 'Can create a visit with no user' do

@@ -35,7 +35,7 @@ module Analytics
     belongs_to :dimension_channel, class_name: 'Analytics::DimensionChannel'
     belongs_to :dimension_date_first_action, class_name: 'Analytics::DimensionDate', primary_key: 'date'
     belongs_to :dimension_date_last_action, class_name: 'Analytics::DimensionDate', primary_key: 'date'
-    has_and_belongs_to_many :dimension_project, class_name: 'Analytics::DimensionProject', join_table: 'analytics_join_project_visits'
-    has_and_belongs_to_many :dimension_locale, class_name: 'Analytics::DimensionLocale', join_table: 'analytics_join_locale_visits'
+    has_and_belongs_to_many :dimension_projects, class_name: 'Analytics::DimensionProject', join_table: 'analytics_join_project_visits'
+    has_and_belongs_to_many :dimension_locales, class_name: 'Analytics::DimensionLocale', join_table: 'analytics_join_locale_visits'
   end
 end

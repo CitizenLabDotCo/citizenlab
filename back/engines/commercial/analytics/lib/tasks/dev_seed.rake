@@ -37,8 +37,8 @@ namespace :analytics do
         matomo_visit_id: 101,
         matomo_last_action_time: '2022-09-05 18:08:39.0'
       )
-      visit.dimension_project << project
-      visit.dimension_locale << locale1
+      visit.dimension_projects << project
+      visit.dimension_locales << locale1
 
       # Visit 2
       visit = Analytics::FactVisit.create!(
@@ -52,8 +52,8 @@ namespace :analytics do
         matomo_visit_id: 102,
         matomo_last_action_time: '2022-09-05 18:08:39.0'
         )
-      visit.dimension_project << project
-      visit.dimension_locale << locale2
+      visit.dimension_projects << project
+      visit.dimension_locales << locale2
 
       # Visit 3 - no user, no project
       visit = Analytics::FactVisit.create!(
@@ -67,7 +67,7 @@ namespace :analytics do
         matomo_visit_id: 103,
         matomo_last_action_time: '2022-09-05 18:08:39.0'
         )
-      visit.dimension_locale << locale2
+      visit.dimension_locales << locale2
 
     end
   end
