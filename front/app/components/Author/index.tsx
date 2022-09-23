@@ -97,7 +97,7 @@ const TimeAgo = styled.div`
 
 export interface Props {
   authorId: string | null;
-  createdAt?: string;
+  createdAt: string;
   size: number;
   isLinkToProfile?: boolean;
   projectId?: string | null;
@@ -167,12 +167,9 @@ const Author = memo(
                   underline={underline}
                 />
               </AuthorNameContainer>
-
-              {createdAt && (
-                <TimeAgo className={horizontalLayout ? 'horizontalLayout' : ''}>
-                  {timeAgo(Date.parse(createdAt), locale)}
-                </TimeAgo>
-              )}
+              <TimeAgo className={horizontalLayout ? 'horizontalLayout' : ''}>
+                {timeAgo(Date.parse(createdAt), locale)}
+              </TimeAgo>
             </AuthorMeta>
           </AuthorContainer>
         </Container>

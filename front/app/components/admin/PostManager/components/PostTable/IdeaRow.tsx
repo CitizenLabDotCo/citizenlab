@@ -80,7 +80,7 @@ const IdeaRow = ({
   statuses,
   idea,
   selection,
-}: Props & InjectedIntlProps & InjectedLocalized) => {
+}: Props & WrappedComponentProps & InjectedLocalized) => {
   const locale = useLocale();
   const [cells, setCells] = useState<
     CellConfiguration<IdeaCellComponentProps>[]
