@@ -21,10 +21,10 @@ const TooltipOutline = ({ label, children }: Props) => (
     <Text
       color="adminTextColor"
       fontWeight="bold"
-      textAlign="center"
+      textAlign="left"
       fontSize="s"
       mt="0px"
-      mb="8px"
+      mb="4px"
     >
       {label}
     </Text>

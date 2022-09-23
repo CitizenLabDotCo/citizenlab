@@ -44,7 +44,7 @@ const CustomTooltip = ({ label, payload, resolution }: CustomTooltipProps) => {
   return (
     <TooltipOutline label={toFullMonth(label, resolution)}>
       {payload.map(({ stroke, dataKey, payload }) => (
-        <Box py="2px" key={dataKey}>
+        <Box py="0px" key={dataKey}>
           <Icon
             name="dot"
             width="8px"

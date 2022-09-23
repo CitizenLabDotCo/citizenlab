@@ -30,7 +30,7 @@ interface RowProps {
 }
 
 const Row = ({ name, percentage, number, colorName }: RowProps) => (
-  <Box py="2px">
+  <Box>
     <Text color={colorName} fontSize="s" display="inline">
       {name}: {formatPercentage(percentage)}
     </Text>
