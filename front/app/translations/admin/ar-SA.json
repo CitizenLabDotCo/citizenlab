@@ -617,6 +617,7 @@
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageAndOver": "{age} فما فوق",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageGroup": "الفئة العمرية",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageGroupNotIncluded": "لم يتم تضمين الفئة (الفئات) العمرية {upperBound} فما فوق.",
+  "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageGroupX": "الفئة العمرية {number}",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageGroups": "الفئات العمرية",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.andOver": "فما فوق",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.applyExampleGrouping": "تطبيق الفئات النموذجية",
