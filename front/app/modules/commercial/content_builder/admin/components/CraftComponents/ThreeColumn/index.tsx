@@ -4,7 +4,7 @@ import React from 'react';
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // craft
-import { UserComponent, Element } from '@craftjs/core';
+import { Element, UserComponent } from '@craftjs/core';
 import Container from '../Container';
 
 const ThreeColumn: UserComponent = () => {

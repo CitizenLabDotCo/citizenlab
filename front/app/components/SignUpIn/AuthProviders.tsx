@@ -1,14 +1,14 @@
+import { isBoolean } from 'lodash-es';
 import React, { memo, useCallback, useEffect } from 'react';
 import { adopt } from 'react-adopt';
-import { isBoolean } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import AuthProviderButton, { TOnContinueFunction } from './AuthProviderButton';
-import Or from 'components/UI/Or';
-import FranceConnectButton from 'components/UI/FranceConnectButton';
 import Outlet from 'components/Outlet';
+import FranceConnectButton from 'components/UI/FranceConnectButton';
+import Or from 'components/UI/Or';
+import AuthProviderButton, { TOnContinueFunction } from './AuthProviderButton';
 
 // resources
 import GetAppConfiguration, {
@@ -17,18 +17,20 @@ import GetAppConfiguration, {
 import GetFeatureFlag from 'resources/GetFeatureFlag';
 
 // i18n
-import { FormattedMessage } from 'react-intl';
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from './SignUp/messages';
 
 // styling
+import { Option, Options } from 'components/SignUpIn/styles';
 import styled from 'styled-components';
-import { Options, Option } from 'components/SignUpIn/styles';
 
 // typings
-import { SSOProvider } from 'services/singleSignOn';
 import { ISignUpInMetaData } from 'components/SignUpIn';
+import { SSOProvider } from 'services/singleSignOn';
 
 const Container = styled.div`
   display: flex;

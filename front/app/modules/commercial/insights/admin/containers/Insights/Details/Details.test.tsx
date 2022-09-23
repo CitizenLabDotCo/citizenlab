@@ -1,11 +1,11 @@
 import React from 'react';
 import Details from './';
 
-import { render, fireEvent, screen } from 'utils/testUtils/rtl';
-import useInsightsInputsLoadMore from 'modules/commercial/insights/hooks/useInsightsInputsLoadMore';
-import inputs from 'modules/commercial/insights/fixtures/inputs';
-import clHistory from 'utils/cl-router/history';
 import mockCategories from 'modules/commercial/insights/fixtures/categories';
+import inputs from 'modules/commercial/insights/fixtures/inputs';
+import useInsightsInputsLoadMore from 'modules/commercial/insights/hooks/useInsightsInputsLoadMore';
+import clHistory from 'utils/cl-router/history';
+import { fireEvent, render, screen } from 'utils/testUtils/rtl';
 
 const viewId = '1';
 

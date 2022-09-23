@@ -2,9 +2,8 @@
 import React from 'react';
 
 // i18n
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
 import messages from 'containers/Admin/dashboard/messages';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 
 // services
 import {

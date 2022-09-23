@@ -1,6 +1,6 @@
 import React from 'react';
-import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 import { requestBlob } from 'utils/request';
+import { fireEvent, render, screen } from 'utils/testUtils/rtl';
 
 import views from 'modules/commercial/insights/fixtures/views';
 import Export from './Export';

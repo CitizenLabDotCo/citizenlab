@@ -5,22 +5,24 @@ import React, { PureComponent } from 'react';
 import { IPollQuestion, updatePollQuestion } from 'services/pollQuestions';
 
 // Components
-import Button from 'components/UI/Button';
+import { Input, Select } from '@citizenlab/cl2-component-library';
 import { Row } from 'components/admin/ResourceList';
-import { Select, Input } from '@citizenlab/cl2-component-library';
+import Button from 'components/UI/Button';
 import WrongMaxChoiceIndicator from './WrongMaxChoiceIndicator';
 
 // Typings
 import { IOption } from 'typings';
 
 // i18n
-import { FormattedMessage } from 'react-intl';
-import { injectIntl } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from './messages';
 
 // Style
 import styled from 'styled-components';
-import { WrappedComponentProps } from 'react-intl';
 
 const FormContainer = styled.div`
   display: flex;

@@ -16,18 +16,17 @@ import Link from 'utils/cl-router/Link';
 import { fontSizes } from 'utils/styleUtils';
 
 // Components
-import { Toggle, IconTooltip, Box } from '@citizenlab/cl2-component-library';
-import Warning from 'components/UI/Warning';
+import { Box, IconTooltip, Toggle } from '@citizenlab/cl2-component-library';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
+import Warning from 'components/UI/Warning';
 import {
   addContentBuilderLayout,
   PROJECT_DESCRIPTION_CODE,
 } from 'modules/commercial/content_builder/services/contentBuilder';
 
 // Messages
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
 
 // Helpers
 import { isNil, isNilOrError } from 'utils/helperUtils';

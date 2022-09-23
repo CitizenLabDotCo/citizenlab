@@ -1,32 +1,34 @@
-import React, { PureComponent } from 'react';
 import { reject } from 'lodash-es';
-import clHistory from 'utils/cl-router/history';
+import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { Outlet as RouterOutlet } from 'react-router-dom';
+import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import GoBackButton from 'components/UI/GoBackButton';
-import Button from 'components/UI/Button';
 import TabbedResource from 'components/admin/TabbedResource';
 import Outlet from 'components/Outlet';
+import Button from 'components/UI/Button';
+import GoBackButton from 'components/UI/GoBackButton';
 
 // resources
+import { PreviousPathnameContext } from 'context';
 import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import { PreviousPathnameContext } from 'context';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage } from 'react-intl';
-import { injectIntl } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
+import { getInputTermMessage } from 'utils/i18n';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
-import { getInputTermMessage } from 'utils/i18n';
 
 // tracks
 import { trackEventByName } from 'utils/analytics';
@@ -36,9 +38,9 @@ import tracks from './tracks';
 import styled from 'styled-components';
 
 // typings
-import { InsertConfigurationOptions, ITab } from 'typings';
 import { getInputTerm } from 'services/participationContexts';
 import { IProjectData } from 'services/projects';
+import { InsertConfigurationOptions, ITab } from 'typings';
 
 import { insertConfiguration } from 'utils/moduleUtils';
 

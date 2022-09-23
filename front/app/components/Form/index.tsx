@@ -1,11 +1,11 @@
+import { JsonForms } from '@jsonforms/react';
 import React, {
   memo,
   ReactElement,
   useCallback,
-  useState,
   useEffect,
+  useState,
 } from 'react';
-import { JsonForms } from '@jsonforms/react';
 
 import CLCategoryLayout, {
   clCategoryTester,
@@ -14,21 +14,21 @@ import OrderedLayout, {
   orderedLayoutTester,
 } from './Components/Layouts/OrderedLayout';
 
+import ImageControl, {
+  imageControlTester,
+} from './Components/Controls/ImageControl';
 import InputControl, {
   inputControlTester,
 } from './Components/Controls/InputControl';
 import TextAreaControl, {
   textAreaControlTester,
 } from './Components/Controls/TextAreaControl';
-import WYSIWYGControl, {
-  WYSIWYGControlTester,
-} from './Components/Controls/WYSIWYGControl';
 import TopicsControl, {
   topicsControlTester,
 } from './Components/Controls/TopicsControl';
-import ImageControl, {
-  imageControlTester,
-} from './Components/Controls/ImageControl';
+import WYSIWYGControl, {
+  WYSIWYGControlTester,
+} from './Components/Controls/WYSIWYGControl';
 
 import AttachmentsControl, {
   attachmentsControlTester,
@@ -42,36 +42,36 @@ import TitleControl, {
 
 import {
   createAjv,
-  JsonSchema7,
-  UISchemaElement,
   isCategorization,
+  JsonSchema7,
   Translator,
+  UISchemaElement,
 } from '@jsonforms/core';
 import styled from 'styled-components';
-import SingleSelectControl, {
-  singleSelectControlTester,
-} from './Components/Controls/SingleSelectControl';
-import MultiSelectControl, {
-  multiSelectControlTester,
-} from './Components/Controls/MultiSelectControl';
-import UserPickerControl, {
-  userPickerControlTester,
-} from './Components/Controls/UserPickerControl';
 import CheckboxControl, {
   checkboxControlTester,
 } from './Components/Controls/CheckboxControl';
-import LocationControl, {
-  locationControlTester,
-} from './Components/Controls/LocationControl';
 import DateControl, {
   dateControlTester,
 } from './Components/Controls/DateControl';
-import MultilocInputLayout, {
-  multilocInputTester,
-} from './Components/Controls/MultilocInputLayout';
 import LinearScaleControl, {
   linearScaleControlTester,
 } from './Components/Controls/LinearScaleControl';
+import LocationControl, {
+  locationControlTester,
+} from './Components/Controls/LocationControl';
+import MultilocInputLayout, {
+  multilocInputTester,
+} from './Components/Controls/MultilocInputLayout';
+import MultiSelectControl, {
+  multiSelectControlTester,
+} from './Components/Controls/MultiSelectControl';
+import SingleSelectControl, {
+  singleSelectControlTester,
+} from './Components/Controls/SingleSelectControl';
+import UserPickerControl, {
+  userPickerControlTester,
+} from './Components/Controls/UserPickerControl';
 
 import {
   Box,
@@ -84,15 +84,14 @@ import ButtonBar from './Components/ButtonBar';
 
 import useObserveEvent from 'hooks/useObserveEvent';
 
+import { ErrorObject } from 'ajv';
+import useLocale from 'hooks/useLocale';
+import { forOwn } from 'lodash-es';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import { CLErrors, Message } from 'typings';
 import { getDefaultAjvErrorMessage } from 'utils/errorUtils';
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
-import { ErrorObject } from 'ajv';
-import { forOwn } from 'lodash-es';
-import { APIErrorsContext, FormContext } from './contexts';
-import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
+import { APIErrorsContext, FormContext } from './contexts';
 
 // hopefully we can standardize this someday
 const Title = styled.h1`

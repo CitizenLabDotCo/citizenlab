@@ -1,28 +1,28 @@
-import React, { memo, useState, useEffect } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // resources
 import GetIdeas from 'resources/GetIdeas';
 
 // hooks
-import useProject from 'hooks/useProject';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import useEvents from 'hooks/useEvents';
 import useLocale from 'hooks/useLocale';
-import useAppConfiguration from 'hooks/useAppConfiguration';
 import usePhases from 'hooks/usePhases';
+import useProject from 'hooks/useProject';
 
 // components
-import EventCard from 'components/EventCard';
 import ContentContainer from 'components/ContentContainer';
-import {
-  ProjectPageSectionTitle,
-  maxPageWidth,
-} from 'containers/ProjectsShowPage/styles';
+import EventCard from 'components/EventCard';
 import SectionContainer from 'components/SectionContainer';
+import {
+  maxPageWidth,
+  ProjectPageSectionTitle,
+} from 'containers/ProjectsShowPage/styles';
 
 // i18n
-import { FormattedMessage } from 'react-intl';
 import messages from 'containers/ProjectsShowPage/messages';
+import { FormattedMessage } from 'react-intl';
 
 // services
 import { IPhaseData } from 'services/phases';
@@ -31,9 +31,9 @@ import { IPhaseData } from 'services/phases';
 import styled from 'styled-components';
 
 // other
-import { selectedPhase$ } from '../../timeline/events';
 import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
 import { scrollToElement } from 'utils/scroll';
+import { selectedPhase$ } from '../../timeline/events';
 
 const Container = styled.div`
   background: #fff;

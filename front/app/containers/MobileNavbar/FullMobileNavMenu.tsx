@@ -3,9 +3,9 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // hooks
+import useLocalize from 'hooks/useLocalize';
 import useNavbarItems from 'hooks/useNavbarItems';
 import usePageSlugById from 'hooks/usePageSlugById';
-import useLocalize from 'hooks/useLocalize';
 
 // components
 import FullscreenModal from 'components/UI/FullscreenModal';
@@ -13,19 +13,18 @@ import FullMobileNavMenuItem from './FullMobileNavMenuItem';
 import TenantLogo from './TenantLogo';
 
 // styles
-import styled, { css } from 'styled-components';
-import { media, colors, hexToRgb } from 'utils/styleUtils';
 import { darken } from 'polished';
+import styled, { css } from 'styled-components';
+import { colors, hexToRgb, media } from 'utils/styleUtils';
 // i18n
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import mainHeaderMessages from '../MainHeader/messages';
+import messages from './messages';
 
 // utils
+import CloseIconButton from 'components/UI/CloseIconButton';
 import { isNilOrError } from 'utils/helperUtils';
 import getNavbarItemPropsArray from '../MainHeader/DesktopNavbar/getNavbarItemPropsArray';
-import CloseIconButton from 'components/UI/CloseIconButton';
 
 const containerBackgroundColorRgb = hexToRgb(colors.label);
 

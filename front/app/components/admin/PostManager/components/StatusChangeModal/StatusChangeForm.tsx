@@ -11,29 +11,31 @@ import GetAppConfigurationLocales, {
 } from 'resources/GetAppConfigurationLocales';
 
 // intl
-import { FormattedMessage } from 'react-intl';
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from '../../messages';
 
 // components
-import OfficialFeedbackPost from 'components/PostShowComponents/OfficialFeedback/OfficialFeedbackPost';
 import {
-  Radio,
   Input,
   LocaleSwitcher,
+  Radio,
 } from '@citizenlab/cl2-component-library';
 import { Section } from 'components/admin/Section';
-import MentionsTextArea from 'components/UI/MentionsTextArea';
-import Error from 'components/UI/Error';
+import OfficialFeedbackPost from 'components/PostShowComponents/OfficialFeedback/OfficialFeedbackPost';
 import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
+import MentionsTextArea from 'components/UI/MentionsTextArea';
 
 // styling
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 // typings
-import { Multiloc, Locale, MultilocFormValues } from 'typings';
+import { Locale, Multiloc, MultilocFormValues } from 'typings';
 
 const StyledSection = styled(Section)``;
 

@@ -1,13 +1,12 @@
-import React from 'react';
-import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'react-intl';
-import messages from './messages';
-import usePage from 'hooks/usePage';
-import { isNilOrError } from 'utils/helperUtils';
-import { isPolicyPageSlug } from 'services/pages';
 import { SectionField } from 'components/admin/Section';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import usePage from 'hooks/usePage';
+import React from 'react';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
+import { isPolicyPageSlug } from 'services/pages';
+import { isNilOrError } from 'utils/helperUtils';
 import useNavbarItem from '../../hooks/useNavbarItem';
+import messages from './messages';
 
 type Props = {
   pageId: string | null;

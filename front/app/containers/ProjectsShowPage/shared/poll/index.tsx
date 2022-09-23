@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
 import { IParticipationContextType } from 'typings';
+import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import {
@@ -11,21 +11,20 @@ import {
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 import GetPollQuestions, {
   GetPollQuestionsChildProps,
 } from 'resources/GetPollQuestions';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
 // components
+import Warning from 'components/UI/Warning';
 import FormCompleted from './FormCompleted';
 import PollForm from './PollForm';
-import Warning from 'components/UI/Warning';
 
 // i18n
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, MessageDescriptor } from 'react-intl';
 import messages from './messages';
-import { MessageDescriptor } from 'react-intl';
 
 // events
 import { openSignUpInModal } from 'components/SignUpIn/events';

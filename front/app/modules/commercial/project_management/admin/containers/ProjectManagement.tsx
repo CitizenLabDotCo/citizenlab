@@ -5,10 +5,12 @@ import styled from 'styled-components';
 import { Section, SubSectionTitle } from 'components/admin/Section';
 
 // i18n
-import { FormattedMessage } from 'react-intl';
-import { injectIntl } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
 
 // components
 import { IconTooltip } from '@citizenlab/cl2-component-library';

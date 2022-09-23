@@ -1,5 +1,5 @@
-import React, { memo } from 'react';
 import moment from 'moment';
+import React, { memo } from 'react';
 
 // components
 import DateBlocks from './DateBlocks';

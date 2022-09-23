@@ -1,10 +1,10 @@
 import React, { FC, useEffect } from 'react';
 
 import { TableHeaderCellText } from 'components/admin/PostManager/components/PostTable';
-import { FormattedMessage } from 'react-intl';
-import { CellConfiguration, InsertConfigurationOptions } from 'typings';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaHeaderRow';
 import messages from 'components/admin/PostManager/messages';
+import { FormattedMessage } from 'react-intl';
+import { CellConfiguration, InsertConfigurationOptions } from 'typings';
 
 type Props = {
   onData: (

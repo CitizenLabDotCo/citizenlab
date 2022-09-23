@@ -1,11 +1,11 @@
 import React from 'react';
 
 // i18n
-import { FormattedMessage } from 'react-intl';
 import {
-  WrappedComponentProps,
+  FormattedMessage,
   injectIntl,
   MessageDescriptor,
+  WrappedComponentProps,
 } from 'react-intl';
 import messages from './messages';
 
@@ -14,9 +14,9 @@ import { Icon } from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
 
 // styles
-import styled from 'styled-components';
-import { fontSizes, colors, media } from 'utils/styleUtils';
 import { darken } from 'polished';
+import styled from 'styled-components';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;

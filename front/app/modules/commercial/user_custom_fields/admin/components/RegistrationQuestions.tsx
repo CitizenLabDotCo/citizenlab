@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { SectionField } from 'components/admin/Section';
-import { FormattedMessage } from 'react-intl';
 import { IconTooltip } from '@citizenlab/cl2-component-library';
+import { SectionField } from 'components/admin/Section';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import { LabelTooltip } from 'containers/Admin/settings/registration';
+import { FormattedMessage } from 'react-intl';
 import { TAppConfigurationSettingCore } from 'services/appConfiguration';
 import { Multiloc } from 'typings';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import messages from './messages';
 
 type Props = {

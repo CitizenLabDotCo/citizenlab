@@ -1,22 +1,22 @@
-import { withJsonFormsControlProps } from '@jsonforms/react';
+import { Box } from '@citizenlab/cl2-component-library';
 import {
+  ControlProps,
   RankedTester,
   rankWith,
   scopeEndsWith,
-  ControlProps,
 } from '@jsonforms/core';
-import React, { useContext, useEffect, useState } from 'react';
+import { withJsonFormsControlProps } from '@jsonforms/react';
 import { FormLabel } from 'components/UI/FormComponents';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import { UploadFile } from 'typings';
-import ErrorDisplay from '../ErrorDisplay';
-import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
-import { deleteIdeaImage } from 'services/ideaImages';
 import useIdeaImages from 'hooks/useIdeaImages';
-import { isNilOrError } from 'utils/helperUtils';
+import React, { useContext, useEffect, useState } from 'react';
+import { deleteIdeaImage } from 'services/ideaImages';
+import { UploadFile } from 'typings';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import { FormContext } from '../../contexts';
-import { Box } from '@citizenlab/cl2-component-library';
+import ErrorDisplay from '../ErrorDisplay';
 
 const ImageControl = ({
   uischema,

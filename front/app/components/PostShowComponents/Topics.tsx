@@ -8,9 +8,9 @@ import useTopics from 'hooks/useTopics';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 // styling
+import { transparentize } from 'polished';
 import styled from 'styled-components';
 import { fontSizes, isRtl } from 'utils/styleUtils';
-import { transparentize } from 'polished';
 
 // typings
 import { ITopicData } from 'services/topics';

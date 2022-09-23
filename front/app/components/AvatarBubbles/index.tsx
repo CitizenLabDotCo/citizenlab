@@ -1,23 +1,22 @@
+import { isError, isNumber } from 'lodash-es';
 import React from 'react';
-import { isNumber, isError } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import { IAvatarData } from 'services/avatars';
 
 // resources
-import GetRandomAvatars from 'resources/GetRandomAvatars';
 import GetAvatars from 'resources/GetAvatars';
+import GetRandomAvatars from 'resources/GetRandomAvatars';
 
 // i18n
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
+import { colors } from 'utils/styleUtils';
 
 const getFontSize = (size: number, digits: number) => {
   if (size >= 34) {

@@ -2,15 +2,15 @@
 import React, { ReactNode } from 'react';
 
 // Style
-import styled from 'styled-components';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
-import { remCalc, fontSizes, colors } from 'utils/styleUtils';
+import styled from 'styled-components';
+import { colors, fontSizes, remCalc } from 'utils/styleUtils';
 
 // Components
+export { default as LockedRow } from './LockedRow';
 export { default as SortableList } from './SortableList';
 export { default as SortableRow } from './SortableRow';
-export { default as LockedRow } from './LockedRow';
 
 const StyledList = styled.div`
   display: flex;

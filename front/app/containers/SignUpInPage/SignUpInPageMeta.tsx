@@ -1,28 +1,27 @@
 // libraries
 import React, { memo } from 'react';
-import { Helmet } from 'react-helmet';
 import { adopt } from 'react-adopt';
+import { Helmet } from 'react-helmet';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // i18n
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from './messages';
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
 
 // resources
-import GetAppConfigurationLocales, {
-  GetAppConfigurationLocalesChildProps,
-} from 'resources/GetAppConfigurationLocales';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
+import GetAppConfigurationLocales, {
+  GetAppConfigurationLocalesChildProps,
+} from 'resources/GetAppConfigurationLocales';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // utils
-import { isNilOrError, endsWith } from 'utils/helperUtils';
-import { getLocalized } from 'utils/i18n';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
+import { endsWith, isNilOrError } from 'utils/helperUtils';
+import { getLocalized } from 'utils/i18n';
 
 interface DataProps {
   tenantLocales: GetAppConfigurationLocalesChildProps;

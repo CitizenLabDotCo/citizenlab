@@ -1,9 +1,9 @@
-import React, { PureComponent } from 'react';
 import FilterSelector from 'components/FilterSelector';
+import React, { PureComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
-import messages from './messages';
-import styled from 'styled-components';
 import { CommentsSort } from 'services/comments';
+import styled from 'styled-components';
+import messages from './messages';
 
 const Container = styled.div``;
 

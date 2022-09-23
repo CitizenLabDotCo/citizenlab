@@ -1,5 +1,5 @@
-import React, { memo, useCallback, MouseEvent } from 'react';
 import { capitalize, get } from 'lodash-es';
+import React, { memo, MouseEvent, useCallback } from 'react';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // i18n
@@ -7,14 +7,14 @@ import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // components
-import T from 'components/T';
 import { Icon } from '@citizenlab/cl2-component-library';
+import T from 'components/T';
 
 // styling
-import styled from 'styled-components';
-import { fontSizes, colors, defaultCardStyle, isRtl } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
 import { darken } from 'polished';
+import styled from 'styled-components';
+import { ScreenReaderOnly } from 'utils/a11y';
+import { colors, defaultCardStyle, fontSizes, isRtl } from 'utils/styleUtils';
 import { Header, Title } from './styles';
 
 // typings

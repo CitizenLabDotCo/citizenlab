@@ -2,33 +2,35 @@
 import React from 'react';
 
 // intl
-import { FormattedMessage } from 'react-intl';
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from '../../messages';
 
 // styling
-import { withTheme } from 'styled-components';
 import { legacyColors } from 'components/admin/Graphs/styling';
+import { withTheme } from 'styled-components';
 
 // components
-import ReportExportMenu from 'components/admin/ReportExportMenu';
+import PieChart from 'components/admin/Graphs/PieChart';
 import {
+  GraphCard,
+  GraphCardHeader,
+  GraphCardInner,
+  GraphCardTitle,
   IGraphUnit,
   NoDataContainer,
-  GraphCardHeader,
-  GraphCardTitle,
-  GraphCard,
-  GraphCardInner,
   PieChartStyleFixesDiv,
 } from 'components/admin/GraphWrappers';
-import PieChart from 'components/admin/Graphs/PieChart';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 
 // resources
 import GetSerieFromStream from 'resources/GetSerieFromStream';
 
 // typings
-import { IStreamParams, IStream } from 'utils/streams';
+import { IStream, IStreamParams } from 'utils/streams';
 
 import { IGraphFormat } from 'typings';
 

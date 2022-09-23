@@ -1,6 +1,6 @@
 import {
-  IIdeaFormSchemas,
   CustomFieldCodes,
+  IIdeaFormSchemas,
 } from 'services/ideaCustomFieldsSchemas';
 import { Locale } from 'typings';
 

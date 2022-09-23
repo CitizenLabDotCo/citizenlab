@@ -1,19 +1,21 @@
-import React from 'react';
 import Button from 'components/UI/Button';
+import React from 'react';
 import { fontSizes } from 'utils/styleUtils';
 
 // i18n
-import messages from '../../messages';
-import { FormattedMessage } from 'react-intl';
-import { injectIntl } from 'react-intl';
+import { API_PATH } from 'containers/App/constants';
+import { saveAs } from 'file-saver';
 import { isString } from 'lodash-es';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import { trackEventByName } from 'utils/analytics';
 import { requestBlob } from 'utils/request';
-import { API_PATH } from 'containers/App/constants';
+import messages from '../../messages';
 import tracks from '../../tracks';
 import { exportType } from '../ExportMenu';
-import { saveAs } from 'file-saver';
-import { WrappedComponentProps } from 'react-intl';
 
 interface Props {
   exportQueryParameter: 'all' | string | string[];

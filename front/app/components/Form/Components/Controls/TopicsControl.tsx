@@ -1,17 +1,17 @@
-import { withJsonFormsControlProps } from '@jsonforms/react';
 import {
-  scopeEndsWith,
+  ControlProps,
   RankedTester,
   rankWith,
-  ControlProps,
+  scopeEndsWith,
 } from '@jsonforms/core';
+import { withJsonFormsControlProps } from '@jsonforms/react';
 import React, { useState } from 'react';
 
-import TopicsPicker from 'components/UI/TopicsPicker';
-import { FormLabel } from 'components/UI/FormComponents';
-import ErrorDisplay from '../ErrorDisplay';
-import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import { Box } from '@citizenlab/cl2-component-library';
+import { FormLabel } from 'components/UI/FormComponents';
+import TopicsPicker from 'components/UI/TopicsPicker';
+import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
+import ErrorDisplay from '../ErrorDisplay';
 
 const TopicsControl = ({
   data: selectedTopicIds = [],

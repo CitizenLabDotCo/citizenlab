@@ -1,10 +1,10 @@
-import React, { memo } from 'react';
 import moment from 'moment';
+import React, { memo } from 'react';
 
 // components
-import { EventDateBlockWrapper } from './styling';
 import DateBlockSingleYear from './DateBlockSingleYear';
 import DateBlocksMultiYear from './DateBlocksMultiYear';
+import { EventDateBlockWrapper } from './styling';
 
 // styling
 import styled from 'styled-components';

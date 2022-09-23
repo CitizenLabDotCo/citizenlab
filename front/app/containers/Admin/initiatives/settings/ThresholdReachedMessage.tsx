@@ -6,15 +6,15 @@ import {
   SectionField,
   SubSectionTitleWithDescription,
 } from 'components/admin/Section';
-import { StyledSectionDescription } from '.';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
+import { StyledSectionDescription } from '.';
 
 // i18n
 import { FormattedMessage } from 'react-intl';
 import messages from '../messages';
 
 // typings
-import { Multiloc, Locale } from 'typings';
+import { Locale, Multiloc } from 'typings';
 
 const StyledSectionField = styled(SectionField)`
   margin-top: 45px;

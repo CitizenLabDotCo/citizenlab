@@ -4,20 +4,19 @@ import React from 'react';
 import { coreSettings } from 'services/appConfiguration';
 
 // hooks
-import useTopics from 'hooks/useTopics';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useLocalize from 'hooks/useLocalize';
+import useTopics from 'hooks/useTopics';
 
 // components
 import { IconTooltip } from '@citizenlab/cl2-component-library';
 import { SubSectionTitle } from 'components/admin/Section';
-import { StyledSectionField } from './styling';
-import TopicsPicker from 'components/UI/TopicsPicker';
 import Outlet from 'components/Outlet';
+import TopicsPicker from 'components/UI/TopicsPicker';
+import { StyledSectionField } from './styling';
 
 // i18n
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 // utils

@@ -1,5 +1,5 @@
-import React, { memo, useState, useEffect } from 'react';
-import { isEmpty, inRange } from 'lodash-es';
+import { inRange, isEmpty } from 'lodash-es';
+import React, { memo, useEffect, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
@@ -10,10 +10,10 @@ import useAppConfiguration from 'hooks/useAppConfiguration';
 import useMapConfig from '../../../hooks/useMapConfig';
 
 // components
-import { Input, IconTooltip, Icon } from '@citizenlab/cl2-component-library';
+import { Icon, IconTooltip, Input } from '@citizenlab/cl2-component-library';
+import { SubSectionTitle } from 'components/admin/Section';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import { SubSectionTitle } from 'components/admin/Section';
 
 // utils
 import { getCenter, getZoomLevel } from '../../../utils/map';
@@ -25,9 +25,11 @@ import {
 } from 'components/UI/LeafletMap/events';
 
 // i18n
-import { FormattedMessage } from 'react-intl';
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from './messages';
 
 // styling

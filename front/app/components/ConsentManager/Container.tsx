@@ -1,14 +1,14 @@
-import React, { PureComponent, FormEvent } from 'react';
+import React, { FormEvent, PureComponent } from 'react';
 import { Subscription } from 'rxjs';
 
 // Events
 import eventEmitter from 'utils/eventEmitter';
 
 // Components
-import Banner from './Banner';
-import PreferencesDialog, { ContentContainer } from './PreferencesDialog';
-import Footer from './Footer';
 import Modal from 'components/UI/Modal';
+import Banner from './Banner';
+import Footer from './Footer';
+import PreferencesDialog, { ContentContainer } from './PreferencesDialog';
 
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';

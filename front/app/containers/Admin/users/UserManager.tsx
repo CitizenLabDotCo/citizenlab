@@ -1,21 +1,21 @@
 // Libraries
+import { includes, isArray } from 'lodash-es';
 import React, { PureComponent } from 'react';
-import { isArray, includes } from 'lodash-es';
 import { Subscription } from 'rxjs';
 
 // Components
-import UserTable from './UserTable';
-import UserTableActions from './UserTableActions';
 import Error from 'components/UI/Error';
 import NoUsers from './NoUsers';
+import UserTable from './UserTable';
+import UserTableActions from './UserTableActions';
 
 // Events
 import eventEmitter from 'utils/eventEmitter';
 import events from './events';
 
 // Resources
-import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
 import GetAuthUser from 'resources/GetAuthUser';
+import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
 
 // Services
 import { MembershipType } from 'services/groups';

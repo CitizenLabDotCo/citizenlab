@@ -1,10 +1,10 @@
-import React from 'react';
-import styled, { useTheme } from 'styled-components';
 import ProgressBar from 'components/UI/ProgressBar';
-import { ScreenReaderOnly } from 'utils/a11y';
+import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import messages from './messages';
+import styled, { useTheme } from 'styled-components';
+import { ScreenReaderOnly } from 'utils/a11y';
 import { colors } from 'utils/styleUtils';
+import messages from './messages';
 
 const StyledProgressBar = styled(ProgressBar)`
   height: 12px;

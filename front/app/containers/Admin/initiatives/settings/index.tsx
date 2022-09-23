@@ -1,5 +1,5 @@
-import React, { useState, useMemo, useEffect } from 'react';
-import { isEmpty, isNaN, omit, isEqual } from 'lodash-es';
+import { isEmpty, isEqual, isNaN, omit } from 'lodash-es';
+import React, { useEffect, useMemo, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
@@ -14,18 +14,18 @@ import { updatePage } from 'services/pages';
 
 // components
 import {
-  SectionTitle,
-  SectionDescription,
   Section,
+  SectionDescription,
+  SectionTitle,
 } from 'components/admin/Section';
 import Warning from 'components/UI/Warning';
-import EnableSwitch from './EnableSwitch';
-import VotingThreshold from './VotingThreshold';
-import VotingLimit from './VotingLimit';
-import ThresholdReachedMessage from './ThresholdReachedMessage';
 import EligibilityCriteria from './EligibilityCriteria';
+import EnableSwitch from './EnableSwitch';
 import PageBody from './PageBody';
 import SubmitButton from './SubmitButton';
+import ThresholdReachedMessage from './ThresholdReachedMessage';
+import VotingLimit from './VotingLimit';
+import VotingThreshold from './VotingThreshold';
 
 // i18n
 import { FormattedMessage } from 'react-intl';

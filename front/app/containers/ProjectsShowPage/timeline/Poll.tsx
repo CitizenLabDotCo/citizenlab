@@ -2,15 +2,15 @@ import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Poll from '../shared/poll';
 import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
+import Poll from '../shared/poll';
 
 // hooks
 import usePhase from 'hooks/usePhase';
 
 // i18n
-import { FormattedMessage } from 'react-intl';
 import messages from 'containers/ProjectsShowPage/messages';
+import { FormattedMessage } from 'react-intl';
 
 // styling
 import styled from 'styled-components';

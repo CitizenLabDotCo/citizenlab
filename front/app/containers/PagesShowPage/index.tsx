@@ -1,46 +1,48 @@
+import { isUndefined } from 'lodash-es';
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { isUndefined } from 'lodash-es';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import Link from 'utils/cl-router/Link';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import { Helmet } from 'react-helmet';
-import ContentContainer from 'components/ContentContainer';
 import { Icon } from '@citizenlab/cl2-component-library';
+import ContentContainer from 'components/ContentContainer';
 import Fragment from 'components/Fragment';
 import FileAttachments from 'components/UI/FileAttachments';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
+import { Helmet } from 'react-helmet';
 
 // resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
 } from 'resources/GetAppConfigurationLocales';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
 import GetResourceFiles, {
   GetResourceFilesChildProps,
 } from 'resources/GetResourceFiles';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage } from 'react-intl';
-import { injectIntl } from 'react-intl';
-import { getLocalized } from 'utils/i18n';
 import T from 'components/T';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
+import { getLocalized } from 'utils/i18n';
 import messages from './messages';
 
 // styling
+import ResolveTextVariables from 'components/ResolveTextVariables';
 import styled from 'styled-components';
 import {
-  media,
   colors,
-  fontSizes,
   defaultCardStyle,
+  fontSizes,
   isRtl,
+  media,
 } from 'utils/styleUtils';
-import ResolveTextVariables from 'components/ResolveTextVariables';
 
 export const Container = styled.div`
   min-height: calc(

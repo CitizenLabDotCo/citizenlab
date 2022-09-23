@@ -1,43 +1,45 @@
 // libraries
-import React, { useState, useRef, useEffect } from 'react';
-import { includes } from 'lodash-es';
-import { locales } from 'containers/App/constants';
 import bowser from 'bowser';
+import { locales } from 'containers/App/constants';
+import { includes } from 'lodash-es';
+import React, { useEffect, useRef, useState } from 'react';
 
 // components
-import NotificationMenu from './NotificationMenu';
-import DesktopNavbar from './DesktopNavbar';
-import UserMenu from './UserMenu';
-import TenantLogo from './TenantLogo';
-import LanguageSelector from 'containers/MainHeader/LanguageSelector';
-import Fragment from 'components/Fragment';
 import { IconButton, useWindowSize } from '@citizenlab/cl2-component-library';
+import Fragment from 'components/Fragment';
+import LanguageSelector from 'containers/MainHeader/LanguageSelector';
+import DesktopNavbar from './DesktopNavbar';
+import NotificationMenu from './NotificationMenu';
+import TenantLogo from './TenantLogo';
+import UserMenu from './UserMenu';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
 import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAuthUser from 'hooks/useAuthUser';
 import useLocale from 'hooks/useLocale';
 
 // utils
-import { isNilOrError, isPage, isDesktop } from 'utils/helperUtils';
 import { openSignUpInModal } from 'components/SignUpIn/events';
-import eventEmitter from 'utils/eventEmitter';
 import clHistory from 'utils/cl-router/history';
+import eventEmitter from 'utils/eventEmitter';
+import { isDesktop, isNilOrError, isPage } from 'utils/helperUtils';
 
 // i18n
-import { FormattedMessage } from 'react-intl';
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from './messages';
 
 // style
-import styled, { useTheme } from 'styled-components';
 import { darken } from 'polished';
-import { media, fontSizes, isRtl, colors } from 'utils/styleUtils';
+import styled, { useTheme } from 'styled-components';
+import { colors, fontSizes, isRtl, media } from 'utils/styleUtils';
 
 const Container = styled.header<{ position: 'fixed' | 'absolute' }>`
   width: 100vw;

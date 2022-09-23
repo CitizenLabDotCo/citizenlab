@@ -1,17 +1,17 @@
-import React, { memo, useState, useCallback, useEffect } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import TextArea, { Props as TextAreaProps } from 'components/UI/TextArea';
 import {
   IconTooltip,
-  LocaleSwitcher,
   Label,
+  LocaleSwitcher,
 } from '@citizenlab/cl2-component-library';
+import TextArea, { Props as TextAreaProps } from 'components/UI/TextArea';
 
 // hooks
-import useLocale from 'hooks/useLocale';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useLocale from 'hooks/useLocale';
 
 // style
 import styled from 'styled-components';

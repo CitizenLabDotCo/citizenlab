@@ -1,17 +1,3 @@
-import React, { memo } from 'react';
-import styled from 'styled-components';
-import {
-  fontSizes,
-  colors,
-  invisibleA11yText,
-  media,
-  defaultCardStyle,
-  isRtl,
-} from 'utils/styleUtils';
-import { FormattedMessage } from 'react-intl';
-import { MessageDescriptor } from 'react-intl';
-import messages from './messages';
-import { isString } from 'utils/helperUtils';
 import {
   Box,
   BoxBackgroundProps,
@@ -31,6 +17,19 @@ import {
   IconNames,
 } from '@citizenlab/cl2-component-library';
 import { omit } from 'lodash-es';
+import React, { memo } from 'react';
+import { FormattedMessage, MessageDescriptor } from 'react-intl';
+import styled from 'styled-components';
+import { isString } from 'utils/helperUtils';
+import {
+  colors,
+  defaultCardStyle,
+  fontSizes,
+  invisibleA11yText,
+  isRtl,
+  media,
+} from 'utils/styleUtils';
+import messages from './messages';
 
 export const FormSection = styled.div`
   max-width: 620px;

@@ -1,15 +1,15 @@
-import React, { useContext } from 'react';
 import { Box, Icon } from '@citizenlab/cl2-component-library';
+import { darken } from 'polished';
+import React, { useContext } from 'react';
+import { FormattedMessage } from 'react-intl';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
-import { FormattedMessage } from 'react-intl';
-import { darken } from 'polished';
-import messages from '../messages';
-import { colors, fontSizes, isRtl } from 'utils/styleUtils';
-import { getDefaultApiErrorMessage } from 'utils/errorUtils';
-import { APIErrorsContext, FormContext } from '../contexts';
-import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import Link from 'utils/cl-router/Link';
+import { getDefaultApiErrorMessage } from 'utils/errorUtils';
+import { getFieldNameFromPath } from 'utils/JSONFormUtils';
+import { colors, fontSizes, isRtl } from 'utils/styleUtils';
+import { APIErrorsContext, FormContext } from '../contexts';
+import messages from '../messages';
 
 const timeout = 350;
 

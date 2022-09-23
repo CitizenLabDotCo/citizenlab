@@ -1,23 +1,23 @@
 import React, { useRef, useState } from 'react';
 
 // components
-import GraphCard from 'components/admin/GraphCard';
 import { Box, Icon } from '@citizenlab/cl2-component-library';
-import EmptyState from 'components/admin/Graphs/_components/EmptyState';
+import GraphCard from 'components/admin/GraphCard';
 import PieChart from 'components/admin/Graphs/PieChart';
 import ProgressBars from 'components/admin/Graphs/ProgressBars';
 import StackedBarChart from 'components/admin/Graphs/StackedBarChart';
-import CenterLabel from './CenterLabel';
-import { stackLabels } from './stackLabels';
-import { stackedBarTooltip } from './stackedBarTooltip';
+import EmptyState from 'components/admin/Graphs/_components/EmptyState';
 import Button from 'components/UI/Button';
+import CenterLabel from './CenterLabel';
+import { stackedBarTooltip } from './stackedBarTooltip';
+import { stackLabels } from './stackLabels';
 
 // stylings
 import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // i18n
-import { injectIntl } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import hookMessages from '../../hooks/usePostsFeedback/messages';
 import messages from './messages';
 
@@ -27,9 +27,6 @@ import usePostsFeedback from '../../hooks/usePostsFeedback';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { getCornerRadius } from './utils';
-
-// typings
-import { WrappedComponentProps } from 'react-intl';
 
 interface Props {
   projectId: string | undefined;

@@ -1,29 +1,31 @@
 // Libraries
-import React, { PureComponent, FormEvent } from 'react';
-import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
 import { get } from 'lodash-es';
+import React, { FormEvent, PureComponent } from 'react';
+import { BehaviorSubject, combineLatest, Subscription } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 // i18n
-import { FormattedMessage } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from './messages';
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
 
 // Services
 import { ICommentData, markForDeletion } from 'services/comments';
 import { hasPermission } from 'services/permissions';
 
 // Components
-import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
-import Modal from 'components/UI/Modal';
-import SpamReportForm from 'containers/SpamReport';
-import Button from 'components/UI/Button';
 import HasPermission from 'components/HasPermission';
+import Button from 'components/UI/Button';
+import Modal from 'components/UI/Modal';
+import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
+import SpamReportForm from 'containers/SpamReport';
 import CommentsAdminDeletionModal from './CommentsAdminDeletionModal';
 
 // events
-import { deleteCommentModalClosed, commentDeleted } from './events';
+import { commentDeleted, deleteCommentModalClosed } from './events';
 
 // Styling
 import styled from 'styled-components';

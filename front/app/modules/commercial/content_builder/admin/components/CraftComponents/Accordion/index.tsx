@@ -5,21 +5,21 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 import QuillEditor from 'components/UI/QuillEditor';
 
 // craft
-import { useNode } from '@craftjs/core';
 import {
-  Box,
   Accordion as AccordionComponent,
-  Title,
+  Box,
   Input,
+  Title,
   Toggle,
 } from '@citizenlab/cl2-component-library';
+import { useNode } from '@craftjs/core';
 
 // hooks
 import { useTheme } from 'styled-components';
 
 // intl
-import messages from '../../../messages';
 import { injectIntl } from 'react-intl';
+import messages from '../../../messages';
 
 const Accordion = ({ text, title, openByDefault }) => {
   const theme: any = useTheme();

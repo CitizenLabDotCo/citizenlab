@@ -1,6 +1,6 @@
-import React, { lazy, Suspense, memo } from 'react';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useLocalize from 'hooks/useLocalize';
+import React, { lazy, memo, Suspense } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 // components
 const IdeasWithFiltersSidebar = lazy(() => import('./IdeasWithFiltersSidebar'));
@@ -13,16 +13,15 @@ import styled from 'styled-components';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 // i18n
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, MessageDescriptor } from 'react-intl';
 
 // typings
-import {
-  ParticipationMethod,
-  IdeaDefaultSortMethod,
-} from 'services/participationContexts';
 import { InputProps as GetIdeasInputProps } from 'resources/GetIdeas';
+import {
+  IdeaDefaultSortMethod,
+  ParticipationMethod,
+} from 'services/participationContexts';
 import { IParticipationContextType } from 'typings';
-import { MessageDescriptor } from 'react-intl';
 
 const Container = styled.div`
   width: 100%;

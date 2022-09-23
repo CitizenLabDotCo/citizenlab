@@ -1,14 +1,14 @@
-import React, { memo } from 'react';
 import { isError } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import IdeasShow from 'containers/IdeasShow';
 import Button from 'components/UI/Button';
-import IdeaShowPageTopBar from './IdeaShowPageTopBar';
+import IdeasShow from 'containers/IdeasShow';
 import Link from 'utils/cl-router/Link';
+import IdeaShowPageTopBar from './IdeaShowPageTopBar';
 
 // resources
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
@@ -22,7 +22,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media, fontSizes, colors, viewportWidths } from 'utils/styleUtils';
+import { colors, fontSizes, media, viewportWidths } from 'utils/styleUtils';
 
 const IdeaNotFoundWrapper = styled.div`
   height: calc(

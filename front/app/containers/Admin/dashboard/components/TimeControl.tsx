@@ -1,15 +1,17 @@
-import React, { PureComponent } from 'react';
 import moment, { Moment } from 'moment';
+import React, { PureComponent } from 'react';
 
 // components
-import Button from 'components/UI/Button';
-import { Icon, Dropdown } from '@citizenlab/cl2-component-library';
+import { Dropdown, Icon } from '@citizenlab/cl2-component-library';
 import DateRangePicker from 'components/admin/DateRangePicker';
+import Button from 'components/UI/Button';
 
 // i18n
-import { FormattedMessage } from 'react-intl';
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from '../messages';
 
 // styling

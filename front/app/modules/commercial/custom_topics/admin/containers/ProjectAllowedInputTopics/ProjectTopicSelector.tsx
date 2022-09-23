@@ -1,17 +1,16 @@
 // Libraries
 import React, { memo, useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
 
 // Hooks
-import useTopics from 'hooks/useTopics';
 import useProjectAllowedInputTopics from 'hooks/useProjectAllowedInputTopics';
+import useTopics from 'hooks/useTopics';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'react-intl';
-import messages from './messages';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import messages from './messages';
 
 // Components
 import Button from 'components/UI/Button';

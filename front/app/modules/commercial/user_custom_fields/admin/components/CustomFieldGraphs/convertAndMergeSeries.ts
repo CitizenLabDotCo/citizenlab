@@ -2,25 +2,25 @@
 import { map, orderBy } from 'lodash-es';
 import {
   binBirthyear,
-  rename,
-  join,
   convertDomicileData,
+  join,
+  rename,
   Series,
 } from '../../../utils/data';
 import { fallbackMessages } from '../AreaChart';
 
 // typings
-import { TCustomFieldCode } from '../../../services/userCustomFields';
 import {
-  IUsersByRegistrationField,
-  IUsersByDomicile,
   IUsersByBirthyear,
+  IUsersByDomicile,
+  IUsersByRegistrationField,
 } from 'modules/commercial/user_custom_fields/services/stats';
+import { TCustomFieldCode } from '../../../services/userCustomFields';
 
 // i18n
 import messages from 'containers/Admin/dashboard/messages';
+import { IntlFormatters, MessageDescriptor } from 'react-intl';
 import { InjectedLocalized } from 'utils/localize';
-import { MessageDescriptor, IntlFormatters } from 'react-intl';
 
 export type ISupportedDataType =
   | IUsersByRegistrationField

@@ -1,53 +1,56 @@
 // libraries
+import { isEmpty, map } from 'lodash-es';
 import React from 'react';
-import { Subscription, combineLatest } from 'rxjs';
-import { map, isEmpty } from 'lodash-es';
+import { combineLatest, Subscription } from 'rxjs';
 
 // styling
 import {
+  animation,
   legacyColors,
   sizes,
-  animation,
 } from 'components/admin/Graphs/styling';
 
 // services
 import {
-  votesByTimeStream,
-  votesByTimeCumulativeStream,
-  votesByTimeXlsxEndpoint,
   IVotesByTime,
+  votesByTimeCumulativeStream,
+  votesByTimeStream,
+  votesByTimeXlsxEndpoint,
 } from 'services/stats';
 
 // components
-import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
-  Line,
-  Label,
+  GraphCard,
+  GraphCardFigure,
+  GraphCardFigureChange,
+  GraphCardFigureContainer,
+  GraphCardHeader,
+  GraphCardInner,
+  GraphCardTitle,
+  NoDataContainer,
+} from 'components/admin/GraphWrappers';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
+import { IResolution } from 'components/admin/ResolutionControl';
+import {
   Bar,
+  CartesianGrid,
+  ComposedChart,
+  Label,
+  Legend,
+  Line,
+  ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
-  ResponsiveContainer,
-  CartesianGrid,
-  Legend,
-  ComposedChart,
 } from 'recharts';
-import {
-  GraphCard,
-  NoDataContainer,
-  GraphCardInner,
-  GraphCardHeader,
-  GraphCardTitle,
-  GraphCardFigureContainer,
-  GraphCardFigure,
-  GraphCardFigureChange,
-} from 'components/admin/GraphWrappers';
-import { IResolution } from 'components/admin/ResolutionControl';
 
 // i18n
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from '../messages';
-import { FormattedMessage } from 'react-intl';
-import { injectIntl, WrappedComponentProps } from 'react-intl';
 
 type ISerie = {
   cumulatedTotal: number;

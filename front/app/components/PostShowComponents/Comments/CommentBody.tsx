@@ -1,39 +1,39 @@
 // Libraries
-import React, { PureComponent, FormEvent } from 'react';
+import { get } from 'lodash-es';
+import React, { FormEvent, PureComponent } from 'react';
+import { adopt } from 'react-adopt';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { get } from 'lodash-es';
-import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // Services
-import { updateComment, IUpdatedComment } from 'services/comments';
+import { IUpdatedComment, updateComment } from 'services/comments';
 
 // Resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
 } from 'resources/GetAppConfigurationLocales';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 import { commentTranslateButtonClicked$ } from './events';
 
 // i18n
-import { getLocalized } from 'utils/i18n';
 import { FormattedMessage } from 'react-intl';
+import { getLocalized } from 'utils/i18n';
 import messages from './messages';
 
 // Components
-import MentionsTextArea from 'components/UI/MentionsTextArea';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
+import MentionsTextArea from 'components/UI/MentionsTextArea';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 // Styling
 import styled, { withTheme } from 'styled-components';
 
 // Typings
-import { CLErrorsJSON, CLErrors } from 'typings';
+import { CLErrors, CLErrorsJSON } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
 import Outlet from 'components/Outlet';

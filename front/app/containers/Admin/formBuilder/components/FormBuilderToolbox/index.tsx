@@ -1,14 +1,16 @@
 import React from 'react';
 
 // intl
-import { FormattedMessage } from 'react-intl';
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from '../messages';
 
 // components
-import ToolboxItem from './ToolboxItem';
 import { Box, Title } from '@citizenlab/cl2-component-library';
+import ToolboxItem from './ToolboxItem';
 
 // styles
 import styled from 'styled-components';

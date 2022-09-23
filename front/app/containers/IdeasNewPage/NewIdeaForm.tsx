@@ -7,8 +7,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import IdeaForm, { IIdeaFormOutput } from 'components/IdeaForm';
 
 // resources
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
 // services
 import {
@@ -20,15 +20,15 @@ import { getInputTerm } from 'services/participationContexts';
 
 // i18n
 import { FormattedMessage } from 'react-intl';
-import messages from './messages';
 import { getInputTermMessage } from 'utils/i18n';
+import messages from './messages';
 
 // typings
 import { UploadFile } from 'typings';
 
 // style
-import { media, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
+import { fontSizes, media } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;

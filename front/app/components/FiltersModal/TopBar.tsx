@@ -8,9 +8,9 @@ import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // styling
-import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
 import { lighten } from 'polished';
+import styled from 'styled-components';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 
 const Container = styled.div`
   height: ${(props) => props.theme.mobileTopBarHeight}px;

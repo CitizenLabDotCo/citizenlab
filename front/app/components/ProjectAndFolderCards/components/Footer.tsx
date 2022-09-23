@@ -4,9 +4,9 @@ import React from 'react';
 import Button from 'components/UI/Button';
 
 // styling
+import { rgba } from 'polished';
 import styled, { useTheme } from 'styled-components';
 import { media } from 'utils/styleUtils';
-import { rgba } from 'polished';
 
 // i18n
 import { FormattedMessage } from 'react-intl';

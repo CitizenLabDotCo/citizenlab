@@ -2,15 +2,15 @@ import React from 'react';
 import { Multiloc } from 'typings';
 
 // styling
-import styled from 'styled-components';
 import { darken } from 'polished';
-import { media, colors } from 'utils/styleUtils';
+import styled from 'styled-components';
+import { colors, media } from 'utils/styleUtils';
 
 // components
-import { NavigationItem, NavigationLabel } from './';
-import Link from 'utils/cl-router/Link';
 import { Icon, IconNames } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
+import Link from 'utils/cl-router/Link';
+import { NavigationItem, NavigationLabel } from './';
 
 // there's a name clash when importing styled components
 // from a file that also imports styled

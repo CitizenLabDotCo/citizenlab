@@ -1,31 +1,31 @@
 // libraries
-import React, { memo, useState, useCallback } from 'react';
-import { get, isUndefined } from 'lodash-es';
-import { adopt } from 'react-adopt';
 import Observer from '@researchgate/react-intersection-observer';
+import { get, isUndefined } from 'lodash-es';
+import React, { memo, useCallback, useState } from 'react';
+import { adopt } from 'react-adopt';
 
 // resources
+import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 import GetPost, { GetPostChildProps } from 'resources/GetPost';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import ParentCommentForm from './ParentCommentForm';
-import Comments from './Comments';
 import CommentingDisabled from './CommentingDisabled';
+import Comments from './Comments';
 import CommentSorting from './CommentSorting';
+import ParentCommentForm from './ParentCommentForm';
 
 // i18n
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // style
-import styled from 'styled-components';
-import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
 import { Title } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+import { colors, fontSizes, isRtl, media } from 'utils/styleUtils';
 
 // typings
 import { CommentsSort } from 'services/comments';

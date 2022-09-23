@@ -1,45 +1,47 @@
 // libraries
+import { clone, isEqual } from 'lodash-es';
 import React, { Component } from 'react';
-import Link from 'utils/cl-router/Link';
-import styled from 'styled-components';
 import { DndProvider } from 'react-dnd-cjs';
 import HTML5Backend from 'react-dnd-html5-backend-cjs';
-import { isEqual, clone } from 'lodash-es';
+import styled from 'styled-components';
+import Link from 'utils/cl-router/Link';
 
 // i18n
-import { FormattedMessage } from 'react-intl';
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-import customfieldMessages from '../../../../admin/containers/CustomFields/messages';
 import T from 'components/T';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
+import customfieldMessages from '../../../../admin/containers/CustomFields/messages';
+import messages from './messages';
 
 // components
+import {
+  Badge,
+  Box,
+  IconTooltip,
+  Toggle,
+} from '@citizenlab/cl2-component-library';
+import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
 import FeatureFlag from 'components/FeatureFlag';
 import Button from 'components/UI/Button';
-import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
-import {
-  Toggle,
-  Badge,
-  IconTooltip,
-  Box,
-} from '@citizenlab/cl2-component-library';
 
 import {
   Section,
-  SectionTitle,
   SectionDescription,
+  SectionTitle,
   SubSectionTitle,
 } from 'components/admin/Section';
 
 // services
 import {
-  IUserCustomFieldData,
   deleteUserCustomField,
-  updateCustomFieldForUsers,
-  reorderCustomFieldForUsers,
   isBuiltInField,
   isHiddenField,
+  IUserCustomFieldData,
+  reorderCustomFieldForUsers,
+  updateCustomFieldForUsers,
 } from '../../../../services/userCustomFields';
 
 // resources

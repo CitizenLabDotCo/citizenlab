@@ -16,9 +16,9 @@ import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // style
+import { darken } from 'polished';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import { darken } from 'polished';
 
 const duration = 300;
 const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';

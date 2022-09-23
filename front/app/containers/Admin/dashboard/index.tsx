@@ -1,12 +1,12 @@
-import React, { memo, useState, useEffect } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { adopt } from 'react-adopt';
-import { insertConfiguration } from 'utils/moduleUtils';
 import { Outlet as RouterOutlet } from 'react-router-dom';
+import { insertConfiguration } from 'utils/moduleUtils';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
-import DashboardTabs from './components/DashboardTabs';
 import Outlet from 'components/Outlet';
+import DashboardTabs from './components/DashboardTabs';
 
 // resource
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -15,9 +15,8 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { isAdmin, isProjectModerator } from 'services/permissions/roles';
 
 // i18n
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'react-intl';
 
 // typings
 import { InsertConfigurationOptions, ITab } from 'typings';

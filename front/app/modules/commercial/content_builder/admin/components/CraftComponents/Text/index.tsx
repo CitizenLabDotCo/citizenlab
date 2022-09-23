@@ -5,8 +5,8 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 import QuillEditor from 'components/UI/QuillEditor';
 
 // craft
-import { useNode } from '@craftjs/core';
 import { Box } from '@citizenlab/cl2-component-library';
+import { useNode } from '@craftjs/core';
 
 // hooks
 import { useTheme } from 'styled-components';

@@ -1,29 +1,28 @@
-import React from 'react';
-import useLocalize from 'hooks/useLocalize';
 import useAppConfiguration from 'hooks/useAppConfiguration';
+import useLocalize from 'hooks/useLocalize';
+import React from 'react';
 import styled, { useTheme } from 'styled-components';
+import { getDaysRemainingUntil } from 'utils/dateUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 import { StatusExplanation } from './SharedStyles';
-import { isNilOrError } from 'utils/helperUtils';
-import { getDaysRemainingUntil } from 'utils/dateUtils';
 
+import { IAppConfigurationSettings } from 'services/appConfiguration';
 import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
-import { IAppConfigurationSettings } from 'services/appConfiguration';
 
-import CountDown from './CountDown';
 import { Icon, IconTooltip } from '@citizenlab/cl2-component-library';
+import CountDown from './CountDown';
 
 import Button from 'components/UI/Button';
 import ProposalProgressBar from './ProposalProgressBar';
 
-import { FormattedMessage } from 'react-intl';
-import { MessageDescriptor } from 'react-intl';
-import messages from './messages';
+import Tippy from '@tippyjs/react';
 import T from 'components/T';
 import { IInitiativeDisabledReason } from 'hooks/useInitiativesPermissions';
 import { darken } from 'polished';
-import Tippy from '@tippyjs/react';
+import { FormattedMessage, MessageDescriptor } from 'react-intl';
+import messages from './messages';
 
 const Container = styled.div``;
 

@@ -1,28 +1,28 @@
-import React, { memo, useCallback, useState, useEffect } from 'react';
 import { isEmpty } from 'lodash-es';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 
 // components
 import Button from 'components/UI/Button';
 import ReactResizeDetector from 'react-resize-detector';
 
 // hooks
-import { useWindowSize, Box } from '@citizenlab/cl2-component-library';
+import { Box, useWindowSize } from '@citizenlab/cl2-component-library';
 
 // i18n
 import T from 'components/T';
-import { FormattedMessage } from 'react-intl';
 import messages from 'containers/ProjectsShowPage/messages';
+import { FormattedMessage } from 'react-intl';
 
 // style
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 import styled, { useTheme } from 'styled-components';
 import {
-  fontSizes,
   colors,
+  fontSizes,
+  isRtl,
   media,
   viewportWidths,
-  isRtl,
 } from 'utils/styleUtils';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { Multiloc } from 'typings';
 

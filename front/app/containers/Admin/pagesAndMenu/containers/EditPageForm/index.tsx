@@ -2,29 +2,28 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 // components
-import PageForm, { FormValues } from 'components/PageForm';
 import Outlet from 'components/Outlet';
+import PageForm, { FormValues } from 'components/PageForm';
 
 // components
-import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
 import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
+import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
 import useLocalize from 'hooks/useLocalize';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 
 // services
-import { updatePage } from 'services/pages';
-import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 import { MAX_TITLE_LENGTH } from 'services/navbar';
+import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
+import { updatePage } from 'services/pages';
 
 // hooks
-import useRemoteFiles from 'hooks/useRemoteFiles';
 import usePage from 'hooks/usePage';
+import useRemoteFiles from 'hooks/useRemoteFiles';
 import { truncateMultiloc } from 'utils/textUtils';
 
 const EditPageForm = ({ intl: { formatMessage } }: WrappedComponentProps) => {

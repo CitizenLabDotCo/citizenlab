@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import { Box, fontSizes, media } from '@citizenlab/cl2-component-library';
 import {
   Categorization,
   isCategorization,
@@ -6,10 +6,10 @@ import {
   rankWith,
 } from '@jsonforms/core';
 import { JsonFormsDispatch, withJsonFormsLayoutProps } from '@jsonforms/react';
-import { Box, fontSizes, media } from '@citizenlab/cl2-component-library';
-import { FormSection } from 'components/UI/FormComponents';
-import styled from 'styled-components';
 import { FormElement } from 'components/IdeaForm';
+import { FormSection } from 'components/UI/FormComponents';
+import React, { memo } from 'react';
+import styled from 'styled-components';
 
 const StyledFormSection = styled(FormSection)`
   max-width: 100%;

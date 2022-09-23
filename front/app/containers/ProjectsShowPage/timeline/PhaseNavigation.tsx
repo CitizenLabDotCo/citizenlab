@@ -1,17 +1,17 @@
-import React, { memo, useState, useCallback, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { findIndex } from 'lodash-es';
 import Tippy from '@tippyjs/react';
+import { findIndex } from 'lodash-es';
+import React, { memo, useCallback, useEffect, useState } from 'react';
+import { isNilOrError } from 'utils/helperUtils';
 
 // tracking
-import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
 
 // components
 import { Button } from '@citizenlab/cl2-component-library';
 
 // services
-import { IPhaseData, getCurrentPhase } from 'services/phases';
+import { getCurrentPhase, IPhaseData } from 'services/phases';
 
 // events
 import { selectedPhase$, selectPhase } from './events';
@@ -21,8 +21,7 @@ import usePhases from 'hooks/usePhases';
 
 // i18n
 import messages from 'containers/ProjectsShowPage/messages';
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 
 // style
 import styled from 'styled-components';

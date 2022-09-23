@@ -1,38 +1,38 @@
 import React, { memo, useCallback } from 'react';
 
 // services
-import { addVolunteer, deleteVolunteer } from 'services/volunteers';
 import { ICauseData } from 'services/causes';
+import { addVolunteer, deleteVolunteer } from 'services/volunteers';
 
 // resource hooks
 import useAuthUser from 'hooks/useAuthUser';
 
 // components
-import Image from 'components/UI/Image';
 import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
+import Image from 'components/UI/Image';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Warning from 'components/UI/Warning';
 
 // utils
-import { isEmptyMultiloc } from 'utils/helperUtils';
 import { openSignUpInModal } from 'components/SignUpIn/events';
 import { ScreenReaderOnly } from 'utils/a11y';
+import { isEmptyMultiloc } from 'utils/helperUtils';
 
 // i18n
-import { FormattedMessage } from 'react-intl';
 import T from 'components/T';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // styling
 import styled, { useTheme } from 'styled-components';
 import {
-  fontSizes,
   colors,
+  defaultCardStyle,
+  fontSizes,
+  isRtl,
   media,
   viewportWidths,
-  defaultCardStyle,
-  isRtl,
 } from 'utils/styleUtils';
 
 const Container = styled.div`

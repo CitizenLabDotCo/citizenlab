@@ -1,15 +1,15 @@
-import React, { PureComponent, FormEvent } from 'react';
 import { get } from 'lodash-es';
+import React, { FormEvent, PureComponent } from 'react';
 import { adopt } from 'react-adopt';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { distinctUntilChanged, filter, switchMap, tap } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
-import { Subscription, BehaviorSubject } from 'rxjs';
-import { distinctUntilChanged, switchMap, filter, tap } from 'rxjs/operators';
 
 // components
-import Comment from './Comment';
-import ChildCommentForm from './ChildCommentForm';
 import { Spinner } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
+import ChildCommentForm from './ChildCommentForm';
+import Comment from './Comment';
 
 // services
 import { childCommentsStream, IComments } from 'services/comments';
@@ -28,11 +28,11 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // style
-import styled, { withTheme } from 'styled-components';
 import { darken } from 'polished';
 import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
 } from 'resources/GetInitiativesPermissions';
+import styled, { withTheme } from 'styled-components';
 
 const Container = styled.div`
   position: relative;

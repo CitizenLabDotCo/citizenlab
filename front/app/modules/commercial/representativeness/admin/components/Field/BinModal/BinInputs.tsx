@@ -1,26 +1,25 @@
 import React, { useState } from 'react';
 
 // components
-import { Box, Text, Input, Icon } from '@citizenlab/cl2-component-library';
+import { Box, Icon, Input, Text } from '@citizenlab/cl2-component-library';
 import BinInputsHeader from './BinInputsHeader';
 
 // i18n
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from './messages';
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
 
 // styling
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 // utils
+import { clamp } from 'lodash-es';
+import { indices } from 'utils/helperUtils';
 import {
   getLowerBoundLimits,
   getUpperBoundLimits,
   parseLabel,
 } from '../../../utils/bins';
-import { clamp } from 'lodash-es';
-import { indices } from 'utils/helperUtils';
 
 // typings
 import { Bins } from '../../../services/referenceDistribution';

@@ -1,21 +1,21 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import styled, { useTheme } from 'styled-components';
 
 // components
-import SectionFormWrapper from '../../components/SectionFormWrapper';
 import {
   Section,
   SectionField,
   SubSectionTitle,
 } from 'components/admin/Section';
+import SectionFormWrapper from '../../components/SectionFormWrapper';
 
 import {
-  Setting,
-  ToggleLabel,
-  StyledToggle,
   LabelContent,
-  LabelTitle,
   LabelDescription,
+  LabelTitle,
+  Setting,
+  StyledToggle,
+  ToggleLabel,
 } from 'containers/Admin/settings/general';
 
 import {
@@ -27,20 +27,22 @@ import {
   Select,
 } from '@citizenlab/cl2-component-library';
 
-import HeaderImageDropzone from './HeaderImageDropzone';
-import RangeInput from 'components/UI/RangeInput';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import Outlet from 'components/Outlet';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
+import Outlet from 'components/Outlet';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import RangeInput from 'components/UI/RangeInput';
+import HeaderImageDropzone from './HeaderImageDropzone';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage } from 'react-intl';
-import { injectIntl } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from './messages';
 
 // typings
-import { UploadFile, Multiloc, CLErrors } from 'typings';
+import { CLErrors, Multiloc, UploadFile } from 'typings';
 type MultilocErrorType = {
   signedOutHeaderErrors: Multiloc;
   signedOutSubheaderErrors: Multiloc;
@@ -48,21 +50,21 @@ type MultilocErrorType = {
 export type PreviewDevice = 'mobile' | 'tablet' | 'desktop';
 
 // resources
+import useHomepageSettings from 'hooks/useHomepageSettings';
 import {
   IHomepageSettingsAttributes,
   updateHomepageSettings,
 } from 'services/homepageSettings';
-import useHomepageSettings from 'hooks/useHomepageSettings';
 
 // utils
-import { isNil, isNilOrError } from 'utils/helperUtils';
+import { debounce, forOwn, isEqual, size, trim } from 'lodash-es';
 import { isCLErrorJSON } from 'utils/errorUtils';
-import { forOwn, size, trim, debounce, isEqual } from 'lodash-es';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { isNil, isNilOrError } from 'utils/helperUtils';
 
 // constants
-import { pagesAndMenuBreadcrumb, homeBreadcrumb } from '../../breadcrumbs';
 import Warning from 'components/UI/Warning';
+import { homeBreadcrumb, pagesAndMenuBreadcrumb } from '../../breadcrumbs';
 const TITLE_MAX_CHAR_COUNT = 45;
 const SUBTITLE_MAX_CHAR_COUNT = 90;
 

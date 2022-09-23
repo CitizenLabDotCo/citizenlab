@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import Tippy from '@tippyjs/react';
 import { round } from 'lodash-es';
 import moment from 'moment';
-import Tippy from '@tippyjs/react';
+import React, { useState } from 'react';
+import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import { updateBasket } from 'services/baskets';
@@ -11,25 +11,27 @@ import { updateBasket } from 'services/baskets';
 import { IParticipationContextType } from 'typings';
 
 // components
-import Button from 'components/UI/Button';
 import { Icon } from '@citizenlab/cl2-component-library';
-import PBBasket from './PBBasket';
+import Button from 'components/UI/Button';
 import ButtonWithDropdown from 'components/UI/ButtonWithDropdown';
+import PBBasket from './PBBasket';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // i18n
-import { FormattedMessage } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'react-intl';
 import messages from 'containers/ProjectsShowPage/messages';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import FormattedBudget from 'utils/currency/FormattedBudget';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes, defaultCardStyle } from 'utils/styleUtils';
+import { colors, defaultCardStyle, fontSizes } from 'utils/styleUtils';
 
 // a11y
 import { ScreenReaderOnly } from 'utils/a11y';
@@ -37,9 +39,9 @@ import { ScreenReaderOnly } from 'utils/a11y';
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useBasket from 'hooks/useBasket';
-import useProject from 'hooks/useProject';
-import usePhase from 'hooks/usePhase';
 import useLocale from 'hooks/useLocale';
+import usePhase from 'hooks/usePhase';
+import useProject from 'hooks/useProject';
 
 const Container = styled.div`
   ${defaultCardStyle};

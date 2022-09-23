@@ -1,5 +1,5 @@
-import React from 'react';
 import { AUTH_PATH } from 'containers/App/constants';
+import React from 'react';
 import { removeUrlLocale } from 'services/locale';
 import { getJwt } from 'utils/auth/jwt';
 
@@ -10,8 +10,7 @@ import { TVerificationMethod } from 'services/verificationMethods';
 import FranceConnectButton from 'components/UI/FranceConnectButton';
 
 // i18n
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 interface Props {

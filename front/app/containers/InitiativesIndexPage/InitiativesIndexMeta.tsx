@@ -1,26 +1,25 @@
 // libraries
-import React from 'react';
-import { Helmet } from 'react-helmet';
-import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
 import useLocalize from 'hooks/useLocalize';
+import React from 'react';
+import { adopt } from 'react-adopt';
+import { Helmet } from 'react-helmet';
+import { isNilOrError } from 'utils/helperUtils';
 // i18n
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from './messages';
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
 
 // resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
 } from 'resources/GetAppConfigurationLocales';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // utils
-import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
-import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
+import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
+import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 
 interface InputProps {}
 

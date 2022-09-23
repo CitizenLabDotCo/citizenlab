@@ -1,41 +1,43 @@
+import { stringify } from 'qs';
 import React, { useState } from 'react';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { stringify } from 'qs';
 
 // styles
-import styled from 'styled-components';
 import { darken } from 'polished';
+import styled from 'styled-components';
 
 // components
 import {
-  Input,
-  Spinner,
   Box,
   Dropdown,
   DropdownListItem,
   Icon,
   IconTooltip,
+  Input,
+  Spinner,
 } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 
 import Error from 'components/UI/Error';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
-import { FormattedMessage } from 'react-intl';
-import { injectIntl } from 'react-intl';
-import { colors, fontSizes } from 'utils/styleUtils';
-import clHistory from 'utils/cl-router/history';
 import getInputsCategoryFilter from 'modules/commercial/insights/utils/getInputsCategoryFilter';
+import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
-import useInsightsInputsCount from 'modules/commercial/insights/hooks/useInsightsInputsCount';
 import useDetectedCategories from 'modules/commercial/insights/hooks/useInsightsDetectedCategories';
+import useInsightsInputsCount from 'modules/commercial/insights/hooks/useInsightsInputsCount';
 
 // intl
-import { WrappedComponentProps } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from '../../messages';
 
 // types
@@ -49,8 +51,8 @@ import {
 } from 'modules/commercial/insights/services/insightsCategories';
 
 // tracking
-import { trackEventByName } from 'utils/analytics';
 import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
+import { trackEventByName } from 'utils/analytics';
 
 const CategoriesLabel = styled.div`
   display: flex;

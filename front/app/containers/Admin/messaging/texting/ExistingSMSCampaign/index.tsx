@@ -3,11 +3,11 @@ import React from 'react';
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 import HelmetIntl from 'components/HelmetIntl';
-import TextingHeader from '../components/TextingHeader';
 import FormattedStatusLabel from '../components/FormattedStatusLabel';
 import SMSCampaignForm from '../components/SMSCampaignForm';
+import TextingHeader from '../components/TextingHeader';
 // i18n
-import { FormattedTime, FormattedDate } from 'react-intl';
+import { FormattedDate, FormattedTime } from 'react-intl';
 
 // utils
 import clHistory from 'utils/cl-router/history';

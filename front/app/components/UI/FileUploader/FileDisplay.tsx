@@ -1,21 +1,23 @@
+import { lighten } from 'polished';
 import React from 'react';
 import { returnFileSize } from 'utils/fileUtils';
-import { lighten } from 'polished';
 
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // components
 import { Icon, IconButton } from '@citizenlab/cl2-component-library';
 import { UploadFile } from 'typings';
 
 // i18n
-import { FormattedMessage } from 'react-intl';
-import { injectIntl } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
 
 const Container = styled.div<{ error: boolean }>`
   display: flex;

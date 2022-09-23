@@ -2,10 +2,10 @@ import React from 'react';
 
 // components
 import { IconTooltip, Radio } from '@citizenlab/cl2-component-library';
-import { FormattedMessage } from 'react-intl';
-import FeatureFlag from 'components/FeatureFlag';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
+import FeatureFlag from 'components/FeatureFlag';
 import Error from 'components/UI/Error';
+import { FormattedMessage } from 'react-intl';
 import { LabelHeaderDescription } from './labels';
 import { ParticipationMethodRadio } from './styling';
 

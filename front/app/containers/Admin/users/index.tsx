@@ -1,7 +1,7 @@
-import React, { PureComponent } from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { Formik, FormikActions } from 'formik';
+import React, { PureComponent } from 'react';
 import { Outlet as RouterOutlet } from 'react-router-dom';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // Resources
 import GetFeatureFlag, {
@@ -11,8 +11,8 @@ import GetFeatureFlag, {
 // components
 import HelmetIntl from 'components/HelmetIntl';
 import Modal from 'components/UI/Modal';
-import GroupsListPanel from './GroupsListPanel';
 import GroupCreationStep1 from './GroupCreationStep1';
+import GroupsListPanel from './GroupsListPanel';
 import NormalGroupForm, { NormalFormValues } from './NormalGroupForm';
 
 // Global state
@@ -63,12 +63,12 @@ import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // Services
-import { IGroupData, addGroup, MembershipType } from 'services/groups';
+import { addGroup, IGroupData, MembershipType } from 'services/groups';
 
 // Typings
+import Outlet from 'components/Outlet';
 import { CLErrorsJSON } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
-import Outlet from 'components/Outlet';
 
 export interface Props {
   isVerificationEnabled: GetFeatureFlagChildProps;

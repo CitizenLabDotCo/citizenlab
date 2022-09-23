@@ -1,17 +1,20 @@
 // libraries
+import { isError } from 'lodash-es';
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { isError } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
+import {
+  injectIntl,
+  MessageDescriptor,
+  WrappedComponentProps,
+} from 'react-intl';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useAuthUser from 'hooks/useAuthUser';
 import useLocalize from 'hooks/useLocalize';
 // utils
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';

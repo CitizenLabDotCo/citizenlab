@@ -1,8 +1,8 @@
-import React from 'react';
+import Error, { TFieldName } from 'components/UI/Error';
 import MultipleSelectComponent, {
   Props as MultipleSelectComponentProps,
 } from 'components/UI/MultipleSelect';
-import Error, { TFieldName } from 'components/UI/Error';
+import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { CLError, IOption } from 'typings';
 

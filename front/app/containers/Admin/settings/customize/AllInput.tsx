@@ -4,17 +4,17 @@ import React, { useState } from 'react';
 import useNavbarItemEnabled from 'hooks/useNavbarItemEnabled';
 
 // components
-import Outlet from 'components/Outlet';
 import { SectionField } from 'components/admin/Section';
+import Outlet from 'components/Outlet';
+import { StyledSection, StyledSectionTitle } from '.';
 import {
+  LabelContent,
+  LabelDescription,
+  LabelTitle,
   Setting,
   StyledToggle,
   ToggleLabel,
-  LabelContent,
-  LabelTitle,
-  LabelDescription,
 } from '../general';
-import { StyledSection, StyledSectionTitle } from '.';
 
 // i18n
 import { FormattedMessage } from 'react-intl';

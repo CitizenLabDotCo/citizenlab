@@ -1,31 +1,31 @@
+import { get, isEmpty, isString } from 'lodash-es';
 import React from 'react';
-import { isString, isEmpty, get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import TextArea from 'components/UI/TextArea';
-import Error from 'components/UI/Error';
 import {
-  Radio,
   IconTooltip,
-  Toggle,
   Label,
+  Radio,
+  Toggle,
 } from '@citizenlab/cl2-component-library';
-import Tabs from 'components/UI/Tabs';
-import Collapse from 'components/UI/Collapse';
-import MultipleSelect from 'components/UI/MultipleSelect';
-import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionField, SectionTitle } from 'components/admin/Section';
-import QuillEditor from 'components/UI/QuillEditor';
+import SubmitWrapper from 'components/admin/SubmitWrapper';
 import HelmetIntl from 'components/HelmetIntl';
 import Button from 'components/UI/Button';
+import Collapse from 'components/UI/Collapse';
+import Error from 'components/UI/Error';
+import MultipleSelect from 'components/UI/MultipleSelect';
+import QuillEditor from 'components/UI/QuillEditor';
+import Tabs from 'components/UI/Tabs';
+import TextArea from 'components/UI/TextArea';
 import Warning from 'components/UI/Warning';
 
 // services
 import {
-  bulkInviteXLSX,
   bulkInviteEmails,
+  bulkInviteXLSX,
   IInviteError,
   INewBulkInvite,
 } from 'services/invites';
@@ -34,30 +34,32 @@ import {
 import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
 } from 'resources/GetAppConfigurationLocales';
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage } from 'react-intl';
-import { injectIntl } from 'react-intl';
-import messages from '../messages';
 import { API_PATH, appLocalePairs } from 'containers/App/constants';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import { getLocalized } from 'utils/i18n';
+import messages from '../messages';
 
 // utils
-import { getBase64FromFile } from 'utils/fileUtils';
 import { saveAs } from 'file-saver';
+import { getBase64FromFile } from 'utils/fileUtils';
 import { requestBlob } from 'utils/request';
 
 // styling
+import { darken } from 'polished';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import { darken } from 'polished';
 
 // typings
-import { Locale, IOption } from 'typings';
+import { IOption, Locale } from 'typings';
 
 const InvitationOptions = styled.div`
   width: 497px;

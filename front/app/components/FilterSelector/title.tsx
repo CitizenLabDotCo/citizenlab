@@ -1,13 +1,13 @@
 import React, { PureComponent } from 'react';
-import { removeFocusAfterMouseClick, isPage } from 'utils/helperUtils';
+import { isPage, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
 
 // style
-import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
 import { darken } from 'polished';
+import styled from 'styled-components';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 const Text = styled.span<{ textColor?: string }>`
   color: ${({ textColor }) => textColor ?? colors.text};

@@ -1,19 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
-import Error, { findErrorMessage, TFieldName } from 'components/UI/Error';
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
 import {
-  Text,
-  Title,
   Box,
   colors,
   Icon,
+  Text,
+  Title,
 } from '@citizenlab/cl2-component-library';
-import { scrollToElement } from 'utils/scroll';
 import CloseIconButton from 'components/UI/CloseIconButton';
-import messages from './messages';
+import Error, { findErrorMessage, TFieldName } from 'components/UI/Error';
 import { get } from 'lodash-es';
+import React, { useEffect, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
+import { scrollToElement } from 'utils/scroll';
+import messages from './messages';
 
 type FeedbackProps = {
   successMessage?: string;

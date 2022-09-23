@@ -10,14 +10,16 @@ import { canModerateProject } from 'services/permissions/rules/projectPermission
 
 // hooks
 import useUser from 'hooks/useUser';
+
+// i18n
+import { FormattedMessage } from 'react-intl';
 import useLocale from 'hooks/useLocale';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes, isRtl } from 'utils/styleUtils';
-import { FormattedMessage } from 'react-intl';
-import messages from './messages';
 import { ScreenReaderOnly } from 'utils/a11y';
+import { colors, fontSizes, isRtl, media } from 'utils/styleUtils';
+import messages from './messages';
 import { timeAgo } from 'utils/dateUtils';
 
 const Container = styled.div`

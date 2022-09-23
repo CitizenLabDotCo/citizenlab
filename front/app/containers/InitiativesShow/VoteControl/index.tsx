@@ -1,43 +1,43 @@
-import React, { PureComponent } from 'react';
-import styled from 'styled-components';
-import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
-import { media, defaultCardStyle } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
-import { FormattedMessage } from 'react-intl';
+import { openSignUpInModal } from 'components/SignUpIn/events';
+import { openVerificationModal } from 'components/Verification/verificationModalEvents';
+import { IInitiativeDisabledReason } from 'hooks/useInitiativesPermissions';
 import moment from 'moment';
-import messages from './messages';
-import {
-  InitiativeStatusCode,
-  IInitiativeStatusData,
-} from 'services/initiativeStatuses';
-import GetInitiative, {
-  GetInitiativeChildProps,
-} from 'resources/GetInitiative';
-import GetInitiativeStatus, {
-  GetInitiativeStatusChildProps,
-} from 'resources/GetInitiativeStatus';
-import { IInitiativeData } from 'services/initiatives';
-import { IAppConfigurationSettings } from 'services/appConfiguration';
+import React, { PureComponent } from 'react';
+import { adopt } from 'react-adopt';
+import { FormattedMessage } from 'react-intl';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import { addVote, deleteVote } from 'services/initiativeVotes';
-import ProposedNotVoted from './ProposedNotVoted';
-import ProposedVoted from './ProposedVoted';
-import Expired from './Expired';
-import ThresholdReached from './ThresholdReached';
-import Answered from './Answered';
-import Ineligible from './Ineligible';
-import Custom from './Custom';
-import { openSignUpInModal } from 'components/SignUpIn/events';
+import GetInitiative, {
+  GetInitiativeChildProps,
+} from 'resources/GetInitiative';
 import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
 } from 'resources/GetInitiativesPermissions';
-import { IInitiativeDisabledReason } from 'hooks/useInitiativesPermissions';
+import GetInitiativeStatus, {
+  GetInitiativeStatusChildProps,
+} from 'resources/GetInitiativeStatus';
+import { IAppConfigurationSettings } from 'services/appConfiguration';
+import { IInitiativeData } from 'services/initiatives';
+import {
+  IInitiativeStatusData,
+  InitiativeStatusCode,
+} from 'services/initiativeStatuses';
+import { addVote, deleteVote } from 'services/initiativeVotes';
+import styled from 'styled-components';
+import { ScreenReaderOnly } from 'utils/a11y';
 import { trackEventByName } from 'utils/analytics';
-import { openVerificationModal } from 'components/Verification/verificationModalEvents';
+import { isNilOrError } from 'utils/helperUtils';
+import { defaultCardStyle, media } from 'utils/styleUtils';
+import Answered from './Answered';
+import Custom from './Custom';
+import Expired from './Expired';
+import Ineligible from './Ineligible';
+import messages from './messages';
+import ProposedNotVoted from './ProposedNotVoted';
+import ProposedVoted from './ProposedVoted';
+import ThresholdReached from './ThresholdReached';
 
 const Container = styled.div`
   ${media.biggerThanMaxTablet`

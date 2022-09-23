@@ -7,37 +7,39 @@ import Link from 'utils/cl-router/Link';
 
 // components
 import { Input } from '@citizenlab/cl2-component-library';
-import PasswordInput from 'components/UI/PasswordInput';
+import { Option, Options } from 'components/SignUpIn/styles';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';
-import { Options, Option } from 'components/SignUpIn/styles';
+import PasswordInput from 'components/UI/PasswordInput';
 
 // resources
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
+import GetFeatureFlag from 'resources/GetFeatureFlag';
 import GetWindowSize, {
   GetWindowSizeChildProps,
 } from 'resources/GetWindowSize';
-import GetFeatureFlag from 'resources/GetFeatureFlag';
 
 // services
 import { signIn } from 'services/auth';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage } from 'react-intl';
-import { injectIntl } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from './messages';
 
 // utils
-import { isValidEmail, isValidPhoneNumber } from 'utils/validate';
 import { isNilOrError } from 'utils/helperUtils';
+import { isValidEmail, isValidPhoneNumber } from 'utils/validate';
 
 // analytics
-import { trackEventByName } from 'utils/analytics';
 import tracks from 'components/SignUpIn/tracks';
+import { trackEventByName } from 'utils/analytics';
 
 // style
 import styled from 'styled-components';

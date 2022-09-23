@@ -1,51 +1,51 @@
 // Libraries
+import { Formik } from 'formik';
+import { isEmpty, isString } from 'lodash-es';
 import React from 'react';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { Formik } from 'formik';
-import { isEmpty, isString } from 'lodash-es';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import { API_PATH } from 'containers/App/constants';
+import { isNilOrError } from 'utils/helperUtils';
 import streams from 'utils/streams';
 
 // Components
-import UsersHeader from './UsersHeader';
 import Modal from 'components/UI/Modal';
 import NormalGroupForm, { NormalFormValues } from './NormalGroupForm';
 import UserManager from './UserManager';
+import UsersHeader from './UsersHeader';
 
 // Events
 import eventEmitter from 'utils/eventEmitter';
 import events from './events';
 
 // i18n
-import messages from './messages';
 import {
+  FormattedMessage,
   injectIntl,
   WrappedComponentProps,
-  FormattedMessage,
 } from 'react-intl';
+import messages from './messages';
 
 // Resources
-import GetGroup, { GetGroupChildProps } from 'resources/GetGroup';
 import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
+import GetGroup, { GetGroupChildProps } from 'resources/GetGroup';
 
 // Services
-import { deleteGroup, updateGroup, MembershipType } from 'services/groups';
 import { deleteMembershipByUserId } from 'services/groupMemberships';
+import { deleteGroup, MembershipType, updateGroup } from 'services/groups';
 
 // tracking
-import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
 
 // Typings
+import Outlet from 'components/Outlet';
 import { CLErrorsJSON } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
-import Outlet from 'components/Outlet';
 
 export interface InputProps {}
 

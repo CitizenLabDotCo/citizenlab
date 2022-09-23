@@ -1,20 +1,19 @@
-import React from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { API_PATH } from 'containers/App/constants';
 import { saveAs } from 'file-saver';
+import React from 'react';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // components
 import Button from 'components/UI/Button';
 
 // intl
-import { injectIntl } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
-import { WrappedComponentProps } from 'react-intl';
 
 // utils
-import { colors } from 'utils/styleUtils';
-import { requestBlob } from 'utils/request';
 import { isNilOrError } from 'utils/helperUtils';
+import { requestBlob } from 'utils/request';
+import { colors } from 'utils/styleUtils';
 
 // hooks
 import useInsightsView from 'modules/commercial/insights/hooks/useInsightsView';

@@ -4,17 +4,17 @@ import styled from 'styled-components';
 import { fontSizes, media } from 'utils/styleUtils';
 import { StatusExplanation } from './SharedStyles';
 
+import { IAppConfigurationSettings } from 'services/appConfiguration';
 import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
-import { IAppConfigurationSettings } from 'services/appConfiguration';
 
-import CountDown from './CountDown';
 import Button from 'components/UI/Button';
+import CountDown from './CountDown';
 import ProposalProgressBar from './ProposalProgressBar';
 
+import T from 'components/T';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
-import T from 'components/T';
 
 const Container = styled.div``;
 

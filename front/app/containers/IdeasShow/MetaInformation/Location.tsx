@@ -1,26 +1,25 @@
-import React, { memo, useState, useMemo } from 'react';
-import styled from 'styled-components';
-import { darken } from 'polished';
 import useIdea from 'hooks/useIdea';
-import { isNilOrError } from 'utils/helperUtils';
 import { isNil } from 'lodash-es';
+import { darken } from 'polished';
+import React, { memo, useMemo, useState } from 'react';
+import styled from 'styled-components';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import { Icon, colors } from '@citizenlab/cl2-component-library';
-import Modal from 'components/UI/Modal';
-import Map, { Point } from 'components/Map';
+import { colors, Icon } from '@citizenlab/cl2-component-library';
 import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
+import Map, { Point } from 'components/Map';
+import Modal from 'components/UI/Modal';
 
 // utils
 import { getAddressOrFallbackDMS } from 'utils/map';
 
 // i18n
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // styling
-import { isRtl, fontSizes, media } from 'utils/styleUtils';
+import { fontSizes, isRtl, media } from 'utils/styleUtils';
 
 // typings
 import { LatLngTuple } from 'leaflet';

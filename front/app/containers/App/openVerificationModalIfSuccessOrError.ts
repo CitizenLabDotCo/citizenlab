@@ -1,6 +1,6 @@
+import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 import { has } from 'lodash-es';
 import { parse } from 'qs';
-import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 
 export default function openVerificationModalIfSuccessOrError(search: string) {
   const urlSearchParams = parse(search, { ignoreQueryPrefix: true });

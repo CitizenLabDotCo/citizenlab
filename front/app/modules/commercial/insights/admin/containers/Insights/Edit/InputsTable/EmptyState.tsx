@@ -3,12 +3,11 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // styles
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // intl
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
 
 // components
 import { Icon } from '@citizenlab/cl2-component-library';

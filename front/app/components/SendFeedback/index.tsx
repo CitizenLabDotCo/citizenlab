@@ -5,13 +5,16 @@ import { Icon } from '@citizenlab/cl2-component-library';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // import i18n
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from './messages';
-import { WrappedComponentProps, injectIntl } from 'react-intl';
-import { FormattedMessage } from 'react-intl';
 
 const SendFeedbackText = styled.span`
   color: ${colors.label};

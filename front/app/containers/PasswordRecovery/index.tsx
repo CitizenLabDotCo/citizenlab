@@ -2,10 +2,10 @@ import React from 'react';
 
 // components
 import { Input, Success } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import { Helmet } from 'react-helmet';
 import ContentContainer from 'components/ContentContainer';
+import Button from 'components/UI/Button';
 import { FormLabel } from 'components/UI/FormComponents';
+import { Helmet } from 'react-helmet';
 
 // services
 import { sendPasswordResetMail } from 'services/auth';
@@ -14,13 +14,12 @@ import { sendPasswordResetMail } from 'services/auth';
 import { isValidEmail } from 'utils/validate';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 
 // style
 import styled from 'styled-components';
+import { colors, fontSizes } from 'utils/styleUtils';
 import messages from './messages';
-import { fontSizes, colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -200,7 +199,10 @@ class PasswordRecovery extends React.PureComponent<
             <Subtitle>{subtitle}</Subtitle>
 
             <Form onSubmit={this.handleOnSubmit}>
-              <FormLabel htmlFor="email" labelText={formatMessage(messages.emailLabel)} />
+              <FormLabel
+                htmlFor="email"
+                labelText={formatMessage(messages.emailLabel)}
+              />
               <StyledInput
                 id="email"
                 type="email"

@@ -1,12 +1,11 @@
-import { ScreenReaderOnly } from 'utils/a11y';
 import ContentContainer from 'components/ContentContainer';
-import styled, { useTheme } from 'styled-components';
-import { FormattedMessage } from 'react-intl';
 import Button from 'components/UI/Button';
-import { colors, media } from 'utils/styleUtils';
 import React from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
+import styled, { useTheme } from 'styled-components';
+import { ScreenReaderOnly } from 'utils/a11y';
+import { colors, media } from 'utils/styleUtils';
 import messages from './messages';
-import { useIntl } from 'react-intl';
 
 interface FormSubmitFooterProps {
   disabled?: boolean;

@@ -1,9 +1,9 @@
 // Libraries
 import React from 'react';
 import { adopt } from 'react-adopt';
+import { Subscription } from 'rxjs';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
-import { Subscription } from 'rxjs';
 
 // Resources
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
@@ -15,8 +15,8 @@ import eventEmitter from 'utils/eventEmitter';
 import events, { MembershipAdd } from './events';
 
 // Components
-import Button from 'components/UI/Button';
 import T from 'components/T';
+import Button from 'components/UI/Button';
 
 // i18n
 import { FormattedMessage } from 'react-intl';
@@ -27,10 +27,10 @@ import { injectTracks } from 'utils/analytics';
 import tracks from './tracks';
 
 // Styling
+import Outlet from 'components/Outlet';
+import { rgba } from 'polished';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import { rgba } from 'polished';
-import Outlet from 'components/Outlet';
 
 const Container = styled.div`
   flex: 1;

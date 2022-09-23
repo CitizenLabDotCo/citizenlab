@@ -1,34 +1,36 @@
 import React from 'react';
-import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-import { Multiloc } from 'typings';
 import { ideaStatusCodes, TIdeaStatusCode } from 'services/ideaStatuses';
+import styled from 'styled-components';
+import { Multiloc } from 'typings';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // components
-import { Section, SectionField } from 'components/admin/Section';
 import {
-  Label,
-  IconTooltip,
   Box,
   Button,
+  IconTooltip,
+  Label,
 } from '@citizenlab/cl2-component-library';
+import { Section, SectionField } from 'components/admin/Section';
 
 // form
-import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { string, object } from 'yup';
-import validateMultiloc from 'utils/yup/validateMultiloc';
-import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import TextAreaMultilocWithLocaleSwitcher from 'components/HookForm/TextAreaMultilocWithLocaleSwitcher';
-import RadioGroup, { Radio } from 'components/HookForm/RadioGroup';
 import ColorPicker from 'components/HookForm/ColorPicker';
 import Feedback from 'components/HookForm/Feedback';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import RadioGroup, { Radio } from 'components/HookForm/RadioGroup';
+import TextAreaMultilocWithLocaleSwitcher from 'components/HookForm/TextAreaMultilocWithLocaleSwitcher';
+import { FormProvider, useForm } from 'react-hook-form';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import validateMultiloc from 'utils/yup/validateMultiloc';
+import { object, string } from 'yup';
 
 // i18n
-import { FormattedMessage } from 'react-intl';
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from './messages';
 
 export interface FormValues {
