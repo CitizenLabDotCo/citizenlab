@@ -20,7 +20,7 @@ import {
 // i18n
 import messages from 'containers/Admin/dashboard/messages';
 import { InjectedLocalized } from 'utils/localize';
-import { MessageDescriptor } from 'react-intl';
+import { MessageDescriptor, IntlFormatters } from 'react-intl';
 
 export type ISupportedDataType =
   | IUsersByRegistrationField
@@ -28,7 +28,7 @@ export type ISupportedDataType =
   | IUsersByBirthyear;
 
 interface IParameters {
-  formatMessage: WrappedComponentProps['intl']['formatMessage'];
+  formatMessage: IntlFormatters['formatMessage'];
   localize: InjectedLocalized['localize'];
 }
 

@@ -29,6 +29,7 @@ import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import { MessageDescriptor } from 'react-intl';
 
 // events
 import { openSignUpInModal } from 'components/SignUpIn/events';

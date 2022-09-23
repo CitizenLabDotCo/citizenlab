@@ -4,8 +4,7 @@ import { Subscription } from 'rxjs';
 import { isEmpty } from 'lodash-es';
 
 // intl
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import moment from 'moment';
 
 // typings
@@ -71,7 +70,7 @@ class BarChartActiveUsersByTime extends React.PureComponent<
   subscription: Subscription;
   currentChart: React.RefObject<any>;
 
-  constructor(props: Props) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props as any);
     this.state = {
       serie: null,

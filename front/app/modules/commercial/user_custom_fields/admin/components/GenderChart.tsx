@@ -8,8 +8,7 @@ import shallowCompare from 'utils/shallowCompare';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from 'containers/Admin/dashboard/messages';
 
 // styling
@@ -56,12 +55,15 @@ const labelColors = {
   _blank: '#C0C2CE',
 };
 
-class GenderChart extends PureComponent<Props & WrappedComponentProps, State> {
+class GenderChart extends PureComponent<
+  Props & { theme: any } & WrappedComponentProps,
+  State
+> {
   private subscriptions: Subscription[];
   private queryProps$: BehaviorSubject<QueryProps>;
   private currentChart: React.RefObject<any>;
 
-  constructor(props: Props & WrappedComponentProps) {
+  constructor(props: Props & { theme: any } & WrappedComponentProps) {
     super(props);
     this.state = {
       serie: null,
@@ -185,4 +187,4 @@ class GenderChart extends PureComponent<Props & WrappedComponentProps, State> {
   }
 }
 
-export default injectIntl(withTheme(GenderChart as any) as any);
+export default withTheme(injectIntl(GenderChart));

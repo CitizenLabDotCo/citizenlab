@@ -64,9 +64,8 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
+import { WrappedComponentProps, injectIntl } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
-import { injectIntl } from 'react-intl';
 import messages from './messages';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { getInputTermMessage } from 'utils/i18n';
@@ -241,7 +240,9 @@ export class IdeasShow extends PureComponent<
   Props & WrappedComponentProps & InjectedLocalized & WithRouterProps,
   State
 > {
-  constructor(props) {
+  constructor(
+    props: Props & WrappedComponentProps & InjectedLocalized & WithRouterProps
+  ) {
     super(props);
     this.state = {
       loaded: false,

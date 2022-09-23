@@ -9,11 +9,12 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { Row } from 'components/admin/ResourceList';
 import AdminEditButton from './AdminEditButton';
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { MessageDescriptor } from 'react-intl';
 
 export interface Props {
   onChangeSectionToggle: () => void;
-  onClickEditButton?: (string) => void;
+  onClickEditButton?: (path: string) => void;
   titleMessageDescriptor: MessageDescriptor;
   tooltipMessageDescriptor: MessageDescriptor;
   checked: boolean;

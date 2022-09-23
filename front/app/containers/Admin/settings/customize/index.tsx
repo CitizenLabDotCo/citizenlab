@@ -20,8 +20,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'react-intl';
+import { WrappedComponentProps, injectIntl } from 'react-intl';
 import messages from './messages';
 import sharedSettingsMessages from '../messages';
 
@@ -81,7 +80,7 @@ class SettingsCustomizeTab extends PureComponent<
 > {
   subscriptions: Subscription[];
 
-  constructor(props) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       locale: null,
