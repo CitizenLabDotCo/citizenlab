@@ -44,7 +44,6 @@ const {
   IntlProvider,
   FormattedDate,
   FormattedTime,
-  FormattedRelative,
   FormattedNumber,
   FormattedPlural,
   FormattedMessage,
@@ -59,11 +58,6 @@ Intl.FormattedDate = (props) => (
 Intl.FormattedTime = (props) => (
   <IntlProvider {...defaultProps}>
     <FormattedTime {...props} />
-  </IntlProvider>
-);
-Intl.FormattedRelative = (props) => (
-  <IntlProvider {...defaultProps}>
-    <FormattedRelative {...props} />
   </IntlProvider>
 );
 Intl.FormattedNumber = (props) => (
