@@ -27,12 +27,14 @@ import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 
 interface Props {
   resolution: IResolution;
+  innerRef: React.RefObject<any>
 }
 
 const EMPTY_DATA = generateEmptyData();
 
 const Chart = ({
   resolution,
+  innerRef,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const { timeSeries } = useVisitorsData();
@@ -97,6 +99,7 @@ const Chart = ({
             marginTop: 16,
             items: legendItems,
           }}
+          innerRef={innerRef}
         />
       )}
     </Box>

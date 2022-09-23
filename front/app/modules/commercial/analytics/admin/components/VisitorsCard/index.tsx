@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 // components
 import GraphCard from 'components/admin/GraphCard';
@@ -8,30 +8,44 @@ import Chart from './Chart';
 
 // i18n
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 // typings
 import { IResolution } from 'components/admin/ResolutionControl';
+import { Moment } from 'moment';
 
 interface Props {
+  startAtMoment: Moment | null | undefined;
+  endAtMoment: Moment | null;
+  projectFilter: string | undefined;
   resolution: IResolution;
 }
 
-const VisitorsCard = ({ resolution }: Props) => (
-  <GraphCard
-    title={<FormattedMessage {...messages.visitors} />}
-    infoTooltipContent={<FormattedMessage {...messages.titleTooltipMessage} />}
-  >
-    <Box width="100%" display="flex" flexDirection="row">
-      <Box display="flex" flexDirection="row" pl="20px">
-        <VisitorStats resolution={resolution} />
-      </Box>
+const VisitorsCard = ({ resolution, intl: { formatMessage } }: Props & InjectedIntlProps) => {
+  const graphRef = useRef(); 
 
-      <Box flexGrow={1} display="flex" justifyContent="center">
-        <Chart resolution={resolution} />
-      </Box>
-    </Box>
-  </GraphCard>
-);
+  return (
+    <GraphCard
+      title={formatMessage(messages.visitors)}
+      infoTooltipContent={formatMessage(messages.titleTooltipMessage)}
+      exportMenu={{
+        name: formatMessage(messages.visitors),
+        svgNode: graphRef,
 
-export default VisitorsCard;
+      }}
+    >
+      <Box width="100%" display="flex" flexDirection="row">
+        <Box display="flex" flexDirection="row" pl="20px">
+          <VisitorStats resolution={resolution} />
+        </Box>
+
+        <Box flexGrow={1} display="flex" justifyContent="center">
+          <Chart resolution={resolution} innerRef={graphRef} />
+        </Box>
+      </Box>
+    </GraphCard>
+  )
+};
+
+export default injectIntl(VisitorsCard);

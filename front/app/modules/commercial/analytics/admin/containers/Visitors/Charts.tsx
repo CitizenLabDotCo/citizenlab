@@ -14,9 +14,9 @@ interface Props {
   resolution: IResolution;
 }
 
-const Charts = ({ resolution }: Props) => (
+const Charts = (props: Props) => (
   <>
-    <VisitorsCard resolution={resolution} />
+    <VisitorsCard {...props} />
   </>
 );
 
