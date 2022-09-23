@@ -1,8 +1,7 @@
 // libraries
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { adopt } from 'react-adopt';
-
+import { isNilOrError } from 'utils/helperUtils';
 // i18n
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
@@ -13,37 +12,39 @@ import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 
 // resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetAppConfigurationLocales, {
-  GetAppConfigurationLocalesChildProps,
-} from 'resources/GetAppConfigurationLocales';
+import useAuthUser from 'hooks/useAuthUser';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import useLocalize from 'hooks/useLocalize';
 
-interface InputProps {}
+interface Props {}
 
-interface DataProps {
-  authUser: GetAuthUserChildProps;
-  tenantLocales: GetAppConfigurationLocalesChildProps;
-}
+const ProjectsMeta = ({ intl }: Props & WrappedComponentProps) => {
+  const { formatMessage } = intl;
+  const { location } = window;
+  const authUser = useAuthUser();
+  const localize = useLocalize();
+  const tenantLocales = useAppConfigurationLocales();
+  const appConfig = useAppConfiguration();
 
-interface Props extends InputProps, DataProps {}
-
-const ProjectsMeta = React.memo<Props & WrappedComponentProps>(
-  ({ intl, authUser, tenantLocales }) => {
-    const { formatMessage } = intl;
-    const { location } = window;
-    const projectsIndexTitle = formatMessage(messages.metaTitle);
-    const projectsIndexDescription = formatMessage(messages.metaDescription);
-
+  if (!isNilOrError(authUser) && !isNilOrError(appConfig)) {
+    const orgName = localize(
+      appConfig.attributes.settings.core.organization_name
+    );
+    const projectsIndexTitle = formatMessage(messages.metaTitle, { orgName });
+    const projectsIndexDescription = formatMessage(messages.metaDescription, {
+      orgName,
+    });
     return (
       <Helmet>
         <title>
           {`
-          ${
-            authUser && authUser.attributes.unread_notifications
-              ? `(${authUser.attributes.unread_notifications}) `
-              : ''
-          }
-          ${projectsIndexTitle}`}
+            ${
+              authUser && authUser.attributes.unread_notifications
+                ? `(${authUser.attributes.unread_notifications}) `
+                : ''
+            }
+            ${projectsIndexTitle}`}
         </title>
         {getCanonicalLink()}
         {getAlternateLinks(tenantLocales)}
@@ -55,17 +56,8 @@ const ProjectsMeta = React.memo<Props & WrappedComponentProps>(
       </Helmet>
     );
   }
-);
 
-const ProjectsMetaWithHoc = injectIntl<Props>(ProjectsMeta);
+  return null;
+};
 
-const Data = adopt<DataProps, InputProps>({
-  tenantLocales: <GetAppConfigurationLocales />,
-  authUser: <GetAuthUser />,
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataprops) => <ProjectsMetaWithHoc {...inputProps} {...dataprops} />}
-  </Data>
-);
+export default injectIntl(ProjectsMeta);

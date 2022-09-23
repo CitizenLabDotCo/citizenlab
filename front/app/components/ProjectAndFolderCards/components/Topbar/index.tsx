@@ -149,7 +149,7 @@ const Header = ({
   onChangeSearch,
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
-  const appConfiguration = useAppConfiguration();
+  const appConfig = useAppConfiguration();
   const smallerThanXlPhone = useBreakpoint('xlPhone');
   const smallerThanMinTablet = useBreakpoint('smallTablet');
   const topics = useTopics({ forHomepageFilter: true });
@@ -178,11 +178,13 @@ const Header = ({
     [onChangeSearch]
   );
 
-  if (isNilOrError(appConfiguration)) return null;
+  if (isNilOrError(appConfig)) return null;
 
   const customCurrentlyWorkingOn =
-    coreSettings(appConfiguration).currently_working_on_text;
-  const fallback = formatMessage(messages.currentlyWorkingOn);
+    coreSettings(appConfig).currently_working_on_text;
+  const fallback = formatMessage(messages.currentlyWorkingOn, {
+    orgName: localize(appConfig.attributes.settings.core.organization_name),
+  });
   const currentlyWorkingOnText = localize(customCurrentlyWorkingOn, {
     fallback,
   });

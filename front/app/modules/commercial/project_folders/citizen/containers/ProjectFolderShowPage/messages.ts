@@ -1,14 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  projectFolderTwitterMessage: {
-    id: 'app.containers.ProjectFolderShowPage.projectFolderTwitterMessage',
-    defaultMessage: '{title} | {orgName}',
-  },
-  projectFolderWhatsAppMessage: {
-    id: 'app.containers.ProjectFolderShowPage.projectFolderWhatsAppMessage',
-    defaultMessage: '{title} | {orgName}',
-  },
   metaTitle: {
     id: 'app.containers.ProjectFolderShowPage.metaTitle',
     defaultMessage: '{title}',

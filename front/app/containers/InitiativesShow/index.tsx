@@ -319,7 +319,7 @@ interface DataProps {
   windowSize: GetWindowSizeChildProps;
   officialFeedbacks: GetOfficialFeedbacksChildProps;
   postOfficialFeedbackPermission: GetPermissionChildProps;
-  tenant: GetAppConfigurationChildProps;
+  appConfig: GetAppConfigurationChildProps;
 }
 
 interface InputProps {
@@ -437,7 +437,7 @@ export class InitiativesShow extends PureComponent<
       windowSize,
       className,
       postOfficialFeedbackPermission,
-      tenant,
+      appConfig,
     } = this.props;
     const {
       loaded,
@@ -446,8 +446,8 @@ export class InitiativesShow extends PureComponent<
       a11y_pronounceLatestOfficialFeedbackPost,
     } = this.state;
     const { formatMessage } = this.props.intl;
-    const initiativeSettings = !isNilOrError(tenant)
-      ? tenant.attributes.settings.initiatives
+    const initiativeSettings = !isNilOrError(appConfig)
+      ? appConfig.attributes.settings.initiatives
       : null;
     const votingThreshold = initiativeSettings
       ? initiativeSettings.voting_threshold
@@ -459,6 +459,7 @@ export class InitiativesShow extends PureComponent<
       initiativeSettings &&
       !isNilOrError(initiative) &&
       !isNilOrError(locale) &&
+      !isNilOrError(appConfig) &&
       loaded
     ) {
       const initiativeHeaderImageLarge =
@@ -640,6 +641,9 @@ export class InitiativesShow extends PureComponent<
                     })}
                     whatsAppMessage={formatMessage(messages.whatsAppMessage, {
                       initiativeTitle,
+                      orgName: localize(
+                        appConfig.attributes.settings.core.organization_name
+                      ),
                     })}
                     emailSubject={formatMessage(messages.emailSharingSubject, {
                       initiativeTitle,
@@ -687,6 +691,10 @@ export class InitiativesShow extends PureComponent<
                           messages.whatsAppMessage,
                           {
                             initiativeTitle,
+                            orgName: localize(
+                              appConfig.attributes.settings.core
+                                .organization_name
+                            ),
                           }
                         )}
                         emailSubject={formatMessage(

@@ -68,7 +68,9 @@ const Meta: React.SFC<Props & WrappedComponentProps> = ({
 
     const metaTitleMultiLoc = tenant.attributes.settings.core.meta_title;
     let metaTitle = getLocalized(metaTitleMultiLoc, locale, tenantLocales, 50);
-    metaTitle = metaTitle || formatMessage(messages.metaTitle);
+    metaTitle =
+      metaTitle ||
+      formatMessage(messages.metaTitle, { orgName: organizationName });
 
     const metaDescriptionMultiLoc =
       tenant.attributes.settings.core.meta_description;
@@ -78,7 +80,8 @@ const Meta: React.SFC<Props & WrappedComponentProps> = ({
       tenantLocales
     );
     metaDescription =
-      metaDescription || formatMessage(messages.appMetaDescription);
+      metaDescription ||
+      formatMessage(messages.appMetaDescription, { orgName: organizationName });
 
     const lifecycleStage = tenant.attributes.settings.core.lifecycle_stage;
     const blockIndexing = !['active', 'churned'].includes(lifecycleStage);

@@ -52,7 +52,7 @@ interface InputProps {
 
 interface DataProps {
   locale: GetLocaleChildProps;
-  tenant: GetAppConfigurationChildProps;
+  appConfig: GetAppConfigurationChildProps;
   authUser: GetAuthUserChildProps;
   idea: GetIdeaChildProps;
   initiative: GetInitiativeChildProps;
@@ -156,7 +156,15 @@ class SharingModalContent extends PureComponent<
   };
 
   render() {
-    const { postType, authUser, className, title, subtitle } = this.props;
+    const {
+      postType,
+      authUser,
+      className,
+      title,
+      subtitle,
+      localize,
+      appConfig,
+    } = this.props;
     const { formatMessage } = this.props.intl;
 
     const { postTitle, postUrl } = this.getPostValues();
@@ -165,6 +173,7 @@ class SharingModalContent extends PureComponent<
 
     if (
       !isNilOrError(authUser) &&
+      !isNilOrError(appConfig) &&
       postUrl &&
       emailSharingBody &&
       emailSharingSubject &&
@@ -207,6 +216,9 @@ class SharingModalContent extends PureComponent<
             })}
             whatsAppMessage={formatMessage(whatsAppMessage, {
               postTitle,
+              orgName: localize(
+                appConfig.attributes.settings.core.organization_name
+              ),
             })}
             emailSubject={formatMessage(emailSharingSubject, { postTitle })}
             emailBody={formatMessage(emailSharingBody, {

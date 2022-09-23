@@ -43,7 +43,7 @@ const SignUpInPageMeta = memo<Props & WrappedComponentProps & WithRouterProps>(
       const method = endsWith(pathname, 'sign-in') ? 'signin' : 'signup';
       const organizationNameMultiLoc =
         tenant.attributes.settings.core.organization_name;
-      const tenantName = getLocalized(
+      const orgName = getLocalized(
         organizationNameMultiLoc,
         locale,
         tenantLocales
@@ -52,12 +52,13 @@ const SignUpInPageMeta = memo<Props & WrappedComponentProps & WithRouterProps>(
         method === 'signin'
           ? messages.signInMetaTitle
           : messages.signUpMetaTitle,
-        { tenantName }
+        { tenantName: orgName }
       );
       const pageMetaDescription = formatMessage(
         method === 'signin'
           ? messages.signInPageMetaDescription
-          : messages.signUpPageMetaDescription
+          : messages.signUpPageMetaDescription,
+        { orgName }
       );
 
       return (
@@ -80,12 +81,14 @@ const SignUpInPageMeta = memo<Props & WrappedComponentProps & WithRouterProps>(
 
 const SignUpInPageMetaWithHoC = withRouter(injectIntl(SignUpInPageMeta));
 
-const Data = adopt<DataProps>({
+const Data = adopt<Props>({
   tenantLocales: <GetAppConfigurationLocales />,
   tenant: <GetAppConfiguration />,
   locale: <GetLocale />,
 });
 
 export default () => (
-  <Data>{(dataprops) => <SignUpInPageMetaWithHoC {...dataprops} />}</Data>
+  <Data>
+    {(dataProps: DataProps) => <SignUpInPageMetaWithHoC {...dataProps} />}
+  </Data>
 );

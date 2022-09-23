@@ -14,6 +14,7 @@ import Outlet from 'components/Outlet';
 import SignUpButton from '../SignUpButton';
 import useHomepageSettings from 'hooks/useHomepageSettings';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 
 const Container = styled.div<{
   align: 'center' | 'left';
@@ -144,6 +145,7 @@ const HeaderContent = ({
   fontColors,
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
+  const appConfig = useAppConfiguration();
   const homepageSettings = useHomepageSettings();
   const localize = useLocalize();
 
@@ -160,12 +162,15 @@ const HeaderContent = ({
     name: 'customizable_homepage_banner',
   });
 
-  if (!isNilOrError(homepageSettings)) {
+  if (!isNilOrError(homepageSettings) && !isNilOrError(appConfig)) {
+    const orgName = localize(
+      appConfig.attributes.settings.core.organization_name
+    );
     const homepageAttributes = homepageSettings.data.attributes;
 
     const headerTitle = homepageAttributes.banner_signed_out_header_multiloc
       ? localize(homepageAttributes.banner_signed_out_header_multiloc)
-      : formatMessage(messages.titleCity);
+      : formatMessage(messages.titleCity, { orgName });
     const headerSubtitle =
       homepageAttributes.banner_signed_out_subheader_multiloc
         ? localize(homepageAttributes.banner_signed_out_subheader_multiloc)

@@ -8,6 +8,8 @@ import SharingButtons from 'components/Sharing/SharingButtons';
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
 import useProject from 'hooks/useProject';
+import useLocalize from 'hooks/useLocalize';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 
 // i18n
 import T from 'components/T';
@@ -29,6 +31,8 @@ const ProjectSharingModal = memo<Props & WrappedComponentProps>(
   ({ projectId, className, opened, close, intl: { formatMessage } }) => {
     const authUser = useAuthUser();
     const project = useProject({ projectId });
+    const localize = useLocalize();
+    const appConfig = useAppConfiguration();
 
     const projectUrl = location.href;
     const utmParams = !isNilOrError(authUser)
@@ -46,7 +50,7 @@ const ProjectSharingModal = memo<Props & WrappedComponentProps>(
       close();
     }, [close]);
 
-    if (!isNilOrError(project)) {
+    if (!isNilOrError(project) && !isNilOrError(appConfig)) {
       const url = window.location.href;
       return (
         <Modal
@@ -77,18 +81,30 @@ const ProjectSharingModal = memo<Props & WrappedComponentProps>(
                           messages.whatsAppMessage,
                           {
                             projectName: title,
+                            orgName: localize(
+                              appConfig.attributes.settings.core
+                                .organization_name
+                            ),
                           }
                         )}
                         facebookMessage={formatMessage(
                           messages.facebookMessage,
                           {
                             projectName: title,
+                            orgName: localize(
+                              appConfig.attributes.settings.core
+                                .organization_name
+                            ),
                           }
                         )}
                         twitterMessage={formatMessage(
                           messages.projectTwitterMessage,
                           {
                             projectName: title,
+                            orgName: localize(
+                              appConfig.attributes.settings.core
+                                .organization_name
+                            ),
                           }
                         )}
                         emailSubject={formatMessage(

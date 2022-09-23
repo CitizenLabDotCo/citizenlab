@@ -2,31 +2,39 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
+import useLocalize from 'hooks/useLocalize';
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import { isNilOrError } from 'utils/helperUtils';
 
-type Props = {
+interface Props {
   title: MessageDescriptor;
   description: MessageDescriptor;
-};
+}
 
-interface State {}
+const HelmetIntl = ({
+  intl: { formatMessage },
+  title,
+  description,
+}: Props & WrappedComponentProps) => {
+  const localize = useLocalize();
+  const appConfig = useAppConfiguration();
 
-export class HelmetIntl extends React.PureComponent<
-  Props & WrappedComponentProps,
-  State
-> {
-  render() {
-    const { formatMessage } = this.props.intl;
-    const { title, description } = this.props;
-
+  if (!isNilOrError(appConfig)) {
     return (
       <>
         <Helmet
-          title={formatMessage(title)}
+          title={formatMessage(title, {
+            orgName: localize(
+              appConfig.attributes.settings.core.organization_name
+            ),
+          })}
           meta={[{ name: 'description', content: formatMessage(description) }]}
         />
       </>
     );
   }
-}
 
-export default injectIntl<Props>(HelmetIntl);
+  return null;
+};
+
+export default injectIntl(HelmetIntl);

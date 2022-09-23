@@ -1,6 +1,9 @@
-import React, { PureComponent } from 'react';
-import styled, { withTheme } from 'styled-components';
+import React from 'react';
+import styled, { useTheme } from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
+import useLocalize from 'hooks/useLocalize';
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import { IInitiativeData } from 'services/initiatives';
@@ -38,34 +41,35 @@ const StyledButton = styled(Button)`
   margin-top: 20px;
 `;
 
-interface InputProps {
+interface Props {
   initiative: IInitiativeData;
   initiativeStatus: IInitiativeStatusData;
   initiativeSettings: NonNullable<IAppConfigurationSettings['initiatives']>;
   userVoted: boolean;
   onVote: () => void;
 }
-interface DataProps {}
 
-interface Props extends InputProps, DataProps {}
-
-interface State {}
-
-class ThresholdReached extends PureComponent<Props & { theme: any }, State> {
-  handleOnVote = () => {
-    this.props.onVote();
+const ThresholdReached = ({
+  initiative,
+  initiativeSettings: { voting_threshold, threshold_reached_message },
+  initiativeStatus,
+  userVoted,
+  onVote,
+}: Props) => {
+  const theme: any = useTheme();
+  const localize = useLocalize();
+  const appConfig = useAppConfiguration();
+  const handleOnVote = () => {
+    onVote();
   };
 
-  render() {
-    const {
-      initiative,
-      initiativeSettings: { voting_threshold, threshold_reached_message },
-      initiativeStatus,
-      userVoted,
-    } = this.props;
+  const voteCount = initiative.attributes.upvotes_count;
+  const voteLimit = voting_threshold;
 
-    const voteCount = initiative.attributes.upvotes_count;
-    const voteLimit = voting_threshold;
+  if (!isNilOrError(appConfig)) {
+    const orgName = localize(
+      appConfig.attributes.settings.core.organization_name
+    );
 
     return (
       <Container>
@@ -77,6 +81,7 @@ class ThresholdReached extends PureComponent<Props & { theme: any }, State> {
           <FormattedMessage
             {...messages.thresholdReachedStatusExplanation}
             values={{
+              orgName,
               thresholdReachedStatusExplanationBold: (
                 <b>
                   <FormattedMessage
@@ -89,7 +94,7 @@ class ThresholdReached extends PureComponent<Props & { theme: any }, State> {
           {threshold_reached_message ? (
             <IconTooltip
               icon="info"
-              iconColor={this.props.theme.colorText}
+              iconColor={theme.colorText}
               theme="light"
               placement="bottom"
               content={<T value={threshold_reached_message} supportHtml />}
@@ -115,13 +120,15 @@ class ThresholdReached extends PureComponent<Props & { theme: any }, State> {
           />
         </VoteText>
         {!userVoted && (
-          <StyledButton icon="upvote" onClick={this.handleOnVote}>
+          <StyledButton icon="upvote" onClick={handleOnVote}>
             <FormattedMessage {...messages.vote} />
           </StyledButton>
         )}
       </Container>
     );
   }
-}
 
-export default withTheme(ThresholdReached);
+  return null;
+};
+
+export default ThresholdReached;

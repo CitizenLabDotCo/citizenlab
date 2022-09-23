@@ -1,23 +1,26 @@
 // libraries
 import React from 'react';
-import { Helmet } from 'react-helmet';
 import { adopt } from 'react-adopt';
+import { Helmet } from 'react-helmet';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
-import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { WrappedComponentProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 import { getInputTermMessage } from 'utils/i18n';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import messages from './messages';
 
 // resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
 } from 'resources/GetAppConfigurationLocales';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
 // utils
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
@@ -31,6 +34,7 @@ interface InputProps {}
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
+  appConfig: GetAppConfigurationChildProps;
   locales: GetAppConfigurationLocalesChildProps;
   project: GetProjectChildProps;
   phases: GetPhasesChildProps;
@@ -50,10 +54,11 @@ const IdeasNewMeta = React.memo<Props>(
     localize,
     intl: { formatMessage },
     phases,
+    appConfig,
   }) => {
     const { location } = window;
 
-    if (!isNilOrError(project)) {
+    if (!isNilOrError(project) && !isNilOrError(appConfig)) {
       const projectName = localize(project.attributes.title_multiloc);
       const inputTerm = getInputTerm(
         project.attributes.process_type,
@@ -74,7 +79,9 @@ const IdeasNewMeta = React.memo<Props>(
       const ideasIndexDescription = formatMessage(
         messages.ideaNewMetaDescription,
         {
-          projectName,
+          orgName: localize(
+            appConfig.attributes.settings.core.organization_name
+          ),
         }
       );
 
@@ -108,6 +115,7 @@ const IdeasNewMeta = React.memo<Props>(
 const IdeasNewMetaWithHoc = injectIntl(injectLocalize(IdeasNewMeta));
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
+  appConfig: <GetAppConfiguration />,
   locales: <GetAppConfigurationLocales />,
   authUser: <GetAuthUser />,
   project: ({ params, render }) => (
