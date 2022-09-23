@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import moment, { Moment } from 'moment';
 
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 import ChartFilters from 'containers/Admin/dashboard/overview/ChartFilters';
@@ -14,7 +17,9 @@ import { IResolution } from 'components/admin/ResolutionControl';
 import { IOption } from 'typings';
 
 const Visitors = () => {
-  const [startAtMoment, setStartAtMoment] = useState<Moment | null | undefined>(undefined);
+  const [startAtMoment, setStartAtMoment] = useState<Moment | null | undefined>(
+    undefined
+  );
   const [endAtMoment, setEndAtMoment] = useState<Moment | null>(moment());
   const [projectFilter, setProjectFilter] = useState<string | undefined>();
   const [resolution, setResolution] = useState<IResolution>('month');
@@ -47,7 +52,7 @@ const Visitors = () => {
         />
       </Box>
 
-      <Charts 
+      <Charts
         startAtMoment={startAtMoment}
         endAtMoment={endAtMoment}
         projectFilter={projectFilter}
@@ -57,4 +62,13 @@ const Visitors = () => {
   );
 };
 
-export default Visitors;
+const FeatureFlagWrapper = () => {
+  const visitorsDashboardEnabled = useFeatureFlag({
+    name: 'visitors_dashboard',
+  });
+  if (!visitorsDashboardEnabled) return null;
+
+  return <Visitors />;
+};
+
+export default FeatureFlagWrapper;
