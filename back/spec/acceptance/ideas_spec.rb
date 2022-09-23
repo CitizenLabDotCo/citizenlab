@@ -669,7 +669,7 @@ resource 'Ideas' do
 
       describe do
         let(:project) { create(:project_with_current_phase, phases_config: { sequence: 'xxcx' }) }
-        let(:phase_ids) { project.phases.shuffle.take(2).map(&:id) }
+        let(:phase_ids) { project.phases.sample(1).map(&:id) }
 
         example_request 'Creating an idea in specific phases' do
           assert_status 201

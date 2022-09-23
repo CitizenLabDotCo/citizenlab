@@ -17,6 +17,14 @@ module ParticipationMethod
       false
     end
 
+    def assign_idea_status(input)
+      # Default is to do nothing.
+    end
+
+    def assign_defaults(input)
+      # Default is to do nothing.
+    end
+
     private
 
     attr_reader :participation_context

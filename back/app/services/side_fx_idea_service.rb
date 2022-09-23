@@ -84,7 +84,7 @@ class SideFxIdeaService
     return unless idea.project&.timeline? && idea.phases.empty?
 
     phase = TimelineService.new.current_and_future_phases(idea.project).find do |ph|
-      ph&.can_contain_ideas?
+      ph&.can_contain_input?
     end
     idea.phases = [phase] if phase
   end

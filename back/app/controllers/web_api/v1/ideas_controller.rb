@@ -3,10 +3,10 @@
 class WebApi::V1::IdeasController < ApplicationController
   include BlockingProfanity
 
-  before_action :set_idea, only: %i[show update destroy]
   before_action :authorize_project_or_ideas, only: %i[index_xlsx]
   skip_before_action :authenticate_user # TODO: temp fix to pass tests
   skip_after_action :verify_authorized, only: %i[index_xlsx index_mini index_idea_markers filter_counts]
+  skip_after_action :verify_authorized, only: %i[create], unless: -> { response.status == 400 }
   after_action :verify_policy_scoped, only: %i[index index_mini]
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -93,85 +93,108 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def show
-    render json: WebApi::V1::IdeaSerializer.new(
-      @idea,
-      params: fastjson_params,
-      include: %i[author topics user_vote idea_images]
-    ).serialized_json
+    render_show Idea.find params[:id]
   end
 
   def by_slug
-    @idea = Idea.find_by!(slug: params[:slug])
-    authorize @idea
-    show
+    render_show Idea.find_by!(slug: params[:slug])
   end
 
-  # insert
+  # For continuous projects:
+  #   Providing a phase id yields a bad request.
+  # For timeline projects:
+  #   Normal users always post in an active phase. They should never provide a phase id.
+  #   Users who can moderate projects post in an active phase if no phase id is given.
+  #   Users who can moderate projects post in the given phase if a phase id is given.
   def create
-    extract_custom_field_values_from_params!
+    project = Project.find(params.dig(:idea, :project_id))
+    participation_context = project && ParticipationContextService.new.get_participation_context(project)
+    phase_ids = params.dig(:idea, :phase_ids) || []
+    if UserRoleService.new.can_moderate_project?(project, current_user)
+      if phase_ids.any?
+        send_error and return if project.continuous? || phase_ids.size != 1
 
-    @idea = Idea.new idea_params
-    @idea.author ||= current_user
-    service.before_create(@idea, current_user)
+        participation_context = Phase.find(phase_ids.first)
+      end
+    elsif phase_ids.any?
+      send_error and return
+    end
+    send_error and return unless participation_context
 
-    authorize @idea
-    verify_profanity @idea
+    participation_method = Factory.instance.participation_method_for participation_context
+    custom_form = custom_form_for participation_context
+    extract_custom_field_values_from_params! custom_form
+
+    user_can_moderate_project = UserRoleService.new.can_moderate_project?(project, current_user)
+    input = Idea.new idea_params(custom_form, user_can_moderate_project)
+    input.author ||= current_user
+    participation_method.assign_defaults input
+    service.before_create(input, current_user)
+
+    authorize_input input, project
+    verify_profanity input
 
     save_options = {}
     save_options[:context] = :publication if params.dig(:idea, :publication_status) == 'published'
     ActiveRecord::Base.transaction do
-      if @idea.save save_options
-        service.after_create(@idea, current_user)
+      if input.save save_options
+        service.after_create(input, current_user)
         render json: WebApi::V1::IdeaSerializer.new(
-          @idea.reload,
+          input.reload,
           params: fastjson_params,
           include: %i[author topics phases user_vote idea_images]
         ).serialized_json, status: :created
       else
-        render json: { errors: @idea.errors.details }, status: :unprocessable_entity
+        render json: { errors: input.errors.details }, status: :unprocessable_entity
       end
     end
   end
 
-  # patch
   def update
-    extract_custom_field_values_from_params!
+    input = Idea.find params[:id]
+    project = input.project
+    authorize_input input, project
+
+    custom_form = custom_form_for participation_context_for_update(input, project)
+    extract_custom_field_values_from_params! custom_form
     params[:idea][:topic_ids] ||= [] if params[:idea].key?(:topic_ids)
     params[:idea][:phase_ids] ||= [] if params[:idea].key?(:phase_ids)
-    mark_custom_field_values_to_clear!
+    mark_custom_field_values_to_clear! input
 
-    update_params = idea_params.to_h
-    update_params[:custom_field_values] = @idea.custom_field_values.merge(update_params[:custom_field_values] || {})
+    user_can_moderate_project = UserRoleService.new.can_moderate_project?(project, current_user)
+    update_params = idea_params(custom_form, user_can_moderate_project).to_h
+    update_params[:custom_field_values] = input.custom_field_values.merge(update_params[:custom_field_values] || {})
     CustomFieldService.new.cleanup_custom_field_values! update_params[:custom_field_values]
-    @idea.assign_attributes update_params
-    authorize @idea
-    verify_profanity @idea
+    input.assign_attributes update_params
+    authorize_input input, project
+    verify_profanity input
 
-    service.before_update(@idea, current_user)
+    service.before_update(input, current_user)
 
     save_options = {}
     save_options[:context] = :publication if params.dig(:idea, :publication_status) == 'published'
     ActiveRecord::Base.transaction do
-      if @idea.save save_options
-        authorize @idea
-        service.after_update(@idea, current_user)
+      if input.save save_options
+        authorize_input input, project
+        service.after_update(input, current_user)
         render json: WebApi::V1::IdeaSerializer.new(
-          @idea.reload,
+          input.reload,
           params: fastjson_params,
           include: %i[author topics user_vote idea_images]
         ).serialized_json, status: :ok
       else
-        render json: { errors: @idea.errors.details }, status: :unprocessable_entity
+        render json: { errors: input.errors.details }, status: :unprocessable_entity
       end
     end
   end
 
-  # delete
   def destroy
-    service.before_destroy(@idea, current_user)
-    idea = @idea.destroy
-    if idea.destroyed?
-      service.after_destroy(idea, current_user)
+    input = Idea.find params[:id]
+    authorize_input input, input.project
+    service.before_destroy(input, current_user)
+    input = input.destroy
+    if input.destroyed?
+      service.after_destroy(input, current_user)
       head :ok
     else
       head :internal_server_error
@@ -180,9 +203,53 @@ class WebApi::V1::IdeasController < ApplicationController
 
   private
 
-  def extract_custom_field_values_from_params!
-    project = @idea&.project || Project.find(params.dig(:idea, :project_id))
-    custom_form = project.custom_form || CustomForm.new(participation_context: project)
+  def authorize_input(input, project)
+    authorize input, policy_class: policy_class(input, project)
+  end
+
+  def policy_class(input, project)
+    phases = input.phases
+    if project.continuous?
+      project.native_survey? ? SurveyResponsePolicy : IdeaPolicy
+    elsif phases.size == 1 && phases.first.native_survey?
+      SurveyResponsePolicy
+    else
+      IdeaPolicy
+    end
+  end
+
+  def render_show(input)
+    authorize_input input, input.project
+    render json: WebApi::V1::IdeaSerializer.new(
+      input,
+      params: fastjson_params,
+      include: %i[author topics user_vote idea_images]
+    ).serialized_json
+  end
+
+  def custom_form_for(participation_context)
+    return CustomForm.new unless participation_context
+
+    participation_context.custom_form || CustomForm.new(participation_context: participation_context)
+  end
+
+  def participation_context_for_update(idea, project)
+    phases = idea.phases
+    if project.continuous? || phases.none?(&:native_survey?)
+      # The form is at the project level
+      project
+    elsif phases.size == 1 && phases.first.native_survey?
+      # Survey responses can only live in exactly 1 phase.
+      # The form is at the phase level.
+      phases.first
+    else
+      raise 'Current context does not support saving input!'
+    end
+  end
+
+  def extract_custom_field_values_from_params!(custom_form)
+    return unless custom_form
+
     all_fields = IdeaCustomFieldsService.new(custom_form).all_fields
     extra_field_values = all_fields.each_with_object({}) do |field, accu|
       next if field.built_in?
@@ -201,20 +268,13 @@ class WebApi::V1::IdeasController < ApplicationController
     @service ||= SideFxIdeaService.new
   end
 
-  def set_idea
-    @idea = Idea.find params[:id]
-    authorize @idea
-  end
-
-  def idea_attributes
-    project = @idea&.project || Project.find(params.dig(:idea, :project_id))
-    custom_form = project.custom_form || CustomForm.new(participation_context: project)
+  def idea_attributes(custom_form, user_can_moderate_project)
     enabled_field_keys = IdeaCustomFieldsService.new(custom_form).enabled_fields.map { |field| field.key.to_sym }
 
     attributes = idea_simple_attributes(enabled_field_keys)
     complex_attributes = idea_complex_attributes(custom_form, enabled_field_keys)
     attributes << complex_attributes if complex_attributes.any?
-    if UserRoleService.new.can_moderate_project?(project, current_user)
+    if user_can_moderate_project
       attributes.concat %i[idea_status_id budget] + [phase_ids: []]
     end
     attributes
@@ -252,14 +312,18 @@ class WebApi::V1::IdeasController < ApplicationController
     complex_attributes
   end
 
-  def idea_params
-    params.require(:idea).permit(idea_attributes)
+  def idea_params(custom_form, user_can_moderate_project)
+    params.require(:idea).permit(idea_attributes(custom_form, user_can_moderate_project))
   end
 
   def authorize_project_or_ideas
     if params[:project].present?
       authorize Project.find(params[:project]), :index_xlsx?
     else
+      # TODO: (native surveys) No policy_class here, because the project is not given.
+      # That means that this is only applicable for ideas.
+      # Is there a use case in which no project is given? That seems unlikely,
+      # because that would result in all ideas of all projects to be included in the export file.
       authorize :idea, :index_xlsx?
     end
   end
@@ -281,15 +345,15 @@ class WebApi::V1::IdeasController < ApplicationController
     end
   end
 
-  def mark_custom_field_values_to_clear!
+  def mark_custom_field_values_to_clear!(input)
     # We need to explicitly mark which custom field values
     # should be cleared so we can distinguish those from
     # the custom field value updates cleared out by the
     # policy (which should stay like before instead of
     # being cleared out).
-    return unless @idea&.custom_field_values.present? && params[:idea][:custom_field_values].present?
+    return unless input&.custom_field_values.present? && params[:idea][:custom_field_values].present?
 
-    (@idea.custom_field_values.keys - (params[:idea][:custom_field_values].keys || [])).each do |clear_key|
+    (input.custom_field_values.keys - (params[:idea][:custom_field_values].keys || [])).each do |clear_key|
       params[:idea][:custom_field_values][clear_key] = nil
     end
   end

@@ -11,5 +11,10 @@ module ParticipationMethod
       new_slug = SlugService.new.generate_slug input, input.id
       input.update_column :slug, new_slug
     end
+
+    def assign_defaults(input)
+      input.publication_status = 'published'
+      input.idea_status = IdeaStatus.find_by!(code: 'proposed')
+    end
   end
 end
