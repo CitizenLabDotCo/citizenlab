@@ -29,6 +29,11 @@ export default defineMessages({
     id: 'app.modules.commercial.analytics.admin.components.VisitorsCard.yesterday',
     defaultMessage: 'Yesterday:',
   },
+  titleTooltipMessage: {
+    id: 'app.modules.commercial.analytics.admin.components.VisitorsCard.titleTooltipMessage',
+    defaultMessage:
+      'Visits of admins and project managers are not counted here.',
+  },
   tooltipMessage: {
     id: 'app.modules.commercial.analytics.admin.components.VisitorsCard.tooltipMessage',
     defaultMessage: 'Data is not available when the project filter is active.',
