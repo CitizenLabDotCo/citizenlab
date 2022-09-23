@@ -41,7 +41,8 @@ import Error from 'components/UI/Error';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import messages from './messages';
 
 // styling
@@ -538,7 +539,7 @@ const Data = adopt<DataProps, InputProps>({
   userCustomFieldsSchema: <GetUserCustomFieldsSchema />,
 });
 
-const UserCustomFieldsFormWithHoc = injectIntl<Props>(UserCustomFieldsForm);
+const UserCustomFieldsFormWithHoc = injectIntl(UserCustomFieldsForm);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

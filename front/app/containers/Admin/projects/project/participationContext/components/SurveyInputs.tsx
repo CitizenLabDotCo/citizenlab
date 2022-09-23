@@ -7,7 +7,8 @@ import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import { StyledA, StyledWarning, SurveyServiceRadio } from './styling';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 
@@ -24,7 +25,7 @@ interface Props {
   handleSurveyEmbedUrlChange: (survey_embed_url: string) => void;
 }
 
-export default injectIntl<Props & WrappedComponentProps>(
+export default injectIntl(
   ({
     intl: { formatMessage },
     survey_service,

@@ -19,7 +19,8 @@ import tracks from './tracks';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import messages from './messages';
 
 // services
@@ -434,7 +435,7 @@ class ChildCommentForm extends PureComponent<
   }
 }
 
-const ChildCommentFormWithHoCs = injectIntl<Props>(ChildCommentForm);
+const ChildCommentFormWithHoCs = injectIntl(ChildCommentForm);
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,

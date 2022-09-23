@@ -3,7 +3,7 @@ import { TwitterShareButton } from 'react-share';
 import { Medium } from '../utils';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 

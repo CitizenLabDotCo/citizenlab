@@ -9,7 +9,8 @@ import { CLError, Multiloc, IOption } from 'typings';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { appLocalePairs } from 'containers/App/constants';
 import messages from '../messages';
 
@@ -467,4 +468,4 @@ class SettingsGeneralTab extends PureComponent<
   }
 }
 
-export default injectIntl<Props>(SettingsGeneralTab);
+export default injectIntl(SettingsGeneralTab);

@@ -13,8 +13,7 @@ import useProjectFolder from '../../../hooks/useProjectFolder';
 
 // i18n
 import T from 'components/T';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
 

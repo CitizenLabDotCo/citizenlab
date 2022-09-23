@@ -10,7 +10,7 @@ import TopicsMenu from './FilterSidebarTopics';
 import ProjectsMenu from './FilterSidebarProjects';
 import StatusesMenu from './FilterSidebarStatuses';
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import messages from '../../messages';
 import { Icon } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';

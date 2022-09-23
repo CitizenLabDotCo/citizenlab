@@ -1,7 +1,7 @@
 import React from 'react';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import messages from './messages';
 import usePage from 'hooks/usePage';
 import { isNilOrError } from 'utils/helperUtils';

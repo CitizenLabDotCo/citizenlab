@@ -20,7 +20,7 @@ import GetInitiativeImages, {
 
 // i18n
 import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
@@ -199,7 +199,7 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
 });
 
-const InitiativeMetaWithHoc = injectIntl<Props>(
+const InitiativeMetaWithHoc = injectIntl(
   injectLocalize<Props & WrappedComponentProps>(InitiativeMeta)
 );
 

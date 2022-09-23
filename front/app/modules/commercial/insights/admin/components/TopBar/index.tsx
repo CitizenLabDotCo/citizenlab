@@ -22,7 +22,7 @@ import messages from './messages';
 
 // utils
 import clHistory from 'utils/cl-router/history';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { isNilOrError, isError } from 'utils/helperUtils';
 
 // services

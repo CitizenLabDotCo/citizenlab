@@ -6,7 +6,8 @@ import { isEqual } from 'lodash-es';
 // resources
 import { isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import styled from 'styled-components';
 import messages from './messages';
 import ResolutionControl, {

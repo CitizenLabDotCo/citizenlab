@@ -12,7 +12,8 @@ import CopyLink from '../buttons/CopyLink';
 // i18n
 import messages from '../messages';
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 
 // utils
 import { getUrlWithUtm, UtmParams, Medium } from '../utils';

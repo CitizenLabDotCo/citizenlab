@@ -17,7 +17,7 @@ import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import hookMessages from '../../hooks/usePostsFeedback/messages';
 import messages from './messages';
 

@@ -26,7 +26,8 @@ import { CLError } from 'typings';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 
 // style
 import styled from 'styled-components';
@@ -299,7 +300,7 @@ class PasswordReset extends React.PureComponent<
   }
 }
 
-const PasswordResetWithHocs = injectIntl<Props>(PasswordReset);
+const PasswordResetWithHocs = injectIntl(PasswordReset);
 
 const Data = adopt({
   tenant: <GetAppConfiguration />,

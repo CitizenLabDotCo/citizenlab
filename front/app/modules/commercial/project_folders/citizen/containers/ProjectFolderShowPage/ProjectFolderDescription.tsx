@@ -15,7 +15,8 @@ import { useWindowSize } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
 import messages from './messages';
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 
 // style
 import styled, { useTheme } from 'styled-components';

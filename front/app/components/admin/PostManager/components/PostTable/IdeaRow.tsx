@@ -23,8 +23,7 @@ import localize, { InjectedLocalized } from 'utils/localize';
 import { timeAgo } from 'utils/dateUtils';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { WrappedComponentProps, injectIntl } from 'react-intl';
 import messages from '../../messages';
 
 // analytics

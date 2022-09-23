@@ -21,7 +21,8 @@ import {
 } from 'modules/commercial/insights/services/insightsInputs';
 
 // I18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import messages from '../../messages';
 
 // Styling

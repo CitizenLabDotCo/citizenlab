@@ -7,7 +7,8 @@ import { reorderArea, IAreaData, deleteArea } from 'services/areas';
 
 import messages from '../messages';
 import T from 'components/T';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 
 import {
   SortableList,
@@ -122,7 +123,7 @@ class AreaList extends React.PureComponent<Props & WrappedComponentProps> {
   }
 }
 
-const AreaListWithHoCs = injectIntl<Props>(AreaList);
+const AreaListWithHoCs = injectIntl(AreaList);
 
 export default () => (
   <GetAreas>{(areas) => <AreaListWithHoCs areas={areas} />}</GetAreas>

@@ -21,7 +21,7 @@ import { Select } from '@citizenlab/cl2-component-library';
 
 // i18n
 import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 
 const StyledSelect = styled(Select)`

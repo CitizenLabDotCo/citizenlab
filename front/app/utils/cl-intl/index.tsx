@@ -1,5 +1,4 @@
 import FormattedMessage from './FormattedMessage';
-import injectIntl from './injectIntl';
 import { MessageDescriptor } from 'react-intl';
 
 type IMessageInfo = {
@@ -7,4 +6,4 @@ type IMessageInfo = {
   values?: OriginalFormattedMessage.Props['values'];
 };
 
-export { FormattedMessage, injectIntl, IMessageInfo };
+export { FormattedMessage, IMessageInfo };

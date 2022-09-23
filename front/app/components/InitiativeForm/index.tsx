@@ -22,8 +22,8 @@ import Link from 'utils/cl-router/Link';
 
 // intl
 import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
-import { IMessageInfo, injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { WrappedComponentProps, injectIntl } from 'react-intl';
+import { IMessageInfo, FormattedMessage } from 'utils/cl-intl';
 
 // typings
 import { Multiloc, Locale, UploadFile } from 'typings';

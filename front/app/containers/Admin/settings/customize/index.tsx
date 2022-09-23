@@ -21,7 +21,7 @@ import { isCLErrorJSON } from 'utils/errorUtils';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import messages from './messages';
 import sharedSettingsMessages from '../messages';
 
@@ -284,4 +284,4 @@ class SettingsCustomizeTab extends PureComponent<
   }
 }
 
-export default withTheme(injectIntl<Props>(SettingsCustomizeTab));
+export default withTheme(injectIntl(SettingsCustomizeTab));

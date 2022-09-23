@@ -4,7 +4,7 @@ import { ControlProps, RankedTester, rankWith } from '@jsonforms/core';
 import QuillEditor from 'components/UI/QuillEditor';
 import { WrappedComponentProps } from 'react-intl';
 import ErrorDisplay from '../ErrorDisplay';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { FormLabel } from 'components/UI/FormComponents';
 import {
   getLabel,

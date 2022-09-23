@@ -1,6 +1,6 @@
 import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 
 // components
 import { Toggle, Box, Title } from '@citizenlab/cl2-component-library';

@@ -35,7 +35,8 @@ import { trackEventByName } from 'utils/analytics';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from 'containers/ProjectsShowPage/messages';
 import FormattedBudget from 'utils/currency/FormattedBudget';
@@ -343,7 +344,7 @@ const Data = adopt<DataProps, InputProps>({
   ),
 });
 
-const PBBasketWithHoCs = injectIntl<Props>(PBBasket);
+const PBBasketWithHoCs = injectIntl(PBBasket);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

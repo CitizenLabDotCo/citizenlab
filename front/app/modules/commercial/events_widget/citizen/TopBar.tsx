@@ -5,7 +5,7 @@ import Link from 'utils/cl-router/Link';
 
 // i18n
 import messages from 'containers/LandingPage/messages';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 
 // styling
@@ -49,11 +49,15 @@ const EventPageLink = styled(Link)`
   margin-top: auto;
 `;
 
-export default injectIntl<WrappedComponentProps>(({ intl }) => (
-  <Header>
-    <Title>{intl.formatMessage(messages.upcomingEventsWidgetTitle)}</Title>
-    <EventPageLink to="/events">
-      {intl.formatMessage(messages.viewAllEventsText)}
-    </EventPageLink>
-  </Header>
-));
+const Topbar = ({ intl }: WrappedComponentProps) => {
+  return (
+    <Header>
+      <Title>{intl.formatMessage(messages.upcomingEventsWidgetTitle)}</Title>
+      <EventPageLink to="/events">
+        {intl.formatMessage(messages.viewAllEventsText)}
+      </EventPageLink>
+    </Header>
+  );
+};
+
+export default injectIntl(Topbar);

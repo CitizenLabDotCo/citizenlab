@@ -22,7 +22,8 @@ import Error from 'components/UI/Error';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { colors, fontSizes } from 'utils/styleUtils';
 import clHistory from 'utils/cl-router/history';
 import getInputsCategoryFilter from 'modules/commercial/insights/utils/getInputsCategoryFilter';

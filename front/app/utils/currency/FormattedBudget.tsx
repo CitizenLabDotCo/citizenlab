@@ -5,8 +5,7 @@ import styled from 'styled-components';
 import { Icon } from '@citizenlab/cl2-component-library';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps, FormattedNumber } from 'react-intl';
+import { WrappedComponentProps, FormattedNumber, injectIntl } from 'react-intl';
 import messages from './messages';
 
 const StyledIcon = styled(Icon)`

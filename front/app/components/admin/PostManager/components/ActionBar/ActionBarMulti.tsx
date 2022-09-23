@@ -1,5 +1,6 @@
 import React from 'react';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 import { deleteIdea } from 'services/ideas';
 import { deleteInitiative } from 'services/initiatives';
@@ -92,4 +93,4 @@ class ActionBarMulti extends React.PureComponent<
   }
 }
 
-export default injectIntl<Props>(ActionBarMulti);
+export default injectIntl(ActionBarMulti);

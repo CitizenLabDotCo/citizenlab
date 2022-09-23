@@ -42,7 +42,8 @@ import ParticipationContext, {
 import FileUploader from 'components/UI/FileUploader';
 
 // i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
@@ -516,9 +517,7 @@ class AdminProjectTimelineEdit extends PureComponent<
   }
 }
 
-const AdminProjectTimelineEditWithHOCs = injectIntl<Props>(
-  AdminProjectTimelineEdit
-);
+const AdminProjectTimelineEditWithHOCs = injectIntl(AdminProjectTimelineEdit);
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   phases: ({ params, render }) => (

@@ -9,7 +9,8 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 // Utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 
 // Services
 import { deletePhase } from 'services/phases';

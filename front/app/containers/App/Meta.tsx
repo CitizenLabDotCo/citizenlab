@@ -16,7 +16,7 @@ import useHomepageSettings from 'hooks/useHomepageSettings';
 import messages from './messages';
 import { getLocalized } from 'utils/i18n';
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -157,7 +157,7 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
 });
 
-const MetaWithHoc = injectIntl<Props>(Meta);
+const MetaWithHoc = injectIntl(Meta);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

@@ -1,7 +1,8 @@
 import React from 'react';
 
 // intl
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 
 // styles
 import styled from 'styled-components';

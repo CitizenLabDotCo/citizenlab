@@ -13,7 +13,8 @@ import {
 import Warning from 'components/UI/Warning';
 import styled from 'styled-components';
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
@@ -71,7 +72,7 @@ class AutomatedCampaigns extends React.PureComponent<
   }
 }
 
-const AutomatedCampaignsWithIntl = injectIntl<Props>(AutomatedCampaigns);
+const AutomatedCampaignsWithIntl = injectIntl(AutomatedCampaigns);
 
 export default () => (
   <GetCampaigns withoutCampaignNames={['manual']} pageSize={250}>

@@ -21,7 +21,7 @@ import { useEditor, useNode } from '@craftjs/core';
 import messages from '../../../messages';
 
 // intl
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 
 // events
 import eventEmitter from 'utils/eventEmitter';

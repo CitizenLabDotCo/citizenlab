@@ -1,6 +1,7 @@
 import React, { memo, FormEvent } from 'react';
 import { isError } from 'lodash-es';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import messages from './messages';
 import Button from 'components/UI/Button';
 import { List, Row } from 'components/admin/ResourceList';

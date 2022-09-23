@@ -46,7 +46,8 @@ import { IResolution } from 'components/admin/ResolutionControl';
 
 // i18n
 import messages from '../../messages';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 import moment from 'moment';
 
@@ -382,4 +383,4 @@ class LineBarChartVotesByTime extends React.PureComponent<
   }
 }
 
-export default injectIntl<Props>(LineBarChartVotesByTime);
+export default injectIntl(LineBarChartVotesByTime);

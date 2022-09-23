@@ -7,7 +7,7 @@ import { saveAs } from 'file-saver';
 import Button from 'components/UI/Button';
 
 // intl
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import messages from '../../messages';
 import { WrappedComponentProps } from 'react-intl';
 

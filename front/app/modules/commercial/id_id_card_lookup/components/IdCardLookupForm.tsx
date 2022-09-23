@@ -30,7 +30,8 @@ import { verifyIDLookup } from '../services/verify';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import messages from '../messages';
 import T from 'components/T';
 
@@ -190,4 +191,4 @@ const VerificationFormLookup = memo<Props & WrappedComponentProps>(
   }
 );
 
-export default injectIntl<Props>(VerificationFormLookup);
+export default injectIntl(VerificationFormLookup);

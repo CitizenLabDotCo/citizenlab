@@ -5,8 +5,7 @@ import { Helmet } from 'react-helmet';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import { getInputTermMessage } from 'utils/i18n';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';

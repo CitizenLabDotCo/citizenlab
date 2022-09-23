@@ -12,7 +12,7 @@ import {
 } from 'modules/commercial/user_custom_fields/services/stats';
 
 // intl
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
 import messages from 'containers/Admin/dashboard/messages';
@@ -185,8 +185,8 @@ export class RegistrationFieldsToGraphs extends PureComponent<
 }
 
 const RegistrationFieldsToGraphsWithHoCs = localize<Props>(
-  injectIntl<Props & InjectedLocalized>(RegistrationFieldsToGraphs as any)
-) as any;
+  injectIntl(RegistrationFieldsToGraphs)
+);
 
 export default (inputProps: InputProps) => (
   <GetUserCustomFields

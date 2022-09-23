@@ -3,7 +3,7 @@ import { isEmpty } from 'lodash-es';
 import { combineLatest } from 'rxjs';
 
 // intl
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from 'containers/Admin/dashboard/messages';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
@@ -259,5 +259,5 @@ const CustomFieldsGraph = ({
 };
 
 export default injectLocalize<InputProps>(
-  injectIntl<InputProps & InjectedLocalized>(CustomFieldsGraph)
+  injectIntl(CustomFieldsGraph)
 );

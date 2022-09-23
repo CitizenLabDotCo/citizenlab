@@ -38,7 +38,7 @@ import useFormCustomFields from 'hooks/useFormCustomFields';
 
 // intl
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import messages from '../messages';
 
 const StyledRightColumn = styled(RightColumn)`

@@ -18,7 +18,8 @@ import GetComment, { GetCommentChildProps } from 'resources/GetComment';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
@@ -204,7 +205,7 @@ const Data = adopt<DataProps, InputProps>({
   ),
 });
 
-const CommentWithHoCs = injectIntl<Props>(Comment);
+const CommentWithHoCs = injectIntl(Comment);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

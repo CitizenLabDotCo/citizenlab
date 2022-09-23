@@ -21,7 +21,7 @@ import usePhases from 'hooks/usePhases';
 
 // i18n
 import messages from 'containers/ProjectsShowPage/messages';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 
 // style

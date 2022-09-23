@@ -17,7 +17,7 @@ import {
   IUserCustomFieldInputType,
 } from 'modules/commercial/user_custom_fields/services/userCustomFields';
 
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import messages from './messages';
 import { MessageDescriptor } from 'react-intl';
 

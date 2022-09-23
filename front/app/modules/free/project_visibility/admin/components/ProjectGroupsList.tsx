@@ -5,7 +5,8 @@ import { find, map } from 'lodash-es';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { getLocalized } from 'utils/i18n';
 import messages from './messages';
 
@@ -289,4 +290,4 @@ class ProjectGroupsList extends PureComponent<
   }
 }
 
-export default injectIntl<Props>(ProjectGroupsList);
+export default injectIntl(ProjectGroupsList);

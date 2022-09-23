@@ -91,9 +91,9 @@ module.exports = {
           },
           {
             name: 'react-intl',
-            importNames: ['FormattedMessage', 'injectIntl'],
+            importNames: ['FormattedMessage'],
             message:
-              "Import FormattedMessage and injectIntl from 'utils/cl-intl' instead of directly from 'react-intl'",
+              "Import FormattedMessage from 'utils/cl-intl' instead of directly from 'react-intl'",
           },
           {
             name: 'history',

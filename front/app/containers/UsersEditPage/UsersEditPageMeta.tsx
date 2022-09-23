@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet';
 
 // i18n
 import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 
 // hooks
@@ -87,6 +87,6 @@ const UsersEditPageMeta = React.memo<Props & WrappedComponentProps>(
   }
 );
 
-const UsersEditPageMetaWithHoc = injectIntl<Props>(UsersEditPageMeta);
+const UsersEditPageMetaWithHoc = injectIntl(UsersEditPageMeta);
 
 export default UsersEditPageMetaWithHoc;

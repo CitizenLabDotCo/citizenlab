@@ -1,7 +1,7 @@
 import React from 'react';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import { Outlet as RouterOutlet } from 'react-router-dom';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 import TabbedResource from 'components/admin/TabbedResource';
 import messages from './messages';

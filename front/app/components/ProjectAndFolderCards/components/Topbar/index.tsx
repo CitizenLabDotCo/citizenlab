@@ -22,7 +22,7 @@ import styled from 'styled-components';
 import { media, isRtl, fontSizes, colors } from 'utils/styleUtils';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 

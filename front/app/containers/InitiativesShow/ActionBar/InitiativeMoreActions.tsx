@@ -15,7 +15,7 @@ import SpamReportForm from 'containers/SpamReport';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import { WrappedComponentProps } from 'react-intl';
-import injectIntl from 'utils/cl-intl/injectIntl';
+import { injectIntl } from 'react-intl';
 
 // services
 import { deleteInitiative, IInitiativeData } from 'services/initiatives';

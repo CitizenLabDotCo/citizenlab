@@ -6,7 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import useLocalize from 'hooks/useLocalize';
 // i18n
 import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 
 // resources
@@ -78,7 +78,7 @@ const InitiativesIndexMeta = React.memo<Props & WrappedComponentProps>(
   }
 );
 
-const InitiativesIndexMetaWithHoc = injectIntl<Props>(InitiativesIndexMeta);
+const InitiativesIndexMetaWithHoc = injectIntl(InitiativesIndexMeta);
 
 const Data = adopt<DataProps, InputProps>({
   tenantLocales: <GetAppConfigurationLocales />,

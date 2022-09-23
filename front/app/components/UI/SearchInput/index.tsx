@@ -6,7 +6,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import messages from './messages';
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 export interface Props {

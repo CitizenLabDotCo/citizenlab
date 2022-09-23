@@ -7,7 +7,8 @@ import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 
 // intl
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from 'containers/Admin/dashboard/messages';
 
@@ -184,4 +185,4 @@ class GenderChart extends PureComponent<Props & WrappedComponentProps, State> {
   }
 }
 
-export default injectIntl<Props>(withTheme(GenderChart as any) as any);
+export default injectIntl(withTheme(GenderChart as any) as any);

@@ -1,6 +1,6 @@
 import { FC, useEffect } from 'react';
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 import messages from './messages';
 import { ITabItem } from 'components/UI/Tabs';
 import { InsertConfigurationOptions } from 'typings';

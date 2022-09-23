@@ -16,7 +16,7 @@ import { useTheme } from 'styled-components';
 
 // intl
 import messages from '../../../messages';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 
 type ButtonProps = {
   text: string;

@@ -17,7 +17,7 @@ import { isAdmin, isProjectModerator } from 'services/permissions/roles';
 // i18n
 import messages from './messages';
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'react-intl';
 
 // typings
 import { InsertConfigurationOptions, ITab } from 'typings';
