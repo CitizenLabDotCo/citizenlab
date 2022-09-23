@@ -5,13 +5,13 @@ module Analytics
     perform_retries false
 
     # Not too many import tasks should be performed at the same time to avoid putting
-    # too much pressure on Matomo. We implemented a *simplistic mechanism* relying on
-    # Postgres advisory locks to limit the number of concurrent jobs. However,
-    # Postgres advisory locks are binary locks, so in order to allow more than one job
-    # to run more at the same, we use multiple (`MAX_CONCURRENCY`) locks. Each job is
-    # assigned to one of those locks based on the hash of its target site id. If it
-    # fails to acquire this lock, the job is rescheduled (even if some other locks are
-    # available).
+    # too much pressure on Matomo. For this reason, we implemented a *simplistic
+    # mechanism* relying on Postgres advisory locks to limit the number of concurrent
+    # jobs (Que does have that feature). However, Postgres advisory locks are binary
+    # locks, so in order to allow more than one job to run at the same time, we use
+    # multiple locks (`MAX_CONCURRENCY`). Each job is pseudo-randomly assigned to one of
+    # these locks (based on the hash of its target site id). If it fails to acquire this
+    # lock, the job is rescheduled (even if some other locks are available).
     MAX_CONCURRENCY = 10
 
     def run(tenant_id, min_duration: 1.day, max_nb_batches: 5, batch_size: 250)
