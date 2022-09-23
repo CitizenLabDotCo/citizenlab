@@ -78,7 +78,6 @@ const IdeasNewMeta = React.memo<Props>(
       const ideasIndexDescription = formatMessage(
         messages.ideaNewMetaDescription,
         {
-          projectName,
           orgName: localize(
             appConfig.attributes.settings.core.organization_name
           ),

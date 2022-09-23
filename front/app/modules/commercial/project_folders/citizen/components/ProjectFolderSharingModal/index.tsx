@@ -52,6 +52,9 @@ const ProjectFolderSharingModal = memo<
   }, [close]);
 
   if (!isNilOrError(projectFolder) && !isNilOrError(appConfig)) {
+    const orgName = localize(
+      appConfig.attributes.settings.core.organization_name
+    );
     return (
       <Modal
         width={550}
@@ -78,26 +81,20 @@ const ProjectFolderSharingModal = memo<
                       url={folderUrl}
                       facebookMessage={formatMessage(messages.facebookMessage, {
                         projectFolderName,
-                        orgName: localize(
-                          appConfig.attributes.settings.core.organization_name
-                        ),
+                        orgName,
                       })}
                       twitterMessage={formatMessage(messages.twitterMessage, {
                         projectFolderName,
                       })}
                       whatsAppMessage={formatMessage(messages.whatsAppMessage, {
                         projectFolderName,
-                        orgName: localize(
-                          appConfig.attributes.settings.core.organization_name
-                        ),
+                        orgName,
                       })}
                       emailSubject={formatMessage(
                         messages.emailSharingSubject,
                         {
+                          orgName,
                           projectFolderName: projectFolderName.toString(),
-                          orgName: localize(
-                            appConfig.attributes.settings.core.organization_name
-                          ),
                         }
                       )}
                       emailBody={formatMessage(messages.emailSharingBody, {

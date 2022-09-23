@@ -157,6 +157,9 @@ const SiteMap = ({ projects, authUser }: Props) => {
     archivedSection.current || draftSection.current || currentSection.current;
 
   if (!isNilOrError(appConfig)) {
+    const orgName = localize(
+      appConfig.attributes.settings.core.organization_name
+    );
     return (
       <Container>
         <SiteMapMeta />
@@ -170,7 +173,10 @@ const SiteMap = ({ projects, authUser }: Props) => {
             <StyledContentContainer>
               <QuillEditedContent>
                 <Title>
-                  <FormattedMessage {...messages.siteMapTitle} />
+                  <FormattedMessage
+                    {...messages.siteMapTitle}
+                    values={{ orgName }}
+                  />
                 </Title>
 
                 <TOC>
@@ -203,10 +209,7 @@ const SiteMap = ({ projects, authUser }: Props) => {
                           <FormattedMessage
                             {...messages.projectsSection}
                             values={{
-                              orgName: localize(
-                                appConfig.attributes.settings.core
-                                  .organization_name
-                              ),
+                              orgName,
                             }}
                           />
                         </NavItem>
