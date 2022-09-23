@@ -1,4 +1,5 @@
 import { TimeSeries } from '.';
+import { XlsxData } from 'components/admin/ReportExportMenu';
 
 export const fakeStats = {
   visitors: {
@@ -66,3 +67,15 @@ export const fakeTimeSeries: TimeSeries = [
     visits: 230,
   },
 ];
+
+export const fakeXlsxData: XlsxData = {
+  stats: [
+    {
+      visitors: 3092,
+      visits: 5432,
+      visitDuration: 312,
+      pageViews: 3.2,
+    },
+  ],
+  timeSeries: fakeTimeSeries,
+};

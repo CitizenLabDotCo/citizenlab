@@ -31,6 +31,7 @@ import {
 import { Multiloc } from 'typings';
 import { InjectedIntlProps } from 'react-intl';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
+import { XlsxData } from 'components/admin/ReportExportMenu';
 
 interface QueryProps {
   projectId: string | undefined;
@@ -81,7 +82,7 @@ interface PostFeedback {
   statusColorById: Record<string, string>;
   stackedBarPercentages: number[];
   stackedBarsLegendItems: LegendItem[];
-  xlsxData: object;
+  xlsxData: XlsxData;
 }
 
 interface PieRow {

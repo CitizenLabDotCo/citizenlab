@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { fakeStats, fakeTimeSeries } from './fakeData';
+import { fakeStats, fakeTimeSeries, fakeXlsxData } from './fakeData';
 
 // typings
 import { NilOrError } from 'utils/helperUtils';
+import { XlsxData } from 'components/admin/ReportExportMenu';
 
 interface Stat {
   value: number;
@@ -28,11 +29,13 @@ export type TimeSeries = TimeSeriesRow[];
 export default function useVisitorsData() {
   const [stats, setStats] = useState<Stats | NilOrError>();
   const [timeSeries, setTimeSeries] = useState<TimeSeries | NilOrError>();
+  const [xlsxData, setXlsxData] = useState<XlsxData | NilOrError>();
 
   useEffect(() => {
     setStats(fakeStats);
     setTimeSeries(fakeTimeSeries);
+    setXlsxData(fakeXlsxData);
   }, []);
 
-  return { stats, timeSeries };
+  return { stats, timeSeries, xlsxData };
 }
