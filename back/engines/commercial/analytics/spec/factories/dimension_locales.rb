@@ -8,4 +8,3 @@ FactoryBot.define do
     name { 'nl' }
   end
 end
-

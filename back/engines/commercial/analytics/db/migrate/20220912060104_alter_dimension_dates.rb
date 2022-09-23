@@ -6,6 +6,6 @@ class AlterDimensionDates < ActiveRecord::Migration[6.1]
       t.remove :day
       t.date :week
     end
-    Analytics::DimensionDate.delete_all()
+    Analytics::DimensionDate.delete_all
   end
 end

@@ -7,4 +7,3 @@ RSpec.describe Analytics::DimensionDate, type: :model do
     create(:dimension_date_first)
   end
 end
-

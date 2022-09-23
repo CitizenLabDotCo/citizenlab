@@ -5,7 +5,7 @@ namespace :analytics do
   desc 'Seed some dummy data for dev'
   task seed_dev_data: :environment do
     Apartment::Tenant.switch('localhost') do
-      puts "Seeding some visits data for localhost"
+      puts 'Seeding some visits data for localhost'
 
       # delete any we've already created
       Analytics::FactVisit.delete_all
@@ -16,8 +16,8 @@ namespace :analytics do
       Rake::Task['analytics:populate_locale_dimension'].execute(host: 'localhost')
       locale1 = Analytics::DimensionLocale.first
       locale2 = Analytics::DimensionLocale.last
-      channel = Analytics::DimensionChannel.create!(name_multiloc: {"en": "Website", "fr-BE": "Website", "nl-BE": "Website"})
-      channel2 = Analytics::DimensionChannel.create!(name_multiloc: {"en": "Social", "fr-BE": "Social", "nl-BE": "Social"})
+      channel = Analytics::DimensionChannel.create!(name_multiloc: { en: 'Website', 'fr-BE': 'Website', 'nl-BE': 'Website' })
+      channel2 = Analytics::DimensionChannel.create!(name_multiloc: { en: 'Social', 'fr-BE': 'Social', 'nl-BE': 'Social' })
 
       # Get some other dimensions
       project = Analytics::DimensionProject.first
@@ -51,7 +51,7 @@ namespace :analytics do
         pages_visited: 10,
         matomo_visit_id: 102,
         matomo_last_action_time: '2022-09-05 18:08:39.0'
-        )
+      )
       visit.dimension_projects << project
       visit.dimension_locales << locale2
 
@@ -66,10 +66,8 @@ namespace :analytics do
         returning_visitor: false,
         matomo_visit_id: 103,
         matomo_last_action_time: '2022-09-05 18:08:39.0'
-        )
+      )
       visit.dimension_locales << locale2
-
     end
   end
-
 end

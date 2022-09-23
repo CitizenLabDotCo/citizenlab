@@ -4,7 +4,6 @@
 # Create the whole data model for visitor analytics from Matomo
 class CreateFactVisits < ActiveRecord::Migration[6.1]
   def change
-
     # New dimensions
     create_table :analytics_dimension_channels, id: :uuid do |t|
       t.jsonb :name_multiloc
@@ -18,7 +17,6 @@ class CreateFactVisits < ActiveRecord::Migration[6.1]
 
     # Main fact table
     create_table :analytics_fact_visits, id: :uuid do |t|
-
       t.string :visitor_id, null: false
 
       # Dimension FKs
@@ -35,7 +33,6 @@ class CreateFactVisits < ActiveRecord::Migration[6.1]
       # Metadata to join enable updating from matomo data
       t.integer :matomo_visit_id, null: false, index: { unique: true, name: 'i_v_matomo_visit' }
       t.timestamp :matomo_last_action_time, null: false, index: { name: 'i_v_timestamp' }
-
     end
 
     create_table :analytics_join_locale_visits, id: false do |t|
@@ -47,7 +44,5 @@ class CreateFactVisits < ActiveRecord::Migration[6.1]
       t.belongs_to :dimension_project, type: :uuid # No FK as projects is a view
       t.belongs_to :fact_visit, type: :uuid, foreign_key: { to_table: 'analytics_fact_visits' }
     end
-
-
   end
 end
