@@ -6,11 +6,11 @@ import { NilOrError } from 'utils/helperUtils';
 import { XlsxData } from 'components/admin/ReportExportMenu';
 
 interface Stat {
-  value: number;
-  lastPeriod: number;
+  value: string;
+  lastPeriod: string;
 }
 
-interface Stats {
+export interface Stats {
   visitors: Stat;
   visits: Stat;
   visitDuration: Stat;

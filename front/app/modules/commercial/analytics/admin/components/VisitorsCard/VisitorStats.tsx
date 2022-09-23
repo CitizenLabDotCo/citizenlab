@@ -45,14 +45,14 @@ const VisitorStats = ({
           name={formatMessage(messages.visitors)}
           value={stats.visitors.value.toLocaleString()}
           bottomLabel={bottomLabel}
-          bottomLabelValue={`+${stats.visitors.lastPeriod}`}
+          bottomLabelValue={stats.visitors.lastPeriod}
         />
         <Box mt="32px">
           <Statistic
             name={formatMessage(messages.visitDuration)}
             value={stats.visitDuration.value.toLocaleString()}
             bottomLabel={bottomLabel}
-            bottomLabelValue={`+${stats.visitDuration.lastPeriod}`}
+            bottomLabelValue={stats.visitDuration.lastPeriod}
           />
         </Box>
       </Box>
@@ -61,14 +61,14 @@ const VisitorStats = ({
           name={formatMessage(messages.visits)}
           value={stats.visits.value.toLocaleString()}
           bottomLabel={bottomLabel}
-          bottomLabelValue={`+${stats.visits.lastPeriod}`}
+          bottomLabelValue={stats.visits.lastPeriod}
         />
         <Box mt="32px">
           <Statistic
             name={formatMessage(messages.pageViews)}
             value={stats.pageViews.value.toLocaleString()}
             bottomLabel={bottomLabel}
-            bottomLabelValue={`+${stats.pageViews.lastPeriod}`}
+            bottomLabelValue={stats.pageViews.lastPeriod}
           />
         </Box>
       </Box>

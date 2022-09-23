@@ -3,20 +3,20 @@ import { XlsxData } from 'components/admin/ReportExportMenu';
 
 export const fakeStats = {
   visitors: {
-    value: 3092,
-    lastPeriod: 309,
+    value: (3092).toLocaleString(),
+    lastPeriod: (309).toLocaleString(),
   },
   visits: {
-    value: 5432,
-    lastPeriod: 423,
+    value: (5432).toLocaleString(),
+    lastPeriod: (423).toLocaleString(),
   },
   visitDuration: {
-    value: 312,
-    lastPeriod: 373,
+    value: (312).toLocaleString(),
+    lastPeriod: (373).toLocaleString(),
   },
   pageViews: {
-    value: 3.2,
-    lastPeriod: 2.9,
+    value: (3.2).toLocaleString(),
+    lastPeriod: (2.9).toLocaleString(),
   },
 };
 
