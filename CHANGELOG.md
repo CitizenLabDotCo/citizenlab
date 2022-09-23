@@ -1,5 +1,11 @@
 # Changelog
 
+## Next release
+
+### Fixed
+
+- [DISP-185] Fix 'Age group' copy not being translated
+
 ## 2022-09-20
 
 ## Added
