@@ -617,7 +617,7 @@
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageAndOver": "{age} a méi al",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageGroup": "Altersgrupp",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageGroupNotIncluded": "Altergrupp(e) vun {upperBound} a méi al ass/sinn net mat abegraff.",
-  "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageGroupX": "Age group {number}",
+  "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageGroupX": "Altersgrupp {number}",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageGroups": "Altersgruppen",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.andOver": "A méi al",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.applyExampleGrouping": "Beispill-Gruppéierung uwennen",
