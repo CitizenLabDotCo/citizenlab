@@ -617,6 +617,7 @@
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageAndOver": "{age} en ouder",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageGroup": "Leeftijdsgroep",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageGroupNotIncluded": "Leeftijdsgroep(en) van {upperBound} en ouder zijn niet inbegrepen.",
+  "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageGroupX": "Leeftijdgroep {number}",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageGroups": "Leeftijdsgroepen",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.andOver": "en ouder",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.applyExampleGrouping": "Voorbeeldgroepering toepassen",
