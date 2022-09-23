@@ -71,6 +71,7 @@ import { BannerButtonStyle } from 'containers/LandingPage/BannerButton';
 import { AuthProvider } from 'components/SignUpIn/AuthProviders';
 import { Localize } from 'hooks/useLocalize';
 import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/projects/project/general';
+import { IResolution } from 'components/admin/ResolutionControl';
 
 export type ITabsOutlet = {
   formatMessage: (
@@ -189,6 +190,7 @@ export interface OutletsPropertyMap {
     projectId: string | undefined;
     startAt: string | null | undefined;
     endAt: string | null | undefined;
+    resolution: IResolution;
     onMount: () => void;
   };
   'app.components.SignUpIn.SignUp.step': SignUpStepOutletProps;

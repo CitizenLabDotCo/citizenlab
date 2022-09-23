@@ -254,6 +254,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 projectId={currentProjectFilter}
                 startAt={startAt}
                 endAt={endAt}
+                resolution={resolution}
                 onMount={this.hideIdeasByStatusChart}
               />
               <SelectableResourceByTopicChart

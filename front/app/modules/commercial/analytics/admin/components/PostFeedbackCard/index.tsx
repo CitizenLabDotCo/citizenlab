@@ -30,11 +30,13 @@ import { getCornerRadius } from './utils';
 
 // typings
 import { InjectedIntlProps } from 'react-intl';
+import { IResolution } from 'components/admin/ResolutionControl';
 
 interface Props {
   projectId: string | undefined;
   startAt: string | null | undefined;
   endAt: string | null | undefined;
+  resolution: IResolution;
 }
 
 const Container = styled.div`
@@ -78,6 +80,7 @@ const PostFeedback = ({
   projectId,
   startAt,
   endAt,
+  resolution,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const currentPieChart = useRef();
@@ -136,6 +139,10 @@ const PostFeedback = ({
           currentStackedBarChart,
         ],
         xlsxData,
+        currentProjectFilter: projectId,
+        startAt,
+        endAt,
+        resolution,
       }}
     >
       <Container>

@@ -6,10 +6,14 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 // components
 import PostFeedbackCard from '../components/PostFeedbackCard';
 
+// typings
+import { IResolution } from 'components/admin/ResolutionControl';
+
 interface Props {
   projectId: string | undefined;
   startAt: string | null | undefined;
   endAt: string | null | undefined;
+  resolution: IResolution;
   onMount: () => void;
 }
 
