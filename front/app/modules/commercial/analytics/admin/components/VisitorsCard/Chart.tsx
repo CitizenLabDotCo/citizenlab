@@ -52,7 +52,7 @@ const Chart = ({
 }: Props & InjectedIntlProps) => {
   // const { timeSeries } = useVisitorsData();
   const x = useVisitorsData();
-  const timeSeries = 1 + 1 === 3 ? x.timeSeries : fakeMonthData
+  const timeSeries = 1 + 1 === 3 ? x.timeSeries : null
 
   const legendItems: LegendItem[] = [
     {
