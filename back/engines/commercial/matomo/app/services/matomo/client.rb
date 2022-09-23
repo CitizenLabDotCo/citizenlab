@@ -99,13 +99,15 @@ module Matomo
     # @param [Integer,nil] min_timestamp minimum value of visits' lastActionTimestamp
     # @param [Integer,nil] filter_limit
     # @param [Integer,nil] filter_offset
+    # @param [String (frozen)] filter_sort_order 'asc' or 'desc'
     def get_last_visits_details(
       site_id,
       period: nil,
       date: nil,
       min_timestamp: nil,
       filter_limit: nil,
-      filter_offset: nil
+      filter_offset: nil,
+      filter_sort_order: 'asc'
     )
       query = {
         'module' => 'API',
@@ -116,6 +118,7 @@ module Matomo
         'minTimestamp' => min_timestamp,
         'filter_limit' => filter_limit,
         'filter_offset' => filter_offset,
+        'filter_sort_order' => filter_sort_order,
         'format' => 'JSON'
       }.compact
 

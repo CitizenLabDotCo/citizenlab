@@ -83,7 +83,7 @@ RSpec.describe Matomo::Client do
 
       VCR.use_cassette('matomo') do
         response = service.get_last_visits_details(
-          site_id, period, date, filter_limit: filter_limit, filter_offset: filter_offset
+          site_id, period: period, date: date, filter_limit: filter_limit, filter_offset: filter_offset
         )
 
         expect(response.code).to eq(200)
