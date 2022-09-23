@@ -34,8 +34,16 @@ export default defineMessages({
     defaultMessage:
       'Visits of admins and project managers are not counted here.',
   },
-  tooltipMessage: {
-    id: 'app.modules.commercial.analytics.admin.components.VisitorsCard.tooltipMessage',
+  emptyTooltipMessage: {
+    id: 'app.modules.commercial.analytics.admin.components.VisitorsCard.emptyTooltipMessage',
     defaultMessage: 'Data is not available when the project filter is active.',
   },
+  visitorsTooltipMessage: {
+    id: 'app.modules.commercial.analytics.admin.components.VisitorsCard.visitorsTooltipMessage',
+    defaultMessage: '"Visitors" is the number of unique visitors. If the same person visited the platform multiple times, they are counted once.',
+  },
+  visitsTooltipMessage: {
+    id: 'app.modules.commercial.analytics.admin.components.VisitorsCard.visitsTooltipMessage',
+    defaultMessage: '"Visits" is the number of sessions. If the same person visited the platform multiple times, each visit is counted.',
+  }
 });

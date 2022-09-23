@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Box, Text, Icon } from '@citizenlab/cl2-component-library';
+import { Box, Text, Icon, IconTooltip } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 
 // styling
@@ -12,7 +12,7 @@ interface Props {
   value: string;
   bottomLabel?: string;
   bottomLabelValue?: string;
-  showEmptyTooltip?: boolean;
+  tooltipContent?: React.ReactChild;
   emptyTooltipContent?: React.ReactNode;
 }
 
@@ -21,7 +21,7 @@ const Statistic = ({
   value,
   bottomLabel,
   bottomLabelValue,
-  showEmptyTooltip,
+  tooltipContent,
   emptyTooltipContent,
 }: Props) => (
   <Box>
@@ -36,7 +36,16 @@ const Statistic = ({
         {name}
       </Text>
 
-      {showEmptyTooltip && (
+      {tooltipContent && (
+        <Box ml="8px" display="inline">
+          <IconTooltip
+            content={tooltipContent}
+            theme="light"
+          />
+        </Box>
+      )}
+
+      {emptyTooltipContent && (
         <Box ml="8px" display="inline">
           <Tippy
             interactive={true}

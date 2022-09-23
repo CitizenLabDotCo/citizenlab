@@ -56,6 +56,7 @@ const VisitorStats = ({
           value={stats.visitors.value.toLocaleString()}
           bottomLabel={bottomLabel}
           bottomLabelValue={stats.visitors.lastPeriod}
+          tooltipContent={formatMessage(messages.visitorsTooltipMessage)}
         />
         <Box mt="32px">
           <Statistic
@@ -72,6 +73,7 @@ const VisitorStats = ({
           value={stats.visits.value.toLocaleString()}
           bottomLabel={bottomLabel}
           bottomLabelValue={stats.visits.lastPeriod}
+          tooltipContent={formatMessage(messages.visitsTooltipMessage)}
         />
         <Box mt="32px">
           <Statistic
