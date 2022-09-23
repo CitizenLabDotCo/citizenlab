@@ -617,7 +617,7 @@
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageAndOver": "{age} y más",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageGroup": "Grupo de edad",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageGroupNotIncluded": "Grupo(s) de edad de {upperBound} y más no está(n) incluido(s).",
-  "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageGroupX": "Age group {number}",
+  "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageGroupX": "Grupo de edad {number}",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageGroups": "Grupos de edad",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.andOver": "y más",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.applyExampleGrouping": "Aplicar ejemplo de agrupación",
