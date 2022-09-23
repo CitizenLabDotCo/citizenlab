@@ -9,7 +9,7 @@ import RegistrationCustomFieldForm, {
   FormValues,
 } from '../RegistrationCustomFieldForm';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from '../messages';
 
 const PageTitle = styled.h1`

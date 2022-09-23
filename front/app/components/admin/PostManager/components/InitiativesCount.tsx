@@ -4,7 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { isFunction } from 'lodash-es';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from '../messages';
 
 // styles

@@ -4,7 +4,7 @@ import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import { media, defaultCardStyle } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import moment from 'moment';
 import messages from './messages';
 import {

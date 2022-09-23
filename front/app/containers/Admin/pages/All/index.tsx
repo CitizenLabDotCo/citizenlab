@@ -14,7 +14,7 @@ import {
 import usePages from 'hooks/usePages';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 import T from 'components/T';

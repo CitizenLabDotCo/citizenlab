@@ -12,7 +12,7 @@ import { Icon } from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from 'containers/UsersEditPage/messages';
 
 // styling

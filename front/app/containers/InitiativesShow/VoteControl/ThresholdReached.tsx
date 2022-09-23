@@ -18,7 +18,7 @@ import Button from 'components/UI/Button';
 // i18n
 import T from 'components/T';
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 
 const Container = styled.div``;
 

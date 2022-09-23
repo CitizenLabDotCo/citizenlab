@@ -5,7 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import Link from 'utils/cl-router/Link';
 import styled from 'styled-components';
 import { IconTooltip, Toggle } from '@citizenlab/cl2-component-library';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 import { trackEventByName } from 'utils/analytics';

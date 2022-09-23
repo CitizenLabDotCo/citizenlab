@@ -1,7 +1,7 @@
 import React, { useEffect, useState, FormEvent } from 'react';
 import { CONFIRMATION_STEP_NAME } from '../../index';
 import { SignUpStepOutletProps } from 'utils/moduleUtils';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 import messages from './messages';

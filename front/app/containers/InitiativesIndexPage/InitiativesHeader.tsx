@@ -14,7 +14,7 @@ import GetAppConfiguration, {
 } from 'resources/GetAppConfiguration';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // style

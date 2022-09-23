@@ -8,7 +8,7 @@ import { getInputTerm } from 'services/participationContexts';
 
 // i18n
 import messages from '../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import { getInputTermMessage } from 'utils/i18n';
 
 // components

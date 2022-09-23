@@ -16,7 +16,7 @@ import { requestBlob } from 'utils/request';
 import { reportError } from 'utils/loggingUtils';
 import { saveAs } from 'file-saver';
 import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import { injectIntl } from 'react-intl';
 import messages from './messages';
 import { IResolution } from 'components/admin/ResolutionControl';

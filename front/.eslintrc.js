@@ -90,12 +90,6 @@ module.exports = {
               "Import the Link or useNavigate from utils/cl-router instead of directly from 'react-router-dom'",
           },
           {
-            name: 'react-intl',
-            importNames: ['FormattedMessage'],
-            message:
-              "Import FormattedMessage from 'utils/cl-intl' instead of directly from 'react-intl'",
-          },
-          {
             name: 'history',
             message:
               "Import history from utils/cl-router/cl-history instead of directly from 'history'",

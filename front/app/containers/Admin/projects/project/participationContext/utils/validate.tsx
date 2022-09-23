@@ -1,6 +1,6 @@
 import React from 'react';
 import messages from '../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import { State } from '..';
 import { isFinite, isNaN } from 'lodash-es';
 

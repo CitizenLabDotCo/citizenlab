@@ -8,7 +8,7 @@ import {
   defaultCardStyle,
   isRtl,
 } from 'utils/styleUtils';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import { MessageDescriptor } from 'react-intl';
 import messages from './messages';
 import { isString } from 'utils/helperUtils';

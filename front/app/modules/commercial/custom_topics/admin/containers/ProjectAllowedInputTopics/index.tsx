@@ -11,7 +11,7 @@ import SortableProjectTopicList from './SortableProjectTopicList';
 import HasPermission from 'components/HasPermission';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 const Container = styled.div`

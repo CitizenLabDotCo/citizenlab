@@ -7,7 +7,7 @@ import CityLogoSection from 'components/CityLogoSection';
 import IdeasIndexMeta from './IdeaIndexMeta';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // style

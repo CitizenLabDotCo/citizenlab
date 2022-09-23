@@ -7,7 +7,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import { StyledLink } from 'containers/Admin/settings/policies';
 
 // intl
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // utils

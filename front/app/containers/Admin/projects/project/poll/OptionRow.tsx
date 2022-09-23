@@ -7,7 +7,7 @@ import Button from 'components/UI/Button';
 import { Row, TextCell } from 'components/admin/ResourceList';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // Typings

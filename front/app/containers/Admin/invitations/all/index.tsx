@@ -6,7 +6,7 @@ import { saveAs } from 'file-saver';
 
 // components
 import { Table, Popup } from 'semantic-ui-react';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import Pagination from 'components/admin/Pagination';
 import Button from 'components/UI/Button';
 import { Icon } from '@citizenlab/cl2-component-library';

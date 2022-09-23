@@ -8,7 +8,7 @@ import Fields from './Fields';
 
 // i18n
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 
 const ReferenceDataInterface = () => (
   <>

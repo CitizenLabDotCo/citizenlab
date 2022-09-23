@@ -7,7 +7,7 @@ import { StyledSectionField, StyledInputMultiloc } from './styling';
 import { SubSectionTitle } from 'components/admin/Section';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from '../messages';
 
 // typings

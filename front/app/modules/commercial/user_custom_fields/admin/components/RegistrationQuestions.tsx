@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { SectionField } from 'components/admin/Section';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import { IconTooltip } from '@citizenlab/cl2-component-library';
 import { LabelTooltip } from 'containers/Admin/settings/registration';
 import { TAppConfigurationSettingCore } from 'services/appConfiguration';

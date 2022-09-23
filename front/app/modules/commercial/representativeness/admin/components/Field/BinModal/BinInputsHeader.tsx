@@ -5,7 +5,7 @@ import { Box, Text } from '@citizenlab/cl2-component-library';
 
 // i18n
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import { MessageDescriptor } from 'react-intl';
 
 // styling

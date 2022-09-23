@@ -26,7 +26,7 @@ import { getIsPostingEnabled } from 'containers/Admin/formBuilder/utils';
 
 // i18n
 import messages from '../messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 
 // routing
 import clHistory from 'utils/cl-router/history';

@@ -7,7 +7,7 @@ import ProjectFolderSharingModal from '../../../citizen/components/ProjectFolder
 
 // i18n
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 
 // style
 import styled from 'styled-components';

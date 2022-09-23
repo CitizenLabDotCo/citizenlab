@@ -12,7 +12,7 @@ import { darken } from 'polished';
 
 // i18n
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 
 const Container = styled.div`
   display: flex;

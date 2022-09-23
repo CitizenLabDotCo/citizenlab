@@ -7,7 +7,7 @@ import { reorderArea, IAreaData, deleteArea } from 'services/areas';
 
 import messages from '../messages';
 import T from 'components/T';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import { injectIntl } from 'react-intl';
 
 import {

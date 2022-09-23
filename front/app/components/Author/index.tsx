@@ -15,7 +15,7 @@ import useLocale from 'hooks/useLocale';
 // style
 import styled from 'styled-components';
 import { media, colors, fontSizes, isRtl } from 'utils/styleUtils';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { timeAgo } from 'utils/dateUtils';

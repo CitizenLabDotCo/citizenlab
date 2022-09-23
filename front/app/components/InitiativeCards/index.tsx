@@ -43,7 +43,7 @@ import {
   MessageDescriptor,
   injectIntl,
 } from 'react-intl';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 
 // style
 import styled, { withTheme } from 'styled-components';

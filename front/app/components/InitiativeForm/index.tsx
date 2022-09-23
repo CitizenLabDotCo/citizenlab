@@ -27,7 +27,7 @@ import {
   injectIntl,
   MessageDescriptor,
 } from 'react-intl';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 
 // typings
 import { Multiloc, Locale, UploadFile } from 'typings';

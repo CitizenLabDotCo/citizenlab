@@ -6,9 +6,11 @@ import { Icon } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 
 // i18n
-import FormattedMessage from 'utils/cl-intl/FormattedMessage';
-import { injectIntl } from 'react-intl';
-import { WrappedComponentProps } from 'react-intl';
+import {
+  FormattedMessage,
+  WrappedComponentProps,
+  injectIntl,
+} from 'react-intl';
 import messages from './messages';
 
 // Styling

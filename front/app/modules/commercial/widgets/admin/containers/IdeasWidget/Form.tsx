@@ -15,7 +15,7 @@ import ColorPicker from 'components/HookForm/ColorPicker';
 import Feedback from 'components/HookForm/Feedback';
 
 // I18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 import localize, { InjectedLocalized } from 'utils/localize';

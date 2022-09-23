@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Link from 'utils/cl-router/Link';
 import { NavItem } from '.';
 import { media, colors, fontSizes } from 'utils/styleUtils';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 import { Icon } from '@citizenlab/cl2-component-library';
 import CountBadge from 'components/UI/CountBadge';

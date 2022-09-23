@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ICampaignData, deleteCampaign } from 'services/campaigns';
 import clHistory from 'utils/cl-router/history';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import { injectIntl } from 'react-intl';
 import messages from '../../messages';
 import GetCampaign from 'resources/GetCampaign';
@@ -55,9 +55,7 @@ class DraftCampaignDetails extends React.Component<Props> {
   }
 }
 
-const DraftCampaignDetailsWithHOCs = injectIntl(
-  DraftCampaignDetails
-);
+const DraftCampaignDetailsWithHOCs = injectIntl(DraftCampaignDetails);
 
 export default (inputProps: InputProps) => (
   <GetCampaign id={inputProps.campaignId}>

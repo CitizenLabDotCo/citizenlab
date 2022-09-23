@@ -7,7 +7,7 @@ import messages from './messages';
 import { TVoteMode } from 'services/ideaVotes';
 import { Icon, IconNames } from '@citizenlab/cl2-component-library';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import { IdeaVotingDisabledReason } from 'services/ideas';
 import useAuthUser from 'hooks/useAuthUser';
 import useIdea from 'hooks/useIdea';

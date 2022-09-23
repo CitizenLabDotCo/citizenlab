@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from '../messages';
 import styled from 'styled-components';
 import PostManager, { TFilterMenu } from 'components/admin/PostManager';

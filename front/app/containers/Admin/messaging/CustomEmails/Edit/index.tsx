@@ -5,7 +5,7 @@ import clHistory from 'utils/cl-router/history';
 import GoBackButton from 'components/UI/GoBackButton';
 import CampaignForm, { FormValues, PageTitle } from '../CampaignForm';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from '../../messages';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import GetCampaign from 'resources/GetCampaign';

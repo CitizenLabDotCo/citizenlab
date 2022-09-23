@@ -12,7 +12,7 @@ import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import Button from 'components/UI/Button';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 import T from 'components/T';

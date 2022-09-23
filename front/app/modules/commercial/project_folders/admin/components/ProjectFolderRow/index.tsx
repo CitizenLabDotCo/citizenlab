@@ -16,7 +16,7 @@ import {
 import styled from 'styled-components';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // hooks

@@ -4,7 +4,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { Icon } from '@citizenlab/cl2-component-library';
 import { ScreenReaderOnly } from 'utils/a11y';
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 
 const Container = styled.div`
   color: ${colors.label};

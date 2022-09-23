@@ -13,7 +13,7 @@ import TextCampaignListRow from './TextCampaignListRow';
 import useTextingCampaigns from 'hooks/useTextingCampaigns';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from '../../messages';
 
 // styling

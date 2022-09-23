@@ -2,7 +2,7 @@ import React from 'react';
 import { xor } from 'lodash-es';
 import { Menu, Divider } from 'semantic-ui-react';
 import FilterSidebarTopicsItem from './FilterSidebarTopicsItem';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from '../../messages';
 import { ITopicData } from 'services/topics';
 

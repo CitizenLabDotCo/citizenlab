@@ -4,7 +4,7 @@ import React, { memo } from 'react';
 import TipsContent from './TipsContent';
 
 // intl
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // style

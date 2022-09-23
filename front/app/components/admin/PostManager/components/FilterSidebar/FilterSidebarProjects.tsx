@@ -2,7 +2,7 @@ import React from 'react';
 import { IProjectData } from 'services/projects';
 import { Menu, Divider } from 'semantic-ui-react';
 import FilterSidebarProjectsItem from './FilterSidebarProjectsItem';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from '../../messages';
 
 interface Props {

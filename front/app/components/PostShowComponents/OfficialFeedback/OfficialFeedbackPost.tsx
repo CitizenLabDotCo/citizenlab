@@ -19,7 +19,7 @@ import { transparentize } from 'polished';
 
 // i18n
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import { injectIntl } from 'react-intl';
 import { FormattedDate, WrappedComponentProps } from 'react-intl';
 import { getLocalized } from 'utils/i18n';

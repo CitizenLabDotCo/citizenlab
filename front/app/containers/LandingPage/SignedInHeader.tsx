@@ -34,7 +34,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 import T from 'components/T';
 
@@ -300,7 +300,6 @@ interface Props extends InputProps, DataProps {
   theme: any;
 }
 
-
 const SignedInHeader = ({
   locale,
   appConfig,
@@ -311,7 +310,7 @@ const SignedInHeader = ({
   homepageSettings,
 }: Props) => {
   const localize = useLocalize();
-  
+
   const handleSkip = (name: IOnboardingCampaignNames) => () => {
     trackEventByName(tracks.clickSkipButton, {
       extra: { location: 'signed-in header', context: name },
@@ -332,7 +331,9 @@ const SignedInHeader = ({
     !isNilOrError(onboardingCampaigns) &&
     !isNilOrError(homepageSettings)
   ) {
-    const orgName = localize(appConfig.attributes.settings.core.organization_name)
+    const orgName = localize(
+      appConfig.attributes.settings.core.organization_name
+    );
     const tenantHeaderImage = homepageSettings.data.attributes.header_bg
       ? homepageSettings.data.attributes.header_bg.large
       : null;

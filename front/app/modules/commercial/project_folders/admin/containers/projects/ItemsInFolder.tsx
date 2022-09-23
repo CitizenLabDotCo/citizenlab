@@ -13,7 +13,7 @@ import useAdminPublications, {
 import useAuthUser from 'hooks/useAuthUser';
 
 // localisation
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from '../messages';
 
 // components

@@ -15,7 +15,7 @@ import { IdeaCommentingDisabledReason } from 'services/ideas';
 
 // i18n
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 
 // events
 import { openVerificationModal } from 'components/Verification/verificationModalEvents';

@@ -17,7 +17,7 @@ import { Icon, IconTooltip } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import ProposalProgressBar from './ProposalProgressBar';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import { MessageDescriptor } from 'react-intl';
 import messages from './messages';
 import T from 'components/T';

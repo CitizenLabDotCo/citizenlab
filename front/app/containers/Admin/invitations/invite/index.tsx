@@ -40,7 +40,7 @@ import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import { injectIntl } from 'react-intl';
 import messages from '../messages';
 import { API_PATH, appLocalePairs } from 'containers/App/constants';

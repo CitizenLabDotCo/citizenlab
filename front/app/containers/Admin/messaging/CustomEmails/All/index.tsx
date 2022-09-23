@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import GetCampaigns, { GetCampaignsChildProps } from 'resources/GetCampaigns';
 import { isDraft } from 'services/campaigns';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 

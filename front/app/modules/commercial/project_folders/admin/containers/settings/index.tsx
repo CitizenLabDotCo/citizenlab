@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import styled from 'styled-components';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from '../messages';
 import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';

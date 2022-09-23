@@ -45,7 +45,7 @@ import {
 } from 'components/UI/LeafletMap/events';
 
 // i18n
-import FormattedMessage from 'utils/cl-intl/FormattedMessage';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // styling

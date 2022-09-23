@@ -4,7 +4,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { map, isEmpty } from 'lodash-es';
 
 // intl
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 import moment from 'moment';

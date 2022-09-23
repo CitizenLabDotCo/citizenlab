@@ -9,7 +9,7 @@ import useNavbarItems from 'hooks/useNavbarItems';
 import usePages from 'hooks/usePages';
 
 // intl
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // components

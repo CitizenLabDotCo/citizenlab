@@ -9,7 +9,7 @@ import useIdeaStatus from 'hooks/useIdeaStatus';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { updateIdeaStatus } from 'services/ideaStatuses';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // components

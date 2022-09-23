@@ -17,7 +17,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import styled, { withTheme } from 'styled-components';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 import { darken, rgba } from 'polished';
 import { media, colors, fontSizes } from 'utils/styleUtils';

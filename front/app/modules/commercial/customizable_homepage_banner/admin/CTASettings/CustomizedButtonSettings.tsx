@@ -8,7 +8,7 @@ import { CLErrors, Multiloc, Locale } from 'typings';
 import messages from '../messages';
 import genericMessages from 'components/UI/Error/messages';
 import settingsMessages from 'containers/Admin/settings/messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import { injectIntl, IntlFormatters, WrappedComponentProps } from 'react-intl';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { isNilOrError } from 'utils/helperUtils';

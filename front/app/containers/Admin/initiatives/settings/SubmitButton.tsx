@@ -8,7 +8,7 @@ import { fontSizes, colors, isRtl } from 'utils/styleUtils';
 import Button from 'components/UI/Button';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from '../messages';
 
 const ButtonContainer = styled.div`

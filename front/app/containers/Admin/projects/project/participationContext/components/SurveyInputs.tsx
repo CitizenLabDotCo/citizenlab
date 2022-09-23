@@ -7,7 +7,7 @@ import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import { StyledA, StyledWarning, SurveyServiceRadio } from './styling';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 

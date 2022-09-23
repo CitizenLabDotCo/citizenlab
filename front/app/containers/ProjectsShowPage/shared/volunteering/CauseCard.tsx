@@ -20,7 +20,7 @@ import { openSignUpInModal } from 'components/SignUpIn/events';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import T from 'components/T';
 import messages from './messages';
 

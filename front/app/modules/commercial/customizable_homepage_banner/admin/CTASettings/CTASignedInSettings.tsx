@@ -1,6 +1,6 @@
 import React from 'react';
 import { SectionField } from 'components/admin/Section';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from '../messages';
 import { CTASignedInType } from 'services/homepageSettings';
 

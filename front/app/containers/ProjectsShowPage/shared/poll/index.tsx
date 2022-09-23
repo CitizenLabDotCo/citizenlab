@@ -23,7 +23,7 @@ import PollForm from './PollForm';
 import Warning from 'components/UI/Warning';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 import { MessageDescriptor } from 'react-intl';
 

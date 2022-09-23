@@ -19,7 +19,7 @@ import IdeaPane from './IdeaPane';
 import Warning from 'components/UI/Warning';
 
 // intl
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
 

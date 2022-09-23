@@ -5,7 +5,7 @@ import GetCampaignStats from 'resources/GetCampaignStats';
 import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import { FormattedNumber } from 'react-intl';
 import { IconTooltip } from '@citizenlab/cl2-component-library';
 

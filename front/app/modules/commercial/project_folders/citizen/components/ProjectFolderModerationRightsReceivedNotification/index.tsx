@@ -3,7 +3,7 @@ import { IProjectFolderModerationRightsReceivedNotificationData } from 'services
 import NotificationWrapper from 'containers/MainHeader/NotificationMenu/components/NotificationWrapper';
 import messages from './messages';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import T from 'components/T';
 
 interface Props {

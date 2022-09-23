@@ -2,7 +2,7 @@ import React from 'react';
 import styled, { useTheme } from 'styled-components';
 import { Box, media, Button, Spinner } from '@citizenlab/cl2-component-library';
 import IdeaCard from 'components/IdeaCard';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 import { rgba } from 'polished';
 import { ParticipationMethod } from 'services/participationContexts';

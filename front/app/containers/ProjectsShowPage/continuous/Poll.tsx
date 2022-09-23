@@ -16,7 +16,7 @@ import useProject from 'hooks/useProject';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import { injectIntl } from 'react-intl';
 import messages from 'containers/ProjectsShowPage/messages';
 

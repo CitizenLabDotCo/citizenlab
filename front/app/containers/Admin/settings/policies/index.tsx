@@ -12,7 +12,7 @@ import PageEditor from './PageEditor';
 import Outlet from 'components/Outlet';
 
 // intl
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 export const StyledLink = styled(Link)`

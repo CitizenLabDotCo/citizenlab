@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 import Button from 'components/UI/Button';

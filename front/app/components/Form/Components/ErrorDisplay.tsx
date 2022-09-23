@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Box, Icon } from '@citizenlab/cl2-component-library';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import { darken } from 'polished';
 import messages from '../messages';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';

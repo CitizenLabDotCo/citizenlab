@@ -7,7 +7,7 @@ import HTML5Backend from 'react-dnd-html5-backend-cjs';
 import { isEqual, clone } from 'lodash-es';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';

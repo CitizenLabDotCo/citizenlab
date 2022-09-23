@@ -24,7 +24,7 @@ import {
 import { PreviousPathnameContext } from 'context';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // style

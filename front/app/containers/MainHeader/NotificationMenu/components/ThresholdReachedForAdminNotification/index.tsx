@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { stopPropagation } from 'utils/helperUtils';
 import { IThresholdReachedForAdminNotificationData } from 'services/notifications';
 import messages from '../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import Link from 'utils/cl-router/Link';
 import T from 'components/T';
 import NotificationWrapper from '../NotificationWrapper';

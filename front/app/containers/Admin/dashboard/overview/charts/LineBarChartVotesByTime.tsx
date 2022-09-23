@@ -46,7 +46,7 @@ import { IResolution } from 'components/admin/ResolutionControl';
 
 // i18n
 import messages from '../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import { injectIntl, WrappedComponentProps } from 'react-intl';
 import moment from 'moment';
 

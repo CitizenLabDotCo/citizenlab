@@ -2,7 +2,7 @@ import React from 'react';
 import { Multiloc, CLErrors } from 'typings';
 import { CTASignedOutType, CTASignedInType } from 'services/homepageSettings';
 import messages from '../messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import { Radio } from '@citizenlab/cl2-component-library';
 import CustomizedButtonSettings from './CustomizedButtonSettings';
 import styled from 'styled-components';

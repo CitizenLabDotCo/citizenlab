@@ -7,7 +7,7 @@ import { IProjectModerationRightsReceivedNotificationData } from 'services/notif
 
 // i18n
 import messages from '../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import T from 'components/T';
 
 // components

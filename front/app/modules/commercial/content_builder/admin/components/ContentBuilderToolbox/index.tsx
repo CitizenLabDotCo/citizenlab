@@ -7,7 +7,7 @@ import { useEditor } from '@craftjs/core';
 import { useParams } from 'react-router-dom';
 
 // intl
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import { injectIntl } from 'react-intl';
 import { WrappedComponentProps } from 'react-intl';
 

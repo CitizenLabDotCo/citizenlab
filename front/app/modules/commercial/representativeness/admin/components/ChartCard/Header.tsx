@@ -14,7 +14,7 @@ import Tabs, { ITabItem } from 'components/UI/Tabs';
 
 // i18n
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 
 // typings
 import { ViewState } from '.';
