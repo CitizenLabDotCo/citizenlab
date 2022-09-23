@@ -119,34 +119,57 @@ RSpec.describe Matomo::Client do
   describe '#error?' do
     using RSpec::Parameterized::TableSyntax
 
-    where(:payload, :expected_result) do
-      { 'result' => 'error', 'message' => 'Some description...' } | true
-      { 'result' => 'not-error', 'message' => 'Some description...' } | false
-      { 'property' => 'value' } | false
-      %w[value value2] | false
+    where(:is_success, :payload, :expected_result) do
+      true  | { 'result' => 'error', 'message' => 'Some description...' } | true
+      true  | { 'result' => 'not-error', 'message' => 'Some description...' } | false
+      true  | { 'property' => 'value' } | false
+      true  | %w[value value2] | false
+      false | 'whatever' | true
     end
 
     with_them do
       specify do
-        response = instance_double(HTTParty::Response, parsed_response: payload)
+        response = instance_double(
+          HTTParty::Response, parsed_response: payload, 'success?': is_success
+        )
+
         expect(service.send(:error?, response)).to eq(expected_result)
       end
     end
   end
 
   describe '#raise_if_error' do
-    context 'when error' do
-      let(:response) do
-        instance_double(
-          HTTParty::Response,
-          parsed_response: { 'result' => 'error', 'message' => error_message }
-        )
-      end
+    context 'when the request failed' do
       let(:error_message) { 'Some error message...' }
 
-      specify do
-        expect { service.send(:raise_if_error, response) }
-          .to raise_error(Matomo::Client::MatomoApiError, error_message)
+      context 'and the payload is a json object' do
+        let(:response) do
+          instance_double(
+            HTTParty::Response,
+            success?: true, # Matomo API returns 200 even for failed requests
+            parsed_response: { 'result' => 'error', 'message' => error_message }
+          )
+        end
+
+        specify do
+          expect { service.raise_if_error(response) }
+            .to raise_error(Matomo::Client::MatomoApiError, error_message)
+        end
+      end
+
+      context 'and the payload is a string' do
+        let(:response) do
+          instance_double(
+            HTTParty::Response,
+            success?: false,
+            parsed_response: error_message
+          )
+        end
+
+        specify do
+          expect { service.raise_if_error(response) }
+            .to raise_error(Matomo::Client::MatomoApiError, error_message)
+        end
       end
     end
   end

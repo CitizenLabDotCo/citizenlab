@@ -138,6 +138,18 @@ module Matomo
       { 'token_auth' => auth_token }
     end
 
+    def raise_if_error(response)
+      return unless error?(response)
+
+      message = begin
+                  response.parsed_response.fetch('message')
+                rescue StandardError
+                  response.parsed_response.to_s
+                end
+
+      raise MatomoApiError, message
+    end
+
     private
 
     def format_visit(visit)
@@ -162,13 +174,14 @@ module Matomo
     end
 
     def error?(response)
-      response.parsed_response['result'] == 'error'
-    rescue StandardError
-      false
-    end
+      return true unless response.success?
 
-    def raise_if_error(response)
-      raise MatomoApiError, response.parsed_response['message'] if error?(response)
+      # A response can be an error even if `success?` is true because Matomo API tends to
+      # return status codes of 200 even for failed requests. To be sure, we have to
+      # check if the payload contains an error message.
+      response.parsed_response['result'] == 'error'
+    rescue TypeError
+      false
     end
 
     class MatomoApiError < RuntimeError; end

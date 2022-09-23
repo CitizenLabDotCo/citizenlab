@@ -55,6 +55,7 @@ module Analytics
             filter_offset: filter_offset
           )
 
+          @matomo.raise_if_error(visit_data)
           break if visit_data.empty?
 
           enum << visit_data.parsed_response
