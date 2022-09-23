@@ -45,7 +45,6 @@ module Analytics
           [
             assoc.name.to_s,
             {
-              # Note: Changed this to remove 'Analytics::'
               columns: assoc.options[:class_name].constantize.new.attributes.keys,
               primary_key: assoc.options.key?(:primary_key) ? assoc.options[:primary_key] : nil
             }
