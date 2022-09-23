@@ -131,7 +131,7 @@ const CompactIdeaCard = memo<Props>(
       ideaImageId: get(idea, 'relationships.idea_images.data[0].id'),
     });
 
-    if (isNilOrError(idea)) {
+    if (isNilOrError(idea) || isNilOrError(locale)) {
       return null;
     }
 
@@ -223,8 +223,7 @@ const CompactIdeaCard = memo<Props>(
               <StyledUserName userId={authorId || null} />
               <Separator aria-hidden>&bull;</Separator>
               <TimeAgo>
-                {!isNilOrError(locale) &&
-                  timeAgo(Date.parse(idea.attributes.created_at), locale)}
+                {timeAgo(Date.parse(idea.attributes.created_at), locale)}
               </TimeAgo>
               <span aria-hidden> {bodyText}</span>
             </Body>
