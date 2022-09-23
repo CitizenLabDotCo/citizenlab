@@ -6,6 +6,12 @@
 
 - [DISP-185] Fix 'Age group' copy not being translated
 
+## 2022-09-20
+
+## Added
+
+- Vienna citizen Single sign-on (StandardPortal)
+
 ### Fixed
 
 - [CL-1586] Fix deleting folder and cause images
