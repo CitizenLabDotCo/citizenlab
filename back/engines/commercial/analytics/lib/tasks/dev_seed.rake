@@ -14,7 +14,8 @@ namespace :analytics do
 
       # Create static dimensions - locale / channel
       Rake::Task['analytics:populate_locale_dimension'].execute(host: 'localhost')
-      locale = Analytics::DimensionLocale.first
+      locale1 = Analytics::DimensionLocale.first
+      locale2 = Analytics::DimensionLocale.last
       channel = Analytics::DimensionChannel.create!(name_multiloc: {"en": "Website", "fr-BE": "Website", "nl-BE": "Website"})
       channel2 = Analytics::DimensionChannel.create!(name_multiloc: {"en": "Social", "fr-BE": "Social", "nl-BE": "Social"})
 
@@ -37,7 +38,7 @@ namespace :analytics do
         matomo_last_action_time: '2022-09-05 18:08:39.0'
       )
       visit.dimension_project << project
-      visit.dimension_locale << locale
+      visit.dimension_locale << locale1
 
       # Visit 2
       visit = Analytics::FactVisit.create!(
@@ -52,7 +53,7 @@ namespace :analytics do
         matomo_last_action_time: '2022-09-05 18:08:39.0'
         )
       visit.dimension_project << project
-      visit.dimension_locale << locale
+      visit.dimension_locale << locale2
 
       # Visit 3 - no user, no project
       visit = Analytics::FactVisit.create!(
@@ -62,10 +63,11 @@ namespace :analytics do
         dimension_date_last_action: date2,
         duration: 900,
         pages_visited: 15,
+        returning_visitor: false,
         matomo_visit_id: 103,
         matomo_last_action_time: '2022-09-05 18:08:39.0'
         )
-      visit.dimension_locale << locale
+      visit.dimension_locale << locale2
 
     end
   end
