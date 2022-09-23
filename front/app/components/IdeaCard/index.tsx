@@ -131,7 +131,7 @@ const CompactIdeaCard = memo<Props>(
       ideaImageId: get(idea, 'relationships.idea_images.data[0].id'),
     });
 
-    if (isNilOrError(idea)) {
+    if (isNilOrError(idea) || isNilOrError(locale)) {
       return null;
     }
 
