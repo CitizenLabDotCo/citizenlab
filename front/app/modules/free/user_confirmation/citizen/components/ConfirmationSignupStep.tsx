@@ -17,7 +17,7 @@ import { CLErrors, CLError } from 'typings';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
-
+import { useIntl } from 'react-intl';
 import {
   Box,
   Icon,
@@ -113,6 +113,7 @@ const userEmailToBeConfirmed = (authUser: TAuthUser) => {
 
 const ConfirmationSignupStep = ({ onCompleted, onData, step }: Props) => {
   const user = useAuthUser();
+  const { formatMessage } = useIntl();
   const [confirmation, setConfirmation] = useState<IConfirmation>({
     code: null,
   });
@@ -217,7 +218,10 @@ const ConfirmationSignupStep = ({ onCompleted, onData, step }: Props) => {
       {changingEmail ? (
         <Form inModal={inModal} onSubmit={handleEmailSubmit}>
           <FormField>
-            <FormLabel labelMessage={messages.email} htmlFor="email-code" />
+            <FormLabel
+              labelText={formatMessage(messages.email)}
+              htmlFor="email-code"
+            />
             <Input
               id="email-code"
               type="email"

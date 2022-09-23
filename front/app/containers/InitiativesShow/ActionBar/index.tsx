@@ -44,9 +44,7 @@ const ActionBar = memo<Props>(
             postType="initiative"
             links={[
               {
-                text: {
-                  message: messages.allInitiatives,
-                },
+                message: messages.allInitiatives,
                 to: '/initiatives',
               },
             ]}

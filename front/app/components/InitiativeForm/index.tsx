@@ -22,8 +22,12 @@ import Link from 'utils/cl-router/Link';
 
 // intl
 import messages from './messages';
-import { WrappedComponentProps, injectIntl } from 'react-intl';
-import { IMessageInfo, FormattedMessage } from 'utils/cl-intl';
+import {
+  WrappedComponentProps,
+  injectIntl,
+  MessageDescriptor,
+} from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // typings
 import { Multiloc, Locale, UploadFile } from 'typings';
@@ -86,7 +90,11 @@ interface State {
     [key in keyof FormValues]?: boolean | undefined;
   };
   errors: {
-    [key in keyof FormValues]?: IMessageInfo | undefined;
+    [key in keyof FormValues]?:
+      | {
+          message: MessageDescriptor;
+        }
+      | undefined;
   };
 }
 
@@ -377,8 +385,8 @@ class InitiativeForm extends React.Component<
             <SectionField id="e2e-initiative-form-title-section">
               <FormLabel
                 htmlFor="e2e-initiative-title-input"
-                labelMessage={messages.titleLabel}
-                subtextMessage={messages.titleLabelSubtext2}
+                labelText={formatMessage(messages.titleLabel)}
+                subtext={formatMessage(messages.titleLabelSubtext2)}
               >
                 <Input
                   type="text"
@@ -425,8 +433,8 @@ class InitiativeForm extends React.Component<
               <FormLabel
                 id="description-label-id"
                 htmlFor="body"
-                labelMessage={messages.descriptionLabel}
-                subtextMessage={messages.descriptionLabelSubtext}
+                labelText={formatMessage(messages.descriptionLabel)}
+                subtext={formatMessage(messages.descriptionLabelSubtext)}
               />
               <QuillEditor
                 id="body"
@@ -470,8 +478,8 @@ class InitiativeForm extends React.Component<
 
             <SectionField aria-live="polite">
               <FormLabel
-                labelMessage={messages.topicsLabel}
-                subtextMessage={messages.topicsLabelDescription}
+                labelText={formatMessage(messages.topicsLabel)}
+                subtext={formatMessage(messages.topicsLabelDescription)}
                 htmlFor="field-topic-multiple-picker"
               />
               <TopicsPicker
@@ -491,8 +499,8 @@ class InitiativeForm extends React.Component<
             {mapsLoaded && (
               <SectionField>
                 <FormLabel
-                  labelMessage={messages.locationLabel}
-                  subtextMessage={messages.locationLabelSubtext}
+                  labelText={formatMessage(messages.locationLabel)}
+                  subtext={formatMessage(messages.locationLabelSubtext)}
                   htmlFor="initiative-location-picker"
                   optional
                 >
@@ -512,8 +520,8 @@ class InitiativeForm extends React.Component<
             <FormSectionTitle message={messages.formAttachmentsSectionTitle} />
             <SectionField id="e2e-iniatiative-banner-dropzone">
               <FormLabel
-                labelMessage={messages.bannerUploadLabel}
-                subtextMessage={messages.bannerUploadLabelSubtext}
+                labelText={formatMessage(messages.bannerUploadLabel)}
+                subtext={formatMessage(messages.bannerUploadLabelSubtext)}
                 htmlFor="initiative-banner-dropzone"
                 optional
               />
@@ -533,8 +541,8 @@ class InitiativeForm extends React.Component<
             </SectionField>
             <SectionField id="e2e-iniatiative-img-dropzone">
               <FormLabel
-                labelMessage={messages.imageUploadLabel}
-                subtextMessage={messages.imageUploadLabelSubtext}
+                labelText={formatMessage(messages.imageUploadLabel)}
+                subtext={formatMessage(messages.imageUploadLabelSubtext)}
                 htmlFor="initiative-image-dropzone"
                 optional
               />
@@ -554,8 +562,8 @@ class InitiativeForm extends React.Component<
             </SectionField>
             <SectionField>
               <FormLabel
-                labelMessage={messages.fileUploadLabel}
-                subtextMessage={messages.fileUploadLabelSubtext}
+                labelText={formatMessage(messages.fileUploadLabel)}
+                subtext={formatMessage(messages.fileUploadLabelSubtext)}
                 htmlFor="e2e-initiative-file-upload"
                 optional
               >
@@ -571,9 +579,7 @@ class InitiativeForm extends React.Component<
           </StyledFormSection>
           <FormSubmitFooter
             className="e2e-initiative-publish-button"
-            message={messages.publishButton}
             error={publishError}
-            errorMessage={messages.submitApiError}
             processing={publishing}
             onSubmit={this.handleOnPublish}
           />

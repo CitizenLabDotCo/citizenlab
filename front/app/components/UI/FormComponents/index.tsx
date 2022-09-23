@@ -8,7 +8,7 @@ import {
   defaultCardStyle,
   isRtl,
 } from 'utils/styleUtils';
-import { FormattedMessage, IMessageInfo } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import { MessageDescriptor } from 'react-intl';
 import messages from './messages';
 import { isString } from 'utils/helperUtils';
@@ -66,23 +66,25 @@ const StyledSpan = styled.span`
   margin-right: 3px;
 `;
 
-interface FormSectionTitleProps extends IMessageInfo {
+interface FormSectionTitleProps {
   subtitleMessage?: MessageDescriptor;
+  message: MessageDescriptor;
 }
 
-export const FormSectionTitle = memo(
-  ({ message, values, subtitleMessage }: FormSectionTitleProps) => (
-    <TitleContainer>
-      <FormSectionTitleStyled>
-        <FormattedMessage {...message} values={values} />
-      </FormSectionTitleStyled>
-      {subtitleMessage && (
-        <FormSectionDescriptionStyled>
-          <FormattedMessage {...subtitleMessage} />
-        </FormSectionDescriptionStyled>
-      )}
-    </TitleContainer>
-  )
+export const FormSectionTitle = ({
+  message,
+  subtitleMessage,
+}: FormSectionTitleProps) => (
+  <TitleContainer>
+    <FormSectionTitleStyled>
+      <FormattedMessage {...message} />
+    </FormSectionTitleStyled>
+    {subtitleMessage && (
+      <FormSectionDescriptionStyled>
+        <FormattedMessage {...subtitleMessage} />
+      </FormSectionDescriptionStyled>
+    )}
+  </TitleContainer>
 );
 
 export const FormLabelStyled = styled(Box)`
@@ -151,15 +153,13 @@ interface FormLabelGenericProps {
   noSpace?: boolean;
   optional?: boolean;
   iconName?: IconNames;
-  subtextMessage?: MessageDescriptor;
-  subtextMessageValues?: OriginalFormattedMessage.Props['values'];
+  subtext?: string;
   subtextValue?: JSX.Element | string;
   subtextSupportsHtml?: boolean;
 }
 
 interface FormLabelPropsMessages extends FormLabelGenericProps {
-  labelMessage: MessageDescriptor;
-  labelMessageValues?: OriginalFormattedMessage.Props['values'];
+  labelText: string;
 }
 
 interface FormLabelPropsValue extends FormLabelGenericProps {
@@ -199,8 +199,7 @@ export const FormLabel = memo<
     optional,
     iconName,
     iconAriaHidden,
-    subtextMessage,
-    subtextMessageValues,
+    subtext,
     subtextSupportsHtml,
     subtextValue,
     ...remainingProps
@@ -214,22 +213,11 @@ export const FormLabel = memo<
         .filter((item) => item)
         .join(' ')}
       htmlFor={htmlFor}
-      {...omit(remainingProps, [
-        'labelMessage',
-        'labelMessageValues',
-        'labelValue',
-      ])}
+      {...omit(remainingProps, ['labelText', 'labelValue'])}
     >
       <LabelContainer>
         <StyledSpan>
-          {propsHasValues(props) ? (
-            props.labelValue
-          ) : (
-            <FormattedMessage
-              {...props.labelMessage}
-              values={props.labelMessageValues}
-            />
-          )}
+          {propsHasValues(props) ? props.labelValue : props.labelText}
         </StyledSpan>
         {optional && (
           <OptionalText>
@@ -255,14 +243,7 @@ export const FormLabel = memo<
           )}
         </FormSubtextStyled>
       ) : (
-        subtextMessage && (
-          <FormSubtextStyled>
-            <FormattedMessage
-              {...subtextMessage}
-              values={subtextMessageValues}
-            />
-          </FormSubtextStyled>
-        )
+        subtext && <FormSubtextStyled>{subtext}</FormSubtextStyled>
       )}
       {!noSpace && <Spacer />}
       {children}

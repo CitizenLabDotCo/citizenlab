@@ -1,20 +1,19 @@
 import { ScreenReaderOnly } from 'utils/a11y';
 import ContentContainer from 'components/ContentContainer';
-import styled, { withTheme } from 'styled-components';
-import { FormattedMessage, IMessageInfo } from 'utils/cl-intl';
+import styled, { useTheme } from 'styled-components';
+import { FormattedMessage } from 'utils/cl-intl';
 import Button from 'components/UI/Button';
 import { colors, media } from 'utils/styleUtils';
-import React, { memo } from 'react';
+import React from 'react';
 import messages from './messages';
+import { useIntl } from 'react-intl';
 
-interface FormSubmitFooterProps extends IMessageInfo {
+interface FormSubmitFooterProps {
   disabled?: boolean;
   processing?: boolean;
   onSubmit: () => void;
-  theme: any;
   className?: string;
   error: boolean;
-  errorMessage: IMessageInfo['message'];
 }
 
 const StyledButton = styled(Button)`
@@ -61,51 +60,49 @@ const SubmitFooterInner = styled.div`
 const ErrorContainer = styled.div`
   color: ${colors.red600};
 `;
-export const FormSubmitFooter = withTheme(
-  memo(
-    ({
-      message,
-      values,
-      theme,
-      onSubmit,
-      className,
-      error,
-      errorMessage,
-      disabled,
-      ...otherProps
-    }: FormSubmitFooterProps) => (
-      <SubmitFooterContainer className={className}>
-        <StyledContentContainer mode="page">
-          <SubmitFooterInner>
-            <StyledButton
-              fontWeight="500"
-              padding="13px 22px"
-              bgColor={theme.colorMain}
-              textColor="#FFF"
-              type="submit"
-              onClick={onSubmit}
-              className="e2e-submit-form"
-              disabled={disabled}
-              ariaDisabled={disabled}
-              {...otherProps}
-            >
-              <FormattedMessage {...message} values={values} />
-            </StyledButton>
-            {error && (
-              <ErrorContainer className="e2e-error-form">
-                <FormattedMessage {...errorMessage} />
-              </ErrorContainer>
+
+export const FormSubmitFooter = ({
+  onSubmit,
+  className,
+  error,
+  disabled,
+  ...otherProps
+}: FormSubmitFooterProps) => {
+  const theme: any = useTheme();
+  const { formatMessage } = useIntl();
+
+  return (
+    <SubmitFooterContainer className={className}>
+      <StyledContentContainer mode="page">
+        <SubmitFooterInner>
+          <StyledButton
+            fontWeight="500"
+            padding="13px 22px"
+            bgColor={theme.colorMain}
+            textColor="#FFF"
+            type="submit"
+            onClick={onSubmit}
+            className="e2e-submit-form"
+            disabled={disabled}
+            ariaDisabled={disabled}
+            {...otherProps}
+          >
+            {formatMessage(messages.publishButton)}
+          </StyledButton>
+          {error && (
+            <ErrorContainer className="e2e-error-form">
+              {formatMessage(messages.submitApiError)}
+            </ErrorContainer>
+          )}
+          <ScreenReaderOnly aria-live="polite">
+            {disabled ? (
+              <FormattedMessage {...messages.buttonDisabled} />
+            ) : (
+              <FormattedMessage {...messages.buttonEnabled} />
             )}
-            <ScreenReaderOnly aria-live="polite">
-              {disabled ? (
-                <FormattedMessage {...messages.buttonDisabled} />
-              ) : (
-                <FormattedMessage {...messages.buttonEnabled} />
-              )}
-            </ScreenReaderOnly>
-          </SubmitFooterInner>
-        </StyledContentContainer>
-      </SubmitFooterContainer>
-    )
-  )
-);
+          </ScreenReaderOnly>
+        </SubmitFooterInner>
+      </StyledContentContainer>
+    </SubmitFooterContainer>
+  );
+};

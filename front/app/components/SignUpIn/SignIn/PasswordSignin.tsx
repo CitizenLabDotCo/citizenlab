@@ -289,11 +289,11 @@ class PasswordSignin extends PureComponent<
           <FormElement>
             <FormLabel
               htmlFor="email"
-              labelMessage={
+              labelText={formatMessage(
                 phoneLoginEnabled
                   ? messages.emailOrPhoneLabel
                   : messages.emailLabel
-              }
+    )}
             />
             <Input
               type="email"
@@ -308,10 +308,7 @@ class PasswordSignin extends PureComponent<
           </FormElement>
 
           <FormElement>
-            <FormLabel
-              htmlFor="password"
-              labelMessage={messages.passwordLabel}
-            />
+            <FormLabel htmlFor="password" labelText={formatMessage(messages.passwordLabel)} />
             <PasswordInput
               id="password"
               password={password}

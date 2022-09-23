@@ -791,7 +791,7 @@ class IdeaForm extends PureComponent<
             <FormElement id="e2e-idea-title-input">
               <FormLabel
                 htmlFor="title"
-                labelMessage={messages.title}
+                labelText={formatMessage(messages.title)}
                 optional={
                   !this.isFieldRequired(
                     'title_multiloc',
@@ -838,7 +838,7 @@ class IdeaForm extends PureComponent<
                 <FormElement id="e2e-idea-author-input">
                   <FormLabel
                     htmlFor="author-select"
-                    labelMessage={messages.author}
+                    labelText={formatMessage(messages.author)}
                   />
                   <UserSelect
                     id="author"
@@ -854,7 +854,7 @@ class IdeaForm extends PureComponent<
               <FormLabel
                 id="editor-label"
                 htmlFor="editor"
-                labelMessage={messages.descriptionTitle}
+                labelText={formatMessage(messages.descriptionTitle)}
                 optional={
                   !this.isFieldRequired(
                     'body_multiloc',
@@ -931,10 +931,9 @@ class IdeaForm extends PureComponent<
                 <FormElement>
                   <FormLabel
                     htmlFor="estimated-budget"
-                    labelMessage={messages.proposedBudgetLabel}
-                    labelMessageValues={{
+                    labelText={formatMessage(messages.proposedBudgetLabel, {
                       currency: tenantCurrency,
-                    }}
+                    })}
                     optional={
                       !this.isFieldRequired(
                         'proposed_budget',
@@ -966,7 +965,7 @@ class IdeaForm extends PureComponent<
                 <FormElement id="e2e-idea-topics-input">
                   <FormLabel
                     htmlFor="topics"
-                    labelMessage={messages.topicsTitle}
+                    labelText={formatMessage(messages.topicsTitle)}
                     optional={
                       !this.isFieldRequired(
                         'topic_ids',
@@ -995,7 +994,7 @@ class IdeaForm extends PureComponent<
               {showLocation && mapsLoaded && (
                 <FormElement>
                   <FormLabel
-                    labelMessage={messages.locationTitle}
+                    labelText={formatMessage(messages.locationTitle)}
                     optional={
                       !this.isFieldRequired(
                         'location_description',
@@ -1030,7 +1029,7 @@ class IdeaForm extends PureComponent<
             <FormElement id="e2e-idea-image-upload">
               <FormLabel
                 htmlFor="idea-image-dropzone"
-                labelMessage={messages.imageUploadTitle}
+                labelText={formatMessage(messages.imageUploadTitle)}
                 optional={
                   !this.isFieldRequired(
                     'idea_images_attributes',
@@ -1060,7 +1059,7 @@ class IdeaForm extends PureComponent<
             {attachmentsEnabled && (
               <FormElement id="e2e-idea-file-upload">
                 <FormLabel
-                  labelMessage={messages.otherFilesTitle}
+                  labelText={formatMessage(messages.otherFilesTitle)}
                   optional={
                     !this.isFieldRequired(
                       'idea_files_attributes',
