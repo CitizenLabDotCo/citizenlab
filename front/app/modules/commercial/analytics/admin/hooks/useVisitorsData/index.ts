@@ -18,7 +18,7 @@ interface Stats {
 
 export interface TimeSeriesRow {
   /* Date format: YYYY-MM-DD */
-  date: `${number}-${number}-${number}`;
+  date: string;
   visits: number;
   visitors: number;
 }

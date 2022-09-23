@@ -1,7 +1,7 @@
 import React from 'react';
 
 // hooks
-import useVisitorsData from '../../hooks/useVisitorsData';
+import useVisitorsData from '../../../hooks/useVisitorsData';
 
 // styling
 import { colors } from 'components/admin/Graphs/styling';
@@ -12,13 +12,14 @@ import LineChart from 'components/admin/Graphs/LineChart';
 import renderTooltip from './renderTooltip';
 
 // i18n
-import messages from './messages';
+import messages from '../messages';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
+import { hasNoData } from 'components/admin/Graphs/utils';
 import { toThreeLetterMonth } from 'utils/dateUtils';
+import { generateEmptyData } from './generateEmptyData';
 
 // typings
 import { IResolution } from 'components/admin/ResolutionControl';
@@ -28,31 +29,13 @@ interface Props {
   resolution: IResolution;
 }
 
-const fakeMonthData = [
-  {
-    date: '2022-07-01',
-    visits: 0,
-    visitors: 0
-  },
-  {
-    date: '2022-08-01',
-    visits: 0,
-    visitors: 0
-  },
-  {
-    date: '2022-09-01',
-    visits: 250,
-    visitors: 250
-  }
-]
+const EMPTY_DATA = generateEmptyData();
 
 const Chart = ({
   resolution,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
-  // const { timeSeries } = useVisitorsData();
-  const x = useVisitorsData();
-  const timeSeries = 1 + 1 === 3 ? x.timeSeries : null
+  const { timeSeries } = useVisitorsData();
 
   const legendItems: LegendItem[] = [
     {
@@ -73,14 +56,17 @@ const Chart = ({
 
   return (
     <Box pt="8px" width="90%" maxWidth="900px" height="250px">
-      {isNilOrError(timeSeries) && (
+      {hasNoData(timeSeries) && (
         <LineChart
           width="100%"
           height="100%"
-          data={fakeMonthData}
+          data={EMPTY_DATA}
           mapping={{
             x: 'date',
-            y: ['visits']
+            y: ['visits'],
+          }}
+          lines={{
+            strokeWidths: [0],
           }}
           grid={{ vertical: true }}
           xaxis={{ tickFormatter: formatTick }}
@@ -91,7 +77,7 @@ const Chart = ({
         />
       )}
 
-      {!isNilOrError(timeSeries) && (
+      {!hasNoData(timeSeries) && (
         <LineChart
           width="100%"
           height="100%"

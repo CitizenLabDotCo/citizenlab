@@ -9,14 +9,14 @@ import TooltipOutline from 'components/admin/Graphs/utilities/TooltipOutline';
 import { colors } from 'components/admin/Graphs/styling';
 
 // i18n
-import messages from './messages';
+import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
 import { toFullMonth } from 'utils/dateUtils';
 
 // typings
-import { TimeSeriesRow } from '../../hooks/useVisitorsData';
+import { TimeSeriesRow } from '../../../hooks/useVisitorsData';
 import { IResolution } from 'components/admin/ResolutionControl';
 import { MessageDescriptor } from 'typings';
 
