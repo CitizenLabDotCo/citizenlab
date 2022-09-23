@@ -617,7 +617,7 @@
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageAndOver": "{age} и старији",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageGroup": "Старосна група",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageGroupNotIncluded": "Старосна група(-е) за {upperBound} и старије није обухваћена.",
-  "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageGroupX": "Age group {number}",
+  "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageGroupX": "Старосна група {number}",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageGroups": "Старосне групе",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.andOver": "и старији",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.applyExampleGrouping": "Примени пример груписања",
