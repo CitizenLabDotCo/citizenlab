@@ -1010,8 +1010,8 @@
 
       "representativeness": {
         "type": "object",
-        "title": "Representativeness (experimental)",
-        "description":  "Enables the representativeness dashboard. Don't turn this on unless you know what you're doing.",
+        "title": "Representativeness",
+        "description": "Enables the representativeness dashboard.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -1029,6 +1029,18 @@
         "properties": {
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "visitors_dashboard": {
+        "type": "object",
+        "title": "Visitors dashboard",
+        "description": "Enabled the visitors dashboard. Don't turn this on unless you know what you're doing.",
+        "additionalProperties": "false",
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default", false }
         }
       }
     },
