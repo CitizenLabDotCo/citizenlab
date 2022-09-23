@@ -28,12 +28,31 @@ interface Props {
   resolution: IResolution;
 }
 
+const fakeMonthData = [
+  {
+    date: '2022-07-01',
+    visits: 0,
+    visitors: 0
+  },
+  {
+    date: '2022-08-01',
+    visits: 0,
+    visitors: 0
+  },
+  {
+    date: '2022-09-01',
+    visits: 250,
+    visitors: 250
+  }
+]
+
 const Chart = ({
   resolution,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
-  const { timeSeries } = useVisitorsData();
-  if (isNilOrError(timeSeries)) return null;
+  // const { timeSeries } = useVisitorsData();
+  const x = useVisitorsData();
+  const timeSeries = 1 + 1 === 3 ? x.timeSeries : fakeMonthData
 
   const legendItems: LegendItem[] = [
     {
@@ -54,26 +73,46 @@ const Chart = ({
 
   return (
     <Box pt="8px" width="90%" maxWidth="900px" height="250px">
-      <LineChart
-        width="100%"
-        height="100%"
-        data={timeSeries}
-        mapping={{
-          x: 'date',
-          y: ['visitors', 'visits'],
-        }}
-        lines={{
-          strokes: [colors.categorical01, colors.categorical03],
-          activeDot: { r: 4 },
-        }}
-        grid={{ vertical: true }}
-        xaxis={{ tickFormatter: formatTick }}
-        tooltip={renderTooltip(resolution)}
-        legend={{
-          marginTop: 16,
-          items: legendItems,
-        }}
-      />
+      {isNilOrError(timeSeries) && (
+        <LineChart
+          width="100%"
+          height="100%"
+          data={fakeMonthData}
+          mapping={{
+            x: 'date',
+            y: ['visits']
+          }}
+          grid={{ vertical: true }}
+          xaxis={{ tickFormatter: formatTick }}
+          legend={{
+            marginTop: 16,
+            items: legendItems,
+          }}
+        />
+      )}
+
+      {!isNilOrError(timeSeries) && (
+        <LineChart
+          width="100%"
+          height="100%"
+          data={timeSeries}
+          mapping={{
+            x: 'date',
+            y: ['visitors', 'visits'],
+          }}
+          lines={{
+            strokes: [colors.categorical01, colors.categorical03],
+            activeDot: { r: 4 },
+          }}
+          grid={{ vertical: true }}
+          xaxis={{ tickFormatter: formatTick }}
+          tooltip={renderTooltip(resolution)}
+          legend={{
+            marginTop: 16,
+            items: legendItems,
+          }}
+        />
+      )}
     </Box>
   );
 };
