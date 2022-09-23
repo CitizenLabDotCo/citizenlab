@@ -37,9 +37,8 @@ import { IProjectData } from 'services/projects';
 // other
 import { isValidPhase } from './phaseParam';
 import { anyIsUndefined, isNilOrError, isApiError } from 'utils/helperUtils';
-
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { getLatestRelevantPhase } from 'services/phases';
+import { getMethodConfig } from 'utils/participationMethodUtils';
 
 const Container = styled.main<{ background: string }>`
   flex: 1 0 auto;
@@ -94,7 +93,7 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
     if (!isNilOrError(showModal)) {
       setTimeout(() => {
         setShowModal(JSON.parse(showModal));
-      }, 1500);
+      }, 1000);
       clHistory.replace(window.location.pathname);
     }
   }, []);
@@ -137,6 +136,18 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
   } else if (projectNotFound) {
     content = <ProjectNotFound />;
   } else if (projectId && processType) {
+    let phaseParticipationMethod;
+
+    if (!isNilOrError(phases)) {
+      phaseParticipationMethod =
+        getLatestRelevantPhase(phases)?.attributes.participation_method;
+    }
+    const config = getMethodConfig(
+      phaseParticipationMethod
+        ? phaseParticipationMethod
+        : project?.attributes.participation_method
+    );
+
     content = (
       <ContentWrapper id="e2e-project-page">
         <ProjectHeader projectId={projectId} />
@@ -154,7 +165,6 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
           projectId={projectId}
           scrollToEventId={scrollToEventId}
         />
-        {/* TODO Tomorrow: Abstract into ParticipationMethodConfig */}
         <Modal
           opened={showModal}
           close={() => {
@@ -171,7 +181,7 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
           >
             <Image width="80px" height="80px" src={rocket} alt="" />
             <Title variant="h2" textAlign="center">
-              <FormattedMessage {...messages.surveySubmissionMessage} />
+              {config.getSubmissionMessage()}
             </Title>
           </Box>
         </Modal>

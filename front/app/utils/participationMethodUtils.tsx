@@ -1,13 +1,17 @@
+import React from 'react';
 import { ParticipationMethod } from 'services/participationContexts';
 import { IPhaseData } from 'services/phases';
 import { IProjectData } from 'services/projects';
 import clHistory from 'utils/cl-router/history';
+import { FormattedMessage } from './cl-intl';
+import messages from './participationMethodUtilsMessages';
 
 type ParticipationMethodConfig = {
   /** We currently have 2 UIs for admins to edit the form definition. This
    * defines which UI, if any, the method uses */
   formEditor: 'simpleFormEditor' | 'surveyEditor' | null;
   onFormSubmission?: any;
+  getSubmissionMessage?: any;
 };
 
 const ideationConfig: ParticipationMethodConfig = {
@@ -27,6 +31,9 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
       pathname: `/projects/${_project?.attributes.slug}`,
       search: `?show_modal=true`,
     });
+  },
+  getSubmissionMessage: () => {
+    return <FormattedMessage {...messages.onSurveySubmission} />;
   },
 };
 
