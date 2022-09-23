@@ -4,7 +4,7 @@ import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // styles
@@ -20,6 +20,7 @@ import Link from 'utils/cl-router/Link';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import eventEmitter from 'utils/eventEmitter';
 import useLocalize from 'hooks/useLocalize';
+import { WrappedComponentProps } from 'react-intl';
 
 const Container = styled.div`
   padding: 0px 10px;
@@ -59,7 +60,10 @@ interface Props {
   closeDialog: () => void;
 }
 
-const DeletionDialog = ({ closeDialog }: Props) => {
+const DeletionDialog = ({
+  closeDialog,
+  intl: { formatMessage },
+}: Props & WrappedComponentProps) => {
   const appConfiguration = useAppConfiguration();
   const localize = useLocalize();
 
@@ -106,10 +110,10 @@ const DeletionDialog = ({ closeDialog }: Props) => {
             <FormattedAnchor
               mainMessage={messages.contactUs}
               mainMessageLinkKey="feedbackLink"
-              urlMessage={messages.feedbackLinkUrl}
-              urlMessageValues={{ url: location.href }}
+              href={formatMessage(messages.feedbackLinkUrl, {
+                url: location.href,
+              })}
               linkTextMessage={messages.feedbackLinkText}
-              target="_blank"
             />
           </li>
           <li>
@@ -143,4 +147,4 @@ const DeletionDialog = ({ closeDialog }: Props) => {
   return null;
 };
 
-export default DeletionDialog;
+export default injectIntl(DeletionDialog);

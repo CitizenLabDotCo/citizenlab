@@ -19,8 +19,8 @@ import Feedback from 'components/HookForm/Feedback';
 import RadioGroup, { Radio } from 'components/HookForm/RadioGroup';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, MessageDescriptor } from 'utils/cl-intl';
+import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // animation
