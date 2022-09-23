@@ -22,7 +22,13 @@ interface Props {
   resolution: IResolution;
 }
 
-const VisitorsCard = ({ resolution, intl: { formatMessage } }: Props & InjectedIntlProps) => {
+const VisitorsCard = ({
+  startAtMoment,
+  endAtMoment,
+  projectFilter, 
+  resolution,
+  intl: { formatMessage }
+}: Props & InjectedIntlProps) => {
   const graphRef = useRef(); 
 
   return (
@@ -32,7 +38,7 @@ const VisitorsCard = ({ resolution, intl: { formatMessage } }: Props & InjectedI
       exportMenu={{
         name: formatMessage(messages.visitors),
         svgNode: graphRef,
-
+        startAt: startAtMoment
       }}
     >
       <Box width="100%" display="flex" flexDirection="row">
