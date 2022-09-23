@@ -53,7 +53,7 @@ const Chart = ({
   };
 
   return (
-    <Box pt="12px" minHeight="300px" width="100%" maxWidth="900px">
+    <Box pt="12px" width="900px" maxWidth="90%">
       <LineChart
         width="100%"
         height="100%"

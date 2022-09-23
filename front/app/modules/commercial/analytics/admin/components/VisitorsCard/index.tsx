@@ -24,7 +24,7 @@ const VisitorsCard = ({ resolution }: Props) => (
         <VisitorStats resolution={resolution} />
       </Box>
 
-      <Box flexGrow={1}>
+      <Box flexGrow={1} display="flex" justifyContent="center">
         <Chart resolution={resolution} />
       </Box>
     </Box>
