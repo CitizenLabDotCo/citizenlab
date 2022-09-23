@@ -176,7 +176,7 @@ gem 'mjml-rails', '~> 4.4'
 # Specifying this gem explicitly can probably be removed when the Rails upgrade is available.
 gem 'rails-html-sanitizer', '>= 1.4.3'
 
-
+# Used to define CRON tasks. See back/config/schedule.rb.
 gem 'whenever', '~> 1.0'
 
 require 'json'
