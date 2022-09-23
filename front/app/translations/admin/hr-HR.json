@@ -617,7 +617,7 @@
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageAndOver": "{age} i stariji",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageGroup": "Dobna skupina",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageGroupNotIncluded": "Nije uključena dobna skupina(e) od {upperBound} i stariji.",
-  "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageGroupX": "Age group {number}",
+  "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageGroupX": "Dobna skupina {number}",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageGroups": "Dobne skupine",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.andOver": "i stariji",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.applyExampleGrouping": "Primijeni primjer grupiranja",
