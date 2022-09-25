@@ -10,7 +10,6 @@ import { SectionField, SectionTitle } from 'components/admin/Section';
 import CloseIconButton from 'components/UI/CloseIconButton';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import Toggle from 'components/HookForm/Toggle';
-import ConfigMultiselectWithLocaleSwitcher from './ConfigMultiselectWithLocaleSwitcher';
 
 // intl
 import messages from '../messages';
@@ -22,6 +21,9 @@ import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';
 // hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { isNilOrError } from 'utils/helperUtils';
+
+// utils
+import { getAdditionalSettings } from './utils';
 
 interface Props {
   field: IFlatCustomFieldWithIndex;
@@ -44,6 +46,12 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
     case 'multiselect':
       translatedStringKey = messages.multipleChoice;
       break;
+    case 'number':
+      translatedStringKey = messages.number;
+      break;
+    case 'linear_scale':
+      translatedStringKey = messages.linearScale;
+      break;
   }
 
   return (
@@ -58,7 +66,7 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
       background="white"
       boxShadow="-2px 0px 1px 0px rgba(0, 0, 0, 0.06)"
     >
-      <Box position="absolute" right="8px" mb="20px">
+      <Box position="absolute" right="8px" mt="8px" mb="20px">
         <CloseIconButton
           a11y_buttonActionMessage={messages.close}
           onClick={onClose}
@@ -95,12 +103,7 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
           }
         />
       </SectionField>
-      {field.input_type === 'multiselect' && (
-        <ConfigMultiselectWithLocaleSwitcher // TODO: Abstract logic to somewhere else? Could be messy with more field types.
-          name={`customFields.${field.index}.options`}
-          locales={locales}
-        />
-      )}
+      {getAdditionalSettings(field.input_type, locales, field.index)}
       <Box display="flex" justifyContent="space-between">
         <Button
           icon="delete"

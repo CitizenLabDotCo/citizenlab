@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 
 // components
 import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 import FormActions from 'containers/Admin/formBuilder/components/FormActions';
+import FormResults from 'containers/Admin/formBuilder/components/FormResults';
 
 // i18n
 import messages from './messages';
@@ -25,14 +26,21 @@ const Forms = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const { projectId } = useParams() as { projectId: string };
   const project = useProject({ projectId });
   const phases = usePhases(projectId);
+  const { pathname } = useLocation();
 
   if (isNilOrError(project)) {
     return null;
   }
 
+  const showResults = pathname.includes(
+    `/admin/projects/${project.id}/native-survey/results`
+  );
+
   const formActionsConfigs = getFormActionsConfig(project, phases);
 
-  return (
+  return showResults ? (
+    <FormResults />
+  ) : (
     <>
       <Box width="100%">
         <Box width="100%">
@@ -42,8 +50,10 @@ const Forms = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         {formActionsConfigs.map(
           (
             {
+              phaseId,
               editFormLink,
               viewFormLink,
+              viewFormResults,
               heading,
               postingEnabled,
               togglePostingEnabled,
@@ -51,10 +61,12 @@ const Forms = ({ intl: { formatMessage } }: InjectedIntlProps) => {
             index
           ) => {
             return (
-              <>
+              <Fragment key={index}>
                 <FormActions
+                  phaseId={phaseId}
                   editFormLink={editFormLink}
                   viewFormLink={viewFormLink}
+                  viewFormResults={viewFormResults}
                   heading={heading}
                   postingEnabled={postingEnabled}
                   togglePostingEnabled={togglePostingEnabled}
@@ -62,7 +74,7 @@ const Forms = ({ intl: { formatMessage } }: InjectedIntlProps) => {
                 {index !== formActionsConfigs.length - 1 && (
                   <Box height="1px" border={`1px solid ${colors.separation}`} />
                 )}
-              </>
+              </Fragment>
             );
           }
         )}

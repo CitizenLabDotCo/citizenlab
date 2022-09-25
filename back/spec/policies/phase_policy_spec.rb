@@ -18,6 +18,8 @@ describe PhasePolicy do
       it { is_expected.not_to permit(:create)  }
       it { is_expected.not_to permit(:update)  }
       it { is_expected.not_to permit(:destroy) }
+      it { is_expected.not_to permit(:survey_results) }
+      it { is_expected.not_to permit(:submission_count) }
 
       it 'should index the phase' do
         expect(scope.resolve.size).to eq 1
@@ -31,6 +33,8 @@ describe PhasePolicy do
       it { is_expected.not_to permit(:create)  }
       it { is_expected.not_to permit(:update)  }
       it { is_expected.not_to permit(:destroy) }
+      it { is_expected.not_to permit(:survey_results) }
+      it { is_expected.not_to permit(:submission_count) }
 
       it 'should index the phase' do
         expect(scope.resolve.size).to eq 1
@@ -44,6 +48,8 @@ describe PhasePolicy do
       it { is_expected.to    permit(:create)  }
       it { is_expected.to    permit(:update)  }
       it { is_expected.to    permit(:destroy) }
+      it { is_expected.to    permit(:survey_results) }
+      it { is_expected.to    permit(:submission_count) }
 
       it 'should index the phase' do
         expect(scope.resolve.size).to eq 1
@@ -60,6 +66,8 @@ describe PhasePolicy do
     it { is_expected.not_to permit(:create)  }
     it { is_expected.not_to permit(:update)  }
     it { is_expected.not_to permit(:destroy) }
+    it { is_expected.not_to permit(:survey_results) }
+    it { is_expected.not_to permit(:submission_count) }
 
     it 'should not index the phase' do
       expect(scope.resolve.size).to eq 0
@@ -75,6 +83,8 @@ describe PhasePolicy do
     it { is_expected.not_to permit(:create)  }
     it { is_expected.not_to permit(:update)  }
     it { is_expected.not_to permit(:destroy) }
+    it { is_expected.not_to permit(:survey_results) }
+    it { is_expected.not_to permit(:submission_count) }
 
     it 'should not index the phase' do
       expect(scope.resolve.size).to eq 0
@@ -90,6 +100,8 @@ describe PhasePolicy do
     it { is_expected.not_to permit(:create)  }
     it { is_expected.not_to permit(:update)  }
     it { is_expected.not_to permit(:destroy) }
+    it { is_expected.not_to permit(:survey_results) }
+    it { is_expected.not_to permit(:submission_count) }
 
     it 'should index the phase' do
       expect(scope.resolve.size).to eq 1
