@@ -603,7 +603,10 @@ const ProjectCard = memo<Props>(
         ctaMessage = <FormattedMessage {...messages.allocateYourBudget} />;
       } else if (participationMethod === 'information') {
         ctaMessage = <FormattedMessage {...messages.learnMore} />;
-      } else if (participationMethod === 'survey') {
+      } else if (
+        participationMethod === 'survey' ||
+        participationMethod === 'native_survey'
+      ) {
         ctaMessage = <FormattedMessage {...messages.takeTheSurvey} />;
       } else if (participationMethod === 'poll') {
         ctaMessage = <FormattedMessage {...messages.takeThePoll} />;
