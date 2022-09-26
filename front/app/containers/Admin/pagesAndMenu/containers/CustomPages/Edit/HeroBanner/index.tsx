@@ -64,16 +64,16 @@ const EditCustomPageHeroBannerForm = ({
     }
   };
 
-  const handleHeaderSignedOutMultilocOnChange = (
+  const handleSignedOutMultilocHeaderOnChange = (
     signedOutHeaderMultiloc: Multiloc
   ) => {
     handleOnChange('banner_header_multiloc', signedOutHeaderMultiloc);
   };
 
-  const handleSubheaderSignedOutMultilocOnChange = (
-    signedOutHeaderMultiloc: Multiloc
+  const handleSignedOutMultilocSubheaderOnChange = (
+    signedOutSubheaderMultiloc: Multiloc
   ) => {
-    handleOnChange('banner_subheader_multiloc', signedOutHeaderMultiloc);
+    handleOnChange('banner_subheader_multiloc', signedOutSubheaderMultiloc);
   };
 
   const handleOnBannerImageAdd = (newImageBase64: string) => {
@@ -147,8 +147,8 @@ const EditCustomPageHeroBannerForm = ({
           <BannerHeaderFields
             bannerHeaderMultiloc={localSettings.banner_header_multiloc}
             bannerSubheaderMultiloc={localSettings.banner_subheader_multiloc}
-            onHeaderChange={handleHeaderSignedOutMultilocOnChange}
-            onSubheaderChange={handleSubheaderSignedOutMultilocOnChange}
+            onHeaderChange={handleSignedOutMultilocHeaderOnChange}
+            onSubheaderChange={handleSignedOutMultilocSubheaderOnChange}
             titleMessage={messages.bannerTextTitle}
             inputLabelMessage={messages.bannerHeaderSignedOut}
           />
