@@ -89,11 +89,11 @@ const EditHomepageHeroBannerForm = ({
   };
 
   const handleSubheaderSignedOutMultilocOnChange = (
-    signedOutHeaderMultiloc: Multiloc
+    signedOutSubheaderMultiloc: Multiloc
   ) => {
     handleOnChange(
       'banner_signed_out_subheader_multiloc',
-      signedOutHeaderMultiloc
+      signedOutSubheaderMultiloc
     );
   };
 
