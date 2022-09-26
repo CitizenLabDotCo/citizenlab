@@ -11,7 +11,8 @@ resource 'Analytics API - Queries for visitors dashboard', use_transactional_fix
       header 'Content-Type', 'application/json'
       admin_header_token
 
-      # Create 3 visits - 2 visitors, 1 with an admin user, 2 with a project, 2 in Sept, 1 in Aug, 1 Channel, 2 Locales
+      # Create 3 visits - 2 visitors
+      # Visitor 1 - 2 visits, no user, with a project, in Sept
       create(:project)
       locale1 = create(:dimension_locale_en)
       visit1 = create(:fact_visit, matomo_visit_id: 1, duration: 100, pages_visited: 1)
@@ -21,14 +22,20 @@ resource 'Analytics API - Queries for visitors dashboard', use_transactional_fix
       visit2.dimension_projects << Analytics::DimensionProject.first
       visit2.dimension_locales << locale1
 
-      user = create(:user)
-      user.add_role 'admin'
+      # Visitor 2 - 1 visit, admin user, same channel, no project, different locale, in Aug
+      create(:user, roles: [{ type: 'admin' }])
       locale2 = create(:dimension_locale_nl)
       aug = create(:dimension_date_aug)
-      visit3 = create(:fact_visit, matomo_visit_id: 3, duration: 300, pages_visited: 3, visitor_id: 'YYYY1')
-      visit3.dimension_user = Analytics::DimensionUser.first
-      visit3.dimension_date_first_action = aug
-      visit3.dimension_date_last_action = aug
+      visit3 = create(
+        :fact_visit,
+        matomo_visit_id: 3,
+        duration: 300,
+        pages_visited: 3,
+        visitor_id: 'YYYY1',
+        dimension_user: Analytics::DimensionUser.first,
+        dimension_date_first_action: aug,
+        dimension_date_last_action: aug
+      )
       visit3.dimension_locales << locale2
     end
 
