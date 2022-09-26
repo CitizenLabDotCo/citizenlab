@@ -1287,7 +1287,7 @@
   "app.containers.UsersEditPage.feedbackLinkText": "Klik her",
   "app.containers.UsersEditPage.feedbackLinkUrl": "https://citizenlabco.typeform.com/to/z7baRP?source={url}",
   "app.containers.UsersEditPage.firstNames": "Fornavn",
-  "app.containers.UsersEditPage.firstNamesEmptyError": "Provide a first name",
+  "app.containers.UsersEditPage.firstNamesEmptyError": "Angiv fornavne",
   "app.containers.UsersEditPage.h1": "Dine kontooplysninger",
   "app.containers.UsersEditPage.h1sub": "Rediger dine kontooplysninger",
   "app.containers.UsersEditPage.image": "Avatar-billede",
