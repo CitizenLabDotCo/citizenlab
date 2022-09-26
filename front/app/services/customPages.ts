@@ -19,6 +19,8 @@ export type TCustomPageBannerLayout =
   | 'two_column_layout'
   | 'two_row_layout';
 
+export type TCustomPageCTAType = 'customized_button' | 'no_button';
+
 export interface ICustomPageEnabledSettings {
   banner_enabled: boolean;
   bottom_info_section_enabled: boolean;

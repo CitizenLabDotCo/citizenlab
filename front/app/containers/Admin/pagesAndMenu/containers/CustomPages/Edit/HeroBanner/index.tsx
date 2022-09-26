@@ -1,24 +1,36 @@
+import { ISubmitState } from 'components/admin/SubmitWrapper';
 import {
   homeBreadcrumb,
   pagesAndMenuBreadcrumb,
 } from 'containers/Admin/pagesAndMenu/breadcrumbs';
+import CTAButtonFields from 'containers/Admin/pagesAndMenu/containers/CustomPages/Edit/HeroBanner/CTAButtonFields';
 import BannerHeaderFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerHeaderFields';
 import BannerImageFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerImageFields';
+import LayoutSettingField from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/LayoutSettingField';
 import useCustomPage from 'hooks/useCustomPage';
 import { forOwn, isEqual } from 'lodash-es';
 import React, { useEffect, useState } from 'react';
+import { InjectedIntlProps } from 'react-intl';
 import { useParams } from 'react-router-dom';
-import { ICustomPageAttributes, updateCustomPage } from 'services/customPages';
+import {
+  ICustomPageAttributes,
+  TCustomPageBannerLayout,
+  TCustomPageCTAType,
+  updateCustomPage,
+} from 'services/customPages';
 import { isNilOrError } from 'utils/helperUtils';
 import GenericHeroBannerForm from '../../../GenericHeroBannerForm';
 import messages from '../../../GenericHeroBannerForm/messages';
-// i18n
-import { ISubmitState } from 'components/admin/SubmitWrapper';
-import LayoutSettingField from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/LayoutSettingField';
-import { InjectedIntlProps } from 'react-intl';
-import { THomepageBannerLayout } from 'services/homepageSettings';
+
 import { Multiloc } from 'typings';
 import { injectIntl } from 'utils/cl-intl';
+
+export type CustomPageBannerSettingKeyType = Extract<
+  keyof ICustomPageAttributes,
+  | 'banner_cta_button_multiloc'
+  | 'banner_cta_button_url'
+  | 'banner_cta_button_type'
+>;
 
 const EditCustomPageHeroBannerForm = ({
   intl: { formatMessage },
@@ -90,8 +102,22 @@ const EditCustomPageHeroBannerForm = ({
     handleOnChange('banner_overlay_opacity', opacity);
   };
 
-  const handleLayoutOnChange = (bannerLayout: THomepageBannerLayout) => {
+  const handleLayoutOnChange = (bannerLayout: TCustomPageBannerLayout) => {
     handleOnChange('banner_layout', bannerLayout);
+  };
+
+  const handleCTAButtonTypeOnChange = (ctaType: TCustomPageCTAType) => {
+    handleOnChange('banner_cta_button_type', ctaType);
+  };
+
+  const handleCTAButtonTextMultilocOnChange = (
+    buttonTextMultiloc: Multiloc
+  ) => {
+    handleOnChange('banner_cta_button_multiloc', buttonTextMultiloc);
+  };
+
+  const handleCTAButtonUrlOnChange = (url: string) => {
+    handleOnChange('banner_cta_button_url', url);
   };
 
   const handleOnChange = (key: keyof ICustomPageAttributes, value: unknown) => {
@@ -151,6 +177,19 @@ const EditCustomPageHeroBannerForm = ({
             onSubheaderChange={handleSignedOutMultilocSubheaderOnChange}
             title={formatMessage(messages.bannerTextTitle)}
             inputLabelText={formatMessage(messages.bannerHeaderSignedOut)}
+          />
+        }
+        ctaButtonFieldsComponent={
+          <CTAButtonFields
+            ctaType={localSettings.banner_cta_button_type}
+            ctaButtonMultiloc={localSettings.banner_cta_button_multiloc}
+            ctaButtonUrl={localSettings.banner_cta_button_url}
+            handleCTAButtonTypeOnChange={handleCTAButtonTypeOnChange}
+            handleCTAButtonTextMultilocOnChange={
+              handleCTAButtonTextMultilocOnChange
+            }
+            handleCTAButtonUrlOnChange={handleCTAButtonUrlOnChange}
+            title={formatMessage(messages.buttonTitle)}
           />
         }
       />
