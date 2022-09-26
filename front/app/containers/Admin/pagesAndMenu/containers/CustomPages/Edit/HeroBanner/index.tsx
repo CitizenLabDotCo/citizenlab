@@ -1,24 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import useCustomPage from 'hooks/useCustomPage';
-import { updateCustomPage, ICustomPageAttributes } from 'services/customPages';
-import GenericHeroBannerForm from '../../../GenericHeroBannerForm';
-import { isNilOrError } from 'utils/helperUtils';
-import messages from '../../../GenericHeroBannerForm/messages';
-import { forOwn, isEqual } from 'lodash-es';
+import {
+  homeBreadcrumb,
+  pagesAndMenuBreadcrumb,
+} from 'containers/Admin/pagesAndMenu/breadcrumbs';
 import BannerHeaderFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerHeaderFields';
 import BannerImageFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerImageFields';
-import {
-  pagesAndMenuBreadcrumb,
-  homeBreadcrumb,
-} from 'containers/Admin/pagesAndMenu/breadcrumbs';
+import useCustomPage from 'hooks/useCustomPage';
+import { forOwn, isEqual } from 'lodash-es';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { ICustomPageAttributes, updateCustomPage } from 'services/customPages';
+import { isNilOrError } from 'utils/helperUtils';
+import GenericHeroBannerForm from '../../../GenericHeroBannerForm';
+import messages from '../../../GenericHeroBannerForm/messages';
 // i18n
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
 import { ISubmitState } from 'components/admin/SubmitWrapper';
-import { Multiloc } from 'typings';
 import LayoutSettingField from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/LayoutSettingField';
+import { InjectedIntlProps } from 'react-intl';
 import { THomepageBannerLayout } from 'services/homepageSettings';
+import { Multiloc } from 'typings';
+import { injectIntl } from 'utils/cl-intl';
 
 const EditCustomPageHeroBannerForm = ({
   intl: { formatMessage },
@@ -149,8 +149,8 @@ const EditCustomPageHeroBannerForm = ({
             bannerSubheaderMultiloc={localSettings.banner_subheader_multiloc}
             onHeaderChange={handleSignedOutMultilocHeaderOnChange}
             onSubheaderChange={handleSignedOutMultilocSubheaderOnChange}
-            titleMessage={messages.bannerTextTitle}
-            inputLabelMessage={messages.bannerHeaderSignedOut}
+            title={formatMessage(messages.bannerTextTitle)}
+            inputLabelText={formatMessage(messages.bannerHeaderSignedOut)}
           />
         }
       />

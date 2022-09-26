@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Multiloc } from 'typings';
 
 // components
-import GenericHeroBannerForm from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm';
-import {
-  pagesAndMenuBreadcrumb,
-  homeBreadcrumb,
-} from 'containers/Admin/pagesAndMenu/breadcrumbs';
-import AvatarsField from '../../containers/GenericHeroBannerForm/AvatarsField';
-import BannerHeaderMultilocField from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerHeaderMultilocField';
-import Outlet from 'components/Outlet';
-import BannerHeaderFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerHeaderFields';
-import BannerImageFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerImageFields';
 import { ISubmitState } from 'components/admin/SubmitWrapper';
+import Outlet from 'components/Outlet';
+import {
+  homeBreadcrumb,
+  pagesAndMenuBreadcrumb,
+} from 'containers/Admin/pagesAndMenu/breadcrumbs';
+import GenericHeroBannerForm from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm';
+import BannerHeaderFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerHeaderFields';
+import BannerHeaderMultilocField from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerHeaderMultilocField';
+import BannerImageFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerImageFields';
+import AvatarsField from '../../containers/GenericHeroBannerForm/AvatarsField';
 
 // resources
 import useHomepageSettings from 'hooks/useHomepageSettings';
@@ -22,13 +22,13 @@ import {
 } from 'services/homepageSettings';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import { forOwn, isEqual } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
-import messages from '../../containers/GenericHeroBannerForm/messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
+import messages from '../../containers/GenericHeroBannerForm/messages';
 
 const EditHomepageHeroBannerForm = ({
   intl: { formatMessage },
@@ -177,8 +177,8 @@ const EditHomepageHeroBannerForm = ({
             }
             onHeaderChange={handleHeaderSignedOutMultilocOnChange}
             onSubheaderChange={handleSubheaderSignedOutMultilocOnChange}
-            titleMessage={messages.bannerTextTitle}
-            inputLabelMessage={messages.bannerHeaderSignedOut}
+            title={formatMessage(messages.bannerTextTitle)}
+            inputLabelText={formatMessage(messages.bannerHeaderSignedOut)}
           />
         }
         outletSectionStart={
