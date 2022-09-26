@@ -6,7 +6,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { Radio } from '@citizenlab/cl2-component-library';
 import CustomizedButtonSettings from './CustomizedButtonSettings';
 import styled from 'styled-components';
-import { BannerSettingKeyType } from '.';
+import { BannerSettingKeyType } from 'containers/Admin/pagesAndMenu/EditHomepage/HeroBanner';
 
 const StyledCustomizedButtonSettings = styled(CustomizedButtonSettings)`
   margin-left: 28px;

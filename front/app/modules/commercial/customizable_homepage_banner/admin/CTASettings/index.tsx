@@ -7,16 +7,7 @@ import CTASignedInSettings from './CTASignedInSettings';
 import 'utils/moduleUtils';
 import { CLErrors } from 'typings';
 import { IHomepageSettingsAttributes } from 'services/homepageSettings';
-
-export type BannerSettingKeyType = Extract<
-  keyof Props,
-  | 'banner_cta_signed_in_text_multiloc'
-  | 'banner_cta_signed_out_text_multiloc'
-  | 'banner_cta_signed_in_url'
-  | 'banner_cta_signed_out_url'
-  | 'banner_cta_signed_out_type'
-  | 'banner_cta_signed_in_type'
->;
+import { BannerSettingKeyType } from 'containers/Admin/pagesAndMenu/EditHomepage/HeroBanner';
 
 interface Props {
   banner_cta_signed_in_text_multiloc: IHomepageSettingsAttributes['banner_cta_signed_in_text_multiloc'];
@@ -26,7 +17,7 @@ interface Props {
   // todo: type these better, probably means moving CTA types to main app
   banner_cta_signed_out_type: IHomepageSettingsAttributes['banner_cta_signed_out_type'];
   banner_cta_signed_in_type: IHomepageSettingsAttributes['banner_cta_signed_in_type'];
-  handleOnChange: (settingKey: any, settingValue: any) => void;
+  handleOnChange: (settingKey: BannerSettingKeyType, settingValue: any) => void;
   errors?: CLErrors | undefined | null;
 }
 

@@ -6,7 +6,7 @@ import { CTASignedOutType } from 'services/homepageSettings';
 import SettingRadioButtons from './SettingRadioButtons';
 import { CLErrors, Multiloc } from 'typings';
 import SettingsLabel from './SettingsLabel';
-import { BannerSettingKeyType } from '.';
+import { BannerSettingKeyType } from 'containers/Admin/pagesAndMenu/EditHomepage/HeroBanner';
 
 const CTA_SIGNED_OUT_TYPES: CTASignedOutType[] = [
   'sign_up_button',

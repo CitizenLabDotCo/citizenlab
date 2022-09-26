@@ -7,7 +7,7 @@ import { CTASignedInType } from 'services/homepageSettings';
 import SettingRadioButtons from './SettingRadioButtons';
 import { CLErrors, Multiloc } from 'typings';
 import SettingsLabel from './SettingsLabel';
-import { BannerSettingKeyType } from '.';
+import { BannerSettingKeyType } from 'containers/Admin/pagesAndMenu/EditHomepage/HeroBanner';
 
 const CTA_SIGNED_IN_TYPES: CTASignedInType[] = [
   'customized_button',

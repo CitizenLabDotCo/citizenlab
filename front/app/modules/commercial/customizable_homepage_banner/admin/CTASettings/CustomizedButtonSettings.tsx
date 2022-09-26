@@ -13,7 +13,7 @@ import { InjectedIntlProps } from 'react-intl';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
-import { BannerSettingKeyType } from '.';
+import { BannerSettingKeyType } from 'containers/Admin/pagesAndMenu/EditHomepage/HeroBanner';
 
 const TextSettings = styled.div`
   margin-top: 10px;

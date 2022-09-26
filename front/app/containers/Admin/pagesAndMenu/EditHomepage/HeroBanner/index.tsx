@@ -30,6 +30,16 @@ import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../../containers/GenericHeroBannerForm/messages';
 
+export type BannerSettingKeyType = Extract<
+  keyof IHomepageSettingsAttributes,
+  | 'banner_cta_signed_in_text_multiloc'
+  | 'banner_cta_signed_out_text_multiloc'
+  | 'banner_cta_signed_in_url'
+  | 'banner_cta_signed_out_url'
+  | 'banner_cta_signed_out_type'
+  | 'banner_cta_signed_in_type'
+>;
+
 const EditHomepageHeroBannerForm = ({
   intl: { formatMessage },
 }: InjectedIntlProps) => {
