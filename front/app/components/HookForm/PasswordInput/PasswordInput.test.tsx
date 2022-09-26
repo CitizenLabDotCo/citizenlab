@@ -13,7 +13,7 @@ const schema = object({
 jest.mock('utils/cl-intl');
 jest.mock('hooks/useLocale');
 jest.mock('hooks/useAppConfiguration', () => () => ({
-  data: { attributes: { settings: { password_login: { minimum_length: 8 } } } },
+  attributes: { settings: { password_login: { minimum_length: 8 } } },
 }));
 
 const onSubmit = jest.fn();
