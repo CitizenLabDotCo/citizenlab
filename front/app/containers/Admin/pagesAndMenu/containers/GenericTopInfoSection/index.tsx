@@ -18,6 +18,7 @@ import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWi
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
+import HelmetIntl from 'components/HelmetIntl';
 
 // typings
 import { Multiloc } from 'typings';
@@ -74,37 +75,40 @@ const GenericTopInfoSection = ({
   });
 
   return (
-    <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onFormSubmit)}>
-        <SectionFormWrapper
-          breadcrumbs={[
-            {
-              label: formatMessage(pagesAndMenuBreadcrumb.label),
-              linkTo: pagesAndMenuBreadcrumb.linkTo,
-            },
-            ...breadcrumbs,
-            { label: formatMessage(messages.topInfoPageTitle) },
-          ]}
-          title={formatMessage(messages.topInfoPageTitle)}
-        >
-          <Feedback
-            successMessage={formatMessage(messages.topInfoMessageSuccess)}
-          />
-          <Box maxWidth={`${theme.maxPageWidth - 100}px`} mb="24px">
-            <QuillMultilocWithLocaleSwitcher
-              name="top_info_section_multiloc"
-              label={formatMessage(messages.topInfoContentEditorTitle)}
-              withCTAButton
+    <>
+      <HelmetIntl title={messages.topInfoMetaTitle} />
+      <FormProvider {...methods}>
+        <form onSubmit={methods.handleSubmit(onFormSubmit)}>
+          <SectionFormWrapper
+            breadcrumbs={[
+              {
+                label: formatMessage(pagesAndMenuBreadcrumb.label),
+                linkTo: pagesAndMenuBreadcrumb.linkTo,
+              },
+              ...breadcrumbs,
+              { label: formatMessage(messages.topInfoPageTitle) },
+            ]}
+            title={formatMessage(messages.topInfoPageTitle)}
+          >
+            <Feedback
+              successMessage={formatMessage(messages.topInfoMessageSuccess)}
             />
-          </Box>
-          <Box display="flex">
-            <Button type="submit" processing={methods.formState.isSubmitting}>
-              {formatMessage(messages.topInfoSaveButton)}
-            </Button>
-          </Box>
-        </SectionFormWrapper>
-      </form>
-    </FormProvider>
+            <Box maxWidth={`${theme.maxPageWidth - 100}px`} mb="24px">
+              <QuillMultilocWithLocaleSwitcher
+                name="top_info_section_multiloc"
+                label={formatMessage(messages.topInfoContentEditorTitle)}
+                withCTAButton
+              />
+            </Box>
+            <Box display="flex">
+              <Button type="submit" processing={methods.formState.isSubmitting}>
+                {formatMessage(messages.topInfoSaveButton)}
+              </Button>
+            </Box>
+          </SectionFormWrapper>
+        </form>
+      </FormProvider>
+    </>
   );
 };
 

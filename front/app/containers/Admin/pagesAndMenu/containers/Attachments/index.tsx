@@ -15,6 +15,7 @@ import messages from './messages';
 import useLocalize from 'hooks/useLocalize';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import HelmetIntl from 'components/HelmetIntl';
 
 // form
 import { useForm, FormProvider } from 'react-hook-form';
@@ -100,48 +101,51 @@ const AttachmentsForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   }
 
   return (
-    <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onFormSubmit)}>
-        <SectionFormWrapper
-          title={formatMessage(messages.pageTitle)}
-          breadcrumbs={[
-            {
-              label: formatMessage(pagesAndMenuBreadcrumb.label),
-              linkTo: pagesAndMenuBreadcrumb.linkTo,
-            },
-            {
-              label: localize(customPage.attributes.title_multiloc),
-              linkTo: `${PAGES_MENU_CUSTOM_PATH}/${customPageId}/content`,
-            },
-            {
-              label: formatMessage(messages.pageTitle),
-            },
-          ]}
-        >
-          <Feedback successMessage={formatMessage(messages.messageSuccess)} />
-          <SectionField>
-            <Label htmlFor="local_page_files">
-              <FormattedMessage {...messages.attachmentUploadLabel} />
-              <IconTooltip
-                content={
-                  <FormattedMessage {...messages.attachmentUploadTooltip} />
-                }
+    <>
+      <HelmetIntl title={messages.pageMetaTitle} />
+      <FormProvider {...methods}>
+        <form onSubmit={methods.handleSubmit(onFormSubmit)}>
+          <SectionFormWrapper
+            title={formatMessage(messages.pageTitle)}
+            breadcrumbs={[
+              {
+                label: formatMessage(pagesAndMenuBreadcrumb.label),
+                linkTo: pagesAndMenuBreadcrumb.linkTo,
+              },
+              {
+                label: localize(customPage.attributes.title_multiloc),
+                linkTo: `${PAGES_MENU_CUSTOM_PATH}/${customPageId}/content`,
+              },
+              {
+                label: formatMessage(messages.pageTitle),
+              },
+            ]}
+          >
+            <Feedback successMessage={formatMessage(messages.messageSuccess)} />
+            <SectionField>
+              <Label htmlFor="local_page_files">
+                <FormattedMessage {...messages.attachmentUploadLabel} />
+                <IconTooltip
+                  content={
+                    <FormattedMessage {...messages.attachmentUploadTooltip} />
+                  }
+                />
+              </Label>
+              <FileUploader
+                name="local_page_files"
+                resourceId={customPageId}
+                resourceType="page"
               />
-            </Label>
-            <FileUploader
-              name="local_page_files"
-              resourceId={customPageId}
-              resourceType="page"
-            />
-          </SectionField>
-          <Box display="flex">
-            <Button type="submit" processing={methods.formState.isSubmitting}>
-              <FormattedMessage {...messages.saveButton} />
-            </Button>
-          </Box>
-        </SectionFormWrapper>
-      </form>
-    </FormProvider>
+            </SectionField>
+            <Box display="flex">
+              <Button type="submit" processing={methods.formState.isSubmitting}>
+                <FormattedMessage {...messages.saveButton} />
+              </Button>
+            </Box>
+          </SectionFormWrapper>
+        </form>
+      </FormProvider>
+    </>
   );
 };
 
