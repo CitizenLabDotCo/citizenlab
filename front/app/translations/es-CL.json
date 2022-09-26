@@ -1287,7 +1287,7 @@
   "app.containers.UsersEditPage.feedbackLinkText": "Haz clic aquí",
   "app.containers.UsersEditPage.feedbackLinkUrl": "https://citizenlabco.typeform.com/to/PAglUWkY#source={url}",
   "app.containers.UsersEditPage.firstNames": "Nombre",
-  "app.containers.UsersEditPage.firstNamesEmptyError": "Provide a first name",
+  "app.containers.UsersEditPage.firstNamesEmptyError": "Proporcionar nombres de pila",
   "app.containers.UsersEditPage.h1": "La información de su cuenta",
   "app.containers.UsersEditPage.h1sub": "Editar la información de su cuenta",
   "app.containers.UsersEditPage.image": "Imagen de avatar",
