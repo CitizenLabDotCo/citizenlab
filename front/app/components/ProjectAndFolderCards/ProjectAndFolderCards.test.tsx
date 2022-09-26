@@ -77,14 +77,12 @@ jest.mock('hooks/useLocale');
 
 jest.mock('hooks/useAppConfiguration', () =>
   jest.fn(() => ({
-    data: {
-      attributes: {
-        settings: {
-          core: {
-            currently_working_on_text: { en: 'Working on text' },
-            area_term: { en: 'Area' },
-            topic_term: { en: 'Topic' },
-          },
+    attributes: {
+      settings: {
+        core: {
+          currently_working_on_text: { en: 'Working on text' },
+          area_term: { en: 'Area' },
+          topic_term: { en: 'Topic' },
         },
       },
     },

@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
 module IdViennaSaml
-  # Provides a SAML Omniauth configuration for Vienna's StandardPortal.
-  class IdViennaSamlOmniauth
+  # Provides a SAML Omniauth configuration for Vienna city employees.
+  class EmployeeSamlOmniauth
     # The Issuer is hardcoded on Vienna's side and needs to match exactly.
     ENVIRONMENTS = {
       test: {
         issuer: 'CitizenLab',
-        metadata_xml_file: File.join(IdViennaSaml::Engine.root, 'config', 'idp_metadata_test.xml')
+        metadata_xml_file: File.join(IdViennaSaml::Engine.root, 'config', 'saml', 'employee', 'idp_metadata_test.xml')
       },
       production: {
         issuer: 'CitizenLabWien',
-        metadata_xml_file: File.join(IdViennaSaml::Engine.root, 'config', 'idp_metadata_production.xml')
+        metadata_xml_file: File.join(IdViennaSaml::Engine.root, 'config', 'saml', 'employee', 'idp_metadata_production.xml')
       }
     }.freeze
 
@@ -29,12 +29,12 @@ module IdViennaSaml
       }
     end
 
-    # Configures the SAML endpoint to authenticate with Vienna's StandardPortal
+    # Configures the SAML endpoint to authenticate with Vienna's IdP for employees
     # if the feature is enabled.
     # Most of the settings are read from the XML file that Vienna shared with us.
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
-      return unless configuration.feature_activated?('vienna_login')
+      return unless configuration.feature_activated?('vienna_employee_login')
 
       metadata_file = ENVIRONMENTS.dig(vienna_login_env, :metadata_xml_file)
       issuer = ENVIRONMENTS.dig(vienna_login_env, :issuer)
@@ -65,12 +65,12 @@ module IdViennaSaml
     # @param [AppConfiguration] configuration
     # @return [String] The path to the callback URL
     def redirect_uri(configuration)
-      "#{configuration.base_backend_uri}/auth/saml/callback"
+      "#{configuration.base_backend_uri}/auth/vienna_employee/callback"
     end
 
     # @return [Symbol] The configured Vienna Login environment as a symbol
     def vienna_login_env
-      AppConfiguration.instance.settings('vienna_login', 'environment').to_sym
+      AppConfiguration.instance.settings('vienna_employee_login', 'environment').to_sym
     end
   end
 end

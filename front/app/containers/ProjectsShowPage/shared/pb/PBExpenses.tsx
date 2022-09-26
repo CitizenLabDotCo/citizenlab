@@ -321,7 +321,7 @@ const PBExpenses = ({
     ((participationContextType === 'project' && !isNilOrError(project)) ||
       (participationContextType === 'phase' && !isNilOrError(phase)))
   ) {
-    const currency = appConfiguration.data.attributes.settings.core.currency;
+    const currency = appConfiguration.attributes.settings.core.currency;
     const spentBudget = !isNilOrError(basket)
       ? basket.attributes.total_budget
       : 0;

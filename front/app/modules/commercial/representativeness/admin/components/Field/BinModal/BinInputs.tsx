@@ -118,7 +118,9 @@ const BinInputRow = injectIntl(
     return (
       <Box display="flex" flexDirection="row" mt="10px" mb="10px">
         <Box width="25%">
-          <Text color="adminTextColor">Age group {binIndex + 1}</Text>
+          <Text color="adminTextColor">
+            {formatMessage(messages.ageGroupX, { number: binIndex + 1 })}
+          </Text>
         </Box>
         <Box width="25%" pr="24px" display="flex" alignItems="center">
           <Input

@@ -55,7 +55,7 @@ export default defineMessages({
   },
   lastNameEmptyError: {
     id: 'app.containers.UsersEditPage.lastNameEmptyError',
-    defaultMessage: 'Provide a last names',
+    defaultMessage: 'Provide a last name',
   },
   email: {
     id: 'app.containers.UsersEditPage.email',
