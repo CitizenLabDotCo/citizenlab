@@ -35,7 +35,7 @@ const GraphCard = ({
             <IconTooltip
               content={infoTooltipContent}
               ml="8px"
-              mt="-2px"
+              transform="translate(0,-2)"
               theme="light"
             />
           )}

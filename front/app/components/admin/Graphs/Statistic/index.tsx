@@ -1,7 +1,12 @@
 import React from 'react';
 
 // components
-import { Box, Text, Icon, IconTooltip } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Text,
+  Icon,
+  IconTooltip,
+} from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 
 // styling
@@ -41,6 +46,7 @@ const Statistic = ({
           <IconTooltip
             content={tooltipContent}
             theme="light"
+            transform="translate(0,-2)"
           />
         </Box>
       )}
@@ -59,6 +65,7 @@ const Statistic = ({
                 width={`${fontSizes.s}px`}
                 height={`${fontSizes.s}px`}
                 fill={colors.clBlueLight}
+                transform="translate(0,-1)"
               />
             </Box>
           </Tippy>
