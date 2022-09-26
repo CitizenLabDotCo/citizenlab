@@ -414,7 +414,7 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
       const submitErrorMessage = submitError ? (
         <FormattedMessage {...messages.submitError} />
       ) : null;
-
+      const a = '';
       if (projectId) {
         return (
           <Container>
