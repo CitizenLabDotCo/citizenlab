@@ -27,7 +27,7 @@ class CreateFactVisits < ActiveRecord::Migration[6.1]
       # Fact data
       t.integer :duration, null: false
       t.integer :pages_visited, null: false
-      t.boolean :returning_visitor, null: false, default: true
+      t.boolean :returning_visitor, null: false, default: false
 
       # Metadata to join enable updating from matomo data
       t.integer :matomo_visit_id, null: false, index: { unique: true, name: 'i_v_matomo_visit' }
