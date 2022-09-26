@@ -1,39 +1,6 @@
 import { randomString } from '../support/commands';
-import { skipOn } from '@cypress/skip-test';
 
-describe('Existing continuous project with survey', () => {
-  before(() => {
-    cy.setAdminLoginCookie();
-    cy.visit('/projects/charlie-crew-survey');
-    cy.get('#e2e-project-page');
-    cy.wait(1000);
-  });
-
-  it('shows the correct project header', () => {
-    cy.get('#e2e-project-description');
-    cy.get('#e2e-project-sidebar');
-    cy.get('#e2e-project-sidebar-share-button');
-  });
-
-  it('shows the survey', () => {
-    cy.get('.e2e-continuous-project-survey-container');
-    cy.get('.e2e-typeform-survey');
-    cy.wait(3000);
-    cy.get('.e2e-typeform-survey iframe');
-
-    // This test always fails on firefox, even though it's
-    // working fine. For now we will skip it
-    // https://stackoverflow.com/a/64939524
-    skipOn('firefox', () => {
-      cy.get('.e2e-typeform-survey iframe').then(($iframe) => {
-        const $body = $iframe.contents().find('body');
-        cy.wrap($body).find('#root').contains('Enter');
-      });
-    });
-  });
-});
-
-describe('New continuous project with survey', () => {
+describe('New continuous project with native survey', () => {
   const projectTitle = randomString();
   const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
@@ -47,9 +14,7 @@ describe('New continuous project with survey', () => {
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
       publicationStatus: 'published',
-      participationMethod: 'survey',
-      surveyUrl: 'https://citizenlabco.typeform.com/to/Yv6B7V',
-      surveyService: 'typeform',
+      participationMethod: 'native_survey',
     }).then((project) => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
@@ -68,18 +33,9 @@ describe('New continuous project with survey', () => {
     cy.get('#e2e-project-sidebar-share-button');
   });
 
-  it('shows the survey', () => {
-    cy.get('.e2e-continuous-project-survey-container');
-    cy.get('.e2e-typeform-survey');
-    cy.wait(3000);
-    cy.get('.e2e-typeform-survey iframe');
-
-    skipOn('firefox', () => {
-      cy.get('.e2e-typeform-survey iframe').then(($iframe) => {
-        const $body = $iframe.contents().find('body');
-        cy.wrap($body).find('#root').contains('Start');
-      });
-    });
+  it('shows the survey buttons', () => {
+    cy.contains('Take the survey').should('exist');
+    cy.contains('1 survey').should('exist');
   });
 
   after(() => {
@@ -87,7 +43,7 @@ describe('New continuous project with survey', () => {
   });
 });
 
-describe('Timeline project with survey phase', () => {
+describe('Timeline project with native survey phase', () => {
   const projectTitle = randomString();
   const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
@@ -110,14 +66,12 @@ describe('Timeline project with survey phase', () => {
         projectId,
         phaseTitle,
         '2018-03-01',
-        '2025-01-01',
-        'survey',
+        '5025-01-01',
+        'native_survey',
         true,
         true,
         true,
-        'description',
-        'https://citizenlabco.typeform.com/to/Yv6B7V',
-        'typeform'
+        'description'
       );
     });
   });
@@ -128,17 +82,9 @@ describe('Timeline project with survey phase', () => {
     cy.wait(1000);
   });
 
-  it('shows the survey', () => {
-    cy.get('.e2e-typeform-survey');
-    cy.wait(3000);
-    cy.get('.e2e-typeform-survey iframe');
-
-    skipOn('firefox', () => {
-      cy.get('.e2e-typeform-survey iframe').then(($iframe) => {
-        const $body = $iframe.contents().find('body');
-        cy.wrap($body).find('#root').contains('Start');
-      });
-    });
+  it('shows the survey buttons', () => {
+    cy.contains('Take the survey').should('exist');
+    cy.contains('1 survey').should('exist');
   });
 
   after(() => {
@@ -146,7 +92,7 @@ describe('Timeline project with survey phase', () => {
   });
 });
 
-describe('Timeline project with survey phase but not active', () => {
+describe('Timeline project with native survey phase but not active', () => {
   const projectTitle = randomString();
   const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
@@ -170,13 +116,11 @@ describe('Timeline project with survey phase but not active', () => {
         phaseTitle,
         '2018-03-01',
         '2019-01-01',
-        'survey',
+        'native_survey',
         true,
         true,
         true,
-        'description',
-        'https://citizenlabco.typeform.com/to/Yv6B7V',
-        'typeform'
+        'description'
       );
     });
   });
@@ -186,7 +130,7 @@ describe('Timeline project with survey phase but not active', () => {
     cy.visit(`/projects/${projectSlug}`);
   });
 
-  it('does not show the survey or survey buttons', () => {
+  it('does not show the survey buttons', () => {
     cy.contains('Take the survey').should('not.exist');
     cy.contains('1 survey').should('not.exist');
   });
@@ -210,9 +154,7 @@ describe('Archived continuous project with survey', () => {
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
       publicationStatus: 'archived',
-      participationMethod: 'survey',
-      surveyUrl: 'https://citizenlabco.typeform.com/to/Yv6B7V',
-      surveyService: 'typeform',
+      participationMethod: 'native_survey',
     }).then((project) => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
@@ -224,7 +166,7 @@ describe('Archived continuous project with survey', () => {
     cy.visit(`/projects/${projectSlug}`);
   });
 
-  it('does not show the survey or survey buttons', () => {
+  it('does not show the survey buttons', () => {
     cy.contains('Take the survey').should('not.exist');
     cy.contains('1 survey').should('not.exist');
   });

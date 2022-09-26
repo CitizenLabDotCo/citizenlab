@@ -25,7 +25,7 @@ import {
 import { ISavedDestinations } from 'components/ConsentManager/consent';
 import { authUserStream } from 'services/auth';
 
-interface IEvent {
+export interface IEvent {
   name: string;
   properties?: {
     [key: string]: any;
