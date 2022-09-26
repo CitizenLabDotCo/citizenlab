@@ -202,7 +202,7 @@ const ProfileForm = ({
     ? []
     : lockedFields.map((field) => field.attributes.name);
 
-  const handleFormOnChange = ({
+  const handleCustomFieldsChange = ({
     key,
     formData,
   }: {
@@ -332,7 +332,7 @@ const ProfileForm = ({
         </form>
         <Outlet
           id="app.containers.UserEditPage.ProfileForm.forms"
-          onChange={handleFormOnChange}
+          onChange={handleCustomFieldsChange}
           authUser={authUser}
         />
         <Box display="flex">
