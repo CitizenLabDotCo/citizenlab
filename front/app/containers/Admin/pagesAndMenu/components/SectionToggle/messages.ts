@@ -53,6 +53,7 @@ export default defineMessages({
   },
   attachmentsSectionTooltip: {
     id: 'app.containers.Admin.PagesAndMenu.SectionToggle.attachmentsSectionTooltip',
-    defaultMessage: 'Add files and other things to the page',
+    defaultMessage:
+      'Add files (max. 50 MB) that will be available to download from the page.',
   },
 });
