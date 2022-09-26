@@ -1,6 +1,28 @@
 # Changelog
 
-### 2022-09-07_2
+## 2022-09-23
+
+### Fixed
+
+- [DISP-185] Fix 'Age group' copy not being translated
+
+## 2022-09-20
+
+## Added
+
+- Vienna citizen Single sign-on (StandardPortal)
+
+### Fixed
+
+- [CL-1586] Fix deleting folder and cause images
+
+## 2022-09-08
+
+### Fixed
+
+- Save button text in representation data input interface is now translated.
+
+## 2022-09-07_2
 
 ### Changed
 

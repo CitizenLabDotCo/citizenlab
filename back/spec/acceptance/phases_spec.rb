@@ -53,7 +53,7 @@ resource 'Phases' do
     end
   end
 
-  context 'when authenticated' do
+  context 'when authenticated as admin' do
     before do
       @user = create(:admin)
       token = Knock::AuthToken.new(payload: @user.to_token_payload).token
@@ -314,6 +314,121 @@ resource 'Phases' do
       example_request 'Delete a phase' do
         expect(response_status).to eq 200
         expect { Comment.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
+    get 'web_api/v1/phases/:id/survey_results' do
+      let(:project) { create(:project_with_active_native_survey_phase) }
+      let(:active_phase) { project.phases.first }
+      let(:form) { create(:custom_form, participation_context: active_phase) }
+      let(:id) { active_phase.id }
+      let(:multiselect_field) do
+        create(
+          :custom_field_multiselect,
+          resource: form,
+          title_multiloc: { 'en' => 'What are your favourite pets?' },
+          description_multiloc: {}
+        )
+      end
+      let!(:cat_option) do
+        create(:custom_field_option, custom_field: multiselect_field, key: 'cat', title_multiloc: { 'en' => 'Cat' })
+      end
+      let!(:dog_option) do
+        create(:custom_field_option, custom_field: multiselect_field, key: 'dog', title_multiloc: { 'en' => 'Dog' })
+      end
+      let!(:survey_response1) do
+        create(
+          :idea,
+          project: project,
+          phases: [active_phase],
+          custom_field_values: { multiselect_field.key => %w[cat dog] }
+        )
+      end
+      let!(:survey_response2) do
+        create(
+          :idea,
+          project: project,
+          phases: [active_phase],
+          custom_field_values: { multiselect_field.key => %w[cat] }
+        )
+      end
+
+      example 'Get survey results', skip: !CitizenLab.ee? do
+        do_request
+        expect(status).to eq 200
+
+        json_response = json_parse(response_body)
+        expect(json_response).to eq(
+          {
+            data: {
+              results: [
+                {
+                  inputType: 'multiselect',
+                  question: { en: 'What are your favourite pets?' },
+                  totalResponses: 3,
+                  answers: [
+                    { answer: { en: 'Cat' }, responses: 2 },
+                    { answer: { en: 'Dog' }, responses: 1 }
+                  ]
+                }
+              ],
+              totalSubmissions: 2
+            }
+          }
+        )
+      end
+    end
+
+    get 'web_api/v1/phases/:id/submission_count' do
+      let(:project) { create(:project_with_active_native_survey_phase) }
+      let(:active_phase) { project.phases.first }
+      let(:form) { create(:custom_form, participation_context: active_phase) }
+      let(:id) { active_phase.id }
+      let(:multiselect_field) do
+        create(
+          :custom_field_multiselect,
+          resource: form,
+          title_multiloc: { 'en' => 'What are your favourite pets?' },
+          description_multiloc: {}
+        )
+      end
+      let!(:cat_option) do
+        create(:custom_field_option, custom_field: multiselect_field, key: 'cat', title_multiloc: { 'en' => 'Cat' })
+      end
+      let!(:dog_option) do
+        create(:custom_field_option, custom_field: multiselect_field, key: 'dog', title_multiloc: { 'en' => 'Dog' })
+      end
+      let!(:survey_response1) do
+        create(
+          :idea,
+          project: project,
+          phases: [active_phase],
+          custom_field_values: { multiselect_field.key => %w[cat dog] }
+        )
+      end
+      let!(:survey_response2) do
+        create(
+          :idea,
+          project: project,
+          phases: [active_phase],
+          custom_field_values: { multiselect_field.key => %w[cat] }
+        )
+      end
+      let!(:survey_response3) do
+        create(
+          :idea,
+          project: project,
+          phases: [active_phase],
+          custom_field_values: { multiselect_field.key => %w[dog] }
+        )
+      end
+
+      example 'Get submission count', skip: !CitizenLab.ee? do
+        do_request
+        expect(status).to eq 200
+
+        json_response = json_parse(response_body)
+        expect(json_response).to eq({ data: { totalSubmissions: 3 } })
       end
     end
   end

@@ -284,7 +284,7 @@ const MainHeader = ({
   }, []);
 
   const tenantLocales = !isNilOrError(appConfiguration)
-    ? appConfiguration.data.attributes.settings.core.locales
+    ? appConfiguration.attributes.settings.core.locales
     : [];
   const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
   const firstUrlSegment = urlSegments[0];

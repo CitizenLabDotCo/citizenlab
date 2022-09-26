@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ProjectsController < ::ApplicationController
-  before_action :set_project, only: %i[show update reorder destroy]
+  before_action :set_project, only: %i[show update reorder destroy survey_results submission_count]
   skip_before_action :authenticate_user
   skip_after_action :verify_policy_scoped, only: :index
 
@@ -86,10 +86,8 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     project_params = permitted_attributes(Project)
 
     @project.assign_attributes project_params
-    if project_params.key?(:header_bg) && project_params[:header_bg].nil?
-      # setting the header image attribute to nil will not remove the header image
-      @project.remove_header_bg!
-    end
+    remove_image_if_requested!(@project, project_params, :header_bg)
+
     sidefx.before_update(@project, current_user)
 
     if save_project
@@ -112,6 +110,16 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     else
       head :internal_server_error
     end
+  end
+
+  def survey_results
+    results = SurveyResultsGeneratorService.new(@project).generate_results
+    render json: results
+  end
+
+  def submission_count
+    count = SurveyResultsGeneratorService.new(@project).generate_submission_count
+    render json: count
   end
 
   private

@@ -34,7 +34,7 @@ import Outlet from 'components/Outlet';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { slugRexEx } from 'utils/textUtils';
+import { slugRegEx } from 'utils/textUtils';
 
 // hooks
 import useLocale from 'hooks/useLocale';
@@ -81,7 +81,7 @@ const PageForm = ({
       }),
     ...(!hideSlugInput && {
       slug: string()
-        .matches(slugRexEx, formatMessage(messages.slugRegexError))
+        .matches(slugRegEx, formatMessage(messages.slugRegexError))
         .required(formatMessage(messages.blankSlugError)),
       local_page_files: mixed(),
     }),
@@ -146,7 +146,7 @@ const PageForm = ({
                         currentPageURL: (
                           <em>
                             <b>
-                              {appConfig.data.attributes.host}/{locale}
+                              {appConfig.attributes.host}/{locale}
                               /pages/{page.attributes.slug}
                             </b>
                           </em>
@@ -174,7 +174,7 @@ const PageForm = ({
               <b>
                 <FormattedMessage {...messages.resultingPageURL} />
               </b>
-              : {appConfig.data.attributes.host}/{locale}/pages/
+              : {appConfig.attributes.host}/{locale}/pages/
               {methods.getValues('slug')}
             </Text>
           </SectionField>

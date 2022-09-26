@@ -175,6 +175,14 @@ class JsonSchemaGeneratorService < FieldVisitorService
     }
   end
 
+  def visit_linear_scale(field)
+    {
+      type: 'number',
+      minimum: 1,
+      maximum: field.maximum
+    }
+  end
+
   private
 
   attr_reader :locales, :multiloc_service

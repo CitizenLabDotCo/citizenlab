@@ -222,7 +222,7 @@ const IdeaMapCard = memo<Props>(
       !isNilOrError(ideaMarker) &&
       !isNilOrError(project)
     ) {
-      const tenantCurrency = tenant.data.attributes.settings.core.currency;
+      const tenantCurrency = tenant.attributes.settings.core.currency;
       const ideaBudget = ideaMarker.attributes?.budget;
       const votingActionDescriptor =
         project.attributes.action_descriptor.voting_idea;
