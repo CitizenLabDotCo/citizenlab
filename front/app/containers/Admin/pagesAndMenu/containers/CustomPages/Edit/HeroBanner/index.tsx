@@ -1,7 +1,6 @@
-import {
-  homeBreadcrumb,
-  pagesAndMenuBreadcrumb,
-} from 'containers/Admin/pagesAndMenu/breadcrumbs';
+import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
+import { PAGES_MENU_CUSTOM_PATH } from 'containers/Admin/pagesAndMenu/routes';
+
 import BannerHeaderFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerHeaderFields';
 import BannerImageFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerImageFields';
 import useCustomPage from 'hooks/useCustomPage';
@@ -19,10 +18,12 @@ import { InjectedIntlProps } from 'react-intl';
 import { THomepageBannerLayout } from 'services/homepageSettings';
 import { Multiloc } from 'typings';
 import { injectIntl } from 'utils/cl-intl';
+import useLocalize from 'hooks/useLocalize';
 
 const EditCustomPageHeroBannerForm = ({
   intl: { formatMessage },
 }: InjectedIntlProps) => {
+  const localize = useLocalize();
   const [isLoading, setIsLoading] = useState(false);
   const [formStatus, setFormStatus] = useState<ISubmitState>('disabled');
   const [localSettings, setLocalSettings] =
@@ -117,8 +118,8 @@ const EditCustomPageHeroBannerForm = ({
             linkTo: pagesAndMenuBreadcrumb.linkTo,
           },
           {
-            label: formatMessage(homeBreadcrumb.label),
-            linkTo: homeBreadcrumb.linkTo,
+            label: localize(customPage.attributes.title_multiloc),
+            linkTo: `${PAGES_MENU_CUSTOM_PATH}/${customPageId}/content`,
           },
           { label: formatMessage(messages.heroBannerTitle) },
         ]}
