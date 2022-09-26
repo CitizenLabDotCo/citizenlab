@@ -12,6 +12,10 @@ module ParticipationMethod
       input.update_column :slug, new_slug
     end
 
+    def assign_default_idea_status(input)
+      # Default is to do nothing.
+    end
+
     def assign_defaults(input)
       input.publication_status = 'published'
       input.idea_status = IdeaStatus.find_by!(code: 'proposed')
