@@ -11,7 +11,7 @@ type ParticipationMethodConfig = {
    * defines which UI, if any, the method uses */
   formEditor: 'simpleFormEditor' | 'surveyEditor' | null;
   onFormSubmission?: any;
-  getSubmissionMessage?: any;
+  getModalContent?: any;
 };
 
 const ideationConfig: ParticipationMethodConfig = {
@@ -32,7 +32,7 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
       search: `?show_modal=true`,
     });
   },
-  getSubmissionMessage: () => {
+  getModalContent: () => {
     return <FormattedMessage {...messages.onSurveySubmission} />;
   },
 };
