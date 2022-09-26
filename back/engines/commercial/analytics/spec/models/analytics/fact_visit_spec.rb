@@ -33,17 +33,18 @@ RSpec.describe Analytics::FactVisit, type: :model do
     assert(visit.dimension_locales[1].id == locale_nl.id)
   end
 
-  it 'Can create a visit with no user' do
-    create(:fact_visit_no_user)
-  end
-
   it 'Can associate a visit with a user in dimension_users db view' do
     user = create(:user)
     dimension_user = Analytics::DimensionUser.first
 
-    visit = create(:fact_visit_no_user)
+    visit = create(:fact_visit)
     visit.dimension_user = dimension_user
 
     assert(visit.dimension_user.id == user.id)
+  end
+
+  it 'Cannot create another visit with the same matomo visit ID' do
+    create(:fact_visit, matomo_visit_id: 1)
+    expect { create(:fact_visit, matomo_visit_id: 1) }.to raise_error ActiveRecord::RecordNotUnique
   end
 end

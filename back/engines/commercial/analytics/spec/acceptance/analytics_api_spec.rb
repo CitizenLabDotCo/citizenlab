@@ -55,6 +55,10 @@ resource 'Analytics API', use_transactional_fixtures: false do
         assert_status 400
         expect(json_response_body[:messages]).to eq(["Aggregations on 'all' can only be 'count'."])
       end
+
+      example 'Rejects non-existent dimensions' do
+        #  TODO:
+      end
     end
 
     context 'When not admin' do
