@@ -3,8 +3,8 @@ import React, { ReactElement } from 'react';
 // components
 import { Section } from 'components/admin/Section';
 
-import SectionFormWrapper from '../../components/SectionFormWrapper';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
+import SectionFormWrapper from '../../components/SectionFormWrapper';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -16,7 +16,6 @@ import { TBreadcrumbs } from 'components/UI/Breadcrumbs';
 // constants
 import Warning from 'components/UI/Warning';
 
-// names differ slightly between HomePage and CustomPage
 interface Props {
   breadcrumbs: TBreadcrumbs;
   title?: string | JSX.Element;
