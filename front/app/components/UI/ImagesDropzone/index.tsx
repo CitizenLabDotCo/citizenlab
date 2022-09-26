@@ -198,7 +198,7 @@ const RemoveButton = styled.button`
   }
 `;
 
-interface Props {
+export interface Props {
   id?: string;
   images: UploadFile[] | null;
   acceptedFileTypes?: Accept;

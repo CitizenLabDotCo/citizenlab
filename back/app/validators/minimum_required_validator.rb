@@ -16,7 +16,7 @@ class MinimumRequiredValidator < ActiveModel::EachValidator
 
     return unless updating_required_value? || destroying_required_object?
 
-    record.errors.add(attribute, :value_required, message: 'is required and cannot be changed or deleted.')
+    record.errors.add(attribute, :invalid, message: 'is required and cannot be changed or deleted.')
   end
 
   private
