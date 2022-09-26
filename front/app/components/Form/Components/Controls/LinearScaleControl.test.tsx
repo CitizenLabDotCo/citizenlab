@@ -15,14 +15,9 @@ const mockJSONSchema = {
   additionalProperties: false,
   properties: {
     linear_scale: {
-      type: 'object',
-      properties: {
-        rating: {
-          type: 'integer',
-          minimum: 1,
-          maximum: 5,
-        },
-      },
+      type: 'number',
+      minimum: 1,
+      maximum: 5,
     },
   },
   required: ['linear_scale'],
