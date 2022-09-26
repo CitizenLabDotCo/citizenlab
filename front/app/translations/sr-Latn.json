@@ -1287,7 +1287,7 @@
   "app.containers.UsersEditPage.feedbackLinkText": "Kažite nam",
   "app.containers.UsersEditPage.feedbackLinkUrl": "https://citizenlabco.typeform.com/to/z7baRP?source={url}",
   "app.containers.UsersEditPage.firstNames": "Ime",
-  "app.containers.UsersEditPage.firstNamesEmptyError": "Provide a first name",
+  "app.containers.UsersEditPage.firstNamesEmptyError": "Navedi imena",
   "app.containers.UsersEditPage.h1": "Informacije o vašem nalogu",
   "app.containers.UsersEditPage.h1sub": "Izmenite informacije o vašem nalogu",
   "app.containers.UsersEditPage.image": "Slika avatara",
