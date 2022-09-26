@@ -29,8 +29,8 @@ namespace :analytics do
       (from..to).each do |date|
         new_date = Analytics::DimensionDate.new
         new_date.date = date
-        new_date.day = date.day
-        new_date.month = date.month
+        new_date.week = date.beginning_of_week.to_date
+        new_date.month = "#{date.year}-#{date.strftime('%m')}"
         new_date.year = date.year
         new_date.save
       end
@@ -51,6 +51,29 @@ namespace :analytics do
       end
     end
   end
+
+  desc 'Populate locale dimensions from tenant config'
+  task :populate_locale_dimension, %i[host] => [:environment] do |_t, _args|
+    # Apartment::Tenant.switch(args[:host].tr('.', '_')) do
+    Apartment::Tenant.switch('localhost') do
+      locales = AppConfiguration.instance.settings('core', 'locales')
+      locales.each do |locale_name|
+        puts locale_name
+        next if Analytics::DimensionLocale.exists?(name: locale_name)
+
+        new_locale = Analytics::DimensionLocale.new
+        new_locale.name = locale_name
+        new_locale.save
+      end
+    end
+  end
+
+  desc 'Populate channel dimensions from translations'
+  task :populate_channel_dimension, %i[host] => [:environment] do |_t, args|
+    Apartment::Tenant.switch(args[:host].tr('.', '_')) do
+      # TODO: How do we get translations?
+    end
+  end
 end
 
 Rake::Task['analytics:install:migrations'].enhance(['analytics:copy_views'])
@@ -59,6 +82,7 @@ def populate_dimensions
   Tenant.not_deleted.each do |tenant|
     Rake::Task['analytics:populate_date_dimension'].execute(host: tenant.schema_name)
     Rake::Task['analytics:populate_type_dimension'].execute(host: tenant.schema_name, types: 'idea%post|initiative%post|comment%nil|vote%nil')
+    Rake::Task['analytics:populate_locale_dimension'].execute(host: tenant.schema_name)
   end
 end
 

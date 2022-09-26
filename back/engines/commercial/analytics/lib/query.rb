@@ -4,7 +4,8 @@ module Analytics
   class Query
     MODELS = {
       post: FactPost,
-      participation: FactParticipation
+      participation: FactParticipation,
+      visit: FactVisit
     }.freeze
 
     def initialize(query)
@@ -39,12 +40,12 @@ module Analytics
 
     def all_dimensions
       @all_dimensions ||= model
-        .reflect_on_all_associations(:belongs_to)
+        .reflect_on_all_associations
         .to_h do |assoc|
           [
             assoc.name.to_s,
             {
-              columns: "Analytics::#{assoc.options[:class_name]}".constantize.new.attributes.keys,
+              columns: assoc.options[:class_name].constantize.new.attributes.keys,
               primary_key: assoc.options.key?(:primary_key) ? assoc.options[:primary_key] : nil
             }
           ]
@@ -121,6 +122,8 @@ module Analytics
       aggregations.map do |column, aggregation|
         if aggregation == 'count' && column == 'all'
           Arel.sql('COUNT(*) as count')
+        elsif aggregation == 'count'
+          Arel.sql("COUNT(DISTINCT #{column}) as #{aggregation_alias(column, aggregation)}")
         elsif aggregation == 'first'
           "array_agg(#{column}) as #{aggregation_alias(column, aggregation)}"
         else
