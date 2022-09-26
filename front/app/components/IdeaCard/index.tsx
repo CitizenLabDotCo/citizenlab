@@ -19,9 +19,6 @@ import useIdeaImage from 'hooks/useIdeaImage';
 import useProject from 'hooks/useProject';
 import useLocalize from 'hooks/useLocalize';
 
-// i18n
-import { FormattedRelative } from 'react-intl';
-
 // utils
 import { get } from 'lodash-es';
 import eventEmitter from 'utils/eventEmitter';
@@ -31,6 +28,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 import { transparentize } from 'polished';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
+import { timeAgo } from 'utils/dateUtils';
+import useLocale from 'hooks/useLocale';
 
 const BodyWrapper = styled.div`
   display: flex;
@@ -119,6 +118,7 @@ const CompactIdeaCard = memo<Props>(
     hideImagePlaceholder = false,
     hideIdeaStatus = false,
   }) => {
+    const locale = useLocale();
     const localize = useLocalize();
     const idea = useIdea({ ideaId });
     const project = useProject({
@@ -131,7 +131,7 @@ const CompactIdeaCard = memo<Props>(
       ideaImageId: get(idea, 'relationships.idea_images.data[0].id'),
     });
 
-    if (isNilOrError(idea)) {
+    if (isNilOrError(idea) || isNilOrError(locale)) {
       return null;
     }
 
@@ -223,10 +223,7 @@ const CompactIdeaCard = memo<Props>(
               <StyledUserName userId={authorId || null} />
               <Separator aria-hidden>&bull;</Separator>
               <TimeAgo>
-                <FormattedRelative
-                  value={idea.attributes.created_at}
-                  style="numeric"
-                />
+                {timeAgo(Date.parse(idea.attributes.created_at), locale)}
               </TimeAgo>
               <span aria-hidden> {bodyText}</span>
             </Body>
