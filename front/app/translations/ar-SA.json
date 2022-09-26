@@ -1290,7 +1290,7 @@
   "app.containers.UsersEditPage.feedbackLinkText": "أخبرنا",
   "app.containers.UsersEditPage.feedbackLinkUrl": "https://citizenlabco.typeform.com/to/z7baRP?source={url}",
   "app.containers.UsersEditPage.firstNames": "الاسم الأول",
-  "app.containers.UsersEditPage.firstNamesEmptyError": "Provide a first name",
+  "app.containers.UsersEditPage.firstNamesEmptyError": "إدخال الأسماء الأولى",
   "app.containers.UsersEditPage.h1": "معلومات حسابك",
   "app.containers.UsersEditPage.h1sub": "عدّل معلومات حسابك",
   "app.containers.UsersEditPage.image": "الصورة الرمزية",
