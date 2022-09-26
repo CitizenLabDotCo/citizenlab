@@ -1,6 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
+import { ImageSizes, Multiloc } from 'typings';
 import streams from 'utils/streams';
-import { Multiloc, ImageSizes } from 'typings';
 import { THomepageBannerLayout } from './homepageSettings';
 
 export interface ICustomPage {
@@ -13,6 +13,11 @@ export interface ICustomPageData {
 }
 
 export type TCustomPageEnabledSetting = keyof ICustomPageEnabledSettings;
+
+export type TCustomPageBannerLayout =
+  | 'full_width_banner_layout'
+  | 'two_column_layout'
+  | 'two_row_layout';
 
 export interface ICustomPageEnabledSettings {
   banner_enabled: boolean;
