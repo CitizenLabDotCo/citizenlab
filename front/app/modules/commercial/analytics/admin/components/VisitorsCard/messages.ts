@@ -29,21 +29,23 @@ export default defineMessages({
     id: 'app.modules.commercial.analytics.admin.components.VisitorsCard.yesterday',
     defaultMessage: 'Yesterday:',
   },
-  titleTooltipMessage: {
-    id: 'app.modules.commercial.analytics.admin.components.VisitorsCard.titleTooltipMessage',
+  cardTitleTooltipMessage: {
+    id: 'app.modules.commercial.analytics.admin.components.VisitorsCard.cardTitleTooltipMessage',
     defaultMessage:
-      'Visits of admins and project managers are not counted here.',
+      'Only users who have accepted cookie tracking will be counted. Admins and project managers are not counted.',
   },
-  emptyTooltipMessage: {
-    id: 'app.modules.commercial.analytics.admin.components.VisitorsCard.emptyTooltipMessage',
+  visitorsStatTooltipMessage: {
+    id: 'app.modules.commercial.analytics.admin.components.VisitorsCard.visitorsStatTooltipMessage',
+    defaultMessage:
+      '"Visitors" is the number of unique visitors. If a person visits the platform multiple times, they are only counted once.',
+  },
+  visitsStatTooltipMessage: {
+    id: 'app.modules.commercial.analytics.admin.components.VisitorsCard.visitsStatTooltipMessage',
+    defaultMessage:
+      '"Visits" is the number of sessions. If a person visited the platform multiple times, each visit is counted.',
+  },
+  emptyStatTooltipMessage: {
+    id: 'app.modules.commercial.analytics.admin.components.VisitorsCard.emptyStatTooltipMessage',
     defaultMessage: 'Data is not available when the project filter is active.',
   },
-  visitorsTooltipMessage: {
-    id: 'app.modules.commercial.analytics.admin.components.VisitorsCard.visitorsTooltipMessage',
-    defaultMessage: '"Visitors" is the number of unique visitors. If the same person visited the platform multiple times, they are counted once.',
-  },
-  visitsTooltipMessage: {
-    id: 'app.modules.commercial.analytics.admin.components.VisitorsCard.visitsTooltipMessage',
-    defaultMessage: '"Visits" is the number of sessions. If the same person visited the platform multiple times, each visit is counted.',
-  }
 });
