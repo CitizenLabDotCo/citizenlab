@@ -54,7 +54,12 @@ module MultiTenancy
               identifier: '***REMOVED***',
               secret: '***REMOVED***'
             },
-            vienna_login: {
+            vienna_citizen_login: {
+              allowed: true,
+              enabled: true,
+              environment: 'test'
+            },
+            vienna_employee_login: {
               allowed: true,
               enabled: true,
               environment: 'test'
@@ -127,6 +132,18 @@ module MultiTenancy
               allowed: true
             },
             idea_custom_fields: {
+              enabled: true,
+              allowed: true
+            },
+            dynamic_idea_form: {
+              enabled: true,
+              allowed: true
+            },
+            idea_author_change: {
+              enabled: true,
+              allowed: true
+            },
+            idea_custom_copy: {
               enabled: true,
               allowed: true
             },
@@ -359,6 +376,10 @@ module MultiTenancy
               monthly_sms_segments_limit: 100_000
             },
             native_surveys: {
+              enabled: true,
+              allowed: true
+            },
+            analytics: {
               enabled: true,
               allowed: true
             }
