@@ -77,8 +77,8 @@ const FormBuilderTopBar = ({ isSubmitting }: FormBuilderTopBarProps) => {
       top="0px"
     >
       <Box
-        p="16px"
-        w="212px"
+        p="15px"
+        w="210px"
         h="100%"
         borderRight={`1px solid ${colors.mediumGrey}`}
         display="flex"
@@ -91,8 +91,14 @@ const FormBuilderTopBar = ({ isSubmitting }: FormBuilderTopBarProps) => {
           <Text mb="0px" color="adminSecondaryTextColor">
             {localize(project.attributes.title_multiloc)}
           </Text>
-          <Box display="flex" alignContent="center">
-            <Title marginRight="8px" marginTop="auto" variant="h4" as="h1">
+          <Box display="flex" alignContent="center" mt="4px">
+            <Title
+              mt="0"
+              marginRight="8px"
+              marginTop="auto"
+              variant="h4"
+              as="h1"
+            >
               <FormattedMessage {...messages.surveyTitle} />
             </Title>
             <StyledStatusLabel
@@ -102,7 +108,7 @@ const FormBuilderTopBar = ({ isSubmitting }: FormBuilderTopBarProps) => {
                     <FormattedMessage {...messages.open} />
                   </span>
                 ) : (
-                  <span style={{ color: colors.grey }}>
+                  <span style={{ color: colors.red400 }}>
                     <FormattedMessage {...messages.closed} />
                   </span>
                 )
@@ -110,7 +116,7 @@ const FormBuilderTopBar = ({ isSubmitting }: FormBuilderTopBarProps) => {
               backgroundColor={
                 isPostingEnabled
                   ? colors.clGreenSuccessBackground
-                  : colors.backgroundLightGrey
+                  : colors.red100
               }
             />
           </Box>
@@ -128,7 +134,6 @@ const FormBuilderTopBar = ({ isSubmitting }: FormBuilderTopBarProps) => {
         </Button>
         <Button
           buttonStyle="primary"
-          mx="20px"
           disabled={!project}
           processing={isSubmitting}
           type="submit"
