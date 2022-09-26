@@ -43,7 +43,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "pretty-quick",
-      "pre-push": "polite-eslint"
+      "pre-push": "lint"
     }
   },
   "dependencies": {
