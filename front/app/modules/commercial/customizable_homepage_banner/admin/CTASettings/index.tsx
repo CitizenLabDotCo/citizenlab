@@ -1,23 +1,25 @@
 import { Section, SubSectionTitle } from 'components/admin/Section';
-import { FormattedMessage } from 'utils/cl-intl';
+import { HomepageBannerSettingKeyType } from 'containers/Admin/pagesAndMenu/EditHomepage/HeroBanner';
 import React from 'react';
-import messages from '../messages';
-import CTASignedOutSettings from './CTASignedOutSettings';
-import CTASignedInSettings from './CTASignedInSettings';
-import 'utils/moduleUtils';
-import { CLErrors } from 'typings';
 import { IHomepageSettingsAttributes } from 'services/homepageSettings';
-import { BannerSettingKeyType } from 'containers/Admin/pagesAndMenu/EditHomepage/HeroBanner';
+import { CLErrors } from 'typings';
+import { FormattedMessage } from 'utils/cl-intl';
+import 'utils/moduleUtils';
+import messages from '../messages';
+import CTASignedInSettings from './CTASignedInSettings';
+import CTASignedOutSettings from './CTASignedOutSettings';
 
 interface Props {
   banner_cta_signed_in_text_multiloc: IHomepageSettingsAttributes['banner_cta_signed_in_text_multiloc'];
   banner_cta_signed_out_text_multiloc: IHomepageSettingsAttributes['banner_cta_signed_out_text_multiloc'];
   banner_cta_signed_in_url: IHomepageSettingsAttributes['banner_cta_signed_in_url'];
   banner_cta_signed_out_url: IHomepageSettingsAttributes['banner_cta_signed_out_url'];
-  // todo: type these better, probably means moving CTA types to main app
   banner_cta_signed_out_type: IHomepageSettingsAttributes['banner_cta_signed_out_type'];
   banner_cta_signed_in_type: IHomepageSettingsAttributes['banner_cta_signed_in_type'];
-  handleOnChange: (settingKey: BannerSettingKeyType, settingValue: any) => void;
+  handleOnChange: (
+    settingKey: HomepageBannerSettingKeyType,
+    settingValue: any
+  ) => void;
   errors?: CLErrors | undefined | null;
 }
 

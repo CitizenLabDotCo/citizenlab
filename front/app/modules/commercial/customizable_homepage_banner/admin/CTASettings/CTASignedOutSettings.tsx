@@ -1,12 +1,12 @@
-import React from 'react';
 import { SectionField } from 'components/admin/Section';
+import { HomepageBannerSettingKeyType } from 'containers/Admin/pagesAndMenu/EditHomepage/HeroBanner';
+import React from 'react';
+import { CTASignedOutType } from 'services/homepageSettings';
+import { CLErrors, Multiloc } from 'typings';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-import { CTASignedOutType } from 'services/homepageSettings';
 import SettingRadioButtons from './SettingRadioButtons';
-import { CLErrors, Multiloc } from 'typings';
 import SettingsLabel from './SettingsLabel';
-import { BannerSettingKeyType } from 'containers/Admin/pagesAndMenu/EditHomepage/HeroBanner';
 
 const CTA_SIGNED_OUT_TYPES: CTASignedOutType[] = [
   'sign_up_button',
@@ -19,7 +19,7 @@ type Props = {
   ctaButtonMultiloc: Multiloc;
   ctaButtonUrl: string | null;
   handleSettingOnChange: (
-    settingKey: BannerSettingKeyType,
+    settingKey: HomepageBannerSettingKeyType,
     settingValue: string
   ) => void;
   errors: CLErrors | undefined | null;

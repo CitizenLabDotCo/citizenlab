@@ -1,13 +1,13 @@
-import React from 'react';
 import { SectionField } from 'components/admin/Section';
+import React from 'react';
+import { CTASignedInType } from 'services/homepageSettings';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-import { CTASignedInType } from 'services/homepageSettings';
 
-import SettingRadioButtons from './SettingRadioButtons';
+import { HomepageBannerSettingKeyType } from 'containers/Admin/pagesAndMenu/EditHomepage/HeroBanner';
 import { CLErrors, Multiloc } from 'typings';
+import SettingRadioButtons from './SettingRadioButtons';
 import SettingsLabel from './SettingsLabel';
-import { BannerSettingKeyType } from 'containers/Admin/pagesAndMenu/EditHomepage/HeroBanner';
 
 const CTA_SIGNED_IN_TYPES: CTASignedInType[] = [
   'customized_button',
@@ -19,7 +19,7 @@ type Props = {
   ctaButtonMultiloc: Multiloc;
   ctaButtonUrl: string | null;
   handleSettingOnChange: (
-    settingKey: BannerSettingKeyType,
+    settingKey: HomepageBannerSettingKeyType,
     settingValue: any
   ) => void;
   errors: CLErrors | undefined | null;

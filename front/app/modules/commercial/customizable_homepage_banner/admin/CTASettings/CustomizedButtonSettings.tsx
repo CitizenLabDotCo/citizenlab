@@ -1,19 +1,19 @@
-import { isEmpty } from 'lodash-es';
 import { Input, Label } from '@citizenlab/cl2-component-library';
 import { SectionField } from 'components/admin/Section';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import React, { useEffect, useMemo, useState } from 'react';
-import { CustomizedButtonConfig } from 'services/appConfiguration';
-import { CLErrors, Multiloc, Locale } from 'typings';
-import messages from '../messages';
 import genericMessages from 'components/UI/Error/messages';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import { HomepageBannerSettingKeyType } from 'containers/Admin/pagesAndMenu/EditHomepage/HeroBanner';
 import settingsMessages from 'containers/Admin/settings/messages';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import { isNilOrError } from 'utils/helperUtils';
+import { isEmpty } from 'lodash-es';
+import React, { useEffect, useMemo, useState } from 'react';
+import { InjectedIntlProps } from 'react-intl';
+import { CustomizedButtonConfig } from 'services/appConfiguration';
 import styled from 'styled-components';
-import { BannerSettingKeyType } from 'containers/Admin/pagesAndMenu/EditHomepage/HeroBanner';
+import { CLErrors, Locale, Multiloc } from 'typings';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import messages from '../messages';
 
 const TextSettings = styled.div`
   margin-top: 10px;
@@ -87,7 +87,7 @@ interface Props {
   buttonMultiloc: Multiloc;
   buttonConfig?: CustomizedButtonConfig;
   handleSettingOnChange: (
-    settingKey: BannerSettingKeyType,
+    settingKey: HomepageBannerSettingKeyType,
     settingValue: Multiloc | string
   ) => void;
   signInStatus: 'signed_out' | 'signed_in';
