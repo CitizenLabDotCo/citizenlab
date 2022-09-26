@@ -1287,7 +1287,7 @@
   "app.containers.UsersEditPage.feedbackLinkText": "Laat het ons weten",
   "app.containers.UsersEditPage.feedbackLinkUrl": "https://citizenlabco.typeform.com/to/AWSAgY?source={url}",
   "app.containers.UsersEditPage.firstNames": "Voornaam",
-  "app.containers.UsersEditPage.firstNamesEmptyError": "Provide a first name",
+  "app.containers.UsersEditPage.firstNamesEmptyError": "Voer voornamen in",
   "app.containers.UsersEditPage.h1": "Je accountinformatie",
   "app.containers.UsersEditPage.h1sub": "Wijzig je profiel",
   "app.containers.UsersEditPage.image": "Avatar-afbeelding",
