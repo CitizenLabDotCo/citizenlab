@@ -129,15 +129,15 @@ export default defineMessages({
     defaultMessage: 'Layout',
   },
   fullWidthBannerLayout: {
-    id: 'app.containers.Admin.PagesAndMenu.fullWidthBannerLayout',
+    id: 'app.containers.AdminPage.SettingsPage.fullWidthBannerLayout',
     defaultMessage: 'Full-width banner',
   },
   TwoColumnLayout: {
-    id: 'app.containers.Admin.PagesAndMenu.TwoColumnLayout',
+    id: 'app.containers.AdminPage.SettingsPage.TwoColumnLayout',
     defaultMessage: 'Two columns',
   },
   twoRowLayout: {
-    id: 'app.containers.Admin.PagesAndMenu.twoRowLayout',
+    id: 'app.containers.AdminPage.SettingsPage.twoRowLayout',
     defaultMessage: 'Two rows',
   },
 });
