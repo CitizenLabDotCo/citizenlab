@@ -40,10 +40,18 @@
   "majestic": {
     "jestScriptPath": "node_modules/jest/bin/jest.js"
   },
+  "lint-prepush": {
+    "base": "master",
+    "tasks": {
+      "*.{ts|tsx|js|jsx|json}": [
+      "eslint"
+     ]
+  }
+},
   "husky": {
     "hooks": {
       "pre-commit": "pretty-quick",
-      "pre-push": "npm run lint"
+      "pre-push": "lint-prepush"
     }
   },
   "dependencies": {
@@ -210,12 +218,13 @@
     "fork-ts-checker-webpack-plugin": "6.4.0",
     "glob": "7.2.0",
     "html-webpack-plugin": "5.5.0",
-    "husky": "4.3.8",
+    "husky": "^4.3.8",
     "jest": "^28.1.2",
     "jest-cli": "^28.1.1",
     "jest-environment-jsdom": "^28.1.1",
     "jest-junit": "^14.0.0",
     "jest-styled-components": "^7.0.8",
+    "lint-prepush": "^2.2.1",
     "mini-css-extract-plugin": "^2.6.1",
     "moment-locales-webpack-plugin": "1.2.0",
     "moment-timezone-data-webpack-plugin": "1.5.0",
