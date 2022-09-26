@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import moment from 'moment';
 
 // services
 import {
@@ -11,9 +10,7 @@ import {
 // hooks
 import useLocalize from 'hooks/useLocalize';
 
-// utils
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
-import { isEmptyResponse } from './utils';
+// parsing
 import {
   getTranslations,
   parsePieData,
@@ -27,13 +24,18 @@ import {
   parseExcelData,
 } from './parse';
 
+// utils
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import { isEmptyResponse } from './utils';
+import { getProjectFilter, getDateFilter } from '../../utils/query';
+
 // typings
 import { Multiloc } from 'typings';
 import { InjectedIntlProps } from 'react-intl';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import { XlsxData } from 'components/admin/ReportExportMenu';
 
-interface QueryProps {
+interface QueryParameters {
   projectId: string | undefined;
   startAt: string | null | undefined;
   endAt: string | null | undefined;
@@ -100,9 +102,7 @@ interface ProgressBarsRow {
 
 export type StackedBarsRow = Record<string, number>;
 
-const toDate = (dateString: string) => moment(dateString).format('yyyy-MM-DD');
-
-const query = ({ projectId, startAt, endAt }: QueryProps): Query => {
+const query = ({ projectId, startAt, endAt }: QueryParameters): Query => {
   const queryFeedback: QuerySchema = {
     fact: 'post',
     aggregations: {
@@ -113,17 +113,8 @@ const query = ({ projectId, startAt, endAt }: QueryProps): Query => {
     },
     filters: {
       type: { name: 'idea' },
-      ...(projectId ? { project: { id: projectId } } : {}),
-      ...(startAt && endAt
-        ? {
-            created_date: {
-              date: {
-                from: toDate(startAt),
-                to: toDate(endAt),
-              },
-            },
-          }
-        : {}),
+      ...getProjectFilter(projectId),
+      ...getDateFilter('created_date', startAt, endAt),
     },
   };
 
@@ -137,17 +128,8 @@ const query = ({ projectId, startAt, endAt }: QueryProps): Query => {
     },
     filters: {
       type: { name: 'idea' },
-      ...(projectId ? { project: { id: projectId } } : {}),
-      ...(startAt && endAt
-        ? {
-            created_date: {
-              date: {
-                from: toDate(startAt),
-                to: toDate(endAt),
-              },
-            },
-          }
-        : {}),
+      ...getProjectFilter(projectId),
+      ...getDateFilter('created_date', startAt, endAt),
     },
   };
 
@@ -156,7 +138,7 @@ const query = ({ projectId, startAt, endAt }: QueryProps): Query => {
 
 export default function usePostsWithFeedback(
   formatMessage: InjectedIntlProps['intl']['formatMessage'],
-  { projectId, startAt, endAt }: QueryProps
+  { projectId, startAt, endAt }: QueryParameters
 ) {
   const localize = useLocalize();
 

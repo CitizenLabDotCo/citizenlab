@@ -20,6 +20,9 @@ import { IResolution } from 'components/admin/ResolutionControl';
 import { MessageDescriptor } from 'typings';
 
 interface Props {
+  startAt: string | undefined;
+  endAt: string | undefined;
+  projectFilter: string | undefined;
   resolution: IResolution;
 }
 
@@ -38,10 +41,19 @@ const EMPTY_DATA: Stats = {
 };
 
 const VisitorStats = ({
+  startAt,
+  endAt,
+  projectFilter,
   resolution,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
-  const visitorData = useVisitorsData();
+  const visitorData = useVisitorsData({
+    startAt,
+    endAt,
+    projectId: projectFilter,
+    resolution,
+  });
+
   const stats = isNilOrError(visitorData.stats)
     ? EMPTY_DATA
     : visitorData.stats;

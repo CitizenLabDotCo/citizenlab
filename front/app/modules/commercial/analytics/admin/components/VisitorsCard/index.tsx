@@ -34,7 +34,16 @@ const VisitorsCard = ({
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const graphRef = useRef();
-  const { xlsxData } = useVisitorsData();
+
+  const startAt = startAtMoment?.toISOString();
+  const endAt = endAtMoment?.toISOString();
+
+  const { xlsxData } = useVisitorsData({
+    startAt,
+    endAt,
+    projectId: projectFilter,
+    resolution,
+  });
 
   const visitorsMessage = formatMessage(messages.visitors);
 
@@ -46,19 +55,30 @@ const VisitorsCard = ({
         name: visitorsMessage,
         svgNode: graphRef,
         xlsxData: isNilOrError(xlsxData) ? undefined : xlsxData,
-        startAt: startAtMoment?.toISOString(),
-        endAt: endAtMoment?.toISOString(),
+        startAt,
+        endAt,
         currentProjectFilter: projectFilter,
         resolution,
       }}
     >
       <Box width="100%" display="flex" flexDirection="row">
         <Box display="flex" flexDirection="row" pl="20px">
-          <VisitorStats resolution={resolution} />
+          <VisitorStats
+            startAt={startAt}
+            endAt={endAt}
+            projectFilter={projectFilter}
+            resolution={resolution}
+          />
         </Box>
 
         <Box flexGrow={1} display="flex" justifyContent="center">
-          <Chart resolution={resolution} innerRef={graphRef} />
+          <Chart
+            startAt={startAt}
+            endAt={endAt}
+            projectFilter={projectFilter}
+            resolution={resolution}
+            innerRef={graphRef}
+          />
         </Box>
       </Box>
     </GraphCard>

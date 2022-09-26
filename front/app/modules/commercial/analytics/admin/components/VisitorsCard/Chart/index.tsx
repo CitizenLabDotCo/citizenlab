@@ -26,18 +26,29 @@ import { IResolution } from 'components/admin/ResolutionControl';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 
 interface Props {
+  startAt: string | undefined;
+  endAt: string | undefined;
+  projectFilter: string | undefined;
   resolution: IResolution;
-  innerRef: React.RefObject<any>
+  innerRef: React.RefObject<any>;
 }
 
 const EMPTY_DATA = generateEmptyData();
 
 const Chart = ({
+  startAt,
+  endAt,
+  projectFilter,
   resolution,
   innerRef,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
-  const { timeSeries } = useVisitorsData();
+  const { timeSeries } = useVisitorsData({
+    startAt,
+    endAt,
+    projectId: projectFilter,
+    resolution,
+  });
 
   const legendItems: LegendItem[] = [
     {
