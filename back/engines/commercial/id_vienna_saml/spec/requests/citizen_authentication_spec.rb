@@ -3,11 +3,11 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-describe 'Vienna SAML authentication', type: :request do
-  def enable_vienna_login
+describe 'Vienna SAML citizen authentication', type: :request do
+  def enable_vienna_citizen_login
     configuration = AppConfiguration.instance
     settings = configuration.settings
-    settings['vienna_login'] = {
+    settings['vienna_citizen_login'] = {
       allowed: true,
       enabled: true,
       environment: 'test'
@@ -19,7 +19,7 @@ describe 'Vienna SAML authentication', type: :request do
   let(:saml_auth_response) do
     OmniAuth::AuthHash.new(
       {
-        'provider' => 'saml',
+        'provider' => 'vienna_citizen',
         'uid' => '_254e789de8e21e632c8ca2c71aacc980',
         'info' => { 'name' => nil, 'email' => nil, 'first_name' => nil, 'last_name' => nil },
         'credentials' => {},
@@ -49,13 +49,13 @@ describe 'Vienna SAML authentication', type: :request do
 
   before do
     OmniAuth.config.test_mode = true
-    OmniAuth.config.mock_auth[:saml] = saml_auth_response
-    enable_vienna_login
+    OmniAuth.config.mock_auth[:vienna_citizen] = saml_auth_response
+    enable_vienna_citizen_login
   end
 
   context 'when the user does not exist yet' do
     before do
-      get '/auth/saml'
+      get '/auth/vienna_citizen'
       follow_redirect!
     end
 
@@ -66,7 +66,7 @@ describe 'Vienna SAML authentication', type: :request do
     it 'creates the user and identity' do
       user = User.find_by(email: 'philipp.press@extern.wien.gv.at', first_name: 'Philipp', last_name: 'Preß')
       expect(user).to be_present
-      expect(user.identities.first).to have_attributes(provider: 'saml', uid: '_254e789de8e21e632c8ca2c71aacc980')
+      expect(user.identities.first).to have_attributes(provider: 'vienna_citizen', uid: '_254e789de8e21e632c8ca2c71aacc980')
     end
 
     it 'sets the JWT auth token' do
@@ -77,7 +77,7 @@ describe 'Vienna SAML authentication', type: :request do
   context 'when the user already exists' do
     before do
       create(:user, email: 'philipp.press@extern.wien.gv.at')
-      get '/auth/saml'
+      get '/auth/vienna_citizen'
       follow_redirect!
     end
 

@@ -25,7 +25,7 @@ const PagesMenu = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       rightSideCTA={
         previewNewCustomPages && (
           <Button
-            buttonStyle="admin-dark"
+            buttonStyle="cl-blue"
             icon="plus-circle"
             id="create-custom-page"
             linkTo={'/admin/pages-menu/custom/new'}

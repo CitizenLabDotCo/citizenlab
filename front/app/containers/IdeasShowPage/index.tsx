@@ -1,8 +1,7 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { isError } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { adopt } from 'react-adopt';
+import { useParams } from 'react-router-dom';
 
 // components
 import IdeasShow from 'containers/IdeasShow';
@@ -10,11 +9,9 @@ import Button from 'components/UI/Button';
 import IdeaShowPageTopBar from './IdeaShowPageTopBar';
 import Link from 'utils/cl-router/Link';
 
-// resources
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
-
 // hooks
 import { useWindowSize } from '@citizenlab/cl2-component-library';
+import useIdea from 'hooks/useIdea';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -75,15 +72,9 @@ const StyledSignInButton = styled(Button)`
   margin-bottom: 20px;
 `;
 
-interface InputProps {}
-
-interface DataProps {
-  idea: GetIdeaChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-const IdeasShowPage = memo<Props>(({ idea }) => {
+const IdeasShowPage = () => {
+  const { slug } = useParams() as { slug: string };
+  const idea = useIdea({ ideaSlug: slug });
   const { windowWidth } = useWindowSize();
   const smallerThanMaxTablet = windowWidth <= viewportWidths.largeTablet;
 
@@ -124,16 +115,6 @@ const IdeasShowPage = memo<Props>(({ idea }) => {
   }
 
   return null;
-});
+};
 
-const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  idea: ({ params, render }) => (
-    <GetIdea ideaSlug={params.slug}>{render}</GetIdea>
-  ),
-});
-
-export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <IdeasShowPage {...inputProps} {...dataProps} />}
-  </Data>
-));
+export default IdeasShowPage;
