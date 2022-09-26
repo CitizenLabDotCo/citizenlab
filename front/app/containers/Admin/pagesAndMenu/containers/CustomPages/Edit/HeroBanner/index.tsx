@@ -1,9 +1,8 @@
 import { ISubmitState } from 'components/admin/SubmitWrapper';
-import {
-  homeBreadcrumb,
-  pagesAndMenuBreadcrumb,
-} from 'containers/Admin/pagesAndMenu/breadcrumbs';
+import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 import CTAButtonFields from 'containers/Admin/pagesAndMenu/containers/CustomPages/Edit/HeroBanner/CTAButtonFields';
+import { PAGES_MENU_CUSTOM_PATH } from 'containers/Admin/pagesAndMenu/routes';
+
 import BannerHeaderFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerHeaderFields';
 import BannerImageFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerImageFields';
 import LayoutSettingField from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/LayoutSettingField';
@@ -22,6 +21,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import GenericHeroBannerForm from '../../../GenericHeroBannerForm';
 import messages from '../../../GenericHeroBannerForm/messages';
 
+import useLocalize from 'hooks/useLocalize';
 import { Multiloc } from 'typings';
 import { injectIntl } from 'utils/cl-intl';
 
@@ -35,6 +35,7 @@ export type CustomPageBannerSettingKeyType = Extract<
 const EditCustomPageHeroBannerForm = ({
   intl: { formatMessage },
 }: InjectedIntlProps) => {
+  const localize = useLocalize();
   const [isLoading, setIsLoading] = useState(false);
   const [formStatus, setFormStatus] = useState<ISubmitState>('disabled');
   const [localSettings, setLocalSettings] =
@@ -143,8 +144,8 @@ const EditCustomPageHeroBannerForm = ({
             linkTo: pagesAndMenuBreadcrumb.linkTo,
           },
           {
-            label: formatMessage(homeBreadcrumb.label),
-            linkTo: homeBreadcrumb.linkTo,
+            label: localize(customPage.attributes.title_multiloc),
+            linkTo: `${PAGES_MENU_CUSTOM_PATH}/${customPageId}/content`,
           },
           { label: formatMessage(messages.heroBannerTitle) },
         ]}
