@@ -5,6 +5,16 @@ import { fakeStats, fakeTimeSeries, fakeXlsxData } from './fakeData';
 import { NilOrError } from 'utils/helperUtils';
 import { XlsxData } from 'components/admin/ReportExportMenu';
 
+// interface QueryProps {
+//   projectId: string | undefined;
+//   startAt: string | null | undefined;
+//   endAt: string | null | undefined;
+// }
+
+// Response
+// TODO
+
+// Hook return value
 interface Stat {
   value: string;
   lastPeriod: string;
