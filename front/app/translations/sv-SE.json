@@ -1290,7 +1290,7 @@
   "app.containers.UsersEditPage.feedbackLinkText": "Berätta för oss",
   "app.containers.UsersEditPage.feedbackLinkUrl": "https://citizenlabco.typeform.com/to/z7baRP?source={url}",
   "app.containers.UsersEditPage.firstNames": "Förnamn",
-  "app.containers.UsersEditPage.firstNamesEmptyError": "Provide a first name",
+  "app.containers.UsersEditPage.firstNamesEmptyError": "Ange förnamn",
   "app.containers.UsersEditPage.h1": "Din kontoinformation",
   "app.containers.UsersEditPage.h1sub": "Redigera din kontoinformation",
   "app.containers.UsersEditPage.image": "Avatarbild",
