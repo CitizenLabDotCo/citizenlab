@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import moment from 'moment';
-import { fakeStats, fakeTimeSeries, fakeXlsxData } from './fakeData';
 
 // services
 import {
@@ -18,7 +17,7 @@ import {
 } from '../../utils/query';
 
 // typings
-import { NilOrError } from 'utils/helperUtils';
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { XlsxData } from 'components/admin/ReportExportMenu';
 import { IResolution } from 'components/admin/ResolutionControl';
 
@@ -30,7 +29,34 @@ interface QueryParameters {
 }
 
 // Response
-// TODO
+export type Response = {
+  data: [[TotalsRow], [TotalsRow], TimeSeriesResponse];
+};
+
+interface TotalsRow {
+  count: number;
+  count_visitor_id: number;
+  avg_duration: string | null;
+  avg_pages_visited: string | null;
+}
+
+type TimeSeriesResponse = (
+  | TimeSeriesResponseMonth
+  | TimeSeriesResponseWeek
+  | TimeSeriesResponseDay
+)[];
+
+interface TimeSeriesResponseMonth extends TotalsRow {
+  'dimension_date_last_action.month': string;
+}
+
+interface TimeSeriesResponseWeek extends TotalsRow {
+  'dimension_date_last_action.week': string;
+}
+
+interface TimeSeriesResponseDay extends TotalsRow {
+  'dimension_date_last_action.date': string;
+}
 
 // Hook return value
 interface Stat {
@@ -128,7 +154,7 @@ export default function useVisitorsData({
   const [xlsxData, setXlsxData] = useState<XlsxData | NilOrError>();
 
   useEffect(() => {
-    const observable = analyticsStream(
+    const observable = analyticsStream<Response>(
       query({
         projectId,
         startAt,
@@ -137,12 +163,15 @@ export default function useVisitorsData({
       })
     ).observable;
 
-    const subscription = observable.subscribe(() => {
-      // TODO
-      setStats(fakeStats);
-      setTimeSeries(fakeTimeSeries);
-      setXlsxData(fakeXlsxData);
-    });
+    const subscription = observable.subscribe(
+      (response: Response | NilOrError) => {
+        if (isNilOrError(response)) {
+          setStats(response);
+          setTimeSeries(response);
+          setXlsxData(response);
+        }
+      }
+    );
 
     return () => subscription.unsubscribe();
   }, [projectId, startAt, endAt, resolution]);
