@@ -37,23 +37,13 @@
     "lint:eslint": "eslint --ext .js,.jsx,.ts,.tsx app --color --max-warnings=0",
     "detect-deadcode": "ts-prune -p app/tsconfig.json -i '(node_modules|utils/testUtils/rtl.tsx|services/permissions|i18n|/*/*/__mocks__)' | (! grep -v 'used in module')"
   },
-  "lint-staged": {
-    "!(*app/containers/App/constants).js": [
-      "eslint --max-warnings=0"
-    ],
-    "*.{ts,tsx,jsx}": [
-      "eslint --max-warnings=0"
-    ],
-    "*.{js,jsx,ts,tsx,json,css,scss,md,mdx,html}": [
-      "prettier --write"
-    ]
-  },
   "majestic": {
     "jestScriptPath": "node_modules/jest/bin/jest.js"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "pretty-quick",
+      "pre-push": "polite-eslint"
     }
   },
   "dependencies": {
@@ -226,11 +216,12 @@
     "jest-environment-jsdom": "^28.1.1",
     "jest-junit": "^14.0.0",
     "jest-styled-components": "^7.0.8",
-    "lint-staged": "^13.0.2",
     "mini-css-extract-plugin": "^2.6.1",
     "moment-locales-webpack-plugin": "1.2.0",
     "moment-timezone-data-webpack-plugin": "1.5.0",
+    "polite-linter": "^1.2.1",
     "prettier": "^2.0.5",
+    "pretty-quick": "^3.1.3",
     "react-refresh": "^0.14.0",
     "react-select-event": "5.5.1",
     "readline": "1.3.0",
