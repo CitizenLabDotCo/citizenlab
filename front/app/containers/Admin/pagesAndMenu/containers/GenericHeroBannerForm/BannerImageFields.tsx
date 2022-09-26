@@ -1,25 +1,26 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { SectionField } from 'components/admin/Section';
-import { useTheme } from 'styled-components';
 import {
   Box,
-  IOption,
   ColorPickerInput,
+  IconTooltip,
+  IOption,
   Label,
   Select,
 } from '@citizenlab/cl2-component-library';
-import HeaderImageDropzone from './HeaderImageDropzone';
-import { UploadFile } from 'typings';
+import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import { ISubmitState } from 'components/admin/SubmitWrapper';
 import { debounce } from 'lodash-es';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useTheme } from 'styled-components';
+import { UploadFile } from 'typings';
+import HeaderImageDropzone from './HeaderImageDropzone';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-import { isNil, isNilOrError } from 'utils/helperUtils';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { isNil, isNilOrError } from 'utils/helperUtils';
 
 import { ICustomPageAttributes } from 'services/customPages';
 import { IHomepageSettingsAttributes } from 'services/homepageSettings';
@@ -131,6 +132,29 @@ const BannerImageField = ({
 
   return (
     <>
+      <SubSectionTitle>
+        <FormattedMessage {...messages.header_bg} />
+        <IconTooltip
+          content={
+            <FormattedMessage
+              {...messages.headerBgTooltip}
+              values={{
+                supportPageLink: (
+                  <a
+                    href={formatMessage(messages.headerImageSupportPageURL)}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <FormattedMessage
+                      {...messages.headerImageSupportPageText}
+                    />
+                  </a>
+                ),
+              }}
+            />
+          }
+        />
+      </SubSectionTitle>
       <SectionField>
         {!isNilOrError(headerLocalDisplayImage) && (
           <>

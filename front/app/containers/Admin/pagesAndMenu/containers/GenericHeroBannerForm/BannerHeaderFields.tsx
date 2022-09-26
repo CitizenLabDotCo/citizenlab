@@ -1,4 +1,4 @@
-import { Box, IconTooltip } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import { forOwn, size, trim } from 'lodash-es';
@@ -7,7 +7,7 @@ import { InjectedIntlProps } from 'react-intl';
 import { ICustomPageAttributes } from 'services/customPages';
 import { IHomepageSettingsAttributes } from 'services/homepageSettings';
 import { Multiloc } from 'typings';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 interface Props {
@@ -80,29 +80,6 @@ const BannerHeaderFields = ({
 
   return (
     <>
-      <SubSectionTitle>
-        <FormattedMessage {...messages.header_bg} />
-        <IconTooltip
-          content={
-            <FormattedMessage
-              {...messages.headerBgTooltip}
-              values={{
-                supportPageLink: (
-                  <a
-                    href={formatMessage(messages.headerImageSupportPageURL)}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <FormattedMessage
-                      {...messages.headerImageSupportPageText}
-                    />
-                  </a>
-                ),
-              }}
-            />
-          }
-        />
-      </SubSectionTitle>
       <SectionField key={'banner_text'} data-cy="e2e-signed-out-header-section">
         <SubSectionTitle>{title}</SubSectionTitle>
         <InputMultilocWithLocaleSwitcher
