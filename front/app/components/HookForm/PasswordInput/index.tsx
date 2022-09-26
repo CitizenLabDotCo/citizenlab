@@ -1,38 +1,50 @@
 import React from 'react';
-import {
-  Input as InputComponent,
-  InputProps,
-  Box,
-} from '@citizenlab/cl2-component-library';
+
 import Error, { TFieldName } from 'components/UI/Error';
 import { Controller, useFormContext } from 'react-hook-form';
 import { CLError } from 'typings';
-import { get } from 'lodash-es';
 
-interface Props extends InputProps {
+import PasswordInputComponent, {
+  Props as PasswordInputComponentProps,
+} from 'components/UI/PasswordInput';
+
+interface Props
+  extends Omit<
+    PasswordInputComponentProps,
+    'id' | 'password' | 'onChange' | 'errors'
+  > {
   name: string;
 }
 
-const Input = ({ name, type = 'text', ...rest }: Props) => {
+const PasswordInput = ({ name, ...rest }: Props) => {
   const {
-    formState: { errors: formContextErrors },
+    getValues,
+    formState: { errors },
     control,
   } = useFormContext();
 
-  const errors = get(formContextErrors, name);
-  const validationError = errors?.message as string | undefined;
+  const defaultValue = '';
+
+  const validationError = errors[name]?.message as string | undefined;
 
   // If an API error with a matching name has been returned from the API response, apiError is set to an array with the error message as the only item
   const apiError =
-    (errors?.error as string | undefined) && ([errors] as unknown as CLError[]);
+    (errors[name]?.error as string | undefined) &&
+    ([errors[name]] as unknown as CLError[]);
 
   return (
-    <Box width="100%">
+    <>
       <Controller
         name={name}
         control={control}
+        defaultValue={defaultValue}
         render={({ field: { ref: _ref, ...field } }) => (
-          <InputComponent id={name} type={type} {...field} {...rest} />
+          <PasswordInputComponent
+            {...field}
+            {...rest}
+            id={name}
+            password={getValues(name)}
+          />
         )}
       />
       {validationError && (
@@ -52,8 +64,8 @@ const Input = ({ name, type = 'text', ...rest }: Props) => {
           scrollIntoView={false}
         />
       )}
-    </Box>
+    </>
   );
 };
 
-export default Input;
+export default PasswordInput;
