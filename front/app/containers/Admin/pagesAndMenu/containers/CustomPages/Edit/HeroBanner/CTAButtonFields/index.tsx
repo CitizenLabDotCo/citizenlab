@@ -1,9 +1,7 @@
-import { colors, Label } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import React from 'react';
 import { TCustomPageCTAType } from 'services/customPages';
 import { CTASignedInType } from 'services/homepageSettings';
-import styled from 'styled-components';
 import { Multiloc } from 'typings';
 import SettingRadioButtons from './SettingRadioButtons';
 
@@ -11,12 +9,6 @@ const CTA_SIGNED_IN_TYPES: CTASignedInType[] = [
   'no_button',
   'customized_button',
 ];
-
-const SettingsLabel = styled(Label)`
-  font-weight: bold;
-  margin-bottom: 18px;
-  color: ${colors.adminTextColor};
-`;
 
 interface Props {
   ctaType: CTASignedInType;
@@ -26,7 +18,6 @@ interface Props {
   handleCTAButtonTextMultilocOnChange: (buttonTextMultiloc: Multiloc) => void;
   handleCTAButtonUrlOnChange: (url: string) => void;
   title?: string;
-  label?: string;
 }
 
 const CTAButtonFields = ({
@@ -37,12 +28,10 @@ const CTAButtonFields = ({
   handleCTAButtonTextMultilocOnChange,
   handleCTAButtonUrlOnChange,
   title,
-  label,
 }: Props) => {
   return (
     <SectionField>
       <SubSectionTitle>{title}</SubSectionTitle>
-      {label && <SettingsLabel>{label}</SettingsLabel>}
       <SettingRadioButtons
         ctaTypes={CTA_SIGNED_IN_TYPES}
         ctaType={ctaType}
