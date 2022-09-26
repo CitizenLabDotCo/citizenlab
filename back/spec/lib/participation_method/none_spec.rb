@@ -20,9 +20,9 @@ RSpec.describe ParticipationMethod::None do
     end
   end
 
-  describe '#assign_idea_status' do
+  describe '#assign_default_idea_status' do
     it 'does not change the input' do
-      participation_method.assign_idea_status input
+      participation_method.assign_default_idea_status input
       expect(input).not_to be_changed
     end
   end

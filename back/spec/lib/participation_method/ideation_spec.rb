@@ -41,21 +41,21 @@ RSpec.describe ParticipationMethod::Ideation do
     end
   end
 
-  describe '#assign_idea_status' do
+  describe '#assign_default_idea_status' do
     context 'when the proposed idea status is available' do
       let!(:proposed) { create :idea_status_proposed }
       let!(:initial_status) { create :idea_status_implemented }
 
       it 'sets a default "proposed" idea_status if not set' do
         input = build :idea, idea_status: nil
-        participation_method.assign_idea_status input
+        participation_method.assign_default_idea_status input
         expect(input.idea_status).to eq proposed
       end
 
       it 'does not change the idea_status if it is already set' do
         initial_status = create :idea_status_implemented
         input = build :idea, idea_status: initial_status
-        participation_method.assign_idea_status input
+        participation_method.assign_default_idea_status input
         expect(input.idea_status).to eq initial_status
       end
     end
@@ -63,13 +63,13 @@ RSpec.describe ParticipationMethod::Ideation do
     context 'when the proposed idea status is not available' do
       it 'raises a ActiveRecord::RecordNotFound when the idea_status is not set' do
         input = build :idea, idea_status: nil
-        expect { participation_method.assign_idea_status input }.to raise_error ActiveRecord::RecordNotFound
+        expect { participation_method.assign_default_idea_status input }.to raise_error ActiveRecord::RecordNotFound
       end
 
       it 'does not change the idea_status if it is already set' do
         initial_status = create :idea_status_implemented
         input = build :idea, idea_status: initial_status
-        participation_method.assign_idea_status input
+        participation_method.assign_default_idea_status input
         expect(input.idea_status).to eq initial_status
       end
     end

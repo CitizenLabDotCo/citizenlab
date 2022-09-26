@@ -101,7 +101,7 @@ class Idea < ApplicationRecord
   with_options unless: :draft? do
     validates :idea_status, presence: true
     validates :project, presence: true
-    before_validation :assign_idea_status
+    before_validation :assign_default_idea_status
     before_validation :sanitize_body_multiloc, if: :body_multiloc
   end
 
@@ -180,8 +180,8 @@ class Idea < ApplicationRecord
     self.body_multiloc = service.linkify_multiloc(body_multiloc)
   end
 
-  def assign_idea_status
-    participation_method.assign_idea_status self
+  def assign_default_idea_status
+    participation_method.assign_default_idea_status self
   end
 
   def fix_comments_count_on_projects

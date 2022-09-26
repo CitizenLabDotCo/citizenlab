@@ -13,9 +13,5 @@ module ParticipationMethod
     def validate_built_in_fields?
       true
     end
-
-    def assign_idea_status(input)
-      input.idea_status ||= IdeaStatus.find_by!(code: 'proposed')
-    end
   end
 end

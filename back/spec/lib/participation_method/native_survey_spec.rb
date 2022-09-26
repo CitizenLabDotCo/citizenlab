@@ -38,11 +38,11 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
   end
 
-  describe '#assign_idea_status' do
+  describe '#assign_default_idea_status' do
     let(:input) { create :idea }
 
     it 'does not change the input' do
-      participation_method.assign_idea_status input
+      participation_method.assign_default_idea_status input
       expect(input).not_to be_changed
     end
   end
