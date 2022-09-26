@@ -1290,7 +1290,7 @@
   "app.containers.UsersEditPage.feedbackLinkText": "Klickt hei",
   "app.containers.UsersEditPage.feedbackLinkUrl": "https://citizenlabco.typeform.com/to/z7baRP?source={url}",
   "app.containers.UsersEditPage.firstNames": "Virnumm",
-  "app.containers.UsersEditPage.firstNamesEmptyError": "Provide a first name",
+  "app.containers.UsersEditPage.firstNamesEmptyError": "Stellt Virnimm zur Verfügung",
   "app.containers.UsersEditPage.h1": "Är Kontinformatiounen",
   "app.containers.UsersEditPage.h1sub": "D'Informatiounen vun Ärem Kont beaarbechten",
   "app.containers.UsersEditPage.image": "Avatar-Bild",
