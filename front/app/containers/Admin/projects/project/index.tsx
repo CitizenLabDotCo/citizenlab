@@ -11,14 +11,9 @@ import GoBackButton from 'components/UI/GoBackButton';
 import Button from 'components/UI/Button';
 import TabbedResource from 'components/admin/TabbedResource';
 import Outlet from 'components/Outlet';
-import {
-  Dropdown,
-  DropdownListItem,
-  Box,
-  Icon,
-  Text,
-} from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import NewIdeaButton from './ideas/NewIdeaButton';
+import NewIdeaButtonDropdown from './ideas/NewIdeaButtonDropdown';
 
 // resources
 import GetFeatureFlag, {
@@ -33,7 +28,6 @@ import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
-import { getInputTermMessage } from 'utils/i18n';
 
 // tracks
 import { trackEventByName } from 'utils/analytics';
@@ -41,7 +35,6 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 
 // typings
 import { InsertConfigurationOptions, ITab } from 'typings';
@@ -50,9 +43,6 @@ import { IProjectData } from 'services/projects';
 
 // utils
 import { insertConfiguration } from 'utils/moduleUtils';
-
-// hooks
-import useLocalize from 'hooks/useLocalize';
 
 const TopContainer = styled.div`
   width: 100%;
@@ -70,16 +60,6 @@ const ActionsContainer = styled.div`
   & > *:not(:last-child) {
     margin-right: 15px;
   }
-`;
-
-const StyledDropdown = styled(Dropdown)`
-  margin-top: 0px;
-`;
-
-const StyledText = styled(Text)`
-  color: white;
-  margin: auto;
-  padding: 8px;
 `;
 
 export interface InputProps {}
@@ -377,37 +357,6 @@ export class AdminProjectsProjectIndex extends PureComponent<
         phases
       );
 
-      const DropdownContent = () => {
-        const localize = useLocalize();
-        if (!isNilOrError(phases)) {
-          return (
-            <>
-              {phases.map((phase, i) => (
-                <>
-                  {(phase.attributes.participation_method === 'ideation' ||
-                    phase.attributes.participation_method === 'budgeting') && (
-                    <DropdownListItem key={i}>
-                      <Box
-                        onClick={() => {
-                          clHistory.push(
-                            `/projects/${project.attributes.slug}/ideas/new?phase_id=${phase.id}`
-                          );
-                        }}
-                      >
-                        <span color={colors.text}>
-                          {localize(phase.attributes.title_multiloc)}
-                        </span>
-                      </Box>
-                    </DropdownListItem>
-                  )}
-                </>
-              ))}
-            </>
-          );
-        }
-        return null;
-      };
-
       if (!isNilOrError(phases)) {
         phases.map((phase) => {
           if (
@@ -457,40 +406,12 @@ export class AdminProjectsProjectIndex extends PureComponent<
                       )}
                     {project.attributes.process_type === 'timeline' &&
                       numberIdeationPhases > 1 && (
-                        <>
-                          <Box
-                            color="white"
-                            background={colors.clBlueDark}
-                            borderRadius="3px"
-                            height="42px"
-                            px="16px"
-                            display="flex"
-                          >
-                            <Icon
-                              fill="white"
-                              marginRight="8px"
-                              width="15px"
-                              name="idea"
-                              marginY="auto"
-                            />
-                            <StyledText>
-                              {formatMessage(
-                                getInputTermMessage(inputTerm, {
-                                  idea: messages.addNewIdea,
-                                  option: messages.addNewOption,
-                                  project: messages.addNewProject,
-                                  question: messages.addNewQuestion,
-                                  issue: messages.addNewIssue,
-                                  contribution: messages.addNewContribution,
-                                })
-                              )}
-                            </StyledText>
-                          </Box>
-                          <StyledDropdown
-                            opened={this.state.showIdeaDropdown}
-                            content={<DropdownContent />}
-                          />
-                        </>
+                        <NewIdeaButtonDropdown
+                          phases={phases}
+                          project={project}
+                          inputTerm={inputTerm}
+                          showDropdown={this.state.showIdeaDropdown}
+                        />
                       )}
                   </Box>
                 </>
