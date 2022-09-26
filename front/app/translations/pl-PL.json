@@ -1287,7 +1287,7 @@
   "app.containers.UsersEditPage.feedbackLinkText": "Daj nam znać",
   "app.containers.UsersEditPage.feedbackLinkUrl": "https://citizenlabco.typeform.com/to/z7baRP?source={url}",
   "app.containers.UsersEditPage.firstNames": "Imię",
-  "app.containers.UsersEditPage.firstNamesEmptyError": "Provide a first name",
+  "app.containers.UsersEditPage.firstNamesEmptyError": "Podaj imiona",
   "app.containers.UsersEditPage.h1": "Informacje o Twoim koncie",
   "app.containers.UsersEditPage.h1sub": "Edytuj informacje o koncie",
   "app.containers.UsersEditPage.image": "Obraz awatara",
