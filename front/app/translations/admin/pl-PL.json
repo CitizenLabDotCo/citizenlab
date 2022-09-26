@@ -1064,7 +1064,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.addAnswer": "Dodaj odpowiedź",
   "app.containers.AdminPage.ProjectEdit.survey.addSurveyContent": "Dodaj treść ankiety",
   "app.containers.AdminPage.ProjectEdit.survey.close": "Zamknij",
-  "app.containers.AdminPage.ProjectEdit.survey.closed": "Closed",
+  "app.containers.AdminPage.ProjectEdit.survey.closed": "Zamknięte",
   "app.containers.AdminPage.ProjectEdit.survey.default": "Domyślnie",
   "app.containers.AdminPage.ProjectEdit.survey.delete": "Usuń",
   "app.containers.AdminPage.ProjectEdit.survey.deleteButtonLabel": "Usuń",
