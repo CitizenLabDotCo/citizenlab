@@ -233,8 +233,8 @@ class WebApi::V1::IdeasController < ApplicationController
     participation_context.custom_form || CustomForm.new(participation_context: participation_context)
   end
 
-  def participation_context_for_update(idea, project)
-    phases = idea.phases
+  def participation_context_for_update(input, project)
+    phases = input.phases
     if project.continuous? || phases.none?(&:native_survey?)
       # The form is at the project level
       project
