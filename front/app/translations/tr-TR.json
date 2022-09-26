@@ -1287,7 +1287,7 @@
   "app.containers.UsersEditPage.feedbackLinkText": "Bizi bilgilendirin",
   "app.containers.UsersEditPage.feedbackLinkUrl": "https://citizenlabco.typeform.com/to/z7baRP?source={url}",
   "app.containers.UsersEditPage.firstNames": "Ad",
-  "app.containers.UsersEditPage.firstNamesEmptyError": "Provide a first name",
+  "app.containers.UsersEditPage.firstNamesEmptyError": "Adları girin",
   "app.containers.UsersEditPage.h1": "Hesap bilgileriniz",
   "app.containers.UsersEditPage.h1sub": "Hesap bilgilerinizi düzenleyin",
   "app.containers.UsersEditPage.image": "Avatar resmi",
