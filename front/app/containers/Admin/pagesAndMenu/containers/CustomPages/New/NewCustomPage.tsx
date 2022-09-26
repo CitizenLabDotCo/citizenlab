@@ -11,7 +11,7 @@ const NewCustomPage = () => {
     // Without the redirect was too sudden
     // (with a short flash of the success message in between)
     setTimeout(
-      () => clHistory.push(`/admin/pages-menu/custom/${data.id}/content`),
+      () => clHistory.push(`/admin/pages-menu/custom/${data.id}/settings`),
       1500
     );
   };
