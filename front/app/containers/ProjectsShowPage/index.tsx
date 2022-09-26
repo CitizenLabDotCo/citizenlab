@@ -165,26 +165,28 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
           projectId={projectId}
           scrollToEventId={scrollToEventId}
         />
-        <Modal
-          opened={showModal}
-          close={() => {
-            setShowModal(false);
-          }}
-          hasSkipButton={false}
-        >
-          <Box
-            width="100%"
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            justifyContent="center"
+        {showModal && (
+          <Modal
+            opened={showModal}
+            close={() => {
+              setShowModal(false);
+            }}
+            hasSkipButton={false}
           >
-            <Image width="80px" height="80px" src={rocket} alt="" />
-            <Title variant="h2" textAlign="center">
-              {config.getModalContent()}
-            </Title>
-          </Box>
-        </Modal>
+            <Box
+              width="100%"
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Image width="80px" height="80px" src={rocket} alt="" />
+              <Title variant="h2" textAlign="center">
+                {config.getModalContent()}
+              </Title>
+            </Box>
+          </Modal>
+        )}
       </ContentWrapper>
     );
   }
