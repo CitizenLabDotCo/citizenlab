@@ -1287,7 +1287,7 @@
   "app.containers.UsersEditPage.feedbackLinkText": "Bitte hier klicken",
   "app.containers.UsersEditPage.feedbackLinkUrl": "https://citizenlabco.typeform.com/to/BGVTCYeO#source={url}",
   "app.containers.UsersEditPage.firstNames": "Vorname",
-  "app.containers.UsersEditPage.firstNamesEmptyError": "Geben Sie Vornamen an",
+  "app.containers.UsersEditPage.firstNamesEmptyError": "Geben Sie einen Vornamen an",
   "app.containers.UsersEditPage.h1": "Ihre Kontoinformationen",
   "app.containers.UsersEditPage.h1sub": "Bearbeiten Sie Ihre Kontoinformationen",
   "app.containers.UsersEditPage.image": "Avatar-Bild",
