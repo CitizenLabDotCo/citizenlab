@@ -11,6 +11,14 @@ import GoBackButton from 'components/UI/GoBackButton';
 import Button from 'components/UI/Button';
 import TabbedResource from 'components/admin/TabbedResource';
 import Outlet from 'components/Outlet';
+import {
+  Dropdown,
+  DropdownListItem,
+  Box,
+  Icon,
+  Text,
+} from '@citizenlab/cl2-component-library';
+import NewIdeaButton from './ideas/NewIdeaButton';
 
 // resources
 import GetFeatureFlag, {
@@ -33,13 +41,18 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
 
 // typings
 import { InsertConfigurationOptions, ITab } from 'typings';
 import { getInputTerm } from 'services/participationContexts';
 import { IProjectData } from 'services/projects';
 
+// utils
 import { insertConfiguration } from 'utils/moduleUtils';
+
+// hooks
+import useLocalize from 'hooks/useLocalize';
 
 const TopContainer = styled.div`
   width: 100%;
@@ -59,6 +72,16 @@ const ActionsContainer = styled.div`
   }
 `;
 
+const StyledDropdown = styled(Dropdown)`
+  margin-top: 0px;
+`;
+
+const StyledText = styled(Text)`
+  color: white;
+  margin: auto;
+  padding: 8px;
+`;
+
 export interface InputProps {}
 
 interface DataProps {
@@ -70,6 +93,7 @@ interface DataProps {
 }
 
 interface State {
+  showIdeaDropdown: boolean;
   tabs: ITab[];
   goBackUrl: string | null;
   tabHideConditions: {
@@ -93,6 +117,7 @@ export class AdminProjectsProjectIndex extends PureComponent<
     } = props;
 
     this.state = {
+      showIdeaDropdown: false,
       tabs: [
         {
           label: formatMessage(messages.generalTab),
@@ -341,12 +366,59 @@ export class AdminProjectsProjectIndex extends PureComponent<
       },
       tabs: !isNilOrError(project) ? this.getTabs(project.id, project) : [],
     };
+
+    let numberIdeationPhases = 0;
+    let ideationPhase;
+
     if (!isNilOrError(project) && phases !== undefined) {
       const inputTerm = getInputTerm(
         project?.attributes.process_type,
         project,
         phases
       );
+
+      const DropdownContent = () => {
+        const localize = useLocalize();
+        if (!isNilOrError(phases)) {
+          return (
+            <>
+              {phases.map((phase, i) => (
+                <>
+                  {(phase.attributes.participation_method === 'ideation' ||
+                    phase.attributes.participation_method === 'budgeting') && (
+                    <DropdownListItem key={i}>
+                      <Box
+                        onClick={() => {
+                          clHistory.push(
+                            `/projects/${project.attributes.slug}/ideas/new?phase_id=${phase.id}`
+                          );
+                        }}
+                      >
+                        <span color={colors.text}>
+                          {localize(phase.attributes.title_multiloc)}
+                        </span>
+                      </Box>
+                    </DropdownListItem>
+                  )}
+                </>
+              ))}
+            </>
+          );
+        }
+        return null;
+      };
+
+      if (!isNilOrError(phases)) {
+        phases.map((phase) => {
+          if (
+            phase.attributes.participation_method === 'ideation' ||
+            phase.attributes.participation_method === 'budgeting'
+          ) {
+            numberIdeationPhases++;
+            ideationPhase = phase;
+          }
+        });
+      }
 
       return (
         <>
@@ -360,23 +432,68 @@ export class AdminProjectsProjectIndex extends PureComponent<
             <GoBackButton onClick={this.goBack} />
             <ActionsContainer>
               {tabbedProps.tabs.some((tab) => tab.name === 'ideas') && (
-                <Button
-                  id="e2e-new-idea"
-                  buttonStyle="cl-blue"
-                  icon="idea"
-                  linkTo={`/projects/${project.attributes.slug}/ideas/new`}
-                  text={formatMessage(
-                    getInputTermMessage(inputTerm, {
-                      idea: messages.addNewIdea,
-                      option: messages.addNewOption,
-                      project: messages.addNewProject,
-                      question: messages.addNewQuestion,
-                      issue: messages.addNewIssue,
-                      contribution: messages.addNewContribution,
-                    })
-                  )}
-                  onClick={this.onNewIdea(pathname)}
-                />
+                <>
+                  <Box
+                    onClick={this.onNewIdea(pathname)}
+                    onMouseOver={() => {
+                      this.setState({ showIdeaDropdown: true });
+                    }}
+                    onMouseLeave={() => {
+                      this.setState({ showIdeaDropdown: false });
+                    }}
+                  >
+                    {project.attributes.process_type === 'continuous' && (
+                      <NewIdeaButton
+                        inputTerm={inputTerm}
+                        linkTo={`/projects/${project.attributes.slug}/ideas/new`}
+                      />
+                    )}
+                    {project.attributes.process_type === 'timeline' &&
+                      numberIdeationPhases === 1 && (
+                        <NewIdeaButton
+                          inputTerm={inputTerm}
+                          linkTo={`/projects/${project.attributes.slug}/ideas/new?phase_id=${ideationPhase.id}`}
+                        />
+                      )}
+                    {project.attributes.process_type === 'timeline' &&
+                      numberIdeationPhases > 1 && (
+                        <>
+                          <Box
+                            color="white"
+                            background={colors.clBlueDark}
+                            borderRadius="3px"
+                            height="42px"
+                            px="16px"
+                            display="flex"
+                          >
+                            <Icon
+                              fill="white"
+                              marginRight="8px"
+                              width="15px"
+                              name="idea"
+                              marginY="auto"
+                            />
+                            <StyledText>
+                              {formatMessage(
+                                getInputTermMessage(inputTerm, {
+                                  idea: messages.addNewIdea,
+                                  option: messages.addNewOption,
+                                  project: messages.addNewProject,
+                                  question: messages.addNewQuestion,
+                                  issue: messages.addNewIssue,
+                                  contribution: messages.addNewContribution,
+                                })
+                              )}
+                            </StyledText>
+                          </Box>
+                          <StyledDropdown
+                            opened={this.state.showIdeaDropdown}
+                            content={<DropdownContent />}
+                          />
+                        </>
+                      )}
+                  </Box>
+                </>
               )}
               <Button
                 buttonStyle="cl-blue"
