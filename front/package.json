@@ -43,7 +43,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "pretty-quick",
-      "pre-push": "lint"
+      "pre-push": "npm run lint"
     }
   },
   "dependencies": {
@@ -219,7 +219,6 @@
     "mini-css-extract-plugin": "^2.6.1",
     "moment-locales-webpack-plugin": "1.2.0",
     "moment-timezone-data-webpack-plugin": "1.5.0",
-    "polite-linter": "^1.2.1",
     "prettier": "^2.0.5",
     "pretty-quick": "^3.1.3",
     "react-refresh": "^0.14.0",
