@@ -1,20 +1,23 @@
-import React, { memo } from 'react';
 import { get } from 'lodash-es';
+import React, { memo } from 'react';
 // hooks
 import useLocalize from 'hooks/useLocalize';
 
 // components
-import ProjectTemplateCard from './ProjectTemplateCard';
-import SearchInput from 'components/UI/SearchInput';
 import { Spinner } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
+import SearchInput from 'components/UI/SearchInput';
 import DepartmentFilter from '../components/DepartmentFilter';
-import PurposeFilter from './PurposeFilter';
 import ParticipationLevelFilter from './ParticipationLevelFilter';
+import ProjectTemplateCard from './ProjectTemplateCard';
+import PurposeFilter from './PurposeFilter';
 
 // i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from './messages';
 
 // style

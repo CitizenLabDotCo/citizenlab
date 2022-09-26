@@ -1,49 +1,52 @@
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import React, {
+  useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState,
-  useMemo,
-  useCallback,
 } from 'react';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // graph
+import { forceCollide } from 'd3-force';
 import ForceGraph2D, {
   ForceGraphMethods,
   NodeObject,
 } from 'react-force-graph-2d';
-import { forceCollide } from 'd3-force';
 
 // hooks
-import useInsightsView from 'modules/commercial/insights/hooks/useInsightsView';
 import useNetwork from 'modules/commercial/insights/hooks/useInsightsNetwork';
+import useInsightsView from 'modules/commercial/insights/hooks/useInsightsView';
 
 // types
 import { IInsightsNetworkNode } from 'modules/commercial/insights/services/insightsNetwork';
 
 // utils
-import { isNilOrError, isError } from 'utils/helperUtils';
-import { cloneDeep } from 'lodash-es';
-import { colors } from 'utils/styleUtils';
-import clHistory from 'utils/cl-router/history';
-import { stringify } from 'qs';
 import { saveAs } from 'file-saver';
+import { cloneDeep } from 'lodash-es';
+import { stringify } from 'qs';
+import clHistory from 'utils/cl-router/history';
+import { isError, isNilOrError } from 'utils/helperUtils';
+import { colors } from 'utils/styleUtils';
 
 // components
-import { Box, Spinner, IconTooltip } from '@citizenlab/cl2-component-library';
+import { Box, IconTooltip, Spinner } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import {
-  TooltipContent,
   SectionTitle,
+  TooltipContent,
 } from 'modules/commercial/insights/admin/components/StyledTextComponents';
 
 // tracking
-import { trackEventByName } from 'utils/analytics';
 import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
+import { trackEventByName } from 'utils/analytics';
 
 // intl
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from '../../messages';
 // styles
 import styled from 'styled-components';

@@ -3,7 +3,7 @@ import { IProjectPhaseStartedNotificationData } from 'services/notifications';
 
 // i18n
 import messages from '../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 
 // components
 import NotificationWrapper from '../NotificationWrapper';

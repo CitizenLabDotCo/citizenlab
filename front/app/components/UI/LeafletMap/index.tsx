@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import styled, { css } from 'styled-components';
+import { fontSizes, media } from 'utils/styleUtils';
 import useLeaflet, { ILeafletMapConfig } from './useLeaflet';
-import { media, fontSizes } from 'utils/styleUtils';
 
 const LeafletMapContainer = styled.div<{ mapHeight: string | undefined }>`
   flex: 1;

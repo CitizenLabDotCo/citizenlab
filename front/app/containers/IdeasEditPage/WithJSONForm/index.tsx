@@ -1,30 +1,30 @@
-import React, { useCallback, useContext, useEffect } from 'react';
 import { PreviousPathnameContext } from 'context';
+import React, { useCallback, useContext, useEffect } from 'react';
 
-import { WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
+import { WithRouterProps } from 'utils/cl-router/withRouter';
 
-import { isError, isNilOrError } from 'utils/helperUtils';
 import useAuthUser from 'hooks/useAuthUser';
-import useProject from 'hooks/useProject';
-import usePhases from 'hooks/usePhases';
 import useInputSchema from 'hooks/useInputSchema';
+import usePhases from 'hooks/usePhases';
+import useProject from 'hooks/useProject';
 import { getInputTerm } from 'services/participationContexts';
+import { isError, isNilOrError } from 'utils/helperUtils';
 
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
 import ideaFormMessages from 'containers/IdeasNewPage/messages';
+import { FormattedMessage } from 'react-intl';
+import messages from '../messages';
 
 import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
 
-import PageContainer from 'components/UI/PageContainer';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
-import { updateIdea } from 'services/ideas';
-import { geocode } from 'utils/locationTools';
+import PageContainer from 'components/UI/PageContainer';
 import useIdea from 'hooks/useIdea';
-import IdeasEditMeta from '../IdeasEditMeta';
+import { updateIdea } from 'services/ideas';
 import { usePermission } from 'services/permissions';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
+import { geocode } from 'utils/locationTools';
+import IdeasEditMeta from '../IdeasEditMeta';
 
 const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);

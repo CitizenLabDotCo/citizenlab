@@ -2,7 +2,7 @@ import React from 'react';
 import clHistory from 'utils/cl-router/history';
 
 // intl
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from '../messages';
 
 // components

@@ -1,4 +1,4 @@
-import React, { memo, useCallback, MouseEvent } from 'react';
+import React, { memo, MouseEvent, useCallback } from 'react';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // components

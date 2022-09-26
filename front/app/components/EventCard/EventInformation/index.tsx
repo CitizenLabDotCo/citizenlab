@@ -1,24 +1,23 @@
-import React, { memo, useRef, useState, useEffect } from 'react';
-import { isEmpty, every } from 'lodash-es';
+import { every, isEmpty } from 'lodash-es';
 import moment from 'moment';
+import React, { memo, useEffect, useRef, useState } from 'react';
 
 // components
-import Link from 'utils/cl-router/Link';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
 import { Icon } from '@citizenlab/cl2-component-library';
 import FileAttachments from 'components/UI/FileAttachments';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
+import Link from 'utils/cl-router/Link';
 
 // hooks
-import useResourceFiles from 'hooks/useResourceFiles';
 import useProject from 'hooks/useProject';
+import useResourceFiles from 'hooks/useResourceFiles';
 
 // services
 import { IEventData } from 'services/events';
 
 // i18n
 import T from 'components/T';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 // styling
@@ -26,9 +25,9 @@ import styled, { useTheme } from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // other
-import checkTextOverflow from './checkTextOverflow';
-import { isNilOrError } from 'utils/helperUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
+import { isNilOrError } from 'utils/helperUtils';
+import checkTextOverflow from './checkTextOverflow';
 
 const EventInformationContainer = styled.div`
   flex: 1;

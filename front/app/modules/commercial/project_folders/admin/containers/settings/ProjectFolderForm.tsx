@@ -15,7 +15,7 @@ import { convertUrlToUploadFile } from 'utils/fileUtils';
 import useProjectFolderImages from '../../../hooks/useProjectFolderImages';
 import useProjectFolder from '../../../hooks/useProjectFolder';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from '../messages';
 import {
   SectionField,
@@ -572,4 +572,4 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   );
 };
 
-export default injectIntl(ProjectFolderForm);
+export default ProjectFolderForm;

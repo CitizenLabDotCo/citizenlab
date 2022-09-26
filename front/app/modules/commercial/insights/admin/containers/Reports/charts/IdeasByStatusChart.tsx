@@ -1,28 +1,31 @@
 // libraries
-import React from 'react';
 import { isEmpty, map, orderBy } from 'lodash-es';
+import React from 'react';
 
 // intl
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from '../messages';
 
 // styling
 import {
+  DEFAULT_BAR_CHART_MARGIN,
   legacyColors,
   sizes,
-  DEFAULT_BAR_CHART_MARGIN,
 } from 'components/admin/Graphs/styling';
 
 // components
-import ReportExportMenu from 'components/admin/ReportExportMenu';
-import {
-  GraphCardHeader,
-  GraphCardTitle,
-  GraphCard,
-  GraphCardInner,
-} from 'components/admin/GraphWrappers';
 import BarChart from 'components/admin/Graphs/BarChart';
+import {
+  GraphCard,
+  GraphCardHeader,
+  GraphCardInner,
+  GraphCardTitle,
+} from 'components/admin/GraphWrappers';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 
 // resources
 import GetSerieFromStream from 'resources/GetSerieFromStream';
@@ -129,7 +132,7 @@ export class IdeasByStatusChart extends React.PureComponent<
   }
 }
 
-const IdeasByStatusChartWithHoCs = injectIntl<Props>(IdeasByStatusChart);
+const IdeasByStatusChartWithHoCs = injectIntl(IdeasByStatusChart);
 
 const WrappedIdeasByStatusChart = (
   inputProps: InputProps & InjectedLocalized

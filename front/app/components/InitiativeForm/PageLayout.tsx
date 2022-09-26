@@ -1,4 +1,5 @@
 import React from 'react';
+import { isNilOrError } from 'utils/helperUtils';
 
 // libraries
 import clHistory from 'utils/cl-router/history';
@@ -15,8 +16,12 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 // intl
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
+
+// hooks
+import useLocalize from 'hooks/useLocalize';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 
 const Container = styled.main`
   background: ${colors.background};
@@ -127,29 +132,31 @@ interface Props {
   isAdmin: boolean;
 }
 
-export default class PageLayout extends React.PureComponent<Props> {
-  goBack = () => {
+const PageLayout = ({ children, className, isAdmin }: Props) => {
+  const localize = useLocalize();
+  const appConfig = useAppConfiguration();
+
+  const goBack = () => {
     clHistory.goBack();
   };
 
-  render() {
-    const { children, className, isAdmin } = this.props;
+  const pageContent = (
+    <TwoColumns>
+      <div>
+        <StyledCollapsibleTipsAndInfo />
+        {children}
+      </div>
+      <TipsContainer>
+        <StyledTipsBox />
+      </TipsContainer>
+    </TwoColumns>
+  );
 
-    const pageContent = (
-      <TwoColumns>
-        <div>
-          <StyledCollapsibleTipsAndInfo />
-          {children}
-        </div>
-        <TipsContainer>
-          <StyledTipsBox />
-        </TipsContainer>
-      </TwoColumns>
-    );
+  if (!isNilOrError(appConfig)) {
     return (
       <Container className={className}>
         <TopLine>
-          <GoBackButton onClick={this.goBack} />
+          <GoBackButton onClick={goBack} />
         </TopLine>
         <Header>
           <HeaderTitle>
@@ -158,7 +165,9 @@ export default class PageLayout extends React.PureComponent<Props> {
               values={{
                 styledOrgName: (
                   <ColoredText>
-                    <FormattedMessage {...messages.orgName} />
+                    {localize(
+                      appConfig.attributes.settings.core.organization_name
+                    )}
                   </ColoredText>
                 ),
               }}
@@ -175,4 +184,8 @@ export default class PageLayout extends React.PureComponent<Props> {
       </Container>
     );
   }
-}
+
+  return null;
+};
+
+export default PageLayout;

@@ -4,16 +4,16 @@ import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Button from 'components/UI/Button';
 import { Icon } from '@citizenlab/cl2-component-library';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
+import Button from 'components/UI/Button';
 import TextCampaignListRow from './TextCampaignListRow';
 
 // resources
 import useTextingCampaigns from 'hooks/useTextingCampaigns';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from '../../messages';
 
 // styling

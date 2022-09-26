@@ -2,25 +2,25 @@ import React from 'react';
 
 // components
 import {
-  Toggle,
   IconTooltip,
   IOption,
+  Toggle,
 } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
-import { LabelBudgetingInput } from './labels';
 import CustomFieldPicker from './CustomFieldPicker';
 import DefaultViewPicker from './DefaultViewPicker';
+import { LabelBudgetingInput } from './labels';
 import SortingPicker from './SortingPicker';
 import {
-  ToggleRow,
-  ToggleLabel,
   BudgetingAmountInput,
   BudgetingAmountInputError,
+  ToggleLabel,
+  ToggleRow,
 } from './styling';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from '../../messages';
 
 // typings

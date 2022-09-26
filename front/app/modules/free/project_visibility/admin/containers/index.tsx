@@ -1,22 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { fontSizes } from 'utils/styleUtils';
 
 // components
+import { Radio } from '@citizenlab/cl2-component-library';
 import {
   Section,
-  SubSectionTitle,
   SectionField,
+  SubSectionTitle,
 } from 'components/admin/Section';
-import { Radio } from '@citizenlab/cl2-component-library';
 import ProjectGroupsList from '../components/ProjectGroupsList';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 import permissionsMessages from 'containers/Admin/projects/project/permissions/messages';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
+import messages from './messages';
 
 // services
 import { updateProject } from 'services/projects';

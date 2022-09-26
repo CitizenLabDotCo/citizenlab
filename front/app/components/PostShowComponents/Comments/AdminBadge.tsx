@@ -1,9 +1,9 @@
+import { lighten } from 'polished';
 import React from 'react';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import { lighten } from 'polished';
+import messages from './messages';
 
 const Container = styled.span`
   color: ${colors.red600};

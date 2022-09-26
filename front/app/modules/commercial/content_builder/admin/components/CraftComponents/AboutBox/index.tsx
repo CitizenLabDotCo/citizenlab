@@ -1,8 +1,8 @@
 import React from 'react';
 
 // components
-import ProjectInfoSideBar from 'containers/ProjectsShowPage/shared/header/ProjectInfoSideBar';
 import { Box } from '@citizenlab/cl2-component-library';
+import ProjectInfoSideBar from 'containers/ProjectsShowPage/shared/header/ProjectInfoSideBar';
 
 const AboutBox = ({ projectId }: { projectId: string }) => {
   return (

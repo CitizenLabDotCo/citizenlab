@@ -1,8 +1,8 @@
 import React, { memo, useEffect, useMemo, useState } from 'react';
 
 // components
-import ParentComment from './ParentComment';
 import { Spinner } from '@citizenlab/cl2-component-library';
+import ParentComment from './ParentComment';
 
 // services
 import { ICommentData } from 'services/comments';
@@ -14,8 +14,7 @@ import { commentAdded$, commentDeleted$ } from './events';
 import styled from 'styled-components';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // a11y

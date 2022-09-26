@@ -1,17 +1,17 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
+import { isNilOrError } from 'utils/helperUtils';
 
+import Link from 'utils/cl-router/Link';
 import { H2 } from '.';
 import Project from './Project';
-import Link from 'utils/cl-router/Link';
 
 // intl
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
-import useAdminPublications from 'hooks/useAdminPublications';
 import Outlet from 'components/Outlet';
+import useAdminPublications from 'hooks/useAdminPublications';
 
 const AllProjectsLink = styled(Link)`
   display: block;

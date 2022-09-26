@@ -5,13 +5,13 @@ import { isNilOrError, stopPropagation } from 'utils/helperUtils';
 import { ICommentOnYourCommentNotificationData } from 'services/notifications';
 
 // i18n
+import { FormattedMessage } from 'react-intl';
 import messages from '../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
 
 // components
-import NotificationWrapper from '../NotificationWrapper';
-import { DeletedUser } from '../Notification';
 import Link from 'utils/cl-router/Link';
+import { DeletedUser } from '../Notification';
+import NotificationWrapper from '../NotificationWrapper';
 
 interface Props {
   notification: ICommentOnYourCommentNotificationData;

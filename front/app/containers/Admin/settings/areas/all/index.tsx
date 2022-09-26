@@ -1,14 +1,18 @@
 import React from 'react';
-import { WrappedComponentProps } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import GetAreas, { GetAreasChildProps } from 'resources/GetAreas';
-import { reorderArea, IAreaData, deleteArea } from 'services/areas';
+import { deleteArea, IAreaData, reorderArea } from 'services/areas';
 
-import messages from '../messages';
 import T from 'components/T';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import messages from '../messages';
 
+import { ButtonWrapper } from 'components/admin/PageWrapper';
 import {
   SortableList,
   SortableRow,
@@ -20,7 +24,6 @@ import {
   SectionTitle,
 } from 'components/admin/Section';
 import Button from 'components/UI/Button';
-import { ButtonWrapper } from 'components/admin/PageWrapper';
 import AreaTermConfig from './AreaTermConfig';
 
 interface InputProps {}
@@ -122,7 +125,7 @@ class AreaList extends React.PureComponent<Props & WrappedComponentProps> {
   }
 }
 
-const AreaListWithHoCs = injectIntl<Props>(AreaList);
+const AreaListWithHoCs = injectIntl(AreaList);
 
 export default () => (
   <GetAreas>{(areas) => <AreaListWithHoCs areas={areas} />}</GetAreas>

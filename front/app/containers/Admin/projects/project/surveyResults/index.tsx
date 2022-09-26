@@ -1,23 +1,23 @@
 // Libraries
 import React, { Fragment } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { adopt } from 'react-adopt';
 import styled from 'styled-components';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
 
 // Services / Data loading
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetFeatureFlag from 'resources/GetFeatureFlag';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
 // Components
-import ExportSurveyButton from './ExportSurveyButton';
+import { SectionDescription, SectionTitle } from 'components/admin/Section';
 import T from 'components/T';
-import { SectionTitle, SectionDescription } from 'components/admin/Section';
+import ExportSurveyButton from './ExportSurveyButton';
 
 // i18n
+import { FormattedMessage } from 'react-intl';
 import messages from '../messages';
-import { FormattedMessage } from 'utils/cl-intl';
 
 const Container = styled.div`
   display: flex;

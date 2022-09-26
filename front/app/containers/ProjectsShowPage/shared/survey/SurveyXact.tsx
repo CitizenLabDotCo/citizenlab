@@ -1,8 +1,8 @@
 import React, { memo, useState } from 'react';
 
 // styling
-import { defaultCardStyle, viewportWidths } from 'utils/styleUtils';
 import styled from 'styled-components';
+import { defaultCardStyle, viewportWidths } from 'utils/styleUtils';
 
 // components
 import { Spinner, useWindowSize } from '@citizenlab/cl2-component-library';

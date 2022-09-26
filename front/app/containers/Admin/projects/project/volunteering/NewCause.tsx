@@ -1,35 +1,38 @@
-import React, { memo, useCallback, useState } from 'react';
 import { isEmpty } from 'lodash-es';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import React, { memo, useCallback, useState } from 'react';
 import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // Services
 import { addCause } from 'services/causes';
 
 // Components
+import { Label } from '@citizenlab/cl2-component-library';
 import {
   Section,
+  SectionDescription,
   SectionField,
   SectionTitle,
-  SectionDescription,
 } from 'components/admin/Section';
-import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import { Label } from '@citizenlab/cl2-component-library';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 
 // i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
 
 // Styling
 import styled from 'styled-components';
 
 // Typing
-import { Multiloc, Locale, UploadFile } from 'typings';
+import { Locale, Multiloc, UploadFile } from 'typings';
 
 const Container = styled.div``;
 

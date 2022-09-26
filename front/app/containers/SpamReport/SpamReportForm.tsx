@@ -8,14 +8,13 @@ import { Report } from 'services/spamReports';
 import getSubmitState from 'utils/getSubmitState';
 
 // Components
-import { SectionField } from 'components/admin/Section';
 import { Label, Radio } from '@citizenlab/cl2-component-library';
-import TextArea from 'components/UI/TextArea';
+import { SectionField } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
+import TextArea from 'components/UI/TextArea';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // animation
@@ -150,4 +149,4 @@ class SpamReportForm extends React.PureComponent<
   }
 }
 
-export default injectIntl<Props>(SpamReportForm);
+export default injectIntl(SpamReportForm);

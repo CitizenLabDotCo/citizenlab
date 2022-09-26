@@ -1,14 +1,14 @@
-import React, { ReactElement, memo, useState, useCallback } from 'react';
-import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
-import { isNilOrError } from 'utils/helperUtils';
 import { gql, useQuery } from '@apollo/client';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import { trackEventByName } from 'utils/analytics';
+import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 import { get, isEmpty } from 'lodash-es';
+import React, { memo, ReactElement, useCallback, useState } from 'react';
+import { trackEventByName } from 'utils/analytics';
+import { isNilOrError } from 'utils/helperUtils';
 import tracks from '../../tracks';
-import ProjectTemplateCards from '../components/ProjectTemplateCards';
 import { client } from '../../utils/apolloUtils';
+import ProjectTemplateCards from '../components/ProjectTemplateCards';
 
 interface Props {
   className?: string;

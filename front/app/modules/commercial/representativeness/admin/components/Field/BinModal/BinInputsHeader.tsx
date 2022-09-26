@@ -4,8 +4,8 @@ import React from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 
 // i18n
+import { FormattedMessage, MessageDescriptor } from 'react-intl';
 import messages from './messages';
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
 // styling
 import { colors } from 'utils/styleUtils';

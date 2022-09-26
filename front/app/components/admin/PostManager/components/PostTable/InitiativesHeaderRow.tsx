@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table } from 'semantic-ui-react';
 import Checkbox from 'components/UI/Checkbox';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import SortableTableHeader from 'components/admin/SortableTableHeader';
 import messages from '../../messages';
 import { TableHeaderCellText } from '.';

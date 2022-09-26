@@ -1,45 +1,44 @@
-import React, { PureComponent } from 'react';
-import { Subscription, combineLatest, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
 import { get, has, isEmpty, omitBy } from 'lodash-es';
+import React, { PureComponent } from 'react';
+import { combineLatest, of, Subscription } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 // components
 import { Section, SectionTitle } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
+import AllInput from './AllInput';
 import Branding from './Branding';
 import ProjectHeader from './ProjectHeader';
-import AllInput from './AllInput';
 
 // style
 import styled, { withTheme } from 'styled-components';
 
 // utils
-import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
-import getSubmitState from './getSubmitState';
-import { isNilOrError } from 'utils/helperUtils';
 import { isCLErrorJSON } from 'utils/errorUtils';
+import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import getSubmitState from './getSubmitState';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
-import messages from './messages';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import sharedSettingsMessages from '../messages';
+import messages from './messages';
 
 // services
-import { localeStream } from 'services/locale';
 import {
   currentAppConfigurationStream,
-  updateAppConfiguration,
-  IAppConfigurationStyle,
   IAppConfiguration,
   IAppConfigurationSettings,
+  IAppConfigurationStyle,
   IUpdatedAppConfigurationProperties,
   TAppConfigurationSetting,
+  updateAppConfiguration,
 } from 'services/appConfiguration';
+import { localeStream } from 'services/locale';
 import { toggleAllInput } from 'services/navbar';
 
 // typings
-import { UploadFile, Locale, Multiloc, CLErrors } from 'typings';
+import { CLErrors, Locale, Multiloc, UploadFile } from 'typings';
 
 interface Props {
   theme: any;
@@ -81,7 +80,7 @@ class SettingsCustomizeTab extends PureComponent<
 > {
   subscriptions: Subscription[];
 
-  constructor(props) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       locale: null,
@@ -284,4 +283,4 @@ class SettingsCustomizeTab extends PureComponent<
   }
 }
 
-export default withTheme(injectIntl<Props>(SettingsCustomizeTab));
+export default withTheme(injectIntl(SettingsCustomizeTab));

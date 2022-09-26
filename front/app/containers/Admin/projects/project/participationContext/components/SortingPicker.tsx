@@ -1,12 +1,12 @@
 import React from 'react';
 
 // components
-import { Radio, IconTooltip } from '@citizenlab/cl2-component-library';
-import Error from 'components/UI/Error';
+import { IconTooltip, Radio } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
+import Error from 'components/UI/Error';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from '../../messages';
 
 // typings

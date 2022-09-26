@@ -1,14 +1,14 @@
 // libraries
+import moment, { Moment } from 'moment';
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import moment, { Moment } from 'moment';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 import {
-  GraphsContainer,
-  ControlBar,
   Column,
+  ControlBar,
+  GraphsContainer,
 } from 'components/admin/GraphWrappers';
 import ResolutionControl, {
   IResolution,
@@ -16,12 +16,12 @@ import ResolutionControl, {
 import Outlet from 'components/Outlet';
 import ProjectFilter from '../components/ChartFilters/ProjectFilter';
 import TimeControl from '../components/TimeControl';
-import LineBarChart from './charts/LineBarChart';
 import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
+import IdeasByStatusChart from './charts/IdeasByStatusChart';
+import LineBarChart from './charts/LineBarChart';
+import LineBarChartVotesByTime from './charts/LineBarChartVotesByTime';
 import SelectableResourceByProjectChart from './charts/SelectableResourceByProjectChart';
 import SelectableResourceByTopicChart from './charts/SelectableResourceByTopicChart';
-import LineBarChartVotesByTime from './charts/LineBarChartVotesByTime';
-import IdeasByStatusChart from './charts/IdeasByStatusChart';
 
 // typings
 import { IOption } from 'typings';
@@ -31,28 +31,27 @@ import { injectTracks } from 'utils/analytics';
 import tracks from '../tracks';
 
 // i18n
-import messages from '../messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
+import messages from '../messages';
 
 // resources
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 import { PublicationStatus } from 'services/projects';
-import { isNilOrError } from 'utils/helperUtils';
 import {
-  usersByTimeCumulativeStream,
   activeUsersByTimeStream,
-  usersByTimeStream,
+  activeUsersByTimeXlsxEndpoint,
+  commentsByTimeCumulativeStream,
+  commentsByTimeCumulativeXlsxEndpoint,
   commentsByTimeStream,
   ideasByTimeCumulativeStream,
-  commentsByTimeCumulativeStream,
-  activeUsersByTimeXlsxEndpoint,
   ideasByTimeCumulativeXlsxEndpoint,
-  commentsByTimeCumulativeXlsxEndpoint,
   ideasByTimeStream,
+  usersByTimeCumulativeStream,
+  usersByTimeStream,
   usersByTimeXlsxEndpoint,
 } from 'services/stats';
+import { isNilOrError } from 'utils/helperUtils';
 
 export type IResource = 'ideas' | 'comments' | 'votes';
 

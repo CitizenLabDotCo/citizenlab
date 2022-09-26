@@ -1,18 +1,17 @@
-import { withJsonFormsControlProps } from '@jsonforms/react';
 import {
   ControlProps,
   RankedTester,
   rankWith,
   scopeEndsWith,
 } from '@jsonforms/core';
-import React from 'react';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import ErrorDisplay from '../ErrorDisplay';
-import UserSelect from 'components/UI/UserSelect';
-import messages from '../../messages';
+import { withJsonFormsControlProps } from '@jsonforms/react';
 import { FormLabel } from 'components/UI/FormComponents';
+import UserSelect from 'components/UI/UserSelect';
+import React from 'react';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
+import messages from '../../messages';
+import ErrorDisplay from '../ErrorDisplay';
 
 const UserPickerControl = ({
   data,

@@ -1,10 +1,9 @@
 import React, { Fragment } from 'react';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
-import { useParams, useLocation } from 'react-router-dom';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
+import { useLocation, useParams } from 'react-router-dom';
 
 // components
-import { Box, Title, Text } from '@citizenlab/cl2-component-library';
+import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 import FormActions from 'containers/Admin/formBuilder/components/FormActions';
 import FormResults from 'containers/Admin/formBuilder/components/FormResults';
 
@@ -12,12 +11,12 @@ import FormResults from 'containers/Admin/formBuilder/components/FormResults';
 import messages from './messages';
 
 // hooks
-import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
+import useProject from 'hooks/useProject';
 
 // Utils
-import { isNilOrError } from 'utils/helperUtils';
 import { getFormActionsConfig } from 'containers/Admin/formBuilder/utils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // Styles
 import { colors } from 'utils/styleUtils';

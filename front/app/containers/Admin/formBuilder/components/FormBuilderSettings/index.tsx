@@ -4,16 +4,16 @@ import React from 'react';
 import { colors } from 'utils/styleUtils';
 
 // components
-import { Box, Text, stylingConsts } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
+import { Box, stylingConsts, Text } from '@citizenlab/cl2-component-library';
 import { SectionField, SectionTitle } from 'components/admin/Section';
-import CloseIconButton from 'components/UI/CloseIconButton';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import Toggle from 'components/HookForm/Toggle';
+import Button from 'components/UI/Button';
+import CloseIconButton from 'components/UI/CloseIconButton';
 
 // intl
+import { FormattedMessage, MessageDescriptor } from 'react-intl';
 import messages from '../messages';
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
 // types
 import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';

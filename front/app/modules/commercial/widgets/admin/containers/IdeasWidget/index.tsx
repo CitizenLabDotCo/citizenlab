@@ -1,20 +1,23 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import styled from 'styled-components';
-import { omitBy, isNil, isEmpty, isString, debounce } from 'lodash-es';
+import { debounce, isEmpty, isNil, isString, omitBy } from 'lodash-es';
 import { stringify } from 'qs';
+import React, { useEffect, useMemo, useState } from 'react';
+import styled from 'styled-components';
 
-import Form, { FormValues } from './Form';
-import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { string, object, number, boolean, array } from 'yup';
+import { FormProvider, useForm } from 'react-hook-form';
+import { array, boolean, number, object, string } from 'yup';
+import Form, { FormValues } from './Form';
 
-import WidgetPreview from '../WidgetPreview';
+import Button from 'components/UI/Button';
 import Modal from 'components/UI/Modal';
 import WidgetCode from '../WidgetCode';
-import Button from 'components/UI/Button';
+import WidgetPreview from '../WidgetPreview';
 
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from '../../messages';
 
 import { trackEventByName } from 'utils/analytics';

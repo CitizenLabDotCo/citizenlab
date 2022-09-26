@@ -1,15 +1,18 @@
 // Libraries
-import React from 'react';
-import styled from 'styled-components';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
 import moment from 'moment';
+import React from 'react';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
+import styled from 'styled-components';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import messages from './messages';
 
 // Utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 
 // Services
 import { deletePhase } from 'services/phases';
@@ -18,13 +21,13 @@ import { deletePhase } from 'services/phases';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 
 // Components
+import { HeadRow, List, Row } from 'components/admin/ResourceList';
+import { SectionDescription, SectionTitle } from 'components/admin/Section';
 import T from 'components/T';
 import Button from 'components/UI/Button';
-import { List, Row, HeadRow } from 'components/admin/ResourceList';
-import { SectionTitle, SectionDescription } from 'components/admin/Section';
 
 // Styling
-import { fontSizes, colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // Styles
 const ListWrapper = styled.div`

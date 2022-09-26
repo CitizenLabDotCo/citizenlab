@@ -2,8 +2,8 @@ import React, { useCallback, useState } from 'react';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // utils
+import { parse, stringify } from 'qs';
 import clHistory from 'utils/cl-router/history';
-import { stringify, parse } from 'qs';
 import { isNilOrError } from 'utils/helperUtils';
 
 // styles
@@ -12,30 +12,29 @@ import { colors, fontSizes } from 'utils/styleUtils';
 
 // components
 import { Box, IconTooltip } from '@citizenlab/cl2-component-library';
-import Search from 'components/UI/SearchInput';
-import InputCard from './InputCard';
-import Empty from './Empty';
 import Button from 'components/UI/Button';
-import Tag from 'modules/commercial/insights/admin/components/Tag';
 import Modal from 'components/UI/Modal';
-import CreateCategory from './CreateCategory';
-import Export from './Export';
+import Search from 'components/UI/SearchInput';
 import {
-  TooltipContent,
   SectionTitle,
+  TooltipContent,
 } from 'modules/commercial/insights/admin/components/StyledTextComponents';
+import Tag from 'modules/commercial/insights/admin/components/Tag';
+import CreateCategory from './CreateCategory';
+import Empty from './Empty';
+import Export from './Export';
+import InputCard from './InputCard';
 
 // intl
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 
 // types
 import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
 
 // tracking
-import { trackEventByName } from 'utils/analytics';
 import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
+import { trackEventByName } from 'utils/analytics';
 
 // hooks
 import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';

@@ -7,23 +7,26 @@ import { useEditor } from '@craftjs/core';
 import { useParams } from 'react-router-dom';
 
 // intl
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 
 // components
-import ToolboxItem from './ToolboxItem';
 import { Box, Title } from '@citizenlab/cl2-component-library';
-import Text from '../CraftComponents/Text';
-import TwoColumn from '../CraftComponents/TwoColumn';
-import ThreeColumn from '../CraftComponents/ThreeColumn';
-import Image from '../CraftComponents/Image';
-import Iframe from '../CraftComponents/Iframe';
 import AboutBox from '../CraftComponents/AboutBox';
 import Accordion from '../CraftComponents/Accordion';
-import WhiteSpace from '../CraftComponents/WhiteSpace';
 import Button from '../CraftComponents/Button';
-import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
+import Iframe from '../CraftComponents/Iframe';
+import Image from '../CraftComponents/Image';
+import Text from '../CraftComponents/Text';
+import ThreeColumn from '../CraftComponents/ThreeColumn';
+import TwoColumn from '../CraftComponents/TwoColumn';
+import WhiteSpace from '../CraftComponents/WhiteSpace';
 import ImageTextCards from '../CraftSections/ImageTextCards';
+import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
+import ToolboxItem from './ToolboxItem';
 
 // intl
 import messages from '../../messages';

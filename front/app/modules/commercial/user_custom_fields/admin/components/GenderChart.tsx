@@ -1,35 +1,38 @@
 // libraries
 import React, { PureComponent } from 'react';
-import { Subscription, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 // utils
 import shallowCompare from 'utils/shallowCompare';
 
 // intl
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
 import messages from 'containers/Admin/dashboard/messages';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 
 // styling
 import { withTheme } from 'styled-components';
 
 // components
-import ReportExportMenu from 'components/admin/ReportExportMenu';
+import PieChart from 'components/admin/Graphs/PieChart';
 import {
-  NoDataContainer,
-  GraphCardHeader,
-  GraphCardTitle,
   GraphCard,
+  GraphCardHeader,
   GraphCardInner,
+  GraphCardTitle,
+  NoDataContainer,
   PieChartStyleFixesDiv,
 } from 'components/admin/GraphWrappers';
-import PieChart from 'components/admin/Graphs/PieChart';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 
 // services
 import {
-  usersByGenderStream,
   IUsersByRegistrationField,
+  usersByGenderStream,
   usersByGenderXlsxEndpoint,
 } from 'modules/commercial/user_custom_fields/services/stats';
 
@@ -55,12 +58,15 @@ const labelColors = {
   _blank: '#C0C2CE',
 };
 
-class GenderChart extends PureComponent<Props & WrappedComponentProps, State> {
+class GenderChart extends PureComponent<
+  Props & { theme: any } & WrappedComponentProps,
+  State
+> {
   private subscriptions: Subscription[];
   private queryProps$: BehaviorSubject<QueryProps>;
   private currentChart: React.RefObject<any>;
 
-  constructor(props: Props & WrappedComponentProps) {
+  constructor(props: Props & { theme: any } & WrappedComponentProps) {
     super(props);
     this.state = {
       serie: null,
@@ -184,4 +190,4 @@ class GenderChart extends PureComponent<Props & WrappedComponentProps, State> {
   }
 }
 
-export default injectIntl<Props>(withTheme(GenderChart as any) as any);
+export default withTheme(injectIntl(GenderChart));

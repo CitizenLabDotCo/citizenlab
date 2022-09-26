@@ -4,25 +4,25 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import ContentContainer from 'components/ContentContainer';
 import IdeaCards from 'components/IdeaCards';
-import PBExpenses from '../shared/pb/PBExpenses';
-import {
-  ProjectPageSectionTitle,
-  maxPageWidth,
-} from 'containers/ProjectsShowPage/styles';
 import SectionContainer from 'components/SectionContainer';
+import {
+  maxPageWidth,
+  ProjectPageSectionTitle,
+} from 'containers/ProjectsShowPage/styles';
+import PBExpenses from '../shared/pb/PBExpenses';
 
 // hooks
-import useProject from 'hooks/useProject';
 import { useWindowSize } from '@citizenlab/cl2-component-library';
+import useProject from 'hooks/useProject';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from 'containers/ProjectsShowPage/messages';
+import { FormattedMessage } from 'react-intl';
 import { getInputTermMessage } from 'utils/i18n';
 
 // style
 import styled from 'styled-components';
-import { viewportWidths, colors } from 'utils/styleUtils';
+import { colors, viewportWidths } from 'utils/styleUtils';
 
 const Container = styled.div``;
 

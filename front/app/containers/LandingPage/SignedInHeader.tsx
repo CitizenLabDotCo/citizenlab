@@ -1,12 +1,13 @@
-import React, { PureComponent } from 'react';
-import { adopt } from 'react-adopt';
+import useLocalize from 'hooks/useLocalize';
 import { isEmpty } from 'lodash-es';
+import React from 'react';
+import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Button from 'components/UI/Button';
-import Avatar from 'components/Avatar';
 import { Icon, Image } from '@citizenlab/cl2-component-library';
+import Avatar from 'components/Avatar';
+import Button from 'components/UI/Button';
 
 // services
 import {
@@ -15,34 +16,34 @@ import {
 } from 'services/onboardingCampaigns';
 
 // resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetOnboardingCampaigns, {
   GetOnboardingCampaignsChildProps,
 } from 'resources/GetOnboardingCampaigns';
 
 // utils
-import CSSTransition from 'react-transition-group/CSSTransition';
 import { openVerificationModal } from 'components/Verification/verificationModalEvents';
+import CSSTransition from 'react-transition-group/CSSTransition';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 import T from 'components/T';
+import { FormattedMessage } from 'react-intl';
+import messages from './messages';
 
 // style
-import styled, { withTheme } from 'styled-components';
-import { ScreenReaderOnly } from 'utils/a11y';
-import { media, fontSizes, isRtl } from 'utils/styleUtils';
 import Outlet from 'components/Outlet';
 import { IHomepageSettings } from 'services/homepageSettings';
+import styled, { withTheme } from 'styled-components';
+import { ScreenReaderOnly } from 'utils/a11y';
+import { fontSizes, isRtl, media } from 'utils/styleUtils';
 
 const contentTimeout = 350;
 const contentEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -290,7 +291,7 @@ export interface InputProps {
 
 interface DataProps {
   locale: GetLocaleChildProps;
-  tenant: GetAppConfigurationChildProps;
+  appConfig: GetAppConfigurationChildProps;
   authUser: GetAuthUserChildProps;
   onboardingCampaigns: GetOnboardingCampaignsChildProps;
 }
@@ -299,240 +300,240 @@ interface Props extends InputProps, DataProps {
   theme: any;
 }
 
-interface State {}
+const SignedInHeader = ({
+  locale,
+  appConfig,
+  authUser,
+  className,
+  theme,
+  onboardingCampaigns,
+  homepageSettings,
+}: Props) => {
+  const localize = useLocalize();
 
-class SignedInHeader extends PureComponent<Props, State> {
-  handleSkip = (name: IOnboardingCampaignNames) => () => {
+  const handleSkip = (name: IOnboardingCampaignNames) => () => {
     trackEventByName(tracks.clickSkipButton, {
       extra: { location: 'signed-in header', context: name },
     });
     dismissOnboardingCampaign(name);
   };
 
-  handleAccept = (name: IOnboardingCampaignNames) => {
+  const handleAccept = (name: IOnboardingCampaignNames) => {
     if (name === 'verification') {
       openVerificationModal();
     }
   };
 
-  render() {
-    const {
-      locale,
-      tenant,
-      authUser,
-      className,
-      theme,
-      onboardingCampaigns,
-      homepageSettings,
-    } = this.props;
+  if (
+    !isNilOrError(locale) &&
+    !isNilOrError(appConfig) &&
+    !isNilOrError(authUser) &&
+    !isNilOrError(onboardingCampaigns) &&
+    !isNilOrError(homepageSettings)
+  ) {
+    const orgName = localize(
+      appConfig.attributes.settings.core.organization_name
+    );
+    const tenantHeaderImage = homepageSettings.data.attributes.header_bg
+      ? homepageSettings.data.attributes.header_bg.large
+      : null;
+    const defaultMessage =
+      homepageSettings.data.attributes.banner_signed_in_header_multiloc;
 
-    if (
-      !isNilOrError(locale) &&
-      !isNilOrError(tenant) &&
-      !isNilOrError(authUser) &&
-      !isNilOrError(onboardingCampaigns) &&
-      !isNilOrError(homepageSettings)
-    ) {
-      const tenantHeaderImage = homepageSettings.data.attributes.header_bg
-        ? homepageSettings.data.attributes.header_bg.large
-        : null;
-      const defaultMessage =
-        homepageSettings.data.attributes.banner_signed_in_header_multiloc;
+    const objectFitCoverSupported =
+      window['CSS'] && CSS.supports('object-fit: cover');
 
-      const objectFitCoverSupported =
-        window['CSS'] && CSS.supports('object-fit: cover');
+    const genericTitle = (
+      <FormattedMessage
+        tagName="h1"
+        {...messages.titleCity}
+        values={{ orgName }}
+      />
+    );
 
-      const genericTitle = (
-        <FormattedMessage tagName="h1" {...messages.titleCity} />
-      );
-
-      return (
-        <Header
-          className={`e2e-signed-in-header ${className}`}
-          id="hook-header"
-        >
-          <ScreenReaderOnly>
-            {defaultMessage ? (
-              <T as="h1" value={defaultMessage}>
-                {(translatedTitle) =>
-                  translatedTitle ? <h1>{translatedTitle}</h1> : genericTitle
+    return (
+      <Header className={`e2e-signed-in-header ${className}`} id="hook-header">
+        <ScreenReaderOnly>
+          {defaultMessage ? (
+            <T as="h1" value={defaultMessage}>
+              {(translatedTitle) =>
+                translatedTitle ? <h1>{translatedTitle}</h1> : genericTitle
+              }
+            </T>
+          ) : (
+            genericTitle
+          )}
+        </ScreenReaderOnly>
+        <HeaderImageContainer>
+          <HeaderImageContainerInner>
+            {tenantHeaderImage && (
+              <HeaderImage
+                alt="" // Image is decorative, so alt tag is empty
+                src={tenantHeaderImage}
+                className={
+                  objectFitCoverSupported ? 'objectFitCoverSupported' : ''
                 }
-              </T>
-            ) : (
-              genericTitle
+              />
             )}
-          </ScreenReaderOnly>
-          <HeaderImageContainer>
-            <HeaderImageContainerInner>
-              {tenantHeaderImage && (
-                <HeaderImage
-                  alt="" // Image is decorative, so alt tag is empty
-                  src={tenantHeaderImage}
-                  className={
-                    objectFitCoverSupported ? 'objectFitCoverSupported' : ''
-                  }
+            <HeaderImageOverlay />
+          </HeaderImageContainerInner>
+        </HeaderImageContainer>
+
+        {/* First header state - complete profile */}
+        <CSSTransition
+          classNames="content"
+          in={onboardingCampaigns.name === 'complete_profile'}
+          timeout={
+            onboardingCampaigns.name === 'complete_profile'
+              ? contentTimeout + contentDelay
+              : contentTimeout
+          }
+          mountOnEnter={true}
+          unmountOnExit={true}
+          enter={true}
+          exit={true}
+        >
+          <HeaderContentCompleteProfile id="e2e-signed-in-header-complete-profile">
+            <Left>
+              <Icons>
+                <StyledAvatar
+                  userId={authUser?.id}
+                  size={50}
+                  fillColor="#fff"
+                  padding={0}
+                  borderThickness={0}
+                />
+                <CompleteProfileIcon name="completeProfile" ariaHidden />
+              </Icons>
+              <Text>
+                <FormattedMessage
+                  {...messages.completeYourProfile}
+                  tagName="h2"
+                  values={{ firstName: authUser.attributes.first_name }}
+                />
+              </Text>
+            </Left>
+
+            <Right>
+              <SkipButton
+                buttonStyle="primary-outlined"
+                text={<FormattedMessage {...messages.doItLater} />}
+                onClick={handleSkip(onboardingCampaigns.name)}
+                borderColor="#fff"
+                textColor="#fff"
+                fontWeight="500"
+                className="e2e-signed-in-header-complete-skip-btn"
+              />
+              <AcceptButton
+                text={<FormattedMessage {...messages.completeProfile} />}
+                buttonStyle="primary-inverse"
+                linkTo="/profile/edit"
+                textColor={theme.colorMain}
+                textHoverColor={theme.colorMain}
+                fontWeight="500"
+                className="e2e-signed-in-header-accept-btn"
+              />
+            </Right>
+          </HeaderContentCompleteProfile>
+        </CSSTransition>
+
+        <Outlet
+          id="app.containers.LandingPage.onboardingCampaigns"
+          onboardingCampaigns={onboardingCampaigns}
+          contentTimeout={contentTimeout}
+          contentDelay={contentDelay}
+          authUser={authUser}
+          theme={theme}
+          onSkip={handleSkip}
+          onAccept={handleAccept}
+        />
+
+        {/* Second header state - custom CTA */}
+        <CSSTransition
+          classNames="content"
+          in={onboardingCampaigns.name === 'custom_cta'}
+          timeout={
+            onboardingCampaigns.name === 'custom_cta'
+              ? contentTimeout + contentDelay
+              : contentTimeout
+          }
+          mountOnEnter={true}
+          unmountOnExit={true}
+          enter={true}
+          exit={true}
+        >
+          <HeaderContentCustomCta id="e2e-signed-in-header-custom-cta">
+            <Left>
+              <Text>
+                <T
+                  as="h2"
+                  value={onboardingCampaigns.cta_message_multiloc}
+                  supportHtml
+                />
+              </Text>
+            </Left>
+
+            <Right>
+              <SkipButton
+                buttonStyle="primary-outlined"
+                text={<FormattedMessage {...messages.doItLater} />}
+                onClick={handleSkip(onboardingCampaigns.name)}
+                borderColor="#fff"
+                textColor="#fff"
+                fontWeight="500"
+              />
+              <AcceptButton
+                text={<T value={onboardingCampaigns.cta_button_multiloc} />}
+                linkTo={onboardingCampaigns.cta_button_link}
+                buttonStyle="primary-inverse"
+                textColor={theme.colorMain}
+                textHoverColor={theme.colorMain}
+                fontWeight="500"
+              />
+            </Right>
+          </HeaderContentCustomCta>
+        </CSSTransition>
+
+        {/* Third header state - default customizable message */}
+        <CSSTransition
+          classNames="content"
+          in={onboardingCampaigns.name === 'default'}
+          timeout={
+            onboardingCampaigns.name === 'default'
+              ? contentTimeout + contentDelay
+              : contentTimeout
+          }
+          mountOnEnter={true}
+          unmountOnExit={true}
+          enter={true}
+          exit={true}
+        >
+          <HeaderContentDefault id="e2e-signed-in-header-default-cta">
+            <Left>
+              {defaultMessage && !isEmpty(defaultMessage) ? (
+                <T as="h2" value={defaultMessage} supportHtml />
+              ) : (
+                <FormattedMessage
+                  {...messages.defaultSignedInMessage}
+                  tagName="h2"
+                  values={{ firstName: authUser.attributes.first_name }}
                 />
               )}
-              <HeaderImageOverlay />
-            </HeaderImageContainerInner>
-          </HeaderImageContainer>
-
-          {/* First header state - complete profile */}
-          <CSSTransition
-            classNames="content"
-            in={onboardingCampaigns.name === 'complete_profile'}
-            timeout={
-              onboardingCampaigns.name === 'complete_profile'
-                ? contentTimeout + contentDelay
-                : contentTimeout
-            }
-            mountOnEnter={true}
-            unmountOnExit={true}
-            enter={true}
-            exit={true}
-          >
-            <HeaderContentCompleteProfile id="e2e-signed-in-header-complete-profile">
-              <Left>
-                <Icons>
-                  <StyledAvatar
-                    userId={authUser?.id}
-                    size={50}
-                    fillColor="#fff"
-                    padding={0}
-                    borderThickness={0}
-                  />
-                  <CompleteProfileIcon name="completeProfile" ariaHidden />
-                </Icons>
-                <Text>
-                  <FormattedMessage
-                    {...messages.completeYourProfile}
-                    tagName="h2"
-                    values={{ firstName: authUser.attributes.first_name }}
-                  />
-                </Text>
-              </Left>
-
-              <Right>
-                <SkipButton
-                  buttonStyle="primary-outlined"
-                  text={<FormattedMessage {...messages.doItLater} />}
-                  onClick={this.handleSkip(onboardingCampaigns.name)}
-                  borderColor="#fff"
-                  textColor="#fff"
-                  fontWeight="500"
-                  className="e2e-signed-in-header-complete-skip-btn"
-                />
-                <AcceptButton
-                  text={<FormattedMessage {...messages.completeProfile} />}
-                  buttonStyle="primary-inverse"
-                  linkTo="/profile/edit"
-                  textColor={theme.colorMain}
-                  textHoverColor={theme.colorMain}
-                  fontWeight="500"
-                  className="e2e-signed-in-header-accept-btn"
-                />
-              </Right>
-            </HeaderContentCompleteProfile>
-          </CSSTransition>
-
-          <Outlet
-            id="app.containers.LandingPage.onboardingCampaigns"
-            onboardingCampaigns={onboardingCampaigns}
-            contentTimeout={contentTimeout}
-            contentDelay={contentDelay}
-            authUser={authUser}
-            theme={theme}
-            onSkip={this.handleSkip}
-            onAccept={this.handleAccept}
-          />
-
-          {/* Second header state - custom CTA */}
-          <CSSTransition
-            classNames="content"
-            in={onboardingCampaigns.name === 'custom_cta'}
-            timeout={
-              onboardingCampaigns.name === 'custom_cta'
-                ? contentTimeout + contentDelay
-                : contentTimeout
-            }
-            mountOnEnter={true}
-            unmountOnExit={true}
-            enter={true}
-            exit={true}
-          >
-            <HeaderContentCustomCta id="e2e-signed-in-header-custom-cta">
-              <Left>
-                <Text>
-                  <T
-                    as="h2"
-                    value={onboardingCampaigns.cta_message_multiloc}
-                    supportHtml
-                  />
-                </Text>
-              </Left>
-
-              <Right>
-                <SkipButton
-                  buttonStyle="primary-outlined"
-                  text={<FormattedMessage {...messages.doItLater} />}
-                  onClick={this.handleSkip(onboardingCampaigns.name)}
-                  borderColor="#fff"
-                  textColor="#fff"
-                  fontWeight="500"
-                />
-                <AcceptButton
-                  text={<T value={onboardingCampaigns.cta_button_multiloc} />}
-                  linkTo={onboardingCampaigns.cta_button_link}
-                  buttonStyle="primary-inverse"
-                  textColor={theme.colorMain}
-                  textHoverColor={theme.colorMain}
-                  fontWeight="500"
-                />
-              </Right>
-            </HeaderContentCustomCta>
-          </CSSTransition>
-
-          {/* Third header state - default customizable message */}
-          <CSSTransition
-            classNames="content"
-            in={onboardingCampaigns.name === 'default'}
-            timeout={
-              onboardingCampaigns.name === 'default'
-                ? contentTimeout + contentDelay
-                : contentTimeout
-            }
-            mountOnEnter={true}
-            unmountOnExit={true}
-            enter={true}
-            exit={true}
-          >
-            <HeaderContentDefault id="e2e-signed-in-header-default-cta">
-              <Left>
-                {defaultMessage && !isEmpty(defaultMessage) ? (
-                  <T as="h2" value={defaultMessage} supportHtml />
-                ) : (
-                  <FormattedMessage
-                    {...messages.defaultSignedInMessage}
-                    tagName="h2"
-                    values={{ firstName: authUser.attributes.first_name }}
-                  />
-                )}
-              </Left>
-              <Right>
-                <Outlet
-                  id="app.containers.LandingPage.SignedInHeader.CTA"
-                  buttonStyle="primary-inverse"
-                />
-              </Right>
-            </HeaderContentDefault>
-          </CSSTransition>
-        </Header>
-      );
-    }
-
-    return null;
+            </Left>
+            <Right>
+              <Outlet
+                id="app.containers.LandingPage.SignedInHeader.CTA"
+                buttonStyle="primary-inverse"
+              />
+            </Right>
+          </HeaderContentDefault>
+        </CSSTransition>
+      </Header>
+    );
   }
-}
+
+  return null;
+};
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,

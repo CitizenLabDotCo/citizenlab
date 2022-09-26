@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor, fireEvent } from 'utils/testUtils/rtl';
+import { fireEvent, render, screen, waitFor } from 'utils/testUtils/rtl';
 import ChartCard from './';
 
 jest.mock('utils/cl-intl');

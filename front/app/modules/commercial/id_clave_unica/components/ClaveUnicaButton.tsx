@@ -11,7 +11,7 @@ import icon from './clave-unica-icon.svg';
 import { TVerificationMethod } from 'services/verificationMethods';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from '../messages';
 
 const Container = styled.div<{ last: boolean }>`

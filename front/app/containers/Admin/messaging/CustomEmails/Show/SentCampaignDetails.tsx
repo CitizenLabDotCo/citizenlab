@@ -10,7 +10,7 @@ import CampaignStats from './CampaignStats';
 import PreviewFrame from './PreviewFrame';
 import RecipientsTable from './RecipientsTable';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from '../../messages';
 
 const PaddedCampaignStats = styled(CampaignStats)`

@@ -10,7 +10,7 @@ import GoBackButton from 'components/UI/GoBackButton';
 import IdeaStatusForm, { FormValues } from '../components/IdeaStatusForm';
 import { Section, SectionTitle } from 'components/admin/Section';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 const StyledSectionTitle = styled(SectionTitle)`

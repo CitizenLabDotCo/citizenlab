@@ -8,7 +8,7 @@ import GetUser from 'resources/GetUser';
 import { StatusLabel } from '@citizenlab/cl2-component-library';
 import { IDeliveryData } from 'services/campaigns';
 import { colors } from 'utils/styleUtils';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from '../../messages';
 import Pagination from 'components/admin/Pagination';
 import Avatar from 'components/Avatar';

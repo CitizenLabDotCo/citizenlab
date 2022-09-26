@@ -3,8 +3,8 @@ import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Warning from 'components/UI/Warning';
 import T from 'components/T';
+import Warning from 'components/UI/Warning';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -14,12 +14,12 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import { IdeaCommentingDisabledReason } from 'services/ideas';
 
 // i18n
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
 
 // events
-import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 import { openSignUpInModal } from 'components/SignUpIn/events';
+import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 
 // styling
 import styled from 'styled-components';

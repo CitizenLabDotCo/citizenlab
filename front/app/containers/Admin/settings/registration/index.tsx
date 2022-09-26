@@ -30,7 +30,7 @@ import { IconTooltip } from '@citizenlab/cl2-component-library';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import Outlet from 'components/Outlet';
 
 export const LabelTooltip = styled.div`

@@ -1,11 +1,11 @@
 import React, { memo } from 'react';
 
 // components
-import { EventDateBlockWrapper, EventDateBlockLabel } from './styling';
 import DateBlockSingleYear from './DateBlockSingleYear';
+import { EventDateBlockLabel, EventDateBlockWrapper } from './styling';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from '../messages';
 
 // styling

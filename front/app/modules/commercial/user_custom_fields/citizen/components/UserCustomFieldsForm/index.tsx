@@ -1,16 +1,16 @@
+import {
+  forOwn,
+  get,
+  isBoolean,
+  isEmpty,
+  isNil,
+  isString,
+  uniq,
+} from 'lodash-es';
+import moment from 'moment';
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { Subscription } from 'rxjs';
-import moment from 'moment';
-import {
-  isBoolean,
-  forOwn,
-  get,
-  uniq,
-  isNil,
-  isEmpty,
-  isString,
-} from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // libraries
@@ -26,30 +26,33 @@ import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 
 // components
-import { FormLabel } from 'components/UI/FormComponents';
-import TextArea from 'components/UI/TextArea';
 import {
-  Input,
-  IconTooltip,
-  Select,
   DateInput,
+  IconTooltip,
+  Input,
+  Select,
 } from '@citizenlab/cl2-component-library';
-import MultipleSelect from 'components/UI/MultipleSelect';
-import Checkbox from 'components/UI/Checkbox';
 import { SectionField } from 'components/admin/Section';
+import Checkbox from 'components/UI/Checkbox';
 import Error from 'components/UI/Error';
+import { FormLabel } from 'components/UI/FormComponents';
+import MultipleSelect from 'components/UI/MultipleSelect';
+import TextArea from 'components/UI/TextArea';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from './messages';
 
 // styling
 import styled from 'styled-components';
 
 // typings
-import { IOption } from 'typings';
 import { IUserData } from 'services/users';
+import { IOption } from 'typings';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -538,7 +541,7 @@ const Data = adopt<DataProps, InputProps>({
   userCustomFieldsSchema: <GetUserCustomFieldsSchema />,
 });
 
-const UserCustomFieldsFormWithHoc = injectIntl<Props>(UserCustomFieldsForm);
+const UserCustomFieldsFormWithHoc = injectIntl(UserCustomFieldsForm);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

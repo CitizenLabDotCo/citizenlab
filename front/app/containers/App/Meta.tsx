@@ -5,25 +5,24 @@ import { adopt } from 'react-adopt';
 import { Helmet } from 'react-helmet';
 
 // resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import useHomepageSettings from 'hooks/useHomepageSettings';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import useHomepageSettings from 'hooks/useHomepageSettings';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // i18n
-import messages from './messages';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import { getLocalized } from 'utils/i18n';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
-import { imageSizes } from 'utils/fileUtils';
 import { API_PATH } from 'containers/App/constants';
-import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
+import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
+import { imageSizes } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {}
 
@@ -68,7 +67,9 @@ const Meta: React.SFC<Props & WrappedComponentProps> = ({
 
     const metaTitleMultiLoc = tenant.attributes.settings.core.meta_title;
     let metaTitle = getLocalized(metaTitleMultiLoc, locale, tenantLocales, 50);
-    metaTitle = metaTitle || formatMessage(messages.metaTitle);
+    metaTitle =
+      metaTitle ||
+      formatMessage(messages.metaTitle, { orgName: organizationName });
 
     const metaDescriptionMultiLoc =
       tenant.attributes.settings.core.meta_description;
@@ -78,7 +79,8 @@ const Meta: React.SFC<Props & WrappedComponentProps> = ({
       tenantLocales
     );
     metaDescription =
-      metaDescription || formatMessage(messages.appMetaDescription);
+      metaDescription ||
+      formatMessage(messages.appMetaDescription, { orgName: organizationName });
 
     const lifecycleStage = tenant.attributes.settings.core.lifecycle_stage;
     const blockIndexing = !['active', 'churned'].includes(lifecycleStage);
@@ -154,7 +156,7 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
 });
 
-const MetaWithHoc = injectIntl<Props>(Meta);
+const MetaWithHoc = injectIntl(Meta);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

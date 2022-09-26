@@ -3,15 +3,15 @@ import styled from 'styled-components';
 import { StyledSectionDescription } from '.';
 
 // components
+import { Toggle } from '@citizenlab/cl2-component-library';
 import {
   SectionField,
   SubSectionTitleWithDescription,
 } from 'components/admin/Section';
-import { Toggle } from '@citizenlab/cl2-component-library';
 import Outlet from 'components/Outlet';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from '../messages';
 
 const StyledToggle = styled(Toggle)`

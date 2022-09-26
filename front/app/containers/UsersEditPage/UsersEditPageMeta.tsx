@@ -3,24 +3,23 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 
 // i18n
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
 
 // hooks
-import useLocale from 'hooks/useLocale';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useAuthUser from 'hooks/useAuthUser';
+import useLocale from 'hooks/useLocale';
 
 // services
 import { IUserData } from 'services/users';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
-import { getLocalized } from 'utils/i18n';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
+import { isNilOrError } from 'utils/helperUtils';
+import { getLocalized } from 'utils/i18n';
 
 interface Props {
   user: IUserData;
@@ -87,6 +86,6 @@ const UsersEditPageMeta = React.memo<Props & WrappedComponentProps>(
   }
 );
 
-const UsersEditPageMetaWithHoc = injectIntl<Props>(UsersEditPageMeta);
+const UsersEditPageMetaWithHoc = injectIntl(UsersEditPageMeta);
 
 export default UsersEditPageMetaWithHoc;

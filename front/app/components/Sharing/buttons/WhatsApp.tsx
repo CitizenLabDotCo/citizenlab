@@ -2,10 +2,9 @@ import React from 'react';
 import { clickSocialSharingLink, Medium } from '../utils';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from '../messages';
 import { Button } from '@citizenlab/cl2-component-library';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
+import messages from '../messages';
 
 // style
 import { colors } from 'utils/styleUtils';

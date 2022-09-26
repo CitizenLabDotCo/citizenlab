@@ -1,6 +1,6 @@
-import React, { PureComponent, MouseEvent } from 'react';
+import { cloneDeep, get, isNumber } from 'lodash-es';
+import React, { MouseEvent, PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { cloneDeep, isNumber, get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -11,7 +11,6 @@ import { addCommentVote, deleteCommentVote } from 'services/commentVotes';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetPost, { GetPostChildProps } from 'resources/GetPost';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
 import GetCommentVote, {
   GetCommentVoteChildProps,
@@ -19,6 +18,7 @@ import GetCommentVote, {
 import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
 } from 'resources/GetInitiativesPermissions';
+import GetPost, { GetPostChildProps } from 'resources/GetPost';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -29,14 +29,13 @@ import { openSignUpInModal } from 'components/SignUpIn/events';
 import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // style
+import { lighten } from 'polished';
 import styled from 'styled-components';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
-import { lighten } from 'polished';
 
 // a11y
 import { ScreenReaderOnly } from 'utils/a11y';

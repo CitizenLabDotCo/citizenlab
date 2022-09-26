@@ -3,7 +3,7 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // components
@@ -13,8 +13,8 @@ import { Section, SectionTitle } from 'components/admin/Section';
 import useProject from 'hooks/useProject';
 
 // style
-import styled from 'styled-components';
 import Outlet from 'components/Outlet';
+import styled from 'styled-components';
 
 const StyledSection = styled(Section)`
   margin-bottom: 50px;

@@ -6,28 +6,27 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // services
 import {
+  deleteUserCustomFieldOption,
   IUserCustomFieldOptionData,
   reorderUserCustomFieldOption,
-  deleteUserCustomFieldOption,
 } from '../../../../services/userCustomFieldOptions';
 
 // hooks
-import useUserCustomFieldOptions from '../../../../hooks/useUserCustomFieldOptions';
 import useLocalize from 'hooks/useLocalize';
+import useUserCustomFieldOptions from '../../../../hooks/useUserCustomFieldOptions';
 
 // components
+import { ButtonWrapper } from 'components/admin/PageWrapper';
 import {
   SortableList,
   SortableRow,
   TextCell,
 } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
-import { ButtonWrapper } from 'components/admin/PageWrapper';
 
 // i18n
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
 
 const RegistrationCustomFieldOptions = memo(
   ({

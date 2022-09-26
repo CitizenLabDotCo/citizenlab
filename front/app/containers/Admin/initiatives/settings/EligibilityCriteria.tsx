@@ -9,11 +9,11 @@ import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMult
 import { StyledSectionDescription } from '.';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from '../messages';
 
 // typings
-import { Multiloc, Locale } from 'typings';
+import { Locale, Multiloc } from 'typings';
 
 interface Props {
   value: Multiloc;

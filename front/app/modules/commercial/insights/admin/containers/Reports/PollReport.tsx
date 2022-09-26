@@ -1,20 +1,23 @@
-import React, { memo } from 'react';
-import { adopt } from 'react-adopt';
-import { WrappedComponentProps } from 'react-intl';
-import GetPollQuestions, {
-  GetPollQuestionsChildProps,
-} from 'resources/GetPollQuestions';
-import { isNilOrError } from 'utils/helperUtils';
 import {
   GraphCard,
   GraphCardInner,
   GraphsContainer,
   NoDataContainer,
 } from 'components/admin/GraphWrappers';
-import QuestionReport from './QuestionReport';
 import { SubSectionTitle } from 'components/admin/Section';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import React, { memo } from 'react';
+import { adopt } from 'react-adopt';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
+import GetPollQuestions, {
+  GetPollQuestionsChildProps,
+} from 'resources/GetPollQuestions';
+import { isNilOrError } from 'utils/helperUtils';
 import messages from './messages';
+import QuestionReport from './QuestionReport';
 
 interface InputProps {
   participationContextId: string;

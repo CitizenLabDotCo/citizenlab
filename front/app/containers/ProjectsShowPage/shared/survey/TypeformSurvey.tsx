@@ -1,6 +1,6 @@
-import React, { memo } from 'react';
+import { isNil, omitBy } from 'lodash-es';
 import { stringify } from 'qs';
-import { omitBy, isNil } from 'lodash-es';
+import React, { memo } from 'react';
 
 // components
 import { useBreakpoint } from '@citizenlab/cl2-component-library';

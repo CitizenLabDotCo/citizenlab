@@ -2,24 +2,24 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 // components
+import { ColorPickerInput, Label } from '@citizenlab/cl2-component-library';
 import {
   Section,
-  SectionTitle,
-  SectionField,
   SectionDescription,
+  SectionField,
+  SectionTitle,
   SubSectionTitle,
 } from 'components/admin/Section';
-import { Label, ColorPickerInput } from '@citizenlab/cl2-component-library';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import Warning from 'components/UI/Warning';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // utils
-import { calculateContrastRatio, hexToRgb } from 'utils/styleUtils';
 import { get } from 'lodash-es';
+import { calculateContrastRatio, hexToRgb } from 'utils/styleUtils';
 import {
   createAddUploadHandler,
   createRemoveUploadHandler,

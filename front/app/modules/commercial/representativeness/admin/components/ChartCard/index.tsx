@@ -7,25 +7,24 @@ import useRScore from '../../hooks/useRScore';
 
 // services
 import {
-  usersByRegFieldXlsxEndpoint,
-  usersByGenderXlsxEndpoint,
-  usersByDomicileXlsxEndpoint,
   usersByAgeXlsxEndpoint,
+  usersByDomicileXlsxEndpoint,
+  usersByGenderXlsxEndpoint,
+  usersByRegFieldXlsxEndpoint,
 } from 'modules/commercial/user_custom_fields/services/stats';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import EmptyCard from './EmptyCard';
-import Header from './Header';
 import Chart from './Chart';
-import Table from './Table';
+import EmptyCard from './EmptyCard';
 import Footer from './Footer';
+import Header from './Header';
+import Table from './Table';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import fieldMessages from '../Field/messages';
+import messages from './messages';
 
 // typings
 import {
@@ -38,8 +37,8 @@ import {
 } from '../../hooks/createRefDataSubscription';
 
 // utils
-import { getLegendLabels } from './utils';
 import { isNilOrError } from 'utils/helperUtils';
+import { getLegendLabels } from './utils';
 
 export type ViewState = 'chart' | 'table';
 

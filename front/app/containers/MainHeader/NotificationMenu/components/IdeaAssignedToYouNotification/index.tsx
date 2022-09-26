@@ -6,7 +6,7 @@ import { get } from 'lodash-es';
 
 // i18n
 import messages from '../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 
 // permissions
 import { isAdmin, isProjectModerator } from 'services/permissions/roles';

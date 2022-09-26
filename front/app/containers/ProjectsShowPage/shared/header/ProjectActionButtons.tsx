@@ -1,43 +1,43 @@
+import { isNumber } from 'lodash-es';
 import React, {
+  FormEvent,
   memo,
   useCallback,
   useEffect,
   useState,
-  FormEvent,
 } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { isNumber } from 'lodash-es';
 
 // hooks
-import useProject from 'hooks/useProject';
-import usePhases from 'hooks/usePhases';
 import useAuthUser from 'hooks/useAuthUser';
+import usePhases from 'hooks/usePhases';
+import useProject from 'hooks/useProject';
 
 // services
-import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
-import { getInputTerm } from 'services/participationContexts';
 import { getSurveyTakingRules } from 'services/actionTakingRules';
+import { getInputTerm } from 'services/participationContexts';
+import { getCurrentPhase, getLastPhase, IPhaseData } from 'services/phases';
 
 // components
-import Button from 'components/UI/Button';
 import IdeaButton from 'components/IdeaButton';
+import Button from 'components/UI/Button';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { scrollToElement } from 'utils/scroll';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from 'containers/ProjectsShowPage/messages';
+import { FormattedMessage } from 'react-intl';
 import { getInputTermMessage } from 'utils/i18n';
 
 // style
-import styled from 'styled-components';
 import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
+import styled from 'styled-components';
 
 // router
-import clHistory from 'utils/cl-router/history';
 import { useLocation } from 'react-router-dom';
+import clHistory from 'utils/cl-router/history';
 
 import { openSignUpInModal } from 'components/SignUpIn/events';
 

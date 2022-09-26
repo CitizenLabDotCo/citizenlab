@@ -1,15 +1,15 @@
-import React, { memo, useState, useCallback, useEffect } from 'react';
 import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
-import { removeFocusAfterMouseClick } from 'utils/helperUtils';
-import clHistory from 'utils/cl-router/history';
-import { insertConfiguration } from 'utils/moduleUtils';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import { InsertConfigurationOptions } from 'typings';
+import clHistory from 'utils/cl-router/history';
+import { removeFocusAfterMouseClick } from 'utils/helperUtils';
+import { insertConfiguration } from 'utils/moduleUtils';
 // components
-import Outlet from 'components/Outlet';
 import { Icon } from '@citizenlab/cl2-component-library';
+import Outlet from 'components/Outlet';
+import Tabs, { ITabItem } from 'components/UI/Tabs';
 import AdminProjectsProjectGeneral from 'containers/Admin/projects/project/general';
 import { HeaderTitle } from './StyledComponents';
-import Tabs, { ITabItem } from 'components/UI/Tabs';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -19,14 +19,17 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from './messages';
 
 // style
-import { colors } from 'utils/styleUtils';
-import styled from 'styled-components';
 import { transparentize } from 'polished';
+import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
 
 // animations
 import CSSTransition from 'react-transition-group/CSSTransition';

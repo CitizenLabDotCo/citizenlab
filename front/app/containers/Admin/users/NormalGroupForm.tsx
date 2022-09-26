@@ -1,19 +1,19 @@
 // Libraries
+import { every, isEmpty, values as getValues } from 'lodash-es';
 import React from 'react';
-import { isEmpty, values as getValues, every } from 'lodash-es';
 
 // Formik
-import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
-import FormikInputMultilocWithLocaleSwitcher from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
+import FormikInputMultilocWithLocaleSwitcher from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
+import { Field, Form, FormikErrors, InjectedFormikProps } from 'formik';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // Components
-import Error from 'components/UI/Error';
 import { SectionField } from 'components/admin/Section';
+import Error from 'components/UI/Error';
 
 // Typings
 import { Multiloc } from 'typings';
@@ -24,8 +24,8 @@ export interface NormalFormValues {
 }
 
 // Style
-import styled from 'styled-components';
 import { MembershipType } from 'services/groups';
+import styled from 'styled-components';
 
 export const Fill = styled.div`
   padding-top: 40px;

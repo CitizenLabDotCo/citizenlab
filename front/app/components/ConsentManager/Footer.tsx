@@ -1,11 +1,11 @@
-import React, { FormEvent } from 'react';
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
 import Button from 'components/UI/Button';
-import { ButtonContainer } from './Container';
-import { colors } from 'utils/styleUtils';
 import { darken } from 'polished';
+import React, { FormEvent } from 'react';
+import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
+import { ButtonContainer } from './Container';
+import messages from './messages';
 
 const CancelButton = styled(Button)`
   margin-right: 4px;

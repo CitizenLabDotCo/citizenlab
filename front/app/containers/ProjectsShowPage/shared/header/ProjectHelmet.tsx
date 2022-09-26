@@ -5,21 +5,20 @@ import { isNilOrError } from 'utils/helperUtils';
 import { Helmet } from 'react-helmet';
 
 // hooks
-import useLocale from 'hooks/useLocale';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useAuthUser from 'hooks/useAuthUser';
+import useLocale from 'hooks/useLocale';
 
 // utils
-import { stripHtml } from 'utils/textUtils';
-import { imageSizes } from 'utils/fileUtils';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
+import { imageSizes } from 'utils/fileUtils';
+import { stripHtml } from 'utils/textUtils';
 
 // i18n
-import { getLocalized } from 'utils/i18n';
 import messages from 'containers/ProjectsShowPage/messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
+import { getLocalized } from 'utils/i18n';
 
 // typings
 import { IProjectData } from 'services/projects';
@@ -95,6 +94,6 @@ const ProjectHelmet = memo<Props & WrappedComponentProps>(
   }
 );
 
-const ProjectHelmetWithHoC = injectIntl<Props>(ProjectHelmet);
+const ProjectHelmetWithHoC = injectIntl(ProjectHelmet);
 
 export default ProjectHelmetWithHoC;

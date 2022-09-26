@@ -1,13 +1,13 @@
-import React, { PureComponent } from 'react';
 import {
-  isArray,
+  cloneDeep,
   find,
+  includes,
+  isArray,
   isEmpty,
   isString,
-  cloneDeep,
-  includes,
   without,
 } from 'lodash-es';
+import React, { PureComponent } from 'react';
 
 // components
 import Title from './title';
@@ -15,7 +15,7 @@ import ValuesList from './valuesList';
 
 // style
 import styled from 'styled-components';
-import { media, isRtl } from 'utils/styleUtils';
+import { isRtl, media } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: inline-block;

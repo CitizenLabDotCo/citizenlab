@@ -1,12 +1,12 @@
 import React, { memo } from 'react';
 
 // components
+import ButtonBar from 'components/ButtonBar';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import ButtonBar from 'components/ButtonBar';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // utils

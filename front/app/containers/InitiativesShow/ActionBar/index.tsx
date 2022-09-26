@@ -2,8 +2,8 @@ import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
 
 // components
-import BreadCrumbs from 'components/PostShowComponents/Breadcrumbs';
 import ActionBarLayout from 'components/PostShowComponents/ActionBar';
+import BreadCrumbs from 'components/PostShowComponents/Breadcrumbs';
 import InitiativeMoreActions from './InitiativeMoreActions';
 
 // resource
@@ -44,9 +44,7 @@ const ActionBar = memo<Props>(
             postType="initiative"
             links={[
               {
-                text: {
-                  message: messages.allInitiatives,
-                },
+                message: messages.allInitiatives,
                 to: '/initiatives',
               },
             ]}

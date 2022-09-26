@@ -6,25 +6,25 @@ import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // Components
-import ProfileForm from './ProfileForm';
 import CampaignsConsentForm from './CampaignsConsentForm';
-import ProfileDeletion from './ProfileDeletion';
-import UsersEditPageMeta from './UsersEditPageMeta';
 import FragmentForm from './FragmentForm';
+import ProfileDeletion from './ProfileDeletion';
+import ProfileForm from './ProfileForm';
+import UsersEditPageMeta from './UsersEditPageMeta';
 
 // Styles
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
+import { colors } from 'utils/styleUtils';
 
 // Hooks
+import Outlet from 'components/Outlet';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useAuthUser from 'hooks/useAuthUser';
-import Outlet from 'components/Outlet';
 
 const Container = styled.main`
   width: 100%;

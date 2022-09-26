@@ -2,18 +2,19 @@ import React, { memo, useCallback } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Modal from 'components/UI/Modal';
 import SharingButtons from 'components/Sharing/SharingButtons';
+import Modal from 'components/UI/Modal';
 
 // hooks
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import useAuthUser from 'hooks/useAuthUser';
+import useLocalize from 'hooks/useLocalize';
 import useProject from 'hooks/useProject';
 
 // i18n
 import T from 'components/T';
 import messages from 'containers/ProjectsShowPage/messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 
 // style
 import { Box } from '@citizenlab/cl2-component-library';
@@ -29,6 +30,8 @@ const ProjectSharingModal = memo<Props & WrappedComponentProps>(
   ({ projectId, className, opened, close, intl: { formatMessage } }) => {
     const authUser = useAuthUser();
     const project = useProject({ projectId });
+    const localize = useLocalize();
+    const appConfig = useAppConfiguration();
 
     const projectUrl = location.href;
     const utmParams = !isNilOrError(authUser)
@@ -46,7 +49,7 @@ const ProjectSharingModal = memo<Props & WrappedComponentProps>(
       close();
     }, [close]);
 
-    if (!isNilOrError(project)) {
+    if (!isNilOrError(project) && !isNilOrError(appConfig)) {
       const url = window.location.href;
       return (
         <Modal
@@ -77,18 +80,30 @@ const ProjectSharingModal = memo<Props & WrappedComponentProps>(
                           messages.whatsAppMessage,
                           {
                             projectName: title,
+                            orgName: localize(
+                              appConfig.attributes.settings.core
+                                .organization_name
+                            ),
                           }
                         )}
                         facebookMessage={formatMessage(
                           messages.facebookMessage,
                           {
                             projectName: title,
+                            orgName: localize(
+                              appConfig.attributes.settings.core
+                                .organization_name
+                            ),
                           }
                         )}
                         twitterMessage={formatMessage(
                           messages.projectTwitterMessage,
                           {
                             projectName: title,
+                            orgName: localize(
+                              appConfig.attributes.settings.core
+                                .organization_name
+                            ),
                           }
                         )}
                         emailSubject={formatMessage(

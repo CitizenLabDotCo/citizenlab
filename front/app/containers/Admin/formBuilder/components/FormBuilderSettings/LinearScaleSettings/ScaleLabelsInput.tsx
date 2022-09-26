@@ -6,18 +6,17 @@ import { Controller, useFormContext } from 'react-hook-form';
 // components
 import {
   Box,
-  Label,
   IconTooltip,
   Input,
+  Label,
   LocaleSwitcher,
 } from '@citizenlab/cl2-component-library';
 
 // i18n
-import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import { Locale } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
+import messages from './messages';
 
 interface Props {
   minimumLabelName: string;

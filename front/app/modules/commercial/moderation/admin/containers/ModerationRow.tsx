@@ -1,28 +1,31 @@
-import React, { memo } from 'react';
 import moment from 'moment';
+import React, { memo } from 'react';
 
 // components
-import ModerationContentCell from './ModerationContentCell';
-import Checkbox from 'components/UI/Checkbox';
-import Outlet from 'components/Outlet';
 import { Icon } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
+import Outlet from 'components/Outlet';
+import Checkbox from 'components/UI/Checkbox';
 import Link from 'utils/cl-router/Link';
+import ModerationContentCell from './ModerationContentCell';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
 import useLocalize from 'hooks/useLocalize';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
+import messages from './messages';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // styling
+import { rgba } from 'polished';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
-import { rgba } from 'polished';
 
 // typings
 import {

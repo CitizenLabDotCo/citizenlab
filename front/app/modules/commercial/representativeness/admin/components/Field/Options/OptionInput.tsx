@@ -1,11 +1,11 @@
 import React from 'react';
 
 // components
-import { Box, Text, Input } from '@citizenlab/cl2-component-library';
+import { Box, Input, Text } from '@citizenlab/cl2-component-library';
 
 // i18n
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
 import { parsePopulationValue } from '../../../utils/options';

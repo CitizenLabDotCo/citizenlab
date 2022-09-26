@@ -1,17 +1,16 @@
-import React, { memo, FormEvent } from 'react';
+import React, { FormEvent, memo } from 'react';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
-import messages from './messages';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
+import messages from './messages';
 
 // services
 import { deleteProjectFolder } from '../../../services/projectFolders';
 
 // components
-import { RowButton } from './StyledComponents';
 import { ButtonContainerProps } from 'components/UI/Button';
+import { RowButton } from './StyledComponents';
 
 // styles
 import { colors } from 'utils/styleUtils';

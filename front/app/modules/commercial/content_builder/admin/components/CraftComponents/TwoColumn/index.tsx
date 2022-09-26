@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Box, Radio, Title, Icon } from '@citizenlab/cl2-component-library';
+import { Box, Icon, Radio, Title } from '@citizenlab/cl2-component-library';
 
 // styles
 import styled from 'styled-components';
@@ -10,11 +10,11 @@ import styled from 'styled-components';
 import { colors, media } from 'utils/styleUtils';
 
 // craft
-import { useNode, UserComponent, Element } from '@craftjs/core';
+import { Element, useNode, UserComponent } from '@craftjs/core';
 import Container from '../Container';
 
 // Intl
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from '../../../messages';
 
 type TwoColumnProps = {

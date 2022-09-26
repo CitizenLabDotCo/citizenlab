@@ -6,35 +6,39 @@ import { isNilOrError } from 'utils/helperUtils';
 import { Locale, Multiloc } from 'typings';
 
 // components
-import OfficialFeedbackForm from './OfficialFeedbackForm';
-import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import T from 'components/T';
+import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
+import OfficialFeedbackForm from './OfficialFeedbackForm';
 
 // styles
-import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
-import styled from 'styled-components';
 import { transparentize } from 'polished';
+import styled from 'styled-components';
+import { ScreenReaderOnly } from 'utils/a11y';
+import { colors, fontSizes, isRtl, media } from 'utils/styleUtils';
 
 // i18n
-import messages from './messages';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { FormattedDate, WrappedComponentProps } from 'react-intl';
+import {
+  FormattedDate,
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import { getLocalized } from 'utils/i18n';
+import messages from './messages';
 
 // services
 import {
-  IOfficialFeedbackData,
   deleteOfficialFeedbackFromIdea,
   deleteOfficialFeedbackFromInitiative,
+  IOfficialFeedbackData,
 } from 'services/officialFeedback';
 
 // resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
 } from 'resources/GetAppConfigurationLocales';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 const Container = styled.div`
   display: flex;
@@ -346,7 +350,7 @@ const Data = adopt<DataProps>({
   tenantLocales: <GetAppConfigurationLocales />,
 });
 
-const OfficialFeedbackPostWithIntl = injectIntl<Props>(OfficialFeedbackPost);
+const OfficialFeedbackPostWithIntl = injectIntl(OfficialFeedbackPost);
 
 export default (inputProps: InputProps) => (
   <Data>

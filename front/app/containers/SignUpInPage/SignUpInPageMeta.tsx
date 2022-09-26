@@ -1,28 +1,27 @@
 // libraries
 import React, { memo } from 'react';
-import { Helmet } from 'react-helmet';
 import { adopt } from 'react-adopt';
+import { Helmet } from 'react-helmet';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // i18n
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
 
 // resources
-import GetAppConfigurationLocales, {
-  GetAppConfigurationLocalesChildProps,
-} from 'resources/GetAppConfigurationLocales';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
+import GetAppConfigurationLocales, {
+  GetAppConfigurationLocalesChildProps,
+} from 'resources/GetAppConfigurationLocales';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // utils
-import { isNilOrError, endsWith } from 'utils/helperUtils';
-import { getLocalized } from 'utils/i18n';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
+import { endsWith, isNilOrError } from 'utils/helperUtils';
+import { getLocalized } from 'utils/i18n';
 
 interface DataProps {
   tenantLocales: GetAppConfigurationLocalesChildProps;
@@ -43,7 +42,7 @@ const SignUpInPageMeta = memo<Props & WrappedComponentProps & WithRouterProps>(
       const method = endsWith(pathname, 'sign-in') ? 'signin' : 'signup';
       const organizationNameMultiLoc =
         tenant.attributes.settings.core.organization_name;
-      const tenantName = getLocalized(
+      const orgName = getLocalized(
         organizationNameMultiLoc,
         locale,
         tenantLocales
@@ -52,12 +51,13 @@ const SignUpInPageMeta = memo<Props & WrappedComponentProps & WithRouterProps>(
         method === 'signin'
           ? messages.signInMetaTitle
           : messages.signUpMetaTitle,
-        { tenantName }
+        { tenantName: orgName }
       );
       const pageMetaDescription = formatMessage(
         method === 'signin'
           ? messages.signInPageMetaDescription
-          : messages.signUpPageMetaDescription
+          : messages.signUpPageMetaDescription,
+        { orgName }
       );
 
       return (
@@ -80,12 +80,14 @@ const SignUpInPageMeta = memo<Props & WrappedComponentProps & WithRouterProps>(
 
 const SignUpInPageMetaWithHoC = withRouter(injectIntl(SignUpInPageMeta));
 
-const Data = adopt<DataProps>({
+const Data = adopt<Props>({
   tenantLocales: <GetAppConfigurationLocales />,
   tenant: <GetAppConfiguration />,
   locale: <GetLocale />,
 });
 
 export default () => (
-  <Data>{(dataprops) => <SignUpInPageMetaWithHoC {...dataprops} />}</Data>
+  <Data>
+    {(dataProps: DataProps) => <SignUpInPageMetaWithHoC {...dataProps} />}
+  </Data>
 );

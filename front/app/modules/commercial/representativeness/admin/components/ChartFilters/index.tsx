@@ -2,15 +2,15 @@ import React from 'react';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import ProjectFilter from 'containers/Admin/dashboard/components/ChartFilters/ProjectFilter';
 import Button from 'components/UI/Button';
+import ProjectFilter from 'containers/Admin/dashboard/components/ChartFilters/ProjectFilter';
 
 // styling
 import { colors } from 'utils/styleUtils';
 
 // i18n
+import { FormattedMessage } from 'react-intl';
 import messages from '../messages';
-import { FormattedMessage } from 'utils/cl-intl';
 
 // typings
 import { IOption } from 'typings';

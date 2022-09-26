@@ -12,7 +12,7 @@ import { Tooltip } from 'recharts';
 import CustomTooltip from './CustomTooltip';
 
 // utils
-import { formatPercentage, emptyString } from './utils';
+import { emptyString, formatPercentage } from './utils';
 
 // typings
 import { RepresentativenessData } from '../../hooks/createRefDataSubscription';

@@ -8,7 +8,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import GoBackButton from 'components/UI/GoBackButton';
 import CampaignForm, { FormValues, PageTitle } from '../CampaignForm';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from '../../messages';
 
 const New = () => {

@@ -1,49 +1,51 @@
 // Libraries
+import { Formik } from 'formik';
+import { isEmpty, isString } from 'lodash-es';
 import React from 'react';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { Formik } from 'formik';
-import { isEmpty, isString } from 'lodash-es';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import { API_PATH } from 'containers/App/constants';
+import { isNilOrError } from 'utils/helperUtils';
 import streams from 'utils/streams';
 
 // Components
-import UsersHeader from './UsersHeader';
 import Modal from 'components/UI/Modal';
 import NormalGroupForm, { NormalFormValues } from './NormalGroupForm';
 import UserManager from './UserManager';
+import UsersHeader from './UsersHeader';
 
 // Events
 import eventEmitter from 'utils/eventEmitter';
 import events from './events';
 
 // i18n
-import FormattedMessage from 'utils/cl-intl/FormattedMessage';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
 
 // Resources
-import GetGroup, { GetGroupChildProps } from 'resources/GetGroup';
 import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
+import GetGroup, { GetGroupChildProps } from 'resources/GetGroup';
 
 // Services
-import { deleteGroup, updateGroup, MembershipType } from 'services/groups';
 import { deleteMembershipByUserId } from 'services/groupMemberships';
+import { deleteGroup, MembershipType, updateGroup } from 'services/groups';
 
 // tracking
-import { injectTracks } from 'utils/analytics';
+import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // Typings
+import Outlet from 'components/Outlet';
 import { CLErrorsJSON } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
-import Outlet from 'components/Outlet';
 
 export interface InputProps {}
 
@@ -59,15 +61,11 @@ export interface State {
   search: string | undefined;
 }
 
-interface Tracks {
-  trackEditGroup: ({ extra: { groupType: MembershipType } }) => void;
-}
-
 export class UsersGroup extends React.PureComponent<
-  Props & WrappedComponentProps & Tracks,
+  Props & WrappedComponentProps,
   State
 > {
-  constructor(props: Props & WrappedComponentProps & Tracks) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       groupEditionModal: false,
@@ -80,11 +78,11 @@ export class UsersGroup extends React.PureComponent<
   };
 
   openGroupEditionModal = () => {
-    const { group, trackEditGroup } = this.props;
+    const { group } = this.props;
 
     if (!isNilOrError(group)) {
       const groupType = group.attributes.membership_type;
-      trackEditGroup({
+      trackEventByName(tracks.editGroup.name, {
         extra: {
           groupType,
         },
@@ -235,9 +233,7 @@ export class UsersGroup extends React.PureComponent<
   }
 }
 
-const UsersGroupWithHoCs = injectTracks<Props>({
-  trackEditGroup: tracks.editGroup,
-})(injectIntl(UsersGroup));
+const UsersGroupWithHoCs = injectIntl(UsersGroup);
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   group: ({ params, render }) => (

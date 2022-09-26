@@ -1,34 +1,38 @@
-import * as React from 'react';
 import { get } from 'lodash-es';
-import { stripHtmlTags, isNilOrError } from 'utils/helperUtils';
-import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import * as React from 'react';
 import scrollToComponent from 'react-scroll-to-component';
+import styled from 'styled-components';
+import { isNilOrError, stripHtmlTags } from 'utils/helperUtils';
+import { media } from 'utils/styleUtils';
 
 // Components
+import { Input, LocationInput } from '@citizenlab/cl2-component-library';
+import { SectionField } from 'components/admin/Section';
+import Error from 'components/UI/Error';
+import FileUploader from 'components/UI/FileUploader';
 import {
+  FormLabel,
   FormSection,
   FormSectionTitle,
-  FormLabel,
 } from 'components/UI/FormComponents';
-import { SectionField } from 'components/admin/Section';
-import TopicsPicker from 'components/UI/TopicsPicker';
-import { Input, LocationInput } from '@citizenlab/cl2-component-library';
-import QuillEditor from 'components/UI/QuillEditor';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import FileUploader from 'components/UI/FileUploader';
-import Error from 'components/UI/Error';
+import QuillEditor from 'components/UI/QuillEditor';
+import TopicsPicker from 'components/UI/TopicsPicker';
 import Link from 'utils/cl-router/Link';
 
 // intl
+import {
+  FormattedMessage,
+  injectIntl,
+  MessageDescriptor,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
-import { IMessageInfo, injectIntl, FormattedMessage } from 'utils/cl-intl';
 
 // typings
-import { Multiloc, Locale, UploadFile } from 'typings';
 import bowser from 'bowser';
 import { ITopicData } from 'services/topics';
+import { Locale, Multiloc, UploadFile } from 'typings';
 import { FormSubmitFooter } from './SubmitFooter';
 
 const Form = styled.form`
@@ -86,7 +90,11 @@ interface State {
     [key in keyof FormValues]?: boolean | undefined;
   };
   errors: {
-    [key in keyof FormValues]?: IMessageInfo | undefined;
+    [key in keyof FormValues]?:
+      | {
+          message: MessageDescriptor;
+        }
+      | undefined;
   };
 }
 
@@ -377,8 +385,8 @@ class InitiativeForm extends React.Component<
             <SectionField id="e2e-initiative-form-title-section">
               <FormLabel
                 htmlFor="e2e-initiative-title-input"
-                labelMessage={messages.titleLabel}
-                subtextMessage={messages.titleLabelSubtext2}
+                labelText={formatMessage(messages.titleLabel)}
+                subtext={formatMessage(messages.titleLabelSubtext2)}
               >
                 <Input
                   type="text"
@@ -425,8 +433,8 @@ class InitiativeForm extends React.Component<
               <FormLabel
                 id="description-label-id"
                 htmlFor="body"
-                labelMessage={messages.descriptionLabel}
-                subtextMessage={messages.descriptionLabelSubtext}
+                labelText={formatMessage(messages.descriptionLabel)}
+                subtext={formatMessage(messages.descriptionLabelSubtext)}
               />
               <QuillEditor
                 id="body"
@@ -470,8 +478,8 @@ class InitiativeForm extends React.Component<
 
             <SectionField aria-live="polite">
               <FormLabel
-                labelMessage={messages.topicsLabel}
-                subtextMessage={messages.topicsLabelDescription}
+                labelText={formatMessage(messages.topicsLabel)}
+                subtext={formatMessage(messages.topicsLabelDescription)}
                 htmlFor="field-topic-multiple-picker"
               />
               <TopicsPicker
@@ -491,8 +499,8 @@ class InitiativeForm extends React.Component<
             {mapsLoaded && (
               <SectionField>
                 <FormLabel
-                  labelMessage={messages.locationLabel}
-                  subtextMessage={messages.locationLabelSubtext}
+                  labelText={formatMessage(messages.locationLabel)}
+                  subtext={formatMessage(messages.locationLabelSubtext)}
                   htmlFor="initiative-location-picker"
                   optional
                 >
@@ -512,8 +520,8 @@ class InitiativeForm extends React.Component<
             <FormSectionTitle message={messages.formAttachmentsSectionTitle} />
             <SectionField id="e2e-iniatiative-banner-dropzone">
               <FormLabel
-                labelMessage={messages.bannerUploadLabel}
-                subtextMessage={messages.bannerUploadLabelSubtext}
+                labelText={formatMessage(messages.bannerUploadLabel)}
+                subtext={formatMessage(messages.bannerUploadLabelSubtext)}
                 htmlFor="initiative-banner-dropzone"
                 optional
               />
@@ -533,8 +541,8 @@ class InitiativeForm extends React.Component<
             </SectionField>
             <SectionField id="e2e-iniatiative-img-dropzone">
               <FormLabel
-                labelMessage={messages.imageUploadLabel}
-                subtextMessage={messages.imageUploadLabelSubtext}
+                labelText={formatMessage(messages.imageUploadLabel)}
+                subtext={formatMessage(messages.imageUploadLabelSubtext)}
                 htmlFor="initiative-image-dropzone"
                 optional
               />
@@ -554,8 +562,8 @@ class InitiativeForm extends React.Component<
             </SectionField>
             <SectionField>
               <FormLabel
-                labelMessage={messages.fileUploadLabel}
-                subtextMessage={messages.fileUploadLabelSubtext}
+                labelText={formatMessage(messages.fileUploadLabel)}
+                subtext={formatMessage(messages.fileUploadLabelSubtext)}
                 htmlFor="e2e-initiative-file-upload"
                 optional
               >
@@ -571,9 +579,7 @@ class InitiativeForm extends React.Component<
           </StyledFormSection>
           <FormSubmitFooter
             className="e2e-initiative-publish-button"
-            message={messages.publishButton}
             error={publishError}
-            errorMessage={messages.submitApiError}
             processing={publishing}
             onSubmit={this.handleOnPublish}
           />

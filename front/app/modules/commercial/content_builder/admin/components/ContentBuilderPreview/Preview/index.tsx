@@ -1,16 +1,16 @@
 import React from 'react';
 
 // hooks
-import useContentBuilderLayout from '../../../../hooks/useContentBuilder';
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
+import useContentBuilderLayout from '../../../../hooks/useContentBuilder';
 
 // components
-import Editor from '../../Editor';
-import ContentBuilderFrame from '../../ContentBuilderFrame';
 import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
 import ProjectInfo from 'containers/ProjectsShowPage/shared/header/ProjectInfo';
 import { isNilOrError } from 'utils/helperUtils';
+import ContentBuilderFrame from '../../ContentBuilderFrame';
+import Editor from '../../Editor';
 
 // services
 import { PROJECT_DESCRIPTION_CODE } from '../../../../services/contentBuilder';

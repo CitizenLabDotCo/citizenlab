@@ -1,36 +1,39 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
 import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/projects/project/general';
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
 
 // hooks
-import { useProjectFolders } from '../../../hooks';
 import useLocalize from 'hooks/useLocalize';
 import { usePermission } from 'services/permissions';
+import { useProjectFolders } from '../../../hooks';
 
 // services
-import { IUpdatedProjectProperties } from 'services/projects';
 import { userModeratesFolder } from 'modules/commercial/project_folders/permissions/roles';
+import { IUpdatedProjectProperties } from 'services/projects';
 
 // components
 import {
+  Error,
+  IconTooltip,
   Radio,
   Select,
-  IconTooltip,
-  Error,
 } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 
 // utils
-import { isNilOrError, isNil } from 'utils/helperUtils';
+import { isNil, isNilOrError } from 'utils/helperUtils';
 
 // typings
 import { IOption } from 'typings';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
 import useAuthUser from 'hooks/useAuthUser';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
+import messages from './messages';
 
 const StyledSectionField = styled(SectionField)`
   max-width: 100%;

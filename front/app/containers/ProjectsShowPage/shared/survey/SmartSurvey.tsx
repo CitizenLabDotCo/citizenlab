@@ -1,5 +1,5 @@
-import React from 'react';
 import { parse, stringify } from 'qs';
+import React from 'react';
 
 import styled from 'styled-components';
 

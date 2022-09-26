@@ -1,13 +1,13 @@
 import React, { PureComponent } from 'react';
-import { Subscription, combineLatest, of, Observable } from 'rxjs';
+import { adopt } from 'react-adopt';
+import { combineLatest, Observable, of, Subscription } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import shallowCompare from 'utils/shallowCompare';
-import { adopt } from 'react-adopt';
 
 // libraries
-import scrollToComponent from 'react-scroll-to-component';
 import bowser from 'bowser';
+import scrollToComponent from 'react-scroll-to-component';
 
 // components
 import {
@@ -16,65 +16,68 @@ import {
   Input,
   LocationInput,
 } from '@citizenlab/cl2-component-library';
-import QuillEditor from 'components/UI/QuillEditor';
-import ImagesDropzone from 'components/UI/ImagesDropzone';
-import UserSelect from 'components/UI/UserSelect';
-import Error from 'components/UI/Error';
 import HasPermission from 'components/HasPermission';
+import Error from 'components/UI/Error';
 import FileUploader from 'components/UI/FileUploader';
 import {
+  FormLabel,
   FormSection,
   FormSectionTitle,
-  FormLabel,
 } from 'components/UI/FormComponents';
+import ImagesDropzone from 'components/UI/ImagesDropzone';
+import QuillEditor from 'components/UI/QuillEditor';
+import UserSelect from 'components/UI/UserSelect';
 import Link from 'utils/cl-router/Link';
 
 // services
-import { localeStream } from 'services/locale';
 import {
   currentAppConfigurationStream,
   IAppConfiguration,
 } from 'services/appConfiguration';
-import { projectByIdStream, IProject, IProjectData } from 'services/projects';
-import { phasesStream, IPhaseData } from 'services/phases';
 import {
+  CustomFieldCodes,
   ideaFormSchemaStream,
   IIdeaFormSchemas,
-  CustomFieldCodes,
 } from 'services/ideaCustomFieldsSchemas';
+import { localeStream } from 'services/locale';
+import { IPhaseData, phasesStream } from 'services/phases';
 import { getTopicIds } from 'services/projectAllowedInputTopics';
+import { IProject, IProjectData, projectByIdStream } from 'services/projects';
 
 // resources
 import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetProjectAllowedInputTopics from 'resources/GetProjectAllowedInputTopics';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
 // utils
-import eventEmitter from 'utils/eventEmitter';
 import { pastPresentOrFuture } from 'utils/dateUtils';
+import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from './messages';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import { getInputTermMessage } from 'utils/i18n';
+import messages from './messages';
 
 // typings
-import { IOption, UploadFile, Locale } from 'typings';
+import { IOption, Locale, UploadFile } from 'typings';
 
 // style
-import styled from 'styled-components';
 import TopicsPicker from 'components/UI/TopicsPicker';
-import { media } from 'utils/styleUtils';
-import { getInputTerm } from 'services/participationContexts';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import { getInputTerm } from 'services/participationContexts';
 import { isAdmin } from 'services/permissions/roles';
 import { IUserData } from 'services/users';
+import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
 
 const Form = styled.form`
   width: 100%;
@@ -790,7 +793,7 @@ class IdeaForm extends PureComponent<
             <FormElement id="e2e-idea-title-input">
               <FormLabel
                 htmlFor="title"
-                labelMessage={messages.title}
+                labelText={formatMessage(messages.title)}
                 optional={
                   !this.isFieldRequired(
                     'title_multiloc',
@@ -837,7 +840,7 @@ class IdeaForm extends PureComponent<
                 <FormElement id="e2e-idea-author-input">
                   <FormLabel
                     htmlFor="author-select"
-                    labelMessage={messages.author}
+                    labelText={formatMessage(messages.author)}
                   />
                   <UserSelect
                     id="author"
@@ -853,7 +856,7 @@ class IdeaForm extends PureComponent<
               <FormLabel
                 id="editor-label"
                 htmlFor="editor"
-                labelMessage={messages.descriptionTitle}
+                labelText={formatMessage(messages.descriptionTitle)}
                 optional={
                   !this.isFieldRequired(
                     'body_multiloc',
@@ -930,10 +933,9 @@ class IdeaForm extends PureComponent<
                 <FormElement>
                   <FormLabel
                     htmlFor="estimated-budget"
-                    labelMessage={messages.proposedBudgetLabel}
-                    labelMessageValues={{
+                    labelText={formatMessage(messages.proposedBudgetLabel, {
                       currency: tenantCurrency,
-                    }}
+                    })}
                     optional={
                       !this.isFieldRequired(
                         'proposed_budget',
@@ -965,7 +967,7 @@ class IdeaForm extends PureComponent<
                 <FormElement id="e2e-idea-topics-input">
                   <FormLabel
                     htmlFor="topics"
-                    labelMessage={messages.topicsTitle}
+                    labelText={formatMessage(messages.topicsTitle)}
                     optional={
                       !this.isFieldRequired(
                         'topic_ids',
@@ -994,7 +996,7 @@ class IdeaForm extends PureComponent<
               {showLocation && mapsLoaded && (
                 <FormElement>
                   <FormLabel
-                    labelMessage={messages.locationTitle}
+                    labelText={formatMessage(messages.locationTitle)}
                     optional={
                       !this.isFieldRequired(
                         'location_description',
@@ -1029,7 +1031,7 @@ class IdeaForm extends PureComponent<
             <FormElement id="e2e-idea-image-upload">
               <FormLabel
                 htmlFor="idea-image-dropzone"
-                labelMessage={messages.imageUploadTitle}
+                labelText={formatMessage(messages.imageUploadTitle)}
                 optional={
                   !this.isFieldRequired(
                     'idea_images_attributes',
@@ -1059,7 +1061,7 @@ class IdeaForm extends PureComponent<
             {attachmentsEnabled && (
               <FormElement id="e2e-idea-file-upload">
                 <FormLabel
-                  labelMessage={messages.otherFilesTitle}
+                  labelText={formatMessage(messages.otherFilesTitle)}
                   optional={
                     !this.isFieldRequired(
                       'idea_files_attributes',

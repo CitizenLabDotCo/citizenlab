@@ -2,43 +2,46 @@
 import React, { memo } from 'react';
 
 // intl
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from '../messages';
 
 // styling
-import styled from 'styled-components';
 import {
+  animation,
   legacyColors,
   sizes,
-  animation,
 } from 'components/admin/Graphs/styling';
+import styled from 'styled-components';
 
 // resources
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  ResponsiveContainer,
-  Cell,
-  LabelList,
-} from 'recharts';
-import {
+  GraphCard,
+  GraphCardHeader,
+  GraphCardInner,
+  GraphCardTitle,
   IGraphUnit,
   NoDataContainer,
-  GraphCardHeader,
-  GraphCardTitle,
-  GraphCard,
-  GraphCardInner,
 } from 'components/admin/GraphWrappers';
+import {
+  Bar,
+  BarChart,
+  Cell,
+  LabelList,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+} from 'recharts';
 
 // types
-import { IGraphPoint } from 'typings';
 import ReportExportMenu from 'components/admin/ReportExportMenu';
+import { IGraphPoint } from 'typings';
 
 interface VoteGraphPoint extends IGraphPoint {
   up: number;
@@ -235,8 +238,8 @@ export const HorizontalBarChartWithoutStream: React.SFC<
   );
 });
 
-const HorizontalBarChartWithoutStreamWithHoCs = injectIntl<Props>(
-  HorizontalBarChartWithoutStream as any
+const HorizontalBarChartWithoutStreamWithHoCs = injectIntl(
+  HorizontalBarChartWithoutStream
 );
 
 export default HorizontalBarChartWithoutStreamWithHoCs;

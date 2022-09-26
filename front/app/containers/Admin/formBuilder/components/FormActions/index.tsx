@@ -1,11 +1,10 @@
 import React from 'react';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 
 // components
-import { Toggle, Box, Title } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
+import { Box, Title, Toggle } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
+import Button from 'components/UI/Button';
 
 // routing
 import clHistory from 'utils/cl-router/history';

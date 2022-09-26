@@ -3,12 +3,16 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Avatar from 'components/Avatar';
-import UserName from 'components/UI/UserName';
 import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
+import UserName from 'components/UI/UserName';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps, FormattedDate } from 'react-intl';
+import {
+  FormattedDate,
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from './messages';
 
 // hooks

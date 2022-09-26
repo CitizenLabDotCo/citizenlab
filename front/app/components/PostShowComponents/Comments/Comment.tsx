@@ -1,14 +1,14 @@
 // libraries
+import { get } from 'lodash-es';
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import { get } from 'lodash-es';
 
 // components
-import CommentHeader from './CommentHeader';
+import { Icon } from '@citizenlab/cl2-component-library';
 import CommentBody from './CommentBody';
 import CommentFooter from './CommentFooter';
-import { Icon } from '@citizenlab/cl2-component-library';
+import CommentHeader from './CommentHeader';
 
 // services
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
@@ -18,8 +18,11 @@ import GetComment, { GetCommentChildProps } from 'resources/GetComment';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from './messages';
 
 // style
@@ -204,7 +207,7 @@ const Data = adopt<DataProps, InputProps>({
   ),
 });
 
-const CommentWithHoCs = injectIntl<Props>(Comment);
+const CommentWithHoCs = injectIntl(Comment);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

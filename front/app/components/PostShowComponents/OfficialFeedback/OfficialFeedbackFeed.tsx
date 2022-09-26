@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
@@ -13,12 +13,16 @@ import GetOfficialFeedbacks, {
 
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
+import { colors, fontSizes, isRtl, media } from 'utils/styleUtils';
 
 // i18n
+import {
+  FormattedDate,
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from './messages';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps, FormattedDate } from 'react-intl';
 
 const Container = styled.div`
   &.hasTopMargin {
@@ -195,7 +199,7 @@ const Data = adopt<DataProps, InputProps>({
   ),
 });
 
-const OfficialFeedbackFeedWithIntl = injectIntl<Props>(OfficialFeedbackFeed);
+const OfficialFeedbackFeedWithIntl = injectIntl(OfficialFeedbackFeed);
 
 const WrappedOfficialFeedback = (inputProps: InputProps) => (
   <Data {...inputProps}>

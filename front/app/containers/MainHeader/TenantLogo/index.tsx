@@ -4,8 +4,7 @@ import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 // hooks
@@ -13,6 +12,7 @@ import useAppConfiguration from 'hooks/useAppConfiguration';
 
 // components
 import { Image } from '@citizenlab/cl2-component-library';
+import useLocalize from 'hooks/useLocalize';
 
 const LogoLink = styled(Link)`
   flex: 1 1 auto;
@@ -32,14 +32,21 @@ const Logo = styled(Image)`
 
 const TenantLogo = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const appConfiguration = useAppConfiguration();
+  const localize = useLocalize();
 
   if (!isNilOrError(appConfiguration)) {
     const tenantLogo = appConfiguration.attributes.logo?.medium;
+    const orgName = localize(
+      appConfiguration.attributes.settings.core.organization_name
+    );
 
     if (tenantLogo) {
       return (
         <LogoLink to="/" onlyActiveOnIndex={true}>
-          <Logo src={tenantLogo} alt={formatMessage(messages.logoAltText)} />
+          <Logo
+            src={tenantLogo}
+            alt={formatMessage(messages.logoAltText, { orgName })}
+          />
         </LogoLink>
       );
     }

@@ -1,42 +1,45 @@
-import React, { memo, useState, useEffect, useCallback } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 
 import { isNilOrError } from 'utils/helperUtils';
 import { insertConfiguration } from 'utils/moduleUtils';
 
 // components
-import Table from 'components/UI/Table';
-import ModerationRow from './ModerationRow';
-import Pagination from 'components/Pagination';
-import Checkbox from 'components/UI/Checkbox';
 import {
+  Error,
   Icon,
   IconTooltip,
   Select,
-  Error,
 } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import Tabs, { ITabItem } from 'components/UI/Tabs';
 import { PageTitle } from 'components/admin/Section';
-import SelectType from './SelectType';
-import SelectProject from './SelectProject';
-import SearchInput from 'components/UI/SearchInput';
 import Outlet from 'components/Outlet';
+import Pagination from 'components/Pagination';
+import Button from 'components/UI/Button';
+import Checkbox from 'components/UI/Checkbox';
+import SearchInput from 'components/UI/SearchInput';
+import Table from 'components/UI/Table';
+import Tabs, { ITabItem } from 'components/UI/Tabs';
+import ModerationRow from './ModerationRow';
+import SelectProject from './SelectProject';
+import SelectType from './SelectType';
 
 // hooks
 import useModerations from '../../hooks/useModerations';
 import useModerationsCount from '../../hooks/useModerationsCount';
 
 // services
+import { removeInappropriateContentFlag } from 'modules/commercial/flag_inappropriate_content/services/inappropriateContentFlags';
 import {
-  updateModerationStatus,
   IModerationData,
   TModeratableType,
+  updateModerationStatus,
 } from '../../services/moderations';
-import { removeInappropriateContentFlag } from 'modules/commercial/flag_inappropriate_content/services/inappropriateContentFlags';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from './messages';
 
 // analytics
@@ -48,7 +51,7 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // typings
-import { IOption, InsertConfigurationOptions } from 'typings';
+import { InsertConfigurationOptions, IOption } from 'typings';
 
 const Container = styled.div`
   display: flex;

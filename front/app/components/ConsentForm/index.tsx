@@ -1,33 +1,33 @@
 import React, { PureComponent } from 'react';
 import {
+  getCategorizedConsents,
+  IConsent,
   IConsentData,
   updateConsent,
-  IConsent,
   updateConsentWithToken,
-  getCategorizedConsents,
 } from 'services/campaignConsents';
 
 // components
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import T from 'components/T';
 import Button from 'components/UI/Button';
-import CheckboxWithPartialCheck from 'components/UI/CheckboxWithPartialCheck';
 import Checkbox from 'components/UI/Checkbox';
+import CheckboxWithPartialCheck from 'components/UI/CheckboxWithPartialCheck';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 // analytics
+import { FormSection, FormSectionTitle } from 'components/UI/FormComponents';
 import { trackEventByName } from 'utils/analytics';
-import { FormSectionTitle, FormSection } from 'components/UI/FormComponents';
 
 // i18n
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
 
 // styling
-import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 import { Icon } from '@citizenlab/cl2-component-library';
 import { CSSTransition } from 'react-transition-group';
+import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
 
 const timeout = 400;
 

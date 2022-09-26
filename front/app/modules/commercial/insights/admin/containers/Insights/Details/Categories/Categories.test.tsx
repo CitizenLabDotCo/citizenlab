@@ -1,13 +1,11 @@
-import React from 'react';
-import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
-import clHistory from 'utils/cl-router/history';
 import categories from 'modules/commercial/insights/fixtures/categories';
+import React from 'react';
+import clHistory from 'utils/cl-router/history';
+import { fireEvent, render, screen, waitFor } from 'utils/testUtils/rtl';
 
 import Categories, { visibleCategoriesNumber } from './';
 
 let mockData = categories;
-
-jest.mock('utils/cl-intl');
 
 jest.mock('modules/commercial/insights/hooks/useInsightsCategories', () => {
   return jest.fn(() => mockData);

@@ -1,11 +1,11 @@
-import { getJwt } from 'utils/auth/jwt';
 import {
   ApolloClient,
-  HttpLink,
   ApolloLink,
-  InMemoryCache,
   concat,
+  HttpLink,
+  InMemoryCache,
 } from '@apollo/client';
+import { getJwt } from 'utils/auth/jwt';
 
 const ADMIN_TEMPLATES_GRAPHQL_PATH = '/admin_templates_api/graphql';
 const httpLink = new HttpLink({ uri: ADMIN_TEMPLATES_GRAPHQL_PATH });

@@ -1,13 +1,12 @@
-import React from 'react';
-import { colors } from 'utils/styleUtils';
-import { FormattedMessage } from 'utils/cl-intl';
-import { FormattedDate } from 'react-intl';
-import messages from '../messages';
-import { IInviteData, deleteInvite } from 'services/invites';
-import GetUser from 'resources/GetUser';
-import { Table, Button as SemanticButton, Popup } from 'semantic-ui-react';
 import { Badge } from '@citizenlab/cl2-component-library';
+import React from 'react';
+import { FormattedDate, FormattedMessage } from 'react-intl';
+import GetUser from 'resources/GetUser';
+import { Button as SemanticButton, Popup, Table } from 'semantic-ui-react';
+import { deleteInvite, IInviteData } from 'services/invites';
 import { isNilOrError } from 'utils/helperUtils';
+import { colors } from 'utils/styleUtils';
+import messages from '../messages';
 
 interface InputProps {
   invite: IInviteData;

@@ -1,29 +1,26 @@
-import React, { PureComponent } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { adopt } from 'react-adopt';
 import { get } from 'lodash-es';
+import React, { PureComponent } from 'react';
+import { adopt } from 'react-adopt';
 import { getDaysRemainingUntil } from 'utils/dateUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Title from 'components/PostShowComponents/Title';
+import VoteIndicator from 'components/InitiativeCard/VoteIndicator';
 import Body from 'components/PostShowComponents/Body';
+import Comments from 'components/PostShowComponents/Comments';
 import DropdownMap from 'components/PostShowComponents/DropdownMap';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
-import PostedBy from 'containers/InitiativesShow/PostedBy';
-import Comments from 'components/PostShowComponents/Comments';
-import FileAttachments from 'components/UI/FileAttachments';
-import FeedbackSettings from './FeedbackSettings';
+import Title from 'components/PostShowComponents/Title';
 import Button from 'components/UI/Button';
-import { Top, Content, Container } from '../PostPreview';
-import VoteIndicator from 'components/InitiativeCard/VoteIndicator';
+import FileAttachments from 'components/UI/FileAttachments';
+import PostedBy from 'containers/InitiativesShow/PostedBy';
+import { Container, Content, Top } from '../PostPreview';
+import FeedbackSettings from './FeedbackSettings';
 
 // services
 import { deleteInitiative } from 'services/initiatives';
 
 // resources
-import GetResourceFiles, {
-  GetResourceFilesChildProps,
-} from 'resources/GetResourceFiles';
 import GetInitiative, {
   GetInitiativeChildProps,
 } from 'resources/GetInitiative';
@@ -31,11 +28,17 @@ import GetInitiativeImages, {
   GetInitiativeImagesChildProps,
 } from 'resources/GetInitiativeImages';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetResourceFiles, {
+  GetResourceFilesChildProps,
+} from 'resources/GetResourceFiles';
 
 // i18n
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 // style

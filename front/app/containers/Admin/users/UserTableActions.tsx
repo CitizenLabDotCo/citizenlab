@@ -1,25 +1,25 @@
 // Libraries
-import React, { PureComponent, FormEvent } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { isArray, isNil, omitBy, includes } from 'lodash-es';
 import { saveAs } from 'file-saver';
+import { includes, isArray, isNil, omitBy } from 'lodash-es';
+import React, { FormEvent, PureComponent } from 'react';
+import { isNilOrError } from 'utils/helperUtils';
 
 // Components
-import Checkbox from 'components/UI/Checkbox';
-import { Icon, Dropdown } from '@citizenlab/cl2-component-library';
+import { Dropdown, Icon } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
 import Button from 'components/UI/Button';
+import Checkbox from 'components/UI/Checkbox';
 
 // Services
-import { IGroupData, MembershipType } from 'services/groups';
 import {
   addGroupMembership,
   IGroupMembership,
 } from 'services/groupMemberships';
+import { IGroupData, MembershipType } from 'services/groups';
 
 // Utils
-import { requestBlob } from 'utils/request';
 import { API_PATH } from 'containers/App/constants';
+import { requestBlob } from 'utils/request';
 import streams from 'utils/streams';
 
 // Events
@@ -33,14 +33,22 @@ import tracks from './tracks';
 // Resources
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 
+// Typings
+import { CLErrorsJSON } from 'typings';
+import { isCLErrorJSON } from 'utils/errorUtils';
+
 // I18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from './messages';
 
 // Styling
+import { rgba } from 'polished';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import { rgba } from 'polished';
 
 const TableOptions = styled.div`
   min-height: 60px;
@@ -156,11 +164,6 @@ const DropdownFooterButton = styled(Button)`
     border-top-right-radius: 0;
   }
 `;
-
-// Typings
-import { CLErrorsJSON } from 'typings';
-import { isCLErrorJSON } from 'utils/errorUtils';
-import { WrappedComponentProps } from 'react-intl';
 
 interface InputProps {
   groupType?: MembershipType;

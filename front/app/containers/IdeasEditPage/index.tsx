@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { Subscription, combineLatest, of } from 'rxjs';
-import { switchMap, map, first } from 'rxjs/operators';
+import { combineLatest, of, Subscription } from 'rxjs';
+import { first, map, switchMap } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
 
 // router
@@ -16,23 +16,23 @@ import IdeasEditMeta from './IdeasEditMeta';
 import IdeasEditPageWithJSONForm from './WithJSONForm';
 
 // services
-import { localeStream } from 'services/locale';
 import { currentAppConfigurationStream } from 'services/appConfiguration';
-import { ideaByIdStream, IIdeaData, updateIdea } from 'services/ideas';
+import { addIdeaFile, deleteIdeaFile } from 'services/ideaFiles';
 import {
-  ideaImageStream,
   addIdeaImage,
   deleteIdeaImage,
+  ideaImageStream,
 } from 'services/ideaImages';
-import { hasPermission } from 'services/permissions';
-import { addIdeaFile, deleteIdeaFile } from 'services/ideaFiles';
+import { ideaByIdStream, IIdeaData, updateIdea } from 'services/ideas';
+import { localeStream } from 'services/locale';
 import { getInputTerm } from 'services/participationContexts';
+import { hasPermission } from 'services/permissions';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import { FormattedMessage } from 'react-intl';
 import { getInputTermMessage } from 'utils/i18n';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import messages from './messages';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -40,29 +40,29 @@ import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
 import { geocode } from 'utils/locationTools';
 
 // typings
-import { UploadFile, Multiloc, Locale } from 'typings';
+import { Locale, Multiloc, UploadFile } from 'typings';
 
 // style
-import { media, fontSizes, colors } from 'utils/styleUtils';
 import styled from 'styled-components';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // resource components
-import GetRemoteFiles, {
-  GetRemoteFilesChildProps,
-} from 'resources/GetRemoteFiles';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
-import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetRemoteFiles, {
+  GetRemoteFilesChildProps,
+} from 'resources/GetRemoteFiles';
 
 // tracks
-import tracks from './tracks';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import { trackEventByName } from 'utils/analytics';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import tracks from './tracks';
 
 const Container = styled.div`
   background: ${colors.background};

@@ -1,45 +1,45 @@
 import React, { memo, useEffect, useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Timeline from './Timeline';
-import PBExpenses from '../shared/pb/PBExpenses';
-import PhaseSurvey from './Survey';
-import PhasePoll from './Poll';
-import PhaseVolunteering from './Volunteering';
-import PhaseIdeas from './Ideas';
 import ContentContainer from 'components/ContentContainer';
-import PhaseNavigation from './PhaseNavigation';
-import {
-  ProjectPageSectionTitle,
-  maxPageWidth,
-} from 'containers/ProjectsShowPage/styles';
 import SectionContainer from 'components/SectionContainer';
+import {
+  maxPageWidth,
+  ProjectPageSectionTitle,
+} from 'containers/ProjectsShowPage/styles';
+import PBExpenses from '../shared/pb/PBExpenses';
+import PhaseIdeas from './Ideas';
+import PhaseNavigation from './PhaseNavigation';
+import PhasePoll from './Poll';
+import PhaseSurvey from './Survey';
+import Timeline from './Timeline';
+import PhaseVolunteering from './Volunteering';
 
 // services
 import {
-  IPhaseData,
-  getLatestRelevantPhase,
   getCurrentPhase,
+  getLatestRelevantPhase,
+  IPhaseData,
 } from 'services/phases';
 
 // events
 import { selectedPhase$, selectPhase } from './events';
 
 // hooks
-import useProject from 'hooks/useProject';
-import usePhases from 'hooks/usePhases';
 import { useWindowSize } from '@citizenlab/cl2-component-library';
 import useLocale from 'hooks/useLocale';
+import usePhases from 'hooks/usePhases';
+import useProject from 'hooks/useProject';
 
 // i18n
 import messages from 'containers/ProjectsShowPage/messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 
 // style
 import styled from 'styled-components';
-import { colors, viewportWidths, isRtl } from 'utils/styleUtils';
+import { colors, isRtl, viewportWidths } from 'utils/styleUtils';
 
 // other
 import { isValidPhase } from '../phaseParam';

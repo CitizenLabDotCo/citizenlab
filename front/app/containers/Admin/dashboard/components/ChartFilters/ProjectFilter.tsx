@@ -11,12 +11,15 @@ import useLocalize, { Localize } from 'hooks/useLocalize';
 import { Box, Select } from '@citizenlab/cl2-component-library';
 
 // typings
-import { IOption } from 'typings';
 import { IProjectData, PublicationStatus } from 'services/projects';
+import { IOption } from 'typings';
 
 // i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from './messages';
 
 // utils

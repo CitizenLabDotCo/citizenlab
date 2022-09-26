@@ -2,11 +2,10 @@ import React from 'react';
 import EventsViewer from './EventsViewer';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl } from 'react-intl';
 import messages from './messages';
 
-export default injectIntl<WrappedComponentProps>(({ intl }) => (
+export default injectIntl(({ intl }) => (
   <EventsViewer
     title={intl.formatMessage(messages.pastEvents)}
     fallbackMessage={messages.noPastEvents}

@@ -36,7 +36,7 @@ import {
 import { LatLngTuple } from 'leaflet';
 import { Point } from 'components/UI/LeafletMap/typings';
 import { IUserData } from 'services/users';
-import { MessageValue, MessageDescriptor } from 'react-intl';
+import { IntlFormatters } from 'react-intl';
 import { NavItem } from 'containers/Admin/sideBar';
 import {
   AppConfigurationFeature,
@@ -72,10 +72,7 @@ import { Localize } from 'hooks/useLocalize';
 import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/projects/project/general';
 
 export type ITabsOutlet = {
-  formatMessage: (
-    messageDescriptor: MessageDescriptor,
-    values?: { [key: string]: MessageValue } | undefined
-  ) => string;
+  formatMessage: IntlFormatters['formatMessage'];
   onData: (data: InsertConfigurationOptions<ITab>) => void;
 };
 

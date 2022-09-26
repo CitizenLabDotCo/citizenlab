@@ -2,8 +2,8 @@ import React from 'react';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
-import TextingHeader from '../components/TextingHeader';
 import SMSCampaignForm from '../components/SMSCampaignForm';
+import TextingHeader from '../components/TextingHeader';
 
 // utils
 import clHistory from 'utils/cl-router/history';

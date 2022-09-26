@@ -1,24 +1,23 @@
 import React from 'react';
 
 // intl
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 // components
+import Divider from 'components/admin/Divider';
 import PageTitle from 'components/admin/PageTitle';
 import Button from 'components/UI/Button';
-import Divider from 'components/admin/Divider';
 
 // styles
-import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
 import { darken } from 'polished';
+import styled from 'styled-components';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // services
 import {
-  IInsightsViewData,
   deleteInsightsView,
+  IInsightsViewData,
 } from 'modules/commercial/insights/services/insightsViews';
 
 const StyledDescription = styled.p`

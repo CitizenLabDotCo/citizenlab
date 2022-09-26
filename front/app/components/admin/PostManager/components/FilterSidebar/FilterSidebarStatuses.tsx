@@ -3,7 +3,7 @@ import { IIdeaStatusData } from 'services/ideaStatuses';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
 import { Menu, Divider } from 'semantic-ui-react';
 import FilterSidebarStatusesItem from './FilterSidebarStatusesItem';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../../messages';

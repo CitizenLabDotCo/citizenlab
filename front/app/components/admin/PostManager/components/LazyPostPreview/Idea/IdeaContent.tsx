@@ -1,57 +1,60 @@
-import React, { PureComponent } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { adopt } from 'react-adopt';
 import { get } from 'lodash-es';
+import React, { PureComponent } from 'react';
+import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Title from 'components/PostShowComponents/Title';
-import PostedBy from 'containers/IdeasShow/PostedBy';
+import { IconTooltip } from '@citizenlab/cl2-component-library';
 import Body from 'components/PostShowComponents/Body';
-import IdeaProposedBudget from 'containers/IdeasShow/IdeaProposedBudget';
+import Comments from 'components/PostShowComponents/Comments';
 import DropdownMap from 'components/PostShowComponents/DropdownMap';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
-import Comments from 'components/PostShowComponents/Comments';
+import Title from 'components/PostShowComponents/Title';
+import T from 'components/T';
+import Button from 'components/UI/Button';
 import FileAttachments from 'components/UI/FileAttachments';
+import IdeaProposedBudget from 'containers/IdeasShow/IdeaProposedBudget';
+import PostedBy from 'containers/IdeasShow/PostedBy';
+import Link from 'utils/cl-router/Link';
+import { Container, Content, Top } from '../PostPreview';
 import FeedbackSettings from './FeedbackSettings';
 import VotePreview from './VotePreview';
-import { IconTooltip } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import Link from 'utils/cl-router/Link';
-import T from 'components/T';
-import { Top, Content, Container } from '../PostPreview';
 
 // services
 import { deleteIdea } from 'services/ideas';
 import { ProcessType } from 'services/projects';
 
 // resources
-import GetResourceFiles, {
-  GetResourceFilesChildProps,
-} from 'resources/GetResourceFiles';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetIdeaImages, {
   GetIdeaImagesChildProps,
 } from 'resources/GetIdeaImages';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPermission, {
   GetPermissionChildProps,
 } from 'resources/GetPermission';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetResourceFiles, {
+  GetResourceFilesChildProps,
+} from 'resources/GetResourceFiles';
 
 // utils
 import { getAddressOrFallbackDMS } from 'utils/map';
 
 // i18n
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from '../messages';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import FormattedBudget from 'utils/currency/FormattedBudget';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import messages from '../messages';
 
 // style
+import { darken } from 'polished';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import { darken } from 'polished';
 
 const StyledTitle = styled(Title)`
   margin-bottom: 20px;

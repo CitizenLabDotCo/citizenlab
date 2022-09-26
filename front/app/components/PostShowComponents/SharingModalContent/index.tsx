@@ -1,20 +1,19 @@
 import React, { PureComponent } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 import { getInputTerm } from 'services/participationContexts';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import SharingButtons from 'components/Sharing/SharingButtons';
 import {
-  Spinner,
   Box,
+  Image,
+  Spinner,
   Text,
   Title,
-  Image,
 } from '@citizenlab/cl2-component-library';
+import SharingButtons from 'components/Sharing/SharingButtons';
 
 // resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
@@ -23,16 +22,20 @@ import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetInitiative, {
   GetInitiativeChildProps,
 } from 'resources/GetInitiative';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import { PostType } from 'resources/GetPost';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
 // i18n
-import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
-import injectIntl from 'utils/cl-intl/injectIntl';
+import {
+  injectIntl,
+  MessageDescriptor,
+  WrappedComponentProps,
+} from 'react-intl';
+import { getInputTermMessage } from 'utils/i18n';
 import localize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
-import { getInputTermMessage } from 'utils/i18n';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -52,7 +55,7 @@ interface InputProps {
 
 interface DataProps {
   locale: GetLocaleChildProps;
-  tenant: GetAppConfigurationChildProps;
+  appConfig: GetAppConfigurationChildProps;
   authUser: GetAuthUserChildProps;
   idea: GetIdeaChildProps;
   initiative: GetInitiativeChildProps;
@@ -156,7 +159,15 @@ class SharingModalContent extends PureComponent<
   };
 
   render() {
-    const { postType, authUser, className, title, subtitle } = this.props;
+    const {
+      postType,
+      authUser,
+      className,
+      title,
+      subtitle,
+      localize,
+      appConfig,
+    } = this.props;
     const { formatMessage } = this.props.intl;
 
     const { postTitle, postUrl } = this.getPostValues();
@@ -165,6 +176,7 @@ class SharingModalContent extends PureComponent<
 
     if (
       !isNilOrError(authUser) &&
+      !isNilOrError(appConfig) &&
       postUrl &&
       emailSharingBody &&
       emailSharingSubject &&
@@ -207,6 +219,9 @@ class SharingModalContent extends PureComponent<
             })}
             whatsAppMessage={formatMessage(whatsAppMessage, {
               postTitle,
+              orgName: localize(
+                appConfig.attributes.settings.core.organization_name
+              ),
             })}
             emailSubject={formatMessage(emailSharingSubject, { postTitle })}
             emailBody={formatMessage(emailSharingBody, {
@@ -237,9 +252,7 @@ class SharingModalContent extends PureComponent<
   }
 }
 
-const SharingModalContentWithHoCs = injectIntl<Props>(
-  localize(SharingModalContent)
-);
+const SharingModalContentWithHoCs = injectIntl(localize(SharingModalContent));
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,

@@ -2,11 +2,14 @@ import React from 'react';
 import { deleteIdea } from 'services/ideas';
 import { deleteInitiative } from 'services/initiatives';
 
-import { Icon, Button } from 'semantic-ui-react';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from '../../messages';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
+import { Button, Icon } from 'semantic-ui-react';
 import { ManagerType } from '../..';
+import messages from '../../messages';
 
 interface Props {
   type: ManagerType;
@@ -88,4 +91,4 @@ class ActionBarSingle extends React.PureComponent<
   }
 }
 
-export default injectIntl<Props>(ActionBarSingle);
+export default injectIntl(ActionBarSingle);

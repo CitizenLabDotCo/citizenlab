@@ -1,34 +1,34 @@
+import { map, sortBy } from 'lodash-es';
 import React from 'react';
 import { adopt } from 'react-adopt';
-import { map, sortBy } from 'lodash-es';
 import styled from 'styled-components';
 
 // resources
 import GetSerieFromStream from 'resources/GetSerieFromStream';
 import {
-  IIdeasByTopic,
-  ideasByTopicStream,
-  ICommentsByTopic,
   commentsByTopicStream,
+  ICommentsByTopic,
+  ideasByTopicStream,
+  IIdeasByTopic,
   IVotesByTopic,
   votesByTopicStream,
 } from 'services/stats';
 import { IParticipationByTopic } from 'typings';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import messages from '../messages';
-import useLocalize from 'hooks/useLocalize';
 import {
   GraphCard,
+  GraphCardHeader,
   GraphCardInner,
   GraphCardTitle,
-  GraphCardHeader,
   NoDataContainer,
 } from 'components/admin/GraphWrappers';
+import useLocalize from 'hooks/useLocalize';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import { isNilOrError } from 'utils/helperUtils';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import messages from '../messages';
 
 interface InputProps {
   projectId: string | null;

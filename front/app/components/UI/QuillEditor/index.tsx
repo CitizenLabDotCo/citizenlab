@@ -1,18 +1,17 @@
-import React, { memo, useEffect, useRef, useState, useCallback } from 'react';
 import usePrevious from 'hooks/usePrevious';
 import { debounce } from 'lodash-es';
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 
 // quill
-import Quill, { Sources, QuillOptionsStatic, RangeStatic } from 'quill';
+import Quill, { QuillOptionsStatic, RangeStatic, Sources } from 'quill';
 import BlotFormatter from 'quill-blot-formatter';
 import 'quill/dist/quill.snow.css';
 
 // components
-import { Label, IconTooltip } from '@citizenlab/cl2-component-library';
+import { IconTooltip, Label } from '@citizenlab/cl2-component-library';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // analytics
@@ -23,22 +22,22 @@ import tracks from './tracks';
 import styled from 'styled-components';
 import {
   colors,
-  quillEditedContent,
-  media,
-  fontSizes,
   defaultStyles,
+  fontSizes,
   isRtl,
+  media,
+  quillEditedContent,
 } from 'utils/styleUtils';
 
 import {
-  ImageBlot,
   AltTextToImagesModule,
-  KeepHTML,
   attributes,
+  ImageBlot,
+  KeepHTML,
 } from './altTextToImagesModule';
 // typings
-import { Locale } from 'typings';
 import Tippy from '@tippyjs/react';
+import { Locale } from 'typings';
 
 const DropdownList = styled.div`
   display: flex;

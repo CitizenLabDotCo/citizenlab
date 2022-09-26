@@ -1,43 +1,42 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { stringify } from 'qs';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
-import clHistory from 'utils/cl-router/history';
 import getInputsCategoryFilter from 'modules/commercial/insights/utils/getInputsCategoryFilter';
+import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInsightsInputs, {
   defaultPageSize,
 } from 'modules/commercial/insights/hooks/useInsightsInputs';
-import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
 import useScanInsightsCategory from 'modules/commercial/insights/hooks/useScanInsightsCategory';
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
 
 // components
-import { Table, Icon, Box } from '@citizenlab/cl2-component-library';
+import { Box, Icon, Table } from '@citizenlab/cl2-component-library';
+import Divider from 'components/admin/Divider';
+import Pagination from 'components/Pagination';
 import Button from 'components/UI/Button';
-import InputsTableRow from './InputsTableRow';
-import EmptyState from './EmptyState';
 import CheckboxWithPartialCheck from 'components/UI/CheckboxWithPartialCheck';
+import SearchInput from 'components/UI/SearchInput';
 import SideModal from 'components/UI/SideModal';
 import InputDetails from '../InputDetails';
-import Divider from 'components/admin/Divider';
 import Actions from './Actions';
-import Pagination from 'components/Pagination';
-import SearchInput from 'components/UI/SearchInput';
-import TableTitle from './TableTitle';
+import EmptyState from './EmptyState';
 import Export from './Export';
+import InputsTableRow from './InputsTableRow';
 import ScanCategory from './ScanCategory';
+import TableTitle from './TableTitle';
 
 // styles
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 // intl
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 
 const Inputs = styled.div`

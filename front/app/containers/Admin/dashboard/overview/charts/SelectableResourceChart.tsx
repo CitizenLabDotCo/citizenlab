@@ -1,51 +1,55 @@
 import React, { useRef } from 'react';
 
 // intl
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  MessageDescriptor,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from '../../messages';
 
 // styling
-import styled from 'styled-components';
 import {
-  sizes,
   DEFAULT_BAR_CHART_MARGIN,
+  sizes,
 } from 'components/admin/Graphs/styling';
+import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 // resources
 import GetSerieFromStream from 'resources/GetSerieFromStream';
 
 // components
-import ReportExportMenu from 'components/admin/ReportExportMenu';
+import { Select } from '@citizenlab/cl2-component-library';
+import BarChart from 'components/admin/Graphs/BarChart';
 import {
   GraphCard,
-  GraphCardInner,
   GraphCardHeaderWithFilter,
+  GraphCardInner,
 } from 'components/admin/GraphWrappers';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 import { IResolution } from 'components/admin/ResolutionControl';
-import { Select } from '@citizenlab/cl2-component-library';
 import { HiddenLabel } from 'utils/a11y';
-import BarChart from 'components/admin/Graphs/BarChart';
 
 // typings
 import {
-  IIdeasByTopic,
-  ICommentsByTopic,
-  IVotesByTopic,
-  IIdeasByProject,
-  ICommentsByProject,
-  IVotesByProject,
-  ideasByTopicXlsxEndpoint,
-  ideasByProjectXlsxEndpoint,
-  commentsByTopicXlsxEndpoint,
   commentsByProjectXlsxEndpoint,
-  votesByTopicXlsxEndpoint,
+  commentsByTopicXlsxEndpoint,
+  ICommentsByProject,
+  ICommentsByTopic,
+  ideasByProjectXlsxEndpoint,
+  ideasByTopicXlsxEndpoint,
+  IIdeasByProject,
+  IIdeasByTopic,
+  IVotesByProject,
+  IVotesByTopic,
   votesByProjectXlsxEndpoint,
+  votesByTopicXlsxEndpoint,
 } from 'services/stats';
-import { IStreamParams, IStream } from 'utils/streams';
-import { IResource } from '..';
 import { IGraphFormat, IOption } from 'typings';
+import { IStream, IStreamParams } from 'utils/streams';
+import { IResource } from '..';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
@@ -202,9 +206,7 @@ const SelectableResourceChart = ({
   );
 };
 
-const SelectableResourceChartWithHoCs = injectIntl<Props>(
-  SelectableResourceChart
-);
+const SelectableResourceChartWithHoCs = injectIntl(SelectableResourceChart);
 
 export default (inputProps: InputProps) => (
   <GetSerieFromStream {...inputProps}>

@@ -1,7 +1,7 @@
-import React, { memo, useCallback, useEffect, useState } from 'react';
 import { get } from 'lodash-es';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // components
 import Button from 'components/UI/Button';
@@ -9,12 +9,12 @@ import ProjectTemplatePreview from '../../components/ProjectTemplatePreview';
 import UseTemplateModal from '../components/UseTemplateModal';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // analytics
-import { trackEventByName } from 'utils/analytics';
 import tracks from 'containers/Admin/projects/all/tracks';
+import { trackEventByName } from 'utils/analytics';
 
 // styling
 import styled from 'styled-components';

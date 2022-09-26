@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { isNilOrError, isString } from 'utils/helperUtils';
 import { IconTooltip, Radio } from '@citizenlab/cl2-component-library';
-import Link from 'utils/cl-router/Link';
 import { SubSectionTitle } from 'components/admin/Section';
-import { StyledSectionField, StyledMultipleSelect } from './styling';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-import { IOption, isIOption } from 'typings';
 import useAreas from 'hooks/useAreas';
-import useProject from 'hooks/useProject';
 import useLocalize from 'hooks/useLocalize';
-import { IAreaData } from 'services/areas';
+import useProject from 'hooks/useProject';
+import React, { useEffect, useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { useParams } from 'react-router-dom';
+import { IAreaData } from 'services/areas';
+import { IOption, isIOption } from 'typings';
+import Link from 'utils/cl-router/Link';
+import { isNilOrError, isString } from 'utils/helperUtils';
 import { TOnProjectAttributesDiffChangeFunction } from '..';
 import { LabelHeaderDescription } from '../../participationContext/components/labels';
+import messages from '../messages';
+import { StyledMultipleSelect, StyledSectionField } from './styling';
 
 // styles
 import styled from 'styled-components';

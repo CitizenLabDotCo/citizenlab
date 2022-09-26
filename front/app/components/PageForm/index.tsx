@@ -4,42 +4,45 @@ import React from 'react';
 import { Multiloc, UploadFile } from 'typings';
 
 // form
-import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { string, object, mixed } from 'yup';
-import validateMultiloc from 'utils/yup/validateMultiloc';
+import { SectionField } from 'components/admin/Section';
+import Feedback from 'components/HookForm/Feedback';
+import FileUploader from 'components/HookForm/FileUploader';
+import Input from 'components/HookForm/Input';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
-import Input from 'components/HookForm/Input';
-import FileUploader from 'components/HookForm/FileUploader';
-import Feedback from 'components/HookForm/Feedback';
-import { SectionField } from 'components/admin/Section';
+import { FormProvider, useForm } from 'react-hook-form';
+import validateMultiloc from 'utils/yup/validateMultiloc';
+import { mixed, object, string } from 'yup';
 
 // intl
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 // components
 import {
+  Box,
   IconTooltip,
   Label,
-  Box,
   Text,
 } from '@citizenlab/cl2-component-library';
-import Warning from 'components/UI/Warning';
-import Button from 'components/UI/Button';
 import Outlet from 'components/Outlet';
+import Button from 'components/UI/Button';
+import Warning from 'components/UI/Warning';
 
 // utils
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { slugRexEx } from 'utils/textUtils';
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 // hooks
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import useLocale from 'hooks/useLocale';
 import usePage from 'hooks/usePage';
-import useAppConfiguration from 'hooks/useAppConfiguration';
 
 export interface FormValues {
   nav_bar_item_title_multiloc?: Multiloc;

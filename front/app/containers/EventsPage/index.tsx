@@ -1,12 +1,12 @@
 import React from 'react';
 
 // components
-import EventsPageMeta from './EventsPageMeta';
-import SectionContainer from 'components/SectionContainer';
-import ContentContainer from 'components/ContentContainer';
-import CurrentAndUpcomingEvents from './CurrentAndUpcomingEvents';
-import PastEvents from './PastEvents';
 import { Box } from '@citizenlab/cl2-component-library';
+import ContentContainer from 'components/ContentContainer';
+import SectionContainer from 'components/SectionContainer';
+import CurrentAndUpcomingEvents from './CurrentAndUpcomingEvents';
+import EventsPageMeta from './EventsPageMeta';
+import PastEvents from './PastEvents';
 
 // styling
 import styled from 'styled-components';

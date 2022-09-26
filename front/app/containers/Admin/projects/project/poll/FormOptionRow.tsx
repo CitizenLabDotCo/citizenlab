@@ -21,7 +21,7 @@ import { Multiloc, Locale } from 'typings';
 import { addPollOption, updatePollOption } from 'services/pollOptions';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 /*

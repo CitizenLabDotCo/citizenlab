@@ -1,24 +1,27 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
+import { isNilOrError } from 'utils/helperUtils';
 
 import GetCampaigns, { GetCampaignsChildProps } from 'resources/GetCampaigns';
 import { isDraft } from 'services/campaigns';
 
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 
+import { Icon } from '@citizenlab/cl2-component-library';
+import { ButtonWrapper } from 'components/admin/PageWrapper';
+import Pagination from 'components/admin/Pagination';
 import { List } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
-import { Icon } from '@citizenlab/cl2-component-library';
-import Pagination from 'components/admin/Pagination';
-import { ButtonWrapper } from 'components/admin/PageWrapper';
 import DraftCampaignRow from './DraftCampaignRow';
 import SentCampaignRow from './SentCampaignRow';
 
 import messages from '../../messages';
 
-import { fontSizes, colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 const NoCampaignsWrapper = styled.div`
   display: flex;
@@ -107,7 +110,7 @@ class Campaigns extends React.Component<Props & WrappedComponentProps, State> {
   }
 }
 
-const CampaignsWithInjectedIntl = injectIntl<Props>(Campaigns);
+const CampaignsWithInjectedIntl = injectIntl(Campaigns);
 
 export default () => (
   <GetCampaigns campaignNames={['manual']} pageSize={10}>

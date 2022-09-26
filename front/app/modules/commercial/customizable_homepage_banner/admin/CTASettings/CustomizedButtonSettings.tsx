@@ -1,19 +1,23 @@
-import { isEmpty } from 'lodash-es';
 import { Input, Label } from '@citizenlab/cl2-component-library';
 import { SectionField } from 'components/admin/Section';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import React, { useEffect, useMemo, useState } from 'react';
-import { CustomizedButtonConfig } from 'services/appConfiguration';
-import { CLErrors, Multiloc, Locale } from 'typings';
-import messages from '../messages';
 import genericMessages from 'components/UI/Error/messages';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import settingsMessages from 'containers/Admin/settings/messages';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import { isNilOrError } from 'utils/helperUtils';
+import { isEmpty } from 'lodash-es';
+import React, { useEffect, useMemo, useState } from 'react';
+import {
+  FormattedMessage,
+  injectIntl,
+  IntlFormatters,
+  WrappedComponentProps,
+} from 'react-intl';
+import { CustomizedButtonConfig } from 'services/appConfiguration';
 import styled from 'styled-components';
+import { CLErrors, Locale, Multiloc } from 'typings';
+import { isNilOrError } from 'utils/helperUtils';
 import { BannerSettingKeyType } from '.';
+import messages from '../messages';
 
 const TextSettings = styled.div`
   margin-top: 10px;
@@ -41,7 +45,7 @@ const TextSettings = styled.div`
 const getTextErrors = (
   textMultiloc: Multiloc | undefined,
   errors: CLErrors | undefined | null,
-  formatMessage: (messageDescriptor, values?) => string,
+  formatMessage: IntlFormatters['formatMessage'],
   tenantLocales: Locale[] | undefined | null | Error
 ) => {
   const textErrors: Multiloc = {};
@@ -65,7 +69,7 @@ const getTextErrors = (
 const getUrlErrors = (
   url: string | undefined | null,
   errors: CLErrors | undefined | null,
-  formatMessage: (messageDescriptor, values?) => string
+  formatMessage: IntlFormatters['formatMessage']
 ) => {
   // Prevent displaying errors on the first render.
   if (isEmpty(errors)) {

@@ -8,8 +8,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
 
 // hooks
-import useIdea from 'hooks/useIdea';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useIdea from 'hooks/useIdea';
 
 // styles
 import styled from 'styled-components';

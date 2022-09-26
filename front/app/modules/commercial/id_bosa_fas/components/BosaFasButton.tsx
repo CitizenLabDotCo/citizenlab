@@ -10,7 +10,7 @@ import { TVerificationMethod } from 'services/verificationMethods';
 import VerificationMethodButton from 'modules/commercial/verification/citizen/components/VerificationMethodButton';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from '../messages';
 
 interface Props {

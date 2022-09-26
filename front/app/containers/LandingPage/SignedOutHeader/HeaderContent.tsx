@@ -1,19 +1,19 @@
-import React from 'react';
-import styled, { css } from 'styled-components';
-import { media, fontSizes } from 'utils/styleUtils';
 import AvatarBubbles from 'components/AvatarBubbles';
-import useLocalize from 'hooks/useLocalize';
-import { isNilOrError } from 'utils/helperUtils';
-import { trackEventByName } from 'utils/analytics';
-import tracks from '../tracks';
-import { openSignUpInModal } from 'components/SignUpIn/events';
-import { WrappedComponentProps } from 'react-intl';
-import messages from '../messages';
-import { injectIntl } from 'utils/cl-intl';
 import Outlet from 'components/Outlet';
-import SignUpButton from '../SignUpButton';
-import useHomepageSettings from 'hooks/useHomepageSettings';
+import { openSignUpInModal } from 'components/SignUpIn/events';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useHomepageSettings from 'hooks/useHomepageSettings';
+import useLocalize from 'hooks/useLocalize';
+import React from 'react';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
+import styled, { css } from 'styled-components';
+import { trackEventByName } from 'utils/analytics';
+import { isNilOrError } from 'utils/helperUtils';
+import { fontSizes, media } from 'utils/styleUtils';
+import messages from '../messages';
+import SignUpButton from '../SignUpButton';
+import tracks from '../tracks';
 
 const Container = styled.div<{
   align: 'center' | 'left';
@@ -144,6 +144,7 @@ const HeaderContent = ({
   fontColors,
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
+  const appConfig = useAppConfiguration();
   const homepageSettings = useHomepageSettings();
   const localize = useLocalize();
 
@@ -160,12 +161,15 @@ const HeaderContent = ({
     name: 'customizable_homepage_banner',
   });
 
-  if (!isNilOrError(homepageSettings)) {
+  if (!isNilOrError(homepageSettings) && !isNilOrError(appConfig)) {
+    const orgName = localize(
+      appConfig.attributes.settings.core.organization_name
+    );
     const homepageAttributes = homepageSettings.data.attributes;
 
     const headerTitle = homepageAttributes.banner_signed_out_header_multiloc
       ? localize(homepageAttributes.banner_signed_out_header_multiloc)
-      : formatMessage(messages.titleCity);
+      : formatMessage(messages.titleCity, { orgName });
     const headerSubtitle =
       homepageAttributes.banner_signed_out_subheader_multiloc
         ? localize(homepageAttributes.banner_signed_out_subheader_multiloc)

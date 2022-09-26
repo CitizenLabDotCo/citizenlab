@@ -1,7 +1,7 @@
-import React, { PureComponent, lazy, Suspense } from 'react';
-import { isUndefined, isString, includes } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
+import { includes, isString, isUndefined } from 'lodash-es';
+import React, { lazy, PureComponent, Suspense } from 'react';
 import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import { getInputTerm } from 'services/participationContexts';
@@ -15,61 +15,63 @@ import tracks from './tracks';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // components
-import IdeaSharingButton from './Buttons/IdeaSharingButton';
-import IdeaMeta from './IdeaMeta';
-import Title from 'components/PostShowComponents/Title';
-import IdeaProposedBudget from './IdeaProposedBudget';
+import { Spinner } from '@citizenlab/cl2-component-library';
+import AssignBudgetControl from 'components/AssignBudgetControl';
+import FeatureFlag from 'components/FeatureFlag';
 import Body from 'components/PostShowComponents/Body';
+import LoadingComments from 'components/PostShowComponents/Comments/LoadingComments';
 import Image from 'components/PostShowComponents/Image';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
-import Modal from 'components/UI/Modal';
-import AssignBudgetControl from 'components/AssignBudgetControl';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
-import FeatureFlag from 'components/FeatureFlag';
-import IdeaMoreActions from './IdeaMoreActions';
-import { Spinner } from '@citizenlab/cl2-component-library';
+import Title from 'components/PostShowComponents/Title';
+import Modal from 'components/UI/Modal';
+import IdeaSharingButton from './Buttons/IdeaSharingButton';
+import MobileSharingButtonComponent from './Buttons/MobileSharingButtonComponent';
 import GoBackButton from './GoBackButton';
+import IdeaMeta from './IdeaMeta';
+import IdeaMoreActions from './IdeaMoreActions';
+import IdeaProposedBudget from './IdeaProposedBudget';
+import MetaInformation from './MetaInformation';
+import RightColumnDesktop from './RightColumnDesktop';
 const LazyComments = lazy(
   () => import('components/PostShowComponents/Comments')
 );
-import LoadingComments from 'components/PostShowComponents/Comments/LoadingComments';
-import MetaInformation from './MetaInformation';
-import MobileSharingButtonComponent from './Buttons/MobileSharingButtonComponent';
-import RightColumnDesktop from './RightColumnDesktop';
 
 // utils
 import isFieldEnabled from './isFieldEnabled';
 
 // resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
+import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import GetIdeaCustomFieldsSchemas, {
+  GetIdeaCustomFieldsSchemasChildProps,
+} from 'resources/GetIdeaCustomFieldsSchemas';
 import GetIdeaImages, {
   GetIdeaImagesChildProps,
 } from 'resources/GetIdeaImages';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
-import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
-import GetWindowSize, {
-  GetWindowSizeChildProps,
-} from 'resources/GetWindowSize';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetOfficialFeedbacks, {
   GetOfficialFeedbacksChildProps,
 } from 'resources/GetOfficialFeedbacks';
 import GetPermission, {
   GetPermissionChildProps,
 } from 'resources/GetPermission';
-import GetIdeaCustomFieldsSchemas, {
-  GetIdeaCustomFieldsSchemasChildProps,
-} from 'resources/GetIdeaCustomFieldsSchemas';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
+import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetWindowSize, {
+  GetWindowSizeChildProps,
+} from 'resources/GetWindowSize';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage } from 'utils/cl-intl';
-import injectIntl from 'utils/cl-intl/injectIntl';
-import messages from './messages';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import { getInputTermMessage } from 'utils/i18n';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import messages from './messages';
 
 // animations
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -78,10 +80,10 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import clHistory from 'utils/cl-router/history';
 
 // style
-import styled from 'styled-components';
-import { media, viewportWidths, isRtl } from 'utils/styleUtils';
-import { columnsGapDesktop, pageContentMaxWidth } from './styleConstants';
 import Outlet from 'components/Outlet';
+import styled from 'styled-components';
+import { isRtl, media, viewportWidths } from 'utils/styleUtils';
+import { columnsGapDesktop, pageContentMaxWidth } from './styleConstants';
 
 const contentFadeInDuration = 250;
 const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -241,7 +243,9 @@ export class IdeasShow extends PureComponent<
   Props & WrappedComponentProps & InjectedLocalized & WithRouterProps,
   State
 > {
-  constructor(props) {
+  constructor(
+    props: Props & WrappedComponentProps & InjectedLocalized & WithRouterProps
+  ) {
     super(props);
     this.state = {
       loaded: false,

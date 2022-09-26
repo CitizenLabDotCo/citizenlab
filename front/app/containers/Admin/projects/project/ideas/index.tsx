@@ -5,7 +5,7 @@ import messages from '../messages';
 import { adopt } from 'react-adopt';
 
 // Utils
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 
 // Resources
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';

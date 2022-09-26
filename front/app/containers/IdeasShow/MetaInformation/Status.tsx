@@ -1,5 +1,5 @@
-import React from 'react';
 import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
+import React from 'react';
 
 // hooks
 import useIdeaStatus from 'hooks/useIdeaStatus';
@@ -8,8 +8,8 @@ import useIdeaStatus from 'hooks/useIdeaStatus';
 import StatusBadge from 'components/StatusBadge';
 
 // i18n
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

@@ -1,14 +1,14 @@
-import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import {
   InputMultilocWithLocaleSwitcher as InputMultilocWithLocaleSwitcherComponent,
   InputMultilocWithLocaleSwitcherProps,
 } from '@citizenlab/cl2-component-library';
 import Error, { TFieldName } from 'components/UI/Error';
-import { Controller, useFormContext, FieldError } from 'react-hook-form';
-import { CLError, Locale } from 'typings';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { get } from 'lodash-es';
+import React from 'react';
+import { Controller, FieldError, useFormContext } from 'react-hook-form';
+import { CLError, Locale } from 'typings';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface Props
   extends Omit<

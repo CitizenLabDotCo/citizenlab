@@ -5,14 +5,14 @@ import { isNilOrError, stopPropagation } from 'utils/helperUtils';
 import { IMentionInOfficialFeedbackNotificationData } from 'services/notifications';
 
 // i18n
+import { FormattedMessage } from 'react-intl';
 import messages from '../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
 
 // components
-import NotificationWrapper from '../NotificationWrapper';
+import T from 'components/T';
 import Link from 'utils/cl-router/Link';
 import { DeletedUser } from '../Notification';
-import T from 'components/T';
+import NotificationWrapper from '../NotificationWrapper';
 
 interface Props {
   notification: IMentionInOfficialFeedbackNotificationData;

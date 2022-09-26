@@ -1,47 +1,51 @@
-import React, { memo, useState, useEffect } from 'react';
-import { adopt } from 'react-adopt';
 import useLocalize from 'hooks/useLocalize';
 import { isEqual } from 'lodash-es';
+import React, { memo, useEffect, useState } from 'react';
+import { adopt } from 'react-adopt';
 
 // resources
-import { isNilOrError } from 'utils/helperUtils';
-import moment from 'moment';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import styled from 'styled-components';
-import messages from './messages';
+import { GraphsContainer } from 'components/admin/GraphWrappers';
 import ResolutionControl, {
   IResolution,
 } from 'components/admin/ResolutionControl';
-import { GraphsContainer } from 'components/admin/GraphWrappers';
+import moment from 'moment';
+import {
+  FormattedMessage,
+  injectIntl,
+  MessageDescriptor,
+  WrappedComponentProps,
+} from 'react-intl';
+import styled from 'styled-components';
+import { isNilOrError } from 'utils/helperUtils';
+import messages from './messages';
 
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import {
   activeUsersByTimeCumulativeXlsxEndpoint,
   activeUsersByTimeStream,
-  ideasByTimeCumulativeXlsxEndpoint,
-  ideasByTimeCumulativeStream,
-  ideasByTimeStream,
-  commentsByTimeCumulativeXlsxEndpoint,
   commentsByTimeCumulativeStream,
+  commentsByTimeCumulativeXlsxEndpoint,
   commentsByTimeStream,
+  ideasByTimeCumulativeStream,
+  ideasByTimeCumulativeXlsxEndpoint,
+  ideasByTimeStream,
 } from 'services/stats';
 import { colors } from 'utils/styleUtils';
-import { MessageDescriptor } from 'react-intl';
 
 // services
 import { ParticipationMethod } from 'services/participationContexts';
 
 // components
-import { SectionTitle, PageTitle } from 'components/admin/Section';
+import { PageTitle, SectionTitle } from 'components/admin/Section';
 import T from 'components/T';
 
+import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
 import HorizontalBarChartWithoutStream from './charts/HorizontalBarChartWithoutStream';
 import IdeasByStatusChart from './charts/IdeasByStatusChart';
-import ParticipationPerTopic from './charts/ParticipationPerTopic';
 import LineBarChart from './charts/LineBarChart';
 import LineBarChartVotesByTime from './charts/LineBarChartVotesByTime';
-import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
+import ParticipationPerTopic from './charts/ParticipationPerTopic';
 import PollReport from './PollReport';
 
 import Outlet from 'components/Outlet';

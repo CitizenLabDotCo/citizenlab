@@ -2,18 +2,18 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 
+import { IAppConfigurationSettings } from 'services/appConfiguration';
 import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
-import { IAppConfigurationSettings } from 'services/appConfiguration';
 
 import { Icon } from '@citizenlab/cl2-component-library';
-import { StatusWrapper, StatusExplanation } from './SharedStyles';
-import ProposalProgressBar from './ProposalProgressBar';
 import Button from 'components/UI/Button';
+import ProposalProgressBar from './ProposalProgressBar';
+import { StatusExplanation, StatusWrapper } from './SharedStyles';
 
 import T from 'components/T';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
 
 const Container = styled.div``;
 

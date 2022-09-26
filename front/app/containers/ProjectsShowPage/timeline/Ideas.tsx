@@ -10,8 +10,8 @@ import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from 'containers/ProjectsShowPage/messages';
+import { FormattedMessage } from 'react-intl';
 import { getInputTermMessage } from 'utils/i18n';
 
 // style

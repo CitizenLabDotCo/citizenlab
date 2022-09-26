@@ -1,18 +1,18 @@
 import React from 'react';
 
 // services
-import {
-  reorderNavbarItem,
-  removeNavbarItem,
-} from '../../../../services/navbar';
-import { deletePage } from 'services/pages';
 import { getNavbarItemSlug, INavbarItem } from 'services/navbar';
+import { deletePage } from 'services/pages';
+import {
+  removeNavbarItem,
+  reorderNavbarItem,
+} from '../../../../services/navbar';
 
 // components
 import {
+  LockedRow,
   SortableList,
   SortableRow,
-  LockedRow,
 } from 'components/admin/ResourceList';
 import { SubSectionTitle } from 'components/admin/Section';
 import NavbarItemRow from 'containers/Admin/pagesAndMenu/NavbarItemRow';
@@ -22,14 +22,17 @@ import useNavbarItems from 'hooks/useNavbarItems';
 import usePageSlugById from 'hooks/usePageSlugById';
 
 // i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from './messages';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
-import clHistory from 'utils/cl-router/history';
 import { PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
+import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
 
 const VisibleNavbarItemList = ({
   intl: { formatMessage },

@@ -5,7 +5,7 @@ import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 
 // style
 import { Box } from '@citizenlab/cl2-component-library';

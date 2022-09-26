@@ -1,7 +1,7 @@
-import React, { PureComponent, createRef } from 'react';
-import { isUndefined, isString } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
+import { isString, isUndefined } from 'lodash-es';
+import React, { createRef, PureComponent } from 'react';
 import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
 
 // analytics
 import { trackEvent } from 'utils/analytics';
@@ -11,76 +11,78 @@ import tracks from './tracks';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // components
-import Modal from 'components/UI/Modal';
-import FileAttachments from 'components/UI/FileAttachments';
 import { Spinner } from '@citizenlab/cl2-component-library';
-import SharingButtons from 'components/Sharing/SharingButtons';
 import FeatureFlag from 'components/FeatureFlag';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
+import SharingButtons from 'components/Sharing/SharingButtons';
+import FileAttachments from 'components/UI/FileAttachments';
+import Modal from 'components/UI/Modal';
 
-import Topics from 'components/PostShowComponents/Topics';
-import Title from 'components/PostShowComponents/Title';
-import DropdownMap from 'components/PostShowComponents/DropdownMap';
 import Body from 'components/PostShowComponents/Body';
-import Image from 'components/PostShowComponents/Image';
+import DropdownMap from 'components/PostShowComponents/DropdownMap';
 import Footer from 'components/PostShowComponents/Footer';
+import Image from 'components/PostShowComponents/Image';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
+import Title from 'components/PostShowComponents/Title';
+import Topics from 'components/PostShowComponents/Topics';
+import ActionBar from './ActionBar';
+import InitiativeMoreActions from './ActionBar/InitiativeMoreActions';
 import InitiativeMeta from './InitiativeMeta';
 import PostedBy from './PostedBy';
 import PostedByMobile from './PostedByMobile';
-import ActionBar from './ActionBar';
 import VoteControl from './VoteControl';
-import InitiativeMoreActions from './ActionBar/InitiativeMoreActions';
 
 // resources
-import GetResourceFiles, {
-  GetResourceFilesChildProps,
-} from 'resources/GetResourceFiles';
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetInitiativeImages, {
-  GetInitiativeImagesChildProps,
-} from 'resources/GetInitiativeImages';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetInitiative, {
   GetInitiativeChildProps,
 } from 'resources/GetInitiative';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetWindowSize, {
-  GetWindowSizeChildProps,
-} from 'resources/GetWindowSize';
+import GetInitiativeImages, {
+  GetInitiativeImagesChildProps,
+} from 'resources/GetInitiativeImages';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetOfficialFeedbacks, {
   GetOfficialFeedbacksChildProps,
 } from 'resources/GetOfficialFeedbacks';
 import GetPermission, {
   GetPermissionChildProps,
 } from 'resources/GetPermission';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
+import GetResourceFiles, {
+  GetResourceFilesChildProps,
+} from 'resources/GetResourceFiles';
+import GetWindowSize, {
+  GetWindowSizeChildProps,
+} from 'resources/GetWindowSize';
 
 // utils
-import { getAddressOrFallbackDMS } from 'utils/map';
 import clHistory from 'utils/cl-router/history';
+import { getAddressOrFallbackDMS } from 'utils/map';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage } from 'utils/cl-intl';
-import injectIntl from 'utils/cl-intl/injectIntl';
-import messages from './messages';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import messages from './messages';
 
 // animations
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, viewportWidths } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
+import { media, viewportWidths } from 'utils/styleUtils';
 import {
   columnsGapDesktop,
-  rightColumnWidthDesktop,
   columnsGapTablet,
-  rightColumnWidthTablet,
   pageContentMaxWidth,
+  rightColumnWidthDesktop,
+  rightColumnWidthTablet,
 } from './styleConstants';
 
 import Outlet from 'components/Outlet';
@@ -319,7 +321,7 @@ interface DataProps {
   windowSize: GetWindowSizeChildProps;
   officialFeedbacks: GetOfficialFeedbacksChildProps;
   postOfficialFeedbackPermission: GetPermissionChildProps;
-  tenant: GetAppConfigurationChildProps;
+  appConfig: GetAppConfigurationChildProps;
 }
 
 interface InputProps {
@@ -344,7 +346,9 @@ export class InitiativesShow extends PureComponent<
   officialFeedbackElement = createRef<HTMLDivElement>();
   timeoutRef: NodeJS.Timeout;
 
-  constructor(props) {
+  constructor(
+    props: Props & WrappedComponentProps & InjectedLocalized & WithRouterProps
+  ) {
     super(props);
     this.state = {
       loaded: false,
@@ -437,7 +441,7 @@ export class InitiativesShow extends PureComponent<
       windowSize,
       className,
       postOfficialFeedbackPermission,
-      tenant,
+      appConfig,
     } = this.props;
     const {
       loaded,
@@ -446,8 +450,8 @@ export class InitiativesShow extends PureComponent<
       a11y_pronounceLatestOfficialFeedbackPost,
     } = this.state;
     const { formatMessage } = this.props.intl;
-    const initiativeSettings = !isNilOrError(tenant)
-      ? tenant.attributes.settings.initiatives
+    const initiativeSettings = !isNilOrError(appConfig)
+      ? appConfig.attributes.settings.initiatives
       : null;
     const votingThreshold = initiativeSettings
       ? initiativeSettings.voting_threshold
@@ -459,6 +463,7 @@ export class InitiativesShow extends PureComponent<
       initiativeSettings &&
       !isNilOrError(initiative) &&
       !isNilOrError(locale) &&
+      !isNilOrError(appConfig) &&
       loaded
     ) {
       const initiativeHeaderImageLarge =
@@ -640,6 +645,9 @@ export class InitiativesShow extends PureComponent<
                     })}
                     whatsAppMessage={formatMessage(messages.whatsAppMessage, {
                       initiativeTitle,
+                      orgName: localize(
+                        appConfig.attributes.settings.core.organization_name
+                      ),
                     })}
                     emailSubject={formatMessage(messages.emailSharingSubject, {
                       initiativeTitle,
@@ -687,6 +695,10 @@ export class InitiativesShow extends PureComponent<
                           messages.whatsAppMessage,
                           {
                             initiativeTitle,
+                            orgName: localize(
+                              appConfig.attributes.settings.core
+                                .organization_name
+                            ),
                           }
                         )}
                         emailSubject={formatMessage(

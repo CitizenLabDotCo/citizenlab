@@ -5,8 +5,8 @@ import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
 } from 'resources/GetAppConfigurationLocales';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import { isNilOrError } from 'utils/helperUtils';
 import { Locale } from 'typings';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {}
 

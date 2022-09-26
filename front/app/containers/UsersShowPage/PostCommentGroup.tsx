@@ -31,7 +31,7 @@ import CommentBody from 'components/PostShowComponents/Comments/CommentBody';
 
 // intl
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import T from 'components/T';
 
 const Container = styled.div`

@@ -1,7 +1,7 @@
 // @ts-nocheck
 // libraries
-import React from 'react';
 import { shallow } from 'enzyme';
+import React from 'react';
 
 // component to test
 import { ConsentManager } from './';
@@ -21,11 +21,11 @@ jest.mock('./consent', () => ({
 
 import * as consent from './consent';
 
-import { makeUser } from 'services/__mocks__/users';
 import {
-  __setMockAppConfiguration,
   getAppConfigurationData,
+  __setMockAppConfiguration,
 } from 'services/__mocks__/appConfiguration';
+import { makeUser } from 'services/__mocks__/users';
 import { getDestinationConfigs, registerDestination } from './destinations';
 
 registerDestination({

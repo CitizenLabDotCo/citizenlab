@@ -5,13 +5,16 @@ import { Icon } from '@citizenlab/cl2-component-library';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // import i18n
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 const SendFeedbackText = styled.span`
   color: ${colors.label};
@@ -54,33 +57,28 @@ interface Props {
   className?: string;
 }
 
-const SendFeedbackComponent = React.memo<Props>(
-  (props: Props & WrappedComponentProps) => {
-    const {
-      showFeedbackText,
-      className,
-      intl: { formatMessage },
-    } = props;
-
-    return (
-      <Container
-        className={className}
-        target="_blank"
-        href={formatMessage(messages.sendFeedbackLink, { url: location.href })}
-      >
-        <SendFeedbackIcon name="questionMark" className="send-feedback-icon" />
-        <SendFeedbackText>
-          {showFeedbackText ? (
-            <FormattedMessage {...messages.sendFeedback} />
-          ) : (
-            <ScreenReaderOnly>
-              {formatMessage(messages.sendFeedback)}
-            </ScreenReaderOnly>
-          )}
-        </SendFeedbackText>
-      </Container>
-    );
-  }
-);
-
+const SendFeedbackComponent = ({
+  showFeedbackText,
+  className,
+  intl: { formatMessage },
+}: Props & WrappedComponentProps) => {
+  return (
+    <Container
+      className={className}
+      target="_blank"
+      href={formatMessage(messages.sendFeedbackLink, { url: location.href })}
+    >
+      <SendFeedbackIcon name="questionMark" className="send-feedback-icon" />
+      <SendFeedbackText>
+        {showFeedbackText ? (
+          <FormattedMessage {...messages.sendFeedback} />
+        ) : (
+          <ScreenReaderOnly>
+            {formatMessage(messages.sendFeedback)}
+          </ScreenReaderOnly>
+        )}
+      </SendFeedbackText>
+    </Container>
+  );
+};
 export default injectIntl(SendFeedbackComponent);

@@ -1,39 +1,36 @@
-import React, { useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
-import clHistory from 'utils/cl-router/history';
 import { stringify } from 'qs';
+import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
 
 // tracking
-import { trackEventByName } from 'utils/analytics';
 import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
+import { trackEventByName } from 'utils/analytics';
 
 // hooks
 import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
 
 // components
-import Tag from 'modules/commercial/insights/admin/components/Tag';
 import { Box, IconTooltip } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
+import Tag from 'modules/commercial/insights/admin/components/Tag';
 
 // styles
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // intl
+import { useIntl } from 'react-intl';
 import messages from '../../messages';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
 
-import { IInsightsCategoryData } from 'modules/commercial/insights/services/insightsCategories';
 import {
-  TooltipContent,
   SectionTitle,
+  TooltipContent,
 } from 'modules/commercial/insights/admin/components/StyledTextComponents';
-
-type CategoryProps = WithRouterProps & WrappedComponentProps;
+import { IInsightsCategoryData } from 'modules/commercial/insights/services/insightsCategories';
 
 const StyledTag = styled(Tag)`
   margin-right: 8px;
@@ -49,14 +46,18 @@ const EmptyStateTitle = styled.p`
 
 export const visibleCategoriesNumber = 6;
 
-const Categories: React.FC<CategoryProps> = ({
+interface Props {
+  children?: ReactNode;
+}
+
+const Categories = ({
   location: { pathname, query },
   params: { viewId },
-  intl: { formatMessage },
   children,
-}) => {
+}: Props & WithRouterProps) => {
   const [seeAllCategories, setSeeAllCategories] = useState(false);
   const categories = useInsightsCategories(viewId);
+  const { formatMessage } = useIntl();
 
   if (isNilOrError(categories)) {
     return null;
@@ -198,4 +199,4 @@ const Categories: React.FC<CategoryProps> = ({
   );
 };
 
-export default withRouter(injectIntl(Categories));
+export default withRouter(Categories);

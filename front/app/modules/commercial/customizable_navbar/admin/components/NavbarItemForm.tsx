@@ -4,23 +4,22 @@ import React from 'react';
 import { Multiloc } from 'typings';
 
 // form
-import { FormProvider, useForm } from 'react-hook-form';
-import { SectionField } from 'components/admin/Section';
-import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import Feedback from 'components/HookForm/Feedback';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { object } from 'yup';
+import { SectionField } from 'components/admin/Section';
+import Feedback from 'components/HookForm/Feedback';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import { FormProvider, useForm } from 'react-hook-form';
 import validateMultiloc from 'utils/yup/validateMultiloc';
+import { object } from 'yup';
 
 // components
-import Button from 'components/UI/Button';
 import { Box } from '@citizenlab/cl2-component-library';
+import Button from 'components/UI/Button';
 
 // intl
-import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import messages from './messages';
 
 export interface FormValues {
   nav_bar_item_title_multiloc: Multiloc;

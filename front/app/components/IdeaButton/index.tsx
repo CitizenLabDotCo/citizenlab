@@ -1,8 +1,8 @@
+import { stringify } from 'qs';
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 import clHistory from 'utils/cl-router/history';
-import { stringify } from 'qs';
+import { isNilOrError } from 'utils/helperUtils';
 
 // typings
 import { IParticipationContextType } from 'typings';
@@ -15,21 +15,25 @@ import {
 import { getInputTerm } from 'services/participationContexts';
 
 // resources
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
 // components
-import Button, { Props as ButtonProps } from 'components/UI/Button';
-import Tippy from '@tippyjs/react';
 import { Icon } from '@citizenlab/cl2-component-library';
+import Tippy from '@tippyjs/react';
+import Button, { Props as ButtonProps } from 'components/UI/Button';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
-import messages from './messages';
+import {
+  FormattedMessage,
+  injectIntl,
+  MessageDescriptor,
+  WrappedComponentProps,
+} from 'react-intl';
 import { getInputTermMessage } from 'utils/i18n';
+import messages from './messages';
 
 // utils
 import { openSignUpInModal } from 'components/SignUpIn/events';
@@ -42,9 +46,9 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // styling
-import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
 import { darken } from 'polished';
+import styled from 'styled-components';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // typings
 import { LatLng } from 'leaflet';

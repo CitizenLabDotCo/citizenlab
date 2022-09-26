@@ -1,16 +1,16 @@
+import ContentContainer from 'components/ContentContainer';
+import Fragment from 'components/Fragment';
+import T from 'components/T';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 import React from 'react';
 import { isEmptyMultiloc } from 'utils/helperUtils';
-import T from 'components/T';
-import ContentContainer from 'components/ContentContainer';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
-import Fragment from 'components/Fragment';
 
 // typings
 import { Multiloc } from 'typings';
 
 // style
 import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
+import { colors, media } from 'utils/styleUtils';
 
 const CustomSectionContentContainer = styled(ContentContainer)`
   width: 100%;

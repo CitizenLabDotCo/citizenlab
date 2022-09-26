@@ -7,10 +7,6 @@ export default defineMessages({
     defaultMessage:
       'Start your own initiative and make your voice heard by {styledOrgName}',
   },
-  orgName: {
-    id: 'app.containers.InitiativesNewPage.orgName',
-    defaultMessage: '{orgName}',
-  },
   // Tips Box Messages
   tipsTitle: {
     id: 'app.containers.InitiativesNewPage.tipsTitle',

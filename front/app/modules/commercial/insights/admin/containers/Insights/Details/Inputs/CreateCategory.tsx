@@ -2,19 +2,18 @@ import React, { useState } from 'react';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // components
-import { Input, Box } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
+import { Box, Input } from '@citizenlab/cl2-component-library';
 import { SectionField } from 'components/admin/Section';
+import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import Tag from 'modules/commercial/insights/admin/components/Tag';
 
 // styles
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // intl
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 
 // typings

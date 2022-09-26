@@ -5,21 +5,20 @@ import useNavbarItems from 'hooks/useNavbarItems';
 import usePageSlugById from 'hooks/usePageSlugById';
 
 // components
-import DesktopNavbarItem from './DesktopNavbarItem';
 import AdminPublicationsNavbarItem from './AdminPublicationsNavbarItem';
+import DesktopNavbarItem from './DesktopNavbarItem';
 
 // style
 import styled from 'styled-components';
-import { media, isRtl } from 'utils/styleUtils';
+import { isRtl, media } from 'utils/styleUtils';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import getNavbarItemPropsArray from './getNavbarItemPropsArray';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
-import { WrappedComponentProps } from 'react-intl';
 
 const Container = styled.nav`
   height: 100%;

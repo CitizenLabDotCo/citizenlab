@@ -1,15 +1,15 @@
-import React, { memo, useState, useEffect } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { isNilOrError } from 'utils/helperUtils';
 import { CSSTransition } from 'react-transition-group';
+import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
-import useProject from 'hooks/useProject';
-import usePhases from 'hooks/usePhases';
 import { useWindowSize } from '@citizenlab/cl2-component-library';
+import usePhases from 'hooks/usePhases';
+import useProject from 'hooks/useProject';
 
 // services
-import { IPhaseData, getCurrentPhase } from 'services/phases';
+import { getCurrentPhase, IPhaseData } from 'services/phases';
 
 // components
 import ContentContainer from 'components/ContentContainer';
@@ -19,10 +19,10 @@ import IdeaButton from 'components/IdeaButton';
 import T from 'components/T';
 
 // style
-import styled from 'styled-components';
-import { lighten } from 'polished';
-import { fontSizes, media, colors, viewportWidths } from 'utils/styleUtils';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
+import { lighten } from 'polished';
+import styled from 'styled-components';
+import { colors, fontSizes, media, viewportWidths } from 'utils/styleUtils';
 
 const slideInOutTimeout = 250;
 const slideInOutDistance = 14;

@@ -1,7 +1,7 @@
 import React from 'react';
-import { render, screen, act, fireEvent } from 'utils/testUtils/rtl';
-import HeroBannerForm from '.';
 import * as homepageSettingsService from 'services/homepageSettings';
+import { act, fireEvent, render, screen } from 'utils/testUtils/rtl';
+import HeroBannerForm from '.';
 
 jest.mock('services/locale');
 jest.mock('services/appConfiguration');

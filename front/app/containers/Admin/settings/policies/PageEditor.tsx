@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 // i18n
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 
 // components
 import { Icon } from '@citizenlab/cl2-component-library';

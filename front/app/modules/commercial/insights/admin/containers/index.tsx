@@ -1,22 +1,21 @@
 import React from 'react';
 
+import { Outlet as RouterOutlet } from 'react-router-dom';
 import Link from 'utils/cl-router/Link';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // components
-import HelmetIntl from 'components/HelmetIntl';
 import NavigationTabs, {
   Tab,
   TabsPageLayout,
 } from 'components/admin/NavigationTabs';
+import HelmetIntl from 'components/HelmetIntl';
 
 // utils
 import { matchPathToUrl } from 'utils/helperUtils';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 
 // hooks

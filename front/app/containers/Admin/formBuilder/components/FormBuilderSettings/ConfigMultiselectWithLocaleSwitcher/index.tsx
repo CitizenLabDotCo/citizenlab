@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { get } from 'lodash-es';
+import React, { useCallback, useEffect, useState } from 'react';
 import { DndProvider } from 'react-dnd-cjs';
 import HTML5Backend from 'react-dnd-html5-backend-cjs';
-import { get } from 'lodash-es';
 
 // react hook form
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
@@ -9,24 +9,23 @@ import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 // components
 import {
   Box,
-  Label,
   Button,
-  IconTooltip,
-  LocaleSwitcher,
   Icon,
+  IconTooltip,
   Input,
+  Label,
+  LocaleSwitcher,
 } from '@citizenlab/cl2-component-library';
-import { SectionField } from 'components/admin/Section';
 import { List, SortableRow } from 'components/admin/ResourceList';
+import { SectionField } from 'components/admin/Section';
 import Error, { TFieldName } from 'components/UI/Error';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // Typings
-import { Multiloc, Locale, CLError } from 'typings';
+import { CLError, Locale, Multiloc } from 'typings';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

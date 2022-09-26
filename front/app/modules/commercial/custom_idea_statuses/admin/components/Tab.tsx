@@ -3,8 +3,7 @@ import { InsertConfigurationOptions, ITab } from 'typings';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 interface Props {

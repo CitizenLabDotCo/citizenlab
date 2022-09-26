@@ -1,47 +1,46 @@
-import React, { useState, useRef, useEffect } from 'react';
 import { isEmpty } from 'lodash-es';
+import React, { useEffect, useRef, useState } from 'react';
 import { combineLatest } from 'rxjs';
 
 // intl
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from 'containers/Admin/dashboard/messages';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import T from 'components/T';
+import messages from 'containers/Admin/dashboard/messages';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 // styling
 import {
-  sizes,
   DEFAULT_BAR_CHART_MARGIN,
+  sizes,
 } from 'components/admin/Graphs/styling';
 
 // components
-import ReportExportMenu from 'components/admin/ReportExportMenu';
-import {
-  GraphCardHeader,
-  GraphCardTitle,
-  GraphCard,
-  GraphCardInner,
-} from 'components/admin/GraphWrappers';
-import { Tooltip } from 'recharts';
-import BarChart from 'components/admin/Graphs/BarChart';
 import { Box, colors } from '@citizenlab/cl2-component-library';
+import BarChart from 'components/admin/Graphs/BarChart';
+import {
+  GraphCard,
+  GraphCardHeader,
+  GraphCardInner,
+  GraphCardTitle,
+} from 'components/admin/GraphWrappers';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
+import { Tooltip } from 'recharts';
 
 // typings
-import { IUserCustomFieldData } from '../../../services/userCustomFields';
 import { IStream } from 'utils/streams';
 import { ICustomFieldParams } from '../../../services/stats';
+import { IUserCustomFieldData } from '../../../services/userCustomFields';
 
 // services
 import {
-  usersByRegFieldStream,
-  usersByRegFieldXlsxEndpoint,
-  usersByGenderStream,
-  usersByGenderXlsxEndpoint,
   usersByBirthyearStream,
   usersByBirthyearXlsxEndpoint,
   usersByDomicileStream,
   usersByDomicileXlsxEndpoint,
+  usersByGenderStream,
+  usersByGenderXlsxEndpoint,
+  usersByRegFieldStream,
+  usersByRegFieldXlsxEndpoint,
 } from 'modules/commercial/user_custom_fields/services/stats';
 
 // utils
@@ -258,6 +257,4 @@ const CustomFieldsGraph = ({
   );
 };
 
-export default injectLocalize<InputProps>(
-  injectIntl<InputProps & InjectedLocalized>(CustomFieldsGraph)
-);
+export default injectLocalize<InputProps>(injectIntl(CustomFieldsGraph));

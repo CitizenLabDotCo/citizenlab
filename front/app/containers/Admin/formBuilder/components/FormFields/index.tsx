@@ -4,17 +4,17 @@ import HTML5Backend from 'react-dnd-html5-backend-cjs';
 import { useFormContext } from 'react-hook-form';
 
 // intl
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from '../messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Button from 'components/UI/Button';
+import { Badge, Box, Text } from '@citizenlab/cl2-component-library';
 import { List, SortableRow } from 'components/admin/ResourceList';
-import { Box, Badge, Text } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
+import Button from 'components/UI/Button';
 
 // styling
 import styled from 'styled-components';

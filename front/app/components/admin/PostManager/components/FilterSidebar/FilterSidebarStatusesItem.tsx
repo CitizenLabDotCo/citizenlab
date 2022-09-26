@@ -8,7 +8,7 @@ import { DropTarget } from 'react-dnd-cjs';
 import T from 'components/T';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from '../../messages';
 
 const ItemWrapper = styled.div`

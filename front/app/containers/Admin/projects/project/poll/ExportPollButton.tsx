@@ -13,10 +13,13 @@ import Button from 'components/UI/Button';
 import { exportPollResponses } from 'services/pollResponses';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
 import { snakeCase } from 'lodash-es';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
+import messages from './messages';
 
 interface Props {
   participationContextType: IParticipationContextType;

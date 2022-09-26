@@ -1,9 +1,8 @@
 import React from 'react';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
-import { WrappedComponentProps } from 'react-intl';
 
 // components
 import { Form } from 'formik';
@@ -17,13 +16,13 @@ import { Multiloc } from 'typings';
 import { Box, Button } from '@citizenlab/cl2-component-library';
 
 // form
-import { FormProvider, useForm } from 'react-hook-form';
-import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import Feedback from 'components/HookForm/Feedback';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { object } from 'yup';
-import validateMultiloc from 'utils/yup/validateMultiloc';
+import Feedback from 'components/HookForm/Feedback';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import { FormProvider, useForm } from 'react-hook-form';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import validateMultiloc from 'utils/yup/validateMultiloc';
+import { object } from 'yup';
 
 export interface FormValues {
   title_multiloc: Multiloc;
@@ -94,4 +93,4 @@ const TopicForm = ({
   );
 };
 
-export default injectIntl<Props>(TopicForm);
+export default injectIntl(TopicForm);

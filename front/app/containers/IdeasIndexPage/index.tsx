@@ -1,18 +1,18 @@
 import React, { memo } from 'react';
 
 // components
+import CityLogoSection from 'components/CityLogoSection';
 import ContentContainer from 'components/ContentContainer';
 import IdeaCards from 'components/IdeaCards';
-import CityLogoSection from 'components/CityLogoSection';
 import IdeasIndexMeta from './IdeaIndexMeta';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
+import { colors, fontSizes, isRtl, media } from 'utils/styleUtils';
 
 const Container = styled.main`
   min-height: calc(

@@ -1,53 +1,56 @@
+import { isEmpty, isEqual } from 'lodash-es';
 import React, { PureComponent } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
-import { isEqual, isEmpty } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
 import streams from 'utils/streams';
 
 // services
-import { updateUser, mapUserToDiff } from 'services/users';
-import GetLockedFields, {
-  GetLockedFieldsChildProps,
-} from 'resources/GetLockedFields';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetLockedFields, {
+  GetLockedFieldsChildProps,
+} from 'resources/GetLockedFields';
+import { mapUserToDiff, updateUser } from 'services/users';
 
 // utils
 import { Formik } from 'formik';
 
 // components
+import { SectionField } from 'components/admin/Section';
 import Error from 'components/UI/Error';
+import {
+  FormLabel,
+  FormSection,
+  FormSectionTitle,
+} from 'components/UI/FormComponents';
+import ImagesDropzone from 'components/UI/ImagesDropzone';
 import PasswordInput, {
   hasPasswordMinimumLength,
 } from 'components/UI/PasswordInput';
 import PasswordInputIconTooltip from 'components/UI/PasswordInput/PasswordInputIconTooltip';
-import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
-import { SectionField } from 'components/admin/Section';
-import {
-  FormSection,
-  FormLabel,
-  FormSectionTitle,
-} from 'components/UI/FormComponents';
 
-import { Input, Select, IconTooltip } from '@citizenlab/cl2-component-library';
+import { IconTooltip, Input, Select } from '@citizenlab/cl2-component-library';
 import QuillEditor from 'components/UI/QuillEditor';
 
 // i18n
-import { appLocalePairs, API_PATH } from 'containers/App/constants';
-import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { API_PATH, appLocalePairs } from 'containers/App/constants';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
+import messages from './messages';
 
 // styling
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import styled from 'styled-components';
 
 // typings
-import { IOption, UploadFile, CLErrorsJSON } from 'typings';
+import { CLErrorsJSON, IOption, UploadFile } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
 import Outlet from 'components/Outlet';
@@ -306,7 +309,7 @@ class ProfileForm extends PureComponent<Props, State> {
           <SectionField>
             <FormLabel
               htmlFor="profile-form-avatar-dropzone"
-              labelMessage={messages.image}
+              labelText={formatMessage(messages.image)}
             />
             <ImagesDropzone
               id="profile-form-avatar-dropzone"
@@ -328,7 +331,10 @@ class ProfileForm extends PureComponent<Props, State> {
           </SectionField>
 
           <SectionField>
-            <FormLabel htmlFor="firstName" labelMessage={messages.firstNames} />
+            <FormLabel
+              htmlFor="firstName"
+              labelText={formatMessage(messages.firstNames)}
+            />
             <InputContainer>
               <Input
                 type="text"
@@ -351,7 +357,10 @@ class ProfileForm extends PureComponent<Props, State> {
           </SectionField>
 
           <SectionField>
-            <FormLabel htmlFor="lastName" labelMessage={messages.lastName} />
+            <FormLabel
+              htmlFor="lastName"
+              labelText={formatMessage(messages.lastName)}
+            />
             <InputContainer id="e2e-last-name-input">
               <Input
                 type="text"
@@ -374,7 +383,10 @@ class ProfileForm extends PureComponent<Props, State> {
           </SectionField>
 
           <SectionField>
-            <FormLabel htmlFor="email" labelMessage={messages.email} />
+            <FormLabel
+              htmlFor="email"
+              labelText={formatMessage(messages.email)}
+            />
             <InputContainer>
               <Input
                 type="email"
@@ -399,7 +411,10 @@ class ProfileForm extends PureComponent<Props, State> {
 
           {!disableBio && (
             <SectionField>
-              <FormLabel labelMessage={messages.bio} id="label-bio" />
+              <FormLabel
+                labelText={formatMessage(messages.bio)}
+                id="label-bio"
+              />
               <QuillEditor
                 id="bio_multiloc"
                 noImages={true}
@@ -423,7 +438,7 @@ class ProfileForm extends PureComponent<Props, State> {
               <FormLabel
                 width="max-content"
                 margin-right="5px"
-                labelMessage={messages.password}
+                labelText={formatMessage(messages.password)}
                 htmlFor="password"
               />
               <StyledPasswordInputIconTooltip />
@@ -438,7 +453,10 @@ class ProfileForm extends PureComponent<Props, State> {
           </SectionField>
 
           <SectionField>
-            <FormLabel htmlFor="language" labelMessage={messages.language} />
+            <FormLabel
+              htmlFor="language"
+              labelText={formatMessage(messages.language)}
+            />
             <Select
               id="language"
               onChange={createChangeHandler('locale')}
@@ -489,7 +507,7 @@ class ProfileForm extends PureComponent<Props, State> {
   }
 }
 
-const ProfileFormWithHocs = injectIntl<InputProps>(localize(ProfileForm));
+const ProfileFormWithHocs = injectIntl(localize(ProfileForm));
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,

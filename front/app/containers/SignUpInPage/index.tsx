@@ -1,35 +1,35 @@
-import React, { useEffect, ReactElement, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { adopt } from 'react-adopt';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // components
-import SignUpInPageMeta from './SignUpInPageMeta';
 import SignUpIn, { ISignUpInMetaData } from 'components/SignUpIn';
+import SignUpInPageMeta from './SignUpInPageMeta';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // utils
-import { isNilOrError, endsWith } from 'utils/helperUtils';
+import { endsWith, isNilOrError } from 'utils/helperUtils';
 
 // events
 import {
-  signUpActiveStepChange$,
   openSignUpInModal$,
+  signUpActiveStepChange$,
 } from 'components/SignUpIn/events';
 
 // context
 import { PreviousPathnameContext } from 'context';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 
 const Container = styled.main`
   width: 100%;

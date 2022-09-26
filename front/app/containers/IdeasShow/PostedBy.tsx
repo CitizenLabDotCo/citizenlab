@@ -2,13 +2,12 @@ import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import UserName from 'components/UI/UserName';
 import Avatar from 'components/Avatar';
+import UserName from 'components/UI/UserName';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedDate, FormattedMessage } from 'react-intl';
 import messages from './messages';
-import { FormattedDate } from 'react-intl';
 
 // styling
 import styled from 'styled-components';

@@ -1,6 +1,6 @@
+import { get, isString } from 'lodash-es';
 import React from 'react';
 import { adopt } from 'react-adopt';
-import { isString, get } from 'lodash-es';
 import styled from 'styled-components';
 
 // typings
@@ -20,9 +20,8 @@ import { updateProject } from 'services/projects';
 import { Select } from '@citizenlab/cl2-component-library';
 
 // i18n
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
 
 const StyledSelect = styled(Select)`
   width: 300px;

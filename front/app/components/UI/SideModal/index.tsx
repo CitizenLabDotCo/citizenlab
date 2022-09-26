@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import { createPortal } from 'react-dom';
-import eventEmitter from 'utils/eventEmitter';
-import { Subscription } from 'rxjs';
 import { FocusOn } from 'react-focus-on';
+import { Subscription } from 'rxjs';
+import eventEmitter from 'utils/eventEmitter';
 
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
@@ -12,13 +12,13 @@ import clickOutside from 'utils/containers/clickOutside';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // Translation
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
 
 // style
-import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
 import { hideVisually } from 'polished';
+import styled from 'styled-components';
+import { colors, media } from 'utils/styleUtils';
 
 const enterTimeout = 350;
 const enterDelay = 0;

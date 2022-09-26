@@ -4,18 +4,17 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 
 // craft
-import { UserComponent, Element } from '@craftjs/core';
-import TwoColumn from '../../CraftComponents/TwoColumn';
-import Text from '../../CraftComponents/Text';
+import { Element, UserComponent } from '@craftjs/core';
 import AboutBox from '../../CraftComponents/AboutBox';
-import WhiteSpace from '../../CraftComponents/WhiteSpace';
 import Accordion from '../../CraftComponents/Accordion';
 import Container from '../../CraftComponents/Container';
+import Text from '../../CraftComponents/Text';
+import TwoColumn from '../../CraftComponents/TwoColumn';
+import WhiteSpace from '../../CraftComponents/WhiteSpace';
 
 // intl
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from '../../../messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
 
 type InfoWithAccordionsProps = {
   projectId: string;

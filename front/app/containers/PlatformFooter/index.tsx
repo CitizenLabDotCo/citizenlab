@@ -1,18 +1,22 @@
+import { isEmpty } from 'lodash-es';
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { isEmpty } from 'lodash-es';
 
 // utils
 import Link from 'utils/cl-router/Link';
 import eventEmitter from 'utils/eventEmitter';
 
 // components
-import SendFeedback from 'components/SendFeedback';
 import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
+import SendFeedback from 'components/SendFeedback';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  MessageDescriptor,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from './messages';
 
 // services
@@ -20,7 +24,7 @@ import { FOOTER_PAGES, TFooterPage } from 'services/pages';
 
 // style
 import styled, { css } from 'styled-components';
-import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
+import { colors, fontSizes, media, viewportWidths } from 'utils/styleUtils';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';

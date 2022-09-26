@@ -2,12 +2,12 @@ import React from 'react';
 import clHistory from 'utils/cl-router/history';
 
 // intl
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from '../messages';
 
 // Components
-import GoBackButton from 'components/UI/GoBackButton';
 import { Section, SectionTitle } from 'components/admin/Section';
+import GoBackButton from 'components/UI/GoBackButton';
 import AreaForm, { FormValues } from '../AreaForm';
 
 import { addArea } from 'services/areas';

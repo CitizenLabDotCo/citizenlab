@@ -4,7 +4,7 @@ import ActionsForm from '../../../admin/containers/Granular/ActionsForm';
 import GetGlobalPermissions, {
   GetGlobalPermissionsChildProps,
 } from 'resources/GetGlobalPermissions';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 import { isNilOrError } from 'utils/helperUtils';
 import { updateGlobalPermission } from 'services/actionPermissions';

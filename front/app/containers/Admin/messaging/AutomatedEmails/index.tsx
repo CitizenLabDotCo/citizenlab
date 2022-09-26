@@ -1,20 +1,23 @@
-import React from 'react';
-import { isUndefined } from 'lodash-es';
-import GetCampaigns, { GetCampaignsChildProps } from 'resources/GetCampaigns';
-import { ICampaignData, updateCampaign } from 'services/campaigns';
-import { isNilOrError } from 'utils/helperUtils';
-import T from 'components/T';
 import { Toggle } from '@citizenlab/cl2-component-library';
 import {
   List as AutomatedEmailsList,
   Row,
   TextCell,
 } from 'components/admin/ResourceList';
+import T from 'components/T';
 import Warning from 'components/UI/Warning';
+import { isUndefined } from 'lodash-es';
+import React from 'react';
+import GetCampaigns, { GetCampaignsChildProps } from 'resources/GetCampaigns';
+import { ICampaignData, updateCampaign } from 'services/campaigns';
 import styled from 'styled-components';
+import { isNilOrError } from 'utils/helperUtils';
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from '../messages';
 
 const StyledWarning = styled(Warning)`
@@ -71,7 +74,7 @@ class AutomatedCampaigns extends React.PureComponent<
   }
 }
 
-const AutomatedCampaignsWithIntl = injectIntl<Props>(AutomatedCampaigns);
+const AutomatedCampaignsWithIntl = injectIntl(AutomatedCampaigns);
 
 export default () => (
   <GetCampaigns withoutCampaignNames={['manual']} pageSize={250}>

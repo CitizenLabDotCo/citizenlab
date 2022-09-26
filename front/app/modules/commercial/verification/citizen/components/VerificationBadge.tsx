@@ -2,7 +2,7 @@ import React from 'react';
 import FeatureFlag from 'components/FeatureFlag';
 import styled from 'styled-components';
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import { colors } from 'utils/styleUtils';
 
 const Badge = styled.div`

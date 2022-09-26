@@ -1,26 +1,28 @@
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import useLocalize from 'hooks/useLocalize';
 import React from 'react';
-
 import styled, { useTheme } from 'styled-components';
+import { getDaysRemainingUntil } from 'utils/dateUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 import { StatusExplanation } from './SharedStyles';
-import { getDaysRemainingUntil } from 'utils/dateUtils';
 
+import { IAppConfigurationSettings } from 'services/appConfiguration';
 import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
-import { IAppConfigurationSettings } from 'services/appConfiguration';
 
-import CountDown from './CountDown';
 import { Icon, IconTooltip } from '@citizenlab/cl2-component-library';
+import CountDown from './CountDown';
 
 import Button from 'components/UI/Button';
 import ProposalProgressBar from './ProposalProgressBar';
 
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import Tippy from '@tippyjs/react';
 import T from 'components/T';
 import { IInitiativeDisabledReason } from 'hooks/useInitiativesPermissions';
 import { darken } from 'polished';
-import Tippy from '@tippyjs/react';
+import { FormattedMessage, MessageDescriptor } from 'react-intl';
+import messages from './messages';
 
 const Container = styled.div``;
 
@@ -162,6 +164,8 @@ const ProposedNotVoted = ({
   initiativeSettings: { voting_threshold, threshold_reached_message },
   disabledReason,
 }: Props) => {
+  const localize = useLocalize();
+  const appConfig = useAppConfiguration();
   const theme: any = useTheme();
   const voteCount = initiative.attributes.upvotes_count;
   const voteLimit = voting_threshold;
@@ -188,87 +192,97 @@ const ProposedNotVoted = ({
     </TooltipContent>
   ) : null;
 
-  return (
-    <Container>
-      <CountDownWrapper>
-        <CountDown targetTime={initiative.attributes.expires_at} />
-      </CountDownWrapper>
-      <StatusIcon ariaHidden name="bullseye" />
-      <StatusExplanation>
-        <OnDesktop>
-          <FormattedMessage
-            {...messages.proposedStatusExplanation}
-            values={{
-              votingThreshold: voting_threshold,
-              proposedStatusExplanationBold: (
-                <b>
-                  <FormattedMessage
-                    {...messages.proposedStatusExplanationBold}
-                  />
-                </b>
-              ),
-            }}
-          />
-          {thresholdReachedTooltip}
-        </OnDesktop>
-        <OnMobile>
-          <FormattedMessage
-            {...messages.proposedStatusExplanationMobile}
-            values={{
-              daysLeft,
-              votingThreshold: voting_threshold,
-              proposedStatusExplanationMobileBold: (
-                <b>
-                  <FormattedMessage
-                    {...messages.proposedStatusExplanationMobileBold}
-                  />
-                </b>
-              ),
-            }}
-          />
-          {thresholdReachedTooltip}
-        </OnMobile>
-      </StatusExplanation>
-      <VoteCounter>
-        <VoteText aria-hidden={true}>
-          <VoteTextLeft id="e2e-initiative-not-voted-vote-count">
+  if (!isNilOrError(appConfig)) {
+    const orgName = localize(
+      appConfig.attributes.settings.core.organization_name
+    );
+
+    return (
+      <Container>
+        <CountDownWrapper>
+          <CountDown targetTime={initiative.attributes.expires_at} />
+        </CountDownWrapper>
+        <StatusIcon ariaHidden name="bullseye" />
+        <StatusExplanation>
+          <OnDesktop>
             <FormattedMessage
-              {...messages.xVotes}
-              values={{ count: voteCount }}
+              {...messages.proposedStatusExplanation}
+              values={{
+                votingThreshold: voting_threshold,
+                proposedStatusExplanationBold: (
+                  <b>
+                    <FormattedMessage
+                      {...messages.proposedStatusExplanationBold}
+                      values={{ orgName }}
+                    />
+                  </b>
+                ),
+              }}
             />
-          </VoteTextLeft>
-          <VoteTextRight>{voteLimit}</VoteTextRight>
-        </VoteText>
-        <ProposalProgressBar voteCount={voteCount} voteLimit={voteLimit} />
-      </VoteCounter>
-      <Tippy
-        disabled={!tippyContent}
-        placement="bottom"
-        content={tippyContent || <></>}
-        theme="light"
-        hideOnClick={false}
-      >
-        <div
-          tabIndex={tippyContent ? 0 : -1}
-          className={`${tippyContent ? 'disabled' : ''} ${
-            disabledReason ? disabledReason : ''
-          }`}
+            {thresholdReachedTooltip}
+          </OnDesktop>
+          <OnMobile>
+            <FormattedMessage
+              {...messages.proposedStatusExplanationMobile}
+              values={{
+                daysLeft,
+                votingThreshold: voting_threshold,
+                proposedStatusExplanationMobileBold: (
+                  <b>
+                    <FormattedMessage
+                      {...messages.proposedStatusExplanationMobileBold}
+                      values={{ orgName }}
+                    />
+                  </b>
+                ),
+              }}
+            />
+            {thresholdReachedTooltip}
+          </OnMobile>
+        </StatusExplanation>
+        <VoteCounter>
+          <VoteText aria-hidden={true}>
+            <VoteTextLeft id="e2e-initiative-not-voted-vote-count">
+              <FormattedMessage
+                {...messages.xVotes}
+                values={{ count: voteCount }}
+              />
+            </VoteTextLeft>
+            <VoteTextRight>{voteLimit}</VoteTextRight>
+          </VoteText>
+          <ProposalProgressBar voteCount={voteCount} voteLimit={voteLimit} />
+        </VoteCounter>
+        <Tippy
+          disabled={!tippyContent}
+          placement="bottom"
+          content={tippyContent || <></>}
+          theme="light"
+          hideOnClick={false}
         >
-          <StyledButton
-            icon="upvote"
-            aria-describedby="tooltip-content"
-            disabled={!!tippyContent}
-            buttonStyle="primary"
-            onClick={onVote}
-            id="e2e-initiative-upvote-button"
-            ariaDisabled={false}
+          <div
+            tabIndex={tippyContent ? 0 : -1}
+            className={`${tippyContent ? 'disabled' : ''} ${
+              disabledReason ? disabledReason : ''
+            }`}
           >
-            <FormattedMessage {...messages.vote} />
-          </StyledButton>
-        </div>
-      </Tippy>
-    </Container>
-  );
+            <StyledButton
+              icon="upvote"
+              aria-describedby="tooltip-content"
+              disabled={!!tippyContent}
+              buttonStyle="primary"
+              onClick={onVote}
+              id="e2e-initiative-upvote-button"
+              ariaDisabled={false}
+            >
+              <FormattedMessage {...messages.vote} />
+            </StyledButton>
+          </div>
+        </Tippy>
+      </Container>
+    );
+  }
+
+  return null;
 };
 
 export default ProposedNotVoted;

@@ -9,7 +9,7 @@ import ReactResizeDetector from 'react-resize-detector';
 import { HeaderSubtitle } from 'components/UI/Modal';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 interface Props {

@@ -1,35 +1,37 @@
-import React, { memo, useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { isEmpty, get, isNumber, round } from 'lodash-es';
-import moment from 'moment';
 import Observer from '@researchgate/react-intersection-observer';
 import bowser from 'bowser';
+import { get, isEmpty, isNumber, round } from 'lodash-es';
+import moment from 'moment';
+import React, { memo, useState } from 'react';
+import { isNilOrError } from 'utils/helperUtils';
 
 // router
 import Link from 'utils/cl-router/Link';
 
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
-import Image from 'components/UI/Image';
 import AvatarBubbles from 'components/AvatarBubbles';
+import Image from 'components/UI/Image';
 
 // services
-import { getProjectUrl } from 'services/projects';
-import { getInputTerm } from 'services/participationContexts';
 import { getIdeaPostingRules } from 'services/actionTakingRules';
+import { getInputTerm } from 'services/participationContexts';
+import { getProjectUrl } from 'services/projects';
 
 // resources
-import useProject from 'hooks/useProject';
+import useAuthUser from 'hooks/useAuthUser';
 import usePhase from 'hooks/usePhase';
 import usePhases from 'hooks/usePhases';
-import useAuthUser from 'hooks/useAuthUser';
+import useProject from 'hooks/useProject';
 import useProjectImages from 'hooks/useProjectImages';
 
 // i18n
 import T from 'components/T';
-import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage } from 'utils/cl-intl';
-import injectIntl from 'utils/cl-intl/injectIntl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from './messages';
 
 // tracking
@@ -37,18 +39,18 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // style
+import { darken, rgba } from 'polished';
 import styled, { useTheme } from 'styled-components';
-import {
-  media,
-  colors,
-  fontSizes,
-  defaultCardStyle,
-  defaultCardHoverStyle,
-  isRtl,
-} from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { rgba, darken } from 'polished';
 import { getInputTermMessage } from 'utils/i18n';
+import {
+  colors,
+  defaultCardHoverStyle,
+  defaultCardStyle,
+  fontSizes,
+  isRtl,
+  media,
+} from 'utils/styleUtils';
 
 const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
   width: calc(33% - 12px);

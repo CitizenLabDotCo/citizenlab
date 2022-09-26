@@ -1,20 +1,19 @@
-import React from 'react';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
 import { get } from 'lodash-es';
+import React from 'react';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
 // components
 import {
   Box,
-  Title,
-  Text,
-  Icon,
   colors,
+  Icon,
+  Text,
+  Title,
 } from '@citizenlab/cl2-component-library';
+import T from 'components/T';
 import Button from 'components/UI/Button';
 import CompletionBar from 'containers/Admin/formBuilder/components/FormResults/CompletionBar';
-import T from 'components/T';
 
 // i18n
 import messages from '../messages';
@@ -23,8 +22,8 @@ import messages from '../messages';
 import styled from 'styled-components';
 
 // utils
-import { media } from 'utils/styleUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { media } from 'utils/styleUtils';
 
 // hooks
 import useFormResults from 'hooks/useFormResults';

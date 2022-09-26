@@ -1,15 +1,15 @@
 import React, { useMemo } from 'react';
 
 // services
-import { addNavbarItem } from '../../../../services/navbar';
-import { deletePage, IPageData, FIXED_PAGES, TPageCode } from 'services/pages';
 import { getNavbarItemSlug } from 'services/navbar';
+import { deletePage, FIXED_PAGES, IPageData, TPageCode } from 'services/pages';
+import { addNavbarItem } from '../../../../services/navbar';
 
 // hooks
 import useNavbarItems from 'hooks/useNavbarItems';
-import useRemovedDefaultNavbarItems from '../../../../hooks/useRemovedDefaultNavbarItems';
 import usePages from 'hooks/usePages';
 import usePageSlugById from 'hooks/usePageSlugById';
+import useRemovedDefaultNavbarItems from '../../../../hooks/useRemovedDefaultNavbarItems';
 
 // components
 import { List, Row } from 'components/admin/ResourceList';
@@ -17,15 +17,14 @@ import NavbarItemRow from 'containers/Admin/pagesAndMenu/NavbarItemRow';
 import Header from './Header';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // utils
+import { PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
+import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 import getItemsNotInNavbar, { IItemNotInNavbar } from './getItemsNotInNavbar';
-import clHistory from 'utils/cl-router/history';
-import { PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 
 const FIXED_PAGES_SET = new Set<TPageCode>(FIXED_PAGES);
 const removeFixedPages = (page: IPageData) =>

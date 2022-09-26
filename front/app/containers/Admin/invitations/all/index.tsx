@@ -1,17 +1,17 @@
 // libraries
+import { saveAs } from 'file-saver';
+import { isEmpty } from 'lodash-es';
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { isEmpty } from 'lodash-es';
-import { saveAs } from 'file-saver';
 
 // components
-import { Table, Popup } from 'semantic-ui-react';
-import { FormattedMessage } from 'utils/cl-intl';
+import { Icon } from '@citizenlab/cl2-component-library';
 import Pagination from 'components/admin/Pagination';
 import Button from 'components/UI/Button';
-import { Icon } from '@citizenlab/cl2-component-library';
-import Row from './Row';
 import SearchInput from 'components/UI/SearchInput';
+import { FormattedMessage } from 'react-intl';
+import { Popup, Table } from 'semantic-ui-react';
+import Row from './Row';
 
 // resources
 import GetInvites, {

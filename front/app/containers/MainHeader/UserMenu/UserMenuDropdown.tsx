@@ -16,7 +16,7 @@ import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 const DropdownListItem = styled(Button)``;

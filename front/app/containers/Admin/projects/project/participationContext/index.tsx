@@ -1,26 +1,26 @@
-import React, { PureComponent } from 'react';
-import { Subscription, Observable, of } from 'rxjs';
-import { filter } from 'rxjs/operators';
 import { isEqual } from 'lodash-es';
+import React, { PureComponent } from 'react';
+import { Observable, of, Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 // components
 import ParticipationMethodPicker from './components/ParticipationMethodPicker';
 import ParticipatoryBudgetingInputs from './components/ParticipatoryBudgetingInputs';
 import PollInputs from './components/PollInputs';
-import SurveyInputs from './components/SurveyInputs';
 import { Container, StyledSection } from './components/styling';
+import SurveyInputs from './components/SurveyInputs';
 
 // services
-import { projectByIdStream, IProject } from 'services/projects';
-import { phaseStream, IPhase } from 'services/phases';
 import {
-  ParticipationMethod,
-  TSurveyService,
   IdeaDefaultSortMethod,
   ideaDefaultSortMethodFallback,
   InputTerm,
   INPUT_TERMS,
+  ParticipationMethod,
+  TSurveyService,
 } from 'services/participationContexts';
+import { IPhase, phaseStream } from 'services/phases';
+import { IProject, projectByIdStream } from 'services/projects';
 import eventEmitter from 'utils/eventEmitter';
 
 // resources
@@ -29,20 +29,23 @@ import GetFeatureFlag, {
 } from 'resources/GetFeatureFlag';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import {
+  injectIntl,
+  MessageDescriptor,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from '../messages';
 
 // typings
-import { CLErrors } from 'typings';
-import { adopt } from 'react-adopt';
 import { IOption } from '@citizenlab/cl2-component-library';
+import { adopt } from 'react-adopt';
+import { CLErrors } from 'typings';
 
 // utils
-import getOutput from './utils/getOutput';
-import validate from './utils/validate';
 import { anyIsDefined } from 'utils/helperUtils';
 import IdeationInputs from './components/IdeationInputs';
+import getOutput from './utils/getOutput';
+import validate from './utils/validate';
 
 export interface IParticipationContextConfig {
   participation_method: ParticipationMethod;

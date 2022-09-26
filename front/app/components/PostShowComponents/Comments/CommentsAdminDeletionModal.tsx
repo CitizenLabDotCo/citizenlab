@@ -5,22 +5,25 @@ import React from 'react';
 import { DeleteReasonCode } from 'services/comments';
 
 // Components
-import Button from 'components/UI/Button';
-import { SectionField } from 'components/admin/Section';
 import { Box } from '@citizenlab/cl2-component-library';
+import { SectionField } from 'components/admin/Section';
+import Button from 'components/UI/Button';
 
 // form
-import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { string, object } from 'yup';
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import TextArea from 'components/HookForm/TextArea';
 import Feedback from 'components/HookForm/Feedback';
 import RadioGroup, { Radio } from 'components/HookForm/RadioGroup';
+import TextArea from 'components/HookForm/TextArea';
+import { FormProvider, useForm } from 'react-hook-form';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import { object, string } from 'yup';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, MessageDescriptor } from 'utils/cl-intl';
+import {
+  injectIntl,
+  MessageDescriptor,
+  WrappedComponentProps,
+} from 'react-intl';
 import messages from './messages';
 
 // animation

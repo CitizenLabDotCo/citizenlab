@@ -1,22 +1,21 @@
 import React from 'react';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 // components
-import { Section, SectionField } from 'components/admin/Section';
 import { Box, Button } from '@citizenlab/cl2-component-library';
+import { Section, SectionField } from 'components/admin/Section';
 
 // form
-import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { object } from 'yup';
-import validateMultiloc from 'utils/yup/validateMultiloc';
+import Feedback from 'components/HookForm/Feedback';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
-import Feedback from 'components/HookForm/Feedback';
+import { FormProvider, useForm } from 'react-hook-form';
+import validateMultiloc from 'utils/yup/validateMultiloc';
+import { object } from 'yup';
 
 // typings
 import { Multiloc } from 'typings';
@@ -91,4 +90,4 @@ const AreaForm = ({
   );
 };
 
-export default injectIntl<Props>(AreaForm);
+export default injectIntl(AreaForm);

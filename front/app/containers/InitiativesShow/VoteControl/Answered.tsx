@@ -1,18 +1,20 @@
-import React, { PureComponent } from 'react';
-import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
-
+import React from 'react';
+import { IAppConfigurationSettings } from 'services/appConfiguration';
 import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
-import { IAppConfigurationSettings } from 'services/appConfiguration';
+import styled from 'styled-components';
+import { isNilOrError } from 'utils/helperUtils';
+import { fontSizes } from 'utils/styleUtils';
 
 import { Icon } from '@citizenlab/cl2-component-library';
-import { StatusWrapper, StatusExplanation } from './SharedStyles';
 import Button from 'components/UI/Button';
+import { StatusExplanation, StatusWrapper } from './SharedStyles';
 
 import T from 'components/T';
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import useLocalize from 'hooks/useLocalize';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
 
 const Container = styled.div``;
 
@@ -41,7 +43,7 @@ const Buttons = styled.div`
   }
 `;
 
-interface InputProps {
+interface Props {
   initiative: IInitiativeData;
   initiativeStatus: IInitiativeStatusData;
   initiativeSettings: NonNullable<IAppConfigurationSettings['initiatives']>;
@@ -49,25 +51,29 @@ interface InputProps {
   onVote: () => void;
   onScrollToOfficialFeedback: () => void;
 }
-interface DataProps {}
 
-interface Props extends InputProps, DataProps {}
-
-interface State {}
-
-class Answered extends PureComponent<Props, State> {
-  handleOnVote = () => {
-    this.props.onVote();
+const Answered = ({
+  onVote,
+  onScrollToOfficialFeedback,
+  initiative,
+  initiativeStatus,
+  userVoted,
+}: Props) => {
+  const localize = useLocalize();
+  const appConfig = useAppConfiguration();
+  const handleOnVote = () => {
+    onVote();
+  };
+  const handleOnReadAnswer = () => {
+    onScrollToOfficialFeedback();
   };
 
-  handleOnReadAnswer = () => {
-    this.props.onScrollToOfficialFeedback();
-  };
+  const voteCount = initiative.attributes.upvotes_count;
 
-  render() {
-    const { initiative, initiativeStatus, userVoted } = this.props;
-
-    const voteCount = initiative.attributes.upvotes_count;
+  if (!isNilOrError(appConfig)) {
+    const orgName = localize(
+      appConfig.attributes.settings.core.organization_name
+    );
 
     return (
       <Container>
@@ -83,6 +89,7 @@ class Answered extends PureComponent<Props, State> {
                 <b>
                   <FormattedMessage
                     {...messages.answeredStatusExplanationBold}
+                    values={{ orgName }}
                   />
                 </b>
               ),
@@ -105,11 +112,11 @@ class Answered extends PureComponent<Props, State> {
           />
         </VoteText>
         <Buttons>
-          <Button onClick={this.handleOnReadAnswer}>
+          <Button onClick={handleOnReadAnswer}>
             <FormattedMessage {...messages.readAnswer} />
           </Button>
           {!userVoted && (
-            <Button buttonStyle="primary-outlined" onClick={this.handleOnVote}>
+            <Button buttonStyle="primary-outlined" onClick={handleOnVote}>
               <FormattedMessage {...messages.vote} />
             </Button>
           )}
@@ -117,6 +124,8 @@ class Answered extends PureComponent<Props, State> {
       </Container>
     );
   }
-}
+
+  return null;
+};
 
 export default Answered;

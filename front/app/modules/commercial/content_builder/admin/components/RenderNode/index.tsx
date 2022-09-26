@@ -11,7 +11,7 @@ import { colors } from 'utils/styleUtils';
 import { useNode, useEditor, ROOT_NODE } from '@craftjs/core';
 
 // intl
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from '../../messages';
 
 const CONTAINER = 'Container';

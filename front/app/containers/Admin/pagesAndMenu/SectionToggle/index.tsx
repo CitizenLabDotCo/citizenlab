@@ -2,18 +2,18 @@ import React from 'react';
 
 // components
 import {
-  IconTooltip,
-  Toggle,
   Box,
+  IconTooltip,
   Title,
+  Toggle,
 } from '@citizenlab/cl2-component-library';
 import { Row } from 'components/admin/ResourceList';
+import { FormattedMessage, MessageDescriptor } from 'react-intl';
 import AdminEditButton from './AdminEditButton';
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
 export interface Props {
   onChangeSectionToggle: () => void;
-  onClickEditButton?: (string) => void;
+  onClickEditButton?: (path: string) => void;
   titleMessageDescriptor: MessageDescriptor;
   tooltipMessageDescriptor: MessageDescriptor;
   checked: boolean;

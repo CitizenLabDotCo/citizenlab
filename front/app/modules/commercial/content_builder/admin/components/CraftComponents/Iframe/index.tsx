@@ -10,8 +10,8 @@ import {
 import Error from 'components/UI/Error';
 
 // intl
+import { FormattedMessage, injectIntl } from 'react-intl';
 import messages from '../../../messages';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 
 // craft
 import { useNode } from '@craftjs/core';

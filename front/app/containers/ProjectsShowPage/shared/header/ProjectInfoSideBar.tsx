@@ -1,46 +1,46 @@
+import { isNumber } from 'lodash-es';
+import moment from 'moment';
 import React, {
+  FormEvent,
   memo,
   useCallback,
   useEffect,
   useState,
-  FormEvent,
 } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { isNumber } from 'lodash-es';
-import moment from 'moment';
 
 // hooks
-import useProject from 'hooks/useProject';
-import usePhases from 'hooks/usePhases';
-import useEvents from 'hooks/useEvents';
 import useAuthUser from 'hooks/useAuthUser';
+import useEvents from 'hooks/useEvents';
+import usePhases from 'hooks/usePhases';
+import useProject from 'hooks/useProject';
 
 // router
 import clHistory from 'utils/cl-router/history';
 
 // services
-import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
+import { getCurrentPhase, getLastPhase, IPhaseData } from 'services/phases';
 
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
-import ProjectSharingModal from './ProjectSharingModal';
 import ProjectActionBar from './ProjectActionBar';
 import ProjectActionButtons from './ProjectActionButtons';
+import ProjectSharingModal from './ProjectSharingModal';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { scrollToElement } from 'utils/scroll';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from 'containers/ProjectsShowPage/messages';
-import { getInputTermMessage } from 'utils/i18n';
+import { FormattedMessage } from 'react-intl';
 import FormattedBudget from 'utils/currency/FormattedBudget';
+import { getInputTermMessage } from 'utils/i18n';
 
 // style
-import styled from 'styled-components';
-import { fontSizes, colors, isRtl, media } from 'utils/styleUtils';
 import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
+import styled from 'styled-components';
+import { colors, fontSizes, isRtl, media } from 'utils/styleUtils';
 
 const Container = styled.div``;
 

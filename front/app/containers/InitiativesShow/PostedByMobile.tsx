@@ -8,8 +8,8 @@ import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 // i18n
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
 
 const Container = styled.div`
   display: flex;

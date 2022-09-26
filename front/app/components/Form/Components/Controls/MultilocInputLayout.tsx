@@ -1,7 +1,7 @@
-import React from 'react';
-import { Layout, LayoutProps, rankWith, optionIs } from '@jsonforms/core';
+import { Layout, LayoutProps, optionIs, rankWith } from '@jsonforms/core';
 import { JsonFormsDispatch, withJsonFormsLayoutProps } from '@jsonforms/react';
 import useLocale from 'hooks/useLocale';
+import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 const MultilocInputLayout = ({

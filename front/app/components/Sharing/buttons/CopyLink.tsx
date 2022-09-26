@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { Box, Button } from '@citizenlab/cl2-component-library';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
-import { Button, Box } from '@citizenlab/cl2-component-library';
 
 // style
 import { colors } from 'utils/styleUtils';

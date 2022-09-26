@@ -17,7 +17,7 @@ import GetUser, { GetUserChildProps } from 'resources/GetUser';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import T from 'components/T';
 import messages from './messages';
 

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-import { withJsonFormsControlProps } from '@jsonforms/react';
 import { LocationInput } from '@citizenlab/cl2-component-library';
 import {
   ControlProps,
@@ -8,13 +7,13 @@ import {
   rankWith,
   scopeEndsWith,
 } from '@jsonforms/core';
-import { FormLabel } from 'components/UI/FormComponents';
-import ErrorDisplay from '../ErrorDisplay';
+import { withJsonFormsControlProps } from '@jsonforms/react';
 import Error from 'components/UI/Error';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { FormLabel } from 'components/UI/FormComponents';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import { getLabel } from 'utils/JSONFormUtils';
 import messages from '../../messages';
+import ErrorDisplay from '../ErrorDisplay';
 
 const LocationControl = ({
   uischema,

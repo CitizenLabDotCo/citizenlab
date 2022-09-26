@@ -1,54 +1,54 @@
-import React, { memo, FormEvent, useState } from 'react';
 import { includes, isUndefined } from 'lodash-es';
+import React, { FormEvent, memo, useState } from 'react';
 import {
+  capitalizeParticipationContextType,
   isNilOrError,
   isUndefinedOrError,
-  capitalizeParticipationContextType,
 } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
 
 // services
-import { IProjectData } from 'services/projects';
+import { addBasket, updateBasket } from 'services/baskets';
 import {
   getCurrentPhase,
   getLatestRelevantPhase,
   IPhaseData,
 } from 'services/phases';
-import { addBasket, updateBasket } from 'services/baskets';
+import { IProjectData } from 'services/projects';
 
 // resources
 import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { GetIdeaChildProps } from 'resources/GetIdea';
-import { GetProjectChildProps } from 'resources/GetProject';
 import { GetPhasesChildProps } from 'resources/GetPhases';
+import { GetProjectChildProps } from 'resources/GetProject';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
-import useIdea from 'hooks/useIdea';
 import useBasket from 'hooks/useBasket';
-import useProject from 'hooks/useProject';
+import useIdea from 'hooks/useIdea';
 import usePhases from 'hooks/usePhases';
+import useProject from 'hooks/useProject';
 
 // tracking
-import { trackEventByName } from 'utils/analytics';
 import tracks from 'containers/ProjectsShowPage/shared/pb/tracks';
+import { trackEventByName } from 'utils/analytics';
 
 // utils
-import streams from 'utils/streams';
 import { openSignUpInModal } from 'components/SignUpIn/events';
+import streams from 'utils/streams';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import { FormattedMessage } from 'react-intl';
 import FormattedBudget from 'utils/currency/FormattedBudget';
+import messages from './messages';
 
 // styles
-import styled from 'styled-components';
-import { fontSizes, colors, defaultCardStyle, media } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
 import PBExpenses from 'containers/ProjectsShowPage/shared/pb/PBExpenses';
+import styled from 'styled-components';
+import { ScreenReaderOnly } from 'utils/a11y';
+import { colors, defaultCardStyle, fontSizes, media } from 'utils/styleUtils';
 
 // typings
 import { IParticipationContextType } from 'typings';

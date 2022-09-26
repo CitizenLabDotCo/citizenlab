@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // Components
-import { Icon, Dropdown, Checkbox } from '@citizenlab/cl2-component-library';
+import { Checkbox, Dropdown, Icon } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 
 // Hooks
@@ -20,8 +20,12 @@ import {
   IInsightsInputData,
 } from 'modules/commercial/insights/services/insightsInputs';
 
-// I18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import messages from '../../messages';
 
 // Styling
@@ -97,10 +101,6 @@ const DropdownFooterButton = styled(Button)`
     border-top-right-radius: 0;
   }
 `;
-
-// Typings
-import { WrappedComponentProps } from 'react-intl';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 interface Props {
   className?: string;

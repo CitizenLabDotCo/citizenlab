@@ -1,13 +1,12 @@
-import React, { memo } from 'react';
 import { keys } from 'lodash-es';
+import React, { memo } from 'react';
 
-import { ruleTypeConstraints, TPredicate, TRuleType } from './rules';
 import { IOption } from 'typings';
+import { ruleTypeConstraints, TPredicate, TRuleType } from './rules';
 
 import { Select } from '@citizenlab/cl2-component-library';
 
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 type Props = {

@@ -2,7 +2,7 @@ import React, { memo, useCallback } from 'react';
 import FilterSelector from 'components/FilterSelector';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // services
