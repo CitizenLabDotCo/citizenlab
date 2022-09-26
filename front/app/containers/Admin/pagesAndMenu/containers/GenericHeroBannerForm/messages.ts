@@ -96,6 +96,22 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.noHeader',
     defaultMessage: 'Please upload a header image',
   },
+  chooseLayout: {
+    id: 'app.containers.AdminPage.SettingsPage.chooseLayout',
+    defaultMessage: 'Layout',
+  },
+  fullWidthBannerLayout: {
+    id: 'app.containers.AdminPage.SettingsPage.fullWidthBannerLayout',
+    defaultMessage: 'Full-width banner',
+  },
+  TwoColumnLayout: {
+    id: 'app.containers.AdminPage.SettingsPage.TwoColumnLayout',
+    defaultMessage: 'Two columns',
+  },
+  twoRowLayout: {
+    id: 'app.containers.AdminPage.SettingsPage.twoRowLayout',
+    defaultMessage: 'Two rows',
+  },
   heroBannerTitle: {
     id: 'app.containers.AdminPage.HeroBannerForm.heroBannerTitle',
     defaultMessage: 'Hero banner',
@@ -123,21 +139,5 @@ export default defineMessages({
   heroBannerError: {
     id: 'app.containers.Admin.PagesAndMenu.heroBannerError',
     defaultMessage: "Couldn't save hero banner",
-  },
-  chooseLayout: {
-    id: 'app.containers.Admin.PagesAndMenu.chooseLayout',
-    defaultMessage: 'Layout',
-  },
-  fullWidthBannerLayout: {
-    id: 'app.containers.AdminPage.SettingsPage.fullWidthBannerLayout',
-    defaultMessage: 'Full-width banner',
-  },
-  TwoColumnLayout: {
-    id: 'app.containers.AdminPage.SettingsPage.TwoColumnLayout',
-    defaultMessage: 'Two columns',
-  },
-  twoRowLayout: {
-    id: 'app.containers.AdminPage.SettingsPage.twoRowLayout',
-    defaultMessage: 'Two rows',
   },
 });
