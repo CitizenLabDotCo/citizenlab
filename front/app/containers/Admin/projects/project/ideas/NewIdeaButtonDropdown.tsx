@@ -26,6 +26,7 @@ import { IPhaseData } from 'services/phases';
 
 // style
 import styled from 'styled-components';
+import { getMethodConfig } from 'utils/participationMethodUtils';
 
 interface Props {
   phases: IPhaseData[] | null;
@@ -56,8 +57,8 @@ const NewIdeaButtonDropdown = ({
         <>
           {phases.map((phase, i) => (
             <>
-              {(phase.attributes.participation_method === 'ideation' ||
-                phase.attributes.participation_method === 'budgeting') && (
+              {getMethodConfig(phase.attributes.participation_method)
+                .showInputManager && (
                 <DropdownListItem key={i}>
                   <Box
                     onClick={() => {
