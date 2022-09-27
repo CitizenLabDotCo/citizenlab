@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.containers.Admin.PagesAndMenu.topInfoPageTitle',
     defaultMessage: 'Top info section',
   },
+  topInfoMetaTitle: {
+    id: 'app.containers.Admin.PagesAndMenu.topInfoMetaTitle',
+    defaultMessage: 'Top info section | {orgName}',
+  },
   topInfoContentEditorTitle: {
     id: 'app.containers.Admin.PagesAndMenu.topInfoContentEditorTitle',
     defaultMessage: 'Content',
