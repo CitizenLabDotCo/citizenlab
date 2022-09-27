@@ -65,7 +65,6 @@ const SettingRadioButtons = ({
                   handleCTAButtonTextMultilocOnChange
                 }
                 handleCTAButtonUrlOnChange={handleCTAButtonUrlOnChange}
-                signInStatus={signInStatus}
                 key={`customized-button-settings-${option}`}
               />
             )}

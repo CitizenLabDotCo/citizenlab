@@ -3,7 +3,6 @@ import { SectionField } from 'components/admin/Section';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import React from 'react';
 import { InjectedIntlProps } from 'react-intl';
-import { CustomizedButtonConfig } from 'services/appConfiguration';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -17,10 +16,8 @@ const TextSettings = styled.div`
 interface Props {
   buttonUrl: string | null;
   buttonMultiloc: Multiloc;
-  buttonConfig?: CustomizedButtonConfig;
   handleCTAButtonTextMultilocOnChange: (buttonTextMultiloc: Multiloc) => void;
   handleCTAButtonUrlOnChange: (url: string) => void;
-  signInStatus: 'signed_out' | 'signed_in';
   className?: string;
 }
 
