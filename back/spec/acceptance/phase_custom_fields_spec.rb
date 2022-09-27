@@ -80,7 +80,8 @@ resource 'Phase level Custom Fields' do
     get 'web_api/v1/phases/:phase_id/custom_fields/json_forms_schema' do
       example_request 'Get the jsonforms.io json schema and ui schema for the custom fields' do
         expect(status).to eq 200
-        expect(response_body).to eq 'null'
+        json_response = json_parse(response_body)
+        expect(json_response).to be_nil
       end
     end
   end
