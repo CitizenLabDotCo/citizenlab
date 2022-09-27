@@ -190,9 +190,10 @@
         "title": "Customizable homepage banner",
         "description": "Customizable homepage banner.",
         "additionalProperties": false,
-        "required": ["allowed"],
+        "required": ["allowed", "enabled"],
         "properties": {
-          "allowed": { "type": "boolean", "default": false }
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
         }
       },
 
@@ -831,9 +832,10 @@
         "title": "Events Landing Page Widget",
         "description":	"Display a widget of the next upcoming events in your landing page.",
         "additionalProperties": false,
-        "required": ["allowed"],
+        "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": true},
           "widget_title": {"$ref": "#/definitions/multiloc_string"}
         }
       },
