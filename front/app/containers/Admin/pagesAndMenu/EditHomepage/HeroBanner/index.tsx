@@ -29,6 +29,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../../containers/GenericHeroBannerForm/messages';
+import HelmetIntl from 'components/HelmetIntl';
 
 export type HomepageBannerSettingKeyType = Extract<
   keyof IHomepageSettingsAttributes,
@@ -143,94 +144,101 @@ const EditHomepageHeroBannerForm = ({
 
   if (!isNilOrError(localSettings)) {
     return (
-      <GenericHeroBannerForm
-        onSave={handleSave}
-        title={formatMessage(messages.heroBannerTitle)}
-        isLoading={isLoading}
-        formStatus={formStatus}
-        breadcrumbs={[
-          {
-            label: formatMessage(pagesAndMenuBreadcrumb.label),
-            linkTo: pagesAndMenuBreadcrumb.linkTo,
-          },
-          {
-            label: formatMessage(homeBreadcrumb.label),
-            linkTo: homeBreadcrumb.linkTo,
-          },
-          { label: formatMessage(messages.heroBannerTitle) },
-        ]}
-        setFormStatus={setFormStatus}
-        bannerImageFieldsComponent={
-          <BannerImageFields
-            bannerLayout={localSettings.banner_layout}
-            bannerOverlayColor={
-              localSettings.banner_signed_out_header_overlay_color
-            }
-            bannerOverlayOpacity={
-              localSettings.banner_signed_out_header_overlay_opacity
-            }
-            headerBg={localSettings.header_bg}
-            setFormStatus={setFormStatus}
-            onAddImage={handleOnBannerImageAdd}
-            onRemoveImage={handleOnBannerImageRemove}
-            onOverlayColorChange={handleOverlayColorOnChange}
-            onOverlayOpacityChange={handleOverlayOpacityOnChange}
-          />
-        }
-        bannerHeaderFieldsComponent={
-          <BannerHeaderFields
-            bannerHeaderMultiloc={
-              localSettings.banner_signed_out_header_multiloc
-            }
-            bannerSubheaderMultiloc={
-              localSettings.banner_signed_out_subheader_multiloc
-            }
-            onHeaderChange={handleHeaderSignedOutMultilocOnChange}
-            onSubheaderChange={handleSubheaderSignedOutMultilocOnChange}
-            title={formatMessage(messages.bannerTextTitle)}
-            inputLabelText={formatMessage(messages.bannerHeaderSignedOut)}
-          />
-        }
-        outletSectionStart={
-          <Outlet
-            id="app.containers.Admin.settings.customize.headerSectionStart"
-            bannerLayout={
-              localSettings.banner_layout ?? 'full_width_banner_layout'
-            }
-            onChange={handleOnChange}
-          />
-        }
-        bannerMultilocFieldComponent={
-          <BannerHeaderMultilocField
-            onChange={handleBannerSignedInMultilocOnChange}
-            headerMultiloc={localSettings.banner_signed_in_header_multiloc}
-          />
-        }
-        avatarsFieldComponent={
-          <AvatarsField
-            checked={localSettings.banner_avatars_enabled}
-            onChange={handleOnChangeBannerAvatarsEnabled}
-          />
-        }
-        outletSectionEnd={
-          <Outlet
-            id="app.containers.Admin.settings.customize.headerSectionEnd"
-            banner_cta_signed_in_text_multiloc={
-              localSettings.banner_cta_signed_in_text_multiloc
-            }
-            banner_cta_signed_in_url={localSettings.banner_cta_signed_in_url}
-            banner_cta_signed_in_type={localSettings.banner_cta_signed_in_type}
-            banner_cta_signed_out_text_multiloc={
-              localSettings.banner_cta_signed_out_text_multiloc
-            }
-            banner_cta_signed_out_url={localSettings.banner_cta_signed_out_url}
-            banner_cta_signed_out_type={
-              localSettings.banner_cta_signed_out_type
-            }
-            handleOnChange={handleOnChange}
-          />
-        }
-      />
+      <>
+        <HelmetIntl title={messages.homepageMetaTitle} />
+        <GenericHeroBannerForm
+          onSave={handleSave}
+          title={formatMessage(messages.heroBannerTitle)}
+          isLoading={isLoading}
+          formStatus={formStatus}
+          breadcrumbs={[
+            {
+              label: formatMessage(pagesAndMenuBreadcrumb.label),
+              linkTo: pagesAndMenuBreadcrumb.linkTo,
+            },
+            {
+              label: formatMessage(homeBreadcrumb.label),
+              linkTo: homeBreadcrumb.linkTo,
+            },
+            { label: formatMessage(messages.heroBannerTitle) },
+          ]}
+          setFormStatus={setFormStatus}
+          bannerImageFieldsComponent={
+            <BannerImageFields
+              bannerLayout={localSettings.banner_layout}
+              bannerOverlayColor={
+                localSettings.banner_signed_out_header_overlay_color
+              }
+              bannerOverlayOpacity={
+                localSettings.banner_signed_out_header_overlay_opacity
+              }
+              headerBg={localSettings.header_bg}
+              setFormStatus={setFormStatus}
+              onAddImage={handleOnBannerImageAdd}
+              onRemoveImage={handleOnBannerImageRemove}
+              onOverlayColorChange={handleOverlayColorOnChange}
+              onOverlayOpacityChange={handleOverlayOpacityOnChange}
+            />
+          }
+          bannerHeaderFieldsComponent={
+            <BannerHeaderFields
+              bannerHeaderMultiloc={
+                localSettings.banner_signed_out_header_multiloc
+              }
+              bannerSubheaderMultiloc={
+                localSettings.banner_signed_out_subheader_multiloc
+              }
+              onHeaderChange={handleHeaderSignedOutMultilocOnChange}
+              onSubheaderChange={handleSubheaderSignedOutMultilocOnChange}
+              title={formatMessage(messages.bannerTextTitle)}
+              inputLabelText={formatMessage(messages.bannerHeaderSignedOut)}
+            />
+          }
+          outletSectionStart={
+            <Outlet
+              id="app.containers.Admin.settings.customize.headerSectionStart"
+              bannerLayout={
+                localSettings.banner_layout ?? 'full_width_banner_layout'
+              }
+              onChange={handleOnChange}
+            />
+          }
+          bannerMultilocFieldComponent={
+            <BannerHeaderMultilocField
+              onChange={handleBannerSignedInMultilocOnChange}
+              headerMultiloc={localSettings.banner_signed_in_header_multiloc}
+            />
+          }
+          avatarsFieldComponent={
+            <AvatarsField
+              checked={localSettings.banner_avatars_enabled}
+              onChange={handleOnChangeBannerAvatarsEnabled}
+            />
+          }
+          outletSectionEnd={
+            <Outlet
+              id="app.containers.Admin.settings.customize.headerSectionEnd"
+              banner_cta_signed_in_text_multiloc={
+                localSettings.banner_cta_signed_in_text_multiloc
+              }
+              banner_cta_signed_in_url={localSettings.banner_cta_signed_in_url}
+              banner_cta_signed_in_type={
+                localSettings.banner_cta_signed_in_type
+              }
+              banner_cta_signed_out_text_multiloc={
+                localSettings.banner_cta_signed_out_text_multiloc
+              }
+              banner_cta_signed_out_url={
+                localSettings.banner_cta_signed_out_url
+              }
+              banner_cta_signed_out_type={
+                localSettings.banner_cta_signed_out_type
+              }
+              handleOnChange={handleOnChange}
+            />
+          }
+        />
+      </>
     );
   }
 

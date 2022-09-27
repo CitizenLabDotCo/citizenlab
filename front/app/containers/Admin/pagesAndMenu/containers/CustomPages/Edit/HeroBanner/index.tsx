@@ -24,6 +24,7 @@ import messages from '../../../GenericHeroBannerForm/messages';
 import useLocalize from 'hooks/useLocalize';
 import { Multiloc } from 'typings';
 import { injectIntl } from 'utils/cl-intl';
+import HelmetIntl from 'components/HelmetIntl';
 
 export type CustomPageBannerSettingKeyType = Extract<
   keyof ICustomPageAttributes,
@@ -134,66 +135,69 @@ const EditCustomPageHeroBannerForm = ({
 
   if (!isNilOrError(localSettings)) {
     return (
-      <GenericHeroBannerForm
-        onSave={handleSave}
-        formStatus={formStatus}
-        isLoading={isLoading}
-        breadcrumbs={[
-          {
-            label: formatMessage(pagesAndMenuBreadcrumb.label),
-            linkTo: pagesAndMenuBreadcrumb.linkTo,
-          },
-          {
-            label: localize(customPage.attributes.title_multiloc),
-            linkTo: `${PAGES_MENU_CUSTOM_PATH}/${customPageId}/content`,
-          },
-          { label: formatMessage(messages.heroBannerTitle) },
-        ]}
-        title={formatMessage(messages.heroBannerTitle)}
-        setFormStatus={setFormStatus}
-        layoutSettingFieldComponent={
-          <LayoutSettingField
-            bannerLayout={localSettings.banner_layout}
-            onChange={handleLayoutOnChange}
-          />
-        }
-        bannerImageFieldsComponent={
-          <BannerImageFields
-            bannerLayout={localSettings.banner_layout}
-            bannerOverlayColor={localSettings.banner_overlay_color}
-            bannerOverlayOpacity={localSettings.banner_overlay_opacity}
-            headerBg={localSettings.header_bg}
-            setFormStatus={setFormStatus}
-            onAddImage={handleOnBannerImageAdd}
-            onRemoveImage={handleOnBannerImageRemove}
-            onOverlayColorChange={handleOverlayColorOnChange}
-            onOverlayOpacityChange={handleOverlayOpacityOnChange}
-          />
-        }
-        bannerHeaderFieldsComponent={
-          <BannerHeaderFields
-            bannerHeaderMultiloc={localSettings.banner_header_multiloc}
-            bannerSubheaderMultiloc={localSettings.banner_subheader_multiloc}
-            onHeaderChange={handleSignedOutMultilocHeaderOnChange}
-            onSubheaderChange={handleSignedOutMultilocSubheaderOnChange}
-            title={formatMessage(messages.bannerTextTitle)}
-            inputLabelText={formatMessage(messages.bannerHeaderSignedOut)}
-          />
-        }
-        ctaButtonFieldsComponent={
-          <CTAButtonFields
-            ctaType={localSettings.banner_cta_button_type}
-            ctaButtonMultiloc={localSettings.banner_cta_button_multiloc}
-            ctaButtonUrl={localSettings.banner_cta_button_url}
-            handleCTAButtonTypeOnChange={handleCTAButtonTypeOnChange}
-            handleCTAButtonTextMultilocOnChange={
-              handleCTAButtonTextMultilocOnChange
-            }
-            handleCTAButtonUrlOnChange={handleCTAButtonUrlOnChange}
-            title={formatMessage(messages.buttonTitle)}
-          />
-        }
-      />
+      <>
+        <HelmetIntl title={messages.customPageMetaTitle} />
+        <GenericHeroBannerForm
+          onSave={handleSave}
+          formStatus={formStatus}
+          isLoading={isLoading}
+          breadcrumbs={[
+            {
+              label: formatMessage(pagesAndMenuBreadcrumb.label),
+              linkTo: pagesAndMenuBreadcrumb.linkTo,
+            },
+            {
+              label: localize(customPage.attributes.title_multiloc),
+              linkTo: `${PAGES_MENU_CUSTOM_PATH}/${customPageId}/content`,
+            },
+            { label: formatMessage(messages.heroBannerTitle) },
+          ]}
+          title={formatMessage(messages.heroBannerTitle)}
+          setFormStatus={setFormStatus}
+          layoutSettingFieldComponent={
+            <LayoutSettingField
+              bannerLayout={localSettings.banner_layout}
+              onChange={handleLayoutOnChange}
+            />
+          }
+          bannerImageFieldsComponent={
+            <BannerImageFields
+              bannerLayout={localSettings.banner_layout}
+              bannerOverlayColor={localSettings.banner_overlay_color}
+              bannerOverlayOpacity={localSettings.banner_overlay_opacity}
+              headerBg={localSettings.header_bg}
+              setFormStatus={setFormStatus}
+              onAddImage={handleOnBannerImageAdd}
+              onRemoveImage={handleOnBannerImageRemove}
+              onOverlayColorChange={handleOverlayColorOnChange}
+              onOverlayOpacityChange={handleOverlayOpacityOnChange}
+            />
+          }
+          bannerHeaderFieldsComponent={
+            <BannerHeaderFields
+              bannerHeaderMultiloc={localSettings.banner_header_multiloc}
+              bannerSubheaderMultiloc={localSettings.banner_subheader_multiloc}
+              onHeaderChange={handleSignedOutMultilocHeaderOnChange}
+              onSubheaderChange={handleSignedOutMultilocSubheaderOnChange}
+              title={formatMessage(messages.bannerTextTitle)}
+              inputLabelText={formatMessage(messages.bannerHeaderSignedOut)}
+            />
+          }
+          ctaButtonFieldsComponent={
+            <CTAButtonFields
+              ctaType={localSettings.banner_cta_button_type}
+              ctaButtonMultiloc={localSettings.banner_cta_button_multiloc}
+              ctaButtonUrl={localSettings.banner_cta_button_url}
+              handleCTAButtonTypeOnChange={handleCTAButtonTypeOnChange}
+              handleCTAButtonTextMultilocOnChange={
+                handleCTAButtonTextMultilocOnChange
+              }
+              handleCTAButtonUrlOnChange={handleCTAButtonUrlOnChange}
+              title={formatMessage(messages.buttonTitle)}
+            />
+          }
+        />
+      </>
     );
   }
 

@@ -49,43 +49,45 @@ const GenericHeroBannerForm = ({
   ctaButtonFieldsComponent,
 }: Props) => {
   return (
-    <SectionFormWrapper
-      breadcrumbs={breadcrumbs}
-      title={title}
-      stickyMenuContents={
-        <SubmitWrapper
-          status={formStatus}
-          buttonStyle="primary"
-          loading={isLoading}
-          onClick={onSave}
-          messages={{
-            buttonSave: messages.heroBannerSaveButton,
-            buttonSuccess: messages.heroBannerButtonSuccess,
-            messageSuccess: messages.heroBannerMessageSuccess,
-            messageError: messages.heroBannerError,
-          }}
-        />
-      }
-    >
-      <Section key={'header'}>
-        <Warning>
-          <FormattedMessage {...messages.heroBannerInfoBar} />
-        </Warning>
-        {outletSectionStart}
-        {layoutSettingFieldComponent}
-        {bannerImageFieldsComponent}
-        {bannerHeaderFieldsComponent}
-        {bannerMultilocFieldComponent}
-        {avatarsFieldComponent}
-        {/* The custom page hero banner form has the CTA button fields inserted via the core */}
-        {ctaButtonFieldsComponent}
-        {/*
+    <>
+      <SectionFormWrapper
+        breadcrumbs={breadcrumbs}
+        title={title}
+        stickyMenuContents={
+          <SubmitWrapper
+            status={formStatus}
+            buttonStyle="primary"
+            loading={isLoading}
+            onClick={onSave}
+            messages={{
+              buttonSave: messages.heroBannerSaveButton,
+              buttonSuccess: messages.heroBannerButtonSuccess,
+              messageSuccess: messages.heroBannerMessageSuccess,
+              messageError: messages.heroBannerError,
+            }}
+          />
+        }
+      >
+        <Section key={'header'}>
+          <Warning>
+            <FormattedMessage {...messages.heroBannerInfoBar} />
+          </Warning>
+          {outletSectionStart}
+          {layoutSettingFieldComponent}
+          {bannerImageFieldsComponent}
+          {bannerHeaderFieldsComponent}
+          {bannerMultilocFieldComponent}
+          {avatarsFieldComponent}
+          {/* The custom page hero banner form has the CTA button fields inserted via the core */}
+          {ctaButtonFieldsComponent}
+          {/*
           The home page hero banner form has CTA button fields inserted
           via the outlet below (customizable_homepage_banner module)
         */}
-        {outletSectionEnd}
-      </Section>
-    </SectionFormWrapper>
+          {outletSectionEnd}
+        </Section>
+      </SectionFormWrapper>
+    </>
   );
 };
 

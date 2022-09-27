@@ -3,6 +3,14 @@ import { defineMessages } from 'react-intl';
 // moved from admin/settings/customize
 
 export default defineMessages({
+  homepageMetaTitle: {
+    id: 'app.containers.AdminPage.SettingsPage.homepageMetaTitle',
+    defaultMessage: 'Homepage header | {orgName}',
+  },
+  customPageMetaTitle: {
+    id: 'app.containers.AdminPage.SettingsPage.homepageMetaTitle',
+    defaultMessage: 'Custom page header | {orgName}',
+  },
   header: {
     id: 'app.containers.AdminPage.SettingsPage.header',
     defaultMessage: 'Homepage header',
