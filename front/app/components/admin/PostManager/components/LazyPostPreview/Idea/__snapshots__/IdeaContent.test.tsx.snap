@@ -8,7 +8,7 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
       icon="edit"
       onClick={[MockFunction]}
     >
-      <MemoizedFormattedMessage
+      <FormattedMessage
         defaultMessage="Edit"
         id="app.components.admin.PostManager.PostPreview.edit"
       />
@@ -18,7 +18,7 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
       icon="delete"
       onClick={[Function]}
     >
-      <MemoizedFormattedMessage
+      <FormattedMessage
         defaultMessage="Delete"
         id="app.components.admin.PostManager.PostPreview.delete"
       />
@@ -26,7 +26,7 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
   </Top>
   <Content>
     <IdeaContent__BelongsToProject>
-      <MemoizedFormattedMessage
+      <FormattedMessage
         defaultMessage="Posted in {projectLink}"
         id="app.containers.IdeasShow.postedIn"
         values={
@@ -59,7 +59,7 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
     <IdeaContent__Row>
       <IdeaContent__Left>
         <IdeaContent__BodySectionTitle>
-          <MemoizedFormattedMessage
+          <FormattedMessage
             defaultMessage="Proposed budget"
             id="app.containers.IdeasShow.proposedBudgetTitle"
           />
@@ -68,7 +68,7 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
           proposedBudget={45}
         />
         <IdeaContent__BodySectionTitle>
-          <MemoizedFormattedMessage
+          <FormattedMessage
             defaultMessage="Description"
             id="app.containers.IdeasShow.bodyTitle"
           />
@@ -110,7 +110,7 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
             value={60}
           />
           <IdeaContent__Picks>
-            <MemoizedFormattedMessage
+            <FormattedMessage
               defaultMessage="Picks: {picksNumber}"
               id="app.components.admin.PostManager.PostPreview.picks"
               values={
@@ -122,7 +122,7 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
              
             <IconTooltip
               content={
-                <Memo(MemoizedFormattedMessage)
+                <Memo(FormattedMessage)
                   defaultMessage="The number of times this has been included in other participants' participatory budgets"
                   id="app.components.admin.PostManager.PostPreview.pbItemCountTooltip"
                 />

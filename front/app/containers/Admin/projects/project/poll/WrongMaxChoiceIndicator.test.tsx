@@ -18,8 +18,6 @@ const pollOptions = ['Vanilla', 'Pistachio', 'Raspberry'].map((item, index) =>
   mockOption(index, item)
 );
 
-jest.mock('react-intl');
-
 describe('<WrongMaxChoiceIndicator/>', () => {
   describe('boundaries', () => {
     it('renders correctly when options is null', () => {

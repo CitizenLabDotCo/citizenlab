@@ -2,7 +2,7 @@
 
 exports[`<UserComments /> renders correctly when empty 1`] = `
 <UserComments__MessageContainer>
-  <MemoizedFormattedMessage
+  <FormattedMessage
     defaultMessage="This user has not posted any comment yet."
     id="app.containers.UsersShowPage.noCommentsForUser"
   />
@@ -11,7 +11,7 @@ exports[`<UserComments /> renders correctly when empty 1`] = `
 
 exports[`<UserComments /> renders correctly when empty and own profile 1`] = `
 <UserComments__MessageContainer>
-  <MemoizedFormattedMessage
+  <FormattedMessage
     defaultMessage="You have not posted any comment yet."
     id="app.containers.UsersShowPage.noCommentsForYou"
   />
@@ -20,7 +20,7 @@ exports[`<UserComments /> renders correctly when empty and own profile 1`] = `
 
 exports[`<UserComments /> renders correctly when error 1`] = `
 <UserComments__MessageContainer>
-  <MemoizedFormattedMessage
+  <FormattedMessage
     defaultMessage="An error has occured, please try again later."
     id="app.containers.UsersShowPage.tryAgain"
   />
@@ -32,7 +32,7 @@ exports[`<UserComments /> renders correctly with actual comments 1`] = `
   className="e2e-profile-comments"
 >
   <a11y__ScreenReaderOnly>
-    <MemoizedFormattedMessage
+    <FormattedMessage
       defaultMessage="All the comments posted by this user"
       id="app.containers.UsersShowPage.invisibleTitleUserComments"
       tagName="h2"
@@ -169,7 +169,7 @@ exports[`<UserComments /> renders correctly with actual comments and load more b
   className="e2e-profile-comments"
 >
   <a11y__ScreenReaderOnly>
-    <MemoizedFormattedMessage
+    <FormattedMessage
       defaultMessage="All the comments posted by this user"
       id="app.containers.UsersShowPage.invisibleTitleUserComments"
       tagName="h2"
@@ -226,7 +226,7 @@ exports[`<UserComments /> renders correctly with actual comments and load more b
       onClick={[MockFunction]}
       textColor="#e68f51"
     >
-      <MemoizedFormattedMessage
+      <FormattedMessage
         defaultMessage="Load more comments"
         id="app.containers.UsersShowPage.loadMoreComments"
       />

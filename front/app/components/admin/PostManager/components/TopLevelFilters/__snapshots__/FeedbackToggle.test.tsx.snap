@@ -19,7 +19,7 @@ exports[`<FeedbackToggle /> renders correctly checked for initiatives 1`] = `
   <FeedbackToggle__StyledLabel
     onClick={[Function]}
   >
-    <MemoizedFormattedMessage
+    <FormattedMessage
       defaultMessage="Only show inputs that need feedback"
       id="app.components.admin.PostManager.inputsNeedFeedbackToggle"
     />
@@ -49,7 +49,7 @@ exports[`<FeedbackToggle /> renders correctly unchecked for ideas 1`] = `
   <FeedbackToggle__StyledLabel
     onClick={[Function]}
   >
-    <MemoizedFormattedMessage
+    <FormattedMessage
       defaultMessage="Only show inputs that need feedback"
       id="app.components.admin.PostManager.inputsNeedFeedbackToggle"
     />

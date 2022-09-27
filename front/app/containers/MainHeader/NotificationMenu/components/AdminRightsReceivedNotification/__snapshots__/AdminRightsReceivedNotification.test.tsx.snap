@@ -7,7 +7,7 @@ exports[`<AdminRightsReceivedNotification /> renders correctly 1`] = `
   linkTo="/admin"
   timing="2019-04-16T14:32:17.095Z"
 >
-  <MemoizedFormattedMessage
+  <FormattedMessage
     defaultMessage="You're now an administrator of the platform"
     id="app.containers.NotificationMenu.adminRightsReceived"
   />
