@@ -1,5 +1,8 @@
 import moment, { Moment } from 'moment';
 
+// utils
+import { range } from 'lodash';
+
 // typings
 import { IResolution } from 'components/admin/ResolutionControl';
 import {
@@ -104,9 +107,44 @@ const interpolateMonths = (
   const firstDate = getFirstDate(responseTimeSeries);
   const lastDate = getLastDate(responseTimeSeries);
 
-  console.log(responseTimeSeries, startAtMoment, endAtMoment, firstDate, lastDate)
+  const emptyMonthsBefore = startAtMoment
+    ? getEmptyMonthsBefore(startAtMoment, firstDate)
+    : []
+
+  console.log(responseTimeSeries, endAtMoment, lastDate, emptyMonthsBefore)
   return []
 }
+
+const getEmptyMonthsBefore = (startAtMoment: Moment, firstDate: Moment): TimeSeries => {
+  if (startAtMoment.isSameOrAfter(firstDate)) return [];
+
+  const startMonth = startAtMoment.month() + 1;
+  const startYear = startAtMoment.year();
+  const firstMonth = firstDate.month() + 1;
+  const firstYear = firstDate.year();
+
+  return range(startYear, firstYear).reduce((acc, year) => {
+    if (year === startYear) {
+      return createEmptyMonths(startMonth, 13, startYear)
+    }
+
+    if (year === firstYear) {
+      return [
+        ...acc,
+        ...createEmptyMonths(1, firstMonth, firstYear)
+      ]
+    }
+
+    return [...acc, ...createEmptyMonths(1, 12, year)]
+  }, [])
+}
+
+const createEmptyMonths = (startMonth: number, endMonth: number, year: number) =>
+  range(startMonth, endMonth).map((month) => ({
+    visitors: 0,
+    visits: 0,
+    date: `${year}-${month}-01`
+  }))
 
 const interpolateWeeks = (
   responseTimeSeries: TimeSeriesResponse,
