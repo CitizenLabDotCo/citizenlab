@@ -48,8 +48,10 @@ describe MultilocService do
       expect(service.t(translations, user)).to eq 'wort'
     end
 
-    it 'returns an empty string when no translation is defined' do
-      expect(service.t({}, user)).to eq ''
+    it 'returns an empty unfrozen string when no translation is defined' do
+      translation = service.t({}, user)
+      expect(translation).to eq ''
+      expect(translation).not_to be_frozen
     end
 
     it "returns an empty string when that's what the translations define" do

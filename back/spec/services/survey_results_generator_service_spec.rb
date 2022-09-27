@@ -77,6 +77,20 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
       title_multiloc: { 'en' => 'Pig', 'fr-FR' => 'Porc', 'nl-NL' => 'Varken' }
     )
   end
+  let(:minimum_label_multiloc) do
+    {
+      'en' => 'Strongly disagree',
+      'fr-FR' => "Pas du tout d'accord",
+      'nl-NL' => 'Helemaal niet mee eens'
+    }
+  end
+  let(:maximum_label_multiloc) do
+    {
+      'en' => 'Strongly agree',
+      'fr-FR' => "Tout à fait d'accord",
+      'nl-NL' => 'Strerk mee eens'
+    }
+  end
   let!(:linear_scale_field) do
     create(
       :custom_field_linear_scale,
@@ -87,17 +101,79 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
         'nl-NL' => 'Ben je het eens met de visie?'
       },
       maximum: 5,
-      minimum_label_multiloc: {
-        'en' => 'Strongly disagree',
-        'fr-FR' => "Pas du tout d'accord",
-        'nl-NL' => 'Helemaal niet mee eens'
-      },
-      maximum_label_multiloc: {
-        'en' => 'Strongly agree',
-        'fr-FR' => "Tout à fait d'accord",
-        'nl-NL' => 'Strerk mee eens'
-      }
+      minimum_label_multiloc: minimum_label_multiloc,
+      maximum_label_multiloc: maximum_label_multiloc
     )
+  end
+
+  let(:expected_result) do
+    {
+      data: {
+        results: [
+          {
+            inputType: 'multiselect',
+            question: {
+              'en' => 'What are your favourite pets?',
+              'fr-FR' => 'Quels sont vos animaux de compagnie préférés ?',
+              'nl-NL' => 'Wat zijn je favoriete huisdieren?'
+            },
+            totalResponses: 10,
+            answers: [
+              { answer: { 'en' => 'Cat', 'fr-FR' => 'Chat', 'nl-NL' => 'Kat' }, responses: 4 },
+              { answer: { 'en' => 'Dog', 'fr-FR' => 'Chien', 'nl-NL' => 'Hond' }, responses: 3 },
+              { answer: { 'en' => 'Cow', 'fr-FR' => 'Vache', 'nl-NL' => 'Koe' }, responses: 2 },
+              { answer: { 'en' => 'Pig', 'fr-FR' => 'Porc', 'nl-NL' => 'Varken' }, responses: 1 }
+            ]
+          },
+          {
+            inputType: 'linear_scale',
+            question: {
+              'en' => 'Do you agree with the vision?',
+              'fr-FR' => "Êtes-vous d'accord avec la vision? ?",
+              'nl-NL' => 'Ben je het eens met de visie?'
+            },
+            totalResponses: 18,
+            answers: [
+              { answer: { 'en' => '3', 'fr-FR' => '3', 'nl-NL' => '3' }, responses: 7 },
+              { answer: { 'en' => '2', 'fr-FR' => '2', 'nl-NL' => '2' }, responses: 5 },
+              { answer: { 'en' => '4', 'fr-FR' => '4', 'nl-NL' => '4' }, responses: 3 },
+              {
+                answer: {
+                  'en' => '1 - Strongly disagree',
+                  'fr-FR' => "1 - Pas du tout d'accord",
+                  'nl-NL' => '1 - Helemaal niet mee eens'
+                },
+                responses: 2
+              },
+              {
+                answer: {
+                  'en' => '5 - Strongly agree',
+                  'fr-FR' => "5 - Tout à fait d'accord",
+                  'nl-NL' => '5 - Strerk mee eens'
+                },
+                responses: 1
+              }
+            ]
+          }
+        ],
+        totalSubmissions: 23
+      }
+    }
+  end
+
+  let(:expected_result_without_minimum_and_maximum_labels) do
+    expected_result.tap do |result|
+      result[:data][:results][1][:answers][3][:answer] = {
+        'en' => '1',
+        'fr-FR' => "1 - Pas du tout d'accord",
+        'nl-NL' => '1'
+      }
+      result[:data][:results][1][:answers][4][:answer] = {
+        'en' => '5 - Strongly agree',
+        'fr-FR' => '5',
+        'nl-NL' => '5'
+      }
+    end
   end
 
   before do
@@ -139,88 +215,71 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
     end
   end
 
-  describe '#generate' do
-    let(:expected_result) do
-      {
-        data: {
-          results: [
-            {
-              inputType: 'multiselect',
-              question: {
-                'en' => 'What are your favourite pets?',
-                'fr-FR' => 'Quels sont vos animaux de compagnie préférés ?',
-                'nl-NL' => 'Wat zijn je favoriete huisdieren?'
-              },
-              totalResponses: 10,
-              answers: [
-                { answer: { 'en' => 'Cat', 'fr-FR' => 'Chat', 'nl-NL' => 'Kat' }, responses: 4 },
-                { answer: { 'en' => 'Dog', 'fr-FR' => 'Chien', 'nl-NL' => 'Hond' }, responses: 3 },
-                { answer: { 'en' => 'Cow', 'fr-FR' => 'Vache', 'nl-NL' => 'Koe' }, responses: 2 },
-                { answer: { 'en' => 'Pig', 'fr-FR' => 'Porc', 'nl-NL' => 'Varken' }, responses: 1 }
-              ]
-            },
-            {
-              inputType: 'linear_scale',
-              question: {
-                'en' => 'Do you agree with the vision?',
-                'fr-FR' => "Êtes-vous d'accord avec la vision? ?",
-                'nl-NL' => 'Ben je het eens met de visie?'
-              },
-              totalResponses: 18,
-              answers: [
-                { answer: { 'en' => '3', 'fr-FR' => '3', 'nl-NL' => '3' }, responses: 7 },
-                { answer: { 'en' => '2', 'fr-FR' => '2', 'nl-NL' => '2' }, responses: 5 },
-                { answer: { 'en' => '4', 'fr-FR' => '4', 'nl-NL' => '4' }, responses: 3 },
-                {
-                  answer: {
-                    'en' => 'Strongly disagree',
-                    'fr-FR' => "Pas du tout d'accord",
-                    'nl-NL' => 'Helemaal niet mee eens'
-                  },
-                  responses: 2
-                },
-                {
-                  answer: {
-                    'en' => 'Strongly agree',
-                    'fr-FR' => "Tout à fait d'accord",
-                    'nl-NL' => 'Strerk mee eens'
-                  },
-                  responses: 1
-                }
-              ]
-            }
-          ],
-          totalSubmissions: 23
-        }
-      }
-    end
+  context 'for a project' do
+    let(:project) { create(:continuous_native_survey_project) }
+    let(:form) { create(:custom_form, participation_context: project) }
+    let(:participation_context) { project }
+    let(:phases_of_inputs) { [] }
 
-    context 'for a project' do
-      let(:project) { create(:continuous_native_survey_project) }
-      let(:form) { create(:custom_form, participation_context: project) }
-      let(:participation_context) { project }
-      let(:phases_of_inputs) { [] }
-
-      it 'returns the results' do
-        # These locales are a prerequisite for the test.
-        expect(AppConfiguration.instance.settings('core', 'locales')).to eq(%w[en fr-FR nl-NL])
-
-        expect(generator.generate).to eq expected_result
+    describe '#generate_submission_count' do
+      it 'returns the count' do
+        expect(generator.generate_submission_count).to eq({ data: { totalSubmissions: 23 } })
       end
     end
 
-    context 'for a phase' do
-      let(:project) { create(:project_with_active_native_survey_phase) }
-      let(:active_phase) { project.phases.first }
-      let(:form) { create(:custom_form, participation_context: active_phase) }
-      let(:participation_context) { active_phase }
-      let(:phases_of_inputs) { [active_phase] }
-
+    describe '#generate_results' do
       it 'returns the results' do
         # These locales are a prerequisite for the test.
         expect(AppConfiguration.instance.settings('core', 'locales')).to eq(%w[en fr-FR nl-NL])
 
-        expect(generator.generate).to eq expected_result
+        expect(generator.generate_results).to eq expected_result
+      end
+
+      context 'when not all minimum and maximum labels are configured' do
+        let(:minimum_label_multiloc) { { 'fr-FR' => "Pas du tout d'accord" } }
+        let(:maximum_label_multiloc) { { 'en' => 'Strongly agree' } }
+
+        it 'returns minimum and maximum labels as numbers' do
+          # These locales are a prerequisite for the test.
+          expect(AppConfiguration.instance.settings('core', 'locales')).to eq(%w[en fr-FR nl-NL])
+
+          expect(generator.generate_results).to eq expected_result_without_minimum_and_maximum_labels
+        end
+      end
+    end
+  end
+
+  context 'for a phase' do
+    let(:project) { create(:project_with_active_native_survey_phase) }
+    let(:active_phase) { project.phases.first }
+    let(:form) { create(:custom_form, participation_context: active_phase) }
+    let(:participation_context) { active_phase }
+    let(:phases_of_inputs) { [active_phase] }
+
+    describe '#generate_submission_count' do
+      it 'returns the count' do
+        expect(generator.generate_submission_count).to eq({ data: { totalSubmissions: 23 } })
+      end
+    end
+
+    describe '#generate_results' do
+      it 'returns the results' do
+        # These locales are a prerequisite for the test.
+        expect(AppConfiguration.instance.settings('core', 'locales')).to eq(%w[en fr-FR nl-NL])
+
+        expect(generator.generate_results).to eq expected_result
+      end
+
+      context 'when not all minimum and maximum labels are configured' do
+        let(:minimum_label_multiloc) { { 'fr-FR' => "Pas du tout d'accord" } }
+        let(:maximum_label_multiloc) { { 'en' => 'Strongly agree' } }
+
+        it 'returns minimum and maximum labels as numbers' do
+          # These locales are a prerequisite for the test.
+          expect(AppConfiguration.instance.settings('core', 'locales')).to eq(%w[en fr-FR nl-NL])
+
+          expect(generator.generate_results).to eq expected_result_without_minimum_and_maximum_labels
+        end
       end
     end
   end

@@ -9,6 +9,7 @@ import { Multiloc } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 
 type FormActionsConfig = {
+  phaseId?: string;
   editFormLink: string;
   viewFormLink: string;
   viewFormResults: string;
@@ -47,6 +48,7 @@ export const getFormActionsConfig = (
   }
 
   return getSurveyPhases(phases).map((phase) => ({
+    phaseId: phase.id,
     editFormLink: `/admin/projects/${project.id}/phases/${phase.id}/native-survey/edit`,
     viewFormLink: `/projects/${project.attributes.slug}/ideas/new?phase_id=${phase.id}`,
     viewFormResults: `/admin/projects/${project.id}/native-survey/results?phase_id=${phase.id}`,
