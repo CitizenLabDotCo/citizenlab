@@ -266,6 +266,13 @@ PATH
       rails (~> 6.1)
 
 PATH
+  remote: engines/commercial/impact_tracking
+  specs:
+    impact_tracking (0.1.0)
+      crawler_detect (~> 1.2.1)
+      rails (~> 6.1)
+
+PATH
   remote: engines/commercial/insights
   specs:
     insights (0.1.0)
@@ -598,6 +605,8 @@ GEM
     crack (0.4.5)
       rexml
     crass (1.0.6)
+    crawler_detect (1.2.1)
+      qonfig (~> 0.24)
     css_parser (1.11.0)
       addressable
     dalli (2.7.11)
@@ -866,6 +875,7 @@ GEM
     public_suffix (4.0.7)
     puma (5.6.4)
       nio4r (~> 2.0)
+    qonfig (0.28.0)
     que-web (0.9.3)
       que (~> 1.0.0.beta3)
       sinatra
@@ -1195,6 +1205,7 @@ DEPENDENCIES
   id_vienna_saml!
   idea_assignment!
   idea_custom_fields!
+  impact_tracking!
   insights!
   interactor
   interactor-rails
