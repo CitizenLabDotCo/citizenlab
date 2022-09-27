@@ -1,17 +1,16 @@
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import React from 'react';
 import { TCustomPageCTAType } from 'services/customPages';
-import { CTASignedInType } from 'services/homepageSettings';
 import { Multiloc } from 'typings';
 import SettingRadioButtons from './SettingRadioButtons';
 
-const CTA_SIGNED_IN_TYPES: CTASignedInType[] = [
+const CTA_SIGNED_IN_TYPES: TCustomPageCTAType[] = [
   'no_button',
   'customized_button',
 ];
 
 interface Props {
-  ctaType: CTASignedInType;
+  ctaType: TCustomPageCTAType;
   ctaButtonMultiloc: Multiloc;
   ctaButtonUrl: string | null;
   handleCTAButtonTypeOnChange: (ctaType: TCustomPageCTAType) => void;

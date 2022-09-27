@@ -1,7 +1,6 @@
 import { Radio } from '@citizenlab/cl2-component-library';
 import React from 'react';
 import { TCustomPageCTAType } from 'services/customPages';
-import { CTASignedInType } from 'services/homepageSettings';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -14,8 +13,8 @@ const StyledCustomizedButtonSettings = styled(CustomizedButtonSettings)`
 
 interface Props {
   signInStatus: 'signed_in';
-  ctaTypes: CTASignedInType[];
-  ctaType: CTASignedInType;
+  ctaTypes: TCustomPageCTAType[];
+  ctaType: TCustomPageCTAType;
   ctaButtonMultiloc: Multiloc;
   ctaButtonUrl: string | null;
   handleCTAButtonTypeOnChange: (ctaType: TCustomPageCTAType) => void;
@@ -35,7 +34,7 @@ const SettingRadioButtons = ({
 }: Props) => {
   return (
     <>
-      {ctaTypes.map((option: CTASignedInType) => (
+      {ctaTypes.map((option: TCustomPageCTAType) => (
         <div
           data-cy={`e2e-cta-settings-${signInStatus}-${option}`}
           key={option}
