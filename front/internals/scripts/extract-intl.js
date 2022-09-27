@@ -1,3 +1,4 @@
+
 /**
  * This script will extract the internationalization messages from all components
    and package them in the translation json files in the translations file.
@@ -93,7 +94,7 @@ const generateLocaleMappings = (
 const extractFromFile = async (fileName, localeMappings, oldLocaleMappings) => {
   try {
     const codeToTransform = await readFilePromise(fileName);
-    const options = { plugins: ['react-intl'], filename: fileName };
+    const options = { plugins: ['formatjs'], filename: fileName };
     const { metadata } = await babel.transform(codeToTransform, options);
 
     if (metadata && metadata['react-intl'] && metadata['react-intl'].messages) {
