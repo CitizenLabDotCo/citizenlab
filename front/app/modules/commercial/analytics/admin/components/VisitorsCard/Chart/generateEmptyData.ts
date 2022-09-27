@@ -4,7 +4,10 @@ import moment from 'moment';
 import { range } from 'lodash-es';
 
 // typings
-import { TimeSeries, TimeSeriesRow } from '../../../hooks/useVisitorsData';
+import {
+  TimeSeries,
+  TimeSeriesRow,
+} from '../../../hooks/useVisitorsData/typings';
 
 export const generateEmptyData = (): TimeSeries => {
   return range(-6, 1).map((i) => {

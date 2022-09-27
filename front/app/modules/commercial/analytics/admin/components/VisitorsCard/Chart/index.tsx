@@ -1,8 +1,5 @@
 import React from 'react';
 
-// hooks
-import useVisitorsData from '../../../hooks/useVisitorsData';
-
 // styling
 import { colors } from 'components/admin/Graphs/styling';
 
@@ -24,11 +21,11 @@ import { generateEmptyData } from './generateEmptyData';
 // typings
 import { IResolution } from 'components/admin/ResolutionControl';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
+import { TimeSeries } from '../../../hooks/useVisitorsData/typings';
+import { NilOrError } from 'utils/helperUtils';
 
 interface Props {
-  startAt: string | undefined;
-  endAt: string | undefined;
-  projectFilter: string | undefined;
+  timeSeries: TimeSeries | NilOrError;
   resolution: IResolution;
   innerRef: React.RefObject<any>;
 }
@@ -36,20 +33,11 @@ interface Props {
 const EMPTY_DATA = generateEmptyData();
 
 const Chart = ({
-  startAt,
-  endAt,
-  projectFilter,
+  timeSeries,
   resolution,
   innerRef,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
-  const { timeSeries } = useVisitorsData({
-    startAt,
-    endAt,
-    projectId: projectFilter,
-    resolution,
-  });
-
   const legendItems: LegendItem[] = [
     {
       icon: 'circle',

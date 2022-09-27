@@ -16,7 +16,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { toFullMonth } from 'utils/dateUtils';
 
 // typings
-import { TimeSeriesRow } from '../../../hooks/useVisitorsData';
+import { TimeSeriesRow } from '../../../hooks/useVisitorsData/typings';
 import { IResolution } from 'components/admin/ResolutionControl';
 import { MessageDescriptor } from 'typings';
 

@@ -35,7 +35,7 @@ const VisitorsCard = ({
 }: Props & InjectedIntlProps) => {
   const graphRef = useRef();
 
-  const { xlsxData } = useVisitorsData({
+  const { stats, timeSeries, xlsxData } = useVisitorsData({
     startAtMoment,
     endAtMoment,
     projectId: projectFilter,
@@ -62,19 +62,12 @@ const VisitorsCard = ({
     >
       <Box width="100%" display="flex" flexDirection="row">
         <Box display="flex" flexDirection="row" pl="20px">
-          <VisitorStats
-            startAt={startAt}
-            endAt={endAt}
-            projectFilter={projectFilter}
-            resolution={resolution}
-          />
+          <VisitorStats stats={stats} resolution={resolution} />
         </Box>
 
         <Box flexGrow={1} display="flex" justifyContent="center">
           <Chart
-            startAt={startAt}
-            endAt={endAt}
-            projectFilter={projectFilter}
+            timeSeries={timeSeries}
             resolution={resolution}
             innerRef={graphRef}
           />

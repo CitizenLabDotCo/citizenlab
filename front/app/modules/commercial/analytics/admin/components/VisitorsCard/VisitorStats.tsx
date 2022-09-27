@@ -1,8 +1,5 @@
 import React from 'react';
 
-// hooks
-import useVisitorsData, { Stats } from '../../hooks/useVisitorsData';
-
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 import Statistic from 'components/admin/Graphs/Statistic';
@@ -13,16 +10,15 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 // typings
 import { IResolution } from 'components/admin/ResolutionControl';
 import { MessageDescriptor } from 'typings';
+import { Stats } from '../../hooks/useVisitorsData/typings';
 
 interface Props {
-  startAt: string | undefined;
-  endAt: string | undefined;
-  projectFilter: string | undefined;
+  stats: Stats | NilOrError;
   resolution: IResolution;
 }
 
@@ -41,22 +37,11 @@ const EMPTY_DATA: Stats = {
 };
 
 const VisitorStats = ({
-  startAt,
-  endAt,
-  projectFilter,
+  stats,
   resolution,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
-  const visitorData = useVisitorsData({
-    startAt,
-    endAt,
-    projectId: projectFilter,
-    resolution,
-  });
-
-  const stats = isNilOrError(visitorData.stats)
-    ? EMPTY_DATA
-    : visitorData.stats;
+  const shownStats = isNilOrError(stats) ? EMPTY_DATA : stats;
 
   const bottomLabel = formatMessage(BOTTOM_LABEL_COPY[resolution]);
 
@@ -65,34 +50,34 @@ const VisitorStats = ({
       <Box>
         <Statistic
           name={formatMessage(messages.visitors)}
-          value={stats.visitors.value.toLocaleString()}
+          value={shownStats.visitors.value.toLocaleString()}
           bottomLabel={bottomLabel}
-          bottomLabelValue={stats.visitors.lastPeriod}
+          bottomLabelValue={shownStats.visitors.lastPeriod}
           tooltipContent={formatMessage(messages.visitorsStatTooltipMessage)}
         />
         <Box mt="32px">
           <Statistic
             name={formatMessage(messages.visitDuration)}
-            value={stats.visitDuration.value.toLocaleString()}
+            value={shownStats.visitDuration.value.toLocaleString()}
             bottomLabel={bottomLabel}
-            bottomLabelValue={stats.visitDuration.lastPeriod}
+            bottomLabelValue={shownStats.visitDuration.lastPeriod}
           />
         </Box>
       </Box>
       <Box ml="28px">
         <Statistic
           name={formatMessage(messages.visits)}
-          value={stats.visits.value.toLocaleString()}
+          value={shownStats.visits.value.toLocaleString()}
           bottomLabel={bottomLabel}
-          bottomLabelValue={stats.visits.lastPeriod}
+          bottomLabelValue={shownStats.visits.lastPeriod}
           tooltipContent={formatMessage(messages.visitsStatTooltipMessage)}
         />
         <Box mt="32px">
           <Statistic
             name={formatMessage(messages.pageViews)}
-            value={stats.pageViews.value.toLocaleString()}
+            value={shownStats.pageViews.value.toLocaleString()}
             bottomLabel={bottomLabel}
-            bottomLabelValue={stats.pageViews.lastPeriod}
+            bottomLabelValue={shownStats.pageViews.lastPeriod}
           />
         </Box>
       </Box>
