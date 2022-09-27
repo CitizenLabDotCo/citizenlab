@@ -21,7 +21,10 @@ module MultiTenancy
               organization_name: runner.create_for_tenant_locales { Faker::Address.city },
               currency: CL2_SUPPORTED_CURRENCIES.sample
             },
-            customizable_homepage_banner: { allowed: true },
+            customizable_homepage_banner: {
+              allowed: true,
+              enabled: true
+            },
             password_login: {
               allowed: true,
               enabled: true,
@@ -259,6 +262,7 @@ module MultiTenancy
               allowed: true
             },
             events_widget: {
+              enabled: true,
               allowed: true
             },
             initiatives: {
