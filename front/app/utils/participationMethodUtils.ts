@@ -84,7 +84,8 @@ export function getAllParticipationMethods(
   }
 }
 
-/** Given the project and its phases, returns whether the InputManager should be shown in the back office.
+/** Given a project and its (optional) phases, returns whether the InputManager
+ *  should be shown in the back office.
  */
 export function showInputManager(
   project: IProjectData,
