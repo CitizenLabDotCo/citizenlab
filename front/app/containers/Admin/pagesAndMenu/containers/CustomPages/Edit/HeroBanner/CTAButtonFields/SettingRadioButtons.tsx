@@ -1,13 +1,13 @@
 import { Radio } from '@citizenlab/cl2-component-library';
+import Error from 'components/UI/Error';
 import React from 'react';
+import { InjectedIntlProps } from 'react-intl';
 import { TCustomPageCTAType } from 'services/customPages';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
-import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import CustomizedButtonSettings from './CustomizedButtonSettings';
 import messages from './messages';
-import Error from 'components/UI/Error';
 
 const StyledCustomizedButtonSettings = styled(CustomizedButtonSettings)`
   margin-left: 28px;
@@ -62,7 +62,9 @@ const SettingRadioButtons = ({
           />
           {option === 'customized_button' && ctaType === 'customized_button' && (
             <>
-              {hasCTAError && <Error text={formatMessage(messages.ctaError)} />}
+              {hasCTAError && (
+                <Error text={formatMessage(messages.customPageCtaError)} />
+              )}
               <StyledCustomizedButtonSettings
                 buttonMultiloc={ctaButtonMultiloc}
                 buttonUrl={ctaButtonUrl}
