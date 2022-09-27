@@ -89,6 +89,7 @@ const NewIdeaButtonDropdown = ({
         height="42px"
         px="16px"
         display="flex"
+        id="e2e-new-idea"
       >
         <Icon
           fill="white"
