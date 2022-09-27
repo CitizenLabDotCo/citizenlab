@@ -7,34 +7,42 @@ type ParticipationMethodConfig = {
   /** We currently have 2 UIs for admins to edit the form definition. This
    * defines which UI, if any, the method uses */
   formEditor: 'simpleFormEditor' | 'surveyEditor' | null;
+  showInputManager: boolean;
 };
 
 const ideationConfig: ParticipationMethodConfig = {
   formEditor: 'simpleFormEditor',
+  showInputManager: true,
 };
 
 const nativeSurveyConfig: ParticipationMethodConfig = {
   formEditor: 'surveyEditor',
+  showInputManager: false,
 };
 
 const informationConfig: ParticipationMethodConfig = {
   formEditor: null,
+  showInputManager: false,
 };
 
 const surveyConfig: ParticipationMethodConfig = {
   formEditor: null,
+  showInputManager: false,
 };
 
 const budgetingConfig: ParticipationMethodConfig = {
   formEditor: 'simpleFormEditor',
+  showInputManager: true,
 };
 
 const pollConfig: ParticipationMethodConfig = {
   formEditor: null,
+  showInputManager: false,
 };
 
 const volunteeringConfig: ParticipationMethodConfig = {
   formEditor: null,
+  showInputManager: false,
 };
 
 const methodToConfig: {
@@ -82,37 +90,22 @@ export function showInputManager(
   project: IProjectData,
   phases?: Error | IPhaseData[] | null | undefined
 ): boolean {
-  if (
-    project.attributes.process_type === 'continuous' &&
-    (project.attributes.participation_method === 'ideation' ||
-      project.attributes.participation_method === 'budgeting')
-  ) {
-    return true;
+  let showInputManager = false;
+  if (project.attributes.process_type === 'continuous') {
+    showInputManager = getMethodConfig(
+      project.attributes.participation_method
+    ).showInputManager;
   } else if (project.attributes.process_type === 'timeline') {
     if (!isNilOrError(phases)) {
-      if (
-        hasPhaseOfType(phases, 'ideation') ||
-        hasPhaseOfType(phases, 'budgeting')
-      ) {
-        return true;
-      }
+      phases.map((phase) => {
+        if (
+          getMethodConfig(phase.attributes.participation_method)
+            .showInputManager
+        ) {
+          showInputManager = true;
+        }
+      });
     }
   }
-  return false;
-}
-
-/** Given an array of Phases and a participation method, returns whether one of
- * the phases is of the given method.
- */
-export function hasPhaseOfType(
-  phases: IPhaseData[],
-  type: ParticipationMethod
-) {
-  let found = false;
-  phases.map((phase) => {
-    if (phase.attributes.participation_method === type && found === false) {
-      found = true;
-    }
-  });
-  return found;
+  return showInputManager;
 }
