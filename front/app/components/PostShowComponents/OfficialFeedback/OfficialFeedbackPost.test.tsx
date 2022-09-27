@@ -4,6 +4,7 @@ import React from 'react';
 import * as officialFeedbackSerivce from 'services/officialFeedback';
 import { mockOfficialFeedback } from 'services/__mocks__/officialFeedback';
 import { OfficialFeedbackPost } from './OfficialFeedbackPost';
+import { IntlShape } from 'react-intl';
 
 jest.mock('services/officialFeedback', () => ({
   deleteOfficialFeedbackFromIdea: jest.fn(),
@@ -29,7 +30,7 @@ describe('<OfficialFeedbackPost />', () => {
         officialFeedbackPost={mockOfficialFeedbackPost}
         locale="en"
         tenantLocales={['en', 'nl-BE']}
-        intl={intl}
+        intl={intl as IntlShape}
         postType="initiative"
       />
     );
@@ -42,7 +43,7 @@ describe('<OfficialFeedbackPost />', () => {
         officialFeedbackPost={mockOfficialFeedbackPost}
         locale="en"
         tenantLocales={['en', 'nl-BE']}
-        intl={intl}
+        intl={intl as IntlShape}
         postType="initiative"
       />
     );
@@ -57,7 +58,7 @@ describe('<OfficialFeedbackPost />', () => {
         officialFeedbackPost={mockOfficialFeedbackPost}
         locale="en"
         tenantLocales={['en', 'nl-BE']}
-        intl={intl}
+        intl={intl as IntlShape}
         postType="initiative"
       />
     );
