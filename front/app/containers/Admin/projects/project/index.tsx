@@ -43,6 +43,7 @@ import { IProjectData } from 'services/projects';
 
 // utils
 import { insertConfiguration } from 'utils/moduleUtils';
+import { showInputManager } from 'utils/participationMethodUtils';
 
 const TopContainer = styled.div`
   width: 100%;
@@ -157,22 +158,10 @@ export class AdminProjectsProjectIndex extends PureComponent<
         description: function isDescriptionTabHidden() {
           return false;
         },
-        ideas: function isIdeaTabHidden(project) {
-          const processType = project?.attributes.process_type;
-          const participationMethod = project.attributes.participation_method;
-
-          if (
-            processType === 'continuous' &&
-            participationMethod !== 'ideation' &&
-            participationMethod !== 'native_survey' &&
-            participationMethod !== 'budgeting'
-          ) {
-            return true;
-          }
-
-          return false;
+        ideas: function isIdeaTabHidden(project, phases) {
+          return !showInputManager(project, phases);
         },
-        poll: function isPollTabHidden(project, phases) {
+        poll: function isPollTabHiddenbHidden(project, phases) {
           const processType = project?.attributes.process_type;
           const participationMethod = project.attributes.participation_method;
 
@@ -400,7 +389,7 @@ export class AdminProjectsProjectIndex extends PureComponent<
                     {project.attributes.process_type === 'timeline' &&
                       numberIdeationPhases === 1 && (
                         <NewIdeaButton
-                          inputTerm={inputTerm}
+                          inputTerm={ideationPhase.attributes.input_term}
                           linkTo={`/projects/${project.attributes.slug}/ideas/new?phase_id=${ideationPhase.id}`}
                         />
                       )}
