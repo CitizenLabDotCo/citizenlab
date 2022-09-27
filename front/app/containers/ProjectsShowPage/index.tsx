@@ -93,7 +93,7 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
     if (!isNilOrError(showModal)) {
       setTimeout(() => {
         setShowModal(JSON.parse(showModal));
-      }, 1000);
+      }, 1500);
       clHistory.replace(window.location.pathname);
     }
   }, []);
@@ -165,28 +165,26 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
           projectId={projectId}
           scrollToEventId={scrollToEventId}
         />
-        {showModal && (
-          <Modal
-            opened={showModal}
-            close={() => {
-              setShowModal(false);
-            }}
-            hasSkipButton={false}
+        <Modal
+          opened={showModal}
+          close={() => {
+            setShowModal(false);
+          }}
+          hasSkipButton={false}
+        >
+          <Box
+            width="100%"
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
           >
-            <Box
-              width="100%"
-              display="flex"
-              flexDirection="column"
-              alignItems="center"
-              justifyContent="center"
-            >
-              <Image width="80px" height="80px" src={rocket} alt="" />
-              <Title variant="h2" textAlign="center">
-                {config.getModalContent()}
-              </Title>
-            </Box>
-          </Modal>
-        )}
+            <Image width="80px" height="80px" src={rocket} alt="" />
+            <Title variant="h2" textAlign="center">
+              {config.getModalContent()}
+            </Title>
+          </Box>
+        </Modal>
       </ContentWrapper>
     );
   }
