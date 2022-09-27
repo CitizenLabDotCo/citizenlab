@@ -48,32 +48,32 @@ describe('parseTimeSeries', () => {
       expect(output).toEqual(expectedOutput);
     })
 
-    it('works with only start date (continuousData)', () => {
+    // it('works with only start date (continuousData)', () => {
       
-    })
+    // })
 
-    it('works with only end date (continuousData)', () => {
+    // it('works with only end date (continuousData)', () => {
       
-    })
+    // })
 
-    it('works with both start and end date (continuousData)', () => {
+    // it('works with both start and end date (continuousData)', () => {
 
-    })
+    // })
 
-    it('works without start and end date (dataWithGap)', () => {
+    // it('works without start and end date (dataWithGap)', () => {
 
-    })
+    // })
 
-    it('works with only start date (dataWithGap)', () => {
+    // it('works with only start date (dataWithGap)', () => {
       
-    })
+    // })
 
-    it('works with only end date (dataWithGap)', () => {
+    // it('works with only end date (dataWithGap)', () => {
       
-    })
+    // })
 
-    it('works with both start and end date (dataWithGap)', () => {
+    // it('works with both start and end date (dataWithGap)', () => {
       
-    })
+    // })
   })
 })
