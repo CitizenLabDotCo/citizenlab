@@ -9,15 +9,15 @@ namespace :analytics do
 
       # delete any we've already created
       Analytics::FactVisit.delete_all
-      Analytics::DimensionChannel.delete_all
+      Analytics::DimensionReferrerType.delete_all
       Analytics::DimensionLocale.delete_all
 
       # Create static dimensions - locale / channel
       Rake::Task['analytics:populate_locale_dimension'].execute(host: 'localhost')
       locale1 = Analytics::DimensionLocale.first
       locale2 = Analytics::DimensionLocale.last
-      channel = Analytics::DimensionChannel.create!(name_multiloc: { en: 'Website', 'fr-BE': 'Website', 'nl-BE': 'Website' })
-      channel2 = Analytics::DimensionChannel.create!(name_multiloc: { en: 'Social', 'fr-BE': 'Social', 'nl-BE': 'Social' })
+      referrer_type1 = Analytics::DimensionReferrerType.create!(name_multiloc: { en: 'Website', 'fr-BE': 'Website', 'nl-BE': 'Website' })
+      referrer_type2 = Analytics::DimensionReferrerType.create!(name_multiloc: { en: 'Social', 'fr-BE': 'Social', 'nl-BE': 'Social' })
 
       # Get some other dimensions
       project = Analytics::DimensionProject.first
@@ -29,7 +29,7 @@ namespace :analytics do
       visit = Analytics::FactVisit.create!(
         visitor_id: '1',
         dimension_user: user,
-        dimension_channel: channel,
+        dimension_referrer_type: referrer_type1,
         dimension_date_first_action: date1,
         dimension_date_last_action: date1,
         duration: 300,
@@ -44,7 +44,7 @@ namespace :analytics do
       visit = Analytics::FactVisit.create!(
         visitor_id: '1',
         dimension_user: user,
-        dimension_channel: channel,
+        dimension_referrer_type: referrer_type1,
         dimension_date_first_action: date1,
         dimension_date_last_action: date1,
         duration: 600,
@@ -58,7 +58,7 @@ namespace :analytics do
       # Visit 3 - no user, no project
       visit = Analytics::FactVisit.create!(
         visitor_id: '2',
-        dimension_channel: channel2,
+        dimension_referrer_type: referrer_type2,
         dimension_date_first_action: date2,
         dimension_date_last_action: date2,
         duration: 900,
