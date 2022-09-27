@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_06_074349) do
+ActiveRecord::Schema.define(version: 2022_09_27_091942) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -472,6 +472,11 @@ ActiveRecord::Schema.define(version: 2022_09_06_074349) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_identities_on_user_id"
+  end
+
+  create_table "impact_tracking_sessions", id: false, force: :cascade do |t|
+    t.string "monthly_user_hash"
+    t.datetime "created_at", null: false
   end
 
   create_table "initiative_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1480,7 +1485,7 @@ ActiveRecord::Schema.define(version: 2022_09_06_074349) do
               0 AS feedback_official,
               1 AS feedback_status_change
              FROM activities
-            WHERE (((activities.action)::text = 'changed_status'::text) AND ((activities.item_type)::text = ANY ((ARRAY['Idea'::character varying, 'Initiative'::character varying])::text[])))
+            WHERE (((activities.action)::text = 'changed_status'::text) AND ((activities.item_type)::text = ANY (ARRAY[('Idea'::character varying)::text, ('Initiative'::character varying)::text])))
             GROUP BY activities.item_id
           UNION ALL
            SELECT official_feedbacks.post_id,
