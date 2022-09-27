@@ -6,29 +6,17 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
   skip_before_action :authenticate_user
 
   def schema
-    if participation_context
-      render json: CustomFieldService.new.ui_and_json_multiloc_schemas(AppConfiguration.instance, custom_fields)
-    else
-      send_not_found
-    end
+    render json: CustomFieldService.new.ui_and_json_multiloc_schemas(AppConfiguration.instance, custom_fields)
   end
 
   def json_forms_schema
-    if participation_context
-      render json: JsonFormsService.new.input_ui_and_json_multiloc_schemas(custom_fields, current_user)
-    else
-      send_not_found
-    end
+    render json: JsonFormsService.new.input_ui_and_json_multiloc_schemas(custom_fields, current_user)
   end
 
   private
 
   def project
-    @project ||= Project.find_by id: params[:project_id]
-  end
-
-  def participation_context
-    @participation_context ||= project && ParticipationContextService.new.get_participation_context(project)
+    Project.find_by id: params[:project_id]
   end
 
   def custom_fields
@@ -36,6 +24,6 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
   end
 
   def custom_form
-    participation_context.custom_form || CustomForm.new(participation_context: participation_context)
+    project.custom_form || CustomForm.new(participation_context: project)
   end
 end
