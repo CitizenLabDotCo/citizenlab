@@ -28,7 +28,7 @@ import { geocode, reverseGeocode } from 'utils/locationTools';
 // for getting inital state from previous page
 import { parse } from 'qs';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
-import { getLatestRelevantPhase } from 'services/phases';
+import { getCurrentPhase } from 'services/phases';
 import { getMethodConfig } from 'utils/participationMethodUtils';
 
 const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
@@ -117,8 +117,16 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
 
     // Check ParticipationMethodConfig for form submission action
     if (!isNilOrError(phases)) {
-      const phaseParticipationMethod =
-        getLatestRelevantPhase(phases)?.attributes.participation_method;
+      // Check if URL contains specific phase_id
+      const queryParams = new URLSearchParams(window.location.search);
+      const phaseIdFromUrl = queryParams.get('phase_id');
+      const participationMethodFromURL = phases
+        .filter((phase) => phase.id === phaseIdFromUrl)
+        .map((phase) => phase.attributes.participation_method)[0];
+
+      const phaseParticipationMethod = phaseIdFromUrl
+        ? participationMethodFromURL
+        : getCurrentPhase(phases)?.attributes.participation_method;
       if (!isNilOrError(phaseParticipationMethod)) {
         getMethodConfig(phaseParticipationMethod).onFormSubmission(
           project,
