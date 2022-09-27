@@ -80,7 +80,7 @@ ActiveRecord::Schema.define(version: 2022_09_21_102230) do
     t.date "dimension_date_last_action_id"
     t.integer "duration", null: false
     t.integer "pages_visited", null: false
-    t.boolean "returning_visitor", default: true, null: false
+    t.boolean "returning_visitor", default: false, null: false
     t.integer "matomo_visit_id", null: false
     t.datetime "matomo_last_action_time", null: false
     t.index ["dimension_channel_id"], name: "i_v_channel"

@@ -12,7 +12,7 @@
 #  dimension_date_last_action_id  :date
 #  duration                       :integer          not null
 #  pages_visited                  :integer          not null
-#  returning_visitor              :boolean          default(TRUE), not null
+#  returning_visitor              :boolean          default(FALSE), not null
 #  matomo_visit_id                :integer          not null
 #  matomo_last_action_time        :datetime         not null
 #
