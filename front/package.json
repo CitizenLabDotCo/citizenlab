@@ -43,7 +43,7 @@
   "lint-prepush": {
     "base": "master",
     "tasks": {
-      "app/*.{ts,tsx,js,jsx}": [
+      "app/**/*.{ts,tsx,js,jsx}": [
       "eslint --ext .js,.jsx,.ts,.tsx app --color --max-warnings=0"
      ]
   }
