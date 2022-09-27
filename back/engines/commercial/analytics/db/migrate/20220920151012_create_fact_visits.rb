@@ -3,9 +3,10 @@
 # Create the whole data model for visitor analytics from Matomo
 class CreateFactVisits < ActiveRecord::Migration[6.1]
   def change
-    # New dimensions
+    # Dimensions
     create_table :analytics_dimension_referrer_types, id: :uuid do |t|
-      t.jsonb :name_multiloc
+      t.string :key, index: { unique: true, name: 'i_d_referrer_key' }
+      t.string :name
     end
 
     create_table :analytics_dimension_locales, id: :uuid do |t|
@@ -36,6 +37,7 @@ class CreateFactVisits < ActiveRecord::Migration[6.1]
       t.timestamp :matomo_last_action_time, null: false, index: { name: 'i_v_timestamp' }
     end
 
+    # Join tables
     create_table :analytics_dimension_locales_fact_visits, id: false do |t|
       t.belongs_to :dimension_locale, type: :uuid, foreign_key: { to_table: 'analytics_dimension_locales' }, index: { name: 'i_l_v_locale' }
       t.belongs_to :fact_visit, type: :uuid, foreign_key: { to_table: 'analytics_fact_visits' }, index: { name: 'i_l_v_visit' }

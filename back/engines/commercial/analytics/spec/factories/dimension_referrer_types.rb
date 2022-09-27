@@ -2,6 +2,7 @@
 
 FactoryBot.define do
   factory :dimension_referrer_type_website, class: 'Analytics::DimensionReferrerType' do
-    name_multiloc { { en: 'Website', 'fr-BE': 'Website', 'nl-BE': 'Website' } }
+    key { 'website' }
+    name { 'Website' }
   end
 end

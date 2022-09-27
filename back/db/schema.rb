@@ -78,7 +78,9 @@ ActiveRecord::Schema.define(version: 2022_09_27_100512) do
   end
 
   create_table "analytics_dimension_referrer_types", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.jsonb "name_multiloc"
+    t.string "key"
+    t.string "name"
+    t.index ["key"], name: "i_d_referrer_key", unique: true
   end
 
   create_table "analytics_dimension_types", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
