@@ -10,6 +10,7 @@ const SignedOutHeaderIndex = () => {
   // Flag should not be here, but inside module (not sure now)
   const customizableHomepageBannerEnabled = useFeatureFlag({
     name: 'customizable_homepage_banner',
+    onlyCheckAllowed: true,
   });
 
   if (!isNilOrError(homepageSettings)) {

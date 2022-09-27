@@ -158,6 +158,7 @@ const HeaderContent = ({
   // Flag should not be here, but inside module.
   const customizableHomepageBannerEnabled = useFeatureFlag({
     name: 'customizable_homepage_banner',
+    onlyCheckAllowed: true
   });
 
   if (!isNilOrError(homepageSettings)) {
