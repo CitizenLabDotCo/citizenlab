@@ -2,7 +2,7 @@
 // libraries
 import React from 'react';
 import { shallow } from 'enzyme';
-import { intl } from 'utils/cl-intl';
+import { intl } from 'react-intl';
 import useUser from 'hooks/useUser';
 
 // component to test

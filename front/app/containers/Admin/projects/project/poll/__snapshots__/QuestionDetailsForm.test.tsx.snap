@@ -31,7 +31,7 @@ exports[`<QuestionDetailsForm/> display displays correctly for a single choice q
       disabled={true}
       onClick={[Function]}
     >
-      <FormattedMessage
+      <MemoizedFormattedMessage
         defaultMessage="Apply"
         id="app.containers.AdminPage.ProjectEdit.PollTab.applyQuestionSettings"
       />

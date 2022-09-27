@@ -15,7 +15,7 @@ exports[`<Container /> renders correclty when no destinations are allowed by the
       />
     }
     header={
-      <FormattedMessage
+      <Memo(MemoizedFormattedMessage)
         defaultMessage="Your cookie preferences"
         id="app.components.ConsentManager.Modal.PreferencesDialog.title"
       />

@@ -19,17 +19,17 @@ Array [
   },
   Object {
     "className": "e2e-assignee-filter-other-user",
-    "text": "Assigned to admin1 Citizenlab",
+    "text": "Assigned to {assigneeName}",
     "value": "admin1",
   },
   Object {
     "className": "e2e-assignee-filter-other-user",
-    "text": "Assigned to admin2 Citizenlab",
+    "text": "Assigned to {assigneeName}",
     "value": "admin2",
   },
   Object {
     "className": "e2e-assignee-filter-other-user",
-    "text": "Assigned to admin3 Citizenlab",
+    "text": "Assigned to {assigneeName}",
     "value": "admin3",
   },
 ]

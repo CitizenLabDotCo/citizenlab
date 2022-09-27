@@ -4,8 +4,9 @@ import { shallow } from 'enzyme';
 
 import { mockQuestion } from 'services/__mocks__/pollQuestions';
 
-const Intl = require('utils/cl-intl/__mocks__/');
-const { intl } = Intl;
+const intl = {
+  formatMessage: ({ defaultMessage }) => defaultMessage,
+};
 
 jest.mock('components/UI/Button', () => 'Button');
 jest.mock('@citizenlab/cl2-component-library', () => ({

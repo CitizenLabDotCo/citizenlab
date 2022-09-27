@@ -10,7 +10,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for admin 1`] = `
       Array [
         Object {
           "handler": [Function],
-          "label": <FormattedMessage
+          "label": <Memo(MemoizedFormattedMessage)
             defaultMessage="Edit"
             id="app.components.PostComponents.OfficialFeedback.editOfficialFeedbackPost"
           />,
@@ -18,7 +18,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for admin 1`] = `
         },
         Object {
           "handler": [Function],
-          "label": <FormattedMessage
+          "label": <Memo(MemoizedFormattedMessage)
             defaultMessage="Delete"
             id="app.components.PostComponents.OfficialFeedback.deleteOfficialFeedbackPost"
           />,
@@ -59,7 +59,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for admin 1`] = `
       </OfficialFeedbackPost__Author>
       <OfficialFeedbackPost__DatesPostedEdited>
         <OfficialFeedbackPost__DatePosted>
-          <FormattedMessage
+          <MemoizedFormattedMessage
             defaultMessage="Posted on {date}"
             id="app.components.PostComponents.OfficialFeedback.postedOn"
             values={
@@ -78,7 +78,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for admin 1`] = `
           -
         </OfficialFeedbackPost__DatesSpacer>
         <OfficialFeedbackPost__DateEdited>
-          <FormattedMessage
+          <MemoizedFormattedMessage
             defaultMessage="Last edited on {date}"
             id="app.components.PostComponents.OfficialFeedback.lastEdition"
             values={
@@ -135,7 +135,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for non-admin 1`] = `
       </OfficialFeedbackPost__Author>
       <OfficialFeedbackPost__DatesPostedEdited>
         <OfficialFeedbackPost__DatePosted>
-          <FormattedMessage
+          <MemoizedFormattedMessage
             defaultMessage="Posted on {date}"
             id="app.components.PostComponents.OfficialFeedback.postedOn"
             values={
@@ -154,7 +154,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for non-admin 1`] = `
           -
         </OfficialFeedbackPost__DatesSpacer>
         <OfficialFeedbackPost__DateEdited>
-          <FormattedMessage
+          <MemoizedFormattedMessage
             defaultMessage="Last edited on {date}"
             id="app.components.PostComponents.OfficialFeedback.lastEdition"
             values={

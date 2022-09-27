@@ -16,8 +16,9 @@ jest.mock('components/T');
 
 jest.mock('modules', () => ({ streamsToReset: [] }));
 
-const Intl = require('utils/cl-intl/__mocks__/');
-const { intl } = Intl;
+const intl = {
+  formatMessage: ({ defaultMessage }) => defaultMessage,
+};
 const mockOfficialFeedbackPost = mockOfficialFeedback.data[0];
 
 describe('<OfficialFeedbackPost />', () => {
