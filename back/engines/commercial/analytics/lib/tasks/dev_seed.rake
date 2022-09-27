@@ -16,8 +16,8 @@ namespace :analytics do
       Rake::Task['analytics:populate_locale_dimension'].execute(host: 'localhost')
       locale1 = Analytics::DimensionLocale.first
       locale2 = Analytics::DimensionLocale.last
-      referrer_type1 = Analytics::DimensionReferrerType.create!(name_multiloc: { en: 'Website', 'fr-BE': 'Website', 'nl-BE': 'Website' })
-      referrer_type2 = Analytics::DimensionReferrerType.create!(name_multiloc: { en: 'Social', 'fr-BE': 'Social', 'nl-BE': 'Social' })
+      referrer_type1 = Analytics::DimensionReferrerType.create!(key: 'website', name: 'Website')
+      referrer_type2 = Analytics::DimensionReferrerType.create!(key: 'social', name: 'Social')
 
       # Get some other dimensions
       project = Analytics::DimensionProject.first
