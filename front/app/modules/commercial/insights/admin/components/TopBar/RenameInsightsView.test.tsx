@@ -33,7 +33,7 @@ describe('Rename Insights View', () => {
 
     const spy = jest.spyOn(service, 'updateInsightsView');
     const closeModal = () => jest.fn();
-    render(
+    const { container } = render(
       <RenameInsightsView
         originalViewName="Name"
         insightsViewId={viewId}
@@ -48,7 +48,7 @@ describe('Rename Insights View', () => {
     });
 
     act(() => {
-      fireEvent.click(screen.getByText('Save'));
+      fireEvent.click(container.querySelector('#renameViewButton'));
     });
 
     expect(spy).toHaveBeenCalledWith(viewId, viewName);

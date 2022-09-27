@@ -72,7 +72,6 @@ jest.mock('hooks/useAdminPublicationsStatusCounts', () =>
   }))
 );
 
-jest.mock('hooks/useLocalize');
 jest.mock('hooks/useLocale');
 
 jest.mock('hooks/useAppConfiguration', () =>

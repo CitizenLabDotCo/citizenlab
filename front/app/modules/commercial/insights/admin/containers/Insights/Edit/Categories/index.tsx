@@ -291,6 +291,7 @@ const Categories = ({
           textHoverColor={colors.adminTextColor}
           bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
           onClick={selectAllInput}
+          id="allInputButton"
         >
           <span> {formatMessage(messages.allInput)}</span>
           {!isNilOrError(allInputsCount) && (
@@ -309,6 +310,7 @@ const Categories = ({
           textHoverColor={colors.adminTextColor}
           bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
           onClick={selectRecentlyPosted}
+          id="recentlyPostedButton"
         >
           <span>{formatMessage(messages.recentlyPosted)}</span>
           {!isNilOrError(recentlyPostedInputsCount) && (
@@ -327,6 +329,7 @@ const Categories = ({
           textHoverColor={colors.adminTextColor}
           bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
           onClick={selectUncategorizedInput}
+          id="uncategorizedInputButton"
         >
           <span>{formatMessage(messages.notCategorized)}</span>
           {!isNilOrError(uncategorizedInputsCount) && (

@@ -91,8 +91,8 @@ describe('Insights Edit Categories', () => {
 
   it('selects all input correctly', () => {
     const spy = jest.spyOn(clHistory, 'push');
-    render(<Categories />);
-    fireEvent.click(screen.getAllByText('All input')[0]);
+    const { container } = render(<Categories />);
+    fireEvent.click(container.querySelector('#allInputButton'));
     expect(spy).toHaveBeenCalledWith({
       pathname: '',
       search: `?pageNumber=1&processed=true`,
@@ -101,8 +101,8 @@ describe('Insights Edit Categories', () => {
 
   it('selects uncategorized input correctly', () => {
     const spy = jest.spyOn(clHistory, 'push');
-    render(<Categories />);
-    fireEvent.click(screen.getAllByText('Not categorized')[0]);
+    const { container } = render(<Categories />);
+    fireEvent.click(container.querySelector('#uncategorizedInputButton'));
     expect(spy).toHaveBeenCalledWith({
       pathname: '',
       search: `?pageNumber=1&category=&processed=true`,
@@ -141,7 +141,7 @@ describe('Insights Edit Categories', () => {
 
     render(<Categories />);
 
-    fireEvent.input(screen.getByPlaceholderText('Add category'), {
+    fireEvent.input(screen.getByPlaceholderText('Add tag'), {
       target: {
         value: categoryName,
       },
