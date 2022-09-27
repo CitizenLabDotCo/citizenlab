@@ -97,8 +97,8 @@ const extractFromFile = async (fileName, localeMappings, oldLocaleMappings) => {
     const options = { plugins: ['formatjs'], filename: fileName };
     const { metadata } = await babel.transform(codeToTransform, options);
 
-    if (metadata && metadata['react-intl'] && metadata['react-intl'].messages) {
-      for (const message of metadata['react-intl'].messages) {
+    if (metadata && metadata['formatjs'] && metadata['formatjs'].messages) {
+      for (const message of metadata['formatjs'].messages) {
         for (const locale of locales) {
           const oldLocaleMapping = oldLocaleMappings[locale][message.id];
 
