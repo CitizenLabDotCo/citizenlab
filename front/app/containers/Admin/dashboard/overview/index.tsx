@@ -252,8 +252,8 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
               <Outlet
                 id="app.containers.Admin.dashboard.summary.postStatus"
                 projectId={currentProjectFilter}
-                startAt={startAt}
-                endAt={endAt}
+                startAtMoment={startAtMoment}
+                endAtMoment={endAtMoment}
                 resolution={resolution}
                 onMount={this.hideIdeasByStatusChart}
               />

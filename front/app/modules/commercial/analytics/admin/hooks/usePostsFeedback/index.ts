@@ -38,7 +38,14 @@ import {
   EmptyResponse,
 } from './typings';
 
-const query = ({ projectId, startAt, endAt }: QueryParameters): Query => {
+const query = ({
+  projectId,
+  startAtMoment,
+  endAtMoment,
+}: QueryParameters): Query => {
+  const startAt = startAtMoment?.toISOString();
+  const endAt = endAtMoment?.toISOString();
+
   const queryFeedback: QuerySchema = {
     fact: 'post',
     aggregations: {
@@ -74,7 +81,7 @@ const query = ({ projectId, startAt, endAt }: QueryParameters): Query => {
 
 export default function usePostsWithFeedback(
   formatMessage: InjectedIntlProps['intl']['formatMessage'],
-  { projectId, startAt, endAt }: QueryParameters
+  { projectId, startAtMoment, endAtMoment }: QueryParameters
 ) {
   const localize = useLocalize();
 
@@ -84,7 +91,7 @@ export default function usePostsWithFeedback(
 
   useEffect(() => {
     const { observable } = analyticsStream<Response | EmptyResponse>(
-      query({ projectId, startAt, endAt })
+      query({ projectId, startAtMoment, endAtMoment })
     );
     const subscription = observable.subscribe(
       (response: Response | EmptyResponse | NilOrError) => {
@@ -150,7 +157,7 @@ export default function usePostsWithFeedback(
     );
 
     return () => subscription.unsubscribe();
-  }, [projectId, startAt, endAt, formatMessage, localize]);
+  }, [projectId, startAtMoment, endAtMoment, formatMessage, localize]);
 
   return postsWithFeedback;
 }

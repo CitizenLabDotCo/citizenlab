@@ -1,11 +1,12 @@
 import { Multiloc } from 'typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import { XlsxData } from 'components/admin/ReportExportMenu';
+import { Moment } from 'moment';
 
 export interface QueryParameters {
   projectId: string | undefined;
-  startAt: string | null | undefined;
-  endAt: string | null | undefined;
+  startAtMoment: Moment | null | undefined;
+  endAtMoment: Moment | null | undefined;
 }
 
 // Response

@@ -31,11 +31,12 @@ import { getCornerRadius } from './utils';
 // typings
 import { InjectedIntlProps } from 'react-intl';
 import { IResolution } from 'components/admin/ResolutionControl';
+import { Moment } from 'moment';
 
 interface Props {
   projectId: string | undefined;
-  startAt: string | null | undefined;
-  endAt: string | null | undefined;
+  startAtMoment: Moment | null | undefined;
+  endAtMoment: Moment | null | undefined;
   resolution: IResolution;
 }
 
@@ -78,8 +79,8 @@ const ProgressBarsContainer = styled.div`
 
 const PostFeedback = ({
   projectId,
-  startAt,
-  endAt,
+  startAtMoment,
+  endAtMoment,
   resolution,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
@@ -100,8 +101,8 @@ const PostFeedback = ({
 
   const data = usePostsFeedback(formatMessage, {
     projectId,
-    startAt,
-    endAt,
+    startAtMoment,
+    endAtMoment,
   });
 
   if (isNilOrError(data)) {
@@ -125,6 +126,9 @@ const PostFeedback = ({
     stackedBarsLegendItems,
     xlsxData,
   } = data;
+
+  const startAt = startAtMoment?.toISOString();
+  const endAt = endAtMoment?.toISOString();
 
   return (
     <GraphCard

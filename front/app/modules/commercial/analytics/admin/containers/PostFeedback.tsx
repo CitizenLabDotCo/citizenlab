@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Moment } from 'moment';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -11,8 +12,8 @@ import { IResolution } from 'components/admin/ResolutionControl';
 
 interface Props {
   projectId: string | undefined;
-  startAt: string | null | undefined;
-  endAt: string | null | undefined;
+  startAtMoment: Moment | null | undefined;
+  endAtMoment: Moment | null | undefined;
   resolution: IResolution;
   onMount: () => void;
 }
