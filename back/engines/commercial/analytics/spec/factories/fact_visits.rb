@@ -4,9 +4,9 @@ FactoryBot.define do
   factory :fact_visit, class: 'Analytics::FactVisit' do
     transient do
       date_dimension { Analytics::DimensionDate.first || create(:dimension_date_sept) }
-      channel_dimension { Analytics::DimensionChannel.first || create(:dimension_channel_website) }
+      referrer_type_dimension { Analytics::DimensionReferrerType.first || create(:dimension_referrer_type_website) }
     end
-    dimension_channel { channel_dimension }
+    dimension_referrer_type { referrer_type_dimension }
     dimension_date_first_action { date_dimension }
     dimension_date_last_action { date_dimension }
     visitor_id { 'XXX1' } #  string           not null

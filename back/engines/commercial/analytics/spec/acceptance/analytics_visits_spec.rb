@@ -155,11 +155,11 @@ resource 'Analytics API - Queries for visitors dashboard', use_transactional_fix
       expect(json_response_body[:data].length).to eq(2)
     end
 
-    it 'Can group visitors by channel' do
+    it 'Can group visitors by referrer type (channel)' do
       do_request({
         query: {
           fact: 'visit',
-          groups: 'dimension_channel.id',
+          groups: 'dimension_referrer_type.id',
           aggregations: {
             all: 'count'
           }
