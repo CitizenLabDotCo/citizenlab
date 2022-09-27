@@ -32,6 +32,10 @@ class WebApi::V1::PhaseCustomFieldsController < ApplicationController
   end
 
   def custom_form
-    phase.custom_form || CustomForm.new(participation_context: phase)
+    if phase.native_survey?
+      phase.custom_form || CustomForm.new(participation_context: phase)
+    else
+      phase.project.custom_form || CustomForm.new(participation_context: phase.project)
+    end
   end
 end
