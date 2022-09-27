@@ -29,8 +29,15 @@ resource 'Phase level Custom Fields' do
       example_request 'Get the jsonforms.io json schema and ui schema for the custom fields' do
         expect(status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response[:json_schema_multiloc]).to be_present
-        expect(json_response[:ui_schema_multiloc]).to be_present
+        if CitizenLab.ee?
+          expect(json_response[:json_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
+          %i[en fr-FR nl-NL].each do |locale|
+            expect(json_response[:json_schema_multiloc][locale][:properties].keys).to eq([custom_field.key.to_sym])
+          end
+          expect(json_response[:ui_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
+        else
+          expect(json_response).to be_nil
+        end
       end
     end
   end
