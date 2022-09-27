@@ -43,7 +43,10 @@ import { IProjectData } from 'services/projects';
 
 // utils
 import { insertConfiguration } from 'utils/moduleUtils';
-import { showInputManager } from 'utils/participationMethodUtils';
+import {
+  getMethodConfig,
+  showInputManager,
+} from 'utils/participationMethodUtils';
 
 const TopContainer = styled.div`
   width: 100%;
@@ -349,8 +352,8 @@ export class AdminProjectsProjectIndex extends PureComponent<
       if (!isNilOrError(phases)) {
         phases.map((phase) => {
           if (
-            phase.attributes.participation_method === 'ideation' ||
-            phase.attributes.participation_method === 'budgeting'
+            getMethodConfig(phase.attributes.participation_method)
+              .showInputManager
           ) {
             numberIdeationPhases++;
             ideationPhase = phase;
