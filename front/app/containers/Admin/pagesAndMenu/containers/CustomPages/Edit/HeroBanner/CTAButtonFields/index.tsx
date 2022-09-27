@@ -17,6 +17,7 @@ interface Props {
   handleCTAButtonTextMultilocOnChange: (buttonTextMultiloc: Multiloc) => void;
   handleCTAButtonUrlOnChange: (url: string) => void;
   title?: string;
+  hasCTAError: boolean;
 }
 
 const CTAButtonFields = ({
@@ -27,6 +28,7 @@ const CTAButtonFields = ({
   handleCTAButtonTextMultilocOnChange,
   handleCTAButtonUrlOnChange,
   title,
+  hasCTAError,
 }: Props) => {
   return (
     <SectionField>
@@ -42,6 +44,7 @@ const CTAButtonFields = ({
           handleCTAButtonTextMultilocOnChange
         }
         handleCTAButtonUrlOnChange={handleCTAButtonUrlOnChange}
+        hasCTAError={hasCTAError}
       />
     </SectionField>
   );

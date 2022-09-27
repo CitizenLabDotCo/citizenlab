@@ -3,9 +3,11 @@ import React from 'react';
 import { TCustomPageCTAType } from 'services/customPages';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
-import { FormattedMessage } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import CustomizedButtonSettings from './CustomizedButtonSettings';
 import messages from './messages';
+import Error from 'components/UI/Error';
 
 const StyledCustomizedButtonSettings = styled(CustomizedButtonSettings)`
   margin-left: 28px;
@@ -20,6 +22,7 @@ interface Props {
   handleCTAButtonTypeOnChange: (ctaType: TCustomPageCTAType) => void;
   handleCTAButtonTextMultilocOnChange: (buttonTextMultiloc: Multiloc) => void;
   handleCTAButtonUrlOnChange: (url: string) => void;
+  hasCTAError: boolean;
 }
 
 const SettingRadioButtons = ({
@@ -31,7 +34,9 @@ const SettingRadioButtons = ({
   handleCTAButtonTypeOnChange,
   handleCTAButtonTextMultilocOnChange,
   handleCTAButtonUrlOnChange,
-}: Props) => {
+  hasCTAError = false,
+  intl: { formatMessage },
+}: Props & InjectedIntlProps) => {
   return (
     <>
       {ctaTypes.map((option: TCustomPageCTAType) => (
@@ -55,8 +60,9 @@ const SettingRadioButtons = ({
             name={`cta_${signInStatus}_type`}
             id={`${signInStatus}-${option}`}
           />
-          {option === 'customized_button' &&
-            ctaType === 'customized_button' && (
+          {option === 'customized_button' && ctaType === 'customized_button' && (
+            <>
+              {hasCTAError && <Error text={formatMessage(messages.ctaError)} />}
               <StyledCustomizedButtonSettings
                 buttonMultiloc={ctaButtonMultiloc}
                 buttonUrl={ctaButtonUrl}
@@ -66,11 +72,12 @@ const SettingRadioButtons = ({
                 handleCTAButtonUrlOnChange={handleCTAButtonUrlOnChange}
                 key={`customized-button-settings-${option}`}
               />
-            )}
+            </>
+          )}
         </div>
       ))}
     </>
   );
 };
 
-export default SettingRadioButtons;
+export default injectIntl(SettingRadioButtons);
