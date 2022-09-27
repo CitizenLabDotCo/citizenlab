@@ -43,9 +43,7 @@ resource 'AppConfigurations' do
   patch 'web_api/v1/app_configuration' do
     with_options scope: :app_configuration do
       parameter :logo, 'Base64 encoded logo'
-      parameter :header_bg, 'Base64 encoded header'
       parameter :favicon, 'Base64 encoded favicon'
-      parameter :homepage_info_multiloc, 'HTML multiloc for the homepage info section at the bottom'
 
       # Settings parameters
       parameter :settings, <<~DESC, extra: ''
@@ -80,13 +78,7 @@ resource 'AppConfigurations' do
     ValidationErrorHelper.new.error_fields(self, AppConfiguration)
 
     let(:logo) { png_image_as_base64 'logo.png' }
-    let(:header_bg) { file_as_base64 'header.jpg', 'image/jpeg' }
     let(:favicon) { png_image_as_base64 'favicon.png' }
-    let(:homepage_info_multiloc) do
-      {
-        'en' => 'Awesome homepage info'
-      }
-    end
     let(:organization_name) do
       {
         'en' => 'TestTown',
@@ -96,12 +88,7 @@ resource 'AppConfigurations' do
     end
 
     if CitizenLab.ee?
-      let(:style) do
-        {
-          'signedOutHeaderOverlayColor' => '#3467eb',
-          'signedInHeaderOverlayColor' => '#db2577'
-        }
-      end
+      let(:style) { { signedInHeaderOverlayColor: '#db2577' } }
     end
 
     example_request 'Update the app configuration' do
@@ -110,9 +97,7 @@ resource 'AppConfigurations' do
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :attributes, :settings, :core, :organization_name, :en)).to eq 'TestTown'
       expect(json_response.dig(:data, :attributes, :favicon)).to be_present
-      expect(json_response.dig(:data, :attributes, :homepage_info_multiloc).stringify_keys).to match homepage_info_multiloc
       if CitizenLab.ee?
-        expect(json_response.dig(:data, :attributes, :style, :signedOutHeaderOverlayColor)).to eq '#3467eb'
         expect(json_response.dig(:data, :attributes, :style, :signedInHeaderOverlayColor)).to eq '#db2577'
       end
     end
@@ -140,16 +125,6 @@ resource 'AppConfigurations' do
         assert_status 422
         json_response = json_parse(response_body)
         expect(json_response.dig(:errors, :settings)).to be_present
-      end
-    end
-
-    describe do
-      example 'The header image can be removed' do
-        configuration = AppConfiguration.instance
-        configuration.update(header_bg: Rails.root.join('spec/fixtures/header.jpg').open)
-        expect(configuration.reload.header_bg_url).to be_present
-        do_request app_configuration: { header_bg: nil }
-        expect(configuration.reload.header_bg_url).to be_nil
       end
     end
 

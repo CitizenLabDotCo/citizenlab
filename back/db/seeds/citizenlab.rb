@@ -23,13 +23,7 @@ AppConfiguration.create!(
       currency: ENV.fetch('CL_SETTINGS_CORE_CURRENCY', 'EUR'),
       reply_to_email: ENV.fetch('DEFAULT_FROM_EMAIL')
     },
-    customizable_homepage_banner: {
-      allowed: true,
-      enabled: true,
-      layout: 'full_width_banner_layout',
-      cta_signed_out_type: 'sign_up_button',
-      cta_signed_in_type: 'no_button'
-    },
+    customizable_homepage_banner: { allowed: true },
     password_login: {
       enabled: true,
       allowed: true,
@@ -172,7 +166,6 @@ AppConfiguration.create!(
       allowed: true
     },
     events_widget: {
-      enabled: true,
       allowed: true
     },
     native_surveys: {
@@ -554,7 +547,9 @@ open_idea_project.project_images.create!(remote_image_url: 'https://res.cloudina
 open_idea_project.set_default_topics!
 
 # Create settings for Home Page.
-HomePage.create!
+HomePage.create!({
+  header_bg: Rails.root.join('spec/fixtures/header.jpg').open
+})
 
 User.find_each do |user|
   EmailCampaigns::UnsubscriptionToken.create!(user_id: user.id)
