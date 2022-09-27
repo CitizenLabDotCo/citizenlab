@@ -9,7 +9,7 @@ import { sum, roundPercentage, roundPercentages } from 'utils/math';
 import { capitalize } from 'lodash-es';
 
 // typings
-import { FeedbackRow, StatusRow, StackedBarsRow } from '.';
+import { FeedbackRow, StatusRow, StackedBarsRow } from './typings';
 import { InjectedIntlProps } from 'react-intl';
 import { Localize } from 'hooks/useLocalize';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';

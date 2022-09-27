@@ -1,4 +1,4 @@
-import { Response, EmptyResponse } from '.';
+import { Response, EmptyResponse } from './typings';
 
 export const isEmptyResponse = (
   response: Response | EmptyResponse

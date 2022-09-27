@@ -9,6 +9,9 @@ import {
   AggregationsConfig,
 } from '../../services/analyticsFacts';
 
+// parse
+import { parseStats } from './parse';
+
 // utils
 import {
   getProjectFilter,
@@ -19,66 +22,8 @@ import {
 // typings
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { XlsxData } from 'components/admin/ReportExportMenu';
+import { QueryParameters, Response, Stats, TimeSeries } from './typings';
 import { IResolution } from 'components/admin/ResolutionControl';
-
-interface QueryParameters {
-  projectId: string | undefined;
-  startAt: string | null | undefined;
-  endAt: string | null | undefined;
-  resolution: IResolution;
-}
-
-// Response
-export type Response = {
-  data: [[TotalsRow], [TotalsRow], TimeSeriesResponse];
-};
-
-interface TotalsRow {
-  count: number;
-  count_visitor_id: number;
-  avg_duration: string | null;
-  avg_pages_visited: string | null;
-}
-
-type TimeSeriesResponse = (
-  | TimeSeriesResponseMonth
-  | TimeSeriesResponseWeek
-  | TimeSeriesResponseDay
-)[];
-
-interface TimeSeriesResponseMonth extends TotalsRow {
-  'dimension_date_last_action.month': string;
-}
-
-interface TimeSeriesResponseWeek extends TotalsRow {
-  'dimension_date_last_action.week': string;
-}
-
-interface TimeSeriesResponseDay extends TotalsRow {
-  'dimension_date_last_action.date': string;
-}
-
-// Hook return value
-interface Stat {
-  value: string;
-  lastPeriod: string;
-}
-
-export interface Stats {
-  visitors: Stat;
-  visits: Stat;
-  visitDuration: Stat;
-  pageViews: Stat;
-}
-
-export interface TimeSeriesRow {
-  /* Date format: YYYY-MM-DD */
-  date: string;
-  visits: number;
-  visitors: number;
-}
-
-export type TimeSeries = TimeSeriesRow[];
 
 const getAggregations = (): AggregationsConfig => ({
   all: 'count',
@@ -86,6 +31,18 @@ const getAggregations = (): AggregationsConfig => ({
   duration: 'avg',
   pages_visited: 'avg',
 });
+
+const getLastPeriod = (resolution: IResolution) => {
+  if (resolution === 'month') {
+    return moment().subtract({ days: 30 }).format('YYYY-MM-DD');
+  }
+
+  if (resolution === 'week') {
+    return moment().subtract({ days: 7 }).format('YYYY-MM-DD');
+  }
+
+  return moment().subtract({ days: 1 }).format('YYYY-MM-DD');
+};
 
 const query = ({
   projectId,
@@ -106,7 +63,7 @@ const query = ({
   };
 
   const today = moment().format('YYYY-MM-DD');
-  const thirtyDaysAgo = moment().subtract({ days: 30 }).format('YYYY-MM-DD');
+  const lastPeriod = getLastPeriod(resolution);
 
   const totalsLast30DaysQuery: QuerySchema = {
     fact: 'visit',
@@ -117,7 +74,7 @@ const query = ({
       ...getProjectFilter(projectId),
       dimension_date_last_action: {
         date: {
-          from: thirtyDaysAgo,
+          from: lastPeriod,
           to: today,
         },
       },
@@ -169,7 +126,10 @@ export default function useVisitorsData({
           setStats(response);
           setTimeSeries(response);
           setXlsxData(response);
+          return;
         }
+
+        setStats(parseStats(response.data));
       }
     );
 
