@@ -68,7 +68,7 @@ const query = ({
   const today = moment().format('YYYY-MM-DD');
   const lastPeriod = getLastPeriod(resolution);
 
-  const totalsLast30DaysQuery: QuerySchema = {
+  const totalsLastPeriodQuery: QuerySchema = {
     fact: 'visit',
     filters: {
       dimension_user: {
@@ -102,7 +102,7 @@ const query = ({
   };
 
   return {
-    query: [totalsWholePeriodQuery, totalsLast30DaysQuery, timeSeriesQuery],
+    query: [totalsWholePeriodQuery, totalsLastPeriodQuery, timeSeriesQuery],
   };
 };
 
