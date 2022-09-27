@@ -63,10 +63,15 @@ const Visitors = () => {
 };
 
 const FeatureFlagWrapper = () => {
+  const analyticsEnabled = useFeatureFlag({
+    name: 'analytics',
+  });
+
   const visitorsDashboardEnabled = useFeatureFlag({
     name: 'visitors_dashboard',
   });
-  if (!visitorsDashboardEnabled) return null;
+
+  if (!analyticsEnabled || !visitorsDashboardEnabled) return null;
 
   return <Visitors />;
 };
