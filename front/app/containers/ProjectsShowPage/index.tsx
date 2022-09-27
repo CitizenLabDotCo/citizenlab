@@ -29,7 +29,7 @@ import useAuthUser from 'hooks/useAuthUser';
 // style
 import styled from 'styled-components';
 import { media, colors } from 'utils/styleUtils';
-import rocket from './rocket.png';
+import rocket from 'assets/img/rocket.png';
 
 // typings
 import { IProjectData } from 'services/projects';

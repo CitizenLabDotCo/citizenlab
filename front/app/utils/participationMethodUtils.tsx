@@ -11,7 +11,7 @@ type ParticipationMethodConfig = {
    * defines which UI, if any, the method uses */
   formEditor: 'simpleFormEditor' | 'surveyEditor' | null;
   onFormSubmission?: any;
-  getModalContent?: any;
+  getModalContent: any;
 };
 
 const ideationConfig: ParticipationMethodConfig = {
@@ -21,6 +21,9 @@ const ideationConfig: ParticipationMethodConfig = {
       pathname: `/ideas/${_idea.data.attributes.slug}`,
       search: `?new_idea_id=${_ideaId}`,
     });
+  },
+  getModalContent: () => {
+    return null;
   },
 };
 
@@ -39,22 +42,37 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
 
 const informationConfig: ParticipationMethodConfig = {
   formEditor: null,
+  getModalContent: () => {
+    return null;
+  },
 };
 
 const surveyConfig: ParticipationMethodConfig = {
   formEditor: null,
+  getModalContent: () => {
+    return null;
+  },
 };
 
 const budgetingConfig: ParticipationMethodConfig = {
   formEditor: 'simpleFormEditor',
+  getModalContent: () => {
+    return null;
+  },
 };
 
 const pollConfig: ParticipationMethodConfig = {
   formEditor: null,
+  getModalContent: () => {
+    return null;
+  },
 };
 
 const volunteeringConfig: ParticipationMethodConfig = {
   formEditor: null,
+  getModalContent: () => {
+    return null;
+  },
 };
 
 const methodToConfig: {
