@@ -73,15 +73,17 @@ module Analytics
       {
         # +visit_json['visitorId']+ can be false sometimes.
         visitor_id: visit_json['visitorId'].presence,
-        user_id: visit_json['userId'],
-        channel_id: visit_json['referrerType'],
-        first_action_date_id: Time.at(first_action_timestamp).in_time_zone(@timezone).to_date,
-        last_action_date_id: Time.at(last_action_timestamp).in_time_zone(@timezone).to_date,
+        dimension_user_id: visit_json['userId'],
+        dimension_referrer_type_id: visit_json['referrerType'],
+        dimension_date_first_action_id: Time.at(first_action_timestamp).in_time_zone(@timezone).to_date,
+        dimension_date_last_action_id: Time.at(last_action_timestamp).in_time_zone(@timezone).to_date,
         duration: visit_json['visitDuration']&.to_i,
         pages_visited: visit_json['actionDetails'].count, # TODO: to be confirmed
         returning_visitor: visit_json['visitorType'] == 'returningCustomer',
+        referrer_name: visit_json['referrerName'],
+        referrer_url: visit_json['referrerUrl'],
         matomo_visit_id: visit_json['idVisit'],
-        last_action_timestamp: last_action_timestamp
+        matomo_last_action_time: last_action_timestamp
       }
     end
   end
