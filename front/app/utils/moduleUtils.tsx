@@ -26,7 +26,6 @@ import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import { ParticipationMethod } from 'services/participationContexts';
 import {
   CellConfiguration,
-  FormikSubmitHandler,
   InsertConfigurationOptions,
   ITab,
   MessageDescriptor,
@@ -161,7 +160,7 @@ export interface OutletsPropertyMap {
   };
   'app.containers.Admin.users.form': {
     type: GroupCreationModal;
-    onSubmit: FormikSubmitHandler<NormalFormValues>;
+    onSubmit: (values: NormalFormValues) => void;
     isVerificationEnabled: boolean;
   };
   'app.containers.Admin.users.header': {
@@ -170,7 +169,7 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.users.UsersGroup.form': {
     initialValues: IGroupDataAttributes;
     type: GroupCreationModal;
-    onSubmit: FormikSubmitHandler<NormalFormValues>;
+    onSubmit: (values: NormalFormValues) => void;
     isVerificationEnabled: boolean;
   };
   'app.containers.Admin.users.UsersGroup.header': {

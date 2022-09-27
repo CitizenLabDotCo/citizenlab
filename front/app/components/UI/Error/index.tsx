@@ -108,8 +108,6 @@ const ErrorList = styled.ul`
 const ErrorListItem = styled.li`
   display: flex;
   align-items: flex-start;
-  margin-top: 8px;
-  margin-bottom: 8px;
 `;
 
 const Bullet = styled.span`
