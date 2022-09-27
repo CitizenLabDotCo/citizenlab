@@ -43,16 +43,11 @@ export const parseTimeSeries = (
   endAtMoment: Moment | null | undefined,
   resolution: IResolution
 ): TimeSeries => {
-  const firstDate = getFirstDate(responseTimeSeries)
-  const lastDate = getLastDate(responseTimeSeries)
-
   if (resolution === 'month') {
     return interpolateMonths(
       responseTimeSeries,
       startAtMoment,
-      endAtMoment,
-      firstDate,
-      lastDate
+      endAtMoment
     )
   }
 
@@ -60,18 +55,14 @@ export const parseTimeSeries = (
     return interpolateWeeks(
       responseTimeSeries,
       startAtMoment,
-      endAtMoment,
-      firstDate,
-      lastDate
+      endAtMoment
     )
   }
 
   return interpolateDays(
     responseTimeSeries,
     startAtMoment,
-    endAtMoment,
-    firstDate,
-    lastDate
+    endAtMoment
   )
 }
 
@@ -109,9 +100,10 @@ const interpolateMonths = (
   responseTimeSeries: TimeSeriesResponse,
   startAtMoment: Moment | null | undefined,
   endAtMoment: Moment | null | undefined,
-  firstDate: Moment,
-  lastDate: Moment
 ): any => {
+  const firstDate = getFirstDate(responseTimeSeries);
+  const lastDate = getLastDate(responseTimeSeries);
+
   console.log(responseTimeSeries, startAtMoment, endAtMoment, firstDate, lastDate)
   return []
 }
@@ -120,9 +112,10 @@ const interpolateWeeks = (
   responseTimeSeries: TimeSeriesResponse,
   startAtMoment: Moment | null | undefined,
   endAtMoment: Moment | null | undefined,
-  firstDate: Moment,
-  lastDate: Moment
 ): any => {
+  const firstDate = getFirstDate(responseTimeSeries);
+  const lastDate = getLastDate(responseTimeSeries);
+
   console.log(responseTimeSeries, startAtMoment, endAtMoment, firstDate, lastDate)
   return []
 }
@@ -131,9 +124,10 @@ const interpolateDays = (
   responseTimeSeries: TimeSeriesResponse,
   startAtMoment: Moment | null | undefined,
   endAtMoment: Moment | null | undefined,
-  firstDate: Moment,
-  lastDate: Moment
 ): any => {
+  const firstDate = getFirstDate(responseTimeSeries);
+  const lastDate = getLastDate(responseTimeSeries);
+
   console.log(responseTimeSeries, startAtMoment, endAtMoment, firstDate, lastDate)
   return []
 }
