@@ -161,7 +161,7 @@ export class AdminProjectsProjectIndex extends PureComponent<
         ideas: function isIdeaTabHidden(project, phases) {
           return !showInputManager(project, phases);
         },
-        poll: function isPollTabHiddenbHidden(project, phases) {
+        poll: function isPollTabHidden(project, phases) {
           const processType = project?.attributes.process_type;
           const participationMethod = project.attributes.participation_method;
 
