@@ -7,7 +7,6 @@ import { WrongMaxChoiceIndicator } from './WrongMaxChoiceIndicator';
 
 import { mockOption } from 'services/__mocks__/pollOptions';
 
-jest.mock('utils/cl-intl', () => ({ FormattedMessage: 'FormattedMessage' }));
 jest.mock('services/pollOptions');
 jest.mock('./WrongOptionsIndicator', () => ({
   StyledIconTooltip: 'StyledIconTooltip',
@@ -60,47 +59,6 @@ describe('<WrongMaxChoiceIndicator/>', () => {
         />
       );
       expect(Wrapper).toMatchSnapshot();
-    });
-  });
-  describe('renders the error message when max answers is not as expected', () => {
-    it('renders correctly when options is as expected and maxAnswers is zero', () => {
-      const Wrapper = shallow(
-        <WrongMaxChoiceIndicator
-          questionId="questionId"
-          maxAnswers={0}
-          options={pollOptions}
-        />
-      );
-      expect(
-        shallow(Wrapper.find('StyledIconTooltip').prop('content')).prop('id')
-      ).toContain('maxUnderTheMinTooltip');
-      expect(Wrapper.find('FormattedMessage').prop('id')).toContain('wrongMax');
-    });
-    it('renders correctly when options is as expected and maxAnswers is one', () => {
-      const Wrapper = shallow(
-        <WrongMaxChoiceIndicator
-          questionId="questionId"
-          maxAnswers={1}
-          options={pollOptions}
-        />
-      );
-      expect(
-        shallow(Wrapper.find('StyledIconTooltip').prop('content')).prop('id')
-      ).toContain('maxUnderTheMinTooltip');
-      expect(Wrapper.find('FormattedMessage').prop('id')).toContain('wrongMax');
-    });
-    it('renders correctly when there is less options than maxAnswers', () => {
-      const Wrapper = shallow(
-        <WrongMaxChoiceIndicator
-          questionId="questionId"
-          maxAnswers={10}
-          options={pollOptions}
-        />
-      );
-      expect(
-        shallow(Wrapper.find('StyledIconTooltip').prop('content')).prop('id')
-      ).toContain('maxOverTheMaxTooltip');
-      expect(Wrapper.find('FormattedMessage').prop('id')).toContain('wrongMax');
     });
   });
   describe('renders nothing when max answers is as expected', () => {

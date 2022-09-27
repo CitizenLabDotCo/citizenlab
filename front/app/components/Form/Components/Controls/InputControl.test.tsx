@@ -4,7 +4,6 @@ import { fireEvent, render, screen } from 'utils/testUtils/rtl';
 
 import { InputControl } from './InputControl';
 
-jest.mock('utils/cl-intl');
 jest.mock('services/locale');
 
 const intl = getDummyIntlObject();
@@ -48,12 +47,12 @@ describe('InputControl', () => {
 
   it('shows opional for optional fields', () => {
     render(<InputControl {...mostProps} data={undefined} />);
-    expect(screen.getByText('optional')).toBeInTheDocument();
+    expect(screen.getByText('(optional)')).toBeInTheDocument();
   });
 
   it("doesn't show opional for reuqired fields", () => {
     render(<InputControl {...mostProps} data={undefined} required={true} />);
-    expect(screen.queryByText('optional')).toBeNull();
+    expect(screen.queryByText('(optional)')).toBeNull();
   });
 
   it('shows the current data', () => {

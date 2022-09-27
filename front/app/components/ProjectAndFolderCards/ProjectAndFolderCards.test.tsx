@@ -72,7 +72,6 @@ jest.mock('hooks/useAdminPublicationsStatusCounts', () =>
   }))
 );
 
-jest.mock('hooks/useLocalize');
 jest.mock('hooks/useLocale');
 
 jest.mock('hooks/useAppConfiguration', () =>
@@ -126,7 +125,7 @@ jest.mock('components/Outlet', () => ({
   __esModule: true,
   default: () => <></>,
 }));
-jest.mock('utils/cl-intl');
+
 jest.mock('components/T', () => ({
   __esModule: true,
   default: () => <></>,

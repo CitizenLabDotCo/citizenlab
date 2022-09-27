@@ -15,9 +15,9 @@ jest.mock('./PreferencesDialog', () => 'PreferencesDialog');
 jest.mock('./Footer', () => 'Footer');
 jest.mock('components/UI/Modal', () => 'Modal');
 
-jest.mock('utils/cl-intl');
-const Intl = require('utils/cl-intl/__mocks__/');
-const { intl } = Intl;
+const intl = {
+  formatMessage: ({ defaultMessage }) => defaultMessage,
+};
 
 let setPreferences: jest.Mock;
 let resetPreferences: jest.Mock;

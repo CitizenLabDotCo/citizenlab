@@ -66,7 +66,6 @@ jest.mock('modules/commercial/insights/services/insightsViews', () => ({
   deleteInsightsView: jest.fn(),
 }));
 
-jest.mock('utils/cl-intl');
 jest.mock('utils/analytics');
 
 jest.mock('modules/commercial/insights/services/insightsCategories', () => ({

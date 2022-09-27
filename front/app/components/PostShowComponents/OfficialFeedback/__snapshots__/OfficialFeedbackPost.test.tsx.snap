@@ -10,7 +10,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for admin 1`] = `
       Array [
         Object {
           "handler": [Function],
-          "label": <FormattedMessage
+          "label": <Memo(FormattedMessage)
             defaultMessage="Edit"
             id="app.components.PostComponents.OfficialFeedback.editOfficialFeedbackPost"
           />,
@@ -18,7 +18,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for admin 1`] = `
         },
         Object {
           "handler": [Function],
-          "label": <FormattedMessage
+          "label": <Memo(FormattedMessage)
             defaultMessage="Delete"
             id="app.components.PostComponents.OfficialFeedback.deleteOfficialFeedbackPost"
           />,

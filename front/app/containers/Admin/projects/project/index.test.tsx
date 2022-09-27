@@ -12,13 +12,12 @@ import {
   mockPhaseInformationData,
 } from 'services/__mocks__/phases';
 import { getProject } from 'services/__mocks__/projects';
-import { shallowWithIntl } from 'utils/testUtils/withIntl';
 import { localizeProps } from 'utils/testUtils/localizeProps';
 import { getDummyIntlObject } from 'utils/testUtils/mockedIntl';
 import { WithRouterProps } from 'utils/cl-router/withRouter';
 
 // what needs to be mocked by jest to render the component
-jest.mock('utils/cl-intl');
+
 jest.mock('components/Outlet', () => 'outlet');
 jest.mock('modules', () => ({ streamsToReset: [] }));
 jest.mock('utils/cl-router/Link');
@@ -443,20 +442,18 @@ describe('<AdminProjectEdition />', () => {
     );
     const routerProps = getRouterProps('continuousInformation', 'general');
 
-    shallowWithIntl(
-      <AdminProjectsProjectIndex
-        surveys_enabled={surveys_enabled}
-        typeform_enabled={typeform_enabled}
-        phases={phases}
-        project={project}
-        intl={intl}
-        {...routerProps}
-        {...localizeProps}
-        {...additionalProps}
-      >
-        {children}
-      </AdminProjectsProjectIndex>
-    );
+    <AdminProjectsProjectIndex
+      surveys_enabled={surveys_enabled}
+      typeform_enabled={typeform_enabled}
+      phases={phases}
+      project={project}
+      intl={intl}
+      {...routerProps}
+      {...localizeProps}
+      {...additionalProps}
+    >
+      {children}
+    </AdminProjectsProjectIndex>;
 
     const newIdeaButton = await screen.queryByText('Add an idea');
     expect(newIdeaButton).toBeNull();

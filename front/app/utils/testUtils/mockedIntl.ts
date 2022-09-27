@@ -1,7 +1,7 @@
-import { InjectedIntl } from 'react-intl';
+import { IntlShape } from 'react-intl';
 
 export const getDummyIntlObject = (messages?: any) => {
-  const intl: InjectedIntl = {
+  const intl = {
     messages,
     defaultFormats: undefined,
     defaultLocale: 'en',
@@ -16,7 +16,7 @@ export const getDummyIntlObject = (messages?: any) => {
     locale: 'en',
     now: jest.fn(),
     onError: jest.fn(),
-  };
+  } as unknown as IntlShape;
 
   return intl;
 };

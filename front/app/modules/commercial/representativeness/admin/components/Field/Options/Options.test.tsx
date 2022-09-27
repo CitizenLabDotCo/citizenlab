@@ -5,7 +5,6 @@ import Options from '.';
 
 jest.mock('services/appConfiguration');
 jest.mock('hooks/useLocalize');
-jest.mock('utils/cl-intl');
 
 const generateOptions = (n: number) =>
   indices(n).map((i) => ({

@@ -56,7 +56,6 @@ jest.mock('utils/cl-router/withRouter', () => {
 });
 jest.mock('utils/cl-router/Link');
 jest.mock('utils/cl-router/history');
-jest.mock('utils/cl-intl');
 
 jest.mock('hooks/useIdea', () => {
   return jest.fn(() => mockIdeaData);

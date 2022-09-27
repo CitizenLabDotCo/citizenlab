@@ -10,8 +10,6 @@ const schema = object({
   input: string().required('Error message'),
 });
 
-jest.mock('utils/cl-intl');
-
 const onSubmit = jest.fn();
 
 const Form = () => {

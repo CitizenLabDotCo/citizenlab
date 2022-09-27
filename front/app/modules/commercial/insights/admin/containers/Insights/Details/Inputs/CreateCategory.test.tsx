@@ -8,7 +8,6 @@ import { act, fireEvent, render, screen } from 'utils/testUtils/rtl';
 const viewId = '1';
 
 jest.mock('services/locale');
-jest.mock('utils/cl-intl');
 
 jest.mock('utils/cl-router/withRouter', () => {
   return {
