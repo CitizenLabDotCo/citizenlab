@@ -11,6 +11,7 @@ require_relative 'custom_fields'
 require_relative 'custom_forms'
 require_relative 'custom_maps'
 require_relative 'groups'
+require_relative 'home_pages'
 require_relative 'ideas'
 require_relative 'iniatives'
 require_relative 'invites'
@@ -100,6 +101,7 @@ module MultiTenancy
 
         MultiTenancy::TenantTemplateService.new.resolve_and_apply_template('base', external_subfolder: false)
 
+        MultiTenancy::Seeds::HomePages.new(runner: self).run
         MultiTenancy::Seeds::Users.new(runner: self).run
         MultiTenancy::Seeds::ApiClients.new(runner: self).run
         MultiTenancy::Seeds::CustomFields.new(runner: self).run
