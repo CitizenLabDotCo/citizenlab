@@ -109,7 +109,52 @@ resource 'Phase level Custom Fields' do
       example_request 'Get the react-jsonschema-form json schema and ui schema for the custom fields' do
         expect(status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response).to eq schemas_without_fields
+        if CitizenLab.ee?
+          expect(json_response).to eq({
+            json_schema_multiloc: {
+              en: {
+                type: 'object',
+                additionalProperties: false,
+                properties: {
+                  extra_field: {
+                    title: 'An extra question',
+                    description: 'Which councils are you attending in our city?',
+                    type: 'string'
+                  }
+                }
+              },
+              'fr-FR': {
+                type: 'object',
+                additionalProperties: false,
+                properties: {
+                  extra_field: {
+                    title: 'An extra question',
+                    description: 'Which councils are you attending in our city?',
+                    type: 'string'
+                  }
+                }
+              },
+              'nl-NL': {
+                type: 'object',
+                additionalProperties: false,
+                properties: {
+                  extra_field: {
+                    title: 'An extra question',
+                    description: 'Which councils are you attending in our city?',
+                    type: 'string'
+                  }
+                }
+              }
+            },
+            ui_schema_multiloc: {
+              en: { extra_field: {}, 'ui:order': ['extra_field'] },
+              'fr-FR': { extra_field: {}, 'ui:order': ['extra_field'] },
+              'nl-NL': { extra_field: {}, 'ui:order': ['extra_field'] }
+            }
+          })
+        else
+          expect(json_response).to eq schemas_without_fields
+        end
       end
     end
 
