@@ -43,14 +43,14 @@
   "lint-prepush": {
     "base": "master",
     "tasks": {
-      "*.{ts,tsx,js,jsx}": [
+      "app/**/*.{ts,tsx,js,jsx}": [
       "eslint --ext .js,.jsx,.ts,.tsx app --color --max-warnings=0"
      ]
   }
 },
   "husky": {
     "hooks": {
-      "pre-commit": "pretty-quick",
+      "pre-commit": "pretty-quick --staged",
       "pre-push": "lint-prepush"
     }
   },
