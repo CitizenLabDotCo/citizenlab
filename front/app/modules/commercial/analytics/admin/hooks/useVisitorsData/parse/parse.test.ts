@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { parseTimeSeries } from '.';
 import { TimeSeriesResponse, TimeSeries } from '../typings';
 
@@ -27,11 +28,44 @@ describe('parseTimeSeries', () => {
       },
     ]
 
+    const expectedParsedContinuousData: TimeSeries = [
+      { date: '2021-11-01', visits: 0, visitors: 0 },
+      { date: '2021-12-01', visits: 1, visitors: 1 },
+      { date: '2022-01-01', visits: 2, visitors: 2 },
+      { date: '2022-02-01', visits: 3, visitors: 3 }
+    ]
+
+    const expectedDataBefore: TimeSeries = [
+      {
+        date: '2021-09-01',
+        visitors: 0,
+        visits: 0
+      },
+      {
+        date: '2021-10-01',
+        visitors: 0,
+        visits: 0
+      },
+    ]
+
+    const expectedDataAfter: TimeSeries = [
+      {
+        date: '2022-03-01',
+        visitors: 0,
+        visits: 0
+      },
+      {
+        date: '2022-04-01',
+        visitors: 0,
+        visits: 0
+      },
+    ]
+
     // const dataWithGap: TimeSeriesResponse = [
-    //   continuousData[0], continuousData[1], continuousData[3]
+    //   continuousData[0], continuousData[1], continuousData[2]
     // ];
 
-    it.skip('works without start and end date (continuousData)', () => {
+    it('works without start and end date (continuousData)', () => {
       const output = parseTimeSeries(
         continuousData,
         null,
@@ -39,26 +73,57 @@ describe('parseTimeSeries', () => {
         resolution
       )
 
-      const expectedOutput: TimeSeries = continuousData.map((row) => ({
-        date: `${row['dimension_date_last_action.month']}-01`,
-        visits: row.count,
-        visitors: row.count_visitor_id
-      }))
+      expect(output).toEqual(expectedParsedContinuousData);
+    })
+
+    it('works with only start date (continuousData)', () => {
+      const output = parseTimeSeries(
+        continuousData,
+        moment('2021-09-01'),
+        null,
+        resolution
+      )
+
+      const expectedOutput: TimeSeries = [
+        ...expectedDataBefore,
+        ...expectedParsedContinuousData
+      ]
 
       expect(output).toEqual(expectedOutput);
     })
 
-    // it('works with only start date (continuousData)', () => {
+    it('works with only end date (continuousData)', () => {
+      const output = parseTimeSeries(
+        continuousData,
+        null,
+        moment('2022-04-01'),
+        resolution
+      )
 
-    // })
+      const expectedOutput: TimeSeries = [
+        ...expectedParsedContinuousData,
+        ...expectedDataAfter
+      ]
 
-    // it('works with only end date (continuousData)', () => {
+      expect(output).toEqual(expectedOutput);
+    })
 
-    // })
+    it('works with both start and end date (continuousData)', () => {
+      const output = parseTimeSeries(
+        continuousData,
+        moment('2021-09-01'),
+        moment('2022-04-01'),
+        resolution
+      )
 
-    // it('works with both start and end date (continuousData)', () => {
+      const expectedOutput: TimeSeries = [
+        ...expectedDataBefore,
+        ...expectedParsedContinuousData,
+        ...expectedDataAfter
+      ]
 
-    // })
+      expect(output).toEqual(expectedOutput);
+    })
 
     // it('works without start and end date (dataWithGap)', () => {
 

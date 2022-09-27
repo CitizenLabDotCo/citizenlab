@@ -1,7 +1,7 @@
-import { getFirstDateInData, getLastDateInData } from './utils';
+import moment, { Moment } from 'moment';
+import { getDate, getFirstDateInData, getLastDateInData } from './utils';
 import { range } from 'lodash-es';
-import { TimeSeriesResponse, TimeSeries } from '../typings';
-import { Moment } from 'moment';
+import { TimeSeriesResponse } from '../typings';
 
 const parseMonths = (
   responseTimeSeries: TimeSeriesResponse,
@@ -19,13 +19,18 @@ const parseMonths = (
     ? getEmptyMonthsAfter(endAtMoment, lastDateInData)
     : []
 
-  console.log(responseTimeSeries, endAtMoment, emptyMonthsBefore, emptyMonthsAfter)
-  return []
+  const parsedTimeSeries = parseTimeSeries(responseTimeSeries);
+
+  return [
+    ...emptyMonthsBefore,
+    ...parsedTimeSeries,
+    ...emptyMonthsAfter
+  ]
 }
 
 export default parseMonths;
 
-export const getEmptyMonthsBefore = (startAtMoment: Moment, firstDateInData: Moment): TimeSeries => {
+export const getEmptyMonthsBefore = (startAtMoment: Moment, firstDateInData: Moment) => {
   if (startAtMoment.isSameOrAfter(firstDateInData)) return [];
 
   const startMonth = startAtMoment.month() + 1;
@@ -53,7 +58,7 @@ export const getEmptyMonthsBefore = (startAtMoment: Moment, firstDateInData: Mom
   }, [])
 }
 
-export const getEmptyMonthsAfter = (endAtMoment: Moment, lastDateInData: Moment): TimeSeries => {
+export const getEmptyMonthsAfter = (endAtMoment: Moment, lastDateInData: Moment) => {
   if (lastDateInData.isSameOrAfter(endAtMoment)) return [];
 
   const endMonth = endAtMoment.month() + 1;
@@ -89,5 +94,32 @@ const createEmptyMonths = (startMonth: number, endMonth: number, year: number) =
   }))
 
 export const getFirstDayOfMonth = (year: number, month: number) => {
-  return `${year}-${month < 11 ? `0${month}` : month}-01`
+  return `${year}-${month < 10 ? `0${month}` : month}-01`
 }
+
+const parseTimeSeries = (responseTimeSeries: TimeSeriesResponse) => {
+  const timeSeriesWithMoments = responseTimeSeries.map((row) => ({
+    moment: moment(getDate(row)),
+    visitors: row.count_visitor_id,
+    visits: row.count
+  }))
+
+  const sortedTimeSeries = timeSeriesWithMoments.sort(momentAscending)
+
+  return sortedTimeSeries.map(({ moment, visitors, visits }) => ({
+    date: moment.format('YYYY-MM-DD'),
+    visits,
+    visitors
+  }));
+}
+
+interface TimeSeriesWithMomentsRow {
+  moment: Moment;
+  visitors: number;
+  visits: number;
+}
+
+const momentAscending = (
+  a: TimeSeriesWithMomentsRow,
+  b: TimeSeriesWithMomentsRow
+) => a.moment.isBefore(b.moment) ? -1 : 1

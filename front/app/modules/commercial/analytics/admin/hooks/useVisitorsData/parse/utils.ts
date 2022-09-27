@@ -14,7 +14,7 @@ export const getLastDateInData = (responseTimeSeries: TimeSeriesResponse) => {
   const lastMonthInData = responseTimeSeries.reduce((acc, row) => {
     const date = getDate(row)
     return date.isAfter(acc) ? date : acc
-  }, moment());
+  }, moment('1970-01-01'));
 
   return lastMonthInData;
 }

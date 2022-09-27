@@ -42,7 +42,9 @@ export const parseTimeSeries = (
   startAtMoment: Moment | null | undefined,
   endAtMoment: Moment | null | undefined,
   resolution: IResolution
-): TimeSeries => {
+): TimeSeries | null => {
+  if (responseTimeSeries.length === 0) return null;
+
   if (resolution === 'month') {
     return parseMonths(
       responseTimeSeries,
