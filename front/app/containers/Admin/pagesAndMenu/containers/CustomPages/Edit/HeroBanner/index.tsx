@@ -53,6 +53,13 @@ const EditCustomPageHeroBannerForm = ({
     }
   }, [customPage]);
 
+  // disable form if there's no header image when local settings change
+  useEffect(() => {
+    if (!localSettings?.header_bg) {
+      setFormStatus('disabled');
+    }
+  }, [localSettings]);
+
   if (isNilOrError(customPage)) {
     return null;
   }

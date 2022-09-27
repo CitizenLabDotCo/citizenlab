@@ -59,6 +59,13 @@ const EditHomepageHeroBannerForm = ({
     }
   }, [homepageSettings]);
 
+  // disable form if there's no header image when local settings change
+  useEffect(() => {
+    if (!localSettings?.header_bg) {
+      setFormStatus('disabled');
+    }
+  }, [localSettings]);
+
   if (isNilOrError(homepageSettings)) {
     return null;
   }
@@ -117,6 +124,7 @@ const EditHomepageHeroBannerForm = ({
   const handleOnBannerImageAdd = (newImageBase64: string) => {
     handleOnChange('header_bg', newImageBase64);
   };
+
   const handleOnBannerImageRemove = () => {
     handleOnChange('header_bg', null);
   };
