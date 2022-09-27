@@ -62,9 +62,6 @@ const SettingRadioButtons = ({
           />
           {option === 'customized_button' && ctaType === 'customized_button' && (
             <>
-              {hasCTAError && (
-                <Error text={formatMessage(messages.customPageCtaError)} />
-              )}
               <StyledCustomizedButtonSettings
                 buttonMultiloc={ctaButtonMultiloc}
                 buttonUrl={ctaButtonUrl}
@@ -74,6 +71,9 @@ const SettingRadioButtons = ({
                 handleCTAButtonUrlOnChange={handleCTAButtonUrlOnChange}
                 key={`customized-button-settings-${option}`}
               />
+              {hasCTAError && (
+                <Error text={formatMessage(messages.customPageCtaError)} />
+              )}
             </>
           )}
         </div>
