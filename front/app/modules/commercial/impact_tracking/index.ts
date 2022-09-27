@@ -12,8 +12,12 @@ const trackPageChange = (_payload) => {
   // console.log(payload);
 };
 
+const trackSessionStarted = () => {};
+
 const configuration: ModuleConfiguration = {
   beforeMountApplication: () => {
+    trackSessionStarted();
+
     pageChanges$
       .pipe(
         withLatestFrom(

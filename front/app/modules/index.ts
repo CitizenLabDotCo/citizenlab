@@ -230,6 +230,6 @@ export default loadModules([
   },
   {
     configuration: impactTrackingConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/impact_tracking'],
   },
 ]);
