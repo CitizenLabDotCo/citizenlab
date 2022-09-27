@@ -85,7 +85,7 @@ const FormBuilderToolbox = ({
           ml="16px"
           variant="h6"
           as="h3"
-          color="secondaryText"
+          color="grey"
           style={{ textTransform: 'uppercase' }}
         >
           <FormattedMessage {...messages.addSurveyContent} />

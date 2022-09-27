@@ -73,7 +73,7 @@ const FormFields = ({
               if (hasErrors) {
                 outlineStyle = `1px solid ${colors.red400}`;
               } else if (selectedFieldId === field.id) {
-                outlineStyle = `2px solid ${colors.adminTextColor}`;
+                outlineStyle = `1px solid ${colors.adminTextColor}`;
               }
 
               return (
@@ -93,7 +93,7 @@ const FormFields = ({
                         </Text>
                       </Box>
                       {!isNilOrError(field.input_type) && (
-                        <StyledBadge color={colors.adminSecondaryTextColor}>
+                        <StyledBadge className="inverse" color={colors.grey}>
                           <FormattedMessage
                             {...getTranslatedFieldType(field.input_type)}
                           />
