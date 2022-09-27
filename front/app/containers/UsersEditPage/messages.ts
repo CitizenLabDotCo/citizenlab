@@ -1,8 +1,3 @@
-/*
- * UsersEditPage Messages
- *
- * This contains all the text for the UsersEditPage component.
- */
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
@@ -30,9 +25,6 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.messageSuccess',
     defaultMessage: 'Your profile has been saved.',
   },
-  /*
-   * Basic information
-   */
   h1: {
     id: 'app.containers.UsersEditPage.h1',
     defaultMessage: 'Basic information',
@@ -65,9 +57,6 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.image',
     defaultMessage: 'Avatar image',
   },
-  /*
-   * Deletion
-   */
   deletionSection: {
     id: 'app.containers.UsersEditPage.deletionSection',
     defaultMessage: 'Delete your profile',
@@ -129,9 +118,6 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.cancel',
     defaultMessage: 'Cancel',
   },
-  /*
-   * Details
-   */
   bio: {
     id: 'app.containers.UsersEditPage.bio',
     defaultMessage: 'Bio',
@@ -164,9 +150,6 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.user',
     defaultMessage: 'When do you want us to send you an email to notify you?',
   },
-  /*
-   * VerificationStatus
-   */
   becomeVerifiedTitle: {
     id: 'app.containers.UsersEditPage.becomeVerifiedTitle',
     defaultMessage: 'Verify your identity',
@@ -201,9 +184,6 @@ export default defineMessages({
     defaultMessage:
       "You can't edit this field because it contains verified information",
   },
-  /*
-   * Meta
-   */
   metaTitle: {
     id: 'app.containers.UsersEditPage.metaTitle',
     defaultMessage:

@@ -224,7 +224,10 @@ const CampaignForm = ({
             <QuillMultilocWithLocaleSwitcher
               name="body_multiloc"
               label={formatMessage(messages.fieldBody)}
-              labelTooltipText={formatMessage(messages.nameVariablesInfo)}
+              labelTooltipText={formatMessage(messages.nameVariablesInfo, {
+                firstNameVariable: '{first_name}',
+                lastNameVariable: '{{last_name}}',
+              })}
               noVideos
               noAlign
             />

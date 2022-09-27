@@ -425,7 +425,7 @@ class ProfileForm extends PureComponent<Props, State> {
                     ? this.props.localize(values.bio_multiloc)
                     : ''
                 }
-                placeholder={formatMessage({ ...messages.bio_placeholder })}
+                placeholder={formatMessage(messages.bio_placeholder)}
                 onChange={createChangeHandler('bio_multiloc')}
                 onBlur={createBlurHandler('bio_multiloc')}
               />

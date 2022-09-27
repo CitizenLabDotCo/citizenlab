@@ -304,7 +304,7 @@ class Sidebar extends PureComponent<
             <IconWrapper>
               <Icon name="academy" />
             </IconWrapper>
-            <Text>{formatMessage({ ...messages.academy })}</Text>
+            <Text>{formatMessage(messages.academy)}</Text>
           </MenuLink>
 
           <GetStartedLink
@@ -314,7 +314,7 @@ class Sidebar extends PureComponent<
             <IconWrapper>
               <Icon name="circleInfo" />
             </IconWrapper>
-            <Text>{formatMessage({ ...messages.guide })}</Text>
+            <Text>{formatMessage(messages.guide)}</Text>
           </GetStartedLink>
         </MenuInner>
       </Menu>
