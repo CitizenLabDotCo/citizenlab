@@ -91,22 +91,22 @@ export function showInputManager(
   project: IProjectData,
   phases?: Error | IPhaseData[] | null | undefined
 ): boolean {
-  let showInputManager = false;
   if (project.attributes.process_type === 'continuous') {
-    showInputManager = getMethodConfig(
-      project.attributes.participation_method
-    ).showInputManager;
-  } else if (project.attributes.process_type === 'timeline') {
+    return getMethodConfig(project.attributes.participation_method)
+      .showInputManager;
+  }
+  if (project.attributes.process_type === 'timeline') {
     if (!isNilOrError(phases)) {
-      phases.map((phase) => {
-        if (
-          getMethodConfig(phase.attributes.participation_method)
-            .showInputManager
-        ) {
-          showInputManager = true;
-        }
-      });
+      if (
+        phases.some(
+          (phase) =>
+            getMethodConfig(phase.attributes.participation_method)
+              .showInputManager
+        )
+      ) {
+        return true;
+      }
     }
   }
-  return showInputManager;
+  return false;
 }
