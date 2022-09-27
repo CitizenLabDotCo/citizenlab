@@ -21,10 +21,10 @@ import { isNilOrError } from 'utils/helperUtils';
 import GenericHeroBannerForm from '../../../GenericHeroBannerForm';
 import messages from '../../../GenericHeroBannerForm/messages';
 
+import HelmetIntl from 'components/HelmetIntl';
 import useLocalize from 'hooks/useLocalize';
 import { Multiloc } from 'typings';
 import { injectIntl } from 'utils/cl-intl';
-import HelmetIntl from 'components/HelmetIntl';
 
 export type CustomPageBannerSettingKeyType = Extract<
   keyof ICustomPageAttributes,
@@ -128,6 +128,7 @@ const EditCustomPageHeroBannerForm = ({
 
   const handleCTAButtonTypeOnChange = (ctaType: TCustomPageCTAType) => {
     handleOnChange('banner_cta_button_type', ctaType);
+    setHasCTAError(false);
   };
 
   const handleCTAButtonTextMultilocOnChange = (
@@ -205,20 +206,18 @@ const EditCustomPageHeroBannerForm = ({
             />
           }
           ctaButtonFieldsComponent={
-            <>
-              <CTAButtonFields
-                ctaType={localSettings.banner_cta_button_type}
-                ctaButtonMultiloc={localSettings.banner_cta_button_multiloc}
-                ctaButtonUrl={localSettings.banner_cta_button_url}
-                handleCTAButtonTypeOnChange={handleCTAButtonTypeOnChange}
-                handleCTAButtonTextMultilocOnChange={
-                  handleCTAButtonTextMultilocOnChange
-                }
-                handleCTAButtonUrlOnChange={handleCTAButtonUrlOnChange}
-                title={formatMessage(messages.buttonTitle)}
-                hasCTAError={hasCTAError}
-              />
-            </>
+            <CTAButtonFields
+              ctaType={localSettings.banner_cta_button_type}
+              ctaButtonMultiloc={localSettings.banner_cta_button_multiloc}
+              ctaButtonUrl={localSettings.banner_cta_button_url}
+              handleCTAButtonTypeOnChange={handleCTAButtonTypeOnChange}
+              handleCTAButtonTextMultilocOnChange={
+                handleCTAButtonTextMultilocOnChange
+              }
+              handleCTAButtonUrlOnChange={handleCTAButtonUrlOnChange}
+              title={formatMessage(messages.buttonTitle)}
+              hasCTAError={hasCTAError}
+            />
           }
         />
       </>
