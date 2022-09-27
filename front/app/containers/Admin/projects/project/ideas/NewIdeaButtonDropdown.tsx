@@ -18,31 +18,18 @@ import {
 import { isNilOrError } from 'utils/helperUtils';
 import { colors } from 'utils/styleUtils';
 import clHistory from 'utils/cl-router/history';
+import { getMethodConfig } from 'utils/participationMethodUtils';
 
 // hooks & services
 import useLocalize from 'hooks/useLocalize';
 import { IProjectData } from 'services/projects';
 import { IPhaseData } from 'services/phases';
 
-// style
-import styled from 'styled-components';
-import { getMethodConfig } from 'utils/participationMethodUtils';
-
 interface Props {
   phases: IPhaseData[] | null;
   project: IProjectData;
   showDropdown: any;
 }
-
-const StyledDropdown = styled(Dropdown)`
-  margin-top: 0px;
-`;
-
-const StyledText = styled(Text)`
-  color: white;
-  margin: auto;
-  padding: 8px;
-`;
 
 const NewIdeaButtonDropdown = ({
   phases,
@@ -99,9 +86,11 @@ const NewIdeaButtonDropdown = ({
           name="idea"
           marginY="auto"
         />
-        <StyledText>{formatMessage(messages.addNewInput)}</StyledText>
+        <Text margin="auto" padding="8px" style={{ color: 'white' }}>
+          {formatMessage(messages.addNewInput)}
+        </Text>
       </Box>
-      <StyledDropdown opened={showDropdown} content={<DropdownContent />} />
+      <Dropdown opened={showDropdown} content={<DropdownContent />} />
     </>
   );
 };
