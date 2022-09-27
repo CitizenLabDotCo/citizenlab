@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # This migration comes from impact_tracking (originally 20220927133822)
 
 class CreateSalts < ActiveRecord::Migration[6.1]

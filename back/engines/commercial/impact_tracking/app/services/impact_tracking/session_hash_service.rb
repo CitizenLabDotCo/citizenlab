@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ImpactTracking::SessionHashService
   def generate_for_user(user_id)
     hash([salt, user_id].join)

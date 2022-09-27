@@ -1,4 +1,3 @@
-
 # frozen_string_literal: true
 
 # == Schema Information
@@ -11,7 +10,6 @@
 #  updated_at :datetime         not null
 #
 class ImpactTracking::Salt < ApplicationRecord
-
   validates :salt, presence: true
 
   def self.current_salt

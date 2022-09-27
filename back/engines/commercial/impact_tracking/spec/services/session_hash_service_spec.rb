@@ -6,7 +6,6 @@ describe ImpactTracking::SessionHashService do
   let(:service) { described_class.new }
 
   describe 'generate_for_visitor' do
-
     it 'generates a different hash for different parameters' do
       ip1 = '1.2.3.4'
       user_agent = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:64.0) Gecko/20100101 Firefox/64.0'
