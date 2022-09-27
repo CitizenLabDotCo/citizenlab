@@ -6,7 +6,7 @@ import { shallow } from 'enzyme';
 jest.mock('./FormCompleted', () => 'FormCompleted');
 jest.mock('./PollForm', () => 'PollForm');
 jest.mock('components/UI/Warning', () => 'Warning');
-jest.mock('utils/cl-intl', () => ({ FormattedMessage: 'FormattedMessage' }));
+
 jest.mock('modules', () => ({ streamsToReset: [] }));
 
 import { mockPhasePollData } from 'services/__mocks__/phases';

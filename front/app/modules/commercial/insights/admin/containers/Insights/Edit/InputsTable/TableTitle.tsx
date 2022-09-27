@@ -170,7 +170,10 @@ const TableTitle = ({
               <DropdownListItem onClick={openCategoryRenameModal}>
                 {formatMessage(messages.editCategoryName)}
               </DropdownListItem>
-              <DropdownListItem onClick={handleDeleteCategory}>
+              <DropdownListItem
+                id="deleteCategoryButton"
+                onClick={handleDeleteCategory}
+              >
                 {formatMessage(messages.deleteCategory)}
               </DropdownListItem>
             </>

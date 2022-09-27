@@ -11,7 +11,6 @@ import {
 jest.mock('services/appConfiguration');
 jest.mock('services/locale');
 jest.mock('hooks/useLocalize');
-jest.mock('utils/cl-intl');
 
 jest.mock('../../services/referenceDistribution', () => ({
   createReferenceDistribution: jest.fn(),

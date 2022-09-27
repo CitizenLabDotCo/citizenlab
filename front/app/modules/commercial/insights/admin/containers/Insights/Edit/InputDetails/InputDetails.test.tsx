@@ -77,8 +77,6 @@ jest.mock('modules/commercial/insights/hooks/useInsightsCategory', () => {
 
 jest.mock('hooks/useLocale');
 
-jest.mock('utils/cl-intl');
-
 jest.mock('utils/cl-router/withRouter', () => {
   return {
     withRouter: (Component) => {
@@ -122,8 +120,8 @@ describe('Insights Input Details', () => {
   });
   it('adds existing category to category list correctly', async () => {
     const spy = jest.spyOn(insightsService, 'addInsightsInputCategory');
-    render(<InputDetails {...defaultProps} />);
-    selectEvent.openMenu(screen.getByLabelText('Add a category'));
+    const { container } = render(<InputDetails {...defaultProps} />);
+    selectEvent.openMenu(container.querySelector('#categorySelect'));
 
     expect(
       screen.getByText(mockCategoriesData[0].attributes.name)

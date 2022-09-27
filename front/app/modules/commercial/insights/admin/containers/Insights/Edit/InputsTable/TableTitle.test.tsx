@@ -7,8 +7,6 @@ import TableTitle from './TableTitle';
 
 const mockData = categories;
 
-jest.mock('utils/cl-intl');
-
 jest.mock('modules/commercial/insights/services/insightsCategories', () => ({
   addInsightsCategory: jest.fn(),
   deleteInsightsCategory: jest.fn(),
@@ -73,12 +71,12 @@ describe('Table Title', () => {
 
   it('deletes category correctly', async () => {
     mockLocationData = { pathname: '', query: { category: mockData[0].id } };
-    render(<TableTitle />);
+    const { container } = render(<TableTitle />);
     fireEvent.click(
       within(screen.getByTestId('insightsInputsHeader')).getByRole('button')
     );
     await act(async () => {
-      fireEvent.click(screen.getByText('Delete category'));
+      fireEvent.click(container.querySelector('#deleteCategoryButton'));
     });
     expect(service.deleteInsightsCategory).toHaveBeenCalledWith(
       viewId,

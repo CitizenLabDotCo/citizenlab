@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
 import { shallow } from 'enzyme';
+import React, { Component } from 'react';
 import { mockOption } from 'services/__mocks__/pollOptions';
 
 jest.mock('services/pollOptions', () => ({
@@ -32,7 +32,7 @@ jest.mock(
   () => 'InputMultilocWithLocaleSwitcher'
 );
 jest.mock('components/UI/Button', () => 'Button');
-jest.mock('utils/cl-intl', () => ({ FormattedMessage: 'FormattedMessage' }));
+
 jest.mock('modules', () => ({ streamsToReset: [] }));
 
 import { FormOptionRow, Props, State } from './FormOptionRow';

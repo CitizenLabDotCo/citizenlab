@@ -5,7 +5,7 @@ import ProjectFolderSelect from './';
 
 jest.mock('services/appConfiguration');
 jest.mock('services/locale');
-jest.mock('utils/cl-intl');
+
 jest.mock('hooks/useLocalize');
 let mockPermission = false;
 jest.mock('services/permissions', () => {

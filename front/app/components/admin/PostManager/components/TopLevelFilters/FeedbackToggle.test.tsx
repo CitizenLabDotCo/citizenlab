@@ -5,13 +5,12 @@ import { shallow } from 'enzyme';
 import { FeedbackToggle } from './FeedbackToggle';
 
 jest.mock('services/stats');
-jest.mock('utils/cl-intl');
 
 // mocking dependencies
 jest.mock('resources/GetIdeasCount', () => 'GetIdeasCount');
 jest.mock('resources/GetInitiativesCount', () => 'GetInitiativesCount');
 jest.mock('components/UI/CountBadge', () => 'CountBadge');
-jest.mock('utils/cl-intl');
+
 jest.mock('modules', () => ({ streamsToReset: [] }));
 
 import 'jest-styled-components';

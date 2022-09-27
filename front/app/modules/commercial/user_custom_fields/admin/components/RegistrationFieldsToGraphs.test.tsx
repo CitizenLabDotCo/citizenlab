@@ -1,13 +1,13 @@
 // @ts-nocheck
 import { shallow } from 'enzyme';
 import React from 'react';
-jest.mock('utils/cl-intl');
+
 jest.mock('../../resources/GetUserCustomFields');
 jest.mock('services/stats');
 jest.mock('components/Outlet', () => 'Outlet');
 jest.mock('modules', () => ({ streamsToReset: [] }));
 
-import { intl } from 'utils/cl-intl';
+import { intl } from 'react-intl';
 import { localizeProps } from 'utils/testUtils/localizeProps';
 import { mockGetUserCustomFields } from '../../resources/__mocks__/GetUserCustomFields';
 import { mockUsersByRegFields } from '../../services/__mocks__/userCustomFieldsStats';

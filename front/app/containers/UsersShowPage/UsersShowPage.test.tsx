@@ -2,14 +2,14 @@
 // libraries
 import React from 'react';
 import { shallow } from 'enzyme';
-import { intl } from 'utils/cl-intl';
+import { intl } from 'react-intl';
 import useUser from 'hooks/useUser';
 
 // component to test
 import { UsersShowPage } from './';
 
 // mock utilities
-jest.mock('utils/cl-intl');
+
 jest.mock('services/comments');
 jest.mock('services/ideas');
 jest.mock('services/users');

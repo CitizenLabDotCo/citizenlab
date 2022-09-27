@@ -101,6 +101,7 @@ const RenameInsightsView = ({
             disabled={!name}
             onClick={handleSubmit}
             bgColor={colors.adminTextColor}
+            id="renameViewButton"
           >
             {formatMessage(messages.renameModalSaveView)}
           </Button>

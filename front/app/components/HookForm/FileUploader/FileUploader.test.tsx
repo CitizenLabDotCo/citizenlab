@@ -3,7 +3,6 @@ import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
 import FileUploader from './';
 import { useForm, FormProvider } from 'react-hook-form';
 
-jest.mock('utils/cl-intl');
 jest.mock('hooks/useRemoteFiles', () => () => null);
 
 const file = new File(['file'], 'file.pdf', {

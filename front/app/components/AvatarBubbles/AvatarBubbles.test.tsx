@@ -6,7 +6,7 @@ import { AvatarBubbles } from './';
 
 jest.mock('services/locale');
 jest.mock('services/avatars');
-jest.mock('utils/cl-intl');
+
 jest.mock('services/appConfiguration');
 jest.mock('utils/cl-router/history');
 

@@ -4,6 +4,7 @@ import React from 'react';
 import * as officialFeedbackSerivce from 'services/officialFeedback';
 import { mockOfficialFeedback } from 'services/__mocks__/officialFeedback';
 import { OfficialFeedbackPost } from './OfficialFeedbackPost';
+import { IntlShape } from 'react-intl';
 
 jest.mock('services/officialFeedback', () => ({
   deleteOfficialFeedbackFromIdea: jest.fn(),
@@ -13,11 +14,12 @@ jest.mock('./OfficialFeedbackForm', () => 'OfficialFeedbackForm');
 jest.mock('components/UI/MoreActionsMenu', () => 'MoreActionsMenu');
 jest.mock('components/UI/QuillEditedContent', () => 'QuillEditedContent');
 jest.mock('components/T');
-jest.mock('utils/cl-intl');
+
 jest.mock('modules', () => ({ streamsToReset: [] }));
 
-const Intl = require('utils/cl-intl/__mocks__/');
-const { intl } = Intl;
+const intl = {
+  formatMessage: ({ defaultMessage }) => defaultMessage,
+};
 const mockOfficialFeedbackPost = mockOfficialFeedback.data[0];
 
 describe('<OfficialFeedbackPost />', () => {
@@ -28,7 +30,7 @@ describe('<OfficialFeedbackPost />', () => {
         officialFeedbackPost={mockOfficialFeedbackPost}
         locale="en"
         tenantLocales={['en', 'nl-BE']}
-        intl={intl}
+        intl={intl as IntlShape}
         postType="initiative"
       />
     );
@@ -41,7 +43,7 @@ describe('<OfficialFeedbackPost />', () => {
         officialFeedbackPost={mockOfficialFeedbackPost}
         locale="en"
         tenantLocales={['en', 'nl-BE']}
-        intl={intl}
+        intl={intl as IntlShape}
         postType="initiative"
       />
     );
@@ -56,7 +58,7 @@ describe('<OfficialFeedbackPost />', () => {
         officialFeedbackPost={mockOfficialFeedbackPost}
         locale="en"
         tenantLocales={['en', 'nl-BE']}
-        intl={intl}
+        intl={intl as IntlShape}
         postType="initiative"
       />
     );
