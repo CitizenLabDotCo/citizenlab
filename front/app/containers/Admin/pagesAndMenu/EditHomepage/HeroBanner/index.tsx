@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Multiloc } from 'typings';
+import { Multiloc, CLErrors } from 'typings';
 
 // components
 import { ISubmitState } from 'components/admin/SubmitWrapper';
@@ -45,6 +45,7 @@ const EditHomepageHeroBannerForm = ({
   intl: { formatMessage },
 }: InjectedIntlProps) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [apiErrors, setApiErrors] = useState<CLErrors | null>({});
   const [formStatus, setFormStatus] = useState<ISubmitState>('disabled');
   const [localSettings, setLocalSettings] =
     useState<IHomepageSettingsAttributes | null>(null);
@@ -87,6 +88,7 @@ const EditHomepageHeroBannerForm = ({
       setFormStatus('success');
     } catch (error) {
       setIsLoading(false);
+      setApiErrors(error);
       setFormStatus('error');
     }
   };
@@ -246,6 +248,7 @@ const EditHomepageHeroBannerForm = ({
                 localSettings.banner_cta_signed_out_type
               }
               handleOnChange={handleOnChange}
+              errors={apiErrors}
             />
           }
         />
