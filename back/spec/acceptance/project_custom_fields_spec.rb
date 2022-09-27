@@ -10,6 +10,33 @@ resource 'Project level Custom Fields' do
     header 'Content-Type', 'application/json'
   end
 
+  let(:schemas_without_fields) do
+    {
+      json_schema_multiloc: {
+        en: {
+          type: 'object',
+          additionalProperties: false,
+          properties: {}
+        },
+        'fr-FR': {
+          type: 'object',
+          additionalProperties: false,
+          properties: {}
+        },
+        'nl-NL': {
+          type: 'object',
+          additionalProperties: false,
+          properties: {}
+        }
+      },
+      ui_schema_multiloc: {
+        en: { 'ui:order': [] },
+        'fr-FR': { 'ui:order': [] },
+        'nl-NL': { 'ui:order': [] }
+      }
+    }
+  end
+
   describe 'in a continuous ideation project without custom fields' do
     let(:project) { create(:continuous_project) }
     let(:project_id) { project.id }
@@ -116,21 +143,50 @@ resource 'Project level Custom Fields' do
         expect(status).to eq 200
         json_response = json_parse(response_body)
         if CitizenLab.ee?
-          expect(json_response[:json_schema_multiloc]).to be_present
-          expect(json_response[:ui_schema_multiloc]).to be_present
-        else
           expect(json_response).to eq({
             json_schema_multiloc: {
-              en: { type: 'object', additionalProperties: false, properties: {} },
-              'fr-FR': { type: 'object', additionalProperties: false, properties: {} },
-              'nl-NL': { type: 'object', additionalProperties: false, properties: {} }
+              en: {
+                type: 'object',
+                additionalProperties: false,
+                properties: {
+                  extra_field: {
+                    title: 'An extra question',
+                    description: 'Which councils are you attending in our city?',
+                    type: 'string'
+                  }
+                }
+              },
+              'fr-FR': {
+                type: 'object',
+                additionalProperties: false,
+                properties: {
+                  extra_field: {
+                    title: 'An extra question',
+                    description: 'Which councils are you attending in our city?',
+                    type: 'string'
+                  }
+                }
+              },
+              'nl-NL': {
+                type: 'object',
+                additionalProperties: false,
+                properties: {
+                  extra_field: {
+                    title: 'An extra question',
+                    description: 'Which councils are you attending in our city?',
+                    type: 'string'
+                  }
+                }
+              }
             },
             ui_schema_multiloc: {
-              en: { 'ui:order': [] },
-              'fr-FR': { 'ui:order': [] },
-              'nl-NL': { 'ui:order': [] }
+              en: { extra_field: {}, 'ui:order': ['extra_field'] },
+              'fr-FR': { extra_field: {}, 'ui:order': ['extra_field'] },
+              'nl-NL': { extra_field: {}, 'ui:order': ['extra_field'] }
             }
           })
+        else
+          expect(json_response).to eq schemas_without_fields
         end
       end
     end
@@ -160,30 +216,7 @@ resource 'Project level Custom Fields' do
       example_request 'Get the react-jsonschema-form json schema and ui schema for the custom fields' do
         expect(status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response).to eq({
-          json_schema_multiloc: {
-            en: {
-              type: 'object',
-              additionalProperties: false,
-              properties: {}
-            },
-            'fr-FR': {
-              type: 'object',
-              additionalProperties: false,
-              properties: {}
-            },
-            'nl-NL': {
-              type: 'object',
-              additionalProperties: false,
-              properties: {}
-            }
-          },
-          ui_schema_multiloc: {
-            en: { 'ui:order': [] },
-            'fr-FR': { 'ui:order': [] },
-            'nl-NL': { 'ui:order': [] }
-          }
-        })
+        expect(json_response).to eq schemas_without_fields
       end
     end
 
