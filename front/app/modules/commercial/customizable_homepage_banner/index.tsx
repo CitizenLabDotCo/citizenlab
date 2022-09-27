@@ -1,57 +1,40 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import LayoutSetting from './admin/LayoutSetting';
 import TwoColumnLayout from './citizen/TwoColumnLayout';
 import TwoRowLayout from './citizen/TwoRowLayout';
 import CTASettings from './admin/CTASettings';
 import CTA from './citizen/CTA';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
-type RenderOnFeatureFlagProps = {
-  children: ReactNode;
-};
-
-const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {
-  // Could be more than just a feature flag check,
-  // hence we're not using the FeatureFlag component
-  const isEnabled = useFeatureFlag({
-    name: 'customizable_homepage_banner',
-    onlyCheckAllowed: true,
-  });
-  if (isEnabled) {
-    return <>{children}</>;
-  }
-  return null;
-};
+import FeatureFlag from 'components/FeatureFlag';
 
 const configuration: ModuleConfiguration = {
   outlets: {
     'app.containers.Admin.settings.customize.headerSectionStart': (props) => {
       return (
-        <RenderOnFeatureFlag>
+        <FeatureFlag name="customizable_homepage_banner">
           <LayoutSetting {...props} />
-        </RenderOnFeatureFlag>
+        </FeatureFlag>
       );
     },
     'app.containers.Admin.settings.customize.headerSectionEnd': (props) => {
       return (
-        <RenderOnFeatureFlag>
+        <FeatureFlag name="customizable_homepage_banner">
           <CTASettings {...props} />
-        </RenderOnFeatureFlag>
+        </FeatureFlag>
       );
     },
     'app.containers.LandingPage.SignedOutHeader.CTA': (props) => {
       return (
-        <RenderOnFeatureFlag>
+        <FeatureFlag name="customizable_homepage_banner">
           <CTA signedIn={false} {...props} />
-        </RenderOnFeatureFlag>
+        </FeatureFlag>
       );
     },
     'app.containers.LandingPage.SignedInHeader.CTA': (props) => {
       return (
-        <RenderOnFeatureFlag>
+        <FeatureFlag name="customizable_homepage_banner">
           <CTA signedIn {...props} />
-        </RenderOnFeatureFlag>
+        </FeatureFlag>
       );
     },
     'app.containers.LandingPage.SignedOutHeader.index': ({
