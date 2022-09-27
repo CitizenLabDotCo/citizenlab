@@ -21,6 +21,7 @@ interface Props {
   onSubheaderChange: (subheaderMultiloc: Multiloc) => void;
   title: string;
   inputLabelText: string;
+  subheaderInputLabelText: string;
 }
 
 const BannerHeaderFields = ({
@@ -30,6 +31,7 @@ const BannerHeaderFields = ({
   onSubheaderChange,
   title,
   inputLabelText,
+  subheaderInputLabelText,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const [headerAndSubheaderErrors, setHeaderAndSubheaderErrors] = useState<{
@@ -99,7 +101,7 @@ const BannerHeaderFields = ({
         <InputMultilocWithLocaleSwitcher
           type="text"
           valueMultiloc={bannerSubheaderMultiloc}
-          label={formatMessage(messages.bannerHeaderSignedOutSubtitle)}
+          label={subheaderInputLabelText}
           maxCharCount={90}
           onChange={handleSubheaderOnChange}
           errorMultiloc={headerAndSubheaderErrors.signedOutSubheaderErrors}

@@ -23,6 +23,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.bannerHeaderSignedOut',
     defaultMessage: 'Header text for non-registered visitors',
   },
+  bannerHeader: {
+    id: 'app.containers.AdminPage.SettingsPage.bannerHeader',
+    defaultMessage: 'Header text',
+  },
+  bannerHeaderSubtitle: {
+    id: 'app.containers.AdminPage.SettingsPage.bannerHeaderSubtitle',
+    defaultMessage: 'Sub-header text',
+  },
   titleMaxCharError: {
     id: 'app.containers.AdminPage.SettingsPage.titleMaxCharError',
     defaultMessage:

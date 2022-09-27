@@ -192,6 +192,9 @@ const EditHomepageHeroBannerForm = ({
               onSubheaderChange={handleSubheaderSignedOutMultilocOnChange}
               title={formatMessage(messages.bannerTextTitle)}
               inputLabelText={formatMessage(messages.bannerHeaderSignedOut)}
+              subheaderInputLabelText={formatMessage(
+                messages.bannerHeaderSignedOutSubtitle
+              )}
             />
           }
           outletSectionStart={

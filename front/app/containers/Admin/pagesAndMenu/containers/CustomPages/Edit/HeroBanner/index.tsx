@@ -180,7 +180,10 @@ const EditCustomPageHeroBannerForm = ({
               onHeaderChange={handleSignedOutMultilocHeaderOnChange}
               onSubheaderChange={handleSignedOutMultilocSubheaderOnChange}
               title={formatMessage(messages.bannerTextTitle)}
-              inputLabelText={formatMessage(messages.bannerHeaderSignedOut)}
+              inputLabelText={formatMessage(messages.bannerHeader)}
+              subheaderInputLabelText={formatMessage(
+                messages.bannerHeaderSubtitle
+              )}
             />
           }
           ctaButtonFieldsComponent={
