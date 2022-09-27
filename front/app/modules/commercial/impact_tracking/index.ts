@@ -1,57 +1,21 @@
-import { events$, pageChanges$, tenantInfo } from 'utils/analytics';
-import { currentAppConfigurationStream } from 'services/appConfiguration';
-import { authUserStream } from 'services/auth';
-import { withLatestFrom } from 'rxjs';
+// utils
 import { ModuleConfiguration } from 'utils/moduleUtils';
+import request from 'utils/request';
+import { API_PATH } from 'containers/App/constants';
 
-const trackEvent = (_payload) => {
-  // console.log(payload);
+const trackSessionStarted = () => {
+  request(
+    `${API_PATH}/sessions`,
+    {},
+    { method: 'POST' },
+    null
+  );
 };
-
-const trackPageChange = (_payload) => {
-  // console.log(payload);
-};
-
-const trackSessionStarted = () => {};
 
 const configuration: ModuleConfiguration = {
   beforeMountApplication: () => {
     trackSessionStarted();
-
-    pageChanges$
-      .pipe(
-        withLatestFrom(
-          authUserStream().observable,
-          currentAppConfigurationStream().observable
-        )
-      )
-      .subscribe(([pageChange, user, appConfig]) => {
-        trackPageChange({
-          path: pageChange.path,
-          url: `https://${appConfig.data.attributes.host}${pageChange.path}`,
-          title: document.title,
-          user_id: user?.data.id,
-          properties: pageChange.properties,
-          ...tenantInfo(appConfig.data),
-        });
-      });
-
-    events$
-      .pipe(
-        withLatestFrom(
-          authUserStream().observable,
-          currentAppConfigurationStream().observable
-        )
-      )
-      .subscribe(([event, user, appConfig]) => {
-        trackEvent({
-          name: event.name,
-          properties: event.properties,
-          user_id: user?.data.id,
-          ...tenantInfo(appConfig.data),
-        });
-      });
-  },
+  }
 };
 
 export default configuration;
