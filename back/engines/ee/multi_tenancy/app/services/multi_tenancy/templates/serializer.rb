@@ -13,16 +13,16 @@ module MultiTenancy
           {
             'home_page'                            => yml_home_pages,
             'area'                                 => yml_areas,
-            'custom_form'                          => yml_custom_forms,
-            'custom_field'                         => yml_custom_fields,
-            'custom_field_option'                  => yml_custom_field_options,
             'topic'                                => yml_topics,
-            'user'                                 => yml_users,
-            'email_campaigns/unsubscription_token' => yml_unsubscription_tokens,
             'project_folders/folder'               => yml_project_folders,
             'project_folders/image'                => yml_project_folder_images,
             'project_folders/file'                 => yml_project_folder_files,
             'project'                              => yml_projects,
+            'custom_form'                          => yml_custom_forms,
+            'custom_field'                         => yml_custom_fields,
+            'custom_field_option'                  => yml_custom_field_options,
+            'user'                                 => yml_users,
+            'email_campaigns/unsubscription_token' => yml_unsubscription_tokens,
             'project_file'                         => yml_project_files,
             'project_image'                        => yml_project_images,
             'projects_allowed_input_topic'         => yml_projects_allowed_input_topics,
@@ -140,7 +140,8 @@ module MultiTenancy
         CustomForm.all.map do |c|
           yml_custom_form = {
             'created_at' => c.created_at.to_s,
-            'updated_at' => c.updated_at.to_s
+            'updated_at' => c.updated_at.to_s,
+            'participation_context_ref' => lookup_ref(c.participation_context_id, %i[project phase])
           }
           store_ref yml_custom_form, c.id, :custom_form
           yml_custom_form
@@ -175,7 +176,12 @@ module MultiTenancy
       end
 
       def yml_custom_field_options
-        CustomFieldOption.all.map do |c|
+        # Options of the domicile field do not need to be serialized.
+        # They will be recreated from areas when loading the template.
+        domicile_field = CustomField.find_by(code: 'domicile')
+        options = domicile_field ? CustomFieldOption.where.not(custom_field: domicile_field) : CustomFieldOption
+
+        options.all.map do |c|
           yml_custom_field_option = {
             'custom_field_ref' => lookup_ref(c.custom_field_id, :custom_field),
             'key' => c.key,
@@ -296,8 +302,7 @@ module MultiTenancy
             'description_preview_multiloc' => p.description_preview_multiloc,
             'process_type' => p.process_type,
             'internal_role' => p.internal_role,
-            'custom_form_ref' => lookup_ref(p.custom_form_id, :custom_form),
-            'text_images_attributes' => p.text_images.map  do |ti|
+            'text_images_attributes' => p.text_images.map do |ti|
               {
                 'imageable_field' => ti.imageable_field,
                 'remote_image_url' => ti.image_url,

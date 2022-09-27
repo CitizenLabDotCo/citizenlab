@@ -43,10 +43,6 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        idea_custom_copy: {
-          enabled: false,
-          allowed: false
-        },
         initiativeflow_social_sharing: {
           enabled: true,
           allowed: true
@@ -56,6 +52,14 @@ namespace :cl2_back do
           allowed: true
         },
         dynamic_idea_form: {
+          enabled: true,
+          allowed: true
+        },
+        idea_author_change: {
+          enabled: true,
+          allowed: true
+        },
+        idea_custom_copy: {
           enabled: true,
           allowed: true
         },
@@ -301,6 +305,10 @@ namespace :cl2_back do
           monthly_sms_segments_limit: 100_000
         },
         native_surveys: {
+          enabled: true,
+          allowed: true
+        },
+        analytics: {
           enabled: true,
           allowed: true
         }

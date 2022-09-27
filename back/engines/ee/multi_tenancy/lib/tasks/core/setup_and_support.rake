@@ -127,7 +127,7 @@ namespace :setup_and_support do
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
       cf = CustomField.find args[:id]
       options.each do |option|
-        cfo = cf.custom_field_options.create!(title_multiloc: { locale => option })
+        cfo = cf.options.create!(title_multiloc: { locale => option })
         cfo.move_to_bottom
       end
     end
