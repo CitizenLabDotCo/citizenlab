@@ -46,10 +46,13 @@ const getLastPeriod = (resolution: IResolution) => {
 
 const query = ({
   projectId,
-  startAt,
-  endAt,
+  startAtMoment,
+  endAtMoment,
   resolution,
 }: QueryParameters): Query => {
+  const startAt = startAtMoment?.toISOString();
+  const endAt = endAtMoment?.toISOString();
+
   const totalsWholePeriodQuery: QuerySchema = {
     fact: 'visit',
     filters: {
@@ -105,8 +108,8 @@ const query = ({
 
 export default function useVisitorsData({
   projectId,
-  startAt,
-  endAt,
+  startAtMoment,
+  endAtMoment,
   resolution,
 }: QueryParameters) {
   const [stats, setStats] = useState<Stats | NilOrError>();
@@ -117,8 +120,8 @@ export default function useVisitorsData({
     const observable = analyticsStream<Response>(
       query({
         projectId,
-        startAt,
-        endAt,
+        startAtMoment,
+        endAtMoment,
         resolution,
       })
     ).observable;
@@ -136,15 +139,15 @@ export default function useVisitorsData({
 
         setTimeSeries(parseTimeSeries(
           response.data[2],
-          startAt,
-          endAt,
+          startAtMoment,
+          endAtMoment,
           resolution
         ));
       }
     );
 
     return () => subscription.unsubscribe();
-  }, [projectId, startAt, endAt, resolution]);
+  }, [projectId, startAtMoment, endAtMoment, resolution]);
 
   return { stats, timeSeries, xlsxData };
 }

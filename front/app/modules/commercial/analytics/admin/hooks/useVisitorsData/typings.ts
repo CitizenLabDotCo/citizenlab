@@ -1,9 +1,10 @@
 import { IResolution } from 'components/admin/ResolutionControl';
+import { Moment } from 'moment';
 
 export interface QueryParameters {
   projectId: string | undefined;
-  startAt: string | null | undefined;
-  endAt: string | null | undefined;
+  startAtMoment: Moment | null | undefined;
+  endAtMoment: Moment | null | undefined;
   resolution: IResolution;
 }
 

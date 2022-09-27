@@ -35,17 +35,16 @@ const VisitorsCard = ({
 }: Props & InjectedIntlProps) => {
   const graphRef = useRef();
 
-  const startAt = startAtMoment?.toISOString();
-  const endAt = endAtMoment?.toISOString();
-
   const { xlsxData } = useVisitorsData({
-    startAt,
-    endAt,
+    startAtMoment,
+    endAtMoment,
     projectId: projectFilter,
     resolution,
   });
 
   const visitorsMessage = formatMessage(messages.visitors);
+  const startAt = startAtMoment?.toISOString();
+  const endAt = endAtMoment?.toISOString();
 
   return (
     <GraphCard

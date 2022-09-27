@@ -2,7 +2,7 @@ import moment, { Moment } from 'moment';
 
 // typings
 import { IResolution } from 'components/admin/ResolutionControl';
-import { 
+import {
   Response,
   Stats,
   TimeSeries,
@@ -39,30 +39,43 @@ export const parseStats = ([
 
 export const parseTimeSeries = (
   responseTimeSeries: TimeSeriesResponse,
-  startAt: string | null | undefined,
-  endAt: string | null | undefined,
+  startAtMoment: Moment | null | undefined,
+  endAtMoment: Moment | null | undefined,
   resolution: IResolution
 ): TimeSeries => {
-  const firstDate = getFirstDate(responseTimeSeries, startAt)
-  const lastDate = getLastDate(responseTimeSeries, endAt)
+  const firstDate = getFirstDate(responseTimeSeries)
+  const lastDate = getLastDate(responseTimeSeries)
 
   if (resolution === 'month') {
-    return interpolateMonths(responseTimeSeries, firstDate, lastDate)
+    return interpolateMonths(
+      responseTimeSeries,
+      startAtMoment,
+      endAtMoment,
+      firstDate,
+      lastDate
+    )
   }
 
   if (resolution === 'week') {
-    return interpolateWeeks(responseTimeSeries, firstDate, lastDate)
+    return interpolateWeeks(
+      responseTimeSeries,
+      startAtMoment,
+      endAtMoment,
+      firstDate,
+      lastDate
+    )
   }
 
-  return interpolateDays(responseTimeSeries, firstDate, lastDate)
+  return interpolateDays(
+    responseTimeSeries,
+    startAtMoment,
+    endAtMoment,
+    firstDate,
+    lastDate
+  )
 }
 
-const getFirstDate = (
-  responseTimeSeries: TimeSeriesResponse,
-  startAt: string | null | undefined
-) => {
-  if (startAt) return moment(startAt);
-
+const getFirstDate = (responseTimeSeries: TimeSeriesResponse) => {
   const firstMonthInData = responseTimeSeries.reduce((acc, row) => {
     const date = getDate(row)
     return date.isAfter(acc) ? acc : date
@@ -71,12 +84,7 @@ const getFirstDate = (
   return firstMonthInData;
 }
 
-const getLastDate = (
-  responseTimeSeries: TimeSeriesResponse,
-  endAt: string | null | undefined
-) => {
-  if (endAt) return moment(endAt);
-
+const getLastDate = (responseTimeSeries: TimeSeriesResponse) => {
   const lastMonthInData = responseTimeSeries.reduce((acc, row) => {
     const date = getDate(row)
     return date.isAfter(acc) ? date : acc
@@ -93,33 +101,39 @@ const getDate = (row: TimeSeriesResponseRow) => {
   if ('dimension_date_last_action.week' in row) {
     return moment(row['dimension_date_last_action.week'])
   }
-  
+
   return moment(row['dimension_date_last_action.date']);
 }
 
 const interpolateMonths = (
   responseTimeSeries: TimeSeriesResponse,
+  startAtMoment: Moment | null | undefined,
+  endAtMoment: Moment | null | undefined,
   firstDate: Moment,
   lastDate: Moment
 ): any => {
-  console.log(responseTimeSeries, firstDate, lastDate)
+  console.log(responseTimeSeries, startAtMoment, endAtMoment, firstDate, lastDate)
   return []
 }
 
 const interpolateWeeks = (
   responseTimeSeries: TimeSeriesResponse,
+  startAtMoment: Moment | null | undefined,
+  endAtMoment: Moment | null | undefined,
   firstDate: Moment,
   lastDate: Moment
 ): any => {
-  console.log(responseTimeSeries, firstDate, lastDate)
+  console.log(responseTimeSeries, startAtMoment, endAtMoment, firstDate, lastDate)
   return []
 }
 
 const interpolateDays = (
   responseTimeSeries: TimeSeriesResponse,
+  startAtMoment: Moment | null | undefined,
+  endAtMoment: Moment | null | undefined,
   firstDate: Moment,
   lastDate: Moment
 ): any => {
-  console.log(responseTimeSeries, firstDate, lastDate)
+  console.log(responseTimeSeries, startAtMoment, endAtMoment, firstDate, lastDate)
   return []
 }
