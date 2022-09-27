@@ -1,8 +1,5 @@
 import React from 'react';
 
-// services
-import { InputTerm } from 'services/participationContexts';
-
 // intl
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
@@ -18,7 +15,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 // utils
-import { getInputTermMessage } from 'utils/i18n';
 import { isNilOrError } from 'utils/helperUtils';
 import { colors } from 'utils/styleUtils';
 import clHistory from 'utils/cl-router/history';
@@ -34,7 +30,6 @@ import styled from 'styled-components';
 interface Props {
   phases: IPhaseData[] | null;
   project: IProjectData;
-  inputTerm: InputTerm;
   showDropdown: any;
 }
 
@@ -51,7 +46,6 @@ const StyledText = styled(Text)`
 const NewIdeaButtonDropdown = ({
   phases,
   project,
-  inputTerm,
   showDropdown,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
@@ -103,18 +97,7 @@ const NewIdeaButtonDropdown = ({
           name="idea"
           marginY="auto"
         />
-        <StyledText>
-          {formatMessage(
-            getInputTermMessage(inputTerm, {
-              idea: messages.addNewIdea,
-              option: messages.addNewOption,
-              project: messages.addNewProject,
-              question: messages.addNewQuestion,
-              issue: messages.addNewIssue,
-              contribution: messages.addNewContribution,
-            })
-          )}
-        </StyledText>
+        <StyledText>{formatMessage(messages.addNewInput)}</StyledText>
       </Box>
       <StyledDropdown opened={showDropdown} content={<DropdownContent />} />
     </>

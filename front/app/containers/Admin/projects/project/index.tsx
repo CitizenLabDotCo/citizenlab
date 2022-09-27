@@ -398,7 +398,6 @@ export class AdminProjectsProjectIndex extends PureComponent<
                         <NewIdeaButtonDropdown
                           phases={phases}
                           project={project}
-                          inputTerm={inputTerm}
                           showDropdown={this.state.showIdeaDropdown}
                         />
                       )}
