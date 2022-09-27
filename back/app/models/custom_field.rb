@@ -4,20 +4,23 @@
 #
 # Table name: custom_fields
 #
-#  id                   :uuid             not null, primary key
-#  resource_type        :string
-#  key                  :string
-#  input_type           :string
-#  title_multiloc       :jsonb
-#  description_multiloc :jsonb
-#  required             :boolean          default(FALSE)
-#  ordering             :integer
-#  created_at           :datetime         not null
-#  updated_at           :datetime         not null
-#  enabled              :boolean          default(TRUE), not null
-#  code                 :string
-#  resource_id          :uuid
-#  hidden               :boolean          default(FALSE), not null
+#  id                     :uuid             not null, primary key
+#  resource_type          :string
+#  key                    :string
+#  input_type             :string
+#  title_multiloc         :jsonb
+#  description_multiloc   :jsonb
+#  required               :boolean          default(FALSE)
+#  ordering               :integer
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  enabled                :boolean          default(TRUE), not null
+#  code                   :string
+#  resource_id            :uuid
+#  hidden                 :boolean          default(FALSE), not null
+#  maximum                :integer
+#  minimum_label_multiloc :jsonb            not null
+#  maximum_label_multiloc :jsonb            not null
 #
 # Indexes
 #
@@ -35,7 +38,7 @@ class CustomField < ApplicationRecord
   belongs_to :resource, polymorphic: true, optional: true
 
   FIELDABLE_TYPES = %w[User CustomForm].freeze
-  INPUT_TYPES = %w[text number multiline_text html text_multiloc multiline_text_multiloc html_multiloc select multiselect checkbox date files image_files point].freeze
+  INPUT_TYPES = %w[text number multiline_text html text_multiloc multiline_text_multiloc html_multiloc select multiselect checkbox date files image_files point linear_scale].freeze
   CODES = %w[gender birthyear domicile education title_multiloc body_multiloc topic_ids location_description proposed_budget idea_images_attributes idea_files_attributes author_id budget].freeze
 
   validates :resource_type, presence: true, inclusion: { in: FIELDABLE_TYPES }
@@ -52,6 +55,7 @@ class CustomField < ApplicationRecord
   before_validation :set_default_enabled
   before_validation :generate_key, on: :create
   before_validation :sanitize_description_multiloc
+  after_create :create_domicile_options, if: :domicile?
 
   scope :with_resource_type, ->(resource_type) { where(resource_type: resource_type) }
   scope :enabled, -> { where(enabled: true) }
@@ -79,6 +83,10 @@ class CustomField < ApplicationRecord
 
   def required?
     required
+  end
+
+  def domicile?
+    key == 'domicile' && code == 'domicile'
   end
 
   def accept(visitor)
@@ -111,6 +119,8 @@ class CustomField < ApplicationRecord
       visitor.visit_image_files self
     when 'point'
       visitor.visit_point self
+    when 'linear_scale'
+      visitor.visit_linear_scale self
     else
       raise "Unsupported input type: #{input_type}"
     end
@@ -138,6 +148,19 @@ class CustomField < ApplicationRecord
     self.description_multiloc = service.sanitize_multiloc description_multiloc, %i[decoration link list title]
     self.description_multiloc = service.remove_multiloc_empty_trailing_tags description_multiloc
     self.description_multiloc = service.linkify_multiloc description_multiloc
+  end
+
+  def create_domicile_options
+    Area.all.map(&:create_custom_field_option)
+    create_somewhere_else_domicile_option
+  end
+
+  def create_somewhere_else_domicile_option
+    title_multiloc = CL2_SUPPORTED_LOCALES.index_with do |locale|
+      I18n.t('custom_field_options.domicile.outside', locale: locale)
+    end
+
+    options.create!(title_multiloc: title_multiloc)
   end
 end
 

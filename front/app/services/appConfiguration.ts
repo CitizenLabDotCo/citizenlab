@@ -217,6 +217,7 @@ export interface IAppConfigurationSettings {
   representativeness?: AppConfigurationFeature;
   remove_vendor_branding?: AppConfigurationFeature;
   native_surveys?: AppConfigurationFeature;
+  analytics?: AppConfigurationFeature;
 }
 
 interface AppConfigurationMapSettings extends AppConfigurationFeature {
@@ -298,8 +299,8 @@ export async function updateAppConfiguration(
   return tenant;
 }
 
-export const coreSettings = (appConfiguration: IAppConfiguration) =>
-  appConfiguration.data.attributes.settings.core;
+export const coreSettings = (appConfiguration: IAppConfigurationData) =>
+  appConfiguration.attributes.settings.core;
 
 type TCurrency = TCustomCurrency | TCountryCurrency;
 type TCustomCurrency =

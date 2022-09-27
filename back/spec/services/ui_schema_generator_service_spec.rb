@@ -499,4 +499,26 @@ RSpec.describe UiSchemaGeneratorService do
       expect(generator.visit_point(field)).to be_nil
     end
   end
+
+  describe '#visit_linear_scale' do
+    let(:field) do
+      create(
+        :custom_field_linear_scale,
+        key: field_key
+      )
+    end
+
+    it 'returns the schema for the given field' do
+      expect(generator.visit_linear_scale(field)).to eq({
+        type: 'Control',
+        scope: "#/properties/#{field_key}",
+        label: 'We need a swimming pool.',
+        options: {
+          description: 'Please indicate how strong you agree or disagree.',
+          minimum_label: 'Strongly disagree',
+          maximum_label: 'Strongly agree'
+        }
+      })
+    end
+  end
 end

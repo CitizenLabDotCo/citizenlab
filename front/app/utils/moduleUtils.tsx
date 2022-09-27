@@ -185,6 +185,12 @@ export interface OutletsPropertyMap {
     currentGroupFilter?: string;
     currentGroupFilterLabel?: string;
   };
+  'app.containers.Admin.dashboard.summary.postStatus': {
+    projectId: string | undefined;
+    startAt: string | null | undefined;
+    endAt: string | null | undefined;
+    onMount: () => void;
+  };
   'app.components.SignUpIn.SignUp.step': SignUpStepOutletProps;
   'app.containers.Admin.dashboard.reports.ProjectReport.graphs': {
     startAt: string;
@@ -404,6 +410,13 @@ export interface OutletsPropertyMap {
     string,
     any
   >;
+  'app.components.PageForm.index.top': {
+    pageId: string | null;
+    navbarItemId: string | null;
+  };
+  'app.containers.Admin.pages-menu.containers.EditPageForm.index.onMount': {
+    onMount: () => void;
+  };
 }
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];

@@ -191,7 +191,7 @@ class SettingsGeneralTab extends PureComponent<
             const errors = e.json.errors;
             this.setState({ errors, loading: false });
             // This error check uses an undocumented API from the backend.
-            // Needs to be reimplemented to use frontend validation when converted to a Formik form.
+            // Needs to be reimplemented to use frontend validation when converted to a React Hook Form.
             if (errors.settings && errors.settings.length > 0) {
               const foundUrlError = !!errors.settings.find(
                 (error) => error.error.fragment === '#/core/organization_site'

@@ -19,6 +19,12 @@ import {
   IFlatCreateCustomField,
 } from 'services/formCustomFields';
 
+// Hooks
+import useLocale from 'hooks/useLocale';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+
 const DraggableElement = styled.div`
   cursor: move;
 `;
@@ -31,14 +37,28 @@ const FormBuilderToolbox = ({
   intl: { formatMessage },
   onAddField,
 }: FormBuilderToolboxProps & InjectedIntlProps) => {
-  const addAnswer = (inputType: ICustomFieldInputType) => {
+  const locale = useLocale();
+
+  if (isNilOrError(locale)) return null;
+
+  const addField = (inputType: ICustomFieldInputType) => {
     onAddField({
       id: `${Math.floor(Date.now() * Math.random())}`,
       isLocalOnly: true,
       description_multiloc: {},
       input_type: inputType,
       required: false,
-      title_multiloc: {},
+      title_multiloc: {
+        [locale]: '',
+      },
+      maximum_label_multiloc: {},
+      minimum_label_multiloc: {},
+      maximum: 5,
+      options: [
+        {
+          title_multiloc: {},
+        },
+      ],
       enabled: true,
     });
   };
@@ -74,7 +94,22 @@ const FormBuilderToolbox = ({
           <ToolboxItem
             icon="short-answer"
             label={formatMessage(messages.shortAnswer)}
-            onClick={() => addAnswer('text')}
+            onClick={() => addField('text')}
+          />
+          <ToolboxItem
+            icon="multiple-choice"
+            label={formatMessage(messages.multipleChoice)}
+            onClick={() => addField('multiselect')}
+          />
+          <ToolboxItem
+            icon="number-field"
+            label={formatMessage(messages.number)}
+            onClick={() => addField('number')}
+          />
+          <ToolboxItem
+            icon="linear-scale"
+            label={formatMessage(messages.linearScale)}
+            onClick={() => addField('linear_scale')}
           />
         </DraggableElement>
       </Box>

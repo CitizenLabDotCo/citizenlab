@@ -32,7 +32,6 @@ resource 'Projects' do
       parameter :publication_statuses, 'Return only projects with the specified publication statuses (i.e. given an array of publication statuses); returns all projects by default', required: false
       parameter :filter_can_moderate, 'Filter out the projects the user is allowed to moderate. False by default', required: false
       parameter :filter_ids, 'Filter out only projects with the given list of IDs', required: false
-      parameter :search, 'Filter by searching in title_multiloc, description_multiloc and description_preview_multiloc', required: false
 
       parameter :folder, 'Filter by folder (project folder id)', required: false if CitizenLab.ee?
 
@@ -547,6 +546,88 @@ resource 'Projects' do
         expect(moderator.project_moderator?(id)).to be true
         do_request
         expect(moderator.reload.project_moderator?(id)).to be false
+      end
+    end
+
+    get 'web_api/v1/projects/:id/survey_results' do
+      let(:project) { create(:continuous_native_survey_project) }
+      let(:form) { create(:custom_form, participation_context: project) }
+      let(:id) { project.id }
+      let(:multiselect_field) do
+        create(
+          :custom_field_multiselect,
+          resource: form,
+          title_multiloc: { 'en' => 'What are your favourite pets?' },
+          description_multiloc: {}
+        )
+      end
+      let!(:cat_option) do
+        create(:custom_field_option, custom_field: multiselect_field, key: 'cat', title_multiloc: { 'en' => 'Cat' })
+      end
+      let!(:dog_option) do
+        create(:custom_field_option, custom_field: multiselect_field, key: 'dog', title_multiloc: { 'en' => 'Dog' })
+      end
+
+      before do
+        create(:idea, project: project, custom_field_values: { multiselect_field.key => %w[cat dog] })
+        create(:idea, project: project, custom_field_values: { multiselect_field.key => %w[cat] })
+      end
+
+      example 'Get survey results', skip: !CitizenLab.ee? do
+        do_request
+        expect(status).to eq 200
+
+        expect(json_response).to eq(
+          {
+            data: {
+              results: [
+                {
+                  inputType: 'multiselect',
+                  question: { en: 'What are your favourite pets?' },
+                  totalResponses: 3,
+                  answers: [
+                    { answer: { en: 'Cat' }, responses: 2 },
+                    { answer: { en: 'Dog' }, responses: 1 }
+                  ]
+                }
+              ],
+              totalSubmissions: 2
+            }
+          }
+        )
+      end
+    end
+
+    get 'web_api/v1/projects/:id/submission_count' do
+      let(:project) { create(:continuous_native_survey_project) }
+      let(:form) { create(:custom_form, participation_context: project) }
+      let(:id) { project.id }
+      let(:multiselect_field) do
+        create(
+          :custom_field_multiselect,
+          resource: form,
+          title_multiloc: { 'en' => 'What are your favourite pets?' },
+          description_multiloc: {}
+        )
+      end
+      let!(:cat_option) do
+        create(:custom_field_option, custom_field: multiselect_field, key: 'cat', title_multiloc: { 'en' => 'Cat' })
+      end
+      let!(:dog_option) do
+        create(:custom_field_option, custom_field: multiselect_field, key: 'dog', title_multiloc: { 'en' => 'Dog' })
+      end
+
+      before do
+        create(:idea, project: project, custom_field_values: { multiselect_field.key => %w[cat dog] })
+        create(:idea, project: project, custom_field_values: { multiselect_field.key => %w[cat] })
+        create(:idea, project: project, custom_field_values: { multiselect_field.key => %w[dog] })
+      end
+
+      example 'Get submission count', skip: !CitizenLab.ee? do
+        do_request
+        expect(status).to eq 200
+
+        expect(json_response).to eq({ data: { totalSubmissions: 3 } })
       end
     end
   end

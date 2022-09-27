@@ -8,7 +8,7 @@ import { Radio } from '@citizenlab/cl2-component-library';
 import { getDestinationConfig, IDestination, TCategory } from './destinations';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
-import { IAppConfiguration } from 'services/appConfiguration';
+import { IAppConfigurationData } from 'services/appConfiguration';
 
 const Container = styled.div`
   display: flex;
@@ -92,12 +92,12 @@ const DestinationName = ({
   tenant,
   destination,
 }: {
-  tenant: IAppConfiguration | null;
+  tenant: IAppConfigurationData | null;
   destination: IDestination;
 }) => {
   const config = getDestinationConfig(destination);
   if (config?.name && tenant) {
-    return <>{config.name(tenant.data)}</>;
+    return <>{config.name(tenant)}</>;
   } else if (config) {
     return <>{config.key}</>;
   } else {

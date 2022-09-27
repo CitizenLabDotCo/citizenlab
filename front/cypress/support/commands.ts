@@ -1,5 +1,6 @@
 import 'cypress-file-upload';
 import './dnd';
+import { ParticipationMethod } from '../../app/services/participationContexts';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -697,20 +698,17 @@ export function apiCreateProject({
   assigneeId,
   surveyUrl,
   surveyService,
+  maxBudget,
 }: {
   type: 'timeline' | 'continuous';
   title: string;
   descriptionPreview: string;
   description: string;
   publicationStatus?: 'draft' | 'published' | 'archived';
-  participationMethod?:
-    | 'ideation'
-    | 'information'
-    | 'survey'
-    | 'budgeting'
-    | 'poll';
+  participationMethod?: ParticipationMethod;
   assigneeId?: string;
   surveyUrl?: string;
+  maxBudget?: number;
   surveyService?: 'typeform' | 'survey_monkey' | 'google_forms';
 }) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
@@ -748,6 +746,7 @@ export function apiCreateProject({
               : participationMethod,
           survey_embed_url: surveyUrl,
           survey_service: surveyService,
+          max_budget: maxBudget,
         },
       },
     });
@@ -897,18 +896,14 @@ export function apiCreatePhase(
   title: string,
   startAt: string,
   endAt: string,
-  participationMethod:
-    | 'ideation'
-    | 'information'
-    | 'survey'
-    | 'budgeting'
-    | 'poll',
+  participationMethod: ParticipationMethod,
   canPost: boolean,
   canVote: boolean,
   canComment: boolean,
   description?: string,
   surveyUrl?: string,
-  surveyService?: 'typeform' | 'survey_monkey' | 'google_forms'
+  surveyService?: 'typeform' | 'survey_monkey' | 'google_forms',
+  maxBudget?: number
 ) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -935,6 +930,7 @@ export function apiCreatePhase(
           description_multiloc: { en: description },
           survey_embed_url: surveyUrl,
           survey_service: surveyService,
+          max_budget: maxBudget,
         },
       },
     });

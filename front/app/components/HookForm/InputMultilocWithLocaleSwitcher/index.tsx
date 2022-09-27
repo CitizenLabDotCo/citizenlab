@@ -5,11 +5,12 @@ import {
   InputMultilocWithLocaleSwitcher as InputMultilocWithLocaleSwitcherComponent,
   InputMultilocWithLocaleSwitcherProps,
 } from '@citizenlab/cl2-component-library';
-import Error from 'components/UI/Error';
+import Error, { TFieldName } from 'components/UI/Error';
 import { Controller, useFormContext, FieldError } from 'react-hook-form';
-import { Locale } from 'typings';
+import { CLError, Locale } from 'typings';
+import { get } from 'lodash-es';
 
-export interface Props
+interface Props
   extends Omit<
     InputMultilocWithLocaleSwitcherProps,
     'locales' | 'valueMultiloc'
@@ -19,7 +20,7 @@ export interface Props
 
 const InputMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
   const {
-    formState: { errors },
+    formState: { errors: formContextErrors },
     control,
   } = useFormContext();
   const locales = useAppConfigurationLocales();
@@ -34,9 +35,14 @@ const InputMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
   );
 
   // Select the first error messages from the field's multiloc validation error
-  const errorMessage = Object.values(
-    (errors[name] as Record<Locale, FieldError> | undefined) || {}
+  const errors = get(formContextErrors, name);
+  const validationError = Object.values(
+    (errors as Record<Locale, FieldError> | undefined) || {}
   )[0]?.message;
+
+  // If an API error with a matching name has been returned from the API response, apiError is set to an array with the error message as the only item
+  const apiError =
+    (errors?.error as string | undefined) && ([errors] as unknown as CLError[]);
 
   return (
     <>
@@ -57,11 +63,20 @@ const InputMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
           );
         }}
       />
-      {errorMessage && (
+      {validationError && (
         <Error
           marginTop="8px"
           marginBottom="8px"
-          text={errorMessage}
+          text={validationError}
+          scrollIntoView={false}
+        />
+      )}
+      {apiError && (
+        <Error
+          fieldName={name as TFieldName}
+          apiErrors={apiError}
+          marginTop="8px"
+          marginBottom="8px"
           scrollIntoView={false}
         />
       )}

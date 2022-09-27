@@ -53,7 +53,7 @@ const PasswordInputComponent = ({
   minimumPasswordLength,
   isLoginPasswordInput,
   setRef,
-  errors,
+  errors = {},
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const locale = useLocale();
@@ -74,9 +74,9 @@ const PasswordInputComponent = ({
     onChange(password);
   };
 
-  const handleOnBlur = () => {
+  const handleOnBlur = (e) => {
     if (onBlur) {
-      onBlur();
+      onBlur(e);
     }
   };
 
