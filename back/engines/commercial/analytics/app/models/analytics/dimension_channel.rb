@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: analytics_dimension_channels
@@ -7,6 +9,5 @@
 #
 module Analytics
   class DimensionChannel < Analytics::ApplicationRecord
-    # has_many :visits, class_name: 'Analytics::FactVisit'
   end
 end

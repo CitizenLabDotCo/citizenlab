@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_31_171634) do
+ActiveRecord::Schema.define(version: 2022_09_21_102230) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -53,15 +53,56 @@ ActiveRecord::Schema.define(version: 2022_08_31_171634) do
     t.index ["rgt"], name: "index_admin_publications_on_rgt"
   end
 
+  create_table "analytics_dimension_channels", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.jsonb "name_multiloc"
+  end
+
   create_table "analytics_dimension_dates", primary_key: "date", id: :date, force: :cascade do |t|
     t.string "year"
     t.string "month"
-    t.string "day"
+    t.date "week"
+  end
+
+  create_table "analytics_dimension_locales", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
   end
 
   create_table "analytics_dimension_types", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "parent"
+  end
+
+  create_table "analytics_fact_visits", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "visitor_id", null: false
+    t.uuid "dimension_user_id"
+    t.uuid "dimension_channel_id"
+    t.date "dimension_date_first_action_id"
+    t.date "dimension_date_last_action_id"
+    t.integer "duration", null: false
+    t.integer "pages_visited", null: false
+    t.boolean "returning_visitor", default: true, null: false
+    t.integer "matomo_visit_id", null: false
+    t.datetime "matomo_last_action_time", null: false
+    t.index ["dimension_channel_id"], name: "i_v_channel"
+    t.index ["dimension_date_first_action_id"], name: "i_v_first_action"
+    t.index ["dimension_date_last_action_id"], name: "i_v_last_action"
+    t.index ["dimension_user_id"], name: "i_v_user"
+    t.index ["matomo_last_action_time"], name: "i_v_timestamp"
+    t.index ["matomo_visit_id"], name: "i_v_matomo_visit", unique: true
+  end
+
+  create_table "analytics_join_locale_visits", id: false, force: :cascade do |t|
+    t.uuid "dimension_locale_id"
+    t.uuid "fact_visit_id"
+    t.index ["dimension_locale_id"], name: "index_analytics_join_locale_visits_on_dimension_locale_id"
+    t.index ["fact_visit_id"], name: "index_analytics_join_locale_visits_on_fact_visit_id"
+  end
+
+  create_table "analytics_join_project_visits", id: false, force: :cascade do |t|
+    t.uuid "dimension_project_id"
+    t.uuid "fact_visit_id"
+    t.index ["dimension_project_id"], name: "index_analytics_join_project_visits_on_dimension_project_id"
+    t.index ["fact_visit_id"], name: "index_analytics_join_project_visits_on_fact_visit_id"
   end
 
   create_table "app_configurations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -201,6 +242,9 @@ ActiveRecord::Schema.define(version: 2022_08_31_171634) do
     t.string "code"
     t.uuid "resource_id"
     t.boolean "hidden", default: false, null: false
+    t.integer "maximum"
+    t.jsonb "minimum_label_multiloc", default: {}, null: false
+    t.jsonb "maximum_label_multiloc", default: {}, null: false
     t.index ["resource_type", "resource_id"], name: "index_custom_fields_on_resource_type_and_resource_id"
   end
 
@@ -1226,6 +1270,12 @@ ActiveRecord::Schema.define(version: 2022_08_31_171634) do
   end
 
   add_foreign_key "activities", "users"
+  add_foreign_key "analytics_fact_visits", "analytics_dimension_channels", column: "dimension_channel_id"
+  add_foreign_key "analytics_fact_visits", "analytics_dimension_dates", column: "dimension_date_first_action_id", primary_key: "date"
+  add_foreign_key "analytics_fact_visits", "analytics_dimension_dates", column: "dimension_date_last_action_id", primary_key: "date"
+  add_foreign_key "analytics_join_locale_visits", "analytics_dimension_locales", column: "dimension_locale_id"
+  add_foreign_key "analytics_join_locale_visits", "analytics_fact_visits", column: "fact_visit_id"
+  add_foreign_key "analytics_join_project_visits", "analytics_fact_visits", column: "fact_visit_id"
   add_foreign_key "areas", "custom_field_options"
   add_foreign_key "areas_ideas", "areas"
   add_foreign_key "areas_ideas", "ideas"
@@ -1477,7 +1527,7 @@ ActiveRecord::Schema.define(version: 2022_08_31_171634) do
               0 AS feedback_official,
               1 AS feedback_status_change
              FROM activities
-            WHERE (((activities.action)::text = 'changed_status'::text) AND ((activities.item_type)::text = ANY ((ARRAY['Idea'::character varying, 'Initiative'::character varying])::text[])))
+            WHERE (((activities.action)::text = 'changed_status'::text) AND ((activities.item_type)::text = ANY (ARRAY[('Idea'::character varying)::text, ('Initiative'::character varying)::text])))
             GROUP BY activities.item_id
           UNION ALL
            SELECT official_feedbacks.post_id,
@@ -1589,5 +1639,10 @@ ActiveRecord::Schema.define(version: 2022_08_31_171634) do
        LEFT JOIN ideas i ON ((i.id = v.votable_id)))
        LEFT JOIN comments c ON ((c.id = v.votable_id)))
        LEFT JOIN ideas ic ON ((ic.id = c.post_id)));
+  SQL
+  create_view "analytics_dimension_users", sql_definition: <<-SQL
+      SELECT users.id,
+      COALESCE(((users.roles -> 0) ->> 'type'::text), 'citizen'::text) AS role
+     FROM users;
   SQL
 end

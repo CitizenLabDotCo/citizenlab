@@ -90,7 +90,7 @@ const VisibleNavbarItemList = ({
       >
         {({ lockedItemsList, itemsList, handleDragRow, handleDropRow }) => (
           <>
-            {lockedItemsList.map((navbarItem: INavbarItem, i: number) => (
+            {lockedItemsList?.map((navbarItem: INavbarItem, i: number) => (
               <LockedRow
                 key={navbarItem.id}
                 isLastItem={i === itemsList.length - 1}

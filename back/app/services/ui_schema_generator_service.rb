@@ -64,6 +64,13 @@ class UiSchemaGeneratorService < FieldVisitorService
     nil
   end
 
+  def visit_linear_scale(field)
+    default(field).tap do |ui_field|
+      ui_field[:options][:minimum_label] = multiloc_service.t(field.minimum_label_multiloc)
+      ui_field[:options][:maximum_label] = multiloc_service.t(field.maximum_label_multiloc)
+    end
+  end
+
   def default(field)
     {
       type: 'Control',

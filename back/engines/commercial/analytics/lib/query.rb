@@ -40,12 +40,11 @@ module Analytics
 
     def all_dimensions
       @all_dimensions ||= model
-        .reflect_on_all_associations()
+        .reflect_on_all_associations
         .to_h do |assoc|
           [
             assoc.name.to_s,
             {
-              # Note: Changed this to remove 'Analytics::'
               columns: assoc.options[:class_name].constantize.new.attributes.keys,
               primary_key: assoc.options.key?(:primary_key) ? assoc.options[:primary_key] : nil
             }

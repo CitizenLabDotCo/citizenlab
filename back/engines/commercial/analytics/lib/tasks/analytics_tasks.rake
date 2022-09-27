@@ -53,7 +53,7 @@ namespace :analytics do
   end
 
   desc 'Populate locale dimensions from tenant config'
-  task :populate_locale_dimension, %i[host] => [:environment] do |_t, args|
+  task :populate_locale_dimension, %i[host] => [:environment] do |_t, _args|
     # Apartment::Tenant.switch(args[:host].tr('.', '_')) do
     Apartment::Tenant.switch('localhost') do
       locales = AppConfiguration.instance.settings('core', 'locales')
@@ -74,7 +74,6 @@ namespace :analytics do
       # TODO: How do we get translations?
     end
   end
-
 end
 
 Rake::Task['analytics:install:migrations'].enhance(['analytics:copy_views'])
