@@ -12,28 +12,33 @@ export type Response = {
   data: [[TotalsRow], [TotalsRow], TimeSeriesResponse];
 };
 
-interface TotalsRow {
+interface BaseRow {
   count: number;
   count_visitor_id: number;
+}
+
+interface TotalsRow extends BaseRow {
   avg_duration: string | null;
   avg_pages_visited: string | null;
 }
 
-type TimeSeriesResponse = (
+export type TimeSeriesResponse = TimeSeriesResponseRow[];
+
+export type TimeSeriesResponseRow = (
   | TimeSeriesResponseMonth
   | TimeSeriesResponseWeek
   | TimeSeriesResponseDay
-)[];
+)
 
-interface TimeSeriesResponseMonth extends TotalsRow {
+interface TimeSeriesResponseMonth extends BaseRow {
   'dimension_date_last_action.month': string;
 }
 
-interface TimeSeriesResponseWeek extends TotalsRow {
+interface TimeSeriesResponseWeek extends BaseRow {
   'dimension_date_last_action.week': string;
 }
 
-interface TimeSeriesResponseDay extends TotalsRow {
+interface TimeSeriesResponseDay extends BaseRow {
   'dimension_date_last_action.date': string;
 }
 

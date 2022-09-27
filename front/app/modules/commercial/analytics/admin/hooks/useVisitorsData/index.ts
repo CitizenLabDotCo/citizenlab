@@ -10,7 +10,7 @@ import {
 } from '../../services/analyticsFacts';
 
 // parse
-import { parseStats } from './parse';
+import { parseStats, parseTimeSeries } from './parse';
 
 // utils
 import {
@@ -92,7 +92,10 @@ const query = ({
       ...getDateFilter('dimension_date_last_action', startAt, endAt),
     },
     groups: `dimension_date_last_action.${getInterval(resolution)}`,
-    aggregations: getAggregations(),
+    aggregations: {
+      all: 'count',
+      visitor_id: 'count',
+    },
   };
 
   return {
@@ -130,6 +133,13 @@ export default function useVisitorsData({
         }
 
         setStats(parseStats(response.data));
+
+        setTimeSeries(parseTimeSeries(
+          response.data[2],
+          startAt,
+          endAt,
+          resolution
+        ));
       }
     );
 
