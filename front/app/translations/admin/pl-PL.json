@@ -617,6 +617,7 @@
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageAndOver": "{age} i powyżej",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageGroup": "Grupa wiekowa",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageGroupNotIncluded": "Bez uwzględnienia grupy wiekowej ({upperBound} i powyżej).",
+  "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageGroupX": "Age group {number}",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageGroups": "Grupy wiekowe",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.andOver": "i nad",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.applyExampleGrouping": "Zastosuj przykładowe grupowanie",

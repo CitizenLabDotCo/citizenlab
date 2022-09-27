@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ProjectsController < ::ApplicationController
-  before_action :set_project, only: %i[show update reorder destroy survey_results]
+  before_action :set_project, only: %i[show update reorder destroy survey_results submission_count]
   skip_before_action :authenticate_user
   skip_after_action :verify_policy_scoped, only: :index
 
@@ -113,8 +113,13 @@ class WebApi::V1::ProjectsController < ::ApplicationController
   end
 
   def survey_results
-    results = SurveyResultsGeneratorService.new(@project).generate
+    results = SurveyResultsGeneratorService.new(@project).generate_results
     render json: results
+  end
+
+  def submission_count
+    count = SurveyResultsGeneratorService.new(@project).generate_submission_count
+    render json: count
   end
 
   private

@@ -617,6 +617,7 @@
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageAndOver": "{age} ve üzeri",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageGroup": "Yaş grubu",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageGroupNotIncluded": "{upperBound} ve üzeri yaş grupları dahil değildir.",
+  "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageGroupX": "Age group {number}",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageGroups": "Yaş grupları",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.andOver": "ve üzeri",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.applyExampleGrouping": "Örnek gruplandırma uygulayın",
