@@ -1,4 +1,3 @@
-import React from 'react';
 import { createIntl, MessageDescriptor } from 'react-intl';
 import messages from '../app/i18n/en';
 const Intl = jest.requireActual('react-intl');
