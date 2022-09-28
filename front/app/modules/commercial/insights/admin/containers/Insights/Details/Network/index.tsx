@@ -63,7 +63,7 @@ const nodeColors = [
   colors.clGreen,
   colors.clBlue,
   colors.red500,
-  colors.adminOrangeIcons,
+  colors.orange,
   colors.primary,
   colors.facebookMessenger,
   colors.facebook,

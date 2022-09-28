@@ -5,7 +5,7 @@ import { colors } from 'utils/styleUtils';
 const LightningBolt = styled(Icon).attrs({ name: 'lightningBolt' })`
   flex: 0 0 18px;
   height: 18px;
-  fill: ${colors.adminOrangeIcons};
+  fill: ${colors.orange};
   margin-right: 4px;
 `;
 
