@@ -47,7 +47,7 @@ const TextContainer = styled.div`
 const CloseIcon = styled(Icon)`
   flex: 0 0 15px;
   width: 15px;
-  fill: ${colors.mediumGrey};
+  fill: ${colors.grey500};
 `;
 const StyledAuthor = styled(Author)`
   margin-top: 25px;

@@ -73,14 +73,14 @@ const FormBuilderTopBar = ({ isSubmitting }: FormBuilderTopBarProps) => {
       h={`${stylingConsts.menuHeight}px`}
       display="flex"
       background={`${colors.white}`}
-      borderBottom={`1px solid ${colors.mediumGrey}`}
+      borderBottom={`1px solid ${colors.grey500}`}
       top="0px"
     >
       <Box
         p="16px"
         w="212px"
         h="100%"
-        borderRight={`1px solid ${colors.mediumGrey}`}
+        borderRight={`1px solid ${colors.grey500}`}
         display="flex"
         alignItems="center"
       >

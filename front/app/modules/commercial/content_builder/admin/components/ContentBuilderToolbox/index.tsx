@@ -65,7 +65,7 @@ const ContentBuilderToolbox = ({
       alignItems="center"
       bgColor="#ffffff"
       overflowY="auto"
-      borderRight={`1px solid ${colors.mediumGrey}`}
+      borderRight={`1px solid ${colors.grey500}`}
     >
       <Box w="100%" display="inline">
         <Title

@@ -34,7 +34,7 @@ const Header = () => (
       />
     </Title>
     <Box>
-      <Text color="label">
+      <Text color="textSecondary">
         {/* <FormattedMessage
           {...messages.pageDescription}
           values={{

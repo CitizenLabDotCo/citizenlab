@@ -56,7 +56,7 @@ const EmptyState = ({
             }}
           />
         </Title>
-        <Text pt="10px" fontSize="base" color="label">
+        <Text pt="10px" fontSize="base" color="textSecondary">
           {formatMessage(messages.description)}
         </Text>
         <Box display="flex" flexWrap="wrap" alignItems="flex-start" mt="40px">

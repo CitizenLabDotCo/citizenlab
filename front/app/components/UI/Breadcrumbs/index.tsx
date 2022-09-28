@@ -37,7 +37,7 @@ const Breadcrumbs = ({ breadcrumbs }: Props) => {
             key={label}
             display="flex"
             alignItems="center"
-            color="label"
+            color="textSecondary"
             data-cy={`breadcrumbs-${label}`}
           >
             {linkTo && (
@@ -46,7 +46,7 @@ const Breadcrumbs = ({ breadcrumbs }: Props) => {
               </Text>
             )}
             {!linkTo && (
-              <Text color="label" fontSize="m" as="span">
+              <Text color="textSecondary" fontSize="m" as="span">
                 {label}
               </Text>
             )}
