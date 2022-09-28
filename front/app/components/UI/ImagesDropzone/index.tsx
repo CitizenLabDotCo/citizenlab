@@ -72,7 +72,7 @@ const DropzoneInput = styled.input``;
 
 const DropzoneContent = styled.div<{ borderRadius?: string }>`
   box-sizing: border-box;
-  border: 1px dashed ${colors.border};
+  border: 1px dashed ${colors.borderDark};
   border-radius: ${(props) =>
     props.borderRadius ? props.borderRadius : props.theme.borderRadius};
   position: relative;

@@ -67,7 +67,7 @@ const FormContainer = styled(clickOutside)`
 const Form = styled.form`
   flex: 1;
   background: #fff;
-  border: 1px solid ${colors.border};
+  border: 1px solid ${colors.borderDark};
   border-radius: ${(props: any) => props.theme.borderRadius};
 
   &:not(.focused):hover {

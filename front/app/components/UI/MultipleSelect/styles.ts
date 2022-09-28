@@ -1,6 +1,6 @@
 import { colors, fontSizes, defaultStyles } from 'utils/styleUtils';
 
-export function getSelectStyles(borderColor = colors.border) {
+export function getSelectStyles(borderColor = colors.borderDark) {
   return {
     container: (base) => ({
       ...base,

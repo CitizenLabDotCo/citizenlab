@@ -59,8 +59,8 @@ const Phase = styled.div<{ isCurrentPhase: boolean }>`
   padding: 10px;
   border: ${(props) =>
     props.isCurrentPhase
-      ? `solid 3px ${colors.border}`
-      : `solid 1px ${colors.borderLight}`};
+      ? `solid 3px ${colors.borderDark}`
+      : `solid 1px ${colors.borderDarkLight}`};
   border-radius: ${(props: any) => props.theme.borderRadius};
 `;
 

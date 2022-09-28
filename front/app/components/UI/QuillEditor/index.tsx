@@ -206,7 +206,7 @@ const Container = styled.div<{
     border-radius: ${({ theme }) => theme.borderRadius}
       ${({ theme }) => theme.borderRadius} 0 0;
     box-shadow: none;
-    border: 1px solid ${colors.border};
+    border: 1px solid ${colors.borderDark};
     border-bottom: 0;
     transition: box-shadow 100ms ease-out;
   }
@@ -231,7 +231,7 @@ const Container = styled.div<{
     cursor: text;
     border-radius: 0 0 ${({ theme }) => theme.borderRadius}
       ${({ theme }) => theme.borderRadius};
-    border: 1px solid ${colors.border};
+    border: 1px solid ${colors.borderDark};
     box-shadow: none;
     overflow-y: auto;
     ${(props: any) => quillEditedContent(props.theme.colorMain)};

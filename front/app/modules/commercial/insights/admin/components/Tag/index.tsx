@@ -81,14 +81,14 @@ const StyledTag = styled(Box)<{ variant: Variant; size: Size }>`
     ${variant === 'secondary' &&
     css`
       background-color: ${colors.textSecondary};
-      border: 1px solid ${colors.border};
+      border: 1px solid ${colors.borderDark};
       color: #fff;
     `}
     ${variant === 'default' &&
     css`
       background-color: #fff;
       color: ${colors.textSecondary};
-      border: 1px solid ${colors.border};
+      border: 1px solid ${colors.borderDark};
     `}
     ${onClick &&
     css`
