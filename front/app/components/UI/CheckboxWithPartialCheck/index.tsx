@@ -58,7 +58,7 @@ const CustomInputWrapper = styled.div<{
       props.checked === 'mixed'
         ? colors.teal300est
         : props.checked
-        ? colors.clGreen
+        ? colors.green
         : '#333'};
   }
 `;

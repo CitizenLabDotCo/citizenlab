@@ -89,7 +89,7 @@ const SuccessText = styled.div`
     text-decoration: underline;
 
     &:hover {
-      color: ${darken(0.15, colors.clGreenSuccess)};
+      color: ${darken(0.15, colors.greenSuccess)};
       text-decoration: underline;
     }
   }

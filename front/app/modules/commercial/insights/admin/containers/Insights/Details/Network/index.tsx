@@ -60,7 +60,7 @@ const visibleKeywordLabelScale = 2;
 const collideForce = 10;
 
 const nodeColors = [
-  colors.clGreen,
+  colors.green,
   colors.teal,
   colors.red500,
   colors.orange,
