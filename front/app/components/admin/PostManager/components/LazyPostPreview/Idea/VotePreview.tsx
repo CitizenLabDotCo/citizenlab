@@ -52,7 +52,7 @@ const VoteIcon = styled(Icon)`
 `;
 
 const UpvoteIcon = styled(VoteIcon)`
-  fill: ${colors.clGreen};
+  fill: ${colors.green};
   margin-top: -2px;
 `;
 
@@ -67,7 +67,7 @@ const VotesCount = styled.div`
 `;
 
 const UpvotesCount = styled(VotesCount)`
-  color: ${colors.clGreen};
+  color: ${colors.green};
 `;
 
 const DownvotesCount = styled(VotesCount)`

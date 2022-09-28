@@ -269,7 +269,7 @@ const InputDetails = ({
               variant="approved"
             />
           ))}
-          {loading && <StyledSpinner color={colors.clGreen} size="24px" />}
+          {loading && <StyledSpinner color={colors.green} size="24px" />}
         </CategoryList>
         {ideaId && <Idea ideaId={ideaId} />}
       </Container>

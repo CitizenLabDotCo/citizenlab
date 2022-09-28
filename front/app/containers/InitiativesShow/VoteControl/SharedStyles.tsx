@@ -9,7 +9,7 @@ export const StatusWrapper = styled.div`
   color: ${colors.clGreyOnGreyBackground};
 
   &.answered {
-    color: ${colors.clGreen};
+    color: ${colors.green};
   }
 
   ${media.smallerThanMaxTablet`

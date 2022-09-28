@@ -65,9 +65,9 @@ const StyledCheckbox = styled.div<{
   &.enabled {
     &:hover {
       background: ${({ checkedOrIndeterminate }) =>
-        checkedOrIndeterminate ? darken(0.05, colors.clGreen) : '#fff'};
+        checkedOrIndeterminate ? darken(0.05, colors.green) : '#fff'};
       border-color: ${({ checkedOrIndeterminate }) =>
-        checkedOrIndeterminate ? darken(0.05, colors.clGreen) : '#000'};
+        checkedOrIndeterminate ? darken(0.05, colors.green) : '#000'};
     }
   }
 `;

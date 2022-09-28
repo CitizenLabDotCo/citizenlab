@@ -43,7 +43,7 @@ const IconContainer = styled.div`
 const PlusIcon = styled(Icon)`
   margin-left: 8px;
   height: 14px;
-  fill: ${colors.clGreen};
+  fill: ${colors.green};
 `;
 
 const CloseIcon = styled(Icon)`
@@ -74,8 +74,8 @@ const StyledTag = styled(Box)<{ variant: Variant; size: Size }>`
     `}
     ${variant === 'primary' &&
     css`
-      background-color: ${colors.clGreen};
-      border: 1px solid ${colors.clGreen};
+      background-color: ${colors.green};
+      border: 1px solid ${colors.green};
       color: #fff;
     `}
     ${variant === 'secondary' &&
@@ -164,7 +164,7 @@ const Tag = ({
                 <StyledSpinner
                   size="10px"
                   thickness="1px"
-                  color={variant === 'primary' ? '#fff' : colors.clGreen}
+                  color={variant === 'primary' ? '#fff' : colors.green}
                 />
               </div>
             ) : (

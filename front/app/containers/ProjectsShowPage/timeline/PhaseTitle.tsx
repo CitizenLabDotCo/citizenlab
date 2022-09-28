@@ -59,7 +59,7 @@ const PhaseNumber = styled.div`
   `}
 
   &.present {
-    background: ${colors.clGreen};
+    background: ${colors.green};
   }
 
   ${media.smallerThanMinTablet`
@@ -90,7 +90,7 @@ const HeaderTitle = styled.h2`
   word-break: break-word;
 
   &.present {
-    color: ${colors.clGreen};
+    color: ${colors.green};
   }
 `;
 

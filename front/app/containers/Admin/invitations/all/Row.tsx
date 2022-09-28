@@ -42,7 +42,7 @@ export default (inputProps: InputProps) => (
                 <FormattedMessage {...messages.inviteStatusPending} />
               </Badge>
             ) : (
-              <Badge color={colors.clGreen}>
+              <Badge color={colors.green}>
                 <FormattedMessage {...messages.inviteStatusAccepted} />
               </Badge>
             )}
