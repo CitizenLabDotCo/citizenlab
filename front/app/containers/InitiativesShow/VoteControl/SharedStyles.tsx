@@ -19,7 +19,7 @@ export const StatusWrapper = styled.div`
 
 export const StatusExplanation = styled.div`
   font-size: ${fontSizes.base}px;
-  color: ${(props) => props.theme.colorText};
+  color: ${(props) => props.theme.colors.tenantText};
   line-height: 23px;
 
   .tooltip-icon {

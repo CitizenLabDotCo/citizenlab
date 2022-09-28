@@ -11,7 +11,7 @@ export const FormContainer = styled.div<{ inModal: boolean }>`
 
 export const Title = styled.h1`
   width: 100%;
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.xxl}px;
   font-weight: 300;
   line-height: normal;
@@ -34,7 +34,7 @@ export const Title = styled.h1`
 `;
 
 export const Subtitle = styled.h2`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.l}px;
   font-weight: 600;
   line-height: normal;

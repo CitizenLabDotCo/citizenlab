@@ -40,7 +40,7 @@ export const FormSection = styled.div`
   max-width: 620px;
   min-width: 560px;
   padding: 40px 40px 30px;
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   margin-bottom: 15px;
   ${defaultCardStyle};
 
@@ -92,7 +92,7 @@ export const FormSectionTitle = memo(
 export const FormLabelStyled = styled(Box)`
   width: 100%;
   font-size: ${fontSizes.base}px;
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-weight: 500;
   line-height: normal;
 
@@ -120,7 +120,7 @@ export const Spacer = styled.div`
 `;
 
 const OptionalText = styled.span`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-weight: 400;
 `;
 

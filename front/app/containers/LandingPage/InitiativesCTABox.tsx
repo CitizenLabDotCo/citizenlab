@@ -64,7 +64,7 @@ const TextContainer = styled.div`
 `;
 
 const Title = styled.h2`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.xxl}px;
   line-height: 33px;
   font-weight: 600;
@@ -160,7 +160,7 @@ const InitiativesCTABox = memo<Props>(({ theme, className }) => {
             fontWeight="500"
             padding="13px 22px"
             buttonStyle="text"
-            textColor={theme.colorMain}
+            textColor={theme.colors.tenantPrimary}
             textDecorationHover="underline"
             fullWidth={smallerThanSmallTablet}
             linkTo="/initiatives"

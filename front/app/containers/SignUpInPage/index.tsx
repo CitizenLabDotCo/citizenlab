@@ -78,7 +78,7 @@ const Banner = styled.div`
 const Slogan = styled.div`
   width: 100%;
   max-width: 400px;
-  color: ${(props) => props.theme.colorMain || '#333'};
+  color: ${(props) => props.theme.colors.tenantPrimary || '#333'};
   font-size: ${fontSizes.xxxxl}px;
   line-height: 44px;
   font-weight: 600;

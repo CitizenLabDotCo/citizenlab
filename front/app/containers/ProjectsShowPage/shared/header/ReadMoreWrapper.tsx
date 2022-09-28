@@ -113,7 +113,7 @@ const ReadMoreWrapper = memo<Props>(
                 <div id={`e2e-project-${contentId}`}>
                   <QuillEditedContent
                     fontSize={fontSize}
-                    textColor={theme.colorText}
+                    textColor={theme.colors.tenantText}
                     disableTabbing={!expanded}
                   >
                     <T value={value} supportHtml={true} />
@@ -140,7 +140,7 @@ const ReadMoreWrapper = memo<Props>(
                         textDecoration="underline"
                         textDecorationHover="underline"
                         textColor={colors.textSecondary}
-                        textHoverColor={theme.colorText}
+                        textHoverColor={theme.colors.tenantText}
                         fontWeight="500"
                         fontSize={`${fontSizes.m}px`}
                         padding="0"
@@ -161,7 +161,7 @@ const ReadMoreWrapper = memo<Props>(
                       textDecoration="underline"
                       textDecorationHover="underline"
                       textColor={colors.textSecondary}
-                      textHoverColor={theme.colorText}
+                      textHoverColor={theme.colors.tenantText}
                       fontWeight="500"
                       fontSize={`${fontSizes.m}px`}
                       padding="0"

@@ -201,7 +201,7 @@ const InitiativeBannerContainer = styled.div`
   display: flex;
   align-items: stretch;
   position: relative;
-  background: ${({ theme }) => theme.colorMain};
+  background: ${({ theme }) => theme.colors.tenantPrimary};
 
   ${media.phone`
     min-height: 200px;

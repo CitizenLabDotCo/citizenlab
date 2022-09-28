@@ -40,7 +40,7 @@ const Container = styled.div`
 `;
 
 const Title = styled.h3`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   width: calc(100% - 50px);
   margin: 0;
   padding: 0;

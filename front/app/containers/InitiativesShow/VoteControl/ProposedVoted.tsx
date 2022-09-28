@@ -42,7 +42,7 @@ const StyledIcon = styled(Icon)`
 `;
 
 const VotedTitle = styled.h4`
-  color: ${(props) => props.theme.colorText};
+  color: ${(props) => props.theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   font-weight: 600;
   text-align: center;
@@ -53,7 +53,7 @@ const VotedTitle = styled.h4`
 `;
 
 const VotedText = styled.p`
-  color: ${(props) => props.theme.colorText};
+  color: ${(props) => props.theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   line-height: 21px;
@@ -63,12 +63,12 @@ const VotedText = styled.p`
 `;
 
 const UnvoteButton = styled.button`
-  color: ${(props) => props.theme.colorText};
+  color: ${(props) => props.theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   text-decoration: underline;
 
   &:hover {
-    color: ${(props) => darken(0.12, props.theme.colorText)};
+    color: ${(props) => darken(0.12, props.theme.colors.tenantText)};
     text-decoration: underline;
     cursor: pointer;
   }
@@ -96,7 +96,7 @@ const VoteTextLeft = styled.div`
 
 const VoteTextRight = styled.div`
   font-size: ${fontSizes.base}px;
-  color: ${(props) => props.theme.colorText};
+  color: ${(props) => props.theme.colors.tenantText};
 `;
 
 interface InputProps {

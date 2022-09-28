@@ -73,7 +73,7 @@ const FooterNotes = styled.div`
 `;
 
 const FooterNote = styled.p`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.s}px;
   line-height: normal;
 
@@ -85,11 +85,11 @@ const FooterNote = styled.p`
 const FooterNoteLink = styled(Link)`
   font-size: ${fontSizes.s}px;
   padding-left: 4px;
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   text-decoration: underline;
 
   &:hover {
-    color: ${({ theme }) => darken(0.2, theme.colorText)};
+    color: ${({ theme }) => darken(0.2, theme.colors.tenantText)};
     text-decoration: underline;
   }
 `;

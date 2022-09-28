@@ -220,7 +220,7 @@ export const HeaderContainer = styled.div`
 `;
 
 export const HeaderTitle = styled.h1`
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.xl}px;
   font-weight: 600;
   line-height: normal;
@@ -245,7 +245,7 @@ export const HeaderTitle = styled.h1`
 
 export const HeaderSubtitle = styled.h2`
   width: 100%;
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   line-height: normal;

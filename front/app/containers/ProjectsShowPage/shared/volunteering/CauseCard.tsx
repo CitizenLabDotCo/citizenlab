@@ -85,7 +85,7 @@ const Content = styled.div`
 `;
 
 const Title = styled.h3`
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.xxl}px;
   font-weight: 500;
   line-height: normal;
@@ -95,7 +95,7 @@ const Title = styled.h3`
 `;
 
 const Description = styled.div`
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   line-height: normal;
 `;
@@ -259,7 +259,7 @@ const CauseCard = memo<Props>(({ cause, className }) => {
           </ScreenReaderOnly>
           {!isEmptyMultiloc(cause.attributes.description_multiloc) && (
             <Description>
-              <QuillEditedContent textColor={theme.colorText}>
+              <QuillEditedContent textColor={theme.colors.tenantText}>
                 <T value={cause.attributes.description_multiloc} supportHtml />
               </QuillEditedContent>
             </Description>

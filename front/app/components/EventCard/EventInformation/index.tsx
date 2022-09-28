@@ -50,19 +50,19 @@ const StyledLink = styled(Link)`
   margin: 0 0 5px 0;
 
   &:hover {
-    color: ${({ theme }) => theme.colorMain};
+    color: ${({ theme }) => theme.colors.tenantPrimary};
   }
 `;
 
 const EventTitle = styled.h3<{ fontSize?: number }>`
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${({ fontSize }) => fontSize ?? fontSizes.xl}px;
   font-weight: 700;
   line-height: normal;
   margin: 0 0 9px 0 !important;
 
   &:hover {
-    color: ${({ theme }) => theme.colorMain};
+    color: ${({ theme }) => theme.colors.tenantPrimary};
   }
 `;
 
@@ -74,7 +74,7 @@ const EventTimeAndLocationContainer = styled.div`
     flex-direction: column;
   `}
 
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.xs}px;
 `;
 
@@ -133,7 +133,7 @@ const StyledT = styled(T)<IStyledT>`
     line-height: ${SMALL_LINE_HEIGHT}px;
   }
 
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props: any) => props.theme.colors.tenantText};
   position: relative;
   display: block;
 `;
@@ -147,7 +147,7 @@ const ShowMoreOrLessButton = styled.button`
   text-decoration-line: underline;
 
   &:hover {
-    color: ${({ theme }) => theme.colorMain};
+    color: ${({ theme }) => theme.colors.tenantPrimary};
     text-decoration-line: none;
   }
 `;
@@ -283,7 +283,7 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
         <EventDescription>
           <QuillEditedContent
             disableTabbing={hideTextOverflow && textOverflow}
-            textColor={theme.colorText}
+            textColor={theme.colors.tenantText}
           >
             <StyledT
               value={event.attributes.description_multiloc}

@@ -22,7 +22,7 @@ import { shortenedAppLocalePairs } from 'containers/App/constants';
 import { Locale } from 'typings';
 
 const DropdownButtonText = styled.div`
-  color: ${({ theme }) => theme.navbarTextColor || theme.colorText};
+  color: ${({ theme }) => theme.navbarTextColor || theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   font-weight: 500;
   line-height: ${fontSizes.base}px;
@@ -32,7 +32,7 @@ const DropdownButtonText = styled.div`
 const DropdownButtonIcon = styled(Icon)`
   width: 11px;
   height: 6px;
-  color: ${({ theme }) => theme.navbarTextColor || theme.colorText};
+  color: ${({ theme }) => theme.navbarTextColor || theme.colors.tenantText};
   margin-top: 1px;
   margin-left: 4px;
   transition: all 100ms ease-out;

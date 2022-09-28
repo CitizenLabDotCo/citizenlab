@@ -35,7 +35,7 @@ const Container = styled.div`
 `;
 
 const Title = styled.h1`
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.xxxl}px;
   line-height: normal;
   font-weight: 600;
@@ -158,7 +158,7 @@ const ProjectFolderDescription = memo<Props & InjectedIntlProps>(
             <ReactResizeDetector handleWidth handleHeight onResize={onResize}>
               <div>
                 <QuillEditedContent
-                  textColor={theme.colorText}
+                  textColor={theme.colors.tenantText}
                   fontSize="m"
                   className="e2e-folder-description"
                   disableTabbing={!expanded}
@@ -182,7 +182,7 @@ const ProjectFolderDescription = memo<Props & InjectedIntlProps>(
                       textDecoration="underline"
                       textDecorationHover="underline"
                       textColor={colors.textSecondary}
-                      textHoverColor={theme.colorText}
+                      textHoverColor={theme.colors.tenantText}
                       fontWeight="500"
                       fontSize={`${fontSizes.m}px`}
                       padding="0"
@@ -204,7 +204,7 @@ const ProjectFolderDescription = memo<Props & InjectedIntlProps>(
                     textDecoration="underline"
                     textDecorationHover="underline"
                     textColor={colors.textSecondary}
-                    textHoverColor={theme.colorText}
+                    textHoverColor={theme.colors.tenantText}
                     fontWeight="500"
                     fontSize={`${fontSizes.m}px`}
                     padding="0"

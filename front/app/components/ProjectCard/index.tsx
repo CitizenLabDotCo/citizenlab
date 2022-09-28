@@ -274,7 +274,7 @@ const Countdown = styled.div`
 `;
 
 const TimeRemaining = styled.div`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   margin-bottom: 7px;
@@ -303,7 +303,7 @@ const ProgressBarOverlay: any = styled.div`
 
 const ProjectLabel = styled.div`
   // darkened to have higher chances of solid color contrast
-  color: ${({ theme }) => darken(0.05, theme.colorSecondary)};
+  color: ${({ theme }) => darken(0.05, theme.colors.tenantSecondary)};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   text-align: center;
@@ -313,7 +313,7 @@ const ProjectLabel = styled.div`
   padding-top: 8px;
   padding-bottom: 8px;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  background: ${({ theme }) => rgba(theme.colorSecondary, 0.1)};
+  background: ${({ theme }) => rgba(theme.colors.tenantSecondary, 0.1)};
 `;
 
 const ContentBody = styled.div`
@@ -333,7 +333,7 @@ const ProjectTitle = styled.h3`
   line-height: normal;
   font-weight: 500;
   font-size: ${fontSizes.xl}px;
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   margin: 0;
   padding: 0;
 
@@ -413,7 +413,7 @@ const ContentHeaderLabel = styled.span`
 
 const ProjectMetaItems = styled.div`
   height: 100%;
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   display: flex;
@@ -438,7 +438,7 @@ const MetaItem = styled.div`
 const MetaItemIcon = styled(Icon)`
   width: 20px;
   height: 20px;
-  fill: ${({ theme }) => theme.colorMain};
+  fill: ${({ theme }) => theme.colors.tenantPrimary};
 `;
 
 const CommentIcon = styled(MetaItemIcon)`
@@ -447,7 +447,7 @@ const CommentIcon = styled(MetaItemIcon)`
 `;
 
 const MetaItemText = styled.div`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: normal;
@@ -747,7 +747,7 @@ const ProjectCard = memo<Props>(
                   <AvatarBubbles
                     size={32}
                     limit={3}
-                    userCountBgColor={theme.colorMain}
+                    userCountBgColor={theme.colors.tenantPrimary}
                     avatarIds={avatarIds}
                     userCount={project.attributes.participants_count}
                   />

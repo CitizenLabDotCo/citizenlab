@@ -36,7 +36,7 @@ const PostedByWrapper = styled.div`
 `;
 
 const PostedByText = styled.div`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   margin-bottom: 3px;
 `;

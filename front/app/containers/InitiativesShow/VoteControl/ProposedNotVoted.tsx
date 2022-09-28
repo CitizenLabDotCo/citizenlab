@@ -34,7 +34,7 @@ const CountDownWrapper = styled.div`
 
 const StatusIcon = styled(Icon)`
   path {
-    fill: ${(props) => props.theme.colorMain};
+    fill: ${(props) => props.theme.colors.tenantPrimary};
   }
   width: 31px;
   height: 31px;
@@ -57,12 +57,12 @@ const VoteText = styled.div`
 
 const VoteTextLeft = styled.div`
   font-size: ${fontSizes.base}px;
-  color: ${(props) => props.theme.colorMain};
+  color: ${(props) => props.theme.colors.tenantPrimary};
 `;
 
 const VoteTextRight = styled.div`
   font-size: ${fontSizes.base}px;
-  color: ${(props) => props.theme.colorText};
+  color: ${(props) => props.theme.colors.tenantText};
 `;
 
 const StyledButton = styled(Button)`
@@ -170,7 +170,7 @@ const ProposedNotVoted = ({
   const thresholdReachedTooltip = threshold_reached_message ? (
     <IconTooltip
       icon="info"
-      iconColor={theme.colorText}
+      iconColor={theme.colors.tenantText}
       theme="light"
       placement="bottom"
       content={<T value={threshold_reached_message} supportHtml />}

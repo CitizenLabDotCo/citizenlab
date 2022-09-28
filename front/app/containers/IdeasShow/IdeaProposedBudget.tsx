@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 const Container = styled.div`
-  color: ${(props) => props.theme.colorText};
+  color: ${(props) => props.theme.colors.tenantText};
   font-size: ${(props) => props.theme.fontSizes.l}px;
   line-height: 29px; // same line-height as Body's content
   font-weight: 300;

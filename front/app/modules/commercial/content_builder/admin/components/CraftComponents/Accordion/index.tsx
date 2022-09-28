@@ -35,7 +35,7 @@ const Accordion = ({ text, title, openByDefault }) => {
         </Box>
       }
     >
-      <QuillEditedContent textColor={theme.colorText}>
+      <QuillEditedContent textColor={theme.colors.tenantText}>
         <div dangerouslySetInnerHTML={{ __html: text }} />
       </QuillEditedContent>
     </AccordionComponent>

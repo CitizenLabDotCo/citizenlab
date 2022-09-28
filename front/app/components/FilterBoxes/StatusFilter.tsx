@@ -63,7 +63,7 @@ const CloseIcon = styled(Icon)`
 const StatusesContainer = styled.div``;
 
 const Status = styled.button`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: normal;
@@ -93,10 +93,10 @@ const Status = styled.button`
 
   &.selected {
     color: #fff;
-    background: ${({ theme }) => theme.colorSecondary};
+    background: ${({ theme }) => theme.colors.tenantSecondary};
 
     &:hover {
-      background: ${({ theme }) => darken(0.15, theme.colorSecondary)};
+      background: ${({ theme }) => darken(0.15, theme.colors.tenantSecondary)};
     }
 
     ${Count} {

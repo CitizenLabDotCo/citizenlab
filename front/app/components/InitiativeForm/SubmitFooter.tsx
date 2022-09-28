@@ -80,7 +80,7 @@ export const FormSubmitFooter = withTheme(
             <StyledButton
               fontWeight="500"
               padding="13px 22px"
-              bgColor={theme.colorMain}
+              bgColor={theme.colors.tenantPrimary}
               textColor="#FFF"
               type="submit"
               onClick={onSubmit}

@@ -73,7 +73,7 @@ const Item = styled.button<{ useColorsTheme?: boolean }>`
   min-width: 38px;
   height: 38px;
   color: ${({ useColorsTheme, theme }) =>
-    useColorsTheme ? theme.colorText : colors.primary};
+    useColorsTheme ? theme.colors.tenantText : colors.primary};
   font-size: ${fontSizes.base}px;
   font-weight: 500;
   margin-left: 5px;
@@ -93,14 +93,17 @@ const Item = styled.button<{ useColorsTheme?: boolean }>`
     &.active {
       color: #fff;
       background: ${({ useColorsTheme, theme }) =>
-        useColorsTheme ? theme.colorMain : colors.primary};
+        useColorsTheme ? theme.colors.tenantPrimary : colors.primary};
     }
 
     &:not(.active) {
       &:hover,
       &:focus {
         background: ${({ useColorsTheme, theme }) =>
-          rgba(useColorsTheme ? theme.colorMain : colors.primary, 0.2)};
+          rgba(
+            useColorsTheme ? theme.colors.tenantPrimary : colors.primary,
+            0.2
+          )};
       }
     }
   }

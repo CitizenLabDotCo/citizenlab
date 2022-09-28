@@ -58,7 +58,7 @@ const FullName = styled.h1`
   font-size: ${fontSizes.xl}px;
   font-weight: 600;
   text-align: center;
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   padding: 0px;
   margin: 0px;
   margin-bottom: 5px;
@@ -68,7 +68,7 @@ const JoinedAt = styled.div`
   width: 100%;
   font-weight: 300;
   text-align: center;
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   margin-bottom: 20px;
 `;
 

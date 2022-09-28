@@ -119,7 +119,7 @@ class MentionsTextArea extends PureComponent<Props, State> {
       paddingLeft: '0px',
       paddingRight: '1px',
       borderRadius: '3px',
-      backgroundColor: transparentize(0.85, this.props.theme.colorText),
+      backgroundColor: transparentize(0.85, this.props.theme.colors.tenantText),
     };
     this.setState({ style, mentionStyle });
   }

@@ -136,9 +136,9 @@ const IdeasList = ({
                 height="50px"
                 icon="showMore"
                 iconPos="left"
-                textColor={theme.colorText}
-                bgColor={rgba(theme.colorText, 0.08)}
-                bgHoverColor={rgba(theme.colorText, 0.12)}
+                textColor={theme.colors.tenantText}
+                bgColor={rgba(theme.colors.tenantText, 0.08)}
+                bgHoverColor={rgba(theme.colors.tenantText, 0.12)}
                 fontWeight="500"
               />
             </Footer>

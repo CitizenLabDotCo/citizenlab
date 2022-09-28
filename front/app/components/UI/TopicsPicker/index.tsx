@@ -50,19 +50,20 @@ const TopicSwitch = styled.button`
 
   &:not(.selected):not(:disabled) {
     &:hover {
-      color: ${({ theme }) => theme.colorSecondary};
-      border-color: ${({ theme }) => theme.colorSecondary};
+      color: ${({ theme }) => theme.colors.tenantSecondary};
+      border-color: ${({ theme }) => theme.colors.tenantSecondary};
     }
   }
 
   &.selected {
     color: #fff;
-    background: ${({ theme }) => theme.colorSecondary};
-    border-color: ${({ theme }) => theme.colorSecondary};
+    background: ${({ theme }) => theme.colors.tenantSecondary};
+    border-color: ${({ theme }) => theme.colors.tenantSecondary};
 
     &:hover {
-      background: ${({ theme }) => darken(0.15, theme.colorSecondary)};
-      border-color: ${({ theme }) => darken(0.15, theme.colorSecondary)};
+      background: ${({ theme }) => darken(0.15, theme.colors.tenantSecondary)};
+      border-color: ${({ theme }) =>
+        darken(0.15, theme.colors.tenantSecondary)};
     }
   }
 

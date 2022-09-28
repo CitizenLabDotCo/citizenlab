@@ -85,8 +85,8 @@ const VerificationOnboardingStep = ({
             text={<FormattedMessage {...messages.verifyNow} />}
             buttonStyle="primary-inverse"
             onClick={handleAccept}
-            textColor={theme.colorMain}
-            textHoverColor={theme.colorMain}
+            textColor={theme.colors.tenantPrimary}
+            textHoverColor={theme.colors.tenantPrimary}
             fontWeight="500"
             className="e2e-signed-in-header-accept-btn"
           />

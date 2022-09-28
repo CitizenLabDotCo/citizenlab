@@ -41,17 +41,19 @@ const Tab = styled.button<{ active: boolean }>`
   padding: 21px 15px;
 
   border-bottom: ${({ active, theme }) =>
-    active ? `3px solid ${theme.colorMain}` : '3px solid transparent'};
+    active
+      ? `3px solid ${theme.colors.tenantPrimary}`
+      : '3px solid transparent'};
 
   color: ${({ active, theme }) =>
-    active ? theme.colorMain : colors.textSecondary};
+    active ? theme.colors.tenantPrimary : colors.textSecondary};
 
   ${({ active, theme }) =>
     active
       ? ''
       : `
       &:hover {
-        border-bottom: 3px solid ${rgba(theme.colorMain, 0.3)};
+        border-bottom: 3px solid ${rgba(theme.colors.tenantPrimary, 0.3)};
       }
       cursor: pointer;
     `}

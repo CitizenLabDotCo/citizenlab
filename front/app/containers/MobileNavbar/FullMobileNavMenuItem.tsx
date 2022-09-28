@@ -27,7 +27,7 @@ const StyledLink = styled(Link)`
     background: ${darken(0.05, '#fff')};
   }
   &.active {
-    color: ${(props) => props.theme.colorMain};
+    color: ${(props) => props.theme.colors.tenantPrimary};
   }
 `;
 

@@ -59,7 +59,7 @@ const Header = styled.div`
 
 const Title = styled.h2`
   min-height: 20px;
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.l}px;
   line-height: normal;
   font-weight: 500;
@@ -97,7 +97,7 @@ const Spacer = styled.div`
 `;
 
 const Budget = styled.div`
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   line-height: ${fontSizes.base}px;
   display: flex;
@@ -250,7 +250,7 @@ const TooltipContentIcon = styled(Icon)`
 
 const TooltipContentText = styled.div`
   flex: 1 1 auto;
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 400;

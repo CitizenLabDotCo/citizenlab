@@ -194,7 +194,7 @@ const StyledRightFragment = styled(Fragment)`
 
 const LogInMenuItem = styled.button`
   height: 100%;
-  color: ${({ theme }) => theme.navbarTextColor || theme.colorText};
+  color: ${({ theme }) => theme.navbarTextColor || theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 500;
@@ -224,17 +224,14 @@ const SignUpMenuItem = styled.button`
   border: none;
   border-radius: 0px;
   background-color: ${({ theme }) =>
-    theme.navbarHighlightedItemBackgroundColor || theme.colorSecondary};
+    theme.tenantPrimary || theme.colors.tenantSecondary};
   transition: all 100ms ease-out;
 
   &:hover {
     color: #fff;
     text-decoration: underline;
     background-color: ${({ theme }) =>
-      darken(
-        0.12,
-        theme.navbarHighlightedItemBackgroundColor || theme.colorSecondary
-      )};
+      darken(0.12, theme.tenantPrimary || theme.colors.tenantSecondary)};
   }
 
   ${media.phone`

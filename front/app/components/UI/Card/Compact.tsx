@@ -100,7 +100,7 @@ const Header = styled.header`
 `;
 
 const Title = styled.h3`
-  color: ${(props) => props.theme.colorText};
+  color: ${(props) => props.theme.colors.tenantText};
   font-size: 21px;
   font-weight: 500;
   display: -webkit-box;

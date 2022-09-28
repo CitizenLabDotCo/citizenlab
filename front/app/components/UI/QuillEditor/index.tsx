@@ -234,7 +234,7 @@ const Container = styled.div<{
     border: 1px solid ${colors.borderDark};
     box-shadow: none;
     overflow-y: auto;
-    ${(props: any) => quillEditedContent(props.theme.colorMain)};
+    ${(props: any) => quillEditedContent(props.theme.colors.tenantPrimary)};
 
     .ql-editor {
       min-height: ${(props) => (props.minHeight ? props.minHeight : '300px')};

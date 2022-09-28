@@ -23,7 +23,7 @@ const Container = styled.div`
 const Title = styled.h1`
   flex-shrink: 0;
   width: 100%;
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.xxl}px;
   line-height: 40px;
   font-weight: 500;

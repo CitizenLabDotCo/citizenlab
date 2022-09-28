@@ -251,7 +251,7 @@ const FolderTitle = styled.h3`
   line-height: normal;
   font-weight: 500;
   font-size: ${fontSizes.xl}px;
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   margin: 0;
   padding: 0;
 
@@ -274,14 +274,14 @@ const FolderDescription = styled.div`
 const MapIcon = styled(Icon)`
   width: 27px;
   height: 21px;
-  fill: ${({ theme }) => theme.colorSecondary};
+  fill: ${({ theme }) => theme.colors.tenantSecondary};
   margin-right: 10px;
 `;
 
 const MapIconDescription = styled.span`
   font-weight: bold;
   margin-bottom: -2px;
-  color: ${({ theme }) => theme.colorSecondary};
+  color: ${({ theme }) => theme.colors.tenantSecondary};
 `;
 
 export interface Props {

@@ -53,7 +53,7 @@ const About = styled.div`
 `;
 
 const Title = styled.h2`
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.xl}px;
   line-height: normal;
   font-weight: 500;

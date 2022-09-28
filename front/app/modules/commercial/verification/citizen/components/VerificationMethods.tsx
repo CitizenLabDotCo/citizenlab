@@ -108,7 +108,7 @@ const Context = styled.div`
 `;
 
 const ContextLabel = styled.div`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   line-height: normal;
@@ -116,7 +116,7 @@ const ContextLabel = styled.div`
 `;
 
 const ContextItem = styled.span`
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.s}px;
   line-height: normal;
   border-radius: ${(props) => props.theme.borderRadius};

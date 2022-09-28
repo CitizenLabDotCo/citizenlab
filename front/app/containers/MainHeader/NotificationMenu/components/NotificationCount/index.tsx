@@ -26,7 +26,7 @@ const NewNotificationsIndicator = styled.div`
   line-height: ${fontSizes.xs}px;
   background: ${({ theme }) =>
     theme.invertedNavbarColors && theme.navbarTextColor
-      ? theme.colorText
+      ? theme.colors.tenantText
       : colors.red500};
   padding: 4px;
   border-radius: ${(props: any) => props.theme.borderRadius};

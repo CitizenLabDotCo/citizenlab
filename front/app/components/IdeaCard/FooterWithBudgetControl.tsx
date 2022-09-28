@@ -26,7 +26,7 @@ const BudgetControl = styled.div`
 const IdeaBudget = styled.span`
   color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
-  color: ${(props) => props.theme.colorText};
+  color: ${(props) => props.theme.colors.tenantText};
   font-weight: 600;
   display: flex;
   align-items: center;

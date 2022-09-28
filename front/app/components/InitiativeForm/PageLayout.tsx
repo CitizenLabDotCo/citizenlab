@@ -57,7 +57,7 @@ const Header = styled.div`
 const HeaderTitle: any = styled.h1`
   width: 100%;
   max-width: 600px;
-  color: ${({ theme }) => theme.colorMain};
+  color: ${({ theme }) => theme.colors.tenantPrimary};
   font-size: ${({ theme }) =>
     theme.signedOutHeaderTitleFontSize || fontSizes.xxxl + 1}px;
   line-height: normal;
@@ -72,7 +72,7 @@ const HeaderTitle: any = styled.h1`
 `;
 
 const ColoredText = styled.span`
-  color: ${({ theme }) => theme.colorSecondary};
+  color: ${({ theme }) => theme.colors.tenantSecondary};
 `;
 
 const TwoColumns = styled.div`

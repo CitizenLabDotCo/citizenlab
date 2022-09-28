@@ -102,7 +102,7 @@ const HeaderImage = styled(Image)`
 
 const HeaderImageOverlay = styled.div`
   background: ${({ theme }) =>
-    theme.signedInHeaderOverlayColor || theme.colorMain};
+    theme.signedInHeaderOverlayColor || theme.colors.tenantPrimary};
   opacity: ${({ theme }) => theme.signedInHeaderOverlayOpacity / 100};
   position: absolute;
   top: 0;
@@ -426,8 +426,8 @@ class SignedInHeader extends PureComponent<Props, State> {
                   text={<FormattedMessage {...messages.completeProfile} />}
                   buttonStyle="primary-inverse"
                   linkTo="/profile/edit"
-                  textColor={theme.colorMain}
-                  textHoverColor={theme.colorMain}
+                  textColor={theme.colors.tenantPrimary}
+                  textHoverColor={theme.colors.tenantPrimary}
                   fontWeight="500"
                   className="e2e-signed-in-header-accept-btn"
                 />
@@ -484,8 +484,8 @@ class SignedInHeader extends PureComponent<Props, State> {
                   text={<T value={onboardingCampaigns.cta_button_multiloc} />}
                   linkTo={onboardingCampaigns.cta_button_link}
                   buttonStyle="primary-inverse"
-                  textColor={theme.colorMain}
-                  textHoverColor={theme.colorMain}
+                  textColor={theme.colors.tenantPrimary}
+                  textHoverColor={theme.colors.tenantPrimary}
                   fontWeight="500"
                 />
               </Right>

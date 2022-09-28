@@ -71,7 +71,7 @@ const StyledCloseIconButton = styled(CloseIconButton)`
 const Title = styled.h3`
   height: 46px;
   max-height: 46px;
-  color: ${(props) => props.theme.colorText};
+  color: ${(props) => props.theme.colors.tenantText};
   font-size: 18px;
   font-weight: 600;
   display: -webkit-box;

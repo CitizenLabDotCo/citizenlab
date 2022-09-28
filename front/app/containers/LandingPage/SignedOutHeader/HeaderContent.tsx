@@ -52,8 +52,8 @@ const HeaderTitle = styled.h1<{
     hasHeader
       ? fontColors === 'light'
         ? '#fff'
-        : theme.colorMain
-      : theme.colorMain};
+        : theme.colors.tenantPrimary
+      : theme.colors.tenantPrimary};
   font-size: ${({ theme }) =>
     theme.signedOutHeaderTitleFontSize || fontSizes.xxxl}px;
   ${HeadingFontStyle};
@@ -81,8 +81,8 @@ const HeaderSubtitle = styled.h2<{
     hasHeader
       ? fontColors === 'light'
         ? '#fff'
-        : theme.colorMain
-      : theme.colorMain};
+        : theme.colors.tenantPrimary
+      : theme.colors.tenantPrimary};
   font-size: ${fontSizes.l}px;
   line-height: 28px;
   font-weight: 400;

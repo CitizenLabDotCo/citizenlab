@@ -30,7 +30,7 @@ const CustomSectionContentContainer = styled(ContentContainer)`
 const StyledQuillEditedContent = styled(QuillEditedContent)`
   h1,
   h2 {
-    color: ${(props) => props.theme.colorText};
+    color: ${(props) => props.theme.colors.tenantText};
   }
 
   p,

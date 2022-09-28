@@ -68,28 +68,28 @@ const StyledLink = xStyled(Link)`
   // for touch devices
   &:active,
   &.active {
-    color: ${(props) => props.theme.colorMain};
+    color: ${(props) => props.theme.colors.tenantPrimary};
 
     ${NavigationIcon} {
-      fill: ${(props) => props.theme.colorMain};
+      fill: ${(props) => props.theme.colors.tenantPrimary};
 
       .cl-icon-primary,
       .cl-icon-accent,
       .cl-icon-secondary {
-        fill: ${(props) => props.theme.colorMain};
+        fill: ${(props) => props.theme.colors.tenantPrimary};
       }
     }
 
     &:hover {
-      color: ${(props) => darken(0.2, props.theme.colorMain)};
+      color: ${(props) => darken(0.2, props.theme.colors.tenantPrimary)};
 
       ${NavigationIcon} {
-        fill: ${(props) => darken(0.2, props.theme.colorMain)};
+        fill: ${(props) => darken(0.2, props.theme.colors.tenantPrimary)};
 
         .cl-icon-primary,
         .cl-icon-accent,
         .cl-icon-secondary {
-          fill: ${(props) => darken(0.2, props.theme.colorMain)};
+          fill: ${(props) => darken(0.2, props.theme.colors.tenantPrimary)};
         }
       }
     }

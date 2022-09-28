@@ -43,7 +43,7 @@ const Body = memo<Props>(
     return (
       <Container id={`e2e-${postType}-description`} className={className}>
         <QuillEditedContent
-          textColor={color || theme.colorText}
+          textColor={color || theme.colors.tenantText}
           fontSize={smallerThanSmallTablet ? 'base' : 'l'}
           fontWeight={400}
         >

@@ -59,7 +59,7 @@ const ContentToggleButton = styled.button`
   padding-right: 20px;
   padding-top: 10px;
   padding-bottom: 10px;
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   line-height: 24px;
   font-weight: 600;

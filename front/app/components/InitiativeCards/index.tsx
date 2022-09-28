@@ -117,7 +117,7 @@ const AboveContentLeft = styled.div`
 const AboveContentRight = styled.div``;
 
 const InitiativesCount = styled.div`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   line-height: 21px;
   white-space: nowrap;

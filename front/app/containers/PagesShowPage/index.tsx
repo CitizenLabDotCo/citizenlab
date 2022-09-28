@@ -80,7 +80,7 @@ export const PageContent = styled.main`
 `;
 
 export const PageTitle = styled.h1`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.xxxxl}px;
   line-height: normal;
   font-weight: 600;

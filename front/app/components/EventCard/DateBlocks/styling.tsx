@@ -34,7 +34,7 @@ export const EventDate = styled.div`
   background: #f5f6f7;
   border: solid 1px #ccc;
   border-bottom: none;
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props: any) => props.theme.colors.tenantText};
 
   ${media.phone`
     padding: 4px;
@@ -42,7 +42,7 @@ export const EventDate = styled.div`
 `;
 
 export const EventMonth = styled.div`
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.s}px;
   line-height: normal;
   font-weight: 500;
@@ -50,7 +50,7 @@ export const EventMonth = styled.div`
 `;
 
 export const EventDay = styled.div`
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.m}px;
   line-height: normal;
   font-weight: 400;
@@ -72,7 +72,7 @@ export const EventYear = styled.div`
   border-radius: ${(props: any) => props.theme.borderRadius};
   border-top-left-radius: 0;
   border-top-right-radius: 0;
-  background: ${({ theme }) => theme.colorMain};
+  background: ${({ theme }) => theme.colors.tenantPrimary};
 
   ${media.phone`
     font-size: ${fontSizes.s}px;

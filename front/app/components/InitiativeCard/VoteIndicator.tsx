@@ -90,7 +90,7 @@ const VoteText = styled.div`
 
   b {
     font-weight: 600;
-    color: ${({ theme }) => theme.colorMain};
+    color: ${({ theme }) => theme.colors.tenantPrimary};
   }
 
   span.division-bar {
@@ -205,7 +205,7 @@ class VoteIndicator extends PureComponent<Props & { theme: any }> {
             <StyledProposalProgressBar
               voteCount={voteCount}
               voteLimit={voteLimit}
-              barColor={theme.colorMain}
+              barColor={theme.colors.tenantPrimary}
             />
           </div>
         )}

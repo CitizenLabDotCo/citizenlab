@@ -70,7 +70,7 @@ const PostLinkLeft = styled.div`
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;

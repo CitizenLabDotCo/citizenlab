@@ -139,10 +139,10 @@ export const UserComments = memo<Props>(
                   onClick={comments.loadMore}
                   processing={comments.loadingMore}
                   icon="showMore"
-                  textColor={theme.colorText}
-                  textHoverColor={darken(0.1, theme.colorText)}
-                  bgColor={rgba(theme.colorText, 0.08)}
-                  bgHoverColor={rgba(theme.colorText, 0.12)}
+                  textColor={theme.colors.tenantText}
+                  textHoverColor={darken(0.1, theme.colors.tenantText)}
+                  bgColor={rgba(theme.colors.tenantText, 0.08)}
+                  bgHoverColor={rgba(theme.colors.tenantText, 0.12)}
                   height="50px"
                 >
                   <FormattedMessage {...messages.loadMoreComments} />

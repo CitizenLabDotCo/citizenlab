@@ -50,7 +50,7 @@ const User = ({ userId }: Props) => {
     <>
       <UserNameContainer>
         <StyledUserName
-          color={theme.navbarTextColor || theme.colorText}
+          color={theme.navbarTextColor || theme.colors.tenantText}
           userId={userId}
           hideLastName
         />

@@ -78,7 +78,7 @@ const StyledSignUpIn = styled(SignUpIn)`
 `;
 
 const SignUpInHeader = styled.h2`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.xxl}px;
   line-height: normal;
   font-weight: 500;
