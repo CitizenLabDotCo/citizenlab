@@ -7,18 +7,15 @@ class SideFxIdeaService
     @automatic_assignment = false
   end
 
-  def before_create(idea, user)
-    before_publish idea, user if idea.published?
-  end
+  def before_create(idea, user); end
 
   def after_create(idea, user)
     idea.update!(body_multiloc: TextImageService.new.swap_data_images(idea, :body_multiloc))
     after_publish idea, user if idea.published?
   end
 
-  def before_update(idea, user)
+  def before_update(idea, _user)
     idea.body_multiloc = TextImageService.new.swap_data_images(idea, :body_multiloc)
-    before_publish idea, user if idea.will_be_published?
   end
 
   def after_update(idea, user)
@@ -71,22 +68,9 @@ class SideFxIdeaService
 
   private
 
-  def before_publish(idea, _user)
-    set_phase(idea)
-  end
-
   def after_publish(idea, user)
     add_autovote idea
     log_activity_jobs_after_published idea, user
-  end
-
-  def set_phase(idea)
-    return unless idea.project&.timeline? && idea.phases.empty?
-
-    phase = TimelineService.new.current_and_future_phases(idea.project).find do |ph|
-      ph&.can_contain_input?
-    end
-    idea.phases = [phase] if phase
   end
 
   def add_autovote(idea)
