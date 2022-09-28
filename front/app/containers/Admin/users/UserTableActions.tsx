@@ -142,7 +142,7 @@ const DropdownListItem = styled.button`
   &:hover,
   &:focus,
   &.selected {
-    background: ${colors.clDropdownHoverBackground};
+    background: ${colors.gray300};
 
     ${DropdownListItemText} {
       color: #000;

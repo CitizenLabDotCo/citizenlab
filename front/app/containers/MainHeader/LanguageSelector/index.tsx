@@ -96,7 +96,7 @@ const ListItem = styled.button`
   &:hover,
   &:focus,
   &.active {
-    background: ${colors.clDropdownHoverBackground};
+    background: ${colors.gray300};
     ${ListItemText} {
       color: #000;
     }

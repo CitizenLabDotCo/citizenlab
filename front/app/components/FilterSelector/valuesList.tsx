@@ -53,7 +53,7 @@ const ListItem = styled.li`
   &:hover,
   &:focus,
   &.selected {
-    background: ${colors.clDropdownHoverBackground};
+    background: ${colors.gray300};
 
     ${ListItemText} {
       color: #000;
@@ -82,7 +82,7 @@ const CheckboxListItem = styled.li`
   &:hover,
   &:focus,
   &.selected {
-    background: ${colors.clDropdownHoverBackground};
+    background: ${colors.gray300};
 
     ${ListItemText} {
       color: #000;

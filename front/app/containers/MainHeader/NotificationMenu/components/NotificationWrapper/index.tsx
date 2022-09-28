@@ -23,7 +23,7 @@ const Container = styled.button`
   &:hover,
   &:focus {
     color: ${colors.textPrimary};
-    background-color: ${colors.clDropdownHoverBackground};
+    background-color: ${colors.gray300};
   }
 
   ${media.phone`
