@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :fact_visit, class: 'Analytics::FactVisit' do
     transient do
-      date_dimension { Analytics::DimensionDate.first || create(:dimension_date_sept) }
+      date_dimension { Analytics::DimensionDate.first || create(:dimension_date) }
       referrer_type_dimension { Analytics::DimensionReferrerType.first || create(:dimension_referrer_type_website) }
     end
     dimension_referrer_type { referrer_type_dimension }

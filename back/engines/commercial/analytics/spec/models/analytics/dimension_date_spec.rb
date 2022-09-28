@@ -3,7 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe Analytics::DimensionDate, type: :model do
-  it 'Can create a date dimension' do
-    create(:dimension_date_sept)
+  it 'Can create a date dimension (Sept)' do
+    date_dim = create(:dimension_date, date: Date.new(2022, 9, 1))
+    pp date_dim
   end
 end

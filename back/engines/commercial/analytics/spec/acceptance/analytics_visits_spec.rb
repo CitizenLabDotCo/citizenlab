@@ -25,7 +25,7 @@ resource 'Analytics API - Queries for visitors dashboard', use_transactional_fix
       # Visitor 2 - 1 visit, admin user, same channel, no project, different locale, in Aug
       create(:user, roles: [{ type: 'admin' }])
       locale2 = create(:dimension_locale_nl)
-      aug = create(:dimension_date_aug)
+      aug = create(:dimension_date, date: Date.new(2022, 8, 1))
       visit3 = create(
         :fact_visit,
         matomo_visit_id: 3,
@@ -59,7 +59,6 @@ resource 'Analytics API - Queries for visitors dashboard', use_transactional_fix
           count: 3,
           count_visitor_id: 2
         }])
-      #  Returning string for float?
     end
 
     it 'Can filter visits by day' do

@@ -1,16 +1,10 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :dimension_date_sept, class: 'Analytics::DimensionDate' do
-    date { '2022-09-01' }
-    year { '2022' }
-    month { '2022-09' }
-    week { '2022-08-29' }
-  end
-  factory :dimension_date_aug, class: 'Analytics::DimensionDate' do
-    date { '2022-08-01' }
-    year { '2022' }
-    month { '2022-08' }
-    week { '2022-08-08' }
+  factory :dimension_date, class: 'Analytics::DimensionDate' do
+    date { Date.new(2022, 9, 1) }
+    year { date.year }
+    month { "#{date.year}-#{date.strftime('%m')}" }
+    week { date.beginning_of_week.to_date }
   end
 end
