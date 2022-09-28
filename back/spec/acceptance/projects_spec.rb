@@ -10,6 +10,7 @@ resource 'Projects' do
 
   before do
     header 'Content-Type', 'application/json'
+    create(:idea_status_proposed)
   end
 
   context 'when admin' do

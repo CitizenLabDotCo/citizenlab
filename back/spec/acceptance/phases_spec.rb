@@ -8,6 +8,7 @@ resource 'Phases' do
 
   before do
     header 'Content-Type', 'application/json'
+    create(:idea_status_proposed)
     @project = create(:project)
     @phases = create_list(:phase_sequence, 2, project: @project)
   end

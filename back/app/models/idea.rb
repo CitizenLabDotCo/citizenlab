@@ -101,11 +101,11 @@ class Idea < ApplicationRecord
   with_options unless: :draft? do
     validates :idea_status, presence: true
     validates :project, presence: true
-    before_validation :assign_default_idea_status
+    before_validation :assign_defaults
     before_validation :sanitize_body_multiloc, if: :body_multiloc
   end
 
-  after_create :assign_slug!
+  after_create :assign_slug
   after_update :fix_comments_count_on_projects
 
   scope :with_some_topics, (proc do |topics|
@@ -156,18 +156,39 @@ class Idea < ApplicationRecord
     publication_status_change == %w[draft published] || publication_status_change == [nil, 'published']
   end
 
+  def survey_response?
+    (project.continuous? && project.native_survey?) || (phases.size == 1 && phases.first.native_survey?)
+  end
+
+  def idea?
+    !survey_response?
+  end
+
   private
 
-  def participation_method
-    ::Factory.instance.participation_method_for(ParticipationContextService.new.get_participation_context(project))
-  end
-
   def validate_built_in_fields?
-    !draft? && participation_method.validate_built_in_fields?
+    idea? && !draft?
   end
 
-  def assign_slug!
-    participation_method.assign_slug! self
+  def assign_slug
+    return if slug # Slugs never change.
+
+    new_slug = if idea?
+      title = MultilocService.new.t title_multiloc, author
+      SlugService.new.generate_slug self, title
+    else
+      SlugService.new.generate_slug self, id
+    end
+    update_column :slug, new_slug
+  end
+
+  def assign_defaults
+    if idea?
+      self.idea_status ||= IdeaStatus.find_by!(code: 'proposed')
+    else
+      self.publication_status = 'published'
+      self.idea_status = IdeaStatus.find_by!(code: 'proposed')
+    end
   end
 
   def sanitize_body_multiloc
@@ -178,10 +199,6 @@ class Idea < ApplicationRecord
     )
     self.body_multiloc = service.remove_multiloc_empty_trailing_tags(body_multiloc)
     self.body_multiloc = service.linkify_multiloc(body_multiloc)
-  end
-
-  def assign_default_idea_status
-    participation_method.assign_default_idea_status self
   end
 
   def fix_comments_count_on_projects

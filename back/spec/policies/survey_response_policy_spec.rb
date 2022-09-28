@@ -5,6 +5,10 @@ require 'rails_helper'
 describe SurveyResponsePolicy do
   subject(:policy) { described_class.new(user, input) }
 
+  before do
+    create(:idea_status_proposed)
+  end
+
   let(:scope) { IdeaPolicy::Scope.new(user, project.ideas) }
 
   context 'on input in a public project' do
