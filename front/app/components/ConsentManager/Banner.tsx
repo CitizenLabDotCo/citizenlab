@@ -136,7 +136,7 @@ const StyledCloseIconButton = styled(CloseIconButton)`
   border: none;
   background: none;
 
-  ${media.smallerThan1280px`
+  ${media.tablet`
     display: none;
   `}
 `;

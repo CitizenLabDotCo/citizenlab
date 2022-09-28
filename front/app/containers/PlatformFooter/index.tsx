@@ -181,7 +181,7 @@ const PoweredByText = styled.span`
   font-weight: 400;
   line-height: normal;
   margin-right: 8px;
-  ${media.smallerThan1280px`
+  ${media.tablet`
     display: none;
   `}
   ${media.smallerThanMaxTablet`

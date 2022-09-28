@@ -143,7 +143,7 @@ export const PieChartStyleFixesDiv = styled.div`
 export const GraphCardHeaderWithFilter = styled(GraphCardHeader)`
   align-items: center;
 
-  ${media.smallerThan1280px`
+  ${media.tablet`
     flex-direction: column;
     align-items: flex-start;
     margin-top: 0px;

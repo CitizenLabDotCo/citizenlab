@@ -80,7 +80,7 @@ export const RightColumn = styled.div`
     max-width: none;
   }
 
-  ${media.smallerThan1280px`
+  ${media.tablet`
     padding: 2.5rem 2.5rem;
   `}
 `;

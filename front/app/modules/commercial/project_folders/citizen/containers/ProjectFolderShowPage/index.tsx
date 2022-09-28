@@ -43,7 +43,7 @@ const Container = styled.main`
   flex-direction: column;
   background: #fff;
 
-  ${media.smallerThan1280px`
+  ${media.tablet`
     background: ${colors.background};
   `}
 
@@ -98,7 +98,7 @@ const Content = styled.div`
   justify-content: flex-start;
   margin-bottom: 110px;
 
-  ${media.smallerThan1280px`
+  ${media.tablet`
     flex-direction: column;
     align-items: stretch;
   `};
@@ -107,7 +107,7 @@ const Content = styled.div`
 const StyledProjectFolderDescription = styled(ProjectFolderDescription)`
   flex: 1;
 
-  ${media.smallerThan1280px`
+  ${media.tablet`
     margin-bottom: 40px;
   `};
 `;
@@ -127,7 +127,7 @@ const StyledProjectFolderProjectCards = styled(ProjectFolderProjectCards)`
     width: 500px;
   }
 
-  ${media.smallerThan1280px`
+  ${media.tablet`
     flex: 1;
     width: 100%;
     margin: 0;

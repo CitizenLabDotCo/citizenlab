@@ -54,7 +54,7 @@ const GraphCardTitle = styled.h3`
   margin: 0;
   margin-right: 15px;
 
-  ${media.smallerThan1280px`
+  ${media.tablet`
     margin-bottom: 15px;
   `}
 `;

@@ -10,7 +10,7 @@ const Wrapper = styled.div`
   padding: 3.5rem 4rem;
   margin-bottom: 0px;
 
-  ${media.smallerThan1280px`
+  ${media.tablet`
     padding: 2rem 2rem;
   `}
 `;
