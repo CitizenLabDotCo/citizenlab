@@ -59,7 +59,7 @@ const EmptyCard = ({ titleMultiloc, isComingSoon }: Props) => {
             {isComingSoon && (
               <StyledStatusLabel
                 text={<FormattedMessage {...messages.comingSoon} />}
-                backgroundColor={colors.adminSecondaryTextColor}
+                backgroundColor={colors.textSecondary}
               />
             )}
           </Title>

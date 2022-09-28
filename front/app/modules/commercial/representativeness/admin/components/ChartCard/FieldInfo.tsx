@@ -48,7 +48,7 @@ const FieldInfo = ({ includedUsers, fieldIsRequired }: Props) => (
         name="user"
         width="16px"
         height="16px"
-        fill={colors.adminSecondaryTextColor}
+        fill={colors.textSecondary}
         mr="6px"
       />
       <FormattedMessage

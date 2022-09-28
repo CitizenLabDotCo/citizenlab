@@ -17,7 +17,7 @@ const AddIcon = styled(Icon).attrs({ name: 'plus' })`
   height: 16px;
   margin-left: auto;
   margin-right: 12px;
-  fill: ${colors.adminSecondaryTextColor};
+  fill: ${colors.textSecondary};
 `;
 
 const StyledBox = styled(Box)`

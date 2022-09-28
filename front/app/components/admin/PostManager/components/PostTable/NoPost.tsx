@@ -66,7 +66,7 @@ export const NoPostHeader = styled.h2`
 `;
 
 export const NoPostDescription = styled.p`
-  color: ${colors.adminSecondaryTextColor};
+  color: ${colors.textSecondary};
   font-weight: 400;
   font-size: ${fontSizes.s}px;
   margin-bottom: 30px;

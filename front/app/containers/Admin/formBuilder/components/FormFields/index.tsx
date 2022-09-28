@@ -92,7 +92,7 @@ const FormFields = ({
                       </Text>
                     </Box>
                     {!isNilOrError(field.input_type) && (
-                      <StyledBadge color={colors.adminSecondaryTextColor}>
+                      <StyledBadge color={colors.textSecondary}>
                         <FormattedMessage
                           {...getTranslatedFieldType(field.input_type)}
                         />

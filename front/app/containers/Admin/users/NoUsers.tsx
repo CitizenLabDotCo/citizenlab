@@ -25,17 +25,17 @@ const NoUsersPage = styled.div`
 `;
 
 const SFormattedMessage = styled.div`
-  color: ${colors.adminSecondaryTextColor};
+  color: ${colors.textSecondary};
   font-weight: 400;
   font-size: ${fontSizes.base}px;
 
   a {
-    color: ${colors.adminSecondaryTextColor};
+    color: ${colors.textSecondary};
     font-weight: bold;
     text-decoration: underline;
 
     &:hover {
-      color: ${darken(0.2, colors.adminSecondaryTextColor)};
+      color: ${darken(0.2, colors.textSecondary)};
     }
   }
 `;

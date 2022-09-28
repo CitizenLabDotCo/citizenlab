@@ -30,7 +30,7 @@ const Header = () => (
       <FormattedMessage {...messages.pageTitle} />
       <StyledStatusLabel
         text={<FormattedMessage {...messages.betaLabel} />}
-        backgroundColor={colors.adminSecondaryTextColor}
+        backgroundColor={colors.textSecondary}
       />
     </Title>
     <Box>

@@ -88,7 +88,7 @@ export const SubSectionTitleWithDescription = styled(SubSectionTitle)`
 `;
 
 export const SectionDescription = styled.p`
-  color: ${colors.adminSecondaryTextColor};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   margin-bottom: ${remCalc(45)};
   font-weight: 400;

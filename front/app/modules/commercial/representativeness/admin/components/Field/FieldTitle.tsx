@@ -94,7 +94,7 @@ const FieldTitle = ({
           <ComingSoonStatusLabel
             text={<FormattedMessage {...messages.comingSoon} />}
             variant="default"
-            backgroundColor={colors.adminSecondaryTextColor}
+            backgroundColor={colors.textSecondary}
           />
         )}
       </Box>
