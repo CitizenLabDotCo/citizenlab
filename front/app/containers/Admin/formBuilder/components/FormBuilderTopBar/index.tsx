@@ -72,7 +72,7 @@ const FormBuilderTopBar = ({ isSubmitting }: FormBuilderTopBarProps) => {
       w="100%"
       h={`${stylingConsts.menuHeight}px`}
       display="flex"
-      background={`${colors.adminContentBackground}`}
+      background={`${colors.white}`}
       borderBottom={`1px solid ${colors.mediumGrey}`}
       top="0px"
     >

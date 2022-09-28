@@ -43,7 +43,7 @@ const EmptyState = () => (
           <Button
             width="auto"
             mb="16px"
-            bgColor={colors.adminTextColor}
+            bgColor={colors.primary}
             linkTo="/admin/dashboard/representation/edit-base-data"
           >
             <FormattedMessage {...messages.submitBaseDataButton} />

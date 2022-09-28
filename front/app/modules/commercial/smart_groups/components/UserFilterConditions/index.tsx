@@ -38,7 +38,7 @@ const AddButton = styled(Button)`
 
   &:hover {
     .buttonIcon {
-      fill: ${colors.adminTextColor};
+      fill: ${colors.primary};
     }
   }
 
@@ -51,7 +51,7 @@ const AddButton = styled(Button)`
   }
 
   .buttonText {
-    color: ${colors.adminTextColor};
+    color: ${colors.primary};
   }
 `;
 

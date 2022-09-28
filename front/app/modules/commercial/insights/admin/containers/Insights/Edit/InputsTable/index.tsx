@@ -92,7 +92,7 @@ const SearchContainer = styled.div`
 `;
 
 const RecentlyPostedInfoBox = styled.div`
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
   background-color: ${colors.clBlueLightest};
   padding: 20px;
   border-radius: 3px;
@@ -403,7 +403,7 @@ const InputsTable = ({
             <Box alignItems="center" mr="16px">
               <Button
                 buttonStyle="secondary"
-                textColor={colors.adminTextColor}
+                textColor={colors.primary}
                 onClick={triggerScan}
                 data-testid="insightsScanCategory-button"
               >

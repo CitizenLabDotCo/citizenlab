@@ -128,7 +128,7 @@ const AnimatedFieldset = styled.fieldset`
 const StyledCheckboxWithPartialCheck = styled(CheckboxWithPartialCheck)`
   label {
     font-size: ${fontSizes.s}px;
-    color: ${colors.adminTextColor};
+    color: ${colors.primary};
   }
 `;
 
@@ -258,7 +258,7 @@ export const CreateInsightsView = ({
       w="100%"
       maxWidth="450px"
       m="40px auto"
-      color={colors.adminTextColor}
+      color={colors.primary}
       data-testid="insightsCreateModal"
     >
       <Title>
@@ -378,7 +378,7 @@ export const CreateInsightsView = ({
             processing={loading}
             disabled={!name || selectedProjectsIds.length === 0}
             onClick={handleSubmit}
-            bgColor={colors.adminTextColor}
+            bgColor={colors.primary}
           >
             <FormattedMessage {...messages.createModalSaveView} />
           </Button>

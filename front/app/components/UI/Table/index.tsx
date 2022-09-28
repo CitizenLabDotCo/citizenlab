@@ -22,7 +22,7 @@ const StyledTable = styled.table`
     tr {
       th {
         fill: ${colors.text};
-        color: ${colors.adminTextColor};
+        color: ${colors.primary};
         font-size: ${fontSizes.s}px;
         font-weight: 600;
         text-align: left;
@@ -46,7 +46,7 @@ const StyledTable = styled.table`
       border-bottom: solid 1px #ccc;
 
       td {
-        color: ${colors.adminTextColor};
+        color: ${colors.primary};
         font-size: ${fontSizes.s}px;
         font-weight: 400;
         line-height: normal;

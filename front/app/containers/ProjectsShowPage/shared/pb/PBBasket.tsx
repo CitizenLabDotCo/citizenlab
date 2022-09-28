@@ -62,7 +62,7 @@ const EmptyIcon = styled.svg`
 
 const EmptyText = styled.div`
   width: 100%;
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
   font-size: ${fontSizes.base}px;
   line-height: 18px;
   font-weight: 500;

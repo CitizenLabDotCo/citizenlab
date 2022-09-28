@@ -50,7 +50,7 @@ const TableOptions = styled.div`
   padding-left: 5px;
   padding-right: 5px;
   margin-bottom: 10px;
-  border-bottom: solid 1px ${colors.adminTextColor};
+  border-bottom: solid 1px ${colors.primary};
   user-select: none;
 `;
 
@@ -72,8 +72,8 @@ const SelectAllCheckbox = styled(Checkbox)`
 
   &:hover,
   &:focus {
-    background: ${rgba(colors.adminTextColor, 0.1)};
-    color: ${colors.adminTextColor};
+    background: ${rgba(colors.primary, 0.1)};
+    color: ${colors.primary};
     outline: none;
   }
 `;

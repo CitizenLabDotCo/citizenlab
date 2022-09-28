@@ -86,7 +86,7 @@ const Right = styled.div`
   position: sticky;
   top: 80px;
   align-self: flex-start;
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
   font-size: ${fontSizes.base}px;
   line-height: 19px;
 `;
@@ -167,7 +167,7 @@ export class InitiativeContent extends PureComponent<
             <Button
               icon="edit"
               buttonStyle="text"
-              textColor={colors.adminTextColor}
+              textColor={colors.primary}
               onClick={handleClickEdit}
             >
               <FormattedMessage {...messages.edit} />
@@ -175,7 +175,7 @@ export class InitiativeContent extends PureComponent<
             <Button
               icon="delete"
               buttonStyle="text"
-              textColor={colors.adminTextColor}
+              textColor={colors.primary}
               onClick={this.handleClickDelete}
             >
               <FormattedMessage {...messages.delete} />

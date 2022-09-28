@@ -131,7 +131,7 @@ const Right = styled.div`
   position: sticky;
   top: 80px;
   align-self: flex-start;
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
   font-size: ${fontSizes.base}px;
   line-height: 19px;
 `;
@@ -148,7 +148,7 @@ const BudgetBox = styled.div`
   position: relative;
   border-radius: 5px;
   background: ${colors.background};
-  border: solid 1px ${colors.adminTextColor};
+  border: solid 1px ${colors.primary};
   font-size: ${fontSizes.l}px;
   font-weight: 500;
 `;

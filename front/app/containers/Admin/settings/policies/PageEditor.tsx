@@ -56,10 +56,10 @@ const Toggle = styled.div`
 
   &:hover,
   &.deployed {
-    color: ${colors.adminTextColor};
+    color: ${colors.primary};
 
     ${DeployIcon} {
-      fill: ${colors.adminTextColor};
+      fill: ${colors.primary};
     }
   }
 

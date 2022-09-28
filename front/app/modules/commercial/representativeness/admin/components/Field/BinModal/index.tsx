@@ -142,7 +142,7 @@ const BinModal = ({ open, bins, onClose, onSave }: Props) => {
       close={onClose}
       width="70%"
       header={
-        <Box color={colors.adminTextColor} style={{ fontWeight: 700 }}>
+        <Box color={colors.primary} style={{ fontWeight: 700 }}>
           <FormattedMessage {...messages.ageGroups} />
         </Box>
       }

@@ -40,18 +40,18 @@ export const IconWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${transparentize(0.9, colors.adminTextColor)};
+  background: ${transparentize(0.9, colors.primary)};
 `;
 
 const ManualGroupIcon = styled(Icon).attrs({ name: 'database' })`
   width: 28px;
   height: 28px;
-  fill: ${colors.adminTextColor};
-  fill: ${colors.adminTextColor};
+  fill: ${colors.primary};
+  fill: ${colors.primary};
 `;
 
 export const GroupName = styled.p`
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
   font-size: ${fontSizes.xl}px;
   font-weight: 600;
   margin-top: 15px;
@@ -67,7 +67,7 @@ export const GroupDescription = styled.div`
 
 export const DescriptionText = styled.div`
   max-width: 285px;
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
   text-align: center;
 `;
 

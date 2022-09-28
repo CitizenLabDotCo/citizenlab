@@ -92,7 +92,7 @@ const EmptyCard = ({ titleMultiloc, isComingSoon }: Props) => {
           {!isComingSoon && (
             <Button
               width="164px"
-              bgColor={colors.adminTextColor}
+              bgColor={colors.primary}
               linkTo="/admin/dashboard/representation/edit-base-data"
             >
               <FormattedMessage {...messages.submitBaseDataButton} />

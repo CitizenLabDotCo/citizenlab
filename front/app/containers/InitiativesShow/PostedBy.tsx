@@ -24,7 +24,7 @@ const InitiativesIcon = styled(Icon)`
   width: 42px;
   height: 42px;
   background-color: rgba(4, 77, 108, 0.06);
-  fill: ${colors.adminTextColor};
+  fill: ${colors.primary};
   border-radius: 50%;
   padding: 10px;
   margin-right: 17px;

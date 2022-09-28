@@ -29,7 +29,7 @@ const ToolboxItem = ({ icon, label }: Props) => {
         marginRight="16px"
         width="20px"
         height="20px"
-        fill={colors.adminTextColor}
+        fill={colors.primary}
         name={icon}
       />
       <Text color="text" style={{ lineHeight: '1' }}>

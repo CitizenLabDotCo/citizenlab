@@ -128,7 +128,7 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
                   return (
                     <CompletionBar
                       key={index}
-                      bgColor={colors.adminTextColor}
+                      bgColor={colors.primary}
                       completed={percentage}
                       leftLabel={answer}
                       rightLabel={`${percentage}% (${responses} choices)`}

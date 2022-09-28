@@ -80,13 +80,13 @@ const Tab = styled.div`
   }
 
   &:not(.active):hover a {
-    color: ${colors.adminTextColor};
+    color: ${colors.primary};
     border-color: #ddd;
   }
 
   &.active a {
-    color: ${colors.adminTextColor};
-    border-color: ${colors.adminTextColor};
+    color: ${colors.primary};
+    border-color: ${colors.primary};
   }
 `;
 
@@ -94,7 +94,7 @@ const ChildWrapper = styled.div`
   margin-bottom: 60px;
   padding: 42px;
   border: 1px solid ${colors.separation};
-  background: ${colors.adminContentBackground};
+  background: ${colors.white};
 
   @media print {
     border: none;

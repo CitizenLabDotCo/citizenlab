@@ -23,9 +23,9 @@ import 'assets/semantic/semantic.min.css';
 const Container = styled.div`
   display: flex;
   background: ${colors.background};
-  color: ${colors.adminTextColor};
-  fill: ${colors.adminTextColor};
-  border-color: ${colors.adminTextColor};
+  color: ${colors.primary};
+  fill: ${colors.primary};
+  border-color: ${colors.primary};
 
   &.whiteBg {
     background: #fff;
@@ -37,14 +37,14 @@ const Container = styled.div`
   .ui a,
   .ui input,
   .ui .active td {
-    color: ${colors.adminTextColor} !important;
+    color: ${colors.primary} !important;
   }
 
   .Select-control,
   .Select-value-label,
   .Select-value-icon,
   .Select-option {
-    color: ${colors.adminTextColor} !important;
+    color: ${colors.primary} !important;
   }
 
   .ui.red {

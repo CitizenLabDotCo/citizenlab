@@ -14,7 +14,7 @@ const Container = styled.div`
 `;
 
 const TabText = styled.span`
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   white-space: nowrap;
@@ -54,12 +54,12 @@ const Tab = styled.button<{ index: number }>`
   &:not(.selected):hover,
   &:not(.selected):focus {
     z-index: 10;
-    border-color: ${colors.adminTextColor};
+    border-color: ${colors.primary};
   }
 
   &.selected {
-    border-color: ${colors.adminTextColor};
-    background: ${colors.adminTextColor};
+    border-color: ${colors.primary};
+    background: ${colors.primary};
 
     ${TabText} {
       color: #fff;

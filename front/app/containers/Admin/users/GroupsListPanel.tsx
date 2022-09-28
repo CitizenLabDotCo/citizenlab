@@ -82,7 +82,7 @@ const GroupsList = styled.div`
 `;
 
 const MenuLink = styled(Link)`
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
   font-size: ${fontSizes.base}px;
   display: flex;
   align-items: center;
@@ -99,13 +99,13 @@ const MenuLink = styled(Link)`
   }
 
   &.active {
-    background: ${rgba(colors.adminTextColor, 0.08)};
+    background: ${rgba(colors.primary, 0.08)};
   }
 
   &:hover,
   &:focus {
-    color: ${colors.adminTextColor};
-    background: ${rgba(colors.adminTextColor, 0.15)};
+    color: ${colors.primary};
+    background: ${rgba(colors.primary, 0.15)};
   }
 
   @keyframes highlight {
@@ -230,13 +230,13 @@ export class GroupsListPanel extends React.PureComponent<
               hiddenText={<FormattedMessage {...messages.createGroupButton} />}
               icon="plus"
               iconSize="11px"
-              iconColor={colors.adminTextColor}
+              iconColor={colors.primary}
               onClick={this.handleCreateGroup}
               padding="8px"
               borderRadius="50%"
               buttonStyle="secondary"
-              bgColor={rgba(colors.adminTextColor, 0.08)}
-              bgHoverColor={rgba(colors.adminTextColor, 0.15)}
+              bgColor={rgba(colors.primary, 0.08)}
+              bgHoverColor={rgba(colors.primary, 0.15)}
             />
           </ButtonWrapper>
         </MenuTitle>

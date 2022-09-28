@@ -177,14 +177,14 @@ const PostFeedback = ({
             <Box
               m="0 0 0 0"
               style={{
-                color: colors.adminTextColor,
+                color: colors.primary,
                 fontSize: fontSizes.s,
               }}
               width="100%"
             >
               <Icon
                 name="calendar"
-                fill={colors.adminTextColor}
+                fill={colors.primary}
                 width="13px"
                 height="13px"
                 mr="11px"

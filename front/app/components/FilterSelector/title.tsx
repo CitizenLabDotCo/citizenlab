@@ -33,11 +33,11 @@ const Container = styled.button<{ textColor?: string }>`
 
   &.adminpage {
     ${Text} {
-      color: ${colors.adminTextColor};
+      color: ${colors.primary};
     }
 
     ${DropdownIcon} {
-      fill: ${colors.adminTextColor};
+      fill: ${colors.primary};
     }
   }
 

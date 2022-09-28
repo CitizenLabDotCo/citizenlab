@@ -13,7 +13,7 @@ const Container = styled.div`
   position: fixed;
   bottom: 0;
   color: white;
-  background: ${colors.adminTextColor};
+  background: ${colors.primary};
   font-size: ${fontSizes.base};
   z-index: 1001;
   width: 100%;
@@ -172,8 +172,8 @@ const Banner = ({ onAccept, onChangePreferences }: Props) => {
             <AcceptButton
               className="e2e-accept-cookies-btn"
               buttonStyle="primary-inverse"
-              textColor={colors.adminTextColor}
-              textHoverColor={colors.adminTextColor}
+              textColor={colors.primary}
+              textHoverColor={colors.primary}
               onClick={onAccept}
             >
               <FormattedMessage {...messages.accept} />
@@ -181,8 +181,8 @@ const Banner = ({ onAccept, onChangePreferences }: Props) => {
             <PreferencesButton
               className="integration-open-modal"
               buttonStyle="primary-inverse"
-              textColor={colors.adminTextColor}
-              textHoverColor={colors.adminTextColor}
+              textColor={colors.primary}
+              textHoverColor={colors.primary}
               onClick={onChangePreferences}
             >
               <FormattedMessage {...messages.manage} />

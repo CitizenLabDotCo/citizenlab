@@ -41,7 +41,7 @@ const StyledLink = styled.a`
 
 const InsightsContainer = styled.div`
   margin-top: 40px;
-  background-color: ${colors.adminContentBackground};
+  background-color: ${colors.white};
   padding: 60px 70px;
   font-size: ${fontSizes.base}px;
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
@@ -125,7 +125,7 @@ const InsightsList: React.FC<InsightsList & InjectedIntlProps> = ({
             </InsightsContainerTitle>
             <p>{formatMessage(messages.listDescription)}</p>
           </div>
-          <Button bgColor={colors.adminTextColor} onClick={openCreateModal}>
+          <Button bgColor={colors.primary} onClick={openCreateModal}>
             {formatMessage(messages.listCreate)}
           </Button>
         </InsightsContainerHeader>
@@ -140,7 +140,7 @@ const InsightsList: React.FC<InsightsList & InjectedIntlProps> = ({
                 {/* <Button
                     buttonStyle="white"
                     icon="copy"
-                    textColor={colors.adminTextColor}
+                    textColor={colors.primary}
                     boxShadow="none"
                   >
                     {formatMessage(messages.listDuplicate)}
@@ -148,7 +148,7 @@ const InsightsList: React.FC<InsightsList & InjectedIntlProps> = ({
                 <Button
                   buttonStyle="white"
                   icon="delete"
-                  textColor={colors.adminTextColor}
+                  textColor={colors.primary}
                   boxShadow="none"
                   onClick={handleDeleteClick(view.id)}
                 >

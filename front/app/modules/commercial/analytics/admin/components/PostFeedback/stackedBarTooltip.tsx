@@ -38,7 +38,7 @@ export const stackedBarTooltip =
             <Box
               p="8px"
               background="white"
-              color={colors.adminTextColor}
+              color={colors.primary}
               border={`1px solid ${colors.separation}`}
             >
               <Box

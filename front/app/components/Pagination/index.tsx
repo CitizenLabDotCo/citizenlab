@@ -17,13 +17,13 @@ const ContainerInner = styled.div`
 
 const ChevronIcon = styled(Icon)`
   height: 12px;
-  fill: ${colors.adminTextColor};
+  fill: ${colors.primary};
 `;
 
 const NavigateButton = styled.button`
   width: 38px;
   height: 38px;
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
   font-size: ${fontSizes.base}px;
   font-weight: 500;
   margin: 0;
@@ -73,7 +73,7 @@ const Item = styled.button<{ useColorsTheme?: boolean }>`
   min-width: 38px;
   height: 38px;
   color: ${({ useColorsTheme, theme }) =>
-    useColorsTheme ? theme.colorText : colors.adminTextColor};
+    useColorsTheme ? theme.colorText : colors.primary};
   font-size: ${fontSizes.base}px;
   font-weight: 500;
   margin-left: 5px;
@@ -93,14 +93,14 @@ const Item = styled.button<{ useColorsTheme?: boolean }>`
     &.active {
       color: #fff;
       background: ${({ useColorsTheme, theme }) =>
-        useColorsTheme ? theme.colorMain : colors.adminTextColor};
+        useColorsTheme ? theme.colorMain : colors.primary};
     }
 
     &:not(.active) {
       &:hover,
       &:focus {
         background: ${({ useColorsTheme, theme }) =>
-          rgba(useColorsTheme ? theme.colorMain : colors.adminTextColor, 0.2)};
+          rgba(useColorsTheme ? theme.colorMain : colors.primary, 0.2)};
       }
     }
   }

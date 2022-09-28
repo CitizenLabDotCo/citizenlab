@@ -76,7 +76,7 @@ const GoToIcon = styled(Icon)`
   fill: ${colors.textSecondary};
 
   &:hover {
-    fill: ${colors.adminTextColor};
+    fill: ${colors.primary};
   }
 `;
 
@@ -120,7 +120,7 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
     const moderatableType = moderation.attributes.moderatable_type;
     const belongsToTypes = Object.keys(moderation.attributes.belongs_to);
     const bgColor = selected
-      ? rgba(colors.adminTextColor, 0.1)
+      ? rgba(colors.primary, 0.1)
       : moderation.attributes.moderation_status === 'read'
       ? '#f6f6f6'
       : '#fff';

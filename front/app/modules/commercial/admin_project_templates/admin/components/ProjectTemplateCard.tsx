@@ -46,7 +46,7 @@ const Content = styled.div`
 `;
 
 const Title = styled.h3`
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
   font-size: ${fontSizes.xl}px;
   font-weight: 500;
   padding: 0;

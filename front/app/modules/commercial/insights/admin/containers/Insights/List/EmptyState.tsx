@@ -17,7 +17,7 @@ import Button from 'components/UI/Button';
 import { InjectedIntlProps } from 'react-intl';
 
 const Container = styled.div`
-  background-color: ${colors.adminContentBackground};
+  background-color: ${colors.white};
   padding: 135px 100px;
   display: flex;
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
@@ -61,7 +61,7 @@ const EmptyState = ({
         </Text>
         <Box display="flex" flexWrap="wrap" alignItems="flex-start" mt="40px">
           <Button
-            bgColor={colors.adminTextColor}
+            bgColor={colors.primary}
             onClick={openCreateModal}
             mr="12px"
             mb="12px"

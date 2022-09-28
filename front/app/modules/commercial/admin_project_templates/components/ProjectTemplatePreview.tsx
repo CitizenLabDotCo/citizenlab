@@ -73,7 +73,7 @@ const HeaderRight = styled.div`
 `;
 
 const Title = styled.h1`
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
   font-size: ${fontSizes.xxl}px;
   font-weight: 600;
   line-height: normal;
@@ -87,7 +87,7 @@ const Title = styled.h1`
 `;
 
 const Subtitle = styled.h2`
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: normal;
@@ -146,7 +146,7 @@ const MetaInfoLeft = styled.div`
 `;
 
 const Department = styled.div`
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   line-height: normal;
@@ -289,7 +289,7 @@ const Footer = styled.div``;
 
 const SuccessCasesTitle = styled.div`
   width: 100%;
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
   font-size: ${fontSizes.base}px;
   font-weight: 500;
   line-height: normal;
@@ -465,7 +465,7 @@ const ProjectTemplatePreview = memo<Props>(
                 <HeaderImage src={data.projectTemplate.headerImage} />
               )}
 
-              <QuillEditedContent textColor={colors.adminTextColor}>
+              <QuillEditedContent textColor={colors.primary}>
                 <div
                   dangerouslySetInnerHTML={{
                     __html: localize(data.projectTemplate.descriptionMultilocs),

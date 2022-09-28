@@ -171,7 +171,7 @@ const Categories: React.FC<CategoryProps> = ({
             alignItems="center"
             padding="16px 24px"
             bgColor={colors.clBlueLightest}
-            color={colors.adminTextColor}
+            color={colors.primary}
             borderRadius="3px"
             data-testid="insightsDetailsCategoriesEmpty"
           >

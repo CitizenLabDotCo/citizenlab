@@ -56,7 +56,7 @@ const CategoriesLabel = styled.div`
   p {
     text-transform: uppercase;
     font-size: ${fontSizes.xs}px;
-    color: ${colors.adminTextColor};
+    color: ${colors.primary};
     font-weight: bold;
     margin-bottom: 0px;
     margin-right: 8px;
@@ -104,7 +104,7 @@ const CategoryButtonWithIcon = styled(CategoryButton)`
 const CategoryInfoBox = styled.div`
   background-color: ${colors.clBlueLightest};
   font-size: ${fontSizes.base};
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
   border-radius: 3px;
   padding: 8px 20px;
 `;
@@ -285,7 +285,7 @@ const Categories = ({
               : 'transparent'
           }
           textColor={colors.textSecondary}
-          textHoverColor={colors.adminTextColor}
+          textHoverColor={colors.primary}
           bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
           onClick={selectAllInput}
         >
@@ -303,7 +303,7 @@ const Categories = ({
               : 'transparent'
           }
           textColor={colors.textSecondary}
-          textHoverColor={colors.adminTextColor}
+          textHoverColor={colors.primary}
           bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
           onClick={selectRecentlyPosted}
         >
@@ -321,7 +321,7 @@ const Categories = ({
               : 'transparent'
           }
           textColor={colors.textSecondary}
-          textHoverColor={colors.adminTextColor}
+          textHoverColor={colors.primary}
           bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
           onClick={selectUncategorizedInput}
         >
@@ -386,7 +386,7 @@ const Categories = ({
         />
         <Button
           fontSize={`${fontSizes.xxxl}px`}
-          bgColor={colors.adminTextColor}
+          bgColor={colors.primary}
           ml="4px"
           p="8px"
           onClick={handleCategorySubmit}
@@ -406,7 +406,7 @@ const Categories = ({
           <Button
             buttonStyle="white"
             mb="8px"
-            textColor={colors.adminTextColor}
+            textColor={colors.primary}
             linkTo={`/admin/insights/${viewId}/detect`}
             data-testid="insightsDetectCategories"
           >
@@ -434,7 +434,7 @@ const Categories = ({
                   : 'transparent'
               }
               textColor={colors.textSecondary}
-              textHoverColor={colors.adminTextColor}
+              textHoverColor={colors.primary}
               bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
               onClick={selectCategory(category.id)}
             >

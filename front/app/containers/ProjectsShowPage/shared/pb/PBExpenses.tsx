@@ -552,7 +552,7 @@ const PBExpenses = ({
                 <div>
                   <SubmitExpensesButton
                     onClick={handleSubmitExpensesOnClick}
-                    bgColor={colors.adminTextColor}
+                    bgColor={colors.primary}
                     disabled={
                       validationStatus === 'validationSuccess' ||
                       budgetExceedsLimit ||

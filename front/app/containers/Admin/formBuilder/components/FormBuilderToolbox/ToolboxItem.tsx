@@ -46,7 +46,7 @@ const ToolboxItem = ({ icon, label, onClick }: Props) => {
       px="0px"
     >
       <Icon
-        fill={colors.adminTextColor}
+        fill={colors.primary}
         width="20px"
         height="20px"
         marginLeft="12px"

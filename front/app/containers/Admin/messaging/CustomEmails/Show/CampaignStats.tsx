@@ -21,7 +21,7 @@ const GraphCard = styled.div`
   flex-direction: column;
   border: solid 1px ${colors.borderLight};
   border-radius: ${(props: any) => props.theme.borderRadius};
-  background: ${colors.adminContentBackground};
+  background: ${colors.white};
   margin: 5px;
   justify-content: space-around;
   flex-grow: 1;

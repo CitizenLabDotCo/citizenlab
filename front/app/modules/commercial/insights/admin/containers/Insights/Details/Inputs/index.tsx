@@ -251,7 +251,7 @@ const Inputs = ({
                 processing={loading}
                 onClick={onLoadMore}
                 buttonStyle="white"
-                textColor={colors.adminTextColor}
+                textColor={colors.primary}
                 data-testid="insightsDetailsLoadMore"
               >
                 {formatMessage(messages.inputsLoadMore)}

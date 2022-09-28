@@ -64,7 +64,7 @@ const nodeColors = [
   colors.clBlue,
   colors.red500,
   colors.adminOrangeIcons,
-  colors.adminTextColor,
+  colors.primary,
   colors.facebookMessenger,
   colors.facebook,
   colors.textSecondary,
@@ -324,7 +324,7 @@ const Network = ({
       >
         <Button
           buttonStyle="white"
-          textColor={colors.adminTextColor}
+          textColor={colors.primary}
           onClick={onZoomIn}
           width="36px"
           height="36px"
@@ -333,7 +333,7 @@ const Network = ({
         </Button>
         <Button
           buttonStyle="white"
-          textColor={colors.adminTextColor}
+          textColor={colors.primary}
           onClick={onZoomOut}
           width="36px"
           height="36px"

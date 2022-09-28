@@ -68,7 +68,7 @@ const ToggleUserConfirmation = ({
         <StyledToggle
           checked={userConfirmationSetting.enabled}
           onChange={handleToggleOnChange}
-          labelTextColor={colors.adminTextColor}
+          labelTextColor={colors.primary}
         />
         {userConfirmationSetting.enabled ? (
           <FormattedMessage {...messages.enabled} />

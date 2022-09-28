@@ -24,7 +24,7 @@ const ScanContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
   text-align: left;
   border-radius: 3px;
   position: relative;
@@ -141,7 +141,7 @@ const ScanCategory = ({
       <ProgressBar
         data-testid="insightsScanCategory-progress"
         isInProgress={isInProgress}
-        bgColor={colors.adminTextColor}
+        bgColor={colors.primary}
         width={`${progress * 100}%`}
         position="absolute"
         top="0"
