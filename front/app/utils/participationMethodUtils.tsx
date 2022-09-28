@@ -5,6 +5,7 @@ import { IProjectData } from 'services/projects';
 import clHistory from 'utils/cl-router/history';
 import { FormattedMessage } from './cl-intl';
 import messages from './participationMethodUtilsMessages';
+import { isNilOrError } from './helperUtils';
 
 type ParticipationMethodConfig = {
   /** We currently have 2 UIs for admins to edit the form definition. This
@@ -12,6 +13,7 @@ type ParticipationMethodConfig = {
   formEditor: 'simpleFormEditor' | 'surveyEditor' | null;
   onFormSubmission?: any;
   getModalContent: any;
+  showInputManager: boolean;
 };
 
 const ideationConfig: ParticipationMethodConfig = {
@@ -25,6 +27,7 @@ const ideationConfig: ParticipationMethodConfig = {
   getModalContent: () => {
     return null;
   },
+  showInputManager: true,
 };
 
 const nativeSurveyConfig: ParticipationMethodConfig = {
@@ -39,6 +42,7 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
   getModalContent: () => {
     return <FormattedMessage {...messages.onSurveySubmission} />;
   },
+  showInputManager: false,
 };
 
 const informationConfig: ParticipationMethodConfig = {
@@ -46,6 +50,7 @@ const informationConfig: ParticipationMethodConfig = {
   getModalContent: () => {
     return null;
   },
+  showInputManager: false,
 };
 
 const surveyConfig: ParticipationMethodConfig = {
@@ -53,6 +58,7 @@ const surveyConfig: ParticipationMethodConfig = {
   getModalContent: () => {
     return null;
   },
+  showInputManager: false,
 };
 
 const budgetingConfig: ParticipationMethodConfig = {
@@ -60,6 +66,7 @@ const budgetingConfig: ParticipationMethodConfig = {
   getModalContent: () => {
     return null;
   },
+  showInputManager: true,
 };
 
 const pollConfig: ParticipationMethodConfig = {
@@ -67,6 +74,7 @@ const pollConfig: ParticipationMethodConfig = {
   getModalContent: () => {
     return null;
   },
+  showInputManager: false,
 };
 
 const volunteeringConfig: ParticipationMethodConfig = {
@@ -74,6 +82,7 @@ const volunteeringConfig: ParticipationMethodConfig = {
   getModalContent: () => {
     return null;
   },
+  showInputManager: false,
 };
 
 const methodToConfig: {
@@ -113,4 +122,31 @@ export function getAllParticipationMethods(
   } else {
     throw `Unknown process_type ${project.attributes.process_type}`;
   }
+}
+
+/** Given a project and its (optional) phases, returns whether the InputManager
+ *  should be shown in the back office.
+ */
+export function showInputManager(
+  project: IProjectData,
+  phases?: Error | IPhaseData[] | null | undefined
+): boolean {
+  if (project.attributes.process_type === 'continuous') {
+    return getMethodConfig(project.attributes.participation_method)
+      .showInputManager;
+  }
+  if (project.attributes.process_type === 'timeline') {
+    if (!isNilOrError(phases)) {
+      if (
+        phases.some(
+          (phase) =>
+            getMethodConfig(phase.attributes.participation_method)
+              .showInputManager
+        )
+      ) {
+        return true;
+      }
+    }
+  }
+  return false;
 }

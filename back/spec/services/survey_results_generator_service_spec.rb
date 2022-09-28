@@ -77,6 +77,20 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
       title_multiloc: { 'en' => 'Pig', 'fr-FR' => 'Porc', 'nl-NL' => 'Varken' }
     )
   end
+  let(:minimum_label_multiloc) do
+    {
+      'en' => 'Strongly disagree',
+      'fr-FR' => "Pas du tout d'accord",
+      'nl-NL' => 'Helemaal niet mee eens'
+    }
+  end
+  let(:maximum_label_multiloc) do
+    {
+      'en' => 'Strongly agree',
+      'fr-FR' => "Tout à fait d'accord",
+      'nl-NL' => 'Strerk mee eens'
+    }
+  end
   let!(:linear_scale_field) do
     create(
       :custom_field_linear_scale,
@@ -87,16 +101,8 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
         'nl-NL' => 'Ben je het eens met de visie?'
       },
       maximum: 5,
-      minimum_label_multiloc: {
-        'en' => 'Strongly disagree',
-        'fr-FR' => "Pas du tout d'accord",
-        'nl-NL' => 'Helemaal niet mee eens'
-      },
-      maximum_label_multiloc: {
-        'en' => 'Strongly agree',
-        'fr-FR' => "Tout à fait d'accord",
-        'nl-NL' => 'Strerk mee eens'
-      }
+      minimum_label_multiloc: minimum_label_multiloc,
+      maximum_label_multiloc: maximum_label_multiloc
     )
   end
 
@@ -133,17 +139,17 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
               { answer: { 'en' => '4', 'fr-FR' => '4', 'nl-NL' => '4' }, responses: 3 },
               {
                 answer: {
-                  'en' => 'Strongly disagree',
-                  'fr-FR' => "Pas du tout d'accord",
-                  'nl-NL' => 'Helemaal niet mee eens'
+                  'en' => '1 - Strongly disagree',
+                  'fr-FR' => "1 - Pas du tout d'accord",
+                  'nl-NL' => '1 - Helemaal niet mee eens'
                 },
                 responses: 2
               },
               {
                 answer: {
-                  'en' => 'Strongly agree',
-                  'fr-FR' => "Tout à fait d'accord",
-                  'nl-NL' => 'Strerk mee eens'
+                  'en' => '5 - Strongly agree',
+                  'fr-FR' => "5 - Tout à fait d'accord",
+                  'nl-NL' => '5 - Strerk mee eens'
                 },
                 responses: 1
               }
@@ -153,6 +159,21 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
         totalSubmissions: 23
       }
     }
+  end
+
+  let(:expected_result_without_minimum_and_maximum_labels) do
+    expected_result.tap do |result|
+      result[:data][:results][1][:answers][3][:answer] = {
+        'en' => '1',
+        'fr-FR' => "1 - Pas du tout d'accord",
+        'nl-NL' => '1'
+      }
+      result[:data][:results][1][:answers][4][:answer] = {
+        'en' => '5 - Strongly agree',
+        'fr-FR' => '5',
+        'nl-NL' => '5'
+      }
+    end
   end
 
   before do
@@ -213,6 +234,18 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
 
         expect(generator.generate_results).to eq expected_result
       end
+
+      context 'when not all minimum and maximum labels are configured' do
+        let(:minimum_label_multiloc) { { 'fr-FR' => "Pas du tout d'accord" } }
+        let(:maximum_label_multiloc) { { 'en' => 'Strongly agree' } }
+
+        it 'returns minimum and maximum labels as numbers' do
+          # These locales are a prerequisite for the test.
+          expect(AppConfiguration.instance.settings('core', 'locales')).to eq(%w[en fr-FR nl-NL])
+
+          expect(generator.generate_results).to eq expected_result_without_minimum_and_maximum_labels
+        end
+      end
     end
   end
 
@@ -235,6 +268,18 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
         expect(AppConfiguration.instance.settings('core', 'locales')).to eq(%w[en fr-FR nl-NL])
 
         expect(generator.generate_results).to eq expected_result
+      end
+
+      context 'when not all minimum and maximum labels are configured' do
+        let(:minimum_label_multiloc) { { 'fr-FR' => "Pas du tout d'accord" } }
+        let(:maximum_label_multiloc) { { 'en' => 'Strongly agree' } }
+
+        it 'returns minimum and maximum labels as numbers' do
+          # These locales are a prerequisite for the test.
+          expect(AppConfiguration.instance.settings('core', 'locales')).to eq(%w[en fr-FR nl-NL])
+
+          expect(generator.generate_results).to eq expected_result_without_minimum_and_maximum_labels
+        end
       end
     end
   end

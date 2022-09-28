@@ -37,4 +37,15 @@ RSpec.describe ParticipationMethod::NativeSurvey do
       expect(participation_method.validate_built_in_fields?).to be false
     end
   end
+
+  describe '#assign_defaults' do
+    let!(:proposed) { create :idea_status_proposed }
+    let(:input) { build :idea, publication_status: 'draft', idea_status: nil }
+
+    it 'sets the publication_status to "publised" and the idea_status to "proposed"' do
+      participation_method.assign_defaults input
+      expect(input.publication_status).to eq 'published'
+      expect(input.idea_status).to eq proposed
+    end
+  end
 end

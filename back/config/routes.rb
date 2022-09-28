@@ -122,6 +122,10 @@ Rails.application.routes.draw do
         resources :files, defaults: { container_type: 'Phase' }, shallow: false
         get 'survey_results', on: :member
         get 'submission_count', on: :member
+        resources :custom_fields, controller: 'phase_custom_fields', only: %i[] do
+          get 'schema', on: :collection
+          get 'json_forms_schema', on: :collection
+        end
       end
 
       resources :projects do
@@ -132,7 +136,7 @@ Rails.application.routes.draw do
         resources :files, defaults: { container_type: 'Project' }
         resources :groups_projects, shallow: true, except: [:update]
 
-        resources :custom_fields, controller: 'idea_custom_fields', only: %i[] do
+        resources :custom_fields, controller: 'project_custom_fields', only: %i[] do
           get 'schema', on: :collection
           get 'json_forms_schema', on: :collection
         end

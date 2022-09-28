@@ -13,6 +13,7 @@ class SideFxParticipationContextService
       pc.survey_service,
       pc.survey_embed_url
     )
+    # Factory.participation_method_for(pc).apply_default_form(pc)
   end
 
   def before_update(pc, user); end

@@ -247,13 +247,7 @@ describe('<AdminProjectEdition />', () => {
       </AdminProjectsProjectIndex>
     );
 
-    const tabNames = [
-      'General',
-      'Description',
-      'Input manager',
-      'Timeline',
-      'Events',
-    ];
+    const tabNames = ['General', 'Description', 'Timeline', 'Events'];
     tabNames.forEach((tabName) => {
       expect(screen.getByText(tabName)).toBeInTheDocument();
     });
@@ -326,7 +320,6 @@ describe('<AdminProjectEdition />', () => {
     const tabNames = [
       'General',
       'Description',
-      'Input manager',
       'Survey Results',
       'Timeline',
       'Events',
@@ -363,13 +356,7 @@ describe('<AdminProjectEdition />', () => {
       </AdminProjectsProjectIndex>
     );
 
-    const tabNames = [
-      'General',
-      'Description',
-      'Input manager',
-      'Timeline',
-      'Events',
-    ];
+    const tabNames = ['General', 'Description', 'Timeline', 'Events'];
     tabNames.forEach((tabName) => {
       expect(screen.getByText(tabName)).toBeInTheDocument();
     });
