@@ -91,7 +91,7 @@ const ListItem = styled.button`
   &:hover,
   &:focus {
     color: white;
-    background: ${lighten(0.12, colors.background)};
+    background: ${colors.grey600};
   }
 `;
 
