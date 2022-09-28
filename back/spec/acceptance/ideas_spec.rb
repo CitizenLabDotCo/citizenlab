@@ -11,6 +11,7 @@ resource 'Ideas' do
   before do
     header 'Content-Type', 'application/json'
     @user = user
+    create(:idea_status_proposed)
     token = Knock::AuthToken.new(payload: @user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
   end
