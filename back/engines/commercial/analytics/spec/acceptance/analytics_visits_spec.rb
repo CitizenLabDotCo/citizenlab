@@ -14,24 +14,23 @@ resource 'Analytics API - Queries for visitors dashboard', use_transactional_fix
       # Create 3 visits - 2 visitors
       # Visitor 1 - 2 visits, no user, with a project, in Sept
       create(:project)
-      locale1 = create(:dimension_locale_en)
-      visit1 = create(:fact_visit, matomo_visit_id: 1, duration: 100, pages_visited: 1)
+      locale1 = create(:dimension_locale)
+      visit1 = create(:fact_visit, visitor_id: 'v-1', duration: 100, pages_visited: 1)
       visit1.dimension_projects << Analytics::DimensionProject.first
       visit1.dimension_locales << locale1
-      visit2 = create(:fact_visit, matomo_visit_id: 2, duration: 200, pages_visited: 2)
+      visit2 = create(:fact_visit, visitor_id: 'v-1', duration: 200, pages_visited: 2)
       visit2.dimension_projects << Analytics::DimensionProject.first
       visit2.dimension_locales << locale1
 
       # Visitor 2 - 1 visit, admin user, same channel, no project, different locale, in Aug
-      create(:user, roles: [{ type: 'admin' }])
-      locale2 = create(:dimension_locale_nl)
+      create(:admin)
+      locale2 = create(:dimension_locale, name: 'nl')
       aug = create(:dimension_date, date: Date.new(2022, 8, 1))
       visit3 = create(
         :fact_visit,
-        matomo_visit_id: 3,
         duration: 300,
         pages_visited: 3,
-        visitor_id: 'YYYY1',
+        visitor_id: 'v-2',
         dimension_user: Analytics::DimensionUser.first,
         dimension_date_first_action: aug,
         dimension_date_last_action: aug
@@ -39,7 +38,7 @@ resource 'Analytics API - Queries for visitors dashboard', use_transactional_fix
       visit3.dimension_locales << locale2
     end
 
-    it 'Gets correct number of visits & visitors and correctly averages duration and pages visited' do
+    it 'gets correct number of visits & visitors and correctly averages duration and pages visited' do
       do_request({
         query: {
           fact: 'visit',
@@ -53,7 +52,7 @@ resource 'Analytics API - Queries for visitors dashboard', use_transactional_fix
       })
       assert_status 200
       expect(json_response_body[:data])
-        .to eq([{
+        .to match_array([{
           avg_duration: '200.0',
           avg_pages_visited: '2.0',
           count: 3,
@@ -61,7 +60,7 @@ resource 'Analytics API - Queries for visitors dashboard', use_transactional_fix
         }])
     end
 
-    it 'Can filter visits by day' do
+    it 'can filter visits by day' do
       do_request({
         query: {
           fact: 'visit',
@@ -82,7 +81,7 @@ resource 'Analytics API - Queries for visitors dashboard', use_transactional_fix
         }
       })
       assert_status 200
-      expect(json_response_body[:data])
+      expect(response_data)
         .to eq([{
           avg_duration: '150.0',
           avg_pages_visited: '1.5',
@@ -91,7 +90,7 @@ resource 'Analytics API - Queries for visitors dashboard', use_transactional_fix
         }])
     end
 
-    it 'Can group visits by month' do
+    it 'can group visits by month' do
       do_request({
         query: {
           fact: 'visit',
@@ -102,8 +101,8 @@ resource 'Analytics API - Queries for visitors dashboard', use_transactional_fix
         }
       })
       assert_status 200
-      expect(json_response_body[:data])
-        .to eq([
+      expect(response_data)
+        .to match_array([
           {
             'dimension_date_last_action.month': '2022-09',
             count: 2
@@ -113,10 +112,9 @@ resource 'Analytics API - Queries for visitors dashboard', use_transactional_fix
             count: 1
           }
         ])
-      # Is order important here for the grouping?
     end
 
-    it 'Can filter visitors by project' do
+    it 'can filter visitors by project' do
       project_id = Analytics::DimensionProject.first.id
       do_request({
         query: {
@@ -133,14 +131,14 @@ resource 'Analytics API - Queries for visitors dashboard', use_transactional_fix
         }
       })
       assert_status 200
-      expect(json_response_body[:data])
-        .to eq([{
+      expect(response_data)
+        .to match_array([{
           count: 2,
           count_visitor_id: 1
         }])
     end
 
-    it 'Can group visitors by language/locale' do
+    it 'can group visitors by language/locale' do
       do_request({
         query: {
           fact: 'visit',
@@ -151,10 +149,10 @@ resource 'Analytics API - Queries for visitors dashboard', use_transactional_fix
         }
       })
       assert_status 200
-      expect(json_response_body[:data].length).to eq(2)
+      expect(response_data.size).to eq(2)
     end
 
-    it 'Can group visitors by referrer type (channel)' do
+    it 'can group visitors by referrer type' do
       do_request({
         query: {
           fact: 'visit',
@@ -165,10 +163,10 @@ resource 'Analytics API - Queries for visitors dashboard', use_transactional_fix
         }
       })
       assert_status 200
-      expect(json_response_body[:data].length).to eq(1)
+      expect(response_data.size).to eq(1)
     end
 
-    it 'Can filter only visits by citizens or non-registered users (not admins or moderators)' do
+    it 'can filter only visits by citizens or non-registered users (not admins or moderators)' do
       do_request({
         query: {
           fact: 'visit',
@@ -184,8 +182,8 @@ resource 'Analytics API - Queries for visitors dashboard', use_transactional_fix
         }
       })
       assert_status 200
-      expect(json_response_body[:data])
-        .to eq([{
+      expect(response_data)
+        .to match_array([{
           count: 2,
           count_visitor_id: 1
         }])

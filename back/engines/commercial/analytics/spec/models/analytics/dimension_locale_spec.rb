@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe Analytics::DimensionLocale, type: :model do
-  it 'Can create a locale dimension (en)' do
-    create(:dimension_locale_en)
+  it 'can create a locale dimension (en)' do
+    create(:dimension_locale)
   end
   # Needs a check for uniqueness
 end
