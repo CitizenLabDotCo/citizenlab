@@ -121,6 +121,7 @@ module MultiTenancy
         MultiTenancy::Seeds::CustomForms.new(runner: self).run
         MultiTenancy::Seeds::Volunteers.new(runner: self).run
         MultiTenancy::Seeds::CustomMaps.new(runner: self).run
+        MultiTenancy::Seeds::Analytics.new(runner: self).run
       end
 
       # @return [Array[String]] default seed locales
