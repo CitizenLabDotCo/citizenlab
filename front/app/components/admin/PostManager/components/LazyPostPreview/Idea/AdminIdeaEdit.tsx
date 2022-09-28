@@ -468,7 +468,6 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
           </Container>
         );
       }
-
       return null;
     }
 
