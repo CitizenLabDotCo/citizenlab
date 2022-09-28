@@ -37,7 +37,7 @@ namespace :analytics do
     end
   end
 
-  desc 'Populate type dimension table with json rows'
+  desc 'Populate type dimension table from pipe separated values'
   task :populate_type_dimension, %i[host types] => [:environment] do |_t, args|
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
       types = args[:types].split('|').map { |type| type.split '%' }
@@ -53,12 +53,10 @@ namespace :analytics do
   end
 
   desc 'Populate locale dimensions from tenant config'
-  task :populate_locale_dimension, %i[host] => [:environment] do |_t, _args|
-    # Apartment::Tenant.switch(args[:host].tr('.', '_')) do
-    Apartment::Tenant.switch('localhost') do
+  task :populate_locale_dimension, %i[host] => [:environment] do |_t, args|
+    Apartment::Tenant.switch(args[:host].tr('.', '_')) do
       locales = AppConfiguration.instance.settings('core', 'locales')
       locales.each do |locale_name|
-        puts locale_name
         next if Analytics::DimensionLocale.exists?(name: locale_name)
 
         Analytics::DimensionLocale.create!(name: locale_name)
@@ -66,10 +64,15 @@ namespace :analytics do
     end
   end
 
-  desc 'Populate channel dimensions from translations'
-  task :populate_channel_dimension, %i[host] => [:environment] do |_t, args|
+  desc 'Populate referrer type dimensions from pipe separated values'
+  task :populate_referrer_type_dimension, %i[host types] => [:environment] do |_t, args|
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
-      # TODO: How do we get translations?
+      types = args[:types].split('|').map { |type| type.split '%' }
+      types.each do |key, name|
+        next if Analytics::DimensionReferrerType.exists?(key: key)
+
+        Analytics::DimensionReferrerType.create!(key: key, name: name)
+      end
     end
   end
 end
@@ -79,8 +82,15 @@ Rake::Task['analytics:install:migrations'].enhance(['analytics:copy_views'])
 def populate_dimensions
   Tenant.not_deleted.each do |tenant|
     Rake::Task['analytics:populate_date_dimension'].execute(host: tenant.schema_name)
-    Rake::Task['analytics:populate_type_dimension'].execute(host: tenant.schema_name, types: 'idea%post|initiative%post|comment%nil|vote%nil')
     Rake::Task['analytics:populate_locale_dimension'].execute(host: tenant.schema_name)
+    Rake::Task['analytics:populate_type_dimension'].execute(
+      host: tenant.schema_name,
+      types: 'idea%post|initiative%post|comment%nil|vote%nil'
+    )
+    Rake::Task['analytics:populate_referrer_type_dimension'].execute(
+      host: tenant.schema_name,
+      types: 'website%Websites|social%Social Networks|search%Search Engines|campaigns%Campaigns|direct%Direct Entry'
+    )
   end
 end
 
