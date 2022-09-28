@@ -35,7 +35,7 @@ const VisitorsCard = ({
 }: Props & InjectedIntlProps) => {
   const graphRef = useRef();
 
-  const { stats, timeSeries, xlsxData } = useVisitorsData({
+  const { deducedResolution, stats, timeSeries, xlsxData } = useVisitorsData({
     startAtMoment,
     endAtMoment,
     projectId: projectFilter,
@@ -57,18 +57,18 @@ const VisitorsCard = ({
         startAt,
         endAt,
         currentProjectFilter: projectFilter,
-        resolution,
+        resolution: deducedResolution,
       }}
     >
       <Box width="100%" display="flex" flexDirection="row">
         <Box display="flex" flexDirection="row" pl="20px">
-          <VisitorStats stats={stats} resolution={resolution} />
+          <VisitorStats stats={stats} resolution={deducedResolution} />
         </Box>
 
         <Box flexGrow={1} display="flex" justifyContent="center">
           <Chart
             timeSeries={timeSeries}
-            resolution={resolution}
+            resolution={deducedResolution}
             innerRef={graphRef}
           />
         </Box>

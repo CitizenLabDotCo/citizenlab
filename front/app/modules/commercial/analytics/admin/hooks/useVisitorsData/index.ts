@@ -18,6 +18,7 @@ import {
   getDateFilter,
   getInterval,
 } from '../../utils/query';
+import { deduceResolution } from './utils';
 
 // typings
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
@@ -112,6 +113,8 @@ export default function useVisitorsData({
   endAtMoment,
   resolution,
 }: QueryParameters) {
+  const [deducedResolution, setDeducedResolution] =
+    useState<IResolution>(resolution);
   const [stats, setStats] = useState<Stats | NilOrError>();
   const [timeSeries, setTimeSeries] = useState<TimeSeries | NilOrError>();
   const [xlsxData, setXlsxData] = useState<XlsxData | NilOrError>();
@@ -135,19 +138,24 @@ export default function useVisitorsData({
           return;
         }
 
+        const deducedResolution = deduceResolution(response.data[2]);
+        setDeducedResolution(deducedResolution);
+
         setStats(parseStats(response.data));
 
-        setTimeSeries(parseTimeSeries(
-          response.data[2],
-          startAtMoment,
-          endAtMoment,
-          resolution
-        ));
+        setTimeSeries(
+          parseTimeSeries(
+            response.data[2],
+            startAtMoment,
+            endAtMoment,
+            deducedResolution
+          )
+        );
       }
     );
 
     return () => subscription.unsubscribe();
   }, [projectId, startAtMoment, endAtMoment, resolution]);
 
-  return { stats, timeSeries, xlsxData };
+  return { deducedResolution, stats, timeSeries, xlsxData };
 }
