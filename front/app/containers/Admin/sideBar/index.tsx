@@ -60,7 +60,7 @@ const MenuInner = styled.nav`
   top: 0;
   bottom: 0;
   padding-top: ${stylingConsts.menuHeight + 10}px;
-  background: ${colors.adminMenuBackground};
+  background: ${colors.background};
 
   ${media.tablet`
     width: 80px;
@@ -78,7 +78,7 @@ const IconWrapper = styled.div`
 
 const Text = styled.div`
   flex: 1;
-  color: ${colors.adminLightText};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 19px;
@@ -127,10 +127,10 @@ const MenuLink = styled.a`
 const GetStartedLink = styled(MenuLink)`
   padding-bottom: 1px;
   margin-bottom: 25px;
-  background: ${lighten(0.05, colors.adminMenuBackground)};
+  background: ${lighten(0.05, colors.background)};
 
   &:hover {
-    background: ${lighten(0.1, colors.adminMenuBackground)};
+    background: ${lighten(0.1, colors.background)};
   }
 `;
 

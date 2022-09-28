@@ -44,7 +44,7 @@ const WhatsApp = ({
     <Button
       onClick={handleClick(whatsAppHref)}
       aria-label={formatMessage(messages.shareViaWhatsApp)}
-      bgColor={colors.whatsapp}
+      bgColor={colors.green}
       width="40px"
       height="40px"
       icon="whatsapp"

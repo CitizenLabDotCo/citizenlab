@@ -65,7 +65,7 @@ const RightColumnDesktop = ({
         <Box
           padding="20px"
           borderRadius="3px"
-          background={colors.backgroundLightGrey}
+          background={colors.background}
           mb="12px"
         >
           <StyledVoteControl styleType="shadow" ideaId={ideaId} size="4" />

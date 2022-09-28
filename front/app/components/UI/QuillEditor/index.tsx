@@ -68,7 +68,7 @@ const DropdownListItem = styled.button`
   &:focus {
     outline: none;
     color: white;
-    background: ${colors.adminMenuBackground};
+    background: ${colors.background};
   }
 `;
 

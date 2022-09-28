@@ -133,7 +133,7 @@ const FormattedTabLink = ({
         {label}
         <StatusLabelWithMargin
           text={statusLabel}
-          backgroundColor={(color = 'background')}
+          backgroundColor={colors.background}
           variant="outlined"
         />
       </Link>

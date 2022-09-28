@@ -121,7 +121,7 @@ const CommentsCount = styled.span`
   align-items: center;
   display: none;
 
-  ${media.biggerThanLargePhone`
+  ${media.tablet`
     display: block;
   `}
 `;

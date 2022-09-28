@@ -244,7 +244,7 @@ class Show extends React.Component<Props, State> {
                 />
               ) : (
                 <StatusLabel
-                  backgroundColor="clGreenSuccess"
+                  backgroundColor="green"
                   text={<FormattedMessage {...messages.sent} />}
                 />
               )}

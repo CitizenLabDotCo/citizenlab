@@ -69,7 +69,7 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         <Box width="100%">
           <Title variant="h2">{formatMessage(messages.surveyResults)}</Title>
           {totalSubmissions && (
-            <Text variant="bodyM" color="clBlueDarker">
+            <Text variant="bodyM" color="teal700">
               {formatMessage(messages.totalSurveyResponses, {
                 count: totalSubmissions,
               })}
@@ -89,7 +89,7 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       </Box>
 
       <Box
-        bgColor={colors.tealBg}
+        bgColor={colors.teal100}
         borderRadius="3px"
         px="12px"
         py="4px"
@@ -101,8 +101,8 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         mt="32px"
       >
         <Box display="flex" gap="16px" alignItems="center">
-          <Icon name="info" width="24px" height="24px" fill="clBlueDarker" />
-          <Text variant="bodyM" color="clBlueDarker">
+          <Icon name="info" width="24px" height="24px" fill="teal700" />
+          <Text variant="bodyM" color="teal700">
             {formatMessage(messages.informationText)}
           </Text>
         </Box>

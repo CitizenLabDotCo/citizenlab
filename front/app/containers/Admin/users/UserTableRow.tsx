@@ -80,7 +80,7 @@ const DropdownListButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: ${colors.adminLightText};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   white-space: nowrap;
@@ -93,7 +93,7 @@ const DropdownListButton = styled.button`
   &:focus {
     outline: none;
     color: white;
-    background: ${lighten(0.1, colors.adminMenuBackground)};
+    background: ${lighten(0.1, colors.background)};
   }
 `;
 

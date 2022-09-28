@@ -72,7 +72,7 @@ const NotificationCount = ({
         iconColorOnHover={
           theme.navbarTextColor
             ? darken(0.2, theme.navbarTextColor)
-            : colors.text
+            : colors.textPrimary
         }
         iconWidth={'20px'}
         iconHeight={'24px'}

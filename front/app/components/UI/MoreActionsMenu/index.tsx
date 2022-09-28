@@ -74,7 +74,7 @@ const ListItem = styled.button`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: ${colors.adminLightText};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   white-space: nowrap;
@@ -91,7 +91,7 @@ const ListItem = styled.button`
   &:hover,
   &:focus {
     color: white;
-    background: ${lighten(0.12, colors.adminMenuBackground)};
+    background: ${lighten(0.12, colors.background)};
   }
 `;
 

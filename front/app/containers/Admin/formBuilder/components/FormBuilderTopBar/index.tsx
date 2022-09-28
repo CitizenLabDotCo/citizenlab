@@ -102,15 +102,13 @@ const FormBuilderTopBar = ({ isSubmitting }: FormBuilderTopBarProps) => {
                     <FormattedMessage {...messages.open} />
                   </span>
                 ) : (
-                  <span style={{ color: colors.grey }}>
+                  <span style={{ color: colors.grey700 }}>
                     <FormattedMessage {...messages.closed} />
                   </span>
                 )
               }
               backgroundColor={
-                isPostingEnabled
-                  ? colors.greenLight
-                  : colors.backgroundLightGrey
+                isPostingEnabled ? colors.greenLight : colors.background
               }
             />
           </Box>

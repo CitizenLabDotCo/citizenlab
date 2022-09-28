@@ -93,7 +93,7 @@ const InnerContainer = styled.div<{
 
   & .pbAssignBudgetControlContainer {
     padding: 20px;
-    background: ${colors.backgroundLightGrey};
+    background: ${colors.background};
   }
 
   ${media.desktop`

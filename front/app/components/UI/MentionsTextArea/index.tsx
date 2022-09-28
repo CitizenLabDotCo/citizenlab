@@ -92,7 +92,7 @@ class MentionsTextArea extends PureComponent<Props, State> {
   textareaElement = React.createRef();
 
   static defaultProps = {
-    color: colors.text,
+    color: colors.textPrimary,
     fontSize: `${fontSizes.base}px`,
     fontWeight: '400',
     lineHeight: '24px',

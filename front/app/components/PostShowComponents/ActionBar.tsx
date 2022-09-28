@@ -14,7 +14,7 @@ const Container = styled.div`
   height: 50px;
   color: ${colors.textSecondary};
   background: rgba(132, 147, 158, 0.06);
-  border-bottom: 1px solid ${colors.adminSeparation};
+  border-bottom: 1px solid ${colors.divider};
 `;
 
 const Inner = styled.div`

@@ -65,7 +65,7 @@ const IdeaPageContainer = styled.div`
 
   ${media.smallerThanMaxTablet`
     padding: 20px;
-    background: ${colors.backgroundLightGrey};
+    background: ${colors.background};
   `}
 `;
 

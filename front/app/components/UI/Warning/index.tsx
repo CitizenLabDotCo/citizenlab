@@ -10,7 +10,7 @@ const Container = styled.div`
   align-items: center;
   padding: 14px;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  background: ${colors.tealBg};
+  background: ${colors.teal100};
 
   ${isRtl`
     flex-direction: row-reverse;

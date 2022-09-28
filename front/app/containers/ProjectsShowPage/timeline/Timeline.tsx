@@ -39,7 +39,7 @@ const CONTAINER_PADDING_PX = 20;
 const grey = colors.textSecondary;
 const greenTransparent = rgba(colors.green, 0.15);
 const green = colors.green;
-const darkGreen = colors.greenDark;
+const darkGreen = colors.green700;
 
 const RtlBox = styled(Box)`
   ${isRtl`

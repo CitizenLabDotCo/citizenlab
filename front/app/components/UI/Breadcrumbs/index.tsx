@@ -52,7 +52,7 @@ const Breadcrumbs = ({ breadcrumbs }: Props) => {
             )}
             {!isLastBreadcrumb && (
               <Text
-                color="separationDark"
+                color="borderDark"
                 ml="16px"
                 as="span"
                 mr="16px"

@@ -69,7 +69,7 @@ const Container = styled.div<{ showFilters: boolean }>`
     flex-direction: row-reverse;
   `}
 
-  ${media.xlPhone`
+  ${media.phone`
     flex-direction: row;
   `}
 `;
@@ -150,7 +150,7 @@ const Header = ({
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const appConfiguration = useAppConfiguration();
-  const smallerThanXlPhone = useBreakpoint('xlPhone');
+  const smallerThanXlPhone = useBreakpoint('phone');
   const smallerThanMinTablet = useBreakpoint('tablet');
   const topics = useTopics({ forHomepageFilter: true });
   const areas = useAreas({ forHomepageFilter: true });

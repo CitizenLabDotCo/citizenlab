@@ -61,7 +61,7 @@ const InfoboxContainer = styled.div`
   padding: 27px;
   margin-bottom: 25px;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  background: ${colors.tealBg};
+  background: ${colors.teal100};
 `;
 
 const InfoboxIcon = styled(Icon)`

@@ -62,7 +62,7 @@ const MenuItemLink = styled(Link)`
   &:not(.active) {
     .cl-icon {
       .cl-icon-primary {
-        fill: ${colors.clIconPrimary};
+        fill: ${colors.blue400};
       }
       .cl-icon-accent {
         fill: ${colors.teal400};
@@ -80,7 +80,7 @@ const MenuItemLink = styled(Link)`
         fill: ${colors.teal400};
       }
       .cl-icon-accent {
-        fill: ${colors.clIconPrimary};
+        fill: ${colors.blue400};
       }
     }
 
