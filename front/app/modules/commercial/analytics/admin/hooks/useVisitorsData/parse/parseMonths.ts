@@ -4,8 +4,9 @@ import {
   getFirstDateInData,
   getLastDateInData,
   getEmptyRow,
+  dateRange,
 } from './utils';
-import { TimeSeriesResponse, TimeSeries } from '../typings';
+import { TimeSeriesResponse } from '../typings';
 
 export const parseMonths = (
   responseTimeSeries: TimeSeriesResponse,
@@ -25,28 +26,15 @@ export const parseMonths = (
     ? roundDownToFirstDayOfMonth(endAtMoment)
     : roundDownToFirstDayOfMonth(lastDateInData);
 
-  let currentMonth = startMonth.clone();
+  const months = dateRange(startMonth, endMonth, 'month');
+  if (months === null) return null;
 
-  const months: TimeSeries = [];
+  return months.map((month) => {
+    const currentMonthISO = month.toISOString();
+    const row = indexedTimeSeries.get(currentMonthISO);
 
-  // Should not be possible, but just in case to avoid
-  // infinite loop
-  if (currentMonth.isAfter(endMonth)) return null;
-
-  while (currentMonth.isSameOrBefore(endMonth)) {
-    const currentMondayISO = currentMonth.toISOString();
-    const month = indexedTimeSeries.get(currentMondayISO);
-
-    if (month) {
-      months.push(month);
-    } else {
-      months.push(getEmptyRow(currentMonth));
-    }
-
-    currentMonth = currentMonth.add({ month: 1 });
-  }
-
-  return months;
+    return row ?? getEmptyRow(month);
+  });
 };
 
 const roundDownToFirstDayOfMonth = (date: Moment) => {

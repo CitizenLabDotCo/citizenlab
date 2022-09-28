@@ -4,8 +4,9 @@ import {
   getFirstDateInData,
   getLastDateInData,
   getEmptyRow,
+  dateRange,
 } from './utils';
-import { TimeSeriesResponse, TimeSeries } from '../typings';
+import { TimeSeriesResponse } from '../typings';
 
 export const parseWeeks = (
   responseTimeSeries: TimeSeriesResponse,
@@ -25,28 +26,15 @@ export const parseWeeks = (
     ? roundDownToMonday(endAtMoment)
     : roundDownToMonday(lastDateInData);
 
-  let currentMonday = startMonday.clone();
+  const mondays = dateRange(startMonday, endMonday, 'week');
+  if (mondays === null) return null;
 
-  const weeks: TimeSeries = [];
+  return mondays.map((monday) => {
+    const currentMondayISO = monday.toISOString();
+    const row = indexedTimeSeries.get(currentMondayISO);
 
-  // Should not be possible, but just in case to avoid
-  // infinite loop
-  if (currentMonday.isAfter(endMonday)) return null;
-
-  while (currentMonday.isSameOrBefore(endMonday)) {
-    const currentMondayISO = currentMonday.toISOString();
-    const week = indexedTimeSeries.get(currentMondayISO);
-
-    if (week) {
-      weeks.push(week);
-    } else {
-      weeks.push(getEmptyRow(currentMonday));
-    }
-
-    currentMonday = currentMonday.add({ day: 7 });
-  }
-
-  return weeks;
+    return row ?? getEmptyRow(monday);
+  });
 };
 
 const roundDownToMonday = (date: Moment) => {

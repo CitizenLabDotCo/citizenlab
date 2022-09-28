@@ -57,3 +57,31 @@ const getDate = (row: TimeSeriesResponseRow) => {
 
   return moment(row['dimension_date_last_action.date']);
 };
+
+type Step = 'month' | 'week' | 'day';
+
+type TimeDelta = { month: 1 } | { day: 7 } | { day: 1 };
+
+const TIME_DELTA_MAP: Record<Step, TimeDelta> = {
+  month: { month: 1 },
+  week: { day: 7 },
+  day: { day: 1 },
+};
+
+export const dateRange = (start: Moment, end: Moment, step: Step) => {
+  const timeDelta = TIME_DELTA_MAP[step];
+  const dates: Moment[] = [];
+
+  let currentDate = start.clone();
+
+  // Should not be possible, but just in case to avoid
+  // infinite loop
+  if (start.isAfter(end)) return null;
+
+  while (currentDate.isSameOrBefore(end)) {
+    dates.push(currentDate.clone());
+    currentDate = currentDate.add(timeDelta);
+  }
+
+  return dates;
+};
