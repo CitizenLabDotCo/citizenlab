@@ -47,7 +47,7 @@ const Container = styled.div`
   padding-top: 40px;
   position: relative;
 
-  ${media.biggerThanMaxTablet`
+  ${media.desktop`
     display: none;
   `}
 `;

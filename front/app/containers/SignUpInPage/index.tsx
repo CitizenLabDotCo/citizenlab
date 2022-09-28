@@ -40,7 +40,7 @@ const Container = styled.main`
   background: ${colors.background};
   position: relative;
 
-  ${media.biggerThanMaxTablet`
+  ${media.desktop`
     min-height: calc(
       100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
     );
@@ -60,7 +60,7 @@ const Section = styled.div`
 const Left = styled(Section)`
   display: none;
 
-  ${media.biggerThanMaxTablet`
+  ${media.desktop`
     display: block;
   `}
 `;

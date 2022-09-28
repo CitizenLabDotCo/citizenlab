@@ -91,7 +91,7 @@ const StyledCollapsibleTipsAndInfo = styled(CollapsibleTipsAndInfo)`
   max-width: 620px;
   margin-bottom: 20px;
 
-  ${media.biggerThanMaxTablet`
+  ${media.desktop`
     display: none;
   `}
 `;

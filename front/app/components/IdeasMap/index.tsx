@@ -96,7 +96,7 @@ const InnerContainer = styled.div<{
     background: ${colors.backgroundLightGrey};
   }
 
-  ${media.biggerThanMaxTablet`
+  ${media.desktop`
     & .leaflet-control-zoom {
       margin-top: ${(props) =>
         props.isPostingEnabled ? '78px' : '25px'} !important;

@@ -22,7 +22,7 @@ const Container = styled.div`
   background: #fff;
   border-bottom: solid 1px ${lighten(0.4, colors.textSecondary)};
 
-  ${media.biggerThanMaxTablet`
+  ${media.desktop`
     display: none;
   `}
 `;

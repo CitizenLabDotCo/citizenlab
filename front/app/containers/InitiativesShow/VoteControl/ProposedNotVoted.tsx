@@ -84,7 +84,7 @@ const OnDesktop = styled.span`
 const OnMobile = styled.span`
   display: inline;
 
-  ${media.biggerThanMaxTablet`
+  ${media.desktop`
     display: none;
   `}
 `;

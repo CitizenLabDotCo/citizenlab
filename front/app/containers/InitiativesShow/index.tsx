@@ -295,7 +295,7 @@ const SharingButtonsMobile = styled(SharingButtons)`
   margin: 0;
   margin-top: 40px;
 
-  ${media.biggerThanMaxTablet`
+  ${media.desktop`
     display: none;
   `}
 `;

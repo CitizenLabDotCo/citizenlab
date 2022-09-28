@@ -33,7 +33,7 @@ const Container = styled.nav`
     flex-direction: row-reverse;
   `}
 
-  ${media.biggerThanMaxTablet`
+  ${media.desktop`
     display: none;
   `}
 
