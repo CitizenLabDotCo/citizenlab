@@ -1,4 +1,4 @@
-import parseMonths from './parseMonths';
+import { parseMonths } from './parseMonths';
 
 // typings
 import { Moment } from 'moment';

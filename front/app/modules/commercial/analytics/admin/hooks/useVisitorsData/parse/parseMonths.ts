@@ -3,7 +3,7 @@ import { getDate, getFirstDateInData, getLastDateInData } from './utils';
 import { range } from 'lodash-es';
 import { TimeSeriesResponse } from '../typings';
 
-const parseMonths = (
+export const parseMonths = (
   responseTimeSeries: TimeSeriesResponse,
   startAtMoment: Moment | null | undefined,
   endAtMoment: Moment | null | undefined
@@ -24,15 +24,13 @@ const parseMonths = (
   return [...emptyMonthsBefore, ...parsedTimeSeries, ...emptyMonthsAfter];
 };
 
-export default parseMonths;
-
 export const getEmptyMonthsBefore = (
   startAtMoment: Moment,
   firstDateInData: Moment
 ) => {
   const months = interpolateMonths(
     startAtMoment,
-    firstDateInData.subtract({ month: 1 })
+    firstDateInData.clone().subtract({ month: 1 })
   );
   if (months === null) return [];
 
@@ -44,7 +42,7 @@ export const getEmptyMonthsAfter = (
   lastDateInData: Moment
 ) => {
   const months = interpolateMonths(
-    lastDateInData.add({ month: 1 }),
+    lastDateInData.clone().add({ month: 1 }),
     endAtMoment
   );
   if (months === null) return [];
@@ -53,7 +51,8 @@ export const getEmptyMonthsAfter = (
 };
 
 const interpolateMonths = (from: Moment, to: Moment) => {
-  if (from.isSameOrAfter(to)) return null;
+  if (from.isAfter(to)) return null;
+  if (from.isSame(to)) return [from];
 
   const fromMonth = from.month() + 1;
   const fromYear = from.year();
@@ -99,8 +98,9 @@ const parseTimeSeries = (responseTimeSeries: TimeSeriesResponse) => {
   }));
 
   const sortedTimeSeries = timeSeriesWithMoments.sort(momentAscending);
+  const timeSeriesWithoutGaps = fillGaps(sortedTimeSeries);
 
-  return sortedTimeSeries.map(({ moment, visitors, visits }) => ({
+  return timeSeriesWithoutGaps.map(({ moment, visitors, visits }) => ({
     date: moment.format('YYYY-MM-DD'),
     visits,
     visitors,
@@ -117,3 +117,33 @@ const momentAscending = (
   a: TimeSeriesWithMomentsRow,
   b: TimeSeriesWithMomentsRow
 ) => (a.moment.isBefore(b.moment) ? -1 : 1);
+
+const fillGaps = (sortedTimeSeries: TimeSeriesWithMomentsRow[]) => {
+  const newTimeSeries: TimeSeriesWithMomentsRow[] = [];
+
+  for (let i = 0; i < sortedTimeSeries.length - 1; i++) {
+    const thisRow = sortedTimeSeries[i]
+    const nextRow = sortedTimeSeries[i + 1]
+
+    newTimeSeries.push(thisRow);
+
+    const monthsInBetween = interpolateMonths(
+      thisRow.moment.clone().add({ month: 1 }),
+      nextRow.moment.clone().subtract({ month: 1 })
+    )
+
+    if (monthsInBetween) {
+      newTimeSeries.push(...monthsInBetween.map((moment) => ({
+        moment,
+        visitors: 0,
+        visits: 0
+      })))
+    }
+
+    if (i === sortedTimeSeries.length - 2) {
+      newTimeSeries.push(nextRow)
+    }
+  }
+
+  return newTimeSeries;
+}
