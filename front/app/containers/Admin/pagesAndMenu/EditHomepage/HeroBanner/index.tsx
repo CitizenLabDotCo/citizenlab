@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Multiloc } from 'typings';
+import { Multiloc, CLErrors } from 'typings';
 
 // components
 import { ISubmitState } from 'components/admin/SubmitWrapper';
@@ -45,6 +45,7 @@ const EditHomepageHeroBannerForm = ({
   intl: { formatMessage },
 }: InjectedIntlProps) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [apiErrors, setApiErrors] = useState<CLErrors | null>({});
   const [formStatus, setFormStatus] = useState<ISubmitState>('disabled');
   const [localSettings, setLocalSettings] =
     useState<IHomepageSettingsAttributes | null>(null);
@@ -58,6 +59,13 @@ const EditHomepageHeroBannerForm = ({
       });
     }
   }, [homepageSettings]);
+
+  // disable form if there's no header image when local settings change
+  useEffect(() => {
+    if (!localSettings?.header_bg) {
+      setFormStatus('disabled');
+    }
+  }, [localSettings]);
 
   if (isNilOrError(homepageSettings)) {
     return null;
@@ -80,6 +88,7 @@ const EditHomepageHeroBannerForm = ({
       setFormStatus('success');
     } catch (error) {
       setIsLoading(false);
+      setApiErrors(error);
       setFormStatus('error');
     }
   };
@@ -117,6 +126,7 @@ const EditHomepageHeroBannerForm = ({
   const handleOnBannerImageAdd = (newImageBase64: string) => {
     handleOnChange('header_bg', newImageBase64);
   };
+
   const handleOnBannerImageRemove = () => {
     handleOnChange('header_bg', null);
   };
@@ -238,6 +248,7 @@ const EditHomepageHeroBannerForm = ({
                 localSettings.banner_cta_signed_out_type
               }
               handleOnChange={handleOnChange}
+              errors={apiErrors}
             />
           }
         />

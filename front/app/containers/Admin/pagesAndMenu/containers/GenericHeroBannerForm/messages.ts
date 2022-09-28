@@ -8,7 +8,7 @@ export default defineMessages({
     defaultMessage: 'Homepage header | {orgName}',
   },
   customPageMetaTitle: {
-    id: 'app.containers.AdminPage.SettingsPage.homepageMetaTitle',
+    id: 'app.containers.AdminPage.SettingsPage.customPageMetaTitle',
     defaultMessage: 'Custom page header | {orgName}',
   },
   header: {

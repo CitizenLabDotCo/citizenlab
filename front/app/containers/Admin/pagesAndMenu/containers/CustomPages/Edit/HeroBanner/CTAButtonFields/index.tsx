@@ -1,9 +1,11 @@
 import { Box, Radio } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
+import Error from 'components/UI/Error';
 import React from 'react';
+import { InjectedIntlProps } from 'react-intl';
 import { TCustomPageCTAType } from 'services/customPages';
 import { Multiloc } from 'typings';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import CustomizedButtonSettings from './CustomizedButtonSettings';
 import messages from './messages';
 
@@ -17,6 +19,7 @@ interface Props {
   handleCTAButtonTextMultilocOnChange: (buttonTextMultiloc: Multiloc) => void;
   handleCTAButtonUrlOnChange: (url: string) => void;
   title?: string;
+  hasCTAError: boolean;
 }
 
 const CTAButtonFields = ({
@@ -27,7 +30,9 @@ const CTAButtonFields = ({
   handleCTAButtonTextMultilocOnChange,
   handleCTAButtonUrlOnChange,
   title,
-}: Props) => {
+  hasCTAError,
+  intl: { formatMessage },
+}: Props & InjectedIntlProps) => {
   return (
     <>
       <SubSectionTitle>{title}</SubSectionTitle>
@@ -61,6 +66,9 @@ const CTAButtonFields = ({
                   handleCTAButtonUrlOnChange={handleCTAButtonUrlOnChange}
                   key={`customized-button-settings-${option}`}
                 />
+                {hasCTAError && (
+                  <Error text={formatMessage(messages.customPageCtaError)} />
+                )}
               </Box>
             )}
           </div>
@@ -70,4 +78,4 @@ const CTAButtonFields = ({
   );
 };
 
-export default CTAButtonFields;
+export default injectIntl(CTAButtonFields);

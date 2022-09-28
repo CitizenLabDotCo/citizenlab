@@ -21,10 +21,10 @@ import { isNilOrError } from 'utils/helperUtils';
 import GenericHeroBannerForm from '../../../GenericHeroBannerForm';
 import messages from '../../../GenericHeroBannerForm/messages';
 
+import HelmetIntl from 'components/HelmetIntl';
 import useLocalize from 'hooks/useLocalize';
 import { Multiloc } from 'typings';
 import { injectIntl } from 'utils/cl-intl';
-import HelmetIntl from 'components/HelmetIntl';
 
 export type CustomPageBannerSettingKeyType = Extract<
   keyof ICustomPageAttributes,
@@ -38,6 +38,7 @@ const EditCustomPageHeroBannerForm = ({
 }: InjectedIntlProps) => {
   const localize = useLocalize();
   const [isLoading, setIsLoading] = useState(false);
+  const [hasCTAError, setHasCTAError] = useState(false);
   const [formStatus, setFormStatus] = useState<ISubmitState>('disabled');
   const [localSettings, setLocalSettings] =
     useState<ICustomPageAttributes | null>(null);
@@ -52,6 +53,13 @@ const EditCustomPageHeroBannerForm = ({
       });
     }
   }, [customPage]);
+
+  // disable form if there's no header image when local settings change
+  useEffect(() => {
+    if (!localSettings?.header_bg) {
+      setFormStatus('disabled');
+    }
+  }, [localSettings]);
 
   if (isNilOrError(customPage)) {
     return null;
@@ -68,11 +76,21 @@ const EditCustomPageHeroBannerForm = ({
 
     setIsLoading(true);
     setFormStatus('disabled');
+    setHasCTAError(false);
     try {
       await updateCustomPage(customPageId, diffedValues);
       setIsLoading(false);
       setFormStatus('success');
     } catch (error) {
+      const apiErrors = error.json.errors;
+      if (
+        apiErrors['banner_cta_button_multiloc'] ||
+        apiErrors['banner_cta_button_url']
+      ) {
+        setHasCTAError(true);
+      } else {
+        setHasCTAError(false);
+      }
       setIsLoading(false);
       setFormStatus('error');
     }
@@ -110,6 +128,7 @@ const EditCustomPageHeroBannerForm = ({
 
   const handleCTAButtonTypeOnChange = (ctaType: TCustomPageCTAType) => {
     handleOnChange('banner_cta_button_type', ctaType);
+    setHasCTAError(false);
   };
 
   const handleCTAButtonTextMultilocOnChange = (
@@ -197,6 +216,7 @@ const EditCustomPageHeroBannerForm = ({
               }
               handleCTAButtonUrlOnChange={handleCTAButtonUrlOnChange}
               title={formatMessage(messages.buttonTitle)}
+              hasCTAError={hasCTAError}
             />
           }
         />

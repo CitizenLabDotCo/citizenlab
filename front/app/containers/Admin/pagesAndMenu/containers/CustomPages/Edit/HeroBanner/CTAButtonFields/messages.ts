@@ -21,4 +21,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.customized_button_url_label',
     defaultMessage: 'Button link',
   },
+  customPageCtaError: {
+    id: 'app.containers.AdminPage.SettingsPage.customPageCtaError',
+    defaultMessage: 'Custom button text and URL must be valid.',
+  },
 });
