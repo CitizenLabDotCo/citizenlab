@@ -157,7 +157,7 @@ const ButtonSettings = injectIntl(({ intl: { formatMessage } }) => {
             borderRadius="4px"
             px="8px"
             py="2px"
-            bgColor={colors.lightGreyishBlue}
+            bgColor={colors.grey200}
             color={darken(0.1, colors.textSecondary)}
           >
             {formatMessage(messages.buttonTypeSecondaryLabel)}

@@ -159,8 +159,8 @@ const ProjectTemplateCard = memo<Props>(
             onClick={onOpenModal}
             buttonStyle="secondary"
             fullWidth={true}
-            bgColor={darken(0.05, colors.lightGreyishBlue)}
-            bgHoverColor={darken(0.1, colors.lightGreyishBlue)}
+            bgColor={darken(0.05, colors.grey200)}
+            bgHoverColor={darken(0.1, colors.grey200)}
           >
             <FormattedMessage {...messages.useTemplate} />
           </UseTemplateButton>

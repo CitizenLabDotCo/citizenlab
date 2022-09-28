@@ -32,7 +32,7 @@ import useLocale from 'hooks/useLocale';
 const Container = styled.div`
   display: flex;
   padding: 4px;
-  background: ${darken(0.06, colors.lightGreyishBlue)};
+  background: ${darken(0.06, colors.grey200)};
   border-radius: ${(props: any) => props.theme.borderRadius};
 `;
 

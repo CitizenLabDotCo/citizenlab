@@ -59,12 +59,12 @@ const StyledCloseIconButton = styled(CloseIconButton)`
   position: absolute;
   top: 10px;
   right: 10px;
-  background: ${colors.lightGreyishBlue};
+  background: ${colors.grey200};
   padding: 7px 8px;
   border-radius: ${({ theme }) => theme.borderRadius};
 
   &:hover {
-    background: ${darken(0.1, colors.lightGreyishBlue)};
+    background: ${darken(0.1, colors.grey200)};
   }
 `;
 

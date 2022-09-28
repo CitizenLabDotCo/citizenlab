@@ -30,7 +30,7 @@ export const GroupType = styled.div`
   padding-bottom: 50px;
   position: relative;
   flex: 1;
-  background: ${colors.lightGreyishBlue};
+  background: ${colors.grey200};
 `;
 
 export const IconWrapper = styled.div`

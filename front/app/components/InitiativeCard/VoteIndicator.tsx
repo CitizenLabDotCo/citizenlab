@@ -65,7 +65,7 @@ const IneligibleBadgeIcon = styled(Icon)`
 `;
 
 const IneligibleStatusBadge = styled(StatusBadge)`
-  background-color: ${colors.lightGreyishBlue};
+  background-color: ${colors.grey200};
   color: ${colors.clGreyOnGreyBackground};
 `;
 

@@ -30,7 +30,7 @@ const Container = styled.div`
 const DefaultTag = styled.div`
   display: inline-block;
   color: ${colors.textSecondary};
-  background-color: ${colors.lightGreyishBlue};
+  background-color: ${colors.grey200};
   font-weight: bold;
   font-size: 12px;
   padding: 0px 6px;

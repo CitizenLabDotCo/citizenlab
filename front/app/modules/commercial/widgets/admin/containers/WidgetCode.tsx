@@ -12,7 +12,7 @@ import Button from 'components/UI/Button';
 const CodeSnippet = styled.textarea`
   word-wrap: break-word;
   font-family: 'Courier New', Courier, monospace;
-  background-color: ${colors.lightGreyishBlue};
+  background-color: ${colors.grey200};
   border: solid 1px ${colors.borderLight};
   border-radius: ${(props: any) => props.theme.borderRadius};
   padding: 15px;

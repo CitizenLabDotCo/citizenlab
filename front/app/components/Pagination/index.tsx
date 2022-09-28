@@ -87,7 +87,7 @@ const Item = styled.button<{ useColorsTheme?: boolean }>`
 
   &:not(.disabled) {
     border-radius: ${(props: any) => props.theme.borderRadius};
-    background: ${colors.lightGreyishBlue};
+    background: ${colors.grey200};
     cursor: pointer;
 
     &.active {

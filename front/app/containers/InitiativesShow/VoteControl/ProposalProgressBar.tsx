@@ -32,7 +32,7 @@ const ProposalProgressBar = ({
       <StyledProgressBar
         progress={voteCount / voteLimit}
         color={barColor || theme.colorText}
-        bgColor={colors.lightGreyishBlue}
+        bgColor={colors.grey200}
         bgShaded={bgShaded}
       />
       <ScreenReaderOnly>

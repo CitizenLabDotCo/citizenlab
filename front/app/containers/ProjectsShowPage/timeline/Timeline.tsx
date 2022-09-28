@@ -81,7 +81,7 @@ const PhaseBar = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${darken(0.08, colors.lightGreyishBlue)};
+  background: ${darken(0.08, colors.grey200)};
   transition: background 60ms ease-out;
   position: relative;
   cursor: pointer;
