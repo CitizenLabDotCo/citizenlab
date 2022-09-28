@@ -10,7 +10,7 @@ class CreateFactVisits < ActiveRecord::Migration[6.1]
     end
 
     create_table :analytics_dimension_locales, id: :uuid do |t|
-      t.string :name, null: false
+      t.string :name, null: false, index: { unique: true }
     end
 
     create_view :analytics_dimension_users
