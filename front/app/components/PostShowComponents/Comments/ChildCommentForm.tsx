@@ -364,7 +364,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
         !isNilOrError(authUser) &&
         canModerateProject(postId, { data: authUser });
       const smallerThanSmallTablet =
-        !isNilOrError(windowSize) && windowSize <= viewportWidths.smallTablet;
+        !isNilOrError(windowSize) && windowSize <= viewportWidths.tablet;
 
       return (
         <Container className={`${className || ''} e2e-childcomment-form`}>

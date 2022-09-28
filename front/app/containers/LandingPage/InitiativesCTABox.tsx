@@ -134,7 +134,7 @@ const InitiativesCTABox = memo<Props>(({ theme, className }) => {
   const authUser = useAuthUser();
   const { windowWidth } = useWindowSize();
 
-  const smallerThanSmallTablet = windowWidth <= viewportWidths.smallTablet;
+  const smallerThanSmallTablet = windowWidth <= viewportWidths.tablet;
 
   const signUp = useCallback(() => {
     openSignUpInModal({

@@ -403,7 +403,7 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
     const biggerThanLargeTablet =
       windowSize && windowSize >= viewportWidths.tablet;
     const biggerThanSmallTablet =
-      windowSize && windowSize >= viewportWidths.smallTablet;
+      windowSize && windowSize >= viewportWidths.tablet;
     const filterColumnWidth = windowSize && windowSize < 1400 ? 340 : 352;
     const filtersActive =
       selectedInitiativeFilters.search ||

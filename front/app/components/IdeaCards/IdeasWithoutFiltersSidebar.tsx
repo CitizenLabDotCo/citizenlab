@@ -256,10 +256,10 @@ const IdeasWithoutFiltersSidebar = ({
     windowSize && windowSize <= viewportWidths.tablet
   );
   const smallerThanSmallTablet = !!(
-    windowSize && windowSize <= viewportWidths.smallTablet
+    windowSize && windowSize <= viewportWidths.tablet
   );
   const biggerThanSmallTablet = !!(
-    windowSize && windowSize >= viewportWidths.smallTablet
+    windowSize && windowSize >= viewportWidths.tablet
   );
   const biggerThanLargeTablet = !!(
     windowSize && windowSize >= viewportWidths.tablet

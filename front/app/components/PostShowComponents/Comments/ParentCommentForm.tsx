@@ -356,7 +356,7 @@ class ParentCommentForm extends PureComponent<
       messages[`${postType}CommentBodyPlaceholder`]
     );
     const smallerThanSmallTablet =
-      !isNilOrError(windowSize) && windowSize <= viewportWidths.smallTablet;
+      !isNilOrError(windowSize) && windowSize <= viewportWidths.tablet;
 
     if (!isNilOrError(authUser) && canComment) {
       return (

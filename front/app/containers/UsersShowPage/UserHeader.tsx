@@ -102,7 +102,7 @@ export const UserHeader = memo<Props>((props) => {
   const hideBio = useFeatureFlag({ name: 'disable_user_bios' });
 
   const smallerThanSmallTablet = windowSize
-    ? windowSize <= viewportWidths.smallTablet
+    ? windowSize <= viewportWidths.tablet
     : false;
 
   if (!isNilOrError(user)) {

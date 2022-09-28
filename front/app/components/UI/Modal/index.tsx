@@ -435,7 +435,7 @@ class Modal extends PureComponent<Props, State> {
     } = this.props;
     const hasFixedHeight = this.props.fixedHeight;
     const smallerThanSmallTablet = windowSize
-      ? windowSize <= viewportWidths.smallTablet
+      ? windowSize <= viewportWidths.tablet
       : false;
     const modalPortalElement = document?.getElementById('modal-portal');
     let padding: string | undefined = undefined;

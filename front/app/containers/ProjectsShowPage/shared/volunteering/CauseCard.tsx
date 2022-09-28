@@ -202,7 +202,7 @@ const CauseCard = memo<Props>(({ cause, className }) => {
   }, []);
 
   const isVolunteer = !!cause.relationships?.user_volunteer?.data;
-  const smallerThanSmallTablet = windowWidth <= viewportWidths.smallTablet;
+  const smallerThanSmallTablet = windowWidth <= viewportWidths.tablet;
   const signUpLink = (
     <button onClick={signUp}>
       <FormattedMessage {...messages.signUpLinkText} />

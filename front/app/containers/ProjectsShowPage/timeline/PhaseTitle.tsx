@@ -126,7 +126,7 @@ const PhaseTitle = ({
   const phase = usePhase(phaseId);
   const { windowWidth } = useWindowSize();
   const localize = useLocalize();
-  const smallerThanSmallTablet = windowWidth <= viewportWidths.smallTablet;
+  const smallerThanSmallTablet = windowWidth <= viewportWidths.tablet;
 
   if (!isNilOrError(phase)) {
     let phaseTitle = localize(phase.attributes.title_multiloc);

@@ -265,7 +265,7 @@ const PlatformFooter = ({
   };
 
   const smallerThanSmallTablet =
-    windowSize.windowWidth <= viewportWidths.smallTablet;
+    windowSize.windowWidth <= viewportWidths.tablet;
   const hasCustomizedA11yFooterLink = getHasCustomizedA11yFooterLink();
   const customizedA11yHref = getCustomizedA11yHref();
   const removeVendorBranding = useFeatureFlag({
