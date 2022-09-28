@@ -154,7 +154,7 @@ const IdeaMapCard = memo<Props>(
     const phase = usePhase(phaseId || null);
     const project = useProject({ projectId });
     const { windowWidth } = useWindowSize();
-    const smallerThanMaxTablet = windowWidth <= viewportWidths.largeTablet;
+    const smallerThanMaxTablet = windowWidth <= viewportWidths.tablet;
 
     const [hovered, setHovered] = useState(false);
 

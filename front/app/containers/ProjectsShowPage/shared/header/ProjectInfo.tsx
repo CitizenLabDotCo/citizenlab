@@ -75,7 +75,7 @@ const ProjectInfo = memo<Props>(({ projectId, className }) => {
   const projectFiles = useProjectFiles(projectId);
   const { windowWidth } = useWindowSize();
 
-  const smallerThanLargeTablet = windowWidth <= viewportWidths.largeTablet;
+  const smallerThanLargeTablet = windowWidth <= viewportWidths.tablet;
 
   if (!isNilOrError(project)) {
     return (

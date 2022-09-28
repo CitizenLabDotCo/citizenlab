@@ -77,7 +77,7 @@ const ReadMoreWrapper = memo<Props>(
     const [expanded, setExpanded] = useState(false);
     const [contentHeight, setContentHeight] = useState<number | null>(null);
 
-    const smallerThanLargeTablet = windowWidth <= viewportWidths.largeTablet;
+    const smallerThanLargeTablet = windowWidth <= viewportWidths.tablet;
 
     const collapsedContentMaxHeight = smallerThanLargeTablet
       ? mobileCollapsedContentMaxHeight

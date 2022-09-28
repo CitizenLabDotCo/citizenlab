@@ -253,7 +253,7 @@ const IdeasWithoutFiltersSidebar = ({
     !locationEnabled || (locationEnabled && selectedView === 'card');
   const showMapView = locationEnabled && selectedView === 'map';
   const smallerThanBigTablet = !!(
-    windowSize && windowSize <= viewportWidths.largeTablet
+    windowSize && windowSize <= viewportWidths.tablet
   );
   const smallerThanSmallTablet = !!(
     windowSize && windowSize <= viewportWidths.smallTablet
@@ -262,7 +262,7 @@ const IdeasWithoutFiltersSidebar = ({
     windowSize && windowSize >= viewportWidths.smallTablet
   );
   const biggerThanLargeTablet = !!(
-    windowSize && windowSize >= viewportWidths.largeTablet
+    windowSize && windowSize >= viewportWidths.tablet
   );
   const smallerThan1100px = !!(windowSize && windowSize <= 1100);
   const smallerThanPhone = !!(windowSize && windowSize <= viewportWidths.phone);

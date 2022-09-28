@@ -160,7 +160,7 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
   const [isVisible, setIsVisible] = useState(false);
 
-  const smallerThanLargeTablet = windowWidth <= viewportWidths.largeTablet;
+  const smallerThanLargeTablet = windowWidth <= viewportWidths.tablet;
 
   const portalElement = document?.getElementById('topbar-portal');
 

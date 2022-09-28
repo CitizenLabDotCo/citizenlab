@@ -54,7 +54,7 @@ interface Props {
 const PostPageFullscreenModal = memo<Props>(
   ({ postId, slug, type, navbarRef, mobileNavbarRef, close }) => {
     const { windowWidth } = useWindowSize();
-    const smallerThanMaxTablet = windowWidth <= viewportWidths.largeTablet;
+    const smallerThanMaxTablet = windowWidth <= viewportWidths.tablet;
 
     // Far from ideal to always try to load the idea, but
     // has to happen for hooks to work.

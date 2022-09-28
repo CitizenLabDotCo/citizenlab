@@ -76,7 +76,7 @@ const IdeasShowPage = () => {
   const { slug } = useParams() as { slug: string };
   const idea = useIdea({ ideaSlug: slug });
   const { windowWidth } = useWindowSize();
-  const smallerThanMaxTablet = windowWidth <= viewportWidths.largeTablet;
+  const smallerThanMaxTablet = windowWidth <= viewportWidths.tablet;
 
   if (isError(idea)) {
     return (

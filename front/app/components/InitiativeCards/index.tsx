@@ -401,7 +401,7 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
     const { list, querying, onLoadMore, hasMore, loadingMore } = initiatives;
     const hasInitiatives = !isNilOrError(list) && list.length > 0;
     const biggerThanLargeTablet =
-      windowSize && windowSize >= viewportWidths.largeTablet;
+      windowSize && windowSize >= viewportWidths.tablet;
     const biggerThanSmallTablet =
       windowSize && windowSize >= viewportWidths.smallTablet;
     const filterColumnWidth = windowSize && windowSize < 1400 ? 340 : 352;

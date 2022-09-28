@@ -227,7 +227,7 @@ const IdeasMap = memo<Props>((props) => {
   const project = useProject({ projectId });
   const phase = usePhase(phaseId || null);
   const { windowWidth } = useWindowSize();
-  const smallerThanMaxTablet = windowWidth <= viewportWidths.largeTablet;
+  const smallerThanMaxTablet = windowWidth <= viewportWidths.tablet;
 
   // refs
   const containerRef = useRef<HTMLDivElement | null>(null);

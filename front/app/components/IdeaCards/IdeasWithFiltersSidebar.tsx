@@ -386,7 +386,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
       selectedIdeaFilters.idea_status ||
       selectedIdeaFilters.topics;
     const biggerThanLargeTablet = !!(
-      windowWidth && windowWidth >= viewportWidths.largeTablet
+      windowWidth && windowWidth >= viewportWidths.tablet
     );
     const smallerThan1440px = !!(windowWidth && windowWidth <= 1440);
     const smallerThanPhone = !!(

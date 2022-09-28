@@ -478,11 +478,9 @@ export class InitiativesShow extends PureComponent<
       const initiativeUrl = location.href;
       const initiativeId = initiative?.id;
       const initiativeBody = localize(initiative?.attributes?.body_multiloc);
-      const isDesktop = windowSize
-        ? windowSize > viewportWidths.largeTablet
-        : true;
+      const isDesktop = windowSize ? windowSize > viewportWidths.tablet : true;
       const isNotDesktop = windowSize
-        ? windowSize <= viewportWidths.largeTablet
+        ? windowSize <= viewportWidths.tablet
         : false;
       const utmParams = !isNilOrError(authUser)
         ? {
