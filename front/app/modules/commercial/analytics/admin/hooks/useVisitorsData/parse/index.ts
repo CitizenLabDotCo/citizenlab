@@ -61,8 +61,8 @@ export const parseTimeSeries = (
 const RESOLUTION_TO_MESSAGE_KEY: Record<IResolution, keyof Translations> = {
   month: 'last30Days',
   week: 'last7Days',
-  day: 'yesterday'
-}
+  day: 'yesterday',
+};
 
 export const parseExcelData = (
   stats: Stats,
@@ -77,19 +77,20 @@ export const parseExcelData = (
     return {
       [translations.statistic]: translations[key],
       [translations.total]: stat.value,
-      [lastPeriod]: stat.lastPeriod
-    }
-  })
+      [lastPeriod]: stat.lastPeriod,
+    };
+  });
 
-  // const timeSeriesData = timeSeries?.map((row) => ({
-
-  // }))
-  console.log(timeSeries)
+  const timeSeriesData = timeSeries?.map((row) => ({
+    [translations.visits]: row.visits,
+    [translations.visitors]: row.visitors,
+    [translations.date]: row.date,
+  }));
 
   const xlsxData = {
     [translations.stats]: statsData,
-    // [translations.timeSeries]: timeSeriesData ?? []
-  }
+    [translations.timeSeries]: timeSeriesData ?? [],
+  };
 
-  return xlsxData
-}
+  return xlsxData;
+};

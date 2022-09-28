@@ -29,6 +29,7 @@ export interface Translations {
   timeSeries: string;
   statistic: string;
   total: string;
+  date: string;
   visitors: string;
   visits: string;
   visitDuration: string;
@@ -45,6 +46,7 @@ export const getTranslations = (
   timeSeries: formatMessage(messages.timeSeries),
   statistic: formatMessage(messages.statistic),
   total: formatMessage(messages.total),
+  date: formatMessage(messages.date),
   visitors: formatMessage(cardMessages.visitors),
   visits: formatMessage(cardMessages.visits),
   visitDuration: formatMessage(cardMessages.visitDuration),
