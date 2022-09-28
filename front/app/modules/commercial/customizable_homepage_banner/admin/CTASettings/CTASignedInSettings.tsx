@@ -10,8 +10,8 @@ import SettingRadioButtons from './SettingRadioButtons';
 import SettingsLabel from './SettingsLabel';
 
 const CTA_SIGNED_IN_TYPES: CTASignedInType[] = [
-  'customized_button',
   'no_button',
+  'customized_button',
 ];
 
 type Props = {

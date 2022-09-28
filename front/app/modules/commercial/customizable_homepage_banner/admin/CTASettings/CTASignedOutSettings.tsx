@@ -10,8 +10,8 @@ import SettingsLabel from './SettingsLabel';
 
 const CTA_SIGNED_OUT_TYPES: CTASignedOutType[] = [
   'sign_up_button',
-  'customized_button',
   'no_button',
+  'customized_button',
 ];
 
 type Props = {
