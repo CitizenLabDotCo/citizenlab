@@ -8,17 +8,17 @@ module MultiTenancy
       def run
         Rake::Task['analytics:populate_dimensions'].execute
 
-        project = Analytics::DimensionProject.first
-        user = Analytics::DimensionUser.first
-        locale1 = Analytics::DimensionLocale.first
-        locale2 = Analytics::DimensionLocale.last
-        referrer_type1 = Analytics::DimensionReferrerType.first
-        referrer_type2 = Analytics::DimensionReferrerType.last
-        date1 = Analytics::DimensionDate.first
-        date2 = Analytics::DimensionDate.limit(2)[1]
+        project = ::Analytics::DimensionProject.first
+        user = ::Analytics::DimensionUser.first
+        locale1 = ::Analytics::DimensionLocale.first
+        locale2 = ::Analytics::DimensionLocale.last
+        referrer_type1 = ::Analytics::DimensionReferrerType.first
+        referrer_type2 = ::Analytics::DimensionReferrerType.last
+        date1 = ::Analytics::DimensionDate.first
+        date2 = ::Analytics::DimensionDate.limit(2)[1]
 
         # Insert 2 visits (same user)
-        visit1 = Analytics::FactVisit.create!(
+        visit1 = ::Analytics::FactVisit.create!(
           visitor_id: 'XX1',
           dimension_user: user,
           dimension_referrer_type: referrer_type1,
@@ -32,7 +32,7 @@ module MultiTenancy
         visit1.dimension_projects << project
         visit1.dimension_locales << locale1
 
-        visit2 = Analytics::FactVisit.create!(
+        visit2 =::Analytics::FactVisit.create!(
           visitor_id: 'XX1',
           dimension_user: user,
           dimension_referrer_type: referrer_type1,
@@ -47,7 +47,7 @@ module MultiTenancy
         visit2.dimension_locales << locale2
 
         # Visit 3 - No user, no project
-        visit3 = Analytics::FactVisit.create!(
+        visit3 = ::Analytics::FactVisit.create!(
           visitor_id: 'XX3',
           dimension_referrer_type: referrer_type2,
           dimension_date_first_action: date2,
