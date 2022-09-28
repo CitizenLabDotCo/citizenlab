@@ -71,7 +71,7 @@ export const NavigationItem = styled.li`
   & > * {
     padding: 0 20px;
 
-    ${media.largePhone`
+    ${media.phone`
       padding: 0;
     `}
   }

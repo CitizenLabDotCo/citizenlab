@@ -22,7 +22,7 @@ const TabsContainer = styled.div`
   flex-direction: row;
   justify-content: flex-start;
 
-  ${media.largePhone`
+  ${media.phone`
     width: 100%;
     justify-content: space-between;
   `}

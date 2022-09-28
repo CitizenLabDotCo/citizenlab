@@ -20,7 +20,7 @@ const StyledFormSection = styled(FormSection)`
     padding-right: 25px;
   `}
 
-  ${media.largePhone`
+  ${media.phone`
     padding-left: 18px;
     padding-right: 18px;
   `}

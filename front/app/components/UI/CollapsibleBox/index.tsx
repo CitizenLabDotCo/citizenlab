@@ -93,7 +93,7 @@ const Wrapper = styled.div<{ contentBackgroundColor?: string }>`
   background-color: ${(props) => props.contentBackgroundColor || '#fff'};
   margin-top: 1px;
 
-  ${media.largePhone`
+  ${media.phone`
     padding: 30px 20px;
   `}
 

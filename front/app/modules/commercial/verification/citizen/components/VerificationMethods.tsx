@@ -66,7 +66,7 @@ const StyledAvatar = styled(Avatar)`
   margin-right: -5px;
   z-index: 2;
 
-  ${media.largePhone`
+  ${media.phone`
     margin-left: 0;
   `}
 `;
@@ -132,7 +132,7 @@ const ContextItem = styled.span`
     text-transform: capitalize;
   }
 
-  ${media.largePhone`
+  ${media.phone`
     white-space: normal;
   `}
 `;
