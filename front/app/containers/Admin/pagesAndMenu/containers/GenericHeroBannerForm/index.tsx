@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react';
 
 // components
+import { Box } from '@citizenlab/cl2-component-library';
 import { Section } from 'components/admin/Section';
-
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 import SectionFormWrapper from '../../components/SectionFormWrapper';
 
@@ -69,22 +69,27 @@ const GenericHeroBannerForm = ({
         }
       >
         <Section key={'header'}>
-          <Warning>
-            <FormattedMessage {...messages.heroBannerInfoBar} />
-          </Warning>
-          {outletSectionStart}
-          {layoutSettingFieldComponent}
-          {bannerImageFieldsComponent}
-          {bannerHeaderFieldsComponent}
-          {bannerMultilocFieldComponent}
-          {avatarsFieldComponent}
-          {/* The custom page hero banner form has the CTA button fields inserted via the core */}
-          {ctaButtonFieldsComponent}
           {/*
+            Padding equal to the height of the sticky bar with the submit button.
+          */}
+          <Box pb="78px">
+            <Warning>
+              <FormattedMessage {...messages.heroBannerInfoBar} />
+            </Warning>
+            {outletSectionStart}
+            {layoutSettingFieldComponent}
+            {bannerImageFieldsComponent}
+            {bannerHeaderFieldsComponent}
+            {bannerMultilocFieldComponent}
+            {avatarsFieldComponent}
+            {/* The custom page hero banner form has the CTA button fields inserted via the core */}
+            {ctaButtonFieldsComponent}
+            {/*
           The home page hero banner form has CTA button fields inserted
           via the outlet below (customizable_homepage_banner module)
         */}
-          {outletSectionEnd}
+            {outletSectionEnd}
+          </Box>
         </Section>
       </SectionFormWrapper>
     </>
