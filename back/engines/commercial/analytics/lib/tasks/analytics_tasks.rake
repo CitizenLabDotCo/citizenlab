@@ -61,9 +61,7 @@ namespace :analytics do
         puts locale_name
         next if Analytics::DimensionLocale.exists?(name: locale_name)
 
-        new_locale = Analytics::DimensionLocale.new
-        new_locale.name = locale_name
-        new_locale.save
+        Analytics::DimensionLocale.create!(name: locale_name)
       end
     end
   end
