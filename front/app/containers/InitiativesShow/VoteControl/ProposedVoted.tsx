@@ -91,7 +91,7 @@ const VoteText = styled.div`
 
 const VoteTextLeft = styled.div`
   font-size: ${fontSizes.base}px;
-  color: ${colors.clGreyOnGreyBackground};
+  color: ${colors.coolGrey600};
 `;
 
 const VoteTextRight = styled.div`

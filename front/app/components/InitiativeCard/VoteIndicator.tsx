@@ -60,17 +60,17 @@ const AnsweredStatusBadge = styled(StatusBadge)`
 const IneligibleBadgeIcon = styled(Icon)`
   width: 1.6em;
   height: 1.6em;
-  fill: ${colors.clGreyOnGreyBackground};
+  fill: ${colors.coolGrey600};
   padding-right: 7px;
 `;
 
 const IneligibleStatusBadge = styled(StatusBadge)`
   background-color: ${colors.grey200};
-  color: ${colors.clGreyOnGreyBackground};
+  color: ${colors.coolGrey600};
 `;
 
 const CustomStatusBadge = styled(StatusBadge)`
-  color: ${colors.clGreyOnGreyBackground};
+  color: ${colors.coolGrey600};
 `;
 
 const StyledProposalProgressBar = styled(ProposalProgressBar)`
@@ -117,7 +117,7 @@ const ExpiredText = styled.div`
 
 const ExpiredIcon = styled(Icon)`
   path {
-    fill: ${colors.clGreyOnGreyBackground};
+    fill: ${colors.coolGrey600};
   }
   width: 14px;
   height: 14px;

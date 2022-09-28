@@ -43,11 +43,11 @@ const PostedByText = styled.div`
 
 const AboutInitiativesLink = styled(Link)`
   font-size: ${fontSizes.s}px;
-  color: ${colors.clGreyOnGreyBackground};
+  color: ${colors.coolGrey600};
   text-decoration: underline;
 
   &:hover {
-    color: ${darken(0.2, colors.clGreyOnGreyBackground)};
+    color: ${darken(0.2, colors.coolGrey600)};
     text-decoration: underline;
   }
 `;

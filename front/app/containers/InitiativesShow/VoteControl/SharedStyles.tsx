@@ -6,7 +6,7 @@ export const StatusWrapper = styled.div`
   flex-direction: row-reverse;
   font-size: ${fontSizes.s};
   text-transform: uppercase;
-  color: ${colors.clGreyOnGreyBackground};
+  color: ${colors.coolGrey600};
 
   &.answered {
     color: ${colors.green};

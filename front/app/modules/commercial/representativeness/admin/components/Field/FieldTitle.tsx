@@ -23,7 +23,7 @@ import { Multiloc, MessageDescriptor } from 'typings';
 import { Status } from '../../utils/form';
 
 const DefaultStatusLabel = styled(StatusLabel)`
-  color: ${colors.clGreyOnGreyBackground};
+  color: ${colors.coolGrey600};
   font-weight: 700;
   margin-left: 8px;
 `;
