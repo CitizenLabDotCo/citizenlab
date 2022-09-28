@@ -65,7 +65,7 @@ const HeaderTitle = styled.h1<{
     font-size: ${fontSizes.xxxl}px;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-bottom: 15px;
   `}
 `;
@@ -102,7 +102,7 @@ const HeaderSubtitle = styled.h2<{
     `
       margin-bottom: 38px;
 
-      ${media.smallerThanMinTablet`
+      ${media.phone`
         margin-bottom: 30px;
       `}
   `}
@@ -112,7 +112,7 @@ const StyledAvatarBubbles = styled(AvatarBubbles)`
   min-height: 40px;
   margin-bottom: 30px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-bottom: 30px;
   `}
 `;

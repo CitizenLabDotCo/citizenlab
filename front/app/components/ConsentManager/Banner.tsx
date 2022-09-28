@@ -36,7 +36,7 @@ const ContentContainerInner = styled.div`
     flex-direction: row-reverse;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     max-width: auto;
     flex-direction: column;
     align-items: stretch;
@@ -50,7 +50,7 @@ const Left = styled.div`
   flex-direction: column;
   margin-right: 40px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-right: 0px;
     margin-bottom: 20px;
   `}
@@ -59,7 +59,7 @@ const Left = styled.div`
     margin-right: 0;
     margin-left: 40px;
 
-    ${media.smallerThanMinTablet`
+    ${media.phone`
         margin-left: 0px;
     `}
   `}
@@ -106,7 +106,7 @@ const ButtonContainer = styled.div`
 const AcceptButton = styled(Button)`
   margin-right: 10px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-right: 0px;
     order: 2;
   `}
@@ -115,14 +115,14 @@ const AcceptButton = styled(Button)`
     margin-right: 0px;
     margin-left: 10px;
 
-    ${media.smallerThanMinTablet`
+    ${media.phone`
       margin-left: 0px;
     `}
   `}
 `;
 
 const PreferencesButton = styled(Button)`
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-right: 10px;
     order: 1;
   `}

@@ -70,7 +70,7 @@ const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
         flex-direction: row-reverse;
     `}
 
-    ${media.smallerThanMinTablet`
+    ${media.phone`
       width: 100%;
     `}
   }
@@ -81,7 +81,7 @@ const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
     padding-left: 30px;
     padding-right: 30px;
 
-    ${media.smallerThanMinTablet`
+    ${media.phone`
       width: 100%;
     `}
   }
@@ -98,13 +98,13 @@ const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
         width: calc(50% - 13px);
       `}
 
-      ${media.smallerThanMinTablet`
+      ${media.phone`
         width: 100%;
         min-height: 460px;
       `}
     }
 
-    ${media.smallerThanMinTablet`
+    ${media.phone`
       min-height: 400px;
     `}
   }
@@ -123,7 +123,7 @@ const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
     ${defaultCardHoverStyle};
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     width: 100%;
     min-height: 460px;
   `}
@@ -197,7 +197,7 @@ const ProjectContent = styled.div`
     padding-left: 30px;
     padding-right: 30px;
 
-    ${media.smallerThanMinTablet`
+    ${media.phone`
       padding-left: 20px;
       padding-right: 20px;
     `};
@@ -245,7 +245,7 @@ const ContentHeader = styled.div`
     padding-left: 30px;
     padding-right: 30px;
 
-    ${media.smallerThanMinTablet`
+    ${media.phone`
       padding-left: 20px;
       padding-right: 20px;
     `}
@@ -381,7 +381,7 @@ const ContentFooter = styled.div`
     }
 
     &:not(.large) {
-      ${media.smallerThanMinTablet`
+      ${media.phone`
         height: 20px;
         flex-basis: 20px;
         margin: 0px;
@@ -430,7 +430,7 @@ const MetaItem = styled.div`
     margin-left: 0px;
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-left: 20px;
   `};
 `;

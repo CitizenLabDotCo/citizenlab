@@ -73,7 +73,7 @@ const Address = styled.div`
 const MapContainer = styled.div`
   padding: 30px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding: 20px;
   `}
 `;

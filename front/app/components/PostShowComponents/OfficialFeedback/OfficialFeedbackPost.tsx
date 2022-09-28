@@ -47,7 +47,7 @@ const Container = styled.div`
   padding-top: 35px;
   margin-bottom: 15px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding: 20px;
     padding-top: 25px;
   `}
@@ -97,14 +97,14 @@ const DatesPostedEdited = styled.span`
   display: flex;
   align-items: center;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     flex-direction: column;
     align-items: flex-start;
   `}
 
   ${isRtl`
     justify-content: flex-end;
-    ${media.smallerThanMinTablet`
+    ${media.phone`
         align-items: flex-end;
     `}
  `}
@@ -116,13 +116,13 @@ const DatesSpacer = styled.span`
   margin-left: 4px;
   margin-right: 4px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     display: none;
   `}
 `;
 
 const DateEdited = styled.span`
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     font-style: italic;
   `}
 `;
@@ -132,7 +132,7 @@ const StyledMoreActionsMenu = styled(MoreActionsMenu)`
   top: 12px;
   right: 15px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     top: 5px;
     right: 5px;
   `}
@@ -141,7 +141,7 @@ const StyledMoreActionsMenu = styled(MoreActionsMenu)`
     right: auto;
     left: 15px;
 
-    ${media.smallerThanMinTablet`
+    ${media.phone`
         left: 5px;
     `}
 `}

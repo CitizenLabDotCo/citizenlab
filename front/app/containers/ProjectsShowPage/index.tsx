@@ -53,7 +53,7 @@ const Container = styled.main<{ background: string }>`
     mobileTopBarHeight}px);
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     min-height: calc(100vh - ${({ theme: { mobileMenuHeight } }) =>
       mobileMenuHeight}px - ${({ theme: { mobileTopBarHeight } }) =>
     mobileTopBarHeight}px);

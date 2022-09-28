@@ -21,7 +21,7 @@ const Header = styled.div`
   border-bottom: 1px solid #d1d1d1;
   margin-bottom: 30px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-bottom: 21px;
   `}
 
@@ -38,7 +38,7 @@ const Title = styled.h2`
   padding: 0;
   margin: 0;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     text-align: center;
     margin: 0;
   `};

@@ -148,7 +148,7 @@ const ButtonsContainer = styled.div`
     background: ${colors.background};
     border-radius: ${(props: any) => props.theme.borderRadius};
 
-    ${media.smallerThanMinTablet`
+    ${media.phone`
       padding: 15px;
     `}
 

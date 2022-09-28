@@ -88,7 +88,7 @@ const UserNavbarButton = styled.button`
     }
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     flex: 1;
   `}
 `;

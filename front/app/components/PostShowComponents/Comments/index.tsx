@@ -61,7 +61,7 @@ const StyledCommentSorting = styled(CommentSorting)`
   display: flex;
   justify-content: flex-end;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     justify-content: flex-start;
   `}
 `;

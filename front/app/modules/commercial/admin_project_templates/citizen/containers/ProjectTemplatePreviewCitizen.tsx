@@ -39,7 +39,7 @@ const Container = styled.div`
   ) => props.theme.mobileTopBarHeight}px);
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding: 20px;
   `}
 `;

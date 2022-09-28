@@ -45,7 +45,7 @@ const Container = styled.div`
     margin-bottom: 20px;
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding: 17px 30px 30px;
   `}
 `;

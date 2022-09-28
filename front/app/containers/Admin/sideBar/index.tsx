@@ -84,7 +84,7 @@ const Text = styled.div`
   line-height: 19px;
   margin-left: 10px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     display: none;
   `}
 `;

@@ -31,7 +31,7 @@ const TopLine = styled.div`
   width: 100%;
   padding: 30px 40px 0;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     display: none;
   `}
 `;
@@ -97,7 +97,7 @@ const StyledCollapsibleTipsAndInfo = styled(CollapsibleTipsAndInfo)`
 `;
 
 const StyledContentContainer = styled(ContentContainer)`
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-left: 0;
     padding-right: 0;
   `}

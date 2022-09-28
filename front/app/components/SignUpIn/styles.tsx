@@ -13,7 +13,7 @@ export const Options = styled.div`
   align-items: stretch;
   margin-bottom: 30px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-bottom: 20px;
   `}
 `;
@@ -77,7 +77,7 @@ export const StyledHeaderContainer = styled((props) => (
       background: transparent;
       border: none;
 
-      ${media.smallerThanMinTablet`
+      ${media.phone`
         padding-top: 0px;
         padding-left: 2px;
         padding-right: 2px;
@@ -106,7 +106,7 @@ export const StyledModalContentContainer = styled(ModalContentContainer)<{
       padding-bottom: 0px;
       max-height: calc(85vh - ${props.headerHeight});
 
-      ${media.smallerThanMinTablet`
+      ${media.phone`
         max-height: ${(props) => `calc(85vh - 30px - ${props.headerHeight})`};
       `}
     `}
@@ -117,7 +117,7 @@ export const StyledModalContentContainer = styled(ModalContentContainer)<{
       padding-top: 10px;
       padding-bottom: 0px;
 
-      ${media.smallerThanMinTablet`
+      ${media.phone`
         padding-top: 10px;
         padding-left: 2px;
         padding-right: 2px;

@@ -60,7 +60,7 @@ const EmptyMessageTitle = styled.h2`
   white-space: nowrap;
   margin-bottom: 5px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     font-size: ${fontSizes.l}px;
   `};
 `;

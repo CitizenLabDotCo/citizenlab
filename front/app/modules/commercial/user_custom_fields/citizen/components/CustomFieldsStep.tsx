@@ -43,7 +43,7 @@ const Loading = styled.div`
 const Container = styled.div`
   padding-bottom: 30px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-bottom: 15px;
   `}
 `;
@@ -54,7 +54,7 @@ const ButtonWrapper = styled.div`
   justify-content: space-between;
   margin-top: -15px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     flex-direction: column;
     align-items: stretch;
     justify-content: center;
@@ -64,7 +64,7 @@ const ButtonWrapper = styled.div`
 const SubmitButton = styled(Button)``;
 
 const SkipButton = styled(Button)`
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-top: 20px;
     margin-bottom: 15px;
   `}

@@ -31,7 +31,7 @@ const Container = styled.div`
   position: relative;
   z-index: 2;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-top: 30px;
     padding-bottom: 35px;
   `}
@@ -64,7 +64,7 @@ const HeaderImage = styled(Image)`
   border-radius: ${(props: any) => props.theme.borderRadius};
   overflow: hidden;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     height: 160px;
     margin-bottom: 20px;
   `}

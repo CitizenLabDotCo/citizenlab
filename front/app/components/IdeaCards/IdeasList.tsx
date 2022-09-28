@@ -26,7 +26,7 @@ const Footer = styled.div`
   justify-content: center;
   margin-top: 30px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     flex-direction: column;
     align-items: stretch;
     margin-top: 0px;
@@ -45,7 +45,7 @@ const Loading = styled.div`
     top: 200px;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     height: 150px;
   `}
 `;

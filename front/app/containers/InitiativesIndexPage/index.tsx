@@ -64,7 +64,7 @@ const StyledContentContainer = styled(ContentContainer)`
 const Padding = styled.div`
   width: 100%;
   height: 100px;
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     height: 40px;
   `}
 `;

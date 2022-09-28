@@ -28,7 +28,7 @@ const Container = styled.div`
       margin-right: 30px;
     `}
 
-    ${media.smallerThanMinTablet`
+    ${media.phone`
       margin-right: 25px;
     `}
 

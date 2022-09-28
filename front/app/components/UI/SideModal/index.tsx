@@ -70,7 +70,7 @@ const CloseButton = styled.button`
     }
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     height: 18px;
     width: 18px;
   `}

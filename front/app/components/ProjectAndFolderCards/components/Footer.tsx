@@ -19,7 +19,7 @@ const Container = styled.div`
   align-items: center;
   margin-top: 20px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     flex-direction: column;
     align-items: stretch;
     margin-top: 0px;

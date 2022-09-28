@@ -82,7 +82,7 @@ const InitialLoading = styled.div`
   justify-content: center;
   ${defaultCardStyle};
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     height: 150px;
   `}
 `;

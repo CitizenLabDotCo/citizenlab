@@ -43,7 +43,7 @@ const BoxContainer = styled.div`
     margin-bottom: 20px;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     flex-direction: column;
     align-items: flex-start;
     padding: 60px 30px 40px;
@@ -71,7 +71,7 @@ const Title = styled.h2`
   margin-bottom: 10px;
   max-width: 400px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     max-width: none;
     text-align: center;
   `}
@@ -83,7 +83,7 @@ const Text = styled.div`
   font-size: ${fontSizes.base}px;
   font-weight: 300;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     max-width: none;
     text-align: center;
   `}
@@ -100,7 +100,7 @@ const ButtonContainer = styled.div`
     margin-left: 20px;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-left: 0;
     width: 100%;
     margin-top: 20px;
@@ -117,7 +117,7 @@ const StartInitiativeButton = styled(Button)`
     margin-left: 0;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-top: 20px;
   `}
 `;

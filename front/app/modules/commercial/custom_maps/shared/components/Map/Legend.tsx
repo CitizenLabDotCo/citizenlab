@@ -33,7 +33,7 @@ const LegendItems = styled.ul`
   margin: 0;
   columns: 2;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     columns: 1;
   `}
 `;

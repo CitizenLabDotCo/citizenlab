@@ -46,7 +46,7 @@ const Title = styled.h2<{ hasPublications: boolean }>`
   text-align: center;
   margin-bottom: 28px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     text-align: left;
     margin-bottom: ${({ hasPublications }) =>
       hasPublications ? '36' : '20'}px;
@@ -87,7 +87,7 @@ const DesktopFilters = styled.div`
 
   height: 68px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     height: 52px;
   `}
 

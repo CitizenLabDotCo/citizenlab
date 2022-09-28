@@ -28,7 +28,7 @@ const Right = styled.div`
   display: flex;
   align-items: center;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     display: none;
   `}
 `;

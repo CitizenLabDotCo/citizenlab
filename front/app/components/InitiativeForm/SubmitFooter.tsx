@@ -53,7 +53,7 @@ const SubmitFooterInner = styled.div`
   padding-bottom: 12px;
   background: #fff;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding: 10px;
   `}
 `;

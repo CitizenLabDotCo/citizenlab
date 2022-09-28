@@ -51,7 +51,7 @@ const FileDownloadLink = styled.a`
     text-decoration: underline;
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-right: auto;
   `}
 `;
@@ -64,7 +64,7 @@ const FileSize = styled.span`
   margin-left: 20px;
   white-space: nowrap;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     display: none;
   `}
 `;

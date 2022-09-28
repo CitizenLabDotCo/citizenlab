@@ -146,7 +146,7 @@ const InitiativeContainer = styled.div`
     padding-top: 35px;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-top: 25px;
     padding-left: 15px;
     padding-right: 15px;
@@ -203,7 +203,7 @@ const InitiativeBannerContainer = styled.div`
   position: relative;
   background: ${({ theme }) => theme.colorMain};
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     min-height: 200px;
   `}
 `;

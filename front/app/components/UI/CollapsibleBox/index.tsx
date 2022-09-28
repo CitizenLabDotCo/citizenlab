@@ -31,7 +31,7 @@ const TitleIcon = styled(Icon)`
   fill: ${colors.textSecondary};
   margin-right: 13px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     flex: 0 0 14px;
     width: 14px;
     height: 20px;

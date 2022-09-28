@@ -154,7 +154,7 @@ const Right = styled.div`
     margin-top: 15px;
     margin-bottom: 15px;
   `}
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     flex-direction: column;
   `}
 `;
@@ -166,7 +166,7 @@ const PoweredBy = styled.div`
   padding-right: 20px;
   margin-right: 24px;
   border-right: 2px solid ${colors.separation};
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     flex-direction: column;
     padding: 0px;
     margin: 0px;
@@ -187,7 +187,7 @@ const PoweredByText = styled.span`
   ${media.smallerThanMaxTablet`
     display: block;
   `}
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-bottom: 10px;
   `}
 `;
@@ -202,7 +202,7 @@ const CitizenlabLink = styled.a`
 `;
 
 const StyledSendFeedback = styled(SendFeedback)`
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-top: 20px;
   `}
 `;

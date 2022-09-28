@@ -46,7 +46,7 @@ const Container = styled.div`
     flex-direction: row-reverse;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     flex-direction: column;
   `}
 `;
@@ -56,7 +56,7 @@ const Left = styled.div`
   width: 300px;
   overflow: hidden;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     flex: auto;
     width: auto;
     margin-bottom: 20px;
@@ -74,7 +74,7 @@ const Right = styled.div`
   margin-right: 40px;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-left: 0px;
   `}
 `;

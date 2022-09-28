@@ -26,7 +26,7 @@ const Container = styled.button`
     background-color: ${colors.clDropdownHoverBackground};
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-left: 5px;
     padding-right: 5px;
     padding-top: 5px;

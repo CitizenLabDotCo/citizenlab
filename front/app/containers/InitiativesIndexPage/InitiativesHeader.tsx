@@ -39,7 +39,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     min-height: 300px;
   `}
 `;
@@ -52,7 +52,7 @@ const Content = styled.div`
   padding-left: 30px;
   padding-right: 30px;
   padding-bottom: 50px;
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-bottom: 20px;
   `}
   display: flex;

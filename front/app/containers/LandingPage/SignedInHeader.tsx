@@ -55,7 +55,7 @@ const Header = styled.div`
   display: flex;
   flex-direction: column;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     height: 320px;
   `}
 `;
@@ -168,7 +168,7 @@ const HeaderContent = styled.div`
     padding-right: 30px;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     flex-direction: column;
     align-items: stretch;
     justify-content: center;
@@ -186,7 +186,7 @@ const HeaderContentDefault = styled(HeaderContent)`
     text-align: center;
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     align-items: center;
   `}
 `;
@@ -200,7 +200,7 @@ export const Left = styled.div`
     flex-direction: row-reverse;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-right: 0;
   `}
 `;
@@ -235,7 +235,7 @@ export const Right = styled.div`
   flex-shrink: 0;
   display: flex;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
@@ -245,7 +245,7 @@ export const Right = styled.div`
   ${isRtl`
     flex-direction: row-reverse;
 
-    ${media.smallerThanMinTablet`
+    ${media.phone`
         align-items: flex-end;
     `}
   `}
@@ -254,7 +254,7 @@ export const Right = styled.div`
 export const SkipButton = styled(Button)`
   margin-right: 10px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     order: 2;
     margin-right: 0px;
   `}
@@ -266,7 +266,7 @@ export const SkipButton = styled(Button)`
 `;
 
 export const AcceptButton = styled(Button)`
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     order: 1;
     margin-bottom: 10px;
   `}

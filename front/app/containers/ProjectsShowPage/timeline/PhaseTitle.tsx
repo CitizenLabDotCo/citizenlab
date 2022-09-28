@@ -62,7 +62,7 @@ const PhaseNumber = styled.div`
     background: ${colors.green};
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     display: none;
   `}
 `;

@@ -129,7 +129,7 @@ const PhaseText = styled.div<{ current: boolean; selected: boolean }>`
   margin-right: 5px;
   transition: color 80ms ease-out;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     display: none;
   `}
 `;

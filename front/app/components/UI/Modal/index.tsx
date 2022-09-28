@@ -59,7 +59,7 @@ export const ModalContentContainer = styled.div<{
   -webkit-overflow-scrolling: touch;
   padding: ${({ padding }) => padding || '30px'};
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding: ${({ padding }) => padding || '20px'};
   `}
 `;
@@ -88,7 +88,7 @@ const StyledCloseIconButton = styled(CloseIconButton)`
     left: 25px;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     top: 13px;
     right: 15px;
   `}
@@ -125,7 +125,7 @@ const ModalContainer = styled(clickOutside)<{ windowHeight: string }>`
     margin-top: 120px;
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     max-width: calc(100vw - 30px);
     max-height: ${(props) => `calc(${props.windowHeight} - 30px)`};
     margin-top: 15px;
@@ -159,7 +159,7 @@ const Overlay = styled.div`
     justify-content: center;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-left: 12px;
     padding-right: 12px;
     padding: 0px;
@@ -172,7 +172,7 @@ const Overlay = styled.div`
       opacity: 1;
       transform: translateY(${desktopTranslateY});
 
-      ${media.smallerThanMinTablet`
+      ${media.phone`
         transform: translateY(${mobileTranslateY});
       `}
     }
@@ -181,7 +181,7 @@ const Overlay = styled.div`
       opacity: 1;
       transition: opacity ${desktopOpacityTimeout}ms ${desktopEasing};
 
-      ${media.smallerThanMinTablet`
+      ${media.phone`
         transition: opacity ${mobileOpacityTimeout}ms ${mobileEasing};
       `}
 
@@ -191,7 +191,7 @@ const Overlay = styled.div`
         transition: opacity ${desktopOpacityTimeout}ms ${desktopEasing},
           transform ${desktopTransformTimeout}ms ${desktopEasing};
 
-        ${media.smallerThanMinTablet`
+        ${media.phone`
           transition: opacity ${mobileOpacityTimeout}ms ${mobileEasing},
                       transform ${mobileTransformTimeout}ms ${mobileEasing};
         `}
@@ -211,7 +211,7 @@ export const HeaderContainer = styled.div`
   border-bottom: solid 1px #e0e0e0;
   background: transparent;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-top: 15px;
     padding-bottom: 15px;
     padding-left: 20px;
@@ -228,7 +228,7 @@ export const HeaderTitle = styled.h1`
   margin-right: 45px;
   padding: 0;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-right: 35px;
   `}
 
@@ -237,7 +237,7 @@ export const HeaderTitle = styled.h1`
     margin: 0;
     margin-left: 45px;
 
-    ${media.smallerThanMinTablet`
+    ${media.phone`
       margin-left: 35px;
     `}
   `}
@@ -271,7 +271,7 @@ const FooterContainer = styled.div`
   border-top: solid 1px ${colors.separation};
   background: #fff;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-top: 10px;
     padding-bottom: 10px;
     padding-left: 20px;

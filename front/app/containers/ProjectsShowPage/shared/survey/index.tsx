@@ -53,7 +53,7 @@ const SignUpInWrapper = styled.div`
   padding-top: 45px;
   ${defaultCardStyle};
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-top: 30px;
   `}
 `;
@@ -85,7 +85,7 @@ const SignUpInHeader = styled.h2`
   margin: 0;
   padding: 0;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     font-size: ${fontSizes.xl}px;
   `}
 `;

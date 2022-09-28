@@ -25,7 +25,7 @@ const FileDownloadLink = styled.a`
     text-decoration: underline;
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-right: 0;
   `}
 `;

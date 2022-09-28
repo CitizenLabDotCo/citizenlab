@@ -48,7 +48,7 @@ const Container = styled(Link)`
     align-items: stretch;
     justify-content: space-between;
 
-    ${media.smallerThanMinTablet`
+    ${media.phone`
       width: 100%;
     `}
   }
@@ -59,7 +59,7 @@ const Container = styled(Link)`
     padding-left: 30px;
     padding-right: 30px;
 
-    ${media.smallerThanMinTablet`
+    ${media.phone`
       width: 100%;
     `}
   }
@@ -72,13 +72,13 @@ const Container = styled(Link)`
         width: calc(50% - 13px);
       `}
 
-      ${media.smallerThanMinTablet`
+      ${media.phone`
         width: 100%;
         min-height: 460px;
       `}
     }
 
-    ${media.smallerThanMinTablet`
+    ${media.phone`
       min-height: 400px;
     `}
   }
@@ -97,7 +97,7 @@ const Container = styled(Link)`
     ${defaultCardHoverStyle};
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     width: 100%;
     min-height: 460px;
   `}
@@ -171,7 +171,7 @@ const FolderContent = styled.div`
     padding-left: 30px;
     padding-right: 30px;
 
-    ${media.smallerThanMinTablet`
+    ${media.phone`
       padding-left: 20px;
       padding-right: 20px;
     `};
@@ -208,7 +208,7 @@ const ContentHeader = styled.div<{ hasLabel: boolean }>`
     padding-left: 30px;
     padding-right: 30px;
 
-    ${media.smallerThanMinTablet`
+    ${media.phone`
       padding-left: 20px;
       padding-right: 20px;
     `}

@@ -33,7 +33,7 @@ const Header = styled.div`
     min-height: ${homepageBannerLayoutHeights.full_width_banner_layout.tablet}px;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     min-height: ${homepageBannerLayoutHeights.full_width_banner_layout.phone}px;
   `}
 `;

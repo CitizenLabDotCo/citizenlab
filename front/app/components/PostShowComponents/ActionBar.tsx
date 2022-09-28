@@ -31,7 +31,7 @@ const Inner = styled.div`
     max-width: 100vw;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     width: 100%;
     max-width: 100vw;
     padding-left: 15px;

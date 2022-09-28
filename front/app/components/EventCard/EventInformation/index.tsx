@@ -70,7 +70,7 @@ const EventTimeAndLocationContainer = styled.div`
   display: flex;
   flex-direction: row;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     flex-direction: column;
   `}
 
@@ -81,7 +81,7 @@ const EventTimeAndLocationContainer = styled.div`
 const Time = styled.time`
   margin-right: 23px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-bottom: 5px;
     margin-right: 0px;
   `}
@@ -93,7 +93,7 @@ const StyledIcon = styled(Icon)`
   flex: 0 0 24px;
   margin-top: -1.5px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-right: 6px;
   `}
 `;

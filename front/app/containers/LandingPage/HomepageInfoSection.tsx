@@ -21,7 +21,7 @@ const CustomSectionContentContainer = styled(ContentContainer)`
   padding-bottom: 80px;
   background: #fff;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-top: 40px;
     padding-bottom: 40px;
   `}

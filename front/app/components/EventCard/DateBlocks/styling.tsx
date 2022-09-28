@@ -36,7 +36,7 @@ export const EventDate = styled.div`
   border-bottom: none;
   color: ${(props: any) => props.theme.colorText};
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding: 4px;
   `}
 `;
@@ -55,7 +55,7 @@ export const EventDay = styled.div`
   line-height: normal;
   font-weight: 400;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     font-size: ${fontSizes.base}px;
   `}
 `;
@@ -74,7 +74,7 @@ export const EventYear = styled.div`
   border-top-right-radius: 0;
   background: ${({ theme }) => theme.colorMain};
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     font-size: ${fontSizes.s}px;
   `}
 `;

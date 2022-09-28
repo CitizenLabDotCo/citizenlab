@@ -30,7 +30,7 @@ const Content = styled.div`
   padding-right: 60px;
   padding-bottom: 80px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-top: 30px;
     padding-left: 15px;
     padding-right: 15px;

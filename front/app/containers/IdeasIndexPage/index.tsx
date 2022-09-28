@@ -36,7 +36,7 @@ const StyledContentContainer = styled(ContentContainer)`
   padding-top: 60px;
   padding-bottom: 100px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-top: 30px;
   `}
 `;
@@ -56,7 +56,7 @@ const PageTitle = styled.h1`
     margin-bottom: 20px;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     font-size: ${fontSizes.xxxl}px;
   `}
 

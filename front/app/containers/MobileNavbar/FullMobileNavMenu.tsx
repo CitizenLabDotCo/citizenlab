@@ -86,7 +86,7 @@ const StyledCloseIconButton = styled(CloseIconButton)`
     background: #e0e0e0;
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     right: 15px;
   `}
 `;

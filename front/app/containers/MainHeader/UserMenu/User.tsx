@@ -24,7 +24,7 @@ const StyledUserName = styled(UserName)`
   align-items: flex-end;
   transition: all 100ms ease-out;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     display: none;
   `}
 `;

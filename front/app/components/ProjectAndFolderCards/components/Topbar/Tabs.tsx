@@ -56,7 +56,7 @@ const Tab = styled.button<{ active: boolean }>`
       cursor: pointer;
     `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     font-size: ${fontSizes.base}px;
     padding: 14px 9px 14px;
   `}
@@ -65,7 +65,7 @@ const Tab = styled.button<{ active: boolean }>`
 const StatusCount = styled.span`
   margin-left: 5px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-left: 3px;
   `}
 `;

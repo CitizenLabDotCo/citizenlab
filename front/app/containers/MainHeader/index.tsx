@@ -82,7 +82,7 @@ const ContainerInner = styled.div`
     flex-direction: row-reverse;
     `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-left: 15px;
   `}
 `;
@@ -123,7 +123,7 @@ const Right = styled.div`
     margin-right: 40px;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-right: 20px;
   `}
   ${isRtl`
@@ -137,7 +137,7 @@ const Right = styled.div`
         margin-left: 40px;
     `}
 
-    ${media.smallerThanMinTablet`
+    ${media.phone`
         margin-left: 20px;
     `}
     `}
@@ -146,13 +146,13 @@ const Right = styled.div`
 const StyledLanguageSelector = styled(LanguageSelector)`
   padding-left: 20px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-left: 15px;
   `}
   ${isRtl`
     padding-left: 0px;
     padding-right: 20px;
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-right: 15px;
   `}
   `}
@@ -170,14 +170,14 @@ const RightItem = styled.div`
     margin-left: 0px;
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-left: 30px;
   `}
 
   ${isRtl`
     margin-right: 40px;
     margin-left: 0;
-    ${media.smallerThanMinTablet`
+    ${media.phone`
         margin-right: 30px;
     `}
     &.noLeftMargin {
@@ -208,7 +208,7 @@ const LogInMenuItem = styled.button`
     text-decoration: underline;
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding: 0 15px;
   `}
 `;
@@ -237,7 +237,7 @@ const SignUpMenuItem = styled.button`
       )};
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding: 0 15px;
   `}
 

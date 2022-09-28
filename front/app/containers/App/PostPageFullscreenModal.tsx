@@ -35,7 +35,7 @@ const StyledIdeasShow = styled(IdeasShow)`
     padding-top: 35px;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-top: 25px;
     padding-left: 15px;
     padding-right: 15px;

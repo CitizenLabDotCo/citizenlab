@@ -48,7 +48,7 @@ const Title = styled.h3`
   font-weight: 500;
   line-height: normal;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     font-size: ${fontSizes.xl}px;
   `}
 `;
@@ -62,7 +62,7 @@ const Address = styled.div`
   align-items: center;
   margin-top: 20px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     font-size: ${fontSizes.s}px;
     margin-top: 18px;
   `}
@@ -95,7 +95,7 @@ const Description = styled.div`
     position: absolute;
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-top: 18px;
   `}
 `;

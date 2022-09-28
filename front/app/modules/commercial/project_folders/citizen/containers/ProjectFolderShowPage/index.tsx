@@ -87,7 +87,7 @@ const StyledProjectFolderHeader = styled(ProjectFolderHeader)`
   height: 240px;
   margin-bottom: 30px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     height: 140px;
   `};
 `;

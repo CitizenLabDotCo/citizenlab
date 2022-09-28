@@ -11,7 +11,7 @@ const Container = styled.div`
   line-height: 29px; // same line-height as Body's content
   font-weight: 300;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     font-size: ${(props) => props.theme.fontSizes.base}px;
   `}
 `;

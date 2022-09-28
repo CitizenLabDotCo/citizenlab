@@ -36,7 +36,7 @@ const Container = styled.div`
   border-radius: ${({ theme }) => theme.borderRadius};
   border: solid 1px #e0e0e0;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding: 30px;
   `}
 `;
@@ -55,7 +55,7 @@ const Header = styled.div`
   justify-content: space-between;
   margin-bottom: 60px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     flex-direction: column;
     align-items: stretch;
   `}
@@ -81,7 +81,7 @@ const Title = styled.h1`
   margin: 0;
   margin-bottom: 10px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-bottom: 5px;
   `}
 `;
@@ -95,7 +95,7 @@ const Subtitle = styled.h2`
   margin-top: 0;
   margin-bottom: 5px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-bottom: 35px;
   `}
 `;
@@ -111,7 +111,7 @@ const LinkCopied = styled.div`
     opacity: 1;
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     order: 2;
   `}
 `;
@@ -125,7 +125,7 @@ const LinkCopiedIcon = styled(Icon)`
 const CopyLinkButton = styled(Button)`
   margin-left: 20px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     order: 1;
     margin-left: 0px;
     margin-right: 20px;

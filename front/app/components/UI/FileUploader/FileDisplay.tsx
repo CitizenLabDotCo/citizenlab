@@ -67,7 +67,7 @@ const FileSize = styled.span<{ error: boolean }>`
   white-space: nowrap;
   margin-left: 10px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     display: none;
   `}
 `;
