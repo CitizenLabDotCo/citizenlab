@@ -37,8 +37,8 @@ import { IProjectData } from 'services/projects';
 // other
 import { isValidPhase } from './phaseParam';
 import { anyIsUndefined, isNilOrError, isApiError } from 'utils/helperUtils';
-import { getLatestRelevantPhase } from 'services/phases';
-import { getMethodConfig } from 'utils/participationMethodUtils';
+import { getCurrentPhase } from 'services/phases';
+import { getMethodConfig, getPhase } from 'utils/participationMethodUtils';
 
 const Container = styled.main<{ background: string }>`
   flex: 1 0 auto;
@@ -87,21 +87,39 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
     ? project.attributes.process_type
     : undefined;
 
-  useEffect(() => {
-    const queryParams = new URLSearchParams(window.location.search);
-    const showModal = queryParams.get('show_modal');
-    if (!isNilOrError(showModal)) {
-      setTimeout(() => {
-        setShowModal(JSON.parse(showModal));
-      }, 1500);
-      clHistory.replace(window.location.pathname);
-    }
-  }, []);
-
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [phaseIdUrl, setPhaseIdUrl] = useState<string | null>(null);
   const locale = useLocale();
   const tenant = useAppConfiguration();
   const phases = usePhases(projectId);
+
+  // UseEffect to handle modal state and phase parameters
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const showModalParam = queryParams.get('show_modal');
+    const phaseIdParam = queryParams.get('phase_id');
+    // Set phase id
+    if (!isNilOrError(phaseIdParam) && phaseIdUrl === null) {
+      setPhaseIdUrl(phaseIdParam);
+    }
+    // Set modal state
+    if (!isNilOrError(showModalParam)) {
+      setTimeout(() => {
+        if (!showModal) {
+          setShowModal(JSON.parse(showModalParam));
+        }
+      }, 1500);
+    }
+    // Clear URL parameters for continuous projects
+    // (handled elsewhere for timeline projects)
+    if (
+      !isNilOrError(project) &&
+      project.attributes.process_type === 'continuous'
+    ) {
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+  }, [project, showModal, phaseIdUrl]);
+
   const { events } = useEvents({
     projectIds: projectId ? [projectId] : undefined,
     sort: 'newest',
@@ -139,9 +157,17 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
     let phaseParticipationMethod;
 
     if (!isNilOrError(phases)) {
-      phaseParticipationMethod =
-        getLatestRelevantPhase(phases)?.attributes.participation_method;
+      if (phaseIdUrl) {
+        const phase = getPhase(phaseIdUrl, phases);
+        if (!isNilOrError(phase)) {
+          phaseParticipationMethod = phase.attributes.participation_method;
+        }
+      } else {
+        phaseParticipationMethod =
+          getCurrentPhase(phases)?.attributes.participation_method;
+      }
     }
+
     const config = getMethodConfig(
       phaseParticipationMethod
         ? phaseParticipationMethod
@@ -181,7 +207,7 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
           >
             <Image width="80px" height="80px" src={rocket} alt="" />
             <Title variant="h2" textAlign="center">
-              {config.getModalContent()}
+              {config && config.getModalContent()}
             </Title>
           </Box>
         </Modal>

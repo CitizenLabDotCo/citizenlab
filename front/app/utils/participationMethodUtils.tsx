@@ -36,7 +36,7 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
     const urlParameters = `?show_modal=true`;
     clHistory.push({
       pathname: `/projects/${project?.attributes.slug}`,
-      search: urlParameters.concat(_phaseId ? `?phase_id=${_phaseId}` : ''),
+      search: urlParameters.concat(_phaseId ? `&phase_id=${_phaseId}` : ''),
     });
   },
   getModalContent: () => {
@@ -122,6 +122,14 @@ export function getAllParticipationMethods(
   } else {
     throw `Unknown process_type ${project.attributes.process_type}`;
   }
+}
+
+/** Returns the phase for a given phaseID */
+export function getPhase(
+  phaseId: string,
+  phases: IPhaseData[]
+): IPhaseData | null {
+  return phases.filter((phase) => phase.id === phaseId)[0];
 }
 
 /** Given a project and its (optional) phases, returns whether the InputManager

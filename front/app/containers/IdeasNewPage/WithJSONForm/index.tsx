@@ -99,14 +99,10 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   }, [search]);
 
   const onSubmit = async (data) => {
-    // TODO Next iteration: Handle the submit differently for ideas versus survey inputs (i.e. no redirection)
-
     let location_point_geojson;
-
     if (data.location_description && !data.location_point_geojson) {
       location_point_geojson = await geocode(data.location_description);
     }
-
     const idea = await addIdea({
       ...data,
       location_point_geojson,
@@ -117,17 +113,22 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
     const ideaId = idea.data.id;
 
     // Check ParticipationMethodConfig for form submission action
-    if (!isNilOrError(phases)) {
+    if (
+      project?.attributes.process_type === 'timeline' &&
+      !isNilOrError(phases)
+    ) {
       // Check if URL contains specific phase_id
       const queryParams = new URLSearchParams(window.location.search);
       const phaseIdFromUrl = queryParams.get('phase_id');
+
       const participationMethodFromURL = phases
         .filter((phase) => phase.id === phaseIdFromUrl)
         .map((phase) => phase.attributes.participation_method)[0];
 
-      const phaseParticipationMethod = phaseIdFromUrl
+      const phaseParticipationMethod = participationMethodFromURL
         ? participationMethodFromURL
         : getCurrentPhase(phases)?.attributes.participation_method;
+
       if (!isNilOrError(phaseParticipationMethod)) {
         getMethodConfig(phaseParticipationMethod).onFormSubmission(
           project,
@@ -136,8 +137,7 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
           phaseIdFromUrl
         );
       }
-    }
-    if (!isNilOrError(project)) {
+    } else if (!isNilOrError(project)) {
       getMethodConfig(
         project?.attributes.participation_method
       ).onFormSubmission(project, ideaId, idea, undefined);
