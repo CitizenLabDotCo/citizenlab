@@ -16,7 +16,7 @@ const ProjectsListItem = styled(Link)`
   &:hover,
   &:focus {
     color: #000;
-    background: ${colors.gray300};
+    background: ${colors.grey300};
     text-decoration: none;
   }
 `;

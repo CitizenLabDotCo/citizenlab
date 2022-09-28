@@ -41,7 +41,7 @@ export function getSelectStyles(borderColor = colors.borderDark) {
       ':active': null,
       fontSize: `${fontSizes.base}px`,
       color: isFocused ? colors.text : colors.textSecondary,
-      backgroundColor: isFocused ? colors.gray300 : '#fff',
+      backgroundColor: isFocused ? colors.grey300 : '#fff',
       cursor: 'pointer',
     }),
     multiValue: (base) => ({

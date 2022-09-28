@@ -52,7 +52,7 @@ const DropdownListItem = styled.button`
   &:hover,
   &:focus,
   &.selected {
-    background: ${colors.gray300};
+    background: ${colors.grey300};
   }
 `;
 

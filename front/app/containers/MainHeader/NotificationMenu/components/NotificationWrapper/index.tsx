@@ -23,7 +23,7 @@ const Container = styled.button`
   &:hover,
   &:focus {
     color: ${colors.textPrimary};
-    background-color: ${colors.gray300};
+    background-color: ${colors.grey300};
   }
 
   ${media.phone`
