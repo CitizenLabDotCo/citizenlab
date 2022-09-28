@@ -51,7 +51,7 @@ const Title = styled.h1`
     text-align: right;
   `}
 
-  ${media.smallerThan1100px`
+  ${media.tablet`
     margin-bottom: 20px;
   `}
 `;

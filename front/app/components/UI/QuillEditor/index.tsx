@@ -112,7 +112,7 @@ const Container = styled.div<{
   .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter,
   .ql-picker-label:focus .ql-stroke,
   .ql-picker-item:focus .ql-stroke {
-    stroke: ${colors.clBlue};
+    stroke: ${colors.teal};
   }
 
   .ql-snow.ql-toolbar button:hover .ql-fill,
@@ -145,7 +145,7 @@ const Container = styled.div<{
   .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke.ql-fill,
   .ql-snow.ql-toolbar .ql-picker-label:focus .ql-stroke.ql-fill,
   .ql-snow.ql-toolbar .ql-picker-item:focus .ql-stroke.ql-fill {
-    fill: ${colors.clBlue};
+    fill: ${colors.teal};
   }
 
   .ql-snow.ql-toolbar button:hover,
@@ -165,7 +165,7 @@ const Container = styled.div<{
   .ql-snow.ql-toolbar .ql-picker-item.ql-selected,
   .ql-snow.ql-toolbar .ql-picker-item:focus,
   .ql-snow .ql-toolbar .ql-picker-item.ql-selected {
-    color: ${colors.clBlue};
+    color: ${colors.teal};
   }
 
   .ql-tooltip[data-mode='link']::before {

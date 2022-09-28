@@ -15,7 +15,7 @@ const StyledIdeaCard = styled(IdeaCard)`
   width: calc(50% - 20px);
   margin: 10px;
 
-  ${media.smallerThan1100px`
+  ${media.tablet`
     width: 100%;
   `};
 `;

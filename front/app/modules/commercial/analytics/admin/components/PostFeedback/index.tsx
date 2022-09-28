@@ -44,7 +44,7 @@ const Container = styled.div`
   flex-direction: row;
   min-height: 240px;
 
-  ${media.smallerThan1100px`
+  ${media.tablet`
     flex-direction: column;
   `}
 `;
@@ -54,7 +54,7 @@ const DonutChartContainer = styled.div`
   height: 100%;
   padding: 8px;
 
-  ${media.smallerThan1100px`
+  ${media.tablet`
     width: 100%;
     height: 50%;
   `}
@@ -68,7 +68,7 @@ const ProgressBarsContainer = styled.div`
   justify-content: center;
   padding: 8px;
 
-  ${media.smallerThan1100px`
+  ${media.tablet`
     width: 100%;
     height: 50%;
   `}

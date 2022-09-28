@@ -61,7 +61,7 @@ const collideForce = 10;
 
 const nodeColors = [
   colors.clGreen,
-  colors.clBlue,
+  colors.teal,
   colors.red500,
   colors.orange,
   colors.primary,

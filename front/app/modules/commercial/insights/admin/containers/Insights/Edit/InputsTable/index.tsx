@@ -99,7 +99,7 @@ const RecentlyPostedInfoBox = styled.div`
   text-align: center;
   margin-bottom: 28px;
   svg {
-    fill: ${colors.clBlue};
+    fill: ${colors.teal};
     margin-right: 8px;
   }
 `;
@@ -413,7 +413,7 @@ const InputsTable = ({
           )}
           <Button
             buttonStyle="admin-dark"
-            bgColor={colors.clBlue}
+            bgColor={colors.teal}
             linkTo={`/admin/insights/${viewId}`}
           >
             {formatMessage(messages.inputsDone)}

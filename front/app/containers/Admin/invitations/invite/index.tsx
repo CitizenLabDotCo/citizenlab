@@ -102,11 +102,11 @@ const SectionDescription = styled.div`
 
 const SectionParagraph = styled.p`
   a {
-    color: ${colors.clBlue};
+    color: ${colors.teal};
     text-decoration: underline;
 
     &:hover {
-      color: ${darken(0.2, colors.clBlue)};
+      color: ${darken(0.2, colors.teal)};
       text-decoration: underline;
     }
   }

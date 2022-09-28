@@ -30,11 +30,11 @@ const StyledDescription = styled.p`
 const StyledLink = styled.a`
   cursor: pointer;
   font-size: ${fontSizes.base}px;
-  color: ${colors.clBlue};
+  color: ${colors.teal};
   font-weight: 600;
   text-decoration: underline;
   &:hover {
-    color: ${darken(0.2, colors.clBlue)};
+    color: ${darken(0.2, colors.teal)};
     text-decoration: underline;
   }
 `;
