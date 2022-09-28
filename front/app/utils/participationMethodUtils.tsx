@@ -16,7 +16,7 @@ type ParticipationMethodConfig = {
 
 const ideationConfig: ParticipationMethodConfig = {
   formEditor: 'simpleFormEditor',
-  onFormSubmission: (_project, _ideaId, _idea) => {
+  onFormSubmission: (_project, _ideaId, _idea, _phaseId) => {
     clHistory.push({
       pathname: `/ideas/${_idea.data.attributes.slug}`,
       search: `?new_idea_id=${_ideaId}`,
@@ -29,10 +29,11 @@ const ideationConfig: ParticipationMethodConfig = {
 
 const nativeSurveyConfig: ParticipationMethodConfig = {
   formEditor: 'surveyEditor',
-  onFormSubmission: (_project, _ideaId, _idea) => {
+  onFormSubmission: (project: IProjectData, _ideaId, _idea, _phaseId) => {
+    const urlParameters = `?show_modal=true`;
     clHistory.push({
-      pathname: `/projects/${_project?.attributes.slug}`,
-      search: `?show_modal=true`,
+      pathname: `/projects/${project?.attributes.slug}`,
+      search: urlParameters.concat(_phaseId ? `?phase_id=${_phaseId}` : ''),
     });
   },
   getModalContent: () => {

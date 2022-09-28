@@ -131,14 +131,15 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
         getMethodConfig(phaseParticipationMethod).onFormSubmission(
           project,
           ideaId,
-          idea
+          idea,
+          phaseIdFromUrl
         );
       }
     }
     if (!isNilOrError(project)) {
       getMethodConfig(
         project?.attributes.participation_method
-      ).onFormSubmission(project, ideaId, idea);
+      ).onFormSubmission(project, ideaId, idea, undefined);
     }
   };
 
