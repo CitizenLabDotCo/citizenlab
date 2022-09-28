@@ -12,7 +12,6 @@ import useLocalize from 'hooks/useLocalize';
 
 // parsing
 import {
-  getTranslations,
   parsePieData,
   parseProgressBarsData,
   parseStackedBarsData,
@@ -26,7 +25,7 @@ import {
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
-import { isEmptyResponse } from './utils';
+import { isEmptyResponse, getTranslations } from './utils';
 import { getProjectFilter, getDateFilter } from '../../utils/query';
 
 // typings

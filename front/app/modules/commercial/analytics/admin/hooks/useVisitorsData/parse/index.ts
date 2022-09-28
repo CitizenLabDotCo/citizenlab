@@ -10,34 +10,7 @@ import { keys } from 'utils/helperUtils';
 import { Moment } from 'moment';
 import { IResolution } from 'components/admin/ResolutionControl';
 import { Response, Stats, TimeSeries, TimeSeriesResponse } from '../typings';
-
-interface Translations {
-  stats: string;
-  timeSeries: string;
-  statistic: string;
-  total: string;
-  lastPeriod: string;
-  visitors: string;
-  visits: string;
-  visitDuration: string;
-  pageViews: string;
-}
-
-// export const getTranslations = (
-//   formatMessage: InjectedIntlProps['intl']['formatMessage']
-// ): Translations => ({
-//   statusChanged: formatMessage(messages.statusChanged),
-//   officialUpdate: formatMessage(messages.officialUpdate),
-//   feedbackGiven: formatMessage(messages.feedbackGiven),
-//   total: formatMessage(messages.total),
-//   averageTimeColumnName: formatMessage(messages.averageTimeColumnName),
-//   inputStatus: formatMessage(messages.inputStatus),
-//   responseTime: formatMessage(messages.responseTime),
-//   inputsByStatus: formatMessage(messages.inputsByStatus),
-//   status: formatMessage(messages.status),
-//   numberOfInputs: formatMessage(messages.numberOfInputs),
-//   percentageOfInputs: formatMessage(messages.percentageOfInputs),
-// });
+import { Translations } from '../utils';
 
 export const parseStats = ([
   totalsWholePeriodRows,
@@ -85,28 +58,37 @@ export const parseTimeSeries = (
   return parseDays(responseTimeSeries, startAtMoment, endAtMoment);
 };
 
+const RESOLUTION_TO_MESSAGE_KEY: Record<IResolution, keyof Translations> = {
+  month: 'last30Days',
+  week: 'last7Days',
+  day: 'yesterday'
+}
+
 export const parseExcelData = (
   stats: Stats,
   timeSeries: TimeSeries | null,
-  translations: Translations
+  translations: Translations,
+  resolution: IResolution
 ) => {
   const statsData = keys(stats).map((key) => {
     const stat = stats[key];
+    const lastPeriod = translations[RESOLUTION_TO_MESSAGE_KEY[resolution]];
 
     return {
       [translations.statistic]: translations[key],
       [translations.total]: stat.value,
-      [translations.lastPeriod]: stat.lastPeriod
+      [lastPeriod]: stat.lastPeriod
     }
   })
 
-  const timeSeriesData = timeSeries?.map((row) => ({
-    
-  }))
+  // const timeSeriesData = timeSeries?.map((row) => ({
+
+  // }))
+  console.log(timeSeries)
 
   const xlsxData = {
     [translations.stats]: statsData,
-    [translations.timeSeries]: timeSeriesData ?? []
+    // [translations.timeSeries]: timeSeriesData ?? []
   }
 
   return xlsxData

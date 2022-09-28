@@ -10,7 +10,7 @@ import {
 } from '../../services/analyticsFacts';
 
 // parse
-import { parseStats, parseTimeSeries } from './parse';
+import { parseStats, parseTimeSeries, parseExcelData } from './parse';
 
 // utils
 import {
@@ -18,13 +18,14 @@ import {
   getDateFilter,
   getInterval,
 } from '../../utils/query';
-import { deduceResolution } from './utils';
+import { deduceResolution, getTranslations } from './utils';
 
 // typings
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { XlsxData } from 'components/admin/ReportExportMenu';
 import { QueryParameters, Response, Stats, TimeSeries } from './typings';
 import { IResolution } from 'components/admin/ResolutionControl';
+import { InjectedIntlProps } from 'react-intl';
 
 const getAggregations = (): AggregationsConfig => ({
   all: 'count',
@@ -107,12 +108,15 @@ const query = ({
   };
 };
 
-export default function useVisitorsData({
-  projectId,
-  startAtMoment,
-  endAtMoment,
-  resolution,
-}: QueryParameters) {
+export default function useVisitorsData(
+  formatMessage: InjectedIntlProps['intl']['formatMessage'],
+  {
+    projectId,
+    startAtMoment,
+    endAtMoment,
+    resolution,
+  }: QueryParameters
+) {
   const [deducedResolution, setDeducedResolution] =
     useState<IResolution>(resolution);
   const [stats, setStats] = useState<Stats | NilOrError>();
@@ -138,24 +142,33 @@ export default function useVisitorsData({
           return;
         }
 
+        const translations = getTranslations(formatMessage)
+
         const deducedResolution = deduceResolution(response.data[2]);
         setDeducedResolution(deducedResolution);
 
-        setStats(parseStats(response.data));
+        const stats = parseStats(response.data)
+        setStats(stats);
 
-        setTimeSeries(
-          parseTimeSeries(
-            response.data[2],
-            startAtMoment,
-            endAtMoment,
-            deducedResolution
-          )
-        );
+        const timeSeries = parseTimeSeries(
+          response.data[2],
+          startAtMoment,
+          endAtMoment,
+          deducedResolution
+        )
+        setTimeSeries(timeSeries);
+
+        setXlsxData(parseExcelData(
+          stats,
+          timeSeries,
+          translations,
+          deducedResolution
+        ))
       }
     );
 
     return () => subscription.unsubscribe();
-  }, [projectId, startAtMoment, endAtMoment, resolution]);
+  }, [projectId, startAtMoment, endAtMoment, resolution, formatMessage]);
 
   return { deducedResolution, stats, timeSeries, xlsxData };
 }
