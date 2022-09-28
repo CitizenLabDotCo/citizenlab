@@ -27,8 +27,10 @@ const SettingsLabel = styled(Label)`
 interface Props {
   localHomepageSettings: IHomepageSettingsAttributes;
   onChange: (key: keyof IHomepageSettingsAttributes, value: unknown) => void;
-  hasCTAMultilocError: boolean;
-  hasCTAUrlError: boolean;
+  hasSignedOutCTAMultilocError: boolean;
+  hasSignedInCTAMultilocError: boolean;
+  hasSignedOutCTAUrlError: boolean;
+  hasSignedInCTAUrlError: boolean;
 }
 
 declare module 'utils/moduleUtils' {
@@ -58,8 +60,10 @@ const CTASettings = ({
     banner_cta_signed_out_type,
     banner_cta_signed_in_type,
   },
-  hasCTAMultilocError,
-  hasCTAUrlError,
+  hasSignedOutCTAMultilocError,
+  hasSignedInCTAMultilocError,
+  hasSignedOutCTAUrlError,
+  hasSignedInCTAUrlError,
 }: Props) => {
   // signed out
   const handleSignedOutCTAButtonTextMultilocOnChange = (
@@ -107,8 +111,8 @@ const CTASettings = ({
             handleSignedOutCTAButtonTextMultilocOnChange
           }
           handleCTAButtonUrlOnChange={handleSignedOutCTAButtonUrlOnChange}
-          hasCTAMultilocError={hasCTAMultilocError}
-          hasCTAUrlError={hasCTAUrlError}
+          hasCTAMultilocError={hasSignedOutCTAMultilocError}
+          hasCTAUrlError={hasSignedOutCTAUrlError}
         />
       </SectionField>
       <SectionField>
@@ -126,8 +130,8 @@ const CTASettings = ({
             handleSignedInCTAButtonTextMultilocOnChange
           }
           handleCTAButtonUrlOnChange={handleSignedInCTAButtonUrlOnChange}
-          hasCTAMultilocError={hasCTAMultilocError}
-          hasCTAUrlError={hasCTAUrlError}
+          hasCTAMultilocError={hasSignedInCTAMultilocError}
+          hasCTAUrlError={hasSignedInCTAUrlError}
         />
       </SectionField>
     </Section>
