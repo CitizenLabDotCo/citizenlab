@@ -139,7 +139,7 @@ const ContentBuilderTopBar = ({
             <Spinner />
           ) : (
             <>
-              <Text mb="0px" color="adminSecondaryTextColor">
+              <Text mb="0px" color="textSecondary">
                 {localize(project.attributes.title_multiloc)}
               </Text>
               <Title variant="h4" as="h1">

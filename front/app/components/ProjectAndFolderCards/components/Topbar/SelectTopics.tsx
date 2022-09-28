@@ -37,7 +37,7 @@ const SelectTopics = ({
   const localize = useLocalize();
   const topics = useTopics({ forHomepageFilter: true });
   const appConfig = useAppConfiguration();
-  const smallerThanMinTablet = useBreakpoint('smallTablet');
+  const smallerThanMinTablet = useBreakpoint('tablet');
 
   if (isNilOrError(appConfig)) return null;
 

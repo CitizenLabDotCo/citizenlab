@@ -93,7 +93,7 @@ const SearchContainer = styled.div`
 
 const RecentlyPostedInfoBox = styled.div`
   color: ${colors.primary};
-  background-color: ${colors.teal300est};
+  background-color: ${colors.teal100};
   padding: 20px;
   border-radius: 3px;
   text-align: center;

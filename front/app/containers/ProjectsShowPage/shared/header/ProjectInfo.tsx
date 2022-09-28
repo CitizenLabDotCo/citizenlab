@@ -82,7 +82,7 @@ const ProjectInfo = memo<Props>(({ projectId, className }) => {
       <Container className={`${className || ''} e2e-project-info`}>
         <Fragment name={`projects/${project.id}/info`}>
           <Left>
-            <Title variant="h1" color="colorText">
+            <Title variant="h1" color="tenantText">
               <T value={project.attributes.title_multiloc} />
             </Title>
 

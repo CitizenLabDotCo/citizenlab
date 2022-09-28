@@ -19,7 +19,7 @@ import { ScanStatus } from 'modules/commercial/insights/hooks/useScanInsightsCat
 
 const ScanContainer = styled.div`
   width: 100%;
-  background-color: ${colors.teal300est};
+  background-color: ${colors.teal100};
   padding: 32px;
   display: flex;
   justify-content: space-between;

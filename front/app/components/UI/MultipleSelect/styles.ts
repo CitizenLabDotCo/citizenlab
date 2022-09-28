@@ -19,7 +19,7 @@ export function getSelectStyles(borderColor = colors.borderDark) {
       boxShadow: isFocused ? defaultStyles.boxShadowFocused : 'none',
       cursor: 'pointer',
       '&:hover': {
-        borderColor: isFocused ? colors.black : colors.black,
+        borderColor: colors.black,
       },
     }),
     indicatorSeparator: () => ({
@@ -29,7 +29,7 @@ export function getSelectStyles(borderColor = colors.borderDark) {
       ...base,
       color: isFocused ? colors.black : `${borderColor}`,
       '&:hover': {
-        color: isFocused ? colors.black : colors.black,
+        color: colors.black,
       },
     }),
     placeholder: (base) => ({
@@ -40,7 +40,7 @@ export function getSelectStyles(borderColor = colors.borderDark) {
       ...base,
       ':active': null,
       fontSize: `${fontSizes.base}px`,
-      color: isFocused ? colors.text : colors.textSecondary,
+      color: isFocused ? colors.textPrimary : colors.textSecondary,
       backgroundColor: isFocused ? colors.grey300 : '#fff',
       cursor: 'pointer',
     }),

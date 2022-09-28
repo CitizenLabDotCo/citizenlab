@@ -64,7 +64,7 @@ const CustomTooltip = ({ label, payload }: CustomTooltipProps) => {
           referenceNumber,
         } = payload;
         const colorName: TextProps['color'] =
-          dataKey === 'actualPercentage' ? 'adminTextColor' : 'clBlue';
+          dataKey === 'actualPercentage' ? 'textPrimary' : 'teal';
 
         return dataKey === 'actualPercentage' ? (
           <Row

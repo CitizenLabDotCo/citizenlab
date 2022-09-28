@@ -29,7 +29,7 @@ const Container = styled.div`
     justify-content: flex-end;
   `}
 
-  ${media.smallPhone`
+  ${media.phone`
     flex-direction: column;
   `}
 `;

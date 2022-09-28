@@ -27,7 +27,7 @@ export const NoPostPage = styled.div`
   svg {
     margin-bottom: 20px;
     height: 50px;
-    fill: ${colors.clIconAccent};
+    fill: ${colors.teal400};
   }
 
   transition: all 200ms ease;

@@ -26,7 +26,7 @@ const StyledBox = styled(Box)`
     visibility: hidden;
   }
   &:hover {
-    background-color: ${colors.emailBg};
+    background-color: ${colors.grey200};
     transition: background-color 80ms ease-out 0s;
   }
   &:hover ${AddIcon} {

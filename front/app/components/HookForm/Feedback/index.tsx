@@ -107,7 +107,7 @@ const Feedback = ({
                   width="24px"
                   height="24px"
                 />
-                <Title color="clGreenSuccess" variant="h4" as="h3">
+                <Title color="green" variant="h4" as="h3">
                   {successMessage || formatMessage(messages.successMessage)}
                 </Title>
               </Box>

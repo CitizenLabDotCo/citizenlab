@@ -32,7 +32,7 @@ const Container = styled.div`
       margin-right: 25px;
     `}
 
-    ${media.smallPhone`
+    ${media.phone`
       margin-right: 20px;
     `}
   }
@@ -49,7 +49,7 @@ const Container = styled.div`
         margin-left: 30px;
       `}
 
-      ${media.smallPhone`
+      ${media.phone`
         margin-left: 20px;
       `}
     }

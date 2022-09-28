@@ -75,7 +75,7 @@ const InfoboxIcon = styled(Icon)`
 `;
 
 const InfoboxText = styled.div`
-  color: ${colors.tealer};
+  color: ${colors.teal700};
   font-size: ${fontSizes.base}px;
   line-height: 21px;
   font-weight: 400;
@@ -88,12 +88,12 @@ const InfoboxText = styled.div`
   }
 
   a {
-    color: ${colors.tealer};
+    color: ${colors.teal700};
     font-weight: 400;
     text-decoration: underline;
 
     &:hover {
-      color: ${darken(0.15, colors.tealer)};
+      color: ${darken(0.15, colors.teal700)};
       text-decoration: underline;
     }
   }

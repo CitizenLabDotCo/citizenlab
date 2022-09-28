@@ -41,7 +41,7 @@ const SharingButtons = memo(
     url,
     utmParams,
   }: Props & InjectedIntlProps) => {
-    const maxTabletOrSmaller = useBreakpoint('largeTablet');
+    const maxTabletOrSmaller = useBreakpoint('tablet');
 
     const getUrl = (medium: Medium) => {
       return getUrlWithUtm(medium, url, utmParams);

@@ -24,7 +24,7 @@ const GoBackButton = memo(
   ({ projectId, className, insideModal, deselectIdeaOnMap }: Props) => {
     const project = useProject({ projectId });
     const localize = useLocalize();
-    const isSmallTablet = useBreakpoint('smallTablet');
+    const isSmallTablet = useBreakpoint('tablet');
 
     const projectExists = !isNilOrError(project);
     const deselectIdeaCallbackExists = !isNilOrError(deselectIdeaOnMap);

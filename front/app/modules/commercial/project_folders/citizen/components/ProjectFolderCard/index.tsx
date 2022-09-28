@@ -133,7 +133,7 @@ const FolderImagePlaceholder = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${colors.placeholderBg};
+  background: ${colors.background};
 `;
 
 const FolderImagePlaceholderIcon = styled(Icon)`
@@ -213,7 +213,7 @@ const ContentHeader = styled.div<{ hasLabel: boolean }>`
       padding-right: 20px;
     `}
 
-    ${media.smallPhone`
+    ${media.phone`
       padding-left: 10px;
       padding-right: 10px;
     `}

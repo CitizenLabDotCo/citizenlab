@@ -88,7 +88,7 @@ const FormBuilderTopBar = ({ isSubmitting }: FormBuilderTopBarProps) => {
       </Box>
       <Box display="flex" p="16px" flexGrow={1} alignItems="center">
         <Box flexGrow={2}>
-          <Text mb="0px" color="adminSecondaryTextColor">
+          <Text mb="0px" color="textSecondary">
             {localize(project.attributes.title_multiloc)}
           </Text>
           <Box display="flex" alignContent="center">

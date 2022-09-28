@@ -47,7 +47,7 @@ const CustomInputWrapper = styled.div<{
   display: flex;
   align-items: center;
   justify-content: center;
-  border: solid 1px ${colors.dividerDark};
+  border: solid 1px ${colors.divider};
   border-radius: ${(props) => props.theme.borderRadius};
   background: ${(props) => (props.checked ? colors.green : '#fff')};
   border-color: ${(props) => (props.checked ? colors.green : '#aaa')};
@@ -56,7 +56,7 @@ const CustomInputWrapper = styled.div<{
   &:hover {
     border-color: ${(props) =>
       props.checked === 'mixed'
-        ? colors.teal300est
+        ? colors.teal100
         : props.checked
         ? colors.green
         : '#333'};

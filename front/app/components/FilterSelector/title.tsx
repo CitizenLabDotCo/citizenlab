@@ -45,12 +45,12 @@ const Container = styled.button<{ textColor?: string }>`
   &:focus,
   &.opened {
     ${Text} {
-      color: ${({ textColor }) => darken(0.2, textColor ?? colors.text)};
+      color: ${({ textColor }) => darken(0.2, textColor ?? colors.textPrimary)};
       text-decoration: underline;
     }
 
     ${DropdownIcon} {
-      fill: ${({ textColor }) => darken(0.2, textColor ?? colors.text)};
+      fill: ${({ textColor }) => darken(0.2, textColor ?? colors.textPrimary)};
     }
   }
 `;

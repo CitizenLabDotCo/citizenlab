@@ -117,7 +117,7 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
                   <T value={question} />
                 </Text>
                 {inputTypeText && (
-                  <Text variant="bodyS" color="adminSecondaryTextColor">
+                  <Text variant="bodyS" color="textSecondary">
                     {formatMessage(inputTypeText)}
                   </Text>
                 )}

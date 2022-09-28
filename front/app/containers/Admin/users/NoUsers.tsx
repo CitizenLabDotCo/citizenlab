@@ -20,7 +20,7 @@ const NoUsersPage = styled.div`
   svg {
     margin-bottom: 20px;
     height: 70px;
-    fill: ${colors.clIconAccent};
+    fill: ${colors.teal400};
   }
 `;
 

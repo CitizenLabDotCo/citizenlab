@@ -65,7 +65,7 @@ const MenuItemLink = styled(Link)`
         fill: ${colors.clIconPrimary};
       }
       .cl-icon-accent {
-        fill: ${colors.clIconAccent};
+        fill: ${colors.teal400};
       }
     }
   }
@@ -77,7 +77,7 @@ const MenuItemLink = styled(Link)`
 
     .cl-icon {
       .cl-icon-primary {
-        fill: ${colors.clIconAccent};
+        fill: ${colors.teal400};
       }
       .cl-icon-accent {
         fill: ${colors.clIconPrimary};
@@ -87,10 +87,10 @@ const MenuItemLink = styled(Link)`
     &.moderation {
       .cl-icon {
         .cl-icon-primary {
-          fill: ${colors.clIconAccent};
+          fill: ${colors.teal400};
         }
         .cl-icon-accent {
-          fill: ${colors.clIconAccent};
+          fill: ${colors.teal400};
         }
       }
     }

@@ -111,7 +111,7 @@ const ImageWrapper = styled.div`
 
   &.fillBackground {
     height: 225px;
-    background: ${colors.placeholderBg};
+    background: ${colors.background};
   }
 `;
 

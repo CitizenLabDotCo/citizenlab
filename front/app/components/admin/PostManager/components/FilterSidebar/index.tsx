@@ -18,7 +18,7 @@ import { colors } from 'utils/styleUtils';
 import { ITopicData } from 'services/topics';
 
 const InfoIcon = styled(Icon)`
-  fill: ${colors.tealer};
+  fill: ${colors.teal700};
   width: 16px;
   height: 16px;
   cursor: pointer;

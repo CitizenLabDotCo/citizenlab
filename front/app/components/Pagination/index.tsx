@@ -48,7 +48,7 @@ const NavigateButton = styled.button`
     &:hover,
     &:focus {
       ${ChevronIcon} {
-        fill: ${colors.clIconAccent};
+        fill: ${colors.teal400};
       }
     }
   }

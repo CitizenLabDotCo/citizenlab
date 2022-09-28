@@ -27,7 +27,7 @@ const CompletionBar = ({
           </Text>
         )}
         {rightLabel && (
-          <Text variant="bodyS" color="adminSecondaryTextColor">
+          <Text variant="bodyS" color="textSecondary">
             {rightLabel}
           </Text>
         )}

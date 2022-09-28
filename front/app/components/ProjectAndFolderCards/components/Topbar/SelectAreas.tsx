@@ -35,7 +35,7 @@ const SelectAreas = ({
   const localize = useLocalize();
   const areas = useAreas({ forHomepageFilter: true });
   const appConfig = useAppConfiguration();
-  const smallerThanMinTablet = useBreakpoint('smallTablet');
+  const smallerThanMinTablet = useBreakpoint('tablet');
 
   if (isNilOrError(appConfig)) return null;
 

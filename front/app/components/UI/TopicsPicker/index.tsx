@@ -44,7 +44,7 @@ const TopicSwitch = styled.button`
   margin-bottom: 8px;
   cursor: pointer;
   user-select: none;
-  border: solid 1px ${colors.dividerDark};
+  border: solid 1px ${colors.divider};
   border-radius: 5px;
   transition: all 80ms ease-out;
 

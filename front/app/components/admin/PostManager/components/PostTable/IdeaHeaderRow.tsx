@@ -18,7 +18,7 @@ import Outlet from 'components/Outlet';
 import { insertConfiguration } from 'utils/moduleUtils';
 
 const InfoIcon = styled(Icon)`
-  fill: ${colors.tealer};
+  fill: ${colors.teal700};
   width: 16px;
   height: 16px;
   cursor: pointer;

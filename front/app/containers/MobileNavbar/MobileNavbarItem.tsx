@@ -24,7 +24,7 @@ const NavigationIconWrapper = xStyled.div`
   justify-content: center;
   margin-right: 5px;
 
-  ${media.smallPhone`
+  ${media.phone`
     height: 20px;
     width: 20px;
   `}

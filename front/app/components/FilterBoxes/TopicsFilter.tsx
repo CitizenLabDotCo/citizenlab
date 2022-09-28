@@ -51,7 +51,7 @@ const Topic = styled.button`
   margin-bottom: 8px;
   cursor: pointer;
   user-select: none;
-  border: solid 1px ${colors.dividerDark};
+  border: solid 1px ${colors.divider};
   border-radius: ${(props: any) => props.theme.borderRadius};
   transition: all 80ms ease-out;
 

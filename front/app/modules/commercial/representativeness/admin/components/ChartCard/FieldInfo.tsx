@@ -43,7 +43,7 @@ export interface Props extends RequiredOrOptionalProps {
 
 const FieldInfo = ({ includedUsers, fieldIsRequired }: Props) => (
   <>
-    <Text fontSize="s" color="adminSecondaryTextColor">
+    <Text fontSize="s" color="textSecondary">
       <StyledIcon
         name="user"
         width="16px"

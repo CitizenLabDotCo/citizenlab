@@ -12,7 +12,7 @@ export const DEFAULT_BAR_CHART_MARGIN: Margin = {
 // COLORS
 export const legacyColors = {
   chartFill: mainColors.clIconAccent,
-  chartLabel: mainColors.adminSecondaryTextColor,
+  chartLabel: mainColors.textSecondary,
   cartesianGrid: '#f5f5f5',
   barFill: '#073F80',
   barFillLighter: '#073f80b3',

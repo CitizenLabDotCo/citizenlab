@@ -64,7 +64,7 @@ const Header = ({
     <Box display="flex" alignItems="center" mt="4px">
       <Text
         fontSize="s"
-        color="adminSecondaryTextColor"
+        color="textSecondary"
         fontWeight="bold"
         display="inline"
         m="0px"
@@ -88,7 +88,7 @@ const Header = ({
       <Text
         fontSize="xxl"
         display="inline"
-        color="mediumGrey"
+        color="grey500"
         m="0px"
         mr="8px"
         mb="0px"

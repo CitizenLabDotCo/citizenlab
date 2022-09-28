@@ -67,10 +67,10 @@ const Body = styled.div`
   margin-bottom: 30px;
 
   a {
-    color: ${colors.tealer};
+    color: ${colors.teal700};
 
     &:hover {
-      color: ${colors.tealer};
+      color: ${colors.teal700};
     }
   }
 `;
