@@ -1,7 +1,11 @@
 import { Moment } from 'moment';
-import { getFirstDateInData, getLastDateInData, getDate } from './utils';
-// import { range } from 'lodash-es';
-import { TimeSeriesResponse, TimeSeries, TimeSeriesRow, TimeSeriesResponseRow } from '../typings';
+import {
+  indexTimeSeries,
+  getFirstDateInData,
+  getLastDateInData,
+  getEmptyRow,
+} from './utils';
+import { TimeSeriesResponse, TimeSeries } from '../typings';
 
 export const parseWeeks = (
   responseTimeSeries: TimeSeriesResponse,
@@ -13,58 +17,39 @@ export const parseWeeks = (
   const firstDateInData = getFirstDateInData(responseTimeSeries);
   const lastDateInData = getLastDateInData(responseTimeSeries);
 
-  const startAtMonday = startAtMoment
+  const startMonday = startAtMoment
     ? roundDownToMonday(startAtMoment)
-    : roundDownToMonday(firstDateInData)
+    : roundDownToMonday(firstDateInData);
 
-  const endAtMonday = endAtMoment
+  const endMonday = endAtMoment
     ? roundDownToMonday(endAtMoment)
-    : roundDownToMonday(lastDateInData)
+    : roundDownToMonday(lastDateInData);
 
-  let currentMonday = startAtMonday.clone()
+  let currentMonday = startMonday.clone();
 
   const weeks: TimeSeries = [];
 
-  while(currentMonday.isSameOrBefore(endAtMonday)) {
-    const currentMondayISO = currentMonday.toISOString()
-    const week = indexedTimeSeries.get(currentMondayISO)
+  // Should not be possible, but just in case to avoid
+  // infinite loop
+  if (currentMonday.isAfter(endMonday)) return null;
+
+  while (currentMonday.isSameOrBefore(endMonday)) {
+    const currentMondayISO = currentMonday.toISOString();
+    const week = indexedTimeSeries.get(currentMondayISO);
 
     if (week) {
       weeks.push(week);
     } else {
-      weeks.push(getEmptyWeek(currentMonday))
+      weeks.push(getEmptyRow(currentMonday));
     }
 
     currentMonday = currentMonday.add({ day: 7 });
   }
 
   return weeks;
-}
-
-const indexTimeSeries = (
-  responseTimeSeries: TimeSeriesResponse
-): Map<string, TimeSeriesRow> => {
-  return responseTimeSeries.reduce((acc, row) => {
-    const date = getDate(row);
-    acc.set(date.toISOString(), getWeek(row));
-
-    return acc;
-  }, new Map() as Map<string, TimeSeriesRow>)
-}
+};
 
 const roundDownToMonday = (date: Moment) => {
   const dayNumber = date.isoWeekday();
   return date.clone().subtract({ day: dayNumber - 1 });
-}
-
-const getEmptyWeek = (date: Moment) => ({
-  date: date.format('YYYY-MM-DD'),
-  visitors: 0,
-  visits: 0
-})
-
-const getWeek = (row: TimeSeriesResponseRow) => ({
-  visitors: row.count_visitor_id,
-  visits: row.count,
-  date: getDate(row).format('YYYY-MM-DD')
-})
+};
