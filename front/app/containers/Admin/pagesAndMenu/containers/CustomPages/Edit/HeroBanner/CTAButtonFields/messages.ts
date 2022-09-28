@@ -21,8 +21,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.customized_button_url_label',
     defaultMessage: 'Button link',
   },
-  customPageCtaError: {
-    id: 'app.containers.AdminPage.SettingsPage.customPageCtaError',
-    defaultMessage: 'Enter a valid button text and URL.',
+  customPageCtaButtonTextError: {
+    id: 'app.containers.AdminPage.SettingsPage.customPageCtaButtonTextError',
+    defaultMessage: 'Enter a button text.',
+  },
+  customPageCtaButtonUrlError: {
+    id: 'app.containers.AdminPage.SettingsPage.customPageCtaButtonUrlError',
+    defaultMessage:
+      "Enter a valid button link. Make sure the link starts with 'https://'.",
   },
 });

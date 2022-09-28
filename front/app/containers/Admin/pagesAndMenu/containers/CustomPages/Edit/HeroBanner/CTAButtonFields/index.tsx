@@ -1,12 +1,11 @@
-import { Box, Radio } from '@citizenlab/cl2-component-library';
+import { Box, Input, Label, Radio } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import React from 'react';
-import { InjectedIntlProps } from 'react-intl';
 import { TCustomPageCTAType } from 'services/customPages';
 import { Multiloc } from 'typings';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import CustomizedButtonSettings from './CustomizedButtonSettings';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 const CTA_TYPES: TCustomPageCTAType[] = ['no_button', 'customized_button'];
@@ -19,7 +18,8 @@ interface Props {
   handleCTAButtonTextMultilocOnChange: (buttonTextMultiloc: Multiloc) => void;
   handleCTAButtonUrlOnChange: (url: string) => void;
   title?: string;
-  hasCTAError: boolean;
+  hasCTAMultilocError: boolean;
+  hasCTAUrlError: boolean;
 }
 
 const CTAButtonFields = ({
@@ -30,9 +30,9 @@ const CTAButtonFields = ({
   handleCTAButtonTextMultilocOnChange,
   handleCTAButtonUrlOnChange,
   title,
-  hasCTAError,
-  intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+  hasCTAMultilocError,
+  hasCTAUrlError,
+}: Props) => {
   return (
     <>
       <SubSectionTitle>{title}</SubSectionTitle>
@@ -57,18 +57,53 @@ const CTAButtonFields = ({
             />
             {option === 'customized_button' && ctaType === 'customized_button' && (
               <Box ml="28px">
-                <CustomizedButtonSettings
-                  buttonMultiloc={ctaButtonMultiloc}
-                  buttonUrl={ctaButtonUrl}
-                  handleCTAButtonTextMultilocOnChange={
-                    handleCTAButtonTextMultilocOnChange
-                  }
-                  handleCTAButtonUrlOnChange={handleCTAButtonUrlOnChange}
-                  key={`customized-button-settings-${option}`}
-                />
-                {hasCTAError && (
-                  <Error text={formatMessage(messages.customPageCtaError)} />
-                )}
+                <SectionField>
+                  <Box mb="20px">
+                    <InputMultilocWithLocaleSwitcher
+                      data-testid="inputMultilocLocaleSwitcher"
+                      type="text"
+                      valueMultiloc={ctaButtonMultiloc}
+                      label={
+                        <FormattedMessage
+                          {...messages.customized_button_text_label}
+                        />
+                      }
+                      onChange={handleCTAButtonTextMultilocOnChange}
+                      // we need it null and not {} to make an error disappear after entering a valid value
+                    />
+                    {hasCTAMultilocError && (
+                      <Error
+                        text={
+                          <FormattedMessage
+                            {...messages.customPageCtaButtonTextError}
+                          />
+                        }
+                      />
+                    )}
+                  </Box>
+                  <Label htmlFor="buttonConfigInput">
+                    <FormattedMessage
+                      {...messages.customized_button_url_label}
+                    />
+                  </Label>
+                  <Input
+                    id="buttonConfigInput"
+                    data-testid="buttonConfigInput"
+                    type="text"
+                    placeholder="https://..."
+                    onChange={handleCTAButtonUrlOnChange}
+                    value={ctaButtonUrl}
+                  />
+                  {hasCTAUrlError && (
+                    <Error
+                      text={
+                        <FormattedMessage
+                          {...messages.customPageCtaButtonUrlError}
+                        />
+                      }
+                    />
+                  )}
+                </SectionField>
               </Box>
             )}
           </div>
@@ -78,4 +113,4 @@ const CTAButtonFields = ({
   );
 };
 
-export default injectIntl(CTAButtonFields);
+export default CTAButtonFields;

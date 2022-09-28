@@ -38,7 +38,8 @@ const EditCustomPageHeroBannerForm = ({
 }: InjectedIntlProps) => {
   const localize = useLocalize();
   const [isLoading, setIsLoading] = useState(false);
-  const [hasCTAError, setHasCTAError] = useState(false);
+  const [hasCTAMultilocError, setHasCTAMultilocError] = useState(false);
+  const [hasCTAUrlError, setHasCTAUrlError] = useState(false);
   const [formStatus, setFormStatus] = useState<ISubmitState>('disabled');
   const [localSettings, setLocalSettings] =
     useState<ICustomPageAttributes | null>(null);
@@ -76,20 +77,25 @@ const EditCustomPageHeroBannerForm = ({
 
     setIsLoading(true);
     setFormStatus('disabled');
-    setHasCTAError(false);
+    setHasCTAMultilocError(false);
+    setHasCTAUrlError(false);
     try {
       await updateCustomPage(customPageId, diffedValues);
       setIsLoading(false);
       setFormStatus('success');
     } catch (error) {
       const apiErrors = error.json.errors;
-      if (
-        apiErrors['banner_cta_button_multiloc'] ||
-        apiErrors['banner_cta_button_url']
-      ) {
-        setHasCTAError(true);
+      if (apiErrors) {
+        if (apiErrors['banner_cta_button_multiloc']) {
+          setHasCTAMultilocError(true);
+        }
+
+        if (apiErrors['banner_cta_button_url']) {
+          setHasCTAUrlError(true);
+        }
       } else {
-        setHasCTAError(false);
+        setHasCTAMultilocError(false);
+        setHasCTAUrlError(false);
       }
       setIsLoading(false);
       setFormStatus('error');
@@ -128,7 +134,8 @@ const EditCustomPageHeroBannerForm = ({
 
   const handleCTAButtonTypeOnChange = (ctaType: TCustomPageCTAType) => {
     handleOnChange('banner_cta_button_type', ctaType);
-    setHasCTAError(false);
+    setHasCTAMultilocError(false);
+    setHasCTAUrlError(false);
   };
 
   const handleCTAButtonTextMultilocOnChange = (
@@ -216,7 +223,8 @@ const EditCustomPageHeroBannerForm = ({
               }
               handleCTAButtonUrlOnChange={handleCTAButtonUrlOnChange}
               title={formatMessage(messages.buttonTitle)}
-              hasCTAError={hasCTAError}
+              hasCTAMultilocError={hasCTAMultilocError}
+              hasCTAUrlError={hasCTAUrlError}
             />
           }
         />
