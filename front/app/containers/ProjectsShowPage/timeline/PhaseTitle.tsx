@@ -46,7 +46,7 @@ const PhaseNumber = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: ${colors.label};
+  background: ${colors.textSecondary};
   margin-right: 11px;
   color: #fff;
   font-size: ${fontSizes.base}px;
@@ -79,7 +79,7 @@ const HeaderTitleWrapper = styled.div`
 `;
 
 const HeaderTitle = styled.h2`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.l + 1}px;
   line-height: normal;
   font-weight: 600;
@@ -95,7 +95,7 @@ const HeaderTitle = styled.h2`
 `;
 
 const PhaseDate = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 400;

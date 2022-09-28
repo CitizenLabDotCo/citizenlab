@@ -30,7 +30,7 @@ const IdeaList = styled.ul`
 `;
 
 const IdeaListItem = styled.li`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   line-height: normal;
   overflow-wrap: break-word;
@@ -44,13 +44,13 @@ const IdeaListItem = styled.li`
 `;
 
 const IdeaLink = styled(Link)`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   line-height: normal;
   text-decoration: underline;
 
   &:hover {
-    color: ${darken(0.2, colors.label)};
+    color: ${darken(0.2, colors.textSecondary)};
     text-decoration: underline;
   }
 `;

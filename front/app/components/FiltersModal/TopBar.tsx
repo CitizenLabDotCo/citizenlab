@@ -15,7 +15,7 @@ import { lighten } from 'polished';
 const Container = styled.div`
   height: ${(props) => props.theme.mobileTopBarHeight}px;
   background: #fff;
-  border-bottom: solid 1px ${lighten(0.4, colors.label)};
+  border-bottom: solid 1px ${lighten(0.4, colors.textSecondary)};
 `;
 
 const StyledCloseIconButton = styled(CloseIconButton)`
@@ -74,7 +74,7 @@ const TopBar = ({ onClose, onReset, className }: Props) => {
           <StyledCloseIconButton
             a11y_buttonActionMessage={messages.a11y_closeFilterPanel}
             onClick={onClose}
-            iconColor={colors.label}
+            iconColor={colors.textSecondary}
             iconColorOnHover={'#000'}
           />
         </Left>

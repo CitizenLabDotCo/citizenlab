@@ -21,7 +21,7 @@ const TabText = styled.span`
 `;
 
 const TabIcon = styled(Icon)`
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   flex: 0 0 20px;
   width: 20px;
   height: 20px;

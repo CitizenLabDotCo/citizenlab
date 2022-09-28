@@ -85,7 +85,7 @@ const VoteCounter = styled.div`
 `;
 
 const VoteText = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
 
   b {
@@ -99,7 +99,7 @@ const VoteText = styled.div`
 `;
 
 const VoteIcon = styled(Icon)`
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   width: 16px;
   height: 16px;
   margin-top: -4px;
@@ -112,7 +112,7 @@ const ExpiredText = styled.div`
   font-size: ${fontSizes.s}px;
   text-transform: capitalize;
   padding-bottom: 5px;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
 `;
 
 const ExpiredIcon = styled(Icon)`
@@ -185,7 +185,7 @@ class VoteIndicator extends PureComponent<Props & { theme: any }> {
             <StyledProposalProgressBar
               voteCount={voteCount}
               voteLimit={voteLimit}
-              barColor={colors.label}
+              barColor={colors.textSecondary}
               bgShaded
             />
           </div>

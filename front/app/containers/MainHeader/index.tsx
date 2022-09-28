@@ -351,7 +351,7 @@ const MainHeader = ({
                       }
                       iconName="search"
                       a11y_buttonActionMessage={formatMessage(messages.search)}
-                      iconColor={theme.navbarTextColor || colors.label}
+                      iconColor={theme.navbarTextColor || colors.textSecondary}
                       iconColorOnHover={
                         theme.navbarTextColor
                           ? darken(0.2, theme.navbarTextColor)

@@ -37,7 +37,7 @@ const Container = styled.div`
 const Topics = styled.div``;
 
 const Topic = styled.button`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   line-height: normal;

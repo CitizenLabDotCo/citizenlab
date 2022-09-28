@@ -107,7 +107,7 @@ const IdeaTitle = styled.div`
 `;
 
 const IdeaBudget = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   line-height: 18px;
@@ -230,7 +230,7 @@ class PBBasket extends PureComponent<Props & InjectedIntlProps, State> {
                     icon="basket-minus"
                     buttonStyle="text"
                     iconSize="21px"
-                    iconColor={colors.label}
+                    iconColor={colors.textSecondary}
                     padding="0"
                     onClick={this.ideaRemovedFromBasket(idea.id)}
                     ariaLabel={this.props.intl.formatMessage(

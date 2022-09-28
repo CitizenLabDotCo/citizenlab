@@ -28,7 +28,7 @@ const TitleIcon = styled(Icon)`
   flex: 0 0 16px;
   width: 16px;
   height: 23px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   margin-right: 13px;
 
   ${media.smallerThanMinTablet`
@@ -39,7 +39,7 @@ const TitleIcon = styled(Icon)`
 `;
 
 const ContentLabel = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   margin-right: 6px;
@@ -67,7 +67,7 @@ const ContentToggleButton = styled.button`
 
   &:hover {
     ${ContentLabel} {
-      color: ${darken(0.2, colors.label)};
+      color: ${darken(0.2, colors.textSecondary)};
     }
   }
 `;
@@ -76,7 +76,7 @@ const ArrowIcon = styled(Icon)`
   flex: 0 0 13px;
   width: 13px;
   height: 13px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   transform: rotate(90deg);
   transition: all 0.2s linear;
 

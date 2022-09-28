@@ -19,12 +19,12 @@ const Container = styled.div`
 const MoreOptionsIcon = styled(Icon)<{ color?: string }>`
   width: 20px;
   height: 6px;
-  fill: ${({ color }) => color || colors.label};
+  fill: ${({ color }) => color || colors.textSecondary};
   transition: all 100ms ease-out;
 `;
 
 const MoreOptionsLabel = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   line-height: normal;
   font-weight: 400;

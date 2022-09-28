@@ -54,7 +54,7 @@ const Title = styled.h3`
 `;
 
 const Address = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: normal;
@@ -72,7 +72,7 @@ const MapMarkerIcon = styled(Icon)`
   flex: 0 0 20px;
   width: 20px;
   height: 20px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   margin-right: 5px;
   margin-top: -2px;
 `;
@@ -114,7 +114,7 @@ const ViewInitiativeButton = styled(Button)`
 `;
 
 const CommentsCount = styled.span`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   display: flex;
   flex-direction: row;
@@ -129,7 +129,7 @@ const CommentsCount = styled.span`
 const CommentIcon = styled(Icon)`
   width: 25px;
   height: 25px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   margin-right: 6px;
   margin-top: 2px;
 `;

@@ -117,7 +117,7 @@ const StyledPlus = styled.div`
 const DeletedIcon = styled(Icon)`
   width: 18px;
   height: 18px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   &:hover {
     fill: ${colors.red600};
   }
@@ -284,7 +284,7 @@ const Categories = ({
               ? darken(0.05, colors.lightGreyishBlue)
               : 'transparent'
           }
-          textColor={colors.label}
+          textColor={colors.textSecondary}
           textHoverColor={colors.adminTextColor}
           bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
           onClick={selectAllInput}
@@ -302,7 +302,7 @@ const Categories = ({
               ? darken(0.05, colors.lightGreyishBlue)
               : 'transparent'
           }
-          textColor={colors.label}
+          textColor={colors.textSecondary}
           textHoverColor={colors.adminTextColor}
           bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
           onClick={selectRecentlyPosted}
@@ -320,7 +320,7 @@ const Categories = ({
               ? darken(0.05, colors.lightGreyishBlue)
               : 'transparent'
           }
-          textColor={colors.label}
+          textColor={colors.textSecondary}
           textHoverColor={colors.adminTextColor}
           bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
           onClick={selectUncategorizedInput}
@@ -349,8 +349,8 @@ const Categories = ({
         </CategoriesLabel>
         <Button
           icon="more-options"
-          iconColor={colors.label}
-          iconHoverColor={colors.label}
+          iconColor={colors.textSecondary}
+          iconHoverColor={colors.textSecondary}
           boxShadow="none"
           boxShadowHover="none"
           bgColor="transparent"
@@ -433,7 +433,7 @@ const Categories = ({
                   ? darken(0.05, colors.lightGreyishBlue)
                   : 'transparent'
               }
-              textColor={colors.label}
+              textColor={colors.textSecondary}
               textHoverColor={colors.adminTextColor}
               bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
               onClick={selectCategory(category.id)}

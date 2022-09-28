@@ -70,7 +70,7 @@ const List = styled.ul`
 `;
 
 const ListItem = styled.li`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 400;
@@ -87,7 +87,7 @@ const ListItemIcon = styled(Icon)`
   flex: 0 0 18px;
   width: 18px;
   height: 18px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   margin-right: 14px;
 
   ${isRtl`
@@ -104,7 +104,7 @@ const ListItemIcon = styled(Icon)`
 `;
 
 const ListItemButton = styled.button`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 400;

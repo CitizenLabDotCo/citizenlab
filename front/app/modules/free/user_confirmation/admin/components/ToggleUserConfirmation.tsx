@@ -29,7 +29,7 @@ const StyledToggle = styled(Toggle)`
 const ToggleLabel = styled.label`
   display: flex;
   align-items: center;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
 `;
 

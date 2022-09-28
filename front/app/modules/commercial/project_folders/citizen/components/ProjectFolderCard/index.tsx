@@ -239,7 +239,7 @@ const ContentBody = styled.div`
 
 const ContentHeaderLabel = styled.span`
   height: ${ContentHeaderHeight}px;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   font-weight: 500;
   text-transform: uppercase;
@@ -261,7 +261,7 @@ const FolderTitle = styled.h3`
 `;
 
 const FolderDescription = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 300;

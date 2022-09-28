@@ -74,7 +74,7 @@ const Left = styled.div`
 
 const BelongsToProject = styled.p`
   width: 100%;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-weight: 300;
   font-size: ${fontSizes.base}px;
   line-height: normal;
@@ -91,7 +91,7 @@ const ProjectLink = styled(Link)`
   margin-left: 4px;
 
   &:hover {
-    color: ${darken(0.2, colors.label)};
+    color: ${darken(0.2, colors.textSecondary)};
     text-decoration: underline;
   }
 `;

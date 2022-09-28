@@ -31,18 +31,18 @@ const NavigationIconWrapper = xStyled.div`
 `;
 
 const NavigationIcon = xStyled(Icon)`
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   height: 22px;
   width: 22px;
 
   .cl-icon-primary,
   .cl-icon-accent,
   .cl-icon-secondary {
-    fill: ${colors.label};
+    fill: ${colors.textSecondary};
   }
 `;
 
-const linkColor = colors.label;
+const linkColor = colors.textSecondary;
 const StyledLink = xStyled(Link)`
   display: flex;
   align-items: center;

@@ -40,7 +40,7 @@ export function getSelectStyles(borderColor = colors.border) {
       ...base,
       ':active': null,
       fontSize: `${fontSizes.base}px`,
-      color: isFocused ? colors.text : colors.label,
+      color: isFocused ? colors.text : colors.textSecondary,
       backgroundColor: isFocused ? colors.clDropdownHoverBackground : '#fff',
       cursor: 'pointer',
     }),

@@ -347,7 +347,7 @@ const ProjectTitle = styled.h3`
 `;
 
 const ProjectDescription = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 300;
@@ -403,7 +403,7 @@ const ContentFooterRight = styled(ContentFooterSection)``;
 
 const ContentHeaderLabel = styled.span`
   height: ${ContentHeaderHeight}px;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   font-weight: 500;
   text-transform: uppercase;

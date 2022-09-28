@@ -80,7 +80,7 @@ const LoadingMore = styled.div`
 `;
 
 const LoadingMoreMessage = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.m}px;
   font-weight: 400;
 `;

@@ -46,7 +46,7 @@ const Container = styled.div`
 
   ${media.smallerThanMaxTablet`
     top: 0px;
-    border-bottom: solid 1px ${lighten(0.4, colors.label)};
+    border-bottom: solid 1px ${lighten(0.4, colors.textSecondary)};
   `}
 `;
 

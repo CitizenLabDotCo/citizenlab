@@ -74,7 +74,7 @@ const ContentBuilderSettings = () => {
         className="e2eBuilderSettingsClose"
         a11y_buttonActionMessage={messages.a11y_closeSettingsPanel}
         onClick={closeSettings}
-        iconColor={colors.label}
+        iconColor={colors.textSecondary}
         iconColorOnHover={'#000'}
       />
       <Title variant="h2">

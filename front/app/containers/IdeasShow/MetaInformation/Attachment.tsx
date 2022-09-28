@@ -14,14 +14,14 @@ const Container = styled.div`
 `;
 
 const FileDownloadLink = styled.a`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   display: inline-block;
   margin-right: 10px;
   hyphens: auto;
   text-decoration: underline;
 
   &:hover {
-    color: ${darken(0.2, colors.label)};
+    color: ${darken(0.2, colors.textSecondary)};
     text-decoration: underline;
   }
 
@@ -33,7 +33,7 @@ const FileDownloadLink = styled.a`
 const PaperclipIcon = styled(Icon)`
   width: 12px;
   height: 20px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   margin-right: 10px;
 `;
 

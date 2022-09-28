@@ -45,7 +45,7 @@ const IconContainer = styled.div`
 const StyledIcon: any = styled(Icon)`
   flex: 0 0 22px;
   height: 22px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   opacity: ${(props: any) => (props.isRead ? '0.4' : '1')};
 `;
 
@@ -54,7 +54,7 @@ const Body = styled.div`
 `;
 
 const Message = styled.div<{ isRead: boolean }>`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: ${(props) => (props.isRead ? 'normal' : '500')};
   text-align: left;
@@ -79,7 +79,7 @@ const Message = styled.div<{ isRead: boolean }>`
 
 const Timing = styled.span`
   width: 100%;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   text-align: left;
 `;

@@ -69,7 +69,7 @@ const CheckmarkIcon = styled(Icon)`
 `;
 
 const Label = styled.label`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   margin-left: 10px;

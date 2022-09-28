@@ -23,7 +23,7 @@ const Container = styled.div`
 `;
 
 const Label = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   margin-right: 20px;

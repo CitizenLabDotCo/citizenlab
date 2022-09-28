@@ -74,7 +74,7 @@ const SelectAreas = ({
       right="-4px"
       mobileLeft={smallerThanMinTablet ? '-4px' : undefined}
       mobileRight={smallerThanMinTablet ? undefined : '-4px'}
-      textColor={colors.label}
+      textColor={colors.textSecondary}
     />
   );
 };

@@ -150,9 +150,9 @@ const Avatar = memo(
       const avatarSrc = avatar ? avatar[imageSizeLabel] : null;
       const containerSize = avatarSize + paddingValue * 2 + borderThickness * 2;
       const badgeSize = avatarSize / (avatarSize < 40 ? 1.8 : 2.3);
-      const fillColor = props.fillColor || lighten(0.2, colors.label);
-      const fillHoverColor = colors.label;
-      const borderHoverColor = colors.label;
+      const fillColor = props.fillColor || lighten(0.2, colors.textSecondary);
+      const fillHoverColor = colors.textSecondary;
+      const borderHoverColor = colors.textSecondary;
       const borderColor = props.borderColor || 'transparent';
       const bgColor = props.bgColor || 'transparent';
 

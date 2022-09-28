@@ -73,7 +73,7 @@ const GoToLink = styled(Link)`
 const GoToIcon = styled(Icon)`
   width: 100%;
   height: 100%;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
 
   &:hover {
     fill: ${colors.adminTextColor};

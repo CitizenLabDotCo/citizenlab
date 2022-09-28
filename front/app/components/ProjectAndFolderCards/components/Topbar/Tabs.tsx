@@ -43,7 +43,8 @@ const Tab = styled.button<{ active: boolean }>`
   border-bottom: ${({ active, theme }) =>
     active ? `3px solid ${theme.colorMain}` : '3px solid transparent'};
 
-  color: ${({ active, theme }) => (active ? theme.colorMain : colors.label)};
+  color: ${({ active, theme }) =>
+    active ? theme.colorMain : colors.textSecondary};
 
   ${({ active, theme }) =>
     active

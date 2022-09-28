@@ -68,7 +68,7 @@ const NotificationCount = ({
           messages.a11y_notificationsLabel,
           { count }
         )}
-        iconColor={theme.navbarTextColor || colors.label}
+        iconColor={theme.navbarTextColor || colors.textSecondary}
         iconColorOnHover={
           theme.navbarTextColor
             ? darken(0.2, theme.navbarTextColor)

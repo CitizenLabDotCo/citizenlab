@@ -80,7 +80,7 @@ const PagesNavList = styled.ul`
   & li {
     margin-right: 10px;
     &:after {
-      color: ${colors.label};
+      color: ${colors.textSecondary};
       font-size: ${fontSizes.s}px;
       font-weight: 400;
       content: '•';
@@ -97,7 +97,7 @@ const PagesNavList = styled.ul`
 `;
 
 const PagesNavListItem = styled.li`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   line-height: normal;
   font-weight: 400;
@@ -107,7 +107,7 @@ const PagesNavListItem = styled.li`
 `;
 
 const StyledButton = styled.button`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   line-height: normal;
@@ -123,7 +123,7 @@ const StyledButton = styled.button`
 `;
 
 const linkStyle = css`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-weight: 400;
   font-size: ${fontSizes.s}px;
   line-height: 21px;
@@ -176,7 +176,7 @@ const PoweredBy = styled.div`
 `;
 
 const PoweredByText = styled.span`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   line-height: normal;
@@ -209,7 +209,7 @@ const StyledSendFeedback = styled(SendFeedback)`
 
 const CitizenLabLogo = styled(Icon)`
   height: 28px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   &:hover {
     fill: #000;
   }

@@ -33,7 +33,7 @@ const StyledButton = styled(Button)`
 const DropdownItemIcon = styled(Icon)`
   width: 11px;
   height: 6px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   margin-top: 1px;
   margin-left: 4px;
 `;

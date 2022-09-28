@@ -35,7 +35,7 @@ const StyledQuillEditedContent = styled(QuillEditedContent)`
 
   p,
   li {
-    color: ${colors.label};
+    color: ${colors.textSecondary};
   }
 `;
 

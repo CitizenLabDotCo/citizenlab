@@ -99,7 +99,7 @@ const VotePreview = styled.div`
 `;
 
 const DaysLeft = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   margin-bottom: 20px;
 `;
 

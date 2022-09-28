@@ -79,7 +79,7 @@ const Title = styled.h2`
 
 const Text = styled.div`
   max-width: 400px;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
 

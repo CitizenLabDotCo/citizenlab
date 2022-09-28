@@ -104,7 +104,7 @@ const CustomTooltip = ({
         <h4 style={{ fontWeight: 600 }}>{label}</h4>
         <div>{`${payload[0].name} : ${payload[0].value}`}</div>
         <Box
-          color={colors.label}
+          color={colors.textSecondary}
         >{`${totalLabel} : ${payload[0]?.payload?.total}`}</Box>
       </Box>
     );

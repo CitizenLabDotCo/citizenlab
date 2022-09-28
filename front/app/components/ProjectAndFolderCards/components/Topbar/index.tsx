@@ -110,7 +110,7 @@ const FiltersLabel = styled.div`
   display: flex;
   align-items: center;
   font-size: ${fontSizes.base}px;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   transform: translateY(-1px);
 `;
 

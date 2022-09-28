@@ -44,14 +44,14 @@ const ApplyExampleGroupingButton = styled.button`
   cursor: pointer;
 
   p {
-    color: ${colors.label};
+    color: ${colors.textSecondary};
     &:hover {
       color: ${colors.text};
     }
   }
 
   svg {
-    fill: ${colors.label};
+    fill: ${colors.textSecondary};
     &:hover {
       fill: ${colors.text};
     }

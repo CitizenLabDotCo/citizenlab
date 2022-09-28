@@ -49,7 +49,7 @@ const MessageContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.m}px;
   font-weight: 400;
 `;

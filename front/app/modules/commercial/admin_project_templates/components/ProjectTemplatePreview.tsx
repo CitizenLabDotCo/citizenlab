@@ -165,7 +165,7 @@ const MetaInfoRight = styled.div`
 `;
 
 const MetaInfoRightBox = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   line-height: normal;
@@ -180,7 +180,7 @@ const MetaInfoRightBox = styled.div`
 
 const MetaInfoRightBoxIcon = styled(Icon)`
   flex: 0 0 24px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   width: 24px;
   height: 24px;
   margin-right: 7px;
@@ -213,7 +213,7 @@ const PhaseBar = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${lighten(0.15, colors.label)};
+  background: ${lighten(0.15, colors.textSecondary)};
   transition: background 60ms ease-out;
   position: relative;
   border: none;
@@ -236,7 +236,7 @@ const PhaseArrow = styled(Icon)`
 `;
 
 const PhaseText = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   text-align: center;

@@ -21,8 +21,8 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: ${colors.label};
-  border: 1px solid ${lighten(0.4, colors.label)};
+  color: ${colors.textSecondary};
+  border: 1px solid ${lighten(0.4, colors.textSecondary)};
   border-radius: ${(props: any) => props.theme.borderRadius};
   font-size: ${fontSizes.base}px;
   line-height: 24px;
@@ -35,12 +35,12 @@ const Paperclip = styled(Icon)`
   min-height: 20px;
   width: 10px;
   height: 20px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   margin-right: 15px;
 `;
 
 const FileDownloadLink = styled.a`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   text-decoration: underline;
   display: inline-block;
   margin-right: 10px;

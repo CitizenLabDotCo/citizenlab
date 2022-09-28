@@ -16,11 +16,11 @@ const StyledIcon = styled(Icon)<{ isFullMenuOpened: boolean }>`
   width: 20px;
   margin-right: 3px;
   fill: ${({ isFullMenuOpened, theme }) =>
-    isFullMenuOpened ? theme.colorMain : colors.label};
+    isFullMenuOpened ? theme.colorMain : colors.textSecondary};
 
   &:hover {
     fill: ${({ isFullMenuOpened, theme }) =>
-      darken(0.2, isFullMenuOpened ? theme.colorMain : colors.label)};
+      darken(0.2, isFullMenuOpened ? theme.colorMain : colors.textSecondary)};
   }
 `;
 
@@ -33,7 +33,7 @@ const StyledButton = styled.button<{ isFullMenuOpened: boolean }>`
   justify-content: center;
   align-items: center;
   color: ${({ isFullMenuOpened, theme }) =>
-    isFullMenuOpened ? theme.colorMain : colors.label};
+    isFullMenuOpened ? theme.colorMain : colors.textSecondary};
 
   &:active {
     color: ${({ theme }) => theme.colorMain};
@@ -45,11 +45,11 @@ const StyledButton = styled.button<{ isFullMenuOpened: boolean }>`
 
   &:hover {
     color: ${({ isFullMenuOpened, theme }) =>
-      darken(0.2, isFullMenuOpened ? theme.colorMain : colors.label)};
+      darken(0.2, isFullMenuOpened ? theme.colorMain : colors.textSecondary)};
 
     ${StyledIcon} {
       fill: ${({ isFullMenuOpened, theme }) =>
-        darken(0.2, isFullMenuOpened ? theme.colorMain : colors.label)};
+        darken(0.2, isFullMenuOpened ? theme.colorMain : colors.textSecondary)};
     }
   }
 `;

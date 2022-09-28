@@ -46,7 +46,7 @@ const CloseIcon = styled(Icon)`
   flex: 0 0 16px;
   width: 16px;
   height: 16px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   z-index: 2;
 `;
 

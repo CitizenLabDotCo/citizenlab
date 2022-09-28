@@ -67,7 +67,7 @@ const nodeColors = [
   colors.adminTextColor,
   colors.facebookMessenger,
   colors.facebook,
-  colors.label,
+  colors.textSecondary,
   '#0DA796',
   '#934E6F',
 ];
@@ -244,7 +244,7 @@ const Network = ({
         display="flex"
         justifyContent="center"
         alignItems="center"
-        color={colors.label}
+        color={colors.textSecondary}
       >
         <StyledMessage>
           <FormattedMessage

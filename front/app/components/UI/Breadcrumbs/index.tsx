@@ -7,9 +7,9 @@ import { Box, Text } from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
 
 const StyledLink = styled(Link)`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   &:hover {
-    border-bottom: 2px solid ${colors.label};
+    border-bottom: 2px solid ${colors.textSecondary};
     color: inherit;
     margin-bottom: -2px;
   }

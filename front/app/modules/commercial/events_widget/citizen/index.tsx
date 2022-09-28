@@ -29,7 +29,7 @@ const EventsWidgetContainer = styled.div`
 const NoEventsText = styled.div`
   margin: auto 0px;
   text-align: center;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.xl}px;
 `;
 

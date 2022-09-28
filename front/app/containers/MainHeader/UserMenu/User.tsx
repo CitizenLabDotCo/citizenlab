@@ -63,7 +63,7 @@ const User = ({ userId }: Props) => {
       <Avatar
         userId={userId}
         size={30}
-        fillColor={theme?.navbarTextColor || colors.label}
+        fillColor={theme?.navbarTextColor || colors.textSecondary}
         addVerificationBadge
       />
     </>

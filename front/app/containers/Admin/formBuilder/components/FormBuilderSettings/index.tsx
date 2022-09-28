@@ -70,7 +70,7 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
         <CloseIconButton
           a11y_buttonActionMessage={messages.close}
           onClick={onClose}
-          iconColor={colors.label}
+          iconColor={colors.textSecondary}
           iconColorOnHover={'#000'}
         />
       </Box>

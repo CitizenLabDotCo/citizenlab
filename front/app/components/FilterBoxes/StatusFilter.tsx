@@ -36,7 +36,7 @@ const Container = styled.div`
 `;
 
 const Count = styled.span`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   transition: all 80ms ease-out;

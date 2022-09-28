@@ -44,7 +44,7 @@ const EventTitleAndAttributes = styled.div`
 
 const StyledLink = styled(Link)`
   cursor: pointer;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.xs}px;
   display: block;
   margin: 0 0 5px 0;
@@ -141,7 +141,7 @@ const StyledT = styled(T)<IStyledT>`
 const ShowMoreOrLessButton = styled.button`
   margin-top: 18px;
   padding: 0;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   cursor: pointer;
   font-weight: 600;
   text-decoration-line: underline;
@@ -257,7 +257,7 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
           <Time>
             <StyledIcon
               name="clock-solid"
-              fill={colors.label}
+              fill={colors.textSecondary}
               width={`${fontSizes.m}px`}
               height={`${fontSizes.m}px`}
               marginRight="6px"

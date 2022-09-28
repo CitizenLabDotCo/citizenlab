@@ -12,7 +12,7 @@ import Outlet from 'components/Outlet';
 const Container = styled.div`
   width: 100%;
   height: 50px;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   background: rgba(132, 147, 158, 0.06);
   border-bottom: 1px solid ${colors.adminSeparation};
 `;

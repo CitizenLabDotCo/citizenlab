@@ -51,7 +51,7 @@ const Container = styled.li`
 `;
 
 const UpvoteIcon = styled(Icon)`
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   flex: 0 0 17px;
   width: 17px;
   height: 17px;
@@ -59,7 +59,7 @@ const UpvoteIcon = styled(Icon)`
 `;
 
 const UpvoteButton = styled.button`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   display: flex;
@@ -92,10 +92,10 @@ const UpvoteButton = styled.button`
   }
 
   &.disabled:not(.voted) {
-    color: ${lighten(0.25, colors.label)};
+    color: ${lighten(0.25, colors.textSecondary)};
 
     ${UpvoteIcon} {
-      fill: ${lighten(0.25, colors.label)};
+      fill: ${lighten(0.25, colors.textSecondary)};
     }
   }
 

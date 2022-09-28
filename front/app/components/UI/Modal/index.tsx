@@ -476,7 +476,7 @@ class Modal extends PureComponent<Props, State> {
                 <StyledCloseIconButton
                   className="e2e-modal-close-button"
                   onClick={this.clickCloseButton}
-                  iconColor={colors.label}
+                  iconColor={colors.textSecondary}
                   iconColorOnHover={'#000'}
                   a11y_buttonActionMessage={messages.closeModal}
                 />

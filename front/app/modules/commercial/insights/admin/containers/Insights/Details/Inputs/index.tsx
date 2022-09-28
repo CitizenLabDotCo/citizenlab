@@ -221,7 +221,7 @@ const Inputs = ({
           <Button
             buttonStyle="white"
             mb="12px"
-            textColor={colors.label}
+            textColor={colors.textSecondary}
             icon="file-add"
             onClick={openCreateModal}
             data-testid="insightsDetailsCreateCategory"

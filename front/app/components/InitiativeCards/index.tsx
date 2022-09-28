@@ -157,7 +157,7 @@ const FiltersSidebarContainer = styled.div`
 `;
 
 const ClearFiltersText = styled.span`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: auto;

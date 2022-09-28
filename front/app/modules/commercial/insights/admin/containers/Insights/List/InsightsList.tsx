@@ -57,7 +57,7 @@ const InsightsContainerHeader = styled.div`
   margin-bottom: 60px;
   justify-content: space-between;
   p {
-    color: ${colors.label};
+    color: ${colors.textSecondary};
   }
   > div:first-child {
     width: 50%;
@@ -76,7 +76,7 @@ const InsightsListItem = styled.div`
   }
   p {
     font-size: ${fontSizes.xs}px;
-    color: ${colors.label};
+    color: ${colors.textSecondary};
   }
   .buttons {
     display: flex;

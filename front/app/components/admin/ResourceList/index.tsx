@@ -49,7 +49,7 @@ export const Container = styled.div`
     font-size: ${fontSizes.base}px;
   }
   p {
-    color: ${colors.label};
+    color: ${colors.textSecondary};
     font-size: ${fontSizes.base}px;
     font-weight: 400;
     line-height: 20px;
@@ -91,7 +91,7 @@ export const Container = styled.div`
   }
   &.e2e-admin-list-head-row {
     border-top: 0;
-    color: ${colors.label};
+    color: ${colors.textSecondary};
     font-size: ${fontSizes.s}px;
     font-weight: 500;
   }

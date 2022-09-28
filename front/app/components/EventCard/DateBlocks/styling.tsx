@@ -8,7 +8,7 @@ export const EventDateBlockWrapper = styled.div`
 `;
 
 export const EventDateBlockLabel = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.xs}px;
   line-height: normal;
   font-weight: 600;

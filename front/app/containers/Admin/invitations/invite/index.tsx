@@ -86,7 +86,7 @@ const ButtonWrapper = styled.div`
 `;
 
 const Processing = styled.div`
-  color: ${(props) => props.theme.colors.label};
+  color: ${(props) => props.theme.colors.textSecondary};
   margin-left: 15px;
 `;
 

@@ -34,7 +34,7 @@ const TextContainer = styled.div`
   word-break: break-word;
 
   p {
-    color: ${colors.label};
+    color: ${colors.textSecondary};
     overflow-wrap: break-word;
     word-wrap: break-word;
     word-break: break-word;
@@ -55,7 +55,7 @@ const StyledFieldset = styled.fieldset`
 `;
 
 const Separator = styled.span`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-weight: 400;
   font-size: ${fontSizes.base}px;
   line-height: 19px;

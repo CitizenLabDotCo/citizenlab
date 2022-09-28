@@ -106,21 +106,21 @@ const FooterItem = styled.div`
 const MoneybagIcon = styled(Icon)`
   width: 18px;
   height: 18px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   margin-right: 6px;
 `;
 
 const DownvoteIcon = styled(Icon)`
   width: 17px;
   height: 17px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   margin-right: 6px;
 `;
 
 const UpvoteIcon = styled(Icon)`
   width: 17px;
   height: 17px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   margin-right: 6px;
   margin-top: 5px;
 `;
@@ -128,13 +128,13 @@ const UpvoteIcon = styled(Icon)`
 const CommentIcon = styled(Icon)`
   width: 20px;
   height: 20px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   margin-right: 6px;
   margin-left: 2px;
 `;
 
 const FooterValue = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s + 1}px;
   line-height: normal;
   font-weight: 400;
@@ -252,8 +252,8 @@ const IdeaMapCard = memo<Props>(
               iconHeight={'12px'}
               onClick={handleCloseButtonClick}
               a11y_buttonActionMessage={messages.a11y_hideIdeaCard}
-              iconColor={darken(0.1, colors.label)}
-              iconColorOnHover={darken(0.2, colors.label)}
+              iconColor={darken(0.1, colors.textSecondary)}
+              iconColorOnHover={darken(0.2, colors.textSecondary)}
             />
           )}
           <Title>

@@ -151,7 +151,7 @@ const ProgressBar = styled.div<{ viewMode: 'row' | 'column' }>`
 const ProgressBarOverlay: any = styled.div`
   width: ${(props: any) => props.progress}%;
   height: 100%;
-  background: ${colors.label};
+  background: ${colors.textSecondary};
   border-radius: ${(props: any) => props.theme.borderRadius};
   display: flex;
   align-items: center;

@@ -27,7 +27,7 @@ const InputTitle = styled.h2`
 `;
 
 const InputBody = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   h1,
   h2,
   h3,

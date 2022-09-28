@@ -45,7 +45,7 @@ const Title = styled.h2`
 `;
 
 const EventPageLink = styled(Link)`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   margin-top: auto;
 `;
 

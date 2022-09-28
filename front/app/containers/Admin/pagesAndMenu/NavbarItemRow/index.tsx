@@ -29,7 +29,7 @@ const Container = styled.div`
 
 const DefaultTag = styled.div`
   display: inline-block;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   background-color: ${colors.lightGreyishBlue};
   font-weight: bold;
   font-size: 12px;

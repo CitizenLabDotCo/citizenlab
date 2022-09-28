@@ -35,7 +35,7 @@ const NotFoundContainer = styled.main`
   align-items: center;
   padding-top: 4rem;
   font-size: ${fontSizes.l}px;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
 `;
 
 const Container = styled.main`
