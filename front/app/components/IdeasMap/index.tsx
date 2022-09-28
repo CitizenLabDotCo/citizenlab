@@ -139,7 +139,7 @@ const InfoOverlayInner = styled.div`
 `;
 
 const InfoOverlayIcon = styled(Icon)`
-  fill: ${colors.clBlueDarker};
+  fill: ${colors.tealer};
   flex: 0 0 18px;
   width: 18px;
   height: 18px;
@@ -147,7 +147,7 @@ const InfoOverlayIcon = styled(Icon)`
 `;
 
 const InfoOverlayText = styled.p`
-  color: ${colors.clBlueDarker};
+  color: ${colors.tealer};
   font-size: ${fontSizes.base}px;
   font-weight: 500;
   line-height: normal;

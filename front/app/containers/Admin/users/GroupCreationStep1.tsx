@@ -72,13 +72,13 @@ export const DescriptionText = styled.div`
 `;
 
 export const MoreInfoLink = styled.a`
-  color: ${colors.clBlueDark};
+  color: ${colors.teal};
   text-align: center;
   text-decoration: underline;
   margin-top: 10px;
 
   &:hover {
-    color: ${darken(0.15, colors.clBlueDark)};
+    color: ${darken(0.15, colors.teal)};
     text-decoration: underline;
   }
 `;

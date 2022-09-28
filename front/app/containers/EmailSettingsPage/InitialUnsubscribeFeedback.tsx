@@ -14,7 +14,7 @@ import { Multiloc } from 'typings';
 import T from 'components/T';
 
 const Message = styled.div<{ status: 'error' | 'success' | 'loading' }>`
-  color: ${colors.clBlueDarker};
+  color: ${colors.tealer};
   font-size: ${fontSizes.l}px;
 `;
 

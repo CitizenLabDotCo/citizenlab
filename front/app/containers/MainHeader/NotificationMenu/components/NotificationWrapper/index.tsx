@@ -62,7 +62,7 @@ const Message = styled.div<{ isRead: boolean }>`
   margin-bottom: 4px;
 
   a {
-    color: ${colors.clBlueDark};
+    color: ${colors.teal};
     text-decoration: underline;
     overflow-wrap: break-word;
     word-wrap: break-word;
@@ -71,7 +71,7 @@ const Message = styled.div<{ isRead: boolean }>`
     hyphens: auto;
 
     &:hover {
-      color: ${darken(0.15, colors.clBlueDark)};
+      color: ${darken(0.15, colors.teal)};
       text-decoration: underline;
     }
   }

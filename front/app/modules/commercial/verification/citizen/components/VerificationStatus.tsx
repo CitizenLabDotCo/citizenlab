@@ -89,7 +89,7 @@ const StyledText = styled(Text)`
 const VerifyButton = styled(Button)``;
 
 const ReverifyButton = styled.button`
-  color: ${colors.clBlueDark};
+  color: ${colors.teal};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   line-height: normal;
@@ -103,7 +103,7 @@ const ReverifyButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    color: ${darken(0.15, colors.clBlueDark)};
+    color: ${darken(0.15, colors.teal)};
     text-decoration: underline;
   }
 `;

@@ -89,7 +89,7 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       </Box>
 
       <Box
-        bgColor={colors.clBlueDarkBg}
+        bgColor={colors.tealBg}
         borderRadius="3px"
         px="12px"
         py="4px"

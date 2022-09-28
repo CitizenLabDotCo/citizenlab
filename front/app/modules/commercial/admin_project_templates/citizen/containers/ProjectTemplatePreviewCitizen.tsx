@@ -61,7 +61,7 @@ const InfoboxContainer = styled.div`
   padding: 27px;
   margin-bottom: 25px;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  background: ${colors.clBlueDarkBg};
+  background: ${colors.tealBg};
 `;
 
 const InfoboxIcon = styled(Icon)`
@@ -75,7 +75,7 @@ const InfoboxIcon = styled(Icon)`
 `;
 
 const InfoboxText = styled.div`
-  color: ${colors.clBlueDarker};
+  color: ${colors.tealer};
   font-size: ${fontSizes.base}px;
   line-height: 21px;
   font-weight: 400;
@@ -88,12 +88,12 @@ const InfoboxText = styled.div`
   }
 
   a {
-    color: ${colors.clBlueDarker};
+    color: ${colors.tealer};
     font-weight: 400;
     text-decoration: underline;
 
     &:hover {
-      color: ${darken(0.15, colors.clBlueDarker)};
+      color: ${darken(0.15, colors.tealer)};
       text-decoration: underline;
     }
   }

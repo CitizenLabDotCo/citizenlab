@@ -47,7 +47,7 @@ const AddButton = styled(Button)`
   }
 
   .buttonIcon {
-    fill: ${colors.clBlueDark};
+    fill: ${colors.teal};
   }
 
   .buttonText {

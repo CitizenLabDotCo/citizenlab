@@ -69,7 +69,7 @@ const CloseButton = styled.button`
   &:focus,
   &:active {
     svg {
-      fill: ${colors.clBlueDark};
+      fill: ${colors.teal};
     }
   }
 `;
