@@ -93,9 +93,6 @@ const EditCustomPageHeroBannerForm = ({
         if (apiErrors['banner_cta_button_url']) {
           setHasCTAUrlError(true);
         }
-      } else {
-        setHasCTAMultilocError(false);
-        setHasCTAUrlError(false);
       }
       setIsLoading(false);
       setFormStatus('error');
@@ -134,8 +131,6 @@ const EditCustomPageHeroBannerForm = ({
 
   const handleCTAButtonTypeOnChange = (ctaType: TCustomPageCTAType) => {
     handleOnChange('banner_cta_button_type', ctaType);
-    setHasCTAMultilocError(false);
-    setHasCTAUrlError(false);
   };
 
   const handleCTAButtonTextMultilocOnChange = (
@@ -214,7 +209,8 @@ const EditCustomPageHeroBannerForm = ({
           }
           ctaButtonFieldsComponent={
             <CTAButtonFields
-              ctaType={localSettings.banner_cta_button_type}
+              id="custom"
+              currentCtaType={localSettings.banner_cta_button_type}
               ctaButtonMultiloc={localSettings.banner_cta_button_multiloc}
               ctaButtonUrl={localSettings.banner_cta_button_url}
               handleCTAButtonTypeOnChange={handleCTAButtonTypeOnChange}

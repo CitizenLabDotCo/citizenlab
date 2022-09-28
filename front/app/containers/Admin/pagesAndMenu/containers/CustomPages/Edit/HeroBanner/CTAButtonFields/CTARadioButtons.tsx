@@ -3,23 +3,28 @@ import Error from 'components/UI/Error';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import React from 'react';
 import { TCustomPageCTAType } from 'services/customPages';
+import { CTASignedInType, CTASignedOutType } from 'services/homepageSettings';
+
 import { Multiloc } from 'typings';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import messages from './messages';
 
+type CTAType = TCustomPageCTAType | CTASignedInType | CTASignedOutType;
 export interface Props {
-  ctaTypes: TCustomPageCTAType[];
-  currentCtaType: TCustomPageCTAType;
-  handleCTAButtonTypeOnChange: (ctaType: TCustomPageCTAType) => void;
-  handleCTAButtonTextMultilocOnChange: (buttonTextMultiloc: Multiloc) => void;
-  handleCTAButtonUrlOnChange: (url: string) => void;
+  id: 'homepage_signed_in' | 'homepage_signed_out' | 'custom';
+  currentCtaType: CTAType;
   ctaButtonMultiloc: Multiloc;
   ctaButtonUrl: string | null;
+  ctaTypes: TCustomPageCTAType[] | CTASignedInType[] | CTASignedOutType[];
+  handleCTAButtonTypeOnChange: (ctaType: CTAType) => void;
+  handleCTAButtonTextMultilocOnChange: (buttonTextMultiloc: Multiloc) => void;
+  handleCTAButtonUrlOnChange: (url: string) => void;
   hasCTAMultilocError: boolean;
   hasCTAUrlError: boolean;
 }
 
 const CTARadioButtons = ({
+  id,
   ctaTypes,
   currentCtaType,
   ctaButtonMultiloc,
@@ -32,74 +37,73 @@ const CTARadioButtons = ({
 }: Props) => {
   return (
     <>
-      {ctaTypes.map((option: TCustomPageCTAType) => (
-        <div data-cy={`e2e-cta-settings-signed_in-${option}`} key={option}>
-          <Radio
-            key={`cta-type-${option}`}
-            onChange={handleCTAButtonTypeOnChange}
-            currentValue={currentCtaType}
-            value={option}
-            label={
-              <FormattedMessage
-                {...{
-                  customized_button: messages.customized_button,
-                  no_button: messages.no_button,
-                }[option]}
-              />
-            }
-            name={'cta_signed_in_type'}
-            id={`signed_in-${option}`}
-          />
-          {option === 'customized_button' &&
-            currentCtaType === 'customized_button' && (
-              <Box ml="28px">
-                <Box mb="20px">
-                  <InputMultilocWithLocaleSwitcher
-                    data-testid="inputMultilocLocaleSwitcher"
-                    type="text"
-                    valueMultiloc={ctaButtonMultiloc}
-                    label={
-                      <FormattedMessage
-                        {...messages.customized_button_text_label}
+      {ctaTypes.map((option: CTAType) => {
+        const labelMessages: Record<CTAType, MessageDescriptor> = {
+          customized_button: messages.customized_button,
+          no_button: messages.no_button,
+          sign_up_button: messages.sign_up_button,
+        };
+        const labelMessage = labelMessages[option];
+
+        return (
+          <div data-cy={`e2e-cta-settings-${id}-${option}`} key={option}>
+            <Radio
+              key={`cta-type-${option}`}
+              onChange={handleCTAButtonTypeOnChange}
+              currentValue={currentCtaType}
+              value={option}
+              label={<FormattedMessage {...labelMessage} />}
+              name={'cta_${identifier}_type'}
+              id={`${id}-${option}`}
+            />
+            {option === 'customized_button' &&
+              currentCtaType === 'customized_button' && (
+                <Box ml="28px">
+                  <Box mb="20px">
+                    <InputMultilocWithLocaleSwitcher
+                      data-testid="inputMultilocLocaleSwitcher"
+                      type="text"
+                      valueMultiloc={ctaButtonMultiloc}
+                      label={
+                        <FormattedMessage
+                          {...messages.customized_button_text_label}
+                        />
+                      }
+                      onChange={handleCTAButtonTextMultilocOnChange}
+                    />
+                    {hasCTAMultilocError && (
+                      <Error
+                        text={
+                          <FormattedMessage {...messages.ctaButtonTextError} />
+                        }
                       />
-                    }
-                    onChange={handleCTAButtonTextMultilocOnChange}
-                    // we need it null and not {} to make an error disappear after entering a valid value
+                    )}
+                  </Box>
+                  <Label htmlFor="buttonConfigInput">
+                    <FormattedMessage
+                      {...messages.customized_button_url_label}
+                    />
+                  </Label>
+                  <Input
+                    id="buttonConfigInput"
+                    data-testid="buttonConfigInput"
+                    type="text"
+                    placeholder="https://..."
+                    onChange={handleCTAButtonUrlOnChange}
+                    value={ctaButtonUrl}
                   />
-                  {hasCTAMultilocError && (
+                  {hasCTAUrlError && (
                     <Error
                       text={
-                        <FormattedMessage
-                          {...messages.customPageCtaButtonTextError}
-                        />
+                        <FormattedMessage {...messages.ctaButtonUrlError} />
                       }
                     />
                   )}
                 </Box>
-                <Label htmlFor="buttonConfigInput">
-                  <FormattedMessage {...messages.customized_button_url_label} />
-                </Label>
-                <Input
-                  id="buttonConfigInput"
-                  data-testid="buttonConfigInput"
-                  type="text"
-                  placeholder="https://..."
-                  onChange={handleCTAButtonUrlOnChange}
-                  value={ctaButtonUrl}
-                />
-                {hasCTAUrlError && (
-                  <Error
-                    text={
-                      <FormattedMessage
-                        {...messages.customPageCtaButtonUrlError}
-                      />
-                    }
-                  />
-                )}
-              </Box>
-            )}
-        </div>
-      ))}
+              )}
+          </div>
+        );
+      })}
     </>
   );
 };

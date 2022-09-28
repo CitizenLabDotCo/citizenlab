@@ -7,7 +7,7 @@ import CTARadioButtons, {
 
 const CTA_TYPES: TCustomPageCTAType[] = ['no_button', 'customized_button'];
 
-interface Props extends CTARadioButtonProps {
+interface Props extends Omit<CTARadioButtonProps, 'ctaTypes'> {
   title?: string;
 }
 
@@ -27,6 +27,7 @@ const CTAButtonFields = ({
       <SubSectionTitle>{title}</SubSectionTitle>
       <SectionField>
         <CTARadioButtons
+          id="custom"
           currentCtaType={currentCtaType}
           ctaTypes={CTA_TYPES}
           ctaButtonMultiloc={ctaButtonMultiloc}
