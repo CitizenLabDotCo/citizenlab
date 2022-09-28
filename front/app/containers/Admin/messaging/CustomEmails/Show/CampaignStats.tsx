@@ -19,7 +19,7 @@ const Container = styled.div`
 const GraphCard = styled.div`
   display: flex;
   flex-direction: column;
-  border: solid 1px ${colors.borderDarkLight};
+  border: solid 1px ${colors.borderLight};
   border-radius: ${(props: any) => props.theme.borderRadius};
   background: ${colors.white};
   margin: 5px;

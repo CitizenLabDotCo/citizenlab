@@ -60,7 +60,7 @@ const Phase = styled.div<{ isCurrentPhase: boolean }>`
   border: ${(props) =>
     props.isCurrentPhase
       ? `solid 3px ${colors.borderDark}`
-      : `solid 1px ${colors.borderDarkLight}`};
+      : `solid 1px ${colors.borderLight}`};
   border-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
