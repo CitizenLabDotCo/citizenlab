@@ -121,7 +121,8 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
       const queryParams = new URLSearchParams(window.location.search);
       const phaseIdFromUrl = queryParams.get('phase_id');
       const participationMethodFromURL = phases
-        .filter((phase) => phase.id === phaseIdFromUrl)[0].attributes.participation_method;
+        .filter((phase) => phase.id === phaseIdFromUrl)
+        .map((phase) => phase.attributes.participation_method)[0];
 
       const phaseParticipationMethod = phaseIdFromUrl
         ? participationMethodFromURL
