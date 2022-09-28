@@ -10,7 +10,7 @@ import { fontSizes, colors } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 const Text = styled.span<{ textColor?: string }>`
-  color: ${({ textColor }) => textColor ?? colors.text};
+  color: ${({ textColor }) => textColor ?? colors.textPrimary};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   transition: all 100ms ease-out;
@@ -22,7 +22,7 @@ const Text = styled.span<{ textColor?: string }>`
 const DropdownIcon = styled(Icon)<{ textColor?: string }>`
   width: 10px;
   height: 7px;
-  fill: ${({ textColor }) => textColor ?? colors.text};
+  fill: ${({ textColor }) => textColor ?? colors.textPrimary};
   transition: all 100ms ease-out;
   margin-left: 7px;
 `;

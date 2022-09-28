@@ -41,7 +41,7 @@ const EmptyMessage = styled.div`
 `;
 
 const EmptyMessageMainLine = styled.div`
-  color: ${colors.text};
+  color: ${colors.textPrimary};
   font-size: ${fontSizes.xl}px;
   font-weight: 500;
   line-height: normal;

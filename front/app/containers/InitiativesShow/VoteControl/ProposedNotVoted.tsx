@@ -104,7 +104,7 @@ const TooltipContentIcon = styled(Icon)`
 
 const TooltipContentText = styled.div`
   flex: 1 1 auto;
-  color: ${colors.text};
+  color: ${colors.textPrimary};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 400;

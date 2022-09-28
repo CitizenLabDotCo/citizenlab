@@ -38,7 +38,7 @@ const StylingWrapper = styled.div`
 
     .DateInput,
     .DateInput_input {
-      color: ${colors.text};
+      color: ${colors.textPrimary};
       font-size: ${fontSizes.base}px;
       line-height: normal;
       font-weight: 400;

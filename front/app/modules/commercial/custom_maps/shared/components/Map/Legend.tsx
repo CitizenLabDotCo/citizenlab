@@ -39,7 +39,7 @@ const LegendItems = styled.ul`
 `;
 
 const Item = styled.li`
-  color: ${colors.text};
+  color: ${colors.textPrimary};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   display: flex;

@@ -43,7 +43,7 @@ const Subtitle = styled.h3`
   flex-shrink: 0;
   width: 100%;
   max-width: 500px;
-  color: ${colors.text};
+  color: ${colors.textPrimary};
   font-size: ${fontSizes.base}px;
   line-height: 25px;
   font-weight: 300;
@@ -60,7 +60,7 @@ const Subtitle = styled.h3`
   `}
   a {
     text-decoration: underline;
-    color: ${colors.text};
+    color: ${colors.textPrimary};
   }
 `;
 

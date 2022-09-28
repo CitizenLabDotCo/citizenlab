@@ -74,7 +74,7 @@ const Title = styled.h2`
 `;
 
 const Text = styled.p`
-  color: ${colors.text};
+  color: ${colors.textPrimary};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   line-height: normal;

@@ -46,14 +46,14 @@ const ApplyExampleGroupingButton = styled.button`
   p {
     color: ${colors.textSecondary};
     &:hover {
-      color: ${colors.text};
+      color: ${colors.textPrimary};
     }
   }
 
   svg {
     fill: ${colors.textSecondary};
     &:hover {
-      fill: ${colors.text};
+      fill: ${colors.textPrimary};
     }
   }
 `;

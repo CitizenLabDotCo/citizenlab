@@ -81,7 +81,7 @@ const Footer = styled.div`
 `;
 
 const Author = styled.span`
-  color: ${colors.text};
+  color: ${colors.textPrimary};
   font-size: ${fontSizes.base}px;
   font-weight: 600;
 
@@ -91,7 +91,7 @@ const Author = styled.span`
 `;
 
 const DatesPostedEdited = styled.span`
-  color: ${colors.text};
+  color: ${colors.textPrimary};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   display: flex;

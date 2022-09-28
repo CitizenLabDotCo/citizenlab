@@ -17,7 +17,7 @@ const MenuItem = styled.li`
 `;
 
 const StyledLink = styled(Link)`
-  color: ${colors.text};
+  color: ${colors.textPrimary};
   padding: 20px 10px;
   border-radius: 5px;
   &:hover {

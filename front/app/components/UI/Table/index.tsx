@@ -21,7 +21,7 @@ const StyledTable = styled.table`
   thead {
     tr {
       th {
-        fill: ${colors.text};
+        fill: ${colors.textPrimary};
         color: ${colors.primary};
         font-size: ${fontSizes.s}px;
         font-weight: 600;

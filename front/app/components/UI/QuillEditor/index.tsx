@@ -53,7 +53,7 @@ const DropdownListItem = styled.button`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: ${colors.text};
+  color: ${colors.textPrimary};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   white-space: nowrap;
