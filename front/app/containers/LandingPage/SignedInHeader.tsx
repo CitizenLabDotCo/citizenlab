@@ -55,7 +55,7 @@ const Header = styled.div`
   display: flex;
   flex-direction: column;
 
-  ${media.phone`
+  ${media.tablet`
     height: 320px;
   `}
 `;
@@ -86,7 +86,11 @@ const HeaderImage = styled(Image)`
   width: 100%;
   height: auto;
 
+<<<<<<< HEAD
   ${media.smallerThanMaxTablet`
+=======
+  ${media.tablet`
+>>>>>>> 3bada9c380 ([CL-1435] Fix header)
     &.objectFitCoverSupported {
       width: 100%;
       height: 100%;
@@ -163,12 +167,16 @@ const HeaderContent = styled.div`
     font-weight: 400;
   }
 
+<<<<<<< HEAD
   ${media.smallerThanMaxTablet`
+=======
+  ${media.tablet`
+>>>>>>> 3bada9c380 ([CL-1435] Fix header)
     padding-left: 30px;
     padding-right: 30px;
   `}
 
-  ${media.phone`
+  ${media.tablet`
     flex-direction: column;
     align-items: stretch;
     justify-content: center;
@@ -186,7 +194,7 @@ const HeaderContentDefault = styled(HeaderContent)`
     text-align: center;
   }
 
-  ${media.phone`
+  ${media.tablet`
     align-items: center;
   `}
 `;
@@ -200,7 +208,7 @@ export const Left = styled.div`
     flex-direction: row-reverse;
   `}
 
-  ${media.phone`
+  ${media.tablet`
     margin-right: 0;
   `}
 `;
@@ -214,7 +222,11 @@ export const Icons = styled.div`
     margin-left: 30px;
   `}
 
+<<<<<<< HEAD
   ${media.smallerThanMaxTablet`
+=======
+  ${media.tablet`
+>>>>>>> 3bada9c380 ([CL-1435] Fix header)
     display: none;
   `}
 `;
@@ -235,7 +247,7 @@ export const Right = styled.div`
   flex-shrink: 0;
   display: flex;
 
-  ${media.phone`
+  ${media.tablet`
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
@@ -245,7 +257,7 @@ export const Right = styled.div`
   ${isRtl`
     flex-direction: row-reverse;
 
-    ${media.phone`
+    ${media.tablet`
         align-items: flex-end;
     `}
   `}
@@ -254,7 +266,7 @@ export const Right = styled.div`
 export const SkipButton = styled(Button)`
   margin-right: 10px;
 
-  ${media.phone`
+  ${media.tablet`
     order: 2;
     margin-right: 0px;
   `}
@@ -266,7 +278,7 @@ export const SkipButton = styled(Button)`
 `;
 
 export const AcceptButton = styled(Button)`
-  ${media.phone`
+  ${media.tablet`
     order: 1;
     margin-bottom: 10px;
   `}
