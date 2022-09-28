@@ -25,7 +25,7 @@ const Loading = styled.div`
   align-items: center;
   justify-content: center;
 
-  ${media.biggerThanMinTablet`
+  ${media.desktop`
     height: calc(100vh - 280px);
     position: sticky;
     top: 200px;

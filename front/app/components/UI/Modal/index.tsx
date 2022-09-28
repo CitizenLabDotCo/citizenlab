@@ -155,7 +155,7 @@ const Overlay = styled.div`
   z-index: 1000001;
   will-change: opacity, transform;
 
-  ${media.biggerThanMinTablet`
+  ${media.desktop`
     justify-content: center;
   `}
 

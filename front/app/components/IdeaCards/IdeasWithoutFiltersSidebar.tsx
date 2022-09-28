@@ -72,7 +72,7 @@ const FiltersArea = styled.div`
     `}
   }
 
-  ${media.biggerThanMinTablet`
+  ${media.desktop`
     &.mapView {
       margin-top: -65px;
     }

@@ -67,7 +67,7 @@ const HeaderRight = styled.div`
   display: flex;
   align-items: center;
 
-  ${media.biggerThanMinTablet`
+  ${media.desktop`
     margin-left: 30px;
   `}
 `;

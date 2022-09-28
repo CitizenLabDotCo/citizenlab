@@ -222,7 +222,7 @@ const ContentHeader = styled.div`
   justify-content: space-between;
 
   &.noContent {
-    ${media.biggerThanMinTablet`
+    ${media.desktop`
       height: ${ContentHeaderHeight + ContentHeaderBottomMargin}px;
     `}
   }

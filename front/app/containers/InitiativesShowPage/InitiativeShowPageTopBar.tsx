@@ -36,7 +36,7 @@ const TopBarInner = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  ${media.biggerThanMinTablet`
+  ${media.desktop`
     padding-left: 30px;
     padding-right: 30px;
   `}

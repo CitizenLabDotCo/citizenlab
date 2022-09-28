@@ -192,7 +192,7 @@ const ContentHeader = styled.div<{ hasLabel: boolean }>`
   margin-bottom: ${ContentHeaderBottomMargin}px;
 
   &.noContent {
-    ${media.biggerThanMinTablet`
+    ${media.desktop`
       height: ${ContentHeaderHeight + ContentHeaderBottomMargin}px;
     `}
   }
