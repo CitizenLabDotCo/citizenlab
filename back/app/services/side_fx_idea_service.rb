@@ -71,8 +71,7 @@ class SideFxIdeaService
 
   private
 
-  def before_publish(idea, _user)
-  end
+  def before_publish(idea, _user); end
 
   def after_publish(idea, user)
     add_autovote idea
