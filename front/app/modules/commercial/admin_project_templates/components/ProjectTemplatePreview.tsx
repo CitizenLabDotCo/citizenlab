@@ -153,7 +153,7 @@ const Department = styled.div`
   white-space: nowrap;
   padding: 6px 12px;
   border-radius: ${({ theme }) => theme.borderRadius};
-  border: solid 1px ${colors.divier};
+  border: solid 1px ${colors.divider};
   margin-right: 5px;
   margin-bottom: 5px;
 `;
@@ -303,7 +303,7 @@ const SuccessCase = styled.a`
   margin-right: 8px;
   background: #fff;
   border-radius: ${({ theme }) => theme.borderRadius};
-  border: solid 1px ${colors.divier};
+  border: solid 1px ${colors.divider};
   transition: all 80ms ease-out;
 
   &:hover {

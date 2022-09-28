@@ -15,7 +15,7 @@ const Container = styled.div`
   padding: 20px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   background-color: ${transparentize(0.95, colors.primary)};
-  border: 1px solid ${colors.divier};
+  border: 1px solid ${colors.divider};
   margin-bottom: 10px;
 
   &:last-child {

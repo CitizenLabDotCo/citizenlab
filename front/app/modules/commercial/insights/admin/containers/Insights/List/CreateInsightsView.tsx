@@ -83,7 +83,7 @@ const AnimatedFieldset = styled.fieldset`
   display: none;
   transition: all ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
   will-change: opacity, height;
-  border-bottom: 1px solid ${colors.divier};
+  border-bottom: 1px solid ${colors.divider};
   margin-top: 15px;
 
   &.collapse-enter {
@@ -288,7 +288,7 @@ export const CreateInsightsView = ({
               <Box
                 key={project.id}
                 py="15px"
-                borderBottom={`1px solid ${colors.divier}`}
+                borderBottom={`1px solid ${colors.divider}`}
               >
                 <Checkbox
                   size="20px"
@@ -305,7 +305,7 @@ export const CreateInsightsView = ({
               <Box key={folder.id}>
                 <Box
                   py="15px"
-                  borderBottom={`1px solid ${colors.divier}`}
+                  borderBottom={`1px solid ${colors.divider}`}
                   display="flex"
                   justifyContent="space-between"
                   alignItems="center"

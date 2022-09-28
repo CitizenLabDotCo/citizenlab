@@ -5,7 +5,7 @@ import { media } from 'utils/styleUtils';
 const Wrapper = styled.div`
   background: #fff;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  border: 1px solid ${(props) => props.theme.colors.divier};
+  border: 1px solid ${(props) => props.theme.colors.divider};
   box-sizing: border-box;
   padding: 3.5rem 4rem;
   margin-bottom: 0px;

@@ -88,7 +88,7 @@ const ProjectRows = styled.div`
 const InFolderProjectRow = styled(ProjectRow)`
   padding-bottom: 10px;
   padding-top: 10px;
-  border-top: 1px solid ${colors.divier};
+  border-top: 1px solid ${colors.divider};
 
   &:last-child {
     padding-bottom: 0;

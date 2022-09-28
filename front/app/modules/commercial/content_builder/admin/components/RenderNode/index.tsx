@@ -178,7 +178,7 @@ const RenderNode = ({ render }) => {
           : solidBorderIsVisible
           ? colors.primary
           : isSelectable
-          ? colors.divier
+          ? colors.divider
           : 'transparent'
       }
       m="4px"

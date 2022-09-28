@@ -43,7 +43,7 @@ const Container = styled.div`
 `;
 
 const Separator = styled.hr`
-  background: ${colors.divier};
+  background: ${colors.divider};
   border: none;
   height: 1px;
   margin: 1rem 0 3rem 0;

@@ -3,7 +3,7 @@ import { media, colors } from 'utils/styleUtils';
 
 const StickyContainer = styled.div`
   background-color: #fcfcfc;
-  border-top: 1px solid ${colors.divier};
+  border-top: 1px solid ${colors.divider};
 
   height: 78px;
   width: calc(100% + 8rem);

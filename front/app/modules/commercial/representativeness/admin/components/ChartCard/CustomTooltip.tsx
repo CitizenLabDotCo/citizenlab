@@ -45,7 +45,7 @@ const CustomTooltip = ({ label, payload }: CustomTooltipProps) => {
   if (!payload) return null;
 
   return (
-    <Box background="white" px="8px" border={`1px solid ${colors.divier}`}>
+    <Box background="white" px="8px" border={`1px solid ${colors.divider}`}>
       <Text
         color="adminTextColor"
         fontWeight="bold"

@@ -101,7 +101,7 @@ const IdeaImage = styled.img`
   margin: 0 0 2rem;
   padding: 0;
   border-radius: 8px;
-  border: 1px solid ${colors.divier};
+  border: 1px solid ${colors.divider};
 `;
 
 const StyledBody = styled(Body)`

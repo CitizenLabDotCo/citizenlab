@@ -111,10 +111,10 @@ const CheckboxContainer = styled.div`
 const ConsentList = styled.div`
   padding-top: 14px;
   padding-bottom: 14px;
-  border-bottom: 1px solid ${colors.divier};
+  border-bottom: 1px solid ${colors.divider};
 
   &.first {
-    border-top: 1px solid ${colors.divier};
+    border-top: 1px solid ${colors.divider};
   }
 
   &.last {
