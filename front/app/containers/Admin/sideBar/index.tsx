@@ -60,7 +60,7 @@ const MenuInner = styled.nav`
   top: 0;
   bottom: 0;
   padding-top: ${stylingConsts.menuHeight + 10}px;
-  background: ${colors.background};
+  background: ${colors.blue700};
 
   ${media.tablet`
     width: 80px;
@@ -78,7 +78,9 @@ const IconWrapper = styled.div`
 
 const Text = styled.div`
   flex: 1;
-  color: ${colors.textSecondary};
+  color: ${colors.white};
+  opacity: 0.7;
+
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 19px;
@@ -110,7 +112,7 @@ const MenuLink = styled.a`
     background: rgba(0, 0, 0, 0.36);
 
     ${Text} {
-      color: #fff;
+      opacity: 1;
     }
   }
 
@@ -127,10 +129,10 @@ const MenuLink = styled.a`
 const GetStartedLink = styled(MenuLink)`
   padding-bottom: 1px;
   margin-bottom: 25px;
-  background: ${lighten(0.05, colors.background)};
+  background: ${lighten(0.05, colors.blue700)};
 
   &:hover {
-    background: ${lighten(0.1, colors.background)};
+    background: ${lighten(0.1, colors.blue700)};
   }
 `;
 
