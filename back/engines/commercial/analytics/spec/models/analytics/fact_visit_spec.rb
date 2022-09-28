@@ -3,13 +3,12 @@
 require 'rails_helper'
 
 RSpec.describe Analytics::FactVisit, type: :model do
-  it 'Can create a visit' do
+  it 'can create a visit' do
     create(:fact_visit)
   end
 
-  it 'Can associate a visit with multiple projects in the dimension_projects db view' do
-    project1 = create(:project)
-    project2 = create(:project)
+  it 'can associate a visit with multiple projects in the dimension_projects db view' do
+    project1, project2 = create_list(:project, 2)
     dimension_project1 = Analytics::DimensionProject.first
     dimension_project2 = Analytics::DimensionProject.last
 
@@ -21,9 +20,9 @@ RSpec.describe Analytics::FactVisit, type: :model do
     assert(visit.dimension_projects[1].id == project2.id)
   end
 
-  it 'Can associate a visit with multiple locales' do
-    locale_en = create(:dimension_locale_en)
-    locale_nl = create(:dimension_locale_nl)
+  it 'can associate a visit with multiple locales' do
+    locale_en = create(:dimension_locale)
+    locale_nl = create(:dimension_locale, name: 'nl')
 
     visit = create(:fact_visit)
     visit.dimension_locales << locale_en
@@ -33,7 +32,7 @@ RSpec.describe Analytics::FactVisit, type: :model do
     assert(visit.dimension_locales[1].id == locale_nl.id)
   end
 
-  it 'Can associate a visit with a user in dimension_users db view' do
+  it 'can associate a visit with a user in dimension_users db view' do
     user = create(:user)
     dimension_user = Analytics::DimensionUser.first
 
@@ -43,7 +42,7 @@ RSpec.describe Analytics::FactVisit, type: :model do
     assert(visit.dimension_user.id == user.id)
   end
 
-  it 'Cannot create another visit with the same matomo visit ID' do
+  it 'cannot create another visit with the same matomo visit ID' do
     create(:fact_visit, matomo_visit_id: 1)
     expect { create(:fact_visit, matomo_visit_id: 1) }.to raise_error ActiveRecord::RecordNotUnique
   end

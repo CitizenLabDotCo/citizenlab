@@ -9,11 +9,11 @@ FactoryBot.define do
     dimension_referrer_type { referrer_type_dimension }
     dimension_date_first_action { date_dimension }
     dimension_date_last_action { date_dimension }
-    visitor_id { 'XXX1' } #  string           not null
-    duration { 500 } # integer          not null
-    pages_visited { 5 } # integer          not null
-    returning_visitor { true } # boolean          default(TRUE), not null
-    matomo_visit_id { 1 } # integer          not null
-    matomo_last_action_time { '2022-09-01 12:00:00' } # datetime         not null
+    sequence(:visitor_id) { |n| "v-#{n}" }
+    duration { 500 }
+    pages_visited { 5 }
+    returning_visitor { true }
+    sequence(:matomo_visit_id)
+    matomo_last_action_time { date_dimension.date }
   end
 end
