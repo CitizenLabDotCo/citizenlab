@@ -9,7 +9,6 @@ import Tippy from '@tippyjs/react';
 // Styling
 import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
-import { lighten } from 'polished';
 
 const Container = styled.div`
   position: relative;
