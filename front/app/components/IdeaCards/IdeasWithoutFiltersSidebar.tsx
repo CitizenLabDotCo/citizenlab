@@ -67,7 +67,7 @@ const FiltersArea = styled.div`
     justify-content: flex-end;
     margin-bottom: 15px;
 
-    ${media.phone`
+    ${media.tablet`
       margin-bottom: 0px;
     `}
   }
@@ -78,7 +78,7 @@ const FiltersArea = styled.div`
     }
   `}
 
-  ${media.phone`
+  ${media.tablet`
     flex-direction: column;
     align-items: stretch;
     margin-bottom: 30px;
@@ -97,7 +97,7 @@ const LeftFilterArea = styled(FilterArea)`
     display: none;
   }
 
-  ${media.phone`
+  ${media.tablet`
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -125,7 +125,7 @@ const DropdownFilters = styled.div`
 const DesktopViewButtons = styled(ViewButtons)`
   margin-left: 40px;
 
-  ${media.phone`
+  ${media.tablet`
     display: none;
   `}
 `;
@@ -143,7 +143,7 @@ const StyledSearchInput = styled(SearchInput)`
     margin-left: auto;
   `}
 
-  ${media.phone`
+  ${media.tablet`
     width: 100%;
     margin-right: 0px;
     margin-left: 0px;

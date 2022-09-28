@@ -73,7 +73,11 @@ const PagesNavList = styled.ul`
   list-style: none;
   margin: 0;
   padding: 0;
+<<<<<<< HEAD
   ${media.smallerThanMaxTablet`
+=======
+  ${media.tablet`
+>>>>>>> 86341c7b6e ([CL-1435] Fix idea search)
     flex-wrap: wrap;
     justify-content: center;
   `}
@@ -150,11 +154,15 @@ const StyledA = styled.a`
 const Right = styled.div`
   display: flex;
   align-items: center;
+<<<<<<< HEAD
   ${media.smallerThanMaxTablet`
+=======
+  ${media.tablet`
+>>>>>>> 86341c7b6e ([CL-1435] Fix idea search)
     margin-top: 15px;
     margin-bottom: 15px;
   `}
-  ${media.phone`
+  ${media.tablet`
     flex-direction: column;
   `}
 `;
@@ -166,7 +174,7 @@ const PoweredBy = styled.div`
   padding-right: 20px;
   margin-right: 24px;
   border-right: 2px solid ${colors.divider};
-  ${media.phone`
+  ${media.tablet`
     flex-direction: column;
     padding: 0px;
     margin: 0px;
@@ -184,10 +192,14 @@ const PoweredByText = styled.span`
   ${media.tablet`
     display: none;
   `}
+<<<<<<< HEAD
   ${media.smallerThanMaxTablet`
+=======
+  ${media.tablet`
+>>>>>>> 86341c7b6e ([CL-1435] Fix idea search)
     display: block;
   `}
-  ${media.phone`
+  ${media.tablet`
     margin-bottom: 10px;
   `}
 `;
@@ -202,7 +214,7 @@ const CitizenlabLink = styled.a`
 `;
 
 const StyledSendFeedback = styled(SendFeedback)`
-  ${media.phone`
+  ${media.tablet`
     margin-top: 20px;
   `}
 `;
