@@ -6,17 +6,17 @@ module MultiTenancy
   module Seeds
     class Analytics < Base
       def run
-        project = Analytics::DimensionProject.first
-        user = Analytics::DimensionUser.first
-        locale1 = Analytics::DimensionLocale.first
-        locale2 = Analytics::DimensionLocale.last
-        referrer_type1 = Analytics::DimensionReferrerType.first
-        referrer_type2 = Analytics::DimensionReferrerType.last
-        date1 = Analytics::DimensionDate.first
-        date2 = Analytics::DimensionDate.limit(2)[1]
+        project = ::Analytics::DimensionProject.first
+        user = ::Analytics::DimensionUser.first
+        locale1 = ::Analytics::DimensionLocale.first
+        locale2 = ::Analytics::DimensionLocale.last
+        referrer_type1 = ::Analytics::DimensionReferrerType.first
+        referrer_type2 = ::Analytics::DimensionReferrerType.last
+        date1 = ::Analytics::DimensionDate.first
+        date2 = ::Analytics::DimensionDate.limit(2)[1]
 
         # Insert 2 visits (same user)
-        visit = Analytics::FactVisit.create!(
+        visit = ::Analytics::FactVisit.create!(
           visitor_id: 'XX1',
           dimension_user: user,
           dimension_referrer_type: referrer_type1,
@@ -31,7 +31,7 @@ module MultiTenancy
         visit.dimension_locales << locale1
 
         # Visit 2
-        visit = Analytics::FactVisit.create!(
+        visit = ::Analytics::FactVisit.create!(
           visitor_id: 'XX1',
           dimension_user: user,
           dimension_referrer_type: referrer_type1,
@@ -46,7 +46,7 @@ module MultiTenancy
         visit.dimension_locales << locale2
 
         # Visit 3 - no user, no project
-        visit = Analytics::FactVisit.create!(
+        visit = ::Analytics::FactVisit.create!(
           visitor_id: 'XX2',
           dimension_referrer_type: referrer_type2,
           dimension_date_first_action: date2,
