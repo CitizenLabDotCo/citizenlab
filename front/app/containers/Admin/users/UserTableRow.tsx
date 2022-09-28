@@ -80,7 +80,7 @@ const DropdownListButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: ${colors.textSecondary};
+  color: ${colors.white};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   white-space: nowrap;
@@ -93,7 +93,7 @@ const DropdownListButton = styled.button`
   &:focus {
     outline: none;
     color: white;
-    background: ${lighten(0.1, colors.background)};
+    background: ${lighten(0.1, colors.grey800)};
   }
 `;
 
@@ -229,7 +229,7 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
                   >
                     <FormattedMessage {...messages.seeProfile} />
                     <IconWrapper>
-                      <Icon name="eye" />
+                      <Icon name="eye" fill="white" />
                     </IconWrapper>
                   </DropdownListButton>
                   <DropdownListButton onClick={this.handleDeleteClick}>

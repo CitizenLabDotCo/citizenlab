@@ -74,7 +74,7 @@ const ListItem = styled.button`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: ${colors.textSecondary};
+  color: ${colors.white};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   white-space: nowrap;
