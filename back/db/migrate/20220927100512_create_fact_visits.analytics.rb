@@ -7,14 +7,14 @@ class CreateFactVisits < ActiveRecord::Migration[6.1]
   def change
     # rubocop:disable Rails/CreateTableWithTimestamps
 
-    # # Dimensions
+    # Dimensions
     create_table :analytics_dimension_referrer_types, id: :uuid do |t|
-      t.string :key, index: { unique: true, name: 'i_d_referrer_key' }
-      t.string :name
+      t.string :key, null: false, index: { unique: true, name: 'i_d_referrer_key' }
+      t.string :name, null: false
     end
 
     create_table :analytics_dimension_locales, id: :uuid do |t|
-      t.string :name
+      t.string :name, null: false
     end
 
     create_view :analytics_dimension_users
