@@ -33,7 +33,7 @@ const mockInputSettings = {
   },
 };
 
-describe.skip('<GenericHeroBannerForm />', () => {
+describe('<GenericHeroBannerForm />', () => {
   describe('as custom page', () => {
     it('renders with proper settings', () => {
       render(
