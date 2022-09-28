@@ -75,29 +75,26 @@ namespace :analytics do
       end
     end
   end
+
+  task populate_dimensions: :environment do
+    Tenant.not_deleted.each do |tenant|
+      Rake::Task['analytics:populate_date_dimension'].execute(host: tenant.schema_name)
+      Rake::Task['analytics:populate_locale_dimension'].execute(host: tenant.schema_name)
+      Rake::Task['analytics:populate_type_dimension'].execute(
+        host: tenant.schema_name,
+        types: 'idea%post|initiative%post|comment%nil|vote%nil'
+      )
+      Rake::Task['analytics:populate_referrer_type_dimension'].execute(
+        host: tenant.schema_name,
+        types: 'website%Websites|social%Social Networks|search%Search Engines|campaigns%Campaigns|direct%Direct Entry'
+      )
+    end
+  end
+
 end
 
 Rake::Task['analytics:install:migrations'].enhance(['analytics:copy_views'])
 
-def populate_dimensions
-  Tenant.not_deleted.each do |tenant|
-    Rake::Task['analytics:populate_date_dimension'].execute(host: tenant.schema_name)
-    Rake::Task['analytics:populate_locale_dimension'].execute(host: tenant.schema_name)
-    Rake::Task['analytics:populate_type_dimension'].execute(
-      host: tenant.schema_name,
-      types: 'idea%post|initiative%post|comment%nil|vote%nil'
-    )
-    Rake::Task['analytics:populate_referrer_type_dimension'].execute(
-      host: tenant.schema_name,
-      types: 'website%Websites|social%Social Networks|search%Search Engines|campaigns%Campaigns|direct%Direct Entry'
-    )
-  end
-end
-
-Rake::Task['db:reset'].enhance do
-  populate_dimensions
-end
-
 Rake::Task['db:migrate'].enhance do
-  populate_dimensions
+  Rake::Task['analytics:populate_dimensions'].execute
 end
