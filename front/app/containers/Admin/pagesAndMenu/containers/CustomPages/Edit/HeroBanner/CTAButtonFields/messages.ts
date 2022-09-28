@@ -23,6 +23,6 @@ export default defineMessages({
   },
   customPageCtaError: {
     id: 'app.containers.AdminPage.SettingsPage.customPageCtaError',
-    defaultMessage: 'Custom button text and URL must be valid.',
+    defaultMessage: 'Enter a valid button text and URL.',
   },
 });
