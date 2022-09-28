@@ -11,15 +11,11 @@ module WebApi
   module V1
     module External
       class TenantSerializer < ActiveModel::Serializer
-        attributes :id, :name, :host, :settings, :style, :logo, :header_bg
+        attributes :id, :name, :host, :settings, :style, :logo
         delegate :host, :settings, :style, to: :configuration
 
         def logo
           configuration.logo && configuration.logo.versions.to_h { |k, v| [k.to_s, v.url] }
-        end
-
-        def header_bg
-          configuration.header_bg && configuration.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
         end
 
         def configuration
