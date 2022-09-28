@@ -1,16 +1,12 @@
 // parse dates
 import { parseMonths } from './parseMonths';
 import { parseWeeks } from './parseWeeks';
+import { parseDays } from './parseDays';
 
 // typings
 import { Moment } from 'moment';
 import { IResolution } from 'components/admin/ResolutionControl';
-import {
-  Response,
-  Stats,
-  TimeSeries,
-  TimeSeriesResponse,
-} from '../typings';
+import { Response, Stats, TimeSeries, TimeSeriesResponse } from '../typings';
 
 export const parseStats = ([
   totalsWholePeriodRows,
@@ -48,36 +44,12 @@ export const parseTimeSeries = (
   if (responseTimeSeries.length === 0) return null;
 
   if (resolution === 'month') {
-    return parseMonths(
-      responseTimeSeries,
-      startAtMoment,
-      endAtMoment
-    )
+    return parseMonths(responseTimeSeries, startAtMoment, endAtMoment);
   }
 
   if (resolution === 'week') {
-    return parseWeeks(
-      responseTimeSeries,
-      startAtMoment,
-      endAtMoment
-    )
+    return parseWeeks(responseTimeSeries, startAtMoment, endAtMoment);
   }
 
-  return parseDays(
-    responseTimeSeries,
-    startAtMoment,
-    endAtMoment
-  )
-}
-
-const parseDays = (
-  responseTimeSeries: TimeSeriesResponse,
-  startAtMoment: Moment | null | undefined,
-  endAtMoment: Moment | null | undefined,
-): any => {
-  // const firstDateInData = getFirstDateInData(responseTimeSeries);
-  // const lastDateInData = getLastDateInData(responseTimeSeries);
-
-  console.log(responseTimeSeries, startAtMoment, endAtMoment)
-  return []
-}
+  return parseDays(responseTimeSeries, startAtMoment, endAtMoment);
+};
