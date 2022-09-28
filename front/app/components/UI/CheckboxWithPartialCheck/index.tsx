@@ -49,8 +49,8 @@ const CustomInputWrapper = styled.div<{
   justify-content: center;
   border: solid 1px ${colors.separationDark};
   border-radius: ${(props) => props.theme.borderRadius};
-  background: ${(props) => (props.checked ? colors.clGreen : '#fff')};
-  border-color: ${(props) => (props.checked ? colors.clGreen : '#aaa')};
+  background: ${(props) => (props.checked ? colors.green : '#fff')};
+  border-color: ${(props) => (props.checked ? colors.green : '#aaa')};
   box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.15);
 
   &:hover {

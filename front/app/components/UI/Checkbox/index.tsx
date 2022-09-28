@@ -53,9 +53,9 @@ const StyledCheckbox = styled.div<{
   border-radius: ${(props) => props.theme.borderRadius};
   border: solid 1px
     ${({ checkedOrIndeterminate }) =>
-      checkedOrIndeterminate ? colors.clGreen : colors.separationDark};
+      checkedOrIndeterminate ? colors.green : colors.separationDark};
   background: ${({ checkedOrIndeterminate }) =>
-    checkedOrIndeterminate ? colors.clGreen : '#fff'};
+    checkedOrIndeterminate ? colors.green : '#fff'};
   transition: all 120ms ease-out;
 
   ${HiddenCheckbox}.focus-visible + & {

@@ -73,7 +73,7 @@ const StyledError = styled(Error)`
 
 const SuccessMessage = styled.div`
   font-size: ${fontSizes.base}px;
-  color: ${colors.clGreenSuccess};
+  color: ${colors.green};
   font-weight: 400;
   line-height: normal;
   margin-left: 14px;

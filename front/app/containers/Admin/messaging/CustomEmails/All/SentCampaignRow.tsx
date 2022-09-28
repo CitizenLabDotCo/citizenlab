@@ -25,7 +25,7 @@ const SentCampaignRow = ({ campaign }: Props) => (
     </div>
     <StatusLabel
       minWidth="94px"
-      backgroundColor={colors.clGreenSuccess}
+      backgroundColor={colors.green}
       text={<FormattedMessage {...messages.sent} />}
     />
     <Box minWidth="220px" display="flex" justifyContent="flex-end">

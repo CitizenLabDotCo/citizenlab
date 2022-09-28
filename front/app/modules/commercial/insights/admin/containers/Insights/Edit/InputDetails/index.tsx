@@ -87,7 +87,7 @@ const LoadingContainer = styled.div`
 
 const StyledCreatable = styled(Creatable)<{ opitons: OptionProps[] }>`
   #react-select-2-option-${({ options }) => options.length} {
-    background-color: ${colors.clGreenSuccessBackground};
+    background-color: ${colors.greenLight};
   }
 `;
 

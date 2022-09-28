@@ -89,7 +89,7 @@ const Feedback = ({
         <Box id="feedback" data-testid="feedback" key={submitCount}>
           {successMessageIsShown && (
             <Box
-              bgColor={colors.clGreenSuccessBackground}
+              bgColor={colors.greenLight}
               borderRadius="3px"
               px="12px"
               py="4px"
@@ -103,7 +103,7 @@ const Feedback = ({
               <Box display="flex" gap="16px" alignItems="center">
                 <Icon
                   name="checkmark-full"
-                  fill={colors.clGreenSuccess}
+                  fill={colors.green}
                   width="24px"
                   height="24px"
                 />

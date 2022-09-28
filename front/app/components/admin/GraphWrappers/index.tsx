@@ -171,7 +171,7 @@ export const GraphCardFigureChange = styled.span`
   font-size: ${fontSizes.base}px;
 
   &.increase {
-    color: ${colors.clGreenSuccess};
+    color: ${colors.green};
   }
 
   &.decrease {

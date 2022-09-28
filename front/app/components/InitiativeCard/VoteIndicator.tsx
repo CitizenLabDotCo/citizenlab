@@ -48,13 +48,13 @@ const BadgeLabel = styled.div`
 const AnsweredBadgeIcon = styled(Icon)`
   width: 1.6em;
   height: 1.6em;
-  fill: ${colors.clGreenSuccess};
+  fill: ${colors.green};
   padding-right: 7px;
 `;
 
 const AnsweredStatusBadge = styled(StatusBadge)`
-  background-color: ${colors.clGreenSuccessBackground};
-  color: ${colors.clGreenSuccess};
+  background-color: ${colors.greenLight};
+  color: ${colors.green};
 `;
 
 const IneligibleBadgeIcon = styled(Icon)`

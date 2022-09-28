@@ -35,7 +35,7 @@ const scaleIn = keyframes`
 `;
 
 const StyledIcon = styled(Icon)`
-  fill: ${colors.clGreenSuccess};
+  fill: ${colors.green};
   width: 63px;
   height: 63px;
   animation: ${scaleIn} 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;

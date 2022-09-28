@@ -97,7 +97,7 @@ const StyledTag = styled(Box)<{ variant: Variant; size: Size }>`
       &:focus {
         background-color: ${darken(
           0.1,
-          variant === 'primary' ? colors.clGreen : '#fff'
+          variant === 'primary' ? colors.green : '#fff'
         )};
       }
     `}
