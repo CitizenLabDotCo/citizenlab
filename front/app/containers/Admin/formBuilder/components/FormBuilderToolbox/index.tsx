@@ -85,7 +85,7 @@ const FormBuilderToolbox = ({
           ml="12px"
           variant="h6"
           as="h3"
-          color="secondaryText"
+          color="textSecondary"
         >
           <FormattedMessage {...messages.addSurveyContent} />
         </Title>

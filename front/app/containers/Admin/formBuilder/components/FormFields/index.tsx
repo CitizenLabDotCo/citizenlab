@@ -72,7 +72,7 @@ const FormFields = ({
             if (hasErrors) {
               border = '1px solid red';
             } else if (selectedFieldId === field.id) {
-              border = `1px solid ${colors.clBlueLight}`;
+              border = `1px solid ${colors.teal300}`;
             }
 
             return (

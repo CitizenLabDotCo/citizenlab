@@ -72,7 +72,7 @@ const EmptyCard = ({ titleMultiloc, isComingSoon }: Props) => {
           justifyContent="center"
           alignItems="center"
         >
-          <Title variant="h3" mb="8px" color="text">
+          <Title variant="h3" mb="8px" color="textPrimary">
             {isComingSoon ? (
               <FormattedMessage {...messages.comingSoon} />
             ) : (

@@ -56,7 +56,7 @@ const CustomInputWrapper = styled.div<{
   &:hover {
     border-color: ${(props) =>
       props.checked === 'mixed'
-        ? colors.clBlueLightest
+        ? colors.teal300est
         : props.checked
         ? colors.clGreen
         : '#333'};

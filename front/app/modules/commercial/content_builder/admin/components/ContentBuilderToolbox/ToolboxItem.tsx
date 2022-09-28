@@ -32,7 +32,7 @@ const ToolboxItem = ({ icon, label }: Props) => {
         fill={colors.primary}
         name={icon}
       />
-      <Text color="text" style={{ lineHeight: '1' }}>
+      <Text color="textPrimary" style={{ lineHeight: '1' }}>
         {label}
       </Text>
     </StyledBox>

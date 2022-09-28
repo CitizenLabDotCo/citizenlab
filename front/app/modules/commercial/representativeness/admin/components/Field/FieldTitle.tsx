@@ -48,12 +48,12 @@ const STATUS_MESSAGES: Record<Status, MessageDescriptor> = {
   incomplete: messages.incomplete,
 };
 
-type StatusColor = 'clGreenSuccess' | 'label';
+type StatusColor = 'green' | 'textSecondary';
 
 const STATUS_COLORS: Record<Status, StatusColor> = {
-  saved: 'clGreenSuccess',
-  complete: 'clGreenSuccess',
-  incomplete: 'label',
+  saved: 'green',
+  complete: 'green',
+  incomplete: 'textSecondary',
 };
 
 const FieldTitle = ({

@@ -52,7 +52,7 @@ const ToolboxItem = ({ icon, label, onClick }: Props) => {
         marginLeft="12px"
         name={icon}
       />
-      <Text fontSize="s" marginLeft="8px" color="text">
+      <Text fontSize="s" marginLeft="8px" color="textPrimary">
         {label}
       </Text>
       <AddIcon />

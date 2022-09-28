@@ -62,7 +62,7 @@ const Footer = ({
       {!hideLegend && (
         <Legend
           labels={legendLabels}
-          colors={[colors.primary, colors.clBlueLight]}
+          colors={[colors.primary, colors.teal300]}
         />
       )}
     </Box>

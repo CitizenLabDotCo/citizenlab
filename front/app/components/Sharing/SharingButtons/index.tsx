@@ -58,7 +58,7 @@ const SharingButtons = memo(
         <Title
           textAlign={maxTabletOrSmaller ? 'center' : 'inherit'}
           mb="12px"
-          color="text"
+          color="textPrimary"
           variant="h3"
         >
           {titleMessage}

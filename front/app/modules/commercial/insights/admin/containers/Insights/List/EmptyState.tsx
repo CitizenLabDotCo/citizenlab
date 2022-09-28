@@ -49,7 +49,7 @@ const EmptyState = ({
             {...messages.emptyStateTitle}
             values={{
               accentText: (
-                <span style={{ color: colors.clBlueLight }}>
+                <span style={{ color: colors.teal300 }}>
                   {formatMessage(messages.emptyStateAccentText)}
                 </span>
               ),
