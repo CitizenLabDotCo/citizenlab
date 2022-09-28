@@ -22,7 +22,7 @@ const Text = styled.div`
   align-items: center;
   transition: all 80ms ease-out;
 
-  ${media.smallerThan1200px`
+  ${media.tablet`
     display: none;
   `}
 `;
@@ -32,7 +32,7 @@ const ArrowIcon = styled(Icon)`
   opacity: 0;
   transition: all 80ms ease-out;
 
-  ${media.smallerThan1200px`
+  ${media.tablet`
     display: none;
   `}
 `;
@@ -96,7 +96,7 @@ const MenuItemLink = styled(Link)`
     }
   }
 
-  ${media.smallerThan1200px`
+  ${media.tablet`
     width: 56px;
     padding-right: 5px;
   `}

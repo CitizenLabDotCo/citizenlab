@@ -45,7 +45,7 @@ const Menu = styled.div`
     display: none;
   }
 
-  ${media.smallerThan1200px`
+  ${media.tablet`
     width: 80px;
   `}
 `;
@@ -62,7 +62,7 @@ const MenuInner = styled.nav`
   padding-top: ${stylingConsts.menuHeight + 10}px;
   background: ${colors.adminMenuBackground};
 
-  ${media.smallerThan1200px`
+  ${media.tablet`
     width: 80px;
   `}
 `;
@@ -114,7 +114,7 @@ const MenuLink = styled.a`
     }
   }
 
-  ${media.smallerThan1200px`
+  ${media.tablet`
     width: 56px;
     padding-right: 5px;
 
