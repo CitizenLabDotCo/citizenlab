@@ -7,7 +7,7 @@ export const parseMonths = (
   responseTimeSeries: TimeSeriesResponse,
   startAtMoment: Moment | null | undefined,
   endAtMoment: Moment | null | undefined
-): any => {
+) => {
   const firstDateInData = getFirstDateInData(responseTimeSeries);
   const lastDateInData = getLastDateInData(responseTimeSeries);
 

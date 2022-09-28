@@ -50,6 +50,9 @@ describe('parseMonths', () => {
     { date: '2022-02-01', visits: 4, visitors: 4 }
   ]
 
+  const startMoment = moment('2021-09-01');
+  const endMoment = moment('2022-04-01');
+
   const expectedDataBefore: TimeSeries = [
     {
       date: '2021-09-01',
@@ -89,7 +92,7 @@ describe('parseMonths', () => {
   it('works with only start date (continuousData)', () => {
     const output = parseMonths(
       continuousData,
-      moment('2021-09-01'),
+      startMoment,
       null,
     )
 
@@ -105,7 +108,7 @@ describe('parseMonths', () => {
     const output = parseMonths(
       continuousData,
       null,
-      moment('2022-04-01'),
+      endMoment,
     )
 
     const expectedOutput: TimeSeries = [
@@ -119,8 +122,8 @@ describe('parseMonths', () => {
   it('works with both start and end date (continuousData)', () => {
     const output = parseMonths(
       continuousData,
-      moment('2021-09-01'),
-      moment('2022-04-01'),
+      startMoment,
+      endMoment,
     )
 
     const expectedOutput: TimeSeries = [
@@ -145,7 +148,7 @@ describe('parseMonths', () => {
   it('works with only start date (dataWithGap)', () => {
     const output = parseMonths(
       dataWithGap,
-      moment('2021-09-01'),
+      startMoment,
       null,
     )
 
@@ -161,7 +164,7 @@ describe('parseMonths', () => {
     const output = parseMonths(
       dataWithGap,
       null,
-      moment('2022-04-01'),
+      endMoment,
     )
 
     const expectedOutput: TimeSeries = [
@@ -175,8 +178,8 @@ describe('parseMonths', () => {
   it('works with both start and end date (dataWithGap)', () => {
     const output = parseMonths(
       dataWithGap,
-      moment('2021-09-01'),
-      moment('2022-04-01'),
+      startMoment,
+      endMoment,
     )
 
     const expectedOutput: TimeSeries = [
@@ -188,7 +191,7 @@ describe('parseMonths', () => {
     expect(output).toEqual(expectedOutput);
   })
 
-  it('works with large gap (dataWithGap)', () => {
+  it('works with large gap', () => {
     const data = [
       {
         'dimension_date_last_action.month': '2021-10',

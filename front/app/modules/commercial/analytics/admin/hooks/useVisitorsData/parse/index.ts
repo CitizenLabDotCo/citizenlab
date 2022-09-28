@@ -1,4 +1,6 @@
+// parse dates
 import { parseMonths } from './parseMonths';
+import { parseWeeks } from './parseWeeks';
 
 // typings
 import { Moment } from 'moment';
@@ -66,18 +68,6 @@ export const parseTimeSeries = (
     startAtMoment,
     endAtMoment
   )
-}
-
-const parseWeeks = (
-  responseTimeSeries: TimeSeriesResponse,
-  startAtMoment: Moment | null | undefined,
-  endAtMoment: Moment | null | undefined,
-): any => {
-  // const firstDateInData = getFirstDateInData(responseTimeSeries);
-  // const lastDateInData = getLastDateInData(responseTimeSeries);
-
-  console.log(responseTimeSeries, startAtMoment, endAtMoment)
-  return []
 }
 
 const parseDays = (
