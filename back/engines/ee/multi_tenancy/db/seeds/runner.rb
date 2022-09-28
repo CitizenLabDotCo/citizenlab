@@ -4,6 +4,7 @@
 # The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
 
 require_relative 'api_clients'
+require_relative 'analytics'
 require_relative 'areas'
 require_relative 'baskets'
 require_relative 'common_passwords'
