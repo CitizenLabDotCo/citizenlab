@@ -55,6 +55,11 @@ const Chart = ({
     return toThreeLetterMonth(date, resolution);
   };
 
+  // Avoids unmounted component state update warning
+  if (timeSeries === undefined) {
+    return null;
+  }
+
   return (
     <Box pt="8px" width="90%" maxWidth="900px" height="250px">
       {hasNoData(timeSeries) && (
