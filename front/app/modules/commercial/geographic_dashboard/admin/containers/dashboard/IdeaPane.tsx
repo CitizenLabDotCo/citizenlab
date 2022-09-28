@@ -27,7 +27,7 @@ const Container = styled.div`
   padding: 15px;
   padding-top: 30px;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  border: 1px solid ${colors.adminBorder};
+  border: 1px solid ${colors.borderLight};
   position: relative;
   display: flex;
   flex-direction: column;
