@@ -159,7 +159,7 @@ const ProjectImagePlaceholder = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${colors.background};
+  background: ${colors.grey300};
 `;
 
 const ProjectImagePlaceholderIcon = styled(Icon)`
