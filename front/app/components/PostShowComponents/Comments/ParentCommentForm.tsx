@@ -76,11 +76,11 @@ const Form = styled.form`
   overflow: hidden;
 
   &:not(.focused):hover {
-    border-color: ${colors.hoveredBorder};
+    border-color: ${colors.black};
   }
 
   &.focused {
-    border-color: ${colors.focussedBorder};
+    border-color: ${colors.black};
     box-shadow: ${defaultStyles.boxShadowFocused};
   }
 `;

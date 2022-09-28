@@ -33,7 +33,7 @@ const StylingWrapper = styled.div`
     border: solid 1px ${colors.borderDark};
 
     &:hover {
-      border-color: ${colors.hoveredBorder};
+      border-color: ${colors.black};
     }
 
     .DateInput,

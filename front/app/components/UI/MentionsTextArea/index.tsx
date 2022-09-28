@@ -25,7 +25,7 @@ const Container = styled.div`
   background: #fff;
 
   & .hasBorder textarea:focus {
-    border-color: ${colors.focussedBorder} !important;
+    border-color: ${colors.black} !important;
     box-shadow: ${defaultStyles.boxShadowFocused} !important;
   }
 
