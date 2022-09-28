@@ -23,7 +23,7 @@ export const NoPostPage = styled.div`
   padding: 100px 0;
   width: 100%;
 
-  border: 1px solid ${colors.separation};
+  border: 1px solid ${colors.divier};
   svg {
     margin-bottom: 20px;
     height: 50px;

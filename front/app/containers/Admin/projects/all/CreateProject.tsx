@@ -37,7 +37,7 @@ const easing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 const Container = styled.div`
   background: #fff;
   border-radius: ${({ theme }) => theme.borderRadius};
-  border: 1px solid ${({ theme }) => theme.colors.separation};
+  border: 1px solid ${({ theme }) => theme.colors.divier};
 `;
 
 const CreateProjectContent = styled.div`

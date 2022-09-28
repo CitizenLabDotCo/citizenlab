@@ -46,7 +46,7 @@ const InputsContainer = styled.div`
   padding: 12px 20px 0px 20px;
   height: 100%;
   background-color: ${colors.emailBg};
-  border-left: 1px solid ${colors.separation};
+  border-left: 1px solid ${colors.divier};
   display: flex;
   flex-direction: column;
 `;

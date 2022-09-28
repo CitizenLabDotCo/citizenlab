@@ -150,8 +150,8 @@ const ContentBuilderTopBar = ({
         </Box>
         {selectedLocale && locales.length > 1 && (
           <Box
-            borderLeft={`1px solid ${colors.separation}`}
-            borderRight={`1px solid ${colors.separation}`}
+            borderLeft={`1px solid ${colors.divier}`}
+            borderRight={`1px solid ${colors.divier}`}
             h="100%"
             p="24px"
           >

@@ -39,7 +39,7 @@ export const stackedBarTooltip =
               p="8px"
               background="white"
               color={colors.primary}
-              border={`1px solid ${colors.separation}`}
+              border={`1px solid ${colors.divier}`}
             >
               <Box
                 display="flex"

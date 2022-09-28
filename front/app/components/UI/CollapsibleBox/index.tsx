@@ -15,7 +15,7 @@ const timeout = 300;
 
 const Container = styled.div`
   background: #fff;
-  border: 1px solid ${colors.separation};
+  border: 1px solid ${colors.divier};
   border-radius: ${(props: any) => props.theme.borderRadius};
 `;
 

@@ -72,7 +72,7 @@ const Forms = ({ intl: { formatMessage } }: InjectedIntlProps) => {
                   togglePostingEnabled={togglePostingEnabled}
                 />
                 {index !== formActionsConfigs.length - 1 && (
-                  <Box height="1px" border={`1px solid ${colors.separation}`} />
+                  <Box height="1px" border={`1px solid ${colors.divier}`} />
                 )}
               </Fragment>
             );

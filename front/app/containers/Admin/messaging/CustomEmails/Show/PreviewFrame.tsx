@@ -6,7 +6,7 @@ import request from 'utils/request';
 
 const StyledFrame = styled(Frame)`
   border-radius: ${(props: any) => props.theme.borderRadius};
-  border: 1px solid ${(props) => props.theme.colors.separation};
+  border: 1px solid ${(props) => props.theme.colors.divier};
   width: 100%;
   height: 450px;
 `;

@@ -122,7 +122,7 @@ const CommentContainer = styled.div`
 
   &:not(:last-child) {
     padding-bottom: 30px;
-    border-bottom: 1px solid ${colors.separation};
+    border-bottom: 1px solid ${colors.divier};
   }
 `;
 

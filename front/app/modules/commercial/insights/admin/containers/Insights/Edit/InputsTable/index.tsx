@@ -46,7 +46,7 @@ const Inputs = styled.div`
   overflow-x: auto;
   overflow-y: auto;
   padding: 40px;
-  border-left: 1px solid ${colors.separation};
+  border-left: 1px solid ${colors.divier};
 `;
 
 const StyledActions = styled(Actions)`

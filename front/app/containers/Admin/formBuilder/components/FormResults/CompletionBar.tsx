@@ -37,7 +37,7 @@ const CompletionBar = ({
       height="16px"
       width="100%"
       borderRadius="3px"
-      border={`1px solid ${colors.separation};`}
+      border={`1px solid ${colors.divier};`}
     >
       <Box height="100%" width={`${completed}%`} bgColor={bgColor} />
     </Box>

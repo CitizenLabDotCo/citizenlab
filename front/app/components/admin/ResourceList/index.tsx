@@ -29,10 +29,10 @@ export const Container = styled.div`
   align-items: center !important;
   padding-top: 10px;
   padding-bottom: 10px;
-  border-top: 1px solid ${colors.separation};
+  border-top: 1px solid ${colors.divier};
   transition: all ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
   &.last-item {
-    border-bottom: 1px solid ${colors.separation};
+    border-bottom: 1px solid ${colors.divier};
   }
   h1,
   h2,

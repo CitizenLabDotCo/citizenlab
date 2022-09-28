@@ -47,7 +47,7 @@ const CustomInputWrapper = styled.div<{
   display: flex;
   align-items: center;
   justify-content: center;
-  border: solid 1px ${colors.separationDark};
+  border: solid 1px ${colors.divierDark};
   border-radius: ${(props) => props.theme.borderRadius};
   background: ${(props) => (props.checked ? colors.green : '#fff')};
   border-color: ${(props) => (props.checked ? colors.green : '#aaa')};

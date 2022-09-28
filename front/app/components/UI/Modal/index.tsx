@@ -268,7 +268,7 @@ const FooterContainer = styled.div`
   padding-right: 30px;
   padding-top: 15px;
   padding-bottom: 15px;
-  border-top: solid 1px ${colors.separation};
+  border-top: solid 1px ${colors.divier};
   background: #fff;
 
   ${media.phone`

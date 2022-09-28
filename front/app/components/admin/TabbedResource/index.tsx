@@ -38,7 +38,7 @@ const TabbedNav = styled.nav`
     ${(props: any) => props.theme.borderRadius} 0 0;
   padding-left: 44px;
   display: flex;
-  border: 1px solid ${colors.separation};
+  border: 1px solid ${colors.divier};
   border-bottom: 1px solid transparent;
   @media print {
     border: none;
@@ -93,7 +93,7 @@ const Tab = styled.div`
 const ChildWrapper = styled.div`
   margin-bottom: 60px;
   padding: 42px;
-  border: 1px solid ${colors.separation};
+  border: 1px solid ${colors.divier};
   background: ${colors.white};
 
   @media print {

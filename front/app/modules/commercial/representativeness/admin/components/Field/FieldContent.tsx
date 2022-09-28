@@ -78,7 +78,7 @@ const FieldContent = ({
         <Box
           width="100%"
           background="#FCFCFC"
-          border={`1px ${colors.separation} solid`}
+          border={`1px ${colors.divier} solid`}
           pt="20px"
           pb="12px"
           px="16px"

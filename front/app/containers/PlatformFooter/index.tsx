@@ -165,7 +165,7 @@ const PoweredBy = styled.div`
   outline: none;
   padding-right: 20px;
   margin-right: 24px;
-  border-right: 2px solid ${colors.separation};
+  border-right: 2px solid ${colors.divier};
   ${media.phone`
     flex-direction: column;
     padding: 0px;

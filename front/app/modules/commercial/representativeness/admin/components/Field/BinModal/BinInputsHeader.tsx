@@ -22,7 +22,7 @@ const BinInputsHeader = () => (
     display="flex"
     flexDirection="row"
     pb="8px"
-    borderBottom={`1px solid ${colors.separation}`}
+    borderBottom={`1px solid ${colors.divier}`}
   >
     {HEADER_MESSAGES.map((message, i) => (
       <Box width="25%" key={i}>
