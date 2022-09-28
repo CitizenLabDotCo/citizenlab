@@ -30,7 +30,7 @@ const BinInputsHeader = () => (
           mt="0px"
           mb="0px"
           variant="bodyS"
-          color="adminTextColor"
+          color="primary"
           fontWeight="bold"
         >
           <FormattedMessage {...message} />

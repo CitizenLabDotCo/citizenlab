@@ -87,7 +87,7 @@ const FormFields = ({
                 >
                   <Box display="flex" className="expand">
                     <Box as="span" display="flex" alignItems="center">
-                      <Text fontSize="base" my="0px" color="adminTextColor">
+                      <Text fontSize="base" my="0px" color="primary">
                         <T value={field.title_multiloc} />
                       </Text>
                     </Box>

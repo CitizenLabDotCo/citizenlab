@@ -97,7 +97,7 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
         <Toggle
           name={`customFields.${field.index}.required`}
           label={
-            <Text as="span" color="adminTextColor" variant="bodyM" my="0px">
+            <Text as="span" color="primary" variant="bodyM" my="0px">
               <FormattedMessage {...messages.required} />
             </Text>
           }

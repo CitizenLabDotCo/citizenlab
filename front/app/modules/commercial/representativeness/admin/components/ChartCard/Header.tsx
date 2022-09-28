@@ -77,7 +77,7 @@ const Header = ({
       <Text
         fontSize="xxl"
         display="inline"
-        color="adminTextColor"
+        color="primary"
         fontWeight="bold"
         m="0px"
         mb="0px"
