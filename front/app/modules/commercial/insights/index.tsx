@@ -27,6 +27,7 @@ const AdminInsightsViewDetectComponent = React.lazy(
 declare module 'components/UI/Error' {
   interface TFieldNameMap {
     view_name: 'view_name';
+    category_name: 'category_name';
   }
 }
 
