@@ -83,6 +83,27 @@ export function toThreeLetterMonth(date: string, resolution: IResolution) {
 }
 
 export function toFullMonth(date: string, resolution: IResolution) {
+  if (resolution === 'week') {
+    const startWeek = moment.utc(date, 'YYYY-MM-DD');
+    const endWeek = startWeek.clone().add({ day: 7 });
+
+    const sameYear = startWeek.year() === endWeek.year();
+    if (!sameYear) {
+      return `${startWeek.format('MMMM DD, YYYY')} - ${endWeek.format(
+        'MMMM DD, YYYY'
+      )}`;
+    }
+
+    const sameMonth = startWeek.month() === endWeek.month();
+    if (!sameMonth) {
+      return `${startWeek.format('MMMM DD')} - ${endWeek.format(
+        'MMMM DD, YYYY'
+      )}`;
+    }
+
+    return `${startWeek.format('MMMM DD')} - ${endWeek.format('DD, YYYY')}`;
+  }
+
   return moment
     .utc(date, 'YYYY-MM-DD')
     .format(resolution === 'month' ? 'MMMM YYYY' : 'MMMM DD, YYYY');
