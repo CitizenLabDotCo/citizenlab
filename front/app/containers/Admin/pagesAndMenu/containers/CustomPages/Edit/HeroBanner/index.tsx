@@ -209,7 +209,6 @@ const EditCustomPageHeroBannerForm = ({
                 handleCTAButtonTextMultilocOnChange
               }
               handleCTAButtonUrlOnChange={handleCTAButtonUrlOnChange}
-              title={formatMessage(messages.buttonTitle)}
               apiErrors={apiErrors}
               buttonTextMultilocFieldName="banner_cta_button_multiloc"
               buttonUrlFieldName="banner_cta_button_url"

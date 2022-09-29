@@ -1,20 +1,22 @@
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import React from 'react';
-import { TCustomPageCTAType } from 'services/customPages';
 import CTARadioButtons, {
   Props as CTARadioButtonProps,
 } from 'components/LandingPageComponents/admin/CTARadioButtons';
+import React from 'react';
+import { InjectedIntlProps } from 'react-intl';
+import { TCustomPageCTAType } from 'services/customPages';
+import { injectIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 const CTA_TYPES: TCustomPageCTAType[] = ['no_button', 'customized_button'];
 
-interface Props extends Omit<CTARadioButtonProps, 'ctaTypes' | 'id'> {
-  title?: string;
-}
-
-const CTAButtonFields = ({ title, ...otherProps }: Props) => {
+const CTAButtonFields = ({
+  intl: { formatMessage },
+  ...otherProps
+}: Omit<CTARadioButtonProps, 'ctaTypes' | 'id'> & InjectedIntlProps) => {
   return (
     <>
-      <SubSectionTitle>{title}</SubSectionTitle>
+      <SubSectionTitle>{formatMessage(messages.buttonTitle)}</SubSectionTitle>
       <SectionField>
         <CTARadioButtons id="custom" ctaTypes={CTA_TYPES} {...otherProps} />
       </SectionField>
@@ -22,4 +24,4 @@ const CTAButtonFields = ({ title, ...otherProps }: Props) => {
   );
 };
 
-export default CTAButtonFields;
+export default injectIntl(CTAButtonFields);
