@@ -1,12 +1,12 @@
 import React, { useRef } from 'react';
 import { adopt } from 'react-adopt';
-import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import scrollToComponent from 'react-scroll-to-component';
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // hooks
-import usePages from 'hooks/usePages';
-import useNavbarItems from 'hooks/useNavbarItems';
 import useLocalize from 'hooks/useLocalize';
+import useNavbarItems from 'hooks/useNavbarItems';
+import usePages from 'hooks/usePages';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
@@ -14,23 +14,23 @@ import messages from './messages';
 
 // components
 import { Spinner } from '@citizenlab/cl2-component-library';
-import FeatureFlag from 'components/FeatureFlag';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
 import ContentContainer from 'components/ContentContainer';
-import SiteMapMeta from './SiteMapMeta';
-import ProjectsAndFoldersSection from './ProjectsAndFoldersSection';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Link from 'utils/cl-router/Link';
+import ProjectsAndFoldersSection from './ProjectsAndFoldersSection';
+import SiteMapMeta from './SiteMapMeta';
 
 // styles
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // resources
-import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
 // services
 import { DEFAULT_PAGE_SLUGS } from 'services/navbar';
+import { TPageCode } from 'services/pages';
 
 const Container = styled.div`
   min-height: calc(
@@ -125,6 +125,7 @@ interface DataProps {
 interface Props extends DataProps {}
 
 const SiteMap = ({ projects, authUser }: Props) => {
+  const proposalsEnabled = useFeatureFlag({ name: 'initiatives' });
   const loaded = projects !== undefined;
   const navBarItems = useNavbarItems();
   const localize = useLocalize();
@@ -239,7 +240,7 @@ const SiteMap = ({ projects, authUser }: Props) => {
                       )}
                     </li>
                   )}
-                  <FeatureFlag name="initiatives">
+                  {proposalsEnabled && (
                     <li>
                       <NavItem
                         onMouseDown={removeFocusAfterMouseClick}
@@ -248,7 +249,7 @@ const SiteMap = ({ projects, authUser }: Props) => {
                         <FormattedMessage {...messages.initiativesSection} />
                       </NavItem>
                     </li>
-                  </FeatureFlag>
+                  )}
                   <li>
                     <NavItem
                       onMouseDown={removeFocusAfterMouseClick}
@@ -268,26 +269,42 @@ const SiteMap = ({ projects, authUser }: Props) => {
                 {!isNilOrError(navBarItems) &&
                   navBarItems
                     .filter(
-                      (item) => item.relationships.static_page.data === null
+                      (navBarItem) =>
+                        navBarItem.relationships.static_page.data === null
                     )
-                    .map((item) => (
-                      <li key={item.id}>
-                        <Link to={DEFAULT_PAGE_SLUGS[item.attributes.code]}>
-                          {localize(item.attributes.title_multiloc)}
+                    .map((navBarItem) => (
+                      <li key={navBarItem.id}>
+                        <Link
+                          to={DEFAULT_PAGE_SLUGS[navBarItem.attributes.code]}
+                        >
+                          {localize(navBarItem.attributes.title_multiloc)}
                         </Link>
                       </li>
                     ))}
                 {/* Non-custom static pages */}
                 {!isNilOrError(pages) &&
                   pages
-                    .filter((page) => page.attributes.code !== 'custom')
-                    .map((item) => (
-                      <li key={item.id}>
-                        <Link to={`/pages/${item.attributes.slug}`}>
-                          {localize(item.attributes.title_multiloc)}
-                        </Link>
-                      </li>
-                    ))}
+                    .filter((page) => {
+                      const showPageConditions: Record<TPageCode, Function> = {
+                        proposals: () => proposalsEnabled,
+                        about: () => true,
+                        faq: () => true,
+                        'terms-and-conditions': () => true,
+                        'privacy-policy': () => true,
+                        custom: () => false,
+                      };
+
+                      return showPageConditions[page.attributes.code]();
+                    })
+                    .map((page) => {
+                      return (
+                        <li key={page.id}>
+                          <Link to={`/pages/${page.attributes.slug}`}>
+                            {localize(page.attributes.title_multiloc)}
+                          </Link>
+                        </li>
+                      );
+                    })}
               </ul>
 
               <H2 ref={userSpaceSection} tabIndex={-1}>
@@ -324,23 +341,27 @@ const SiteMap = ({ projects, authUser }: Props) => {
               </ul>
 
               <ProjectsAndFoldersSection projectsSectionRef={projectsSection} />
-              <FeatureFlag name="initiatives">
-                <H2 ref={initiativesSection} tabIndex={-1}>
-                  <FormattedMessage {...messages.initiativesSection} />
-                </H2>
-                <ul>
-                  <li>
-                    <Link to="/initiatives">
-                      <FormattedMessage {...messages.initiativesList} />
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/pages/initiatives">
-                      <FormattedMessage {...messages.initiativesInfo} />
-                    </Link>
-                  </li>
-                </ul>
-              </FeatureFlag>
+              <>
+                {proposalsEnabled && (
+                  <>
+                    <H2 ref={initiativesSection} tabIndex={-1}>
+                      <FormattedMessage {...messages.initiativesSection} />
+                    </H2>
+                    <ul>
+                      <li>
+                        <Link to="/initiatives">
+                          <FormattedMessage {...messages.initiativesList} />
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to="/pages/initiatives">
+                          <FormattedMessage {...messages.initiativesInfo} />
+                        </Link>
+                      </li>
+                    </ul>
+                  </>
+                )}
+              </>
 
               <H2 ref={customPagesSection} tabIndex={-1}>
                 <FormattedMessage {...messages.customPageSection} />
@@ -349,7 +370,18 @@ const SiteMap = ({ projects, authUser }: Props) => {
                 {/* Custom static pages */}
                 {!isNilOrError(pages) &&
                   pages
-                    .filter((page) => page.attributes.code === 'custom')
+                    .filter((page) => {
+                      const showPageConditions: Record<TPageCode, Function> = {
+                        custom: () => true,
+                        proposals: () => false,
+                        about: () => false,
+                        faq: () => false,
+                        'terms-and-conditions': () => false,
+                        'privacy-policy': () => false,
+                      };
+
+                      return showPageConditions[page.attributes.code]();
+                    })
                     .map((item) => (
                       <li key={item.id}>
                         <Link to={`/pages/${item.attributes.slug}`}>
