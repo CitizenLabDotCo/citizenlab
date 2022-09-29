@@ -36,6 +36,15 @@ declare module 'utils/moduleUtils' {
   }
 }
 
+declare module 'components/UI/Error' {
+  interface TFieldNameMap {
+    banner_cta_signed_out_text_multiloc: 'banner_cta_signed_out_text_multiloc';
+    banner_cta_signed_out_url: 'banner_cta_signed_out_url';
+    banner_cta_signed_in_text_multiloc: 'banner_cta_signed_in_text_multiloc';
+    banner_cta_signed_in_url: 'banner_cta_signed_in_url';
+  }
+}
+
 const CTA_SIGNED_OUT_TYPES: CTASignedOutType[] = [
   'sign_up_button',
   'no_button',

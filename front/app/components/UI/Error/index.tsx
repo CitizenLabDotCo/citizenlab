@@ -133,51 +133,49 @@ interface Props {
   scrollIntoView?: boolean;
 }
 
-export type TFieldName =
-  | 'base'
-  | 'title_multiloc'
-  | 'sender'
-  | 'group_ids'
-  | 'reply_to'
-  | 'subject_multiloc'
-  | 'body_multiloc'
-  | 'description_multiloc'
-  | 'description_preview_multiloc'
-  | 'required'
-  | 'input_type'
-  | 'slug'
-  | 'file'
-  | 'token'
-  | 'password'
-  | 'buttonText'
-  | 'showFooter'
-  | 'showLogo'
-  | 'showHeader'
-  | 'relativeLink'
-  | 'font'
-  | 'accentColor'
-  | 'textColor'
-  | 'siteBgColor'
-  | 'bgColor'
-  | 'fontSize'
-  | 'headerText'
-  | 'headerSubText'
-  | 'limit'
-  | 'width'
-  | 'height'
-  | 'first_name'
-  | 'last_name'
-  | 'confirmation_code'
-  | 'email'
-  | 'view_name'
-  | 'category_name'
-  | 'nav_bar_item_title_multiloc'
-  | 'banner_cta_button_multiloc'
-  | 'banner_cta_button_url'
-  | 'banner_cta_signed_out_text_multiloc'
-  | 'banner_cta_signed_out_url'
-  | 'banner_cta_signed_in_text_multiloc'
-  | 'banner_cta_signed_in_url';
+export interface TFieldNameMap {
+  base: 'base';
+  title_multiloc: 'title_multiloc';
+  sender: 'sender';
+  group_ids: 'group_ids';
+  reply_to: 'reply_to';
+  subject_multiloc: 'subject_multiloc';
+  body_multiloc: 'body_multiloc';
+  description_multiloc: 'description_multiloc';
+  description_preview_multiloc: 'description_preview_multiloc';
+  required: 'required';
+  input_type: 'input_type';
+  slug: 'slug';
+  file: 'file';
+  token: 'token';
+  password: 'password';
+  buttonText: 'buttonText';
+  showFooter: 'showFooter';
+  showLogo: 'showLogo';
+  relativeLink: 'relativeLink';
+  font: 'font';
+  accentColor: 'accentColor';
+  textColor: 'textColor';
+  siteBgColor: 'siteBgColor';
+  bgColor: 'bgColor';
+  fontSize: 'fontSize';
+  headerText: 'headerText';
+  headerSubText: 'headerSubText';
+  limit: 'limit';
+  width: 'width';
+  height: 'height';
+  first_name: 'first_name';
+  last_name: 'last_name';
+  confirmation_code: 'confirmation_code';
+  email: 'email';
+  view_name: 'confirmation_code';
+  category_name: 'category_name';
+  nav_bar_item_title_multiloc: 'nav_bar_item_title_multiloc';
+  banner_cta_button_multiloc: 'banner_cta_button_multiloc';
+  banner_cta_button_url: 'banner_cta_button_url';
+}
+
+export type TFieldName = TFieldNameMap[keyof TFieldNameMap];
 
 export const findErrorMessage = (
   fieldName: TFieldName | undefined,
