@@ -65,7 +65,11 @@ const VisitorsCard = ({
     >
       <Box width="100%" display="flex" flexDirection="row">
         <Box display="flex" flexDirection="row" pl="20px">
-          <VisitorStats stats={stats} resolution={deducedResolution} />
+          <VisitorStats
+            stats={stats}
+            projectFilter={projectFilter}
+            resolution={deducedResolution}
+          />
         </Box>
 
         <Box flexGrow={1} display="flex" justifyContent="center">
