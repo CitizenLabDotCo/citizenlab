@@ -6,6 +6,10 @@ import {
 } from '../typings';
 import { IResolution } from 'components/admin/ResolutionControl';
 
+export const roundDateToMidnight = (date: Moment) => {
+  return moment(date.format('YYYY-MM-DD'));
+};
+
 export const indexTimeSeries = (
   responseTimeSeries: TimeSeriesResponse
 ): Map<string, TimeSeriesRow> => {

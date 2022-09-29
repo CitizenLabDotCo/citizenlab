@@ -5,6 +5,7 @@ import { parseDays } from './parseDays';
 
 // utils
 import { keys } from 'utils/helperUtils';
+import { roundDateToMidnight } from './utils';
 
 // typings
 import { Moment } from 'moment';
@@ -47,15 +48,35 @@ export const parseTimeSeries = (
 ): TimeSeries | null => {
   if (responseTimeSeries.length === 0) return null;
 
+  const startAtMomentRounded = startAtMoment
+    ? roundDateToMidnight(startAtMoment)
+    : startAtMoment;
+
+  const endAtMomentRounded = endAtMoment
+    ? roundDateToMidnight(endAtMoment)
+    : endAtMoment;
+
   if (resolution === 'month') {
-    return parseMonths(responseTimeSeries, startAtMoment, endAtMoment);
+    return parseMonths(
+      responseTimeSeries,
+      startAtMomentRounded,
+      endAtMomentRounded
+    );
   }
 
   if (resolution === 'week') {
-    return parseWeeks(responseTimeSeries, startAtMoment, endAtMoment);
+    return parseWeeks(
+      responseTimeSeries,
+      startAtMomentRounded,
+      endAtMomentRounded
+    );
   }
 
-  return parseDays(responseTimeSeries, startAtMoment, endAtMoment);
+  return parseDays(
+    responseTimeSeries,
+    startAtMomentRounded,
+    endAtMomentRounded
+  );
 };
 
 const RESOLUTION_TO_MESSAGE_KEY: Record<IResolution, keyof Translations> = {
