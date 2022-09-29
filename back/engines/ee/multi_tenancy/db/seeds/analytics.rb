@@ -14,8 +14,7 @@ module MultiTenancy
         locale2 = ::Analytics::DimensionLocale.last
         referrer_type1 = ::Analytics::DimensionReferrerType.first
         referrer_type2 = ::Analytics::DimensionReferrerType.last
-        date1 = ::Analytics::DimensionDate.first
-        date2 = ::Analytics::DimensionDate.limit(2)[1]
+        date1, date2 = ::Analytics::DimensionDate.take(2)
 
         # Insert 2 visits (same user)
         visit1 = ::Analytics::FactVisit.create!(
