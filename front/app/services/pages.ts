@@ -55,7 +55,7 @@ export const FOOTER_PAGES: TFooterPage[] = [
 // but do not have a corresponding navbar item.
 // Their slugs and titles cannot be changed. Their
 // codes are the same as their slugs.
-export type TFixedPage = TPolicyPage | 'proposals';
+type TFixedPage = TPolicyPage | 'proposals';
 
 export const FIXED_PAGES: TFixedPage[] = [
   'terms-and-conditions',
