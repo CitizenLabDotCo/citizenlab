@@ -4,6 +4,7 @@ import {
   TimeSeriesResponseRow,
   TimeSeriesRow,
 } from '../typings';
+import { IResolution } from 'components/admin/ResolutionControl';
 
 export const indexTimeSeries = (
   responseTimeSeries: TimeSeriesResponse
@@ -58,17 +59,15 @@ const getDate = (row: TimeSeriesResponseRow) => {
   return moment(row['dimension_date_last_action.date']);
 };
 
-type Step = 'month' | 'week' | 'day';
-
 type TimeDelta = { month: 1 } | { day: 7 } | { day: 1 };
 
-const TIME_DELTA_MAP: Record<Step, TimeDelta> = {
+const TIME_DELTA_MAP: Record<IResolution, TimeDelta> = {
   month: { month: 1 },
   week: { day: 7 },
   day: { day: 1 },
 };
 
-export const dateRange = (start: Moment, end: Moment, step: Step) => {
+export const dateRange = (start: Moment, end: Moment, step: IResolution) => {
   const timeDelta = TIME_DELTA_MAP[step];
   const dates: Moment[] = [];
 
