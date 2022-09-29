@@ -78,7 +78,7 @@ const FormBuilderTopBar = ({ isSubmitting }: FormBuilderTopBarProps) => {
     >
       <Box
         p="16px"
-        w="212px"
+        w="210px"
         h="100%"
         borderRight={`1px solid ${colors.grey500}`}
         display="flex"
@@ -91,8 +91,8 @@ const FormBuilderTopBar = ({ isSubmitting }: FormBuilderTopBarProps) => {
           <Text mb="0px" color="textSecondary">
             {localize(project.attributes.title_multiloc)}
           </Text>
-          <Box display="flex" alignContent="center">
-            <Title marginRight="8px" marginTop="auto" variant="h4" as="h1">
+          <Box display="flex" alignContent="center" mt="4px">
+            <Title marginRight="8px" marginTop="0" variant="h4" as="h1">
               <FormattedMessage {...messages.surveyTitle} />
             </Title>
             <StyledStatusLabel
@@ -102,13 +102,13 @@ const FormBuilderTopBar = ({ isSubmitting }: FormBuilderTopBarProps) => {
                     <FormattedMessage {...messages.open} />
                   </span>
                 ) : (
-                  <span style={{ color: colors.grey700 }}>
+                  <span style={{ color: colors.red400 }}>
                     <FormattedMessage {...messages.closed} />
                   </span>
                 )
               }
               backgroundColor={
-                isPostingEnabled ? colors.greenLight : colors.background
+                isPostingEnabled ? colors.greenLight : colors.red100
               }
             />
           </Box>
@@ -126,7 +126,6 @@ const FormBuilderTopBar = ({ isSubmitting }: FormBuilderTopBarProps) => {
         </Button>
         <Button
           buttonStyle="primary"
-          mx="20px"
           disabled={!project}
           processing={isSubmitting}
           type="submit"

@@ -65,54 +65,56 @@ const FormFields = ({
   return (
     <DndProvider backend={HTML5Backend}>
       <Box p="32px" height="100%" overflowY="auto">
-        <List key={formCustomFields.length}>
-          {formCustomFields.map((field, index) => {
-            const hasErrors = !!errors.customFields?.[index];
-            let border = 'none';
-            if (hasErrors) {
-              border = '1px solid red';
-            } else if (selectedFieldId === field.id) {
-              border = `1px solid ${colors.teal300}`;
-            }
+        <Box borderBottom={`1px solid ${colors.divider}`}>
+          <List key={formCustomFields.length}>
+            {formCustomFields.map((field, index) => {
+              const hasErrors = !!errors.customFields?.[index];
+              let outlineStyle = 'none';
+              if (hasErrors) {
+                outlineStyle = `1px solid ${colors.red400}`;
+              } else if (selectedFieldId === field.id) {
+                outlineStyle = `1px solid ${colors.primary}`;
+              }
 
-            return (
-              <Box border={border} key={field.id}>
-                <SortableRow
-                  id={field.id}
-                  index={index}
-                  moveRow={handleDragRow}
-                  dropRow={() => {
-                    // Do nothing, no need to handle dropping a row for now
-                  }}
-                >
-                  <Box display="flex" className="expand">
-                    <Box as="span" display="flex" alignItems="center">
-                      <Text fontSize="base" my="0px" color="primary">
-                        <T value={field.title_multiloc} />
-                      </Text>
-                    </Box>
-                    {!isNilOrError(field.input_type) && (
-                      <StyledBadge color={colors.textSecondary}>
-                        <FormattedMessage
-                          {...getTranslatedFieldType(field.input_type)}
-                        />
-                      </StyledBadge>
-                    )}
-                  </Box>
-                  <Button
-                    buttonStyle="secondary"
-                    icon="edit"
-                    onClick={() => {
-                      onEditField({ ...field, index });
+              return (
+                <Box key={field.id} style={{ outline: outlineStyle }}>
+                  <SortableRow
+                    id={field.id}
+                    index={index}
+                    moveRow={handleDragRow}
+                    dropRow={() => {
+                      // Do nothing, no need to handle dropping a row for now
                     }}
                   >
-                    <FormattedMessage {...messages.editButtonLabel} />
-                  </Button>
-                </SortableRow>
-              </Box>
-            );
-          })}
-        </List>
+                    <Box display="flex" className="expand">
+                      <Box as="span" display="flex" alignItems="center">
+                        <Text fontSize="base" my="0px" color="primary">
+                          <T value={field.title_multiloc} />
+                        </Text>
+                      </Box>
+                      {!isNilOrError(field.input_type) && (
+                        <StyledBadge className="inverse" color={colors.grey700}>
+                          <FormattedMessage
+                            {...getTranslatedFieldType(field.input_type)}
+                          />
+                        </StyledBadge>
+                      )}
+                    </Box>
+                    <Button
+                      buttonStyle="secondary"
+                      icon="edit"
+                      onClick={() => {
+                        onEditField({ ...field, index });
+                      }}
+                    >
+                      <FormattedMessage {...messages.editButtonLabel} />
+                    </Button>
+                  </SortableRow>
+                </Box>
+              );
+            })}
+          </List>
+        </Box>
       </Box>
     </DndProvider>
   );
