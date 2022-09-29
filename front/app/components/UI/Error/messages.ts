@@ -315,7 +315,7 @@ export default defineMessages({
   banner_cta_signed_in_url_url: {
     id: 'app.errors.banner_cta_signed_in_url_blank',
     defaultMessage:
-      "Enter a valid button link. Make sure the link starts with 'https://'.",
+      "Enter a valid link. Make sure the link starts with 'https://'.",
   },
   banner_cta_signed_out_text_multiloc_blank: {
     id: 'app.errors.banner_cta_signed_out_text_multiloc_blank',
@@ -328,7 +328,7 @@ export default defineMessages({
   banner_cta_signed_out_url_url: {
     id: 'app.errors.banner_cta_signed_out_url_blank',
     defaultMessage:
-      "Enter a valid button link. Make sure the link starts with 'https://'.",
+      "Enter a valid link. Make sure the link starts with 'https://'.",
   },
   banner_cta_button_multiloc_blank: {
     id: 'app.errors.banner_cta_button_multiloc_blank',
@@ -341,6 +341,6 @@ export default defineMessages({
   banner_cta_button_url_url: {
     id: 'app.errors.banner_cta_button_url_url',
     defaultMessage:
-      "Enter a valid button link. Make sure the link starts with 'https://'.",
+      "Enter a valid link. Make sure the link starts with 'https://'.",
   },
 });
