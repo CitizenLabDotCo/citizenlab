@@ -96,8 +96,6 @@ describe('HeaderImageDropzone', () => {
       screen.getByRole('button').click();
     });
 
-    await waitFor(() =>
-      expect(onRemove).toHaveBeenCalledWith(mockUploadFileParams)
-    );
+    await waitFor(() => expect(onRemove).toHaveBeenCalled());
   });
 });
