@@ -114,7 +114,7 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
       <Box
         display="flex"
         justifyContent="space-between"
-        borderTop={`1px solid ${colors.separation}`}
+        borderTop={`1px solid ${colors.divider}`}
         pt="36px"
       >
         <Button buttonStyle="secondary" onClick={onClose} minWidth="160px">
