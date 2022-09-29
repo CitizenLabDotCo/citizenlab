@@ -24,7 +24,6 @@ import Image from 'components/PostShowComponents/Image';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import Modal from 'components/UI/Modal';
 import AssignBudgetControl from 'components/AssignBudgetControl';
-import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
 import IdeaMoreActions from './IdeaMoreActions';
 import { Spinner } from '@citizenlab/cl2-component-library';
@@ -82,6 +81,7 @@ import styled from 'styled-components';
 import { media, viewportWidths, isRtl } from 'utils/styleUtils';
 import { columnsGapDesktop, pageContentMaxWidth } from './styleConstants';
 import Outlet from 'components/Outlet';
+import { getMethodConfig } from 'utils/participationMethodUtils';
 
 const contentFadeInDuration = 250;
 const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -489,6 +489,24 @@ export class IdeasShow extends PureComponent<
         phases
       );
 
+      const title = formatMessage(
+        getInputTermMessage(inputTerm, {
+          idea: messages.sharingModalTitle,
+          option: messages.optionSharingModalTitle,
+          project: messages.projectSharingModalTitle,
+          question: messages.questionSharingModalTitle,
+          issue: messages.issueSharingModalTitle,
+          contribution: messages.contributionSharingModalTitle,
+        })
+      );
+      const subtitle = formatMessage(messages.sharingModalSubtitle);
+
+      const modalContent = getMethodConfig('ideation').getModalContent(
+        ideaIdForSocialSharing,
+        title,
+        subtitle
+      );
+
       return (
         <>
           {!loaded && (
@@ -522,23 +540,7 @@ export class IdeasShow extends PureComponent<
               hasSkipButton={true}
               skipText={<FormattedMessage {...messages.skipSharing} />}
             >
-              {ideaIdForSocialSharing && (
-                <SharingModalContent
-                  postType="idea"
-                  postId={ideaIdForSocialSharing}
-                  title={formatMessage(
-                    getInputTermMessage(inputTerm, {
-                      idea: messages.sharingModalTitle,
-                      option: messages.optionSharingModalTitle,
-                      project: messages.projectSharingModalTitle,
-                      question: messages.questionSharingModalTitle,
-                      issue: messages.issueSharingModalTitle,
-                      contribution: messages.contributionSharingModalTitle,
-                    })
-                  )}
-                  subtitle={formatMessage(messages.sharingModalSubtitle)}
-                />
-              )}
+              {ideaIdForSocialSharing && modalContent}
             </Modal>
           </FeatureFlag>
         </>

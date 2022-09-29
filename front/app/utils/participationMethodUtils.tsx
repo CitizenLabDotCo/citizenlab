@@ -1,11 +1,20 @@
 import React from 'react';
+
+// intl
+import { FormattedMessage } from './cl-intl';
+import messages from './participationMethodUtilsMessages';
+
+// services
 import { ParticipationMethod } from 'services/participationContexts';
 import { IPhaseData } from 'services/phases';
 import { IProjectData } from 'services/projects';
-import clHistory from 'utils/cl-router/history';
-import { FormattedMessage } from './cl-intl';
-import messages from './participationMethodUtilsMessages';
+
+// components
+import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
+
+// utils
 import { isNilOrError } from './helperUtils';
+import clHistory from 'utils/cl-router/history';
 
 type ParticipationMethodConfig = {
   /** We currently have 2 UIs for admins to edit the form definition. This
@@ -24,8 +33,15 @@ const ideationConfig: ParticipationMethodConfig = {
       search: `?new_idea_id=${_ideaId}`,
     });
   },
-  getModalContent: () => {
-    return null;
+  getModalContent: (ideaIdForSocialSharing, title, subtitle) => {
+    return (
+      <SharingModalContent
+        postType="idea"
+        postId={ideaIdForSocialSharing}
+        title={title}
+        subtitle={subtitle}
+      />
+    );
   },
   showInputManager: true,
 };
