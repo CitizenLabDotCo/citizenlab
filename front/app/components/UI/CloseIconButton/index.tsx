@@ -20,7 +20,7 @@ const CloseIconButton = ({
   onClick,
   a11y_buttonActionMessage,
   intl: { formatMessage },
-  iconColor = colors.label,
+  iconColor = colors.textSecondary,
   iconColorOnHover = '#000',
   className,
   iconWidth = '15px',

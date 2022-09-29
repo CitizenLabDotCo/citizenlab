@@ -25,7 +25,7 @@ const CheckboxWrapper = styled.div`
 `;
 
 const ConsentText = styled.div`
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.s}px;
   line-height: 21px;
   font-weight: 300;
@@ -34,7 +34,7 @@ const ConsentText = styled.div`
   word-break: break-word;
 
   a {
-    color: ${(props: any) => props.theme.colorText};
+    color: ${(props: any) => props.theme.colors.tenantText};
     font-weight: 400;
     text-decoration: underline;
     overflow-wrap: break-word;

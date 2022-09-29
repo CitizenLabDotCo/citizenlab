@@ -31,7 +31,7 @@ const Container = styled.main`
   position: relative;
   background: #fff;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     min-height: auto;
   `}
 `;

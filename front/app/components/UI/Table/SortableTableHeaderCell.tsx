@@ -22,7 +22,7 @@ const Container = styled.div`
   cursor: pointer;
 
   &:hover {
-    color: ${colors.clIconAccent};
+    color: ${colors.teal400};
   }
 `;
 

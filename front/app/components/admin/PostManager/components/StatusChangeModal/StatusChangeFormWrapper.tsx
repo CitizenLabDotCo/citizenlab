@@ -209,7 +209,7 @@ class StatusChangeFormWrapper extends PureComponent<
             {...messages.statusChange}
             values={{
               initiativeTitle: (
-                <ColoredText color={colors.clBlueDark}>
+                <ColoredText color={colors.teal}>
                   <T value={initiative.attributes.title_multiloc} />
                 </ColoredText>
               ),

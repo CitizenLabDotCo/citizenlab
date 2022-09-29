@@ -10,7 +10,7 @@ const Container = styled.div`
   align-items: center;
   padding: 14px;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  background: ${colors.clBlueDarkBg};
+  background: ${colors.teal100};
 
   ${isRtl`
     flex-direction: row-reverse;
@@ -25,7 +25,7 @@ const StyledIcon = styled(Icon)`
   flex: 0 0 20px;
   width: 20px;
   height: 20px;
-  fill: ${colors.clBlueDarker};
+  fill: ${colors.teal700};
   padding: 0px;
   margin: 0px;
   margin-right: 10px;
@@ -37,14 +37,14 @@ const StyledIcon = styled(Icon)`
 `;
 
 const Text = styled.div`
-  color: ${colors.clBlueDarker};
+  color: ${colors.teal700};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 400;
 
   a,
   button {
-    color: ${colors.clBlueDarker};
+    color: ${colors.teal700};
     font-weight: 400;
     text-decoration: underline;
     display: inline-block;
@@ -60,7 +60,7 @@ const Text = styled.div`
     }
 
     &:hover {
-      color: ${darken(0.15, colors.clBlueDarker)};
+      color: ${darken(0.15, colors.teal700)};
       text-decoration: underline;
     }
   }

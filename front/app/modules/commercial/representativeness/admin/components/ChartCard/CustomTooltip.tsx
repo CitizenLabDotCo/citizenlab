@@ -35,7 +35,7 @@ const Row = ({ name, percentage, number, colorName }: RowProps) => (
     <Text color={colorName} fontSize="s" display="inline">
       {name}: {formatPercentage(percentage)}
     </Text>
-    <Text ml="4px" color="secondaryText" fontSize="s" display="inline">
+    <Text ml="4px" color="textSecondary" fontSize="s" display="inline">
       ({number.toLocaleString('en-US')})
     </Text>
   </Box>
@@ -45,9 +45,9 @@ const CustomTooltip = ({ label, payload }: CustomTooltipProps) => {
   if (!payload) return null;
 
   return (
-    <Box background="white" px="8px" border={`1px solid ${colors.separation}`}>
+    <Box background="white" px="8px" border={`1px solid ${colors.divider}`}>
       <Text
-        color="adminTextColor"
+        color="primary"
         fontWeight="bold"
         textAlign="center"
         fontSize="s"
@@ -64,7 +64,7 @@ const CustomTooltip = ({ label, payload }: CustomTooltipProps) => {
           referenceNumber,
         } = payload;
         const colorName: TextProps['color'] =
-          dataKey === 'actualPercentage' ? 'adminTextColor' : 'clBlue';
+          dataKey === 'actualPercentage' ? 'textPrimary' : 'teal';
 
         return dataKey === 'actualPercentage' ? (
           <Row

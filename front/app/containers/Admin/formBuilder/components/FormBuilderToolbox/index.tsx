@@ -75,7 +75,7 @@ const FormBuilderToolbox = ({
       alignItems="center"
       bgColor="white"
       overflowY="auto"
-      borderRight={`1px solid ${colors.mediumGrey}`}
+      borderRight={`1px solid ${colors.grey500}`}
     >
       <Box w="100%" display="inline">
         <Title
@@ -85,7 +85,7 @@ const FormBuilderToolbox = ({
           ml="16px"
           variant="h6"
           as="h3"
-          color="grey"
+          color="textSecondary"
           style={{ textTransform: 'uppercase' }}
         >
           <FormattedMessage {...messages.addSurveyContent} />

@@ -96,7 +96,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // hopefully we can standardize this someday
 const Title = styled.h1`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.xxxxl}px;
   line-height: 40px;
   font-weight: 500;
@@ -106,7 +106,7 @@ const Title = styled.h1`
   padding-top: 60px;
   padding-bottom: 40px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     font-size: ${fontSizes.xxxl}px;
     line-height: 34px;
   `}

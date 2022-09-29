@@ -136,7 +136,7 @@ export const AvatarBubbles = ({
   size = 34,
   overlap,
   className,
-  userCountBgColor = colors.label,
+  userCountBgColor = colors.textSecondary,
   intl: { formatMessage },
   avatars,
   userCount,

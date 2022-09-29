@@ -16,8 +16,9 @@ const AddIcon = styled(Icon).attrs({ name: 'plus' })`
   width: 16px;
   height: 16px;
   margin-left: auto;
+  margin-right: 12px;
+  fill: ${colors.textSecondary};
   margin-right: 0;
-  fill: ${colors.adminSecondaryTextColor};
 `;
 
 const StyledBox = styled(Box)`
@@ -26,7 +27,7 @@ const StyledBox = styled(Box)`
     visibility: hidden;
   }
   &:hover {
-    background-color: ${colors.emailBg};
+    background-color: ${colors.grey200};
     transition: background-color 80ms ease-out 0s;
     cursor: pointer;
   }
@@ -48,13 +49,8 @@ const ToolboxItem = ({ icon, label, onClick }: Props) => {
       // remove the role attribute when we add drag and drop functionality
       role="button"
     >
-      <Icon
-        fill={colors.adminTextColor}
-        width="20px"
-        height="20px"
-        name={icon}
-      />
-      <Text fontSize="s" ml="12px" mt="0" mb="0" color="text">
+      <Icon fill={colors.primary} width="20px" height="20px" name={icon} />
+      <Text fontSize="s" ml="12px" mt="0" mb="0" color="textPrimary">
         {label}
       </Text>
       <AddIcon />

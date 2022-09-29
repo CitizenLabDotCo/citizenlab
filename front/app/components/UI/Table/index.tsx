@@ -21,8 +21,8 @@ const StyledTable = styled.table`
   thead {
     tr {
       th {
-        fill: ${colors.text};
-        color: ${colors.adminTextColor};
+        fill: ${colors.textPrimary};
+        color: ${colors.primary};
         font-size: ${fontSizes.s}px;
         font-weight: 600;
         text-align: left;
@@ -46,7 +46,7 @@ const StyledTable = styled.table`
       border-bottom: solid 1px #ccc;
 
       td {
-        color: ${colors.adminTextColor};
+        color: ${colors.primary};
         font-size: ${fontSizes.s}px;
         font-weight: 400;
         line-height: normal;
@@ -59,11 +59,11 @@ const StyledTable = styled.table`
         }
 
         a {
-          color: ${colors.clBlue};
+          color: ${colors.teal};
           text-decoration: underline;
 
           &:hover {
-            color: ${darken(0.2, colors.clBlue)};
+            color: ${darken(0.2, colors.teal)};
             text-decoration: underline;
           }
         }

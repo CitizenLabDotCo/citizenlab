@@ -25,7 +25,7 @@ const TitleWrapper = styled.div`
     margin: 10px;
     margin-top: 20px;
     margin-bottom: 30px;
-    color: ${colors.adminSecondaryTextColor};
+    color: ${colors.textSecondary};
     font-size: ${fontSizes.base}px;
     font-weight: 400;
   }
