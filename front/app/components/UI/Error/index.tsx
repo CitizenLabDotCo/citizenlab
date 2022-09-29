@@ -108,8 +108,6 @@ const ErrorList = styled.ul`
 const ErrorListItem = styled.li`
   display: flex;
   align-items: flex-start;
-  margin-top: 8px;
-  margin-bottom: 8px;
 `;
 
 const Bullet = styled.span`
@@ -184,8 +182,8 @@ export const findErrorMessage = (
   if (messages[error]) {
     return messages[error] as Message;
   }
-  // Return a generic error message
-  return messages.invalid;
+  // Return a empty error message
+  return '';
 };
 
 const Error = (props: Props) => {
