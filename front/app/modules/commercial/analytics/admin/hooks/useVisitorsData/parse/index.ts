@@ -21,20 +21,20 @@ export const parseStats = ([
 
   return {
     visitors: {
-      value: wholePeriod.count_visitor_id.toLocaleString(),
-      lastPeriod: lastPeriod.count_visitor_id.toLocaleString(),
+      value: wholePeriod?.count_visitor_id.toLocaleString() ?? '0',
+      lastPeriod: lastPeriod?.count_visitor_id.toLocaleString() ?? '0',
     },
     visits: {
-      value: wholePeriod.count.toLocaleString(),
-      lastPeriod: lastPeriod.count.toLocaleString(),
+      value: wholePeriod?.count.toLocaleString() ?? '0',
+      lastPeriod: lastPeriod?.count.toLocaleString() ?? '0',
     },
     visitDuration: {
-      value: wholePeriod.avg_duration ?? '-',
-      lastPeriod: lastPeriod.avg_duration ?? '-',
+      value: wholePeriod?.avg_duration ?? '-',
+      lastPeriod: lastPeriod?.avg_duration ?? '-',
     },
     pageViews: {
-      value: wholePeriod.avg_pages_visited ?? '-',
-      lastPeriod: lastPeriod.avg_pages_visited ?? '-',
+      value: wholePeriod?.avg_pages_visited ?? '-',
+      lastPeriod: lastPeriod?.avg_pages_visited ?? '-',
     },
   };
 };

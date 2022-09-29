@@ -10,7 +10,7 @@ export interface QueryParameters {
 
 // Response
 export type Response = {
-  data: [[TotalsRow], [TotalsRow], TimeSeriesResponse];
+  data: [[TotalsRow] | [], [TotalsRow] | [], TimeSeriesResponse];
 };
 
 interface BaseRow {
@@ -25,11 +25,10 @@ interface TotalsRow extends BaseRow {
 
 export type TimeSeriesResponse = TimeSeriesResponseRow[];
 
-export type TimeSeriesResponseRow = (
+export type TimeSeriesResponseRow =
   | TimeSeriesResponseMonth
   | TimeSeriesResponseWeek
-  | TimeSeriesResponseDay
-)
+  | TimeSeriesResponseDay;
 
 interface TimeSeriesResponseMonth extends BaseRow {
   'dimension_date_last_action.month': string;
