@@ -12,6 +12,8 @@ Currently the engine only performs session tracking.
 - The back-end checks whether the user agent is a known crawler, and if so does nothing
 - If the user is human, a session record is stored in the `sessions` table. It stores the current time and a `monthly_user_hash` to uniquely identify the user *within* the current month.
 
+If we would only store a session once the application loads, when a user registers or signs in, no new session would be created and the session would be counted as a unauthenticated session. To deal with this, we update the current session at the moment a user registers or signs in to make it an authenticated session.
+
 ### How is the `monthly_user_hash` calculated?
 
 Since visitors did not accept our cookie policy when the session is stored, we can't rely on a cookie to uniquely identify non-authenticated users that return to the platform. Instead, for non-authenticated visitors, we use the IP and the User-Agent to detect whether a user is returning. This is not fully accurate, but gives a good enough approximation of uniqueness. For authenticated users, we use the user ID.

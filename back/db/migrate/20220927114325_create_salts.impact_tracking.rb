@@ -4,7 +4,7 @@
 
 class CreateSalts < ActiveRecord::Migration[6.1]
   def change
-    create_table :impact_tracking_salts do |t|
+    create_table :impact_tracking_salts, id: :uuid do |t|
       t.string 'salt'
       t.timestamps
     end
