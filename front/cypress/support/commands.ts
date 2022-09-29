@@ -9,6 +9,7 @@ declare global {
       unregisterServiceWorkers: typeof unregisterServiceWorkers;
       goToLandingPage: typeof goToLandingPage;
       login: typeof login;
+      signUp: typeof signUp;
       apiLogin: typeof apiLogin;
       setAdminLoginCookie: typeof setAdminLoginCookie;
       setLoginCookie: typeof setLoginCookie;
@@ -70,9 +71,9 @@ export function randomEmail() {
     .toString(36)
     .substr(2, 12)
     .toLowerCase()}@${Math.random()
-    .toString(36)
-    .substr(2, 12)
-    .toLowerCase()}.com`;
+      .toString(36)
+      .substr(2, 12)
+      .toLowerCase()}.com`;
 }
 
 export function unregisterServiceWorkers() {
@@ -105,6 +106,31 @@ export function login(email: string, password: string) {
   cy.get('#e2e-sign-up-in-modal').should('not.exist');
   cy.get('#e2e-user-menu-container');
   cy.wait(500);
+}
+
+export function signUp() {
+  cy.goToLandingPage();
+  cy.get('#e2e-navbar-signup-menu-item').click();
+  cy.get('#e2e-sign-up-container');
+  cy.get('#e2e-sign-up-email-password-container');
+
+  const firstName = randomString();
+  const lastName = randomString();
+  const email = randomEmail();
+  const password = randomString();
+
+  cy.get('#firstName').type(firstName);
+  cy.get('#lastName').type(lastName);
+  cy.get('#email').type(email);
+  cy.get('#password').type(password);
+  cy.get('.e2e-terms-and-conditions .e2e-checkbox').click();
+  cy.get('.e2e-privacy-checkbox .e2e-checkbox').click();
+  cy.get('#e2e-signup-password-submit-button').wait(500).click().wait(500);
+
+  cy.get('#e2e-confirmation-code-input').type('1234');
+  cy.get('#e2e-confirmation-button').click();
+
+  cy.get('.e2e-signup-success-close-button').wait(500).click();
 }
 
 export function apiLogin(email: string, password: string) {
@@ -1176,6 +1202,7 @@ export function notIntersectsViewport(subject?: any) {
 Cypress.Commands.add('unregisterServiceWorkers', unregisterServiceWorkers);
 Cypress.Commands.add('goToLandingPage', goToLandingPage);
 Cypress.Commands.add('login', login);
+Cypress.Commands.add('signUp', signUp);
 Cypress.Commands.add('apiLogin', apiLogin);
 Cypress.Commands.add('apiSignup', apiSignup);
 Cypress.Commands.add('apiCreateAdmin', apiCreateAdmin);
