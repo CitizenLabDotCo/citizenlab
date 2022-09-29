@@ -4,6 +4,7 @@ import { useResizeDetector } from 'react-resize-detector';
 // components
 import { ResponsiveContainer } from 'recharts';
 import FakeLegend from './Legend/FakeLegend';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // utils
 import { debounce, isEqual } from 'lodash-es';
@@ -62,14 +63,26 @@ const Container = ({
     resizeRef.current = node;
   };
 
-  const parsedHeight =
-    typeof height === 'number' && legend?.maintainGraphHeight
-      ? height + (legendDimensions?.height ?? 0)
-      : height;
+  const rightLegend = legend?.position?.includes('right');
+  const parsedHeight = rightLegend
+    ? height
+    : typeof height === 'number' && legend?.maintainGraphSize
+    ? height + (legendDimensions?.height ?? 0)
+    : height;
+
+  const parsedWidth = !rightLegend
+    ? width
+    : typeof width === 'number' && legend?.maintainGraphSize
+    ? width + (legendDimensions?.width ?? 0)
+    : width;
 
   return (
-    <>
-      <ResponsiveContainer width={width} height={parsedHeight} ref={handleRef}>
+    <Box display="flex" flexDirection={rightLegend ? 'row' : 'column'}>
+      <ResponsiveContainer
+        width={parsedWidth}
+        height={parsedHeight}
+        ref={handleRef}
+      >
         {children}
       </ResponsiveContainer>
 
@@ -81,7 +94,7 @@ const Container = ({
           onCalculateDimensions={onUpdateLegendDimensions}
         />
       )}
-    </>
+    </Box>
   );
 };
 

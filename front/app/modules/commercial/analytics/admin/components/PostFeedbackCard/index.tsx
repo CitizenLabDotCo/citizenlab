@@ -153,6 +153,7 @@ const PostFeedback = ({
         <DonutChartContainer>
           <PieChart
             data={pieData}
+            height={200}
             mapping={{
               angle: 'value',
               name: 'name',

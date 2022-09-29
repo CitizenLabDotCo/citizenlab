@@ -32,17 +32,21 @@ export const parseMargin = (
   defaultMargin: number
 ): Margin | undefined => {
   const noLegend = !legend || !legendDimensions;
-
+  const rightLegend = legend?.position?.includes('right');
   const legendOffset = noLegend
     ? 0
+    : rightLegend
+    ? legendDimensions.width + (legend.marginRight ?? defaultMargin)
     : legendDimensions.height + (legend.marginTop ?? defaultMargin);
 
   if (margin) {
-    const bottom = (margin.bottom ?? 0) + legendOffset;
-    return { ...margin, bottom };
+    const bottom = !rightLegend ? (margin.bottom ?? 0) + legendOffset : 0;
+    const right = rightLegend ? (margin.right ?? 0) + legendOffset : 0;
+
+    return { ...margin, bottom, right };
   }
 
   if (noLegend) return;
 
-  return { bottom: legendOffset };
+  return rightLegend ? { right: legendOffset } : { bottom: legendOffset };
 };

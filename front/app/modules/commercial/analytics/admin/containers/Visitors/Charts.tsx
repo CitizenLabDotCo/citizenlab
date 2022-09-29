@@ -2,6 +2,7 @@ import React from 'react';
 
 // components
 import VisitorsCard from '../../components/VisitorsCard';
+import VisitorsLanguageCard from '../../components/VisitorsLanguageCard';
 
 // typings
 import { Moment } from 'moment';
@@ -17,6 +18,7 @@ interface Props {
 const Charts = (props: Props) => (
   <>
     <VisitorsCard {...props} />
+    <VisitorsLanguageCard {...props} />
   </>
 );
 
