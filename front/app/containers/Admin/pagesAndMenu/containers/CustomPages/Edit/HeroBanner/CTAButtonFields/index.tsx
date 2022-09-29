@@ -7,39 +7,16 @@ import CTARadioButtons, {
 
 const CTA_TYPES: TCustomPageCTAType[] = ['no_button', 'customized_button'];
 
-interface Props extends Omit<CTARadioButtonProps, 'ctaTypes'> {
+interface Props extends Omit<CTARadioButtonProps, 'ctaTypes' | 'id'> {
   title?: string;
 }
 
-const CTAButtonFields = ({
-  currentCtaType,
-  ctaButtonMultiloc,
-  ctaButtonUrl,
-  handleCTAButtonTypeOnChange,
-  handleCTAButtonTextMultilocOnChange,
-  handleCTAButtonUrlOnChange,
-  title,
-  hasCTAMultilocError,
-  hasCTAUrlError,
-}: Props) => {
+const CTAButtonFields = ({ title, ...otherProps }: Props) => {
   return (
     <>
       <SubSectionTitle>{title}</SubSectionTitle>
       <SectionField>
-        <CTARadioButtons
-          id="custom"
-          currentCtaType={currentCtaType}
-          ctaTypes={CTA_TYPES}
-          ctaButtonMultiloc={ctaButtonMultiloc}
-          ctaButtonUrl={ctaButtonUrl}
-          handleCTAButtonTypeOnChange={handleCTAButtonTypeOnChange}
-          handleCTAButtonTextMultilocOnChange={
-            handleCTAButtonTextMultilocOnChange
-          }
-          handleCTAButtonUrlOnChange={handleCTAButtonUrlOnChange}
-          hasCTAMultilocError={hasCTAMultilocError}
-          hasCTAUrlError={hasCTAUrlError}
-        />
+        <CTARadioButtons id="custom" ctaTypes={CTA_TYPES} {...otherProps} />
       </SectionField>
     </>
   );

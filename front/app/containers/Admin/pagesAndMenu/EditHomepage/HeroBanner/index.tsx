@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Multiloc } from 'typings';
+import { CLErrors, Multiloc } from 'typings';
 
 // components
 import { ISubmitState } from 'components/admin/SubmitWrapper';
@@ -45,14 +45,7 @@ const EditHomepageHeroBannerForm = ({
   intl: { formatMessage },
 }: InjectedIntlProps) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [hasSignedInCTAMultilocApiError, setHasSignedInCTAMultilocApiError] =
-    useState(false);
-  const [hasSignedOutCTAMultilocApiError, setHasSignedOutCTAMultilocApiError] =
-    useState(false);
-  const [hasSignedInCTAUrlApiError, setHasSignedInCTAUrlApiError] =
-    useState(false);
-  const [hasSignedOutCTAUrlApiError, setHasSignedOutCTAUrlApiError] =
-    useState(false);
+  const [apiErrors, setApiErrors] = useState<CLErrors | null>(null);
   const [formStatus, setFormStatus] = useState<ISubmitState>('disabled');
   const [localSettings, setLocalSettings] =
     useState<IHomepageSettingsAttributes | null>(null);
@@ -89,10 +82,7 @@ const EditHomepageHeroBannerForm = ({
 
     setIsLoading(true);
     setFormStatus('disabled');
-    setHasSignedOutCTAMultilocApiError(false);
-    setHasSignedInCTAMultilocApiError(false);
-    setHasSignedOutCTAUrlApiError(false);
-    setHasSignedInCTAUrlApiError(false);
+    setApiErrors(null);
     try {
       await updateHomepageSettings(diffedValues);
       setIsLoading(false);
@@ -101,21 +91,7 @@ const EditHomepageHeroBannerForm = ({
       const apiErrors = error.json.errors;
 
       if (apiErrors) {
-        if (apiErrors['banner_cta_signed_out_text_multiloc']) {
-          setHasSignedOutCTAMultilocApiError(true);
-        }
-
-        if (apiErrors['banner_cta_signed_in_text_multiloc']) {
-          setHasSignedInCTAMultilocApiError(true);
-        }
-
-        if (apiErrors['banner_cta_signed_out_url']) {
-          setHasSignedOutCTAUrlApiError(true);
-        }
-
-        if (apiErrors['banner_cta_signed_in_url']) {
-          setHasSignedInCTAUrlApiError(true);
-        }
+        setApiErrors(apiErrors);
       }
       setIsLoading(false);
       setFormStatus('error');
@@ -262,10 +238,7 @@ const EditHomepageHeroBannerForm = ({
               id="app.containers.Admin.settings.customize.headerSectionEnd"
               localHomepageSettings={localSettings}
               onChange={handleOnChange}
-              hasSignedOutCTAMultilocError={hasSignedOutCTAMultilocApiError}
-              hasSignedInCTAMultilocError={hasSignedInCTAMultilocApiError}
-              hasSignedOutCTAUrlError={hasSignedOutCTAUrlApiError}
-              hasSignedInCTAUrlError={hasSignedInCTAUrlApiError}
+              apiErrors={apiErrors}
             />
           }
         />

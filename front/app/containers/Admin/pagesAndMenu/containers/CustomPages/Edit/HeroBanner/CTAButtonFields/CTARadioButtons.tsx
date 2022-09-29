@@ -1,11 +1,11 @@
 import { Box, Input, Label, Radio } from '@citizenlab/cl2-component-library';
-import Error from 'components/UI/Error';
+import Error, { TFieldName } from 'components/UI/Error';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import React from 'react';
 import { TCustomPageCTAType } from 'services/customPages';
 import { CTASignedInType, CTASignedOutType } from 'services/homepageSettings';
+import { CLErrors, Multiloc } from 'typings';
 
-import { Multiloc } from 'typings';
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -19,8 +19,9 @@ export interface Props {
   handleCTAButtonTypeOnChange: (ctaType: CTAType) => void;
   handleCTAButtonTextMultilocOnChange: (buttonTextMultiloc: Multiloc) => void;
   handleCTAButtonUrlOnChange: (url: string) => void;
-  hasCTAMultilocError: boolean;
-  hasCTAUrlError: boolean;
+  apiErrors: CLErrors | null;
+  buttonTextMultilocFieldName: TFieldName;
+  buttonUrlFieldName: TFieldName;
 }
 
 const CTARadioButtons = ({
@@ -32,8 +33,9 @@ const CTARadioButtons = ({
   handleCTAButtonTypeOnChange,
   handleCTAButtonTextMultilocOnChange,
   handleCTAButtonUrlOnChange,
-  hasCTAMultilocError,
-  hasCTAUrlError,
+  apiErrors,
+  buttonTextMultilocFieldName,
+  buttonUrlFieldName,
 }: Props) => {
   return (
     <>
@@ -71,13 +73,11 @@ const CTARadioButtons = ({
                       }
                       onChange={handleCTAButtonTextMultilocOnChange}
                     />
-                    {hasCTAMultilocError && (
-                      <Error
-                        text={
-                          <FormattedMessage {...messages.ctaButtonTextError} />
-                        }
-                      />
-                    )}
+
+                    <Error
+                      fieldName={buttonTextMultilocFieldName}
+                      apiErrors={apiErrors?.[buttonTextMultilocFieldName]}
+                    />
                   </Box>
                   <Label htmlFor="buttonConfigInput">
                     <FormattedMessage
@@ -92,13 +92,10 @@ const CTARadioButtons = ({
                     onChange={handleCTAButtonUrlOnChange}
                     value={ctaButtonUrl}
                   />
-                  {hasCTAUrlError && (
-                    <Error
-                      text={
-                        <FormattedMessage {...messages.ctaButtonUrlError} />
-                      }
-                    />
-                  )}
+                  <Error
+                    fieldName={buttonUrlFieldName}
+                    apiErrors={apiErrors?.[buttonUrlFieldName]}
+                  />
                 </Box>
               )}
           </div>

@@ -1,14 +1,14 @@
-import React, { useRef, useEffect } from 'react';
-import { Icon, Box } from '@citizenlab/cl2-component-library';
-import CSSTransition from 'react-transition-group/CSSTransition';
+import { Box, Icon } from '@citizenlab/cl2-component-library';
 import { isArray, isEmpty, uniqBy } from 'lodash-es';
-import styled from 'styled-components';
-import { FormattedMessage } from 'utils/cl-intl';
 import { darken } from 'polished';
-import { CLError, Message } from 'typings';
+import React, { useEffect, useRef } from 'react';
+import CSSTransition from 'react-transition-group/CSSTransition';
 import { IInviteError } from 'services/invites';
-import messages from './messages';
+import styled from 'styled-components';
+import { CLError, Message } from 'typings';
+import { FormattedMessage } from 'utils/cl-intl';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
+import messages from './messages';
 
 const timeout = 350;
 
@@ -171,7 +171,13 @@ export type TFieldName =
   | 'email'
   | 'view_name'
   | 'category_name'
-  | 'nav_bar_item_title_multiloc';
+  | 'nav_bar_item_title_multiloc'
+  | 'banner_cta_button_multiloc'
+  | 'banner_cta_button_url'
+  | 'banner_cta_signed_out_text_multiloc'
+  | 'banner_cta_signed_out_url'
+  | 'banner_cta_signed_in_text_multiloc'
+  | 'banner_cta_signed_in_url';
 
 export const findErrorMessage = (
   fieldName: TFieldName | undefined,

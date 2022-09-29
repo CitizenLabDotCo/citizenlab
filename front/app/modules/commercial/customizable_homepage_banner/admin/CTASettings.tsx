@@ -12,7 +12,7 @@ import {
   IHomepageSettingsAttributes,
 } from 'services/homepageSettings';
 import styled from 'styled-components';
-import { Multiloc } from 'typings';
+import { CLErrors, Multiloc } from 'typings';
 import { FormattedMessage } from 'utils/cl-intl';
 import 'utils/moduleUtils';
 import { colors } from 'utils/styleUtils';
@@ -27,10 +27,7 @@ const SettingsLabel = styled(Label)`
 interface Props {
   localHomepageSettings: IHomepageSettingsAttributes;
   onChange: (key: keyof IHomepageSettingsAttributes, value: unknown) => void;
-  hasSignedOutCTAMultilocError: boolean;
-  hasSignedInCTAMultilocError: boolean;
-  hasSignedOutCTAUrlError: boolean;
-  hasSignedInCTAUrlError: boolean;
+  apiErrors: CLErrors | null;
 }
 
 declare module 'utils/moduleUtils' {
@@ -60,10 +57,7 @@ const CTASettings = ({
     banner_cta_signed_out_type,
     banner_cta_signed_in_type,
   },
-  hasSignedOutCTAMultilocError,
-  hasSignedInCTAMultilocError,
-  hasSignedOutCTAUrlError,
-  hasSignedInCTAUrlError,
+  apiErrors,
 }: Props) => {
   // signed out
   const handleSignedOutCTAButtonTextMultilocOnChange = (
@@ -111,8 +105,9 @@ const CTASettings = ({
             handleSignedOutCTAButtonTextMultilocOnChange
           }
           handleCTAButtonUrlOnChange={handleSignedOutCTAButtonUrlOnChange}
-          hasCTAMultilocError={hasSignedOutCTAMultilocError}
-          hasCTAUrlError={hasSignedOutCTAUrlError}
+          apiErrors={apiErrors}
+          buttonTextMultilocFieldName="banner_cta_signed_out_text_multiloc"
+          buttonUrlFieldName="banner_cta_signed_out_url"
         />
       </SectionField>
       <SectionField>
@@ -130,8 +125,9 @@ const CTASettings = ({
             handleSignedInCTAButtonTextMultilocOnChange
           }
           handleCTAButtonUrlOnChange={handleSignedInCTAButtonUrlOnChange}
-          hasCTAMultilocError={hasSignedInCTAMultilocError}
-          hasCTAUrlError={hasSignedInCTAUrlError}
+          apiErrors={apiErrors}
+          buttonTextMultilocFieldName="banner_cta_signed_in_text_multiloc"
+          buttonUrlFieldName="banner_cta_signed_in_url"
         />
       </SectionField>
     </Section>

@@ -1,11 +1,10 @@
 import { ISubmitState } from 'components/admin/SubmitWrapper';
 import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 import CTAButtonFields from 'containers/Admin/pagesAndMenu/containers/CustomPages/Edit/HeroBanner/CTAButtonFields';
-import { PAGES_MENU_CUSTOM_PATH } from 'containers/Admin/pagesAndMenu/routes';
-
 import BannerHeaderFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerHeaderFields';
 import BannerImageFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerImageFields';
 import LayoutSettingField from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/LayoutSettingField';
+import { PAGES_MENU_CUSTOM_PATH } from 'containers/Admin/pagesAndMenu/routes';
 import useCustomPage from 'hooks/useCustomPage';
 import { forOwn, isEqual } from 'lodash-es';
 import React, { useEffect, useState } from 'react';
@@ -17,13 +16,13 @@ import {
   TCustomPageCTAType,
   updateCustomPage,
 } from 'services/customPages';
+import { CLErrors, Multiloc } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 import GenericHeroBannerForm from '../../../GenericHeroBannerForm';
 import messages from '../../../GenericHeroBannerForm/messages';
 
 import HelmetIntl from 'components/HelmetIntl';
 import useLocalize from 'hooks/useLocalize';
-import { Multiloc } from 'typings';
 import { injectIntl } from 'utils/cl-intl';
 
 export type CustomPageBannerSettingKeyType = Extract<
@@ -38,8 +37,8 @@ const EditCustomPageHeroBannerForm = ({
 }: InjectedIntlProps) => {
   const localize = useLocalize();
   const [isLoading, setIsLoading] = useState(false);
-  const [hasCTAMultilocError, setHasCTAMultilocError] = useState(false);
-  const [hasCTAUrlError, setHasCTAUrlError] = useState(false);
+  const [apiErrors, setApiErrors] = useState<CLErrors | null>(null);
+
   const [formStatus, setFormStatus] = useState<ISubmitState>('disabled');
   const [localSettings, setLocalSettings] =
     useState<ICustomPageAttributes | null>(null);
@@ -77,8 +76,7 @@ const EditCustomPageHeroBannerForm = ({
 
     setIsLoading(true);
     setFormStatus('disabled');
-    setHasCTAMultilocError(false);
-    setHasCTAUrlError(false);
+    setApiErrors(null);
     try {
       await updateCustomPage(customPageId, diffedValues);
       setIsLoading(false);
@@ -86,13 +84,7 @@ const EditCustomPageHeroBannerForm = ({
     } catch (error) {
       const apiErrors = error.json.errors;
       if (apiErrors) {
-        if (apiErrors['banner_cta_button_multiloc']) {
-          setHasCTAMultilocError(true);
-        }
-
-        if (apiErrors['banner_cta_button_url']) {
-          setHasCTAUrlError(true);
-        }
+        setApiErrors(apiErrors);
       }
       setIsLoading(false);
       setFormStatus('error');
@@ -209,7 +201,6 @@ const EditCustomPageHeroBannerForm = ({
           }
           ctaButtonFieldsComponent={
             <CTAButtonFields
-              id="custom"
               currentCtaType={localSettings.banner_cta_button_type}
               ctaButtonMultiloc={localSettings.banner_cta_button_multiloc}
               ctaButtonUrl={localSettings.banner_cta_button_url}
@@ -219,8 +210,9 @@ const EditCustomPageHeroBannerForm = ({
               }
               handleCTAButtonUrlOnChange={handleCTAButtonUrlOnChange}
               title={formatMessage(messages.buttonTitle)}
-              hasCTAMultilocError={hasCTAMultilocError}
-              hasCTAUrlError={hasCTAUrlError}
+              apiErrors={apiErrors}
+              buttonTextMultilocFieldName="banner_cta_button_multiloc"
+              buttonUrlFieldName="banner_cta_button_url"
             />
           }
         />
