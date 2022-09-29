@@ -9,8 +9,8 @@ import { InjectedIntlProps } from 'react-intl';
 
 export const deduceResolution = (
   timeSeriesResponse: TimeSeriesResponse
-): IResolution => {
-  if (timeSeriesResponse.length === 0) return 'month';
+): IResolution | null => {
+  if (timeSeriesResponse.length === 0) return null;
   const firstRow = timeSeriesResponse[0];
 
   if ('dimension_date_last_action.month' in firstRow) {

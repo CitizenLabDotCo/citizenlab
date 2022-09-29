@@ -61,7 +61,7 @@ const query = ({
       dimension_user: {
         role: ['citizen', null],
       },
-      ...getProjectFilter('dimension_project', projectId),
+      ...getProjectFilter('dimension_projects', projectId),
       ...getDateFilter('dimension_date_last_action', startAt, endAt),
     },
     aggregations: getAggregations(),
@@ -76,7 +76,7 @@ const query = ({
       dimension_user: {
         role: ['citizen', null],
       },
-      ...getProjectFilter('dimension_project', projectId),
+      ...getProjectFilter('dimension_projects', projectId),
       dimension_date_last_action: {
         date: {
           from: lastPeriod,
@@ -93,7 +93,7 @@ const query = ({
       dimension_user: {
         role: ['citizen', null],
       },
-      ...getProjectFilter('dimension_project', projectId),
+      ...getProjectFilter('dimension_projects', projectId),
       ...getDateFilter('dimension_date_last_action', startAt, endAt),
     },
     groups: `dimension_date_last_action.${getInterval(resolution)}`,
@@ -134,12 +134,14 @@ export default function useVisitorsData(
           setStats(response);
           setTimeSeries(response);
           setXlsxData(response);
+          setDeducedResolution(resolution);
           return;
         }
 
         const translations = getTranslations(formatMessage);
 
-        const deducedResolution = deduceResolution(response.data[2]);
+        const deducedResolution =
+          deduceResolution(response.data[2]) ?? resolution;
         setDeducedResolution(deducedResolution);
 
         const stats = parseStats(response.data);

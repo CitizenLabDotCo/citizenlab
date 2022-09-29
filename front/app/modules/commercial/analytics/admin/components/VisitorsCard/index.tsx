@@ -71,6 +71,8 @@ const VisitorsCard = ({
         <Box flexGrow={1} display="flex" justifyContent="center">
           <Chart
             timeSeries={timeSeries}
+            startAtMoment={startAtMoment}
+            endAtMoment={endAtMoment}
             resolution={deducedResolution}
             innerRef={graphRef}
           />
