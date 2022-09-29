@@ -98,7 +98,11 @@ const GenericTopInfoSection = ({
             />
           </Box>
           <Box display="flex">
-            <Button type="submit" processing={methods.formState.isSubmitting}>
+            <Button
+              type="submit"
+              processing={methods.formState.isSubmitting}
+              data-cy={`e2e-top-info-section-submit`}
+            >
               {formatMessage(messages.topInfoSaveButton)}
             </Button>
           </Box>
