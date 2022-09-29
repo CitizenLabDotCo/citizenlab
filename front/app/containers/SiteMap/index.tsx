@@ -157,16 +157,16 @@ const SiteMap = ({ projects, authUser }: Props) => {
 
   if (!isNilOrError(pages)) {
     const nonCustomStaticPages = pages.filter((page) => {
-      const showPageConditions: Record<TPageCode, () => boolean> = {
-        proposals: () => proposalsEnabled,
-        about: () => true,
-        faq: () => true,
-        'terms-and-conditions': () => true,
-        'privacy-policy': () => true,
-        custom: () => false,
+      const showPageConditions: Record<TPageCode, boolean> = {
+        proposals: proposalsEnabled,
+        about: true,
+        faq: true,
+        'terms-and-conditions': true,
+        'privacy-policy': true,
+        custom: false,
       };
 
-      return showPageConditions[page.attributes.code]();
+      return showPageConditions[page.attributes.code];
     });
 
     const customStaticPages = pages.filter((page) => {
