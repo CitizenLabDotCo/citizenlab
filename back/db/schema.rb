@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_27_100512) do
+ActiveRecord::Schema.define(version: 2022_09_29_125457) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -66,6 +66,7 @@ ActiveRecord::Schema.define(version: 2022_09_27_100512) do
   create_table "analytics_dimension_locales_fact_visits", id: false, force: :cascade do |t|
     t.uuid "dimension_locale_id"
     t.uuid "fact_visit_id"
+    t.index ["dimension_locale_id", "fact_visit_id"], name: "i_analytics_dim_locales_fact_visits_on_locale_and_visit_ids", unique: true
     t.index ["dimension_locale_id"], name: "i_l_v_locale"
     t.index ["fact_visit_id"], name: "i_l_v_visit"
   end
@@ -73,6 +74,7 @@ ActiveRecord::Schema.define(version: 2022_09_27_100512) do
   create_table "analytics_dimension_projects_fact_visits", id: false, force: :cascade do |t|
     t.uuid "dimension_project_id"
     t.uuid "fact_visit_id"
+    t.index ["dimension_project_id", "fact_visit_id"], name: "i_analytics_dim_projects_fact_visits_on_project_and_visit_ids", unique: true
     t.index ["dimension_project_id"], name: "i_p_v_project"
     t.index ["fact_visit_id"], name: "i_p_v_visit"
   end

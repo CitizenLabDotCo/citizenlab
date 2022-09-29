@@ -2,6 +2,12 @@
 
 module Analytics
   class MatomoDataImporter
+    # The custom dimensions are configured by cl2-tenant-setup.
+    ACTION_CUSTOM_DIMENSION_KEYS = {
+      locale: 'dimension3',
+      project_id: 'dimension4'
+    }
+
     def initialize(...)
       @matomo = Matomo::Client.new(...)
       @timezone = AppConfiguration.instance.settings.dig('core', 'timezone')
@@ -27,16 +33,78 @@ module Analytics
         last_action_timestamp < at_least_until_timestamp || index < max_nb_batches
       end
 
-      enumerator.map { |visits| persist_visits(visits) }.force
+      enumerator.map { |visits| persist_visit_data(visits) }.force
     end
 
+    def persist_visit_data(visit_data)
+      persist_visits(visit_data)
+      persist_visits_projects(visit_data)
+      persist_visits_locales(visit_data)
+    end
+
+    private
+
     def persist_visits(visit_data)
-      # TODO: import project-visits and locales-visits
+      update_referrer_types(visit_data)
       visits_attrs = visit_data.map { |visit_json| visit_attrs(visit_json) }
       FactVisit.upsert_all(visits_attrs, unique_by: :matomo_visit_id)
     end
 
-    private
+    def persist_visits_projects(visit_data)
+      projects_visits_attrs = visit_data.flat_map do |visit|
+        visit_id = visit['idVisit']
+        project_ids = visit['actionDetails']
+          .pluck(ACTION_CUSTOM_DIMENSION_KEYS[:project_id])
+          .map(&:presence).uniq.compact
+
+        project_ids.map do |project_id|
+          { fact_visit_id: visit_id, dimension_project_id: project_id }
+        end
+      end
+
+      Analytics::DimensionProjectsFactVisits.insert_all(projects_visits_attrs)
+    end
+
+    def persist_visits_locales(visit_data)
+      locales_visits_attrs = visit_data.flat_map do |visit|
+        visit_id = visit['idVisit']
+        locales = visit['actionDetails']
+          .pluck(ACTION_CUSTOM_DIMENSION_KEYS[:locale])
+          .map(&:presence).uniq.compact
+
+        locales.map do |locale|
+          { fact_visit_id: visit_id, dimension_locale_id: locale }
+        end
+      end
+
+      Analytics::DimensionLocalesFactVisits.insert_all(locales_visits_attrs)
+    end
+
+    # @param [Enumerable<String>] referrer_types
+    def update_referrer_types(visit_data)
+      referrer_types_attrs = visit_data
+        .pluck('referrerType', 'referrerTypeName').uniq
+        # being extra cautious and checking that matomo doesn't return empty values
+        .select { |type_infos| type_infos.none?(&:blank?) }
+        .map { |type, type_name| { key: type, name: type_name } }
+
+      return if referrer_types_attrs.blank?
+
+      result = DimensionReferrerType.insert_all(referrer_types_attrs, unique_by: :key)
+      return if result.count.zero?
+
+      ErrorReporter.report_msg(<<~MSG, extra: { unknown_referrers: referrer_types_attrs})
+        Newly imported matomo visits use new referrer types. The referrer types were
+        added to the database, but the front-end may need to be update to display them
+        correctly.
+      MSG
+    end
+
+    # @param [Enumerable<String>] locales
+    def update_locales(locales)
+      locales_attrs = locales.map { |locale| { name: locale } }
+      DimensionLocale.insert_all(locales_attrs)
+    end
 
     # If a block is provided, +visits_in_batches+ behaves like a map on batches of
     # visits, otherwise it returns an enumerator over batches.
