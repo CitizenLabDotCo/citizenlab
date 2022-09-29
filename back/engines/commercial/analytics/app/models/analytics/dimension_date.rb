@@ -12,5 +12,9 @@
 module Analytics
   class DimensionDate < Analytics::ApplicationRecord
     self.primary_key = :date
+    validates :date, presence: true
+    validates :year, presence: true
+    validates :month, presence: true
+    validates :week, presence: true
   end
 end
