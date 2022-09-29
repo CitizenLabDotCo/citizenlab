@@ -61,7 +61,7 @@ const query = ({
       dimension_user: {
         role: ['citizen', null],
       },
-      ...getProjectFilter(projectId),
+      ...getProjectFilter('dimension_project', projectId),
       ...getDateFilter('dimension_date_last_action', startAt, endAt),
     },
     aggregations: getAggregations(),
@@ -76,7 +76,7 @@ const query = ({
       dimension_user: {
         role: ['citizen', null],
       },
-      ...getProjectFilter(projectId),
+      ...getProjectFilter('dimension_project', projectId),
       dimension_date_last_action: {
         date: {
           from: lastPeriod,
@@ -93,7 +93,7 @@ const query = ({
       dimension_user: {
         role: ['citizen', null],
       },
-      ...getProjectFilter(projectId),
+      ...getProjectFilter('dimension_project', projectId),
       ...getDateFilter('dimension_date_last_action', startAt, endAt),
     },
     groups: `dimension_date_last_action.${getInterval(resolution)}`,
@@ -110,12 +110,7 @@ const query = ({
 
 export default function useVisitorsData(
   formatMessage: InjectedIntlProps['intl']['formatMessage'],
-  {
-    projectId,
-    startAtMoment,
-    endAtMoment,
-    resolution,
-  }: QueryParameters
+  { projectId, startAtMoment, endAtMoment, resolution }: QueryParameters
 ) {
   const [deducedResolution, setDeducedResolution] =
     useState<IResolution>(resolution);
@@ -142,12 +137,12 @@ export default function useVisitorsData(
           return;
         }
 
-        const translations = getTranslations(formatMessage)
+        const translations = getTranslations(formatMessage);
 
         const deducedResolution = deduceResolution(response.data[2]);
         setDeducedResolution(deducedResolution);
 
-        const stats = parseStats(response.data)
+        const stats = parseStats(response.data);
         setStats(stats);
 
         const timeSeries = parseTimeSeries(
@@ -155,15 +150,12 @@ export default function useVisitorsData(
           startAtMoment,
           endAtMoment,
           deducedResolution
-        )
+        );
         setTimeSeries(timeSeries);
 
-        setXlsxData(parseExcelData(
-          stats,
-          timeSeries,
-          translations,
-          deducedResolution
-        ))
+        setXlsxData(
+          parseExcelData(stats, timeSeries, translations, deducedResolution)
+        );
       }
     );
 

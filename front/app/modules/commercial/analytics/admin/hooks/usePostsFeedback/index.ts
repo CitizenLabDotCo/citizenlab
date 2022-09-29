@@ -55,7 +55,7 @@ const query = ({
     },
     filters: {
       type: { name: 'idea' },
-      ...getProjectFilter(projectId),
+      ...getProjectFilter('project', projectId),
       ...getDateFilter('created_date', startAt, endAt),
     },
   };
@@ -70,7 +70,7 @@ const query = ({
     },
     filters: {
       type: { name: 'idea' },
-      ...getProjectFilter(projectId),
+      ...getProjectFilter('project', projectId),
       ...getDateFilter('created_date', startAt, endAt),
     },
   };
