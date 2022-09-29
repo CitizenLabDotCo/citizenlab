@@ -13,12 +13,14 @@ type children = (
 
 interface Props {
   projectId: string | null;
+  phaseId: string | null;
   children?: children;
 }
 
 export default (props: Props) => {
   const ideaCustomFieldsSchema = useIdeaCustomFieldsSchemas({
     projectId: props.projectId,
+    phaseId: props.phaseId,
   });
   return (props.children as children)(ideaCustomFieldsSchema);
 };

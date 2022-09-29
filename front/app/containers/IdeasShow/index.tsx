@@ -234,6 +234,7 @@ interface State {
   loaded: boolean;
   spamModalVisible: boolean;
   ideaIdForSocialSharing: string | null;
+  phaseId: string | null;
   translateButtonClicked: boolean;
 }
 
@@ -248,19 +249,23 @@ export class IdeasShow extends PureComponent<
       spamModalVisible: false,
       ideaIdForSocialSharing: null,
       translateButtonClicked: false,
+      phaseId: null,
     };
   }
 
   componentDidMount() {
     const queryParams = new URLSearchParams(window.location.search);
     const newIdeaId = queryParams.get('new_idea_id');
+    const phaseId = queryParams.get('phase_id');
+
     this.setLoaded();
     if (isString(newIdeaId)) {
+      if (isString(phaseId)) {
+        this.setState({ phaseId });
+      }
       setTimeout(() => {
         this.setState({ ideaIdForSocialSharing: newIdeaId });
       }, 1500);
-
-      clHistory.replace(window.location.pathname);
     }
   }
 
@@ -442,6 +447,7 @@ export class IdeasShow extends PureComponent<
                 <MobileMetaInformation
                   ideaId={ideaId}
                   projectId={projectId}
+                  phaseId={getPhaseFromUrl()}
                   statusId={statusId}
                   authorId={authorId}
                   compact={isCompactView}
@@ -555,6 +561,13 @@ const IdeasShowWithHOCs = injectLocalize<Props>(
   withRouter(injectIntl(IdeasShow))
 );
 
+const getPhaseFromUrl = () => {
+  const queryParams = new URLSearchParams(window.location.search);
+  const phaseId = queryParams.get('phase_id');
+  console.log('getPhaseFromUrl(): ', phaseId);
+  return phaseId;
+};
+
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
@@ -583,7 +596,10 @@ const Data = adopt<DataProps, InputProps>({
     </GetPermission>
   ),
   ideaCustomFieldsSchemas: ({ projectId, render }) => (
-    <GetIdeaCustomFieldsSchemas projectId={projectId}>
+    <GetIdeaCustomFieldsSchemas
+      phaseId={getPhaseFromUrl()}
+      projectId={projectId}
+    >
       {render}
     </GetIdeaCustomFieldsSchemas>
   ),

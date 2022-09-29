@@ -59,9 +59,14 @@ export interface IIdeaFormSchemas {
 
 export function ideaFormSchemaStream(
   projectId: string,
+  phaseId: string,
   streamParams: IStreamParams | null = null
 ) {
-  const apiEndpoint = `${API_PATH}/projects/${projectId}/custom_fields/schema`;
+  console.log("ideaFormSchemaStream phaseId: ", phaseId)
+  let apiEndpoint = `${API_PATH}/projects/${projectId}/custom_fields/schema`;
+  if (phaseId) {
+    apiEndpoint = `${API_PATH}/phases/${phaseId}/custom_fields/schema`
+  }
   return streams.get<IIdeaFormSchemas>({
     apiEndpoint,
     ...streamParams,

@@ -28,9 +28,10 @@ type ParticipationMethodConfig = {
 const ideationConfig: ParticipationMethodConfig = {
   formEditor: 'simpleFormEditor',
   onFormSubmission: (_project, _ideaId, _idea, _phaseId) => {
+    const urlParameters = `?new_idea_id=${_ideaId}`;
     clHistory.push({
       pathname: `/ideas/${_idea.data.attributes.slug}`,
-      search: `?new_idea_id=${_ideaId}`,
+      search: urlParameters.concat(_phaseId ? `&phase_id=${_phaseId}` : ''),
     });
   },
   getModalContent: (ideaIdForSocialSharing, title, subtitle) => {
