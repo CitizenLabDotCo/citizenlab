@@ -189,7 +189,9 @@ export const FormEdit = ({
                       />
                     </Box>
                   )}
-                  <Feedback />
+                  <Feedback
+                    successMessage={formatMessage(messages.successMessage)}
+                  />
                   <Box bgColor="white" minHeight="300px">
                     <FormFields
                       onEditField={setSelectedField}

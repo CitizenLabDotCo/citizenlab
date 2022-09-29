@@ -22,4 +22,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.emptyOptionError',
     defaultMessage: 'Provide at least 1 answer',
   },
+  successMessage: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.successMessage',
+    defaultMessage: 'Survey successfully saved',
+  },
 });
