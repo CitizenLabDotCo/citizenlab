@@ -480,10 +480,11 @@ ActiveRecord::Schema.define(version: 2022_09_27_114325) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "impact_tracking_sessions", id: false, force: :cascade do |t|
+  create_table "impact_tracking_sessions", id: :uuid, force: :cascade do |t|
     t.string "monthly_user_hash", null: false
-    t.string 'highest_role'
+    t.string "highest_role"
     t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "initiative_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

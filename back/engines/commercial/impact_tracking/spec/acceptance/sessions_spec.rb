@@ -64,4 +64,38 @@ resource 'Impact tracking session' do
       })
     end
   end
+
+  patch 'web_api/v1/sessions/current/upgrade' do
+    before do
+      @ip = '59.152.62.114'
+      @user_agent = 'User-Agent'
+      @visitor_hash = ImpactTracking::SessionHashService.new.generate_for_visitor(@ip, @user_agent)
+      session = create(:session, monthly_user_hash: @visitor_hash)
+      @created_at = session.created_at
+    end
+
+    example 'Upgrade the current session from a visitor to an authenticated user' do
+      header 'User-Agent', @user_agent
+      header 'X-Forwarded-For', @ip
+      user_header_token
+
+      do_request
+
+      expect(response_status).to eq 200
+      expect(ImpactTracking::Session.count).to eq 1
+      session = ImpactTracking::Session.first
+      expect(session.highest_role).to eq('user')
+      expect(session.monthly_user_hash).not_to eq(@visitor_hash)
+      expect(session.updated_at).not_to eq(@created_at)
+    end
+
+    example 'Returns unauthorized when the user is not signed in', document: false do
+      header 'User-Agent', @user_agent
+      header 'X-Forwarded-For', @ip
+
+      do_request
+
+      expect(response_status).to eq 401
+    end
+  end
 end

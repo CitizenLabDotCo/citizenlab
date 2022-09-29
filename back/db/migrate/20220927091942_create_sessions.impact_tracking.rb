@@ -4,10 +4,10 @@
 
 class CreateSessions < ActiveRecord::Migration[6.1]
   def change
-    create_table :impact_tracking_sessions, id: false do |t|
+    create_table :impact_tracking_sessions, id: :uuid do |t|
       t.string 'monthly_user_hash', null: false
       t.string 'highest_role'
-      t.datetime 'created_at', null: false
+      t.timestamps
     end
   end
 end
