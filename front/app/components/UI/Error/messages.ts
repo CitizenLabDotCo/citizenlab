@@ -313,7 +313,7 @@ export default defineMessages({
     defaultMessage: 'Enter a link.',
   },
   banner_cta_signed_in_url_url: {
-    id: 'app.errors.banner_cta_signed_in_url_blank',
+    id: 'app.errors.banner_cta_signed_in_url_url',
     defaultMessage:
       "Enter a valid link. Make sure the link starts with 'https://'.",
   },
@@ -326,7 +326,7 @@ export default defineMessages({
     defaultMessage: 'Enter a link.',
   },
   banner_cta_signed_out_url_url: {
-    id: 'app.errors.banner_cta_signed_out_url_blank',
+    id: 'app.errors.banner_cta_signed_out_url_url',
     defaultMessage:
       "Enter a valid link. Make sure the link starts with 'https://'.",
   },
