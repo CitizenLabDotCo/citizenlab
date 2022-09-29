@@ -9,9 +9,7 @@ namespace :analytics do
   desc 'Populates the dimension tables for each tenant'
   task populate_dimensions: :environment do
     Tenant.not_deleted.each do |tenant|
-      Apartment::Tenant.switch(tenant.schema_name.tr('.', '_')) do
-        Analytics::PopulateDimensionsService.run
-      end
+      tenant.switch { Analytics::PopulateDimensionsService.run }
     end
   end
 
