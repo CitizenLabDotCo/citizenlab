@@ -7,7 +7,7 @@ import Image from 'components/UI/Image';
 import useHomepageSettings from 'hooks/useHomepageSettings';
 import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/HeaderImageDropzone';
 
-const Container = styled.div`
+export const Container = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
@@ -18,7 +18,7 @@ const Container = styled.div`
   `}
 `;
 
-const HeaderImage = styled(Image)`
+export const HeaderImage = styled(Image)`
   height: ${homepageBannerLayoutHeights.two_column_layout.desktop}px;
   max-width: 50%;
   overflow: hidden;

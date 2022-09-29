@@ -20,7 +20,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
-const Container = styled.main`
+export const Container = styled.main`
   height: 100%;
   min-height: calc(
     100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
@@ -36,7 +36,7 @@ const Container = styled.main`
   `}
 `;
 
-const Content = styled.div`
+export const Content = styled.div`
   width: 100%;
   z-index: 3;
 `;

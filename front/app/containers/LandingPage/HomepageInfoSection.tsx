@@ -12,7 +12,7 @@ import { Multiloc } from 'typings';
 import styled from 'styled-components';
 import { media, colors } from 'utils/styleUtils';
 
-const CustomSectionContentContainer = styled(ContentContainer)`
+export const CustomSectionContentContainer = styled(ContentContainer)`
   width: 100%;
   max-width: 750px;
   margin-left: auto;
@@ -27,7 +27,7 @@ const CustomSectionContentContainer = styled(ContentContainer)`
   `}
 `;
 
-const StyledQuillEditedContent = styled(QuillEditedContent)`
+export const StyledQuillEditedContent = styled(QuillEditedContent)`
   h1,
   h2 {
     color: ${(props) => props.theme.colorText};

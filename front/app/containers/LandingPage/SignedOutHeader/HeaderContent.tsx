@@ -15,7 +15,7 @@ import SignUpButton from '../SignUpButton';
 import useHomepageSettings from 'hooks/useHomepageSettings';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-const Container = styled.div<{
+export const Container = styled.div<{
   align: 'center' | 'left';
   alignTo: 'center' | 'flex-start' | undefined;
 }>`
@@ -42,7 +42,7 @@ export const HeadingFontStyle = css`
   line-height: normal;
 `;
 
-const HeaderTitle = styled.h1<{
+export const HeaderTitle = styled.h1<{
   hasHeader: boolean;
   fontColors: 'light' | 'dark';
   align: 'center' | 'left';
@@ -70,7 +70,7 @@ const HeaderTitle = styled.h1<{
   `}
 `;
 
-const HeaderSubtitle = styled.h2<{
+export const HeaderSubtitle = styled.h2<{
   hasHeader: boolean;
   fontColors: 'light' | 'dark';
   align: 'center' | 'left';

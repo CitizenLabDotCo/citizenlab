@@ -30,6 +30,8 @@ const AccessibilityStatement = lazy(
   () => import('containers/AccessibilityStatement')
 );
 const PagesShowPage = lazy(() => import('containers/PagesShowPage'));
+const CustomPageShow = lazy(() => import('containers/CustomPageShow'));
+
 const PasswordRecovery = lazy(() => import('containers/PasswordRecovery'));
 const PasswordReset = lazy(() => import('containers/PasswordReset'));
 const SubscriptionEndedPage = lazy(
@@ -251,6 +253,15 @@ export default function createRoutes() {
           element: (
             <PageLoading>
               <PagesShowPage />
+            </PageLoading>
+          ),
+        },
+        // temporary URL for development purposes
+        {
+          path: 'custom-pages/:slug',
+          element: (
+            <PageLoading>
+              <CustomPageShow />
             </PageLoading>
           ),
         },
