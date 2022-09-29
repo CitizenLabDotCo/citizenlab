@@ -60,41 +60,4 @@ describe('BannerHeaderFields', () => {
       en: 'new banner subheader',
     });
   });
-
-  it('does not accept too-long strings', async () => {
-    const onHeaderChange = jest.fn();
-    const stringWith46Chars = 'cmBWChcCoQuVNCrFq9sSXCKMwOwSYZyHZnRyvfGyDTrSTi';
-    const stringWith44Chars = 'LMt6Yqokmgq6XQNVkhjeMNcpjPVl3qe6CF0aePClNKuV';
-
-    render(
-      <BannerHeaderFields
-        bannerHeaderMultiloc={{ en: 'banner header' }}
-        bannerSubheaderMultiloc={{ en: 'banner subheader' }}
-        onHeaderChange={onHeaderChange}
-        onSubheaderChange={jest.fn()}
-        title={'banner header fields'}
-        inputLabelText={'header input label text'}
-        subheaderInputLabelText={'subheader input label text'}
-      />
-    );
-
-    await waitFor(() => {
-      fireEvent.change(screen.getByDisplayValue('banner header'), {
-        target: {
-          value: stringWith46Chars,
-        },
-      });
-    });
-
-    await waitFor(() => {
-      fireEvent.change(screen.getByDisplayValue('banner header'), {
-        target: {
-          value: stringWith44Chars,
-        },
-      });
-    });
-
-    expect(onHeaderChange).toHaveBeenCalledTimes(1);
-    expect(onHeaderChange).toHaveBeenCalledWith({ en: stringWith44Chars });
-  });
 });
