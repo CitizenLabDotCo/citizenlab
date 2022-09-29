@@ -56,9 +56,9 @@ const ContainerInner = styled.div<{ showBackground: boolean }>`
   justify-content: space-between;
   padding: 0px 13px;
   border-radius: ${(props) => props.theme.borderRadius};
-  background: ${colors.red100};
+  background: ${colors.errorLight};
   background: ${(props) =>
-    props.showBackground ? colors.red100 : 'transparent'};
+    props.showBackground ? colors.errorLight : 'transparent'};
 
   ${isRtl`
     flex-direction: row-reverse;

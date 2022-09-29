@@ -21,8 +21,8 @@ const statusColorMapping: {
   failed: 'red600',
   accepted: 'grey200',
   delivered: 'teal300',
-  opened: 'green',
-  clicked: 'green',
+  opened: 'success',
+  clicked: 'success',
 };
 
 interface InputProps {

@@ -53,9 +53,9 @@ const StyledCheckbox = styled.div<{
   border-radius: ${(props) => props.theme.borderRadius};
   border: solid 1px
     ${({ checkedOrIndeterminate }) =>
-      checkedOrIndeterminate ? colors.green : colors.divider};
+      checkedOrIndeterminate ? colors.success : colors.divider};
   background: ${({ checkedOrIndeterminate }) =>
-    checkedOrIndeterminate ? colors.green : '#fff'};
+    checkedOrIndeterminate ? colors.success : '#fff'};
   transition: all 120ms ease-out;
 
   ${HiddenCheckbox}.focus-visible + & {
@@ -65,9 +65,9 @@ const StyledCheckbox = styled.div<{
   &.enabled {
     &:hover {
       background: ${({ checkedOrIndeterminate }) =>
-        checkedOrIndeterminate ? darken(0.05, colors.green) : '#fff'};
+        checkedOrIndeterminate ? darken(0.05, colors.success) : '#fff'};
       border-color: ${({ checkedOrIndeterminate }) =>
-        checkedOrIndeterminate ? darken(0.05, colors.green) : '#000'};
+        checkedOrIndeterminate ? darken(0.05, colors.success) : '#000'};
     }
   }
 `;

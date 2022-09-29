@@ -202,7 +202,7 @@ const Avatar = memo(
               <BadgeIcon
                 name="checkmark-full"
                 size={badgeSize}
-                fill={colors.green}
+                fill={colors.success}
               />
             </FeatureFlag>
           )}

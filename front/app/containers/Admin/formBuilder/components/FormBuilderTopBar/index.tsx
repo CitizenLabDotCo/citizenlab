@@ -98,7 +98,7 @@ const FormBuilderTopBar = ({ isSubmitting }: FormBuilderTopBarProps) => {
             <StyledStatusLabel
               text={
                 isPostingEnabled ? (
-                  <span style={{ color: colors.green }}>
+                  <span style={{ color: colors.success }}>
                     <FormattedMessage {...messages.open} />
                   </span>
                 ) : (
@@ -108,7 +108,7 @@ const FormBuilderTopBar = ({ isSubmitting }: FormBuilderTopBarProps) => {
                 )
               }
               backgroundColor={
-                isPostingEnabled ? colors.greenLight : colors.red100
+                isPostingEnabled ? colors.successLight : colors.errorLight
               }
             />
           </Box>

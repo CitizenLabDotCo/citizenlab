@@ -95,7 +95,7 @@ const FooterNoteLink = styled(Link)`
 `;
 
 const FooterNoteSuccessMessage = styled.span`
-  color: ${colors.green};
+  color: ${colors.success};
   padding-left: 6px;
 `;
 

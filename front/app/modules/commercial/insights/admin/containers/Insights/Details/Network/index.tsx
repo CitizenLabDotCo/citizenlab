@@ -60,9 +60,9 @@ const visibleKeywordLabelScale = 2;
 const collideForce = 10;
 
 const nodeColors = [
-  colors.green,
+  colors.success,
   colors.teal,
-  colors.red500,
+  colors.error,
   colors.orange,
   colors.primary,
   colors.facebookMessenger,

@@ -280,7 +280,7 @@ const AssignBudgetControl = memo(
                 isSignedIn && !isBudgetingEnabled && !hasBudgetingDisabledReason
               }
               processing={processing}
-              bgColor={isInBasket ? colors.red600 : colors.green}
+              bgColor={isInBasket ? colors.red600 : colors.success}
               iconSize="18px"
               icon={!isInBasket ? 'basket-plus' : 'basket-minus'}
               className={`e2e-assign-budget-button ${

@@ -101,7 +101,7 @@ const Subtitle = styled.h2`
 `;
 
 const LinkCopied = styled.div`
-  color: ${colors.green};
+  color: ${colors.success};
   display: flex;
   align-items: center;
   opacity: 0;
@@ -117,7 +117,7 @@ const LinkCopied = styled.div`
 `;
 
 const LinkCopiedIcon = styled(Icon)`
-  fill: ${colors.green};
+  fill: ${colors.success};
   height: 13px;
   margin-right: 3px;
 `;

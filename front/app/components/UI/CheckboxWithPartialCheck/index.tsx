@@ -49,8 +49,8 @@ const CustomInputWrapper = styled.div<{
   justify-content: center;
   border: solid 1px ${colors.divider};
   border-radius: ${(props) => props.theme.borderRadius};
-  background: ${(props) => (props.checked ? colors.green : '#fff')};
-  border-color: ${(props) => (props.checked ? colors.green : '#aaa')};
+  background: ${(props) => (props.checked ? colors.success : '#fff')};
+  border-color: ${(props) => (props.checked ? colors.success : '#aaa')};
   box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.15);
 
   &:hover {
@@ -58,7 +58,7 @@ const CustomInputWrapper = styled.div<{
       props.checked === 'mixed'
         ? colors.teal100
         : props.checked
-        ? colors.green
+        ? colors.success
         : '#333'};
   }
 `;

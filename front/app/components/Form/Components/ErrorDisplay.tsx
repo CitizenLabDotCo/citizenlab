@@ -57,7 +57,7 @@ const ContainerInner = styled.div`
   justify-content: space-between;
   padding: 10px 13px;
   border-radius: ${(props) => props.theme.borderRadius};
-  background: ${colors.red100};
+  background: ${colors.errorLight};
 
   ${isRtl`
     flex-direction: row-reverse;

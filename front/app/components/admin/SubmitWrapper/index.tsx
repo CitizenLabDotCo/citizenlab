@@ -47,7 +47,7 @@ const Message = styled.p`
   }
 
   &.success {
-    color: ${colors.green};
+    color: ${colors.success};
   }
 
   &.success-enter {

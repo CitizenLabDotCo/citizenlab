@@ -56,7 +56,7 @@ const ToggleContainer: any = styled.div`
       i {
         padding-right: ${padding}px !important;
         padding-left: ${size}px !important;
-        background: ${colors.green} !important;
+        background: ${colors.success} !important;
       }
     `};
 

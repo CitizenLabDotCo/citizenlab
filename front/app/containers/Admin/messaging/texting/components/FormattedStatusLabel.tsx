@@ -44,7 +44,7 @@ const FormattedStatusLabel = (
       return (
         <StatusLabel
           width={props.width}
-          backgroundColor={colors.green}
+          backgroundColor={colors.success}
           text={<FormattedMessage {...messages.sent} />}
         />
       );

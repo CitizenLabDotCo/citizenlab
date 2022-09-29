@@ -87,9 +87,9 @@ const ContentBuilderSettings = () => {
             id="e2e-delete-button"
             icon="delete"
             buttonStyle="primary-outlined"
-            borderColor={colors.red500}
-            textColor={colors.red500}
-            iconColor={colors.red500}
+            borderColor={colors.error}
+            textColor={colors.error}
+            iconColor={colors.error}
             onClick={() => {
               actions.delete(selected.id);
               eventEmitter.emit(

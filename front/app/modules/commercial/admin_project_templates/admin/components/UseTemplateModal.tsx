@@ -67,12 +67,12 @@ const Success = styled.div`
 
 const SuccessIcon = styled(Icon)`
   height: 40px;
-  fill: ${colors.green};
+  fill: ${colors.success};
   margin-bottom: 20px;
 `;
 
 const SuccessText = styled.div`
-  color: ${colors.green};
+  color: ${colors.success};
   font-size: ${fontSizes.m}px;
   font-weight: 400;
   text-align: center;
@@ -85,11 +85,11 @@ const SuccessText = styled.div`
   }
 
   a {
-    color: ${colors.green};
+    color: ${colors.success};
     text-decoration: underline;
 
     &:hover {
-      color: ${darken(0.15, colors.green)};
+      color: ${darken(0.15, colors.success)};
       text-decoration: underline;
     }
   }

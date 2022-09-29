@@ -37,8 +37,8 @@ const MIN_PHASE_WIDTH_PX = 110;
 const CONTAINER_PADDING_PX = 20;
 
 const grey = colors.textSecondary;
-const greenTransparent = rgba(colors.green, 0.15);
-const green = colors.green;
+const greenTransparent = rgba(colors.success, 0.15);
+const green = colors.success;
 const darkGreen = colors.green700;
 
 const RtlBox = styled(Box)`

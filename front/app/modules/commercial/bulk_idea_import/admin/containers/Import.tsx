@@ -99,7 +99,7 @@ const Import = () => {
           </Button>
         </Box>
         {!isLoading && isSuccessful && (
-          <Text color="green">
+          <Text color="success">
             <FormattedMessage {...messages.successMessage} />
           </Text>
         )}

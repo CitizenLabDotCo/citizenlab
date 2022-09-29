@@ -59,7 +59,7 @@ const PhaseNumber = styled.div`
   `}
 
   &.present {
-    background: ${colors.green};
+    background: ${colors.success};
   }
 
   ${media.phone`
@@ -90,7 +90,7 @@ const HeaderTitle = styled.h2`
   word-break: break-word;
 
   &.present {
-    color: ${colors.green};
+    color: ${colors.success};
   }
 `;
 

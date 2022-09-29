@@ -258,7 +258,7 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
                     )}
                   </TextCellContent>
                   {field.attributes.required && (
-                    <StyledBadge className="inverse" color={colors.red500}>
+                    <StyledBadge className="inverse" color={colors.error}>
                       <FormattedMessage {...customfieldMessages.required} />
                     </StyledBadge>
                   )}

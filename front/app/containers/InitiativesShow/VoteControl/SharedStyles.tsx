@@ -9,7 +9,7 @@ export const StatusWrapper = styled.div`
   color: ${colors.coolGrey600};
 
   &.answered {
-    color: ${colors.green};
+    color: ${colors.success};
   }
 
   ${media.tablet`

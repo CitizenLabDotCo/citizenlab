@@ -84,10 +84,10 @@ const UpvoteButton = styled.button`
   }
 
   &.enabled.voted {
-    color: ${colors.green};
+    color: ${colors.success};
 
     ${UpvoteIcon} {
-      fill: ${colors.green};
+      fill: ${colors.success};
     }
   }
 
@@ -100,10 +100,10 @@ const UpvoteButton = styled.button`
   }
 
   &.disabled.voted {
-    color: ${lighten(0.25, colors.green)};
+    color: ${lighten(0.25, colors.success)};
 
     ${UpvoteIcon} {
-      fill: ${lighten(0.25, colors.green)};
+      fill: ${lighten(0.25, colors.success)};
     }
   }
 `;

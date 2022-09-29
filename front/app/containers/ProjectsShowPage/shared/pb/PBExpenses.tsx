@@ -75,8 +75,8 @@ const Title = styled.h2`
   }
 
   &.validationSuccess {
-    color: ${colors.green};
-    fill: ${colors.green};
+    color: ${colors.success};
+    fill: ${colors.success};
   }
 `;
 
@@ -121,7 +121,7 @@ const BudgetAmount = styled.span`
   }
 
   &.green {
-    color: ${colors.green};
+    color: ${colors.success};
   }
 `;
 
@@ -163,7 +163,7 @@ const ProgressBarOverlay: any = styled.div`
   }
 
   &.green {
-    background: ${colors.green};
+    background: ${colors.success};
   }
 `;
 

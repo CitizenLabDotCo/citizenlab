@@ -43,7 +43,7 @@ const IconContainer = styled.div`
 const PlusIcon = styled(Icon)`
   margin-left: 8px;
   height: 14px;
-  fill: ${colors.green};
+  fill: ${colors.success};
 `;
 
 const CloseIcon = styled(Icon)`
@@ -74,8 +74,8 @@ const StyledTag = styled(Box)<{ variant: Variant; size: Size }>`
     `}
     ${variant === 'primary' &&
     css`
-      background-color: ${colors.green};
-      border: 1px solid ${colors.green};
+      background-color: ${colors.success};
+      border: 1px solid ${colors.success};
       color: #fff;
     `}
     ${variant === 'secondary' &&
@@ -97,7 +97,7 @@ const StyledTag = styled(Box)<{ variant: Variant; size: Size }>`
       &:focus {
         background-color: ${darken(
           0.1,
-          variant === 'primary' ? colors.green : '#fff'
+          variant === 'primary' ? colors.success : '#fff'
         )};
       }
     `}
@@ -164,7 +164,7 @@ const Tag = ({
                 <StyledSpinner
                   size="10px"
                   thickness="1px"
-                  color={variant === 'primary' ? '#fff' : colors.green}
+                  color={variant === 'primary' ? '#fff' : colors.success}
                 />
               </div>
             ) : (
