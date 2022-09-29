@@ -71,9 +71,9 @@ export function randomEmail() {
     .toString(36)
     .substr(2, 12)
     .toLowerCase()}@${Math.random()
-      .toString(36)
-      .substr(2, 12)
-      .toLowerCase()}.com`;
+    .toString(36)
+    .substr(2, 12)
+    .toLowerCase()}.com`;
 }
 
 export function unregisterServiceWorkers() {
