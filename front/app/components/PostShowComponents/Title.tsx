@@ -28,7 +28,7 @@ export const Title = styled.h1<{
   padding: 0;
   z-index: 1;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     font-size: ${fontSizes.xxl}px;
   `}
 `;

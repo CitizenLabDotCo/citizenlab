@@ -31,7 +31,7 @@ const UserNavbarWrapper = styled.div`
   justify-content: center;
   height: 54px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     top: 0px;
   `}
 `;

@@ -29,7 +29,7 @@ const Container = styled.div`
     flex-direction: row-reverse;
   `}
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-start;
@@ -39,7 +39,7 @@ const Container = styled.div`
 const Left = styled.div`
   flex: 1;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     margin-bottom: 20px;
   `}
 `;
@@ -54,7 +54,7 @@ const Right = styled.div`
     margin-left: auto;
   `}
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     flex: 1 1 auto;
     width: 100%;
     margin-left: 0px;

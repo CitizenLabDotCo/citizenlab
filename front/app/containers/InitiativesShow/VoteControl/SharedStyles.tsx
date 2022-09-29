@@ -12,7 +12,7 @@ export const StatusWrapper = styled.div`
     color: ${colors.green};
   }
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: none;
   `}
 `;

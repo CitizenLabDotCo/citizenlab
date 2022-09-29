@@ -77,7 +77,7 @@ const UnvoteButton = styled.button`
 const VoteCounter = styled.div`
   margin-top: 15px;
   width: 100%;
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: none;
   `}
 `;

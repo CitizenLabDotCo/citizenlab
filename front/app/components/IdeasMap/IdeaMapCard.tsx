@@ -86,7 +86,7 @@ const Title = styled.h3`
   word-wrap: break-word;
   word-break: break-word;
 
-  /* ${media.smallerThanMaxTablet`
+  /* ${media.tablet`
     width: calc(100% - 22px);
     margin-bottom: 25px;
   `} */
@@ -154,7 +154,7 @@ const IdeaMapCard = memo<Props>(
     const phase = usePhase(phaseId || null);
     const project = useProject({ projectId });
     const { windowWidth } = useWindowSize();
-    const smallerThanMaxTablet = windowWidth <= viewportWidths.tablet;
+    const tablet = windowWidth <= viewportWidths.tablet;
 
     const [hovered, setHovered] = useState(false);
 
@@ -172,7 +172,7 @@ const IdeaMapCard = memo<Props>(
     useEffect(() => {
       const subscriptions = [
         leafletMapHoveredMarker$.subscribe((hoverredIdeaId) => {
-          if (!smallerThanMaxTablet) {
+          if (!tablet) {
             setHovered(hoverredIdeaId === ideaMarker.id);
           }
         }),
@@ -182,14 +182,14 @@ const IdeaMapCard = memo<Props>(
         subscriptions.forEach((subscription) => subscription.unsubscribe());
       };
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [smallerThanMaxTablet]);
+    }, [tablet]);
 
     const handleOnClick = (event: React.FormEvent) => {
       event?.preventDefault();
 
       setIdeaMapCardSelected(ideaMarker.id);
 
-      if (smallerThanMaxTablet) {
+      if (tablet) {
         eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
           id: ideaMarker.id,
           slug: ideaMarker.attributes.slug,
@@ -246,7 +246,7 @@ const IdeaMapCard = memo<Props>(
           role="button"
           tabIndex={0}
         >
-          {smallerThanMaxTablet && (
+          {tablet && (
             <StyledCloseIconButton
               iconWidth={'12px'}
               iconHeight={'12px'}

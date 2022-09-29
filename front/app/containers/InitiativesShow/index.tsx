@@ -107,7 +107,7 @@ const Container = styled.main`
     100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
   );
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
     props
   ) => props.theme.mobileTopBarHeight}px);
@@ -142,7 +142,7 @@ const InitiativeContainer = styled.div`
   padding-right: 60px;
   position: relative;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding-top: 35px;
   `}
 
@@ -157,7 +157,7 @@ const Content = styled.div`
   width: 100%;
   display: flex;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: block;
   `}
 `;
@@ -172,7 +172,7 @@ const LeftColumn = styled.div`
     padding-right: ${columnsGapTablet}px;
   `}
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding: 0;
   `}
 `;
@@ -180,7 +180,7 @@ const LeftColumn = styled.div`
 const StyledTopics = styled(Topics)`
   margin-bottom: 30px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     margin-bottom: 5px;
   `}
 `;
@@ -189,7 +189,7 @@ const InitiativeHeader = styled.div`
   margin-top: -5px;
   margin-bottom: 28px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     margin-top: 0px;
     margin-bottom: 45px;
   `}
@@ -254,7 +254,7 @@ const MobileMoreActionContainer = styled.div`
 const StyledDropdownMap = styled(DropdownMap)`
   margin-bottom: 40px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     margin-bottom: 20px;
   `}
 `;
@@ -274,7 +274,7 @@ const RightColumnDesktop = styled(RightColumn)`
     width: ${rightColumnWidthTablet}px;
   `}
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: none;
   `}
 `;

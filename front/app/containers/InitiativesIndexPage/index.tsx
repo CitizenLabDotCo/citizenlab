@@ -46,7 +46,7 @@ const FooterMessage = styled.h2`
   max-width: 500px;
   text-align: center;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
       font-size: ${fontSizes.xxxl}px;
     `}
 `;
@@ -56,7 +56,7 @@ const StyledContentContainer = styled(ContentContainer)`
   background-color: ${colors.background};
   padding-bottom: 150px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding-bottom: 80px;
   `}
 `;

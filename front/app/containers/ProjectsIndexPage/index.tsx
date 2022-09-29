@@ -24,7 +24,7 @@ const Container = styled.main`
   position: relative;
   background: ${colors.background};
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
     props
   ) => props.theme.mobileTopBarHeight}px);
@@ -51,7 +51,7 @@ const PageTitle = styled.h1`
   margin: 0;
   margin-bottom: 40px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     text-align: left;
     margin-bottom: 20px;
   `}

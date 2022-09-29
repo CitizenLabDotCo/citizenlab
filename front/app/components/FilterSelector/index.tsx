@@ -24,7 +24,7 @@ const Container = styled.div`
   &:not(:last-child) {
     margin-right: 40px;
 
-    ${media.smallerThanMaxTablet`
+    ${media.tablet`
       margin-right: 30px;
     `}
 
@@ -45,7 +45,7 @@ const Container = styled.div`
     &:not(:last-child) {
       margin-left: 40px;
 
-      ${media.smallerThanMaxTablet`
+      ${media.tablet`
         margin-left: 30px;
       `}
 

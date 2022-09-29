@@ -33,12 +33,12 @@ const SubmitFooterContainer = styled.div`
   border-top: 1px solid #e8e8e8;
   border-bottom: 1px solid #e8e8e8;
   z-index: 1;
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     align-items: center;
   `}
 `;
 const StyledContentContainer = styled(ContentContainer)`
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     max-width: 620px;
   `}
 `;

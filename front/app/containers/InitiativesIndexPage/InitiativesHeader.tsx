@@ -75,7 +75,7 @@ const Title = styled.h2`
   padding: 0;
   margin-bottom: 18px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     font-size: ${fontSizes.xxxl}px;
   `}
 `;

@@ -45,7 +45,7 @@ const ContentInner = styled.div`
     padding-right: ${rightColumnWidthTablet + columnsGapTablet}px;
   `}
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding-right: 0px;
   `}
 `;

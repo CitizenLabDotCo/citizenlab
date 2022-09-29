@@ -106,7 +106,7 @@ const Title = styled.h1`
   padding-top: 60px;
   padding-bottom: 40px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     font-size: ${fontSizes.xxxl}px;
     line-height: 34px;
   `}

@@ -47,7 +47,7 @@ const Left = styled.div`
   align-items: center;
   display: none;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: flex;
   `}
 `;

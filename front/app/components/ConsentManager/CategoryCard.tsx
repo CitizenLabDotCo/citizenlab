@@ -22,7 +22,7 @@ const Container = styled.div`
     margin: 0;
   }
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     flex-wrap: wrap;
   `}
 `;
@@ -40,7 +40,7 @@ const TextContainer = styled.div`
     word-break: break-word;
   }
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding: 0;
   `}
 `;
@@ -65,7 +65,7 @@ const SSpan = styled.span`
   padding-left: 10px;
   padding-right: 10px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding-left: 8px;
     padding-right: 8px;
 `}

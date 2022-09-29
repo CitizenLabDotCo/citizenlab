@@ -29,7 +29,7 @@ const Header = styled.div`
   align-items: center;
   justify-content: center;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     min-height: ${homepageBannerLayoutHeights.full_width_banner_layout.tablet}px;
   `}
 

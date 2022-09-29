@@ -48,7 +48,7 @@ const CardsContainer = styled.div`
     margin-right: 0px;
   }
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     flex-direction: column;
 
     > * {

@@ -94,7 +94,7 @@ const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
     }
 
     &.threecolumns {
-      ${media.smallerThanMaxTablet`
+      ${media.tablet`
         width: calc(50% - 13px);
       `}
 
@@ -187,7 +187,7 @@ const ProjectContent = styled.div`
     padding-left: 68px;
     padding-right: 32px;
 
-    ${media.smallerThanMaxTablet`
+    ${media.tablet`
       padding-left: 20px;
       padding-right: 20px;
     `}

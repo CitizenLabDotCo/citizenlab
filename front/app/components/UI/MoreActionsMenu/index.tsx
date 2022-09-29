@@ -31,7 +31,7 @@ const MoreOptionsLabel = styled.div`
   margin-left: 10px;
   transition: all 100ms ease-out;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: none;
   `}
 `;

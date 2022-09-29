@@ -38,7 +38,7 @@ const Container = styled.div`
     flex-direction: row-reverse;
   `}
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-start;

@@ -33,7 +33,7 @@ const Title = styled.h1`
   margin-bottom: 10px;
   padding: 0;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     max-width: auto;
     line-height: 36px;
   `}
@@ -53,7 +53,7 @@ const Subtitle = styled.h3`
   margin-bottom: 35px;
   padding: 0;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     font-size: ${fontSizes.base}px;
     line-height: 21px;
     margin-bottom: 20px;

@@ -249,7 +249,7 @@ const Container = styled.div<{
     `}
     }
 
-    ${media.smallerThanMaxTablet`
+    ${media.tablet`
       max-height: ${({ theme: { mobileMenuHeight } }) =>
         `calc(80vh - ${mobileMenuHeight}px)`};
     `}

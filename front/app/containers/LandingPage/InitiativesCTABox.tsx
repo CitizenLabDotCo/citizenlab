@@ -38,7 +38,7 @@ const BoxContainer = styled.div`
   margin-bottom: 70px;
   ${defaultCardStyle};
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding: 60px 50px 50px;
     margin-bottom: 20px;
   `}
@@ -93,7 +93,7 @@ const ButtonContainer = styled.div`
   display: flex;
   flex-direction: row;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     flex-direction: column;
     justify-content: center;
     align-items: stretch;
@@ -112,7 +112,7 @@ const BrowseInitiativesButton = styled(Button)``;
 const StartInitiativeButton = styled(Button)`
   margin-left: 20px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     margin-top: 15px;
     margin-left: 0;
   `}

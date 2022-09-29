@@ -125,7 +125,7 @@ const ListItemButton = styled.button`
 const StyledProjectActionButtons = styled(ProjectActionButtons)`
   margin-top: 20px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     margin-top: 30px;
   `}
 `;

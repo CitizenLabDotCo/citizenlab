@@ -86,11 +86,7 @@ const HeaderImage = styled(Image)`
   width: 100%;
   height: auto;
 
-<<<<<<< HEAD
-  ${media.smallerThanMaxTablet`
-=======
   ${media.tablet`
->>>>>>> 3bada9c380 ([CL-1435] Fix header)
     &.objectFitCoverSupported {
       width: 100%;
       height: 100%;
@@ -167,11 +163,7 @@ const HeaderContent = styled.div`
     font-weight: 400;
   }
 
-<<<<<<< HEAD
-  ${media.smallerThanMaxTablet`
-=======
   ${media.tablet`
->>>>>>> 3bada9c380 ([CL-1435] Fix header)
     padding-left: 30px;
     padding-right: 30px;
   `}
@@ -222,11 +214,7 @@ export const Icons = styled.div`
     margin-left: 30px;
   `}
 
-<<<<<<< HEAD
-  ${media.smallerThanMaxTablet`
-=======
   ${media.tablet`
->>>>>>> 3bada9c380 ([CL-1435] Fix header)
     display: none;
   `}
 `;

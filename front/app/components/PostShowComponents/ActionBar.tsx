@@ -27,7 +27,7 @@ const Inner = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     max-width: 100vw;
   `}
 

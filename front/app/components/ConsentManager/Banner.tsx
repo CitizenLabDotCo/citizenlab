@@ -23,7 +23,7 @@ const Container = styled.div`
   padding-top: 20px;
   padding-bottom: 20px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     bottom: ${(props) => props.theme.mobileMenuHeight}px;
   `}
 `;

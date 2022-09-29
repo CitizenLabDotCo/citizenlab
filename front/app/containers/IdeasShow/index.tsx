@@ -145,7 +145,7 @@ const IdeaHeader = styled.div`
     flex-direction: row-reverse;
   `}
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     margin-top: 0px;
   `}
 `;

@@ -47,7 +47,7 @@ const Header = styled.div`
   align-items: stretch;
   margin-bottom: 35px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     justify-content: flex-start;
     margin-bottom: 20px;
   `}
@@ -86,7 +86,7 @@ const Content = styled.div`
     justify-content: center;
   }
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     flex-wrap: wrap;
   `}
 `;
@@ -101,7 +101,7 @@ const Context = styled.div`
   padding-top: 30px;
   padding-bottom: 30px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding: 0;
     margin-bottom: 25px;
   `}

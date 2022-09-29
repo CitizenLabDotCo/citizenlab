@@ -63,7 +63,7 @@ const IdeaPageContainer = styled.div`
   flex-direction: column;
   align-items: stretch;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding: 20px;
     background: ${colors.background};
   `}

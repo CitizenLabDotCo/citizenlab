@@ -27,7 +27,7 @@ const Container = styled.div``;
 const CountDownWrapper = styled.div`
   display: flex;
   flex-direction: row-reverse;
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: none;
   `}
 `;
@@ -43,7 +43,7 @@ const StatusIcon = styled(Icon)`
 
 const VoteCounter = styled.div`
   margin-top: 15px;
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: none;
   `}
 `;
@@ -76,7 +76,7 @@ const StyledButton = styled(Button)`
 const OnDesktop = styled.span`
   display: inline;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: none;
   `}
 `;

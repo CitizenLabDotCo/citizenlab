@@ -287,7 +287,7 @@ const Skip = styled.div`
   margin-top: 15px;
   cursor: pointer;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: none;
   `}
 `;

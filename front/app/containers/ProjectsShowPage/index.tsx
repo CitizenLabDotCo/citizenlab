@@ -47,7 +47,7 @@ const Container = styled.main<{ background: string }>`
   align-items: center;
   background: ${(props) => props.background};
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     min-height: calc(100vh - ${({ theme: { mobileMenuHeight } }) =>
       mobileMenuHeight}px - ${({ theme: { mobileTopBarHeight } }) =>
     mobileTopBarHeight}px);

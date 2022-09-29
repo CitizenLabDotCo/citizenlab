@@ -32,7 +32,7 @@ const Container = styled.div`
   padding-top: 30px;
   padding-bottom: 70px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding: 20px 20px 35px;
   `}
 `;

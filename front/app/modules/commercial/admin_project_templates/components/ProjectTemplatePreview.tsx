@@ -230,7 +230,7 @@ const PhaseArrow = styled(Icon)`
   right: -9px;
   z-index: 2;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     fill: ${colors.background};
   `}
 `;

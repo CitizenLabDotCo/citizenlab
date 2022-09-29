@@ -28,7 +28,7 @@ const Image = styled.img`
   width: 50%;
   margin-left: 35px;
   object-fit: contain;
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: none;
   `};
 `;

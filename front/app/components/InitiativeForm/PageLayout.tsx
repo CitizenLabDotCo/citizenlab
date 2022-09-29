@@ -48,7 +48,7 @@ const Header = styled.div`
   padding-left: 30px;
   padding-right: 30px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding-top: 50px;
     padding-bottom: 40px;
   `}
@@ -66,7 +66,7 @@ const HeaderTitle: any = styled.h1`
   margin: 0;
   padding: 0;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     font-size: ${fontSizes.xxl}px;
   `}
 `;
@@ -80,7 +80,7 @@ const TwoColumns = styled.div`
   flex-direction: row;
   margin: 30px 0 0;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -116,7 +116,7 @@ const StyledTipsBox = styled(TipsBox)`
   padding: 40px 50px;
   margin-bottom: 110px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: none;
   `}
 `;

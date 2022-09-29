@@ -27,7 +27,7 @@ const Container = styled(FormSection)`
   justify-content: space-between;
   padding: 30px 40px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     flex-direction: column;
     align-items: flex-start;
     justify-content: left;
@@ -56,7 +56,7 @@ const Content = styled.div`
   margin-left: 30px;
   margin-right: 20px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     text-align: left;
     margin-left: 0px;
     margin-right: 0px;

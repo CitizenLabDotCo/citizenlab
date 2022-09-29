@@ -32,7 +32,7 @@ const Container = styled.div<{
   word-wrap: break-word;
   word-break: break-word;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding: 50px 30px;
   `}
 `;
@@ -61,7 +61,7 @@ const HeaderTitle = styled.h1<{
   padding: 0;
   margin-bottom: 10px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     font-size: ${fontSizes.xxxl}px;
   `}
 

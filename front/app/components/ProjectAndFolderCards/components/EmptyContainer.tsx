@@ -32,7 +32,7 @@ const EmptyProjectsImage = styled(Image)`
   width: 100%;
   height: auto;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     &.objectFitCoverSupported {
       width: 100%;
       height: 100%;

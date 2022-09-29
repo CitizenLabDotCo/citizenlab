@@ -28,7 +28,7 @@ const StyledBox = styled(Box)`
   gap: 24px;
   display: grid;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     grid-template-columns: 1fr;
   `}
 

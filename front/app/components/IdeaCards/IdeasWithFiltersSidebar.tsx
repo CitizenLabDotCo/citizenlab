@@ -110,7 +110,7 @@ const AboveContent = styled.div<{ filterColumnWidth: number }>`
     flex-direction: row-reverse;
   `}
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     margin-right: 0;
     margin-top: 20px;
   `}
@@ -195,7 +195,7 @@ const ClearFiltersButton = styled.button`
 const DesktopSearchInput = styled(SearchInput)`
   margin-bottom: 20px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: none;
   `}
 `;

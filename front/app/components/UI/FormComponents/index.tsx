@@ -44,7 +44,7 @@ export const FormSection = styled.div`
   margin-bottom: 15px;
   ${defaultCardStyle};
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     min-width: auto;
   `}
 `;

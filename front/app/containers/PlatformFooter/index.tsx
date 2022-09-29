@@ -31,7 +31,7 @@ const Container = styled.footer<{ insideModal?: boolean }>`
   flex-direction: column;
   align-items: stretch;
   position: relative;
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     margin-top: 0px;
     padding-bottom: ${({ insideModal, theme: { mobileMenuHeight } }) =>
       insideModal ? 0 : mobileMenuHeight}px;
@@ -49,7 +49,7 @@ const FooterContainer = styled.div`
   background: #fff;
   border-top: solid 1px #ccc;
   overflow: hidden;
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -59,7 +59,7 @@ const FooterContainer = styled.div`
 `;
 
 const PagesNav = styled.nav`
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     width: 90vw;
     margin-top: 15px;
     margin-bottom: 15px;
@@ -73,11 +73,7 @@ const PagesNavList = styled.ul`
   list-style: none;
   margin: 0;
   padding: 0;
-<<<<<<< HEAD
-  ${media.smallerThanMaxTablet`
-=======
   ${media.tablet`
->>>>>>> 86341c7b6e ([CL-1435] Fix idea search)
     flex-wrap: wrap;
     justify-content: center;
   `}
@@ -154,11 +150,7 @@ const StyledA = styled.a`
 const Right = styled.div`
   display: flex;
   align-items: center;
-<<<<<<< HEAD
-  ${media.smallerThanMaxTablet`
-=======
   ${media.tablet`
->>>>>>> 86341c7b6e ([CL-1435] Fix idea search)
     margin-top: 15px;
     margin-bottom: 15px;
   `}
@@ -191,15 +183,6 @@ const PoweredByText = styled.span`
   margin-right: 8px;
   ${media.tablet`
     display: none;
-  `}
-<<<<<<< HEAD
-  ${media.smallerThanMaxTablet`
-=======
-  ${media.tablet`
->>>>>>> 86341c7b6e ([CL-1435] Fix idea search)
-    display: block;
-  `}
-  ${media.tablet`
     margin-bottom: 10px;
   `}
 `;

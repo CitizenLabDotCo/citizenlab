@@ -33,7 +33,7 @@ const StyledBox = styled(Box)`
   display: grid;
   gap: 80px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     grid-template-columns: 1fr;
   `}
 

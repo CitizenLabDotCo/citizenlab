@@ -47,7 +47,7 @@ const Container = styled.div`
     ${defaultCardStyle};
   `}
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding: 15px;
   `}
 `;

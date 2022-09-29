@@ -22,7 +22,7 @@ const Container = styled.div`
   padding-bottom: 8px;
   ${defaultCardStyle};
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding: 20px;
   `}
 `;

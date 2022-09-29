@@ -28,7 +28,7 @@ const StatusIcon = styled(Icon)`
 
 const VoteCounter = styled.div`
   margin-top: 15px;
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: none;
   `}
 `;

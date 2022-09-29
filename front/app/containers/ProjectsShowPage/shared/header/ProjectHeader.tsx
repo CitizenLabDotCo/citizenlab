@@ -76,7 +76,7 @@ const StyledProjectArchivedIndicator = styled(ProjectArchivedIndicator)<{
   margin-top: ${(props) => (props.hasHeaderImage ? '-20px' : '0px')};
   margin-bottom: 25px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: none;
   `}
 `;

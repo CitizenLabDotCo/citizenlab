@@ -51,13 +51,13 @@ const Container = styled.header<{ position: 'fixed' | 'absolute' }>`
   z-index: 1004;
 
   &.hideNavbar {
-    ${media.smallerThanMaxTablet`
+    ${media.tablet`
       display: none;
     `}
   }
 
   &.citizenPage {
-    ${media.smallerThanMaxTablet`
+    ${media.tablet`
       position: absolute;
     `}
   }

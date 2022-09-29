@@ -44,7 +44,7 @@ const Container = styled.div`
     pointer-events: auto;
   }
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     top: 0px;
     border-bottom: solid 1px ${lighten(0.4, colors.textSecondary)};
   `}
@@ -65,7 +65,7 @@ const InnerContainer = styled.div`
     }
   }
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     flex-direction: column;
   `}
 `;
@@ -75,7 +75,7 @@ const Left = styled.div`
   display: flex;
   align-items: center;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: none;
   `}
 `;
@@ -87,7 +87,7 @@ const Right = styled.div`
   align-items: center;
   margin-left: 15px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     flex: 1 1 auto;
     width: 100%;
     flex-direction: column;

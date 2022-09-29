@@ -53,7 +53,7 @@ export const Title = styled.h1`
     font-weight: 600;
   }
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     font-size: ${fontSizes.xl}px;
     margin-bottom: 20px;
   `}

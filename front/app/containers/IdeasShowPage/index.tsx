@@ -54,7 +54,7 @@ const StyledIdeasShow = styled(IdeasShow)`
   padding-left: 60px;
   padding-right: 60px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     min-height: calc(100vh - ${({
       theme: { mobileMenuHeight, mobileTopBarHeight },
     }) => mobileMenuHeight + mobileTopBarHeight}px);
@@ -76,7 +76,7 @@ const IdeasShowPage = () => {
   const { slug } = useParams() as { slug: string };
   const idea = useIdea({ ideaSlug: slug });
   const { windowWidth } = useWindowSize();
-  const smallerThanMaxTablet = windowWidth <= viewportWidths.tablet;
+  const tablet = windowWidth <= viewportWidths.tablet;
 
   if (isError(idea)) {
     return (
@@ -98,7 +98,7 @@ const IdeasShowPage = () => {
   if (!isNilOrError(idea)) {
     return (
       <Container>
-        {smallerThanMaxTablet && (
+        {tablet && (
           <StyledIdeaShowPageTopBar
             projectId={idea.relationships.project.data.id}
             ideaId={idea.id}

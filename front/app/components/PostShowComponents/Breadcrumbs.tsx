@@ -47,7 +47,7 @@ const Separator = styled.div`
   font-weight: 300;
   line-height: normal;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     margin: 0 10px;
   `}
 `;
