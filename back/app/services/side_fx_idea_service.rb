@@ -71,22 +71,11 @@ class SideFxIdeaService
 
   private
 
-  def before_publish(idea, _user)
-    set_phase(idea)
-  end
+  def before_publish(idea, _user); end
 
   def after_publish(idea, user)
     add_autovote idea
     log_activity_jobs_after_published idea, user
-  end
-
-  def set_phase(idea)
-    return unless idea.project&.timeline? && idea.phases.empty?
-
-    phase = TimelineService.new.current_and_future_phases(idea.project).find do |ph|
-      ph&.can_contain_input?
-    end
-    idea.phases = [phase] if phase
   end
 
   def add_autovote(idea)

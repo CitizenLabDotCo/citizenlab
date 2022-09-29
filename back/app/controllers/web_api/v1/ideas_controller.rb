@@ -121,14 +121,15 @@ class WebApi::V1::IdeasController < ApplicationController
     end
     send_error and return unless participation_context
 
-    participation_method = Factory.instance.participation_method_for participation_context
     custom_form = custom_form_for participation_context
     extract_custom_field_values_from_params! custom_form
 
     user_can_moderate_project = UserRoleService.new.can_moderate_project?(project, current_user)
     input = Idea.new idea_params(custom_form, user_can_moderate_project)
     input.author ||= current_user
-    participation_method.assign_defaults input
+    if phase_ids.empty? && project.timeline?
+      input.phase_ids = [participation_context.id]
+    end
     service.before_create(input, current_user)
 
     authorize_input input, project
