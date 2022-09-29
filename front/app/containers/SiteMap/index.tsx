@@ -25,9 +25,9 @@ import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // resources
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
-
 // services
 import { DEFAULT_PAGE_SLUGS } from 'services/navbar';
 import { TPageCode } from 'services/pages';
@@ -405,4 +405,6 @@ const Data = adopt<DataProps>({
   authUser: <GetAuthUser />,
 });
 
-export default () => <Data>{(dataprops) => <SiteMap {...dataprops} />}</Data>;
+export default () => (
+  <Data>{(dataProps: DataProps) => <SiteMap {...dataProps} />}</Data>
+);
