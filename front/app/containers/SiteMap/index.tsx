@@ -285,7 +285,10 @@ const SiteMap = ({ projects, authUser }: Props) => {
                 {!isNilOrError(pages) &&
                   pages
                     .filter((page) => {
-                      const showPageConditions: Record<TPageCode, Function> = {
+                      const showPageConditions: Record<
+                        TPageCode,
+                        () => boolean
+                      > = {
                         proposals: () => proposalsEnabled,
                         about: () => true,
                         faq: () => true,
@@ -371,7 +374,10 @@ const SiteMap = ({ projects, authUser }: Props) => {
                 {!isNilOrError(pages) &&
                   pages
                     .filter((page) => {
-                      const showPageConditions: Record<TPageCode, Function> = {
+                      const showPageConditions: Record<
+                        TPageCode,
+                        () => boolean
+                      > = {
                         custom: () => true,
                         proposals: () => false,
                         about: () => false,
