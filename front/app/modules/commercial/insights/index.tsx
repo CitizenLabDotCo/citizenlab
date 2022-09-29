@@ -24,6 +24,12 @@ const AdminInsightsViewDetectComponent = React.lazy(
   () => import('./admin/containers/Insights/Detect')
 );
 
+declare module 'components/UI/Error' {
+  interface TFieldNameMap {
+    view_name: 'view_name';
+  }
+}
+
 const configuration: ModuleConfiguration = {
   routes: {
     admin: [

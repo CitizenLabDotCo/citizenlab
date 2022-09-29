@@ -168,7 +168,6 @@ export interface TFieldNameMap {
   last_name: 'last_name';
   confirmation_code: 'confirmation_code';
   email: 'email';
-  view_name: 'confirmation_code';
   category_name: 'category_name';
   nav_bar_item_title_multiloc: 'nav_bar_item_title_multiloc';
   banner_cta_button_multiloc: 'banner_cta_button_multiloc';
