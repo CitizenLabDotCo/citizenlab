@@ -142,17 +142,33 @@ module Analytics
         # +visit_json['visitorId']+ can be false sometimes.
         visitor_id: visit_json['visitorId'].presence,
         dimension_user_id: visit_json['userId'],
-        dimension_referrer_type_id: visit_json['referrerType'],
-        dimension_date_first_action_id: Time.at(first_action_timestamp).in_time_zone(@timezone).to_date,
-        dimension_date_last_action_id: Time.at(last_action_timestamp).in_time_zone(@timezone).to_date,
+        dimension_referrer_type_id: referrer_key_to_id[visit_json['referrerType']],
+        dimension_date_first_action_id: timestamp_to_date(first_action_timestamp),
+        dimension_date_last_action_id: timestamp_to_date(last_action_timestamp),
         duration: visit_json['visitDuration']&.to_i,
-        pages_visited: visit_json['actionDetails'].count, # TODO: to be confirmed
+        pages_visited: pages_visited(visit_json['actionDetails']),
         returning_visitor: visit_json['visitorType'] == 'returningCustomer',
         referrer_name: visit_json['referrerName'],
         referrer_url: visit_json['referrerUrl'],
         matomo_visit_id: visit_json['idVisit'],
         matomo_last_action_time: last_action_timestamp
       }
+    end
+
+    def pages_visited(action_details)
+      # 'action' should refer to page visits. Other types include: outlink, download,
+      # event, etc.
+      action_details.count { |details| details['type'] == 'action' }
+    end
+
+    def referrer_key_to_id
+      DimensionReferrerType.all.to_h do |type|
+        [type.key, type.id]
+      end
+    end
+
+    def timestamp_to_date(timestamp)
+      Time.at(timestamp).in_time_zone(@timezone).to_date
     end
   end
 end
