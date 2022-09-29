@@ -3,7 +3,7 @@ import React from 'react';
 import { TCustomPageCTAType } from 'services/customPages';
 import CTARadioButtons, {
   Props as CTARadioButtonProps,
-} from './CTARadioButtons';
+} from 'components/LandingPageComponents/admin/CTARadioButtons';
 
 const CTA_TYPES: TCustomPageCTAType[] = ['no_button', 'customized_button'];
 

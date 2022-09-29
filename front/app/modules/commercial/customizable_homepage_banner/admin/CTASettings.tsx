@@ -4,7 +4,7 @@ import {
   SectionField,
   SubSectionTitle,
 } from 'components/admin/Section';
-import CTARadioButtons from 'containers/Admin/pagesAndMenu/containers/CustomPages/Edit/HeroBanner/CTAButtonFields/CTARadioButtons';
+import CTARadioButtons from 'components/LandingPageComponents/admin/CTARadioButtons';
 import React from 'react';
 import {
   CTASignedInType,
