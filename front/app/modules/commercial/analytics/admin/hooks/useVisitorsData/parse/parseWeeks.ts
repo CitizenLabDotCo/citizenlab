@@ -30,8 +30,8 @@ export const parseWeeks = (
   if (mondays === null) return null;
 
   return mondays.map((monday) => {
-    const currentMondayISO = monday.toISOString();
-    const row = indexedTimeSeries.get(currentMondayISO);
+    const currentMondayStr = monday.format('YYYY-MM-DD');
+    const row = indexedTimeSeries.get(currentMondayStr);
 
     return row ?? getEmptyRow(monday);
   });

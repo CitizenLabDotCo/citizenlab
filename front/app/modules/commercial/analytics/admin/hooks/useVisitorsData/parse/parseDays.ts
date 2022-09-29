@@ -25,8 +25,8 @@ export const parseDays = (
   if (days === null) return null;
 
   return days.map((day) => {
-    const currentDayISO = day.toISOString();
-    const row = indexedTimeSeries.get(currentDayISO);
+    const currentDayStr = day.format('YYYY-MM-DD');
+    const row = indexedTimeSeries.get(currentDayStr);
 
     return row ?? getEmptyRow(day);
   });

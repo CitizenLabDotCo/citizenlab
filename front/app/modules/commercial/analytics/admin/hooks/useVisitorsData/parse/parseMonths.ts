@@ -30,8 +30,8 @@ export const parseMonths = (
   if (months === null) return null;
 
   return months.map((month) => {
-    const currentMonthISO = month.toISOString();
-    const row = indexedTimeSeries.get(currentMonthISO);
+    const currentMonthStr = month.format('YYYY-MM-DD');
+    const row = indexedTimeSeries.get(currentMonthStr);
 
     return row ?? getEmptyRow(month);
   });

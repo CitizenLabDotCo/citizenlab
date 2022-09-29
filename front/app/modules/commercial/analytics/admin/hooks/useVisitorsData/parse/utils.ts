@@ -11,7 +11,7 @@ export const indexTimeSeries = (
 ): Map<string, TimeSeriesRow> => {
   return responseTimeSeries.reduce((acc, row) => {
     const date = getDate(row);
-    acc.set(date.toISOString(), parseRow(row));
+    acc.set(date.format('YYYY-MM-DD'), parseRow(row));
 
     return acc;
   }, new Map() as Map<string, TimeSeriesRow>);
