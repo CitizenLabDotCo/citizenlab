@@ -6,7 +6,7 @@ module MultiTenancy
   module Seeds
     class Analytics < Base
       def run
-        Rake::Task['analytics:populate_dimensions'].execute
+        ::Analytics::PopulateDimensionsService.run
 
         project = ::Analytics::DimensionProject.first
         user = ::Analytics::DimensionUser.first
