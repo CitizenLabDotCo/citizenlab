@@ -1,5 +1,7 @@
 import { randomString } from '../../../support/commands';
 
+const seedLanguages = ['en', 'nl-BE', 'nl-NL', 'fr-BE'];
+
 describe('Admin: update HomePage content', () => {
   before(() => {
     cy.setAdminLoginCookie();
@@ -24,16 +26,24 @@ describe('Admin: update HomePage content', () => {
 
     // visit top into section edit page
     cy.get('[data-cy="e2e-admin-edit-button"]').eq(1).click();
-    cy.get('#custom-section-en').clear().type(topInfoContent);
-    cy.get('.e2e-submit-wrapper-button').click();
+    seedLanguages.forEach((language) => {
+      cy.get(`.${language}`).click();
+      cy.get('#top_info_section_multiloc-en').clear().type(topInfoContent);
+    });
+    cy.get('[data-cy="e2e-top-info-section-submit"').click();
 
     // // go back home
     cy.get('[data-cy="breadcrumbs-Home"]').click();
 
     // // visit bottom into section edit page
     cy.get('[data-cy="e2e-admin-edit-button"]').eq(2).click();
-    cy.get('#custom-section-en').clear().type(bottomInfoContent);
-    cy.get('.e2e-submit-wrapper-button').click();
+    seedLanguages.forEach((language) => {
+      cy.get(`.${language}`).click();
+      cy.get('#bottom_info_section_multiloc-en')
+        .clear()
+        .type(bottomInfoContent);
+    });
+    cy.get('[data-cy="e2e-bottom-info-section-submit"').click();
 
     cy.visit('/');
 
@@ -53,7 +63,6 @@ describe('Admin: update HomePage content', () => {
       '[data-cy="e2e-admin-section-toggle-top_info_section_enabled"]'
     ).click();
     cy.wait('@saveHomePage');
-    cy.wait('@getHomePage');
 
     // wait for the next toggle to become disabled, then enabled again once it finishes toggling
     cy.get('[data-cy="e2e-admin-section-toggle-bottom_info_section_enabled"]')
@@ -68,7 +77,6 @@ describe('Admin: update HomePage content', () => {
       '[data-cy="e2e-admin-section-toggle-bottom_info_section_enabled"]'
     ).click();
     cy.wait('@saveHomePage');
-    cy.wait('@getHomePage');
 
     // wait for the next toggle to become disabled, then enabled again once it finishes toggling
     cy.get('[data-cy="e2e-admin-section-toggle-events_widget_enabled"]')
@@ -83,7 +91,6 @@ describe('Admin: update HomePage content', () => {
       '[data-cy="e2e-admin-section-toggle-events_widget_enabled"]'
     ).click();
     cy.wait('@saveHomePage');
-    cy.wait('@getHomePage');
 
     // go back to homepage and see that the content is there correctly
     cy.visit('/');
