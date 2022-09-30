@@ -69,8 +69,9 @@ const VisitorsCard = ({
         currentProjectFilter: projectFilter,
         resolution,
       }}
+      fullWidth={false}
     >
-      <Box width="100%" maxWidth="300px" height="initial">
+      <Box width="100%" height="initial">
         <PieChart
           height={140}
           data={pieData}

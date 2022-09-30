@@ -8,7 +8,7 @@ import {
 } from '../../services/analyticsFacts';
 
 // parse
-import { parsePieData } from './parse';
+import { parsePieData, parseXlsxData } from './parse';
 
 // typings
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
@@ -45,6 +45,8 @@ export default function useVisitorsData() {
           return;
         }
 
+        setXlsxData(parseXlsxData(response.data));
+        console.log('data', response.data);
         setPieData(parsePieData(response.data));
       }
     );
