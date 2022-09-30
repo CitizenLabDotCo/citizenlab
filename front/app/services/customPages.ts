@@ -1,6 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
+import { ImageSizes, Multiloc } from 'typings';
 import streams from 'utils/streams';
-import { Multiloc, ImageSizes } from 'typings';
 import { THomepageBannerLayout } from './homepageSettings';
 
 export interface ICustomPage {
@@ -9,10 +9,17 @@ export interface ICustomPage {
 
 export interface ICustomPageData {
   id: string;
-  attributes: ICustomPagesAttributes;
+  attributes: ICustomPageAttributes;
 }
 
 export type TCustomPageEnabledSetting = keyof ICustomPageEnabledSettings;
+
+export type TCustomPageBannerLayout =
+  | 'full_width_banner_layout'
+  | 'two_column_layout'
+  | 'two_row_layout';
+
+export type TCustomPageCTAType = 'customized_button' | 'no_button';
 
 export interface ICustomPageEnabledSettings {
   banner_enabled: boolean;
@@ -25,7 +32,7 @@ export interface ICustomPageEnabledSettings {
   // projects_enabled: boolean;
 }
 
-export interface ICustomPagesAttributes extends ICustomPageEnabledSettings {
+export interface ICustomPageAttributes extends ICustomPageEnabledSettings {
   title_multiloc: Multiloc;
   top_info_section_multiloc: Multiloc;
   slug: string;
@@ -65,7 +72,7 @@ export function customPageByIdStream(customPageId: string) {
 
 export async function updateCustomPage(
   customPageId: string,
-  updatedPageSettings: Partial<ICustomPagesAttributes>
+  updatedPageSettings: Partial<ICustomPageAttributes>
 ) {
   const customPageSettings = await streams.update(
     `${customPagesEndpoint}/${customPageId}`,

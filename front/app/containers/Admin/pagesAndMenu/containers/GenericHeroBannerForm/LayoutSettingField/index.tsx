@@ -1,14 +1,14 @@
 import React from 'react';
 
 // components
-import { Radio, Box, fontSizes } from '@citizenlab/cl2-component-library';
+import { Box, fontSizes, Radio } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 
 import FullWidthBannerLayoutActive from './layout_previews/full_width_banner_layout_active.jpg';
-import TwoColumnLayoutActive from './layout_previews/two_column_layout_active.jpg';
-import TwoRowLayoutActive from './layout_previews/two_row_layout_active.jpg';
 import FullWidthBannerLayoutInactive from './layout_previews/full_width_banner_layout_inactive.jpg';
+import TwoColumnLayoutActive from './layout_previews/two_column_layout_active.jpg';
 import TwoColumnLayoutInactive from './layout_previews/two_column_layout_inactive.jpg';
+import TwoRowLayoutActive from './layout_previews/two_row_layout_active.jpg';
 import TwoRowLayoutInactive from './layout_previews/two_row_layout_inactive.jpg';
 
 // style
@@ -18,6 +18,11 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 import {
+  ICustomPageAttributes,
+  TCustomPageBannerLayout,
+} from 'services/customPages';
+import {
+  IHomepageSettingsAttributes,
   THomepageBannerLayout,
 } from 'services/homepageSettings';
 
@@ -43,17 +48,16 @@ const LayoutOptionTextWrapper = styled.div`
   margin-bottom: 9px;
 `;
 
-interface Props {
-  bannerLayout: THomepageBannerLayout;
-  handleOnChange: (settingKey: 'banner_layout', settingValue: string) => void;
+export interface Props {
+  bannerLayout:
+    | ICustomPageAttributes['banner_layout']
+    | IHomepageSettingsAttributes['banner_layout'];
+  onChange: (
+    bannerLayout: THomepageBannerLayout | TCustomPageBannerLayout
+  ) => void;
 }
 
-const LayoutSetting = ({ bannerLayout, handleOnChange }: Props) => {
-  const handleLayoutOnChange = (layout: THomepageBannerLayout) => {
-    handleOnChange('banner_layout', layout);
-  };
-
-  const homepageBannerLayout = bannerLayout;
+const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
   return (
     <SectionField key="layout">
       <SubSectionTitle>
@@ -63,11 +67,11 @@ const LayoutSetting = ({ bannerLayout, handleOnChange }: Props) => {
         <LayoutOption>
           <LayoutOptionTop>
             <Radio
-              onChange={handleLayoutOnChange}
-              currentValue={homepageBannerLayout}
+              onChange={onChange}
+              currentValue={bannerLayout}
               value="full_width_banner_layout"
-              name="homepage-banner-layout"
-              id="homepage-banner-full-width-banner-layout"
+              name="banner-layout"
+              id="banner-full-width-banner-layout"
             />
             <LayoutOptionTextWrapper>
               <FormattedMessage {...messages.fullWidthBannerLayout} />
@@ -75,7 +79,7 @@ const LayoutSetting = ({ bannerLayout, handleOnChange }: Props) => {
           </LayoutOptionTop>
           <LayoutPreview
             src={
-              homepageBannerLayout === 'full_width_banner_layout'
+              bannerLayout === 'full_width_banner_layout'
                 ? FullWidthBannerLayoutActive
                 : FullWidthBannerLayoutInactive
             }
@@ -84,11 +88,11 @@ const LayoutSetting = ({ bannerLayout, handleOnChange }: Props) => {
         <LayoutOption>
           <LayoutOptionTop data-cy="e2e-two-column-layout-option">
             <Radio
-              onChange={handleLayoutOnChange}
-              currentValue={homepageBannerLayout}
+              onChange={onChange}
+              currentValue={bannerLayout}
               value="two_column_layout"
-              name="homepage-banner-layout"
-              id="homepage-banner-two-column-layout"
+              name="banner-layout"
+              id="banner-two-column-layout"
             />
             <LayoutOptionTextWrapper>
               <FormattedMessage {...messages.TwoColumnLayout} />
@@ -96,7 +100,7 @@ const LayoutSetting = ({ bannerLayout, handleOnChange }: Props) => {
           </LayoutOptionTop>
           <LayoutPreview
             src={
-              homepageBannerLayout === 'two_column_layout'
+              bannerLayout === 'two_column_layout'
                 ? TwoColumnLayoutActive
                 : TwoColumnLayoutInactive
             }
@@ -105,11 +109,11 @@ const LayoutSetting = ({ bannerLayout, handleOnChange }: Props) => {
         <LayoutOption>
           <LayoutOptionTop>
             <Radio
-              onChange={handleLayoutOnChange}
-              currentValue={homepageBannerLayout}
+              onChange={onChange}
+              currentValue={bannerLayout}
               value="two_row_layout"
-              name="homepage-banner-layout"
-              id="homepage-banner-two-row-layout"
+              name="banner-layout"
+              id="banner-two-row-layout"
             />
             <LayoutOptionTextWrapper>
               <FormattedMessage {...messages.twoRowLayout} />
@@ -117,7 +121,7 @@ const LayoutSetting = ({ bannerLayout, handleOnChange }: Props) => {
           </LayoutOptionTop>
           <LayoutPreview
             src={
-              homepageBannerLayout === 'two_row_layout'
+              bannerLayout === 'two_row_layout'
                 ? TwoRowLayoutActive
                 : TwoRowLayoutInactive
             }
@@ -128,4 +132,4 @@ const LayoutSetting = ({ bannerLayout, handleOnChange }: Props) => {
   );
 };
 
-export default LayoutSetting;
+export default LayoutSettingField;

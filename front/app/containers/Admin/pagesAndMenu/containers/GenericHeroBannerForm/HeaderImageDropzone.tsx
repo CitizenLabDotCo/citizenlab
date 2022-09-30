@@ -3,14 +3,14 @@ import React from 'react';
 // components and theming
 import styled, { useTheme } from 'styled-components';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import { PreviewDevice } from './index';
+import { PreviewDevice } from './BannerImageFields';
 
 // types
 import {
   IHomepageSettingsAttributes,
   THomepageBannerLayout,
 } from 'services/homepageSettings';
-import { ICustomPagesAttributes } from 'services/customPages';
+import { ICustomPageAttributes } from 'services/customPages';
 import { UploadFile } from 'typings';
 
 const HeaderImageOverlay = styled.div<{
@@ -29,10 +29,10 @@ const HeaderImageOverlay = styled.div<{
 interface Props {
   overlayOpacity:
     | IHomepageSettingsAttributes['banner_signed_out_header_overlay_opacity']
-    | ICustomPagesAttributes['banner_overlay_opacity'];
+    | ICustomPageAttributes['banner_overlay_opacity'];
   overlayColor:
     | IHomepageSettingsAttributes['banner_signed_out_header_overlay_color']
-    | ICustomPagesAttributes['banner_overlay_color'];
+    | ICustomPageAttributes['banner_overlay_color'];
   onAdd: (newImage: UploadFile[]) => void;
   onRemove: () => void;
   headerError: string | null;
