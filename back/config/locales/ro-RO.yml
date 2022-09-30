@@ -114,7 +114,7 @@ ro:
         title: Descriere
         description:
       author_id:
-        title: Author
+        title: Autor
         description:
       topic_ids:
         title: Subiecte
@@ -159,7 +159,7 @@ ro:
     gender:
       male: Masculin
       female: Femeie
-      unspecified: Nespecificat
+      unspecified: Alte
     domicile:
       outside: Altundeva
     education:
