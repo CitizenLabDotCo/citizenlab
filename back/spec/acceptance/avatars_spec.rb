@@ -10,6 +10,9 @@ resource 'Avatars' do
     header 'Content-Type', 'application/json'
     @user_without_avatar = create(:user, avatar: nil)
     @users_with_avatar = create_list(:user, 6)
+    home_page = HomePage.new
+    home_page.banner_avatars_enabled = true
+    home_page.save!
   end
 
   get 'web_api/v1/avatars' do
@@ -31,12 +34,12 @@ resource 'Avatars' do
 
     describe do
       before do
-        config = AppConfiguration.instance
-        config.settings['core']['display_header_avatars'] = false
-        config.save!
+        home_page = HomePage.first
+        home_page.banner_avatars_enabled = false
+        home_page.save!
       end
 
-      example_request 'Returns empty response for disabled display_header_avatars' do
+      example_request 'Returns empty response for disabled banner_avatars_enabled' do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 0

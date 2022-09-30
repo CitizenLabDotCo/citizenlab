@@ -5,9 +5,6 @@ import { injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import { InjectedIntlProps } from 'react-intl';
 
-// components
-import { Form } from 'formik';
-
 import { Section, SectionField } from 'components/admin/Section';
 
 // typings
@@ -60,37 +57,33 @@ const TopicForm = ({
   };
 
   return (
-    <Form>
-      <Section>
-        <FormProvider {...methods}>
-          <form
-            onSubmit={methods.handleSubmit(onFormSubmit)}
-            data-testid="topicForm"
-          >
-            <SectionField>
-              <Feedback />
-              <InputMultilocWithLocaleSwitcher
-                name="title_multiloc"
-                label={formatMessage(messages.fieldTopicTitle)}
-                labelTooltipText={formatMessage(
-                  messages.fieldTopicTitleTooltip
-                )}
-                type="text"
-              />
-            </SectionField>
-            <Box display="flex">
-              <Button
-                type="submit"
-                processing={methods.formState.isSubmitting}
-                id="e2e-submit-wrapper-button"
-              >
-                {formatMessage(messages.fieldTopicSave)}
-              </Button>
-            </Box>
-          </form>
-        </FormProvider>
-      </Section>
-    </Form>
+    <Section>
+      <FormProvider {...methods}>
+        <form
+          onSubmit={methods.handleSubmit(onFormSubmit)}
+          data-testid="topicForm"
+        >
+          <SectionField>
+            <Feedback />
+            <InputMultilocWithLocaleSwitcher
+              name="title_multiloc"
+              label={formatMessage(messages.fieldTopicTitle)}
+              labelTooltipText={formatMessage(messages.fieldTopicTitleTooltip)}
+              type="text"
+            />
+          </SectionField>
+          <Box display="flex">
+            <Button
+              type="submit"
+              processing={methods.formState.isSubmitting}
+              id="e2e-submit-wrapper-button"
+            >
+              {formatMessage(messages.fieldTopicSave)}
+            </Button>
+          </Box>
+        </form>
+      </FormProvider>
+    </Section>
   );
 };
 

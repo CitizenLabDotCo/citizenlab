@@ -26,8 +26,8 @@ const NewNotificationsIndicator = styled.div`
   line-height: ${fontSizes.xs}px;
   background: ${({ theme }) =>
     theme.invertedNavbarColors && theme.navbarTextColor
-      ? theme.colorText
-      : colors.red500};
+      ? theme.colors.tenantText
+      : colors.error};
   padding: 4px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   border: solid 1px
@@ -68,11 +68,11 @@ const NotificationCount = ({
           messages.a11y_notificationsLabel,
           { count }
         )}
-        iconColor={theme.navbarTextColor || colors.label}
+        iconColor={theme.navbarTextColor || colors.textSecondary}
         iconColorOnHover={
           theme.navbarTextColor
             ? darken(0.2, theme.navbarTextColor)
-            : colors.text
+            : colors.textPrimary
         }
         iconWidth={'20px'}
         iconHeight={'24px'}

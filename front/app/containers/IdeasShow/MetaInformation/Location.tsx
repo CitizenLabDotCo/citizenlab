@@ -37,7 +37,7 @@ const Container = styled.div`
 const StyledIcon = styled(Icon)`
   flex: 0 0 16px;
   width: 16px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   margin-right: 8px;
 
   ${isRtl`
@@ -47,7 +47,7 @@ const StyledIcon = styled(Icon)`
 `;
 
 const OpenMapModalButton = styled.button`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   line-height: 22px;
   text-decoration: underline;
@@ -59,7 +59,7 @@ const OpenMapModalButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    color: ${darken(0.2, colors.label)};
+    color: ${darken(0.2, colors.textSecondary)};
   }
 `;
 
@@ -73,7 +73,7 @@ const Address = styled.div`
 const MapContainer = styled.div`
   padding: 30px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding: 20px;
   `}
 `;

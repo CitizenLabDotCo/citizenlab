@@ -361,14 +361,9 @@ RSpec.describe JsonSchemaGeneratorService do
 
     it 'returns the schema for the given field' do
       expect(generator.visit_linear_scale(field)).to eq({
-        type: 'object',
-        properties: {
-          rating: {
-            type: 'integer',
-            minimum: 1,
-            maximum: field.maximum
-          }
-        }
+        type: 'number',
+        minimum: 1,
+        maximum: field.maximum
       })
     end
   end

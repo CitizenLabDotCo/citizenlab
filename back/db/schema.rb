@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_21_102230) do
+ActiveRecord::Schema.define(version: 2022_09_27_114325) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -53,10 +53,6 @@ ActiveRecord::Schema.define(version: 2022_09_21_102230) do
     t.index ["rgt"], name: "index_admin_publications_on_rgt"
   end
 
-  create_table "analytics_dimension_channels", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.jsonb "name_multiloc"
-  end
-
   create_table "analytics_dimension_dates", primary_key: "date", id: :date, force: :cascade do |t|
     t.string "year"
     t.string "month"
@@ -67,6 +63,26 @@ ActiveRecord::Schema.define(version: 2022_09_21_102230) do
     t.string "name"
   end
 
+  create_table "analytics_dimension_locales_fact_visits", id: false, force: :cascade do |t|
+    t.uuid "dimension_locale_id"
+    t.uuid "fact_visit_id"
+    t.index ["dimension_locale_id"], name: "i_l_v_locale"
+    t.index ["fact_visit_id"], name: "i_l_v_visit"
+  end
+
+  create_table "analytics_dimension_projects_fact_visits", id: false, force: :cascade do |t|
+    t.uuid "dimension_project_id"
+    t.uuid "fact_visit_id"
+    t.index ["dimension_project_id"], name: "i_p_v_project"
+    t.index ["fact_visit_id"], name: "i_p_v_visit"
+  end
+
+  create_table "analytics_dimension_referrer_types", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "key"
+    t.string "name"
+    t.index ["key"], name: "i_d_referrer_key", unique: true
+  end
+
   create_table "analytics_dimension_types", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "parent"
@@ -75,47 +91,33 @@ ActiveRecord::Schema.define(version: 2022_09_21_102230) do
   create_table "analytics_fact_visits", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "visitor_id", null: false
     t.uuid "dimension_user_id"
-    t.uuid "dimension_channel_id"
+    t.uuid "dimension_referrer_type_id"
     t.date "dimension_date_first_action_id"
     t.date "dimension_date_last_action_id"
     t.integer "duration", null: false
     t.integer "pages_visited", null: false
-    t.boolean "returning_visitor", default: true, null: false
+    t.boolean "returning_visitor", default: false, null: false
+    t.string "referrer_name"
+    t.string "referrer_url"
     t.integer "matomo_visit_id", null: false
     t.datetime "matomo_last_action_time", null: false
-    t.index ["dimension_channel_id"], name: "i_v_channel"
     t.index ["dimension_date_first_action_id"], name: "i_v_first_action"
     t.index ["dimension_date_last_action_id"], name: "i_v_last_action"
+    t.index ["dimension_referrer_type_id"], name: "i_v_referrer_type"
     t.index ["dimension_user_id"], name: "i_v_user"
     t.index ["matomo_last_action_time"], name: "i_v_timestamp"
     t.index ["matomo_visit_id"], name: "i_v_matomo_visit", unique: true
-  end
-
-  create_table "analytics_join_locale_visits", id: false, force: :cascade do |t|
-    t.uuid "dimension_locale_id"
-    t.uuid "fact_visit_id"
-    t.index ["dimension_locale_id"], name: "index_analytics_join_locale_visits_on_dimension_locale_id"
-    t.index ["fact_visit_id"], name: "index_analytics_join_locale_visits_on_fact_visit_id"
-  end
-
-  create_table "analytics_join_project_visits", id: false, force: :cascade do |t|
-    t.uuid "dimension_project_id"
-    t.uuid "fact_visit_id"
-    t.index ["dimension_project_id"], name: "index_analytics_join_project_visits_on_dimension_project_id"
-    t.index ["fact_visit_id"], name: "index_analytics_join_project_visits_on_fact_visit_id"
   end
 
   create_table "app_configurations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "host"
     t.string "logo"
-    t.string "header_bg"
     t.string "favicon"
     t.jsonb "settings", default: {}
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.jsonb "style", default: {}
-    t.jsonb "homepage_info_multiloc"
   end
 
   create_table "areas", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -513,6 +515,20 @@ ActiveRecord::Schema.define(version: 2022_09_21_102230) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_identities_on_user_id"
+  end
+
+  create_table "impact_tracking_salts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "salt"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "impact_tracking_sessions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "monthly_user_hash", null: false
+    t.string "highest_role"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["monthly_user_hash"], name: "index_impact_tracking_sessions_on_monthly_user_hash"
   end
 
   create_table "initiative_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1146,7 +1162,6 @@ ActiveRecord::Schema.define(version: 2022_09_21_102230) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "logo"
-    t.string "header_bg"
     t.string "favicon"
     t.jsonb "style", default: {}
     t.datetime "deleted_at"
@@ -1270,12 +1285,12 @@ ActiveRecord::Schema.define(version: 2022_09_21_102230) do
   end
 
   add_foreign_key "activities", "users"
-  add_foreign_key "analytics_fact_visits", "analytics_dimension_channels", column: "dimension_channel_id"
+  add_foreign_key "analytics_dimension_locales_fact_visits", "analytics_dimension_locales", column: "dimension_locale_id"
+  add_foreign_key "analytics_dimension_locales_fact_visits", "analytics_fact_visits", column: "fact_visit_id"
+  add_foreign_key "analytics_dimension_projects_fact_visits", "analytics_fact_visits", column: "fact_visit_id"
   add_foreign_key "analytics_fact_visits", "analytics_dimension_dates", column: "dimension_date_first_action_id", primary_key: "date"
   add_foreign_key "analytics_fact_visits", "analytics_dimension_dates", column: "dimension_date_last_action_id", primary_key: "date"
-  add_foreign_key "analytics_join_locale_visits", "analytics_dimension_locales", column: "dimension_locale_id"
-  add_foreign_key "analytics_join_locale_visits", "analytics_fact_visits", column: "fact_visit_id"
-  add_foreign_key "analytics_join_project_visits", "analytics_fact_visits", column: "fact_visit_id"
+  add_foreign_key "analytics_fact_visits", "analytics_dimension_referrer_types", column: "dimension_referrer_type_id"
   add_foreign_key "areas", "custom_field_options"
   add_foreign_key "areas_ideas", "areas"
   add_foreign_key "areas_ideas", "ideas"

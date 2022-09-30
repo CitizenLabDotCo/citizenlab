@@ -36,7 +36,7 @@ const SpinnerContainer = styled.div`
   & > :not(:last-child) {
     margin-bottom: 10px;
   }
-  color: ${colors.adminSecondaryTextColor};
+  color: ${colors.textSecondary};
   align-items: center;
   justify-content: center;
   height: 600px;

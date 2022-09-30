@@ -45,7 +45,7 @@ module Analytics
           [
             assoc.name.to_s,
             {
-              columns: assoc.options[:class_name].constantize.new.attributes.keys,
+              columns: assoc.options[:class_name].constantize.attribute_names,
               primary_key: assoc.options.key?(:primary_key) ? assoc.options[:primary_key] : nil
             }
           ]

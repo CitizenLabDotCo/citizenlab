@@ -55,7 +55,7 @@ const VerificationModal = memo<Props>(({ className, onMounted }) => {
   const [error, setError] = useState<IVerificationError>(null);
   const opened = !!activeStep;
 
-  const smallerThanSmallTablet = windowWidth <= viewportWidths.smallTablet;
+  const smallerThanSmallTablet = windowWidth <= viewportWidths.tablet;
 
   useEffect(() => {
     if (isMounted() && onMounted) {

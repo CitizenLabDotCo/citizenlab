@@ -177,14 +177,9 @@ class JsonSchemaGeneratorService < FieldVisitorService
 
   def visit_linear_scale(field)
     {
-      type: 'object',
-      properties: {
-        rating: {
-          type: 'integer',
-          minimum: 1,
-          maximum: field.maximum
-        }
-      }
+      type: 'number',
+      minimum: 1,
+      maximum: field.maximum
     }
   end
 

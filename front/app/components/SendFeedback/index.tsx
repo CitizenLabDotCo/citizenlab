@@ -14,7 +14,7 @@ import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 const SendFeedbackText = styled.span`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   text-decoration: underline;
@@ -22,7 +22,7 @@ const SendFeedbackText = styled.span`
 `;
 
 const SendFeedbackIcon = styled(Icon)`
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   width: 22px;
   height: 22px;
   transition: all 100ms ease-out;

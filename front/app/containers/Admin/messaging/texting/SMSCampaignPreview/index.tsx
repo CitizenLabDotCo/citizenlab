@@ -103,12 +103,12 @@ const InformativeTableRow = ({
   return (
     <tr>
       <td>
-        <Text fontSize="m" color="adminTextColor" as="span" fontWeight="bold">
+        <Text fontSize="m" color="primary" as="span" fontWeight="bold">
           {title}
         </Text>
       </td>
       <td>
-        <Text fontSize="m" color="adminTextColor" as="span">
+        <Text fontSize="m" color="primary" as="span">
           {content}
         </Text>
       </td>

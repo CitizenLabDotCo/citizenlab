@@ -51,9 +51,9 @@ export const trackPageChange = async (path: string) => {
   const projectId = await getProjectId(path);
 
   if (projectId) {
-    window._paq.push(['setCustomDimension', 4, projectId])
+    window._paq.push(['setCustomDimension', 4, projectId]);
   } else {
-    window._paq.push(['setCustomDimension', 4])
+    window._paq.push(['setCustomDimension', 4]);
   }
 
   // Set custom URL (override default behavior)
