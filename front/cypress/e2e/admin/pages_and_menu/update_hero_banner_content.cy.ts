@@ -1,4 +1,4 @@
-import { randomString, randomEmail } from '../../../support/commands';
+import { randomEmail, randomString } from '../../../support/commands';
 
 describe('Admin: update Hero Banner content', () => {
   // for a fake verified user
@@ -127,34 +127,34 @@ describe('Admin: update Hero Banner content', () => {
     cy.get('[data-cy="e2e-banner-avatar-toggle-section"]').find('i').click();
 
     // enable custom signed out button and fill out text/url
-    cy.get('[data-cy="e2e-cta-settings-signed_out-customized_button"]')
+    cy.get('[data-cy="e2e-cta-settings-homepage_signed_out-customized_button"]')
       .find('.circle')
       .click();
 
-    cy.get('[data-cy="e2e-cta-settings-signed_out-customized_button"]')
+    cy.get('[data-cy="e2e-cta-settings-homepage_signed_out-customized_button"]')
       .find('[data-testid=inputMultilocLocaleSwitcher]')
       .find('input')
       .clear()
       .type(updatedSignedOutCTAButton);
 
-    cy.get('[data-cy="e2e-cta-settings-signed_out-customized_button"]')
+    cy.get('[data-cy="e2e-cta-settings-homepage_signed_out-customized_button"]')
       .find('[data-testid=buttonConfigInput]')
       .find('input')
       .clear()
       .type(updatedSignedOutCTAURL);
 
     // enable custom signed in button and fill out text/url
-    cy.get('[data-cy="e2e-cta-settings-signed_in-customized_button"]')
+    cy.get('[data-cy="e2e-cta-settings-homepage_signed_in-customized_button"]')
       .find('.circle')
       .click();
 
-    cy.get('[data-cy="e2e-cta-settings-signed_in-customized_button"]')
+    cy.get('[data-cy="e2e-cta-settings-homepage_signed_in-customized_button"]')
       .find('[data-testid=inputMultilocLocaleSwitcher]')
       .find('input')
       .clear()
       .type(updatedSignedInCTAButton);
 
-    cy.get('[data-cy="e2e-cta-settings-signed_in-customized_button"]')
+    cy.get('[data-cy="e2e-cta-settings-homepage_signed_in-customized_button"]')
       .find('[data-testid=buttonConfigInput]')
       .find('input')
       .clear()

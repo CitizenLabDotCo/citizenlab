@@ -1,15 +1,15 @@
-import React from 'react';
-import { ModuleConfiguration } from 'utils/moduleUtils';
-import LayoutSettingField from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/LayoutSettingField';
-import TwoColumnLayout from './citizen/TwoColumnLayout';
-import TwoRowLayout from './citizen/TwoRowLayout';
-import CTASettings from './admin/CTASettings';
-import CTA from './citizen/CTA';
 import FeatureFlag from 'components/FeatureFlag';
+import LayoutSettingField from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/LayoutSettingField';
+import React from 'react';
 import {
   IHomepageSettingsAttributes,
   THomepageBannerLayout,
 } from 'services/homepageSettings';
+import { ModuleConfiguration } from 'utils/moduleUtils';
+import CTASettings from './admin/CTASettings';
+import CTA from './citizen/CTA';
+import TwoColumnLayout from './citizen/TwoColumnLayout';
+import TwoRowLayout from './citizen/TwoRowLayout';
 
 declare module 'utils/moduleUtils' {
   export interface OutletsPropertyMap {
