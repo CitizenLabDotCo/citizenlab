@@ -31,13 +31,7 @@ const Statistic = ({
 }: Props) => (
   <Box>
     <Box>
-      <Text
-        color="adminTextColor"
-        fontSize="s"
-        mt="0px"
-        mb="0px"
-        display="inline"
-      >
+      <Text color="primary" fontSize="s" mt="0px" mb="0px" display="inline">
         {name}
       </Text>
 
@@ -64,7 +58,7 @@ const Statistic = ({
                 name="error"
                 width={`${fontSizes.s}px`}
                 height={`${fontSizes.s}px`}
-                fill={colors.clBlueLight}
+                fill={colors.teal300}
                 transform="translate(0,-1)"
               />
             </Box>
@@ -73,18 +67,24 @@ const Statistic = ({
       )}
     </Box>
 
-    <Text color="text" fontSize="xl" mt="2px" mb="0px">
+    <Text color="textPrimary" fontSize="xl" mt="2px" mb="0px">
       {value}
     </Text>
     {bottomLabel && (
       <Box mt="3px">
-        <Text color="label" fontSize="s" mt="0px" mb="0px" display="inline">
+        <Text
+          color="textSecondary"
+          fontSize="s"
+          mt="0px"
+          mb="0px"
+          display="inline"
+        >
           {bottomLabel}
         </Text>
 
         {bottomLabelValue && (
           <Text
-            color="label"
+            color="textSecondary"
             display="inline"
             fontWeight="bold"
             fontSize="s"
