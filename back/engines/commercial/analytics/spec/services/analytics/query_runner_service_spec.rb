@@ -5,9 +5,13 @@ require 'query'
 
 describe Analytics::QueryRunnerService do
   describe 'run' do
+    before(:all) do
+      create(:dimension_type)
+      create(:dimension_type, name: 'initiative')
+    end
+
     it 'return the ID field for each post' do
       ideas = create_list(:idea, 5)
-      create(:dimension_type_idea)
       query_param = ActionController::Parameters.new(fact: 'post', fields: 'id')
       query = Analytics::Query.new(query_param)
 
@@ -21,8 +25,6 @@ describe Analytics::QueryRunnerService do
       initiative = create(:initiative)
       create_list(:vote, 2, votable: idea)
       create_list(:vote, 1, votable: initiative)
-      create(:dimension_type_idea)
-      create(:dimension_type_initiative)
 
       query_param = ActionController::Parameters.new(
         fact: 'post',
@@ -46,8 +48,6 @@ describe Analytics::QueryRunnerService do
     it 'return filtered ideas count' do
       create(:idea)
       create(:initiative)
-      create(:dimension_type_idea)
-      create(:dimension_type_initiative)
 
       query_param = ActionController::Parameters.new(
         fact: 'post',
@@ -70,8 +70,6 @@ describe Analytics::QueryRunnerService do
     it 'return first two sorted posts' do
       ideas = create_list(:idea, 5)
       initiatives = create_list(:initiative, 5)
-      create(:dimension_type_idea)
-      create(:dimension_type_initiative)
 
       query_param = ActionController::Parameters.new(
         fact: 'post',
