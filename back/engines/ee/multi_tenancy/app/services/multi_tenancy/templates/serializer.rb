@@ -611,7 +611,7 @@ module MultiTenancy
             'projects_filter_type' => sp.projects_filter_type,
             'events_widget_enabled' => sp.events_widget_enabled,
             'bottom_info_section_enabled' => sp.bottom_info_section_enabled,
-            'bottom_info_section_multiloc' => sp.bottom_info_section_enabled,
+            'bottom_info_section_multiloc' => sp.bottom_info_section_multiloc,
             'remote_header_bg_url' => sp.header_bg_url,
             'text_images_attributes' => sp.text_images.map do |ti|
               {
