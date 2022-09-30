@@ -35,12 +35,15 @@ const VisitorsCard = ({
 }: Props & InjectedIntlProps) => {
   const graphRef = useRef();
 
-  const { stats, timeSeries, xlsxData } = useVisitorsData({
-    startAtMoment,
-    endAtMoment,
-    projectId: projectFilter,
-    resolution,
-  });
+  const { deducedResolution, stats, timeSeries, xlsxData } = useVisitorsData(
+    formatMessage,
+    {
+      startAtMoment,
+      endAtMoment,
+      projectId: projectFilter,
+      resolution,
+    }
+  );
 
   const visitorsMessage = formatMessage(messages.visitors);
   const startAt = startAtMoment?.toISOString();
@@ -57,18 +60,24 @@ const VisitorsCard = ({
         startAt,
         endAt,
         currentProjectFilter: projectFilter,
-        resolution,
+        resolution: deducedResolution,
       }}
     >
       <Box width="100%" display="flex" flexDirection="row">
         <Box display="flex" flexDirection="row" pl="20px">
-          <VisitorStats stats={stats} resolution={resolution} />
+          <VisitorStats
+            stats={stats}
+            projectFilter={projectFilter}
+            resolution={deducedResolution}
+          />
         </Box>
 
         <Box flexGrow={1} display="flex" justifyContent="center">
           <Chart
             timeSeries={timeSeries}
-            resolution={resolution}
+            startAtMoment={startAtMoment}
+            endAtMoment={endAtMoment}
+            resolution={deducedResolution}
             innerRef={graphRef}
           />
         </Box>

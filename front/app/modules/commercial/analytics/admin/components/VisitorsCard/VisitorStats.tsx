@@ -19,6 +19,7 @@ import { Stats } from '../../hooks/useVisitorsData/typings';
 
 interface Props {
   stats: Stats | NilOrError;
+  projectFilter: string | undefined;
   resolution: IResolution;
 }
 
@@ -38,12 +39,14 @@ const EMPTY_DATA: Stats = {
 
 const VisitorStats = ({
   stats,
+  projectFilter,
   resolution,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const shownStats = isNilOrError(stats) ? EMPTY_DATA : stats;
 
   const bottomLabel = formatMessage(BOTTOM_LABEL_COPY[resolution]);
+  const emptyTooltipContent = formatMessage(messages.emptyStatTooltipMessage);
 
   return (
     <>
@@ -61,6 +64,9 @@ const VisitorStats = ({
             value={shownStats.visitDuration.value.toLocaleString()}
             bottomLabel={bottomLabel}
             bottomLabelValue={shownStats.visitDuration.lastPeriod}
+            emptyTooltipContent={
+              projectFilter ? emptyTooltipContent : undefined
+            }
           />
         </Box>
       </Box>
@@ -78,6 +84,9 @@ const VisitorStats = ({
             value={shownStats.pageViews.value.toLocaleString()}
             bottomLabel={bottomLabel}
             bottomLabelValue={shownStats.pageViews.lastPeriod}
+            emptyTooltipContent={
+              projectFilter ? emptyTooltipContent : undefined
+            }
           />
         </Box>
       </Box>

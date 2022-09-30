@@ -12,7 +12,6 @@ import useLocalize from 'hooks/useLocalize';
 
 // parsing
 import {
-  getTranslations,
   parsePieData,
   parseProgressBarsData,
   parseStackedBarsData,
@@ -26,7 +25,7 @@ import {
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
-import { isEmptyResponse } from './utils';
+import { isEmptyResponse, getTranslations } from './utils';
 import { getProjectFilter, getDateFilter } from '../../utils/query';
 
 // typings
@@ -56,7 +55,7 @@ const query = ({
     },
     filters: {
       type: { name: 'idea' },
-      ...getProjectFilter(projectId),
+      ...getProjectFilter('project', projectId),
       ...getDateFilter('created_date', startAt, endAt),
     },
   };
@@ -71,7 +70,7 @@ const query = ({
     },
     filters: {
       type: { name: 'idea' },
-      ...getProjectFilter(projectId),
+      ...getProjectFilter('project', projectId),
       ...getDateFilter('created_date', startAt, endAt),
     },
   };

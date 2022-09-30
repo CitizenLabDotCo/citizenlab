@@ -40,8 +40,8 @@ export const colors = {
   categoricalOther: mainColors.grey300,
   lightGrey: mainColors.divider,
   legendText: '#43515D',
-  gridColor: mainColors.lightGreyishBlue,
-  gridHoverColor: mainColors.mediumGrey,
+  gridColor: mainColors.grey200,
+  gridHoverColor: mainColors.grey500,
 };
 
 const DEFAULT_CATEGORICAL_COLORS = [

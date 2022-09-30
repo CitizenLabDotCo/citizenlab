@@ -1,26 +1,24 @@
-import moment from 'moment';
-
-// utils
-import { range } from 'lodash-es';
-
-// typings
 import {
-  TimeSeries,
-  TimeSeriesRow,
-} from '../../../hooks/useVisitorsData/typings';
+  dateRange,
+  getEmptyRow,
+} from '../../../hooks/useVisitorsData/parse/utils';
+// typings
+import moment, { Moment } from 'moment';
+import { IResolution } from 'components/admin/ResolutionControl';
 
-export const generateEmptyData = (): TimeSeries => {
-  return range(-6, 1).map((i) => {
-    const firstDayOfMonth = moment()
-      .subtract({ months: Math.abs(i) })
-      .format('YYYY-MM-01');
+export const generateEmptyData = (
+  startAtMoment: Moment | null | undefined,
+  endAtMoment: Moment | null | undefined,
+  resolution: IResolution
+) => {
+  const start = startAtMoment ?? moment().subtract({ month: 7 });
+  const end = endAtMoment ?? moment();
 
-    const row: TimeSeriesRow = {
-      date: firstDayOfMonth,
-      visitors: i === 0 ? 250 : 0,
-      visits: i === 0 ? 250 : 0,
-    };
+  const dates = dateRange(start, end, resolution);
+  if (dates === null) return [];
 
-    return row;
-  });
+  return dates.map((date, i) => ({
+    ...getEmptyRow(date),
+    ...(i === 0 ? { visitors: 10, visits: 10 } : {}),
+  }));
 };
