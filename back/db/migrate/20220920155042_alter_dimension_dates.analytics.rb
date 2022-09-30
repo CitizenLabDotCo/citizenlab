@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # This migration comes from analytics (originally 20220912060104)
 
 class AlterDimensionDates < ActiveRecord::Migration[6.1]
