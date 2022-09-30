@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 // styling
 import { colors } from 'components/admin/Graphs/styling';
@@ -14,30 +14,37 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
 // utils
-import { hasNoData } from 'components/admin/Graphs/utils';
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { toThreeLetterMonth } from 'utils/dateUtils';
 import { generateEmptyData } from './generateEmptyData';
 
 // typings
+import { Moment } from 'moment';
 import { IResolution } from 'components/admin/ResolutionControl';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import { TimeSeries } from '../../../hooks/useVisitorsData/typings';
-import { NilOrError } from 'utils/helperUtils';
 
 interface Props {
   timeSeries: TimeSeries | NilOrError;
+  startAtMoment: Moment | null | undefined;
+  endAtMoment: Moment | null | undefined;
   resolution: IResolution;
   innerRef: React.RefObject<any>;
 }
 
-const EMPTY_DATA = generateEmptyData();
-
 const Chart = ({
   timeSeries,
+  startAtMoment,
+  endAtMoment,
   resolution,
   innerRef,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
+  const emptyData = useMemo(
+    () => generateEmptyData(startAtMoment, endAtMoment, resolution),
+    [startAtMoment, endAtMoment, resolution]
+  );
+
   const legendItems: LegendItem[] = [
     {
       icon: 'circle',
@@ -55,13 +62,18 @@ const Chart = ({
     return toThreeLetterMonth(date, resolution);
   };
 
+  // Avoids unmounted component state update warning
+  if (timeSeries === undefined) {
+    return null;
+  }
+
   return (
     <Box pt="8px" width="90%" maxWidth="900px" height="250px">
-      {hasNoData(timeSeries) && (
+      {isNilOrError(timeSeries) && (
         <LineChart
           width="100%"
           height="100%"
-          data={EMPTY_DATA}
+          data={emptyData}
           mapping={{
             x: 'date',
             y: ['visits'],
@@ -78,7 +90,7 @@ const Chart = ({
         />
       )}
 
-      {!hasNoData(timeSeries) && (
+      {!isNilOrError(timeSeries) && (
         <LineChart
           width="100%"
           height="100%"

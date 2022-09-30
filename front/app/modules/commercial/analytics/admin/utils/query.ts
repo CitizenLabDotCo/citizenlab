@@ -5,9 +5,10 @@ type ProjectFilter = { project: { id: string } };
 type EmptyObject = Record<string, unknown>;
 
 export const getProjectFilter = (
+  filter: string,
   projectId: string | undefined
 ): ProjectFilter | EmptyObject => {
-  return projectId ? { project: { id: projectId } } : {};
+  return projectId ? { [filter]: { id: projectId } } : {};
 };
 
 const formatDate = (dateString: string) =>

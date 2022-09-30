@@ -10,7 +10,7 @@ import {
 } from '../../services/analyticsFacts';
 
 // parse
-import { parseStats, parseTimeSeries } from './parse';
+import { parseStats, parseTimeSeries, parseExcelData } from './parse';
 
 // utils
 import {
@@ -18,12 +18,14 @@ import {
   getDateFilter,
   getInterval,
 } from '../../utils/query';
+import { deduceResolution, getTranslations } from './utils';
 
 // typings
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { XlsxData } from 'components/admin/ReportExportMenu';
 import { QueryParameters, Response, Stats, TimeSeries } from './typings';
 import { IResolution } from 'components/admin/ResolutionControl';
+import { InjectedIntlProps } from 'react-intl';
 
 const getAggregations = (): AggregationsConfig => ({
   all: 'count',
@@ -59,7 +61,7 @@ const query = ({
       dimension_user: {
         role: ['citizen', null],
       },
-      ...getProjectFilter(projectId),
+      ...getProjectFilter('dimension_projects', projectId),
       ...getDateFilter('dimension_date_last_action', startAt, endAt),
     },
     aggregations: getAggregations(),
@@ -74,7 +76,7 @@ const query = ({
       dimension_user: {
         role: ['citizen', null],
       },
-      ...getProjectFilter(projectId),
+      ...getProjectFilter('dimension_projects', projectId),
       dimension_date_last_action: {
         date: {
           from: lastPeriod,
@@ -91,7 +93,7 @@ const query = ({
       dimension_user: {
         role: ['citizen', null],
       },
-      ...getProjectFilter(projectId),
+      ...getProjectFilter('dimension_projects', projectId),
       ...getDateFilter('dimension_date_last_action', startAt, endAt),
     },
     groups: `dimension_date_last_action.${getInterval(resolution)}`,
@@ -106,12 +108,12 @@ const query = ({
   };
 };
 
-export default function useVisitorsData({
-  projectId,
-  startAtMoment,
-  endAtMoment,
-  resolution,
-}: QueryParameters) {
+export default function useVisitorsData(
+  formatMessage: InjectedIntlProps['intl']['formatMessage'],
+  { projectId, startAtMoment, endAtMoment, resolution }: QueryParameters
+) {
+  const [deducedResolution, setDeducedResolution] =
+    useState<IResolution>(resolution);
   const [stats, setStats] = useState<Stats | NilOrError>();
   const [timeSeries, setTimeSeries] = useState<TimeSeries | NilOrError>();
   const [xlsxData, setXlsxData] = useState<XlsxData | NilOrError>();
@@ -132,22 +134,35 @@ export default function useVisitorsData({
           setStats(response);
           setTimeSeries(response);
           setXlsxData(response);
+          setDeducedResolution(resolution);
           return;
         }
 
-        setStats(parseStats(response.data));
+        const translations = getTranslations(formatMessage);
 
-        setTimeSeries(parseTimeSeries(
+        const deducedResolution =
+          deduceResolution(response.data[2]) ?? resolution;
+        setDeducedResolution(deducedResolution);
+
+        const stats = parseStats(response.data);
+        setStats(stats);
+
+        const timeSeries = parseTimeSeries(
           response.data[2],
           startAtMoment,
           endAtMoment,
-          resolution
-        ));
+          deducedResolution
+        );
+        setTimeSeries(timeSeries);
+
+        setXlsxData(
+          parseExcelData(stats, timeSeries, translations, deducedResolution)
+        );
       }
     );
 
     return () => subscription.unsubscribe();
-  }, [projectId, startAtMoment, endAtMoment, resolution]);
+  }, [projectId, startAtMoment, endAtMoment, resolution, formatMessage]);
 
-  return { stats, timeSeries, xlsxData };
+  return { deducedResolution, stats, timeSeries, xlsxData };
 }

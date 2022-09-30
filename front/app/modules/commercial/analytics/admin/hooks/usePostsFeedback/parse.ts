@@ -1,48 +1,15 @@
 // styling
 import { colors } from 'components/admin/Graphs/styling';
 
-// i18n
-import messages from './messages';
-
 // utils
 import { sum, roundPercentage, roundPercentages } from 'utils/math';
 import { capitalize } from 'lodash-es';
 
 // typings
 import { FeedbackRow, StatusRow, StackedBarsRow } from './typings';
-import { InjectedIntlProps } from 'react-intl';
+import { Translations } from './utils';
 import { Localize } from 'hooks/useLocalize';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
-
-interface Translations {
-  statusChanged: string;
-  officialUpdate: string;
-  feedbackGiven: string;
-  total: string;
-  averageTimeColumnName: string;
-  inputStatus: string;
-  responseTime: string;
-  inputsByStatus: string;
-  status: string;
-  numberOfInputs: string;
-  percentageOfInputs: string;
-}
-
-export const getTranslations = (
-  formatMessage: InjectedIntlProps['intl']['formatMessage']
-): Translations => ({
-  statusChanged: formatMessage(messages.statusChanged),
-  officialUpdate: formatMessage(messages.officialUpdate),
-  feedbackGiven: formatMessage(messages.feedbackGiven),
-  total: formatMessage(messages.total),
-  averageTimeColumnName: formatMessage(messages.averageTimeColumnName),
-  inputStatus: formatMessage(messages.inputStatus),
-  responseTime: formatMessage(messages.responseTime),
-  inputsByStatus: formatMessage(messages.inputsByStatus),
-  status: formatMessage(messages.status),
-  numberOfInputs: formatMessage(messages.numberOfInputs),
-  percentageOfInputs: formatMessage(messages.percentageOfInputs),
-});
 
 export const parsePieData = (feedbackRow: FeedbackRow) => {
   const {
