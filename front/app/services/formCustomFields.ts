@@ -7,6 +7,7 @@ export type ICustomFieldInputType =
   | 'text'
   | 'multiselect'
   | 'number'
+  | 'select'
   | 'linear_scale';
 export type IOptionsType = {
   id?: string;

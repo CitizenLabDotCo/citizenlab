@@ -14,6 +14,7 @@ import {
   LocaleSwitcher,
   Icon,
   Input,
+  Toggle,
 } from '@citizenlab/cl2-component-library';
 import { SectionField } from 'components/admin/Section';
 import { List, SortableRow } from 'components/admin/ResourceList';
@@ -32,6 +33,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   name: string;
+  nameInputType: string;
   onSelectedLocaleChange?: (locale: Locale) => void;
   locales: Locale[];
   allowDeletingAllOptions?: boolean;
@@ -40,6 +42,7 @@ interface Props {
 const ConfigMultiselectWithLocaleSwitcher = ({
   onSelectedLocaleChange,
   name,
+  nameInputType,
   locales,
   intl: { formatMessage },
   allowDeletingAllOptions = false,
@@ -48,6 +51,7 @@ const ConfigMultiselectWithLocaleSwitcher = ({
     control,
     formState: { errors: formContextErrors },
     setValue,
+    watch,
     trigger,
   } = useFormContext();
   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
@@ -85,6 +89,15 @@ const ConfigMultiselectWithLocaleSwitcher = ({
     const newValues = value;
     newValues.splice(index, 1);
     setValue(name, newValues);
+    setValue(nameInputType, 'select');
+  };
+
+  const toggleMultiselection = () => {
+    if (watch(nameInputType) === 'select') {
+      setValue(nameInputType, 'multiselect');
+    } else {
+      setValue(nameInputType, 'select');
+    }
   };
 
   const defaultValues = [{}];
@@ -207,6 +220,15 @@ const ConfigMultiselectWithLocaleSwitcher = ({
                       scrollIntoView={false}
                     />
                   )}
+                  <Box mt="24px">
+                    <Toggle
+                      checked={watch(nameInputType) === 'multiselect'}
+                      onChange={() => {
+                        toggleMultiselection();
+                      }}
+                      label={formatMessage(messages.chooseMultipleToggle)}
+                    />
+                  </Box>
                 </SectionField>
               </Box>
             );

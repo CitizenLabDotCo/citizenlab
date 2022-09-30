@@ -72,6 +72,12 @@ import MultilocInputLayout, {
 import LinearScaleControl, {
   linearScaleControlTester,
 } from './Components/Controls/LinearScaleControl';
+import MultiSelectCheckboxControl, {
+  multiSelectCheckboxControlTester,
+} from './Components/Controls/MultiSelectCheckboxControl';
+import SingleSelectRadioControl, {
+  singleSelectRadioControlTester,
+} from './Components/Controls/SingleSelectRadioControl';
 
 import {
   Box,
@@ -158,6 +164,14 @@ const renderers = [
   { tester: checkboxControlTester, renderer: CheckboxControl },
   { tester: singleSelectControlTester, renderer: SingleSelectControl },
   { tester: multiSelectControlTester, renderer: MultiSelectControl },
+  {
+    tester: multiSelectCheckboxControlTester,
+    renderer: MultiSelectCheckboxControl,
+  },
+  {
+    tester: singleSelectRadioControlTester,
+    renderer: SingleSelectRadioControl,
+  },
   { tester: WYSIWYGControlTester, renderer: WYSIWYGControl },
   { tester: descriptionControlTester, renderer: DescriptionControl },
   { tester: topicsControlTester, renderer: TopicsControl },
