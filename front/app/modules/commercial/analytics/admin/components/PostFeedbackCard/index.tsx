@@ -209,7 +209,7 @@ const PostFeedback = ({
       <Box width="100%" maxWidth="600px" height="initial" mt="30px" p="8px">
         <StackedBarChart
           data={stackedBarsData}
-          height={60}
+          height={40}
           mapping={{
             stackedLength: stackedBarColumns,
             fill: ({ stackIndex }) =>

@@ -89,7 +89,7 @@ const FakeLegend = ({
     ? `${width}px`
     : width ?? '100%';
 
-  const stringHeight = rightLegend
+  const stringHeight = !rightLegend
     ? 'auto'
     : typeof height === 'number'
     ? `${height}px`
