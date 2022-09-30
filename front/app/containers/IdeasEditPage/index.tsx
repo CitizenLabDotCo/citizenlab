@@ -80,14 +80,14 @@ const FormContainer = styled.main`
   margin-left: auto;
   margin-right: auto;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding-bottom: 80px;
   `}
 `;
 
 const Title = styled.h1`
   width: 100%;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.xxxxl}px;
   line-height: 42px;
   font-weight: 500;

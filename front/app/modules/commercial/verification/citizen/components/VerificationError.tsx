@@ -32,7 +32,7 @@ const StyledIcon = styled(Icon)`
 const Subtitle = styled.h2`
   width: 100%;
   max-width: 500px;
-  color: ${colors.text};
+  color: ${colors.textPrimary};
   font-size: ${fontSizes.m}px;
   line-height: normal;
   font-weight: 300;

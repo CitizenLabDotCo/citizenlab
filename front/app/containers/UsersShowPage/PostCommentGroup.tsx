@@ -45,7 +45,7 @@ const Container = styled.div`
     margin-bottom: 20px;
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding: 17px 30px 30px;
   `}
 `;
@@ -70,7 +70,7 @@ const PostLinkLeft = styled.div`
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -86,14 +86,14 @@ const PostLinkLeft = styled.div`
 `;
 
 const StyledIcon = styled(Icon)`
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   width: 20px;
   height: 20px;
   margin-right: 10px;
 `;
 
 const PostLinkRight = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   text-decoration: underline;
   white-space: nowrap;
 `;
@@ -108,13 +108,13 @@ const VoteIcon = styled(Icon)`
   width: 16px;
   height: 16px;
   flex: 0 0 16px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   margin-right: 5px;
   margin-top: -2px;
 `;
 
 const VoteCount = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
 `;
 
 const CommentContainer = styled.div`
@@ -122,7 +122,7 @@ const CommentContainer = styled.div`
 
   &:not(:last-child) {
     padding-bottom: 30px;
-    border-bottom: 1px solid ${colors.separation};
+    border-bottom: 1px solid ${colors.divider};
   }
 `;
 

@@ -268,7 +268,7 @@ jobs:
   front-build:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
-    resource_class: medium+
+    resource_class: large
     working_directory: /citizenlab/front
     steps:
       - checkout:
