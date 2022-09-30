@@ -46,7 +46,6 @@ export default function useVisitorsData() {
         }
 
         setXlsxData(parseXlsxData(response.data));
-        console.log('data', response.data);
         setPieData(parsePieData(response.data));
       }
     );

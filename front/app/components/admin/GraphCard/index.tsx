@@ -27,7 +27,7 @@ const GraphCard = ({
   children,
   fullWidth = true,
 }: Props) => (
-  <GraphCardContainer className={'dynamicHeight' + (fullWidth && ' fullWidth')}>
+  <GraphCardContainer className={`dynamicHeight ${fullWidth && 'fullWidth'}`}>
     <GraphCardInnerClean>
       <GraphCardHeader>
         <GraphCardTitle>
