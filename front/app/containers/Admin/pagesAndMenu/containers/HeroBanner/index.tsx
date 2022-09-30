@@ -400,7 +400,8 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
                   type="text"
                   value={
                     // default values come from the theme
-                    banner_signed_out_header_overlay_color ?? theme.colorMain
+                    banner_signed_out_header_overlay_color ??
+                    theme.colors.tenantPrimary
                   }
                   onChange={handleOverlayColorOnChange}
                 />

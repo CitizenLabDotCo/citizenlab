@@ -25,13 +25,14 @@ const Container = styled.div`
 `;
 
 const Topic = styled.div`
-  color: ${({ theme }) => theme.colorSecondary};
+  color: ${({ theme }) => theme.colors.tenantSecondary};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   padding: 6px 12px;
   margin-right: 5px;
   margin-bottom: 5px;
-  border: 1px solid ${({ theme }) => transparentize(0.7, theme.colorSecondary)};
+  border: 1px solid
+    ${({ theme }) => transparentize(0.7, theme.colors.tenantSecondary)};
   border-radius: ${(props: any) => props.theme.borderRadius};
 
   ${isRtl`

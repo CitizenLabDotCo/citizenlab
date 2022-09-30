@@ -5,7 +5,7 @@ import styled from 'styled-components';
 const SettingsLabel = styled(Label)`
   font-weight: bold;
   margin-bottom: 18px;
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
 `;
 
 export default SettingsLabel;

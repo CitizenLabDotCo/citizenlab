@@ -11,7 +11,7 @@ const timeout = 400;
 const Container = styled.div``;
 
 const ArrowIcon = styled(Icon)`
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   flex: 0 0 11px;
   height: 11px;
   width: 11px;
@@ -36,16 +36,16 @@ const CollapseExpandButton = styled.button`
   transition: all 80ms ease-out;
 
   &:hover {
-    color: ${darken(0.25, colors.label)};
+    color: ${darken(0.25, colors.textSecondary)};
 
     ${ArrowIcon} {
-      fill: ${darken(0.25, colors.label)};
+      fill: ${darken(0.25, colors.textSecondary)};
     }
   }
 `;
 
 const Label = styled.label`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   display: flex;
   align-items: center;
   font-size: ${fontSizes.base}px;

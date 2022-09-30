@@ -49,7 +49,7 @@ export const Container = styled.div`
   flex-direction: column;
   background: ${colors.background};
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
     props
   ) => props.theme.mobileTopBarHeight}px);
@@ -80,7 +80,7 @@ export const PageContent = styled.main`
 `;
 
 export const PageTitle = styled.h1`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.xxxxl}px;
   line-height: normal;
   font-weight: 600;
@@ -90,7 +90,7 @@ export const PageTitle = styled.h1`
   padding-top: 0px;
   padding-bottom: 40px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     font-size: ${fontSizes.xxxl};
   `}
   ${isRtl`

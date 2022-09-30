@@ -18,7 +18,7 @@ interface Props {
 
 const Container = styled.div`
   border-radius: ${({ theme }) => theme.borderRadius};
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   line-height: 20px;
   border: 1px solid #e7e7e7;

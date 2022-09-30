@@ -41,7 +41,7 @@ const StyledTableRow = styled.tr`
 
   .inputTitle {
     font-size: ${fontSizes.s}px;
-    color: ${colors.label};
+    color: ${colors.textSecondary};
   }
 
   &:hover {

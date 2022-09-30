@@ -12,7 +12,7 @@ import { fontSizes, colors } from 'utils/styleUtils';
 
 const Container = styled(VerticalCenterer)`
   font-size: ${fontSizes.l}px;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
 `;
 
 interface Props {

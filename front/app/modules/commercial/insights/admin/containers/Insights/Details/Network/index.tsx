@@ -60,14 +60,14 @@ const visibleKeywordLabelScale = 2;
 const collideForce = 10;
 
 const nodeColors = [
-  colors.clGreen,
-  colors.clBlue,
-  colors.red500,
-  colors.adminOrangeIcons,
-  colors.adminTextColor,
+  colors.success,
+  colors.teal,
+  colors.error,
+  colors.orange,
+  colors.primary,
   colors.facebookMessenger,
   colors.facebook,
-  colors.label,
+  colors.textSecondary,
   '#0DA796',
   '#934E6F',
 ];
@@ -244,7 +244,7 @@ const Network = ({
         display="flex"
         justifyContent="center"
         alignItems="center"
-        color={colors.label}
+        color={colors.textSecondary}
       >
         <StyledMessage>
           <FormattedMessage
@@ -324,7 +324,7 @@ const Network = ({
       >
         <Button
           buttonStyle="white"
-          textColor={colors.adminTextColor}
+          textColor={colors.primary}
           onClick={onZoomIn}
           width="36px"
           height="36px"
@@ -333,7 +333,7 @@ const Network = ({
         </Button>
         <Button
           buttonStyle="white"
-          textColor={colors.adminTextColor}
+          textColor={colors.primary}
           onClick={onZoomOut}
           width="36px"
           height="36px"

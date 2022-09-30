@@ -4,9 +4,14 @@ import React from 'react';
 import { colors } from 'utils/styleUtils';
 
 // components
-import { Box, Text, stylingConsts } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Title,
+  Text,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
-import { SectionField, SectionTitle } from 'components/admin/Section';
+import { SectionField } from 'components/admin/Section';
 import CloseIconButton from 'components/UI/CloseIconButton';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import Toggle from 'components/HookForm/Toggle';
@@ -59,25 +64,27 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
       position="fixed"
       right="0"
       top={`${stylingConsts.menuHeight}px`}
+      bottom="0"
       zIndex="99999"
-      px="20px"
+      p="20px"
       w="400px"
-      h="100%"
       background="white"
       boxShadow="-2px 0px 1px 0px rgba(0, 0, 0, 0.06)"
+      overflowY="auto"
+      overflowX="hidden"
     >
-      <Box position="absolute" right="8px" mt="8px" mb="20px">
+      <Box position="absolute" right="10px">
         <CloseIconButton
           a11y_buttonActionMessage={messages.close}
           onClick={onClose}
-          iconColor={colors.label}
+          iconColor={colors.textSecondary}
           iconColorOnHover={'#000'}
         />
       </Box>
       {translatedStringKey && (
-        <SectionTitle>
+        <Title variant="h4" as="h2" mb="36px">
           <FormattedMessage {...translatedStringKey} />
-        </SectionTitle>
+        </Title>
       )}
       <SectionField>
         <InputMultilocWithLocaleSwitcher
@@ -97,20 +104,28 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
         <Toggle
           name={`customFields.${field.index}.required`}
           label={
-            <Text as="span" color="adminTextColor" variant="bodyM" my="0px">
+            <Text as="span" color="primary" variant="bodyM" my="0px">
               <FormattedMessage {...messages.required} />
             </Text>
           }
         />
       </SectionField>
       {getAdditionalSettings(field.input_type, locales, field.index)}
-      <Box display="flex" justifyContent="space-between">
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        borderTop={`1px solid ${colors.divider}`}
+        pt="36px"
+      >
+        <Button buttonStyle="secondary" onClick={onClose} minWidth="160px">
+          <FormattedMessage {...messages.done} />
+        </Button>
         <Button
           icon="delete"
           buttonStyle="primary-outlined"
-          borderColor={colors.red500}
-          textColor={colors.red500}
-          iconColor={colors.red500}
+          borderColor={colors.error}
+          textColor={colors.error}
+          iconColor={colors.error}
           onClick={() => onDelete(field.index)}
           minWidth="160px"
         >

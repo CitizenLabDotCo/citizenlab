@@ -19,12 +19,8 @@ const ContentBuilderEditModePreview = React.forwardRef<
 >(({ projectId }, ref) => {
   const locale = useLocale();
   const [isMobile, setIsMobile] = useState(true);
-  const colorIfDesktopView = isMobile
-    ? colors.adminContentBackground
-    : colors.adminTextColor;
-  const colorIfMobileView = isMobile
-    ? colors.adminTextColor
-    : colors.adminContentBackground;
+  const colorIfDesktopView = isMobile ? colors.white : colors.primary;
+  const colorIfMobileView = isMobile ? colors.primary : colors.white;
   const buttonProps = {
     height: '40px',
     width: '92px',
@@ -44,7 +40,7 @@ const ContentBuilderEditModePreview = React.forwardRef<
             }}
             borderRadius="4px 0px 0px 4px"
             bgHoverColor={colorIfMobileView}
-            borderColor={`${colors.adminTextColor}`}
+            borderColor={`${colors.primary}`}
             id="e2e-mobile-preview"
             {...buttonProps}
           >
@@ -63,7 +59,7 @@ const ContentBuilderEditModePreview = React.forwardRef<
             id="e2e-desktop-preview"
             borderRadius="0px 4px 4px 0px"
             bgHoverColor={colorIfDesktopView}
-            borderColor={`${colors.adminTextColor}`}
+            borderColor={`${colors.primary}`}
             {...buttonProps}
           >
             <Icon name="desktop" width="20px" fill={colorIfMobileView} />

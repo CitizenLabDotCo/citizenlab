@@ -109,13 +109,11 @@ ActiveRecord::Schema.define(version: 2022_09_21_102230) do
     t.string "name"
     t.string "host"
     t.string "logo"
-    t.string "header_bg"
     t.string "favicon"
     t.jsonb "settings", default: {}
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.jsonb "style", default: {}
-    t.jsonb "homepage_info_multiloc"
   end
 
   create_table "areas", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1146,7 +1144,6 @@ ActiveRecord::Schema.define(version: 2022_09_21_102230) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "logo"
-    t.string "header_bg"
     t.string "favicon"
     t.jsonb "style", default: {}
     t.datetime "deleted_at"

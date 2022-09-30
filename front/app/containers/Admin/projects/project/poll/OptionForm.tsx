@@ -38,7 +38,7 @@ const StyledButton = styled(Button)`
 `;
 
 const DisabledDragHandle = styled.div`
-  color: ${colors.clGreyOnGreyBackground};
+  color: ${colors.coolGrey600};
   padding: 1rem;
 `;
 

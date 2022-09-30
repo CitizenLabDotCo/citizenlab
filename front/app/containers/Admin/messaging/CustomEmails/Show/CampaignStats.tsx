@@ -19,9 +19,9 @@ const Container = styled.div`
 const GraphCard = styled.div`
   display: flex;
   flex-direction: column;
-  border: solid 1px ${colors.adminBorder};
+  border: solid 1px ${colors.borderLight};
   border-radius: ${(props: any) => props.theme.borderRadius};
-  background: ${colors.adminContentBackground};
+  background: ${colors.white};
   margin: 5px;
   justify-content: space-around;
   flex-grow: 1;
@@ -30,13 +30,13 @@ const GraphCard = styled.div`
 
 const GraphCardPercentage = styled.div`
   font-size: ${fontSizes.s};
-  color: ${colors.adminSecondaryTextColor};
+  color: ${colors.textSecondary};
 `;
 
 const GraphCardTitle = styled.h3`
   display: flex;
   font-size: ${fontSizes.l}px;
-  color: ${colors.adminSecondaryTextColor};
+  color: ${colors.textSecondary};
   font-weight: 400;
   margin: 0;
 

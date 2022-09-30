@@ -86,7 +86,7 @@ const CreateCategory = ({
       w="100%"
       maxWidth="350px"
       m="40px auto"
-      color={colors.adminTextColor}
+      color={colors.primary}
       data-testid="insightsDetailsCreateCategory"
     >
       <Title>{formatMessage(messages.createCategoryTitle)}</Title>
@@ -150,7 +150,7 @@ const CreateCategory = ({
             processing={loading}
             disabled={!name}
             onClick={handleCategorySubmit}
-            bgColor={colors.adminTextColor}
+            bgColor={colors.primary}
             data-testid="insightsDetailsCreateCategoryConfirm"
           >
             {formatMessage(messages.createCategoryConfirm)}

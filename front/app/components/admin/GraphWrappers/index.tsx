@@ -169,7 +169,7 @@ export const PieChartStyleFixesDiv = styled.div`
 export const GraphCardHeaderWithFilter = styled(GraphCardHeader)`
   align-items: center;
 
-  ${media.smallerThan1280px`
+  ${media.tablet`
     flex-direction: column;
     align-items: flex-start;
     margin-top: 0px;
@@ -197,7 +197,7 @@ export const GraphCardFigureChange = styled.span`
   font-size: ${fontSizes.base}px;
 
   &.increase {
-    color: ${colors.clGreenSuccess};
+    color: ${colors.success};
   }
 
   &.decrease {

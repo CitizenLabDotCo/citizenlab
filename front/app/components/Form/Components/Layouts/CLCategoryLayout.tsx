@@ -15,12 +15,12 @@ const StyledFormSection = styled(FormSection)`
   max-width: 100%;
   width: 100%;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-left: 25px;
     padding-right: 25px;
   `}
 
-  ${media.largePhone`
+  ${media.phone`
     padding-left: 18px;
     padding-right: 18px;
   `}

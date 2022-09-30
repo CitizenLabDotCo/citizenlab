@@ -16,7 +16,7 @@ const Text = ({ text }) => {
 
   return (
     <Box id="e2e-text-box" minHeight="26px">
-      <QuillEditedContent textColor={theme.colorText}>
+      <QuillEditedContent textColor={theme.colors.tenantText}>
         <div dangerouslySetInnerHTML={{ __html: text }} />
       </QuillEditedContent>
     </Box>

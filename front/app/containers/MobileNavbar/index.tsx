@@ -20,7 +20,7 @@ const Container = styled.nav`
   left: 0;
   right: 0;
   background: #fff;
-  border-top: solid 1px ${lighten(0.3, colors.label)};
+  border-top: solid 1px ${lighten(0.3, colors.textSecondary)};
   display: flex;
   align-items: stretch;
   z-index: 1006;
@@ -33,7 +33,7 @@ const Container = styled.nav`
     flex-direction: row-reverse;
   `}
 
-  ${media.biggerThanMaxTablet`
+  ${media.desktop`
     display: none;
   `}
 
@@ -71,7 +71,7 @@ export const NavigationItem = styled.li`
   & > * {
     padding: 0 20px;
 
-    ${media.largePhone`
+    ${media.phone`
       padding: 0;
     `}
   }

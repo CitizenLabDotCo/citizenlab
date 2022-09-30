@@ -13,7 +13,7 @@ import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from '../messages';
 
 const Content = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   text-align: center;
   font-size: ${fontSizes.base}px;
   line-height: ${fontSizes.xl}px;

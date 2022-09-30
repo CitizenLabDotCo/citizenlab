@@ -16,10 +16,10 @@ const TooltipOutline = ({ label, children }: Props) => (
     background="white"
     px="8px"
     py="8px"
-    border={`1px solid ${colors.separation}`}
+    border={`1px solid ${colors.divider}`}
   >
     <Text
-      color="adminTextColor"
+      color="primary"
       fontWeight="bold"
       textAlign="left"
       fontSize="s"

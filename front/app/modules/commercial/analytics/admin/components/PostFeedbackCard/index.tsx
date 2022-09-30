@@ -47,7 +47,7 @@ const Container = styled.div`
   flex-direction: row;
   min-height: 240px;
 
-  ${media.smallerThan1100px`
+  ${media.tablet`
     flex-direction: column;
   `}
 `;
@@ -57,7 +57,7 @@ const DonutChartContainer = styled.div`
   height: 100%;
   padding: 8px;
 
-  ${media.smallerThan1100px`
+  ${media.tablet`
     width: 100%;
     height: 50%;
   `}
@@ -71,7 +71,7 @@ const ProgressBarsContainer = styled.div`
   justify-content: center;
   padding: 8px;
 
-  ${media.smallerThan1100px`
+  ${media.tablet`
     width: 100%;
     height: 50%;
   `}
@@ -188,14 +188,14 @@ const PostFeedback = ({
             <Box
               m="0 0 0 0"
               style={{
-                color: colors.adminTextColor,
+                color: colors.primary,
                 fontSize: fontSizes.s,
               }}
               width="100%"
             >
               <Icon
                 name="calendar"
-                fill={colors.adminTextColor}
+                fill={colors.primary}
                 width="13px"
                 height="13px"
                 mr="11px"
