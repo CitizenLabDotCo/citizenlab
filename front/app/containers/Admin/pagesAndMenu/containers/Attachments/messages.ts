@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.pageTitle',
     defaultMessage: 'Attachments',
   },
+  pageMetaTitle: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.pageMetaTitle',
+    defaultMessage: 'Attachments | {orgName}',
+  },
   contentEditorTitle: {
     id: 'app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.contentEditorTitle',
     defaultMessage: 'Content',

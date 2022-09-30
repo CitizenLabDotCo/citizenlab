@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Multiloc, CLErrors } from 'typings';
+import { CLErrors, Multiloc } from 'typings';
 
 // components
 import { ISubmitState } from 'components/admin/SubmitWrapper';
@@ -26,26 +26,16 @@ import { forOwn, isEqual } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
+import HelmetIntl from 'components/HelmetIntl';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../../containers/GenericHeroBannerForm/messages';
-import HelmetIntl from 'components/HelmetIntl';
-
-export type HomepageBannerSettingKeyType = Extract<
-  keyof IHomepageSettingsAttributes,
-  | 'banner_cta_signed_in_text_multiloc'
-  | 'banner_cta_signed_out_text_multiloc'
-  | 'banner_cta_signed_in_url'
-  | 'banner_cta_signed_out_url'
-  | 'banner_cta_signed_out_type'
-  | 'banner_cta_signed_in_type'
->;
 
 const EditHomepageHeroBannerForm = ({
   intl: { formatMessage },
 }: InjectedIntlProps) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [apiErrors, setApiErrors] = useState<CLErrors | null>({});
+  const [apiErrors, setApiErrors] = useState<CLErrors | null>(null);
   const [formStatus, setFormStatus] = useState<ISubmitState>('disabled');
   const [localSettings, setLocalSettings] =
     useState<IHomepageSettingsAttributes | null>(null);
@@ -82,23 +72,30 @@ const EditHomepageHeroBannerForm = ({
 
     setIsLoading(true);
     setFormStatus('disabled');
+    setApiErrors(null);
     try {
       await updateHomepageSettings(diffedValues);
       setIsLoading(false);
       setFormStatus('success');
     } catch (error) {
+      const apiErrors = error.json.errors;
+
+      if (apiErrors) {
+        setApiErrors(apiErrors);
+      }
       setIsLoading(false);
-      setApiErrors(error);
       setFormStatus('error');
     }
   };
 
+  // signed in handlers
   const handleBannerSignedInMultilocOnChange = (
     signedInHeaderMultiloc: Multiloc
   ) => {
     handleOnChange('banner_signed_in_header_multiloc', signedInHeaderMultiloc);
   };
 
+  // signed out handlers
   const handleHeaderSignedOutMultilocOnChange = (
     signedOutHeaderMultiloc: Multiloc
   ) => {
@@ -107,7 +104,6 @@ const EditHomepageHeroBannerForm = ({
       signedOutHeaderMultiloc
     );
   };
-
   const handleSubheaderSignedOutMultilocOnChange = (
     signedOutSubheaderMultiloc: Multiloc
   ) => {
@@ -115,6 +111,12 @@ const EditHomepageHeroBannerForm = ({
       'banner_signed_out_subheader_multiloc',
       signedOutSubheaderMultiloc
     );
+  };
+  const handleOverlayColorOnChange = (color: string) => {
+    handleOnChange('banner_signed_out_header_overlay_color', color);
+  };
+  const handleOverlayOpacityOnChange = (opacity: number) => {
+    handleOnChange('banner_signed_out_header_overlay_opacity', opacity);
   };
 
   const handleOnChangeBannerAvatarsEnabled = (
@@ -129,13 +131,6 @@ const EditHomepageHeroBannerForm = ({
 
   const handleOnBannerImageRemove = () => {
     handleOnChange('header_bg', null);
-  };
-
-  const handleOverlayColorOnChange = (color: string) => {
-    handleOnChange('banner_signed_out_header_overlay_color', color);
-  };
-  const handleOverlayOpacityOnChange = (opacity: number) => {
-    handleOnChange('banner_signed_out_header_overlay_opacity', opacity);
   };
 
   const handleOnChange = (
@@ -231,24 +226,9 @@ const EditHomepageHeroBannerForm = ({
           outletSectionEnd={
             <Outlet
               id="app.containers.Admin.settings.customize.headerSectionEnd"
-              banner_cta_signed_in_text_multiloc={
-                localSettings.banner_cta_signed_in_text_multiloc
-              }
-              banner_cta_signed_in_url={localSettings.banner_cta_signed_in_url}
-              banner_cta_signed_in_type={
-                localSettings.banner_cta_signed_in_type
-              }
-              banner_cta_signed_out_text_multiloc={
-                localSettings.banner_cta_signed_out_text_multiloc
-              }
-              banner_cta_signed_out_url={
-                localSettings.banner_cta_signed_out_url
-              }
-              banner_cta_signed_out_type={
-                localSettings.banner_cta_signed_out_type
-              }
-              handleOnChange={handleOnChange}
-              errors={apiErrors}
+              localHomepageSettings={localSettings}
+              onChange={handleOnChange}
+              apiErrors={apiErrors}
             />
           }
         />

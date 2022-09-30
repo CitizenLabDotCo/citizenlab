@@ -4,7 +4,7 @@ import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
 import { IHomepageSettingsAttributes } from 'services/homepageSettings';
 
-import CTASettings from './';
+import CTASettings from './CTASettings';
 
 jest.mock('utils/cl-router/Link', () => 'Link');
 jest.mock('utils/cl-intl');
