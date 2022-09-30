@@ -22,31 +22,31 @@ resource 'Analytics API', use_transactional_fixtures: false do
       create(:dimension_type_idea)
     end
 
-    context 'When admin' do
+    context 'when admin' do
       before do
         admin_header_token
       end
 
-      example 'Handles single query' do
+      example 'handles single query' do
         do_request(query: {
           fact: 'post',
           aggregations: { all: 'count' }
         })
         assert_status 200
-        expect(json_response_body[:data]).to eq([{ count: 1 }])
+        expect(response_data).to eq([{ count: 1 }])
       end
 
-      example 'Handles multiple queries' do
+      example 'handles multiple queries' do
         query = {
           fact: 'post',
           aggregations: { all: 'count' }
         }
         do_request(query: [query, query])
         assert_status 200
-        expect(json_response_body[:data]).to eq([[{ count: 1 }], [{ count: 1 }]])
+        expect(response_data).to eq([[{ count: 1 }], [{ count: 1 }]])
       end
 
-      example 'Handles error in query' do
+      example 'handles error in query' do
         query = {
           fact: 'post',
           aggregations: { all: 'max' }
@@ -54,6 +54,17 @@ resource 'Analytics API', use_transactional_fixtures: false do
         do_request(query: query)
         assert_status 400
         expect(json_response_body[:messages]).to eq(["Aggregations on 'all' can only be 'count'."])
+      end
+
+      example 'rejects non-existent dimensions' do
+        query = {
+          fact: 'post',
+          groups: 'dimension_non_existent.id',
+          aggregations: { all: 'count' }
+        }
+        do_request(query: query)
+        assert_status 400
+        expect(json_response_body[:messages]).to eq(['Groups field dimension_non_existent does not exist.'])
       end
     end
 
