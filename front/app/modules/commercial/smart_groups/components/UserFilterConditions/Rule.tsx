@@ -31,7 +31,7 @@ const IconCell = styled.div`
 `;
 
 const SelectorCell = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   flex: 1;
   padding: 10px 5px;
   display: flex;

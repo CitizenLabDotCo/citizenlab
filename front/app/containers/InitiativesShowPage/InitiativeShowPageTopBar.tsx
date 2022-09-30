@@ -20,9 +20,9 @@ import { lighten } from 'polished';
 const Container = styled.div`
   height: ${(props) => props.theme.mobileTopBarHeight}px;
   background: #fff;
-  border-bottom: solid 1px ${lighten(0.4, colors.label)};
+  border-bottom: solid 1px ${lighten(0.4, colors.textSecondary)};
 
-  ${media.biggerThanMaxTablet`
+  ${media.desktop`
     display: none;
   `}
 `;
@@ -36,7 +36,7 @@ const TopBarInner = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  ${media.biggerThanMinTablet`
+  ${media.desktop`
     padding-left: 30px;
     padding-right: 30px;
   `}
@@ -47,7 +47,7 @@ const Left = styled.div`
   align-items: center;
   display: none;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: flex;
   `}
 `;
@@ -56,7 +56,7 @@ const Right = styled.div``;
 
 const GoBackIcon = styled(Icon)`
   height: 22px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -76,7 +76,7 @@ const GoBackButton = styled.button`
   cursor: pointer;
   background: #fff;
   border-radius: 50%;
-  border: solid 1px ${lighten(0.2, colors.label)};
+  border: solid 1px ${lighten(0.2, colors.textSecondary)};
   transition: all 100ms ease-out;
 
   &:hover {
@@ -89,7 +89,7 @@ const GoBackButton = styled.button`
 `;
 
 const GoBackLabel = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   transition: fill 100ms ease-out;

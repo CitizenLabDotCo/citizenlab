@@ -57,7 +57,7 @@ const LayerIcon = styled(Icon)<{ color: string }>`
 `;
 
 const LayerName = styled.div`
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
   font-size: ${fontSizes.m}px;
   line-height: normal;
   font-weight: 400;

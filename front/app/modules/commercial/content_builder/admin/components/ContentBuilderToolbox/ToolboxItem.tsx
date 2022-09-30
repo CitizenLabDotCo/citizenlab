@@ -12,7 +12,7 @@ interface Props {
 
 const StyledBox = styled(Box)`
   &:hover {
-    background-color: ${colors.emailBg};
+    background-color: ${colors.grey200};
     transition: background-color 80ms ease-out 0s;
   }
 `;
@@ -29,10 +29,10 @@ const ToolboxItem = ({ icon, label }: Props) => {
         marginRight="16px"
         width="20px"
         height="20px"
-        fill={colors.adminTextColor}
+        fill={colors.primary}
         name={icon}
       />
-      <Text color="text" style={{ lineHeight: '1' }}>
+      <Text color="textPrimary" style={{ lineHeight: '1' }}>
         {label}
       </Text>
     </StyledBox>

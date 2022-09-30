@@ -40,14 +40,14 @@ import { trackEventByName } from 'utils/analytics';
 import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 
 const Container = styled.div`
-  ${media.biggerThanMaxTablet`
+  ${media.desktop`
     margin-bottom: 45px;
     padding: 35px;
     border: 1px solid #e0e0e0;
     ${defaultCardStyle};
   `}
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding: 15px;
   `}
 `;

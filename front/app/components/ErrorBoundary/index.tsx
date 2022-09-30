@@ -21,7 +21,7 @@ const Container = styled.div`
 
 const StyledButton = styled.button`
   outline: none;
-  color: ${colors.clBlue};
+  color: ${colors.teal};
   &.hover,
   &.focus {
     text-decoration: underline;

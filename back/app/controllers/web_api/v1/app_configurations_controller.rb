@@ -31,7 +31,6 @@ class WebApi::V1::AppConfigurationsController < ApplicationController
 
   def remove_images!(configuration, config_params)
     remove_image_if_requested!(configuration, config_params, 'logo')
-    remove_image_if_requested!(configuration, config_params, 'header_bg')
     remove_image_if_requested!(configuration, config_params, 'favicon')
   end
 
@@ -41,6 +40,6 @@ class WebApi::V1::AppConfigurationsController < ApplicationController
 
   def config_params
     @config_params ||= params.require(:app_configuration)
-      .permit(:logo, :header_bg, :favicon, homepage_info_multiloc: {}, settings: {}, style: {})
+      .permit(:logo, :favicon, settings: {}, style: {})
   end
 end

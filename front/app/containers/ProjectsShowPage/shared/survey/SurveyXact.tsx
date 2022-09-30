@@ -40,7 +40,7 @@ export default memo<Props>(({ surveyXactUrl, className }) => {
   const [hackyWidthThingy, setHackyWidthThingy] = useState<string>('100%');
   const windowSize = useWindowSize();
   const smallerThanLargeTablet = windowSize
-    ? windowSize.windowWidth <= viewportWidths.largeTablet
+    ? windowSize.windowWidth <= viewportWidths.tablet
     : false;
 
   const handleIframeOnLoad = () => {

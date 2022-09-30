@@ -38,7 +38,7 @@ const TabbedNav = styled.nav`
     ${(props: any) => props.theme.borderRadius} 0 0;
   padding-left: 44px;
   display: flex;
-  border: 1px solid ${colors.separation};
+  border: 1px solid ${colors.divider};
   border-bottom: 1px solid transparent;
   @media print {
     border: none;
@@ -68,7 +68,7 @@ const Tab = styled.div`
   }
 
   a {
-    color: ${colors.label};
+    color: ${colors.textSecondary};
     font-size: ${fontSizes.base}px;
     font-weight: 400;
     line-height: 1.5rem;
@@ -80,21 +80,21 @@ const Tab = styled.div`
   }
 
   &:not(.active):hover a {
-    color: ${colors.adminTextColor};
+    color: ${colors.primary};
     border-color: #ddd;
   }
 
   &.active a {
-    color: ${colors.adminTextColor};
-    border-color: ${colors.adminTextColor};
+    color: ${colors.primary};
+    border-color: ${colors.primary};
   }
 `;
 
 const ChildWrapper = styled.div`
   margin-bottom: 60px;
   padding: 42px;
-  border: 1px solid ${colors.separation};
-  background: ${colors.adminContentBackground};
+  border: 1px solid ${colors.divider};
+  background: ${colors.white};
 
   @media print {
     border: none;
@@ -133,7 +133,7 @@ const FormattedTabLink = ({
         {label}
         <StatusLabelWithMargin
           text={statusLabel}
-          backgroundColor={colors.adminBackground}
+          backgroundColor={colors.background}
           variant="outlined"
         />
       </Link>

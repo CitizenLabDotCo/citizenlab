@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Input as InputComponent,
   InputProps,
+  Box,
 } from '@citizenlab/cl2-component-library';
 import Error, { TFieldName } from 'components/UI/Error';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -26,7 +27,7 @@ const Input = ({ name, type = 'text', ...rest }: Props) => {
     (errors?.error as string | undefined) && ([errors] as unknown as CLError[]);
 
   return (
-    <>
+    <Box width="100%">
       <Controller
         name={name}
         control={control}
@@ -51,7 +52,7 @@ const Input = ({ name, type = 'text', ...rest }: Props) => {
           scrollIntoView={false}
         />
       )}
-    </>
+    </Box>
   );
 };
 

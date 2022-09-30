@@ -224,7 +224,6 @@ exports[`<UserComments /> renders correctly with actual comments and load more b
       height="50px"
       icon="showMore"
       onClick={[MockFunction]}
-      textColor="#e68f51"
     >
       <FormattedMessage
         defaultMessage="Load more comments"

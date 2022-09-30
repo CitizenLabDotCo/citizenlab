@@ -56,7 +56,7 @@ const Container = styled.div`
     100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
   );
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
     props
   ) => props.theme.mobileTopBarHeight}px);
@@ -70,7 +70,7 @@ const PageContainer = styled.main`
   );
   position: relative;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
     props
   ) => props.theme.mobileTopBarHeight}px);

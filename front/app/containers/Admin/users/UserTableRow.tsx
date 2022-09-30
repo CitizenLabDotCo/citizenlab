@@ -43,7 +43,7 @@ const MoreOptionsWrapper = styled.div`
 const MoreOptionsIcon = styled(Icon)`
   width: 20px;
   height: 20px;
-  fill: ${colors.adminSecondaryTextColor};
+  fill: ${colors.textSecondary};
 `;
 
 const MoreOptionsButton = styled.button`
@@ -80,7 +80,7 @@ const DropdownListButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: ${colors.adminLightText};
+  color: ${colors.white};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   white-space: nowrap;
@@ -93,7 +93,7 @@ const DropdownListButton = styled.button`
   &:focus {
     outline: none;
     color: white;
-    background: ${lighten(0.1, colors.adminMenuBackground)};
+    background: ${lighten(0.1, colors.grey800)};
   }
 `;
 
@@ -229,7 +229,7 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
                   >
                     <FormattedMessage {...messages.seeProfile} />
                     <IconWrapper>
-                      <Icon name="eye" />
+                      <Icon name="eye" fill="white" />
                     </IconWrapper>
                   </DropdownListButton>
                   <DropdownListButton onClick={this.handleDeleteClick}>

@@ -46,7 +46,7 @@ const Inputs = styled.div`
   overflow-x: auto;
   overflow-y: auto;
   padding: 40px;
-  border-left: 1px solid ${colors.separation};
+  border-left: 1px solid ${colors.divider};
 `;
 
 const StyledActions = styled(Actions)`
@@ -92,14 +92,14 @@ const SearchContainer = styled.div`
 `;
 
 const RecentlyPostedInfoBox = styled.div`
-  color: ${colors.adminTextColor};
-  background-color: ${colors.clBlueLightest};
+  color: ${colors.primary};
+  background-color: ${colors.teal100};
   padding: 20px;
   border-radius: 3px;
   text-align: center;
   margin-bottom: 28px;
   svg {
-    fill: ${colors.clBlue};
+    fill: ${colors.teal};
     margin-right: 8px;
   }
 `;
@@ -403,7 +403,7 @@ const InputsTable = ({
             <Box alignItems="center" mr="16px">
               <Button
                 buttonStyle="secondary"
-                textColor={colors.adminTextColor}
+                textColor={colors.primary}
                 onClick={triggerScan}
                 data-testid="insightsScanCategory-button"
               >
@@ -413,7 +413,7 @@ const InputsTable = ({
           )}
           <Button
             buttonStyle="admin-dark"
-            bgColor={colors.clBlue}
+            bgColor={colors.teal}
             linkTo={`/admin/insights/${viewId}`}
           >
             {formatMessage(messages.inputsDone)}

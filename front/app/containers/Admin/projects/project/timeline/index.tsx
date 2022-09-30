@@ -60,7 +60,7 @@ const OrderLabel = styled.div`
   }
 
   &.past {
-    background: ${colors.separation};
+    background: ${colors.divider};
   }
 
   &.future {

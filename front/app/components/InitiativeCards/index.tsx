@@ -78,7 +78,7 @@ const InitialLoading = styled.div`
   justify-content: center;
   ${defaultCardStyle};
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     height: 150px;
   `}
 `;
@@ -102,7 +102,7 @@ const AboveContent = styled.div<{ filterColumnWidth: number }>`
   margin-bottom: 22px;
   flex-direction: row-reverse;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     margin-right: 0;
     margin-top: 20px;
   `}
@@ -117,7 +117,7 @@ const AboveContentLeft = styled.div`
 const AboveContentRight = styled.div``;
 
 const InitiativesCount = styled.div`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   line-height: 21px;
   white-space: nowrap;
@@ -157,7 +157,7 @@ const FiltersSidebarContainer = styled.div`
 `;
 
 const ClearFiltersText = styled.span`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: auto;
@@ -184,7 +184,7 @@ const ClearFiltersButton = styled.button`
 const DesktopSearchInput = styled(SearchInput)`
   margin-bottom: 20px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: none;
   `}
 `;
@@ -401,9 +401,9 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
     const { list, querying, onLoadMore, hasMore, loadingMore } = initiatives;
     const hasInitiatives = !isNilOrError(list) && list.length > 0;
     const biggerThanLargeTablet =
-      windowSize && windowSize >= viewportWidths.largeTablet;
+      windowSize && windowSize >= viewportWidths.tablet;
     const biggerThanSmallTablet =
-      windowSize && windowSize >= viewportWidths.smallTablet;
+      windowSize && windowSize >= viewportWidths.tablet;
     const filterColumnWidth = windowSize && windowSize < 1400 ? 340 : 352;
     const filtersActive =
       selectedInitiativeFilters.search ||

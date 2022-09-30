@@ -31,7 +31,7 @@ const InitiativeNotFoundWrapper = styled.div`
   align-items: center;
   padding: 4rem;
   font-size: ${fontSizes.l}px;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
 `;
 
 const Container = styled.div`

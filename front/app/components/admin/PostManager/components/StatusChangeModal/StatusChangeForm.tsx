@@ -219,7 +219,7 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
           processing={loading}
           disabled={!valid}
           onClick={submit}
-          bgColor={colors.clBlue}
+          bgColor={colors.teal}
         >
           <FormattedMessage {...messages.statusChangeSave} />
         </ChangeStatusButton>

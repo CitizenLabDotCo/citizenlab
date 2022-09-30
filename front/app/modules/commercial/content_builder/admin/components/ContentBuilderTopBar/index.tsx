@@ -120,14 +120,14 @@ const ContentBuilderTopBar = ({
       w="100%"
       h={`${stylingConsts.menuHeight}px`}
       display="flex"
-      background={`${colors.adminContentBackground}`}
-      borderBottom={`1px solid ${colors.mediumGrey}`}
+      background={`${colors.white}`}
+      borderBottom={`1px solid ${colors.grey500}`}
     >
       <Box
         p="15px"
         w="210px"
         h="100%"
-        borderRight={`1px solid ${colors.mediumGrey}`}
+        borderRight={`1px solid ${colors.grey500}`}
         display="flex"
         alignItems="center"
       >
@@ -139,7 +139,7 @@ const ContentBuilderTopBar = ({
             <Spinner />
           ) : (
             <>
-              <Text mb="0px" color="adminSecondaryTextColor">
+              <Text mb="0px" color="textSecondary">
                 {localize(project.attributes.title_multiloc)}
               </Text>
               <Title variant="h4" as="h1">
@@ -150,8 +150,8 @@ const ContentBuilderTopBar = ({
         </Box>
         {selectedLocale && locales.length > 1 && (
           <Box
-            borderLeft={`1px solid ${colors.separation}`}
-            borderRight={`1px solid ${colors.separation}`}
+            borderLeft={`1px solid ${colors.divider}`}
+            borderRight={`1px solid ${colors.divider}`}
             h="100%"
             p="24px"
           >

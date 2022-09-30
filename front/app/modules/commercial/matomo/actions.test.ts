@@ -39,10 +39,10 @@ describe('trackPageChange', () => {
     window._paq = [];
     mockProject = {
       data: { id: 'project-id' },
-    }
+    };
     mockIdea = {
       data: { relationships: { project: { data: { id: 'project-id2' } } } },
-    }
+    };
   });
 
   it('sets locale if locale in path', async () => {
@@ -68,24 +68,24 @@ describe('trackPageChange', () => {
   it('sets project id if path is projects/:slug/ideas/new', async () => {
     await trackPageChange('/en/projects/some-project/ideas/new');
     expect(window._paq[1]).toEqual(['setCustomDimension', 4, 'project-id']);
-  })
+  });
 
   it('removes project id when navigation away from project page', async () => {
     await trackPageChange('/en/projects/some-project');
     window._paq = [];
     await trackPageChange('/en');
     expect(window._paq[1]).toEqual(['setCustomDimension', 4]);
-  })
+  });
 
   it('does not set project id if stream returns null', async () => {
-    mockProject = null
+    mockProject = null;
     await trackPageChange('/en/projects/some-project');
     expect(window._paq[1]).not.toEqual(['setCustomDimension', 4, 'project-id']);
-  })
+  });
 
   it('does not set project id if stream returns error', async () => {
     mockProject = new Error();
     await trackPageChange('/en/projects/some-project');
     expect(window._paq[1]).not.toEqual(['setCustomDimension', 4, 'project-id']);
-  })
+  });
 });

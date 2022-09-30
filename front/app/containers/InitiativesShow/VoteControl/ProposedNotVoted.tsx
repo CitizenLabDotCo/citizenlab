@@ -27,14 +27,14 @@ const Container = styled.div``;
 const CountDownWrapper = styled.div`
   display: flex;
   flex-direction: row-reverse;
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: none;
   `}
 `;
 
 const StatusIcon = styled(Icon)`
   path {
-    fill: ${(props) => props.theme.colorMain};
+    fill: ${(props) => props.theme.colors.tenantPrimary};
   }
   width: 31px;
   height: 31px;
@@ -43,7 +43,7 @@ const StatusIcon = styled(Icon)`
 
 const VoteCounter = styled.div`
   margin-top: 15px;
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: none;
   `}
 `;
@@ -57,12 +57,12 @@ const VoteText = styled.div`
 
 const VoteTextLeft = styled.div`
   font-size: ${fontSizes.base}px;
-  color: ${(props) => props.theme.colorMain};
+  color: ${(props) => props.theme.colors.tenantPrimary};
 `;
 
 const VoteTextRight = styled.div`
   font-size: ${fontSizes.base}px;
-  color: ${(props) => props.theme.colorText};
+  color: ${(props) => props.theme.colors.tenantText};
 `;
 
 const StyledButton = styled(Button)`
@@ -76,7 +76,7 @@ const StyledButton = styled(Button)`
 const OnDesktop = styled.span`
   display: inline;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: none;
   `}
 `;
@@ -84,7 +84,7 @@ const OnDesktop = styled.span`
 const OnMobile = styled.span`
   display: inline;
 
-  ${media.biggerThanMaxTablet`
+  ${media.desktop`
     display: none;
   `}
 `;
@@ -104,7 +104,7 @@ const TooltipContentIcon = styled(Icon)`
 
 const TooltipContentText = styled.div`
   flex: 1 1 auto;
-  color: ${colors.text};
+  color: ${colors.textPrimary};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 400;
@@ -114,7 +114,7 @@ const TooltipContentText = styled.div`
 
   a,
   button {
-    color: ${colors.clBlueDark};
+    color: ${colors.teal};
     font-size: ${fontSizes.base}px;
     line-height: normal;
     font-weight: 400;
@@ -133,7 +133,7 @@ const TooltipContentText = styled.div`
     transition: all 100ms ease-out;
 
     &:hover {
-      color: ${darken(0.15, colors.clBlueDark)};
+      color: ${darken(0.15, colors.teal)};
       text-decoration: underline;
     }
   }
@@ -170,7 +170,7 @@ const ProposedNotVoted = ({
   const thresholdReachedTooltip = threshold_reached_message ? (
     <IconTooltip
       icon="info"
-      iconColor={theme.colorText}
+      iconColor={theme.colors.tenantText}
       theme="light"
       placement="bottom"
       content={<T value={threshold_reached_message} supportHtml />}
