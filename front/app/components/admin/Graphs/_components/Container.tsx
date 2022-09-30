@@ -64,17 +64,18 @@ const Container = ({
   };
 
   const rightLegend = legend?.position?.includes('right');
-  const parsedHeight = rightLegend
-    ? height
-    : typeof height === 'number' && legend?.maintainGraphSize
-    ? height + (legendDimensions?.height ?? 0)
-    : height;
 
   const parsedWidth = !rightLegend
     ? width
     : typeof width === 'number' && legend?.maintainGraphSize
     ? width + (legendDimensions?.width ?? 0)
     : width;
+
+  const parsedHeight = rightLegend
+    ? height
+    : typeof height === 'number' && legend?.maintainGraphSize
+    ? height + (legendDimensions?.height ?? 0)
+    : height;
 
   return (
     <Box display="flex" flexDirection={rightLegend ? 'row' : 'column'}>

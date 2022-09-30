@@ -238,7 +238,7 @@ const PostFeedback = ({
           legend={{
             items: stackedBarsLegendItems,
             marginTop: 15,
-            maintainGraphHeight: true,
+            maintainGraphSize: true,
           }}
           innerRef={currentStackedBarChart}
           onMouseOver={onMouseOverStackedBar}
