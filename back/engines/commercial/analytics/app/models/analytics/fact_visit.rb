@@ -41,5 +41,12 @@ module Analytics
     belongs_to :dimension_date_last_action, class_name: 'Analytics::DimensionDate', primary_key: 'date'
     has_and_belongs_to_many :dimension_projects, class_name: 'Analytics::DimensionProject', join_table: 'analytics_dimension_projects_fact_visits'
     has_and_belongs_to_many :dimension_locales, class_name: 'Analytics::DimensionLocale', join_table: 'analytics_dimension_locales_fact_visits'
+
+    validates :visitor_id, presence: true
+    validates :duration, presence: true
+    validates :pages_visited, presence: true
+    validates :matomo_visit_id, presence: true, uniqueness: true
+    validates :matomo_last_action_time, presence: true
+
   end
 end

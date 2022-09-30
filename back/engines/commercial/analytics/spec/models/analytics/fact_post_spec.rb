@@ -3,18 +3,21 @@
 require 'rails_helper'
 
 RSpec.describe Analytics::FactPost, type: :model do
-  it 'can create a post fact by creating an idea' do
-    create(:dimension_type_idea)
-    idea = create(:idea)
-    post_fact = described_class.first
+  context 'when an idea is created and there is an idea type' do
+    let!(:type_idea) { create(:dimension_type) }
+    let!(:idea) { create(:idea) }
 
-    assert(post_fact.id == idea.id)
+    it 'is also available as a post dimension' do
+      described_class.find(idea.id)
+    end
   end
 
-  it 'can create a post fact by creating an initiative' do
-    create(:dimension_type_initiative)
-    initiative = create(:initiative)
-    post_fact = described_class.first
-    assert(post_fact.id == initiative.id)
+  context 'when an initiative is created and there is an initiative type' do
+    let!(:type_initiative) { create(:dimension_type, name: 'initiative') }
+    let!(:initiative) { create(:initiative) }
+
+    it 'is also available as a post dimension' do
+      described_class.find(initiative.id)
+    end
   end
 end

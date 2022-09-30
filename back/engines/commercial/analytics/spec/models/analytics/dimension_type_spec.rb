@@ -3,7 +3,11 @@
 require 'rails_helper'
 
 RSpec.describe Analytics::DimensionType, type: :model do
-  it 'can create a type dimension (idea)' do
-    create(:dimension_type_idea)
+  subject { build(:dimension_type) }
+
+  describe 'validations' do
+    it { is_expected.to be_valid }
+    it { is_expected.to validate_presence_of(:name) }
+    it { is_expected.to validate_uniqueness_of(:name) }
   end
 end
