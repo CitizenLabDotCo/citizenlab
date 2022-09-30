@@ -1,7 +1,7 @@
 import moment, { Moment } from 'moment';
 
 // utils
-import { range } from 'lodash';
+import { range } from 'lodash-es';
 
 // typings
 import { IResolution } from 'components/admin/ResolutionControl';
