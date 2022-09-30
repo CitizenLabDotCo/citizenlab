@@ -36,7 +36,7 @@ export const parseMargin = (
   const legendOffset = noLegend
     ? 0
     : rightLegend
-    ? legendDimensions.width + (legend.marginRight ?? defaultMargin)
+    ? legendDimensions.width + (legend.marginLeft ?? defaultMargin)
     : legendDimensions.height + (legend.marginTop ?? defaultMargin);
 
   if (margin) {
