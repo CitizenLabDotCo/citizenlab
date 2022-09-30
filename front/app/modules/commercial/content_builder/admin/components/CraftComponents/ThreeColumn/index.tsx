@@ -8,7 +8,7 @@ import { UserComponent, Element } from '@craftjs/core';
 import Container from '../Container';
 
 const ThreeColumn: UserComponent = () => {
-  const isLargeTablet = useBreakpoint('largeTablet');
+  const isLargeTablet = useBreakpoint('tablet');
 
   return (
     <Box

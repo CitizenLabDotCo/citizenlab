@@ -18,7 +18,7 @@ const NavigationTabs = styled.nav`
     border-radius: ${theme.borderRadius} ${theme.borderRadius} 0 0;
     padding-left: 44px;
     display: flex;
-    border: ${tabBorderSize}px solid ${colors.separation};
+    border: ${tabBorderSize}px solid ${colors.divider};
     border-bottom: ${tabBorderSize}px solid transparent;
     @media print {
       border: none;

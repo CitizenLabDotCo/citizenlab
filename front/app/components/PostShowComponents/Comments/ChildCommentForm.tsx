@@ -67,15 +67,15 @@ const FormContainer = styled(clickOutside)`
 const Form = styled.form`
   flex: 1;
   background: #fff;
-  border: 1px solid ${colors.border};
+  border: 1px solid ${colors.borderDark};
   border-radius: ${(props: any) => props.theme.borderRadius};
 
   &:not(.focused):hover {
-    border-color: ${colors.hoveredBorder};
+    border-color: ${colors.black};
   }
 
   &.focused {
-    border-color: ${colors.focussedBorder};
+    border-color: ${colors.black};
     box-shadow: ${defaultStyles.boxShadowFocused};
   }
 `;
@@ -364,7 +364,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
         !isNilOrError(authUser) &&
         canModerateProject(postId, { data: authUser });
       const smallerThanSmallTablet =
-        !isNilOrError(windowSize) && windowSize <= viewportWidths.smallTablet;
+        !isNilOrError(windowSize) && windowSize <= viewportWidths.tablet;
 
       return (
         <Container className={`${className || ''} e2e-childcomment-form`}>

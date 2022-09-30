@@ -38,7 +38,7 @@ const Form = styled.form`
 `;
 
 const StyledFormSection = styled(FormSection)`
-  ${media.largePhone`
+  ${media.phone`
     padding-left: 18px;
     padding-right: 18px;
   `}

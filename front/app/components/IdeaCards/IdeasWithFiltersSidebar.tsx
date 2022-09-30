@@ -82,7 +82,7 @@ const InitialLoading = styled.div`
   justify-content: center;
   ${defaultCardStyle};
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     height: 150px;
   `}
 `;
@@ -110,7 +110,7 @@ const AboveContent = styled.div<{ filterColumnWidth: number }>`
     flex-direction: row-reverse;
   `}
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     margin-right: 0;
     margin-top: 20px;
   `}
@@ -126,7 +126,7 @@ const AboveContentRight = styled.div`
 `;
 
 const IdeasCount = styled.div`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   line-height: 21px;
   white-space: nowrap;
@@ -168,7 +168,7 @@ const FiltersSidebarContainer = styled.div`
 `;
 
 const ClearFiltersText = styled.span`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: auto;
@@ -195,7 +195,7 @@ const ClearFiltersButton = styled.button`
 const DesktopSearchInput = styled(SearchInput)`
   margin-bottom: 20px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: none;
   `}
 `;
@@ -386,7 +386,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
       selectedIdeaFilters.idea_status ||
       selectedIdeaFilters.topics;
     const biggerThanLargeTablet = !!(
-      windowWidth && windowWidth >= viewportWidths.largeTablet
+      windowWidth && windowWidth >= viewportWidths.tablet
     );
     const smallerThan1440px = !!(windowWidth && windowWidth <= 1440);
     const smallerThanPhone = !!(

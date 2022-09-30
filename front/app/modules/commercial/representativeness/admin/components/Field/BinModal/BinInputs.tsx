@@ -118,7 +118,7 @@ const BinInputRow = injectIntl(
     return (
       <Box display="flex" flexDirection="row" mt="10px" mb="10px">
         <Box width="25%">
-          <Text color="adminTextColor">
+          <Text color="primary">
             {formatMessage(messages.ageGroupX, { number: binIndex + 1 })}
           </Text>
         </Box>
@@ -149,7 +149,7 @@ const BinInputRow = injectIntl(
           />
         </Box>
         <Box width="25%" display="flex" alignItems="center">
-          <Text variant="bodyS" fontWeight="bold" color="adminTextColor">
+          <Text variant="bodyS" fontWeight="bold" color="primary">
             {parseLabel(
               lowerBoundDisplayValue,
               upperBoundDisplayValue,

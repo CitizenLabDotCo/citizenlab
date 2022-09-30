@@ -37,7 +37,7 @@ import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
 import { PublicationTab } from '../..';
 
 const Title = styled.h2<{ hasPublications: boolean }>`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.xl}px;
   font-weight: 500;
   line-height: normal;
@@ -46,7 +46,7 @@ const Title = styled.h2<{ hasPublications: boolean }>`
   text-align: center;
   margin-bottom: 28px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     text-align: left;
     margin-bottom: ${({ hasPublications }) =>
       hasPublications ? '36' : '20'}px;
@@ -69,7 +69,7 @@ const Container = styled.div<{ showFilters: boolean }>`
     flex-direction: row-reverse;
   `}
 
-  ${media.xlPhone`
+  ${media.phone`
     flex-direction: row;
   `}
 `;
@@ -87,7 +87,7 @@ const DesktopFilters = styled.div`
 
   height: 68px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     height: 52px;
   `}
 
@@ -110,7 +110,7 @@ const FiltersLabel = styled.div`
   display: flex;
   align-items: center;
   font-size: ${fontSizes.base}px;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   transform: translateY(-1px);
 `;
 
@@ -150,8 +150,8 @@ const Header = ({
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const appConfiguration = useAppConfiguration();
-  const smallerThanXlPhone = useBreakpoint('xlPhone');
-  const smallerThanMinTablet = useBreakpoint('smallTablet');
+  const smallerThanXlPhone = useBreakpoint('phone');
+  const smallerThanMinTablet = useBreakpoint('tablet');
   const topics = useTopics({ forHomepageFilter: true });
   const areas = useAreas({ forHomepageFilter: true });
   const localize = useLocalize();

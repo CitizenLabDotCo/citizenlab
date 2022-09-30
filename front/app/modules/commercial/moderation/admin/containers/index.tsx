@@ -144,7 +144,7 @@ const RowsPerPage = styled.div`
 `;
 
 const RowsPerPageLabel = styled.div`
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
   font-size: ${fontSizes.base}px;
   font-weight: 500;
   margin-right: 10px;
@@ -173,7 +173,7 @@ const EmptyIcon = styled(Icon)`
 
 const EmptyMessage = styled.div`
   max-width: 350px;
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
   font-size: ${fontSizes.m}px;
   line-height: normal;
   font-weight: 500;

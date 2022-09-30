@@ -7,8 +7,8 @@ export default function getCardSizes(
 ): TCardSize[] {
   const initialCount = Math.min(adminPublicationsLength, 6);
   const isOdd = (number: number) => number % 2 === 1;
-  const biggerThanSmallTablet = windowWidth >= viewportWidths.smallTablet;
-  const biggerThanLargeTablet = windowWidth >= viewportWidths.largeTablet;
+  const biggerThanSmallTablet = windowWidth >= viewportWidths.tablet;
+  const biggerThanLargeTablet = windowWidth >= viewportWidths.tablet;
 
   const indices = Array(adminPublicationsLength)
     .fill(0)

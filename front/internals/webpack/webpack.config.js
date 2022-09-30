@@ -52,8 +52,10 @@ const config = {
     path: path.join(process.cwd(), 'build'),
     pathinfo: false,
     publicPath: '/',
-    filename: isDev ? '[name].js' : '[name].[contenthash].js',
-    chunkFilename: isDev ? '[name].chunk.js' : '[name].[contenthash].chunk.js',
+    filename: isDev ? '[name].js' : '[name].[contenthash].min.js',
+    chunkFilename: isDev
+      ? '[name].chunk.js'
+      : '[name].[contenthash].chunk.min.js',
   },
 
   mode: isDev ? 'development' : 'production',
@@ -87,11 +89,7 @@ const config = {
     optimization: {
       runtimeChunk: 'single',
       minimize: true,
-      splitChunks: {
-        chunks: 'all',
-      },
-      moduleIds: 'deterministic',
-      minimizer: [new CssMinimizerPlugin()],
+      minimizer: ['...', new CssMinimizerPlugin()],
     },
   }),
 
@@ -203,8 +201,8 @@ const config = {
 
     !isDev &&
       new MiniCssExtractPlugin({
-        filename: '[name].[contenthash].css',
-        chunkFilename: '[name].[contenthash].chunk.css',
+        filename: '[name].[contenthash].min.css',
+        chunkFilename: '[name].[contenthash].chunk.min.css',
       }),
 
     sourceMapToSentry &&

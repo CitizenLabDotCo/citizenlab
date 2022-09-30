@@ -36,7 +36,7 @@ const Container = styled.div`
   border-radius: ${({ theme }) => theme.borderRadius};
   border: solid 1px #e0e0e0;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding: 30px;
   `}
 `;
@@ -55,7 +55,7 @@ const Header = styled.div`
   justify-content: space-between;
   margin-bottom: 60px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     flex-direction: column;
     align-items: stretch;
   `}
@@ -67,13 +67,13 @@ const HeaderRight = styled.div`
   display: flex;
   align-items: center;
 
-  ${media.biggerThanMinTablet`
+  ${media.desktop`
     margin-left: 30px;
   `}
 `;
 
 const Title = styled.h1`
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
   font-size: ${fontSizes.xxl}px;
   font-weight: 600;
   line-height: normal;
@@ -81,13 +81,13 @@ const Title = styled.h1`
   margin: 0;
   margin-bottom: 10px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-bottom: 5px;
   `}
 `;
 
 const Subtitle = styled.h2`
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: normal;
@@ -95,13 +95,13 @@ const Subtitle = styled.h2`
   margin-top: 0;
   margin-bottom: 5px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-bottom: 35px;
   `}
 `;
 
 const LinkCopied = styled.div`
-  color: ${colors.clGreenSuccess};
+  color: ${colors.success};
   display: flex;
   align-items: center;
   opacity: 0;
@@ -111,13 +111,13 @@ const LinkCopied = styled.div`
     opacity: 1;
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     order: 2;
   `}
 `;
 
 const LinkCopiedIcon = styled(Icon)`
-  fill: ${colors.clGreenSuccess};
+  fill: ${colors.success};
   height: 13px;
   margin-right: 3px;
 `;
@@ -125,7 +125,7 @@ const LinkCopiedIcon = styled(Icon)`
 const CopyLinkButton = styled(Button)`
   margin-left: 20px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     order: 1;
     margin-left: 0px;
     margin-right: 20px;
@@ -146,14 +146,14 @@ const MetaInfoLeft = styled.div`
 `;
 
 const Department = styled.div`
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   line-height: normal;
   white-space: nowrap;
   padding: 6px 12px;
   border-radius: ${({ theme }) => theme.borderRadius};
-  border: solid 1px ${colors.separation};
+  border: solid 1px ${colors.divider};
   margin-right: 5px;
   margin-bottom: 5px;
 `;
@@ -165,7 +165,7 @@ const MetaInfoRight = styled.div`
 `;
 
 const MetaInfoRightBox = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   line-height: normal;
@@ -180,7 +180,7 @@ const MetaInfoRightBox = styled.div`
 
 const MetaInfoRightBoxIcon = styled(Icon)`
   flex: 0 0 24px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   width: 24px;
   height: 24px;
   margin-right: 7px;
@@ -213,7 +213,7 @@ const PhaseBar = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${lighten(0.15, colors.label)};
+  background: ${lighten(0.15, colors.textSecondary)};
   transition: background 60ms ease-out;
   position: relative;
   border: none;
@@ -230,13 +230,13 @@ const PhaseArrow = styled(Icon)`
   right: -9px;
   z-index: 2;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     fill: ${colors.background};
   `}
 `;
 
 const PhaseText = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   text-align: center;
@@ -289,7 +289,7 @@ const Footer = styled.div``;
 
 const SuccessCasesTitle = styled.div`
   width: 100%;
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
   font-size: ${fontSizes.base}px;
   font-weight: 500;
   line-height: normal;
@@ -303,7 +303,7 @@ const SuccessCase = styled.a`
   margin-right: 8px;
   background: #fff;
   border-radius: ${({ theme }) => theme.borderRadius};
-  border: solid 1px ${colors.separation};
+  border: solid 1px ${colors.divider};
   transition: all 80ms ease-out;
 
   &:hover {
@@ -465,7 +465,7 @@ const ProjectTemplatePreview = memo<Props>(
                 <HeaderImage src={data.projectTemplate.headerImage} />
               )}
 
-              <QuillEditedContent textColor={colors.adminTextColor}>
+              <QuillEditedContent textColor={colors.primary}>
                 <div
                   dangerouslySetInnerHTML={{
                     __html: localize(data.projectTemplate.descriptionMultilocs),

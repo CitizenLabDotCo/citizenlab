@@ -71,16 +71,16 @@ const Anchor = styled.div`
 
 const Form = styled.form`
   flex: 1;
-  border: 1px solid ${colors.border};
+  border: 1px solid ${colors.borderDark};
   border-radius: ${(props: any) => props.theme.borderRadius};
   overflow: hidden;
 
   &:not(.focused):hover {
-    border-color: ${colors.hoveredBorder};
+    border-color: ${colors.black};
   }
 
   &.focused {
-    border-color: ${colors.focussedBorder};
+    border-color: ${colors.black};
     box-shadow: ${defaultStyles.boxShadowFocused};
   }
 `;
@@ -356,7 +356,7 @@ class ParentCommentForm extends PureComponent<
       messages[`${postType}CommentBodyPlaceholder`]
     );
     const smallerThanSmallTablet =
-      !isNilOrError(windowSize) && windowSize <= viewportWidths.smallTablet;
+      !isNilOrError(windowSize) && windowSize <= viewportWidths.tablet;
 
     if (!isNilOrError(authUser) && canComment) {
       return (

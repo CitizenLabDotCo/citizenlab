@@ -10,7 +10,7 @@ const Outer = styled.div`
   padding-left: 30px;
   padding-right: 30px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-left: 20px;
     padding-right: 20px;
   `}

@@ -27,7 +27,7 @@ const Container = styled.div`
   padding: 15px;
   padding-top: 30px;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  border: 1px solid ${colors.adminBorder};
+  border: 1px solid ${colors.borderLight};
   position: relative;
   display: flex;
   flex-direction: column;
@@ -47,7 +47,7 @@ const TextContainer = styled.div`
 const CloseIcon = styled(Icon)`
   flex: 0 0 15px;
   width: 15px;
-  fill: ${colors.mediumGrey};
+  fill: ${colors.grey500};
 `;
 const StyledAuthor = styled(Author)`
   margin-top: 25px;
@@ -69,7 +69,7 @@ const CloseButton = styled.button`
   &:focus,
   &:active {
     svg {
-      fill: ${colors.clBlueDark};
+      fill: ${colors.teal};
     }
   }
 `;

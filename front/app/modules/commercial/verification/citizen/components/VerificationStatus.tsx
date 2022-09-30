@@ -27,7 +27,7 @@ const Container = styled(FormSection)`
   justify-content: space-between;
   padding: 30px 40px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     flex-direction: column;
     align-items: flex-start;
     justify-content: left;
@@ -46,7 +46,7 @@ const StyledAvatar = styled(Avatar)`
 `;
 
 const ShieldIcon = styled(Icon)`
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   width: 48px;
   height: 53px;
   margin-left: -4px;
@@ -56,7 +56,7 @@ const Content = styled.div`
   margin-left: 30px;
   margin-right: 20px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     text-align: left;
     margin-left: 0px;
     margin-right: 0px;
@@ -74,7 +74,7 @@ const Title = styled.h2`
 `;
 
 const Text = styled.p`
-  color: ${colors.text};
+  color: ${colors.textPrimary};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   line-height: normal;
@@ -89,7 +89,7 @@ const StyledText = styled(Text)`
 const VerifyButton = styled(Button)``;
 
 const ReverifyButton = styled.button`
-  color: ${colors.clBlueDark};
+  color: ${colors.teal};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   line-height: normal;
@@ -103,7 +103,7 @@ const ReverifyButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    color: ${darken(0.15, colors.clBlueDark)};
+    color: ${darken(0.15, colors.teal)};
     text-decoration: underline;
   }
 `;

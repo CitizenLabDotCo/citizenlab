@@ -46,7 +46,7 @@ const FormLabel = styled.div`
 `;
 
 const AddOfficialUpdateTitle = styled.h2`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.m}px;
   line-height: normal;
   font-weight: 600;
@@ -73,7 +73,7 @@ const StyledError = styled(Error)`
 
 const SuccessMessage = styled.div`
   font-size: ${fontSizes.base}px;
-  color: ${colors.clGreenSuccess};
+  color: ${colors.success};
   font-weight: 400;
   line-height: normal;
   margin-left: 14px;
@@ -374,9 +374,7 @@ class OfficialFeedbackForm extends PureComponent<
           <ButtonContainer>
             <SubmitButton
               className="e2e-official-feedback-form-submit-button"
-              bgColor={
-                formType === 'edit' ? colors.adminTextColor : colors.red500
-              }
+              bgColor={formType === 'edit' ? colors.primary : colors.error}
               icon="pen"
               textColor="white"
               fullWidth={formType === 'new'}
@@ -399,9 +397,7 @@ class OfficialFeedbackForm extends PureComponent<
               <CancelButton
                 buttonStyle="secondary"
                 onClick={onClose}
-                textColor={
-                  formType === 'edit' ? colors.adminTextColor : colors.red500
-                }
+                textColor={formType === 'edit' ? colors.primary : colors.error}
               >
                 <FormattedMessage {...messages.cancel} />
               </CancelButton>

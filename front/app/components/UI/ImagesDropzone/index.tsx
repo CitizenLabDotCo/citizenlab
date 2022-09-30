@@ -41,7 +41,7 @@ const ErrorWrapper = styled.div`
 `;
 
 const DropzoneLabelText = styled.span`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 400;
@@ -53,13 +53,13 @@ const DropzoneLabelText = styled.span`
 const DropzoneLabelIcon = styled(Icon)`
   flex: 0 0 30px;
   height: 30px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   margin-bottom: 4px;
   transition: all 100ms ease-out;
 `;
 
 const DropzoneImagesRemaining = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   line-height: normal;
   font-weight: 400;
@@ -72,7 +72,7 @@ const DropzoneInput = styled.input``;
 
 const DropzoneContent = styled.div<{ borderRadius?: string }>`
   box-sizing: border-box;
-  border: 1px dashed ${colors.border};
+  border: 1px dashed ${colors.borderDark};
   border-radius: ${(props) =>
     props.borderRadius ? props.borderRadius : props.theme.borderRadius};
   position: relative;

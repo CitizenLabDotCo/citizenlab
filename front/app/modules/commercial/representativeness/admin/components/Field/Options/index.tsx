@@ -99,11 +99,7 @@ const Options = injectIntl(
                   />
                 )}
 
-                <Text
-                  ml={bins ? '' : '12px'}
-                  variant="bodyM"
-                  color="adminTextColor"
-                >
+                <Text ml={bins ? '' : '12px'} variant="bodyM" color="primary">
                   {label}
                 </Text>
               </Box>

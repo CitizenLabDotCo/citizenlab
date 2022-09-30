@@ -37,7 +37,7 @@ const SelectTopics = ({
   const localize = useLocalize();
   const topics = useTopics({ forHomepageFilter: true });
   const appConfig = useAppConfiguration();
-  const smallerThanMinTablet = useBreakpoint('smallTablet');
+  const smallerThanMinTablet = useBreakpoint('tablet');
 
   if (isNilOrError(appConfig)) return null;
 
@@ -77,7 +77,7 @@ const SelectTopics = ({
       right="-4px"
       mobileLeft={smallerThanMinTablet ? '-4px' : undefined}
       mobileRight={smallerThanMinTablet ? undefined : '-4px'}
-      textColor={colors.label}
+      textColor={colors.textSecondary}
     />
   );
 };

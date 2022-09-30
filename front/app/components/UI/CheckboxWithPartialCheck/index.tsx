@@ -47,18 +47,18 @@ const CustomInputWrapper = styled.div<{
   display: flex;
   align-items: center;
   justify-content: center;
-  border: solid 1px ${colors.separationDark};
+  border: solid 1px ${colors.divider};
   border-radius: ${(props) => props.theme.borderRadius};
-  background: ${(props) => (props.checked ? colors.clGreen : '#fff')};
-  border-color: ${(props) => (props.checked ? colors.clGreen : '#aaa')};
+  background: ${(props) => (props.checked ? colors.success : '#fff')};
+  border-color: ${(props) => (props.checked ? colors.success : '#aaa')};
   box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.15);
 
   &:hover {
     border-color: ${(props) =>
       props.checked === 'mixed'
-        ? colors.clBlueLightest
+        ? colors.teal100
         : props.checked
-        ? colors.clGreen
+        ? colors.success
         : '#333'};
   }
 `;
@@ -69,7 +69,7 @@ const CheckmarkIcon = styled(Icon)`
 `;
 
 const Label = styled.label`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   margin-left: 10px;

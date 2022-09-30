@@ -23,7 +23,7 @@ import { Multiloc, MessageDescriptor } from 'typings';
 import { Status } from '../../utils/form';
 
 const DefaultStatusLabel = styled(StatusLabel)`
-  color: ${colors.clGreyOnGreyBackground};
+  color: ${colors.coolGrey600};
   font-weight: 700;
   margin-left: 8px;
 `;
@@ -48,12 +48,12 @@ const STATUS_MESSAGES: Record<Status, MessageDescriptor> = {
   incomplete: messages.incomplete,
 };
 
-type StatusColor = 'clGreenSuccess' | 'label';
+type StatusColor = 'success' | 'textSecondary';
 
 const STATUS_COLORS: Record<Status, StatusColor> = {
-  saved: 'clGreenSuccess',
-  complete: 'clGreenSuccess',
-  incomplete: 'label',
+  saved: 'success',
+  complete: 'success',
+  incomplete: 'textSecondary',
 };
 
 const FieldTitle = ({
@@ -94,7 +94,7 @@ const FieldTitle = ({
           <ComingSoonStatusLabel
             text={<FormattedMessage {...messages.comingSoon} />}
             variant="default"
-            backgroundColor={colors.adminSecondaryTextColor}
+            backgroundColor={colors.textSecondary}
           />
         )}
       </Box>
