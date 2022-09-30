@@ -30,7 +30,11 @@ const AvatarsField = ({
   };
 
   return (
-    <SectionField key="avatars" data-cy="e2e-banner-avatar-toggle-section">
+    <SectionField
+      key="avatars"
+      data-cy="e2e-banner-avatar-toggle-section"
+      data-testid="avatarsField"
+    >
       <SubSectionTitle>
         <FormattedMessage {...messages.avatarsTitle} />
       </SubSectionTitle>

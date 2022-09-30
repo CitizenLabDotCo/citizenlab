@@ -85,8 +85,6 @@ const HeaderImageDropzone = ({
   };
 
   const theme: any = useTheme();
-
-  //
   const displayOverlayColor = overlayColor ?? theme.colorMain;
   const displayOverlayOpacity =
     overlayOpacity ?? theme.signedOutHeaderOverlayOpacity;
