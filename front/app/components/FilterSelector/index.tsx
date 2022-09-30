@@ -24,15 +24,15 @@ const Container = styled.div`
   &:not(:last-child) {
     margin-right: 40px;
 
-    ${media.smallerThanMaxTablet`
+    ${media.tablet`
       margin-right: 30px;
     `}
 
-    ${media.smallerThanMinTablet`
+    ${media.phone`
       margin-right: 25px;
     `}
 
-    ${media.smallPhone`
+    ${media.phone`
       margin-right: 20px;
     `}
   }
@@ -45,11 +45,11 @@ const Container = styled.div`
     &:not(:last-child) {
       margin-left: 40px;
 
-      ${media.smallerThanMaxTablet`
+      ${media.tablet`
         margin-left: 30px;
       `}
 
-      ${media.smallPhone`
+      ${media.phone`
         margin-left: 20px;
       `}
     }

@@ -21,7 +21,7 @@ import messages from './messages';
 const SettingsLabel = styled(Label)`
   font-weight: bold;
   margin-bottom: 18px;
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
 `;
 
 interface Props {

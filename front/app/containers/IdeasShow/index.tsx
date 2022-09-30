@@ -145,7 +145,7 @@ const IdeaHeader = styled.div`
     flex-direction: row-reverse;
   `}
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     margin-top: 0px;
   `}
 `;
@@ -362,7 +362,7 @@ export class IdeasShow extends PureComponent<
       const ideaBody = localize(idea?.attributes?.body_multiloc);
       const isCompactView =
         compact === true ||
-        (windowSize ? windowSize <= viewportWidths.largeTablet : false);
+        (windowSize ? windowSize <= viewportWidths.tablet : false);
       const proposedBudgetEnabled = isFieldEnabled(
         'proposed_budget',
         ideaCustomFieldsSchemas,

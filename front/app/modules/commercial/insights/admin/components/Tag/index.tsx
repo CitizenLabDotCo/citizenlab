@@ -43,7 +43,7 @@ const IconContainer = styled.div`
 const PlusIcon = styled(Icon)`
   margin-left: 8px;
   height: 14px;
-  fill: ${colors.clGreen};
+  fill: ${colors.success};
 `;
 
 const CloseIcon = styled(Icon)`
@@ -74,21 +74,21 @@ const StyledTag = styled(Box)<{ variant: Variant; size: Size }>`
     `}
     ${variant === 'primary' &&
     css`
-      background-color: ${colors.clGreen};
-      border: 1px solid ${colors.clGreen};
+      background-color: ${colors.success};
+      border: 1px solid ${colors.success};
       color: #fff;
     `}
     ${variant === 'secondary' &&
     css`
-      background-color: ${colors.label};
-      border: 1px solid ${colors.border};
+      background-color: ${colors.textSecondary};
+      border: 1px solid ${colors.borderDark};
       color: #fff;
     `}
     ${variant === 'default' &&
     css`
       background-color: #fff;
-      color: ${colors.label};
-      border: 1px solid ${colors.border};
+      color: ${colors.textSecondary};
+      border: 1px solid ${colors.borderDark};
     `}
     ${onClick &&
     css`
@@ -97,7 +97,7 @@ const StyledTag = styled(Box)<{ variant: Variant; size: Size }>`
       &:focus {
         background-color: ${darken(
           0.1,
-          variant === 'primary' ? colors.clGreen : '#fff'
+          variant === 'primary' ? colors.success : '#fff'
         )};
       }
     `}
@@ -164,7 +164,7 @@ const Tag = ({
                 <StyledSpinner
                   size="10px"
                   thickness="1px"
-                  color={variant === 'primary' ? '#fff' : colors.clGreen}
+                  color={variant === 'primary' ? '#fff' : colors.success}
                 />
               </div>
             ) : (

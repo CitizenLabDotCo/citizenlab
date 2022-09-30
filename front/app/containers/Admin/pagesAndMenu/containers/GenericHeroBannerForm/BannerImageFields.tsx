@@ -205,7 +205,7 @@ const BannerImageField = ({
               type="text"
               value={
                 // default values come from the theme
-                bannerOverlayColor ?? theme.colorMain
+                bannerOverlayColor ?? theme.colors.tenantPrimary
               }
               onChange={handleOverlayColorOnChange}
             />

@@ -14,7 +14,7 @@ const Container = styled.div`
   align-items: center;
   padding: 20px 0;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding: 0;
   `}
 `;
@@ -24,7 +24,7 @@ const HeaderImage = styled(Image)`
   height: ${homepageBannerLayoutHeights['two_row_layout'].desktop}px;
   overflow: hidden;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     height: ${homepageBannerLayoutHeights['two_row_layout'].tablet}px;
   `}
 `;

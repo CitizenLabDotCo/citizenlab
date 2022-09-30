@@ -83,7 +83,7 @@ const AnimatedFieldset = styled.fieldset`
   display: none;
   transition: all ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
   will-change: opacity, height;
-  border-bottom: 1px solid ${colors.separation};
+  border-bottom: 1px solid ${colors.divider};
   margin-top: 15px;
 
   &.collapse-enter {
@@ -128,7 +128,7 @@ const AnimatedFieldset = styled.fieldset`
 const StyledCheckboxWithPartialCheck = styled(CheckboxWithPartialCheck)`
   label {
     font-size: ${fontSizes.s}px;
-    color: ${colors.adminTextColor};
+    color: ${colors.primary};
   }
 `;
 
@@ -258,7 +258,7 @@ export const CreateInsightsView = ({
       w="100%"
       maxWidth="450px"
       m="40px auto"
-      color={colors.adminTextColor}
+      color={colors.primary}
       data-testid="insightsCreateModal"
     >
       <Title>
@@ -288,7 +288,7 @@ export const CreateInsightsView = ({
               <Box
                 key={project.id}
                 py="15px"
-                borderBottom={`1px solid ${colors.separation}`}
+                borderBottom={`1px solid ${colors.divider}`}
               >
                 <Checkbox
                   size="20px"
@@ -305,7 +305,7 @@ export const CreateInsightsView = ({
               <Box key={folder.id}>
                 <Box
                   py="15px"
-                  borderBottom={`1px solid ${colors.separation}`}
+                  borderBottom={`1px solid ${colors.divider}`}
                   display="flex"
                   justifyContent="space-between"
                   alignItems="center"
@@ -378,7 +378,7 @@ export const CreateInsightsView = ({
             processing={loading}
             disabled={!name || selectedProjectsIds.length === 0}
             onClick={handleSubmit}
-            bgColor={colors.adminTextColor}
+            bgColor={colors.primary}
           >
             <FormattedMessage {...messages.createModalSaveView} />
           </Button>

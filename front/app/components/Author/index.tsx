@@ -29,7 +29,7 @@ const Container = styled.div`
     justify-content: flex-end;
   `}
 
-  ${media.smallPhone`
+  ${media.phone`
     flex-direction: column;
   `}
 `;
@@ -70,7 +70,7 @@ const AuthorMeta = styled.div`
 const AuthorNameContainer = styled.div`
   display: flex;
   align-items: center;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   line-height: 16px;
   text-decoration: none;
@@ -86,7 +86,7 @@ const AuthorNameContainer = styled.div`
 `;
 
 const TimeAgo = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   line-height: 16px;
   margin-top: 3px;

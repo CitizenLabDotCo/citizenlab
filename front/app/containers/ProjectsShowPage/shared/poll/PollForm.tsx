@@ -18,7 +18,7 @@ import PollSingleChoice from './PollSingleChoice';
 import PollMultipleChoice from './PollMultipleChoice';
 
 const PollContainer = styled.div`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   display: flex;
   flex-direction: column;
   align-items: center;

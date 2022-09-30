@@ -21,7 +21,7 @@ import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 const UserWrapper = styled.div`
   display: flex;
   align-items: center;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   margin-top: -4px;
   margin-bottom: -6px;
@@ -59,7 +59,7 @@ const PostedBy = memo<Props & InjectedIntlProps>(
           userId={authorId}
           isLinkToProfile={true}
           underline={true}
-          color={colors.label}
+          color={colors.textSecondary}
           fontSize={fontSizes.s}
         />
       );

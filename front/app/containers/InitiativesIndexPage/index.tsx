@@ -21,7 +21,7 @@ import { media, fontSizes, colors } from 'utils/styleUtils';
 const Container = styled.main``;
 
 const FooterBanner = styled.div`
-  background: ${({ theme }) => theme.colorMain};
+  background: ${({ theme }) => theme.colors.tenantPrimary};
   width: 100%;
   min-height: 300px;
   margin: 0;
@@ -46,7 +46,7 @@ const FooterMessage = styled.h2`
   max-width: 500px;
   text-align: center;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
       font-size: ${fontSizes.xxxl}px;
     `}
 `;
@@ -56,7 +56,7 @@ const StyledContentContainer = styled(ContentContainer)`
   background-color: ${colors.background};
   padding-bottom: 150px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding-bottom: 80px;
   `}
 `;
@@ -64,7 +64,7 @@ const StyledContentContainer = styled(ContentContainer)`
 const Padding = styled.div`
   width: 100%;
   height: 100px;
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     height: 40px;
   `}
 `;

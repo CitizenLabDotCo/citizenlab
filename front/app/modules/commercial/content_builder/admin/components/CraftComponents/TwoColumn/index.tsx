@@ -28,7 +28,7 @@ const StyledBox = styled(Box)`
   gap: 24px;
   display: grid;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     grid-template-columns: 1fr;
   `}
 
@@ -82,7 +82,7 @@ const TwoColumnSettings = () => {
             ariaHidden={false}
             width="20px"
             height="20px"
-            fill={colors.adminTextColor}
+            fill={colors.primary}
             name="column2"
           />
         }
@@ -103,7 +103,7 @@ const TwoColumnSettings = () => {
             ariaHidden={false}
             width="20px"
             height="20px"
-            fill={colors.adminTextColor}
+            fill={colors.primary}
             name="column2Variant2-1"
           />
         }
@@ -123,7 +123,7 @@ const TwoColumnSettings = () => {
             ariaHidden={false}
             width="20px"
             height="20px"
-            fill={colors.adminTextColor}
+            fill={colors.primary}
             name="column2Variant1-2"
           />
         }

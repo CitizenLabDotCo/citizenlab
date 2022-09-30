@@ -1,16 +1,16 @@
 import React from 'react';
 
 // components and theming
-import styled, { useTheme } from 'styled-components';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
+import styled, { useTheme } from 'styled-components';
 import { PreviewDevice } from './BannerImageFields';
 
 // types
+import { ICustomPageAttributes } from 'services/customPages';
 import {
   IHomepageSettingsAttributes,
   THomepageBannerLayout,
 } from 'services/homepageSettings';
-import { ICustomPageAttributes } from 'services/customPages';
 import { UploadFile } from 'typings';
 
 const HeaderImageOverlay = styled.div<{
@@ -85,7 +85,7 @@ const HeaderImageDropzone = ({
   };
 
   const theme: any = useTheme();
-  const displayOverlayColor = overlayColor ?? theme.colorMain;
+  const displayOverlayColor = overlayColor ?? theme.colors.tenantPrimary;
   const displayOverlayOpacity =
     overlayOpacity ?? theme.signedOutHeaderOverlayOpacity;
 

@@ -17,7 +17,7 @@ const TABLE_HEADER_BG_COLOR = '#f9fafb';
 const StyledTable = styled(Table)<{ $hideBorderTop?: boolean }>`
   td,
   th > div {
-    color: ${colors.adminTextColor};
+    color: ${colors.primary};
   }
   ${({ $hideBorderTop }) =>
     $hideBorderTop ? 'border-top: 0px !important;' : ''}

@@ -9,7 +9,6 @@ import Tippy from '@tippyjs/react';
 // Styling
 import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
-import { lighten } from 'polished';
 
 const Container = styled.div`
   position: relative;
@@ -19,12 +18,12 @@ const Container = styled.div`
 const MoreOptionsIcon = styled(Icon)<{ color?: string }>`
   width: 20px;
   height: 6px;
-  fill: ${({ color }) => color || colors.label};
+  fill: ${({ color }) => color || colors.textSecondary};
   transition: all 100ms ease-out;
 `;
 
 const MoreOptionsLabel = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   line-height: normal;
   font-weight: 400;
@@ -32,7 +31,7 @@ const MoreOptionsLabel = styled.div`
   margin-left: 10px;
   transition: all 100ms ease-out;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: none;
   `}
 `;
@@ -74,7 +73,7 @@ const ListItem = styled.button`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: ${colors.adminLightText};
+  color: ${colors.white};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   white-space: nowrap;
@@ -91,7 +90,7 @@ const ListItem = styled.button`
   &:hover,
   &:focus {
     color: white;
-    background: ${lighten(0.12, colors.adminMenuBackground)};
+    background: ${colors.grey600};
   }
 `;
 

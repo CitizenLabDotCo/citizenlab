@@ -12,7 +12,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     flex-direction: column;
     align-items: normal;
   `}
@@ -23,7 +23,7 @@ const HeaderImage = styled(Image)`
   max-width: 50%;
   overflow: hidden;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     max-width: 100%;
     height: ${homepageBannerLayoutHeights.two_column_layout.phone}px;
   `}

@@ -35,7 +35,7 @@ const NotFoundContainer = styled.main`
   align-items: center;
   padding-top: 4rem;
   font-size: ${fontSizes.l}px;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
 `;
 
 const Container = styled.main`
@@ -48,7 +48,7 @@ const Container = styled.main`
   position: relative;
   background: ${colors.background};
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
     props
   ) => props.theme.mobileTopBarHeight}px);
