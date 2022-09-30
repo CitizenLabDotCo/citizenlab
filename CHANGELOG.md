@@ -1,5 +1,10 @@
 # Changelog
 
+## Next
+
+### Added
+- [CL-1553] Basic privacy-friendly session counting for all visitors and users, for now not exposed in the product
+
 ## 2022-09-23
 
 ### Fixed
