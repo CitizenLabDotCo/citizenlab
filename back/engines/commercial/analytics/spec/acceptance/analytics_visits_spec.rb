@@ -14,7 +14,7 @@ resource 'Analytics - Visits model' do
   end
 
   post 'web_api/v1/analytics' do
-    before(:all) do
+    before_all do
       # Create 3 visits - 2 visitors - Single referrer
       # Visitor 1 - 2 visits, no user, with a project, in Sept
       create(:project)

@@ -5,7 +5,7 @@ require 'query'
 
 describe Analytics::QueryRunnerService do
   describe 'run' do
-    before(:all) do
+    before_all do
       create(:dimension_type)
       create(:dimension_type, name: 'initiative')
     end
