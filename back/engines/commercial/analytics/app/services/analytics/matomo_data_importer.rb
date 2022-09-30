@@ -151,7 +151,7 @@ module Analytics
         referrer_name: visit_json['referrerName'],
         referrer_url: visit_json['referrerUrl'],
         matomo_visit_id: visit_json['idVisit'],
-        matomo_last_action_time: last_action_timestamp
+        matomo_last_action_time: Time.at(last_action_timestamp)
       }
     end
 

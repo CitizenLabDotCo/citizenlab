@@ -52,7 +52,7 @@ module Analytics
       # We resume the import at the timestamp of the last action or at the time of
       # creation of the platform if there are no visits yet in the DB.
       from_timestamp =
-        FactVisit.maximum(:last_action_timestamp) || AppConfiguration.instance.created_at.to_i
+        FactVisit.maximum(:matomo_last_action_time).to_i || AppConfiguration.instance.created_at.to_i
 
       # We go back 15min in time to import the visits that were maybe a bit slow to
       # reach Matomo. 15 minutes is an arbitrary choice and is not backed up by any smart
