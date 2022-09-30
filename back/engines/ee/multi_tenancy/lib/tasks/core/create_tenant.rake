@@ -23,11 +23,8 @@ namespace :cl2_back do
           }
         },
         customizable_homepage_banner: {
-          allowed: true,
           enabled: true,
-          layout: 'full_width_banner_layout',
-          cta_signed_out_type: 'sign_up_button',
-          cta_signed_in_type: 'no_button'
+          allowed: true
         },
         private_projects: {
           enabled: true,
@@ -329,7 +326,6 @@ namespace :cl2_back do
       name: host,
       host: host,
       logo: Rails.root.join('spec/fixtures/logo.png').open,
-      header_bg: Rails.root.join('spec/fixtures/header.jpg').open,
       settings: settings
     )
 

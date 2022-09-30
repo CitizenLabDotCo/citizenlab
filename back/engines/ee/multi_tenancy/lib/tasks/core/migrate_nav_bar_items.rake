@@ -56,29 +56,6 @@ namespace :migrate_nav_bar_items do
     end
   end
 
-  task :move_homepage_info, [] => [:environment] do
-    Tenant.all.each do |tenant|
-      puts tenant.host
-      Apartment::Tenant.switch(tenant.schema_name) do
-        page = StaticPage.find_by slug: 'homepage-info'
-        if page
-          config = AppConfiguration.instance
-          unless config.update_column(:homepage_info_multiloc, page.body_multiloc)
-            puts 'Failed move homepage info'
-          end
-          page.text_images.update_all(
-            imageable_id: config.id,
-            imageable_type: AppConfiguration.name,
-            imageable_field: 'homepage_info_multiloc'
-          )
-          unless page.destroy
-            puts 'Failed delete homepage info'
-          end
-        end
-      end
-    end
-  end
-
   task :delete_referenced_success_stories, [] => [:environment] do
     Tenant.all.each do |tenant|
       puts tenant.host
