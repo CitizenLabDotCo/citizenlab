@@ -3,8 +3,13 @@
 require 'rails_helper'
 
 RSpec.describe Analytics::DimensionDate, type: :model do
-  it 'can create a date dimension (Sept)' do
-    date_dim = create(:dimension_date, date: Date.new(2022, 9, 1))
-    pp date_dim
+
+  subject { build(:dimension_date) }
+
+  describe 'validations' do
+    it { is_expected.to be_valid }
+    it { is_expected.to validate_presence_of(:year) }
+    it { is_expected.to validate_presence_of(:month) }
+    it { is_expected.to validate_presence_of(:week) }
   end
 end

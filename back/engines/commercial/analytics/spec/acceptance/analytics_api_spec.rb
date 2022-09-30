@@ -33,7 +33,7 @@ resource 'Analytics API', use_transactional_fixtures: false do
           aggregations: { all: 'count' }
         })
         assert_status 200
-        expect(json_response_body[:data]).to eq([{ count: 1 }])
+        expect(response_data).to eq([{ count: 1 }])
       end
 
       example 'handles multiple queries' do
@@ -43,7 +43,7 @@ resource 'Analytics API', use_transactional_fixtures: false do
         }
         do_request(query: [query, query])
         assert_status 200
-        expect(json_response_body[:data]).to eq([[{ count: 1 }], [{ count: 1 }]])
+        expect(response_data).to eq([[{ count: 1 }], [{ count: 1 }]])
       end
 
       example 'handles error in query' do
@@ -57,7 +57,14 @@ resource 'Analytics API', use_transactional_fixtures: false do
       end
 
       example 'rejects non-existent dimensions' do
-        #  TODO:
+        query = {
+          fact: 'post',
+          groups: 'dimension_non_existent.id',
+          aggregations: { all: 'count' }
+        }
+        do_request(query: query)
+        assert_status 400
+        expect(json_response_body[:messages]).to eq(['Groups field dimension_non_existent does not exist.'])
       end
     end
 
