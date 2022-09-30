@@ -114,7 +114,7 @@ ro:
         title: Descriere
         description:
       author_id:
-        title: Author
+        title: Autor
         description:
       topic_ids:
         title: Subiecte
