@@ -27,6 +27,7 @@
 #  assigned_at              :datetime
 #  proposed_budget          :integer
 #  custom_field_values      :jsonb            not null
+#  creation_phase_id        :uuid
 #
 # Indexes
 #
