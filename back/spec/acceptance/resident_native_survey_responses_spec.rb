@@ -4,7 +4,7 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Ideas' do
-  explanation 'Inputs posted by citizens: native survey responses.'
+  explanation 'Inputs posted by residents: native survey responses.'
 
   let(:user) { create(:user) }
 
