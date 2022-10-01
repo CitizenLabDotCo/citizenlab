@@ -32,6 +32,41 @@ RSpec.describe Idea, type: :model do
     end
   end
 
+  describe '#custom_form' do
+    context 'in a continuous project' do
+      let(:project) { create :continuous_project }
+      let!(:project_form) { create :custom_form, participation_context: project }
+      let(:idea) { build(:idea, project: project) }
+
+      it 'returns the form of the project' do
+        expect(idea.custom_form).to eq project_form
+      end
+    end
+
+    context 'in a timeline project when created in a phase' do
+      let(:project) { create :project_with_future_native_survey_phase }
+      let(:phase) { project.phases.first }
+      let!(:phase_form) { create :custom_form, participation_context: phase }
+      let(:idea) { build(:idea, project: project, creation_phase: phase) }
+
+      it 'returns the form of the phase in which the input was created' do
+        expect(idea.custom_form).to eq phase_form
+      end
+    end
+
+    context 'in a timeline project when created outside a phase' do
+      let(:project) { create :project_with_future_native_survey_phase }
+      let!(:project_form) { create :custom_form, participation_context: project }
+      let(:phase) { project.phases.first }
+      let!(:phase_form) { create :custom_form, participation_context: phase }
+      let(:idea) { build(:idea, project: project) }
+
+      it 'returns the form of the project' do
+        expect(idea.custom_form).to eq project_form
+      end
+    end
+  end
+
   context 'with custom fields' do
     context 'when creating ideas' do
       let(:idea) { build :idea }
