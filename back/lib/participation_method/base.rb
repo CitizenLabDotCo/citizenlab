@@ -6,6 +6,21 @@ module ParticipationMethod
       @participation_context = participation_context
     end
 
+    def assign_slug(input)
+      # Input is not created in this participation method,
+      # so the default is to do nothing.
+    end
+
+    def assign_defaults(input)
+      # Default is to do nothing.
+    end
+
+    def validate_built_in_fields?
+      # Most participation methods do not have built-in fields,
+      # so return false.
+      false
+    end
+
     private
 
     attr_reader :participation_context
