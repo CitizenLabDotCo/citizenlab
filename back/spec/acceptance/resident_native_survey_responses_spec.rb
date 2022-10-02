@@ -165,10 +165,10 @@ resource 'Ideas' do
       parameter :custom_field_name1, 'A value for one custom field'
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
-          let(:project) { create :project_with_active_native_survey_phase }
-          let(:active_phase) { project.phases.first }
-          let(:custom_form) { create(:custom_form, participation_context: active_phase) }
-          let(:creation_phase) { active_phase }
+    let(:project) { create :project_with_active_native_survey_phase }
+    let(:active_phase) { project.phases.first }
+    let(:custom_form) { create(:custom_form, participation_context: active_phase) }
+    let(:creation_phase) { active_phase }
     let(:creation_phase) { nil }
     let!(:input) do
       create(
