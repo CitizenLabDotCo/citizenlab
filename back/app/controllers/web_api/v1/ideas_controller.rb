@@ -121,11 +121,14 @@ class WebApi::V1::IdeasController < ApplicationController
     end
     send_error and return unless participation_context
 
-    custom_form = custom_form_for participation_context
+    creation_phase = (participation_context if participation_context.is_a?(Phase))
+
+    custom_form = participation_context.custom_form || CustomForm.new(participation_context: participation_context)
     extract_custom_field_values_from_params! custom_form
 
     user_can_moderate_project = UserRoleService.new.can_moderate_project?(project, current_user)
     input = Idea.new idea_params(custom_form, user_can_moderate_project)
+    input.creation_phase = creation_phase
     input.author ||= current_user
     if phase_ids.empty? && project.timeline?
       input.phase_ids = [participation_context.id]
@@ -156,14 +159,13 @@ class WebApi::V1::IdeasController < ApplicationController
     project = input.project
     authorize_input input, project
 
-    custom_form = custom_form_for participation_context_for_update(input, project)
-    extract_custom_field_values_from_params! custom_form
+    extract_custom_field_values_from_params! input.custom_form
     params[:idea][:topic_ids] ||= [] if params[:idea].key?(:topic_ids)
     params[:idea][:phase_ids] ||= [] if params[:idea].key?(:phase_ids)
     mark_custom_field_values_to_clear! input
 
     user_can_moderate_project = UserRoleService.new.can_moderate_project?(project, current_user)
-    update_params = idea_params(custom_form, user_can_moderate_project).to_h
+    update_params = idea_params(input.custom_form, user_can_moderate_project).to_h
     update_params[:custom_field_values] = input.custom_field_values.merge(update_params[:custom_field_values] || {})
     CustomFieldService.new.cleanup_custom_field_values! update_params[:custom_field_values]
     input.assign_attributes update_params
@@ -226,26 +228,6 @@ class WebApi::V1::IdeasController < ApplicationController
       params: fastjson_params,
       include: %i[author topics user_vote idea_images]
     ).serialized_json
-  end
-
-  def custom_form_for(participation_context)
-    return CustomForm.new unless participation_context
-
-    participation_context.custom_form || CustomForm.new(participation_context: participation_context)
-  end
-
-  def participation_context_for_update(input, project)
-    phases = input.phases
-    if project.continuous? || phases.none?(&:native_survey?)
-      # The form is at the project level
-      project
-    elsif phases.size == 1 && phases.first.native_survey?
-      # Survey responses can only live in exactly 1 phase.
-      # The form is at the phase level.
-      phases.first
-    else
-      raise 'Current context does not support saving input!'
-    end
   end
 
   def extract_custom_field_values_from_params!(custom_form)

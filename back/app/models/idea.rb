@@ -101,7 +101,7 @@ class Idea < ApplicationRecord
   end
 
   # validates :custom_field_values, json: {
-  #   schema: :schema,
+  #   schema: :schema_for_validation,
   #   message: ->(errors) { errors }
   # }
 
@@ -164,14 +164,8 @@ class Idea < ApplicationRecord
   end
 
   def custom_form
-    participation_context_on_creation = creation_phase || project
-    participation_context_on_creation.custom_form
-  end
-
-  def schema
-    fields = custom_form.custom_fields
-    multiloc_schema = JsonSchemaGeneratorService.new.generate_for fields
-    multiloc_schema.values.first
+    context = participation_context_on_creation
+    context.custom_form || CustomForm.new(participation_context: context)
   end
 
   private
@@ -182,6 +176,12 @@ class Idea < ApplicationRecord
 
   def participation_method_on_creation
     Factory.instance.participation_method_for participation_context_on_creation
+  end
+
+  def schema_for_validation
+    fields = custom_form.custom_fields
+    multiloc_schema = JsonSchemaGeneratorService.new.generate_for fields
+    multiloc_schema.values.first
   end
 
   def validate_built_in_fields?
