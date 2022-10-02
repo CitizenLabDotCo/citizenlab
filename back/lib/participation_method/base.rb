@@ -21,6 +21,14 @@ module ParticipationMethod
       false
     end
 
+    def never_show?
+      false
+    end
+
+    def never_update?
+      false
+    end
+
     private
 
     attr_reader :participation_context

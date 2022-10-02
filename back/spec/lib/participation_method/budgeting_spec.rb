@@ -58,4 +58,16 @@ RSpec.describe ParticipationMethod::Budgeting do
       end
     end
   end
+
+  describe '#never_show?' do
+    it 'returns false' do
+      expect(participation_method.never_show?).to be false
+    end
+  end
+
+  describe '#never_update?' do
+    it 'returns false' do
+      expect(participation_method.never_update?).to be false
+    end
+  end
 end

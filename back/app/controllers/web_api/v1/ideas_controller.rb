@@ -135,7 +135,7 @@ class WebApi::V1::IdeasController < ApplicationController
     end
     service.before_create(input, current_user)
 
-    authorize_input input, project
+    authorize input
     verify_profanity input
 
     save_options = {}
@@ -157,7 +157,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def update
     input = Idea.find params[:id]
     project = input.project
-    authorize_input input, project
+    authorize input
 
     extract_custom_field_values_from_params! input.custom_form
     params[:idea][:topic_ids] ||= [] if params[:idea].key?(:topic_ids)
@@ -169,7 +169,7 @@ class WebApi::V1::IdeasController < ApplicationController
     update_params[:custom_field_values] = input.custom_field_values.merge(update_params[:custom_field_values] || {})
     CustomFieldService.new.cleanup_custom_field_values! update_params[:custom_field_values]
     input.assign_attributes update_params
-    authorize_input input, project
+    authorize input
     verify_profanity input
 
     service.before_update(input, current_user)
@@ -178,7 +178,7 @@ class WebApi::V1::IdeasController < ApplicationController
     save_options[:context] = :publication if params.dig(:idea, :publication_status) == 'published'
     ActiveRecord::Base.transaction do
       if input.save save_options
-        authorize_input input, project
+        authorize input
         service.after_update(input, current_user)
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
@@ -193,7 +193,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def destroy
     input = Idea.find params[:id]
-    authorize_input input, input.project
+    authorize input
     service.before_destroy(input, current_user)
     input = input.destroy
     if input.destroyed?
@@ -206,23 +206,8 @@ class WebApi::V1::IdeasController < ApplicationController
 
   private
 
-  def authorize_input(input, project)
-    authorize input, policy_class: policy_class(input, project)
-  end
-
-  def policy_class(input, project)
-    phases = input.phases
-    if project.continuous?
-      project.native_survey? ? SurveyResponsePolicy : IdeaPolicy
-    elsif phases.size == 1 && phases.first.native_survey?
-      SurveyResponsePolicy
-    else
-      IdeaPolicy
-    end
-  end
-
   def render_show(input)
-    authorize_input input, input.project
+    authorize input
     render json: WebApi::V1::IdeaSerializer.new(
       input,
       params: fastjson_params,
@@ -303,10 +288,6 @@ class WebApi::V1::IdeasController < ApplicationController
     if params[:project].present?
       authorize Project.find(params[:project]), :index_xlsx?
     else
-      # TODO: (native surveys) No policy_class here, because the project is not given.
-      # That means that this is only applicable for ideas.
-      # Is there a use case in which no project is given? That seems unlikely,
-      # because that would result in all ideas of all projects to be included in the export file.
       authorize :idea, :index_xlsx?
     end
   end

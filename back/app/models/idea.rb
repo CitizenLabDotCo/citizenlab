@@ -168,14 +168,14 @@ class Idea < ApplicationRecord
     context.custom_form || CustomForm.new(participation_context: context)
   end
 
+  def participation_method_on_creation
+    Factory.instance.participation_method_for participation_context_on_creation
+  end
+
   private
 
   def participation_context_on_creation
     creation_phase || project
-  end
-
-  def participation_method_on_creation
-    Factory.instance.participation_method_for participation_context_on_creation
   end
 
   def schema_for_validation

@@ -15,5 +15,13 @@ module ParticipationMethod
       input.publication_status = 'published'
       input.idea_status = IdeaStatus.find_by!(code: 'proposed')
     end
+
+    def never_show?
+      true
+    end
+
+    def never_update?
+      true
+    end
   end
 end

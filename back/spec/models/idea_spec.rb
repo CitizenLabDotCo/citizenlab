@@ -32,6 +32,37 @@ RSpec.describe Idea, type: :model do
     end
   end
 
+  describe '#participation_method_on_creation' do
+    context 'in a continuous project' do
+      let(:project) { create :continuous_project }
+      let(:idea) { build(:idea, project: project) }
+
+      it 'returns the project' do
+        expect(idea.participation_method_on_creation).to be_an_instance_of ParticipationMethod::Ideation
+      end
+    end
+
+    context 'in a timeline project when created in a phase' do
+      let(:project) { create :project_with_future_native_survey_phase }
+      let(:creation_phase) { project.phases.first }
+      let(:idea) { build(:idea, project: project, creation_phase: creation_phase) }
+
+      it 'returns the phase on creation' do
+        expect(idea.participation_method_on_creation).to be_an_instance_of ParticipationMethod::NativeSurvey
+      end
+    end
+
+    context 'in a timeline project when created outside a phase' do
+      let(:project) { create :project_with_future_native_survey_phase }
+      let(:phase) { project.phases.first }
+      let(:idea) { build(:idea, project: project) }
+
+      it 'returns the project' do
+        expect(idea.participation_method_on_creation).to be_an_instance_of ParticipationMethod::Ideation
+      end
+    end
+  end
+
   describe '#custom_form' do
     context 'in a continuous project when the form has been defined' do
       let(:project) { create :continuous_project }

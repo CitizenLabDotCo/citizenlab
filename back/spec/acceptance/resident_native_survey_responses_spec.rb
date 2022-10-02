@@ -15,6 +15,48 @@ resource 'Ideas' do
     IdeaStatus.create_defaults
   end
 
+  get 'web_api/v1/ideas/:id' do
+    let(:project) { create :project_with_active_native_survey_phase }
+    let(:creation_phase) { project.phases.first }
+    let!(:input) do
+      create(
+        :idea,
+        author: user,
+        project: project,
+        creation_phase: creation_phase,
+        phases: [creation_phase]
+      )
+    end
+    let(:id) { input.id }
+
+    example_request '[error] Try to get one input by id' do
+      assert_status 401
+      json_response = json_parse(response_body)
+      expect(json_response).to eq({ errors: { base: [{ error: 'Unauthorized!' }] } })
+    end
+  end
+
+  get 'web_api/v1/ideas/by_slug/:slug' do
+    let(:project) { create :project_with_active_native_survey_phase }
+    let(:creation_phase) { project.phases.first }
+    let!(:input) do
+      create(
+        :idea,
+        author: user,
+        project: project,
+        creation_phase: creation_phase,
+        phases: [creation_phase]
+      )
+    end
+    let(:slug) { input.slug }
+
+    example_request '[error] Try to get one input by slug' do
+      assert_status 401
+      json_response = json_parse(response_body)
+      expect(json_response).to eq({ errors: { base: [{ error: 'Unauthorized!' }] } })
+    end
+  end
+
   post 'web_api/v1/ideas' do
     with_options scope: :idea do
       parameter :project_id, 'The identifier of the project that hosts the input', required: true
@@ -123,7 +165,11 @@ resource 'Ideas' do
       parameter :custom_field_name1, 'A value for one custom field'
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
-    let!(:phases) { [] }
+          let(:project) { create :project_with_active_native_survey_phase }
+          let(:active_phase) { project.phases.first }
+          let(:custom_form) { create(:custom_form, participation_context: active_phase) }
+          let(:creation_phase) { active_phase }
+    let(:creation_phase) { nil }
     let!(:input) do
       create(
         :idea,
@@ -132,7 +178,8 @@ resource 'Ideas' do
         custom_field_values: {
           custom_field_name1: 'Cat'
         },
-        phases: phases
+        creation_phase: creation_phase,
+        phases: [creation_phase].compact
       )
     end
     let(:id) { input.id }
@@ -167,7 +214,7 @@ resource 'Ideas' do
           let(:project) { create :project_with_active_native_survey_phase }
           let(:active_phase) { project.phases.first }
           let(:custom_form) { create(:custom_form, participation_context: active_phase) }
-          let!(:phases) { [active_phase] }
+          let(:creation_phase) { active_phase }
 
           example_request '[error] Trying to update an input' do
             assert_status 401

@@ -46,4 +46,16 @@ RSpec.describe ParticipationMethod::NativeSurvey do
       end
     end
   end
+
+  describe '#never_show?' do
+    it 'returns true' do
+      expect(participation_method.never_show?).to be true
+    end
+  end
+
+  describe '#never_update?' do
+    it 'returns true' do
+      expect(participation_method.never_update?).to be true
+    end
+  end
 end
