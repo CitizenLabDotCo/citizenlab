@@ -23,7 +23,7 @@ export const getLegendTranslate = (
   }
 
   if (position === 'right-center') {
-    const left = graphWidth - legendWidth - (margin?.right ?? 0);
+    const left = graphWidth - legendWidth - (margin?.left ?? 0);
     const top = (graphHeight - legendHeight) / 2 + 8;
     return `translate(${left},${top})`;
   }

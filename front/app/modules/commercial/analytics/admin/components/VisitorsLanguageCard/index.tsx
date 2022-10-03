@@ -8,6 +8,7 @@ import GraphCard from 'components/admin/GraphCard';
 import PieChart from 'components/admin/Graphs/PieChart';
 import { Box } from '@citizenlab/cl2-component-library';
 import EmptyState from 'components/admin/Graphs/_components/EmptyState';
+import EmptyPieChart from '../EmptyPieChart';
 
 // i18n
 import messages from './messages';
@@ -37,11 +38,12 @@ const VisitorsCard = ({
   const graphRef = useRef();
 
   const { pieData, xlsxData } = useVisitorsLanguageData();
+  const title = formatMessage(messages.title);
 
   if (isNilOrError(pieData)) {
     return (
-      <GraphCard title="visitors locale">
-        <EmptyState />
+      <GraphCard title={title}>
+        <EmptyState emptyContainerContent={EmptyPieChart} />
       </GraphCard>
     );
   }
@@ -53,15 +55,15 @@ const VisitorsCard = ({
       label: row.name,
     })
   );
-  const visitorsMessage = formatMessage(messages.visitorsLanguage);
+
   const startAt = startAtMoment?.toISOString();
   const endAt = endAtMoment?.toISOString();
 
   return (
     <GraphCard
-      title={visitorsMessage}
+      title={title}
       exportMenu={{
-        name: visitorsMessage,
+        name: title,
         svgNode: graphRef,
         xlsxData: isNilOrError(xlsxData) ? undefined : xlsxData,
         startAt,
@@ -71,9 +73,10 @@ const VisitorsCard = ({
       }}
       fullWidth={false}
     >
-      <Box width="100%" height="initial">
+      <Box height="initial" p="20px">
         <PieChart
-          height={140}
+          height={164}
+          width={164}
           data={pieData}
           mapping={{
             angle: 'value',
@@ -81,8 +84,8 @@ const VisitorsCard = ({
           }}
           legend={{
             items: legend,
-            marginTop: 15,
             maintainGraphSize: true,
+            marginLeft: 50,
             position: 'right-center',
           }}
           innerRef={graphRef}
