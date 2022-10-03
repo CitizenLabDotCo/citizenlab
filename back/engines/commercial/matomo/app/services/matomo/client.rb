@@ -122,7 +122,7 @@ module Matomo
         'format' => 'JSON'
       }.compact
 
-      HTTParty.get(
+      HTTParty.post(
         @index_php_uri,
         query: query,
         headers: headers,
