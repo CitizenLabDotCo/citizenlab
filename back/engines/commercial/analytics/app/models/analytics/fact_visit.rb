@@ -47,6 +47,5 @@ module Analytics
     validates :pages_visited, presence: true
     validates :matomo_visit_id, presence: true, uniqueness: true
     validates :matomo_last_action_time, presence: true
-
   end
 end

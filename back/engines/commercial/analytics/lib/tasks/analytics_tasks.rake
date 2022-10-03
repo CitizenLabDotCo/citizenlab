@@ -12,7 +12,6 @@ namespace :analytics do
       tenant.switch { Analytics::PopulateDimensionsService.run }
     end
   end
-
 end
 
 Rake::Task['analytics:install:migrations'].enhance(['analytics:copy_views'])
