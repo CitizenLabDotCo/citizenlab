@@ -1,5 +1,7 @@
 # Changelog
 
+## 2022-10-03
+
 ### Fixed
 
 - [CL-1762] Default pages titles and content, and default navbar items, now display in Swedish for newly created platforms with the Swedish locale.
