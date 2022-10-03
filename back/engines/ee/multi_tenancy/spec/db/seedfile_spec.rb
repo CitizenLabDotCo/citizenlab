@@ -7,6 +7,7 @@ describe 'seedfile', slow_test: true do
   # seem to work the straightforward way after multiple runs, seems to be due to
   # the schema created by apartment for the seedfile tenant. It's not getting
   # deleted after the tests
+  # rubocop:disable ExampleLength
   it 'generates a valid tenant and user' do
     expect(Tenant.count).to be(1)
     load Rails.root.join('db/seeds.rb')
@@ -65,4 +66,5 @@ describe 'seedfile', slow_test: true do
       expect(Group.count).to be 0
     end
   end
+  # rubocop:enable ExampleLength
 end
