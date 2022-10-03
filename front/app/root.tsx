@@ -17,31 +17,51 @@ import modules from 'modules';
 import history from 'utils/browserHistory';
 
 import {
-  unstable_HistoryRouter as HistoryRouter,
-  useRoutes,
-  useLocation,
-  useNavigationType,
   createRoutesFromChildren,
   matchRoutes,
+  useLocation,
+  useNavigationType,
+  useRoutes,
+  unstable_HistoryRouter as HistoryRouter,
 } from 'react-router-dom';
+import { wrapUseRoutes } from '@sentry/react';
 
-const useSentryRoutes = Sentry.wrapUseRoutes(useRoutes);
+Sentry.init({
+  dsn: process.env.SENTRY_DSN,
+  environment: process.env.SENTRY_ENV,
+  integrations: [
+    new BrowserTracing({
+      routingInstrumentation: Sentry.reactRouterV6Instrumentation(
+        useEffect,
+        useLocation,
+        useNavigationType,
+        createRoutesFromChildren,
+        matchRoutes
+      ),
+    }),
+  ],
+  tracesSampleRate: 1.0,
+});
 
-const Routes = () => {
-  const importedRoutes = createRoutes();
-  const routes = useSentryRoutes(importedRoutes);
+const useSentryRoutes = wrapUseRoutes(useRoutes);
+const routes = createRoutes();
+
+function Routes() {
   useEffect(() => {
     modules.afterMountApplication();
   }, []);
 
-  return <App>{routes}</App>;
-};
+  return useSentryRoutes(routes);
+}
+
 const Root = () => {
   return (
     <OutletsProvider>
       <LanguageProvider>
         <HistoryRouter history={history}>
-          <Routes />
+          <App>
+            <Routes />
+          </App>
         </HistoryRouter>
       </LanguageProvider>
     </OutletsProvider>
@@ -57,26 +77,3 @@ const mountApplication = () => {
 };
 
 mountApplication();
-
-if (process.env.SENTRY_DSN) {
-  import('@sentry/integrations').then((Integrations) => {
-    Sentry.init({
-      dsn: process.env.SENTRY_DSN,
-      environment: process.env.SENTRY_ENV,
-      release: process.env.CIRCLE_BUILD_NUM,
-      integrations: [
-        new Integrations.RewriteFrames(),
-        new BrowserTracing({
-          routingInstrumentation: Sentry.reactRouterV6Instrumentation(
-            React.useEffect,
-            useLocation,
-            useNavigationType,
-            createRoutesFromChildren,
-            matchRoutes
-          ),
-        }),
-      ],
-      tracesSampleRate: 0.05,
-    });
-  });
-}
