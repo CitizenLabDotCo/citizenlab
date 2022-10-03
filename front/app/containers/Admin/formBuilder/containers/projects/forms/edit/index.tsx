@@ -131,6 +131,9 @@ export const FormEdit = ({
 
   const handleDragRow = (fromIndex: number, toIndex: number) => {
     move(fromIndex, toIndex);
+    if (!isNilOrError(selectedField)) {
+      setSelectedField({ ...selectedField, index: toIndex });
+    }
   };
 
   const hasErrors = !!Object.keys(errors).length;
