@@ -27,7 +27,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import getNavbarItemPropsArray from '../MainHeader/DesktopNavbar/getNavbarItemPropsArray';
 import CloseIconButton from 'components/UI/CloseIconButton';
 
-const containerBackgroundColorRgb = hexToRgb(colors.label);
+const containerBackgroundColorRgb = hexToRgb(colors.textSecondary);
 
 const Container = styled.div`
   ${containerBackgroundColorRgb
@@ -47,7 +47,7 @@ const Container = styled.div`
   padding-top: 40px;
   position: relative;
 
-  ${media.biggerThanMaxTablet`
+  ${media.desktop`
     display: none;
   `}
 `;
@@ -86,7 +86,7 @@ const StyledCloseIconButton = styled(CloseIconButton)`
     background: #e0e0e0;
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     right: 15px;
   `}
 `;
@@ -193,8 +193,8 @@ const FullMobileNavMenu = ({
             <StyledCloseIconButton
               a11y_buttonActionMessage={messages.closeMobileNavMenu}
               onClick={handleOnCloseButtonClick}
-              iconColor={colors.label}
-              iconColorOnHover={darken(0.1, colors.label)}
+              iconColor={colors.textSecondary}
+              iconColorOnHover={darken(0.1, colors.textSecondary)}
               iconWidth={'12px'}
               iconHeight={'12px'}
             />

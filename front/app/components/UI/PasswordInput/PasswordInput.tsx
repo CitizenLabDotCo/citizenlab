@@ -119,8 +119,8 @@ const PasswordInputComponent = ({
             a11y_buttonActionMessage={formatMessage(
               showPassword ? messages.hidePassword : messages.showPassword
             )}
-            iconColor={colors.label}
-            iconColorOnHover={darken(0.1, colors.label)}
+            iconColor={colors.textSecondary}
+            iconColorOnHover={darken(0.1, colors.textSecondary)}
             iconWidth={'22px'}
             iconHeight={showPassword ? '15px' : '19px'}
             // prevent form submission
@@ -155,7 +155,7 @@ const PasswordInputComponent = ({
                 ]}
                 onChangeScore={handleOnChangeScore}
                 scoreWordStyle={{
-                  color: colors.label,
+                  color: colors.textSecondary,
                 }}
               />
             </Suspense>

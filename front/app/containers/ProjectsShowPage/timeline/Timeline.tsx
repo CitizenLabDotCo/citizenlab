@@ -36,10 +36,10 @@ import { darken, rgba } from 'polished';
 const MIN_PHASE_WIDTH_PX = 110;
 const CONTAINER_PADDING_PX = 20;
 
-const grey = colors.label;
-const greenTransparent = rgba(colors.clGreen, 0.15);
-const green = colors.clGreen;
-const darkGreen = colors.clGreenDark;
+const grey = colors.textSecondary;
+const greenTransparent = rgba(colors.success, 0.15);
+const green = colors.success;
+const darkGreen = colors.green700;
 
 const RtlBox = styled(Box)`
   ${isRtl`
@@ -75,13 +75,13 @@ const phaseBarHeight = '24px';
 const PhaseBar = styled.button`
   width: 100%;
   height: calc(${phaseBarHeight} - 1px);
-  color: ${darken(0.1, colors.label)};
+  color: ${darken(0.1, colors.textSecondary)};
   font-size: ${fontSizes.s}px;
   font-weight: 500;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${darken(0.08, colors.lightGreyishBlue)};
+  background: ${darken(0.08, colors.grey200)};
   transition: background 60ms ease-out;
   position: relative;
   cursor: pointer;
@@ -108,7 +108,7 @@ const PhaseArrow = styled(Icon)`
 `;
 
 const PhaseText = styled.div<{ current: boolean; selected: boolean }>`
-  color: ${darken(0.1, colors.label)};
+  color: ${darken(0.1, colors.textSecondary)};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   text-align: center;
@@ -129,7 +129,7 @@ const PhaseText = styled.div<{ current: boolean; selected: boolean }>`
   margin-right: 5px;
   transition: color 80ms ease-out;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     display: none;
   `}
 `;

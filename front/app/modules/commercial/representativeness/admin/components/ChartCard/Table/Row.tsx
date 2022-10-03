@@ -14,7 +14,7 @@ import { formatPercentage } from '../utils';
 import { RepresentativenessRow } from '../../../hooks/createRefDataSubscription';
 
 const AbsoluteValue = styled.span`
-  color: ${colors.secondaryText};
+  color: ${colors.textSecondary};
   margin-left: 4px;
 `;
 

@@ -11,7 +11,6 @@ import {
   Box,
   Label,
   Button,
-  IconTooltip,
   LocaleSwitcher,
   Icon,
   Input,
@@ -109,6 +108,8 @@ const ConfigMultiselectWithLocaleSwitcher = ({
               <Box
                 as="fieldset"
                 border="none"
+                p="0"
+                m="0"
                 onBlur={() => {
                   onBlur();
                   trigger();
@@ -117,12 +118,7 @@ const ConfigMultiselectWithLocaleSwitcher = ({
                 <SectionField>
                   <Box display="flex" flexWrap="wrap" marginBottom="12px">
                     <Box marginTop="4px" marginRight="8px">
-                      <Label>
-                        {formatMessage(messages.fieldLabel)}
-                        <IconTooltip
-                          content={formatMessage(messages.fieldTooltip)}
-                        />
-                      </Label>
+                      <Label>{formatMessage(messages.fieldLabel)}</Label>
                     </Box>
                     <Box>
                       <LocaleSwitcher
@@ -168,7 +164,7 @@ const ConfigMultiselectWithLocaleSwitcher = ({
                                   padding="0px"
                                   buttonStyle="text"
                                   aria-label={formatMessage(
-                                    messages.removeOption
+                                    messages.removeAnswer
                                   )}
                                   onClick={() => {
                                     removeOption(choices, name, index);
@@ -194,28 +190,28 @@ const ConfigMultiselectWithLocaleSwitcher = ({
                     onClick={() => addOption(choices, name)}
                     text={formatMessage(messages.addAnswer)}
                   />
+                  {validationError && (
+                    <Error
+                      marginTop="8px"
+                      marginBottom="8px"
+                      text={validationError}
+                      scrollIntoView={false}
+                    />
+                  )}
+                  {apiError && (
+                    <Error
+                      fieldName={name as TFieldName}
+                      apiErrors={apiError}
+                      marginTop="8px"
+                      marginBottom="8px"
+                      scrollIntoView={false}
+                    />
+                  )}
                 </SectionField>
               </Box>
             );
           }}
         />
-        {validationError && (
-          <Error
-            marginTop="8px"
-            marginBottom="8px"
-            text={validationError}
-            scrollIntoView={false}
-          />
-        )}
-        {apiError && (
-          <Error
-            fieldName={name as TFieldName}
-            apiErrors={apiError}
-            marginTop="8px"
-            marginBottom="8px"
-            scrollIntoView={false}
-          />
-        )}
       </>
     );
   }

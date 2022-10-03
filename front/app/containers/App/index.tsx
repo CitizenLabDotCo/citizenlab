@@ -93,7 +93,7 @@ const InnerContainer = styled.div`
   flex-direction: column;
   align-items: stretch;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding-top: ${(props) => props.theme.mobileTopBarHeight}px;
     min-height: calc(100vh - ${(props) =>
       props.theme.mobileTopBarHeight}px - ${(props) =>
