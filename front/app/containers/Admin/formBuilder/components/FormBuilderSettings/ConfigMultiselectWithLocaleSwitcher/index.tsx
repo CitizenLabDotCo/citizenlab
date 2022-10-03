@@ -77,7 +77,7 @@ const ConfigMultiselectWithLocaleSwitcher = ({
     move(fromIndex, toIndex);
   };
 
-  // Handles add and remove fields
+  // Handles add and remove options
   const addOption = (value, name) => {
     const newValues = value;
     newValues.push({
@@ -92,15 +92,9 @@ const ConfigMultiselectWithLocaleSwitcher = ({
     setValue(nameInputType, 'select');
   };
 
-  const toggleMultiselection = () => {
-    if (watch(nameInputType) === 'select') {
-      setValue(nameInputType, 'multiselect');
-    } else {
-      setValue(nameInputType, 'select');
-    }
-  };
-
-  const defaultValues = [{}];
+  const defaultOptionValues = [{}];
+  const defaultToggleValue = false;
+  const currentToggleValue = watch(nameInputType);
   const errors = get(formContextErrors, name);
   const apiError =
     (errors?.error as string | undefined) && ([errors] as unknown as CLError[]);
@@ -112,7 +106,7 @@ const ConfigMultiselectWithLocaleSwitcher = ({
         <Controller
           name={name}
           control={control}
-          defaultValue={defaultValues}
+          defaultValue={defaultOptionValues}
           render={({ field: { ref: _ref, value: choices, onBlur } }) => {
             const canDeleteLastOption =
               allowDeletingAllOptions || choices.length > 1;
@@ -221,12 +215,25 @@ const ConfigMultiselectWithLocaleSwitcher = ({
                     />
                   )}
                   <Box mt="24px">
-                    <Toggle
-                      checked={watch(nameInputType) === 'multiselect'}
-                      onChange={() => {
-                        toggleMultiselection();
+                    <Controller
+                      name={nameInputType}
+                      control={control}
+                      defaultValue={defaultToggleValue}
+                      render={({ field: { ref: _ref, value } }) => {
+                        return (
+                          <Toggle
+                            checked={value === 'multiselect'}
+                            onChange={() => {
+                              if (currentToggleValue === 'select') {
+                                setValue(nameInputType, 'multiselect');
+                              } else {
+                                setValue(nameInputType, 'select');
+                              }
+                            }}
+                            label={formatMessage(messages.chooseMultipleToggle)}
+                          />
+                        );
                       }}
-                      label={formatMessage(messages.chooseMultipleToggle)}
                     />
                   </Box>
                 </SectionField>
