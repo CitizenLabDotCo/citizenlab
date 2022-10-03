@@ -12,9 +12,8 @@ export type Response = {
 };
 
 interface BaseRow {
-  'dimension_user.id': string;
-  first_dimension_date_first_action_date: string;
-  first_dimension_date_last_action_date: string;
+  returning_visitor: boolean;
+  count: number;
 }
 
 export interface PieRow {

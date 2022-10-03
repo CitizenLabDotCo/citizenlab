@@ -37,10 +37,9 @@ const query = ({
       ...getProjectFilter('dimension_projects', projectId),
       ...getDateFilter('dimension_date_last_action', startAt, endAt),
     },
-    groups: 'dimension_user.id',
+    groups: 'returning_visitor',
     aggregations: {
-      'dimension_date_first_action.date': 'first',
-      'dimension_date_last_action.date': 'first',
+      all: 'count',
     },
   };
 

@@ -1,34 +1,21 @@
 import { Response, PieRow } from './typings';
-import { colors } from 'components/admin/Graphs/styling';
 import { XlsxData } from 'components/admin/ReportExportMenu';
 import { Translations } from './utils';
 
 // styling
+import { categoricalColorScheme } from 'components/admin/Graphs/styling';
 
 export const parsePieData = (
   data: Response['data'],
   translations: Translations
-): PieRow[] => {
-  const usersByAction = data.map(
-    (row) =>
-      row.first_dimension_date_first_action_date ===
-      row.first_dimension_date_last_action_date
-  );
-  const newUsers = usersByAction.filter((v) => v).length;
-  const oldUsers = usersByAction.filter((v) => !v).length;
-  return [
-    {
-      name: translations.newVisitors,
-      value: newUsers,
-      color: colors.categorical01,
-    },
-    {
-      name: translations.returningVisitors,
-      value: oldUsers,
-      color: colors.categorical02,
-    },
-  ];
-};
+): PieRow[] =>
+  data.map((row, i) => ({
+    name: row.returning_visitor
+      ? translations.returningVisitors
+      : translations.newVisitors,
+    value: row.count,
+    color: categoricalColorScheme({ rowIndex: i }),
+  }));
 
 export const parseExcelData = (
   data: Response['data'],
