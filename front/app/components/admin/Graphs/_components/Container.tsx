@@ -82,6 +82,8 @@ const Container = ({
       display="flex"
       flexDirection={rightLegend ? 'row' : 'column'}
       justifyContent="center"
+      width="100%"
+      height="100%"
     >
       <ResponsiveContainer
         width={parsedWidth}
