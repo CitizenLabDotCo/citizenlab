@@ -105,6 +105,31 @@ RSpec.describe Idea, type: :model do
         form = idea.custom_form
         expect(form).to be_instance_of CustomForm
         expect(form).to be_new_record
+        expect(form.participation_context_type).to eq 'Phase'
+      end
+    end
+
+    context 'in a timeline project when created in an ideation phase and a form has been defined' do
+      let(:project) { create :project_with_active_ideation_phase }
+      let(:phase) { project.phases.first }
+      let!(:project_form) { create :custom_form, participation_context: project }
+      let(:idea) { build(:idea, project: project, creation_phase: phase) }
+
+      it 'returns the form of the phase in which the input was created' do
+        expect(idea.custom_form).to eq project_form
+      end
+    end
+
+    context 'in a timeline project when created in an ideation phase and a form has not been defined yet' do
+      let(:project) { create :project_with_active_ideation_phase }
+      let(:phase) { project.phases.first }
+      let(:idea) { build(:idea, project: project, creation_phase: phase) }
+
+      it 'returns a new form' do
+        form = idea.custom_form
+        expect(form).to be_instance_of CustomForm
+        expect(form).to be_new_record
+        expect(form.participation_context_type).to eq 'Project'
       end
     end
 

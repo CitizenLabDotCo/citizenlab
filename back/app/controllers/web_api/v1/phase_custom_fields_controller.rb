@@ -6,6 +6,8 @@ class WebApi::V1::PhaseCustomFieldsController < ApplicationController
   skip_before_action :authenticate_user
 
   def schema
+    send_error && return unless phase.project.timeline?
+
     if phase
       render json: CustomFieldService.new.ui_and_json_multiloc_schemas(AppConfiguration.instance, custom_fields)
     else
@@ -14,6 +16,8 @@ class WebApi::V1::PhaseCustomFieldsController < ApplicationController
   end
 
   def json_forms_schema
+    send_error && return unless phase.project.timeline?
+
     if phase
       render json: JsonFormsService.new.input_ui_and_json_multiloc_schemas(custom_fields, current_user)
     else
@@ -24,15 +28,16 @@ class WebApi::V1::PhaseCustomFieldsController < ApplicationController
   private
 
   def phase
-    @phase ||= Phase.find_by id: params[:phase_id]
+    @phase ||= Phase.find params[:phase_id]
   end
 
   def custom_fields
-    IdeaCustomFieldsService.new(custom_form).all_fields
+    IdeaCustomFieldsService.new(custom_form).enabled_fields
   end
 
   def custom_form
-    if phase.native_survey?
+    participation_method = Factory.instance.participation_method_for phase
+    if participation_method.form_in_phase?
       phase.custom_form || CustomForm.new(participation_context: phase)
     else
       phase.project.custom_form || CustomForm.new(participation_context: phase.project)

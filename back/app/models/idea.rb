@@ -164,8 +164,11 @@ class Idea < ApplicationRecord
   end
 
   def custom_form
-    context = participation_context_on_creation
-    context.custom_form || CustomForm.new(participation_context: context)
+    if project.timeline? && participation_method_on_creation.form_in_phase?
+      creation_phase.custom_form || CustomForm.new(participation_context: creation_phase)
+    else
+      project.custom_form || CustomForm.new(participation_context: project)
+    end
   end
 
   def participation_method_on_creation

@@ -50,6 +50,8 @@ Rails.application.routes.draw do
         get 'by_slug/:slug', on: :collection, to: 'ideas#by_slug'
         get :as_markers, on: :collection, action: 'index_idea_markers'
         get :filter_counts, on: :collection
+        get :schema, on: :member
+        get :json_forms_schema, on: :member
       end
 
       resources :initiatives,

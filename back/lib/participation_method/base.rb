@@ -29,6 +29,10 @@ module ParticipationMethod
       false
     end
 
+    def form_in_phase?
+      false
+    end
+
     private
 
     attr_reader :participation_context

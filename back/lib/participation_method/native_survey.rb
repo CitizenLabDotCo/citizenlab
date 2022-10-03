@@ -23,5 +23,9 @@ module ParticipationMethod
     def never_update?
       true
     end
+
+    def form_in_phase?
+      true
+    end
   end
 end

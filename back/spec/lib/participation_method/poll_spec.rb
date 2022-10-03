@@ -39,4 +39,10 @@ RSpec.describe ParticipationMethod::Poll do
       expect(participation_method.never_update?).to be false
     end
   end
+
+  describe '#form_in_phase?' do
+    it 'returns false' do
+      expect(participation_method.form_in_phase?).to be false
+    end
+  end
 end
