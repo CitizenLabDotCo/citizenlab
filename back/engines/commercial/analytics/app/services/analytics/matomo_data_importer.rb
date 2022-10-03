@@ -28,12 +28,12 @@ module Analytics
         batch_size: batch_size
       )
 
-      enumerator = enumerator.lazy.with_index.take_while do |visits, index|
-        last_action_timestamp = visits.pluck('lastActionTimestamp').max
-        last_action_timestamp < at_least_until_timestamp || index < max_nb_batches
-      end
+      enumerator.with_index(1) do |visits, index|
+        persist_visit_data(visits)
 
-      enumerator.map { |visits| persist_visit_data(visits) }.force
+        last_action_timestamp = visits.pluck('lastActionTimestamp').max
+        break if last_action_timestamp > at_least_until_timestamp && index >= max_nb_batches
+      end
     end
 
     def persist_visit_data(visit_data)
