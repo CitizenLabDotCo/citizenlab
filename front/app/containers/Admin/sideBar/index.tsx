@@ -171,7 +171,7 @@ class Sidebar extends PureComponent<
         {
           name: 'dashboard',
           link: '/admin/dashboard',
-          iconName: 'stats',
+          iconName: 'sidebar-dashboards',
           message: 'dashboard',
         },
         {
@@ -183,14 +183,14 @@ class Sidebar extends PureComponent<
         {
           name: 'workshops',
           link: '/admin/workshops',
-          iconName: 'workshops',
+          iconName: 'sidebar-workshops',
           message: 'workshops',
           featureNames: ['workshops'],
         },
         {
           name: 'ideas',
           link: '/admin/ideas',
-          iconName: 'idea2',
+          iconName: 'sidebar-input-manager',
           message: 'inputManager',
         },
         {
@@ -204,19 +204,19 @@ class Sidebar extends PureComponent<
         {
           name: 'userinserts',
           link: '/admin/users',
-          iconName: 'users',
+          iconName: 'sidebar-users',
           message: 'users',
         },
         {
           name: 'invitations',
           link: '/admin/invitations',
-          iconName: 'invitations',
+          iconName: 'sidebar-invitations',
           message: 'invitations',
         },
         {
           name: 'messaging',
           link: '/admin/messaging',
-          iconName: 'emails',
+          iconName: 'sidebar-messaging',
           message: 'messaging',
           featureNames: [
             'manual_emailing',
@@ -227,7 +227,7 @@ class Sidebar extends PureComponent<
         {
           name: 'menu',
           link: '/admin/pages-menu',
-          iconName: 'blankPage',
+          iconName: 'sidebar-pages-menu',
           // It's better to avoid using this feature flag in the core
           // https://github.com/CitizenLabDotCo/citizenlab/pull/2162#discussion_r916512426
           message: props.customizableNavbarFeatureFlag ? 'menu' : 'pages',
@@ -305,7 +305,7 @@ class Sidebar extends PureComponent<
             target="_blank"
           >
             <IconWrapper>
-              <Icon name="academy" />
+              <Icon name="sidebar-academy" />
             </IconWrapper>
             <Text>{formatMessage({ ...messages.academy })}</Text>
           </MenuLink>
@@ -315,7 +315,7 @@ class Sidebar extends PureComponent<
             target="_blank"
           >
             <IconWrapper>
-              <Icon name="circleInfo" />
+              <Icon name="sidebar-guide" />
             </IconWrapper>
             <Text>{formatMessage({ ...messages.guide })}</Text>
           </GetStartedLink>
