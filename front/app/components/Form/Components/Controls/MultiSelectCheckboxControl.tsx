@@ -6,12 +6,18 @@ import {
   rankWith,
 } from '@jsonforms/core';
 import React, { useState } from 'react';
-import ErrorDisplay from '../ErrorDisplay';
-import { Box, Checkbox } from '@citizenlab/cl2-component-library';
-import { FormLabel } from 'components/UI/FormComponents';
+
+// utils
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
-import VerificationIcon from '../VerificationIcon';
 import { isArray } from 'lodash-es';
+
+// components
+import VerificationIcon from '../VerificationIcon';
+import { Box, Checkbox, Text } from '@citizenlab/cl2-component-library';
+import { FormLabel } from 'components/UI/FormComponents';
+import ErrorDisplay from '../ErrorDisplay';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 const MultiSelectCheckboxControl = ({
   data,
@@ -44,7 +50,10 @@ const MultiSelectCheckboxControl = ({
         subtextValue={uischema.options?.description}
         subtextSupportsHtml
       />
-      <Box mt="16px" display="block">
+      <Box display="block">
+        <Text fontSize="s">
+          <FormattedMessage {...messages.selectMany} />
+        </Text>
         {options?.map((option) => (
           <Box mt="12px" key={option.value}>
             <Checkbox

@@ -307,7 +307,11 @@ const Form = memo(
         }
         id={uiSchema?.options?.formId}
       >
-        <Box overflow={layoutType === 'inline' ? 'visible' : 'auto'} flex="1">
+        <Box
+          overflow={layoutType === 'inline' ? 'visible' : 'auto'}
+          flex="1"
+          marginBottom={layoutType === 'fullpage' ? '32px' : 'auto'}
+        >
           {title && <Title>{title}</Title>}
           <APIErrorsContext.Provider value={apiErrors}>
             <FormContext.Provider
