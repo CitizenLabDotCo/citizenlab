@@ -16,7 +16,7 @@ import EmptyProjectsImageSrc from 'assets/img/landingpage/no_projects_image.svg'
 const Container = styled.div`
   width: 100%;
   min-height: 200px;
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -32,7 +32,7 @@ const EmptyProjectsImage = styled(Image)`
   width: 100%;
   height: auto;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     &.objectFitCoverSupported {
       width: 100%;
       height: 100%;
@@ -47,7 +47,7 @@ const EmptyProjectsImage = styled(Image)`
 `;
 
 export const EmptyMessage = styled.div`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   position: absolute;
   top: 50%;
   left: 50%;
@@ -60,13 +60,13 @@ const EmptyMessageTitle = styled.h2`
   white-space: nowrap;
   margin-bottom: 5px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     font-size: ${fontSizes.l}px;
   `};
 `;
 
 const EmptyMessageLine = styled.p`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 25px;

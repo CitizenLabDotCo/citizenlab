@@ -22,7 +22,7 @@ const Text = styled.div`
   align-items: center;
   transition: all 80ms ease-out;
 
-  ${media.smallerThan1200px`
+  ${media.tablet`
     display: none;
   `}
 `;
@@ -32,7 +32,7 @@ const ArrowIcon = styled(Icon)`
   opacity: 0;
   transition: all 80ms ease-out;
 
-  ${media.smallerThan1200px`
+  ${media.tablet`
     display: none;
   `}
 `;
@@ -62,10 +62,10 @@ const MenuItemLink = styled(Link)`
   &:not(.active) {
     .cl-icon {
       .cl-icon-primary {
-        fill: ${colors.clIconPrimary};
+        fill: ${colors.blue400};
       }
       .cl-icon-accent {
-        fill: ${colors.clIconAccent};
+        fill: ${colors.teal400};
       }
     }
   }
@@ -77,26 +77,26 @@ const MenuItemLink = styled(Link)`
 
     .cl-icon {
       .cl-icon-primary {
-        fill: ${colors.clIconAccent};
+        fill: ${colors.teal400};
       }
       .cl-icon-accent {
-        fill: ${colors.clIconPrimary};
+        fill: ${colors.blue400};
       }
     }
 
     &.moderation {
       .cl-icon {
         .cl-icon-primary {
-          fill: ${colors.clIconAccent};
+          fill: ${colors.teal400};
         }
         .cl-icon-accent {
-          fill: ${colors.clIconAccent};
+          fill: ${colors.teal400};
         }
       }
     }
   }
 
-  ${media.smallerThan1200px`
+  ${media.tablet`
     width: 56px;
     padding-right: 5px;
   `}

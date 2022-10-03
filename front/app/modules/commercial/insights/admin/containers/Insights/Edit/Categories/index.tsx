@@ -56,7 +56,7 @@ const CategoriesLabel = styled.div`
   p {
     text-transform: uppercase;
     font-size: ${fontSizes.xs}px;
-    color: ${colors.adminTextColor};
+    color: ${colors.primary};
     font-weight: bold;
     margin-bottom: 0px;
     margin-right: 8px;
@@ -102,9 +102,9 @@ const CategoryButtonWithIcon = styled(CategoryButton)`
 `;
 
 const CategoryInfoBox = styled.div`
-  background-color: ${colors.clBlueLightest};
+  background-color: ${colors.teal100};
   font-size: ${fontSizes.base};
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
   border-radius: 3px;
   padding: 8px 20px;
 `;
@@ -117,7 +117,7 @@ const StyledPlus = styled.div`
 const DeletedIcon = styled(Icon)`
   width: 18px;
   height: 18px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   &:hover {
     fill: ${colors.red600};
   }
@@ -281,12 +281,12 @@ const Categories = ({
         <CategoryButton
           bgColor={
             inputsCategoryFilter === 'allInput'
-              ? darken(0.05, colors.lightGreyishBlue)
+              ? darken(0.05, colors.grey200)
               : 'transparent'
           }
-          textColor={colors.label}
-          textHoverColor={colors.adminTextColor}
-          bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
+          textColor={colors.textSecondary}
+          textHoverColor={colors.primary}
+          bgHoverColor={darken(0.05, colors.grey200)}
           onClick={selectAllInput}
         >
           <span> {formatMessage(messages.allInput)}</span>
@@ -299,12 +299,12 @@ const Categories = ({
         <CategoryButton
           bgColor={
             inputsCategoryFilter === 'recentlyPosted'
-              ? darken(0.05, colors.lightGreyishBlue)
+              ? darken(0.05, colors.grey200)
               : 'transparent'
           }
-          textColor={colors.label}
-          textHoverColor={colors.adminTextColor}
-          bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
+          textColor={colors.textSecondary}
+          textHoverColor={colors.primary}
+          bgHoverColor={darken(0.05, colors.grey200)}
           onClick={selectRecentlyPosted}
         >
           <span>{formatMessage(messages.recentlyPosted)}</span>
@@ -317,12 +317,12 @@ const Categories = ({
         <CategoryButton
           bgColor={
             inputsCategoryFilter === 'notCategorized'
-              ? darken(0.05, colors.lightGreyishBlue)
+              ? darken(0.05, colors.grey200)
               : 'transparent'
           }
-          textColor={colors.label}
-          textHoverColor={colors.adminTextColor}
-          bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
+          textColor={colors.textSecondary}
+          textHoverColor={colors.primary}
+          bgHoverColor={darken(0.05, colors.grey200)}
           onClick={selectUncategorizedInput}
         >
           <span>{formatMessage(messages.notCategorized)}</span>
@@ -349,8 +349,8 @@ const Categories = ({
         </CategoriesLabel>
         <Button
           icon="more-options"
-          iconColor={colors.label}
-          iconHoverColor={colors.label}
+          iconColor={colors.textSecondary}
+          iconHoverColor={colors.textSecondary}
           boxShadow="none"
           boxShadowHover="none"
           bgColor="transparent"
@@ -386,7 +386,7 @@ const Categories = ({
         />
         <Button
           fontSize={`${fontSizes.xxxl}px`}
-          bgColor={colors.adminTextColor}
+          bgColor={colors.primary}
           ml="4px"
           p="8px"
           onClick={handleCategorySubmit}
@@ -406,7 +406,7 @@ const Categories = ({
           <Button
             buttonStyle="white"
             mb="8px"
-            textColor={colors.adminTextColor}
+            textColor={colors.primary}
             linkTo={`/admin/insights/${viewId}/detect`}
             data-testid="insightsDetectCategories"
           >
@@ -430,12 +430,12 @@ const Categories = ({
             <CategoryButtonWithIcon
               bgColor={
                 category.id === query.category
-                  ? darken(0.05, colors.lightGreyishBlue)
+                  ? darken(0.05, colors.grey200)
                   : 'transparent'
               }
-              textColor={colors.label}
-              textHoverColor={colors.adminTextColor}
-              bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
+              textColor={colors.textSecondary}
+              textHoverColor={colors.primary}
+              bgHoverColor={darken(0.05, colors.grey200)}
               onClick={selectCategory(category.id)}
             >
               <span>{category.attributes.name}</span>

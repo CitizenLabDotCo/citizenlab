@@ -50,12 +50,12 @@ const TableOptions = styled.div`
   padding-left: 5px;
   padding-right: 5px;
   margin-bottom: 10px;
-  border-bottom: solid 1px ${colors.adminTextColor};
+  border-bottom: solid 1px ${colors.primary};
   user-select: none;
 `;
 
 const UserCount = styled.span`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   white-space: nowrap;
@@ -72,8 +72,8 @@ const SelectAllCheckbox = styled(Checkbox)`
 
   &:hover,
   &:focus {
-    background: ${rgba(colors.adminTextColor, 0.1)};
-    color: ${colors.adminTextColor};
+    background: ${rgba(colors.primary, 0.1)};
+    color: ${colors.primary};
     outline: none;
   }
 `;
@@ -108,7 +108,7 @@ const ActionButtonWrapper = styled.div`
 const DropdownListItemText = styled.div`
   width: 80%;
   flex: 1 1 auto;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: normal;
@@ -142,7 +142,7 @@ const DropdownListItem = styled.button`
   &:hover,
   &:focus,
   &.selected {
-    background: ${colors.clDropdownHoverBackground};
+    background: ${colors.grey300};
 
     ${DropdownListItemText} {
       color: #000;
