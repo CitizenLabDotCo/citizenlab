@@ -12,7 +12,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 const EmptyPieChart = (
   <Box color={colors.coolGrey500}>
-    <Image src={EmptyPieChartImageSrc} alt="" marginRight="48px" />
+    <Image src={EmptyPieChartImageSrc} alt="Pie chart placeholder" marginRight="48px" />
     <FormattedMessage {...messages.noDataShort} />
   </Box>
 );
