@@ -89,7 +89,6 @@ const ConfigMultiselectWithLocaleSwitcher = ({
     const newValues = value;
     newValues.splice(index, 1);
     setValue(name, newValues);
-    setValue(nameInputType, 'select');
   };
 
   const defaultOptionValues = [{}];
