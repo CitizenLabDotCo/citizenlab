@@ -37,7 +37,11 @@ const VisitorsCard = ({
 }: Props & InjectedIntlProps) => {
   const graphRef = useRef();
 
-  const { pieData, xlsxData } = useVisitorsLanguageData();
+  const { pieData, xlsxData } = useVisitorsLanguageData(formatMessage, {
+    startAtMoment,
+    endAtMoment,
+    projectId: projectFilter,
+  });
   const title = formatMessage(messages.title);
 
   if (isNilOrError(pieData)) {

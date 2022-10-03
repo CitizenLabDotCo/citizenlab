@@ -8,16 +8,35 @@ import {
 } from '../../services/analyticsFacts';
 
 // parse
-import { parsePieData, parseXlsxData } from './parse';
+import { parsePieData, parseExcelData } from './parse';
 
 // typings
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { XlsxData } from 'components/admin/ReportExportMenu';
-import { Response, PieRow } from './typings';
+import { Response, PieRow, QueryParameters } from './typings';
+import { InjectedIntlProps } from 'react-intl';
 
-const query = (): Query => {
+// utils
+import { getProjectFilter, getDateFilter } from '../../utils/query';
+import { getTranslations } from './utils';
+
+const query = ({
+  projectId,
+  startAtMoment,
+  endAtMoment,
+}: QueryParameters): Query => {
+  const startAt = startAtMoment?.toISOString();
+  const endAt = endAtMoment?.toISOString();
+
   const localesCountQuery: QuerySchema = {
     fact: 'visit',
+    filters: {
+      dimension_user: {
+        role: ['citizen', null],
+      },
+      ...getProjectFilter('dimension_projects', projectId),
+      ...getDateFilter('dimension_date_last_action', startAt, endAt),
+    },
     groups: 'dimension_locales.id',
     aggregations: {
       all: 'count',
@@ -30,12 +49,21 @@ const query = (): Query => {
   };
 };
 
-export default function useVisitorsData() {
+export default function useVisitorsData(
+  formatMessage: InjectedIntlProps['intl']['formatMessage'],
+  { projectId, startAtMoment, endAtMoment }: QueryParameters
+) {
   const [pieData, setPieData] = useState<PieRow[] | NilOrError>();
   const [xlsxData, setXlsxData] = useState<XlsxData | NilOrError>();
 
   useEffect(() => {
-    const observable = analyticsStream<Response>(query()).observable;
+    const observable = analyticsStream<Response>(
+      query({
+        projectId,
+        startAtMoment,
+        endAtMoment,
+      })
+    ).observable;
 
     const subscription = observable.subscribe(
       (response: Response | NilOrError) => {
@@ -44,8 +72,8 @@ export default function useVisitorsData() {
           setXlsxData(response);
           return;
         }
-
-        setXlsxData(parseXlsxData(response.data));
+        const translations = getTranslations(formatMessage);
+        setXlsxData(parseExcelData(response.data, translations));
         setPieData(parsePieData(response.data));
       }
     );
