@@ -68,7 +68,7 @@ const Container = ({
   const parsedWidth = !rightLegend
     ? width
     : typeof width === 'number' && legend?.maintainGraphSize
-    ? width + (legendDimensions?.width ?? 0)
+    ? width + (legendDimensions?.width ?? 0) + (legend.marginLeft ?? 0)
     : width;
 
   const parsedHeight = rightLegend
@@ -78,7 +78,11 @@ const Container = ({
     : height;
 
   return (
-    <Box display="flex" flexDirection={rightLegend ? 'row' : 'column'}>
+    <Box
+      display="flex"
+      flexDirection={rightLegend ? 'row' : 'column'}
+      justifyContent="center"
+    >
       <ResponsiveContainer
         width={parsedWidth}
         height={parsedHeight}

@@ -5,9 +5,14 @@ import { Translations } from './utils';
 // styling
 import { categoricalColorScheme } from 'components/admin/Graphs/styling';
 
-export const parsePieData = (data: Response['data']): PieRow[] =>
+export const parsePieData = (
+  data: Response['data'],
+  translations: Translations
+): PieRow[] =>
   data.map((row, i) => ({
-    name: row.first_dimension_locales_name,
+    name: row.returning_visitor
+      ? translations.returningVisitors
+      : translations.newVisitors,
     value: row.count,
     color: categoricalColorScheme({ rowIndex: i }),
   }));
@@ -16,9 +21,9 @@ export const parseExcelData = (
   data: Response['data'],
   translations: Translations
 ): XlsxData => {
-  const visitorsLanguageData = data?.map((row) => ({
-    [translations.language]: row.first_dimension_locales_name,
-    [translations.count]: row.count,
+  const visitorsLanguageData = parsePieData(data, translations).map((row) => ({
+    [translations.type]: row.name,
+    [translations.count]: row.value,
   }));
 
   const xlsxData = {

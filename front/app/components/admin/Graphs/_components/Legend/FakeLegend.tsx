@@ -89,7 +89,7 @@ const FakeLegend = ({
     ? `${width}px`
     : width ?? '100%';
 
-  const stringHeight = rightLegend
+  const stringHeight = !rightLegend
     ? 'auto'
     : typeof height === 'number'
     ? `${height}px`
@@ -105,8 +105,9 @@ const FakeLegend = ({
       style={{
         visibility: 'hidden',
         // transform: `translate(0,-${legendDimensions?.height ?? 0}px)`
-        marginTop: `-${legendDimensions?.height ?? 0}px`,
-        marginRight: `-${legendDimensions?.width ?? 0}px`,
+        marginTop: !rightLegend ? `-${legendDimensions?.height ?? 0}px` : 0,
+        marginLeft: rightLegend ? `-${legendDimensions?.width ?? 0}px` : 0,
+        whiteSpace: 'nowrap',
       }}
       display="flex"
       flexDirection={rightLegend ? 'column' : 'row'}

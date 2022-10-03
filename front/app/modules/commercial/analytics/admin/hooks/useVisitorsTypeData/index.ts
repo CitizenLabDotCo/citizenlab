@@ -28,7 +28,7 @@ const query = ({
   const startAt = startAtMoment?.toISOString();
   const endAt = endAtMoment?.toISOString();
 
-  const localesCountQuery: QuerySchema = {
+  const visitorTypesCountQuery: QuerySchema = {
     fact: 'visit',
     filters: {
       dimension_user: {
@@ -37,15 +37,14 @@ const query = ({
       ...getProjectFilter('dimension_projects', projectId),
       ...getDateFilter('dimension_date_last_action', startAt, endAt),
     },
-    groups: 'dimension_locales.id',
+    groups: 'returning_visitor',
     aggregations: {
       all: 'count',
-      'dimension_locales.name': 'first',
     },
   };
 
   return {
-    query: localesCountQuery,
+    query: visitorTypesCountQuery,
   };
 };
 
@@ -74,7 +73,7 @@ export default function useVisitorsData(
         }
         const translations = getTranslations(formatMessage);
         setXlsxData(parseExcelData(response.data, translations));
-        setPieData(parsePieData(response.data));
+        setPieData(parsePieData(response.data, translations));
       }
     );
 
