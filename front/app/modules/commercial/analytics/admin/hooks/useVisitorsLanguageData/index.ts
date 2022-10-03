@@ -79,7 +79,7 @@ export default function useVisitorsData(
     );
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [projectId, startAtMoment, endAtMoment, formatMessage]);
 
   return { pieData, xlsxData };
 }
