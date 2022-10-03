@@ -14,6 +14,12 @@ module Analytics
     # lock, the job is rescheduled (even if some other locks are available).
     MAX_CONCURRENCY = 10
 
+    # We resume the import of data from a little further back in time (wrt the end of
+    # the previous import) to make sure to capture most of the visits that were slow to
+    # reach Matomo. The current duration is an arbitrary choice and has not been
+    # determined by any smart calculations.
+    RETROACTIVE_IMPORT = 15.minutes
+
     def run(tenant_id, min_duration: 1.day, max_nb_batches: 5, batch_size: 250)
       Tenant.find(tenant_id).switch do
         matomo_site_id = AppConfiguration.instance.settings.dig('matomo', 'tenant_site_id')
@@ -28,7 +34,7 @@ module Analytics
 
     def self.perform_for_all_tenants(min_duration: 1.day, max_nb_batches: 5, batch_size: 250)
       kwargs = { min_duration: min_duration, max_nb_batches: max_nb_batches, batch_size: batch_size }
-      Tenant.ids.map { perform_later(tenant_id, **kwargs) }
+      Tenant.ids.map { |tenant_id| perform_later(tenant_id, **kwargs) }
     end
 
     private
@@ -54,10 +60,7 @@ module Analytics
       from_timestamp =
         FactVisit.maximum(:matomo_last_action_time).to_i || AppConfiguration.instance.created_at.to_i
 
-      # We go back 15min in time to import the visits that were maybe a bit slow to
-      # reach Matomo. 15 minutes is an arbitrary choice and is not backed up by any smart
-      # calculations.
-      from_timestamp -= 900 # 15min = 60 * 15 = 900
+      from_timestamp -= RETROACTIVE_IMPORT.to_i
       MatomoDataImporter.new.import(
         site_id, from_timestamp,
         min_duration: min_duration, max_nb_batches: max_nb_batches, batch_size: batch_size
