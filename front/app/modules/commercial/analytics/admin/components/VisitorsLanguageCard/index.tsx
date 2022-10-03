@@ -47,7 +47,7 @@ const VisitorsCard = ({
   if (hasNoData(pieData)) {
     return (
       <GraphCard title={title}>
-        <EmptyState emptyContainerContent={EmptyPieChart} />
+        <EmptyPieChart />
       </GraphCard>
     );
   }
