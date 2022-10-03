@@ -40,7 +40,7 @@ Sentry.init({
       ),
     }),
   ],
-  tracesSampleRate: 1.0,
+  tracesSampleRate: 0.05,
 });
 
 const useSentryRoutes = wrapUseRoutes(useRoutes);
