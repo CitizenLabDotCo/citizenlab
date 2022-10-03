@@ -34,7 +34,13 @@ const VisitorsCard = ({
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const graphRef = useRef();
-  const { pieData, xlsxData } = useVisitorsTrafficSourcesData();
+  const { pieData } = useVisitorsTrafficSourcesData({
+    startAtMoment,
+    endAtMoment,
+    projectId: projectFilter,
+  });
+
+  if (isNilOrError(pieData)) return null;
 
   const legend = pieData.map(
     (row): LegendItem => ({
@@ -54,7 +60,7 @@ const VisitorsCard = ({
       exportMenu={{
         name: cardTitle,
         svgNode: graphRef,
-        xlsxData: isNilOrError(xlsxData) ? undefined : xlsxData,
+        // xlsxData: isNilOrError(xlsxData) ? undefined : xlsxData,
         startAt,
         endAt,
         currentProjectFilter: projectFilter,

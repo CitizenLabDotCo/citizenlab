@@ -7,11 +7,15 @@ import {
   QuerySchema,
 } from '../../services/analyticsFacts';
 
+// parse
+import { parsePieData } from './parse';
+
 // utils
 import { getProjectFilter, getDateFilter } from '../../utils/query';
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 // typings
-import { QueryParameters } from './typings';
+import { QueryParameters, Response, PieRow } from './typings';
 
 const query = ({
   projectId,
@@ -45,7 +49,7 @@ export default function useVisitorsTrafficSourcesData({
   startAtMoment,
   endAtMoment,
 }: QueryParameters) {
-  const [pieData, setPieData] = useState();
+  const [pieData, setPieData] = useState<PieRow[] | NilOrError>();
 
   useEffect(() => {
     const observable = analyticsStream<Response>(
@@ -56,9 +60,16 @@ export default function useVisitorsTrafficSourcesData({
       })
     ).observable;
 
-    const subscription = observable.subscribe(() => {
-      // TODO
-    });
+    const subscription = observable.subscribe(
+      (response: Response | NilOrError) => {
+        if (isNilOrError(response)) {
+          setPieData(response);
+          return;
+        }
+
+        setPieData(parsePieData(response.data));
+      }
+    );
 
     return () => subscription.unsubscribe();
   }, [projectId, startAtMoment, endAtMoment]);
