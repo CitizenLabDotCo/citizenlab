@@ -44,7 +44,7 @@ const VisitorsCard = ({
   });
   const title = formatMessage(messages.title);
 
-  if (isNilOrError(pieData)) {
+  if (isNilOrError(pieData) || pieData.length === 0) {
     return (
       <GraphCard title={title}>
         <EmptyState emptyContainerContent={EmptyPieChart} />
