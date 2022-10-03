@@ -152,8 +152,8 @@ module Analytics
         duration: visit_json['visitDuration']&.to_i,
         pages_visited: pages_visited(visit_json['actionDetails']),
         returning_visitor: visit_json['visitorType'] == 'returningCustomer',
-        referrer_name: visit_json['referrerName'],
-        referrer_url: visit_json['referrerUrl'],
+        referrer_name: visit_json['referrerName'].presence,
+        referrer_url: visit_json['referrerUrl'].presence,
         matomo_visit_id: visit_json['idVisit'],
         matomo_last_action_time: Time.at(last_action_timestamp)
       }
