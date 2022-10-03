@@ -107,7 +107,6 @@ export const GraphCard = styled.div`
   height: 350px;
   display: flex;
   width: 50%;
-  flex: 1 1 0px;
 
   &.dynamicHeight {
     height: auto;
