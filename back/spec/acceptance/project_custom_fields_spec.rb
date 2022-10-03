@@ -48,7 +48,7 @@ resource 'Project level Custom Fields' do
         expect(json_response[:json_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
         %i[en fr-FR nl-NL].each do |locale|
           expect(json_response[:json_schema_multiloc][locale][:properties].keys).to eq(
-            %i[title_multiloc body_multiloc author_id budget proposed_budget topic_ids location_description idea_images_attributes idea_files_attributes]
+            %i[title_multiloc body_multiloc author_id budget topic_ids location_description idea_images_attributes idea_files_attributes]
           )
         end
         expect(json_response[:ui_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
@@ -75,13 +75,12 @@ resource 'Project level Custom Fields' do
     let(:project_id) { project.id }
     let(:custom_form) { create(:custom_form, participation_context: project) }
     let!(:custom_field) { create(:custom_field_extra_custom_form, resource: custom_form) }
-    let(:built_in_field_keys) do
+    let(:enabled_built_in_field_keys) do
       %i[
         title_multiloc
         body_multiloc
         author_id
         budget
-        proposed_budget
         topic_ids
         location_description
         idea_images_attributes
@@ -91,19 +90,19 @@ resource 'Project level Custom Fields' do
 
     if CitizenLab.ee?
       let(:expected_jsonschema_form_field_keys) do
-        built_in_field_keys + [custom_field.key.to_sym]
+        enabled_built_in_field_keys + [custom_field.key.to_sym]
       end
       let(:expected_json_forms_field_keys) do
         invisible_field_keys = %i[author_id budget proposed_budget]
-        built_in_field_keys - invisible_field_keys + [custom_field.key.to_sym]
+        enabled_built_in_field_keys - invisible_field_keys + [custom_field.key.to_sym]
       end
     else
       let(:expected_jsonschema_form_field_keys) do
-        built_in_field_keys
+        enabled_built_in_field_keys
       end
       let(:expected_json_forms_field_keys) do
         invisible_field_keys = %i[author_id budget proposed_budget]
-        built_in_field_keys - invisible_field_keys
+        enabled_built_in_field_keys - invisible_field_keys
       end
     end
 
