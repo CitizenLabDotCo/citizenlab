@@ -3,6 +3,7 @@ import React from 'react';
 // components
 import VisitorsCard from '../../components/VisitorsCard';
 import VisitorsLanguageCard from '../../components/VisitorsLanguageCard';
+import VisitorsTrafficSourcesCard from '../../components/VisitorsTrafficSourcesCard';
 
 // typings
 import { Moment } from 'moment';
@@ -18,6 +19,7 @@ interface Props {
 const Charts = (props: Props) => (
   <>
     <VisitorsCard {...props} />
+    <VisitorsTrafficSourcesCard {...props} />
     <VisitorsLanguageCard {...props} />
   </>
 );
