@@ -31,7 +31,7 @@ module MultiTenancy
         visit1.dimension_projects << project
         visit1.dimension_locales << locale1
 
-        visit2 =::Analytics::FactVisit.create!(
+        visit2 = ::Analytics::FactVisit.create!(
           visitor_id: 'XX1',
           dimension_user: user,
           dimension_referrer_type: referrer_type1,
