@@ -152,6 +152,7 @@ const ConfigMultiselectWithLocaleSwitcher = ({
                             >
                               <Box width="280px">
                                 <Input
+                                  id="e2e-option-input"
                                   size="small"
                                   type="text"
                                   value={choice.title_multiloc[selectedLocale]}
@@ -222,6 +223,7 @@ const ConfigMultiselectWithLocaleSwitcher = ({
                         return (
                           <Toggle
                             checked={value === 'multiselect'}
+                            id="e2e-multiselect-toggle"
                             onChange={() => {
                               if (currentToggleValue === 'select') {
                                 setValue(nameInputType, 'multiselect');

@@ -50,7 +50,7 @@ const MultiSelectCheckboxControl = ({
         subtextValue={uischema.options?.description}
         subtextSupportsHtml
       />
-      <Box display="block">
+      <Box display="block" id="e2e-multiselect-control">
         <Text fontSize="s">
           <FormattedMessage {...messages.selectMany} />
         </Text>
