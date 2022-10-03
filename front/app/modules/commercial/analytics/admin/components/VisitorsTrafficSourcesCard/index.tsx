@@ -34,7 +34,7 @@ const VisitorsCard = ({
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const graphRef = useRef();
-  const { pieData } = useVisitorsTrafficSourcesData({
+  const { pieData } = useVisitorsTrafficSourcesData(formatMessage, {
     startAtMoment,
     endAtMoment,
     projectId: projectFilter,
