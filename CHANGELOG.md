@@ -1,12 +1,22 @@
 # Changelog
 
+## 2022-10-03 (2)
+
+### Fixed
+
+- Some colors used in the charts were replaced wrongly during the design system refactor. Now they're correct again.
+
+## 2022-10-03
+
+### Fixed
+
+- [CL-1762] Default pages titles and content, and default navbar items, now display in Swedish for newly created platforms with the Swedish locale.
+
 ## 2022-09-30
 
 ### Added
 
 - [CL-1553] Basic privacy-friendly session counting for all visitors and users, for now not exposed in the product
-
-### Fixed
 
 ## 2022-09-29
 
