@@ -62,6 +62,8 @@ module Analytics
         end
       end
 
+      return if projects_visits_attrs.blank?
+
       Analytics::DimensionProjectsFactVisits.insert_all(projects_visits_attrs)
     end
 
@@ -76,6 +78,8 @@ module Analytics
           { fact_visit_id: visit_id, dimension_locale_id: locale }
         end
       end
+
+      return if locales_visits_attrs.blank?
 
       Analytics::DimensionLocalesFactVisits.insert_all(locales_visits_attrs)
     end
