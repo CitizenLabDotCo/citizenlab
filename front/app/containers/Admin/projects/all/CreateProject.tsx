@@ -165,7 +165,7 @@ const CreateProject = memo<Props & InjectedIntlProps>(
       {
         name: 'scratch',
         label: formatMessage(messages.fromScratch),
-        icon: 'scratch',
+        icon: 'blank-paper',
       },
     ]);
     const tabValues = tabs.map((tab) => tab.name) as TTabName[];

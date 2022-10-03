@@ -91,7 +91,7 @@ const ContentBuilderToolbox = ({
           }
         >
           <ToolboxItem
-            icon="imageCardSection"
+            icon="section-image-text"
             label={formatMessage(messages.imageTextCards)}
           />
         </DraggableElement>
@@ -111,7 +111,7 @@ const ContentBuilderToolbox = ({
           }
         >
           <ToolboxItem
-            icon="infoAccordionSection"
+            icon="section-info-accordion"
             label={formatMessage(messages.infoWithAccordions)}
           />
         </DraggableElement>
@@ -142,7 +142,7 @@ const ContentBuilderToolbox = ({
           }
         >
           <ToolboxItem
-            icon="column2"
+            icon="layout-2column-1"
             label={formatMessage(messages.twoColumn)}
           />
         </DraggableElement>
@@ -158,7 +158,7 @@ const ContentBuilderToolbox = ({
           }
         >
           <ToolboxItem
-            icon="column3"
+            icon="layout-3column"
             label={formatMessage(messages.threeColumn)}
           />
         </DraggableElement>
@@ -174,7 +174,7 @@ const ContentBuilderToolbox = ({
           }
         >
           <ToolboxItem
-            icon="dashedBorderRectangle"
+            icon="layout-white-space"
             label={formatMessage(messages.whiteSpace)}
           />
         </DraggableElement>

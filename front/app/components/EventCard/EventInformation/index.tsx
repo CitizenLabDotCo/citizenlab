@@ -268,7 +268,7 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
           {hasLocation && showLocation && (
             <Location>
               <StyledIcon
-                name="mapmarker"
+                name="position"
                 width={`${fontSizes.m}px`}
                 height={`${fontSizes.m}px`}
                 marginRight="6px"

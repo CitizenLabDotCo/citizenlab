@@ -436,7 +436,7 @@ const ProjectTemplatePreview = memo<Props>(
                 {data.projectTemplate.purposes &&
                   data.projectTemplate.purposes.length > 0 && (
                     <MetaInfoRightBox>
-                      <MetaInfoRightBoxIcon name="purpose" />
+                      <MetaInfoRightBoxIcon name="bullseye" />
                       <MetaInfoRightBoxText>
                         {data.projectTemplate.purposes
                           .map((purpose) => localize(purpose.titleMultiloc))
@@ -447,7 +447,7 @@ const ProjectTemplatePreview = memo<Props>(
                 {data.projectTemplate.participationLevels &&
                   data.projectTemplate.participationLevels.length > 0 && (
                     <MetaInfoRightBox className="last">
-                      <MetaInfoRightBoxIcon name="participationLevel" />
+                      <MetaInfoRightBoxIcon name="participation-level" />
                       <MetaInfoRightBoxText>
                         {data.projectTemplate.participationLevels
                           .map((participationLevel) =>
@@ -488,7 +488,7 @@ const ProjectTemplatePreview = memo<Props>(
                     >
                       <PhaseBar>
                         {index + 1}
-                        <PhaseArrow name="phase_arrow" />
+                        <PhaseArrow name="chevron-right" />
                       </PhaseBar>
                       <PhaseText>
                         <T value={phase} />

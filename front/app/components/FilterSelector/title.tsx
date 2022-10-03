@@ -92,7 +92,7 @@ export default class Title extends PureComponent<Props, State> {
         </Text>
         <DropdownIcon
           className="FilterSelectorTitleIcon"
-          name="dropdown"
+          name="chevron-down"
           ariaHidden
           textColor={textColor}
         />

@@ -265,7 +265,7 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
             className="e2e-disabled-tooltip"
             inMap={inMap}
           >
-            <TooltipContentIcon name="lock-outlined" ariaHidden />
+            <TooltipContentIcon name="lock" ariaHidden />
             <TooltipContentText>
               <FormattedMessage
                 {...disabledMessages[disabledReason]}
@@ -282,7 +282,7 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
             className="e2e-disabled-tooltip"
             inMap={inMap}
           >
-            <TooltipContentIcon name="lock-outlined" ariaHidden />
+            <TooltipContentIcon name="lock" ariaHidden />
             <TooltipContentText>
               <FormattedMessage
                 {...disabledMessages[disabledReason]}

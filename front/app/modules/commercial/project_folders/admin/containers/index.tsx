@@ -104,7 +104,7 @@ const AdminProjectFolderEdition = memo<
           {!isNilOrError(projectFolder) && (
             <Button
               buttonStyle="cl-blue"
-              icon="eye"
+              icon="eyeOpened"
               id="to-projectFolder"
               linkTo={`/folders/${projectFolder.attributes.slug}`}
             >

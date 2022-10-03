@@ -336,7 +336,7 @@ export const CreateInsightsView = ({
                         <FormattedMessage {...messages.createModalExpand} />
                       )}
                       <ArrowIcon
-                        name="dropdown"
+                        name="chevron-down"
                         className={isFolderExpanded ? 'open' : ''}
                         ariaHidden
                       />

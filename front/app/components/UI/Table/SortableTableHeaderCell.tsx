@@ -53,7 +53,7 @@ export default class SortableTableHeaderCell extends React.PureComponent<
         onClick={this.onClick}
       >
         {isString(value) ? <span>{value}</span> : value}
-        {sorted && <StyledIcon name="dropdown" className={sorted} />}
+        {sorted && <StyledIcon name="chevron-down" className={sorted} />}
       </Container>
     );
   }

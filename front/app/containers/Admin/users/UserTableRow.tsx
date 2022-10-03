@@ -229,13 +229,13 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
                   >
                     <FormattedMessage {...messages.seeProfile} />
                     <IconWrapper>
-                      <Icon name="eye" fill="white" />
+                      <Icon name="eyeOpened" fill="white" />
                     </IconWrapper>
                   </DropdownListButton>
                   <DropdownListButton onClick={this.handleDeleteClick}>
                     <FormattedMessage {...messages.deleteUser} />
                     <IconWrapper>
-                      <Icon name="trash" />
+                      <Icon name="delete" />
                     </IconWrapper>
                   </DropdownListButton>
                 </DropdownList>

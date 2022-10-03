@@ -72,7 +72,7 @@ class ThresholdReached extends PureComponent<Props & { theme: any }, State> {
         <StatusWrapper>
           <T value={initiativeStatus.attributes.title_multiloc} />
         </StatusWrapper>
-        <StatusIcon ariaHidden name="envelope-check" />
+        <StatusIcon ariaHidden name="email-check" />
         <StatusExplanation>
           <FormattedMessage
             {...messages.thresholdReachedStatusExplanation}

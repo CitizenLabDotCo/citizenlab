@@ -184,7 +184,7 @@ class InitiativePreview extends PureComponent<
 
           {initiativeAddress && (
             <Address>
-              <MapMarkerIcon name="mapmarker" />
+              <MapMarkerIcon name="position" />
               {initiativeAddress}
             </Address>
           )}

@@ -157,7 +157,7 @@ const CollapsibleBox = memo<Props>((props) => {
           {titleIconName && <TitleIcon name={titleIconName} />}
           <ContentLabel>{title}</ContentLabel>
         </Title>
-        <ArrowIcon name="dropdown" className={showContent ? 'open' : ''} />
+        <ArrowIcon name="chevron-down" className={showContent ? 'open' : ''} />
       </ContentToggleButton>
       <CSSTransition
         classNames="content"

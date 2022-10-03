@@ -109,7 +109,7 @@ const FormActions = ({
           </Button>
           <Button
             linkTo={viewFormLink}
-            icon="eye"
+            icon="eyeOpened"
             openLinkInNewTab
             buttonStyle="primary"
             width="auto"

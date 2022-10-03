@@ -531,7 +531,7 @@ const PBExpenses = ({
                 placement="bottom"
                 content={
                   <TooltipContent>
-                    <TooltipContentIcon name="lock-outlined" ariaHidden />
+                    <TooltipContentIcon name="lock" ariaHidden />
                     <TooltipContentText>
                       <FormattedMessage
                         // This will only show when there's a min budget that is not reached,

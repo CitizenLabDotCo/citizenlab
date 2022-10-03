@@ -35,7 +35,7 @@ const FormattedBudget = ({
     if (currency === 'TOK') {
       return (
         <>
-          <StyledIcon name="tokens" />
+          <StyledIcon name="token" />
           {formatNumber(value)}
         </>
       );

@@ -58,7 +58,7 @@ class Campaigns extends React.Component<Props & InjectedIntlProps, State> {
       return (
         <>
           <NoCampaignsWrapper>
-            <Icon name="mailBig" />
+            <Icon name="email-2" />
             <NoCampaignsHeader>
               <FormattedMessage {...messages.noCampaignsHeader} />
             </NoCampaignsHeader>

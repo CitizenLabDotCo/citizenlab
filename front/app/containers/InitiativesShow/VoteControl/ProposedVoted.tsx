@@ -126,7 +126,7 @@ class ProposedVoted extends PureComponent<Props & { theme: any }> {
 
     return (
       <Container>
-        <StyledIcon ariaHidden name="round-checkmark" />
+        <StyledIcon ariaHidden name="checkmark-full" />
         <VotedTitle>
           <FormattedMessage {...messages.votedTitle} />
         </VotedTitle>

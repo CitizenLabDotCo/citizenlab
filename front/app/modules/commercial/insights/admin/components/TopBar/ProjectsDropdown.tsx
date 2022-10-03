@@ -99,7 +99,7 @@ const ProjectsDropdown = ({
         {formatMessage(messages.linkedProjects, {
           numberOfProjects: projectIds.length,
         })}
-        <StyledIcon name="dropdown" ariaHidden />
+        <StyledIcon name="chevron-down" ariaHidden />
       </Button>
       <Dropdown
         opened={isDropdownOpened}

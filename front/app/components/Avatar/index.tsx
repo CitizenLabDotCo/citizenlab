@@ -194,7 +194,11 @@ const Avatar = memo(
           )}
 
           {moderator && (
-            <BadgeIcon name="clShield" size={badgeSize} fill={colors.red600} />
+            <BadgeIcon
+              name="cl-favicon"
+              size={badgeSize}
+              fill={colors.red600}
+            />
           )}
 
           {verified && addVerificationBadge && (

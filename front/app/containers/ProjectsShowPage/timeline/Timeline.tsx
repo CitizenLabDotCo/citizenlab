@@ -342,7 +342,9 @@ const Timeline = ({
                           }}
                         />
                       </ScreenReaderOnly>
-                      {!isLast && <PhaseArrow name="phase_arrow" ariaHidden />}
+                      {!isLast && (
+                        <PhaseArrow name="chevron-right" ariaHidden />
+                      )}
                     </PhaseBar>
                     <PhaseText
                       current={isCurrentPhase}

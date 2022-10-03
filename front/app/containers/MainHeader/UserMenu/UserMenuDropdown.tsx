@@ -79,7 +79,7 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
               onClick={handleCloseDropdown}
               buttonStyle="text"
               bgHoverColor={colors.grey300}
-              icon="profile1"
+              icon="user"
               iconPos="right"
               iconSize="20px"
               padding="11px 11px"

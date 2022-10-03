@@ -401,7 +401,7 @@ class SignedInHeader extends PureComponent<Props, State> {
                     padding={0}
                     borderThickness={0}
                   />
-                  <CompleteProfileIcon name="completeProfile" ariaHidden />
+                  <CompleteProfileIcon name="edit" ariaHidden />
                 </Icons>
                 <Text>
                   <FormattedMessage

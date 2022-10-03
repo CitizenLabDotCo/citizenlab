@@ -92,7 +92,8 @@ class Rule extends PureComponent<Props, State> {
         <IconCell className={`${showLabels && 'showLabels'}`}>
           <StyledRemoveButton
             onClick={onRemove}
-            icon="minus-circle"
+            icon="remove"
+            iconColor={colors.red500}
             buttonStyle="text"
             padding="0"
           />

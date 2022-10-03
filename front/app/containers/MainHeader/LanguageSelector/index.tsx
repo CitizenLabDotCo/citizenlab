@@ -147,7 +147,7 @@ const LanguageSelector = ({ className }: Props) => {
           aria-expanded={dropdownOpened}
         >
           <DropdownButtonText>{selectedLocale}</DropdownButtonText>
-          <DropdownButtonIcon name="dropdown" />
+          <DropdownButtonIcon name="chevron-down" />
         </DropdownButton>
 
         <Dropdown

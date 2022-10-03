@@ -229,7 +229,7 @@ const VerificationMethods = memo<Props>(
                   userId={!isNilOrError(authUser) ? authUser.id : null}
                   size={55}
                 />
-                <ShieldIcon name="verify_dark" />
+                <ShieldIcon name="shieldVerified" />
               </AboveTitle>
               <Title id="modal-header">
                 <strong>

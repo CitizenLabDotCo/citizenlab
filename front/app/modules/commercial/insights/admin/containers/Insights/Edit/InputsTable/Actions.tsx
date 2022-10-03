@@ -280,7 +280,7 @@ const Actions = ({
               buttonStyle="admin-dark-text"
               processing={processing}
             >
-              <StyledIcon name="trash" />
+              <StyledIcon name="delete" />
               <FormattedMessage {...messages.bulkUnassign} />
             </Button>
           )}

@@ -162,7 +162,8 @@ const BinInputRow = injectIntl(
                 onClick={onRemoveBin}
               >
                 <Icon
-                  name="minus-circle"
+                  name="remove"
+                  fill={colors.red500}
                   width="13px"
                   height="13px"
                   ml="12px"

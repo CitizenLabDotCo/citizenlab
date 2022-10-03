@@ -196,7 +196,7 @@ class Sidebar extends PureComponent<
         {
           name: 'initiatives',
           link: '/admin/initiatives',
-          iconName: 'initiativesAdminMenuIcon',
+          iconName: 'initiatives',
           message: 'initiatives',
           featureNames: ['initiatives'],
           onlyCheckAllowed: true,

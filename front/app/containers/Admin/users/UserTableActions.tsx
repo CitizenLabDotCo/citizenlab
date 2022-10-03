@@ -451,7 +451,7 @@ class UserTableActions extends PureComponent<Props & InjectedIntlProps, State> {
               className="hasLeftMargin"
               buttonStyle="admin-dark-text"
             >
-              <StyledIcon name="trash" />
+              <StyledIcon name="delete" />
               <FormattedMessage {...messages.membershipDelete} />
             </Button>
           )}

@@ -166,7 +166,7 @@ class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
             ) : (
               <FormattedMessage {...messages.customDateRange} />
             )}
-            <DropdownItemIcon name="dropdown" />
+            <DropdownItemIcon name="chevron-down" />
           </StyledButton>
           <Dropdown
             width="200px"

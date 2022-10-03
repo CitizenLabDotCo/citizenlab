@@ -203,7 +203,7 @@ const CompactIdeaCard = memo<Props>(
         imagePlaceholder={
           <ImagePlaceholderContainer>
             <ImagePlaceholderIcon
-              name={participationMethod === 'budgeting' ? 'moneybag' : 'idea'}
+              name={participationMethod === 'budgeting' ? 'money-bag' : 'idea'}
             />
           </ImagePlaceholderContainer>
         }

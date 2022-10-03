@@ -181,7 +181,7 @@ const ProposedNotVoted = ({
 
   const tippyContent = disabledReason ? (
     <TooltipContent id="tooltip-content" className="e2e-disabled-tooltip">
-      <TooltipContentIcon name="lock-outlined" ariaHidden />
+      <TooltipContentIcon name="lock" ariaHidden />
       <TooltipContentText>
         <FormattedMessage {...disabledMessages[disabledReason]} />
       </TooltipContentText>

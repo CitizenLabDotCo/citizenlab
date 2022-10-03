@@ -196,7 +196,7 @@ const AdminPublicationsNavbarItem = ({
         >
           <NavigationItemBorder />
           <T value={navigationItemTitle} />
-          <NavigationDropdownItemIcon name="dropdown" />
+          <NavigationDropdownItemIcon name="chevron-down" />
         </NavigationDropdownItem>
         <Dropdown
           top="68px"

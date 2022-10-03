@@ -343,7 +343,7 @@ export default class ConsentForm extends PureComponent<Props, State> {
                         <FormattedMessage {...messages.expand} />
                       )}
                       <ArrowIcon
-                        name="dropdown"
+                        name="chevron-down"
                         className={isCategoryOpen[category] ? 'open' : ''}
                         ariaHidden
                       />

@@ -67,7 +67,7 @@ const TableWrapper = ({
             {formatMessage(messages.openTableModalButtonText, {
               numberOfHiddenItems,
             })}
-            <Icon name="openModal" width="15px" height="15px" ml="12px" />
+            <Icon name="goTo" width="15px" height="15px" ml="12px" />
           </Box>
         </Button>
       )}

@@ -172,7 +172,7 @@ const ConfigMultiselectWithLocaleSwitcher = ({
                                   }}
                                 >
                                   <Icon
-                                    name="trash"
+                                    name="delete"
                                     fill="grey"
                                     padding="0px"
                                   />

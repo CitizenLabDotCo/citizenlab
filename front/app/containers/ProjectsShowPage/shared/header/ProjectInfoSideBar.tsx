@@ -218,7 +218,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                 currentPhase.attributes.end_at,
               ]) === 'past' && (
                 <ListItem id="e2e-project-sidebar-enddate">
-                  <ListItemIcon ariaHidden name="finish_flag" />
+                  <ListItemIcon ariaHidden name="flag" />
                   <FormattedMessage
                     {...messages.endedOn}
                     values={{

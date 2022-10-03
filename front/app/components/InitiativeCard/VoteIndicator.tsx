@@ -212,7 +212,7 @@ class VoteIndicator extends PureComponent<Props & { theme: any }> {
 
         {statusCode === 'answered' && (
           <AnsweredStatusBadge color={initiativeStatus.attributes.color}>
-            <AnsweredBadgeIcon name="round-checkmark" ariaHidden />
+            <AnsweredBadgeIcon name="checkmark-full" ariaHidden />
             <BadgeLabel>
               <T value={initiativeStatus.attributes.title_multiloc} />
             </BadgeLabel>

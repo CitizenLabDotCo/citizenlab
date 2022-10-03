@@ -18,7 +18,7 @@ const SharingButtonComponent = ({
 }: Props & InjectedIntlProps) => {
   return (
     <IdeaCTAButton
-      iconName="share-arrow"
+      iconName="share"
       buttonText={formatMessage(messages.share)}
       onClick={onClick}
       ariaExpanded={ariaExpanded}
