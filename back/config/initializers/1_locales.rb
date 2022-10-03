@@ -53,6 +53,7 @@ fallback_locales =
     pt
     ro
     sr
+    sv
     tr
   ].freeze
 
