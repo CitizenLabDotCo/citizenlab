@@ -86,7 +86,7 @@ const ButtonWrapper = styled.div`
 `;
 
 const Processing = styled.div`
-  color: ${(props) => props.theme.colors.label};
+  color: ${(props) => props.theme.colors.textSecondary};
   margin-left: 15px;
 `;
 
@@ -102,11 +102,11 @@ const SectionDescription = styled.div`
 
 const SectionParagraph = styled.p`
   a {
-    color: ${colors.clBlue};
+    color: ${colors.teal};
     text-decoration: underline;
 
     &:hover {
-      color: ${darken(0.2, colors.clBlue)};
+      color: ${darken(0.2, colors.teal)};
       text-decoration: underline;
     }
   }

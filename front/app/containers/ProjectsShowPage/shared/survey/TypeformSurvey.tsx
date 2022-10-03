@@ -31,7 +31,7 @@ interface Props {
 
 const TypeformSurvey = memo<Props>(
   ({ typeformUrl, email, user_id, className, language }) => {
-    const isLargeTablet = useBreakpoint('largeTablet');
+    const isLargeTablet = useBreakpoint('tablet');
     const queryString = stringify(omitBy({ email, user_id, language }, isNil));
     const surveyUrl = `${typeformUrl}?${queryString}&disable-auto-focus=true`;
 

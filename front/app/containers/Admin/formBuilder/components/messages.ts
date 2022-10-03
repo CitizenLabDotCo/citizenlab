@@ -57,6 +57,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.delete',
     defaultMessage: 'Delete',
   },
+  done: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.done',
+    defaultMessage: 'Done',
+  },
   questionTitle: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.questionTitle',
     defaultMessage: 'Question title',

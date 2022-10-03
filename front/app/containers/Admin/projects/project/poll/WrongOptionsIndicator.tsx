@@ -13,8 +13,7 @@ import { colors } from 'utils/styleUtils';
 
 export const Indicator = styled(TextCell)<{ isWarning?: boolean }>`
   display: flex;
-  color: ${({ isWarning }) =>
-    isWarning ? colors.adminOrangeIcons : colors.red500};
+  color: ${({ isWarning }) => (isWarning ? colors.orange : colors.error)};
 `;
 
 export const StyledIconTooltip = styled<any>(IconTooltip)`
