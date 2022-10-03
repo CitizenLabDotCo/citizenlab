@@ -1,7 +1,7 @@
 import { defineConfig } from 'cypress';
 
 export default defineConfig({
-  viewportWidth: 1200,
+  viewportWidth: 1201,
   viewportHeight: 800,
   video: false,
   videoUploadOnPasses: false,
