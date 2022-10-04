@@ -33,6 +33,10 @@ module ParticipationMethod
       false
     end
 
+    def extra_fields_category_translation_key
+      'custom_forms.categories.extra.title'
+    end
+
     private
 
     attr_reader :participation_context
