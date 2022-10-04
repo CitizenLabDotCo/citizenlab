@@ -545,6 +545,7 @@
   "app.components.form.ErrorDisplay.guidelinesLinkText": "malittarisassavut",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Atuisup aqqanik mailimilluunniit ujaasiniaruit allallutit aallartiguk...",
   "app.components.form.blockedVerified": "Allaffissaq una allanngortitersinnaanngilat paasissutissanik uppernarsakkanik imaqarmat",
+  "app.components.form.controls.selectMany": "*Choose as many as you like",
   "app.components.form.error": "Kukkuneq",
   "app.components.form.locationGoogleUnavailable": "Sumiiffik google mapsikkut nanineqanngilaq.",
   "app.components.form.submit": "Nassiuguk",
