@@ -14,7 +14,7 @@ export const parsePieData = (data: Response['data']): PieRow[] | null => {
   const percentages = roundPercentages(data.map(({ count }) => count));
 
   return data.map((row, i) => ({
-    name: row.first_dimension_locales_name,
+    name: row.first_dimension_locales_name.toUpperCase(),
     value: row.count,
     color: categoricalColorScheme({ rowIndex: i }),
     percentage: percentages[i],
@@ -28,7 +28,7 @@ export const parseExcelData = (
   if (data.length === 0) return null;
 
   const visitorsLanguageData = data.map((row) => ({
-    [translations.language]: row.first_dimension_locales_name,
+    [translations.language]: row.first_dimension_locales_name.toUpperCase(),
     [translations.count]: row.count,
   }));
 
