@@ -545,6 +545,7 @@
   "app.components.form.ErrorDisplay.guidelinesLinkText": "le nostre linee guida",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Inizia a digitare per cercare per email o nome dell'utente...",
   "app.components.form.blockedVerified": "Non puoi modificare questo campo perché contiene informazioni verificate",
+  "app.components.form.controls.selectMany": "*Choose as many as you like",
   "app.components.form.error": "Errore",
   "app.components.form.locationGoogleUnavailable": "Impossibile caricare il campo posizione fornito da google maps.",
   "app.components.form.submit": "Invia",
