@@ -11,6 +11,7 @@ import { Box, Radio } from '@citizenlab/cl2-component-library';
 import { FormLabel } from 'components/UI/FormComponents';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import VerificationIcon from '../VerificationIcon';
+import { getOptions } from './controlUtils';
 
 const SingleSelectRadioControl = ({
   data,
@@ -23,13 +24,7 @@ const SingleSelectRadioControl = ({
   id,
 }: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
-  const options =
-    schema?.oneOf
-      ?.map((o) => ({
-        value: o.const,
-        label: o.title || o.const,
-      }))
-      .filter((e) => e.value && e.label) || null;
+  const options = getOptions(schema, 'single');
 
   return (
     <>

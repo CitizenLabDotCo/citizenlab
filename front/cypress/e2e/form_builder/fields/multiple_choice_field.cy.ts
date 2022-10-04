@@ -27,7 +27,7 @@ describe('Form builder multiple choice component', () => {
     cy.wait(1000);
   });
 
-  it('adds multiple choice field and tests validations', () => {
+  it('adds single select multiple choice field, tests validations and checks renderer', () => {
     cy.contains('Multiple choice').click();
     cy.contains('Save').click();
     cy.contains('Provide a question title').should('exist');
@@ -35,26 +35,21 @@ describe('Form builder multiple choice component', () => {
     cy.get('#e2e-title-multiloc').type('Question title', { force: true });
     cy.get('#e2e-option-input').type('Option 1', { force: true });
     cy.contains('Save').click();
-  });
-
-  it('checks that single select renderer used in front office', () => {
     cy.visit(`/projects/${projectSlug}/ideas/new`);
     cy.contains('Question title').should('exist');
     cy.contains('Option 1').should('exist');
     cy.get('#e2e-single-select-control').should('exist');
   });
 
-  it('changes multiple choice field to multiselect', () => {
-    cy.visit(`admin/projects/${projectId}/native-survey/edit`);
-    cy.contains('Edit').click();
+  it('adds multiselect multiple choice field and checks renderer', () => {
+    cy.contains('Multiple choice').click();
+    cy.get('#e2e-title-multiloc').type('Question title 2', { force: true });
+    cy.get('#e2e-option-input').type('Option 1 question 2', { force: true });
     cy.get('#e2e-multiselect-toggle').click();
     cy.contains('Save').click();
-  });
-
-  it('checks that multiselect renderer used in front office', () => {
     cy.visit(`/projects/${projectSlug}/ideas/new`);
-    cy.contains('Question title').should('exist');
-    cy.contains('Option 1').should('exist');
+    cy.contains('Question title 2').should('exist');
+    cy.contains('Option 1 question 2').should('exist');
     cy.get('#e2e-multiselect-control').should('exist');
   });
 

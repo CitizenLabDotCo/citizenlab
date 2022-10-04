@@ -14,13 +14,6 @@ export function getAdditionalSettings(
 ) {
   switch (type) {
     case 'multiselect':
-      return (
-        <ConfigMultiselectWithLocaleSwitcher
-          nameInputType={`customFields.${index}.input_type`}
-          name={`customFields.${index}.options`}
-          locales={locales}
-        />
-      );
     case 'select':
       return (
         <ConfigMultiselectWithLocaleSwitcher

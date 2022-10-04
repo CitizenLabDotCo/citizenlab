@@ -9,7 +9,6 @@ import React, { useState } from 'react';
 
 // utils
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
-import { isArray } from 'lodash-es';
 
 // components
 import VerificationIcon from '../VerificationIcon';
@@ -18,6 +17,7 @@ import { FormLabel } from 'components/UI/FormComponents';
 import ErrorDisplay from '../ErrorDisplay';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import { getOptions } from './controlUtils';
 
 const MultiSelectCheckboxControl = ({
   data,
@@ -31,15 +31,9 @@ const MultiSelectCheckboxControl = ({
 }: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
 
-  const options =
-    (!Array.isArray(schema.items) &&
-      schema.items?.oneOf?.map((o) => ({
-        value: o.const as string,
-        label: (o.title || o.const) as string,
-      }))) ||
-    null;
+  const options = getOptions(schema, 'multi');
 
-  const dataArray = isArray(data) && data !== [] ? data : [];
+  const dataArray = Array.isArray(data) && data !== [] ? data : [];
 
   return (
     <>
