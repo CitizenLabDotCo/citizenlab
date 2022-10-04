@@ -541,6 +541,7 @@
   "app.components.form.ErrorDisplay.guidelinesLinkText": "orientările noastre",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Începeți să tastați pentru a căuta după adresa de e-mail sau numele utilizatorului...",
   "app.components.form.blockedVerified": "Nu puteți edita acest câmp deoarece conține informații verificate.",
+  "app.components.form.controls.selectMany": "*Choose as many as you like",
   "app.components.form.error": "Eroare",
   "app.components.form.locationGoogleUnavailable": "Nu s-a putut încărca câmpul de locație furnizat de Google Maps.",
   "app.components.form.submit": "Trimite",
