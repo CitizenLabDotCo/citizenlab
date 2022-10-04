@@ -1,5 +1,11 @@
 # Changelog
 
+## 2022-10-03 (2)
+
+### Fixed
+
+- Some colors used in the charts were replaced wrongly during the design system refactor. Now they're correct again.
+
 ## 2022-10-03
 
 ### Fixed
