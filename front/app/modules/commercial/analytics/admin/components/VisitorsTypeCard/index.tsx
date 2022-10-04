@@ -43,11 +43,12 @@ const VisitorsCard = ({
     endAtMoment,
     projectId: projectFilter,
   });
-  const title = formatMessage(messages.title);
+
+  const cardTitle = formatMessage(messages.title);
 
   if (isNilOrError(pieData)) {
     return (
-      <GraphCard title={title}>
+      <GraphCard title={cardTitle}>
         <EmptyPieChart />
       </GraphCard>
     );
@@ -66,9 +67,9 @@ const VisitorsCard = ({
 
   return (
     <GraphCard
-      title={title}
+      title={cardTitle}
       exportMenu={{
-        name: title,
+        name: cardTitle,
         svgNode: graphRef,
         xlsxData: isNilOrError(xlsxData) ? undefined : xlsxData,
         startAt,

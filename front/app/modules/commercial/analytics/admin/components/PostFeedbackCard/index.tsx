@@ -105,9 +105,11 @@ const PostFeedback = ({
     endAtMoment,
   });
 
+  const cardTitle = formatMessage(hookMessages.inputStatus);
+
   if (isNilOrError(data)) {
     return (
-      <GraphCard title={formatMessage(hookMessages.inputStatus)}>
+      <GraphCard title={cardTitle}>
         <EmptyState />
       </GraphCard>
     );
@@ -132,11 +134,9 @@ const PostFeedback = ({
 
   return (
     <GraphCard
-      title={formatMessage(hookMessages.inputStatus)}
+      title={cardTitle}
       exportMenu={{
-        name: formatMessage(hookMessages.inputStatus)
-          .toLowerCase()
-          .replace(' ', '_'),
+        name: cardTitle.toLowerCase().replace(' ', '_'),
         svgNode: [
           currentPieChart,
           currentProgressBarsChart,

@@ -7,6 +7,7 @@ import useVisitorsTrafficSourcesData from '../../hooks/useVisitorsTrafficSources
 import GraphCard from 'components/admin/GraphCard';
 import PieChart from 'components/admin/Graphs/PieChart';
 import { Box } from '@citizenlab/cl2-component-library';
+import EmptyPieChart from '../EmptyPieChart';
 
 // i18n
 import messages from './messages';
@@ -40,7 +41,15 @@ const VisitorsCard = ({
     projectId: projectFilter,
   });
 
-  if (isNilOrError(pieData)) return null;
+  const cardTitle = formatMessage(messages.visitorsTrafficSources);
+
+  if (isNilOrError(pieData)) {
+    return (
+      <GraphCard title={cardTitle}>
+        <EmptyPieChart />
+      </GraphCard>
+    );
+  }
 
   const legend = pieData.map(
     (row): LegendItem => ({
@@ -50,7 +59,6 @@ const VisitorsCard = ({
     })
   );
 
-  const cardTitle = formatMessage(messages.visitorsTrafficSources);
   const startAt = startAtMoment?.toISOString();
   const endAt = endAtMoment?.toISOString();
 
