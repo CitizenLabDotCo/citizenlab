@@ -161,7 +161,11 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
     config = getMethodConfig(phaseFromUrl.attributes.participation_method);
   } else {
     if (phases && project?.attributes.process_type === 'timeline') {
-      config = getCurrentPhase(phases)?.attributes.participation_method;
+      const participationMethod =
+        getCurrentPhase(phases)?.attributes.participation_method;
+      if (!isNilOrError(participationMethod)) {
+        config = getMethodConfig(participationMethod);
+      }
     } else if (!isNilOrError(project)) {
       config = getMethodConfig(project.attributes.participation_method);
     }
