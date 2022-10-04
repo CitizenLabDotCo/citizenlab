@@ -15,6 +15,7 @@ interface CustomTooltipProps {
     value: number;
     payload: {
       color: string;
+      percentage: number;
     };
   }[];
 }
@@ -24,8 +25,9 @@ const CustomTooltip = ({ label, payload }: CustomTooltipProps) => {
   const {
     name,
     value,
-    payload: { color },
+    payload: { percentage, color },
   } = payload[0];
+  console.log(payload)
   return (
     <TooltipOutline label={name}>
       <Box py="0px">
@@ -37,7 +39,7 @@ const CustomTooltip = ({ label, payload }: CustomTooltipProps) => {
           mr="6px"
           mt="-2px"
         />
-        <FormattedMessage {...messages.tabVisitors} />: {value} ({value})
+        <FormattedMessage {...messages.tabVisitors} />: {value} ({percentage}%)
       </Box>
     </TooltipOutline>
   );
