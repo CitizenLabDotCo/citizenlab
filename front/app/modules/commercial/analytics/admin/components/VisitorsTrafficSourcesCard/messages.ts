@@ -6,7 +6,7 @@ export default defineMessages({
     defaultMessage: 'Traffic sources',
   },
   visits: {
-    id: 'app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.visitorsTrafficSources',
+    id: 'app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.visits',
     defaultMessage: 'Visits',
   },
 });
