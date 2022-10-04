@@ -8,15 +8,17 @@ import {
 } from '../../services/analyticsFacts';
 
 // parse
-import { parsePieData } from './parse';
+import { parsePieData, parseExcelData } from './parse';
 
 // utils
 import { getProjectFilter, getDateFilter } from '../../utils/query';
+import { getTranslations } from './utils';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 // typings
 import { QueryParameters, Response, PieRow } from './typings';
 import { InjectedIntlProps } from 'react-intl';
+import { XlsxData } from 'components/admin/ReportExportMenu';
 
 const query = ({
   projectId,
@@ -50,6 +52,7 @@ export default function useVisitorsTrafficSourcesData(
   { projectId, startAtMoment, endAtMoment }: QueryParameters
 ) {
   const [pieData, setPieData] = useState<PieRow[] | NilOrError>();
+  const [xlsxData, setXlsxData] = useState<XlsxData | NilOrError>();
 
   useEffect(() => {
     const observable = analyticsStream<Response>(
@@ -67,12 +70,16 @@ export default function useVisitorsTrafficSourcesData(
           return;
         }
 
-        setPieData(parsePieData(formatMessage, response.data));
+        const translations = getTranslations(formatMessage);
+
+        const pieData = parsePieData(response.data, translations);
+        setPieData(pieData);
+        setXlsxData(parseExcelData(pieData, translations));
       }
     );
 
     return () => subscription.unsubscribe();
   }, [projectId, startAtMoment, endAtMoment]);
 
-  return { pieData };
+  return { pieData, xlsxData };
 }

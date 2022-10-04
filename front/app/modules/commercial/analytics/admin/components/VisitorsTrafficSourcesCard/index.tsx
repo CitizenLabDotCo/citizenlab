@@ -35,7 +35,7 @@ const VisitorsCard = ({
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const graphRef = useRef();
-  const { pieData } = useVisitorsTrafficSourcesData(formatMessage, {
+  const { pieData, xlsxData } = useVisitorsTrafficSourcesData(formatMessage, {
     startAtMoment,
     endAtMoment,
     projectId: projectFilter,
@@ -68,7 +68,7 @@ const VisitorsCard = ({
       exportMenu={{
         name: cardTitle,
         svgNode: graphRef,
-        // xlsxData: isNilOrError(xlsxData) ? undefined : xlsxData,
+        xlsxData: isNilOrError(xlsxData) ? undefined : xlsxData,
         startAt,
         endAt,
         currentProjectFilter: projectFilter,

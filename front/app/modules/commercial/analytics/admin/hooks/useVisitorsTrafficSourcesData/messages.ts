@@ -21,4 +21,16 @@ export default defineMessages({
     id: 'app.modules.commercial.analytics.admin.hooks.useVisitorsTrafficSourcesData.campaigns',
     defaultMessage: 'Campaigns',
   },
+  trafficSource: {
+    id: 'app.modules.commercial.analytics.admin.hooks.useVisitorsTrafficSourcesData.trafficSource',
+    defaultMessage: 'Traffic source',
+  },
+  numberOfVisits: {
+    id: 'app.modules.commercial.analytics.admin.hooks.useVisitorsTrafficSourcesData.visits',
+    defaultMessage: 'Number of visits',
+  },
+  percentageOfVisits: {
+    id: 'app.modules.commercial.analytics.admin.hooks.useVisitorsTrafficSourcesData.percentageOfVisits',
+    defaultMessage: 'Percentage of visits',
+  },
 });

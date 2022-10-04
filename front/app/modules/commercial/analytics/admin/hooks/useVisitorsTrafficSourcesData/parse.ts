@@ -1,26 +1,16 @@
 // styling
 import { categoricalColorScheme } from 'components/admin/Graphs/styling';
 
-// i18n
-import messages from './messages';
+// utils
 import { roundPercentages } from 'utils/math';
 
 // typings
-import { InjectedIntlProps } from 'react-intl';
-import { Response, PieRow, ReferrerTypeName } from './typings';
-import { MessageDescriptor } from 'utils/cl-intl';
-
-const REFERRER_TYPE_MESSAGES: Record<ReferrerTypeName, MessageDescriptor> = {
-  'Direct Entry': messages.directEntry,
-  'Social Networks': messages.socialNetworks,
-  'Search Engines': messages.searchEngines,
-  Websites: messages.websites,
-  Campaigns: messages.campaigns,
-};
+import { Response, PieRow } from './typings';
+import { Translations } from './utils';
 
 export const parsePieData = (
-  formatMessage: InjectedIntlProps['intl']['formatMessage'],
-  data: Response['data']
+  data: Response['data'],
+  translations: Translations
 ): PieRow[] | null => {
   if (data.length === 0) return null;
 
@@ -28,13 +18,28 @@ export const parsePieData = (
   const percentages = roundPercentages(counts);
 
   return data.map((row, i) => ({
-    name: formatMessage(
-      REFERRER_TYPE_MESSAGES[row.first_dimension_referrer_type_name]
-    ),
+    name: translations[row.first_dimension_referrer_type_name],
     value: row.count,
     percentage: percentages[i],
     color: categoricalColorScheme({ rowIndex: i }),
   }));
 };
 
-export const parseExcelData = (pieData: PieRow[] | null) => {};
+export const parseExcelData = (
+  pieData: PieRow[] | null,
+  translations: Translations
+) => {
+  if (pieData === null) return null;
+
+  const trafficSourceData = pieData.map((row) => ({
+    [translations.trafficSource]: row.name,
+    [translations.numberOfVisits]: row.value,
+    [translations.percentageOfVisits]: row.percentage,
+  }));
+
+  const xlsxData = {
+    [translations.trafficSources]: trafficSourceData,
+  };
+
+  return xlsxData;
+};
