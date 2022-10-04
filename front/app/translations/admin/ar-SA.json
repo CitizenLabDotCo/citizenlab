@@ -1065,6 +1065,7 @@
   "app.containers.AdminPage.ProjectEdit.subtitleGeneral": "قم بإعداد مشروعك وتخصيصه.",
   "app.containers.AdminPage.ProjectEdit.survey.addAnswer": "إضافة إجابة",
   "app.containers.AdminPage.ProjectEdit.survey.addSurveyContent": "إضافة محتوى الاستبيان",
+  "app.containers.AdminPage.ProjectEdit.survey.chooseMultipleToggle": "Choose multiple",
   "app.containers.AdminPage.ProjectEdit.survey.close": "إغلاق",
   "app.containers.AdminPage.ProjectEdit.survey.closed": "مغلق",
   "app.containers.AdminPage.ProjectEdit.survey.default": "افتراضي",
