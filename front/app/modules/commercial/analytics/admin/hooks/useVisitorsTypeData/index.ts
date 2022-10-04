@@ -72,8 +72,11 @@ export default function useVisitorsData(
           return;
         }
         const translations = getTranslations(formatMessage);
-        setXlsxData(parseExcelData(response.data, translations));
-        setPieData(parsePieData(response.data, translations));
+
+        const pieData = parsePieData(response.data, translations);
+        setPieData(pieData);
+
+        setXlsxData(parseExcelData(pieData, translations));
       }
     );
 

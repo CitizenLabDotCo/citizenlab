@@ -8,20 +8,25 @@ import { categoricalColorScheme } from 'components/admin/Graphs/styling';
 export const parsePieData = (
   data: Response['data'],
   translations: Translations
-): PieRow[] =>
-  data.map((row, i) => ({
+): PieRow[] | null => {
+  if (data.length === 0) return null;
+
+  return data.map((row, i) => ({
     name: row.returning_visitor
       ? translations.returningVisitors
       : translations.newVisitors,
     value: row.count,
     color: categoricalColorScheme({ rowIndex: i }),
   }));
+};
 
 export const parseExcelData = (
-  data: Response['data'],
+  pieData: PieRow[] | null,
   translations: Translations
-): XlsxData => {
-  const visitorsLanguageData = parsePieData(data, translations).map((row) => ({
+): XlsxData | null => {
+  if (pieData === null) return null;
+
+  const visitorsLanguageData = pieData.map((row) => ({
     [translations.type]: row.name,
     [translations.count]: row.value,
   }));

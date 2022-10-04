@@ -8,7 +8,7 @@ export interface QueryParameters {
 
 // Response
 export type Response = {
-  data: [BaseRow];
+  data: [BaseRow] | [];
 };
 
 interface BaseRow {

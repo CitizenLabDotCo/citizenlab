@@ -14,14 +14,13 @@ import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+
 // typings
 import { IResolution } from 'components/admin/ResolutionControl';
 import { Moment } from 'moment';
-import { isNilOrError } from 'utils/helperUtils';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
-
-// utils
-import { hasNoData } from 'components/admin/Graphs/utils';
 
 interface Props {
   startAtMoment: Moment | null | undefined;
@@ -46,7 +45,7 @@ const VisitorsCard = ({
   });
   const title = formatMessage(messages.title);
 
-  if (hasNoData(pieData)) {
+  if (isNilOrError(pieData)) {
     return (
       <GraphCard title={title}>
         <EmptyPieChart />
