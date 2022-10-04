@@ -1105,6 +1105,7 @@
   "app.containers.AdminPage.ProjectEdit.subtitleGeneral": "Podesite i personalizujte vaš projekat",
   "app.containers.AdminPage.ProjectEdit.survey.addAnswer": "Dodaj odgovor",
   "app.containers.AdminPage.ProjectEdit.survey.addSurveyContent": "Dodaj sadržaj ankete",
+  "app.containers.AdminPage.ProjectEdit.survey.chooseMultipleToggle": "Choose multiple",
   "app.containers.AdminPage.ProjectEdit.survey.close": "Zatvori",
   "app.containers.AdminPage.ProjectEdit.survey.closed": "Zatvoreno",
   "app.containers.AdminPage.ProjectEdit.survey.default": "Podrazumevano",
