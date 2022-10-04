@@ -41,8 +41,10 @@ module Analytics
 
     def query_filters(results)
       @json_query[:filters].each do |dimension, columns|
+
         columns.each do |column, value|
           if [Array, String].include? value.class
+            value = convert_empty_to_null(value)
             results = results.where(dimension => { column => value })
           else
             if column == 'date'
@@ -58,6 +60,16 @@ module Analytics
       end
 
       results
+    end
+
+    def convert_empty_to_null(value)
+      case value
+      when Array
+        value.map! { |x| x == '' ? nil : x }
+      when ''
+        value = nil
+      end
+      value
     end
 
     # creates a dummy where statement in the active record query
