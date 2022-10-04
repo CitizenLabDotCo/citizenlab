@@ -90,7 +90,7 @@ const CloseButton = styled.button`
     ${defaultOutline};
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     top: 4px;
     right: 4px;
   `}

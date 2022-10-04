@@ -23,7 +23,7 @@ const Container = styled.div`
   align-items: center;
   padding-bottom: 30px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-bottom: 20px;
   `}
 `;
@@ -37,7 +37,7 @@ const ImageContainer = styled.div`
 
 export const Title = styled.h1`
   width: 100%;
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.xxl}px;
   font-weight: 300;
   line-height: normal;
@@ -53,7 +53,7 @@ export const Title = styled.h1`
     font-weight: 600;
   }
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     font-size: ${fontSizes.xl}px;
     margin-bottom: 20px;
   `}

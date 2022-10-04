@@ -34,16 +34,16 @@ const Footer = ({
       <CancelButton
         onClick={handleCancelBack}
         buttonStyle="primary-inverse"
-        textColor={colors.adminTextColor}
-        textHoverColor={colors.adminTextColor}
+        textColor={colors.primary}
+        textHoverColor={colors.primary}
       >
         <FormattedMessage {...messages.back} />
       </CancelButton>
       <Button
         onClick={handleCancelConfirm}
         buttonStyle="primary"
-        bgColor={colors.adminTextColor}
-        bgHoverColor={darken(0.1, colors.adminTextColor)}
+        bgColor={colors.primary}
+        bgHoverColor={darken(0.1, colors.primary)}
       >
         <FormattedMessage {...messages.confirm} />
       </Button>
@@ -54,16 +54,16 @@ const Footer = ({
         onClick={handleCancel}
         className="integration-cancel"
         buttonStyle="primary-inverse"
-        textColor={colors.adminTextColor}
-        textHoverColor={colors.adminTextColor}
+        textColor={colors.primary}
+        textHoverColor={colors.primary}
       >
         <FormattedMessage {...messages.cancel} />
       </CancelButton>
       <Button
         onClick={handleSave}
         buttonStyle="primary"
-        bgColor={colors.adminTextColor}
-        bgHoverColor={darken(0.1, colors.adminTextColor)}
+        bgColor={colors.primary}
+        bgHoverColor={darken(0.1, colors.primary)}
         className="integration-save"
         disabled={!isValid}
         id="e2e-preferences-save"
@@ -75,8 +75,8 @@ const Footer = ({
     <Button
       onClick={handleCancel}
       buttonStyle="primary"
-      bgColor={colors.adminTextColor}
-      bgHoverColor={darken(0.1, colors.adminTextColor)}
+      bgColor={colors.primary}
+      bgHoverColor={darken(0.1, colors.primary)}
     >
       <FormattedMessage {...messages.close} />
     </Button>

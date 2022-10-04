@@ -21,7 +21,7 @@ const CollapsibleTipsAndInfo = memo<Props>(({ className }) => {
       className={className}
       titleIconName="info"
       title={<FormattedMessage {...messages.tipsTitle} />}
-      contentBackgroundColor={colors.lightGreyishBlue}
+      contentBackgroundColor={colors.grey200}
     >
       <TipsContent />
     </CollapsibleBox>

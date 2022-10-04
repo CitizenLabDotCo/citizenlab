@@ -48,7 +48,7 @@ const Container = styled(Link)`
     align-items: stretch;
     justify-content: space-between;
 
-    ${media.smallerThanMinTablet`
+    ${media.phone`
       width: 100%;
     `}
   }
@@ -59,7 +59,7 @@ const Container = styled(Link)`
     padding-left: 30px;
     padding-right: 30px;
 
-    ${media.smallerThanMinTablet`
+    ${media.phone`
       width: 100%;
     `}
   }
@@ -68,17 +68,17 @@ const Container = styled(Link)`
     min-height: 540px;
 
     &.threecolumns {
-      ${media.smallerThanMaxTablet`
+      ${media.tablet`
         width: calc(50% - 13px);
       `}
 
-      ${media.smallerThanMinTablet`
+      ${media.phone`
         width: 100%;
         min-height: 460px;
       `}
     }
 
-    ${media.smallerThanMinTablet`
+    ${media.phone`
       min-height: 400px;
     `}
   }
@@ -97,7 +97,7 @@ const Container = styled(Link)`
     ${defaultCardHoverStyle};
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     width: 100%;
     min-height: 460px;
   `}
@@ -133,7 +133,7 @@ const FolderImagePlaceholder = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${colors.placeholderBg};
+  background: ${colors.grey300};
 `;
 
 const FolderImagePlaceholderIcon = styled(Icon)`
@@ -161,7 +161,7 @@ const FolderContent = styled.div`
     padding-left: 68px;
     padding-right: 32px;
 
-    ${media.smallerThanMaxTablet`
+    ${media.tablet`
       padding-left: 20px;
       padding-right: 20px;
     `}
@@ -171,7 +171,7 @@ const FolderContent = styled.div`
     padding-left: 30px;
     padding-right: 30px;
 
-    ${media.smallerThanMinTablet`
+    ${media.phone`
       padding-left: 20px;
       padding-right: 20px;
     `};
@@ -192,7 +192,7 @@ const ContentHeader = styled.div<{ hasLabel: boolean }>`
   margin-bottom: ${ContentHeaderBottomMargin}px;
 
   &.noContent {
-    ${media.biggerThanMinTablet`
+    ${media.desktop`
       height: ${ContentHeaderHeight + ContentHeaderBottomMargin}px;
     `}
   }
@@ -208,12 +208,12 @@ const ContentHeader = styled.div<{ hasLabel: boolean }>`
     padding-left: 30px;
     padding-right: 30px;
 
-    ${media.smallerThanMinTablet`
+    ${media.phone`
       padding-left: 20px;
       padding-right: 20px;
     `}
 
-    ${media.smallPhone`
+    ${media.phone`
       padding-left: 10px;
       padding-right: 10px;
     `}
@@ -239,7 +239,7 @@ const ContentBody = styled.div`
 
 const ContentHeaderLabel = styled.span`
   height: ${ContentHeaderHeight}px;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   font-weight: 500;
   text-transform: uppercase;
@@ -251,7 +251,7 @@ const FolderTitle = styled.h3`
   line-height: normal;
   font-weight: 500;
   font-size: ${fontSizes.xl}px;
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   margin: 0;
   padding: 0;
 
@@ -261,7 +261,7 @@ const FolderTitle = styled.h3`
 `;
 
 const FolderDescription = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 300;
@@ -274,14 +274,14 @@ const FolderDescription = styled.div`
 const MapIcon = styled(Icon)`
   width: 27px;
   height: 21px;
-  fill: ${({ theme }) => theme.colorSecondary};
+  fill: ${({ theme }) => theme.colors.tenantSecondary};
   margin-right: 10px;
 `;
 
 const MapIconDescription = styled.span`
   font-weight: bold;
   margin-bottom: -2px;
-  color: ${({ theme }) => theme.colorSecondary};
+  color: ${({ theme }) => theme.colors.tenantSecondary};
 `;
 
 export interface Props {
