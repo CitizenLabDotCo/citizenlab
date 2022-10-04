@@ -172,7 +172,7 @@ export const FormEdit = ({
       w="100%"
       zIndex="10000"
       position="fixed"
-      bgColor={colors.adminBackground}
+      bgColor={colors.background}
       h="100vh"
     >
       <FocusOn>

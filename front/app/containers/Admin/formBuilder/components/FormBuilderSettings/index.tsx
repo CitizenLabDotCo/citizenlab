@@ -80,7 +80,7 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
         <CloseIconButton
           a11y_buttonActionMessage={messages.close}
           onClick={onClose}
-          iconColor={colors.label}
+          iconColor={colors.textSecondary}
           iconColorOnHover={'#000'}
         />
       </Box>
@@ -108,7 +108,7 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
         <Toggle
           name={`customFields.${field.index}.required`}
           label={
-            <Text as="span" color="adminTextColor" variant="bodyM" my="0px">
+            <Text as="span" color="primary" variant="bodyM" my="0px">
               <FormattedMessage {...messages.required} />
             </Text>
           }
@@ -118,7 +118,7 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
       <Box
         display="flex"
         justifyContent="space-between"
-        borderTop={`1px solid ${colors.separation}`}
+        borderTop={`1px solid ${colors.divider}`}
         pt="36px"
       >
         <Button buttonStyle="secondary" onClick={onClose} minWidth="160px">
@@ -127,9 +127,9 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
         <Button
           icon="delete"
           buttonStyle="primary-outlined"
-          borderColor={colors.red500}
-          textColor={colors.red500}
-          iconColor={colors.red500}
+          borderColor={colors.error}
+          textColor={colors.error}
+          iconColor={colors.error}
           onClick={() => onDelete(field.index)}
           minWidth="160px"
         >

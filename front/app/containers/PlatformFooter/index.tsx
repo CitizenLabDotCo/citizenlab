@@ -31,7 +31,7 @@ const Container = styled.footer<{ insideModal?: boolean }>`
   flex-direction: column;
   align-items: stretch;
   position: relative;
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     margin-top: 0px;
     padding-bottom: ${({ insideModal, theme: { mobileMenuHeight } }) =>
       insideModal ? 0 : mobileMenuHeight}px;
@@ -49,7 +49,7 @@ const FooterContainer = styled.div`
   background: #fff;
   border-top: solid 1px #ccc;
   overflow: hidden;
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -59,7 +59,7 @@ const FooterContainer = styled.div`
 `;
 
 const PagesNav = styled.nav`
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     width: 90vw;
     margin-top: 15px;
     margin-bottom: 15px;
@@ -73,14 +73,14 @@ const PagesNavList = styled.ul`
   list-style: none;
   margin: 0;
   padding: 0;
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     flex-wrap: wrap;
     justify-content: center;
   `}
   & li {
     margin-right: 10px;
     &:after {
-      color: ${colors.label};
+      color: ${colors.textSecondary};
       font-size: ${fontSizes.s}px;
       font-weight: 400;
       content: '•';
@@ -97,7 +97,7 @@ const PagesNavList = styled.ul`
 `;
 
 const PagesNavListItem = styled.li`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   line-height: normal;
   font-weight: 400;
@@ -107,7 +107,7 @@ const PagesNavListItem = styled.li`
 `;
 
 const StyledButton = styled.button`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   line-height: normal;
@@ -123,7 +123,7 @@ const StyledButton = styled.button`
 `;
 
 const linkStyle = css`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-weight: 400;
   font-size: ${fontSizes.s}px;
   line-height: 21px;
@@ -150,11 +150,11 @@ const StyledA = styled.a`
 const Right = styled.div`
   display: flex;
   align-items: center;
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     margin-top: 15px;
     margin-bottom: 15px;
   `}
-  ${media.smallerThanMinTablet`
+  ${media.tablet`
     flex-direction: column;
   `}
 `;
@@ -165,8 +165,8 @@ const PoweredBy = styled.div`
   outline: none;
   padding-right: 20px;
   margin-right: 24px;
-  border-right: 2px solid ${colors.separation};
-  ${media.smallerThanMinTablet`
+  border-right: 2px solid ${colors.divider};
+  ${media.tablet`
     flex-direction: column;
     padding: 0px;
     margin: 0px;
@@ -176,18 +176,13 @@ const PoweredBy = styled.div`
 `;
 
 const PoweredByText = styled.span`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   line-height: normal;
   margin-right: 8px;
-  ${media.smallerThan1280px`
+  ${media.tablet`
     display: none;
-  `}
-  ${media.smallerThanMaxTablet`
-    display: block;
-  `}
-  ${media.smallerThanMinTablet`
     margin-bottom: 10px;
   `}
 `;
@@ -202,14 +197,14 @@ const CitizenlabLink = styled.a`
 `;
 
 const StyledSendFeedback = styled(SendFeedback)`
-  ${media.smallerThanMinTablet`
+  ${media.tablet`
     margin-top: 20px;
   `}
 `;
 
 const CitizenLabLogo = styled(Icon)`
   height: 28px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   &:hover {
     fill: #000;
   }
@@ -265,7 +260,7 @@ const PlatformFooter = ({
   };
 
   const smallerThanSmallTablet =
-    windowSize.windowWidth <= viewportWidths.smallTablet;
+    windowSize.windowWidth <= viewportWidths.tablet;
   const hasCustomizedA11yFooterLink = getHasCustomizedA11yFooterLink();
   const customizedA11yHref = getCustomizedA11yHref();
   const removeVendorBranding = useFeatureFlag({

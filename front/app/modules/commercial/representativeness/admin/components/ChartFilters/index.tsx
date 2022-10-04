@@ -35,7 +35,7 @@ const ChartFilters = ({
       <Button
         linkTo="/admin/dashboard/representation/edit-base-data"
         text={<FormattedMessage {...messages.editBaseData} />}
-        bgColor={colors.clBlueDark}
+        bgColor={colors.teal}
       />
     )}
   </Box>

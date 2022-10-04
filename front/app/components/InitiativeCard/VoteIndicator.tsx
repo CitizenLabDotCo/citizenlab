@@ -48,29 +48,29 @@ const BadgeLabel = styled.div`
 const AnsweredBadgeIcon = styled(Icon)`
   width: 1.6em;
   height: 1.6em;
-  fill: ${colors.clGreenSuccess};
+  fill: ${colors.success};
   padding-right: 7px;
 `;
 
 const AnsweredStatusBadge = styled(StatusBadge)`
-  background-color: ${colors.clGreenSuccessBackground};
-  color: ${colors.clGreenSuccess};
+  background-color: ${colors.successLight};
+  color: ${colors.success};
 `;
 
 const IneligibleBadgeIcon = styled(Icon)`
   width: 1.6em;
   height: 1.6em;
-  fill: ${colors.clGreyOnGreyBackground};
+  fill: ${colors.coolGrey600};
   padding-right: 7px;
 `;
 
 const IneligibleStatusBadge = styled(StatusBadge)`
-  background-color: ${colors.lightGreyishBlue};
-  color: ${colors.clGreyOnGreyBackground};
+  background-color: ${colors.grey200};
+  color: ${colors.coolGrey600};
 `;
 
 const CustomStatusBadge = styled(StatusBadge)`
-  color: ${colors.clGreyOnGreyBackground};
+  color: ${colors.coolGrey600};
 `;
 
 const StyledProposalProgressBar = styled(ProposalProgressBar)`
@@ -85,12 +85,12 @@ const VoteCounter = styled.div`
 `;
 
 const VoteText = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
 
   b {
     font-weight: 600;
-    color: ${({ theme }) => theme.colorMain};
+    color: ${({ theme }) => theme.colors.tenantPrimary};
   }
 
   span.division-bar {
@@ -99,7 +99,7 @@ const VoteText = styled.div`
 `;
 
 const VoteIcon = styled(Icon)`
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   width: 16px;
   height: 16px;
   margin-top: -4px;
@@ -112,12 +112,12 @@ const ExpiredText = styled.div`
   font-size: ${fontSizes.s}px;
   text-transform: capitalize;
   padding-bottom: 5px;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
 `;
 
 const ExpiredIcon = styled(Icon)`
   path {
-    fill: ${colors.clGreyOnGreyBackground};
+    fill: ${colors.coolGrey600};
   }
   width: 14px;
   height: 14px;
@@ -185,7 +185,7 @@ class VoteIndicator extends PureComponent<Props & { theme: any }> {
             <StyledProposalProgressBar
               voteCount={voteCount}
               voteLimit={voteLimit}
-              barColor={colors.label}
+              barColor={colors.textSecondary}
               bgShaded
             />
           </div>
@@ -205,7 +205,7 @@ class VoteIndicator extends PureComponent<Props & { theme: any }> {
             <StyledProposalProgressBar
               voteCount={voteCount}
               voteLimit={voteLimit}
-              barColor={theme.colorMain}
+              barColor={theme.colors.tenantPrimary}
             />
           </div>
         )}

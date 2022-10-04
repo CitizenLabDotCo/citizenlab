@@ -53,7 +53,7 @@ const SignUpInWrapper = styled.div`
   padding-top: 45px;
   ${defaultCardStyle};
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-top: 30px;
   `}
 `;
@@ -78,14 +78,14 @@ const StyledSignUpIn = styled(SignUpIn)`
 `;
 
 const SignUpInHeader = styled.h2`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.xxl}px;
   line-height: normal;
   font-weight: 500;
   margin: 0;
   padding: 0;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     font-size: ${fontSizes.xl}px;
   `}
 `;

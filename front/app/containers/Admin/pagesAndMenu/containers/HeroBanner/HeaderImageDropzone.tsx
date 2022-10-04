@@ -80,7 +80,8 @@ const HeaderImageDropzone = ({
   };
 
   const theme: any = useTheme();
-  const overlayColor = homepageSettingsOverlayColor ?? theme.colorMain;
+  const overlayColor =
+    homepageSettingsOverlayColor ?? theme.colors.tenantPrimary;
   const overlayOpacity =
     homepageSettingsOverlayOpacity ?? theme.signedOutHeaderOverlayOpacity;
   const previewOverlayElement =

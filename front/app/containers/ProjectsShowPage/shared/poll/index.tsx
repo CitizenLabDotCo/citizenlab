@@ -33,7 +33,7 @@ import { openVerificationModal } from 'components/Verification/verificationModal
 import styled from 'styled-components';
 
 const Container = styled.div`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
 `;
 
 const StyledWarning = styled(Warning)`
