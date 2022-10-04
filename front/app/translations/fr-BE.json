@@ -541,6 +541,7 @@
   "app.components.form.ErrorDisplay.guidelinesLinkText": "nos directives",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Commencez à taper pour rechercher par email ou nom d'utilisateur...",
   "app.components.form.blockedVerified": "Vous ne pouvez pas modifier ce champ car il contient des informations vérifiées",
+  "app.components.form.controls.selectMany": "*Choose as many as you like",
   "app.components.form.error": "Erreur",
   "app.components.form.locationGoogleUnavailable": "Impossible de charger le champ de localisation fourni par Google Maps.",
   "app.components.form.submit": "Envoyer",
