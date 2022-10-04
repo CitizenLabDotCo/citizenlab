@@ -23,6 +23,7 @@ interface Props {
   legend?: Legend;
   graphDimensions: GraphDimensions | undefined;
   legendDimensions: LegendDimensions | undefined;
+  defaultLegendOffset: number;
   onUpdateGraphDimensions?: (graphDimensions: GraphDimensions) => void;
   onUpdateLegendDimensions?: (legendDimensions: LegendDimensions) => void;
   children: React.ReactElement;
@@ -34,6 +35,7 @@ const Container = ({
   legend,
   graphDimensions,
   legendDimensions,
+  defaultLegendOffset,
   onUpdateGraphDimensions,
   onUpdateLegendDimensions,
   children,
@@ -64,24 +66,29 @@ const Container = ({
   };
 
   const rightLegend = legend?.position?.includes('right');
+  const maintainGraphSize = !!legend?.maintainGraphSize;
 
-  const parsedWidth = !rightLegend
-    ? width
-    : typeof width === 'number' && legend?.maintainGraphSize
-    ? width + (legendDimensions?.width ?? 0) + (legend.marginLeft ?? 0)
-    : width;
+  const parsedWidth =
+    rightLegend && typeof width === 'number' && maintainGraphSize
+      ? width +
+        (legendDimensions?.width ?? 0) +
+        (legend.marginLeft ?? defaultLegendOffset)
+      : width;
 
-  const parsedHeight = rightLegend
-    ? height
-    : typeof height === 'number' && legend?.maintainGraphSize
-    ? height + (legendDimensions?.height ?? 0)
-    : height;
+  const parsedHeight =
+    !rightLegend && typeof height === 'number' && maintainGraphSize
+      ? height +
+        (legendDimensions?.height ?? 0) +
+        (legend.marginTop ?? defaultLegendOffset)
+      : height;
 
   return (
     <Box
       display="flex"
       flexDirection={rightLegend ? 'row' : 'column'}
       justifyContent="center"
+      width="100%"
+      height="100%"
     >
       <ResponsiveContainer
         width={parsedWidth}

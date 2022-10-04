@@ -7,7 +7,6 @@ import useVisitorsTypeData from '../../hooks/useVisitorsTypeData';
 import GraphCard from 'components/admin/GraphCard';
 import PieChart from 'components/admin/Graphs/PieChart';
 import { Box } from '@citizenlab/cl2-component-library';
-import EmptyState from 'components/admin/Graphs/_components/EmptyState';
 import EmptyPieChart from '../EmptyPieChart';
 
 // i18n
@@ -20,6 +19,9 @@ import { IResolution } from 'components/admin/ResolutionControl';
 import { Moment } from 'moment';
 import { isNilOrError } from 'utils/helperUtils';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
+
+// utils
+import { hasNoData } from 'components/admin/Graphs/utils';
 
 interface Props {
   startAtMoment: Moment | null | undefined;
@@ -44,10 +46,10 @@ const VisitorsCard = ({
   });
   const title = formatMessage(messages.title);
 
-  if (isNilOrError(pieData)) {
+  if (hasNoData(pieData)) {
     return (
       <GraphCard title={title}>
-        <EmptyState emptyContainerContent={EmptyPieChart} />
+        <EmptyPieChart />
       </GraphCard>
     );
   }
