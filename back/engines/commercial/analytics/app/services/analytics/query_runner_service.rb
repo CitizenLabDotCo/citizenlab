@@ -41,7 +41,6 @@ module Analytics
 
     def query_filters(results)
       @json_query[:filters].each do |dimension, columns|
-
         columns.each do |column, value|
           if [Array, String].include? value.class
             value = convert_empty_to_null(value)
