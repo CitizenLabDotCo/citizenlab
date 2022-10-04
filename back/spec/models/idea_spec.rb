@@ -32,6 +32,120 @@ RSpec.describe Idea, type: :model do
     end
   end
 
+  describe '#participation_method_on_creation' do
+    context 'in a continuous project' do
+      let(:project) { create :continuous_project }
+      let(:idea) { build(:idea, project: project) }
+
+      it 'returns the project' do
+        expect(idea.participation_method_on_creation).to be_an_instance_of ParticipationMethod::Ideation
+      end
+    end
+
+    context 'in a timeline project when created in a phase' do
+      let(:project) { create :project_with_future_native_survey_phase }
+      let(:creation_phase) { project.phases.first }
+      let(:idea) { build(:idea, project: project, creation_phase: creation_phase) }
+
+      it 'returns the phase on creation' do
+        expect(idea.participation_method_on_creation).to be_an_instance_of ParticipationMethod::NativeSurvey
+      end
+    end
+
+    context 'in a timeline project when created outside a phase' do
+      let(:project) { create :project_with_future_native_survey_phase }
+      let(:phase) { project.phases.first }
+      let(:idea) { build(:idea, project: project) }
+
+      it 'returns the project' do
+        expect(idea.participation_method_on_creation).to be_an_instance_of ParticipationMethod::Ideation
+      end
+    end
+  end
+
+  describe '#custom_form' do
+    context 'in a continuous project when the form has been defined' do
+      let(:project) { create :continuous_project }
+      let!(:project_form) { create :custom_form, participation_context: project }
+      let(:idea) { build(:idea, project: project) }
+
+      it 'returns the form of the project' do
+        expect(idea.custom_form).to eq project_form
+      end
+    end
+
+    context 'in a continuous project when the form has not been defined yet' do
+      let(:project) { create :continuous_project }
+      let(:idea) { build(:idea, project: project) }
+
+      it 'returns a new form' do
+        form = idea.custom_form
+        expect(form).to be_instance_of CustomForm
+        expect(form).to be_new_record
+      end
+    end
+
+    context 'in a timeline project when created in a phase and a form has been defined' do
+      let(:project) { create :project_with_future_native_survey_phase }
+      let(:phase) { project.phases.first }
+      let!(:phase_form) { create :custom_form, participation_context: phase }
+      let(:idea) { build(:idea, project: project, creation_phase: phase) }
+
+      it 'returns the form of the phase in which the input was created' do
+        expect(idea.custom_form).to eq phase_form
+      end
+    end
+
+    context 'in a timeline project when created in a phase and a form has not been defined yet' do
+      let(:project) { create :project_with_future_native_survey_phase }
+      let(:phase) { project.phases.first }
+      let(:idea) { build(:idea, project: project, creation_phase: phase) }
+
+      it 'returns a new form' do
+        form = idea.custom_form
+        expect(form).to be_instance_of CustomForm
+        expect(form).to be_new_record
+        expect(form.participation_context_type).to eq 'Phase'
+      end
+    end
+
+    context 'in a timeline project when created in an ideation phase and a form has been defined' do
+      let(:project) { create :project_with_active_ideation_phase }
+      let(:phase) { project.phases.first }
+      let!(:project_form) { create :custom_form, participation_context: project }
+      let(:idea) { build(:idea, project: project, creation_phase: phase) }
+
+      it 'returns the form of the phase in which the input was created' do
+        expect(idea.custom_form).to eq project_form
+      end
+    end
+
+    context 'in a timeline project when created in an ideation phase and a form has not been defined yet' do
+      let(:project) { create :project_with_active_ideation_phase }
+      let(:phase) { project.phases.first }
+      let(:idea) { build(:idea, project: project, creation_phase: phase) }
+
+      it 'returns a new form' do
+        form = idea.custom_form
+        expect(form).to be_instance_of CustomForm
+        expect(form).to be_new_record
+        expect(form.participation_context_type).to eq 'Project'
+      end
+    end
+
+    context 'in a timeline project when created outside a phase' do
+      let(:project) { create :project_with_future_native_survey_phase }
+      let!(:project_form) { create :custom_form, participation_context: project }
+      let(:phase) { project.phases.first }
+      let!(:phase_form) { create :custom_form, participation_context: phase }
+      let(:idea) { build(:idea, project: project) }
+
+      it 'returns the form of the project' do
+        expect(idea.custom_form).to eq project_form
+      end
+    end
+  end
+
   context 'with custom fields' do
     context 'when creating ideas' do
       let(:idea) { build :idea }

@@ -32,7 +32,7 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
   end
 
   def custom_fields
-    IdeaCustomFieldsService.new(custom_form).all_fields
+    IdeaCustomFieldsService.new(custom_form).enabled_fields
   end
 
   def custom_form

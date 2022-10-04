@@ -54,7 +54,6 @@ resource 'Phase level Custom Fields' do
           body_multiloc
           author_id
           budget
-          proposed_budget
           topic_ids
           location_description
           idea_images_attributes
@@ -202,14 +201,12 @@ resource 'Phase level Custom Fields' do
     get 'web_api/v1/phases/:phase_id/custom_fields/schema' do
       example_request 'Get the react-jsonschema-form json schema and ui schema for the custom fields' do
         expect(status).to eq 404
-        expect(response_body).to be_empty
       end
     end
 
     get 'web_api/v1/phases/:phase_id/custom_fields/json_forms_schema' do
       example_request 'Get the jsonforms.io json schema and ui schema for the custom fields' do
         expect(status).to eq 404
-        expect(response_body).to be_empty
       end
     end
   end

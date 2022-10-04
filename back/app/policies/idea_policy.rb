@@ -44,6 +44,8 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def show?
+    return false if record.participation_method_on_creation.never_show?
+
     project_show = ProjectPolicy.new(user, record.project).show?
     return true if project_show && %w[draft published closed].include?(record.publication_status)
 
@@ -55,6 +57,8 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def update?
+    return false if record.participation_method_on_creation.never_update?
+
     bypassable_reasons = %w[posting_disabled]
     pcs = ParticipationContextService.new
     pcs_posting_reason = pcs.posting_idea_disabled_reason_for_project(record.project, user)
