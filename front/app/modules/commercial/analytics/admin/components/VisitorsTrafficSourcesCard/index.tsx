@@ -75,9 +75,10 @@ const VisitorsCard = ({
         resolution,
       }}
     >
-      <Box width="100%" maxWidth="300px" height="initial">
+      <Box width="100%" height="initial" display="flex" alignItems="center">
         <PieChart
-          height={140}
+          width={164}
+          height={164}
           data={pieData}
           mapping={{
             angle: 'value',
@@ -85,7 +86,7 @@ const VisitorsCard = ({
           }}
           legend={{
             items: legend,
-            marginTop: 15,
+            marginLeft: 50,
             maintainGraphSize: true,
             position: 'right-center',
           }}

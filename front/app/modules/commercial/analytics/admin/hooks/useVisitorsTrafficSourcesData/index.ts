@@ -11,7 +11,7 @@ import {
 import { parsePieData } from './parse';
 
 // utils
-// import { getProjectFilter, getDateFilter } from '../../utils/query';
+import { getProjectFilter, getDateFilter } from '../../utils/query';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 // typings
@@ -26,19 +26,15 @@ const query = ({
   const startAt = startAtMoment?.toISOString();
   const endAt = endAtMoment?.toISOString();
 
-  if (1 + 1 === 3) {
-    console.log(projectId, startAt, endAt);
-  }
-
   const trafficSourcesQuery: QuerySchema = {
     fact: 'visit',
-    // filters: {
-    //   dimension_user: {
-    //     role: ['citizen', null],
-    //   },
-    //   ...getProjectFilter('dimension_projects', projectId),
-    //   ...getDateFilter('dimension_date_last_action', startAt, endAt),
-    // },
+    filters: {
+      dimension_user: {
+        role: ['citizen', null],
+      },
+      ...getProjectFilter('dimension_projects', projectId),
+      ...getDateFilter('dimension_date_last_action', startAt, endAt),
+    },
     groups: 'dimension_referrer_type.id',
     aggregations: {
       all: 'count',
