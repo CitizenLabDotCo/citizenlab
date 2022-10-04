@@ -11,7 +11,7 @@ import 'moment-timezone';
 import 'intersection-observer';
 import 'focus-visible';
 import smoothscroll from 'smoothscroll-polyfill';
-import { configureScope } from '@sentry/browser';
+import { configureScope } from '@sentry/react';
 import GlobalStyle from 'global-styles';
 
 // constants
