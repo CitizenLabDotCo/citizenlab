@@ -87,7 +87,7 @@ const LoadingContainer = styled.div`
 
 const StyledCreatable = styled(Creatable)<{ opitons: OptionProps[] }>`
   #react-select-2-option-${({ options }) => options.length} {
-    background-color: ${colors.clGreenSuccessBackground};
+    background-color: ${colors.successLight};
   }
 `;
 
@@ -269,7 +269,7 @@ const InputDetails = ({
               variant="approved"
             />
           ))}
-          {loading && <StyledSpinner color={colors.clGreen} size="24px" />}
+          {loading && <StyledSpinner color={colors.success} size="24px" />}
         </CategoryList>
         {ideaId && <Idea ideaId={ideaId} />}
       </Container>

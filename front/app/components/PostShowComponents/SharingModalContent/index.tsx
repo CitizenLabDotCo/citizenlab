@@ -190,7 +190,7 @@ class SharingModalContent extends PureComponent<
             {title}
           </Title>
           <Text
-            color="text"
+            color="textPrimary"
             mt="12px"
             mb="36px"
             fontSize={'m'}

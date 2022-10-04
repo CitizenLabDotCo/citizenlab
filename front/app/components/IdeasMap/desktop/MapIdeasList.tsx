@@ -102,7 +102,7 @@ const IdeaIcon = styled(Icon)`
   flex: 0 0 26px;
   width: 26px;
   height: 26px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
 `;
 
 const EmptyMessage = styled.div`
@@ -113,7 +113,7 @@ const EmptyMessage = styled.div`
 `;
 
 const EmptyMessageLine = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: normal;

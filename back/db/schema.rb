@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_06_074349) do
+ActiveRecord::Schema.define(version: 2022_10_01_123808) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -68,13 +68,11 @@ ActiveRecord::Schema.define(version: 2022_09_06_074349) do
     t.string "name"
     t.string "host"
     t.string "logo"
-    t.string "header_bg"
     t.string "favicon"
     t.jsonb "settings", default: {}
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.jsonb "style", default: {}
-    t.jsonb "homepage_info_multiloc"
   end
 
   create_table "areas", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -438,6 +436,7 @@ ActiveRecord::Schema.define(version: 2022_09_06_074349) do
     t.datetime "assigned_at"
     t.integer "proposed_budget"
     t.jsonb "custom_field_values", default: {}, null: false
+    t.uuid "creation_phase_id"
     t.index "((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))", name: "index_ideas_search", using: :gin
     t.index ["author_id"], name: "index_ideas_on_author_id"
     t.index ["idea_status_id"], name: "index_ideas_on_idea_status_id"
@@ -472,6 +471,20 @@ ActiveRecord::Schema.define(version: 2022_09_06_074349) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_identities_on_user_id"
+  end
+
+  create_table "impact_tracking_salts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "salt"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "impact_tracking_sessions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "monthly_user_hash", null: false
+    t.string "highest_role"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["monthly_user_hash"], name: "index_impact_tracking_sessions_on_monthly_user_hash"
   end
 
   create_table "initiative_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1105,7 +1118,6 @@ ActiveRecord::Schema.define(version: 2022_09_06_074349) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "logo"
-    t.string "header_bg"
     t.string "favicon"
     t.jsonb "style", default: {}
     t.datetime "deleted_at"
@@ -1480,7 +1492,7 @@ ActiveRecord::Schema.define(version: 2022_09_06_074349) do
               0 AS feedback_official,
               1 AS feedback_status_change
              FROM activities
-            WHERE (((activities.action)::text = 'changed_status'::text) AND ((activities.item_type)::text = ANY ((ARRAY['Idea'::character varying, 'Initiative'::character varying])::text[])))
+            WHERE (((activities.action)::text = 'changed_status'::text) AND ((activities.item_type)::text = ANY (ARRAY[('Idea'::character varying)::text, ('Initiative'::character varying)::text])))
             GROUP BY activities.item_id
           UNION ALL
            SELECT official_feedbacks.post_id,

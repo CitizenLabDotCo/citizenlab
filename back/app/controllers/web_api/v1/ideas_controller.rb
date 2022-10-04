@@ -10,6 +10,18 @@ class WebApi::V1::IdeasController < ApplicationController
   after_action :verify_policy_scoped, only: %i[index index_mini]
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
+  def schema
+    input = Idea.find params[:id]
+    enabled_fields = IdeaCustomFieldsService.new(input.custom_form).enabled_fields
+    render json: CustomFieldService.new.ui_and_json_multiloc_schemas(AppConfiguration.instance, enabled_fields)
+  end
+
+  def json_forms_schema
+    input = Idea.find params[:id]
+    enabled_fields = IdeaCustomFieldsService.new(input.custom_form).enabled_fields
+    render json: JsonFormsService.new.input_ui_and_json_multiloc_schemas(enabled_fields, current_user)
+  end
+
   def index
     ideas = IdeasFinder.new(
       params,
@@ -121,18 +133,21 @@ class WebApi::V1::IdeasController < ApplicationController
     end
     send_error and return unless participation_context
 
-    custom_form = custom_form_for participation_context
+    creation_phase = (participation_context if participation_context.is_a?(Phase))
+
+    custom_form = participation_context.custom_form || CustomForm.new(participation_context: participation_context)
     extract_custom_field_values_from_params! custom_form
 
     user_can_moderate_project = UserRoleService.new.can_moderate_project?(project, current_user)
     input = Idea.new idea_params(custom_form, user_can_moderate_project)
+    input.creation_phase = creation_phase
     input.author ||= current_user
     if phase_ids.empty? && project.timeline?
       input.phase_ids = [participation_context.id]
     end
     service.before_create(input, current_user)
 
-    authorize_input input, project
+    authorize input
     verify_profanity input
 
     save_options = {}
@@ -154,20 +169,19 @@ class WebApi::V1::IdeasController < ApplicationController
   def update
     input = Idea.find params[:id]
     project = input.project
-    authorize_input input, project
+    authorize input
 
-    custom_form = custom_form_for participation_context_for_update(input, project)
-    extract_custom_field_values_from_params! custom_form
+    extract_custom_field_values_from_params! input.custom_form
     params[:idea][:topic_ids] ||= [] if params[:idea].key?(:topic_ids)
     params[:idea][:phase_ids] ||= [] if params[:idea].key?(:phase_ids)
     mark_custom_field_values_to_clear! input
 
     user_can_moderate_project = UserRoleService.new.can_moderate_project?(project, current_user)
-    update_params = idea_params(custom_form, user_can_moderate_project).to_h
+    update_params = idea_params(input.custom_form, user_can_moderate_project).to_h
     update_params[:custom_field_values] = input.custom_field_values.merge(update_params[:custom_field_values] || {})
     CustomFieldService.new.cleanup_custom_field_values! update_params[:custom_field_values]
     input.assign_attributes update_params
-    authorize_input input, project
+    authorize input
     verify_profanity input
 
     service.before_update(input, current_user)
@@ -176,7 +190,7 @@ class WebApi::V1::IdeasController < ApplicationController
     save_options[:context] = :publication if params.dig(:idea, :publication_status) == 'published'
     ActiveRecord::Base.transaction do
       if input.save save_options
-        authorize_input input, project
+        authorize input
         service.after_update(input, current_user)
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
@@ -191,7 +205,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def destroy
     input = Idea.find params[:id]
-    authorize_input input, input.project
+    authorize input
     service.before_destroy(input, current_user)
     input = input.destroy
     if input.destroyed?
@@ -204,48 +218,13 @@ class WebApi::V1::IdeasController < ApplicationController
 
   private
 
-  def authorize_input(input, project)
-    authorize input, policy_class: policy_class(input, project)
-  end
-
-  def policy_class(input, project)
-    phases = input.phases
-    if project.continuous?
-      project.native_survey? ? SurveyResponsePolicy : IdeaPolicy
-    elsif phases.size == 1 && phases.first.native_survey?
-      SurveyResponsePolicy
-    else
-      IdeaPolicy
-    end
-  end
-
   def render_show(input)
-    authorize_input input, input.project
+    authorize input
     render json: WebApi::V1::IdeaSerializer.new(
       input,
       params: fastjson_params,
       include: %i[author topics user_vote idea_images]
     ).serialized_json
-  end
-
-  def custom_form_for(participation_context)
-    return CustomForm.new unless participation_context
-
-    participation_context.custom_form || CustomForm.new(participation_context: participation_context)
-  end
-
-  def participation_context_for_update(input, project)
-    phases = input.phases
-    if project.continuous? || phases.none?(&:native_survey?)
-      # The form is at the project level
-      project
-    elsif phases.size == 1 && phases.first.native_survey?
-      # Survey responses can only live in exactly 1 phase.
-      # The form is at the phase level.
-      phases.first
-    else
-      raise 'Current context does not support saving input!'
-    end
   end
 
   def extract_custom_field_values_from_params!(custom_form)
@@ -321,10 +300,6 @@ class WebApi::V1::IdeasController < ApplicationController
     if params[:project].present?
       authorize Project.find(params[:project]), :index_xlsx?
     else
-      # TODO: (native surveys) No policy_class here, because the project is not given.
-      # That means that this is only applicable for ideas.
-      # Is there a use case in which no project is given? That seems unlikely,
-      # because that would result in all ideas of all projects to be included in the export file.
       authorize :idea, :index_xlsx?
     end
   end

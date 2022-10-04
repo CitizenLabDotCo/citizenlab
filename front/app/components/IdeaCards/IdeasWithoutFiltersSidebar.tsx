@@ -67,18 +67,18 @@ const FiltersArea = styled.div`
     justify-content: flex-end;
     margin-bottom: 15px;
 
-    ${media.smallerThanMinTablet`
+    ${media.tablet`
       margin-bottom: 0px;
     `}
   }
 
-  ${media.biggerThanMinTablet`
+  ${media.desktop`
     &.mapView {
       margin-top: -65px;
     }
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.tablet`
     flex-direction: column;
     align-items: stretch;
     margin-bottom: 30px;
@@ -97,7 +97,7 @@ const LeftFilterArea = styled(FilterArea)`
     display: none;
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.tablet`
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -125,7 +125,7 @@ const DropdownFilters = styled.div`
 const DesktopViewButtons = styled(ViewButtons)`
   margin-left: 40px;
 
-  ${media.smallerThanMinTablet`
+  ${media.tablet`
     display: none;
   `}
 `;
@@ -143,7 +143,7 @@ const StyledSearchInput = styled(SearchInput)`
     margin-left: auto;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.tablet`
     width: 100%;
     margin-right: 0px;
     margin-left: 0px;
@@ -253,16 +253,16 @@ const IdeasWithoutFiltersSidebar = ({
     !locationEnabled || (locationEnabled && selectedView === 'card');
   const showMapView = locationEnabled && selectedView === 'map';
   const smallerThanBigTablet = !!(
-    windowSize && windowSize <= viewportWidths.largeTablet
+    windowSize && windowSize <= viewportWidths.tablet
   );
   const smallerThanSmallTablet = !!(
-    windowSize && windowSize <= viewportWidths.smallTablet
+    windowSize && windowSize <= viewportWidths.tablet
   );
   const biggerThanSmallTablet = !!(
-    windowSize && windowSize >= viewportWidths.smallTablet
+    windowSize && windowSize >= viewportWidths.tablet
   );
   const biggerThanLargeTablet = !!(
-    windowSize && windowSize >= viewportWidths.largeTablet
+    windowSize && windowSize >= viewportWidths.tablet
   );
   const smallerThan1100px = !!(windowSize && windowSize <= 1100);
   const smallerThanPhone = !!(windowSize && windowSize <= viewportWidths.phone);

@@ -28,7 +28,7 @@ import { darken } from 'polished';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 const StyledButton = styled.button`
-  color: ${colors.clBlueDark};
+  color: ${colors.teal};
   font-weight: inherit;
   text-decoration: underline;
   margin: 0;
@@ -36,7 +36,7 @@ const StyledButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    color: ${darken(0.15, colors.clBlueDark)};
+    color: ${darken(0.15, colors.teal)};
     text-decoration: underline;
   }
 `;

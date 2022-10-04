@@ -7,7 +7,7 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 const Container = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   display: flex;
   flex-direction: row;
@@ -18,7 +18,7 @@ const Container = styled.div`
 const CommentIcon = styled(Icon)`
   width: 20px;
   height: 20px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   margin-right: 8px;
 `;
 

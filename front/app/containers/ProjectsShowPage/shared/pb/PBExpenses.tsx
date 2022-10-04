@@ -59,7 +59,7 @@ const Header = styled.div`
 
 const Title = styled.h2`
   min-height: 20px;
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.l}px;
   line-height: normal;
   font-weight: 500;
@@ -75,8 +75,8 @@ const Title = styled.h2`
   }
 
   &.validationSuccess {
-    color: ${colors.clGreenSuccess};
-    fill: ${colors.clGreenSuccess};
+    color: ${colors.success};
+    fill: ${colors.success};
   }
 `;
 
@@ -97,7 +97,7 @@ const Spacer = styled.div`
 `;
 
 const Budget = styled.div`
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   line-height: ${fontSizes.base}px;
   display: flex;
@@ -121,7 +121,7 @@ const BudgetAmount = styled.span`
   }
 
   &.green {
-    color: ${colors.clGreenSuccess};
+    color: ${colors.success};
   }
 `;
 
@@ -151,7 +151,7 @@ const ProgressBar = styled.div<{ viewMode: 'row' | 'column' }>`
 const ProgressBarOverlay: any = styled.div`
   width: ${(props: any) => props.progress}%;
   height: 100%;
-  background: ${colors.label};
+  background: ${colors.textSecondary};
   border-radius: ${(props: any) => props.theme.borderRadius};
   display: flex;
   align-items: center;
@@ -163,7 +163,7 @@ const ProgressBarOverlay: any = styled.div`
   }
 
   &.green {
-    background: ${colors.clGreenSuccess};
+    background: ${colors.success};
   }
 `;
 
@@ -250,7 +250,7 @@ const TooltipContentIcon = styled(Icon)`
 
 const TooltipContentText = styled.div`
   flex: 1 1 auto;
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 400;
@@ -552,7 +552,7 @@ const PBExpenses = ({
                 <div>
                   <SubmitExpensesButton
                     onClick={handleSubmitExpensesOnClick}
-                    bgColor={colors.adminTextColor}
+                    bgColor={colors.primary}
                     disabled={
                       validationStatus === 'validationSuccess' ||
                       budgetExceedsLimit ||

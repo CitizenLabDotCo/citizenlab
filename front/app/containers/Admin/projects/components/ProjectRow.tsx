@@ -140,14 +140,14 @@ export default ({
                     <FormattedMessage {...messages.onlyAdminsCanView} />
                   )
                 }
-                backgroundColor={colors.clBlueDark}
+                backgroundColor={colors.teal}
                 icon="lock"
               />
             )}
           {publication.attributes?.publication_visible_to === 'admins' && (
             <StyledStatusLabel
               text={<FormattedMessage {...messages.onlyAdminsCanView} />}
-              backgroundColor={colors.clBlueDark}
+              backgroundColor={colors.teal}
               icon="lock"
             />
           )}
