@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 
 // hooks
 import useVisitorsLanguageData from '../../hooks/useVisitorsLanguageData';
@@ -44,6 +44,15 @@ const VisitorsCard = ({
     endAtMoment,
     projectId: projectFilter,
   });
+  const [hoverIndex, setHoverIndex] = useState<number | undefined>();
+
+  const onMouseOver = ({ rowIndex }) => {
+    setHoverIndex(rowIndex);
+  };
+
+  const onMouseOut = () => {
+    setHoverIndex(undefined);
+  };
 
   const cardTitle = formatMessage(messages.title);
 
@@ -88,6 +97,10 @@ const VisitorsCard = ({
           mapping={{
             angle: 'value',
             name: 'name',
+            opacity: ({ rowIndex }) => {
+              if (hoverIndex === undefined) return 1;
+              return hoverIndex === rowIndex ? 1 : 0.3;
+            },
           }}
           tooltip={renderTooltip(cardTitle)}
           legend={{
@@ -97,6 +110,8 @@ const VisitorsCard = ({
             position: 'right-center',
           }}
           innerRef={graphRef}
+          onMouseOver={onMouseOver}
+          onMouseOut={onMouseOut}
         />
       </Box>
     </GraphCard>
