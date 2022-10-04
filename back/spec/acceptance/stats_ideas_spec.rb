@@ -47,8 +47,8 @@ resource 'Stats - Ideas' do
     AppConfiguration.instance.update!(created_at: now - 3.years)
     @timezone = AppConfiguration.instance.settings('core', 'timezone')
 
-    @project1 = create(:project)
-    @project2 = create(:project)
+    @project1 = create(:continuous_project)
+    @project2 = create(:continuous_project)
     @proposed = create(:idea_status, code: 'proposed')
     @ideas_with_topics = []
     @ideas_with_status = []
@@ -134,7 +134,7 @@ resource 'Stats - Ideas' do
 
       before do
         topic = create(:topic)
-        @project = create(:project, allowed_input_topics: [topic])
+        @project = create(:continuous_project, allowed_input_topics: [topic])
         travel_to start_at + 2.months do
           create(:idea, project: @project, topics: [topic])
           create(:idea)
@@ -181,7 +181,7 @@ resource 'Stats - Ideas' do
 
       before do
         topic = create(:topic)
-        @project = create(:project, allowed_input_topics: [topic])
+        @project = create(:continuous_project, allowed_input_topics: [topic])
         travel_to start_at + 2.months do
           create(:idea, project: @project, topics: [topic])
           create(:idea)
@@ -245,7 +245,7 @@ resource 'Stats - Ideas' do
       let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
 
       before do
-        @project = create(:project)
+        @project = create(:continuous_project)
         travel_to start_at + 2.months do
           create(:idea, project: @project, idea_status: @proposed)
         end
@@ -291,7 +291,7 @@ resource 'Stats - Ideas' do
 
       before do
         topic = create(:topic)
-        @project = create(:project, allowed_input_topics: [topic])
+        @project = create(:continuous_project, allowed_input_topics: [topic])
         travel_to start_at + 2.months do
           create(:idea, project: @project, topics: [topic])
           create(:idea)
