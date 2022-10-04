@@ -14,5 +14,6 @@
 #
 module Analytics
   class DimensionReferrerType < Analytics::ApplicationRecord
+    validates :key, presence: true, uniqueness: true
   end
 end
