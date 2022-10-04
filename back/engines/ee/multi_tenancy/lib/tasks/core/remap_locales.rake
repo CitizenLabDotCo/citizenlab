@@ -23,13 +23,6 @@ namespace :fix_existing_tenants do
           tenant.settings['core']['organization_name'] =
             multiloc_transform(tenant.settings['core']['organization_name'], loc_map)
         end
-        if tenant.settings['core']['header_title']
-          tenant.settings['core']['header_title'] = multiloc_transform(tenant.settings['core']['header_title'], loc_map)
-        end
-        if tenant.settings['core']['header_slogan']
-          tenant.settings['core']['header_slogan'] =
-            multiloc_transform(tenant.settings['core']['header_slogan'], loc_map)
-        end
         if tenant.settings['core']['meta_title']
           tenant.settings['core']['meta_title'] = multiloc_transform(tenant.settings['core']['meta_title'], loc_map)
         end

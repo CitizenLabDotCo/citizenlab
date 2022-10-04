@@ -11,7 +11,6 @@ module MultiTenancy
           name: 'local',
           host: 'localhost',
           logo: Rails.root.join('spec/fixtures/logo.png').open,
-          header_bg: Rails.root.join('spec/fixtures/header.jpg').open,
           created_at: Faker::Date.between(from: 1.year.ago, to: Time.zone.now),
           settings: SettingsService.new.minimal_required_settings(
             locales: runner.seed_locales,
@@ -24,10 +23,7 @@ module MultiTenancy
             },
             customizable_homepage_banner: {
               allowed: true,
-              enabled: true,
-              layout: 'full_width_banner_layout',
-              cta_signed_out_type: 'sign_up_button',
-              cta_signed_in_type: 'no_button'
+              enabled: true
             },
             password_login: {
               allowed: true,
@@ -395,7 +391,6 @@ module MultiTenancy
           name: 'empty',
           host: 'empty.localhost',
           logo: Rails.root.join('spec/fixtures/logo.png').open,
-          header_bg: Rails.root.join('spec/fixtures/header.jpg').open,
           created_at: Faker::Date.between(from: 1.year.ago, to: Time.zone.now),
           settings: SettingsService.new.minimal_required_settings(locales: %w[en nl-BE], lifecycle_stage: 'active')
         )

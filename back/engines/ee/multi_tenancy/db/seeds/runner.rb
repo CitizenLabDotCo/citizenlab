@@ -4,6 +4,7 @@
 # The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
 
 require_relative 'api_clients'
+require_relative 'analytics'
 require_relative 'areas'
 require_relative 'baskets'
 require_relative 'common_passwords'
@@ -11,6 +12,7 @@ require_relative 'custom_fields'
 require_relative 'custom_forms'
 require_relative 'custom_maps'
 require_relative 'groups'
+require_relative 'home_pages'
 require_relative 'ideas'
 require_relative 'iniatives'
 require_relative 'invites'
@@ -100,6 +102,7 @@ module MultiTenancy
 
         MultiTenancy::TenantTemplateService.new.resolve_and_apply_template('base', external_subfolder: false)
 
+        MultiTenancy::Seeds::HomePages.new(runner: self).run
         MultiTenancy::Seeds::Users.new(runner: self).run
         MultiTenancy::Seeds::ApiClients.new(runner: self).run
         MultiTenancy::Seeds::CustomFields.new(runner: self).run
@@ -121,6 +124,7 @@ module MultiTenancy
         MultiTenancy::Seeds::CustomForms.new(runner: self).run
         MultiTenancy::Seeds::Volunteers.new(runner: self).run
         MultiTenancy::Seeds::CustomMaps.new(runner: self).run
+        MultiTenancy::Seeds::Analytics.new(runner: self).run
       end
 
       # @return [Array[String]] default seed locales

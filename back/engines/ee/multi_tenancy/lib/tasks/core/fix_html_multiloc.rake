@@ -252,7 +252,6 @@ def imageable_html_multilocs
     Phase => [:description_multiloc],
     Project => [:description_multiloc],
     ProjectFolders::Folder => [:description_multiloc],
-    EmailCampaigns::Campaign => [:body_multiloc],
-    AppConfiguration => [:homepage_info_multiloc]
+    EmailCampaigns::Campaign => [:body_multiloc]
   }
 end
