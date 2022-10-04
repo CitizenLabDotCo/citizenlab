@@ -8,6 +8,7 @@ import GraphCard from 'components/admin/GraphCard';
 import PieChart from 'components/admin/Graphs/PieChart';
 import { Box } from '@citizenlab/cl2-component-library';
 import EmptyPieChart from '../EmptyPieChart';
+import renderTooltip from '../../utils/renderSimpleTooltip';
 
 // i18n
 import messages from './messages';
@@ -88,6 +89,7 @@ const VisitorsCard = ({
             angle: 'value',
             name: 'name',
           }}
+          tooltip={renderTooltip(cardTitle)}
           legend={{
             items: legend,
             maintainGraphSize: true,

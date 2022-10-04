@@ -9,5 +9,6 @@
 #
 module Analytics
   class DimensionLocale < Analytics::ApplicationRecord
+    validates :name, presence: true, uniqueness: true
   end
 end
