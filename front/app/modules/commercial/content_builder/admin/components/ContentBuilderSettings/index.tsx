@@ -74,7 +74,7 @@ const ContentBuilderSettings = () => {
         className="e2eBuilderSettingsClose"
         a11y_buttonActionMessage={messages.a11y_closeSettingsPanel}
         onClick={closeSettings}
-        iconColor={colors.label}
+        iconColor={colors.textSecondary}
         iconColorOnHover={'#000'}
       />
       <Title variant="h2">
@@ -87,9 +87,9 @@ const ContentBuilderSettings = () => {
             id="e2e-delete-button"
             icon="delete"
             buttonStyle="primary-outlined"
-            borderColor={colors.red500}
-            textColor={colors.red500}
-            iconColor={colors.red500}
+            borderColor={colors.error}
+            textColor={colors.error}
+            iconColor={colors.error}
             onClick={() => {
               actions.delete(selected.id);
               eventEmitter.emit(

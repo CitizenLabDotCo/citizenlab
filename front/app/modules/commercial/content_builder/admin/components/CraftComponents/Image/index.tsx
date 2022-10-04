@@ -65,7 +65,7 @@ const Image = ({
           padding="24px"
           width="100px"
           height="100px"
-          fill={colors.clIconSecondary}
+          fill={colors.grey500}
           name="image"
         />
       )}

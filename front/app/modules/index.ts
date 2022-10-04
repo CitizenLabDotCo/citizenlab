@@ -29,6 +29,7 @@ import customIdeaStatusesConfiguration from './commercial/custom_idea_statuses';
 import bulkIdeaImportConfiguration from './commercial/bulk_idea_import';
 import verificationConfiguration from './commercial/verification';
 import customTopicsConfiguration from './commercial/custom_topics';
+import impactTrackingConfiguration from './commercial/impact_tracking';
 
 import idAuth0Configuration from './commercial/id_auth0';
 import idBosaFasConfiguration from './commercial/id_bosa_fas';
@@ -226,5 +227,9 @@ export default loadModules([
   {
     configuration: representativenessConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/representativeness'],
+  },
+  {
+    configuration: impactTrackingConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/impact_tracking'],
   },
 ]);

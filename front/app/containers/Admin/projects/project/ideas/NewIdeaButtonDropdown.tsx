@@ -54,7 +54,7 @@ const NewIdeaButtonDropdown = ({
                       );
                     }}
                   >
-                    <span color={colors.text}>
+                    <span color={colors.textPrimary}>
                       {localize(phase.attributes.title_multiloc)}
                     </span>
                   </Box>
@@ -72,7 +72,7 @@ const NewIdeaButtonDropdown = ({
     <>
       <Box
         color="white"
-        background={colors.clBlueDark}
+        background={colors.teal}
         borderRadius="3px"
         height="42px"
         px="16px"

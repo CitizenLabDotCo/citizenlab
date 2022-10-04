@@ -19,7 +19,7 @@ const DraftCampaignRow = ({ campaign }: Props) => (
     </TextCell>
     <StatusLabel
       minWidth="94px"
-      backgroundColor={colors.adminOrangeIcons}
+      backgroundColor={colors.orange}
       text={<FormattedMessage {...messages.draft} />}
     />
     <Box minWidth="220px" display="flex" justifyContent="flex-end">

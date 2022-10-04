@@ -24,15 +24,16 @@ class WebApi::V1::PhaseCustomFieldsController < ApplicationController
   private
 
   def phase
-    @phase ||= Phase.find_by id: params[:phase_id]
+    @phase ||= Phase.find params[:phase_id]
   end
 
   def custom_fields
-    IdeaCustomFieldsService.new(custom_form).all_fields
+    IdeaCustomFieldsService.new(custom_form).enabled_fields
   end
 
   def custom_form
-    if phase.native_survey?
+    participation_method = Factory.instance.participation_method_for phase
+    if participation_method.form_in_phase?
       phase.custom_form || CustomForm.new(participation_context: phase)
     else
       phase.project.custom_form || CustomForm.new(participation_context: phase.project)

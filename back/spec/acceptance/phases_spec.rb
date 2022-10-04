@@ -4,7 +4,7 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Phases' do
-  explanation 'Timeline projects constist of multiple phases through which ideas can transit.'
+  explanation 'Timeline projects consist of multiple phases through which ideas can transit.'
 
   before do
     header 'Content-Type', 'application/json'

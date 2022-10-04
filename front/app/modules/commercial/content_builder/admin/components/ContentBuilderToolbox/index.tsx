@@ -65,7 +65,7 @@ const ContentBuilderToolbox = ({
       alignItems="center"
       bgColor="#ffffff"
       overflowY="auto"
-      borderRight={`1px solid ${colors.mediumGrey}`}
+      borderRight={`1px solid ${colors.grey500}`}
     >
       <Box w="100%" display="inline">
         <Title
@@ -75,7 +75,7 @@ const ContentBuilderToolbox = ({
           ml="10px"
           variant="h6"
           as="h3"
-          color="secondaryText"
+          color="textSecondary"
         >
           <FormattedMessage {...messages.sections} />
         </Title>
@@ -122,7 +122,7 @@ const ContentBuilderToolbox = ({
           ml="10px"
           variant="h6"
           as="h3"
-          color="secondaryText"
+          color="textSecondary"
         >
           <FormattedMessage {...messages.layout} />
         </Title>
@@ -185,7 +185,7 @@ const ContentBuilderToolbox = ({
           ml="10px"
           variant="h6"
           as="h3"
-          color="secondaryText"
+          color="textSecondary"
         >
           <FormattedMessage {...messages.content} />
         </Title>
