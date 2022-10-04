@@ -79,7 +79,7 @@ export default function useVisitorsTrafficSourcesData(
     );
 
     return () => subscription.unsubscribe();
-  }, [projectId, startAtMoment, endAtMoment]);
+  }, [projectId, startAtMoment, endAtMoment, formatMessage]);
 
   return { pieData, xlsxData };
 }
