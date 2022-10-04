@@ -27,7 +27,6 @@ const CustomTooltip = ({ label, payload }: CustomTooltipProps) => {
     value,
     payload: { percentage, color },
   } = payload[0];
-  console.log(payload)
   return (
     <TooltipOutline label={name}>
       <Box py="0px">
