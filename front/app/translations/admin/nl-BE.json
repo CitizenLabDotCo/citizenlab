@@ -1065,6 +1065,7 @@
   "app.containers.AdminPage.ProjectEdit.subtitleGeneral": "Maak je project aan en personaliseer het.",
   "app.containers.AdminPage.ProjectEdit.survey.addAnswer": "Voeg antwoord toe",
   "app.containers.AdminPage.ProjectEdit.survey.addSurveyContent": "Enquête-inhoud toevoegen",
+  "app.containers.AdminPage.ProjectEdit.survey.chooseMultipleToggle": "Choose multiple",
   "app.containers.AdminPage.ProjectEdit.survey.close": "Sluiten",
   "app.containers.AdminPage.ProjectEdit.survey.closed": "Gesloten",
   "app.containers.AdminPage.ProjectEdit.survey.default": "Standaard",
