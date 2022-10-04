@@ -21,7 +21,7 @@ const Container = styled.div``;
 
 const StatusIcon = styled(Icon)`
   path {
-    fill: ${(props) => props.theme.colorText};
+    fill: ${(props) => props.theme.colors.tenantText};
   }
   width: 40px;
   height: 40px;
@@ -30,7 +30,7 @@ const StatusIcon = styled(Icon)`
 
 const VoteText = styled.div`
   font-size: ${fontSizes.base}px;
-  color: ${(props) => props.theme.colorText};
+  color: ${(props) => props.theme.colors.tenantText};
   margin-top: 20px;
 `;
 
@@ -89,7 +89,7 @@ class ThresholdReached extends PureComponent<Props & { theme: any }, State> {
           {threshold_reached_message ? (
             <IconTooltip
               icon="info"
-              iconColor={this.props.theme.colorText}
+              iconColor={this.props.theme.colors.tenantText}
               theme="light"
               placement="bottom"
               content={<T value={threshold_reached_message} supportHtml />}

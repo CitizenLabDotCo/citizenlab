@@ -27,6 +27,7 @@
 #  assigned_at              :datetime
 #  proposed_budget          :integer
 #  custom_field_values      :jsonb            not null
+#  creation_phase_id        :uuid
 #
 # Indexes
 #
@@ -49,6 +50,7 @@ class Idea < ApplicationRecord
   extend OrderAsSpecified
 
   belongs_to :project, touch: true
+  belongs_to :creation_phase, class_name: 'Phase', optional: true
   belongs_to :idea_status, optional: true
 
   counter_culture :idea_status, touch: true
@@ -98,14 +100,19 @@ class Idea < ApplicationRecord
     validates :proposed_budget, numericality: { greater_than_or_equal_to: 0, if: :proposed_budget }
   end
 
+  # validates :custom_field_values, json: {
+  #   schema: :schema_for_validation,
+  #   message: ->(errors) { errors }
+  # }
+
   with_options unless: :draft? do
     validates :idea_status, presence: true
     validates :project, presence: true
-    before_validation :set_idea_status
+    before_validation :assign_defaults
     before_validation :sanitize_body_multiloc, if: :body_multiloc
   end
 
-  after_create :assign_slug!
+  after_create :assign_slug
   after_update :fix_comments_count_on_projects
 
   scope :with_some_topics, (proc do |topics|
@@ -156,18 +163,42 @@ class Idea < ApplicationRecord
     publication_status_change == %w[draft published] || publication_status_change == [nil, 'published']
   end
 
+  def custom_form
+    if project.timeline? && participation_method_on_creation.form_in_phase?
+      creation_phase.custom_form || CustomForm.new(participation_context: creation_phase)
+    else
+      project.custom_form || CustomForm.new(participation_context: project)
+    end
+  end
+
+  def participation_method_on_creation
+    Factory.instance.participation_method_for participation_context_on_creation
+  end
+
   private
 
-  def participation_method
-    ::Factory.instance.participation_method_for(project)
+  def participation_context_on_creation
+    creation_phase || project
+  end
+
+  def schema_for_validation
+    fields = custom_form.custom_fields
+    multiloc_schema = JsonSchemaGeneratorService.new.generate_for fields
+    multiloc_schema.values.first
   end
 
   def validate_built_in_fields?
-    !draft? && participation_method.validate_built_in_fields?
+    !draft? && participation_method_on_creation.validate_built_in_fields?
   end
 
-  def assign_slug!
-    participation_method.assign_slug! self
+  def assign_slug
+    return if slug # Slugs never change.
+
+    participation_method_on_creation.assign_slug self
+  end
+
+  def assign_defaults
+    participation_method_on_creation.assign_defaults self
   end
 
   def sanitize_body_multiloc
@@ -178,10 +209,6 @@ class Idea < ApplicationRecord
     )
     self.body_multiloc = service.remove_multiloc_empty_trailing_tags(body_multiloc)
     self.body_multiloc = service.linkify_multiloc(body_multiloc)
-  end
-
-  def set_idea_status
-    self.idea_status ||= IdeaStatus.find_by!(code: 'proposed')
   end
 
   def fix_comments_count_on_projects

@@ -26,7 +26,7 @@ const Tab = styled.div`
     }
 
     > * {
-      color: ${colors.label};
+      color: ${colors.textSecondary};
       font-size: ${fontSizes.base}px;
       font-weight: 400;
       line-height: ${tabLineHeight}px;
@@ -37,7 +37,7 @@ const Tab = styled.div`
     }
 
     &:hover > * {
-      color: ${colors.adminTextColor};
+      color: ${colors.primary};
     }
 
     ${!active &&
@@ -47,10 +47,10 @@ const Tab = styled.div`
 
     ${active &&
     `border-color: #7FBBCA;
-    // border-color: ${colors.adminTextColor}; TODO : set accent color in component library
+    // border-color: ${colors.primary}; TODO : set accent color in component library
 
     > * {
-        color: ${colors.adminTextColor};
+        color: ${colors.primary};
     }`}
   `}
 `;

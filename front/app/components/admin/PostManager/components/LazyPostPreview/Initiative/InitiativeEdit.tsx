@@ -110,7 +110,7 @@ export class InitiativesEditPage extends React.PureComponent<Props, State> {
           <Button
             icon="arrow-back"
             buttonStyle="text"
-            textColor={colors.adminTextColor}
+            textColor={colors.primary}
             onClick={goBack}
           >
             <FormattedMessage {...messages.cancelEdit} />

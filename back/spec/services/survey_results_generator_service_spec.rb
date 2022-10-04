@@ -177,6 +177,7 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
   end
 
   before do
+    create(:idea_status_proposed)
     create(
       :idea,
       project: project,

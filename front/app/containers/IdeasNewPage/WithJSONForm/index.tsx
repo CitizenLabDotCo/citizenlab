@@ -64,7 +64,7 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   // Click on map flow :
   // clicked location is passed in url params
   // reverse goecode them and use them as initial data
-  const [processingLocation, setProcessingLocation] = useState(Boolean(search));
+  const [processingLocation, setProcessingLocation] = useState(false);
   const [initialFormData, setInitialFormData] = useState({});
 
   useEffect(() => {
@@ -86,6 +86,7 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
     }
 
     if (typeof lat === 'number' && typeof lng === 'number') {
+      setProcessingLocation(true);
       reverseGeocode(lat, lng).then((address) => {
         setInitialFormData((initialFormData) => ({
           ...initialFormData,

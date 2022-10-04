@@ -46,7 +46,7 @@ const CloseIcon = styled(Icon)`
   flex: 0 0 16px;
   width: 16px;
   height: 16px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   z-index: 2;
 `;
 
@@ -70,7 +70,7 @@ const CloseButton = styled.button`
     }
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     height: 18px;
     width: 18px;
   `}

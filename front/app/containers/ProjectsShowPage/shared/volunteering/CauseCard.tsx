@@ -46,7 +46,7 @@ const Container = styled.div`
     flex-direction: row-reverse;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     flex-direction: column;
   `}
 `;
@@ -56,7 +56,7 @@ const Left = styled.div`
   width: 300px;
   overflow: hidden;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     flex: auto;
     width: auto;
     margin-bottom: 20px;
@@ -74,7 +74,7 @@ const Right = styled.div`
   margin-right: 40px;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-left: 0px;
   `}
 `;
@@ -85,7 +85,7 @@ const Content = styled.div`
 `;
 
 const Title = styled.h3`
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.xxl}px;
   font-weight: 500;
   line-height: normal;
@@ -95,7 +95,7 @@ const Title = styled.h3`
 `;
 
 const Description = styled.div`
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   line-height: normal;
 `;
@@ -111,7 +111,7 @@ const ImageWrapper = styled.div`
 
   &.fillBackground {
     height: 225px;
-    background: ${colors.placeholderBg};
+    background: ${colors.background};
   }
 `;
 
@@ -202,7 +202,7 @@ const CauseCard = memo<Props>(({ cause, className }) => {
   }, []);
 
   const isVolunteer = !!cause.relationships?.user_volunteer?.data;
-  const smallerThanSmallTablet = windowWidth <= viewportWidths.smallTablet;
+  const smallerThanSmallTablet = windowWidth <= viewportWidths.tablet;
   const signUpLink = (
     <button onClick={signUp}>
       <FormattedMessage {...messages.signUpLinkText} />
@@ -259,7 +259,7 @@ const CauseCard = memo<Props>(({ cause, className }) => {
           </ScreenReaderOnly>
           {!isEmptyMultiloc(cause.attributes.description_multiloc) && (
             <Description>
-              <QuillEditedContent textColor={theme.colorText}>
+              <QuillEditedContent textColor={theme.colors.tenantText}>
                 <T value={cause.attributes.description_multiloc} supportHtml />
               </QuillEditedContent>
             </Description>

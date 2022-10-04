@@ -18,7 +18,7 @@ const Container = styled.div``;
 
 const StatusIcon = styled(Icon)`
   path {
-    fill: ${(props) => props.theme.colorText};
+    fill: ${(props) => props.theme.colors.tenantText};
   }
   width: 40px;
   height: 40px;
@@ -27,7 +27,7 @@ const StatusIcon = styled(Icon)`
 
 const VoteText = styled.div`
   font-size: ${fontSizes.base}px;
-  color: ${(props) => props.theme.colorText};
+  color: ${(props) => props.theme.colors.tenantText};
   margin-top: 20px;
 `;
 

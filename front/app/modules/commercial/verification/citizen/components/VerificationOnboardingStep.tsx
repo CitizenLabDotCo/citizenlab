@@ -20,7 +20,7 @@ import messages from 'containers/LandingPage/messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 const ShieldIcon = styled(Icon)`
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   width: 50px;
   height: 56px;
   margin-left: -3px;
@@ -85,8 +85,8 @@ const VerificationOnboardingStep = ({
             text={<FormattedMessage {...messages.verifyNow} />}
             buttonStyle="primary-inverse"
             onClick={handleAccept}
-            textColor={theme.colorMain}
-            textHoverColor={theme.colorMain}
+            textColor={theme.colors.tenantPrimary}
+            textHoverColor={theme.colors.tenantPrimary}
             fontWeight="500"
             className="e2e-signed-in-header-accept-btn"
           />
