@@ -1,25 +1,19 @@
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import {
   ControlProps,
-  isPrimitiveArrayControl,
+  isOneOfControl,
   RankedTester,
   rankWith,
 } from '@jsonforms/core';
 import React, { useState } from 'react';
 import ErrorDisplay from '../ErrorDisplay';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Radio } from '@citizenlab/cl2-component-library';
 import { FormLabel } from 'components/UI/FormComponents';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
-import styled from 'styled-components';
-import MultipleSelect from 'components/UI/MultipleSelect';
 import VerificationIcon from '../VerificationIcon';
 import { getOptions } from './controlUtils';
 
-const StyledMultipleSelect = styled(MultipleSelect)`
-  flex-grow: 1;
-`;
-
-const MultiSelectControl = ({
+const SingleSelectRadioControl = ({
   data,
   handleChange,
   path,
@@ -30,7 +24,7 @@ const MultiSelectControl = ({
   id,
 }: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
-  const options = getOptions(schema, 'multi');
+  const options = getOptions(schema, 'single');
 
   return (
     <>
@@ -41,20 +35,21 @@ const MultiSelectControl = ({
         subtextValue={uischema.options?.description}
         subtextSupportsHtml
       />
-      <Box display="flex" flexDirection="row" overflow="visible">
-        <StyledMultipleSelect
-          value={data}
-          options={options}
-          onChange={(vals) => {
-            setDidBlur(true);
-            handleChange(
-              path,
-              vals.map((val) => val.value)
-            );
-          }}
-          inputId={sanitizeForClassname(id)}
-          disabled={uischema?.options?.readonly}
-        />
+      <Box mt="16px" display="block" id="e2e-single-select-control">
+        {options?.map((option) => (
+          <Box mt="12px" key={option.value}>
+            <Radio
+              name="name-temp"
+              label={option.label}
+              currentValue={data}
+              value={option.value}
+              onChange={() => {
+                handleChange(path, option.value);
+                setDidBlur(true);
+              }}
+            />
+          </Box>
+        ))}
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
       <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
@@ -62,9 +57,9 @@ const MultiSelectControl = ({
   );
 };
 
-export default withJsonFormsControlProps(MultiSelectControl);
+export default withJsonFormsControlProps(SingleSelectRadioControl);
 
-export const multiSelectControlTester: RankedTester = rankWith(
-  4,
-  isPrimitiveArrayControl
+export const singleSelectRadioControlTester: RankedTester = rankWith(
+  10,
+  isOneOfControl
 );
