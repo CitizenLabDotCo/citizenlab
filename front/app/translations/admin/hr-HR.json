@@ -1615,6 +1615,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.visitorsTrafficSources": "Traffic sources",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.visits": "Posjeti",
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.title": "Visitor Types",
+  "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.visitors": "Posjetitelji",
   "app.modules.commercial.analytics.admin.hooks.useVisitorsData.date": "Datum",
   "app.modules.commercial.analytics.admin.hooks.useVisitorsData.statistic": "Statistic",
   "app.modules.commercial.analytics.admin.hooks.useVisitorsData.stats": "Overall statistics",
