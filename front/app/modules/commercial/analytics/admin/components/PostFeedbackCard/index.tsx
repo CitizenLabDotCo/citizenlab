@@ -153,6 +153,7 @@ const PostFeedback = ({
         <DonutChartContainer>
           <PieChart
             data={pieData}
+            height={200}
             mapping={{
               angle: 'value',
               name: 'name',
@@ -208,7 +209,7 @@ const PostFeedback = ({
       <Box width="100%" maxWidth="600px" height="initial" mt="30px" p="8px">
         <StackedBarChart
           data={stackedBarsData}
-          height={40}
+          height={25}
           mapping={{
             stackedLength: stackedBarColumns,
             fill: ({ stackIndex }) =>
@@ -237,7 +238,7 @@ const PostFeedback = ({
           legend={{
             items: stackedBarsLegendItems,
             marginTop: 15,
-            maintainGraphHeight: true,
+            maintainGraphSize: true,
           }}
           innerRef={currentStackedBarChart}
           onMouseOver={onMouseOverStackedBar}

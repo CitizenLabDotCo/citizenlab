@@ -17,6 +17,7 @@ interface Props {
   infoTooltipContent?: React.ReactChild;
   exportMenu?: ReportExportMenuProps;
   children?: React.ReactNode;
+  fullWidth?: boolean;
 }
 
 const GraphCard = ({
@@ -24,8 +25,9 @@ const GraphCard = ({
   infoTooltipContent,
   exportMenu,
   children,
+  fullWidth = true,
 }: Props) => (
-  <GraphCardContainer className="fullWidth dynamicHeight">
+  <GraphCardContainer className={`dynamicHeight ${fullWidth ? 'fullWidth' : ''}`}>
     <GraphCardInnerClean>
       <GraphCardHeader>
         <GraphCardTitle>

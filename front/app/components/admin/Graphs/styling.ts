@@ -60,7 +60,7 @@ const DEFAULT_CATEGORICAL_COLORS = [
 export const categoricalColorScheme = ({
   rowIndex,
 }: {
-  row: any;
+  row?: any;
   rowIndex: number;
   barIndex?: number;
 }) => DEFAULT_CATEGORICAL_COLORS[rowIndex];
