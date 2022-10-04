@@ -8,6 +8,7 @@ import GraphCard from 'components/admin/GraphCard';
 import PieChart from 'components/admin/Graphs/PieChart';
 import { Box } from '@citizenlab/cl2-component-library';
 import EmptyPieChart from '../EmptyPieChart';
+import renderTooltip from './renderTooltip';
 
 // i18n
 import messages from './messages';
@@ -97,6 +98,7 @@ const VisitorsCard = ({
               return hoverIndex === rowIndex ? 1 : 0.3;
             },
           }}
+          tooltip={renderTooltip()}
           legend={{
             items: legend,
             marginLeft: 50,
