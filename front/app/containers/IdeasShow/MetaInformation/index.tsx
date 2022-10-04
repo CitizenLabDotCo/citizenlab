@@ -27,7 +27,6 @@ interface Props {
   ideaId: string;
   authorId: string | null;
   projectId: string;
-  phaseId?: string | null;
   statusId: string;
   compact?: boolean;
   className?: string;
@@ -40,13 +39,9 @@ const MetaInformation = ({
   authorId,
   compact,
   className,
-  phaseId,
 }: Props) => {
   const locale = useLocale();
-  const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({
-    projectId,
-    phaseId: phaseId ? phaseId : null,
-  });
+  const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({ projectId });
   if (!isNilOrError(locale) && !isNilOrError(ideaCustomFieldsSchemas)) {
     const topicsEnabled = isFieldEnabled(
       'topic_ids',

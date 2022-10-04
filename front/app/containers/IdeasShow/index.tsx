@@ -24,6 +24,7 @@ import Image from 'components/PostShowComponents/Image';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import Modal from 'components/UI/Modal';
 import AssignBudgetControl from 'components/AssignBudgetControl';
+import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
 import IdeaMoreActions from './IdeaMoreActions';
 import { Spinner } from '@citizenlab/cl2-component-library';
@@ -81,7 +82,6 @@ import styled from 'styled-components';
 import { media, viewportWidths, isRtl } from 'utils/styleUtils';
 import { columnsGapDesktop, pageContentMaxWidth } from './styleConstants';
 import Outlet from 'components/Outlet';
-import { getMethodConfig } from 'utils/participationMethodUtils';
 
 const contentFadeInDuration = 250;
 const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -234,7 +234,6 @@ interface State {
   loaded: boolean;
   spamModalVisible: boolean;
   ideaIdForSocialSharing: string | null;
-  phaseId: string | null;
   translateButtonClicked: boolean;
 }
 
@@ -249,23 +248,19 @@ export class IdeasShow extends PureComponent<
       spamModalVisible: false,
       ideaIdForSocialSharing: null,
       translateButtonClicked: false,
-      phaseId: null,
     };
   }
 
   componentDidMount() {
     const queryParams = new URLSearchParams(window.location.search);
     const newIdeaId = queryParams.get('new_idea_id');
-    const phaseId = queryParams.get('phase_id');
-
     this.setLoaded();
     if (isString(newIdeaId)) {
-      if (isString(phaseId)) {
-        this.setState({ phaseId });
-      }
       setTimeout(() => {
         this.setState({ ideaIdForSocialSharing: newIdeaId });
       }, 1500);
+
+      clHistory.replace(window.location.pathname);
     }
   }
 
@@ -447,7 +442,6 @@ export class IdeasShow extends PureComponent<
                 <MobileMetaInformation
                   ideaId={ideaId}
                   projectId={projectId}
-                  phaseId={getPhaseFromUrl()}
                   statusId={statusId}
                   authorId={authorId}
                   compact={isCompactView}
@@ -495,24 +489,6 @@ export class IdeasShow extends PureComponent<
         phases
       );
 
-      const title = formatMessage(
-        getInputTermMessage(inputTerm, {
-          idea: messages.sharingModalTitle,
-          option: messages.optionSharingModalTitle,
-          project: messages.projectSharingModalTitle,
-          question: messages.questionSharingModalTitle,
-          issue: messages.issueSharingModalTitle,
-          contribution: messages.contributionSharingModalTitle,
-        })
-      );
-      const subtitle = formatMessage(messages.sharingModalSubtitle);
-
-      const modalContent = getMethodConfig('ideation').getModalContent(
-        ideaIdForSocialSharing,
-        title,
-        subtitle
-      );
-
       return (
         <>
           {!loaded && (
@@ -546,7 +522,23 @@ export class IdeasShow extends PureComponent<
               hasSkipButton={true}
               skipText={<FormattedMessage {...messages.skipSharing} />}
             >
-              {ideaIdForSocialSharing && modalContent}
+              {ideaIdForSocialSharing && (
+                <SharingModalContent
+                  postType="idea"
+                  postId={ideaIdForSocialSharing}
+                  title={formatMessage(
+                    getInputTermMessage(inputTerm, {
+                      idea: messages.sharingModalTitle,
+                      option: messages.optionSharingModalTitle,
+                      project: messages.projectSharingModalTitle,
+                      question: messages.questionSharingModalTitle,
+                      issue: messages.issueSharingModalTitle,
+                      contribution: messages.contributionSharingModalTitle,
+                    })
+                  )}
+                  subtitle={formatMessage(messages.sharingModalSubtitle)}
+                />
+              )}
             </Modal>
           </FeatureFlag>
         </>
@@ -560,13 +552,6 @@ export class IdeasShow extends PureComponent<
 const IdeasShowWithHOCs = injectLocalize<Props>(
   withRouter(injectIntl(IdeasShow))
 );
-
-const getPhaseFromUrl = () => {
-  const queryParams = new URLSearchParams(window.location.search);
-  const phaseId = queryParams.get('phase_id');
-  console.log('getPhaseFromUrl(): ', phaseId);
-  return phaseId;
-};
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
@@ -596,10 +581,7 @@ const Data = adopt<DataProps, InputProps>({
     </GetPermission>
   ),
   ideaCustomFieldsSchemas: ({ projectId, render }) => (
-    <GetIdeaCustomFieldsSchemas
-      phaseId={getPhaseFromUrl()}
-      projectId={projectId}
-    >
+    <GetIdeaCustomFieldsSchemas projectId={projectId}>
       {render}
     </GetIdeaCustomFieldsSchemas>
   ),

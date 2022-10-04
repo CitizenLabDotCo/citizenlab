@@ -45,3 +45,15 @@ export function ideaJsonFormsSchemaStream(
     ...streamParams,
   });
 }
+
+export function ideaIdJsonFormsSchemaStream(
+  ideaId: string,
+  schemaType: 'json_forms_schema' | 'schema',
+  streamParams: IStreamParams | null = null
+) {
+  const apiEndpoint = `/ideas/${ideaId}/${schemaType}`;
+  return streams.get<IIdeaJsonFormSchemas | Error>({
+    apiEndpoint,
+    ...streamParams,
+  });
+}
