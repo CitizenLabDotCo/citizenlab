@@ -49,6 +49,7 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
       translatedStringKey = messages.shortAnswer;
       break;
     case 'multiselect':
+    case 'select':
       translatedStringKey = messages.multipleChoice;
       break;
     case 'number':
@@ -88,6 +89,7 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
       )}
       <SectionField>
         <InputMultilocWithLocaleSwitcher
+          id="e2e-title-multiloc"
           name={`customFields.${field.index}.title_multiloc`}
           label={<FormattedMessage {...messages.questionTitle} />}
           type="text"

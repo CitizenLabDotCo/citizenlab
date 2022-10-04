@@ -803,6 +803,8 @@ GEM
     nio4r (2.5.8)
     nokogiri (1.13.8-aarch64-linux)
       racc (~> 1.4)
+    nokogiri (1.13.8-arm64-darwin)
+      racc (~> 1.4)
     nokogiri (1.13.8-x86_64-linux)
       racc (~> 1.4)
     nori (2.6.0)
@@ -1152,6 +1154,7 @@ GEM
 
 PLATFORMS
   aarch64-linux
+  arm64-darwin-21
   x86_64-linux
 
 DEPENDENCIES
@@ -1303,4 +1306,4 @@ DEPENDENCIES
   webmock (~> 3.14)
 
 BUNDLED WITH
-   2.3.20
+   2.3.22
