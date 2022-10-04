@@ -5,14 +5,14 @@ import { Box, Icon } from '@citizenlab/cl2-component-library';
 import { Tooltip } from 'recharts';
 import TooltipOutline from 'components/admin/Graphs/utilities/TooltipOutline';
 
-// styling
-import { colors } from 'components/admin/Graphs/styling';
-
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../components/messages';
 interface CustomTooltipProps {
   label?: string;
   payload?: {
     name: string;
-    dataKey: string;
+    value: number;
     payload: {
       color: string;
     };
@@ -20,22 +20,25 @@ interface CustomTooltipProps {
 }
 
 const CustomTooltip = ({ label, payload }: CustomTooltipProps) => {
-  if (!payload || !label) return null;
+  if (!payload || payload.length === 0 || !label) return null;
+  const {
+    name,
+    value,
+    payload: { color },
+  } = payload[0];
   return (
-    <TooltipOutline label={label}>
-      {payload.map(({ dataKey, name, payload: { color } }) => (
-        <Box py="0px" key={dataKey}>
-          <Icon
-            name="dot"
-            width="8px"
-            height="8px"
-            fill={color}
-            mr="6px"
-            mt="-2px"
-          />
-          {name}: {payload[dataKey]}
-        </Box>
-      ))}
+    <TooltipOutline label={name}>
+      <Box py="0px">
+        <Icon
+          name="dot"
+          width="8px"
+          height="8px"
+          fill={color}
+          mr="6px"
+          mt="-2px"
+        />
+        <FormattedMessage {...messages.tabVisitors} />: {value} ({value})
+      </Box>
     </TooltipOutline>
   );
 };
@@ -44,7 +47,6 @@ const renderTooltip = (label) => (props) =>
   (
     <Tooltip
       {...props}
-      cursor={{ stroke: colors.gridHoverColor }}
       content={(props) => (
         <CustomTooltip payload={props.payload as any} label={label} />
       )}

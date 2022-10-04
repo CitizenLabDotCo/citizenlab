@@ -22,7 +22,7 @@ import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 
 // utils
 import { hasNoData } from 'components/admin/Graphs/utils';
-import renderTooltip from './renderTooltip';
+import renderTooltip from '../../utils/renderSimpleTooltip';
 
 interface Props {
   startAtMoment: Moment | null | undefined;
