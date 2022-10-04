@@ -5,13 +5,19 @@ import { Translations } from './utils';
 // styling
 import { categoricalColorScheme } from 'components/admin/Graphs/styling';
 
+// utils
+import { roundPercentages } from 'utils/math';
+
 export const parsePieData = (data: Response['data']): PieRow[] | null => {
   if (data.length === 0) return null;
+
+  const percentages = roundPercentages(data.map(({ count }) => count));
 
   return data.map((row, i) => ({
     name: row.first_dimension_locales_name,
     value: row.count,
     color: categoricalColorScheme({ rowIndex: i }),
+    percentage: percentages[i],
   }));
 };
 

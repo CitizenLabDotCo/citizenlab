@@ -5,11 +5,16 @@ import { Translations } from './utils';
 // styling
 import { categoricalColorScheme } from 'components/admin/Graphs/styling';
 
+// utils
+import { roundPercentages } from 'utils/math';
+
 export const parsePieData = (
   data: Response['data'],
   translations: Translations
 ): PieRow[] | null => {
   if (data.length === 0) return null;
+
+  const percentages = roundPercentages(data.map(({ count }) => count));
 
   return data.map((row, i) => ({
     name: row.returning_visitor
@@ -17,6 +22,7 @@ export const parsePieData = (
       : translations.newVisitors,
     value: row.count,
     color: categoricalColorScheme({ rowIndex: i }),
+    percentage: percentages[i],
   }));
 };
 
