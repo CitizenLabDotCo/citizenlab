@@ -5,7 +5,7 @@ import { quillEditedContent } from 'utils/styleUtils';
 const Container: any = styled.div`
   ${(props: any) =>
     quillEditedContent(
-      props.theme.colorMain,
+      props.theme.colors.tenantPrimary,
       props.linkColor,
       props.textColor,
       props.mentionColor,
@@ -55,7 +55,7 @@ const QuillEditedContent = ({
     <Container
       linkColor={linkColor}
       textColor={textColor}
-      mentionColor={mentionColor || theme.colorText}
+      mentionColor={mentionColor || theme.colors.tenantText}
       fontSize={fontSize}
       fontWeight={fontWeight}
       className={className || ''}

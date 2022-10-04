@@ -4,7 +4,7 @@ import { fontSizes, isRtl } from 'utils/styleUtils';
 export const maxPageWidth = 1166;
 
 export const ProjectPageSectionTitle = styled.h2`
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.xxl}px;
   line-height: normal;
   font-weight: 500;

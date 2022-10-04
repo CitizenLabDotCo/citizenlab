@@ -3,6 +3,14 @@ import { defineMessages } from 'react-intl';
 // moved from admin/settings/customize
 
 export default defineMessages({
+  homepageMetaTitle: {
+    id: 'app.containers.AdminPage.SettingsPage.homepageMetaTitle',
+    defaultMessage: 'Homepage header | {orgName}',
+  },
+  customPageMetaTitle: {
+    id: 'app.containers.AdminPage.SettingsPage.customPageMetaTitle',
+    defaultMessage: 'Custom page header | {orgName}',
+  },
   header: {
     id: 'app.containers.AdminPage.SettingsPage.header',
     defaultMessage: 'Homepage header',
@@ -14,6 +22,14 @@ export default defineMessages({
   bannerHeaderSignedOut: {
     id: 'app.containers.AdminPage.SettingsPage.bannerHeaderSignedOut',
     defaultMessage: 'Header text for non-registered visitors',
+  },
+  bannerHeader: {
+    id: 'app.containers.AdminPage.SettingsPage.bannerHeader',
+    defaultMessage: 'Header text',
+  },
+  bannerHeaderSubtitle: {
+    id: 'app.containers.AdminPage.SettingsPage.bannerHeaderSubtitle',
+    defaultMessage: 'Sub-header text',
   },
   titleMaxCharError: {
     id: 'app.containers.AdminPage.SettingsPage.titleMaxCharError',
@@ -95,6 +111,22 @@ export default defineMessages({
   noHeader: {
     id: 'app.containers.AdminPage.SettingsPage.noHeader',
     defaultMessage: 'Please upload a header image',
+  },
+  chooseLayout: {
+    id: 'app.containers.AdminPage.SettingsPage.chooseLayout',
+    defaultMessage: 'Layout',
+  },
+  fullWidthBannerLayout: {
+    id: 'app.containers.AdminPage.SettingsPage.fullWidthBannerLayout',
+    defaultMessage: 'Full-width banner',
+  },
+  TwoColumnLayout: {
+    id: 'app.containers.AdminPage.SettingsPage.TwoColumnLayout',
+    defaultMessage: 'Two columns',
+  },
+  twoRowLayout: {
+    id: 'app.containers.AdminPage.SettingsPage.twoRowLayout',
+    defaultMessage: 'Two rows',
   },
   heroBannerTitle: {
     id: 'app.containers.AdminPage.HeroBannerForm.heroBannerTitle',

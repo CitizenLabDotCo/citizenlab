@@ -72,6 +72,12 @@ import MultilocInputLayout, {
 import LinearScaleControl, {
   linearScaleControlTester,
 } from './Components/Controls/LinearScaleControl';
+import MultiSelectCheckboxControl, {
+  multiSelectCheckboxControlTester,
+} from './Components/Controls/MultiSelectCheckboxControl';
+import SingleSelectRadioControl, {
+  singleSelectRadioControlTester,
+} from './Components/Controls/SingleSelectRadioControl';
 
 import {
   Box,
@@ -96,7 +102,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // hopefully we can standardize this someday
 const Title = styled.h1`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.xxxxl}px;
   line-height: 40px;
   font-weight: 500;
@@ -106,7 +112,7 @@ const Title = styled.h1`
   padding-top: 60px;
   padding-bottom: 40px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     font-size: ${fontSizes.xxxl}px;
     line-height: 34px;
   `}
@@ -158,6 +164,14 @@ const renderers = [
   { tester: checkboxControlTester, renderer: CheckboxControl },
   { tester: singleSelectControlTester, renderer: SingleSelectControl },
   { tester: multiSelectControlTester, renderer: MultiSelectControl },
+  {
+    tester: multiSelectCheckboxControlTester,
+    renderer: MultiSelectCheckboxControl,
+  },
+  {
+    tester: singleSelectRadioControlTester,
+    renderer: SingleSelectRadioControl,
+  },
   { tester: WYSIWYGControlTester, renderer: WYSIWYGControl },
   { tester: descriptionControlTester, renderer: DescriptionControl },
   { tester: topicsControlTester, renderer: TopicsControl },
@@ -293,7 +307,11 @@ const Form = memo(
         }
         id={uiSchema?.options?.formId}
       >
-        <Box overflow={layoutType === 'inline' ? 'visible' : 'auto'} flex="1">
+        <Box
+          overflow={layoutType === 'inline' ? 'visible' : 'auto'}
+          flex="1"
+          marginBottom={layoutType === 'fullpage' ? '32px' : 'auto'}
+        >
           {title && <Title>{title}</Title>}
           <APIErrorsContext.Provider value={apiErrors}>
             <FormContext.Provider

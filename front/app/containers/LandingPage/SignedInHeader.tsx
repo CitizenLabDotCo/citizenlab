@@ -55,7 +55,7 @@ const Header = styled.div`
   display: flex;
   flex-direction: column;
 
-  ${media.smallerThanMinTablet`
+  ${media.tablet`
     height: 320px;
   `}
 `;
@@ -86,7 +86,7 @@ const HeaderImage = styled(Image)`
   width: 100%;
   height: auto;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     &.objectFitCoverSupported {
       width: 100%;
       height: 100%;
@@ -102,7 +102,7 @@ const HeaderImage = styled(Image)`
 
 const HeaderImageOverlay = styled.div`
   background: ${({ theme }) =>
-    theme.signedInHeaderOverlayColor || theme.colorMain};
+    theme.signedInHeaderOverlayColor || theme.colors.tenantPrimary};
   opacity: ${({ theme }) => theme.signedInHeaderOverlayOpacity / 100};
   position: absolute;
   top: 0;
@@ -163,12 +163,12 @@ const HeaderContent = styled.div`
     font-weight: 400;
   }
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding-left: 30px;
     padding-right: 30px;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.tablet`
     flex-direction: column;
     align-items: stretch;
     justify-content: center;
@@ -186,7 +186,7 @@ const HeaderContentDefault = styled(HeaderContent)`
     text-align: center;
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.tablet`
     align-items: center;
   `}
 `;
@@ -200,7 +200,7 @@ export const Left = styled.div`
     flex-direction: row-reverse;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.tablet`
     margin-right: 0;
   `}
 `;
@@ -214,7 +214,7 @@ export const Icons = styled.div`
     margin-left: 30px;
   `}
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: none;
   `}
 `;
@@ -235,7 +235,7 @@ export const Right = styled.div`
   flex-shrink: 0;
   display: flex;
 
-  ${media.smallerThanMinTablet`
+  ${media.tablet`
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
@@ -245,7 +245,7 @@ export const Right = styled.div`
   ${isRtl`
     flex-direction: row-reverse;
 
-    ${media.smallerThanMinTablet`
+    ${media.tablet`
         align-items: flex-end;
     `}
   `}
@@ -254,7 +254,7 @@ export const Right = styled.div`
 export const SkipButton = styled(Button)`
   margin-right: 10px;
 
-  ${media.smallerThanMinTablet`
+  ${media.tablet`
     order: 2;
     margin-right: 0px;
   `}
@@ -266,7 +266,7 @@ export const SkipButton = styled(Button)`
 `;
 
 export const AcceptButton = styled(Button)`
-  ${media.smallerThanMinTablet`
+  ${media.tablet`
     order: 1;
     margin-bottom: 10px;
   `}
@@ -426,8 +426,8 @@ class SignedInHeader extends PureComponent<Props, State> {
                   text={<FormattedMessage {...messages.completeProfile} />}
                   buttonStyle="primary-inverse"
                   linkTo="/profile/edit"
-                  textColor={theme.colorMain}
-                  textHoverColor={theme.colorMain}
+                  textColor={theme.colors.tenantPrimary}
+                  textHoverColor={theme.colors.tenantPrimary}
                   fontWeight="500"
                   className="e2e-signed-in-header-accept-btn"
                 />
@@ -484,8 +484,8 @@ class SignedInHeader extends PureComponent<Props, State> {
                   text={<T value={onboardingCampaigns.cta_button_multiloc} />}
                   linkTo={onboardingCampaigns.cta_button_link}
                   buttonStyle="primary-inverse"
-                  textColor={theme.colorMain}
-                  textHoverColor={theme.colorMain}
+                  textColor={theme.colors.tenantPrimary}
+                  textHoverColor={theme.colors.tenantPrimary}
                   fontWeight="500"
                 />
               </Right>

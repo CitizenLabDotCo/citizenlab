@@ -32,7 +32,7 @@ export const Container = styled.div<{
   word-wrap: break-word;
   word-break: break-word;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding: 50px 30px;
   `}
 `;
@@ -52,8 +52,8 @@ export const HeaderTitle = styled.h1<{
     hasHeader
       ? fontColors === 'light'
         ? '#fff'
-        : theme.colorMain
-      : theme.colorMain};
+        : theme.colors.tenantPrimary
+      : theme.colors.tenantPrimary};
   font-size: ${({ theme }) =>
     theme.signedOutHeaderTitleFontSize || fontSizes.xxxl}px;
   ${HeadingFontStyle};
@@ -61,11 +61,11 @@ export const HeaderTitle = styled.h1<{
   padding: 0;
   margin-bottom: 10px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     font-size: ${fontSizes.xxxl}px;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-bottom: 15px;
   `}
 `;
@@ -81,8 +81,8 @@ export const HeaderSubtitle = styled.h2<{
     hasHeader
       ? fontColors === 'light'
         ? '#fff'
-        : theme.colorMain
-      : theme.colorMain};
+        : theme.colors.tenantPrimary
+      : theme.colors.tenantPrimary};
   font-size: ${fontSizes.l}px;
   line-height: 28px;
   font-weight: 400;
@@ -102,7 +102,7 @@ export const HeaderSubtitle = styled.h2<{
     `
       margin-bottom: 38px;
 
-      ${media.smallerThanMinTablet`
+      ${media.phone`
         margin-bottom: 30px;
       `}
   `}
@@ -112,7 +112,7 @@ const StyledAvatarBubbles = styled(AvatarBubbles)`
   min-height: 40px;
   margin-bottom: 30px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-bottom: 30px;
   `}
 `;

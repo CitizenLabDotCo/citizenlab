@@ -25,7 +25,7 @@ interface Props {
 
 const VerificationBadge = ({ isVerified }: Props) => (
   <FeatureFlag name="verification">
-    <Badge color={isVerified ? colors.clGreen : colors.label}>
+    <Badge color={isVerified ? colors.success : colors.textSecondary}>
       {isVerified ? (
         <FormattedMessage {...messages.verified} />
       ) : (

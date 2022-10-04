@@ -21,7 +21,7 @@ export const CustomSectionContentContainer = styled(ContentContainer)`
   padding-bottom: 80px;
   background: #fff;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-top: 40px;
     padding-bottom: 40px;
   `}
@@ -30,12 +30,12 @@ export const CustomSectionContentContainer = styled(ContentContainer)`
 export const StyledQuillEditedContent = styled(QuillEditedContent)`
   h1,
   h2 {
-    color: ${(props) => props.theme.colorText};
+    color: ${(props) => props.theme.colors.tenantText};
   }
 
   p,
   li {
-    color: ${colors.label};
+    color: ${colors.textSecondary};
   }
 `;
 

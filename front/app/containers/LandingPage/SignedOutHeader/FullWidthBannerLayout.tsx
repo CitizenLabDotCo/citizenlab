@@ -29,11 +29,11 @@ const Header = styled.div`
   align-items: center;
   justify-content: center;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     min-height: ${homepageBannerLayoutHeights.full_width_banner_layout.tablet}px;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     min-height: ${homepageBannerLayoutHeights.full_width_banner_layout.phone}px;
   `}
 `;
@@ -62,7 +62,8 @@ const HeaderImageOverlay = styled.div<{
   overlayColor: string | null;
   overlayOpacity: number | null;
 }>`
-  background: ${({ overlayColor, theme }) => overlayColor ?? theme.colorMain};
+  background: ${({ overlayColor, theme }) =>
+    overlayColor ?? theme.colors.tenantPrimary};
   opacity: ${({ overlayOpacity, theme }) =>
     (overlayOpacity ?? theme.signedOutHeaderOverlayOpacity) / 100};
   position: absolute;

@@ -24,7 +24,7 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 const FooterBanner = styled.div`
-  background: ${({ theme }) => theme.colorMain};
+  background: ${({ theme }) => theme.colors.tenantPrimary};
   width: 100%;
   min-height: 300px;
   margin: 0;

@@ -39,11 +39,17 @@ class SurveyResultsGeneratorService < FieldVisitorService
       .select("custom_field_values->'#{field.key}' as value")
       .where("custom_field_values->'#{field.key}' IS NOT NULL")
     distribution = Idea.select(:value).from(values).group(:value).order(Arel.sql('COUNT(value) DESC')).count.to_a
-    option_titles = (2...field.maximum).index_with do |value|
+    option_titles = (1..field.maximum).index_with do |value|
       locales.index_with { |_locale| value.to_s }
     end
-    option_titles[1] = field.minimum_label_multiloc
-    option_titles[field.maximum] = field.maximum_label_multiloc
+    minimum_labels = field.minimum_label_multiloc.transform_values do |label|
+      label.present? ? "1 - #{label}" : '1'
+    end
+    option_titles[1].merge! minimum_labels
+    maximum_labels = field.maximum_label_multiloc.transform_values do |label|
+      label.present? ? "#{field.maximum} - #{label}" : field.maximum.to_s
+    end
+    option_titles[field.maximum].merge! maximum_labels
     collect_answers(field, distribution, option_titles)
   end
 

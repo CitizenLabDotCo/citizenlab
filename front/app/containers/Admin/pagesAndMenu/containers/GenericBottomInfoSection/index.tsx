@@ -99,7 +99,11 @@ const GenericBottomInfoSection = ({
             />
           </Box>
           <Box display="flex">
-            <Button type="submit" processing={methods.formState.isSubmitting}>
+            <Button
+              type="submit"
+              processing={methods.formState.isSubmitting}
+              data-cy={`e2e-bottom-info-section-submit`}
+            >
               {formatMessage(messages.saveButton)}
             </Button>
           </Box>

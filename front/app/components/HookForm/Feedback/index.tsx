@@ -64,7 +64,7 @@ const Feedback = ({
 
         errorMessages.push({
           field,
-          message: formatMessage(apiErrorMessage),
+          message: apiErrorMessage ? formatMessage(apiErrorMessage) : '',
         });
       } else if (multilocFieldFirstError) {
         errorMessages.push({
@@ -89,7 +89,7 @@ const Feedback = ({
         <Box id="feedback" data-testid="feedback" key={submitCount}>
           {successMessageIsShown && (
             <Box
-              bgColor={colors.clGreenSuccessBackground}
+              bgColor={colors.successLight}
               borderRadius="3px"
               px="12px"
               py="4px"
@@ -103,11 +103,11 @@ const Feedback = ({
               <Box display="flex" gap="16px" alignItems="center">
                 <Icon
                   name="checkmark-full"
-                  fill={colors.clGreenSuccess}
+                  fill={colors.success}
                   width="24px"
                   height="24px"
                 />
-                <Title color="clGreenSuccess" variant="h4" as="h3">
+                <Title color="success" variant="h4" as="h3">
                   {successMessage || formatMessage(messages.successMessage)}
                 </Title>
               </Box>
@@ -133,11 +133,11 @@ const Feedback = ({
                     </>
                   ) : (
                     <Box data-testid="feedbackErrorMessage">
-                      <Title color="red600" variant="h4">
+                      <Title color="red600" variant="h4" mt="0px" mb="0px">
                         {formatMessage(messages.errorTitle)}
                       </Title>
                       {getAllErrorMessages().map((error) => {
-                        return (
+                        return error.message ? (
                           <Text
                             key={error.field}
                             onClick={() => scrollToElement({ id: error.field })}
@@ -154,7 +154,7 @@ const Feedback = ({
                           >
                             {error.message}
                           </Text>
-                        );
+                        ) : null;
                       })}
                     </Box>
                   )}

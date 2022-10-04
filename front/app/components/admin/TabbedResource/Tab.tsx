@@ -1,10 +1,10 @@
+import { StatusLabel } from '@citizenlab/cl2-component-library';
 import React from 'react';
-import { ITab } from 'typings';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { ITab } from 'typings';
 import Link from 'utils/cl-router/Link';
-import { StatusLabel } from '@citizenlab/cl2-component-library';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   list-style: none;
@@ -21,7 +21,7 @@ const Container = styled.div`
   }
 
   a {
-    color: ${colors.label};
+    color: ${colors.textSecondary};
     font-size: ${fontSizes.base}px;
     font-weight: 400;
     line-height: 1.5rem;
@@ -33,13 +33,13 @@ const Container = styled.div`
   }
 
   &:not(.active):hover a {
-    color: ${colors.adminTextColor};
+    color: ${colors.textPrimary};
     border-color: #ddd;
   }
 
   &.active a {
-    color: ${colors.adminTextColor};
-    border-color: ${colors.adminTextColor};
+    color: ${colors.textPrimary};
+    border-color: ${colors.textPrimary};
   }
 `;
 
@@ -76,7 +76,7 @@ const Tab = ({ tab: { url, label, statusLabel, active } }: Props) => {
         {statusLabel && (
           <StatusLabelWithMargin
             text={statusLabel}
-            backgroundColor={colors.adminBackground}
+            backgroundColor={colors.background}
             variant="outlined"
           />
         )}

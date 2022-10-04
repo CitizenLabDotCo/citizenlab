@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  removeOption: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.removeOption',
-    defaultMessage: 'Remove option',
+  removeAnswer: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.removeAnswer',
+    defaultMessage: 'Remove answer',
   },
   addAnswer: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.addAnswer',
@@ -13,8 +13,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.fieldLabel',
     defaultMessage: 'Answer choices',
   },
-  fieldTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.fieldTooltip',
-    defaultMessage: 'Field tooltip content',
+  chooseMultipleToggle: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.chooseMultipleToggle',
+    defaultMessage: 'Choose multiple',
   },
 });
