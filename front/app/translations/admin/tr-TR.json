@@ -1065,6 +1065,7 @@
   "app.containers.AdminPage.ProjectEdit.subtitleGeneral": "Projenizi ayarlayın ve kişiselleştirin.",
   "app.containers.AdminPage.ProjectEdit.survey.addAnswer": "Yanıt ekleyin",
   "app.containers.AdminPage.ProjectEdit.survey.addSurveyContent": "Anket içeriği ekleyin",
+  "app.containers.AdminPage.ProjectEdit.survey.chooseMultipleToggle": "Choose multiple",
   "app.containers.AdminPage.ProjectEdit.survey.close": "Kapat",
   "app.containers.AdminPage.ProjectEdit.survey.closed": "Kapalı",
   "app.containers.AdminPage.ProjectEdit.survey.default": "Varsayılan",
