@@ -36,3 +36,5 @@ export const parsePieData = (
     color: categoricalColorScheme({ rowIndex: i }),
   }));
 };
+
+export const parseExcelData = (pieData: PieRow[] | null) => {};

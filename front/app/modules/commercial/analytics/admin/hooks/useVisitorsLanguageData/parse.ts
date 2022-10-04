@@ -19,7 +19,7 @@ export const parseExcelData = (
   data: Response['data'],
   translations: Translations
 ): XlsxData | null => {
-  if (data === null) return null;
+  if (data.length === 0) return null;
 
   const visitorsLanguageData = data.map((row) => ({
     [translations.language]: row.first_dimension_locales_name,
