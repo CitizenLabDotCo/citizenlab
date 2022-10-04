@@ -6,8 +6,6 @@ class WebApi::V1::PhaseCustomFieldsController < ApplicationController
   skip_before_action :authenticate_user
 
   def schema
-    send_error && return unless phase.project.timeline?
-
     if phase
       render json: CustomFieldService.new.ui_and_json_multiloc_schemas(AppConfiguration.instance, custom_fields)
     else
@@ -16,8 +14,6 @@ class WebApi::V1::PhaseCustomFieldsController < ApplicationController
   end
 
   def json_forms_schema
-    send_error && return unless phase.project.timeline?
-
     if phase
       render json: JsonFormsService.new.input_ui_and_json_multiloc_schemas(custom_fields, current_user)
     else
