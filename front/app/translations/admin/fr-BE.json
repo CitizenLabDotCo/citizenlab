@@ -1065,6 +1065,7 @@
   "app.containers.AdminPage.ProjectEdit.subtitleGeneral": "Créez et personnalisez votre projet.",
   "app.containers.AdminPage.ProjectEdit.survey.addAnswer": "Ajouter une réponse",
   "app.containers.AdminPage.ProjectEdit.survey.addSurveyContent": "Ajouter le contenu de l'enquête",
+  "app.containers.AdminPage.ProjectEdit.survey.chooseMultipleToggle": "Choose multiple",
   "app.containers.AdminPage.ProjectEdit.survey.close": "Fermer",
   "app.containers.AdminPage.ProjectEdit.survey.closed": "Fermé",
   "app.containers.AdminPage.ProjectEdit.survey.default": "Par défaut",
