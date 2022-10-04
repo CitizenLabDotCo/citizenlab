@@ -5,21 +5,17 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-resource 'Analytics API', use_transactional_fixtures: false do
-  explanation 'Analytics API'
+resource 'Analytics', use_transactional_fixtures: false do
+  explanation 'Core functionality of the Analytics API'
 
   before { header 'Content-Type', 'application/json' }
 
   post 'web_api/v1/analytics' do
-    route_description <<~DESC
-      Universal API for querying posts from the analytics database
-    DESC
-
     parameter :query, 'The query object.', required: true
 
     before do
       create(:idea)
-      create(:dimension_type_idea)
+      create(:dimension_type)
     end
 
     context 'when admin' do

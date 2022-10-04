@@ -2,6 +2,6 @@
 
 FactoryBot.define do
   factory :dimension_locale, class: 'Analytics::DimensionLocale' do
-    name { 'en' }
+    sequence(:name) { |n| "en-#{n}" }
   end
 end

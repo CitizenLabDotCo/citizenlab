@@ -3,9 +3,27 @@
 require 'rails_helper'
 
 RSpec.describe Analytics::DimensionUser, type: :model do
-  it 'can create a user dimension by creating a user' do
-    user = create(:user)
-    user_dimension = described_class.first
-    assert(user_dimension.id == user.id)
+  context 'when a normal user is created' do
+    let!(:user) { create(:user) }
+
+    it 'is also available as a user dimension' do
+      described_class.find(user.id)
+    end
+
+    it 'has the default dimension role of citizen' do
+      expect(described_class.find(user.id).role).to eq('citizen')
+    end
+  end
+
+  context 'when an admin user is created' do
+    let!(:admin) { create(:admin) }
+
+    it 'is also available as a user dimension' do
+      described_class.find(admin.id)
+    end
+
+    it 'has the dimension role of admin' do
+      expect(described_class.find(admin.id).role).to eq('admin')
+    end
   end
 end
