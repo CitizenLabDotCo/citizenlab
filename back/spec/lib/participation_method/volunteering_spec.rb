@@ -45,4 +45,10 @@ RSpec.describe ParticipationMethod::Volunteering do
       expect(participation_method.form_in_phase?).to be false
     end
   end
+
+  describe '#extra_fields_category_translation_key' do
+    it 'returns the translation key for the extra fields category' do
+      expect(participation_method.extra_fields_category_translation_key).to eq 'custom_forms.categories.extra.title'
+    end
+  end
 end
