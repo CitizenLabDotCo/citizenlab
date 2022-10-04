@@ -545,6 +545,7 @@
   "app.components.form.ErrorDisplay.guidelinesLinkText": "eis Richtlinnen",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Fänkt un ze tippen, fir no Benotzer-E-Mail oder Numm ze sichen......",
   "app.components.form.blockedVerified": "Dir kënnt dëst Feld editéieren, well et verifizéiert Informatiounen enthält",
+  "app.components.form.controls.selectMany": "*Choose as many as you like",
   "app.components.form.error": "Error",
   "app.components.form.locationGoogleUnavailable": "Konnt d’Standuertfeld, dat vu Google Maps zur Verfügung gestallt gouf, net lueden.",
   "app.components.form.submit": "Schécken",
