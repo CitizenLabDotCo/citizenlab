@@ -5,19 +5,30 @@ import { Translations } from './utils';
 // styling
 import { categoricalColorScheme } from 'components/admin/Graphs/styling';
 
-export const parsePieData = (data: Response['data']): PieRow[] =>
-  data.map((row, i) => ({
-    name: row.first_dimension_locales_name,
+// utils
+import { roundPercentages } from 'utils/math';
+
+export const parsePieData = (data: Response['data']): PieRow[] | null => {
+  if (data.length === 0) return null;
+
+  const percentages = roundPercentages(data.map(({ count }) => count));
+
+  return data.map((row, i) => ({
+    name: row.first_dimension_locales_name.toUpperCase(),
     value: row.count,
     color: categoricalColorScheme({ rowIndex: i }),
+    percentage: percentages[i],
   }));
+};
 
 export const parseExcelData = (
   data: Response['data'],
   translations: Translations
-): XlsxData => {
-  const visitorsLanguageData = data?.map((row) => ({
-    [translations.language]: row.first_dimension_locales_name,
+): XlsxData | null => {
+  if (data.length === 0) return null;
+
+  const visitorsLanguageData = data.map((row) => ({
+    [translations.language]: row.first_dimension_locales_name.toUpperCase(),
     [translations.count]: row.count,
   }));
 

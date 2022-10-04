@@ -10,15 +10,15 @@ import {
 // parse
 import { parsePieData, parseExcelData } from './parse';
 
-// typings
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
-import { XlsxData } from 'components/admin/ReportExportMenu';
-import { Response, PieRow, QueryParameters } from './typings';
-import { InjectedIntlProps } from 'react-intl';
-
 // utils
 import { getProjectFilter, getDateFilter } from '../../utils/query';
 import { getTranslations } from './utils';
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
+
+// typings
+import { QueryParameters, Response, PieRow } from './typings';
+import { InjectedIntlProps } from 'react-intl';
+import { XlsxData } from 'components/admin/ReportExportMenu';
 
 const query = ({
   projectId,
@@ -28,7 +28,7 @@ const query = ({
   const startAt = startAtMoment?.toISOString();
   const endAt = endAtMoment?.toISOString();
 
-  const visitorTypesCountQuery: QuerySchema = {
+  const trafficSourcesQuery: QuerySchema = {
     fact: 'visit',
     filters: {
       dimension_user: {
@@ -37,18 +37,17 @@ const query = ({
       ...getProjectFilter('dimension_projects', projectId),
       ...getDateFilter('dimension_date_last_action', startAt, endAt),
     },
-    groups: 'returning_visitor',
+    groups: 'dimension_referrer_type.id',
     aggregations: {
       all: 'count',
+      'dimension_referrer_type.name': 'first',
     },
   };
 
-  return {
-    query: visitorTypesCountQuery,
-  };
+  return { query: trafficSourcesQuery };
 };
 
-export default function useVisitorsData(
+export default function useVisitorsTrafficSourcesData(
   formatMessage: InjectedIntlProps['intl']['formatMessage'],
   { projectId, startAtMoment, endAtMoment }: QueryParameters
 ) {
@@ -68,14 +67,13 @@ export default function useVisitorsData(
       (response: Response | NilOrError) => {
         if (isNilOrError(response)) {
           setPieData(response);
-          setXlsxData(response);
           return;
         }
+
         const translations = getTranslations(formatMessage);
 
         const pieData = parsePieData(response.data, translations);
         setPieData(pieData);
-
         setXlsxData(parseExcelData(pieData, translations));
       }
     );

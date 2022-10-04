@@ -8,7 +8,7 @@ export interface QueryParameters {
 
 // Response
 export type Response = {
-  data: [BaseRow];
+  data: [BaseRow] | [];
 };
 
 interface BaseRow {
@@ -20,4 +20,5 @@ export interface PieRow {
   name: string;
   value: number;
   color: string;
+  percentage: number;
 }

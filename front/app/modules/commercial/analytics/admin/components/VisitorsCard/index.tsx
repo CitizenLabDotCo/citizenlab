@@ -45,16 +45,16 @@ const VisitorsCard = ({
     }
   );
 
-  const visitorsMessage = formatMessage(messages.visitors);
+  const cardTitle = formatMessage(messages.visitors);
   const startAt = startAtMoment?.toISOString();
   const endAt = endAtMoment?.toISOString();
 
   return (
     <GraphCard
-      title={visitorsMessage}
+      title={cardTitle}
       infoTooltipContent={formatMessage(messages.cardTitleTooltipMessage)}
       exportMenu={{
-        name: visitorsMessage,
+        name: cardTitle,
         svgNode: graphRef,
         xlsxData: isNilOrError(xlsxData) ? undefined : xlsxData,
         startAt,

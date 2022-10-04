@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 
 // hooks
-import useVisitorsTypeData from '../../hooks/useVisitorsTypeData';
+import useVisitorsTrafficSourcesData from '../../hooks/useVisitorsTrafficSourcesData';
 
 // components
 import GraphCard from 'components/admin/GraphCard';
@@ -15,12 +15,10 @@ import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
 // typings
 import { IResolution } from 'components/admin/ResolutionControl';
 import { Moment } from 'moment';
+import { isNilOrError } from 'utils/helperUtils';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 
 interface Props {
@@ -38,13 +36,11 @@ const VisitorsCard = ({
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const graphRef = useRef();
-
-  const { pieData, xlsxData } = useVisitorsTypeData(formatMessage, {
+  const { pieData, xlsxData } = useVisitorsTrafficSourcesData(formatMessage, {
     startAtMoment,
     endAtMoment,
     projectId: projectFilter,
   });
-
   const [hoverIndex, setHoverIndex] = useState<number | undefined>();
 
   const onMouseOver = ({ rowIndex }) => {
@@ -55,7 +51,7 @@ const VisitorsCard = ({
     setHoverIndex(undefined);
   };
 
-  const cardTitle = formatMessage(messages.title);
+  const cardTitle = formatMessage(messages.visitorsTrafficSources);
 
   if (isNilOrError(pieData)) {
     return (
@@ -69,7 +65,7 @@ const VisitorsCard = ({
     (row): LegendItem => ({
       icon: 'circle',
       color: row.color,
-      label: row.name,
+      label: `${row.name} (${row.percentage}%)`,
     })
   );
 
@@ -88,12 +84,11 @@ const VisitorsCard = ({
         currentProjectFilter: projectFilter,
         resolution,
       }}
-      fullWidth={false}
     >
-      <Box height="initial" p="20px">
+      <Box width="100%" height="initial" display="flex" alignItems="center">
         <PieChart
-          height={164}
           width={164}
+          height={164}
           data={pieData}
           mapping={{
             angle: 'value',
@@ -106,8 +101,8 @@ const VisitorsCard = ({
           tooltip={renderTooltip()}
           legend={{
             items: legend,
-            maintainGraphSize: true,
             marginLeft: 50,
+            maintainGraphSize: true,
             position: 'right-center',
           }}
           innerRef={graphRef}

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 
 // hooks
 import useVisitorsLanguageData from '../../hooks/useVisitorsLanguageData';
@@ -8,21 +8,21 @@ import GraphCard from 'components/admin/GraphCard';
 import PieChart from 'components/admin/Graphs/PieChart';
 import { Box } from '@citizenlab/cl2-component-library';
 import EmptyPieChart from '../EmptyPieChart';
+import renderTooltip from '../VisitorsTypeCard/renderTooltip';
 
 // i18n
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+
 // typings
 import { IResolution } from 'components/admin/ResolutionControl';
 import { Moment } from 'moment';
-import { isNilOrError } from 'utils/helperUtils';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 
-// utils
-import { hasNoData } from 'components/admin/Graphs/utils';
-import renderTooltip from '../../utils/renderSimpleTooltip';
 interface Props {
   startAtMoment: Moment | null | undefined;
   endAtMoment: Moment | null;
@@ -44,11 +44,21 @@ const VisitorsCard = ({
     endAtMoment,
     projectId: projectFilter,
   });
-  const title = formatMessage(messages.title);
+  const [hoverIndex, setHoverIndex] = useState<number | undefined>();
 
-  if (hasNoData(pieData)) {
+  const onMouseOver = ({ rowIndex }) => {
+    setHoverIndex(rowIndex);
+  };
+
+  const onMouseOut = () => {
+    setHoverIndex(undefined);
+  };
+
+  const cardTitle = formatMessage(messages.title);
+
+  if (isNilOrError(pieData)) {
     return (
-      <GraphCard title={title}>
+      <GraphCard title={cardTitle}>
         <EmptyPieChart />
       </GraphCard>
     );
@@ -67,9 +77,9 @@ const VisitorsCard = ({
 
   return (
     <GraphCard
-      title={title}
+      title={cardTitle}
       exportMenu={{
-        name: title,
+        name: cardTitle,
         svgNode: graphRef,
         xlsxData: isNilOrError(xlsxData) ? undefined : xlsxData,
         startAt,
@@ -87,8 +97,12 @@ const VisitorsCard = ({
           mapping={{
             angle: 'value',
             name: 'name',
+            opacity: ({ rowIndex }) => {
+              if (hoverIndex === undefined) return 1;
+              return hoverIndex === rowIndex ? 1 : 0.3;
+            },
           }}
-          tooltip={renderTooltip(title)}
+          tooltip={renderTooltip()}
           legend={{
             items: legend,
             maintainGraphSize: true,
@@ -96,6 +110,8 @@ const VisitorsCard = ({
             position: 'right-center',
           }}
           innerRef={graphRef}
+          onMouseOver={onMouseOver}
+          onMouseOut={onMouseOut}
         />
       </Box>
     </GraphCard>
