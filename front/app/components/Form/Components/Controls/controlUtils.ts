@@ -1,3 +1,4 @@
+// Given a schema and field type, returns the options for a given array field
 export const getOptions = (schema, fieldType: 'single' | 'multi') => {
   if (fieldType === 'multi') {
     return (
