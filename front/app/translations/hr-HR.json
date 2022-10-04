@@ -541,6 +541,7 @@
   "app.components.form.ErrorDisplay.guidelinesLinkText": "naše smjernice",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Započnite pretragu unosom korisnikove e-pošte ili imena...",
   "app.components.form.blockedVerified": "Ne možete urediti ovo polje jer sadrži potvrđene informacije",
+  "app.components.form.controls.selectMany": "*Choose as many as you like",
   "app.components.form.error": "Pogreška",
   "app.components.form.locationGoogleUnavailable": "Učitavanje polja s lokacijom s Google Mapa nije uspjelo.",
   "app.components.form.submit": "Pošalji",
