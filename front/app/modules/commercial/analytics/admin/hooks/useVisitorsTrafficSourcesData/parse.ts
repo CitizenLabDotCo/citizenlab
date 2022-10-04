@@ -3,6 +3,7 @@ import { categoricalColorScheme } from 'components/admin/Graphs/styling';
 
 // i18n
 import messages from './messages';
+import { roundPercentages } from 'utils/math';
 
 // typings
 import { InjectedIntlProps } from 'react-intl';
@@ -23,11 +24,15 @@ export const parsePieData = (
 ): PieRow[] | null => {
   if (data.length === 0) return null;
 
+  const counts = data.map(({ count }) => count);
+  const percentages = roundPercentages(counts);
+
   return data.map((row, i) => ({
     name: formatMessage(
       REFERRER_TYPE_MESSAGES[row.first_dimension_referrer_type_name]
     ),
     value: row.count,
+    percentage: percentages[i],
     color: categoricalColorScheme({ rowIndex: i }),
   }));
 };
