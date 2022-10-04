@@ -22,6 +22,7 @@ import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 
 // utils
 import { hasNoData } from 'components/admin/Graphs/utils';
+import renderTooltip from './renderTooltip';
 
 interface Props {
   startAtMoment: Moment | null | undefined;
@@ -88,6 +89,7 @@ const VisitorsCard = ({
             angle: 'value',
             name: 'name',
           }}
+          tooltip={renderTooltip(title)}
           legend={{
             items: legend,
             maintainGraphSize: true,
