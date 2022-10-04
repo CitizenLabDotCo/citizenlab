@@ -1105,6 +1105,7 @@
   "app.containers.AdminPage.ProjectEdit.subtitleGeneral": "Suliniummik pilersitsigit ilinnullu tulluarsarlugu.",
   "app.containers.AdminPage.ProjectEdit.survey.addAnswer": "Add answer",
   "app.containers.AdminPage.ProjectEdit.survey.addSurveyContent": "Add survey content",
+  "app.containers.AdminPage.ProjectEdit.survey.chooseMultipleToggle": "Choose multiple",
   "app.containers.AdminPage.ProjectEdit.survey.close": "Matujuk",
   "app.containers.AdminPage.ProjectEdit.survey.closed": "Closed",
   "app.containers.AdminPage.ProjectEdit.survey.default": "Nalinginnaasoq",
