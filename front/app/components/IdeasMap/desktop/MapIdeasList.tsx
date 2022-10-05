@@ -130,7 +130,6 @@ const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
   const locale = useLocale();
   const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({
     projectId,
-    phaseId: phaseId ? phaseId : null,
   });
   const project = useProject({ projectId });
 
