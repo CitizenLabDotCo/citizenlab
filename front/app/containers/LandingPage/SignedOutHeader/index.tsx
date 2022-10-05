@@ -13,7 +13,7 @@ const SignedOutHeaderIndex = () => {
   });
 
   if (!isNilOrError(homepageSettings)) {
-    const layoutSetting = homepageSettings.data.attributes.banner_layout;
+    const layoutSetting = homepageSettings.attributes.banner_layout;
     // Mistake, we should rather use a mechanism similar to
     // navbarModuleActive. The core should not know about
     // a feature flag of a modularized feature.
