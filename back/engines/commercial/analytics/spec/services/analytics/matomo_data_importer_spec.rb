@@ -122,7 +122,10 @@ RSpec.describe Analytics::MatomoDataImporter do
     end
 
     it 'is idempotent' do
-      expect { described_class.new.persist_visit_data(visit_data) }
+      matomo_client = Matomo::Client.new('https://fake.matomo.citizenlab.co', 'matomo-token')
+      importer = described_class.new(matomo_client: matomo_client)
+
+      expect { importer.persist_visit_data(visit_data) }
         .not_to change(Analytics::FactVisit, :count)
     end
   end
