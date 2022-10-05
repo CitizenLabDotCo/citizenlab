@@ -118,6 +118,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.multiselectText',
     defaultMessage: 'Multiple choice - choose many',
   },
+  select: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.selectText',
+    defaultMessage: 'Multiple choice - choose one',
+  },
   linear_scale: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.linear_scale',
     defaultMessage: 'Linear scale',
