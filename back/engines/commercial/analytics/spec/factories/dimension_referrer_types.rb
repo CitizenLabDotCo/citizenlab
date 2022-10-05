@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :dimension_referrer_type_website, class: 'Analytics::DimensionReferrerType' do
-    key { 'website' }
-    name { 'Website' }
+  factory :dimension_referrer_type, class: 'Analytics::DimensionReferrerType' do
+    sequence(:key) { |n| "referrer-#{n}" }
+    name { 'Referrer' }
   end
 end

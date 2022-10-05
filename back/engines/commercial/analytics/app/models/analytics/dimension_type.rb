@@ -10,5 +10,6 @@
 #
 module Analytics
   class DimensionType < Analytics::ApplicationRecord
+    validates :name, presence: true, uniqueness: true
   end
 end

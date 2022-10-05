@@ -45,8 +45,8 @@ const InputsContainer = styled.div`
   flex: 0 0 420px;
   padding: 12px 20px 0px 20px;
   height: 100%;
-  background-color: ${colors.emailBg};
-  border-left: 1px solid ${colors.separation};
+  background-color: ${colors.grey200};
+  border-left: 1px solid ${colors.divider};
   display: flex;
   flex-direction: column;
 `;
@@ -221,7 +221,7 @@ const Inputs = ({
           <Button
             buttonStyle="white"
             mb="12px"
-            textColor={colors.label}
+            textColor={colors.textSecondary}
             icon="file-add"
             onClick={openCreateModal}
             data-testid="insightsDetailsCreateCategory"
@@ -251,7 +251,7 @@ const Inputs = ({
                 processing={loading}
                 onClick={onLoadMore}
                 buttonStyle="white"
-                textColor={colors.adminTextColor}
+                textColor={colors.primary}
                 data-testid="insightsDetailsLoadMore"
               >
                 {formatMessage(messages.inputsLoadMore)}

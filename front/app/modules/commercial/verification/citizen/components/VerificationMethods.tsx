@@ -47,7 +47,7 @@ const Header = styled.div`
   align-items: stretch;
   margin-bottom: 35px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     justify-content: flex-start;
     margin-bottom: 20px;
   `}
@@ -66,13 +66,13 @@ const StyledAvatar = styled(Avatar)`
   margin-right: -5px;
   z-index: 2;
 
-  ${media.largePhone`
+  ${media.phone`
     margin-left: 0;
   `}
 `;
 
 const ShieldIcon = styled(Icon)`
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   width: 48px;
   height: 53px;
   margin-left: -5px;
@@ -86,7 +86,7 @@ const Content = styled.div`
     justify-content: center;
   }
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     flex-wrap: wrap;
   `}
 `;
@@ -101,14 +101,14 @@ const Context = styled.div`
   padding-top: 30px;
   padding-bottom: 30px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding: 0;
     margin-bottom: 25px;
   `}
 `;
 
 const ContextLabel = styled.div`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   line-height: normal;
@@ -116,7 +116,7 @@ const ContextLabel = styled.div`
 `;
 
 const ContextItem = styled.span`
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.s}px;
   line-height: normal;
   border-radius: ${(props) => props.theme.borderRadius};
@@ -132,7 +132,7 @@ const ContextItem = styled.span`
     text-transform: capitalize;
   }
 
-  ${media.largePhone`
+  ${media.phone`
     white-space: normal;
   `}
 `;
@@ -148,7 +148,7 @@ const ButtonsContainer = styled.div`
     background: ${colors.background};
     border-radius: ${(props: any) => props.theme.borderRadius};
 
-    ${media.smallerThanMinTablet`
+    ${media.phone`
       padding: 15px;
     `}
 

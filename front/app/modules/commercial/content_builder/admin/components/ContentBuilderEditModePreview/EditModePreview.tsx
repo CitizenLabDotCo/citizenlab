@@ -75,7 +75,7 @@ export const EditModePreview = () => {
         data-testid="contentBuilderEditModePreviewContent"
       >
         <Box p="20px">
-          <Title color="colorText" variant="h1">
+          <Title color="tenantText" variant="h1">
             {project.attributes.title_multiloc[locale]}
           </Title>
           {isLoadingContentBuilderLayout && <Spinner />}

@@ -3,47 +3,50 @@
 require 'rails_helper'
 
 RSpec.describe Analytics::FactVisit, type: :model do
-  it 'can create a visit' do
-    create(:fact_visit)
+  subject(:fact_visit) { build(:fact_visit) }
+
+  describe 'validations' do
+    it { is_expected.to be_valid }
+    it { is_expected.to validate_presence_of(:visitor_id) }
+    it { is_expected.to validate_presence_of(:duration) }
+    it { is_expected.to validate_presence_of(:pages_visited) }
+    it { is_expected.to validate_presence_of(:matomo_visit_id) }
+    it { is_expected.to validate_presence_of(:matomo_last_action_time) }
+    it { is_expected.to validate_uniqueness_of(:matomo_visit_id) }
   end
 
-  it 'can associate a visit with multiple projects in the dimension_projects db view' do
-    project1, project2 = create_list(:project, 2)
-    dimension_project1 = Analytics::DimensionProject.first
-    dimension_project2 = Analytics::DimensionProject.last
-
-    visit = create(:fact_visit)
-    visit.dimension_projects << dimension_project1
-    visit.dimension_projects << dimension_project2
-
-    assert(visit.dimension_projects[0].id == project1.id)
-    assert(visit.dimension_projects[1].id == project2.id)
+  describe 'database behaviour' do
+    # Using mostly batch inserts so DB index is actually more important than model validations
+    it { is_expected.to have_db_index(:matomo_visit_id).unique }
   end
 
-  it 'can associate a visit with multiple locales' do
-    locale_en = create(:dimension_locale)
-    locale_nl = create(:dimension_locale, name: 'nl')
+  describe 'associations' do
+    it { is_expected.to belong_to(:dimension_date_first_action).class_name('Analytics::DimensionDate') }
+    it { is_expected.to belong_to(:dimension_date_last_action).class_name('Analytics::DimensionDate') }
+    it { is_expected.to belong_to(:dimension_referrer_type) }
+    it { is_expected.to belong_to(:dimension_user).optional }
 
-    visit = create(:fact_visit)
-    visit.dimension_locales << locale_en
-    visit.dimension_locales << locale_nl
+    it 'can associate a visit with multiple projects in the dimension_projects db view' do
+      create_list(:project, 2)
+      dimension_project1, dimension_project2 = Analytics::DimensionProject.first(2)
+      fact_visit.dimension_projects << [dimension_project1, dimension_project2]
 
-    assert(visit.dimension_locales[0].id == locale_en.id)
-    assert(visit.dimension_locales[1].id == locale_nl.id)
-  end
+      expect(fact_visit.dimension_projects.length).to eq(2)
+    end
 
-  it 'can associate a visit with a user in dimension_users db view' do
-    user = create(:user)
-    dimension_user = Analytics::DimensionUser.first
+    it 'can associate a visit with multiple locales' do
+      locale1, locale2 = create_list(:dimension_locale, 2)
+      fact_visit.dimension_locales << [locale1, locale2]
 
-    visit = create(:fact_visit)
-    visit.dimension_user = dimension_user
+      expect(fact_visit.dimension_locales.length).to eq(2)
+    end
 
-    assert(visit.dimension_user.id == user.id)
-  end
+    it 'can associate a visit with a user in dimension_users db view' do
+      user = create(:user)
+      dimension_user = Analytics::DimensionUser.first
+      fact_visit.dimension_user = dimension_user
 
-  it 'cannot create another visit with the same matomo visit ID' do
-    create(:fact_visit, matomo_visit_id: 1)
-    expect { create(:fact_visit, matomo_visit_id: 1) }.to raise_error ActiveRecord::RecordNotUnique
+      expect(fact_visit.dimension_user.id).to eq(user.id)
+    end
   end
 end

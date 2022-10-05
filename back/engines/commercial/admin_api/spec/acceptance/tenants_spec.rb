@@ -40,7 +40,6 @@ resource 'Tenants', admin_api: true do
       parameter :name, 'The name of the tenant'
       parameter :host, 'The host URL of the tenant'
       parameter :logo, 'The logo image of the tenant'
-      parameter :header_bg, 'The header background image of the tenant'
       parameter :settings, 'The tenant settings'
       parameter :style, 'The tenant style definitions'
     end

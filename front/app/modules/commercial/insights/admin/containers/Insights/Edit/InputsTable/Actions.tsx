@@ -49,7 +49,7 @@ const ActionButtonWrapper = styled.div`
 const DropdownListItemText = styled.div`
   width: 80%;
   flex: 1 1 auto;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: normal;
@@ -83,7 +83,7 @@ const DropdownListItem = styled.label`
   &:hover,
   &:focus,
   &.selected {
-    background: ${colors.clDropdownHoverBackground};
+    background: ${colors.grey300};
 
     ${DropdownListItemText} {
       color: #000;

@@ -69,23 +69,24 @@ const FormBuilderToolbox = ({
       zIndex="99999"
       flex="0 0 auto"
       h="100%"
-      w="212px"
+      w="210px"
       display="flex"
       flexDirection="column"
       alignItems="center"
       bgColor="white"
       overflowY="auto"
-      borderRight={`1px solid ${colors.mediumGrey}`}
+      borderRight={`1px solid ${colors.grey500}`}
     >
       <Box w="100%" display="inline">
         <Title
           fontWeight="normal"
           mb="4px"
           mt="24px"
-          ml="12px"
+          ml="16px"
           variant="h6"
           as="h3"
-          color="secondaryText"
+          color="textSecondary"
+          style={{ textTransform: 'uppercase' }}
         >
           <FormattedMessage {...messages.addSurveyContent} />
         </Title>
@@ -99,17 +100,17 @@ const FormBuilderToolbox = ({
           <ToolboxItem
             icon="multiple-choice"
             label={formatMessage(messages.multipleChoice)}
-            onClick={() => addField('multiselect')}
-          />
-          <ToolboxItem
-            icon="number-field"
-            label={formatMessage(messages.number)}
-            onClick={() => addField('number')}
+            onClick={() => addField('select')}
           />
           <ToolboxItem
             icon="linear-scale"
             label={formatMessage(messages.linearScale)}
             onClick={() => addField('linear_scale')}
+          />
+          <ToolboxItem
+            icon="number-field"
+            label={formatMessage(messages.number)}
+            onClick={() => addField('number')}
           />
         </DraggableElement>
       </Box>

@@ -131,6 +131,9 @@ export const FormEdit = ({
 
   const handleDragRow = (fromIndex: number, toIndex: number) => {
     move(fromIndex, toIndex);
+    if (!isNilOrError(selectedField)) {
+      setSelectedField({ ...selectedField, index: toIndex });
+    }
   };
 
   const hasErrors = !!Object.keys(errors).length;
@@ -144,7 +147,8 @@ export const FormEdit = ({
         enabled: field.enabled,
         title_multiloc: field.title_multiloc || {},
         description_multiloc: field.description_multiloc || {},
-        ...(field.input_type === 'multiselect' && {
+        ...((field.input_type === 'multiselect' ||
+          field.input_type === 'select') && {
           // TODO: This will get messy with more field types, abstract this in some way
           options: field.options || {},
         }),
@@ -168,7 +172,7 @@ export const FormEdit = ({
       w="100%"
       zIndex="10000"
       position="fixed"
-      bgColor={colors.adminBackground}
+      bgColor={colors.background}
       h="100vh"
     >
       <FocusOn>
@@ -189,7 +193,9 @@ export const FormEdit = ({
                       />
                     </Box>
                   )}
-                  <Feedback />
+                  <Feedback
+                    successMessage={formatMessage(messages.successMessage)}
+                  />
                   <Box bgColor="white" minHeight="300px">
                     <FormFields
                       onEditField={setSelectedField}

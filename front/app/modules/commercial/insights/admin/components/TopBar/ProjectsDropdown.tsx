@@ -43,7 +43,7 @@ const StyledDropdownListItem = styled(DropdownListItem)`
 const StyledLink = styled(Link)`
   font-size: ${fontSizes.s}px;
   font-weight: 500;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   text-align: left;
 `;
 

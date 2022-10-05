@@ -45,8 +45,8 @@ const NavigationItemBorder = styled.div`
 `;
 
 const NavigationDropdownItem = styled.button`
-  color: ${({ theme }) => theme.navbarTextColor || theme.colorText};
-  fill: ${({ theme }) => theme.navbarTextColor || theme.colorText};
+  color: ${({ theme }) => theme.navbarTextColor || theme.colors.tenantText};
+  fill: ${({ theme }) => theme.navbarTextColor || theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   font-weight: 500;
   line-height: ${fontSizes.base}px;
@@ -62,14 +62,14 @@ const NavigationDropdownItem = styled.button`
 
   &:hover,
   &.opened {
-    color: ${({ theme }) => theme.navbarTextColor || theme.colorText};
+    color: ${({ theme }) => theme.navbarTextColor || theme.colors.tenantText};
     text-decoration: underline;
 
     ${NavigationItemBorder} {
       background: ${({ theme }) =>
         theme.navbarActiveItemBorderColor
           ? rgba(theme.navbarActiveItemBorderColor, 0.3)
-          : rgba(theme.colorMain, 0.3)};
+          : rgba(theme.colors.tenantPrimary, 0.3)};
     }
   }
 
@@ -84,13 +84,14 @@ const NavigationDropdownItem = styled.button`
       width: 100%;
       z-index: -1;
       background-color: ${({ theme }) =>
-        theme.navbarActiveItemBackgroundColor || rgba(theme.colorMain, 0.05)};
+        theme.navbarActiveItemBackgroundColor ||
+        rgba(theme.colors.tenantPrimary, 0.05)};
       pointer-events: none;
     }
 
     ${NavigationItemBorder} {
       background: ${({ theme }) =>
-        theme.navbarActiveItemBorderColor || theme.colorMain};
+        theme.navbarActiveItemBorderColor || theme.colors.tenantPrimary};
     }
   }
   ${isRtl`
@@ -128,7 +129,7 @@ const ProjectsListFooter = styled(Link)`
   text-decoration: none;
   padding: 15px 15px;
   cursor: pointer;
-  background: ${({ theme }) => theme.colorSecondary};
+  background: ${({ theme }) => theme.colors.tenantSecondary};
   border-radius: ${(props: any) => props.theme.borderRadius};
   border-top-left-radius: 0;
   border-top-right-radius: 0;
@@ -137,7 +138,7 @@ const ProjectsListFooter = styled(Link)`
   &:hover,
   &:focus {
     color: #fff;
-    background: ${({ theme }) => darken(0.15, theme.colorSecondary)};
+    background: ${({ theme }) => darken(0.15, theme.colors.tenantSecondary)};
     text-decoration: none;
   }
 `;
