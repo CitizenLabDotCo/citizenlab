@@ -129,7 +129,7 @@ RSpec.describe Matomo::Client do
     with_them do
       specify do
         response = instance_double(
-          HTTParty::Response, parsed_response: payload, 'success?': is_success
+          HTTParty::Response, parsed_response: payload, success?: is_success
         )
 
         expect(service.send(:error?, response)).to eq(expected_result)

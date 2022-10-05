@@ -119,7 +119,7 @@ module Analytics
       result = DimensionReferrerType.insert_all(referrer_types_attrs, unique_by: :key)
       return if result.count.zero?
 
-      ErrorReporter.report_msg(<<~MSG, extra: { unknown_referrers: referrer_types_attrs})
+      ErrorReporter.report_msg(<<~MSG, extra: { unknown_referrers: referrer_types_attrs })
         Newly imported matomo visits use new referrer types. The referrer types were
         added to the database, but the front-end may need to be update to display them
         correctly.

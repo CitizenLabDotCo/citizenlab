@@ -142,10 +142,10 @@ module Matomo
       return unless error?(response)
 
       message = begin
-                  response.parsed_response.fetch('message')
-                rescue StandardError
-                  response.parsed_response.to_s
-                end
+        response.parsed_response.fetch('message')
+      rescue StandardError
+        response.parsed_response.to_s
+      end
 
       raise MatomoApiError, message
     end
