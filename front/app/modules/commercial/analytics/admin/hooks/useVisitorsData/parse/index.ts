@@ -5,7 +5,7 @@ import { parseDays } from './parseDays';
 
 // utils
 import { keys } from 'utils/helperUtils';
-import { roundDateToMidnight } from './utils';
+import { roundDateToMidnight, secondsToString } from './utils';
 
 // typings
 import { Moment } from 'moment';
@@ -19,7 +19,7 @@ export const parseStats = ([
 ]: Response['data']): Stats => {
   const wholePeriod = totalsWholePeriodRows[0];
   const lastPeriod = totalsLastPeriodRows[0];
-
+  console.log(wholePeriod?.avg_duration, lastPeriod?.avg_duration);
   return {
     visitors: {
       value: wholePeriod?.count_visitor_id.toLocaleString() ?? '0',
@@ -30,8 +30,8 @@ export const parseStats = ([
       lastPeriod: lastPeriod?.count.toLocaleString() ?? '0',
     },
     visitDuration: {
-      value: wholePeriod?.avg_duration ?? '-',
-      lastPeriod: lastPeriod?.avg_duration ?? '-',
+      value: secondsToString(wholePeriod?.avg_duration),
+      lastPeriod: secondsToString(lastPeriod?.avg_duration),
     },
     pageViews: {
       value: wholePeriod?.avg_pages_visited ?? '-',
