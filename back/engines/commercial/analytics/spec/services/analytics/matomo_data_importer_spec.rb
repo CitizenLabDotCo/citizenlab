@@ -5,7 +5,6 @@ require 'query'
 
 VCR.configure do |config|
   config.cassette_library_dir = Analytics::Engine.root / 'spec' / 'fixtures' / 'vcr_cassettes'
-  config.hook_into :webmock
 end
 
 RSpec.describe Analytics::MatomoDataImporter do

@@ -5,7 +5,6 @@ require 'vcr'
 
 VCR.configure do |config|
   config.cassette_library_dir = Matomo::Engine.root / 'spec' / 'fixtures' / 'vcr_cassettes'
-  config.hook_into :webmock
 end
 
 RSpec.describe Matomo::Client do
