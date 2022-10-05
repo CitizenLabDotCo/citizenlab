@@ -11,7 +11,7 @@ RSpec.describe Matomo::Client do
   subject(:service) { described_class.new(base_uri, auth_token) }
 
   let(:base_uri) { 'https://demo.matomo.cloud' }
-  let(:auth_token) { 'auth-token' }
+  let(:auth_token) { 'anonymous' }
 
   describe '.new' do
     context 'when getting config from the environment' do
@@ -80,7 +80,7 @@ RSpec.describe Matomo::Client do
       filter_limit = 3
       filter_offset = 2
 
-      VCR.use_cassette('matomo') do
+      VCR.use_cassette('matomo_client') do
         response = service.get_last_visits_details(
           site_id, period: period, date: date, filter_limit: filter_limit, filter_offset: filter_offset
         )
