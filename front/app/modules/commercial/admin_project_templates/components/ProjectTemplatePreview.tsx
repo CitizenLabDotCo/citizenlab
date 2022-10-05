@@ -418,7 +418,7 @@ const ProjectTemplatePreview = memo<Props>(
 
               <HeaderRight>
                 <LinkCopied className={linkCopied ? 'visible' : 'hidden'}>
-                  <LinkCopiedIcon name="checkmark" />
+                  <LinkCopiedIcon name="check" />
                   <FormattedMessage {...messages.copied} />
                 </LinkCopied>
                 <CopyLinkButton

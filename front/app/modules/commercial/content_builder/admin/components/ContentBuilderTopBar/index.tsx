@@ -174,7 +174,7 @@ const ContentBuilderTopBar = ({
         <Button
           id="e2e-view-project-button"
           buttonStyle="secondary"
-          icon="eyeOpened"
+          icon="eye"
           mx="20px"
           disabled={!project}
           linkTo={`/projects/${project?.attributes.slug}`}

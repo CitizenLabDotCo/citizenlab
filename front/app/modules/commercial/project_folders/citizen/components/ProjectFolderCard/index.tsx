@@ -333,7 +333,7 @@ const ProjectFolderCard = memo<Props>(
           </ContentHeaderLabel>
         )}
         <div>
-          <MapIcon name="folder" ariaHidden />
+          <MapIcon name="folder-solid" ariaHidden />
           <MapIconDescription
             aria-hidden
             className="e2e-folder-card-numberofprojects"
@@ -381,7 +381,7 @@ const ProjectFolderCard = memo<Props>(
 
         <FolderImageContainer className={size}>
           <FolderImagePlaceholder>
-            <FolderImagePlaceholderIcon name="project" />
+            <FolderImagePlaceholderIcon name="building" />
           </FolderImagePlaceholder>
 
           {imageUrl && <FolderImage src={imageUrl} alt="" cover={true} />}

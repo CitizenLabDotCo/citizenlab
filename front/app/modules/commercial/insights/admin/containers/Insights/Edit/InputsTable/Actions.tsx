@@ -219,7 +219,7 @@ const Actions = ({
           {otherCategories.length > 0 && (
             <ActionButtonWrapper data-testid="insightsTableActionsBulkAssign">
               <Button onClick={toggleDropdown} buttonStyle="admin-dark-text">
-                <StyledIcon name="moveFolder" />
+                <StyledIcon name="folder-move" />
                 <FormattedMessage {...messages.bulkAssignCategory} />
               </Button>
 
@@ -269,7 +269,7 @@ const Actions = ({
               buttonStyle="admin-dark-text"
               processing={processingBulkApprove}
             >
-              <StyledIcon name="checkmark-full" />
+              <StyledIcon name="check-circle" />
               <FormattedMessage {...messages.bulkApprove} />
             </Button>
           )}

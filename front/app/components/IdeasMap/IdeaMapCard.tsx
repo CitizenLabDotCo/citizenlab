@@ -271,14 +271,14 @@ const IdeaMapCard = memo<Props>(
             {!isParticipatoryBudgetIdea && (
               <>
                 <FooterItem>
-                  <DownvoteIcon name="upvote" />
+                  <DownvoteIcon name="vote-up" />
                   <FooterValue>
                     {ideaMarker.attributes.upvotes_count}
                   </FooterValue>
                 </FooterItem>
                 {showDownvote && (
                   <FooterItem>
-                    <UpvoteIcon name="downvote" />
+                    <UpvoteIcon name="vote-down" />
                     <FooterValue>
                       {ideaMarker.attributes.downvotes_count}
                     </FooterValue>

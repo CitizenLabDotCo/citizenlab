@@ -126,15 +126,9 @@ export default class Checkbox extends PureComponent<Props> {
                 disabled ? 'disabled' : 'enabled'
               } e2e-checkbox`}
             >
-              {checked && (
-                <CheckMarkIcon ariaHidden name="checkmark" size={size} />
-              )}
+              {checked && <CheckMarkIcon ariaHidden name="check" size={size} />}
               {indeterminate && (
-                <IndeterminateIcon
-                  ariaHidden
-                  name="indeterminate"
-                  size={size}
-                />
+                <IndeterminateIcon ariaHidden name="minus" size={size} />
               )}
             </StyledCheckbox>
           </CheckboxContainer>

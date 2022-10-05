@@ -114,7 +114,7 @@ const PasswordInputComponent = ({
           />
           <ShowPasswordIconButton
             showPassword={showPassword}
-            iconName={showPassword ? 'eyeOpened' : 'eyeClosed'}
+            iconName={showPassword ? 'eye' : 'eye-off'}
             onClick={handleOnClick}
             a11y_buttonActionMessage={formatMessage(
               showPassword ? messages.hidePassword : messages.showPassword

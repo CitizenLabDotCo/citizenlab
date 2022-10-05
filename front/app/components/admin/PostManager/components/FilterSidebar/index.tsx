@@ -80,7 +80,7 @@ class FilterSidebar extends React.PureComponent<Props & InjectedIntlProps> {
             content={this.props.intl.formatMessage(tooltipMessage)}
             trigger={
               <button>
-                <InfoIcon name="info3" />
+                <InfoIcon name="info-solid" />
               </button>
             }
           />

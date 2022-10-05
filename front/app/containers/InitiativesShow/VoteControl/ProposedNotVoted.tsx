@@ -169,7 +169,7 @@ const ProposedNotVoted = ({
 
   const thresholdReachedTooltip = threshold_reached_message ? (
     <IconTooltip
-      icon="info"
+      icon="info-outline"
       iconColor={theme.colors.tenantText}
       theme="light"
       placement="bottom"
@@ -255,7 +255,7 @@ const ProposedNotVoted = ({
           }`}
         >
           <StyledButton
-            icon="upvote"
+            icon="vote-up"
             aria-describedby="tooltip-content"
             disabled={!!tippyContent}
             buttonStyle="primary"

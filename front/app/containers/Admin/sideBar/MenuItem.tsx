@@ -139,7 +139,7 @@ const MenuItem = ({ navItem }: Props) => {
           <FormattedMessage {...messages[navItem.message]} />
           {!!navItem.count && <CountBadge count={navItem.count} />}
         </Text>
-        <ArrowIcon name="arrowLeft" />
+        <ArrowIcon name="arrow-left" />
       </MenuItemLink>
     </HasPermission>
   ) : null;

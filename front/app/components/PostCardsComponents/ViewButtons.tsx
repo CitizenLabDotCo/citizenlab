@@ -127,7 +127,7 @@ const ViewButtons = memo<Props>(({ className, selectedView, onClick }) => {
           onKeyDown={handleTabListOnKeyDown}
           active={isListViewSelected}
         >
-          <StyledIcon name="list2" />
+          <StyledIcon name="menu" />
           <FormattedMessage {...messages.list} />
         </ListButton>
         <MapButton

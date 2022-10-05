@@ -187,7 +187,7 @@ class InvitesTable extends React.PureComponent<Props, State> {
                       }
                       trigger={
                         <button>
-                          <InfoIcon name="info3" />
+                          <InfoIcon name="info-solid" />
                         </button>
                       }
                     />

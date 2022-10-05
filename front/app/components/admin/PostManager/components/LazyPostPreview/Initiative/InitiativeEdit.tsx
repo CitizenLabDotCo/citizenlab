@@ -108,7 +108,7 @@ export class InitiativesEditPage extends React.PureComponent<Props, State> {
       <Container>
         <Top>
           <Button
-            icon="arrow-back"
+            icon="arrow-left"
             buttonStyle="text"
             textColor={colors.primary}
             onClick={goBack}

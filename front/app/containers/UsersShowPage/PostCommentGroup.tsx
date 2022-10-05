@@ -213,7 +213,7 @@ export class PostCommentGroup extends PureComponent<Props> {
                   onCancelEditing={nothingHappens}
                 />
                 <VotesContainer>
-                  <VoteIcon ariaHidden name="upvote" />
+                  <VoteIcon ariaHidden name="vote-up" />
                   <VoteCount aria-hidden>
                     {comment.attributes.upvotes_count}
                   </VoteCount>

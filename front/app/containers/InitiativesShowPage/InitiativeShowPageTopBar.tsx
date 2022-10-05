@@ -123,7 +123,7 @@ const InitiativeShowPageTopBar = memo<Props>(
         <TopBarInner>
           <Left>
             <GoBackButton onClick={onGoBack}>
-              <GoBackIcon name="arrow-back" />
+              <GoBackIcon name="arrow-left" />
             </GoBackButton>
             <GoBackLabel>
               <FormattedMessage {...messages.goBack} />

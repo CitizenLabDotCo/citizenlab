@@ -256,7 +256,7 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
         <EventTimeAndLocationContainer>
           <Time>
             <StyledIcon
-              name="clock-solid"
+              name="clock"
               fill={colors.textSecondary}
               width={`${fontSizes.m}px`}
               height={`${fontSizes.m}px`}

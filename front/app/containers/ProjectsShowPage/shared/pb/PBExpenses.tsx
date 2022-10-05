@@ -407,7 +407,12 @@ const PBExpenses = ({
               )}
               {validationStatus === 'validationError' && (
                 <>
-                  <TitleIcon name="error" ariaHidden viewMode={viewMode} />
+                  <TitleIcon
+                    name="alert-circle"
+                    fill={colors.error}
+                    ariaHidden
+                    viewMode={viewMode}
+                  />
                   {showFixedRequiredBudget ? (
                     <FormattedMessage {...messages.requiredSelectionExceeded} />
                   ) : (
@@ -417,7 +422,7 @@ const PBExpenses = ({
               )}
               {validationStatus === 'validationSuccess' && (
                 <>
-                  <TitleIcon name="checkmark" ariaHidden viewMode={viewMode} />
+                  <TitleIcon name="check" ariaHidden viewMode={viewMode} />
                   <FormattedMessage {...messages.basketSubmitted} />
                 </>
               )}

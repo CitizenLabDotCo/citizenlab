@@ -185,9 +185,9 @@ export default class CheckboxWithPartialCheck extends PureComponent<Props> {
       >
         <CustomInputWrapper size={size as string} checked={checked}>
           {checked === 'mixed' ? (
-            <CheckmarkIcon ariaHidden name="more-options" />
+            <CheckmarkIcon ariaHidden name="dots-horizontal" />
           ) : (
-            checked && <CheckmarkIcon ariaHidden name="checkmark" />
+            checked && <CheckmarkIcon ariaHidden name="check" />
           )}
         </CustomInputWrapper>
 

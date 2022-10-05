@@ -396,7 +396,7 @@ class UserTableActions extends PureComponent<Props & InjectedIntlProps, State> {
                 onClick={this.toggleDropdown}
                 buttonStyle="admin-dark-text"
               >
-                <StyledIcon name="moveFolder" />
+                <StyledIcon name="folder-move" />
                 <FormattedMessage {...messages.moveUsersTableAction} />
               </Button>
 
@@ -461,7 +461,7 @@ class UserTableActions extends PureComponent<Props & InjectedIntlProps, State> {
             className={`export e2e-${exportType} hasLeftMargin`}
             buttonStyle="admin-dark-text"
           >
-            <StyledIcon name="userExport" />
+            <StyledIcon name="user-data" />
             <FormattedMessage {...messages[exportType]} />
           </Button>
         </ActionButtons>

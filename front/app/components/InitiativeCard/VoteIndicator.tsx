@@ -154,7 +154,7 @@ class VoteIndicator extends PureComponent<Props & { theme: any }> {
         {statusCode === 'proposed' && (
           <div>
             <VoteCounter>
-              <VoteIcon name="upvote" ariaHidden />
+              <VoteIcon name="vote-up" ariaHidden />
               <VoteText aria-hidden>
                 <b className="e2e-initiative-card-vote-count">{voteCount}</b>
                 <span className="division-bar">/</span>
@@ -194,7 +194,7 @@ class VoteIndicator extends PureComponent<Props & { theme: any }> {
         {statusCode === 'threshold_reached' && (
           <div>
             <VoteCounter>
-              <VoteIcon name="upvote" ariaHidden />
+              <VoteIcon name="vote-up" ariaHidden />
               <VoteText aria-hidden>
                 <b>{voteCount}</b>
                 <span className="division-bar">/</span>
@@ -212,7 +212,7 @@ class VoteIndicator extends PureComponent<Props & { theme: any }> {
 
         {statusCode === 'answered' && (
           <AnsweredStatusBadge color={initiativeStatus.attributes.color}>
-            <AnsweredBadgeIcon name="checkmark-full" ariaHidden />
+            <AnsweredBadgeIcon name="check-circle" ariaHidden />
             <BadgeLabel>
               <T value={initiativeStatus.attributes.title_multiloc} />
             </BadgeLabel>

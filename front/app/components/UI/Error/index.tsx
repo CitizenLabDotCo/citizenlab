@@ -241,7 +241,13 @@ const Error = (props: Props) => {
           showBackground={showBackground}
           className={`${apiErrors && apiErrors.length > 1 && 'isList'}`}
         >
-          {showIcon && <ErrorIcon name="error" data-testid="error-icon" />}
+          {showIcon && (
+            <ErrorIcon
+              name="alert-circle"
+              fill={colors.error}
+              data-testid="error-icon"
+            />
+          )}
 
           <ErrorMessageText data-testid="error-message-text">
             <Box py="16px">

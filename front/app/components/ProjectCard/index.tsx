@@ -708,7 +708,7 @@ const ProjectCard = memo<Props>(
               <ProjectImage src={imageUrl} alt="" cover={true} />
             ) : (
               <ProjectImagePlaceholder>
-                <ProjectImagePlaceholderIcon name="project" />
+                <ProjectImagePlaceholderIcon name="building" />
               </ProjectImagePlaceholder>
             )}
           </ProjectImageContainer>

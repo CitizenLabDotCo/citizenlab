@@ -229,7 +229,7 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
                   >
                     <FormattedMessage {...messages.seeProfile} />
                     <IconWrapper>
-                      <Icon name="eyeOpened" fill="white" />
+                      <Icon name="eye" fill="white" />
                     </IconWrapper>
                   </DropdownListButton>
                   <DropdownListButton onClick={this.handleDeleteClick}>
@@ -242,7 +242,7 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
               }
             >
               <MoreOptionsButton onMouseDown={removeFocusAfterMouseClick}>
-                <MoreOptionsIcon name="more-options" />
+                <MoreOptionsIcon name="dots-horizontal" />
               </MoreOptionsButton>
             </Tippy>
           </MoreOptionsWrapper>

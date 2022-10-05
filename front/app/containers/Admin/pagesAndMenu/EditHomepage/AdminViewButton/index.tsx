@@ -14,7 +14,7 @@ const AdminViewButton = ({ linkTo, buttonTextMessageDescriptor }: Props) => {
   return (
     <Button
       buttonStyle="admin-dark"
-      icon="eyeOpened"
+      icon="eye"
       id="to-project"
       openLinkInNewTab
       linkTo={linkTo}

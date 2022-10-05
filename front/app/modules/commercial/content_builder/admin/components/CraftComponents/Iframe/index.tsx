@@ -101,7 +101,7 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
             <span>
               {formatMessage(messages.embedIframeUrlLabel)}{' '}
               <IconTooltip
-                icon="info3"
+                icon="info-solid"
                 content={formatMessage(messages.embedIframeUrlLabelTooltip)}
               />
             </span>
@@ -130,7 +130,7 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
             <span>
               {formatMessage(messages.embedIframeHeightLabel)}{' '}
               <IconTooltip
-                icon="info3"
+                icon="info-solid"
                 content={formatMessage(messages.embedIframeHeightLabelTooltip)}
               />
             </span>
@@ -155,7 +155,7 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
             <span>
               {formatMessage(messages.embedIframeTitleLabel)}{' '}
               <IconTooltip
-                icon="info3"
+                icon="info-solid"
                 content={formatMessage(messages.embedIframeTitleTooltip)}
               />
             </span>

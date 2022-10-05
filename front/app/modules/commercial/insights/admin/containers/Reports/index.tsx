@@ -56,7 +56,7 @@ const ReportTab = memo(({ projects }: DataProps) => {
                       `}
                     linkTo={`/admin/insights/reports/${project.id}`}
                     buttonStyle="secondary"
-                    icon="eyeOpened"
+                    icon="eye"
                     type="button"
                   >
                     <FormattedMessage {...messages.seeReportButton} />

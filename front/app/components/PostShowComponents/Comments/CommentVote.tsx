@@ -350,7 +350,7 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
             >
               <>
                 <UpvoteIcon
-                  name="upvote"
+                  name="vote-up"
                   className={`
                   ${voted ? 'voted' : 'notVoted'}
                   ${disabled ? 'disabled' : 'enabled'}

@@ -84,7 +84,7 @@ const FormActions = ({
           justifyContent="space-between"
         >
           <Button
-            icon="charts"
+            icon="chart-bar"
             buttonStyle="primary"
             width="auto"
             minWidth="312px"
@@ -109,7 +109,7 @@ const FormActions = ({
           </Button>
           <Button
             linkTo={viewFormLink}
-            icon="eyeOpened"
+            icon="eye"
             openLinkInNewTab
             buttonStyle="primary"
             width="auto"

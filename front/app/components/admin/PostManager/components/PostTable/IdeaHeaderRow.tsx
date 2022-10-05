@@ -159,7 +159,7 @@ export default ({
               content={<FormattedMessage {...messages.pbItemCountTooltip} />}
               trigger={
                 <button>
-                  <InfoIcon name="info3" />
+                  <InfoIcon name="info-solid" />
                 </button>
               }
             />

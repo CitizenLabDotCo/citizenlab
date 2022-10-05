@@ -63,7 +63,7 @@ const VerificationOnboardingStep = ({
                 padding={0}
                 borderThickness={0}
               />
-              <ShieldIcon name="shieldVerified" />
+              <ShieldIcon name="shield-check" />
             </AvatarAndShield>
           </Icons>
           <Text>

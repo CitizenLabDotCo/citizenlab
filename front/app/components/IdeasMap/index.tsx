@@ -390,7 +390,7 @@ const IdeasMap = memo<Props>((props) => {
         {isIdeaPostingEnabled && (
           <InfoOverlay>
             <InfoOverlayInner>
-              <InfoOverlayIcon name="info" />
+              <InfoOverlayIcon name="info-outline" />
               <InfoOverlayText>
                 <FormattedMessage
                   {...(tablet

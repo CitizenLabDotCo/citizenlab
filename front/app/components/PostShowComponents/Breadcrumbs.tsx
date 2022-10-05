@@ -96,7 +96,7 @@ const Breadcrumbs = ({
       <HomeLink id="e2e-home-page-link" to="/">
         <HomeIcon
           title={formatMessage(messages.linkToHomePage)}
-          name="homeFilled"
+          name="home"
           ariaHidden={false}
         />
       </HomeLink>

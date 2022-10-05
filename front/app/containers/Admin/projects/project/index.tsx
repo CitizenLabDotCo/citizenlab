@@ -380,7 +380,7 @@ export class AdminProjectsProjectIndex extends PureComponent<
               )}
               <Button
                 buttonStyle="cl-blue"
-                icon="eyeOpened"
+                icon="eye"
                 id="to-project"
                 linkTo={`/projects/${project.attributes.slug}`}
               >

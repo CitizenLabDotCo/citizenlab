@@ -62,7 +62,7 @@ const TopBar = memo<Props & InjectedIntlProps>(
         <Title>{title}</Title>
 
         <ProjectFilterDropdownPositioner>
-          <FilterIcon name="filter-funnel" />
+          <FilterIcon name="filter-2" />
           <ProjectFilterDropdown
             title={intl.formatMessage(messages.filterDropdownTitle)}
             onChange={setProjectIds}

@@ -196,7 +196,7 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
           >
             <MoreOptionsIcon
               title={label}
-              name="more-options"
+              name="dots-horizontal"
               color={color}
               ariaHidden={!showLabel}
             />

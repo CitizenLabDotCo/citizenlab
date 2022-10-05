@@ -97,7 +97,7 @@ const UserSelect = ({
         {avatarSrc ? (
           <AvatarImage className="avatarImage" src={avatarSrc} alt="" />
         ) : (
-          <AvatarIcon className="avatarIcon" name="user" />
+          <AvatarIcon className="avatarIcon" name="user-circle" />
         )}
       </>
     );
@@ -109,7 +109,7 @@ const UserSelect = ({
         <Button
           onClick={handleLoadMore}
           processing={users.isLoading}
-          icon="showMore"
+          icon="refresh"
           buttonStyle="text"
           padding="0px"
         />

@@ -67,7 +67,10 @@ const ShowFullMenuButton = ({ onClick, isFullMenuOpened }: Props) => {
   return (
     <NavigationItem>
       <StyledButton onClick={onClick} isFullMenuOpened={isFullMenuOpened}>
-        <StyledIcon name="more-options" isFullMenuOpened={isFullMenuOpened} />
+        <StyledIcon
+          name="dots-horizontal"
+          isFullMenuOpened={isFullMenuOpened}
+        />
         <NavigationLabel>
           <FormattedMessage {...messages.showMore} />
         </NavigationLabel>

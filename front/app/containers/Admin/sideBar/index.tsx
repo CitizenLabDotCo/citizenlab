@@ -177,7 +177,7 @@ class Sidebar extends PureComponent<
         {
           name: 'projects',
           link: '/admin/projects',
-          iconName: 'folder',
+          iconName: 'sidebar-folder',
           message: 'projects',
         },
         {

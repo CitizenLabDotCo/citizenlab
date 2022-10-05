@@ -148,7 +148,7 @@ const ImageSettings = injectIntl(({ intl: { formatMessage } }) => {
             <span>
               {formatMessage(messages.imageAltTextLabel)}{' '}
               <IconTooltip
-                icon="info3"
+                icon="info-solid"
                 content={formatMessage(messages.imageAltTextTooltip)}
               />
             </span>

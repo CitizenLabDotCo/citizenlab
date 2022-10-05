@@ -86,7 +86,7 @@ export default class Warning extends PureComponent<Props> {
       <Container
         className={`${className || ''} ${adminPage ? 'adminPage' : ''}`}
       >
-        <StyledIcon name={icon || 'info'} />
+        <StyledIcon name={icon || 'info-outline'} />
         <Text>{text || children}</Text>
       </Container>
     );

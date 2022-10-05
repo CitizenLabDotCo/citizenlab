@@ -141,7 +141,7 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
                 name="chevron-right"
               />
             )}
-            <FolderIcon name="simpleFolder" />
+            <FolderIcon name="folder-outline" />
             <RowTitle
               value={publication.attributes.publication_title_multiloc}
             />

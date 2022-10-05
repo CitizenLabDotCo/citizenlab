@@ -116,7 +116,7 @@ const FormBuilderTopBar = ({ isSubmitting }: FormBuilderTopBarProps) => {
         <Box ml="24px" />
         <Button
           buttonStyle="secondary"
-          icon="eyeOpened"
+          icon="eye"
           mx="20px"
           disabled={!project}
           linkTo={viewSurveyLInk}

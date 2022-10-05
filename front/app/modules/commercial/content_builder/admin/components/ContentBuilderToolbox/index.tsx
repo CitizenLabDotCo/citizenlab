@@ -274,7 +274,10 @@ const ContentBuilderToolbox = ({
             })
           }
         >
-          <ToolboxItem icon="info3" label={formatMessage(messages.aboutBox)} />
+          <ToolboxItem
+            icon="info-solid"
+            label={formatMessage(messages.aboutBox)}
+          />
         </DraggableElement>
         <DraggableElement
           id="e2e-draggable-accordion"
