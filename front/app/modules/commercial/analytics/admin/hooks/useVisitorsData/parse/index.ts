@@ -19,7 +19,7 @@ export const parseStats = ([
 ]: Response['data']): Stats => {
   const wholePeriod = totalsWholePeriodRows[0];
   const lastPeriod = totalsLastPeriodRows[0];
-  console.log(wholePeriod?.avg_duration, lastPeriod?.avg_duration);
+
   return {
     visitors: {
       value: wholePeriod?.count_visitor_id.toLocaleString() ?? '0',
