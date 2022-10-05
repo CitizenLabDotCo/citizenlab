@@ -89,18 +89,5 @@ export const dateRange = (start: Moment, end: Moment, step: IResolution) => {
   return dates;
 };
 
-export const secondsToString = (seconds) => {
-  if (!seconds) return '-';
-
-  const TIME_PARTS = ['h', 'm', 's'];
-  const time = new Date(seconds * 1000)
-    .toISOString()
-    .substring(11, 19)
-    .split(':')
-    .map((t, i) => `${t}${TIME_PARTS[i]}`)
-    .filter((t) => !t.includes('00'))
-    .map((t) => (t[0] === '0' ? t.substring(1) : t))
-    .join(' ');
-
-  return time;
-};
+export const secondsToString = (seconds) =>
+  seconds ? new Date(seconds * 1000).toISOString().substring(11, 19) : '-';
