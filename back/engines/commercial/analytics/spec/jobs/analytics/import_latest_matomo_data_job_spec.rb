@@ -17,6 +17,11 @@ RSpec.describe Analytics::ImportLatestMatomoDataJob do
   end
 
   it 'delegates the import to MatomoDataImporter' do
+    stub_const('ENV', ENV.to_h.merge(
+      'MATOMO_HOST' => 'https://fake.matomo.citizenlab.co',
+      'MATOMO_AUTHORIZATION_TOKEN' => 'matomo-token',
+    ))
+
     site_id = AppConfiguration.instance.settings.dig('matomo', 'tenant_site_id')
     from_timestamp = Tenant.current.created_at.to_i - described_class::RETROACTIVE_IMPORT
     options = { min_duration: 2.days, max_nb_batches: 3, batch_size: 100 }

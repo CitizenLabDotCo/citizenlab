@@ -61,7 +61,8 @@ RSpec.describe Analytics::MatomoDataImporter do
       create(:project).update(id: '9ae10575-921b-45a4-bb2f-c9e0a6d19f5a')
       create(:project).update(id: '27e298d2-e12d-47b5-819c-5442a66893b2')
 
-      described_class.new.persist_visit_data(visit_data)
+      matomo = Matomo::Client.new('https://localhost', 'dummy-token')
+      described_class.new(matomo_client: matomo).persist_visit_data(visit_data)
     end
 
     # Visits that should have been imported from the visit batch
