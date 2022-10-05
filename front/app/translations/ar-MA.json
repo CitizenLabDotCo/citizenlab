@@ -541,6 +541,7 @@
   "app.components.form.ErrorDisplay.guidelinesLinkText": "إرشاداتنا",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "جارٍ بدء الكتابة للبحث بحسب البريد الإلكتروني للمستخدم أو اسمه...",
   "app.components.form.blockedVerified": "لا يمكنك تعديل هذا الحقل؛ لأنه يحتوي على معلومات تم التحقق من صحتها",
+  "app.components.form.controls.selectMany": "*Choose as many as you like",
   "app.components.form.error": "خطأ",
   "app.components.form.locationGoogleUnavailable": "تعذر تعبئة حقل الموقع المتوفر من خرائط google.",
   "app.components.form.submit": "إرسال",

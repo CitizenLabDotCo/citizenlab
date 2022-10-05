@@ -541,6 +541,7 @@
   "app.components.form.ErrorDisplay.guidelinesLinkText": "Onze richtlijnen",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Begin met typen om te zoeken op email of naam...",
   "app.components.form.blockedVerified": "Je kunt dit veld niet bewerken omdat het bevestigde informatie bevat",
+  "app.components.form.controls.selectMany": "*Choose as many as you like",
   "app.components.form.error": "Fout",
   "app.components.form.locationGoogleUnavailable": "Kan locatieveld geleverd door google maps niet laden.",
   "app.components.form.submit": "Verzenden",
