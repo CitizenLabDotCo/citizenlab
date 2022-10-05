@@ -35,7 +35,9 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
   });
 
   const phases = usePhases(project?.id);
-  const { schema, uiSchema, inputSchemaError } = useInputSchema(project?.id);
+  const { schema, uiSchema, inputSchemaError } = useInputSchema({
+    projectId: project?.id,
+  });
   const permisison = usePermission({
     item: isNilOrError(idea) ? null : idea,
     action: 'edit',
