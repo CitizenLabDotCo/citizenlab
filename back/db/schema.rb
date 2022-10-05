@@ -1090,6 +1090,7 @@ ActiveRecord::Schema.define(version: 2022_09_27_114325) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "code", null: false
+    t.jsonb "top_info_section_multiloc"
     t.index ["code"], name: "index_static_pages_on_code"
     t.index ["slug"], name: "index_static_pages_on_slug", unique: true
   end
