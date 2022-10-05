@@ -5,7 +5,6 @@ import TabbedResource from 'components/admin/TabbedResource';
 import { Box } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import Breadcrumbs from 'components/UI/Breadcrumbs';
-
 import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 
 // i18n
