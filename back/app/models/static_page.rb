@@ -4,13 +4,14 @@
 #
 # Table name: static_pages
 #
-#  id             :uuid             not null, primary key
-#  title_multiloc :jsonb
-#  body_multiloc  :jsonb
-#  slug           :string
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
-#  code           :string           not null
+#  id                        :uuid             not null, primary key
+#  title_multiloc            :jsonb
+#  body_multiloc             :jsonb
+#  slug                      :string
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
+#  code                      :string           not null
+#  top_info_section_multiloc :jsonb
 #
 # Indexes
 #
@@ -37,6 +38,11 @@ class StaticPage < ApplicationRecord
 
   before_validation :strip_title
   before_validation :sanitize_body_multiloc
+
+  def body_multiloc=(value)
+    self.top_info_section_multiloc = value
+    super
+  end
 
   def custom?
     code == 'custom'
