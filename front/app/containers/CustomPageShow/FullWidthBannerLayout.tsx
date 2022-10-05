@@ -28,11 +28,11 @@ const Header = styled.div`
   align-items: center;
   justify-content: center;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     min-height: ${homepageBannerLayoutHeights.full_width_banner_layout.tablet}px;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     min-height: ${homepageBannerLayoutHeights.full_width_banner_layout.phone}px;
   `}
 `;

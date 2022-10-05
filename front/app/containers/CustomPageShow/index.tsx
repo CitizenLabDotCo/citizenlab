@@ -12,19 +12,20 @@ import { useParams } from 'react-router-dom';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
-import { ICustomPagesAttributes } from 'services/customPages';
+import { ICustomPageAttributes } from 'services/customPages';
 
 const LandingPage = () => {
   const { slug } = useParams() as {
     slug: string;
   };
+  debugger;
   const customPage = usePage({ pageSlug: slug });
 
   if (isNilOrError(customPage)) {
     return null;
   }
 
-  const attributes = customPage.attributes as unknown as ICustomPagesAttributes;
+  const attributes = customPage.attributes as unknown as ICustomPageAttributes;
   return (
     <>
       <Container id="e2e-landing-page">
