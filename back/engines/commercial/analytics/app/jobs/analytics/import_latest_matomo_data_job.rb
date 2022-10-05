@@ -7,7 +7,7 @@ module Analytics
     # Not too many import tasks should be performed at the same time to avoid putting
     # too much pressure on Matomo. For this reason, we implemented a *simplistic
     # mechanism* relying on Postgres advisory locks to limit the number of concurrent
-    # jobs (Que does have that feature). However, Postgres advisory locks are binary
+    # jobs (Que does not have that feature). However, Postgres advisory locks are binary
     # locks, so in order to allow more than one job to run at the same time, we use
     # multiple locks (`MAX_CONCURRENCY`). Each job is pseudo-randomly assigned to one of
     # these locks (based on the hash of its target site id). If it fails to acquire this
