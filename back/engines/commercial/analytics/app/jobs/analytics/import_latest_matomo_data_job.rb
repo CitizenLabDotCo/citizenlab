@@ -12,7 +12,7 @@ module Analytics
     # multiple locks (`MAX_CONCURRENCY`). Each job is pseudo-randomly assigned to one of
     # these locks (based on the hash of its target site id). If it fails to acquire this
     # lock, the job is rescheduled (even if some other locks are available).
-    MAX_CONCURRENCY = 10
+    MAX_CONCURRENCY = ENV['MATOMO_IMPORT_MAX_CONCURRENCY'] || 10
 
     # We resume the import of data from a little further back in time (wrt the end of
     # the previous import) to make sure to capture most of the visits that were slow to
