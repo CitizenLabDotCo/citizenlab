@@ -103,7 +103,7 @@ resource 'Ideas' do
     end
 
     example 'List all ideas in a project' do
-      l = create(:continuous_project)
+      l = create(:project)
       i = create(:idea, project: l)
 
       do_request projects: [l.id]
@@ -129,9 +129,9 @@ resource 'Ideas' do
       ph1 = pr.phases.first
       ph2 = pr.phases.second
       ideas = [
-        create(:idea, phases: [ph1], creation_phase: ph1, project: pr),
-        create(:idea, phases: [ph2], creation_phase: ph2, project: pr),
-        create(:idea, phases: [ph1, ph2], creation_phase: ph1, project: pr)
+        create(:idea, phases: [ph1], project: pr),
+        create(:idea, phases: [ph2], project: pr),
+        create(:idea, phases: [ph1, ph2], project: pr)
       ]
 
       do_request phase: ph2.id
@@ -274,9 +274,9 @@ resource 'Ideas' do
       pr = create(:project_with_phases)
       ph1 = pr.phases.first
       ph2 = pr.phases.second
-      create(:idea, phases: [ph1], creation_phase: ph1, project: pr)
-      i2 = create(:idea, phases: [ph2], creation_phase: ph2, project: pr)
-      i3 = create(:idea, phases: [ph1, ph2], creation_phase: ph1, project: pr)
+      create(:idea, phases: [ph1], project: pr)
+      i2 = create(:idea, phases: [ph2], project: pr)
+      i3 = create(:idea, phases: [ph1, ph2], project: pr)
 
       do_request phase: ph2.id
       json_response = json_parse(response_body)
@@ -305,7 +305,7 @@ resource 'Ideas' do
 
     describe do
       before do
-        @project = create(:continuous_project)
+        @project = create(:project)
         @selected_ideas = @ideas.select(&:published?).shuffle.take 3
         @selected_ideas.each do |idea|
           idea.update! project: @project
@@ -352,7 +352,7 @@ resource 'Ideas' do
     before do
       @t1 = create(:topic)
       @t2 = create(:topic)
-      @project = create(:continuous_project, allowed_input_topics: [@t1, @t2])
+      @project = create(:project, allowed_input_topics: [@t1, @t2])
 
       @s1 = create(:idea_status)
       @s2 = create(:idea_status)
