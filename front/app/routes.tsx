@@ -252,15 +252,6 @@ export default function createRoutes() {
           path: 'pages/:slug',
           element: (
             <PageLoading>
-              <PagesShowPage />
-            </PageLoading>
-          ),
-        },
-        // temporary URL for development purposes
-        {
-          path: 'custom-pages/:slug',
-          element: (
-            <PageLoading>
               <CustomPageShow />
             </PageLoading>
           ),

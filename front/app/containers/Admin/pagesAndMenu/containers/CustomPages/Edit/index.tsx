@@ -57,9 +57,9 @@ const CustomPagesEditSettings = ({
             <Button
               buttonStyle="admin-dark"
               icon="eye"
-              id="to-project"
+              id="to-custom-page"
               openLinkInNewTab
-              linkTo={`/custom-pages/${customPage.attributes.slug}`}
+              linkTo={`/pages/${customPage.attributes.slug}`}
             >
               'view page'
             </Button>

@@ -24,10 +24,32 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 import useLocalize from 'hooks/useLocalize';
 
-const CustomPageShow = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+// styling
+import styled from 'styled-components';
+import { media, fontSizes, isRtl } from 'utils/styleUtils';
+
+const PageTitle = styled.h1`
+  color: ${({ theme }) => theme.colors.tenantText};
+  font-size: ${fontSizes.xxxxl}px;
+  line-height: normal;
+  font-weight: 600;
+  text-align: left;
+  margin: 0;
+  padding: 0;
+  padding-top: 0px;
+
+  ${media.tablet`
+    font-size: ${fontSizes.xxxl};
+  `}
+  ${isRtl`
+    text-align: right;
+    direction: rtl;
+  `}
+`;
+
+const CustomPageShow = () => {
   const appConfiguration = useAppConfiguration();
   const localize = useLocalize();
 
@@ -55,7 +77,6 @@ const CustomPageShow = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       <Helmet
         title={`${localize(attributes.title_multiloc)} | ${localizedOrgName}`}
       />
-
       {attributes.banner_enabled && (
         <CustomPageHeader
           headerLayout={attributes.banner_layout}
@@ -71,6 +92,9 @@ const CustomPageShow = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           <Fragment
             name={!isNilOrError(page) ? `pages/${page && page.id}/content` : ''}
           ></Fragment>
+          {!attributes.banner_enabled && (
+            <PageTitle>{localize(attributes.title_multiloc)}</PageTitle>
+          )}
           {attributes.top_info_section_enabled && (
             <TopInfoSection
               multilocContent={attributes.top_info_section_multiloc}
