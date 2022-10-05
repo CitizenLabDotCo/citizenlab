@@ -4,10 +4,12 @@ import React from 'react';
 import CustomPageHeader from './CustomPageHeader';
 import TopInfoSection from './TopInfoSection';
 import { Container, Content } from 'containers/LandingPage';
+import FileAttachments from 'components/UI/FileAttachments';
 
 // hooks
 import usePage from 'hooks/usePage';
 import { useParams } from 'react-router-dom';
+import useResourceFiles from 'hooks/useResourceFiles';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -18,8 +20,13 @@ const LandingPage = () => {
   const { slug } = useParams() as {
     slug: string;
   };
-  debugger;
+
   const customPage = usePage({ pageSlug: slug });
+
+  const remotePageFiles = useResourceFiles({
+    resourceType: 'page',
+    resourceId: !isNilOrError(customPage) ? customPage.id : null,
+  });
 
   if (isNilOrError(customPage)) {
     return null;
@@ -38,9 +45,15 @@ const LandingPage = () => {
           headerOpacity={attributes.banner_overlay_opacity}
         />
         <Content>
-          <TopInfoSection
-            multilocContent={attributes.top_info_section_multiloc}
-          />
+          {attributes.top_info_section_enabled && (
+            <TopInfoSection
+              multilocContent={attributes.top_info_section_multiloc}
+            />
+          )}
+          {attributes.files_section_enabled &&
+            !isNilOrError(remotePageFiles) && (
+              <FileAttachments files={remotePageFiles} />
+            )}
         </Content>
       </Container>
     </>

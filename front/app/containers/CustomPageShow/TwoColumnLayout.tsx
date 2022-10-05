@@ -52,7 +52,7 @@ const TwoColumnLayout = ({ imageUrl, headerMultiloc, subheaderMultiloc }) => {
         headerMultiloc={headerMultiloc}
         subheaderMultiloc={subheaderMultiloc}
         hasHeaderBannerImage={imageUrl != null}
-        fontColors="light"
+        fontColors="dark"
       />
     </Container>
   );
