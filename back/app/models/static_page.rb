@@ -4,14 +4,14 @@
 #
 # Table name: static_pages
 #
-#  id                        :uuid             not null, primary key
-#  title_multiloc            :jsonb
-#  body_multiloc             :jsonb
-#  slug                      :string
-#  created_at                :datetime         not null
-#  updated_at                :datetime         not null
-#  code                      :string           not null
-#  top_info_section_multiloc :jsonb
+#  id                           :uuid             not null, primary key
+#  title_multiloc               :jsonb
+#  body_multiloc                :jsonb
+#  slug                         :string
+#  created_at                   :datetime         not null
+#  updated_at                   :datetime         not null
+#  code                         :string           not null
+#  top_info_section_multiloc    :jsonb            not null
 #  banner_enabled               :boolean          default(FALSE), not null
 #  banner_layout                :string           default("full_width_banner_layout"), not null
 #  banner_overlay_color         :string

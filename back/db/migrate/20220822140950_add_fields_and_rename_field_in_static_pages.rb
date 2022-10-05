@@ -33,6 +33,7 @@ class AddFieldsAndRenameFieldInStaticPages < ActiveRecord::Migration[6.1]
         StubStaticPage.reset_column_information
         StubStaticPage.update_all(banner_enabled: false, top_info_section_enabled: true)
         StubStaticPage.where.not(code: %w[terms-and-conditions privacy-policy]).update_all(files_section_enabled: true)
+        execute('UPDATE static_pages SET top_info_section_multiloc = body_multiloc')
       end
     end
   end

@@ -1085,12 +1085,12 @@ ActiveRecord::Schema.define(version: 2022_09_27_114325) do
 
   create_table "static_pages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.jsonb "title_multiloc", default: {}
-    t.jsonb "top_info_section_multiloc", default: {}, null: false
+    t.jsonb "body_multiloc", default: {}
     t.string "slug"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "code", null: false
-    t.jsonb "top_info_section_multiloc"
+    t.jsonb "top_info_section_multiloc", default: {}, null: false
     t.boolean "banner_enabled", default: false, null: false
     t.string "banner_layout", default: "full_width_banner_layout", null: false
     t.string "banner_overlay_color"
