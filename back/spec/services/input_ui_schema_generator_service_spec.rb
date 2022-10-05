@@ -198,7 +198,7 @@ RSpec.describe InputUiSchemaGeneratorService do
       end
     end
 
-    context 'for a continuous project' do
+    context 'for a continuous ideation project' do
       let(:project) { create(:continuous_project, input_term: 'option') }
       let(:continuous_fields) do
         IdeaCustomFieldsService.new(
@@ -250,6 +250,34 @@ RSpec.describe InputUiSchemaGeneratorService do
         ui_schema = generator.generate_for(continuous_fields)['en']
         expect(ui_schema[:elements].find { |e| e[:options][:id] == 'extra' }[:elements].size).to eq 1
         expect(ui_schema[:elements].find { |e| e[:options][:id] == 'extra' }[:elements].first[:scope]).to eq '#/properties/extra_field'
+      end
+    end
+
+    context 'for a continuous native survey project' do
+      let(:project) { create(:continuous_native_survey_project) }
+      let(:form) { create :custom_form, participation_context: project }
+      let!(:field) { create :custom_field, resource: form }
+
+      it 'has an empty extra category label, so that the category label is suppressed in the UI' do
+        en_ui_schema = generator.generate_for([field])['en']
+        expect(en_ui_schema).to eq({
+          type: 'Categorization',
+          options: {
+            formId: 'idea-form',
+            inputTerm: 'idea'
+          },
+          elements: [{
+            type: 'Category',
+            label: nil,
+            options: { id: 'extra' },
+            elements: [{
+              type: 'Control',
+              scope: "#/properties/#{field.key}",
+              label: 'Did you attend',
+              options: { description: 'Which councils are you attending in our city?', transform: 'trim_on_blur' }
+            }]
+          }]
+        })
       end
     end
 
