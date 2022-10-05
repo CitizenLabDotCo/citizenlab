@@ -64,4 +64,10 @@ RSpec.describe ParticipationMethod::NativeSurvey do
       expect(participation_method.form_in_phase?).to be true
     end
   end
+
+  describe '#extra_fields_category_translation_key' do
+    it 'returns nil' do
+      expect(participation_method.extra_fields_category_translation_key).to be_nil
+    end
+  end
 end
