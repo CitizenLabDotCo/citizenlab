@@ -19,7 +19,7 @@ RSpec.describe Analytics::ImportLatestMatomoDataJob do
   it 'delegates the import to MatomoDataImporter' do
     stub_const('ENV', ENV.to_h.merge(
       'MATOMO_HOST' => 'https://fake.matomo.citizenlab.co',
-      'MATOMO_AUTHORIZATION_TOKEN' => 'matomo-token',
+      'MATOMO_AUTHORIZATION_TOKEN' => 'matomo-token'
     ))
 
     site_id = AppConfiguration.instance.settings.dig('matomo', 'tenant_site_id')

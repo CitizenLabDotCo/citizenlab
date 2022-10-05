@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # This migration comes from analytics (originally 20220929124340)
 
 class AddIndexToAnalyticsDimensionProjectsFactVisits < ActiveRecord::Migration[6.1]
