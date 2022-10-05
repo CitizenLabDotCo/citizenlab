@@ -23,6 +23,8 @@ module Analytics
     def run(tenant_id, min_duration: 1.day, max_nb_batches: 5, batch_size: 250)
       Tenant.find(tenant_id).switch do
         matomo_site_id = AppConfiguration.instance.settings.dig('matomo', 'tenant_site_id')
+        return if matomo_site_id.blank?
+
         lock_name = calculate_lock_name(matomo_site_id)
 
         # Failures to lock are handled by #handle_error.
