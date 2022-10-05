@@ -91,6 +91,7 @@ export const dateRange = (start: Moment, end: Moment, step: IResolution) => {
 
 export const secondsToString = (seconds) => {
   if (!seconds) return '-';
+
   const TIME_PARTS = ['h', 'm', 's'];
   const time = new Date(seconds * 1000)
     .toISOString()
