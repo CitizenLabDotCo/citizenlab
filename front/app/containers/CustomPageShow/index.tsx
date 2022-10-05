@@ -17,6 +17,7 @@ import {
 import { useParams } from 'react-router-dom';
 import useCustomPageBySlug from 'hooks/useCustomPageBySlug';
 import useResourceFiles from 'hooks/useResourceFiles';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -24,69 +25,58 @@ import { isNilOrError } from 'utils/helperUtils';
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from './messages';
 import useLocalize from 'hooks/useLocalize';
 
 const CustomPageShow = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+  const appConfiguration = useAppConfiguration();
+  const localize = useLocalize();
+
   const { slug } = useParams() as {
     slug: string;
   };
-
   const page = useCustomPageBySlug(slug);
+
   const remotePageFiles = useResourceFiles({
     resourceType: 'page',
     resourceId: !isNilOrError(page) ? page.id : null,
   });
-  const localize = useLocalize();
 
-  if (isNilOrError(page)) {
+  if (isNilOrError(page) || isNilOrError(appConfiguration)) {
     return null;
-  }
-
-  let seoTitle: string;
-  let seoDescription: string;
-  let blockIndexing: boolean;
-  let pageSlug: string;
-
-  if (!isNilOrError(page)) {
-    seoTitle = localize(page.attributes.title_multiloc);
-    seoDescription = '';
-    blockIndexing = false;
-    pageSlug = page.attributes.slug || '';
-  } else {
-    seoTitle = formatMessage(messages.notFoundTitle);
-    seoDescription = formatMessage(messages.notFoundDescription);
-    blockIndexing = true;
-    pageSlug = '';
+    // should return 404 here
   }
 
   const attributes = page.attributes;
+  const localizedOrgName = localize(
+    appConfiguration.attributes.settings.core.organization_name
+  );
   return (
-    <Container className={`e2e-page-${pageSlug}`}>
-      <Helmet>
-        <title>{seoTitle}</title>
-        <meta name="description" content={seoDescription} />
-        {blockIndexing && <meta name="robots" content="noindex" />}
-      </Helmet>
-      <CustomPageHeader
-        headerLayout={attributes.banner_layout}
-        header_bg={attributes.header_bg}
-        headerMultiloc={attributes.banner_header_multiloc}
-        subheaderMultiloc={attributes.banner_subheader_multiloc}
-        headerColor={attributes.banner_overlay_color}
-        headerOpacity={attributes.banner_overlay_opacity}
+    <Container className={`e2e-custom-page`}>
+      <Helmet
+        title={`${localize(attributes.title_multiloc)} | ${localizedOrgName}`}
       />
+
+      {attributes.banner_enabled && (
+        <CustomPageHeader
+          headerLayout={attributes.banner_layout}
+          header_bg={attributes.header_bg}
+          headerMultiloc={attributes.banner_header_multiloc}
+          subheaderMultiloc={attributes.banner_subheader_multiloc}
+          headerColor={attributes.banner_overlay_color}
+          headerOpacity={attributes.banner_overlay_opacity}
+        />
+      )}
       <PageContent>
         <StyledContentContainer>
           <Fragment
             name={!isNilOrError(page) ? `pages/${page && page.id}/content` : ''}
           ></Fragment>
+          {attributes.top_info_section_enabled && (
+            <TopInfoSection
+              multilocContent={attributes.top_info_section_multiloc}
+            />
+          )}
         </StyledContentContainer>
-        {attributes.top_info_section_enabled && (
-          <TopInfoSection
-            multilocContent={attributes.top_info_section_multiloc}
-          />
-        )}
         {attributes.files_section_enabled &&
           !isNilOrError(remotePageFiles) &&
           remotePageFiles.length > 0 && (

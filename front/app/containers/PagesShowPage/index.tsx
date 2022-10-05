@@ -192,7 +192,6 @@ class PagesShowPage extends PureComponent<
             <meta name="description" content={seoDescription} />
             {blockIndexing && <meta name="robots" content="noindex" />}
           </Helmet>
-
           <PageContent>
             <StyledContentContainer>
               <Fragment
