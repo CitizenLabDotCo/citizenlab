@@ -75,4 +75,8 @@ export default defineMessages({
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.editCustomPagePageTitle',
     defaultMessage: 'Edit custom page',
   },
+  viewCustomPage: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.viewCustomPage',
+    defaultMessage: 'View custom page',
+  },
 });

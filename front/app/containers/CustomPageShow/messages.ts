@@ -1,16 +1,12 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  pageTitle: {
-    id: 'app.components.PagesShowPage.pageTitle',
-    defaultMessage: '{projectTitle} | {orgName}',
-  },
   notFoundTitle: {
-    id: 'app.components.PagesShowPage.notFoundTitle',
+    id: 'app.components.CustomPageShow.notFoundTitle',
     defaultMessage: 'Page not found',
   },
   notFoundDescription: {
-    id: 'app.components.PagesShowPage.notFoundDescription',
+    id: 'app.components.CustomPageShow.notFoundDescription',
     defaultMessage: 'The requested page could not be found',
   },
 });

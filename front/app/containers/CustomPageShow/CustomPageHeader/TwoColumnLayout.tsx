@@ -29,7 +29,6 @@ export const HeaderImage = styled(Image)`
 `;
 
 export interface Props {
-  className?: string;
   imageUrl?: string;
   headerMultiloc: Multiloc;
   subheaderMultiloc: Multiloc;

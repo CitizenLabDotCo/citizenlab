@@ -61,7 +61,7 @@ const CustomPagesEditSettings = ({
               openLinkInNewTab
               linkTo={`/pages/${customPage.attributes.slug}`}
             >
-              'view page'
+              {formatMessage(messages.viewCustomPage)}
             </Button>
           ),
         }}

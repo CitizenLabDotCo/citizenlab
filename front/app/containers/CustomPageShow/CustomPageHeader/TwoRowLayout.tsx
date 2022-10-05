@@ -29,10 +29,7 @@ const HeaderImage = styled(Image)`
 `;
 
 export interface Props {
-  className?: string;
   imageUrl?: string;
-  imageColor?: string;
-  imageOpacity?: number;
   headerMultiloc: Multiloc;
   subheaderMultiloc: Multiloc;
 }
