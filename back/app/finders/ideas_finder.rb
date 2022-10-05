@@ -24,16 +24,25 @@ class IdeasFinder < ApplicationFinder
   }
 
   def initialize(params, scope: nil, includes: [], current_user: nil, paginate: true)
-    timeline_inputs = scope.where(creation_phase: Phase.where(participation_method: 'ideation'))
-    continuous_inputs = scope.where(
-      project: Project.where(process_type: 'continuous', participation_method: 'ideation')
+    scope ||= _base_scope
+    super(
+      params,
+      scope: only_idea_inputs_scope(scope),
+      includes: includes,
+      current_user: current_user,
+      paginate: paginate
     )
-    scope = timeline_inputs.or continuous_inputs
-
-    super params, scope: scope, includes: [], current_user: nil, paginate: true
   end
 
   private
+
+  def only_idea_inputs_scope(scope)
+    phase_ideas = scope.where(creation_phase: Phase.where(participation_method: %w[ideation budgeting]))
+    project_ideas = scope.where(
+      project: Project.where(process_type: 'continuous', participation_method: %w[ideation budgeting])
+    )
+    phase_ideas.or project_ideas
+  end
 
   def ideas_condition(ids)
     where(id: ids)

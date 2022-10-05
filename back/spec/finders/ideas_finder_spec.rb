@@ -10,7 +10,9 @@ describe IdeasFinder do
   let(:result_record_ids) { finder.find_records.pluck(:id) }
 
   before_all do
-    create_list(:idea_with_topics, 5, project: create(:project_with_phases))
+    timeline_project = create :project_with_phases
+    ideation_phase = timeline_project.phases.first
+    create_list(:idea_with_topics, 5, project: timeline_project, creation_phase: ideation_phase)
   end
 
   context 'when passing a sort param' do
@@ -378,7 +380,7 @@ describe IdeasFinder do
     context 'with current user and can_moderate is true' do
       let(:user) { create(:user) }
       let(:options) { { current_user: user } }
-      let(:moderatable_project) { create(:project) }
+      let(:moderatable_project) { create(:continuous_project) }
       let(:moderatable_projects) { Project.where(id: moderatable_project.id) }
       let!(:idea1) { create(:idea, project: moderatable_project) }
 
@@ -394,7 +396,7 @@ describe IdeasFinder do
 
       it 'returns the correct records' do
         expect(user_role_service).to receive(:moderatable_projects)
-        expect(result_record_ids).to match_array [idea1.id]
+        expect(result_record_ids).to eq [idea1.id]
       end
     end
 
