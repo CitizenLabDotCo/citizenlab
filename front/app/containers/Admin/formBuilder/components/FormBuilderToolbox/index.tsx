@@ -100,7 +100,7 @@ const FormBuilderToolbox = ({
           <ToolboxItem
             icon="survey-multiple-choice"
             label={formatMessage(messages.multipleChoice)}
-            onClick={() => addField('multiselect')}
+            onClick={() => addField('select')}
           />
           <ToolboxItem
             icon="survey-linear-scale"
