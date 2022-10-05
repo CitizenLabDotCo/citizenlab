@@ -8,6 +8,12 @@ class AddFieldsAndRenameFieldInStaticPages < ActiveRecord::Migration[6.1]
   # rubocop:enable Rails/ApplicationRecord
 
   def change
+    reversible do |dir|
+      dir.up do
+        execute('UPDATE static_pages SET top_info_section_multiloc = body_multiloc')
+      end
+    end
+
     change_column_null :static_pages, :top_info_section_multiloc, false
     change_column_default :static_pages, :top_info_section_multiloc, from: nil, to: {}
     add_column :static_pages, :banner_enabled, :boolean, default: false, null: false
@@ -33,7 +39,6 @@ class AddFieldsAndRenameFieldInStaticPages < ActiveRecord::Migration[6.1]
         StubStaticPage.reset_column_information
         StubStaticPage.update_all(banner_enabled: false, top_info_section_enabled: true)
         StubStaticPage.where.not(code: %w[terms-and-conditions privacy-policy]).update_all(files_section_enabled: true)
-        execute('UPDATE static_pages SET top_info_section_multiloc = body_multiloc')
       end
     end
   end
