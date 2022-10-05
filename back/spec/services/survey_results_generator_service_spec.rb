@@ -97,12 +97,40 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
       resource: form,
       title_multiloc: {
         'en' => 'Do you agree with the vision?',
-        'fr-FR' => "Êtes-vous d'accord avec la vision? ?",
+        'fr-FR' => "Êtes-vous d'accord avec la vision ?",
         'nl-NL' => 'Ben je het eens met de visie?'
       },
       maximum: 5,
       minimum_label_multiloc: minimum_label_multiloc,
       maximum_label_multiloc: maximum_label_multiloc
+    )
+  end
+  let(:select_field) do
+    create(
+      :custom_field_select,
+      resource: form,
+      title_multiloc: {
+        'en' => 'What city do you like best?',
+        'fr-FR' => 'Quelle ville préférez-vous ?',
+        'nl-NL' => 'Welke stad vind jij het leukst?'
+      },
+      description_multiloc: {}
+    )
+  end
+  let!(:la_option) do
+    create(
+      :custom_field_option,
+      custom_field: select_field,
+      key: 'la',
+      title_multiloc: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' }
+    )
+  end
+  let!(:ny_option) do
+    create(
+      :custom_field_option,
+      custom_field: select_field,
+      key: 'ny',
+      title_multiloc: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' }
     )
   end
 
@@ -129,7 +157,7 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
             inputType: 'linear_scale',
             question: {
               'en' => 'Do you agree with the vision?',
-              'fr-FR' => "Êtes-vous d'accord avec la vision? ?",
+              'fr-FR' => "Êtes-vous d'accord avec la vision ?",
               'nl-NL' => 'Ben je het eens met de visie?'
             },
             totalResponses: 18,
@@ -153,6 +181,19 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
                 },
                 responses: 1
               }
+            ]
+          },
+          {
+            inputType: 'select',
+            question: {
+              'en' => 'What city do you like best?',
+              'fr-FR' => 'Quelle ville préférez-vous ?',
+              'nl-NL' => 'Welke stad vind jij het leukst?'
+            },
+            totalResponses: 4,
+            answers: [
+              { answer: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' }, responses: 3 },
+              { answer: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' }, responses: 1 }
             ]
           }
         ],
@@ -181,25 +222,41 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
       :idea,
       project: project,
       phases: phases_of_inputs,
-      custom_field_values: { text_field.key => 'Red', multiselect_field.key => %w[cat dog] }
+      custom_field_values: {
+        text_field.key => 'Red',
+        multiselect_field.key => %w[cat dog],
+        select_field.key => 'ny'
+      }
     )
     create(
       :idea,
       project: project,
       phases: phases_of_inputs,
-      custom_field_values: { text_field.key => 'Blue', multiselect_field.key => %w[cow pig cat] }
+      custom_field_values: {
+        text_field.key => 'Blue',
+        multiselect_field.key => %w[cow pig cat],
+        select_field.key => 'la'
+      }
     )
     create(
       :idea,
       project: project,
       phases: phases_of_inputs,
-      custom_field_values: { text_field.key => 'Green', multiselect_field.key => %w[cat dog] }
+      custom_field_values: {
+        text_field.key => 'Green',
+        multiselect_field.key => %w[cat dog],
+        select_field.key => 'la'
+      }
     )
     create(
       :idea,
       project: project,
       phases: phases_of_inputs,
-      custom_field_values: { text_field.key => 'Pink', multiselect_field.key => %w[dog cat cow] }
+      custom_field_values: {
+        text_field.key => 'Pink',
+        multiselect_field.key => %w[dog cat cow],
+        select_field.key => 'la'
+      }
     )
     create(:idea, project: project, phases: phases_of_inputs, custom_field_values: {})
 
