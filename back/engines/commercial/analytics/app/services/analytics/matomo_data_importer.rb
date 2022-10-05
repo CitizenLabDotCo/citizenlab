@@ -8,9 +8,11 @@ module Analytics
       project_id: 'dimension4'
     }
 
-    def initialize(...)
-      @matomo = Matomo::Client.new(...)
-      @timezone = AppConfiguration.instance.settings.dig('core', 'timezone')
+    # @param [Matomo::Client] matomo_client
+    # @param [String] timezone
+    def initialize(matomo_client: nil, timezone: nil)
+      @matomo_client = matomo_client || Matomo::Client.new
+      @timezone = timezone || AppConfiguration.instance.settings.dig('core', 'timezone')
     end
 
     # @param [String] site_id Matomo site id
@@ -37,46 +39,67 @@ module Analytics
     end
 
     def persist_visit_data(visit_data)
-      persist_visits(visit_data)
-      persist_visits_projects(visit_data)
-      persist_visits_locales(visit_data)
+      visit_ids = persist_visits(visit_data)
+      persist_visits_projects(visit_data, visit_ids)
+      persist_visits_locales(visit_data, visit_ids)
+
+      visit_ids
     end
 
     private
 
+    # @return [Array<String>] the ids of the newly created +FactVisit+ in the same order
+    #   as +visit_data+.
     def persist_visits(visit_data)
       update_referrer_types(visit_data)
       visits_attrs = visit_data.map { |visit_json| visit_attrs(visit_json) }
-      FactVisit.upsert_all(visits_attrs, unique_by: :matomo_visit_id)
+
+      result = FactVisit.upsert_all(
+        visits_attrs,
+        unique_by: :matomo_visit_id,
+        returning: %w[matomo_visit_id id]
+      )
+
+      matomo_visit_id_to_id = result.rows.to_h
+
+      visit_data
+        .pluck('idVisit')
+        .map(&:to_i)
+        .map { |matomo_id| matomo_visit_id_to_id.fetch(matomo_id) }
     end
 
-    def persist_visits_projects(visit_data)
-      projects_visits_attrs = visit_data.flat_map do |visit|
-        visit_id = visit['idVisit']
-        project_ids = visit['actionDetails']
-          .pluck(ACTION_CUSTOM_DIMENSION_KEYS[:project_id])
-          .map(&:presence).uniq.compact
+    def persist_visits_projects(visit_data, visit_ids)
+      projects_visits_attrs =
+        visit_data.zip(visit_ids).flat_map do |visit, id|
+          project_ids = visit['actionDetails']
+            .pluck(ACTION_CUSTOM_DIMENSION_KEYS[:project_id])
+            .map(&:presence).uniq.compact
 
-        project_ids.map do |project_id|
-          { fact_visit_id: visit_id, dimension_project_id: project_id }
+          project_ids.map do |project_id|
+            { fact_visit_id: id, dimension_project_id: project_id }
+          end
         end
-      end
 
       return if projects_visits_attrs.blank?
 
       Analytics::DimensionProjectsFactVisits.insert_all(projects_visits_attrs)
     end
 
-    def persist_visits_locales(visit_data)
-      locales_visits_attrs = visit_data.flat_map do |visit|
-        visit_id = visit['idVisit']
+    def persist_visits_locales(visit_data, visit_ids)
+      visit_locales = visit_data.zip(visit_ids).to_h do |visit, visit_id|
         locales = visit['actionDetails']
           .pluck(ACTION_CUSTOM_DIMENSION_KEYS[:locale])
           .map(&:presence).uniq.compact
 
-        locales.map do |locale|
-          { fact_visit_id: visit_id, dimension_locale_id: locale }
-        end
+        [visit_id, locales]
+      end
+
+      update_locales(visit_locales.values.flatten.uniq)
+      locale_name_to_id = Analytics::DimensionLocale.pluck(:name, :id).to_h
+
+      locales_visits_attrs = visit_locales.flat_map do |visit_id, locales|
+        locale_ids = locales.map { |name| locale_name_to_id.fetch(name) }
+        locale_ids.map { |locale_id| { fact_visit_id: visit_id, dimension_locale_id: locale_id } }
       end
 
       return if locales_visits_attrs.blank?
@@ -84,7 +107,6 @@ module Analytics
       Analytics::DimensionLocalesFactVisits.insert_all(locales_visits_attrs)
     end
 
-    # @param [Enumerable<String>] referrer_types
     def update_referrer_types(visit_data)
       referrer_types_attrs = visit_data
         .pluck('referrerType', 'referrerTypeName').uniq
@@ -106,6 +128,8 @@ module Analytics
 
     # @param [Enumerable<String>] locales
     def update_locales(locales)
+      return if locales.blank?
+
       locales_attrs = locales.map { |locale| { name: locale } }
       DimensionLocale.insert_all(locales_attrs)
     end
@@ -118,7 +142,7 @@ module Analytics
       enumerator = Enumerator.new do |enum|
         filter_offset = 0
         loop do
-          visit_data = @matomo.get_last_visits_details(
+          visit_data = @matomo_client.get_last_visits_details(
             site_id,
             period: period,
             date: date,
@@ -127,7 +151,7 @@ module Analytics
             filter_offset: filter_offset
           )
 
-          @matomo.raise_if_error(visit_data)
+          @matomo_client.raise_if_error(visit_data)
           break if visit_data.empty?
 
           enum << visit_data.parsed_response
@@ -155,7 +179,7 @@ module Analytics
         referrer_name: visit_json['referrerName'].presence,
         referrer_url: visit_json['referrerUrl'].presence,
         matomo_visit_id: visit_json['idVisit'],
-        matomo_last_action_time: Time.at(last_action_timestamp)
+        matomo_last_action_time: Time.at(last_action_timestamp).utc
       }
     end
 
