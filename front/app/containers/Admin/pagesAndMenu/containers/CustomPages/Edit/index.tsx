@@ -54,7 +54,7 @@ const CustomPagesEditSettings = ({
           title: localize(pageTitleMultiloc),
           rightSideCTA: (
             <Button
-              buttonStyle="admin-dark"
+              buttonStyle="cl-blue"
               icon="eye"
               id="to-custom-page"
               openLinkInNewTab

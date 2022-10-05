@@ -85,8 +85,10 @@ const TabbedResource = ({
       <ResourceHeader className="e2e-resource-header">
         <>
           <Box width="100%" display="flex" justifyContent="space-between">
-            <Title>{title}</Title>
-            {subtitle && <SectionDescription>{subtitle}</SectionDescription>}
+            <Box>
+              <Title>{title}</Title>
+              {subtitle && <SectionDescription>{subtitle}</SectionDescription>}
+            </Box>
             {rightSideCTA && <Box ml="60px">{rightSideCTA}</Box>}
           </Box>
         </>
