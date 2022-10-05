@@ -40,8 +40,6 @@ import GetIdeaImages, {
   GetIdeaImagesChildProps,
 } from 'resources/GetIdeaImages';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
-import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetWindowSize, {
   GetWindowSizeChildProps,
 } from 'resources/GetWindowSize';
@@ -51,10 +49,6 @@ import GetOfficialFeedbacks, {
 import GetPermission, {
   GetPermissionChildProps,
 } from 'resources/GetPermission';
-import GetIdeaCustomFieldsSchemas, {
-  GetIdeaCustomFieldsSchemasChildProps,
-} from 'resources/GetIdeaCustomFieldsSchemas';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 
 // i18n
@@ -76,9 +70,14 @@ import { media, viewportWidths, isRtl } from 'utils/styleUtils';
 import { columnsGapDesktop, pageContentMaxWidth } from './styleConstants';
 import Outlet from 'components/Outlet';
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+
+// hooks
+import useLocale from 'hooks/useLocale';
+import usePhases from 'hooks/usePhases';
+import useIdea from 'hooks/useIdea';
+import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
 
 const contentFadeInDuration = 250;
 const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -100,7 +99,7 @@ const Container = styled.main`
     justify-content: center;
   }
 
-  &.loaded {
+  &.isLoaded {
     opacity: 0;
 
     &.content-enter {
@@ -159,16 +158,11 @@ const BodySectionTitle = styled.h2`
 `;
 
 interface DataProps {
-  idea: GetIdeaChildProps;
-  locale: GetLocaleChildProps;
-  authUser: GetAuthUserChildProps;
   project: GetProjectChildProps;
-  phases: GetPhasesChildProps;
   ideaImages: GetIdeaImagesChildProps;
   windowSize: GetWindowSizeChildProps;
   officialFeedbacks: GetOfficialFeedbacksChildProps;
   postOfficialFeedbackPermission: GetPermissionChildProps;
-  ideaCustomFieldsSchemas: GetIdeaCustomFieldsSchemasChildProps;
   comments: GetCommentsChildProps;
 }
 
@@ -189,14 +183,11 @@ export const IdeasShow = ({
   className,
   postOfficialFeedbackPermission,
   localize,
-  locale,
   projectId,
-  ideaCustomFieldsSchemas,
   insideModal,
   project,
   compact,
-  phases,
-  idea,
+  ideaId,
   officialFeedbacks,
   setRef,
   intl: { formatMessage },
@@ -219,6 +210,11 @@ export const IdeasShow = ({
       clearTimeout(timeout);
     };
   }, []);
+
+  const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({ projectId });
+  const phases = usePhases(projectId);
+  const idea = useIdea({ ideaId });
+  const locale = useLocale();
 
   const ideaflowSocialSharingIsEnabled = useFeatureFlag({
     name: 'ideaflow_social_sharing',
@@ -249,12 +245,6 @@ export const IdeasShow = ({
   };
 
   let content: JSX.Element | null = null;
-
-  console.log('project', project);
-  console.log('idea', idea);
-  console.log('locale', locale);
-  console.log('ideaSchema', ideaCustomFieldsSchemas);
-  console.log('isLoaded', isLoaded);
 
   if (
     !isNilOrError(project) &&
@@ -476,18 +466,12 @@ const IdeasShowWithHOCs = injectLocalize<Props>(
 );
 
 const Data = adopt<DataProps, InputProps>({
-  locale: <GetLocale />,
-  authUser: <GetAuthUser />,
   windowSize: <GetWindowSize />,
-  idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
   ideaImages: ({ ideaId, render }) => (
     <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>
   ),
   project: ({ projectId, render }) => (
     <GetProject projectId={projectId}>{render}</GetProject>
-  ),
-  phases: ({ projectId, render }) => (
-    <GetPhases projectId={projectId}>{render}</GetPhases>
   ),
   officialFeedbacks: ({ ideaId, render }) => (
     <GetOfficialFeedbacks postId={ideaId} postType="idea">
@@ -501,11 +485,6 @@ const Data = adopt<DataProps, InputProps>({
     >
       {render}
     </GetPermission>
-  ),
-  ideaCustomFieldsSchemas: ({ projectId, render }) => (
-    <GetIdeaCustomFieldsSchemas projectId={projectId}>
-      {render}
-    </GetIdeaCustomFieldsSchemas>
   ),
   comments: ({ ideaId, render }) => (
     <GetComments postId={ideaId} postType="idea">

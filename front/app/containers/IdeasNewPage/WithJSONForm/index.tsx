@@ -39,10 +39,10 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   const phaseId = searchParams.get('phase_id');
 
   const phases = usePhases(project?.id);
-  const { schema, uiSchema, inputSchemaError } = useInputSchema(
-    project?.id,
-    phaseId
-  );
+  const { schema, uiSchema, inputSchemaError } = useInputSchema({
+    projectId: project?.id,
+    phaseId,
+  });
 
   useEffect(() => {
     const isPrivilegedUser =
