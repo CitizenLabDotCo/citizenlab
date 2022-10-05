@@ -1098,6 +1098,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.removeAnswer": "Remove answer",
   "app.containers.AdminPage.ProjectEdit.survey.required": "Obligatorio",
   "app.containers.AdminPage.ProjectEdit.survey.save": "Guardar",
+  "app.containers.AdminPage.ProjectEdit.survey.selectText": "Multiple choice - choose one",
   "app.containers.AdminPage.ProjectEdit.survey.shortAnswer": "Respuesta corta",
   "app.containers.AdminPage.ProjectEdit.survey.successMessage": "Survey successfully saved",
   "app.containers.AdminPage.ProjectEdit.survey.surveyDescription": "Crea y edita las preguntas de la encuesta de este proyecto.",
