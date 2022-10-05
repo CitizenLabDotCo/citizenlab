@@ -34,7 +34,11 @@ export interface Props {
   subheaderMultiloc: Multiloc;
 }
 
-const TwoRowLayout = ({ imageUrl, headerMultiloc, subheaderMultiloc }) => {
+const TwoRowLayout = ({
+  imageUrl,
+  headerMultiloc,
+  subheaderMultiloc,
+}: Props) => {
   return (
     <>
       {imageUrl && (

@@ -28,13 +28,17 @@ export const HeaderImage = styled(Image)`
   `}
 `;
 
-export interface Props {
+interface Props {
   imageUrl?: string;
   headerMultiloc: Multiloc;
   subheaderMultiloc: Multiloc;
 }
 
-const TwoColumnLayout = ({ imageUrl, headerMultiloc, subheaderMultiloc }) => {
+const TwoColumnLayout = ({
+  imageUrl,
+  headerMultiloc,
+  subheaderMultiloc,
+}: Props) => {
   return (
     <Container data-cy="e2e-two-column-layout-container">
       {imageUrl && (
