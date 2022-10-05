@@ -157,6 +157,7 @@ models:
       title_multiloc: static_pages.infopage_title
       top_info_section_multiloc: static_pages.infopage_body
       top_info_section_enabled: true
+      files_section_enabled: true
       text_images_attributes:
         - imageable_field: top_info_section_multiloc
           remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png
@@ -200,11 +201,13 @@ models:
       title_multiloc: static_pages.faq_title
       top_info_section_multiloc: static_pages.faq_body
       top_info_section_enabled: true
+      files_section_enabled: true
     - &initiatives-page
       code: proposals
       title_multiloc: static_pages.initiatives_title
       top_info_section_multiloc: static_pages.initiatives_body
       top_info_section_enabled: true
+      files_section_enabled: true
       slug: initiatives
       text_images_attributes:
         - imageable_field: top_info_section_multiloc
