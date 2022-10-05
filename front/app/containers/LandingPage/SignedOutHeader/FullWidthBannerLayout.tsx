@@ -12,13 +12,13 @@ import { media } from 'utils/styleUtils';
 // hooks
 import useHomepageSettings from 'hooks/useHomepageSettings';
 
-const Container = styled.div`
+export const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
 `;
 
-const Header = styled.div`
+export const Header = styled.div`
   width: 100%;
   min-height: ${homepageBannerLayoutHeights.full_width_banner_layout.desktop}px;
   margin: 0;
@@ -38,7 +38,7 @@ const Header = styled.div`
   `}
 `;
 
-const HeaderImage = styled.div`
+export const HeaderImage = styled.div`
   position: absolute;
   top: 0;
   bottom: 0;
@@ -46,7 +46,7 @@ const HeaderImage = styled.div`
   right: 0;
 `;
 
-const HeaderImageBackground = styled.div<{ src: string | null }>`
+export const HeaderImageBackground = styled.div<{ src: string | null }>`
   position: absolute;
   top: 0;
   bottom: 0;
@@ -58,9 +58,9 @@ const HeaderImageBackground = styled.div<{ src: string | null }>`
   background-image: url(${({ src }) => src});
 `;
 
-const HeaderImageOverlay = styled.div<{
-  overlayColor: string | null;
-  overlayOpacity: number | null;
+export const HeaderImageOverlay = styled.div<{
+  overlayColor: string | null | undefined;
+  overlayOpacity: number | null | undefined;
 }>`
   background: ${({ overlayColor, theme }) =>
     overlayColor ?? theme.colors.tenantPrimary};

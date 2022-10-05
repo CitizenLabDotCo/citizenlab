@@ -63,7 +63,7 @@ export const StyledContentContainer = styled(ContentContainer)`
   margin-bottom: 30px;
 `;
 
-const AttachmentsContainer = styled.div`
+export const AttachmentsContainer = styled.div`
   max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
   margin-left: auto;
   margin-right: auto;
