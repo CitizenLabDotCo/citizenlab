@@ -91,7 +91,7 @@ const CustomPageShow = () => {
         <StyledContentContainer>
           <Fragment
             name={!isNilOrError(page) ? `pages/${page && page.id}/content` : ''}
-          ></Fragment>
+          />
           {!attributes.banner_enabled && (
             <PageTitle>{localize(attributes.title_multiloc)}</PageTitle>
           )}
