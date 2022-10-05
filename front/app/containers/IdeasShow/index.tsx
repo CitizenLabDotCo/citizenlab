@@ -1,18 +1,14 @@
 import React, { lazy, Suspense, useState, useEffect } from 'react';
-import { isUndefined, isString, includes } from 'lodash-es';
+import { isUndefined, isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
 // services
 import { getInputTerm } from 'services/participationContexts';
-import { getLatestRelevantPhase } from 'services/phases';
 
 // analytics
 import { trackEvent } from 'utils/analytics';
 import tracks from './tracks';
-
-// router
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // components
 import IdeaSharingButton from './Buttons/IdeaSharingButton';
@@ -25,9 +21,8 @@ import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import Modal from 'components/UI/Modal';
 import AssignBudgetControl from 'components/AssignBudgetControl';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
-import FeatureFlag from 'components/FeatureFlag';
 import IdeaMoreActions from './IdeaMoreActions';
-import { Spinner } from '@citizenlab/cl2-component-library';
+import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import GoBackButton from './GoBackButton';
 const LazyComments = lazy(
   () => import('components/PostShowComponents/Comments')
@@ -41,7 +36,6 @@ import RightColumnDesktop from './RightColumnDesktop';
 import isFieldEnabled from './isFieldEnabled';
 
 // resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetIdeaImages, {
   GetIdeaImagesChildProps,
 } from 'resources/GetIdeaImages';
@@ -68,7 +62,6 @@ import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from './messages';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { getInputTermMessage } from 'utils/i18n';
 
 // animations
@@ -82,7 +75,10 @@ import styled from 'styled-components';
 import { media, viewportWidths, isRtl } from 'utils/styleUtils';
 import { columnsGapDesktop, pageContentMaxWidth } from './styleConstants';
 import Outlet from 'components/Outlet';
-import useLocalize from 'hooks/useLocalize';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 const contentFadeInDuration = 250;
 const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -123,14 +119,6 @@ const Container = styled.main`
   }
 `;
 
-const Content = styled.div`
-  display: flex;
-`;
-
-const LeftColumn = styled.div`
-  flex: 1 1 100%;
-`;
-
 const StyledRightColumnDesktop = styled(RightColumnDesktop)`
   margin-left: ${columnsGapDesktop}px;
 `;
@@ -151,10 +139,6 @@ const IdeaHeader = styled.div`
   `}
 `;
 
-const MobileIdeaMoreActions = styled(IdeaMoreActions)`
-  margin-left: 30px;
-`;
-
 const TopBar = styled.div`
   display: flex;
   justify-content: space-between;
@@ -165,10 +149,6 @@ const TopBar = styled.div`
   `}
 `;
 
-const StyledGoBackButton = styled(GoBackButton)`
-  margin-bottom: 40px;
-`;
-
 const BodySectionTitle = styled.h2`
   font-size: ${(props) => props.theme.fontSizes.l}px;
   font-weight: 500;
@@ -176,34 +156,6 @@ const BodySectionTitle = styled.h2`
   padding: 0;
   margin: 0;
   margin-bottom: 15px;
-`;
-
-const StyledBody = styled(Body)`
-  margin-bottom: 40px;
-`;
-
-const StyledIdeaProposedBudget = styled(IdeaProposedBudget)`
-  margin-bottom: 20px;
-`;
-
-const MobileMetaInformation = styled(MetaInformation)`
-  margin-bottom: 30px;
-`;
-
-const StyledAssignBudgetControl = styled(AssignBudgetControl)`
-  margin-top: 30px;
-  margin-bottom: 30px;
-`;
-
-const MobileIdeaSharingButton = styled(IdeaSharingButton)``;
-
-const StyledOfficialFeedback = styled(OfficialFeedback)`
-  margin-top: 80px;
-  margin-bottom: 80px;
-`;
-
-const Comments = styled.div`
-  margin-bottom: 100px;
 `;
 
 interface DataProps {
@@ -232,11 +184,12 @@ interface InputProps {
 interface Props extends DataProps, InputProps {}
 
 export const IdeasShow = ({
-  locale,
   ideaImages,
   windowSize,
   className,
   postOfficialFeedbackPermission,
+  localize,
+  locale,
   projectId,
   ideaCustomFieldsSchemas,
   insideModal,
@@ -247,9 +200,8 @@ export const IdeasShow = ({
   officialFeedbacks,
   setRef,
   intl: { formatMessage },
-}: Props & InjectedIntlProps & WithRouterProps) => {
+}: Props & InjectedIntlProps & InjectedLocalized & WithRouterProps) => {
   const [newIdeaId, setNewIdeaId] = useState<string | null>(null);
-  const [spamModalIsVisible, setSpamModalIsVisible] = useState<boolean>(false);
   const [translateButtonIsClicked, setTranslateButtonIsClicked] =
     useState<boolean>(false);
 
@@ -268,7 +220,9 @@ export const IdeasShow = ({
     };
   }, []);
 
-  const localize = useLocalize();
+  const ideaflowSocialSharingIsEnabled = useFeatureFlag({
+    name: 'ideaflow_social_sharing',
+  });
 
   const isLoaded =
     !isNilOrError(idea) &&
@@ -294,21 +248,13 @@ export const IdeasShow = ({
     setRef?.(element);
   };
 
-  const getLatestRelevantPhaseId = () => {
-    if (!isNilOrError(idea) && !isNilOrError(phases)) {
-      const ideaPhaseIds = idea?.relationships?.phases?.data?.map(
-        (item) => item.id
-      );
-      const ideaPhases = phases.filter((phase) =>
-        includes(ideaPhaseIds, phase.id)
-      );
-      return getLatestRelevantPhase(ideaPhases)?.id;
-    }
-
-    return undefined;
-  };
-
   let content: JSX.Element | null = null;
+
+  console.log('project', project);
+  console.log('idea', idea);
+  console.log('locale', locale);
+  console.log('ideaSchema', ideaCustomFieldsSchemas);
+  console.log('isLoaded', isLoaded);
 
   if (
     !isNilOrError(project) &&
@@ -341,16 +287,15 @@ export const IdeasShow = ({
 
         {!isCompactView && (
           <TopBar>
-            <StyledGoBackButton
-              projectId={projectId}
-              insideModal={insideModal}
-            />
+            <Box mb="40px">
+              <GoBackButton projectId={projectId} insideModal={insideModal} />
+            </Box>
             <IdeaMoreActions idea={idea} projectId={projectId} />
           </TopBar>
         )}
 
-        <Content id="e2e-idea-show-page-content">
-          <LeftColumn>
+        <Box display="flex" id="e2e-idea-show-page-content">
+          <Box flex="1 1 100%">
             <IdeaHeader>
               <Title
                 postType="idea"
@@ -360,7 +305,10 @@ export const IdeasShow = ({
                 translateButtonClicked={translateButtonIsClicked}
               />
               {isCompactView && (
-                <MobileIdeaMoreActions idea={idea} projectId={projectId} />
+                <Box ml="30px">
+                  {' '}
+                  <IdeaMoreActions idea={idea} projectId={projectId} />
+                </Box>
               )}
             </IdeaHeader>
 
@@ -381,58 +329,68 @@ export const IdeasShow = ({
                 <BodySectionTitle>
                   <FormattedMessage {...messages.proposedBudgetTitle} />
                 </BodySectionTitle>
-                <StyledIdeaProposedBudget proposedBudget={proposedBudget} />
+                <Box mb="20px">
+                  <IdeaProposedBudget proposedBudget={proposedBudget} />
+                </Box>
                 <BodySectionTitle>
                   <FormattedMessage {...messages.bodyTitle} />
                 </BodySectionTitle>
               </>
             )}
 
-            <StyledBody
-              postType="idea"
-              postId={ideaId}
-              locale={locale}
-              body={ideaBody}
-              translateButtonClicked={translateButtonIsClicked}
-            />
-
-            {isCompactView && (
-              <StyledAssignBudgetControl
-                view="ideaPage"
-                ideaId={ideaId}
-                projectId={projectId}
+            <Box mb="40px">
+              <Body
+                postType="idea"
+                postId={ideaId}
+                locale={locale}
+                body={ideaBody}
+                translateButtonClicked={translateButtonIsClicked}
               />
+            </Box>
+            {isCompactView && (
+              <Box my="30px">
+                {' '}
+                <AssignBudgetControl
+                  view="ideaPage"
+                  ideaId={ideaId}
+                  projectId={projectId}
+                />
+              </Box>
             )}
 
             {isCompactView && (
-              <MobileMetaInformation
-                ideaId={ideaId}
-                projectId={projectId}
-                statusId={statusId}
-                authorId={authorId}
-                compact={isCompactView}
-              />
+              <Box mb="30px">
+                {' '}
+                <MetaInformation
+                  ideaId={ideaId}
+                  projectId={projectId}
+                  statusId={statusId}
+                  authorId={authorId}
+                  compact={isCompactView}
+                />
+              </Box>
             )}
 
             {isCompactView && (
-              <MobileIdeaSharingButton
+              <IdeaSharingButton
                 ideaId={ideaId}
                 buttonComponent={<MobileSharingButtonComponent />}
               />
             )}
-
-            <StyledOfficialFeedback
-              postId={ideaId}
-              postType="idea"
-              permissionToPost={postOfficialFeedbackPermission}
-            />
-
-            <Comments>
+            <Box my="80px">
+              {' '}
+              <OfficialFeedback
+                postId={ideaId}
+                postType="idea"
+                permissionToPost={postOfficialFeedbackPermission}
+              />
+            </Box>
+            <Box mb="100px">
               <Suspense fallback={<LoadingComments />}>
                 <LazyComments postId={ideaId} postType="idea" />
               </Suspense>
-            </Comments>
-          </LeftColumn>
+            </Box>
+          </Box>
 
           {!isCompactView && projectId && (
             <StyledRightColumnDesktop
@@ -443,7 +401,7 @@ export const IdeasShow = ({
               insideModal={insideModal}
             />
           )}
-        </Content>
+        </Box>
       </>
     );
   }
@@ -480,8 +438,7 @@ export const IdeasShow = ({
             {content}
           </Container>
         </CSSTransition>
-
-        <FeatureFlag name="ideaflow_social_sharing">
+        {ideaflowSocialSharingIsEnabled && (
           <Modal
             opened={!!newIdeaId}
             close={closeIdeaSocialSharingModal}
@@ -506,7 +463,7 @@ export const IdeasShow = ({
               />
             )}
           </Modal>
-        </FeatureFlag>
+        )}
       </>
     );
   }
@@ -514,7 +471,10 @@ export const IdeasShow = ({
   return null;
 };
 
-const IdeasShowWithHOCs = withRouter(injectIntl(IdeasShow));
+const IdeasShowWithHOCs = injectLocalize<Props>(
+  withRouter(injectIntl(IdeasShow))
+);
+
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   authUser: <GetAuthUser />,

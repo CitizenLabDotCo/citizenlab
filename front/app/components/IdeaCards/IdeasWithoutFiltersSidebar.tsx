@@ -373,7 +373,7 @@ const Data = adopt<DataProps, InputProps>({
   ),
   ideaCustomFieldsSchemas: ({ render, projectId }) => {
     return (
-      <GetIdeaCustomFieldsSchemas phaseId={null} projectId={projectId || null}>
+      <GetIdeaCustomFieldsSchemas projectId={projectId || null}>
         {render}
       </GetIdeaCustomFieldsSchemas>
     );

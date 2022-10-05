@@ -8,10 +8,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import useAppConfigurationLocales from './useAppConfigurationLocales';
 import useLocale from './useLocale';
 
-export default (
-  inputId: string,
-  schemaType: 'json_forms_schema' | 'schema'
-) => {
+export default (inputId: string, schemaType: 'json_forms_schema') => {
   const [schema, setSchema] = useState<JsonFormsSchema | null>(null);
   const [uiSchema, setUiSchema] = useState<Layout | null>(null);
   const [isError, setIsError] = useState(false);
