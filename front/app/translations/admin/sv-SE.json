@@ -1098,6 +1098,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.removeAnswer": "Remove answer",
   "app.containers.AdminPage.ProjectEdit.survey.required": "Krävs",
   "app.containers.AdminPage.ProjectEdit.survey.save": "Spara",
+  "app.containers.AdminPage.ProjectEdit.survey.selectText": "Multiple choice - choose one",
   "app.containers.AdminPage.ProjectEdit.survey.shortAnswer": "Kort svar",
   "app.containers.AdminPage.ProjectEdit.survey.successMessage": "Survey successfully saved",
   "app.containers.AdminPage.ProjectEdit.survey.surveyDescription": "Skapa och redigera frågorna i det här projektets undersökning.",
