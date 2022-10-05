@@ -8,10 +8,12 @@ import { Helmet } from 'react-helmet';
 import Fragment from 'components/Fragment';
 import ContentContainer from 'components/ContentContainer';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
+import FileAttachments from 'components/UI/FileAttachments';
 
 // hooks
 import usePage from 'hooks/usePage';
 import { useParams } from 'react-router-dom';
+import useResourceFiles from 'hooks/useResourceFiles';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -71,6 +73,10 @@ const CustomPageShow = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     slug: string;
   };
   const page = usePage({ pageSlug: slug });
+  const remotePageFiles = useResourceFiles({
+    resourceType: 'page',
+    resourceId: !isNilOrError(page) ? page.id : null,
+  });
   const localize = useLocalize();
 
   if (isNilOrError(page)) {
@@ -133,11 +139,11 @@ const CustomPageShow = ({ intl: { formatMessage } }: InjectedIntlProps) => {
             )}
           </Fragment>
         </StyledContentContainer>
-        {/* {!isNilOrError(pageFiles) && pageFiles.length > 0 && (
-          <AttachmentsContainer>
-            <FileAttachments files={pageFiles} />
-          </AttachmentsContainer>
-        )} */}
+        {attributes.files_section_enabled &&
+          !isNilOrError(remotePageFiles) &&
+          remotePageFiles.length > 0 && (
+            <FileAttachments files={remotePageFiles} />
+          )}
       </PageContent>
     </Container>
   );
