@@ -3,7 +3,9 @@ import React from 'react';
 // components
 import TabbedResource from 'components/admin/TabbedResource';
 import { Box } from '@citizenlab/cl2-component-library';
+import Button from 'components/UI/Button';
 import Breadcrumbs from 'components/UI/Breadcrumbs';
+
 import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 
 // i18n
@@ -51,6 +53,17 @@ const CustomPagesEditSettings = ({
       <TabbedResource
         resource={{
           title: localize(pageTitleMultiloc),
+          rightSideCTA: (
+            <Button
+              buttonStyle="admin-dark"
+              icon="eye"
+              id="to-project"
+              openLinkInNewTab
+              linkTo={`/custom-pages/${customPage.attributes.slug}`}
+            >
+              'view page'
+            </Button>
+          ),
         }}
         tabs={[
           {

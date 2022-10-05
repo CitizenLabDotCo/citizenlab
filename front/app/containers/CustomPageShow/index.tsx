@@ -2,7 +2,7 @@ import React from 'react';
 
 // components
 import CustomPageHeader from './CustomPageHeader';
-// import TopInfoSection from './TopInfoSection';
+import TopInfoSection from './TopInfoSection';
 import { Container } from 'containers/LandingPage';
 import { Helmet } from 'react-helmet';
 import Fragment from 'components/Fragment';
@@ -72,6 +72,7 @@ const CustomPageShow = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const { slug } = useParams() as {
     slug: string;
   };
+
   const page = usePage({ pageSlug: slug });
   const remotePageFiles = useResourceFiles({
     resourceType: 'page',
@@ -118,20 +119,19 @@ const CustomPageShow = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         <meta name="description" content={seoDescription} />
         {blockIndexing && <meta name="robots" content="noindex" />}
       </Helmet>
+      <CustomPageHeader
+        headerLayout={attributes.banner_layout}
+        header_bg={attributes.header_bg}
+        headerMultiloc={attributes.banner_header_multiloc}
+        subheaderMultiloc={attributes.banner_subheader_multiloc}
+        headerColor={attributes.banner_overlay_color}
+        headerOpacity={attributes.banner_overlay_opacity}
+      />
       <PageContent>
         <StyledContentContainer>
           <Fragment
             name={!isNilOrError(page) ? `pages/${page && page.id}/content` : ''}
           >
-            <PageTitle>{pageTitle}</PageTitle>
-            <CustomPageHeader
-              headerLayout={attributes.banner_layout}
-              header_bg={attributes.header_bg}
-              headerMultiloc={attributes.banner_header_multiloc}
-              subheaderMultiloc={attributes.banner_subheader_multiloc}
-              headerColor={attributes.banner_overlay_color}
-              headerOpacity={attributes.banner_overlay_opacity}
-            />
             {attributes.top_info_section_enabled && (
               <div>
                 <QuillEditedContent>{pageDescription}</QuillEditedContent>
@@ -139,6 +139,11 @@ const CustomPageShow = ({ intl: { formatMessage } }: InjectedIntlProps) => {
             )}
           </Fragment>
         </StyledContentContainer>
+        {attributes.top_info_section_enabled && (
+          <TopInfoSection
+            multilocContent={attributes.top_info_section_multiloc}
+          />
+        )}
         {attributes.files_section_enabled &&
           !isNilOrError(remotePageFiles) &&
           remotePageFiles.length > 0 && (

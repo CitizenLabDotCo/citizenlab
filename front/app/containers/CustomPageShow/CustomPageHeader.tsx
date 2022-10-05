@@ -1,5 +1,7 @@
 import React from 'react';
 import FullWidthBannerLayout from './FullWidthBannerLayout';
+import TwoColumnLayout from './TwoColumnLayout';
+import TwoRowLayout from './TwoRowLayout';
 
 const CustomPageHeader = ({
   headerLayout,
@@ -16,6 +18,20 @@ const CustomPageHeader = ({
           imageUrl={header_bg.large}
           imageColor={headerColor}
           imageOpacity={headerOpacity}
+          headerMultiloc={headerMultiloc}
+          subheaderMultiloc={subheaderMultiloc}
+        />
+      )}
+      {headerLayout === 'two_column_layout' && (
+        <TwoColumnLayout
+          imageUrl={header_bg.large}
+          headerMultiloc={headerMultiloc}
+          subheaderMultiloc={subheaderMultiloc}
+        />
+      )}
+      {headerLayout === 'two_row_layout' && (
+        <TwoRowLayout
+          imageUrl={header_bg.large}
           headerMultiloc={headerMultiloc}
           subheaderMultiloc={subheaderMultiloc}
         />

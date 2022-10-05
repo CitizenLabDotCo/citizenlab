@@ -12,6 +12,7 @@ import FeatureFlag from 'components/FeatureFlag';
 import { SectionDescription } from 'components/admin/Section';
 import Title from 'components/admin/PageTitle';
 import Tab from './Tab';
+import { Box } from '@citizenlab/cl2-component-library';
 
 const ResourceHeader = styled.div`
   display: flex;
@@ -66,6 +67,7 @@ interface Props {
   resource: {
     title: string;
     subtitle?: string;
+    rightSideCTA?: JSX.Element | JSX.Element[];
   };
   tabs: ITab[];
   children: React.ReactNode;
@@ -74,7 +76,7 @@ interface Props {
 
 const TabbedResource = ({
   children,
-  resource: { title, subtitle },
+  resource: { title, subtitle, rightSideCTA },
   tabs,
   contentWrapper = true,
 }: Props) => {
@@ -82,8 +84,13 @@ const TabbedResource = ({
     <>
       <ResourceHeader className="e2e-resource-header">
         <>
-          <Title>{title}</Title>
-          {subtitle && <SectionDescription>{subtitle}</SectionDescription>}
+          <Box width="100%" display="flex" justifyContent="space-between">
+            <Box mb="20px">
+              <Title>{title}</Title>
+              {subtitle && <SectionDescription>{subtitle}</SectionDescription>}
+            </Box>
+            {rightSideCTA && <Box ml="60px">{rightSideCTA}</Box>}
+          </Box>
         </>
       </ResourceHeader>
 
