@@ -7,6 +7,7 @@ describe 'seedfile', slow_test: true do
   # seem to work the straightforward way after multiple runs, seems to be due to
   # the schema created by apartment for the seedfile tenant. It's not getting
   # deleted after the tests
+  # rubocop:disable RSpec/ExampleLength
   it 'generates a valid tenant and user' do
     expect(Tenant.count).to be(1)
     load Rails.root.join('db/seeds.rb')
@@ -43,6 +44,11 @@ describe 'seedfile', slow_test: true do
       expect(CustomMaps::LegendItem.count).to be 7
       expect(Volunteering::Cause.count).to be 5
       expect(Volunteering::Volunteer.count).to be > 10
+      expect(Analytics::DimensionDate.count).to be > 0
+      expect(Analytics::DimensionLocale.count).to be > 0
+      expect(Analytics::DimensionType.count).to be > 0
+      expect(Analytics::DimensionReferrerType.count).to be > 0
+      expect(Analytics::FactVisit.count).to be 3
     end
     Apartment::Tenant.switch('empty_localhost') do
       load Rails.root.join('db/seeds.rb')
@@ -60,4 +66,5 @@ describe 'seedfile', slow_test: true do
       expect(Group.count).to be 0
     end
   end
+  # rubocop:enable RSpec/ExampleLength
 end
