@@ -31,8 +31,7 @@ const HomeLink = styled(Link)`
 `;
 
 const HomeIcon = styled(Icon)`
-  flex: 0 0 14px;
-  height: 14px;
+  flex: 0 0 24px;
   fill: ${colors.textSecondary};
   margin-top: -3px;
 

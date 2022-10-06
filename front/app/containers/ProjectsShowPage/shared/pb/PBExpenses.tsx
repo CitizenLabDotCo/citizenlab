@@ -81,8 +81,7 @@ const Title = styled.h2`
 `;
 
 const TitleIcon = styled(Icon)<{ viewMode?: 'row' | 'column' }>`
-  flex: 0 0 18px;
-  height: 18px;
+  flex: 0 0 24px;
   margin-right: 10px;
 
   ${({ viewMode }) =>
@@ -242,9 +241,9 @@ const TooltipContent = styled.div`
 `;
 
 const TooltipContentIcon = styled(Icon)`
-  flex: 0 0 25px;
+  flex: 0 0 20px;
   width: 20px;
-  height: 25px;
+  height: 20px;
   margin-right: 1rem;
 `;
 

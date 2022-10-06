@@ -13,7 +13,6 @@ interface Props {
 }
 
 const StyledIcon = styled(Icon)<{ isFullMenuOpened: boolean }>`
-  width: 20px;
   margin-right: 3px;
   fill: ${({ isFullMenuOpened, theme }) =>
     isFullMenuOpened ? theme.colors.tenantPrimary : colors.textSecondary};

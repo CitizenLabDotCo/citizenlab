@@ -96,9 +96,7 @@ const TooltipContent = styled.div<{ inMap?: boolean }>`
 `;
 
 const TooltipContentIcon = styled(Icon)`
-  flex: 0 0 25px;
-  width: 20px;
-  height: 25px;
+  flex: 0 0 24px;
   margin-right: 1rem;
 `;
 

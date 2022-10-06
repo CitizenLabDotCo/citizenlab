@@ -16,16 +16,10 @@ const CheckboxContainer = styled.div<{ hasLabel: boolean }>`
 
 const CheckMarkIcon = styled(Icon)<{ size: string }>`
   fill: #fff;
-  flex: 0 0 ${({ size }) => Math.round((parseInt(size, 10) / 100) * 70)}px;
-  width: ${({ size }) => Math.round((parseInt(size, 10) / 100) * 70)}px;
-  height: ${({ size }) => Math.round((parseInt(size, 10) / 100) * 70)}px;
 `;
 
 const IndeterminateIcon = styled(Icon)<{ size: string }>`
   fill: #fff;
-  flex: 0 0 ${({ size }) => Math.round((parseInt(size, 10) / 100) * 60)}px;
-  width: ${({ size }) => Math.round((parseInt(size, 10) / 100) * 60)}px;
-  height: ${({ size }) => Math.round((parseInt(size, 10) / 100) * 60)}px;
 `;
 
 const Label = styled.label<{ disabled: boolean }>`

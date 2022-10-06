@@ -3,7 +3,7 @@ import { FormattedRelative } from 'react-intl';
 import styled from 'styled-components';
 import { darken } from 'polished';
 import { fontSizes, colors, media } from 'utils/styleUtils';
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, IconNames } from '@citizenlab/cl2-component-library';
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../tracks';
 import clHistory from 'utils/cl-router/history';
@@ -43,7 +43,7 @@ const IconContainer = styled.div`
 `;
 
 const StyledIcon: any = styled(Icon)`
-  flex: 0 0 22px;
+  flex: 0 0 24px;
   fill: ${colors.textSecondary};
   opacity: ${(props: any) => (props.isRead ? '0.4' : '1')};
 `;
@@ -84,7 +84,7 @@ const Timing = styled.span`
 `;
 
 type Props = {
-  icon?: string;
+  icon?: IconNames;
   timing?: string;
   children: any;
   linkTo: string;

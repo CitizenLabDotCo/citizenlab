@@ -57,8 +57,8 @@ const EmptyStateContainer = styled.div`
 
 const InfoIcon = styled(Icon)`
   fill: ${colors.teal700};
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
   cursor: pointer;
 
   &:hover {

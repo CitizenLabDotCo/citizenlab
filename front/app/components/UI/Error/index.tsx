@@ -36,9 +36,7 @@ const ErrorMessageText = styled.div`
 `;
 
 const ErrorIcon = styled(Icon)`
-  flex: 0 0 20px;
-  width: 20px;
-  height: 20px;
+  flex: 0 0 24px;
   fill: ${colors.red600};
   padding: 0px;
   margin: 0px;

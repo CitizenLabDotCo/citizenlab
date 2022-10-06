@@ -74,7 +74,7 @@ const StyledAvatar = styled(Avatar)`
 const ShieldIcon = styled(Icon)`
   fill: ${colors.textSecondary};
   width: 48px;
-  height: 53px;
+  height: 48px;
   margin-left: -5px;
 `;
 

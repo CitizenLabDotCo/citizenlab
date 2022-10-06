@@ -272,8 +272,6 @@ const FolderDescription = styled.div`
 `;
 
 const MapIcon = styled(Icon)`
-  width: 27px;
-  height: 21px;
   fill: ${({ theme }) => theme.colors.tenantSecondary};
   margin-right: 10px;
 `;

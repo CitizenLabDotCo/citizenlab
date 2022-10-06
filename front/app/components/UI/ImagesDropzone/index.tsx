@@ -165,7 +165,6 @@ const Box = styled.div<{ maxWidth: string | undefined; ratio: number }>`
 `;
 
 const RemoveIcon = styled(Icon)`
-  height: 10px;
   fill: #fff;
   transition: all 100ms ease-out;
 `;

@@ -436,8 +436,6 @@ const MetaItem = styled.div`
 `;
 
 const MetaItemIcon = styled(Icon)`
-  width: 20px;
-  height: 20px;
   fill: ${({ theme }) => theme.colors.tenantPrimary};
 `;
 

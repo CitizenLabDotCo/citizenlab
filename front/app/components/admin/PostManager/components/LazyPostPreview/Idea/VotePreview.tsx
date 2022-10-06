@@ -46,8 +46,6 @@ const UpvotesContainer = styled(VotesContainer)`
 const DownvotesContainer = styled(VotesContainer)``;
 
 const VoteIcon = styled(Icon)`
-  width: 20px;
-  height: 18px;
   margin-right: 5px;
 `;
 

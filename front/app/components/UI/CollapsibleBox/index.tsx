@@ -26,8 +26,6 @@ const Title = styled.div`
 
 const TitleIcon = styled(Icon)`
   flex: 0 0 16px;
-  width: 16px;
-  height: 23px;
   fill: ${colors.textSecondary};
   margin-right: 13px;
 

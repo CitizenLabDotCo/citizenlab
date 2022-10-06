@@ -104,30 +104,22 @@ const FooterItem = styled.div`
 `;
 
 const MoneybagIcon = styled(Icon)`
-  width: 18px;
-  height: 18px;
   fill: ${colors.textSecondary};
   margin-right: 6px;
 `;
 
 const DownvoteIcon = styled(Icon)`
-  width: 17px;
-  height: 17px;
   fill: ${colors.textSecondary};
   margin-right: 6px;
 `;
 
 const UpvoteIcon = styled(Icon)`
-  width: 17px;
-  height: 17px;
   fill: ${colors.textSecondary};
   margin-right: 6px;
   margin-top: 5px;
 `;
 
 const CommentIcon = styled(Icon)`
-  width: 20px;
-  height: 20px;
   fill: ${colors.textSecondary};
   margin-right: 6px;
   margin-left: 2px;

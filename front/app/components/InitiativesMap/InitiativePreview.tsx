@@ -69,9 +69,7 @@ const Address = styled.div`
 `;
 
 const MapMarkerIcon = styled(Icon)`
-  flex: 0 0 20px;
-  width: 20px;
-  height: 20px;
+  flex: 0 0 24px;
   fill: ${colors.textSecondary};
   margin-right: 5px;
   margin-top: -2px;
@@ -127,8 +125,6 @@ const CommentsCount = styled.span`
 `;
 
 const CommentIcon = styled(Icon)`
-  width: 25px;
-  height: 25px;
   fill: ${colors.textSecondary};
   margin-right: 6px;
   margin-top: 2px;

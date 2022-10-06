@@ -146,9 +146,7 @@ const VolunteersCount = styled.div`
 `;
 
 const VolunteersCountIcon = styled(Icon)`
-  flex: 0 0 16px;
-  width: 16px;
-  height: 16px;
+  flex: 0 0 24px;
   fill: #fff;
   margin-right: 8px;
 `;

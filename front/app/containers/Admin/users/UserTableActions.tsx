@@ -93,8 +93,7 @@ const ActionButtons = styled.div`
 `;
 
 const StyledIcon = styled(Icon)`
-  flex: 0 0 22px;
-  height: 22px;
+  flex: 0 0 24px;
   margin-right: 10px;
 `;
 

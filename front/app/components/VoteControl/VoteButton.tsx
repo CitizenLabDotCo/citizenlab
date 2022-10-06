@@ -212,8 +212,6 @@ const VoteIcon = styled(Icon)<{
   buttonVoteMode: TVoteMode;
   disabledReason: IdeaVotingDisabledReason | null;
 }>`
-  width: 19px;
-  height: 19px;
   fill: ${colors.textSecondary};
   transition: all 100ms ease-out;
 

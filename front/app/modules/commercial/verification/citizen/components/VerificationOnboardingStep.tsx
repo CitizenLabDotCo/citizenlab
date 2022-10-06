@@ -22,7 +22,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 const ShieldIcon = styled(Icon)`
   fill: ${colors.textSecondary};
   width: 50px;
-  height: 56px;
+  height: 50px;
   margin-left: -3px;
 `;
 

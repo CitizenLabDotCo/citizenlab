@@ -46,8 +46,6 @@ const BadgeLabel = styled.div`
 `;
 
 const AnsweredBadgeIcon = styled(Icon)`
-  width: 1.6em;
-  height: 1.6em;
   fill: ${colors.success};
   padding-right: 7px;
 `;
@@ -58,8 +56,6 @@ const AnsweredStatusBadge = styled(StatusBadge)`
 `;
 
 const IneligibleBadgeIcon = styled(Icon)`
-  width: 1.6em;
-  height: 1.6em;
   fill: ${colors.coolGrey600};
   padding-right: 7px;
 `;
@@ -100,8 +96,6 @@ const VoteText = styled.div`
 
 const VoteIcon = styled(Icon)`
   fill: ${colors.textSecondary};
-  width: 16px;
-  height: 16px;
   margin-top: -4px;
   margin-right: 10px;
 `;
@@ -119,8 +113,6 @@ const ExpiredIcon = styled(Icon)`
   path {
     fill: ${colors.coolGrey600};
   }
-  width: 14px;
-  height: 14px;
   margin: 0 4px 2px 0;
 `;
 

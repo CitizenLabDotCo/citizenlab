@@ -87,8 +87,6 @@ const PostLinkLeft = styled.div`
 
 const StyledIcon = styled(Icon)`
   fill: ${colors.textSecondary};
-  width: 20px;
-  height: 20px;
   margin-right: 10px;
 `;
 
@@ -105,9 +103,7 @@ const VotesContainer = styled.div`
 `;
 
 const VoteIcon = styled(Icon)`
-  width: 16px;
-  height: 16px;
-  flex: 0 0 16px;
+  flex: 0 0 24px;
   fill: ${colors.textSecondary};
   margin-right: 5px;
   margin-top: -2px;

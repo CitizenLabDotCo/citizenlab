@@ -57,8 +57,6 @@ const InfoIcon = styled(Icon)`
   display: flex;
   align-items: center;
   cursor: pointer;
-  width: 20px;
-  height: 22px;
   margin-left: 10px;
 `;
 

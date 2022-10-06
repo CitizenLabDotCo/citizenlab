@@ -140,9 +140,7 @@ const InfoOverlayInner = styled.div`
 
 const InfoOverlayIcon = styled(Icon)`
   fill: ${colors.teal700};
-  flex: 0 0 18px;
-  width: 18px;
-  height: 18px;
+  flex: 0 0 24px;
   margin-right: 8px;
 `;
 

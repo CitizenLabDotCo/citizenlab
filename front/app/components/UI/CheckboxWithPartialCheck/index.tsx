@@ -65,7 +65,6 @@ const CustomInputWrapper = styled.div<{
 
 const CheckmarkIcon = styled(Icon)`
   fill: #fff;
-  width: 15px;
 `;
 
 const Label = styled.label`

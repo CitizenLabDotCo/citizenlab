@@ -22,9 +22,7 @@ const Container = styled.div`
 `;
 
 const StyledIcon = styled(Icon)`
-  flex: 0 0 20px;
-  width: 20px;
-  height: 20px;
+  flex: 0 0 24px;
   fill: ${colors.teal700};
   padding: 0px;
   margin: 0px;

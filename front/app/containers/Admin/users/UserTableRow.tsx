@@ -41,8 +41,6 @@ const MoreOptionsWrapper = styled.div`
 `;
 
 const MoreOptionsIcon = styled(Icon)`
-  width: 20px;
-  height: 20px;
   fill: ${colors.textSecondary};
 `;
 

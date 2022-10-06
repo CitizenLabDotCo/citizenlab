@@ -126,8 +126,6 @@ const LinkCopied = styled.div`
 
 const LinkCopiedIcon = styled(Icon)`
   fill: ${colors.success};
-  height: 13px;
-  margin-right: 3px;
 `;
 
 const CopyLinkButton = styled(Button)`
@@ -189,8 +187,6 @@ const MetaInfoRightBox = styled.div`
 const MetaInfoRightBoxIcon = styled(Icon)`
   flex: 0 0 24px;
   fill: ${colors.textSecondary};
-  width: 24px;
-  height: 24px;
   margin-right: 7px;
 `;
 

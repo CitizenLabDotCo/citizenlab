@@ -23,8 +23,6 @@ const SendFeedbackText = styled.span`
 
 const SendFeedbackIcon = styled(Icon)`
   fill: ${colors.textSecondary};
-  width: 22px;
-  height: 22px;
   transition: all 100ms ease-out;
   margin-right: 8px;
 

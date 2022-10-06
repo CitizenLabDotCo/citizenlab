@@ -34,8 +34,6 @@ import { PublicationStatus } from 'services/projects';
 
 const FolderIcon = styled(Icon)`
   margin-right: 10px;
-  height: 14px;
-  width: 17px;
 `;
 
 // types & services

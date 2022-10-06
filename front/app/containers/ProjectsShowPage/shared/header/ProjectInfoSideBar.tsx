@@ -84,9 +84,7 @@ const ListItem = styled.li`
 `;
 
 const ListItemIcon = styled(Icon)`
-  flex: 0 0 18px;
-  width: 18px;
-  height: 18px;
+  flex: 0 0 24px;
   fill: ${colors.textSecondary};
   margin-right: 14px;
 
