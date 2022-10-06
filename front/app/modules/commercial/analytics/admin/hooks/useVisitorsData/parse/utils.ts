@@ -89,5 +89,5 @@ export const dateRange = (start: Moment, end: Moment, step: IResolution) => {
   return dates;
 };
 
-export const secondsToString = (seconds) =>
-  seconds ? new Date(seconds * 1000).toISOString().substring(11, 19) : '-';
+export const secondsToString = (seconds: number) =>
+  new Date(seconds * 1000).toISOString().substring(11, 19);

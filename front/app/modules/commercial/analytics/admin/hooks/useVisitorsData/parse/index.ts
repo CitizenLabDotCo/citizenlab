@@ -30,8 +30,12 @@ export const parseStats = ([
       lastPeriod: lastPeriod?.count.toLocaleString() ?? '0',
     },
     visitDuration: {
-      value: secondsToString(wholePeriod?.avg_duration),
-      lastPeriod: secondsToString(lastPeriod?.avg_duration),
+      value: wholePeriod?.avg_duration
+        ? secondsToString(+wholePeriod.avg_duration)
+        : '-',
+      lastPeriod: lastPeriod?.avg_duration
+        ? secondsToString(+lastPeriod.avg_duration)
+        : '-',
     },
     pageViews: {
       value: wholePeriod?.avg_pages_visited ?? '-',
