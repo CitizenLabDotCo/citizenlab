@@ -5,12 +5,10 @@ import useHomepageSettings from './useHomepageSettings';
 
 jest.mock('hooks/useHomepageSettings', () => {
   return jest.fn(() => ({
-    data: {
-      attributes: {
-        events_widget_enabled: true,
-        top_info_section_enabled: true,
-        bottom_info_section_enabled: false,
-      },
+    attributes: {
+      events_widget_enabled: true,
+      top_info_section_enabled: true,
+      bottom_info_section_enabled: false,
     },
   }));
 });
@@ -54,7 +52,7 @@ describe('useHomepageSettingsFeatureFlag', () => {
 
   it('should return false when widget is allowed but not enabled', () => {
     (useHomepageSettings as jest.Mock).mockReturnValue({
-      data: { attributes: { events_widget_enabled: false } },
+      attributes: { events_widget_enabled: false },
     });
     const { result } = renderHook(() =>
       useHomepageSettingsFeatureFlag({
@@ -82,7 +80,7 @@ describe('useHomepageSettingsFeatureFlag', () => {
 
   it('should return false when widget disabled and not allowed', () => {
     (useHomepageSettings as jest.Mock).mockReturnValue({
-      data: { attributes: { events_widget_enabled: false } },
+      attributes: { events_widget_enabled: false },
     });
     (useAppConfiguration as jest.Mock).mockReturnValue({
       attributes: {

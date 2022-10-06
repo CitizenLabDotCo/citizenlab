@@ -69,9 +69,9 @@ const Footer = () => {
   if (!isNilOrError(homepageSettings)) {
     // tranlate header slogan into a h2 wih a fallback
     const headerSloganMultiLoc =
-      homepageSettings.data.attributes.banner_signed_out_subheader_multiloc;
+      homepageSettings.attributes.banner_signed_out_subheader_multiloc;
     const displayHeaderAvatars =
-      homepageSettings.data.attributes.banner_avatars_enabled;
+      homepageSettings.attributes.banner_avatars_enabled;
 
     return (
       <>

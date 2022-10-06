@@ -31,7 +31,6 @@ import {
   MessageDescriptor,
   Multiloc,
   Locale,
-  CLErrors,
 } from 'typings';
 import { LatLngTuple } from 'leaflet';
 import { Point } from 'components/UI/LeafletMap/typings';
@@ -44,10 +43,7 @@ import {
   TAppConfigurationSetting,
   TAppConfigurationSettingCore,
 } from 'services/appConfiguration';
-import {
-  THomepageBannerLayout,
-  IHomepageSettingsAttributes,
-} from 'services/homepageSettings';
+import { THomepageBannerLayout } from 'services/homepageSettings';
 import { ManagerType } from 'components/admin/PostManager';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaHeaderRow';
@@ -368,21 +364,6 @@ export interface OutletsPropertyMap {
   };
   'app.containers.Admin.initiatives.settings.EnableSwitch': {
     onMount: () => void;
-  };
-  'app.containers.Admin.settings.customize.headerSectionStart': {
-    homepageSettings: IHomepageSettingsAttributes;
-    handleOnChange: (
-      settingKey: keyof IHomepageSettingsAttributes,
-      settingValue: any
-    ) => void;
-  };
-  'app.containers.Admin.settings.customize.headerSectionEnd': {
-    homepageSettings: IHomepageSettingsAttributes;
-    handleOnChange: (
-      settingKey: keyof IHomepageSettingsAttributes,
-      settingValue: any
-    ) => void;
-    errors: CLErrors | null;
   };
   'app.containers.LandingPage.SignedOutHeader.index': {
     homepageBannerLayout: THomepageBannerLayout;

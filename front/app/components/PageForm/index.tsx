@@ -44,7 +44,7 @@ import useAppConfiguration from 'hooks/useAppConfiguration';
 export interface FormValues {
   nav_bar_item_title_multiloc?: Multiloc;
   title_multiloc: Multiloc;
-  body_multiloc: Multiloc;
+  top_info_section_multiloc: Multiloc;
   slug?: string;
   local_page_files: UploadFile[] | null;
 }
@@ -69,7 +69,7 @@ const PageForm = ({
 
   const schema = object({
     title_multiloc: validateMultiloc(formatMessage(messages.blankTitleError)),
-    body_multiloc: validateMultiloc(
+    top_info_section_multiloc: validateMultiloc(
       formatMessage(messages.blankDescriptionError)
     ),
     ...(pageId &&
@@ -129,7 +129,7 @@ const PageForm = ({
         </SectionField>
         <SectionField>
           <QuillMultilocWithLocaleSwitcher
-            name="body_multiloc"
+            name="top_info_section_multiloc"
             label={formatMessage(messages.editContent)}
           />
         </SectionField>
