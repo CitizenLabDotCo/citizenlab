@@ -3,10 +3,6 @@
 require 'rails_helper'
 require 'query'
 
-VCR.configure do |config|
-  config.cassette_library_dir = Analytics::Engine.root / 'spec' / 'fixtures' / 'vcr_cassettes'
-end
-
 RSpec.describe Analytics::MatomoDataImporter do
   self.file_fixture_path = Analytics::Engine.root.join('spec', 'fixtures', 'files')
 
@@ -32,7 +28,10 @@ RSpec.describe Analytics::MatomoDataImporter do
     end
 
     around do |example|
-      VCR.use_cassette('analytics_matomo_data_importer') { example.run }
+      cassette_library_dir = Analytics::Engine.root / 'spec' / 'fixtures' / 'vcr_cassettes'
+      VcrHelper.use_cassette_library_dir(cassette_library_dir) do
+        VCR.use_cassette('analytics_matomo_data_importer') { example.run }
+      end
     end
 
     it 'imports visit data successfully' do

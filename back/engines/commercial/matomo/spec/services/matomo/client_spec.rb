@@ -3,10 +3,6 @@
 require 'rails_helper'
 require 'vcr'
 
-VCR.configure do |config|
-  config.cassette_library_dir = Matomo::Engine.root / 'spec' / 'fixtures' / 'vcr_cassettes'
-end
-
 RSpec.describe Matomo::Client do
   subject(:service) { described_class.new(base_uri, auth_token) }
 
@@ -72,6 +68,14 @@ RSpec.describe Matomo::Client do
     end
   end
 
+  def with_vcr_cassette(&block)
+    library_dir = Matomo::Engine.root / 'spec' / 'fixtures' / 'vcr_cassettes'
+
+    VcrHelper.use_cassette_library_dir(library_dir) do
+      VCR.use_cassette('matomo_client', &block)
+    end
+  end
+
   describe '#get_last_visits_details' do
     it 'retrieves visits details' do
       site_id = 1
@@ -80,7 +84,7 @@ RSpec.describe Matomo::Client do
       filter_limit = 3
       filter_offset = 2
 
-      VCR.use_cassette('matomo_client') do
+      with_vcr_cassette do
         response = service.get_last_visits_details(
           site_id, period: period, date: date, filter_limit: filter_limit, filter_offset: filter_offset
         )
