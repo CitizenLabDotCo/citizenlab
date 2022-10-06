@@ -43,11 +43,11 @@ export default function useIdeaCustomFieldsSchemas({
       return;
     }
 
-    if (ideaId && dynamicIdeaFormIsEnabled && ideaCustomFieldsIsEnabled) {
+    if (dynamicIdeaFormIsEnabled && ideaCustomFieldsIsEnabled) {
       observable = ideaJsonFormsSchemaStream(
         projectId,
         null,
-        ideaId
+        ideaId || undefined
       ).observable;
     } else {
       observable = ideaFormSchemaStream(projectId).observable;

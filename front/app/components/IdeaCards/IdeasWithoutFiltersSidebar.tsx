@@ -24,9 +24,6 @@ import GetIdeas, {
   InputProps as GetIdeasInputProps,
 } from 'resources/GetIdeas';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetIdeaCustomFieldsSchemas, {
-  GetIdeaCustomFieldsSchemasChildProps,
-} from 'resources/GetIdeaCustomFieldsSchemas';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // i18n
@@ -172,7 +169,6 @@ interface DataProps {
   windowSize: GetWindowSizeChildProps;
   ideas: GetIdeasChildProps;
   project: GetProjectChildProps;
-  ideaCustomFieldsSchemas: GetIdeaCustomFieldsSchemasChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -186,7 +182,6 @@ const IdeasWithoutFiltersSidebar = ({
   className,
   allowProjectsFilter,
   project,
-  ideaCustomFieldsSchemas,
   participationMethod,
   participationContextId,
   participationContextType,
@@ -239,11 +234,7 @@ const IdeasWithoutFiltersSidebar = ({
       and has no ideaCustomFields settings as such,
       we fall back to true
     */
-    if (
-      !isNilOrError(ideaCustomFieldsSchemas) &&
-      !isNilOrError(locale) &&
-      !isNilOrError(schema)
-    ) {
+    if (!isNilOrError(locale) && !isNilOrError(schema)) {
       return checkFieldEnabled(
         fieldCode,
         schema,
@@ -392,13 +383,6 @@ const Data = adopt<DataProps, InputProps>({
   project: ({ render, projectId }) => (
     <GetProject projectId={projectId}>{render}</GetProject>
   ),
-  ideaCustomFieldsSchemas: ({ render, projectId }) => {
-    return (
-      <GetIdeaCustomFieldsSchemas projectId={projectId || null}>
-        {render}
-      </GetIdeaCustomFieldsSchemas>
-    );
-  },
 });
 
 export default (inputProps: InputProps) => (
