@@ -9,7 +9,6 @@ import { addNavbarItem } from '../../../../services/navbar';
 import useNavbarItems from 'hooks/useNavbarItems';
 import usePages from 'hooks/usePages';
 import usePageSlugById from 'hooks/usePageSlugById';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useRemovedDefaultNavbarItems from '../../../../hooks/useRemovedDefaultNavbarItems';
 
 // components
@@ -39,9 +38,6 @@ const HiddenNavbarItemList = ({
   const removedDefaultNavbarItems = useRemovedDefaultNavbarItems();
   const pages = usePages();
   const pageSlugById = usePageSlugById();
-  const previewNewCustomPages = useFeatureFlag({
-    name: 'preview_new_custom_pages',
-  });
 
   const notAllHooksRendered =
     isNilOrError(navbarItems) ||
@@ -66,10 +62,7 @@ const HiddenNavbarItemList = ({
 
   const handleClickEditButton = (item: IItemNotInNavbar) => () => {
     if (item.type !== 'page') return;
-
-    previewNewCustomPages
-      ? clHistory.push(`${PAGES_MENU_PATH}/custom/${item.pageId}`)
-      : clHistory.push(`${PAGES_MENU_PATH}/pages/edit/${item.pageId}`);
+    clHistory.push(`${PAGES_MENU_PATH}/custom/${item.pageId}`);
   };
 
   const handleClickAdd = (item: IItemNotInNavbar) => () => {

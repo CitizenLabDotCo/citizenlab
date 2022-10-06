@@ -18,6 +18,9 @@ export interface Props {
   imageOpacity?: number;
   headerMultiloc: Multiloc;
   subheaderMultiloc: Multiloc;
+  ctaButtonType: 'customized_button' | 'no_button';
+  ctaButtonUrl: string | null;
+  ctaButtonMultiloc: Multiloc;
 }
 
 const FullWidthBannerLayout = ({
@@ -27,6 +30,9 @@ const FullWidthBannerLayout = ({
   subheaderMultiloc,
   imageColor,
   imageOpacity,
+  ctaButtonType,
+  ctaButtonUrl,
+  ctaButtonMultiloc,
 }: Props) => {
   return (
     <Container className={`e2e-signed-out-header ${className}`}>
@@ -44,6 +50,9 @@ const FullWidthBannerLayout = ({
           subheaderMultiloc={subheaderMultiloc}
           hasHeaderBannerImage={imageUrl != null}
           fontColors="light"
+          ctaButtonUrl={ctaButtonUrl}
+          ctaButtonType={ctaButtonType}
+          ctaButtonMultiloc={ctaButtonMultiloc}
         />
       </Header>
     </Container>

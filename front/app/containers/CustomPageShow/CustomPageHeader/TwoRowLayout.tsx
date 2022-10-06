@@ -32,12 +32,18 @@ export interface Props {
   imageUrl?: string;
   headerMultiloc: Multiloc;
   subheaderMultiloc: Multiloc;
+  ctaButtonType: 'customized_button' | 'no_button';
+  ctaButtonUrl: string | null;
+  ctaButtonMultiloc: Multiloc;
 }
 
 const TwoRowLayout = ({
   imageUrl,
   headerMultiloc,
   subheaderMultiloc,
+  ctaButtonType,
+  ctaButtonUrl,
+  ctaButtonMultiloc,
 }: Props) => {
   return (
     <>
@@ -58,6 +64,9 @@ const TwoRowLayout = ({
             subheaderMultiloc={subheaderMultiloc}
             hasHeaderBannerImage={imageUrl != null}
             fontColors="dark"
+            ctaButtonUrl={ctaButtonUrl}
+            ctaButtonType={ctaButtonType}
+            ctaButtonMultiloc={ctaButtonMultiloc}
           />
         </Container>
       </ContentContainer>
