@@ -1,5 +1,5 @@
 import React from 'react';
-import { Multiloc } from 'typings';
+import { ICustomPageAttributes } from 'services/customPages';
 
 // components
 import HeaderContent from './HeaderContent';
@@ -13,27 +13,18 @@ import {
 
 export interface Props {
   className?: string;
-  imageUrl?: string;
   imageColor?: string;
   imageOpacity?: number;
-  headerMultiloc: Multiloc;
-  subheaderMultiloc: Multiloc;
-  ctaButtonType: 'customized_button' | 'no_button';
-  ctaButtonUrl: string | null;
-  ctaButtonMultiloc: Multiloc;
+  pageAttributes: ICustomPageAttributes;
 }
 
 const FullWidthBannerLayout = ({
   className,
-  imageUrl,
-  headerMultiloc,
-  subheaderMultiloc,
   imageColor,
   imageOpacity,
-  ctaButtonType,
-  ctaButtonUrl,
-  ctaButtonMultiloc,
+  pageAttributes,
 }: Props) => {
+  const imageUrl = pageAttributes.header_bg?.large;
   return (
     <Container className={`e2e-signed-out-header ${className}`}>
       <Header id="hook-header">
@@ -46,13 +37,9 @@ const FullWidthBannerLayout = ({
         </HeaderImage>
 
         <HeaderContent
-          headerMultiloc={headerMultiloc}
-          subheaderMultiloc={subheaderMultiloc}
-          hasHeaderBannerImage={imageUrl != null}
           fontColors="light"
-          ctaButtonUrl={ctaButtonUrl}
-          ctaButtonType={ctaButtonType}
-          ctaButtonMultiloc={ctaButtonMultiloc}
+          hasHeaderBannerImage={imageUrl != null}
+          pageAttributes={pageAttributes}
         />
       </Header>
     </Container>
