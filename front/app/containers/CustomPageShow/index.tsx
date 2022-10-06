@@ -3,15 +3,11 @@ import React from 'react';
 // components
 import CustomPageHeader from './CustomPageHeader';
 import TopInfoSection from './TopInfoSection';
-import { Container } from 'containers/LandingPage';
+import { Container, Content } from 'containers/LandingPage';
 import { Helmet } from 'react-helmet';
 import Fragment from 'components/Fragment';
 import FileAttachments from 'components/UI/FileAttachments';
-import {
-  StyledContentContainer,
-  AttachmentsContainer,
-  PageContent,
-} from 'containers/PagesShowPage';
+import ContentContainer from 'components/ContentContainer';
 
 // hooks
 import { useParams } from 'react-router-dom';
@@ -38,7 +34,7 @@ const PageTitle = styled.h1`
   text-align: left;
   margin: 0;
   padding: 0;
-  padding-top: 0px;
+  padding-top: 50px;
 
   ${media.tablet`
     font-size: ${fontSizes.xxxl};
@@ -47,6 +43,14 @@ const PageTitle = styled.h1`
     text-align: right;
     direction: rtl;
   `}
+`;
+
+const AttachmentsContainer = styled.div`
+  max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 20px;
+  padding-right: 20px;
 `;
 
 const CustomPageShow = () => {
@@ -87,20 +91,21 @@ const CustomPageShow = () => {
           headerOpacity={attributes.banner_overlay_opacity}
         />
       )}
-      <PageContent>
-        <StyledContentContainer>
-          <Fragment
-            name={!isNilOrError(page) ? `pages/${page && page.id}/content` : ''}
-          />
-          {!attributes.banner_enabled && (
+      <Content>
+        <Fragment
+          name={!isNilOrError(page) ? `pages/${page && page.id}/content` : ''}
+        />
+        {/* show page text title if the banner is disabled */}
+        {!attributes.banner_enabled && (
+          <ContentContainer>
             <PageTitle>{localize(attributes.title_multiloc)}</PageTitle>
-          )}
-          {attributes.top_info_section_enabled && (
-            <TopInfoSection
-              multilocContent={attributes.top_info_section_multiloc}
-            />
-          )}
-        </StyledContentContainer>
+          </ContentContainer>
+        )}
+        {attributes.top_info_section_enabled && (
+          <TopInfoSection
+            multilocContent={attributes.top_info_section_multiloc}
+          />
+        )}
         {attributes.files_section_enabled &&
           !isNilOrError(remotePageFiles) &&
           remotePageFiles.length > 0 && (
@@ -108,7 +113,7 @@ const CustomPageShow = () => {
               <FileAttachments files={remotePageFiles} />
             </AttachmentsContainer>
           )}
-      </PageContent>
+      </Content>
     </Container>
   );
 };
