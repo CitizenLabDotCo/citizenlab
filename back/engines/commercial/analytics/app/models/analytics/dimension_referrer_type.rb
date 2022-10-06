@@ -5,8 +5,8 @@
 # Table name: analytics_dimension_referrer_types
 #
 #  id   :uuid             not null, primary key
-#  key  :string
-#  name :string
+#  key  :string           not null
+#  name :string           not null
 #
 # Indexes
 #
