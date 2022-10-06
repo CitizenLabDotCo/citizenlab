@@ -61,9 +61,15 @@ const VisitorStats = ({
         <Box mt="32px">
           <Statistic
             name={formatMessage(messages.visitDuration)}
-            value={shownStats.visitDuration.value.toLocaleString()}
+            value={
+              projectFilter
+                ? '-'
+                : shownStats.visitDuration.value.toLocaleString()
+            }
             bottomLabel={bottomLabel}
-            bottomLabelValue={shownStats.visitDuration.lastPeriod}
+            bottomLabelValue={
+              projectFilter ? '-' : shownStats.visitDuration.lastPeriod
+            }
             emptyTooltipContent={
               projectFilter ? emptyTooltipContent : undefined
             }
@@ -81,9 +87,13 @@ const VisitorStats = ({
         <Box mt="32px">
           <Statistic
             name={formatMessage(messages.pageViews)}
-            value={shownStats.pageViews.value.toLocaleString()}
+            value={
+              projectFilter ? '-' : shownStats.pageViews.value.toLocaleString()
+            }
             bottomLabel={bottomLabel}
-            bottomLabelValue={shownStats.pageViews.lastPeriod}
+            bottomLabelValue={
+              projectFilter ? '-' : shownStats.pageViews.lastPeriod
+            }
             emptyTooltipContent={
               projectFilter ? emptyTooltipContent : undefined
             }
