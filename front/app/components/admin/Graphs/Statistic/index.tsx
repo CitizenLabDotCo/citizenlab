@@ -1,16 +1,7 @@
 import React from 'react';
 
 // components
-import {
-  Box,
-  Text,
-  Icon,
-  IconTooltip,
-} from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
-
-// styling
-import { colors, fontSizes } from 'utils/styleUtils';
+import { Box, Text, IconTooltip } from '@citizenlab/cl2-component-library';
 
 interface Props {
   name: string;
@@ -18,7 +9,6 @@ interface Props {
   bottomLabel?: string;
   bottomLabelValue?: string;
   tooltipContent?: React.ReactChild;
-  emptyTooltipContent?: React.ReactNode;
 }
 
 const Statistic = ({
@@ -27,7 +17,6 @@ const Statistic = ({
   bottomLabel,
   bottomLabelValue,
   tooltipContent,
-  emptyTooltipContent,
 }: Props) => (
   <Box>
     <Box>
@@ -42,27 +31,6 @@ const Statistic = ({
             theme="light"
             transform="translate(0,-2)"
           />
-        </Box>
-      )}
-
-      {emptyTooltipContent && (
-        <Box ml="8px" display="inline">
-          <Tippy
-            interactive={true}
-            content={emptyTooltipContent}
-            placement="top"
-            theme="light"
-          >
-            <Box display="inline">
-              <Icon
-                name="error"
-                width={`${fontSizes.s}px`}
-                height={`${fontSizes.s}px`}
-                fill={colors.teal300}
-                transform="translate(0,-1)"
-              />
-            </Box>
-          </Tippy>
         </Box>
       )}
     </Box>

@@ -46,14 +46,13 @@ const VisitorStats = ({
   const shownStats = isNilOrError(stats) ? EMPTY_DATA : stats;
 
   const bottomLabel = formatMessage(BOTTOM_LABEL_COPY[resolution]);
-  const emptyTooltipContent = formatMessage(messages.emptyStatTooltipMessage);
 
   return (
     <>
       <Box>
         <Statistic
           name={formatMessage(messages.visitors)}
-          value={shownStats.visitors.value.toLocaleString()}
+          value={shownStats.visitors.value}
           bottomLabel={bottomLabel}
           bottomLabelValue={shownStats.visitors.lastPeriod}
           tooltipContent={formatMessage(messages.visitorsStatTooltipMessage)}
@@ -61,17 +60,13 @@ const VisitorStats = ({
         <Box mt="32px">
           <Statistic
             name={formatMessage(messages.visitDuration)}
-            value={
-              projectFilter
-                ? '-'
-                : shownStats.visitDuration.value.toLocaleString()
-            }
+            value={shownStats.visitDuration.value}
             bottomLabel={bottomLabel}
-            bottomLabelValue={
-              projectFilter ? '-' : shownStats.visitDuration.lastPeriod
-            }
-            emptyTooltipContent={
-              projectFilter ? emptyTooltipContent : undefined
+            bottomLabelValue={shownStats.visitDuration.lastPeriod}
+            tooltipContent={
+              projectFilter
+                ? formatMessage(messages.durationStatTooltipMessage)
+                : undefined
             }
           />
         </Box>
@@ -79,7 +74,7 @@ const VisitorStats = ({
       <Box ml="28px">
         <Statistic
           name={formatMessage(messages.visits)}
-          value={shownStats.visits.value.toLocaleString()}
+          value={shownStats.visits.value}
           bottomLabel={bottomLabel}
           bottomLabelValue={shownStats.visits.lastPeriod}
           tooltipContent={formatMessage(messages.visitsStatTooltipMessage)}
@@ -87,15 +82,13 @@ const VisitorStats = ({
         <Box mt="32px">
           <Statistic
             name={formatMessage(messages.pageViews)}
-            value={
-              projectFilter ? '-' : shownStats.pageViews.value.toLocaleString()
-            }
+            value={shownStats.pageViews.value}
             bottomLabel={bottomLabel}
-            bottomLabelValue={
-              projectFilter ? '-' : shownStats.pageViews.lastPeriod
-            }
-            emptyTooltipContent={
-              projectFilter ? emptyTooltipContent : undefined
+            bottomLabelValue={shownStats.pageViews.lastPeriod}
+            tooltipContent={
+              projectFilter
+                ? formatMessage(messages.pageViewsStatTooltipMessage)
+                : undefined
             }
           />
         </Box>

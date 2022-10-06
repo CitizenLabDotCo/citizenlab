@@ -68,7 +68,7 @@ describe('<VisitorsCard />', () => {
     ).toBeInTheDocument();
   });
 
-  it('renders visit duration and pageviews if no project filter', () => {
+  it('renders visit duration and pageviews', () => {
     const projectFilter = undefined;
 
     render(
@@ -86,10 +86,10 @@ describe('<VisitorsCard />', () => {
     expect(screen.getByText('2.8')).toBeInTheDocument();
   });
 
-  it('does not render visit duration and pageviews if project filter', () => {
-    const projectFilter = '1111';
+  it('does not render tooltips for duration and pageviews if project filter not active', () => {
+    const projectFilter = undefined;
 
-    render(
+    const { container } = render(
       <VisitorsCard
         startAtMoment={startAtMoment}
         endAtMoment={endAtMoment}
@@ -98,9 +98,21 @@ describe('<VisitorsCard />', () => {
       />
     );
 
-    expect(screen.queryByText('00:02:10')).not.toBeInTheDocument();
-    expect(screen.queryByText('00:01:55')).not.toBeInTheDocument();
-    expect(screen.queryByText('3.1')).not.toBeInTheDocument();
-    expect(screen.queryByText('2.8')).not.toBeInTheDocument();
+    expect(container.querySelectorAll('.tooltip-icon')).toHaveLength(3);
+  });
+
+  it('renders tooltips for duration and pageviews if project filter active', () => {
+    const projectFilter = '1111';
+
+    const { container } = render(
+      <VisitorsCard
+        startAtMoment={startAtMoment}
+        endAtMoment={endAtMoment}
+        projectFilter={projectFilter}
+        resolution={resolution}
+      />
+    );
+
+    expect(container.querySelectorAll('.tooltip-icon')).toHaveLength(5);
   });
 });
