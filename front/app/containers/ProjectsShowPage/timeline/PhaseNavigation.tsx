@@ -146,7 +146,6 @@ const PhaseNavigation = memo<Props & InjectedIntlProps>(
               <PreviousPhaseButton
                 onClick={goToPreviousPhase}
                 icon="chevron-left"
-                iconSize="12px"
                 iconColor={colors.textSecondary}
                 buttonStyle={navButtonStyle}
                 width={navButtonSize}
@@ -198,7 +197,6 @@ const PhaseNavigation = memo<Props & InjectedIntlProps>(
               <NextPhaseButton
                 onClick={goToNextPhase}
                 icon="chevron-right"
-                iconSize="12px"
                 iconColor={colors.textSecondary}
                 buttonStyle={navButtonStyle}
                 width={navButtonSize}

@@ -42,8 +42,6 @@ const ProjectFilterDropdownPositioner = styled.div`
 `;
 
 const FilterIcon = styled(Icon)`
-  width: 12px;
-  height: 12px;
   fill: ${({ theme }) => theme.colors.tenantText};
   margin-right: 3px;
 `;

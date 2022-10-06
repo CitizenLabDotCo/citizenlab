@@ -30,11 +30,7 @@ const DropdownButtonText = styled.div`
 `;
 
 const DropdownButtonIcon = styled(Icon)`
-  width: 11px;
-  height: 6px;
   color: ${({ theme }) => theme.navbarTextColor || theme.colors.tenantText};
-  margin-top: 1px;
-  margin-left: 4px;
   transition: all 100ms ease-out;
   ${isRtl`
     margin-left: 0;

@@ -196,7 +196,7 @@ class Sidebar extends PureComponent<
         {
           name: 'initiatives',
           link: '/admin/initiatives',
-          iconName: 'initiatives',
+          iconName: 'sidebar-proposals',
           message: 'initiatives',
           featureNames: ['initiatives'],
           onlyCheckAllowed: true,
@@ -235,7 +235,7 @@ class Sidebar extends PureComponent<
         {
           name: 'settings',
           link: '/admin/settings/general',
-          iconName: 'setting',
+          iconName: 'sidebar-settings',
           message: 'settings',
         },
       ],

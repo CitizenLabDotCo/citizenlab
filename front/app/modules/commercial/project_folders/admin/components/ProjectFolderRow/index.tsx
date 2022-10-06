@@ -45,9 +45,7 @@ import PublicationStatusLabel from 'containers/Admin/projects/components/Publica
 import DeleteProjectFolderButton from '../DeleteProjectFolderButton';
 
 const ArrowIcon = styled(Icon)<{ expanded: boolean }>`
-  flex: 0 0 11px;
-  height: 11px;
-  width: 11px;
+  flex: 0 0 24px;
   margin-right: 8px;
   transition: transform 350ms cubic-bezier(0.165, 0.84, 0.44, 1),
     fill 80ms ease-out;

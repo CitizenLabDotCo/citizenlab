@@ -112,7 +112,6 @@ const ExpandIconWrapper = styled.div`
 `;
 
 const ExpandIcon = styled(Icon)`
-  height: 11px;
   fill: ${colors.textSecondary};
   transition: all ${duartion - 100}ms ease-out;
 

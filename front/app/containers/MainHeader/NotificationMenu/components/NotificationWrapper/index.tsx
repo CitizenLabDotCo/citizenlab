@@ -44,7 +44,6 @@ const IconContainer = styled.div`
 
 const StyledIcon: any = styled(Icon)`
   flex: 0 0 22px;
-  height: 22px;
   fill: ${colors.textSecondary};
   opacity: ${(props: any) => (props.isRead ? '0.4' : '1')};
 `;

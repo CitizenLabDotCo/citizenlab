@@ -73,9 +73,7 @@ const ContentToggleButton = styled.button`
 `;
 
 const ArrowIcon = styled(Icon)`
-  flex: 0 0 13px;
-  width: 13px;
-  height: 13px;
+  flex: 0 0 24px;
   fill: ${colors.textSecondary};
   transform: rotate(90deg);
   transition: all 0.2s linear;

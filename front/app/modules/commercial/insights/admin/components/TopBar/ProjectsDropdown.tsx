@@ -28,7 +28,6 @@ import { isNilOrError } from 'utils/helperUtils';
 const DropdownWrapper = styled.div``;
 
 const StyledIcon = styled(Icon)`
-  width: 10px;
   margin-left: 8px;
 `;
 

@@ -100,11 +100,8 @@ const NavigationDropdownItem = styled.button`
 `;
 
 const NavigationDropdownItemIcon = styled(Icon)`
-  width: 11px;
-  height: 6px;
   fill: inherit;
   margin-left: 4px;
-  margin-top: 3px;
   ${isRtl`
     margin-left: 0;
     margin-right: 4px;
