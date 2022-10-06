@@ -1,53 +1,24 @@
 import React from 'react';
+import { ICustomPageAttributes } from 'services/customPages';
 import FullWidthBannerLayout from './FullWidthBannerLayout';
 import TwoColumnLayout from './TwoColumnLayout';
 import TwoRowLayout from './TwoRowLayout';
 
-// to do add props
-const CustomPageHeader = ({
-  headerLayout,
-  header_bg,
-  headerMultiloc,
-  subheaderMultiloc,
-  headerColor,
-  headerOpacity,
-  ctaButtonType,
-  ctaButtonUrl,
-  ctaButtonMultiloc,
-}) => {
+interface Props {
+  pageAttributes: ICustomPageAttributes;
+}
+
+const CustomPageHeader = ({ pageAttributes }: Props) => {
   return (
     <>
-      {headerLayout === 'full_width_banner_layout' && (
-        <FullWidthBannerLayout
-          imageUrl={header_bg.large}
-          imageColor={headerColor}
-          imageOpacity={headerOpacity}
-          headerMultiloc={headerMultiloc}
-          subheaderMultiloc={subheaderMultiloc}
-          ctaButtonType={ctaButtonType}
-          ctaButtonUrl={ctaButtonUrl}
-          ctaButtonMultiloc={ctaButtonMultiloc}
-        />
+      {pageAttributes.banner_layout === 'full_width_banner_layout' && (
+        <FullWidthBannerLayout pageAttributes={pageAttributes} />
       )}
-      {headerLayout === 'two_column_layout' && (
-        <TwoColumnLayout
-          imageUrl={header_bg.large}
-          headerMultiloc={headerMultiloc}
-          subheaderMultiloc={subheaderMultiloc}
-          ctaButtonType={ctaButtonType}
-          ctaButtonUrl={ctaButtonUrl}
-          ctaButtonMultiloc={ctaButtonMultiloc}
-        />
+      {pageAttributes.banner_layout === 'two_column_layout' && (
+        <TwoColumnLayout pageAttributes={pageAttributes} />
       )}
-      {headerLayout === 'two_row_layout' && (
-        <TwoRowLayout
-          imageUrl={header_bg.large}
-          headerMultiloc={headerMultiloc}
-          subheaderMultiloc={subheaderMultiloc}
-          ctaButtonType={ctaButtonType}
-          ctaButtonUrl={ctaButtonUrl}
-          ctaButtonMultiloc={ctaButtonMultiloc}
-        />
+      {pageAttributes.banner_layout === 'two_row_layout' && (
+        <TwoRowLayout pageAttributes={pageAttributes} />
       )}
     </>
   );

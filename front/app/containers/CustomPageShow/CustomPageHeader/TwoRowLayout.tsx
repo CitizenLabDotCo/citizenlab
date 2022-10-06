@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import Image from 'components/UI/Image';
 import { media } from 'utils/styleUtils';
 import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/HeaderImageDropzone';
-import { Multiloc } from 'typings';
+import { ICustomPageAttributes } from 'services/customPages';
 
 const Container = styled.div`
   display: flex;
@@ -28,23 +28,12 @@ const HeaderImage = styled(Image)`
   `}
 `;
 
-export interface Props {
-  imageUrl?: string;
-  headerMultiloc: Multiloc;
-  subheaderMultiloc: Multiloc;
-  ctaButtonType: 'customized_button' | 'no_button';
-  ctaButtonUrl: string | null;
-  ctaButtonMultiloc: Multiloc;
+interface Props {
+  pageAttributes: ICustomPageAttributes;
 }
 
-const TwoRowLayout = ({
-  imageUrl,
-  headerMultiloc,
-  subheaderMultiloc,
-  ctaButtonType,
-  ctaButtonUrl,
-  ctaButtonMultiloc,
-}: Props) => {
+const TwoRowLayout = ({ pageAttributes }: Props) => {
+  const imageUrl = pageAttributes.header_bg?.large;
   return (
     <>
       {imageUrl && (
@@ -60,13 +49,9 @@ const TwoRowLayout = ({
       <ContentContainer mode="page">
         <Container>
           <HeaderContent
-            headerMultiloc={headerMultiloc}
-            subheaderMultiloc={subheaderMultiloc}
             hasHeaderBannerImage={imageUrl != null}
             fontColors="dark"
-            ctaButtonUrl={ctaButtonUrl}
-            ctaButtonType={ctaButtonType}
-            ctaButtonMultiloc={ctaButtonMultiloc}
+            pageAttributes={pageAttributes}
           />
         </Container>
       </ContentContainer>

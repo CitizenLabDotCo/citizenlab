@@ -9,38 +9,30 @@ import {
 } from 'containers/LandingPage/SignedOutHeader/HeaderContent';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { Multiloc } from 'typings';
 import BannerButton from 'containers/LandingPage/BannerButton';
+import { ICustomPageAttributes } from 'services/customPages';
 
 interface Props {
   fontColors: 'light' | 'dark';
   align?: TAlign;
-  headerMultiloc: Multiloc;
-  subheaderMultiloc: Multiloc;
   hasHeaderBannerImage: boolean;
-  ctaButtonType: 'customized_button' | 'no_button';
-  ctaButtonUrl: string | null;
-  ctaButtonMultiloc: Multiloc;
+  pageAttributes: ICustomPageAttributes;
 }
 
 const HeaderContent = ({
   align = 'center',
   fontColors,
-  headerMultiloc,
-  subheaderMultiloc,
   hasHeaderBannerImage,
-  ctaButtonType,
-  ctaButtonUrl,
-  ctaButtonMultiloc,
+  pageAttributes,
 }: Props & InjectedIntlProps) => {
   const localize = useLocalize();
 
-  const formattedHeaderTitle = headerMultiloc
-    ? localize(headerMultiloc)
+  const formattedHeaderTitle = pageAttributes.banner_header_multiloc
+    ? localize(pageAttributes.banner_header_multiloc)
     : 'Placeholder: no header multiloc';
 
-  const formattedSubheaderTitle = subheaderMultiloc
-    ? localize(subheaderMultiloc)
+  const formattedSubheaderTitle = pageAttributes.banner_subheader_multiloc
+    ? localize(pageAttributes.banner_subheader_multiloc)
     : 'Placeholder: no subheader multiloc';
 
   return (
@@ -67,11 +59,11 @@ const HeaderContent = ({
       >
         {formattedSubheaderTitle}
       </HeaderSubtitle>
-      {ctaButtonType === 'customized_button' && (
+      {pageAttributes.banner_cta_button_type === 'customized_button' && (
         <BannerButton
           buttonStyle={fontColors === 'light' ? 'primary-inverse' : 'primary'}
-          text={localize(ctaButtonMultiloc)}
-          linkTo={ctaButtonUrl}
+          text={localize(pageAttributes.banner_cta_button_multiloc)}
+          linkTo={pageAttributes.banner_cta_button_url}
           openLinkInNewTab={true}
         />
       )}
