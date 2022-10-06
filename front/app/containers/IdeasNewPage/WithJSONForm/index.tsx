@@ -11,10 +11,9 @@ import { isError, isNilOrError } from 'utils/helperUtils';
 import useAuthUser from 'hooks/useAuthUser';
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
+import usePhase from 'hooks/usePhase';
 import useInputSchema from 'hooks/useInputSchema';
-import { getInputTerm } from 'services/participationContexts';
 
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 import IdeasNewMeta from '../IdeasNewMeta';
@@ -28,6 +27,8 @@ import { geocode, reverseGeocode } from 'utils/locationTools';
 // for getting inital state from previous page
 import { parse } from 'qs';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
+import { getMethodConfig } from 'utils/participationMethodUtils';
+import { getCurrentPhase } from 'services/phases';
 
 const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
@@ -152,9 +153,30 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
     [uiSchema]
   );
 
+  // get participation method config
+  const phaseFromUrl = usePhase(phaseId);
+  let config;
+
+  if (!isNilOrError(phaseFromUrl)) {
+    config = getMethodConfig(phaseFromUrl.attributes.participation_method);
+  } else {
+    if (phases && project?.attributes.process_type === 'timeline') {
+      const participationMethod =
+        getCurrentPhase(phases)?.attributes.participation_method;
+      if (!isNilOrError(participationMethod)) {
+        config = getMethodConfig(participationMethod);
+      }
+    } else if (!isNilOrError(project)) {
+      config = getMethodConfig(project.attributes.participation_method);
+    }
+  }
   return (
     <PageContainer id="e2e-idea-new-page" overflow="hidden">
-      {!isNilOrError(project) && !processingLocation && schema && uiSchema ? (
+      {!isNilOrError(project) &&
+      !processingLocation &&
+      schema &&
+      uiSchema &&
+      config ? (
         <>
           <IdeasNewMeta />
           <Form
@@ -165,24 +187,7 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
             getAjvErrorMessage={getAjvErrorMessage}
             getApiErrorMessage={getApiErrorMessage}
             inputId={undefined}
-            title={
-              <FormattedMessage
-                {...{
-                  idea: messages.ideaFormTitle,
-                  option: messages.optionFormTitle,
-                  project: messages.projectFormTitle,
-                  question: messages.questionFormTitle,
-                  issue: messages.issueFormTitle,
-                  contribution: messages.contributionFormTitle,
-                }[
-                  getInputTerm(
-                    project?.attributes.process_type,
-                    project,
-                    phases
-                  )
-                ]}
-              />
-            }
+            title={config.getFormTitle(project, phases)}
           />
         </>
       ) : isError(project) || inputSchemaError ? null : (
