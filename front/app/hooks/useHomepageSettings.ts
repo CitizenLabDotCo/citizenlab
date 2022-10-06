@@ -1,18 +1,22 @@
 import { useState, useEffect } from 'react';
 import {
   homepageSettingsStream,
-  IHomepageSettings,
+  IHomepageSettingsData,
 } from 'services/homepageSettings';
+import { isNilOrError } from 'utils/helperUtils';
 
 export default function useHomepageSettings() {
   const [homepageSettings, setHomepageSettings] = useState<
-    IHomepageSettings | null | Error
+    IHomepageSettingsData | null | Error
   >(null);
 
   useEffect(() => {
     const subscription = homepageSettingsStream().observable.subscribe(
-      (currentlySavedHomepageSettings) => {
-        setHomepageSettings(currentlySavedHomepageSettings);
+      (returnedHomePage) => {
+        const apiHomePage = !isNilOrError(returnedHomePage)
+          ? returnedHomePage.data
+          : returnedHomePage;
+        setHomepageSettings(apiHomePage);
       }
     );
 

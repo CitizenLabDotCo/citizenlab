@@ -5,7 +5,11 @@
 # Table name: analytics_dimension_locales
 #
 #  id   :uuid             not null, primary key
-#  name :string
+#  name :string           not null
+#
+# Indexes
+#
+#  index_analytics_dimension_locales_on_name  (name) UNIQUE
 #
 module Analytics
   class DimensionLocale < Analytics::ApplicationRecord

@@ -7,6 +7,7 @@ RSpec.describe Analytics::DimensionDate, type: :model do
 
   describe 'validations' do
     it { is_expected.to be_valid }
+    it { is_expected.to validate_presence_of(:date) }
     it { is_expected.to validate_presence_of(:year) }
     it { is_expected.to validate_presence_of(:month) }
     it { is_expected.to validate_presence_of(:week) }
