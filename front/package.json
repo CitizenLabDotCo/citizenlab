@@ -50,8 +50,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "pretty-quick --staged",
-      "pre-push": "lint-prepush"
+      "pre-commit": "pretty-quick --staged"
     }
   },
   "dependencies": {
