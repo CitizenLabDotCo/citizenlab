@@ -6,6 +6,11 @@ module MultiTenancy
   module Seeds
     class Tenants < Base
       def run
+        create_localhost_tenant
+        create_empty_localhost_tenant if runner.create_empty_tenant?
+      end
+
+      def create_localhost_tenant
         Tenant.create!(
           id: 'c72c5211-8e03-470b-9564-04ec0a8c322b',
           name: 'local',
@@ -381,7 +386,9 @@ module MultiTenancy
             }
           })
         )
+      end
 
+      def create_empty_localhost_tenant
         Tenant.create!(
           id: '07ff8088-cc78-4307-9a1c-ebb6fb836f96',
           name: 'empty',
