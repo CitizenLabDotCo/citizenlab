@@ -11,34 +11,21 @@ import { IStreamParams, IStream } from 'utils/streams';
 import { IResourceByTime, IUsersByTime } from 'services/stats';
 
 // components
+import { IconTooltip, Text } from '@citizenlab/cl2-component-library';
 import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
   IGraphUnit,
   GraphCard,
-  GraphCardInner,
+  GraphCardInnerClean,
   GraphCardHeader,
   GraphCardTitle,
 } from 'components/admin/GraphWrappers';
 import BarChart from 'components/admin/Graphs/BarChart';
 import { IResolution } from 'components/admin/ResolutionControl';
-import { Popup } from 'semantic-ui-react';
-import { Icon } from '@citizenlab/cl2-component-library';
 
 // utils
 import { toThreeLetterMonth, toFullMonth } from 'utils/dateUtils';
-
-// styling
-import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
-
-const InfoIcon = styled(Icon)`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  width: 20px;
-  height: 22px;
-  margin-left: 10px;
-`;
 
 type Row = { name: string; code: string; value: number };
 
@@ -195,20 +182,20 @@ class BarChartActiveUsersByTime extends React.PureComponent<
 
     return (
       <GraphCard className={className}>
-        <GraphCardInner>
+        <GraphCardInnerClean>
           <GraphCardHeader>
             <GraphCardTitle>
               {graphTitle}
               {infoMessage && (
-                <Popup
-                  basic
-                  trigger={
-                    <div>
-                      <InfoIcon name="info" />
-                    </div>
+                <IconTooltip
+                  content={
+                    <Text m="0px" mb="0px" fontSize="s">
+                      {infoMessage}
+                    </Text>
                   }
-                  content={infoMessage}
-                  position="top left"
+                  ml="8px"
+                  transform="translate(0,-1)"
+                  theme="light"
                 />
               )}
             </GraphCardTitle>
@@ -230,7 +217,7 @@ class BarChartActiveUsersByTime extends React.PureComponent<
             xaxis={{ tickFormatter: this.formatTick }}
             tooltip={{ labelFormatter: this.formatLabel }}
           />
-        </GraphCardInner>
+        </GraphCardInnerClean>
       </GraphCard>
     );
   }
