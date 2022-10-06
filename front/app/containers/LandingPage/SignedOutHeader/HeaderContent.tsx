@@ -117,27 +117,27 @@ const StyledAvatarBubbles = styled(AvatarBubbles)`
   `}
 `;
 
-type TAlign = 'center' | 'left';
+export type TAlign = 'center' | 'left';
 interface Props {
   fontColors: 'light' | 'dark';
   align?: TAlign;
 }
 
-function getButtonStyle(fontColors: 'light' | 'dark') {
+export const getButtonStyle = (fontColors: 'light' | 'dark') => {
   switch (fontColors) {
     case 'light':
       return 'primary-inverse';
     case 'dark':
       return 'primary';
   }
-}
+};
 
-function getAlignItems(align: TAlign) {
+export const getAlignItems = (align: TAlign) => {
   if (align === 'center') return 'center';
   if (align === 'left') return 'flex-start';
 
   return undefined;
-}
+};
 
 const HeaderContent = ({
   align = 'center',

@@ -32,12 +32,18 @@ interface Props {
   imageUrl?: string;
   headerMultiloc: Multiloc;
   subheaderMultiloc: Multiloc;
+  ctaButtonType: 'customized_button' | 'no_button';
+  ctaButtonUrl: string | null;
+  ctaButtonMultiloc: Multiloc;
 }
 
 const TwoColumnLayout = ({
   imageUrl,
   headerMultiloc,
   subheaderMultiloc,
+  ctaButtonType,
+  ctaButtonUrl,
+  ctaButtonMultiloc,
 }: Props) => {
   return (
     <Container data-cy="e2e-two-column-layout-container">
@@ -56,6 +62,9 @@ const TwoColumnLayout = ({
         subheaderMultiloc={subheaderMultiloc}
         hasHeaderBannerImage={imageUrl != null}
         fontColors="dark"
+        ctaButtonUrl={ctaButtonUrl}
+        ctaButtonType={ctaButtonType}
+        ctaButtonMultiloc={ctaButtonMultiloc}
       />
     </Container>
   );

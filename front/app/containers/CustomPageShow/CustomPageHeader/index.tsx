@@ -3,6 +3,7 @@ import FullWidthBannerLayout from './FullWidthBannerLayout';
 import TwoColumnLayout from './TwoColumnLayout';
 import TwoRowLayout from './TwoRowLayout';
 
+// to do add props
 const CustomPageHeader = ({
   headerLayout,
   header_bg,
@@ -10,6 +11,9 @@ const CustomPageHeader = ({
   subheaderMultiloc,
   headerColor,
   headerOpacity,
+  ctaButtonType,
+  ctaButtonUrl,
+  ctaButtonMultiloc,
 }) => {
   return (
     <>
@@ -20,6 +24,9 @@ const CustomPageHeader = ({
           imageOpacity={headerOpacity}
           headerMultiloc={headerMultiloc}
           subheaderMultiloc={subheaderMultiloc}
+          ctaButtonType={ctaButtonType}
+          ctaButtonUrl={ctaButtonUrl}
+          ctaButtonMultiloc={ctaButtonMultiloc}
         />
       )}
       {headerLayout === 'two_column_layout' && (
@@ -27,6 +34,9 @@ const CustomPageHeader = ({
           imageUrl={header_bg.large}
           headerMultiloc={headerMultiloc}
           subheaderMultiloc={subheaderMultiloc}
+          ctaButtonType={ctaButtonType}
+          ctaButtonUrl={ctaButtonUrl}
+          ctaButtonMultiloc={ctaButtonMultiloc}
         />
       )}
       {headerLayout === 'two_row_layout' && (
@@ -34,6 +44,9 @@ const CustomPageHeader = ({
           imageUrl={header_bg.large}
           headerMultiloc={headerMultiloc}
           subheaderMultiloc={subheaderMultiloc}
+          ctaButtonType={ctaButtonType}
+          ctaButtonUrl={ctaButtonUrl}
+          ctaButtonMultiloc={ctaButtonMultiloc}
         />
       )}
     </>

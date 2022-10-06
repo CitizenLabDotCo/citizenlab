@@ -4,25 +4,25 @@ import {
   Container,
   HeaderTitle,
   HeaderSubtitle,
+  TAlign,
+  getAlignItems,
+  // getButtonStyle,
 } from 'containers/LandingPage/SignedOutHeader/HeaderContent';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import { Multiloc } from 'typings';
+import BannerButton from // BannerButtonStyle,
+'containers/LandingPage/BannerButton';
 
-type TAlign = 'center' | 'left';
 interface Props {
   fontColors: 'light' | 'dark';
   align?: TAlign;
   headerMultiloc: Multiloc;
   subheaderMultiloc: Multiloc;
   hasHeaderBannerImage: boolean;
-}
-
-function getAlignItems(align: TAlign) {
-  if (align === 'center') return 'center';
-  if (align === 'left') return 'flex-start';
-
-  return undefined;
+  ctaButtonType: 'customized_button' | 'no_button';
+  ctaButtonUrl: string | null;
+  ctaButtonMultiloc: Multiloc;
 }
 
 const HeaderContent = ({
@@ -31,8 +31,10 @@ const HeaderContent = ({
   headerMultiloc,
   subheaderMultiloc,
   hasHeaderBannerImage,
-}: //   intl: { formatMessage },
-Props & InjectedIntlProps) => {
+  ctaButtonType,
+  ctaButtonUrl,
+  ctaButtonMultiloc,
+}: Props & InjectedIntlProps) => {
   const localize = useLocalize();
 
   const formattedHeaderTitle = headerMultiloc
@@ -67,6 +69,14 @@ Props & InjectedIntlProps) => {
       >
         {formattedSubheaderTitle}
       </HeaderSubtitle>
+      {ctaButtonType === 'customized_button' && (
+        <BannerButton
+          buttonStyle="primary"
+          text={localize(ctaButtonMultiloc)}
+          linkTo={ctaButtonUrl}
+          openLinkInNewTab={true}
+        />
+      )}
     </Container>
   );
 };

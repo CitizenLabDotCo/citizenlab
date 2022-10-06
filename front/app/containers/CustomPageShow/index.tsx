@@ -89,6 +89,9 @@ const CustomPageShow = () => {
           subheaderMultiloc={attributes.banner_subheader_multiloc}
           headerColor={attributes.banner_overlay_color}
           headerOpacity={attributes.banner_overlay_opacity}
+          ctaButtonType={attributes.banner_cta_button_type}
+          ctaButtonMultiloc={attributes.banner_cta_button_multiloc}
+          ctaButtonUrl={attributes.banner_cta_button_url}
         />
       )}
       <Content>
