@@ -3,6 +3,25 @@
 require 'rails_helper'
 
 RSpec.describe Analytics::ImportLatestMatomoDataJob do
+  before do
+    # Configure Matomo on the test tenant
+    settings = AppConfiguration.instance.settings
+    settings['matomo'] = {
+      'tenant_site_id' => '10',
+      'product_site_id' => '2',
+      'enabled' => true,
+      'allowed' => true
+    }
+    AppConfiguration.instance.update(settings: settings)
+
+    # Configure Matomo environment variables
+    stub_const('ENV', ENV.to_h.merge(
+      'MATOMO_HOST' => 'https://fake.matomo.citizenlab.co',
+      'MATOMO_AUTHORIZATION_TOKEN' => 'matomo-token',
+      'DEFAULT_MATOMO_TENANT_SITE_ID' => 1
+    ))
+  end
+
   describe '.perform_for_all_tenants' do
     it 'enqueues an import job for each tenant', slow_test: true do
       create(:tenant)
@@ -17,11 +36,6 @@ RSpec.describe Analytics::ImportLatestMatomoDataJob do
   end
 
   it 'delegates the import to MatomoDataImporter' do
-    stub_const('ENV', ENV.to_h.merge(
-      'MATOMO_HOST' => 'https://fake.matomo.citizenlab.co',
-      'MATOMO_AUTHORIZATION_TOKEN' => 'matomo-token'
-    ))
-
     site_id = AppConfiguration.instance.settings.dig('matomo', 'tenant_site_id')
     from_timestamp = Tenant.current.created_at.to_i - described_class::RETROACTIVE_IMPORT
     options = { min_duration: 2.days, max_nb_batches: 3, batch_size: 100 }
@@ -30,5 +44,14 @@ RSpec.describe Analytics::ImportLatestMatomoDataJob do
       .to receive(:import).with(site_id, from_timestamp, options)
 
     described_class.perform_now(Tenant.current.id, options)
+  end
+
+  it 'raises an error if the configured matomo site is the default one' do
+    stub_const('ENV', ENV.to_h.merge(
+      'DEFAULT_MATOMO_TENANT_SITE_ID' => AppConfiguration.instance.settings('matomo', 'tenant_site_id')
+    ))
+
+    expect { described_class.perform_now(Tenant.current.id) }
+      .to raise_error(described_class::MatomoMisconfigurationError)
   end
 end
