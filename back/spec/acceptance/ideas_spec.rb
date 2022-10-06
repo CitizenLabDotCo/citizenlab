@@ -37,6 +37,7 @@ resource 'Ideas' do
       @ideas = %w[published published draft published spam published published].map do |ps|
         create :idea, publication_status: ps
       end
+      create :idea, project: create(:continuous_native_survey_project)
     end
 
     example_request 'List all published ideas (default behaviour)' do

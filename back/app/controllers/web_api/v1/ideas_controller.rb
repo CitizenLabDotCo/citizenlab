@@ -127,6 +127,8 @@ class WebApi::V1::IdeasController < ApplicationController
         send_error and return if project.continuous? || phase_ids.size != 1
 
         participation_context = Phase.find(phase_ids.first)
+        participation_method = Factory.instance.participation_method_for(participation_context)
+        participation_context = project unless participation_method.form_in_phase?
       end
     elsif phase_ids.any?
       send_error and return
@@ -140,7 +142,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
     user_can_moderate_project = UserRoleService.new.can_moderate_project?(project, current_user)
     input = Idea.new idea_params(custom_form, user_can_moderate_project)
-    input.creation_phase = creation_phase
+    input.creation_phase = creation_phase if participation_method.form_in_phase?
     input.author ||= current_user
     if phase_ids.empty? && project.timeline?
       input.phase_ids = [participation_context.id]

@@ -444,7 +444,6 @@ describe IdeasFinder do
     budgeting_project = create :continuous_budgeting_project
     survey_project = create :continuous_project, participation_method: 'native_survey'
 
-    create :idea, project: timeline_project, creation_phase: nil
     create :idea, project: timeline_project, creation_phase: survey_phase
     create :idea, project: survey_project
 
@@ -452,7 +451,8 @@ describe IdeasFinder do
       create(:idea, project: timeline_project, creation_phase: ideation_phase).id,
       create(:idea, project: timeline_project, creation_phase: budgeting_phase).id,
       create(:idea, project: ideation_project).id,
-      create(:idea, project: budgeting_project).id
+      create(:idea, project: budgeting_project).id,
+      create(:idea, project: timeline_project).id
     ]
   end
 end
