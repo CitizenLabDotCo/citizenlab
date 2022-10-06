@@ -6,13 +6,11 @@ import {
   HeaderSubtitle,
   TAlign,
   getAlignItems,
-  // getButtonStyle,
 } from 'containers/LandingPage/SignedOutHeader/HeaderContent';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import { Multiloc } from 'typings';
-import BannerButton from // BannerButtonStyle,
-'containers/LandingPage/BannerButton';
+import BannerButton from 'containers/LandingPage/BannerButton';
 
 interface Props {
   fontColors: 'light' | 'dark';
@@ -71,7 +69,7 @@ const HeaderContent = ({
       </HeaderSubtitle>
       {ctaButtonType === 'customized_button' && (
         <BannerButton
-          buttonStyle="primary"
+          buttonStyle={fontColors === 'light' ? 'primary-inverse' : 'primary'}
           text={localize(ctaButtonMultiloc)}
           linkTo={ctaButtonUrl}
           openLinkInNewTab={true}
