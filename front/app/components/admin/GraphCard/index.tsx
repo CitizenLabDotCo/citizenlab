@@ -1,14 +1,13 @@
 import React from 'react';
 
 // components
-import { Text } from '@citizenlab/cl2-component-library';
+import { Text, IconTooltip } from '@citizenlab/cl2-component-library';
 import {
   GraphCard as GraphCardContainer,
   GraphCardHeader,
   GraphCardTitle,
   GraphCardInnerClean,
 } from 'components/admin/GraphWrappers';
-import { IconTooltip } from '@citizenlab/cl2-component-library';
 import ReportExportMenu, {
   ReportExportMenuProps,
 } from 'components/admin/ReportExportMenu';
