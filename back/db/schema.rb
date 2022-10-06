@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_27_114325) do
+ActiveRecord::Schema.define(version: 2022_10_06_100512) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -56,12 +56,58 @@ ActiveRecord::Schema.define(version: 2022_09_27_114325) do
   create_table "analytics_dimension_dates", primary_key: "date", id: :date, force: :cascade do |t|
     t.string "year"
     t.string "month"
-    t.string "day"
+    t.date "week"
+  end
+
+  create_table "analytics_dimension_locales", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.index ["name"], name: "index_analytics_dimension_locales_on_name", unique: true
+  end
+
+  create_table "analytics_dimension_locales_fact_visits", id: false, force: :cascade do |t|
+    t.uuid "dimension_locale_id"
+    t.uuid "fact_visit_id"
+    t.index ["dimension_locale_id"], name: "i_l_v_locale"
+    t.index ["fact_visit_id"], name: "i_l_v_visit"
+  end
+
+  create_table "analytics_dimension_projects_fact_visits", id: false, force: :cascade do |t|
+    t.uuid "dimension_project_id"
+    t.uuid "fact_visit_id"
+    t.index ["dimension_project_id"], name: "i_p_v_project"
+    t.index ["fact_visit_id"], name: "i_p_v_visit"
+  end
+
+  create_table "analytics_dimension_referrer_types", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "key", null: false
+    t.string "name", null: false
+    t.index ["key"], name: "i_d_referrer_key", unique: true
   end
 
   create_table "analytics_dimension_types", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "parent"
+  end
+
+  create_table "analytics_fact_visits", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "visitor_id", null: false
+    t.uuid "dimension_user_id"
+    t.uuid "dimension_referrer_type_id", null: false
+    t.date "dimension_date_first_action_id", null: false
+    t.date "dimension_date_last_action_id", null: false
+    t.integer "duration", null: false
+    t.integer "pages_visited", null: false
+    t.boolean "returning_visitor", default: false, null: false
+    t.string "referrer_name"
+    t.string "referrer_url"
+    t.integer "matomo_visit_id", null: false
+    t.datetime "matomo_last_action_time", null: false
+    t.index ["dimension_date_first_action_id"], name: "i_v_first_action"
+    t.index ["dimension_date_last_action_id"], name: "i_v_last_action"
+    t.index ["dimension_referrer_type_id"], name: "i_v_referrer_type"
+    t.index ["dimension_user_id"], name: "i_v_user"
+    t.index ["matomo_last_action_time"], name: "i_v_timestamp"
+    t.index ["matomo_visit_id"], name: "i_v_matomo_visit", unique: true
   end
 
   create_table "app_configurations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1258,6 +1304,12 @@ ActiveRecord::Schema.define(version: 2022_09_27_114325) do
   end
 
   add_foreign_key "activities", "users"
+  add_foreign_key "analytics_dimension_locales_fact_visits", "analytics_dimension_locales", column: "dimension_locale_id"
+  add_foreign_key "analytics_dimension_locales_fact_visits", "analytics_fact_visits", column: "fact_visit_id"
+  add_foreign_key "analytics_dimension_projects_fact_visits", "analytics_fact_visits", column: "fact_visit_id"
+  add_foreign_key "analytics_fact_visits", "analytics_dimension_dates", column: "dimension_date_first_action_id", primary_key: "date"
+  add_foreign_key "analytics_fact_visits", "analytics_dimension_dates", column: "dimension_date_last_action_id", primary_key: "date"
+  add_foreign_key "analytics_fact_visits", "analytics_dimension_referrer_types", column: "dimension_referrer_type_id"
   add_foreign_key "areas", "custom_field_options"
   add_foreign_key "areas_ideas", "areas"
   add_foreign_key "areas_ideas", "ideas"
@@ -1621,5 +1673,10 @@ ActiveRecord::Schema.define(version: 2022_09_27_114325) do
        LEFT JOIN ideas i ON ((i.id = v.votable_id)))
        LEFT JOIN comments c ON ((c.id = v.votable_id)))
        LEFT JOIN ideas ic ON ((ic.id = c.post_id)));
+  SQL
+  create_view "analytics_dimension_users", sql_definition: <<-SQL
+      SELECT users.id,
+      COALESCE(((users.roles -> 0) ->> 'type'::text), 'citizen'::text) AS role
+     FROM users;
   SQL
 end
