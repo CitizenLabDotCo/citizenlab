@@ -757,7 +757,7 @@ resource 'Ideas' do
         end
       end
 
-      describe 'when posting an idea in an ideation phase, the form of the project is used for accepting the input' do
+      describe 'when posting an idea in an ideation phase, the form of the project is used for accepting the input', skip: !CitizenLab.ee? do
         let(:project) { create(:project_with_active_ideation_phase) }
         let!(:custom_form) do
           create(:custom_form, participation_context: project).tap do |form|
