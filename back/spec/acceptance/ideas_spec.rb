@@ -623,6 +623,18 @@ resource 'Ideas' do
       end
     end
 
+    describe 'when posting an idea in an active ideation phase, the creation_phase is not set' do
+      let(:project) { create(:project_with_active_ideation_phase) }
+      let!(:custom_form) { create(:custom_form, participation_context: project) }
+
+      example_request 'Post an idea in an ideation phase', document: false do
+        assert_status 201
+        json_response = json_parse response_body
+        idea = Idea.find(json_response.dig(:data, :id))
+        expect(idea.creation_phase).to be_nil
+      end
+    end
+
     describe 'For projects without ideas_order' do
       let(:project) { create(:continuous_project) }
 
@@ -778,6 +790,19 @@ resource 'Ideas' do
           expect(json_response.dig(:data, :attributes)).not_to have_key :idea_files_attributes
           # location_point_geojson is not a field and cannot be disabled, so it has a value
           expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
+        end
+      end
+
+      describe 'when posting an idea in an ideation phase, the creation_phase is not set' do
+        let(:project) { create(:project_with_active_ideation_phase) }
+        let!(:custom_form) { create(:custom_form, participation_context: project) }
+        let(:phase_ids) { [project.phases.first.id] }
+
+        example_request 'Post an idea in an ideation phase', document: false do
+          assert_status 201
+          json_response = json_parse response_body
+          idea = Idea.find(json_response.dig(:data, :id))
+          expect(idea.creation_phase).to be_nil
         end
       end
 
