@@ -10,7 +10,5 @@
 module Analytics
   class DimensionProject < Analytics::ApplicationRecordView
     self.primary_key = :id
-    has_many :posts, class_name: 'PostActivity'
-    has_many :participations, class_name: 'ParticipationActivity'
   end
 end
