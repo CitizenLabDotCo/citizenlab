@@ -60,6 +60,6 @@ const SingleSelectRadioControl = ({
 export default withJsonFormsControlProps(SingleSelectRadioControl);
 
 export const singleSelectRadioControlTester: RankedTester = rankWith(
-  10,
+  1,
   isOneOfControl
 );
