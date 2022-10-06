@@ -7,9 +7,9 @@
 #  id                             :uuid             not null, primary key
 #  visitor_id                     :string           not null
 #  dimension_user_id              :uuid
-#  dimension_referrer_type_id     :uuid
-#  dimension_date_first_action_id :date
-#  dimension_date_last_action_id  :date
+#  dimension_referrer_type_id     :uuid             not null
+#  dimension_date_first_action_id :date             not null
+#  dimension_date_last_action_id  :date             not null
 #  duration                       :integer          not null
 #  pages_visited                  :integer          not null
 #  returning_visitor              :boolean          default(FALSE), not null

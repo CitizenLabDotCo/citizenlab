@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_27_114325) do
+ActiveRecord::Schema.define(version: 2022_10_06_100512) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -92,9 +92,9 @@ ActiveRecord::Schema.define(version: 2022_09_27_114325) do
   create_table "analytics_fact_visits", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "visitor_id", null: false
     t.uuid "dimension_user_id"
-    t.uuid "dimension_referrer_type_id"
-    t.date "dimension_date_first_action_id"
-    t.date "dimension_date_last_action_id"
+    t.uuid "dimension_referrer_type_id", null: false
+    t.date "dimension_date_first_action_id", null: false
+    t.date "dimension_date_last_action_id", null: false
     t.integer "duration", null: false
     t.integer "pages_visited", null: false
     t.boolean "returning_visitor", default: false, null: false
