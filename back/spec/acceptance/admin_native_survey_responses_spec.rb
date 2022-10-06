@@ -94,6 +94,7 @@ resource 'Ideas' do
           input = inputs.first
           expect(input.phase_ids).to eq []
           expect(input.custom_field_values).to eq({ 'custom_field_name1' => 'Cat' })
+          expect(input.creation_phase).to be_nil
         end
       end
 
@@ -111,6 +112,7 @@ resource 'Ideas' do
           input = inputs.first
           expect(inputs.first.phase_ids).to eq [active_phase.id]
           expect(input.custom_field_values).to eq({ 'custom_field_name1' => 'Cat' })
+          expect(input.creation_phase_id).to eq active_phase.id
         end
       end
 
@@ -151,7 +153,7 @@ resource 'Ideas' do
         end
       end
 
-      context 'in an active native survey phase' do
+      context 'with an active native survey phase' do
         let(:project) { create :project_with_active_and_future_native_survey_phase }
         let(:active_phase) { project.phases.first }
         let(:future_phase) { project.phases.last }
@@ -168,6 +170,7 @@ resource 'Ideas' do
           input = inputs.first
           expect(inputs.first.phase_ids).to eq [future_phase.id]
           expect(input.custom_field_values).to eq({ 'custom_field_name1' => 'Cat' })
+          expect(input.creation_phase_id).to eq future_phase.id
         end
       end
 
@@ -186,6 +189,7 @@ resource 'Ideas' do
           input = inputs.first
           expect(inputs.first.phase_ids).to eq [future_phase.id]
           expect(input.custom_field_values).to eq({ 'custom_field_name1' => 'Cat' })
+          expect(input.creation_phase_id).to eq future_phase.id
         end
       end
     end

@@ -95,10 +95,11 @@ resource 'Ideas' do
             input = inputs.first
             expect(input.phase_ids).to eq []
             expect(input.custom_field_values).to eq({ 'custom_field_name1' => 'Cat' })
+            expect(input.creation_phase).to be_nil
           end
         end
 
-        describe 'in an active native survey phase' do
+        describe 'with an active native survey phase' do
           let(:project) { create :project_with_active_native_survey_phase }
           let(:active_phase) { project.phases.first }
           let(:custom_form) { create(:custom_form, participation_context: active_phase) }
@@ -112,6 +113,7 @@ resource 'Ideas' do
             input = inputs.first
             expect(inputs.first.phase_ids).to eq [active_phase.id]
             expect(input.custom_field_values).to eq({ 'custom_field_name1' => 'Cat' })
+            expect(input.creation_phase_id).to eq active_phase.id
           end
         end
       end
