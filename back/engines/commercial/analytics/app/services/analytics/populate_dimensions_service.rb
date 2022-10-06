@@ -15,7 +15,7 @@ module Analytics
       def populate_dates
         dates_count = Analytics::DimensionDate.count
         from = Time.zone.today
-        to = Time.zone.today + 6.months
+        to = from + 6.months
 
         if dates_count == 0
           first_idea = Idea.order(:created_at).limit(1).pluck(:created_at)
