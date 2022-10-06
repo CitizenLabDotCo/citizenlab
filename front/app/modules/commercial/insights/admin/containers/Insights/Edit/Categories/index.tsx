@@ -53,12 +53,12 @@ import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks
 
 const CategoriesLabel = styled.div`
   display: flex;
+  align-items: center;
   p {
     text-transform: uppercase;
     font-size: ${fontSizes.xs}px;
     color: ${colors.primary};
     font-weight: bold;
-    margin-bottom: 0px;
     margin-right: 8px;
   }
 `;

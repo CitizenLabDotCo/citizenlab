@@ -5,8 +5,6 @@ import { Icon } from '@citizenlab/cl2-component-library';
 import { isString } from 'lodash-es';
 
 const StyledIcon = styled(Icon)`
-  margin-left: 5px;
-
   &.ascending {
     transform: rotate(180deg);
   }
