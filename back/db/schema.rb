@@ -60,7 +60,8 @@ ActiveRecord::Schema.define(version: 2022_09_27_114325) do
   end
 
   create_table "analytics_dimension_locales", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
+    t.index ["name"], name: "index_analytics_dimension_locales_on_name", unique: true
   end
 
   create_table "analytics_dimension_locales_fact_visits", id: false, force: :cascade do |t|
@@ -78,8 +79,8 @@ ActiveRecord::Schema.define(version: 2022_09_27_114325) do
   end
 
   create_table "analytics_dimension_referrer_types", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "key"
-    t.string "name"
+    t.string "key", null: false
+    t.string "name", null: false
     t.index ["key"], name: "i_d_referrer_key", unique: true
   end
 
