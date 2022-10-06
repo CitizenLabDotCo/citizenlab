@@ -1,5 +1,8 @@
 import React from 'react';
 import { isEmptyMultiloc } from 'utils/helperUtils';
+
+// i18n
+import ResolveTextVariables from 'components/ResolveTextVariables';
 import T from 'components/T';
 
 // typings
@@ -30,11 +33,18 @@ const CustomPageTopInfoSection = ({ multilocContent }: Props) => {
     return null;
   }
 
+  // needed for backwards compatibility with old-style custom pages
+  // see PagesShowPage/index.tsx on an older commit for more info
+  // this won't be needed for bottom info section
+  const pageContent = (
+    <ResolveTextVariables value={multilocContent}>
+      {(multiloc) => <T value={multiloc} supportHtml={true} />}
+    </ResolveTextVariables>
+  );
+
   return (
     <StyledTopInfoSectionContainer>
-      <StyledQuillEditedContent>
-        <T value={multilocContent} supportHtml={true} />
-      </StyledQuillEditedContent>
+      <StyledQuillEditedContent>{pageContent}</StyledQuillEditedContent>
     </StyledTopInfoSectionContainer>
   );
 };
