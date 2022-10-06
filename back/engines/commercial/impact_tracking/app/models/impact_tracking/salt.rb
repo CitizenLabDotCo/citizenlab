@@ -4,7 +4,7 @@
 #
 # Table name: impact_tracking_salts
 #
-#  id         :bigint           not null, primary key
+#  id         :uuid             not null, primary key
 #  salt       :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null

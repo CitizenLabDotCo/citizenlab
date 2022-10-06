@@ -4,7 +4,7 @@ import React, {
   FunctionComponent,
   ReactElement,
 } from 'react';
-
+import { Moment } from 'moment';
 import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
 import {
   TSignUpStepConfigurationObject,
@@ -66,6 +66,7 @@ import { BannerButtonStyle } from 'containers/LandingPage/BannerButton';
 import { AuthProvider } from 'components/SignUpIn/AuthProviders';
 import { Localize } from 'hooks/useLocalize';
 import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/projects/project/general';
+import { IResolution } from 'components/admin/ResolutionControl';
 
 export type ITabsOutlet = {
   formatMessage: (
@@ -182,8 +183,9 @@ export interface OutletsPropertyMap {
   };
   'app.containers.Admin.dashboard.summary.postStatus': {
     projectId: string | undefined;
-    startAt: string | null | undefined;
-    endAt: string | null | undefined;
+    startAtMoment: Moment | null | undefined;
+    endAtMoment: Moment | null | undefined;
+    resolution: IResolution;
     onMount: () => void;
   };
   'app.components.SignUpIn.SignUp.step': SignUpStepOutletProps;
