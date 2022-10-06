@@ -38,7 +38,11 @@ const GraphCard = ({
 
           {infoTooltipContent && (
             <IconTooltip
-              content={<Text m="0px">{infoTooltipContent}</Text>}
+              content={
+                <Text m="0px" mb="0px" fontSize="s">
+                  {infoTooltipContent}
+                </Text>
+              }
               ml="8px"
               transform="translate(0,-2)"
               theme="light"
