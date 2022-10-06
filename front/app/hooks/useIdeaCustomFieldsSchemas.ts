@@ -7,9 +7,15 @@ import { Observable, of } from 'rxjs';
 
 interface Props {
   projectId: string | null;
+  phaseId?: string | null;
+  inputId?: string;
 }
 
-export default function useIdeaCustomFieldsSchemas({ projectId }: Props) {
+export default function useIdeaCustomFieldsSchemas({
+  projectId,
+  phaseId,
+  inputId,
+}: Props) {
   const [ideaCustomFieldsSchemas, setIdeaCustomFieldsSchemas] = useState<
     IIdeaFormSchemas | undefined | null | Error
   >(undefined);
@@ -18,7 +24,7 @@ export default function useIdeaCustomFieldsSchemas({ projectId }: Props) {
     let observable: Observable<IIdeaFormSchemas | null> = of(null);
 
     if (projectId) {
-      observable = ideaFormSchemaStream(projectId).observable;
+      observable = ideaFormSchemaStream(projectId, phaseId, inputId).observable;
     }
 
     const subscription = observable.subscribe((ideaCustomFieldsSchemas) => {
@@ -26,7 +32,7 @@ export default function useIdeaCustomFieldsSchemas({ projectId }: Props) {
     });
 
     return () => subscription.unsubscribe();
-  }, [projectId]);
+  }, [projectId, inputId, phaseId]);
 
   return ideaCustomFieldsSchemas;
 }
