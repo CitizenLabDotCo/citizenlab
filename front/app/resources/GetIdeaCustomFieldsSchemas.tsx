@@ -20,5 +20,7 @@ export default (props: Props) => {
   const ideaCustomFieldsSchema = useIdeaCustomFieldsSchemas({
     projectId: props.projectId,
   });
-  return (props.children as children)(ideaCustomFieldsSchema);
+  return (props.children as children)(
+    ideaCustomFieldsSchema as IIdeaFormSchemas
+  );
 };

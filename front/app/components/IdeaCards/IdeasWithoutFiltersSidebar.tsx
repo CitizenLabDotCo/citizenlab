@@ -45,6 +45,10 @@ import {
 } from 'services/participationContexts';
 import { IParticipationContextType } from 'typings';
 import { CustomFieldCodes } from 'services/ideaCustomFieldsSchemas';
+import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
+import { checkFieldEnabled } from 'containers/IdeasShow/isFieldEnabled';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocale from 'hooks/useLocale';
 
 const Container = styled.div`
   width: 100%;
@@ -183,7 +187,6 @@ const IdeasWithoutFiltersSidebar = ({
   allowProjectsFilter,
   project,
   ideaCustomFieldsSchemas,
-  locale,
   participationMethod,
   participationContextId,
   participationContextType,
@@ -221,21 +224,34 @@ const IdeasWithoutFiltersSidebar = ({
     setSelectedView(selectedView);
   };
 
-  const isFieldEnabled = (fieldCode: CustomFieldCodes) => {
+  const IsFieldEnabled = (projectId: string, fieldCode: CustomFieldCodes) => {
+    const schema = useIdeaCustomFieldsSchemas({ projectId });
+    const ideaCustomFieldsIsEnabled = useFeatureFlag({
+      name: 'idea_custom_fields',
+    });
+    const dynamicIdeaFormIsEnabled = useFeatureFlag({
+      name: 'dynamic_idea_form',
+    });
+    const locale = useLocale();
+
     /*
       If IdeaCards are used in a location that's not inside a project,
       and has no ideaCustomFields settings as such,
       we fall back to true
     */
-
-    if (!isNilOrError(ideaCustomFieldsSchemas) && !isNilOrError(locale)) {
-      return (
-        ideaCustomFieldsSchemas.ui_schema_multiloc?.[locale]?.[fieldCode]?.[
-          'ui:widget'
-        ] !== 'hidden'
+    if (
+      !isNilOrError(ideaCustomFieldsSchemas) &&
+      !isNilOrError(locale) &&
+      !isNilOrError(schema)
+    ) {
+      return checkFieldEnabled(
+        fieldCode,
+        schema,
+        locale,
+        ideaCustomFieldsIsEnabled,
+        dynamicIdeaFormIsEnabled
       );
     }
-
     return true;
   };
 
@@ -246,8 +262,13 @@ const IdeasWithoutFiltersSidebar = ({
     queryParameters: { phase: phaseId },
   } = ideas;
 
-  const locationEnabled = isFieldEnabled('location_description');
-  const topicsEnabled = isFieldEnabled('topic_ids');
+  let locationEnabled = false;
+  let topicsEnabled = false;
+
+  if (!isNilOrError(projectId)) {
+    locationEnabled = IsFieldEnabled(projectId, 'location_description');
+    topicsEnabled = IsFieldEnabled(projectId, 'topic_ids');
+  }
   const showViewButtons = !!(locationEnabled && showViewToggle);
   const showListView =
     !locationEnabled || (locationEnabled && selectedView === 'card');

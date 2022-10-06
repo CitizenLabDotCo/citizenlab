@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
-import isFieldEnabled from '../isFieldEnabled';
+import { checkFieldEnabled } from '../isFieldEnabled';
 
 // components
 import Status from './Status';
@@ -10,10 +10,11 @@ import Attachments from './Attachments';
 import IdeaTopics from './IdeaTopics';
 import PostedBy from './PostedBy';
 
-// hooks
+// hooks & services
 import useLocale from 'hooks/useLocale';
 import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
 import Outlet from 'components/Outlet';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const Container = styled.div`
   width: 100%;
@@ -41,22 +42,41 @@ const MetaInformation = ({
   className,
 }: Props) => {
   const locale = useLocale();
-  const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({ projectId });
+
+  const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({
+    projectId,
+    ideaId,
+  });
+  const ideaCustomFieldsIsEnabled = useFeatureFlag({
+    name: 'idea_custom_fields',
+  });
+  const dynamicIdeaFormIsEnabled = useFeatureFlag({
+    name: 'dynamic_idea_form',
+  });
+
   if (!isNilOrError(locale) && !isNilOrError(ideaCustomFieldsSchemas)) {
-    const topicsEnabled = isFieldEnabled(
+    const topicsEnabled = checkFieldEnabled(
       'topic_ids',
       ideaCustomFieldsSchemas,
-      locale
+      locale,
+      ideaCustomFieldsIsEnabled,
+      dynamicIdeaFormIsEnabled
     );
-    const locationEnabled = isFieldEnabled(
+
+    const locationEnabled = checkFieldEnabled(
       'location_description',
       ideaCustomFieldsSchemas,
-      locale
+      locale,
+      ideaCustomFieldsIsEnabled,
+      dynamicIdeaFormIsEnabled
     );
-    const attachmentsEnabled = isFieldEnabled(
+
+    const attachmentsEnabled = checkFieldEnabled(
       'idea_files_attributes',
       ideaCustomFieldsSchemas,
-      locale
+      locale,
+      ideaCustomFieldsIsEnabled,
+      dynamicIdeaFormIsEnabled
     );
 
     return (

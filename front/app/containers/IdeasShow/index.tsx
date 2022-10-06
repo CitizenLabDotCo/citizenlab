@@ -79,6 +79,13 @@ import usePhases from 'hooks/usePhases';
 import useIdea from 'hooks/useIdea';
 import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
 
+// services
+import {
+  CustomFieldCodes,
+  IIdeaFormSchemas,
+} from 'services/ideaCustomFieldsSchemas';
+import { IIdeaJsonFormSchemas } from 'services/ideaJsonFormsSchema';
+
 const contentFadeInDuration = 250;
 const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 const contentFadeInDelay = 150;
@@ -211,13 +218,23 @@ export const IdeasShow = ({
     };
   }, []);
 
-  const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({ projectId });
   const phases = usePhases(projectId);
   const idea = useIdea({ ideaId });
   const locale = useLocale();
 
   const ideaflowSocialSharingIsEnabled = useFeatureFlag({
     name: 'ideaflow_social_sharing',
+  });
+  const ideaCustomFieldsIsEnabled = useFeatureFlag({
+    name: 'idea_custom_fields',
+  });
+  const dynamicIdeaFormIsEnabled = useFeatureFlag({
+    name: 'dynamic_idea_form',
+  });
+
+  const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({
+    projectId,
+    ideaId,
   });
 
   const isLoaded =
@@ -265,10 +282,33 @@ export const IdeasShow = ({
     const isCompactView =
       compact === true ||
       (windowSize ? windowSize <= viewportWidths.tablet : false);
-    const proposedBudgetEnabled = isFieldEnabled(
+
+    const checkFieldEnabled = (
+      fieldName: CustomFieldCodes,
+      ideaCustomFieldsIsEnabled,
+      dynamicIdeaFormIsEnabled
+    ) => {
+      let fieldEnabled;
+      if (!ideaCustomFieldsIsEnabled || !dynamicIdeaFormIsEnabled) {
+        fieldEnabled = isFieldEnabled(
+          fieldName,
+          ideaCustomFieldsSchemas as IIdeaFormSchemas,
+          locale
+        );
+      } else {
+        const schema = ideaCustomFieldsSchemas as IIdeaJsonFormSchemas;
+        const jsonmultiloc = schema.json_schema_multiloc[locale];
+        if (jsonmultiloc) {
+          fieldEnabled = jsonmultiloc.properties[fieldName];
+        }
+      }
+      return fieldEnabled;
+    };
+
+    const proposedBudgetEnabled = checkFieldEnabled(
       'proposed_budget',
-      ideaCustomFieldsSchemas,
-      locale
+      ideaCustomFieldsIsEnabled,
+      dynamicIdeaFormIsEnabled
     );
 
     content = (
