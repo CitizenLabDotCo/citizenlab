@@ -8,8 +8,14 @@ class AddFieldsAndRenameFieldInStaticPages < ActiveRecord::Migration[6.1]
   # rubocop:enable Rails/ApplicationRecord
 
   def change
-    rename_column :static_pages, :body_multiloc, :top_info_section_multiloc
+    reversible do |dir|
+      dir.up do
+        execute('UPDATE static_pages SET top_info_section_multiloc = body_multiloc')
+      end
+    end
+
     change_column_null :static_pages, :top_info_section_multiloc, false
+    change_column_default :static_pages, :top_info_section_multiloc, from: nil, to: {}
     add_column :static_pages, :banner_enabled, :boolean, default: false, null: false
     add_column :static_pages, :banner_layout, :string, default: 'full_width_banner_layout', null: false
     add_column :static_pages, :banner_overlay_color, :string

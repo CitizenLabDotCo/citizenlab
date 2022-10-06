@@ -6,11 +6,12 @@
 #
 #  id                           :uuid             not null, primary key
 #  title_multiloc               :jsonb
-#  top_info_section_multiloc    :jsonb            not null
+#  body_multiloc                :jsonb
 #  slug                         :string
 #  created_at                   :datetime         not null
 #  updated_at                   :datetime         not null
 #  code                         :string           not null
+#  top_info_section_multiloc    :jsonb            not null
 #  banner_enabled               :boolean          default(FALSE), not null
 #  banner_layout                :string           default("full_width_banner_layout"), not null
 #  banner_overlay_color         :string
@@ -87,6 +88,11 @@ class StaticPage < ApplicationRecord
   validates :bottom_info_section_multiloc, multiloc: { presence: false, html: true }
 
   mount_base64_uploader :header_bg, HeaderBgUploader
+
+  def body_multiloc=(value)
+    self.top_info_section_multiloc = value
+    super
+  end
 
   def custom?
     code == 'custom'
