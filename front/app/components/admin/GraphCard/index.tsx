@@ -1,6 +1,7 @@
 import React from 'react';
 
 // components
+import { Text } from '@citizenlab/cl2-component-library';
 import {
   GraphCard as GraphCardContainer,
   GraphCardHeader,
@@ -37,7 +38,7 @@ const GraphCard = ({
 
           {infoTooltipContent && (
             <IconTooltip
-              content={infoTooltipContent}
+              content={<Text m="0px">{infoTooltipContent}</Text>}
               ml="8px"
               transform="translate(0,-2)"
               theme="light"
