@@ -127,6 +127,8 @@ class WebApi::V1::IdeasController < ApplicationController
         send_error and return if project.continuous? || phase_ids.size != 1
 
         participation_context = Phase.find(phase_ids.first)
+        participation_method = Factory.instance.participation_method_for(participation_context)
+        participation_context = project unless participation_method.form_in_phase?
       end
     elsif phase_ids.any?
       send_error and return
