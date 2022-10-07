@@ -36,7 +36,6 @@ module Analytics
       end
 
       def create_dates(from, to)
-        pp [from, to]
         (from..to).each do |date|
           Analytics::DimensionDate.create!(
             date: date,
