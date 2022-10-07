@@ -49,7 +49,7 @@ const getInputFormsSchemaEndpoint = (
 export function ideaJsonFormsSchemaStream(
   projectId: string,
   phaseId?: string | null,
-  inputId?: string,
+  inputId?: string | null,
   streamParams: IStreamParams | null = null
 ) {
   const apiEndpoint = getInputFormsSchemaEndpoint(projectId, phaseId, inputId);

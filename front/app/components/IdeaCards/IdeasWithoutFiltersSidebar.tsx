@@ -24,6 +24,9 @@ import GetIdeas, {
   InputProps as GetIdeasInputProps,
 } from 'resources/GetIdeas';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetIdeaCustomFieldsSchemas, {
+  GetIdeaCustomFieldsSchemasChildProps,
+} from 'resources/GetIdeaCustomFieldsSchemas';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // i18n
@@ -42,10 +45,6 @@ import {
 } from 'services/participationContexts';
 import { IParticipationContextType } from 'typings';
 import { CustomFieldCodes } from 'services/ideaCustomFieldsSchemas';
-import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
-import { checkFieldEnabled } from 'containers/IdeasShow/isFieldEnabled';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useLocale from 'hooks/useLocale';
 
 const Container = styled.div`
   width: 100%;
@@ -59,26 +58,21 @@ const FiltersArea = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 15px;
-
   ${isRtl`
     flex-direction: row-reverse;
   `}
-
   &.mapView {
     justify-content: flex-end;
     margin-bottom: 15px;
-
     ${media.tablet`
       margin-bottom: 0px;
     `}
   }
-
   ${media.desktop`
     &.mapView {
       margin-top: -65px;
     }
   `}
-
   ${media.tablet`
     flex-direction: column;
     align-items: stretch;
@@ -93,11 +87,9 @@ const FilterArea = styled.div`
 
 const LeftFilterArea = styled(FilterArea)`
   flex: 1 1 auto;
-
   &.hidden {
     display: none;
   }
-
   ${media.tablet`
     display: flex;
     flex-direction: column;
@@ -108,7 +100,6 @@ const LeftFilterArea = styled(FilterArea)`
 const RightFilterArea = styled(FilterArea)`
   display: flex;
   align-items: center;
-
   &.hidden {
     display: none;
   }
@@ -117,7 +108,6 @@ const RightFilterArea = styled(FilterArea)`
 const DropdownFilters = styled.div`
   display: flex;
   align-items: center;
-
   &.hidden {
     display: none;
   }
@@ -125,7 +115,6 @@ const DropdownFilters = styled.div`
 
 const DesktopViewButtons = styled(ViewButtons)`
   margin-left: 40px;
-
   ${media.tablet`
     display: none;
   `}
@@ -138,12 +127,10 @@ const MobileViewButtons = styled(ViewButtons)`
 const StyledSearchInput = styled(SearchInput)`
   width: 300px;
   margin-right: 30px;
-
   ${isRtl`
     margin-right: 0;
     margin-left: auto;
   `}
-
   ${media.tablet`
     width: 100%;
     margin-right: 0px;
@@ -169,6 +156,7 @@ interface DataProps {
   windowSize: GetWindowSizeChildProps;
   ideas: GetIdeasChildProps;
   project: GetProjectChildProps;
+  ideaCustomFieldsSchemas: GetIdeaCustomFieldsSchemasChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -182,6 +170,8 @@ const IdeasWithoutFiltersSidebar = ({
   className,
   allowProjectsFilter,
   project,
+  ideaCustomFieldsSchemas,
+  locale,
   participationMethod,
   participationContextId,
   participationContextType,
@@ -219,30 +209,21 @@ const IdeasWithoutFiltersSidebar = ({
     setSelectedView(selectedView);
   };
 
-  const IsFieldEnabled = (projectId: string, fieldCode: CustomFieldCodes) => {
-    const schema = useIdeaCustomFieldsSchemas({ projectId });
-    const ideaCustomFieldsIsEnabled = useFeatureFlag({
-      name: 'idea_custom_fields',
-    });
-    const dynamicIdeaFormIsEnabled = useFeatureFlag({
-      name: 'dynamic_idea_form',
-    });
-    const locale = useLocale();
-
+  const isFieldEnabled = (fieldCode: CustomFieldCodes) => {
     /*
       If IdeaCards are used in a location that's not inside a project,
       and has no ideaCustomFields settings as such,
       we fall back to true
     */
-    if (!isNilOrError(locale) && !isNilOrError(schema)) {
-      return checkFieldEnabled(
-        fieldCode,
-        schema,
-        locale,
-        ideaCustomFieldsIsEnabled,
-        dynamicIdeaFormIsEnabled
+
+    if (!isNilOrError(ideaCustomFieldsSchemas) && !isNilOrError(locale)) {
+      return (
+        ideaCustomFieldsSchemas.ui_schema_multiloc?.[locale]?.[fieldCode]?.[
+          'ui:widget'
+        ] !== 'hidden'
       );
     }
+
     return true;
   };
 
@@ -253,13 +234,8 @@ const IdeasWithoutFiltersSidebar = ({
     queryParameters: { phase: phaseId },
   } = ideas;
 
-  let locationEnabled = false;
-  let topicsEnabled = false;
-
-  if (!isNilOrError(projectId)) {
-    locationEnabled = IsFieldEnabled(projectId, 'location_description');
-    topicsEnabled = IsFieldEnabled(projectId, 'topic_ids');
-  }
+  const locationEnabled = isFieldEnabled('location_description');
+  const topicsEnabled = isFieldEnabled('topic_ids');
   const showViewButtons = !!(locationEnabled && showViewToggle);
   const showListView =
     !locationEnabled || (locationEnabled && selectedView === 'card');
@@ -383,6 +359,22 @@ const Data = adopt<DataProps, InputProps>({
   project: ({ render, projectId }) => (
     <GetProject projectId={projectId}>{render}</GetProject>
   ),
+  ideaCustomFieldsSchemas: ({
+    render,
+    projectId,
+    ideas: {
+      queryParameters: { phase: phaseId },
+    },
+  }) => {
+    return (
+      <GetIdeaCustomFieldsSchemas
+        projectId={projectId || null}
+        phaseId={phaseId}
+      >
+        {render}
+      </GetIdeaCustomFieldsSchemas>
+    );
+  },
 });
 
 export default (inputProps: InputProps) => (

@@ -12,12 +12,14 @@ import useFeatureFlag from './useFeatureFlag';
 
 interface Props {
   projectId: string | null;
-  ideaId?: string | null;
+  phaseId?: string | null;
+  inputId?: string;
 }
 
 export default function useIdeaCustomFieldsSchemas({
   projectId,
-  ideaId,
+  phaseId,
+  inputId,
 }: Props) {
   const [ideaCustomFieldsSchemas, setIdeaCustomFieldsSchemas] = useState<
     IIdeaFormSchemas | undefined | null | Error | IIdeaJsonFormSchemas
@@ -47,10 +49,10 @@ export default function useIdeaCustomFieldsSchemas({
       observable = ideaJsonFormsSchemaStream(
         projectId,
         null,
-        ideaId || undefined
+        inputId || undefined
       ).observable;
     } else {
-      observable = ideaFormSchemaStream(projectId).observable;
+      observable = ideaFormSchemaStream(projectId, phaseId, inputId).observable;
     }
 
     const subscription = observable.subscribe((ideaCustomFieldsSchemas) => {
@@ -58,7 +60,13 @@ export default function useIdeaCustomFieldsSchemas({
     });
 
     return () => subscription.unsubscribe();
-  }, [projectId, ideaId, ideaCustomFieldsIsEnabled, dynamicIdeaFormIsEnabled]);
+  }, [
+    projectId,
+    inputId,
+    phaseId,
+    ideaCustomFieldsIsEnabled,
+    dynamicIdeaFormIsEnabled,
+  ]);
 
   return ideaCustomFieldsSchemas;
 }

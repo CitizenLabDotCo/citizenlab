@@ -7,12 +7,14 @@
 #  date  :date             not null, primary key
 #  year  :string
 #  month :string
-#  day   :string
+#  week  :date
 #
 module Analytics
   class DimensionDate < Analytics::ApplicationRecord
     self.primary_key = :date
-    has_many :posts, class_name: 'PostActivity'
-    has_many :participations, class_name: 'ParticipationActivity'
+    validates :date, presence: true
+    validates :year, presence: true
+    validates :month, presence: true
+    validates :week, presence: true
   end
 end
