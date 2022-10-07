@@ -127,12 +127,11 @@ describe('Admin: create custom page', () => {
     //  go back to main page
     cy.get(`[data-cy="breadcrumbs-${pageName}"]`).click();
 
-    // visit our custom page, removing target to keep same tab
-    // cy.get('#to-custom-page').invoke('removeAttr', 'target').click()
     // visit our customm page by slug
     cy.visit(`/en/pages/${pageName}`);
 
     // to do - test attachments (same way as drag and drop image, but has to not be png)
+    // to do - find a way to check that the icon.png image was properly uploaded
     cy.contains(headerContent);
     cy.contains(subheaderContent);
     cy.contains(ctaContent);
