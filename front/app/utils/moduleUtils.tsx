@@ -4,7 +4,7 @@ import React, {
   FunctionComponent,
   ReactElement,
 } from 'react';
-
+import { Moment } from 'moment';
 import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
 import {
   TSignUpStepConfigurationObject,
@@ -31,7 +31,6 @@ import {
   MessageDescriptor,
   Multiloc,
   Locale,
-  CLErrors,
 } from 'typings';
 import { LatLngTuple } from 'leaflet';
 import { Point } from 'components/UI/LeafletMap/typings';
@@ -44,10 +43,7 @@ import {
   TAppConfigurationSetting,
   TAppConfigurationSettingCore,
 } from 'services/appConfiguration';
-import {
-  THomepageBannerLayout,
-  IHomepageSettingsAttributes,
-} from 'services/homepageSettings';
+import { THomepageBannerLayout } from 'services/homepageSettings';
 import { ManagerType } from 'components/admin/PostManager';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaHeaderRow';
@@ -70,6 +66,7 @@ import { BannerButtonStyle } from 'containers/LandingPage/BannerButton';
 import { AuthProvider } from 'components/SignUpIn/AuthProviders';
 import { Localize } from 'hooks/useLocalize';
 import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/projects/project/general';
+import { IResolution } from 'components/admin/ResolutionControl';
 
 export type ITabsOutlet = {
   formatMessage: (
@@ -186,8 +183,9 @@ export interface OutletsPropertyMap {
   };
   'app.containers.Admin.dashboard.summary.postStatus': {
     projectId: string | undefined;
-    startAt: string | null | undefined;
-    endAt: string | null | undefined;
+    startAtMoment: Moment | null | undefined;
+    endAtMoment: Moment | null | undefined;
+    resolution: IResolution;
     onMount: () => void;
   };
   'app.components.SignUpIn.SignUp.step': SignUpStepOutletProps;
@@ -368,21 +366,6 @@ export interface OutletsPropertyMap {
   };
   'app.containers.Admin.initiatives.settings.EnableSwitch': {
     onMount: () => void;
-  };
-  'app.containers.Admin.settings.customize.headerSectionStart': {
-    homepageSettings: IHomepageSettingsAttributes;
-    handleOnChange: (
-      settingKey: keyof IHomepageSettingsAttributes,
-      settingValue: any
-    ) => void;
-  };
-  'app.containers.Admin.settings.customize.headerSectionEnd': {
-    homepageSettings: IHomepageSettingsAttributes;
-    handleOnChange: (
-      settingKey: keyof IHomepageSettingsAttributes,
-      settingValue: any
-    ) => void;
-    errors: CLErrors | null;
   };
   'app.containers.LandingPage.SignedOutHeader.index': {
     homepageBannerLayout: THomepageBannerLayout;
