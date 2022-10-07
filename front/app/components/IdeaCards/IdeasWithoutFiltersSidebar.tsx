@@ -371,9 +371,18 @@ const Data = adopt<DataProps, InputProps>({
   project: ({ render, projectId }) => (
     <GetProject projectId={projectId}>{render}</GetProject>
   ),
-  ideaCustomFieldsSchemas: ({ render, projectId }) => {
+  ideaCustomFieldsSchemas: ({
+    render,
+    projectId,
+    ideas: {
+      queryParameters: { phase: phaseId },
+    },
+  }) => {
     return (
-      <GetIdeaCustomFieldsSchemas projectId={projectId || null}>
+      <GetIdeaCustomFieldsSchemas
+        projectId={projectId || null}
+        phaseId={phaseId}
+      >
         {render}
       </GetIdeaCustomFieldsSchemas>
     );

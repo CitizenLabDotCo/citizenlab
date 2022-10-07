@@ -53,6 +53,7 @@ const NewIdeaButtonDropdown = ({
                         `/projects/${project.attributes.slug}/ideas/new?phase_id=${phase.id}`
                       );
                     }}
+                    id={`e2e-phase-${phase.id}`}
                   >
                     <span color={colors.textPrimary}>
                       {localize(phase.attributes.title_multiloc)}
@@ -86,7 +87,12 @@ const NewIdeaButtonDropdown = ({
           name="idea"
           marginY="auto"
         />
-        <Text margin="auto" padding="8px" style={{ color: 'white' }}>
+        <Text
+          margin="auto"
+          padding="8px"
+          style={{ color: 'white' }}
+          id="e2e-add-an-input"
+        >
           {formatMessage(messages.addNewInput)}
         </Text>
       </Box>
