@@ -1,6 +1,10 @@
 # Changelog
 
-## 2022-10-03 (2)
+## 2022-10-06
+
+### Added
+
+- [CL-1328] New visitors dashboard released behind feature flag
 
 ### Fixed
 

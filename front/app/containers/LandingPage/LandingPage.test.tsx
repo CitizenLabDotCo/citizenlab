@@ -13,15 +13,13 @@ jest.mock('services/homepageSettings', () => ({
 }));
 
 const mockHomepageSettings = {
-  data: {
-    id: '1',
-    attributes: {
-      banner_layout: 'full_width_banner_layout',
-      banner_signed_out_header_multiloc: { en: 'Signed out header' },
-      banner_signed_out_subheader_multiloc: { en: 'Signed out subhead' },
-      banner_signed_in_header_multiloc: { en: 'Signed in header' },
-      header_bg: { large: 'https://example.com/image.png' },
-    },
+  id: '1',
+  attributes: {
+    banner_layout: 'full_width_banner_layout',
+    banner_signed_out_header_multiloc: { en: 'Signed out header' },
+    banner_signed_out_subheader_multiloc: { en: 'Signed out subhead' },
+    banner_signed_in_header_multiloc: { en: 'Signed in header' },
+    header_bg: { large: 'https://example.com/image.png' },
   },
 };
 
