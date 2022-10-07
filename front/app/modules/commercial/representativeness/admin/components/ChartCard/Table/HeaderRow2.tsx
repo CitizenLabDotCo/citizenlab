@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Header, Row /*Cell*/ } from 'components/admin/Table';
+import { Header, Row, HeaderCell } from 'components/admin/Table';
 import { Box } from '@citizenlab/cl2-component-library';
 
 interface Props {
@@ -11,10 +11,10 @@ interface Props {
 const HeaderRow = ({ columns }: Props) => (
   <Header>
     <Row>
-      {columns.map((column) => (
-        // <Cell width={1} key={i}>
-        <Box my="6px">{column}</Box>
-        // </Cell>
+      {columns.map((column, i) => (
+        <HeaderCell width={1} key={i}>
+          <Box my="6px">{column}</Box>
+        </HeaderCell>
       ))}
     </Row>
   </Header>
