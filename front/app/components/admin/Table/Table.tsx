@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, BoxProps } from '@citizenlab/cl2-component-library';
 
 // styling
 import { colors, fontSizes } from 'utils/styleUtils';
@@ -10,11 +10,7 @@ import {
   SEMANTIC_UI_BORDER_RADIUS,
 } from './constants';
 
-interface Props {
-  children: React.ReactNode;
-}
-
-const Table = ({ children }: Props) => (
+const Table = ({ children, style, ...otherProps }: BoxProps) => (
   <Box
     as="table"
     width="100%"
@@ -25,7 +21,9 @@ const Table = ({ children }: Props) => (
       textAlign: 'left',
       fontSize: `${fontSizes.s}px`,
       borderCollapse: 'separate',
+      ...style,
     }}
+    {...otherProps}
   >
     {children}
   </Box>
