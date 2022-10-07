@@ -119,27 +119,18 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
       // Check if URL contains specific phase_id
       const queryParams = new URLSearchParams(window.location.search);
       const phaseIdFromUrl = queryParams.get('phase_id');
-
-      const participationMethodFromURL = phases
-        .filter((phase) => phase.id === phaseIdFromUrl)
-        .map((phase) => phase.attributes.participation_method)[0];
-
-      const phaseParticipationMethod = participationMethodFromURL
-        ? participationMethodFromURL
-        : getCurrentPhase(phases)?.attributes.participation_method;
-
-      if (!isNilOrError(phaseParticipationMethod)) {
-        getMethodConfig(phaseParticipationMethod).onFormSubmission(
-          project,
-          ideaId,
-          idea,
-          phaseIdFromUrl
-        );
+      const phaseUsed =
+        phases.find((phase) => phase.id === phaseIdFromUrl) ||
+        getCurrentPhase(phases);
+      if (!isNilOrError(phaseUsed)) {
+        getMethodConfig(
+          phaseUsed?.attributes?.participation_method
+        ).onFormSubmission(project, ideaId, idea, phaseUsed.id);
       }
     } else if (!isNilOrError(project)) {
       getMethodConfig(
         project?.attributes.participation_method
-      ).onFormSubmission(project, ideaId, idea, undefined);
+      ).onFormSubmission(project, ideaId, idea);
     }
   };
 

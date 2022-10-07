@@ -47,10 +47,10 @@ const MetaInformation = ({
     projectId,
     inputId: ideaId,
   });
-  const ideaCustomFieldsIsEnabled = useFeatureFlag({
+  const isIdeaCustomFieldsEnabled = useFeatureFlag({
     name: 'idea_custom_fields',
   });
-  const dynamicIdeaFormIsEnabled = useFeatureFlag({
+  const isDynamicIdeaFormEnabled = useFeatureFlag({
     name: 'dynamic_idea_form',
   });
 
@@ -59,24 +59,24 @@ const MetaInformation = ({
       'topic_ids',
       ideaCustomFieldsSchemas,
       locale,
-      ideaCustomFieldsIsEnabled,
-      dynamicIdeaFormIsEnabled
+      isIdeaCustomFieldsEnabled,
+      isDynamicIdeaFormEnabled
     );
 
     const locationEnabled = checkFieldEnabled(
       'location_description',
       ideaCustomFieldsSchemas,
       locale,
-      ideaCustomFieldsIsEnabled,
-      dynamicIdeaFormIsEnabled
+      isIdeaCustomFieldsEnabled,
+      isDynamicIdeaFormEnabled
     );
 
     const attachmentsEnabled = checkFieldEnabled(
       'idea_files_attributes',
       ideaCustomFieldsSchemas,
       locale,
-      ideaCustomFieldsIsEnabled,
-      dynamicIdeaFormIsEnabled
+      isIdeaCustomFieldsEnabled,
+      isDynamicIdeaFormEnabled
     );
 
     return (

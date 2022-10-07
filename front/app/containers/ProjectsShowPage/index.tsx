@@ -157,11 +157,9 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
     let phaseParticipationMethod;
 
     if (!isNilOrError(phases)) {
-      if (phaseIdUrl) {
-        const phase = getPhase(phaseIdUrl, phases);
-        if (!isNilOrError(phase)) {
-          phaseParticipationMethod = phase.attributes.participation_method;
-        }
+      const phase = phaseIdUrl ? getPhase(phaseIdUrl, phases) : null;
+      if (!isNilOrError(phase)) {
+        phaseParticipationMethod = phase.attributes.participation_method;
       } else {
         phaseParticipationMethod =
           getCurrentPhase(phases)?.attributes.participation_method;

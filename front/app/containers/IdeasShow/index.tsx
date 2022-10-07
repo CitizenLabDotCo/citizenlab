@@ -33,7 +33,7 @@ import MobileSharingButtonComponent from './Buttons/MobileSharingButtonComponent
 import RightColumnDesktop from './RightColumnDesktop';
 
 // utils
-import isFieldEnabled from './isFieldEnabled';
+import { checkFieldEnabled } from './isFieldEnabled';
 
 // resources
 import GetIdeaImages, {
@@ -78,13 +78,6 @@ import useLocale from 'hooks/useLocale';
 import usePhases from 'hooks/usePhases';
 import useIdea from 'hooks/useIdea';
 import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
-
-// services
-import {
-  CustomFieldCodes,
-  IIdeaFormSchemas,
-} from 'services/ideaCustomFieldsSchemas';
-import { IIdeaJsonFormSchemas } from 'services/ideaJsonFormsSchema';
 
 const contentFadeInDuration = 250;
 const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -225,10 +218,10 @@ export const IdeasShow = ({
   const ideaflowSocialSharingIsEnabled = useFeatureFlag({
     name: 'ideaflow_social_sharing',
   });
-  const ideaCustomFieldsIsEnabled = useFeatureFlag({
+  const isIdeaCustomFieldsEnabled = useFeatureFlag({
     name: 'idea_custom_fields',
   });
-  const dynamicIdeaFormIsEnabled = useFeatureFlag({
+  const isDynamicIdeaFormEnabled = useFeatureFlag({
     name: 'dynamic_idea_form',
   });
 
@@ -283,32 +276,12 @@ export const IdeasShow = ({
       compact === true ||
       (windowSize ? windowSize <= viewportWidths.tablet : false);
 
-    const checkFieldEnabled = (
-      fieldName: CustomFieldCodes,
-      ideaCustomFieldsIsEnabled,
-      dynamicIdeaFormIsEnabled
-    ) => {
-      let fieldEnabled;
-      if (!ideaCustomFieldsIsEnabled || !dynamicIdeaFormIsEnabled) {
-        fieldEnabled = isFieldEnabled(
-          fieldName,
-          ideaCustomFieldsSchemas as IIdeaFormSchemas,
-          locale
-        );
-      } else {
-        const schema = ideaCustomFieldsSchemas as IIdeaJsonFormSchemas;
-        const jsonmultiloc = schema.json_schema_multiloc[locale];
-        if (jsonmultiloc) {
-          fieldEnabled = jsonmultiloc.properties[fieldName];
-        }
-      }
-      return fieldEnabled;
-    };
-
     const proposedBudgetEnabled = checkFieldEnabled(
       'proposed_budget',
-      ideaCustomFieldsIsEnabled,
-      dynamicIdeaFormIsEnabled
+      ideaCustomFieldsSchemas,
+      locale,
+      isIdeaCustomFieldsEnabled,
+      isDynamicIdeaFormEnabled
     );
 
     content = (

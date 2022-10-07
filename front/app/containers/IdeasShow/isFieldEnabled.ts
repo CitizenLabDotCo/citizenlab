@@ -9,7 +9,7 @@ export default function isFieldEnabled(
   fieldCode: CustomFieldCodes,
   ideaCustomFieldsSchemas: IIdeaFormSchemas,
   locale: Locale
-) {
+): boolean {
   return (
     ideaCustomFieldsSchemas.ui_schema_multiloc[locale][fieldCode]?.[
       'ui:widget'
@@ -22,11 +22,11 @@ export const checkFieldEnabled = (
   fieldName: CustomFieldCodes,
   ideaCustomFieldsSchemas: IIdeaFormSchemas | IIdeaJsonFormSchemas,
   locale: Locale,
-  ideaCustomFieldsIsEnabled: any,
-  dynamicIdeaFormIsEnabled: any
-) => {
+  isIdeaCustomFieldsEnabled: boolean,
+  isDynamicIdeaFormEnabled: boolean
+): boolean => {
   let fieldEnabled;
-  if (!ideaCustomFieldsIsEnabled || !dynamicIdeaFormIsEnabled) {
+  if (!isIdeaCustomFieldsEnabled || !isDynamicIdeaFormEnabled) {
     fieldEnabled = isFieldEnabled(
       fieldName,
       ideaCustomFieldsSchemas as IIdeaFormSchemas,

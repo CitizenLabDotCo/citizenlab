@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 // intl
 import { FormattedMessage } from './cl-intl';
@@ -18,37 +18,59 @@ import SharingModalContent from 'components/PostShowComponents/SharingModalConte
 // utils
 import { isNilOrError } from './helperUtils';
 import clHistory from 'utils/cl-router/history';
+import { IIdea } from 'services/ideas';
 
 type ParticipationMethodConfig = {
   /** We currently have 2 UIs for admins to edit the form definition. This
    * defines which UI, if any, the method uses */
   formEditor: 'simpleFormEditor' | 'surveyEditor' | null;
-  onFormSubmission?: any;
-  getModalContent: any;
-  getFormTitle?: any;
+  onFormSubmission: (
+    _project?: IProjectData,
+    ideaId?: string,
+    idea?: IIdea,
+    phaseId?: string
+  ) => void;
+  getModalContent: () => ReactNode | null;
+  getFormTitle?: (_project: IProjectData, _phases: [IPhaseData]) => void;
   showInputManager: boolean;
 };
 
 const ideationConfig: ParticipationMethodConfig = {
   formEditor: 'simpleFormEditor',
-  onFormSubmission: (_project, _ideaId, _idea, _phaseId) => {
-    const urlParameters = `?new_idea_id=${_ideaId}`;
-    clHistory.push({
-      pathname: `/ideas/${_idea.data.attributes.slug}`,
-      search: urlParameters.concat(_phaseId ? `&phase_id=${_phaseId}` : ''),
-    });
+  onFormSubmission: (
+    _project?: IProjectData,
+    ideaId?: string,
+    idea?: IIdea,
+    phaseId?: string
+  ) => {
+    if (ideaId && idea && phaseId) {
+      const urlParameters = `?new_idea_id=${ideaId}`;
+      if (idea) {
+        clHistory.push({
+          pathname: `/ideas/${idea.data.attributes.slug}`,
+          search: urlParameters.concat(phaseId ? `&phase_id=${phaseId}` : ''),
+        });
+      }
+    }
   },
-  getModalContent: (ideaIdForSocialSharing, title, subtitle) => {
-    return (
-      <SharingModalContent
-        postType="idea"
-        postId={ideaIdForSocialSharing}
-        title={title}
-        subtitle={subtitle}
-      />
-    );
+  getModalContent: (
+    ideaIdForSocialSharing?: string,
+    title?: string,
+    subtitle?: string
+  ) => {
+    if (ideaIdForSocialSharing && title && subtitle) {
+      return (
+        <SharingModalContent
+          postType="idea"
+          postId={ideaIdForSocialSharing}
+          title={title}
+          subtitle={subtitle}
+        />
+      );
+    }
+    return null;
   },
-  getFormTitle: (project, phases) => {
+  getFormTitle: (_project, _phases) => {
     return (
       <FormattedMessage
         {...{
@@ -58,7 +80,7 @@ const ideationConfig: ParticipationMethodConfig = {
           question: messages.questionFormTitle,
           issue: messages.issueFormTitle,
           contribution: messages.contributionFormTitle,
-        }[getInputTerm(project?.attributes.process_type, project, phases)]}
+        }[getInputTerm(_project?.attributes.process_type, _project, _phases)]}
       />
     );
   },
@@ -67,12 +89,20 @@ const ideationConfig: ParticipationMethodConfig = {
 
 const nativeSurveyConfig: ParticipationMethodConfig = {
   formEditor: 'surveyEditor',
-  onFormSubmission: (project: IProjectData, _ideaId, _idea, _phaseId) => {
-    const urlParameters = `?show_modal=true`;
-    clHistory.push({
-      pathname: `/projects/${project?.attributes.slug}`,
-      search: urlParameters.concat(_phaseId ? `&phase_id=${_phaseId}` : ''),
-    });
+  onFormSubmission: (
+    project?: IProjectData,
+    _ideaId?: string,
+    _idea?: IIdea,
+    phaseId?: string
+  ) => {
+    if (project && phaseId) {
+      clHistory.push({
+        pathname: `/projects/${project?.attributes.slug}`,
+        search: `?show_modal=true`.concat(
+          phaseId ? `&phase_id=${phaseId}` : ''
+        ),
+      });
+    }
   },
   getModalContent: () => {
     return <FormattedMessage {...messages.onSurveySubmission} />;
@@ -88,6 +118,14 @@ const informationConfig: ParticipationMethodConfig = {
   getModalContent: () => {
     return null;
   },
+  onFormSubmission: (
+    _project?: IProjectData,
+    _ideaId?: string,
+    _idea?: IIdea,
+    _phaseId?: string
+  ) => {
+    return;
+  },
   showInputManager: false,
 };
 
@@ -96,6 +134,14 @@ const surveyConfig: ParticipationMethodConfig = {
   getModalContent: () => {
     return null;
   },
+  onFormSubmission: (
+    _project?: IProjectData,
+    _ideaId?: string,
+    _idea?: IIdea,
+    _phaseId?: string
+  ) => {
+    return;
+  },
   showInputManager: false,
 };
 
@@ -103,6 +149,14 @@ const budgetingConfig: ParticipationMethodConfig = {
   formEditor: 'simpleFormEditor',
   getModalContent: () => {
     return null;
+  },
+  onFormSubmission: (
+    _project?: IProjectData,
+    _ideaId?: string,
+    _idea?: IIdea,
+    _phaseId?: string
+  ) => {
+    return;
   },
   getFormTitle: (project, phases) => {
     return (
@@ -126,6 +180,14 @@ const pollConfig: ParticipationMethodConfig = {
   getModalContent: () => {
     return null;
   },
+  onFormSubmission: (
+    _project?: IProjectData,
+    _ideaId?: string,
+    _idea?: IIdea,
+    _phaseId?: string
+  ) => {
+    return;
+  },
   showInputManager: false,
 };
 
@@ -133,6 +195,14 @@ const volunteeringConfig: ParticipationMethodConfig = {
   formEditor: null,
   getModalContent: () => {
     return null;
+  },
+  onFormSubmission: (
+    _project?: IProjectData,
+    _ideaId?: string,
+    _idea?: IIdea,
+    _phaseId?: string
+  ) => {
+    return;
   },
   showInputManager: false,
 };
