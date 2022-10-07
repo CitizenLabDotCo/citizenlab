@@ -2,7 +2,10 @@ import {
   IIdeaFormSchemas,
   CustomFieldCodes,
 } from 'services/ideaCustomFieldsSchemas';
-import { IIdeaJsonFormSchemas } from 'services/ideaJsonFormsSchema';
+import {
+  IIdeaJsonFormSchemas,
+  JSONSFormsSchemaObject,
+} from 'services/ideaJsonFormsSchema';
 import { Locale } from 'typings';
 
 export default function isFieldEnabled(
@@ -24,7 +27,7 @@ export const checkFieldEnabled = (
   locale: Locale,
   isIdeaCustomFieldsEnabled: boolean,
   isDynamicIdeaFormEnabled: boolean
-): boolean => {
+): boolean | JSONSFormsSchemaObject => {
   let fieldEnabled;
   if (!isIdeaCustomFieldsEnabled || !isDynamicIdeaFormEnabled) {
     fieldEnabled = isFieldEnabled(
