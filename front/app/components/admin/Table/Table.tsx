@@ -5,13 +5,14 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 // styling
 import { colors, fontSizes } from 'utils/styleUtils';
+import {
+  SEMANTIC_UI_BORDER_COLOR,
+  SEMANTIC_UI_BORDER_RADIUS,
+} from './constants';
 
 interface Props {
   children: React.ReactNode;
 }
-
-const SEMANTIC_UI_BORDER_COLOR = 'rgba(34,36,38,0.15)';
-const SEMANTIC_UI_BORDER_RADIUS = '0.286rem';
 
 const Table = ({ children }: Props) => (
   <Box
