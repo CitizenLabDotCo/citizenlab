@@ -2,16 +2,18 @@
 
 require 'rails_helper'
 
-describe 'seedfile', slow_test: true do
+describe 'db/seeds.rb', slow_test: true do
   # TODO: Refacor this to have separate examples for various assertions. Didn't
   # seem to work the straightforward way after multiple runs, seems to be due to
   # the schema created by apartment for the seedfile tenant. It's not getting
   # deleted after the tests
-  # rubocop:disable RSpec/ExampleLength
-  it 'generates a valid tenant and user' do
+  it 'generates a localhost tenant with a couple of records' do
     expect(Tenant.count).to be(1)
+
     load Rails.root.join('db/seeds.rb')
-    expect(Tenant.count).to be(3)
+
+    expect(Tenant.count).to be(2)
+
     Apartment::Tenant.switch('localhost') do
       load Rails.root.join('db/seeds.rb')
       # The default tenant has a locked id to make it easier for other related
@@ -50,6 +52,12 @@ describe 'seedfile', slow_test: true do
       expect(Analytics::DimensionReferrerType.count).to be > 0
       expect(Analytics::FactVisit.count).to be 3
     end
+  end
+
+  it 'generates an empty_localhost tenant with a few records' do
+    stub_const('ENV', ENV.to_hash.merge('SEED_EMPTY_TENANT' => 'TRUE'))
+    load Rails.root.join('db/seeds.rb')
+
     Apartment::Tenant.switch('empty_localhost') do
       load Rails.root.join('db/seeds.rb')
       expect(Tenant.current.id).to eq '07ff8088-cc78-4307-9a1c-ebb6fb836f96'
@@ -66,5 +74,4 @@ describe 'seedfile', slow_test: true do
       expect(Group.count).to be 0
     end
   end
-  # rubocop:enable RSpec/ExampleLength
 end
