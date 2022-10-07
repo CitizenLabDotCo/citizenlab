@@ -104,6 +104,20 @@ const budgetingConfig: ParticipationMethodConfig = {
   getModalContent: () => {
     return null;
   },
+  getFormTitle: (project, phases) => {
+    return (
+      <FormattedMessage
+        {...{
+          idea: messages.ideaFormTitle,
+          option: messages.optionFormTitle,
+          project: messages.projectFormTitle,
+          question: messages.questionFormTitle,
+          issue: messages.issueFormTitle,
+          contribution: messages.contributionFormTitle,
+        }[getInputTerm(project?.attributes.process_type, project, phases)]}
+      />
+    );
+  },
   showInputManager: true,
 };
 
