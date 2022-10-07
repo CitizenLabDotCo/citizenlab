@@ -8,7 +8,7 @@ import {
 } from 'services/ideaJsonFormsSchema';
 import { Locale } from 'typings';
 
-export default function isFieldEnabled(
+export function isFieldEnabled(
   fieldCode: CustomFieldCodes,
   ideaCustomFieldsSchemas: IIdeaFormSchemas,
   locale: Locale
