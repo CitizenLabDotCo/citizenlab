@@ -100,7 +100,7 @@ const CustomPageSettingsForm = ({
             )}
             <Box display="flex">
               <Button
-                id="submit-custom-page"
+                data-cy="e2e-submit-custom-page"
                 type="submit"
                 processing={methods.formState.isSubmitting}
               >

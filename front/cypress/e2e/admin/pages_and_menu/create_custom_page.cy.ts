@@ -29,7 +29,7 @@ describe('Admin: create custom page', () => {
     });
 
     // submit
-    cy.get('#submit-custom-page').click();
+    cy.get('[data-cy="submit-custom-page"]').click();
 
     // click the page content tab
     cy.contains('Page content').click();
