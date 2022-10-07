@@ -99,7 +99,11 @@ const CustomPageSettingsForm = ({
               <SlugInput slug={slug} pathnameWithoutSlug="pages" />
             )}
             <Box display="flex">
-              <Button type="submit" processing={methods.formState.isSubmitting}>
+              <Button
+                id="submit-custom-page"
+                type="submit"
+                processing={methods.formState.isSubmitting}
+              >
                 {formatMessage(messages.saveButton)}
               </Button>
             </Box>
