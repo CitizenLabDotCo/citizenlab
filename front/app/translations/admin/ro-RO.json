@@ -439,7 +439,7 @@
   "app.containers.Admin.PagesAndMenu.SectionToggle.eventsListTooltip": "Customize which events are displayed on the page.",
   "app.containers.Admin.PagesAndMenu.SectionToggle.heroBanner": "Hero banner",
   "app.containers.Admin.PagesAndMenu.SectionToggle.heroBannerTooltip": "Customise the page banner image and text.",
-  "app.containers.Admin.PagesAndMenu.SectionToggle.projectsList": "Projects list",
+  "app.containers.Admin.PagesAndMenu.SectionToggle.projectsList": "Lista de proiecte",
   "app.containers.Admin.PagesAndMenu.SectionToggle.projectsListTooltip": "Customize how projects are displayed on the page.",
   "app.containers.Admin.PagesAndMenu.SectionToggle.topInfoSection": "Top info section",
   "app.containers.Admin.PagesAndMenu.SectionToggle.topInfoSectionTooltip": "Add your own content to the customizable section at the top of the page.",
