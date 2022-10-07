@@ -56,6 +56,9 @@ import MultiSelectCheckboxControl, {
 import SingleSelectRadioControl, {
   singleSelectRadioControlTester,
 } from './SingleSelectRadioControl';
+import LinearScaleControl, {
+  linearScaleControlTester,
+} from './LinearScaleControl';
 
 export {
   CLCategoryLayout,
@@ -96,4 +99,6 @@ export {
   dateControlTester,
   MultilocInputLayout,
   multilocInputTester,
+  LinearScaleControl,
+  linearScaleControlTester,
 };
