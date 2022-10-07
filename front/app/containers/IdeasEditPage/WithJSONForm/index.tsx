@@ -26,6 +26,44 @@ import IdeasEditMeta from '../IdeasEditMeta';
 import { usePermission } from 'services/permissions';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 
+// renderers
+import {
+  linearScaleControlTester,
+  LinearScaleControl,
+  inputControlTester,
+  InputControl,
+  textAreaControlTester,
+  TextAreaControl,
+  multiSelectCheckboxControlTester,
+  MultiSelectCheckboxControl,
+  singleSelectRadioControlTester,
+  SingleSelectRadioControl,
+  WYSIWYGControlTester,
+  WYSIWYGControl,
+  descriptionControlTester,
+  DescriptionControl,
+  topicsControlTester,
+  TopicsControl,
+  titleControlTester,
+  TitleControl,
+  imageControlTester,
+  ImageControl,
+  attachmentsControlTester,
+  AttachmentsControl,
+  clCategoryTester,
+  CLCategoryLayout,
+  locationControlTester,
+  LocationControl,
+  dateControlTester,
+  DateControl,
+  userPickerControlTester,
+  UserPickerControl,
+  multilocInputTester,
+  MultilocInputLayout,
+  orderedLayoutTester,
+  OrderedLayout,
+} from 'components/Form/Components/Controls';
+
 const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
   const authUser = useAuthUser();
@@ -120,6 +158,33 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
     [uiSchema]
   );
 
+  const formRenderers = [
+    { tester: linearScaleControlTester, renderer: LinearScaleControl },
+    { tester: inputControlTester, renderer: InputControl },
+    { tester: textAreaControlTester, renderer: TextAreaControl },
+    {
+      tester: multiSelectCheckboxControlTester,
+      renderer: MultiSelectCheckboxControl,
+    },
+    {
+      tester: singleSelectRadioControlTester,
+      renderer: SingleSelectRadioControl,
+    },
+    { tester: WYSIWYGControlTester, renderer: WYSIWYGControl },
+    { tester: descriptionControlTester, renderer: DescriptionControl },
+    { tester: topicsControlTester, renderer: TopicsControl },
+    { tester: titleControlTester, renderer: TitleControl },
+    { tester: imageControlTester, renderer: ImageControl },
+    { tester: attachmentsControlTester, renderer: AttachmentsControl },
+    { tester: clCategoryTester, renderer: CLCategoryLayout },
+    { tester: orderedLayoutTester, renderer: OrderedLayout },
+    { tester: locationControlTester, renderer: LocationControl },
+    { tester: dateControlTester, renderer: DateControl },
+    { tester: userPickerControlTester, renderer: UserPickerControl },
+    { tester: multilocInputTester, renderer: MultilocInputLayout },
+    { tester: orderedLayoutTester, renderer: OrderedLayout },
+  ];
+
   return (
     <PageContainer overflow="hidden" id="e2e-idea-edit-page">
       {!isNilOrError(project) && !isNilOrError(idea) && schema && uiSchema ? (
@@ -133,6 +198,7 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
             inputId={idea.id}
             getAjvErrorMessage={getAjvErrorMessage}
             getApiErrorMessage={getApiErrorMessage}
+            providedRenderers={formRenderers}
             title={
               <FormattedMessage
                 {...{
