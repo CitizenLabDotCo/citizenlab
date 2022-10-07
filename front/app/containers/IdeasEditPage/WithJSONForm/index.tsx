@@ -136,6 +136,7 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
             inputId={idea.id}
             getAjvErrorMessage={getAjvErrorMessage}
             getApiErrorMessage={getApiErrorMessage}
+            config={'input'}
             title={
               <FormattedMessage
                 {...{

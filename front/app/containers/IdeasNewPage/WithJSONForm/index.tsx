@@ -188,6 +188,7 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
             getApiErrorMessage={getApiErrorMessage}
             inputId={undefined}
             title={config.getFormTitle(project, phases)}
+            config={'input'}
           />
         </>
       ) : isError(project) || inputSchemaError ? null : (
