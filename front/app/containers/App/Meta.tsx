@@ -50,9 +50,9 @@ const Meta: React.SFC<Props & InjectedIntlProps> = ({
     const { formatMessage } = intl;
     const tenantLocales = tenant.attributes.settings.core.locales;
     const headerBg =
-      homepageSettings.data.attributes.header_bg &&
-      homepageSettings.data.attributes.header_bg.large
-        ? homepageSettings.data.attributes.header_bg.large
+      homepageSettings.attributes.header_bg &&
+      homepageSettings.attributes.header_bg.large
+        ? homepageSettings.attributes.header_bg.large
         : '';
     const organizationNameMultiLoc =
       tenant.attributes.settings.core.organization_name;

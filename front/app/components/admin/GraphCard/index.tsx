@@ -1,31 +1,57 @@
 import React from 'react';
 
 // components
+import { Text, IconTooltip } from '@citizenlab/cl2-component-library';
 import {
   GraphCard as GraphCardContainer,
   GraphCardHeader,
   GraphCardTitle,
-  GraphCardInner,
+  GraphCardInnerClean,
 } from 'components/admin/GraphWrappers';
 import ReportExportMenu, {
   ReportExportMenuProps,
 } from 'components/admin/ReportExportMenu';
 
 interface Props {
-  title?: string;
+  title: string | React.ReactNode;
+  infoTooltipContent?: React.ReactChild;
   exportMenu?: ReportExportMenuProps;
   children?: React.ReactNode;
+  fullWidth?: boolean;
 }
 
-const GraphCard = ({ title, exportMenu, children }: Props) => (
-  <GraphCardContainer className="fullWidth dynamicHeight">
-    <GraphCardInner>
+const GraphCard = ({
+  title,
+  infoTooltipContent,
+  exportMenu,
+  children,
+  fullWidth = true,
+}: Props) => (
+  <GraphCardContainer
+    className={`dynamicHeight ${fullWidth ? 'fullWidth' : ''}`}
+  >
+    <GraphCardInnerClean>
       <GraphCardHeader>
-        <GraphCardTitle>{title}</GraphCardTitle>
+        <GraphCardTitle>
+          {title}
+
+          {infoTooltipContent && (
+            <IconTooltip
+              content={
+                <Text m="0px" mb="0px" fontSize="s">
+                  {infoTooltipContent}
+                </Text>
+              }
+              ml="8px"
+              transform="translate(0,-2)"
+              theme="light"
+            />
+          )}
+        </GraphCardTitle>
         {exportMenu && <ReportExportMenu {...exportMenu} />}
       </GraphCardHeader>
       {children}
-    </GraphCardInner>
+    </GraphCardInnerClean>
   </GraphCardContainer>
 );
 

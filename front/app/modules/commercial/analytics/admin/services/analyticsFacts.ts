@@ -8,7 +8,7 @@ export interface Query {
 
 export interface QuerySchema {
   fields?: string | string[];
-  fact: 'post' | 'participation';
+  fact: 'post' | 'participation' | 'visit';
   filters?: {
     [k: string]: {
       [k: string]:
@@ -21,14 +21,16 @@ export interface QuerySchema {
     };
   };
   groups?: string | string[];
-  aggregations?: {
-    [k: string]: Aggregation | Aggregation[];
-  };
+  aggregations?: AggregationsConfig;
   sort?: {
     [k: string]: 'ASC' | 'DESC';
   };
   limit?: number;
 }
+
+export type AggregationsConfig = {
+  [k: string]: Aggregation | Aggregation[];
+};
 
 type Aggregation = 'min' | 'max' | 'avg' | 'sum' | 'count' | 'first';
 
