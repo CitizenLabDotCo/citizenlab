@@ -1,12 +1,12 @@
 import React from 'react';
 
 // components
-import { Box, BoxProps } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 
-const Body = ({ children, ...otherProps }: BoxProps) => (
-  <Box as="tbody" {...otherProps}>
-    {children}
-  </Box>
-);
+interface Props {
+  children: React.ReactNode;
+}
+
+const Body = ({ children }: Props) => <Box as="tbody">{children}</Box>;
 
 export default Body;
