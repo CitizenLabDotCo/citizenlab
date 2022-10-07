@@ -1,12 +1,12 @@
 import React from 'react';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, BoxProps } from '@citizenlab/cl2-component-library';
 
-interface Props {
-  children: React.ReactNode;
-}
-
-const HeaderCell = ({ children }: Props) => <Box as="th">{children}</Box>;
+const HeaderCell = ({ children, ...otherProps }: BoxProps) => (
+  <Box as="th" {...otherProps}>
+    {children}
+  </Box>
+);
 
 export default HeaderCell;

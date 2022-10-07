@@ -24,6 +24,7 @@ const Table = ({ children }: Props) => (
     style={{
       textAlign: 'left',
       fontSize: `${fontSizes.s}px`,
+      borderCollapse: 'separate',
     }}
   >
     {children}

@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 // components
 import { Box, Icon } from '@citizenlab/cl2-component-library';
 import Table from './Table';
+import Table2 from './Table2';
 import Button from 'components/UI/Button';
 import TableModal from './TableModal';
 
@@ -50,6 +51,10 @@ const TableWrapper = ({
     <>
       <Box mx="40px" my="20px">
         <Table columns={columns} data={slicedData} />
+      </Box>
+
+      <Box mx="40px" my="10px">
+        <Table2 columns={columns} data={slicedData} />
       </Box>
 
       {showModalButton && (

@@ -3,8 +3,8 @@ import styled from 'styled-components';
 
 // components
 import { Table, Body } from 'components/admin/Table';
-import HeaderRow from './HeaderRow';
-import Row from './Row';
+import HeaderRow from './HeaderRow2';
+import Row from './Row2';
 
 // styling
 import { colors } from 'utils/styleUtils';
