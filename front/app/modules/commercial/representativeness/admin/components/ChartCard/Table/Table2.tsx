@@ -1,25 +1,11 @@
 import React from 'react';
-import styled from 'styled-components';
-
 // components
 import { Table, Body } from 'components/admin/Table';
 import HeaderRow from './HeaderRow2';
 import Row from './Row2';
 
-// styling
-import { colors } from 'utils/styleUtils';
-
 // typings
 import { RepresentativenessData } from '../../../hooks/createRefDataSubscription';
-
-const StyledTable = styled(Table)<{ $hideBorderTop?: boolean }>`
-  td,
-  th > div {
-    color: ${colors.primary};
-  }
-  ${({ $hideBorderTop }) =>
-    $hideBorderTop ? 'border-top: 0px !important;' : ''}
-`;
 
 interface Props {
   columns: string[];
@@ -28,14 +14,14 @@ interface Props {
 }
 
 const TableComponent = ({ columns, data, hideBorderTop }: Props) => (
-  <StyledTable $hideBorderTop={hideBorderTop}>
+  <Table borderTop={hideBorderTop ? 'none' : undefined}>
     <HeaderRow columns={columns} />
     <Body>
       {data.map((row, i) => (
         <Row row={row} key={i} />
       ))}
     </Body>
-  </StyledTable>
+  </Table>
 );
 
 export default TableComponent;
