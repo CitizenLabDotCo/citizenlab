@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_29_125457) do
+ActiveRecord::Schema.define(version: 2022_10_06_100512) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -60,7 +60,8 @@ ActiveRecord::Schema.define(version: 2022_09_29_125457) do
   end
 
   create_table "analytics_dimension_locales", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
+    t.index ["name"], name: "index_analytics_dimension_locales_on_name", unique: true
   end
 
   create_table "analytics_dimension_locales_fact_visits", id: false, force: :cascade do |t|
@@ -80,8 +81,8 @@ ActiveRecord::Schema.define(version: 2022_09_29_125457) do
   end
 
   create_table "analytics_dimension_referrer_types", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "key"
-    t.string "name"
+    t.string "key", null: false
+    t.string "name", null: false
     t.index ["key"], name: "i_d_referrer_key", unique: true
   end
 
@@ -93,9 +94,9 @@ ActiveRecord::Schema.define(version: 2022_09_29_125457) do
   create_table "analytics_fact_visits", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "visitor_id", null: false
     t.uuid "dimension_user_id"
-    t.uuid "dimension_referrer_type_id"
-    t.date "dimension_date_first_action_id"
-    t.date "dimension_date_last_action_id"
+    t.uuid "dimension_referrer_type_id", null: false
+    t.date "dimension_date_first_action_id", null: false
+    t.date "dimension_date_last_action_id", null: false
     t.integer "duration", null: false
     t.integer "pages_visited", null: false
     t.boolean "returning_visitor", default: false, null: false
@@ -1137,6 +1138,24 @@ ActiveRecord::Schema.define(version: 2022_09_29_125457) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "code", null: false
+    t.jsonb "top_info_section_multiloc", default: {}, null: false
+    t.boolean "banner_enabled", default: false, null: false
+    t.string "banner_layout", default: "full_width_banner_layout", null: false
+    t.string "banner_overlay_color"
+    t.integer "banner_overlay_opacity"
+    t.jsonb "banner_cta_button_multiloc", default: {}, null: false
+    t.string "banner_cta_button_type", default: "no_button", null: false
+    t.string "banner_cta_button_url"
+    t.jsonb "banner_header_multiloc", default: {}, null: false
+    t.jsonb "banner_subheader_multiloc", default: {}, null: false
+    t.boolean "top_info_section_enabled", default: false, null: false
+    t.boolean "files_section_enabled", default: false, null: false
+    t.boolean "projects_enabled", default: false, null: false
+    t.string "projects_filter_type"
+    t.boolean "events_widget_enabled", default: false, null: false
+    t.boolean "bottom_info_section_enabled", default: false, null: false
+    t.jsonb "bottom_info_section_multiloc", default: {}, null: false
+    t.string "header_bg"
     t.index ["code"], name: "index_static_pages_on_code"
     t.index ["slug"], name: "index_static_pages_on_slug", unique: true
   end

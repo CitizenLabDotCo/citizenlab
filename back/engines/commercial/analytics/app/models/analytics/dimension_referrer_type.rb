@@ -5,8 +5,8 @@
 # Table name: analytics_dimension_referrer_types
 #
 #  id   :uuid             not null, primary key
-#  key  :string
-#  name :string
+#  key  :string           not null
+#  name :string           not null
 #
 # Indexes
 #
@@ -15,5 +15,6 @@
 module Analytics
   class DimensionReferrerType < Analytics::ApplicationRecord
     validates :key, presence: true, uniqueness: true
+    validates :name, presence: true
   end
 end

@@ -6,7 +6,7 @@ import ContentContainer from 'components/ContentContainer';
 import styled from 'styled-components';
 import Image from 'components/UI/Image';
 import { media } from 'utils/styleUtils';
-import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/HeroBanner/HeaderImageDropzone';
+import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/HeaderImageDropzone';
 
 const Container = styled.div`
   display: flex;
@@ -33,7 +33,7 @@ const TwoRowLayout = () => {
   const homepageSettings = useHomepageSettings();
 
   if (!isNilOrError(homepageSettings)) {
-    const headerImage = homepageSettings.data.attributes.header_bg?.large;
+    const headerImage = homepageSettings.attributes.header_bg?.large;
 
     return (
       <>
