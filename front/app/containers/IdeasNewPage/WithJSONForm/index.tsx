@@ -25,6 +25,44 @@ import FullPageSpinner from 'components/UI/FullPageSpinner';
 import { addIdea } from 'services/ideas';
 import { geocode, reverseGeocode } from 'utils/locationTools';
 
+// renderers
+import {
+  linearScaleControlTester,
+  LinearScaleControl,
+  inputControlTester,
+  InputControl,
+  textAreaControlTester,
+  TextAreaControl,
+  multiSelectCheckboxControlTester,
+  MultiSelectCheckboxControl,
+  singleSelectRadioControlTester,
+  SingleSelectRadioControl,
+  WYSIWYGControlTester,
+  WYSIWYGControl,
+  descriptionControlTester,
+  DescriptionControl,
+  topicsControlTester,
+  TopicsControl,
+  titleControlTester,
+  TitleControl,
+  imageControlTester,
+  ImageControl,
+  attachmentsControlTester,
+  AttachmentsControl,
+  clCategoryTester,
+  CLCategoryLayout,
+  locationControlTester,
+  LocationControl,
+  dateControlTester,
+  DateControl,
+  userPickerControlTester,
+  UserPickerControl,
+  multilocInputTester,
+  MultilocInputLayout,
+  orderedLayoutTester,
+  OrderedLayout,
+} from 'components/Form/Components/Controls';
+
 // for getting inital state from previous page
 import { parse } from 'qs';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
@@ -151,6 +189,33 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
     [uiSchema]
   );
 
+  const formRenderers = [
+    { tester: linearScaleControlTester, renderer: LinearScaleControl },
+    { tester: inputControlTester, renderer: InputControl },
+    { tester: textAreaControlTester, renderer: TextAreaControl },
+    {
+      tester: multiSelectCheckboxControlTester,
+      renderer: MultiSelectCheckboxControl,
+    },
+    {
+      tester: singleSelectRadioControlTester,
+      renderer: SingleSelectRadioControl,
+    },
+    { tester: WYSIWYGControlTester, renderer: WYSIWYGControl },
+    { tester: descriptionControlTester, renderer: DescriptionControl },
+    { tester: topicsControlTester, renderer: TopicsControl },
+    { tester: titleControlTester, renderer: TitleControl },
+    { tester: imageControlTester, renderer: ImageControl },
+    { tester: attachmentsControlTester, renderer: AttachmentsControl },
+    { tester: clCategoryTester, renderer: CLCategoryLayout },
+    { tester: orderedLayoutTester, renderer: OrderedLayout },
+    { tester: locationControlTester, renderer: LocationControl },
+    { tester: dateControlTester, renderer: DateControl },
+    { tester: userPickerControlTester, renderer: UserPickerControl },
+    { tester: multilocInputTester, renderer: MultilocInputLayout },
+    { tester: orderedLayoutTester, renderer: OrderedLayout },
+  ];
+
   return (
     <PageContainer id="e2e-idea-new-page" overflow="hidden">
       {!isNilOrError(project) && !processingLocation && schema && uiSchema ? (
@@ -164,6 +229,7 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
             getAjvErrorMessage={getAjvErrorMessage}
             getApiErrorMessage={getApiErrorMessage}
             inputId={undefined}
+            providedRenderers={formRenderers}
             title={
               <FormattedMessage
                 {...{

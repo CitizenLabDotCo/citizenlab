@@ -72,12 +72,6 @@ import MultilocInputLayout, {
 import LinearScaleControl, {
   linearScaleControlTester,
 } from './Components/Controls/LinearScaleControl';
-import MultiSelectCheckboxControl, {
-  multiSelectCheckboxControlTester,
-} from './Components/Controls/MultiSelectCheckboxControl';
-import SingleSelectRadioControl, {
-  singleSelectRadioControlTester,
-} from './Components/Controls/SingleSelectRadioControl';
 
 import {
   Box,
@@ -156,22 +150,15 @@ interface Props {
    * Idea id for update form, used to load and udpate image and files.
    */
   inputId?: string;
+  providedRenderers?: any;
 }
-const renderers = [
+const defaultRenderers = [
   { tester: linearScaleControlTester, renderer: LinearScaleControl },
   { tester: inputControlTester, renderer: InputControl },
   { tester: textAreaControlTester, renderer: TextAreaControl },
   { tester: checkboxControlTester, renderer: CheckboxControl },
   { tester: singleSelectControlTester, renderer: SingleSelectControl },
   { tester: multiSelectControlTester, renderer: MultiSelectControl },
-  {
-    tester: multiSelectCheckboxControlTester,
-    renderer: MultiSelectCheckboxControl,
-  },
-  {
-    tester: singleSelectRadioControlTester,
-    renderer: SingleSelectRadioControl,
-  },
   { tester: WYSIWYGControlTester, renderer: WYSIWYGControl },
   { tester: descriptionControlTester, renderer: DescriptionControl },
   { tester: topicsControlTester, renderer: TopicsControl },
@@ -199,6 +186,7 @@ const Form = memo(
     onChange,
     getAjvErrorMessage,
     getApiErrorMessage,
+    providedRenderers,
     intl: { formatMessage },
   }: Props & InjectedIntlProps) => {
     const [data, setData] = useState<FormData>(initialFormData);
@@ -325,7 +313,9 @@ const Form = memo(
                 schema={fixedSchema}
                 uischema={uiSchema}
                 data={data}
-                renderers={renderers}
+                renderers={
+                  providedRenderers ? providedRenderers : defaultRenderers
+                }
                 onChange={({ data }) => {
                   setData(data);
                   onChange?.(data);
