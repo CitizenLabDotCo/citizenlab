@@ -130,9 +130,9 @@ resource 'Ideas' do
       ph1 = pr.phases.first
       ph2 = pr.phases.second
       ideas = [
-        create(:idea, phases: [ph1], creation_phase: ph1, project: pr),
-        create(:idea, phases: [ph2], creation_phase: ph2, project: pr),
-        create(:idea, phases: [ph1, ph2], creation_phase: ph1, project: pr)
+        create(:idea, phases: [ph1], project: pr),
+        create(:idea, phases: [ph2], project: pr),
+        create(:idea, phases: [ph1, ph2], project: pr)
       ]
 
       do_request phase: ph2.id
@@ -275,9 +275,9 @@ resource 'Ideas' do
       pr = create(:project_with_phases)
       ph1 = pr.phases.first
       ph2 = pr.phases.second
-      create(:idea, phases: [ph1], creation_phase: ph1, project: pr)
-      i2 = create(:idea, phases: [ph2], creation_phase: ph2, project: pr)
-      i3 = create(:idea, phases: [ph1, ph2], creation_phase: ph1, project: pr)
+      create(:idea, phases: [ph1], project: pr)
+      i2 = create(:idea, phases: [ph2], project: pr)
+      i3 = create(:idea, phases: [ph1, ph2], project: pr)
 
       do_request phase: ph2.id
       json_response = json_parse(response_body)
@@ -490,7 +490,7 @@ resource 'Ideas' do
     let(:project) { create(:project_with_active_ideation_phase) }
     let(:custom_form) { create(:custom_form, participation_context: project) }
     let!(:custom_field) { create(:custom_field_extra_custom_form, resource: custom_form) }
-    let(:idea) { create :idea, project: project, creation_phase: project.phases.first }
+    let(:idea) { create :idea, project: project }
     let(:idea_id) { idea.id }
 
     example_request 'Get the react-jsonschema-form json schema and ui schema for an ideation input' do
@@ -523,7 +523,7 @@ resource 'Ideas' do
       let(:project) { create(:project_with_active_ideation_phase) }
       let(:custom_form) { create(:custom_form, participation_context: project) }
       let!(:custom_field) { create(:custom_field_extra_custom_form, resource: custom_form) }
-      let(:idea) { create :idea, project: project, creation_phase: project.phases.first }
+      let(:idea) { create :idea, project: project }
       let(:idea_id) { idea.id }
 
       example_request 'Get the jsonforms.io json schema and ui schema for an ideation input' do

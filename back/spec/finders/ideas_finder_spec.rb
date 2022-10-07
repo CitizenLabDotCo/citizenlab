@@ -12,8 +12,7 @@ describe IdeasFinder do
   before_all do
     IdeaStatus.create_defaults
     timeline_project = create :project_with_phases
-    ideation_phase = timeline_project.phases.first
-    create_list(:idea_with_topics, 5, project: timeline_project, creation_phase: ideation_phase)
+    create_list :idea_with_topics, 5, project: timeline_project
   end
 
   context 'default scope' do
@@ -437,8 +436,8 @@ describe IdeasFinder do
 
   def initialize_inputs_for_scope_filtering
     timeline_project = create :project, process_type: 'timeline'
-    ideation_phase = create :phase, project: timeline_project, participation_method: 'ideation', start_at: (Time.zone.today - 1.month), end_at: (Time.zone.today - 1.day)
-    budgeting_phase = create :phase, project: timeline_project, participation_method: 'budgeting', start_at: Time.zone.today, end_at: (Time.zone.today + 1.day)
+    create :phase, project: timeline_project, participation_method: 'ideation', start_at: (Time.zone.today - 1.month), end_at: (Time.zone.today - 1.day)
+    create :phase, project: timeline_project, participation_method: 'budgeting', start_at: Time.zone.today, end_at: (Time.zone.today + 1.day)
     survey_phase = create :phase, project: timeline_project, participation_method: 'native_survey', start_at: (Time.zone.today + 2.days), end_at: (Time.zone.today + 1.month)
     ideation_project = create :continuous_project, participation_method: 'ideation'
     budgeting_project = create :continuous_budgeting_project
@@ -448,8 +447,6 @@ describe IdeasFinder do
     create :idea, project: survey_project
 
     [
-      create(:idea, project: timeline_project, creation_phase: ideation_phase).id,
-      create(:idea, project: timeline_project, creation_phase: budgeting_phase).id,
       create(:idea, project: ideation_project).id,
       create(:idea, project: budgeting_project).id,
       create(:idea, project: timeline_project).id
