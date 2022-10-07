@@ -61,6 +61,7 @@ export interface ICustomPageAttributes extends ICustomPageEnabledSettings {
 
   // for a subsequent iteration
   projects_filter_type: 'area' | 'projects';
+  nav_bar_item_title_multiloc: Multiloc;
 }
 
 const customPagesEndpoint = `${API_PATH}/static_pages`;

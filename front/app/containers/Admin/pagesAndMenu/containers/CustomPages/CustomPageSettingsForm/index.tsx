@@ -27,7 +27,6 @@ import { injectIntl } from 'utils/cl-intl';
 
 // types
 import { Multiloc } from 'typings';
-import { isNil } from 'utils/helperUtils';
 
 export interface FormValues {
   title_multiloc: Multiloc;
@@ -38,12 +37,14 @@ export interface FormValues {
 type TMode = 'new' | 'edit';
 interface Props {
   defaultValues?: FormValues;
+  showNavBarItemTitle?: boolean;
   mode: TMode;
   onSubmit: (formValues: FormValues) => void | Promise<void>;
 }
 
 const CustomPageSettingsForm = ({
   defaultValues,
+  showNavBarItemTitle,
   intl: { formatMessage },
   mode,
   onSubmit,
@@ -53,7 +54,7 @@ const CustomPageSettingsForm = ({
     title_multiloc: validateMultiloc(
       formatMessage(messages.titleMultilocError)
     ),
-    ...(!isNil(defaultValues?.nav_bar_item_title_multiloc) && {
+    ...(showNavBarItemTitle && {
       nav_bar_item_title_multiloc: validateMultiloc(
         formatMessage(messages.titleMultilocError)
       ),
@@ -102,12 +103,14 @@ const CustomPageSettingsForm = ({
                 type="text"
               />
             </Box>
-            {defaultValues?.nav_bar_item_title_multiloc && (
-              <InputMultilocWithLocaleSwitcher
-                label={formatMessage(messages.navbarItemTitle)}
-                type="text"
-                name="nav_bar_item_title_multiloc"
-              />
+            {showNavBarItemTitle && (
+              <Box mb="20px">
+                <InputMultilocWithLocaleSwitcher
+                  label={formatMessage(messages.navbarItemTitle)}
+                  type="text"
+                  name="nav_bar_item_title_multiloc"
+                />
+              </Box>
             )}
             {mode === 'edit' && (
               <SlugInput slug={slug} pathnameWithoutSlug="pages" />
