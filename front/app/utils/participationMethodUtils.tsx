@@ -43,7 +43,7 @@ const ideationConfig: ParticipationMethodConfig = {
     idea?: IIdea,
     phaseId?: string
   ) => {
-    if (ideaId && idea && phaseId) {
+    if (ideaId && idea) {
       const urlParameters = `?new_idea_id=${ideaId}`;
       if (idea) {
         clHistory.push({
@@ -95,7 +95,7 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
     _idea?: IIdea,
     phaseId?: string
   ) => {
-    if (project && phaseId) {
+    if (project) {
       clHistory.push({
         pathname: `/projects/${project?.attributes.slug}`,
         search: `?show_modal=true`.concat(
@@ -152,11 +152,19 @@ const budgetingConfig: ParticipationMethodConfig = {
   },
   onFormSubmission: (
     _project?: IProjectData,
-    _ideaId?: string,
-    _idea?: IIdea,
-    _phaseId?: string
+    ideaId?: string,
+    idea?: IIdea,
+    phaseId?: string
   ) => {
-    return;
+    if (ideaId && idea) {
+      const urlParameters = `?new_idea_id=${ideaId}`;
+      if (idea) {
+        clHistory.push({
+          pathname: `/ideas/${idea.data.attributes.slug}`,
+          search: urlParameters.concat(phaseId ? `&phase_id=${phaseId}` : ''),
+        });
+      }
+    }
   },
   getFormTitle: (project, phases) => {
     return (
