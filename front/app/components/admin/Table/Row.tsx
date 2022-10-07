@@ -21,11 +21,11 @@ const BorderBox = styled(Box)`
 
 interface Props {
   children: React.ReactNode;
-  borderBottom?: boolean;
+  borderHorizontal?: boolean;
 }
 
-const Row = ({ children, borderBottom = true }: Props) =>
-  borderBottom ? (
+const Row = ({ children, borderHorizontal = true }: Props) =>
+  borderHorizontal ? (
     <BorderBox as="tr">{children}</BorderBox>
   ) : (
     <Box as="tr">{children}</Box>
