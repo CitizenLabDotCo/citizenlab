@@ -1052,7 +1052,7 @@
   "app.containers.Projects.currentPhase": "Fase atual",
   "app.containers.Projects.editProject": "Editar projeto",
   "app.containers.Projects.emailSharingBody": "What do you think of this initiative? Vote on it and share the discussion at {initiativeUrl} to make your voice heard!",
-  "app.containers.Projects.emailSharingSubject": "Support my initiative: {initiativeTitle}.",
+  "app.containers.Projects.emailSharingSubject": "Apoiar a minha proposta: {initiativeTitle}.",
   "app.containers.Projects.endedOn": "Terminado em {date}",
   "app.containers.Projects.events": "Eventos",
   "app.containers.Projects.facebookMessage": "{projectName} | a partir da plataforma de participação de {orgName}",
