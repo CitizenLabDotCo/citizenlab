@@ -7,6 +7,6 @@ interface Props {
   children: React.ReactNode;
 }
 
-const Cell = ({ children }: Props) => <Box as="td">{children}</Box>;
+const HeaderCell = ({ children }: Props) => <Box as="th">{children}</Box>;
 
-export default Cell;
+export default HeaderCell;
