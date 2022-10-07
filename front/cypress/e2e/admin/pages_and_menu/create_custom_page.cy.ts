@@ -13,8 +13,8 @@ describe('Admin: create custom page', () => {
     cy.intercept('GET', '**/static_pages/**').as('getCustomPage');
 
     const pageName = randomString();
-    const topInfoContent = randomString();
-    const bottomInfoContent = randomString();
+    const headerContent = randomString();
+    const subheaderContent = randomString();
 
     // go to custom page creation form
     cy.get('#create-custom-page').click();
@@ -38,13 +38,47 @@ describe('Admin: create custom page', () => {
     ];
     // toggle top info section and wait for requests to complete
     sectionNames.forEach((sectionName) => {
+      // click the toggle
       cy.get(`[data-cy="e2e-admin-section-toggle-${sectionName}"]`).click();
+      // wait for the call to complete
       cy.wait('@updateCustomPage');
-      // wait for the next toggle to become disabled, then enabled again once it finishes toggling
+      // wait for the toggle to become enabled in the UI
       cy.get(`[data-cy="e2e-admin-section-toggle-${sectionName}"]`)
         .find('i')
         .should('have.class', 'enabled');
     });
+
+    // go to the hero banner edit
+    cy.get('[data-cy="e2e-admin-edit-button-banner_enabled"]').click();
+
+    // focus the header dropzone and drop an image onto it
+    cy.get('#header-dropzone').attachFile('icon.png', {
+      subjectType: 'drag-n-drop',
+    });
+
+    // update the header text
+    cy.get('[data-cy="e2e-signed-out-header-section"]').scrollIntoView();
+    cy.get('[data-cy="e2e-signed-out-header-section"]')
+      .find('.e2e-localeswitcher')
+      .each((button) => {
+        cy.wrap(button).click();
+        cy.get('[data-cy="e2e-signed-out-header-section"]')
+          .find('input')
+          .type(headerContent);
+      });
+
+    // update the subheader text
+    cy.get('[data-cy="e2e-signed-out-subheader-section"]').scrollIntoView();
+    cy.get('[data-cy="e2e-signed-out-subheader-section"]')
+      .find('.e2e-localeswitcher')
+      .each((button) => {
+        cy.wrap(button).click();
+        cy.get('[data-cy="e2e-signed-out-header-section"]')
+          .find('input')
+          .type(subheaderContent);
+      });
+
+    // to do: test color and opacity
 
     // // // go back home
     // cy.get('[data-cy="breadcrumbs-Home"]').click();

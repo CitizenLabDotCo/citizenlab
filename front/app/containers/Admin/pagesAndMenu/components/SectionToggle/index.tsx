@@ -69,7 +69,10 @@ const SectionToggle = ({
         </Box>
       </Box>
       {editLinkPath && onClickEditButton && (
-        <AdminEditButton onClick={() => onClickEditButton(editLinkPath)} />
+        <AdminEditButton
+          onClick={() => onClickEditButton(editLinkPath)}
+          testId={name}
+        />
       )}
     </Row>
   );
