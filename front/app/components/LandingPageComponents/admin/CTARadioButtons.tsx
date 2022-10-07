@@ -64,6 +64,7 @@ const CTARadioButtons = ({
                   <Box mb="20px">
                     <InputMultilocWithLocaleSwitcher
                       data-testid="inputMultilocLocaleSwitcher"
+                      data-cy="input-multiloc-locale-switcher"
                       type="text"
                       valueMultiloc={ctaButtonMultiloc}
                       label={
@@ -87,6 +88,7 @@ const CTARadioButtons = ({
                   <Input
                     id="buttonConfigInput"
                     data-testid="buttonConfigInput"
+                    data-cy="cta-button-url-input"
                     type="text"
                     placeholder="https://..."
                     onChange={handleCTAButtonUrlOnChange}

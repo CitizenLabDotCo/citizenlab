@@ -1,3 +1,4 @@
+import { curry } from 'cypress/types/lodash';
 import { randomString } from '../../../support/commands';
 
 describe('Admin: create custom page', () => {
@@ -15,6 +16,8 @@ describe('Admin: create custom page', () => {
     const pageName = randomString();
     const headerContent = randomString();
     const subheaderContent = randomString();
+    const ctaContent = randomString();
+    const topInfoContent = randomString();
 
     // go to custom page creation form
     cy.get('#create-custom-page').click();
@@ -73,77 +76,66 @@ describe('Admin: create custom page', () => {
       .find('.e2e-localeswitcher')
       .each((button) => {
         cy.wrap(button).click();
-        cy.get('[data-cy="e2e-signed-out-header-section"]')
+        cy.get('[data-cy="e2e-signed-out-subheader-section"]')
           .find('input')
           .type(subheaderContent);
       });
 
+    // enable custom button
+    cy.get('[data-cy="e2e-cta-settings-custom-customized_button"]').click();
+
+    cy.get('[data-cy="e2e-cta-settings-custom-customized_button"]')
+      .find('.e2e-localeswitcher')
+      .each((button) => {
+        cy.wrap(button).click();
+        cy.get('[data-testid="inputMultilocLocaleSwitcher"]')
+          .find('input')
+          .type(ctaContent);
+      });
+
+    // type the url
+    cy.get('#buttonConfigInput').type('https://www.coolwebsite.biz');
+
+    // submit form
+    cy.get('.e2e-submit-wrapper-button').click();
+
+    // scroll to breadcrumbs, go back to main page
+    cy.get(`[data-cy="breadcrumbs-${pageName}"]`).click();
+
     // to do: test color and opacity
+    // go to top info section edit page
+    cy.get(
+      '[data-cy="e2e-admin-edit-button-top_info_section_enabled"]'
+    ).click();
 
-    // // // go back home
-    // cy.get('[data-cy="breadcrumbs-Home"]').click();
+    // fill out top info section
+    cy.get('[data-cy="e2e-top-info-form"]')
+      .find('.e2e-localeswitcher')
+      .each((button) => {
+        cy.wrap(button).click();
+        // to do- remove locale from id, it doesn't work
+        cy.get('#top_info_section_multiloc-en').type(topInfoContent);
+        cy.wrap(button).get('.notEmpty');
+      });
 
-    // // // visit bottom into section edit page
-    // cy.get('[data-cy="e2e-admin-edit-button"]').eq(2).click();
-    // seedLanguages.forEach((language) => {
-    //   cy.get(`.${language}`).click();
-    //   cy.get('#bottom_info_section_multiloc-en')
-    //     .clear()
-    //     .type(bottomInfoContent);
-    // });
-    // cy.get('[data-cy="e2e-bottom-info-section-submit"').click();
+    // submit
+    cy.get('[data-cy="e2e-top-info-section-submit"]').click();
 
-    // cy.visit('/');
+    // wait for success toast
+    cy.get('[data-testid="feedbackSuccessMessage"');
 
-    // cy.get('[data-testid="e2e-landing-page-top-info-section"]').should(
-    //   'not.exist'
-    // );
-    // cy.get('[data-testid="e2e-landing-page-bottom-info-section"]').should(
-    //   'not.exist'
-    // );
-    // cy.get('[data-testid="e2e-events-widget-container"]').should('not.exist');
+    //  go back to main page
+    cy.get(`[data-cy="breadcrumbs-${pageName}"]`).click();
 
-    // cy.visit('/admin/pages-menu/');
-    // cy.get('[data-testid="edit-button"]').first().click();
+    // visit our custom page, removing target to keep same tab
+    // cy.get('#to-custom-page').invoke('removeAttr', 'target').click()
+    // visit our customm page by slug
+    cy.visit(`/en/pages/${pageName}`);
 
-    // // toggle top info section and wait for requests to complete
-    // cy.get(
-    //   '[data-cy="e2e-admin-section-toggle-top_info_section_enabled"]'
-    // ).click();
-    // cy.wait('@saveHomePage');
-
-    // // wait for the next toggle to become disabled, then enabled again once it finishes toggling
-    // cy.get('[data-cy="e2e-admin-section-toggle-bottom_info_section_enabled"]')
-    //   .find('i')
-    //   .should('have.class', 'disabled');
-    // cy.get('[data-cy="e2e-admin-section-toggle-bottom_info_section_enabled"]')
-    //   .find('i')
-    //   .should('have.class', 'enabled');
-
-    // // click bottom info section toggle and wait for requests to complete
-    // cy.get(
-    //   '[data-cy="e2e-admin-section-toggle-bottom_info_section_enabled"]'
-    // ).click();
-    // cy.wait('@saveHomePage');
-
-    // // wait for the next toggle to become disabled, then enabled again once it finishes toggling
-    // cy.get('[data-cy="e2e-admin-section-toggle-events_widget_enabled"]')
-    //   .find('i')
-    //   .should('have.class', 'disabled');
-    // cy.get('[data-cy="e2e-admin-section-toggle-events_widget_enabled"]')
-    //   .find('i')
-    //   .should('have.class', 'enabled');
-
-    // // toggle events section and wait for requests to complete
-    // cy.get(
-    //   '[data-cy="e2e-admin-section-toggle-events_widget_enabled"]'
-    // ).click();
-    // cy.wait('@saveHomePage');
-
-    // // go back to homepage and see that the content is there correctly
-    // cy.visit('/');
-    // cy.contains(topInfoContent);
-    // cy.contains(bottomInfoContent);
-    // cy.get('[data-testid="e2e-events-widget-container"]').should('exist');
+    // to do - test attachments (same way as drag and drop image, but has to not be png)
+    cy.contains(headerContent);
+    cy.contains(subheaderContent);
+    cy.contains(ctaContent);
+    cy.contains(topInfoContent);
   });
 });
