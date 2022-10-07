@@ -28,7 +28,7 @@ export const checkFieldEnabled = (
   isIdeaCustomFieldsEnabled: boolean,
   isDynamicIdeaFormEnabled: boolean
 ): boolean | JSONSFormsSchemaObject => {
-  let fieldEnabled;
+  let fieldEnabled: boolean | JSONSFormsSchemaObject = false;
   if (!isIdeaCustomFieldsEnabled || !isDynamicIdeaFormEnabled) {
     fieldEnabled = isFieldEnabled(
       fieldName,
