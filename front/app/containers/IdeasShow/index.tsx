@@ -234,7 +234,7 @@ export const IdeasShow = ({
 
   const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({
     projectId,
-    ideaId,
+    inputId: ideaId,
   });
 
   const isLoaded =

@@ -11,7 +11,7 @@ import useLocale from './useLocale';
 interface Props {
   projectId: string | undefined;
   phaseId?: string | null;
-  inputId?: string;
+  inputId?: string | null;
 }
 
 export default ({ projectId, phaseId, inputId }: Props) => {

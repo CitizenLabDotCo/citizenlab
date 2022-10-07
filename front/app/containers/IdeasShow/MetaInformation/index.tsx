@@ -45,7 +45,7 @@ const MetaInformation = ({
 
   const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({
     projectId,
-    ideaId,
+    inputId: ideaId,
   });
   const ideaCustomFieldsIsEnabled = useFeatureFlag({
     name: 'idea_custom_fields',
