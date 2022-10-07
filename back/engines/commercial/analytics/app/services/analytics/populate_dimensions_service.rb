@@ -16,18 +16,27 @@ module Analytics
         from = Time.zone.today
         to = from + 6.months
 
-        if Analytics::DimensionDate.none?
-          first_idea = Idea.order(:created_at).limit(1).pluck(:created_at)
-          first_initiative = Initiative.order(:created_at).limit(1).pluck(:created_at)
-          first_post = [first_idea, first_initiative].min[0]
-          unless first_post.nil?
-            from = first_post.year > 2020 ? first_post.to_date : Date.parse('2020-01-01')
-          end
-        else
-          last_date = Analytics::DimensionDate.order(date: :desc).first.date
-          from = last_date + 1.day
-        end
+        tenant_creation = AppConfiguration.first.created_at
+        first_idea = Idea.order(:created_at).limit(1).pluck(:created_at)[0]
+        first_initiative = Initiative.order(:created_at).limit(1).pluck(:created_at)[0]
+        first_activity_date = [tenant_creation, first_idea, first_initiative].compact.min.to_date
 
+        if Analytics::DimensionDate.none?
+          from = [Date.parse('2020-01-01'), first_activity_date].max # No date dimensions earlier than 2020
+        else
+          first_dimension_date = Analytics::DimensionDate.order(date: :asc).first.date
+          last_dimension_date = Analytics::DimensionDate.order(date: :desc).first.date
+          from = last_dimension_date + 1.day
+          if first_activity_date < first_dimension_date
+            # Back fill any earlier dates that may have been missed due to previous issue with population
+            create_dates(first_activity_date, first_dimension_date - 1.day)
+          end
+        end
+        create_dates(from, to)
+      end
+
+      def create_dates(from, to)
+        pp [from, to]
         (from..to).each do |date|
           Analytics::DimensionDate.create!(
             date: date,
