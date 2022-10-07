@@ -1,5 +1,5 @@
 import { API_PATH } from 'containers/App/constants';
-import { ImageSizes, Multiloc } from 'typings';
+import { ImageSizes, IRelationship, Multiloc } from 'typings';
 import streams from 'utils/streams';
 import { THomepageBannerLayout } from './homepageSettings';
 
@@ -10,6 +10,11 @@ export interface ICustomPage {
 export interface ICustomPageData {
   id: string;
   attributes: ICustomPageAttributes;
+  relationships: {
+    nav_bar_item: {
+      data: IRelationship | null;
+    };
+  };
 }
 
 export type TCustomPageEnabledSetting = keyof ICustomPageEnabledSettings;

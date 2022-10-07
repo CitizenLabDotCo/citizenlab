@@ -27,9 +27,11 @@ import { injectIntl } from 'utils/cl-intl';
 
 // types
 import { Multiloc } from 'typings';
+import { isNil } from 'utils/helperUtils';
 
 export interface FormValues {
   title_multiloc: Multiloc;
+  nav_bar_item_title_multiloc?: Multiloc;
   slug?: string;
 }
 
@@ -51,6 +53,11 @@ const CustomPageSettingsForm = ({
     title_multiloc: validateMultiloc(
       formatMessage(messages.titleMultilocError)
     ),
+    ...(!isNil(defaultValues?.nav_bar_item_title_multiloc) && {
+      nav_bar_item_title_multiloc: validateMultiloc(
+        formatMessage(messages.titleMultilocError)
+      ),
+    }),
     ...(mode === 'edit' && {
       slug: string()
         .matches(slugRegEx, formatMessage(messages.slugRegexError))
@@ -95,6 +102,13 @@ const CustomPageSettingsForm = ({
                 type="text"
               />
             </Box>
+            {defaultValues?.nav_bar_item_title_multiloc && (
+              <InputMultilocWithLocaleSwitcher
+                label={formatMessage(messages.navbarItemTitle)}
+                type="text"
+                name="nav_bar_item_title_multiloc"
+              />
+            )}
             {mode === 'edit' && (
               <SlugInput slug={slug} pathnameWithoutSlug="pages" />
             )}

@@ -41,6 +41,10 @@ export default defineMessages({
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleLabel',
     defaultMessage: 'Title',
   },
+  navbarItemTitle: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.navbarItemTitle',
+    defaultMessage: 'Title in navigation bar',
+  },
   slugLabel: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.slugLabel',
     defaultMessage: 'Page slug',
