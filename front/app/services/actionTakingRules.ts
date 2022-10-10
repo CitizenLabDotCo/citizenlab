@@ -177,6 +177,36 @@ export const getIdeaPostingRules = ({
     }
 
     // continuous, not an enabled ideation project
+    // TODO: Will need to update this section after we add new permissions in back office in i5
+    if (
+      isNilOrError(phase) &&
+      project.attributes.participation_method === 'native_survey'
+    ) {
+      if (!project.attributes.posting_enabled) {
+        return {
+          show: true,
+          enabled: false,
+          disabledReason: 'notPermitted' as IIdeaPostingDisabledReason,
+          action: null,
+        };
+      }
+      if (authUser) {
+        return {
+          show: true,
+          enabled: true,
+          disabledReason: null,
+          action: null,
+        };
+      } else {
+        return {
+          show: true,
+          enabled: false,
+          disabledReason: signedIn ? 'notPermitted' : 'maybeNotPermitted',
+          action: null,
+        };
+      }
+    }
+
     if (
       isNilOrError(phase) &&
       !(
