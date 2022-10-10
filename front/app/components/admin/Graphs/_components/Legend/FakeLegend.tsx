@@ -15,6 +15,7 @@ import { Percentage } from 'typings';
 
 interface Props {
   width?: number | Percentage;
+  height?: number | Percentage;
   items: LegendItem[];
   position?: Position;
   onCalculateDimensions: (dimensions: LegendDimensions) => void;
@@ -30,6 +31,7 @@ const getId = () => {
 
 const FakeLegend = ({
   width,
+  height,
   items,
   position = 'bottom-center',
   onCalculateDimensions,
@@ -80,8 +82,18 @@ const FakeLegend = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [calculationScheduled]);
 
-  const stringWidth =
-    typeof width === 'number' ? `${width}px` : width ?? '100%';
+  const rightLegend = position?.includes('right');
+  const stringWidth = rightLegend
+    ? 'auto'
+    : typeof width === 'number'
+    ? `${width}px`
+    : width ?? '100%';
+
+  const stringHeight = !rightLegend
+    ? 'auto'
+    : typeof height === 'number'
+    ? `${height}px`
+    : height ?? '100%';
 
   const handleRef = (ref: HTMLDivElement | null) => {
     if (ref === null) return;
@@ -93,14 +105,17 @@ const FakeLegend = ({
       style={{
         visibility: 'hidden',
         // transform: `translate(0,-${legendDimensions?.height ?? 0}px)`
-        marginTop: `-${legendDimensions?.height ?? 0}px`,
+        marginTop: !rightLegend ? `-${legendDimensions?.height ?? 0}px` : 0,
+        marginLeft: rightLegend ? `-${legendDimensions?.width ?? 0}px` : 0,
+        whiteSpace: 'nowrap',
       }}
       display="flex"
-      flexDirection="row"
+      flexDirection={rightLegend ? 'column' : 'row'}
       flexWrap="wrap"
       justifyContent={getJustifyContent(position)}
       id={id}
       width={stringWidth}
+      height={stringHeight}
       ref={handleRef}
     >
       {items.map((item, i) => (

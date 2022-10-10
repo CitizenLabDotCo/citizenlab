@@ -1,15 +1,20 @@
 import React, { useEffect } from 'react';
+import { Moment } from 'moment';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
-import PostFeedback from '../components/PostFeedback';
+import PostFeedbackCard from '../components/PostFeedbackCard';
+
+// typings
+import { IResolution } from 'components/admin/ResolutionControl';
 
 interface Props {
   projectId: string | undefined;
-  startAt: string | null | undefined;
-  endAt: string | null | undefined;
+  startAtMoment: Moment | null | undefined;
+  endAtMoment: Moment | null | undefined;
+  resolution: IResolution;
   onMount: () => void;
 }
 
@@ -23,5 +28,5 @@ export default ({ onMount, ...otherProps }: Props) => {
 
   if (!analyticsActive) return null;
 
-  return <PostFeedback {...otherProps} />;
+  return <PostFeedbackCard {...otherProps} />;
 };
