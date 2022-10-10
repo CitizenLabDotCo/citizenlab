@@ -19,6 +19,10 @@ const HeaderRow = ({ columns }: Props) => (
           width={`${roundPercentage(1, columns.length)}%`}
           key={i}
           p="12px"
+          clickable
+          onClick={(e) => {
+            console.log(e);
+          }}
         >
           <Box my="6px">{column}</Box>
         </HeaderCell>

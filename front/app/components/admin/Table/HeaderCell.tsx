@@ -4,16 +4,37 @@ import React from 'react';
 import { Box, BoxProps } from '@citizenlab/cl2-component-library';
 
 // styling
-import { SEMANTIC_UI_BORDER_INNER_COLOR } from './constants';
+import styled from 'styled-components';
+import {
+  SEMANTIC_UI_BORDER_INNER_COLOR,
+  SEMANTIC_UI_HEADER_BG_COLOR_DARKER,
+} from './constants';
 
-const HeaderCell = ({ children, ...otherProps }: BoxProps) => (
-  <Box
+interface Props extends BoxProps {
+  clickable?: boolean;
+}
+
+const StyledBox = styled(Box)<{ clickable?: boolean }>`
+  ${({ clickable }) =>
+    !clickable
+      ? ''
+      : `
+    &:hover {
+      background: ${SEMANTIC_UI_HEADER_BG_COLOR_DARKER};
+      cursor: pointer;
+    }
+  `}
+`;
+
+const HeaderCell = ({ children, clickable, ...otherProps }: Props) => (
+  <StyledBox
     as="th"
     borderBottom={`1px solid ${SEMANTIC_UI_BORDER_INNER_COLOR}`}
+    clickable={clickable}
     {...otherProps}
   >
     {children}
-  </Box>
+  </StyledBox>
 );
 
 export default HeaderCell;
