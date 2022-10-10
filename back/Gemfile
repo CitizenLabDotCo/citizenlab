@@ -60,6 +60,7 @@ group :development, :test do
   gem 'simplecov'
   gem 'simplecov-rcov'
   gem 'test-prof', '~> 1.0'
+  gem 'vcr', '~> 6.1'
 end
 
 group :development do
@@ -174,6 +175,9 @@ gem 'mjml-rails', '~> 4.4'
 # The gem is a dependency of Rails, but we use Rails 6.1.6 and no Rails upgrade is available yet.
 # Specifying this gem explicitly can probably be removed when the Rails upgrade is available.
 gem 'rails-html-sanitizer', '>= 1.4.3'
+
+# Used to define CRON tasks. See back/config/schedule.rb.
+gem 'whenever', '~> 1.0'
 
 require 'json'
 if File.exist? '../citizenlab.config.ee.json'

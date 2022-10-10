@@ -164,6 +164,7 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
             getAjvErrorMessage={getAjvErrorMessage}
             getApiErrorMessage={getApiErrorMessage}
             inputId={undefined}
+            config={'input'}
             title={
               <FormattedMessage
                 {...{

@@ -23,9 +23,9 @@ module Analytics
   class FactPost < Analytics::ApplicationRecordView
     self.primary_key = :id
     attribute :feedback_time_taken, :string
-    belongs_to :type, class_name: 'DimensionType'
-    belongs_to :created_date, class_name: 'DimensionDate', primary_key: 'date'
-    belongs_to :project, class_name: 'DimensionProject'
-    belongs_to :status, class_name: 'DimensionStatus'
+    belongs_to :type, class_name: 'Analytics::DimensionType'
+    belongs_to :created_date, class_name: 'Analytics::DimensionDate', primary_key: 'date'
+    belongs_to :project, class_name: 'Analytics::DimensionProject'
+    belongs_to :status, class_name: 'Analytics::DimensionStatus'
   end
 end
