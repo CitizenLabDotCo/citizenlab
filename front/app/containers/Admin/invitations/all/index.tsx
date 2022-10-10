@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 
 // components
-import { Table } from 'semantic-ui-react';
+import { Table, Body, Footer, Row, HeaderCell } from 'components/admin/Table';
 import Pagination from 'components/admin/Pagination';
 import Button from 'components/UI/Button';
 import TableHeader from './TableHeader';
-import Row from './Row';
+import TableRow from './TableRow';
 import SearchInput from 'components/UI/SearchInput';
 
 // resources
@@ -112,31 +112,31 @@ const InvitesTable = ({
       </HeaderContainer>
 
       {invitesList.length > 0 && (
-        <Table sortable>
+        <Table>
           <TableHeader
             sortAttribute={sortAttribute}
             sortDirection={sortDirection}
             onSortHeaderClick={handleSortHeaderClick}
           />
 
-          <Table.Body>
+          <Body horizontalBorders>
             {invitesList.map((invite) => (
-              <Row key={invite.id} invite={invite} />
+              <TableRow key={invite.id} invite={invite} />
             ))}
-          </Table.Body>
+          </Body>
 
           {currentPage && lastPage && lastPage > 1 && (
-            <Table.Footer fullWidth={true}>
-              <Table.Row>
-                <Table.HeaderCell colSpan="6">
+            <Footer>
+              <Row>
+                <HeaderCell width="100%">
                   <Pagination
                     currentPage={currentPage}
                     totalPages={lastPage}
                     loadPage={onChangePage}
                   />
-                </Table.HeaderCell>
-              </Table.Row>
-            </Table.Footer>
+                </HeaderCell>
+              </Row>
+            </Footer>
           )}
         </Table>
       )}

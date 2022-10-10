@@ -7,7 +7,8 @@ import { IInviteData, deleteInvite } from 'services/invites';
 import useUser from 'hooks/useUser';
 
 // components
-import { Table, Button as SemanticButton, Popup } from 'semantic-ui-react';
+import { Button as SemanticButton, Popup } from 'semantic-ui-react';
+import { Row, Cell } from 'components/admin/Table';
 import { Badge } from '@citizenlab/cl2-component-library';
 
 // styling
@@ -25,7 +26,7 @@ interface InputProps {
   invite: IInviteData;
 }
 
-const Row = (inputProps: InputProps) => {
+const TableRow = (inputProps: InputProps) => {
   const userId = inputProps.invite.relationships.invitee.data.id;
   const user = useUser({ userId });
 
@@ -38,20 +39,20 @@ const Row = (inputProps: InputProps) => {
 
   return (
     // To test invitation flow, we need the token, hence this className
-    <Table.Row
+    <Row
       key={inputProps.invite.id}
       className={inputProps.invite.attributes.token}
     >
-      <Table.Cell>{user.attributes.email}</Table.Cell>
-      <Table.Cell>
+      <Cell>{user.attributes.email}</Cell>
+      <Cell>
         <span>
           {user.attributes.first_name} {user.attributes.last_name}
         </span>
-      </Table.Cell>
-      <Table.Cell>
+      </Cell>
+      <Cell>
         <FormattedDate value={inputProps.invite.attributes.created_at} />
-      </Table.Cell>
-      <Table.Cell textAlign="center">
+      </Cell>
+      <Cell style={{ textAlign: 'center' }}>
         {user.attributes.invite_status === 'pending' ? (
           <Badge>
             <FormattedMessage {...messages.inviteStatusPending} />
@@ -61,8 +62,8 @@ const Row = (inputProps: InputProps) => {
             <FormattedMessage {...messages.inviteStatusAccepted} />
           </Badge>
         )}
-      </Table.Cell>
-      <Table.Cell textAlign="center">
+      </Cell>
+      <Cell style={{ textAlign: 'center' }}>
         <Popup
           trigger={<SemanticButton icon="trash" />}
           content={
@@ -75,9 +76,9 @@ const Row = (inputProps: InputProps) => {
           on="click"
           position="bottom right"
         />
-      </Table.Cell>
-    </Table.Row>
+      </Cell>
+    </Row>
   );
 };
 
-export default Row;
+export default TableRow;

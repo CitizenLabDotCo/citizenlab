@@ -26,16 +26,14 @@ interface Props {
 const RowComponent = ({ row }: Props) => {
   return (
     <Row>
-      <Cell p="12px" background={SEMANTIC_UI_HEADER_BG_COLOR}>
-        {row.name}
-      </Cell>
-      <Cell p="12px">
+      <Cell background={SEMANTIC_UI_HEADER_BG_COLOR}>{row.name}</Cell>
+      <Cell>
         {formatPercentage(row.actualPercentage)}
         <AbsoluteValue>
           ({row.actualNumber.toLocaleString('en-US')})
         </AbsoluteValue>
       </Cell>
-      <Cell p="12px">
+      <Cell>
         {formatPercentage(row.referencePercentage)}
         <AbsoluteValue>
           ({row.referenceNumber.toLocaleString('en-US')})

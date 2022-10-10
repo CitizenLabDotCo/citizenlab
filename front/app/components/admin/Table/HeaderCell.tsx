@@ -31,6 +31,7 @@ const HeaderCell = ({ children, clickable, ...otherProps }: Props) => (
     as="th"
     borderBottom={`1px solid ${SEMANTIC_UI_BORDER_INNER_COLOR}`}
     clickable={clickable}
+    p="12px"
     {...otherProps}
   >
     {children}

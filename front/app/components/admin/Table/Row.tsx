@@ -22,13 +22,18 @@ const BorderBox = styled(Box)`
 interface Props {
   children: React.ReactNode;
   borderHorizontal?: boolean;
+  className?: string;
 }
 
-const Row = ({ children, borderHorizontal = true }: Props) =>
+const Row = ({ children, borderHorizontal = true, className }: Props) =>
   borderHorizontal ? (
-    <BorderBox as="tr">{children}</BorderBox>
+    <BorderBox as="tr" className={className}>
+      {children}
+    </BorderBox>
   ) : (
-    <Box as="tr">{children}</Box>
+    <Box as="tr" className={className}>
+      {children}
+    </Box>
   );
 
 export default Row;

@@ -1,11 +1,12 @@
 import React from 'react';
 
 // components
-import { Table } from 'semantic-ui-react';
-import { IconTooltip, Text } from '@citizenlab/cl2-component-library';
+import { Header, Row, HeaderCell } from 'components/admin/Table';
+import { IconTooltip, Text, Icon } from '@citizenlab/cl2-component-library';
 
 // styling
 import { colors } from 'utils/styleUtils';
+import { SEMANTIC_UI_HEADER_BG_COLOR_DARKER } from 'components/admin/Table/constants';
 
 // i18n
 import messages from '../messages';
@@ -14,6 +15,37 @@ import { FormattedMessage } from 'utils/cl-intl';
 // typings
 import { SortAttribute } from 'resources/GetInvites';
 import { SortDirection } from 'utils/paginationUtils';
+
+interface ClickableCellProps {
+  width: string;
+  sorted: SortDirection | undefined;
+  style?: React.CSSProperties;
+  onClick: () => void;
+  children: React.ReactNode;
+}
+
+const ClickableCell = ({
+  children,
+  sorted,
+  ...otherProps
+}: ClickableCellProps) => (
+  <HeaderCell
+    clickable
+    background={sorted ? SEMANTIC_UI_HEADER_BG_COLOR_DARKER : undefined}
+    {...otherProps}
+  >
+    {children}
+    {sorted && (
+      <Icon
+        name={sorted === 'ascending' ? 'chevron-up' : 'chevron-down'}
+        width="10px"
+        fill={colors.primary}
+        ml="8px"
+        transform="translate(0,-1)"
+      />
+    )}
+  </HeaderCell>
+);
 
 interface Props {
   sortAttribute: SortAttribute;
@@ -26,38 +58,38 @@ const TableHeader = ({
   sortDirection,
   onSortHeaderClick,
 }: Props) => (
-  <Table.Header>
-    <Table.Row>
-      <Table.HeaderCell
+  <Header verticalBorders>
+    <Row>
+      <ClickableCell
         sorted={sortAttribute === 'email' ? sortDirection : undefined}
         onClick={onSortHeaderClick('email')}
-        width={3}
+        width="38%"
       >
         <FormattedMessage {...messages.email} />
-      </Table.HeaderCell>
-      <Table.HeaderCell
+      </ClickableCell>
+      <ClickableCell
         sorted={sortAttribute === 'last_name' ? sortDirection : undefined}
         onClick={onSortHeaderClick('last_name')}
-        width={2}
+        width="25%"
       >
         <FormattedMessage {...messages.name} />
-      </Table.HeaderCell>
-      <Table.HeaderCell
+      </ClickableCell>
+      <ClickableCell
         sorted={sortAttribute === 'created_at' ? sortDirection : undefined}
         onClick={onSortHeaderClick('created_at')}
-        width={1}
+        width="13%"
       >
         <FormattedMessage {...messages.invitedSince} />
-      </Table.HeaderCell>
-      <Table.HeaderCell
+      </ClickableCell>
+      <ClickableCell
         sorted={sortAttribute === 'invite_status' ? sortDirection : undefined}
         onClick={onSortHeaderClick('invite_status')}
-        width={1}
-        textAlign="center"
+        width="12%"
+        style={{ textAlign: 'center' }}
       >
         <FormattedMessage {...messages.inviteStatus} />
-      </Table.HeaderCell>
-      <Table.HeaderCell width={1} textAlign="center">
+      </ClickableCell>
+      <HeaderCell width="12%" style={{ textAlign: 'center' }}>
         <FormattedMessage {...messages.deleteInvite} />
         <IconTooltip
           ml="6px"
@@ -72,9 +104,9 @@ const TableHeader = ({
             </Text>
           }
         />
-      </Table.HeaderCell>
-    </Table.Row>
-  </Table.Header>
+      </HeaderCell>
+    </Row>
+  </Header>
 );
 
 export default TableHeader;
