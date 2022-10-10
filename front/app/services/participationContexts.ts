@@ -60,19 +60,22 @@ export function getInputTerm(
   phases: IPhaseData[] | undefined | null | Error,
   phaseFromUrl?: IPhaseData | undefined | null | Error
 ) {
-  return {
+  if (processType === 'continuous') {
     // To make sure copy depending on an input_term doesn't break,
     // we have a fallback to idea here.
-    continuous: !isNilOrError(project) ? getProjectInputTerm(project) : 'idea',
+    return !isNilOrError(project) ? getProjectInputTerm(project) : 'idea';
+  }
+  if (processType === 'timeline') {
     // (2020/12/9): When a new timeline project is created, phases will initially
     // be []. To make sure we don't break copy that depends on an input_term,
     // we have the fallback to idea here in that case.
-    timeline: !isNilOrError(phaseFromUrl)
-      ? getPhaseInputTerm([phaseFromUrl])
-      : !isNilOrError(phases) && phases.length > 0
-      ? getPhaseInputTerm(phases)
-      : 'idea',
-  }[processType];
+    if (!isNilOrError(phaseFromUrl)) {
+      return getPhaseInputTerm([phaseFromUrl]);
+    } else if (!isNilOrError(phases) && phases.length > 0) {
+      return getPhaseInputTerm(phases);
+    }
+  }
+  return 'idea';
 }
 
 export const ideaDefaultSortMethodFallback = 'trending';
