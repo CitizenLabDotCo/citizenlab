@@ -1654,7 +1654,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last30Days": "Poslednjih 30 dana:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last7Days": "Poslednjih 7 dana:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.pageViews": "Pregledi stranice po poseti",
-  "app.modules.commercial.analytics.admin.components.VisitorsCard.pageViewsStatTooltipMessage": "When the project filter is active, this shows the average page views for any visit that included the selected project. This counts all pages that a user viewed during the visit, not just the selected project page(s).",
+  "app.modules.commercial.analytics.admin.components.VisitorsCard.pageViewsStatTooltipMessage": "Kada je aktivan filter projekta, ovo pokazuje prosečno trajanje bilo koje posete koja je obuhvatila izabrani projekat. Ovde se računa celokupni period koji je korisnik proveo na platformi, a ne samo vreme koje je proveo na stranici(ama) izabranog projekta.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visitDuration": "Trajanje posete",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visitors": "Posetioci",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visitorsStatTooltipMessage": "„Posetioci” označava broj jedinstvenih posetilaca. Ako osoba poseti platformu više puta, računa se samo jednom.",
