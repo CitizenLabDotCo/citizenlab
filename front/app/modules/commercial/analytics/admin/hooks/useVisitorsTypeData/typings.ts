@@ -13,7 +13,7 @@ export type Response = {
 
 interface BaseRow {
   returning_visitor: boolean;
-  count: number;
+  count_visitor_id: number;
 }
 
 export interface PieRow {
