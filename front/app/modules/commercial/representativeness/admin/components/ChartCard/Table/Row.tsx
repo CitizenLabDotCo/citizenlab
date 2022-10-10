@@ -1,11 +1,12 @@
 import React from 'react';
 
 // components
-import { Table } from 'semantic-ui-react';
+import { Row, Cell } from 'components/admin/Table';
 
 // styling
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
+import { SEMANTIC_UI_HEADER_BG_COLOR } from 'components/admin/Table/constants';
 
 // utils
 import { formatPercentage } from '../utils';
@@ -22,24 +23,26 @@ interface Props {
   row: RepresentativenessRow;
 }
 
-const Row = ({ row }: Props) => {
+const RowComponent = ({ row }: Props) => {
   return (
-    <Table.Row>
-      <Table.Cell>{row.name}</Table.Cell>
-      <Table.Cell>
+    <Row>
+      <Cell p="12px" background={SEMANTIC_UI_HEADER_BG_COLOR}>
+        {row.name}
+      </Cell>
+      <Cell p="12px">
         {formatPercentage(row.actualPercentage)}
         <AbsoluteValue>
           ({row.actualNumber.toLocaleString('en-US')})
         </AbsoluteValue>
-      </Table.Cell>
-      <Table.Cell>
+      </Cell>
+      <Cell p="12px">
         {formatPercentage(row.referencePercentage)}
         <AbsoluteValue>
           ({row.referenceNumber.toLocaleString('en-US')})
         </AbsoluteValue>
-      </Table.Cell>
-    </Table.Row>
+      </Cell>
+    </Row>
   );
 };
 
-export default Row;
+export default RowComponent;
