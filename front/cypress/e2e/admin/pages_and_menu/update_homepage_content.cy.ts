@@ -1,7 +1,5 @@
 import { randomString } from '../../../support/commands';
 
-const seedLanguages = ['en', 'nl-BE', 'nl-NL', 'fr-BE'];
-
 describe('Admin: update HomePage content', () => {
   before(() => {
     cy.setAdminLoginCookie();
@@ -24,10 +22,12 @@ describe('Admin: update HomePage content', () => {
     // go to page with homepage settings toggles
     cy.get('[data-testid="edit-button"]').first().click();
 
-    // visit top into section edit page
-    cy.get('[data-cy="e2e-admin-edit-button"]').eq(1).click();
-    seedLanguages.forEach((language) => {
-      cy.get(`.${language}`).click();
+    // visit and update top into section edit page
+    cy.get(
+      '[data-cy="e2e-admin-edit-button-top_info_section_enabled"]'
+    ).click();
+    cy.get('.e2e-localeswitcher').each((button) => {
+      cy.wrap(button).click();
       cy.get('#top_info_section_multiloc-en').clear().type(topInfoContent);
     });
     cy.get('[data-cy="e2e-top-info-section-submit"').click();
@@ -35,18 +35,20 @@ describe('Admin: update HomePage content', () => {
     // // go back home
     cy.get('[data-cy="breadcrumbs-Home"]').click();
 
-    // // visit bottom into section edit page
-    cy.get('[data-cy="e2e-admin-edit-button"]').eq(2).click();
-    seedLanguages.forEach((language) => {
-      cy.get(`.${language}`).click();
+    // // visit and update bottom into section edit page
+    cy.get(
+      '[data-cy="e2e-admin-edit-button-bottom_info_section_enabled"]'
+    ).click();
+    cy.get('.e2e-localeswitcher').each((button) => {
+      cy.wrap(button).click();
       cy.get('#bottom_info_section_multiloc-en')
         .clear()
         .type(bottomInfoContent);
     });
     cy.get('[data-cy="e2e-bottom-info-section-submit"').click();
 
+    // go to home page, check that the content is not there yet
     cy.visit('/');
-
     cy.get('[data-testid="e2e-landing-page-top-info-section"]').should(
       'not.exist'
     );
@@ -55,6 +57,7 @@ describe('Admin: update HomePage content', () => {
     );
     cy.get('[data-testid="e2e-events-widget-container"]').should('not.exist');
 
+    // go back to edit the page
     cy.visit('/admin/pages-menu/');
     cy.get('[data-testid="edit-button"]').first().click();
 

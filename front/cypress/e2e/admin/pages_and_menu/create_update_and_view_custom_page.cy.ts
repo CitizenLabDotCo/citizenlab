@@ -1,7 +1,7 @@
 import { curry } from 'cypress/types/lodash';
 import { randomString } from '../../../support/commands';
 
-describe('Admin: create custom page', () => {
+describe('Admin: create, update, and view custom page', () => {
   before(() => {
     cy.setAdminLoginCookie();
     cy.visit('/admin/pages-menu/');
@@ -29,7 +29,7 @@ describe('Admin: create custom page', () => {
     });
 
     // submit
-    cy.get('[data-cy="submit-custom-page"]').click();
+    cy.get('[data-cy="e2e-submit-custom-page"]').click();
 
     // click the page content tab
     cy.contains('Page content').click();
