@@ -39,7 +39,7 @@ const query = ({
     },
     groups: 'returning_visitor',
     aggregations: {
-      all: 'count',
+      visitor_id: 'count',
     },
   };
 

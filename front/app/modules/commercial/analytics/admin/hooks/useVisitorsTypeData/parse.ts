@@ -14,13 +14,15 @@ export const parsePieData = (
 ): PieRow[] | null => {
   if (data.length === 0) return null;
 
-  const percentages = roundPercentages(data.map(({ count }) => count));
+  const percentages = roundPercentages(
+    data.map(({ count_visitor_id }) => count_visitor_id)
+  );
 
   return data.map((row, i) => ({
     name: row.returning_visitor
       ? translations.returningVisitors
       : translations.newVisitors,
-    value: row.count,
+    value: row.count_visitor_id,
     color: categoricalColorScheme({ rowIndex: i }),
     percentage: percentages[i],
   }));
