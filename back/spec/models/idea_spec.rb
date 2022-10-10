@@ -179,8 +179,8 @@ RSpec.describe Idea, type: :model do
 
     it 'is invalid for a phase that does not belong to the input\'s project' do
       project = create :project_with_active_native_survey_phase
-      idea = build :idea, project: project, creation_phase: create(:native_survey_phase)
-      expect(idea).to be_invalid
+      response = build :idea, project: project, creation_phase: create(:native_survey_phase)
+      expect(response).to be_invalid
     end
 
     it 'is valid when nil and in a timeline project' do
@@ -191,8 +191,8 @@ RSpec.describe Idea, type: :model do
 
     it 'is valid for non-transitive participation methods in a timeline project' do
       project = create :project_with_active_native_survey_phase
-      idea = build :idea, project: project, creation_phase: project.phases.first
-      expect(idea).to be_valid
+      response = build :idea, project: project, creation_phase: project.phases.first
+      expect(response).to be_valid
     end
 
     it 'is invalid for transitive participation methods in a timeline project' do
@@ -203,14 +203,14 @@ RSpec.describe Idea, type: :model do
 
     it 'is valid when nil and in a continuous project' do
       project = create :continuous_native_survey_project
-      idea = build :idea, project: project, creation_phase: nil
-      expect(idea).to be_valid
+      response = build :idea, project: project, creation_phase: nil
+      expect(response).to be_valid
     end
 
     it 'is invalid when present and in a continuous project' do
       project = create :continuous_native_survey_project
-      idea = build :idea, project: project, creation_phase: create(:phase)
-      expect(idea).to be_invalid
+      input = build :idea, project: project, creation_phase: create(:phase)
+      expect(input).to be_invalid
     end
   end
 
