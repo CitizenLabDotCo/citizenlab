@@ -30,18 +30,21 @@ import { Multiloc } from 'typings';
 
 export interface FormValues {
   title_multiloc: Multiloc;
+  nav_bar_item_title_multiloc?: Multiloc;
   slug?: string;
 }
 
 type TMode = 'new' | 'edit';
 interface Props {
   defaultValues?: FormValues;
+  showNavBarItemTitle?: boolean;
   mode: TMode;
   onSubmit: (formValues: FormValues) => void | Promise<void>;
 }
 
 const CustomPageSettingsForm = ({
   defaultValues,
+  showNavBarItemTitle,
   intl: { formatMessage },
   mode,
   onSubmit,
@@ -51,6 +54,11 @@ const CustomPageSettingsForm = ({
     title_multiloc: validateMultiloc(
       formatMessage(messages.titleMultilocError)
     ),
+    ...(showNavBarItemTitle && {
+      nav_bar_item_title_multiloc: validateMultiloc(
+        formatMessage(messages.titleMultilocError)
+      ),
+    }),
     ...(mode === 'edit' && {
       slug: string()
         .matches(slugRegEx, formatMessage(messages.slugRegexError))
@@ -95,6 +103,15 @@ const CustomPageSettingsForm = ({
                 type="text"
               />
             </Box>
+            {showNavBarItemTitle && (
+              <Box mb="20px">
+                <InputMultilocWithLocaleSwitcher
+                  label={formatMessage(messages.navbarItemTitle)}
+                  type="text"
+                  name="nav_bar_item_title_multiloc"
+                />
+              </Box>
+            )}
             {mode === 'edit' && (
               <SlugInput slug={slug} pathnameWithoutSlug="pages" />
             )}

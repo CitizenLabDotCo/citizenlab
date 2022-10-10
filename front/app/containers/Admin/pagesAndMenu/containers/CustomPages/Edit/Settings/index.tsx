@@ -20,8 +20,11 @@ const EditCustomPageSettings = () => {
         mode="edit"
         defaultValues={{
           title_multiloc: customPage.attributes.title_multiloc,
+          nav_bar_item_title_multiloc:
+            customPage.attributes.nav_bar_item_title_multiloc,
           slug: customPage.attributes.slug,
         }}
+        showNavBarItemTitle={!!customPage.relationships.nav_bar_item.data?.id}
         onSubmit={handleOnSubmit}
       />
     );
