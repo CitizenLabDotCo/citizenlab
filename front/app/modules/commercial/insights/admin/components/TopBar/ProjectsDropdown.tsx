@@ -9,6 +9,7 @@ import {
   Dropdown,
   DropdownListItem,
   Icon,
+  Box,
 } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import Link from 'utils/cl-router/Link';
@@ -26,10 +27,6 @@ import useLocalize from 'hooks/useLocalize';
 import { isNilOrError } from 'utils/helperUtils';
 
 const DropdownWrapper = styled.div``;
-
-const StyledIcon = styled(Icon)`
-  margin-left: 8px;
-`;
 
 const StyledDropdownListItem = styled(DropdownListItem)`
   &:hover {
@@ -95,10 +92,12 @@ const ProjectsDropdown = ({
         mr="12px"
         onClick={toggleDropdown}
       >
-        {formatMessage(messages.linkedProjects, {
-          numberOfProjects: projectIds.length,
-        })}
-        <StyledIcon name="chevron-down" ariaHidden />
+        <Box as="span" display="flex" alignItems="center">
+          {formatMessage(messages.linkedProjects, {
+            numberOfProjects: projectIds.length,
+          })}
+          <Icon ml="4px" name="chevron-down" ariaHidden />
+        </Box>
       </Button>
       <Dropdown
         opened={isDropdownOpened}

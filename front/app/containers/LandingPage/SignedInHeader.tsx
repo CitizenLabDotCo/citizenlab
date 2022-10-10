@@ -223,6 +223,7 @@ const CompleteProfileIcon = styled(Icon)`
   width: 50px;
   height: 50px;
   margin-left: -3px;
+  opacity: 0.5;
 `;
 
 export const Text = styled.div`
@@ -401,7 +402,7 @@ class SignedInHeader extends PureComponent<Props, State> {
                     padding={0}
                     borderThickness={0}
                   />
-                  <CompleteProfileIcon name="edit" ariaHidden />
+                  <CompleteProfileIcon name="edit" fill="#fff" ariaHidden />
                 </Icons>
                 <Text>
                   <FormattedMessage

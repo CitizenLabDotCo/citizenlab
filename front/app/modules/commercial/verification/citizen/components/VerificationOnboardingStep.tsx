@@ -20,7 +20,8 @@ import messages from 'containers/LandingPage/messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 const ShieldIcon = styled(Icon)`
-  fill: ${colors.textSecondary};
+  fill: ${colors.white};
+  opacity: 0.5;
   width: 50px;
   height: 50px;
   margin-left: -3px;

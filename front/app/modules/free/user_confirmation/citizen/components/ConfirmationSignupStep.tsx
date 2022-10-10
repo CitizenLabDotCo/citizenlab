@@ -253,7 +253,12 @@ const ConfirmationSignupStep = ({ onCompleted, onData, step }: Props) => {
         <Form inModal={inModal} onSubmit={handleSubmitConfirmation}>
           <FormField>
             <Box display="flex" alignItems="center" mb="20px">
-              <Icon width="30px" height="30px" name="check-circle" />
+              <Icon
+                width="30px"
+                height="30px"
+                name="check-circle"
+                fill={colors.success}
+              />
               <Success
                 text={
                   <FormattedMessage

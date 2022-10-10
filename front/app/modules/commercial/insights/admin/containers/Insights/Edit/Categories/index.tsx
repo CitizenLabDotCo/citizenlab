@@ -116,6 +116,8 @@ const StyledPlus = styled.div`
 
 const DeletedIcon = styled(Icon)`
   fill: ${colors.textSecondary};
+  width: 20px;
+  height: 20px;
   &:hover {
     fill: ${colors.red600};
   }

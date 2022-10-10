@@ -51,8 +51,9 @@ const DropzoneLabelText = styled.span`
 `;
 
 const DropzoneLabelIcon = styled(Icon)`
-  flex: 0 0 30px;
-  height: 30px;
+  flex: 0 0 40px;
+  height: 40px;
+  width: 40px;
   fill: ${colors.textSecondary};
   margin-bottom: 4px;
   transition: all 100ms ease-out;

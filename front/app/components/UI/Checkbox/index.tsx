@@ -47,7 +47,7 @@ const StyledCheckbox = styled.div<{
   border-radius: ${(props) => props.theme.borderRadius};
   border: solid 1px
     ${({ checkedOrIndeterminate }) =>
-      checkedOrIndeterminate ? colors.success : colors.divider};
+      checkedOrIndeterminate ? colors.success : colors.grey600};
   background: ${({ checkedOrIndeterminate }) =>
     checkedOrIndeterminate ? colors.success : '#fff'};
   transition: all 120ms ease-out;
