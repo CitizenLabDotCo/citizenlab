@@ -226,6 +226,14 @@ class Idea < ApplicationRecord
   def validate_creation_phase
     return unless creation_phase
 
+    if creation_phase.project_id != project_id
+      errors.add(
+        :creation_phase,
+        :invalid_project,
+        message: 'The creation phase must be a phase of the input\'s project'
+      )
+    end
+
     if %w[ideation budgeting].include?(creation_phase.participation_method)
       errors.add(
         :creation_phase,
@@ -241,8 +249,6 @@ class Idea < ApplicationRecord
       :not_in_timeline_project,
       message: 'The creation phase cannot be set for inputs in a continuous project'
     )
-
-    # Also verify that project of creation phase is idea project?
   end
 end
 

@@ -177,6 +177,12 @@ RSpec.describe Idea, type: :model do
   context 'creation_phase' do
     before { IdeaStatus.create_defaults }
 
+    it 'is invalid for a phase that does not belong to the input\'s project' do
+      project = create :project_with_active_native_survey_phase
+      idea = build :idea, project: project, creation_phase: create(:native_survey_phase)
+      expect(idea).to be_invalid
+    end
+
     it 'is valid when nil and in a timeline project' do
       project = create :project_with_active_native_survey_phase
       idea = build :idea, project: project, creation_phase: nil
