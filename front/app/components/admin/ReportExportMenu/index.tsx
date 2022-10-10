@@ -36,6 +36,8 @@ const StyledButton = styled(Button)`
   }
 `;
 
+export type XlsxData = Record<string, Record<string, any>[]>;
+
 export interface ReportExportMenuProps {
   className?: string;
   name: string;
@@ -50,7 +52,7 @@ export interface ReportExportMenuProps {
   currentProjectFilterLabel?: string | undefined;
   currentGroupFilterLabel?: string | undefined;
   currentTopicFilterLabel?: string | undefined;
-  xlsxData?: object;
+  xlsxData?: XlsxData;
 }
 
 const ReportExportMenu = ({
