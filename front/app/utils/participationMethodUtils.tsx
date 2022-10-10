@@ -20,57 +20,66 @@ import { isNilOrError } from './helperUtils';
 import clHistory from 'utils/cl-router/history';
 import { IIdea } from 'services/ideas';
 
+type FormSubmissionMethodProps = {
+  project?: IProjectData;
+  ideaId?: string;
+  idea?: IIdea;
+  phaseId?: string;
+};
+
+type ModalContentMethodProps = {
+  ideaIdForSocialSharing?: string;
+  title?: string;
+  subtitle?: string;
+};
+
+type FormTitleMethodProps = {
+  project: IProjectData;
+  phases: [IPhaseData];
+  phaseFromUrl?: IPhaseData;
+};
+
 type ParticipationMethodConfig = {
   /** We currently have 2 UIs for admins to edit the form definition. This
    * defines which UI, if any, the method uses */
   formEditor: 'simpleFormEditor' | 'surveyEditor' | null;
-  onFormSubmission: (
-    _project?: IProjectData,
-    ideaId?: string,
-    idea?: IIdea,
-    phaseId?: string
-  ) => void;
-  getModalContent: () => ReactNode | null;
-  getFormTitle?: (_project: IProjectData, _phases: [IPhaseData]) => void;
+  onFormSubmission: (props: FormSubmissionMethodProps) => void;
+  getModalContent: (
+    props: ModalContentMethodProps
+  ) => ReactNode | JSX.Element | null;
+  getFormTitle?: (props: FormTitleMethodProps) => void;
   showInputManager: boolean;
 };
 
 const ideationConfig: ParticipationMethodConfig = {
   formEditor: 'simpleFormEditor',
-  onFormSubmission: (
-    _project?: IProjectData,
-    ideaId?: string,
-    idea?: IIdea,
-    phaseId?: string
-  ) => {
-    if (ideaId && idea) {
-      const urlParameters = `?new_idea_id=${ideaId}`;
-      if (idea) {
+  onFormSubmission: (props: FormSubmissionMethodProps) => {
+    if (props.ideaId && props.idea) {
+      const urlParameters = `?new_idea_id=${props.ideaId}`;
+      if (props.idea) {
         clHistory.push({
-          pathname: `/ideas/${idea.data.attributes.slug}`,
-          search: urlParameters.concat(phaseId ? `&phase_id=${phaseId}` : ''),
+          pathname: `/ideas/${props.idea.data.attributes.slug}`,
+          search: urlParameters.concat(
+            props.phaseId ? `&phase_id=${props.phaseId}` : ''
+          ),
         });
       }
     }
   },
-  getModalContent: (
-    ideaIdForSocialSharing?: string,
-    title?: string,
-    subtitle?: string
-  ) => {
-    if (ideaIdForSocialSharing && title && subtitle) {
+  getModalContent: (props: ModalContentMethodProps) => {
+    if (props.ideaIdForSocialSharing && props.title && props.subtitle) {
       return (
         <SharingModalContent
           postType="idea"
-          postId={ideaIdForSocialSharing}
-          title={title}
-          subtitle={subtitle}
+          postId={props.ideaIdForSocialSharing}
+          title={props.title}
+          subtitle={props.subtitle}
         />
       );
     }
     return null;
   },
-  getFormTitle: (_project, _phases) => {
+  getFormTitle: (props: FormTitleMethodProps) => {
     return (
       <FormattedMessage
         {...{
@@ -80,7 +89,14 @@ const ideationConfig: ParticipationMethodConfig = {
           question: messages.questionFormTitle,
           issue: messages.issueFormTitle,
           contribution: messages.contributionFormTitle,
-        }[getInputTerm(_project?.attributes.process_type, _project, _phases)]}
+        }[
+          getInputTerm(
+            props.project?.attributes.process_type,
+            props.project,
+            props.phases,
+            props.phaseFromUrl
+          )
+        ]}
       />
     );
   },
@@ -89,26 +105,21 @@ const ideationConfig: ParticipationMethodConfig = {
 
 const nativeSurveyConfig: ParticipationMethodConfig = {
   formEditor: 'surveyEditor',
-  onFormSubmission: (
-    project?: IProjectData,
-    _ideaId?: string,
-    _idea?: IIdea,
-    phaseId?: string
-  ) => {
-    if (project) {
+  onFormSubmission: (props: FormSubmissionMethodProps) => {
+    if (props.project) {
       clHistory.push({
-        pathname: `/projects/${project?.attributes.slug}`,
+        pathname: `/projects/${props.project?.attributes.slug}`,
         search: `?show_modal=true`.concat(
-          phaseId ? `&phase_id=${phaseId}` : ''
+          props.phaseId ? `&phase_id=${props.phaseId}` : ''
         ),
       });
     }
   },
-  getModalContent: () => {
-    return <FormattedMessage {...messages.onSurveySubmission} />;
+  getModalContent: (props: ModalContentMethodProps) => {
+    return <FormattedMessage {...messages.onSurveySubmission} {...props} />;
   },
-  getFormTitle: (_project, _phases) => {
-    return <FormattedMessage {...messages.surveyTitle} />;
+  getFormTitle: (props: FormTitleMethodProps) => {
+    return <FormattedMessage {...messages.surveyTitle} {...props} />;
   },
   showInputManager: false,
 };
@@ -118,12 +129,7 @@ const informationConfig: ParticipationMethodConfig = {
   getModalContent: () => {
     return null;
   },
-  onFormSubmission: (
-    _project?: IProjectData,
-    _ideaId?: string,
-    _idea?: IIdea,
-    _phaseId?: string
-  ) => {
+  onFormSubmission: () => {
     return;
   },
   showInputManager: false,
@@ -134,12 +140,7 @@ const surveyConfig: ParticipationMethodConfig = {
   getModalContent: () => {
     return null;
   },
-  onFormSubmission: (
-    _project?: IProjectData,
-    _ideaId?: string,
-    _idea?: IIdea,
-    _phaseId?: string
-  ) => {
+  onFormSubmission: () => {
     return;
   },
   showInputManager: false,
@@ -150,23 +151,20 @@ const budgetingConfig: ParticipationMethodConfig = {
   getModalContent: () => {
     return null;
   },
-  onFormSubmission: (
-    _project?: IProjectData,
-    ideaId?: string,
-    idea?: IIdea,
-    phaseId?: string
-  ) => {
-    if (ideaId && idea) {
-      const urlParameters = `?new_idea_id=${ideaId}`;
-      if (idea) {
+  onFormSubmission: (props: FormSubmissionMethodProps) => {
+    if (props.ideaId && props.idea) {
+      const urlParameters = `?new_idea_id=${props.ideaId}`;
+      if (props.idea) {
         clHistory.push({
-          pathname: `/ideas/${idea.data.attributes.slug}`,
-          search: urlParameters.concat(phaseId ? `&phase_id=${phaseId}` : ''),
+          pathname: `/ideas/${props.idea.data.attributes.slug}`,
+          search: urlParameters.concat(
+            props.phaseId ? `&phase_id=${props.phaseId}` : ''
+          ),
         });
       }
     }
   },
-  getFormTitle: (project, phases) => {
+  getFormTitle: (props: FormTitleMethodProps) => {
     return (
       <FormattedMessage
         {...{
@@ -176,7 +174,14 @@ const budgetingConfig: ParticipationMethodConfig = {
           question: messages.questionFormTitle,
           issue: messages.issueFormTitle,
           contribution: messages.contributionFormTitle,
-        }[getInputTerm(project?.attributes.process_type, project, phases)]}
+        }[
+          getInputTerm(
+            props.project?.attributes.process_type,
+            props.project,
+            props.phases,
+            props.phaseFromUrl
+          )
+        ]}
       />
     );
   },
@@ -188,12 +193,7 @@ const pollConfig: ParticipationMethodConfig = {
   getModalContent: () => {
     return null;
   },
-  onFormSubmission: (
-    _project?: IProjectData,
-    _ideaId?: string,
-    _idea?: IIdea,
-    _phaseId?: string
-  ) => {
+  onFormSubmission: () => {
     return;
   },
   showInputManager: false,
@@ -204,12 +204,7 @@ const volunteeringConfig: ParticipationMethodConfig = {
   getModalContent: () => {
     return null;
   },
-  onFormSubmission: (
-    _project?: IProjectData,
-    _ideaId?: string,
-    _idea?: IIdea,
-    _phaseId?: string
-  ) => {
+  onFormSubmission: () => {
     return;
   },
   showInputManager: false,

@@ -205,7 +205,7 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
           >
             <Image width="80px" height="80px" src={rocket} alt="" />
             <Title variant="h2" textAlign="center">
-              {config && config.getModalContent()}
+              {config && config.getModalContent({})}
             </Title>
           </Box>
         </Modal>
