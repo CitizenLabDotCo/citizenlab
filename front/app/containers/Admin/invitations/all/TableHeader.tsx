@@ -1,11 +1,10 @@
 import React from 'react';
 
 // components
-import { Table, Popup } from 'semantic-ui-react';
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Table } from 'semantic-ui-react';
+import { IconTooltip, Text } from '@citizenlab/cl2-component-library';
 
 // styling
-import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 // i18n
@@ -21,17 +20,6 @@ interface Props {
   sortDirection: SortDirection;
   onSortHeaderClick: (sortAttribute: SortAttribute) => () => void;
 }
-
-const InfoIcon = styled(Icon)`
-  fill: ${colors.teal700};
-  width: 16px;
-  height: 16px;
-  cursor: pointer;
-
-  &:hover {
-    fill: #000;
-  }
-`;
 
 const TableHeader = ({
   sortAttribute,
@@ -71,12 +59,17 @@ const TableHeader = ({
       </Table.HeaderCell>
       <Table.HeaderCell width={1} textAlign="center">
         <FormattedMessage {...messages.deleteInvite} />
-        <Popup
-          content={<FormattedMessage {...messages.deleteInviteTooltip} />}
-          trigger={
-            <button>
-              <InfoIcon name="info3" />
-            </button>
+        <IconTooltip
+          ml="6px"
+          iconColor={colors.teal700}
+          iconHoverColor="#000"
+          iconSize="16px"
+          theme="light"
+          transform="translate(0,-1)"
+          content={
+            <Text mb="0px" mt="0px" fontSize="s">
+              <FormattedMessage {...messages.deleteInviteTooltip} />
+            </Text>
           }
         />
       </Table.HeaderCell>
