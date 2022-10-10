@@ -39,7 +39,7 @@ const query = ({
     },
     groups: 'dimension_locales.id',
     aggregations: {
-      all: 'count',
+      visitor_id: 'count',
       'dimension_locales.name': 'first',
     },
   };

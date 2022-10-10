@@ -13,7 +13,7 @@ export type Response = {
 
 interface BaseRow {
   'dimension_locales.id': string;
-  count: number;
+  count_visitor_id: number;
   first_dimension_locales_name: string;
 }
 
