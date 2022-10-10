@@ -12,6 +12,7 @@ import {
 
 interface Props extends BoxProps {
   clickable?: boolean;
+  colSpan?: `${number}`;
 }
 
 const StyledBox = styled(Box)<{ clickable?: boolean }>`
@@ -26,12 +27,12 @@ const StyledBox = styled(Box)<{ clickable?: boolean }>`
   `}
 `;
 
-const HeaderCell = ({ children, clickable, ...otherProps }: Props) => (
+const HeaderCell = ({ children, colSpan, ...otherProps }: Props) => (
   <StyledBox
     as="th"
     borderBottom={`1px solid ${SEMANTIC_UI_BORDER_INNER_COLOR}`}
-    clickable={clickable}
     p="12px"
+    colSpan={colSpan as any}
     {...otherProps}
   >
     {children}

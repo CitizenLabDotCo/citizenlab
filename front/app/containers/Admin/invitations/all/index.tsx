@@ -128,10 +128,10 @@ const InvitesTable = ({
           {currentPage && lastPage && lastPage > 1 && (
             <Footer>
               <Row>
-                <HeaderCell width="100%">
+                <HeaderCell colSpan="5">
                   <Pagination
-                    currentPage={currentPage}
-                    totalPages={lastPage}
+                    currentPage={1}
+                    totalPages={5}
                     loadPage={onChangePage}
                   />
                 </HeaderCell>
