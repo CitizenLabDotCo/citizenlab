@@ -22,7 +22,6 @@ const Text = styled.span<{ textColor?: string }>`
 const DropdownIcon = styled(Icon)<{ textColor?: string }>`
   fill: ${({ textColor }) => textColor ?? colors.textPrimary};
   transition: all 100ms ease-out;
-  margin-left: 7px;
 `;
 
 const Container = styled.button<{ textColor?: string }>`

@@ -137,8 +137,9 @@ const FolderImagePlaceholder = styled.div`
 `;
 
 const FolderImagePlaceholderIcon = styled(Icon)`
-  height: 45px;
-  fill: #fff;
+  height: 80px;
+  width: 80px;
+  fill: ${colors.white};
 `;
 
 const FolderImage = styled(Image)`

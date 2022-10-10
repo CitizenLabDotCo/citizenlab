@@ -101,10 +101,8 @@ const NavigationDropdownItem = styled.button`
 
 const NavigationDropdownItemIcon = styled(Icon)`
   fill: inherit;
-  margin-left: 4px;
   ${isRtl`
     margin-left: 0;
-    margin-right: 4px;
   `}
 `;
 

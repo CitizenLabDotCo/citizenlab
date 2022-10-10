@@ -52,8 +52,9 @@ const Container = styled.li`
 
 const UpvoteIcon = styled(Icon)`
   fill: ${colors.textSecondary};
-  flex: 0 0 14px;
-  margin-top: -2px;
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
 `;
 
 const UpvoteButton = styled.button`

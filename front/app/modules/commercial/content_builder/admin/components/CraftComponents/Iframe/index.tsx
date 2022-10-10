@@ -97,15 +97,8 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
       <Box flex="0 0 100%">
         <Input
           id="e2e-content-builder-iframe-url-input"
-          label={
-            <span>
-              {formatMessage(messages.embedIframeUrlLabel)}{' '}
-              <IconTooltip
-                icon="info-solid"
-                content={formatMessage(messages.embedIframeUrlLabelTooltip)}
-              />
-            </span>
-          }
+          labelTooltipText={formatMessage(messages.embedIframeUrlLabelTooltip)}
+          label={formatMessage(messages.embedIframeUrlLabel)}
           placeholder={formatMessage(messages.urlPlaceholder)}
           type="text"
           value={url}
@@ -126,15 +119,10 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
       </Box>
       <Box flex="0 0 100%">
         <Input
-          label={
-            <span>
-              {formatMessage(messages.embedIframeHeightLabel)}{' '}
-              <IconTooltip
-                icon="info-solid"
-                content={formatMessage(messages.embedIframeHeightLabelTooltip)}
-              />
-            </span>
-          }
+          labelTooltipText={formatMessage(
+            messages.embedIframeHeightLabelTooltip
+          )}
+          label={formatMessage(messages.embedIframeHeightLabel)}
           placeholder={formatMessage(messages.iframeHeightPlaceholder)}
           type="number"
           value={height}
@@ -155,6 +143,7 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
             <span>
               {formatMessage(messages.embedIframeTitleLabel)}{' '}
               <IconTooltip
+                display="inline"
                 icon="info-solid"
                 content={formatMessage(messages.embedIframeTitleTooltip)}
               />

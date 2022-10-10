@@ -50,8 +50,6 @@ const PreviousPhaseButton = styled(Button)`
   `}
 `;
 
-const CurrentPhaseButton = styled(Button)``;
-
 const NextPhaseButton = styled(Button)`
   margin-left: 5px;
 
@@ -168,10 +166,10 @@ const PhaseNavigation = memo<Props & InjectedIntlProps>(
               hideOnClick={true}
             >
               <div>
-                <CurrentPhaseButton
+                <Button
                   onClick={goToCurrentPhase}
                   icon="dot"
-                  iconSize="8px"
+                  iconSize="16px"
                   iconColor={colors.success}
                   buttonStyle={navButtonStyle}
                   width={navButtonSize}

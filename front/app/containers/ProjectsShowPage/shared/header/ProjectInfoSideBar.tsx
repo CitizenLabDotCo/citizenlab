@@ -92,13 +92,6 @@ const ListItemIcon = styled(Icon)`
     margin-right: 0;
     margin-left: 14px;
   `}
-
-  &.timeline {
-    flex: 0 0 22px;
-    width: 22px;
-    height: 22px;
-    margin-right: 10px;
-  }
 `;
 
 const ListItemButton = styled.button`

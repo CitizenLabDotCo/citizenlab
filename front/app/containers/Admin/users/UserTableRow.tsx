@@ -233,7 +233,7 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
                   <DropdownListButton onClick={this.handleDeleteClick}>
                     <FormattedMessage {...messages.deleteUser} />
                     <IconWrapper>
-                      <Icon name="delete" />
+                      <Icon name="delete" fill="white" />
                     </IconWrapper>
                   </DropdownListButton>
                 </DropdownList>
