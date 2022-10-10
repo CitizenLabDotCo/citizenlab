@@ -31,7 +31,11 @@ type ParticipationMethodConfig = {
     phaseId?: string
   ) => void;
   getModalContent: () => ReactNode | null;
-  getFormTitle?: (_project: IProjectData, _phases: [IPhaseData]) => void;
+  getFormTitle?: (
+    _project: IProjectData,
+    _phases: [IPhaseData],
+    _phaseFromUrl?: IPhaseData
+  ) => void;
   showInputManager: boolean;
 };
 
@@ -70,7 +74,7 @@ const ideationConfig: ParticipationMethodConfig = {
     }
     return null;
   },
-  getFormTitle: (_project, _phases) => {
+  getFormTitle: (_project, _phases, _phaseFromUrl) => {
     return (
       <FormattedMessage
         {...{
@@ -80,7 +84,14 @@ const ideationConfig: ParticipationMethodConfig = {
           question: messages.questionFormTitle,
           issue: messages.issueFormTitle,
           contribution: messages.contributionFormTitle,
-        }[getInputTerm(_project?.attributes.process_type, _project, _phases)]}
+        }[
+          getInputTerm(
+            _project?.attributes.process_type,
+            _project,
+            _phases,
+            _phaseFromUrl
+          )
+        ]}
       />
     );
   },
@@ -166,7 +177,7 @@ const budgetingConfig: ParticipationMethodConfig = {
       }
     }
   },
-  getFormTitle: (project, phases) => {
+  getFormTitle: (project, phases, _phaseFromUrl) => {
     return (
       <FormattedMessage
         {...{
@@ -176,7 +187,14 @@ const budgetingConfig: ParticipationMethodConfig = {
           question: messages.questionFormTitle,
           issue: messages.issueFormTitle,
           contribution: messages.contributionFormTitle,
-        }[getInputTerm(project?.attributes.process_type, project, phases)]}
+        }[
+          getInputTerm(
+            project?.attributes.process_type,
+            project,
+            phases,
+            _phaseFromUrl
+          )
+        ]}
       />
     );
   },
