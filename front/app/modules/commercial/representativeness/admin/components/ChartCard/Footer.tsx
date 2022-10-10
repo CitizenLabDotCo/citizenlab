@@ -15,7 +15,7 @@ import messages from './messages';
 import { colors } from 'utils/styleUtils';
 
 // typings
-import { ViewState } from '.';
+import { ViewState } from 'components/admin/GraphCard/ViewToggle';
 
 interface Props extends FieldInfoProps {
   hideTicks: boolean;
