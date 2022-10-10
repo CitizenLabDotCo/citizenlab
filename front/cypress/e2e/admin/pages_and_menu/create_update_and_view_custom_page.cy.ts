@@ -127,7 +127,7 @@ describe('Admin: create, update, and view custom page', () => {
     //  go back to main page
     cy.get(`[data-cy="breadcrumbs-${pageName}"]`).click();
 
-    // visit our customm page by slug
+    // visit our custom page by slug
     cy.visit(`/en/pages/${pageName}`);
 
     // check for presence of image in header and text content
