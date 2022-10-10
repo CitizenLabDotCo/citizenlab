@@ -130,11 +130,15 @@ describe('Admin: create, update, and view custom page', () => {
     // visit our customm page by slug
     cy.visit(`/en/pages/${pageName}`);
 
-    // to do - test attachments (same way as drag and drop image, but has to not be png)
-    // to do - find a way to check that the icon.png image was properly uploaded
+    // check for presence of image in header and text content
+    cy.get('[data-cy="e2e-header-image-background"]')
+      .should('have.attr', 'src')
+      .should('include', '.png');
     cy.contains(headerContent);
     cy.contains(subheaderContent);
     cy.contains(ctaContent);
     cy.contains(topInfoContent);
+
+    // to do - test attachments (same way as drag and drop image, but has to not be png)
   });
 });
