@@ -226,6 +226,15 @@ class Idea < ApplicationRecord
   def validate_creation_phase
     return unless creation_phase
 
+    if project.continuous?
+      errors.add(
+        :creation_phase,
+        :not_in_timeline_project,
+        message: 'The creation phase cannot be set for inputs in a continuous project'
+      )
+      return
+    end
+
     if creation_phase.project_id != project_id
       errors.add(
         :creation_phase,
@@ -233,14 +242,6 @@ class Idea < ApplicationRecord
         message: 'The creation phase must be a phase of the input\'s project'
       )
       return
-    end
-
-    if project.continuous?
-      errors.add(
-        :creation_phase,
-        :not_in_timeline_project,
-        message: 'The creation phase cannot be set for inputs in a continuous project'
-      )
     end
 
     return if participation_method_on_creation.form_in_phase?
