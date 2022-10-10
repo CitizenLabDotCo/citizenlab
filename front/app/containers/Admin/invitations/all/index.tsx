@@ -130,8 +130,8 @@ const InvitesTable = ({
               <Row>
                 <HeaderCell colSpan="5">
                   <Pagination
-                    currentPage={1}
-                    totalPages={5}
+                    currentPage={currentPage}
+                    totalPages={lastPage}
                     loadPage={onChangePage}
                   />
                 </HeaderCell>
