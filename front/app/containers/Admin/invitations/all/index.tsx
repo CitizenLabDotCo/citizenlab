@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 
 // components
-import { Table, Popup } from 'semantic-ui-react';
-import { FormattedMessage } from 'utils/cl-intl';
+import { Table } from 'semantic-ui-react';
 import Pagination from 'components/admin/Pagination';
 import Button from 'components/UI/Button';
-import { Icon } from '@citizenlab/cl2-component-library';
+import TableHeader from './TableHeader';
 import Row from './Row';
 import SearchInput from 'components/UI/SearchInput';
 
@@ -17,10 +16,10 @@ import GetInvites, {
 
 // i18n
 import messages from '../messages';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 
 // utils
 import { API_PATH } from 'containers/App/constants';
@@ -52,17 +51,6 @@ const EmptyStateContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`;
-
-const InfoIcon = styled(Icon)`
-  fill: ${colors.teal700};
-  width: 16px;
-  height: 16px;
-  cursor: pointer;
-
-  &:hover {
-    fill: #000;
-  }
 `;
 
 const InvitesTable = ({
@@ -125,58 +113,11 @@ const InvitesTable = ({
 
       {invitesList.length > 0 && (
         <Table sortable>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell
-                sorted={sortAttribute === 'email' ? sortDirection : undefined}
-                onClick={handleSortHeaderClick('email')}
-                width={3}
-              >
-                <FormattedMessage {...messages.email} />
-              </Table.HeaderCell>
-              <Table.HeaderCell
-                sorted={
-                  sortAttribute === 'last_name' ? sortDirection : undefined
-                }
-                onClick={handleSortHeaderClick('last_name')}
-                width={2}
-              >
-                <FormattedMessage {...messages.name} />
-              </Table.HeaderCell>
-              <Table.HeaderCell
-                sorted={
-                  sortAttribute === 'created_at' ? sortDirection : undefined
-                }
-                onClick={handleSortHeaderClick('created_at')}
-                width={1}
-              >
-                <FormattedMessage {...messages.invitedSince} />
-              </Table.HeaderCell>
-              <Table.HeaderCell
-                sorted={
-                  sortAttribute === 'invite_status' ? sortDirection : undefined
-                }
-                onClick={handleSortHeaderClick('invite_status')}
-                width={1}
-                textAlign="center"
-              >
-                <FormattedMessage {...messages.inviteStatus} />
-              </Table.HeaderCell>
-              <Table.HeaderCell width={1} textAlign="center">
-                <FormattedMessage {...messages.deleteInvite} />
-                <Popup
-                  content={
-                    <FormattedMessage {...messages.deleteInviteTooltip} />
-                  }
-                  trigger={
-                    <button>
-                      <InfoIcon name="info3" />
-                    </button>
-                  }
-                />
-              </Table.HeaderCell>
-            </Table.Row>
-          </Table.Header>
+          <TableHeader
+            sortAttribute={sortAttribute}
+            sortDirection={sortDirection}
+            onSortHeaderClick={handleSortHeaderClick}
+          />
 
           <Table.Body>
             {invitesList.map((invite) => (
