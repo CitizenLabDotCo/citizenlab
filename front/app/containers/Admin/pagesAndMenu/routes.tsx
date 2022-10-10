@@ -112,7 +112,7 @@ export default () => ({
           path: ':customPageId',
           element: <EditCustomPageIndex />,
           children: [
-            { path: '', element: <Navigate to="settings" /> },
+            { path: '', element: <Navigate to="settings" /> }, // to handle manually changing URL
             {
               path: 'settings',
               element: (
