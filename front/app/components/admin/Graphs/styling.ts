@@ -40,6 +40,8 @@ export const colors = {
   categoricalOther: mainColors.coolGrey300,
   lightGrey: mainColors.divider,
   legendText: '#43515D',
+  gridColor: mainColors.grey200,
+  gridHoverColor: mainColors.grey500,
 };
 
 const DEFAULT_CATEGORICAL_COLORS = [
@@ -58,7 +60,7 @@ const DEFAULT_CATEGORICAL_COLORS = [
 export const categoricalColorScheme = ({
   rowIndex,
 }: {
-  row: any;
+  row?: any;
   rowIndex: number;
   barIndex?: number;
 }) => DEFAULT_CATEGORICAL_COLORS[rowIndex];
