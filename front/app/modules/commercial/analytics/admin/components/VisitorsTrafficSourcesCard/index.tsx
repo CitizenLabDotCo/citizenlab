@@ -84,6 +84,10 @@ const VisitorsTrafficSourcesCard = ({
         currentProjectFilter: projectFilter,
         resolution,
       }}
+      viewToggle={{
+        view: 'chart',
+        onChangeView: () => {},
+      }}
     >
       <Box width="100%" height="initial" display="flex" alignItems="center">
         <PieChart

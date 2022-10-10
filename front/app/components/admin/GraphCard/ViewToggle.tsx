@@ -22,7 +22,7 @@ const StyledTabs = styled(Tabs)`
 
 export type View = 'chart' | 'table';
 
-interface Props {
+export interface Props {
   view: View;
   onChangeView: (view: View) => void;
 }
