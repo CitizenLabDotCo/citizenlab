@@ -181,6 +181,7 @@ RSpec.describe Idea, type: :model do
       project = create :project_with_active_native_survey_phase
       response = build :idea, project: project, creation_phase: create(:native_survey_phase)
       expect(response).to be_invalid
+      expect(response.errors.details).to eq({ creation_phase: [{ error: :invalid_project }] })
     end
 
     it 'is valid when nil and in a timeline project' do
@@ -199,6 +200,7 @@ RSpec.describe Idea, type: :model do
       project = create :project_with_active_ideation_phase
       idea = build :idea, project: project, creation_phase: project.phases.first
       expect(idea).to be_invalid
+      expect(idea.errors.details).to eq({ creation_phase: [{ error: :invalid_participation_method }] })
     end
 
     it 'is valid when nil and in a continuous project' do
@@ -209,8 +211,9 @@ RSpec.describe Idea, type: :model do
 
     it 'is invalid when present and in a continuous project' do
       project = create :continuous_native_survey_project
-      input = build :idea, project: project, creation_phase: create(:phase)
+      input = build :idea, project: project, creation_phase: create(:native_survey_phase)
       expect(input).to be_invalid
+      expect(input.errors.details).to eq({ creation_phase: [{ error: :invalid_project }, { error: :not_in_timeline_project }] })
     end
   end
 

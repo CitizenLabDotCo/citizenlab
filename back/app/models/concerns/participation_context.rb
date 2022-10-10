@@ -33,7 +33,7 @@ module ParticipationContext
       before_validation :set_presentation_mode, on: :create
 
       # ideation? or budgeting?
-      with_options if: :ideation_or_budgeting? do
+      with_options if: :can_contain_ideas? do
         validates :presentation_mode,
           inclusion: { in: PRESENTATION_MODES }, allow_nil: true
 
@@ -52,10 +52,10 @@ module ParticipationContext
       end
       validates :upvoting_limited_max, presence: true,
         numericality: { only_integer: true, greater_than: 0 },
-        if: %i[ideation_or_budgeting? upvoting_limited?]
+        if: %i[can_contain_ideas? upvoting_limited?]
       validates :downvoting_limited_max, presence: true,
         numericality: { only_integer: true, greater_than: 0 },
-        if: %i[ideation_or_budgeting? downvoting_limited?]
+        if: %i[can_contain_ideas? downvoting_limited?]
 
       # ideation?
       with_options if: :ideation? do
@@ -76,10 +76,6 @@ module ParticipationContext
     end
   end
 
-  def ideation_or_budgeting?
-    ideation? || budgeting?
-  end
-
   def ideation?
     participation_method == 'ideation'
   end
@@ -93,6 +89,10 @@ module ParticipationContext
   end
 
   def can_contain_ideas?
+    ideation? || budgeting?
+  end
+
+  def transitive?
     ideation? || budgeting?
   end
 

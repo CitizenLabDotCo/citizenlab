@@ -234,7 +234,7 @@ class Idea < ApplicationRecord
       )
     end
 
-    if %w[ideation budgeting].include?(creation_phase.participation_method)
+    if creation_phase.transitive?
       errors.add(
         :creation_phase,
         :invalid_participation_method,
