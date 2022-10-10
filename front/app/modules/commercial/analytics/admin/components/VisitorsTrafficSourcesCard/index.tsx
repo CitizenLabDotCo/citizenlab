@@ -28,7 +28,7 @@ interface Props {
   resolution: IResolution;
 }
 
-const VisitorsCard = ({
+const VisitorsTrafficSourcesCard = ({
   startAtMoment,
   endAtMoment,
   projectFilter,
@@ -114,4 +114,4 @@ const VisitorsCard = ({
   );
 };
 
-export default injectIntl(VisitorsCard);
+export default injectIntl(VisitorsTrafficSourcesCard);
