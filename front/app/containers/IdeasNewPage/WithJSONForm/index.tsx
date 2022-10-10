@@ -125,12 +125,12 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
       if (!isNilOrError(phaseUsed)) {
         getMethodConfig(
           phaseUsed?.attributes?.participation_method
-        ).onFormSubmission(project, ideaId, idea, phaseUsed.id);
+        ).onFormSubmission({ project, ideaId, idea, phaseId: phaseUsed.id });
       }
     } else if (!isNilOrError(project)) {
       getMethodConfig(
         project?.attributes.participation_method
-      ).onFormSubmission(project, ideaId, idea);
+      ).onFormSubmission({ project, ideaId, idea });
     }
   };
 
@@ -200,7 +200,7 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
             getAjvErrorMessage={getAjvErrorMessage}
             getApiErrorMessage={getApiErrorMessage}
             inputId={undefined}
-            title={config.getFormTitle(project, phases, phaseFromUrl)}
+            title={config.getFormTitle({ project, phases, phaseFromUrl })}
             config={'input'}
           />
         </>
