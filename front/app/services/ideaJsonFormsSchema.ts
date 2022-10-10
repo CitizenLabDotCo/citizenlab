@@ -35,7 +35,7 @@ export interface IIdeaJsonFormSchemas {
 const getInputFormsSchemaEndpoint = (
   projectId: string,
   phaseId?: string | null,
-  inputId?: string
+  inputId?: string | null
 ) => {
   // If we have the input id, we access the schema directly through the ideas endpoint
   if (inputId) {
@@ -49,7 +49,7 @@ const getInputFormsSchemaEndpoint = (
 export function ideaJsonFormsSchemaStream(
   projectId: string,
   phaseId?: string | null,
-  inputId?: string,
+  inputId?: string | null,
   streamParams: IStreamParams | null = null
 ) {
   const apiEndpoint = getInputFormsSchemaEndpoint(projectId, phaseId, inputId);

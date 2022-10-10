@@ -1,8 +1,10 @@
 import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
 import { IIdeaFormSchemas } from 'services/ideaCustomFieldsSchemas';
+import { IIdeaJsonFormSchemas } from 'services/ideaJsonFormsSchema';
 
 export type GetIdeaCustomFieldsSchemasChildProps =
   | IIdeaFormSchemas
+  | IIdeaJsonFormSchemas
   | undefined
   | null
   | Error;

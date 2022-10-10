@@ -27,8 +27,8 @@ import { geocode, reverseGeocode } from 'utils/locationTools';
 // for getting inital state from previous page
 import { parse } from 'qs';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
-import { getMethodConfig } from 'utils/participationMethodUtils';
 import { getCurrentPhase } from 'services/phases';
+import { getMethodConfig } from 'utils/participationMethodUtils';
 
 const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
@@ -98,14 +98,10 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   }, [search]);
 
   const onSubmit = async (data) => {
-    // TODO Next iteration: Handle the submit differently for ideas versus survey inputs (i.e. no redirection)
-
     let location_point_geojson;
-
     if (data.location_description && !data.location_point_geojson) {
       location_point_geojson = await geocode(data.location_description);
     }
-
     const idea = await addIdea({
       ...data,
       location_point_geojson,
@@ -115,10 +111,27 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
     });
     const ideaId = idea.data.id;
 
-    clHistory.push({
-      pathname: `/ideas/${idea.data.attributes.slug}`,
-      search: `?new_idea_id=${ideaId}`,
-    });
+    // Check ParticipationMethodConfig for form submission action
+    if (
+      project?.attributes.process_type === 'timeline' &&
+      !isNilOrError(phases)
+    ) {
+      // Check if URL contains specific phase_id
+      const queryParams = new URLSearchParams(window.location.search);
+      const phaseIdFromUrl = queryParams.get('phase_id');
+      const phaseUsed =
+        phases.find((phase) => phase.id === phaseIdFromUrl) ||
+        getCurrentPhase(phases);
+      if (!isNilOrError(phaseUsed)) {
+        getMethodConfig(
+          phaseUsed?.attributes?.participation_method
+        ).onFormSubmission(project, ideaId, idea, phaseUsed.id);
+      }
+    } else if (!isNilOrError(project)) {
+      getMethodConfig(
+        project?.attributes.participation_method
+      ).onFormSubmission(project, ideaId, idea);
+    }
   };
 
   const getApiErrorMessage: ApiErrorGetter = useCallback(

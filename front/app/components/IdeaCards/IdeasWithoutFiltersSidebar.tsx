@@ -58,26 +58,21 @@ const FiltersArea = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 15px;
-
   ${isRtl`
     flex-direction: row-reverse;
   `}
-
   &.mapView {
     justify-content: flex-end;
     margin-bottom: 15px;
-
     ${media.tablet`
       margin-bottom: 0px;
     `}
   }
-
   ${media.desktop`
     &.mapView {
       margin-top: -65px;
     }
   `}
-
   ${media.tablet`
     flex-direction: column;
     align-items: stretch;
@@ -92,11 +87,9 @@ const FilterArea = styled.div`
 
 const LeftFilterArea = styled(FilterArea)`
   flex: 1 1 auto;
-
   &.hidden {
     display: none;
   }
-
   ${media.tablet`
     display: flex;
     flex-direction: column;
@@ -107,7 +100,6 @@ const LeftFilterArea = styled(FilterArea)`
 const RightFilterArea = styled(FilterArea)`
   display: flex;
   align-items: center;
-
   &.hidden {
     display: none;
   }
@@ -116,7 +108,6 @@ const RightFilterArea = styled(FilterArea)`
 const DropdownFilters = styled.div`
   display: flex;
   align-items: center;
-
   &.hidden {
     display: none;
   }
@@ -124,7 +115,6 @@ const DropdownFilters = styled.div`
 
 const DesktopViewButtons = styled(ViewButtons)`
   margin-left: 40px;
-
   ${media.tablet`
     display: none;
   `}
@@ -137,12 +127,10 @@ const MobileViewButtons = styled(ViewButtons)`
 const StyledSearchInput = styled(SearchInput)`
   width: 300px;
   margin-right: 30px;
-
   ${isRtl`
     margin-right: 0;
     margin-left: auto;
   `}
-
   ${media.tablet`
     width: 100%;
     margin-right: 0px;
