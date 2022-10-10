@@ -1,4 +1,3 @@
-import { curry } from 'cypress/types/lodash';
 import { randomString } from '../../../support/commands';
 
 describe('Admin: create, update, and view custom page', () => {
@@ -121,6 +120,18 @@ describe('Admin: create, update, and view custom page', () => {
     // submit
     cy.get('[data-cy="e2e-top-info-section-submit"]').click();
 
+    // scroll to breadcrumbs, go back to main page
+    cy.get(`[data-cy="breadcrumbs-${pageName}"]`).click();
+
+    // go to attachments section edit page
+    cy.get('[data-cy="e2e-admin-edit-button-files_section_enabled"]').click();
+
+    // drop an example pdf file
+    cy.get('#local_page_files').selectFile('cypress/fixtures/example.pdf');
+
+    // submit
+    cy.get('[data-cy="e2e-attachments-section-submit"]').click();
+
     // wait for success toast
     cy.get('[data-testid="feedbackSuccessMessage"');
 
@@ -138,7 +149,6 @@ describe('Admin: create, update, and view custom page', () => {
     cy.contains(subheaderContent);
     cy.contains(ctaContent);
     cy.contains(topInfoContent);
-
-    // to do - test attachments (same way as drag and drop image, but has to not be png)
+    cy.contains('example.pdf');
   });
 });
