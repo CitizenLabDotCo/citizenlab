@@ -1,12 +1,31 @@
 import React from 'react';
 
-// components
-import { Box } from '@citizenlab/cl2-component-library';
+// styling
+import styled from 'styled-components';
+import { SEMANTIC_UI_BORDER_INNER_COLOR } from './constants';
 
 interface Props {
   children: React.ReactNode;
+  horizontalBorders?: boolean;
 }
 
-const Body = ({ children }: Props) => <Box as="tbody">{children}</Box>;
+const StyledTBody = styled.tbody`
+  tr > td {
+    border-bottom: 1px solid ${SEMANTIC_UI_BORDER_INNER_COLOR};
+  }
+
+  tr:last-child {
+    td {
+      border-bottom: none;
+    }
+  }
+`;
+
+const Body = ({ children, horizontalBorders }: Props) =>
+  horizontalBorders ? (
+    <StyledTBody>{children}</StyledTBody>
+  ) : (
+    <tbody>{children}</tbody>
+  );
 
 export default Body;
