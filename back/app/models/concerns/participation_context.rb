@@ -92,10 +92,6 @@ module ParticipationContext
     ideation? || budgeting?
   end
 
-  def transitive?
-    ideation? || budgeting?
-  end
-
   def can_contain_input?
     can_contain_ideas? || native_survey?
   end

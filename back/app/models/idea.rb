@@ -232,22 +232,23 @@ class Idea < ApplicationRecord
         :invalid_project,
         message: 'The creation phase must be a phase of the input\'s project'
       )
+      return
     end
 
-    if creation_phase.transitive?
+    if project.continuous?
       errors.add(
         :creation_phase,
-        :invalid_participation_method,
-        message: 'The creation phase cannot be set for transitive participation methods'
+        :not_in_timeline_project,
+        message: 'The creation phase cannot be set for inputs in a continuous project'
       )
     end
 
-    return if project.timeline?
+    return if participation_method_on_creation.form_in_phase?
 
     errors.add(
       :creation_phase,
-      :not_in_timeline_project,
-      message: 'The creation phase cannot be set for inputs in a continuous project'
+      :invalid_participation_method,
+      message: 'The creation phase cannot be set for transitive participation methods'
     )
   end
 end

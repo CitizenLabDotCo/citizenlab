@@ -211,9 +211,9 @@ RSpec.describe Idea, type: :model do
 
     it 'is invalid when present and in a continuous project' do
       project = create :continuous_native_survey_project
-      input = build :idea, project: project, creation_phase: create(:native_survey_phase)
+      input = build :idea, project: project, creation_phase: build(:native_survey_phase, project: project)
       expect(input).to be_invalid
-      expect(input.errors.details).to eq({ creation_phase: [{ error: :invalid_project }, { error: :not_in_timeline_project }] })
+      expect(input.errors.details).to eq({ creation_phase: [{ error: :not_in_timeline_project }] })
     end
   end
 
