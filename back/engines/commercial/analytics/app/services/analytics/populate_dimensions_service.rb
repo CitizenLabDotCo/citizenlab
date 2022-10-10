@@ -22,7 +22,7 @@ module Analytics
         first_activity_date = [tenant_creation, first_idea, first_initiative].compact.min.to_date
 
         if Analytics::DimensionDate.none?
-          from = [Date.parse('2020-01-01'), first_activity_date].max # No date dimensions earlier than 2020
+          from = first_activity_date
         else
           first_dimension_date = Analytics::DimensionDate.order(date: :asc).first.date
           last_dimension_date = Analytics::DimensionDate.order(date: :desc).first.date
@@ -37,6 +37,8 @@ module Analytics
 
       def create_dates(from, to)
         (from..to).each do |date|
+          next if date.year < 2020 # We don't want any date dimensions earlier than 2020
+
           Analytics::DimensionDate.create!(
             date: date,
             week: date.beginning_of_week.to_date,
