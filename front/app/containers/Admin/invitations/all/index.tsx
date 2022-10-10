@@ -118,117 +118,111 @@ class InvitesTable extends React.PureComponent<Props, State> {
       onChangePage,
     } = this.props;
 
-    if (!isNilOrError(invitesList)) {
-      return (
-        <Container className={this.props['className']}>
-          <HeaderContainer>
-            <SearchInput
-              onChange={this.handleChangeSearchTerm}
-              a11y_numberOfSearchResults={invitesList.length}
-            />
-            <Button
-              buttonStyle="cl-blue"
-              icon="download"
-              onClick={this.handleInvitesExport}
-              processing={exporting}
-            >
-              <FormattedMessage {...messages.exportInvites} />
-            </Button>
-          </HeaderContainer>
+    if (isNilOrError(invitesList)) return null;
 
-          {invitesList.length > 0 && (
-            <Table sortable>
-              <Table.Header>
+    return (
+      <Container className={this.props['className']}>
+        <HeaderContainer>
+          <SearchInput
+            onChange={this.handleChangeSearchTerm}
+            a11y_numberOfSearchResults={invitesList.length}
+          />
+          <Button
+            buttonStyle="cl-blue"
+            icon="download"
+            onClick={this.handleInvitesExport}
+            processing={exporting}
+          >
+            <FormattedMessage {...messages.exportInvites} />
+          </Button>
+        </HeaderContainer>
+
+        {invitesList.length > 0 && (
+          <Table sortable>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell
+                  sorted={sortAttribute === 'email' ? sortDirection : undefined}
+                  onClick={this.handleSortHeaderClick('email')}
+                  width={3}
+                >
+                  <FormattedMessage {...messages.email} />
+                </Table.HeaderCell>
+                <Table.HeaderCell
+                  sorted={
+                    sortAttribute === 'last_name' ? sortDirection : undefined
+                  }
+                  onClick={this.handleSortHeaderClick('last_name')}
+                  width={2}
+                >
+                  <FormattedMessage {...messages.name} />
+                </Table.HeaderCell>
+                <Table.HeaderCell
+                  sorted={
+                    sortAttribute === 'created_at' ? sortDirection : undefined
+                  }
+                  onClick={this.handleSortHeaderClick('created_at')}
+                  width={1}
+                >
+                  <FormattedMessage {...messages.invitedSince} />
+                </Table.HeaderCell>
+                <Table.HeaderCell
+                  sorted={
+                    sortAttribute === 'invite_status'
+                      ? sortDirection
+                      : undefined
+                  }
+                  onClick={this.handleSortHeaderClick('invite_status')}
+                  width={1}
+                  textAlign="center"
+                >
+                  <FormattedMessage {...messages.inviteStatus} />
+                </Table.HeaderCell>
+                <Table.HeaderCell width={1} textAlign="center">
+                  <FormattedMessage {...messages.deleteInvite} />
+                  <Popup
+                    content={
+                      <FormattedMessage {...messages.deleteInviteTooltip} />
+                    }
+                    trigger={
+                      <button>
+                        <InfoIcon name="info3" />
+                      </button>
+                    }
+                  />
+                </Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
+
+            <Table.Body>
+              {invitesList.map((invite) => (
+                <Row key={invite.id} invite={invite} />
+              ))}
+            </Table.Body>
+
+            {currentPage && lastPage && lastPage > 1 && (
+              <Table.Footer fullWidth={true}>
                 <Table.Row>
-                  <Table.HeaderCell
-                    sorted={
-                      sortAttribute === 'email' ? sortDirection : undefined
-                    }
-                    onClick={this.handleSortHeaderClick('email')}
-                    width={3}
-                  >
-                    <FormattedMessage {...messages.email} />
-                  </Table.HeaderCell>
-                  <Table.HeaderCell
-                    sorted={
-                      sortAttribute === 'last_name' ? sortDirection : undefined
-                    }
-                    onClick={this.handleSortHeaderClick('last_name')}
-                    width={2}
-                  >
-                    <FormattedMessage {...messages.name} />
-                  </Table.HeaderCell>
-                  <Table.HeaderCell
-                    sorted={
-                      sortAttribute === 'created_at' ? sortDirection : undefined
-                    }
-                    onClick={this.handleSortHeaderClick('created_at')}
-                    width={1}
-                  >
-                    <FormattedMessage {...messages.invitedSince} />
-                  </Table.HeaderCell>
-                  <Table.HeaderCell
-                    sorted={
-                      sortAttribute === 'invite_status'
-                        ? sortDirection
-                        : undefined
-                    }
-                    onClick={this.handleSortHeaderClick('invite_status')}
-                    width={1}
-                    textAlign="center"
-                  >
-                    <FormattedMessage {...messages.inviteStatus} />
-                  </Table.HeaderCell>
-                  <Table.HeaderCell width={1} textAlign="center">
-                    <FormattedMessage {...messages.deleteInvite} />
-                    <Popup
-                      content={
-                        <FormattedMessage {...messages.deleteInviteTooltip} />
-                      }
-                      trigger={
-                        <button>
-                          <InfoIcon name="info3" />
-                        </button>
-                      }
+                  <Table.HeaderCell colSpan="6">
+                    <Pagination
+                      currentPage={currentPage}
+                      totalPages={lastPage}
+                      loadPage={onChangePage}
                     />
                   </Table.HeaderCell>
                 </Table.Row>
-              </Table.Header>
+              </Table.Footer>
+            )}
+          </Table>
+        )}
 
-              <Table.Body>
-                {invitesList.map((invite) => (
-                  <Row key={invite.id} invite={invite} />
-                ))}
-              </Table.Body>
-
-              {currentPage && lastPage && lastPage > 1 && (
-                <Table.Footer fullWidth={true}>
-                  <Table.Row>
-                    <Table.HeaderCell colSpan="6">
-                      <Pagination
-                        currentPage={currentPage}
-                        totalPages={lastPage}
-                        loadPage={onChangePage}
-                      />
-                    </Table.HeaderCell>
-                  </Table.Row>
-                </Table.Footer>
-              )}
-            </Table>
-          )}
-
-          {isEmpty(invitesList) && !isEmpty(searchValue) && (
-            <EmptyStateContainer>
-              <FormattedMessage
-                {...messages.currentlyNoInvitesThatMatchSearch}
-              />
-            </EmptyStateContainer>
-          )}
-        </Container>
-      );
-    }
-
-    return null;
+        {isEmpty(invitesList) && !isEmpty(searchValue) && (
+          <EmptyStateContainer>
+            <FormattedMessage {...messages.currentlyNoInvitesThatMatchSearch} />
+          </EmptyStateContainer>
+        )}
+      </Container>
+    );
   }
 }
 
