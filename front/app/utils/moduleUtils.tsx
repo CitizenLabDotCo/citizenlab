@@ -358,9 +358,6 @@ export interface OutletsPropertyMap {
     className?: string;
   };
   'app.containers.LandingPage.EventsWidget': Record<string, any>;
-  'app.containers.Admin.settings.customize.Events': {
-    onMount: () => void;
-  };
   'app.containers.Admin.settings.customize.AllInput': {
     onMount: () => void;
   };

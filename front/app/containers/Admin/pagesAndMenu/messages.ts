@@ -17,8 +17,4 @@ export default defineMessages({
     id: 'app.containers.Admin.PagesAndMenu.pagesMenuMetaTitle',
     defaultMessage: 'Pages & menu | {orgName}',
   },
-  pagesMetaTitle: {
-    id: 'app.containers.Admin.PagesAndMenu.pagesMetaTitle',
-    defaultMessage: 'Pages | {orgName}',
-  },
 });

@@ -2,11 +2,10 @@ import React, { lazy } from 'react';
 import PageLoading from 'components/UI/PageLoading';
 import moduleConfiguration from 'modules';
 import { Navigate } from 'react-router-dom';
+import Outlet from 'components/Outlet';
+
 const CustomPagesIndex = lazy(() => import('./containers/CustomPages'));
 const PagesAndMenuIndex = lazy(() => import('containers/Admin/pagesAndMenu'));
-const NavigationSettings = lazy(
-  () => import('./containers/NavigationSettings')
-);
 
 // homepage
 const EditHomepage = lazy(() => import('./containers/EditHomepage'));
@@ -61,7 +60,7 @@ export default () => ({
           index: true,
           element: (
             <PageLoading>
-              <NavigationSettings />
+              <Outlet id="app.containers.Admin.pages-menu.NavigationSettings" />
             </PageLoading>
           ),
         },
