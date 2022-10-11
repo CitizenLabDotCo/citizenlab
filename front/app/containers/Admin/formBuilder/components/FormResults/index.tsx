@@ -3,6 +3,10 @@ import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import { get } from 'lodash-es';
 import { useParams } from 'react-router-dom';
+import { snakeCase } from 'lodash-es';
+
+// Hooks
+import useLocale from 'hooks/useLocale';
 
 // components
 import {
@@ -44,7 +48,7 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const { projectId } = useParams() as {
     projectId: string;
   };
-
+  const locale = useLocale();
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   let phaseId = urlParams.get('phase_id');
@@ -57,7 +61,7 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     phaseId,
   });
 
-  if (isNilOrError(formResults)) {
+  if (isNilOrError(formResults) || isNilOrError(locale)) {
     return null;
   }
 
@@ -112,7 +116,7 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           ({ question, inputType, answers, totalResponses }, index) => {
             const inputTypeText = get(messages, inputType, '');
             return (
-              <Box key={index}>
+              <Box key={index} data-cy={`${snakeCase(question[locale])}`}>
                 <Text fontWeight="bold">
                   <T value={question} />
                 </Text>

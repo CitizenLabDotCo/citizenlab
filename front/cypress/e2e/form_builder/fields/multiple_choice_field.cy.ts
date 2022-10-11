@@ -33,7 +33,7 @@ describe('Form builder multiple choice component', () => {
     cy.contains('Provide a question title').should('exist');
     cy.contains('Provide at least 1 answer').should('exist');
     cy.get('#e2e-title-multiloc').type('Question title', { force: true });
-    cy.get('#e2e-option-input').type('Option 1', { force: true });
+    cy.get('#e2e-option-input-0').type('Option 1', { force: true });
     cy.contains('Save').click();
     cy.visit(`/projects/${projectSlug}/ideas/new`);
     cy.contains('Question title').should('exist');
@@ -45,7 +45,7 @@ describe('Form builder multiple choice component', () => {
   it('adds multiselect multiple choice field and checks renderer', () => {
     cy.contains('Multiple choice').click();
     cy.get('#e2e-title-multiloc').type('Question title 2', { force: true });
-    cy.get('#e2e-option-input').type('Option 1 question 2', { force: true });
+    cy.get('#e2e-option-input-0').type('Option 1 question 2', { force: true });
     cy.get('#e2e-multiselect-toggle').click();
     cy.contains('Save').click();
     cy.visit(`/projects/${projectSlug}/ideas/new`);

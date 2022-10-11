@@ -102,6 +102,7 @@ const FormBuilderToolbox = ({
             icon="multiple-choice"
             label={formatMessage(messages.multipleChoice)}
             onClick={() => addField('select')}
+            data-cy="multiple-choice"
           />
           <ToolboxItem
             icon="linear-scale"

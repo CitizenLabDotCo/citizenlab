@@ -152,7 +152,7 @@ const ConfigMultiselectWithLocaleSwitcher = ({
                             >
                               <Box width="280px">
                                 <Input
-                                  id="e2e-option-input"
+                                  id={`e2e-option-input-${index}`}
                                   size="small"
                                   type="text"
                                   value={choice.title_multiloc[selectedLocale]}
@@ -194,6 +194,7 @@ const ConfigMultiselectWithLocaleSwitcher = ({
                   <Button
                     icon="plus-circle"
                     buttonStyle="secondary"
+                    data-cy="add-answer"
                     onClick={() => addOption(choices, name)}
                     text={formatMessage(messages.addAnswer)}
                   />

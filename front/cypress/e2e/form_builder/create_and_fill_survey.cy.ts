@@ -116,6 +116,88 @@ describe('Survey builder', () => {
     cy.contains(questionTitle).should('not.exist');
   });
 
+  it('shows survey results for multiple choice and linear scale fields', () => {
+    const chooseOneOption1 = randomString();
+    const chooseOneOption2 = randomString();
+    const chooseManyOption1 = randomString();
+    const chooseManyOption2 = randomString();
+    const multipleChoiceChooseOneTitle = 'multiplechoicechooseonefield';
+    const multipleChoiceChooseManyTitle = 'multiplechoicechoosemultiplefield';
+    const linearScaleTitle = 'linearscalefield';
+    cy.visit(`admin/projects/${projectId}/native-survey/edit`);
+
+    // Multiple choice choose one
+    cy.get('[data-cy="multiple-choice"]').click();
+    cy.get('#e2e-title-multiloc').type(multipleChoiceChooseOneTitle, {
+      force: true,
+    });
+    cy.get('#e2e-option-input-0').type(chooseOneOption1, { force: true });
+    cy.get('[data-cy="add-answer"]').click();
+    cy.get('#e2e-option-input-1').type(chooseOneOption2, { force: true });
+
+    // Multiple choice choose multiple
+    cy.get('[data-cy="multiple-choice"]').click();
+    cy.get('#e2e-title-multiloc').type(multipleChoiceChooseManyTitle, {
+      force: true,
+    });
+    cy.get('#e2e-multiselect-toggle').click();
+    cy.get('#e2e-option-input-0').type(chooseManyOption1, { force: true });
+    cy.get('[data-cy="add-answer"]').click();
+    cy.get('#e2e-option-input-1').type(chooseManyOption2, { force: true });
+
+    // Linear scale
+    cy.get('[data-cy="linear-scale"]').click();
+    cy.get('#e2e-title-multiloc').type(linearScaleTitle, { force: true });
+
+    // Save the survey
+    cy.get('form').submit();
+    // Should show success message on saving
+    cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
+
+    // Navigate to the survey page
+    cy.visit(`/projects/${projectSlug}/ideas/new`);
+    cy.acceptCookies();
+    cy.contains(multipleChoiceChooseOneTitle).should('exist');
+    cy.contains(multipleChoiceChooseManyTitle).should('exist');
+    cy.contains(linearScaleTitle).should('exist');
+
+    // Enter some data and save
+    cy.get(`#${multipleChoiceChooseOneTitle}-radio-0`).click({ force: true });
+    cy.get(`#${multipleChoiceChooseManyTitle}-checkbox-0`).click({
+      force: true,
+    });
+    cy.get(`#${linearScaleTitle}-radio-1`).click({ force: true });
+    cy.get('.e2e-submit-idea-form').click();
+    cy.wait(1000);
+
+    cy.visit(`/projects/${projectSlug}/ideas/new`);
+    cy.get(`#${multipleChoiceChooseOneTitle}-radio-1`).click({ force: true });
+    cy.get(`#${multipleChoiceChooseManyTitle}-checkbox-1`).click({
+      force: true,
+    });
+    cy.get(`#${linearScaleTitle}-radio-0`).click({ force: true });
+    cy.get('.e2e-submit-idea-form').click();
+    cy.wait(1000);
+
+    cy.visit(`/projects/${projectSlug}/ideas/new`);
+    cy.get(`#${multipleChoiceChooseOneTitle}-radio-1`).click({ force: true });
+    cy.get(`#${multipleChoiceChooseManyTitle}-checkbox-1`).click({
+      force: true,
+    });
+    cy.get(`#${linearScaleTitle}-radio-0`).click({ force: true });
+    cy.get('.e2e-submit-idea-form').click();
+    cy.wait(1000);
+
+    cy.visit(`admin/projects/${projectId}/native-survey/results`);
+    cy.get(`[data-cy="${snakeCase(multipleChoiceChooseOneTitle)}"]`).should(
+      'exist'
+    );
+    cy.get(`[data-cy="${snakeCase(multipleChoiceChooseManyTitle)}"]`).should(
+      'exist'
+    );
+    cy.get(`[data-cy="${snakeCase(linearScaleTitle)}"]`).should('exist');
+  });
+
   it('navigates to live project in a new tab when view project button in content builder is clicked', () => {
     const projectUrl = `/en/projects/${projectSlug}/ideas/new`;
 
