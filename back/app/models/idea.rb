@@ -42,6 +42,7 @@
 #
 #  fk_rails_...  (assignee_id => users.id)
 #  fk_rails_...  (author_id => users.id)
+#  fk_rails_...  (creation_phase_id => phases.id)
 #  fk_rails_...  (idea_status_id => idea_statuses.id)
 #  fk_rails_...  (project_id => projects.id)
 #

@@ -215,6 +215,28 @@ RSpec.describe Idea, type: :model do
       expect(input).to be_invalid
       expect(input.errors.details).to eq({ creation_phase: [{ error: :not_in_timeline_project }] })
     end
+
+    it 'deleting a phase used as creation phase of an input fails' do
+      project = create :project_with_active_native_survey_phase
+      phase = project.phases.first
+      create :idea, project: project, creation_phase: phase
+
+      expect { phase.destroy }.to raise_error ActiveRecord::InvalidForeignKey
+      expect(Project.count).to eq 1
+      expect(Phase.count).to eq 1
+      expect(described_class.count).to eq 1
+    end
+
+    it 'deleting a project with a phase used as creation phase of an input fails' do
+      project = create :project_with_active_native_survey_phase
+      phase = project.phases.first
+      create :idea, project: project, creation_phase: phase
+      project.destroy
+
+      expect(Project.count).to eq 0
+      expect(Phase.count).to eq 0
+      expect(described_class.count).to eq 0
+    end
   end
 
   context 'hooks' do
