@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 import Image from 'components/UI/Image';
 import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/HeaderImageDropzone';
-import { ICustomPageAttributes } from 'services/customPages';
+import { ICustomPageAttributes } from 'services/staticPages';
 
 export const Container = styled.div`
   width: 100%;

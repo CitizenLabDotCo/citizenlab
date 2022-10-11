@@ -3,7 +3,7 @@ import CustomPageSettingsForm from '../../CustomPageSettingsForm';
 import useCustomPage from 'hooks/useCustomPage';
 import { useParams } from 'react-router-dom';
 import { isNilOrError } from 'utils/helperUtils';
-import { updateCustomPage } from 'services/customPages';
+import { updateCustomPage } from 'services/staticPages';
 import { FormValues } from 'containers/Admin/pagesAndMenu/containers/CustomPages/CustomPageSettingsForm';
 
 const EditCustomPageSettings = () => {

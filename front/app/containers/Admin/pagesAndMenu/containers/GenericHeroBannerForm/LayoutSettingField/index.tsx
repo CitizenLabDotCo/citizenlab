@@ -20,7 +20,7 @@ import messages from '../messages';
 import {
   ICustomPageAttributes,
   TCustomPageBannerLayout,
-} from 'services/customPages';
+} from 'services/staticPages';
 import {
   IHomepageSettingsAttributes,
   THomepageBannerLayout,

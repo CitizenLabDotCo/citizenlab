@@ -6,7 +6,7 @@ import styled, { useTheme } from 'styled-components';
 import { PreviewDevice } from './BannerImageFields';
 
 // types
-import { ICustomPageAttributes } from 'services/customPages';
+import { ICustomPageAttributes } from 'services/staticPages';
 import {
   IHomepageSettingsAttributes,
   THomepageBannerLayout,

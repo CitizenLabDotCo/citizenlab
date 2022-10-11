@@ -2,7 +2,7 @@ import useCustomPage from 'hooks/useCustomPage';
 import useLocalize from 'hooks/useLocalize';
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { updateCustomPage } from 'services/customPages';
+import { updateCustomPage } from 'services/staticPages';
 import { isNilOrError } from 'utils/helperUtils';
 import GenericTopInfoSection from 'containers/Admin/pagesAndMenu/containers/GenericTopInfoSection';
 

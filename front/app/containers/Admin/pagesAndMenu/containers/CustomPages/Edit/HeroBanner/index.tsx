@@ -15,7 +15,7 @@ import {
   TCustomPageBannerLayout,
   TCustomPageCTAType,
   updateCustomPage,
-} from 'services/customPages';
+} from 'services/staticPages';
 import { CLErrors, Multiloc } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 import GenericHeroBannerForm from '../../../GenericHeroBannerForm';

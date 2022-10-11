@@ -4,7 +4,7 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 import { forOwn, size, trim } from 'lodash-es';
 import React, { useState } from 'react';
 import { InjectedIntlProps } from 'react-intl';
-import { ICustomPageAttributes } from 'services/customPages';
+import { ICustomPageAttributes } from 'services/staticPages';
 import { IHomepageSettingsAttributes } from 'services/homepageSettings';
 import { Multiloc } from 'typings';
 import { injectIntl } from 'utils/cl-intl';

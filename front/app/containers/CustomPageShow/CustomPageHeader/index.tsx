@@ -1,5 +1,5 @@
 import React from 'react';
-import { ICustomPageAttributes } from 'services/customPages';
+import { ICustomPageAttributes } from 'services/staticPages';
 import FullWidthBannerLayout from './FullWidthBannerLayout';
 import TwoColumnLayout from './TwoColumnLayout';
 import TwoRowLayout from './TwoRowLayout';

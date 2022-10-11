@@ -1,7 +1,7 @@
 import React from 'react';
 import CustomPageSettingsForm from '../CustomPageSettingsForm';
 import { FormValues } from 'containers/Admin/pagesAndMenu/containers/CustomPages/CustomPageSettingsForm';
-import { createCustomPage } from 'services/customPages';
+import { createCustomPage } from 'services/staticPages';
 import clHistory from 'utils/cl-router/history';
 
 const NewCustomPage = () => {
