@@ -2,10 +2,7 @@ import React from 'react';
 
 // styling
 import styled from 'styled-components';
-import {
-  SEMANTIC_UI_HEADER_BG_COLOR,
-  SEMANTIC_UI_BORDER_INNER_COLOR,
-} from './constants';
+import { colors } from 'utils/styleUtils';
 
 interface Props {
   children: React.ReactNode;
@@ -16,13 +13,12 @@ const StyledTFoot = styled.tfoot<{ background: string }>`
   background: ${({ background }) => background};
 
   tr:first-child > td {
-    border-top: 1px solid ${SEMANTIC_UI_BORDER_INNER_COLOR};
+    border-top: 1px solid ${colors.grey200};
   }
 `;
 
-const Footer = ({
-  children,
-  background = SEMANTIC_UI_HEADER_BG_COLOR,
-}: Props) => <StyledTFoot background={background}>{children}</StyledTFoot>;
+const Footer = ({ children, background = colors.grey50 }: Props) => (
+  <StyledTFoot background={background}>{children}</StyledTFoot>
+);
 
 export default Footer;

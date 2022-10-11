@@ -25,7 +25,7 @@ interface Props {
 const RowComponent = ({ row }: Props) => {
   return (
     <Row>
-      <Cell background={colors.teal100}>{row.name}</Cell>
+      <Cell background={colors.grey50}>{row.name}</Cell>
       <Cell>
         {formatPercentage(row.actualPercentage)}
         <AbsoluteValue>

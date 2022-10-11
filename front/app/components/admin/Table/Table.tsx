@@ -17,7 +17,7 @@ const StyledBox = styled(Box)<{ innerBorders?: InnerBorders }>`
   text-align: left;
   font-size: ${fontSizes.s}px;
   color: ${colors.primary};
-  border-collapse: seperate;
+  border-collapse: separate;
 
   thead > th {
     border-bottom: 1px solid ${SEMANTIC_UI_BORDER_INNER_COLOR};
