@@ -8,11 +8,14 @@ describe('Native survey project page actions', () => {
   const userLastName = randomString(10);
   const userPassword = randomString(10);
   const userEmail = randomEmail();
-  let projectId: string;
-  let projectSlug: string;
+  let projectIdContinuous: string;
+  let projectSlugContinous: string;
+  let projectIdArchived: string;
+  let projectSlugArchived: string;
   let userId: string;
 
   before(() => {
+    // Create active continuous project
     cy.apiCreateProject({
       type: 'continuous',
       title: projectTitle,
@@ -21,8 +24,21 @@ describe('Native survey project page actions', () => {
       publicationStatus: 'published',
       participationMethod: 'native_survey',
     }).then((project) => {
-      projectId = project.body.data.id;
-      projectSlug = project.body.data.attributes.slug;
+      projectIdContinuous = project.body.data.id;
+      projectSlugContinous = project.body.data.attributes.slug;
+    });
+
+    // Create archived continuous project
+    cy.apiCreateProject({
+      type: 'continuous',
+      title: projectTitle,
+      descriptionPreview: projectDescriptionPreview,
+      description: projectDescription,
+      publicationStatus: 'archived',
+      participationMethod: 'native_survey',
+    }).then((project) => {
+      projectIdArchived = project.body.data.id;
+      projectSlugArchived = project.body.data.attributes.slug;
     });
 
     // create some users
@@ -33,36 +49,52 @@ describe('Native survey project page actions', () => {
     );
   });
 
-  it('visits the page as an unregistered user', () => {
+  it('tests actions when continuous survey project is active and accepting submissions', () => {
+    // Unregistered user
     cy.logout();
-  });
+    cy.visit(`/projects/${projectSlugContinous}`);
+    cy.contains('Take the survey').click();
+    cy.contains('Please log in').should('exist');
 
-  it('visits the page as a logged in user', () => {
+    // Regular user
     cy.setLoginCookie(userEmail, userPassword);
-    cy.visit(`/projects/${projectSlug}`);
-    cy.wait(1000);
-  });
+    cy.visit(`/projects/${projectSlugContinous}`);
+    cy.contains('Take the survey').click();
+    cy.url().should('include', `/projects/${projectSlugContinous}/ideas/new`);
 
-  it('visits the page as an admin user', () => {
+    // Admin user
     cy.setAdminLoginCookie();
-    cy.visit(`/projects/${projectSlug}`);
-    cy.wait(1000);
+    cy.visit(`/projects/${projectSlugContinous}`);
+    cy.contains('Take the survey').click();
+    cy.url().should('include', `/projects/${projectSlugContinous}/ideas/new`);
   });
 
-  it('visits the page when the survey is not accepting submissions', () => {
-    // temp
+  it('tests actions when project is archived', () => {
+    cy.setLoginCookie(userEmail, userPassword);
+    cy.visit(`/projects/${projectSlugArchived}`);
+    cy.contains(
+      "Unfortunately, you can't participate in this project anymore because it has been archived"
+    );
+    cy.contains('Take the survey').should('not.exist');
+    cy.contains('1 survey').should('not.exist');
   });
 
-  it('visits the page when the survey phase is not active', () => {
-    // temp
+  it('tests actions when survey is not accepting submissions', () => {
+    cy.setAdminLoginCookie();
+    cy.visit(`admin/projects/${projectIdContinuous}`);
+    cy.contains('Submitting posts').within(() => {
+      cy.get('[type="checkbox"]').check();
+    });
+    cy.contains('Save').click();
   });
 
-  it('visits the page when the project is archived', () => {
+  it('tests actions when survey phase is not active', () => {
     // temp
   });
 
   after(() => {
-    cy.apiRemoveProject(projectId);
+    cy.apiRemoveProject(projectIdContinuous);
+    cy.apiRemoveProject(projectIdArchived);
     cy.apiRemoveUser(userId);
   });
 });
