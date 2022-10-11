@@ -5,6 +5,7 @@ import { Header, Row, HeaderCell } from 'components/admin/Table';
 import { IconTooltip, Text, Icon } from '@citizenlab/cl2-component-library';
 
 // styling
+import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 // i18n
@@ -23,13 +24,19 @@ interface ClickableCellProps {
   children: React.ReactNode;
 }
 
+const StyledHeaderCell = styled(HeaderCell)`
+  &:hover {
+    cursor: pointer;
+    background: ${colors.grey200};
+  }
+`;
+
 const ClickableCell = ({
   children,
   sorted,
   ...otherProps
 }: ClickableCellProps) => (
-  <HeaderCell
-    clickable
+  <StyledHeaderCell
     background={sorted ? colors.grey200 : undefined}
     {...otherProps}
   >
@@ -43,7 +50,7 @@ const ClickableCell = ({
         transform="translate(0,-1)"
       />
     )}
-  </HeaderCell>
+  </StyledHeaderCell>
 );
 
 interface Props {
