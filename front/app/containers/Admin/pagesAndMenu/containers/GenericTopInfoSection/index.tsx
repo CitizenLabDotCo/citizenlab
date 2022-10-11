@@ -75,7 +75,7 @@ const GenericTopInfoSection = ({
   });
 
   return (
-    <>
+    <div data-cy="e2e-top-info-form">
       <HelmetIntl title={messages.topInfoMetaTitle} />
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onFormSubmit)}>
@@ -112,7 +112,7 @@ const GenericTopInfoSection = ({
           </SectionFormWrapper>
         </form>
       </FormProvider>
-    </>
+    </div>
   );
 };
 

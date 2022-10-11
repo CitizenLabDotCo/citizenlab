@@ -108,7 +108,7 @@ describe('Admin: update Hero Banner content', () => {
     cy.get('[data-testid="edit-button"]').first().click();
 
     // click hero banner edit button
-    cy.get('[data-cy="e2e-admin-edit-button"]').first().click();
+    cy.get('[data-cy="e2e-admin-edit-button-homepage_banner"]').first().click();
 
     // click two-column banner layout
     cy.get('[data-cy="e2e-two-column-layout-option"]').click();

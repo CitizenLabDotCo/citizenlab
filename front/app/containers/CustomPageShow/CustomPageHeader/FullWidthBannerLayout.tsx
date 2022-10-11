@@ -29,13 +29,15 @@ const FullWidthBannerLayout = ({
     <Container className={`e2e-signed-out-header ${className}`}>
       <Header id="hook-header">
         <HeaderImage id="hook-header-image">
-          <HeaderImageBackground src={imageUrl || null} />
+          <HeaderImageBackground
+            data-cy="e2e-header-image-background"
+            src={imageUrl || null}
+          />
           <HeaderImageOverlay
             overlayColor={imageColor}
             overlayOpacity={imageOpacity}
           />
         </HeaderImage>
-
         <HeaderContent
           fontColors="light"
           hasHeaderBannerImage={imageUrl != null}

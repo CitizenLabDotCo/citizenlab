@@ -138,7 +138,11 @@ const AttachmentsForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
               />
             </SectionField>
             <Box display="flex">
-              <Button type="submit" processing={methods.formState.isSubmitting}>
+              <Button
+                data-cy={`e2e-attachments-section-submit`}
+                type="submit"
+                processing={methods.formState.isSubmitting}
+              >
                 <FormattedMessage {...messages.saveButton} />
               </Button>
             </Box>
