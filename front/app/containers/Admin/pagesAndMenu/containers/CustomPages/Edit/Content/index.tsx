@@ -113,7 +113,7 @@ const CustomPagesEditContent = () => {
   };
 
   return (
-    <PageWrapper>
+    <PageWrapper flatTopBorder>
       <Box display="flex" flexDirection="column">
         <Box mb="28px">
           <Warning>
