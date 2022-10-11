@@ -202,10 +202,10 @@ export default ({
       ...(onClick ? { onClick } : {}),
     };
 
-    const width =
-      typeof cellProps.width === 'number'
-        ? `${roundPercentage(cellProps.width, totalWidth)}%`
-        : '0%';
+    const width = `${roundPercentage(
+      typeof cellProps.width === 'number' ? cellProps.width : 1,
+      totalWidth
+    )}%`;
 
     const Content = (
       <HeaderCell width={width} key={name}>
