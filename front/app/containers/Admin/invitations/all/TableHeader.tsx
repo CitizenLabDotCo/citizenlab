@@ -2,10 +2,9 @@ import React from 'react';
 
 // components
 import { Header, Row, HeaderCell } from 'components/admin/Table';
-import { IconTooltip, Text, Icon } from '@citizenlab/cl2-component-library';
+import { IconTooltip, Text } from '@citizenlab/cl2-component-library';
 
 // styling
-import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 // i18n
@@ -18,39 +17,25 @@ import { SortDirection } from 'utils/paginationUtils';
 
 interface ClickableCellProps {
   width: string;
-  sorted: SortDirection | undefined;
+  sortDirection: SortDirection | undefined;
   style?: React.CSSProperties;
   onClick: () => void;
   children: React.ReactNode;
 }
 
-const StyledHeaderCell = styled(HeaderCell)`
-  &:hover {
-    cursor: pointer;
-    background: ${colors.grey200};
-  }
-`;
-
 const ClickableCell = ({
   children,
-  sorted,
+  sortDirection,
   ...otherProps
 }: ClickableCellProps) => (
-  <StyledHeaderCell
-    background={sorted ? colors.grey200 : undefined}
+  <HeaderCell
+    clickable
+    background={sortDirection ? colors.grey200 : undefined}
+    sortDirection={sortDirection}
     {...otherProps}
   >
     {children}
-    {sorted && (
-      <Icon
-        name={sorted === 'ascending' ? 'chevron-up' : 'chevron-down'}
-        width="10px"
-        fill={colors.primary}
-        ml="8px"
-        transform="translate(0,-1)"
-      />
-    )}
-  </StyledHeaderCell>
+  </HeaderCell>
 );
 
 interface Props {
@@ -67,28 +52,34 @@ const TableHeader = ({
   <Header background={colors.grey50}>
     <Row>
       <ClickableCell
-        sorted={sortAttribute === 'email' ? sortDirection : undefined}
+        sortDirection={sortAttribute === 'email' ? sortDirection : undefined}
         onClick={onSortHeaderClick('email')}
         width="38%"
       >
         <FormattedMessage {...messages.email} />
       </ClickableCell>
       <ClickableCell
-        sorted={sortAttribute === 'last_name' ? sortDirection : undefined}
+        sortDirection={
+          sortAttribute === 'last_name' ? sortDirection : undefined
+        }
         onClick={onSortHeaderClick('last_name')}
         width="25%"
       >
         <FormattedMessage {...messages.name} />
       </ClickableCell>
       <ClickableCell
-        sorted={sortAttribute === 'created_at' ? sortDirection : undefined}
+        sortDirection={
+          sortAttribute === 'created_at' ? sortDirection : undefined
+        }
         onClick={onSortHeaderClick('created_at')}
         width="13%"
       >
         <FormattedMessage {...messages.invitedSince} />
       </ClickableCell>
       <ClickableCell
-        sorted={sortAttribute === 'invite_status' ? sortDirection : undefined}
+        sortDirection={
+          sortAttribute === 'invite_status' ? sortDirection : undefined
+        }
         onClick={onSortHeaderClick('invite_status')}
         width="12%"
         style={{ textAlign: 'center' }}

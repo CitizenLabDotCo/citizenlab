@@ -95,6 +95,8 @@ const InvitesTable = ({
     onChangeSearchTerm(searchValue);
   };
 
+  console.log(sortDirection);
+
   return (
     <Container>
       <HeaderContainer>
