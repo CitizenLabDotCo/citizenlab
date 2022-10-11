@@ -1,15 +1,5 @@
 import { configureScope } from '@sentry/react';
-import ErrorBoundary from 'components/ErrorBoundary';
-import HasPermission from 'components/HasPermission';
-import Outlet from 'components/Outlet';
-import ForbiddenRoute from 'components/routing/forbiddenRoute';
-import { openSignUpInModal$ } from 'components/SignUpIn/events';
-import SignUpInModal from 'components/SignUpIn/SignUpInModal';
 import { openVerificationModal } from 'components/Verification/verificationModalEvents';
-import { appLocalesMomentPairs, locales } from 'containers/App/constants';
-import MainHeader from 'containers/MainHeader';
-import MobileNavbar from 'containers/MobileNavbar';
-import { PreviousPathnameContext } from 'context';
 import 'focus-visible';
 import GlobalStyle from 'global-styles';
 import 'intersection-observer';
@@ -19,14 +9,39 @@ import 'moment-timezone';
 import { parse } from 'qs';
 import React, { lazy, PureComponent, Suspense } from 'react';
 import { adopt } from 'react-adopt';
-import GetFeatureFlag, {
-  GetFeatureFlagChildProps,
-} from 'resources/GetFeatureFlag';
-import GetWindowSize, {
-  GetWindowSizeChildProps,
-} from 'resources/GetWindowSize';
 import { combineLatest, Subscription } from 'rxjs';
 import { first, tap } from 'rxjs/operators';
+import smoothscroll from 'smoothscroll-polyfill';
+import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { endsWith, isDesktop, isNilOrError, isPage } from 'utils/helperUtils';
+
+// constants
+import { appLocalesMomentPairs, locales } from 'containers/App/constants';
+
+// context
+import { PreviousPathnameContext } from 'context';
+import { trackPage } from 'utils/analytics';
+
+// analytics
+const ConsentManager = lazy(() => import('components/ConsentManager'));
+
+// components
+import ErrorBoundary from 'components/ErrorBoundary';
+import Outlet from 'components/Outlet';
+import ForbiddenRoute from 'components/routing/forbiddenRoute';
+import SignUpInModal from 'components/SignUpIn/SignUpInModal';
+import MainHeader from 'containers/MainHeader';
+import MobileNavbar from 'containers/MobileNavbar';
+import Meta from './Meta';
+const UserDeletedModal = lazy(() => import('./UserDeletedModal'));
+const PlatformFooter = lazy(() => import('containers/PlatformFooter'));
+const PostPageFullscreenModal = lazy(() => import('./PostPageFullscreenModal'));
+
+// auth
+import HasPermission from 'components/HasPermission';
+
+// services
 import {
   currentAppConfigurationStream,
   IAppConfiguration,
@@ -39,22 +54,29 @@ import {
 } from 'services/auth';
 import { localeStream } from 'services/locale';
 import { IUser } from 'services/users';
-import smoothscroll from 'smoothscroll-polyfill';
-import styled, { ThemeProvider } from 'styled-components';
-import { Locale } from 'typings';
-import { trackPage } from 'utils/analytics';
-import clHistory from 'utils/cl-router/history';
-import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+
+// resources
+import GetFeatureFlag, {
+  GetFeatureFlagChildProps,
+} from 'resources/GetFeatureFlag';
+import GetWindowSize, {
+  GetWindowSizeChildProps,
+} from 'resources/GetWindowSize';
+
+// events
+import { openSignUpInModal$ } from 'components/SignUpIn/events';
 import eventEmitter from 'utils/eventEmitter';
-import { endsWith, isDesktop, isNilOrError, isPage } from 'utils/helperUtils';
+
+// style
+import styled, { ThemeProvider } from 'styled-components';
 import { getTheme, media } from 'utils/styleUtils';
-import Meta from './Meta';
+
+// typings
+import { Locale } from 'typings';
+
+// utils
+import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import openSignUpInModalIfNecessary from './openSignUpInModalIfNecessary';
-const ConsentManager = lazy(() => import('components/ConsentManager'));
-const UserDeletedModal = lazy(() => import('./UserDeletedModal'));
-const PlatformFooter = lazy(() => import('containers/PlatformFooter'));
-const PostPageFullscreenModal = lazy(() => import('./PostPageFullscreenModal'));
 
 const Container = styled.div`
   display: flex;
