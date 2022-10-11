@@ -51,7 +51,7 @@ describe('Idea new page', () => {
 
     cy.get('#e2e-idea-new-page');
     cy.get('#idea-form');
-
+    cy.contains('Add new idea').should('exist');
     // add a title and description
     cy.get('#e2e-idea-title-input input').type(ideaTitle);
     cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);

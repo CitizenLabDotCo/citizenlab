@@ -490,7 +490,7 @@
   "app.containers.Admin.PagesAndMenu.homeTitle": "Angerlarit",
   "app.containers.Admin.PagesAndMenu.pageHeader": "Quppernerit",
   "app.containers.Admin.PagesAndMenu.pagesMenuMetaTitle": "Pages & menu | {orgName}",
-  "app.containers.Admin.PagesAndMenu.pagesMetaTitle": "Pages | {orgName}",
+  "app.containers.Admin.PagesAndMenu.pagesMetaTitle": "Suliniutit | {orgName}",
   "app.containers.Admin.PagesAndMenu.removeButton": "Navigationslinjemiit peeruk",
   "app.containers.Admin.PagesAndMenu.title": "Quppernit & toqqagassat",
   "app.containers.Admin.PagesAndMenu.topInfoButtonSuccess": "iluatsilluarpoq",
