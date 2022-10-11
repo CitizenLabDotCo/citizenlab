@@ -1,5 +1,11 @@
 # Changelog
 
+## 2022-10-11
+
+### Fixed
+
+- [CL-1814] Fixed bug when opening the verification model after having a verification error
+
 ## 2022-10-06
 
 ### Added
