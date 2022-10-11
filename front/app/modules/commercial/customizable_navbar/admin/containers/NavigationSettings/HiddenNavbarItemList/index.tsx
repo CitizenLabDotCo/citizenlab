@@ -62,7 +62,7 @@ const HiddenNavbarItemList = ({
 
   const handleClickEditButton = (item: IItemNotInNavbar) => () => {
     if (item.type !== 'page') return;
-    clHistory.push(`${PAGES_MENU_PATH}/custom/${item.pageId}/settings`);
+    clHistory.push(`${PAGES_MENU_PATH}/pages/${item.pageId}/settings`);
   };
 
   const handleClickAdd = (item: IItemNotInNavbar) => () => {

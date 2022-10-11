@@ -106,14 +106,12 @@ const CustomPagesEditContent = () => {
 
   const handleOnClick = (sectionPath: string) => {
     if (sectionPath) {
-      clHistory.push(
-        `/admin/pages-menu/custom/${customPageId}/${sectionPath}/`
-      );
+      clHistory.push(`/admin/pages-menu/pages/${customPageId}/${sectionPath}/`);
     }
   };
 
   return (
-    <PageWrapper>
+    <PageWrapper flatTopBorder>
       <Box display="flex" flexDirection="column">
         <Box mb="28px">
           <Warning>

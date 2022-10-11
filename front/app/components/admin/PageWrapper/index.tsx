@@ -1,14 +1,26 @@
-import React, { PureComponent } from 'react';
+import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ flatTopBorder: boolean }>`
   background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
   border: 1px solid ${(props) => props.theme.colors.divider};
   box-sizing: border-box;
   padding: 4rem 4rem;
   margin-bottom: 0px;
+
+  ${(props) => {
+    if (props.flatTopBorder) {
+      return `
+        border-bottom-left-radius: ${props.theme.borderRadius};
+        border-bottom-right-radius: ${props.theme.borderRadius};
+    `;
+    } else {
+      return `
+        border-radius: ${props.theme.borderRadius};
+    `;
+    }
+  }}
 
   ${media.tablet`
     padding: 2rem 2rem;
@@ -29,10 +41,18 @@ export const ButtonWrapper = styled.div`
   }
 `;
 
-export default class PageWrapper extends PureComponent<{ className?: string }> {
-  render() {
-    return (
-      <Wrapper className={this.props.className}>{this.props.children}</Wrapper>
-    );
-  }
-}
+const PageWrapper = ({
+  className,
+  flatTopBorder = false,
+  children,
+}: {
+  className?: string;
+  // remove rounded border from the top of the container
+  flatTopBorder?: boolean;
+  children?: ReactNode;
+}) => (
+  <Wrapper className={className} flatTopBorder={flatTopBorder}>
+    {children}
+  </Wrapper>
+);
+export default PageWrapper;

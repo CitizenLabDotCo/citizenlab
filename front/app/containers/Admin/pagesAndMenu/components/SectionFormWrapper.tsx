@@ -15,6 +15,7 @@ interface Props {
   children: JSX.Element | JSX.Element[];
   stickyMenuContents?: JSX.Element | JSX.Element[];
   rightSideCTA?: JSX.Element | JSX.Element[];
+  flatTopBorder?: boolean;
 }
 
 const SectionFormWrapper = ({
@@ -24,6 +25,7 @@ const SectionFormWrapper = ({
   children,
   stickyMenuContents,
   rightSideCTA,
+  flatTopBorder,
 }: Props) => {
   return (
     <>
@@ -42,7 +44,7 @@ const SectionFormWrapper = ({
         {rightSideCTA && <Box ml="60px">{rightSideCTA}</Box>}
       </Box>
       <Box>
-        <PageWrapper>
+        <PageWrapper flatTopBorder={flatTopBorder}>
           {children}
           {stickyMenuContents && (
             <StickyContainer>{stickyMenuContents}</StickyContainer>

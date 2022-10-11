@@ -87,7 +87,7 @@ const CustomPageSettingsForm = ({
         onSubmit={methods.handleSubmit(onFormSubmit)}
         data-testid="customPageSettingsForm"
       >
-        <SectionFormWrapper>
+        <SectionFormWrapper flatTopBorder>
           <SectionField>
             <Feedback
               successMessage={

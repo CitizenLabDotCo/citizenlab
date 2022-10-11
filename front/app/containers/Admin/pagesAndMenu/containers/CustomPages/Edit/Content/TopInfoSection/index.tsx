@@ -21,7 +21,7 @@ const TopInfoSection = () => {
       breadcrumbs={[
         {
           label: localize(customPage.attributes.title_multiloc),
-          linkTo: `/admin/pages-menu/custom/${customPageId}/content`,
+          linkTo: `/admin/pages-menu/pages/${customPageId}/content`,
         },
       ]}
     />
