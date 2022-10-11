@@ -647,7 +647,7 @@ resource 'Ideas' do
       end
     end
 
-    describe 'when posting an idea in an active ideation phase, the creation_phase is not set' do
+    describe 'when posting an idea in an active ideation phase, the creation_phase is not set', skip: !CitizenLab.ee? do
       let(:project) { create(:project_with_active_ideation_phase) }
       let!(:custom_form) { create(:custom_form, participation_context: project) }
 
