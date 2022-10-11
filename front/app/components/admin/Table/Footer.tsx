@@ -9,15 +9,15 @@ interface Props {
   background?: string;
 }
 
-const StyledTFoot = styled.tfoot<{ background: string }>`
-  background: ${({ background }) => background};
+const StyledTFoot = styled.tfoot<{ background?: string }>`
+  background: ${({ background }) => background ?? 'white'};
 
   tr:first-child > td {
     border-top: 1px solid ${colors.grey200};
   }
 `;
 
-const Footer = ({ children, background = colors.grey50 }: Props) => (
+const Footer = ({ children, background }: Props) => (
   <StyledTFoot background={background}>{children}</StyledTFoot>
 );
 

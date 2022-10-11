@@ -64,7 +64,7 @@ const TableHeader = ({
   sortDirection,
   onSortHeaderClick,
 }: Props) => (
-  <Header>
+  <Header background={colors.grey50}>
     <Row>
       <ClickableCell
         sorted={sortAttribute === 'email' ? sortDirection : undefined}
