@@ -70,7 +70,7 @@ describe('Native survey project page actions', () => {
       );
     });
 
-    // create some users
+    // create a regular user
     cy.apiSignup(userFirstName, userLastName, userEmail, userPassword).then(
       (response) => {
         userId = response.body.data.id;
