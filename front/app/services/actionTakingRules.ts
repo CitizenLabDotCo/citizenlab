@@ -147,7 +147,8 @@ export const getIdeaPostingRules = ({
       // not an enabled ideation phase
       if (
         !(
-          phase.attributes.participation_method === 'ideation' &&
+          (phase.attributes.participation_method === 'ideation' ||
+            phase.attributes.participation_method === 'native_survey') &&
           phase.attributes.posting_enabled &&
           disabled_reason !== 'not_ideation'
         )

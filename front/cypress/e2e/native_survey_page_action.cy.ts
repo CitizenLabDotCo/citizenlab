@@ -1,3 +1,4 @@
+import moment = require('moment');
 import { randomEmail, randomString } from '../support/commands';
 
 describe('Native survey project page actions', () => {
@@ -8,10 +9,15 @@ describe('Native survey project page actions', () => {
   const userLastName = randomString(10);
   const userPassword = randomString(10);
   const userEmail = randomEmail();
+  const inTwoDays = moment().add(2, 'days').format('DD/MM/YYYY');
+  const inTwoMonths = moment().add(2, 'month').format('DD/MM/YYYY');
+  const phaseFutureTitle = 'Future survey phase';
   let projectIdContinuous: string;
   let projectSlugContinous: string;
   let projectIdArchived: string;
   let projectSlugArchived: string;
+  let projectIdTimeline: string;
+  let projectSlugTimeline: string;
   let userId: string;
 
   before(() => {
@@ -41,6 +47,29 @@ describe('Native survey project page actions', () => {
       projectSlugArchived = project.body.data.attributes.slug;
     });
 
+    // Create timeline project with no active phase
+    cy.apiCreateProject({
+      type: 'timeline',
+      title: projectTitle,
+      descriptionPreview: projectDescriptionPreview,
+      description: randomString(),
+      publicationStatus: 'published',
+    }).then((project) => {
+      projectIdTimeline = project.body.data.id;
+      projectSlugTimeline = project.body.data.attributes.slug;
+      cy.apiCreatePhase(
+        projectIdTimeline,
+        'Future ',
+        inTwoDays,
+        inTwoMonths,
+        'native_survey',
+        true,
+        true,
+        true,
+        `description ${phaseFutureTitle}`
+      );
+    });
+
     // create some users
     cy.apiSignup(userFirstName, userLastName, userEmail, userPassword).then(
       (response) => {
@@ -51,9 +80,8 @@ describe('Native survey project page actions', () => {
 
   it('tests actions when continuous survey project is active and accepting submissions', () => {
     // Unregistered user
-    cy.logout();
     cy.visit(`/projects/${projectSlugContinous}`);
-    cy.contains('Take the survey').click();
+    cy.contains('Take the survey').click({ force: true });
     cy.contains('Please log in').should('exist');
 
     // Regular user
@@ -79,17 +107,25 @@ describe('Native survey project page actions', () => {
     cy.contains('1 survey').should('not.exist');
   });
 
-  it('tests actions when survey is not accepting submissions', () => {
-    cy.setAdminLoginCookie();
-    cy.visit(`admin/projects/${projectIdContinuous}`);
-    cy.contains('Submitting posts').within(() => {
-      cy.get('[type="checkbox"]').check();
-    });
-    cy.contains('Save').click();
+  it('tests actions when survey phase is not active', () => {
+    cy.setLoginCookie(userEmail, userPassword);
+    cy.visit(`/projects/${projectSlugTimeline}`);
+    cy.contains('Take the survey').click({ force: true });
+    cy.contains('New submissions can only be added in active phases.').should(
+      'exist'
+    );
   });
 
-  it('tests actions when survey phase is not active', () => {
-    // temp
+  it('tests actions when survey is not accepting submissions', () => {
+    cy.setAdminLoginCookie();
+    cy.visit(`admin/projects/${projectIdContinuous}/native-survey`);
+    cy.get('[type="checkbox"]').check();
+    cy.setLoginCookie(userEmail, userPassword);
+    cy.visit(`/projects/${projectSlugTimeline}`);
+    cy.contains('Take the survey').click({ force: true });
+    cy.contains('New submissions can only be added in active phases.').should(
+      'exist'
+    );
   });
 
   after(() => {
