@@ -5,6 +5,9 @@ import { Table, Body } from 'components/admin/Table';
 import HeaderRow from './HeaderRow';
 import Row from './Row';
 
+// styling
+import { colors, stylingConsts } from '@citizenlab/cl2-component-library';
+
 // typings
 import { RepresentativenessData } from '../../../hooks/createRefDataSubscription';
 
@@ -15,7 +18,14 @@ interface Props {
 }
 
 const TableComponent = ({ columns, data, hideBorderTop }: Props) => (
-  <Table borderTop={hideBorderTop ? 'none' : undefined}>
+  <Table
+    border={`1px solid ${colors.grey300}`}
+    borderRadius={stylingConsts.borderRadius}
+    borderTop={hideBorderTop ? 'none' : undefined}
+    innerBorders={{
+      bodyRows: `1px solid ${colors.grey200}`,
+    }}
+  >
     <HeaderRow columns={columns} />
     <Body>
       {data.map((row, i) => (

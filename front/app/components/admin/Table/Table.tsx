@@ -6,18 +6,14 @@ import { Box, BoxProps } from '@citizenlab/cl2-component-library';
 // styling
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import {
-  SEMANTIC_UI_BORDER_INNER_COLOR,
-  SEMANTIC_UI_BORDER_RADIUS,
-} from './constants';
+import { SEMANTIC_UI_BORDER_INNER_COLOR } from './constants';
 
-interface Borders {
-  around?: string;
+interface InnerBorders {
   headerCells?: string;
   bodyRows?: string;
 }
 
-const StyledBox = styled(Box)<{ borders?: Borders }>`
+const StyledBox = styled(Box)<{ innerBorders?: InnerBorders }>`
   text-align: left;
   font-size: ${fontSizes.s}px;
   color: ${colors.primary};
@@ -27,20 +23,12 @@ const StyledBox = styled(Box)<{ borders?: Borders }>`
     border-bottom: 1px solid ${SEMANTIC_UI_BORDER_INNER_COLOR};
   }
 
-  ${({ borders }) =>
-    !borders?.around
-      ? ''
-      : `
-    border: ${borders.around};
-    border-radius: ${SEMANTIC_UI_BORDER_RADIUS};
-  `}
-
-  ${({ borders }) =>
-    !borders?.headerCells
+  ${({ innerBorders }) =>
+    !innerBorders?.headerCells
       ? ''
       : `
     thead > tr > th {
-      border-right: ${borders.headerCells};
+      border-right: ${innerBorders.headerCells};
     }
 
     thead > tr > th:last-child {
@@ -48,12 +36,12 @@ const StyledBox = styled(Box)<{ borders?: Borders }>`
     }
   `}
 
-  ${({ borders }) =>
-    !borders?.bodyRows
+  ${({ innerBorders }) =>
+    !innerBorders?.bodyRows
       ? ''
       : `
     tbody > tr > td {
-      border-bottom: ${borders?.bodyRows};
+      border-bottom: ${innerBorders?.bodyRows};
     }
 
     tbody > tr:last-child > td
@@ -63,11 +51,16 @@ const StyledBox = styled(Box)<{ borders?: Borders }>`
 `;
 
 interface Props extends BoxProps {
-  borders?: Borders;
+  innerBorders?: InnerBorders;
 }
 
-const Table = ({ children, borders, ...otherProps }: Props) => (
-  <StyledBox as="table" width="100%" borders={borders} {...otherProps}>
+const Table = ({ children, innerBorders, ...otherProps }: Props) => (
+  <StyledBox
+    as="table"
+    width="100%"
+    innerBorders={innerBorders}
+    {...otherProps}
+  >
     {children}
   </StyledBox>
 );

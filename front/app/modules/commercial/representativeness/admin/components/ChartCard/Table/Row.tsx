@@ -6,7 +6,6 @@ import { Row, Cell } from 'components/admin/Table';
 // styling
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
-import { SEMANTIC_UI_HEADER_BG_COLOR } from 'components/admin/Table/constants';
 
 // utils
 import { formatPercentage } from '../utils';
@@ -26,7 +25,7 @@ interface Props {
 const RowComponent = ({ row }: Props) => {
   return (
     <Row>
-      <Cell background={SEMANTIC_UI_HEADER_BG_COLOR}>{row.name}</Cell>
+      <Cell background={colors.teal100}>{row.name}</Cell>
       <Cell>
         {formatPercentage(row.actualPercentage)}
         <AbsoluteValue>
