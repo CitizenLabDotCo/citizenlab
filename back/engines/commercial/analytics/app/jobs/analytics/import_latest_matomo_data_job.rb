@@ -24,11 +24,12 @@ module Analytics
       Tenant.find(tenant_id).switch do
         lock_name = calculate_lock_name(matomo_site_id)
 
-        # Failures to lock are handled by #handle_error.
         CitizenLab::LockManager.try_with_transaction_lock(lock_name) do
           import_data(matomo_site_id, min_duration, max_nb_batches, batch_size)
         end
       end
+    rescue CitizenLab::LockManager::FailedToLock
+      reschedule_in rand(180..600).seconds
     end
 
     def self.perform_for_all_tenants(min_duration: 1.day, max_nb_batches: 5, batch_size: 250)
@@ -38,19 +39,20 @@ module Analytics
 
     private
 
-    def handle_error(error)
-      case error
-      when CitizenLab::LockManager::FailedToLock then reschedule_in rand(10..20).minutes
-      else super
-      end
-    end
-
     def reschedule_in(duration)
       Rails.logger.info(
         'rescheduling Analytics::ImportLatestMatomoDataJob',
-        tenant_id: AppConfiguration.instance.id, job_id: id, executions: executions
+        tenant_id: tenant_id,
+        job_id: job_id,
+        executions: executions,
+        in: duration.inspect
       )
+
       retry_in(duration)
+    end
+
+    def tenant_id
+      arguments.first
     end
 
     def import_data(site_id, min_duration, max_nb_batches, batch_size)

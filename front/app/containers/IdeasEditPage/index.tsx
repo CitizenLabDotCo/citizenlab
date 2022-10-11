@@ -491,6 +491,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
 
               <IdeaForm
                 authorId={authorId}
+                ideaId={ideaId}
                 projectId={projectId}
                 title={title}
                 description={description}
