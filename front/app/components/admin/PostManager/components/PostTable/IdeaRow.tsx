@@ -203,7 +203,7 @@ class IdeaRow extends React.PureComponent<
     };
 
     const Content = (
-      <Cell key={name}>
+      <Cell key={name} borderBottom="0px solid white !important">
         <Component idea={idea} selection={selection} {...handlers} />
       </Cell>
     );
