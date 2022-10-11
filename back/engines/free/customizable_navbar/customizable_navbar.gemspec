@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.version     = CustomizableNavbar::VERSION
   s.authors     = ['CitizenLab']
   s.email       = ['developers@citizenlab.co']
-  s.licenses    = ['CitizenLab Commercial License V1']
+  s.licenses    = ['AGPLv3']
   s.summary     = 'Add, remove, reposition and rename items in the navbar'
 
   s.files = Dir['{app,config,db,lib}/**/*', 'README.md']

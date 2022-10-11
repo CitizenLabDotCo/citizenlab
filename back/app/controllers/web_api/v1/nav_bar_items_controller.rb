@@ -44,10 +44,4 @@ class WebApi::V1::NavBarItemsController < ApplicationController
       render json: { errors: { base: [{ error: 'already_disabled' }] } }, status: :unprocessable_entity
     end
   end
-
-  private
-
-  def customizable_navbar_activated?
-    AppConfiguration.instance.feature_activated?('customizable_navbar')
-  end
 end
