@@ -476,6 +476,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
                   objectFit={objectFit}
                 >
                   <RemoveButton
+                    type="button"
                     onMouseDown={removeFocusAfterMouseClick}
                     onClick={this.removeImage(image)}
                     className="remove-button"
