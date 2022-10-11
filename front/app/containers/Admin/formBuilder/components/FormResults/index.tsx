@@ -1,9 +1,8 @@
 import React from 'react';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { get } from 'lodash-es';
+import { get, snakeCase } from 'lodash-es';
 import { useParams } from 'react-router-dom';
-import { snakeCase } from 'lodash-es';
 
 // Hooks
 import useLocale from 'hooks/useLocale';
