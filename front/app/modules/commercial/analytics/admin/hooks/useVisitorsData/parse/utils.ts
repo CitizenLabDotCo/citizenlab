@@ -5,6 +5,7 @@ import {
   TimeSeriesRow,
 } from '../typings';
 import { IResolution } from 'components/admin/ResolutionControl';
+import { round } from 'lodash-es';
 
 export const roundDateToMidnight = (date: Moment) => {
   return moment(date.format('YYYY-MM-DD'));
@@ -89,5 +90,12 @@ export const dateRange = (start: Moment, end: Moment, step: IResolution) => {
   return dates;
 };
 
-export const secondsToString = (seconds: number) =>
-  new Date(seconds * 1000).toISOString().substring(11, 19);
+export const parsePageViews = (pageViews: string | null | undefined) => {
+  if (!pageViews) return '-';
+  return round(+pageViews, 2).toString();
+};
+
+export const parseVisitDuration = (seconds: string | null | undefined) => {
+  if (!seconds) return '-';
+  return new Date(+seconds * 1000).toISOString().substring(11, 19);
+};

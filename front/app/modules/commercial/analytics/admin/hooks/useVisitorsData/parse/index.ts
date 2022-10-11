@@ -5,7 +5,11 @@ import { parseDays } from './parseDays';
 
 // utils
 import { keys } from 'utils/helperUtils';
-import { roundDateToMidnight, secondsToString } from './utils';
+import {
+  roundDateToMidnight,
+  parseVisitDuration,
+  parsePageViews,
+} from './utils';
 
 // typings
 import { Moment } from 'moment';
@@ -30,16 +34,12 @@ export const parseStats = ([
       lastPeriod: lastPeriod?.count.toLocaleString() ?? '0',
     },
     visitDuration: {
-      value: wholePeriod?.avg_duration
-        ? secondsToString(+wholePeriod.avg_duration)
-        : '-',
-      lastPeriod: lastPeriod?.avg_duration
-        ? secondsToString(+lastPeriod.avg_duration)
-        : '-',
+      value: parseVisitDuration(wholePeriod?.avg_duration),
+      lastPeriod: parseVisitDuration(lastPeriod?.avg_duration),
     },
     pageViews: {
-      value: wholePeriod?.avg_pages_visited ?? '-',
-      lastPeriod: lastPeriod?.avg_pages_visited ?? '-',
+      value: parsePageViews(wholePeriod?.avg_pages_visited),
+      lastPeriod: parsePageViews(lastPeriod?.avg_pages_visited),
     },
   };
 };
