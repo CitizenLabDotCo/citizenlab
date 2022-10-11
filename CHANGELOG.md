@@ -1,5 +1,11 @@
 # Changelog
 
+#2022-10-11
+
+### Fixed
+
+- [CL-1544] Fixed banner images and attachments being deleted in the back-office when a form is submitted via keyboard Enter press
+
 ## 2022-10-06
 
 ### Added
