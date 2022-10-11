@@ -174,6 +174,71 @@ RSpec.describe Idea, type: :model do
     end
   end
 
+  context 'creation_phase' do
+    before { IdeaStatus.create_defaults }
+
+    it 'is invalid for a phase that does not belong to the input\'s project' do
+      project = create :project_with_active_native_survey_phase
+      response = build :idea, project: project, creation_phase: create(:native_survey_phase)
+      expect(response).to be_invalid
+      expect(response.errors.details).to eq({ creation_phase: [{ error: :invalid_project }] })
+    end
+
+    it 'is valid when nil and in a timeline project' do
+      project = create :project_with_active_native_survey_phase
+      idea = build :idea, project: project, creation_phase: nil
+      expect(idea).to be_valid
+    end
+
+    it 'is valid for non-transitive participation methods in a timeline project' do
+      project = create :project_with_active_native_survey_phase
+      response = build :idea, project: project, creation_phase: project.phases.first
+      expect(response).to be_valid
+    end
+
+    it 'is invalid for transitive participation methods in a timeline project' do
+      project = create :project_with_active_ideation_phase
+      idea = build :idea, project: project, creation_phase: project.phases.first
+      expect(idea).to be_invalid
+      expect(idea.errors.details).to eq({ creation_phase: [{ error: :invalid_participation_method }] })
+    end
+
+    it 'is valid when nil and in a continuous project' do
+      project = create :continuous_native_survey_project
+      response = build :idea, project: project, creation_phase: nil
+      expect(response).to be_valid
+    end
+
+    it 'is invalid when present and in a continuous project' do
+      project = create :continuous_native_survey_project
+      input = build :idea, project: project, creation_phase: build(:native_survey_phase, project: project)
+      expect(input).to be_invalid
+      expect(input.errors.details).to eq({ creation_phase: [{ error: :not_in_timeline_project }] })
+    end
+
+    it 'deleting a phase used as creation phase of an input fails' do
+      project = create :project_with_active_native_survey_phase
+      phase = project.phases.first
+      create :idea, project: project, creation_phase: phase
+
+      expect { phase.destroy }.to raise_error ActiveRecord::InvalidForeignKey
+      expect(Project.count).to eq 1
+      expect(Phase.count).to eq 1
+      expect(described_class.count).to eq 1
+    end
+
+    it 'deleting a project with a phase used as creation phase of an input fails' do
+      project = create :project_with_active_native_survey_phase
+      phase = project.phases.first
+      create :idea, project: project, creation_phase: phase
+      project.destroy
+
+      expect(Project.count).to eq 0
+      expect(Phase.count).to eq 0
+      expect(described_class.count).to eq 0
+    end
+  end
+
   context 'hooks' do
     it 'should set the author name on creation' do
       u = create(:user)

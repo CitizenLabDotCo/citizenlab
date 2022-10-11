@@ -42,6 +42,7 @@
 #
 #  fk_rails_...  (assignee_id => users.id)
 #  fk_rails_...  (author_id => users.id)
+#  fk_rails_...  (creation_phase_id => phases.id)
 #  fk_rails_...  (idea_status_id => idea_statuses.id)
 #  fk_rails_...  (project_id => projects.id)
 #
@@ -99,6 +100,8 @@ class Idea < ApplicationRecord
     validates :body_multiloc, presence: true, multiloc: { presence: true, html: true }
     validates :proposed_budget, numericality: { greater_than_or_equal_to: 0, if: :proposed_budget }
   end
+
+  validate :validate_creation_phase
 
   # validates :custom_field_values, json: {
   #   schema: :schema_for_validation,
@@ -164,7 +167,7 @@ class Idea < ApplicationRecord
   end
 
   def custom_form
-    if project.timeline? && participation_method_on_creation.form_in_phase?
+    if participation_method_on_creation.form_in_phase?
       creation_phase.custom_form || CustomForm.new(participation_context: creation_phase)
     else
       project.custom_form || CustomForm.new(participation_context: project)
@@ -219,6 +222,36 @@ class Idea < ApplicationRecord
 
   def update_phase_ideas_count(_)
     IdeasPhase.counter_culture_fix_counts only: %i[phase]
+  end
+
+  def validate_creation_phase
+    return unless creation_phase
+
+    if project.continuous?
+      errors.add(
+        :creation_phase,
+        :not_in_timeline_project,
+        message: 'The creation phase cannot be set for inputs in a continuous project'
+      )
+      return
+    end
+
+    if creation_phase.project_id != project_id
+      errors.add(
+        :creation_phase,
+        :invalid_project,
+        message: 'The creation phase must be a phase of the input\'s project'
+      )
+      return
+    end
+
+    return if participation_method_on_creation.form_in_phase?
+
+    errors.add(
+      :creation_phase,
+      :invalid_participation_method,
+      message: 'The creation phase cannot be set for transitive participation methods'
+    )
   end
 end
 

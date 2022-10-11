@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe ParticipationMethod::NativeSurvey do
-  subject(:participation_method) { described_class.new project }
+  subject(:participation_method) { described_class.new participation_context }
 
-  let(:project) { create :continuous_native_survey_project }
+  let(:participation_context) { create :continuous_native_survey_project }
 
   describe '#assign_slug' do
     let(:input) { create :input, slug: nil }
@@ -60,8 +60,19 @@ RSpec.describe ParticipationMethod::NativeSurvey do
   end
 
   describe '#form_in_phase?' do
-    it 'returns true' do
-      expect(participation_method.form_in_phase?).to be true
+    context 'for a timeline project' do
+      let(:project) { create :project_with_active_native_survey_phase }
+      let(:participation_context) { project.phases.first }
+
+      it 'returns true' do
+        expect(participation_method.form_in_phase?).to be true
+      end
+    end
+
+    context 'for a continuous project' do
+      it 'returns false' do
+        expect(participation_method.form_in_phase?).to be false
+      end
     end
   end
 

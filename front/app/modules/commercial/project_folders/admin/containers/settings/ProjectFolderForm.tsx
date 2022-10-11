@@ -392,6 +392,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                 setStatus('apiError');
               }
             }
+            setProjectFolderFilesToRemove([]);
             setStatus('success');
           } else {
             setStatus('apiError');

@@ -131,6 +131,67 @@ resource 'Project level Custom Fields' do
     end
   end
 
+  describe 'in a timeline project with an active ideation phase with custom fields' do
+    let(:project) { create(:project_with_active_ideation_phase) }
+    let(:project_id) { project.id }
+    let(:custom_form) { create(:custom_form, participation_context: project) }
+    let!(:custom_field) { create(:custom_field_extra_custom_form, resource: custom_form) }
+    let(:enabled_built_in_field_keys) do
+      %i[
+        title_multiloc
+        body_multiloc
+        author_id
+        budget
+        topic_ids
+        location_description
+        idea_images_attributes
+        idea_files_attributes
+      ]
+    end
+
+    if CitizenLab.ee?
+      let(:expected_jsonschema_form_field_keys) do
+        enabled_built_in_field_keys + [custom_field.key.to_sym]
+      end
+      let(:expected_json_forms_field_keys) do
+        invisible_field_keys = %i[author_id budget proposed_budget]
+        enabled_built_in_field_keys - invisible_field_keys + [custom_field.key.to_sym]
+      end
+    else
+      let(:expected_jsonschema_form_field_keys) do
+        enabled_built_in_field_keys
+      end
+      let(:expected_json_forms_field_keys) do
+        invisible_field_keys = %i[author_id budget proposed_budget]
+        enabled_built_in_field_keys - invisible_field_keys
+      end
+    end
+
+    get 'web_api/v1/projects/:project_id/custom_fields/schema' do
+      example_request 'Get the react-jsonschema-form json schema and ui schema for the custom fields' do
+        expect(status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response[:json_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
+        %i[en fr-FR nl-NL].each do |locale|
+          expect(json_response[:json_schema_multiloc][locale][:properties].keys).to eq expected_jsonschema_form_field_keys
+        end
+        expect(json_response[:ui_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
+      end
+    end
+
+    get 'web_api/v1/projects/:project_id/custom_fields/json_forms_schema' do
+      example_request 'Get the jsonforms.io json schema and ui schema for the custom fields' do
+        expect(status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response[:json_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
+        %i[en fr-FR nl-NL].each do |locale|
+          expect(json_response[:json_schema_multiloc][locale][:properties].keys).to eq expected_json_forms_field_keys
+        end
+        expect(json_response[:ui_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
+      end
+    end
+  end
+
   describe 'in an active native survey phase with form fields' do
     let(:project) { create(:project_with_active_native_survey_phase) }
     let(:project_id) { project.id }

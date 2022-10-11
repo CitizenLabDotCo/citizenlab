@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_06_100512) do
+ActiveRecord::Schema.define(version: 2022_10_11_092349) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1338,6 +1338,7 @@ ActiveRecord::Schema.define(version: 2022_10_06_100512) do
   add_foreign_key "idea_files", "ideas"
   add_foreign_key "idea_images", "ideas"
   add_foreign_key "ideas", "idea_statuses"
+  add_foreign_key "ideas", "phases", column: "creation_phase_id"
   add_foreign_key "ideas", "projects"
   add_foreign_key "ideas", "users", column: "assignee_id"
   add_foreign_key "ideas", "users", column: "author_id"

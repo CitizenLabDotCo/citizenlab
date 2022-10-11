@@ -10,7 +10,32 @@ describe IdeasFinder do
   let(:result_record_ids) { finder.find_records.pluck(:id) }
 
   before_all do
-    create_list(:idea_with_topics, 5, project: create(:project_with_phases))
+    IdeaStatus.create_defaults
+    timeline_project = create :project_with_phases
+    create_list :idea_with_topics, 5, project: timeline_project
+  end
+
+  context 'default scope' do
+    it 'filters out non-ideation inputs' do
+      Idea.destroy_all
+      expected_input_ids = initialize_inputs_for_scope_filtering
+
+      expect(result_record_ids).to match_array expected_input_ids
+    end
+  end
+
+  context 'custom scope' do
+    before { @scope = Idea }
+
+    let(:options) { { scope: @scope } }
+
+    it 'filters out non-ideation inputs' do
+      Idea.destroy_all
+      ideation_input_ids = initialize_inputs_for_scope_filtering
+      @scope = @scope.where.not(id: ideation_input_ids.first)
+
+      expect(result_record_ids).to match_array ideation_input_ids.drop(1)
+    end
   end
 
   context 'when passing a sort param' do
@@ -378,7 +403,7 @@ describe IdeasFinder do
     context 'with current user and can_moderate is true' do
       let(:user) { create(:user) }
       let(:options) { { current_user: user } }
-      let(:moderatable_project) { create(:project) }
+      let(:moderatable_project) { create(:continuous_project) }
       let(:moderatable_projects) { Project.where(id: moderatable_project.id) }
       let!(:idea1) { create(:idea, project: moderatable_project) }
 
@@ -394,7 +419,7 @@ describe IdeasFinder do
 
       it 'returns the correct records' do
         expect(user_role_service).to receive(:moderatable_projects)
-        expect(result_record_ids).to match_array [idea1.id]
+        expect(result_record_ids).to eq [idea1.id]
       end
     end
 
@@ -407,5 +432,24 @@ describe IdeasFinder do
         expect(result_record_ids).to match_array Idea.ids
       end
     end
+  end
+
+  def initialize_inputs_for_scope_filtering
+    timeline_project = create :project, process_type: 'timeline'
+    create :phase, project: timeline_project, participation_method: 'ideation', start_at: (Time.zone.today - 1.month), end_at: (Time.zone.today - 1.day)
+    create :phase, project: timeline_project, participation_method: 'budgeting', start_at: Time.zone.today, end_at: (Time.zone.today + 1.day)
+    survey_phase = create :phase, project: timeline_project, participation_method: 'native_survey', start_at: (Time.zone.today + 2.days), end_at: (Time.zone.today + 1.month)
+    ideation_project = create :continuous_project, participation_method: 'ideation'
+    budgeting_project = create :continuous_budgeting_project
+    survey_project = create :continuous_project, participation_method: 'native_survey'
+
+    create :idea, project: timeline_project, creation_phase: survey_phase
+    create :idea, project: survey_project
+
+    [
+      create(:idea, project: ideation_project).id,
+      create(:idea, project: budgeting_project).id,
+      create(:idea, project: timeline_project).id
+    ]
   end
 end
