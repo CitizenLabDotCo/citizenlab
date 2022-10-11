@@ -1269,8 +1269,6 @@
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Selection",
   "app.containers.admin.project.permissions.permissionsUsersLabel": "Registered users",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Who can see this project?",
-  "app.modules.commercial.customizable_navbar.admin.components.NavbarTitleField.emptyNavbarItemTitleError": "Il campo \"Nome nella barra di navigazione\" è obbligatorio. Se la tua piattaforma ha più lingue, controlla che tutte le lingue siano compilate.",
-  "app.modules.commercial.customizable_navbar.admin.components.NavbarTitleField.navbarItemTitle": "Nome nella barra di navigazione",
   "app.modules.commercial.flag_inappropriate_content.admin.components.flagTooltip": "Puoi rimuovere questa segnalazione di contenuto selezionando questo elemento e cliccando sul pulsante di rimozione in alto. Riapparirà quindi nelle schede Visto o Non visto",
   "app.modules.commercial.flag_inappropriate_content.admin.components.nlpFlaggedWarningText": "Contenuto inappropriato rilevato automaticamente.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.noWarningItems": "Non ci sono post segnalati per la revisione da parte della comunità o segnalati per contenuti inappropriati dal nostro sistema di elaborazione del linguaggio naturale",
