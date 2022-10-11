@@ -44,7 +44,7 @@ const StyledBox = styled(Box)<{ innerBorders?: InnerBorders }>`
       border-bottom: ${innerBorders?.bodyRows};
     }
 
-    tbody > tr:last-child > td
+    tbody > tr:last-child > td {
       border-bottom: none;
     }
   `}
