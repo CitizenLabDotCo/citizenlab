@@ -101,8 +101,9 @@ const IconWrapper = styled.div`
   align-items: center;
   justify-content: center;
 
-  &.reporting svg {
-    height: 31px;
+  &.sidebar-reporting svg {
+    height: 30px;
+    width: 30px;
   }
 
   &.sidebar-pages-menu svg {

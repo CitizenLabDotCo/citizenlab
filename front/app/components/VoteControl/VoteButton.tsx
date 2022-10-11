@@ -213,6 +213,8 @@ const VoteIcon = styled(Icon)<{
 }>`
   fill: ${colors.textSecondary};
   transition: all 100ms ease-out;
+  width: 16px;
+  height: 16px;
 
   ${({ votingEnabled, buttonVoteModeIsActive }) =>
     !votingEnabled &&
@@ -220,13 +222,6 @@ const VoteIcon = styled(Icon)<{
     `
      margin-right: 4px;
   `}
-
-  ${({ buttonVoteMode }) => {
-    return {
-      up: 'margin-bottom: 4px;',
-      down: 'margin-top: 3px;',
-    }[buttonVoteMode];
-  }}
 
   ${({
     buttonVoteModeIsActive,
