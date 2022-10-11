@@ -28,7 +28,18 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
   end
 
   def participation_context
-    @participation_context ||= project && ParticipationContextService.new.get_participation_context(project)
+    @participation_context ||= determine_participation_context
+  end
+
+  def determine_participation_context
+    return unless project
+    return project if project.continuous?
+
+    phase = ParticipationContextService.new.get_participation_context(project)
+    return unless phase
+
+    participation_method = Factory.instance.participation_method_for phase
+    participation_method.form_in_phase? ? phase : project
   end
 
   def custom_fields

@@ -25,7 +25,7 @@ module ParticipationMethod
     end
 
     def form_in_phase?
-      true
+      participation_context.project.timeline?
     end
 
     # The "Additional information" category in the UI should be suppressed.
