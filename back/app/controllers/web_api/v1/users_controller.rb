@@ -165,7 +165,8 @@ class WebApi::V1::UsersController < ::ApplicationController
   end
 
   def ideas_count
-    render json: { count: policy_scope(@user.ideas.published).count }, status: :ok
+    ideas = policy_scope(IdeasFinder.new({}, scope: @user.ideas.published, current_user: current_user).find_records)
+    render json: { count: ideas.count }, status: :ok
   end
 
   def initiatives_count

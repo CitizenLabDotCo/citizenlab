@@ -57,11 +57,26 @@ export interface IIdeaFormSchemas {
   };
 }
 
+const getInputFormsSchemaEndpoint = (
+  projectId: string,
+  phaseId?: string | null,
+  inputId?: string
+) => {
+  if (inputId) {
+    return `${API_PATH}/ideas/${inputId}/schema`;
+  } else if (phaseId) {
+    return `${API_PATH}/phases/${phaseId}/custom_fields/schema`;
+  }
+  return `${API_PATH}/projects/${projectId}/custom_fields/schema`;
+};
+
 export function ideaFormSchemaStream(
   projectId: string,
+  phaseId?: string | null,
+  inputId?: string,
   streamParams: IStreamParams | null = null
 ) {
-  const apiEndpoint = `${API_PATH}/projects/${projectId}/custom_fields/schema`;
+  const apiEndpoint = getInputFormsSchemaEndpoint(projectId, phaseId, inputId);
   return streams.get<IIdeaFormSchemas>({
     apiEndpoint,
     ...streamParams,
