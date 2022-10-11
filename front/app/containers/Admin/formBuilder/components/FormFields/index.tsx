@@ -90,7 +90,7 @@ const FormFields = ({
                 <Box
                   key={field.id}
                   style={{ outline: outlineStyle }}
-                  data-cy={`field-${fieldIdentifier}`}
+                  data-cy={`e2e-field-${fieldIdentifier}`}
                 >
                   <SortableRow
                     id={field.id}
@@ -120,7 +120,7 @@ const FormFields = ({
                       onClick={() => {
                         onEditField({ ...field, index });
                       }}
-                      data-cy={`edit-${fieldIdentifier}`}
+                      data-cy={`e2e-edit-${fieldIdentifier}`}
                     >
                       <FormattedMessage {...messages.editButtonLabel} />
                     </Button>

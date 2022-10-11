@@ -32,7 +32,7 @@ describe('Form builder number field', () => {
 
   it('adds number field and tests validations', () => {
     cy.visit(`admin/projects/${projectId}/native-survey/edit`);
-    cy.get('[data-cy="number-field"]').click();
+    cy.get('[data-cy="e2e-number-field"]').click();
 
     // Save the survey
     cy.get('form').submit();
@@ -75,7 +75,7 @@ describe('Form builder number field', () => {
     cy.get('.e2e-submit-idea-form').click();
 
     // Check that we show a success message
-    cy.get('[data-cy="survey-success-message"]').should('exist');
+    cy.get('[data-cy="e2e-survey-success-message"]').should('exist');
     // close modal
     cy.get('.e2e-modal-close-button').click();
     // check that the modal is no longer on the page

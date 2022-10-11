@@ -105,7 +105,7 @@ const FormActions = ({
             onClick={() => {
               clHistory.push(editFormLink);
             }}
-            data-cy="edit-survey-content"
+            data-cy="e2e-edit-survey-content"
           >
             {formatMessage(messages.editSurveyContent)}
           </Button>

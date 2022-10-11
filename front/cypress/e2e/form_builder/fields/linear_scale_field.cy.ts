@@ -67,7 +67,7 @@ describe('Form builder linear scale', () => {
     cy.get('.e2e-submit-idea-form').click();
 
     // Check that we show a success message
-    cy.get('[data-cy="survey-success-message"]').should('exist');
+    cy.get('[data-cy="e2e-survey-success-message"]').should('exist');
     // close modal
     cy.get('.e2e-modal-close-button').click();
     // check that the modal is no longer on the page

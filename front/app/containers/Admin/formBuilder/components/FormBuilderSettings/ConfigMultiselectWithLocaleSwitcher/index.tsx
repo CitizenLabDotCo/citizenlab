@@ -194,7 +194,7 @@ const ConfigMultiselectWithLocaleSwitcher = ({
                   <Button
                     icon="plus-circle"
                     buttonStyle="secondary"
-                    data-cy="add-answer"
+                    data-cy="e2e-add-answer"
                     onClick={() => addOption(choices, name)}
                     text={formatMessage(messages.addAnswer)}
                   />

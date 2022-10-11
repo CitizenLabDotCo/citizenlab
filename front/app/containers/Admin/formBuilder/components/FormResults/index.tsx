@@ -115,7 +115,7 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           ({ question, inputType, answers, totalResponses }, index) => {
             const inputTypeText = get(messages, inputType, '');
             return (
-              <Box key={index} data-cy={`${snakeCase(question[locale])}`}>
+              <Box key={index} data-cy={`e2e-${snakeCase(question[locale])}`}>
                 <Text fontWeight="bold">
                   <T value={question} />
                 </Text>

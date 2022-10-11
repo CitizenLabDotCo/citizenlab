@@ -120,7 +120,7 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
       <FormattedMessage
         {...messages.onSurveySubmission}
         {...props}
-        data-cy="survey-success-message"
+        data-cy="e2e-survey-success-message"
       />
     );
   },

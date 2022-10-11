@@ -35,8 +35,8 @@ describe('Survey builder', () => {
 
   it('can create survey, save survey and user can respond to survey', () => {
     cy.visit(`admin/projects/${projectId}/native-survey`);
-    cy.get('[data-cy="edit-survey-content"]').click();
-    cy.get('[data-cy="short-answer"]').click();
+    cy.get('[data-cy="e2e-edit-survey-content"]').click();
+    cy.get('[data-cy="e2e-short-answer"]').click();
 
     // Save the survey
     cy.get('form').submit();
@@ -71,7 +71,7 @@ describe('Survey builder', () => {
     cy.get('.e2e-submit-idea-form').click();
 
     // Check that we show a success message
-    cy.get('[data-cy="survey-success-message"]').should('exist');
+    cy.get('[data-cy="e2e-survey-success-message"]').should('exist');
     // close modal
     cy.get('.e2e-modal-close-button').click();
     // check that the modal is no longer on the page
@@ -81,7 +81,7 @@ describe('Survey builder', () => {
   it('deletes a field when the delete button is clicked', () => {
     const fieldIdentifier = snakeCase(questionTitle);
     cy.visit(`admin/projects/${projectId}/native-survey/edit`);
-    cy.get('[data-cy="short-answer"]').click();
+    cy.get('[data-cy="e2e-short-answer"]').click();
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
 
     // Save the survey
@@ -97,13 +97,13 @@ describe('Survey builder', () => {
     cy.visit(`admin/projects/${projectId}/native-survey/edit`);
 
     // Check that field exists
-    cy.get(`[data-cy="${`field-${fieldIdentifier}`}"]`).should('exist');
+    cy.get(`[data-cy="${`e2e-field-${fieldIdentifier}`}"]`).should('exist');
 
     // Click the edit button
-    cy.get(`[data-cy="${`edit-${fieldIdentifier}`}"]`).click();
+    cy.get(`[data-cy="${`e2e-edit-${fieldIdentifier}`}"]`).click();
 
     // Click to delete the field
-    cy.get(`[data-cy="delete-field"]`).click();
+    cy.get(`[data-cy="e2e-delete-field"]`).click();
 
     // Save the survey
     cy.get('form').submit();
@@ -127,26 +127,26 @@ describe('Survey builder', () => {
     cy.visit(`admin/projects/${projectId}/native-survey/edit`);
 
     // Multiple choice choose one
-    cy.get('[data-cy="multiple-choice"]').click();
+    cy.get('[data-cy="e2e-multiple-choice"]').click();
     cy.get('#e2e-title-multiloc').type(multipleChoiceChooseOneTitle, {
       force: true,
     });
     cy.get('#e2e-option-input-0').type(chooseOneOption1, { force: true });
-    cy.get('[data-cy="add-answer"]').click();
+    cy.get('[data-cy="e2e-add-answer"]').click();
     cy.get('#e2e-option-input-1').type(chooseOneOption2, { force: true });
 
     // Multiple choice choose multiple
-    cy.get('[data-cy="multiple-choice"]').click();
+    cy.get('[data-cy="e2e-multiple-choice"]').click();
     cy.get('#e2e-title-multiloc').type(multipleChoiceChooseManyTitle, {
       force: true,
     });
     cy.get('#e2e-multiselect-toggle').click();
     cy.get('#e2e-option-input-0').type(chooseManyOption1, { force: true });
-    cy.get('[data-cy="add-answer"]').click();
+    cy.get('[data-cy="e2e-add-answer"]').click();
     cy.get('#e2e-option-input-1').type(chooseManyOption2, { force: true });
 
     // Linear scale
-    cy.get('[data-cy="linear-scale"]').click();
+    cy.get('[data-cy="e2e-linear-scale"]').click();
     cy.get('#e2e-title-multiloc').type(linearScaleTitle, { force: true });
 
     // Save the survey
@@ -189,25 +189,25 @@ describe('Survey builder', () => {
     cy.wait(1000);
 
     cy.visit(`admin/projects/${projectId}/native-survey/results`);
-    cy.get(`[data-cy="${snakeCase(multipleChoiceChooseOneTitle)}"]`).should(
+    cy.get(`[data-cy="e2e-${snakeCase(multipleChoiceChooseOneTitle)}"]`).should(
       'exist'
     );
-    cy.get(`[data-cy="${snakeCase(multipleChoiceChooseManyTitle)}"]`).should(
-      'exist'
-    );
-    cy.get(`[data-cy="${snakeCase(linearScaleTitle)}"]`).should('exist');
+    cy.get(
+      `[data-cy="e2e-${snakeCase(multipleChoiceChooseManyTitle)}"]`
+    ).should('exist');
+    cy.get(`[data-cy="e2e-${snakeCase(linearScaleTitle)}"]`).should('exist');
   });
 
   it('navigates to live project in a new tab when view project button in content builder is clicked', () => {
     const projectUrl = `/en/projects/${projectSlug}/ideas/new`;
 
     cy.visit(`admin/projects/${projectId}/native-survey`);
-    cy.get('[data-cy="edit-survey-content"]').click();
-    cy.get('[data-cy="short-answer"]').click();
+    cy.get('[data-cy="e2e-edit-survey-content"]').click();
+    cy.get('[data-cy="e2e-short-answer"]').click();
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
     cy.get('form').submit();
 
-    cy.get('[data-cy="preview-form-button"] > a')
+    cy.get('[data-cy="e2e-preview-form-button"] > a')
       .should(($a) => {
         expect($a.attr('href'), 'href').to.equal(projectUrl);
         expect($a.attr('target'), 'target').to.equal('_blank');
