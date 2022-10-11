@@ -110,6 +110,7 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
               <FormattedMessage {...messages.required} />
             </Text>
           }
+          data-cy="e2e-toggle-multiloc"
         />
       </SectionField>
       {getAdditionalSettings(field.input_type, locales, field.index)}

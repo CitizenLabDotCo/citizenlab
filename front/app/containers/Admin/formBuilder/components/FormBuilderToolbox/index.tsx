@@ -96,6 +96,7 @@ const FormBuilderToolbox = ({
             icon="short-answer"
             label={formatMessage(messages.shortAnswer)}
             onClick={() => addField('text')}
+            data-cy="short-answer"
           />
           <ToolboxItem
             icon="multiple-choice"
@@ -106,11 +107,13 @@ const FormBuilderToolbox = ({
             icon="linear-scale"
             label={formatMessage(messages.linearScale)}
             onClick={() => addField('linear_scale')}
+            data-cy="linear-scale"
           />
           <ToolboxItem
             icon="number-field"
             label={formatMessage(messages.number)}
             onClick={() => addField('number')}
+            data-cy="number-field"
           />
         </DraggableElement>
       </Box>

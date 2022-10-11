@@ -121,6 +121,7 @@ const FormBuilderTopBar = ({ isSubmitting }: FormBuilderTopBarProps) => {
           disabled={!project}
           linkTo={viewSurveyLInk}
           openLinkInNewTab
+          data-cy="preview-form-button"
         >
           <FormattedMessage {...messages.viewSurvey} />
         </Button>
