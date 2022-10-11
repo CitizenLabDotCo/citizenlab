@@ -20,6 +20,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // styling
 import styled from 'styled-components';
+import { colors, stylingConsts } from 'utils/styleUtils';
 
 // utils
 import { API_PATH } from 'containers/App/constants';
@@ -112,21 +113,28 @@ const InvitesTable = ({
       </HeaderContainer>
 
       {invitesList.length > 0 && (
-        <Table>
+        <Table
+          border={`1px solid ${colors.grey300}`}
+          borderRadius={stylingConsts.borderRadius}
+          innerBorders={{
+            headerCells: `1px solid ${colors.grey200}`,
+            bodyRows: `1px solid ${colors.grey200}`,
+          }}
+        >
           <TableHeader
             sortAttribute={sortAttribute}
             sortDirection={sortDirection}
             onSortHeaderClick={handleSortHeaderClick}
           />
 
-          <Body horizontalBorders>
+          <Body>
             {invitesList.map((invite) => (
               <TableRow key={invite.id} invite={invite} />
             ))}
           </Body>
 
           {currentPage && lastPage && lastPage > 1 && (
-            <Footer>
+            <Footer background={colors.teal100}>
               <Row>
                 <HeaderCell colSpan="5">
                   <Pagination
