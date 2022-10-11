@@ -11,7 +11,8 @@ import { IPhaseData } from 'services/phases';
 import { IIdeaStatusData } from 'services/ideaStatuses';
 
 // components
-import { Table, Icon } from 'semantic-ui-react';
+import { Cell } from 'components/admin/Table';
+import { Icon } from 'semantic-ui-react';
 import WrappedRow from './WrappedRow';
 import T from 'components/T';
 
@@ -189,7 +190,6 @@ class IdeaRow extends React.PureComponent<
   renderCell = (
     { idea, selection }: IdeaCellComponentProps,
     {
-      cellProps = {},
       name,
       Component,
       onChange,
@@ -203,9 +203,9 @@ class IdeaRow extends React.PureComponent<
     };
 
     const Content = (
-      <Table.Cell {...cellProps} key={name}>
+      <Cell key={name}>
         <Component idea={idea} selection={selection} {...handlers} />
-      </Table.Cell>
+      </Cell>
     );
 
     if (!featureFlag) return Content;

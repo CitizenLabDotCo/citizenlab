@@ -1,9 +1,9 @@
 import React from 'react';
-import { Table } from 'semantic-ui-react';
+import { Row } from 'components/admin/Table';
 
 // Little hack needed to apply react DnD to the custom component
 export default class WrappedRow extends React.Component<any> {
   render() {
-    return <Table.Row {...this.props} />;
+    return <Row {...(this.props as any)} />;
   }
 }

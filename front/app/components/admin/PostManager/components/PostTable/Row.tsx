@@ -20,10 +20,6 @@ export const StyledRow = styled.tr<{ undraggable: boolean }>`
   cursor: ${({ undraggable }) => (undraggable ? 'pointer' : 'move')};
 `;
 
-export const FilterCell = styled.td`
-  border-top: none !important;
-`;
-
 export const TitleLink = styled.a`
   display: block;
   display: -webkit-box;

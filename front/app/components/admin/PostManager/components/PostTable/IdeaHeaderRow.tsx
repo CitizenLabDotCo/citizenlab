@@ -1,21 +1,33 @@
 import React, { ChangeEvent, useState } from 'react';
-import { Table, Popup } from 'semantic-ui-react';
+
+// components
+import { Header, Row, HeaderCell } from 'components/admin/Table';
+import { Popup } from 'semantic-ui-react';
 import Checkbox from 'components/UI/Checkbox';
-import { FormattedMessage } from 'utils/cl-intl';
 import SortableTableHeader from 'components/admin/SortableTableHeader';
 import { Icon } from '@citizenlab/cl2-component-library';
 import FeatureFlag from 'components/FeatureFlag';
+import Outlet from 'components/Outlet';
+
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 import { TableHeaderCellText } from '.';
+
+// styling
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
+
+// utils
+import { insertConfiguration } from 'utils/moduleUtils';
+import { roundPercentage } from 'utils/math';
+
+// typings
 import {
   CellConfiguration,
   InsertConfigurationOptions,
   Override,
 } from 'typings';
-import Outlet from 'components/Outlet';
-import { insertConfiguration } from 'utils/moduleUtils';
 
 const InfoIcon = styled(Icon)`
   fill: ${colors.teal700};
@@ -169,6 +181,14 @@ export default ({
     },
   ]);
 
+  const totalWidth = cells.reduce((acc, cell) => {
+    if (typeof cell.cellProps?.width === 'number') {
+      return cell.cellProps.width + acc;
+    }
+
+    return acc;
+  }, 0);
+
   const renderCell = ({
     cellProps = {},
     name,
@@ -182,15 +202,20 @@ export default ({
       ...(onClick ? { onClick } : {}),
     };
 
+    const width =
+      typeof cellProps.width === 'number'
+        ? `${roundPercentage(cellProps.width, totalWidth)}%`
+        : '0%';
+
     const Content = (
-      <Table.HeaderCell {...cellProps} key={name}>
+      <HeaderCell width={width} key={name}>
         <Component
           sortAttribute={sortAttribute}
           sortDirection={sortDirection}
           allSelected={allSelected}
           {...handlers}
         />
-      </Table.HeaderCell>
+      </HeaderCell>
     );
 
     if (!featureFlag) return Content;
@@ -215,11 +240,11 @@ export default ({
         id="app.components.admin.PostManager.components.PostTable.IdeaHeaderRow.cells"
         onData={handleData}
       />
-      <Table.Header>
-        <Table.Row>
+      <Header background={colors.grey50}>
+        <Row>
           {cells.map((cellConfiguration) => renderCell(cellConfiguration))}
-        </Table.Row>
-      </Table.Header>
+        </Row>
+      </Header>
     </>
   );
 };

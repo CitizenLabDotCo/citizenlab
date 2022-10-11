@@ -1,10 +1,25 @@
 import React from 'react';
-import { Table } from 'semantic-ui-react';
+
+// components
+import { Header, Row, HeaderCell } from 'components/admin/Table';
 import Checkbox from 'components/UI/Checkbox';
-import { FormattedMessage } from 'utils/cl-intl';
 import SortableTableHeader from 'components/admin/SortableTableHeader';
+
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
+
+// styling
+import { colors } from 'utils/styleUtils';
+
+// utils
+import { roundPercentage } from 'utils/math';
+
+// typings
 import { TableHeaderCellText } from '.';
+
+const TOTAL_WIDTH = 11;
+const getWidth = (width: number) => `${roundPercentage(width, TOTAL_WIDTH)}%`;
 
 export default ({
   sortAttribute,
@@ -13,26 +28,26 @@ export default ({
   toggleSelectAll,
   handleSortClick,
 }) => (
-  <Table.Header>
-    <Table.Row>
-      <Table.HeaderCell width={1}>
+  <Header background={colors.grey50}>
+    <Row>
+      <HeaderCell width={getWidth(1)}>
         <Checkbox
           checked={!!allSelected}
           onChange={toggleSelectAll}
           size="21px"
         />
-      </Table.HeaderCell>
-      <Table.HeaderCell width={4}>
+      </HeaderCell>
+      <HeaderCell width={getWidth(4)}>
         <TableHeaderCellText>
           <FormattedMessage {...messages.title} />
         </TableHeaderCellText>
-      </Table.HeaderCell>
-      <Table.HeaderCell width={2}>
+      </HeaderCell>
+      <HeaderCell width={getWidth(2)}>
         <TableHeaderCellText>
           <FormattedMessage {...messages.assignee} />
         </TableHeaderCellText>
-      </Table.HeaderCell>
-      <Table.HeaderCell width={2}>
+      </HeaderCell>
+      <HeaderCell width={getWidth(2)}>
         <SortableTableHeader
           direction={sortAttribute === 'new' ? sortDirection : null}
           onToggle={handleSortClick('new')}
@@ -41,8 +56,8 @@ export default ({
             <FormattedMessage {...messages.remainingTime} />
           </TableHeaderCellText>
         </SortableTableHeader>
-      </Table.HeaderCell>
-      <Table.HeaderCell width={1}>
+      </HeaderCell>
+      <HeaderCell width={getWidth(1)}>
         <SortableTableHeader
           direction={sortAttribute === 'upvotes_count' ? sortDirection : null}
           onToggle={handleSortClick('upvotes_count')}
@@ -51,12 +66,12 @@ export default ({
             <FormattedMessage {...messages.votes} />
           </TableHeaderCellText>
         </SortableTableHeader>
-      </Table.HeaderCell>
-      <Table.HeaderCell width={1}>
+      </HeaderCell>
+      <HeaderCell width={getWidth(1)}>
         <TableHeaderCellText>
           <FormattedMessage {...messages.comments} />
         </TableHeaderCellText>
-      </Table.HeaderCell>
-    </Table.Row>
-  </Table.Header>
+      </HeaderCell>
+    </Row>
+  </Header>
 );

@@ -16,7 +16,8 @@ import {
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
 
 // components
-import { Table, Icon } from 'semantic-ui-react';
+import { Cell } from 'components/admin/Table';
+import { Icon } from 'semantic-ui-react';
 import WrappedRow from './WrappedRow';
 import T from 'components/T';
 import Checkbox from 'components/UI/Checkbox';
@@ -190,33 +191,33 @@ class InitiativeRow extends React.PureComponent<
               connectDragSource(findDOMNode(instance));
           }}
         >
-          <Table.Cell collapsing={true}>
+          <Cell>
             <Checkbox
               checked={!!active}
               onChange={onClickCheckbox}
               size="21px"
             />
-          </Table.Cell>
-          <Table.Cell>
+          </Cell>
+          <Cell>
             <TitleLink
               className="e2e-initiative-manager-initiative-title"
               onClick={onClickTitle}
             >
               <T value={attrs.title_multiloc} />
             </TitleLink>
-          </Table.Cell>
-          <Table.Cell onClick={nothingHappens} singleLine>
+          </Cell>
+          <Cell onClick={nothingHappens}>
             <AssigneeSelect
               onAssigneeChange={this.onUpdateInitiativeAssignee}
               assigneeId={assigneeId}
             />
-          </Table.Cell>
-          <Table.Cell>{this.renderTimingCell()}</Table.Cell>
-          <Table.Cell singleLine>
+          </Cell>
+          <Cell>{this.renderTimingCell()}</Cell>
+          <Cell>
             <Icon name="thumbs up" />
             {attrs.upvotes_count}
-          </Table.Cell>
-          <Table.Cell>{attrs.comments_count}</Table.Cell>
+          </Cell>
+          <Cell>{attrs.comments_count}</Cell>
         </WrappedRow>
         <SubRow
           {...{

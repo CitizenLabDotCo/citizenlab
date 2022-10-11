@@ -3,7 +3,7 @@ import { every, isEmpty, isFunction } from 'lodash-es';
 import styled from 'styled-components';
 
 // components
-import { Table } from 'semantic-ui-react';
+import { Table, Body, Footer, Row as TRow, Cell } from 'components/admin/Table';
 import Row from './Row';
 import Pagination from 'components/admin/Pagination';
 import NoPost from './NoPost';
@@ -27,6 +27,9 @@ import {
   Sort as InitiativesSort,
   SortAttribute as InitiativesSortAttribute,
 } from 'resources/GetInitiatives';
+
+// styling
+import { colors, stylingConsts } from 'utils/styleUtils';
 
 // utils
 import { SortDirection } from 'utils/paginationUtils';
@@ -186,7 +189,14 @@ export default class PostTable extends React.Component<Props> {
 
     return (
       <Container>
-        <Table sortable size="small">
+        <Table
+          border={`1px solid ${colors.grey300}`}
+          borderRadius={stylingConsts.borderRadius}
+          innerBorders={{
+            headerCells: `1px solid ${colors.grey200}`,
+            bodyRows: `1px solid ${colors.grey200}`,
+          }}
+        >
           {type === 'Initiatives' ? (
             <InitiativesHeaderRow
               sortAttribute={sortAttribute}
@@ -204,7 +214,7 @@ export default class PostTable extends React.Component<Props> {
               handleSortClick={this.handleSortClick}
             />
           ) : null}
-          <Table.Body>
+          <Body>
             {!isEmpty(posts) ? (
               <TransitionGroup component={null}>
                 {
@@ -233,19 +243,19 @@ export default class PostTable extends React.Component<Props> {
                 }
               </TransitionGroup>
             ) : null}
-          </Table.Body>
+          </Body>
           {!isEmpty(posts) && (
-            <Table.Footer fullWidth={true}>
-              <Table.Row>
-                <Table.HeaderCell colSpan="7">
+            <Footer background={colors.grey50}>
+              <TRow>
+                <Cell colSpan="7">
                   <Pagination
                     currentPage={this.props.currentPageNumber || 1}
                     totalPages={this.props.lastPageNumber || 1}
                     loadPage={this.handlePaginationClick}
                   />
-                </Table.HeaderCell>
-              </Table.Row>
-            </Table.Footer>
+                </Cell>
+              </TRow>
+            </Footer>
           )}
         </Table>
         {isEmpty(posts) && (
