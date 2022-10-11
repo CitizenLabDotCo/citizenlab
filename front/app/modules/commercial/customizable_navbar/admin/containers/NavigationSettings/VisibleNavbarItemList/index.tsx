@@ -51,7 +51,7 @@ const VisibleNavbarItemList = ({
     const pageData = navbarItem.relationships.static_page.data;
 
     pageData
-      ? clHistory.push(`${PAGES_MENU_PATH}/custom/${pageData.id}`)
+      ? clHistory.push(`${PAGES_MENU_PATH}/pages/${pageData.id}`)
       : clHistory.push(`${PAGES_MENU_PATH}/navbar-items/edit/${navbarItem.id}`);
   };
 

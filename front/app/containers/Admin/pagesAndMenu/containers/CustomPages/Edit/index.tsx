@@ -68,12 +68,12 @@ const CustomPagesEditSettings = ({
           {
             label: formatMessage(messages.pageSettingsTab),
             name: 'settings',
-            url: `/admin/pages-menu/custom/${customPageId}/settings`,
+            url: `/admin/pages-menu/pages/${customPageId}/settings`,
           },
           {
             label: formatMessage(messages.pageContentTab),
             name: 'content',
-            url: `/admin/pages-menu/custom/${customPageId}/content`,
+            url: `/admin/pages-menu/pages/${customPageId}/content`,
           },
         ]}
         contentWrapper={false}

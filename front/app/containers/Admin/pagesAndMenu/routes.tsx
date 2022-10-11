@@ -10,7 +10,6 @@ const NavigationSettings = lazy(
 
 // homepage
 const EditHomepage = lazy(() => import('./containers/EditHomepage'));
-import EditPageForm from './containers/EditPageForm';
 const HomepageBottomInfoForm = lazy(
   () => import('./EditHomepage/BottomInfoSection')
 );
@@ -44,7 +43,7 @@ const PAGE_PATH = 'pages-menu';
 const ADMIN_PATH_PREFIX = 'admin';
 export const PAGES_MENU_PATH = `/${ADMIN_PATH_PREFIX}/${PAGE_PATH}`;
 const HOMEPAGE_PATH = 'homepage';
-const CUSTOM_PAGES_PATH = 'custom';
+const CUSTOM_PAGES_PATH = 'pages';
 export const PAGES_MENU_CUSTOM_PATH = `${PAGES_MENU_PATH}/${CUSTOM_PAGES_PATH}`;
 
 export default () => ({
@@ -101,7 +100,7 @@ export default () => ({
       ),
     },
     {
-      path: CUSTOM_PAGES_PATH,
+      path: CUSTOM_PAGES_PATH, //pages
       element: <CustomPagesIndex />,
       children: [
         {
@@ -168,10 +167,6 @@ export default () => ({
           ),
         },
       ],
-    },
-    {
-      path: 'pages/edit/:pageId',
-      element: <EditPageForm />,
     },
     ...moduleConfiguration.routes['admin.pages-menu'],
   ],

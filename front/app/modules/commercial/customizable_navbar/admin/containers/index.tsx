@@ -20,7 +20,7 @@ const PagesMenu = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           buttonStyle="cl-blue"
           icon="plus-circle"
           id="create-custom-page"
-          linkTo={'/admin/pages-menu/custom/new'}
+          linkTo={'/admin/pages-menu/pages/new'}
         >
           {formatMessage(messages.createCustomPageButton)}
         </Button>
