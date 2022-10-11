@@ -1,9 +1,10 @@
+import { snakeCase } from 'lodash-es';
 import { randomString } from '../../support/commands';
 
 describe('Survey builder', () => {
   const projectTitle = randomString();
   const projectDescription = randomString();
-  const questionTitle = randomString();
+  let questionTitle = randomString();
   const answer = randomString();
   const projectDescriptionPreview = randomString(30);
   let projectId: string;
@@ -25,6 +26,7 @@ describe('Survey builder', () => {
 
   beforeEach(() => {
     cy.setAdminLoginCookie();
+    questionTitle = randomString();
   });
 
   after(() => {
@@ -74,6 +76,44 @@ describe('Survey builder', () => {
     cy.get('.e2e-modal-close-button').click();
     // check that the modal is no longer on the page
     cy.get('#e2e-modal-container').should('have.length', 0);
+  });
+
+  it('deletes a field when the delete button is clicked', () => {
+    const fieldIdentifier = snakeCase(questionTitle);
+    cy.visit(`admin/projects/${projectId}/native-survey/edit`);
+    cy.get('[data-cy="short-answer"]').click();
+    cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
+
+    // Save the survey
+    cy.get('form').submit();
+    // Should show success message on saving
+    cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
+
+    // Navigate to the survey page
+    cy.visit(`/projects/${projectSlug}/ideas/new`);
+    cy.acceptCookies();
+    cy.contains(questionTitle).should('exist');
+
+    cy.visit(`admin/projects/${projectId}/native-survey/edit`);
+
+    // Check that field exists
+    cy.get(`[data-cy="${`field-${fieldIdentifier}`}"]`).should('exist');
+
+    // Click the edit button
+    cy.get(`[data-cy="${`edit-${fieldIdentifier}`}"]`).click();
+
+    // Click to delete the field
+    cy.get(`[data-cy="delete-field"]`).click();
+
+    // Save the survey
+    cy.get('form').submit();
+
+    // Check that field nolonger exists
+    cy.get(`[data-cy="${`field-${questionTitle}`}"]`).should('not.exist');
+
+    // Navigate to the survey page
+    cy.visit(`/projects/${projectSlug}/ideas/new`);
+    cy.contains(questionTitle).should('not.exist');
   });
 
   it('navigates to live project in a new tab when view project button in content builder is clicked', () => {
