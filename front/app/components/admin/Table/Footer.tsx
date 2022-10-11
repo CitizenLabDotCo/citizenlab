@@ -9,19 +9,20 @@ import {
 
 interface Props {
   children: React.ReactNode;
+  background?: string;
 }
 
-const StyledTFoot = styled.tfoot`
-  background: ${SEMANTIC_UI_HEADER_BG_COLOR};
+const StyledTFoot = styled.tfoot<{ background: string }>`
+  background: ${({ background }) => background};
 
-  tr:first-child > th {
+  tr:first-child > td {
     border-top: 1px solid ${SEMANTIC_UI_BORDER_INNER_COLOR};
-  }
-  tr:last-child > th {
-    border-bottom: none;
   }
 `;
 
-const Footer = ({ children }: Props) => <StyledTFoot>{children}</StyledTFoot>;
+const Footer = ({
+  children,
+  background = SEMANTIC_UI_HEADER_BG_COLOR,
+}: Props) => <StyledTFoot background={background}>{children}</StyledTFoot>;
 
 export default Footer;

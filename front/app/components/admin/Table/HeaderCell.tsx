@@ -11,8 +11,8 @@ import {
 } from './constants';
 
 interface Props extends BoxProps {
-  clickable?: boolean;
   colSpan?: `${number}`;
+  clickable?: boolean;
 }
 
 const StyledBox = styled(Box)<{ clickable?: boolean }>`
