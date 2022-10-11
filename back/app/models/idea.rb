@@ -166,7 +166,7 @@ class Idea < ApplicationRecord
   end
 
   def custom_form
-    if project.timeline? && participation_method_on_creation.form_in_phase?
+    if participation_method_on_creation.form_in_phase?
       creation_phase.custom_form || CustomForm.new(participation_context: creation_phase)
     else
       project.custom_form || CustomForm.new(participation_context: project)
