@@ -5,11 +5,11 @@ import { categoricalColorScheme } from 'components/admin/Graphs/styling';
 import { roundPercentages } from 'utils/math';
 
 // typings
-import { Response, PieRow } from './typings';
+import { Response, PieRow, TableRow } from './typings';
 import { Translations } from './utils';
 
 export const parsePieData = (
-  data: Response['data'],
+  data: Response['data'][0],
   translations: Translations
 ): PieRow[] | null => {
   if (data.length === 0) return null;
@@ -23,6 +23,17 @@ export const parsePieData = (
     percentage: percentages[i],
     color: categoricalColorScheme({ rowIndex: i }),
   }));
+};
+
+export const parseTableData = (
+  data: Response['data'][1],
+  _: Translations
+): TableRow[] | null => {
+  if (data.length === 0) return null;
+
+  console.log(data);
+
+  return data.map(() => ({}));
 };
 
 export const parseExcelData = (

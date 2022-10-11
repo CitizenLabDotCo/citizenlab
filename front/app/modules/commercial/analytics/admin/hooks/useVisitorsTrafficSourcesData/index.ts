@@ -8,7 +8,7 @@ import {
 } from '../../services/analyticsFacts';
 
 // parse
-import { parsePieData, parseExcelData } from './parse';
+import { parsePieData, parseTableData, parseExcelData } from './parse';
 
 // utils
 import { getProjectFilter, getDateFilter } from '../../utils/query';
@@ -16,7 +16,7 @@ import { getTranslations } from './utils';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 // typings
-import { QueryParameters, Response, PieRow } from './typings';
+import { QueryParameters, Response, PieRow, TableRow } from './typings';
 import { InjectedIntlProps } from 'react-intl';
 import { XlsxData } from 'components/admin/ReportExportMenu';
 
@@ -44,7 +44,23 @@ const query = ({
     },
   };
 
-  return { query: trafficSourcesQuery };
+  const referrerlistQuery: QuerySchema = {
+    fact: 'visit',
+    filters: {
+      dimension_user: {
+        role: ['citizen', null],
+      },
+      ...getProjectFilter('dimension_projects', projectId),
+      ...getDateFilter('dimension_date_last_action', startAt, endAt),
+    },
+    groups: ['dimension_referrer_type.name', 'referrer_name'],
+    aggregations: {
+      all: 'count',
+      visitor_id: 'count',
+    },
+  };
+
+  return { query: [trafficSourcesQuery, referrerlistQuery] };
 };
 
 export default function useVisitorsTrafficSourcesData(
@@ -52,6 +68,7 @@ export default function useVisitorsTrafficSourcesData(
   { projectId, startAtMoment, endAtMoment }: QueryParameters
 ) {
   const [pieData, setPieData] = useState<PieRow[] | NilOrError>();
+  const [tableData, setTableData] = useState<TableRow[] | NilOrError>();
   const [xlsxData, setXlsxData] = useState<XlsxData | NilOrError>();
 
   useEffect(() => {
@@ -72,8 +89,12 @@ export default function useVisitorsTrafficSourcesData(
 
         const translations = getTranslations(formatMessage);
 
-        const pieData = parsePieData(response.data, translations);
+        const pieData = parsePieData(response.data[0], translations);
         setPieData(pieData);
+
+        const tableData = parseTableData(response.data[1], translations);
+        setTableData(tableData);
+
         setXlsxData(parseExcelData(pieData, translations));
       }
     );
@@ -81,5 +102,5 @@ export default function useVisitorsTrafficSourcesData(
     return () => subscription.unsubscribe();
   }, [projectId, startAtMoment, endAtMoment, formatMessage]);
 
-  return { pieData, xlsxData };
+  return { pieData, tableData, xlsxData };
 }

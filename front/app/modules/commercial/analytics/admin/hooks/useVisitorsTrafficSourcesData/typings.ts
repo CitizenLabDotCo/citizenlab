@@ -8,7 +8,7 @@ export interface QueryParameters {
 
 // Response
 export interface Response {
-  data: TrafficSourcesRow[];
+  data: [TrafficSourcesRow[], ReferrerRow[]];
 }
 
 export interface TrafficSourcesRow {
@@ -24,6 +24,11 @@ export type ReferrerTypeName =
   | 'Websites'
   | 'Campaigns';
 
+interface ReferrerRow {
+  count: number;
+  first_dimension_referrer_type_name: ReferrerTypeName;
+}
+
 // Hook return value
 export interface PieRow {
   name: string;
@@ -31,3 +36,5 @@ export interface PieRow {
   color: string;
   percentage: number;
 }
+
+export type TableRow = any;
