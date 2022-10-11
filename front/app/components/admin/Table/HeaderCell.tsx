@@ -5,10 +5,7 @@ import { Box, BoxProps } from '@citizenlab/cl2-component-library';
 
 // styling
 import styled from 'styled-components';
-import {
-  SEMANTIC_UI_BORDER_INNER_COLOR,
-  SEMANTIC_UI_HEADER_BG_COLOR_DARKER,
-} from './constants';
+import { colors } from 'utils/styleUtils';
 
 interface Props extends BoxProps {
   colSpan?: `${number}`;
@@ -21,20 +18,14 @@ const StyledBox = styled(Box)<{ clickable?: boolean }>`
       ? ''
       : `
     &:hover {
-      background: ${SEMANTIC_UI_HEADER_BG_COLOR_DARKER};
+      background: ${colors.grey200};
       cursor: pointer;
     }
   `}
 `;
 
 const HeaderCell = ({ children, colSpan, ...otherProps }: Props) => (
-  <StyledBox
-    as="th"
-    borderBottom={`1px solid ${SEMANTIC_UI_BORDER_INNER_COLOR}`}
-    p="12px"
-    colSpan={colSpan as any}
-    {...otherProps}
-  >
+  <StyledBox as="th" p="12px" colSpan={colSpan as any} {...otherProps}>
     {children}
   </StyledBox>
 );

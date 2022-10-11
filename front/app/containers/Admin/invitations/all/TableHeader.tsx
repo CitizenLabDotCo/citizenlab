@@ -6,7 +6,6 @@ import { IconTooltip, Text, Icon } from '@citizenlab/cl2-component-library';
 
 // styling
 import { colors } from 'utils/styleUtils';
-import { SEMANTIC_UI_HEADER_BG_COLOR_DARKER } from 'components/admin/Table/constants';
 
 // i18n
 import messages from '../messages';
@@ -31,7 +30,7 @@ const ClickableCell = ({
 }: ClickableCellProps) => (
   <HeaderCell
     clickable
-    background={sorted ? SEMANTIC_UI_HEADER_BG_COLOR_DARKER : undefined}
+    background={sorted ? colors.grey200 : undefined}
     {...otherProps}
   >
     {children}

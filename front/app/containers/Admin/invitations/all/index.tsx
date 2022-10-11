@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 // components
-import { Table, Body, Footer, Row, HeaderCell } from 'components/admin/Table';
+import { Table, Body, Footer, Row, Cell } from 'components/admin/Table';
 import Pagination from 'components/admin/Pagination';
 import Button from 'components/UI/Button';
 import TableHeader from './TableHeader';
@@ -134,15 +134,15 @@ const InvitesTable = ({
           </Body>
 
           {currentPage && lastPage && lastPage > 1 && (
-            <Footer background={colors.teal100}>
+            <Footer>
               <Row>
-                <HeaderCell colSpan="5">
+                <Cell colSpan="5">
                   <Pagination
                     currentPage={currentPage}
                     totalPages={lastPage}
                     loadPage={onChangePage}
                   />
-                </HeaderCell>
+                </Cell>
               </Row>
             </Footer>
           )}

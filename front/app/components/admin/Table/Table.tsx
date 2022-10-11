@@ -6,7 +6,6 @@ import { Box, BoxProps } from '@citizenlab/cl2-component-library';
 // styling
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import { SEMANTIC_UI_BORDER_INNER_COLOR } from './constants';
 
 interface InnerBorders {
   headerCells?: string;
@@ -19,8 +18,8 @@ const StyledBox = styled(Box)<{ innerBorders?: InnerBorders }>`
   color: ${colors.primary};
   border-collapse: separate;
 
-  thead > th {
-    border-bottom: 1px solid ${SEMANTIC_UI_BORDER_INNER_COLOR};
+  thead > tr > th {
+    border-bottom: 1px solid ${colors.grey200};
   }
 
   ${({ innerBorders }) =>
