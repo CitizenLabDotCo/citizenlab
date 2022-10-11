@@ -624,7 +624,7 @@ resource 'Ideas' do
       end
     end
 
-    describe 'when posting an idea in an active ideation phase, the correct form is used' do
+    describe 'when posting an idea in an active ideation phase, the correct form is used', skip: !CitizenLab.ee? do
       let(:project) { create(:project_with_active_ideation_phase) }
       let!(:custom_form) { create(:custom_form, participation_context: project) }
       let!(:custom_field) do
@@ -639,7 +639,7 @@ resource 'Ideas' do
       end
       let(:proposed_budget) { 1234 }
 
-      example_request 'Post an idea in an ideation phase', document: false do
+      example_request 'Post an idea in an ideation phase' do
         assert_status 201
         json_response = json_parse response_body
         idea = Idea.find(json_response.dig(:data, :id))
@@ -647,11 +647,11 @@ resource 'Ideas' do
       end
     end
 
-    describe 'when posting an idea in an active ideation phase, the creation_phase is not set', skip: !CitizenLab.ee? do
+    describe 'when posting an idea in an active ideation phase, the creation_phase is not set' do
       let(:project) { create(:project_with_active_ideation_phase) }
       let!(:custom_form) { create(:custom_form, participation_context: project) }
 
-      example_request 'Post an idea in an ideation phase', document: false do
+      example_request 'Post an idea in an ideation phase' do
         assert_status 201
         json_response = json_parse response_body
         idea = Idea.find(json_response.dig(:data, :id))
