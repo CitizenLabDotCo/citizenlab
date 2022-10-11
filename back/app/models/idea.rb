@@ -100,6 +100,8 @@ class Idea < ApplicationRecord
     validates :proposed_budget, numericality: { greater_than_or_equal_to: 0, if: :proposed_budget }
   end
 
+  validate :validate_creation_phase
+
   # validates :custom_field_values, json: {
   #   schema: :schema_for_validation,
   #   message: ->(errors) { errors }
@@ -219,6 +221,36 @@ class Idea < ApplicationRecord
 
   def update_phase_ideas_count(_)
     IdeasPhase.counter_culture_fix_counts only: %i[phase]
+  end
+
+  def validate_creation_phase
+    return unless creation_phase
+
+    if project.continuous?
+      errors.add(
+        :creation_phase,
+        :not_in_timeline_project,
+        message: 'The creation phase cannot be set for inputs in a continuous project'
+      )
+      return
+    end
+
+    if creation_phase.project_id != project_id
+      errors.add(
+        :creation_phase,
+        :invalid_project,
+        message: 'The creation phase must be a phase of the input\'s project'
+      )
+      return
+    end
+
+    return if participation_method_on_creation.form_in_phase?
+
+    errors.add(
+      :creation_phase,
+      :invalid_participation_method,
+      message: 'The creation phase cannot be set for transitive participation methods'
+    )
   end
 end
 
