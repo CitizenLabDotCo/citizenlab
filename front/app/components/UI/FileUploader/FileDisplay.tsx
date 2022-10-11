@@ -113,6 +113,7 @@ const FileDisplay = ({
         {size && <FileSize error={!!error}>({returnFileSize(size)})</FileSize>}
       </FileInfo>
       <DeleteIconButton
+        buttonType="button"
         iconName="delete"
         a11y_buttonActionMessage={formatMessage(messages.a11y_removeFile)}
         onClick={onDeleteClick}
