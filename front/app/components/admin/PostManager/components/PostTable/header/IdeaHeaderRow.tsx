@@ -2,9 +2,8 @@ import React, { ChangeEvent, useState } from 'react';
 
 // components
 import { Header, Row, HeaderCell } from 'components/admin/Table';
-import { Popup } from 'semantic-ui-react';
 import Checkbox from 'components/UI/Checkbox';
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Text } from '@citizenlab/cl2-component-library';
 import FeatureFlag from 'components/FeatureFlag';
 import Outlet from 'components/Outlet';
 
@@ -13,7 +12,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../../messages';
 
 // styling
-import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 // utils
@@ -27,21 +25,11 @@ import {
   Override,
 } from 'typings';
 
-const InfoIcon = styled(Icon)`
-  fill: ${colors.teal700};
-  width: 16px;
-  height: 16px;
-  cursor: pointer;
-
-  &:hover {
-    fill: #000;
-  }
-`;
-
 interface SortableHeaderCellProps {
   sortAttribute?: string;
   sortDirection?: 'ascending' | 'descending' | null;
   type: string;
+  infoTooltip?: React.ReactChild;
   onChange: () => void;
   children: React.ReactNode;
 }
@@ -50,6 +38,7 @@ const SortableHeaderCell = ({
   sortAttribute,
   sortDirection,
   type,
+  infoTooltip,
   onChange,
   children,
 }: SortableHeaderCellProps) => (
@@ -58,6 +47,7 @@ const SortableHeaderCell = ({
     sortDirection={
       sortAttribute === type && sortDirection ? sortDirection : undefined
     }
+    infoTooltip={infoTooltip}
     onClick={onChange}
   >
     {children}
@@ -162,16 +152,16 @@ export default ({
         props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
       ) => {
         return (
-          <SortableHeaderCell {...props} type="baskets_count">
+          <SortableHeaderCell
+            {...props}
+            type="baskets_count"
+            infoTooltip={
+              <Text mb="0px" mt="0px" fontSize="s">
+                <FormattedMessage {...messages.pbItemCountTooltip} />
+              </Text>
+            }
+          >
             <FormattedMessage {...messages.participatoryBudgettingPicks} />
-            <Popup
-              content={<FormattedMessage {...messages.pbItemCountTooltip} />}
-              trigger={
-                <button>
-                  <InfoIcon name="info3" />
-                </button>
-              }
-            />
           </SortableHeaderCell>
         );
       },

@@ -2,7 +2,7 @@ import React from 'react';
 
 // components
 import { Header, Row, HeaderCell } from 'components/admin/Table';
-import { IconTooltip, Text } from '@citizenlab/cl2-component-library';
+import { Text } from '@citizenlab/cl2-component-library';
 
 // styling
 import { colors } from 'utils/styleUtils';
@@ -86,21 +86,16 @@ const TableHeader = ({
       >
         <FormattedMessage {...messages.inviteStatus} />
       </ClickableCell>
-      <HeaderCell width="12%" style={{ textAlign: 'center' }}>
+      <HeaderCell
+        width="12%"
+        style={{ textAlign: 'center' }}
+        infoTooltip={
+          <Text mb="0px" mt="0px" fontSize="s">
+            <FormattedMessage {...messages.deleteInviteTooltip} />
+          </Text>
+        }
+      >
         <FormattedMessage {...messages.deleteInvite} />
-        <IconTooltip
-          ml="6px"
-          iconColor={colors.teal700}
-          iconHoverColor="#000"
-          iconSize="16px"
-          theme="light"
-          transform="translate(0,-1)"
-          content={
-            <Text mb="0px" mt="0px" fontSize="s">
-              <FormattedMessage {...messages.deleteInviteTooltip} />
-            </Text>
-          }
-        />
       </HeaderCell>
     </Row>
   </Header>
