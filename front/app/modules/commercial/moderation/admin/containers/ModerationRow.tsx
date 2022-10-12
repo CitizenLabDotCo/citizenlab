@@ -73,8 +73,8 @@ const GoToLink = styled(Link)`
 `;
 
 const GoToIcon = styled(Icon)`
-  width: 100%;
-  height: 100%;
+  width: 14px;
+  height: 14px;
   fill: ${colors.textSecondary};
 
   &:hover {
