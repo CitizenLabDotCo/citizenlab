@@ -18,11 +18,11 @@ import { IInitiativeStatusData } from 'services/initiativeStatuses';
 // components
 import { TitleLink } from '.';
 import StyledRow from './StyledRow';
-import { Cell } from 'components/admin/Table';
+import { Cell as BaseCell } from 'components/admin/Table';
 import { Icon } from 'semantic-ui-react';
 import T from 'components/T';
 import Checkbox from 'components/UI/Checkbox';
-import { StatusLabel } from '@citizenlab/cl2-component-library';
+import { colors, StatusLabel } from '@citizenlab/cl2-component-library';
 import SubRow from './SubRow';
 
 // utils
@@ -74,6 +74,22 @@ interface InputProps {
   onClickTitle: (event) => void;
   nothingHappens: (event) => void;
 }
+
+interface CellProps {
+  onClick?: (event: any) => void;
+  active: boolean;
+  children: React.ReactNode;
+}
+
+const Cell = ({ onClick, active, children }: CellProps) => (
+  <BaseCell
+    borderBottom="none !important"
+    background={active ? colors.grey300 : undefined}
+    onClick={onClick}
+  >
+    {children}
+  </BaseCell>
+);
 
 interface Props extends InputProps, DataProps {
   connectDragSource: any;
@@ -183,7 +199,6 @@ class InitiativeRow extends React.PureComponent<
       <>
         <StyledRow
           className={`e2e-initiative-row ${className}`}
-          // active={active}
           undraggable={activeFilterMenu === 'statuses'}
           ref={(instance) => {
             instance &&
@@ -192,14 +207,14 @@ class InitiativeRow extends React.PureComponent<
               connectDragSource(findDOMNode(instance));
           }}
         >
-          <Cell>
+          <Cell active={active}>
             <Checkbox
               checked={!!active}
               onChange={onClickCheckbox}
               size="21px"
             />
           </Cell>
-          <Cell>
+          <Cell active={active}>
             <TitleLink
               className="e2e-initiative-manager-initiative-title"
               onClick={onClickTitle}
@@ -207,18 +222,18 @@ class InitiativeRow extends React.PureComponent<
               <T value={attrs.title_multiloc} />
             </TitleLink>
           </Cell>
-          <Cell onClick={nothingHappens}>
+          <Cell active={active} onClick={nothingHappens}>
             <AssigneeSelect
               onAssigneeChange={this.onUpdateInitiativeAssignee}
               assigneeId={assigneeId}
             />
           </Cell>
-          <Cell>{this.renderTimingCell()}</Cell>
-          <Cell>
+          <Cell active={active}>{this.renderTimingCell()}</Cell>
+          <Cell active={active}>
             <Icon name="thumbs up" />
             {attrs.upvotes_count}
           </Cell>
-          <Cell>{attrs.comments_count}</Cell>
+          <Cell active={active}>{attrs.comments_count}</Cell>
         </StyledRow>
         <SubRow
           {...{
