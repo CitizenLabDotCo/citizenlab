@@ -119,8 +119,8 @@ const InvitesTable = ({
           border={`1px solid ${colors.grey300}`}
           borderRadius={stylingConsts.borderRadius}
           innerBorders={{
-            headerCells: `1px solid ${colors.grey200}`,
-            bodyRows: `1px solid ${colors.grey200}`,
+            headerCells: true,
+            bodyRows: true,
           }}
         >
           <TableHeader

@@ -23,7 +23,7 @@ const TableComponent = ({ columns, data, hideBorderTop }: Props) => (
     borderRadius={stylingConsts.borderRadius}
     borderTop={hideBorderTop ? 'none' : undefined}
     innerBorders={{
-      bodyRows: `1px solid ${colors.grey200}`,
+      bodyRows: true,
     }}
   >
     <HeaderRow columns={columns} />

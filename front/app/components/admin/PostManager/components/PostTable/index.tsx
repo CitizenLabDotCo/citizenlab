@@ -191,8 +191,8 @@ export default class PostTable extends React.Component<Props> {
           border={`1px solid ${colors.grey300}`}
           borderRadius={stylingConsts.borderRadius}
           innerBorders={{
-            headerCells: `1px solid ${colors.grey200}`,
-            bodyRows: `1px solid ${colors.grey200}`,
+            headerCells: true,
+            bodyRows: true,
           }}
         >
           {type === 'Initiatives' ? (

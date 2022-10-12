@@ -8,8 +8,8 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 interface InnerBorders {
-  headerCells?: string;
-  bodyRows?: string;
+  headerCells?: boolean;
+  bodyRows?: boolean;
 }
 
 const StyledBox = styled(Box)<{ innerBorders?: InnerBorders }>`
@@ -27,7 +27,7 @@ const StyledBox = styled(Box)<{ innerBorders?: InnerBorders }>`
       ? ''
       : `
     thead > tr > th {
-      border-right: ${innerBorders.headerCells};
+      border-right: 1px solid ${colors.grey200};
     }
 
     thead > tr > th:last-child {
@@ -40,7 +40,7 @@ const StyledBox = styled(Box)<{ innerBorders?: InnerBorders }>`
       ? ''
       : `
     tbody > tr > td {
-      border-bottom: ${innerBorders?.bodyRows};
+      border-bottom: 1px solid ${colors.grey200};
     }
 
     tbody > tr:last-child > td {
