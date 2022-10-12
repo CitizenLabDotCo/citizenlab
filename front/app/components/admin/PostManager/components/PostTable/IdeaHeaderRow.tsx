@@ -4,7 +4,6 @@ import React, { ChangeEvent, useState } from 'react';
 import { Header, Row, HeaderCell } from 'components/admin/Table';
 import { Popup } from 'semantic-ui-react';
 import Checkbox from 'components/UI/Checkbox';
-import SortableTableHeader from 'components/admin/SortableTableHeader';
 import { Icon } from '@citizenlab/cl2-component-library';
 import FeatureFlag from 'components/FeatureFlag';
 import Outlet from 'components/Outlet';
@@ -39,6 +38,30 @@ const InfoIcon = styled(Icon)`
     fill: #000;
   }
 `;
+
+interface SortableTableHeaderProps {
+  sortAttribute?: string | undefined;
+  sortDirection?: 'ascending' | 'descending' | null | undefined;
+  onChange: () => void;
+  children: React.ReactNode;
+}
+
+const SortableTableHeader = ({
+  sortAttribute,
+  sortDirection,
+  onChange,
+  children,
+}: SortableTableHeaderProps) => (
+  <HeaderCell
+    clickable
+    sortDirection={
+      sortAttribute === 'new' && sortDirection ? sortDirection : undefined
+    }
+    onClick={onChange}
+  >
+    {children}
+  </HeaderCell>
+);
 
 export type IdeaHeaderCellComponentProps = {
   sortAttribute?: string;
@@ -95,14 +118,19 @@ export default ({
         onChange,
       }: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>) => {
         return (
-          <SortableTableHeader
-            direction={sortAttribute === 'new' ? sortDirection : null}
-            onToggle={onChange}
+          <HeaderCell
+            clickable
+            sortDirection={
+              sortAttribute === 'new' && sortDirection
+                ? sortDirection
+                : undefined
+            }
+            onClick={onChange}
           >
             <TableHeaderCellText>
               <FormattedMessage {...messages.publication_date} />
             </TableHeaderCellText>
-          </SortableTableHeader>
+          </HeaderCell>
         );
       },
     },
@@ -110,16 +138,11 @@ export default ({
       name: 'up',
       cellProps: { width: 1 },
       onChange: handleSortClick('upvotes_count'),
-      Component: ({
-        sortAttribute,
-        sortDirection,
-        onChange,
-      }: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>) => {
+      Component: (
+        props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
+      ) => {
         return (
-          <SortableTableHeader
-            direction={sortAttribute === 'upvotes_count' ? sortDirection : null}
-            onToggle={onChange}
-          >
+          <SortableTableHeader {...props}>
             <TableHeaderCellText>
               <FormattedMessage {...messages.up} />
             </TableHeaderCellText>
@@ -131,18 +154,11 @@ export default ({
       name: 'down',
       cellProps: { width: 1 },
       onChange: handleSortClick('downvotes_count'),
-      Component: ({
-        sortAttribute,
-        sortDirection,
-        onChange,
-      }: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>) => {
+      Component: (
+        props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
+      ) => {
         return (
-          <SortableTableHeader
-            direction={
-              sortAttribute === 'downvotes_count' ? sortDirection : null
-            }
-            onToggle={onChange}
-          >
+          <SortableTableHeader {...props}>
             <TableHeaderCellText>
               <FormattedMessage {...messages.down} />
             </TableHeaderCellText>
@@ -154,16 +170,11 @@ export default ({
       name: 'picks',
       featureFlag: 'participatory_budgeting',
       cellProps: { width: 1 },
-      Component: ({
-        sortAttribute,
-        sortDirection,
-        onChange,
-      }: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>) => {
+      Component: (
+        props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
+      ) => {
         return (
-          <SortableTableHeader
-            direction={sortAttribute === 'baskets_count' ? sortDirection : null}
-            onToggle={onChange}
-          >
+          <SortableTableHeader {...props}>
             <TableHeaderCellText>
               <FormattedMessage {...messages.participatoryBudgettingPicks} />
             </TableHeaderCellText>
