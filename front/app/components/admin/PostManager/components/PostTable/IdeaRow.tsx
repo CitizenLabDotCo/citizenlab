@@ -11,9 +11,8 @@ import { IPhaseData } from 'services/phases';
 import { IIdeaStatusData } from 'services/ideaStatuses';
 
 // components
-import { Cell } from 'components/admin/Table';
+import { Row, Cell } from 'components/admin/Table';
 import { Icon } from 'semantic-ui-react';
-import WrappedRow from './WrappedRow';
 import T from 'components/T';
 
 import Checkbox from 'components/UI/Checkbox';
@@ -31,7 +30,7 @@ import messages from '../../messages';
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../tracks';
 import { TFilterMenu, ManagerType } from '../..';
-import { TitleLink, StyledRow } from './Row';
+import { TitleLink } from './Row';
 import SubRow from './SubRow';
 import {
   CellConfiguration,
@@ -254,10 +253,9 @@ class IdeaRow extends React.PureComponent<
           id="app.components.admin.PostManager.components.PostTable.IdeaRow.cells"
           onData={this.handleData}
         />
-        <WrappedRow
+        <Row
           className={`${className} e2e-idea-manager-idea-row`}
-          as={StyledRow}
-          active={active}
+          // active={active}
           ref={(instance) => {
             // eslint-disable-next-line react/no-find-dom-node
             instance && connectDragSource(findDOMNode(instance));
@@ -266,7 +264,7 @@ class IdeaRow extends React.PureComponent<
           {cells.map((cellConfiguration) =>
             this.renderCell({ idea, selection }, cellConfiguration)
           )}
-        </WrappedRow>
+        </Row>
         <SubRow
           {...{
             active,

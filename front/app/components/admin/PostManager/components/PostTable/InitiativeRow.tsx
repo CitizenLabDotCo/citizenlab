@@ -16,12 +16,13 @@ import {
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
 
 // components
+import { TitleLink, StyledRow } from './Row';
 import { Cell } from 'components/admin/Table';
 import { Icon } from 'semantic-ui-react';
-import WrappedRow from './WrappedRow';
 import T from 'components/T';
 import Checkbox from 'components/UI/Checkbox';
 import { StatusLabel } from '@citizenlab/cl2-component-library';
+import SubRow from './SubRow';
 
 // utils
 import localize, { InjectedLocalized } from 'utils/localize';
@@ -36,9 +37,9 @@ import AssigneeSelect from './AssigneeSelect';
 // analytics
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../tracks';
+
+// typings
 import { TFilterMenu, ManagerType } from '../..';
-import { TitleLink, StyledRow } from './Row';
-import SubRow from './SubRow';
 
 // resources
 import GetAppConfiguration, {
@@ -179,7 +180,7 @@ class InitiativeRow extends React.PureComponent<
 
     return (
       <>
-        <WrappedRow
+        <StyledRow
           className={`e2e-initiative-row ${className}`}
           as={StyledRow}
           active={active}
@@ -218,7 +219,7 @@ class InitiativeRow extends React.PureComponent<
             {attrs.upvotes_count}
           </Cell>
           <Cell>{attrs.comments_count}</Cell>
-        </WrappedRow>
+        </StyledRow>
         <SubRow
           {...{
             active,
