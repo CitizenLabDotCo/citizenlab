@@ -7,8 +7,8 @@ import { Table, Body, Footer, Row as TRow, Cell } from 'components/admin/Table';
 import Row from './Row';
 import Pagination from 'components/admin/Pagination';
 import NoPost from './NoPost';
-import IdeaHeaderRow from './IdeaHeaderRow';
-import InitiativesHeaderRow from './InitiativesHeaderRow';
+import IdeaHeaderRow from './header/IdeaHeaderRow';
+import InitiativesHeaderRow from './header/InitiativesHeaderRow';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 // services

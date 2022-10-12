@@ -10,8 +10,8 @@ import Outlet from 'components/Outlet';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
-import { TableHeaderCellText } from '.';
+import messages from '../../../messages';
+import { TableHeaderCellText } from '..';
 
 // styling
 import styled from 'styled-components';
@@ -39,19 +39,19 @@ const InfoIcon = styled(Icon)`
   }
 `;
 
-interface SortableTableHeaderProps {
-  sortAttribute?: string | undefined;
-  sortDirection?: 'ascending' | 'descending' | null | undefined;
+interface SortableHeaderCellProps {
+  sortAttribute?: string;
+  sortDirection?: 'ascending' | 'descending' | null;
   onChange: () => void;
   children: React.ReactNode;
 }
 
-const SortableTableHeader = ({
+const SortableHeaderCell = ({
   sortAttribute,
   sortDirection,
   onChange,
   children,
-}: SortableTableHeaderProps) => (
+}: SortableHeaderCellProps) => (
   <HeaderCell
     clickable
     sortDirection={
@@ -67,6 +67,7 @@ export type IdeaHeaderCellComponentProps = {
   sortAttribute?: string;
   sortDirection?: 'ascending' | 'descending' | null;
   allSelected?: boolean;
+  width: string;
   onChange?: (event: unknown) => void;
   onClick?: (event: unknown) => void;
 };
@@ -93,7 +94,9 @@ export default ({
         { onChange: (event: ChangeEvent<HTMLInputElement>) => void }
       >) => {
         return (
-          <Checkbox checked={!!allSelected} onChange={onChange} size="21px" />
+          <HeaderCell>
+            <Checkbox checked={!!allSelected} onChange={onChange} size="21px" />
+          </HeaderCell>
         );
       },
     },
@@ -102,9 +105,11 @@ export default ({
       cellProps: { width: 4 },
       Component: () => {
         return (
-          <TableHeaderCellText>
-            <FormattedMessage {...messages.title} />
-          </TableHeaderCellText>
+          <HeaderCell>
+            <TableHeaderCellText>
+              <FormattedMessage {...messages.title} />
+            </TableHeaderCellText>
+          </HeaderCell>
         );
       },
     },
@@ -112,25 +117,15 @@ export default ({
       name: 'published_on',
       cellProps: { width: 2 },
       onChange: handleSortClick('new'),
-      Component: ({
-        sortAttribute,
-        sortDirection,
-        onChange,
-      }: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>) => {
+      Component: (
+        props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
+      ) => {
         return (
-          <HeaderCell
-            clickable
-            sortDirection={
-              sortAttribute === 'new' && sortDirection
-                ? sortDirection
-                : undefined
-            }
-            onClick={onChange}
-          >
+          <SortableHeaderCell {...props}>
             <TableHeaderCellText>
               <FormattedMessage {...messages.publication_date} />
             </TableHeaderCellText>
-          </HeaderCell>
+          </SortableHeaderCell>
         );
       },
     },
@@ -142,11 +137,11 @@ export default ({
         props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
       ) => {
         return (
-          <SortableTableHeader {...props}>
+          <SortableHeaderCell {...props}>
             <TableHeaderCellText>
               <FormattedMessage {...messages.up} />
             </TableHeaderCellText>
-          </SortableTableHeader>
+          </SortableHeaderCell>
         );
       },
     },
@@ -158,11 +153,11 @@ export default ({
         props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
       ) => {
         return (
-          <SortableTableHeader {...props}>
+          <SortableHeaderCell {...props}>
             <TableHeaderCellText>
               <FormattedMessage {...messages.down} />
             </TableHeaderCellText>
-          </SortableTableHeader>
+          </SortableHeaderCell>
         );
       },
     },
@@ -174,7 +169,7 @@ export default ({
         props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
       ) => {
         return (
-          <SortableTableHeader {...props}>
+          <SortableHeaderCell {...props}>
             <TableHeaderCellText>
               <FormattedMessage {...messages.participatoryBudgettingPicks} />
             </TableHeaderCellText>
@@ -186,7 +181,7 @@ export default ({
                 </button>
               }
             />
-          </SortableTableHeader>
+          </SortableHeaderCell>
         );
       },
     },
@@ -219,14 +214,14 @@ export default ({
     )}%`;
 
     const Content = (
-      <HeaderCell width={width} key={name}>
-        <Component
-          sortAttribute={sortAttribute}
-          sortDirection={sortDirection}
-          allSelected={allSelected}
-          {...handlers}
-        />
-      </HeaderCell>
+      <Component
+        sortAttribute={sortAttribute}
+        sortDirection={sortDirection}
+        allSelected={allSelected}
+        width={width}
+        {...handlers}
+        key={name}
+      />
     );
 
     if (!featureFlag) return Content;

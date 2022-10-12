@@ -7,7 +7,7 @@ import SortableTableHeader from 'components/admin/SortableTableHeader';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
+import messages from '../../../messages';
 
 // styling
 import { colors } from 'utils/styleUtils';
@@ -16,7 +16,7 @@ import { colors } from 'utils/styleUtils';
 import { roundPercentage } from 'utils/math';
 
 // typings
-import { TableHeaderCellText } from '.';
+import { TableHeaderCellText } from '..';
 
 const TOTAL_WIDTH = 11;
 const getWidth = (width: number) => `${roundPercentage(width, TOTAL_WIDTH)}%`;
