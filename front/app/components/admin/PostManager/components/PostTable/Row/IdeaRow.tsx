@@ -12,7 +12,7 @@ import { IIdeaStatusData } from 'services/ideaStatuses';
 
 // components
 import { TitleLink } from '.';
-// import { Box } from ''
+import { Box } from '@citizenlab/cl2-component-library';
 import SubRow from './SubRow';
 import { Row, Cell } from 'components/admin/Table';
 import { Icon } from 'semantic-ui-react';
@@ -219,7 +219,13 @@ class IdeaRow extends React.PureComponent<
         borderBottom="none !important"
         background={active ? colors.grey300 : undefined}
       >
-        <Component idea={idea} selection={selection} {...handlers} />
+        <Box
+          {...(['up', 'down'].includes(name)
+            ? { display: 'flex', flexDirection: 'row' }
+            : {})}
+        >
+          <Component idea={idea} selection={selection} {...handlers} />
+        </Box>
       </Cell>
     );
 
