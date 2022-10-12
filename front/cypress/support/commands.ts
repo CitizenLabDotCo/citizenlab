@@ -798,7 +798,6 @@ export function apiEditProject({
   descriptionPreview?: string;
   description?: string;
   publicationStatus?: 'draft' | 'published' | 'archived';
-  participationMethod?: ParticipationMethod;
   assigneeId?: string;
   surveyUrl?: string;
   maxBudget?: number;
