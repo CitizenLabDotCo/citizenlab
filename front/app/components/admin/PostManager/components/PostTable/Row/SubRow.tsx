@@ -1,13 +1,13 @@
 import React from 'react';
 
-import PhasesSelector from './PhasesSelector';
-import TopicsSelector from './TopicsSelector';
-import ProjectSelector from './ProjectSelector';
-import IdeasStatusSelector from './IdeasStatusSelector';
-import InitiativesStatusSelector from './InitiativesStatusSelector';
+import PhasesSelector from './selectors/PhasesSelector';
+import TopicsSelector from './selectors/TopicsSelector';
+import ProjectSelector from './selectors/ProjectSelector';
+import IdeasStatusSelector from './selectors/IdeasStatusSelector';
+import InitiativesStatusSelector from './selectors/InitiativesStatusSelector';
 
 import { Row, Cell } from 'components/admin/Table';
-import { TFilterMenu } from '../..';
+import { TFilterMenu } from '../../..';
 import { IPhaseData } from 'services/phases';
 import { IIdeaStatusData } from 'services/ideaStatuses';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';

@@ -16,7 +16,7 @@ import {
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
 
 // components
-import { TitleLink, StyledRow } from './Row';
+import { TitleLink, StyledRow } from '.';
 import { Cell } from 'components/admin/Table';
 import { Icon } from 'semantic-ui-react';
 import T from 'components/T';
@@ -32,14 +32,14 @@ import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
 // style
-import AssigneeSelect from './AssigneeSelect';
+import AssigneeSelect from '../AssigneeSelect';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from '../../tracks';
+import tracks from '../../../tracks';
 
 // typings
-import { TFilterMenu, ManagerType } from '../..';
+import { TFilterMenu, ManagerType } from '../../..';
 
 // resources
 import GetAppConfiguration, {

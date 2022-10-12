@@ -45,7 +45,7 @@ import {
 } from 'services/appConfiguration';
 import { THomepageBannerLayout } from 'services/homepageSettings';
 import { ManagerType } from 'components/admin/PostManager';
-import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
+import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/Row/IdeaRow';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/header/IdeaHeaderRow';
 import { TTabName } from 'containers/Admin/projects/all/CreateProject';
 import { TVerificationMethod } from 'services/verificationMethods';

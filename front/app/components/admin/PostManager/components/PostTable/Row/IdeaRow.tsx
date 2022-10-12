@@ -11,7 +11,7 @@ import { IPhaseData } from 'services/phases';
 import { IIdeaStatusData } from 'services/ideaStatuses';
 
 // components
-import { TitleLink, StyledRow } from './Row';
+import { TitleLink, StyledRow } from '.';
 import SubRow from './SubRow';
 import { Cell } from 'components/admin/Table';
 import { Icon } from 'semantic-ui-react';
@@ -28,14 +28,14 @@ import { insertConfiguration } from 'utils/moduleUtils';
 // i18n
 import { FormattedRelative, InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import messages from '../../messages';
+import messages from '../../../messages';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from '../../tracks';
+import tracks from '../../../tracks';
 
 // typings
-import { TFilterMenu, ManagerType } from '../..';
+import { TFilterMenu, ManagerType } from '../../..';
 import {
   CellConfiguration,
   InsertConfigurationOptions,

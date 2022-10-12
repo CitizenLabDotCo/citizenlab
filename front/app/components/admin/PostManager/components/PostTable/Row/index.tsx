@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import { ManagerType, TFilterMenu } from '../..';
+import { ManagerType, TFilterMenu } from '../../..';
 
 // services
 import { IIdeaData } from 'services/ideas';
