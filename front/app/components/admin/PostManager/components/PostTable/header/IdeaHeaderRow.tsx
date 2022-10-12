@@ -24,11 +24,13 @@ import {
   InsertConfigurationOptions,
   Override,
 } from 'typings';
+import { SortAttribute as IdeasSortAttribute } from 'resources/GetIdeas';
+import { SortDirection } from 'utils/paginationUtils';
 
 interface SortableHeaderCellProps {
-  sortAttribute?: string;
+  sortAttribute?: IdeasSortAttribute;
+  sortAttributeName: IdeasSortAttribute;
   sortDirection?: 'ascending' | 'descending' | null;
-  type: string;
   infoTooltip?: React.ReactChild;
   width: string;
   onChange: () => void;
@@ -38,7 +40,7 @@ interface SortableHeaderCellProps {
 const SortableHeaderCell = ({
   sortAttribute,
   sortDirection,
-  type,
+  sortAttributeName,
   width,
   infoTooltip,
   onChange,
@@ -49,7 +51,9 @@ const SortableHeaderCell = ({
       clickable
       width={width}
       sortDirection={
-        sortAttribute === type && sortDirection ? sortDirection : undefined
+        sortAttribute === sortAttributeName && sortDirection
+          ? sortDirection
+          : undefined
       }
       infoTooltip={infoTooltip}
       onClick={onChange}
@@ -60,7 +64,7 @@ const SortableHeaderCell = ({
 };
 
 export type IdeaHeaderCellComponentProps = {
-  sortAttribute?: string;
+  sortAttribute?: IdeasSortAttribute;
   sortDirection?: 'ascending' | 'descending' | null;
   allSelected?: boolean;
   width: string;
@@ -68,13 +72,21 @@ export type IdeaHeaderCellComponentProps = {
   onClick?: (event: unknown) => void;
 };
 
+interface Props {
+  sortAttribute?: IdeasSortAttribute;
+  sortDirection?: SortDirection;
+  allSelected: boolean;
+  toggleSelectAll: () => void;
+  handleSortClick: (newSortAttribute: IdeasSortAttribute) => () => void;
+}
+
 export default ({
   sortAttribute,
   sortDirection,
   allSelected,
   toggleSelectAll,
   handleSortClick,
-}) => {
+}: Props) => {
   const [cells, setCells] = useState<
     CellConfiguration<IdeaHeaderCellComponentProps>[]
   >([
@@ -115,7 +127,7 @@ export default ({
         props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
       ) => {
         return (
-          <SortableHeaderCell {...props} type="new">
+          <SortableHeaderCell {...props} sortAttributeName="new">
             <FormattedMessage {...messages.publication_date} />
           </SortableHeaderCell>
         );
@@ -129,7 +141,7 @@ export default ({
         props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
       ) => {
         return (
-          <SortableHeaderCell {...props} type="upvotes_count">
+          <SortableHeaderCell {...props} sortAttributeName="upvotes_count">
             <FormattedMessage {...messages.up} />
           </SortableHeaderCell>
         );
@@ -143,7 +155,7 @@ export default ({
         props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
       ) => {
         return (
-          <SortableHeaderCell {...props} type="downvotes_count">
+          <SortableHeaderCell {...props} sortAttributeName="downvotes_count">
             <FormattedMessage {...messages.down} />
           </SortableHeaderCell>
         );

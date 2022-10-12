@@ -17,7 +17,14 @@ import { IPhaseData } from 'services/phases';
 import { IIdeaStatusData } from 'services/ideaStatuses';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
 
-// resources
+// styling
+import styled from 'styled-components';
+import { colors, stylingConsts } from 'utils/styleUtils';
+
+// i18n
+import { ManagerType, TFilterMenu } from '../..';
+
+// typings
 import {
   Sort as IdeasSort,
   SortAttribute as IdeasSortAttribute,
@@ -26,16 +33,7 @@ import {
   Sort as InitiativesSort,
   SortAttribute as InitiativesSortAttribute,
 } from 'resources/GetInitiatives';
-
-// styling
-import styled from 'styled-components';
-import { colors, stylingConsts } from 'utils/styleUtils';
-
-// utils
 import { SortDirection } from 'utils/paginationUtils';
-
-// i18n
-import { ManagerType, TFilterMenu } from '../..';
 
 const Container = styled.div`
   .ui.table {
