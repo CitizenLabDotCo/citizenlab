@@ -86,6 +86,15 @@ const StyledModerationContentCell = styled(ModerationContentCell)`
   margin-bottom: 20px;
 `;
 
+const StyledA = styled.a`
+  text-decoration: underline;
+
+  &:hover {
+    color: ${colors.grey800};
+    text-decoration: underline;
+  }
+`;
+
 interface CellProps {
   className?: string;
   children: React.ReactNode;
@@ -242,13 +251,13 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
                     <BelongsToType>
                       <FormattedMessage {...belongsToTypeMessage} />:
                     </BelongsToType>
-                    <a
+                    <StyledA
                       href={belongsToHref}
                       onClick={handleBelongsToLinkOnClick}
                       data-belongstotype={belongsToType}
                     >
                       {localize(belongsToTitleMultiloc)}
-                    </a>
+                    </StyledA>
                   </BelongsToItem>
                 );
               }
