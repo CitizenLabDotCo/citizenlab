@@ -68,11 +68,9 @@ const VerificationModal = memo<Props>(({ className, onMounted }) => {
     const subscriptions = [
       openVerificationModal$.subscribe(
         ({ eventValue: { step, context, error } }) => {
-          if (!isNilOrError(authUser)) {
-            setActiveStep(step);
-            setContext(context);
-            error && setError(error);
-          }
+          setActiveStep(step);
+          setContext(context);
+          error && setError(error);
         }
       ),
       closeVerificationModal$.subscribe(() => {
