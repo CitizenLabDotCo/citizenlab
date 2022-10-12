@@ -4,7 +4,7 @@ import { isAdmin, TRole } from 'services/permissions/roles';
 import { includes, get, isArray } from 'lodash-es';
 
 // Components
-import Table from 'components/UI/Table';
+import { Table } from 'components/admin/Table';
 import SortableTableHeaderCell from 'components/UI/Table/SortableTableHeaderCell';
 import Pagination from 'components/Pagination';
 import UserTableRow from './UserTableRow';
@@ -78,11 +78,13 @@ interface Props extends InputProps, GetUsersChildProps {}
 
 interface State {}
 
+type Extra = { sortAttribute: SortAttribute };
+
 interface Tracks {
   trackPagination: () => void;
   trackToggleOneUser: () => void;
   trackAdminToggle: () => void;
-  trackSortChange: ({ extra: { sortAttribute: SortAttribute } }) => void;
+  trackSortChange: (value: { extra: Extra }) => void;
 }
 
 class UsersTable extends PureComponent<Props & Tracks, State> {
