@@ -1,12 +1,17 @@
 import React from 'react';
 
+// components
+import { Row, Cell } from 'components/admin/Table';
 import PhasesSelector from './selectors/PhasesSelector';
 import TopicsSelector from './selectors/TopicsSelector';
 import ProjectSelector from './selectors/ProjectSelector';
 import IdeasStatusSelector from './selectors/IdeasStatusSelector';
 import InitiativesStatusSelector from './selectors/InitiativesStatusSelector';
 
-import { Row, Cell } from 'components/admin/Table';
+// styling
+import { colors } from 'utils/styleUtils';
+
+// typings
 import { TFilterMenu } from '../../..';
 import { IPhaseData } from 'services/phases';
 import { IIdeaStatusData } from 'services/ideaStatuses';
@@ -32,7 +37,7 @@ interface Props {
 }
 
 export default ({
-  // active,
+  active,
   className,
   activeFilterMenu,
   selectedPhases,
@@ -49,8 +54,8 @@ export default ({
 }: Props) => {
   return (
     <Row className={className}>
-      <Cell />
-      <Cell colSpan="6">
+      <Cell background={active ? colors.grey300 : undefined} />
+      <Cell background={active ? colors.grey300 : undefined} colSpan="6">
         {activeFilterMenu === 'phases' && phases && (
           <PhasesSelector
             selectedPhases={selectedPhases || []}

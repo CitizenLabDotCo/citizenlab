@@ -41,6 +41,7 @@ import {
   InsertConfigurationOptions,
   Override,
 } from 'typings';
+import { colors } from '@citizenlab/cl2-component-library';
 
 type InputProps = {
   type: ManagerType;
@@ -59,6 +60,7 @@ type InputProps = {
 export type IdeaCellComponentProps = {
   idea: IIdeaData;
   selection: Set<string>;
+  active?: boolean;
   onChange?: (event: unknown) => void;
   onClick?: (event: unknown) => void;
 };
@@ -189,7 +191,7 @@ class IdeaRow extends React.PureComponent<
   };
 
   renderCell = (
-    { idea, selection }: IdeaCellComponentProps,
+    { idea, selection, active }: IdeaCellComponentProps,
     {
       name,
       Component,
@@ -204,7 +206,11 @@ class IdeaRow extends React.PureComponent<
     };
 
     const Content = (
-      <Cell key={name} borderBottom="0px solid white !important">
+      <Cell
+        key={name}
+        borderBottom="none !important"
+        background={active ? colors.grey300 : undefined}
+      >
         <Component idea={idea} selection={selection} {...handlers} />
       </Cell>
     );
@@ -265,7 +271,7 @@ class IdeaRow extends React.PureComponent<
           }}
         >
           {cells.map((cellConfiguration) =>
-            this.renderCell({ idea, selection }, cellConfiguration)
+            this.renderCell({ idea, selection, active }, cellConfiguration)
           )}
         </StyledRow>
         <SubRow
