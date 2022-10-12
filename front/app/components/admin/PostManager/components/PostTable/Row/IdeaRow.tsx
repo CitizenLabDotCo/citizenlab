@@ -15,7 +15,7 @@ import { TitleLink } from '.';
 import { Box } from '@citizenlab/cl2-component-library';
 import StyledRow from './StyledRow';
 import SubRow from './SubRow';
-import { Cell } from 'components/admin/Table';
+import { Td } from 'components/admin/Table';
 import { Icon } from 'semantic-ui-react';
 import T from 'components/T';
 import Outlet from 'components/Outlet';
@@ -207,7 +207,7 @@ class IdeaRow extends React.PureComponent<
     };
 
     const Content = (
-      <Cell
+      <Td
         key={name}
         borderBottom="none !important"
         background={active ? colors.grey300 : undefined}
@@ -219,7 +219,7 @@ class IdeaRow extends React.PureComponent<
         >
           <Component idea={idea} selection={selection} {...handlers} />
         </Box>
-      </Cell>
+      </Td>
     );
 
     if (!featureFlag) return Content;

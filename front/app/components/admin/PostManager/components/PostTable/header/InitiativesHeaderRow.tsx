@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Header, Row, HeaderCell } from 'components/admin/Table';
+import { Thead, Tr, Th } from 'components/admin/Table';
 import Checkbox from 'components/UI/Checkbox';
 import { SortableHeaderCell } from './IdeaHeaderRow';
 
@@ -37,21 +37,21 @@ export default ({
   toggleSelectAll,
   handleSortClick,
 }: Props) => (
-  <Header background={colors.grey50}>
-    <Row>
-      <HeaderCell width={getWidth(1)}>
+  <Thead background={colors.grey50}>
+    <Tr>
+      <Th width={getWidth(1)}>
         <Checkbox
           checked={!!allSelected}
           onChange={toggleSelectAll}
           size="21px"
         />
-      </HeaderCell>
-      <HeaderCell width={getWidth(4)}>
+      </Th>
+      <Th width={getWidth(4)}>
         <FormattedMessage {...messages.title} />
-      </HeaderCell>
-      <HeaderCell width={getWidth(2)}>
+      </Th>
+      <Th width={getWidth(2)}>
         <FormattedMessage {...messages.assignee} />
-      </HeaderCell>
+      </Th>
       <SortableHeaderCell
         width={getWidth(2)}
         sortAttribute={sortAttribute}
@@ -70,9 +70,9 @@ export default ({
       >
         <FormattedMessage {...messages.votes} />
       </SortableHeaderCell>
-      <HeaderCell width={getWidth(1)}>
+      <Th width={getWidth(1)}>
         <FormattedMessage {...messages.comments} />
-      </HeaderCell>
-    </Row>
-  </Header>
+      </Th>
+    </Tr>
+  </Thead>
 );

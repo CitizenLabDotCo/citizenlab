@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useState } from 'react';
 
 // components
-import { Header, Row, HeaderCell } from 'components/admin/Table';
+import { Thead, Tr, Th } from 'components/admin/Table';
 import Checkbox from 'components/UI/Checkbox';
 import { Text } from '@citizenlab/cl2-component-library';
 import FeatureFlag from 'components/FeatureFlag';
@@ -47,7 +47,7 @@ export const SortableHeaderCell = ({
   children,
 }: SortableHeaderCellProps) => {
   return (
-    <HeaderCell
+    <Th
       clickable
       width={width}
       sortDirection={
@@ -59,7 +59,7 @@ export const SortableHeaderCell = ({
       onClick={onChange}
     >
       {children}
-    </HeaderCell>
+    </Th>
   );
 };
 
@@ -102,9 +102,9 @@ export default ({
         { onChange: (event: ChangeEvent<HTMLInputElement>) => void }
       >) => {
         return (
-          <HeaderCell>
+          <Th>
             <Checkbox checked={!!allSelected} onChange={onChange} size="21px" />
-          </HeaderCell>
+          </Th>
         );
       },
     },
@@ -113,9 +113,9 @@ export default ({
       cellProps: { width: 4 },
       Component: () => {
         return (
-          <HeaderCell>
+          <Th>
             <FormattedMessage {...messages.title} />
-          </HeaderCell>
+          </Th>
         );
       },
     },
@@ -167,7 +167,7 @@ export default ({
       cellProps: { width: 1 },
       Component: ({ width }) => {
         return (
-          <HeaderCell
+          <Th
             width={width}
             infoTooltip={
               <Text mb="0px" mt="0px" fontSize="s">
@@ -176,7 +176,7 @@ export default ({
             }
           >
             <FormattedMessage {...messages.participatoryBudgettingPicks} />
-          </HeaderCell>
+          </Th>
         );
       },
     },
@@ -241,11 +241,11 @@ export default ({
         id="app.components.admin.PostManager.components.PostTable.IdeaHeaderRow.cells"
         onData={handleData}
       />
-      <Header background={colors.grey50}>
-        <Row>
+      <Thead background={colors.grey50}>
+        <Tr>
           {cells.map((cellConfiguration) => renderCell(cellConfiguration))}
-        </Row>
-      </Header>
+        </Tr>
+      </Thead>
     </>
   );
 };

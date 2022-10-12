@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Row, Cell } from 'components/admin/Table';
+import { Tr, Td } from 'components/admin/Table';
 import PhasesSelector from './selectors/PhasesSelector';
 import TopicsSelector from './selectors/TopicsSelector';
 import ProjectSelector from './selectors/ProjectSelector';
@@ -53,9 +53,9 @@ export default ({
   postType,
 }: Props) => {
   return (
-    <Row className={className}>
-      <Cell background={active ? colors.grey300 : undefined} />
-      <Cell background={active ? colors.grey300 : undefined} colSpan="6">
+    <Tr className={className}>
+      <Td background={active ? colors.grey300 : undefined} />
+      <Td background={active ? colors.grey300 : undefined} colSpan="6">
         {activeFilterMenu === 'phases' && phases && (
           <PhasesSelector
             selectedPhases={selectedPhases || []}
@@ -90,7 +90,7 @@ export default ({
             onUpdateStatus={onUpdateStatus}
           />
         )}
-      </Cell>
-    </Row>
+      </Td>
+    </Tr>
   );
 };

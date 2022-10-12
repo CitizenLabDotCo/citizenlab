@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Header, Row, HeaderCell } from 'components/admin/Table';
+import { Thead, Tr, Th } from 'components/admin/Table';
 import { Text } from '@citizenlab/cl2-component-library';
 
 // styling
@@ -28,14 +28,14 @@ const ClickableCell = ({
   sortDirection,
   ...otherProps
 }: ClickableCellProps) => (
-  <HeaderCell
+  <Th
     clickable
     background={sortDirection ? colors.grey200 : undefined}
     sortDirection={sortDirection}
     {...otherProps}
   >
     {children}
-  </HeaderCell>
+  </Th>
 );
 
 interface Props {
@@ -49,8 +49,8 @@ const TableHeader = ({
   sortDirection,
   onSortHeaderClick,
 }: Props) => (
-  <Header background={colors.grey50}>
-    <Row>
+  <Thead background={colors.grey50}>
+    <Tr>
       <ClickableCell
         sortDirection={sortAttribute === 'email' ? sortDirection : undefined}
         onClick={onSortHeaderClick('email')}
@@ -86,7 +86,7 @@ const TableHeader = ({
       >
         <FormattedMessage {...messages.inviteStatus} />
       </ClickableCell>
-      <HeaderCell
+      <Th
         width="12%"
         style={{ textAlign: 'center' }}
         infoTooltip={
@@ -96,9 +96,9 @@ const TableHeader = ({
         }
       >
         <FormattedMessage {...messages.deleteInvite} />
-      </HeaderCell>
-    </Row>
-  </Header>
+      </Th>
+    </Tr>
+  </Thead>
 );
 
 export default TableHeader;

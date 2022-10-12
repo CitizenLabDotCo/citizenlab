@@ -2,7 +2,7 @@ import React from 'react';
 import { every, isEmpty, isFunction } from 'lodash-es';
 
 // components
-import { Table, Body, Footer, Row as TRow, Cell } from 'components/admin/Table';
+import { Table, Tbody, Tfoot, Tr, Td } from 'components/admin/Table';
 import Row from './Row';
 import Pagination from 'components/admin/Pagination';
 import NoPost from './NoPost';
@@ -212,7 +212,7 @@ export default class PostTable extends React.Component<Props> {
               handleSortClick={this.handleSortClick}
             />
           ) : null}
-          <Body>
+          <Tbody>
             {!isEmpty(posts) ? (
               <TransitionGroup component={null}>
                 {
@@ -241,19 +241,19 @@ export default class PostTable extends React.Component<Props> {
                 }
               </TransitionGroup>
             ) : null}
-          </Body>
+          </Tbody>
           {!isEmpty(posts) && (
-            <Footer background={colors.grey50}>
-              <TRow>
-                <Cell colSpan="7">
+            <Tfoot background={colors.grey50}>
+              <Tr>
+                <Td colSpan="7">
                   <Pagination
                     currentPage={this.props.currentPageNumber || 1}
                     totalPages={this.props.lastPageNumber || 1}
                     loadPage={this.handlePaginationClick}
                   />
-                </Cell>
-              </TRow>
-            </Footer>
+                </Td>
+              </Tr>
+            </Tfoot>
           )}
         </StyledTable>
         {isEmpty(posts) && (

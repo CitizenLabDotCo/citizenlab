@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 // components
-import { HeaderCell } from 'components/admin/Table';
+import { Th } from 'components/admin/Table';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -28,9 +28,9 @@ const IdeaHeaderCell = ({ onData }: Props) => {
           cellProps: { width: 2 },
           Component: ({ width }) => {
             return (
-              <HeaderCell width={width}>
+              <Th width={width}>
                 <FormattedMessage {...messages.assignee} />
-              </HeaderCell>
+              </Th>
             );
           },
         },

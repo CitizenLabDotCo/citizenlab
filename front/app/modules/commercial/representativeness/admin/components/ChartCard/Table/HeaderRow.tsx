@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Header, Row, HeaderCell } from 'components/admin/Table';
+import { Thead, Tr, Th } from 'components/admin/Table';
 import { Box } from '@citizenlab/cl2-component-library';
 
 // styling
@@ -15,15 +15,15 @@ interface Props {
 }
 
 const HeaderRow = ({ columns }: Props) => (
-  <Header background={colors.grey50}>
-    <Row>
+  <Thead background={colors.grey50}>
+    <Tr>
       {columns.map((column, i) => (
-        <HeaderCell width={`${roundPercentage(1, columns.length)}%`} key={i}>
+        <Th width={`${roundPercentage(1, columns.length)}%`} key={i}>
           <Box my="6px">{column}</Box>
-        </HeaderCell>
+        </Th>
       ))}
-    </Row>
-  </Header>
+    </Tr>
+  </Thead>
 );
 
 export default HeaderRow;

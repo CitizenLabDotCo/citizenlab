@@ -18,7 +18,7 @@ import { IInitiativeStatusData } from 'services/initiativeStatuses';
 // components
 import { TitleLink } from '.';
 import StyledRow from './StyledRow';
-import { Cell as BaseCell } from 'components/admin/Table';
+import { Td } from 'components/admin/Table';
 import { Icon } from 'semantic-ui-react';
 import T from 'components/T';
 import Checkbox from 'components/UI/Checkbox';
@@ -82,13 +82,13 @@ interface CellProps {
 }
 
 const Cell = ({ onClick, active, children }: CellProps) => (
-  <BaseCell
+  <Td
     borderBottom="none !important"
     background={active ? colors.grey300 : undefined}
     onClick={onClick}
   >
     {children}
-  </BaseCell>
+  </Td>
 );
 
 interface Props extends InputProps, DataProps {

@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Table, Body } from 'components/admin/Table';
+import { Table, Tbody } from 'components/admin/Table';
 import HeaderRow from './HeaderRow';
 import Row from './Row';
 
@@ -27,11 +27,11 @@ const TableComponent = ({ columns, data, hideBorderTop }: Props) => (
     }}
   >
     <HeaderRow columns={columns} />
-    <Body>
+    <Tbody>
       {data.map((row, i) => (
         <Row row={row} key={i} />
       ))}
-    </Body>
+    </Tbody>
   </Table>
 );
 

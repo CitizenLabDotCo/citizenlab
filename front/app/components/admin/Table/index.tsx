@@ -1,7 +1,7 @@
 export { default as Table } from './Table';
-export { default as Header } from './Header';
-export { default as Body } from './Body';
-export { default as Row } from './Row';
-export { default as Cell } from './Cell';
-export { default as HeaderCell } from './HeaderCell';
-export { default as Footer } from './Footer';
+export { default as Thead } from './Thead';
+export { default as Tbody } from './Tbody';
+export { default as Tr } from './Tr';
+export { default as Td } from './Td';
+export { default as Th } from './Th';
+export { default as Tfoot } from './Tfoot';

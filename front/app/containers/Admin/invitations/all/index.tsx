@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 // components
-import { Table, Body, Footer, Row, Cell } from 'components/admin/Table';
+import { Table, Tbody, Tfoot, Tr, Td } from 'components/admin/Table';
 import Pagination from 'components/admin/Pagination';
 import Button from 'components/UI/Button';
 import TableHeader from './TableHeader';
@@ -129,24 +129,24 @@ const InvitesTable = ({
             onSortHeaderClick={handleSortHeaderClick}
           />
 
-          <Body>
+          <Tbody>
             {invitesList.map((invite) => (
               <TableRow key={invite.id} invite={invite} />
             ))}
-          </Body>
+          </Tbody>
 
           {currentPage && lastPage && lastPage > 1 && (
-            <Footer background={colors.grey50}>
-              <Row>
-                <Cell colSpan="5">
+            <Tfoot background={colors.grey50}>
+              <Tr>
+                <Td colSpan="5">
                   <Pagination
                     currentPage={currentPage}
                     totalPages={lastPage}
                     loadPage={onChangePage}
                   />
-                </Cell>
-              </Row>
-            </Footer>
+                </Td>
+              </Tr>
+            </Tfoot>
           )}
         </Table>
       )}

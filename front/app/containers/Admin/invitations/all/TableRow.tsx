@@ -8,7 +8,7 @@ import useUser from 'hooks/useUser';
 
 // components
 import { Button as SemanticButton, Popup } from 'semantic-ui-react';
-import { Row, Cell } from 'components/admin/Table';
+import { Tr, Td } from 'components/admin/Table';
 import { Badge } from '@citizenlab/cl2-component-library';
 
 // styling
@@ -39,20 +39,20 @@ const TableRow = (inputProps: InputProps) => {
 
   return (
     // To test invitation flow, we need the token, hence this className
-    <Row
+    <Tr
       key={inputProps.invite.id}
       className={inputProps.invite.attributes.token}
     >
-      <Cell>{user.attributes.email}</Cell>
-      <Cell>
+      <Td>{user.attributes.email}</Td>
+      <Td>
         <span>
           {user.attributes.first_name} {user.attributes.last_name}
         </span>
-      </Cell>
-      <Cell>
+      </Td>
+      <Td>
         <FormattedDate value={inputProps.invite.attributes.created_at} />
-      </Cell>
-      <Cell style={{ textAlign: 'center' }}>
+      </Td>
+      <Td style={{ textAlign: 'center' }}>
         {user.attributes.invite_status === 'pending' ? (
           <Badge>
             <FormattedMessage {...messages.inviteStatusPending} />
@@ -62,8 +62,8 @@ const TableRow = (inputProps: InputProps) => {
             <FormattedMessage {...messages.inviteStatusAccepted} />
           </Badge>
         )}
-      </Cell>
-      <Cell style={{ textAlign: 'center' }}>
+      </Td>
+      <Td style={{ textAlign: 'center' }}>
         <Popup
           trigger={<SemanticButton icon="trash" />}
           content={
@@ -76,8 +76,8 @@ const TableRow = (inputProps: InputProps) => {
           on="click"
           position="bottom right"
         />
-      </Cell>
-    </Row>
+      </Td>
+    </Tr>
   );
 };
 
