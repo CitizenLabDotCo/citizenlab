@@ -1,5 +1,4 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Modal from 'components/UI/Modal';
