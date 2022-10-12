@@ -30,7 +30,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 // services
 import { DEFAULT_PAGE_SLUGS } from 'services/navbar';
-import { TPageCode } from 'services/pages';
+import { TPageCode } from 'services/staticPages';
 
 const Container = styled.div`
   min-height: calc(

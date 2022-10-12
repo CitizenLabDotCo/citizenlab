@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { POLICY_PAGES } from 'services/pages';
+import { POLICY_PAGES } from 'services/staticPages';
 
 // styling
 import styled from 'styled-components';

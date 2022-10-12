@@ -16,7 +16,7 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // services
-import { FOOTER_PAGES, TFooterPage } from 'services/pages';
+import { FOOTER_PAGES, TFooterPage } from 'services/staticPages';
 
 // style
 import styled, { css } from 'styled-components';

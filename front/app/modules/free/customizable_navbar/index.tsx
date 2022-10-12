@@ -1,6 +1,6 @@
 import React, { lazy } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import ModuleActive from './admin/components/ModuleActive';
+import ModuleActive from './ModuleActive';
 import PoliciesSubtitle from './admin/components/PoliciesSubtitle';
 import PagesMenu from './admin/containers';
 import NavbarTitleField from './admin/components/NavbarTitleField';

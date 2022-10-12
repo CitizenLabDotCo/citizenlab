@@ -1,10 +1,15 @@
 import { API_PATH } from 'containers/App/constants';
 import { ImageSizes, IRelationship, Multiloc } from 'typings';
-import streams from 'utils/streams';
+import streams, { IStreamParams } from 'utils/streams';
 import { THomepageBannerLayout } from './homepageSettings';
+import { apiEndpoint as navbarEndpoint } from 'services/navbar';
 
 export interface ICustomPage {
   data: ICustomPageData;
+}
+
+export interface ICustomPages {
+  data: ICustomPageData[];
 }
 
 export interface ICustomPageData {
@@ -53,18 +58,18 @@ export interface ICustomPageAttributes extends ICustomPageEnabledSettings {
   bottom_info_section_multiloc: Multiloc;
   header_bg: ImageSizes | null;
 
-  // check on this one
-  code: string;
+  code: TPageCode;
   // not sure about these
-  // pinned_admin_publication_ids: string[],
-  // static_page_file_id: string,
 
   // for a subsequent iteration
   projects_filter_type: 'area' | 'projects';
   nav_bar_item_title_multiloc: Multiloc;
+
+  created_at: string;
+  updated_at: string;
 }
 
-const customPagesEndpoint = `${API_PATH}/static_pages`;
+export const customPagesEndpoint = `${API_PATH}/static_pages`;
 
 export function createCustomPage(pageData: { title_multiloc: Multiloc }) {
   return streams.add<ICustomPage>(customPagesEndpoint, pageData);
@@ -93,3 +98,84 @@ export async function updateCustomPage(
   );
   return customPageSettings;
 }
+
+// exports from old pages.ts file
+
+export async function deletePage(pageId: string) {
+  const response = await streams.delete(
+    `${customPagesEndpoint}/${pageId}`,
+    pageId
+  );
+  await streams.fetchAllWith({ apiEndpoint: [navbarEndpoint] });
+
+  return response;
+}
+
+export function listPages(streamParams: IStreamParams | null = null) {
+  return streams.get<{ data: ICustomPageData[] }>({
+    apiEndpoint: `${customPagesEndpoint}`,
+    ...streamParams,
+  });
+}
+
+// The following types all refer to the 'code' attribute of the page.
+
+// The 'standard page' distinction is only relevant for non-commercial
+// customers: they can edit the content of these pages, but nothing else.
+// For commercial customers, these behave as 'custom' pages.
+type TStandardPage = 'about' | 'faq';
+
+export const STANDARD_PAGES: TStandardPage[] = ['about', 'faq'];
+
+// Policy pages of which only the content can be edited
+// in 'policy' tab in settings (both for non-commercial and
+// commercial customers). Their codes are the same as their slugs.
+export type TPolicyPage = 'terms-and-conditions' | 'privacy-policy';
+
+export const POLICY_PAGES: TPolicyPage[] = [
+  'terms-and-conditions',
+  'privacy-policy',
+];
+
+export enum POLICY_PAGE {
+  termsAndConditions = 'terms-and-conditions',
+  privacyPolicy = 'privacy-policy',
+}
+
+export function isPolicyPageSlug(slug: string): slug is TPolicyPage {
+  const termsAndConditionsSlug: TPolicyPage = POLICY_PAGE.termsAndConditions;
+  const privacyPolicySlug: TPolicyPage = POLICY_PAGE.privacyPolicy;
+
+  return slug === termsAndConditionsSlug || slug === privacyPolicySlug;
+}
+
+// Hardcoded pages don't actually exist in the database-
+// their codes are the same as their slugs, which are used to render
+// the footer. The slugs link to hard-coded components, see app/routes.ts.
+type THardcodedPage = 'cookie-policy' | 'accessibility-statement';
+
+// Pages in the footer.
+export type TFooterPage = TPolicyPage | THardcodedPage;
+
+export const FOOTER_PAGES: TFooterPage[] = [
+  'terms-and-conditions',
+  'privacy-policy',
+  'cookie-policy',
+  'accessibility-statement',
+];
+
+// Pages that exist in the static_pages database,
+// but do not have a corresponding navbar item.
+// Their slugs and titles cannot be changed. Their
+// codes are the same as their slugs.
+type TFixedPage = TPolicyPage | 'proposals';
+
+export const FIXED_PAGES: TFixedPage[] = [
+  'terms-and-conditions',
+  'privacy-policy',
+  'proposals',
+];
+
+// Everything about 'custom' pages can be changed: their
+// title, navbar name, content and slug.
+export type TPageCode = TStandardPage | TFixedPage | 'custom';

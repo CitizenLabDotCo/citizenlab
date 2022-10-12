@@ -3,8 +3,8 @@ import usePages from './usePages';
 import { Observable, Subscription } from 'rxjs';
 import { waitFor } from 'utils/testUtils/rtl';
 import { delay } from 'rxjs/operators';
-import pages from './fixtures/pages';
-import { listPages, pageByIdStream } from 'services/pages';
+import pages from './fixtures/staticPages';
+import { listPages, customPageByIdStream } from 'services/staticPages';
 
 const mockInputListPages = {
   data: pages,
@@ -19,7 +19,7 @@ const aboutId = 'e7854e94-3074-4607-b66e-0422aa3d8359';
 const faqPage = pages[2];
 const aboutPage = pages[4];
 
-let mockObservablePageByIdStream = (id) =>
+let mockObservablecustomPageByIdStream = (id) =>
   new Observable((subscriber) => {
     id === faqId
       ? subscriber.next({ data: faqPage })
@@ -32,8 +32,8 @@ jest.mock('services/pages', () => {
       observable: mockObservableListPages,
     })),
 
-    pageByIdStream: jest.fn((id) => ({
-      observable: mockObservablePageByIdStream(id),
+    customPageByIdStream: jest.fn((id) => ({
+      observable: mockObservablecustomPageByIdStream(id),
     })),
   };
 });
@@ -84,12 +84,12 @@ describe('usePages', () => {
   });
 
   describe('with ids', () => {
-    it('should call pageByIdStream correct number of times', () => {
+    it('should call customPageByIdStream correct number of times', () => {
       renderHook(() => usePages({ ids: [faqId, aboutId] }));
 
-      expect(pageByIdStream).toHaveBeenCalledTimes(2);
-      expect(pageByIdStream).toHaveBeenCalledWith(faqId);
-      expect(pageByIdStream).toHaveBeenCalledWith(aboutId);
+      expect(customPageByIdStream).toHaveBeenCalledTimes(2);
+      expect(customPageByIdStream).toHaveBeenCalledWith(faqId);
+      expect(customPageByIdStream).toHaveBeenCalledWith(aboutId);
     });
 
     it('should return data when data', async () => {
@@ -103,10 +103,10 @@ describe('usePages', () => {
       );
     });
 
-    it('should return error when one pageByIdStream returns error', () => {
+    it('should return error when one customPageByIdStream returns error', () => {
       const error = new Error();
 
-      mockObservablePageByIdStream = (id) =>
+      mockObservablecustomPageByIdStream = (id) =>
         new Observable((subscriber) => {
           id === faqId
             ? subscriber.next({ data: faqPage })
@@ -117,8 +117,8 @@ describe('usePages', () => {
       expect(result.current).toStrictEqual(error);
     });
 
-    it('should return null when one pageByIdStream returns null', () => {
-      mockObservablePageByIdStream = (id) =>
+    it('should return null when one customPageByIdStream returns null', () => {
+      mockObservablecustomPageByIdStream = (id) =>
         new Observable((subscriber) => {
           id === faqId
             ? subscriber.next({ data: faqPage })

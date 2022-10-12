@@ -10,7 +10,7 @@ import usePage from 'hooks/usePage';
 // services
 import { updateAppConfiguration } from 'services/appConfiguration';
 import { toggleProposals } from 'services/navbar';
-import { updatePage } from 'services/pages';
+import { updateCustomPage } from 'services/staticPages';
 
 // components
 import {
@@ -200,7 +200,7 @@ const InitiativesSettingsPage = () => {
       }
 
       if (proposalsPageBodyChanged) {
-        const promise = updatePage(proposalsPage.id, {
+        const promise = updateCustomPage(proposalsPage.id, {
           top_info_section_multiloc: newProposalsPageBody,
         });
 

@@ -5,7 +5,7 @@ import {
   reorderNavbarItem,
   removeNavbarItem,
 } from '../../../../services/navbar';
-import { deletePage } from 'services/pages';
+import { deletePage } from 'services/staticPages';
 import { PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 import navbarItems from 'hooks/fixtures/navbarItems';
 import clHistory from 'utils/cl-router/history';

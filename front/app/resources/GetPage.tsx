@@ -3,7 +3,11 @@ import { isString } from 'lodash-es';
 import { Subscription, BehaviorSubject, of } from 'rxjs';
 import { distinctUntilChanged, tap, switchMap } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
-import { IPageData, pageByIdStream, pageBySlugStream } from 'services/pages';
+import {
+  ICustomPageData,
+  customPageByIdStream,
+  customPageBySlugStream,
+} from 'services/staticPages';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
@@ -12,7 +16,7 @@ interface InputProps {
   resetOnChange?: boolean;
 }
 
-export type GetPageChildProps = IPageData | undefined | null | Error;
+export type GetPageChildProps = ICustomPageData | undefined | null | Error;
 
 type children = (renderProps: GetPageChildProps) => JSX.Element | null;
 
@@ -51,9 +55,9 @@ export default class GetPage extends React.Component<Props, State> {
           tap(() => resetOnChange && this.setState({ page: undefined })),
           switchMap(({ id, slug }) => {
             if (isString(id)) {
-              return pageByIdStream(id).observable;
+              return customPageByIdStream(id).observable;
             } else if (isString(slug)) {
-              return pageBySlugStream(slug).observable;
+              return customPageBySlugStream(slug).observable;
             }
 
             return of(null);

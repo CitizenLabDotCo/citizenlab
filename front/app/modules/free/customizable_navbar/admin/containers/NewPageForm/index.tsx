@@ -1,7 +1,7 @@
 import React from 'react';
 
 // services
-import { createPage } from 'services/pages';
+import { createCustomPage } from 'services/staticPages';
 import { handleAddPageFiles } from 'services/pageFiles';
 
 // components
@@ -27,7 +27,7 @@ const NewPageForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const handleSubmit = async (values: FormValues) => {
     const localPageFiles = values.local_page_files;
 
-    const page = await createPage(values);
+    const page = await createCustomPage(values);
 
     if (!isNilOrError(page) && !isNilOrError(localPageFiles)) {
       await handleAddPageFiles(page.data.id, localPageFiles, null);

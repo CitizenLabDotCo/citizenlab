@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { Observable, of } from 'rxjs';
 import {
-  IPage,
-  IPageData,
-  pageByIdStream,
-  pageBySlugStream,
-} from 'services/pages';
+  ICustomPage,
+  ICustomPageData,
+  customPageByIdStream,
+  customPageBySlugStream,
+} from 'services/staticPages';
 
 interface Props {
   pageId?: string | null;
@@ -14,19 +14,19 @@ interface Props {
 }
 
 export default function usePage({ pageId, pageSlug }: Props) {
-  const [page, setPage] = useState<IPageData | undefined | null | Error>(
+  const [page, setPage] = useState<ICustomPageData | undefined | null | Error>(
     undefined
   );
 
   useEffect(() => {
     setPage(undefined);
 
-    let observable: Observable<IPage | null> = of(null);
+    let observable: Observable<ICustomPage | null> = of(null);
 
     if (pageId) {
-      observable = pageByIdStream(pageId).observable;
+      observable = customPageByIdStream(pageId).observable;
     } else if (pageSlug) {
-      observable = pageBySlugStream(pageSlug).observable;
+      observable = customPageBySlugStream(pageSlug).observable;
     }
 
     const subscription = observable.subscribe((response) => {

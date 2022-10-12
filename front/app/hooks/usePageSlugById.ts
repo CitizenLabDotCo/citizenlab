@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { listPages } from 'services/pages';
+import { listPages } from 'services/staticPages';
 import { isNilOrError } from 'utils/helperUtils';
 
 export type TPageSlugById = Record<string, string>;

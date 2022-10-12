@@ -3,19 +3,19 @@ import { isEqual } from 'lodash-es';
 import { BehaviorSubject, of, combineLatest } from 'rxjs';
 import { map, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import {
-  IPageData,
-  IPage,
-  IPages,
+  ICustomPageData,
+  ICustomPage,
+  ICustomPages,
   listPages,
-  pageByIdStream,
-} from 'services/pages';
+  customPageByIdStream,
+} from 'services/staticPages';
 import { isNilOrError, NilOrError, reduceErrors } from 'utils/helperUtils';
 
 interface IParams {
   ids?: string[];
 }
 
-export type TPagesState = IPageData[] | NilOrError;
+export type TPagesState = ICustomPageData[] | NilOrError;
 
 export default function usePages({ ids }: IParams = {}) {
   const [pages, setPages] = useState<TPagesState>(undefined);
@@ -36,7 +36,7 @@ export default function usePages({ ids }: IParams = {}) {
   return pages;
 }
 
-type SetPages = (pages: IPageData[] | NilOrError) => void;
+type SetPages = (pages: ICustomPageData[] | NilOrError) => void;
 
 function createSubscription(inputProps$, setPages: SetPages) {
   return inputProps$
@@ -48,8 +48,8 @@ function createSubscription(inputProps$, setPages: SetPages) {
 
           return combineLatest(
             ids.map((id) =>
-              pageByIdStream(id).observable.pipe(
-                map((response: IPage | NilOrError) => {
+              customPageByIdStream(id).observable.pipe(
+                map((response: ICustomPage | NilOrError) => {
                   return isNilOrError(response) ? response : response.data;
                 })
               )
@@ -58,11 +58,11 @@ function createSubscription(inputProps$, setPages: SetPages) {
         }
 
         return listPages().observable.pipe(
-          map((response: IPages | NilOrError) => {
+          map((response: ICustomPages | NilOrError) => {
             return isNilOrError(response) ? response : response.data;
           })
         );
       })
     )
-    .subscribe(reduceErrors<IPageData>(setPages));
+    .subscribe(reduceErrors<ICustomPageData>(setPages));
 }

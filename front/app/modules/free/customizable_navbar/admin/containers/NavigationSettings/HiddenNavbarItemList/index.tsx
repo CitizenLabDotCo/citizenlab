@@ -2,7 +2,12 @@ import React, { useMemo } from 'react';
 
 // services
 import { getNavbarItemSlug } from 'services/navbar';
-import { deletePage, FIXED_PAGES, IPageData, TPageCode } from 'services/pages';
+import {
+  deletePage,
+  FIXED_PAGES,
+  ICustomPageData,
+  TPageCode,
+} from 'services/staticPages';
 import { addNavbarItem } from '../../../../services/navbar';
 
 // hooks
@@ -28,7 +33,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import getItemsNotInNavbar, { IItemNotInNavbar } from './getItemsNotInNavbar';
 
 const FIXED_PAGES_SET = new Set<TPageCode>(FIXED_PAGES);
-const isNotFixedPage = (page: IPageData) =>
+const isNotFixedPage = (page: ICustomPageData) =>
   !FIXED_PAGES_SET.has(page.attributes.code);
 
 const HiddenNavbarItemList = ({

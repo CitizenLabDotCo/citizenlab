@@ -9,7 +9,7 @@ import { Icon } from '@citizenlab/cl2-component-library';
 import PageForm, { FormValues } from 'components/PageForm';
 
 // services
-import { updatePage } from 'services/pages';
+import { updateCustomPage } from 'services/staticPages';
 import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 
 // hooks
@@ -119,7 +119,7 @@ const PageEditor = ({ className, pageSlug }: Props) => {
       local_page_files,
     }: FormValues) => {
       const fieldValues = { slug, title_multiloc, top_info_section_multiloc };
-      await updatePage(pageId, fieldValues);
+      await updateCustomPage(pageId, fieldValues);
 
       if (!isNilOrError(local_page_files)) {
         handleAddPageFiles(pageId, local_page_files, remotePageFiles);

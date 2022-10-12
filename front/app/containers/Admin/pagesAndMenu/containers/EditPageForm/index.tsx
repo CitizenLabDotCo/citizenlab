@@ -18,7 +18,7 @@ import { InjectedIntlProps } from 'react-intl';
 import useLocalize from 'hooks/useLocalize';
 
 // services
-import { updatePage } from 'services/pages';
+import { updateCustomPage } from 'services/staticPages';
 import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 import { MAX_TITLE_LENGTH } from 'services/navbar';
 
@@ -41,7 +41,7 @@ const EditPageForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     local_page_files,
     ...pageUpdate
   }: FormValues) => {
-    const promises: Promise<any>[] = [updatePage(pageId, pageUpdate)];
+    const promises: Promise<any>[] = [updateCustomPage(pageId, pageUpdate)];
 
     if (!isNilOrError(local_page_files)) {
       const addPromise = handleAddPageFiles(
