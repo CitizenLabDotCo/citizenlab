@@ -96,21 +96,25 @@ const FormBuilderToolbox = ({
             icon="survey-short-answer"
             label={formatMessage(messages.shortAnswer)}
             onClick={() => addField('text')}
+            data-cy="e2e-short-answer"
           />
           <ToolboxItem
             icon="survey-multiple-choice"
             label={formatMessage(messages.multipleChoice)}
             onClick={() => addField('select')}
+            data-cy="e2e-multiple-choice"
           />
           <ToolboxItem
             icon="survey-linear-scale"
             label={formatMessage(messages.linearScale)}
             onClick={() => addField('linear_scale')}
+            data-cy="e2e-linear-scale"
           />
           <ToolboxItem
             icon="survey-number-field"
             label={formatMessage(messages.number)}
             onClick={() => addField('number')}
+            data-cy="e2e-number-field"
           />
         </DraggableElement>
       </Box>

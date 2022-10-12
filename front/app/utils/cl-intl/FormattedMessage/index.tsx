@@ -16,7 +16,9 @@ type State = {
   loaded: boolean;
 };
 
-type Props = OriginalFormattedMessage.Props;
+type Props = {
+  'data-cy'?: string;
+} & OriginalFormattedMessage.Props;
 
 const RtlBox = styled.span`
   ${isRtl`
@@ -84,7 +86,7 @@ export default class FormattedMessage extends React.PureComponent<
       }
 
       return (
-        <RtlBox>
+        <RtlBox data-cy={this.props['data-cy']}>
           <OriginalFormattedMessage {...this.props} values={values} />
         </RtlBox>
       );
