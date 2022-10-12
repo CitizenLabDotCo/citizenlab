@@ -19,8 +19,6 @@ const Container = styled.div`
 `;
 
 const StyledIcon = styled(Icon)`
-  width: 24px;
-  height: 18px;
   fill: ${colors.textSecondary};
   margin-right: 10px;
 

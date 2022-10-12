@@ -32,9 +32,6 @@ const NavigationIconWrapper = xStyled.div`
 
 const NavigationIcon = xStyled(Icon)`
   fill: ${colors.textSecondary};
-  height: 22px;
-  width: 22px;
-
   .cl-icon-primary,
   .cl-icon-accent,
   .cl-icon-secondary {

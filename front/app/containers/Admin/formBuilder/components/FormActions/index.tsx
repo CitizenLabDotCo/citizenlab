@@ -85,7 +85,7 @@ const FormActions = ({
           justifyContent="space-between"
         >
           <Button
-            icon="charts"
+            icon="chart-bar"
             buttonStyle="primary"
             width="auto"
             minWidth="312px"

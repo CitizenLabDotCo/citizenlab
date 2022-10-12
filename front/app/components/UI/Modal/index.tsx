@@ -71,7 +71,6 @@ const StyledCloseIconButton = styled(CloseIconButton)`
   z-index: 2000;
   border-radius: 50%;
   border: solid 1px transparent;
-  background: #fff;
   transition: all 100ms ease-out;
   outline: none !important;
   padding: 10px;

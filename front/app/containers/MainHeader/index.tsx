@@ -354,8 +354,8 @@ const MainHeader = ({
                           ? darken(0.2, theme.navbarTextColor)
                           : colors.textPrimary
                       }
-                      iconWidth={'20px'}
-                      iconHeight={'24px'}
+                      iconWidth={'30px'}
+                      iconHeight={'30px'}
                     />
                   </RightItem>
                 )}

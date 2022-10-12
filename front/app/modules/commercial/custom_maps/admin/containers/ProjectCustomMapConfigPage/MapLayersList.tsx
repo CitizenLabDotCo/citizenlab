@@ -52,7 +52,6 @@ const ListItem = styled.div`
 
 const LayerIcon = styled(Icon)<{ color: string }>`
   fill: ${(props) => props.color};
-  width: 19px;
   margin-right: 10px;
 `;
 

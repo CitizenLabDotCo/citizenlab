@@ -23,8 +23,6 @@ const SendFeedbackText = styled.span`
 
 const SendFeedbackIcon = styled(Icon)`
   fill: ${colors.textSecondary};
-  width: 22px;
-  height: 22px;
   transition: all 100ms ease-out;
   margin-right: 8px;
 
@@ -68,7 +66,10 @@ const SendFeedbackComponent = React.memo<Props>(
         target="_blank"
         href={formatMessage(messages.sendFeedbackLink, { url: location.href })}
       >
-        <SendFeedbackIcon name="questionMark" className="send-feedback-icon" />
+        <SendFeedbackIcon
+          name="question-bubble"
+          className="send-feedback-icon"
+        />
         <SendFeedbackText>
           {showFeedbackText ? (
             <FormattedMessage {...messages.sendFeedback} />

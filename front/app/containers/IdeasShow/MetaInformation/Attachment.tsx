@@ -31,8 +31,6 @@ const FileDownloadLink = styled.a`
 `;
 
 const PaperclipIcon = styled(Icon)`
-  width: 12px;
-  height: 20px;
   fill: ${colors.textSecondary};
   margin-right: 10px;
 `;

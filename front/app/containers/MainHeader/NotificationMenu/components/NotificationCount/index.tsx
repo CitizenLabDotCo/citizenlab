@@ -18,8 +18,6 @@ const Container = styled.div`
   position: relative;
 `;
 
-const NotificationIconButton = styled(IconButton)``;
-
 const NewNotificationsIndicator = styled.div`
   color: #fff;
   font-size: ${fontSizes.xs}px;
@@ -61,7 +59,7 @@ const NotificationCount = ({
 
   return (
     <Container>
-      <NotificationIconButton
+      <IconButton
         onClick={onToggleDropdown}
         iconName="notification"
         a11y_buttonActionMessage={formatMessage(
@@ -74,8 +72,6 @@ const NotificationCount = ({
             ? darken(0.2, theme.navbarTextColor)
             : colors.textPrimary
         }
-        iconWidth={'20px'}
-        iconHeight={'24px'}
         ariaExpanded={dropdownOpened}
         ariaControls="notifications-dropdown"
       />

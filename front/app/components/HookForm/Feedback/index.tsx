@@ -102,7 +102,7 @@ const Feedback = ({
             >
               <Box display="flex" gap="16px" alignItems="center">
                 <Icon
-                  name="checkmark-full"
+                  name="check-circle"
                   fill={colors.success}
                   width="24px"
                   height="24px"

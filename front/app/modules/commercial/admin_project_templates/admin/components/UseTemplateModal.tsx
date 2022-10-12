@@ -353,7 +353,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(
             </>
           ) : (
             <Success>
-              <SuccessIcon name="round-checkmark" />
+              <SuccessIcon name="check-circle" />
               <SuccessText>
                 <FormattedMessage {...messages.successMessage} />
                 {showGoBackLink && (
