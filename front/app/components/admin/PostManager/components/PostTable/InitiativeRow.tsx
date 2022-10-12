@@ -182,8 +182,7 @@ class InitiativeRow extends React.PureComponent<
       <>
         <StyledRow
           className={`e2e-initiative-row ${className}`}
-          as={StyledRow}
-          active={active}
+          // active={active}
           undraggable={activeFilterMenu === 'statuses'}
           ref={(instance) => {
             instance &&
