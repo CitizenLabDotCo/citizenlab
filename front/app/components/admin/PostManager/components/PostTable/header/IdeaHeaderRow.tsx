@@ -41,18 +41,23 @@ const SortableHeaderCell = ({
   infoTooltip,
   onChange,
   children,
-}: SortableHeaderCellProps) => (
-  <HeaderCell
-    clickable
-    sortDirection={
-      sortAttribute === type && sortDirection ? sortDirection : undefined
-    }
-    infoTooltip={infoTooltip}
-    onClick={onChange}
-  >
-    {children}
-  </HeaderCell>
-);
+}: SortableHeaderCellProps) => {
+  if (type === 'baskets_count') {
+    console.log(sortAttribute, sortDirection);
+  }
+  return (
+    <HeaderCell
+      clickable
+      sortDirection={
+        sortAttribute === type && sortDirection ? sortDirection : undefined
+      }
+      infoTooltip={infoTooltip}
+      onClick={onChange}
+    >
+      {children}
+    </HeaderCell>
+  );
+};
 
 export type IdeaHeaderCellComponentProps = {
   sortAttribute?: string;
@@ -148,13 +153,9 @@ export default ({
       name: 'picks',
       featureFlag: 'participatory_budgeting',
       cellProps: { width: 1 },
-      Component: (
-        props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
-      ) => {
+      Component: () => {
         return (
-          <SortableHeaderCell
-            {...props}
-            type="baskets_count"
+          <HeaderCell
             infoTooltip={
               <Text mb="0px" mt="0px" fontSize="s">
                 <FormattedMessage {...messages.pbItemCountTooltip} />
@@ -162,7 +163,7 @@ export default ({
             }
           >
             <FormattedMessage {...messages.participatoryBudgettingPicks} />
-          </SortableHeaderCell>
+          </HeaderCell>
         );
       },
     },
