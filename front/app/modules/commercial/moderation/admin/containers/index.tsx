@@ -165,7 +165,7 @@ const StyledSearchInput = styled(SearchInput)`
   width: 320px;
 `;
 
-const Capitalize = styled.span`
+const Uppercase = styled.span`
   text-transform: uppercase;
 `;
 
@@ -528,24 +528,24 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                 />
               </Th>
               <Th className="date">
-                <Capitalize>
+                <Uppercase>
                   <FormattedMessage {...messages.date} />
-                </Capitalize>
+                </Uppercase>
               </Th>
               <Th className="type">
-                <Capitalize>
+                <Uppercase>
                   <FormattedMessage {...messages.type} />
-                </Capitalize>
+                </Uppercase>
               </Th>
               <Th className="belongsTo">
-                <Capitalize>
+                <Uppercase>
                   <FormattedMessage {...messages.belongsTo} />
-                </Capitalize>
+                </Uppercase>
               </Th>
               <Th className="content">
-                <Capitalize>
+                <Uppercase>
                   <FormattedMessage {...messages.content} />
-                </Capitalize>
+                </Uppercase>
               </Th>
               <Th className="goto">&nbsp;</Th>
             </Tr>
