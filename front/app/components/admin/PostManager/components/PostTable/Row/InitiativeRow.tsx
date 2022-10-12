@@ -16,7 +16,8 @@ import {
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
 
 // components
-import { TitleLink, StyledRow } from '.';
+import { TitleLink } from '.';
+import StyledRow from './StyledRow';
 import { Cell } from 'components/admin/Table';
 import { Icon } from 'semantic-ui-react';
 import T from 'components/T';

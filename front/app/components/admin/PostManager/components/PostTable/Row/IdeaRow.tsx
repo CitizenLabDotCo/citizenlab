@@ -13,16 +13,14 @@ import { IIdeaStatusData } from 'services/ideaStatuses';
 // components
 import { TitleLink } from '.';
 import { Box } from '@citizenlab/cl2-component-library';
+import StyledRow from './StyledRow';
 import SubRow from './SubRow';
-import { Row, Cell } from 'components/admin/Table';
+import { Cell } from 'components/admin/Table';
 import { Icon } from 'semantic-ui-react';
 import T from 'components/T';
 import Outlet from 'components/Outlet';
 import Checkbox from 'components/UI/Checkbox';
 import FeatureFlag from 'components/FeatureFlag';
-
-// styling
-import styled from 'styled-components';
 
 // utils
 import localize, { InjectedLocalized } from 'utils/localize';
@@ -75,11 +73,6 @@ type Props = InputProps & {
 type State = {
   cells: CellConfiguration<IdeaCellComponentProps>[];
 };
-
-const StyledRow = styled(Row)<{ undraggable: boolean }>`
-  height: 5.7rem !important;
-  cursor: ${({ undraggable }) => (undraggable ? 'pointer' : 'move')};
-`;
 
 class IdeaRow extends React.PureComponent<
   Props & InjectedIntlProps & InjectedLocalized,
