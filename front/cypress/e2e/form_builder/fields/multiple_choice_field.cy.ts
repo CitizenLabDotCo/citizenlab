@@ -38,6 +38,7 @@ describe('Form builder multiple choice component', () => {
     cy.visit(`/projects/${projectSlug}/ideas/new`);
     cy.contains('Question title').should('exist');
     cy.contains('Option 1').should('exist');
+    cy.contains('Survey').should('exist');
     cy.get('#e2e-single-select-control').should('exist');
   });
 
