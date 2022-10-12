@@ -99,26 +99,6 @@ const StyledTabs = styled(Tabs)`
   margin-right: 20px;
 `;
 
-const StyledTable = styled(Table)`
-  // th,
-  // td {
-  //   text-align: left;
-  //   vertical-align: top;
-  //   padding-left: 0px;
-  //   padding-right: 20px;
-
-  //   &.checkbox {
-  //     width: 70px;
-  //     padding-left: 8px;
-  //   }
-
-  //   &.content {
-  //     width: 50%;
-  //     padding-right: 25px;
-  //   }
-  // }
-`;
-
 const StyledCheckbox = styled(Checkbox)`
   margin-top: -3px;
 `;
@@ -183,6 +163,10 @@ const EmptyMessage = styled.div`
 const StyledSearchInput = styled(SearchInput)`
   margin-left: auto;
   width: 320px;
+`;
+
+const Capitalize = styled.span`
+  text-transform: uppercase;
 `;
 
 interface Props {
@@ -526,7 +510,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
           </ActionBarBottom>
         </ActionBar>
 
-        <StyledTable innerBorders={{ bodyRows: true }}>
+        <Table innerBorders={{ bodyRows: true }}>
           <Thead>
             <Tr>
               <Th className="checkbox">
@@ -544,16 +528,24 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                 />
               </Th>
               <Th className="date">
-                <FormattedMessage {...messages.date} />
+                <Capitalize>
+                  <FormattedMessage {...messages.date} />
+                </Capitalize>
               </Th>
               <Th className="type">
-                <FormattedMessage {...messages.type} />
+                <Capitalize>
+                  <FormattedMessage {...messages.type} />
+                </Capitalize>
               </Th>
               <Th className="belongsTo">
-                <FormattedMessage {...messages.belongsTo} />
+                <Capitalize>
+                  <FormattedMessage {...messages.belongsTo} />
+                </Capitalize>
               </Th>
               <Th className="content">
-                <FormattedMessage {...messages.content} />
+                <Capitalize>
+                  <FormattedMessage {...messages.content} />
+                </Capitalize>
               </Th>
               <Th className="goto">&nbsp;</Th>
             </Tr>
@@ -577,7 +569,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
               ))}
             </Tbody>
           )}
-        </StyledTable>
+        </Table>
 
         {moderations.length > 0 && (
           <Footer>
