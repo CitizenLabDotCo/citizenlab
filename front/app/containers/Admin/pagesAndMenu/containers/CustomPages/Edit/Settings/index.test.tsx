@@ -9,9 +9,12 @@ jest.mock('hooks/useAppConfiguration', () => () => ({
 }));
 
 jest.mock('hooks/useCustomPage', () =>
-  jest.fn(() => ({ attributes: { title_multiloc: { en: 'title' } } }))
+  jest.fn(() => ({
+    relationships: { nav_bar_item: { data: { id: '123' } } },
+    attributes: { title_multiloc: { en: 'title' } },
+  }))
 );
-jest.mock('services/customPages', () => ({
+jest.mock('services/staticPages', () => ({
   // `async` simulates the original `updateCustomPage` which is also `async`.
   // It's important for testing it properly.
   updateCustomPage: jest.fn(async () => {

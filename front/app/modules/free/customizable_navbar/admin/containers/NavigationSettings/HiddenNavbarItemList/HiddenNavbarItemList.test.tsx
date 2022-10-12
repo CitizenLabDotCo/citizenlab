@@ -26,8 +26,8 @@ jest.mock('../../../../services/navbar', () => ({
   addNavbarItem: jest.fn(),
 }));
 
-jest.mock('services/pages', () => {
-  const original = jest.requireActual('services/pages');
+jest.mock('services/staticPages', () => {
+  const original = jest.requireActual('services/staticPages');
 
   return {
     ...original,
@@ -57,7 +57,7 @@ describe('<HiddenNavbarItemList />', () => {
     fireEvent.click(editButtons[0]);
 
     expect(clHistory.push).toHaveBeenCalledWith(
-      `${PAGES_MENU_PATH}/pages/edit/1b095a31-72e1-450a-81be-f6e7a9296553`
+      `${PAGES_MENU_PATH}/pages/1b095a31-72e1-450a-81be-f6e7a9296553/settings`
     );
   });
 
