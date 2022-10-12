@@ -11,7 +11,6 @@ import Outlet from 'components/Outlet';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../../messages';
-import { TableHeaderCellText } from '..';
 
 // styling
 import styled from 'styled-components';
@@ -108,9 +107,7 @@ export default ({
       Component: () => {
         return (
           <HeaderCell>
-            <TableHeaderCellText>
-              <FormattedMessage {...messages.title} />
-            </TableHeaderCellText>
+            <FormattedMessage {...messages.title} />
           </HeaderCell>
         );
       },
@@ -124,9 +121,7 @@ export default ({
       ) => {
         return (
           <SortableHeaderCell {...props} type="new">
-            <TableHeaderCellText>
-              <FormattedMessage {...messages.publication_date} />
-            </TableHeaderCellText>
+            <FormattedMessage {...messages.publication_date} />
           </SortableHeaderCell>
         );
       },
@@ -140,9 +135,7 @@ export default ({
       ) => {
         return (
           <SortableHeaderCell {...props} type="upvotes_count">
-            <TableHeaderCellText>
-              <FormattedMessage {...messages.up} />
-            </TableHeaderCellText>
+            <FormattedMessage {...messages.up} />
           </SortableHeaderCell>
         );
       },
@@ -156,9 +149,7 @@ export default ({
       ) => {
         return (
           <SortableHeaderCell {...props} type="downvotes_count">
-            <TableHeaderCellText>
-              <FormattedMessage {...messages.down} />
-            </TableHeaderCellText>
+            <FormattedMessage {...messages.down} />
           </SortableHeaderCell>
         );
       },
@@ -172,9 +163,7 @@ export default ({
       ) => {
         return (
           <SortableHeaderCell {...props} type="baskets_count">
-            <TableHeaderCellText>
-              <FormattedMessage {...messages.participatoryBudgettingPicks} />
-            </TableHeaderCellText>
+            <FormattedMessage {...messages.participatoryBudgettingPicks} />
             <Popup
               content={<FormattedMessage {...messages.pbItemCountTooltip} />}
               trigger={

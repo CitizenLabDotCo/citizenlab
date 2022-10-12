@@ -15,9 +15,6 @@ import { colors } from 'utils/styleUtils';
 // utils
 import { roundPercentage } from 'utils/math';
 
-// typings
-import { TableHeaderCellText } from '..';
-
 const TOTAL_WIDTH = 11;
 const getWidth = (width: number) => `${roundPercentage(width, TOTAL_WIDTH)}%`;
 
@@ -38,23 +35,17 @@ export default ({
         />
       </HeaderCell>
       <HeaderCell width={getWidth(4)}>
-        <TableHeaderCellText>
-          <FormattedMessage {...messages.title} />
-        </TableHeaderCellText>
+        <FormattedMessage {...messages.title} />
       </HeaderCell>
       <HeaderCell width={getWidth(2)}>
-        <TableHeaderCellText>
-          <FormattedMessage {...messages.assignee} />
-        </TableHeaderCellText>
+        <FormattedMessage {...messages.assignee} />
       </HeaderCell>
       <HeaderCell width={getWidth(2)}>
         <SortableTableHeader
           direction={sortAttribute === 'new' ? sortDirection : null}
           onToggle={handleSortClick('new')}
         >
-          <TableHeaderCellText>
-            <FormattedMessage {...messages.remainingTime} />
-          </TableHeaderCellText>
+          <FormattedMessage {...messages.remainingTime} />
         </SortableTableHeader>
       </HeaderCell>
       <HeaderCell width={getWidth(1)}>
@@ -62,15 +53,11 @@ export default ({
           direction={sortAttribute === 'upvotes_count' ? sortDirection : null}
           onToggle={handleSortClick('upvotes_count')}
         >
-          <TableHeaderCellText>
-            <FormattedMessage {...messages.votes} />
-          </TableHeaderCellText>
+          <FormattedMessage {...messages.votes} />
         </SortableTableHeader>
       </HeaderCell>
       <HeaderCell width={getWidth(1)}>
-        <TableHeaderCellText>
-          <FormattedMessage {...messages.comments} />
-        </TableHeaderCellText>
+        <FormattedMessage {...messages.comments} />
       </HeaderCell>
     </Row>
   </Header>

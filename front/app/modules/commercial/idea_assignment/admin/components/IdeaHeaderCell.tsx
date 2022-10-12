@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 
 // components
 import { HeaderCell } from 'components/admin/Table';
-import { TableHeaderCellText } from 'components/admin/PostManager/components/PostTable';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -30,9 +29,7 @@ const IdeaHeaderCell = ({ onData }: Props) => {
           Component: ({ width }) => {
             return (
               <HeaderCell width={width}>
-                <TableHeaderCellText>
-                  <FormattedMessage {...messages.assignee} />
-                </TableHeaderCellText>
+                <FormattedMessage {...messages.assignee} />
               </HeaderCell>
             );
           },

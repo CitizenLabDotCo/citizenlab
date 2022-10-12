@@ -81,10 +81,6 @@ const Container = styled.div`
   }
 `;
 
-export const TableHeaderCellText = styled.span`
-  font-weight: 600;
-`;
-
 interface Props {
   type: ManagerType;
   sortAttribute?: IdeasSortAttribute | InitiativesSortAttribute;
