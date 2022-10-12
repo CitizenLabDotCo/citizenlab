@@ -55,6 +55,9 @@ export const SortableHeaderCell = ({
           ? sortDirection
           : undefined
       }
+      background={
+        sortAttribute === sortAttributeName ? colors.grey200 : undefined
+      }
       infoTooltip={infoTooltip}
       onClick={onChange}
     >
