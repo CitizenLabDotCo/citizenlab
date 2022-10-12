@@ -34,6 +34,12 @@ module Analytics
       limit = @json_query.fetch(:limit, 10)
       results = results.limit(limit)
 
+      if @json_query.key?(:offset)
+        results = results.offset(@json_query[:offset])
+      end
+
+      # Paging
+
       query_pluck(results)
     end
 
