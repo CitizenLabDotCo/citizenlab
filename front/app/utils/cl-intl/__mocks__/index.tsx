@@ -1,5 +1,6 @@
 import React from 'react';
-import { MessageDescriptor } from 'react-intl';
+import { MessageDescriptor, createIntl } from 'react-intl';
+import messages from 'i18n/en';
 const Intl = jest.requireActual('react-intl');
 
 // Initialise the real provider so that we don't
@@ -8,10 +9,8 @@ const defaultProps = {
   locale: 'en',
   defaultLocale: 'en',
 };
-const intlProvider = new Intl.IntlProvider(defaultProps, {});
 
-// The exact same `intl` object the real code receives ;-)
-const { intl } = intlProvider.getChildContext();
+const intl = createIntl({ locale: 'en', messages });
 
 const formatMessageReplacement = (
   messageDescriptor: MessageDescriptor,
@@ -47,7 +46,6 @@ const {
   FormattedNumber,
   FormattedPlural,
   FormattedMessage,
-  FormattedHTMLMessage,
 } = Intl;
 
 Intl.FormattedDate = (props) => (
@@ -75,20 +73,14 @@ Intl.FormattedMessage = (props) => (
     <FormattedMessage {...props} />
   </IntlProvider>
 );
-Intl.FormattedHTMLMessage = (props) => (
-  <IntlProvider {...defaultProps}>
-    <FormattedHTMLMessage {...props} />
-  </IntlProvider>
-);
 
 // Set displayName so that snapshots don't use "Uknown" as component name
 Intl.FormattedDate.displayName = 'FormattedDate';
 Intl.FormattedTime.displayName = 'FormattedTime';
-Intl.FormattedRelative.displayName = 'FormattedRelative';
+Intl.FormattedRelativeTime.displayName = 'FormattedRelative';
 Intl.FormattedNumber.displayName = 'FormattedNumber';
 Intl.FormattedPlural.displayName = 'FormattedPlural';
 Intl.FormattedMessage.displayName = 'FormattedMessage';
-Intl.FormattedHTMLMessage.displayName = 'FormattedHTMLMessage';
 
 // Special hook for tests, real package does not export this
 Intl.intl = intlReplacement;
