@@ -86,6 +86,17 @@ const StyledModerationContentCell = styled(ModerationContentCell)`
   margin-bottom: 20px;
 `;
 
+interface CellProps {
+  className?: string;
+  children: React.ReactNode;
+}
+
+const Cell = ({ children, className }: CellProps) => (
+  <Td className={className} style={{ verticalAlign: 'top' }}>
+    {children}
+  </Td>
+);
+
 interface Props {
   moderation: IModerationData;
   selected: boolean;
@@ -188,14 +199,14 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
         flagged={hasActiveInappropriateContentFlag}
         bgColor={bgColor}
       >
-        <Td className="checkbox">
+        <Cell className="checkbox">
           <StyledCheckbox checked={selected} onChange={handleOnChecked} />
-        </Td>
-        <Td className="date">
+        </Cell>
+        <Cell className="date">
           {moment(moderation.attributes.created_at).format('L')}{' '}
           {moment(moderation.attributes.created_at).format('LT')}
-        </Td>
-        <Td className="type">
+        </Cell>
+        <Cell className="type">
           {formatMessage(
             {
               Idea: messages.post,
@@ -203,8 +214,8 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
               Initiative: messages.initiative,
             }[moderatableType]
           )}
-        </Td>
-        <Td className="belongsTo">
+        </Cell>
+        <Cell className="belongsTo">
           {belongsToTypes.length > 0 ? (
             belongsToTypes.map((belongsToType: TBelongsTo, index) => {
               const belongsToTypeMessage = {
@@ -247,8 +258,8 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
           ) : (
             <>-</>
           )}
-        </Td>
-        <Td className="content">
+        </Cell>
+        <Cell className="content">
           <StyledModerationContentCell
             contentTitle={contentTitle}
             contentBody={contentBody}
@@ -257,9 +268,9 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
             id="app.modules.commercial.moderation.admin.containers.ModerationRow.content"
             inappropriateContentFlagId={inappropriateContentFlagId}
           />
-        </Td>
+        </Cell>
         {viewLink && (
-          <Td>
+          <Cell>
             <Tippy
               placement="bottom-end"
               content={
@@ -282,7 +293,7 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
                 </GoToLink>
               </GoToLinkWrapper>
             </Tippy>
-          </Td>
+          </Cell>
         )}
       </Container>
     );
