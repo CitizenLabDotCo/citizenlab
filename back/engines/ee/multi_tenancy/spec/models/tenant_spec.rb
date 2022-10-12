@@ -131,7 +131,7 @@ RSpec.describe Tenant, type: :model do
     end
   end
 
-  describe 'closest_locale_to' do
+  describe '#closest_locale_to' do
     let(:tenant) { create(:tenant, host: 'something.else-than-the-default-test-tenant') }
 
     it "returns the locale itself if it's present" do
