@@ -92,6 +92,7 @@ interface Props
   onClick?: (event: FormEvent<any>) => void;
   buttonStyle?: ButtonStyles;
   animate?: boolean;
+  enableFormOnSuccess?: boolean;
 }
 
 export default class SubmitWrapper extends PureComponent<Props> {
@@ -131,13 +132,18 @@ export default class SubmitWrapper extends PureComponent<Props> {
     const { loading, status, onClick, messages, animate, customError } =
       this.props;
 
+    // give the option to leave the form enabled even in success state
+    const isSubmitButtonDisabled =
+      status === 'disabled' ||
+      (!this.props.enableFormOnSuccess && status === 'success');
+
     return (
       <Wrapper aria-live="polite" fullWidth={!!buttonProps.fullWidth}>
         <Button
           className="e2e-submit-wrapper-button"
           buttonStyle={style}
           processing={loading}
-          disabled={status === 'disabled' || status === 'success'}
+          disabled={isSubmitButtonDisabled}
           onClick={onClick}
           setSubmitButtonRef={this.setSubmitButtonRef}
           {...buttonProps}

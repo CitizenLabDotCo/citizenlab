@@ -59,6 +59,7 @@ const GenericHeroBannerForm = ({
             buttonStyle="primary"
             loading={isLoading}
             onClick={onSave}
+            enableFormOnSuccess
             messages={{
               buttonSave: messages.heroBannerSaveButton,
               buttonSuccess: messages.heroBannerButtonSuccess,
