@@ -1,16 +1,13 @@
 import React from 'react';
 import { MessageDescriptor, createIntl } from 'react-intl';
-import messages from 'i18n/en';
 const Intl = jest.requireActual('react-intl');
 
-// Initialise the real provider so that we don't
-// need to reimplement any internals
 const defaultProps = {
   locale: 'en',
   defaultLocale: 'en',
 };
 
-const intl = createIntl({ locale: 'en', messages });
+const intl = createIntl({ locale: 'en', messages: {} });
 
 const formatMessageReplacement = (
   messageDescriptor: MessageDescriptor,
