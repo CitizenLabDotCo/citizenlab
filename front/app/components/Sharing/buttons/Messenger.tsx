@@ -49,7 +49,7 @@ const Messenger = ({
           bgColor={colors.facebookMessenger}
           width="40px"
           height="40px"
-          icon="messenger"
+          icon="facebook-messenger"
           iconSize="20px"
         />
       );

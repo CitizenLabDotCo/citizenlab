@@ -318,10 +318,7 @@ const PlatformFooter = ({
                 <FormattedMessage {...messages.poweredBy} />
               </PoweredByText>
               <CitizenlabLink href="https://www.citizenlab.co/" target="_blank">
-                <CitizenLabLogo
-                  name="citizenlab-footer-logo"
-                  title="CitizenLab"
-                />
+                <CitizenLabLogo name="cl-logo" title="CitizenLab" />
               </CitizenlabLink>
             </PoweredBy>
           )}

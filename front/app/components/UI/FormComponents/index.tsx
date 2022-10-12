@@ -133,8 +133,6 @@ const LabelContainer = styled.div`
 `;
 
 const StyledIcon = styled(Icon)`
-  width: 16px;
-  height: 16px;
   margin-left: 10px;
 `;
 declare type iconAriaHiddenTrue = {

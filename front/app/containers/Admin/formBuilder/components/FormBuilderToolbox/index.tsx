@@ -93,22 +93,22 @@ const FormBuilderToolbox = ({
 
         <DraggableElement>
           <ToolboxItem
-            icon="short-answer"
+            icon="survey-short-answer"
             label={formatMessage(messages.shortAnswer)}
             onClick={() => addField('text')}
           />
           <ToolboxItem
-            icon="multiple-choice"
+            icon="survey-multiple-choice"
             label={formatMessage(messages.multipleChoice)}
             onClick={() => addField('select')}
           />
           <ToolboxItem
-            icon="linear-scale"
+            icon="survey-linear-scale"
             label={formatMessage(messages.linearScale)}
             onClick={() => addField('linear_scale')}
           />
           <ToolboxItem
-            icon="number-field"
+            icon="survey-number-field"
             label={formatMessage(messages.number)}
             onClick={() => addField('number')}
           />

@@ -100,14 +100,9 @@ const NavigationDropdownItem = styled.button`
 `;
 
 const NavigationDropdownItemIcon = styled(Icon)`
-  width: 11px;
-  height: 6px;
   fill: inherit;
-  margin-left: 4px;
-  margin-top: 3px;
   ${isRtl`
     margin-left: 0;
-    margin-right: 4px;
   `}
 `;
 
@@ -196,7 +191,7 @@ const AdminPublicationsNavbarItem = ({
         >
           <NavigationItemBorder />
           <T value={navigationItemTitle} />
-          <NavigationDropdownItemIcon name="dropdown" />
+          <NavigationDropdownItemIcon name="chevron-down" />
         </NavigationDropdownItem>
         <Dropdown
           top="68px"

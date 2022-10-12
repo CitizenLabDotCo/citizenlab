@@ -16,7 +16,6 @@ const ContainerInner = styled.div`
 `;
 
 const ChevronIcon = styled(Icon)`
-  height: 12px;
   fill: ${colors.primary};
 `;
 

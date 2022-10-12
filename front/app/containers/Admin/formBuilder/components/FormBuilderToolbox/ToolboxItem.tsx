@@ -13,8 +13,6 @@ interface Props {
 }
 
 const AddIcon = styled(Icon).attrs({ name: 'plus' })`
-  width: 16px;
-  height: 16px;
   margin-left: auto;
   margin-right: 12px;
   fill: ${colors.textSecondary};

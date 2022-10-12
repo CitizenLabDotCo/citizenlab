@@ -771,7 +771,7 @@ class IdeaForm extends PureComponent<
             <IconTooltip
               iconColor="black"
               marginLeft="4px"
-              icon="admin"
+              icon="shield-checkered"
               content={<FormattedMessage {...messages.adminFieldTooltip} />}
             />
           </>

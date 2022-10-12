@@ -91,10 +91,7 @@ const StyledCreatable = styled(Creatable)<{ opitons: OptionProps[] }>`
   }
 `;
 
-const PlusIcon = styled(Icon)`
-  width: 18px;
-  height: 18px;
-`;
+const PlusIcon = styled(Icon)``;
 
 const StyledOptionLabel = styled(Box)`
   ${PlusIcon} {

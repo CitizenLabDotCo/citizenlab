@@ -104,30 +104,22 @@ const FooterItem = styled.div`
 `;
 
 const MoneybagIcon = styled(Icon)`
-  width: 18px;
-  height: 18px;
   fill: ${colors.textSecondary};
   margin-right: 6px;
 `;
 
 const DownvoteIcon = styled(Icon)`
-  width: 17px;
-  height: 17px;
   fill: ${colors.textSecondary};
   margin-right: 6px;
 `;
 
 const UpvoteIcon = styled(Icon)`
-  width: 17px;
-  height: 17px;
   fill: ${colors.textSecondary};
   margin-right: 6px;
   margin-top: 5px;
 `;
 
 const CommentIcon = styled(Icon)`
-  width: 20px;
-  height: 20px;
   fill: ${colors.textSecondary};
   margin-right: 6px;
   margin-left: 2px;
@@ -271,14 +263,14 @@ const IdeaMapCard = memo<Props>(
             {!isParticipatoryBudgetIdea && (
               <>
                 <FooterItem>
-                  <DownvoteIcon name="upvote" />
+                  <DownvoteIcon name="vote-up" />
                   <FooterValue>
                     {ideaMarker.attributes.upvotes_count}
                   </FooterValue>
                 </FooterItem>
                 {showDownvote && (
                   <FooterItem>
-                    <UpvoteIcon name="downvote" />
+                    <UpvoteIcon name="vote-down" />
                     <FooterValue>
                       {ideaMarker.attributes.downvotes_count}
                     </FooterValue>

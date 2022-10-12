@@ -190,7 +190,7 @@ const ProjectFolderShowPage = memo<{
             <Button
               linkTo="/projects"
               text={<FormattedMessage {...messages.goBackToList} />}
-              icon="arrow-back"
+              icon="arrow-left"
             />
           </NotFoundWrapper>
         ) : loading ? (

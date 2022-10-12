@@ -31,7 +31,7 @@ const SentCampaignRow = ({ campaign }: Props) => (
     <Box minWidth="220px" display="flex" justifyContent="flex-end">
       <Button
         linkTo={`/admin/messaging/emails/custom/${campaign.id}`}
-        icon="charts"
+        icon="chart-bar"
         buttonStyle="text"
       >
         <FormattedMessage {...messages.statsButton} />

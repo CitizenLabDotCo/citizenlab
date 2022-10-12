@@ -30,6 +30,7 @@ const Statistic = ({
             content={tooltipContent}
             theme="light"
             transform="translate(0,-2)"
+            display="inline"
           />
         </Box>
       )}

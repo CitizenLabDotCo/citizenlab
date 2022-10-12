@@ -101,7 +101,7 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         mt="32px"
       >
         <Box display="flex" gap="16px" alignItems="center">
-          <Icon name="info" width="24px" height="24px" fill="teal700" />
+          <Icon name="info-outline" width="24px" height="24px" fill="teal700" />
           <Text variant="bodyM" color="teal700">
             {formatMessage(messages.informationText)}
           </Text>
