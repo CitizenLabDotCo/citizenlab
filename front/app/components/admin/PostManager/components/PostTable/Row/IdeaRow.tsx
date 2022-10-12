@@ -11,15 +11,18 @@ import { IPhaseData } from 'services/phases';
 import { IIdeaStatusData } from 'services/ideaStatuses';
 
 // components
-import { TitleLink, StyledRow } from '.';
+import { TitleLink } from '.';
+// import { Box } from ''
 import SubRow from './SubRow';
-import { Cell } from 'components/admin/Table';
+import { Row, Cell } from 'components/admin/Table';
 import { Icon } from 'semantic-ui-react';
 import T from 'components/T';
 import Outlet from 'components/Outlet';
-
 import Checkbox from 'components/UI/Checkbox';
 import FeatureFlag from 'components/FeatureFlag';
+
+// styling
+import styled from 'styled-components';
 
 // utils
 import localize, { InjectedLocalized } from 'utils/localize';
@@ -72,6 +75,11 @@ type Props = InputProps & {
 type State = {
   cells: CellConfiguration<IdeaCellComponentProps>[];
 };
+
+const StyledRow = styled(Row)<{ undraggable: boolean }>`
+  height: 5.7rem !important;
+  cursor: ${({ undraggable }) => (undraggable ? 'pointer' : 'move')};
+`;
 
 class IdeaRow extends React.PureComponent<
   Props & InjectedIntlProps & InjectedLocalized,
@@ -264,7 +272,6 @@ class IdeaRow extends React.PureComponent<
         <StyledRow
           className={`${className} e2e-idea-manager-idea-row`}
           undraggable={false}
-          // active={active}
           ref={(instance) => {
             // eslint-disable-next-line react/no-find-dom-node
             instance && connectDragSource(findDOMNode(instance));

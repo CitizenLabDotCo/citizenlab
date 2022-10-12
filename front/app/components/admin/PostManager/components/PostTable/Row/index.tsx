@@ -16,11 +16,6 @@ import { colors } from 'utils/styleUtils';
 const IdeaRow = lazy(() => import('./IdeaRow'));
 const InitiativeRow = lazy(() => import('./InitiativeRow'));
 
-export const StyledRow = styled.tr<{ undraggable: boolean }>`
-  height: 5.7rem !important;
-  cursor: ${({ undraggable }) => (undraggable ? 'pointer' : 'move')};
-`;
-
 export const TitleLink = styled.a`
   display: block;
   display: -webkit-box;
