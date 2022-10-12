@@ -299,7 +299,7 @@ class PasswordReset extends React.PureComponent<
   }
 }
 
-const PasswordResetWithHocs = injectIntl<Props>(PasswordReset);
+const PasswordResetWithHocs = injectIntl(PasswordReset);
 
 const Data = adopt({
   tenant: <GetAppConfiguration />,

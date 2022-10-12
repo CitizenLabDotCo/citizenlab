@@ -202,9 +202,7 @@ const SelectableResourceChart = ({
   );
 };
 
-const SelectableResourceChartWithHoCs = injectIntl<Props>(
-  SelectableResourceChart
-);
+const SelectableResourceChartWithHoCs = injectIntl(SelectableResourceChart);
 
 export default (inputProps: InputProps) => (
   <GetSerieFromStream {...inputProps}>

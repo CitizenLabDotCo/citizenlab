@@ -91,4 +91,4 @@ const AreaForm = ({
   );
 };
 
-export default injectIntl<Props>(AreaForm);
+export default injectIntl(AreaForm);

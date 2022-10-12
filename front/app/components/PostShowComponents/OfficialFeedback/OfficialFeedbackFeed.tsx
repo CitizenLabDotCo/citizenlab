@@ -195,7 +195,7 @@ const Data = adopt<DataProps, InputProps>({
   ),
 });
 
-const OfficialFeedbackFeedWithIntl = injectIntl<Props>(OfficialFeedbackFeed);
+const OfficialFeedbackFeedWithIntl = injectIntl(OfficialFeedbackFeed);
 
 const WrappedOfficialFeedback = (inputProps: InputProps) => (
   <Data {...inputProps}>

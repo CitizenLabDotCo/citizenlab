@@ -88,4 +88,4 @@ class ActionBarSingle extends React.PureComponent<
   }
 }
 
-export default injectIntl<Props>(ActionBarSingle);
+export default injectIntl(ActionBarSingle);

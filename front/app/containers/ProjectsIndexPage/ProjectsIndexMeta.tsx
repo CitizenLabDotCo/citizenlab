@@ -57,7 +57,7 @@ const ProjectsMeta = React.memo<Props & WrappedComponentProps>(
   }
 );
 
-const ProjectsMetaWithHoc = injectIntl<Props>(ProjectsMeta);
+const ProjectsMetaWithHoc = injectIntl(ProjectsMeta);
 
 const Data = adopt<DataProps, InputProps>({
   tenantLocales: <GetAppConfigurationLocales />,

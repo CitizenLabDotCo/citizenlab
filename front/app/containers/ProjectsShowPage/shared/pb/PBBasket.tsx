@@ -343,7 +343,7 @@ const Data = adopt<DataProps, InputProps>({
   ),
 });
 
-const PBBasketWithHoCs = injectIntl<Props>(PBBasket);
+const PBBasketWithHoCs = injectIntl(PBBasket);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

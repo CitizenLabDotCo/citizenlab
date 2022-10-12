@@ -29,4 +29,4 @@ export class HelmetIntl extends React.PureComponent<
   }
 }
 
-export default injectIntl<Props>(HelmetIntl);
+export default injectIntl(HelmetIntl);

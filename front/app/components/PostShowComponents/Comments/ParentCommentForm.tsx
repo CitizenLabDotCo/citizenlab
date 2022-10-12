@@ -443,7 +443,7 @@ const Data = adopt<DataProps, InputProps>({
   ),
 });
 
-const ParentCommentFormWithHoCs = injectIntl<Props>(ParentCommentForm);
+const ParentCommentFormWithHoCs = injectIntl(ParentCommentForm);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

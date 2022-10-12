@@ -54,9 +54,7 @@ class DraftCampaignDetails extends React.Component<Props> {
   }
 }
 
-const DraftCampaignDetailsWithHOCs = injectIntl<InputProps & DataProps>(
-  DraftCampaignDetails
-);
+const DraftCampaignDetailsWithHOCs = injectIntl(DraftCampaignDetails);
 
 export default (inputProps: InputProps) => (
   <GetCampaign id={inputProps.campaignId}>

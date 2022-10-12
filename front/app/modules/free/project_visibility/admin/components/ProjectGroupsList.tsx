@@ -289,4 +289,4 @@ class ProjectGroupsList extends PureComponent<
   }
 }
 
-export default injectIntl<Props>(ProjectGroupsList);
+export default injectIntl(ProjectGroupsList);

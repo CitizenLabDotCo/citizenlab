@@ -204,7 +204,7 @@ const Data = adopt<DataProps, InputProps>({
   ),
 });
 
-const CommentWithHoCs = injectIntl<Props>(Comment);
+const CommentWithHoCs = injectIntl(Comment);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

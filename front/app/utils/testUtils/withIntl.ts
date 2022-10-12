@@ -1,18 +1,10 @@
-import { IntlProvider, WrappedComponentProps } from 'react-intl';
+import { WrappedComponentProps, createIntl } from 'react-intl';
 import { shallow, ShallowRendererProps, ShallowWrapper } from 'enzyme';
 import React from 'react';
+import messages from 'i18n/en';
 
-// Create IntlProvider to retrieve React Intl context
-const intlProvider = new IntlProvider(
-  {
-    locale: 'en',
-  },
-  {}
-);
+const originalIntl = createIntl({ locale: 'en', messages });
 
-// You customize the intl object here:
-const { intl: originalIntl } =
-  intlProvider.getChildContext() as WrappedComponentProps;
 const intl = {
   ...originalIntl,
   formatMessage: ({ id, defaultMessage }, values?) =>

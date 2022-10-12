@@ -102,7 +102,7 @@ const Data = adopt<DataProps, InputProps>({
     ),
 });
 
-const AssigneeSelectWithHocs = injectIntl<Props>(AssigneeSelect);
+const AssigneeSelectWithHocs = injectIntl(AssigneeSelect);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

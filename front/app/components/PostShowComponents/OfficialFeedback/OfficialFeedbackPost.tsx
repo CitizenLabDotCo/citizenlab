@@ -346,7 +346,7 @@ const Data = adopt<DataProps>({
   tenantLocales: <GetAppConfigurationLocales />,
 });
 
-const OfficialFeedbackPostWithIntl = injectIntl<Props>(OfficialFeedbackPost);
+const OfficialFeedbackPostWithIntl = injectIntl(OfficialFeedbackPost);
 
 export default (inputProps: InputProps) => (
   <Data>

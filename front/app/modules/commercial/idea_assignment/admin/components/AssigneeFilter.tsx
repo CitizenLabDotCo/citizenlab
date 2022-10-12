@@ -131,7 +131,7 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
 });
 
-const AssigneeFilterWithHocs = injectIntl<Props>(AssigneeFilter);
+const AssigneeFilterWithHocs = injectIntl(AssigneeFilter);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

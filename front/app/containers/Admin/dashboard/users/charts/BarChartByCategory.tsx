@@ -122,7 +122,7 @@ export class BarChartByCategory extends React.PureComponent<
   }
 }
 
-const BarChartByCategoryWithHoCs = injectIntl<Props>(BarChartByCategory);
+const BarChartByCategoryWithHoCs = injectIntl(BarChartByCategory);
 
 const WrappedBarChartByCategory = (inputProps: InputProps) => (
   <GetSerieFromStream {...inputProps}>

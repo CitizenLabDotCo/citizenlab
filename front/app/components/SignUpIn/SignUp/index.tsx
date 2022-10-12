@@ -35,7 +35,7 @@ import { signUpActiveStepChange } from 'components/SignUpIn/events';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { MessageDescriptor } from 'react-intl';
+import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
 import T from 'components/T';
 import messages from './messages';
 

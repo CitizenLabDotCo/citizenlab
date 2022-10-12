@@ -235,8 +235,8 @@ export const HorizontalBarChartWithoutStream: React.SFC<
   );
 });
 
-const HorizontalBarChartWithoutStreamWithHoCs = injectIntl<Props>(
-  HorizontalBarChartWithoutStream as any
-);
+const HorizontalBarChartWithoutStreamWithHoCs = injectIntl<
+  Props & WrappedComponentProps
+>(HorizontalBarChartWithoutStream);
 
 export default HorizontalBarChartWithoutStreamWithHoCs;

@@ -258,6 +258,4 @@ const CustomFieldsGraph = ({
   );
 };
 
-export default injectLocalize<InputProps>(
-  injectIntl<InputProps & InjectedLocalized>(CustomFieldsGraph)
-);
+export default injectLocalize<InputProps>(injectIntl(CustomFieldsGraph));

@@ -136,4 +136,4 @@ const GroupCreationStep1 = memo(
   }
 );
 
-export default injectIntl<Props>(GroupCreationStep1);
+export default injectIntl(GroupCreationStep1);

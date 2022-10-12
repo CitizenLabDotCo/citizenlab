@@ -136,7 +136,7 @@ class PieChartByCategory extends React.PureComponent<
   }
 }
 
-const PieChartByCategoryWithHoCs = injectIntl<Props>(
+const PieChartByCategoryWithHoCs = injectIntl(
   withTheme(PieChartByCategory as any) as any
 );
 

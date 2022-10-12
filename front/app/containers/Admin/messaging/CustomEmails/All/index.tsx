@@ -107,7 +107,7 @@ class Campaigns extends React.Component<Props & WrappedComponentProps, State> {
   }
 }
 
-const CampaignsWithInjectedIntl = injectIntl<Props>(Campaigns);
+const CampaignsWithInjectedIntl = injectIntl(Campaigns);
 
 export default () => (
   <GetCampaigns campaignNames={['manual']} pageSize={10}>

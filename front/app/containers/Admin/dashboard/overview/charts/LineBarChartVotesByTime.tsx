@@ -382,4 +382,6 @@ class LineBarChartVotesByTime extends React.PureComponent<
   }
 }
 
-export default injectIntl<Props>(LineBarChartVotesByTime);
+export default injectIntl<Props & WrappedComponentProps>(
+  LineBarChartVotesByTime
+);

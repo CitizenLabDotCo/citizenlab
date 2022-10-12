@@ -211,6 +211,6 @@ const CustomFieldsStep: FC<Props & WrappedComponentProps> = memo(
   }
 );
 
-const CustomFieldsWithHoC = injectIntl<Props>(CustomFieldsStep);
+const CustomFieldsWithHoC = injectIntl(CustomFieldsStep);
 
 export default CustomFieldsWithHoC;

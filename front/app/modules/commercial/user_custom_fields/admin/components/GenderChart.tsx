@@ -184,4 +184,4 @@ class GenderChart extends PureComponent<Props & WrappedComponentProps, State> {
   }
 }
 
-export default injectIntl<Props>(withTheme(GenderChart as any) as any);
+export default withTheme(injectIntl(GenderChart as any) as any);

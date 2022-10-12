@@ -57,7 +57,7 @@ const InitiativesNewMeta = React.memo<Props & WrappedComponentProps>(
   }
 );
 
-const InitiativesNewMetaWithHoc = injectIntl<Props>(InitiativesNewMeta);
+const InitiativesNewMetaWithHoc = injectIntl(InitiativesNewMeta);
 
 const Data = adopt<DataProps, InputProps>({
   tenantLocales: <GetAppConfigurationLocales />,

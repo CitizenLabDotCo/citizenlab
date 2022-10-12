@@ -95,6 +95,6 @@ const ProjectHelmet = memo<Props & WrappedComponentProps>(
   }
 );
 
-const ProjectHelmetWithHoC = injectIntl<Props>(ProjectHelmet);
+const ProjectHelmetWithHoC = injectIntl(ProjectHelmet);
 
 export default ProjectHelmetWithHoC;

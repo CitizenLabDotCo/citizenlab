@@ -127,7 +127,7 @@ export class HorizontalBarChart extends React.PureComponent<
   }
 }
 
-const HorizontalBarChartWithHoCs = injectIntl<Props>(HorizontalBarChart);
+const HorizontalBarChartWithHoCs = injectIntl(HorizontalBarChart);
 
 const WrappedHorizontalBarChart = (inputProps: InputProps) => (
   <GetSerieFromStream {...inputProps}>

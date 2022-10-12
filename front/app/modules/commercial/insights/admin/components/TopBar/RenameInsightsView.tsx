@@ -114,4 +114,4 @@ const RenameInsightsView = ({
   );
 };
 
-export default injectIntl<RenameInsightsViewProps>(RenameInsightsView);
+export default injectIntl(RenameInsightsView);

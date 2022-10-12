@@ -27,7 +27,7 @@ import {
   commentsByTimeStream,
 } from 'services/stats';
 import { colors } from 'utils/styleUtils';
-import { MessageDescriptor } from 'react-intl';
+import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
 
 // services
 import { ParticipationMethod } from 'services/participationContexts';

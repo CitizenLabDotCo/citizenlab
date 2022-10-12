@@ -143,6 +143,4 @@ const ProjectTopicSelector = memo(
   }
 );
 
-export default injectIntl<Props>(
-  withRouter(injectLocalize(ProjectTopicSelector))
-);
+export default injectIntl(withRouter(injectLocalize(ProjectTopicSelector)));

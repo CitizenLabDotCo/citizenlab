@@ -122,7 +122,7 @@ class AreaList extends React.PureComponent<Props & WrappedComponentProps> {
   }
 }
 
-const AreaListWithHoCs = injectIntl<Props>(AreaList);
+const AreaListWithHoCs = injectIntl(AreaList);
 
 export default () => (
   <GetAreas>{(areas) => <AreaListWithHoCs areas={areas} />}</GetAreas>

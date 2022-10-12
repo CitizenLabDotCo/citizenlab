@@ -207,4 +207,4 @@ class TimeControl extends PureComponent<Props & WrappedComponentProps, State> {
   }
 }
 
-export default injectIntl<Props>(TimeControl);
+export default injectIntl(TimeControl);

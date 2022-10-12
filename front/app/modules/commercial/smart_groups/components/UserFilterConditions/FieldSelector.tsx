@@ -19,7 +19,7 @@ import {
 
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
-import { MessageDescriptor } from 'react-intl';
+import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';

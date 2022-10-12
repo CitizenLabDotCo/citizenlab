@@ -232,4 +232,4 @@ class PasswordRecovery extends React.PureComponent<
   }
 }
 
-export default injectIntl<Props>(PasswordRecovery);
+export default injectIntl(PasswordRecovery);

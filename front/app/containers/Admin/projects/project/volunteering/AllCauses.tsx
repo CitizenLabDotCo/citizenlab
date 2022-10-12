@@ -24,16 +24,19 @@ const Buttons = styled.div`
   align-items: center;
 `;
 
-interface InputProps {
+type Props = {
   participationContextType: 'project' | 'phase';
   participationContextId: string;
   projectId: string;
-}
+} & WrappedComponentProps;
 
-interface Props extends InputProps, WrappedComponentProps {}
-
-const AllCauses = injectIntl<Props>(
-  ({ participationContextType, participationContextId, projectId, intl }) => {
+const AllCauses = injectIntl(
+  ({
+    participationContextType,
+    participationContextId,
+    projectId,
+    intl,
+  }: Props) => {
     const phaseId =
       participationContextType === 'phase' ? participationContextId : null;
     const causes = useCauses({ projectId, phaseId });

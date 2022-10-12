@@ -415,4 +415,4 @@ class OfficialFeedbackForm extends PureComponent<
   }
 }
 
-export default injectIntl<Props>(OfficialFeedbackForm);
+export default injectIntl(OfficialFeedbackForm);

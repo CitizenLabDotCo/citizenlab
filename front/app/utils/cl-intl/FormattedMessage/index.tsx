@@ -16,7 +16,7 @@ type State = {
   loaded: boolean;
 };
 
-type Props = OriginalFormattedMessage.Props;
+type Props = React.ComponentProps<typeof OriginalFormattedMessage>;
 
 const RtlBox = styled.span`
   ${isRtl`
@@ -24,7 +24,7 @@ const RtlBox = styled.span`
   `}
 `;
 
-export default class FormattedMessage extends React.PureComponent<
+export default class FormattedMessageComponent extends React.PureComponent<
   Props,
   State
 > {

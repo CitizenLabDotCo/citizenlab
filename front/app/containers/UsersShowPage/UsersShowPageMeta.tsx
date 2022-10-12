@@ -104,7 +104,7 @@ const UsersShowPageMeta: React.SFC<Props & WrappedComponentProps> = ({
   return null;
 };
 
-const UsersShowPageMetaWithHoc = injectIntl<Props>(UsersShowPageMeta);
+const UsersShowPageMetaWithHoc = injectIntl(UsersShowPageMeta);
 
 const Data = adopt<DataProps, InputProps>({
   tenantLocales: <GetAppConfigurationLocales />,

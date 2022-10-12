@@ -87,6 +87,6 @@ const UsersEditPageMeta = React.memo<Props & WrappedComponentProps>(
   }
 );
 
-const UsersEditPageMetaWithHoc = injectIntl<Props>(UsersEditPageMeta);
+const UsersEditPageMetaWithHoc = injectIntl(UsersEditPageMeta);
 
 export default UsersEditPageMetaWithHoc;

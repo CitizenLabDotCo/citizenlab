@@ -222,9 +222,11 @@ const CompactIdeaCard = memo<Props>(
             <Body>
               <StyledUserName userId={authorId || null} />
               <Separator aria-hidden>&bull;</Separator>
-              <TimeAgo>
-                {timeAgo(Date.parse(idea.attributes.created_at), locale)}
-              </TimeAgo>
+              {!isNilOrError(locale) && (
+                <TimeAgo>
+                  {timeAgo(Date.parse(idea.attributes.created_at), locale)}
+                </TimeAgo>
+              )}
               <span aria-hidden> {bodyText}</span>
             </Body>
           </BodyWrapper>

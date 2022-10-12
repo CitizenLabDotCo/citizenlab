@@ -190,4 +190,4 @@ const VerificationFormLookup = memo<Props & WrappedComponentProps>(
   }
 );
 
-export default injectIntl<Props>(VerificationFormLookup);
+export default injectIntl(VerificationFormLookup);

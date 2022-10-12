@@ -240,4 +240,6 @@ class BarChartActiveUsersByTime extends React.PureComponent<
   }
 }
 
-export default injectIntl<Props>(BarChartActiveUsersByTime);
+export default injectIntl<Props & WrappedComponentProps>(
+  BarChartActiveUsersByTime
+);

@@ -57,7 +57,7 @@ const InitiativesIndexMeta = React.memo<Props & WrappedComponentProps>(
   }
 );
 
-const InitiativesIndexMetaWithHoc = injectIntl<Props>(InitiativesIndexMeta);
+const InitiativesIndexMetaWithHoc = injectIntl(InitiativesIndexMeta);
 
 const Data = adopt<DataProps, InputProps>({
   tenantLocales: <GetAppConfigurationLocales />,

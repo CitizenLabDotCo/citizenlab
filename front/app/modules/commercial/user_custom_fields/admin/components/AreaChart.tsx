@@ -71,7 +71,7 @@ const AreaChart = (
   );
 };
 
-const WrappedAreaChart = injectIntl<Props>(
+const WrappedAreaChart = injectIntl(
   localize<Props & WrappedComponentProps>(AreaChart)
 );
 

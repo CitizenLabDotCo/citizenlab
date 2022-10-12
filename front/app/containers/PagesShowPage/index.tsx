@@ -232,9 +232,7 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   ),
 });
 
-const PagesShowPageWithHOCs = injectIntl<InputProps & WithRouterProps>(
-  PagesShowPage
-);
+const PagesShowPageWithHOCs = injectIntl(PagesShowPage);
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>

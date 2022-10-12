@@ -92,4 +92,4 @@ class ActionBarMulti extends React.PureComponent<
   }
 }
 
-export default injectIntl<Props>(ActionBarMulti);
+export default injectIntl(ActionBarMulti);

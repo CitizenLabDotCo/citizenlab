@@ -199,7 +199,7 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
 });
 
-const InitiativeMetaWithHoc = injectIntl<Props>(
+const InitiativeMetaWithHoc = injectIntl(
   injectLocalize<Props & WrappedComponentProps>(InitiativeMeta)
 );
 

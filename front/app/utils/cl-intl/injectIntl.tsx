@@ -5,8 +5,10 @@ import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useLocalize from 'hooks/useLocalize';
 
-function buildComponent<P>(Component: React.ComponentType<P>) {
-  return (props: P) => {
+export const injectIntl = <P extends WrappedComponentProps>(
+  Component: React.ComponentType<P>
+) => {
+  return (props: Omit<P, keyof WrappedComponentProps>) => {
     const locale = useLocale();
     const localize = useLocalize();
     const appConfig = useAppConfiguration();
@@ -31,12 +33,8 @@ function buildComponent<P>(Component: React.ComponentType<P>) {
       formatMessage: formatMessageReplacement,
     };
 
-    return <Component {...props} intl={intlReplacement} />;
+    return <Component {...(props as P)} intl={intlReplacement} />;
   };
-}
+};
 
-export default function injectIntl<P>(
-  component: React.ComponentType<P & WrappedComponentProps>
-) {
-  return buildComponent<P & WrappedComponentProps>(component);
-}
+export default injectIntl;

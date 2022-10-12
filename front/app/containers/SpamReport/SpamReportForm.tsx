@@ -150,4 +150,4 @@ class SpamReportForm extends React.PureComponent<
   }
 }
 
-export default injectIntl<Props>(SpamReportForm);
+export default injectIntl(SpamReportForm);

@@ -154,7 +154,7 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
 });
 
-const MetaWithHoc = injectIntl<Props>(Meta);
+const MetaWithHoc = injectIntl(Meta);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

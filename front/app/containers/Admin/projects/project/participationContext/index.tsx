@@ -30,7 +30,7 @@ import GetFeatureFlag, {
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 import messages from '../messages';
 
 // typings

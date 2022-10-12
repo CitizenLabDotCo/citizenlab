@@ -20,7 +20,7 @@ import {
 // i18n
 import messages from 'containers/Admin/dashboard/messages';
 import { InjectedLocalized } from 'utils/localize';
-import { MessageDescriptor } from 'react-intl';
+import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
 
 export type ISupportedDataType =
   | IUsersByRegistrationField

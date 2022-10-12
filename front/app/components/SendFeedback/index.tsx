@@ -49,38 +49,36 @@ const Container = styled.a`
   }
 `;
 
-interface Props {
+type Props = {
   showFeedbackText: boolean;
   className?: string;
-}
+} & WrappedComponentProps;
 
-const SendFeedbackComponent = React.memo<Props>(
-  (props: Props & WrappedComponentProps) => {
-    const {
-      showFeedbackText,
-      className,
-      intl: { formatMessage },
-    } = props;
+const SendFeedbackComponent = React.memo<Props>((props: Props) => {
+  const {
+    showFeedbackText,
+    className,
+    intl: { formatMessage },
+  } = props;
 
-    return (
-      <Container
-        className={className}
-        target="_blank"
-        href={formatMessage(messages.sendFeedbackLink, { url: location.href })}
-      >
-        <SendFeedbackIcon name="questionMark" className="send-feedback-icon" />
-        <SendFeedbackText>
-          {showFeedbackText ? (
-            <FormattedMessage {...messages.sendFeedback} />
-          ) : (
-            <ScreenReaderOnly>
-              {formatMessage(messages.sendFeedback)}
-            </ScreenReaderOnly>
-          )}
-        </SendFeedbackText>
-      </Container>
-    );
-  }
-);
+  return (
+    <Container
+      className={className}
+      target="_blank"
+      href={formatMessage(messages.sendFeedbackLink, { url: location.href })}
+    >
+      <SendFeedbackIcon name="questionMark" className="send-feedback-icon" />
+      <SendFeedbackText>
+        {showFeedbackText ? (
+          <FormattedMessage {...messages.sendFeedback} />
+        ) : (
+          <ScreenReaderOnly>
+            {formatMessage(messages.sendFeedback)}
+          </ScreenReaderOnly>
+        )}
+      </SendFeedbackText>
+    </Container>
+  );
+});
 
 export default injectIntl(SendFeedbackComponent);

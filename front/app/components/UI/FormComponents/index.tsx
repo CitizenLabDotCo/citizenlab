@@ -142,6 +142,8 @@ declare type iconAriaHiddenFalse = {
 };
 declare type iconAriaHiddenProps = iconAriaHiddenTrue | iconAriaHiddenFalse;
 
+type FormattedMessageProps = React.ComponentProps<typeof FormattedMessage>;
+
 interface FormLabelGenericProps {
   id?: string;
   htmlFor?: string;
@@ -152,14 +154,14 @@ interface FormLabelGenericProps {
   optional?: boolean;
   iconName?: IconNames;
   subtextMessage?: MessageDescriptor;
-  subtextMessageValues?: OriginalFormattedMessage.Props['values'];
+  subtextMessageValues?: FormattedMessageProps['values'];
   subtextValue?: JSX.Element | string;
   subtextSupportsHtml?: boolean;
 }
 
 interface FormLabelPropsMessages extends FormLabelGenericProps {
   labelMessage: MessageDescriptor;
-  labelMessageValues?: OriginalFormattedMessage.Props['values'];
+  labelMessageValues?: FormattedMessageProps['values'];
 }
 
 interface FormLabelPropsValue extends FormLabelGenericProps {

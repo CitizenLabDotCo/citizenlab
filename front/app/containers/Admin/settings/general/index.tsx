@@ -467,4 +467,4 @@ class SettingsGeneralTab extends PureComponent<
   }
 }
 
-export default injectIntl<Props>(SettingsGeneralTab);
+export default injectIntl(SettingsGeneralTab);

@@ -317,7 +317,7 @@ class CustomFields extends Component<Props & WrappedComponentProps, State> {
   }
 }
 
-const CustomFieldsListWithHoCs = injectIntl<Props>(CustomFields);
+const CustomFieldsListWithHoCs = injectIntl(CustomFields);
 
 export default (inputProps: InputProps) => (
   <GetUserCustomFields>

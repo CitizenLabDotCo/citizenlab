@@ -49,4 +49,4 @@ const AgeChart = (props: Props & WrappedComponentProps) => {
   );
 };
 
-export default injectIntl<Props>(AgeChart);
+export default injectIntl(AgeChart);

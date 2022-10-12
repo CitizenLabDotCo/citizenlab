@@ -237,9 +237,7 @@ class SharingModalContent extends PureComponent<
   }
 }
 
-const SharingModalContentWithHoCs = injectIntl<Props>(
-  localize(SharingModalContent)
-);
+const SharingModalContentWithHoCs = injectIntl(localize(SharingModalContent));
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,

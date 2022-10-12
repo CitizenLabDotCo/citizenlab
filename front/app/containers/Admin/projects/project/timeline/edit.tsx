@@ -516,9 +516,7 @@ class AdminProjectTimelineEdit extends PureComponent<
   }
 }
 
-const AdminProjectTimelineEditWithHOCs = injectIntl<Props>(
-  AdminProjectTimelineEdit
-);
+const AdminProjectTimelineEditWithHOCs = injectIntl(AdminProjectTimelineEdit);
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   phases: ({ params, render }) => (

@@ -2,9 +2,11 @@ import FormattedMessage from './FormattedMessage';
 import injectIntl from './injectIntl';
 import { MessageDescriptor } from 'react-intl';
 
+type Props = React.ComponentProps<typeof FormattedMessage>;
+
 type IMessageInfo = {
   message: MessageDescriptor;
-  values?: OriginalFormattedMessage.Props['values'];
+  values?: Props['values'];
 };
 
-export { FormattedMessage, injectIntl, IMessageInfo };
+export { FormattedMessage, injectIntl, IMessageInfo, MessageDescriptor };

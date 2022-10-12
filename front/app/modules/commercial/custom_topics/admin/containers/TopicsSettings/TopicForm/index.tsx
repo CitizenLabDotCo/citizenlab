@@ -94,4 +94,4 @@ const TopicForm = ({
   );
 };
 
-export default injectIntl<Props>(TopicForm);
+export default injectIntl(TopicForm);

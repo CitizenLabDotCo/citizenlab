@@ -434,7 +434,7 @@ class ChildCommentForm extends PureComponent<
   }
 }
 
-const ChildCommentFormWithHoCs = injectIntl<Props>(ChildCommentForm);
+const ChildCommentFormWithHoCs = injectIntl(ChildCommentForm);
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,

@@ -185,7 +185,7 @@ export class RegistrationFieldsToGraphs extends PureComponent<
 }
 
 const RegistrationFieldsToGraphsWithHoCs = localize<Props>(
-  injectIntl<Props & InjectedLocalized>(RegistrationFieldsToGraphs as any)
+  injectIntl(RegistrationFieldsToGraphs as any)
 ) as any;
 
 export default (inputProps: InputProps) => (

@@ -284,4 +284,4 @@ class SettingsCustomizeTab extends PureComponent<
   }
 }
 
-export default withTheme(injectIntl<Props>(SettingsCustomizeTab));
+export default withTheme(injectIntl(SettingsCustomizeTab));

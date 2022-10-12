@@ -489,7 +489,7 @@ class ProfileForm extends PureComponent<Props, State> {
   }
 }
 
-const ProfileFormWithHocs = injectIntl<InputProps>(localize(ProfileForm));
+const ProfileFormWithHocs = injectIntl(localize(ProfileForm));
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,

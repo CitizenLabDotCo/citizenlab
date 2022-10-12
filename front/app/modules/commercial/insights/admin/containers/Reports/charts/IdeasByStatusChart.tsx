@@ -129,7 +129,7 @@ export class IdeasByStatusChart extends React.PureComponent<
   }
 }
 
-const IdeasByStatusChartWithHoCs = injectIntl<Props>(IdeasByStatusChart);
+const IdeasByStatusChartWithHoCs = injectIntl(IdeasByStatusChart);
 
 const WrappedIdeasByStatusChart = (
   inputProps: InputProps & InjectedLocalized

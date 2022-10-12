@@ -538,7 +538,7 @@ const Data = adopt<DataProps, InputProps>({
   userCustomFieldsSchema: <GetUserCustomFieldsSchema />,
 });
 
-const UserCustomFieldsFormWithHoc = injectIntl<Props>(UserCustomFieldsForm);
+const UserCustomFieldsFormWithHoc = injectIntl(UserCustomFieldsForm);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
