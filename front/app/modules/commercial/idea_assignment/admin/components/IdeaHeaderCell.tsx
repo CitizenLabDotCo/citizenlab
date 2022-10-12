@@ -1,10 +1,16 @@
-import React, { FC, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
+// components
+import { HeaderCell } from 'components/admin/Table';
 import { TableHeaderCellText } from 'components/admin/PostManager/components/PostTable';
+
+// i18n
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from 'components/admin/PostManager/messages';
+
+// typings
 import { CellConfiguration, InsertConfigurationOptions } from 'typings';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/header/IdeaHeaderRow';
-import messages from 'components/admin/PostManager/messages';
 
 type Props = {
   onData: (
@@ -14,18 +20,20 @@ type Props = {
   ) => void;
 };
 
-const IdeaHeaderCell: FC<Props> = ({ onData }) => {
+const IdeaHeaderCell = ({ onData }: Props) => {
   useEffect(
     () =>
       onData({
         configuration: {
           name: 'assignee',
           cellProps: { width: 2 },
-          Component: () => {
+          Component: ({ width }) => {
             return (
-              <TableHeaderCellText>
-                <FormattedMessage {...messages.assignee} />
-              </TableHeaderCellText>
+              <HeaderCell width={width}>
+                <TableHeaderCellText>
+                  <FormattedMessage {...messages.assignee} />
+                </TableHeaderCellText>
+              </HeaderCell>
             );
           },
         },
