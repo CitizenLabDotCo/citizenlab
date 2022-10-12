@@ -20,7 +20,7 @@ export const TitleLink = styled.a`
   display: block;
   display: -webkit-box;
   margin: 0 auto;
-  &:not(:last-child) {black
+  &:not(:last-child) {
     margin-bottom: 7px;
   }
   font-size: $font-size;

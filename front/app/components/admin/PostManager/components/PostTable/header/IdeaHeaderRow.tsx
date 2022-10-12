@@ -30,6 +30,7 @@ interface SortableHeaderCellProps {
   sortDirection?: 'ascending' | 'descending' | null;
   type: string;
   infoTooltip?: React.ReactChild;
+  width: string;
   onChange: () => void;
   children: React.ReactNode;
 }
@@ -38,16 +39,15 @@ const SortableHeaderCell = ({
   sortAttribute,
   sortDirection,
   type,
+  width,
   infoTooltip,
   onChange,
   children,
 }: SortableHeaderCellProps) => {
-  if (type === 'baskets_count') {
-    console.log(sortAttribute, sortDirection);
-  }
   return (
     <HeaderCell
       clickable
+      width={width}
       sortDirection={
         sortAttribute === type && sortDirection ? sortDirection : undefined
       }
@@ -153,9 +153,10 @@ export default ({
       name: 'picks',
       featureFlag: 'participatory_budgeting',
       cellProps: { width: 1 },
-      Component: () => {
+      Component: ({ width }) => {
         return (
           <HeaderCell
+            width={width}
             infoTooltip={
               <Text mb="0px" mt="0px" fontSize="s">
                 <FormattedMessage {...messages.pbItemCountTooltip} />
