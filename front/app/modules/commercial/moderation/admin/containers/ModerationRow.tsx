@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import moment from 'moment';
 
 // components
+import { Tr, Td } from 'components/admin/Table';
 import ModerationContentCell from './ModerationContentCell';
 import Checkbox from 'components/UI/Checkbox';
 import Outlet from 'components/Outlet';
@@ -35,7 +36,7 @@ import {
 import useInappropriateContentFlag from 'modules/commercial/flag_inappropriate_content/hooks/useInappropriateContentFlag';
 import { isNilOrError } from 'utils/helperUtils';
 
-const Container = styled.tr<{ bgColor: string; flagged: boolean }>`
+const Container = styled(Tr)<{ bgColor: string; flagged: boolean }>`
   background: ${({ bgColor, flagged }) =>
     flagged ? colors.errorLight : bgColor};
 `;
@@ -187,14 +188,14 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
         flagged={hasActiveInappropriateContentFlag}
         bgColor={bgColor}
       >
-        <td className="checkbox">
+        <Td className="checkbox">
           <StyledCheckbox checked={selected} onChange={handleOnChecked} />
-        </td>
-        <td className="date">
+        </Td>
+        <Td className="date">
           {moment(moderation.attributes.created_at).format('L')}{' '}
           {moment(moderation.attributes.created_at).format('LT')}
-        </td>
-        <td className="type">
+        </Td>
+        <Td className="type">
           {formatMessage(
             {
               Idea: messages.post,
@@ -202,8 +203,8 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
               Initiative: messages.initiative,
             }[moderatableType]
           )}
-        </td>
-        <td className="belongsTo">
+        </Td>
+        <Td className="belongsTo">
           {belongsToTypes.length > 0 ? (
             belongsToTypes.map((belongsToType: TBelongsTo, index) => {
               const belongsToTypeMessage = {
@@ -246,8 +247,8 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
           ) : (
             <>-</>
           )}
-        </td>
-        <td className="content">
+        </Td>
+        <Td className="content">
           <StyledModerationContentCell
             contentTitle={contentTitle}
             contentBody={contentBody}
@@ -256,9 +257,9 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
             id="app.modules.commercial.moderation.admin.containers.ModerationRow.content"
             inappropriateContentFlagId={inappropriateContentFlagId}
           />
-        </td>
+        </Td>
         {viewLink && (
-          <td>
+          <Td>
             <Tippy
               placement="bottom-end"
               content={
@@ -281,7 +282,7 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
                 </GoToLink>
               </GoToLinkWrapper>
             </Tippy>
-          </td>
+          </Td>
         )}
       </Container>
     );

@@ -4,7 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { insertConfiguration } from 'utils/moduleUtils';
 
 // components
-import Table from 'components/UI/Table';
+import { Table, Thead, Tr, Th, Tbody } from 'components/admin/Table';
 import ModerationRow from './ModerationRow';
 import Pagination from 'components/Pagination';
 import Checkbox from 'components/UI/Checkbox';
@@ -100,23 +100,23 @@ const StyledTabs = styled(Tabs)`
 `;
 
 const StyledTable = styled(Table)`
-  th,
-  td {
-    text-align: left;
-    vertical-align: top;
-    padding-left: 0px;
-    padding-right: 20px;
+  // th,
+  // td {
+  //   text-align: left;
+  //   vertical-align: top;
+  //   padding-left: 0px;
+  //   padding-right: 20px;
 
-    &.checkbox {
-      width: 70px;
-      padding-left: 8px;
-    }
+  //   &.checkbox {
+  //     width: 70px;
+  //     padding-left: 8px;
+  //   }
 
-    &.content {
-      width: 50%;
-      padding-right: 25px;
-    }
-  }
+  //   &.content {
+  //     width: 50%;
+  //     padding-right: 25px;
+  //   }
+  // }
 `;
 
 const StyledCheckbox = styled(Checkbox)`
@@ -526,10 +526,10 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
           </ActionBarBottom>
         </ActionBar>
 
-        <StyledTable>
-          <thead>
-            <tr>
-              <th className="checkbox">
+        <StyledTable innerBorders={{ bodyRows: true }}>
+          <Thead>
+            <Tr>
+              <Th className="checkbox">
                 <StyledCheckbox
                   checked={
                     moderations.length > 0 &&
@@ -542,24 +542,24 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                   disabled={moderations.length === 0}
                   onChange={handleOnSelectAll}
                 />
-              </th>
-              <th className="date">
+              </Th>
+              <Th className="date">
                 <FormattedMessage {...messages.date} />
-              </th>
-              <th className="type">
+              </Th>
+              <Th className="type">
                 <FormattedMessage {...messages.type} />
-              </th>
-              <th className="belongsTo">
+              </Th>
+              <Th className="belongsTo">
                 <FormattedMessage {...messages.belongsTo} />
-              </th>
-              <th className="content">
+              </Th>
+              <Th className="content">
                 <FormattedMessage {...messages.content} />
-              </th>
-              <th className="goto">&nbsp;</th>
-            </tr>
-          </thead>
+              </Th>
+              <Th className="goto">&nbsp;</Th>
+            </Tr>
+          </Thead>
           {moderations.length > 0 && (
-            <tbody>
+            <Tbody>
               {moderations.map((moderationItem) => (
                 <ModerationRow
                   key={moderationItem.id}
@@ -575,7 +575,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                   }
                 />
               ))}
-            </tbody>
+            </Tbody>
           )}
         </StyledTable>
 
