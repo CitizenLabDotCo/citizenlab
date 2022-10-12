@@ -36,11 +36,11 @@ export const FormSection = styled.div`
   max-width: 620px;
   min-width: 560px;
   padding: 40px 40px 30px;
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   margin-bottom: 15px;
   ${defaultCardStyle};
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     min-width: auto;
   `}
 `;
@@ -56,7 +56,7 @@ const FormSectionTitleStyled = styled.h2`
 `;
 
 const FormSectionDescriptionStyled = styled.p`
-  color: ${colors.text};
+  color: ${colors.textPrimary};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   line-height: normal;
@@ -88,7 +88,7 @@ export const FormSectionTitle = memo(
 export const FormLabelStyled = styled(Box)`
   width: 100%;
   font-size: ${fontSizes.base}px;
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-weight: 500;
   line-height: normal;
 
@@ -104,7 +104,7 @@ export const FormLabelStyled = styled(Box)`
 export const FormSubtextStyled = styled.div`
   width: 100%;
   font-size: ${fontSizes.s}px;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-weight: 300;
   line-height: normal;
   margin-top: 4px;
@@ -116,7 +116,7 @@ export const Spacer = styled.div`
 `;
 
 const OptionalText = styled.span`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-weight: 400;
 `;
 
@@ -129,8 +129,6 @@ const LabelContainer = styled.div`
 `;
 
 const StyledIcon = styled(Icon)`
-  width: 16px;
-  height: 16px;
   margin-left: 10px;
 `;
 declare type iconAriaHiddenTrue = {

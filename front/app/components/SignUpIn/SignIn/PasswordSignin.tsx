@@ -271,9 +271,7 @@ class PasswordSignin extends PureComponent<
       azureAdLoginEnabled,
       franceconnectLoginEnabled,
     ].filter((provider) => provider === true);
-    const isDesktop = windowSize
-      ? windowSize > viewportWidths.largeTablet
-      : true;
+    const isDesktop = windowSize ? windowSize > viewportWidths.tablet : true;
 
     return (
       <Container

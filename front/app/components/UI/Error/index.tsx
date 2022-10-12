@@ -1,14 +1,14 @@
-import React, { useRef, useEffect } from 'react';
-import { Icon, Box } from '@citizenlab/cl2-component-library';
-import CSSTransition from 'react-transition-group/CSSTransition';
+import { Box, Icon } from '@citizenlab/cl2-component-library';
 import { isArray, isEmpty, uniqBy } from 'lodash-es';
-import styled from 'styled-components';
-import { FormattedMessage } from 'utils/cl-intl';
 import { darken } from 'polished';
-import { CLError, Message } from 'typings';
+import React, { useEffect, useRef } from 'react';
+import CSSTransition from 'react-transition-group/CSSTransition';
 import { IInviteError } from 'services/invites';
-import messages from './messages';
+import styled from 'styled-components';
+import { CLError, Message } from 'typings';
+import { FormattedMessage } from 'utils/cl-intl';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
+import messages from './messages';
 
 const timeout = 350;
 
@@ -36,9 +36,7 @@ const ErrorMessageText = styled.div`
 `;
 
 const ErrorIcon = styled(Icon)`
-  flex: 0 0 20px;
-  width: 20px;
-  height: 20px;
+  flex: 0 0 24px;
   fill: ${colors.red600};
   padding: 0px;
   margin: 0px;
@@ -56,9 +54,9 @@ const ContainerInner = styled.div<{ showBackground: boolean }>`
   justify-content: space-between;
   padding: 0px 13px;
   border-radius: ${(props) => props.theme.borderRadius};
-  background: ${colors.red100};
+  background: ${colors.errorLight};
   background: ${(props) =>
-    props.showBackground ? colors.red100 : 'transparent'};
+    props.showBackground ? colors.errorLight : 'transparent'};
 
   ${isRtl`
     flex-direction: row-reverse;
@@ -108,8 +106,6 @@ const ErrorList = styled.ul`
 const ErrorListItem = styled.li`
   display: flex;
   align-items: flex-start;
-  margin-top: 8px;
-  margin-bottom: 8px;
 `;
 
 const Bullet = styled.span`
@@ -133,45 +129,47 @@ interface Props {
   scrollIntoView?: boolean;
 }
 
-export type TFieldName =
-  | 'base'
-  | 'title_multiloc'
-  | 'sender'
-  | 'group_ids'
-  | 'reply_to'
-  | 'subject_multiloc'
-  | 'body_multiloc'
-  | 'description_multiloc'
-  | 'description_preview_multiloc'
-  | 'required'
-  | 'input_type'
-  | 'slug'
-  | 'file'
-  | 'token'
-  | 'password'
-  | 'buttonText'
-  | 'showFooter'
-  | 'showLogo'
-  | 'showHeader'
-  | 'relativeLink'
-  | 'font'
-  | 'accentColor'
-  | 'textColor'
-  | 'siteBgColor'
-  | 'bgColor'
-  | 'fontSize'
-  | 'headerText'
-  | 'headerSubText'
-  | 'limit'
-  | 'width'
-  | 'height'
-  | 'first_name'
-  | 'last_name'
-  | 'confirmation_code'
-  | 'email'
-  | 'view_name'
-  | 'category_name'
-  | 'nav_bar_item_title_multiloc';
+export interface TFieldNameMap {
+  base: 'base';
+  title_multiloc: 'title_multiloc';
+  sender: 'sender';
+  group_ids: 'group_ids';
+  reply_to: 'reply_to';
+  subject_multiloc: 'subject_multiloc';
+  body_multiloc: 'body_multiloc';
+  description_multiloc: 'description_multiloc';
+  description_preview_multiloc: 'description_preview_multiloc';
+  required: 'required';
+  input_type: 'input_type';
+  slug: 'slug';
+  file: 'file';
+  token: 'token';
+  password: 'password';
+  buttonText: 'buttonText';
+  showFooter: 'showFooter';
+  showLogo: 'showLogo';
+  relativeLink: 'relativeLink';
+  font: 'font';
+  accentColor: 'accentColor';
+  textColor: 'textColor';
+  siteBgColor: 'siteBgColor';
+  bgColor: 'bgColor';
+  fontSize: 'fontSize';
+  headerText: 'headerText';
+  headerSubText: 'headerSubText';
+  limit: 'limit';
+  width: 'width';
+  height: 'height';
+  first_name: 'first_name';
+  last_name: 'last_name';
+  confirmation_code: 'confirmation_code';
+  email: 'email';
+  nav_bar_item_title_multiloc: 'nav_bar_item_title_multiloc';
+  banner_cta_button_multiloc: 'banner_cta_button_multiloc';
+  banner_cta_button_url: 'banner_cta_button_url';
+}
+
+export type TFieldName = TFieldNameMap[keyof TFieldNameMap];
 
 export const findErrorMessage = (
   fieldName: TFieldName | undefined,
@@ -184,8 +182,8 @@ export const findErrorMessage = (
   if (messages[error]) {
     return messages[error] as Message;
   }
-  // Return a generic error message
-  return messages.invalid;
+  // Return a empty error message
+  return '';
 };
 
 const Error = (props: Props) => {
@@ -243,7 +241,13 @@ const Error = (props: Props) => {
           showBackground={showBackground}
           className={`${apiErrors && apiErrors.length > 1 && 'isList'}`}
         >
-          {showIcon && <ErrorIcon name="error" data-testid="error-icon" />}
+          {showIcon && (
+            <ErrorIcon
+              name="alert-circle"
+              fill={colors.error}
+              data-testid="error-icon"
+            />
+          )}
 
           <ErrorMessageText data-testid="error-message-text">
             <Box py="16px">

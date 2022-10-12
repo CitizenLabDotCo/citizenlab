@@ -49,7 +49,7 @@ export class SortableList extends Component<InputProps, SortableListState> {
   // This ensures that this.state.itemsWhileDragging are used to render the
   // children until the request to the server to update the order has been
   // completed, and the updated order has come back in through the props.
-  componentDidUpdate = (prevProps) => {
+  componentDidUpdate = (prevProps: InputProps) => {
     if (
       this.state.updating &&
       itemOrderWasUpdated(prevProps.items, this.props.items) // &&
@@ -61,17 +61,17 @@ export class SortableList extends Component<InputProps, SortableListState> {
     }
   };
 
-  getLocalIndex(externalIndex) {
+  getLocalIndex(externalIndex: number) {
     const lockFirstNItems = this.props.lockFirstNItems || 0;
     return externalIndex - lockFirstNItems;
   }
 
-  getExternalIndex(localIndex) {
+  getExternalIndex(localIndex: number) {
     const lockFirstNItems = this.props.lockFirstNItems || 0;
     return localIndex + lockFirstNItems;
   }
 
-  handleDragRow = (fromIndex, toIndex) => {
+  handleDragRow = (fromIndex: number, toIndex: number) => {
     const listItems = this.listItems();
     if (!listItems) return;
 
@@ -81,7 +81,7 @@ export class SortableList extends Component<InputProps, SortableListState> {
     this.setState({ itemsWhileDragging });
   };
 
-  handleDropRow = (itemId, toIndex) => {
+  handleDropRow = (itemId: string, toIndex: number) => {
     const listItems = this.listItems();
 
     if (!listItems) return;
@@ -135,7 +135,7 @@ export class SortableList extends Component<InputProps, SortableListState> {
   }
 }
 
-export default (props) => (
+export default (props: InputProps) => (
   <DndProvider backend={HTML5Backend}>
     <SortableList {...props} />
   </DndProvider>

@@ -2,6 +2,7 @@ import React from 'react';
 import { DndProvider } from 'react-dnd-cjs';
 import HTML5Backend from 'react-dnd-html5-backend-cjs';
 import { useFormContext } from 'react-hook-form';
+import { snakeCase } from 'lodash-es';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
@@ -20,6 +21,9 @@ import T from 'components/T';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
+// Hooks
+import useLocale from 'hooks/useLocale';
+
 import {
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
@@ -35,6 +39,7 @@ const getTranslatedFieldType = (field) => {
     case 'text':
       return messages.shortAnswer;
     case 'multiselect':
+    case 'select':
       return messages.multipleChoice;
     case 'number':
       return messages.number;
@@ -61,58 +66,70 @@ const FormFields = ({
     formState: { errors },
   } = useFormContext();
   const formCustomFields: IFlatCustomField[] = watch('customFields');
+  const locale = useLocale();
+  if (isNilOrError(locale)) {
+    return null;
+  }
 
   return (
     <DndProvider backend={HTML5Backend}>
       <Box p="32px" height="100%" overflowY="auto">
-        <List key={formCustomFields.length}>
-          {formCustomFields.map((field, index) => {
-            const hasErrors = !!errors.customFields?.[index];
-            let border = 'none';
-            if (hasErrors) {
-              border = '1px solid red';
-            } else if (selectedFieldId === field.id) {
-              border = `1px solid ${colors.clBlueLight}`;
-            }
+        <Box borderBottom={`1px solid ${colors.divider}`}>
+          <List key={formCustomFields.length}>
+            {formCustomFields.map((field, index) => {
+              const hasErrors = !!errors.customFields?.[index];
+              let outlineStyle = 'none';
+              if (hasErrors) {
+                outlineStyle = `1px solid ${colors.red400}`;
+              } else if (selectedFieldId === field.id) {
+                outlineStyle = `1px solid ${colors.primary}`;
+              }
+              const fieldIdentifier = snakeCase(field.title_multiloc[locale]);
 
-            return (
-              <Box border={border} key={field.id}>
-                <SortableRow
-                  id={field.id}
-                  index={index}
-                  moveRow={handleDragRow}
-                  dropRow={() => {
-                    // Do nothing, no need to handle dropping a row for now
-                  }}
+              return (
+                <Box
+                  key={field.id}
+                  style={{ outline: outlineStyle }}
+                  data-cy={`e2e-field-${fieldIdentifier}`}
                 >
-                  <Box display="flex" className="expand">
-                    <Box as="span" display="flex" alignItems="center">
-                      <Text fontSize="base" my="0px" color="adminTextColor">
-                        <T value={field.title_multiloc} />
-                      </Text>
-                    </Box>
-                    {!isNilOrError(field.input_type) && (
-                      <StyledBadge color={colors.adminSecondaryTextColor}>
-                        <FormattedMessage
-                          {...getTranslatedFieldType(field.input_type)}
-                        />
-                      </StyledBadge>
-                    )}
-                  </Box>
-                  <Button
-                    buttonStyle="secondary"
-                    icon="edit"
-                    onClick={() => {
-                      onEditField({ ...field, index });
+                  <SortableRow
+                    id={field.id}
+                    index={index}
+                    moveRow={handleDragRow}
+                    dropRow={() => {
+                      // Do nothing, no need to handle dropping a row for now
                     }}
                   >
-                    <FormattedMessage {...messages.editButtonLabel} />
-                  </Button>
-                </SortableRow>
-              </Box>
-            );
-          })}
-        </List>
+                    <Box display="flex" className="expand">
+                      <Box as="span" display="flex" alignItems="center">
+                        <Text fontSize="base" my="0px" color="primary">
+                          <T value={field.title_multiloc} />
+                        </Text>
+                      </Box>
+                      {!isNilOrError(field.input_type) && (
+                        <StyledBadge className="inverse" color={colors.grey700}>
+                          <FormattedMessage
+                            {...getTranslatedFieldType(field.input_type)}
+                          />
+                        </StyledBadge>
+                      )}
+                    </Box>
+                    <Button
+                      buttonStyle="secondary"
+                      icon="edit"
+                      onClick={() => {
+                        onEditField({ ...field, index });
+                      }}
+                      data-cy={`e2e-edit-${fieldIdentifier}`}
+                    >
+                      <FormattedMessage {...messages.editButtonLabel} />
+                    </Button>
+                  </SortableRow>
+                </Box>
+              );
+            })}
+          </List>
+        </Box>
       </Box>
     </DndProvider>
   );

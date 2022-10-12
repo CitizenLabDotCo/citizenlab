@@ -18,9 +18,9 @@ import Outlet from 'components/Outlet';
 import { insertConfiguration } from 'utils/moduleUtils';
 
 const InfoIcon = styled(Icon)`
-  fill: ${colors.clBlueDarker};
-  width: 16px;
-  height: 16px;
+  fill: ${colors.teal700};
+  width: 20px;
+  height: 20px;
   cursor: pointer;
 
   &:hover {
@@ -159,7 +159,7 @@ export default ({
               content={<FormattedMessage {...messages.pbItemCountTooltip} />}
               trigger={
                 <button>
-                  <InfoIcon name="info3" />
+                  <InfoIcon name="info-solid" />
                 </button>
               }
             />

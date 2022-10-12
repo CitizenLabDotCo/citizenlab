@@ -5,28 +5,22 @@ import { injectIntl } from 'utils/cl-intl';
 
 type Props = {
   title: MessageDescriptor;
-  description: MessageDescriptor;
+  description?: MessageDescriptor;
+} & WrappedComponentProps;
+
+const HelmetIntl = ({ title, description, intl: { formatMessage } }: Props) => {
+  return (
+    <>
+      <Helmet
+        title={formatMessage(title)}
+        meta={
+          description
+            ? [{ name: 'description', content: formatMessage(description) }]
+            : undefined
+        }
+      />
+    </>
+  );
 };
-
-interface State {}
-
-export class HelmetIntl extends React.PureComponent<
-  Props & WrappedComponentProps,
-  State
-> {
-  render() {
-    const { formatMessage } = this.props.intl;
-    const { title, description } = this.props;
-
-    return (
-      <>
-        <Helmet
-          title={formatMessage(title)}
-          meta={[{ name: 'description', content: formatMessage(description) }]}
-        />
-      </>
-    );
-  }
-}
 
 export default injectIntl(HelmetIntl);

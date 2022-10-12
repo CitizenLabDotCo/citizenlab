@@ -81,6 +81,55 @@ FactoryBot.define do
       end
     end
 
+    factory :project_with_active_and_future_native_survey_phase do
+      after(:create) do |project, _evaluator|
+        active_phase = create(:active_phase, project: project, participation_method: 'native_survey')
+        future_phase = create(
+          :phase,
+          project: project,
+          participation_method: 'native_survey',
+          start_at: active_phase.end_at + 30.days,
+          end_at: active_phase.end_at + 60.days
+        )
+        project.phases << active_phase
+        project.phases << future_phase
+      end
+    end
+
+    factory :project_with_past_and_future_native_survey_phase do
+      after(:create) do |project, _evaluator|
+        past_phase = create(
+          :phase,
+          project: project,
+          participation_method: 'native_survey',
+          start_at: 60.days.ago,
+          end_at: 30.days.ago
+        )
+        future_phase = create(
+          :phase,
+          project: project,
+          participation_method: 'native_survey',
+          start_at: past_phase.end_at + 30.days,
+          end_at: past_phase.end_at + 60.days
+        )
+        project.phases << past_phase
+        project.phases << future_phase
+      end
+    end
+
+    factory :project_with_future_native_survey_phase do
+      after(:create) do |project, _evaluator|
+        future_phase = create(
+          :phase,
+          project: project,
+          participation_method: 'native_survey',
+          start_at: 10.days.from_now,
+          end_at: 40.days.from_now
+        )
+        project.phases << future_phase
+      end
+    end
+
     factory :project_with_past_phases do
       transient do
         phases_count { 5 }

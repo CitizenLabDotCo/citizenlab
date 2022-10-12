@@ -1,8 +1,11 @@
 import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { get } from 'lodash-es';
+import { get, snakeCase } from 'lodash-es';
 import { useParams } from 'react-router-dom';
+
+// Hooks
+import useLocale from 'hooks/useLocale';
 
 // components
 import {
@@ -33,7 +36,7 @@ const StyledBox = styled(Box)`
   display: grid;
   gap: 80px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     grid-template-columns: 1fr;
   `}
 
@@ -44,7 +47,7 @@ const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const { projectId } = useParams() as {
     projectId: string;
   };
-
+  const locale = useLocale();
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   let phaseId = urlParams.get('phase_id');
@@ -57,7 +60,7 @@ const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
     phaseId,
   });
 
-  if (isNilOrError(formResults)) {
+  if (isNilOrError(formResults) || isNilOrError(locale)) {
     return null;
   }
 
@@ -69,7 +72,7 @@ const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
         <Box width="100%">
           <Title variant="h2">{formatMessage(messages.surveyResults)}</Title>
           {totalSubmissions && (
-            <Text variant="bodyM" color="clBlueDarker">
+            <Text variant="bodyM" color="teal700">
               {formatMessage(messages.totalSurveyResponses, {
                 count: totalSubmissions,
               })}
@@ -89,7 +92,7 @@ const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
       </Box>
 
       <Box
-        bgColor={colors.clBlueDarkBg}
+        bgColor={colors.teal100}
         borderRadius="3px"
         px="12px"
         py="4px"
@@ -101,8 +104,8 @@ const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
         mt="32px"
       >
         <Box display="flex" gap="16px" alignItems="center">
-          <Icon name="info" width="24px" height="24px" fill="clBlueDarker" />
-          <Text variant="bodyM" color="clBlueDarker">
+          <Icon name="info-outline" width="24px" height="24px" fill="teal700" />
+          <Text variant="bodyM" color="teal700">
             {formatMessage(messages.informationText)}
           </Text>
         </Box>
@@ -112,12 +115,12 @@ const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
           ({ question, inputType, answers, totalResponses }, index) => {
             const inputTypeText = get(messages, inputType, '');
             return (
-              <Box key={index}>
+              <Box key={index} data-cy={`e2e-${snakeCase(question[locale])}`}>
                 <Text fontWeight="bold">
                   <T value={question} />
                 </Text>
                 {inputTypeText && (
-                  <Text variant="bodyS" color="adminSecondaryTextColor">
+                  <Text variant="bodyS" color="textSecondary">
                     {formatMessage(inputTypeText)}
                   </Text>
                 )}
@@ -128,7 +131,7 @@ const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
                   return (
                     <CompletionBar
                       key={index}
-                      bgColor={colors.adminTextColor}
+                      bgColor={colors.primary}
                       completed={percentage}
                       leftLabel={answer}
                       rightLabel={`${percentage}% (${responses} choices)`}

@@ -66,7 +66,7 @@ const Export = ({
     <div data-testid="insightsExport">
       <Button
         buttonStyle="secondary"
-        textColor={colors.adminTextColor}
+        textColor={colors.primary}
         onClick={handleExportClick}
       >
         {formatMessage(messages.inputsTableExport)}

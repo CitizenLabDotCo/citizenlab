@@ -14,7 +14,7 @@ import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 const SendFeedbackText = styled.span`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   text-decoration: underline;
@@ -22,9 +22,7 @@ const SendFeedbackText = styled.span`
 `;
 
 const SendFeedbackIcon = styled(Icon)`
-  fill: ${colors.label};
-  width: 22px;
-  height: 22px;
+  fill: ${colors.textSecondary};
   transition: all 100ms ease-out;
   margin-right: 8px;
 
@@ -67,7 +65,7 @@ const SendFeedbackComponent = React.memo<Props>((props: Props) => {
       target="_blank"
       href={formatMessage(messages.sendFeedbackLink, { url: location.href })}
     >
-      <SendFeedbackIcon name="questionMark" className="send-feedback-icon" />
+      <SendFeedbackIcon name="question-bubble" className="send-feedback-icon" />
       <SendFeedbackText>
         {showFeedbackText ? (
           <FormattedMessage {...messages.sendFeedback} />

@@ -21,7 +21,8 @@ const LinearScaleControl = ({
   handleChange,
   id,
 }: ControlProps) => {
-  const maximum = schema?.properties?.rating?.maximum;
+  const maximum = schema?.maximum;
+
   return (
     <>
       <FormLabel
@@ -55,11 +56,11 @@ const LinearScaleControl = ({
                 <br />
                 <Radio
                   name="linear_scale"
-                  currentValue={data?.rating}
+                  currentValue={data}
                   value={visualIndex}
                   key={i}
                   id={rowId}
-                  onChange={(value) => handleChange(path, { rating: value })}
+                  onChange={(value) => handleChange(path, value)}
                 />
               </Box>
             );

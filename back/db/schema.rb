@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_06_074349) do
+ActiveRecord::Schema.define(version: 2022_10_11_092349) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -56,7 +56,34 @@ ActiveRecord::Schema.define(version: 2022_09_06_074349) do
   create_table "analytics_dimension_dates", primary_key: "date", id: :date, force: :cascade do |t|
     t.string "year"
     t.string "month"
-    t.string "day"
+    t.date "week"
+  end
+
+  create_table "analytics_dimension_locales", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.index ["name"], name: "index_analytics_dimension_locales_on_name", unique: true
+  end
+
+  create_table "analytics_dimension_locales_fact_visits", id: false, force: :cascade do |t|
+    t.uuid "dimension_locale_id"
+    t.uuid "fact_visit_id"
+    t.index ["dimension_locale_id", "fact_visit_id"], name: "i_analytics_dim_locales_fact_visits_on_locale_and_visit_ids", unique: true
+    t.index ["dimension_locale_id"], name: "i_l_v_locale"
+    t.index ["fact_visit_id"], name: "i_l_v_visit"
+  end
+
+  create_table "analytics_dimension_projects_fact_visits", id: false, force: :cascade do |t|
+    t.uuid "dimension_project_id"
+    t.uuid "fact_visit_id"
+    t.index ["dimension_project_id", "fact_visit_id"], name: "i_analytics_dim_projects_fact_visits_on_project_and_visit_ids", unique: true
+    t.index ["dimension_project_id"], name: "i_p_v_project"
+    t.index ["fact_visit_id"], name: "i_p_v_visit"
+  end
+
+  create_table "analytics_dimension_referrer_types", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "key", null: false
+    t.string "name", null: false
+    t.index ["key"], name: "i_d_referrer_key", unique: true
   end
 
   create_table "analytics_dimension_types", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -64,17 +91,36 @@ ActiveRecord::Schema.define(version: 2022_09_06_074349) do
     t.string "parent"
   end
 
+  create_table "analytics_fact_visits", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "visitor_id", null: false
+    t.uuid "dimension_user_id"
+    t.uuid "dimension_referrer_type_id", null: false
+    t.date "dimension_date_first_action_id", null: false
+    t.date "dimension_date_last_action_id", null: false
+    t.integer "duration", null: false
+    t.integer "pages_visited", null: false
+    t.boolean "returning_visitor", default: false, null: false
+    t.string "referrer_name"
+    t.string "referrer_url"
+    t.integer "matomo_visit_id", null: false
+    t.datetime "matomo_last_action_time", null: false
+    t.index ["dimension_date_first_action_id"], name: "i_v_first_action"
+    t.index ["dimension_date_last_action_id"], name: "i_v_last_action"
+    t.index ["dimension_referrer_type_id"], name: "i_v_referrer_type"
+    t.index ["dimension_user_id"], name: "i_v_user"
+    t.index ["matomo_last_action_time"], name: "i_v_timestamp"
+    t.index ["matomo_visit_id"], name: "i_v_matomo_visit", unique: true
+  end
+
   create_table "app_configurations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "host"
     t.string "logo"
-    t.string "header_bg"
     t.string "favicon"
     t.jsonb "settings", default: {}
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.jsonb "style", default: {}
-    t.jsonb "homepage_info_multiloc"
   end
 
   create_table "areas", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -438,6 +484,7 @@ ActiveRecord::Schema.define(version: 2022_09_06_074349) do
     t.datetime "assigned_at"
     t.integer "proposed_budget"
     t.jsonb "custom_field_values", default: {}, null: false
+    t.uuid "creation_phase_id"
     t.index "((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))", name: "index_ideas_search", using: :gin
     t.index ["author_id"], name: "index_ideas_on_author_id"
     t.index ["idea_status_id"], name: "index_ideas_on_idea_status_id"
@@ -472,6 +519,20 @@ ActiveRecord::Schema.define(version: 2022_09_06_074349) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_identities_on_user_id"
+  end
+
+  create_table "impact_tracking_salts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "salt"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "impact_tracking_sessions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "monthly_user_hash", null: false
+    t.string "highest_role"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["monthly_user_hash"], name: "index_impact_tracking_sessions_on_monthly_user_hash"
   end
 
   create_table "initiative_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1078,6 +1139,24 @@ ActiveRecord::Schema.define(version: 2022_09_06_074349) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "code", null: false
+    t.jsonb "top_info_section_multiloc", default: {}, null: false
+    t.boolean "banner_enabled", default: false, null: false
+    t.string "banner_layout", default: "full_width_banner_layout", null: false
+    t.string "banner_overlay_color"
+    t.integer "banner_overlay_opacity"
+    t.jsonb "banner_cta_button_multiloc", default: {}, null: false
+    t.string "banner_cta_button_type", default: "no_button", null: false
+    t.string "banner_cta_button_url"
+    t.jsonb "banner_header_multiloc", default: {}, null: false
+    t.jsonb "banner_subheader_multiloc", default: {}, null: false
+    t.boolean "top_info_section_enabled", default: false, null: false
+    t.boolean "files_section_enabled", default: false, null: false
+    t.boolean "projects_enabled", default: false, null: false
+    t.string "projects_filter_type"
+    t.boolean "events_widget_enabled", default: false, null: false
+    t.boolean "bottom_info_section_enabled", default: false, null: false
+    t.jsonb "bottom_info_section_multiloc", default: {}, null: false
+    t.string "header_bg"
     t.index ["code"], name: "index_static_pages_on_code"
     t.index ["slug"], name: "index_static_pages_on_slug", unique: true
   end
@@ -1105,7 +1184,6 @@ ActiveRecord::Schema.define(version: 2022_09_06_074349) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "logo"
-    t.string "header_bg"
     t.string "favicon"
     t.jsonb "style", default: {}
     t.datetime "deleted_at"
@@ -1229,6 +1307,12 @@ ActiveRecord::Schema.define(version: 2022_09_06_074349) do
   end
 
   add_foreign_key "activities", "users"
+  add_foreign_key "analytics_dimension_locales_fact_visits", "analytics_dimension_locales", column: "dimension_locale_id"
+  add_foreign_key "analytics_dimension_locales_fact_visits", "analytics_fact_visits", column: "fact_visit_id"
+  add_foreign_key "analytics_dimension_projects_fact_visits", "analytics_fact_visits", column: "fact_visit_id"
+  add_foreign_key "analytics_fact_visits", "analytics_dimension_dates", column: "dimension_date_first_action_id", primary_key: "date"
+  add_foreign_key "analytics_fact_visits", "analytics_dimension_dates", column: "dimension_date_last_action_id", primary_key: "date"
+  add_foreign_key "analytics_fact_visits", "analytics_dimension_referrer_types", column: "dimension_referrer_type_id"
   add_foreign_key "areas", "custom_field_options"
   add_foreign_key "areas_ideas", "areas"
   add_foreign_key "areas_ideas", "ideas"
@@ -1254,6 +1338,7 @@ ActiveRecord::Schema.define(version: 2022_09_06_074349) do
   add_foreign_key "idea_files", "ideas"
   add_foreign_key "idea_images", "ideas"
   add_foreign_key "ideas", "idea_statuses"
+  add_foreign_key "ideas", "phases", column: "creation_phase_id"
   add_foreign_key "ideas", "projects"
   add_foreign_key "ideas", "users", column: "assignee_id"
   add_foreign_key "ideas", "users", column: "author_id"
@@ -1480,7 +1565,7 @@ ActiveRecord::Schema.define(version: 2022_09_06_074349) do
               0 AS feedback_official,
               1 AS feedback_status_change
              FROM activities
-            WHERE (((activities.action)::text = 'changed_status'::text) AND ((activities.item_type)::text = ANY ((ARRAY['Idea'::character varying, 'Initiative'::character varying])::text[])))
+            WHERE (((activities.action)::text = 'changed_status'::text) AND ((activities.item_type)::text = ANY (ARRAY[('Idea'::character varying)::text, ('Initiative'::character varying)::text])))
             GROUP BY activities.item_id
           UNION ALL
            SELECT official_feedbacks.post_id,
@@ -1592,5 +1677,10 @@ ActiveRecord::Schema.define(version: 2022_09_06_074349) do
        LEFT JOIN ideas i ON ((i.id = v.votable_id)))
        LEFT JOIN comments c ON ((c.id = v.votable_id)))
        LEFT JOIN ideas ic ON ((ic.id = c.post_id)));
+  SQL
+  create_view "analytics_dimension_users", sql_definition: <<-SQL
+      SELECT users.id,
+      COALESCE(((users.roles -> 0) ->> 'type'::text), 'citizen'::text) AS role
+     FROM users;
   SQL
 end

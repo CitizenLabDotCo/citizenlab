@@ -13,6 +13,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageGroup',
     defaultMessage: 'Age group',
   },
+  ageGroupX: {
+    id: 'app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageGroupX',
+    defaultMessage: 'Age group {number}',
+  },
   from: {
     id: 'app.containers.AdminPage.DashboardPage.components.Field.BinModal.from',
     defaultMessage: 'From',

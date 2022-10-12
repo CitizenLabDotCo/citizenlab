@@ -320,7 +320,7 @@ const SignUp = ({
           <>
             {helpText && (
               <SignUpHelperText
-                textColor={theme.colorText}
+                textColor={theme.colors.tenantText}
                 fontSize="base"
                 fontWeight={300}
               >

@@ -24,7 +24,7 @@ const Name = styled.span<{
   fontSize?: number;
   underline?: boolean;
 }>`
-  color: ${({ color, theme }) => color || theme.colorText};
+  color: ${({ color, theme }) => color || theme.colors.tenantText};
   font-weight: ${({ fontWeight }) => fontWeight || 400};
   font-size: ${({ fontSize }) => fontSize || fontSizes.base}px;
   text-decoration: ${({ underline }) => (underline ? 'underline' : 'none')};
@@ -33,7 +33,8 @@ const Name = styled.span<{
   &.isLinkToProfile {
     &:hover {
       text-decoration: underline;
-      color: ${({ color, theme }) => darken(0.15, color || theme.colorText)};
+      color: ${({ color, theme }) =>
+        darken(0.15, color || theme.colors.tenantText)};
     }
   }
 
@@ -53,7 +54,7 @@ const Name = styled.span<{
 
     &:hover {
       text-decoration: none;
-      color: ${({ color, theme }) => color || theme.colorText};
+      color: ${({ color, theme }) => color || theme.colors.tenantText};
     }
   }
 `;

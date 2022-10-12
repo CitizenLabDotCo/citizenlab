@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { darken } from 'polished';
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, IconNames } from '@citizenlab/cl2-component-library';
 
 // utils
 import { fontSizes, colors, media } from 'utils/styleUtils';
@@ -28,11 +28,11 @@ const Container = styled.button`
 
   &:hover,
   &:focus {
-    color: ${colors.text};
-    background-color: ${colors.clDropdownHoverBackground};
+    color: ${colors.textPrimary};
+    background-color: ${colors.grey300};
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-left: 5px;
     padding-right: 5px;
     padding-top: 5px;
@@ -49,9 +49,8 @@ const IconContainer = styled.div`
 `;
 
 const StyledIcon: any = styled(Icon)`
-  flex: 0 0 22px;
-  height: 22px;
-  fill: ${colors.label};
+  flex: 0 0 24px;
+  fill: ${colors.textSecondary};
   opacity: ${(props: any) => (props.isRead ? '0.4' : '1')};
 `;
 
@@ -60,7 +59,7 @@ const Body = styled.div`
 `;
 
 const Message = styled.div<{ isRead: boolean }>`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: ${(props) => (props.isRead ? 'normal' : '500')};
   text-align: left;
@@ -68,7 +67,7 @@ const Message = styled.div<{ isRead: boolean }>`
   margin-bottom: 4px;
 
   a {
-    color: ${colors.clBlueDark};
+    color: ${colors.teal};
     text-decoration: underline;
     overflow-wrap: break-word;
     word-wrap: break-word;
@@ -77,7 +76,7 @@ const Message = styled.div<{ isRead: boolean }>`
     hyphens: auto;
 
     &:hover {
-      color: ${darken(0.15, colors.clBlueDark)};
+      color: ${darken(0.15, colors.teal)};
       text-decoration: underline;
     }
   }
@@ -85,13 +84,13 @@ const Message = styled.div<{ isRead: boolean }>`
 
 const Timing = styled.span`
   width: 100%;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   text-align: left;
 `;
 
 type Props = {
-  icon?: string;
+  icon?: IconNames;
   timing?: string;
   children: any;
   linkTo: string;

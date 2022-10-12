@@ -18,9 +18,9 @@ import { colors } from 'utils/styleUtils';
 import { ITopicData } from 'services/topics';
 
 const InfoIcon = styled(Icon)`
-  fill: ${colors.clBlueDarker};
-  width: 16px;
-  height: 16px;
+  fill: ${colors.teal700};
+  width: 20px;
+  height: 20px;
   cursor: pointer;
 
   &:hover {
@@ -80,7 +80,7 @@ class FilterSidebar extends React.PureComponent<Props & WrappedComponentProps> {
             content={this.props.intl.formatMessage(tooltipMessage)}
             trigger={
               <button>
-                <InfoIcon name="info3" />
+                <InfoIcon name="info-solid" />
               </button>
             }
           />

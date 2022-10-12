@@ -61,7 +61,7 @@ class ActionBarSingle extends React.PureComponent<
             basic={true}
             onClick={this.handleClickDeleteIdea}
           >
-            <Icon name="trash" />
+            <Icon name="delete" />
             <FormattedMessage {...messages.delete} />
           </Button>
         </>
@@ -78,7 +78,7 @@ class ActionBarSingle extends React.PureComponent<
             basic={true}
             onClick={this.handleClickDeleteInitiative}
           >
-            <Icon name="trash" />
+            <Icon name="delete" />
             <FormattedMessage {...messages.delete} />
           </Button>
         </>

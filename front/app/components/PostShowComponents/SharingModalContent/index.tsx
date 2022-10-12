@@ -39,8 +39,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // style
-
-import rocket from './rocket.png';
+import rocket from 'assets/img/rocket.png';
 
 interface InputProps {
   postType: PostType;
@@ -188,7 +187,7 @@ class SharingModalContent extends PureComponent<
             {title}
           </Title>
           <Text
-            color="text"
+            color="textPrimary"
             mt="12px"
             mb="36px"
             fontSize={'m'}

@@ -50,6 +50,7 @@ const Forms = ({ intl: { formatMessage } }: WrappedComponentProps) => {
         {formActionsConfigs.map(
           (
             {
+              phaseId,
               editFormLink,
               viewFormLink,
               viewFormResults,
@@ -62,6 +63,7 @@ const Forms = ({ intl: { formatMessage } }: WrappedComponentProps) => {
             return (
               <Fragment key={index}>
                 <FormActions
+                  phaseId={phaseId}
                   editFormLink={editFormLink}
                   viewFormLink={viewFormLink}
                   viewFormResults={viewFormResults}
@@ -70,7 +72,7 @@ const Forms = ({ intl: { formatMessage } }: WrappedComponentProps) => {
                   togglePostingEnabled={togglePostingEnabled}
                 />
                 {index !== formActionsConfigs.length - 1 && (
-                  <Box height="1px" border={`1px solid ${colors.separation}`} />
+                  <Box height="1px" border={`1px solid ${colors.divider}`} />
                 )}
               </Fragment>
             );

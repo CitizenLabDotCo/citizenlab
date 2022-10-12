@@ -11,8 +11,8 @@ export const DEFAULT_BAR_CHART_MARGIN: Margin = {
 
 // COLORS
 export const legacyColors = {
-  chartFill: mainColors.clIconAccent,
-  chartLabel: mainColors.adminSecondaryTextColor,
+  chartFill: mainColors.teal400,
+  chartLabel: mainColors.textSecondary,
   cartesianGrid: '#f5f5f5',
   barFill: '#073F80',
   barFillLighter: '#073f80b3',
@@ -25,8 +25,8 @@ export const legacyColors = {
 };
 
 export const colors = {
-  blue: mainColors.adminTextColor,
-  lightBlue: mainColors.clBlueLight,
+  blue: mainColors.primary,
+  lightBlue: mainColors.teal300,
   categorical01: '#2F478A',
   categorical02: '#4D85C6',
   categorical03: '#EE7041',
@@ -37,9 +37,11 @@ export const colors = {
   categorical08: '#64A0AF',
   categorical09: '#875A20',
   categorical10: '#A3A33A',
-  categoricalOther: mainColors.tagHoverBackgroundColor,
-  lightGrey: mainColors.separation,
+  categoricalOther: mainColors.coolGrey300,
+  lightGrey: mainColors.divider,
   legendText: '#43515D',
+  gridColor: mainColors.grey200,
+  gridHoverColor: mainColors.grey500,
 };
 
 const DEFAULT_CATEGORICAL_COLORS = [
@@ -58,7 +60,7 @@ const DEFAULT_CATEGORICAL_COLORS = [
 export const categoricalColorScheme = ({
   rowIndex,
 }: {
-  row: any;
+  row?: any;
   rowIndex: number;
   barIndex?: number;
 }) => DEFAULT_CATEGORICAL_COLORS[rowIndex];

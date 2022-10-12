@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { Subscription } from 'rxjs';
 import { isNilOrError } from 'utils/helperUtils';
+import { parse } from 'qs';
 
 // components
 import IdeaForm, { IIdeaFormOutput } from 'components/IdeaForm';
@@ -42,7 +43,7 @@ const Container = styled.div`
   margin-left: auto;
   margin-right: auto;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding-bottom: 80px;
     padding-right: 0;
     padding-left: 0;
@@ -50,7 +51,7 @@ const Container = styled.div`
 `;
 
 const Title = styled.h1`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.xxxxl}px;
   line-height: 40px;
   font-weight: 500;
@@ -60,7 +61,7 @@ const Title = styled.h1`
   padding-top: 60px;
   padding-bottom: 40px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     font-size: ${fontSizes.xxxl}px;
     line-height: 34px;
   `}
@@ -103,7 +104,6 @@ interface GlobalState {
 }
 
 interface State extends GlobalState {}
-
 class NewIdeaForm extends PureComponent<Props, State> {
   globalState: IGlobalStateService<IIdeasPageGlobalState>;
   subscriptions: Subscription[];
@@ -232,6 +232,10 @@ class NewIdeaForm extends PureComponent<Props, State> {
       onIdeaFilesChange,
     } = this.props;
 
+    const { phase_id } = parse(location.search, {
+      ignoreQueryPrefix: true,
+    }) as { [key: string]: string };
+
     if (!isNilOrError(project)) {
       const inputTerm = getInputTerm(
         project.attributes.process_type,
@@ -253,7 +257,6 @@ class NewIdeaForm extends PureComponent<Props, State> {
               })}
             />
           </Title>
-
           <IdeaForm
             authorId={authorId}
             projectId={projectId}
@@ -275,6 +278,7 @@ class NewIdeaForm extends PureComponent<Props, State> {
             onTagsChange={onTagsChange}
             onAddressChange={onAddressChange}
             onIdeaFilesChange={onIdeaFilesChange}
+            phaseId={phase_id}
           />
         </Container>
       );

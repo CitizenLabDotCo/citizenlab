@@ -46,7 +46,6 @@ const IdeasPage = ({ intl: { formatMessage } }: WrappedComponentProps) => {
           description={messages.inputManagerMetaDescription}
         />
         <div id="e2e-input-manager-container">
-          {' '}
           <RouterOutlet />
         </div>
       </TabbedResource>

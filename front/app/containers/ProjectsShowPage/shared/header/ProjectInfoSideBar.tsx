@@ -53,7 +53,7 @@ const About = styled.div`
 `;
 
 const Title = styled.h2`
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.xl}px;
   line-height: normal;
   font-weight: 500;
@@ -70,7 +70,7 @@ const List = styled.ul`
 `;
 
 const ListItem = styled.li`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 400;
@@ -84,27 +84,18 @@ const ListItem = styled.li`
 `;
 
 const ListItemIcon = styled(Icon)`
-  flex: 0 0 18px;
-  width: 18px;
-  height: 18px;
-  fill: ${colors.label};
+  flex: 0 0 24px;
+  fill: ${colors.textSecondary};
   margin-right: 14px;
 
   ${isRtl`
     margin-right: 0;
     margin-left: 14px;
   `}
-
-  &.timeline {
-    flex: 0 0 22px;
-    width: 22px;
-    height: 22px;
-    margin-right: 10px;
-  }
 `;
 
 const ListItemButton = styled.button`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 400;
@@ -125,7 +116,7 @@ const ListItemButton = styled.button`
 const StyledProjectActionButtons = styled(ProjectActionButtons)`
   margin-top: 20px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     margin-top: 30px;
   `}
 `;
@@ -175,6 +166,8 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   }, []);
 
   if (!isNilOrError(project)) {
+    const isProjectArchived =
+      project.attributes.publication_status === 'archived';
     const postingIsEnabled =
       project.attributes.posting_enabled ||
       currentPhase?.attributes.posting_enabled;
@@ -190,6 +183,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
           currentPhase.attributes.end_at,
         ]) === 'past'
       : false;
+
     const ideasCount =
       projectType === 'continuous'
         ? project.attributes.ideas_count
@@ -215,7 +209,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                 currentPhase.attributes.end_at,
               ]) === 'past' && (
                 <ListItem id="e2e-project-sidebar-enddate">
-                  <ListItemIcon ariaHidden name="finish_flag" />
+                  <ListItemIcon ariaHidden name="flag" />
                   <FormattedMessage
                     {...messages.endedOn}
                     values={{
@@ -227,7 +221,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
             {isNumber(projectParticipantsCount) &&
               projectParticipantsCount > 0 && (
                 <ListItem id="e2e-project-sidebar-participants-count">
-                  <ListItemIcon ariaHidden name="person" />
+                  <ListItemIcon ariaHidden name="user" />
                   <FormattedMessage
                     {...messages.xParticipants}
                     values={{ participantsCount: projectParticipantsCount }}
@@ -264,7 +258,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
               isNumber(ideasCount) &&
               ideasCount > 0 && (
                 <ListItem>
-                  <ListItemIcon ariaHidden name="idea-filled" />
+                  <ListItemIcon ariaHidden name="idea" />
                   {project.attributes.ideas_count > 0 ? (
                     <ListItemButton
                       id="e2e-project-sidebar-ideas-count"
@@ -346,35 +340,39 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
               )}
             {((projectType === 'continuous' &&
               projectParticipationMethod === 'survey') ||
-              currentPhaseParticipationMethod === 'survey') && (
-              <ListItem>
-                <ListItemIcon ariaHidden name="survey" />
-                {!isNilOrError(authUser) ? (
-                  <ListItemButton
-                    id="e2e-project-sidebar-surveys-count"
-                    onClick={scrollTo('project-survey')}
-                  >
+              currentPhaseParticipationMethod === 'survey') &&
+              !isProjectArchived &&
+              !hasProjectEnded && (
+                <ListItem>
+                  <ListItemIcon ariaHidden name="survey" />
+                  {!isNilOrError(authUser) ? (
+                    <ListItemButton
+                      id="e2e-project-sidebar-surveys-count"
+                      onClick={scrollTo('project-survey')}
+                    >
+                      <FormattedMessage
+                        {...(projectType === 'continuous'
+                          ? messages.xSurveys
+                          : messages.xSurveysInCurrentPhase)}
+                        values={{ surveysCount: 1 }}
+                      />
+                    </ListItemButton>
+                  ) : (
                     <FormattedMessage
                       {...(projectType === 'continuous'
                         ? messages.xSurveys
                         : messages.xSurveysInCurrentPhase)}
                       values={{ surveysCount: 1 }}
                     />
-                  </ListItemButton>
-                ) : (
-                  <FormattedMessage
-                    {...(projectType === 'continuous'
-                      ? messages.xSurveys
-                      : messages.xSurveysInCurrentPhase)}
-                    values={{ surveysCount: 1 }}
-                  />
-                )}
-              </ListItem>
-            )}
+                  )}
+                </ListItem>
+              )}
             {((projectType === 'continuous' &&
               projectParticipationMethod === 'native_survey') ||
               currentPhaseParticipationMethod === 'native_survey') &&
-              postingIsEnabled && (
+              postingIsEnabled &&
+              !isProjectArchived &&
+              !hasProjectEnded && (
                 <ListItem>
                   <ListItemIcon ariaHidden name="survey" />
                   {!isNilOrError(authUser) ? (
@@ -422,7 +420,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
             )}
             {!isNilOrError(events) && events.length > 0 && (
               <ListItem>
-                <ListItemIcon ariaHidden name="event" />
+                <ListItemIcon ariaHidden name="calendar" />
                 <ListItemButton
                   id="e2e-project-sidebar-eventcount"
                   onClick={scrollTo('project-events', false)}

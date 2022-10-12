@@ -11,7 +11,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   text-align: center;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   h2 {
     padding-top: 200px;
     font-size: ${fontSizes.base}px;

@@ -30,7 +30,7 @@ const Container = styled.div`
   width: 100%;
   max-width: 400px;
   margin: 40px auto;
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
 `;
 
 const Title = styled.h1`
@@ -113,7 +113,7 @@ const RenameCategory = ({
             processing={loading}
             disabled={!name}
             onClick={handleSubmit}
-            bgColor={colors.adminTextColor}
+            bgColor={colors.primary}
           >
             {formatMessage(messages.renameCategoryModalSave)}
           </Button>

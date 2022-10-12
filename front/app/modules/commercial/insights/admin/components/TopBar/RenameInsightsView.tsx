@@ -26,7 +26,7 @@ const Container = styled.div`
   width: 100%;
   max-width: 350px;
   margin: 40px auto;
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
 `;
 
 const Title = styled.h1`
@@ -101,7 +101,7 @@ const RenameInsightsView = ({
             processing={loading}
             disabled={!name}
             onClick={handleSubmit}
-            bgColor={colors.adminTextColor}
+            bgColor={colors.primary}
           >
             {formatMessage(messages.renameModalSaveView)}
           </Button>

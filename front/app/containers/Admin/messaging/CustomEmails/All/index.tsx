@@ -35,7 +35,7 @@ const NoCampaignsHeader = styled.h2`
 `;
 
 const NoCampaignsDescription = styled.p`
-  color: ${colors.adminSecondaryTextColor};
+  color: ${colors.textSecondary};
   font-weight: 400;
   font-size: ${fontSizes.base}px;
   margin-bottom: 30px;
@@ -58,7 +58,7 @@ class Campaigns extends React.Component<Props & WrappedComponentProps, State> {
       return (
         <>
           <NoCampaignsWrapper>
-            <Icon name="mailBig" />
+            <Icon name="email-2" width="80px" height="80px" />
             <NoCampaignsHeader>
               <FormattedMessage {...messages.noCampaignsHeader} />
             </NoCampaignsHeader>

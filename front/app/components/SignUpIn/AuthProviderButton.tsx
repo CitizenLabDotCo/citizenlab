@@ -177,7 +177,7 @@ const AuthProviderButton = memo<Props>(
           icon={icon}
           iconSize="22px"
           iconColor={
-            authProvider === 'facebook' ? colors.facebook : colors.text
+            authProvider === 'facebook' ? colors.facebook : colors.textPrimary
           }
           buttonStyle="white"
           fullWidth={true}

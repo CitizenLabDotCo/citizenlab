@@ -86,7 +86,7 @@ const Detect = ({
         <Box display="flex" mb="32px">
           <Button
             buttonStyle="text"
-            icon="arrow-back"
+            icon="arrow-left"
             padding="0px"
             linkTo={backRoute}
           >

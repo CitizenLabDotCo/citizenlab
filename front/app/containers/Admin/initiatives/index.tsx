@@ -80,7 +80,7 @@ const InitiativesPage = memo<WrappedComponentProps & WithRouterProps>(
             <Button
               id="e2e-new-proposal"
               buttonStyle="cl-blue"
-              icon="initiativesAdminMenuIcon"
+              icon="initiatives"
               linkTo={`/initiatives/new`}
               text={formatMessage(messages.addNewProposal)}
               onClick={onNewProposal(pathname)}

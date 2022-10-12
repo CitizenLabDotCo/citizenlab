@@ -49,7 +49,7 @@ const WorkshopPage = memo<WrappedComponentProps>(({ intl }) => {
           </Button>
         </ButtonWrapper>
 
-        <QuillEditedContent textColor={colors.label}>
+        <QuillEditedContent textColor={colors.textSecondary}>
           <FormattedMessage
             {...messages.workshopsIntro}
             values={{

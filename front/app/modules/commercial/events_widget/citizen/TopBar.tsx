@@ -21,7 +21,7 @@ const Header = styled.div`
   border-bottom: 1px solid #d1d1d1;
   margin-bottom: 30px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-bottom: 21px;
   `}
 
@@ -31,21 +31,21 @@ const Header = styled.div`
 `;
 
 const Title = styled.h2`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.xl}px;
   font-weight: 500;
   line-height: normal;
   padding: 0;
   margin: 0;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     text-align: center;
     margin: 0;
   `};
 `;
 
 const EventPageLink = styled(Link)`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   margin-top: auto;
 `;
 

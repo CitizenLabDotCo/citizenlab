@@ -47,7 +47,7 @@ const BodyAndFooter = styled.div`
 `;
 
 const DeletedComment = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   display: flex;
   align-items: center;
   font-size: ${fontSizes.s}px;
@@ -56,10 +56,8 @@ const DeletedComment = styled.div`
 `;
 
 const DeletedIcon = styled(Icon)`
-  width: 18px;
-  height: 18px;
   margin-right: 12px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
 `;
 
 interface InputProps {

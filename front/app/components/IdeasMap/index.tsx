@@ -93,10 +93,10 @@ const InnerContainer = styled.div<{
 
   & .pbAssignBudgetControlContainer {
     padding: 20px;
-    background: ${colors.backgroundLightGrey};
+    background: ${colors.background};
   }
 
-  ${media.biggerThanMaxTablet`
+  ${media.desktop`
     & .leaflet-control-zoom {
       margin-top: ${(props) =>
         props.isPostingEnabled ? '78px' : '25px'} !important;
@@ -108,7 +108,7 @@ const InnerContainer = styled.div<{
     }
   `}
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     .activeArea {
       left: 0px;
     }
@@ -121,7 +121,7 @@ const InfoOverlay = styled.div`
   right: 15px;
   z-index: 900;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     width: calc(100% - 40px);
     top: calc(${mapHeightMobile} - 72px);
     right: 20px;
@@ -139,15 +139,13 @@ const InfoOverlayInner = styled.div`
 `;
 
 const InfoOverlayIcon = styled(Icon)`
-  fill: ${colors.clBlueDarker};
-  flex: 0 0 18px;
-  width: 18px;
-  height: 18px;
+  fill: ${colors.teal700};
+  flex: 0 0 24px;
   margin-right: 8px;
 `;
 
 const InfoOverlayText = styled.p`
-  color: ${colors.clBlueDarker};
+  color: ${colors.teal700};
   font-size: ${fontSizes.base}px;
   font-weight: 500;
   line-height: normal;
@@ -164,7 +162,7 @@ const StyledDesktopIdeaMapOverlay = styled(DesktopIdeaMapOverlay)`
   left: 25px;
   z-index: 900;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: none;
   `}
 `;
@@ -227,7 +225,7 @@ const IdeasMap = memo<Props>((props) => {
   const project = useProject({ projectId });
   const phase = usePhase(phaseId || null);
   const { windowWidth } = useWindowSize();
-  const smallerThanMaxTablet = windowWidth <= viewportWidths.largeTablet;
+  const tablet = windowWidth <= viewportWidths.tablet;
 
   // refs
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -339,7 +337,7 @@ const IdeasMap = memo<Props>((props) => {
     setInnerContainerLeftMargin(
       getInnerContainerLeftMargin(windowWidth, containerWidth)
     );
-  }, [windowWidth, containerWidth, smallerThanMaxTablet]);
+  }, [windowWidth, containerWidth, tablet]);
 
   useEffect(() => {
     const ideaPoints: Point[] = [];
@@ -390,10 +388,10 @@ const IdeasMap = memo<Props>((props) => {
         {isIdeaPostingEnabled && (
           <InfoOverlay>
             <InfoOverlayInner>
-              <InfoOverlayIcon name="info" />
+              <InfoOverlayIcon name="info-outline" />
               <InfoOverlayText>
                 <FormattedMessage
-                  {...(smallerThanMaxTablet
+                  {...(tablet
                     ? messages.tapOnMapToAdd
                     : messages.clickOnMapToAdd)}
                 />
@@ -406,7 +404,7 @@ const IdeasMap = memo<Props>((props) => {
           <FormattedMessage {...messages.a11y_mapTitle} />
         </ScreenReaderOnly>
 
-        {smallerThanMaxTablet && (
+        {tablet && (
           <CSSTransition
             classNames="animation"
             in={!!selectedIdeaMarker}
@@ -426,12 +424,10 @@ const IdeasMap = memo<Props>((props) => {
           onInit={handleMapOnInit}
           projectId={projectId}
           points={points}
-          mapHeight={smallerThanMaxTablet ? mapHeightMobile : mapHeightDesktop}
+          mapHeight={tablet ? mapHeightMobile : mapHeightDesktop}
           noMarkerClustering={false}
-          zoomControlPosition={smallerThanMaxTablet ? 'topleft' : 'topright'}
-          layersControlPosition={
-            smallerThanMaxTablet ? 'topright' : 'bottomright'
-          }
+          zoomControlPosition={tablet ? 'topleft' : 'topright'}
+          layersControlPosition={tablet ? 'topright' : 'bottomright'}
         />
 
         <StyledDesktopIdeaMapOverlay projectId={projectId} phaseId={phaseId} />

@@ -55,7 +55,7 @@ export const FOOTER_PAGES: TFooterPage[] = [
 // but do not have a corresponding navbar item.
 // Their slugs and titles cannot be changed. Their
 // codes are the same as their slugs.
-export type TFixedPage = TPolicyPage | 'proposals';
+type TFixedPage = TPolicyPage | 'proposals';
 
 export const FIXED_PAGES: TFixedPage[] = [
   'terms-and-conditions',
@@ -72,7 +72,7 @@ export interface IPageData {
   type: 'static_page';
   attributes: {
     title_multiloc: Multiloc;
-    body_multiloc: Multiloc;
+    top_info_section_multiloc: Multiloc;
     nav_bar_item_title_multiloc: Multiloc;
     code: TPageCode;
     slug: string;
@@ -88,14 +88,14 @@ export interface IPageData {
 
 interface IPageCreate {
   title_multiloc: Multiloc;
-  body_multiloc: Multiloc;
+  top_info_section_multiloc: Multiloc;
   slug?: string;
 }
 
 export interface IPageUpdate {
   nav_bar_item_title_multiloc?: Multiloc;
   title_multiloc?: Multiloc;
-  body_multiloc?: Multiloc;
+  top_info_section_multiloc?: Multiloc;
   slug?: string;
 }
 

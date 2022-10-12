@@ -10,7 +10,7 @@ import { fontSizes, colors } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 const Text = styled.span<{ textColor?: string }>`
-  color: ${({ textColor }) => textColor ?? colors.text};
+  color: ${({ textColor }) => textColor ?? colors.textPrimary};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   transition: all 100ms ease-out;
@@ -20,11 +20,8 @@ const Text = styled.span<{ textColor?: string }>`
 `;
 
 const DropdownIcon = styled(Icon)<{ textColor?: string }>`
-  width: 10px;
-  height: 7px;
-  fill: ${({ textColor }) => textColor ?? colors.text};
+  fill: ${({ textColor }) => textColor ?? colors.textPrimary};
   transition: all 100ms ease-out;
-  margin-left: 7px;
 `;
 
 const Container = styled.button<{ textColor?: string }>`
@@ -33,11 +30,11 @@ const Container = styled.button<{ textColor?: string }>`
 
   &.adminpage {
     ${Text} {
-      color: ${colors.adminTextColor};
+      color: ${colors.primary};
     }
 
     ${DropdownIcon} {
-      fill: ${colors.adminTextColor};
+      fill: ${colors.primary};
     }
   }
 
@@ -45,12 +42,12 @@ const Container = styled.button<{ textColor?: string }>`
   &:focus,
   &.opened {
     ${Text} {
-      color: ${({ textColor }) => darken(0.2, textColor ?? colors.text)};
+      color: ${({ textColor }) => darken(0.2, textColor ?? colors.textPrimary)};
       text-decoration: underline;
     }
 
     ${DropdownIcon} {
-      fill: ${({ textColor }) => darken(0.2, textColor ?? colors.text)};
+      fill: ${({ textColor }) => darken(0.2, textColor ?? colors.textPrimary)};
     }
   }
 `;
@@ -92,7 +89,7 @@ export default class Title extends PureComponent<Props, State> {
         </Text>
         <DropdownIcon
           className="FilterSelectorTitleIcon"
-          name="dropdown"
+          name="chevron-down"
           ariaHidden
           textColor={textColor}
         />

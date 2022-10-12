@@ -20,7 +20,7 @@ const MobileSharingButtonComponent = ({
     <Button
       buttonStyle="white"
       borderColor="#ccc"
-      icon="share-arrow"
+      icon="share"
       onClick={onClick}
       ariaExpanded={ariaExpanded}
     >

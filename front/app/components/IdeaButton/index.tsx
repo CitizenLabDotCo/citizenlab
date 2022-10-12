@@ -60,15 +60,13 @@ const TooltipContent = styled.div<{ inMap?: boolean }>`
 `;
 
 const TooltipContentIcon = styled(Icon)`
-  flex: 0 0 25px;
-  width: 20px;
-  height: 25px;
+  flex: 0 0 24px;
   margin-right: 1rem;
 `;
 
 const TooltipContentText = styled.div`
   flex: 1 1 auto;
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 400;
@@ -78,7 +76,7 @@ const TooltipContentText = styled.div`
 
   a,
   button {
-    color: ${colors.clBlueDark};
+    color: ${colors.teal};
     font-size: ${fontSizes.base}px;
     line-height: normal;
     font-weight: 400;
@@ -97,7 +95,7 @@ const TooltipContentText = styled.div`
     transition: all 100ms ease-out;
 
     &:hover {
-      color: ${darken(0.15, colors.clBlueDark)};
+      color: ${darken(0.15, colors.teal)};
       text-decoration: underline;
     }
   }
@@ -265,7 +263,7 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
             className="e2e-disabled-tooltip"
             inMap={inMap}
           >
-            <TooltipContentIcon name="lock-outlined" ariaHidden />
+            <TooltipContentIcon name="lock" ariaHidden />
             <TooltipContentText>
               <FormattedMessage
                 {...disabledMessages[disabledReason]}
@@ -282,7 +280,7 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
             className="e2e-disabled-tooltip"
             inMap={inMap}
           >
-            <TooltipContentIcon name="lock-outlined" ariaHidden />
+            <TooltipContentIcon name="lock" ariaHidden />
             <TooltipContentText>
               <FormattedMessage
                 {...disabledMessages[disabledReason]}

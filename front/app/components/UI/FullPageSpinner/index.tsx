@@ -25,7 +25,7 @@ const FullPageContainer: any = styled.div`
   justify-content: center;
   align-items: center;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
     props
   ) => props.theme.mobileTopBarHeight}px);

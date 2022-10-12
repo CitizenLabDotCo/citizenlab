@@ -50,6 +50,15 @@ import DateControl, {
 import MultilocInputLayout, {
   multilocInputTester,
 } from 'components/Form/Components/Controls/MultilocInputLayout';
+import MultiSelectCheckboxControl, {
+  multiSelectCheckboxControlTester,
+} from './MultiSelectCheckboxControl';
+import SingleSelectRadioControl, {
+  singleSelectRadioControlTester,
+} from './SingleSelectRadioControl';
+import LinearScaleControl, {
+  linearScaleControlTester,
+} from './LinearScaleControl';
 
 export {
   CLCategoryLayout,
@@ -76,6 +85,10 @@ export {
   singleSelectControlTester,
   MultiSelectControl,
   multiSelectControlTester,
+  MultiSelectCheckboxControl,
+  multiSelectCheckboxControlTester,
+  SingleSelectRadioControl,
+  singleSelectRadioControlTester,
   UserPickerControl,
   userPickerControlTester,
   CheckboxControl,
@@ -86,4 +99,6 @@ export {
   dateControlTester,
   MultilocInputLayout,
   multilocInputTester,
+  LinearScaleControl,
+  linearScaleControlTester,
 };

@@ -42,14 +42,14 @@ export default (inputProps: InputProps) => (
                 <FormattedMessage {...messages.inviteStatusPending} />
               </Badge>
             ) : (
-              <Badge color={colors.clGreen}>
+              <Badge color={colors.success}>
                 <FormattedMessage {...messages.inviteStatusAccepted} />
               </Badge>
             )}
           </Table.Cell>
           <Table.Cell textAlign="center">
             <Popup
-              trigger={<SemanticButton icon="trash" />}
+              trigger={<SemanticButton icon="delete" />}
               content={
                 <SemanticButton
                   color="red"

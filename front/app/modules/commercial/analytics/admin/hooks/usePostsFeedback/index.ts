@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import moment from 'moment';
 
 // services
 import {
@@ -11,11 +10,8 @@ import {
 // hooks
 import useLocalize from 'hooks/useLocalize';
 
-// utils
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
-import { isEmptyResponse } from './utils';
+// parsing
 import {
-  getTranslations,
   parsePieData,
   parseProgressBarsData,
   parseStackedBarsData,
@@ -27,81 +23,28 @@ import {
   parseExcelData,
 } from './parse';
 
+// utils
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import { isEmptyResponse, getTranslations } from './utils';
+import { getProjectFilter, getDateFilter } from '../../utils/query';
+
 // typings
-import { Multiloc } from 'typings';
 import { WrappedComponentProps } from 'react-intl';
-import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
+import {
+  QueryParameters,
+  PostFeedback,
+  Response,
+  EmptyResponse,
+} from './typings';
 
-interface QueryProps {
-  projectId: string | undefined;
-  startAt: string | null | undefined;
-  endAt: string | null | undefined;
-}
+const query = ({
+  projectId,
+  startAtMoment,
+  endAtMoment,
+}: QueryParameters): Query => {
+  const startAt = startAtMoment?.toISOString();
+  const endAt = endAtMoment?.toISOString();
 
-// Response
-export type Response = {
-  data: [[FeedbackRow], StatusRow[]];
-};
-
-export type EmptyResponse = {
-  data: [
-    {
-      sum_feedback_none: null;
-      sum_feedback_official: null;
-      sum_feedback_status_change: null;
-      avg_feedback_time_taken: null;
-    },
-    []
-  ];
-};
-
-export interface FeedbackRow {
-  sum_feedback_none: number;
-  sum_feedback_official: number;
-  sum_feedback_status_change: number;
-  avg_feedback_time_taken: number;
-}
-
-export interface StatusRow {
-  count: number;
-  'status.id': string;
-  first_status_title_multiloc: Multiloc;
-  first_status_color: string;
-}
-
-// Hook return value
-interface PostFeedback {
-  pieData: PieRow[];
-  progressBarsData: ProgressBarsRow[];
-  stackedBarsData: [StackedBarsRow];
-  pieCenterValue: string;
-  pieCenterLabel: string;
-  days: number;
-  stackedBarColumns: string[];
-  statusColorById: Record<string, string>;
-  stackedBarPercentages: number[];
-  stackedBarsLegendItems: LegendItem[];
-  xlsxData: object;
-}
-
-interface PieRow {
-  name: string;
-  value: number;
-  color: string;
-}
-
-interface ProgressBarsRow {
-  name: string;
-  label: string;
-  value: number;
-  total: number;
-}
-
-export type StackedBarsRow = Record<string, number>;
-
-const toDate = (dateString: string) => moment(dateString).format('yyyy-MM-DD');
-
-const query = ({ projectId, startAt, endAt }: QueryProps): Query => {
   const queryFeedback: QuerySchema = {
     fact: 'post',
     aggregations: {
@@ -112,17 +55,8 @@ const query = ({ projectId, startAt, endAt }: QueryProps): Query => {
     },
     filters: {
       type: { name: 'idea' },
-      ...(projectId ? { project: { id: projectId } } : {}),
-      ...(startAt && endAt
-        ? {
-            created_date: {
-              date: {
-                from: toDate(startAt),
-                to: toDate(endAt),
-              },
-            },
-          }
-        : {}),
+      ...getProjectFilter('project', projectId),
+      ...getDateFilter('created_date', startAt, endAt),
     },
   };
 
@@ -136,17 +70,8 @@ const query = ({ projectId, startAt, endAt }: QueryProps): Query => {
     },
     filters: {
       type: { name: 'idea' },
-      ...(projectId ? { project: { id: projectId } } : {}),
-      ...(startAt && endAt
-        ? {
-            created_date: {
-              date: {
-                from: toDate(startAt),
-                to: toDate(endAt),
-              },
-            },
-          }
-        : {}),
+      ...getProjectFilter('project', projectId),
+      ...getDateFilter('created_date', startAt, endAt),
     },
   };
 
@@ -155,7 +80,7 @@ const query = ({ projectId, startAt, endAt }: QueryProps): Query => {
 
 export default function usePostsWithFeedback(
   formatMessage: WrappedComponentProps['intl']['formatMessage'],
-  { projectId, startAt, endAt }: QueryProps
+  { projectId, startAtMoment, endAtMoment }: QueryParameters
 ) {
   const localize = useLocalize();
 
@@ -165,7 +90,7 @@ export default function usePostsWithFeedback(
 
   useEffect(() => {
     const { observable } = analyticsStream<Response | EmptyResponse>(
-      query({ projectId, startAt, endAt })
+      query({ projectId, startAtMoment, endAtMoment })
     );
     const subscription = observable.subscribe(
       (response: Response | EmptyResponse | NilOrError) => {
@@ -231,7 +156,7 @@ export default function usePostsWithFeedback(
     );
 
     return () => subscription.unsubscribe();
-  }, [projectId, startAt, endAt, formatMessage, localize]);
+  }, [projectId, startAtMoment, endAtMoment, formatMessage, localize]);
 
   return postsWithFeedback;
 }

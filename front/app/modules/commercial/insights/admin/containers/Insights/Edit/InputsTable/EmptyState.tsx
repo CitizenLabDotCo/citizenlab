@@ -30,7 +30,7 @@ const StyledEmptyState = styled.div`
     font-weight: bold;
     line-height: 25px;
     font-size: ${fontSizes.base}px;
-    color: ${colors.label};
+    color: ${colors.textSecondary};
   }
   p {
     font-weight: normal;
@@ -48,7 +48,7 @@ const EmptyState = ({
   );
   return (
     <StyledEmptyState data-testid="insightsInputsTableEmptyState">
-      <Icon name="blankPage" />
+      <Icon name="sidebar-pages-menu" />
       {query.search ? (
         <div data-testid="insightsInputsTableEmptyNoResults">
           <h1>{formatMessage(messages.inputsTableNoResults)}</h1>

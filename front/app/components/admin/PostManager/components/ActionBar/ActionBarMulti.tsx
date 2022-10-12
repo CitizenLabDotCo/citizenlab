@@ -66,7 +66,7 @@ class ActionBarMulti extends React.PureComponent<
           basic={true}
           onClick={this.handleClickDeleteIdeas}
         >
-          <Icon name="trash" />
+          <Icon name="delete" />
           <FormattedMessage
             {...messages.deleteAllSelectedInputs}
             values={{ count: selection.size }}
@@ -80,7 +80,7 @@ class ActionBarMulti extends React.PureComponent<
           basic={true}
           onClick={this.handleClickDeleteInitiatives}
         >
-          <Icon name="trash" />
+          <Icon name="delete" />
           <FormattedMessage
             {...messages.deleteAllSelectedInitiatives}
             values={{ count: selection.size }}

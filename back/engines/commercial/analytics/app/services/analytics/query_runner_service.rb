@@ -31,7 +31,7 @@ module Analytics
         results = query_order(results)
       end
 
-      limit = @json_query.fetch(:limit, 10)
+      limit = @json_query.fetch(:limit, 1000)
       results = results.limit(limit)
 
       query_pluck(results)
@@ -43,6 +43,7 @@ module Analytics
       @json_query[:filters].each do |dimension, columns|
         columns.each do |column, value|
           if [Array, String].include? value.class
+            value = convert_empty_to_null(value)
             results = results.where(dimension => { column => value })
           else
             if column == 'date'
@@ -58,6 +59,16 @@ module Analytics
       end
 
       results
+    end
+
+    def convert_empty_to_null(value)
+      case value
+      when Array
+        value.map! { |x| x == '' ? nil : x }
+      when ''
+        value = nil
+      end
+      value
     end
 
     # creates a dummy where statement in the active record query

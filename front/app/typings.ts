@@ -1,7 +1,16 @@
+import { TFieldName } from 'components/UI/Error';
 import {
-  appLocalePairs,
   appGraphqlLocalePairs,
+  appLocalePairs,
 } from 'containers/App/constants';
+import { FC } from 'react';
+import { TableCellProps } from 'semantic-ui-react';
+import {
+  TAppConfigurationSetting,
+  TAppConfigurationSettingWithEnabled,
+} from 'services/appConfiguration';
+import { IIdeaAction } from 'services/ideas';
+import { IProjectAction } from 'services/projects';
 
 declare global {
   interface Function {
@@ -54,7 +63,7 @@ export interface ITab {
   label: string;
   url: string;
   active?: boolean | ((pathname: string) => boolean);
-  feature?: TAppConfigurationSetting;
+  feature?: TAppConfigurationSettingWithEnabled;
   statusLabel?: string;
 }
 
@@ -110,14 +119,6 @@ export interface Message {
   id: string;
   defaultMessage: string;
 }
-
-import { IProjectAction } from 'services/projects';
-import { IIdeaAction } from 'services/ideas';
-import { FormikActions } from 'formik';
-import { FC } from 'react';
-import { TableCellProps } from 'semantic-ui-react';
-import { TAppConfigurationSetting } from 'services/appConfiguration';
-import { TFieldName } from 'components/UI/Error';
 
 export type Locale = keyof typeof appLocalePairs;
 
@@ -188,11 +189,6 @@ export type ITopicSingleValue = {
 export type IParticipationByTopic = ITopicSingleValue[];
 
 export type IGraphFormat = IGraphPoint[];
-
-export type FormikSubmitHandler<V> = (
-  values: V,
-  actions: FormikActions<V>
-) => void;
 
 export type Override<T, U> = Pick<T, Exclude<keyof T, keyof U>> & U;
 

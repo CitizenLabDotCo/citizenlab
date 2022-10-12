@@ -53,7 +53,7 @@ const PasswordInputComponent = ({
   minimumPasswordLength,
   isLoginPasswordInput,
   setRef,
-  errors,
+  errors = {},
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
   const locale = useLocale();
@@ -74,9 +74,9 @@ const PasswordInputComponent = ({
     onChange(password);
   };
 
-  const handleOnBlur = () => {
+  const handleOnBlur = (e) => {
     if (onBlur) {
-      onBlur();
+      onBlur(e);
     }
   };
 
@@ -114,15 +114,13 @@ const PasswordInputComponent = ({
           />
           <ShowPasswordIconButton
             showPassword={showPassword}
-            iconName={showPassword ? 'eye' : 'eyeClosed'}
+            iconName={showPassword ? 'eye' : 'eye-off'}
             onClick={handleOnClick}
             a11y_buttonActionMessage={formatMessage(
               showPassword ? messages.hidePassword : messages.showPassword
             )}
-            iconColor={colors.label}
-            iconColorOnHover={darken(0.1, colors.label)}
-            iconWidth={'22px'}
-            iconHeight={showPassword ? '15px' : '19px'}
+            iconColor={colors.textSecondary}
+            iconColorOnHover={darken(0.1, colors.textSecondary)}
             // prevent form submission
             buttonType="button"
           />
@@ -155,7 +153,7 @@ const PasswordInputComponent = ({
                 ]}
                 onChangeScore={handleOnChangeScore}
                 scoreWordStyle={{
-                  color: colors.label,
+                  color: colors.textSecondary,
                 }}
               />
             </Suspense>

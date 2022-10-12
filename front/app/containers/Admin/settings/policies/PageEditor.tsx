@@ -37,16 +37,14 @@ const EditorWrapper = styled.div`
 `;
 
 const DeployIcon = styled(Icon)`
-  height: 12px;
-  width: 8px;
-  fill: ${colors.adminSecondaryTextColor};
+  fill: ${colors.textSecondary};
   margin-right: 12px;
   transition: transform 200ms ease-out;
   transform: rotate(0deg);
 `;
 
 const Toggle = styled.div`
-  color: ${colors.adminSecondaryTextColor};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: 500;
   display: flex;
@@ -56,10 +54,10 @@ const Toggle = styled.div`
 
   &:hover,
   &.deployed {
-    color: ${colors.adminTextColor};
+    color: ${colors.primary};
 
     ${DeployIcon} {
-      fill: ${colors.adminTextColor};
+      fill: ${colors.primary};
     }
   }
 
@@ -115,10 +113,10 @@ const PageEditor = ({ className, pageSlug }: Props) => {
     async ({
       slug,
       title_multiloc,
-      body_multiloc,
+      top_info_section_multiloc,
       local_page_files,
     }: FormValues) => {
-      const fieldValues = { slug, title_multiloc, body_multiloc };
+      const fieldValues = { slug, title_multiloc, top_info_section_multiloc };
       await updatePage(pageId, fieldValues);
 
       if (!isNilOrError(local_page_files)) {
@@ -158,7 +156,8 @@ const PageEditor = ({ className, pageSlug }: Props) => {
                 nav_bar_item_title_multiloc:
                   page.attributes.nav_bar_item_title_multiloc,
                 title_multiloc: page.attributes.title_multiloc,
-                body_multiloc: page.attributes.body_multiloc,
+                top_info_section_multiloc:
+                  page.attributes.top_info_section_multiloc,
                 slug: page.attributes.slug,
                 local_page_files: remotePageFiles,
               }}

@@ -3,7 +3,7 @@
 
 import React, { Component } from 'react';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { withScope, showReportDialog } from '@sentry/browser';
+import { withScope, showReportDialog } from '@sentry/react';
 import messages from './messages';
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
@@ -21,7 +21,7 @@ const Container = styled.div`
 
 const StyledButton = styled.button`
   outline: none;
-  color: ${colors.clBlue};
+  color: ${colors.teal};
   &.hover,
   &.focus {
     text-decoration: underline;

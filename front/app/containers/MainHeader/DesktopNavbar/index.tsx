@@ -25,7 +25,7 @@ const Container = styled.nav`
   height: 100%;
   margin-left: 35px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: none;
   `}
   ${isRtl`

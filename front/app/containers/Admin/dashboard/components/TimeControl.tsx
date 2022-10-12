@@ -31,10 +31,7 @@ const StyledButton = styled(Button)`
 `;
 
 const DropdownItemIcon = styled(Icon)`
-  width: 11px;
-  height: 6px;
-  fill: ${colors.label};
-  margin-top: 1px;
+  fill: ${colors.textSecondary};
   margin-left: 4px;
 `;
 
@@ -52,7 +49,7 @@ const DropdownListItem = styled.button`
   &:hover,
   &:focus,
   &.selected {
-    background: ${colors.clDropdownHoverBackground};
+    background: ${colors.grey300};
   }
 `;
 
@@ -166,7 +163,7 @@ class TimeControl extends PureComponent<Props & WrappedComponentProps, State> {
             ) : (
               <FormattedMessage {...messages.customDateRange} />
             )}
-            <DropdownItemIcon name="dropdown" />
+            <DropdownItemIcon name="chevron-down" />
           </StyledButton>
           <Dropdown
             width="200px"

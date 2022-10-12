@@ -29,7 +29,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.number',
     defaultMessage: 'Number',
   },
-    linearScale: {
+  linearScale: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.linearScale',
     defaultMessage: 'Linear scale',
   },
@@ -56,6 +56,10 @@ export default defineMessages({
   delete: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.delete',
     defaultMessage: 'Delete',
+  },
+  done: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.done',
+    defaultMessage: 'Done',
   },
   questionTitle: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.questionTitle',
@@ -113,6 +117,10 @@ export default defineMessages({
   multiselect: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.multiselectText',
     defaultMessage: 'Multiple choice - choose many',
+  },
+  select: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.selectText',
+    defaultMessage: 'Multiple choice - choose one',
   },
   linear_scale: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.linear_scale',
