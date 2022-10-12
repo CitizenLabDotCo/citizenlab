@@ -85,7 +85,7 @@ const FormActions = ({
           justifyContent="space-between"
         >
           <Button
-            icon="charts"
+            icon="chart-bar"
             buttonStyle="primary"
             width="auto"
             minWidth="312px"
@@ -105,6 +105,7 @@ const FormActions = ({
             onClick={() => {
               clHistory.push(editFormLink);
             }}
+            data-cy="e2e-edit-survey-content"
           >
             {formatMessage(messages.editSurveyContent)}
           </Button>

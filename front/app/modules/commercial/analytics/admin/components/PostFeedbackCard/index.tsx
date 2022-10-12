@@ -247,7 +247,7 @@ const PostFeedback = ({
       </Box>
 
       <Button
-        icon="arrowLeft"
+        icon="arrow-right"
         iconPos="right"
         buttonStyle="text"
         iconSize="13px"

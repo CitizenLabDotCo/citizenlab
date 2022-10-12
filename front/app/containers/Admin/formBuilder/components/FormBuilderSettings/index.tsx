@@ -110,6 +110,7 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
               <FormattedMessage {...messages.required} />
             </Text>
           }
+          data-cy="e2e-toggle-multiloc"
         />
       </SectionField>
       {getAdditionalSettings(field.input_type, locales, field.index)}
@@ -130,6 +131,7 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
           iconColor={colors.error}
           onClick={() => onDelete(field.index)}
           minWidth="160px"
+          data-cy="e2e-delete-field"
         >
           <FormattedMessage {...messages.delete} />
         </Button>

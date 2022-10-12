@@ -114,15 +114,13 @@ const PasswordInputComponent = ({
           />
           <ShowPasswordIconButton
             showPassword={showPassword}
-            iconName={showPassword ? 'eye' : 'eyeClosed'}
+            iconName={showPassword ? 'eye' : 'eye-off'}
             onClick={handleOnClick}
             a11y_buttonActionMessage={formatMessage(
               showPassword ? messages.hidePassword : messages.showPassword
             )}
             iconColor={colors.textSecondary}
             iconColorOnHover={darken(0.1, colors.textSecondary)}
-            iconWidth={'22px'}
-            iconHeight={showPassword ? '15px' : '19px'}
             // prevent form submission
             buttonType="button"
           />

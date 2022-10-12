@@ -93,7 +93,8 @@ const ImagePlaceholderContainer = styled.div`
 `;
 
 const ImagePlaceholderIcon = styled(Icon)`
-  width: 34px;
+  width: 80px;
+  height: 80px;
   fill: ${transparentize(0.62, colors.textSecondary)};
 `;
 
@@ -203,7 +204,7 @@ const CompactIdeaCard = memo<Props>(
         imagePlaceholder={
           <ImagePlaceholderContainer>
             <ImagePlaceholderIcon
-              name={participationMethod === 'budgeting' ? 'moneybag' : 'idea'}
+              name={participationMethod === 'budgeting' ? 'money-bag' : 'idea'}
             />
           </ImagePlaceholderContainer>
         }

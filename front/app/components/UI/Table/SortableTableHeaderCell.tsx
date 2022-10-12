@@ -5,11 +5,6 @@ import { Icon } from '@citizenlab/cl2-component-library';
 import { isString } from 'lodash-es';
 
 const StyledIcon = styled(Icon)`
-  height: 7px;
-  width: 10px;
-  margin-left: 5px;
-  margin-top: -2px;
-
   &.ascending {
     transform: rotate(180deg);
   }
@@ -53,7 +48,7 @@ export default class SortableTableHeaderCell extends React.PureComponent<
         onClick={this.onClick}
       >
         {isString(value) ? <span>{value}</span> : value}
-        {sorted && <StyledIcon name="dropdown" className={sorted} />}
+        {sorted && <StyledIcon name="chevron-down" className={sorted} />}
       </Container>
     );
   }

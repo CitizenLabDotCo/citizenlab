@@ -119,10 +119,7 @@ export const StyledLink = styled(Link)`
   }
 `;
 
-export const LinkIcon = styled(Icon)`
-  width: 13px;
-  height: 13px;
-`;
+export const LinkIcon = styled(Icon)``;
 
 interface InputProps {}
 
