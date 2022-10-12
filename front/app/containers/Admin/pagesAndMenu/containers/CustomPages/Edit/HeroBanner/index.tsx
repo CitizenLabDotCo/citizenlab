@@ -6,7 +6,6 @@ import BannerImageFields from 'containers/Admin/pagesAndMenu/containers/GenericH
 import LayoutSettingField from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/LayoutSettingField';
 import { PAGES_MENU_CUSTOM_PATH } from 'containers/Admin/pagesAndMenu/routes';
 import useCustomPage from 'hooks/useCustomPage';
-import { forOwn, isEqual } from 'lodash-es';
 import React, { useEffect, useState } from 'react';
 import { InjectedIntlProps } from 'react-intl';
 import { useParams } from 'react-router-dom';
@@ -17,7 +16,7 @@ import {
   updateCustomPage,
 } from 'services/customPages';
 import { CLErrors, Multiloc } from 'typings';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNil, isNilOrError } from 'utils/helperUtils';
 import GenericHeroBannerForm from '../../../GenericHeroBannerForm';
 import messages from '../../../GenericHeroBannerForm/messages';
 
@@ -39,7 +38,7 @@ const EditCustomPageHeroBannerForm = ({
   const [isLoading, setIsLoading] = useState(false);
   const [apiErrors, setApiErrors] = useState<CLErrors | null>(null);
 
-  const [formStatus, setFormStatus] = useState<ISubmitState>('disabled');
+  const [formStatus, setFormStatus] = useState<ISubmitState>('enabled');
   const [localSettings, setLocalSettings] =
     useState<ICustomPageAttributes | null>(null);
 
@@ -54,31 +53,25 @@ const EditCustomPageHeroBannerForm = ({
     }
   }, [customPage]);
 
-  // disable form if there's no header image when local settings change
-  useEffect(() => {
-    if (!localSettings?.header_bg) {
-      setFormStatus('disabled');
-    }
-  }, [localSettings]);
-
   if (isNilOrError(customPage)) {
     return null;
   }
 
   const handleSave = async () => {
-    // only update the page settings if they have changed
-    const diffedValues = {};
-    forOwn(localSettings, (value, key) => {
-      if (!isEqual(value, customPage.attributes[key])) {
-        diffedValues[key] = value;
-      }
-    });
+    if (isNil(localSettings)) {
+      return;
+    }
 
+    if (localSettings?.header_bg == null) {
+      setFormStatus('error');
+      return;
+    }
+
+    // only update the page settings if they have changed
     setIsLoading(true);
-    setFormStatus('disabled');
     setApiErrors(null);
     try {
-      await updateCustomPage(customPageId, diffedValues);
+      await updateCustomPage(customPageId, localSettings);
       setIsLoading(false);
       setFormStatus('success');
     } catch (error) {
