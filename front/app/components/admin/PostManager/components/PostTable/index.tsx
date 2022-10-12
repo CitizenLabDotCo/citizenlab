@@ -1,6 +1,5 @@
 import React from 'react';
 import { every, isEmpty, isFunction } from 'lodash-es';
-import styled from 'styled-components';
 
 // components
 import { Table, Body, Footer, Row as TRow, Cell } from 'components/admin/Table';
@@ -29,6 +28,7 @@ import {
 } from 'resources/GetInitiatives';
 
 // styling
+import styled from 'styled-components';
 import { colors, stylingConsts } from 'utils/styleUtils';
 
 // utils
@@ -79,6 +79,10 @@ const Container = styled.div`
       display: none;
     }
   }
+`;
+
+const StyledTable = styled(Table)`
+  font-size: 13px;
 `;
 
 interface Props {
@@ -185,7 +189,7 @@ export default class PostTable extends React.Component<Props> {
 
     return (
       <Container>
-        <Table
+        <StyledTable
           border={`1px solid ${colors.grey300}`}
           borderRadius={stylingConsts.borderRadius}
           innerBorders={{
@@ -253,7 +257,7 @@ export default class PostTable extends React.Component<Props> {
               </TRow>
             </Footer>
           )}
-        </Table>
+        </StyledTable>
         {isEmpty(posts) && (
           <TransitionGroup component={null}>
             <CSSTransition classNames="fade" timeout={500}>
