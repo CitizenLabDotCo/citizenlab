@@ -197,7 +197,7 @@ export default class PostTable extends React.Component<Props> {
         >
           {type === 'Initiatives' ? (
             <InitiativesHeaderRow
-              sortAttribute={sortAttribute}
+              sortAttribute={sortAttribute as InitiativesSortAttribute}
               sortDirection={sortDirection}
               allSelected={this.allSelected()}
               toggleSelectAll={this.toggleSelectAll}

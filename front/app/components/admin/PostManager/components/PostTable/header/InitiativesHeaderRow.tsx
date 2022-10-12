@@ -3,7 +3,7 @@ import React from 'react';
 // components
 import { Header, Row, HeaderCell } from 'components/admin/Table';
 import Checkbox from 'components/UI/Checkbox';
-import SortableTableHeader from 'components/admin/SortableTableHeader';
+import { SortableHeaderCell } from './IdeaHeaderRow';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -15,8 +15,20 @@ import { colors } from 'utils/styleUtils';
 // utils
 import { roundPercentage } from 'utils/math';
 
+// typings
+import { SortAttribute as InitiativesSortAttribute } from 'resources/GetInitiatives';
+import { SortDirection } from 'utils/paginationUtils';
+
 const TOTAL_WIDTH = 11;
 const getWidth = (width: number) => `${roundPercentage(width, TOTAL_WIDTH)}%`;
+
+interface Props {
+  sortAttribute?: InitiativesSortAttribute;
+  sortDirection?: SortDirection;
+  allSelected: boolean;
+  toggleSelectAll: () => void;
+  handleSortClick: (newSortAttribute: InitiativesSortAttribute) => () => void;
+}
 
 export default ({
   sortAttribute,
@@ -24,7 +36,7 @@ export default ({
   allSelected,
   toggleSelectAll,
   handleSortClick,
-}) => (
+}: Props) => (
   <Header background={colors.grey50}>
     <Row>
       <HeaderCell width={getWidth(1)}>
@@ -40,22 +52,24 @@ export default ({
       <HeaderCell width={getWidth(2)}>
         <FormattedMessage {...messages.assignee} />
       </HeaderCell>
-      <HeaderCell width={getWidth(2)}>
-        <SortableTableHeader
-          direction={sortAttribute === 'new' ? sortDirection : null}
-          onToggle={handleSortClick('new')}
-        >
-          <FormattedMessage {...messages.remainingTime} />
-        </SortableTableHeader>
-      </HeaderCell>
-      <HeaderCell width={getWidth(1)}>
-        <SortableTableHeader
-          direction={sortAttribute === 'upvotes_count' ? sortDirection : null}
-          onToggle={handleSortClick('upvotes_count')}
-        >
-          <FormattedMessage {...messages.votes} />
-        </SortableTableHeader>
-      </HeaderCell>
+      <SortableHeaderCell
+        width={getWidth(2)}
+        sortAttribute={sortAttribute}
+        sortDirection={sortDirection}
+        sortAttributeName="new"
+        onChange={handleSortClick('new')}
+      >
+        <FormattedMessage {...messages.remainingTime} />
+      </SortableHeaderCell>
+      <SortableHeaderCell
+        width={getWidth(1)}
+        sortAttribute={sortAttribute}
+        sortDirection={sortDirection}
+        sortAttributeName="upvotes_count"
+        onChange={handleSortClick('upvotes_count')}
+      >
+        <FormattedMessage {...messages.votes} />
+      </SortableHeaderCell>
       <HeaderCell width={getWidth(1)}>
         <FormattedMessage {...messages.comments} />
       </HeaderCell>

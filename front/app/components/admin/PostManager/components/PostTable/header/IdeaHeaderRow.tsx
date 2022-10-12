@@ -37,7 +37,7 @@ interface SortableHeaderCellProps {
   children: React.ReactNode;
 }
 
-const SortableHeaderCell = ({
+export const SortableHeaderCell = ({
   sortAttribute,
   sortDirection,
   sortAttributeName,
