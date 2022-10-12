@@ -42,6 +42,7 @@ const InfoIcon = styled(Icon)`
 interface SortableHeaderCellProps {
   sortAttribute?: string;
   sortDirection?: 'ascending' | 'descending' | null;
+  type: string;
   onChange: () => void;
   children: React.ReactNode;
 }
@@ -49,13 +50,14 @@ interface SortableHeaderCellProps {
 const SortableHeaderCell = ({
   sortAttribute,
   sortDirection,
+  type,
   onChange,
   children,
 }: SortableHeaderCellProps) => (
   <HeaderCell
     clickable
     sortDirection={
-      sortAttribute === 'new' && sortDirection ? sortDirection : undefined
+      sortAttribute === type && sortDirection ? sortDirection : undefined
     }
     onClick={onChange}
   >
@@ -121,7 +123,7 @@ export default ({
         props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
       ) => {
         return (
-          <SortableHeaderCell {...props}>
+          <SortableHeaderCell {...props} type="new">
             <TableHeaderCellText>
               <FormattedMessage {...messages.publication_date} />
             </TableHeaderCellText>
@@ -137,7 +139,7 @@ export default ({
         props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
       ) => {
         return (
-          <SortableHeaderCell {...props}>
+          <SortableHeaderCell {...props} type="upvotes_count">
             <TableHeaderCellText>
               <FormattedMessage {...messages.up} />
             </TableHeaderCellText>
@@ -153,7 +155,7 @@ export default ({
         props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
       ) => {
         return (
-          <SortableHeaderCell {...props}>
+          <SortableHeaderCell {...props} type="downvotes_count">
             <TableHeaderCellText>
               <FormattedMessage {...messages.down} />
             </TableHeaderCellText>
@@ -169,7 +171,7 @@ export default ({
         props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
       ) => {
         return (
-          <SortableHeaderCell {...props}>
+          <SortableHeaderCell {...props} type="baskets_count">
             <TableHeaderCellText>
               <FormattedMessage {...messages.participatoryBudgettingPicks} />
             </TableHeaderCellText>
