@@ -58,7 +58,7 @@ const NormalGroupForm = ({
 }: Props) => {
   const schema = object({
     // Ensure a value is entered for at least one language
-    title_multilocc: validateAtLeastOneLocale(
+    title_multiloc: validateAtLeastOneLocale(
       formatMessage(messages.fieldGroupNameEmptyError)
     ),
   });
