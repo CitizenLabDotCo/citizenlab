@@ -19,6 +19,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { Checkbox } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
 import Category from 'modules/commercial/insights/admin/components/Category';
+import { Td } from 'components/admin/Table';
 
 const CategoryList = styled.div`
   > *:not(:only-of-type) {
@@ -32,15 +33,7 @@ const StyledTableRow = styled.tr`
   cursor: pointer;
   height: 56px;
 
-  td {
-    padding: 12px 4px;
-    > * {
-      margin: 0;
-    }
-  }
-
   .inputTitle {
-    font-size: ${fontSizes.s}px;
     color: ${colors.textSecondary};
   }
 
@@ -93,21 +86,21 @@ const InputsTableRow = ({
       onKeyPress={handleEnterPress}
       onClick={onPreview}
     >
-      <td>
+      <Td px="4px">
         <Checkbox
           checked={selected}
           onChange={changeSelected}
           stopLabelPropagation
         />
-      </td>
-      <td>
+      </Td>
+      <Td>
         <T
           value={idea.attributes.title_multiloc}
           maxLength={30}
           className="inputTitle"
         />
-      </td>
-      <td>
+      </Td>
+      <Td>
         <CategoryList>
           {(query.category
             ? categories.filter((category) => category.id === query.category)
@@ -135,9 +128,9 @@ const InputsTableRow = ({
             />
           ))}
         </CategoryList>
-      </td>
+      </Td>
       {query.category ? (
-        <td>
+        <Td>
           <CategoryList>
             {categories
               .filter((category) => category.id !== query.category)
@@ -160,7 +153,7 @@ const InputsTableRow = ({
                 />
               ))}
           </CategoryList>
-        </td>
+        </Td>
       ) : null}
     </StyledTableRow>
   );

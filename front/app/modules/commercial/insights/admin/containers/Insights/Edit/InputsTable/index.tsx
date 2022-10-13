@@ -16,7 +16,8 @@ import useScanInsightsCategory from 'modules/commercial/insights/hooks/useScanIn
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
-import { Table, Icon, Box } from '@citizenlab/cl2-component-library';
+import { Table, Thead, Tbody, Th, Tr } from 'components/admin/Table';
+import { Icon, Box } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import InputsTableRow from './InputsTableRow';
 import EmptyState from './EmptyState';
@@ -55,17 +56,6 @@ const StyledActions = styled(Actions)`
 
 const StyledDivider = styled(Divider)`
   margin-top: 6px;
-`;
-
-const StyledTable = styled(Table)`
-  thead {
-    tr {
-      th {
-        padding: 12px 4px;
-        font-weight: bold;
-      }
-    }
-  }
 `;
 
 const StyledSort = styled.div`
@@ -455,18 +445,21 @@ const InputsTable = ({
         <EmptyState />
       ) : (
         <>
-          <StyledTable>
-            <colgroup>
+          <Table
+            borderBottom={`1px solid ${colors.grey200}`}
+            innerBorders={{ bodyRows: true }}
+          >
+            {/* <colgroup>
               <col span={1} style={{ width: '2.5%' }} />
               <col span={1} style={{ width: '30%' }} />
               {query.category ? (
                 <col span={1} style={{ width: '2.5%' }} />
               ) : null}
               <col span={1} style={{ width: '65%' }} />
-            </colgroup>
-            <thead>
-              <tr>
-                <th>
+            </colgroup> */}
+            <Thead>
+              <Tr>
+                <Th width="2.5%" px="4px">
                   <CheckboxWithPartialCheck
                     onChange={handleCheckboxChange}
                     checked={
@@ -478,9 +471,9 @@ const InputsTable = ({
                     }
                     data-testid="headerCheckBox"
                   />
-                </th>
-                <th>{formatMessage(messages.inputsTableInputs)}</th>
-                <th>
+                </Th>
+                <Th width="30%">{formatMessage(messages.inputsTableInputs)}</Th>
+                <Th>
                   {query.category ? (
                     <StyledSort
                       onClick={onSort}
@@ -499,13 +492,13 @@ const InputsTable = ({
                   ) : (
                     formatMessage(messages.inputsTableCategories)
                   )}
-                </th>
+                </Th>
                 {query.category ? (
-                  <th>{formatMessage(messages.inputsTableAlsoIn)}</th>
+                  <Th>{formatMessage(messages.inputsTableAlsoIn)}</Th>
                 ) : null}
-              </tr>
-            </thead>
-            <tbody>
+              </Tr>
+            </Thead>
+            <Tbody>
               {inputs.map((input) => (
                 <InputsTableRow
                   input={input}
@@ -515,8 +508,8 @@ const InputsTable = ({
                   onPreview={previewInput(input)}
                 />
               ))}
-            </tbody>
-          </StyledTable>
+            </Tbody>
+          </Table>
           <StyledPagination
             currentPage={pageNumber || 1}
             totalPages={lastPage || 1}
