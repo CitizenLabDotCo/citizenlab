@@ -1,7 +1,7 @@
 import { Button, ButtonProps } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
-import React, { ReactNode } from 'react';
 import useLocale from 'hooks/useLocale';
+import React, { ReactNode } from 'react';
+import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 
 const MethodButton = styled(Button)<{ last: boolean }>`
@@ -19,7 +19,7 @@ const VerificationMethodButton = (props: Props) => {
 
   return (
     <MethodButton
-      icon="shieldVerified"
+      icon="shield-check"
       iconSize="22px"
       buttonStyle="white"
       fullWidth={true}
