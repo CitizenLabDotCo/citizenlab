@@ -9,6 +9,12 @@ module MultiTenancy
       'ProjectFolders::Folder' => %w[remote_header_bg_url]
     }.freeze
 
+    USER_INPUT_CLASSES = [
+      Idea,
+      Initiative,
+      Comment
+    ].to_set.freeze
+
     def available_templates(external_subfolder: 'release')
       template_names = {}
       template_names[:internal] = Dir[Rails.root.join('config/tenant_templates/*.yml')].map do |file|
@@ -50,7 +56,14 @@ module MultiTenancy
 
           model = model_class.new
           image_assignments = {}
-          restored_attributes = restore_template_attributes(attributes, obj_to_id_and_class, AppConfiguration.instance.settings)
+
+          restored_attributes = restore_template_attributes(
+            attributes,
+            obj_to_id_and_class,
+            AppConfiguration.instance.settings,
+            model_class: model_class
+          )
+
           restored_attributes.each do |field_name, field_value|
             if field_name.start_with?('remote_') && field_name.end_with?('_url') && field_name.exclude?('file')
               image_assignments[field_name] = field_value
@@ -104,9 +117,9 @@ module MultiTenancy
       nil
     end
 
-    def restore_template_attributes(attributes, obj_to_id_and_class, app_settings)
+    def restore_template_attributes(attributes, obj_to_id_and_class, app_settings, model_class: nil)
       start_of_day = Time.now.in_time_zone(app_settings.dig('core', 'timezone')).beginning_of_day
-      locales = app_settings.dig('core', 'locales')
+      locales = USER_INPUT_CLASSES.include?(model_class) ? app_settings.dig('core', 'locales') : all_supported_locales
 
       new_attributes = {}
       attributes.each do |field_name, field_value|
@@ -354,6 +367,10 @@ module MultiTenancy
       else
         raise 'Could not resolve template'
       end
+    end
+
+    def all_supported_locales
+      @all_supported_locales ||= CL2_SUPPORTED_LOCALES.map(&:to_s)
     end
   end
 end
