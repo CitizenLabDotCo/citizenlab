@@ -58,17 +58,6 @@ const StyledDivider = styled(Divider)`
   margin-top: 6px;
 `;
 
-const StyledSort = styled.div`
-  display: flex;
-  align-items: center !important;
-  cursor: pointer;
-  font-weight: bold;
-  svg {
-    width: 10px;
-    margin-left: 4px;
-  }
-`;
-
 const StyledPagination = styled(Pagination)`
   display: block;
   margin-top: 12px;
@@ -449,14 +438,6 @@ const InputsTable = ({
             borderBottom={`1px solid ${colors.grey200}`}
             innerBorders={{ bodyRows: true }}
           >
-            {/* <colgroup>
-              <col span={1} style={{ width: '2.5%' }} />
-              <col span={1} style={{ width: '30%' }} />
-              {query.category ? (
-                <col span={1} style={{ width: '2.5%' }} />
-              ) : null}
-              <col span={1} style={{ width: '65%' }} />
-            </colgroup> */}
             <Thead>
               <Tr>
                 <Th width="2.5%" px="4px">
@@ -473,26 +454,19 @@ const InputsTable = ({
                   />
                 </Th>
                 <Th width="30%">{formatMessage(messages.inputsTableInputs)}</Th>
-                <Th>
-                  {query.category ? (
-                    <StyledSort
-                      onClick={onSort}
-                      as="button"
-                      data-testid="insightsSortButton"
-                    >
-                      {formatMessage(messages.inputsTableCategories)}
-                      <Icon
-                        name={
-                          query.sort === '-approval'
-                            ? 'chevron-up'
-                            : 'chevron-down'
-                        }
-                      />
-                    </StyledSort>
-                  ) : (
-                    formatMessage(messages.inputsTableCategories)
-                  )}
-                </Th>
+                {query.category ? (
+                  <Th
+                    clickable
+                    sortDirection={
+                      query.sort === '-approval' ? 'ascending' : 'descending'
+                    }
+                    onClick={onSort}
+                  >
+                    {formatMessage(messages.inputsTableCategories)}
+                  </Th>
+                ) : (
+                  <Th>{formatMessage(messages.inputsTableCategories)}</Th>
+                )}
                 {query.category ? (
                   <Th width="65%">
                     {formatMessage(messages.inputsTableAlsoIn)}
