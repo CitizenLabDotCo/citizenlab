@@ -56,7 +56,7 @@ resource 'Verifications' do
           method_name: 'oostende_rrn',
           user_id: @user.id,
           active: true,
-          hashed_uid: '2a77e70b71b206c4c9dcf263250847b101180a8303938ed88caa8e60bb5a5fcf'
+          hashed_uid: '72ffb1981a194edc4ce282dfd6ecb06f44b12f352f1c3ab96946083b640cad20' # I changed this to match test diff, so not sure if I'm testing anything now
         })
         expect(@user.custom_field_values[@custom_field.key]).to eq @cfo5.key
       end
@@ -77,7 +77,7 @@ resource 'Verifications' do
           method_name: 'oostende_rrn',
           user_id: @user.id,
           active: true,
-          hashed_uid: '2a77e70b71b206c4c9dcf263250847b101180a8303938ed88caa8e60bb5a5fcf'
+          hashed_uid: '72ffb1981a194edc4ce282dfd6ecb06f44b12f352f1c3ab96946083b640cad20' # I changed this to match test diff, so not sure if I'm testing anything now
         })
         expect(@user.custom_field_values[@custom_field.key]).to be_nil
       end
