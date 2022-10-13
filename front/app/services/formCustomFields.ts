@@ -180,35 +180,39 @@ export interface IFormSubmissionCount {
   data: IFormSubmissionCountData;
 }
 
+const getSubmissionCountEndpoint = (
+  projectId: string,
+  phaseId?: string | null
+) => {
+  return phaseId
+    ? `${API_PATH}/phases/${phaseId}/submission_count`
+    : `${API_PATH}/projects/${projectId}/submission_count`;
+};
+
 export function formSubmissionCountStream(
   projectId: string,
   phaseId?: string | null,
   streamParams: IStreamParams | null = null
 ) {
-  const apiEndpoint = phaseId
-    ? `${API_PATH}/phases/${phaseId}/submission_count`
-    : `${API_PATH}/projects/${projectId}/submission_count`;
-
   return streams.get<IFormSubmissionCount>({
-    apiEndpoint,
+    apiEndpoint: getSubmissionCountEndpoint(projectId, phaseId),
     cacheStream: false,
     ...streamParams,
   });
 }
 
 export async function deleteFormResults(projectId: string, phaseId?: string) {
-  const apiEndpoint = phaseId
+  const deleteApiEndpoint = phaseId
     ? `${API_PATH}/phases/${phaseId}/inputs`
     : `${API_PATH}/projects/${projectId}/inputs`;
 
-  const response = await streams.delete(apiEndpoint, `${projectId}/${phaseId}`);
+  const response = await streams.delete(
+    deleteApiEndpoint,
+    `${projectId}/${phaseId}`
+  );
 
   await streams.fetchAllWith({
-    apiEndpoint: [
-      ...(phaseId
-        ? [`${API_PATH}/phases/${phaseId}/submission_count`]
-        : [`${API_PATH}/projects/${projectId}/submission_count`]),
-    ],
+    apiEndpoint: [getSubmissionCountEndpoint(projectId, phaseId)],
   });
 
   return response;
