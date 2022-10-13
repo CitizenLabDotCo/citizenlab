@@ -8,8 +8,10 @@ module IdOostendeRrn
       :manual_sync
     end
 
+    # This is just a random uuid for now.
+    # I suspect this will need to be set to a specific value at some point.
     def id
-      '8a6d6f7e-a451-41ea-8e0a-0021439923a1'
+      '00c4faa6-4b0f-11ed-b878-0242ac120002'
     end
 
     def name
