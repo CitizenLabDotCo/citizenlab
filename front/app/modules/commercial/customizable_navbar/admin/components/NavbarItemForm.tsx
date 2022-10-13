@@ -10,7 +10,7 @@ import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWi
 import Feedback from 'components/HookForm/Feedback';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object } from 'yup';
-import validateMultiloc from 'utils/yup/validateMultiloc';
+import validateMultilocForEveryLanguage from 'utils/yup/validateMultilocForEveryLanguage';
 
 // components
 import Button from 'components/UI/Button';
@@ -37,7 +37,7 @@ const NavbarItemForm = ({
   intl: { formatMessage },
 }: PageFormProps) => {
   const schema = object({
-    nav_bar_item_title_multiloc: validateMultiloc(
+    nav_bar_item_title_multiloc: validateMultilocForEveryLanguage(
       formatMessage(messages.emptyTitleError)
     ),
   });

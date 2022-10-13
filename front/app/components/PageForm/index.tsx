@@ -7,7 +7,7 @@ import { Multiloc, UploadFile } from 'typings';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { string, object, mixed } from 'yup';
-import validateMultiloc from 'utils/yup/validateMultiloc';
+import validateMultilocForEveryLanguage from 'utils/yup/validateMultilocForEveryLanguage';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import Input from 'components/HookForm/Input';
@@ -68,14 +68,16 @@ const PageForm = ({
   const appConfig = useAppConfiguration();
 
   const schema = object({
-    title_multiloc: validateMultiloc(formatMessage(messages.blankTitleError)),
-    top_info_section_multiloc: validateMultiloc(
+    title_multiloc: validateMultilocForEveryLanguage(
+      formatMessage(messages.blankTitleError)
+    ),
+    top_info_section_multiloc: validateMultilocForEveryLanguage(
       formatMessage(messages.blankDescriptionError)
     ),
     ...(pageId &&
       !isNilOrError(page) &&
       page.relationships.nav_bar_item.data && {
-        nav_bar_item_title_multiloc: validateMultiloc(
+        nav_bar_item_title_multiloc: validateMultilocForEveryLanguage(
           formatMessage(messages.blankTitleError)
         ),
       }),

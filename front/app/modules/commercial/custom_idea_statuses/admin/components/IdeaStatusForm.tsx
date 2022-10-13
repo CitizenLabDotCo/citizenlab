@@ -17,7 +17,7 @@ import {
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { string, object } from 'yup';
-import validateMultiloc from 'utils/yup/validateMultiloc';
+import validateMultilocForEveryLanguage from 'utils/yup/validateMultilocForEveryLanguage';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import TextAreaMultilocWithLocaleSwitcher from 'components/HookForm/TextAreaMultilocWithLocaleSwitcher';
 import RadioGroup, { Radio } from 'components/HookForm/RadioGroup';
@@ -80,8 +80,10 @@ const IdeaStatusForm = ({
 }: Props) => {
   const schema = object({
     color: string(),
-    title_multiloc: validateMultiloc(formatMessage(messages.fieldTitleError)),
-    description_multiloc: validateMultiloc(
+    title_multiloc: validateMultilocForEveryLanguage(
+      formatMessage(messages.fieldTitleError)
+    ),
+    description_multiloc: validateMultilocForEveryLanguage(
       formatMessage(messages.fieldDescriptionError)
     ),
     code: string().required(),

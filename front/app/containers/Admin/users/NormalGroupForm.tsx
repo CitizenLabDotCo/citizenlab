@@ -3,10 +3,11 @@ import React from 'react';
 // form
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { object, lazy, string } from 'yup';
+import { object } from 'yup';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import Feedback from 'components/HookForm/Feedback';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -57,23 +58,9 @@ const NormalGroupForm = ({
 }: Props) => {
   const schema = object({
     // Ensure a value is entered for at least one language
-    title_multiloc: lazy((obj) => {
-      const keys = Object.keys(obj);
-      const values = Object.values(obj);
-      if (values.every((value) => value === '')) {
-        return object(
-          keys.reduce(
-            (acc, curr) => (
-              (acc[curr] = string().required(
-                formatMessage(messages.fieldGroupNameEmptyError)
-              )),
-              acc
-            ),
-            {}
-          )
-        );
-      } else return object();
-    }),
+    title_multilocc: validateAtLeastOneLocale(
+      formatMessage(messages.fieldGroupNameEmptyError)
+    ),
   });
 
   const methods = useForm({

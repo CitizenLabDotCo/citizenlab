@@ -4,11 +4,11 @@ import TextAreaMultilocWithLocaleSwitcher from './';
 import { useForm, FormProvider } from 'react-hook-form';
 import { object } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import validateMultiloc from 'utils/yup/validateMultiloc';
+import validateMultilocForEveryLanguage from 'utils/yup/validateMultilocForEveryLanguage';
 import translationMessages from 'i18n/en';
 
 const schema = object({
-  title: validateMultiloc('Error message'),
+  title: validateMultilocForEveryLanguage('Error message'),
 });
 
 jest.mock('utils/cl-intl');
