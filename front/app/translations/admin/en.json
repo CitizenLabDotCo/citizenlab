@@ -1114,6 +1114,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.delete": "Delete",
   "app.containers.AdminPage.ProjectEdit.survey.deleteButtonLabel": "Delete",
   "app.containers.AdminPage.ProjectEdit.survey.done": "Done",
+  "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults": "Download all survey results",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults": "Download survey results",
   "app.containers.AdminPage.ProjectEdit.survey.editButtonLabel": "Edit",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent": "Edit survey content",
