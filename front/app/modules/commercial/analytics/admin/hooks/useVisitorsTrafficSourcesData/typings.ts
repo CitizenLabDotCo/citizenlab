@@ -40,5 +40,8 @@ export interface PieRow {
 }
 
 export interface TableRow {
-  count: number;
+  visits: number;
+  visitors: number;
+  referrerType: string;
+  referrerName: string;
 }
