@@ -1,5 +1,11 @@
 # Changelog
 
+## Next release
+
+### Fixed
+
+- [CL-1825] Make tables more visually consistent
+
 ## 2022-10-11
 
 ### Fixed
