@@ -1,20 +1,19 @@
 import React from 'react';
+// eslint-disable-next-line no-restricted-imports
 import { useIntl, MessageDescriptor, WrappedComponentProps } from 'react-intl';
 import { isNilOrError } from 'utils/helperUtils';
-import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useLocalize from 'hooks/useLocalize';
 
-export const injectIntl = <P extends WrappedComponentProps>(
+const injectIntl = <P extends WrappedComponentProps>(
   Component: React.ComponentType<P>
 ) => {
   return (props: Omit<P, keyof WrappedComponentProps>) => {
-    const locale = useLocale();
     const localize = useLocalize();
     const appConfig = useAppConfiguration();
     const intl = useIntl();
 
-    if (isNilOrError(appConfig) || isNilOrError(locale)) return null;
+    if (isNilOrError(appConfig)) return null;
 
     const formatMessageReplacement = (
       messageDescriptor: MessageDescriptor,
