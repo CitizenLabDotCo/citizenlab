@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-class WebApi::V1::ProjectsController < ::ApplicationController
-  before_action :set_project, only: %i[show update reorder destroy survey_results submission_count]
+class WebApi::V1::ProjectsController < WebApi::V1::ParticipationContextsController
+  before_action :set_context, only: %i[show update reorder destroy]
   skip_before_action :authenticate_user
   skip_after_action :verify_policy_scoped, only: :index
 
@@ -48,96 +48,88 @@ class WebApi::V1::ProjectsController < ::ApplicationController
 
   def show
     render json: WebApi::V1::ProjectSerializer.new(
-      @project,
+      @context,
       params: fastjson_params,
       include: %i[admin_publication project_images current_phase]
     ).serialized_json
   end
 
   def by_slug
-    @project = Project.find_by!(slug: params[:slug])
-    authorize @project
+    @context = Project.find_by!(slug: params[:slug])
+    authorize @context
     show
   end
 
   def create
     project_params = permitted_attributes(Project)
-    @project = Project.new(project_params)
-    SideFxProjectService.new.before_create(@project, current_user)
+    @context = Project.new(project_params)
+    sidefx.before_create(@context, current_user)
 
     if save_project
-      SideFxProjectService.new.after_create(@project, current_user)
+      sidefx.after_create(@context, current_user)
       render json: WebApi::V1::ProjectSerializer.new(
-        @project,
+        @context,
         params: fastjson_params,
         include: [:admin_publication]
       ).serialized_json, status: :created
     else
-      render json: { errors: @project.errors.details }, status: :unprocessable_entity
+      render json: { errors: @context.errors.details }, status: :unprocessable_entity
     end
   end
 
   def update
-    sidefx = SideFxProjectService.new
-
     params[:project][:area_ids] ||= [] if params[:project].key?(:area_ids)
     params[:project][:topic_ids] ||= [] if params[:project].key?(:topic_ids)
 
     project_params = permitted_attributes(Project)
 
-    @project.assign_attributes project_params
-    remove_image_if_requested!(@project, project_params, :header_bg)
+    @context.assign_attributes project_params
+    remove_image_if_requested!(@context, project_params, :header_bg)
 
-    sidefx.before_update(@project, current_user)
+    sidefx.before_update(@context, current_user)
 
     if save_project
-      sidefx.after_update(@project, current_user)
+      sidefx.after_update(@context, current_user)
       render json: WebApi::V1::ProjectSerializer.new(
-        @project,
+        @context,
         params: fastjson_params,
         include: [:admin_publication]
       ).serialized_json, status: :ok
     else
-      render json: { errors: @project.errors.details }, status: :unprocessable_entity, include: ['project_images']
+      render json: { errors: @context.errors.details }, status: :unprocessable_entity, include: ['project_images']
     end
   end
 
   def destroy
-    SideFxProjectService.new.before_destroy(@project, current_user)
-    if @project.destroy
-      SideFxProjectService.new.after_destroy(@project, current_user)
+    sidefx.before_destroy(@context, current_user)
+    if @context.destroy
+      sidefx.after_destroy(@context, current_user)
       head :ok
     else
       head :internal_server_error
     end
   end
 
-  def survey_results
-    results = SurveyResultsGeneratorService.new(@project).generate_results
-    render json: results
-  end
-
-  def submission_count
-    count = SurveyResultsGeneratorService.new(@project).generate_submission_count
-    render json: count
-  end
-
   private
+
+  def sidefx
+    @sidefx ||= SideFxProjectService.new
+  end
 
   def save_project
     ActiveRecord::Base.transaction do
       run_callbacks(:save_project) do
         # authorize is placed within the block so we can prepare
-        # the @project to be authorized from a callback.
-        authorize @project
-        @project.save
+        # the @context to be authorized from a callback.
+        authorize @context
+        @context.save
       end
     end
   end
 
-  def set_project
-    @project = Project.find(params[:id])
-    authorize @project
+  def set_context
+    @context = Project.find(params[:id])
+    authorize @context
   end
 end
 

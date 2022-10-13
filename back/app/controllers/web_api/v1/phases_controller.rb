@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-class WebApi::V1::PhasesController < ApplicationController
-  before_action :set_phase, only: %i[show update destroy survey_results submission_count]
+class WebApi::V1::PhasesController < WebApi::V1::ParticipationContextsController
+  before_action :set_context, only: %i[show update destroy]
   skip_before_action :authenticate_user
 
   def index
@@ -14,60 +14,54 @@ class WebApi::V1::PhasesController < ApplicationController
   end
 
   def show
-    render json: WebApi::V1::PhaseSerializer.new(@phase, params: fastjson_params).serialized_json
+    render json: WebApi::V1::PhaseSerializer.new(@context, params: fastjson_params).serialized_json
   end
 
   def create
-    @phase = Phase.new(phase_params)
-    @phase.project_id = params[:project_id]
-    SideFxPhaseService.new.before_create(@phase, current_user)
-    authorize @phase
-    if @phase.save
-      SideFxPhaseService.new.after_create(@phase, current_user)
-      render json: WebApi::V1::PhaseSerializer.new(@phase, params: fastjson_params).serialized_json, status: :created
+    @context = Phase.new(phase_params)
+    @context.project_id = params[:project_id]
+    sidefx.before_create(@context, current_user)
+    authorize @context
+    if @context.save
+      sidefx.after_create(@context, current_user)
+      render json: WebApi::V1::PhaseSerializer.new(@context, params: fastjson_params).serialized_json, status: :created
     else
-      render json: { errors: @phase.errors.details }, status: :unprocessable_entity
+      render json: { errors: @context.errors.details }, status: :unprocessable_entity
     end
   end
 
   def update
-    @phase.assign_attributes phase_params
-    authorize @phase
-    SideFxPhaseService.new.before_update(@phase, current_user)
-    if @phase.save
-      SideFxPhaseService.new.after_update(@phase, current_user)
-      render json: WebApi::V1::PhaseSerializer.new(@phase, params: fastjson_params).serialized_json, status: :ok
+    @context.assign_attributes phase_params
+    authorize @context
+    sidefx.before_update(@context, current_user)
+    if @context.save
+      sidefx.after_update(@context, current_user)
+      render json: WebApi::V1::PhaseSerializer.new(@context, params: fastjson_params).serialized_json, status: :ok
     else
-      render json: { errors: @phase.errors.details }, status: :unprocessable_entity
+      render json: { errors: @context.errors.details }, status: :unprocessable_entity
     end
   end
 
   def destroy
-    SideFxPhaseService.new.before_destroy(@phase, current_user)
-    phase = @phase.destroy
+    sidefx.before_destroy(@context, current_user)
+    phase = @context.destroy
     if phase.destroyed?
-      SideFxPhaseService.new.after_destroy(@phase, current_user)
+      sidefx.after_destroy(@context, current_user)
       head :ok
     else
       head :internal_server_error
     end
   end
 
-  def survey_results
-    results = SurveyResultsGeneratorService.new(@phase).generate_results
-    render json: results
-  end
-
-  def submission_count
-    count = SurveyResultsGeneratorService.new(@phase).generate_submission_count
-    render json: count
-  end
-
   private
 
-  def set_phase
-    @phase = Phase.find params[:id]
-    authorize @phase
+  def sidefx
+    @sidefx ||= SideFxPhaseService.new
+  end
+
+  def set_context
+    @context = Phase.find params[:id]
+    authorize @context
   end
 
   def phase_params

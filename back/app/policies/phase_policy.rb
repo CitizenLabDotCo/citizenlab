@@ -38,4 +38,10 @@ class PhasePolicy < ApplicationPolicy
   def submission_count?
     survey_results?
   end
+
+  def delete_inputs?
+    return unless active?
+
+    UserRoleService.new.can_moderate_project? record.project, user
+  end
 end

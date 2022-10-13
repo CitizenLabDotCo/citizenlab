@@ -631,6 +631,22 @@ resource 'Projects' do
         expect(json_response).to eq({ data: { totalSubmissions: 3 } })
       end
     end
+
+    delete 'web_api/v1/projects/:id/inputs' do
+      let(:project) { create :continuous_project }
+      let(:id) { project.id }
+
+      example 'Delete all inputs of a project' do
+        create_list :idea, 2, project: project
+        create :idea
+
+        do_request
+        expect(response_status).to eq 200
+        expect(Project.find(id)).to eq project
+        expect(project.reload.ideas_count).to eq 0
+        expect(Idea.count).to eq 1
+      end
+    end
   end
 
   get 'web_api/v1/projects' do
