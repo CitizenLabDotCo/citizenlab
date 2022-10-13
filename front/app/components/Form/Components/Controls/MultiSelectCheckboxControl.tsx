@@ -48,9 +48,10 @@ const MultiSelectCheckboxControl = ({
         <Text fontSize="s">
           <FormattedMessage {...messages.selectMany} />
         </Text>
-        {options?.map((option) => (
+        {options?.map((option, index: number) => (
           <Box mt="12px" key={option.value}>
             <Checkbox
+              id={`${path}-checkbox-${index}`}
               label={option.label}
               checked={dataArray.includes(option.value)}
               onChange={() => {

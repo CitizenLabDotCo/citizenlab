@@ -96,9 +96,7 @@ const TooltipContent = styled.div<{ inMap?: boolean }>`
 `;
 
 const TooltipContentIcon = styled(Icon)`
-  flex: 0 0 25px;
-  width: 20px;
-  height: 25px;
+  flex: 0 0 24px;
   margin-right: 1rem;
 `;
 
@@ -169,7 +167,7 @@ const ProposedNotVoted = ({
 
   const thresholdReachedTooltip = threshold_reached_message ? (
     <IconTooltip
-      icon="info"
+      icon="info-outline"
       iconColor={theme.colors.tenantText}
       theme="light"
       placement="bottom"
@@ -181,7 +179,7 @@ const ProposedNotVoted = ({
 
   const tippyContent = disabledReason ? (
     <TooltipContent id="tooltip-content" className="e2e-disabled-tooltip">
-      <TooltipContentIcon name="lock-outlined" ariaHidden />
+      <TooltipContentIcon name="lock" ariaHidden />
       <TooltipContentText>
         <FormattedMessage {...disabledMessages[disabledReason]} />
       </TooltipContentText>
@@ -255,7 +253,7 @@ const ProposedNotVoted = ({
           }`}
         >
           <StyledButton
-            icon="upvote"
+            icon="vote-up"
             aria-describedby="tooltip-content"
             disabled={!!tippyContent}
             buttonStyle="primary"

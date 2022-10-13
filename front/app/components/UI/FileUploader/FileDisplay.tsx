@@ -29,9 +29,7 @@ const Container = styled.div<{ error: boolean }>`
 `;
 
 const Paperclip = styled(Icon)`
-  flex: 0 0 10px;
-  width: 10px;
-  height: 20px;
+  flex: 0 0 24px;
   fill: ${colors.textSecondary};
   margin-right: 15px;
 `;

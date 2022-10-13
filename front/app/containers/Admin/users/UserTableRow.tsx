@@ -6,6 +6,7 @@ import clHistory from 'utils/cl-router/history';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // Components
+import { Tr, Td } from 'components/admin/Table';
 import Avatar from 'components/Avatar';
 import { Toggle, Icon } from '@citizenlab/cl2-component-library';
 import Checkbox from 'components/UI/Checkbox';
@@ -41,8 +42,6 @@ const MoreOptionsWrapper = styled.div`
 `;
 
 const MoreOptionsIcon = styled(Icon)`
-  width: 20px;
-  height: 20px;
   fill: ${colors.textSecondary};
 `;
 
@@ -63,7 +62,7 @@ const MoreOptionsButton = styled.button`
   }
 `;
 
-const CreatedAt = styled.td`
+const CreatedAt = styled(Td)`
   white-space: nowrap;
 `;
 
@@ -192,28 +191,32 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
     const { isAdmin } = this.state;
 
     return (
-      <tr
+      <Tr
         key={user.id}
         className={`e2e-user-table-row ${selected ? 'selected' : ''}`}
       >
-        <td>
+        <Td background={selected ? colors.background : ''}>
           <StyledCheckbox
             checked={selected}
             onChange={this.handleUserSelectedOnChange}
           />
-        </td>
-        <td>
+        </Td>
+        <Td background={selected ? colors.background : ''}>
           <Avatar userId={user.id} size={30} />
-        </td>
-        <td>
+        </Td>
+        <Td background={selected ? colors.background : ''}>
           {user.attributes.first_name} {user.attributes.last_name}
-        </td>
-        <td>{user.attributes.email}</td>
-        <CreatedAt>{this.state.createdAt}</CreatedAt>
-        <td>
+        </Td>
+        <Td background={selected ? colors.background : ''}>
+          {user.attributes.email}
+        </Td>
+        <CreatedAt background={selected ? colors.background : ''}>
+          {this.state.createdAt}
+        </CreatedAt>
+        <Td background={selected ? colors.background : ''}>
           <Toggle checked={isAdmin} onChange={this.handleAdminRoleOnChange} />
-        </td>
-        <td>
+        </Td>
+        <Td background={selected ? colors.background : ''}>
           <MoreOptionsWrapper>
             <Tippy
               placement="bottom-end"
@@ -235,19 +238,19 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
                   <DropdownListButton onClick={this.handleDeleteClick}>
                     <FormattedMessage {...messages.deleteUser} />
                     <IconWrapper>
-                      <Icon name="trash" />
+                      <Icon name="delete" fill="white" />
                     </IconWrapper>
                   </DropdownListButton>
                 </DropdownList>
               }
             >
               <MoreOptionsButton onMouseDown={removeFocusAfterMouseClick}>
-                <MoreOptionsIcon name="more-options" />
+                <MoreOptionsIcon name="dots-horizontal" />
               </MoreOptionsButton>
             </Tippy>
           </MoreOptionsWrapper>
-        </td>
-      </tr>
+        </Td>
+      </Tr>
     );
   }
 }

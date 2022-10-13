@@ -4,29 +4,64 @@ import React from 'react';
 import { Box, BoxProps } from '@citizenlab/cl2-component-library';
 
 // styling
+import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import {
-  SEMANTIC_UI_BORDER_COLOR,
-  SEMANTIC_UI_BORDER_RADIUS,
-} from './constants';
 
-const Table = ({ children, style, ...otherProps }: BoxProps) => (
-  <Box
+interface InnerBorders {
+  headerCells?: boolean;
+  bodyRows?: boolean;
+}
+
+const StyledBox = styled(Box)<{ innerBorders?: InnerBorders }>`
+  text-align: left;
+  font-size: ${fontSizes.s}px;
+  color: ${colors.primary};
+  border-collapse: separate;
+
+  thead > tr > th {
+    border-bottom: 1px solid ${colors.grey200};
+  }
+
+  ${({ innerBorders }) =>
+    !innerBorders?.headerCells
+      ? ''
+      : `
+    thead > tr > th {
+      border-right: 1px solid ${colors.grey200};
+    }
+
+    thead > tr > th:last-child {
+      border-right: none;
+    }
+  `}
+
+  ${({ innerBorders }) =>
+    !innerBorders?.bodyRows
+      ? ''
+      : `
+    tbody > tr > td {
+      border-bottom: 1px solid ${colors.grey200};
+    }
+
+    tbody > tr:last-child > td {
+      border-bottom: none;
+    }
+  `}
+`;
+
+interface Props extends BoxProps {
+  innerBorders?: InnerBorders;
+}
+
+const Table = ({ children, innerBorders, ...otherProps }: Props) => (
+  <StyledBox
     as="table"
     width="100%"
-    border={`1px solid ${SEMANTIC_UI_BORDER_COLOR}`}
-    borderRadius={SEMANTIC_UI_BORDER_RADIUS}
-    color={colors.primary}
-    style={{
-      textAlign: 'left',
-      fontSize: `${fontSizes.s}px`,
-      borderCollapse: 'separate',
-      ...style,
-    }}
+    innerBorders={innerBorders}
     {...otherProps}
   >
     {children}
-  </Box>
+  </StyledBox>
 );
 
 export default Table;

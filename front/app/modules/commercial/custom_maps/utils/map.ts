@@ -103,10 +103,10 @@ export const getLayerColor = (mapLayer: IMapLayerAttributes | undefined) => {
 
 export const getLayerIcon = (mapLayer: IMapLayerAttributes | undefined) => {
   const layerType = getLayerType(mapLayer);
-  let iconName: 'point' | 'line' | 'rectangle' = 'rectangle';
+  let iconName: 'location-simple' | 'line' | 'rectangle' = 'rectangle';
 
   if (layerType === 'Point') {
-    iconName = 'point';
+    iconName = 'location-simple';
   } else if (layerType === 'LineString') {
     iconName = 'line';
   }

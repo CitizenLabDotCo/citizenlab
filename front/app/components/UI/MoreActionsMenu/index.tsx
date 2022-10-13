@@ -16,8 +16,6 @@ const Container = styled.div`
 `;
 
 const MoreOptionsIcon = styled(Icon)<{ color?: string }>`
-  width: 20px;
-  height: 6px;
   fill: ${({ color }) => color || colors.textSecondary};
   transition: all 100ms ease-out;
 `;
@@ -92,11 +90,6 @@ const ListItem = styled.button`
     color: white;
     background: ${colors.grey600};
   }
-`;
-
-const StyledIcon = styled(Icon)`
-  width: 20px;
-  height: 20px;
 `;
 
 export interface IAction {
@@ -180,7 +173,7 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
                     className={name ? `e2e-action-${name}` : undefined}
                   >
                     {label}
-                    {icon && <StyledIcon name={icon} />}
+                    {icon && <Icon name={icon} />}
                   </ListItem>
                 );
               })}
@@ -196,7 +189,7 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
           >
             <MoreOptionsIcon
               title={label}
-              name="more-options"
+              name="dots-horizontal"
               color={color}
               ariaHidden={!showLabel}
             />

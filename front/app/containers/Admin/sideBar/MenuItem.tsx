@@ -83,17 +83,6 @@ const MenuItemLink = styled(Link)`
         fill: ${colors.blue400};
       }
     }
-
-    &.moderation {
-      .cl-icon {
-        .cl-icon-primary {
-          fill: ${colors.teal400};
-        }
-        .cl-icon-accent {
-          fill: ${colors.teal400};
-        }
-      }
-    }
   }
 
   ${media.tablet`
@@ -112,11 +101,12 @@ const IconWrapper = styled.div`
   align-items: center;
   justify-content: center;
 
-  &.processing svg {
-    height: 31px;
+  &.sidebar-reporting svg {
+    height: 30px;
+    width: 30px;
   }
 
-  &.blankPage svg {
+  &.sidebar-pages-menu svg {
     height: 22px;
   }
 `;
@@ -139,7 +129,7 @@ const MenuItem = ({ navItem }: Props) => {
           <FormattedMessage {...messages[navItem.message]} />
           {!!navItem.count && <CountBadge count={navItem.count} />}
         </Text>
-        <ArrowIcon name="arrowLeft" />
+        <ArrowIcon name="arrow-right" />
       </MenuItemLink>
     </HasPermission>
   ) : null;

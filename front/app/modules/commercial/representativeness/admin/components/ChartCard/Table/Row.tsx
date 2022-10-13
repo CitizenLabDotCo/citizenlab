@@ -1,12 +1,11 @@
 import React from 'react';
 
 // components
-import { Row, Cell } from 'components/admin/Table';
+import { Tr, Td } from 'components/admin/Table';
 
 // styling
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
-import { SEMANTIC_UI_HEADER_BG_COLOR } from 'components/admin/Table/constants';
 
 // utils
 import { formatPercentage } from '../utils';
@@ -23,24 +22,24 @@ interface Props {
   row: RepresentativenessRow;
 }
 
-const RowComponent = ({ row }: Props) => {
+const Row = ({ row }: Props) => {
   return (
-    <Row>
-      <Cell background={SEMANTIC_UI_HEADER_BG_COLOR}>{row.name}</Cell>
-      <Cell>
+    <Tr>
+      <Td background={colors.grey50}>{row.name}</Td>
+      <Td>
         {formatPercentage(row.actualPercentage)}
         <AbsoluteValue>
           ({row.actualNumber.toLocaleString('en-US')})
         </AbsoluteValue>
-      </Cell>
-      <Cell>
+      </Td>
+      <Td>
         {formatPercentage(row.referencePercentage)}
         <AbsoluteValue>
           ({row.referenceNumber.toLocaleString('en-US')})
         </AbsoluteValue>
-      </Cell>
-    </Row>
+      </Td>
+    </Tr>
   );
 };
 
-export default RowComponent;
+export default Row;

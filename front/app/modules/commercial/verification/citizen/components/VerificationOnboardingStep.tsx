@@ -20,9 +20,10 @@ import messages from 'containers/LandingPage/messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 const ShieldIcon = styled(Icon)`
-  fill: ${colors.textSecondary};
+  fill: ${colors.white};
+  opacity: 0.5;
   width: 50px;
-  height: 56px;
+  height: 50px;
   margin-left: -3px;
 `;
 
@@ -63,7 +64,7 @@ const VerificationOnboardingStep = ({
                 padding={0}
                 borderThickness={0}
               />
-              <ShieldIcon name="verify_light" />
+              <ShieldIcon name="shield-check" />
             </AvatarAndShield>
           </Icons>
           <Text>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 // components
-import { Table, Body, Footer, Row, HeaderCell } from 'components/admin/Table';
+import { Table, Tbody, Tfoot, Tr, Td } from 'components/admin/Table';
 import Pagination from 'components/admin/Pagination';
 import Button from 'components/UI/Button';
 import TableHeader from './TableHeader';
@@ -20,6 +20,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // styling
 import styled from 'styled-components';
+import { colors, stylingConsts } from 'utils/styleUtils';
 
 // utils
 import { API_PATH } from 'containers/App/constants';
@@ -112,31 +113,38 @@ const InvitesTable = ({
       </HeaderContainer>
 
       {invitesList.length > 0 && (
-        <Table>
+        <Table
+          border={`1px solid ${colors.grey300}`}
+          borderRadius={stylingConsts.borderRadius}
+          innerBorders={{
+            headerCells: true,
+            bodyRows: true,
+          }}
+        >
           <TableHeader
             sortAttribute={sortAttribute}
             sortDirection={sortDirection}
             onSortHeaderClick={handleSortHeaderClick}
           />
 
-          <Body horizontalBorders>
+          <Tbody>
             {invitesList.map((invite) => (
               <TableRow key={invite.id} invite={invite} />
             ))}
-          </Body>
+          </Tbody>
 
           {currentPage && lastPage && lastPage > 1 && (
-            <Footer>
-              <Row>
-                <HeaderCell colSpan="5">
+            <Tfoot background={colors.grey50}>
+              <Tr>
+                <Td colSpan="5">
                   <Pagination
                     currentPage={currentPage}
                     totalPages={lastPage}
                     loadPage={onChangePage}
                   />
-                </HeaderCell>
-              </Row>
-            </Footer>
+                </Td>
+              </Tr>
+            </Tfoot>
           )}
         </Table>
       )}

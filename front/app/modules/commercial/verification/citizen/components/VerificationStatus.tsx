@@ -46,9 +46,10 @@ const StyledAvatar = styled(Avatar)`
 `;
 
 const ShieldIcon = styled(Icon)`
-  fill: ${colors.textSecondary};
+  fill: ${colors.white};
+  opacity: 0.5;
   width: 48px;
-  height: 53px;
+  height: 48px;
   margin-left: -4px;
 `;
 
@@ -167,7 +168,7 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
                 borderThickness={2}
                 borderColor="#fff"
               />
-              <ShieldIcon name="verify_dark" />
+              <ShieldIcon name="shield-check" />
             </AvatarAndShield>
             <Content>
               <Title>

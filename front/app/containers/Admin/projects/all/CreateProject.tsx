@@ -112,7 +112,6 @@ const ExpandIconWrapper = styled.div`
 `;
 
 const ExpandIcon = styled(Icon)`
-  height: 11px;
   fill: ${colors.textSecondary};
   transition: all ${duartion - 100}ms ease-out;
 
@@ -165,7 +164,7 @@ const CreateProject = memo<Props & InjectedIntlProps>(
       {
         name: 'scratch',
         label: formatMessage(messages.fromScratch),
-        icon: 'scratch',
+        icon: 'blank-paper',
       },
     ]);
     const tabValues = tabs.map((tab) => tab.name) as TTabName[];

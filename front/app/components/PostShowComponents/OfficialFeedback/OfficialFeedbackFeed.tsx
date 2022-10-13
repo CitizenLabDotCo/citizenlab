@@ -172,7 +172,7 @@ class OfficialFeedbackFeed extends PureComponent<
             {!querying && hasMore && (
               <LoadMoreButton
                 buttonStyle="secondary-outlined"
-                icon="showMore"
+                icon="refresh"
                 onClick={onLoadMore}
                 text={<FormattedMessage {...messages.showPreviousUpdates} />}
                 processing={loadingMore}
