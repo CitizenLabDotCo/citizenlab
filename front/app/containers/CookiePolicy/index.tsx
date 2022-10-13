@@ -3,9 +3,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 
 // i18n
-import messages from './messages';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, injectIntl, useIntl } from 'utils/cl-intl';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
@@ -41,7 +39,8 @@ const StyledButton = styled.button`
   }
 `;
 
-const CookiePolicy = ({ intl: { formatMessage } }: WrappedComponentProps) => {
+const CookiePolicy = () => {
+  const { formatMessage } = useIntl();
   const openConsentManager = () => {
     eventEmitter.emit('openConsentManager');
   };
