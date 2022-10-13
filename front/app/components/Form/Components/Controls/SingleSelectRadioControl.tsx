@@ -36,9 +36,10 @@ const SingleSelectRadioControl = ({
         subtextSupportsHtml
       />
       <Box mt="16px" display="block" id="e2e-single-select-control">
-        {options?.map((option) => (
+        {options?.map((option, index: number) => (
           <Box mt="12px" key={option.value}>
             <Radio
+              id={`${path}-radio-${index}`}
               name="name-temp"
               label={option.label}
               currentValue={data}

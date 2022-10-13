@@ -10,7 +10,6 @@ import { InjectedIntlProps, FormattedNumber } from 'react-intl';
 import messages from './messages';
 
 const StyledIcon = styled(Icon)`
-  width: 19px;
   margin-top: 3px;
   margin-right: 7px;
   display: inline-block;
@@ -35,7 +34,7 @@ const FormattedBudget = ({
     if (currency === 'TOK') {
       return (
         <>
-          <StyledIcon name="tokens" />
+          <StyledIcon name="token" />
           {formatNumber(value)}
         </>
       );

@@ -43,7 +43,7 @@ const Footer = ({ loadingMore, onShowMore }: Props) => {
         text={<FormattedMessage {...messages.showMore} />}
         processing={loadingMore}
         height="50px"
-        icon="showMore"
+        icon="refresh"
         iconPos="left"
         textColor={theme.colors.tenantText}
         bgColor={rgba(theme.colors.tenantText, 0.08)}

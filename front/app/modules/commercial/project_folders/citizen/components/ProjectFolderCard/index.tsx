@@ -137,8 +137,9 @@ const FolderImagePlaceholder = styled.div`
 `;
 
 const FolderImagePlaceholderIcon = styled(Icon)`
-  height: 45px;
-  fill: #fff;
+  height: 80px;
+  width: 80px;
+  fill: ${colors.white};
 `;
 
 const FolderImage = styled(Image)`
@@ -272,8 +273,6 @@ const FolderDescription = styled.div`
 `;
 
 const MapIcon = styled(Icon)`
-  width: 27px;
-  height: 21px;
   fill: ${({ theme }) => theme.colors.tenantSecondary};
   margin-right: 10px;
 `;
@@ -333,7 +332,7 @@ const ProjectFolderCard = memo<Props>(
           </ContentHeaderLabel>
         )}
         <div>
-          <MapIcon name="folder" ariaHidden />
+          <MapIcon name="folder-solid" ariaHidden />
           <MapIconDescription
             aria-hidden
             className="e2e-folder-card-numberofprojects"
@@ -381,7 +380,7 @@ const ProjectFolderCard = memo<Props>(
 
         <FolderImageContainer className={size}>
           <FolderImagePlaceholder>
-            <FolderImagePlaceholderIcon name="project" />
+            <FolderImagePlaceholderIcon name="building" />
           </FolderImagePlaceholder>
 
           {imageUrl && <FolderImage src={imageUrl} alt="" cover={true} />}

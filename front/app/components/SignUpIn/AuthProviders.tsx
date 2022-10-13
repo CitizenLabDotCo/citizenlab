@@ -201,7 +201,7 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
 
         {azureAdLoginEnabled && (
           <StyledAuthProviderButton
-            icon="azureactivedirectory"
+            icon="microsoft-windows"
             flow={flow}
             authProvider="azureactivedirectory"
             onContinue={onAuthProviderSelected}

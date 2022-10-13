@@ -298,7 +298,7 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
                   onClick={handleGoToLinkOnClick}
                   data-type={moderatableType}
                 >
-                  <GoToIcon name="goTo" />
+                  <GoToIcon name="open-in-new" />
                 </GoToLink>
               </GoToLinkWrapper>
             </Tippy>

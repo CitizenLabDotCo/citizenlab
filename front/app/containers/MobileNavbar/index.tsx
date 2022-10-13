@@ -152,7 +152,7 @@ const MobileNavigation = ({
         <NavigationItems>
           <MobileNavbarItem
             linkTo="/"
-            iconName="homeFilled"
+            iconName="home"
             navigationItemTitle={homeItem.attributes.title_multiloc}
             onlyActiveOnIndex
             isFullMenuOpened={isFullMenuOpened}
@@ -160,7 +160,7 @@ const MobileNavigation = ({
           />
           <MobileNavbarItem
             linkTo="/projects"
-            iconName="folder"
+            iconName="folder-solid"
             navigationItemTitle={projectsItem.attributes.title_multiloc}
             isFullMenuOpened={isFullMenuOpened}
             onClick={handleOnNavItemClick('projects')}

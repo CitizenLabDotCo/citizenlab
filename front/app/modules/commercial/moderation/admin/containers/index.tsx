@@ -470,11 +470,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                 {selectedModerations.length > 0 &&
                   (selectedTab === 'read' || selectedTab === 'unread') && (
                     <MarkAsButton
-                      icon={
-                        moderationStatus === 'unread'
-                          ? 'eyeOpened-unfilled'
-                          : 'eyeClosed-unfilled'
-                      }
+                      icon={moderationStatus === 'unread' ? 'eye' : 'eye-off'}
                       buttonStyle="cl-blue"
                       processing={processing}
                       onClick={markAs}

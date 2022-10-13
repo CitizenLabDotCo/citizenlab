@@ -45,9 +45,9 @@ const FieldInfo = ({ includedUsers, fieldIsRequired }: Props) => (
   <>
     <Text fontSize="s" color="textSecondary">
       <StyledIcon
-        name="user"
-        width="16px"
-        height="16px"
+        name="user-circle"
+        width="20px"
+        height="20px"
         fill={colors.textSecondary}
         mr="6px"
       />

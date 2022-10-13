@@ -62,7 +62,7 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
               onClick={handleCloseDropdown}
               buttonStyle="text"
               bgHoverColor={colors.grey300}
-              icon="admin"
+              icon="shield-checkered"
               iconPos="right"
               iconSize="20px"
               padding="11px 11px"
@@ -79,7 +79,7 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
               onClick={handleCloseDropdown}
               buttonStyle="text"
               bgHoverColor={colors.grey300}
-              icon="profile1"
+              icon="user-circle"
               iconPos="right"
               iconSize="20px"
               padding="11px 11px"
@@ -95,7 +95,7 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
             onClick={handleCloseDropdown}
             buttonStyle="text"
             bgHoverColor={colors.grey300}
-            icon="settings"
+            icon="sidebar-settings"
             iconPos="right"
             iconSize="20px"
             padding="11px 11px"

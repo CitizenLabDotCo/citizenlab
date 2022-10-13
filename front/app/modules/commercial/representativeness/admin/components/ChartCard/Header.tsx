@@ -39,7 +39,7 @@ interface Props {
 }
 
 const TAB_ITEMS: ITabItem[] = [
-  { icon: 'charts', name: 'chart', label: '' },
+  { icon: 'chart-bar', name: 'chart', label: '' },
   { icon: 'list', name: 'table', label: '' },
 ];
 

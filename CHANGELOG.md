@@ -6,6 +6,12 @@
 
 - [CL-1825] Make tables more visually consistent
 
+## 2022-10-13
+
+### Fixed
+
+- [CL-1835] Fixed missing verification button icon, which caused the verification modal to not open.
+
 ## 2022-10-11
 
 ### Fixed

@@ -35,8 +35,7 @@ const Container = styled.div`
 `;
 
 const StyledIcon = styled(Icon)`
-  flex: 0 0 16px;
-  width: 16px;
+  flex: 0 0 24px;
   fill: ${colors.textSecondary};
   margin-right: 8px;
 

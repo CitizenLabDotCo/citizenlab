@@ -46,8 +46,6 @@ const UpvotesContainer = styled(VotesContainer)`
 const DownvotesContainer = styled(VotesContainer)``;
 
 const VoteIcon = styled(Icon)`
-  width: 20px;
-  height: 18px;
   margin-right: 5px;
 `;
 
@@ -94,11 +92,11 @@ const VotePreview = memo<Props>(({ votesCount, className }) => {
         </Label>
         <Block>
           <UpvotesContainer>
-            <UpvoteIcon name="upvote" />
+            <UpvoteIcon name="vote-up" />
             <UpvotesCount>{votesCount.up}</UpvotesCount>
           </UpvotesContainer>
           <DownvotesContainer>
-            <DownvoteIcon name="downvote" />
+            <DownvoteIcon name="vote-down" />
             <DownvotesCount>{votesCount.down}</DownvotesCount>
           </DownvotesContainer>
         </Block>
