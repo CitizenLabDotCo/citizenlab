@@ -13,7 +13,7 @@ module IdOostendeRrn
     end
 
     def name
-      'gent_rrn'
+      'oostende_rrn'
     end
 
     def config_parameters
