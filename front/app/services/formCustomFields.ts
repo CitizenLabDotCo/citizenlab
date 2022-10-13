@@ -171,3 +171,45 @@ export function formCustomFieldsResultsStream(
     ...streamParams,
   });
 }
+
+export interface IFormSubmissionCountData {
+  totalSubmissions: string;
+}
+
+export interface IFormSubmissionCount {
+  data: IFormSubmissionCountData;
+}
+
+export function formSubmissionCountStream(
+  projectId: string,
+  phaseId?: string | null,
+  streamParams: IStreamParams | null = null
+) {
+  const apiEndpoint = phaseId
+    ? `${API_PATH}/phases/${phaseId}/submission_count`
+    : `${API_PATH}/projects/${projectId}/submission_count`;
+
+  return streams.get<IFormSubmissionCount>({
+    apiEndpoint,
+    cacheStream: false,
+    ...streamParams,
+  });
+}
+
+export async function deleteFormResults(projectId: string, phaseId?: string) {
+  const apiEndpoint = phaseId
+    ? `${API_PATH}/phases/${phaseId}/inputs`
+    : `${API_PATH}/projects/${projectId}/inputs`;
+
+  const response = await streams.delete(apiEndpoint, `${projectId}/${phaseId}`);
+
+  await streams.fetchAllWith({
+    apiEndpoint: [
+      ...(phaseId
+        ? [`${API_PATH}/phases/${phaseId}/submission_count`]
+        : [`${API_PATH}/projects/${projectId}/submission_count`]),
+    ],
+  });
+
+  return response;
+}
