@@ -121,54 +121,66 @@ describe MultiTenancy::TenantTemplateService do
     end
 
     describe 'filtering of template multiloc attributes' do
-      let(:platform_locales) { %w[en nl-BE] }
+      let(:platform_locales) { ['en'] }
       let(:template) do
-        YAML.safe_load(<<~YAML)
+        YAML.load(<<~YAML)
           models:
             project:
+              - &project
+                title_multiloc:
+                  en: Project
+                  nl-BE: Project
+            idea_status:
+              - title_multiloc: idea_statuses.proposed
+                ordering: 100
+                code: proposed
+                color: '#687782'
+                description_multiloc: idea_statuses.proposed_description
+            idea:
               - title_multiloc:
-                  en: Project title
-                  nl-BE: Project titel
-                  es-ES: Proyecto titulo
-                description_multiloc:
-                  en: Project description
-                  nl-BE: Projectbeschrijving
-                  es-ES: Proyecto descripción
-                admin_publication_attributes:
-                  publication_status: published
+                  en: Cleaning the sidewalks party
+                  nl-BE: Schoonmaken van de trottoirs feest
+                body_multiloc:
+                  en: "<p>Let's get together to have a cleaning party!<p>"
+                  nl-BE: "<p>Laten we samen een schoonmaakfeest houden!<p>"
+                publication_status: published
+                location_description: 8185 Austen Green
+                project_ref: *project
+                published_at: '2018-03-03 00:00:00'
+                created_at: '2018-02-22 00:00:00'
+                updated_at: '2018-03-28 13:35:10'
         YAML
       end
 
       before do
         app_config = AppConfiguration.instance
-        settings = app_config.settings
-        settings['core']['locales'] = platform_locales
-        app_config.update!(settings: settings)
+        app_config.settings['core']['locales'] = platform_locales
+        app_config.save!
       end
 
-      it 'removes locales not relevant to the platform' do
+      it 'removes non-platform locales from citizen inputs' do
+        service.apply_template(template)
+
+        idea = Idea.first
+        expect(idea.title_multiloc.keys).to eq(platform_locales)
+        expect(idea.body_multiloc.keys).to eq(platform_locales)
+      end
+
+      it 'does not remove locales from other models (non-citizen inputs)' do
         service.apply_template(template)
 
         project = Project.first
-        expect(project.title_multiloc.keys).to match(platform_locales)
-        expect(project.description_multiloc.keys).to match(platform_locales)
+        expect(project.title_multiloc.keys).to eq(%w[en nl-BE])
       end
 
-      # rubocop:disable RSpec/NestedGroups
-      context 'when none of the platform locales is available', :aggregate_failures do
-        let(:platform_locales) { %w[it-IT en-GB] }
+      it 'falls back to another (unspecified) locale if all locales are filtered out' do
+        template.dig('models', 'idea', 0, 'body_multiloc').except!(*platform_locales)
 
-        it 'falls back to another (unspecified) locale' do
-          service.apply_template(template)
+        service.apply_template(template)
 
-          project = Project.first
-          expect(project.title_multiloc.keys.size).to eq(1)
-          # rubocop:disable RSpec/ExpectActual
-          expect(%w[en nl-BE es-ES]).to include(*project.title_multiloc.keys)
-          # rubocop:enable RSpec/ExpectActual
-        end
+        idea = Idea.first
+        expect(idea.body_multiloc.keys).to contain_exactly('nl-BE')
       end
-      # rubocop:enable RSpec/NestedGroups
     end
   end
 end
