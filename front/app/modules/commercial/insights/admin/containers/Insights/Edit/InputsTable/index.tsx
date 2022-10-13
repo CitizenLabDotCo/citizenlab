@@ -461,6 +461,7 @@ const InputsTable = ({
                       query.sort === '-approval' ? 'ascending' : 'descending'
                     }
                     onClick={onSort}
+                    data-testid="insightsSortButton"
                   >
                     {formatMessage(messages.inputsTableCategories)}
                   </Th>
