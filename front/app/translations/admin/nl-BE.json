@@ -444,7 +444,6 @@
   "app.containers.Admin.PagesAndMenu.SectionToggle.topInfoSection": "Bovenste infosectie",
   "app.containers.Admin.PagesAndMenu.SectionToggle.topInfoSectionTooltip": "Voeg je eigen inhoud toe aan het aanpasbare gedeelte boven aan de pagina.",
   "app.containers.Admin.PagesAndMenu.addButton": "Voeg toe aan navigatiebalk",
-  "app.containers.Admin.PagesAndMenu.blankDescriptionError": "Voer voor alle talen inhoud in",
   "app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.attachmentUploadLabel": "Bijlagen (max. 50MB)",
   "app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.buttonSuccess": "Opgeslagen",
   "app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.contentEditorTitle": "Inhoud",

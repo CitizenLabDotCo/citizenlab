@@ -444,7 +444,6 @@
   "app.containers.Admin.PagesAndMenu.SectionToggle.topInfoSection": "Üst bilgi bölümü",
   "app.containers.Admin.PagesAndMenu.SectionToggle.topInfoSectionTooltip": "Add your own content to the customizable section at the top of the page.",
   "app.containers.Admin.PagesAndMenu.addButton": "Gezinme çubuğuna ekle",
-  "app.containers.Admin.PagesAndMenu.blankDescriptionError": "Tüm diller için içerik sağlayın",
   "app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.attachmentUploadLabel": "Ekler (maksimum 50 MB)",
   "app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.buttonSuccess": "Başarılı",
   "app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.contentEditorTitle": "İçerik",

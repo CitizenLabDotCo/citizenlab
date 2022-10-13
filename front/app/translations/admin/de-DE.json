@@ -444,7 +444,6 @@
   "app.containers.Admin.PagesAndMenu.SectionToggle.topInfoSection": "Oberer Infobereich",
   "app.containers.Admin.PagesAndMenu.SectionToggle.topInfoSectionTooltip": "Fügen Sie Ihre eigenen Inhalte in den anpassbaren Bereich oben auf der Seite ein.",
   "app.containers.Admin.PagesAndMenu.addButton": "Zur Nav.-Leiste hinzufügen",
-  "app.containers.Admin.PagesAndMenu.blankDescriptionError": "Geben Sie Inhalte für alle Sprachen ein",
   "app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.attachmentUploadLabel": "Anhänge (max. 50MB)",
   "app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.buttonSuccess": "Gespeichert!",
   "app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.contentEditorTitle": "Inhalt",

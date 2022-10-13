@@ -444,7 +444,6 @@
   "app.containers.Admin.PagesAndMenu.SectionToggle.topInfoSection": "قسم المعلومات العلوي",
   "app.containers.Admin.PagesAndMenu.SectionToggle.topInfoSectionTooltip": "أضف محتواك الخاص إلى القسم القابل للتخصيص في الجزء العلوي من الصفحة.",
   "app.containers.Admin.PagesAndMenu.addButton": "إضافة إلى شريط التنقل",
-  "app.containers.Admin.PagesAndMenu.blankDescriptionError": "أدخل المحتوى بجميع اللغات",
   "app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.attachmentUploadLabel": "المُرفقات (بحجم أقصى 50 ميغابايت)",
   "app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.buttonSuccess": "نجاح",
   "app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.contentEditorTitle": "المحتوى",

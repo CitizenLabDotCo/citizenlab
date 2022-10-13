@@ -444,7 +444,6 @@
   "app.containers.Admin.PagesAndMenu.SectionToggle.topInfoSection": "Seção de informação",
   "app.containers.Admin.PagesAndMenu.SectionToggle.topInfoSectionTooltip": "Adicione o seu próprio conteúdo à seção personalizável na parte inferior da página inicial.",
   "app.containers.Admin.PagesAndMenu.addButton": "Adicionar à barra de navegação",
-  "app.containers.Admin.PagesAndMenu.blankDescriptionError": "Por favor, forneça o conteúdo para todas as línguas",
   "app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.attachmentUploadLabel": "Anexos (max. 50MB)",
   "app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.buttonSuccess": "Sucesso",
   "app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.contentEditorTitle": "Conteúdo",
