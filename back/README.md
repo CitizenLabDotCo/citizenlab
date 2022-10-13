@@ -1,10 +1,10 @@
 # cl2-back
- 
+
 # Getting started
 
 First, you need the latest docker and docker-compose installed.
 
-Build the docker compose images 
+Build the docker compose images
 ```
 docker-compose up --build -d
 ```
@@ -245,13 +245,13 @@ In this section, we explain what you need to do (and what you shouldn't forget) 
 
 1. Run `docker-compose run web bin/rails plugin new engines/free/blorgh --mountable`. Initialize your engine with a nice `README` file.
 
-2. Remove files/folders you don’t need. Change the current files to correspond with the other engines. 
+2. Remove files/folders you don’t need. Change the current files to correspond with the other engines.
 
-3. In the `blorgh.gemspec` file, make sure `AGPLv3` is specified as license. 
+3. In the `blorgh.gemspec` file, make sure `AGPLv3` is specified as license.
 
 4. For feature engines (represented by an app configuration setting that can be enabled and disabled), copy over `lib/blorgh/feature_specification.rb` and `spec/lib/settings_spec.rb` and edit according to your engine's specifications.
 
-5. Add the new engine to `citizenlab.config.json` and 
+5. Add the new engine to `citizenlab.config.json` and
 
 6. Update the licenses by executing `license_finder approvals add blorgh`.
 
@@ -341,3 +341,6 @@ If the license is unkown to rubygems, you can directly approve a gem.
 docker-compose run web license_finder approvals add some_awesome_new_gem
 ```
 Only approve a license or gem if you're sure there are no compatibility issues. License_finder stores its information in `doc/dependency_decisions.yml`
+
+
+This is ridicilous. :)
