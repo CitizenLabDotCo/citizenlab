@@ -12,7 +12,7 @@ import messages from '../messages';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, boolean, string } from 'yup';
-import validateMultilocForEveryLanguage from 'utils/yup/validateMultilocForEveryLanguage';
+import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import TextAreaMultilocWithLocaleSwitcher from 'components/HookForm/TextAreaMultilocWithLocaleSwitcher';
 import Feedback from 'components/HookForm/Feedback';
@@ -58,7 +58,7 @@ const RegistrationCustomFieldForm = ({
     input_type: string()
       .oneOf(fieldTypes, formatMessage(messages.answerFormatError))
       .required(formatMessage(messages.answerFormatError)),
-    title_multiloc: validateMultilocForEveryLanguage(
+    title_multiloc: validateMultilocForEveryLocale(
       formatMessage(messages.fieldNameError)
     ),
     description_multiloc: object(),

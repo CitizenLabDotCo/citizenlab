@@ -13,7 +13,7 @@ import { Box, Button } from '@citizenlab/cl2-component-library';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object } from 'yup';
-import validateMultilocForEveryLanguage from 'utils/yup/validateMultilocForEveryLanguage';
+import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import Feedback from 'components/HookForm/Feedback';
@@ -38,7 +38,7 @@ const AreaForm = ({
   onSubmit,
 }: Props) => {
   const schema = object({
-    title_multiloc: validateMultilocForEveryLanguage(
+    title_multiloc: validateMultilocForEveryLocale(
       formatMessage(messages.fieldTitleError)
     ),
     description_multiloc: object(),

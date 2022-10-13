@@ -20,7 +20,7 @@ import { Section, SectionField, SectionTitle } from 'components/admin/Section';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { string, object, array } from 'yup';
-import validateMultilocForEveryLanguage from 'utils/yup/validateMultilocForEveryLanguage';
+import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import Input from 'components/HookForm/Input';
@@ -85,10 +85,10 @@ const CampaignForm = ({
     reply_to: string()
       .email(formatMessage(messages.fieldReplyToEmailError))
       .required(formatMessage(messages.fieldReplyToError)),
-    subject_multiloc: validateMultilocForEveryLanguage(
+    subject_multiloc: validateMultilocForEveryLocale(
       formatMessage(messages.fieldSubjectError)
     ),
-    body_multiloc: validateMultilocForEveryLanguage(
+    body_multiloc: validateMultilocForEveryLocale(
       formatMessage(messages.fieldBodyError)
     ),
     group_ids: array(),

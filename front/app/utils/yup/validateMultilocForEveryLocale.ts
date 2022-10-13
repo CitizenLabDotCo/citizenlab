@@ -4,7 +4,7 @@ import { object, lazy, string } from 'yup';
 // has a corresponding value. this is based on the input object
 // and not the configured locales
 
-const validateMultilocForEveryLanguage = (message: string) =>
+const validateMultilocForEveryLocale = (message: string) =>
   lazy((obj) => {
     const keys = Object.keys(obj);
 
@@ -16,4 +16,4 @@ const validateMultilocForEveryLanguage = (message: string) =>
     );
   });
 
-export default validateMultilocForEveryLanguage;
+export default validateMultilocForEveryLocale;

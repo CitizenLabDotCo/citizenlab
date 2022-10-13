@@ -19,7 +19,7 @@ import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWi
 import Feedback from 'components/HookForm/Feedback';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object } from 'yup';
-import validateMultilocForEveryLanguage from 'utils/yup/validateMultilocForEveryLanguage';
+import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 export interface FormValues {
@@ -37,7 +37,7 @@ const TopicForm = ({
   defaultValues,
 }: Props) => {
   const schema = object({
-    title_multiloc: validateMultilocForEveryLanguage(
+    title_multiloc: validateMultilocForEveryLocale(
       formatMessage(messages.fieldTopicTitleError)
     ),
   });

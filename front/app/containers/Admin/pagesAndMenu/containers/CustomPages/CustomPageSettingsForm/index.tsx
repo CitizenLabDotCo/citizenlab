@@ -6,7 +6,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { SectionField } from 'components/admin/Section';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, string } from 'yup';
-import validateMultilocForEveryLanguage from 'utils/yup/validateMultilocForEveryLanguage';
+import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 import { slugRegEx } from 'utils/textUtils';
 // import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
@@ -48,7 +48,7 @@ const CustomPageSettingsForm = ({
 }: Props & InjectedIntlProps) => {
   const [_titleErrors, _setTitleErrors] = useState<Multiloc>({});
   const schema = object({
-    title_multiloc: validateMultilocForEveryLanguage(
+    title_multiloc: validateMultilocForEveryLocale(
       formatMessage(messages.titleMultilocError)
     ),
     ...(mode === 'edit' && {
