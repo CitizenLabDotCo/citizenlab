@@ -1,5 +1,7 @@
 [![CircleCI](https://circleci.com/gh/CitizenLabDotCo/citizenlab/tree/master.svg?style=svg)](https://circleci.com/gh/CitizenLabDotCo/citizenlab/tree/master)
 
+Dummy change to be reverted.
+
 # CitizenLab
 
 ![CitizenLab](https://res.cloudinary.com/citizenlabco/image/upload/c_scale,w_170/v1604331338/CitizenLab_logo.png)
