@@ -7,7 +7,7 @@ pl:
     inappropriate_content_flagged:
       subject: 'Post na Twojej platformie został oznaczony do przeglądu'
       header_title: 'Post na Twojej platformie został oznaczony do przeglądu'
-      comment_author: '%{authorName} skomentował(a):'
+      comment_author: '%{authorName} skomentował:'
       idea_author: '%{authorName} dodał(a) nowy post:'
       initiative_author: '%{authorName} dodał(a) nowa propozycję:'
       this_post_was_flagged: >
