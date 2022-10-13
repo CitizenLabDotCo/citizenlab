@@ -970,6 +970,7 @@
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.xVolunteers": "{x, plural, =0 {no frivillige} one {# frivillig} other {# frivillige}}",
   "app.containers.AdminPage.ProjectEdit.addNewContribution": "Ilanngussaqarit",
   "app.containers.AdminPage.ProjectEdit.addNewIdea": "Isumassarsiamik ilanngussigit",
+  "app.containers.AdminPage.ProjectEdit.addNewInput": "Add an input",
   "app.containers.AdminPage.ProjectEdit.addNewIssue": "Oqaaseqaatit nassiutiguk",
   "app.containers.AdminPage.ProjectEdit.addNewOption": "Qinigassamik nutaamik ilanngussigit",
   "app.containers.AdminPage.ProjectEdit.addNewProject": "Suliamik ilanngussigit",
