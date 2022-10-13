@@ -29,7 +29,7 @@ module Analytics
         end
       end
     rescue CitizenLab::LockManager::FailedToLock
-      reschedule_in rand(10..20).minutes
+      reschedule_in rand(180..600).seconds
     end
 
     def self.perform_for_all_tenants(min_duration: 1.day, max_nb_batches: 5, batch_size: 250)

@@ -55,7 +55,7 @@ const GoBackButton = memo(
         <Button
           className={className}
           id="e2e-idea-other-link"
-          icon="circle-arrow-left"
+          icon="arrow-left-circle"
           onClick={onGoBack}
           buttonStyle="text"
           iconSize="26px"

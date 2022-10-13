@@ -49,7 +49,7 @@ export default (inputProps: InputProps) => (
           </Table.Cell>
           <Table.Cell textAlign="center">
             <Popup
-              trigger={<SemanticButton icon="trash" />}
+              trigger={<SemanticButton icon="delete" />}
               content={
                 <SemanticButton
                   color="red"

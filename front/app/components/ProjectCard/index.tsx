@@ -162,11 +162,6 @@ const ProjectImagePlaceholder = styled.div`
   background: ${colors.grey300};
 `;
 
-const ProjectImagePlaceholderIcon = styled(Icon)`
-  height: 45px;
-  fill: #fff;
-`;
-
 const ProjectImage = styled(Image)`
   width: 100%;
   height: 100%;
@@ -436,8 +431,6 @@ const MetaItem = styled.div`
 `;
 
 const MetaItemIcon = styled(Icon)`
-  width: 20px;
-  height: 20px;
   fill: ${({ theme }) => theme.colors.tenantPrimary};
 `;
 
@@ -708,7 +701,12 @@ const ProjectCard = memo<Props>(
               <ProjectImage src={imageUrl} alt="" cover={true} />
             ) : (
               <ProjectImagePlaceholder>
-                <ProjectImagePlaceholderIcon name="project" />
+                <Icon
+                  name="building"
+                  width="80px"
+                  height="80px"
+                  fill={colors.white}
+                />
               </ProjectImagePlaceholder>
             )}
           </ProjectImageContainer>

@@ -45,7 +45,11 @@ class DraftCampaignDetails extends React.Component<Props> {
       <>
         <PreviewFrame campaignId={campaign.id} />
         <ButtonWrapper>
-          <Button buttonStyle="delete" icon="trash" onClick={this.handleDelete}>
+          <Button
+            buttonStyle="delete"
+            icon="delete"
+            onClick={this.handleDelete}
+          >
             <FormattedMessage {...messages.deleteCampaignButton} />
           </Button>
         </ButtonWrapper>

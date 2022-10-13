@@ -41,8 +41,6 @@ const MoreOptionsWrapper = styled.div`
 `;
 
 const MoreOptionsIcon = styled(Icon)`
-  width: 20px;
-  height: 20px;
   fill: ${colors.textSecondary};
 `;
 
@@ -235,14 +233,14 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
                   <DropdownListButton onClick={this.handleDeleteClick}>
                     <FormattedMessage {...messages.deleteUser} />
                     <IconWrapper>
-                      <Icon name="trash" />
+                      <Icon name="delete" fill="white" />
                     </IconWrapper>
                   </DropdownListButton>
                 </DropdownList>
               }
             >
               <MoreOptionsButton onMouseDown={removeFocusAfterMouseClick}>
-                <MoreOptionsIcon name="more-options" />
+                <MoreOptionsIcon name="dots-horizontal" />
               </MoreOptionsButton>
             </Tippy>
           </MoreOptionsWrapper>

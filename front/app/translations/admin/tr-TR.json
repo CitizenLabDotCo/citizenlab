@@ -968,6 +968,7 @@
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.xVolunteers": "{x, plural, =0 {gönüllü yok} one {# gönüllü} other {# gönüllü}}",
   "app.containers.AdminPage.ProjectEdit.addNewContribution": "Bir katkı ekleyin",
   "app.containers.AdminPage.ProjectEdit.addNewIdea": "Bir fikir ekleyin",
+  "app.containers.AdminPage.ProjectEdit.addNewInput": "Add an input",
   "app.containers.AdminPage.ProjectEdit.addNewIssue": "Bir yorum ekleyin",
   "app.containers.AdminPage.ProjectEdit.addNewOption": "Bir seçenek ekleyin",
   "app.containers.AdminPage.ProjectEdit.addNewProject": "Bir proje ekleyin",

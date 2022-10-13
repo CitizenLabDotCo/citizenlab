@@ -38,6 +38,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.addNewIdea',
     defaultMessage: 'Add an idea',
   },
+  addNewInput: {
+    id: 'app.containers.AdminPage.ProjectEdit.addNewInput',
+    defaultMessage: 'Add an input',
+  },
   addNewProject: {
     id: 'app.containers.AdminPage.ProjectEdit.addNewProject',
     defaultMessage: 'Add a project',

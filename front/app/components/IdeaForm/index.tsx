@@ -137,6 +137,8 @@ interface InputProps {
   onAddressChange: (address: string) => void;
   onIdeaFilesChange: (ideaFiles: UploadFile[]) => void;
   authorId: string | null;
+  ideaId?: string;
+  phaseId?: string;
 }
 
 interface DataProps {
@@ -219,13 +221,15 @@ class IdeaForm extends PureComponent<
   }
 
   componentDidMount() {
-    const { projectId } = this.props;
+    const { projectId, ideaId, phaseId } = this.props;
     const locale$ = localeStream().observable;
     const tenant$ = currentAppConfigurationStream().observable;
     const project$: Observable<IProject | null> =
       projectByIdStream(projectId).observable;
     const ideaCustomFieldsSchemas$ = ideaFormSchemaStream(
-      projectId as string
+      projectId as string,
+      phaseId,
+      ideaId
     ).observable;
     const pbContext$: Observable<IProjectData | IPhaseData | null> =
       project$.pipe(
@@ -767,7 +771,7 @@ class IdeaForm extends PureComponent<
             <IconTooltip
               iconColor="black"
               marginLeft="4px"
-              icon="admin"
+              icon="shield-checkered"
               content={<FormattedMessage {...messages.adminFieldTooltip} />}
             />
           </>

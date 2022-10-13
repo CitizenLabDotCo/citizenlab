@@ -34,21 +34,22 @@ const IconContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 28px;
   // Increases the clickable surface area
-  padding: 4px 8px 4px 0px;
-  margin: -4px -8px -4px 0px;
+  padding: 4px 4px 4px 0px;
+  margin: -4px -4px -4px 0px;
 `;
 
 const PlusIcon = styled(Icon)`
   margin-left: 8px;
-  height: 14px;
+  height: 16px;
+  width: 16px;
   fill: ${colors.success};
 `;
 
 const CloseIcon = styled(Icon)`
   margin-left: 8px;
-  height: 10px;
+  height: 16px;
+  width: 16px;
   fill: #fff;
 `;
 

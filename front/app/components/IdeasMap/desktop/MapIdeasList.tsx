@@ -128,7 +128,10 @@ interface Props {
 
 const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
   const locale = useLocale();
-  const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({ projectId });
+  const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({
+    projectId,
+    phaseId,
+  });
   const project = useProject({ projectId });
 
   // ideaMarkers

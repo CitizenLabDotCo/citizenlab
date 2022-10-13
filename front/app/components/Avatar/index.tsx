@@ -181,7 +181,7 @@ const Avatar = memo(
           {!avatarSrc && !hideIfNoAvatar && (
             <AvatarIcon
               className={`avatarIcon ${hasHoverEffect ? 'hasHoverEffect' : ''}`}
-              name="user"
+              name="user-circle"
               size={containerSize}
               fillColor={fillColor}
               fillHoverColor={fillHoverColor}
@@ -194,13 +194,17 @@ const Avatar = memo(
           )}
 
           {moderator && (
-            <BadgeIcon name="clShield" size={badgeSize} fill={colors.red600} />
+            <BadgeIcon
+              name="cl-favicon"
+              size={badgeSize}
+              fill={colors.red600}
+            />
           )}
 
           {verified && addVerificationBadge && (
             <FeatureFlag name="verification">
               <BadgeIcon
-                name="checkmark-full"
+                name="check-circle"
                 size={badgeSize}
                 fill={colors.success}
               />

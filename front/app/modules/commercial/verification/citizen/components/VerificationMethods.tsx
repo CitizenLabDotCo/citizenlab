@@ -74,7 +74,7 @@ const StyledAvatar = styled(Avatar)`
 const ShieldIcon = styled(Icon)`
   fill: ${colors.textSecondary};
   width: 48px;
-  height: 53px;
+  height: 48px;
   margin-left: -5px;
 `;
 
@@ -229,7 +229,7 @@ const VerificationMethods = memo<Props>(
                   userId={!isNilOrError(authUser) ? authUser.id : null}
                   size={55}
                 />
-                <ShieldIcon name="verify_dark" />
+                <ShieldIcon name="shield-check" />
               </AboveTitle>
               <Title id="modal-header">
                 <strong>

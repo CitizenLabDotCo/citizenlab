@@ -100,8 +100,6 @@ const FooterNoteSuccessMessage = styled.span`
 `;
 
 const FooterNoteSuccessMessageIcon = styled(Icon)`
-  width: 12px;
-  height: 12px;
   margin-right: 4px;
 `;
 
@@ -255,7 +253,12 @@ const ConfirmationSignupStep = ({ onCompleted, onData, step }: Props) => {
         <Form inModal={inModal} onSubmit={handleSubmitConfirmation}>
           <FormField>
             <Box display="flex" alignItems="center" mb="20px">
-              <Icon width="30px" height="30px" name="checkmark-full" />
+              <Icon
+                width="30px"
+                height="30px"
+                name="check-circle"
+                fill={colors.success}
+              />
               <Success
                 text={
                   <FormattedMessage
@@ -299,7 +302,7 @@ const ConfirmationSignupStep = ({ onCompleted, onData, step }: Props) => {
 
               {codeResent ? (
                 <FooterNoteSuccessMessage>
-                  <FooterNoteSuccessMessageIcon name="checkmark-full" />
+                  <FooterNoteSuccessMessageIcon name="check-circle" />
                   <FormattedMessage {...messages.confirmationCodeSent} />
                 </FooterNoteSuccessMessage>
               ) : (

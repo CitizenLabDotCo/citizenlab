@@ -25,7 +25,7 @@ export default class GoBackButton extends PureComponent<Props, State> {
           id="e2e-go-back-button"
           onClick={onClick}
           buttonStyle="text"
-          icon="arrow-back"
+          icon="arrow-left"
           size="2"
           padding="0px"
           text={<FormattedMessage {...messages.goBack} />}

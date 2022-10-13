@@ -45,8 +45,7 @@ const TextContainer = styled.div`
   min-height: 0;
 `;
 const CloseIcon = styled(Icon)`
-  flex: 0 0 15px;
-  width: 15px;
+  flex: 0 0 24px;
   fill: ${colors.grey500};
 `;
 const StyledAuthor = styled(Author)`
