@@ -22,7 +22,7 @@ resource 'Verifications' do
       enabled: true,
       verification_methods: [
         {
-          name: 'oostende_rnn',
+          name: 'oostende_rrn',
           api_key: 'fake_api_key',
           environment: 'qa',
           custom_field_key: @custom_field.key,
