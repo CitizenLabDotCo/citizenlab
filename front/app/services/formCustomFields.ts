@@ -1,6 +1,8 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship, Multiloc } from 'typings';
+import { saveAs } from 'file-saver';
+import { requestBlob } from 'utils/request';
 
 // We can add more input types here when we support them
 export type ICustomFieldInputType =
@@ -171,3 +173,18 @@ export function formCustomFieldsResultsStream(
     ...streamParams,
   });
 }
+
+export const downloadSurveyResults = async (
+  projectId: string,
+  phaseId?: string | null
+) => {
+  const apiEndpoint = phaseId
+    ? `${API_PATH}/phases/${phaseId}/as_xlsx`
+    : `${API_PATH}/projects/${projectId}/as_xlsx`;
+
+  const blob = await requestBlob(
+    apiEndpoint,
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+  );
+  saveAs(blob, 'survey-results.xlsx');
+};

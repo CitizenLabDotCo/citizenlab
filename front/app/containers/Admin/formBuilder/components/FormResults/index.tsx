@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import { get, snakeCase } from 'lodash-es';
@@ -32,6 +32,9 @@ import { isNilOrError } from 'utils/helperUtils';
 // hooks
 import useFormResults from 'hooks/useFormResults';
 
+// Services
+import { downloadSurveyResults } from 'services/formCustomFields';
+
 const StyledBox = styled(Box)`
   display: grid;
   gap: 80px;
@@ -47,6 +50,7 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const { projectId } = useParams() as {
     projectId: string;
   };
+  const [isDownloading, setIsDownloading] = useState(false);
   const locale = useLocale();
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
@@ -65,6 +69,17 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   }
 
   const { totalSubmissions, results } = formResults;
+
+  const handleDownloadResults = async () => {
+    try {
+      setIsDownloading(true);
+      await downloadSurveyResults(projectId, phaseId);
+    } catch (error) {
+      // Not handling errors for now
+    } finally {
+      setIsDownloading(false);
+    }
+  };
 
   return (
     <Box width="100%">
@@ -85,6 +100,8 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
             buttonStyle="secondary"
             width="auto"
             minWidth="312px"
+            onClick={handleDownloadResults}
+            processing={isDownloading}
           >
             {formatMessage(messages.downloadResults)}
           </Button>
