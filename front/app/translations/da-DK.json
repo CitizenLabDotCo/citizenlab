@@ -613,7 +613,7 @@
   "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "Bekræftelse er deaktiveret for din platform, fjern verificeringsreglen eller kontakt support.",
   "app.containers.App.appMetaDescription": "Velkommen til borgerinddragelsesplatformen for {orgName}.\nUdforsk lokale projekter og deltag i diskussionen!",
   "app.containers.App.loading": "Indlæser...",
-  "app.containers.App.metaTitle": "{tenantName, select, DeloitteDK {Vores Mål | Giv dit input} other {Citizen engagement platform af {orgName} | CitizenLab}}",
+  "app.containers.App.metaTitle.test": "{tenantName, select, DeloitteDK {Vores Mål | Giv dit input} other {Citizen engagement platform af {orgName} | CitizenLab}}",
   "app.containers.CampaignsConsentForm.adminCategory": "Administrator",
   "app.containers.CampaignsConsentForm.ally_categoryLabel": "E-mails i denne kategori",
   "app.containers.CampaignsConsentForm.buttonSuccessLabel": "Succes",

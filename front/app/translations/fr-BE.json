@@ -613,7 +613,7 @@
   "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "La vérification est désactivée pour votre plate-forme, supprimez la règle de vérification ou contactez le support technique.",
   "app.containers.App.appMetaDescription": "Bienvenue sur la plateforme de participation en ligne de {orgName}. \nExplorez les projets locaux et participez à la discussion !",
   "app.containers.App.loading": "Chargement...",
-  "app.containers.App.metaTitle": "Plateforme d'engagement citoyen de {orgName} | CitizenLab",
+  "app.containers.App.metaTitle.test": "Plateforme d'engagement citoyen de {orgName} | CitizenLab",
   "app.containers.CampaignsConsentForm.adminCategory": "Panneau admin",
   "app.containers.CampaignsConsentForm.ally_categoryLabel": "Emails dans cette catégorie",
   "app.containers.CampaignsConsentForm.buttonSuccessLabel": "Enregistré !",

@@ -6,7 +6,7 @@ export default defineMessages({
     defaultMessage: 'Loading...',
   },
   metaTitle: {
-    id: 'app.containers.App.metaTitle',
+    id: 'app.containers.App.metaTitle.test',
     defaultMessage: 'Citizen engagement platform of {orgName} | CitizenLab',
   },
   appMetaDescription: {

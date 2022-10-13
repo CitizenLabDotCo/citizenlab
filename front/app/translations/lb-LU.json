@@ -613,7 +613,7 @@
   "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "D’Verifikatioun ass op Ärer Plattform gespaart, huelt d’Verificatiounsroll ewech oder kontaktéiert de Support",
   "app.containers.App.appMetaDescription": "Wëllkomm op der participativer Plattform vum {Zesumme Vereinfachen}. Kuckt d'Projeten an diskutéiert mat!",
   "app.containers.App.loading": "Um Lueden ... ",
-  "app.containers.App.metaTitle": "Bedeelegungsplattform {orgName} | CitizenLab",
+  "app.containers.App.metaTitle.test": "Bedeelegungsplattform {orgName} | CitizenLab",
   "app.containers.CampaignsConsentForm.adminCategory": "Admin",
   "app.containers.CampaignsConsentForm.ally_categoryLabel": "E-Mailen an dëser Kategorie",
   "app.containers.CampaignsConsentForm.buttonSuccessLabel": "Gespäichert!",

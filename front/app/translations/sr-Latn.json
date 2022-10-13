@@ -613,7 +613,7 @@
   "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "Verifikacija je onemogućena na vašoj platformi, promenite način verifikacije ili kontaktirajte podršku.",
   "app.containers.App.appMetaDescription": "Dobrodošli na participativnu platformu {orgName}.\nOtkrijte lokalne projekte i priključite se diskusiji!",
   "app.containers.App.loading": "Učitavanje...",
-  "app.containers.App.metaTitle": "Participativna platforma {orgName} | CitizenLab",
+  "app.containers.App.metaTitle.test": "Participativna platforma {orgName} | CitizenLab",
   "app.containers.CampaignsConsentForm.adminCategory": "Admin",
   "app.containers.CampaignsConsentForm.ally_categoryLabel": "Email poruke u ovoj kategoriji",
   "app.containers.CampaignsConsentForm.buttonSuccessLabel": "Uspeh",
