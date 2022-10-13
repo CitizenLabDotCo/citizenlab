@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 
 // hooks
-import useVisitorsLanguageData from '../../hooks/useVisitorsLanguageData';
+import useVisitorLanguages from '../../hooks/useVisitorLanguages';
 
 // components
 import GraphCard from 'components/admin/GraphCard';
@@ -39,7 +39,7 @@ const VisitorsCard = ({
 }: Props & InjectedIntlProps) => {
   const graphRef = useRef();
 
-  const { pieData, xlsxData } = useVisitorsLanguageData(formatMessage, {
+  const { pieData, xlsxData } = useVisitorLanguages(formatMessage, {
     startAtMoment,
     endAtMoment,
     projectId: projectFilter,

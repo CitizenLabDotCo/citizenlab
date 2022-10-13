@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 
 // hooks
-import useVisitorsData from '../../hooks/useVisitorsData';
+import useVisitors from '../../hooks/useVisitors';
 
 // components
 import GraphCard from 'components/admin/GraphCard';
@@ -35,7 +35,7 @@ const VisitorsCard = ({
 }: Props & InjectedIntlProps) => {
   const graphRef = useRef();
 
-  const { deducedResolution, stats, timeSeries, xlsxData } = useVisitorsData(
+  const { deducedResolution, stats, timeSeries, xlsxData } = useVisitors(
     formatMessage,
     {
       startAtMoment,

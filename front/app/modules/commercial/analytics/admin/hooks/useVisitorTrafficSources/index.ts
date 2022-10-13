@@ -63,7 +63,7 @@ const query = ({
   return { query: [trafficSourcesQuery, referrerlistQuery] };
 };
 
-export default function useVisitorsTrafficSourcesData(
+export default function useVisitorTrafficSources(
   formatMessage: InjectedIntlProps['intl']['formatMessage'],
   { projectId, startAtMoment, endAtMoment }: QueryParameters
 ) {

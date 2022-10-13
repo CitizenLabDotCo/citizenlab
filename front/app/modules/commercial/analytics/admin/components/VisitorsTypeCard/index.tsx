@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 
 // hooks
-import useVisitorsTypeData from '../../hooks/useVisitorsTypeData';
+import useVisitorTypes from '../../hooks/useVisitorTypes';
 
 // components
 import GraphCard from 'components/admin/GraphCard';
@@ -39,7 +39,7 @@ const VisitorsCard = ({
 }: Props & InjectedIntlProps) => {
   const graphRef = useRef();
 
-  const { pieData, xlsxData } = useVisitorsTypeData(formatMessage, {
+  const { pieData, xlsxData } = useVisitorTypes(formatMessage, {
     startAtMoment,
     endAtMoment,
     projectId: projectFilter,

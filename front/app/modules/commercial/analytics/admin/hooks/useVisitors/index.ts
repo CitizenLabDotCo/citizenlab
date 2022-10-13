@@ -108,7 +108,7 @@ const query = ({
   };
 };
 
-export default function useVisitorsData(
+export default function useVisitors(
   formatMessage: InjectedIntlProps['intl']['formatMessage'],
   { projectId, startAtMoment, endAtMoment, resolution }: QueryParameters
 ) {

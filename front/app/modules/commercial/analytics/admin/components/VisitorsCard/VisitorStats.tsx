@@ -15,7 +15,7 @@ import { isNilOrError, NilOrError } from 'utils/helperUtils';
 // typings
 import { IResolution } from 'components/admin/ResolutionControl';
 import { MessageDescriptor } from 'typings';
-import { Stats } from '../../hooks/useVisitorsData/typings';
+import { Stats } from '../../hooks/useVisitors/typings';
 
 interface Props {
   stats: Stats | NilOrError;
