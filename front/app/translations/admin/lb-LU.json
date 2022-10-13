@@ -970,6 +970,7 @@
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.xVolunteers": "{x, plural, one {# Volontaire} other {# Volontairen}}",
   "app.containers.AdminPage.ProjectEdit.addNewContribution": "E Bäitrag bäifügen",
   "app.containers.AdminPage.ProjectEdit.addNewIdea": "Add an idea",
+  "app.containers.AdminPage.ProjectEdit.addNewInput": "Add an input",
   "app.containers.AdminPage.ProjectEdit.addNewIssue": "Kommentéieren",
   "app.containers.AdminPage.ProjectEdit.addNewOption": "Eng Optioun bäifügen",
   "app.containers.AdminPage.ProjectEdit.addNewProject": "E Projet bäifügen",
