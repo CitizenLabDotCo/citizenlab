@@ -44,7 +44,8 @@ const HeaderCell = ({
     {sortDirection && (
       <Icon
         name={sortDirection === 'ascending' ? 'chevron-up' : 'chevron-down'}
-        width="10px"
+        width="16px"
+        height="16px"
         fill={colors.primary}
         ml="8px"
         transform="translate(0,-1)"
@@ -53,6 +54,7 @@ const HeaderCell = ({
 
     {infoTooltip && (
       <IconTooltip
+        display="inline"
         ml="8px"
         iconColor={colors.teal700}
         iconHoverColor="#000"
