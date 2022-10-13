@@ -31,9 +31,12 @@ export const parseTableData = (
 ): TableRow[] | null => {
   if (data.length === 0) return null;
 
-  console.log(data);
-
-  return data.map(() => ({}));
+  return data.map((row) => ({
+    visits: row.count,
+    visitors: row.count_visitor_id,
+    referrerType: row['dimension_referrer_type.name'],
+    referrerName: row.referrer_name ?? '',
+  }));
 };
 
 export const parseExcelData = (
