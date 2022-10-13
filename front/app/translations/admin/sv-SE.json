@@ -970,6 +970,7 @@
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.xVolunteers": "{x, plural, =0 {inga anmälde sig frivilligt} one {# anmälde sig frivilligt} other {# anmälde sig frivilligt}}",
   "app.containers.AdminPage.ProjectEdit.addNewContribution": "Lägg till ett bidrag",
   "app.containers.AdminPage.ProjectEdit.addNewIdea": "Lägg till en idé",
+  "app.containers.AdminPage.ProjectEdit.addNewInput": "Add an input",
   "app.containers.AdminPage.ProjectEdit.addNewIssue": "Lägg till en kommentar",
   "app.containers.AdminPage.ProjectEdit.addNewOption": "Lägg till ett alternativ",
   "app.containers.AdminPage.ProjectEdit.addNewProject": "Lägg till ett projekt",
