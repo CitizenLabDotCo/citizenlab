@@ -25,7 +25,10 @@ export interface QuerySchema {
   sort?: {
     [k: string]: 'ASC' | 'DESC';
   };
-  limit?: number;
+  page?: {
+    size?: number;
+    number?: number;
+  };
 }
 
 export type AggregationsConfig = {

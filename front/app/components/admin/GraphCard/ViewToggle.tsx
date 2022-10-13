@@ -7,7 +7,7 @@ import Tabs, { ITabItem } from 'components/UI/Tabs';
 import styled from 'styled-components';
 
 const TAB_ITEMS: ITabItem[] = [
-  { icon: 'charts', name: 'chart', label: '' },
+  { icon: 'chart-bar', name: 'chart', label: '' },
   { icon: 'list', name: 'table', label: '' },
 ];
 
