@@ -36,4 +36,5 @@ const injectIntl = <P extends WrappedComponentProps>(
   };
 };
 
+/** @deprecated Use useIntl instead. */
 export default injectIntl;
