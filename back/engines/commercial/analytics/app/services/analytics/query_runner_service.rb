@@ -31,14 +31,11 @@ module Analytics
         results = query_order(results)
       end
 
-      limit = @json_query.fetch(:limit, 10)
-      results = results.limit(limit)
-
-      if @json_query.key?(:offset)
-        results = results.offset(@json_query[:offset])
+      if @json_query.key?(:page)
+        results = page(results, @json_query[:page])
+      else
+        results.limit(1000)
       end
-
-      # Paging
 
       query_pluck(results)
     end
@@ -140,6 +137,17 @@ module Analytics
 
         response_row
       end
+    end
+
+    def page(results, page)
+      if page.key?(:size)
+        results = results.limit(page[:size])
+        if page.key?(:number) # Number will only be used if size provided
+          offset = page[:size] * (page[:number] - 1)
+          results = results.offset(offset)
+        end
+      end
+      results
     end
   end
 end
