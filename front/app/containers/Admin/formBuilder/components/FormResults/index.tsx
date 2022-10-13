@@ -31,6 +31,8 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
 import useFormResults from 'hooks/useFormResults';
+import useProject from 'hooks/useProject';
+import usePhase from 'hooks/usePhase';
 
 // Services
 import { downloadSurveyResults } from 'services/formCustomFields';
@@ -54,9 +56,12 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const locale = useLocale();
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
-  let phaseId = urlParams.get('phase_id');
-  if (phaseId === null) {
-    phaseId = '';
+  const phaseId = urlParams.get('phase_id');
+  const project = useProject({ projectId });
+  const phase = usePhase(phaseId);
+
+  if (isNilOrError(project)) {
+    return null;
   }
 
   const formResults = useFormResults({
@@ -73,7 +78,7 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const handleDownloadResults = async () => {
     try {
       setIsDownloading(true);
-      await downloadSurveyResults(projectId, phaseId);
+      await downloadSurveyResults(project, locale, phase);
     } catch (error) {
       // Not handling errors for now
     } finally {

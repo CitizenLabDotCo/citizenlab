@@ -15,6 +15,7 @@ import messages from './messages';
 // hooks
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
+import useLocale from 'hooks/useLocale';
 
 // Utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -31,9 +32,10 @@ const Forms = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const [isDownloading, setIsDownloading] = useState(false);
   const project = useProject({ projectId });
   const phases = usePhases(projectId);
+  const locale = useLocale();
   const { pathname } = useLocation();
 
-  if (isNilOrError(project)) {
+  if (isNilOrError(project) || isNilOrError(locale)) {
     return null;
   }
 
@@ -46,7 +48,7 @@ const Forms = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const handleDownloadResults = async () => {
     try {
       setIsDownloading(true);
-      await downloadSurveyResults(projectId);
+      await downloadSurveyResults(project, locale);
     } catch (error) {
       // Not handling errors for now
     } finally {
