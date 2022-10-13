@@ -494,7 +494,9 @@ const InputsTable = ({
                   )}
                 </Th>
                 {query.category ? (
-                  <Th>{formatMessage(messages.inputsTableAlsoIn)}</Th>
+                  <Th width="65%">
+                    {formatMessage(messages.inputsTableAlsoIn)}
+                  </Th>
                 ) : null}
               </Tr>
             </Thead>

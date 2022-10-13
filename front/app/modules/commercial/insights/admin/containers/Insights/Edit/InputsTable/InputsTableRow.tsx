@@ -13,7 +13,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
 
 // components
 import { Checkbox } from '@citizenlab/cl2-component-library';
