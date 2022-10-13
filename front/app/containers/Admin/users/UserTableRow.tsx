@@ -64,7 +64,7 @@ const MoreOptionsButton = styled.button`
   }
 `;
 
-const CreatedAt = styled.td`
+const CreatedAt = styled(Td)`
   white-space: nowrap;
 `;
 
@@ -197,24 +197,28 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
         key={user.id}
         className={`e2e-user-table-row ${selected ? 'selected' : ''}`}
       >
-        <Td>
+        <Td background={selected ? colors.background : ''}>
           <StyledCheckbox
             checked={selected}
             onChange={this.handleUserSelectedOnChange}
           />
         </Td>
-        <Td>
+        <Td background={selected ? colors.background : ''}>
           <Avatar userId={user.id} size={30} />
         </Td>
-        <Td>
+        <Td background={selected ? colors.background : ''}>
           {user.attributes.first_name} {user.attributes.last_name}
         </Td>
-        <Td>{user.attributes.email}</Td>
-        <CreatedAt>{this.state.createdAt}</CreatedAt>
-        <Td>
+        <Td background={selected ? colors.background : ''}>
+          {user.attributes.email}
+        </Td>
+        <CreatedAt background={selected ? colors.background : ''}>
+          {this.state.createdAt}
+        </CreatedAt>
+        <Td background={selected ? colors.background : ''}>
           <Toggle checked={isAdmin} onChange={this.handleAdminRoleOnChange} />
         </Td>
-        <Td>
+        <Td background={selected ? colors.background : ''}>
           <MoreOptionsWrapper>
             <Tippy
               placement="bottom-end"
