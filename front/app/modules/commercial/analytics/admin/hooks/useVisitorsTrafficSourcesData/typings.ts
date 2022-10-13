@@ -26,7 +26,9 @@ export type ReferrerTypeName =
 
 interface ReferrerRow {
   count: number;
-  first_dimension_referrer_type_name: ReferrerTypeName;
+  count_visitor_id: number;
+  'dimension_referrer_type.name': ReferrerTypeName;
+  referrer_name: string | null;
 }
 
 // Hook return value
@@ -37,4 +39,6 @@ export interface PieRow {
   percentage: number;
 }
 
-export type TableRow = any;
+export interface TableRow {
+  count: number;
+}
