@@ -35,7 +35,7 @@ const ProjectNotFound = memo<Props>(({ className }) => {
       <Button
         linkTo="/projects"
         text={<FormattedMessage {...messages.goBackToList} />}
-        icon="arrow-back"
+        icon="arrow-left"
       />
     </Container>
   );

@@ -39,8 +39,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // style
-
-import rocket from './rocket.png';
+import rocket from 'assets/img/rocket.png';
 
 interface InputProps {
   postType: PostType;

@@ -57,7 +57,7 @@ const NoUsers = memo(({ groupType, noSuchSearchResult }: Props) => {
 
   return (
     <NoUsersPage>
-      <Icon name="blankPage" />
+      <Icon name="sidebar-pages-menu" />
       <FormattedMessage {...messages.emptyGroup} />
       {groupType === 'manual' && (
         <SFormattedMessage>

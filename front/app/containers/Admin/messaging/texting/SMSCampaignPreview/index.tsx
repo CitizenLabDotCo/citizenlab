@@ -273,7 +273,7 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
           onClick={openDeleteModal}
           buttonStyle="delete"
           size="1"
-          icon="trash"
+          icon="delete"
           text={'Delete this draft SMS'}
         />
       </Box>
@@ -346,7 +346,7 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
             <StyledModalButton
               buttonStyle="delete"
               onClick={confirmDeleteTextingCampaign}
-              icon="trash"
+              icon="delete"
               iconPos="right"
             >
               Delete

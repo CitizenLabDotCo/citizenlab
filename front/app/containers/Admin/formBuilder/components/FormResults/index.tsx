@@ -1,8 +1,11 @@
 import React from 'react';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { get } from 'lodash-es';
+import { get, snakeCase } from 'lodash-es';
 import { useParams } from 'react-router-dom';
+
+// Hooks
+import useLocale from 'hooks/useLocale';
 
 // components
 import {
@@ -44,7 +47,7 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const { projectId } = useParams() as {
     projectId: string;
   };
-
+  const locale = useLocale();
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   let phaseId = urlParams.get('phase_id');
@@ -57,7 +60,7 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     phaseId,
   });
 
-  if (isNilOrError(formResults)) {
+  if (isNilOrError(formResults) || isNilOrError(locale)) {
     return null;
   }
 
@@ -101,7 +104,7 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         mt="32px"
       >
         <Box display="flex" gap="16px" alignItems="center">
-          <Icon name="info" width="24px" height="24px" fill="teal700" />
+          <Icon name="info-outline" width="24px" height="24px" fill="teal700" />
           <Text variant="bodyM" color="teal700">
             {formatMessage(messages.informationText)}
           </Text>
@@ -112,7 +115,7 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           ({ question, inputType, answers, totalResponses }, index) => {
             const inputTypeText = get(messages, inputType, '');
             return (
-              <Box key={index}>
+              <Box key={index} data-cy={`e2e-${snakeCase(question[locale])}`}>
                 <Text fontWeight="bold">
                   <T value={question} />
                 </Text>

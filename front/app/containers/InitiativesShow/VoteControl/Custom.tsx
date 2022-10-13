@@ -100,7 +100,7 @@ class Custom extends PureComponent<Props & { theme: any }> {
         </VoteCounter>
         {!userVoted && (
           <StyledButton
-            icon="upvote"
+            icon="vote-up"
             buttonStyle="primary"
             onClick={this.handleOnVote}
           >

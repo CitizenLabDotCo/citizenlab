@@ -74,7 +74,7 @@ class Answered extends PureComponent<Props, State> {
         <StatusWrapper>
           <T value={initiativeStatus.attributes.title_multiloc} />
         </StatusWrapper>
-        <StatusIcon name="envelope-check" />
+        <StatusIcon name="email-check" />
         <StatusExplanation>
           <FormattedMessage
             {...messages.answeredStatusExplanation}

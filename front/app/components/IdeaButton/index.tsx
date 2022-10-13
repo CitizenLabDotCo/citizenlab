@@ -60,9 +60,7 @@ const TooltipContent = styled.div<{ inMap?: boolean }>`
 `;
 
 const TooltipContentIcon = styled(Icon)`
-  flex: 0 0 25px;
-  width: 20px;
-  height: 25px;
+  flex: 0 0 24px;
   margin-right: 1rem;
 `;
 
@@ -265,7 +263,7 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
             className="e2e-disabled-tooltip"
             inMap={inMap}
           >
-            <TooltipContentIcon name="lock-outlined" ariaHidden />
+            <TooltipContentIcon name="lock" ariaHidden />
             <TooltipContentText>
               <FormattedMessage
                 {...disabledMessages[disabledReason]}
@@ -282,7 +280,7 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
             className="e2e-disabled-tooltip"
             inMap={inMap}
           >
-            <TooltipContentIcon name="lock-outlined" ariaHidden />
+            <TooltipContentIcon name="lock" ariaHidden />
             <TooltipContentText>
               <FormattedMessage
                 {...disabledMessages[disabledReason]}
