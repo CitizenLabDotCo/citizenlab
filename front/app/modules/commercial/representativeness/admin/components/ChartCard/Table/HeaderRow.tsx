@@ -5,7 +5,7 @@ import { Thead, Tr, Th } from 'components/admin/Table';
 import { Box } from '@citizenlab/cl2-component-library';
 
 // styling
-import { colors } from '@citizenlab/cl2-component-library';
+import { colors } from 'utils/styleUtils';
 
 // utils
 import { roundPercentage } from 'utils/math';

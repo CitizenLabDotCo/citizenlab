@@ -22,6 +22,9 @@ import Outlet from 'components/Outlet';
 import Checkbox from 'components/UI/Checkbox';
 import FeatureFlag from 'components/FeatureFlag';
 
+// styling
+import { colors } from 'utils/styleUtils';
+
 // utils
 import localize, { InjectedLocalized } from 'utils/localize';
 import { insertConfiguration } from 'utils/moduleUtils';
@@ -42,7 +45,6 @@ import {
   InsertConfigurationOptions,
   Override,
 } from 'typings';
-import { colors } from '@citizenlab/cl2-component-library';
 
 type InputProps = {
   type: ManagerType;
