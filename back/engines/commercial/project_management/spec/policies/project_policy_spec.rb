@@ -31,8 +31,8 @@ describe ProjectPolicy do
     end
   end
 
-  context 'on a private admins project' do
-    let!(:project) { create(:private_admins_project) }
+  context 'on a continuous private admins project' do
+    let!(:project) { create :continuous_project, visible_to: 'admins' }
 
     context 'for a moderator' do
       let(:user) { create(:project_moderator, projects: [project]) }
