@@ -125,7 +125,7 @@ const RenderNode = ({ render }) => {
     if (isHover && isChildOfComplexComponent) {
       parentNodeElement?.setAttribute(
         'style',
-        `border: 1px solid ${colors.adminTextColor} `
+        `border: 1px solid ${colors.primary} `
       );
     } else {
       parentNodeElement?.removeAttribute('style');
@@ -176,9 +176,9 @@ const RenderNode = ({ render }) => {
         hasError
           ? colors.red600
           : solidBorderIsVisible
-          ? colors.adminTextColor
+          ? colors.primary
           : isSelectable
-          ? colors.separation
+          ? colors.divider
           : 'transparent'
       }
       m="4px"
@@ -188,7 +188,7 @@ const RenderNode = ({ render }) => {
         <Box
           id="e2e-node-label"
           p="4px"
-          bgColor={hasError ? colors.red600 : colors.adminTextColor}
+          bgColor={hasError ? colors.red600 : colors.primary}
           color="#fff"
           position="absolute"
           top="-28px"

@@ -1,9 +1,6 @@
 import React from 'react';
-import { keys, pick, isEqual } from 'lodash-es';
-import { CLErrorsJSON } from 'typings';
-import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { useParams } from 'react-router-dom';
 
 import {
   updateCustomFieldForUsers,
@@ -15,12 +12,8 @@ import RegistrationCustomFieldForm, {
   FormValues,
 } from '../RegistrationCustomFieldForm';
 
-import { Formik } from 'formik';
-import { isCLErrorJSON } from 'utils/errorUtils';
-
-const RegistrationCustomFieldSettings = ({
-  params: { userCustomFieldId },
-}: WithRouterProps) => {
+const RegistrationCustomFieldSettings = () => {
+  const { userCustomFieldId } = useParams() as { userCustomFieldId: string };
   const customField = useUserCustomField(userCustomFieldId);
 
   if (isNilOrError(customField)) return null;
@@ -37,57 +30,20 @@ const RegistrationCustomFieldSettings = ({
     );
   };
 
-  const changedValues = (initialValues, newValues) => {
-    const changedKeys = keys(newValues).filter(
-      (key) => !isEqual(initialValues[key], newValues[key])
-    );
-    return pick(newValues, changedKeys);
-  };
-
-  const handleSubmit = (
-    values: FormValues,
-    { setErrors, setSubmitting, setStatus }
-  ) => {
+  const handleSubmit = async (values: FormValues) => {
     if (!customField) return;
-
-    updateCustomFieldForUsers(customField.id, {
-      ...changedValues(initialValues(), values),
-    })
-      .then(() => {
-        clHistory.push('/admin/settings/registration');
-      })
-      .catch((errorResponse) => {
-        if (isCLErrorJSON(errorResponse)) {
-          const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-          setErrors(apiErrors);
-        } else {
-          setStatus('error');
-        }
-        setSubmitting(false);
-      });
-  };
-
-  const renderFn = (props) => {
-    return (
-      customField && (
-        <RegistrationCustomFieldForm
-          {...props}
-          mode="edit"
-          customFieldId={customField.id}
-          builtInField={isBuiltInField(customField)}
-        />
-      )
-    );
+    await updateCustomFieldForUsers(customField.id, values);
   };
 
   return (
-    <Formik
-      initialValues={initialValues()}
+    <RegistrationCustomFieldForm
+      defaultValues={initialValues()}
       onSubmit={handleSubmit}
-      render={renderFn}
-      validate={RegistrationCustomFieldForm['validate']}
+      mode="edit"
+      customFieldId={customField.id}
+      builtInField={isBuiltInField(customField)}
     />
   );
 };
 
-export default withRouter(RegistrationCustomFieldSettings);
+export default RegistrationCustomFieldSettings;

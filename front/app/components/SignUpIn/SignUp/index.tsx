@@ -290,7 +290,7 @@ const SignUp = ({
     : null;
   const activeStepConfiguration = activeStep ? configuration[activeStep] : null;
   const helpText = activeStepConfiguration?.helperText?.(
-    !isNilOrError(tenant) ? tenant.data : undefined
+    !isNilOrError(tenant) ? tenant : undefined
   );
   const stepDescription = activeStepConfiguration?.stepDescriptionMessage
     ? formatMessage(activeStepConfiguration.stepDescriptionMessage)
@@ -320,7 +320,7 @@ const SignUp = ({
           <>
             {helpText && (
               <SignUpHelperText
-                textColor={theme.colorText}
+                textColor={theme.colors.tenantText}
                 fontSize="base"
                 fontWeight={300}
               >

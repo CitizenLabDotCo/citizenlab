@@ -80,14 +80,14 @@ const FormContainer = styled.main`
   margin-left: auto;
   margin-right: auto;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding-bottom: 80px;
   `}
 `;
 
 const Title = styled.h1`
   width: 100%;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.xxxxl}px;
   line-height: 42px;
   font-weight: 500;
@@ -491,6 +491,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
 
               <IdeaForm
                 authorId={authorId}
+                ideaId={ideaId}
                 projectId={projectId}
                 title={title}
                 description={description}

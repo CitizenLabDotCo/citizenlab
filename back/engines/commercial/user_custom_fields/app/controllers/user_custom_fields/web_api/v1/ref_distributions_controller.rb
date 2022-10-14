@@ -3,14 +3,19 @@
 module UserCustomFields
   module WebApi::V1
     class RefDistributionsController < ::ApplicationController
+      # Shortcuts for long namespace
+      RefDistribution = Representativeness::RefDistribution
+      CategoricalDistribution = Representativeness::CategoricalDistribution
+      private_constant :RefDistribution, :CategoricalDistribution
+
       def show
         render json: serialize(reference_distribution)
       end
 
       def create
-        ref_distribution = authorize(Representativeness::RefDistribution.new(create_params))
+        ref_distribution = authorize(RefDistribution.new(create_params))
 
-        Representativeness::RefDistribution.transaction do
+        RefDistribution.transaction do
           remove_reference_distribution_if_any(params[:custom_field_id])
           ref_distribution.save!
         end
@@ -30,9 +35,9 @@ module UserCustomFields
       private
 
       def remove_reference_distribution_if_any(custom_field_id)
-        Representativeness::RefDistribution.where(
-          custom_field_id: custom_field_id
-        ).destroy_all
+        RefDistribution
+          .where(custom_field_id: custom_field_id)
+          .destroy_all
       end
 
       def side_fx
@@ -41,18 +46,34 @@ module UserCustomFields
 
       def reference_distribution
         @reference_distribution ||= authorize(
-          Representativeness::RefDistribution
-            .includes(:options)
-            .find_by!(custom_field_id: params[:custom_field_id])
+          RefDistribution.find_by!(custom_field_id: params[:custom_field_id])
         )
       end
 
       def create_params
-        params.permit(:custom_field_id, distribution: {})
+        params
+          .permit(:custom_field_id, distribution: {})
+          .merge(type: infer_ref_distribution_type)
+      end
+
+      def infer_ref_distribution_type
+        custom_field = CustomField.find(params[:custom_field_id])
+        if custom_field.key == 'birthyear'
+          UserCustomFields::Representativeness::BinnedDistribution.name
+        elsif custom_field.input_type == 'select'
+          'UserCustomFields::Representativeness::CategoricalDistribution'
+        else
+          raise 'Unsupported custom field type.'
+        end
       end
 
       def serialize(ref_distribution)
-        RefDistributionSerializer.new(ref_distribution).serialized_json
+        serializer_class = identify_serializer_class(ref_distribution)
+        serializer_class.new(ref_distribution).serialized_json
+      end
+
+      def identify_serializer_class(ref_distribution)
+        "UserCustomFields::WebApi::V1::#{ref_distribution.class.name.demodulize}Serializer".constantize
       end
     end
   end

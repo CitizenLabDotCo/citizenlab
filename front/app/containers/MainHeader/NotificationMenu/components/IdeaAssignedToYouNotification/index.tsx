@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { MouseEvent, KeyboardEvent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import { IIdeaAssignedToYouNotificationData } from 'services/notifications';
@@ -33,15 +33,16 @@ type InputProps = {
 
 type Props = DataProps & InputProps;
 
-interface State {}
-
-class IdeaAssignedToYouNotification extends React.PureComponent<Props, State> {
-  onClickUserName = (event) => {
+const IdeaAssignedToYouNotification = ({
+  authUser,
+  project,
+  notification,
+}: Props) => {
+  const onClickUserName = (event: MouseEvent | KeyboardEvent) => {
     event.stopPropagation();
   };
 
-  getNotificationMessage = (): JSX.Element => {
-    const { notification } = this.props;
+  const getNotificationMessage = (): JSX.Element => {
     const sharedValues = {
       postTitle: <T value={notification.attributes.post_title_multiloc} />,
     };
@@ -64,7 +65,7 @@ class IdeaAssignedToYouNotification extends React.PureComponent<Props, State> {
             name: (
               <Link
                 to={`/profile/${notification.attributes.initiating_user_slug}`}
-                onClick={this.onClickUserName}
+                onClick={onClickUserName}
               >
                 {notification.attributes.initiating_user_first_name}
               </Link>
@@ -75,9 +76,7 @@ class IdeaAssignedToYouNotification extends React.PureComponent<Props, State> {
     }
   };
 
-  getLinkTo = () => {
-    const { authUser, project } = this.props;
-
+  const getLinkTo = () => {
     if (authUser) {
       if (isAdmin({ data: authUser })) {
         return '/admin/ideas';
@@ -92,26 +91,23 @@ class IdeaAssignedToYouNotification extends React.PureComponent<Props, State> {
     return null;
   };
 
-  render() {
-    const { notification } = this.props;
-    const linkTo = this.getLinkTo();
+  const linkTo = getLinkTo();
 
-    if (linkTo) {
-      return (
-        <NotificationWrapper
-          linkTo={linkTo}
-          timing={notification.attributes.created_at}
-          icon="idea"
-          isRead={!!notification.attributes.read_at}
-        >
-          {this.getNotificationMessage()}
-        </NotificationWrapper>
-      );
-    }
-
-    return null;
+  if (linkTo) {
+    return (
+      <NotificationWrapper
+        linkTo={linkTo}
+        timing={notification.attributes.created_at}
+        icon="idea"
+        isRead={!!notification.attributes.read_at}
+      >
+        {getNotificationMessage()}
+      </NotificationWrapper>
+    );
   }
-}
+
+  return null;
+};
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
@@ -125,7 +121,7 @@ const Data = adopt<DataProps, InputProps>({
   ),
 });
 
-export default (inputProps) => (
+export default (inputProps: InputProps) => (
   <Data {...inputProps}>
     {(dataProps) => (
       <IdeaAssignedToYouNotification {...dataProps} {...inputProps} />

@@ -19,6 +19,8 @@
 #
 module ProjectFolders
   class Folder < ::ApplicationRecord
+    include PgSearch::Model
+
     has_one :admin_publication, as: :publication, dependent: :destroy
     accepts_nested_attributes_for :admin_publication, update_only: true
     has_many :images, -> { order(:ordering) }, dependent: :destroy, inverse_of: 'project_folder', foreign_key: 'project_folder_id' # TODO: remove after renaming project_folder association in Image model
@@ -44,6 +46,10 @@ module ProjectFolders
     before_validation :set_admin_publication
 
     after_destroy :remove_moderators
+
+    pg_search_scope :search_by_all,
+      against: %i[title_multiloc description_multiloc description_preview_multiloc slug],
+      using: { tsearch: { prefix: true } }
 
     def projects
       Project.joins(:admin_publication).where(admin_publication: admin_publication.children)

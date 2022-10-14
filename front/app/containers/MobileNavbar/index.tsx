@@ -20,7 +20,7 @@ const Container = styled.nav`
   left: 0;
   right: 0;
   background: #fff;
-  border-top: solid 1px ${lighten(0.3, colors.label)};
+  border-top: solid 1px ${lighten(0.3, colors.textSecondary)};
   display: flex;
   align-items: stretch;
   z-index: 1006;
@@ -33,7 +33,7 @@ const Container = styled.nav`
     flex-direction: row-reverse;
   `}
 
-  ${media.biggerThanMaxTablet`
+  ${media.desktop`
     display: none;
   `}
 
@@ -71,7 +71,7 @@ export const NavigationItem = styled.li`
   & > * {
     padding: 0 20px;
 
-    ${media.largePhone`
+    ${media.phone`
       padding: 0;
     `}
   }
@@ -152,7 +152,7 @@ const MobileNavigation = ({
         <NavigationItems>
           <MobileNavbarItem
             linkTo="/"
-            iconName="homeFilled"
+            iconName="home"
             navigationItemTitle={homeItem.attributes.title_multiloc}
             onlyActiveOnIndex
             isFullMenuOpened={isFullMenuOpened}
@@ -160,7 +160,7 @@ const MobileNavigation = ({
           />
           <MobileNavbarItem
             linkTo="/projects"
-            iconName="folder"
+            iconName="folder-solid"
             navigationItemTitle={projectsItem.attributes.title_multiloc}
             isFullMenuOpened={isFullMenuOpened}
             onClick={handleOnNavItemClick('projects')}

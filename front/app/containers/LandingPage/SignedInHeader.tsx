@@ -42,7 +42,7 @@ import styled, { withTheme } from 'styled-components';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { media, fontSizes, isRtl } from 'utils/styleUtils';
 import Outlet from 'components/Outlet';
-import { IHomepageSettings } from 'services/homepageSettings';
+import { IHomepageSettingsData } from 'services/homepageSettings';
 
 const contentTimeout = 350;
 const contentEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -55,7 +55,7 @@ const Header = styled.div`
   display: flex;
   flex-direction: column;
 
-  ${media.smallerThanMinTablet`
+  ${media.tablet`
     height: 320px;
   `}
 `;
@@ -86,7 +86,7 @@ const HeaderImage = styled(Image)`
   width: 100%;
   height: auto;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     &.objectFitCoverSupported {
       width: 100%;
       height: 100%;
@@ -102,7 +102,7 @@ const HeaderImage = styled(Image)`
 
 const HeaderImageOverlay = styled.div`
   background: ${({ theme }) =>
-    theme.signedInHeaderOverlayColor || theme.colorMain};
+    theme.signedInHeaderOverlayColor || theme.colors.tenantPrimary};
   opacity: ${({ theme }) => theme.signedInHeaderOverlayOpacity / 100};
   position: absolute;
   top: 0;
@@ -163,12 +163,12 @@ const HeaderContent = styled.div`
     font-weight: 400;
   }
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding-left: 30px;
     padding-right: 30px;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.tablet`
     flex-direction: column;
     align-items: stretch;
     justify-content: center;
@@ -186,7 +186,7 @@ const HeaderContentDefault = styled(HeaderContent)`
     text-align: center;
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.tablet`
     align-items: center;
   `}
 `;
@@ -200,7 +200,7 @@ export const Left = styled.div`
     flex-direction: row-reverse;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.tablet`
     margin-right: 0;
   `}
 `;
@@ -214,7 +214,7 @@ export const Icons = styled.div`
     margin-left: 30px;
   `}
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: none;
   `}
 `;
@@ -223,6 +223,7 @@ const CompleteProfileIcon = styled(Icon)`
   width: 50px;
   height: 50px;
   margin-left: -3px;
+  opacity: 0.5;
 `;
 
 export const Text = styled.div`
@@ -235,7 +236,7 @@ export const Right = styled.div`
   flex-shrink: 0;
   display: flex;
 
-  ${media.smallerThanMinTablet`
+  ${media.tablet`
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
@@ -245,7 +246,7 @@ export const Right = styled.div`
   ${isRtl`
     flex-direction: row-reverse;
 
-    ${media.smallerThanMinTablet`
+    ${media.tablet`
         align-items: flex-end;
     `}
   `}
@@ -254,7 +255,7 @@ export const Right = styled.div`
 export const SkipButton = styled(Button)`
   margin-right: 10px;
 
-  ${media.smallerThanMinTablet`
+  ${media.tablet`
     order: 2;
     margin-right: 0px;
   `}
@@ -266,7 +267,7 @@ export const SkipButton = styled(Button)`
 `;
 
 export const AcceptButton = styled(Button)`
-  ${media.smallerThanMinTablet`
+  ${media.tablet`
     order: 1;
     margin-bottom: 10px;
   `}
@@ -285,7 +286,7 @@ export const StyledAvatar = styled(Avatar)`
 
 export interface InputProps {
   className?: string;
-  homepageSettings: Error | IHomepageSettings | null;
+  homepageSettings: Error | IHomepageSettingsData | null;
 }
 
 interface DataProps {
@@ -333,11 +334,11 @@ class SignedInHeader extends PureComponent<Props, State> {
       !isNilOrError(onboardingCampaigns) &&
       !isNilOrError(homepageSettings)
     ) {
-      const tenantHeaderImage = homepageSettings.data.attributes.header_bg
-        ? homepageSettings.data.attributes.header_bg.large
+      const tenantHeaderImage = homepageSettings.attributes.header_bg
+        ? homepageSettings.attributes.header_bg.large
         : null;
       const defaultMessage =
-        homepageSettings.data.attributes.banner_signed_in_header_multiloc;
+        homepageSettings.attributes.banner_signed_in_header_multiloc;
 
       const objectFitCoverSupported =
         window['CSS'] && CSS.supports('object-fit: cover');
@@ -401,7 +402,7 @@ class SignedInHeader extends PureComponent<Props, State> {
                     padding={0}
                     borderThickness={0}
                   />
-                  <CompleteProfileIcon name="completeProfile" ariaHidden />
+                  <CompleteProfileIcon name="edit" fill="#fff" ariaHidden />
                 </Icons>
                 <Text>
                   <FormattedMessage
@@ -426,8 +427,8 @@ class SignedInHeader extends PureComponent<Props, State> {
                   text={<FormattedMessage {...messages.completeProfile} />}
                   buttonStyle="primary-inverse"
                   linkTo="/profile/edit"
-                  textColor={theme.colorMain}
-                  textHoverColor={theme.colorMain}
+                  textColor={theme.colors.tenantPrimary}
+                  textHoverColor={theme.colors.tenantPrimary}
                   fontWeight="500"
                   className="e2e-signed-in-header-accept-btn"
                 />
@@ -484,8 +485,8 @@ class SignedInHeader extends PureComponent<Props, State> {
                   text={<T value={onboardingCampaigns.cta_button_multiloc} />}
                   linkTo={onboardingCampaigns.cta_button_link}
                   buttonStyle="primary-inverse"
-                  textColor={theme.colorMain}
-                  textHoverColor={theme.colorMain}
+                  textColor={theme.colors.tenantPrimary}
+                  textHoverColor={theme.colors.tenantPrimary}
                   fontWeight="500"
                 />
               </Right>

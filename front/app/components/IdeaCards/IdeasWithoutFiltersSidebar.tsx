@@ -58,27 +58,22 @@ const FiltersArea = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 15px;
-
   ${isRtl`
     flex-direction: row-reverse;
   `}
-
   &.mapView {
     justify-content: flex-end;
     margin-bottom: 15px;
-
-    ${media.smallerThanMinTablet`
+    ${media.tablet`
       margin-bottom: 0px;
     `}
   }
-
-  ${media.biggerThanMinTablet`
+  ${media.desktop`
     &.mapView {
       margin-top: -65px;
     }
   `}
-
-  ${media.smallerThanMinTablet`
+  ${media.tablet`
     flex-direction: column;
     align-items: stretch;
     margin-bottom: 30px;
@@ -92,12 +87,10 @@ const FilterArea = styled.div`
 
 const LeftFilterArea = styled(FilterArea)`
   flex: 1 1 auto;
-
   &.hidden {
     display: none;
   }
-
-  ${media.smallerThanMinTablet`
+  ${media.tablet`
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -107,7 +100,6 @@ const LeftFilterArea = styled(FilterArea)`
 const RightFilterArea = styled(FilterArea)`
   display: flex;
   align-items: center;
-
   &.hidden {
     display: none;
   }
@@ -116,7 +108,6 @@ const RightFilterArea = styled(FilterArea)`
 const DropdownFilters = styled.div`
   display: flex;
   align-items: center;
-
   &.hidden {
     display: none;
   }
@@ -124,8 +115,7 @@ const DropdownFilters = styled.div`
 
 const DesktopViewButtons = styled(ViewButtons)`
   margin-left: 40px;
-
-  ${media.smallerThanMinTablet`
+  ${media.tablet`
     display: none;
   `}
 `;
@@ -137,13 +127,11 @@ const MobileViewButtons = styled(ViewButtons)`
 const StyledSearchInput = styled(SearchInput)`
   width: 300px;
   margin-right: 30px;
-
   ${isRtl`
     margin-right: 0;
     margin-left: auto;
   `}
-
-  ${media.smallerThanMinTablet`
+  ${media.tablet`
     width: 100%;
     margin-right: 0px;
     margin-left: 0px;
@@ -253,16 +241,16 @@ const IdeasWithoutFiltersSidebar = ({
     !locationEnabled || (locationEnabled && selectedView === 'card');
   const showMapView = locationEnabled && selectedView === 'map';
   const smallerThanBigTablet = !!(
-    windowSize && windowSize <= viewportWidths.largeTablet
+    windowSize && windowSize <= viewportWidths.tablet
   );
   const smallerThanSmallTablet = !!(
-    windowSize && windowSize <= viewportWidths.smallTablet
+    windowSize && windowSize <= viewportWidths.tablet
   );
   const biggerThanSmallTablet = !!(
-    windowSize && windowSize >= viewportWidths.smallTablet
+    windowSize && windowSize >= viewportWidths.tablet
   );
   const biggerThanLargeTablet = !!(
-    windowSize && windowSize >= viewportWidths.largeTablet
+    windowSize && windowSize >= viewportWidths.tablet
   );
   const smallerThan1100px = !!(windowSize && windowSize <= 1100);
   const smallerThanPhone = !!(windowSize && windowSize <= viewportWidths.phone);
@@ -371,9 +359,18 @@ const Data = adopt<DataProps, InputProps>({
   project: ({ render, projectId }) => (
     <GetProject projectId={projectId}>{render}</GetProject>
   ),
-  ideaCustomFieldsSchemas: ({ render, projectId }) => {
+  ideaCustomFieldsSchemas: ({
+    render,
+    projectId,
+    ideas: {
+      queryParameters: { phase: phaseId },
+    },
+  }) => {
     return (
-      <GetIdeaCustomFieldsSchemas projectId={projectId || null}>
+      <GetIdeaCustomFieldsSchemas
+        projectId={projectId || null}
+        phaseId={phaseId}
+      >
         {render}
       </GetIdeaCustomFieldsSchemas>
     );

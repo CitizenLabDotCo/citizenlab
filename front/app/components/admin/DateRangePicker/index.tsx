@@ -26,15 +26,15 @@ interface Props
 const StylingWrapper = styled.div`
   .DateRangePickerInput {
     border-radius: ${(props: any) => props.theme.borderRadius};
-    border: solid 1px ${colors.border};
+    border: solid 1px ${colors.borderDark};
 
     &:hover {
-      border-color: ${colors.hoveredBorder};
+      border-color: ${colors.black};
     }
 
     .DateInput,
     .DateInput_input {
-      color: ${colors.text};
+      color: ${colors.textPrimary};
       font-size: ${fontSizes.base}px;
       line-height: normal;
       font-weight: 400;

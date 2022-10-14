@@ -20,10 +20,10 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // typings
 import { Multiloc, MessageDescriptor } from 'typings';
-import { Status } from './utils';
+import { Status } from '../../utils/form';
 
 const DefaultStatusLabel = styled(StatusLabel)`
-  color: ${colors.clGreyOnGreyBackground};
+  color: ${colors.coolGrey600};
   font-weight: 700;
   margin-left: 8px;
 `;
@@ -37,6 +37,7 @@ interface Props {
   titleMultiloc: Multiloc;
   isDefault: boolean;
   isComingSoon: boolean;
+  isBirthyear: boolean;
   status: Status | null;
   className?: string;
 }
@@ -47,18 +48,19 @@ const STATUS_MESSAGES: Record<Status, MessageDescriptor> = {
   incomplete: messages.incomplete,
 };
 
-type StatusColor = 'clGreenSuccess' | 'label';
+type StatusColor = 'success' | 'textSecondary';
 
 const STATUS_COLORS: Record<Status, StatusColor> = {
-  saved: 'clGreenSuccess',
-  complete: 'clGreenSuccess',
-  incomplete: 'label',
+  saved: 'success',
+  complete: 'success',
+  incomplete: 'textSecondary',
 };
 
 const FieldTitle = ({
   titleMultiloc,
   isDefault,
   isComingSoon,
+  isBirthyear,
   status,
   className,
 }: Props) => {
@@ -75,7 +77,11 @@ const FieldTitle = ({
     >
       <Box display="flex" alignItems="center">
         <Title variant="h4" as="h3" mt="0px" mb="0px" ml="12px">
-          {localize(titleMultiloc)}
+          {isBirthyear ? (
+            <FormattedMessage {...messages.birthyearCustomTitle} />
+          ) : (
+            <>{localize(titleMultiloc)}</>
+          )}
         </Title>
         {isDefault && !isComingSoon && (
           <DefaultStatusLabel
@@ -88,7 +94,7 @@ const FieldTitle = ({
           <ComingSoonStatusLabel
             text={<FormattedMessage {...messages.comingSoon} />}
             variant="default"
-            backgroundColor={colors.adminSecondaryTextColor}
+            backgroundColor={colors.textSecondary}
           />
         )}
       </Box>

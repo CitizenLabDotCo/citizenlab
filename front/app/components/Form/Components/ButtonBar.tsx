@@ -25,7 +25,14 @@ export default memo(
     onSubmit,
     apiErrors,
   }: Props) => (
-    <Box width="100%" background="#fff" border-top="solid 1px #ddd">
+    <Box
+      position="absolute"
+      bottom="0px"
+      width="100%"
+      height="auto"
+      background="#fff"
+      border-top="solid 1px #ddd"
+    >
       <Box maxWidth="740px" display="flex" padding="10px 30px" margin="auto">
         <Button
           className="e2e-submit-idea-form"

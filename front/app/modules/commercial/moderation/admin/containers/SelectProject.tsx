@@ -45,7 +45,7 @@ const SelectProject = memo(
       return (
         <FilterSelector
           title={<FormattedMessage {...messages.project} />}
-          name="project"
+          name="building"
           selected={selectedProjectIds}
           values={values}
           onChange={handleOnChange}

@@ -29,6 +29,7 @@ import customIdeaStatusesConfiguration from './commercial/custom_idea_statuses';
 import bulkIdeaImportConfiguration from './commercial/bulk_idea_import';
 import verificationConfiguration from './commercial/verification';
 import customTopicsConfiguration from './commercial/custom_topics';
+import impactTrackingConfiguration from './commercial/impact_tracking';
 
 import idAuth0Configuration from './commercial/id_auth0';
 import idBosaFasConfiguration from './commercial/id_bosa_fas';
@@ -43,6 +44,7 @@ import widgetsConfiguration from './commercial/widgets';
 import eventsWidgetConfiguration from './commercial/events_widget';
 
 import insightsConfiguration from './commercial/insights';
+import analyticsConfiguration from './commercial/analytics';
 import customizableNavbarConfiguration from './commercial/customizable_navbar';
 
 import userConfirmationConfiguration from './free/user_confirmation';
@@ -207,6 +209,10 @@ export default loadModules([
     isEnabled: CL_CONFIG['modules']['commercial/insights'],
   },
   {
+    configuration: analyticsConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/analytics'],
+  },
+  {
     configuration: customizableNavbarConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/customizable_navbar'],
   },
@@ -221,5 +227,9 @@ export default loadModules([
   {
     configuration: representativenessConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/representativeness'],
+  },
+  {
+    configuration: impactTrackingConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/impact_tracking'],
   },
 ]);

@@ -15,7 +15,7 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
 // typings
-import { RepresentativenessData } from '../../../hooks/useReferenceData';
+import { RepresentativenessData } from '../../../hooks/createRefDataSubscription';
 import { Props as FieldInfoProps } from '../FieldInfo';
 
 interface Props extends FieldInfoProps {
@@ -67,7 +67,7 @@ const TableWrapper = ({
             {formatMessage(messages.openTableModalButtonText, {
               numberOfHiddenItems,
             })}
-            <Icon name="openModal" width="15px" height="15px" ml="12px" />
+            <Icon name="open-in-new" width="15px" height="15px" ml="12px" />
           </Box>
         </Button>
       )}

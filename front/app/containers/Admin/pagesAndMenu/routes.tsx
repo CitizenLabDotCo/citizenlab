@@ -1,48 +1,70 @@
 import React, { lazy } from 'react';
 import PageLoading from 'components/UI/PageLoading';
 import moduleConfiguration from 'modules';
-const CustomNavbarContainer = lazy(
-  () => import('containers/Admin/pagesAndMenu')
+import { Navigate } from 'react-router-dom';
+const CustomPagesIndex = lazy(() => import('./containers/CustomPages'));
+const PagesAndMenuIndex = lazy(() => import('containers/Admin/pagesAndMenu'));
+const NavigationSettings = lazy(
+  () => import('./containers/NavigationSettings')
 );
-const CustomNavbarSettingsComponent = lazy(
-  () => import('./NavigationSettings')
+
+// homepage
+const EditHomepage = lazy(() => import('./containers/EditHomepage'));
+import EditPageForm from './containers/EditPageForm';
+const HomepageBottomInfoForm = lazy(
+  () => import('./EditHomepage/BottomInfoSection')
 );
-const BottomInfoForm = lazy(() => import('./containers/BottomInfoSection'));
-const TopInfoSection = lazy(() => import('./containers/TopInfoSection'));
-const HeroBannerForm = lazy(() => import('./containers/HeroBanner'));
-const EditHomepage = lazy(() => import('./EditHomepage'));
+const HomepageTopInfoSection = lazy(
+  () => import('./EditHomepage/TopInfoSection')
+);
+const CustomPageTopInfoSection = lazy(
+  () => import('./containers/CustomPages/Edit/Content/TopInfoSection')
+);
+const CustomPageBottomInfoSection = lazy(
+  () => import('./containers/CustomPages/Edit/Content/BottomInfoSection')
+);
+const HomepageHeroBannerForm = lazy(() => import('./EditHomepage/HeroBanner'));
+
+// custom pages
+const NewCustomPageIndex = lazy(() => import('./containers/CustomPages/New'));
+const EditCustomPageIndex = lazy(() => import('./containers/CustomPages/Edit'));
+const EditCustomPageSettings = lazy(
+  () => import('./containers/CustomPages/Edit/Settings')
+);
+const EditCustomPageContent = lazy(
+  () => import('./containers/CustomPages/Edit/Content')
+);
+const AttachmentsForm = lazy(() => import('./containers/Attachments'));
+const CustomPageHeroBannerForm = lazy(
+  () => import('./containers/CustomPages/Edit/HeroBanner')
+);
 
 // path utils
-const ADMIN_PAGE_PATH = 'pages-menu';
-const PATH_PREFIX = `admin/${ADMIN_PAGE_PATH}`;
+const PAGE_PATH = 'pages-menu';
+const ADMIN_PATH_PREFIX = 'admin';
+export const PAGES_MENU_PATH = `/${ADMIN_PATH_PREFIX}/${PAGE_PATH}`;
 const HOMEPAGE_PATH = 'homepage';
-
-function adminPagesMenuHomepagePath() {
-  // could use type checking, I initially edited it to /pages/edit...,
-  // which resulted in a 404
-  return `/${PATH_PREFIX}/${HOMEPAGE_PATH}`;
-}
-
-export { adminPagesMenuHomepagePath };
-
-// routes
-export const PAGES_MENU_PATH = '/admin/pages-menu';
+const CUSTOM_PAGES_PATH = 'custom';
+export const PAGES_MENU_CUSTOM_PATH = `${PAGES_MENU_PATH}/${CUSTOM_PAGES_PATH}`;
 
 export default () => ({
-  path: ADMIN_PAGE_PATH,
+  path: PAGE_PATH, // pages-menu
   children: [
     {
       path: '',
       element: (
         <PageLoading>
-          <CustomNavbarContainer />
+          <PagesAndMenuIndex />
         </PageLoading>
       ),
       children: [
         {
           index: true,
-          // the main page with outlets and a visual container
-          element: <CustomNavbarSettingsComponent />,
+          element: (
+            <PageLoading>
+              <NavigationSettings />
+            </PageLoading>
+          ),
         },
       ],
     },
@@ -50,7 +72,7 @@ export default () => ({
       path: 'bottom-info-section',
       element: (
         <PageLoading>
-          <BottomInfoForm />
+          <HomepageBottomInfoForm />
         </PageLoading>
       ),
     },
@@ -58,7 +80,7 @@ export default () => ({
       path: 'top-info-section',
       element: (
         <PageLoading>
-          <TopInfoSection />
+          <HomepageTopInfoSection />
         </PageLoading>
       ),
     },
@@ -66,13 +88,90 @@ export default () => ({
       path: 'homepage-banner',
       element: (
         <PageLoading>
-          <HeroBannerForm />
+          <HomepageHeroBannerForm />
         </PageLoading>
       ),
     },
     {
       path: HOMEPAGE_PATH,
-      element: <EditHomepage />,
+      element: (
+        <PageLoading>
+          <EditHomepage />
+        </PageLoading>
+      ),
+    },
+    {
+      path: CUSTOM_PAGES_PATH,
+      element: <CustomPagesIndex />,
+      children: [
+        {
+          path: 'new',
+          element: <NewCustomPageIndex />,
+        },
+        {
+          path: ':customPageId',
+          element: <EditCustomPageIndex />,
+          children: [
+            { path: '', element: <Navigate to="settings" /> },
+            {
+              path: 'settings',
+              element: (
+                <PageLoading>
+                  <EditCustomPageSettings />
+                </PageLoading>
+              ),
+            },
+            {
+              path: 'content',
+              element: (
+                <PageLoading>
+                  <EditCustomPageContent />
+                </PageLoading>
+              ),
+            },
+          ],
+        },
+        {
+          path: ':customPageId/banner',
+          element: (
+            <PageLoading>
+              <CustomPageHeroBannerForm />
+            </PageLoading>
+          ),
+        },
+        {
+          path: ':customPageId/top-info-section',
+          element: (
+            <PageLoading>
+              <CustomPageTopInfoSection />
+            </PageLoading>
+          ),
+        },
+        // {
+        //   path: ':customPageId/projects',
+        //   element: <></>,
+        // },
+        {
+          path: ':customPageId/bottom-info-section',
+          element: (
+            <PageLoading>
+              <CustomPageBottomInfoSection />
+            </PageLoading>
+          ),
+        },
+        {
+          path: ':customPageId/attachments',
+          element: (
+            <PageLoading>
+              <AttachmentsForm />
+            </PageLoading>
+          ),
+        },
+      ],
+    },
+    {
+      path: 'pages/edit/:pageId',
+      element: <EditPageForm />,
     },
     ...moduleConfiguration.routes['admin.pages-menu'],
   ],
