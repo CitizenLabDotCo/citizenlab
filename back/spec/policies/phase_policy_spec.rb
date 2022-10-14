@@ -27,7 +27,7 @@ describe PhasePolicy do
       end
     end
 
-    context 'for a mortal user' do
+    context 'for residents' do
       let(:user) { create(:user) }
 
       it { is_expected.to     permit(:show)    }

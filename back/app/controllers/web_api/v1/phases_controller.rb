@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-class WebApi::V1::PhasesController < WebApi::V1::ParticipationContextsController
-  before_action :set_context, only: %i[show update destroy]
+class WebApi::V1::PhasesController < ::ApplicationController
+  before_action :set_context, only: %i[show update destroy survey_results submission_count delete_inputs]
   skip_before_action :authenticate_user
 
   def index
@@ -51,6 +51,25 @@ class WebApi::V1::PhasesController < WebApi::V1::ParticipationContextsController
     else
       head :internal_server_error
     end
+  end
+
+  def survey_results
+    results = SurveyResultsGeneratorService.new(@context).generate_results
+    render json: results
+  end
+
+  def submission_count
+    count = SurveyResultsGeneratorService.new(@context).generate_submission_count
+    render json: count
+  end
+
+  def delete_inputs
+    sidefx.before_delete_inputs @context, current_user
+    ActiveRecord::Base.transaction do
+      @context.ideas.each(&:destroy!)
+    end
+    sidefx.before_delete_inputs @context, current_user
+    head :ok
   end
 
   private
