@@ -2,7 +2,7 @@ import React, { lazy } from 'react';
 import moduleConfiguration from 'modules';
 import PageLoading from 'components/UI/PageLoading';
 const DashboardWrapper = lazy(() => import('.'));
-const Summary = lazy(() => import('./summary'));
+const Overview = lazy(() => import('./overview'));
 const Users = lazy(() => import('./users'));
 
 const createAdminDashboardRoutes = () => {
@@ -18,7 +18,7 @@ const createAdminDashboardRoutes = () => {
         index: true,
         element: (
           <PageLoading>
-            <Summary />
+            <Overview />
           </PageLoading>
         ),
       },

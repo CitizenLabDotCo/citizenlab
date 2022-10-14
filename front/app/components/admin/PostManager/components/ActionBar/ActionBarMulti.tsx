@@ -55,7 +55,7 @@ const ActionBarMulti = ({
   if (type === 'AllIdeas' || type === 'ProjectIdeas') {
     return (
       <Button negative={true} basic={true} onClick={handleClickDeleteIdeas}>
-        <Icon name="trash" />
+        <Icon name="delete" />
         <FormattedMessage
           {...messages.deleteAllSelectedInputs}
           values={{ count: selection.size }}
@@ -69,7 +69,7 @@ const ActionBarMulti = ({
         basic={true}
         onClick={handleClickDeleteInitiatives}
       >
-        <Icon name="trash" />
+        <Icon name="delete" />
         <FormattedMessage
           {...messages.deleteAllSelectedInitiatives}
           values={{ count: selection.size }}

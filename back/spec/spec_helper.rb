@@ -206,9 +206,16 @@ RSpec.configure do |config|
   config.filter_run_excluding template_test: true
 end
 
+require 'vcr'
+VCR.configure do |config|
+  config.hook_into :webmock
+  config.allow_http_connections_when_no_cassette = true
+end
+
 RspecApiDocumentation.configure do |config|
   config.format = ENV['DOC_FORMAT'] || :html
   config.docs_dir = Pathname.new(ENV['DOCS_DIR']) if ENV['DOCS_DIR']
   config.api_name = ENV['API_NAME'] || 'API documentation'
   config.request_body_formatter = :json
+  config.html_embedded_css_file = 'doc/style.css'
 end

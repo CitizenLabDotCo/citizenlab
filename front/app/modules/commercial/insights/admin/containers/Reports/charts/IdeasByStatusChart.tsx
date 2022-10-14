@@ -8,7 +8,11 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
 // styling
-import { withTheme } from 'styled-components';
+import {
+  legacyColors,
+  sizes,
+  DEFAULT_BAR_CHART_MARGIN,
+} from 'components/admin/Graphs/styling';
 
 // components
 import ReportExportMenu from 'components/admin/ReportExportMenu';
@@ -19,8 +23,6 @@ import {
   GraphCardInner,
 } from 'components/admin/GraphWrappers';
 import BarChart from 'components/admin/Graphs/BarChart';
-import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/constants';
-import { Tooltip, LabelList } from 'recharts';
 
 // resources
 import GetSerieFromStream from 'resources/GetSerieFromStream';
@@ -58,7 +60,6 @@ export class IdeasByStatusChart extends React.PureComponent<
   }
 
   render() {
-    const { chartFill, barSize } = this.props['theme'];
     const {
       startAt,
       endAt,
@@ -75,7 +76,9 @@ export class IdeasByStatusChart extends React.PureComponent<
       serie.length <= 0;
 
     const unitName = formatMessage(messages.inputs);
-    const sortedByValue = orderBy(serie, ['value'], ['desc']);
+    const sortedByValue = noData
+      ? null
+      : (orderBy(serie, ['value'], ['desc']) as IGraphFormat);
 
     return (
       <GraphCard className={className}>
@@ -98,24 +101,27 @@ export class IdeasByStatusChart extends React.PureComponent<
           </GraphCardHeader>
           <BarChart
             height={
-              !noData && sortedByValue.length > 1
+              !noData && sortedByValue !== null && sortedByValue.length > 1
                 ? sortedByValue.length * 50
                 : 100
             }
             data={sortedByValue}
+            mapping={{
+              category: 'name',
+              length: 'value',
+              fill: ({ row: { color } }) => color ?? legacyColors.chartFill,
+              opacity: () => 0.8,
+            }}
             layout="horizontal"
             innerRef={this.currentChart}
             margin={DEFAULT_BAR_CHART_MARGIN}
             bars={{
               name: unitName,
-              fill: chartFill,
-              size: barSize,
-              opacity: 0.8,
+              size: sizes.bar,
             }}
-            mapping={{ fill: 'color' }}
             yaxis={{ width: 150, tickLine: false }}
-            renderLabels={(props) => <LabelList {...props} />}
-            renderTooltip={(props) => <Tooltip {...props} />}
+            labels
+            tooltip
           />
         </GraphCardInner>
       </GraphCard>
@@ -123,9 +129,7 @@ export class IdeasByStatusChart extends React.PureComponent<
   }
 }
 
-const IdeasByStatusChartWithHoCs = injectIntl<Props>(
-  withTheme(IdeasByStatusChart as any) as any
-);
+const IdeasByStatusChartWithHoCs = injectIntl<Props>(IdeasByStatusChart);
 
 const WrappedIdeasByStatusChart = (
   inputProps: InputProps & InjectedLocalized

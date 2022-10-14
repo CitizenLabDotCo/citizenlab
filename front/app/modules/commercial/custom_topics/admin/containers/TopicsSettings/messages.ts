@@ -23,6 +23,14 @@ export default defineMessages({
     defaultMessage:
       'The name you choose for each topic will be visible for citizens during signup and when filtering projects.',
   },
+  fieldTopicTitleError: {
+    id: 'app.containers.AdminPage.SettingsPage.fieldTopicTitleError',
+    defaultMessage: 'Provide a tag name for all languages',
+  },
+  fieldTopicSave: {
+    id: 'app.containers.AdminPage.SettingsPage.fieldTopicSave',
+    defaultMessage: 'Save tag',
+  },
   editTopicFormTitle: {
     id: 'app.containers.AdminPage.SettingsPage.editTopicFormTitle',
     defaultMessage: 'Edit topic',

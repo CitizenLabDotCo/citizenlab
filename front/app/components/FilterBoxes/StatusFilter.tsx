@@ -36,7 +36,7 @@ const Container = styled.div`
 `;
 
 const Count = styled.span`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   transition: all 80ms ease-out;
@@ -49,8 +49,6 @@ const Count = styled.span`
 `;
 
 const CloseIcon = styled(Icon)`
-  width: 12px;
-  height: 12px;
   fill: #fff;
   margin-left: auto;
 
@@ -63,7 +61,7 @@ const CloseIcon = styled(Icon)`
 const StatusesContainer = styled.div``;
 
 const Status = styled.button`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: normal;
@@ -93,10 +91,10 @@ const Status = styled.button`
 
   &.selected {
     color: #fff;
-    background: ${({ theme }) => theme.colorSecondary};
+    background: ${({ theme }) => theme.colors.tenantSecondary};
 
     &:hover {
-      background: ${({ theme }) => darken(0.15, theme.colorSecondary)};
+      background: ${({ theme }) => darken(0.15, theme.colors.tenantSecondary)};
     }
 
     ${Count} {

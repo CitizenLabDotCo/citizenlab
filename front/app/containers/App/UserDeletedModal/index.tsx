@@ -23,7 +23,7 @@ const Container = styled.div`
 const Title = styled.h1`
   flex-shrink: 0;
   width: 100%;
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.xxl}px;
   line-height: 40px;
   font-weight: 500;
@@ -33,7 +33,7 @@ const Title = styled.h1`
   margin-bottom: 10px;
   padding: 0;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     max-width: auto;
     line-height: 36px;
   `}
@@ -43,7 +43,7 @@ const Subtitle = styled.h3`
   flex-shrink: 0;
   width: 100%;
   max-width: 500px;
-  color: ${colors.text};
+  color: ${colors.textPrimary};
   font-size: ${fontSizes.base}px;
   line-height: 25px;
   font-weight: 300;
@@ -53,14 +53,14 @@ const Subtitle = styled.h3`
   margin-bottom: 35px;
   padding: 0;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     font-size: ${fontSizes.base}px;
     line-height: 21px;
     margin-bottom: 20px;
   `}
   a {
     text-decoration: underline;
-    color: ${colors.text};
+    color: ${colors.textPrimary};
   }
 `;
 

@@ -46,6 +46,7 @@ module BulkImportIdeas
           'Phase' => 1,
           'Image URL' => 'https://res.cloudinary.com/citizenlabco/image/upload/v1548847594/image_v8imrf.png',
           'Date (dd-mm-yyyy)' => '18-07-2022',
+          'Topics' => 'Mobility; Health and welfare',
           'Latitude' => 50.5035,
           'Longitude' => 6.0944,
           'Location Description' => 'Panorama sur les Hautes Fagnes / Hohes Venn'
@@ -154,6 +155,11 @@ module BulkImportIdeas
 
     def add_published_at(idea_row, idea_attributes)
       return if idea_row[:published_at].blank?
+
+      if idea_row[:published_at].acts_like? :date
+        idea_attributes[:published_at] = idea_row[:published_at]
+        return
+      end
 
       published_at = nil
       invalid_date_error = Error.new(

@@ -161,7 +161,6 @@ exports.shortenedAppLocalePairs = {
   'sv-SE': 'Svenska',
   'tr-TR': 'Türkçe',
 };
-
 // https://github.com/moment/moment/tree/develop/locale lists the supported locales by moment.js
 exports.appLocalesMomentPairs = {
   'ar-MA': 'ar-ma',

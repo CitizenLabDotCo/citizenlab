@@ -39,9 +39,7 @@ const CategoryCheckboxContainer = styled.div`
 const StyledCheckboxWithPartialCheck = styled(CheckboxWithPartialCheck)``;
 
 const ArrowIcon = styled(Icon)`
-  flex: 0 0 12px;
-  width: 12px;
-  height: 12px;
+  flex: 0 0 24px;
   transform: rotate(90deg);
   transition: all 0.2s linear;
   margin-left: 5px;
@@ -111,10 +109,10 @@ const CheckboxContainer = styled.div`
 const ConsentList = styled.div`
   padding-top: 14px;
   padding-bottom: 14px;
-  border-bottom: 1px solid ${colors.separation};
+  border-bottom: 1px solid ${colors.divider};
 
   &.first {
-    border-top: 1px solid ${colors.separation};
+    border-top: 1px solid ${colors.divider};
   }
 
   &.last {
@@ -343,7 +341,7 @@ export default class ConsentForm extends PureComponent<Props, State> {
                         <FormattedMessage {...messages.expand} />
                       )}
                       <ArrowIcon
-                        name="dropdown"
+                        name="chevron-down"
                         className={isCategoryOpen[category] ? 'open' : ''}
                         ariaHidden
                       />

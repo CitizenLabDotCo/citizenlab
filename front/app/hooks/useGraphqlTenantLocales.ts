@@ -13,7 +13,7 @@ export default function useGraphqlTenantLocales() {
   useEffect(() => {
     if (isNilOrError(tenant)) return;
 
-    const graphqlLocales = tenant.data.attributes.settings.core.locales.map(
+    const graphqlLocales = tenant.attributes.settings.core.locales.map(
       (locale) => convertToGraphqlLocale(locale)
     );
 

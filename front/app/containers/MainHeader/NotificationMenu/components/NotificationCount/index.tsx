@@ -18,16 +18,14 @@ const Container = styled.div`
   position: relative;
 `;
 
-const NotificationIconButton = styled(IconButton)``;
-
 const NewNotificationsIndicator = styled.div`
   color: #fff;
   font-size: ${fontSizes.xs}px;
   line-height: ${fontSizes.xs}px;
   background: ${({ theme }) =>
     theme.invertedNavbarColors && theme.navbarTextColor
-      ? theme.colorText
-      : colors.red500};
+      ? theme.colors.tenantText
+      : colors.error};
   padding: 4px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   border: solid 1px
@@ -61,21 +59,19 @@ const NotificationCount = ({
 
   return (
     <Container>
-      <NotificationIconButton
+      <IconButton
         onClick={onToggleDropdown}
         iconName="notification"
         a11y_buttonActionMessage={formatMessage(
           messages.a11y_notificationsLabel,
           { count }
         )}
-        iconColor={theme.navbarTextColor || colors.label}
+        iconColor={theme.navbarTextColor || colors.textSecondary}
         iconColorOnHover={
           theme.navbarTextColor
             ? darken(0.2, theme.navbarTextColor)
-            : colors.text
+            : colors.textPrimary
         }
-        iconWidth={'20px'}
-        iconHeight={'24px'}
         ariaExpanded={dropdownOpened}
         ariaControls="notifications-dropdown"
       />

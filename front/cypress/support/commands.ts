@@ -1,5 +1,6 @@
 import 'cypress-file-upload';
 import './dnd';
+import { ParticipationMethod } from '../../app/services/participationContexts';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -8,6 +9,7 @@ declare global {
       unregisterServiceWorkers: typeof unregisterServiceWorkers;
       goToLandingPage: typeof goToLandingPage;
       login: typeof login;
+      signUp: typeof signUp;
       apiLogin: typeof apiLogin;
       setAdminLoginCookie: typeof setAdminLoginCookie;
       setLoginCookie: typeof setLoginCookie;
@@ -34,6 +36,7 @@ declare global {
       apiAddComment: typeof apiAddComment;
       apiRemoveComment: typeof apiRemoveComment;
       apiCreateProject: typeof apiCreateProject;
+      apiEditProject: typeof apiEditProject;
       apiCreateFolder: typeof apiCreateFolder;
       apiRemoveFolder: typeof apiRemoveFolder;
       apiRemoveProject: typeof apiRemoveProject;
@@ -104,6 +107,31 @@ export function login(email: string, password: string) {
   cy.get('#e2e-sign-up-in-modal').should('not.exist');
   cy.get('#e2e-user-menu-container');
   cy.wait(500);
+}
+
+export function signUp() {
+  cy.goToLandingPage();
+  cy.get('#e2e-navbar-signup-menu-item').click();
+  cy.get('#e2e-sign-up-container');
+  cy.get('#e2e-sign-up-email-password-container');
+
+  const firstName = randomString();
+  const lastName = randomString();
+  const email = randomEmail();
+  const password = randomString();
+
+  cy.get('#firstName').type(firstName);
+  cy.get('#lastName').type(lastName);
+  cy.get('#email').type(email);
+  cy.get('#password').type(password);
+  cy.get('.e2e-terms-and-conditions .e2e-checkbox').click();
+  cy.get('.e2e-privacy-checkbox .e2e-checkbox').click();
+  cy.get('#e2e-signup-password-submit-button').wait(500).click().wait(500);
+
+  cy.get('#e2e-confirmation-code-input').type('1234');
+  cy.get('#e2e-confirmation-button').click();
+
+  cy.get('.e2e-signup-success-close-button').wait(500).click();
 }
 
 export function apiLogin(email: string, password: string) {
@@ -697,20 +725,17 @@ export function apiCreateProject({
   assigneeId,
   surveyUrl,
   surveyService,
+  maxBudget,
 }: {
   type: 'timeline' | 'continuous';
   title: string;
   descriptionPreview: string;
   description: string;
   publicationStatus?: 'draft' | 'published' | 'archived';
-  participationMethod?:
-    | 'ideation'
-    | 'information'
-    | 'survey'
-    | 'budgeting'
-    | 'poll';
+  participationMethod?: ParticipationMethod;
   assigneeId?: string;
   surveyUrl?: string;
+  maxBudget?: number;
   surveyService?: 'typeform' | 'survey_monkey' | 'google_forms';
 }) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
@@ -748,6 +773,76 @@ export function apiCreateProject({
               : participationMethod,
           survey_embed_url: surveyUrl,
           survey_service: surveyService,
+          max_budget: maxBudget,
+        },
+      },
+    });
+  });
+}
+
+export function apiEditProject({
+  projectId,
+  type,
+  title,
+  descriptionPreview,
+  description,
+  publicationStatus = 'published',
+  assigneeId,
+  surveyUrl,
+  surveyService,
+  maxBudget,
+}: {
+  projectId: string;
+  type?: 'timeline' | 'continuous';
+  title?: string;
+  descriptionPreview?: string;
+  description?: string;
+  publicationStatus?: 'draft' | 'published' | 'archived';
+  assigneeId?: string;
+  surveyUrl?: string;
+  maxBudget?: number;
+  surveyService?: 'typeform' | 'survey_monkey' | 'google_forms';
+}) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'PATCH',
+      url: `web_api/v1/projects/${projectId}`,
+      body: {
+        project: {
+          ...(type && { process_type: type }),
+          ...(publicationStatus && {
+            admin_publication_attributes: {
+              publication_status: publicationStatus,
+            },
+          }),
+          ...(title && {
+            title_multiloc: {
+              en: title,
+              'nl-BE': title,
+            },
+          }),
+          ...(descriptionPreview && {
+            description_preview_multiloc: {
+              en: descriptionPreview,
+              'nl-BE': descriptionPreview,
+            },
+          }),
+          ...(description && {
+            description_multiloc: {
+              en: description,
+              'nl-BE': description,
+            },
+          }),
+          ...(assigneeId && { default_assignee_id: assigneeId }),
+          ...(surveyUrl && { survey_embed_url: surveyUrl }),
+          ...(surveyService && { survey_service: surveyService }),
+          ...(maxBudget && { max_budget: maxBudget }),
         },
       },
     });
@@ -897,18 +992,14 @@ export function apiCreatePhase(
   title: string,
   startAt: string,
   endAt: string,
-  participationMethod:
-    | 'ideation'
-    | 'information'
-    | 'survey'
-    | 'budgeting'
-    | 'poll',
+  participationMethod: ParticipationMethod,
   canPost: boolean,
   canVote: boolean,
   canComment: boolean,
   description?: string,
   surveyUrl?: string,
-  surveyService?: 'typeform' | 'survey_monkey' | 'google_forms'
+  surveyService?: 'typeform' | 'survey_monkey' | 'google_forms',
+  maxBudget?: number
 ) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -935,6 +1026,7 @@ export function apiCreatePhase(
           description_multiloc: { en: description },
           survey_embed_url: surveyUrl,
           survey_service: surveyService,
+          max_budget: maxBudget,
         },
       },
     });
@@ -1180,6 +1272,7 @@ export function notIntersectsViewport(subject?: any) {
 Cypress.Commands.add('unregisterServiceWorkers', unregisterServiceWorkers);
 Cypress.Commands.add('goToLandingPage', goToLandingPage);
 Cypress.Commands.add('login', login);
+Cypress.Commands.add('signUp', signUp);
 Cypress.Commands.add('apiLogin', apiLogin);
 Cypress.Commands.add('apiSignup', apiSignup);
 Cypress.Commands.add('apiCreateAdmin', apiCreateAdmin);
@@ -1210,6 +1303,7 @@ Cypress.Commands.add(
 Cypress.Commands.add('apiAddComment', apiAddComment);
 Cypress.Commands.add('apiRemoveComment', apiRemoveComment);
 Cypress.Commands.add('apiCreateProject', apiCreateProject);
+Cypress.Commands.add('apiEditProject', apiEditProject);
 Cypress.Commands.add('apiCreateFolder', apiCreateFolder);
 Cypress.Commands.add('apiRemoveFolder', apiRemoveFolder);
 Cypress.Commands.add('apiRemoveProject', apiRemoveProject);

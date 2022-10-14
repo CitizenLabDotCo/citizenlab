@@ -17,7 +17,7 @@ export const Title = styled.h1<{
   align: 'left' | 'center';
 }>`
   width: 100%;
-  color: ${({ color, theme }) => color || theme.colorText};
+  color: ${({ color, theme }) => color || theme.colors.tenantText};
   font-size: ${fontSizes.xxxl}px;
   font-weight: 500;
   line-height: normal;
@@ -28,7 +28,7 @@ export const Title = styled.h1<{
   padding: 0;
   z-index: 1;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     font-size: ${fontSizes.xxl}px;
   `}
 `;

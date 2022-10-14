@@ -53,8 +53,8 @@ const FlagInnapropriateContentSetting = ({
   const appConfiguration = useAppConfiguration();
   const flagInnaproperiateContentSetting =
     !isNilOrError(appConfiguration) &&
-    appConfiguration.data.attributes.settings.flag_inappropriate_content
-      ? appConfiguration.data.attributes.settings.flag_inappropriate_content
+    appConfiguration.attributes.settings.flag_inappropriate_content
+      ? appConfiguration.attributes.settings.flag_inappropriate_content
       : undefined;
 
   if (flagInnaproperiateContentSetting) {

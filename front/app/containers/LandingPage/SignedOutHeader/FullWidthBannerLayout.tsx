@@ -1,6 +1,6 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/HeroBanner/HeaderImageDropzone';
+import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/HeaderImageDropzone';
 
 // components
 import HeaderContent from './HeaderContent';
@@ -29,11 +29,11 @@ const Header = styled.div`
   align-items: center;
   justify-content: center;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     min-height: ${homepageBannerLayoutHeights.full_width_banner_layout.tablet}px;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     min-height: ${homepageBannerLayoutHeights.full_width_banner_layout.phone}px;
   `}
 `;
@@ -62,7 +62,8 @@ const HeaderImageOverlay = styled.div<{
   overlayColor: string | null;
   overlayOpacity: number | null;
 }>`
-  background: ${({ overlayColor, theme }) => overlayColor ?? theme.colorMain};
+  background: ${({ overlayColor, theme }) =>
+    overlayColor ?? theme.colors.tenantPrimary};
   opacity: ${({ overlayOpacity, theme }) =>
     (overlayOpacity ?? theme.signedOutHeaderOverlayOpacity) / 100};
   position: absolute;
@@ -80,11 +81,11 @@ const FullWidthBannerLayout = ({ className }: Props) => {
   const homepageSettings = useHomepageSettings();
 
   if (!isNilOrError(homepageSettings)) {
-    const headerImage = homepageSettings.data.attributes.header_bg?.large;
+    const headerImage = homepageSettings.attributes.header_bg?.large;
     const homepageSettingColor =
-      homepageSettings.data.attributes.banner_signed_out_header_overlay_color;
+      homepageSettings.attributes.banner_signed_out_header_overlay_color;
     const homepageSettingOpacity =
-      homepageSettings.data.attributes.banner_signed_out_header_overlay_opacity;
+      homepageSettings.attributes.banner_signed_out_header_overlay_opacity;
     return (
       <Container className={`e2e-signed-out-header ${className}`}>
         <Header id="hook-header">

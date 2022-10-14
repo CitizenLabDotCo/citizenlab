@@ -8,21 +8,21 @@ import { Radio } from '@citizenlab/cl2-component-library';
 import { getDestinationConfig, IDestination, TCategory } from './destinations';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
-import { IAppConfiguration } from 'services/appConfiguration';
+import { IAppConfigurationData } from 'services/appConfiguration';
 
 const Container = styled.div`
   display: flex;
   padding: 20px;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  background-color: ${transparentize(0.95, colors.adminTextColor)};
-  border: 1px solid ${colors.separation};
+  background-color: ${transparentize(0.95, colors.primary)};
+  border: 1px solid ${colors.divider};
   margin-bottom: 10px;
 
   &:last-child {
     margin: 0;
   }
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     flex-wrap: wrap;
   `}
 `;
@@ -34,13 +34,13 @@ const TextContainer = styled.div`
   word-break: break-word;
 
   p {
-    color: ${colors.label};
+    color: ${colors.textSecondary};
     overflow-wrap: break-word;
     word-wrap: break-word;
     word-break: break-word;
   }
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding: 0;
   `}
 `;
@@ -55,7 +55,7 @@ const StyledFieldset = styled.fieldset`
 `;
 
 const Separator = styled.span`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-weight: 400;
   font-size: ${fontSizes.base}px;
   line-height: 19px;
@@ -65,7 +65,7 @@ const SSpan = styled.span`
   padding-left: 10px;
   padding-right: 10px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding-left: 8px;
     padding-right: 8px;
 `}
@@ -92,12 +92,12 @@ const DestinationName = ({
   tenant,
   destination,
 }: {
-  tenant: IAppConfiguration | null;
+  tenant: IAppConfigurationData | null;
   destination: IDestination;
 }) => {
   const config = getDestinationConfig(destination);
   if (config?.name && tenant) {
-    return <>{config.name(tenant.data)}</>;
+    return <>{config.name(tenant)}</>;
   } else if (config) {
     return <>{config.key}</>;
   } else {

@@ -46,7 +46,7 @@ const ActionBarSingle = ({
           <FormattedMessage {...messages.edit} />
         </Button>
         <Button negative={true} basic={true} onClick={handleClickDeleteIdea}>
-          <Icon name="trash" />
+          <Icon name="delete" />
           <FormattedMessage {...messages.delete} />
         </Button>
       </>
@@ -63,7 +63,7 @@ const ActionBarSingle = ({
           basic={true}
           onClick={handleClickDeleteInitiative}
         >
-          <Icon name="trash" />
+          <Icon name="delete" />
           <FormattedMessage {...messages.delete} />
         </Button>
       </>

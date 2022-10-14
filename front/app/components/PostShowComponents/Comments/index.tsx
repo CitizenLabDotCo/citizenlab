@@ -61,7 +61,7 @@ const StyledCommentSorting = styled(CommentSorting)`
   display: flex;
   justify-content: flex-end;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     justify-content: flex-start;
   `}
 `;
@@ -80,7 +80,7 @@ const LoadingMore = styled.div`
 `;
 
 const LoadingMoreMessage = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.m}px;
   font-weight: 400;
 `;
@@ -157,7 +157,7 @@ const CommentsSection = memo<Props>(
       return (
         <Container className={className || ''}>
           <Header>
-            <Title color="colorText" variant="h2" id="comments-main-title">
+            <Title color="tenantText" variant="h2" id="comments-main-title">
               <FormattedMessage {...messages.invisibleTitleComments} />
               {commentCount > 0 && (
                 <CommentCount>({commentCount})</CommentCount>

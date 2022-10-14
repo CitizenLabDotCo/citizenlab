@@ -34,8 +34,7 @@ const TopicTermConfig = ({ className }: Props) => {
     });
   };
 
-  const { topic_term, topics_term } =
-    appConfiguration.data.attributes.settings.core;
+  const { topic_term, topics_term } = appConfiguration.attributes.settings.core;
 
   return (
     <TerminologyConfig

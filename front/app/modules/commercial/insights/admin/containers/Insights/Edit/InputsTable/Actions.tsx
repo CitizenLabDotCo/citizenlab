@@ -49,7 +49,7 @@ const ActionButtonWrapper = styled.div`
 const DropdownListItemText = styled.div`
   width: 80%;
   flex: 1 1 auto;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: normal;
@@ -83,7 +83,7 @@ const DropdownListItem = styled.label`
   &:hover,
   &:focus,
   &.selected {
-    background: ${colors.clDropdownHoverBackground};
+    background: ${colors.grey300};
 
     ${DropdownListItemText} {
       color: #000;
@@ -219,7 +219,7 @@ const Actions = ({
           {otherCategories.length > 0 && (
             <ActionButtonWrapper data-testid="insightsTableActionsBulkAssign">
               <Button onClick={toggleDropdown} buttonStyle="admin-dark-text">
-                <StyledIcon name="moveFolder" />
+                <StyledIcon name="folder-move" />
                 <FormattedMessage {...messages.bulkAssignCategory} />
               </Button>
 
@@ -269,7 +269,7 @@ const Actions = ({
               buttonStyle="admin-dark-text"
               processing={processingBulkApprove}
             >
-              <StyledIcon name="checkmark-full" />
+              <StyledIcon name="check-circle" />
               <FormattedMessage {...messages.bulkApprove} />
             </Button>
           )}
@@ -280,7 +280,7 @@ const Actions = ({
               buttonStyle="admin-dark-text"
               processing={processing}
             >
-              <StyledIcon name="trash" />
+              <StyledIcon name="delete" />
               <FormattedMessage {...messages.bulkUnassign} />
             </Button>
           )}

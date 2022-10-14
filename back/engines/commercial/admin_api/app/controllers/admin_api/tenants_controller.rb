@@ -94,7 +94,7 @@ module AdminApi
     end
 
     def config_params
-      @config_params ||= params.require(:tenant).permit(:host, :name, :logo, :header_bg, settings: {}, style: {})
+      @config_params ||= params.require(:tenant).permit(:host, :name, :logo, settings: {}, style: {})
     end
     alias legacy_tenant_params config_params
 

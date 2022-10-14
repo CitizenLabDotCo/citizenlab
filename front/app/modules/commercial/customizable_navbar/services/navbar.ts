@@ -41,7 +41,9 @@ export async function addNavbarItem(item: IItemNotInNavbar) {
     false
   );
 
-  streams.fetchAllWith({ partialApiEndpoint: [apiEndpoint] });
+  streams.fetchAllWith({
+    partialApiEndpoint: ['nav_bar_items', 'static_pages'],
+  });
 
   return response;
 }
@@ -82,7 +84,8 @@ export async function removeNavbarItem(navbarItemId) {
     navbarItemId
   );
 
-  streams.fetchAllWith({ partialApiEndpoint: [apiEndpoint] });
-
+  streams.fetchAllWith({
+    partialApiEndpoint: ['nav_bar_items', 'static_pages'],
+  });
   return response;
 }

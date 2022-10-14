@@ -23,7 +23,11 @@ module IdeaCustomFields
       private
 
       def custom_and_default_fields
-        persisted_fields = custom_form&.custom_fields || []
+        persisted_fields = if custom_form
+          custom_form.custom_fields.includes(:options)
+        else
+          []
+        end
         [
           *default_fields.map do |default_field|
             persisted_fields.find { |c| default_field.code == c.code } || default_field

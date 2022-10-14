@@ -16,7 +16,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 export const StyledLink = styled(Link)`
-  color: ${colors.adminSecondaryTextColor};
+  color: ${colors.textSecondary};
   text-decoration: underline;
 
   &:hover {
@@ -46,7 +46,7 @@ const PoliciesTab = () => {
             {...messages.policiesSubtitleFree}
             values={{
               pagesLink: (
-                <StyledLink to="/admin/settings/pages">
+                <StyledLink to="/admin/pages-menu">
                   <FormattedMessage {...messages.linkToPages} />
                 </StyledLink>
               ),

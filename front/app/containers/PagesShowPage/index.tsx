@@ -49,7 +49,7 @@ export const Container = styled.div`
   flex-direction: column;
   background: ${colors.background};
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
     props
   ) => props.theme.mobileTopBarHeight}px);
@@ -80,7 +80,7 @@ export const PageContent = styled.main`
 `;
 
 export const PageTitle = styled.h1`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.xxxxl}px;
   line-height: normal;
   font-weight: 600;
@@ -90,7 +90,7 @@ export const PageTitle = styled.h1`
   padding-top: 0px;
   padding-bottom: 40px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     font-size: ${fontSizes.xxxl};
   `}
   ${isRtl`
@@ -119,10 +119,7 @@ export const StyledLink = styled(Link)`
   }
 `;
 
-export const LinkIcon = styled(Icon)`
-  width: 13px;
-  height: 13px;
-`;
+export const LinkIcon = styled(Icon)``;
 
 interface InputProps {}
 
@@ -168,7 +165,9 @@ class PagesShowPage extends PureComponent<
         pageSlug = page.attributes.slug || '';
         pageTitle = <T value={page.attributes.title_multiloc} />;
         pageDescription = (
-          <ResolveTextVariables value={page.attributes.body_multiloc}>
+          <ResolveTextVariables
+            value={page.attributes.top_info_section_multiloc}
+          >
             {(multiloc) => <T value={multiloc} supportHtml={true} />}
           </ResolveTextVariables>
         );

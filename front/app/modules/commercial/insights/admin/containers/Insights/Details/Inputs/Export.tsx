@@ -67,7 +67,7 @@ const Export = ({
     <Box data-testid="insightsExport" display="flex" justifyContent="flex-end">
       <Button
         buttonStyle="text"
-        textColor={colors.label}
+        textColor={colors.textSecondary}
         onClick={handleExportClick}
       >
         {formatMessage(messages.inputsListExportButton)}
