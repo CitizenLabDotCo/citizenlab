@@ -64,14 +64,12 @@ const TabbedResource = ({
   return (
     <>
       <Box mb="30px" className="e2e-resource-header">
-        <Box>
-          <Title color="primary">{title}</Title>
-          {subtitle && (
-            <Text maxWidth="60em" color="textSecondary">
-              {subtitle}
-            </Text>
-          )}
-        </Box>
+        <Title color="primary">{title}</Title>
+        {subtitle && (
+          <Text maxWidth="60em" color="textSecondary">
+            {subtitle}
+          </Text>
+        )}
       </Box>
 
       {tabs && tabs.length > 0 && (
