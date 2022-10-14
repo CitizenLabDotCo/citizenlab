@@ -8,68 +8,33 @@ import messages from '../messages';
 // components
 import GoBackButton from 'components/UI/GoBackButton';
 import { Section, SectionTitle } from 'components/admin/Section';
-import { Formik } from 'formik';
 import TopicForm from '../TopicForm';
 
 // services
 import { addTopic, ITopicUpdate } from '../../../../services/topics';
 
-// typings
-import { CLErrorsJSON } from 'typings';
-
-// utils
-import { isCLErrorJSON } from 'utils/errorUtils';
-
-interface Props {}
-
-export default class New extends React.Component<Props> {
-  handleSubmit = (
-    values: ITopicUpdate,
-    { setErrors, setSubmitting, setStatus }
-  ) => {
-    addTopic({
+const New = () => {
+  const handleSubmit = async (values: ITopicUpdate) => {
+    await addTopic({
       ...values,
-    })
-      .then(() => {
-        clHistory.push('/admin/settings/topics');
-      })
-      .catch((errorResponse) => {
-        if (isCLErrorJSON(errorResponse)) {
-          const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-          setErrors(apiErrors);
-        } else {
-          setStatus('error');
-        }
-        setSubmitting(false);
-      });
-  };
+    });
 
-  renderFn = (props) => {
-    return <TopicForm {...props} />;
-  };
-
-  goBack = () => {
     clHistory.push('/admin/settings/topics');
   };
 
-  initialValues = () => ({
-    title_multiloc: {},
-    description_multiloc: {},
-  });
+  const goBack = () => {
+    clHistory.push('/admin/settings/topics');
+  };
 
-  render() {
-    return (
-      <Section>
-        <GoBackButton onClick={this.goBack} />
-        <SectionTitle>
-          <FormattedMessage {...messages.addTopicButton} />
-        </SectionTitle>
-        <Formik
-          initialValues={this.initialValues()}
-          render={this.renderFn}
-          onSubmit={this.handleSubmit}
-        />
-      </Section>
-    );
-  }
-}
+  return (
+    <Section>
+      <GoBackButton onClick={goBack} />
+      <SectionTitle>
+        <FormattedMessage {...messages.addTopicButton} />
+      </SectionTitle>
+      <TopicForm onSubmit={handleSubmit} />
+    </Section>
+  );
+};
+
+export default New;

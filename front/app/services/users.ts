@@ -60,7 +60,7 @@ export interface IUserUpdate {
   email?: string;
   password?: string;
   locale?: string;
-  avatar?: string;
+  avatar?: string | null;
   roles?: TRole[];
   birthyear?: number;
   gender?: string;

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import {
   IProjectAllowedInputTopic,
-  IProjectAllowedInputTopicsResponse,
+  IProjectAllowedInputTopics,
   listProjectAllowedInputTopics,
 } from 'services/projectAllowedInputTopics';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
@@ -11,12 +11,11 @@ export type IProjectAllowedInputTopicsState =
   | IProjectAllowedInputTopic[]
   | NilOrError;
 
-export default function useProjectAllowedInputTopics(projectId?: string) {
+export default function useProjectAllowedInputTopics(projectId: string) {
   const [projectAllowedInputTopics, setProjectAllowedInputTopics] =
     useState<IProjectAllowedInputTopicsState>(undefined);
 
   useEffect(() => {
-    if (!projectId) return;
     const subscription = createSubscription(
       projectId,
       setProjectAllowedInputTopics
@@ -37,9 +36,7 @@ export function createSubscription(
   const observable = listProjectAllowedInputTopics(projectId).observable;
   const subscription = observable.subscribe(
     (
-      projectAllowedInputTopicsResponse:
-        | IProjectAllowedInputTopicsResponse
-        | NilOrError
+      projectAllowedInputTopicsResponse: IProjectAllowedInputTopics | NilOrError
     ) => {
       if (isNilOrError(projectAllowedInputTopicsResponse)) {
         setter(projectAllowedInputTopicsResponse);

@@ -36,7 +36,7 @@ const FeedbackHeader = styled.div`
     flex-direction: row-reverse;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     flex-direction: column;
     align-items: stretch;
     justify-content: left;
@@ -172,7 +172,7 @@ class OfficialFeedbackFeed extends PureComponent<
             {!querying && hasMore && (
               <LoadMoreButton
                 buttonStyle="secondary-outlined"
-                icon="showMore"
+                icon="refresh"
                 onClick={onLoadMore}
                 text={<FormattedMessage {...messages.showPreviousUpdates} />}
                 processing={loadingMore}

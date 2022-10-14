@@ -4,13 +4,11 @@ import useInitiativesPermissions, {
   IInitiativeDisabledReason,
 } from 'hooks/useInitiativesPermissions';
 
-interface InputProps {}
-
 type children = (
   renderProps: GetInitiativesPermissionsChildProps
 ) => JSX.Element | null;
 
-interface Props extends InputProps {
+interface Props {
   children?: children;
   action: IInitiativeAction;
 }
@@ -20,7 +18,9 @@ export type GetInitiativesPermissionsChildProps =
   | null
   | undefined;
 
-export default ({ children, action }: Props) => {
+const GetInitiativesPermissions = ({ children, action }: Props) => {
   const initiativesPermissions = useInitiativesPermissions(action);
   return (children as children)(initiativesPermissions);
 };
+
+export default GetInitiativesPermissions;

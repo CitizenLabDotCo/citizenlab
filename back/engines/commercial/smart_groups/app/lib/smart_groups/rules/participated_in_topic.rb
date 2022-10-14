@@ -77,6 +77,11 @@ module SmartGroups::Rules
       self.value = value
     end
 
+    # The filter queries more than just the `users` table, so we cannot cache the result via the users scope.
+    def cachable_by_users_scope?
+      false
+    end
+
     def multivalue_predicate?
       MULTIVALUE_PREDICATES.include? predicate
     end

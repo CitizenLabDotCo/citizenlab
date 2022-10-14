@@ -10,7 +10,7 @@ import HasPermission from 'components/HasPermission';
 
 // components
 import Sidebar from './sideBar/';
-import styled, { ThemeProvider } from 'styled-components';
+import styled from 'styled-components';
 import { colors, media } from 'utils/styleUtils';
 
 // utils
@@ -19,14 +19,13 @@ import { endsWith } from 'utils/helperUtils';
 
 // stlying
 import 'assets/semantic/semantic.min.css';
-import { rgba } from 'polished';
 
 const Container = styled.div`
   display: flex;
   background: ${colors.background};
-  color: ${colors.adminTextColor};
-  fill: ${colors.adminTextColor};
-  border-color: ${colors.adminTextColor};
+  color: ${colors.primary};
+  fill: ${colors.primary};
+  border-color: ${colors.primary};
 
   &.whiteBg {
     background: #fff;
@@ -38,14 +37,14 @@ const Container = styled.div`
   .ui a,
   .ui input,
   .ui .active td {
-    color: ${colors.adminTextColor} !important;
+    color: ${colors.primary} !important;
   }
 
   .Select-control,
   .Select-value-label,
   .Select-value-icon,
   .Select-option {
-    color: ${colors.adminTextColor} !important;
+    color: ${colors.primary} !important;
   }
 
   .ui.red {
@@ -81,30 +80,10 @@ export const RightColumn = styled.div`
     max-width: none;
   }
 
-  ${media.smallerThan1280px`
+  ${media.tablet`
     padding: 2.5rem 2.5rem;
   `}
 `;
-
-export const chartTheme = (theme) => {
-  return {
-    ...theme,
-    chartStroke: colors.clIconAccent,
-    chartStrokeGreen: colors.clGreen,
-    chartStrokeRed: colors.red500,
-    chartFill: colors.clIconAccent,
-    barFill: colors.adminContentBackground,
-    chartLabelColor: colors.adminSecondaryTextColor,
-    barHoverColor: rgba(colors.clIconAccent, 0.25),
-    chartLabelSize: 13,
-    animationBegin: 10,
-    animationDuration: 200,
-    cartesianGridColor: '#f5f5f5',
-    newBarFill: '#073F80',
-    newLineColor: '#7FBBCA',
-    barSize: 20,
-  };
-};
 
 type Props = {
   className?: string;
@@ -117,8 +96,12 @@ const AdminPage = memo<Props & WithRouterProps>(
     const [adminFullWidth, setAdminFullWidth] = useState(false);
     const [adminNoPadding, setAdminNoPadding] = useState(false);
 
-    const userCanViewAdmin = usePermission({
-      item: { type: 'route', path: '/admin' },
+    // The check in front/app/containers/Admin/routes.tsx already should do the same.
+    // TODO: double check it and remove `userCanViewAdmin`
+    const userCanViewPath = usePermission({
+      // If we're in this component, we're sure
+      // that the path is an admin path
+      item: { type: 'route', path: pathname },
       action: 'access',
     });
 
@@ -137,12 +120,12 @@ const AdminPage = memo<Props & WithRouterProps>(
     }, []);
 
     useEffect(() => {
-      if (authUser === null || (authUser !== undefined && !userCanViewAdmin)) {
+      if (authUser === null || (authUser !== undefined && !userCanViewPath)) {
         clHistory.push('/');
       }
-    }, [authUser, userCanViewAdmin]);
+    }, [authUser, userCanViewPath]);
 
-    if (!userCanViewAdmin) {
+    if (!userCanViewPath) {
       return null;
     }
 
@@ -164,18 +147,16 @@ const AdminPage = memo<Props & WithRouterProps>(
         item={{ type: 'route', path: '/admin/dashboard' }}
         action="access"
       >
-        <ThemeProvider theme={chartTheme}>
-          <Container className={`${className} ${whiteBg ? 'whiteBg' : ''}`}>
-            <Sidebar />
-            <RightColumn
-              className={`${fullWidth && 'fullWidth'} ${
-                noPadding && 'noPadding'
-              }`}
-            >
-              <RouterOutlet />
-            </RightColumn>
-          </Container>
-        </ThemeProvider>
+        <Container className={`${className} ${whiteBg ? 'whiteBg' : ''}`}>
+          <Sidebar />
+          <RightColumn
+            className={`${fullWidth && 'fullWidth'} ${
+              noPadding && 'noPadding'
+            }`}
+          >
+            <RouterOutlet />
+          </RightColumn>
+        </Container>
       </HasPermission>
     );
   }

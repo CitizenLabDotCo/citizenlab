@@ -21,7 +21,7 @@ const ProjectSection = styled.div`
   padding-top: 40px;
   padding-bottom: 90px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-bottom: 60px;
   `}
 `;

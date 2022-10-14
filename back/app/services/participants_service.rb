@@ -86,10 +86,15 @@ class ParticipantsService
     participants
   end
 
+  # Returns the participants of a project.
+  # @param project[Project]
+  # @param options[Hash]
+  # @return[ActiveRecord::Relation] List of users that participated in the project
   def project_participants(project, options = {})
-    Rails.cache.fetch("#{project.cache_key}/participants", expires_in: 1.day) do
-      projects_participants [project], options
+    participant_ids = Rails.cache.fetch("#{project.cache_key}/participant_ids", expires_in: 1.day) do
+      projects_participants([project], options).pluck(:id)
     end
+    User.where(id: participant_ids)
   end
 
   def projects_participants(projects, options = {})

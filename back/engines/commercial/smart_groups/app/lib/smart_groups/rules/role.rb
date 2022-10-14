@@ -49,6 +49,11 @@ module SmartGroups::Rules
       self.predicate = predicate
     end
 
+    # The result of the `filter` query depends on the `users` table only, so the query can be cached.
+    def cachable_by_users_scope?
+      true
+    end
+
     def filter(users_scope)
       case predicate
       when 'is_admin'

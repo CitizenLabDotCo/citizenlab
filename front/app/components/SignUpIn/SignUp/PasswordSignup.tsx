@@ -534,9 +534,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       azureAdLoginEnabled,
       franceconnectLoginEnabled,
     ].filter((provider) => provider === true);
-    const isDesktop = windowSize
-      ? windowSize > viewportWidths.largeTablet
-      : true;
+    const isDesktop = windowSize ? windowSize > viewportWidths.tablet : true;
 
     let unknownApiError: string | null = null;
 

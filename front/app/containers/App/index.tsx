@@ -11,7 +11,7 @@ import 'moment-timezone';
 import 'intersection-observer';
 import 'focus-visible';
 import smoothscroll from 'smoothscroll-polyfill';
-import { configureScope } from '@sentry/browser';
+import { configureScope } from '@sentry/react';
 import GlobalStyle from 'global-styles';
 
 // constants
@@ -93,7 +93,7 @@ const InnerContainer = styled.div`
   flex-direction: column;
   align-items: stretch;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding-top: ${(props) => props.theme.mobileTopBarHeight}px;
     min-height: calc(100vh - ${(props) =>
       props.theme.mobileTopBarHeight}px - ${(props) =>

@@ -31,13 +31,12 @@ const HomeLink = styled(Link)`
 `;
 
 const HomeIcon = styled(Icon)`
-  flex: 0 0 14px;
-  height: 14px;
-  fill: ${colors.label};
+  flex: 0 0 24px;
+  fill: ${colors.textSecondary};
   margin-top: -3px;
 
   &:hover {
-    fill: ${darken(0.25, colors.label)};
+    fill: ${darken(0.25, colors.textSecondary)};
   }
 `;
 
@@ -47,21 +46,21 @@ const Separator = styled.div`
   font-weight: 300;
   line-height: normal;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     margin: 0 10px;
   `}
 `;
 
 const StyledLink = styled(Link)`
   font-size: ${fontSizes.s}px;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   text-decoration: none;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 
   &:hover {
-    color: ${darken(0.2, colors.label)};
+    color: ${darken(0.2, colors.textSecondary)};
     text-decoration: underline;
   }
 `;
@@ -96,7 +95,7 @@ const Breadcrumbs = ({
       <HomeLink id="e2e-home-page-link" to="/">
         <HomeIcon
           title={formatMessage(messages.linkToHomePage)}
-          name="homeFilled"
+          name="home"
           ariaHidden={false}
         />
       </HomeLink>

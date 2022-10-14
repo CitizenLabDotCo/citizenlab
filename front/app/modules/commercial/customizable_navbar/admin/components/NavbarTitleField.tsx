@@ -1,46 +1,44 @@
 import React from 'react';
-
-// services
-import { MAX_TITLE_LENGTH } from 'services/navbar';
-
-// components
-import FormikInputMultilocWithLocaleSwitcher from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
-import { SectionField } from 'components/admin/Section';
-import { Field, FieldProps, FormikErrors } from 'formik';
-import Error from 'components/UI/Error';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
+import usePage from 'hooks/usePage';
+import { isNilOrError } from 'utils/helperUtils';
+import { isPolicyPageSlug } from 'services/pages';
+import { SectionField } from 'components/admin/Section';
+import useNavbarItem from '../../hooks/useNavbarItem';
 
-// typings
-import { Multiloc } from 'typings';
+type Props = {
+  pageId: string | null;
+  navbarItemId: string | null;
+};
 
-const renderFormikInputMultilocWithLocaleSwitcher = (props: FieldProps) => {
+const NavbarTitleField = ({
+  pageId,
+  navbarItemId,
+  intl: { formatMessage },
+}: Props & InjectedIntlProps) => {
+  const page = usePage({ pageId });
+  const navbarItem = useNavbarItem({ navbarItemId });
+
+  if (
+    isNilOrError(page) ||
+    isPolicyPageSlug(page.attributes.slug) ||
+    isNilOrError(navbarItem)
+  ) {
+    return null;
+  }
+
   return (
-    <FormikInputMultilocWithLocaleSwitcher
-      {...props}
-      maxCharCount={MAX_TITLE_LENGTH}
-      label={<FormattedMessage {...messages.navbarItemTitle} />}
-    />
+    <SectionField>
+      <InputMultilocWithLocaleSwitcher
+        label={formatMessage(messages.navbarItemTitle)}
+        type="text"
+        name="nav_bar_item_title_multiloc"
+      />
+    </SectionField>
   );
 };
 
-interface Props {
-  error?: FormikErrors<Multiloc>;
-}
-
-export default ({ error }: Props) => (
-  <SectionField>
-    <Field
-      name="nav_bar_item_title_multiloc"
-      render={renderFormikInputMultilocWithLocaleSwitcher}
-    />
-    {error && (
-      <Error
-        fieldName="nav_bar_item_title_multiloc"
-        text={<FormattedMessage {...messages.emptyNavbarItemTitleError} />}
-      />
-    )}
-  </SectionField>
-);
+export default injectIntl(NavbarTitleField);

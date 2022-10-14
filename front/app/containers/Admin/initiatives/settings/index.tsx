@@ -64,12 +64,12 @@ const InitiativesSettingsPage = () => {
   const remoteProposalsSettings = useMemo(() => {
     if (
       isNilOrError(appConfiguration) ||
-      !appConfiguration.data.attributes.settings.initiatives
+      !appConfiguration.attributes.settings.initiatives
     ) {
       return null;
     }
 
-    return omit(appConfiguration.data.attributes.settings.initiatives, [
+    return omit(appConfiguration.attributes.settings.initiatives, [
       'allowed',
       'enabled',
     ]);
@@ -96,7 +96,9 @@ const InitiativesSettingsPage = () => {
 
   useEffect(() => {
     if (!isNilOrError(proposalsPage)) {
-      setNewProposalsPageBody(proposalsPage.attributes.body_multiloc);
+      setNewProposalsPageBody(
+        proposalsPage.attributes.top_info_section_multiloc
+      );
     }
   }, [proposalsPage]);
 
@@ -117,8 +119,7 @@ const InitiativesSettingsPage = () => {
   }
 
   const validate = () => {
-    const tenantLocales =
-      appConfiguration.data.attributes.settings.core.locales;
+    const tenantLocales = appConfiguration.attributes.settings.core.locales;
     let validated = false;
 
     const proposalsSettingsChanged = !isEqual(
@@ -130,7 +131,8 @@ const InitiativesSettingsPage = () => {
       proposalsNavbarItemEnabled !== newProposalsNavbarItemEnabled;
 
     const proposalsPageBodyChanged =
-      proposalsPage.attributes.body_multiloc !== newProposalsPageBody;
+      proposalsPage.attributes.top_info_section_multiloc !==
+      newProposalsPageBody;
 
     const formChanged =
       proposalsSettingsChanged ||
@@ -172,7 +174,8 @@ const InitiativesSettingsPage = () => {
       proposalsNavbarItemEnabled !== newProposalsNavbarItemEnabled;
 
     const proposalsPageBodyChanged =
-      proposalsPage.attributes.body_multiloc !== newProposalsPageBody;
+      proposalsPage.attributes.top_info_section_multiloc !==
+      newProposalsPageBody;
 
     setProcessing(true);
 
@@ -198,7 +201,7 @@ const InitiativesSettingsPage = () => {
 
       if (proposalsPageBodyChanged) {
         const promise = updatePage(proposalsPage.id, {
-          body_multiloc: newProposalsPageBody,
+          top_info_section_multiloc: newProposalsPageBody,
         });
 
         promises.push(promise);

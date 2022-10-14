@@ -13,7 +13,7 @@ class MultilocService
     result = ([user_locale] + locales + translations.keys).each do |locale|
       break translations[locale] if translations[locale]
     end
-    result.is_a?(String) ? result : ''
+    result.is_a?(String) ? result : +'' # return a non-frozen empty string
   end
 
   def i18n_to_multiloc(key, locales: nil)

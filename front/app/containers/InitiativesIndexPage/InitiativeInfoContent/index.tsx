@@ -13,7 +13,7 @@ import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from '../messages';
 
 const Content = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   text-align: center;
   font-size: ${fontSizes.base}px;
   line-height: ${fontSizes.xl}px;
@@ -42,8 +42,8 @@ const InitiativeInfoContent = memo<InjectedLocalized & Props>(
 
     if (!isNilOrError(tenant)) {
       const voteThreshold =
-        tenant.data.attributes.settings.initiatives?.voting_threshold;
-      const daysLimit = tenant.data.attributes.settings.initiatives?.days_limit;
+        tenant.attributes.settings.initiatives?.voting_threshold;
+      const daysLimit = tenant.attributes.settings.initiatives?.days_limit;
 
       return (
         <Content className={className}>
@@ -67,7 +67,7 @@ const InitiativeInfoContent = memo<InjectedLocalized & Props>(
                 </Link>
               ),
               orgName: localize(
-                tenant.data.attributes.settings.core.organization_name
+                tenant.attributes.settings.core.organization_name
               ),
             }}
           />

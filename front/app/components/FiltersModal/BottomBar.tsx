@@ -15,7 +15,7 @@ const Container = styled.div`
   justify-content: center;
   padding: 40px;
   background: #fff;
-  border-top: solid 1px ${lighten(0.4, colors.label)};
+  border-top: solid 1px ${lighten(0.4, colors.textSecondary)};
 `;
 
 interface Props {

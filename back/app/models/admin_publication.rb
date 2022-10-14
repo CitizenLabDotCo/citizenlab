@@ -42,11 +42,12 @@
 #
 # Indexes
 #
-#  index_admin_publications_on_depth      (depth)
-#  index_admin_publications_on_lft        (lft)
-#  index_admin_publications_on_ordering   (ordering)
-#  index_admin_publications_on_parent_id  (parent_id)
-#  index_admin_publications_on_rgt        (rgt)
+#  index_admin_publications_on_depth                                (depth)
+#  index_admin_publications_on_lft                                  (lft)
+#  index_admin_publications_on_ordering                             (ordering)
+#  index_admin_publications_on_parent_id                            (parent_id)
+#  index_admin_publications_on_publication_type_and_publication_id  (publication_type,publication_id)
+#  index_admin_publications_on_rgt                                  (rgt)
 #
 class AdminPublication < ApplicationRecord
   PUBLICATION_STATUSES = %w[draft published archived]

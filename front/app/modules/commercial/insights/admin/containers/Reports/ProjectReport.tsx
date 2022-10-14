@@ -59,8 +59,8 @@ const Phase = styled.div<{ isCurrentPhase: boolean }>`
   padding: 10px;
   border: ${(props) =>
     props.isCurrentPhase
-      ? `solid 3px ${colors.border}`
-      : `solid 1px ${colors.adminBorder}`};
+      ? `solid 3px ${colors.borderDark}`
+      : `solid 1px ${colors.borderLight}`};
   border-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
@@ -93,6 +93,7 @@ const PARTICIPATION_METHOD_MESSAGES: Record<
 > = {
   ideation: messages.ideationAndFeedback,
   information: messages.information,
+  native_survey: messages.native_survey,
   survey: messages.survey,
   budgeting: messages.budgeting,
   poll: messages.poll,
