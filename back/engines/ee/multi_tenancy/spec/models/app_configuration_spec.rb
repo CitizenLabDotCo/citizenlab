@@ -74,4 +74,25 @@ RSpec.describe AppConfiguration, type: :model do
       expect(config.update(settings: config.settings)).to be_truthy
     end
   end
+
+  context 'when updated' do
+    it 'persists & synchronizes only the dirty attributes' do
+      app_config = described_class.instance
+      another_config_ref = described_class.find(app_config.id)
+
+      # The main color is modified through the other reference.
+      new_color = '#000000'
+      expect(app_config.settings.dig('core', 'color_main')).not_to eq(new_color) # sanity check
+      another_config_ref.settings['core']['color_main'] = new_color
+      another_config_ref.save!
+
+      # The value of the +settings+ attribute of +app_config+ is now stale, but it's not
+      # dirty and as such the update should not persist it.
+      app_config.update!(updated_at: Time.zone.now)
+      app_config.reload
+
+      expect(app_config.settings.dig('core', 'color_main')).to eq(new_color)
+      expect(Tenant.current.settings.dig('core', 'color_main')).to eq(new_color)
+    end
+  end
 end

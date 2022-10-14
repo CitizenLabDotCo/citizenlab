@@ -131,7 +131,7 @@ RSpec.describe Tenant, type: :model do
     end
   end
 
-  describe 'closest_locale_to' do
+  describe '#closest_locale_to' do
     let(:tenant) { create(:tenant, host: 'something.else-than-the-default-test-tenant') }
 
     it "returns the locale itself if it's present" do
@@ -157,6 +157,27 @@ RSpec.describe Tenant, type: :model do
       tenant = create(:tenant, host: 'something.else-than-the-default-test-tenant')
       tenant.update(style: nil)
       expect(tenant.style).to eq({})
+    end
+  end
+
+  context 'when updated' do
+    it 'persists & synchronizes only the dirty attributes' do
+      tenant = described_class.current
+      another_tenant_ref = described_class.find(tenant.id)
+
+      # The main color is modified through the other reference.
+      new_color = '#000000'
+      expect(tenant.settings.dig('core', 'color_main')).not_to eq(new_color) # sanity check
+      another_tenant_ref.settings['core']['color_main'] = new_color
+      another_tenant_ref.save!
+
+      # The value of the +settings+ attribute of +tenant+ is now stale, but it's not
+      # dirty and as such the update should not persist it.
+      tenant.update!(updated_at: Time.zone.now)
+      tenant.reload
+
+      expect(tenant.settings.dig('core', 'color_main')).to eq(new_color)
+      expect(AppConfiguration.instance.reload.settings.dig('core', 'color_main')).to eq(new_color)
     end
   end
 end
