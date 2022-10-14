@@ -42,8 +42,6 @@ const ProjectFilterDropdownPositioner = styled.div`
 `;
 
 const FilterIcon = styled(Icon)`
-  width: 12px;
-  height: 12px;
   fill: ${({ theme }) => theme.colors.tenantText};
   margin-right: 3px;
 `;
@@ -62,7 +60,7 @@ const TopBar = memo<Props & InjectedIntlProps>(
         <Title>{title}</Title>
 
         <ProjectFilterDropdownPositioner>
-          <FilterIcon name="filter-funnel" />
+          <FilterIcon name="filter-2" />
           <ProjectFilterDropdown
             title={intl.formatMessage(messages.filterDropdownTitle)}
             onChange={setProjectIds}

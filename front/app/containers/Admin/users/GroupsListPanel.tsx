@@ -229,7 +229,6 @@ export class GroupsListPanel extends React.PureComponent<
               className="e2e-create-group-button"
               hiddenText={<FormattedMessage {...messages.createGroupButton} />}
               icon="plus"
-              iconSize="11px"
               iconColor={colors.primary}
               onClick={this.handleCreateGroup}
               padding="8px"

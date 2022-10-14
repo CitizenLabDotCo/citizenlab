@@ -116,7 +116,13 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
     }
   },
   getModalContent: (props: ModalContentMethodProps) => {
-    return <FormattedMessage {...messages.onSurveySubmission} {...props} />;
+    return (
+      <FormattedMessage
+        {...messages.onSurveySubmission}
+        {...props}
+        data-cy="e2e-survey-success-message"
+      />
+    );
   },
   getFormTitle: (props: FormTitleMethodProps) => {
     return <FormattedMessage {...messages.surveyTitle} {...props} />;

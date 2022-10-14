@@ -206,16 +206,15 @@ const VoteCount = styled.div<{
 `;
 
 const VoteIcon = styled(Icon)<{
-  size: TSize;
   votingEnabled: boolean | null;
   buttonVoteModeIsActive: boolean;
   buttonVoteMode: TVoteMode;
   disabledReason: IdeaVotingDisabledReason | null;
 }>`
-  width: 19px;
-  height: 19px;
   fill: ${colors.textSecondary};
   transition: all 100ms ease-out;
+  width: 16px;
+  height: 16px;
 
   ${({ votingEnabled, buttonVoteModeIsActive }) =>
     !votingEnabled &&
@@ -223,34 +222,6 @@ const VoteIcon = styled(Icon)<{
     `
      margin-right: 4px;
   `}
-
-  ${({ size }) => {
-    return {
-      1: `
-        width: 17px;
-        height: 17px;
-      `,
-      2: `
-        width: 18px;
-        height: 18px;
-      `,
-      3: `
-        width: 20px;
-        height: 20px;
-      `,
-      4: `
-        width: 21px;
-        height: 21px;
-      `,
-    }[size];
-  }}
-
-  ${({ buttonVoteMode }) => {
-    return {
-      up: 'margin-bottom: 4px;',
-      down: 'margin-top: 3px;',
-    }[buttonVoteMode];
-  }}
 
   ${({
     buttonVoteModeIsActive,
@@ -472,7 +443,6 @@ const VoteButton = ({
           >
             <VoteIcon
               name={iconName}
-              size={size}
               votingEnabled={buttonEnabled}
               buttonVoteModeIsActive={buttonVoteModeIsActive}
               buttonVoteMode={buttonVoteMode}

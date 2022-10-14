@@ -120,33 +120,33 @@ class WebApi::V1::IdeasController < ApplicationController
   #   Users who can moderate projects post in the given phase if a phase id is given.
   def create
     project = Project.find(params.dig(:idea, :project_id))
-    participation_context = ParticipationContextService.new.get_participation_context(project)
-    participation_method = Factory.instance.participation_method_for(participation_context)
-    creation_phase = (participation_context if participation_context.is_a?(Phase))
     phase_ids = params.dig(:idea, :phase_ids) || []
-    if UserRoleService.new.can_moderate_project?(project, current_user)
-      if phase_ids.any?
-        send_error and return if project.continuous? || phase_ids.size != 1
+    is_moderator = UserRoleService.new.can_moderate_project?(project, current_user)
 
-        creation_phase = Phase.find(phase_ids.first)
-        participation_method = Factory.instance.participation_method_for(creation_phase)
-        participation_context = participation_method.form_in_phase? ? creation_phase : project
-      end
-    elsif phase_ids.any?
-      send_error and return
+    if phase_ids.any?
+      send_error and return unless is_moderator
+      send_error and return if project.continuous? || phase_ids.size != 1
+    end
+
+    participation_context = if is_moderator && phase_ids.any?
+      Phase.find(phase_ids.first)
+    else
+      ParticipationContextService.new.get_participation_context(project)
     end
     send_error and return unless participation_context
 
-    custom_form = participation_context.custom_form || CustomForm.new(participation_context: participation_context)
-    extract_custom_field_values_from_params! custom_form
+    participation_method = Factory.instance.participation_method_for(participation_context)
+    participation_context_for_form = participation_method.form_in_phase? ? participation_context : project
+    custom_form = participation_context_for_form.custom_form || CustomForm.new(participation_context: participation_context_for_form)
 
+    extract_custom_field_values_from_params! custom_form
     user_can_moderate_project = UserRoleService.new.can_moderate_project?(project, current_user)
     input = Idea.new idea_params(custom_form, user_can_moderate_project)
-    input.creation_phase = creation_phase if participation_method.form_in_phase?
-    input.author ||= current_user
-    if phase_ids.empty? && project.timeline?
-      input.phase_ids = [participation_context.id]
+    if project.timeline?
+      input.creation_phase = (participation_context if participation_method.form_in_phase?)
+      input.phase_ids = [participation_context.id] if phase_ids.empty?
     end
+    input.author ||= current_user
     service.before_create(input, current_user)
 
     authorize input

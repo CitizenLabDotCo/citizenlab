@@ -129,7 +129,7 @@ const TopBar = ({
       <DropdownWrapper>
         {formatMessage(messages.options)}
         <Button
-          icon="more-options"
+          icon="dots-horizontal"
           iconColor={colors.textSecondary}
           iconHoverColor={colors.textSecondary}
           boxShadow="none"

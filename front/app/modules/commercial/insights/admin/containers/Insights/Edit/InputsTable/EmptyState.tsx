@@ -48,7 +48,7 @@ const EmptyState = ({
   );
   return (
     <StyledEmptyState data-testid="insightsInputsTableEmptyState">
-      <Icon name="blankPage" />
+      <Icon name="sidebar-pages-menu" />
       {query.search ? (
         <div data-testid="insightsInputsTableEmptyNoResults">
           <h1>{formatMessage(messages.inputsTableNoResults)}</h1>
