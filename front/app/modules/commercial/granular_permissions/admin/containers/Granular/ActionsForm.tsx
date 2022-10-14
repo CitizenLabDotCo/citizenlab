@@ -79,6 +79,8 @@ const ActionsForm = memo(
           phases
         );
 
+        // TODO: Either refactor getInputTerm/getInputTermMessage in entire app and add new
+        // "survey" input term + messages, or abstract in some other way.
         return {
           posting_idea:
             postType === 'nativeSurvey'

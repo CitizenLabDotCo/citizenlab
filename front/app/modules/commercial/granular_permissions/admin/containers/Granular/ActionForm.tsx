@@ -76,6 +76,8 @@ const ActionForm = ({
   return (
     <form>
       <StyledFieldset>
+        {/* TODO: Take a decision on which action we should use for native surveys versus ideation. One or separate? 
+        If separate, we will need to update code where we check for attributes.posting_idea */}
         {(action === 'taking_survey' || projectType === 'nativeSurvey') && (
           <Radio
             name={`permittedBy-${permissionId}`}
