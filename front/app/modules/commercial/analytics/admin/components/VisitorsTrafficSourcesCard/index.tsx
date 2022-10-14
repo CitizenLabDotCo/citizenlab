@@ -5,8 +5,9 @@ import useVisitorReferrerTypes from '../../hooks/useVisitorReferrerTypes';
 
 // components
 import GraphCard from 'components/admin/GraphCard';
-import Chart from './Chart';
 import EmptyPieChart from '../EmptyPieChart';
+import Chart from './Chart';
+import Table from './Table';
 
 // i18n
 import messages from './messages';
@@ -73,6 +74,14 @@ const VisitorsTrafficSourcesCard = ({
     >
       {currentView === 'chart' && (
         <Chart pieData={pieData} innerRef={graphRef} />
+      )}
+
+      {currentView === 'table' && (
+        <Table
+          projectId={projectFilter}
+          startAtMoment={startAtMoment}
+          endAtMoment={endAtMoment}
+        />
       )}
     </GraphCard>
   );
