@@ -52,9 +52,8 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
 
     if (
       !isPrivilegedUser &&
-      (authUser === null ||
-        (!isNilOrError(project) &&
-          !project.attributes.action_descriptor.posting_idea.enabled))
+      !isNilOrError(project) &&
+      !project.attributes.action_descriptor.posting_idea.enabled
     ) {
       clHistory.replace(previousPathName || (!authUser ? '/sign-up' : '/'));
     }
