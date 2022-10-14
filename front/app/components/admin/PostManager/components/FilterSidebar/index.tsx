@@ -5,10 +5,10 @@ import { IProjectData } from 'services/projects';
 import { IIdeaStatusData } from 'services/ideaStatuses';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
 import { Segment, Menu, Popup } from 'semantic-ui-react';
-import PhasesMenu from './FilterSidebarPhases';
-import TopicsMenu from './FilterSidebarTopics';
-import ProjectsMenu from './FilterSidebarProjects';
-import StatusesMenu from './FilterSidebarStatuses';
+import FilterSidebarPhases from './FilterSidebarPhases';
+import FilterSidebarTopics from './FilterSidebarTopics';
+import FilterSidebarProjects from './FilterSidebarProjects';
+import FilterSidebarStatuses from './FilterSidebarStatuses';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../../messages';
@@ -37,10 +37,10 @@ interface Props {
   selectedPhase?: string | null;
   selectedProject?: string | null;
   selectedStatus?: string | null;
-  onChangePhaseFilter?: (arg: string) => void;
-  onChangeTopicsFilter?: (topics: string[]) => void;
-  onChangeProjectFilter?: (projects: string[] | undefined) => void;
-  onChangeStatusFilter?: (arg: string) => void;
+  onChangePhaseFilter?: (phaseId: string) => void;
+  onChangeTopicsFilter?: (topicIds: string[]) => void;
+  onChangeProjectFilter?: (projectIds: string[] | undefined) => void;
+  onChangeStatusFilter?: (ideaStatus: string) => void;
   activeFilterMenu: string | null;
   onChangeActiveFilterMenu: (arg: string) => void;
   visibleFilterMenus: string[];
@@ -94,7 +94,7 @@ class FilterSidebar extends React.PureComponent<Props & InjectedIntlProps> {
       name: this.tabName('timelineTab', this.props.selectedPhase, 'phases'),
       key: 'phases',
       content: (
-        <PhasesMenu
+        <FilterSidebarPhases
           phases={this.props.phases}
           selectedPhase={this.props.selectedPhase}
           onChangePhaseFilter={this.props.onChangePhaseFilter}
@@ -105,7 +105,7 @@ class FilterSidebar extends React.PureComponent<Props & InjectedIntlProps> {
       name: this.tabName('topicsTab', this.props.selectedTopics, 'topics'),
       key: 'topics',
       content: (
-        <TopicsMenu
+        <FilterSidebarTopics
           selectableTopics={this.props.topics}
           selectedTopics={this.props.selectedTopics}
           onChangeTopicsFilter={this.props.onChangeTopicsFilter}
@@ -116,7 +116,7 @@ class FilterSidebar extends React.PureComponent<Props & InjectedIntlProps> {
       name: this.tabName('projectsTab', this.props.selectedProject, 'projects'),
       key: 'projects',
       content: (
-        <ProjectsMenu
+        <FilterSidebarProjects
           projects={this.props.projects}
           selectedProject={this.props.selectedProject}
           onChangeProjectFilter={this.props.onChangeProjectFilter}
@@ -127,7 +127,7 @@ class FilterSidebar extends React.PureComponent<Props & InjectedIntlProps> {
       name: this.tabName('statusesTab', this.props.selectedStatus, 'statuses'),
       key: 'statuses',
       content: (
-        <StatusesMenu
+        <FilterSidebarStatuses
           statuses={this.props.statuses}
           selectedStatus={this.props.selectedStatus}
           onChangeStatusFilter={this.props.onChangeStatusFilter}

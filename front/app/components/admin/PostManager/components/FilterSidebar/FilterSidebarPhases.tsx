@@ -9,7 +9,7 @@ import messages from '../../messages';
 interface Props {
   phases?: IPhaseData[];
   selectedPhase?: string | null;
-  onChangePhaseFilter?: (phaseId: string) => void;
+  onChangePhaseFilter?: (phaseId: string | null) => void;
 }
 
 const FilterSidebarPhases = ({
