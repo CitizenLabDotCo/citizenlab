@@ -2,14 +2,11 @@ import React, { useRef, useState } from 'react';
 
 // hooks
 import useVisitorReferrerTypes from '../../hooks/useVisitorReferrerTypes';
-import useVisitorReferrers from '../../hooks/useVisitorReferrers';
 
 // components
 import GraphCard from 'components/admin/GraphCard';
-import PieChart from 'components/admin/Graphs/PieChart';
-import { Box } from '@citizenlab/cl2-component-library';
+import Chart from './Chart';
 import EmptyPieChart from '../EmptyPieChart';
-import renderTooltip from './renderTooltip';
 
 // i18n
 import messages from './messages';
@@ -20,7 +17,7 @@ import { InjectedIntlProps } from 'react-intl';
 import { IResolution } from 'components/admin/ResolutionControl';
 import { Moment } from 'moment';
 import { isNilOrError } from 'utils/helperUtils';
-import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
+import { View } from 'components/admin/GraphCard/ViewToggle';
 
 interface Props {
   startAtMoment: Moment | null | undefined;
@@ -42,24 +39,7 @@ const VisitorsTrafficSourcesCard = ({
     endAtMoment,
     projectId: projectFilter,
   });
-  const { tableData } = useVisitorReferrers({
-    startAtMoment,
-    endAtMoment,
-    projectId: projectFilter,
-    pageNumber: 1,
-    pageSize: 10,
-  });
-  console.log(tableData);
-
-  const [hoverIndex, setHoverIndex] = useState<number | undefined>();
-
-  const onMouseOver = ({ rowIndex }) => {
-    setHoverIndex(rowIndex);
-  };
-
-  const onMouseOut = () => {
-    setHoverIndex(undefined);
-  };
+  const [currentView, setCurrentView] = useState<View>('chart');
 
   const cardTitle = formatMessage(messages.visitorsTrafficSources);
 
@@ -70,14 +50,6 @@ const VisitorsTrafficSourcesCard = ({
       </GraphCard>
     );
   }
-
-  const legend = pieData.map(
-    (row): LegendItem => ({
-      icon: 'circle',
-      color: row.color,
-      label: `${row.name} (${row.percentage}%)`,
-    })
-  );
 
   const startAt = startAtMoment?.toISOString();
   const endAt = endAtMoment?.toISOString();
@@ -95,35 +67,13 @@ const VisitorsTrafficSourcesCard = ({
         resolution,
       }}
       viewToggle={{
-        view: 'chart',
-        onChangeView: () => {},
+        view: currentView,
+        onChangeView: setCurrentView,
       }}
     >
-      <Box width="100%" height="initial" display="flex" alignItems="center">
-        <PieChart
-          width={164}
-          height={164}
-          data={pieData}
-          mapping={{
-            angle: 'value',
-            name: 'name',
-            opacity: ({ rowIndex }) => {
-              if (hoverIndex === undefined) return 1;
-              return hoverIndex === rowIndex ? 1 : 0.3;
-            },
-          }}
-          tooltip={renderTooltip()}
-          legend={{
-            items: legend,
-            marginLeft: 50,
-            maintainGraphSize: true,
-            position: 'right-center',
-          }}
-          innerRef={graphRef}
-          onMouseOver={onMouseOver}
-          onMouseOut={onMouseOut}
-        />
-      </Box>
+      {currentView === 'chart' && (
+        <Chart pieData={pieData} innerRef={graphRef} />
+      )}
     </GraphCard>
   );
 };
