@@ -52,9 +52,6 @@ const query = ({
   endAtMoment,
   resolution,
 }: QueryParameters): Query => {
-  const startAt = startAtMoment?.toISOString();
-  const endAt = endAtMoment?.toISOString();
-
   const totalsWholePeriodQuery: QuerySchema = {
     fact: 'visit',
     filters: {
@@ -62,7 +59,11 @@ const query = ({
         role: ['citizen', null],
       },
       ...getProjectFilter('dimension_projects', projectId),
-      ...getDateFilter('dimension_date_last_action', startAt, endAt),
+      ...getDateFilter(
+        'dimension_date_last_action',
+        startAtMoment,
+        endAtMoment
+      ),
     },
     aggregations: getAggregations(),
   };
@@ -94,7 +95,11 @@ const query = ({
         role: ['citizen', null],
       },
       ...getProjectFilter('dimension_projects', projectId),
-      ...getDateFilter('dimension_date_last_action', startAt, endAt),
+      ...getDateFilter(
+        'dimension_date_last_action',
+        startAtMoment,
+        endAtMoment
+      ),
     },
     groups: `dimension_date_last_action.${getInterval(resolution)}`,
     aggregations: {

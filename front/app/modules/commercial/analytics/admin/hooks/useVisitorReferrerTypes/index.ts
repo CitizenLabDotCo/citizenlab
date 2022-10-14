@@ -25,9 +25,6 @@ const query = ({
   startAtMoment,
   endAtMoment,
 }: QueryParameters): Query => {
-  const startAt = startAtMoment?.toISOString();
-  const endAt = endAtMoment?.toISOString();
-
   const trafficSourcesQuery: QuerySchema = {
     fact: 'visit',
     filters: {
@@ -35,7 +32,11 @@ const query = ({
         role: ['citizen', null],
       },
       ...getProjectFilter('dimension_projects', projectId),
-      ...getDateFilter('dimension_date_last_action', startAt, endAt),
+      ...getDateFilter(
+        'dimension_date_last_action',
+        startAtMoment,
+        endAtMoment
+      ),
     },
     groups: 'dimension_referrer_type.id',
     aggregations: {

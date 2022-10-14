@@ -42,9 +42,6 @@ const query = ({
   startAtMoment,
   endAtMoment,
 }: QueryParameters): Query => {
-  const startAt = startAtMoment?.toISOString();
-  const endAt = endAtMoment?.toISOString();
-
   const queryFeedback: QuerySchema = {
     fact: 'post',
     aggregations: {
@@ -56,7 +53,7 @@ const query = ({
     filters: {
       type: { name: 'idea' },
       ...getProjectFilter('project', projectId),
-      ...getDateFilter('created_date', startAt, endAt),
+      ...getDateFilter('created_date', startAtMoment, endAtMoment),
     },
   };
 
@@ -71,7 +68,7 @@ const query = ({
     filters: {
       type: { name: 'idea' },
       ...getProjectFilter('project', projectId),
-      ...getDateFilter('created_date', startAt, endAt),
+      ...getDateFilter('created_date', startAtMoment, endAtMoment),
     },
   };
 

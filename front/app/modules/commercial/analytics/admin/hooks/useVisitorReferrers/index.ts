@@ -23,7 +23,11 @@ const referrersListQuery = ({
         role: ['citizen', null],
       },
       ...getProjectFilter('dimension_projects', projectId),
-      ...getDateFilter('dimension_date_last_action', startAt, endAt),
+      ...getDateFilter(
+        'dimension_date_last_action',
+        startAtMoment,
+        endAtMoment
+      ),
     },
     groups: ['dimension_referrer_type.name', 'referrer_name'],
     aggregations: {
