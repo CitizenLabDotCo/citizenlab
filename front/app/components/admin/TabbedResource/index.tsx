@@ -3,30 +3,13 @@ import React from 'react';
 // style
 import styled from 'styled-components';
 import { colors, isRtl } from 'utils/styleUtils';
-
+import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 // typings
 import { ITab } from 'typings';
 
 // components
 import FeatureFlag from 'components/FeatureFlag';
-import { SectionDescription } from 'components/admin/Section';
-import Title from 'components/admin/PageTitle';
 import Tab from './Tab';
-
-const ResourceHeader = styled.div`
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  margin-bottom: 30px;
-
-  @media print {
-    margin-bottom: 10px;
-  }
-
-  p {
-    margin-right: 40px;
-  }
-`;
 
 const TabbedNav = styled.nav`
   background: #fcfcfc;
@@ -80,12 +63,14 @@ const TabbedResource = ({
 }: Props) => {
   return (
     <>
-      <ResourceHeader className="e2e-resource-header">
-        <>
-          <Title>{title}</Title>
-          {subtitle && <SectionDescription>{subtitle}</SectionDescription>}
-        </>
-      </ResourceHeader>
+      <Box mb="30px" className="e2e-resource-header">
+        <Title color="primary">{title}</Title>
+        {subtitle && (
+          <Text maxWidth="60em" color="textSecondary">
+            {subtitle}
+          </Text>
+        )}
+      </Box>
 
       {tabs && tabs.length > 0 && (
         <TabbedNav className="e2e-resource-tabs">
