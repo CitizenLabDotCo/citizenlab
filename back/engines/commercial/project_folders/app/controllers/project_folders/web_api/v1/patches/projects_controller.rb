@@ -25,7 +25,7 @@ module ProjectFolders
           def set_folder
             return unless params.require(:project).key?(:folder_id)
 
-            @context.folder_id = params.dig(:project, :folder_id)
+            @project.folder_id = params.dig(:project, :folder_id)
           end
         end
       end

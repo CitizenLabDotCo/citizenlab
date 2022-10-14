@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ProjectsController < ::ApplicationController
-  before_action :set_context, only: %i[show update reorder destroy survey_results submission_count delete_inputs]
+  before_action :set_project, only: %i[show update reorder destroy survey_results submission_count delete_inputs]
   skip_before_action :authenticate_user
   skip_after_action :verify_policy_scoped, only: :index
 
@@ -48,32 +48,32 @@ class WebApi::V1::ProjectsController < ::ApplicationController
 
   def show
     render json: WebApi::V1::ProjectSerializer.new(
-      @context,
+      @project,
       params: fastjson_params,
       include: %i[admin_publication project_images current_phase]
     ).serialized_json
   end
 
   def by_slug
-    @context = Project.find_by!(slug: params[:slug])
-    authorize @context
+    @project = Project.find_by!(slug: params[:slug])
+    authorize @project
     show
   end
 
   def create
     project_params = permitted_attributes(Project)
-    @context = Project.new(project_params)
-    sidefx.before_create(@context, current_user)
+    @project = Project.new(project_params)
+    sidefx.before_create(@project, current_user)
 
     if save_project
-      sidefx.after_create(@context, current_user)
+      sidefx.after_create(@project, current_user)
       render json: WebApi::V1::ProjectSerializer.new(
-        @context,
+        @project,
         params: fastjson_params,
         include: [:admin_publication]
       ).serialized_json, status: :created
     else
-      render json: { errors: @context.errors.details }, status: :unprocessable_entity
+      render json: { errors: @project.errors.details }, status: :unprocessable_entity
     end
   end
 
@@ -83,27 +83,27 @@ class WebApi::V1::ProjectsController < ::ApplicationController
 
     project_params = permitted_attributes(Project)
 
-    @context.assign_attributes project_params
-    remove_image_if_requested!(@context, project_params, :header_bg)
+    @project.assign_attributes project_params
+    remove_image_if_requested!(@project, project_params, :header_bg)
 
-    sidefx.before_update(@context, current_user)
+    sidefx.before_update(@project, current_user)
 
     if save_project
-      sidefx.after_update(@context, current_user)
+      sidefx.after_update(@project, current_user)
       render json: WebApi::V1::ProjectSerializer.new(
-        @context,
+        @project,
         params: fastjson_params,
         include: [:admin_publication]
       ).serialized_json, status: :ok
     else
-      render json: { errors: @context.errors.details }, status: :unprocessable_entity, include: ['project_images']
+      render json: { errors: @project.errors.details }, status: :unprocessable_entity, include: ['project_images']
     end
   end
 
   def destroy
-    sidefx.before_destroy(@context, current_user)
-    if @context.destroy
-      sidefx.after_destroy(@context, current_user)
+    sidefx.before_destroy(@project, current_user)
+    if @project.destroy
+      sidefx.after_destroy(@project, current_user)
       head :ok
     else
       head :internal_server_error
@@ -111,21 +111,21 @@ class WebApi::V1::ProjectsController < ::ApplicationController
   end
 
   def survey_results
-    results = SurveyResultsGeneratorService.new(@context).generate_results
+    results = SurveyResultsGeneratorService.new(@project).generate_results
     render json: results
   end
 
   def submission_count
-    count = SurveyResultsGeneratorService.new(@context).generate_submission_count
+    count = SurveyResultsGeneratorService.new(@project).generate_submission_count
     render json: count
   end
 
   def delete_inputs
-    sidefx.before_delete_inputs @context, current_user
+    sidefx.before_delete_inputs @project, current_user
     ActiveRecord::Base.transaction do
-      @context.ideas.each(&:destroy!)
+      @project.ideas.each(&:destroy!)
     end
-    sidefx.before_delete_inputs @context, current_user
+    sidefx.before_delete_inputs @project, current_user
     head :ok
   end
 
@@ -139,16 +139,16 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     ActiveRecord::Base.transaction do
       run_callbacks(:save_project) do
         # authorize is placed within the block so we can prepare
-        # the @context to be authorized from a callback.
-        authorize @context
-        @context.save
+        # the @project to be authorized from a callback.
+        authorize @project
+        @project.save
       end
     end
   end
 
-  def set_context
-    @context = Project.find(params[:id])
-    authorize @context
+  def set_project
+    @project = Project.find(params[:id])
+    authorize @project
   end
 end
 
