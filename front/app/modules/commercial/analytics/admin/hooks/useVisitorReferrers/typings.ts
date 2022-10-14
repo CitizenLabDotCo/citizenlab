@@ -29,7 +29,8 @@ export interface ReferrerTotalsResponse {
 }
 
 export interface ReferrersTotalRow {
-  // TODO
+  count: number | null;
+  count_visitor_id: number | null;
 }
 
 // Hook return value

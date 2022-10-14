@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 
 // hooks
 import useVisitorReferrerTypes from '../../hooks/useVisitorReferrerTypes';
+import useVisitorReferrers from '../../hooks/useVisitorReferrers';
 
 // components
 import GraphCard from 'components/admin/GraphCard';
@@ -41,6 +42,15 @@ const VisitorsTrafficSourcesCard = ({
     endAtMoment,
     projectId: projectFilter,
   });
+  const { tableData } = useVisitorReferrers({
+    startAtMoment,
+    endAtMoment,
+    projectId: projectFilter,
+    pageNumber: 1,
+    pageSize: 10,
+  });
+  console.log(tableData);
+
   const [hoverIndex, setHoverIndex] = useState<number | undefined>();
 
   const onMouseOver = ({ rowIndex }) => {
