@@ -69,11 +69,7 @@ const TabbedResource = ({
 }: Props) => {
   return (
     <>
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        className="e2e-resource-header"
-      >
+      <Box mb="20px" className="e2e-resource-header">
         <>
           <Box mb="20px">
             <Title>{title}</Title>
