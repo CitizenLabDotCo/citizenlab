@@ -53,6 +53,7 @@ const getTranslatedFieldType = (field) => {
 interface FormFieldsProps {
   onEditField: (field: IFlatCustomFieldWithIndex) => void;
   handleDragRow: (fromIndex: number, toIndex: number) => void;
+  isEditingDisabled: boolean;
   selectedFieldId?: string;
 }
 
@@ -60,6 +61,7 @@ const FormFields = ({
   onEditField,
   handleDragRow,
   selectedFieldId,
+  isEditingDisabled,
 }: FormFieldsProps) => {
   const {
     watch,
@@ -117,6 +119,7 @@ const FormFields = ({
                     <Button
                       buttonStyle="secondary"
                       icon="edit"
+                      disabled={isEditingDisabled}
                       onClick={() => {
                         onEditField({ ...field, index });
                       }}

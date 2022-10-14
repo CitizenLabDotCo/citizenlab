@@ -8,6 +8,7 @@ import { Toggle, Box, Title, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import T from 'components/T';
 import Modal from 'components/UI/Modal';
+import DeleteFormResultsNotice from 'containers/Admin/formBuilder/components/DeleteFormResultsNotice';
 
 // routing
 import clHistory from 'utils/cl-router/history';
@@ -69,6 +70,8 @@ const FormActions = ({
   };
 
   if (!isNilOrError(submissionCount)) {
+    const isEditingDisabled = submissionCount.totalSubmissions > 0;
+
     return (
       <Box width="100%" my="60px">
         <Box display="flex" flexDirection="row" width="100%" mb="48px">
@@ -92,6 +95,11 @@ const FormActions = ({
             />
           </Box>
         </Box>
+        {isEditingDisabled && (
+          <Box width="100%" mb="48px">
+            <DeleteFormResultsNotice projectId={projectId} />
+          </Box>
+        )}
         <Box
           display="flex"
           alignItems="center"
