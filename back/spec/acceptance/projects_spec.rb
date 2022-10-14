@@ -639,6 +639,7 @@ resource 'Projects' do
       example 'Delete all inputs of a project' do
         create_list :idea, 2, project: project
         create :idea
+        expect_any_instance_of(SideFxProjectService).to receive(:after_delete_inputs)
 
         do_request
         assert_status 200

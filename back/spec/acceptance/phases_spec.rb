@@ -461,6 +461,7 @@ resource 'Phases' do
         )
         create_list :idea, 2, project: project, phases: [active_phase]
         create :idea, project: project, phases: [ideation_phase]
+        expect_any_instance_of(SideFxPhaseService).to receive(:after_delete_inputs)
 
         do_request
         assert_status 200

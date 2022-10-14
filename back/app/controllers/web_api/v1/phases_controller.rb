@@ -68,7 +68,7 @@ class WebApi::V1::PhasesController < ::ApplicationController
     ActiveRecord::Base.transaction do
       @phase.ideas.each(&:destroy!)
     end
-    sidefx.before_delete_inputs @phase, current_user
+    sidefx.after_delete_inputs @phase, current_user
     head :ok
   end
 

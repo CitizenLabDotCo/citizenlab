@@ -125,7 +125,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     ActiveRecord::Base.transaction do
       @project.ideas.each(&:destroy!)
     end
-    sidefx.before_delete_inputs @project, current_user
+    sidefx.after_delete_inputs @project, current_user
     head :ok
   end
 
