@@ -8,66 +8,32 @@ import messages from '../messages';
 // Components
 import GoBackButton from 'components/UI/GoBackButton';
 import { Section, SectionTitle } from 'components/admin/Section';
+import AreaForm, { FormValues } from '../AreaForm';
 
 import { addArea } from 'services/areas';
 
-import { Formik } from 'formik';
-import AreaForm, { FormValues } from '../AreaForm';
-
-import { CLErrorsJSON } from 'typings';
-import { isCLErrorJSON } from 'utils/errorUtils';
-
-// eslint-disable-next-line @typescript-eslint/ban-types
-type Props = {};
-
-export default class New extends React.Component<Props> {
-  handleSubmit = (
-    values: FormValues,
-    { setErrors, setSubmitting, setStatus }
-  ) => {
-    addArea({
+const New = () => {
+  const handleSubmit = async (values: FormValues) => {
+    await addArea({
       ...values,
-    })
-      .then(() => {
-        clHistory.push('/admin/settings/areas');
-      })
-      .catch((errorResponse) => {
-        if (isCLErrorJSON(errorResponse)) {
-          const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-          setErrors(apiErrors);
-        } else {
-          setStatus('error');
-        }
-        setSubmitting(false);
-      });
-  };
+    });
 
-  renderFn = (props) => {
-    return <AreaForm {...props} />;
-  };
-
-  goBack = () => {
     clHistory.push('/admin/settings/areas');
   };
 
-  initialValues = () => ({
-    title_multiloc: {},
-    description_multiloc: {},
-  });
+  const goBack = () => {
+    clHistory.push('/admin/settings/areas');
+  };
 
-  render() {
-    return (
-      <Section>
-        <GoBackButton onClick={this.goBack} />
-        <SectionTitle>
-          <FormattedMessage {...messages.addAreaButton} />
-        </SectionTitle>
-        <Formik
-          initialValues={this.initialValues()}
-          render={this.renderFn}
-          onSubmit={this.handleSubmit}
-        />
-      </Section>
-    );
-  }
-}
+  return (
+    <Section>
+      <GoBackButton onClick={goBack} />
+      <SectionTitle>
+        <FormattedMessage {...messages.addAreaButton} />
+      </SectionTitle>
+      <AreaForm onSubmit={handleSubmit} />
+    </Section>
+  );
+};
+
+export default New;

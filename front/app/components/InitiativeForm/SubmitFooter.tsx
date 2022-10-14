@@ -33,12 +33,12 @@ const SubmitFooterContainer = styled.div`
   border-top: 1px solid #e8e8e8;
   border-bottom: 1px solid #e8e8e8;
   z-index: 1;
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     align-items: center;
   `}
 `;
 const StyledContentContainer = styled(ContentContainer)`
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     max-width: 620px;
   `}
 `;
@@ -53,7 +53,7 @@ const SubmitFooterInner = styled.div`
   padding-bottom: 12px;
   background: #fff;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding: 10px;
   `}
 `;
@@ -80,7 +80,7 @@ export const FormSubmitFooter = withTheme(
             <StyledButton
               fontWeight="500"
               padding="13px 22px"
-              bgColor={theme.colorMain}
+              bgColor={theme.colors.tenantPrimary}
               textColor="#FFF"
               type="submit"
               onClick={onSubmit}

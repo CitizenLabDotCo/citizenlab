@@ -1,9 +1,6 @@
 import React from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { useParams } from 'react-router-dom';
 import clHistory from 'utils/cl-router/history';
-import { Formik } from 'formik';
-import { CLErrorsJSON } from 'typings';
-import { isCLErrorJSON } from 'utils/errorUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -18,34 +15,16 @@ import RegistrationCustomFieldOptionsForm, {
   FormValues,
 } from './RegistrationCustomFieldOptionsForm';
 
-const RegistrationCustomFieldOptionsNew = ({
-  params: { userCustomFieldId },
-}: WithRouterProps) => {
-  const handleSubmit = (
-    values: FormValues,
-    { setErrors, setSubmitting, setStatus }
-  ) => {
-    addUserCustomFieldOption(userCustomFieldId, {
+const RegistrationCustomFieldOptionsNew = () => {
+  const { userCustomFieldId } = useParams() as { userCustomFieldId: string };
+  const handleSubmit = async (values: FormValues) => {
+    await addUserCustomFieldOption(userCustomFieldId, {
       title_multiloc: values.title_multiloc,
-    })
-      .then(() => {
-        clHistory.push(
-          `/admin/settings/registration/custom-fields/${userCustomFieldId}/options/`
-        );
-      })
-      .catch((errorResponse) => {
-        if (isCLErrorJSON(errorResponse)) {
-          const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-          setErrors(apiErrors);
-        } else {
-          setStatus('error');
-        }
-        setSubmitting(false);
-      });
-  };
+    });
 
-  const renderFn = (props) => {
-    return <RegistrationCustomFieldOptionsForm {...props} />;
+    clHistory.push(
+      `/admin/settings/registration/custom-fields/${userCustomFieldId}/options/`
+    );
   };
 
   return (
@@ -53,16 +32,9 @@ const RegistrationCustomFieldOptionsNew = ({
       <SectionTitle>
         <FormattedMessage {...messages.newCustomFieldAnswerOptionFormTitle} />
       </SectionTitle>
-      <Formik
-        initialValues={{
-          title_multiloc: {},
-        }}
-        render={renderFn}
-        onSubmit={handleSubmit}
-        validate={(RegistrationCustomFieldOptionsForm as any).validate}
-      />
+      <RegistrationCustomFieldOptionsForm onSubmit={handleSubmit} />
     </Section>
   );
 };
 
-export default withRouter(RegistrationCustomFieldOptionsNew);
+export default RegistrationCustomFieldOptionsNew;

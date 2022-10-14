@@ -35,7 +35,10 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
   });
 
   const phases = usePhases(project?.id);
-  const { schema, uiSchema, inputSchemaError } = useInputSchema(project?.id);
+  const { schema, uiSchema, inputSchemaError } = useInputSchema({
+    projectId: project?.id,
+    inputId: ideaId,
+  });
   const permisison = usePermission({
     item: isNilOrError(idea) ? null : idea,
     action: 'edit',
@@ -133,6 +136,7 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
             inputId={idea.id}
             getAjvErrorMessage={getAjvErrorMessage}
             getApiErrorMessage={getApiErrorMessage}
+            config={'input'}
             title={
               <FormattedMessage
                 {...{

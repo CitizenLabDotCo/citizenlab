@@ -9,14 +9,22 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
-export default () => (
+interface Props {
+  itemsNotInNavbarPresent: boolean;
+}
+
+const Header = ({ itemsNotInNavbarPresent }: Props) => (
   <Box display="flex" justifyContent="space-between" mb="17px">
-    <SubSectionTitle>
-      <FormattedMessage {...messages.hiddenFromNavigation} />
-    </SubSectionTitle>
+    {itemsNotInNavbarPresent && (
+      <SubSectionTitle>
+        <FormattedMessage {...messages.hiddenFromNavigation} />
+      </SubSectionTitle>
+    )}
 
     <Button buttonStyle="cl-blue" linkTo="/admin/pages-menu/pages/new">
       <FormattedMessage {...messages.addPageButton} />
     </Button>
   </Box>
 );
+
+export default Header;

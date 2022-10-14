@@ -53,7 +53,7 @@ const StyledAvatar = styled(Avatar)`
 const Body = styled.div`
   font-size: ${fontSizes.s}px;
   font-weight: 300;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -68,7 +68,7 @@ const Body = styled.div`
 const StyledUserName = styled(UserName)`
   font-size: ${fontSizes.s}px;
   font-weight: 500;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-weight: 500;
 `;
 
@@ -89,12 +89,13 @@ const ImagePlaceholderContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${transparentize(0.94, colors.label)};
+  background: ${transparentize(0.94, colors.textSecondary)};
 `;
 
 const ImagePlaceholderIcon = styled(Icon)`
-  width: 34px;
-  fill: ${transparentize(0.62, colors.label)};
+  width: 80px;
+  height: 80px;
+  fill: ${transparentize(0.62, colors.textSecondary)};
 `;
 
 interface Props {
@@ -203,7 +204,7 @@ const CompactIdeaCard = memo<Props>(
         imagePlaceholder={
           <ImagePlaceholderContainer>
             <ImagePlaceholderIcon
-              name={participationMethod === 'budgeting' ? 'moneybag' : 'idea'}
+              name={participationMethod === 'budgeting' ? 'money-bag' : 'idea'}
             />
           </ImagePlaceholderContainer>
         }
@@ -216,7 +217,7 @@ const CompactIdeaCard = memo<Props>(
                 size={36}
                 userId={authorId}
                 hideIfNoAvatar={true}
-                fillColor={transparentize(0.6, colors.label)}
+                fillColor={transparentize(0.6, colors.textSecondary)}
               />
             )}
             <Body>

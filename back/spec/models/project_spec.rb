@@ -85,4 +85,39 @@ RSpec.describe Project, type: :model do
       expect(p.save).to be true
     end
   end
+
+  describe '#native_survey?' do
+    it 'returns true when the participation method is native_survey' do
+      project = create :continuous_native_survey_project
+      expect(project.native_survey?).to be true
+    end
+
+    it 'returns false otherwise' do
+      project = create :continuous_project
+      expect(project.native_survey?).to be false
+    end
+  end
+
+  describe '#can_contain_input?' do
+    expected_results = {
+      'information' => false,
+      'ideation' => true,
+      'survey' => false,
+      'budgeting' => true,
+      'poll' => false,
+      'volunteering' => false,
+      'native_survey' => true
+    }
+    # Written this way so that additional participation methods will make this spec fail.
+    ::ParticipationContext::PARTICIPATION_METHODS.each do |participation_method|
+      expected_result = expected_results[participation_method]
+      context "for #{participation_method}" do
+        let(:project) { build(:project, participation_method: participation_method) }
+
+        it "returns #{expected_result}" do
+          expect(project.can_contain_input?).to be expected_result
+        end
+      end
+    end
+  end
 end

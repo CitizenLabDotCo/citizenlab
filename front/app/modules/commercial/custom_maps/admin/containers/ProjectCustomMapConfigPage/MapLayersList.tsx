@@ -52,12 +52,11 @@ const ListItem = styled.div`
 
 const LayerIcon = styled(Icon)<{ color: string }>`
   fill: ${(props) => props.color};
-  width: 19px;
   margin-right: 10px;
 `;
 
 const LayerName = styled.div`
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
   font-size: ${fontSizes.m}px;
   line-height: normal;
   font-weight: 400;

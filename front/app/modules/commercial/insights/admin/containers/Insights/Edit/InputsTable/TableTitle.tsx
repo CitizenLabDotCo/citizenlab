@@ -109,9 +109,9 @@ const TableTitle = ({
           <>
             {selectedCategory?.attributes.name}
             <Button
-              icon="more-options"
-              iconColor={colors.label}
-              iconHoverColor={colors.label}
+              icon="dots-horizontal"
+              iconColor={colors.textSecondary}
+              iconHoverColor={colors.textSecondary}
               boxShadow="none"
               boxShadowHover="none"
               bgColor="transparent"

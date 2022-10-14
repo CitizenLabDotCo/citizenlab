@@ -1,34 +1,35 @@
 import React, { useMemo } from 'react';
 
 // services
-import { addNavbarItem } from '../../../../services/navbar';
-import { deletePage, IPageData, FIXED_PAGES, TPageCode } from 'services/pages';
 import { getNavbarItemSlug } from 'services/navbar';
+import { deletePage, FIXED_PAGES, IPageData, TPageCode } from 'services/pages';
+import { addNavbarItem } from '../../../../services/navbar';
 
 // hooks
 import useNavbarItems from 'hooks/useNavbarItems';
-import useRemovedDefaultNavbarItems from '../../../../hooks/useRemovedDefaultNavbarItems';
 import usePages from 'hooks/usePages';
 import usePageSlugById from 'hooks/usePageSlugById';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useRemovedDefaultNavbarItems from '../../../../hooks/useRemovedDefaultNavbarItems';
 
 // components
 import { List, Row } from 'components/admin/ResourceList';
-import NavbarItemRow from 'containers/Admin/pagesAndMenu/NavbarItemRow';
+import NavbarItemRow from 'containers/Admin/pagesAndMenu/containers/NavigationSettings/NavbarItemRow';
 import Header from './Header';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // utils
+import { PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
+import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 import getItemsNotInNavbar, { IItemNotInNavbar } from './getItemsNotInNavbar';
-import clHistory from 'utils/cl-router/history';
-import { PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 
 const FIXED_PAGES_SET = new Set<TPageCode>(FIXED_PAGES);
-const removeFixedPages = (page: IPageData) =>
+const isNotFixedPage = (page: IPageData) =>
   !FIXED_PAGES_SET.has(page.attributes.code);
 
 const HiddenNavbarItemList = ({
@@ -38,6 +39,9 @@ const HiddenNavbarItemList = ({
   const removedDefaultNavbarItems = useRemovedDefaultNavbarItems();
   const pages = usePages();
   const pageSlugById = usePageSlugById();
+  const previewNewCustomPages = useFeatureFlag({
+    name: 'preview_new_custom_pages',
+  });
 
   const notAllHooksRendered =
     isNilOrError(navbarItems) ||
@@ -51,7 +55,7 @@ const HiddenNavbarItemList = ({
     return getItemsNotInNavbar(
       navbarItems,
       removedDefaultNavbarItems,
-      pages.filter(removeFixedPages)
+      pages.filter(isNotFixedPage)
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [notAllHooksRendered, navbarItems, removedDefaultNavbarItems, pages]);
@@ -62,7 +66,10 @@ const HiddenNavbarItemList = ({
 
   const handleClickEditButton = (item: IItemNotInNavbar) => () => {
     if (item.type !== 'page') return;
-    clHistory.push(`${PAGES_MENU_PATH}/pages/edit/${item.pageId}`);
+
+    previewNewCustomPages
+      ? clHistory.push(`${PAGES_MENU_PATH}/custom/${item.pageId}`)
+      : clHistory.push(`${PAGES_MENU_PATH}/pages/edit/${item.pageId}`);
   };
 
   const handleClickAdd = (item: IItemNotInNavbar) => () => {
@@ -89,7 +96,7 @@ const HiddenNavbarItemList = ({
 
   return (
     <>
-      <Header />
+      <Header itemsNotInNavbarPresent={itemsNotInNavbar.length > 0} />
 
       <List key={itemsNotInNavbar.length}>
         {itemsNotInNavbar.map((item, i) => (

@@ -13,7 +13,7 @@ const Header = () => (
     <Title variant="h2">
       <FormattedMessage {...messages.pageTitle} />
     </Title>
-    <Text color="label">
+    <Text color="textSecondary">
       <FormattedMessage
         {...messages.pageDescription}
         values={{

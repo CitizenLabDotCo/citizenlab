@@ -8,10 +8,10 @@ import messages from '../../messages';
 
 // styling
 import { withTheme } from 'styled-components';
+import { legacyColors } from 'components/admin/Graphs/styling';
 
 // components
 import ReportExportMenu from 'components/admin/ReportExportMenu';
-import { PieChart, Pie, Tooltip, Cell, ResponsiveContainer } from 'recharts';
 import {
   IGraphUnit,
   NoDataContainer,
@@ -21,6 +21,7 @@ import {
   GraphCardInner,
   PieChartStyleFixesDiv,
 } from 'components/admin/GraphWrappers';
+import PieChart from 'components/admin/Graphs/PieChart';
 
 // resources
 import GetSerieFromStream from 'resources/GetSerieFromStream';
@@ -58,7 +59,12 @@ interface InputProps {
 
 interface Props extends InputProps, DataProps {}
 
-const labelColors = ['#C37281 ', '#5D99C6', '#B0CDC4 ', '#C0C2CE'];
+export const piechartColors = [
+  legacyColors.pinkRed,
+  legacyColors.lightBlue,
+  legacyColors.lightGreen,
+  legacyColors.grey,
+];
 
 class PieChartByCategory extends React.PureComponent<
   Props & InjectedIntlProps
@@ -70,12 +76,8 @@ class PieChartByCategory extends React.PureComponent<
     this.currentChart = React.createRef();
   }
 
-  formatEntry = (entry) => {
-    return `${entry.name} : ${entry.value}`;
-  };
   render() {
-    const { colorMain, animationBegin, animationDuration } =
-      this.props['theme'];
+    const { colorMain } = this.props['theme'];
     const {
       startAt,
       endAt,
@@ -110,26 +112,22 @@ class PieChartByCategory extends React.PureComponent<
             </NoDataContainer>
           ) : (
             <PieChartStyleFixesDiv>
-              <ResponsiveContainer height={175} width="100%" minWidth={175}>
-                <PieChart>
-                  <Pie
-                    animationDuration={animationDuration}
-                    animationBegin={animationBegin}
-                    isAnimationActive={true}
-                    data={serie}
-                    dataKey="value"
-                    innerRadius={60}
-                    fill={colorMain}
-                    label={this.formatEntry}
-                    ref={this.currentChart}
-                  >
-                    {serie.map((_, index) => (
-                      <Cell key={`cell-${index}`} fill={labelColors[index]} />
-                    ))}
-                  </Pie>
-                  <Tooltip isAnimationActive={false} />
-                </PieChart>
-              </ResponsiveContainer>
+              <PieChart
+                data={serie}
+                mapping={{
+                  angle: 'value',
+                  name: 'name',
+                  fill: ({ rowIndex }) => piechartColors[rowIndex] ?? colorMain,
+                }}
+                pie={{
+                  startAngle: 0,
+                  endAngle: 360,
+                  innerRadius: 60,
+                }}
+                annotations
+                tooltip
+                innerRef={this.currentChart}
+              />
             </PieChartStyleFixesDiv>
           )}
         </GraphCardInner>

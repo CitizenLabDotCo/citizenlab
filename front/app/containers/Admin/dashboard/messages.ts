@@ -7,9 +7,9 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   // Index
-  tabSummary: {
-    id: 'app.containers.AdminPage.DashboardPage.tabSummary',
-    defaultMessage: 'Summary',
+  tabOverview: {
+    id: 'app.containers.AdminPage.DashboardPage.tabOverview',
+    defaultMessage: 'Overview',
   },
   tabUsers: {
     id: 'app.containers.AdminPage.DashboardPage.tabUsers',
@@ -26,6 +26,10 @@ export default defineMessages({
   helmetDescription: {
     id: 'app.containers.AdminPage.DashboardPage.helmetDescription',
     defaultMessage: 'Dashboard for activities on the platform',
+  },
+  selectProject: {
+    id: 'app.containers.AdminPage.DashboardPage.selectProject',
+    defaultMessage: 'Select project',
   },
   // All tabs
   day: {

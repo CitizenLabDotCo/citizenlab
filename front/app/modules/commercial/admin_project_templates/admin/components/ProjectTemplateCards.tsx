@@ -85,7 +85,7 @@ const LoadMoreButton = styled(Button)``;
 const NoTemplates = styled.div`
   width: 100%;
   height: 260px;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   text-align: center;

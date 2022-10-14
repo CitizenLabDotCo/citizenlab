@@ -32,7 +32,7 @@ const Container = styled.div`
   padding-top: 30px;
   padding-bottom: 70px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding: 20px 20px 35px;
   `}
 `;
@@ -58,7 +58,7 @@ const FullName = styled.h1`
   font-size: ${fontSizes.xl}px;
   font-weight: 600;
   text-align: center;
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   padding: 0px;
   margin: 0px;
   margin-bottom: 5px;
@@ -68,7 +68,7 @@ const JoinedAt = styled.div`
   width: 100%;
   font-weight: 300;
   text-align: center;
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   margin-bottom: 20px;
 `;
 
@@ -102,7 +102,7 @@ export const UserHeader = memo<Props>((props) => {
   const hideBio = useFeatureFlag({ name: 'disable_user_bios' });
 
   const smallerThanSmallTablet = windowSize
-    ? windowSize <= viewportWidths.smallTablet
+    ? windowSize <= viewportWidths.tablet
     : false;
 
   if (!isNilOrError(user)) {
@@ -149,7 +149,7 @@ export const UserHeader = memo<Props>((props) => {
             <EditProfileButton
               linkTo="/profile/edit"
               buttonStyle="text"
-              icon="pencil"
+              icon="edit"
               className="e2e-edit-profile"
               bgHoverColor={colors.background}
             >

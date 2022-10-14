@@ -44,6 +44,8 @@ describe('GetArea with streams', () => {
     };
     __setResponseFor(
       '/web_api/v1/areas/f93ad1a1-3a0c-4c3d-b225-e1b63ca782cb',
+      null,
+      null,
       httpResponse
     );
 

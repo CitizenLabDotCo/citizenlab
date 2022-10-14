@@ -48,6 +48,7 @@ import GetAppConfiguration, {
 } from 'resources/GetAppConfiguration';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import { UploadFile } from 'typings';
+import useProject from 'hooks/useProject';
 
 const Container = styled.div`
   background: ${colors.background};
@@ -55,7 +56,7 @@ const Container = styled.div`
     100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
   );
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
     props
   ) => props.theme.mobileTopBarHeight}px);
@@ -69,7 +70,7 @@ const PageContainer = styled.main`
   );
   position: relative;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
     props
   ) => props.theme.mobileTopBarHeight}px);
@@ -186,7 +187,11 @@ class IdeasNewPage extends React.Component<Props & WithRouterProps, State> {
   };
 
   handleOnIdeaSubmit = async () => {
-    const { locale, authUser, project, appConfiguration } = this.props;
+    const { locale, authUser, project, appConfiguration, location } =
+      this.props;
+    const { phase_id } = parse(location.search, {
+      ignoreQueryPrefix: true,
+    }) as { [key: string]: string };
     const {
       title,
       description,
@@ -228,6 +233,7 @@ class IdeasNewPage extends React.Component<Props & WithRouterProps, State> {
           project_id: project.id,
           location_point_geojson: locationGeoJSON,
           location_description: locationDescription,
+          ...(phase_id && { phase_ids: [phase_id] }),
         };
 
         const idea = await addIdea(ideaObject);
@@ -417,7 +423,12 @@ export default withRouter((inputProps: InputProps & WithRouterProps) => {
     name: 'dynamic_idea_form',
   });
 
-  if (isDynamicIdeaFormEnabled) {
+  const project = useProject({ projectSlug: inputProps.params.slug });
+
+  if (
+    isDynamicIdeaFormEnabled ||
+    project?.attributes.participation_method === 'native_survey'
+  ) {
     return <IdeasNewPageWithJSONForm {...inputProps} />;
   }
 

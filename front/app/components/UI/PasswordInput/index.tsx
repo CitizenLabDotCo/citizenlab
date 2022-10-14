@@ -16,12 +16,12 @@ export interface Props {
   id: string;
   password: string | null;
   onChange: (password: string) => void;
-  onBlur?: () => void;
+  onBlur?: (e: React.FormEvent<HTMLInputElement>) => void;
   setRef?: (element: HTMLInputElement) => void;
   autocomplete?: 'current-password' | 'new-password';
   placeholder?: string;
   isLoginPasswordInput?: boolean;
-  errors: PasswordErrors;
+  errors?: PasswordErrors;
 }
 
 const DEFAULT_MINIMUM_PASSWORD_LENGTH = 8;
@@ -50,7 +50,7 @@ const PasswordInput = ({
 
   if (!isNilOrError(tenant)) {
     const minimumPasswordLength =
-      tenant.data.attributes.settings.password_login?.minimum_length ||
+      tenant.attributes.settings.password_login?.minimum_length ||
       DEFAULT_MINIMUM_PASSWORD_LENGTH;
 
     return (

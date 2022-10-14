@@ -52,8 +52,10 @@ const config = {
     path: path.join(process.cwd(), 'build'),
     pathinfo: false,
     publicPath: '/',
-    filename: isDev ? '[name].js' : '[name].[contenthash].js',
-    chunkFilename: isDev ? '[name].chunk.js' : '[name].[contenthash].chunk.js',
+    filename: isDev ? '[name].js' : '[name].[contenthash].min.js',
+    chunkFilename: isDev
+      ? '[name].chunk.js'
+      : '[name].[contenthash].chunk.min.js',
   },
 
   mode: isDev ? 'development' : 'production',
@@ -87,11 +89,7 @@ const config = {
     optimization: {
       runtimeChunk: 'single',
       minimize: true,
-      splitChunks: {
-        chunks: 'all',
-      },
-      moduleIds: 'deterministic',
-      minimizer: [new CssMinimizerPlugin()],
+      minimizer: ['...', new CssMinimizerPlugin()],
     },
   }),
 
@@ -159,6 +157,7 @@ const config = {
         CIRCLE_SHA1: JSON.stringify(process.env.CIRCLE_SHA1),
         CIRCLE_BRANCH: JSON.stringify(process.env.CIRCLE_BRANCH),
         GOOGLE_MAPS_API_KEY: JSON.stringify(process.env.GOOGLE_MAPS_API_KEY),
+        MATOMO_HOST: JSON.stringify(process.env.MATOMO_HOST),
       },
       CL_CONFIG: JSON.stringify(clConfig),
     }),
@@ -202,8 +201,8 @@ const config = {
 
     !isDev &&
       new MiniCssExtractPlugin({
-        filename: '[name].[contenthash].css',
-        chunkFilename: '[name].[contenthash].chunk.css',
+        filename: '[name].[contenthash].min.css',
+        chunkFilename: '[name].[contenthash].chunk.min.css',
       }),
 
     sourceMapToSentry &&
