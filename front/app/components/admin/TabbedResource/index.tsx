@@ -63,8 +63,8 @@ const TabbedResource = ({
 }: Props) => {
   return (
     <>
-      <Box mb="20px" className="e2e-resource-header">
-        <Box mb="20px">
+      <Box mb="30px" className="e2e-resource-header">
+        <Box>
           <Title color="primary">{title}</Title>
           {subtitle && (
             <Text maxWidth="60em" color="textSecondary">
