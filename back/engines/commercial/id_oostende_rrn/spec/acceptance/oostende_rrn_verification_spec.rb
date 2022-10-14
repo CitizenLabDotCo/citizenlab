@@ -83,21 +83,21 @@ resource 'Verifications' do
       end
     end
 
-    describe do
-      let(:rrn) { '99071442848' }
+    # describe do
+    #   let(:rrn) { '99071442848' }
 
-      example '[error] Verify with a rrn of citizen not living in Ghent' do
-        stub_request(:get, "https://apidgqa.gent.be/services/wijkbudget/v1/WijkBudget/verificatie/#{rrn}")
-          .to_return(status: 200, body: { 'verificatieResultaat' => { 'geldig' => false,
-                                                                      'redenNietGeldig' => ['ERR11'] } }.to_json, headers: { 'Content-Type' => 'application/json' })
-        do_request
-        assert_status 422
-        expect(@user.reload.verified).to be false
-        expect(@user.custom_field_values[@custom_field.key]).to be_nil
-        json_response = json_parse response_body
-        expect(json_response).to include_response_error(:base, 'not_entitled', why: 'lives_outside')
-      end
-    end
+    #   example '[error] Verify with a rrn of citizen not living in Ghent' do
+    #     stub_request(:get, "https://apidgqa.gent.be/services/wijkbudget/v1/WijkBudget/verificatie/#{rrn}")
+    #       .to_return(status: 200, body: { 'verificatieResultaat' => { 'geldig' => false,
+    #                                                                   'redenNietGeldig' => ['ERR11'] } }.to_json, headers: { 'Content-Type' => 'application/json' })
+    #     do_request
+    #     assert_status 422
+    #     expect(@user.reload.verified).to be false
+    #     expect(@user.custom_field_values[@custom_field.key]).to be_nil
+    #     json_response = json_parse response_body
+    #     expect(json_response).to include_response_error(:base, 'not_entitled', why: 'lives_outside')
+    #   end
+    # end
 
     describe do
       let(:rrn) { '11010115780' }

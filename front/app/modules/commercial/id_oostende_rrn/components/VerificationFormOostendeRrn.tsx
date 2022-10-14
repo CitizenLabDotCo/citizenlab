@@ -118,13 +118,6 @@ const VerificationFormOostendeRrn = memo<Props & InjectedIntlProps>(
               setFormError(
                 formatMessage(messages.notEntitledTooYoungFormError)
               );
-            } else if (
-              get(error, 'json.errors.base[0].error') === 'not_entitled' &&
-              get(error, 'json.errors.base[0].why') === 'lives_outside'
-            ) {
-              setFormError(
-                formatMessage(messages.notEntitledLivesOutsideFormError)
-              );
             } else if (get(error, 'json.errors.rrn[0].error') === 'invalid') {
               setRrnError(formatMessage(messages.invalidRrnError));
             } else {

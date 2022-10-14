@@ -45,10 +45,6 @@ export default defineMessages({
     defaultMessage:
       "We couldn't find back information on your social security number",
   },
-  notEntitledLivesOutsideFormError: {
-    id: 'app.modules.id_oostende_rrn.notEntitledLivesOutsideFormError',
-    defaultMessage: "We can't verify you because you live outside of Oostende",
-  },
   notEntitledTooYoungFormError: {
     id: 'app.modules.id_oostende_rrn.notEntitledTooYoungFormError',
     defaultMessage: "We can't verify you because you are younger than 14 years",
