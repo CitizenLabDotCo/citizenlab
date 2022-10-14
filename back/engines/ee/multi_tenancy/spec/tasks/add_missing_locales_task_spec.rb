@@ -40,6 +40,7 @@ describe 'rake add_missing_locales' do
 
   it 'does nothing if the locale already exists but is empty' do
     create(:custom_field, key: 'gender', title_multiloc: { 'en' => '', 'nl-BE' => 'Geslacht' })
+    Rake::Task['fixes:add_missing_locales'].invoke('example.org', 'en')
 
     expect(CustomField.first.title_multiloc.length).to eq(2)
     expect(CustomField.first.title_multiloc['en']).to eq('')
