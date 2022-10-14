@@ -233,7 +233,8 @@ module MultiTenancy
 
       # @return [Boolean] true if an empty tenant should be created
       def create_empty_tenant?
-        @create_empty_tenant
+        # @create_empty_tenant
+        true
       end
     end
   end
