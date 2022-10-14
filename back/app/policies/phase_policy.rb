@@ -40,7 +40,7 @@ class PhasePolicy < ApplicationPolicy
   end
 
   def delete_inputs?
-    return unless active?
+    return false unless active?
 
     UserRoleService.new.can_moderate_project? record.project, user
   end
