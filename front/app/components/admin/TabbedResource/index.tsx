@@ -2,20 +2,14 @@ import React from 'react';
 
 // style
 import styled from 'styled-components';
-import { colors, isRtl, fontSizes } from 'utils/styleUtils';
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { colors, isRtl } from 'utils/styleUtils';
+import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 // typings
 import { ITab } from 'typings';
 
 // components
 import FeatureFlag from 'components/FeatureFlag';
 import Tab from './Tab';
-
-const Title = styled.h1`
-  font-size: ${fontSizes.xxxl}px;
-  line-height: 40px;
-  font-weight: 600;
-`;
 
 const TabbedNav = styled.nav`
   background: #fcfcfc;
@@ -70,16 +64,14 @@ const TabbedResource = ({
   return (
     <>
       <Box mb="20px" className="e2e-resource-header">
-        <>
-          <Box mb="20px">
-            <Title>{title}</Title>
-            {subtitle && (
-              <Text maxWidth="60em" color="textSecondary">
-                {subtitle}
-              </Text>
-            )}
-          </Box>
-        </>
+        <Box mb="20px">
+          <Title color="primary">{title}</Title>
+          {subtitle && (
+            <Text maxWidth="60em" color="textSecondary">
+              {subtitle}
+            </Text>
+          )}
+        </Box>
       </Box>
 
       {tabs && tabs.length > 0 && (
