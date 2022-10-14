@@ -39,7 +39,7 @@ type FormTitleMethodProps = {
   phaseFromUrl?: IPhaseData;
 };
 
-type ParticipationMethodConfig = {
+export type ParticipationMethodConfig = {
   /** We currently have 2 UIs for admins to edit the form definition. This
    * defines which UI, if any, the method uses */
   formEditor: 'simpleFormEditor' | 'surveyEditor' | null;
@@ -49,6 +49,7 @@ type ParticipationMethodConfig = {
   ) => ReactNode | JSX.Element | null;
   getFormTitle?: (props: FormTitleMethodProps) => void;
   showInputManager: boolean;
+  getPostType: () => 'defaultInput' | 'nativeSurvey';
 };
 
 const ideationConfig: ParticipationMethodConfig = {
@@ -65,6 +66,9 @@ const ideationConfig: ParticipationMethodConfig = {
         });
       }
     }
+  },
+  getPostType: () => {
+    return 'defaultInput';
   },
   getModalContent: (props: ModalContentMethodProps) => {
     if (props.ideaIdForSocialSharing && props.title && props.subtitle) {
@@ -115,6 +119,9 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
       });
     }
   },
+  getPostType: () => {
+    return 'nativeSurvey';
+  },
   getModalContent: (props: ModalContentMethodProps) => {
     return (
       <FormattedMessage
@@ -138,6 +145,9 @@ const informationConfig: ParticipationMethodConfig = {
   onFormSubmission: () => {
     return;
   },
+  getPostType: () => {
+    return 'defaultInput';
+  },
   showInputManager: false,
 };
 
@@ -149,6 +159,9 @@ const surveyConfig: ParticipationMethodConfig = {
   onFormSubmission: () => {
     return;
   },
+  getPostType: () => {
+    return 'defaultInput';
+  },
   showInputManager: false,
 };
 
@@ -156,6 +169,9 @@ const budgetingConfig: ParticipationMethodConfig = {
   formEditor: 'simpleFormEditor',
   getModalContent: () => {
     return null;
+  },
+  getPostType: () => {
+    return 'defaultInput';
   },
   onFormSubmission: (props: FormSubmissionMethodProps) => {
     if (props.ideaId && props.idea) {
@@ -202,6 +218,9 @@ const pollConfig: ParticipationMethodConfig = {
   onFormSubmission: () => {
     return;
   },
+  getPostType: () => {
+    return 'defaultInput';
+  },
   showInputManager: false,
 };
 
@@ -212,6 +231,9 @@ const volunteeringConfig: ParticipationMethodConfig = {
   },
   onFormSubmission: () => {
     return;
+  },
+  getPostType: () => {
+    return 'defaultInput';
   },
   showInputManager: false,
 };
