@@ -1,42 +1,85 @@
+import { useState, useEffect } from 'react';
+
 // services
-import {
-  analyticsStream,
-  Query,
-  QuerySchema,
-} from '../../services/analyticsFacts';
+import { analyticsStream } from '../../services/analyticsFacts';
+
+// parse
+import { parseTableData } from './parse';
 
 // utils
-import { getProjectFilter, getDateFilter } from '../../utils/query';
+import { referrersListQuery, referrersTotalQuery } from './query';
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 // typings
-import { QueryParameters } from './typings';
+import {
+  QueryParameters,
+  ReferrerListResponse,
+  ReferrerTotalsResponse,
+  ReferrersTotalRow,
+  TableRow,
+} from './typings';
 
-const referrersListQuery = ({
+export default function useVisitorReferrers({
   projectId,
   startAtMoment,
   endAtMoment,
-}: QueryParameters): Query => {
-  const referrersQuery: QuerySchema = {
-    fact: 'visit',
-    filters: {
-      dimension_user: {
-        role: ['citizen', null],
-      },
-      ...getProjectFilter('dimension_projects', projectId),
-      ...getDateFilter(
-        'dimension_date_last_action',
-        startAtMoment,
-        endAtMoment
-      ),
-    },
-    groups: ['dimension_referrer_type.name', 'referrer_name'],
-    aggregations: {
-      all: 'count',
-      visitor_id: 'count',
-    },
-  };
+  pageNumber,
+  pageSize,
+}: QueryParameters) {
+  const [tableData, setTableData] = useState<TableRow[] | NilOrError>();
+  const [totals, setTotals] = useState<ReferrersTotalRow | NilOrError>();
 
-  return {
-    query: referrersQuery,
-  };
-};
+  useEffect(() => {
+    if (isNilOrError(totals)) return;
+
+    const observable = analyticsStream<ReferrerListResponse>(
+      referrersListQuery({
+        projectId,
+        startAtMoment,
+        endAtMoment,
+        pageNumber,
+        pageSize,
+      })
+    ).observable;
+
+    const subscription = observable.subscribe(
+      (response: ReferrerListResponse | NilOrError) => {
+        if (isNilOrError(response)) {
+          setTableData(response);
+          return;
+        }
+
+        setTableData(parseTableData(response.data, totals));
+      }
+    );
+
+    return () => subscription.unsubscribe();
+  }, [projectId, startAtMoment, endAtMoment, pageNumber, pageSize, totals]);
+
+  useEffect(() => {
+    setTotals(undefined);
+
+    const observable = analyticsStream<ReferrerTotalsResponse>(
+      referrersTotalQuery({
+        projectId,
+        startAtMoment,
+        endAtMoment,
+      })
+    ).observable;
+
+    const subscription = observable.subscribe(
+      (response: ReferrerTotalsResponse | NilOrError) => {
+        if (isNilOrError(response)) {
+          setTotals(response);
+          return;
+        }
+
+        setTotals(response.data[0]);
+      }
+    );
+
+    return () => subscription.unsubscribe();
+  }, [projectId, startAtMoment, endAtMoment]);
+
+  return { tableData };
+}

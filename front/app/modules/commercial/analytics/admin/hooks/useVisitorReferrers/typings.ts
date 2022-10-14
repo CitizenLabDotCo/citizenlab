@@ -1,12 +1,15 @@
 import { Moment } from 'moment';
 import { ReferrerTypeName } from '../useVisitorReferrerTypes/typings';
 
-export interface QueryParameters {
+export interface QueryParameters extends QueryParametersWithoutPagination {
+  pageSize: number;
+  pageNumber: number;
+}
+
+export interface QueryParametersWithoutPagination {
   projectId: string | undefined;
   startAtMoment: Moment | null | undefined;
   endAtMoment: Moment | null | undefined;
-  pageSize: number;
-  pageNumber: number;
 }
 
 // Responses
@@ -14,7 +17,7 @@ export interface ReferrerListResponse {
   data: ReferrerRow[];
 }
 
-interface ReferrerRow {
+export interface ReferrerRow {
   count: number;
   count_visitor_id: number;
   'dimension_referrer_type.name': ReferrerTypeName;
@@ -22,7 +25,11 @@ interface ReferrerRow {
 }
 
 export interface ReferrerTotalsResponse {
-  data: any; // TODO
+  data: [ReferrersTotalRow]; // TODO
+}
+
+export interface ReferrersTotalRow {
+  // TODO
 }
 
 // Hook return value
