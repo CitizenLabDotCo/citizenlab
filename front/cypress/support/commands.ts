@@ -36,6 +36,7 @@ declare global {
       apiAddComment: typeof apiAddComment;
       apiRemoveComment: typeof apiRemoveComment;
       apiCreateProject: typeof apiCreateProject;
+      apiEditProject: typeof apiEditProject;
       apiCreateFolder: typeof apiCreateFolder;
       apiRemoveFolder: typeof apiRemoveFolder;
       apiRemoveProject: typeof apiRemoveProject;
@@ -779,6 +780,75 @@ export function apiCreateProject({
   });
 }
 
+export function apiEditProject({
+  projectId,
+  type,
+  title,
+  descriptionPreview,
+  description,
+  publicationStatus = 'published',
+  assigneeId,
+  surveyUrl,
+  surveyService,
+  maxBudget,
+}: {
+  projectId: string;
+  type?: 'timeline' | 'continuous';
+  title?: string;
+  descriptionPreview?: string;
+  description?: string;
+  publicationStatus?: 'draft' | 'published' | 'archived';
+  assigneeId?: string;
+  surveyUrl?: string;
+  maxBudget?: number;
+  surveyService?: 'typeform' | 'survey_monkey' | 'google_forms';
+}) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'PATCH',
+      url: `web_api/v1/projects/${projectId}`,
+      body: {
+        project: {
+          ...(type && { process_type: type }),
+          ...(publicationStatus && {
+            admin_publication_attributes: {
+              publication_status: publicationStatus,
+            },
+          }),
+          ...(title && {
+            title_multiloc: {
+              en: title,
+              'nl-BE': title,
+            },
+          }),
+          ...(descriptionPreview && {
+            description_preview_multiloc: {
+              en: descriptionPreview,
+              'nl-BE': descriptionPreview,
+            },
+          }),
+          ...(description && {
+            description_multiloc: {
+              en: description,
+              'nl-BE': description,
+            },
+          }),
+          ...(assigneeId && { default_assignee_id: assigneeId }),
+          ...(surveyUrl && { survey_embed_url: surveyUrl }),
+          ...(surveyService && { survey_service: surveyService }),
+          ...(maxBudget && { max_budget: maxBudget }),
+        },
+      },
+    });
+  });
+}
+
 export function apiCreateFolder({
   type,
   title,
@@ -1233,6 +1303,7 @@ Cypress.Commands.add(
 Cypress.Commands.add('apiAddComment', apiAddComment);
 Cypress.Commands.add('apiRemoveComment', apiRemoveComment);
 Cypress.Commands.add('apiCreateProject', apiCreateProject);
+Cypress.Commands.add('apiEditProject', apiEditProject);
 Cypress.Commands.add('apiCreateFolder', apiCreateFolder);
 Cypress.Commands.add('apiRemoveFolder', apiRemoveFolder);
 Cypress.Commands.add('apiRemoveProject', apiRemoveProject);

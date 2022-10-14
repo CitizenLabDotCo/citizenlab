@@ -198,14 +198,13 @@ export const getIdeaPostingRules = ({
           disabledReason: null,
           action: null,
         };
-      } else {
-        return {
-          show: true,
-          enabled: false,
-          disabledReason: signedIn ? 'notPermitted' : 'maybeNotPermitted',
-          action: null,
-        };
       }
+      return {
+        show: true,
+        enabled: false,
+        disabledReason: signedIn ? 'notPermitted' : 'maybeNotPermitted',
+        action: null,
+      };
     }
 
     if (
