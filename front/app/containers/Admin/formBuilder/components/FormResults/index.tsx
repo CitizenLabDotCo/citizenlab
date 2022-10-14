@@ -59,17 +59,16 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const phaseId = urlParams.get('phase_id');
   const project = useProject({ projectId });
   const phase = usePhase(phaseId);
-
-  if (isNilOrError(project)) {
-    return null;
-  }
-
   const formResults = useFormResults({
     projectId,
     phaseId,
   });
 
-  if (isNilOrError(formResults) || isNilOrError(locale)) {
+  if (
+    isNilOrError(formResults) ||
+    isNilOrError(locale) ||
+    isNilOrError(project)
+  ) {
     return null;
   }
 

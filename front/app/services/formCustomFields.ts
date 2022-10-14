@@ -193,7 +193,6 @@ export const downloadSurveyResults = async (
   const fileName = `${snakeCase(fileNameTitle[locale])}_${moment().format(
     'MM-DD-YYYY'
   )}.xlsx`;
-  console.log('fileName', fileName);
 
   const blob = await requestBlob(
     apiEndpoint,
