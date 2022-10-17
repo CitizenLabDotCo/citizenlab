@@ -5,9 +5,6 @@ import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
 import T from 'components/T';
 
-// styles
-import styled from 'styled-components';
-
 type CompletionBarProps = {
   bgColor: string;
   completed: number;
