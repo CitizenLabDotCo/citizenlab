@@ -1668,7 +1668,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visitsStatTooltipMessage": "\"Bezoeken\" is het aantal sessies. Als een persoon het platform meerdere keren heeft bezocht, wordt elk bezoek geteld.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.yesterday": "Gisteren:",
   "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.title": "Taal",
-  "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.visitorsTrafficSources": "Verkeersbronnen",
+  "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.visitorsTrafficSources": "Kanalen",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.visits": "Bezoeken",
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.title": "Bezoekerstypes",
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.visitors": "Bezoekers",
