@@ -9,6 +9,8 @@ module IdeaCustomFields
     attr_reader :errors
   end
 
+  class UpdatingSurveyWithResponsesError < StandardError; end
+
   class WebApi::V1::Admin::IdeaCustomFieldsController < ApplicationController
     CONSTANTIZER = {
       'Project' => {
@@ -55,8 +57,10 @@ module IdeaCustomFields
 
     def update_all
       authorize CustomField.new(resource: @custom_form), :update_all?, policy_class: IdeaCustomFieldPolicy
+      verify_no_responses @custom_form.participation_context
+
       update_fields
-      @custom_form.reload
+      @custom_form.reload if @custom_form.persisted?
       render json: ::WebApi::V1::CustomFieldSerializer.new(
         IdeaCustomFieldsService.new(@custom_form).configurable_fields,
         params: fastjson_params,
@@ -64,6 +68,8 @@ module IdeaCustomFields
       ).serialized_json
     rescue UpdateAllFailedError => e
       render json: { errors: e.errors }, status: :unprocessable_entity
+    rescue UpdatingSurveyWithResponsesError
+      render json: { error: :updating_survey_withresponses }, status: :unauthorized
     end
 
     # `upsert_by_code` cannot be used for extra fields, because they do not have a code.
@@ -237,6 +243,12 @@ module IdeaCustomFields
 
     def secure_constantize(key)
       CONSTANTIZER.fetch(params[:container_type])[key]
+    end
+
+    def verify_no_responses(participation_context)
+      return if !participation_context.native_survey? || participation_context.ideas_count == 0
+
+      raise UpdatingSurveyWithResponsesError
     end
   end
 end

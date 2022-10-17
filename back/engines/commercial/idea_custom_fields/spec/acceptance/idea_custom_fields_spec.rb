@@ -408,6 +408,29 @@ resource 'Idea Custom Fields' do
             }
           })
         end
+
+        example '[error] Updating custom fields in a continuous native survey project when there are responses' do
+          IdeaStatus.create_defaults
+          create :idea, project: context
+
+          do_request(custom_fields: [])
+
+          assert_status 401
+          expect(json_response_body).to eq({ error: 'updating_survey_withresponses' })
+        end
+
+        context 'in a continuous ideation project' do
+          let(:context) { create :continuous_project, participation_method: 'ideation' }
+
+          example 'Updating custom fields when there are responses' do
+            IdeaStatus.create_defaults
+            create :idea, project: context
+
+            do_request(custom_fields: [])
+
+            assert_status 200
+          end
+        end
       end
     end
   end
@@ -657,6 +680,16 @@ resource 'Idea Custom Fields' do
             type: 'custom_field',
             relationships: { options: { data: [] } }
           })
+        end
+
+        example '[error] Updating custom fields in a native survey phase when there are responses' do
+          IdeaStatus.create_defaults
+          create :idea, project: context.project, creation_phase: context
+
+          do_request(custom_fields: [])
+
+          assert_status 401
+          expect(json_response_body).to eq({ error: 'updating_survey_withresponses' })
         end
       end
     end
