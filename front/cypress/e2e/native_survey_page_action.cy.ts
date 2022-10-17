@@ -81,19 +81,19 @@ describe('Native survey project page actions', () => {
   it('tests actions when continuous survey project is active and accepting submissions', () => {
     // Unregistered user
     cy.visit(`/projects/${projectSlugContinous}`);
-    cy.contains('Take the survey').click({ force: true });
-    cy.contains('Please log in').should('exist');
+    cy.get('[data-testid="e2e-project-survey-button"]').click({ force: true });
+    cy.get('[data-testid="e2e-sign-up-in-modal"]').should('exist');
 
     // Regular user
     cy.setLoginCookie(userEmail, userPassword);
     cy.visit(`/projects/${projectSlugContinous}`);
-    cy.contains('Take the survey').click();
+    cy.get('[data-testid="e2e-project-survey-button"]').click();
     cy.url().should('include', `/projects/${projectSlugContinous}/ideas/new`);
 
     // Admin user
     cy.setAdminLoginCookie();
     cy.visit(`/projects/${projectSlugContinous}`);
-    cy.contains('Take the survey').click();
+    cy.get('[data-testid="e2e-project-survey-button"]').click();
     cy.url().should('include', `/projects/${projectSlugContinous}/ideas/new`);
   });
 
@@ -103,14 +103,14 @@ describe('Native survey project page actions', () => {
     cy.contains(
       "Unfortunately, you can't participate in this project anymore because it has been archived"
     );
-    cy.contains('Take the survey').should('not.exist');
+    cy.get('[data-testid="e2e-project-survey-button"]').should('not.exist');
     cy.contains('1 survey').should('not.exist');
   });
 
   it('tests actions when survey phase is not active', () => {
     cy.setLoginCookie(userEmail, userPassword);
     cy.visit(`/projects/${projectSlugTimeline}`);
-    cy.contains('Take the survey').click({ force: true });
+    cy.get('[data-testid="e2e-project-survey-button"]').click({ force: true });
     cy.contains('New submissions can only be added in active phases.').should(
       'exist'
     );
@@ -122,7 +122,7 @@ describe('Native survey project page actions', () => {
     cy.get('[type="checkbox"]').check();
     cy.setLoginCookie(userEmail, userPassword);
     cy.visit(`/projects/${projectSlugTimeline}`);
-    cy.contains('Take the survey').click({ force: true });
+    cy.get('[data-testid="e2e-project-survey-button"]').click({ force: true });
     cy.contains('New submissions can only be added in active phases.').should(
       'exist'
     );

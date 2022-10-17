@@ -64,7 +64,9 @@ export default class GetPhase extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    if (this.subscriptions) {
+      this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    }
   }
 
   render() {
