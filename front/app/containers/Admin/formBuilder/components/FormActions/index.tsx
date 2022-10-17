@@ -125,6 +125,7 @@ const FormActions = ({
             buttonStyle="primary"
             width="auto"
             minWidth="312px"
+            disabled={isEditingDisabled}
             onClick={() => {
               clHistory.push(editFormLink);
             }}
