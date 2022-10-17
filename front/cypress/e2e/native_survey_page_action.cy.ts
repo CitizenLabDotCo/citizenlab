@@ -131,7 +131,9 @@ describe('Native survey project page actions', () => {
   it('tests actions when unregistered users may submit survey responses', () => {
     cy.setAdminLoginCookie();
     cy.visit(`admin/projects/${projectIdContinuous}/permissions`);
-    cy.contains('Everyone').first().click({ force: true });
+    cy.get('#e2e-granular-permissions').within(() => {
+      cy.contains('Everyone').click({ force: true });
+    });
     cy.logout();
     cy.visit(`/projects/${projectSlugContinous}`);
     cy.get('[data-testid="e2e-project-survey-button"]').click({ force: true });
