@@ -57,16 +57,11 @@ module IdOostendeRrn
       reason = body.dig('verificatieResultaat', 'redenNietGeldig')
 
       raise Verification::VerificationService::NoMatchError if reason&.include? 'ERR10'
-      # raise Verification::VerificationService::NotEntitledError, 'lives_outside' if reason&.include? 'ERR11'
       raise Verification::VerificationService::NotEntitledError, 'too_young' if reason&.include? 'ERR12'
 
       raise Verification::VerificationService::NoMatchError unless body.dig('verificatieResultaat', 'geldig')
 
-      { uid: rrn }.compact
-    end
-
-    def map_wijk(_wijk_nr)
-      []
+      { uid: rrn }
     end
 
     # Validates the format of the Belgian rijksregisternummer, including a check on the last 2 check digits
