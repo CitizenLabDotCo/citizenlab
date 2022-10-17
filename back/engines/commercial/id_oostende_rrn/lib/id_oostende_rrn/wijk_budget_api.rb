@@ -11,10 +11,10 @@ module IdOostendeRrn
       @domain = case environment
       when 'dv'
         'wapaza-wijkprikkelsapi-01.azurewebsites.net'
-      # when 'qa'
-      #   'wapaza-wijkprikkelsapi-01.azurewebsites.net'
-      # when 'production'
-      #   'wapaza-wijkprikkelsapi-01.azurewebsites.net'
+      when 'qa'
+        'wapaza-wijkprikkelsapi-01.azurewebsites.net'
+      when 'production'
+        'wapaza-wijkprikkelsapi-01.azurewebsites.net'
       else
         raise "Unsupported environment #{environment} for IdOostendeRrn::WijkBudgetApi.new"
       end

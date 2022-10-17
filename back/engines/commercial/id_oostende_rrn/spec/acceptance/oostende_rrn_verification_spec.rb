@@ -12,10 +12,6 @@ resource 'Verifications' do
     token = Knock::AuthToken.new(payload: @user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
     header 'Content-Type', 'application/json'
-
-    @custom_field = create(:custom_field_select)
-    @cfo5 = create(:custom_field_option, custom_field: @custom_field)
-    @cfo11 = create(:custom_field_option, custom_field: @custom_field)
     configuration = AppConfiguration.instance
     configuration.settings['verification'] = {
       allowed: true,
@@ -24,12 +20,7 @@ resource 'Verifications' do
         {
           name: 'oostende_rrn',
           api_key: 'fake_api_key',
-          environment: 'qa',
-          custom_field_key: @custom_field.key,
-          wijk_mapping: {
-            '5' => @cfo5.key,
-            '11' => @cfo11.key
-          }
+          environment: 'qa'
         }
       ]
     }
@@ -42,10 +33,10 @@ resource 'Verifications' do
     end
 
     describe do
-      let(:rrn) { '85102317223' }
+      let(:rrn) { '73091000233' }
 
       example 'Verify with a valid rrn' do
-        stub_request(:get, "https://apidgqa.gent.be/services/wijkbudget/v1/WijkBudget/verificatie/#{rrn}")
+        stub_request(:get, "https://wapaza-wijkprikkelsapi-01.azurewebsites.net/services/wijkbudget-api/v1/api/WijkBudget/verificatie/#{rrn}")
           .to_return(status: 200, body: { 'verificatieResultaat' => { 'geldig' => true,
                                                                       'wijkNr' => '5' } }.to_json, headers: { 'Content-Type' => 'application/json' })
 
@@ -56,17 +47,16 @@ resource 'Verifications' do
           method_name: 'oostende_rrn',
           user_id: @user.id,
           active: true,
-          hashed_uid: '72ffb1981a194edc4ce282dfd6ecb06f44b12f352f1c3ab96946083b640cad20' # I changed this to match test diff, so not sure if I'm testing anything now
+          hashed_uid: '8904bc9894ae7ba9eeb1fb39ce3ac98bf8633e0008bce7d4e6621c9ca701c6cb' # I changed this to match test diff, so not sure if I'm testing anything now
         })
-        expect(@user.custom_field_values[@custom_field.key]).to eq @cfo5.key
       end
     end
 
     describe do
-      let(:rrn) { '85-10-23-172.23 ' }
+      let(:rrn) { '73-09-10-002.33 ' }
 
       example 'Verify with a valid rrn in non-normalized form' do
-        stub_request(:get, 'https://apidgqa.gent.be/services/wijkbudget/v1/WijkBudget/verificatie/85102317223')
+        stub_request(:get, 'https://wapaza-wijkprikkelsapi-01.azurewebsites.net/services/wijkbudget-api/v1/api/WijkBudget/verificatie/73091000233')
           .to_return(status: 200, body: { 'verificatieResultaat' => { 'geldig' => true,
                                                                       'wijkNr' => '15' } }.to_json, headers: { 'Content-Type' => 'application/json' })
 
@@ -77,39 +67,21 @@ resource 'Verifications' do
           method_name: 'oostende_rrn',
           user_id: @user.id,
           active: true,
-          hashed_uid: '72ffb1981a194edc4ce282dfd6ecb06f44b12f352f1c3ab96946083b640cad20' # I changed this to match test diff, so not sure if I'm testing anything now
+          hashed_uid: '8904bc9894ae7ba9eeb1fb39ce3ac98bf8633e0008bce7d4e6621c9ca701c6cb' # I changed this to match test diff, so not sure if I'm testing anything now
         })
-        expect(@user.custom_field_values[@custom_field.key]).to be_nil
       end
     end
-
-    # describe do
-    #   let(:rrn) { '99071442848' }
-
-    #   example '[error] Verify with a rrn of citizen not living in Ghent' do
-    #     stub_request(:get, "https://apidgqa.gent.be/services/wijkbudget/v1/WijkBudget/verificatie/#{rrn}")
-    #       .to_return(status: 200, body: { 'verificatieResultaat' => { 'geldig' => false,
-    #                                                                   'redenNietGeldig' => ['ERR11'] } }.to_json, headers: { 'Content-Type' => 'application/json' })
-    #     do_request
-    #     assert_status 422
-    #     expect(@user.reload.verified).to be false
-    #     expect(@user.custom_field_values[@custom_field.key]).to be_nil
-    #     json_response = json_parse response_body
-    #     expect(json_response).to include_response_error(:base, 'not_entitled', why: 'lives_outside')
-    #   end
-    # end
 
     describe do
       let(:rrn) { '11010115780' }
 
       example '[error] Verify with a rrn of citizen less than 14 year old' do
-        stub_request(:get, "https://apidgqa.gent.be/services/wijkbudget/v1/WijkBudget/verificatie/#{rrn}")
+        stub_request(:get, "https://wapaza-wijkprikkelsapi-01.azurewebsites.net/services/wijkbudget-api/v1/api/WijkBudget/verificatie/#{rrn}")
           .to_return(status: 200, body: { 'verificatieResultaat' => { 'geldig' => false,
                                                                       'redenNietGeldig' => ['ERR12'] } }.to_json, headers: { 'Content-Type' => 'application/json' })
         do_request
         assert_status 422
         expect(@user.reload.verified).to be false
-        expect(@user.custom_field_values[@custom_field.key]).to be_nil
         json_response = json_parse response_body
         expect(json_response).to include_response_error(:base, 'not_entitled', why: 'too_young')
       end
@@ -122,7 +94,6 @@ resource 'Verifications' do
         do_request
         assert_status 422
         expect(@user.reload.verified).to be false
-        expect(@user.custom_field_values[@custom_field.key]).to be_nil
         json_response = json_parse response_body
         expect(json_response).to include_response_error(:rrn, 'invalid')
       end
@@ -132,13 +103,12 @@ resource 'Verifications' do
       let(:rrn) { '85102311283' }
 
       example '[error] Verify with a non-matching rrn' do
-        stub_request(:get, "https://apidgqa.gent.be/services/wijkbudget/v1/WijkBudget/verificatie/#{rrn}")
+        stub_request(:get, "https://wapaza-wijkprikkelsapi-01.azurewebsites.net/services/wijkbudget-api/v1/api/WijkBudget/verificatie/#{rrn}")
           .to_return(status: 200, body: { 'verificatieResultaat' => { 'geldig' => false,
                                                                       'redenNietGeldig' => ['ERR10'] } }.to_json, headers: { 'Content-Type' => 'application/json' })
         do_request
         assert_status 422
         expect(@user.reload.verified).to be false
-        expect(@user.custom_field_values[@custom_field.key]).to be_nil
         json_response = json_parse response_body
         expect(json_response).to include_response_error(:base, 'no_match')
       end
@@ -148,7 +118,7 @@ resource 'Verifications' do
       before do
         other_user = create(:user)
         @rrn = '85102317223'
-        stub_request(:get, "https://apidgqa.gent.be/services/wijkbudget/v1/WijkBudget/verificatie/#{rrn}")
+        stub_request(:get, "https://wapaza-wijkprikkelsapi-01.azurewebsites.net/services/wijkbudget-api/v1/api/WijkBudget/verificatie/#{rrn}")
           .to_return(status: 200, body: { 'verificatieResultaat' => { 'geldig' => true,
                                                                       'wijkNr' => '5' } }.to_json, headers: { 'Content-Type' => 'application/json' })
         Verification::VerificationService.new.verify_sync(
