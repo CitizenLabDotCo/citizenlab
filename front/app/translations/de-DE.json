@@ -1520,7 +1520,6 @@
   "app.modules.id_oostende_rrn.emptyFieldError": "Dies kann nicht leer sein",
   "app.modules.id_oostende_rrn.invalidRrnError": "Ungültige Sozialversicherungsnummer",
   "app.modules.id_oostende_rrn.noMatchFormError": "Wir konnten keine Informationen über Ihre Sozialversicherungsnummer finden",
-  "app.modules.id_oostende_rrn.notEntitledLivesOutsideFormError": "Wir können Sie nicht verifizieren, weil Sie außerhalb von Oostende wohnen",
   "app.modules.id_oostende_rrn.notEntitledTooYoungFormError": "Wir können Sie nicht verifizieren, weil Sie jünger als 14 Jahre sind",
   "app.modules.id_oostende_rrn.oostendeRrnHelp": "Ihre Sozialversicherungsnummer befindet sich auf der Rückseite Ihres digitalen Personalausweises",
   "app.modules.id_oostende_rrn.rrnLabel": "Sozialversicherungsnummer",
