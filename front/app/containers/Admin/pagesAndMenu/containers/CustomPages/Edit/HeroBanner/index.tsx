@@ -49,6 +49,12 @@ const EditCustomPageHeroBannerForm = ({
     if (!isNilOrError(customPage)) {
       setLocalSettings({
         ...customPage.attributes,
+        // if the backend sends an empty header_bg object, with null properties for
+        // images sizes, we set the whole object to null to trigger the same
+        // fe validation as if the user had removed the image
+        ...(customPage.attributes.header_bg?.large == null && {
+          header_bg: null,
+        }),
       });
     }
   }, [customPage]);
