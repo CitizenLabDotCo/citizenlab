@@ -1520,7 +1520,6 @@
   "app.modules.id_oostende_rrn.emptyFieldError": "Este campo no puede estar vacío.",
   "app.modules.id_oostende_rrn.invalidRrnError": "Número de seguridad social inválido",
   "app.modules.id_oostende_rrn.noMatchFormError": "No hemos podido encontrar información sobre su número de seguridad social",
-  "app.modules.id_oostende_rrn.notEntitledLivesOutsideFormError": "We can't verify you because you live outside of Oostende",
   "app.modules.id_oostende_rrn.notEntitledTooYoungFormError": "No podemos verificarle porque es menor de 14 años",
   "app.modules.id_oostende_rrn.oostendeRrnHelp": "Su número de seguridad social aparece en el reverso de su documento de identidad digital",
   "app.modules.id_oostende_rrn.rrnLabel": "Número de la seguridad social",
