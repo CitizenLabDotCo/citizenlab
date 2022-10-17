@@ -49,12 +49,6 @@ const EditCustomPageHeroBannerForm = ({
     if (!isNilOrError(customPage)) {
       setLocalSettings({
         ...customPage.attributes,
-        // if the backend sends an empty header_bg object, with null properties for
-        // images sizes, we set the whole object to null to trigger the same
-        // fe validation as if the user had removed the image
-        ...(customPage.attributes.header_bg?.large == null && {
-          header_bg: null,
-        }),
       });
     }
   }, [customPage]);
@@ -68,6 +62,25 @@ const EditCustomPageHeroBannerForm = ({
       return;
     }
 
+    // this is a hack. If both objects have a "large" key under header_bg with a null value,
+    // it means the image was initialized (with the large: null value) on the server
+    // and hasn't been updated by the user locally. we set the whole value to null
+    // to trigger the FE error message. the first triple equals is on purpose, we want to
+    // only trigger this when the value is explicitly null and not undefined
+    if (
+      localSettings.header_bg?.large === null &&
+      customPage.attributes.header_bg?.large === null
+    ) {
+      setLocalSettings({
+        ...localSettings,
+        header_bg: null,
+      });
+      setFormStatus('error');
+      return;
+    }
+
+    // will be null if set null above, or if the user removes
+    // an existing image
     if (localSettings?.header_bg == null) {
       setFormStatus('error');
       return;
