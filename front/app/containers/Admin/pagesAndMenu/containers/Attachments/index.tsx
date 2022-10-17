@@ -1,28 +1,28 @@
 import React from 'react';
 
 // components
-import SectionFormWrapper from '../../components/SectionFormWrapper';
 import {
+  Box,
+  Button,
   IconTooltip,
   Label,
-  Button,
-  Box,
 } from '@citizenlab/cl2-component-library';
 import { SectionField } from 'components/admin/Section';
+import SectionFormWrapper from '../../components/SectionFormWrapper';
 
 // i18n
-import messages from './messages';
+import HelmetIntl from 'components/HelmetIntl';
 import useLocalize from 'hooks/useLocalize';
 import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import HelmetIntl from 'components/HelmetIntl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 // form
-import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { object, mixed } from 'yup';
-import FileUploader from 'components/HookForm/FileUploader';
 import Feedback from 'components/HookForm/Feedback';
+import FileUploader from 'components/HookForm/FileUploader';
+import { FormProvider, useForm } from 'react-hook-form';
+import { mixed, object } from 'yup';
 
 // typings
 import { UploadFile } from 'typings';
@@ -31,17 +31,17 @@ import { UploadFile } from 'typings';
 import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 
 // hooks
-import { useParams } from 'react-router-dom';
-import useRemoteFiles from 'hooks/useRemoteFiles';
 import useCustomPage from 'hooks/useCustomPage';
+import useRemoteFiles from 'hooks/useRemoteFiles';
+import { useParams } from 'react-router-dom';
 
 // constants
-import { PAGES_MENU_CUSTOM_PATH } from '../../routes';
 import { pagesAndMenuBreadcrumb } from '../../breadcrumbs';
+import { ADMIN_PAGES_MENU_CUSTOM_PAGE_PATH } from '../../routes';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 type FormValues = {
   local_page_files: UploadFile[] | null;
@@ -114,7 +114,7 @@ const AttachmentsForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
               },
               {
                 label: localize(customPage.attributes.title_multiloc),
-                linkTo: `${PAGES_MENU_CUSTOM_PATH}/${customPageId}/content`,
+                linkTo: `${ADMIN_PAGES_MENU_CUSTOM_PAGE_PATH}/${customPageId}/content`,
               },
               {
                 label: formatMessage(messages.pageTitle),

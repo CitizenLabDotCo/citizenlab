@@ -1,14 +1,14 @@
+import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
+import navbarItems from 'hooks/fixtures/navbarItems';
 import React from 'react';
-import { render, screen, fireEvent } from 'utils/testUtils/rtl';
+import { deletePage } from 'services/pages';
+import clHistory from 'utils/cl-router/history';
+import { fireEvent, render, screen } from 'utils/testUtils/rtl';
 import VisibleNavbarItemList from '.';
 import {
-  reorderNavbarItem,
   removeNavbarItem,
+  reorderNavbarItem,
 } from '../../../../services/navbar';
-import { deletePage } from 'services/pages';
-import { PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
-import navbarItems from 'hooks/fixtures/navbarItems';
-import clHistory from 'utils/cl-router/history';
 
 jest.mock('services/locale');
 jest.mock('services/appConfiguration');
@@ -75,7 +75,7 @@ describe('<VisibleNavbarItemList />', () => {
     fireEvent.click(editButtons[1]);
 
     expect(clHistory.push).toHaveBeenCalledWith(
-      `${PAGES_MENU_PATH}/navbar-items/edit/${navbarItems[1].id}`
+      `${ADMIN_PAGES_MENU_PATH}/navbar-items/edit/${navbarItems[1].id}`
     );
   });
 
@@ -88,7 +88,7 @@ describe('<VisibleNavbarItemList />', () => {
     fireEvent.click(editButtons[6]);
 
     expect(clHistory.push).toHaveBeenCalledWith(
-      `${PAGES_MENU_PATH}/pages/edit/${navbarItems[6].relationships.static_page.data?.id}`
+      `${ADMIN_PAGES_MENU_PATH}/pages/edit/${navbarItems[6].relationships.static_page.data?.id}`
     );
   });
 

@@ -11,7 +11,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // utils
-import { PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
+import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 
 export default () => {
   const featureEnabled = useFeatureFlag({ name: 'customizable_navbar' });
@@ -23,7 +23,7 @@ export default () => {
       {...messages.policiesSubtitlePremium}
       values={{
         navigationLink: (
-          <StyledLink to={PAGES_MENU_PATH}>
+          <StyledLink to={ADMIN_PAGES_MENU_PATH}>
             <FormattedMessage {...messages.linkToNavigation} />
           </StyledLink>
         ),

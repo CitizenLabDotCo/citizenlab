@@ -4,7 +4,7 @@ import CTAButtonFields from 'containers/Admin/pagesAndMenu/containers/CustomPage
 import BannerHeaderFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerHeaderFields';
 import BannerImageFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerImageFields';
 import LayoutSettingField from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/LayoutSettingField';
-import { PAGES_MENU_CUSTOM_PATH } from 'containers/Admin/pagesAndMenu/routes';
+import { ADMIN_PAGES_MENU_CUSTOM_PAGE_PATH } from 'containers/Admin/pagesAndMenu/routes';
 import useCustomPage from 'hooks/useCustomPage';
 import { forOwn, isEqual } from 'lodash-es';
 import React, { useEffect, useState } from 'react';
@@ -161,7 +161,7 @@ const EditCustomPageHeroBannerForm = ({
             },
             {
               label: localize(customPage.attributes.title_multiloc),
-              linkTo: `${PAGES_MENU_CUSTOM_PATH}/${customPageId}/content`,
+              linkTo: `${ADMIN_PAGES_MENU_CUSTOM_PAGE_PATH}/${customPageId}/content`,
             },
             { label: formatMessage(messages.heroBannerTitle) },
           ]}
