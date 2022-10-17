@@ -968,7 +968,7 @@
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.xVolunteers": "{x, plural, =0 {nema volontera} one {# volonter} other {# volontera}}",
   "app.containers.AdminPage.ProjectEdit.addNewContribution": "Dodaj doprinos",
   "app.containers.AdminPage.ProjectEdit.addNewIdea": "Dodaj ideju",
-  "app.containers.AdminPage.ProjectEdit.addNewInput": "Add an input",
+  "app.containers.AdminPage.ProjectEdit.addNewInput": "Dodajte unos",
   "app.containers.AdminPage.ProjectEdit.addNewIssue": "Dodaj komentar",
   "app.containers.AdminPage.ProjectEdit.addNewOption": "Dodaj opciju",
   "app.containers.AdminPage.ProjectEdit.addNewProject": "Dodaj projekt",
