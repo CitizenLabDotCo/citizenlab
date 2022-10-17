@@ -487,7 +487,7 @@
   "app.containers.Admin.PagesAndMenu.heroBannerMessageSuccess": "Бaнер херојa сaчувaн",
   "app.containers.Admin.PagesAndMenu.heroBannerSaveButton": "Сaчувaј бaнер херојa",
   "app.containers.Admin.PagesAndMenu.homeTitle": "Почетна",
-  "app.containers.Admin.PagesAndMenu.missingOneLocaleError": "Provide content at least one language",
+  "app.containers.Admin.PagesAndMenu.missingOneLocaleError": "Унесите садржај најмање један језик",
   "app.containers.Admin.PagesAndMenu.pageHeader": "Pages",
   "app.containers.Admin.PagesAndMenu.pagesMenuMetaTitle": "Pages & menu | {orgName}",
   "app.containers.Admin.PagesAndMenu.pagesMetaTitle": "Pages | {orgName}",
