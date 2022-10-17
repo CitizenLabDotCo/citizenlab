@@ -1520,7 +1520,6 @@
   "app.modules.id_oostende_rrn.emptyFieldError": "Ovo polje ne može biti prazno.",
   "app.modules.id_oostende_rrn.invalidRrnError": "Nevaljani broj socijalnog osiguranja",
   "app.modules.id_oostende_rrn.noMatchFormError": "Nismo mogli pronaći podatke o vašem broju socijalnog osiguranja",
-  "app.modules.id_oostende_rrn.notEntitledLivesOutsideFormError": "Ne možemo vas potvrditi jer živite izvan Oostendea",
   "app.modules.id_oostende_rrn.notEntitledTooYoungFormError": "Ne možemo vas potvrditi jer ste mlađi od 14 godina",
   "app.modules.id_oostende_rrn.oostendeRrnHelp": "Vaš broj socijalnog osiguranja prikazan je na poleđini vaše digitalne osobne karte",
   "app.modules.id_oostende_rrn.rrnLabel": "broj socijalnog osiguranja",
