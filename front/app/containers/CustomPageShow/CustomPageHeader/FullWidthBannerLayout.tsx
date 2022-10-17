@@ -45,6 +45,8 @@ const FullWidthBannerLayout = ({
         />
       </Header>
       <AdminCustomPageEditButton
+        // check mobile version
+        // check if we can use path function instead
         linkTo={`${ADMIN_PAGES_MENU_CUSTOM_PAGE_PATH}/${pageData.id}`}
       />
     </Container>
