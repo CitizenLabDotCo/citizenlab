@@ -189,7 +189,10 @@ export const FormEdit = ({
               isEditingDisabled={isEditingDisabled}
             />
             <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
-              <FormBuilderToolbox onAddField={onAddField} />
+              <FormBuilderToolbox
+                onAddField={onAddField}
+                isEditingDisabled={isEditingDisabled}
+              />
               <StyledRightColumn>
                 <Box width="1000px">
                   {hasErrors && (
