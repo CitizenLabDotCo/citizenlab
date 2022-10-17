@@ -84,12 +84,12 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         borderRadius="3px"
         px="12px"
         py="4px"
-        mb="12px"
+        mt="0px"
+        mb="32px"
         role="alert"
         display="flex"
         justifyContent="space-between"
         alignItems="center"
-        mt="32px"
       >
         <Box display="flex" gap="16px" alignItems="center">
           <Icon
@@ -103,7 +103,7 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           </Text>
         </Box>
       </Box>
-      <Box>
+      <Box maxWidth="524px">
         {results.map(
           ({ question, inputType, answers, totalResponses }, index) => {
             const inputTypeText = get(messages, inputType, '');
@@ -111,13 +111,13 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
               <Box
                 key={index}
                 data-cy={`e2e-${snakeCase(question[locale])}`}
-                mb="32px"
+                mb="56px"
               >
                 <Title variant="h3" mb="0">
                   <T value={question} />
                 </Title>
                 {inputTypeText && (
-                  <Text variant="bodyS" color="textSecondary">
+                  <Text variant="bodyS" color="textSecondary" mb="0">
                     {formatMessage(inputTypeText)}
                   </Text>
                 )}

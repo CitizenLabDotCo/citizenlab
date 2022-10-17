@@ -5,12 +5,23 @@ import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
 import T from 'components/T';
 
+// styles
+import styled from 'styled-components';
+
 type CompletionBarProps = {
   bgColor: string;
   completed: number;
   leftLabel?: Multiloc;
   rightLabel?: string;
 };
+
+const CompletionBox = styled.div`
+  overflow: hidden;
+  border-radius: 3px;
+  height: 16px;
+  width: 100%;
+  border: 1px solid ${colors.divider};
+`;
 
 const CompletionBar = ({
   bgColor,
@@ -33,14 +44,9 @@ const CompletionBar = ({
         )}
       </Box>
     )}
-    <Box
-      height="16px"
-      width="100%"
-      borderRadius="3px"
-      border={`1px solid ${colors.divider};`}
-    >
+    <CompletionBox>
       <Box height="100%" width={`${completed}%`} bgColor={bgColor} />
-    </Box>
+    </CompletionBox>
   </Box>
 );
 
