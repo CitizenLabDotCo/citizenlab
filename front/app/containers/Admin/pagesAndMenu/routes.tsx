@@ -68,31 +68,7 @@ export default () => ({
       ],
     },
     {
-      path: 'bottom-info-section',
-      element: (
-        <PageLoading>
-          <HomepageBottomInfoForm />
-        </PageLoading>
-      ),
-    },
-    {
-      path: 'top-info-section',
-      element: (
-        <PageLoading>
-          <HomepageTopInfoSection />
-        </PageLoading>
-      ),
-    },
-    {
-      path: 'homepage-banner',
-      element: (
-        <PageLoading>
-          <HomepageHeroBannerForm />
-        </PageLoading>
-      ),
-    },
-    {
-      path: HOMEPAGE_PATH,
+      path: HOMEPAGE_PATH, // /homepage
       element: (
         <PageLoading>
           <EditHomepage />
@@ -100,7 +76,31 @@ export default () => ({
       ),
     },
     {
-      path: CUSTOM_PAGES_PATH, //pages
+      path: `${HOMEPAGE_PATH}/bottom-info-section`, // /homepage/bottom-info-section
+      element: (
+        <PageLoading>
+          <HomepageBottomInfoForm />
+        </PageLoading>
+      ),
+    },
+    {
+      path: `${HOMEPAGE_PATH}/top-info-section`, // /homepage/top-info-section
+      element: (
+        <PageLoading>
+          <HomepageTopInfoSection />
+        </PageLoading>
+      ),
+    },
+    {
+      path: `${HOMEPAGE_PATH}/homepage-banner`, // /homepage/homepage-banner
+      element: (
+        <PageLoading>
+          <HomepageHeroBannerForm />
+        </PageLoading>
+      ),
+    },
+    {
+      path: CUSTOM_PAGES_PATH, // pages
       element: <CustomPagesIndex />,
       children: [
         {
