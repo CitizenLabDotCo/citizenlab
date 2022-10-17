@@ -111,7 +111,11 @@ module Analytics
     end
 
     def aggregation_alias(column, aggregation)
-      "#{aggregation}_#{column.tr('.', '_')}"
+      if aggregation == 'count' && column == 'all'
+        'count'
+      else
+        "#{aggregation}_#{column.tr('.', '_')}"
+      end
     end
 
     def extract_aggregation_name(attribute)

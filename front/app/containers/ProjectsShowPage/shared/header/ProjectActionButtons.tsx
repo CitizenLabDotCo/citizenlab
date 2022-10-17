@@ -96,10 +96,6 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     return null;
   }
 
-  const postingIsEnabled =
-    project.attributes.posting_enabled ||
-    currentPhase?.attributes.posting_enabled;
-
   const { enabled, disabledReason } = getSurveyTakingRules({
     project,
     phaseContext: currentPhase,
@@ -219,7 +215,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           fontWeight="500"
         />
       )}
-      {showNativeSurvey && !hasProjectEnded && postingIsEnabled && (
+      {showNativeSurvey && !hasProjectEnded && (
         <IdeaButton
           id="project-survey-button"
           projectId={project.id}

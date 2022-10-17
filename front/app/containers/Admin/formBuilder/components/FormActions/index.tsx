@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
+import { darken } from 'polished';
 
 // components
-import { Toggle, Box, Title } from '@citizenlab/cl2-component-library';
+import { Toggle, Box, Title, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import T from 'components/T';
+import Modal from 'components/UI/Modal';
 
 // routing
 import clHistory from 'utils/cl-router/history';
@@ -19,8 +21,13 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
 import { useParams } from 'react-router-dom';
-import useProject from 'hooks/useProject';
 import useFormSubmissionCount from 'hooks/useFormSubmissionCount';
+
+// styles
+import { colors } from 'utils/styleUtils';
+
+// services
+import { deleteFormResults } from 'services/formCustomFields';
 
 type FormActionsProps = {
   phaseId?: string;
@@ -45,13 +52,21 @@ const FormActions = ({
   const { projectId } = useParams() as {
     projectId: string;
   };
-  const project = useProject({ projectId });
-
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const submissionCount = useFormSubmissionCount({
     projectId,
     phaseId,
-    projectType: project?.attributes.process_type,
   });
+  const closeModal = () => {
+    setShowDeleteModal(false);
+  };
+  const openModal = () => {
+    setShowDeleteModal(true);
+  };
+  const deleteResults = async () => {
+    await deleteFormResults(projectId, phaseId);
+    closeModal();
+  };
 
   if (!isNilOrError(submissionCount)) {
     return (
@@ -121,6 +136,59 @@ const FormActions = ({
             {formatMessage(messages.viewSurveyText)}
           </Button>
         </Box>
+        <Box
+          display="flex"
+          alignItems="flex-start"
+          flexDirection="row"
+          width="100%"
+          justifyContent="space-between"
+          mt="32px"
+        >
+          <Button
+            icon="delete"
+            width="auto"
+            minWidth="312px"
+            bgColor="transparent"
+            borderColor={colors.red600}
+            iconColor={colors.red600}
+            textColor={colors.red600}
+            bgHoverColor={darken(0.12, colors.red600)}
+            onClick={openModal}
+          >
+            {formatMessage(messages.deleteSurveyResults)}
+          </Button>
+        </Box>
+        <Modal opened={showDeleteModal} close={closeModal}>
+          <Box display="flex" flexDirection="column" width="100%" p="20px">
+            <Box mb="40px">
+              <Title variant="h3" color="primary">
+                {formatMessage(messages.deleteResultsConfirmationQuestion)}
+              </Title>
+              <Text color="primary" fontSize="l">
+                {formatMessage(messages.deleteResultsInfo)}
+              </Text>
+            </Box>
+            <Box
+              display="flex"
+              flexDirection="row"
+              width="100%"
+              alignItems="center"
+            >
+              <Button
+                icon="delete"
+                buttonStyle="delete"
+                width="auto"
+                mr="20px"
+                onClick={deleteResults}
+              >
+                {formatMessage(messages.confirmDeleteButtonText)}
+              </Button>
+              <Button buttonStyle="secondary" width="auto" onClick={closeModal}>
+                {formatMessage(messages.cancelDeleteButtonText)}
+              </Button>
+            </Box>
+          </Box>
+        </Modal>
       </Box>
     );
   }
