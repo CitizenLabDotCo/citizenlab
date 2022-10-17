@@ -41,6 +41,7 @@ const DeleteFormResultsNotice = ({
     alignItems="center"
     mb="16px"
     px="16px"
+    data-cy="e2e-form-delete-results-notice"
   >
     <Icon name="alert-circle" fill={colors.teal700} />
     <Text ml="16px" color="teal700">
@@ -50,6 +51,7 @@ const DeleteFormResultsNotice = ({
     {redirectToSurveyPage ? (
       <StyledLink
         to={`/admin/projects/${projectId}/native-survey`}
+        data-cy="e2e-delete-form-results-notice-link"
         onlyActiveOnIndex
       >
         {formatMessage(messages.deleteResults)}
