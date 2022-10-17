@@ -1134,7 +1134,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.number": "Tal",
   "app.containers.AdminPage.ProjectEdit.survey.open": "Öppna",
   "app.containers.AdminPage.ProjectEdit.survey.openForSubmissions": "Öppet för bidrag",
-  "app.containers.AdminPage.ProjectEdit.survey.questionDescription": "Frågebeskrivning",
   "app.containers.AdminPage.ProjectEdit.survey.questionTitle": "Frågetitel",
   "app.containers.AdminPage.ProjectEdit.survey.range": "Intervall",
   "app.containers.AdminPage.ProjectEdit.survey.removeAnswer": "Ta bort svar",
