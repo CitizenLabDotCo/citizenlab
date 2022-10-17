@@ -1,12 +1,21 @@
 import React from 'react';
 
 // components
+import { fontSizes } from 'utils/styleUtils';
+import styled from 'styled-components';
 import { Box } from '@citizenlab/cl2-component-library';
 import StickyContainer from './StickyContainer';
 import Breadcrumbs, { TBreadcrumbs } from 'components/UI/Breadcrumbs';
-import PageTitle from 'components/admin/PageTitle';
 import PageWrapper from 'components/admin/PageWrapper';
 import { SectionDescription } from 'components/admin/Section';
+
+const PageTitle = styled.h1`
+  font-size: ${fontSizes.xxxl}px;
+  line-height: 40px;
+  font-weight: 600;
+  padding: 0;
+  margin: 0;
+`;
 
 interface Props {
   breadcrumbs?: TBreadcrumbs;
@@ -16,6 +25,7 @@ interface Props {
   stickyMenuContents?: JSX.Element | JSX.Element[];
   rightSideCTA?: JSX.Element | JSX.Element[];
   flatTopBorder?: boolean;
+  badge?: JSX.Element;
 }
 
 const SectionFormWrapper = ({
@@ -26,6 +36,7 @@ const SectionFormWrapper = ({
   stickyMenuContents,
   rightSideCTA,
   flatTopBorder,
+  badge,
 }: Props) => {
   return (
     <>
@@ -37,7 +48,10 @@ const SectionFormWrapper = ({
       <Box display="flex" justifyContent="space-between">
         {title && (
           <Box mb="20px">
-            <PageTitle>{title}</PageTitle>
+            <Box display="flex" alignItems="center">
+              <PageTitle>{title}</PageTitle>{' '}
+              {badge && <Box ml="20px">{badge}</Box>}
+            </Box>
             {subtitle && <SectionDescription>{subtitle}</SectionDescription>}
           </Box>
         )}

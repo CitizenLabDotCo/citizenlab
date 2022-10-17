@@ -32,6 +32,7 @@ interface Props {
   avatarsFieldComponent?: ReactElement;
   ctaButtonFieldsComponent?: ReactElement;
   outletSectionEnd?: ReactElement;
+  badge?: JSX.Element;
 }
 
 const GenericHeroBannerForm = ({
@@ -49,12 +50,14 @@ const GenericHeroBannerForm = ({
   bannerImageFieldsComponent,
   layoutSettingFieldComponent,
   ctaButtonFieldsComponent,
+  badge,
 }: Props) => {
   return (
     <>
       <SectionFormWrapper
         breadcrumbs={breadcrumbs}
         title={title}
+        badge={badge}
         stickyMenuContents={
           <SubmitWrapper
             status={formStatus}
