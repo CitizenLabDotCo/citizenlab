@@ -1,30 +1,30 @@
 import React from 'react';
 
 // components
-import CustomPageHeader from './CustomPageHeader';
-import TopInfoSection from './TopInfoSection';
-import { Container, Content } from 'containers/LandingPage';
-import { Helmet } from 'react-helmet';
+import ContentContainer from 'components/ContentContainer';
 import Fragment from 'components/Fragment';
 import FileAttachments from 'components/UI/FileAttachments';
-import ContentContainer from 'components/ContentContainer';
+import { Container, Content } from 'containers/LandingPage';
+import { Helmet } from 'react-helmet';
+import CustomPageHeader from './CustomPageHeader';
+import TopInfoSection from './TopInfoSection';
 
 // hooks
-import { useParams } from 'react-router-dom';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import useCustomPageBySlug from 'hooks/useCustomPageBySlug';
 import useResourceFiles from 'hooks/useResourceFiles';
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import { useParams } from 'react-router-dom';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
 import useLocalize from 'hooks/useLocalize';
+import { injectIntl } from 'utils/cl-intl';
 
 // styling
 import styled from 'styled-components';
-import { media, fontSizes, isRtl } from 'utils/styleUtils';
+import { fontSizes, isRtl, media } from 'utils/styleUtils';
 
 const PageTitle = styled.h1`
   color: ${({ theme }) => theme.colors.tenantText};
@@ -82,7 +82,7 @@ const CustomPageShow = () => {
         title={`${localize(attributes.title_multiloc)} | ${localizedOrgName}`}
       />
       {attributes.banner_enabled && (
-        <CustomPageHeader pageAttributes={attributes} />
+        <CustomPageHeader pageData={page} pageAttributes={attributes} />
       )}
       <Content>
         <Fragment

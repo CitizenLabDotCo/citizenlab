@@ -1,30 +1,30 @@
-import React from 'react';
-import { ICustomPageAttributes } from 'services/customPages';
-
-// components
-import HeaderContent from './HeaderContent';
+import { ADMIN_PAGES_MENU_CUSTOM_PAGE_PATH } from 'containers/Admin/pagesAndMenu/routes';
 import {
-  HeaderImageBackground,
   Container,
   Header,
   HeaderImage,
+  HeaderImageBackground,
   HeaderImageOverlay,
 } from 'containers/LandingPage/SignedOutHeader/FullWidthBannerLayout';
-
+import React from 'react';
+import { ICustomPageData } from 'services/customPages';
+import AdminCustomPageEditButton from './AdminCustomPageEditButton';
+import HeaderContent from './HeaderContent';
 export interface Props {
   className?: string;
   imageColor?: string;
   imageOpacity?: number;
-  pageAttributes: ICustomPageAttributes;
+  pageData: ICustomPageData;
 }
 
 const FullWidthBannerLayout = ({
   className,
   imageColor,
   imageOpacity,
-  pageAttributes,
+  pageData,
 }: Props) => {
-  const imageUrl = pageAttributes.header_bg?.large;
+  const imageUrl = pageData.attributes.header_bg?.large;
+
   return (
     <Container className={`e2e-signed-out-header ${className}`}>
       <Header id="hook-header">
@@ -41,9 +41,12 @@ const FullWidthBannerLayout = ({
         <HeaderContent
           fontColors="light"
           hasHeaderBannerImage={imageUrl != null}
-          pageAttributes={pageAttributes}
+          pageAttributes={pageData.attributes}
         />
       </Header>
+      <AdminCustomPageEditButton
+        linkTo={`${ADMIN_PAGES_MENU_CUSTOM_PAGE_PATH}/${pageData.id}`}
+      />
     </Container>
   );
 };

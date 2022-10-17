@@ -16,6 +16,7 @@ export const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  position: relative;
 `;
 
 export const Header = styled.div`
