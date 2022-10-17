@@ -80,13 +80,7 @@ const NewIdeaButtonDropdown = ({
         display="flex"
         id="e2e-new-idea"
       >
-        <Icon
-          fill="white"
-          marginRight="8px"
-          width="15px"
-          name="idea"
-          marginY="auto"
-        />
+        <Icon fill="white" name="idea" marginY="auto" />
         <Text
           margin="auto"
           padding="8px"
