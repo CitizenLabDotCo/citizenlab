@@ -21,6 +21,7 @@ const StyledLink = styled(Link)`
     color: inherit;
     text-decoration: underline;
   }
+  white-space: nowrap;
 `;
 
 type Props = {
@@ -44,7 +45,7 @@ const DeleteFormResultsNotice = ({
     data-cy="e2e-form-delete-results-notice"
   >
     <Icon name="alert-circle" fill={colors.teal700} />
-    <Text ml="16px" color="teal700">
+    <Text ml="16px" color="teal700" whiteSpace="nowrap">
       {formatMessage(messages.disabledSurveyEditingMessage)}
     </Text>
     &nbsp;
@@ -57,10 +58,12 @@ const DeleteFormResultsNotice = ({
         {formatMessage(messages.deleteResults)}
       </StyledLink>
     ) : (
-      <Text color="teal700">{formatMessage(messages.deleteResults)}</Text>
+      <Text color="teal700" whiteSpace="nowrap">
+        {formatMessage(messages.deleteResults)}
+      </Text>
     )}
     &nbsp;
-    <Text color="teal700">
+    <Text color="teal700" whiteSpace="nowrap">
       {formatMessage(messages.deleteResultsCondition)}
     </Text>
   </Box>
