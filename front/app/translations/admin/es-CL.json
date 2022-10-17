@@ -968,7 +968,7 @@
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.xVolunteers": "{x, plural, =0 {ningún voluntario} one {# voluntario} other {# voluntarios}}",
   "app.containers.AdminPage.ProjectEdit.addNewContribution": "Agregar una contribución",
   "app.containers.AdminPage.ProjectEdit.addNewIdea": "Añadir una idea",
-  "app.containers.AdminPage.ProjectEdit.addNewInput": "Add an input",
+  "app.containers.AdminPage.ProjectEdit.addNewInput": "Añadir una entrada",
   "app.containers.AdminPage.ProjectEdit.addNewIssue": "Añadir una respuesta",
   "app.containers.AdminPage.ProjectEdit.addNewOption": "Añadir una opción",
   "app.containers.AdminPage.ProjectEdit.addNewProject": "Agregue un proyecto",
