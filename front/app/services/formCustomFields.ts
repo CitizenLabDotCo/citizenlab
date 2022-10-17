@@ -191,7 +191,7 @@ export const downloadSurveyResults = async (
     ? phase.attributes.title_multiloc
     : project.attributes.title_multiloc;
   const fileName = `${snakeCase(fileNameTitle[locale])}_${moment().format(
-    'MM-DD-YYYY'
+    'YYYY-MM-DD'
   )}.xlsx`;
 
   const blob = await requestBlob(
@@ -200,3 +200,49 @@ export const downloadSurveyResults = async (
   );
   saveAs(blob, fileName);
 };
+
+export interface IFormSubmissionCountData {
+  totalSubmissions: string;
+}
+
+export interface IFormSubmissionCount {
+  data: IFormSubmissionCountData;
+}
+
+const getSubmissionCountEndpoint = (
+  projectId: string,
+  phaseId?: string | null
+) => {
+  return phaseId
+    ? `${API_PATH}/phases/${phaseId}/submission_count`
+    : `${API_PATH}/projects/${projectId}/submission_count`;
+};
+
+export function formSubmissionCountStream(
+  projectId: string,
+  phaseId?: string | null,
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<IFormSubmissionCount>({
+    apiEndpoint: getSubmissionCountEndpoint(projectId, phaseId),
+    cacheStream: false,
+    ...streamParams,
+  });
+}
+
+export async function deleteFormResults(projectId: string, phaseId?: string) {
+  const deleteApiEndpoint = phaseId
+    ? `${API_PATH}/phases/${phaseId}/inputs`
+    : `${API_PATH}/projects/${projectId}/inputs`;
+
+  const response = await streams.delete(
+    deleteApiEndpoint,
+    `${projectId}/${phaseId}`
+  );
+
+  await streams.fetchAllWith({
+    apiEndpoint: [getSubmissionCountEndpoint(projectId, phaseId)],
+  });
+
+  return response;
+}
