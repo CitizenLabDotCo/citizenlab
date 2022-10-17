@@ -106,6 +106,7 @@ const NavbarItemRow = ({
             onClick={handleOnClickEditButton}
             ml="10px"
             data-testid="edit-button"
+            data-cy="e2e-navbar-item-edit-button"
           >
             <FormattedMessage {...messages.editButton} />
           </Button>
