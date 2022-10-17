@@ -1520,7 +1520,6 @@
   "app.modules.id_oostende_rrn.emptyFieldError": "Dëst Feld dierf net eidel sinn.",
   "app.modules.id_oostende_rrn.invalidRrnError": "Ongëlteg Sozialversécherungsnummer",
   "app.modules.id_oostende_rrn.noMatchFormError": "Mir hu keng Informatioun iwwer Är Sozialversécherungsnummer op der Récksäit fonnt",
-  "app.modules.id_oostende_rrn.notEntitledLivesOutsideFormError": "Mir kënnen Iech net verifizéieren, well Dir ausserhalb vun Oostende wunnt",
   "app.modules.id_oostende_rrn.notEntitledTooYoungFormError": "Mir kënnen Iech net verifizéieren, well Dir méi jonk wéi 14 Joer sidd",
   "app.modules.id_oostende_rrn.oostendeRrnHelp": "Är Sozialversécherungsnummer steet op der Récksäit vun Ärer digitaler Identitéitskaart",
   "app.modules.id_oostende_rrn.rrnLabel": "Sozialversécherungsnummer",
