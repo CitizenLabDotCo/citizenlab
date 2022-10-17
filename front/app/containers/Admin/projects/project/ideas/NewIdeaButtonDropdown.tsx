@@ -77,15 +77,16 @@ const NewIdeaButtonDropdown = ({
         borderRadius="3px"
         height="44px"
         px="16px"
-        py="2px"
         display="flex"
         id="e2e-new-idea"
         role="button"
+        alignItems="center"
       >
         <Icon fill="white" marginRight="8px" name="idea" marginY="auto" />
         <Text
-          margin="auto"
-          padding="8px"
+          mt="0"
+          mb="0"
+          padding="0"
           style={{ color: 'white' }}
           id="e2e-add-an-input"
         >
