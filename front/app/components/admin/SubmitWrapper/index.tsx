@@ -91,15 +91,20 @@ interface Props
   };
   onClick?: (event: FormEvent<any>) => void;
   buttonStyle?: ButtonStyles;
+  secondaryButtonOnClick?: (event: FormEvent<any>) => void;
+  secondaryButtonStyle?: ButtonStyles;
+  secondaryButtonSaveMessage?: any;
   animate?: boolean;
 }
 
 export default class SubmitWrapper extends PureComponent<Props> {
   submitButton: HTMLInputElement | null;
+  secondaryButton: HTMLInputElement | null;
 
   constructor(props: Props) {
     super(props as any);
     this.submitButton = null;
+    this.secondaryButton = null;
   }
 
   removeFocus = (el) => {
@@ -110,11 +115,20 @@ export default class SubmitWrapper extends PureComponent<Props> {
     this.submitButton = el;
   };
 
+  setSecondaryButtonRef = (el) => {
+    this.secondaryButton = el;
+  };
+
   render() {
     const style = this.props.buttonStyle || 'cl-blue';
+    const secondaryButtonStyle =
+      this.props.secondaryButtonStyle || 'primary-outlined';
 
     if (this.props.status === 'success' || this.props.status === 'error') {
       this.removeFocus(this.submitButton);
+      if (this.secondaryButton) {
+        this.removeFocus(this.secondaryButton);
+      }
     }
 
     const buttonProps = omit(this.props, [
@@ -151,6 +165,28 @@ export default class SubmitWrapper extends PureComponent<Props> {
             <FormattedMessage {...messages.buttonSuccess} />
           )}
         </Button>
+
+        {/* show a secondary button if an onClick handler is provided for it */}
+        {this.props.secondaryButtonOnClick && (
+          <Button
+            className="e2e-submit-wrapper-button"
+            buttonStyle={secondaryButtonStyle}
+            processing={loading}
+            disabled={status === 'disabled' || status === 'success'}
+            onClick={this.props.secondaryButtonOnClick}
+            setSubmitButtonRef={this.setSecondaryButtonRef}
+            ml="25px"
+          >
+            {(status === 'enabled' ||
+              status === 'disabled' ||
+              status === 'error') && (
+              <FormattedMessage {...this.props.secondaryButtonSaveMessage} />
+            )}
+            {status === 'success' && (
+              <FormattedMessage {...messages.buttonSuccess} />
+            )}
+          </Button>
+        )}
 
         {status === 'error' && (
           <Message className="error">

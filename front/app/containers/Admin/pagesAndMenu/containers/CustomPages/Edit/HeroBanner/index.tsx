@@ -65,14 +65,18 @@ const EditCustomPageHeroBannerForm = ({
     return null;
   }
 
-  const handleSave = async () => {
+  const saveCustomPage = async (enableHeroBanner: boolean = false) => {
     // only update the page settings if they have changed
-    const diffedValues = {};
+    const diffedValues: Partial<ICustomPageAttributes> = {};
     forOwn(localSettings, (value, key) => {
       if (!isEqual(value, customPage.attributes[key])) {
         diffedValues[key] = value;
       }
     });
+
+    if (enableHeroBanner) {
+      diffedValues.banner_enabled = true;
+    }
 
     setIsLoading(true);
     setFormStatus('disabled');
@@ -89,6 +93,14 @@ const EditCustomPageHeroBannerForm = ({
       setIsLoading(false);
       setFormStatus('error');
     }
+  };
+
+  const handleSave = () => {
+    saveCustomPage(false);
+  };
+
+  const handleSaveAndEnable = () => {
+    saveCustomPage(true);
   };
 
   const handleSignedOutMultilocHeaderOnChange = (
@@ -152,6 +164,11 @@ const EditCustomPageHeroBannerForm = ({
         <HelmetIntl title={messages.customPageMetaTitle} />
         <GenericHeroBannerForm
           onSave={handleSave}
+          onSaveAndEnable={
+            // undefined to match type for optional prop.
+            // only show secondary button if banner is not enabled
+            localSettings.banner_enabled ? undefined : handleSaveAndEnable
+          }
           formStatus={formStatus}
           isLoading={isLoading}
           breadcrumbs={[

@@ -22,6 +22,7 @@ interface Props {
   formStatus: ISubmitState;
   setFormStatus: (submitState: ISubmitState) => void;
   onSave: () => void;
+  onSaveAndEnable?: () => void | undefined;
   isLoading: boolean;
   outletSectionStart?: ReactElement;
   layoutSettingFieldComponent?: ReactElement;
@@ -35,6 +36,7 @@ interface Props {
 
 const GenericHeroBannerForm = ({
   onSave,
+  onSaveAndEnable,
   formStatus,
   isLoading,
   title,
@@ -65,6 +67,8 @@ const GenericHeroBannerForm = ({
               messageSuccess: messages.heroBannerMessageSuccess,
               messageError: messages.heroBannerError,
             }}
+            secondaryButtonOnClick={onSaveAndEnable}
+            secondaryButtonSaveMessage={messages.saveAndEnable}
           />
         }
       >
