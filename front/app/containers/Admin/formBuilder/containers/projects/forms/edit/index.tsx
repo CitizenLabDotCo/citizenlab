@@ -252,8 +252,9 @@ const FormBuilderPage = ({ intl }) => {
     phaseId,
   });
 
-  if (isNilOrError(formCustomFields) || isNilOrError(submissionCount))
+  if (isNilOrError(formCustomFields) || isNilOrError(submissionCount)) {
     return <Spinner />;
+  }
 
   return modalPortalElement
     ? createPortal(
