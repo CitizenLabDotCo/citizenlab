@@ -37,7 +37,7 @@ module IdOostendeRrn
     end
 
     def base_uri
-      "https://#{@domain}/services/wijkbudget/v1"
+      "https://#{@domain}/services/wijkbudget-api/v1/api"
     end
   end
 end

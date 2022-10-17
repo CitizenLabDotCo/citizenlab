@@ -8,8 +8,6 @@ module IdOostendeRrn
       :manual_sync
     end
 
-    # This is just a random uuid for now.
-    # I suspect this will need to be set to a specific value at some point.
     def id
       '00c4faa6-4b0f-11ed-b878-0242ac120002'
     end
@@ -19,7 +17,7 @@ module IdOostendeRrn
     end
 
     def config_parameters
-      %i[api_key environment custom_field_key wijk_mapping]
+      %i[api_key environment]
     end
 
     def config_parameters_schema
@@ -27,20 +25,6 @@ module IdOostendeRrn
         environment: {
           type: 'string',
           enum: %w[dv qa production],
-          private: true
-        },
-        custom_field_key: {
-          type: 'string',
-          description: 'The key of the custom field that stores the "wijk"',
-          private: true
-        },
-        wijk_mapping: {
-          type: 'object',
-          description: 'Maps wijknummers (see https://data.stad.gent/explore/dataset/stadswijken-gent/table/) to custom_field_value keys',
-          properties: (1..25).to_h do |i|
-            [i.to_s, { type: 'string' }]
-          end,
-          additionalProperties: false,
           private: true
         }
       }
@@ -78,16 +62,11 @@ module IdOostendeRrn
 
       raise Verification::VerificationService::NoMatchError unless body.dig('verificatieResultaat', 'geldig')
 
-      {
-        uid: rrn,
-        custom_field_values: {
-          config[:custom_field_key] => map_wijk(body.dig('verificatieResultaat', 'wijkNr'))
-        }.compact
-      }.compact
+      { uid: rrn }.compact
     end
 
-    def map_wijk(wijk_nr)
-      wijk_nr && config[:wijk_mapping] && config[:wijk_mapping][wijk_nr]
+    def map_wijk(_wijk_nr)
+      []
     end
 
     # Validates the format of the Belgian rijksregisternummer, including a check on the last 2 check digits
