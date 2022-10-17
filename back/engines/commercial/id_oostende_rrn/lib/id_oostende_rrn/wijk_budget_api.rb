@@ -7,13 +7,14 @@ module IdOostendeRrn
 
     def initialize(api_key:, environment:)
       @api_key = api_key
+      # Only one address provided by Oostende thus far.
       @domain = case environment
       when 'dv'
-        'apidgdv.gent.be'
-      when 'qa'
-        'apidgqa.gent.be'
-      when 'production'
-        'apidg.gent.be'
+        'wapaza-wijkprikkelsapi-01.azurewebsites.net'
+      # when 'qa'
+      #   'wapaza-wijkprikkelsapi-01.azurewebsites.net'
+      # when 'production'
+      #   'wapaza-wijkprikkelsapi-01.azurewebsites.net'
       else
         raise "Unsupported environment #{environment} for IdOostendeRrn::WijkBudgetApi.new"
       end
