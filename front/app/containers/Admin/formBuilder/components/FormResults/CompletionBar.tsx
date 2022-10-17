@@ -15,14 +15,6 @@ type CompletionBarProps = {
   rightLabel?: string;
 };
 
-const CompletionBox = styled.div`
-  overflow: hidden;
-  border-radius: 3px;
-  height: 16px;
-  width: 100%;
-  border: 1px solid ${colors.divider};
-`;
-
 const CompletionBar = ({
   bgColor,
   completed,
@@ -44,9 +36,15 @@ const CompletionBar = ({
         )}
       </Box>
     )}
-    <CompletionBox>
+    <Box
+      height="16px"
+      width="100%"
+      borderRadius="3px"
+      border={`1px solid ${colors.divider};`}
+      overflow="hidden"
+    >
       <Box height="100%" width={`${completed}%`} bgColor={bgColor} />
-    </CompletionBox>
+    </Box>
   </Box>
 );
 
