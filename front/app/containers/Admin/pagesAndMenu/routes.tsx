@@ -101,7 +101,7 @@ export default () => ({
       ),
     },
     {
-      path: CUSTOM_PAGES_PATH,
+      path: CUSTOM_PAGES_PATH, // pages
       element: <CustomPagesIndex />,
       children: [
         {
