@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class WebApi::V1::PhasesController < ::ApplicationController
+class WebApi::V1::PhasesController < ApplicationController
   before_action :set_phase, only: %i[show update destroy survey_results submission_count delete_inputs]
   skip_before_action :authenticate_user
 

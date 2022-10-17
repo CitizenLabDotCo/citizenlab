@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class WebApi::V1::ProjectsController < ::ApplicationController
+class WebApi::V1::ProjectsController < ApplicationController
   before_action :set_project, only: %i[show update reorder destroy survey_results submission_count delete_inputs]
   skip_before_action :authenticate_user
   skip_after_action :verify_policy_scoped, only: :index
