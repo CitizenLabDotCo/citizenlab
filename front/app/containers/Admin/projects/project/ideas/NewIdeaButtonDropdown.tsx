@@ -55,9 +55,9 @@ const NewIdeaButtonDropdown = ({
                     }}
                     id={`e2e-phase-${phase.id}`}
                   >
-                    <span color={colors.textPrimary}>
+                    <Text mt="0" mb="0" textAlign="left">
                       {localize(phase.attributes.title_multiloc)}
-                    </span>
+                    </Text>
                   </Box>
                 </DropdownListItem>
               )}
@@ -73,20 +73,16 @@ const NewIdeaButtonDropdown = ({
     <>
       <Box
         color="white"
-        background={colors.teal}
+        background={colors.primary}
         borderRadius="3px"
-        height="42px"
+        height="44px"
         px="16px"
+        py="2px"
         display="flex"
         id="e2e-new-idea"
+        role="button"
       >
-        <Icon
-          fill="white"
-          marginRight="8px"
-          width="15px"
-          name="idea"
-          marginY="auto"
-        />
+        <Icon fill="white" marginRight="8px" name="idea" marginY="auto" />
         <Text
           margin="auto"
           padding="8px"

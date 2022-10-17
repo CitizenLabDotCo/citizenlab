@@ -36,11 +36,11 @@ const LinearScaleControl = ({
         data-testid="linearScaleControl"
         display="flex"
         flexDirection="row"
-        gap="8px"
+        gap="16px"
         overflow="visible"
       >
         <Box alignSelf="flex-end">
-          <Text mr="8px" fontWeight="bold">
+          <Text mr="8px" color="textSecondary" textAlign="right">
             {uischema.options?.minimum_label}
           </Text>
         </Box>
@@ -67,7 +67,7 @@ const LinearScaleControl = ({
           })}
         </>
         <Box mt="28px" alignSelf="flex-end">
-          <Text mr="8px" fontWeight="bold">
+          <Text mr="8px" color="textSecondary">
             {uischema.options?.maximum_label}
           </Text>
         </Box>

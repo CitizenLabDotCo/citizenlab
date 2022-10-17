@@ -65,13 +65,21 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.questionTitle',
     defaultMessage: 'Question title',
   },
-  questionDescription: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.questionDescription',
-    defaultMessage: 'Question description',
+  questionDescriptionOptional: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.questionDescriptionOptional',
+    defaultMessage: 'Question description (optional)',
   },
   required: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.required',
     defaultMessage: 'Required',
+  },
+  optional: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.optional',
+    defaultMessage: 'Optional',
+  },
+  requiredToggleLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.requiredToggleLabel',
+    defaultMessage: 'Make answering this question required',
   },
   deleteButtonLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.deleteButtonLabel',
@@ -104,6 +112,10 @@ export default defineMessages({
   totalSurveyResponses: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.totalSurveyResponses',
     defaultMessage: 'Total {count} responses',
+  },
+  noSurveyResponses: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.noSurveyResponses',
+    defaultMessage: 'No survey responses yet',
   },
   downloadResults: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.downloadResults',

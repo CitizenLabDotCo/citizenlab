@@ -74,62 +74,68 @@ const FormFields = ({
   return (
     <DndProvider backend={HTML5Backend}>
       <Box p="32px" height="100%" overflowY="auto">
-        <Box borderBottom={`1px solid ${colors.divider}`}>
-          <List key={formCustomFields.length}>
-            {formCustomFields.map((field, index) => {
-              const hasErrors = !!errors.customFields?.[index];
-              let outlineStyle = 'none';
-              if (hasErrors) {
-                outlineStyle = `1px solid ${colors.red400}`;
-              } else if (selectedFieldId === field.id) {
-                outlineStyle = `1px solid ${colors.primary}`;
-              }
-              const fieldIdentifier = snakeCase(field.title_multiloc[locale]);
+        <List key={formCustomFields.length}>
+          {formCustomFields.map((field, index) => {
+            const hasErrors = !!errors.customFields?.[index];
+            let outlineStyle = 'none';
+            if (hasErrors) {
+              outlineStyle = `1px solid ${colors.error}`;
+            } else if (selectedFieldId === field.id) {
+              outlineStyle = `1px solid ${colors.primary}`;
+            }
+            const fieldIdentifier = snakeCase(field.title_multiloc[locale]);
 
-              return (
-                <Box
-                  key={field.id}
-                  style={{ outline: outlineStyle }}
-                  data-cy={`e2e-field-${fieldIdentifier}`}
+            return (
+              <Box
+                key={field.id}
+                style={{ outline: outlineStyle }}
+                data-cy={`e2e-field-${fieldIdentifier}`}
+              >
+                <SortableRow
+                  id={field.id}
+                  index={index}
+                  moveRow={handleDragRow}
+                  dropRow={() => {
+                    // Do nothing, no need to handle dropping a row for now
+                  }}
                 >
-                  <SortableRow
-                    id={field.id}
-                    index={index}
-                    moveRow={handleDragRow}
-                    dropRow={() => {
-                      // Do nothing, no need to handle dropping a row for now
-                    }}
-                  >
-                    <Box display="flex" className="expand">
-                      <Box as="span" display="flex" alignItems="center">
-                        <Text fontSize="base" my="0px" color="primary">
-                          <T value={field.title_multiloc} />
-                        </Text>
-                      </Box>
-                      {!isNilOrError(field.input_type) && (
-                        <StyledBadge className="inverse" color={colors.grey700}>
-                          <FormattedMessage
-                            {...getTranslatedFieldType(field.input_type)}
-                          />
-                        </StyledBadge>
-                      )}
+                  <Box display="flex" className="expand">
+                    <Box as="span" display="flex" alignItems="center">
+                      <Text fontSize="base" my="0px" color="primary">
+                        <T value={field.title_multiloc} />
+                      </Text>
                     </Box>
-                    <Button
-                      buttonStyle="secondary"
-                      icon="edit"
-                      onClick={() => {
-                        onEditField({ ...field, index });
-                      }}
-                      data-cy={`e2e-edit-${fieldIdentifier}`}
-                    >
-                      <FormattedMessage {...messages.editButtonLabel} />
-                    </Button>
-                  </SortableRow>
-                </Box>
-              );
-            })}
-          </List>
-        </Box>
+                    {!isNilOrError(field.input_type) && (
+                      <StyledBadge className="inverse" color={colors.grey700}>
+                        <FormattedMessage
+                          {...getTranslatedFieldType(field.input_type)}
+                        />
+                      </StyledBadge>
+                    )}
+                    {field.required && (
+                      <StyledBadge className="inverse" color={colors.error}>
+                        <FormattedMessage {...messages.required} />
+                      </StyledBadge>
+                    )}
+                  </Box>
+                  <Button
+                    buttonStyle="secondary"
+                    icon="edit"
+                    onClick={() => {
+                      onEditField({ ...field, index });
+                    }}
+                    data-cy={`e2e-edit-${fieldIdentifier}`}
+                  >
+                    <FormattedMessage {...messages.editButtonLabel} />
+                  </Button>
+                </SortableRow>
+              </Box>
+            );
+          })}
+        </List>
+        {formCustomFields.length > 0 && (
+          <Box height="1px" borderTop={`1px solid ${colors.divider}`} />
+        )}
       </Box>
     </DndProvider>
   );

@@ -83,6 +83,7 @@ const FormActions = ({
           flexDirection="row"
           width="100%"
           justifyContent="space-between"
+          gap="12px"
         >
           <Button
             icon="chart-bar"
