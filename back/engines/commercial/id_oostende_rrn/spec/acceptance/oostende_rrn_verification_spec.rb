@@ -47,7 +47,7 @@ resource 'Verifications' do
           method_name: 'oostende_rrn',
           user_id: @user.id,
           active: true,
-          hashed_uid: '8904bc9894ae7ba9eeb1fb39ce3ac98bf8633e0008bce7d4e6621c9ca701c6cb' # I changed this to match test diff, so not sure if I'm testing anything now
+          hashed_uid: '8904bc9894ae7ba9eeb1fb39ce3ac98bf8633e0008bce7d4e6621c9ca701c6cb'
         })
       end
     end
@@ -67,7 +67,7 @@ resource 'Verifications' do
           method_name: 'oostende_rrn',
           user_id: @user.id,
           active: true,
-          hashed_uid: '8904bc9894ae7ba9eeb1fb39ce3ac98bf8633e0008bce7d4e6621c9ca701c6cb' # I changed this to match test diff, so not sure if I'm testing anything now
+          hashed_uid: '8904bc9894ae7ba9eeb1fb39ce3ac98bf8633e0008bce7d4e6621c9ca701c6cb'
         })
       end
     end
