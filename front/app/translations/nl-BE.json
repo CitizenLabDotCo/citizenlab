@@ -1520,7 +1520,6 @@
   "app.modules.id_oostende_rrn.emptyFieldError": "Dit veld mag niet leeg zijn.",
   "app.modules.id_oostende_rrn.invalidRrnError": "Dit rijksregisternummer is ongeldig. Gelieve te controleren op typefouten en probeer het opnieuw.",
   "app.modules.id_oostende_rrn.noMatchFormError": "We konden geen informatie vinden over jouw rijksregisternummer.",
-  "app.modules.id_oostende_rrn.notEntitledLivesOutsideFormError": "Enkel inwoners van Oostende mogen deelnemen aan dit project. Contacteer participatie@oostende.be voor meer informatie.",
   "app.modules.id_oostende_rrn.notEntitledTooYoungFormError": "Enkel personen die 14 jaar of ouder zijn mogen deelnemen aan dit project. Contacteer participatie@oostende.be voor meer informatie.",
   "app.modules.id_oostende_rrn.oostendeRrnHelp": "Je vindt dit nummer op de achterkant van je identiteitskaart, links bovenaan onder “Identificatienummer van het Rijksregister”. Geef 11 cijfers in zonder puntjes of streepjes.",
   "app.modules.id_oostende_rrn.rrnLabel": "Rijksregisternummer",
