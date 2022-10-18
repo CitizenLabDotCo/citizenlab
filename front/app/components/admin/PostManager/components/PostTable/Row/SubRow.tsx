@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Tr, Td } from 'components/admin/Table';
+import { Tr, Td } from '@citizenlab/cl2-component-library';
 import PhasesSelector from './selectors/PhasesSelector';
 import TopicsSelector from './selectors/TopicsSelector';
 import ProjectSelector from './selectors/ProjectSelector';

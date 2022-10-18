@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 // components
-import { Table, Tbody, Tfoot, Tr, Td } from 'components/admin/Table';
+import { Table, Tbody, Tfoot, Tr, Td } from '@citizenlab/cl2-component-library';
 import Pagination from 'components/admin/Pagination';
 import Button from 'components/UI/Button';
 import TableHeader from './TableHeader';

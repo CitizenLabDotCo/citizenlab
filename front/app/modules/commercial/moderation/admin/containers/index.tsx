@@ -4,7 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { insertConfiguration } from 'utils/moduleUtils';
 
 // components
-import { Table, Thead, Tr, Th, Tbody } from 'components/admin/Table';
+import { Table, Thead, Tr, Th, Tbody } from '@citizenlab/cl2-component-library';
 import ModerationRow from './ModerationRow';
 import Pagination from 'components/Pagination';
 import Checkbox from 'components/UI/Checkbox';

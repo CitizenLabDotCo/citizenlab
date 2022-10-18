@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import moment from 'moment';
 
 // components
-import { Tr, Td } from 'components/admin/Table';
+import { Tr, Td } from '@citizenlab/cl2-component-library';
 import ModerationContentCell from './ModerationContentCell';
 import Checkbox from 'components/UI/Checkbox';
 import Outlet from 'components/Outlet';

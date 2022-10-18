@@ -2,7 +2,7 @@ import React from 'react';
 import { every, isEmpty, isFunction } from 'lodash-es';
 
 // components
-import { Table, Tbody, Tfoot, Tr, Td } from 'components/admin/Table';
+import { Table, Tbody, Tfoot, Tr, Td } from '@citizenlab/cl2-component-library';
 import Row from './Row';
 import Pagination from 'components/admin/Pagination';
 import NoPost from './NoPost';

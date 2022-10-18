@@ -18,7 +18,7 @@ import { IInitiativeStatusData } from 'services/initiativeStatuses';
 // components
 import { TitleLink } from '.';
 import StyledRow from './StyledRow';
-import { Td } from 'components/admin/Table';
+import { Td } from '@citizenlab/cl2-component-library';
 import { Icon } from 'semantic-ui-react';
 import T from 'components/T';
 import Checkbox from 'components/UI/Checkbox';

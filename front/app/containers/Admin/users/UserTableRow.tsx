@@ -6,7 +6,7 @@ import clHistory from 'utils/cl-router/history';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // Components
-import { Tr, Td } from 'components/admin/Table';
+import { Tr, Td } from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
 import { Toggle, Icon } from '@citizenlab/cl2-component-library';
 import Checkbox from 'components/UI/Checkbox';

@@ -8,7 +8,7 @@ import useUser from 'hooks/useUser';
 
 // components
 import { Button as SemanticButton, Popup } from 'semantic-ui-react';
-import { Tr, Td } from 'components/admin/Table';
+import { Tr, Td } from '@citizenlab/cl2-component-library';
 import { Badge } from '@citizenlab/cl2-component-library';
 
 // styling
