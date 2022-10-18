@@ -36,18 +36,18 @@ class MissingLocaleFixer
   private
 
   def update_multiloc(model_class, locale, attributes, multiloc_field_name)
-    search_field_name = /^CustomField/.match?(class_name) ? 'key' : 'code'
+    search_field_name = /^CustomField/.match?(model_class.name) ? 'key' : 'code'
     search_key = attributes[search_field_name]
     new_translation = I18n.with_locale(locale) { I18n.t!(attributes[multiloc_field_name]) }
     records = model_class.where(search_field_name => search_key)
     records.each do |record|
       multiloc_field_value = record[multiloc_field_name]
-      if multiloc_field_value[locale]
-        Rails.logger.info("!! #{locale} ALREADY EXISTS for  #{class_name}.#{multiloc_field_name}")
+      if multiloc_field_value[locale].present?
+        Rails.logger.info("!! #{locale} ALREADY EXISTS for  #{model_class.name}.#{multiloc_field_name} #{search_field_name}=#{search_key}")
       elsif multiloc_field_value[locale] == ''
-        Rails.logger.error("Locale Error: #{locale} is set to empty for #{class_name} #{search_field_name}=#{search_key}")
+        Rails.logger.error("ERROR: #{locale} is set to empty for #{model_class.name}.#{multiloc_field_name} #{search_field_name}=#{search_key}")
       else
-        Rails.logger.info("Updating #{class_name}.#{multiloc_field_name} with '#{new_translation}'")
+        Rails.logger.info("Updating #{model_class.name}.#{multiloc_field_name} with '#{new_translation}'")
         record[multiloc_field_name][locale] = new_translation
         record.save!
       end
