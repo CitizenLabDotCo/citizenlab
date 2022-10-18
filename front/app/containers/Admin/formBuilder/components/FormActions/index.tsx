@@ -78,7 +78,7 @@ const FormActions = ({
           display="flex"
           flexDirection="row"
           width="100%"
-          mb="24px"
+          mb="36px"
           gap="16px"
         >
           {heading && (
