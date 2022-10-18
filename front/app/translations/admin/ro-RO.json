@@ -964,6 +964,7 @@
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.xVolunteers": "{x, plural, =0 {0 voluntari} one {# voluntar} other {# voluntari}}",
   "app.containers.AdminPage.ProjectEdit.addNewContribution": "Adăugați o contribuție",
   "app.containers.AdminPage.ProjectEdit.addNewIdea": "Add an idea",
+  "app.containers.AdminPage.ProjectEdit.addNewInput": "Add an input",
   "app.containers.AdminPage.ProjectEdit.addNewIssue": "Adaugă un comentariu",
   "app.containers.AdminPage.ProjectEdit.addNewOption": "Adăugați o opțiune",
   "app.containers.AdminPage.ProjectEdit.addNewProject": "Adăugați un proiect",
