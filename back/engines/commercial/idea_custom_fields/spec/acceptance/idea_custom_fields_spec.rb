@@ -416,7 +416,7 @@ resource 'Idea Custom Fields' do
           do_request(custom_fields: [])
 
           assert_status 401
-          expect(json_response_body).to eq({ error: 'updating_survey_withresponses' })
+          expect(json_response_body).to eq({ error: 'updating_survey_with_responses' })
         end
 
         context 'in a continuous ideation project' do
@@ -689,7 +689,7 @@ resource 'Idea Custom Fields' do
           do_request(custom_fields: [])
 
           assert_status 401
-          expect(json_response_body).to eq({ error: 'updating_survey_withresponses' })
+          expect(json_response_body).to eq({ error: 'updating_survey_with_responses' })
         end
 
         example 'Updating custom fields in a native survey phase when there are no responses' do

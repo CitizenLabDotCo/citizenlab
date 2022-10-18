@@ -252,7 +252,7 @@ module IdeaCustomFields
     end
 
     def render_updating_survey_with_responses_error
-      render json: { error: :updating_survey_withresponses }, status: :unauthorized
+      render json: { error: :updating_survey_with_responses }, status: :unauthorized
     end
   end
 end
