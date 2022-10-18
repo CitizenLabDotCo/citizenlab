@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ProjectsController < ::ApplicationController
-  before_action :set_project, only: %i[show update reorder destroy survey_results submission_count]
+  before_action :set_project, only: %i[show update reorder destroy survey_results submission_count index_xlsx]
   skip_before_action :authenticate_user
   skip_after_action :verify_policy_scoped, only: :index
 
@@ -120,6 +120,14 @@ class WebApi::V1::ProjectsController < ::ApplicationController
   def submission_count
     count = SurveyResultsGeneratorService.new(@project).generate_submission_count
     render json: count
+  end
+
+  def index_xlsx
+    I18n.with_locale(current_user.locale) do
+      include_private_attributes = Pundit.policy!(current_user, User).view_private_attributes?
+      xlsx = XlsxExport::GeneratorService.new.generate_for_project(@project.id, include_private_attributes)
+      send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'inputs.xlsx'
+    end
   end
 
   private

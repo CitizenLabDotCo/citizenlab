@@ -123,6 +123,7 @@ Rails.application.routes.draw do
       resources :phases, only: %i[show edit update destroy] do
         resources :files, defaults: { container_type: 'Phase' }, shallow: false
         get 'survey_results', on: :member
+        get :as_xlsx, on: :member, action: 'index_xlsx'
         get 'submission_count', on: :member
         resources :custom_fields, controller: 'phase_custom_fields', only: %i[] do
           get 'schema', on: :collection
@@ -146,6 +147,7 @@ Rails.application.routes.draw do
         get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'
         get 'survey_results', on: :member
         get 'submission_count', on: :member
+        get :as_xlsx, on: :member, action: 'index_xlsx'
       end
 
       resources :projects_allowed_input_topics, only: %i[show create destroy] do

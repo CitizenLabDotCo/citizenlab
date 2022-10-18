@@ -38,4 +38,8 @@ class PhasePolicy < ApplicationPolicy
   def submission_count?
     survey_results?
   end
+
+  def index_xlsx?
+    survey_results?
+  end
 end

@@ -172,7 +172,7 @@ RSpec/MissingExampleGroupArgument:
 # Offense count: 380
 # Configuration parameters: AllowSubject.
 RSpec/MultipleMemoizedHelpers:
-  Max: 30
+  Max: 36
 
 # Offense count: 29
 # Configuration parameters: IgnoreSharedExamples.

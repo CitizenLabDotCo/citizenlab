@@ -54,6 +54,28 @@ resource 'Phases' do
     end
   end
 
+  get 'web_api/v1/phases/:id/as_xlsx' do
+    context 'for an ideation phase' do
+      let(:project) { create(:project_with_active_ideation_phase) }
+      let(:id) { project.phases.first.id }
+
+      example '[error] Try downloading phase inputs', skip: !CitizenLab.ee? do
+        do_request
+        expect(status).to eq 401
+      end
+    end
+
+    context 'for a native survey phase' do
+      let(:project) { create(:project_with_active_native_survey_phase) }
+      let(:id) { project.phases.first.id }
+
+      example '[error] Try downloading phase inputs', skip: !CitizenLab.ee? do
+        do_request
+        expect(status).to eq 401
+      end
+    end
+  end
+
   context 'when authenticated as admin' do
     before do
       @user = create(:admin)
@@ -341,6 +363,7 @@ resource 'Phases' do
         create(
           :idea,
           project: project,
+          creation_phase: active_phase,
           phases: [active_phase],
           custom_field_values: { multiselect_field.key => %w[cat dog] }
         )
@@ -349,6 +372,7 @@ resource 'Phases' do
         create(
           :idea,
           project: project,
+          creation_phase: active_phase,
           phases: [active_phase],
           custom_field_values: { multiselect_field.key => %w[cat] }
         )
@@ -403,6 +427,7 @@ resource 'Phases' do
         create(
           :idea,
           project: project,
+          creation_phase: active_phase,
           phases: [active_phase],
           custom_field_values: { multiselect_field.key => %w[cat dog] }
         )
@@ -411,6 +436,7 @@ resource 'Phases' do
         create(
           :idea,
           project: project,
+          creation_phase: active_phase,
           phases: [active_phase],
           custom_field_values: { multiselect_field.key => %w[cat] }
         )
@@ -419,6 +445,7 @@ resource 'Phases' do
         create(
           :idea,
           project: project,
+          creation_phase: active_phase,
           phases: [active_phase],
           custom_field_values: { multiselect_field.key => %w[dog] }
         )
@@ -430,6 +457,287 @@ resource 'Phases' do
 
         json_response = json_parse(response_body)
         expect(json_response).to eq({ data: { totalSubmissions: 3 } })
+      end
+    end
+
+    get 'web_api/v1/phases/:id/as_xlsx' do
+      context 'for an ideation phase' do
+        let(:project) { create(:project, process_type: 'timeline') }
+        let(:project_form) { create(:custom_form, participation_context: project) }
+        let(:ideation_phase) do
+          create(
+            :phase,
+            project: project,
+            participation_method: 'ideation',
+            title_multiloc: {
+              'en' => 'Ideation phase',
+              'nl-BE' => 'Ideeënfase'
+            }
+          )
+        end
+        let(:id) { ideation_phase.id }
+        let!(:extra_idea_field) do
+          create(
+            :custom_field_extra_custom_form,
+            resource: project_form
+          )
+        end
+
+        context 'when there are no inputs in the phase' do
+          example 'Download phase inputs in one sheet', skip: !CitizenLab.ee? do
+            do_request
+            expect(status).to eq 200
+            expect(xlsx_contents(response_body)).to match_array([
+              {
+                sheet_name: ideation_phase.title_multiloc['en'],
+                column_headers: [
+                  'ID',
+                  'Title',
+                  'Description',
+                  'Author',
+                  'Budget',
+                  'Proposed Budget',
+                  'Tags',
+                  'Latitude',
+                  'Longitude',
+                  'Location',
+                  'Attachments',
+                  extra_idea_field.title_multiloc['en'],
+                  'Author name',
+                  'Author email',
+                  'Author ID',
+                  'Submitted at',
+                  'Published at',
+                  'Comments',
+                  'Upvotes',
+                  'Downvotes',
+                  'Baskets',
+                  'URL',
+                  'Project',
+                  'Status',
+                  'Assignee',
+                  'Assignee email'
+                ],
+                rows: []
+              }
+            ])
+          end
+        end
+
+        context 'when there are inputs in the phase' do
+          let!(:assignee) { create(:admin, first_name: 'John', last_name: 'Doe')}
+          let!(:ideation_response1) do
+            create(
+              :idea_with_topics,
+              project: project,
+              phases: [ideation_phase],
+              custom_field_values: { extra_idea_field.key => 'Answer' },
+              assignee: assignee
+            )
+          end
+          let!(:attachment1) { create(:idea_file, idea: ideation_response1) }
+          let!(:attachment2) do
+            create(
+              :idea_file,
+              idea: ideation_response1,
+              file: Rails.root.join('spec/fixtures/david.csv').open,
+              name: 'david.csv'
+            )
+          end
+          let!(:comments) { create_list(:comment, 1, post: ideation_response1) }
+          let!(:upvotes) { create_list(:vote, 2, votable: ideation_response1) }
+          let!(:downvotes) { create_list(:downvote, 1, votable: ideation_response1) }
+          let!(:baskets) { [] }
+
+          example 'Download phase inputs in one sheet', skip: !CitizenLab.ee? do
+            do_request
+            expect(status).to eq 200
+            expect(xlsx_contents(response_body)).to match_array([
+              {
+                sheet_name: ideation_phase.title_multiloc['en'],
+                column_headers: [
+                  'ID',
+                  'Title',
+                  'Description',
+                  'Author',
+                  'Budget',
+                  'Proposed Budget',
+                  'Tags',
+                  'Latitude',
+                  'Longitude',
+                  'Location',
+                  'Attachments',
+                  extra_idea_field.title_multiloc['en'],
+                  'Author name',
+                  'Author email',
+                  'Author ID',
+                  'Submitted at',
+                  'Published at',
+                  'Comments',
+                  'Upvotes',
+                  'Downvotes',
+                  'Baskets',
+                  'URL',
+                  'Project',
+                  'Status',
+                  'Assignee',
+                  'Assignee email'
+                ],
+                rows: [
+                  [
+                    ideation_response1.id,
+                    ideation_response1.title_multiloc['en'],
+                    'It would improve the air quality!', # html tags are removed
+                    ideation_response1.author_id,
+                    ideation_response1.budget,
+                    ideation_response1.proposed_budget,
+                    'Topic 1 (en), Topic 2 (en)',
+                    3.921154106874878,
+                    51.11520776293035,
+                    'Some road',
+                    %r{/uploads/.+/idea_file/file/#{attachment1.id}/#{attachment1.name}\n/uploads/.+/idea_file/file/#{attachment2.id}/#{attachment2.name}},
+                    'Answer',
+                    ideation_response1.author_name,
+                    ideation_response1.author.email,
+                    ideation_response1.author_id,
+                    an_instance_of(DateTime), # created_at
+                    an_instance_of(DateTime), # published_at
+                    comments.size,
+                    upvotes.size,
+                    downvotes.size,
+                    baskets.size,
+                    "http://example.org/ideas/#{ideation_response1.slug}",
+                    project.title_multiloc['en'],
+                    ideation_response1.idea_status.title_multiloc['en'],
+                    "#{assignee.first_name} #{assignee.last_name}",
+                    assignee.email
+                  ]
+                ]
+              }
+            ])
+          end
+        end
+      end
+
+      context 'for a native survey phase' do
+        let(:project) { create(:project_with_active_native_survey_phase) }
+        let(:active_phase) { project.phases.first }
+        let(:form) { create(:custom_form, participation_context: active_phase) }
+        let(:id) { active_phase.id }
+        let(:multiselect_field) do
+          create(
+            :custom_field_multiselect,
+            resource: form,
+            title_multiloc: { 'en' => 'What are your favourite pets?' },
+            description_multiloc: {}
+          )
+        end
+        let!(:cat_option) do
+          create(:custom_field_option, custom_field: multiselect_field, key: 'cat', title_multiloc: { 'en' => 'Cat' })
+        end
+        let!(:dog_option) do
+          create(:custom_field_option, custom_field: multiselect_field, key: 'dog', title_multiloc: { 'en' => 'Dog' })
+        end
+
+        context 'when there are no inputs in the phase' do
+          example 'Download phase inputs in one sheet', skip: !CitizenLab.ee? do
+            do_request
+            expect(status).to eq 200
+            expect(xlsx_contents(response_body)).to match_array([
+              {
+                sheet_name: active_phase.title_multiloc['en'],
+                column_headers: [
+                  'ID',
+                  multiselect_field.title_multiloc['en'],
+                  'Author name',
+                  'Author email',
+                  'Author ID',
+                  'Submitted at',
+                  'Project'
+                ],
+                rows: []
+              }
+            ])
+          end
+        end
+
+        context 'when there are inputs in the phase' do
+          let!(:survey_response1) do
+            create(
+              :idea,
+              project: project,
+              creation_phase: active_phase,
+              phases: [active_phase],
+              custom_field_values: { multiselect_field.key => %w[cat dog] }
+            )
+          end
+          let!(:survey_response2) do
+            create(
+              :idea,
+              project: project,
+              creation_phase: active_phase,
+              phases: [active_phase],
+              custom_field_values: { multiselect_field.key => %w[cat] }
+            )
+          end
+          let!(:survey_response3) do
+            create(
+              :idea,
+              project: project,
+              creation_phase: active_phase,
+              phases: [active_phase],
+              custom_field_values: { multiselect_field.key => %w[dog] }
+            )
+          end
+
+          example 'Download phase inputs', skip: !CitizenLab.ee? do
+            do_request
+            expect(status).to eq 200
+            expect(xlsx_contents(response_body)).to match_array([
+              {
+                sheet_name: active_phase.title_multiloc['en'],
+                column_headers: [
+                  'ID',
+                  multiselect_field.title_multiloc['en'],
+                  'Author name',
+                  'Author email',
+                  'Author ID',
+                  'Submitted at',
+                  'Project'
+                ],
+                rows: [
+                  [
+                    survey_response1.id,
+                    'Cat, Dog',
+                    survey_response1.author_name,
+                    survey_response1.author.email,
+                    survey_response1.author_id,
+                    an_instance_of(DateTime), # created_at
+                    project.title_multiloc['en']
+                  ],
+                  [
+                    survey_response2.id,
+                    'Cat',
+                    survey_response2.author_name,
+                    survey_response2.author.email,
+                    survey_response2.author_id,
+                    an_instance_of(DateTime), # created_at
+                    project.title_multiloc['en']
+                  ],
+                  [
+                    survey_response3.id,
+                    'Dog',
+                    survey_response3.author_name,
+                    survey_response3.author.email,
+                    survey_response3.author_id,
+                    an_instance_of(DateTime), # created_at
+                    project.title_multiloc['en']
+                  ]
+                ]
+              }
+            ])
+          end
+        end
       end
     end
   end
