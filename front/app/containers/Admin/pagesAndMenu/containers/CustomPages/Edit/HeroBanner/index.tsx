@@ -61,7 +61,6 @@ const EditCustomPageHeroBannerForm = ({
   const customPage = useCustomPage(customPageId);
 
   useEffect(() => {
-    console.log('setting local page attributes');
     if (!isNilOrError(customPage)) {
       setLocalSettings({
         ...customPage.attributes,
@@ -73,7 +72,7 @@ const EditCustomPageHeroBannerForm = ({
     return null;
   }
 
-  const saveCustomPage = async (enableHeroBanner: boolean = false) => {
+  const saveCustomPage = async (enableHeroBanner = false) => {
     if (isNil(localSettings)) {
       return;
     }
