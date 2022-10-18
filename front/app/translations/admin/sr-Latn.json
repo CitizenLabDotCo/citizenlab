@@ -824,7 +824,6 @@
   "app.containers.AdminPage.PagesEdition.faq": "Često postavljana pitanja (FAQ)",
   "app.containers.AdminPage.PagesEdition.fileUploadLabel": "Prilozi (max. 50MB)",
   "app.containers.AdminPage.PagesEdition.information": "Informacije",
-  "app.containers.AdminPage.PagesEdition.linkToNavigation": "Navigacija",
   "app.containers.AdminPage.PagesEdition.messageError": "Došlo je do greške prilikom čuvanja vaše stranice",
   "app.containers.AdminPage.PagesEdition.messageSuccess": "Vaše izmene su uspešno sačuvane.",
   "app.containers.AdminPage.PagesEdition.policiesSubtitle": "Uredite uslove i odredbe i politiku privatnosti na vašoj platformi. Druge stranice, uključujući stranice About i Česta pitanja, mogu da se urede na kartici {navigationLink}.",
