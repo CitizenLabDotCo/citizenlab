@@ -7,7 +7,7 @@ import { media } from 'utils/styleUtils';
 import AdminCustomPageEditButton from './AdminCustomPageEditButton';
 import HeaderContent from './HeaderContent';
 
-export const Container = styled.div`
+const Container = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
@@ -18,7 +18,7 @@ export const Container = styled.div`
   `}
 `;
 
-export const HeaderImage = styled(Image)`
+const HeaderImage = styled(Image)`
   height: ${homepageBannerLayoutHeights.two_column_layout.desktop}px;
   max-width: 50%;
   overflow: hidden;
