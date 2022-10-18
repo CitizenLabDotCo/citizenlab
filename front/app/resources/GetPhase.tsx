@@ -40,6 +40,7 @@ export default class GetPhase extends React.Component<Props, State> {
     const { id, resetOnChange } = this.props;
 
     this.inputProps$ = new BehaviorSubject({ id });
+    this.subscriptions = [];
 
     if (id) {
       this.subscriptions = [
@@ -62,9 +63,7 @@ export default class GetPhase extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    if (this.subscriptions) {
-      this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-    }
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {
