@@ -1133,7 +1133,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.newField": "Yeni alan",
   "app.containers.AdminPage.ProjectEdit.survey.number": "Number",
   "app.containers.AdminPage.ProjectEdit.survey.open": "Açık",
-  "app.containers.AdminPage.ProjectEdit.survey.openForSubmissions": "Gönderilere açık",
   "app.containers.AdminPage.ProjectEdit.survey.questionTitle": "Soru başlığı",
   "app.containers.AdminPage.ProjectEdit.survey.range": "Aralık",
   "app.containers.AdminPage.ProjectEdit.survey.removeAnswer": "Remove answer",

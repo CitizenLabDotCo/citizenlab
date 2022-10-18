@@ -1133,7 +1133,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.newField": "Novo polje",
   "app.containers.AdminPage.ProjectEdit.survey.number": "Broj",
   "app.containers.AdminPage.ProjectEdit.survey.open": "Otvori",
-  "app.containers.AdminPage.ProjectEdit.survey.openForSubmissions": "Otvoreno za predaju",
   "app.containers.AdminPage.ProjectEdit.survey.questionTitle": "Naslov pitanja",
   "app.containers.AdminPage.ProjectEdit.survey.range": "Raspon",
   "app.containers.AdminPage.ProjectEdit.survey.removeAnswer": "Uklonite odgovor",

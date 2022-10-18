@@ -1133,7 +1133,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.newField": "Nowe pole",
   "app.containers.AdminPage.ProjectEdit.survey.number": "Numer",
   "app.containers.AdminPage.ProjectEdit.survey.open": "Otwórz",
-  "app.containers.AdminPage.ProjectEdit.survey.openForSubmissions": "Otwarte na zgłoszenia",
   "app.containers.AdminPage.ProjectEdit.survey.questionTitle": "Tytuł pytania",
   "app.containers.AdminPage.ProjectEdit.survey.range": "Zakres",
   "app.containers.AdminPage.ProjectEdit.survey.removeAnswer": "Remove answer",

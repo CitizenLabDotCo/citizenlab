@@ -1133,7 +1133,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.newField": "Nyt felt",
   "app.containers.AdminPage.ProjectEdit.survey.number": "Tal",
   "app.containers.AdminPage.ProjectEdit.survey.open": "Åbn",
-  "app.containers.AdminPage.ProjectEdit.survey.openForSubmissions": "Åben for indsendelser",
   "app.containers.AdminPage.ProjectEdit.survey.questionTitle": "Spørgsmålets titel",
   "app.containers.AdminPage.ProjectEdit.survey.range": "Område",
   "app.containers.AdminPage.ProjectEdit.survey.removeAnswer": "Fjern svar",

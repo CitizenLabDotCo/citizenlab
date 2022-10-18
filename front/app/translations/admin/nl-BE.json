@@ -1133,7 +1133,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.newField": "Nieuw veld",
   "app.containers.AdminPage.ProjectEdit.survey.number": "Getal",
   "app.containers.AdminPage.ProjectEdit.survey.open": "Openen",
-  "app.containers.AdminPage.ProjectEdit.survey.openForSubmissions": "Open voor inzendingen",
   "app.containers.AdminPage.ProjectEdit.survey.questionTitle": "Vraagtitel",
   "app.containers.AdminPage.ProjectEdit.survey.range": "Bereik",
   "app.containers.AdminPage.ProjectEdit.survey.removeAnswer": "Antwoord verwijderen",

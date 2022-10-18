@@ -1142,7 +1142,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.noSurveyResponses": "No survey responses yet",
   "app.containers.AdminPage.ProjectEdit.survey.number": "Number",
   "app.containers.AdminPage.ProjectEdit.survey.open": "Open",
-  "app.containers.AdminPage.ProjectEdit.survey.openForSubmissions": "Open for submissions",
+  "app.containers.AdminPage.ProjectEdit.survey.openForResponses": "Open for responses",
   "app.containers.AdminPage.ProjectEdit.survey.optional": "Optional",
   "app.containers.AdminPage.ProjectEdit.survey.questionDescriptionOptional": "Question description (optional)",
   "app.containers.AdminPage.ProjectEdit.survey.questionTitle": "Question title",

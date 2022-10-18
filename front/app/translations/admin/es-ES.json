@@ -1133,7 +1133,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.newField": "Campo nuevo",
   "app.containers.AdminPage.ProjectEdit.survey.number": "Número",
   "app.containers.AdminPage.ProjectEdit.survey.open": "Abrir",
-  "app.containers.AdminPage.ProjectEdit.survey.openForSubmissions": "Abrir para envíos",
   "app.containers.AdminPage.ProjectEdit.survey.questionTitle": "Título de la pregunta",
   "app.containers.AdminPage.ProjectEdit.survey.range": "Rango",
   "app.containers.AdminPage.ProjectEdit.survey.removeAnswer": "Eliminar respuesta",
