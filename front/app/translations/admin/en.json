@@ -477,6 +477,7 @@
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleLabel": "Title",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleMultilocError": "Enter a title in every language",
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.Edit.HeroBanner.buttonTitle": "Button",
+  "app.containers.Admin.PagesAndMenu.containers.CustomPages.Edit.HeroBanner.options": "Options",
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.editCustomPageMetaTitle": "Edit custom page | {orgName}",
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.pageContentTab": "Page content",
   "app.containers.Admin.PagesAndMenu.defaultTag": "DEFAULT",
