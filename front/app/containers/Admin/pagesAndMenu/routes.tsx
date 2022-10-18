@@ -42,7 +42,14 @@ const CustomPageHeroBannerForm = lazy(
 export const ADMIN_PAGES_MENU_PATH = `/admin/pages-menu`;
 const HOMEPAGE_PATH = 'homepage';
 const CUSTOM_PAGES_PATH = 'pages';
-export const ADMIN_PAGES_MENU_CUSTOM_PAGE_PATH = `${ADMIN_PAGES_MENU_PATH}/${CUSTOM_PAGES_PATH}`;
+const ADMIN_PAGES_MENU_CUSTOM_PAGE_PATH = `${ADMIN_PAGES_MENU_PATH}/${CUSTOM_PAGES_PATH}`;
+
+export const adminCustomPageSettingsPath = (pageId: string) => {
+  return `${ADMIN_PAGES_MENU_CUSTOM_PAGE_PATH}/${pageId}/settings`;
+};
+export const adminCustomPageContentPath = (pageId: string) => {
+  return `${ADMIN_PAGES_MENU_CUSTOM_PAGE_PATH}/${pageId}/content`;
+};
 
 export default () => ({
   path: 'pages-menu', // pages-menu

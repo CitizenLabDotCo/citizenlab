@@ -36,8 +36,8 @@ import useRemoteFiles from 'hooks/useRemoteFiles';
 import { useParams } from 'react-router-dom';
 
 // constants
+import { adminCustomPageContentPath } from 'containers/Admin/pagesAndMenu/routes';
 import { pagesAndMenuBreadcrumb } from '../../breadcrumbs';
-import { ADMIN_PAGES_MENU_CUSTOM_PAGE_PATH } from '../../routes';
 
 // utils
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
@@ -114,7 +114,7 @@ const AttachmentsForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
               },
               {
                 label: localize(customPage.attributes.title_multiloc),
-                linkTo: `${ADMIN_PAGES_MENU_CUSTOM_PAGE_PATH}/${customPageId}/content`,
+                linkTo: adminCustomPageContentPath(customPageId),
               },
               {
                 label: formatMessage(messages.pageTitle),
