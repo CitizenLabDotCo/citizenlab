@@ -16,9 +16,8 @@ import styled from 'styled-components';
 
 // utils
 import { PAGES_MENU_CUSTOM_PATH } from 'containers/Admin/pagesAndMenu/routes';
-import { forOwn, isEqual } from 'lodash-es';
 import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isNil } from 'utils/helperUtils';
 
 // resources
 import { useParams } from 'react-router-dom';
@@ -54,7 +53,7 @@ const EditCustomPageHeroBannerForm = ({
   const [isLoading, setIsLoading] = useState(false);
   const [apiErrors, setApiErrors] = useState<CLErrors | null>(null);
 
-  const [formStatus, setFormStatus] = useState<ISubmitState>('disabled');
+  const [formStatus, setFormStatus] = useState<ISubmitState>('enabled');
   const [localSettings, setLocalSettings] =
     useState<ICustomPageAttributes | null>(null);
 
@@ -62,6 +61,7 @@ const EditCustomPageHeroBannerForm = ({
   const customPage = useCustomPage(customPageId);
 
   useEffect(() => {
+    console.log('setting local page attributes');
     if (!isNilOrError(customPage)) {
       setLocalSettings({
         ...customPage.attributes,
@@ -69,35 +69,51 @@ const EditCustomPageHeroBannerForm = ({
     }
   }, [customPage]);
 
-  // disable form if there's no header image when local settings change
-  useEffect(() => {
-    if (!localSettings?.header_bg) {
-      setFormStatus('disabled');
-    }
-  }, [localSettings]);
-
   if (isNilOrError(customPage)) {
     return null;
   }
 
   const saveCustomPage = async (enableHeroBanner: boolean = false) => {
-    // only update the page settings if they have changed
-    const diffedValues: Partial<ICustomPageAttributes> = {};
-    forOwn(localSettings, (value, key) => {
-      if (!isEqual(value, customPage.attributes[key])) {
-        diffedValues[key] = value;
-      }
-    });
+    if (isNil(localSettings)) {
+      return;
+    }
+
+    // if the header_bg is null, the user has removed it, and
+    // the form cannot be saved
+    if (localSettings.header_bg == null) {
+      setFormStatus('error');
+      return;
+    }
+
+    // this is a hack. If both objects have a "large" key under header_bg with a null value,
+    // it means the image was initialized (with the large: null value) on the server
+    // and hasn't been updated by the user locally. we set the whole value to null
+    // to trigger the FE error message. the first triple equals is on purpose, we want to
+    // only trigger this when the value is explicitly null and not undefined
+    if (
+      localSettings.header_bg?.large === null &&
+      customPage.attributes.header_bg?.large === null
+    ) {
+      setLocalSettings({
+        ...localSettings,
+        header_bg: null,
+      });
+      setFormStatus('error');
+      return;
+    }
+
+    const settingsToUpdate = {
+      ...localSettings,
+    };
 
     if (enableHeroBanner) {
-      diffedValues.banner_enabled = true;
+      settingsToUpdate.banner_enabled = true;
     }
 
     setIsLoading(true);
-    setFormStatus('disabled');
     setApiErrors(null);
     try {
-      await updateCustomPage(customPageId, diffedValues);
+      await updateCustomPage(customPageId, settingsToUpdate);
       setIsLoading(false);
       setFormStatus('success');
     } catch (error) {

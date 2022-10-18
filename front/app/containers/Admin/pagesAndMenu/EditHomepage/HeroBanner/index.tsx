@@ -22,7 +22,6 @@ import {
 } from 'services/homepageSettings';
 
 // utils
-import { forOwn, isEqual } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
@@ -36,7 +35,7 @@ const EditHomepageHeroBannerForm = ({
 }: InjectedIntlProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [apiErrors, setApiErrors] = useState<CLErrors | null>(null);
-  const [formStatus, setFormStatus] = useState<ISubmitState>('disabled');
+  const [formStatus, setFormStatus] = useState<ISubmitState>('enabled');
   const [localSettings, setLocalSettings] =
     useState<IHomepageSettingsAttributes | null>(null);
 
@@ -46,35 +45,30 @@ const EditHomepageHeroBannerForm = ({
     if (!isNilOrError(homepageSettings)) {
       setLocalSettings({
         ...homepageSettings.attributes,
+        // if the backend sends an empty header_bg object, with null properties for
+        // images sizes, we set the whole object to null to trigger the same
+        // fe validation as if the user had removed the image
+        ...(homepageSettings.attributes.header_bg?.large == null && {
+          header_bg: null,
+        }),
       });
     }
   }, [homepageSettings]);
-
-  // disable form if there's no header image when local settings change
-  useEffect(() => {
-    if (!localSettings?.header_bg) {
-      setFormStatus('disabled');
-    }
-  }, [localSettings]);
 
   if (isNilOrError(homepageSettings)) {
     return null;
   }
 
   const handleSave = async () => {
-    // only update the page settings if they have changed
-    const diffedValues = {};
-    forOwn(localSettings, (value, key) => {
-      if (!isEqual(value, homepageSettings.attributes[key])) {
-        diffedValues[key] = value;
-      }
-    });
+    if (localSettings?.header_bg == null) {
+      setFormStatus('error');
+      return;
+    }
 
     setIsLoading(true);
-    setFormStatus('disabled');
     setApiErrors(null);
     try {
-      await updateHomepageSettings(diffedValues);
+      await updateHomepageSettings(localSettings);
       setIsLoading(false);
       setFormStatus('success');
     } catch (error) {

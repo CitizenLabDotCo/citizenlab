@@ -93,7 +93,6 @@ const BannerImageField = ({
   useEffect(() => {
     if (isNil(headerBg)) {
       setBannerError(formatMessage(messages.noHeader));
-      setFormStatus('disabled');
       return;
     }
 
