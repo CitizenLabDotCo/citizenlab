@@ -101,6 +101,26 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.surveyResults',
     defaultMessage: 'Survey results',
   },
+  deleteSurveyResults: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResults',
+    defaultMessage: 'Delete survey results',
+  },
+  deleteResultsConfirmationQuestion: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResultsConfirmation',
+    defaultMessage: 'Are you sure you want to delete all survey results?',
+  },
+  deleteResultsInfo: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.deleteResultsInfo',
+    defaultMessage: 'This cannot be undone',
+  },
+  cancelDeleteButtonText: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.cancelDeleteButtonText',
+    defaultMessage: 'Cancel',
+  },
+  confirmDeleteButtonText: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.confirmDeleteButtonText',
+    defaultMessage: 'Yes, delete survey results',
+  },
   totalSurveyResponses: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.totalSurveyResponses',
     defaultMessage: 'Total {count} responses',
@@ -125,5 +145,18 @@ export default defineMessages({
   linear_scale: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.linear_scale',
     defaultMessage: 'Linear scale',
+  },
+  disabledSurveyEditingMessage: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.disabledSurveyEditingMessage',
+    defaultMessage:
+      "Survey content can't be edited as survey results have started coming in.",
+  },
+  deleteResults: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.deleteResults',
+    defaultMessage: 'Delete the results',
+  },
+  deleteResultsCondition: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.deleteResultsCondition',
+    defaultMessage: 'if you need to make changes.',
   },
 });

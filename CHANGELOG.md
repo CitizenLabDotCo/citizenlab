@@ -6,6 +6,12 @@
 
 - [CL-1825] Make tables more visually consistent.
 
+## 2022-10-14
+
+### Fixed
+
+- Fixed bug where subtitle in some admin pages would appear above the main header.
+
 ## 2022-10-13
 
 ### Fixed
