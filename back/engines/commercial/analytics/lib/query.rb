@@ -5,7 +5,8 @@ module Analytics
     MODELS = {
       post: FactPost,
       participation: FactParticipation,
-      visit: FactVisit
+      visit: FactVisit,
+      registration: FactRegistration
     }.freeze
 
     def initialize(query)

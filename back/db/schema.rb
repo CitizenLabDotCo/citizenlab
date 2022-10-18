@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_11_092349) do
+ActiveRecord::Schema.define(version: 2022_10_18_135644) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1257,6 +1257,7 @@ ActiveRecord::Schema.define(version: 2022_10_11_092349) do
     t.boolean "confirmation_required", default: true, null: false
     t.index "lower((email)::text)", name: "users_unique_lower_email_idx", unique: true
     t.index ["email"], name: "index_users_on_email"
+    t.index ["registration_completed_at"], name: "index_users_on_registration_completed_at"
     t.index ["slug"], name: "index_users_on_slug", unique: true
   end
 
@@ -1682,5 +1683,12 @@ ActiveRecord::Schema.define(version: 2022_10_11_092349) do
       SELECT users.id,
       COALESCE(((users.roles -> 0) ->> 'type'::text), 'citizen'::text) AS role
      FROM users;
+  SQL
+  create_view "analytics_fact_registrations", sql_definition: <<-SQL
+      SELECT users.id,
+      users.id AS dimension_user_id,
+      (users.registration_completed_at)::date AS dimension_date_registration_id
+     FROM users
+    WHERE (users.registration_completed_at IS NOT NULL);
   SQL
 end
