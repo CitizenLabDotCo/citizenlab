@@ -85,7 +85,7 @@ const ActionForm = ({
             currentValue={permittedBy}
             label={
               <FormattedMessage
-                {...permissionsMessages.permissionsEveryoneLabel}
+                {...permissionsMessages.permissionsAnyoneLabel}
               />
             }
             onChange={handlePermittedByUpdate('everyone')}
