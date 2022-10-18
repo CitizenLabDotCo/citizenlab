@@ -30,7 +30,7 @@ describe('Admin project participation method settings', () => {
     cy.visit(`admin/projects/${projectIdContinuous}`);
     cy.get('#participationmethod-information').should('be.checked');
 
-    // Test ideation
+    // Ideation
     cy.get('#participationmethod-ideation').click({ force: true });
     cy.get('.e2e-submit-wrapper-button').find('button').click();
     cy.visit(`admin/projects/${projectIdContinuous}`);
