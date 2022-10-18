@@ -244,8 +244,8 @@ export default ({
         id="app.components.admin.PostManager.components.PostTable.IdeaHeaderRow.cells"
         onData={handleData}
       />
-      <Thead background={colors.grey50}>
-        <Tr>
+      <Thead>
+        <Tr background={colors.grey50}>
           {cells.map((cellConfiguration) => renderCell(cellConfiguration))}
         </Tr>
       </Thead>

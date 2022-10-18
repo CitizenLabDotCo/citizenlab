@@ -134,8 +134,8 @@ const InvitesTable = ({
           </Tbody>
 
           {currentPage && lastPage && lastPage > 1 && (
-            <Tfoot background={colors.grey50}>
-              <Tr>
+            <Tfoot>
+              <Tr background={colors.grey50}>
                 <Td colSpan={5}>
                   <Pagination
                     currentPage={currentPage}

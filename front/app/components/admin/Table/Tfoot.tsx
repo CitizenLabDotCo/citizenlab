@@ -6,19 +6,14 @@ import { colors } from 'utils/styleUtils';
 
 interface Props {
   children: React.ReactNode;
-  background?: string;
 }
 
-const StyledTFoot = styled.tfoot<{ background?: string }>`
-  background: ${({ background }) => background ?? 'white'};
-
+const StyledTFoot = styled.tfoot`
   tr:first-child > td {
     border-top: 1px solid ${colors.grey200};
   }
 `;
 
-const Tfoot = ({ children, background }: Props) => (
-  <StyledTFoot background={background}>{children}</StyledTFoot>
-);
+const Tfoot = ({ children }: Props) => <StyledTFoot>{children}</StyledTFoot>;
 
 export default Tfoot;

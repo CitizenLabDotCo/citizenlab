@@ -37,8 +37,8 @@ export default ({
   toggleSelectAll,
   handleSortClick,
 }: Props) => (
-  <Thead background={colors.grey50}>
-    <Tr>
+  <Thead>
+    <Tr background={colors.grey50}>
       <Th width={getWidth(1)}>
         <Checkbox
           checked={!!allSelected}

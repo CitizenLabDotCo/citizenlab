@@ -239,8 +239,8 @@ export default class PostTable extends React.Component<Props> {
             ) : null}
           </Tbody>
           {!isEmpty(posts) && (
-            <Tfoot background={colors.grey50}>
-              <Tr>
+            <Tfoot>
+              <Tr background={colors.grey50}>
                 <Td colSpan={7}>
                   <Pagination
                     currentPage={this.props.currentPageNumber || 1}
