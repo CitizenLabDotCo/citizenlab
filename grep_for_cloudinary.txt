@@ -1,0 +1,92 @@
+➜  citizenlab git:(master) ✗ find . -type f \( -name '*.yml' -o -name '*.rb' -o -name '*.rake' -o -name '*.ts*' \) -exec grep 'cloudinary.com' {} \;
+  #   'http://res.cloudinary.com/citizenlabco/image/upload/v1515573977/man-388104_960_720_dfehjy.jpg',
+  #   'http://res.cloudinary.com/citizenlabco/image/upload/v1515574041/man-838636_960_720_f3i6ki.jpg',
+  #   'http://res.cloudinary.com/citizenlabco/image/upload/v1515573998/smiling-woman_kdsaal.jpg',
+  #   'http://res.cloudinary.com/citizenlabco/image/upload/v1515574018/tiamorrison-profile-photo-2-copy_pcnsxm.png',
+      <img src="https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png" height="374.3745928338762" width="819" alt=""> <h2>Que sont les initiatives citoyennes ?</h2> <p>Les initiatives citoyennes sont des initiatives qui partent de la base, qui naissent d'un besoin, d'un désir, d'un rêve, .... envisagé par vous ou d'autres citoyens. Vous et les autres initiateurs voulez changer ou améliorer une situation actuelle ou recommencer à zéro.</p> <p>Ce qui distingue les initiatives citoyennes, c'est qu'elles suivent un système basé sur des règles et qu'elles incluent la participation de votre gouvernement (local). Ce système basé sur des règles, souvent formalisé dans la législation, indique les conditions qui doivent être remplies pour que le gouvernement (local) soit officiellement impliqué. Cette implication est nécessaire pour que les initiatives citoyennes puissent atteindre leur objectif, penser à l'autorisation d'une ville pour un usage temporaire d'un espace public, au soutien d'experts municipaux pour la mise en œuvre de vos projets, ....</p> <p>Les initiatives citoyennes ne servent jamais l'intérêt personnel, mais toujours l'intérêt collectif.</p> <h2>Pourquoi en commencer une ici ?</h2> <p>Il s'agit de la plateforme de participation officielle de $|orgName|, qui offre les avantages suivants :</p> <ul> <li>$|orgName| est déjà présente et écoute activement ce qui se passe sur la plateforme. Il n'est donc pas nécessaire de trouver et de joindre les personnes pertinentes au sein de$|orgName|.</li> <li>Cette plateforme est conçue spécifiquement pour les actions participatives telles que les initiatives citoyennes. Tous les éléments, le flux, ... sont construits pour optimiser cet objectif précis, ce qui est loin d'être le cas avec les médias sociaux classiques.</li> <li>D'autres citoyens sont déjà présents ici, ce qui augmente la portée potentielle de votre initiative pour obtenir du soutien.</li> </ul> <h2>Quelles sont les mesures à prendre ?</h2> <h3>1. Vérifiez si votre initiative correspond aux critères de $|orgName|</h3> <p>$|initiativesEligibilityCriteria|</p> <h3>2. Vérifiez si les offres de $|orgName| vous aideront à atteindre votre objectif.</h3> <p>$|initiativesThresholdReachedMessage|</p> <h3>3. Préparez votre initiative avec les autres citoyens concernés</h3> <p>Dès que vous publiez votre initiative sur cette plate-forme, le compte à rebours s’enclenche. Par conséquent, il est important d'être bien préparé lorsque vous rédigez votre initiative. <a href="/initiatives/new" target="_blank">Découvrez comment préparer une initiative avant de la publier</a>.</p> <h3>4. Publier votre initiative</h3> <p><a href="/initiatives/new" target="_blank">Publiez votre initiative</a>. Une fois que vous aurez cliqué sur le bouton 'Publier votre initiative', elle sera visible pour tous les autres citoyens et le chronomètre commencera à fonctionner.</p> <h3>5. Recueillir l'appui nécessaire pour atteindre le seuil à temps</h3> <p>Maintenant que votre initiative est publiée, il est temps d’obtenir du soutiens. Assurez-vous de recueillir $|initiativesVotingThreshold| votes en $|initiativesDaysLimit| jours pour obtenir la participation de $|orgName|. Pour cela, vous pouvez utiliser les options de partage sur la plateforme, ou tous les autres outils et canaux auxquels vous pensez.</p> <p><em>Vous avez encore des questions ? <a href="mailto:support@citizenlab.co" target="_blank">Contactez-nous</a></em>.</p>
+          remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png
+          remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png
+          remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png
+          remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png
+          remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png
+          remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png
+          remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png
+          remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png
+          remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png
+          remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png
+          remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png
+          remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png
+          remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png
+          remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png
+          remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png
+      remote_header_bg_url: https://res.cloudinary.com/citizenlabco/image/upload/v1540214247/carrying-casual-cheerful-1162964_dxubq6.jpg
+    - remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1539874546/undraw_brainstorming_49d4_iaimmn.png
+        remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png
+        remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png
+        remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png
+        remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png
+        remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png
+        remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png
+        remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png
+        remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png
+        remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png
+        remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png
+        remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png
+        remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png
+        remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png
+        remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png
+        remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png
+    remote_header_bg_url: https://res.cloudinary.com/citizenlabco/image/upload/v1540214247/carrying-casual-cheerful-1162964_dxubq6.jpg
+    remote_header_bg_url: https://res.cloudinary.com/citizenlabco/image/upload/v1540214247/carrying-casual-cheerful-1162964_dxubq6.jpg
+    remote_header_bg_url: https://res.cloudinary.com/citizenlabco/image/upload/v1540214247/carrying-casual-cheerful-1162964_dxubq6.jpg
+    remote_header_bg_url: https://res.cloudinary.com/citizenlabco/image/upload/v1540214247/carrying-casual-cheerful-1162964_dxubq6.jpg
+    remote_header_bg_url: https://res.cloudinary.com/citizenlabco/image/upload/v1540214247/carrying-casual-cheerful-1162964_dxubq6.jpg
+    remote_header_bg_url: https://res.cloudinary.com/citizenlabco/image/upload/v1540214247/carrying-casual-cheerful-1162964_dxubq6.jpg
+    remote_header_bg_url: https://res.cloudinary.com/citizenlabco/image/upload/v1540214247/carrying-casual-cheerful-1162964_dxubq6.jpg
+    remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1539874546/undraw_brainstorming_49d4_iaimmn.png
+    remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1539874546/undraw_brainstorming_49d4_iaimmn.png
+  - remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1539874546/undraw_brainstorming_49d4_iaimmn.png
+  - remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1539874546/undraw_brainstorming_49d4_iaimmn.png
+  #      https://res.cloudinary.com/citizenlabco/image/upload/v1630939376/Visio%CC%81n_2028_de_Metro_Plan_Estrate%CC%81gico_A_a9ylnk.pdf
+        target="_blank"><img src="https://res.cloudinary.com/citizenlabco/image/upload/v1540212640/image_h6upkl.png"
+        target="_blank"><img src="https://res.cloudinary.com/citizenlabco/image/upload/v1540212640/image_h6upkl.png"
+        target="_blank"><img src="https://res.cloudinary.com/citizenlabco/image/upload/v1540212640/image_h6upkl.png"
+        target="_blank"><img src="https://res.cloudinary.com/citizenlabco/image/upload/v1540212640/image_h6upkl.png"
+        target="_blank"><img src="https://res.cloudinary.com/citizenlabco/image/upload/v1540212640/image_h6upkl.png"
+        target="_blank"><img src="https://res.cloudinary.com/citizenlabco/image/upload/v1540212640/image_h6upkl.png"
+        target="_blank"><img src="https://res.cloudinary.com/citizenlabco/image/upload/v1540212640/image_h6upkl.png"
+        target="_blank"><img src="https://res.cloudinary.com/citizenlabco/image/upload/v1540212640/image_h6upkl.png"
+        target="_blank"><img src="https://res.cloudinary.com/citizenlabco/image/upload/v1540212640/image_h6upkl.png"
+      stub_request(:any, 'res.cloudinary.com').to_return(
+        <img src="https://res.cloudinary.com/citizenlabco/image/upload/v1540214247/carrying-casual-cheerful-1162964_dxubq6.jpg" />
+                    small: 'https://res.cloudinary.com/citizenlabco/image/upload/v1607443075/small_7d3bb3ca-32eb-4ba1-9de6-3bc738e4bad6_qhh6up.jpg',
+                    small: 'https://res.cloudinary.com/citizenlabco/image/upload/v1607443075/small_7d3bb3ca-32eb-4ba1-9de6-3bc738e4bad6_qhh6up.jpg',
+                    small: 'https://res.cloudinary.com/citizenlabco/image/upload/v1607443075/small_7d3bb3ca-32eb-4ba1-9de6-3bc738e4bad6_qhh6up.jpg',
+          remote_header_bg_url: 'http://res.cloudinary.com/citizenlabco/image/upload/v1516809200/Idea_cover_qdrwa6.jpg',
+remote_image_url: 'http://res.cloudinary.com/citizenlabco/image/upload/v1516925813/open_idea_box_gaxtpy.png' })
+                    img.attr('src').exclude?('res.cloudinary.com')
+          'Image URL' => 'https://res.cloudinary.com/citizenlabco/image/upload/v1548847594/image_v8imrf.png',
+# rake bulk_import:ideas['http://res.cloudinary.com/citizenlabco/raw/upload/v1516117361/CitizenLab_import_template_Sint-Niklaas_1_.xlsx_-_Overmolen_nligii.csv','sint-niklaas.citizenlab.co']
+        remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png',
+        remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png',
+        remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png',
+        remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png',
+        remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png',
+        remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png',
+        remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png',
+        remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png',
+        remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png',
+        remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png',
+        remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png',
+        remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png',
+        remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png',
+        remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png',
+        remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png',
+  remote_header_bg_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1540214247/carrying-casual-cheerful-1162964_dxubq6.jpg'
+open_idea_project.project_images.create!(remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1539874546/undraw_brainstorming_49d4_iaimmn.png')
+
+citizenlab-ee git:(master) find . -type f \( -name '*.yml' -o -name '*.rb' -o -name '*.rake' -o -name '*.ts*' \) -exec grep 'cloudinary.com' {} \;
+          remote_header_bg_url: 'http://res.cloudinary.com/citizenlabco/image/upload/v1516809200/Idea_cover_qdrwa6.jpg',
+remote_image_url: 'http://res.cloudinary.com/citizenlabco/image/upload/v1516925813/open_idea_box_gaxtpy.png' })
+                    img.attr('src').exclude?('res.cloudinary.com')
+                    
