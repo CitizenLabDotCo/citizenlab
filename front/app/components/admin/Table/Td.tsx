@@ -7,7 +7,7 @@ interface Props extends BoxProps {
   colSpan?: number;
 }
 
-const Td = ({ children, colSpan, style, ...otherProps }: Props) => (
+const Td = ({ children, colSpan, ...otherProps }: Props) => (
   <Box as="td" p="12px" colSpan={colSpan} {...otherProps}>
     {children}
   </Box>
