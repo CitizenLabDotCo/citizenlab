@@ -10,6 +10,7 @@ interface Props {
   label: string;
   icon: IconNames;
   onClick: () => void;
+  'data-cy'?: string;
 }
 
 const AddIcon = styled(Icon).attrs({ name: 'plus' })`
@@ -34,7 +35,7 @@ const StyledBox = styled(Box)`
   }
 `;
 
-const ToolboxItem = ({ icon, label, onClick }: Props) => {
+const ToolboxItem = ({ icon, label, onClick, ...rest }: Props) => {
   return (
     <StyledBox
       display="flex"
@@ -46,6 +47,7 @@ const ToolboxItem = ({ icon, label, onClick }: Props) => {
       alignItems="center"
       // remove the role attribute when we add drag and drop functionality
       role="button"
+      data-cy={rest['data-cy']}
     >
       <Icon fill={colors.primary} width="20px" height="20px" name={icon} />
       <Text fontSize="s" ml="12px" mt="0" mb="0" color="textPrimary">

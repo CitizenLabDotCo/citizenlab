@@ -31,17 +31,23 @@ const DraggableElement = styled.div`
 
 interface FormBuilderToolboxProps {
   onAddField: (field: IFlatCreateCustomField) => void;
+  isEditingDisabled: boolean;
 }
 
 const FormBuilderToolbox = ({
   intl: { formatMessage },
   onAddField,
+  isEditingDisabled,
 }: FormBuilderToolboxProps & InjectedIntlProps) => {
   const locale = useLocale();
 
   if (isNilOrError(locale)) return null;
 
   const addField = (inputType: ICustomFieldInputType) => {
+    if (isEditingDisabled) {
+      return;
+    }
+
     onAddField({
       id: `${Math.floor(Date.now() * Math.random())}`,
       isLocalOnly: true,
@@ -96,21 +102,25 @@ const FormBuilderToolbox = ({
             icon="survey-short-answer"
             label={formatMessage(messages.shortAnswer)}
             onClick={() => addField('text')}
+            data-cy="e2e-short-answer"
           />
           <ToolboxItem
             icon="survey-multiple-choice"
             label={formatMessage(messages.multipleChoice)}
             onClick={() => addField('select')}
+            data-cy="e2e-multiple-choice"
           />
           <ToolboxItem
             icon="survey-linear-scale"
             label={formatMessage(messages.linearScale)}
             onClick={() => addField('linear_scale')}
+            data-cy="e2e-linear-scale"
           />
           <ToolboxItem
             icon="survey-number-field"
             label={formatMessage(messages.number)}
             onClick={() => addField('number')}
+            data-cy="e2e-number-field"
           />
         </DraggableElement>
       </Box>

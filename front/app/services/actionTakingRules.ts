@@ -147,7 +147,8 @@ export const getIdeaPostingRules = ({
       // not an enabled ideation phase
       if (
         !(
-          phase.attributes.participation_method === 'ideation' &&
+          (phase.attributes.participation_method === 'ideation' ||
+            phase.attributes.participation_method === 'native_survey') &&
           phase.attributes.posting_enabled &&
           disabled_reason !== 'not_ideation'
         )
@@ -177,6 +178,35 @@ export const getIdeaPostingRules = ({
     }
 
     // continuous, not an enabled ideation project
+    // TODO: Will need to update this section after we add new permissions in back office in i5
+    if (
+      isNilOrError(phase) &&
+      project.attributes.participation_method === 'native_survey'
+    ) {
+      if (!project.attributes.posting_enabled) {
+        return {
+          show: true,
+          enabled: false,
+          disabledReason: 'notPermitted' as IIdeaPostingDisabledReason,
+          action: null,
+        };
+      }
+      if (authUser) {
+        return {
+          show: true,
+          enabled: true,
+          disabledReason: null,
+          action: null,
+        };
+      }
+      return {
+        show: true,
+        enabled: false,
+        disabledReason: signedIn ? 'notPermitted' : 'maybeNotPermitted',
+        action: null,
+      };
+    }
+
     if (
       isNilOrError(phase) &&
       !(

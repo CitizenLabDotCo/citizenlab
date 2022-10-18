@@ -39,9 +39,13 @@ const StyledStatusLabel = styled(StatusLabel)`
 
 type FormBuilderTopBarProps = {
   isSubmitting: boolean;
+  isEditingDisabled: boolean;
 };
 
-const FormBuilderTopBar = ({ isSubmitting }: FormBuilderTopBarProps) => {
+const FormBuilderTopBar = ({
+  isSubmitting,
+  isEditingDisabled,
+}: FormBuilderTopBarProps) => {
   const localize = useLocalize();
   const { projectId, phaseId } = useParams() as {
     projectId: string;
@@ -121,12 +125,13 @@ const FormBuilderTopBar = ({ isSubmitting }: FormBuilderTopBarProps) => {
           disabled={!project}
           linkTo={viewSurveyLInk}
           openLinkInNewTab
+          data-cy="e2e-preview-form-button"
         >
           <FormattedMessage {...messages.viewSurvey} />
         </Button>
         <Button
           buttonStyle="primary"
-          disabled={!project}
+          disabled={isEditingDisabled}
           processing={isSubmitting}
           type="submit"
         >
