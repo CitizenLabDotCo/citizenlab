@@ -1,6 +1,6 @@
+import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/HeaderImageDropzone';
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/HeaderImageDropzone';
 
 // components
 import HeaderContent from './HeaderContent';
@@ -24,7 +24,6 @@ export const Header = styled.div`
   min-height: ${homepageBannerLayoutHeights.full_width_banner_layout.desktop}px;
   margin: 0;
   padding: 0;
-  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
