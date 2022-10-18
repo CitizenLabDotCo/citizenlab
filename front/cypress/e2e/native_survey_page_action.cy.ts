@@ -147,7 +147,7 @@ describe('Native survey project page actions', () => {
     cy.visit(`admin/projects/${projectIdContinuous}/permissions`);
     // Select that unregistered users may submit surveys
     cy.get('#e2e-granular-permissions').within(() => {
-      cy.contains('Everyone').click({ force: true });
+      cy.contains('Anyone').click({ force: true });
     });
     // Logout
     cy.logout();
