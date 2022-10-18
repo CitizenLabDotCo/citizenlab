@@ -73,10 +73,6 @@ const GoToLink = styled(Link)`
 `;
 
 const GoToIcon = styled(Icon)`
-  width: 14px;
-  height: 14px;
-  fill: ${colors.textSecondary};
-
   &:hover {
     fill: ${colors.primary};
   }
@@ -298,7 +294,12 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
                   onClick={handleGoToLinkOnClick}
                   data-type={moderatableType}
                 >
-                  <GoToIcon name="open-in-new" />
+                  <GoToIcon
+                    name="open-in-new"
+                    fill={colors.textSecondary}
+                    width="18px"
+                    height="18px"
+                  />
                 </GoToLink>
               </GoToLinkWrapper>
             </Tippy>
