@@ -824,7 +824,6 @@
   "app.containers.AdminPage.PagesEdition.faq": "Perguntas Mais Frequentes (FAQ)",
   "app.containers.AdminPage.PagesEdition.fileUploadLabel": "Anexos (max. 50MB)",
   "app.containers.AdminPage.PagesEdition.information": "Informação",
-  "app.containers.AdminPage.PagesEdition.linkToNavigation": "Navegação",
   "app.containers.AdminPage.PagesEdition.messageError": "Ocorreu um erro ao salvar sua página",
   "app.containers.AdminPage.PagesEdition.messageSuccess": "Suas alterações foram salvas com sucesso",
   "app.containers.AdminPage.PagesEdition.policiesSubtitle": "Edite os termos e condições da sua plataforma e a política de privacidade. Outras páginas, incluindo as páginas Sobre e FAQ, podem ser editadas na aba {navigationLink}.",
