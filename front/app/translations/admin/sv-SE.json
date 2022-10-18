@@ -824,7 +824,6 @@
   "app.containers.AdminPage.PagesEdition.faq": "Vanliga Frågor (FAQ)",
   "app.containers.AdminPage.PagesEdition.fileUploadLabel": "Bilagor (max. 50MB)",
   "app.containers.AdminPage.PagesEdition.information": "Information",
-  "app.containers.AdminPage.PagesEdition.linkToNavigation": "Navigering",
   "app.containers.AdminPage.PagesEdition.messageError": "Det uppstod ett fel när din sida skulle sparas",
   "app.containers.AdminPage.PagesEdition.messageSuccess": "Din sida har sparats",
   "app.containers.AdminPage.PagesEdition.policiesSubtitle": "Redigera villkoren och sekretesspolicyn för din plattform. Andra sidor, inklusive sidorna Om och Vanliga frågor och svar, kan redigeras på fliken {navigationLink}.",
