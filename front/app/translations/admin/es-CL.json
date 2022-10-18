@@ -822,7 +822,6 @@
   "app.containers.AdminPage.PagesEdition.faq": "Preguntas frecuentes (FAQ)",
   "app.containers.AdminPage.PagesEdition.fileUploadLabel": "Archivos adjuntos (máximo 50MB)",
   "app.containers.AdminPage.PagesEdition.information": "La página acerca de",
-  "app.containers.AdminPage.PagesEdition.linkToNavigation": "Navegación",
   "app.containers.AdminPage.PagesEdition.messageError": "Error al guardar la página",
   "app.containers.AdminPage.PagesEdition.messageSuccess": "Los cambios han sido guardados con éxito",
   "app.containers.AdminPage.PagesEdition.policiesTitle": "Políticas de la plataforma",

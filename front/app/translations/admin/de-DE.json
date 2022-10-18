@@ -822,7 +822,6 @@
   "app.containers.AdminPage.PagesEdition.faq": "Fragen & Antworten",
   "app.containers.AdminPage.PagesEdition.fileUploadLabel": "Anhänge (max. 50MB)",
   "app.containers.AdminPage.PagesEdition.information": "Über uns",
-  "app.containers.AdminPage.PagesEdition.linkToNavigation": "Seiten",
   "app.containers.AdminPage.PagesEdition.messageError": "Es gab einen Fehler beim Speichern Ihrer Seite",
   "app.containers.AdminPage.PagesEdition.messageSuccess": "Ihre Seite wurde erfolgreich gespeichert",
   "app.containers.AdminPage.PagesEdition.policiesTitle": "Plattform-Richtlinien",

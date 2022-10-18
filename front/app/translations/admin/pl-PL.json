@@ -822,7 +822,6 @@
   "app.containers.AdminPage.PagesEdition.faq": "Często zadawane pytania (FAQ)",
   "app.containers.AdminPage.PagesEdition.fileUploadLabel": "Załączniki (maks. 50MB)",
   "app.containers.AdminPage.PagesEdition.information": "O nas",
-  "app.containers.AdminPage.PagesEdition.linkToNavigation": "Nawigacja",
   "app.containers.AdminPage.PagesEdition.messageError": "Podczas zapisywania strony wystąpił błąd",
   "app.containers.AdminPage.PagesEdition.messageSuccess": "Twoje zmiany zostały pomyślnie zapisane",
   "app.containers.AdminPage.PagesEdition.policiesTitle": "Polityka platformy",

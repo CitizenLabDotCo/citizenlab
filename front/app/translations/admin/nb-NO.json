@@ -822,7 +822,6 @@
   "app.containers.AdminPage.PagesEdition.faq": "Vanlige spørsmål",
   "app.containers.AdminPage.PagesEdition.fileUploadLabel": "Add files to the About page",
   "app.containers.AdminPage.PagesEdition.information": "Informasjon",
-  "app.containers.AdminPage.PagesEdition.linkToNavigation": "Navigation",
   "app.containers.AdminPage.PagesEdition.messageError": "En feil oppsto ved lagring av siden din",
   "app.containers.AdminPage.PagesEdition.messageSuccess": "Endringene dine har blitt lagret",
   "app.containers.AdminPage.PagesEdition.policiesTitle": "Platform policies",

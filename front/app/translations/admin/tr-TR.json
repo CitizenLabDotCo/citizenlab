@@ -822,7 +822,6 @@
   "app.containers.AdminPage.PagesEdition.faq": "Sıkça Sorulan Sorular (SSS)",
   "app.containers.AdminPage.PagesEdition.fileUploadLabel": "Hakkında sayfasına dosya ekleme",
   "app.containers.AdminPage.PagesEdition.information": "Bilgiler",
-  "app.containers.AdminPage.PagesEdition.linkToNavigation": "Gezinme",
   "app.containers.AdminPage.PagesEdition.messageError": "Sayfanız kaydedilirken bir hata oluştu",
   "app.containers.AdminPage.PagesEdition.messageSuccess": "Sayfanız başarıyla kaydedildi",
   "app.containers.AdminPage.PagesEdition.policiesTitle": "Platform politikaları",
