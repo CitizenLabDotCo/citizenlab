@@ -961,6 +961,7 @@
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.xVolunteers": "{x, plural, =0 {ingen frivillige} one {# frivillig} other {# frivillige}}",
   "app.containers.AdminPage.ProjectEdit.addNewContribution": "Kom med dit bidrag",
   "app.containers.AdminPage.ProjectEdit.addNewIdea": "Tilføj en idé",
+  "app.containers.AdminPage.ProjectEdit.addNewInput": "Add an input",
   "app.containers.AdminPage.ProjectEdit.addNewIssue": "Tilføj kommentar",
   "app.containers.AdminPage.ProjectEdit.addNewOption": "Tilføj mulighed",
   "app.containers.AdminPage.ProjectEdit.addNewProject": "Tilføj et projekt",

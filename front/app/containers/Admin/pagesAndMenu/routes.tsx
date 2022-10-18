@@ -67,7 +67,15 @@ export default () => ({
       ],
     },
     {
-      path: 'bottom-info-section',
+      path: HOMEPAGE_PATH, // /homepage
+      element: (
+        <PageLoading>
+          <EditHomepage />
+        </PageLoading>
+      ),
+    },
+    {
+      path: `${HOMEPAGE_PATH}/bottom-info-section`, // /homepage/bottom-info-section
       element: (
         <PageLoading>
           <HomepageBottomInfoForm />
@@ -75,7 +83,7 @@ export default () => ({
       ),
     },
     {
-      path: 'top-info-section',
+      path: `${HOMEPAGE_PATH}/top-info-section`, // /homepage/top-info-section
       element: (
         <PageLoading>
           <HomepageTopInfoSection />
@@ -83,18 +91,10 @@ export default () => ({
       ),
     },
     {
-      path: 'homepage-banner',
+      path: `${HOMEPAGE_PATH}/homepage-banner`, // /homepage/homepage-banner
       element: (
         <PageLoading>
           <HomepageHeroBannerForm />
-        </PageLoading>
-      ),
-    },
-    {
-      path: HOMEPAGE_PATH,
-      element: (
-        <PageLoading>
-          <EditHomepage />
         </PageLoading>
       ),
     },

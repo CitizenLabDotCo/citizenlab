@@ -422,7 +422,7 @@ const InputsTable = ({
       </SearchContainer>
       {inputsCategoryFilter === 'recentlyPosted' && inputs.length !== 0 && (
         <RecentlyPostedInfoBox data-testid="insightsRecentlyAddedInfobox">
-          <Icon name="showMore" />
+          <Icon name="refresh" />
           {formatMessage(messages.inputsTableRecentlyPostedInfoBox)}
         </RecentlyPostedInfoBox>
       )}

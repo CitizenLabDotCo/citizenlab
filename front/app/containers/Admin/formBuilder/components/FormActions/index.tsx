@@ -66,7 +66,7 @@ const FormActions = ({
             width="100%"
             display="flex"
             alignItems="center"
-            justifyContent="center"
+            justifyContent="flex-end"
           >
             <Toggle
               checked={postingEnabled}
@@ -79,12 +79,13 @@ const FormActions = ({
         </Box>
         <Box
           display="flex"
+          alignItems="center"
           flexDirection="row"
           width="100%"
           justifyContent="space-between"
         >
           <Button
-            icon="charts"
+            icon="chart-bar"
             buttonStyle="primary"
             width="auto"
             minWidth="312px"
@@ -104,6 +105,7 @@ const FormActions = ({
             onClick={() => {
               clHistory.push(editFormLink);
             }}
+            data-cy="e2e-edit-survey-content"
           >
             {formatMessage(messages.editSurveyContent)}
           </Button>

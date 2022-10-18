@@ -11,6 +11,7 @@ resource 'Ideas' do
   before do
     header 'Content-Type', 'application/json'
     @user = user
+    create(:idea_status_proposed)
     token = Knock::AuthToken.new(payload: @user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
   end
@@ -36,6 +37,7 @@ resource 'Ideas' do
       @ideas = %w[published published draft published spam published published].map do |ps|
         create :idea, publication_status: ps
       end
+      create :idea, project: create(:continuous_native_survey_project)
     end
 
     example_request 'List all published ideas (default behaviour)' do
@@ -102,7 +104,7 @@ resource 'Ideas' do
     end
 
     example 'List all ideas in a project' do
-      l = create(:project)
+      l = create(:continuous_project)
       i = create(:idea, project: l)
 
       do_request projects: [l.id]
@@ -304,7 +306,7 @@ resource 'Ideas' do
 
     describe do
       before do
-        @project = create(:project)
+        @project = create(:continuous_project)
         @selected_ideas = @ideas.select(&:published?).shuffle.take 3
         @selected_ideas.each do |idea|
           idea.update! project: @project
@@ -351,7 +353,7 @@ resource 'Ideas' do
     before do
       @t1 = create(:topic)
       @t2 = create(:topic)
-      @project = create(:project, allowed_input_topics: [@t1, @t2])
+      @project = create(:continuous_project, allowed_input_topics: [@t1, @t2])
 
       @s1 = create(:idea_status)
       @s2 = create(:idea_status)
@@ -484,13 +486,79 @@ resource 'Ideas' do
     end
   end
 
+  get 'web_api/v1/ideas/:idea_id/schema' do
+    let(:project) { create(:project_with_active_ideation_phase) }
+    let(:custom_form) { create(:custom_form, participation_context: project) }
+    let!(:custom_field) { create(:custom_field_extra_custom_form, resource: custom_form) }
+    let(:idea) { create :idea, project: project }
+    let(:idea_id) { idea.id }
+
+    example_request 'Get the react-jsonschema-form json schema and ui schema for an ideation input' do
+      expect(status).to eq 200
+      json_response = json_parse(response_body)
+      expect(json_response[:json_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
+      expect(json_response[:ui_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
+      built_in_field_keys = %i[
+        title_multiloc
+        body_multiloc
+        author_id
+        budget
+        topic_ids
+        location_description
+        idea_images_attributes
+        idea_files_attributes
+      ]
+      if CitizenLab.ee?
+        %i[en fr-FR nl-NL].each do |locale|
+          expect(json_response[:json_schema_multiloc][locale][:properties].keys).to eq(built_in_field_keys + [custom_field.key.to_sym])
+        end
+      else
+        %i[en fr-FR nl-NL].each do |locale|
+          expect(json_response[:json_schema_multiloc][locale][:properties].keys).to eq built_in_field_keys
+        end
+      end
+    end
+
+    get 'web_api/v1/ideas/:idea_id/json_forms_schema' do
+      let(:project) { create(:project_with_active_ideation_phase) }
+      let(:custom_form) { create(:custom_form, participation_context: project) }
+      let!(:custom_field) { create(:custom_field_extra_custom_form, resource: custom_form) }
+      let(:idea) { create :idea, project: project }
+      let(:idea_id) { idea.id }
+
+      example_request 'Get the jsonforms.io json schema and ui schema for an ideation input' do
+        expect(status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response[:json_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
+        expect(json_response[:ui_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
+        visible_built_in_field_keys = %i[
+          title_multiloc
+          body_multiloc
+          topic_ids
+          location_description
+          idea_images_attributes
+          idea_files_attributes
+        ]
+        if CitizenLab.ee?
+          %i[en fr-FR nl-NL].each do |locale|
+            expect(json_response[:json_schema_multiloc][locale][:properties].keys).to eq(visible_built_in_field_keys + [custom_field.key.to_sym])
+          end
+        else
+          %i[en fr-FR nl-NL].each do |locale|
+            expect(json_response[:json_schema_multiloc][locale][:properties].keys).to eq visible_built_in_field_keys
+          end
+        end
+      end
+    end
+  end
+
   post 'web_api/v1/ideas' do
     before do
       IdeaStatus.create_defaults
     end
 
     with_options scope: :idea do
-      parameter :project_id, 'The identifier of the project that hosts the idea', extra: ''
+      parameter :project_id, 'The identifier of the project that hosts the idea', required: true
       parameter :phase_ids, 'The phases the idea is part of, defaults to the current only, only allowed by admins'
       parameter :author_id, 'The user id of the user owning the idea', extra: 'Required if not draft'
       parameter :idea_status_id, 'The status of the idea, only allowed for admins', extra: "Defaults to status with code 'proposed'"
@@ -553,6 +621,41 @@ resource 'Ideas' do
           expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
           expect(json_response.dig(:data, :attributes, :location_description)).to eq location_description
         end
+      end
+    end
+
+    describe 'when posting an idea in an active ideation phase, the correct form is used', skip: !CitizenLab.ee? do
+      let(:project) { create(:project_with_active_ideation_phase) }
+      let!(:custom_form) { create(:custom_form, participation_context: project) }
+      let!(:custom_field) do
+        create(
+          :custom_field,
+          resource: custom_form,
+          key: 'proposed_budget',
+          code: 'proposed_budget',
+          input_type: 'number',
+          enabled: true
+        )
+      end
+      let(:proposed_budget) { 1234 }
+
+      example_request 'Post an idea in an ideation phase' do
+        assert_status 201
+        json_response = json_parse response_body
+        idea = Idea.find(json_response.dig(:data, :id))
+        expect(idea.proposed_budget).to eq 1234
+      end
+    end
+
+    describe 'when posting an idea in an active ideation phase, the creation_phase is not set' do
+      let(:project) { create(:project_with_active_ideation_phase) }
+      let!(:custom_form) { create(:custom_form, participation_context: project) }
+
+      example_request 'Post an idea in an ideation phase' do
+        assert_status 201
+        json_response = json_parse response_body
+        idea = Idea.find(json_response.dig(:data, :id))
+        expect(idea.creation_phase).to be_nil
       end
     end
 
@@ -669,12 +772,61 @@ resource 'Ideas' do
 
       describe do
         let(:project) { create(:project_with_current_phase, phases_config: { sequence: 'xxcx' }) }
-        let(:phase_ids) { project.phases.shuffle.take(2).map(&:id) }
+        let(:phase_ids) { project.phases.sample(1).map(&:id) }
 
         example_request 'Creating an idea in specific phases' do
           assert_status 201
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :relationships, :phases, :data).pluck(:id)).to match_array phase_ids
+        end
+      end
+
+      describe 'when posting an idea in an ideation phase, the form of the project is used for accepting the input', skip: !CitizenLab.ee? do
+        let(:project) { create(:project_with_active_ideation_phase) }
+        let!(:custom_form) do
+          create(:custom_form, participation_context: project).tap do |form|
+            fields = IdeaCustomFieldsService.new(form).all_fields
+            # proposed_budget is disabled by default
+            enabled_field_keys = %w[title_multiloc body_multiloc proposed_budget]
+            fields.each do |field|
+              field.enabled = enabled_field_keys.include? field.code
+              field.save
+            end
+          end
+        end
+        let(:phase_ids) { [project.phases.first.id] }
+        let(:title_multiloc) { { 'nl-BE' => 'An idea with a proposed budget' } }
+        let(:body_multiloc) { { 'nl-BE' => 'An idea with a proposed budget for testing' } }
+        let(:proposed_budget) { 1234 }
+
+        example_request 'Post an idea in an ideation phase' do
+          assert_status 201
+          json_response = json_parse response_body
+          # Enabled fields have a value
+          expect(json_response.dig(:data, :attributes, :title_multiloc)).to eq({ 'nl-BE': 'An idea with a proposed budget' })
+          expect(json_response.dig(:data, :attributes, :body_multiloc)).to eq({ 'nl-BE': 'An idea with a proposed budget for testing' })
+          expect(json_response.dig(:data, :attributes, :proposed_budget)).to eq proposed_budget
+          # Disabled fields do not have a value
+          expect(json_response.dig(:data, :attributes, :budget)).to be_nil
+          expect(json_response.dig(:data, :attributes, :location_description)).to be_nil
+          expect(json_response.dig(:data, :attributes)).not_to have_key :topic_ids
+          expect(json_response.dig(:data, :attributes)).not_to have_key :idea_images_attributes
+          expect(json_response.dig(:data, :attributes)).not_to have_key :idea_files_attributes
+          # location_point_geojson is not a field and cannot be disabled, so it has a value
+          expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
+        end
+      end
+
+      describe 'when posting an idea in an ideation phase, the creation_phase is not set' do
+        let(:project) { create(:project_with_active_ideation_phase) }
+        let!(:custom_form) { create(:custom_form, participation_context: project) }
+        let(:phase_ids) { [project.phases.first.id] }
+
+        example_request 'Post an idea in an ideation phase', document: false do
+          assert_status 201
+          json_response = json_parse response_body
+          idea = Idea.find(json_response.dig(:data, :id))
+          expect(idea.creation_phase).to be_nil
         end
       end
 

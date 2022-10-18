@@ -5,7 +5,7 @@ export const SectionTitle = styled.h2`
   color: ${colors.primary};
   font-size: ${fontSizes.l}px;
   display: flex;
-  align-items: baseline;
+  align-items: center;
   margin: 0;
 `;
 

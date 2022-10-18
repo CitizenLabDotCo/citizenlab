@@ -31,8 +31,7 @@ const HomeLink = styled(Link)`
 `;
 
 const HomeIcon = styled(Icon)`
-  flex: 0 0 14px;
-  height: 14px;
+  flex: 0 0 24px;
   fill: ${colors.textSecondary};
   margin-top: -3px;
 
@@ -96,7 +95,7 @@ const Breadcrumbs = ({
       <HomeLink id="e2e-home-page-link" to="/">
         <HomeIcon
           title={formatMessage(messages.linkToHomePage)}
-          name="homeFilled"
+          name="home"
           ariaHidden={false}
         />
       </HomeLink>

@@ -52,10 +52,9 @@ const Container = styled.li`
 
 const UpvoteIcon = styled(Icon)`
   fill: ${colors.textSecondary};
-  flex: 0 0 17px;
-  width: 17px;
-  height: 17px;
-  margin-top: -2px;
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
 `;
 
 const UpvoteButton = styled.button`
@@ -350,7 +349,7 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
             >
               <>
                 <UpvoteIcon
-                  name="upvote"
+                  name="vote-up"
                   className={`
                   ${voted ? 'voted' : 'notVoted'}
                   ${disabled ? 'disabled' : 'enabled'}

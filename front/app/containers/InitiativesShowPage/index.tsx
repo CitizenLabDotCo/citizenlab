@@ -68,7 +68,7 @@ const InitiativesShowPage = memo<Props>(({ initiative }) => {
         <Button
           linkTo="/initiatives"
           text={goBackToListMessage}
-          icon="arrow-back"
+          icon="arrow-left"
         />
       </InitiativeNotFoundWrapper>
     );
