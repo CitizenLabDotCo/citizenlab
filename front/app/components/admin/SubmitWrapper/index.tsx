@@ -178,19 +178,12 @@ export default class SubmitWrapper extends PureComponent<Props> {
             className="e2e-submit-wrapper-button"
             buttonStyle={secondaryButtonStyle}
             processing={loading}
-            disabled={status === 'disabled' || status === 'success'}
+            disabled={isSubmitButtonDisabled}
             onClick={this.props.secondaryButtonOnClick}
             setSubmitButtonRef={this.setSecondaryButtonRef}
             ml="25px"
           >
-            {(status === 'enabled' ||
-              status === 'disabled' ||
-              status === 'error') && (
-              <FormattedMessage {...this.props.secondaryButtonSaveMessage} />
-            )}
-            {status === 'success' && (
-              <FormattedMessage {...messages.buttonSuccess} />
-            )}
+            <FormattedMessage {...this.props.secondaryButtonSaveMessage} />
           </Button>
         )}
 
