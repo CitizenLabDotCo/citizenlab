@@ -33,7 +33,7 @@ export default memo(
       background="#fff"
       border-top="solid 1px #ddd"
     >
-      <Box maxWidth="740px" display="flex" padding="10px 30px" margin="auto">
+      <Box maxWidth="700px" display="flex" padding="10px 16px" margin="auto">
         <Button
           className="e2e-submit-idea-form"
           processing={processing}

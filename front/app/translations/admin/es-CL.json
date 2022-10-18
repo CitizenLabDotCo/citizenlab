@@ -1141,8 +1141,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.newField": "Nuevo campo",
   "app.containers.AdminPage.ProjectEdit.survey.number": "Número",
   "app.containers.AdminPage.ProjectEdit.survey.open": "Abrir",
-  "app.containers.AdminPage.ProjectEdit.survey.openForSubmissions": "Abierto a las presentaciones",
-  "app.containers.AdminPage.ProjectEdit.survey.questionDescription": "Descripción de la pregunta",
   "app.containers.AdminPage.ProjectEdit.survey.questionTitle": "Título de la pregunta",
   "app.containers.AdminPage.ProjectEdit.survey.range": "Rango",
   "app.containers.AdminPage.ProjectEdit.survey.removeAnswer": "Eliminar respuesta",
