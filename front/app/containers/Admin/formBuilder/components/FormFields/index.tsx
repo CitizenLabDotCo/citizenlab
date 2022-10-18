@@ -2,6 +2,7 @@ import React from 'react';
 import { DndProvider } from 'react-dnd-cjs';
 import HTML5Backend from 'react-dnd-html5-backend-cjs';
 import { useFormContext } from 'react-hook-form';
+import { snakeCase } from 'lodash-es';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
@@ -20,6 +21,9 @@ import T from 'components/T';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
+// Hooks
+import useLocale from 'hooks/useLocale';
+
 import {
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
@@ -35,6 +39,7 @@ const getTranslatedFieldType = (field) => {
     case 'text':
       return messages.shortAnswer;
     case 'multiselect':
+    case 'select':
       return messages.multipleChoice;
     case 'number':
       return messages.number;
@@ -48,6 +53,7 @@ const getTranslatedFieldType = (field) => {
 interface FormFieldsProps {
   onEditField: (field: IFlatCustomFieldWithIndex) => void;
   handleDragRow: (fromIndex: number, toIndex: number) => void;
+  isEditingDisabled: boolean;
   selectedFieldId?: string;
 }
 
@@ -55,12 +61,17 @@ const FormFields = ({
   onEditField,
   handleDragRow,
   selectedFieldId,
+  isEditingDisabled,
 }: FormFieldsProps) => {
   const {
     watch,
     formState: { errors },
   } = useFormContext();
   const formCustomFields: IFlatCustomField[] = watch('customFields');
+  const locale = useLocale();
+  if (isNilOrError(locale)) {
+    return null;
+  }
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -75,9 +86,14 @@ const FormFields = ({
               } else if (selectedFieldId === field.id) {
                 outlineStyle = `1px solid ${colors.primary}`;
               }
+              const fieldIdentifier = snakeCase(field.title_multiloc[locale]);
 
               return (
-                <Box key={field.id} style={{ outline: outlineStyle }}>
+                <Box
+                  key={field.id}
+                  style={{ outline: outlineStyle }}
+                  data-cy={`e2e-field-${fieldIdentifier}`}
+                >
                   <SortableRow
                     id={field.id}
                     index={index}
@@ -103,9 +119,11 @@ const FormFields = ({
                     <Button
                       buttonStyle="secondary"
                       icon="edit"
+                      disabled={isEditingDisabled}
                       onClick={() => {
                         onEditField({ ...field, index });
                       }}
+                      data-cy={`e2e-edit-${fieldIdentifier}`}
                     >
                       <FormattedMessage {...messages.editButtonLabel} />
                     </Button>

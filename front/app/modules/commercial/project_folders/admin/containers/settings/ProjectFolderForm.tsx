@@ -392,6 +392,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                 setStatus('apiError');
               }
             }
+            setProjectFolderFilesToRemove([]);
             setStatus('success');
           } else {
             setStatus('apiError');
@@ -405,7 +406,9 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   };
 
   // ---- Rendering
-  if (mode === 'edit' && isNilOrError(projectFolder)) return null;
+  if (mode === 'edit' && isNilOrError(projectFolder)) {
+    return null;
+  }
 
   return (
     <form onSubmit={onSubmit}>
@@ -457,11 +460,12 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
         </SectionField>
         <SectionField>
           <SlugInput
+            inputFieldId="folder-slug"
             slug={slug}
-            resource="folder"
+            pathnameWithoutSlug={'folders'}
             apiErrors={errors}
             showSlugErrorMessage={showSlugErrorMessage}
-            handleSlugOnChange={handleSlugOnChange}
+            onSlugChange={handleSlugOnChange}
           />
         </SectionField>
         <SectionField>

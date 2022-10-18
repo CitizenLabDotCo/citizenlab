@@ -14,6 +14,7 @@ import {
   LocaleSwitcher,
   Icon,
   Input,
+  Toggle,
 } from '@citizenlab/cl2-component-library';
 import { SectionField } from 'components/admin/Section';
 import { List, SortableRow } from 'components/admin/ResourceList';
@@ -32,6 +33,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   name: string;
+  nameInputType: string;
   onSelectedLocaleChange?: (locale: Locale) => void;
   locales: Locale[];
   allowDeletingAllOptions?: boolean;
@@ -40,6 +42,7 @@ interface Props {
 const ConfigMultiselectWithLocaleSwitcher = ({
   onSelectedLocaleChange,
   name,
+  nameInputType,
   locales,
   intl: { formatMessage },
   allowDeletingAllOptions = false,
@@ -48,6 +51,7 @@ const ConfigMultiselectWithLocaleSwitcher = ({
     control,
     formState: { errors: formContextErrors },
     setValue,
+    watch,
     trigger,
   } = useFormContext();
   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
@@ -73,7 +77,7 @@ const ConfigMultiselectWithLocaleSwitcher = ({
     move(fromIndex, toIndex);
   };
 
-  // Handles add and remove fields
+  // Handles add and remove options
   const addOption = (value, name) => {
     const newValues = value;
     newValues.push({
@@ -87,7 +91,9 @@ const ConfigMultiselectWithLocaleSwitcher = ({
     setValue(name, newValues);
   };
 
-  const defaultValues = [{}];
+  const defaultOptionValues = [{}];
+  const defaultToggleValue = false;
+  const currentToggleValue = watch(nameInputType);
   const errors = get(formContextErrors, name);
   const apiError =
     (errors?.error as string | undefined) && ([errors] as unknown as CLError[]);
@@ -99,7 +105,7 @@ const ConfigMultiselectWithLocaleSwitcher = ({
         <Controller
           name={name}
           control={control}
-          defaultValue={defaultValues}
+          defaultValue={defaultOptionValues}
           render={({ field: { ref: _ref, value: choices, onBlur } }) => {
             const canDeleteLastOption =
               allowDeletingAllOptions || choices.length > 1;
@@ -146,6 +152,7 @@ const ConfigMultiselectWithLocaleSwitcher = ({
                             >
                               <Box width="280px">
                                 <Input
+                                  id={`e2e-option-input-${index}`}
                                   size="small"
                                   type="text"
                                   value={choice.title_multiloc[selectedLocale]}
@@ -172,7 +179,7 @@ const ConfigMultiselectWithLocaleSwitcher = ({
                                   }}
                                 >
                                   <Icon
-                                    name="trash"
+                                    name="delete"
                                     fill="grey"
                                     padding="0px"
                                   />
@@ -187,6 +194,7 @@ const ConfigMultiselectWithLocaleSwitcher = ({
                   <Button
                     icon="plus-circle"
                     buttonStyle="secondary"
+                    data-cy="e2e-add-answer"
                     onClick={() => addOption(choices, name)}
                     text={formatMessage(messages.addAnswer)}
                   />
@@ -207,6 +215,29 @@ const ConfigMultiselectWithLocaleSwitcher = ({
                       scrollIntoView={false}
                     />
                   )}
+                  <Box mt="24px">
+                    <Controller
+                      name={nameInputType}
+                      control={control}
+                      defaultValue={defaultToggleValue}
+                      render={({ field: { ref: _ref, value } }) => {
+                        return (
+                          <Toggle
+                            checked={value === 'multiselect'}
+                            id="e2e-multiselect-toggle"
+                            onChange={() => {
+                              if (currentToggleValue === 'select') {
+                                setValue(nameInputType, 'multiselect');
+                              } else {
+                                setValue(nameInputType, 'select');
+                              }
+                            }}
+                            label={formatMessage(messages.chooseMultipleToggle)}
+                          />
+                        );
+                      }}
+                    />
+                  </Box>
                 </SectionField>
               </Box>
             );

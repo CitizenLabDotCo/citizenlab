@@ -83,7 +83,7 @@ const TwoColumnSettings = () => {
             width="20px"
             height="20px"
             fill={colors.primary}
-            name="column2"
+            name="layout-2column-1"
           />
         }
         isRequired
@@ -104,7 +104,7 @@ const TwoColumnSettings = () => {
             width="20px"
             height="20px"
             fill={colors.primary}
-            name="column2Variant2-1"
+            name="layout-2column-3"
           />
         }
         isRequired
@@ -124,7 +124,7 @@ const TwoColumnSettings = () => {
             width="20px"
             height="20px"
             fill={colors.primary}
-            name="column2Variant1-2"
+            name="layout-2column-2"
           />
         }
         isRequired

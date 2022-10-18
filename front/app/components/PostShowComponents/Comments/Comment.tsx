@@ -56,8 +56,6 @@ const DeletedComment = styled.div`
 `;
 
 const DeletedIcon = styled(Icon)`
-  width: 18px;
-  height: 18px;
   margin-right: 12px;
   fill: ${colors.textSecondary};
 `;

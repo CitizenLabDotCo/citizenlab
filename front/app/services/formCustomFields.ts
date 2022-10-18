@@ -7,6 +7,7 @@ export type ICustomFieldInputType =
   | 'text'
   | 'multiselect'
   | 'number'
+  | 'select'
   | 'linear_scale';
 export type IOptionsType = {
   id?: string;
@@ -169,4 +170,50 @@ export function formCustomFieldsResultsStream(
     cacheStream: false,
     ...streamParams,
   });
+}
+
+export interface IFormSubmissionCountData {
+  totalSubmissions: number;
+}
+
+export interface IFormSubmissionCount {
+  data: IFormSubmissionCountData;
+}
+
+const getSubmissionCountEndpoint = (
+  projectId: string,
+  phaseId?: string | null
+) => {
+  return phaseId
+    ? `${API_PATH}/phases/${phaseId}/submission_count`
+    : `${API_PATH}/projects/${projectId}/submission_count`;
+};
+
+export function formSubmissionCountStream(
+  projectId: string,
+  phaseId?: string | null,
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<IFormSubmissionCount>({
+    apiEndpoint: getSubmissionCountEndpoint(projectId, phaseId),
+    cacheStream: false,
+    ...streamParams,
+  });
+}
+
+export async function deleteFormResults(projectId: string, phaseId?: string) {
+  const deleteApiEndpoint = phaseId
+    ? `${API_PATH}/phases/${phaseId}/inputs`
+    : `${API_PATH}/projects/${projectId}/inputs`;
+
+  const response = await streams.delete(
+    deleteApiEndpoint,
+    `${projectId}/${phaseId}`
+  );
+
+  await streams.fetchAllWith({
+    apiEndpoint: [getSubmissionCountEndpoint(projectId, phaseId)],
+  });
+
+  return response;
 }

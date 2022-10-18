@@ -119,10 +119,7 @@ export const StyledLink = styled(Link)`
   }
 `;
 
-export const LinkIcon = styled(Icon)`
-  width: 13px;
-  height: 13px;
-`;
+export const LinkIcon = styled(Icon)``;
 
 interface InputProps {}
 
@@ -168,7 +165,9 @@ class PagesShowPage extends PureComponent<
         pageSlug = page.attributes.slug || '';
         pageTitle = <T value={page.attributes.title_multiloc} />;
         pageDescription = (
-          <ResolveTextVariables value={page.attributes.body_multiloc}>
+          <ResolveTextVariables
+            value={page.attributes.top_info_section_multiloc}
+          >
             {(multiloc) => <T value={multiloc} supportHtml={true} />}
           </ResolveTextVariables>
         );

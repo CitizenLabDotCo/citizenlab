@@ -29,9 +29,7 @@ const Container = styled.div<{ error: boolean }>`
 `;
 
 const Paperclip = styled(Icon)`
-  flex: 0 0 10px;
-  width: 10px;
-  height: 20px;
+  flex: 0 0 24px;
   fill: ${colors.textSecondary};
   margin-right: 15px;
 `;
@@ -113,6 +111,7 @@ const FileDisplay = ({
         {size && <FileSize error={!!error}>({returnFileSize(size)})</FileSize>}
       </FileInfo>
       <DeleteIconButton
+        buttonType="button"
         iconName="delete"
         a11y_buttonActionMessage={formatMessage(messages.a11y_removeFile)}
         onClick={onDeleteClick}

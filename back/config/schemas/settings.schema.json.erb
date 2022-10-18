@@ -832,6 +832,18 @@
         }
       },
 
+      "preview_new_custom_pages": {
+        "type": "object",
+        "title": "Preview New Custom Pages",
+        "description":	"Allow new custom pages to be created. Don't enable if you're not sure what is it.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "events_widget": {
         "type": "object",
         "title": "Events Landing Page Widget",
@@ -954,8 +966,8 @@
 
       "representativeness": {
         "type": "object",
-        "title": "Representativeness (experimental)",
-        "description":  "Enables the representativeness dashboard. Don't turn this on unless you know what you're doing.",
+        "title": "Representativeness",
+        "description": "Enables the representativeness dashboard.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -968,6 +980,18 @@
         "type": "object",
         "title": "Allow in-platform surveys",
         "description":  "DO NOT ENABLE THIS FEATURE BECAUSE IT IS STILL UNDER DEVELOPMENT !!!",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "visitors_dashboard": {
+        "type": "object",
+        "title": "Visitors dashboard",
+        "description": "Enabled the visitors dashboard. Don't turn this on unless you know what you're doing.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {

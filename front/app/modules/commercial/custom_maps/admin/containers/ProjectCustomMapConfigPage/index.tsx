@@ -174,7 +174,7 @@ const ProjectCustomMapConfigPage = memo<
             >
               <div>
                 <Button
-                  icon="mapCenter"
+                  icon="gps"
                   buttonStyle="white"
                   padding="7px"
                   boxShadow="0px 2px 2px rgba(0, 0, 0, 0.2)"

@@ -17,7 +17,7 @@ const ProjectFolderModerationRightsReceivedNotification = ({
     <NotificationWrapper
       linkTo={`/admin/projects/folders/${notification.attributes.project_folder_id}`}
       timing={notification.attributes.created_at}
-      icon="folder"
+      icon="folder-solid"
       isRead={!!notification.attributes.read_at}
     >
       <FormattedMessage

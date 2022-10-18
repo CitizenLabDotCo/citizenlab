@@ -26,7 +26,7 @@ const GoBackButton = memo(({ projectFolderId, className }: Props) => {
     return (
       <Button
         className={className}
-        icon="circle-arrow-left"
+        icon="arrow-left-circle"
         onClick={onGoBack}
         buttonStyle="text"
         iconSize="26px"

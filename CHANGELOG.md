@@ -1,12 +1,44 @@
 # Changelog
 
+## 2022-10-14
+
+### Fixed
+
+- Fixed bug where subtitle in some admin pages would appear above the main header.
+
+## 2022-10-13
+
+### Fixed
+
+- [CL-1835] Fixed missing verification button icon, which caused the verification modal to not open.
+
+## 2022-10-11
+
+### Fixed
+
+- [CL-1544] Fixed banner images and attachments being deleted in the back-office when a form is submitted via keyboard Enter press
+
+## 2022-10-06
+
+### Added
+
+- [CL-1328] New visitors dashboard released behind feature flag
+
+### Fixed
+
+- Some colors used in the charts were replaced wrongly during the design system refactor. Now they're correct again.
+
+## 2022-10-03
+
+### Fixed
+
+- [CL-1762] Default pages titles and content, and default navbar items, now display in Swedish for newly created platforms with the Swedish locale.
+
 ## 2022-09-30
 
 ### Added
 
 - [CL-1553] Basic privacy-friendly session counting for all visitors and users, for now not exposed in the product
-
-### Fixed
 
 ## 2022-09-29
 

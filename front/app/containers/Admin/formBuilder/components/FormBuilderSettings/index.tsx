@@ -49,6 +49,7 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
       translatedStringKey = messages.shortAnswer;
       break;
     case 'multiselect':
+    case 'select':
       translatedStringKey = messages.multipleChoice;
       break;
     case 'number':
@@ -88,6 +89,7 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
       )}
       <SectionField>
         <InputMultilocWithLocaleSwitcher
+          id="e2e-title-multiloc"
           name={`customFields.${field.index}.title_multiloc`}
           label={<FormattedMessage {...messages.questionTitle} />}
           type="text"
@@ -108,6 +110,7 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
               <FormattedMessage {...messages.required} />
             </Text>
           }
+          data-cy="e2e-toggle-multiloc"
         />
       </SectionField>
       {getAdditionalSettings(field.input_type, locales, field.index)}
@@ -128,6 +131,7 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
           iconColor={colors.error}
           onClick={() => onDelete(field.index)}
           minWidth="160px"
+          data-cy="e2e-delete-field"
         >
           <FormattedMessage {...messages.delete} />
         </Button>

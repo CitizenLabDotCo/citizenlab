@@ -96,7 +96,9 @@ const InitiativesSettingsPage = () => {
 
   useEffect(() => {
     if (!isNilOrError(proposalsPage)) {
-      setNewProposalsPageBody(proposalsPage.attributes.body_multiloc);
+      setNewProposalsPageBody(
+        proposalsPage.attributes.top_info_section_multiloc
+      );
     }
   }, [proposalsPage]);
 
@@ -129,7 +131,8 @@ const InitiativesSettingsPage = () => {
       proposalsNavbarItemEnabled !== newProposalsNavbarItemEnabled;
 
     const proposalsPageBodyChanged =
-      proposalsPage.attributes.body_multiloc !== newProposalsPageBody;
+      proposalsPage.attributes.top_info_section_multiloc !==
+      newProposalsPageBody;
 
     const formChanged =
       proposalsSettingsChanged ||
@@ -171,7 +174,8 @@ const InitiativesSettingsPage = () => {
       proposalsNavbarItemEnabled !== newProposalsNavbarItemEnabled;
 
     const proposalsPageBodyChanged =
-      proposalsPage.attributes.body_multiloc !== newProposalsPageBody;
+      proposalsPage.attributes.top_info_section_multiloc !==
+      newProposalsPageBody;
 
     setProcessing(true);
 
@@ -197,7 +201,7 @@ const InitiativesSettingsPage = () => {
 
       if (proposalsPageBodyChanged) {
         const promise = updatePage(proposalsPage.id, {
-          body_multiloc: newProposalsPageBody,
+          top_info_section_multiloc: newProposalsPageBody,
         });
 
         promises.push(promise);

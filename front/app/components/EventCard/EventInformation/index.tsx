@@ -256,10 +256,8 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
         <EventTimeAndLocationContainer>
           <Time>
             <StyledIcon
-              name="clock-solid"
+              name="clock"
               fill={colors.textSecondary}
-              width={`${fontSizes.m}px`}
-              height={`${fontSizes.m}px`}
               marginRight="6px"
             />
             {eventDateTime}
@@ -267,12 +265,7 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
 
           {hasLocation && showLocation && (
             <Location>
-              <StyledIcon
-                name="mapmarker"
-                width={`${fontSizes.m}px`}
-                height={`${fontSizes.m}px`}
-                marginRight="6px"
-              />
+              <StyledIcon name="position" marginRight="6px" />
               <T value={event.attributes.location_multiloc} />
             </Location>
           )}

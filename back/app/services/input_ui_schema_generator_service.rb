@@ -14,7 +14,9 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   protected
 
   def generate_for_current_locale(fields)
-    input_term = fields.first.resource.participation_context&.input_term || ParticipationContext::DEFAULT_INPUT_TERM
+    participation_context = fields.first.resource.participation_context
+    participation_method = Factory.instance.participation_method_for participation_context
+    input_term = participation_context.input_term || ParticipationContext::DEFAULT_INPUT_TERM
     built_in_field_index = fields.select(&:built_in?).index_by(&:code)
     main_fields = built_in_field_index.slice('title_multiloc', 'author_id', 'body_multiloc').values
     details_fields = built_in_field_index.slice('proposed_budget', 'budget', 'topic_ids', 'location_description').values
@@ -25,7 +27,7 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
       category_for(main_fields, 'mainContent', "custom_forms.categories.main_content.#{input_term}.title"),
       category_for(details_fields, 'details', 'custom_forms.categories.details.title'),
       category_for(attachments_fields, 'attachments', 'custom_forms.categories.attachements.title'),
-      category_for(custom_fields, 'extra', 'custom_forms.categories.extra.title')
+      category_for(custom_fields, 'extra', participation_method.extra_fields_category_translation_key)
     ].compact
     {
       type: 'Categorization',
@@ -44,7 +46,7 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
 
     {
       type: 'Category',
-      label: I18n.t(translation_key),
+      label: (I18n.t(translation_key) if translation_key),
       options: { id: category_id },
       elements: fields.map { |field| visit field }
     }
