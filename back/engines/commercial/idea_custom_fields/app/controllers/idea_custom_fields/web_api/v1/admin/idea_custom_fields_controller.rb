@@ -27,6 +27,7 @@ module IdeaCustomFields
     before_action :set_custom_field, only: %i[show update]
     before_action :set_custom_form, only: %i[index update_all]
     skip_after_action :verify_policy_scoped
+    rescue_from UpdatingSurveyWithResponsesError, with: :render_updating_survey_with_responses_error
 
     def index
       authorize CustomField.new(resource: @custom_form), :index?, policy_class: IdeaCustomFieldPolicy
@@ -57,7 +58,8 @@ module IdeaCustomFields
 
     def update_all
       authorize CustomField.new(resource: @custom_form), :update_all?, policy_class: IdeaCustomFieldPolicy
-      verify_no_responses @custom_form.participation_context
+      participation_method = Factory.instance.participation_method_for @custom_form.participation_context
+      verify_no_responses participation_method
 
       update_fields
       @custom_form.reload if @custom_form.persisted?
@@ -68,8 +70,6 @@ module IdeaCustomFields
       ).serialized_json
     rescue UpdateAllFailedError => e
       render json: { errors: e.errors }, status: :unprocessable_entity
-    rescue UpdatingSurveyWithResponsesError
-      render json: { error: :updating_survey_withresponses }, status: :unauthorized
     end
 
     # `upsert_by_code` cannot be used for extra fields, because they do not have a code.
@@ -245,10 +245,14 @@ module IdeaCustomFields
       CONSTANTIZER.fetch(params[:container_type])[key]
     end
 
-    def verify_no_responses(participation_context)
-      return if !participation_context.native_survey? || participation_context.ideas_count == 0
+    def verify_no_responses(participation_method)
+      return if participation_method.edit_custom_form_allowed?
 
       raise UpdatingSurveyWithResponsesError
+    end
+
+    def render_updating_survey_with_responses_error
+      render json: { error: :updating_survey_withresponses }, status: :unauthorized
     end
   end
 end
