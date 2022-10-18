@@ -57,7 +57,7 @@ const StyledDivider = styled(Divider)`
   margin-top: 6px;
 `;
 
-const StyledTable = styled(Table)`
+const StyledTable = styled<any>(Table)`
   thead {
     tr {
       th {

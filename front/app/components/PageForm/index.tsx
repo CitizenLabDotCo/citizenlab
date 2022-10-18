@@ -7,7 +7,7 @@ import { Multiloc, UploadFile } from 'typings';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { string, object, mixed } from 'yup';
-import validateMultiloc from 'utils/yup/validateMultiloc';
+import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import Input from 'components/HookForm/Input';
@@ -68,15 +68,17 @@ const PageForm = ({
   const appConfig = useAppConfiguration();
 
   const schema = object({
-    title_multiloc: validateMultiloc(formatMessage(messages.blankTitleError)),
-    top_info_section_multiloc: validateMultiloc(
-      formatMessage(messages.blankDescriptionError)
+    title_multiloc: validateAtLeastOneLocale(
+      formatMessage(messages.titleMissingOneLanguageError)
+    ),
+    top_info_section_multiloc: validateAtLeastOneLocale(
+      formatMessage(messages.descriptionMissingOneLanguageError)
     ),
     ...(pageId &&
       !isNilOrError(page) &&
       page.relationships.nav_bar_item.data && {
-        nav_bar_item_title_multiloc: validateMultiloc(
-          formatMessage(messages.blankTitleError)
+        nav_bar_item_title_multiloc: validateAtLeastOneLocale(
+          formatMessage(messages.titleMissingOneLanguageError)
         ),
       }),
     ...(!hideSlugInput && {

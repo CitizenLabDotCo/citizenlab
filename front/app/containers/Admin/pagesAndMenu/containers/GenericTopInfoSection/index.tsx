@@ -31,7 +31,7 @@ import { ICustomPageData } from 'services/customPages';
 import { IHomepageSettingsData } from 'services/homepageSettings';
 
 // utils
-import validateMultiloc from 'utils/yup/validateMultiloc';
+import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 interface Props {
@@ -61,8 +61,8 @@ const GenericTopInfoSection = ({
   };
 
   const schema = object({
-    top_info_section_multiloc: validateMultiloc(
-      formatMessage(messages.blankDescriptionError)
+    top_info_section_multiloc: validateAtLeastOneLocale(
+      formatMessage(messages.missingOneLocaleError)
     ),
   });
 
