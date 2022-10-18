@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 
+# rubocop:disable RSpec/DescribeClass
 describe 'rake add_missing_locales' do
   before_all do
     Rails.application.load_tasks
@@ -12,8 +13,12 @@ describe 'rake add_missing_locales' do
   end
 
   it 'adds the missing Belgian Dutch title and description for an idea status of accepted' do
-    create(:idea_status, code: 'accepted', title_multiloc: { 'en' => 'accepted' },
-           description_multiloc: { en: 'This idea has been accepted and will be implemented by the city' })
+    create(
+      :idea_status,
+      code: 'accepted',
+      title_multiloc: { 'en' => 'accepted' },
+      description_multiloc: { en: 'This idea has been accepted and will be implemented by the city' }
+    )
     Rake::Task['fixes:add_missing_locales'].invoke('example.org', 'nl-BE')
 
     expect(IdeaStatus.first.title_multiloc.length).to eq(2)
@@ -44,3 +49,4 @@ describe 'rake add_missing_locales' do
     expect(CustomField.first.title_multiloc['en']).to eq('')
   end
 end
+# rubocop:enable RSpec/DescribeClass
