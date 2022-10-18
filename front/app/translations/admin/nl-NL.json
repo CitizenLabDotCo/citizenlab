@@ -824,7 +824,6 @@
   "app.containers.AdminPage.PagesEdition.faq": "Veelgestelde vragen",
   "app.containers.AdminPage.PagesEdition.fileUploadLabel": "Bijlagen (max. 50MB)",
   "app.containers.AdminPage.PagesEdition.information": "Info",
-  "app.containers.AdminPage.PagesEdition.linkToNavigation": "Navigatie",
   "app.containers.AdminPage.PagesEdition.messageError": "Er is een fout opgetreden tijdens het opslaan van de pagina",
   "app.containers.AdminPage.PagesEdition.messageSuccess": "Je wijzigingen zijn met succes opgeslagen",
   "app.containers.AdminPage.PagesEdition.policiesSubtitle": "Wijzig de algemene voorwaarden van je platform. Andere pagina's, waaronder de Over en FAQ pagina's, kunnen gewijzigd worden in de {navigationLink} tab.",
