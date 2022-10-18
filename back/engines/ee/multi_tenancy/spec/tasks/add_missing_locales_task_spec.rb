@@ -17,8 +17,8 @@ describe 'rake add_missing_locales' do
     Rake::Task['fixes:add_missing_locales'].invoke('example.org', 'nl-BE')
 
     expect(IdeaStatus.first.title_multiloc.length).to eq(2)
-    expect(IdeaStatus.first.title_multiloc).to include('nl-BE')
-    expect(IdeaStatus.first.title_multiloc['nl-BE']).to eq('aangenomen')
+    expect(IdeaStatus.first.title_multiloc).to include('nl-BE' => 'aangenomen')
+
   end
 
   it 'adds the missing English title for gender custom field' do
