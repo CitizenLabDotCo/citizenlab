@@ -5,6 +5,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { Section } from 'components/admin/Section';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 import SectionFormWrapper from '../../components/SectionFormWrapper';
+import ViewCustomPageButton from '../CustomPages/Edit/ViewCustomPageButton';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -31,6 +32,7 @@ interface Props {
   avatarsFieldComponent?: ReactElement;
   ctaButtonFieldsComponent?: ReactElement;
   outletSectionEnd?: ReactElement;
+  linkToLandingPage?: string;
 }
 
 const GenericHeroBannerForm = ({
@@ -47,6 +49,7 @@ const GenericHeroBannerForm = ({
   bannerImageFieldsComponent,
   layoutSettingFieldComponent,
   ctaButtonFieldsComponent,
+  linkToLandingPage,
 }: Props) => {
   return (
     <>
@@ -66,6 +69,11 @@ const GenericHeroBannerForm = ({
               messageError: messages.heroBannerError,
             }}
           />
+        }
+        rightSideCTA={
+          linkToLandingPage ? (
+            <ViewCustomPageButton linkTo={linkToLandingPage} />
+          ) : null
         }
       >
         <Section key={'header'}>
