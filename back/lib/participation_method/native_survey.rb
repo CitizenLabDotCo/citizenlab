@@ -28,6 +28,10 @@ module ParticipationMethod
       participation_context.project.timeline?
     end
 
+    def delete_inputs_on_pc_deletion?
+      true
+    end
+
     # The "Additional information" category in the UI should be suppressed.
     # As long as the form builder does not support sections/categories,
     # we can suppress the heading by returning nil.

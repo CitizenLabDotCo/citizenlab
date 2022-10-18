@@ -44,7 +44,12 @@ class WebApi::V1::PhasesController < ApplicationController
 
   def destroy
     SideFxPhaseService.new.before_destroy(@phase, current_user)
-    phase = @phase.destroy
+    phase = ActiveRecord::Base.transaction do
+      participation_method = Factory.instance.participation_method_for @phase
+      @phase.ideas.each(&:destroy!) if participation_method.delete_inputs_on_pc_deletion?
+
+      @phase.destroy
+    end
     if phase.destroyed?
       SideFxPhaseService.new.after_destroy(@phase, current_user)
       head :ok
