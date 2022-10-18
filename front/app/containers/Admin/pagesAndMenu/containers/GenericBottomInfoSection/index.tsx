@@ -30,7 +30,7 @@ import { IHomepageSettingsData } from 'services/homepageSettings';
 import { ICustomPageData } from 'services/customPages';
 
 // utils
-import validateMultiloc from 'utils/yup/validateMultiloc';
+import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 interface Props {
@@ -62,7 +62,7 @@ const GenericBottomInfoSection = ({
   };
 
   const schema = object({
-    bottom_info_section_multiloc: validateMultiloc(
+    bottom_info_section_multiloc: validateAtLeastOneLocale(
       formatMessage(messages.blankDescriptionError)
     ),
   });

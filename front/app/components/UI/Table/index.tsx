@@ -86,6 +86,7 @@ const StyledTable = styled.table`
 
 interface Props {
   className?: string;
+  children?: React.ReactNode;
 }
 
 interface State {}
