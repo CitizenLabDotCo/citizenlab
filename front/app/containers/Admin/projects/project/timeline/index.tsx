@@ -114,7 +114,6 @@ const AdminProjectTimelineIndex = ({
         <FormattedMessage {...messages.subtitleTimeline} />
       </SectionDescription>
       <AddButton
-        className="e2e-add-phase-button"
         icon="plus-circle"
         buttonStyle="cl-blue"
         linkTo={`/admin/projects/${projectId}/timeline/new`}
@@ -123,7 +122,7 @@ const AdminProjectTimelineIndex = ({
       </AddButton>
 
       {!isNilOrError(phases) && phases.length > 0 && (
-        <div className={'e2e-phases-table'}>
+        <div>
           <StyledList>
             <HeadRow>
               <OrderHeader>
@@ -140,13 +139,7 @@ const AdminProjectTimelineIndex = ({
                 const endAt = moment(phase.attributes.end_at).format('LL');
 
                 return (
-                  <Row
-                    className={`e2e-phase-line ${
-                      phases.length === index + 1 ? 'last' : ''
-                    }`}
-                    id={`e2e-phase_${phase.id}`}
-                    key={phase.id}
-                  >
+                  <Row data-testid={`e2e-phase-${phase.id}`} key={phase.id}>
                     <OrderLabel
                       className={pastPresentOrFuture([
                         phase.attributes.start_at,
@@ -164,7 +157,7 @@ const AdminProjectTimelineIndex = ({
                       </p>
                     </div>
                     <Button
-                      className="e2e-delete-phase"
+                      data-cy={`e2e-delete-phase-${phase.id}`}
                       icon="delete"
                       buttonStyle="text"
                       onClick={() => handleOpenModal(phase.id)}
@@ -172,7 +165,6 @@ const AdminProjectTimelineIndex = ({
                       <FormattedMessage {...messages.deletePhaseButton} />
                     </Button>
                     <Button
-                      className="e2e-edit-phase"
                       icon="edit"
                       buttonStyle="secondary"
                       linkTo={`/admin/projects/${projectId}/timeline/${phase.id}`}
@@ -204,6 +196,7 @@ const AdminProjectTimelineIndex = ({
           >
             <Button
               icon="delete"
+              data-cy={`e2e-confirm-delete-phase-${selectedPhaseId}`}
               buttonStyle="delete"
               width="auto"
               mr="20px"
