@@ -1,10 +1,11 @@
-import React from 'react';
-import HeaderContent from './HeaderContent';
-import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
 import Image from 'components/UI/Image';
 import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/HeaderImageDropzone';
-import { ICustomPageAttributes } from 'services/customPages';
+import React from 'react';
+import { ICustomPageData } from 'services/customPages';
+import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
+import AdminCustomPageEditButton from './AdminCustomPageEditButton';
+import HeaderContent from './HeaderContent';
 
 export const Container = styled.div`
   width: 100%;
@@ -29,10 +30,11 @@ export const HeaderImage = styled(Image)`
 `;
 
 interface Props {
-  pageAttributes: ICustomPageAttributes;
+  pageData: ICustomPageData;
 }
 
-const TwoColumnLayout = ({ pageAttributes }: Props) => {
+const TwoColumnLayout = ({ pageData }: Props) => {
+  const pageAttributes = pageData.attributes;
   const imageUrl = pageAttributes.header_bg?.large;
   return (
     <Container data-cy="e2e-two-column-layout-container">
@@ -50,6 +52,11 @@ const TwoColumnLayout = ({ pageAttributes }: Props) => {
         fontColors="dark"
         hasHeaderBannerImage={imageUrl != null}
         pageAttributes={pageAttributes}
+      />
+      <AdminCustomPageEditButton
+        // check mobile version
+        // check if we can use path function instead
+        pageId={pageData.id}
       />
     </Container>
   );

@@ -1,11 +1,12 @@
-import React from 'react';
-import HeaderContent from './HeaderContent';
 import ContentContainer from 'components/ContentContainer';
-import styled from 'styled-components';
 import Image from 'components/UI/Image';
-import { media } from 'utils/styleUtils';
 import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/HeaderImageDropzone';
-import { ICustomPageAttributes } from 'services/customPages';
+import React from 'react';
+import { ICustomPageData } from 'services/customPages';
+import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
+import HeaderContent from './HeaderContent';
+import AdminCustomPageEditButton from './AdminCustomPageEditButton';
 
 const Container = styled.div`
   display: flex;
@@ -29,10 +30,11 @@ const HeaderImage = styled(Image)`
 `;
 
 interface Props {
-  pageAttributes: ICustomPageAttributes;
+  pageData: ICustomPageData;
 }
 
-const TwoRowLayout = ({ pageAttributes }: Props) => {
+const TwoRowLayout = ({ pageData }: Props) => {
+  const pageAttributes = pageData.attributes;
   const imageUrl = pageAttributes.header_bg?.large;
   return (
     <>
@@ -52,6 +54,11 @@ const TwoRowLayout = ({ pageAttributes }: Props) => {
             hasHeaderBannerImage={imageUrl != null}
             fontColors="dark"
             pageAttributes={pageAttributes}
+          />
+          <AdminCustomPageEditButton
+            // check mobile version
+            // check if we can use path function instead
+            pageId={pageData.id}
           />
         </Container>
       </ContentContainer>

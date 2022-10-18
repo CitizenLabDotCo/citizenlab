@@ -6,13 +6,14 @@ import { isAdmin } from 'services/permissions/roles';
 import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import messages from '../messages';
+import { ADMIN_PAGES_MENU_CUSTOM_PAGE_PATH } from 'containers/Admin/pagesAndMenu/routes';
 
 interface Props {
-  linkTo: string;
+  pageId: string;
 }
 
 const AdminCustomPageEditButton = ({
-  linkTo,
+  pageId,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const authUser = useAuthUser();
@@ -23,7 +24,7 @@ const AdminCustomPageEditButton = ({
   return userCanEditPage ? (
     <Button
       icon="edit"
-      linkTo={linkTo}
+      linkTo={`${ADMIN_PAGES_MENU_CUSTOM_PAGE_PATH}/${pageId}`}
       buttonStyle="secondary"
       padding="5px 8px"
       position="absolute"

@@ -16,10 +16,10 @@ const CustomPageHeader = ({ pageAttributes, pageData }: Props) => {
         <FullWidthBannerLayout pageData={pageData} />
       )}
       {pageAttributes.banner_layout === 'two_column_layout' && (
-        <TwoColumnLayout pageAttributes={pageAttributes} />
+        <TwoColumnLayout pageData={pageData} />
       )}
       {pageAttributes.banner_layout === 'two_row_layout' && (
-        <TwoRowLayout pageAttributes={pageAttributes} />
+        <TwoRowLayout pageData={pageData} />
       )}
     </>
   );

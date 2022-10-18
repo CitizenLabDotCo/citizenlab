@@ -1,4 +1,3 @@
-import { ADMIN_PAGES_MENU_CUSTOM_PAGE_PATH } from 'containers/Admin/pagesAndMenu/routes';
 import {
   Container,
   Header,
@@ -47,7 +46,7 @@ const FullWidthBannerLayout = ({
       <AdminCustomPageEditButton
         // check mobile version
         // check if we can use path function instead
-        linkTo={`${ADMIN_PAGES_MENU_CUSTOM_PAGE_PATH}/${pageData.id}`}
+        pageId={pageData.id}
       />
     </Container>
   );
