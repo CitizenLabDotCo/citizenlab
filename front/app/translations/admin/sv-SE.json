@@ -487,7 +487,7 @@
   "app.containers.Admin.PagesAndMenu.heroBannerMessageSuccess": "Hero-banderollen har sparats",
   "app.containers.Admin.PagesAndMenu.heroBannerSaveButton": "Spara hero-banderoll",
   "app.containers.Admin.PagesAndMenu.homeTitle": "Start",
-  "app.containers.Admin.PagesAndMenu.missingOneLocaleError": "Ange innehåll på minst ett språk",
+  "app.containers.Admin.PagesAndMenu.missingOneLocaleError": "Ange innehåll för minst ett språk",
   "app.containers.Admin.PagesAndMenu.pageHeader": "Sidor",
   "app.containers.Admin.PagesAndMenu.pagesMenuMetaTitle": "Sidor och meny | {orgName}",
   "app.containers.Admin.PagesAndMenu.pagesMetaTitle": "Sidor | {orgName}",
