@@ -32,7 +32,9 @@ module MultiTenancy
 
       def update_tenant
         tenant = Tenant.current
-        attrs_delta = tenant.send(:attributes_delta, self, tenant)
+        app_config = ::AppConfiguration.instance
+        attrs_delta = tenant.send(:attributes_delta, app_config, tenant)
+
         return if attrs_delta.blank?
 
         tenant.attributes = attrs_delta

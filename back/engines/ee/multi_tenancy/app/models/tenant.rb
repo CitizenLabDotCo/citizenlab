@@ -261,7 +261,9 @@ class Tenant < ApplicationRecord
   def update_app_configuration
     switch do
       config = AppConfiguration.instance
-      attrs_delta = attributes_delta(self, config)
+      tenant = Tenant.current
+      attrs_delta = attributes_delta(tenant, config)
+
       return if attrs_delta.blank?
 
       config.attributes = attrs_delta
