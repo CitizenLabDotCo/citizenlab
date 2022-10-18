@@ -1,12 +1,12 @@
-import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import useHomepageSettings from 'hooks/useHomepageSettings';
-import HeaderContent from 'containers/LandingPage/SignedOutHeader/HeaderContent';
 import ContentContainer from 'components/ContentContainer';
-import styled from 'styled-components';
 import Image from 'components/UI/Image';
-import { media } from 'utils/styleUtils';
 import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/HeaderImageDropzone';
+import HeaderContent from 'containers/LandingPage/SignedOutHeader/HeaderContent';
+import useHomepageSettings from 'hooks/useHomepageSettings';
+import React from 'react';
+import styled from 'styled-components';
+import { isNilOrError } from 'utils/helperUtils';
+import { media } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
