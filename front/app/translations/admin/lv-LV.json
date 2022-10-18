@@ -487,7 +487,7 @@
   "app.containers.Admin.PagesAndMenu.heroBannerMessageSuccess": "Hero banner saved",
   "app.containers.Admin.PagesAndMenu.heroBannerSaveButton": "Save hero banner",
   "app.containers.Admin.PagesAndMenu.homeTitle": "Home",
-  "app.containers.Admin.PagesAndMenu.missingOneLocaleError": "Provide content at least one language",
+  "app.containers.Admin.PagesAndMenu.missingOneLocaleError": "Provide content for at least one language",
   "app.containers.Admin.PagesAndMenu.pageHeader": "Pages",
   "app.containers.Admin.PagesAndMenu.pagesMenuMetaTitle": "Pages & menu | {orgName}",
   "app.containers.Admin.PagesAndMenu.pagesMetaTitle": "Pages | {orgName}",
