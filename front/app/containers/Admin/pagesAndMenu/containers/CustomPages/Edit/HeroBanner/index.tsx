@@ -87,7 +87,7 @@ const EditCustomPageHeroBannerForm = ({
     // this is a hack. If both objects have a "large" key under header_bg with a null value,
     // it means the image was initialized (with the large: null value) on the server
     // and hasn't been updated by the user locally. we set the whole value to null
-    // to trigger the FE error message. the first triple equals is on purpose, we want to
+    // to trigger the FE error message. the triple equals is on purpose, we want to
     // only trigger this when the value is explicitly null and not undefined
     if (
       localSettings.header_bg?.large === null &&
