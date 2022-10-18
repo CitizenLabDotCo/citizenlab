@@ -127,7 +127,7 @@ const ActionForm = ({
         {permittedBy === 'groups' && (
           <StyledMultipleSelect
             value={groupIds || []}
-            options={groupsOptions}
+            options={groupsOptions()}
             onChange={handleGroupIdsUpdate}
             placeholder={<FormattedMessage {...messages.selectGroups} />}
           />
