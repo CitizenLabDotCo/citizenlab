@@ -444,7 +444,6 @@
   "app.containers.Admin.PagesAndMenu.SectionToggle.topInfoSection": "Odeljak za informacije na vrhu",
   "app.containers.Admin.PagesAndMenu.SectionToggle.topInfoSectionTooltip": "Dodajte sopstveni sadržaj prilagodljivoj sekciji u vrhu stranice.",
   "app.containers.Admin.PagesAndMenu.addButton": "Dodaj u traku za navigaciju",
-  "app.containers.Admin.PagesAndMenu.blankDescriptionError": "Obezbedite sadržaj za sve jezike",
   "app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.attachmentUploadLabel": "Prilozi (max. 50MB)",
   "app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.buttonSuccess": "Uspeh",
   "app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.contentEditorTitle": "Sadržaj",

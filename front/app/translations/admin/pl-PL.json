@@ -444,7 +444,6 @@
   "app.containers.Admin.PagesAndMenu.SectionToggle.topInfoSection": "Sekcja górna",
   "app.containers.Admin.PagesAndMenu.SectionToggle.topInfoSectionTooltip": "Add your own content to the customizable section at the top of the page.",
   "app.containers.Admin.PagesAndMenu.addButton": "Dodaj do nawigacji",
-  "app.containers.Admin.PagesAndMenu.blankDescriptionError": "Podaj treść dla wszystkich języków",
   "app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.attachmentUploadLabel": "Załączniki (maks. 50MB)",
   "app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.buttonSuccess": "Sukces",
   "app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.contentEditorTitle": "Treść",

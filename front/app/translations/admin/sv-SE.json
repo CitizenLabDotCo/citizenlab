@@ -444,7 +444,6 @@
   "app.containers.Admin.PagesAndMenu.SectionToggle.topInfoSection": "Övre informationsavsnitt",
   "app.containers.Admin.PagesAndMenu.SectionToggle.topInfoSectionTooltip": "Lägg till ditt eget innehåll i det anpassningsbara avsnittet högst upp på sidan.",
   "app.containers.Admin.PagesAndMenu.addButton": "Lägg till i navigeringsfältet",
-  "app.containers.Admin.PagesAndMenu.blankDescriptionError": "Ange innehåll för alla språk",
   "app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.attachmentUploadLabel": "Bilagor (max 50 MB)",
   "app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.buttonSuccess": "Lyckades",
   "app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.contentEditorTitle": "Innehåll",

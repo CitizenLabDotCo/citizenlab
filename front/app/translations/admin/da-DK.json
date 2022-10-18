@@ -444,7 +444,6 @@
   "app.containers.Admin.PagesAndMenu.SectionToggle.topInfoSection": "Afsnit for øverste info",
   "app.containers.Admin.PagesAndMenu.SectionToggle.topInfoSectionTooltip": "Tilføj dit eget indhold til den sektion, der kan tilpasses øverst på siden.",
   "app.containers.Admin.PagesAndMenu.addButton": "Tilføj til navigationslinjen",
-  "app.containers.Admin.PagesAndMenu.blankDescriptionError": "Tilvejebring indhold på alle sprog",
   "app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.attachmentUploadLabel": "Vedhæftede filer (maks. 50 MB)",
   "app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.buttonSuccess": "Succes",
   "app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.contentEditorTitle": "Indhold",
