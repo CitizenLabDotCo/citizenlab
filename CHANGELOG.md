@@ -1,10 +1,10 @@
 # Changelog
 
-## Next release
+## 2022-10-18
 
 ### Fixed
 
-- [CL-1825] Make tables more visually consistent.
+- [CL-1825] Made tables more visually consistent.
 
 ## 2022-10-14
 
