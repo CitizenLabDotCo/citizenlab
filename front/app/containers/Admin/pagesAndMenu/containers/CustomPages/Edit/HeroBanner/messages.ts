@@ -5,4 +5,8 @@ export default defineMessages({
     id: 'app.containers.Admin.PagesAndMenu.containers.CustomPages.Edit.HeroBanner.buttonTitle',
     defaultMessage: 'Button',
   },
+  options: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CustomPages.Edit.HeroBanner.options',
+    defaultMessage: 'Options',
+  },
 });
