@@ -123,7 +123,8 @@ describe MultiTenancy::TenantTemplateService do
     describe 'filtering of template multiloc attributes' do
       let(:platform_locales) { ['en'] }
       let(:template) do
-        YAML.load(<<~YAML)
+        # Allows aliases and deserialization of Time object
+        YAML.safe_load(<<~YAML, [Time], [], true)
           models:
             project:
               - &project
