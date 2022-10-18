@@ -1,9 +1,8 @@
 import React from 'react';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { distinctUntilChanged, switchMap, filter, tap } from 'rxjs/operators';
+import { distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 import { IPhaseData, phaseStream } from 'services/phases';
-import { isString } from 'lodash-es';
 
 interface InputProps {
   id?: string | null;
@@ -48,7 +47,6 @@ export default class GetPhase extends React.Component<Props, State> {
           .pipe(
             distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
             tap(() => resetOnChange && this.setState({ phase: undefined })),
-            filter(({ id }) => isString(id)),
             switchMap(({ id }: { id: string }) => phaseStream(id).observable)
           )
           .subscribe((phase) => {

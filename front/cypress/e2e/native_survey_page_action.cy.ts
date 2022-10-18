@@ -79,18 +79,18 @@ describe('Native survey project page actions', () => {
   });
 
   it('tests actions when continuous survey project is active and accepting submissions', () => {
-    // Unregistered user
+    // Action as unregistered user
     cy.visit(`/projects/${projectSlugContinous}`);
     cy.get('[data-testid="e2e-project-survey-button"]').click({ force: true });
     cy.get('[data-testid="e2e-sign-up-in-modal"]').should('exist');
 
-    // Regular user
+    // Action as registered user
     cy.setLoginCookie(userEmail, userPassword);
     cy.visit(`/projects/${projectSlugContinous}`);
     cy.get('[data-testid="e2e-project-survey-button"]').click();
     cy.url().should('include', `/projects/${projectSlugContinous}/ideas/new`);
 
-    // Admin user
+    // Action as admin user
     cy.setAdminLoginCookie();
     cy.visit(`/projects/${projectSlugContinous}`);
     cy.get('[data-testid="e2e-project-survey-button"]').click();
@@ -98,8 +98,11 @@ describe('Native survey project page actions', () => {
   });
 
   it('tests actions when project is archived', () => {
+    // Login
     cy.setLoginCookie(userEmail, userPassword);
+    // Visit Archived project
     cy.visit(`/projects/${projectSlugArchived}`);
+    // Check that correct text and actions shown
     cy.contains(
       "Unfortunately, you can't participate in this project anymore because it has been archived"
     );
@@ -108,8 +111,11 @@ describe('Native survey project page actions', () => {
   });
 
   it('tests actions when survey phase is not active', () => {
+    // Login
     cy.setLoginCookie(userEmail, userPassword);
+    // Visit timeline project
     cy.visit(`/projects/${projectSlugTimeline}`);
+    // Check that correct text and actions shown
     cy.get('[data-testid="e2e-project-survey-button"]').click({ force: true });
     cy.contains('New submissions can only be added in active phases.').should(
       'exist'
@@ -117,11 +123,17 @@ describe('Native survey project page actions', () => {
   });
 
   it('tests actions when survey is not accepting submissions', () => {
+    // Login as admin
     cy.setAdminLoginCookie();
+    // Visit admin project settings
     cy.visit(`admin/projects/${projectIdContinuous}/native-survey`);
+    // Disable accepting submissions
     cy.get('[type="checkbox"]').check();
+    // Login as regular user
     cy.setLoginCookie(userEmail, userPassword);
+    // Visit timeline project
     cy.visit(`/projects/${projectSlugTimeline}`);
+    // Check that correct text and actions shown
     cy.get('[data-testid="e2e-project-survey-button"]').click({ force: true });
     cy.contains('New submissions can only be added in active phases.').should(
       'exist'
@@ -129,13 +141,19 @@ describe('Native survey project page actions', () => {
   });
 
   it('tests actions when unregistered users may submit survey responses', () => {
+    // Login as admin
     cy.setAdminLoginCookie();
+    // Visit admin project permissions page
     cy.visit(`admin/projects/${projectIdContinuous}/permissions`);
+    // Select that unregistered users may submit surveys
     cy.get('#e2e-granular-permissions').within(() => {
       cy.contains('Everyone').click({ force: true });
     });
+    // Logout
     cy.logout();
+    // Visit the project page
     cy.visit(`/projects/${projectSlugContinous}`);
+    // Check that correct text and actions shown
     cy.get('[data-testid="e2e-project-survey-button"]').click({ force: true });
     cy.url().should('include', `/projects/${projectSlugContinous}/ideas/new`);
   });
