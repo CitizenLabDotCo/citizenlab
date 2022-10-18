@@ -7,7 +7,7 @@ import { Tr } from 'components/admin/Table';
 import { Props as RowProps } from 'components/admin/Table/Tr';
 
 const StyledRow = styled(Tr)<{ undraggable: boolean }>`
-  height: 5.7rem !important;
+  height: 5.7rem;
   cursor: ${({ undraggable }) => (undraggable ? 'pointer' : 'move')};
 `;
 

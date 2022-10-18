@@ -79,10 +79,6 @@ const Container = styled.div`
   }
 `;
 
-const StyledTable = styled(Table)`
-  font-size: 13px;
-`;
-
 interface Props {
   type: ManagerType;
   sortAttribute?: IdeasSortAttribute | InitiativesSortAttribute;
@@ -187,7 +183,7 @@ export default class PostTable extends React.Component<Props> {
 
     return (
       <Container>
-        <StyledTable
+        <Table
           border={`1px solid ${colors.grey300}`}
           borderRadius={stylingConsts.borderRadius}
           innerBorders={{
@@ -243,9 +239,9 @@ export default class PostTable extends React.Component<Props> {
             ) : null}
           </Tbody>
           {!isEmpty(posts) && (
-            <Tfoot background={colors.grey50}>
-              <Tr>
-                <Td colSpan="7">
+            <Tfoot>
+              <Tr background={colors.grey50}>
+                <Td colSpan={7}>
                   <Pagination
                     currentPage={this.props.currentPageNumber || 1}
                     totalPages={this.props.lastPageNumber || 1}
@@ -255,7 +251,7 @@ export default class PostTable extends React.Component<Props> {
               </Tr>
             </Tfoot>
           )}
-        </StyledTable>
+        </Table>
         {isEmpty(posts) && (
           <TransitionGroup component={null}>
             <CSSTransition classNames="fade" timeout={500}>

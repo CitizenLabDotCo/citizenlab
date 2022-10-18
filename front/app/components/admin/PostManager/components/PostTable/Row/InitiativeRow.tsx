@@ -77,16 +77,11 @@ interface InputProps {
 
 interface CellProps {
   onClick?: (event: any) => void;
-  active: boolean;
   children: React.ReactNode;
 }
 
-const Cell = ({ onClick, active, children }: CellProps) => (
-  <Td
-    borderBottom="none !important"
-    background={active ? colors.grey300 : undefined}
-    onClick={onClick}
-  >
+const Cell = ({ onClick, children }: CellProps) => (
+  <Td borderBottom="none !important" onClick={onClick}>
     {children}
   </Td>
 );
@@ -200,6 +195,7 @@ class InitiativeRow extends React.PureComponent<
         <StyledRow
           className={`e2e-initiative-row ${className}`}
           undraggable={activeFilterMenu === 'statuses'}
+          background={active ? colors.grey300 : undefined}
           ref={(instance) => {
             instance &&
               activeFilterMenu !== 'statuses' &&
@@ -207,14 +203,14 @@ class InitiativeRow extends React.PureComponent<
               connectDragSource(findDOMNode(instance));
           }}
         >
-          <Cell active={active}>
+          <Cell>
             <Checkbox
               checked={!!active}
               onChange={onClickCheckbox}
               size="21px"
             />
           </Cell>
-          <Cell active={active}>
+          <Cell>
             <TitleLink
               className="e2e-initiative-manager-initiative-title"
               onClick={onClickTitle}
@@ -222,18 +218,18 @@ class InitiativeRow extends React.PureComponent<
               <T value={attrs.title_multiloc} />
             </TitleLink>
           </Cell>
-          <Cell active={active} onClick={nothingHappens}>
+          <Cell onClick={nothingHappens}>
             <AssigneeSelect
               onAssigneeChange={this.onUpdateInitiativeAssignee}
               assigneeId={assigneeId}
             />
           </Cell>
-          <Cell active={active}>{this.renderTimingCell()}</Cell>
-          <Cell active={active}>
+          <Cell>{this.renderTimingCell()}</Cell>
+          <Cell>
             <Icon name="thumbs up" />
             {attrs.upvotes_count}
           </Cell>
-          <Cell active={active}>{attrs.comments_count}</Cell>
+          <Cell>{attrs.comments_count}</Cell>
         </StyledRow>
         <SubRow
           {...{

@@ -2,8 +2,7 @@ import React, { ChangeEvent, useState } from 'react';
 
 // components
 import { Thead, Tr, Th } from 'components/admin/Table';
-import Checkbox from 'components/UI/Checkbox';
-import { Text } from '@citizenlab/cl2-component-library';
+import { Text, Checkbox } from '@citizenlab/cl2-component-library';
 import FeatureFlag from 'components/FeatureFlag';
 import Outlet from 'components/Outlet';
 
@@ -244,8 +243,8 @@ export default ({
         id="app.components.admin.PostManager.components.PostTable.IdeaHeaderRow.cells"
         onData={handleData}
       />
-      <Thead background={colors.grey50}>
-        <Tr>
+      <Thead>
+        <Tr background={colors.grey50}>
           {cells.map((cellConfiguration) => renderCell(cellConfiguration))}
         </Tr>
       </Thead>

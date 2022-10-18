@@ -15,8 +15,8 @@ interface Props {
 }
 
 const HeaderRow = ({ columns }: Props) => (
-  <Thead background={colors.grey50}>
-    <Tr>
+  <Thead>
+    <Tr background={colors.grey50}>
       {columns.map((column, i) => (
         <Th width={`${roundPercentage(1, columns.length)}%`} key={i}>
           <Box my="6px">{column}</Box>

@@ -1,8 +1,10 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import PostFeedback from './admin/containers/PostFeedback';
 import Tab from './admin/components/Tab';
 
+const PostFeedback = React.lazy(
+  () => import('./admin/containers/PostFeedback')
+);
 const VisitorsContainer = React.lazy(
   () => import('./admin/containers/Visitors')
 );

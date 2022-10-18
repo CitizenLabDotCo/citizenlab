@@ -2,7 +2,7 @@ import React from 'react';
 
 // components
 import { Thead, Tr, Th } from 'components/admin/Table';
-import Checkbox from 'components/UI/Checkbox';
+import { Checkbox } from '@citizenlab/cl2-component-library';
 import { SortableHeaderCell } from './IdeaHeaderRow';
 
 // i18n
@@ -37,8 +37,8 @@ export default ({
   toggleSelectAll,
   handleSortClick,
 }: Props) => (
-  <Thead background={colors.grey50}>
-    <Tr>
+  <Thead>
+    <Tr background={colors.grey50}>
       <Th width={getWidth(1)}>
         <Checkbox
           checked={!!allSelected}
