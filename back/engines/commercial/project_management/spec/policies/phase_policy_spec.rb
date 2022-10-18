@@ -18,6 +18,7 @@ describe PhasePolicy do
       it { is_expected.to     permit(:create)  }
       it { is_expected.to     permit(:update)  }
       it { is_expected.to     permit(:destroy) }
+      it { is_expected.to     permit(:delete_inputs) }
 
       it 'indexes the phase' do
         expect(scope.resolve.size).to eq 1
