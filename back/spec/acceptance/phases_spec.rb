@@ -525,7 +525,7 @@ resource 'Phases' do
         end
 
         context 'when there are inputs in the phase' do
-          let!(:assignee) { create(:admin, first_name: 'John', last_name: 'Doe')}
+          let!(:assignee) { create(:admin, first_name: 'John', last_name: 'Doe') }
           let!(:ideation_response1) do
             create(
               :idea_with_topics,
