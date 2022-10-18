@@ -89,6 +89,6 @@ describe('Content builder navigation', () => {
         $a.attr('target', '_self');
       })
       .click();
-    cy.location('pathname').should('equal', projectUrl);
+    cy.location('pathname', { timeout: 15000 }).should('equal', projectUrl);
   });
 });
