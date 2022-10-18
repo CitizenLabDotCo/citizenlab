@@ -24,9 +24,9 @@ class MissingLocaleFixer
         attributes.each do |field_name, _field_value|
           next unless /_multiloc$/.match?(field_name)
 
-          class_name = model_name.classify
-          unless /^(Event|Project)$/.match?(class_name) # Exclude these objects as they are not structural data
-            update_multiloc(class_name, locale, attributes, field_name)
+          model_class = model_name.classify.constantize
+          unless [Event, Project].include?(model_class) # Exclude these objects as they are not structural data
+            update_multiloc(model_class, locale, attributes, field_name)
           end
         end
       end
