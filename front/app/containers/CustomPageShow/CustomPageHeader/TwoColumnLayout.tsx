@@ -53,11 +53,7 @@ const TwoColumnLayout = ({ pageData }: Props) => {
         hasHeaderBannerImage={imageUrl != null}
         pageAttributes={pageAttributes}
       />
-      <AdminCustomPageEditButton
-        // check mobile version
-        // check if we can use path function instead
-        pageId={pageData.id}
-      />
+      <AdminCustomPageEditButton pageId={pageData.id} />
     </Container>
   );
 };

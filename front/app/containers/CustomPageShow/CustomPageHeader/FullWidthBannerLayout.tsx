@@ -43,11 +43,7 @@ const FullWidthBannerLayout = ({
           pageAttributes={pageData.attributes}
         />
       </Header>
-      <AdminCustomPageEditButton
-        // check mobile version
-        // check if we can use path function instead
-        pageId={pageData.id}
-      />
+      <AdminCustomPageEditButton pageId={pageData.id} />
     </Container>
   );
 };
