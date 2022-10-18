@@ -23,6 +23,7 @@ describe('NormalGroupForm', () => {
     render(<NormalGroupForm {...defaultProps} />);
     expect(screen.getByTestId('normalGroupForm')).toBeInTheDocument();
   });
+
   it('submits correct data', async () => {
     const { container } = render(<NormalGroupForm {...defaultProps} />);
 

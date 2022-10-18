@@ -16,7 +16,7 @@ import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWi
 import Feedback from 'components/HookForm/Feedback';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object } from 'yup';
-import validateMultiloc from 'utils/yup/validateMultiloc';
+import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 // Typings
@@ -39,7 +39,9 @@ const RegistrationCustomFieldOptionsForm = ({
 }: Props) => {
   const { userCustomFieldId } = useParams() as { userCustomFieldId: string };
   const schema = object({
-    title_multiloc: validateMultiloc(formatMessage(messages.answerOptionError)),
+    title_multiloc: validateMultilocForEveryLocale(
+      formatMessage(messages.answerOptionError)
+    ),
   });
 
   const methods = useForm({
