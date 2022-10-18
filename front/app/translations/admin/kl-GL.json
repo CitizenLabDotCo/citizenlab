@@ -1141,8 +1141,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.newField": "New field",
   "app.containers.AdminPage.ProjectEdit.survey.number": "Number",
   "app.containers.AdminPage.ProjectEdit.survey.open": "Open",
-  "app.containers.AdminPage.ProjectEdit.survey.openForSubmissions": "Open for submissions",
-  "app.containers.AdminPage.ProjectEdit.survey.questionDescription": "Question description",
   "app.containers.AdminPage.ProjectEdit.survey.questionTitle": "Question title",
   "app.containers.AdminPage.ProjectEdit.survey.range": "Annertussuseq",
   "app.containers.AdminPage.ProjectEdit.survey.removeAnswer": "Remove answer",

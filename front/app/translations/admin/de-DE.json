@@ -1141,8 +1141,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.newField": "Neues Feld",
   "app.containers.AdminPage.ProjectEdit.survey.number": "Nummer",
   "app.containers.AdminPage.ProjectEdit.survey.open": "Geöffnet",
-  "app.containers.AdminPage.ProjectEdit.survey.openForSubmissions": "Offen für Beiträge",
-  "app.containers.AdminPage.ProjectEdit.survey.questionDescription": "Beschreibung der Frage",
   "app.containers.AdminPage.ProjectEdit.survey.questionTitle": "Frage Titel",
   "app.containers.AdminPage.ProjectEdit.survey.range": "Bereich",
   "app.containers.AdminPage.ProjectEdit.survey.removeAnswer": "Antwort entfernen",
