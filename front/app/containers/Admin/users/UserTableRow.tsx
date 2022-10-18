@@ -193,7 +193,7 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
     return (
       <Tr
         key={user.id}
-        background={selected ? colors.background : ''}
+        background={selected ? colors.background : undefined}
         className={`e2e-user-table-row ${selected ? 'selected' : ''}`}
       >
         <Td>
