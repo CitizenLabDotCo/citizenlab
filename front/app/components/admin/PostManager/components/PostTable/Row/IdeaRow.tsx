@@ -63,7 +63,6 @@ type InputProps = {
 export type IdeaCellComponentProps = {
   idea: IIdeaData;
   selection: Set<string>;
-  active?: boolean;
   onChange?: (event: unknown) => void;
   onClick?: (event: unknown) => void;
 };
@@ -194,7 +193,7 @@ class IdeaRow extends React.PureComponent<
   };
 
   renderCell = (
-    { idea, selection, active }: IdeaCellComponentProps,
+    { idea, selection }: IdeaCellComponentProps,
     {
       name,
       Component,
@@ -209,11 +208,7 @@ class IdeaRow extends React.PureComponent<
     };
 
     const Content = (
-      <Td
-        key={name}
-        borderBottom="none !important"
-        background={active ? colors.grey300 : undefined}
-      >
+      <Td key={name} borderBottom="none !important">
         <Box
           {...(['up', 'down'].includes(name)
             ? { display: 'flex', flexDirection: 'row' }
@@ -273,13 +268,14 @@ class IdeaRow extends React.PureComponent<
         <StyledRow
           className={`${className} e2e-idea-manager-idea-row`}
           undraggable={false}
+          background={active ? colors.grey300 : undefined}
           ref={(instance) => {
             // eslint-disable-next-line react/no-find-dom-node
             instance && connectDragSource(findDOMNode(instance));
           }}
         >
           {cells.map((cellConfiguration) =>
-            this.renderCell({ idea, selection, active }, cellConfiguration)
+            this.renderCell({ idea, selection }, cellConfiguration)
           )}
         </StyledRow>
         <SubRow

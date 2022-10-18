@@ -193,30 +193,27 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
     return (
       <Tr
         key={user.id}
+        background={selected ? colors.background : ''}
         className={`e2e-user-table-row ${selected ? 'selected' : ''}`}
       >
-        <Td background={selected ? colors.background : ''}>
+        <Td>
           <StyledCheckbox
             checked={selected}
             onChange={this.handleUserSelectedOnChange}
           />
         </Td>
-        <Td background={selected ? colors.background : ''}>
+        <Td>
           <Avatar userId={user.id} size={30} />
         </Td>
-        <Td background={selected ? colors.background : ''}>
+        <Td>
           {user.attributes.first_name} {user.attributes.last_name}
         </Td>
-        <Td background={selected ? colors.background : ''}>
-          {user.attributes.email}
-        </Td>
-        <CreatedAt background={selected ? colors.background : ''}>
-          {this.state.createdAt}
-        </CreatedAt>
-        <Td background={selected ? colors.background : ''}>
+        <Td>{user.attributes.email}</Td>
+        <CreatedAt>{this.state.createdAt}</CreatedAt>
+        <Td>
           <Toggle checked={isAdmin} onChange={this.handleAdminRoleOnChange} />
         </Td>
-        <Td background={selected ? colors.background : ''}>
+        <Td>
           <MoreOptionsWrapper>
             <Tippy
               placement="bottom-end"

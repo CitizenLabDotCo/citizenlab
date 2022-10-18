@@ -53,9 +53,9 @@ export default ({
   postType,
 }: Props) => {
   return (
-    <Tr className={className}>
-      <Td background={active ? colors.grey300 : undefined} />
-      <Td background={active ? colors.grey300 : undefined} colSpan={6}>
+    <Tr className={className} background={active ? colors.grey300 : undefined}>
+      <Td />
+      <Td colSpan={6}>
         {activeFilterMenu === 'phases' && phases && (
           <PhasesSelector
             selectedPhases={selectedPhases || []}
