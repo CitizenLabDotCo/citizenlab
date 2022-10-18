@@ -44,6 +44,8 @@ const TwoRowLayout = ({ pageData }: Props) => {
       <Box
         width="100%"
         position="relative"
+        // Needed when the Hero banner is turned on, but there is no image yet
+        // Otherwise the AdminCustomPageEditButton is not clickable.
         height={
           isTablet
             ? `${homepageBannerLayoutHeights['two_row_layout'].tablet}px`
