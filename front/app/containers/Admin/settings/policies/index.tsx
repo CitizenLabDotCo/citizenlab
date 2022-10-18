@@ -13,6 +13,7 @@ import PageEditor from './PageEditor';
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import pagesAndMenuMessages from 'containers/Admin/pagesAndMenu/messages';
 
 export const StyledLink = styled(Link)`
   color: ${colors.textSecondary};
@@ -35,7 +36,7 @@ const PoliciesTab = () => {
           values={{
             navigationLink: (
               <StyledLink to="/admin/pages-menu">
-                <FormattedMessage {...messages.linkToNavigation} />
+                <FormattedMessage {...pagesAndMenuMessages.pagesAndMenuTitle} />
               </StyledLink>
             ),
           }}
