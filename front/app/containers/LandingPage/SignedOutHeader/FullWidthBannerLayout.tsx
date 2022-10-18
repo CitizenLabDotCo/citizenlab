@@ -16,7 +16,6 @@ export const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  position: relative;
 `;
 
 export const Header = styled.div`
@@ -24,6 +23,7 @@ export const Header = styled.div`
   min-height: ${homepageBannerLayoutHeights.full_width_banner_layout.desktop}px;
   margin: 0;
   padding: 0;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
