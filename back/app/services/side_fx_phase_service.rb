@@ -40,4 +40,10 @@ class SideFxPhaseService
     )
     @sfx_pc.after_destroy frozen_phase, user
   end
+
+  def before_delete_inputs(phase, user); end
+
+  def after_delete_inputs(phase, user)
+    LogActivityJob.perform_later phase, 'inputs_deleted', user, Time.now.to_i
+  end
 end
