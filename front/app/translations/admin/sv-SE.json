@@ -1643,7 +1643,6 @@
   "app.containers.admin.import.importStepTwo": "2. Ladda upp din färdiga mallfil",
   "app.containers.admin.import.successMessage": "Filen har importerats!",
   "app.containers.admin.project.permissions.permissionsAdministrators": "Administratörer",
-  "app.containers.admin.project.permissions.permissionsEveryoneLabel": "Alla",
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Urval",
   "app.containers.admin.project.permissions.permissionsUsersLabel": "Registrerade användare",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Vilka kan se det här projektet?",
