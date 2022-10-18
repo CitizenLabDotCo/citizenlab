@@ -101,9 +101,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.viewSurveyText',
     defaultMessage: 'View survey',
   },
-  openForSubmissions: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.openForSubmissions',
-    defaultMessage: 'Open for submissions',
+  openForResponses: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.openForResponses',
+    defaultMessage: 'Open for responses',
   },
   surveyResults: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.surveyResults',
