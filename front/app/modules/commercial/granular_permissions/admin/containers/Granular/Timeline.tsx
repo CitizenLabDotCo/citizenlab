@@ -96,7 +96,7 @@ const Timeline = ({ projectId, phases }: Props) => {
                         <ActionsForm
                           permissions={permissions}
                           onChange={handlePermissionChange}
-                          postType={config.getPostType()}
+                          postType={config.postType}
                           projectId={projectId}
                         />
                       );

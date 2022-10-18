@@ -14,7 +14,10 @@ import {
 
 import { fontSizes } from 'utils/styleUtils';
 import useProject from 'hooks/useProject';
-import { getMethodConfig } from 'utils/participationMethodUtils';
+import {
+  getMethodConfig,
+  ParticipationMethodConfig,
+} from 'utils/participationMethodUtils';
 
 const Container = styled.div`
   display: flex;
@@ -54,22 +57,23 @@ const Continuous = ({ permissions, projectId }: Props) => {
     );
   };
 
-  if (!isNilOrError(project)) {
-    const config = getMethodConfig(project?.attributes.participation_method);
+  const config: ParticipationMethodConfig | null = !isNilOrError(project)
+    ? getMethodConfig(project.attributes.participation_method)
+    : null;
 
-    if (!isNilOrError(permissions) && !isNilOrError(config)) {
-      return (
-        <Container>
-          <ActionsForm
-            permissions={permissions}
-            onChange={handlePermissionChange}
-            postType={config.getPostType()}
-            projectId={projectId}
-          />
-        </Container>
-      );
-    }
+  if (!isNilOrError(permissions) && !isNilOrError(config)) {
+    return (
+      <Container>
+        <ActionsForm
+          permissions={permissions}
+          onChange={handlePermissionChange}
+          postType={config.postType}
+          projectId={projectId}
+        />
+      </Container>
+    );
   }
+
   return null;
 };
 
