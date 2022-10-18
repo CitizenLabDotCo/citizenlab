@@ -4,7 +4,7 @@ import { isAdmin, TRole } from 'services/permissions/roles';
 import { includes, get, isArray } from 'lodash-es';
 
 // Components
-import { Table, Thead, Th, Tbody, Tr } from 'components/admin/Table';
+import { Table, Thead, Th, Tbody, Tr } from '@citizenlab/cl2-component-library';
 import Pagination from 'components/Pagination';
 import UserTableRow from './UserTableRow';
 

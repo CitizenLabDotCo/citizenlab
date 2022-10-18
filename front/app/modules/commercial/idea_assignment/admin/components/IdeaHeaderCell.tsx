@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 // components
-import { Th } from 'components/admin/Table';
+import { Th } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

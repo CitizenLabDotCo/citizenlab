@@ -18,12 +18,12 @@ import { IInitiativeStatusData } from 'services/initiativeStatuses';
 // components
 import { TitleLink } from '.';
 import StyledRow from './StyledRow';
-import { Td } from 'components/admin/Table';
 import { Icon } from 'semantic-ui-react';
 import T from 'components/T';
 import Checkbox from 'components/UI/Checkbox';
-import { colors, StatusLabel } from '@citizenlab/cl2-component-library';
+import { Td, StatusLabel } from '@citizenlab/cl2-component-library';
 import SubRow from './SubRow';
+import AssigneeSelect from '../AssigneeSelect';
 
 // utils
 import localize, { InjectedLocalized } from 'utils/localize';
@@ -32,8 +32,8 @@ import localize, { InjectedLocalized } from 'utils/localize';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
-// style
-import AssigneeSelect from '../AssigneeSelect';
+// styling
+import { colors } from 'utils/styleUtils';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';

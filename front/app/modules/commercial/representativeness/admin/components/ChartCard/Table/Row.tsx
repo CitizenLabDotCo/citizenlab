@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Tr, Td } from 'components/admin/Table';
+import { Tr, Td } from '@citizenlab/cl2-component-library';
 
 // styling
 import styled from 'styled-components';

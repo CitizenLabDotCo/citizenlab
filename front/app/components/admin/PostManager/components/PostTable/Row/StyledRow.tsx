@@ -2,21 +2,19 @@ import React from 'react';
 import styled from 'styled-components';
 
 // components
-import { Tr } from 'components/admin/Table';
-
-import { Props as RowProps } from 'components/admin/Table/Tr';
+import { Tr, TrProps } from '@citizenlab/cl2-component-library';
 
 const StyledRow = styled(Tr)<{ undraggable: boolean }>`
   height: 5.7rem;
   cursor: ${({ undraggable }) => (undraggable ? 'pointer' : 'move')};
 `;
 
-interface Props extends RowProps {
+interface Props extends TrProps {
   undraggable: boolean;
 }
 
 export default React.forwardRef(
   (props: Props, ref: React.RefObject<HTMLTableRowElement>) => (
-    <StyledRow {...props} ref={ref} />
+    <StyledRow {...props} innerRef={ref} />
   )
 );

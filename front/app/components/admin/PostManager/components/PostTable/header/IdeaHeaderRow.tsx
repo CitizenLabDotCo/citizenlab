@@ -1,8 +1,13 @@
 import React, { ChangeEvent, useState } from 'react';
 
 // components
-import { Thead, Tr, Th } from 'components/admin/Table';
-import { Text, Checkbox } from '@citizenlab/cl2-component-library';
+import {
+  Thead,
+  Tr,
+  Th,
+  Text,
+  Checkbox,
+} from '@citizenlab/cl2-component-library';
 import FeatureFlag from 'components/FeatureFlag';
 import Outlet from 'components/Outlet';
 
