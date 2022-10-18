@@ -824,7 +824,6 @@
   "app.containers.AdminPage.PagesEdition.faq": "أسئلة مكررة",
   "app.containers.AdminPage.PagesEdition.fileUploadLabel": "المُرفقات (بحجم أقصى 50 ميغابايت)",
   "app.containers.AdminPage.PagesEdition.information": "معلومات",
-  "app.containers.AdminPage.PagesEdition.linkToNavigation": "التنقل",
   "app.containers.AdminPage.PagesEdition.messageError": "حدث خطأ ما أثناء حفظ صفحتك",
   "app.containers.AdminPage.PagesEdition.messageSuccess": "تم حفظ تغييراتك بنجاح",
   "app.containers.AdminPage.PagesEdition.policiesSubtitle": "عدِّل الشروط والأحكام وسياسة الخصوصية في منصتك. يمكن تعديل صفحات أخرى، بما فيها الصفحتان \"نبذة\" و\"أسئلة مكررة\"، في علامة التبويب {navigationLink}.",
