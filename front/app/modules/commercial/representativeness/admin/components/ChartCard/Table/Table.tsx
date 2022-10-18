@@ -6,7 +6,7 @@ import HeaderRow from './HeaderRow';
 import Row from './Row';
 
 // styling
-import { colors, stylingConsts } from '@citizenlab/cl2-component-library';
+import { colors, stylingConsts } from 'utils/styleUtils';
 
 // typings
 import { RepresentativenessData } from '../../../hooks/createRefDataSubscription';

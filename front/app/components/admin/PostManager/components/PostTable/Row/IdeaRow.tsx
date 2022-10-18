@@ -12,10 +12,9 @@ import { IIdeaStatusData } from 'services/ideaStatuses';
 
 // components
 import { TitleLink } from '.';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Td } from '@citizenlab/cl2-component-library';
 import StyledRow from './StyledRow';
 import SubRow from './SubRow';
-import { Td } from '@citizenlab/cl2-component-library';
 import { Icon } from 'semantic-ui-react';
 import T from 'components/T';
 import Outlet from 'components/Outlet';

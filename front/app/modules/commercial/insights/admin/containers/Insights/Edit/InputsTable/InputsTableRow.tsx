@@ -16,10 +16,9 @@ import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 // components
-import { Checkbox } from '@citizenlab/cl2-component-library';
+import { Checkbox, Td } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
 import Category from 'modules/commercial/insights/admin/components/Category';
-import { Td } from '@citizenlab/cl2-component-library';
 
 const CategoryList = styled.div`
   > *:not(:only-of-type) {

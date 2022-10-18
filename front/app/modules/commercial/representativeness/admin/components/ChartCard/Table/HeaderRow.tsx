@@ -1,8 +1,7 @@
 import React from 'react';
 
 // components
-import { Thead, Tr, Th } from '@citizenlab/cl2-component-library';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Thead, Tr, Th, Box } from '@citizenlab/cl2-component-library';
 
 // styling
 import { colors } from 'utils/styleUtils';

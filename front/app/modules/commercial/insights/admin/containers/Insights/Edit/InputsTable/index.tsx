@@ -16,8 +16,15 @@ import useScanInsightsCategory from 'modules/commercial/insights/hooks/useScanIn
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
-import { Table, Thead, Tbody, Th, Tr } from '@citizenlab/cl2-component-library';
-import { Icon, Box } from '@citizenlab/cl2-component-library';
+import {
+  Table,
+  Thead,
+  Tbody,
+  Th,
+  Tr,
+  Icon,
+  Box,
+} from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import InputsTableRow from './InputsTableRow';
 import EmptyState from './EmptyState';

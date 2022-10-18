@@ -4,16 +4,20 @@ import { isNilOrError } from 'utils/helperUtils';
 import { insertConfiguration } from 'utils/moduleUtils';
 
 // components
-import { Table, Thead, Tr, Th, Tbody } from '@citizenlab/cl2-component-library';
-import ModerationRow from './ModerationRow';
-import Pagination from 'components/Pagination';
-import Checkbox from 'components/UI/Checkbox';
 import {
+  Table,
+  Thead,
+  Tr,
+  Th,
+  Tbody,
   Icon,
   IconTooltip,
   Select,
   Error,
 } from '@citizenlab/cl2-component-library';
+import ModerationRow from './ModerationRow';
+import Pagination from 'components/Pagination';
+import Checkbox from 'components/UI/Checkbox';
 import Button from 'components/UI/Button';
 import Tabs, { ITabItem } from 'components/UI/Tabs';
 import { PageTitle } from 'components/admin/Section';
