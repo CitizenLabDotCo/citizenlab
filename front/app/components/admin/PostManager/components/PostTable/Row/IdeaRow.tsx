@@ -11,34 +11,39 @@ import { IPhaseData } from 'services/phases';
 import { IIdeaStatusData } from 'services/ideaStatuses';
 
 // components
-import { Table, Icon } from 'semantic-ui-react';
-import WrappedRow from './WrappedRow';
+import { TitleLink } from '.';
+import { Box, Td } from '@citizenlab/cl2-component-library';
+import StyledRow from './StyledRow';
+import SubRow from './SubRow';
+import { Icon } from 'semantic-ui-react';
 import T from 'components/T';
-
+import Outlet from 'components/Outlet';
 import Checkbox from 'components/UI/Checkbox';
 import FeatureFlag from 'components/FeatureFlag';
 
+// styling
+import { colors } from 'utils/styleUtils';
+
 // utils
 import localize, { InjectedLocalized } from 'utils/localize';
+import { insertConfiguration } from 'utils/moduleUtils';
 
 // i18n
 import { FormattedRelative, InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import messages from '../../messages';
+import messages from '../../../messages';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from '../../tracks';
-import { TFilterMenu, ManagerType } from '../..';
-import { TitleLink, StyledRow } from './Row';
-import SubRow from './SubRow';
+import tracks from '../../../tracks';
+
+// typings
+import { TFilterMenu, ManagerType } from '../../..';
 import {
   CellConfiguration,
   InsertConfigurationOptions,
   Override,
 } from 'typings';
-import { insertConfiguration } from 'utils/moduleUtils';
-import Outlet from 'components/Outlet';
 
 type InputProps = {
   type: ManagerType;
@@ -189,7 +194,6 @@ class IdeaRow extends React.PureComponent<
   renderCell = (
     { idea, selection }: IdeaCellComponentProps,
     {
-      cellProps = {},
       name,
       Component,
       onChange,
@@ -203,9 +207,15 @@ class IdeaRow extends React.PureComponent<
     };
 
     const Content = (
-      <Table.Cell {...cellProps} key={name}>
-        <Component idea={idea} selection={selection} {...handlers} />
-      </Table.Cell>
+      <Td key={name} borderBottom="none !important">
+        <Box
+          {...(['up', 'down'].includes(name)
+            ? { display: 'flex', flexDirection: 'row' }
+            : {})}
+        >
+          <Component idea={idea} selection={selection} {...handlers} />
+        </Box>
+      </Td>
     );
 
     if (!featureFlag) return Content;
@@ -254,10 +264,10 @@ class IdeaRow extends React.PureComponent<
           id="app.components.admin.PostManager.components.PostTable.IdeaRow.cells"
           onData={this.handleData}
         />
-        <WrappedRow
+        <StyledRow
           className={`${className} e2e-idea-manager-idea-row`}
-          as={StyledRow}
-          active={active}
+          undraggable={false}
+          background={active ? colors.grey300 : undefined}
           ref={(instance) => {
             // eslint-disable-next-line react/no-find-dom-node
             instance && connectDragSource(findDOMNode(instance));
@@ -266,7 +276,7 @@ class IdeaRow extends React.PureComponent<
           {cells.map((cellConfiguration) =>
             this.renderCell({ idea, selection }, cellConfiguration)
           )}
-        </WrappedRow>
+        </StyledRow>
         <SubRow
           {...{
             active,
