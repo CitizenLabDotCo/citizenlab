@@ -1,5 +1,5 @@
 import Button from 'components/UI/Button';
-import { adminCustomPageSettingsPath } from 'containers/Admin/pagesAndMenu/routes';
+import { adminCustomPageContentPath } from 'containers/Admin/pagesAndMenu/routes';
 import useAuthUser from 'hooks/useAuthUser';
 import React from 'react';
 import { InjectedIntlProps } from 'react-intl';
@@ -24,7 +24,7 @@ const AdminCustomPageEditButton = ({
   return userCanEditPage ? (
     <Button
       icon="edit"
-      linkTo={adminCustomPageSettingsPath(pageId)}
+      linkTo={adminCustomPageContentPath(pageId)}
       buttonStyle="secondary"
       padding="5px 8px"
       position="absolute"
