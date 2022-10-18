@@ -35,11 +35,11 @@ class MissingLocaleFixer
 
   private
 
-  def update_multiloc(class_name, locale, attributes, multiloc_field_name)
+  def update_multiloc(model_class, locale, attributes, multiloc_field_name)
     search_field_name = /^CustomField/.match?(class_name) ? 'key' : 'code'
     search_key = attributes[search_field_name]
     new_translation = I18n.with_locale(locale) { I18n.t!(attributes[multiloc_field_name]) }
-    records = class_name.constantize.where "#{search_field_name} = ?", search_key
+    records = model_class.where(search_field_name => search_key)
     records.each do |record|
       multiloc_field_value = record[multiloc_field_name]
       if multiloc_field_value[locale]
