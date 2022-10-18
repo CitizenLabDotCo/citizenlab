@@ -824,7 +824,6 @@
   "app.containers.AdminPage.PagesEdition.faq": "(FAQ) Apeqqutit akulikitsumik apeqqutigineqartartut",
   "app.containers.AdminPage.PagesEdition.fileUploadLabel": "Kakkiussinerit (annerpaamik 50MB)",
   "app.containers.AdminPage.PagesEdition.information": "Paasissutissat",
-  "app.containers.AdminPage.PagesEdition.linkToNavigation": "Iserfiusinnaasut",
   "app.containers.AdminPage.PagesEdition.messageError": "Quppernerpit toqqornerani ajortoqarpoq",
   "app.containers.AdminPage.PagesEdition.messageSuccess": "Quppernerit toqqorneqarpoq",
   "app.containers.AdminPage.PagesEdition.policiesSubtitle": "Nittartakkanni Atugassarititaasut allanngortikkit. Quppernerit allat, tassunga ilaallutik Una pillugu aamma Apeqqutit akulikitsumik apeqqutigineqartartut, fane-kkut {navigationLink} allanngortinneqarsinnaapput.",
