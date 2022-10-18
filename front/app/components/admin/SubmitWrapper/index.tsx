@@ -183,7 +183,11 @@ export default class SubmitWrapper extends PureComponent<Props> {
             setSubmitButtonRef={this.setSecondaryButtonRef}
             ml="25px"
           >
-            <FormattedMessage {...this.props.secondaryButtonSaveMessage} />
+            {this.props.secondaryButtonSaveMessage ? (
+              <FormattedMessage {...this.props.secondaryButtonSaveMessage} />
+            ) : (
+              <FormattedMessage {...messages.buttonSave} />
+            )}
           </Button>
         )}
 
