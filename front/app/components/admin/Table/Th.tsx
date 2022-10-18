@@ -13,7 +13,7 @@ import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 interface Props extends BoxProps {
-  colSpan?: `${number}`;
+  colSpan?: number;
   clickable?: boolean;
   sortDirection?: 'ascending' | 'descending';
   infoTooltip?: React.ReactChild;
@@ -31,14 +31,14 @@ const StyledBox = styled(Box)<{ clickable?: boolean }>`
   `}
 `;
 
-const HeaderCell = ({
+const Th = ({
   children,
   colSpan,
   sortDirection,
   infoTooltip,
   ...otherProps
 }: Props) => (
-  <StyledBox as="th" p="12px" colSpan={colSpan as any} {...otherProps}>
+  <StyledBox as="th" p="12px" colSpan={colSpan} {...otherProps}>
     {children}
 
     {sortDirection && (
@@ -67,4 +67,4 @@ const HeaderCell = ({
   </StyledBox>
 );
 
-export default HeaderCell;
+export default Th;

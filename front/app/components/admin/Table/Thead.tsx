@@ -12,8 +12,8 @@ const StyledTHead = styled.thead<{ background?: string }>`
   background: ${({ background }) => background ?? 'white'};
 `;
 
-const Header = ({ children, background }: Props) => (
+const THead = ({ children, background }: Props) => (
   <StyledTHead background={background}>{children}</StyledTHead>
 );
 
-export default Header;
+export default THead;

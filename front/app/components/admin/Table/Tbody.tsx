@@ -4,6 +4,6 @@ interface Props {
   children: React.ReactNode;
 }
 
-const Body = ({ children }: Props) => <tbody>{children}</tbody>;
+const Tbody = ({ children }: Props) => <tbody>{children}</tbody>;
 
-export default Body;
+export default Tbody;

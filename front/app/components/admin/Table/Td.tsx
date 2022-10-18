@@ -4,13 +4,13 @@ import React from 'react';
 import { Box, BoxProps } from '@citizenlab/cl2-component-library';
 
 interface Props extends BoxProps {
-  colSpan?: `${number}`;
+  colSpan?: number;
 }
 
-const Cell = ({ children, colSpan, ...otherProps }: Props) => (
-  <Box as="td" p="12px" colSpan={colSpan as any} {...otherProps}>
+const Td = ({ children, colSpan, style, ...otherProps }: Props) => (
+  <Box as="td" p="12px" colSpan={colSpan} {...otherProps}>
     {children}
   </Box>
 );
 
-export default Cell;
+export default Td;

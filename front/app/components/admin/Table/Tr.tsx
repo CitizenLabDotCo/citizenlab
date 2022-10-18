@@ -5,7 +5,7 @@ export interface Props {
   className?: string;
 }
 
-const Row = React.forwardRef(
+const Tr = React.forwardRef(
   (
     { children, className }: Props,
     ref: React.RefObject<HTMLTableRowElement>
@@ -16,4 +16,4 @@ const Row = React.forwardRef(
   )
 );
 
-export default Row;
+export default Tr;

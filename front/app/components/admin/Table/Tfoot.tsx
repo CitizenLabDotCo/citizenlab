@@ -17,8 +17,8 @@ const StyledTFoot = styled.tfoot<{ background?: string }>`
   }
 `;
 
-const Footer = ({ children, background }: Props) => (
+const Tfoot = ({ children, background }: Props) => (
   <StyledTFoot background={background}>{children}</StyledTFoot>
 );
 
-export default Footer;
+export default Tfoot;
