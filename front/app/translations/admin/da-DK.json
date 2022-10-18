@@ -824,7 +824,6 @@
   "app.containers.AdminPage.PagesEdition.faq": "Ofte stillede spørgsmål (FAQ)",
   "app.containers.AdminPage.PagesEdition.fileUploadLabel": "Tilføj filer til siden Om",
   "app.containers.AdminPage.PagesEdition.information": "information",
-  "app.containers.AdminPage.PagesEdition.linkToNavigation": "Navigation",
   "app.containers.AdminPage.PagesEdition.messageError": "Der var en fejl ved at gemme din side",
   "app.containers.AdminPage.PagesEdition.messageSuccess": "Din side er blevet gemt med succes",
   "app.containers.AdminPage.PagesEdition.policiesSubtitle": "Rediger din platforms vilkår og betingelser og privatlivspolitik. Andre sider, herunder siderne Om og FAQ, kan redigeres under fanen {navigationLink}.",
