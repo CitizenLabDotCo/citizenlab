@@ -88,6 +88,17 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
         </Title>
       )}
       <SectionField>
+        <Toggle
+          name={`customFields.${field.index}.required`}
+          label={
+            <Text as="span" color="primary" variant="bodyM" my="0px">
+              <FormattedMessage {...messages.requiredToggleLabel} />
+            </Text>
+          }
+          data-cy="e2e-toggle-multiloc"
+        />
+      </SectionField>
+      <SectionField>
         <InputMultilocWithLocaleSwitcher
           id="e2e-title-multiloc"
           name={`customFields.${field.index}.title_multiloc`}
@@ -98,18 +109,8 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
       <SectionField>
         <InputMultilocWithLocaleSwitcher
           name={`customFields.${field.index}.description_multiloc`}
-          label={<FormattedMessage {...messages.questionDescription} />}
+          label={<FormattedMessage {...messages.questionDescriptionOptional} />}
           type="text"
-        />
-      </SectionField>
-      <SectionField>
-        <Toggle
-          name={`customFields.${field.index}.required`}
-          label={
-            <Text as="span" color="primary" variant="bodyM" my="0px">
-              <FormattedMessage {...messages.required} />
-            </Text>
-          }
         />
       </SectionField>
       {getAdditionalSettings(field.input_type, locales, field.index)}
@@ -130,6 +131,7 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
           iconColor={colors.error}
           onClick={() => onDelete(field.index)}
           minWidth="160px"
+          data-cy="e2e-delete-field"
         >
           <FormattedMessage {...messages.delete} />
         </Button>

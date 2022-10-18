@@ -57,6 +57,7 @@ import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import eventEmitter from 'utils/eventEmitter';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { isFieldEnabled } from 'utils/projectUtils';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -659,21 +660,6 @@ class IdeaForm extends PureComponent<
     ].required?.includes(fieldCode);
   };
 
-  isFieldEnabled = (
-    fieldCode: CustomFieldCodes,
-    ideaCustomFieldsSchemas: IIdeaFormSchemas,
-    locale: Locale
-  ) => {
-    return (
-      ideaCustomFieldsSchemas.json_schema_multiloc?.[locale]?.properties?.[
-        fieldCode
-      ] &&
-      ideaCustomFieldsSchemas.ui_schema_multiloc?.[locale]?.[fieldCode]?.[
-        'ui:widget'
-      ] !== 'hidden'
-    );
-  };
-
   handleAuthorChange = (authorId?: string) => {
     this.setState({ authorId: authorId ? authorId : null });
   };
@@ -727,22 +713,22 @@ class IdeaForm extends PureComponent<
       !isNilOrError(allowedTopics) &&
       !isNilOrError(project)
     ) {
-      const topicsEnabled = this.isFieldEnabled(
+      const topicsEnabled = isFieldEnabled(
         'topic_ids',
         ideaCustomFieldsSchemas,
         locale
       );
-      const locationEnabled = this.isFieldEnabled(
+      const locationEnabled = isFieldEnabled(
         'location_description',
         ideaCustomFieldsSchemas,
         locale
       );
-      const attachmentsEnabled = this.isFieldEnabled(
+      const attachmentsEnabled = isFieldEnabled(
         'idea_files_attributes',
         ideaCustomFieldsSchemas,
         locale
       );
-      const proposedBudgetEnabled = this.isFieldEnabled(
+      const proposedBudgetEnabled = isFieldEnabled(
         'proposed_budget',
         ideaCustomFieldsSchemas,
         locale
