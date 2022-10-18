@@ -72,34 +72,34 @@ const CustomPageShow = () => {
     // should return 404 here
   }
 
-  const attributes = page.attributes;
+  const pageAttributes = page.attributes;
   const localizedOrgName = localize(
     appConfiguration.attributes.settings.core.organization_name
   );
   return (
     <Container className={`e2e-custom-page`}>
       <Helmet
-        title={`${localize(attributes.title_multiloc)} | ${localizedOrgName}`}
+        title={`${localize(
+          pageAttributes.title_multiloc
+        )} | ${localizedOrgName}`}
       />
-      {attributes.banner_enabled && (
-        <CustomPageHeader pageData={page} pageAttributes={attributes} />
-      )}
+      {pageAttributes.banner_enabled && <CustomPageHeader pageData={page} />}
       <Content>
         <Fragment
           name={!isNilOrError(page) ? `pages/${page && page.id}/content` : ''}
         />
         {/* show page text title if the banner is disabled */}
-        {!attributes.banner_enabled && (
+        {!pageAttributes.banner_enabled && (
           <ContentContainer>
-            <PageTitle>{localize(attributes.title_multiloc)}</PageTitle>
+            <PageTitle>{localize(pageAttributes.title_multiloc)}</PageTitle>
           </ContentContainer>
         )}
-        {attributes.top_info_section_enabled && (
+        {pageAttributes.top_info_section_enabled && (
           <TopInfoSection
-            multilocContent={attributes.top_info_section_multiloc}
+            multilocContent={pageAttributes.top_info_section_multiloc}
           />
         )}
-        {attributes.files_section_enabled &&
+        {pageAttributes.files_section_enabled &&
           !isNilOrError(remotePageFiles) &&
           remotePageFiles.length > 0 && (
             <AttachmentsContainer>
