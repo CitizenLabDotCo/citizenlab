@@ -33,6 +33,10 @@ module ParticipationMethod
       false
     end
 
+    def sign_in_required_for_posting?
+      true
+    end
+
     def extra_fields_category_translation_key
       'custom_forms.categories.extra.title'
     end
