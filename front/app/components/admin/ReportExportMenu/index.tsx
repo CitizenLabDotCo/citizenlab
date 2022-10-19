@@ -39,8 +39,6 @@ const StyledButton = styled(Button)`
   }
 `;
 
-export type XlsxData = Record<string, Record<string, any>[]>;
-
 export interface ReportExportMenuProps {
   className?: string;
   name: string;
@@ -57,7 +55,9 @@ export interface ReportExportMenuProps {
   xlsx?: XlsxConfig;
 }
 
-type XlsxConfig = OneOf<[XlsxConfigEndpoint, XlsxConfigData]>;
+type XlsxConfig = OneOf<
+  [XlsxConfigEndpoint, XlsxConfigData, XlsxConfigOnDownload]
+>;
 
 interface XlsxConfigEndpoint {
   endpoint: string;
@@ -66,6 +66,23 @@ interface XlsxConfigEndpoint {
 interface XlsxConfigData {
   data: XlsxData;
 }
+
+interface XlsxConfigOnDownload {
+  onDownload: () => Promise<XlsxData>;
+}
+
+export type XlsxData = Record<string, Record<string, any>[]>;
+
+const downloadXlsxData = (data: XlsxData, fileName: string) => {
+  const workbook = XLSX.utils.book_new();
+
+  Object.entries(data).forEach(([sheet_name, sheet_data]) => {
+    const worksheet = XLSX.utils.json_to_sheet(sheet_data);
+    XLSX.utils.book_append_sheet(workbook, worksheet, sheet_name);
+  });
+
+  XLSX.writeFile(workbook, `${fileName}.xlsx`);
+};
 
 const ReportExportMenu = ({
   svgNode,
@@ -201,11 +218,12 @@ const ReportExportMenu = ({
   };
 
   const downloadXlsx = async () => {
+    setExportingXls(true);
+
     if (xlsx?.endpoint) {
       const { endpoint } = xlsx;
 
       try {
-        setExportingXls(true);
         const blob = await requestBlob(
           endpoint,
           'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -218,34 +236,26 @@ const ReportExportMenu = ({
             topic: currentTopicFilter,
           }
         );
+
         if (blob.size <= 2467) {
           throw new Error(`Empty xlsx : ${endpoint}`);
         }
         saveAs(blob, `${fileName}.xlsx`);
-        setExportingXls(false);
         setDropdownOpened(false);
       } catch (error) {
         reportError(error);
-        setExportingXls(false);
       }
-
-      return;
-    }
-
-    if (xlsx?.data) {
+    } else if (xlsx?.data) {
       const { data } = xlsx;
-      setExportingXls(true);
 
-      const workbook = XLSX.utils.book_new();
-      Object.entries(data).forEach(([sheet_name, sheet_data]) => {
-        const worksheet = XLSX.utils.json_to_sheet(sheet_data);
-        XLSX.utils.book_append_sheet(workbook, worksheet, sheet_name);
-      });
-      XLSX.writeFile(workbook, `${fileName}.xlsx`);
+      downloadXlsxData(data, fileName);
+    } else if (xlsx?.onDownload) {
+      const xlsxData = await xlsx.onDownload();
 
-      setExportingXls(false);
-      return;
+      downloadXlsxData(xlsxData, fileName);
     }
+
+    setExportingXls(false);
 
     // track this click for user analytics
     trackEventByName('Clicked export xlsx', { extra: { graph: name } });
