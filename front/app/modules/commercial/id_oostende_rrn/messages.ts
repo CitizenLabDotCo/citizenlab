@@ -42,7 +42,7 @@ export default defineMessages({
   },
   notEntitledLivesOutsideFormError: {
     id: 'app.modules.id_oostende_rrn.notEntitledLivesOutsideFormError',
-    defaultMessage: "We can't verify you because you live outside of Ghent",
+    defaultMessage: "We can't verify you because you live outside of Oostende",
   },
   noMatchFormError: {
     id: 'app.modules.id_oostende_rrn.noMatchFormError',

@@ -73,6 +73,21 @@ resource 'Verifications' do
     end
 
     describe do
+      let(:rrn) { '99071442848' }
+
+      example '[error] Verify with a rrn of citizen not living in Oostende' do
+        stub_request(:get, "https://wapaza-wijkprikkelsapi-01.azurewebsites.net/services/wijkbudget-api/v1/api/WijkBudget/verificatie/#{rrn}")
+          .to_return(status: 200, body: { 'verificatieResultaat' => { 'geldig' => false,
+                                                                      'redenNietGeldig' => ['ERR11'] } }.to_json, headers: { 'Content-Type' => 'application/json' })
+        do_request
+        assert_status 422
+        expect(@user.reload.verified).to be false
+        json_response = json_parse response_body
+        expect(json_response).to include_response_error(:base, 'not_entitled', why: 'lives_outside')
+      end
+    end
+
+    describe do
       let(:rrn) { '11010115780' }
 
       example '[error] Verify with a rrn of citizen less than 14 year old' do
