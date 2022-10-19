@@ -40,7 +40,7 @@ interface Props {
     bottom_info_section_multiloc: Multiloc;
   }) => Promise<any>;
   breadcrumbs: TBreadcrumbs;
-  linkToLandingPage?: string;
+  linkToViewPage?: string;
 }
 
 interface FormValues {
@@ -52,7 +52,7 @@ const GenericBottomInfoSection = ({
   updatePage,
   breadcrumbs,
   intl: { formatMessage },
-  linkToLandingPage,
+  linkToViewPage,
 }: InjectedIntlProps & Props) => {
   const theme: any = useTheme();
 
@@ -93,8 +93,8 @@ const GenericBottomInfoSection = ({
           ]}
           title={formatMessage(messages.pageTitle)}
           rightSideCTA={
-            linkToLandingPage ? (
-              <ViewCustomPageButton linkTo={linkToLandingPage} />
+            linkToViewPage ? (
+              <ViewCustomPageButton linkTo={linkToViewPage} />
             ) : null
           }
         >

@@ -39,7 +39,7 @@ interface Props {
   pageData: IHomepageSettingsData | ICustomPageData;
   updatePage: (data: { top_info_section_multiloc: Multiloc }) => Promise<any>;
   breadcrumbs: TBreadcrumbs;
-  linkToLandingPage?: string;
+  linkToViewPage?: string;
 }
 
 interface FormValues {
@@ -51,7 +51,7 @@ const GenericTopInfoSection = ({
   updatePage,
   breadcrumbs,
   intl: { formatMessage },
-  linkToLandingPage,
+  linkToViewPage,
 }: InjectedIntlProps & Props) => {
   const theme: any = useTheme();
 
@@ -93,8 +93,8 @@ const GenericTopInfoSection = ({
             ]}
             title={formatMessage(messages.topInfoPageTitle)}
             rightSideCTA={
-              linkToLandingPage ? (
-                <ViewCustomPageButton linkTo={linkToLandingPage} />
+              linkToViewPage ? (
+                <ViewCustomPageButton linkTo={linkToViewPage} />
               ) : null
             }
           >

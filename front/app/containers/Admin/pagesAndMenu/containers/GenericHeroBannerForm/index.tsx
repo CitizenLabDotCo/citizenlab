@@ -32,7 +32,7 @@ interface Props {
   avatarsFieldComponent?: ReactElement;
   ctaButtonFieldsComponent?: ReactElement;
   outletSectionEnd?: ReactElement;
-  linkToLandingPage?: string;
+  linkToViewPage?: string;
 }
 
 const GenericHeroBannerForm = ({
@@ -49,7 +49,7 @@ const GenericHeroBannerForm = ({
   bannerImageFieldsComponent,
   layoutSettingFieldComponent,
   ctaButtonFieldsComponent,
-  linkToLandingPage,
+  linkToViewPage,
 }: Props) => {
   return (
     <>
@@ -71,8 +71,8 @@ const GenericHeroBannerForm = ({
           />
         }
         rightSideCTA={
-          linkToLandingPage ? (
-            <ViewCustomPageButton linkTo={linkToLandingPage} />
+          linkToViewPage ? (
+            <ViewCustomPageButton linkTo={linkToViewPage} />
           ) : null
         }
       >

@@ -24,7 +24,7 @@ const BottomInfoSection = () => {
           linkTo: `/admin/pages-menu/pages/${customPageId}/content`,
         },
       ]}
-      linkToLandingPage={`/pages/${customPage.attributes.slug}`}
+      linkToViewPage={`/pages/${customPage.attributes.slug}`}
     />
   );
 };
