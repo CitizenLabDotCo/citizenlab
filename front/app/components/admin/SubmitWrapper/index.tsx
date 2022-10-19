@@ -7,7 +7,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import styled, { css } from 'styled-components';
 
 // components
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import Button, {
   ButtonStyles,
   Props as OriginalButtonProps,
@@ -84,16 +84,16 @@ interface Props
   loading: boolean;
   customError?: string | null;
   messages: {
-    buttonSave: any;
-    buttonSuccess: any;
-    messageSuccess: any;
-    messageError: any;
+    buttonSave: MessageDescriptor;
+    buttonSuccess: MessageDescriptor;
+    messageSuccess: MessageDescriptor;
+    messageError: MessageDescriptor;
   };
   onClick?: (event: FormEvent<any>) => void;
   buttonStyle?: ButtonStyles;
   secondaryButtonOnClick?: (event: FormEvent<any>) => void;
   secondaryButtonStyle?: ButtonStyles;
-  secondaryButtonSaveMessage?: any;
+  secondaryButtonSaveMessage?: MessageDescriptor;
   animate?: boolean;
   enableFormOnSuccess?: boolean;
 }

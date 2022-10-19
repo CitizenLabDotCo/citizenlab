@@ -1,7 +1,7 @@
 import React from 'react';
 
 // styling
-import { StatusLabel, colors } from '@citizenlab/cl2-component-library';
+import { StatusLabel, colors, Text } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -11,12 +11,10 @@ const ShownOnPageBadge = ({ shownOnPage }: { shownOnPage: boolean }) => {
   if (shownOnPage) {
     return (
       <StatusLabel
-        icon="dot"
-        variant="default"
         text={
-          <span style={{ color: colors.success }}>
+          <Text color="success">
             <FormattedMessage {...messages.shownOnPage} />
-          </span>
+          </Text>
         }
         backgroundColor={colors.successLight}
       />
@@ -25,12 +23,10 @@ const ShownOnPageBadge = ({ shownOnPage }: { shownOnPage: boolean }) => {
 
   return (
     <StatusLabel
-      icon="dot"
-      variant="default"
       text={
-        <span style={{ color: colors.error }}>
-          <FormattedMessage {...messages.notShownOnPage} />
-        </span>
+        <Text color="error">
+          <FormattedMessage {...messages.shownOnPage} />
+        </Text>
       }
       backgroundColor={colors.red100}
     />
