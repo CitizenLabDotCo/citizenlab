@@ -13,7 +13,7 @@ import { SectionField } from 'components/admin/Section';
 // i18n
 import messages from './messages';
 import useLocalize from 'hooks/useLocalize';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import HelmetIntl from 'components/HelmetIntl';
 
@@ -47,7 +47,9 @@ type FormValues = {
   local_page_files: UploadFile[] | null;
 };
 
-const AttachmentsForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+const AttachmentsForm = ({
+  intl: { formatMessage },
+}: WrappedComponentProps) => {
   const localize = useLocalize();
   const { customPageId } = useParams() as { customPageId: string };
   const customPage = useCustomPage(customPageId);

@@ -6,7 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 interface Props {
@@ -20,7 +20,7 @@ const IdeaTopics = ({
   compact,
   className,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const idea = useIdea({ ideaId });
 
   if (!isNilOrError(idea)) {

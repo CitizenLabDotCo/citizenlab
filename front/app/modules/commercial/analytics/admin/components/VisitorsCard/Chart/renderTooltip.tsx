@@ -10,7 +10,7 @@ import { colors } from 'components/admin/Graphs/styling';
 
 // i18n
 import messages from '../messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
 // utils
 import { toFullMonth } from 'utils/dateUtils';
@@ -18,7 +18,7 @@ import { toFullMonth } from 'utils/dateUtils';
 // typings
 import { TimeSeriesRow } from '../../../hooks/useVisitors/typings';
 import { IResolution } from 'components/admin/ResolutionControl';
-import { MessageDescriptor } from 'typings';
+import {} from 'typings';
 
 type DataKey = 'visitors' | 'visits';
 

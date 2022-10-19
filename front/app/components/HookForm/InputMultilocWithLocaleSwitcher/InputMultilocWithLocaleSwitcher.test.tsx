@@ -5,7 +5,6 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { object } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
-import translationMessages from 'i18n/en';
 
 const schema = object({
   title: validateMultilocForEveryLocale('Error message'),
@@ -102,11 +101,7 @@ describe('InputMultilocWithLocaleSwitcher', () => {
     fireEvent.click(screen.getByText(/submit/i));
     await waitFor(() => {
       expect(
-        screen.getByText(
-          (translationMessages as Record<string, string>)[
-            'app.errors.generics.blank'
-          ]
-        )
+        screen.getByText('This field cannot be empty.')
       ).toBeInTheDocument();
     });
   });

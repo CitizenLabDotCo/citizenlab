@@ -25,7 +25,7 @@ import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { XlsxData } from 'components/admin/ReportExportMenu';
 import { QueryParameters, Response, Stats, TimeSeries } from './typings';
 import { IResolution } from 'components/admin/ResolutionControl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 const getAggregations = (): AggregationsConfig => ({
   all: 'count',
@@ -113,8 +113,8 @@ const query = ({
   };
 };
 
-export default function useVisitors(
-  formatMessage: InjectedIntlProps['intl']['formatMessage'],
+export default function useVisitorsData(
+  formatMessage: WrappedComponentProps['intl']['formatMessage'],
   { projectId, startAtMoment, endAtMoment, resolution }: QueryParameters
 ) {
   const [deducedResolution, setDeducedResolution] =

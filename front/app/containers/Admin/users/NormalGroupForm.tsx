@@ -11,7 +11,7 @@ import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // Components
@@ -24,7 +24,7 @@ import { Multiloc } from 'typings';
 type Props = {
   onSubmit: (formValues: NormalFormValues) => void | Promise<void>;
   defaultValues?: Partial<NormalFormValues>;
-} & InjectedIntlProps;
+} & WrappedComponentProps;
 
 export interface NormalFormValues {
   title_multiloc: Multiloc;

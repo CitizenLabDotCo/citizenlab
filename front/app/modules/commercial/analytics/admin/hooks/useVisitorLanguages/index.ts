@@ -14,7 +14,7 @@ import { parsePieData, parseExcelData } from './parse';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { XlsxData } from 'components/admin/ReportExportMenu';
 import { Response, PieRow, QueryParameters } from './typings';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // utils
 import { getProjectFilter, getDateFilter } from '../../utils/query';
@@ -50,8 +50,8 @@ const query = ({
   };
 };
 
-export default function useVisitorLanguages(
-  formatMessage: InjectedIntlProps['intl']['formatMessage'],
+export default function useVisitorsData(
+  formatMessage: WrappedComponentProps['intl']['formatMessage'],
   { projectId, startAtMoment, endAtMoment }: QueryParameters
 ) {
   const [pieData, setPieData] = useState<PieRow[] | NilOrError>();

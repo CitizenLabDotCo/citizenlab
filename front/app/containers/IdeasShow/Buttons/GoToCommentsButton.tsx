@@ -3,14 +3,14 @@ import IdeaCTAButton from './IdeaCTAButton';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 interface Props {
   className?: string;
 }
 
-const GoToCommentsButton = memo<Props & InjectedIntlProps>(
+const GoToCommentsButton = memo<Props & WrappedComponentProps>(
   ({ className, intl: { formatMessage } }) => {
     const onClick = useCallback(() => {
       const commentInputElementAnchor = document.getElementById(

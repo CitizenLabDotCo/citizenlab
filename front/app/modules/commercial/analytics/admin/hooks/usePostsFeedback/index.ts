@@ -29,7 +29,7 @@ import { isEmptyResponse, getTranslations } from './utils';
 import { getProjectFilter, getDateFilter } from '../../utils/query';
 
 // typings
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import {
   QueryParameters,
   PostFeedback,
@@ -76,7 +76,7 @@ const query = ({
 };
 
 export default function usePostsWithFeedback(
-  formatMessage: InjectedIntlProps['intl']['formatMessage'],
+  formatMessage: WrappedComponentProps['intl']['formatMessage'],
   { projectId, startAtMoment, endAtMoment }: QueryParameters
 ) {
   const localize = useLocalize();
