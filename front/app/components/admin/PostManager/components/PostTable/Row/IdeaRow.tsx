@@ -37,12 +37,12 @@ import { TFilterMenu, ManagerType } from '../../..';
 import {
   CellConfiguration,
   InsertConfigurationOptions,
+  Locale,
   Override,
 } from 'typings';
 import { insertConfiguration } from 'utils/moduleUtils';
 
 // hooks
-import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
 
 type InputProps = {
@@ -57,6 +57,7 @@ type InputProps = {
   onClickCheckbox: (event) => void;
   onClickTitle: (event) => void;
   nothingHappens: (event) => void;
+  locale: Locale;
 };
 
 export type IdeaCellComponentProps = {
@@ -80,8 +81,8 @@ const IdeaRow = ({
   statuses,
   idea,
   selection,
+  locale,
 }: Props & WrappedComponentProps & InjectedLocalized) => {
-  const locale = useLocale();
   const [cells, setCells] = useState<
     CellConfiguration<IdeaCellComponentProps>[]
   >([
