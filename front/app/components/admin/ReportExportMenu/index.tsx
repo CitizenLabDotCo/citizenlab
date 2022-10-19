@@ -20,6 +20,9 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { IResolution } from 'components/admin/ResolutionControl';
 
+// typings
+import { XOR } from 'typings';
+
 const DropdownButton = styled(Button)``;
 
 const Container = styled.div`
@@ -42,7 +45,6 @@ export interface ReportExportMenuProps {
   className?: string;
   name: string;
   svgNode?: React.RefObject<any> | React.RefObject<any>[];
-  xlsxEndpoint?: string;
   startAt?: string | null | undefined;
   endAt?: string | null;
   resolution?: IResolution;
@@ -52,13 +54,22 @@ export interface ReportExportMenuProps {
   currentProjectFilterLabel?: string | undefined;
   currentGroupFilterLabel?: string | undefined;
   currentTopicFilterLabel?: string | undefined;
-  xlsxData?: XlsxData;
+  xlsx?: XlsxConfig;
+}
+
+type XlsxConfig = XOR<XlsxConfigEndpoint, XlsxConfigData>;
+
+interface XlsxConfigEndpoint {
+  endpoint: string;
+}
+
+interface XlsxConfigData {
+  data: XlsxData;
 }
 
 const ReportExportMenu = ({
   svgNode,
   className,
-  xlsxEndpoint,
   name,
   startAt,
   endAt,
@@ -69,8 +80,8 @@ const ReportExportMenu = ({
   currentGroupFilterLabel,
   currentTopicFilterLabel,
   currentProjectFilterLabel,
+  xlsx,
   intl: { formatMessage, formatDate },
-  xlsxData,
 }: ReportExportMenuProps & WrappedComponentProps) => {
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const [exportingXls, setExportingXls] = useState(false);
@@ -190,11 +201,13 @@ const ReportExportMenu = ({
   };
 
   const downloadXlsx = async () => {
-    if (xlsxEndpoint) {
+    if (xlsx?.endpoint) {
+      const { endpoint } = xlsx;
+
       try {
         setExportingXls(true);
         const blob = await requestBlob(
-          xlsxEndpoint,
+          endpoint,
           'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
           {
             start_at: startAt,
@@ -206,7 +219,7 @@ const ReportExportMenu = ({
           }
         );
         if (blob.size <= 2467) {
-          throw new Error(`Empty xlsx : ${xlsxEndpoint}`);
+          throw new Error(`Empty xlsx : ${endpoint}`);
         }
         saveAs(blob, `${fileName}.xlsx`);
         setExportingXls(false);
@@ -215,13 +228,23 @@ const ReportExportMenu = ({
         reportError(error);
         setExportingXls(false);
       }
-    } else if (xlsxData) {
+
+      return;
+    }
+
+    if (xlsx?.data) {
+      const { data } = xlsx;
+      setExportingXls(true);
+
       const workbook = XLSX.utils.book_new();
-      Object.entries(xlsxData).forEach(([sheet_name, sheet_data]) => {
+      Object.entries(data).forEach(([sheet_name, sheet_data]) => {
         const worksheet = XLSX.utils.json_to_sheet(sheet_data);
         XLSX.utils.book_append_sheet(workbook, worksheet, sheet_name);
       });
       XLSX.writeFile(workbook, `${fileName}.xlsx`);
+
+      setExportingXls(false);
+      return;
     }
 
     // track this click for user analytics
@@ -266,7 +289,7 @@ const ReportExportMenu = ({
                 <FormattedMessage {...messages.downloadPng} />
               </StyledButton>
             )}
-            {(xlsxData || xlsxEndpoint) && (
+            {xlsx && (
               <StyledButton
                 onClick={downloadXlsx}
                 buttonStyle="text"

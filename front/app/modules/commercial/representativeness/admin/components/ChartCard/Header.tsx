@@ -92,7 +92,7 @@ const Header = ({
         <ReportExportMenu
           name={title}
           currentProjectFilter={projectFilter}
-          xlsxEndpoint={view === 'table' ? xlsxEndpoint : undefined}
+          xlsx={view === 'table' ? { endpoint: xlsxEndpoint } : undefined}
           svgNode={view === 'chart' ? svgNode : undefined}
         />
       </Box>

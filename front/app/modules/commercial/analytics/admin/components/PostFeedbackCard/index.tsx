@@ -142,7 +142,7 @@ const PostFeedback = ({
           currentProgressBarsChart,
           currentStackedBarChart,
         ],
-        xlsxData,
+        xlsx: { data: xlsxData },
         currentProjectFilter: projectId,
         startAt,
         endAt,
