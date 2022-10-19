@@ -8,6 +8,12 @@ import GraphCard from 'components/admin/GraphCard';
 import EmptyPieChart from '../EmptyPieChart';
 import Chart from './Chart';
 import Table from './Table';
+import { Text, Icon } from '@citizenlab/cl2-component-library';
+import TableModal from './TableModal';
+
+// styling
+import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
 
 // i18n
 import messages from './messages';
@@ -26,6 +32,16 @@ interface Props {
   resolution: IResolution;
 }
 
+const TableViewButton = styled.button`
+  all: unset;
+  text-decoration: underline;
+  cursor: pointer;
+
+  &:hover {
+    color: ${colors.black};
+  }
+`;
+
 const VisitorsTrafficSourcesCard = ({
   startAtMoment,
   endAtMoment,
@@ -40,6 +56,9 @@ const VisitorsTrafficSourcesCard = ({
     projectId: projectFilter,
   });
   const [currentView, setCurrentView] = useState<View>('chart');
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const openModal = () => setModalOpen(true);
 
   const cardTitle = formatMessage(messages.visitorsTrafficSources);
 
@@ -82,6 +101,26 @@ const VisitorsTrafficSourcesCard = ({
           endAtMoment={endAtMoment}
         />
       )}
+
+      <Text ml="20px" mt="40px" mb="0px" color="coolGrey600" fontSize="s">
+        <Icon
+          name="info-outline"
+          fill={colors.coolGrey600}
+          width="14px"
+          height="14px"
+          transform="translate(0,-1)"
+          mr="4px"
+        />
+        {formatMessage(messages.viewReferrerList, {
+          referrerListButton: (
+            <TableViewButton onClick={openModal}>
+              {formatMessage(messages.referrerListButton)}
+            </TableViewButton>
+          ),
+        })}
+      </Text>
+
+      {modalOpen && <TableModal />}
     </GraphCard>
   );
 };

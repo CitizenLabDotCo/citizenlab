@@ -17,4 +17,12 @@ export default defineMessages({
     id: 'app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.visitors',
     defaultMessage: 'Visitors',
   },
+  viewReferrerList: {
+    id: 'app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.viewReferrerList',
+    defaultMessage: 'To view the full list of referrers, {referrerListButton}',
+  },
+  referrerListButton: {
+    id: 'app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.referrerListButton',
+    defaultMessage: 'click here',
+  },
 });

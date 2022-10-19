@@ -81,8 +81,8 @@ const TableComponent = ({
           </Tr>
         </Thead>
         <Tbody>
-          {tableData.map((row) => (
-            <Tr>
+          {tableData.map((row, i) => (
+            <Tr key={i}>
               <Td background={colors.grey50}>
                 ({row.referrerType}) {row.referrerName}
               </Td>
