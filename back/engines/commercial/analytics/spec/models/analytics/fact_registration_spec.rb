@@ -15,7 +15,7 @@ RSpec.describe Analytics::FactRegistration, type: :model do
     let!(:user) { create(:user, registration_completed_at: nil) }
 
     it 'is not available as a registration fact' do
-      !described_class.find(user.id)
+      expect(described_class.count).to eq(0)
     end
   end
 end
