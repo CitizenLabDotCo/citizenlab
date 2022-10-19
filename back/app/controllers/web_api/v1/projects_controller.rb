@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 class WebApi::V1::ProjectsController < ApplicationController
   before_action :set_project, only: %i[show update reorder destroy survey_results submission_count index_xlsx delete_inputs]
 
