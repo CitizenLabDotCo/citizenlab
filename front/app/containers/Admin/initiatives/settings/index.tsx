@@ -9,7 +9,7 @@ import usePage from 'hooks/usePage';
 
 // services
 import { updateAppConfiguration } from 'services/appConfiguration';
-import { updatePage } from 'services/pages';
+import { updateCustomPage } from 'services/customPages';
 
 // components
 import {
