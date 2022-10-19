@@ -1,18 +1,18 @@
 import React from 'react';
 
 // services
+import { getNavbarItemSlug, INavbarItem } from 'services/navbar';
 import {
-  reorderNavbarItem,
   removeNavbarItem,
+  reorderNavbarItem,
 } from '../../../../services/navbar';
 import { deleteCustomPage } from 'services/customPages';
-import { getNavbarItemSlug, INavbarItem } from 'services/navbar';
 
 // components
 import {
+  LockedRow,
   SortableList,
   SortableRow,
-  LockedRow,
 } from 'components/admin/ResourceList';
 import { SubSectionTitle } from 'components/admin/Section';
 import NavbarItemRow from 'containers/Admin/pagesAndMenu/containers/NavigationSettings/NavbarItemRow';
@@ -22,14 +22,14 @@ import useNavbarItems from 'hooks/useNavbarItems';
 import usePageSlugById from 'hooks/usePageSlugById';
 
 // i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
+import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 import clHistory from 'utils/cl-router/history';
-import { PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
+import { isNilOrError } from 'utils/helperUtils';
 
 const VisibleNavbarItemList = ({
   intl: { formatMessage },
@@ -44,15 +44,17 @@ const VisibleNavbarItemList = ({
   const handleClickEdit = (navbarItem: INavbarItem) => () => {
     // redirect to homepage toggle page
     if (navbarItem?.attributes?.code && navbarItem.attributes.code === 'home') {
-      clHistory.push(`${PAGES_MENU_PATH}/homepage/`);
+      clHistory.push(`${ADMIN_PAGES_MENU_PATH}/homepage/`);
       return;
     }
 
     const pageData = navbarItem.relationships.static_page.data;
 
     pageData
-      ? clHistory.push(`${PAGES_MENU_PATH}/pages/${pageData.id}/settings`)
-      : clHistory.push(`${PAGES_MENU_PATH}/navbar-items/edit/${navbarItem.id}`);
+      ? clHistory.push(`${ADMIN_PAGES_MENU_PATH}/pages/${pageData.id}/settings`)
+      : clHistory.push(
+          `${ADMIN_PAGES_MENU_PATH}/navbar-items/edit/${navbarItem.id}`
+        );
   };
 
   const getViewButtonLink = (navbarItem: INavbarItem) => {

@@ -1,6 +1,6 @@
+import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/HeaderImageDropzone';
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/HeaderImageDropzone';
 
 // components
 import HeaderContent from './HeaderContent';

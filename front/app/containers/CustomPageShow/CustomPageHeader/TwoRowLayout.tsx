@@ -1,11 +1,13 @@
-import React from 'react';
-import HeaderContent from './HeaderContent';
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import ContentContainer from 'components/ContentContainer';
-import styled from 'styled-components';
 import Image from 'components/UI/Image';
-import { media } from 'utils/styleUtils';
 import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/HeaderImageDropzone';
-import { ICustomPageAttributes } from 'services/customPages';
+import React from 'react';
+import { ICustomPageData } from 'services/customPages';
+import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
+import AdminCustomPageEditButton from './AdminCustomPageEditButton';
+import HeaderContent from './HeaderContent';
 
 const Container = styled.div`
   display: flex;
@@ -29,23 +31,39 @@ const HeaderImage = styled(Image)`
 `;
 
 interface Props {
-  pageAttributes: ICustomPageAttributes;
+  pageData: ICustomPageData;
 }
 
-const TwoRowLayout = ({ pageAttributes }: Props) => {
+const TwoRowLayout = ({ pageData }: Props) => {
+  const pageAttributes = pageData.attributes;
   const imageUrl = pageAttributes.header_bg?.large;
+  const isTablet = useBreakpoint('tablet');
+
   return (
     <>
-      {imageUrl && (
-        <HeaderImage
-          src={imageUrl}
-          cover={true}
-          fadeIn={false}
-          isLazy={false}
-          placeholderBg="transparent"
-          alt=""
-        />
-      )}
+      <Box
+        width="100%"
+        position="relative"
+        // Needed when the Hero banner is turned on, but there is no image yet
+        // Otherwise the AdminCustomPageEditButton is not clickable.
+        height={
+          isTablet
+            ? `${homepageBannerLayoutHeights['two_row_layout'].tablet}px`
+            : `${homepageBannerLayoutHeights['two_row_layout'].desktop}px`
+        }
+      >
+        {imageUrl && (
+          <HeaderImage
+            src={imageUrl}
+            cover={true}
+            fadeIn={false}
+            isLazy={false}
+            placeholderBg="transparent"
+            alt=""
+          />
+        )}
+        <AdminCustomPageEditButton pageId={pageData.id} />
+      </Box>
       <ContentContainer mode="page">
         <Container>
           <HeaderContent

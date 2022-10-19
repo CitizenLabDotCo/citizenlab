@@ -27,7 +27,7 @@ import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // utils
-import { PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
+import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 import getItemsNotInNavbar, { IItemNotInNavbar } from './getItemsNotInNavbar';
@@ -67,7 +67,7 @@ const HiddenNavbarItemList = ({
 
   const handleClickEditButton = (item: IItemNotInNavbar) => () => {
     if (item.type !== 'page') return;
-    clHistory.push(`${PAGES_MENU_PATH}/pages/${item.pageId}/settings`);
+    clHistory.push(`${ADMIN_PAGES_MENU_PATH}/pages/${item.pageId}/settings`);
   };
 
   const handleClickAdd = (item: IItemNotInNavbar) => () => {

@@ -485,7 +485,6 @@
   "app.containers.Admin.PagesAndMenu.heroBannerMessageSuccess": "Zapisane",
   "app.containers.Admin.PagesAndMenu.heroBannerSaveButton": "Zapisz",
   "app.containers.Admin.PagesAndMenu.homeTitle": "Strona główna",
-  "app.containers.Admin.PagesAndMenu.pageHeader": "Strony",
   "app.containers.Admin.PagesAndMenu.pagesMenuMetaTitle": "Pages & menu | {orgName}",
   "app.containers.Admin.PagesAndMenu.removeButton": "Usuń z nawigacji",
   "app.containers.Admin.PagesAndMenu.title": "Strony i menu",
