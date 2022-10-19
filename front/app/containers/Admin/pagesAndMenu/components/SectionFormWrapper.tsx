@@ -39,7 +39,7 @@ const SectionFormWrapper = ({
         {title && (
           <Box mb="20px">
             <Box display="flex" alignItems="center">
-              <Title color="primary">{title}</Title>{' '}
+              <Title color="primary">{title}</Title>
               {badge && <Box ml="20px">{badge}</Box>}
             </Box>
             {subtitle && <SectionDescription>{subtitle}</SectionDescription>}
