@@ -1652,7 +1652,7 @@
   "app.containers.admin.import.importStepTwo": "2. Upload your completed template file",
   "app.containers.admin.import.successMessage": "File imported successfully!",
   "app.containers.admin.project.permissions.permissionsAdministrators": "Administrators",
-  "app.containers.admin.project.permissions.permissionsEveryoneLabel": "Everyone",
+  "app.containers.admin.project.permissions.permissionsEveryoneLabel": "Jiddereen",
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Selection",
   "app.containers.admin.project.permissions.permissionsUsersLabel": "Registered users",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Who can see this project?",
