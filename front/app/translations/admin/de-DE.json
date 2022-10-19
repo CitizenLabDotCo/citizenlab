@@ -487,7 +487,6 @@
   "app.containers.Admin.PagesAndMenu.heroBannerMessageSuccess": "Hero Banner gespeichert",
   "app.containers.Admin.PagesAndMenu.heroBannerSaveButton": "Hero Banner speichern",
   "app.containers.Admin.PagesAndMenu.homeTitle": "Willkommen",
-  "app.containers.Admin.PagesAndMenu.pageHeader": "Navigation",
   "app.containers.Admin.PagesAndMenu.pagesMenuMetaTitle": "Seiten & Menü | {orgName}",
   "app.containers.Admin.PagesAndMenu.removeButton": "Von der Nav.-Leiste entfernen",
   "app.containers.Admin.PagesAndMenu.title": "Navigation",
