@@ -9,6 +9,7 @@ import {
   Box,
 } from '@citizenlab/cl2-component-library';
 import { SectionField } from 'components/admin/Section';
+import ShownOnPageBadge from '../../components/ShownOnPageBadge';
 
 // i18n
 import messages from './messages';
@@ -34,6 +35,7 @@ import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 import { useParams } from 'react-router-dom';
 import useRemoteFiles from 'hooks/useRemoteFiles';
 import useCustomPage from 'hooks/useCustomPage';
+import { updateCustomPage } from 'services/customPages';
 
 // constants
 import { PAGES_MENU_CUSTOM_PATH } from '../../routes';
@@ -57,7 +59,10 @@ const AttachmentsForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     resourceId: !isNilOrError(customPage) ? customPage.id : null,
   });
 
-  const handleSubmit = async ({ local_page_files }: FormValues) => {
+  const handleSubmit = async (
+    { local_page_files }: FormValues,
+    enableSection = false
+  ) => {
     const promises: Promise<any>[] = [];
 
     if (!isNilOrError(local_page_files)) {
@@ -75,12 +80,27 @@ const AttachmentsForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       promises.push(addPromise, removePromise);
     }
 
+    if (enableSection) {
+      const enableSectionPromise = updateCustomPage(customPageId, {
+        files_section_enabled: true,
+      });
+      promises.push(enableSectionPromise);
+    }
+
     await Promise.all(promises);
   };
 
   const onFormSubmit = async (formValues: FormValues) => {
     try {
       await handleSubmit(formValues);
+    } catch (error) {
+      handleHookFormSubmissionError(error, methods.setError);
+    }
+  };
+
+  const onFormSubmitAndEnable = async (formValues: FormValues) => {
+    try {
+      await handleSubmit(formValues, true);
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);
     }
@@ -100,6 +120,8 @@ const AttachmentsForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     return null;
   }
 
+  const isSectionEnabled = customPage.attributes.files_section_enabled;
+
   return (
     <>
       <HelmetIntl title={messages.pageMetaTitle} />
@@ -107,6 +129,13 @@ const AttachmentsForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         <form onSubmit={methods.handleSubmit(onFormSubmit)}>
           <SectionFormWrapper
             title={formatMessage(messages.pageTitle)}
+            badge={
+              isSectionEnabled ? (
+                <ShownOnPageBadge shownOnPage />
+              ) : (
+                <ShownOnPageBadge shownOnPage={false} />
+              )
+            }
             breadcrumbs={[
               {
                 label: formatMessage(pagesAndMenuBreadcrumb.label),
@@ -145,6 +174,17 @@ const AttachmentsForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
               >
                 <FormattedMessage {...messages.saveButton} />
               </Button>
+              {!isSectionEnabled && (
+                <Button
+                  ml="30px"
+                  type="button"
+                  buttonStyle="primary-outlined"
+                  onClick={methods.handleSubmit(onFormSubmitAndEnable)}
+                  processing={methods.formState.isSubmitting}
+                >
+                  {formatMessage(messages.saveAndEnableButton)}
+                </Button>
+              )}
             </Box>
           </SectionFormWrapper>
         </form>
