@@ -336,7 +336,7 @@ When you add a gem, you don't have to do anything if it comes with a license we 
 ```bash
 docker-compose run web license_finder permitted_licenses add "the license name"
 ```
-If the license is unkown to rubygems, you can directly approve a gem.
+If the license is unknown to rubygems, you can directly approve a gem.
 ```bash
 docker-compose run web license_finder approvals add some_awesome_new_gem
 ```
