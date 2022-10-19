@@ -40,7 +40,7 @@ interface Props {
   updatePage: (data: {
     bottom_info_section_multiloc: Multiloc;
   }) => Promise<any>;
-  updateAndEnablePage?: (data: {
+  updatePageAndEnableSection?: (data: {
     bottom_info_section_multiloc: Multiloc;
   }) => Promise<any>;
   breadcrumbs: TBreadcrumbs;
@@ -54,7 +54,7 @@ interface FormValues {
 const GenericBottomInfoSection = ({
   pageData,
   updatePage,
-  updateAndEnablePage,
+  updatePageAndEnableSection,
   breadcrumbs,
   intl: { formatMessage },
   linkToViewPage,
@@ -70,10 +70,10 @@ const GenericBottomInfoSection = ({
   };
 
   const onFormSubmitAndEnable = async (formValues: FormValues) => {
-    if (!updateAndEnablePage) return;
+    if (!updatePageAndEnableSection) return;
 
     try {
-      await updateAndEnablePage(formValues);
+      await updatePageAndEnableSection(formValues);
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);
     }
@@ -137,7 +137,7 @@ const GenericBottomInfoSection = ({
               {formatMessage(messages.saveButton)}
             </Button>
             {/* only show save + enable button if a handler is passed down for that */}
-            {updateAndEnablePage && (
+            {updatePageAndEnableSection && (
               <Button
                 ml="30px"
                 type="button"

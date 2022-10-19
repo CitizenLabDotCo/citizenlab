@@ -13,7 +13,7 @@ const TopInfoSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     return null;
   }
 
-  const updateAndEnableHomepage = (data) => {
+  const updateHomepageAndEnableSection = (data) => {
     return updateHomepageSettings({
       ...data,
       top_info_section_enabled: true,
@@ -24,10 +24,10 @@ const TopInfoSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     <GenericTopInfoSection
       pageData={homepageSettings}
       updatePage={(data) => updateHomepageSettings(data)}
-      updateAndEnablePage={
+      updatePageAndEnableSection={
         homepageSettings.attributes.top_info_section_enabled
           ? undefined // matches the type for an optional parameter
-          : (data) => updateAndEnableHomepage(data)
+          : (data) => updateHomepageAndEnableSection(data)
       }
       breadcrumbs={[
         {

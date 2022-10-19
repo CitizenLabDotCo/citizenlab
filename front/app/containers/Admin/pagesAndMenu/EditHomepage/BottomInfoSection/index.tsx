@@ -24,7 +24,9 @@ const BottomInfoSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     <GenericBottomInfoSection
       pageData={homepageSettings}
       updatePage={(data) => updateHomepageSettings(data)}
-      updateAndEnablePage={(data) => updateHomepageAndEnableSection(data)}
+      updatePageAndEnableSection={(data) =>
+        updateHomepageAndEnableSection(data)
+      }
       breadcrumbs={[
         {
           label: formatMessage(homeBreadcrumb.label),

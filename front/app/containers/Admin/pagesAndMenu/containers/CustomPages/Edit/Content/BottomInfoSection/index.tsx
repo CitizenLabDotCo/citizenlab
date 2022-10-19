@@ -15,7 +15,7 @@ const BottomInfoSection = () => {
     return null;
   }
 
-  const updateAndEnableCustomPage = (customPageId, data) => {
+  const updatePageAndEnableSection = (customPageId, data) => {
     return updateCustomPage(customPageId, {
       ...data,
       bottom_info_section_enabled: true,
@@ -26,8 +26,8 @@ const BottomInfoSection = () => {
     <GenericBottomInfoSection
       pageData={customPage}
       updatePage={(data) => updateCustomPage(customPageId, data)}
-      updateAndEnablePage={(data) =>
-        updateAndEnableCustomPage(customPageId, data)
+      updatePageAndEnableSection={(data) =>
+        updatePageAndEnableSection(customPageId, data)
       }
       breadcrumbs={[
         {
