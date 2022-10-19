@@ -15,7 +15,7 @@ import sectionToggleMessages from 'containers/Admin/pagesAndMenu/components/Sect
 import {
   updateCustomPage,
   TCustomPageEnabledSetting,
-} from 'services/staticPages';
+} from 'services/customPages';
 
 // hooks
 import useCustomPage from 'hooks/useCustomPage';

@@ -27,7 +27,7 @@ import { pagesAndMenuBreadcrumb } from '../../breadcrumbs';
 
 // services and hooks
 import { IHomepageSettingsData } from 'services/homepageSettings';
-import { ICustomPageData } from 'services/staticPages';
+import { ICustomPageData } from 'services/customPages';
 
 // utils
 import validateMultiloc from 'utils/yup/validateMultiloc';

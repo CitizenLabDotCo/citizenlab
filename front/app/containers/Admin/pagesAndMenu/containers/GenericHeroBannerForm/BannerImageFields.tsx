@@ -22,7 +22,7 @@ import messages from './messages';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNil, isNilOrError } from 'utils/helperUtils';
 
-import { ICustomPageAttributes } from 'services/staticPages';
+import { ICustomPageAttributes } from 'services/customPages';
 import { IHomepageSettingsAttributes } from 'services/homepageSettings';
 
 import RangeInput from 'components/UI/RangeInput';

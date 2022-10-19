@@ -99,8 +99,6 @@ export async function updateCustomPage(
   return customPageSettings;
 }
 
-// exports from old pages.ts file
-
 export async function deleteCustomPage(pageId: string) {
   const response = await streams.delete(
     `${customPagesEndpoint}/${pageId}`,
@@ -111,7 +109,9 @@ export async function deleteCustomPage(pageId: string) {
   return response;
 }
 
-export function listPages(streamParams: IStreamParams | null = null) {
+// exports from old pages.ts file
+
+export function listStaticPages(streamParams: IStreamParams | null = null) {
   return streams.get<{ data: ICustomPageData[] }>({
     apiEndpoint: `${customPagesEndpoint}`,
     ...streamParams,

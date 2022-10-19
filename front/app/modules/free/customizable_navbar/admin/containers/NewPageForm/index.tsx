@@ -1,7 +1,7 @@
 import React from 'react';
 
 // services
-import { createCustomPage } from 'services/staticPages';
+import { createCustomPage } from 'services/customPages';
 import { handleAddPageFiles } from 'services/pageFiles';
 
 // components

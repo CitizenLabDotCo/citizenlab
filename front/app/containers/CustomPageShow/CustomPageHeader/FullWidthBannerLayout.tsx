@@ -1,5 +1,5 @@
 import React from 'react';
-import { ICustomPageAttributes } from 'services/staticPages';
+import { ICustomPageAttributes } from 'services/customPages';
 
 // components
 import HeaderContent from './HeaderContent';

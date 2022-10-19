@@ -6,9 +6,9 @@ import {
   ICustomPageData,
   ICustomPage,
   ICustomPages,
-  listPages,
+  listStaticPages,
   customPageByIdStream,
-} from 'services/staticPages';
+} from 'services/customPages';
 import { isNilOrError, NilOrError, reduceErrors } from 'utils/helperUtils';
 
 interface IParams {
@@ -57,7 +57,7 @@ function createSubscription(inputProps$, setPages: SetPages) {
           );
         }
 
-        return listPages().observable.pipe(
+        return listStaticPages().observable.pipe(
           map((response: ICustomPages | NilOrError) => {
             return isNilOrError(response) ? response : response.data;
           })

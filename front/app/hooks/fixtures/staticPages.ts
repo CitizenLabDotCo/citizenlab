@@ -1,4 +1,4 @@
-import { ICustomPageData } from 'services/staticPages';
+import { ICustomPageData } from 'services/customPages';
 
 const PAGES: ICustomPageData[] = [
   {

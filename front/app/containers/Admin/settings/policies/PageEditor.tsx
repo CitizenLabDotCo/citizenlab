@@ -9,7 +9,7 @@ import { Icon } from '@citizenlab/cl2-component-library';
 import PageForm, { FormValues } from 'components/PageForm';
 
 // services
-import { updateCustomPage } from 'services/staticPages';
+import { updateCustomPage } from 'services/customPages';
 import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 
 // hooks

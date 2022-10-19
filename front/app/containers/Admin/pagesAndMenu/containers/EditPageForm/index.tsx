@@ -17,7 +17,7 @@ import { InjectedIntlProps } from 'react-intl';
 import useLocalize from 'hooks/useLocalize';
 
 // services
-import { updateCustomPage } from 'services/staticPages';
+import { updateCustomPage } from 'services/customPages';
 import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 import { MAX_TITLE_LENGTH } from 'services/navbar';
 

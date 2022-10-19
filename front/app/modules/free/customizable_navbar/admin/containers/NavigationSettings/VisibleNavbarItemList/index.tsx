@@ -5,7 +5,7 @@ import {
   reorderNavbarItem,
   removeNavbarItem,
 } from '../../../../services/navbar';
-import { deleteCustomPage } from 'services/staticPages';
+import { deleteCustomPage } from 'services/customPages';
 import { getNavbarItemSlug, INavbarItem } from 'services/navbar';
 
 // components

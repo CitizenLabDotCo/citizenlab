@@ -2,7 +2,7 @@ import streams, { IStreamParams } from 'utils/streams';
 import { getFilesToRemove, getFilesToAdd } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { UploadFile } from 'typings';
-import { customPagesEndpoint as apiEndpoint } from './staticPages';
+import { customPagesEndpoint as apiEndpoint } from './customPages';
 import { isString } from 'lodash-es';
 
 export interface ICustomPageFileData {

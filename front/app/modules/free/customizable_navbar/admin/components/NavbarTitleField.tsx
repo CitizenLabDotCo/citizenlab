@@ -5,7 +5,7 @@ import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import usePage from 'hooks/usePage';
 import { isNilOrError } from 'utils/helperUtils';
-import { isPolicyPageSlug } from 'services/staticPages';
+import { isPolicyPageSlug } from 'services/customPages';
 import { SectionField } from 'components/admin/Section';
 import useNavbarItem from '../../hooks/useNavbarItem';
 

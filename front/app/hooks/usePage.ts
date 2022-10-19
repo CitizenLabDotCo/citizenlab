@@ -6,7 +6,7 @@ import {
   ICustomPageData,
   customPageByIdStream,
   customPageBySlugStream,
-} from 'services/staticPages';
+} from 'services/customPages';
 
 interface Props {
   pageId?: string | null;

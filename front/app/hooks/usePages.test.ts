@@ -4,7 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { waitFor } from 'utils/testUtils/rtl';
 import { delay } from 'rxjs/operators';
 import pages from './fixtures/staticPages';
-import { listPages, customPageByIdStream } from 'services/staticPages';
+import { listStaticPages, customPageByIdStream } from 'services/customPages';
 
 const mockInputListPages = {
   data: pages,
@@ -44,7 +44,7 @@ describe('usePages', () => {
   describe('no ids', () => {
     it('should call listPages', () => {
       renderHook(() => usePages());
-      expect(listPages).toHaveBeenCalledTimes(1);
+      expect(listStaticPages).toHaveBeenCalledTimes(1);
     });
 
     it('should return data when data', async () => {

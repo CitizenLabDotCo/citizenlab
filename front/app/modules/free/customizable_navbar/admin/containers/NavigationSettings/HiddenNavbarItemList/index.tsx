@@ -7,7 +7,7 @@ import {
   FIXED_PAGES,
   ICustomPageData,
   TPageCode,
-} from 'services/staticPages';
+} from 'services/customPages';
 import { addNavbarItem } from '../../../../services/navbar';
 
 // hooks

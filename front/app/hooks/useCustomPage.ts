@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { customPageByIdStream, ICustomPageData } from 'services/staticPages';
+import { customPageByIdStream, ICustomPageData } from 'services/customPages';
 import { isNilOrError } from 'utils/helperUtils';
 
 export default function useCustomPage(customPageId: string) {

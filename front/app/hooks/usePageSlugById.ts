@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { listPages } from 'services/staticPages';
+import { listStaticPages } from 'services/customPages';
 import { isNilOrError } from 'utils/helperUtils';
 
 export type TPageSlugById = Record<string, string>;
@@ -10,7 +10,7 @@ export default function usePageSlugById() {
     useState<TPageSlugByIdState>(undefined);
 
   useEffect(() => {
-    const subscription = listPages().observable.subscribe((response) => {
+    const subscription = listStaticPages().observable.subscribe((response) => {
       if (isNilOrError(response)) {
         setPageSlugById(response);
         return;

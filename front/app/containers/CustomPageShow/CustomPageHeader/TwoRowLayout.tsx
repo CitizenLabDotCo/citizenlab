@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import Image from 'components/UI/Image';
 import { media } from 'utils/styleUtils';
 import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/HeaderImageDropzone';
-import { ICustomPageAttributes } from 'services/staticPages';
+import { ICustomPageAttributes } from 'services/customPages';
 
 const Container = styled.div`
   display: flex;

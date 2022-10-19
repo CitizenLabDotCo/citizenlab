@@ -7,7 +7,7 @@ import {
   ICustomPageData,
   customPageByIdStream,
   customPageBySlugStream,
-} from 'services/staticPages';
+} from 'services/customPages';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {

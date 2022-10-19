@@ -4,7 +4,7 @@ import CTARadioButtons, {
 } from 'components/LandingPageComponents/admin/CTARadioButtons';
 import React from 'react';
 import { InjectedIntlProps } from 'react-intl';
-import { TCustomPageCTAType } from 'services/staticPages';
+import { TCustomPageCTAType } from 'services/customPages';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
