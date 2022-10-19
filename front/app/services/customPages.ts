@@ -69,6 +69,8 @@ export interface ICustomPageAttributes extends ICustomPageEnabledSettings {
   updated_at: string;
 }
 
+// the entity is called StaticPage on the backend, but for
+// frontend purposes we refer to it as a Custom Page
 export const customPagesEndpoint = `${API_PATH}/static_pages`;
 
 export function createCustomPage(pageData: { title_multiloc: Multiloc }) {
@@ -109,8 +111,6 @@ export async function deleteCustomPage(pageId: string) {
   return response;
 }
 
-// exports from old pages.ts file
-
 export function listCustomPages(streamParams: IStreamParams | null = null) {
   return streams.get<{ data: ICustomPageData[] }>({
     apiEndpoint: `${customPagesEndpoint}`,
@@ -118,13 +118,15 @@ export function listCustomPages(streamParams: IStreamParams | null = null) {
   });
 }
 
-// The following types all refer to the 'code' attribute of the page.
+// The following types and resources were moved from old "pages" code.
+// Mainly they refer to pages that have special properties, like
+// the FAQ/about pages, and terms/conditions and privacy policies
 
+// These types refer to the "code" attribute of a page.
 // The 'standard page' distinction is only relevant for non-commercial
 // customers: they can edit the content of these pages, but nothing else.
 // For commercial customers, these behave as 'custom' pages.
 type TStandardPage = 'about' | 'faq';
-
 export const STANDARD_PAGES: TStandardPage[] = ['about', 'faq'];
 
 // Policy pages of which only the content can be edited
