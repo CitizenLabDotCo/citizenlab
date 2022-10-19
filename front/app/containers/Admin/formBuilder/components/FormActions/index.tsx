@@ -74,29 +74,28 @@ const FormActions = ({
 
     return (
       <Box width="100%" my="60px">
-        <Box display="flex" flexDirection="row" width="100%" mb="48px">
-          <Box width="100%">
-            <Title variant="h4">
+        <Box
+          display="flex"
+          flexDirection="row"
+          width="100%"
+          mb="36px"
+          gap="16px"
+        >
+          {heading && (
+            <Title variant="h4" mt="0" mb="0">
               <T value={heading} />
             </Title>
-          </Box>
-          <Box
-            width="100%"
-            display="flex"
-            alignItems="center"
-            justifyContent="flex-end"
-          >
-            <Toggle
-              checked={postingEnabled}
-              label={formatMessage(messages.openForSubmissions)}
-              onChange={() => {
-                togglePostingEnabled();
-              }}
-            />
-          </Box>
+          )}
+          <Toggle
+            checked={postingEnabled}
+            label={formatMessage(messages.openForResponses)}
+            onChange={() => {
+              togglePostingEnabled();
+            }}
+          />
         </Box>
         {isEditingDisabled && (
-          <Box width="100%" mb="48px">
+          <Box width="100%" mb="36px">
             <DeleteFormResultsNotice projectId={projectId} />
           </Box>
         )}
@@ -106,6 +105,7 @@ const FormActions = ({
           flexDirection="row"
           width="100%"
           justifyContent="space-between"
+          gap="12px"
         >
           <Button
             icon="chart-bar"
