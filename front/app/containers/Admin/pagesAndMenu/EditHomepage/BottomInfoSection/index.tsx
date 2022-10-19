@@ -13,10 +13,18 @@ const BottomInfoSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     return null;
   }
 
+  const updateHomepageAndEnableSection = (data) => {
+    return updateHomepageSettings({
+      ...data,
+      bottom_info_section_enabled: true,
+    });
+  };
+
   return (
     <GenericBottomInfoSection
       pageData={homepageSettings}
       updatePage={(data) => updateHomepageSettings(data)}
+      updateAndEnablePage={(data) => updateHomepageAndEnableSection(data)}
       breadcrumbs={[
         {
           label: formatMessage(homeBreadcrumb.label),

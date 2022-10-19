@@ -37,7 +37,6 @@ import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 interface Props {
   pageData: IHomepageSettingsData | ICustomPageData;
-  shownOnPage?: boolean;
   updatePage: (data: { top_info_section_multiloc: Multiloc }) => Promise<any>;
   updateAndEnablePage?: (data: {
     top_info_section_multiloc: Multiloc;
@@ -52,7 +51,6 @@ interface FormValues {
 const GenericTopInfoSection = ({
   pageData,
   updatePage,
-  shownOnPage,
   updateAndEnablePage,
   breadcrumbs,
   intl: { formatMessage },
@@ -98,7 +96,7 @@ const GenericTopInfoSection = ({
         <form onSubmit={methods.handleSubmit(onFormSubmit)}>
           <SectionFormWrapper
             badge={
-              shownOnPage ? (
+              pageData.attributes.top_info_section_enabled ? (
                 <ShownOnPageBadge shownOnPage />
               ) : (
                 <ShownOnPageBadge shownOnPage={false} />

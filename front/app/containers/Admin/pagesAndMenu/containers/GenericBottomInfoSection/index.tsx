@@ -6,6 +6,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import SectionFormWrapper from '../../components/SectionFormWrapper';
 import { TBreadcrumbs } from 'components/UI/Breadcrumbs';
 import Button from 'components/UI/Button';
+import ShownOnPageBadge from '../../components/ShownOnPageBadge';
 
 // form
 import { useForm, FormProvider } from 'react-hook-form';
@@ -38,6 +39,9 @@ interface Props {
   updatePage: (data: {
     bottom_info_section_multiloc: Multiloc;
   }) => Promise<any>;
+  updateAndEnablePage?: (data: {
+    bottom_info_section_multiloc: Multiloc;
+  }) => Promise<any>;
   breadcrumbs: TBreadcrumbs;
 }
 
@@ -48,6 +52,7 @@ interface FormValues {
 const GenericBottomInfoSection = ({
   pageData,
   updatePage,
+  updateAndEnablePage,
   breadcrumbs,
   intl: { formatMessage },
 }: InjectedIntlProps & Props) => {
@@ -56,6 +61,16 @@ const GenericBottomInfoSection = ({
   const onFormSubmit = async (formValues: FormValues) => {
     try {
       await updatePage(formValues);
+    } catch (error) {
+      handleHookFormSubmissionError(error, methods.setError);
+    }
+  };
+
+  const onFormSubmitAndEnable = async (formValues: FormValues) => {
+    if (!updateAndEnablePage) return;
+
+    try {
+      await updateAndEnablePage(formValues);
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);
     }
@@ -89,6 +104,13 @@ const GenericBottomInfoSection = ({
             { label: formatMessage(messages.pageTitle) },
           ]}
           title={formatMessage(messages.pageTitle)}
+          badge={
+            pageData.attributes.bottom_info_section_enabled ? (
+              <ShownOnPageBadge shownOnPage />
+            ) : (
+              <ShownOnPageBadge shownOnPage={false} />
+            )
+          }
         >
           <Feedback successMessage={formatMessage(messages.messageSuccess)} />
           <Box maxWidth={`${theme.maxPageWidth - 100}px`} mb="24px">
@@ -106,6 +128,18 @@ const GenericBottomInfoSection = ({
             >
               {formatMessage(messages.saveButton)}
             </Button>
+            {/* only show save + enable button if a handler is passed down for that */}
+            {updateAndEnablePage && (
+              <Button
+                ml="30px"
+                type="button"
+                buttonStyle="primary-outlined"
+                onClick={methods.handleSubmit(onFormSubmitAndEnable)}
+                processing={methods.formState.isSubmitting}
+              >
+                {formatMessage(messages.saveAndEnableButton)}
+              </Button>
+            )}
           </Box>
         </SectionFormWrapper>
       </form>
