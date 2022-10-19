@@ -6,6 +6,7 @@ import { WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
 
 import { isAdmin, isModerator, isSuperAdmin } from 'services/permissions/roles';
+import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 
 import { isError, isNilOrError } from 'utils/helperUtils';
 import useAuthUser from 'hooks/useAuthUser';
@@ -21,6 +22,10 @@ import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
 
 import PageContainer from 'components/UI/PageContainer';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
+import GoBackButton from 'containers/IdeasShow/GoBackButton';
+import { Box } from '@citizenlab/cl2-component-library';
+import Button from 'components/UI/Button';
+import { FormattedMessage } from 'utils/cl-intl';
 import { addIdea } from 'services/ideas';
 import { geocode, reverseGeocode } from 'utils/locationTools';
 
@@ -167,6 +172,7 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
 
   // get participation method config
   const phaseFromUrl = usePhase(phaseId);
+  // TODO: Improve typings and remove any
   let config;
 
   if (!isNilOrError(phaseFromUrl)) {
@@ -182,6 +188,52 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
       config = getMethodConfig(project.attributes.participation_method);
     }
   }
+
+  if (isNilOrError(project) || isNilOrError(config)) {
+    return null;
+  }
+
+  const userCanEditProject =
+    !isNilOrError(authUser) &&
+    canModerateProject(project.id, { data: authUser });
+  const showEditSurveyButton =
+    userCanEditProject && config.postType === 'nativeSurvey';
+
+  const linkToSurveyBuilder = phaseId
+    ? `/admin/projects/${project.id}/phases/${phaseId}/native-survey/edit`
+    : `/admin/projects/${project.id}/native-survey/edit`;
+
+  const TitleComponent = (
+    <Box width="100%" display="flex" flexDirection="column">
+      <Box width="100%" display="flex" justifyContent="center">
+        <Box
+          display="flex"
+          width="50%"
+          flexDirection="row"
+          justifyContent="space-around"
+          mb="14px"
+        >
+          <GoBackButton insideModal={false} projectId={project.id} />
+          <Box data-cy="e2e-edit-survey-link">
+            {showEditSurveyButton && (
+              <Button
+                icon="edit"
+                linkTo={linkToSurveyBuilder}
+                buttonStyle="secondary"
+                padding="5px 8px"
+                hidden={!userCanEditProject}
+              >
+                <FormattedMessage {...messages.editSurvey} />
+              </Button>
+            )}
+          </Box>
+        </Box>
+      </Box>
+
+      <Box>{config.getFormTitle({ project, phases, phaseFromUrl })}</Box>
+    </Box>
+  );
+
   return (
     <PageContainer id="e2e-idea-new-page" overflow="hidden">
       {!isNilOrError(project) &&
@@ -199,7 +251,7 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
             getAjvErrorMessage={getAjvErrorMessage}
             getApiErrorMessage={getApiErrorMessage}
             inputId={undefined}
-            title={config.getFormTitle({ project, phases, phaseFromUrl })}
+            title={TitleComponent}
             config={'input'}
           />
         </>
