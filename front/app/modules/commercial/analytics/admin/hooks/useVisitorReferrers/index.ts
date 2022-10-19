@@ -18,14 +18,18 @@ import {
   ReferrersTotalRow,
   TableRow,
 } from './typings';
+import { InjectedIntlProps } from 'react-intl';
 
-export default function useVisitorReferrers({
-  projectId,
-  startAtMoment,
-  endAtMoment,
-  pageNumber,
-  pageSize,
-}: QueryParameters) {
+export default function useVisitorReferrers(
+  formatMessage: InjectedIntlProps['intl']['formatMessage'],
+  {
+    projectId,
+    startAtMoment,
+    endAtMoment,
+    pageNumber,
+    pageSize,
+  }: QueryParameters
+) {
   const [tableData, setTableData] = useState<TableRow[] | NilOrError>();
   const [totals, setTotals] = useState<ReferrersTotalRow | NilOrError>();
 
@@ -49,7 +53,7 @@ export default function useVisitorReferrers({
           return;
         }
 
-        setTableData(parseTableData(response.data, totals));
+        setTableData(parseTableData(response.data, totals, formatMessage));
       }
     );
 
