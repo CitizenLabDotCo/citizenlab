@@ -1,10 +1,10 @@
+import GenericTopInfoSection from 'containers/Admin/pagesAndMenu/containers/GenericTopInfoSection';
 import useCustomPage from 'hooks/useCustomPage';
 import useLocalize from 'hooks/useLocalize';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { updateCustomPage } from 'services/customPages';
 import { isNilOrError } from 'utils/helperUtils';
-import GenericTopInfoSection from 'containers/Admin/pagesAndMenu/containers/GenericTopInfoSection';
 
 const TopInfoSection = () => {
   const localize = useLocalize();
@@ -36,6 +36,7 @@ const TopInfoSection = () => {
           linkTo: `/admin/pages-menu/pages/${customPageId}/content`,
         },
       ]}
+      linkToViewPage={`/pages/${customPage.attributes.slug}`}
     />
   );
 };

@@ -3,17 +3,18 @@ import { useTheme } from 'styled-components';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import SectionFormWrapper from '../../components/SectionFormWrapper';
 import { TBreadcrumbs } from 'components/UI/Breadcrumbs';
 import Button from 'components/UI/Button';
 import ShownOnPageBadge from '../../components/ShownOnPageBadge';
+import SectionFormWrapper from '../../components/SectionFormWrapper';
+import ViewCustomPageButton from '../CustomPages/Edit/ViewCustomPageButton';
 
 // form
-import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { object } from 'yup';
 import Feedback from 'components/HookForm/Feedback';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
+import { FormProvider, useForm } from 'react-hook-form';
+import { object } from 'yup';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -27,12 +28,12 @@ import { Multiloc } from 'typings';
 import { pagesAndMenuBreadcrumb } from '../../breadcrumbs';
 
 // services and hooks
-import { IHomepageSettingsData } from 'services/homepageSettings';
 import { ICustomPageData } from 'services/customPages';
+import { IHomepageSettingsData } from 'services/homepageSettings';
 
 // utils
-import validateMultiloc from 'utils/yup/validateMultiloc';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import validateMultiloc from 'utils/yup/validateMultiloc';
 
 interface Props {
   pageData: IHomepageSettingsData | ICustomPageData;
@@ -43,6 +44,7 @@ interface Props {
     bottom_info_section_multiloc: Multiloc;
   }) => Promise<any>;
   breadcrumbs: TBreadcrumbs;
+  linkToViewPage?: string;
 }
 
 interface FormValues {
@@ -55,6 +57,7 @@ const GenericBottomInfoSection = ({
   updateAndEnablePage,
   breadcrumbs,
   intl: { formatMessage },
+  linkToViewPage,
 }: InjectedIntlProps & Props) => {
   const theme: any = useTheme();
 
@@ -110,6 +113,11 @@ const GenericBottomInfoSection = ({
             ) : (
               <ShownOnPageBadge shownOnPage={false} />
             )
+          }
+          rightSideCTA={
+            linkToViewPage ? (
+              <ViewCustomPageButton linkTo={linkToViewPage} />
+            ) : null
           }
         >
           <Feedback successMessage={formatMessage(messages.messageSuccess)} />

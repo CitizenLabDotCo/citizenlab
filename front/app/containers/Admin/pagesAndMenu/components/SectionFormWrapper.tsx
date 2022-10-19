@@ -2,10 +2,10 @@ import React from 'react';
 
 // components
 import { Box, Title } from '@citizenlab/cl2-component-library';
-import StickyContainer from './StickyContainer';
-import Breadcrumbs, { TBreadcrumbs } from 'components/UI/Breadcrumbs';
 import PageWrapper from 'components/admin/PageWrapper';
 import { SectionDescription } from 'components/admin/Section';
+import Breadcrumbs, { TBreadcrumbs } from 'components/UI/Breadcrumbs';
+import StickyContainer from './StickyContainer';
 
 interface Props {
   breadcrumbs?: TBreadcrumbs;
@@ -13,7 +13,7 @@ interface Props {
   subtitle?: string | JSX.Element;
   children: JSX.Element | JSX.Element[];
   stickyMenuContents?: JSX.Element | JSX.Element[];
-  rightSideCTA?: JSX.Element | JSX.Element[];
+  rightSideCTA?: JSX.Element | JSX.Element[] | null;
   flatTopBorder?: boolean;
   badge?: JSX.Element;
 }

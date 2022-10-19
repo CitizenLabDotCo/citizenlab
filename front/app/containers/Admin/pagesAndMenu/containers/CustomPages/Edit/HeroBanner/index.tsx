@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 
 // types
 import { ISubmitState } from 'components/admin/SubmitWrapper';
-import { InjectedIntlProps } from 'react-intl';
 import { CLErrors, Multiloc } from 'typings';
 
 // components
@@ -14,11 +13,12 @@ import GenericHeroBannerForm from '../../../GenericHeroBannerForm';
 import ShownOnPageBadge from 'containers/Admin/pagesAndMenu/components/ShownOnPageBadge';
 
 // utils
-import { PAGES_MENU_CUSTOM_PATH } from 'containers/Admin/pagesAndMenu/routes';
 import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 import { isNilOrError, isNil } from 'utils/helperUtils';
 
 // resources
+import { adminCustomPageContentPath } from 'containers/Admin/pagesAndMenu/routes';
+import { InjectedIntlProps } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import useCustomPage from 'hooks/useCustomPage';
 import {
@@ -203,6 +203,7 @@ const EditCustomPageHeroBannerForm = ({
           }
           formStatus={formStatus}
           isLoading={isLoading}
+          linkToViewPage={`/pages/${customPage.attributes.slug}`}
           breadcrumbs={[
             {
               label: formatMessage(pagesAndMenuBreadcrumb.label),
@@ -210,7 +211,7 @@ const EditCustomPageHeroBannerForm = ({
             },
             {
               label: localize(customPage.attributes.title_multiloc),
-              linkTo: `${PAGES_MENU_CUSTOM_PATH}/${customPageId}/content`,
+              linkTo: adminCustomPageContentPath(customPageId),
             },
             { label: formatMessage(messages.heroBannerTitle) },
           ]}

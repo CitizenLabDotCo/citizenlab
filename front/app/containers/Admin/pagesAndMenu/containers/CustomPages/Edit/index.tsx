@@ -1,18 +1,18 @@
 import React from 'react';
 
 // components
-import TabbedResource from 'components/admin/TabbedResource';
 import { Box } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
+import TabbedResource from 'components/admin/TabbedResource';
 import Breadcrumbs from 'components/UI/Breadcrumbs';
 import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
+import ViewCustomPageButton from './ViewCustomPageButton';
 
 // i18n
-import messages from '../messages';
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
 import HelmetIntl from 'components/HelmetIntl';
 import useLocalize from 'hooks/useLocalize';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
+import messages from '../messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -53,15 +53,9 @@ const CustomPagesEditSettings = ({
         resource={{
           title: localize(pageTitleMultiloc),
           rightSideCTA: (
-            <Button
-              buttonStyle="cl-blue"
-              icon="eye"
-              id="to-custom-page"
-              openLinkInNewTab
+            <ViewCustomPageButton
               linkTo={`/pages/${customPage.attributes.slug}`}
-            >
-              {formatMessage(messages.viewCustomPage)}
-            </Button>
+            />
           ),
         }}
         tabs={[

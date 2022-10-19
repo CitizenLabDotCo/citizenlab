@@ -1,11 +1,11 @@
-import React from 'react';
-import { render, screen, fireEvent } from 'utils/testUtils/rtl';
-import HiddenNavbarItemList from '.';
+import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 import allNavbarItems from 'hooks/fixtures/navbarItems';
-import { addNavbarItem } from '../../../../services/navbar';
+import React from 'react';
 import { deletePage } from 'services/pages';
-import { PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 import clHistory from 'utils/cl-router/history';
+import { fireEvent, render, screen } from 'utils/testUtils/rtl';
+import HiddenNavbarItemList from '.';
+import { addNavbarItem } from '../../../../services/navbar';
 
 jest.mock('services/locale');
 jest.mock('services/appConfiguration');
@@ -57,7 +57,7 @@ describe('<HiddenNavbarItemList />', () => {
     fireEvent.click(editButtons[0]);
 
     expect(clHistory.push).toHaveBeenCalledWith(
-      `${PAGES_MENU_PATH}/pages/1b095a31-72e1-450a-81be-f6e7a9296553/settings`
+      `${ADMIN_PAGES_MENU_PATH}/pages/1b095a31-72e1-450a-81be-f6e7a9296553/settings`
     );
   });
 

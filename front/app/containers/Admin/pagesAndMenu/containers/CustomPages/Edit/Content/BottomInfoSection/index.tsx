@@ -1,10 +1,10 @@
+import GenericBottomInfoSection from 'containers/Admin/pagesAndMenu/containers/GenericBottomInfoSection';
 import useCustomPage from 'hooks/useCustomPage';
 import useLocalize from 'hooks/useLocalize';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { updateCustomPage } from 'services/customPages';
 import { isNilOrError } from 'utils/helperUtils';
-import GenericBottomInfoSection from 'containers/Admin/pagesAndMenu/containers/GenericBottomInfoSection';
 
 const BottomInfoSection = () => {
   const localize = useLocalize();
@@ -35,6 +35,7 @@ const BottomInfoSection = () => {
           linkTo: `/admin/pages-menu/pages/${customPageId}/content`,
         },
       ]}
+      linkToViewPage={`/pages/${customPage.attributes.slug}`}
     />
   );
 };
