@@ -56,7 +56,9 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
       ? null
       : Object.fromEntries(
           Object.keys(schema.properties).map((prop) => {
-            if (idea.attributes?.[prop]) {
+            if (prop === 'author_id') {
+              return ['author_id', idea.relationships?.author?.data?.id];
+            } else if (idea.attributes?.[prop]) {
               return [prop, idea.attributes?.[prop]];
             } else if (
               prop === 'topic_ids' &&
@@ -122,7 +124,6 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
     },
     [uiSchema]
   );
-
   return (
     <PageContainer overflow="hidden" id="e2e-idea-edit-page">
       {!isNilOrError(project) && !isNilOrError(idea) && schema && uiSchema ? (
