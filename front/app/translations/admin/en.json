@@ -463,6 +463,7 @@
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.error": "Couldn't save bottom info section",
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.messageSuccess": "Bottom info section saved",
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.pageTitle": "Bottom info section",
+  "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.saveAndEnableButton": "Save and enable bottom info section",
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.saveButton": "Save bottom info section",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.buttonSuccess": "Success",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.contentEditorTitle": "Content",
