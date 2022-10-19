@@ -4,7 +4,7 @@ import {
   HeaderImage,
   HeaderImageBackground,
   HeaderImageOverlay,
-} from 'components/LandingPageComponents/citizen/Layouts/FullWidthBannerLayout';
+} from 'components/LandingPageComponents/citizen/Layouts/FullWidthBannerLayoutStyles';
 import React from 'react';
 import { ICustomPageData } from 'services/customPages';
 import AdminCustomPageEditButton from './AdminCustomPageEditButton';
