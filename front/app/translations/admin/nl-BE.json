@@ -487,7 +487,6 @@
   "app.containers.Admin.PagesAndMenu.heroBannerMessageSuccess": "Hero-banner opgeslagen",
   "app.containers.Admin.PagesAndMenu.heroBannerSaveButton": "Hero-banner opslaan",
   "app.containers.Admin.PagesAndMenu.homeTitle": "Home",
-  "app.containers.Admin.PagesAndMenu.pageHeader": "Pagina's",
   "app.containers.Admin.PagesAndMenu.pagesMenuMetaTitle": "Pagina's en menu | {orgName}",
   "app.containers.Admin.PagesAndMenu.removeButton": "Verwijderen van navigatiebalk",
   "app.containers.Admin.PagesAndMenu.title": "Pagina's en menu",
