@@ -116,7 +116,7 @@ describe('Idea edit page', () => {
     );
   });
 
-  it('has a working idea edit form for admin fields', () => {
+  it('has a working idea edit form for author field', () => {
     cy.setAdminLoginCookie();
     // Visit idea edit page as Admin
     cy.visit(`/ideas/edit/${ideaId}`);
