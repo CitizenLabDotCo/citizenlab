@@ -123,7 +123,7 @@ const VerificationFormOostendeRrn = memo<Props & InjectedIntlProps>(
               get(error, 'json.errors.base[0].why') === 'lives_outside'
             ) {
               setFormError(
-                formatMessage(messages.notEntitledLivesOutsideFormError)
+                formatMessage(messages.notEntitledLivesOutsideFormError1)
               );
             } else if (get(error, 'json.errors.rrn[0].error') === 'invalid') {
               setRrnError(formatMessage(messages.invalidRrnError));
