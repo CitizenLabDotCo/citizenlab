@@ -49,19 +49,19 @@ module XlsxExport
     end
 
     def input_id_report_field
-      SpecialFieldForReport.new('id', column_header_for('input_id'))
+      ComputedFieldForReport.new('id', column_header_for('input_id'), ->(input) { input.id })
     end
 
     def author_name_report_field
-      SpecialFieldForReport.new('author_name', column_header_for('author_fullname'))
+      ComputedFieldForReport.new('author_name', column_header_for('author_fullname'), ->(input) { input.author_name })
     end
 
     def author_email_report_field
-      SpecialFieldForReport.new('email', column_header_for('author_email'), :author)
+      ComputedFieldForReport.new('email', column_header_for('author_email'), ->(input) { input.author.email })
     end
 
     def author_id_report_field
-      SpecialFieldForReport.new('id', column_header_for('author_id'), :author)
+      ComputedFieldForReport.new('id', column_header_for('author_id'), ->(input) { input.author_id })
     end
 
     def latitude_report_field
@@ -73,27 +73,27 @@ module XlsxExport
     end
 
     def created_at_report_field
-      SpecialFieldForReport.new('created_at', column_header_for('created_at'))
+      ComputedFieldForReport.new('created_at', column_header_for('created_at'), ->(input) { input.created_at })
     end
 
     def published_at_report_field
-      SpecialFieldForReport.new('published_at', column_header_for('published_at'))
+      ComputedFieldForReport.new('published_at', column_header_for('published_at'), ->(input) { input.published_at })
     end
 
     def comments_count_report_field
-      SpecialFieldForReport.new('comments_count', column_header_for('comments_count'))
+      ComputedFieldForReport.new('comments_count', column_header_for('comments_count'), ->(input) { input.comments_count })
     end
 
     def upvotes_count_report_field
-      SpecialFieldForReport.new('upvotes_count', column_header_for('upvotes_count'))
+      ComputedFieldForReport.new('upvotes_count', column_header_for('upvotes_count'), ->(input) { input.upvotes_count })
     end
 
     def downvotes_count_report_field
-      SpecialFieldForReport.new('downvotes_count', column_header_for('downvotes_count'))
+      ComputedFieldForReport.new('downvotes_count', column_header_for('downvotes_count'), ->(input) { input.downvotes_count })
     end
 
     def baskets_count_report_field
-      SpecialFieldForReport.new('baskets_count', column_header_for('baskets_count'))
+      ComputedFieldForReport.new('baskets_count', column_header_for('baskets_count'), ->(input) { input.baskets_count })
     end
 
     def input_url_report_field
@@ -121,11 +121,11 @@ module XlsxExport
     end
 
     def assignee_fullname_report_field
-      SpecialFieldForReport.new('full_name', column_header_for('assignee_fullname'), :assignee)
+      ComputedFieldForReport.new('full_name', column_header_for('assignee_fullname'), ->(input) { input.assignee.full_name })
     end
 
     def assignee_email_report_field
-      SpecialFieldForReport.new('email', column_header_for('assignee_email'), :assignee)
+      ComputedFieldForReport.new('email', column_header_for('assignee_email'), ->(input) { input.assignee.email })
     end
 
     def input_report_fields
@@ -191,8 +191,9 @@ module XlsxExport
     end
 
     def all_report_field_values_for(input)
+      utils = Utils.new
       all_report_fields.map do |field|
-        Utils.new.escape_formula field.value_from(input)
+        utils.escape_formula field.value_from(input)
       end
     end
 
