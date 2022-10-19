@@ -40,8 +40,8 @@ export default defineMessages({
     defaultMessage:
       'Your social security number has already been used to verify another account',
   },
-  notEntitledLivesOutsideFormError1: {
-    id: 'app.modules.id_oostende_rrn.notEntitledLivesOutsideFormError',
+  notEntitledLivesOutsideFormError: {
+    id: 'app.modules.id_oostende_rrn.notEntitledLivesOutsideFormError1',
     defaultMessage: "We can't verify you because you live outside of Oostende",
   },
   noMatchFormError: {
