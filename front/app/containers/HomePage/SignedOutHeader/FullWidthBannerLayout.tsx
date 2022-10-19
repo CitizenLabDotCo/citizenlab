@@ -4,7 +4,7 @@ import {
   HeaderImage,
   HeaderImageBackground,
   HeaderImageOverlay,
-} from 'components/LandingPages/citizen/Layouts/FullWidthBannerLayoutStyles';
+} from 'components/LandingPages/citizen/FullWidthBannerLayout';
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 // components
