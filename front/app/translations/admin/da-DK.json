@@ -487,7 +487,6 @@
   "app.containers.Admin.PagesAndMenu.heroBannerMessageSuccess": "Helte-banner gemt",
   "app.containers.Admin.PagesAndMenu.heroBannerSaveButton": "Gem heltebanner",
   "app.containers.Admin.PagesAndMenu.homeTitle": "Hjem",
-  "app.containers.Admin.PagesAndMenu.pageHeader": "Sider",
   "app.containers.Admin.PagesAndMenu.pagesMenuMetaTitle": "Sider og menu | {orgName}",
   "app.containers.Admin.PagesAndMenu.removeButton": "Fjern fra navigationslinjen",
   "app.containers.Admin.PagesAndMenu.title": "Sider og menu",
