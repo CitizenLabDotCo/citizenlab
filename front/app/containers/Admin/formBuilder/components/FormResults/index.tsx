@@ -111,8 +111,11 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           ) => {
             const inputTypeText = get(messages, inputType, '');
             const requiredOrOptionalText = required
-              ? formatMessage(messages.requiredField)
-              : formatMessage(messages.optionalField);
+              ? formatMessage(messages.required)
+              : formatMessage(messages.optional);
+            const inputTypeLabel = `${formatMessage(
+              inputTypeText
+            )} - ${requiredOrOptionalText.toLowerCase()}`;
 
             return (
               <Box
@@ -125,9 +128,7 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
                 </Title>
                 {inputTypeText && (
                   <Text variant="bodyS" color="textSecondary" mb="0">
-                    {`${formatMessage(
-                      inputTypeText
-                    )} - ${requiredOrOptionalText}`}
+                    {inputTypeLabel}
                   </Text>
                 )}
                 {answers.map(({ answer, responses }, index) => {
