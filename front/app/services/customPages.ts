@@ -91,6 +91,5 @@ export async function updateCustomPage(
     customPageId,
     { static_page: updatedPageSettings }
   );
-  await customPageByIdStream(customPageId).fetch();
   return customPageSettings;
 }
