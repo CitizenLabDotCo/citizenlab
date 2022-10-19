@@ -17,7 +17,6 @@ export interface Props {
   titleMessageDescriptor: MessageDescriptor;
   tooltipMessageDescriptor: MessageDescriptor;
   checked: boolean;
-  disabled: boolean;
   editLinkPath?: string;
   isLastItem: boolean;
   hideToggle?: boolean;
@@ -31,7 +30,6 @@ const SectionToggle = ({
   tooltipMessageDescriptor,
   editLinkPath,
   checked,
-  disabled,
   isLastItem,
   hideToggle = false,
   name,
@@ -54,7 +52,7 @@ const SectionToggle = ({
           <Toggle
             checked={checked}
             onChange={onChangeSectionToggle}
-            disabled={disabled}
+            disabled={false}
           />
         </Box>
         <Box>

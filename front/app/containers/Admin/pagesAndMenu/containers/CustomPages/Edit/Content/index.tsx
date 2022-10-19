@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 // components
 import PageWrapper from 'components/admin/PageWrapper';
@@ -37,8 +37,6 @@ export type TCustomPageSectionToggleData = {
 
 // types
 const CustomPagesEditContent = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  // to be typed
   const { customPageId } = useParams() as { customPageId: string };
   const customPage = useCustomPage(customPageId);
 
@@ -92,7 +90,6 @@ const CustomPagesEditContent = () => {
       if (isNilOrError(customPage)) {
         return;
       }
-      setIsLoading(true);
       try {
         await updateCustomPage(customPageId, {
           [sectionName]: !customPage.attributes[sectionName],
@@ -100,7 +97,6 @@ const CustomPagesEditContent = () => {
       } catch (error) {
         console.error(error);
       } finally {
-        setIsLoading(false);
       }
     };
 
@@ -139,7 +135,6 @@ const CustomPagesEditContent = () => {
                 editLinkPath={linkToPath}
                 titleMessageDescriptor={titleMessageDescriptor}
                 tooltipMessageDescriptor={tooltipMessageDescriptor}
-                disabled={isLoading}
                 isLastItem={index === sectionTogglesData.length - 1}
                 hideToggle={hideToggle}
               />
