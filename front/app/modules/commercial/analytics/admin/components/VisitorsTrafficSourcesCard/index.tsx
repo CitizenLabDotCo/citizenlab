@@ -59,6 +59,7 @@ const VisitorsTrafficSourcesCard = ({
   const [modalOpen, setModalOpen] = useState(false);
 
   const openModal = () => setModalOpen(true);
+  const closeModal = () => setModalOpen(false);
 
   const cardTitle = formatMessage(messages.visitorsTrafficSources);
 
@@ -120,7 +121,13 @@ const VisitorsTrafficSourcesCard = ({
         })}
       </Text>
 
-      {modalOpen && <TableModal />}
+      <TableModal
+        projectId={projectFilter}
+        startAtMoment={startAtMoment}
+        endAtMoment={endAtMoment}
+        open={modalOpen}
+        onClose={closeModal}
+      />
     </GraphCard>
   );
 };

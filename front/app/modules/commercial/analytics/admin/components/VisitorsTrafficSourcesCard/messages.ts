@@ -25,4 +25,8 @@ export default defineMessages({
     id: 'app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.referrerListButton',
     defaultMessage: 'click here',
   },
+  referrers: {
+    id: 'app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.referrers',
+    defaultMessage: 'Referrers',
+  },
 });
