@@ -101,7 +101,7 @@ export async function updateCustomPage(
 
 // exports from old pages.ts file
 
-export async function deletePage(pageId: string) {
+export async function deleteCustomPage(pageId: string) {
   const response = await streams.delete(
     `${customPagesEndpoint}/${pageId}`,
     pageId

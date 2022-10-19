@@ -5,7 +5,7 @@ import {
   reorderNavbarItem,
   removeNavbarItem,
 } from '../../../../services/navbar';
-import { deletePage } from 'services/staticPages';
+import { deleteCustomPage } from 'services/staticPages';
 import { getNavbarItemSlug, INavbarItem } from 'services/navbar';
 
 // components
@@ -73,7 +73,7 @@ const VisibleNavbarItemList = ({
     if (pageId === undefined) return;
 
     if (window.confirm(formatMessage(messages.deletePageConfirmationVisible))) {
-      deletePage(pageId);
+      deleteCustomPage(pageId);
     }
   };
 

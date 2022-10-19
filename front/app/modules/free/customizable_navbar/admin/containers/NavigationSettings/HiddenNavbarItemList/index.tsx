@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 // services
 import { getNavbarItemSlug } from 'services/navbar';
 import {
-  deletePage,
+  deleteCustomPage,
   FIXED_PAGES,
   ICustomPageData,
   TPageCode,
@@ -78,7 +78,7 @@ const HiddenNavbarItemList = ({
     if (pageId === undefined) return;
 
     if (window.confirm(formatMessage(messages.deletePageConfirmationHidden))) {
-      deletePage(pageId);
+      deleteCustomPage(pageId);
     }
   };
 

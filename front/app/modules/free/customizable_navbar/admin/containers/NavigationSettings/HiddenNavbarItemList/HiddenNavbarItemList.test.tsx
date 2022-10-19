@@ -3,7 +3,7 @@ import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 import HiddenNavbarItemList from '.';
 import allNavbarItems from 'hooks/fixtures/navbarItems';
 import { addNavbarItem } from '../../../../services/navbar';
-import { deletePage } from 'services/staticPages';
+import { deleteCustomPage } from 'services/staticPages';
 import { PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 import clHistory from 'utils/cl-router/history';
 
@@ -107,12 +107,12 @@ describe('<HiddenNavbarItemList />', () => {
     const deleteButtons = screen.getAllByText('Delete');
 
     fireEvent.click(deleteButtons[0]);
-    expect(deletePage).toHaveBeenCalledWith(
+    expect(deleteCustomPage).toHaveBeenCalledWith(
       '793d56cc-c8b3-4422-b393-972b71f82aa2'
     );
 
     fireEvent.click(deleteButtons[1]);
-    expect(deletePage).toHaveBeenCalledWith(
+    expect(deleteCustomPage).toHaveBeenCalledWith(
       'e7854e94-3074-4607-b66e-0422aa3d8359'
     );
   });
