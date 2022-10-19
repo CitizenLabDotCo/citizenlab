@@ -6,6 +6,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import SectionFormWrapper from '../../components/SectionFormWrapper';
 import { TBreadcrumbs } from 'components/UI/Breadcrumbs';
 import Button from 'components/UI/Button';
+import ShownOnPageBadge from '../../components/ShownOnPageBadge';
 
 // form
 import { useForm, FormProvider } from 'react-hook-form';
@@ -36,7 +37,11 @@ import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 interface Props {
   pageData: IHomepageSettingsData | ICustomPageData;
+  shownOnPage?: boolean;
   updatePage: (data: { top_info_section_multiloc: Multiloc }) => Promise<any>;
+  updateAndEnablePage?: (data: {
+    top_info_section_multiloc: Multiloc;
+  }) => Promise<any>;
   breadcrumbs: TBreadcrumbs;
 }
 
@@ -47,6 +52,8 @@ interface FormValues {
 const GenericTopInfoSection = ({
   pageData,
   updatePage,
+  shownOnPage,
+  updateAndEnablePage,
   breadcrumbs,
   intl: { formatMessage },
 }: InjectedIntlProps & Props) => {
@@ -55,6 +62,16 @@ const GenericTopInfoSection = ({
   const onFormSubmit = async (formValues: FormValues) => {
     try {
       await updatePage(formValues);
+    } catch (error) {
+      handleHookFormSubmissionError(error, methods.setError);
+    }
+  };
+
+  const onFormSubmitAndEnable = async (formValues: FormValues) => {
+    if (!updateAndEnablePage) return;
+
+    try {
+      await updateAndEnablePage(formValues);
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);
     }
@@ -80,6 +97,13 @@ const GenericTopInfoSection = ({
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onFormSubmit)}>
           <SectionFormWrapper
+            badge={
+              shownOnPage ? (
+                <ShownOnPageBadge shownOnPage />
+              ) : (
+                <ShownOnPageBadge shownOnPage={false} />
+              )
+            }
             breadcrumbs={[
               {
                 label: formatMessage(pagesAndMenuBreadcrumb.label),
@@ -108,6 +132,18 @@ const GenericTopInfoSection = ({
               >
                 {formatMessage(messages.topInfoSaveButton)}
               </Button>
+              {/* only show save + enable button if a handler is passed down for that */}
+              {updateAndEnablePage && (
+                <Button
+                  ml="30px"
+                  type="button"
+                  buttonStyle="primary-outlined"
+                  onClick={methods.handleSubmit(onFormSubmitAndEnable)}
+                  processing={methods.formState.isSubmitting}
+                >
+                  {formatMessage(messages.topInfoSaveAndEnableButton)}
+                </Button>
+              )}
             </Box>
           </SectionFormWrapper>
         </form>

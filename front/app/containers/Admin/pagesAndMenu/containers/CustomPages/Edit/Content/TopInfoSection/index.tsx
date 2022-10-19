@@ -14,10 +14,23 @@ const TopInfoSection = () => {
     return null;
   }
 
+  const updateAndEnableCustomPage = (customPageId, data) => {
+    return updateCustomPage(customPageId, {
+      ...data,
+      top_info_section_enabled: true,
+    });
+  };
+
   return (
     <GenericTopInfoSection
+      shownOnPage={customPage.attributes.top_info_section_enabled}
       pageData={customPage}
       updatePage={(data) => updateCustomPage(customPageId, data)}
+      updateAndEnablePage={
+        customPage.attributes.top_info_section_enabled
+          ? undefined // matches the type for an optional parameter
+          : (data) => updateAndEnableCustomPage(customPageId, data)
+      }
       breadcrumbs={[
         {
           label: localize(customPage.attributes.title_multiloc),

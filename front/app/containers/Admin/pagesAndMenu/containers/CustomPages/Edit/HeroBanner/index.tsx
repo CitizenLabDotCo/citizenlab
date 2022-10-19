@@ -10,9 +10,8 @@ import CTAButtonFields from 'containers/Admin/pagesAndMenu/containers/CustomPage
 import BannerHeaderFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerHeaderFields';
 import BannerImageFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerImageFields';
 import LayoutSettingField from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/LayoutSettingField';
-import { StatusLabel, colors } from '@citizenlab/cl2-component-library';
 import GenericHeroBannerForm from '../../../GenericHeroBannerForm';
-import styled from 'styled-components';
+import ShownOnPageBadge from 'containers/Admin/pagesAndMenu/components/ShownOnPageBadge';
 
 // utils
 import { PAGES_MENU_CUSTOM_PATH } from 'containers/Admin/pagesAndMenu/routes';
@@ -33,7 +32,7 @@ import {
 import messages from '../../../GenericHeroBannerForm/messages';
 import HelmetIntl from 'components/HelmetIntl';
 import useLocalize from 'hooks/useLocalize';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 
 export type CustomPageBannerSettingKeyType = Extract<
   keyof ICustomPageAttributes,
@@ -41,10 +40,6 @@ export type CustomPageBannerSettingKeyType = Extract<
   | 'banner_cta_button_url'
   | 'banner_cta_button_type'
 >;
-
-const StyledStatusLabel = styled(StatusLabel)`
-  height: 20px;
-`;
 
 const EditCustomPageHeroBannerForm = ({
   intl: { formatMessage },
@@ -201,23 +196,9 @@ const EditCustomPageHeroBannerForm = ({
           }
           badge={
             localSettings.banner_enabled ? (
-              <StyledStatusLabel
-                text={
-                  <span style={{ color: colors.success }}>
-                    <FormattedMessage {...messages.heroBannerShown} />
-                  </span>
-                }
-                backgroundColor={colors.successLight}
-              />
+              <ShownOnPageBadge shownOnPage />
             ) : (
-              <StyledStatusLabel
-                text={
-                  <span style={{ color: colors.error }}>
-                    <FormattedMessage {...messages.heroBannerNotShown} />
-                  </span>
-                }
-                backgroundColor={colors.red100}
-              />
+              <ShownOnPageBadge shownOnPage={false} />
             )
           }
           formStatus={formStatus}
