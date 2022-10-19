@@ -31,17 +31,23 @@ const DraggableElement = styled.div`
 
 interface FormBuilderToolboxProps {
   onAddField: (field: IFlatCreateCustomField) => void;
+  isEditingDisabled: boolean;
 }
 
 const FormBuilderToolbox = ({
   intl: { formatMessage },
   onAddField,
+  isEditingDisabled,
 }: FormBuilderToolboxProps & InjectedIntlProps) => {
   const locale = useLocale();
 
   if (isNilOrError(locale)) return null;
 
   const addField = (inputType: ICustomFieldInputType) => {
+    if (isEditingDisabled) {
+      return;
+    }
+
     onAddField({
       id: `${Math.floor(Date.now() * Math.random())}`,
       isLocalOnly: true,

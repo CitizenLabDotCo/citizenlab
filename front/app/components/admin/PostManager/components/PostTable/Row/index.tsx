@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import { ManagerType, TFilterMenu } from '../..';
+import { ManagerType, TFilterMenu } from '../../..';
 
 // services
 import { IIdeaData } from 'services/ideas';
@@ -10,19 +10,11 @@ import { IInitiativeStatusData } from 'services/initiativeStatuses';
 
 // style
 import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
 
 // lazy-loaded components
 const IdeaRow = lazy(() => import('./IdeaRow'));
 const InitiativeRow = lazy(() => import('./InitiativeRow'));
-
-export const StyledRow = styled.tr<{ undraggable: boolean }>`
-  height: 5.7rem !important;
-  cursor: ${({ undraggable }) => (undraggable ? 'pointer' : 'move')};
-`;
-
-export const FilterCell = styled.td`
-  border-top: none !important;
-`;
 
 export const TitleLink = styled.a`
   display: block;
@@ -38,7 +30,7 @@ export const TitleLink = styled.a`
   overflow: hidden;
   text-overflow: ellipsis;
   cursor: pointer;
-  color: black;
+  color: ${colors.primary};
   &:hover,
   &:focus {
     text-decoration: underline;

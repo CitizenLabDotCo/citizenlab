@@ -70,6 +70,10 @@ class ProjectPolicy < ApplicationPolicy
     survey_results?
   end
 
+  def delete_inputs?
+    record.continuous? && active_moderator?
+  end
+
   def create?
     active? && admin?
   end
