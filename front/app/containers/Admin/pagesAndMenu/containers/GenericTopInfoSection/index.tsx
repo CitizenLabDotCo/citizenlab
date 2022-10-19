@@ -138,7 +138,6 @@ const GenericTopInfoSection = ({
               >
                 {formatMessage(messages.topInfoSaveButton)}
               </Button>
-              {/* only show save + enable button if a handler is passed down for that */}
               {!pageData.attributes.top_info_section_enabled && (
                 <Button
                   ml="30px"
