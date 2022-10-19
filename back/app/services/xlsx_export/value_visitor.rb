@@ -10,11 +10,11 @@ module XlsxExport
     end
 
     def visit_special_field_for_report(field)
-      escape_formula value_for(field)
+      value_for(field)
     end
 
     def visit_text(field)
-      escape_formula value_for(field)
+      value_for(field)
     end
 
     def visit_number(field)
@@ -30,7 +30,7 @@ module XlsxExport
     end
 
     def visit_text_multiloc(field)
-      escape_formula MultilocService.new.t(value_for(field))
+      MultilocService.new.t(value_for(field))
     end
 
     def visit_multiline_text_multiloc(field)
@@ -39,7 +39,7 @@ module XlsxExport
 
     def visit_html_multiloc(field)
       translation = MultilocService.new.t(value_for(field))
-      escape_formula convert_to_text_long_lines(translation)
+      convert_to_text_long_lines(translation)
     end
 
     def visit_select(field)
@@ -48,10 +48,10 @@ module XlsxExport
 
       if field.code == 'domicile'
         areas = Area.all.index_by(&:id)
-        escape_formula MultilocService.new.t(areas[option_value]&.title_multiloc)
+        MultilocService.new.t(areas[option_value]&.title_multiloc)
       else
         option_title = options_for(field)[option_value].title_multiloc
-        escape_formula MultilocService.new.t(option_title)
+        MultilocService.new.t(option_title)
       end
     end
 
@@ -64,7 +64,7 @@ module XlsxExport
           option_title = options_for(field)[option_value].title_multiloc
           MultilocService.new.t option_title
         end
-        escape_formula option_titles.join(VALUE_SEPARATOR)
+        option_titles.join(VALUE_SEPARATOR)
       end
     end
 
@@ -106,7 +106,7 @@ module XlsxExport
       topic_titles = model.topics.map do |topic|
         MultilocService.new.t(topic.title_multiloc)
       end
-      escape_formula topic_titles.join(VALUE_SEPARATOR)
+      topic_titles.join(VALUE_SEPARATOR)
     end
 
     def built_in_files
@@ -126,17 +126,6 @@ module XlsxExport
     def options_for(field)
       @options ||= {}
       @options[field] ||= field.options.index_by(&:key)
-    end
-
-    def escape_formula(text)
-      return unless text
-
-      # After https://docs.servicenow.com/bundle/orlando-platform-administration/page/administer/security/reference/escape-excel-formula.html and http://rorsecurity.info/portfolio/excel-injection-via-rails-downloads
-      if '=+-@'.include?(text.first) && !text.empty?
-        "'#{text}"
-      else
-        text
-      end
     end
 
     def convert_to_text_long_lines(html)

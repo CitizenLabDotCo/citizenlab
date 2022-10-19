@@ -13,7 +13,7 @@ module XlsxExport
     end
 
     def generate_sheet(workbook, sheetname)
-      sheetname = sanitize_sheetname sheetname
+      sheetname = Utils.new.sanitize_sheetname sheetname
       workbook.styles do |styles|
         column_header = styles.add_style(b: true, alignment: { horizontal: :center, vertical: :top, wrap_text: true })
         date_time = styles.add_style(format_code: 'mm/dd/yyyy hh:mm:ss')
@@ -192,7 +192,7 @@ module XlsxExport
 
     def all_report_field_values_for(input)
       all_report_fields.map do |field|
-        field.value_from input
+        Utils.new.escape_formula field.value_from(input)
       end
     end
 
@@ -202,28 +202,6 @@ module XlsxExport
 
     def column_header_for(translation_key)
       I18n.t translation_key, scope: 'xlsx_export.column_headers'
-    end
-
-    # Sanitize sheet names to comply with Excel naming restrictions.
-    # See: https://support.microsoft.com/en-us/office/rename-a-worksheet-3f1f7148-ee83-404d-8ef0-9ff99fbad1f9
-    def sanitize_sheetname(sheetname)
-      invalid_chars = '?*:[]/\\'
-      sanitized_name = sheetname.tr(invalid_chars, '')
-      sanitized_name = strip_char(sanitized_name, "'")
-      sanitized_name = sanitized_name[0..30]
-
-      if sanitized_name.empty? || sanitized_name == 'History'
-        raise InvalidSheetnameError.new(sheetname, sanitized_name)
-      end
-
-      sanitized_name
-    end
-
-    # Return a copy of the string with the leading and trailing +char+ removed.
-    # @param [String] string
-    # @param [String] char a single character
-    def strip_char(string, char)
-      string.gsub(/^#{char}+|#{char}+$/, '')
     end
   end
 end
