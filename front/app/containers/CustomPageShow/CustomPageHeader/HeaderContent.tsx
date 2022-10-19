@@ -5,7 +5,7 @@ import {
   HeaderSubtitle,
   HeaderTitle,
   TAlign,
-} from 'containers/HomePage/SignedOutHeader/HeaderContent';
+} from 'components/LandingPages/citizen/HeaderContent';
 import useLocalize from 'hooks/useLocalize';
 import React from 'react';
 import { InjectedIntlProps } from 'react-intl';
