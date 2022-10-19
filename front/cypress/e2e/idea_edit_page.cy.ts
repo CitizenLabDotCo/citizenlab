@@ -116,6 +116,20 @@ describe('Idea edit page', () => {
     );
   });
 
+  it('has a working idea edit form for author field', () => {
+    cy.setAdminLoginCookie();
+    // Visit idea edit page as Admin
+    cy.visit(`/ideas/edit/${ideaId}`);
+    // Search and select an author
+    cy.get('#e2e-user-select').click().type(`${lastName}, ${firstName}{enter}`);
+    // Save
+    cy.get('form').submit();
+    // Reload idea edit page
+    cy.visit(`/ideas/edit/${ideaId}`);
+    // Check that author field has correct value
+    cy.contains(`${lastName}, ${firstName}`).should('exist');
+  });
+
   after(() => {
     cy.apiRemoveIdea(ideaId);
   });
