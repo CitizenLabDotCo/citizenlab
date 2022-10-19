@@ -4,7 +4,7 @@ import { orderBy } from 'lodash-es';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
 import messages from 'containers/Admin/dashboard/messages';
 
@@ -35,7 +35,9 @@ export const fallbackMessages = {
   outside: messages.otherArea,
 };
 
-const AreaChart = (props: Props & InjectedIntlProps & InjectedLocalized) => {
+const AreaChart = (
+  props: Props & WrappedComponentProps & InjectedLocalized
+) => {
   const {
     intl: { formatMessage },
     localize,
@@ -69,8 +71,8 @@ const AreaChart = (props: Props & InjectedIntlProps & InjectedLocalized) => {
   );
 };
 
-const WrappedAreaChart = injectIntl<Props>(
-  localize<Props & InjectedIntlProps>(AreaChart)
+const WrappedAreaChart = injectIntl(
+  localize<Props & WrappedComponentProps>(AreaChart)
 );
 
 export default WrappedAreaChart;

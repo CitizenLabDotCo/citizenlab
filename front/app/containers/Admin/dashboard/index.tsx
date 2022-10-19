@@ -15,7 +15,7 @@ import { isAdmin, isProjectModerator } from 'services/permissions/roles';
 
 // i18n
 import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
 // utils
@@ -25,9 +25,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import { InsertConfigurationOptions, ITab } from 'typings';
 
 export const DashboardsPage = memo(
-  ({ intl: { formatMessage } }: InjectedIntlProps) => {
+  ({ intl: { formatMessage } }: WrappedComponentProps) => {
     const authUser = useAuthUser();
-
     const [tabs, setTabs] = useState<ITab[]>([
       {
         label: formatMessage(messages.tabOverview),

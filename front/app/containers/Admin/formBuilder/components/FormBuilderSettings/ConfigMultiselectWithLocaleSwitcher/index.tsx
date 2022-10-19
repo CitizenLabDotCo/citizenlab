@@ -22,7 +22,7 @@ import Error, { TFieldName } from 'components/UI/Error';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // Typings
@@ -46,7 +46,7 @@ const ConfigMultiselectWithLocaleSwitcher = ({
   locales,
   intl: { formatMessage },
   allowDeletingAllOptions = false,
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const {
     control,
     formState: { errors: formContextErrors },
@@ -122,7 +122,12 @@ const ConfigMultiselectWithLocaleSwitcher = ({
                 }}
               >
                 <SectionField>
-                  <Box display="flex" flexWrap="wrap" marginBottom="12px">
+                  <Box
+                    display="flex"
+                    flexWrap="wrap"
+                    justifyContent="space-between"
+                    marginBottom="12px"
+                  >
                     <Box marginTop="4px" marginRight="8px">
                       <Label>{formatMessage(messages.fieldLabel)}</Label>
                     </Box>
@@ -150,7 +155,7 @@ const ConfigMultiselectWithLocaleSwitcher = ({
                                 // Do nothing, no need to handle dropping a row for now
                               }}
                             >
-                              <Box width="280px">
+                              <Box width="100%">
                                 <Input
                                   id={`e2e-option-input-${index}`}
                                   size="small"

@@ -55,13 +55,13 @@ export default defineMessages({
     id: 'app.components.pageForm.takenSlugError',
     defaultMessage: 'This slug is already taken. Choose a different one.',
   },
-  blankTitleError: {
-    id: 'app.components.PagesForm.blankTitleError',
-    defaultMessage: 'Provide title for all languages',
+  titleMissingOneLanguageError: {
+    id: 'app.components.PagesForm.titleMissingOneLanguageError',
+    defaultMessage: 'Provide title for at least one language',
   },
-  blankDescriptionError: {
-    id: 'app.components.PagesForm.blankDescriptionError',
-    defaultMessage: 'Provide content for all languages',
+  descriptionMissingOneLanguageError: {
+    id: 'app.components.PagesForm.descriptionMissingOneLanguageError',
+    defaultMessage: 'Provide content for at least one language',
   },
   savePage: {
     id: 'app.components.PagesForm.savePage',

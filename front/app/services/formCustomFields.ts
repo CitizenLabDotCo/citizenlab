@@ -146,6 +146,7 @@ export interface Result {
   question: Multiloc;
   totalResponses: number;
   answers: Answer[];
+  required: boolean;
 }
 
 export interface SurveyResultData {
@@ -173,7 +174,7 @@ export function formCustomFieldsResultsStream(
 }
 
 export interface IFormSubmissionCountData {
-  totalSubmissions: string;
+  totalSubmissions: number;
 }
 
 export interface IFormSubmissionCount {
