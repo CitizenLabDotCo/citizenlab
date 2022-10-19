@@ -9,7 +9,7 @@ module IdeaCustomFields
     attr_reader :errors
   end
 
-  class UpdatingSurveyWithResponsesError < StandardError; end
+  class UpdatingFormWithInputError < StandardError; end
 
   class WebApi::V1::Admin::IdeaCustomFieldsController < ApplicationController
     CONSTANTIZER = {
@@ -27,7 +27,7 @@ module IdeaCustomFields
     before_action :set_custom_field, only: %i[show update]
     before_action :set_custom_form, only: %i[index update_all]
     skip_after_action :verify_policy_scoped
-    rescue_from UpdatingSurveyWithResponsesError, with: :render_updating_survey_with_responses_error
+    rescue_from UpdatingFormWithInputError, with: :render_updating_form_with_input_error
 
     def index
       authorize CustomField.new(resource: @custom_form), :index?, policy_class: IdeaCustomFieldPolicy
@@ -248,11 +248,11 @@ module IdeaCustomFields
     def verify_no_responses(participation_method)
       return if participation_method.edit_custom_form_allowed?
 
-      raise UpdatingSurveyWithResponsesError
+      raise UpdatingFormWithInputError
     end
 
-    def render_updating_survey_with_responses_error
-      render json: { error: :updating_survey_with_responses }, status: :unauthorized
+    def render_updating_form_with_input_error
+      render json: { error: :updating_form_with_input }, status: :unauthorized
     end
   end
 end
