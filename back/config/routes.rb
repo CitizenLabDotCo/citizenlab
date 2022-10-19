@@ -125,6 +125,7 @@ Rails.application.routes.draw do
         get 'survey_results', on: :member
         get :as_xlsx, on: :member, action: 'index_xlsx'
         get 'submission_count', on: :member
+        delete 'inputs', on: :member, action: 'delete_inputs'
         resources :custom_fields, controller: 'phase_custom_fields', only: %i[] do
           get 'schema', on: :collection
           get 'json_forms_schema', on: :collection
@@ -148,6 +149,7 @@ Rails.application.routes.draw do
         get 'survey_results', on: :member
         get 'submission_count', on: :member
         get :as_xlsx, on: :member, action: 'index_xlsx'
+        delete 'inputs', on: :member, action: 'delete_inputs'
       end
 
       resources :projects_allowed_input_topics, only: %i[show create destroy] do

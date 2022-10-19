@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
-class WebApi::V1::ProjectsController < ::ApplicationController
-  before_action :set_project, only: %i[show update reorder destroy survey_results submission_count index_xlsx]
+
+class WebApi::V1::ProjectsController < ApplicationController
+  before_action :set_project, only: %i[show update reorder destroy survey_results submission_count index_xlsx delete_inputs]
+
   skip_before_action :authenticate_user
   skip_after_action :verify_policy_scoped, only: :index
 
@@ -63,10 +65,10 @@ class WebApi::V1::ProjectsController < ::ApplicationController
   def create
     project_params = permitted_attributes(Project)
     @project = Project.new(project_params)
-    SideFxProjectService.new.before_create(@project, current_user)
+    sidefx.before_create(@project, current_user)
 
     if save_project
-      SideFxProjectService.new.after_create(@project, current_user)
+      sidefx.after_create(@project, current_user)
       render json: WebApi::V1::ProjectSerializer.new(
         @project,
         params: fastjson_params,
@@ -78,8 +80,6 @@ class WebApi::V1::ProjectsController < ::ApplicationController
   end
 
   def update
-    sidefx = SideFxProjectService.new
-
     params[:project][:area_ids] ||= [] if params[:project].key?(:area_ids)
     params[:project][:topic_ids] ||= [] if params[:project].key?(:topic_ids)
 
@@ -103,9 +103,9 @@ class WebApi::V1::ProjectsController < ::ApplicationController
   end
 
   def destroy
-    SideFxProjectService.new.before_destroy(@project, current_user)
+    sidefx.before_destroy(@project, current_user)
     if @project.destroy
-      SideFxProjectService.new.after_destroy(@project, current_user)
+      sidefx.after_destroy(@project, current_user)
       head :ok
     else
       head :internal_server_error
@@ -130,7 +130,20 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     end
   end
 
+  def delete_inputs
+    sidefx.before_delete_inputs @project, current_user
+    ActiveRecord::Base.transaction do
+      @project.ideas.each(&:destroy!)
+    end
+    sidefx.after_delete_inputs @project, current_user
+    head :ok
+  end
+
   private
+
+  def sidefx
+    @sidefx ||= SideFxProjectService.new
+  end
 
   def save_project
     ActiveRecord::Base.transaction do

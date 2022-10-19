@@ -202,7 +202,7 @@ export const downloadSurveyResults = async (
 };
 
 export interface IFormSubmissionCountData {
-  totalSubmissions: string;
+  totalSubmissions: number;
 }
 
 export interface IFormSubmissionCount {

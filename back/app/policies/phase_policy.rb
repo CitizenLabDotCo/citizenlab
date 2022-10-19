@@ -42,4 +42,10 @@ class PhasePolicy < ApplicationPolicy
   def index_xlsx?
     survey_results?
   end
+
+  def delete_inputs?
+    return false unless active?
+
+    UserRoleService.new.can_moderate_project? record.project, user
+  end
 end

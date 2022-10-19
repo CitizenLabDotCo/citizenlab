@@ -936,6 +936,23 @@ resource 'Projects' do
         end
       end
     end
+
+    delete 'web_api/v1/projects/:id/inputs' do
+      let(:project) { create :continuous_project }
+      let(:id) { project.id }
+
+      example 'Delete all inputs of a project' do
+        create_list :idea, 2, project: project
+        create :idea
+        expect_any_instance_of(SideFxProjectService).to receive(:after_delete_inputs)
+
+        do_request
+        assert_status 200
+        expect(Project.find(id)).to eq project
+        expect(project.reload.ideas_count).to eq 0
+        expect(Idea.count).to eq 1
+      end
+    end
   end
 
   get 'web_api/v1/projects' do
@@ -992,7 +1009,7 @@ resource 'Projects' do
         expect(json_response[:data].size).to eq 1
       end
 
-      example 'Normal users cannot moderate any projects', document: false, skip: !CitizenLab.ee? do
+      example 'Residents cannot moderate any projects', document: false, skip: !CitizenLab.ee? do
         %w[published published draft published archived published archived]
           .map { |ps| create(:project, admin_publication_attributes: { publication_status: ps }) }
         do_request(filter_can_moderate: true, publication_statuses: AdminPublication::PUBLICATION_STATUSES)
@@ -1038,6 +1055,18 @@ resource 'Projects' do
         do_request
         assert_status 200
         expect(json_response[:data].size).to eq 0
+      end
+    end
+
+    delete 'web_api/v1/projects/:id/inputs' do
+      let(:project) { create :continuous_project }
+      let(:id) { project.id }
+
+      example '[error] Delete all inputs of a project' do
+        create :idea, project: project
+
+        do_request
+        assert_status 401
       end
     end
   end

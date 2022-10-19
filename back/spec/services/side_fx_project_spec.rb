@@ -76,4 +76,16 @@ describe SideFxProjectService do
       end
     end
   end
+
+  describe 'after_delete_inputs' do
+    it 'logs "inputs_deleted" activity' do
+      expect(LogActivityJob).to receive(:perform_later).with(
+        project,
+        'inputs_deleted',
+        user,
+        anything
+      )
+      service.after_delete_inputs project, user
+    end
+  end
 end

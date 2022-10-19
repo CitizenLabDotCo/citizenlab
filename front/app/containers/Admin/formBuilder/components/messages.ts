@@ -65,13 +65,21 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.questionTitle',
     defaultMessage: 'Question title',
   },
-  questionDescription: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.questionDescription',
-    defaultMessage: 'Question description',
+  questionDescriptionOptional: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.questionDescriptionOptional',
+    defaultMessage: 'Question description (optional)',
   },
   required: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.required',
     defaultMessage: 'Required',
+  },
+  optional: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.optional',
+    defaultMessage: 'Optional',
+  },
+  requiredToggleLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.requiredToggleLabel',
+    defaultMessage: 'Make answering this question required',
   },
   deleteButtonLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.deleteButtonLabel',
@@ -93,9 +101,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.viewSurveyText',
     defaultMessage: 'View survey',
   },
-  openForSubmissions: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.openForSubmissions',
-    defaultMessage: 'Open for submissions',
+  openForResponses: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.openForResponses',
+    defaultMessage: 'Open for responses',
   },
   surveyResults: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.surveyResults',
@@ -125,6 +133,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.totalSurveyResponses',
     defaultMessage: 'Total {count} responses',
   },
+  noSurveyResponses: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.noSurveyResponses',
+    defaultMessage: 'No survey responses yet',
+  },
   downloadResults: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.downloadResults',
     defaultMessage: 'Download survey results',
@@ -145,5 +157,18 @@ export default defineMessages({
   linear_scale: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.linear_scale',
     defaultMessage: 'Linear scale',
+  },
+  disabledSurveyEditingMessage: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.disabledSurveyEditingMessage',
+    defaultMessage:
+      "Survey content can't be edited as survey results have started coming in.",
+  },
+  deleteResults: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.deleteResults',
+    defaultMessage: 'Delete the results',
+  },
+  deleteResultsCondition: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.deleteResultsCondition',
+    defaultMessage: 'if you need to make changes.',
   },
 });
