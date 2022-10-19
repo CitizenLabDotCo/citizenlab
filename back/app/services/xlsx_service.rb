@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class XlsxService
-
   # Converts this hash array:
   #   [{'name' => 'Ron', 'size' => 'xl'), {'name' => 'John', 'age' => 35}]
   # into this xlsx:

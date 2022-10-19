@@ -2,7 +2,6 @@
 
 module XlsxExport
   class ValueVisitor < FieldVisitorService
-
     def initialize(model)
       super()
       @model = model
