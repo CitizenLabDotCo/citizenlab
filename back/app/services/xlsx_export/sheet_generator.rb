@@ -49,56 +49,55 @@ module XlsxExport
     end
 
     def input_id_report_field
-      ComputedFieldForReport.new('id', column_header_for('input_id'), ->(input) { input.id })
+      ComputedFieldForReport.new(column_header_for('input_id'), ->(input) { input.id })
     end
 
     def author_name_report_field
-      ComputedFieldForReport.new('author_name', column_header_for('author_fullname'), ->(input) { input.author_name })
+      ComputedFieldForReport.new(column_header_for('author_fullname'), ->(input) { input.author_name })
     end
 
     def author_email_report_field
-      ComputedFieldForReport.new('email', column_header_for('author_email'), ->(input) { input.author.email })
+      ComputedFieldForReport.new(column_header_for('author_email'), ->(input) { input.author.email })
     end
 
     def author_id_report_field
-      ComputedFieldForReport.new('id', column_header_for('author_id'), ->(input) { input.author_id })
+      ComputedFieldForReport.new(column_header_for('author_id'), ->(input) { input.author_id })
     end
 
     def latitude_report_field
-      ComputedFieldForReport.new('latitude', column_header_for('latitude'), ->(input) { input.location_point&.coordinates&.last })
+      ComputedFieldForReport.new(column_header_for('latitude'), ->(input) { input.location_point&.coordinates&.last })
     end
 
     def longitude_report_field
-      ComputedFieldForReport.new('longitude', column_header_for('longitude'), ->(input) { input.location_point&.coordinates&.first })
+      ComputedFieldForReport.new(column_header_for('longitude'), ->(input) { input.location_point&.coordinates&.first })
     end
 
     def created_at_report_field
-      ComputedFieldForReport.new('created_at', column_header_for('created_at'), ->(input) { input.created_at })
+      ComputedFieldForReport.new(column_header_for('created_at'), ->(input) { input.created_at })
     end
 
     def published_at_report_field
-      ComputedFieldForReport.new('published_at', column_header_for('published_at'), ->(input) { input.published_at })
+      ComputedFieldForReport.new(column_header_for('published_at'), ->(input) { input.published_at })
     end
 
     def comments_count_report_field
-      ComputedFieldForReport.new('comments_count', column_header_for('comments_count'), ->(input) { input.comments_count })
+      ComputedFieldForReport.new(column_header_for('comments_count'), ->(input) { input.comments_count })
     end
 
     def upvotes_count_report_field
-      ComputedFieldForReport.new('upvotes_count', column_header_for('upvotes_count'), ->(input) { input.upvotes_count })
+      ComputedFieldForReport.new(column_header_for('upvotes_count'), ->(input) { input.upvotes_count })
     end
 
     def downvotes_count_report_field
-      ComputedFieldForReport.new('downvotes_count', column_header_for('downvotes_count'), ->(input) { input.downvotes_count })
+      ComputedFieldForReport.new(column_header_for('downvotes_count'), ->(input) { input.downvotes_count })
     end
 
     def baskets_count_report_field
-      ComputedFieldForReport.new('baskets_count', column_header_for('baskets_count'), ->(input) { input.baskets_count })
+      ComputedFieldForReport.new(column_header_for('baskets_count'), ->(input) { input.baskets_count })
     end
 
     def input_url_report_field
       ComputedFieldForReport.new(
-        'url',
         column_header_for('input_url'),
         ->(input) { Frontend::UrlService.new.model_to_url(input) }
       )
@@ -106,7 +105,6 @@ module XlsxExport
 
     def project_report_field
       ComputedFieldForReport.new(
-        'project',
         column_header_for('project'),
         ->(input) { MultilocService.new.t(input.project.title_multiloc) }
       )
@@ -114,18 +112,17 @@ module XlsxExport
 
     def status_report_field
       ComputedFieldForReport.new(
-        'status',
         column_header_for('status'),
         ->(input) { MultilocService.new.t(input.idea_status&.title_multiloc) }
       )
     end
 
     def assignee_fullname_report_field
-      ComputedFieldForReport.new('full_name', column_header_for('assignee_fullname'), ->(input) { input.assignee.full_name })
+      ComputedFieldForReport.new(column_header_for('assignee_fullname'), ->(input) { input.assignee.full_name })
     end
 
     def assignee_email_report_field
-      ComputedFieldForReport.new('email', column_header_for('assignee_email'), ->(input) { input.assignee.email })
+      ComputedFieldForReport.new(column_header_for('assignee_email'), ->(input) { input.assignee.email })
     end
 
     def input_report_fields

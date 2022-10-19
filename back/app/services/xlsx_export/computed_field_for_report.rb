@@ -4,8 +4,7 @@ module XlsxExport
   class ComputedFieldForReport
     attr_reader :column_header
 
-    def initialize(key, column_header, proc)
-      @key = key
+    def initialize(column_header, proc)
       @column_header = column_header
       @proc = proc
     end
