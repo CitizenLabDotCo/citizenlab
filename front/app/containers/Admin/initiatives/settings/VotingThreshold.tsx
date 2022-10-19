@@ -10,7 +10,7 @@ import { StyledWarning } from '.';
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 interface Props {
   value: number;
@@ -21,7 +21,7 @@ const VotingThreshold = ({
   value,
   onChange,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const handleVotingTresholdOnChange = (value: string) => {
     onChange(parseInt(value, 10));
   };

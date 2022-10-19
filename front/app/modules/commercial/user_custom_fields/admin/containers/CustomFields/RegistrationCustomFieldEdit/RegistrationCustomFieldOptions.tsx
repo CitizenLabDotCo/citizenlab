@@ -27,13 +27,13 @@ import { ButtonWrapper } from 'components/admin/PageWrapper';
 // i18n
 import messages from '../messages';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 const RegistrationCustomFieldOptions = memo(
   ({
     intl: { formatMessage },
     params: { userCustomFieldId },
-  }: InjectedIntlProps & WithRouterProps) => {
+  }: WrappedComponentProps & WithRouterProps) => {
     const userCustomFieldOptions = useUserCustomFieldOptions(userCustomFieldId);
     const localize = useLocalize();
 

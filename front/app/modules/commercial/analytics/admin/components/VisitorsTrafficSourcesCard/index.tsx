@@ -13,7 +13,7 @@ import renderTooltip from './renderTooltip';
 // i18n
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // typings
 import { IResolution } from 'components/admin/ResolutionControl';
@@ -34,7 +34,7 @@ const VisitorsCard = ({
   projectFilter,
   resolution,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const graphRef = useRef();
   const { pieData, xlsxData } = useVisitorsTrafficSourcesData(formatMessage, {
     startAtMoment,

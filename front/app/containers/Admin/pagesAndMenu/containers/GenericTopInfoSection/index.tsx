@@ -15,7 +15,7 @@ import Feedback from 'components/HookForm/Feedback';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import HelmetIntl from 'components/HelmetIntl';
@@ -31,7 +31,7 @@ import { ICustomPageData } from 'services/customPages';
 import { IHomepageSettingsData } from 'services/homepageSettings';
 
 // utils
-import validateMultiloc from 'utils/yup/validateMultiloc';
+import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 interface Props {
@@ -49,7 +49,7 @@ const GenericTopInfoSection = ({
   updatePage,
   breadcrumbs,
   intl: { formatMessage },
-}: InjectedIntlProps & Props) => {
+}: WrappedComponentProps & Props) => {
   const theme: any = useTheme();
 
   const onFormSubmit = async (formValues: FormValues) => {
@@ -61,8 +61,8 @@ const GenericTopInfoSection = ({
   };
 
   const schema = object({
-    top_info_section_multiloc: validateMultiloc(
-      formatMessage(messages.blankDescriptionError)
+    top_info_section_multiloc: validateAtLeastOneLocale(
+      formatMessage(messages.missingOneLocaleError)
     ),
   });
 

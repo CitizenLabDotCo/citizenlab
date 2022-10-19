@@ -22,7 +22,7 @@ import usePhases from 'hooks/usePhases';
 // i18n
 import messages from 'containers/ProjectsShowPage/messages';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // style
 import styled from 'styled-components';
@@ -66,7 +66,7 @@ interface Props {
   className?: string;
 }
 
-const PhaseNavigation = memo<Props & InjectedIntlProps>(
+const PhaseNavigation = memo<Props & WrappedComponentProps>(
   ({ projectId, buttonStyle, className, intl: { formatMessage } }) => {
     const phases = usePhases(projectId);
 
