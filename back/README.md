@@ -332,7 +332,7 @@ Add it to the `Bullet.stacktrace_excludes = []` blacklist in `config/application
 
 We use [license_finder](https://github.com/pivotal/LicenseFinder) to check whether the licenses of our gems are compatible with our own. CI runs it for you.
 
-When you add a gem, you don't have to do anything if it comes with a license we previously approved. If it's a new license, you can use the license_finder CLI to approve the license, also for future dependencies.
+When you add a gem, you don't have to do anything if it comes with a license we previously approved. If it is a new license, you can use the license_finder CLI to approve the license, also for future dependencies.
 ```bash
 docker-compose run web license_finder permitted_licenses add "the license name"
 ```

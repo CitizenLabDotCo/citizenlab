@@ -4,16 +4,20 @@ import { isNilOrError } from 'utils/helperUtils';
 import { insertConfiguration } from 'utils/moduleUtils';
 
 // components
-import Table from 'components/UI/Table';
-import ModerationRow from './ModerationRow';
-import Pagination from 'components/Pagination';
-import Checkbox from 'components/UI/Checkbox';
 import {
+  Table,
+  Thead,
+  Tr,
+  Th,
+  Tbody,
   Icon,
   IconTooltip,
   Select,
   Error,
 } from '@citizenlab/cl2-component-library';
+import ModerationRow from './ModerationRow';
+import Pagination from 'components/Pagination';
+import Checkbox from 'components/UI/Checkbox';
 import Button from 'components/UI/Button';
 import Tabs, { ITabItem } from 'components/UI/Tabs';
 import { PageTitle } from 'components/admin/Section';
@@ -99,26 +103,6 @@ const StyledTabs = styled(Tabs)`
   margin-right: 20px;
 `;
 
-const StyledTable = styled(Table)`
-  th,
-  td {
-    text-align: left;
-    vertical-align: top;
-    padding-left: 0px;
-    padding-right: 20px;
-
-    &.checkbox {
-      width: 70px;
-      padding-left: 8px;
-    }
-
-    &.content {
-      width: 50%;
-      padding-right: 25px;
-    }
-  }
-`;
-
 const StyledCheckbox = styled(Checkbox)`
   margin-top: -3px;
 `;
@@ -183,6 +167,10 @@ const EmptyMessage = styled.div`
 const StyledSearchInput = styled(SearchInput)`
   margin-left: auto;
   width: 320px;
+`;
+
+const Uppercase = styled.span`
+  text-transform: uppercase;
 `;
 
 interface Props {
@@ -529,10 +517,10 @@ const Moderation = memo<Props & WrappedComponentProps>(
             </ActionBarBottom>
           </ActionBar>
 
-          <StyledTable>
-            <thead>
-              <tr>
-                <th className="checkbox">
+          <Table innerBorders={{ bodyRows: true }}>
+            <Thead>
+              <Tr>
+                <Th className="checkbox">
                   <StyledCheckbox
                     checked={
                       moderations.length > 0 &&
@@ -545,24 +533,32 @@ const Moderation = memo<Props & WrappedComponentProps>(
                     disabled={moderations.length === 0}
                     onChange={handleOnSelectAll}
                   />
-                </th>
-                <th className="date">
-                  <FormattedMessage {...messages.date} />
-                </th>
-                <th className="type">
-                  <FormattedMessage {...messages.type} />
-                </th>
-                <th className="belongsTo">
-                  <FormattedMessage {...messages.belongsTo} />
-                </th>
-                <th className="content">
-                  <FormattedMessage {...messages.content} />
-                </th>
-                <th className="goto">&nbsp;</th>
-              </tr>
-            </thead>
+                </Th>
+                <Th className="date">
+                  <Uppercase>
+                    <FormattedMessage {...messages.date} />
+                  </Uppercase>
+                </Th>
+                <Th className="type">
+                  <Uppercase>
+                    <FormattedMessage {...messages.type} />
+                  </Uppercase>
+                </Th>
+                <Th className="belongsTo">
+                  <Uppercase>
+                    <FormattedMessage {...messages.belongsTo} />
+                  </Uppercase>
+                </Th>
+                <Th className="content">
+                  <Uppercase>
+                    <FormattedMessage {...messages.content} />
+                  </Uppercase>
+                </Th>
+                <Th className="goto">&nbsp;</Th>
+              </Tr>
+            </Thead>
             {moderations.length > 0 && (
-              <tbody>
+              <Tbody>
                 {moderations.map((moderationItem) => (
                   <ModerationRow
                     key={moderationItem.id}
@@ -578,9 +574,9 @@ const Moderation = memo<Props & WrappedComponentProps>(
                     }
                   />
                 ))}
-              </tbody>
+              </Tbody>
             )}
-          </StyledTable>
+          </Table>
 
           {moderations.length > 0 && (
             <Footer>

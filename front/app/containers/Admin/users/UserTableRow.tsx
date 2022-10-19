@@ -6,8 +6,8 @@ import clHistory from 'utils/cl-router/history';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // Components
+import { Tr, Td, Toggle, Icon } from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
-import { Toggle, Icon } from '@citizenlab/cl2-component-library';
 import Checkbox from 'components/UI/Checkbox';
 import Tippy from '@tippyjs/react';
 
@@ -61,7 +61,7 @@ const MoreOptionsButton = styled.button`
   }
 `;
 
-const CreatedAt = styled.td`
+const CreatedAt = styled(Td)`
   white-space: nowrap;
 `;
 
@@ -190,28 +190,29 @@ class UserTableRow extends PureComponent<Props & WrappedComponentProps, State> {
     const { isAdmin } = this.state;
 
     return (
-      <tr
+      <Tr
         key={user.id}
+        background={selected ? colors.background : undefined}
         className={`e2e-user-table-row ${selected ? 'selected' : ''}`}
       >
-        <td>
+        <Td>
           <StyledCheckbox
             checked={selected}
             onChange={this.handleUserSelectedOnChange}
           />
-        </td>
-        <td>
+        </Td>
+        <Td>
           <Avatar userId={user.id} size={30} />
-        </td>
-        <td>
+        </Td>
+        <Td>
           {user.attributes.first_name} {user.attributes.last_name}
-        </td>
-        <td>{user.attributes.email}</td>
+        </Td>
+        <Td>{user.attributes.email}</Td>
         <CreatedAt>{this.state.createdAt}</CreatedAt>
-        <td>
+        <Td>
           <Toggle checked={isAdmin} onChange={this.handleAdminRoleOnChange} />
-        </td>
-        <td>
+        </Td>
+        <Td>
           <MoreOptionsWrapper>
             <Tippy
               placement="bottom-end"
@@ -244,8 +245,8 @@ class UserTableRow extends PureComponent<Props & WrappedComponentProps, State> {
               </MoreOptionsButton>
             </Tippy>
           </MoreOptionsWrapper>
-        </td>
-      </tr>
+        </Td>
+      </Tr>
     );
   }
 }

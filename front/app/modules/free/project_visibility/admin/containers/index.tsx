@@ -91,7 +91,7 @@ const ProjectVisibility = ({
             onChange={handlePermissionTypeChange}
             currentValue={projectVisibility}
             name="permissionsType"
-            label={formatMessage(permissionsMessages.permissionsEveryoneLabel)}
+            label={formatMessage(permissionsMessages.permissionsAnyoneLabel)}
             value="public"
             id="permissions-all"
           />

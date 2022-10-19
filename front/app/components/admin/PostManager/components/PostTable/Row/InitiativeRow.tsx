@@ -16,11 +16,14 @@ import {
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
 
 // components
-import { Table, Icon } from 'semantic-ui-react';
-import WrappedRow from './WrappedRow';
+import { TitleLink } from '.';
+import StyledRow from './StyledRow';
+import { Icon } from 'semantic-ui-react';
 import T from 'components/T';
 import Checkbox from 'components/UI/Checkbox';
-import { StatusLabel } from '@citizenlab/cl2-component-library';
+import { Td, StatusLabel } from '@citizenlab/cl2-component-library';
+import SubRow from './SubRow';
+import AssigneeSelect from '../AssigneeSelect';
 
 // utils
 import localize, { InjectedLocalized } from 'utils/localize';
@@ -29,15 +32,15 @@ import localize, { InjectedLocalized } from 'utils/localize';
 import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
-// style
-import AssigneeSelect from './AssigneeSelect';
+// styling
+import { colors } from 'utils/styleUtils';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from '../../tracks';
-import { TFilterMenu, ManagerType } from '../..';
-import { TitleLink, StyledRow } from './Row';
-import SubRow from './SubRow';
+import tracks from '../../../tracks';
+
+// typings
+import { TFilterMenu, ManagerType } from '../../..';
 
 // resources
 import GetAppConfiguration, {
@@ -71,6 +74,17 @@ interface InputProps {
   onClickTitle: (event) => void;
   nothingHappens: (event) => void;
 }
+
+interface CellProps {
+  onClick?: (event: any) => void;
+  children: React.ReactNode;
+}
+
+const Cell = ({ onClick, children }: CellProps) => (
+  <Td borderBottom="none !important" onClick={onClick}>
+    {children}
+  </Td>
+);
 
 interface Props extends InputProps, DataProps {
   connectDragSource: any;
@@ -178,11 +192,10 @@ class InitiativeRow extends React.PureComponent<
 
     return (
       <>
-        <WrappedRow
+        <StyledRow
           className={`e2e-initiative-row ${className}`}
-          as={StyledRow}
-          active={active}
           undraggable={activeFilterMenu === 'statuses'}
+          background={active ? colors.grey300 : undefined}
           ref={(instance) => {
             instance &&
               activeFilterMenu !== 'statuses' &&
@@ -190,34 +203,34 @@ class InitiativeRow extends React.PureComponent<
               connectDragSource(findDOMNode(instance));
           }}
         >
-          <Table.Cell collapsing={true}>
+          <Cell>
             <Checkbox
               checked={!!active}
               onChange={onClickCheckbox}
               size="21px"
             />
-          </Table.Cell>
-          <Table.Cell>
+          </Cell>
+          <Cell>
             <TitleLink
               className="e2e-initiative-manager-initiative-title"
               onClick={onClickTitle}
             >
               <T value={attrs.title_multiloc} />
             </TitleLink>
-          </Table.Cell>
-          <Table.Cell onClick={nothingHappens} singleLine>
+          </Cell>
+          <Cell onClick={nothingHappens}>
             <AssigneeSelect
               onAssigneeChange={this.onUpdateInitiativeAssignee}
               assigneeId={assigneeId}
             />
-          </Table.Cell>
-          <Table.Cell>{this.renderTimingCell()}</Table.Cell>
-          <Table.Cell singleLine>
+          </Cell>
+          <Cell>{this.renderTimingCell()}</Cell>
+          <Cell>
             <Icon name="thumbs up" />
             {attrs.upvotes_count}
-          </Table.Cell>
-          <Table.Cell>{attrs.comments_count}</Table.Cell>
-        </WrappedRow>
+          </Cell>
+          <Cell>{attrs.comments_count}</Cell>
+        </StyledRow>
         <SubRow
           {...{
             active,
