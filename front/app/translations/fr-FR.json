@@ -1519,7 +1519,7 @@
   "app.modules.id_oostende_rrn.emptyFieldError": "Ce champ ne peut pas être vide.",
   "app.modules.id_oostende_rrn.invalidRrnError": "Numéro de sécurité sociale invalide",
   "app.modules.id_oostende_rrn.noMatchFormError": "Nous n'avons pas trouvé d'informations sur votre numéro de sécurité sociale",
-  "app.modules.id_oostende_rrn.notEntitledLivesOutsideFormError1": "We can't verify you because you live outside of Oostende",
+  "app.modules.id_oostende_rrn.notEntitledLivesOutsideFormError1": "Nous ne pouvons pas vérifier votre identité car vous habitez en dehors d'Ostende",
   "app.modules.id_oostende_rrn.notEntitledTooYoungFormError": "Nous ne pouvons pas vous vérifier parce que vous avez moins de 14 ans",
   "app.modules.id_oostende_rrn.oostendeRrnHelp": "Votre numéro de sécurité sociale figure au dos de votre carte d'identité numérique",
   "app.modules.id_oostende_rrn.rrnLabel": "Numéro de sécurité sociale",
