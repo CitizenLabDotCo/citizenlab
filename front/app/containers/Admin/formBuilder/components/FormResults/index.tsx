@@ -105,8 +105,18 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       </Box>
       <Box maxWidth="524px">
         {results.map(
-          ({ question, inputType, answers, totalResponses }, index) => {
+          (
+            { question, inputType, answers, totalResponses, required },
+            index
+          ) => {
             const inputTypeText = get(messages, inputType, '');
+            const requiredOrOptionalText = required
+              ? formatMessage(messages.required)
+              : formatMessage(messages.optional);
+            const inputTypeLabel = `${formatMessage(
+              inputTypeText
+            )} - ${requiredOrOptionalText.toLowerCase()}`;
+
             return (
               <Box
                 key={index}
@@ -118,7 +128,7 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
                 </Title>
                 {inputTypeText && (
                   <Text variant="bodyS" color="textSecondary" mb="0">
-                    {formatMessage(inputTypeText)}
+                    {inputTypeLabel}
                   </Text>
                 )}
                 {answers.map(({ answer, responses }, index) => {
