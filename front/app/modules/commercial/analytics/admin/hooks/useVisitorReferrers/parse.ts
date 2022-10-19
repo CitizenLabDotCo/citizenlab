@@ -21,7 +21,7 @@ const REFERRER_TYPE_SINGULAR_MESSAGES: Record<
   Campaigns: messages.campaign,
 };
 
-const getReferrerTranslation = (
+export const getReferrerTranslation = (
   referrerType: ReferrerTypeName | string,
   formatMessage: WrappedComponentProps['intl']['formatMessage']
 ) =>

@@ -19,6 +19,9 @@ import { colors } from 'utils/styleUtils';
 import messages from './messages';
 import { useIntl } from 'react-intl';
 
+// utils
+import getXlsxData from './getXlsxData';
+
 // typings
 import { IResolution } from 'components/admin/ResolutionControl';
 import { Moment } from 'moment';
@@ -80,7 +83,20 @@ const VisitorsTrafficSourcesCard = ({
       exportMenu={{
         name: cardTitle,
         svgNode: graphRef,
-        xlsx: isNilOrError(xlsxData) ? undefined : { data: xlsxData },
+        // xlsx: isNilOrError(xlsxData) ? undefined : { data: xlsxData },
+        xlsx: isNilOrError(xlsxData)
+          ? undefined
+          : {
+              onDownload: () =>
+                getXlsxData(
+                  {
+                    projectId: projectFilter,
+                    startAtMoment,
+                    endAtMoment,
+                  },
+                  xlsxData
+                ),
+            },
         startAt,
         endAt,
         currentProjectFilter: projectFilter,
