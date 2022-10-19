@@ -39,7 +39,7 @@ type FormTitleMethodProps = {
   phaseFromUrl?: IPhaseData;
 };
 
-type ParticipationMethodConfig = {
+export type ParticipationMethodConfig = {
   /** We currently have 2 UIs for admins to edit the form definition. This
    * defines which UI, if any, the method uses */
   formEditor: 'simpleFormEditor' | 'surveyEditor' | null;
@@ -49,6 +49,7 @@ type ParticipationMethodConfig = {
   ) => ReactNode | JSX.Element | null;
   getFormTitle?: (props: FormTitleMethodProps) => void;
   showInputManager: boolean;
+  postType: 'defaultInput' | 'nativeSurvey';
 };
 
 const ideationConfig: ParticipationMethodConfig = {
@@ -66,6 +67,7 @@ const ideationConfig: ParticipationMethodConfig = {
       }
     }
   },
+  postType: 'defaultInput',
   getModalContent: (props: ModalContentMethodProps) => {
     if (props.ideaIdForSocialSharing && props.title && props.subtitle) {
       return (
@@ -115,6 +117,7 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
       });
     }
   },
+  postType: 'nativeSurvey',
   getModalContent: (props: ModalContentMethodProps) => {
     return (
       <FormattedMessage
@@ -138,6 +141,7 @@ const informationConfig: ParticipationMethodConfig = {
   onFormSubmission: () => {
     return;
   },
+  postType: 'defaultInput',
   showInputManager: false,
 };
 
@@ -149,6 +153,7 @@ const surveyConfig: ParticipationMethodConfig = {
   onFormSubmission: () => {
     return;
   },
+  postType: 'defaultInput',
   showInputManager: false,
 };
 
@@ -157,6 +162,7 @@ const budgetingConfig: ParticipationMethodConfig = {
   getModalContent: () => {
     return null;
   },
+  postType: 'defaultInput',
   onFormSubmission: (props: FormSubmissionMethodProps) => {
     if (props.ideaId && props.idea) {
       const urlParameters = `?new_idea_id=${props.ideaId}`;
@@ -202,6 +208,7 @@ const pollConfig: ParticipationMethodConfig = {
   onFormSubmission: () => {
     return;
   },
+  postType: 'defaultInput',
   showInputManager: false,
 };
 
@@ -213,6 +220,7 @@ const volunteeringConfig: ParticipationMethodConfig = {
   onFormSubmission: () => {
     return;
   },
+  postType: 'defaultInput',
   showInputManager: false,
 };
 
