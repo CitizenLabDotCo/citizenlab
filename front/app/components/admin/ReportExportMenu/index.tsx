@@ -21,7 +21,7 @@ import messages from './messages';
 import { IResolution } from 'components/admin/ResolutionControl';
 
 // typings
-import { XOR } from 'typings';
+import { OneOf } from 'typings';
 
 const DropdownButton = styled(Button)``;
 
@@ -57,7 +57,7 @@ export interface ReportExportMenuProps {
   xlsx?: XlsxConfig;
 }
 
-type XlsxConfig = XOR<XlsxConfigEndpoint, XlsxConfigData>;
+type XlsxConfig = OneOf<[XlsxConfigEndpoint, XlsxConfigData]>;
 
 interface XlsxConfigEndpoint {
   endpoint: string;

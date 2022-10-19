@@ -194,7 +194,15 @@ export type Override<T, U> = Pick<T, Exclude<keyof T, keyof U>> & U;
 
 export type Percentage = `${number}%`;
 
-type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
-export type XOR<T, U> = T | U extends object
-  ? (Without<T, U> & U) | (Without<U, T> & T)
-  : T | U;
+type Values<T extends {}> = T[keyof T];
+type Tuplize<T extends {}[]> = Pick<
+  T,
+  Exclude<keyof T, Extract<keyof {}[], string> | number>
+>;
+type _OneOf<T extends {}> = Values<{
+  [K in keyof T]: T[K] & {
+    [M in Values<{ [L in keyof Omit<T, K>]: keyof T[L] }>]?: undefined;
+  };
+}>;
+
+export type OneOf<T extends {}[]> = _OneOf<Tuplize<T>>;
