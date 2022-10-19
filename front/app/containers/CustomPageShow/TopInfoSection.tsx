@@ -6,7 +6,7 @@ import ResolveTextVariables from 'components/ResolveTextVariables';
 import T from 'components/T';
 
 // typings
-import { StyledQuillEditedContent } from 'containers/HomePage/HomepageInfoSection';
+import { StyledQuillEditedContent } from 'components/LandingPages/citizen/InfoSection';
 import { Multiloc } from 'typings';
 
 // components

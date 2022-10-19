@@ -1,18 +1,14 @@
-import React from 'react';
-import { isEmptyMultiloc } from 'utils/helperUtils';
-import T from 'components/T';
 import ContentContainer from 'components/ContentContainer';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Fragment from 'components/Fragment';
-
-// typings
-import { Multiloc } from 'typings';
-
-// style
+import { StyledQuillEditedContent } from 'components/LandingPages/citizen/InfoSection';
+import T from 'components/T';
+import React from 'react';
 import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
+import { Multiloc } from 'typings';
+import { isEmptyMultiloc } from 'utils/helperUtils';
+import { media } from 'utils/styleUtils';
 
-export const CustomSectionContentContainer = styled(ContentContainer)`
+const CustomSectionContentContainer = styled(ContentContainer)`
   width: 100%;
   max-width: 750px;
   margin-left: auto;
@@ -27,26 +23,14 @@ export const CustomSectionContentContainer = styled(ContentContainer)`
   `}
 `;
 
-export const StyledQuillEditedContent = styled(QuillEditedContent)`
-  h1,
-  h2 {
-    color: ${(props) => props.theme.colors.tenantText};
-  }
-
-  p,
-  li {
-    color: ${colors.textSecondary};
-  }
-`;
-
-type Props = {
+interface Props {
   multilocContent: Multiloc;
   // pages/homepage_info/content was the previous bottom info section fragment key,
   // leaving it as such for backwards compatibility
   fragmentName:
     | 'pages/homepage_info/content'
     | 'pages/homepage_info/top-content';
-};
+}
 
 const HomepageInfoSection = ({ multilocContent, fragmentName }: Props) => {
   if (!multilocContent || isEmptyMultiloc(multilocContent)) {
