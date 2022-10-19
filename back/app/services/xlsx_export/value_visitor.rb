@@ -2,7 +2,6 @@
 
 module XlsxExport
   class ValueVisitor < FieldVisitorService
-    include HtmlToPlainText
 
     def initialize(model)
       super()
@@ -39,7 +38,7 @@ module XlsxExport
 
     def visit_html_multiloc(field)
       translation = MultilocService.new.t(value_for(field))
-      convert_to_text_long_lines(translation)
+      Utils.new.convert_to_text_long_lines(translation)
     end
 
     def visit_select(field)
@@ -126,10 +125,6 @@ module XlsxExport
     def options_for(field)
       @options ||= {}
       @options[field] ||= field.options.index_by(&:key)
-    end
-
-    def convert_to_text_long_lines(html)
-      convert_to_text(html).tr("\n", ' ')
     end
   end
 end

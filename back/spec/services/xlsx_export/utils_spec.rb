@@ -26,6 +26,13 @@ describe XlsxExport::Utils do
     end
   end
 
+  describe 'convert_to_text_long_lines' do
+    it 'converts html to text and replaces each newline by a space' do
+      actual = service.convert_to_text_long_lines(+"<p>line1<p>\n<strong>line2</strong>")
+      expect(actual).to eq 'line1 line2'
+    end
+  end
+
   describe '#sanitize_sheetname' do
     context 'when the sheetname can be sanitized' do
       using RSpec::Parameterized::TableSyntax

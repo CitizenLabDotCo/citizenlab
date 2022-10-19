@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class XlsxService
-  include HtmlToPlainText
 
   # Converts this hash array:
   #   [{'name' => 'Ron', 'size' => 'xl'), {'name' => 'John', 'age' => 35}]
@@ -144,7 +143,7 @@ class XlsxService
     columns = [
       { header: 'id',                   f: ->(i) { i.id }, skip_sanitization: true },
       { header: 'title',                f: ->(i) { multiloc_service.t(i.title_multiloc) } },
-      { header: 'description',          f: ->(i) { convert_to_text_long_lines(multiloc_service.t(i.body_multiloc)) }, width: 10 },
+      { header: 'description',          f: ->(i) { XlsxExport::Utils.new.convert_to_text_long_lines(multiloc_service.t(i.body_multiloc)) }, width: 10 },
       { header: 'author_name',          f: ->(i) { i.author_name } },
       { header: 'author_email',         f: ->(i) { i.author&.email } },
       { header: 'author_id',            f: ->(i) { i.author_id } },
@@ -180,7 +179,7 @@ class XlsxService
     columns = [
       { header: 'id',                   f: ->(i) { i.id }, skip_sanitization: true },
       { header: 'title',                f: ->(i) { multiloc_service.t(i.title_multiloc) } },
-      { header: 'description',          f: ->(i) { convert_to_text_long_lines(multiloc_service.t(i.body_multiloc)) }, width: 10 },
+      { header: 'description',          f: ->(i) { XlsxExport::Utils.new.convert_to_text_long_lines(multiloc_service.t(i.body_multiloc)) }, width: 10 },
       { header: 'author_name',          f: ->(i) { i.author_name } },
       { header: 'author_email',         f: ->(i) { i.author&.email } },
       { header: 'author_id',            f: ->(i) { i.author_id } },
@@ -207,7 +206,7 @@ class XlsxService
       { header: 'id',                 f: ->(c) { c.id }, skip_sanitization: true },
       { header: 'input',              f: ->(c) { multiloc_service.t(c.post.title_multiloc) } },
       { header: 'input_id',           f: ->(c) { c.post.id } },
-      { header: 'comment',            f: ->(c) { convert_to_text_long_lines(multiloc_service.t(c.body_multiloc)) }, width: 10 },
+      { header: 'comment',            f: ->(c) { XlsxExport::Utils.new.convert_to_text_long_lines(multiloc_service.t(c.body_multiloc)) }, width: 10 },
       { header: 'upvotes_count',      f: ->(c) { c.upvotes_count }, skip_sanitization: true },
       { header: 'author_name',        f: ->(c) { c.author_name } },
       { header: 'author_email',       f: ->(c) { c.author&.email } },
@@ -226,7 +225,7 @@ class XlsxService
       { header: 'id', f: ->(c) { c.id }, skip_sanitization: true },
       { header: 'proposal', f: ->(c) { multiloc_service.t(c.post.title_multiloc) } },
       { header: 'proposal_id',         f: ->(c) { c.post.id } },
-      { header: 'comment',          f: ->(c) { convert_to_text_long_lines(multiloc_service.t(c.body_multiloc)) }, width: 10 },
+      { header: 'comment',          f: ->(c) { XlsxExport::Utils.new.convert_to_text_long_lines(multiloc_service.t(c.body_multiloc)) }, width: 10 },
       { header: 'upvotes_count', f: ->(c) { c.upvotes_count }, skip_sanitization: true },
       { header: 'author_name',   f: ->(c) { c.author_name } },
       { header: 'author_email',  f: ->(c) { c.author&.email } },
@@ -317,10 +316,6 @@ class XlsxService
 
   def header_style(style)
     style.add_style bg_color: '99ccff', fg_color: '2626ff', sz: 16, alignment: { horizontal: :center }
-  end
-
-  def convert_to_text_long_lines(html)
-    convert_to_text(html).tr("\n", ' ')
   end
 
   def namespace(field_id, option_key)

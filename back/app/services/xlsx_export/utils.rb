@@ -8,6 +8,8 @@ module XlsxExport
   end
 
   class Utils
+    include HtmlToPlainText
+
     def escape_formula(text)
       return text unless text.is_a?(String)
 
@@ -32,6 +34,10 @@ module XlsxExport
       end
 
       sanitized_name
+    end
+
+    def convert_to_text_long_lines(html)
+      convert_to_text(html).tr("\n", ' ')
     end
 
     private
