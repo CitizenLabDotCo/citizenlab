@@ -9,6 +9,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { SectionField } from 'components/admin/Section';
 import SectionFormWrapper from '../../components/SectionFormWrapper';
+import ViewCustomPageButton from '../CustomPages/Edit/ViewCustomPageButton';
 
 // i18n
 import HelmetIntl from 'components/HelmetIntl';
@@ -120,6 +121,11 @@ const AttachmentsForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
                 label: formatMessage(messages.pageTitle),
               },
             ]}
+            rightSideCTA={
+              <ViewCustomPageButton
+                linkTo={`/pages/${customPage.attributes.slug}`}
+              />
+            }
           >
             <Feedback successMessage={formatMessage(messages.messageSuccess)} />
             <SectionField>

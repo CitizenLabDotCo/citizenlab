@@ -154,6 +154,7 @@ const EditCustomPageHeroBannerForm = ({
           onSave={handleSave}
           formStatus={formStatus}
           isLoading={isLoading}
+          linkToViewPage={`/pages/${customPage.attributes.slug}`}
           breadcrumbs={[
             {
               label: formatMessage(pagesAndMenuBreadcrumb.label),
