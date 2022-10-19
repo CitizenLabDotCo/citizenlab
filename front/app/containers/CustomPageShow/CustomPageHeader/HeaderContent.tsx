@@ -1,4 +1,4 @@
-import BannerButton from 'containers/HomePage/BannerButton';
+import BannerButton from 'components/LandingPages/citizen/BannerButton';
 import {
   Container,
   getAlignItems,

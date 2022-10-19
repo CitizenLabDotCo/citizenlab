@@ -1,6 +1,6 @@
 import BannerButton, {
   BannerButtonStyle,
-} from 'containers/HomePage/BannerButton';
+} from 'components/LandingPages/citizen/BannerButton';
 import SignUpButton from 'containers/HomePage/SignUpButton';
 import useHomepageSettings from 'hooks/useHomepageSettings';
 import useLocalize from 'hooks/useLocalize';

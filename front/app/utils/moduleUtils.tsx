@@ -32,7 +32,7 @@ import { TVerificationStep } from 'components/Verification/verificationModalEven
 import { TTabName } from 'containers/Admin/projects/all/CreateProject';
 import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/projects/project/general';
 import { NavItem } from 'containers/Admin/sideBar';
-import { BannerButtonStyle } from 'containers/HomePage/BannerButton';
+import { BannerButtonStyle } from 'components/LandingPages/citizen/BannerButton';
 import { Localize } from 'hooks/useLocalize';
 import { LatLngTuple } from 'leaflet';
 import { MessageValue } from 'react-intl';
