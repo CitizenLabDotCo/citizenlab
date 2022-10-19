@@ -1519,7 +1519,7 @@
   "app.modules.id_oostende_rrn.emptyFieldError": "This field cannot be empty.",
   "app.modules.id_oostende_rrn.invalidRrnError": "Invalid social security number",
   "app.modules.id_oostende_rrn.noMatchFormError": "We couldn't find back information on your social security number",
-  "app.modules.id_oostende_rrn.notEntitledLivesOutsideFormError": "We can't verify you because you live outside of Ghent",
+  "app.modules.id_oostende_rrn.notEntitledLivesOutsideFormError1": "We can't verify you because you live outside of Oostende",
   "app.modules.id_oostende_rrn.notEntitledTooYoungFormError": "We can't verify you because you are younger than 14 years",
   "app.modules.id_oostende_rrn.oostendeRrnHelp": "Your social security number is shown on the back of your digital identity card",
   "app.modules.id_oostende_rrn.rrnLabel": "Social security number",
