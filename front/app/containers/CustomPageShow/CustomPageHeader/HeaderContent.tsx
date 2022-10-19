@@ -1,16 +1,16 @@
-import React from 'react';
-import useLocalize from 'hooks/useLocalize';
+import BannerButton from 'containers/HomePage/BannerButton';
 import {
   Container,
-  HeaderTitle,
-  HeaderSubtitle,
-  TAlign,
   getAlignItems,
-} from 'containers/LandingPage/SignedOutHeader/HeaderContent';
+  HeaderSubtitle,
+  HeaderTitle,
+  TAlign,
+} from 'containers/HomePage/SignedOutHeader/HeaderContent';
+import useLocalize from 'hooks/useLocalize';
+import React from 'react';
 import { InjectedIntlProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
-import BannerButton from 'containers/LandingPage/BannerButton';
 import { ICustomPageAttributes } from 'services/customPages';
+import { injectIntl } from 'utils/cl-intl';
 
 interface Props {
   fontColors: 'light' | 'dark';

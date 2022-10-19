@@ -1,9 +1,9 @@
-import React, { lazy } from 'react';
 import PageLoading from 'components/UI/PageLoading';
 import createAdminRoutes from 'containers/Admin/routes';
 import moduleConfiguration from 'modules';
+import React, { lazy } from 'react';
 
-const LandingPage = lazy(() => import('containers/LandingPage'));
+const LandingPage = lazy(() => import('containers/HomePage'));
 const SignUpInPage = lazy(() => import('containers/SignUpInPage'));
 const SiteMap = lazy(() => import('containers/SiteMap'));
 const UsersEditPage = lazy(() => import('containers/UsersEditPage'));

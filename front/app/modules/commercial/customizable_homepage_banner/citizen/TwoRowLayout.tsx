@@ -1,7 +1,7 @@
 import ContentContainer from 'components/ContentContainer';
 import Image from 'components/UI/Image';
 import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/HeaderImageDropzone';
-import HeaderContent from 'containers/LandingPage/SignedOutHeader/HeaderContent';
+import HeaderContent from 'containers/HomePage/SignedOutHeader/HeaderContent';
 import useHomepageSettings from 'hooks/useHomepageSettings';
 import React from 'react';
 import styled from 'styled-components';

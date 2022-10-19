@@ -4,7 +4,7 @@ import React from 'react';
 import ContentContainer from 'components/ContentContainer';
 import Fragment from 'components/Fragment';
 import FileAttachments from 'components/UI/FileAttachments';
-import { Container, Content } from 'containers/LandingPage';
+import { Container, Content } from 'containers/HomePage';
 import { Helmet } from 'react-helmet';
 import CustomPageHeader from './CustomPageHeader';
 import TopInfoSection from './TopInfoSection';

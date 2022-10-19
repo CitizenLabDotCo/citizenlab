@@ -4,7 +4,7 @@ import {
   HeaderImage,
   HeaderImageBackground,
   HeaderImageOverlay,
-} from 'containers/LandingPage/SignedOutHeader/FullWidthBannerLayout';
+} from 'containers/HomePage/SignedOutHeader/FullWidthBannerLayout';
 import React from 'react';
 import { ICustomPageData } from 'services/customPages';
 import AdminCustomPageEditButton from './AdminCustomPageEditButton';
