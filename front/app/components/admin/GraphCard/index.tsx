@@ -43,7 +43,6 @@ const GraphCard = ({
                 </Text>
               }
               ml="8px"
-              transform="translate(0,-2)"
               theme="light"
             />
           )}

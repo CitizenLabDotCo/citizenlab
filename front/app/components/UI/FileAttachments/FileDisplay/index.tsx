@@ -31,10 +31,6 @@ const Container = styled.div`
 `;
 
 const Paperclip = styled(Icon)`
-  min-width: 10px;
-  min-height: 20px;
-  width: 10px;
-  height: 20px;
   fill: ${colors.textSecondary};
   margin-right: 15px;
 `;

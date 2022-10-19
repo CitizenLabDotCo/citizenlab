@@ -51,8 +51,9 @@ const DropzoneLabelText = styled.span`
 `;
 
 const DropzoneLabelIcon = styled(Icon)`
-  flex: 0 0 30px;
-  height: 30px;
+  flex: 0 0 40px;
+  height: 40px;
+  width: 40px;
   fill: ${colors.textSecondary};
   margin-bottom: 4px;
   transition: all 100ms ease-out;
@@ -165,7 +166,6 @@ const Box = styled.div<{ maxWidth: string | undefined; ratio: number }>`
 `;
 
 const RemoveIcon = styled(Icon)`
-  height: 10px;
   fill: #fff;
   transition: all 100ms ease-out;
 `;
@@ -442,7 +442,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
                     >
                       <DropzoneInput {...getInputProps()} id={id} />
                       <DropzoneContentInner>
-                        <DropzoneLabelIcon name="upload" ariaHidden />
+                        <DropzoneLabelIcon name="upload-image" ariaHidden />
                         <DropzoneLabelText>{label}</DropzoneLabelText>
                         {remainingImages && (
                           <DropzoneImagesRemaining>
@@ -476,6 +476,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
                   objectFit={objectFit}
                 >
                   <RemoveButton
+                    type="button"
                     onMouseDown={removeFocusAfterMouseClick}
                     onClick={this.removeImage(image)}
                     className="remove-button"

@@ -96,7 +96,7 @@ const EditHomepage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
 
   const handleOnClick = (url: string) => {
     if (url) {
-      clHistory.push(`/admin/pages-menu/${url}/`);
+      clHistory.push(`/admin/pages-menu/homepage/${url}/`);
     }
   };
 

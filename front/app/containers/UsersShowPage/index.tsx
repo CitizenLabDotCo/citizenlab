@@ -105,7 +105,7 @@ export const UsersShowPage = memo<Props & WithRouterProps & InjectedIntlProps>(
           <Button
             linkTo={previousPathName || '/'}
             text={formatMessage(messages.goBackToPreviousPage)}
-            icon="arrow-back"
+            icon="arrow-left"
           />
         </NotFoundContainer>
       );

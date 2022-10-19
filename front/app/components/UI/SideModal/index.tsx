@@ -43,9 +43,7 @@ const ModalContainer = styled.div`
 `;
 
 const CloseIcon = styled(Icon)`
-  flex: 0 0 16px;
-  width: 16px;
-  height: 16px;
+  flex: 0 0 24px;
   fill: ${colors.textSecondary};
   z-index: 2;
 `;

@@ -31,10 +31,7 @@ const StyledButton = styled(Button)`
 `;
 
 const DropdownItemIcon = styled(Icon)`
-  width: 11px;
-  height: 6px;
   fill: ${colors.textSecondary};
-  margin-top: 1px;
   margin-left: 4px;
 `;
 
@@ -166,7 +163,7 @@ class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
             ) : (
               <FormattedMessage {...messages.customDateRange} />
             )}
-            <DropdownItemIcon name="dropdown" />
+            <DropdownItemIcon name="chevron-down" />
           </StyledButton>
           <Dropdown
             width="200px"

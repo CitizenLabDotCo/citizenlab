@@ -37,8 +37,6 @@ const EditorWrapper = styled.div`
 `;
 
 const DeployIcon = styled(Icon)`
-  height: 12px;
-  width: 8px;
   fill: ${colors.textSecondary};
   margin-right: 12px;
   transition: transform 200ms ease-out;

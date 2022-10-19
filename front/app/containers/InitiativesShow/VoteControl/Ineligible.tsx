@@ -103,7 +103,7 @@ class Ineligible extends PureComponent<Props, State> {
                 {text}
                 {eligibility_criteria && (
                   <IconTooltip
-                    icon="info"
+                    icon="info-outline"
                     iconColor={this.props.theme.colors.tenantText}
                     theme="light"
                     placement="bottom"

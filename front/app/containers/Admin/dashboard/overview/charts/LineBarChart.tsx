@@ -58,8 +58,6 @@ const InfoIcon = styled(Icon)`
   display: flex;
   align-items: center;
   cursor: pointer;
-  width: 20px;
-  height: 22px;
   margin-left: 10px;
 `;
 
@@ -287,7 +285,7 @@ class LineBarChart extends React.PureComponent<
                   basic
                   trigger={
                     <div>
-                      <InfoIcon name="info" />
+                      <InfoIcon name="info-outline" />
                     </div>
                   }
                   content={infoMessage}

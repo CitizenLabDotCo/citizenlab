@@ -37,8 +37,6 @@ const Container = styled.div`
 `;
 
 const StyledIcon = styled(Icon)`
-  width: 17px;
-  height: 17px;
   color: ${colors.textSecondary};
   margin-right: 10px;
 `;
@@ -127,7 +125,7 @@ const ViewButtons = memo<Props>(({ className, selectedView, onClick }) => {
           onKeyDown={handleTabListOnKeyDown}
           active={isListViewSelected}
         >
-          <StyledIcon name="list2" />
+          <StyledIcon name="menu" />
           <FormattedMessage {...messages.list} />
         </ListButton>
         <MapButton

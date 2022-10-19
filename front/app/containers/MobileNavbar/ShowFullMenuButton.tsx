@@ -13,7 +13,6 @@ interface Props {
 }
 
 const StyledIcon = styled(Icon)<{ isFullMenuOpened: boolean }>`
-  width: 20px;
   margin-right: 3px;
   fill: ${({ isFullMenuOpened, theme }) =>
     isFullMenuOpened ? theme.colors.tenantPrimary : colors.textSecondary};
@@ -67,7 +66,10 @@ const ShowFullMenuButton = ({ onClick, isFullMenuOpened }: Props) => {
   return (
     <NavigationItem>
       <StyledButton onClick={onClick} isFullMenuOpened={isFullMenuOpened}>
-        <StyledIcon name="more-options" isFullMenuOpened={isFullMenuOpened} />
+        <StyledIcon
+          name="dots-horizontal"
+          isFullMenuOpened={isFullMenuOpened}
+        />
         <NavigationLabel>
           <FormattedMessage {...messages.showMore} />
         </NavigationLabel>
