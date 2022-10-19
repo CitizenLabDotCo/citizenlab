@@ -1,6 +1,6 @@
-import React, { lazy } from 'react';
 import PageLoading from 'components/UI/PageLoading';
 import moduleConfiguration from 'modules';
+import React, { lazy } from 'react';
 import { Navigate } from 'react-router-dom';
 import Outlet from 'components/Outlet';
 
@@ -38,15 +38,17 @@ const CustomPageHeroBannerForm = lazy(
 );
 
 // path utils
-const PAGE_PATH = 'pages-menu';
-const ADMIN_PATH_PREFIX = 'admin';
-export const PAGES_MENU_PATH = `/${ADMIN_PATH_PREFIX}/${PAGE_PATH}`;
+export const ADMIN_PAGES_MENU_PATH = `/admin/pages-menu`;
 const HOMEPAGE_PATH = 'homepage';
 const CUSTOM_PAGES_PATH = 'pages';
-export const PAGES_MENU_CUSTOM_PATH = `${PAGES_MENU_PATH}/${CUSTOM_PAGES_PATH}`;
+const ADMIN_PAGES_MENU_CUSTOM_PAGE_PATH = `${ADMIN_PAGES_MENU_PATH}/${CUSTOM_PAGES_PATH}`;
+
+export const adminCustomPageContentPath = (pageId: string) => {
+  return `${ADMIN_PAGES_MENU_CUSTOM_PAGE_PATH}/${pageId}/content`;
+};
 
 export default () => ({
-  path: PAGE_PATH, // pages-menu
+  path: 'pages-menu', // pages-menu
   children: [
     {
       path: '',

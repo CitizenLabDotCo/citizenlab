@@ -1,13 +1,13 @@
 import React from 'react';
 
-import useNavbarItems from 'hooks/useNavbarItems';
-import { getNavbarItemSlug, INavbarItem } from 'services/navbar';
-import NavbarItemRow from '../NavbarItemRow';
 import { List, Row } from 'components/admin/ResourceList';
-import { isNilOrError } from 'utils/helperUtils';
+import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
+import useNavbarItems from 'hooks/useNavbarItems';
 import usePageSlugById from 'hooks/usePageSlugById';
+import { getNavbarItemSlug, INavbarItem } from 'services/navbar';
 import clHistory from 'utils/cl-router/history';
-import { PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
+import { isNilOrError } from 'utils/helperUtils';
+import NavbarItemRow from '../NavbarItemRow';
 
 export default function VisibleNavbarItemList() {
   const navbarItems = useNavbarItems({ onlyDefault: true });
@@ -20,14 +20,16 @@ export default function VisibleNavbarItemList() {
   const handleClickEdit = (navbarItem: INavbarItem) => () => {
     // redirect to homepage toggle page
     if (navbarItem?.attributes?.code && navbarItem.attributes.code === 'home') {
-      clHistory.push(`${PAGES_MENU_PATH}/homepage/`);
+      clHistory.push(`${ADMIN_PAGES_MENU_PATH}/homepage/`);
       return;
     }
 
     const pageData = navbarItem.relationships.static_page.data;
     pageData
-      ? clHistory.push(`${PAGES_MENU_PATH}/pages/${pageData.id}/settings`)
-      : clHistory.push(`${PAGES_MENU_PATH}/navbar-items/edit/${navbarItem.id}`);
+      ? clHistory.push(`${ADMIN_PAGES_MENU_PATH}/pages/${pageData.id}/settings`)
+      : clHistory.push(
+          `${ADMIN_PAGES_MENU_PATH}/navbar-items/edit/${navbarItem.id}`
+        );
   };
 
   const getViewButtonLink = (navbarItem: INavbarItem) => {
