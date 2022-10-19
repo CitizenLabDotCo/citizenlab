@@ -1519,7 +1519,7 @@
   "app.modules.id_oostende_rrn.emptyFieldError": "Imaqanngissinnaanngilaq",
   "app.modules.id_oostende_rrn.invalidRrnError": "Inuup normua atorsinnaanngilaq",
   "app.modules.id_oostende_rrn.noMatchFormError": "Inuttut normut pillugu paasissutissanik nassaanngilagut",
-  "app.modules.id_oostende_rrn.notEntitledLivesOutsideFormError": "Ghent avataani najugaqaravit eqqortuunerarsinnaanngilatsigit",
+  "app.modules.id_oostende_rrn.notEntitledLivesOutsideFormError1": "We can't verify you because you live outside of Oostende",
   "app.modules.id_oostende_rrn.notEntitledTooYoungFormError": "14-it inorlugit ukioqaravit uppernarsarsinnaanngilatsigit",
   "app.modules.id_oostende_rrn.oostendeRrnHelp": "Inuttut normut kinaassutsimut uppernarsaativit digitaliusup tunuani allaqqavoq",
   "app.modules.id_oostende_rrn.rrnLabel": "Inuup normua",
