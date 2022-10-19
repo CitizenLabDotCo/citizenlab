@@ -106,9 +106,6 @@ Rails.application.routes.draw do
 
       resources :nav_bar_items, only: :index do
         get 'removed_default_items', on: :collection
-        %w[proposals events all_input].each do |code|
-          post "toggle_#{code}", on: :collection, to: 'nav_bar_items#toggle_item', defaults: { code: code }
-        end
       end
 
       # Events and phases are split in two because we cannot have a non-shallow
