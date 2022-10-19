@@ -48,16 +48,94 @@ module XlsxExport
       field.code == 'idea_images_attributes' # Not supported by XlsxService
     end
 
+    def input_id_report_field
+      SpecialFieldForReport.new('id', column_header_for('input_id'))
+    end
+
+    def author_name_report_field
+      SpecialFieldForReport.new('author_name', column_header_for('author_fullname'))
+    end
+
+    def author_email_report_field
+      SpecialFieldForReport.new('email', column_header_for('author_email'), :author)
+    end
+
+    def author_id_report_field
+      SpecialFieldForReport.new('id', column_header_for('author_id'), :author)
+    end
+
+    def latitude_report_field
+      ComputedFieldForReport.new('latitude', column_header_for('latitude'), ->(input) { input.location_point&.coordinates&.last })
+    end
+
+    def longitude_report_field
+      ComputedFieldForReport.new('longitude', column_header_for('longitude'), ->(input) { input.location_point&.coordinates&.first })
+    end
+
+    def created_at_report_field
+      SpecialFieldForReport.new('created_at', column_header_for('created_at'))
+    end
+
+    def published_at_report_field
+      SpecialFieldForReport.new('published_at', column_header_for('published_at'))
+    end
+
+    def comments_count_report_field
+      SpecialFieldForReport.new('comments_count', column_header_for('comments_count'))
+    end
+
+    def upvotes_count_report_field
+      SpecialFieldForReport.new('upvotes_count', column_header_for('upvotes_count'))
+    end
+
+    def downvotes_count_report_field
+      SpecialFieldForReport.new('downvotes_count', column_header_for('downvotes_count'))
+    end
+
+    def baskets_count_report_field
+      SpecialFieldForReport.new('baskets_count', column_header_for('baskets_count'))
+    end
+
+    def input_url_report_field
+      ComputedFieldForReport.new(
+        'url',
+        column_header_for('input_url'),
+        ->(input) { Frontend::UrlService.new.model_to_url(input) }
+      )
+    end
+
+    def project_report_field
+      ComputedFieldForReport.new(
+        'project',
+        column_header_for('project'),
+        ->(input) { MultilocService.new.t(input.project.title_multiloc) }
+      )
+    end
+
+    def status_report_field
+      ComputedFieldForReport.new(
+        'status',
+        column_header_for('status'),
+        ->(input) { MultilocService.new.t(input.idea_status&.title_multiloc) }
+      )
+    end
+
+    def assignee_fullname_report_field
+      SpecialFieldForReport.new('full_name', column_header_for('assignee_fullname'), :assignee)
+    end
+
+    def assignee_email_report_field
+      SpecialFieldForReport.new('email', column_header_for('assignee_email'), :assignee)
+    end
+
     def input_report_fields
-      [
-        SpecialFieldForReport.new('id', column_header_for('input_id'))
-      ].tap do |input_fields|
+      [input_id_report_field].tap do |input_fields|
         fields_in_form.each do |field|
-          next if field.code == 'author_id'
+          next if field.code == 'author_id' # Never included, because the user fields include it
 
           if field.code == 'location_description'
-            input_fields << ComputedFieldForReport.new('latitude', column_header_for('latitude'), ->(input) { input.location_point&.coordinates&.last })
-            input_fields << ComputedFieldForReport.new('longitude', column_header_for('longitude'), ->(input) { input.location_point&.coordinates&.first })
+            input_fields << latitude_report_field
+            input_fields << longitude_report_field
           end
           input_fields << CustomFieldForReport.new(field)
         end
@@ -67,41 +145,31 @@ module XlsxExport
     def author_report_fields
       if include_private_attributes
         [
-          SpecialFieldForReport.new('author_name', column_header_for('author_fullname')),
-          SpecialFieldForReport.new('email', column_header_for('author_email'), :author),
-          SpecialFieldForReport.new('id', column_header_for('author_id'), :author)
+          author_name_report_field,
+          author_email_report_field,
+          author_id_report_field
         ]
       else
-        [
-          SpecialFieldForReport.new('author_name', column_header_for('author_fullname'))
-        ]
+        [author_name_report_field]
       end
-    end
-
-    def column_header_for(translation_key)
-      I18n.t translation_key, scope: 'xlsx_export.column_headers'
     end
 
     def meta_report_fields
       [].tap do |meta_fields|
-        meta_fields << SpecialFieldForReport.new('created_at', column_header_for('created_at'))
-        meta_fields << SpecialFieldForReport.new('published_at', column_header_for('published_at')) if participation_method.supports_publication?
-        meta_fields << SpecialFieldForReport.new('comments_count', column_header_for('comments_count')) if participation_method.supports_commenting?
+        meta_fields << created_at_report_field
+        meta_fields << published_at_report_field if participation_method.supports_publication?
+        meta_fields << comments_count_report_field if participation_method.supports_commenting?
         if participation_method.supports_voting?
-          meta_fields << SpecialFieldForReport.new('upvotes_count', column_header_for('upvotes_count'))
-          meta_fields << SpecialFieldForReport.new('downvotes_count', column_header_for('downvotes_count'))
+          meta_fields << upvotes_count_report_field
+          meta_fields << downvotes_count_report_field
         end
-        meta_fields << SpecialFieldForReport.new('baskets_count', column_header_for('baskets_count')) if participation_method.supports_baskets?
-        unless participation_method.never_show?
-          meta_fields << ComputedFieldForReport.new('url', column_header_for('input_url'), ->(input) { Frontend::UrlService.new.model_to_url(input) })
-        end
-        meta_fields << ComputedFieldForReport.new('project', column_header_for('project'), ->(input) { MultilocService.new.t(input.project.title_multiloc) })
-        if participation_method.supports_status?
-          meta_fields << ComputedFieldForReport.new('status', column_header_for('status'), ->(input) { MultilocService.new.t(input.idea_status&.title_multiloc) })
-        end
+        meta_fields << baskets_count_report_field if participation_method.supports_baskets?
+        meta_fields << input_url_report_field unless participation_method.never_show?
+        meta_fields << project_report_field
+        meta_fields << status_report_field if participation_method.supports_status?
         if participation_method.supports_assignment?
-          meta_fields << SpecialFieldForReport.new('full_name', column_header_for('assignee_fullname'), :assignee)
-          meta_fields << SpecialFieldForReport.new('email', column_header_for('assignee_email'), :assignee) if include_private_attributes
+          meta_fields << assignee_fullname_report_field
+          meta_fields << assignee_email_report_field if include_private_attributes
         end
       end
     end
@@ -130,6 +198,10 @@ module XlsxExport
 
     def user_fields
       CustomField.with_resource_type('User').includes(:options).enabled.order(:ordering).all
+    end
+
+    def column_header_for(translation_key)
+      I18n.t translation_key, scope: 'xlsx_export.column_headers'
     end
 
     # Sanitize sheet names to comply with Excel naming restrictions.
