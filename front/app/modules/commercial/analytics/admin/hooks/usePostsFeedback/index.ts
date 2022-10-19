@@ -7,8 +7,9 @@ import {
   QuerySchema,
 } from '../../services/analyticsFacts';
 
-// hooks
+// i18n
 import useLocalize from 'hooks/useLocalize';
+import { useIntl } from 'react-intl';
 
 // parsing
 import {
@@ -29,7 +30,6 @@ import { isEmptyResponse, getTranslations } from './utils';
 import { getProjectFilter, getDateFilter } from '../../utils/query';
 
 // typings
-import { WrappedComponentProps } from 'react-intl';
 import {
   QueryParameters,
   PostFeedback,
@@ -75,11 +75,13 @@ const query = ({
   return { query: [queryFeedback, queryStatus] };
 };
 
-export default function usePostsWithFeedback(
-  formatMessage: WrappedComponentProps['intl']['formatMessage'],
-  { projectId, startAtMoment, endAtMoment }: QueryParameters
-) {
+export default function usePostsFeedback({
+  projectId,
+  startAtMoment,
+  endAtMoment,
+}: QueryParameters) {
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
 
   const [postsWithFeedback, setPostsWithFeedback] = useState<
     PostFeedback | NilOrError

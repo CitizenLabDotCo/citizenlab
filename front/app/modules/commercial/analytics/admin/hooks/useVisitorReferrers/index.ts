@@ -3,6 +3,9 @@ import { useState, useEffect } from 'react';
 // services
 import { analyticsStream } from '../../services/analyticsFacts';
 
+// i18n
+import { useIntl } from 'utils/cl-intl';
+
 // parse
 import { parseTableData } from './parse';
 
@@ -18,18 +21,15 @@ import {
   ReferrersTotalRow,
   TableRow,
 } from './typings';
-import { InjectedIntlProps } from 'react-intl';
 
-export default function useVisitorReferrers(
-  formatMessage: InjectedIntlProps['intl']['formatMessage'],
-  {
-    projectId,
-    startAtMoment,
-    endAtMoment,
-    pageNumber,
-    pageSize,
-  }: QueryParameters
-) {
+export default function useVisitorReferrers({
+  projectId,
+  startAtMoment,
+  endAtMoment,
+  pageNumber,
+  pageSize,
+}: QueryParameters) {
+  const { formatMessage } = useIntl();
   const [tableData, setTableData] = useState<TableRow[] | NilOrError>();
   const [totals, setTotals] = useState<ReferrersTotalRow | NilOrError>();
 

@@ -11,8 +11,7 @@ import Chart from './Chart';
 
 // i18n
 import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'react-intl';
 
 // typings
 import { IResolution } from 'components/admin/ResolutionControl';
@@ -31,19 +30,16 @@ const VisitorsCard = ({
   endAtMoment,
   projectFilter,
   resolution,
-  intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
+}: Props) => {
+  const { formatMessage } = useIntl();
   const graphRef = useRef();
 
-  const { deducedResolution, stats, timeSeries, xlsxData } = useVisitors(
-    formatMessage,
-    {
-      startAtMoment,
-      endAtMoment,
-      projectId: projectFilter,
-      resolution,
-    }
-  );
+  const { deducedResolution, stats, timeSeries, xlsxData } = useVisitors({
+    startAtMoment,
+    endAtMoment,
+    projectId: projectFilter,
+    resolution,
+  });
 
   const cardTitle = formatMessage(messages.visitors);
   const startAt = startAtMoment?.toISOString();
@@ -86,4 +82,4 @@ const VisitorsCard = ({
   );
 };
 
-export default injectIntl(VisitorsCard);
+export default VisitorsCard;

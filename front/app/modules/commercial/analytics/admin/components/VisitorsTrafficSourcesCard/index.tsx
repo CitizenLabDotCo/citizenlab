@@ -11,8 +11,7 @@ import Table from './Table';
 
 // i18n
 import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'react-intl';
 
 // typings
 import { IResolution } from 'components/admin/ResolutionControl';
@@ -32,10 +31,10 @@ const VisitorsTrafficSourcesCard = ({
   endAtMoment,
   projectFilter,
   resolution,
-  intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
+}: Props) => {
+  const { formatMessage } = useIntl();
   const graphRef = useRef();
-  const { pieData, xlsxData } = useVisitorReferrerTypes(formatMessage, {
+  const { pieData, xlsxData } = useVisitorReferrerTypes({
     startAtMoment,
     endAtMoment,
     projectId: projectFilter,
@@ -87,4 +86,4 @@ const VisitorsTrafficSourcesCard = ({
   );
 };
 
-export default injectIntl(VisitorsTrafficSourcesCard);
+export default VisitorsTrafficSourcesCard;

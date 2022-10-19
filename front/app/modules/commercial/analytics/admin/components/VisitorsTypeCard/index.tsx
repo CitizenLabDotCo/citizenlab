@@ -12,8 +12,7 @@ import renderTooltip from './renderTooltip';
 
 // i18n
 import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'react-intl';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -35,11 +34,11 @@ const VisitorsCard = ({
   endAtMoment,
   projectFilter,
   resolution,
-  intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
+}: Props) => {
+  const { formatMessage } = useIntl();
   const graphRef = useRef();
 
-  const { pieData, xlsxData } = useVisitorTypes(formatMessage, {
+  const { pieData, xlsxData } = useVisitorTypes({
     startAtMoment,
     endAtMoment,
     projectId: projectFilter,
@@ -119,4 +118,4 @@ const VisitorsCard = ({
   );
 };
 
-export default injectIntl(VisitorsCard);
+export default VisitorsCard;

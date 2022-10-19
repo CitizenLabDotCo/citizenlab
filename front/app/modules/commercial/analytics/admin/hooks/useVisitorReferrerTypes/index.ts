@@ -7,6 +7,9 @@ import {
   QuerySchema,
 } from '../../services/analyticsFacts';
 
+// i18n
+import { useIntl } from 'react-intl';
+
 // parse
 import { parsePieData, parseExcelData } from './parse';
 
@@ -17,7 +20,6 @@ import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 // typings
 import { QueryParameters, Response, PieRow } from './typings';
-import { WrappedComponentProps } from 'react-intl';
 import { XlsxData } from 'components/admin/ReportExportMenu';
 
 const query = ({
@@ -48,10 +50,12 @@ const query = ({
   return { query: trafficSourcesQuery };
 };
 
-export default function useVisitorsTrafficSourcesData(
-  formatMessage: WrappedComponentProps['intl']['formatMessage'],
-  { projectId, startAtMoment, endAtMoment }: QueryParameters
-) {
+export default function useVisitorsTrafficSourcesData({
+  projectId,
+  startAtMoment,
+  endAtMoment,
+}: QueryParameters) {
+  const { formatMessage } = useIntl();
   const [pieData, setPieData] = useState<PieRow[] | NilOrError>();
   const [xlsxData, setXlsxData] = useState<XlsxData | NilOrError>();
 

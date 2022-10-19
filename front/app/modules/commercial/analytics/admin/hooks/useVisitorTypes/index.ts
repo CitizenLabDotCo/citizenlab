@@ -7,6 +7,9 @@ import {
   QuerySchema,
 } from '../../services/analyticsFacts';
 
+// i18n
+import { useIntl } from 'react-intl';
+
 // parse
 import { parsePieData, parseExcelData } from './parse';
 
@@ -14,7 +17,6 @@ import { parsePieData, parseExcelData } from './parse';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { XlsxData } from 'components/admin/ReportExportMenu';
 import { Response, PieRow, QueryParameters } from './typings';
-import { WrappedComponentProps } from 'react-intl';
 
 // utils
 import { getProjectFilter, getDateFilter } from '../../utils/query';
@@ -49,10 +51,12 @@ const query = ({
   };
 };
 
-export default function useVisitorsData(
-  formatMessage: WrappedComponentProps['intl']['formatMessage'],
-  { projectId, startAtMoment, endAtMoment }: QueryParameters
-) {
+export default function useVisitorsData({
+  projectId,
+  startAtMoment,
+  endAtMoment,
+}: QueryParameters) {
+  const { formatMessage } = useIntl();
   const [pieData, setPieData] = useState<PieRow[] | NilOrError>();
   const [xlsxData, setXlsxData] = useState<XlsxData | NilOrError>();
 
