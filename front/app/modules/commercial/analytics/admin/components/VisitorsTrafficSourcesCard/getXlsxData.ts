@@ -6,6 +6,7 @@ import { apiEndpoint } from '../../services/analyticsFacts';
 // utils
 import { getProjectFilter, getDateFilter } from '../../utils/query';
 import { reportError } from 'utils/loggingUtils';
+import { sanitizeQueryParameters } from 'utils/streams/utils';
 
 // typings
 import {
@@ -53,11 +54,9 @@ export default async function getXlsxData(
     const referrersResponse = await request<ReferrerListResponse>(
       apiEndpoint,
       null,
-      null,
-      query(parameters)
+      { method: 'GET' },
+      sanitizeQueryParameters(query(parameters))
     );
-
-    console.log(referrersResponse);
 
     return {
       ...referrerTypesXlsxData,
