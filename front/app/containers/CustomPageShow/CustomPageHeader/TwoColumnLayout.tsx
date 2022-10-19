@@ -1,7 +1,7 @@
 import {
   Container,
   HeaderImage,
-} from 'components/LandingPages/citizen/Layouts/TwoColumnLayoutStyles';
+} from 'components/LandingPages/citizen/TwoColumnLayout';
 import React from 'react';
 import { ICustomPageData } from 'services/customPages';
 import AdminCustomPageEditButton from './AdminCustomPageEditButton';
