@@ -57,7 +57,7 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
       : Object.fromEntries(
           Object.keys(schema.properties).map((prop) => {
             if (prop === 'author_id') {
-              return ['author_id', idea.relationships?.author?.data?.id];
+              return [prop, idea.relationships?.author?.data?.id];
             } else if (idea.attributes?.[prop]) {
               return [prop, idea.attributes?.[prop]];
             } else if (
