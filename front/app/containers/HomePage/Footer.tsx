@@ -11,7 +11,7 @@ import { openSignUpInModal } from 'components/SignUpIn/events';
 
 // style
 import styled from 'styled-components';
-import { HeadingFontStyle } from './SignedOutHeader/HeaderContent';
+import { HeadingFontStyle } from 'components/LandingPages/citizen/HeaderContent';
 import { fontSizes } from 'utils/styleUtils';
 
 // components

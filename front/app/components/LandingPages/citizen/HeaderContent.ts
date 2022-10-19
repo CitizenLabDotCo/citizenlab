@@ -30,7 +30,7 @@ export const Container = styled.div<{
   `}
 `;
 
-const HeadingFontStyle = css`
+export const HeadingFontStyle = css`
   font-weight: ${({ theme }) => theme.signedOutHeaderTitleFontWeight || 600};
   line-height: normal;
 `;

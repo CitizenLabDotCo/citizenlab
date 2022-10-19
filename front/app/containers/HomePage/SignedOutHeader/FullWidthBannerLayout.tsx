@@ -7,10 +7,9 @@ import {
 } from 'components/LandingPages/citizen/FullWidthBannerLayout';
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
+
 // components
 import HeaderContent from './HeaderContent';
-
-// style
 
 // hooks
 import useHomepageSettings from 'hooks/useHomepageSettings';
