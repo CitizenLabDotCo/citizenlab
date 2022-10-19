@@ -6,7 +6,7 @@ import {
   ICustomPageData,
   ICustomPage,
   ICustomPages,
-  listStaticPages,
+  listCustomPages,
   customPageByIdStream,
 } from 'services/customPages';
 import { isNilOrError, NilOrError, reduceErrors } from 'utils/helperUtils';
@@ -57,7 +57,7 @@ function createSubscription(inputProps$, setPages: SetPages) {
           );
         }
 
-        return listStaticPages().observable.pipe(
+        return listCustomPages().observable.pipe(
           map((response: ICustomPages | NilOrError) => {
             return isNilOrError(response) ? response : response.data;
           })
