@@ -171,4 +171,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.deleteResultsCondition',
     defaultMessage: 'if you need to make changes.',
   },
+  requiredField: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.requiredField',
+    defaultMessage: 'required',
+  },
+  optionalField: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.optionalField',
+    defaultMessage: 'optional',
+  },
 });
