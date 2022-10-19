@@ -24,10 +24,8 @@ const TopInfoSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     <GenericTopInfoSection
       pageData={homepageSettings}
       updatePage={(data) => updateHomepageSettings(data)}
-      updatePageAndEnableSection={
-        homepageSettings.attributes.top_info_section_enabled
-          ? undefined // matches the type for an optional parameter
-          : (data) => updateHomepageAndEnableSection(data)
+      updatePageAndEnableSection={(data) =>
+        updateHomepageAndEnableSection(data)
       }
       breadcrumbs={[
         {

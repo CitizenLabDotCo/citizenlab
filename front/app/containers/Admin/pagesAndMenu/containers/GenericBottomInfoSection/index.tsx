@@ -40,7 +40,7 @@ interface Props {
   updatePage: (data: {
     bottom_info_section_multiloc: Multiloc;
   }) => Promise<any>;
-  updatePageAndEnableSection?: (data: {
+  updatePageAndEnableSection: (data: {
     bottom_info_section_multiloc: Multiloc;
   }) => Promise<any>;
   breadcrumbs: TBreadcrumbs;
@@ -136,8 +136,7 @@ const GenericBottomInfoSection = ({
             >
               {formatMessage(messages.saveButton)}
             </Button>
-            {/* only show save + enable button if a handler is passed down for that */}
-            {updatePageAndEnableSection && (
+            {!pageData.attributes.bottom_info_section_enabled && (
               <Button
                 ml="30px"
                 type="button"

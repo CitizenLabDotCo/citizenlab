@@ -39,7 +39,7 @@ import validateMultiloc from 'utils/yup/validateMultiloc';
 interface Props {
   pageData: IHomepageSettingsData | ICustomPageData;
   updatePage: (data: { top_info_section_multiloc: Multiloc }) => Promise<any>;
-  updatePageAndEnableSection?: (data: {
+  updatePageAndEnableSection: (data: {
     top_info_section_multiloc: Multiloc;
   }) => Promise<any>;
   breadcrumbs: TBreadcrumbs;
@@ -139,7 +139,7 @@ const GenericTopInfoSection = ({
                 {formatMessage(messages.topInfoSaveButton)}
               </Button>
               {/* only show save + enable button if a handler is passed down for that */}
-              {updatePageAndEnableSection && (
+              {!pageData.attributes.top_info_section_enabled && (
                 <Button
                   ml="30px"
                   type="button"

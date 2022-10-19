@@ -25,10 +25,8 @@ const TopInfoSection = () => {
     <GenericTopInfoSection
       pageData={customPage}
       updatePage={(data) => updateCustomPage(customPageId, data)}
-      updatePageAndEnableSection={
-        customPage.attributes.top_info_section_enabled
-          ? undefined // matches the type for an optional parameter
-          : (data) => updateCustomPageAndEnableSection(customPageId, data)
+      updatePageAndEnableSection={(data) =>
+        updateCustomPageAndEnableSection(customPageId, data)
       }
       breadcrumbs={[
         {
