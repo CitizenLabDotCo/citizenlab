@@ -1,21 +1,11 @@
 import React from 'react';
 
 // components
-import { fontSizes } from 'utils/styleUtils';
-import styled from 'styled-components';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Title } from '@citizenlab/cl2-component-library';
 import StickyContainer from './StickyContainer';
 import Breadcrumbs, { TBreadcrumbs } from 'components/UI/Breadcrumbs';
 import PageWrapper from 'components/admin/PageWrapper';
 import { SectionDescription } from 'components/admin/Section';
-
-const PageTitle = styled.h1`
-  font-size: ${fontSizes.xxxl}px;
-  line-height: 40px;
-  font-weight: 600;
-  padding: 0;
-  margin: 0;
-`;
 
 interface Props {
   breadcrumbs?: TBreadcrumbs;
@@ -49,7 +39,7 @@ const SectionFormWrapper = ({
         {title && (
           <Box mb="20px">
             <Box display="flex" alignItems="center">
-              <PageTitle>{title}</PageTitle>{' '}
+              <Title color="primary">{title}</Title>{' '}
               {badge && <Box ml="20px">{badge}</Box>}
             </Box>
             {subtitle && <SectionDescription>{subtitle}</SectionDescription>}
