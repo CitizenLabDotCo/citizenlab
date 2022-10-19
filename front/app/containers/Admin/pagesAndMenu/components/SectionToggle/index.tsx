@@ -49,11 +49,7 @@ const SectionToggle = ({
           mt="7px"
           data-cy={`e2e-admin-section-toggle-${name}`}
         >
-          <Toggle
-            checked={checked}
-            onChange={onChangeSectionToggle}
-            disabled={false}
-          />
+          <Toggle checked={checked} onChange={onChangeSectionToggle} />
         </Box>
         <Box>
           <Title mr="10px">
