@@ -21,11 +21,12 @@ const ShownOnPageBadge = ({ shownOnPage }: { shownOnPage: boolean }) => {
     );
   }
 
+  // not shown
   return (
     <StatusLabel
       text={
         <Text color="error">
-          <FormattedMessage {...messages.shownOnPage} />
+          <FormattedMessage {...messages.notShownOnPage} />
         </Text>
       }
       backgroundColor={colors.red100}
