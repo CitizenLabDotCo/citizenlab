@@ -1,7 +1,7 @@
 import {
   Container,
   HeaderImage,
-} from 'components/LandingPageComponents/citizen/Layouts/TwoColumnLayoutStyles';
+} from 'components/LandingPages/citizen/Layouts/TwoColumnLayoutStyles';
 import HeaderContent from 'containers/HomePage/SignedOutHeader/HeaderContent';
 import useHomepageSettings from 'hooks/useHomepageSettings';
 import React from 'react';

@@ -3,7 +3,7 @@ import ContentContainer from 'components/ContentContainer';
 import {
   Container,
   HeaderImage,
-} from 'components/LandingPageComponents/citizen/Layouts/TwoRowLayoutStyles';
+} from 'components/LandingPages/citizen/Layouts/TwoRowLayoutStyles';
 import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/HeaderImageDropzone';
 import React from 'react';
 import { ICustomPageData } from 'services/customPages';
