@@ -487,7 +487,6 @@
   "app.containers.Admin.PagesAndMenu.heroBannerMessageSuccess": "تم حفظ البانر الرئيسي",
   "app.containers.Admin.PagesAndMenu.heroBannerSaveButton": "حفظ البانر الرئيسي",
   "app.containers.Admin.PagesAndMenu.homeTitle": "الرئيسية",
-  "app.containers.Admin.PagesAndMenu.pageHeader": "الصفحات",
   "app.containers.Admin.PagesAndMenu.pagesMenuMetaTitle": "الصفحات والقائمة | {orgName}",
   "app.containers.Admin.PagesAndMenu.removeButton": "إزالة من شريط التنقل",
   "app.containers.Admin.PagesAndMenu.title": "صفحات وقائمة",
