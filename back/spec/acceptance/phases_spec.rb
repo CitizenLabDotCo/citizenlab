@@ -779,7 +779,7 @@ resource 'Phases' do
     end
   end
 
-  context 'when authenticated as project moderator' do
+  context 'when authenticated as project moderator', skip: !CitizenLab.ee? do
     get 'web_api/v1/phases/:id/as_xlsx' do
       before do
         user = create(:project_moderator, projects: [project])
@@ -819,7 +819,7 @@ resource 'Phases' do
           )
         end
 
-        example_request 'Download phase inputs without private user data', document: false, skip: !CitizenLab.ee? do
+        example_request 'Download phase inputs without private user data', document: false do
           expect(status).to eq 200
           expect(xlsx_contents(response_body)).to match_array([
             {
@@ -908,7 +908,7 @@ resource 'Phases' do
           )
         end
 
-        example_request 'Download phase inputs without private user data', document: false, skip: !CitizenLab.ee? do
+        example_request 'Download phase inputs without private user data', document: false do
           expect(status).to eq 200
           expect(xlsx_contents(response_body)).to match_array([
             {
