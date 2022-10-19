@@ -35,6 +35,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: stretch;
   padding-top: 40px;
+  padding-bottom: 60px;
   padding-left: 20px;
   padding-right: 20px;
 `;
