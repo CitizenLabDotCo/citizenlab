@@ -691,6 +691,7 @@
   "app.containers.CookiePolicy.viewPreferencesButtonText": "Cookie-Astellunge",
   "app.containers.CookiePolicy.viewPreferencesText": "Et ka sinn, datt d’Cookie-Kategorien hei ënnen net op all Visiteuren oder Plattformen zoutreffen; Dir fannt an Äre {viewPreferencesButton} eng vollstänneg Lëscht vun Integratioune vun Drëttubidder, déi Iech betreffen.",
   "app.containers.CookiePolicy.whatDoWeUseCookiesFor": "Fir wat benotze mir Cookien?",
+  "app.containers.CustomPageShow.editPage": "Edit page",
   "app.containers.IdeaButton.addAContribution": "E Bäitrag bäifügen",
   "app.containers.IdeaButton.addAProject": "E Projet bäifügen",
   "app.containers.IdeaButton.addAQuestion": "Eng Fro bäifügen",
