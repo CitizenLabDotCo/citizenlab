@@ -3,7 +3,7 @@ import messages from './messages';
 import cardMessages from '../../components/VisitorsTrafficSourcesCard/messages';
 
 // typings
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 export interface Translations {
   'Direct Entry': string;
@@ -18,7 +18,7 @@ export interface Translations {
 }
 
 export const getTranslations = (
-  formatMessage: InjectedIntlProps['intl']['formatMessage']
+  formatMessage: WrappedComponentProps['intl']['formatMessage']
 ): Translations => ({
   'Direct Entry': formatMessage(messages.directEntry),
   'Social Networks': formatMessage(messages.socialNetworks),

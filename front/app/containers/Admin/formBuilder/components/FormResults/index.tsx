@@ -1,5 +1,5 @@
 import React from 'react';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import { get, snakeCase } from 'lodash-es';
 import { useParams } from 'react-router-dom';
@@ -28,7 +28,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // hooks
 import useFormResults from 'hooks/useFormResults';
 
-const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const { projectId } = useParams() as {
     projectId: string;
   };

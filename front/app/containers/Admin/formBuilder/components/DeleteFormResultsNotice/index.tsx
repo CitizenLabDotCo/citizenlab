@@ -9,7 +9,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { Box, Icon, Text } from '@citizenlab/cl2-component-library';
 
 // intl
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 import { injectIntl } from 'utils/cl-intl';
 
@@ -27,7 +27,7 @@ const StyledLink = styled(Link)`
 type Props = {
   projectId: string;
   redirectToSurveyPage?: boolean;
-} & InjectedIntlProps;
+} & WrappedComponentProps;
 
 const DeleteFormResultsNotice = ({
   projectId,

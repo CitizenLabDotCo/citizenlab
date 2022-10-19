@@ -40,7 +40,7 @@ import useFormCustomFields from 'hooks/useFormCustomFields';
 import useFormSubmissionCount from 'hooks/useFormSubmissionCount';
 
 // intl
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
@@ -65,7 +65,7 @@ type FormEditProps = {
   projectId: string;
   phaseId?: string;
   totalSubmissions: number;
-} & InjectedIntlProps;
+} & WrappedComponentProps;
 
 export const FormEdit = ({
   intl: { formatMessage },
