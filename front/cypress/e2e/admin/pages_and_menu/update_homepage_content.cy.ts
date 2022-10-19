@@ -2,12 +2,15 @@ import { randomString } from '../../../support/commands';
 
 describe('Admin: update HomePage content', () => {
   before(() => {
-    cy.setLoginCookie('admin@citizenlab.co', 'democracy2.0');
     cy.apiUpdateHomepageSettings({
       top_info_section_enabled: false,
       bottom_info_section_enabled: false,
       events_widget_enabled: false,
     });
+  });
+
+  beforeEach(() => {
+    cy.setLoginCookie('admin@citizenlab.co', 'democracy2.0');
   });
 
   it('updates top and bottom info section content and visibility', () => {
@@ -28,7 +31,9 @@ describe('Admin: update HomePage content', () => {
     cy.get('[data-cy="e2e-admin-edit-button"]').eq(1).click();
     cy.get('.e2e-localeswitcher').each((el) => {
       cy.wrap(el).click();
-      cy.get('#top_info_section_multiloc-en').clear().type(topInfoContent);
+      cy.get('#top_info_section_multiloc-en').clear();
+      cy.get('#top_info_section_multiloc-en').type(topInfoContent);
+      cy.get('#top_info_section_multiloc-en').should('contain', topInfoContent);
     });
 
     // submit form and wait for success toast
@@ -44,9 +49,12 @@ describe('Admin: update HomePage content', () => {
     // update content for each language
     cy.get('.e2e-localeswitcher').each((el) => {
       cy.wrap(el).click();
-      cy.get('#bottom_info_section_multiloc-en')
-        .clear()
-        .type(bottomInfoContent);
+      cy.get('#bottom_info_section_multiloc-en').clear();
+      cy.get('#bottom_info_section_multiloc-en').type(bottomInfoContent);
+      cy.get('#bottom_info_section_multiloc-en').should(
+        'contain',
+        bottomInfoContent
+      );
     });
 
     // submit form and wait for success toast

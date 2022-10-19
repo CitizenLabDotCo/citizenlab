@@ -173,7 +173,7 @@ export function formCustomFieldsResultsStream(
 }
 
 export interface IFormSubmissionCountData {
-  totalSubmissions: string;
+  totalSubmissions: number;
 }
 
 export interface IFormSubmissionCount {
