@@ -60,14 +60,6 @@ export function isNonEmptyString(str: string) {
   return isString(str) && trim(str) !== '';
 }
 
-export function sum(a, b) {
-  return a + b;
-}
-
-export function getDisplayName(Component) {
-  return Component.displayName || Component.name || 'Component';
-}
-
 type pageKeys =
   | 'admin'
   | 'idea_form'

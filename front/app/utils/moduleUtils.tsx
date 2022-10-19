@@ -28,14 +28,13 @@ import {
   CellConfiguration,
   InsertConfigurationOptions,
   ITab,
-  MessageDescriptor,
   Multiloc,
   Locale,
 } from 'typings';
 import { LatLngTuple } from 'leaflet';
 import { Point } from 'components/UI/LeafletMap/typings';
 import { IUserData } from 'services/users';
-import { MessageValue } from 'react-intl';
+
 import { NavItem } from 'containers/Admin/sideBar';
 import {
   AppConfigurationFeature,
@@ -66,13 +65,11 @@ import { BannerButtonStyle } from 'containers/LandingPage/BannerButton';
 import { AuthProvider } from 'components/SignUpIn/AuthProviders';
 import { Localize } from 'hooks/useLocalize';
 import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/projects/project/general';
+import { IntlFormatters } from 'react-intl';
 import { IResolution } from 'components/admin/ResolutionControl';
 
 export type ITabsOutlet = {
-  formatMessage: (
-    messageDescriptor: MessageDescriptor,
-    values?: { [key: string]: MessageValue } | undefined
-  ) => string;
+  formatMessage: IntlFormatters['formatMessage'];
   onData: (data: InsertConfigurationOptions<ITab>) => void;
 };
 

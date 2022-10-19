@@ -1649,7 +1649,6 @@
   "app.containers.admin.import.importStepTwo": "2. Upload je ingevulde bestand",
   "app.containers.admin.import.successMessage": "Bestand succesvol geïmporteerd!",
   "app.containers.admin.project.permissions.permissionsAdministrators": "Beheerders en projectbeheerders",
-  "app.containers.admin.project.permissions.permissionsEveryoneLabel": "Iedereen",
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Bepaalde groepen gebruikers",
   "app.containers.admin.project.permissions.permissionsUsersLabel": "Geregistreerde gebruikers",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Wie kan dit project zien?",

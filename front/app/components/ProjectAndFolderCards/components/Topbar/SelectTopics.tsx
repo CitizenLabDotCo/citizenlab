@@ -11,7 +11,7 @@ import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // hooks
@@ -33,7 +33,7 @@ const SelectTopics = ({
   selectedTopics,
   onChangeTopics,
   intl: { formatMessage },
-}: SelectTopicsProps & InjectedIntlProps) => {
+}: SelectTopicsProps & WrappedComponentProps) => {
   const localize = useLocalize();
   const topics = useTopics({ forHomepageFilter: true });
   const appConfig = useAppConfiguration();

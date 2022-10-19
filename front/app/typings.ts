@@ -4,7 +4,6 @@ import {
   appLocalePairs,
 } from 'containers/App/constants';
 import { FC } from 'react';
-import { Messages } from 'react-intl';
 import { TableCellProps } from 'semantic-ui-react';
 import {
   TAppConfigurationSetting,
@@ -120,8 +119,6 @@ export interface Message {
   id: string;
   defaultMessage: string;
 }
-
-export type MessageDescriptor = Messages['key'];
 
 export type Locale = keyof typeof appLocalePairs;
 

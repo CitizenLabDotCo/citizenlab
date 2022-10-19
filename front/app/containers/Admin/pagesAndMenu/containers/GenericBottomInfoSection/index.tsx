@@ -15,7 +15,7 @@ import Feedback from 'components/HookForm/Feedback';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -50,7 +50,7 @@ const GenericBottomInfoSection = ({
   updatePage,
   breadcrumbs,
   intl: { formatMessage },
-}: InjectedIntlProps & Props) => {
+}: WrappedComponentProps & Props) => {
   const theme: any = useTheme();
 
   const onFormSubmit = async (formValues: FormValues) => {

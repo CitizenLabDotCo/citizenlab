@@ -1,20 +1,21 @@
 import { ScreenReaderOnly } from 'utils/a11y';
 import ContentContainer from 'components/ContentContainer';
 import styled, { withTheme } from 'styled-components';
-import { FormattedMessage, IMessageInfo } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import Button from 'components/UI/Button';
 import { colors, media } from 'utils/styleUtils';
 import React, { memo } from 'react';
 import messages from './messages';
 
-interface FormSubmitFooterProps extends IMessageInfo {
+interface FormSubmitFooterProps {
   disabled?: boolean;
   processing?: boolean;
   onSubmit: () => void;
   theme: any;
   className?: string;
   error: boolean;
-  errorMessage: IMessageInfo['message'];
+  errorMessage: MessageDescriptor;
+  message: MessageDescriptor;
 }
 
 const StyledButton = styled(Button)`
@@ -65,7 +66,6 @@ export const FormSubmitFooter = withTheme(
   memo(
     ({
       message,
-      values,
       theme,
       onSubmit,
       className,
@@ -89,7 +89,7 @@ export const FormSubmitFooter = withTheme(
               ariaDisabled={disabled}
               {...otherProps}
             >
-              <FormattedMessage {...message} values={values} />
+              <FormattedMessage {...message} />
             </StyledButton>
             {error && (
               <ErrorContainer className="e2e-error-form">

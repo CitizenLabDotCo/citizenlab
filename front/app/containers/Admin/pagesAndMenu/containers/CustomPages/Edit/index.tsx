@@ -8,7 +8,7 @@ import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumb
 
 // i18n
 import messages from '../messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import HelmetIntl from 'components/HelmetIntl';
 import useLocalize from 'hooks/useLocalize';
@@ -24,7 +24,7 @@ import { Outlet as RouterOutlet, useParams } from 'react-router-dom';
 
 const CustomPagesEditSettings = ({
   intl: { formatMessage },
-}: InjectedIntlProps) => {
+}: WrappedComponentProps) => {
   const localize = useLocalize();
   const { customPageId } = useParams() as { customPageId: string };
   const customPage = useCustomPage(customPageId);

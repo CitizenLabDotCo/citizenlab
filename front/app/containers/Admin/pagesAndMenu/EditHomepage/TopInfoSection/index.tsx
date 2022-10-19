@@ -1,13 +1,13 @@
 import useHomepageSettings from 'hooks/useHomepageSettings';
 import React from 'react';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { updateHomepageSettings } from 'services/homepageSettings';
 import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { homeBreadcrumb } from '../../breadcrumbs';
 import GenericTopInfoSection from 'containers/Admin/pagesAndMenu/containers/GenericTopInfoSection';
 
-const TopInfoSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+const TopInfoSection = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const homepageSettings = useHomepageSettings();
   if (isNilOrError(homepageSettings)) {
     return null;

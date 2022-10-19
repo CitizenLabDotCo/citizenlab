@@ -39,7 +39,7 @@ import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import { API_PATH, appLocalePairs } from 'containers/App/constants';
@@ -155,7 +155,7 @@ type State = {
 };
 
 class Invitations extends React.PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   fileInputElement: HTMLInputElement | null;

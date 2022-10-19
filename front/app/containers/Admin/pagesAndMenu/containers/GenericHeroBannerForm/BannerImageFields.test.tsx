@@ -27,6 +27,6 @@ describe('BannerImageFields', () => {
       />
     );
 
-    expect(screen.getByText('Banner image')).toBeInTheDocument();
+    expect(screen.getByText('Header image')).toBeInTheDocument();
   });
 });

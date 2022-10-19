@@ -8,7 +8,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { CLError, Multiloc, IOption } from 'typings';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { appLocalePairs } from 'containers/App/constants';
 import messages from '../messages';
@@ -89,7 +89,7 @@ interface State {
 }
 
 class SettingsGeneralTab extends PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   subscriptions: Subscription[];
@@ -467,4 +467,4 @@ class SettingsGeneralTab extends PureComponent<
   }
 }
 
-export default injectIntl<Props>(SettingsGeneralTab);
+export default injectIntl(SettingsGeneralTab);

@@ -22,7 +22,7 @@ import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 // intl
 import messages from '../messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
 // types
@@ -45,7 +45,7 @@ const CustomPageSettingsForm = ({
   intl: { formatMessage },
   mode,
   onSubmit,
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const [_titleErrors, _setTitleErrors] = useState<Multiloc>({});
   const schema = object({
     title_multiloc: validateMultilocForEveryLocale(
