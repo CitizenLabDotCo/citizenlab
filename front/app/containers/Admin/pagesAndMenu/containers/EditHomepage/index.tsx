@@ -79,7 +79,6 @@ const EditHomepage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         });
       } catch (error) {
         console.error(error);
-      } finally {
       }
     };
 

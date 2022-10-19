@@ -96,7 +96,6 @@ const CustomPagesEditContent = () => {
         });
       } catch (error) {
         console.error(error);
-      } finally {
       }
     };
 
