@@ -20,7 +20,7 @@ describe('Admin project participation method settings', () => {
     });
   });
 
-  it('checks that participation method can be changed after creation only for certain participation methods', () => {
+  it('checks that participation method can be changed after creation except for native survey projects/phases', () => {
     cy.setAdminLoginCookie();
     cy.visit(`admin/projects/${projectIdContinuous}`);
 
