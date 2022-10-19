@@ -1411,7 +1411,7 @@
   "app.containers.admin.ideas.all.tabManage": "Modifica",
   "app.containers.admin.ideas.all.tabStatuses": "Statuses",
   "app.containers.admin.project.permissions.permissionsAdministrators": "Administrators",
-  "app.containers.admin.project.permissions.permissionsEveryoneLabel": "Everyone",
+  "app.containers.admin.project.permissions.permissionsEveryoneLabel": "Ognuno",
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Selection",
   "app.containers.admin.project.permissions.permissionsUsersLabel": "Utenti registrati",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Who can see this project?",
