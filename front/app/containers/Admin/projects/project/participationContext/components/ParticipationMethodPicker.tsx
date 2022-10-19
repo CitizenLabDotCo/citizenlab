@@ -45,7 +45,7 @@ export const ParticipationMethodPicker = ({
           />
         )}
       </SubSectionTitle>
-      {!config.methodIsLocked && (
+      {!config.methodIsLocked ? (
         <>
           <ParticipationMethodRadio
             onChange={handleParticipationMethodOnChange}
@@ -176,8 +176,7 @@ export const ParticipationMethodPicker = ({
           />
           <Error apiErrors={apiErrors && apiErrors.participation_method} />
         </>
-      )}
-      {config.methodIsLocked && (
+      ) : (
         <Text margin="0" color="teal700">
           {config.getMethodPickerMessage()}
         </Text>
