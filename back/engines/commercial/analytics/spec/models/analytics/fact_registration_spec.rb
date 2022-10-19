@@ -12,10 +12,9 @@ RSpec.describe Analytics::FactRegistration, type: :model do
   end
 
   context 'when user is created and has not completed registration' do
-    let!(:user) { create(:user, registration_completed_at: nil ) }
+    let!(:user) { create(:user, registration_completed_at: nil) }
 
     it 'is not available as a registration fact' do
-      # pp described_class.find(user.id)
       !described_class.find(user.id)
     end
   end
