@@ -21,6 +21,14 @@ const REFERRER_TYPE_SINGULAR_MESSAGES: Record<
   Campaigns: messages.campaign,
 };
 
+const getReferrerTranslation = (
+  referrerType: ReferrerTypeName | string,
+  formatMessage: WrappedComponentProps['intl']['formatMessage']
+) =>
+  referrerType in REFERRER_TYPE_SINGULAR_MESSAGES
+    ? formatMessage(REFERRER_TYPE_SINGULAR_MESSAGES[referrerType])
+    : referrerType;
+
 export const parseTableData = (
   referrerRows: ReferrerRow[],
   { count: totalVisits, count_visitor_id: totalVisitors }: ReferrersTotalRow,
@@ -34,8 +42,9 @@ export const parseTableData = (
     visitsPercentage: roundPercentage(row.count, totalVisits),
     visitors: row.count_visitor_id,
     visitorsPercentage: roundPercentage(row.count_visitor_id, totalVisitors),
-    referrerType: formatMessage(
-      REFERRER_TYPE_SINGULAR_MESSAGES[row['dimension_referrer_type.name']]
+    referrerType: getReferrerTranslation(
+      row['dimension_referrer_type.name'],
+      formatMessage
     ),
     referrerName: row.referrer_name ?? '',
   }));

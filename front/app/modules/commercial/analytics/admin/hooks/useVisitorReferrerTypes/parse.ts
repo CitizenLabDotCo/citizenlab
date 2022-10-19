@@ -5,8 +5,13 @@ import { categoricalColorScheme } from 'components/admin/Graphs/styling';
 import { roundPercentages } from 'utils/math';
 
 // typings
-import { Response, PieRow } from './typings';
+import { Response, PieRow, ReferrerTypeName } from './typings';
 import { Translations } from './utils';
+
+const getReferrerTranslation = (
+  referrerType: ReferrerTypeName | string,
+  translations: Translations
+) => (referrerType in translations ? translations[referrerType] : referrerType);
 
 export const parsePieData = (
   data: Response['data'],
@@ -18,7 +23,10 @@ export const parsePieData = (
   const percentages = roundPercentages(counts);
 
   return data.map((row, i) => ({
-    name: translations[row.first_dimension_referrer_type_name],
+    name: getReferrerTranslation(
+      row.first_dimension_referrer_type_name,
+      translations
+    ),
     value: row.count,
     percentage: percentages[i],
     color: categoricalColorScheme({ rowIndex: i }),
