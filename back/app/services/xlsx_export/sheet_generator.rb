@@ -53,6 +53,8 @@ module XlsxExport
         SpecialFieldForReport.new('id', column_header_for('input_id'))
       ].tap do |input_fields|
         fields_in_form.each do |field|
+          next if field.code == 'author_id'
+
           if field.code == 'location_description'
             input_fields << ComputedFieldForReport.new('latitude', column_header_for('latitude'), ->(input) { input.location_point&.coordinates&.last })
             input_fields << ComputedFieldForReport.new('longitude', column_header_for('longitude'), ->(input) { input.location_point&.coordinates&.first })
@@ -105,6 +107,8 @@ module XlsxExport
     end
 
     def user_report_fields
+      return [] unless include_private_attributes
+
       user_fields.map do |field|
         CustomFieldForReport.new(field, :author)
       end

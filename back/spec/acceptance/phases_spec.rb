@@ -507,7 +507,6 @@ resource 'Phases' do
                   'ID',
                   'Title',
                   'Description',
-                  'Author',
                   'Budget',
                   'Proposed Budget',
                   'Tags',
@@ -572,7 +571,6 @@ resource 'Phases' do
                   'ID',
                   'Title',
                   'Description',
-                  'Author',
                   'Budget',
                   'Proposed Budget',
                   'Tags',
@@ -601,13 +599,12 @@ resource 'Phases' do
                     ideation_response1.id,
                     ideation_response1.title_multiloc['en'],
                     'It would improve the air quality!', # html tags are removed
-                    ideation_response1.author_id,
                     ideation_response1.budget,
                     ideation_response1.proposed_budget,
                     'Topic 1 (en), Topic 2 (en)',
-                    3.921154106874878,
-                    51.11520776293035,
-                    'Some road',
+                    ideation_response1.location_point.coordinates.last,
+                    ideation_response1.location_point.coordinates.first,
+                    ideation_response1.location_description,
                     %r{/uploads/.+/idea_file/file/#{attachment1.id}/#{attachment1.name}\n/uploads/.+/idea_file/file/#{attachment2.id}/#{attachment2.name}},
                     'Answer',
                     ideation_response1.author_name,
@@ -778,6 +775,163 @@ resource 'Phases' do
         expect(active_phase.reload.ideas_count).to eq 0
         expect(ideation_phase.reload.ideas_count).to eq 1
         expect(Idea.count).to eq 1
+      end
+    end
+  end
+
+  context 'when authenticated as project moderator' do
+    get 'web_api/v1/phases/:id/as_xlsx' do
+      before do
+        user = create(:project_moderator, projects: [project])
+        token = Knock::AuthToken.new(payload: user.to_token_payload).token
+        header 'Authorization', "Bearer #{token}"
+      end
+
+      context 'for an ideation phase' do
+        let(:project) { create(:project, process_type: 'timeline') }
+        let(:project_form) { create(:custom_form, participation_context: project) }
+        let(:ideation_phase) do
+          create(
+            :phase,
+            project: project,
+            participation_method: 'ideation',
+            title_multiloc: {
+              'en' => 'Ideation phase',
+              'nl-BE' => 'Ideeënfase'
+            }
+          )
+        end
+        let(:id) { ideation_phase.id }
+        let!(:extra_idea_field) do
+          create(
+            :custom_field_extra_custom_form,
+            resource: project_form
+          )
+        end
+        let!(:assignee) { create(:admin, first_name: 'John', last_name: 'Doe') }
+        let!(:ideation_response) do
+          create(
+            :idea,
+            project: project,
+            phases: [ideation_phase],
+            custom_field_values: { extra_idea_field.key => 'Answer' },
+            assignee: assignee
+          )
+        end
+
+        example_request 'Download phase inputs without private user data', document: false, skip: !CitizenLab.ee? do
+          expect(status).to eq 200
+          expect(xlsx_contents(response_body)).to match_array([
+            {
+              sheet_name: ideation_phase.title_multiloc['en'],
+              column_headers: [
+                'ID',
+                'Title',
+                'Description',
+                'Budget',
+                'Proposed Budget',
+                'Tags',
+                'Latitude',
+                'Longitude',
+                'Location',
+                'Attachments',
+                extra_idea_field.title_multiloc['en'],
+                'Author name',
+                'Submitted at',
+                'Published at',
+                'Comments',
+                'Upvotes',
+                'Downvotes',
+                'Baskets',
+                'URL',
+                'Project',
+                'Status',
+                'Assignee'
+              ],
+              rows: [
+                [
+                  ideation_response.id,
+                  ideation_response.title_multiloc['en'],
+                  'It would improve the air quality!', # html tags are removed
+                  ideation_response.budget,
+                  ideation_response.proposed_budget,
+                  nil,
+                  ideation_response.location_point.coordinates.last,
+                  ideation_response.location_point.coordinates.first,
+                  ideation_response.location_description,
+                  nil,
+                  'Answer',
+                  ideation_response.author_name,
+                  an_instance_of(DateTime), # created_at
+                  an_instance_of(DateTime), # published_at
+                  0,
+                  0,
+                  0,
+                  0,
+                  "http://example.org/ideas/#{ideation_response.slug}",
+                  project.title_multiloc['en'],
+                  ideation_response.idea_status.title_multiloc['en'],
+                  "#{assignee.first_name} #{assignee.last_name}"
+                ]
+              ]
+            }
+          ])
+        end
+      end
+
+      context 'for a native survey phase' do
+        let(:project) { create(:project_with_active_native_survey_phase) }
+        let(:active_phase) { project.phases.first }
+        let(:form) { create(:custom_form, participation_context: active_phase) }
+        let(:id) { active_phase.id }
+        let(:multiselect_field) do
+          create(
+            :custom_field_multiselect,
+            resource: form,
+            title_multiloc: { 'en' => 'What are your favourite pets?' },
+            description_multiloc: {}
+          )
+        end
+        let!(:cat_option) do
+          create(:custom_field_option, custom_field: multiselect_field, key: 'cat', title_multiloc: { 'en' => 'Cat' })
+        end
+        let!(:dog_option) do
+          create(:custom_field_option, custom_field: multiselect_field, key: 'dog', title_multiloc: { 'en' => 'Dog' })
+        end
+        let!(:survey_response) do
+          create(
+            :idea,
+            project: project,
+            creation_phase: active_phase,
+            phases: [active_phase],
+            custom_field_values: { multiselect_field.key => %w[cat dog] }
+          )
+        end
+
+        example_request 'Download phase inputs without private user data', document: false, skip: !CitizenLab.ee? do
+          expect(status).to eq 200
+          expect(xlsx_contents(response_body)).to match_array([
+            {
+              sheet_name: active_phase.title_multiloc['en'],
+              column_headers: [
+                'ID',
+                multiselect_field.title_multiloc['en'],
+                'Author name',
+                'Submitted at',
+                'Project'
+              ],
+              rows: [
+                [
+                  survey_response.id,
+                  'Cat, Dog',
+                  survey_response.author_name,
+                  an_instance_of(DateTime), # created_at
+                  project.title_multiloc['en']
+                ]
+              ]
+            }
+          ])
+        end
       end
     end
   end
