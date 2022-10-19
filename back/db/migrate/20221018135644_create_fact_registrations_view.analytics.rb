@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # This migration comes from analytics (originally 20221017164207)
 
 class CreateFactRegistrationsView < ActiveRecord::Migration[6.1]
