@@ -802,11 +802,11 @@ GEM
       ruby2_keywords (~> 0.0.1)
     netrc (0.11.0)
     nio4r (2.5.8)
-    nokogiri (1.13.8-aarch64-linux)
+    nokogiri (1.13.9-aarch64-linux)
       racc (~> 1.4)
-    nokogiri (1.13.8-arm64-darwin)
+    nokogiri (1.13.9-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.13.8-x86_64-linux)
+    nokogiri (1.13.9-x86_64-linux)
       racc (~> 1.4)
     nori (2.6.0)
     oauth2 (1.4.9)
@@ -1233,6 +1233,7 @@ DEPENDENCIES
   moderation!
   multi_tenancy!
   nlp!
+  nokogiri (>= 1.13.9)
   okcomputer
   omniauth (~> 1.9.1)
   omniauth-azure-activedirectory!
