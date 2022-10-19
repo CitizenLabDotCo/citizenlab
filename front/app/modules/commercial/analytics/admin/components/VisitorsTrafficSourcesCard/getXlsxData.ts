@@ -3,10 +3,15 @@ import request from 'utils/request';
 // services
 import { apiEndpoint } from '../../services/analyticsFacts';
 
+// i18n
+import messages from './messages';
+import reffererTypeMessages from '../../hooks/useVisitorReferrerTypes/messages';
+
 // utils
 import { getProjectFilter, getDateFilter } from '../../utils/query';
 import { reportError } from 'utils/loggingUtils';
 import { sanitizeQueryParameters } from 'utils/streams/utils';
+import { getReferrerTranslation } from '../../hooks/useVisitorReferrerTypes/parse';
 
 // typings
 import {
@@ -15,6 +20,7 @@ import {
 } from '../../hooks/useVisitorReferrers/typings';
 import { XlsxData } from 'components/admin/ReportExportMenu';
 import { QuerySchema, Query } from '../../services/analyticsFacts';
+import { WrappedComponentProps } from 'react-intl';
 
 const query = ({
   projectId,
@@ -44,11 +50,10 @@ const query = ({
   return { query };
 };
 
-// const getTranslation = (formatMessage: )
-
 export default async function getXlsxData(
   parameters: QueryParametersWithoutPagination,
-  referrerTypesXlsxData: XlsxData
+  referrerTypesXlsxData: XlsxData,
+  formatMessage: WrappedComponentProps['intl']['formatMessage']
 ): Promise<XlsxData> {
   try {
     const referrersResponse = await request<ReferrerListResponse>(
@@ -60,7 +65,7 @@ export default async function getXlsxData(
 
     return {
       ...referrerTypesXlsxData,
-      ...parseReferrers(referrersResponse),
+      ...parseReferrers(referrersResponse, formatMessage),
     };
   } catch (error) {
     reportError(error);
@@ -68,6 +73,26 @@ export default async function getXlsxData(
   }
 }
 
-const parseReferrers = ({ data }: ReferrerListResponse): XlsxData => {
-  return data.map((row) => ({}));
+const parseReferrers = (
+  { data }: ReferrerListResponse,
+  formatMessage: WrappedComponentProps['intl']['formatMessage']
+): XlsxData => {
+  const trafficSource = formatMessage(reffererTypeMessages.trafficSource);
+  const referrer = formatMessage(messages.referrer);
+  const numberOfVisits = formatMessage(reffererTypeMessages.numberOfVisits);
+  const numberOfVisitors = formatMessage(messages.numberOfVisitors);
+
+  const parsedData = data.map((row) => ({
+    [trafficSource]: getReferrerTranslation(
+      row['dimension_referrer_type.name'],
+      translations
+    ),
+    [referrer]: row.referrer_name ?? '',
+    [numberOfVisits]: row.count,
+    [numberOfVisitors]: row.count_visitor_id,
+  }));
+
+  return {
+    [formatMessage(messages.referrers)]: parsedData,
+  };
 };

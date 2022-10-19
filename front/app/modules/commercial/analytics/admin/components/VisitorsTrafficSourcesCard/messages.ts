@@ -29,4 +29,8 @@ export default defineMessages({
     id: 'app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.referrers',
     defaultMessage: 'Referrers',
   },
+  numberOfVisitors: {
+    id: 'app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.numberOfVisitors',
+    defaultMessage: 'Number of visitors',
+  },
 });

@@ -83,7 +83,6 @@ const VisitorsTrafficSourcesCard = ({
       exportMenu={{
         name: cardTitle,
         svgNode: graphRef,
-        // xlsx: isNilOrError(xlsxData) ? undefined : { data: xlsxData },
         xlsx: isNilOrError(xlsxData)
           ? undefined
           : {
@@ -94,7 +93,8 @@ const VisitorsTrafficSourcesCard = ({
                     startAtMoment,
                     endAtMoment,
                   },
-                  xlsxData
+                  xlsxData,
+                  formatMessage
                 ),
             },
         startAt,
