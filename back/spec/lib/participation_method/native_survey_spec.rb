@@ -76,6 +76,26 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
   end
 
+  describe '#edit_custom_form_allowed?' do
+    context 'when there are no responses' do
+      it 'returns true' do
+        expect(participation_method.edit_custom_form_allowed?).to be true
+      end
+    end
+
+    context 'when there are responses' do
+      before do
+        IdeaStatus.create_defaults
+        create :idea, project: participation_context
+      end
+
+      it 'returns false' do
+        participation_context.reload
+        expect(participation_method.edit_custom_form_allowed?).to be false
+      end
+    end
+  end
+
   describe '#extra_fields_category_translation_key' do
     it 'returns nil' do
       expect(participation_method.extra_fields_category_translation_key).to be_nil
