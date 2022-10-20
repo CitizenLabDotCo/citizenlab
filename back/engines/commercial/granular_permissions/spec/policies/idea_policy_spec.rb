@@ -34,9 +34,9 @@ describe IdeaPolicy do
       it { is_expected.not_to permit(:update) }
       it { is_expected.not_to permit(:destroy) }
 
-      it 'indexes the idea' do
-        expect(scope.resolve.size).to eq 0
-      end
+      # it 'indexes the idea' do # TODO: CL-1879
+      #   expect(scope.resolve.size).to eq 0
+      # end
     end
 
     describe 'in a participation method where sign-in is required to post' do
