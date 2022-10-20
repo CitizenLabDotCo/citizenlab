@@ -16,9 +16,14 @@ import messages from '../../messages';
 import { ParticipationMethod } from 'services/participationContexts';
 import { ApiErrors } from '..';
 import { getMethodConfig } from 'utils/participationMethodUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import { IPhase } from 'services/phases';
+import { IProjectData } from 'services/projects';
 
 interface Props {
   participation_method: ParticipationMethod;
+  phase?: IPhase | undefined | null;
+  project?: IProjectData | undefined | null;
   showSurveys: boolean;
   apiErrors: ApiErrors;
   handleParticipationMethodOnChange: (
@@ -30,9 +35,21 @@ export const ParticipationMethodPicker = ({
   participation_method,
   showSurveys,
   apiErrors,
+  phase,
+  project,
   handleParticipationMethodOnChange,
 }: Props) => {
-  const config = getMethodConfig(participation_method);
+  const chooseParticipationMethod = () => {
+    if (!isNilOrError(phase)) {
+      return phase.data.attributes.participation_method;
+    }
+    if (!isNilOrError(project)) {
+      return project.attributes.participation_method;
+    }
+    return participation_method;
+  };
+
+  const config = getMethodConfig(chooseParticipationMethod());
   return (
     <SectionField>
       <SubSectionTitle>
