@@ -25,9 +25,11 @@ import useIdea from 'hooks/useIdea';
 import IdeasEditMeta from '../IdeasEditMeta';
 import { usePermission } from 'services/permissions';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
+import { deleteIdeaImage } from 'services/ideaImages';
 
 const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
+
   const authUser = useAuthUser();
   const idea = useIdea({ ideaId });
   const project = useProject({
@@ -56,6 +58,9 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
       ? null
       : Object.fromEntries(
           Object.keys(schema.properties).map((prop) => {
+            if (prop === 'idea_images_attributes') {
+              return [prop, idea.relationships?.idea_images?.data];
+            }
             if (prop === 'author_id') {
               return [prop, idea.relationships?.author?.data?.id];
             } else if (idea.attributes?.[prop]) {
@@ -77,6 +82,31 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
 
     if (data.location_description && !data.location_point_geojson) {
       location_point_geojson = await geocode(data.location_description);
+    }
+
+    // Delete a remote image only on submission
+    if (
+      data.idea_images_attributes === undefined &&
+      initialFormData?.idea_images_attributes !== undefined
+    ) {
+      try {
+        deleteIdeaImage(ideaId, initialFormData?.idea_images_attributes[0].id);
+      } catch (e) {
+        // TODO: Add graceful error handling
+      }
+    }
+
+    // Delete an attachment only on submission
+    if (
+      data.idea_images_attributes === undefined &&
+      initialFormData?.idea_images_attributes !== undefined
+    ) {
+      try {
+        // Loop through and delete any initial files not present in the current data
+        deleteIdeaImage(ideaId, initialFormData?.idea_images_attributes[0].id);
+      } catch (e) {
+        // TODO: Add graceful error handling
+      }
     }
 
     const idea = await updateIdea(ideaId, {
@@ -124,6 +154,7 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
     },
     [uiSchema]
   );
+
   return (
     <PageContainer overflow="hidden" id="e2e-idea-edit-page">
       {!isNilOrError(project) && !isNilOrError(idea) && schema && uiSchema ? (

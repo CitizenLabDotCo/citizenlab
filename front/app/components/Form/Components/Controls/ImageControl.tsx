@@ -11,7 +11,6 @@ import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { UploadFile } from 'typings';
 import ErrorDisplay from '../ErrorDisplay';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
-import { deleteIdeaImage } from 'services/ideaImages';
 import useIdeaImages from 'hooks/useIdeaImages';
 import { isNilOrError } from 'utils/helperUtils';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
@@ -32,10 +31,9 @@ const ImageControl = ({
     setImageFiles(imageFiles);
     setDidBlur(true);
   };
-  const handleUploadOnRemove = (file) => {
-    if (inputId && file.remote) {
-      deleteIdeaImage(inputId, file.id);
-    }
+  const handleUploadOnRemove = (_file) => {
+    // As we should only delete a remote image on form submission, this
+    // must be handled in the form itself, rather than here in the control.
     handleChange(path, undefined);
     setImageFiles([]);
     setDidBlur(true);
