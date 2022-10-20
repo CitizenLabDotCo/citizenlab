@@ -268,8 +268,6 @@
   "app.components.PagesForm.slugLabelTooltip": "Du kan angive den sidste del af din sidens URL-adresse (kaldet slug). Den aktuelle sides URL er f.eks. {currentPageURL}, hvor {currentPageSlug} er slug'en.",
   "app.components.PagesForm.slugRegexError": "Slug'en kan kun indeholde almindelige små bogstaver (a-z), tal (0-9) og bindestreger (-). Det første og sidste tegn kan ikke være bindestreger. Det er forbudt at bruge på hinanden følgende bindestreger (--).",
   "app.components.PagesForm.titleMissingOneLanguageError": "Angiv titel for mindst ét sprog",
-  "app.components.PagesShowPage.notFoundDescription": "Den anmodede side kunne ikke findes",
-  "app.components.PagesShowPage.notFoundTitle": "Side ikke fundet",
   "app.components.PasswordInput.a11y_passwordHidden": "Password er skjult",
   "app.components.PasswordInput.a11y_passwordVisible": "Password er synligt",
   "app.components.PasswordInput.a11y_strength1Password": "Password er for kort",
