@@ -268,8 +268,6 @@
   "app.components.PagesForm.slugLabelTooltip": "Você pode especificar a última parte da URL da página (chamada slug). Por exemplo, a URL da página atual é {currentPageURL}, onde {currentPageSlug} é o slug.",
   "app.components.PagesForm.slugRegexError": "O slug (última parte da URL da página do seu projeto) só pode conter letras minúsculas regulares (a-z), números (0-9) e hifens (-). O primeiro e o último caracteres não podem ser hifens. Hífens consecutivos (-) são proibidos",
   "app.components.PagesForm.titleMissingOneLanguageError": "Provide title for at least one language",
-  "app.components.PagesShowPage.notFoundDescription": "A página solicitada não pôde ser encontrada",
-  "app.components.PagesShowPage.notFoundTitle": "Página não encontrada",
   "app.components.PasswordInput.a11y_passwordHidden": "Senha oculta",
   "app.components.PasswordInput.a11y_passwordVisible": "Senha visível",
   "app.components.PasswordInput.a11y_strength1Password": "Força da senha baixa",
