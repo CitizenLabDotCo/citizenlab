@@ -127,7 +127,6 @@ export function listCustomPages(streamParams: IStreamParams | null = null) {
 // customers: they can edit the content of these pages, but nothing else.
 // For commercial customers, these behave as 'custom' pages.
 type TStandardPage = 'about' | 'faq';
-export const STANDARD_PAGES: TStandardPage[] = ['about', 'faq'];
 
 // Policy pages of which only the content can be edited
 // in 'policy' tab in settings (both for non-commercial and
