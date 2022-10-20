@@ -2,11 +2,11 @@ import React from 'react';
 
 // services
 import { getNavbarItemSlug, INavbarItem } from 'services/navbar';
-import { deletePage } from 'services/pages';
 import {
   removeNavbarItem,
   reorderNavbarItem,
 } from '../../../../services/navbar';
+import { deleteCustomPage } from 'services/customPages';
 
 // components
 import {
@@ -19,7 +19,7 @@ import NavbarItemRow from 'containers/Admin/pagesAndMenu/containers/NavigationSe
 
 // hooks
 import useNavbarItems from 'hooks/useNavbarItems';
-import usePageSlugById from 'hooks/usePageSlugById';
+import useCustomPageSlugById from 'hooks/useCustomPageSlugById';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -35,7 +35,7 @@ const VisibleNavbarItemList = ({
   intl: { formatMessage },
 }: WrappedComponentProps) => {
   const navbarItems = useNavbarItems();
-  const pageSlugById = usePageSlugById();
+  const pageSlugById = useCustomPageSlugById();
 
   if (isNilOrError(navbarItems) || isNilOrError(pageSlugById)) {
     return null;
@@ -75,7 +75,7 @@ const VisibleNavbarItemList = ({
     if (pageId === undefined) return;
 
     if (window.confirm(formatMessage(messages.deletePageConfirmationVisible))) {
-      deletePage(pageId);
+      deleteCustomPage(pageId);
     }
   };
 

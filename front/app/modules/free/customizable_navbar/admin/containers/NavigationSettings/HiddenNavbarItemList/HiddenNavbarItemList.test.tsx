@@ -1,7 +1,7 @@
 import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 import allNavbarItems from 'hooks/fixtures/navbarItems';
+import { deleteCustomPage } from 'services/customPages';
 import React from 'react';
-import { deletePage } from 'services/pages';
 import clHistory from 'utils/cl-router/history';
 import { fireEvent, render, screen } from 'utils/testUtils/rtl';
 import HiddenNavbarItemList from '.';
@@ -18,20 +18,20 @@ jest.mock('../../../../hooks/useRemovedDefaultNavbarItems', () =>
   jest.fn(() => mockRemovedDefaultNavbarItems)
 );
 
-jest.mock('hooks/usePages');
-jest.mock('hooks/usePageSlugById');
+jest.mock('hooks/useCustomPages');
+jest.mock('hooks/useCustomPageSlugById');
 jest.mock('hooks/useLocale');
 
 jest.mock('../../../../services/navbar', () => ({
   addNavbarItem: jest.fn(),
 }));
 
-jest.mock('services/pages', () => {
-  const original = jest.requireActual('services/pages');
+jest.mock('services/customPages', () => {
+  const original = jest.requireActual('services/customPages');
 
   return {
     ...original,
-    deletePage: jest.fn(),
+    deleteCustomPage: jest.fn(),
   };
 });
 
@@ -101,18 +101,18 @@ describe('<HiddenNavbarItemList />', () => {
     expect(addNavbarItem).toHaveBeenCalledWith(aboutItem);
   });
 
-  it('calls deletePage on click delete button with correct page id', () => {
+  it('calls deleteCustomPage on click delete button with correct page id', () => {
     render(<HiddenNavbarItemList />);
 
     const deleteButtons = screen.getAllByText('Delete');
 
     fireEvent.click(deleteButtons[0]);
-    expect(deletePage).toHaveBeenCalledWith(
+    expect(deleteCustomPage).toHaveBeenCalledWith(
       '793d56cc-c8b3-4422-b393-972b71f82aa2'
     );
 
     fireEvent.click(deleteButtons[1]);
-    expect(deletePage).toHaveBeenCalledWith(
+    expect(deleteCustomPage).toHaveBeenCalledWith(
       'e7854e94-3074-4607-b66e-0422aa3d8359'
     );
   });

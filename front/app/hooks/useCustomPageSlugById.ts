@@ -1,22 +1,22 @@
 import { useState, useEffect } from 'react';
-import { listPages } from 'services/pages';
+import { listCustomPages } from 'services/customPages';
 import { isNilOrError } from 'utils/helperUtils';
 
 export type TPageSlugById = Record<string, string>;
 type TPageSlugByIdState = undefined | null | Error | TPageSlugById;
 
-export default function usePageSlugById() {
-  const [pageSlugById, setPageSlugById] =
+export default function useCustomPageSlugById() {
+  const [customPageSlugById, setCustomPageSlugById] =
     useState<TPageSlugByIdState>(undefined);
 
   useEffect(() => {
-    const subscription = listPages().observable.subscribe((response) => {
+    const subscription = listCustomPages().observable.subscribe((response) => {
       if (isNilOrError(response)) {
-        setPageSlugById(response);
+        setCustomPageSlugById(response);
         return;
       }
 
-      setPageSlugById(
+      setCustomPageSlugById(
         response.data.reduce((acc, page) => {
           acc[page.id] = `/pages/${page.attributes.slug}`;
           return acc;
@@ -27,5 +27,5 @@ export default function usePageSlugById() {
     return () => subscription.unsubscribe();
   }, []);
 
-  return pageSlugById;
+  return customPageSlugById;
 }

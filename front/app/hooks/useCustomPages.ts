@@ -3,27 +3,27 @@ import { isEqual } from 'lodash-es';
 import { BehaviorSubject, of, combineLatest } from 'rxjs';
 import { map, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import {
-  IPageData,
-  IPage,
-  IPages,
-  listPages,
-  pageByIdStream,
-} from 'services/pages';
+  ICustomPageData,
+  ICustomPage,
+  ICustomPages,
+  listCustomPages,
+  customPageByIdStream,
+} from 'services/customPages';
 import { isNilOrError, NilOrError, reduceErrors } from 'utils/helperUtils';
 
 interface IParams {
   ids?: string[];
 }
 
-export type TPagesState = IPageData[] | NilOrError;
+export type TPagesState = ICustomPageData[] | NilOrError;
 
-export default function usePages({ ids }: IParams = {}) {
-  const [pages, setPages] = useState<TPagesState>(undefined);
+export default function useCustomPages({ ids }: IParams = {}) {
+  const [customPages, setCustomPages] = useState<TPagesState>(undefined);
 
   const inputProps$ = new BehaviorSubject({ ids });
 
   useEffect(() => {
-    const subscription = createSubscription(inputProps$, setPages);
+    const subscription = createSubscription(inputProps$, setCustomPages);
     return () => subscription.unsubscribe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -33,10 +33,10 @@ export default function usePages({ ids }: IParams = {}) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ids]);
 
-  return pages;
+  return customPages;
 }
 
-type SetPages = (pages: IPageData[] | NilOrError) => void;
+type SetPages = (pages: ICustomPageData[] | NilOrError) => void;
 
 function createSubscription(inputProps$, setPages: SetPages) {
   return inputProps$
@@ -48,8 +48,8 @@ function createSubscription(inputProps$, setPages: SetPages) {
 
           return combineLatest(
             ids.map((id) =>
-              pageByIdStream(id).observable.pipe(
-                map((response: IPage | NilOrError) => {
+              customPageByIdStream(id).observable.pipe(
+                map((response: ICustomPage | NilOrError) => {
                   return isNilOrError(response) ? response : response.data;
                 })
               )
@@ -57,12 +57,12 @@ function createSubscription(inputProps$, setPages: SetPages) {
           );
         }
 
-        return listPages().observable.pipe(
-          map((response: IPages | NilOrError) => {
+        return listCustomPages().observable.pipe(
+          map((response: ICustomPages | NilOrError) => {
             return isNilOrError(response) ? response : response.data;
           })
         );
       })
     )
-    .subscribe(reduceErrors<IPageData>(setPages));
+    .subscribe(reduceErrors<ICustomPageData>(setPages));
 }

@@ -7,7 +7,7 @@ import clHistory from 'utils/cl-router/history';
 const mockNavbarItems = allNavbarItems;
 
 jest.mock('services/locale');
-jest.mock('hooks/usePageSlugById', () => jest.fn(() => 'slug'));
+jest.mock('hooks/useCustomPageSlugById', () => jest.fn(() => 'slug'));
 jest.mock('hooks/useNavbarItems', () => jest.fn(() => mockNavbarItems));
 jest.mock('utils/cl-router/Link');
 jest.mock('utils/cl-router/history');

@@ -11,7 +11,7 @@ import TopInfoSection from './TopInfoSection';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
-import useCustomPageBySlug from 'hooks/useCustomPageBySlug';
+import useCustomPage from 'hooks/useCustomPage';
 import useResourceFiles from 'hooks/useResourceFiles';
 import { useParams } from 'react-router-dom';
 
@@ -60,7 +60,7 @@ const CustomPageShow = () => {
   const { slug } = useParams() as {
     slug: string;
   };
-  const page = useCustomPageBySlug(slug);
+  const page = useCustomPage({ customPageSlug: slug });
 
   const remotePageFiles = useResourceFiles({
     resourceType: 'page',

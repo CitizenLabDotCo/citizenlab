@@ -1,10 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import usePages from './usePages';
+import useCustomPages from './useCustomPages';
 import { Observable, Subscription } from 'rxjs';
 import { waitFor } from 'utils/testUtils/rtl';
 import { delay } from 'rxjs/operators';
-import pages from './fixtures/pages';
-import { listPages, pageByIdStream } from 'services/pages';
+import pages from './fixtures/customPages';
+import { listCustomPages, customPageByIdStream } from 'services/customPages';
 
 const mockInputListPages = {
   data: pages,
@@ -19,36 +19,36 @@ const aboutId = 'e7854e94-3074-4607-b66e-0422aa3d8359';
 const faqPage = pages[2];
 const aboutPage = pages[4];
 
-let mockObservablePageByIdStream = (id) =>
+let mockObservablecustomPageByIdStream = (id) =>
   new Observable((subscriber) => {
     id === faqId
       ? subscriber.next({ data: faqPage })
       : subscriber.next({ data: aboutPage });
   }).pipe(delay(1));
 
-jest.mock('services/pages', () => {
+jest.mock('services/customPages', () => {
   return {
-    listPages: jest.fn(() => ({
+    listCustomPages: jest.fn(() => ({
       observable: mockObservableListPages,
     })),
 
-    pageByIdStream: jest.fn((id) => ({
-      observable: mockObservablePageByIdStream(id),
+    customPageByIdStream: jest.fn((id) => ({
+      observable: mockObservablecustomPageByIdStream(id),
     })),
   };
 });
 
 jest.mock('services/locale');
 
-describe('usePages', () => {
+describe('useCustomPages', () => {
   describe('no ids', () => {
     it('should call listPages', () => {
-      renderHook(() => usePages());
-      expect(listPages).toHaveBeenCalledTimes(1);
+      renderHook(() => useCustomPages());
+      expect(listCustomPages).toHaveBeenCalledTimes(1);
     });
 
     it('should return data when data', async () => {
-      const { result } = renderHook(() => usePages());
+      const { result } = renderHook(() => useCustomPages());
 
       await act(
         async () => await waitFor(() => expect(result.current).toBe(pages))
@@ -61,7 +61,7 @@ describe('usePages', () => {
         subscriber.next(new Error());
       });
 
-      const { result } = renderHook(() => usePages());
+      const { result } = renderHook(() => useCustomPages());
       expect(result.current).toStrictEqual(error);
     });
 
@@ -70,13 +70,13 @@ describe('usePages', () => {
         subscriber.next(null);
       });
 
-      const { result } = renderHook(() => usePages());
+      const { result } = renderHook(() => useCustomPages());
       expect(result.current).toBe(null);
     });
 
     it('should unsubscribe on unmount', () => {
       jest.spyOn(Subscription.prototype, 'unsubscribe');
-      const { unmount } = renderHook(() => usePages());
+      const { unmount } = renderHook(() => useCustomPages());
 
       unmount();
       expect(Subscription.prototype.unsubscribe).toHaveBeenCalled();
@@ -84,16 +84,18 @@ describe('usePages', () => {
   });
 
   describe('with ids', () => {
-    it('should call pageByIdStream correct number of times', () => {
-      renderHook(() => usePages({ ids: [faqId, aboutId] }));
+    it('should call customPageByIdStream correct number of times', () => {
+      renderHook(() => useCustomPages({ ids: [faqId, aboutId] }));
 
-      expect(pageByIdStream).toHaveBeenCalledTimes(2);
-      expect(pageByIdStream).toHaveBeenCalledWith(faqId);
-      expect(pageByIdStream).toHaveBeenCalledWith(aboutId);
+      expect(customPageByIdStream).toHaveBeenCalledTimes(2);
+      expect(customPageByIdStream).toHaveBeenCalledWith(faqId);
+      expect(customPageByIdStream).toHaveBeenCalledWith(aboutId);
     });
 
     it('should return data when data', async () => {
-      const { result } = renderHook(() => usePages({ ids: [faqId, aboutId] }));
+      const { result } = renderHook(() =>
+        useCustomPages({ ids: [faqId, aboutId] })
+      );
 
       await act(
         async () =>
@@ -103,35 +105,41 @@ describe('usePages', () => {
       );
     });
 
-    it('should return error when one pageByIdStream returns error', () => {
+    it('should return error when one customPageByIdStream returns error', () => {
       const error = new Error();
 
-      mockObservablePageByIdStream = (id) =>
+      mockObservablecustomPageByIdStream = (id) =>
         new Observable((subscriber) => {
           id === faqId
             ? subscriber.next({ data: faqPage })
             : subscriber.next(new Error());
         });
 
-      const { result } = renderHook(() => usePages({ ids: [faqId, aboutId] }));
+      const { result } = renderHook(() =>
+        useCustomPages({ ids: [faqId, aboutId] })
+      );
       expect(result.current).toStrictEqual(error);
     });
 
-    it('should return null when one pageByIdStream returns null', () => {
-      mockObservablePageByIdStream = (id) =>
+    it('should return null when one customPageByIdStream returns null', () => {
+      mockObservablecustomPageByIdStream = (id) =>
         new Observable((subscriber) => {
           id === faqId
             ? subscriber.next({ data: faqPage })
             : subscriber.next(null);
         });
 
-      const { result } = renderHook(() => usePages({ ids: [faqId, aboutId] }));
+      const { result } = renderHook(() =>
+        useCustomPages({ ids: [faqId, aboutId] })
+      );
       expect(result.current).toBe(null);
     });
 
     it('should unsubscribe on unmount', () => {
       jest.spyOn(Subscription.prototype, 'unsubscribe');
-      const { unmount } = renderHook(() => usePages({ ids: [faqId, aboutId] }));
+      const { unmount } = renderHook(() =>
+        useCustomPages({ ids: [faqId, aboutId] })
+      );
 
       unmount();
       expect(Subscription.prototype.unsubscribe).toHaveBeenCalled();

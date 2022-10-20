@@ -9,7 +9,7 @@ import { isNilOrError } from 'utils/helperUtils';
 const BottomInfoSection = () => {
   const localize = useLocalize();
   const { customPageId } = useParams() as { customPageId: string };
-  const customPage = useCustomPage(customPageId);
+  const customPage = useCustomPage({ customPageId });
 
   if (isNilOrError(customPage)) {
     return null;

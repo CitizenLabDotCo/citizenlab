@@ -1,4 +1,4 @@
-import pages from '../fixtures/pages';
+import pages from '../fixtures/customPages';
 
 export default jest.fn((ids) => {
   if (!ids) return pages;
