@@ -2,7 +2,7 @@
 import messages from './messages';
 
 // typings
-import { WrappedComponentProps } from 'react-intl';
+import { FormatMessage } from 'typings';
 
 export interface Translations {
   'Direct Entry': string;
@@ -13,7 +13,7 @@ export interface Translations {
 }
 
 export const getTranslations = (
-  formatMessage: WrappedComponentProps['intl']['formatMessage']
+  formatMessage: FormatMessage
 ): Translations => ({
   'Direct Entry': formatMessage(messages.directEntry),
   'Social Networks': formatMessage(messages.socialNetwork),

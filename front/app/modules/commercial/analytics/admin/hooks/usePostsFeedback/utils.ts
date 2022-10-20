@@ -3,7 +3,7 @@ import messages from './messages';
 
 // typings
 import { Response, EmptyResponse } from './typings';
-import { WrappedComponentProps } from 'react-intl';
+import { FormatMessage } from 'typings';
 
 export const isEmptyResponse = (
   response: Response | EmptyResponse
@@ -32,7 +32,7 @@ export interface Translations {
 }
 
 export const getTranslations = (
-  formatMessage: WrappedComponentProps['intl']['formatMessage']
+  formatMessage: FormatMessage
 ): Translations => ({
   statusChanged: formatMessage(messages.statusChanged),
   officialUpdate: formatMessage(messages.officialUpdate),
