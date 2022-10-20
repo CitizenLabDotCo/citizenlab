@@ -4,6 +4,7 @@
 # The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
 
 require_relative 'api_clients'
+require_relative 'analytics'
 require_relative 'areas'
 require_relative 'baskets'
 require_relative 'common_passwords'
@@ -28,6 +29,9 @@ require_relative 'volunteers'
 
 module MultiTenancy
   module Seeds
+    # Runs the seeding process. Can be configured via ENV vars:
+    # SEED_SIZE = [small, medium, large] (number of records)
+    # SEED_EMPTY_TENANT = true (creates an empty tenant)
     class Runner
       attr_reader :seed_size
 
@@ -41,10 +45,10 @@ module MultiTenancy
           num_initiatives: 3
         },
         medium: {
-          num_users: 20,
+          num_users: 10,
           num_projects: 5,
-          num_ideas: 35,
-          num_initiatives: 20
+          num_ideas: 15,
+          num_initiatives: 10
         },
         large: {
           num_users: 50,
@@ -58,7 +62,8 @@ module MultiTenancy
       MAP_OFFSET = 0.1
 
       def initialize
-        @seed_size = ENV.fetch('seed_size', 'medium').to_sym
+        @seed_size = ENV.fetch('SEED_SIZE', 'medium').to_sym
+        @create_empty_tenant = ENV['SEED_EMPTY_TENANT'].present?
       end
 
       def execute
@@ -123,6 +128,7 @@ module MultiTenancy
         MultiTenancy::Seeds::CustomForms.new(runner: self).run
         MultiTenancy::Seeds::Volunteers.new(runner: self).run
         MultiTenancy::Seeds::CustomMaps.new(runner: self).run
+        MultiTenancy::Seeds::Analytics.new(runner: self).run
       end
 
       # @return [Array[String]] default seed locales
@@ -176,7 +182,7 @@ module MultiTenancy
 
       # Creates nested comments for a given post
       def create_comment_tree(post, parent, depth = 0)
-        amount = rand(5 / (depth + 1))
+        amount = rand(2 / (depth + 1))
         amount.times do |_i|
           c = Comment.create!({
             body_multiloc: {
@@ -223,6 +229,11 @@ module MultiTenancy
             content: Rails.root.join('spec/fixtures/afvalkalender.pdf').open
           }
         }
+      end
+
+      # @return [Boolean] true if an empty tenant should be created
+      def create_empty_tenant?
+        @create_empty_tenant
       end
     end
   end

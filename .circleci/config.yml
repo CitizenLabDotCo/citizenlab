@@ -437,7 +437,7 @@ jobs:
   front-deploy-staging:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
-    resource_class: medium+
+    resource_class: large
     working_directory: ~/
     steps:
       - clone_citizenlab_and_enable_ee
@@ -466,7 +466,7 @@ jobs:
   front-deploy-production:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
-    resource_class: medium+
+    resource_class: large
     working_directory: ~/
     steps:
       - clone_citizenlab_and_enable_ee
@@ -503,9 +503,9 @@ jobs:
     working_directory: ~/citizenlab/front
     steps:
       - run:
-          command: npm install lighthouse-ci@1.10.0
+          command: npm install lighthouse-ci@1.13.1
       - run:
-          command: npx lighthouse-ci@1.10.0 https://demo.stg.citizenlab.co --performance=3 --report=/tmp
+          command: npx lighthouse-ci@1.13.1 https://demo.stg.citizenlab.co --performance=3 --report=/tmp
       - store_artifacts:
           path: /tmp/report.html
           destination: lighthouse

@@ -311,6 +311,10 @@ namespace :cl2_back do
         analytics: {
           enabled: true,
           allowed: true
+        },
+        visitors_dashboard: {
+          enabled: true,
+          allowed: true
         }
       }
     )
