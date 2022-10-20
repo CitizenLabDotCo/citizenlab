@@ -1,7 +1,7 @@
 import request from 'utils/request';
 
 // services
-import { apiEndpoint } from '../../services/analyticsFacts';
+import { apiEndpoint, QuerySchema, Query } from '../../services/analyticsFacts';
 
 // i18n
 import messages from './messages';
@@ -20,7 +20,6 @@ import {
   ReferrerListResponse,
 } from '../../hooks/useVisitorReferrers/typings';
 import { XlsxData } from 'components/admin/ReportExportMenu';
-import { QuerySchema, Query } from '../../services/analyticsFacts';
 import { WrappedComponentProps } from 'react-intl';
 
 const query = ({

@@ -12,7 +12,7 @@ import TableModal from './TableModal';
 
 // i18n
 import messages from './messages';
-import { useIntl } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 
 // utils
 import getXlsxData from './getXlsxData';

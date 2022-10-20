@@ -11,7 +11,7 @@ import Chart from './Chart';
 
 // i18n
 import messages from './messages';
-import { useIntl } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 
 // typings
 import { IResolution } from 'components/admin/ResolutionControl';

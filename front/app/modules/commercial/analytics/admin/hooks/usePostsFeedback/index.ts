@@ -9,7 +9,7 @@ import {
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
-import { useIntl } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 
 // parsing
 import {

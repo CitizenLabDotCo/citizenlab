@@ -194,6 +194,7 @@ export type Override<T, U> = Pick<T, Exclude<keyof T, keyof U>> & U;
 
 export type Percentage = `${number}%`;
 
+/* eslint-disable */
 type Values<T extends {}> = T[keyof T];
 type Tuplize<T extends {}[]> = Pick<
   T,
@@ -206,3 +207,4 @@ type _OneOf<T extends {}> = Values<{
 }>;
 
 export type OneOf<T extends {}[]> = _OneOf<Tuplize<T>>;
+/* eslint-enable */

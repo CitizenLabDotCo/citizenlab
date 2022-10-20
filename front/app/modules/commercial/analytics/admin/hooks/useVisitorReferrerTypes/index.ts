@@ -8,7 +8,7 @@ import {
 } from '../../services/analyticsFacts';
 
 // i18n
-import { useIntl } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 
 // parse
 import { parsePieData, parseExcelData } from './parse';

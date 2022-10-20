@@ -61,7 +61,15 @@ export default function useVisitorReferrers({
     );
 
     return () => subscription.unsubscribe();
-  }, [projectId, startAtMoment, endAtMoment, pageNumber, pageSize, totals]);
+  }, [
+    projectId,
+    startAtMoment,
+    endAtMoment,
+    pageNumber,
+    pageSize,
+    totals,
+    formatMessage,
+  ]);
 
   useEffect(() => {
     setTotals(undefined);
