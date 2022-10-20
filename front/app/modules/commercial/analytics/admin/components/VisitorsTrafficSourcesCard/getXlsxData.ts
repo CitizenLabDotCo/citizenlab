@@ -5,13 +5,14 @@ import { apiEndpoint } from '../../services/analyticsFacts';
 
 // i18n
 import messages from './messages';
-import reffererTypeMessages from '../../hooks/useVisitorReferrerTypes/messages';
+import referrerTypeMessages from '../../hooks/useVisitorReferrerTypes/messages';
 import { getTranslations as getReferrerTranslations } from '../../hooks/useVisitorReferrers/utils';
 
 // utils
 import { getProjectFilter, getDateFilter } from '../../utils/query';
 import { reportError } from 'utils/loggingUtils';
 import { sanitizeQueryParameters } from 'utils/streams/utils';
+import { roundPercentages } from 'utils/math';
 
 // typings
 import {
@@ -77,13 +78,24 @@ const parseReferrers = (
   { data }: ReferrerListResponse,
   formatMessage: WrappedComponentProps['intl']['formatMessage']
 ): XlsxData => {
-  const trafficSource = formatMessage(reffererTypeMessages.trafficSource);
+  if (data.length === 0) return {};
+
+  const trafficSource = formatMessage(referrerTypeMessages.trafficSource);
   const referrer = formatMessage(messages.referrer);
-  const numberOfVisits = formatMessage(reffererTypeMessages.numberOfVisits);
+  const numberOfVisits = formatMessage(referrerTypeMessages.numberOfVisits);
+  const percentageOfVisits = formatMessage(
+    referrerTypeMessages.percentageOfVisits
+  );
   const numberOfVisitors = formatMessage(messages.numberOfVisitors);
+  const percentageOfVisitors = formatMessage(messages.percentageOfVisitors);
   const referrerTranslations = getReferrerTranslations(formatMessage);
 
-  const parsedData = data.map((row) => ({
+  const visitPercentages = roundPercentages(data.map(({ count }) => count));
+  const visitorPercentages = roundPercentages(
+    data.map(({ count_visitor_id }) => count_visitor_id)
+  );
+
+  const parsedData = data.map((row, i) => ({
     [trafficSource]:
       row['dimension_referrer_type.name'] in referrerTranslations
         ? referrerTranslations[row['dimension_referrer_type.name']]
@@ -91,6 +103,8 @@ const parseReferrers = (
     [referrer]: row.referrer_name ?? '',
     [numberOfVisits]: row.count,
     [numberOfVisitors]: row.count_visitor_id,
+    [percentageOfVisits]: visitPercentages[i],
+    [percentageOfVisitors]: visitorPercentages[i],
   }));
 
   return {
