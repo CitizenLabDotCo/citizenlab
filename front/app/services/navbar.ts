@@ -48,26 +48,6 @@ export function navbarItemsStream({ onlyDefault } = { onlyDefault: false }) {
   });
 }
 
-// These services are used for the toggles in admin/settings/customize and
-// admin/initiatives. These toggles are only visible if the navbar module
-// is disabled, so that even open source users have some minimal control
-// over the navbar.
-export async function toggleAllInput({ enabled }: { enabled: boolean }) {
-  const response = await streams.add(`${apiEndpoint}/toggle_all_input`, {
-    enabled,
-  });
-  await streams.fetchAllWith({ partialApiEndpoint: [apiEndpoint] });
-  return response;
-}
-
-export async function toggleProposals({ enabled }: { enabled: boolean }) {
-  const response = await streams.add(`${apiEndpoint}/toggle_proposals`, {
-    enabled,
-  });
-  await streams.fetchAllWith({ partialApiEndpoint: [apiEndpoint] });
-  return response;
-}
-
 // utility function to get slug associated with navbar item
 export function getNavbarItemSlug(
   navbarItemCode: TNavbarItemCode,
