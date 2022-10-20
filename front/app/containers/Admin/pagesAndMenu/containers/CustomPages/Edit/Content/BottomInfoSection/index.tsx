@@ -3,7 +3,7 @@ import useCustomPage from 'hooks/useCustomPage';
 import useLocalize from 'hooks/useLocalize';
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { updateCustomPage } from 'services/customPages';
+import { ICustomPageAttributes, updateCustomPage } from 'services/customPages';
 import { isNilOrError } from 'utils/helperUtils';
 
 const BottomInfoSection = () => {
@@ -15,7 +15,10 @@ const BottomInfoSection = () => {
     return null;
   }
 
-  const updateCustomPageAndEnableSection = (customPageId, data) => {
+  const updateCustomPageAndEnableSection = (
+    customPageId: string,
+    data: Partial<ICustomPageAttributes>
+  ) => {
     return updateCustomPage(customPageId, {
       ...data,
       bottom_info_section_enabled: true,
