@@ -1,4 +1,4 @@
-import pages from '../fixtures/staticPages';
+import pages from '../fixtures/customPages';
 
 const customPageSlugById = pages.reduce((acc, page) => {
   acc[page.id] = `/pages/${page.attributes.slug}`;
