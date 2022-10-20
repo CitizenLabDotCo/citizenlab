@@ -1,5 +1,9 @@
 # Changelog
 
+### Changed
+
+- [CL-1611] Improved layout & content of Project Phase Started & Project Phase Upcoming emails.
+
 ## 2022-10-18
 
 ### Fixed
