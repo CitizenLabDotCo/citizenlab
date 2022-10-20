@@ -18,7 +18,7 @@ jest.mock('../../../../hooks/useRemovedDefaultNavbarItems', () =>
   jest.fn(() => mockRemovedDefaultNavbarItems)
 );
 
-jest.mock('hooks/usePages');
+jest.mock('hooks/useCustomPages');
 jest.mock('hooks/usePageSlugById');
 jest.mock('hooks/useLocale');
 

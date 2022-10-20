@@ -1,5 +1,5 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import usePages from './usePages';
+import useCustomPages from './useCustomPages';
 import { Observable, Subscription } from 'rxjs';
 import { waitFor } from 'utils/testUtils/rtl';
 import { delay } from 'rxjs/operators';
@@ -40,15 +40,15 @@ jest.mock('services/customPages', () => {
 
 jest.mock('services/locale');
 
-describe('usePages', () => {
+describe('useCustomPages', () => {
   describe('no ids', () => {
     it('should call listPages', () => {
-      renderHook(() => usePages());
+      renderHook(() => useCustomPages());
       expect(listCustomPages).toHaveBeenCalledTimes(1);
     });
 
     it('should return data when data', async () => {
-      const { result } = renderHook(() => usePages());
+      const { result } = renderHook(() => useCustomPages());
 
       await act(
         async () => await waitFor(() => expect(result.current).toBe(pages))
@@ -61,7 +61,7 @@ describe('usePages', () => {
         subscriber.next(new Error());
       });
 
-      const { result } = renderHook(() => usePages());
+      const { result } = renderHook(() => useCustomPages());
       expect(result.current).toStrictEqual(error);
     });
 
@@ -70,13 +70,13 @@ describe('usePages', () => {
         subscriber.next(null);
       });
 
-      const { result } = renderHook(() => usePages());
+      const { result } = renderHook(() => useCustomPages());
       expect(result.current).toBe(null);
     });
 
     it('should unsubscribe on unmount', () => {
       jest.spyOn(Subscription.prototype, 'unsubscribe');
-      const { unmount } = renderHook(() => usePages());
+      const { unmount } = renderHook(() => useCustomPages());
 
       unmount();
       expect(Subscription.prototype.unsubscribe).toHaveBeenCalled();
@@ -85,7 +85,7 @@ describe('usePages', () => {
 
   describe('with ids', () => {
     it('should call customPageByIdStream correct number of times', () => {
-      renderHook(() => usePages({ ids: [faqId, aboutId] }));
+      renderHook(() => useCustomPages({ ids: [faqId, aboutId] }));
 
       expect(customPageByIdStream).toHaveBeenCalledTimes(2);
       expect(customPageByIdStream).toHaveBeenCalledWith(faqId);
@@ -93,7 +93,9 @@ describe('usePages', () => {
     });
 
     it('should return data when data', async () => {
-      const { result } = renderHook(() => usePages({ ids: [faqId, aboutId] }));
+      const { result } = renderHook(() =>
+        useCustomPages({ ids: [faqId, aboutId] })
+      );
 
       await act(
         async () =>
@@ -113,7 +115,9 @@ describe('usePages', () => {
             : subscriber.next(new Error());
         });
 
-      const { result } = renderHook(() => usePages({ ids: [faqId, aboutId] }));
+      const { result } = renderHook(() =>
+        useCustomPages({ ids: [faqId, aboutId] })
+      );
       expect(result.current).toStrictEqual(error);
     });
 
@@ -125,13 +129,17 @@ describe('usePages', () => {
             : subscriber.next(null);
         });
 
-      const { result } = renderHook(() => usePages({ ids: [faqId, aboutId] }));
+      const { result } = renderHook(() =>
+        useCustomPages({ ids: [faqId, aboutId] })
+      );
       expect(result.current).toBe(null);
     });
 
     it('should unsubscribe on unmount', () => {
       jest.spyOn(Subscription.prototype, 'unsubscribe');
-      const { unmount } = renderHook(() => usePages({ ids: [faqId, aboutId] }));
+      const { unmount } = renderHook(() =>
+        useCustomPages({ ids: [faqId, aboutId] })
+      );
 
       unmount();
       expect(Subscription.prototype.unsubscribe).toHaveBeenCalled();

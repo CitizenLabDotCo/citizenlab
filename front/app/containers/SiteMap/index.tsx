@@ -6,7 +6,7 @@ import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 // hooks
 import useLocalize from 'hooks/useLocalize';
 import useNavbarItems from 'hooks/useNavbarItems';
-import usePages from 'hooks/usePages';
+import useCustomPages from 'hooks/useCustomPages';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
@@ -129,7 +129,7 @@ const SiteMap = ({ projects, authUser }: Props) => {
   const loaded = projects !== undefined;
   const navBarItems = useNavbarItems();
   const localize = useLocalize();
-  const pages = usePages();
+  const pages = useCustomPages();
 
   const scrollTo = (component) => (event: any) => {
     // if the event is synthetic, it's a key event and we move focus

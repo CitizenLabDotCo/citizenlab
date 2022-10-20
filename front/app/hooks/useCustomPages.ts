@@ -17,13 +17,13 @@ interface IParams {
 
 export type TPagesState = ICustomPageData[] | NilOrError;
 
-export default function usePages({ ids }: IParams = {}) {
-  const [pages, setPages] = useState<TPagesState>(undefined);
+export default function useCustomPages({ ids }: IParams = {}) {
+  const [customPages, setCustomPages] = useState<TPagesState>(undefined);
 
   const inputProps$ = new BehaviorSubject({ ids });
 
   useEffect(() => {
-    const subscription = createSubscription(inputProps$, setPages);
+    const subscription = createSubscription(inputProps$, setCustomPages);
     return () => subscription.unsubscribe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -33,7 +33,7 @@ export default function usePages({ ids }: IParams = {}) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ids]);
 
-  return pages;
+  return customPages;
 }
 
 type SetPages = (pages: ICustomPageData[] | NilOrError) => void;
