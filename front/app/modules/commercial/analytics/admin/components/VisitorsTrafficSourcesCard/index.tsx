@@ -66,7 +66,7 @@ const VisitorsTrafficSourcesCard = ({
 
   const cardTitle = formatMessage(messages.visitorsTrafficSources);
 
-  if (isNilOrError(pieData)) {
+  if (isNilOrError(pieData) || isNilOrError(xlsxData)) {
     return (
       <GraphCard title={cardTitle}>
         <EmptyPieChart />
@@ -83,20 +83,18 @@ const VisitorsTrafficSourcesCard = ({
       exportMenu={{
         name: cardTitle,
         svgNode: graphRef,
-        xlsx: isNilOrError(xlsxData)
-          ? undefined
-          : {
-              onDownload: () =>
-                getXlsxData(
-                  {
-                    projectId: projectFilter,
-                    startAtMoment,
-                    endAtMoment,
-                  },
-                  xlsxData,
-                  formatMessage
-                ),
-            },
+        xlsx: {
+          onDownload: () =>
+            getXlsxData(
+              {
+                projectId: projectFilter,
+                startAtMoment,
+                endAtMoment,
+              },
+              xlsxData,
+              formatMessage
+            ),
+        },
         startAt,
         endAt,
         currentProjectFilter: projectFilter,
