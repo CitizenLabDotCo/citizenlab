@@ -4,17 +4,35 @@ import React from 'react';
 import { StatusLabel, colors, Text } from '@citizenlab/cl2-component-library';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
+import { InjectedIntlProps } from 'react-intl';
 
-const ShownOnPageBadge = ({ shownOnPage }: { shownOnPage: boolean }) => {
+interface StatusLabelTextProps {
+  text: string;
+  color: 'success' | 'error';
+}
+
+const StatusLabelText = ({ text, color }: StatusLabelTextProps) => {
+  return (
+    <Text color={color} fontWeight="bold" fontSize="xs" as="span" mb="0">
+      {text}
+    </Text>
+  );
+};
+
+const ShownOnPageBadge = ({
+  shownOnPage,
+  intl: { formatMessage },
+}: { shownOnPage: boolean } & InjectedIntlProps) => {
   if (shownOnPage) {
     return (
       <StatusLabel
         text={
-          <Text color="success">
-            <FormattedMessage {...messages.shownOnPage} />
-          </Text>
+          <StatusLabelText
+            color="success"
+            text={formatMessage(messages.shownOnPage)}
+          />
         }
         backgroundColor={colors.successLight}
       />
@@ -25,13 +43,14 @@ const ShownOnPageBadge = ({ shownOnPage }: { shownOnPage: boolean }) => {
   return (
     <StatusLabel
       text={
-        <Text color="error">
-          <FormattedMessage {...messages.notShownOnPage} />
-        </Text>
+        <StatusLabelText
+          color="error"
+          text={formatMessage(messages.notShownOnPage)}
+        />
       }
-      backgroundColor={colors.red100}
+      backgroundColor={colors.errorLight}
     />
   );
 };
 
-export default ShownOnPageBadge;
+export default injectIntl(ShownOnPageBadge);
