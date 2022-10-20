@@ -2,10 +2,10 @@ import streams, { IStreamParams } from 'utils/streams';
 import { getFilesToRemove, getFilesToAdd } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { UploadFile } from 'typings';
-import { apiEndpoint } from './pages';
+import { customPagesEndpoint as apiEndpoint } from './customPages';
 import { isString } from 'lodash-es';
 
-export interface IPageFileData {
+export interface ICustomPageFileData {
   id: string;
   type: string;
   attributes: {
@@ -20,19 +20,19 @@ export interface IPageFileData {
   };
 }
 
-export interface IPageFile {
-  data: IPageFileData;
+export interface ICustomPageFile {
+  data: ICustomPageFileData;
 }
 
-export interface IPageFiles {
-  data: IPageFileData[];
+export interface ICustomPageFiles {
+  data: ICustomPageFileData[];
 }
 
 export function pageFilesStream(
   pageId: string,
   streamParams: IStreamParams | null = null
 ) {
-  return streams.get<IPageFiles>({
+  return streams.get<ICustomPageFiles>({
     apiEndpoint: `${apiEndpoint}/${pageId}/files`,
     ...streamParams,
   });
@@ -44,7 +44,7 @@ export function addPageFile(
   name: string,
   ordering: number | null = null
 ) {
-  return streams.add<IPageFile>(`${apiEndpoint}/${pageId}/files`, {
+  return streams.add<ICustomPageFile>(`${apiEndpoint}/${pageId}/files`, {
     file: { name, ordering, file: base64 },
   });
 }

@@ -38,7 +38,7 @@ export type TCustomPageSectionToggleData = {
 // types
 const CustomPagesEditContent = () => {
   const { customPageId } = useParams() as { customPageId: string };
-  const customPage = useCustomPage(customPageId);
+  const customPage = useCustomPage({ customPageId });
 
   if (isNilOrError(customPage)) {
     return null;

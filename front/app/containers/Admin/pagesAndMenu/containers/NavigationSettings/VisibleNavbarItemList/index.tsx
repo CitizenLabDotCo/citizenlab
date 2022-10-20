@@ -3,7 +3,7 @@ import React from 'react';
 import { List, Row } from 'components/admin/ResourceList';
 import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 import useNavbarItems from 'hooks/useNavbarItems';
-import usePageSlugById from 'hooks/usePageSlugById';
+import useCustomPageSlugById from 'hooks/useCustomPageSlugById';
 import { getNavbarItemSlug, INavbarItem } from 'services/navbar';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
@@ -11,7 +11,7 @@ import NavbarItemRow from '../NavbarItemRow';
 
 export default function VisibleNavbarItemList() {
   const navbarItems = useNavbarItems({ onlyDefault: true });
-  const pageSlugById = usePageSlugById();
+  const pageSlugById = useCustomPageSlugById();
 
   if (isNilOrError(navbarItems) || isNilOrError(pageSlugById)) {
     return null;

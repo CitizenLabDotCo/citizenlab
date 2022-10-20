@@ -3,9 +3,9 @@ import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWi
 import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
-import usePage from 'hooks/usePage';
+import useCustomPage from 'hooks/useCustomPage';
 import { isNilOrError } from 'utils/helperUtils';
-import { isPolicyPageSlug } from 'services/pages';
+import { isPolicyPageSlug } from 'services/customPages';
 import { SectionField } from 'components/admin/Section';
 import useNavbarItem from '../../hooks/useNavbarItem';
 
@@ -19,7 +19,7 @@ const NavbarTitleField = ({
   navbarItemId,
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
-  const page = usePage({ pageId });
+  const page = useCustomPage({ customPageId: pageId });
   const navbarItem = useNavbarItem({ navbarItemId });
 
   if (

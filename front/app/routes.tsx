@@ -29,7 +29,6 @@ const CookiePolicy = lazy(() => import('containers/CookiePolicy'));
 const AccessibilityStatement = lazy(
   () => import('containers/AccessibilityStatement')
 );
-const PagesShowPage = lazy(() => import('containers/PagesShowPage'));
 const CustomPageShow = lazy(() => import('containers/CustomPageShow'));
 
 const PasswordRecovery = lazy(() => import('containers/PasswordRecovery'));
@@ -290,14 +289,6 @@ export default function createRoutes() {
           ),
         },
         ...moduleConfiguration.routes.citizen,
-        {
-          path: '*',
-          element: (
-            <PageLoading>
-              <PagesShowPage />
-            </PageLoading>
-          ),
-        },
       ],
     },
   ];

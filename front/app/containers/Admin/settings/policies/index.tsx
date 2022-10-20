@@ -1,5 +1,5 @@
 import React from 'react';
-import { POLICY_PAGES } from 'services/pages';
+import { POLICY_PAGES } from 'services/customPages';
 
 // styling
 import styled from 'styled-components';

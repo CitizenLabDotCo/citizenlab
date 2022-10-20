@@ -2,13 +2,18 @@ import React, { useMemo } from 'react';
 
 // services
 import { getNavbarItemSlug } from 'services/navbar';
-import { deletePage, FIXED_PAGES, IPageData, TPageCode } from 'services/pages';
+import {
+  deleteCustomPage,
+  FIXED_PAGES,
+  ICustomPageData,
+  TPageCode,
+} from 'services/customPages';
 import { addNavbarItem } from '../../../../services/navbar';
 
 // hooks
 import useNavbarItems from 'hooks/useNavbarItems';
-import usePages from 'hooks/usePages';
-import usePageSlugById from 'hooks/usePageSlugById';
+import useCustomPages from 'hooks/useCustomPages';
+import useCustomPageSlugById from 'hooks/useCustomPageSlugById';
 import useRemovedDefaultNavbarItems from '../../../../hooks/useRemovedDefaultNavbarItems';
 
 // components
@@ -28,7 +33,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import getItemsNotInNavbar, { IItemNotInNavbar } from './getItemsNotInNavbar';
 
 const FIXED_PAGES_SET = new Set<TPageCode>(FIXED_PAGES);
-const isNotFixedPage = (page: IPageData) =>
+const isNotFixedPage = (page: ICustomPageData) =>
   !FIXED_PAGES_SET.has(page.attributes.code);
 
 const HiddenNavbarItemList = ({
@@ -36,8 +41,8 @@ const HiddenNavbarItemList = ({
 }: WrappedComponentProps) => {
   const navbarItems = useNavbarItems();
   const removedDefaultNavbarItems = useRemovedDefaultNavbarItems();
-  const pages = usePages();
-  const pageSlugById = usePageSlugById();
+  const pages = useCustomPages();
+  const pageSlugById = useCustomPageSlugById();
 
   const notAllHooksRendered =
     isNilOrError(navbarItems) ||
@@ -73,7 +78,7 @@ const HiddenNavbarItemList = ({
     if (pageId === undefined) return;
 
     if (window.confirm(formatMessage(messages.deletePageConfirmationHidden))) {
-      deletePage(pageId);
+      deleteCustomPage(pageId);
     }
   };
 

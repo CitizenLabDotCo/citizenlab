@@ -1,5 +1,5 @@
 import { INavbarItem, TNavbarItemCode } from 'services/navbar';
-import { IPageData, TPageCode } from 'services/pages';
+import { ICustomPageData, TPageCode } from 'services/customPages';
 import { Multiloc } from 'typings';
 
 interface IDefaultItemNotInNavbar {
@@ -9,14 +9,14 @@ interface IDefaultItemNotInNavbar {
   navbarTitleMultiloc: Multiloc;
 }
 
-interface IPageNotInNavbar {
+interface ICustomPageNotInNavbar {
   type: 'page';
   pageCode: TPageCode;
   pageId: string;
   pageTitleMultiloc: Multiloc;
 }
 
-export type IItemNotInNavbar = IDefaultItemNotInNavbar | IPageNotInNavbar;
+export type IItemNotInNavbar = IDefaultItemNotInNavbar | ICustomPageNotInNavbar;
 
 function getDefaultItemsNotInNavbar(
   removedDefaultNavbarItems: INavbarItem[]
@@ -31,8 +31,8 @@ function getDefaultItemsNotInNavbar(
 
 function getPagesNotInNavbar(
   navbarItems: INavbarItem[],
-  pages: IPageData[]
-): IPageNotInNavbar[] {
+  pages: ICustomPageData[]
+): ICustomPageNotInNavbar[] {
   const pageIdsInNavbarItems = new Set<string>(
     navbarItems.reduce((acc, navbarItem) => {
       if (!navbarItem.relationships.static_page.data) return acc;
@@ -53,7 +53,7 @@ function getPagesNotInNavbar(
 export default function getItemsNotInNavbar(
   navbarItems: INavbarItem[],
   removedDefaultNavbarItems: INavbarItem[],
-  pages: IPageData[]
+  pages: ICustomPageData[]
 ): IItemNotInNavbar[] {
   // 'default' navbar items are all navbar items that are not pages.
   const defaultItemsNotInNavbar = getDefaultItemsNotInNavbar(
