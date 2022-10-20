@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import { useParams, useLocation } from 'react-router-dom';
 
@@ -27,7 +27,7 @@ import { colors } from 'utils/styleUtils';
 // Services
 import { downloadSurveyResults } from 'services/formCustomFields';
 
-const Forms = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+const Forms = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const { projectId } = useParams() as { projectId: string };
   const [isDownloading, setIsDownloading] = useState(false);
   const project = useProject({ projectId });

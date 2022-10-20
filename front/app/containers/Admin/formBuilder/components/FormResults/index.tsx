@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import { get, snakeCase } from 'lodash-es';
 import { useParams } from 'react-router-dom';
@@ -33,7 +33,7 @@ import usePhase from 'hooks/usePhase';
 // Services
 import { downloadSurveyResults } from 'services/formCustomFields';
 
-const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const { projectId } = useParams() as {
     projectId: string;
   };
@@ -126,8 +126,18 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       </Box>
       <Box maxWidth="524px">
         {results.map(
-          ({ question, inputType, answers, totalResponses }, index) => {
+          (
+            { question, inputType, answers, totalResponses, required },
+            index
+          ) => {
             const inputTypeText = get(messages, inputType, '');
+            const requiredOrOptionalText = required
+              ? formatMessage(messages.required)
+              : formatMessage(messages.optional);
+            const inputTypeLabel = `${formatMessage(
+              inputTypeText
+            )} - ${requiredOrOptionalText.toLowerCase()}`;
+
             return (
               <Box
                 key={index}
@@ -139,7 +149,7 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
                 </Title>
                 {inputTypeText && (
                   <Text variant="bodyS" color="textSecondary" mb="0">
-                    {formatMessage(inputTypeText)}
+                    {inputTypeLabel}
                   </Text>
                 )}
                 {answers.map(({ answer, responses }, index) => {

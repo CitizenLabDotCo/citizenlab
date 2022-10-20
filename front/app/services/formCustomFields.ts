@@ -153,6 +153,7 @@ export interface Result {
   question: Multiloc;
   totalResponses: number;
   answers: Answer[];
+  required: boolean;
 }
 
 export interface SurveyResultData {

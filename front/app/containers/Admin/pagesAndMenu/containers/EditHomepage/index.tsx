@@ -12,7 +12,7 @@ import { pagesAndMenuBreadcrumb, homeBreadcrumb } from '../../breadcrumbs';
 import messages from './messages';
 import sectionToggleMessages from 'containers/Admin/pagesAndMenu/components/SectionToggle/messages';
 import { FormattedMessage, injectIntl, MessageDescriptor } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // services, hooks, resources, and types
 import Outlet from 'components/Outlet';
@@ -36,7 +36,7 @@ export type TSectionToggleData = {
   hideToggle?: boolean;
 };
 
-const EditHomepage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+const EditHomepage = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const homepageSettings = useHomepageSettings();
   const [isLoading, setIsLoading] = useState(false);
   const [sectionTogglesData, setSectionTogglesData] = useState<

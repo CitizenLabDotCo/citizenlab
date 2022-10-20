@@ -3,7 +3,7 @@ import React from 'react';
 // intl
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // components
 import {
@@ -36,7 +36,7 @@ const NewIdeaButtonDropdown = ({
   project,
   showDropdown,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const DropdownContent = () => {
     const localize = useLocalize();
     if (!isNilOrError(phases)) {

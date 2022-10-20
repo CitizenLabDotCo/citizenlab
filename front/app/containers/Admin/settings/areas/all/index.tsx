@@ -1,5 +1,5 @@
 import React from 'react';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import GetAreas, { GetAreasChildProps } from 'resources/GetAreas';
@@ -31,7 +31,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-class AreaList extends React.PureComponent<Props & InjectedIntlProps> {
+class AreaList extends React.PureComponent<Props & WrappedComponentProps> {
   constructor(props) {
     super(props);
   }
@@ -122,7 +122,7 @@ class AreaList extends React.PureComponent<Props & InjectedIntlProps> {
   }
 }
 
-const AreaListWithHoCs = injectIntl<Props>(AreaList);
+const AreaListWithHoCs = injectIntl(AreaList);
 
 export default () => (
   <GetAreas>{(areas) => <AreaListWithHoCs areas={areas} />}</GetAreas>

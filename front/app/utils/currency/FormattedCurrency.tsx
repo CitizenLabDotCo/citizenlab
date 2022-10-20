@@ -4,10 +4,12 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
-const FormattedCurrency = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+const FormattedCurrency = ({
+  intl: { formatMessage },
+}: WrappedComponentProps) => {
   const appConfiguration = useAppConfiguration();
 
   if (!isNilOrError(appConfiguration)) {

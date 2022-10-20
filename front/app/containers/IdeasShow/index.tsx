@@ -52,7 +52,7 @@ import GetPermission, {
 import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from './messages';
@@ -191,7 +191,7 @@ export const IdeasShow = ({
   officialFeedbacks,
   setRef,
   intl: { formatMessage },
-}: Props & InjectedIntlProps & InjectedLocalized & WithRouterProps) => {
+}: Props & WrappedComponentProps & InjectedLocalized & WithRouterProps) => {
   const [newIdeaId, setNewIdeaId] = useState<string | null>(null);
   const [translateButtonIsClicked, setTranslateButtonIsClicked] =
     useState<boolean>(false);

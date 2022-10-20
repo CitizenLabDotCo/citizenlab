@@ -87,7 +87,7 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
           <FormattedMessage {...translatedStringKey} />
         </Title>
       )}
-      <SectionField>
+      <SectionField id="e2e-required-toggle">
         <Toggle
           name={`customFields.${field.index}.required`}
           label={
@@ -95,7 +95,6 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
               <FormattedMessage {...messages.requiredToggleLabel} />
             </Text>
           }
-          data-cy="e2e-toggle-multiloc"
         />
       </SectionField>
       <SectionField>

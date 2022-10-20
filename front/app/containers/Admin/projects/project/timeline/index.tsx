@@ -1,7 +1,7 @@
 // Libraries
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 import moment from 'moment';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
@@ -84,7 +84,7 @@ interface Props extends InputProps, DataProps {}
 const AdminProjectTimelineIndex = ({
   phases,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const { projectId } = useParams() as {
     projectId: string;
   };
@@ -215,11 +215,13 @@ const AdminProjectTimelineIndex = ({
 };
 
 export default withRouter(
-  injectIntl((inputProps: InputProps & WithRouterProps & InjectedIntlProps) => (
-    <GetPhases projectId={inputProps.params.projectId}>
-      {(phases) => (
-        <AdminProjectTimelineIndex {...inputProps} phases={phases} />
-      )}
-    </GetPhases>
-  ))
+  injectIntl(
+    (inputProps: InputProps & WithRouterProps & WrappedComponentProps) => (
+      <GetPhases projectId={inputProps.params.projectId}>
+        {(phases) => (
+          <AdminProjectTimelineIndex {...inputProps} phases={phases} />
+        )}
+      </GetPhases>
+    )
+  )
 );
