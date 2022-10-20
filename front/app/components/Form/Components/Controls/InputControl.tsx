@@ -1,6 +1,7 @@
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import {
   Box,
+  colors,
   IconTooltip,
   Input,
   Text,
@@ -49,7 +50,7 @@ export const InputControl = ({
         <Text>{label}</Text>
         {uischema?.options?.isAdminField && (
           <IconTooltip
-            iconColor="black"
+            iconColor={colors.grey800}
             marginLeft="4px"
             icon="shield-checkered"
             content={<FormattedMessage {...messages.adminFieldTooltip} />}

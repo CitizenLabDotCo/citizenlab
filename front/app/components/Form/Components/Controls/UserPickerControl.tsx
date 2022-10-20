@@ -14,7 +14,12 @@ import messages from '../../messages';
 import controlMessages from './messages';
 import { FormLabel } from 'components/UI/FormComponents';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
-import { Box, Text, IconTooltip } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Text,
+  colors,
+  IconTooltip,
+} from '@citizenlab/cl2-component-library';
 
 const UserPickerControl = ({
   data,
@@ -33,7 +38,7 @@ const UserPickerControl = ({
         <Text>{getLabel(uischema, schema, path)}</Text>
         {uischema?.options?.isAdminField && (
           <IconTooltip
-            iconColor="black"
+            iconColor={colors.grey800}
             marginLeft="4px"
             icon="shield-checkered"
             content={
