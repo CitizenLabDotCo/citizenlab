@@ -999,7 +999,6 @@
   "app.containers.AdminPage.ProjectEdit.createPoll": "Kreirajte anketu",
   "app.containers.AdminPage.ProjectEdit.createPollDescription": "Podesite upitnik s više odgovora.",
   "app.containers.AdminPage.ProjectEdit.createSurveyDescription": "Povežite Typeform, Google Form, Enalyzer, Qualtrics ili SurveyXact upitnik.",
-  "app.containers.AdminPage.ProjectEdit.createSurveyText": "Kreirajte napredni upitnik",
   "app.containers.AdminPage.ProjectEdit.defaultPostSortingTooltip": "Možete postaviti zadani redoslijed objava koji se prikazuju na glavnoj stranici projekta.",
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "Sortiranje",
   "app.containers.AdminPage.ProjectEdit.departments": "Odjeli",
