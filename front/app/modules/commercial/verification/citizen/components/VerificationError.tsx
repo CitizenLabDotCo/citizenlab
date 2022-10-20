@@ -1,12 +1,11 @@
-import React, { memo } from 'react';
+import React from 'react';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // components
-import { Title } from './styles';
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, Title } from '@citizenlab/cl2-component-library';
 
 // style
 import styled from 'styled-components';
@@ -18,7 +17,6 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
 `;
 
 const StyledIcon = styled(Icon)`
@@ -29,14 +27,13 @@ const StyledIcon = styled(Icon)`
   margin-bottom: 30px;
 `;
 
-const Subtitle = styled.h2`
+const Subtitle = styled.p`
   width: 100%;
   max-width: 500px;
   color: ${colors.textPrimary};
   font-size: ${fontSizes.m}px;
   line-height: normal;
   font-weight: 300;
-  text-align: center;
   margin: 0;
   padding: 0;
 `;
@@ -46,7 +43,7 @@ interface Props {
   error: IVerificationError;
 }
 
-export default memo<Props>(({ className, error }) => {
+const VerificationError = ({ className, error }: Props) => {
   let message = messages.errorGenericSubtitle;
 
   if (error) {
@@ -70,4 +67,6 @@ export default memo<Props>(({ className, error }) => {
       </Subtitle>
     </Container>
   );
-});
+};
+
+export default VerificationError;
