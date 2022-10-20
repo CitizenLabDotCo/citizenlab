@@ -7,15 +7,7 @@ module XlsxExport
       @model = model
     end
 
-    def visit_special_field_for_report(field)
-      value_for(field)
-    end
-
-    def visit_text(field)
-      value_for(field)
-    end
-
-    def visit_number(field)
+    def default(field)
       value_for(field)
     end
 
@@ -86,10 +78,6 @@ module XlsxExport
 
     def visit_point(field)
       # Not supported yet. Field type not used in native surveys, nor idea form.
-    end
-
-    def visit_linear_scale(field)
-      value_for(field)
     end
 
     private

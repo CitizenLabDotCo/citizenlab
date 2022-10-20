@@ -2,6 +2,8 @@
 
 module XlsxExport
   class SheetGenerator
+    US_DATE_TIME_FORMAT = 'mm/dd/yyyy hh:mm:ss'
+
     def initialize(inputs, form, participation_method, include_private_attributes)
       super()
       @inputs = inputs
@@ -15,8 +17,11 @@ module XlsxExport
     def generate_sheet(workbook, sheetname)
       sheetname = Utils.new.sanitize_sheetname sheetname
       workbook.styles do |styles|
-        column_header = styles.add_style(b: true, alignment: { horizontal: :center, vertical: :top, wrap_text: true })
-        date_time = styles.add_style(format_code: 'mm/dd/yyyy hh:mm:ss')
+        column_header = styles.add_style(
+          b: true,
+          alignment: { horizontal: :center, vertical: :top, wrap_text: true }
+        )
+        date_time = styles.add_style(format_code: US_DATE_TIME_FORMAT)
         workbook.add_worksheet(name: sheetname) do |sheet|
           sheet.add_row all_column_headers, style: column_header
           inputs.each do |input|
@@ -38,11 +43,6 @@ module XlsxExport
     private
 
     attr_reader :inputs, :fields_in_form, :participation_method, :include_private_attributes
-
-    def options_for(field)
-      @options ||= {}
-      @options[field] ||= field.options.index_by(&:key)
-    end
 
     def not_supported?(field)
       field.code == 'idea_images_attributes' # Not supported by XlsxService
