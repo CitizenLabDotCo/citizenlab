@@ -1,7 +1,10 @@
 import useHomepageSettings from 'hooks/useHomepageSettings';
 import React from 'react';
 import { InjectedIntlProps } from 'react-intl';
-import { updateHomepageSettings } from 'services/homepageSettings';
+import {
+  IHomepageSettingsAttributes,
+  updateHomepageSettings,
+} from 'services/homepageSettings';
 import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { homeBreadcrumb } from '../../breadcrumbs';
@@ -13,7 +16,9 @@ const BottomInfoSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     return null;
   }
 
-  const updateHomepageAndEnableSection = (data) => {
+  const updateHomepageAndEnableSection = (
+    data: Partial<IHomepageSettingsAttributes>
+  ) => {
     return updateHomepageSettings({
       ...data,
       bottom_info_section_enabled: true,

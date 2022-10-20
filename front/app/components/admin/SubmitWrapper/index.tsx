@@ -99,8 +99,8 @@ interface Props
 }
 
 export default class SubmitWrapper extends PureComponent<Props> {
-  submitButton: HTMLInputElement | null;
-  secondaryButton: HTMLInputElement | null;
+  submitButton: HTMLButtonElement | null;
+  secondaryButton: HTMLButtonElement | null;
 
   constructor(props: Props) {
     super(props as any);
@@ -108,15 +108,15 @@ export default class SubmitWrapper extends PureComponent<Props> {
     this.secondaryButton = null;
   }
 
-  removeFocus = (el) => {
+  removeFocus = (el: HTMLButtonElement | null) => {
     el && el.blur();
   };
 
-  setSubmitButtonRef = (el) => {
+  setSubmitButtonRef = (el: HTMLButtonElement | null) => {
     this.submitButton = el;
   };
 
-  setSecondaryButtonRef = (el) => {
+  setSecondaryButtonRef = (el: HTMLButtonElement | null) => {
     this.secondaryButton = el;
   };
 
