@@ -9,5 +9,41 @@ export interface QueryParameters {
 
 // Response
 export type Response = {
-  data: []; // TODO
+  data: [
+    TimeSeriesResponseRow[],
+    [RegistrationsCountRow],
+    [RegistrationsCountRow],
+    [VisitorsCountRow]
+  ];
 };
+
+type TimeSeriesResponseRow =
+  | TimeSeriesResponseMonth
+  | TimeSeriesResponseWeek
+  | TimeSeriesResponseDay;
+
+interface TimeSeriesResponseMonth extends BaseTimeSeriesResponseRow {
+  'dimension_date_registration.month': string;
+}
+
+interface TimeSeriesResponseWeek extends BaseTimeSeriesResponseRow {
+  'dimension_date_registration.week': string;
+}
+
+interface TimeSeriesResponseDay extends BaseTimeSeriesResponseRow {
+  'dimension_date_registration.date': string;
+}
+
+interface BaseTimeSeriesResponseRow {
+  count: number;
+}
+
+interface RegistrationsCountRow {
+  count: number;
+}
+
+interface VisitorsCountRow {
+  count_visitor_id: number;
+}
+
+// Hook return value
