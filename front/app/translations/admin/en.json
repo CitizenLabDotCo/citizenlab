@@ -1679,6 +1679,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsCard.yesterday": "Yesterday:",
   "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.title": "Language",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.numberOfVisitors": "Number of visitors",
+  "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.percentageOfVisitors": "Percentage of visitors",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.referrer": "Referrer",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.referrerListButton": "click here",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.referrers": "Referrers",
