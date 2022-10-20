@@ -26,12 +26,12 @@ jest.mock('../../../../services/navbar', () => ({
   addNavbarItem: jest.fn(),
 }));
 
-jest.mock('services/staticPages', () => {
-  const original = jest.requireActual('services/staticPages');
+jest.mock('services/customPages', () => {
+  const original = jest.requireActual('services/customPages');
 
   return {
     ...original,
-    deletePage: jest.fn(),
+    deleteCustomPage: jest.fn(),
   };
 });
 
@@ -101,7 +101,7 @@ describe('<HiddenNavbarItemList />', () => {
     expect(addNavbarItem).toHaveBeenCalledWith(aboutItem);
   });
 
-  it('calls deletePage on click delete button with correct page id', () => {
+  it('calls deleteCustomPage on click delete button with correct page id', () => {
     render(<HiddenNavbarItemList />);
 
     const deleteButtons = screen.getAllByText('Delete');

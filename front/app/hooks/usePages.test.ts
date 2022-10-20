@@ -26,7 +26,7 @@ let mockObservablecustomPageByIdStream = (id) =>
       : subscriber.next({ data: aboutPage });
   }).pipe(delay(1));
 
-jest.mock('services/staticPages', () => {
+jest.mock('services/customPages', () => {
   return {
     listPages: jest.fn(() => ({
       observable: mockObservableListPages,

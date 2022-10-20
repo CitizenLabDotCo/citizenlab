@@ -21,8 +21,8 @@ jest.mock('../../../../services/navbar', () => ({
   removeNavbarItem: jest.fn(),
 }));
 
-jest.mock('services/staticPages', () => ({
-  deletePage: jest.fn(),
+jest.mock('services/customPages', () => ({
+  deleteCustomPage: jest.fn(),
 }));
 
 jest.mock('utils/cl-router/history');
@@ -99,7 +99,7 @@ describe('<VisibleNavbarItemList />', () => {
     expect(viewButtons).toHaveLength(7);
   });
 
-  it('calls deletePage on click delete button with correct page id', () => {
+  it('calls deleteCustomPage on click delete button with correct page id', () => {
     render(<VisibleNavbarItemList />);
 
     const deleteButtons = screen.getAllByText('Delete');
