@@ -268,8 +268,6 @@
   "app.components.PagesForm.slugLabelTooltip": "Vous pouvez personnaliser la dernière partie de l'URL de votre page (appelée le slug). Par exemple, l'URL de la page actuelle est {currentPageURL}, où {currentPageSlug} est le slug.",
   "app.components.PagesForm.slugRegexError": "Le slug ne peut contenir que des lettres minuscules (a-z), des chiffres (0-9) et des traits d'union (-). Le premier et le dernier caractère ne peuvent pas être des traits d'union. Les traits d'union consécutifs (--) ne sont pas autorisés.",
   "app.components.PagesForm.titleMissingOneLanguageError": "Fournir un titre pour au moins une langue",
-  "app.components.PagesShowPage.notFoundDescription": "La page demandée est introuvable",
-  "app.components.PagesShowPage.notFoundTitle": "Page introuvable",
   "app.components.PasswordInput.a11y_passwordHidden": "Mot de passe masqué",
   "app.components.PasswordInput.a11y_passwordVisible": "Mot de passe visible",
   "app.components.PasswordInput.a11y_strength1Password": "Niveau de sécurité du mot de passe insuffisant",
