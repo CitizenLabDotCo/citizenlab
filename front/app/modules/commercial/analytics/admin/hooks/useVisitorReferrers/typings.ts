@@ -40,5 +40,5 @@ export interface TableRow {
   visitors: number;
   visitorsPercentage: number;
   referrerType: string;
-  referrerName: string;
+  referrer: string;
 }

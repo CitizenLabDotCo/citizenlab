@@ -84,7 +84,7 @@ const TableComponent = ({
           {tableData.map((row, i) => (
             <Tr key={i}>
               <Td background={colors.grey50}>
-                ({row.referrerType}) {row.referrerName}
+                ({row.referrerType}) {row.referrer}
               </Td>
               <Td>
                 {row.visits}

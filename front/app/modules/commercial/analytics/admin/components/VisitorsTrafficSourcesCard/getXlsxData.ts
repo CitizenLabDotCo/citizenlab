@@ -6,12 +6,12 @@ import { apiEndpoint } from '../../services/analyticsFacts';
 // i18n
 import messages from './messages';
 import reffererTypeMessages from '../../hooks/useVisitorReferrerTypes/messages';
+import { getTranslations as getReferrerTranslations } from '../../hooks/useVisitorReferrers/utils';
 
 // utils
 import { getProjectFilter, getDateFilter } from '../../utils/query';
 import { reportError } from 'utils/loggingUtils';
 import { sanitizeQueryParameters } from 'utils/streams/utils';
-import { getReferrerTranslation } from '../../hooks/useVisitorReferrerTypes/parse';
 
 // typings
 import {
@@ -81,12 +81,13 @@ const parseReferrers = (
   const referrer = formatMessage(messages.referrer);
   const numberOfVisits = formatMessage(reffererTypeMessages.numberOfVisits);
   const numberOfVisitors = formatMessage(messages.numberOfVisitors);
+  const referrerTranslations = getReferrerTranslations(formatMessage);
 
   const parsedData = data.map((row) => ({
-    [trafficSource]: getReferrerTranslation(
-      row['dimension_referrer_type.name'],
-      translations
-    ),
+    [trafficSource]:
+      row['dimension_referrer_type.name'] in referrerTranslations
+        ? referrerTranslations[row['dimension_referrer_type.name']]
+        : row['dimension_referrer_type.name'],
     [referrer]: row.referrer_name ?? '',
     [numberOfVisits]: row.count,
     [numberOfVisitors]: row.count_visitor_id,

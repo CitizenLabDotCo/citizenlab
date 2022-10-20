@@ -12,6 +12,7 @@ import { parseTableData } from './parse';
 // utils
 import { referrersListQuery, referrersTotalQuery } from './query';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import { getTranslations } from './utils';
 
 // typings
 import {
@@ -53,7 +54,9 @@ export default function useVisitorReferrers({
           return;
         }
 
-        setTableData(parseTableData(response.data, totals, formatMessage));
+        const translations = getTranslations(formatMessage);
+
+        setTableData(parseTableData(response.data, totals, translations));
       }
     );
 

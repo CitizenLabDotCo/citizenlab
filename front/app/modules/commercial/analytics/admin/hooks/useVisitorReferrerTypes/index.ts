@@ -50,7 +50,7 @@ const query = ({
   return { query: trafficSourcesQuery };
 };
 
-export default function useVisitorsTrafficSourcesData({
+export default function useVisitorsReferrerTypes({
   projectId,
   startAtMoment,
   endAtMoment,
