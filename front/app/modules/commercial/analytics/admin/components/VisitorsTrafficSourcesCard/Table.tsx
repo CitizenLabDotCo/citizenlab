@@ -14,6 +14,8 @@ import {
   Td,
   Text,
 } from '@citizenlab/cl2-component-library';
+import Pagination from 'components/Pagination';
+import ReferrerListLink from './RefferListLink';
 
 // i18n
 import messages from './messages';
@@ -41,12 +43,17 @@ const Percentage = ({ children }) => (
   </Text>
 );
 
+interface Props extends QueryParametersWithoutPagination {
+  onOpenModal?: () => void;
+}
+
 const TableComponent = ({
   projectId,
   startAtMoment,
   endAtMoment,
-}: QueryParametersWithoutPagination) => {
-  const [pageNumber /*, setPageNumber*/] = useState<number>(1);
+  onOpenModal,
+}: Props) => {
+  const [pageNumber, setPageNumber] = useState<number>(1);
 
   const { tableData } = useVisitorReferrers({
     projectId,
@@ -98,6 +105,21 @@ const TableComponent = ({
           ))}
         </Tbody>
       </Table>
+      <Box
+        mt="40px"
+        display="flex"
+        flexDirection="row-reverse"
+        justifyContent="space-between"
+        alignItems="center"
+      >
+        <Pagination
+          currentPage={pageNumber}
+          totalPages={5}
+          loadPage={setPageNumber}
+        />
+
+        {onOpenModal && <ReferrerListLink onOpenModal={onOpenModal} />}
+      </Box>
     </Box>
   );
 };
