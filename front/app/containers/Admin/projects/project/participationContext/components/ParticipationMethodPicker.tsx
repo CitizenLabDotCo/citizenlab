@@ -122,7 +122,7 @@ export default ({
         id={'participationmethod-survey'}
         label={
           <LabelHeaderDescription
-            header={<FormattedMessage {...messages.createSurveyText} />}
+            header={<FormattedMessage {...messages.createExternalSurveyText} />}
             description={
               <FormattedMessage {...messages.createSurveyDescription} />
             }
