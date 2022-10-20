@@ -566,67 +566,126 @@ resource 'Phases' do
           example 'Download phase inputs in one sheet', skip: !CitizenLab.ee? do
             do_request
             expect(status).to eq 200
-            expect(xlsx_contents(response_body)).to match_array([
-              {
-                sheet_name: ideation_phase.title_multiloc['en'],
-                column_headers: [
-                  'ID',
-                  'Title',
-                  'Description',
-                  'Budget',
-                  'Proposed Budget',
-                  'Tags',
-                  'Latitude',
-                  'Longitude',
-                  'Location',
-                  'Attachments',
-                  extra_idea_field.title_multiloc['en'],
-                  'Author name',
-                  'Author email',
-                  'Author ID',
-                  'Submitted at',
-                  'Published at',
-                  'Comments',
-                  'Upvotes',
-                  'Downvotes',
-                  'Baskets',
-                  'URL',
-                  'Project',
-                  'Status',
-                  'Assignee',
-                  'Assignee email'
-                ],
-                rows: [
-                  [
-                    ideation_response1.id,
-                    ideation_response1.title_multiloc['en'],
-                    'It would improve the air quality!', # html tags are removed
-                    ideation_response1.budget,
-                    ideation_response1.proposed_budget,
-                    'Topic 1 (en), Topic 2 (en)',
-                    ideation_response1.location_point.coordinates.last,
-                    ideation_response1.location_point.coordinates.first,
-                    ideation_response1.location_description,
-                    %r{/uploads/.+/idea_file/file/#{attachment1.id}/#{attachment1.name}\n/uploads/.+/idea_file/file/#{attachment2.id}/#{attachment2.name}},
-                    'Answer',
-                    ideation_response1.author_name,
-                    ideation_response1.author.email,
-                    ideation_response1.author_id,
-                    an_instance_of(DateTime), # created_at
-                    an_instance_of(DateTime), # published_at
-                    comments.size,
-                    upvotes.size,
-                    downvotes.size,
-                    baskets.size,
-                    "http://example.org/ideas/#{ideation_response1.slug}",
-                    project.title_multiloc['en'],
-                    ideation_response1.idea_status.title_multiloc['en'],
-                    "#{assignee.first_name} #{assignee.last_name}",
-                    assignee.email
-                  ]
-                ]
-              }
+            xlsx = xlsx_contents(response_body)
+            expect(xlsx.size).to eq 1
+            expect(xlsx[0][:sheet_name]).to eq ideation_phase.title_multiloc['en']
+            expect(xlsx[0][:column_headers]).to match_array([
+              'ID',
+              'Title',
+              'Description',
+              'Budget',
+              'Proposed Budget',
+              'Tags',
+              'Latitude',
+              'Longitude',
+              'Location',
+              'Attachments',
+              extra_idea_field.title_multiloc['en'],
+              'Author name',
+              'Author email',
+              'Author ID',
+              'Submitted at',
+              'Published at',
+              'Comments',
+              'Upvotes',
+              'Downvotes',
+              'Baskets',
+              'URL',
+              'Project',
+              'Status',
+              'Assignee',
+              'Assignee email'
             ])
+            expect(xlsx[0][:rows].size).to eq 1
+            expect(xlsx[0][:rows][0]).to match_array([
+              ideation_response1.id,
+              ideation_response1.title_multiloc['en'],
+              'It would improve the air quality!', # html tags are removed
+              ideation_response1.budget,
+              ideation_response1.proposed_budget,
+              'Topic 1 (en), Topic 2 (en)',
+              ideation_response1.location_point.coordinates.last,
+              ideation_response1.location_point.coordinates.first,
+              ideation_response1.location_description,
+              %r{/uploads/.+/idea_file/file/#{attachment1.id}/#{attachment1.name}\n/uploads/.+/idea_file/file/#{attachment2.id}/#{attachment2.name}},
+              'Answer',
+              ideation_response1.author_name,
+              ideation_response1.author.email,
+              ideation_response1.author_id,
+              an_instance_of(DateTime), # created_at
+              an_instance_of(DateTime), # published_at
+              comments.size,
+              upvotes.size,
+              downvotes.size,
+              baskets.size,
+              "http://example.org/ideas/#{ideation_response1.slug}",
+              project.title_multiloc['en'],
+              ideation_response1.idea_status.title_multiloc['en'],
+              "#{assignee.first_name} #{assignee.last_name}",
+              assignee.email
+            ])
+
+            # expect(xlsx_contents(response_body)).to match_array([
+            #   {
+            #     sheet_name: ideation_phase.title_multiloc['en'],
+            #     column_headers: [
+            #       'ID',
+            #       'Title',
+            #       'Description',
+            #       'Budget',
+            #       'Proposed Budget',
+            #       'Tags',
+            #       'Latitude',
+            #       'Longitude',
+            #       'Location',
+            #       'Attachments',
+            #       extra_idea_field.title_multiloc['en'],
+            #       'Author name',
+            #       'Author email',
+            #       'Author ID',
+            #       'Submitted at',
+            #       'Published at',
+            #       'Comments',
+            #       'Upvotes',
+            #       'Downvotes',
+            #       'Baskets',
+            #       'URL',
+            #       'Project',
+            #       'Status',
+            #       'Assignee',
+            #       'Assignee email'
+            #     ],
+            #     rows: [
+            #       [
+            #         ideation_response1.id,
+            #         ideation_response1.title_multiloc['en'],
+            #         'It would improve the air quality!', # html tags are removed
+            #         ideation_response1.budget,
+            #         ideation_response1.proposed_budget,
+            #         'Topic 1 (en), Topic 2 (en)',
+            #         ideation_response1.location_point.coordinates.last,
+            #         ideation_response1.location_point.coordinates.first,
+            #         ideation_response1.location_description,
+            #         %r{/uploads/.+/idea_file/file/#{attachment1.id}/#{attachment1.name}\n/uploads/.+/idea_file/file/#{attachment2.id}/#{attachment2.name}},
+            #         'Answer',
+            #         ideation_response1.author_name,
+            #         ideation_response1.author.email,
+            #         ideation_response1.author_id,
+            #         an_instance_of(DateTime), # created_at
+            #         an_instance_of(DateTime), # published_at
+            #         comments.size,
+            #         upvotes.size,
+            #         downvotes.size,
+            #         baskets.size,
+            #         "http://example.org/ideas/#{ideation_response1.slug}",
+            #         project.title_multiloc['en'],
+            #         ideation_response1.idea_status.title_multiloc['en'],
+            #         "#{assignee.first_name} #{assignee.last_name}",
+            #         assignee.email
+            #       ]
+            #     ]
+            #   }
+            # ])
           end
         end
       end
