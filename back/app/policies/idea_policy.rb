@@ -40,7 +40,7 @@ class IdeaPolicy < ApplicationPolicy
     reason = ParticipationContextService.new.posting_idea_disabled_reason_for_project(record.project, user)
     raise_not_authorized(reason) if reason
 
-    owner? && ProjectPolicy.new(user, record.project).show?
+    (!user || owner?) && ProjectPolicy.new(user, record.project).show?
   end
 
   def show?
@@ -77,8 +77,6 @@ class IdeaPolicy < ApplicationPolicy
   private
 
   def owner?
-    return true unless user
-
     record.author_id == user.id
   end
 end

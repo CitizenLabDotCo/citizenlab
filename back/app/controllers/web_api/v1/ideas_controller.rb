@@ -121,7 +121,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def create
     project = Project.find(params.dig(:idea, :project_id))
     phase_ids = params.dig(:idea, :phase_ids) || []
-    is_moderator = UserRoleService.new.can_moderate_project?(project, current_user)
+    is_moderator = current_user && UserRoleService.new.can_moderate_project?(project, current_user)
 
     if phase_ids.any?
       send_error and return unless is_moderator
@@ -140,8 +140,7 @@ class WebApi::V1::IdeasController < ApplicationController
     custom_form = participation_context_for_form.custom_form || CustomForm.new(participation_context: participation_context_for_form)
 
     extract_custom_field_values_from_params! custom_form
-    user_can_moderate_project = UserRoleService.new.can_moderate_project?(project, current_user)
-    input = Idea.new idea_params(custom_form, user_can_moderate_project)
+    input = Idea.new idea_params(custom_form, is_moderator)
     if project.timeline?
       input.creation_phase = (participation_context if participation_method.form_in_phase?)
       input.phase_ids = [participation_context.id] if phase_ids.empty?
