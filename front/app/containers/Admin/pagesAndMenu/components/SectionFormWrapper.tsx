@@ -35,7 +35,7 @@ const SectionFormWrapper = ({
           <Breadcrumbs breadcrumbs={breadcrumbs} />
         </Box>
       )}
-      <Box display="flex" justifyContent="space-between">
+      <Box display="flex" justifyContent="space-between" alignItems="baseline">
         {title && (
           <Box mb="20px">
             <Box display="flex" alignItems="center">

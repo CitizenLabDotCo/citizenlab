@@ -10,7 +10,6 @@ import { ITab } from 'typings';
 // components
 import FeatureFlag from 'components/FeatureFlag';
 import Tab from './Tab';
-import { Box } from '@citizenlab/cl2-component-library';
 
 const TabbedNav = styled.nav`
   background: #fcfcfc;

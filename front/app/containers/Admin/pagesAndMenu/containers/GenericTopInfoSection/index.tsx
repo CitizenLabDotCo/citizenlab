@@ -35,7 +35,6 @@ import { IHomepageSettingsData } from 'services/homepageSettings';
 // utils
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import validateMultiloc from 'utils/yup/validateMultiloc';
 
 interface Props {
   pageData: IHomepageSettingsData | ICustomPageData;

@@ -55,7 +55,7 @@ const CustomPageSettingsForm = ({
       formatMessage(messages.titleMultilocError)
     ),
     ...(showNavBarItemTitle && {
-      nav_bar_item_title_multiloc: validateMultiloc(
+      nav_bar_item_title_multiloc: validateMultilocForEveryLocale(
         formatMessage(messages.titleMultilocError)
       ),
     }),

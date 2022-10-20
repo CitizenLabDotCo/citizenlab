@@ -113,10 +113,11 @@ const GenericBottomInfoSection = ({
             />
           }
           rightSideCTA={
+            linkToViewPage ? (
               <ViewCustomPageButton linkTo={linkToViewPage} />
             ) : null
-            linkToViewPage ? (
           }
+        >
           <Feedback successMessage={formatMessage(messages.messageSuccess)} />
           <Box maxWidth={`${theme.maxPageWidth - 100}px`} mb="24px">
             <QuillMultilocWithLocaleSwitcher
