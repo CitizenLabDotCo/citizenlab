@@ -28,6 +28,10 @@ module ParticipationMethod
       participation_context.project.timeline?
     end
 
+    def edit_custom_form_allowed?
+      participation_context.ideas_count.zero?
+    end
+
     def sign_in_required_for_posting?
       false
     end

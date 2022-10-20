@@ -33,6 +33,10 @@ module ParticipationMethod
       false
     end
 
+    def edit_custom_form_allowed?
+      true
+    end
+
     def sign_in_required_for_posting?
       true
     end
