@@ -1,6 +1,6 @@
 # Changelog
 
-## Next release
+## 2022-10-20
 
 ### Fixed
 
