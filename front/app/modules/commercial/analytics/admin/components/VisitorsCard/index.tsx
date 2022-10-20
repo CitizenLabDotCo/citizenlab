@@ -14,8 +14,8 @@ import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
 // typings
-import { IResolution } from 'components/admin/ResolutionControl';
 import { Moment } from 'moment';
+import { IResolution } from 'components/admin/ResolutionControl';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
