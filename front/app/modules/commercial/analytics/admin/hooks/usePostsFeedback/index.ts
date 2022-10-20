@@ -7,8 +7,9 @@ import {
   QuerySchema,
 } from '../../services/analyticsFacts';
 
-// hooks
+// i18n
 import useLocalize from 'hooks/useLocalize';
+import { useIntl } from 'utils/cl-intl';
 
 // parsing
 import {
@@ -29,7 +30,6 @@ import { isEmptyResponse, getTranslations } from './utils';
 import { getProjectFilter, getDateFilter } from '../../utils/query';
 
 // typings
-import { WrappedComponentProps } from 'react-intl';
 import {
   QueryParameters,
   PostFeedback,
@@ -42,9 +42,6 @@ const query = ({
   startAtMoment,
   endAtMoment,
 }: QueryParameters): Query => {
-  const startAt = startAtMoment?.toISOString();
-  const endAt = endAtMoment?.toISOString();
-
   const queryFeedback: QuerySchema = {
     fact: 'post',
     aggregations: {
@@ -56,7 +53,7 @@ const query = ({
     filters: {
       type: { name: 'idea' },
       ...getProjectFilter('project', projectId),
-      ...getDateFilter('created_date', startAt, endAt),
+      ...getDateFilter('created_date', startAtMoment, endAtMoment),
     },
   };
 
@@ -71,18 +68,20 @@ const query = ({
     filters: {
       type: { name: 'idea' },
       ...getProjectFilter('project', projectId),
-      ...getDateFilter('created_date', startAt, endAt),
+      ...getDateFilter('created_date', startAtMoment, endAtMoment),
     },
   };
 
   return { query: [queryFeedback, queryStatus] };
 };
 
-export default function usePostsWithFeedback(
-  formatMessage: WrappedComponentProps['intl']['formatMessage'],
-  { projectId, startAtMoment, endAtMoment }: QueryParameters
-) {
+export default function usePostsFeedback({
+  projectId,
+  startAtMoment,
+  endAtMoment,
+}: QueryParameters) {
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
 
   const [postsWithFeedback, setPostsWithFeedback] = useState<
     PostFeedback | NilOrError

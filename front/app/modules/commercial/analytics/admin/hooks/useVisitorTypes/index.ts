@@ -7,50 +7,56 @@ import {
   QuerySchema,
 } from '../../services/analyticsFacts';
 
+// i18n
+import { useIntl } from 'utils/cl-intl';
+
 // parse
 import { parsePieData, parseExcelData } from './parse';
+
+// typings
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import { XlsxData } from 'components/admin/ReportExportMenu';
+import { Response, PieRow, QueryParameters } from './typings';
 
 // utils
 import { getProjectFilter, getDateFilter } from '../../utils/query';
 import { getTranslations } from './utils';
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
-
-// typings
-import { QueryParameters, Response, PieRow } from './typings';
-import { WrappedComponentProps } from 'react-intl';
-import { XlsxData } from 'components/admin/ReportExportMenu';
 
 const query = ({
   projectId,
   startAtMoment,
   endAtMoment,
 }: QueryParameters): Query => {
-  const startAt = startAtMoment?.toISOString();
-  const endAt = endAtMoment?.toISOString();
-
-  const trafficSourcesQuery: QuerySchema = {
+  const visitorTypesCountQuery: QuerySchema = {
     fact: 'visit',
     filters: {
       dimension_user: {
         role: ['citizen', null],
       },
       ...getProjectFilter('dimension_projects', projectId),
-      ...getDateFilter('dimension_date_last_action', startAt, endAt),
+      ...getDateFilter(
+        'dimension_date_last_action',
+        startAtMoment,
+        endAtMoment
+      ),
     },
-    groups: 'dimension_referrer_type.id',
+    groups: 'returning_visitor',
     aggregations: {
-      all: 'count',
-      'dimension_referrer_type.name': 'first',
+      visitor_id: 'count',
     },
   };
 
-  return { query: trafficSourcesQuery };
+  return {
+    query: visitorTypesCountQuery,
+  };
 };
 
-export default function useVisitorsTrafficSourcesData(
-  formatMessage: WrappedComponentProps['intl']['formatMessage'],
-  { projectId, startAtMoment, endAtMoment }: QueryParameters
-) {
+export default function useVisitorsData({
+  projectId,
+  startAtMoment,
+  endAtMoment,
+}: QueryParameters) {
+  const { formatMessage } = useIntl();
   const [pieData, setPieData] = useState<PieRow[] | NilOrError>();
   const [xlsxData, setXlsxData] = useState<XlsxData | NilOrError>();
 
@@ -67,13 +73,14 @@ export default function useVisitorsTrafficSourcesData(
       (response: Response | NilOrError) => {
         if (isNilOrError(response)) {
           setPieData(response);
+          setXlsxData(response);
           return;
         }
-
         const translations = getTranslations(formatMessage);
 
         const pieData = parsePieData(response.data, translations);
         setPieData(pieData);
+
         setXlsxData(parseExcelData(pieData, translations));
       }
     );

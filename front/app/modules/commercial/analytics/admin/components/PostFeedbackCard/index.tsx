@@ -17,9 +17,9 @@ import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
 import hookMessages from '../../hooks/usePostsFeedback/messages';
 import messages from './messages';
+import { useIntl } from 'utils/cl-intl';
 
 // hooks
 import usePostsFeedback from '../../hooks/usePostsFeedback';
@@ -29,7 +29,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { getCornerRadius } from './utils';
 
 // typings
-import { WrappedComponentProps } from 'react-intl';
 import { IResolution } from 'components/admin/ResolutionControl';
 import { Moment } from 'moment';
 
@@ -82,8 +81,9 @@ const PostFeedback = ({
   startAtMoment,
   endAtMoment,
   resolution,
-  intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
+}: Props) => {
+  const { formatMessage } = useIntl();
+
   const currentPieChart = useRef();
   const currentProgressBarsChart = useRef();
   const currentStackedBarChart = useRef();
@@ -99,7 +99,7 @@ const PostFeedback = ({
     setStackedBarHoverIndex(undefined);
   };
 
-  const data = usePostsFeedback(formatMessage, {
+  const data = usePostsFeedback({
     projectId,
     startAtMoment,
     endAtMoment,
@@ -142,7 +142,7 @@ const PostFeedback = ({
           currentProgressBarsChart,
           currentStackedBarChart,
         ],
-        xlsxData,
+        xlsx: { data: xlsxData },
         currentProjectFilter: projectId,
         startAt,
         endAt,
@@ -262,4 +262,4 @@ const PostFeedback = ({
   );
 };
 
-export default injectIntl(PostFeedback);
+export default PostFeedback;

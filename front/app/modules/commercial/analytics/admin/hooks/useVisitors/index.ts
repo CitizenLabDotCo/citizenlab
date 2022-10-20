@@ -9,6 +9,9 @@ import {
   AggregationsConfig,
 } from '../../services/analyticsFacts';
 
+// i18n
+import { useIntl } from 'utils/cl-intl';
+
 // parse
 import { parseStats, parseTimeSeries, parseExcelData } from './parse';
 
@@ -25,7 +28,6 @@ import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { XlsxData } from 'components/admin/ReportExportMenu';
 import { QueryParameters, Response, Stats, TimeSeries } from './typings';
 import { IResolution } from 'components/admin/ResolutionControl';
-import { WrappedComponentProps } from 'react-intl';
 
 const getAggregations = (): AggregationsConfig => ({
   all: 'count',
@@ -52,9 +54,6 @@ const query = ({
   endAtMoment,
   resolution,
 }: QueryParameters): Query => {
-  const startAt = startAtMoment?.toISOString();
-  const endAt = endAtMoment?.toISOString();
-
   const totalsWholePeriodQuery: QuerySchema = {
     fact: 'visit',
     filters: {
@@ -62,7 +61,11 @@ const query = ({
         role: ['citizen', null],
       },
       ...getProjectFilter('dimension_projects', projectId),
-      ...getDateFilter('dimension_date_last_action', startAt, endAt),
+      ...getDateFilter(
+        'dimension_date_last_action',
+        startAtMoment,
+        endAtMoment
+      ),
     },
     aggregations: getAggregations(),
   };
@@ -94,7 +97,11 @@ const query = ({
         role: ['citizen', null],
       },
       ...getProjectFilter('dimension_projects', projectId),
-      ...getDateFilter('dimension_date_last_action', startAt, endAt),
+      ...getDateFilter(
+        'dimension_date_last_action',
+        startAtMoment,
+        endAtMoment
+      ),
     },
     groups: `dimension_date_last_action.${getInterval(resolution)}`,
     aggregations: {
@@ -108,10 +115,14 @@ const query = ({
   };
 };
 
-export default function useVisitorsData(
-  formatMessage: WrappedComponentProps['intl']['formatMessage'],
-  { projectId, startAtMoment, endAtMoment, resolution }: QueryParameters
-) {
+export default function useVisitorsData({
+  projectId,
+  startAtMoment,
+  endAtMoment,
+  resolution,
+}: QueryParameters) {
+  const { formatMessage } = useIntl();
+
   const [deducedResolution, setDeducedResolution] =
     useState<IResolution>(resolution);
   const [stats, setStats] = useState<Stats | NilOrError>();

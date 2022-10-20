@@ -98,7 +98,7 @@ class PieChartByCategory extends React.PureComponent<
               <ReportExportMenu
                 name={graphTitleString}
                 svgNode={this.currentChart}
-                xlsxEndpoint={xlsxEndpoint}
+                xlsx={{ endpoint: xlsxEndpoint }}
                 currentGroupFilter={currentGroupFilter}
                 currentGroupFilterLabel={currentGroupFilterLabel}
                 startAt={startAt}
