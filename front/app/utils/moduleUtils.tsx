@@ -318,7 +318,7 @@ export interface OutletsPropertyMap {
     isVerified: boolean;
   };
   'app.containers.App.modals': { onMounted: (id: string) => void };
-  'app.containers.LandingPage.onboardingCampaigns': {
+  'app.containers.HomePage.onboardingCampaigns': {
     onboardingCampaigns: IOnboardingCampaigns;
     contentTimeout: number;
     contentDelay: number;
@@ -353,17 +353,17 @@ export interface OutletsPropertyMap {
     projectFolderId: string;
     className?: string;
   };
-  'app.containers.LandingPage.EventsWidget': Record<string, any>;
-  'app.containers.LandingPage.SignedOutHeader.index': {
+  'app.containers.HomePage.EventsWidget': Record<string, any>;
+  'app.containers.HomePage.SignedOutHeader.index': {
     homepageBannerLayout: THomepageBannerLayout;
   };
   'app.containers.Admin.pages-menu.index': Record<string, any>;
   'app.containers.Admin.pages-menu.NavigationSettings': Record<string, any>;
-  'app.containers.LandingPage.SignedOutHeader.CTA': {
+  'app.containers.HomePage.SignedOutHeader.CTA': {
     buttonStyle: BannerButtonStyle;
     signUpIn: (event: MouseEvent | KeyboardEvent) => void;
   };
-  'app.containers.LandingPage.SignedInHeader.CTA': {
+  'app.containers.HomePage.SignedInHeader.CTA': {
     customizedButtonConfig?: CustomizedButtonConfig;
     buttonStyle: BannerButtonStyle;
   };

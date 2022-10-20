@@ -52,7 +52,7 @@ const MainContent = () => {
         </SectionContainer>
       </ProjectSection>
 
-      <Outlet id="app.containers.LandingPage.EventsWidget" />
+      <Outlet id="app.containers.HomePage.EventsWidget" />
 
       <FeatureFlag name="initiatives">
         {postingProposalsEnabled && <StyledInitiativesCTABox />}

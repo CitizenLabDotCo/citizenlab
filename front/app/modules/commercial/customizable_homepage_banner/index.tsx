@@ -37,21 +37,21 @@ const configuration: ModuleConfiguration = {
     'app.containers.Admin.settings.customize.headerSectionEnd': (props) => {
       return <CTASettings {...props} />;
     },
-    'app.containers.LandingPage.SignedOutHeader.CTA': (props) => {
+    'app.containers.HomePage.SignedOutHeader.CTA': (props) => {
       return (
         <FeatureFlag name="customizable_homepage_banner">
           <CTA signedIn={false} {...props} />
         </FeatureFlag>
       );
     },
-    'app.containers.LandingPage.SignedInHeader.CTA': (props) => {
+    'app.containers.HomePage.SignedInHeader.CTA': (props) => {
       return (
         <FeatureFlag name="customizable_homepage_banner">
           <CTA signedIn {...props} />
         </FeatureFlag>
       );
     },
-    'app.containers.LandingPage.SignedOutHeader.index': ({
+    'app.containers.HomePage.SignedOutHeader.index': ({
       homepageBannerLayout,
     }) => {
       if (homepageBannerLayout === 'two_column_layout') {

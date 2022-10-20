@@ -28,7 +28,7 @@ const SignedOutHeaderIndex = () => {
           <FullWidthBannerLayout />
         )}
         <Outlet
-          id="app.containers.LandingPage.SignedOutHeader.index"
+          id="app.containers.HomePage.SignedOutHeader.index"
           homepageBannerLayout={homepageBannerLayout}
         />
       </>

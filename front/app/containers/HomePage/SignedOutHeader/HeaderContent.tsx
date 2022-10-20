@@ -116,7 +116,7 @@ const HeaderContent = ({
           <SignUpButton buttonStyle={buttonStyle} signUpIn={signUpIn} />
         )}
         <Outlet
-          id="app.containers.LandingPage.SignedOutHeader.CTA"
+          id="app.containers.HomePage.SignedOutHeader.CTA"
           buttonStyle={buttonStyle}
           signUpIn={signUpIn}
         />

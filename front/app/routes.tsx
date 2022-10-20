@@ -3,7 +3,7 @@ import createAdminRoutes from 'containers/Admin/routes';
 import moduleConfiguration from 'modules';
 import React, { lazy } from 'react';
 
-const LandingPage = lazy(() => import('containers/HomePage'));
+const HomePage = lazy(() => import('containers/HomePage'));
 const SignUpInPage = lazy(() => import('containers/SignUpInPage'));
 const SiteMap = lazy(() => import('containers/SiteMap'));
 const UsersEditPage = lazy(() => import('containers/UsersEditPage'));
@@ -48,7 +48,7 @@ export default function createRoutes() {
           index: true,
           element: (
             <PageLoading>
-              <LandingPage />
+              <HomePage />
             </PageLoading>
           ),
         },
@@ -72,7 +72,7 @@ export default function createRoutes() {
           path: 'invite',
           element: (
             <PageLoading>
-              <LandingPage />
+              <HomePage />
             </PageLoading>
           ),
         },
@@ -80,7 +80,7 @@ export default function createRoutes() {
           path: 'complete-signup',
           element: (
             <PageLoading>
-              <LandingPage />
+              <HomePage />
             </PageLoading>
           ),
         },
@@ -88,7 +88,7 @@ export default function createRoutes() {
           path: 'authentication-error',
           element: (
             <PageLoading>
-              <LandingPage />
+              <HomePage />
             </PageLoading>
           ),
         },

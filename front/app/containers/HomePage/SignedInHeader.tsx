@@ -437,7 +437,7 @@ class SignedInHeader extends PureComponent<Props, State> {
           </CSSTransition>
 
           <Outlet
-            id="app.containers.LandingPage.onboardingCampaigns"
+            id="app.containers.HomePage.onboardingCampaigns"
             onboardingCampaigns={onboardingCampaigns}
             contentTimeout={contentTimeout}
             contentDelay={contentDelay}
@@ -521,7 +521,7 @@ class SignedInHeader extends PureComponent<Props, State> {
               </Left>
               <Right>
                 <Outlet
-                  id="app.containers.LandingPage.SignedInHeader.CTA"
+                  id="app.containers.HomePage.SignedInHeader.CTA"
                   buttonStyle="primary-inverse"
                 />
               </Right>

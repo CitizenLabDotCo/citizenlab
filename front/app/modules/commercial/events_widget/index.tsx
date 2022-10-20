@@ -39,7 +39,7 @@ const configuration: ModuleConfiguration = {
         </RenderOnFeatureAllowed>
       );
     },
-    'app.containers.LandingPage.EventsWidget': () => {
+    'app.containers.HomePage.EventsWidget': () => {
       return (
         <RenderOnAllowedAndEnabled>
           <EventsWidget />
