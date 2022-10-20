@@ -16,6 +16,7 @@ import useProjectFolderImages from '../../../hooks/useProjectFolderImages';
 import useProjectFolder from '../../../hooks/useProjectFolder';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 import {
   SectionField,
@@ -38,10 +39,10 @@ import useAdminPublication from 'hooks/useAdminPublication';
 import SlugInput from 'components/admin/SlugInput';
 import { validateSlug } from 'utils/textUtils';
 
-interface Props {
+type Props = {
   mode: 'edit' | 'new';
   projectFolderId: string;
-}
+} & WrappedComponentProps;
 
 const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const projectFolder = useProjectFolder({ projectFolderId });

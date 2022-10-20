@@ -1321,7 +1321,6 @@
   "app.containers.admin.ideas.all.tabManage": "إدارة",
   "app.containers.admin.ideas.all.tabStatuses": "الحالات",
   "app.containers.admin.project.permissions.permissionsAdministrators": "المسؤولون ومديرو المشاريع",
-  "app.containers.admin.project.permissions.permissionsEveryoneLabel": "الجميع",
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "مجموعات مستخدمين محددة",
   "app.containers.admin.project.permissions.permissionsUsersLabel": "جميع المستخدمين",
   "app.containers.admin.project.permissions.viewingRightsTitle": "من يمكنه رؤية هذا المشروع؟",

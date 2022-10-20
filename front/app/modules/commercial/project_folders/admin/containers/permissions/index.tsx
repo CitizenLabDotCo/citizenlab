@@ -21,7 +21,7 @@ import {
 } from '../../../services/projectFolderModerators';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
@@ -62,7 +62,7 @@ const UserSelectButton = styled(Button)`
 const FolderPermissions = ({
   intl: { formatMessage },
   params: { projectFolderId },
-}: InjectedIntlProps & WithRouterProps) => {
+}: WrappedComponentProps & WithRouterProps) => {
   const authUser = useAuthUser();
   const folderModerators = useProjectFolderModerators(projectFolderId);
 

@@ -10,8 +10,8 @@ import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumb
 import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // utils
@@ -19,7 +19,7 @@ import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 
-const NewPageForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+const NewPageForm = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const goBack = () => {
     clHistory.push(ADMIN_PAGES_MENU_PATH);
   };

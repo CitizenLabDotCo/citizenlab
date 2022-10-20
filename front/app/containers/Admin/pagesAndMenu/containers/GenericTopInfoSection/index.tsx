@@ -18,7 +18,7 @@ import { object } from 'yup';
 
 // i18n
 import HelmetIntl from 'components/HelmetIntl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -33,6 +33,7 @@ import { ICustomPageData } from 'services/customPages';
 import { IHomepageSettingsData } from 'services/homepageSettings';
 
 // utils
+import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import validateMultiloc from 'utils/yup/validateMultiloc';
 
@@ -57,7 +58,7 @@ const GenericTopInfoSection = ({
   breadcrumbs,
   intl: { formatMessage },
   linkToViewPage,
-}: InjectedIntlProps & Props) => {
+}: WrappedComponentProps & Props) => {
   const theme: any = useTheme();
 
   const onFormSubmit = async (formValues: FormValues) => {
@@ -79,8 +80,8 @@ const GenericTopInfoSection = ({
   };
 
   const schema = object({
-    top_info_section_multiloc: validateMultiloc(
-      formatMessage(messages.blankDescriptionError)
+    top_info_section_multiloc: validateAtLeastOneLocale(
+      formatMessage(messages.missingOneLocaleError)
     ),
   });
 

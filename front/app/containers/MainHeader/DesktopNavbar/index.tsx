@@ -19,7 +19,7 @@ import getNavbarItemPropsArray from './getNavbarItemPropsArray';
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 const Container = styled.nav`
   height: 100%;
@@ -45,7 +45,7 @@ const NavbarItems = styled.ul`
   `};
 `;
 
-const DesktopNavbar = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+const DesktopNavbar = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const navbarItems = useNavbarItems();
   const pageSlugById = usePageSlugById();
 

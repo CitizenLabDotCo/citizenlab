@@ -15,7 +15,7 @@ import { UploadFile } from 'typings';
 import HeaderImageDropzone from './HeaderImageDropzone';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -59,7 +59,7 @@ const BannerImageField = ({
   setFormStatus,
   onOverlayColorChange,
   onOverlayOpacityChange,
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const theme: any = useTheme();
   const [previewDevice, setPreviewDevice] = useState<PreviewDevice>('desktop');
   const [headerLocalDisplayImage, setHeaderLocalDisplayImage] = useState<

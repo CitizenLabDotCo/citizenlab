@@ -55,11 +55,11 @@ describe('LinearScaleControl', () => {
   });
   it("doesn't show optional for required fields", () => {
     render(<LinearScaleControl {...props} />);
-    expect(screen.queryByText('optional')).toBeNull();
+    expect(screen.queryByText('(optional)')).toBeNull();
   });
   it('shows optional for optional fields', () => {
     props.schema.required = [];
     render(<LinearScaleControl {...props} />);
-    expect(screen.getByText('optional')).toBeInTheDocument();
+    expect(screen.getByText('(optional)')).toBeInTheDocument();
   });
 });

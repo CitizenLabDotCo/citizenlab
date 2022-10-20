@@ -10,7 +10,7 @@ import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWi
 import Feedback from 'components/HookForm/Feedback';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object } from 'yup';
-import validateMultiloc from 'utils/yup/validateMultiloc';
+import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 
 // components
 import Button from 'components/UI/Button';
@@ -18,7 +18,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 // intl
 import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
@@ -29,7 +29,7 @@ export interface FormValues {
 type PageFormProps = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
   defaultValues?: FormValues;
-} & InjectedIntlProps;
+} & WrappedComponentProps;
 
 const NavbarItemForm = ({
   onSubmit,
@@ -37,7 +37,7 @@ const NavbarItemForm = ({
   intl: { formatMessage },
 }: PageFormProps) => {
   const schema = object({
-    nav_bar_item_title_multiloc: validateMultiloc(
+    nav_bar_item_title_multiloc: validateMultilocForEveryLocale(
       formatMessage(messages.emptyTitleError)
     ),
   });

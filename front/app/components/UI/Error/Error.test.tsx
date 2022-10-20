@@ -56,13 +56,7 @@ describe('Error', () => {
       />
     );
     expect(screen.getByTestId('error-message-text')).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        (translationMessages as Record<string, string>)[
-          'app.errors.password_blank'
-        ]
-      )
-    ).toBeInTheDocument();
+    expect(screen.getByText('Please enter a password')).toBeInTheDocument();
     expect(
       screen.getByText(
         (translationMessages as Record<string, string>)[
