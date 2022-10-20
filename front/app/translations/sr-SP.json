@@ -806,6 +806,7 @@
   "app.containers.IdeasNewPage.api_error_question_title_multiloc_too_short": "Наслов питања мора да садржи најмање 10 знакова",
   "app.containers.IdeasNewPage.contributionFormTitle": "Додајте нови допринос",
   "app.containers.IdeasNewPage.contributionMetaTitle": "Додајте нови допринос | {projectName}",
+  "app.containers.IdeasNewPage.editSurvey": "Edit survey",
   "app.containers.IdeasNewPage.fileUploadError": "Један или више докумената нису постављени. Молимо вас проверите њихову величину и формат и покушајте поново.",
   "app.containers.IdeasNewPage.goBack": "Повратак назад",
   "app.containers.IdeasNewPage.ideaFormTitle": "Додајте нову идеју",
