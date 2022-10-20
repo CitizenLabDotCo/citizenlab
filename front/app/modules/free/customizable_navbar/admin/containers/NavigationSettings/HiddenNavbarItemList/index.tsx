@@ -13,7 +13,7 @@ import { addNavbarItem } from '../../../../services/navbar';
 // hooks
 import useNavbarItems from 'hooks/useNavbarItems';
 import useCustomPages from 'hooks/useCustomPages';
-import usePageSlugById from 'hooks/usePageSlugById';
+import useCustomPageSlugById from 'hooks/useCustomPageSlugById';
 import useRemovedDefaultNavbarItems from '../../../../hooks/useRemovedDefaultNavbarItems';
 
 // components
@@ -42,7 +42,7 @@ const HiddenNavbarItemList = ({
   const navbarItems = useNavbarItems();
   const removedDefaultNavbarItems = useRemovedDefaultNavbarItems();
   const pages = useCustomPages();
-  const pageSlugById = usePageSlugById();
+  const pageSlugById = useCustomPageSlugById();
 
   const notAllHooksRendered =
     isNilOrError(navbarItems) ||

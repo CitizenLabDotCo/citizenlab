@@ -19,7 +19,7 @@ import NavbarItemRow from 'containers/Admin/pagesAndMenu/containers/NavigationSe
 
 // hooks
 import useNavbarItems from 'hooks/useNavbarItems';
-import usePageSlugById from 'hooks/usePageSlugById';
+import useCustomPageSlugById from 'hooks/useCustomPageSlugById';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -35,7 +35,7 @@ const VisibleNavbarItemList = ({
   intl: { formatMessage },
 }: InjectedIntlProps) => {
   const navbarItems = useNavbarItems();
-  const pageSlugById = usePageSlugById();
+  const pageSlugById = useCustomPageSlugById();
 
   if (isNilOrError(navbarItems) || isNilOrError(pageSlugById)) {
     return null;
