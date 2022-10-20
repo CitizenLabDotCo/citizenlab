@@ -24,14 +24,6 @@ export const StyledContentContainer = styled(ContentContainer)`
   margin-bottom: 30px;
 `;
 
-export const AttachmentsContainer = styled.div`
-  max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 20px;
-  padding-right: 20px;
-`;
-
 export const PageContent = styled.main`
   flex-shrink: 0;
   flex-grow: 1;
