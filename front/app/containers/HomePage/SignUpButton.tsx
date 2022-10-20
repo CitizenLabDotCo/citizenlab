@@ -1,6 +1,8 @@
 import React, { MouseEvent, KeyboardEvent } from 'react';
 import messages from './messages';
-import BannerButton, { BannerButtonStyle } from './BannerButton';
+import BannerButton, {
+  BannerButtonStyle,
+} from 'components/LandingPages/citizen/BannerButton';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';

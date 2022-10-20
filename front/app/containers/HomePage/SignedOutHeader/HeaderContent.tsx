@@ -1,112 +1,26 @@
-import React from 'react';
-import styled, { css } from 'styled-components';
-import { media, fontSizes } from 'utils/styleUtils';
 import AvatarBubbles from 'components/AvatarBubbles';
-import useLocalize from 'hooks/useLocalize';
-import { isNilOrError } from 'utils/helperUtils';
-import { trackEventByName } from 'utils/analytics';
-import tracks from '../tracks';
-import { openSignUpInModal } from 'components/SignUpIn/events';
+import {
+  Container,
+  getAlignItems,
+  HeaderSubtitle,
+  HeaderTitle,
+  TAlign,
+} from 'components/LandingPages/citizen/HeaderContent';
 import { WrappedComponentProps } from 'react-intl';
-import messages from '../messages';
-import { injectIntl } from 'utils/cl-intl';
 import Outlet from 'components/Outlet';
-import SignUpButton from '../SignUpButton';
-import useHomepageSettings from 'hooks/useHomepageSettings';
+import { openSignUpInModal } from 'components/SignUpIn/events';
 import useFeatureFlag from 'hooks/useFeatureFlag';
-
-export const Container = styled.div<{
-  align: 'center' | 'left';
-  alignTo: 'center' | 'flex-start' | undefined;
-}>`
-  height: 100%;
-  max-width: ${({ theme }) => theme.maxPageWidth + 60}px;
-  padding: ${({ align }) => (align === 'left' ? '50px 80px' : '50px 30px')};
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: ${({ alignTo }) => alignTo || 'normal'};
-  z-index: 1;
-  box-sizing: content-box;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
-
-  ${media.tablet`
-    padding: 50px 30px;
-  `}
-`;
-
-export const HeadingFontStyle = css`
-  font-weight: ${({ theme }) => theme.signedOutHeaderTitleFontWeight || 600};
-  line-height: normal;
-`;
-
-export const HeaderTitle = styled.h1<{
-  hasHeader: boolean;
-  fontColors: 'light' | 'dark';
-  align: 'center' | 'left';
-}>`
-  width: 100%;
-  color: ${({ hasHeader, fontColors, theme }) =>
-    hasHeader
-      ? fontColors === 'light'
-        ? '#fff'
-        : theme.colors.tenantPrimary
-      : theme.colors.tenantPrimary};
-  font-size: ${({ theme }) =>
-    theme.signedOutHeaderTitleFontSize || fontSizes.xxxl}px;
-  ${HeadingFontStyle};
-  text-align: ${({ align }) => align};
-  padding: 0;
-  margin-bottom: 10px;
-
-  ${media.tablet`
-    font-size: ${fontSizes.xxxl}px;
-  `}
-
-  ${media.phone`
-    margin-bottom: 15px;
-  `}
-`;
-
-export const HeaderSubtitle = styled.h2<{
-  hasHeader: boolean;
-  fontColors: 'light' | 'dark';
-  align: 'center' | 'left';
-  displayHeaderAvatars: boolean;
-}>`
-  width: 100%;
-  color: ${({ hasHeader, fontColors, theme }) =>
-    hasHeader
-      ? fontColors === 'light'
-        ? '#fff'
-        : theme.colors.tenantPrimary
-      : theme.colors.tenantPrimary};
-  font-size: ${fontSizes.l}px;
-  line-height: 28px;
-  font-weight: 400;
-  text-align: ${({ align }) => align};
-  text-decoration: none;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
-  padding: 0;
-  margin: 0;
-  margin-bottom: 15px;
-
-  ${({ displayHeaderAvatars }) =>
-    // needed because we don't always
-    // show avatars
-    !displayHeaderAvatars &&
-    `
-      margin-bottom: 38px;
-
-      ${media.phone`
-        margin-bottom: 30px;
-      `}
-  `}
-`;
+import useHomepageSettings from 'hooks/useHomepageSettings';
+import useLocalize from 'hooks/useLocalize';
+import React from 'react';
+import styled from 'styled-components';
+import { trackEventByName } from 'utils/analytics';
+import { injectIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { media } from 'utils/styleUtils';
+import messages from '../messages';
+import SignUpButton from '../SignUpButton';
+import tracks from '../tracks';
 
 const StyledAvatarBubbles = styled(AvatarBubbles)`
   min-height: 40px;
@@ -117,7 +31,6 @@ const StyledAvatarBubbles = styled(AvatarBubbles)`
   `}
 `;
 
-export type TAlign = 'center' | 'left';
 interface Props {
   fontColors: 'light' | 'dark';
   align?: TAlign;
@@ -130,13 +43,6 @@ export const getButtonStyle = (fontColors: 'light' | 'dark') => {
     case 'dark':
       return 'primary';
   }
-};
-
-export const getAlignItems = (align: TAlign) => {
-  if (align === 'center') return 'center';
-  if (align === 'left') return 'flex-start';
-
-  return undefined;
 };
 
 const HeaderContent = ({
@@ -210,7 +116,7 @@ const HeaderContent = ({
           <SignUpButton buttonStyle={buttonStyle} signUpIn={signUpIn} />
         )}
         <Outlet
-          id="app.containers.LandingPage.SignedOutHeader.CTA"
+          id="app.containers.HomePage.SignedOutHeader.CTA"
           buttonStyle={buttonStyle}
           signUpIn={signUpIn}
         />

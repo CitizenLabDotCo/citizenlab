@@ -1,16 +1,6 @@
 import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/HeaderImageDropzone';
-import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-
-// components
-import HeaderContent from './HeaderContent';
-
-// style
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
-
-// hooks
-import useHomepageSettings from 'hooks/useHomepageSettings';
 
 export const Container = styled.div`
   width: 100%;
@@ -72,39 +62,3 @@ export const HeaderImageOverlay = styled.div<{
   left: 0;
   right: 0;
 `;
-
-export interface Props {
-  className?: string;
-}
-
-const FullWidthBannerLayout = ({ className }: Props) => {
-  const homepageSettings = useHomepageSettings();
-
-  if (!isNilOrError(homepageSettings)) {
-    const headerImage = homepageSettings.attributes.header_bg?.large;
-    const homepageSettingColor =
-      homepageSettings.attributes.banner_signed_out_header_overlay_color;
-    const homepageSettingOpacity =
-      homepageSettings.attributes.banner_signed_out_header_overlay_opacity;
-    return (
-      <Container className={`e2e-signed-out-header ${className}`}>
-        <Header id="hook-header">
-          <HeaderImage id="hook-header-image">
-            <HeaderImageBackground src={headerImage || null} />
-            <HeaderImageOverlay
-              data-cy="e2e-full-width-layout-header-image-overlay"
-              overlayColor={homepageSettingColor}
-              overlayOpacity={homepageSettingOpacity}
-            />
-          </HeaderImage>
-
-          <HeaderContent fontColors="light" />
-        </Header>
-      </Container>
-    );
-  }
-
-  return null;
-};
-
-export default FullWidthBannerLayout;

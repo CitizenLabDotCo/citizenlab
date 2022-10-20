@@ -1,10 +1,10 @@
-import React, { MouseEvent, KeyboardEvent } from 'react';
-import SignUpButton from 'containers/LandingPage/SignUpButton';
 import BannerButton, {
   BannerButtonStyle,
-} from 'containers/LandingPage/BannerButton';
-import useLocalize from 'hooks/useLocalize';
+} from 'components/LandingPages/citizen/BannerButton';
+import SignUpButton from 'containers/HomePage/SignUpButton';
 import useHomepageSettings from 'hooks/useHomepageSettings';
+import useLocalize from 'hooks/useLocalize';
+import React, { KeyboardEvent, MouseEvent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {

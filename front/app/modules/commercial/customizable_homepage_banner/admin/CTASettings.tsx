@@ -4,7 +4,7 @@ import {
   SectionField,
   SubSectionTitle,
 } from 'components/admin/Section';
-import CTARadioButtons from 'components/LandingPageComponents/admin/CTARadioButtons';
+import CTARadioButtons from 'components/LandingPages/admin/CTARadioButtons';
 import React from 'react';
 import {
   CTASignedInType,

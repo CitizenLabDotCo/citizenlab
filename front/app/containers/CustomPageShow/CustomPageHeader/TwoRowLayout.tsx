@@ -1,34 +1,14 @@
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import ContentContainer from 'components/ContentContainer';
-import Image from 'components/UI/Image';
+import {
+  Container,
+  HeaderImage,
+} from 'components/LandingPages/citizen/TwoRowLayout';
 import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/HeaderImageDropzone';
 import React from 'react';
 import { ICustomPageData } from 'services/customPages';
-import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
 import AdminCustomPageEditButton from './AdminCustomPageEditButton';
 import HeaderContent from './HeaderContent';
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px 0;
-
-  ${media.tablet`
-    padding: 0;
-  `}
-`;
-
-const HeaderImage = styled(Image)`
-  width: 100%;
-  height: ${homepageBannerLayoutHeights['two_row_layout'].desktop}px;
-  overflow: hidden;
-
-  ${media.tablet`
-    height: ${homepageBannerLayoutHeights['two_row_layout'].tablet}px;
-  `}
-`;
 
 interface Props {
   pageData: ICustomPageData;

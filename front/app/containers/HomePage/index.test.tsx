@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
-import LandingPage from '.';
+import HomePage from '.';
 
 jest.mock('services/locale');
 jest.mock('services/appConfiguration');
@@ -27,9 +27,9 @@ jest.mock('hooks/useHomepageSettings', () => {
   return jest.fn(() => mockHomepageSettings);
 });
 
-describe('<LandingPage />', () => {
+describe('<HomePage />', () => {
   it('renders with HomepageSettings for logged out users', () => {
-    render(<LandingPage />);
+    render(<HomePage />);
     expect(screen.getByText('Signed out header')).toBeInTheDocument();
     expect(screen.getByText('Signed out subhead')).toBeInTheDocument();
   });

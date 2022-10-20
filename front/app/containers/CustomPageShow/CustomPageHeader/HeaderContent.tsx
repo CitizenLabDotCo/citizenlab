@@ -1,15 +1,15 @@
-import React from 'react';
-import useLocalize from 'hooks/useLocalize';
 import {
   Container,
-  HeaderTitle,
-  HeaderSubtitle,
-  TAlign,
   getAlignItems,
-} from 'containers/LandingPage/SignedOutHeader/HeaderContent';
+  HeaderSubtitle,
+  HeaderTitle,
+  TAlign,
+} from 'components/LandingPages/citizen/HeaderContent';
+import useLocalize from 'hooks/useLocalize';
+import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import BannerButton from 'containers/LandingPage/BannerButton';
+import BannerButton from 'components/LandingPages/citizen/BannerButton';
 import { ICustomPageAttributes } from 'services/customPages';
 
 interface Props {

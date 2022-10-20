@@ -1,21 +1,21 @@
-import React from 'react';
 import { Icon } from '@citizenlab/cl2-component-library';
-import { colors } from 'utils/styleUtils';
+import React from 'react';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
 
+import messages from 'containers/HomePage/messages';
 import {
+  AcceptButton,
+  AvatarAndShield,
   HeaderContentCompleteProfile,
+  Icons,
   Left,
   Right,
-  Text,
-  Icons,
-  AvatarAndShield,
-  AcceptButton,
   SkipButton,
   StyledAvatar,
-} from 'containers/LandingPage/SignedInHeader';
-import messages from 'containers/LandingPage/messages';
+  Text,
+} from 'containers/HomePage/SignedInHeader';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
