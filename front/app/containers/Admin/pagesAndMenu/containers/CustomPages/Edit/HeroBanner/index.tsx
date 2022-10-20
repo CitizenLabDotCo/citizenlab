@@ -8,7 +8,7 @@ import { PAGES_MENU_CUSTOM_PATH } from 'containers/Admin/pagesAndMenu/routes';
 import useCustomPage from 'hooks/useCustomPage';
 import { forOwn, isEqual } from 'lodash-es';
 import React, { useEffect, useState } from 'react';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import {
   ICustomPageAttributes,
@@ -34,7 +34,7 @@ export type CustomPageBannerSettingKeyType = Extract<
 
 const EditCustomPageHeroBannerForm = ({
   intl: { formatMessage },
-}: InjectedIntlProps) => {
+}: WrappedComponentProps) => {
   const localize = useLocalize();
   const [isLoading, setIsLoading] = useState(false);
   const [apiErrors, setApiErrors] = useState<CLErrors | null>(null);

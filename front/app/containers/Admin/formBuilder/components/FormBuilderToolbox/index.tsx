@@ -2,7 +2,7 @@ import React from 'react';
 
 // intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 // components
@@ -38,7 +38,7 @@ const FormBuilderToolbox = ({
   intl: { formatMessage },
   onAddField,
   isEditingDisabled,
-}: FormBuilderToolboxProps & InjectedIntlProps) => {
+}: FormBuilderToolboxProps & WrappedComponentProps) => {
   const locale = useLocale();
 
   if (isNilOrError(locale)) return null;

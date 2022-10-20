@@ -1,23 +1,28 @@
 import React from 'react';
 
 // components
-import { Table } from 'semantic-ui-react';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Thead, Tr, Th, Box } from '@citizenlab/cl2-component-library';
+
+// styling
+import { colors } from 'utils/styleUtils';
+
+// utils
+import { roundPercentage } from 'utils/math';
 
 interface Props {
   columns: string[];
 }
 
 const HeaderRow = ({ columns }: Props) => (
-  <Table.Header>
-    <Table.Row>
+  <Thead>
+    <Tr background={colors.grey50}>
       {columns.map((column, i) => (
-        <Table.HeaderCell width={1} key={i}>
+        <Th width={`${roundPercentage(1, columns.length)}%`} key={i}>
           <Box my="6px">{column}</Box>
-        </Table.HeaderCell>
+        </Th>
       ))}
-    </Table.Row>
-  </Table.Header>
+    </Tr>
+  </Thead>
 );
 
 export default HeaderRow;

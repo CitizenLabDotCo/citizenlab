@@ -17,7 +17,7 @@ import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 // typings
 import { QueryParameters, Response, PieRow } from './typings';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { XlsxData } from 'components/admin/ReportExportMenu';
 
 const query = ({
@@ -48,7 +48,7 @@ const query = ({
 };
 
 export default function useVisitorsTrafficSourcesData(
-  formatMessage: InjectedIntlProps['intl']['formatMessage'],
+  formatMessage: WrappedComponentProps['intl']['formatMessage'],
   { projectId, startAtMoment, endAtMoment }: QueryParameters
 ) {
   const [pieData, setPieData] = useState<PieRow[] | NilOrError>();

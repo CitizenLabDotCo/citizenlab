@@ -1,5 +1,17 @@
 # Changelog
 
+## Next release
+
+### Fixed
+
+- [CL-1814] Fixed bug when opening the verification model after having a verification error
+
+## 2022-10-18
+
+### Fixed
+
+- [CL-1825] Made tables more visually consistent.
+
 ## 2022-10-14
 
 ### Fixed

@@ -3,7 +3,7 @@ import messages from './messages';
 import cardMessages from '../../components/VisitorsTypeCard/messages';
 
 // typings
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 export interface Translations {
   newVisitors: string;
@@ -14,7 +14,7 @@ export interface Translations {
 }
 
 export const getTranslations = (
-  formatMessage: InjectedIntlProps['intl']['formatMessage']
+  formatMessage: WrappedComponentProps['intl']['formatMessage']
 ): Translations => ({
   newVisitors: formatMessage(messages.newVisitors),
   returningVisitors: formatMessage(messages.returningVisitors),

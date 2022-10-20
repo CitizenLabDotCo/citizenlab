@@ -218,6 +218,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
       {showNativeSurvey && !hasProjectEnded && (
         <IdeaButton
           id="project-survey-button"
+          data-testid="e2e-project-survey-button"
           projectId={project.id}
           participationContextType={isPhaseNativeSurvey ? 'phase' : 'project'}
           phaseId={isPhaseNativeSurvey ? currentPhase.id : ''}

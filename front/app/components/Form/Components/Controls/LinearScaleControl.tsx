@@ -36,11 +36,11 @@ const LinearScaleControl = ({
         data-testid="linearScaleControl"
         display="flex"
         flexDirection="row"
-        gap="8px"
+        gap="16px"
         overflow="visible"
       >
-        <Box alignSelf="flex-end">
-          <Text mr="8px" fontWeight="bold">
+        <Box pt="28px" alignSelf="center">
+          <Text mr="8px" mt="0" mb="0" color="textSecondary" textAlign="right">
             {uischema.options?.minimum_label}
           </Text>
         </Box>
@@ -50,7 +50,7 @@ const LinearScaleControl = ({
             const visualIndex = i + 1;
             return (
               <Box key={i} style={{ lineHeight: '0px' }}>
-                <Box mt="16px" mx="4px">
+                <Box mt="16px" mx="4px" minHeight="24px">
                   <Label htmlFor={rowId}>{visualIndex}</Label>
                 </Box>
                 <br />
@@ -66,8 +66,8 @@ const LinearScaleControl = ({
             );
           })}
         </>
-        <Box mt="28px" alignSelf="flex-end">
-          <Text mr="8px" fontWeight="bold">
+        <Box pt="28px" alignSelf="center">
+          <Text mr="8px" mt="0" mb="0" color="textSecondary">
             {uischema.options?.maximum_label}
           </Text>
         </Box>

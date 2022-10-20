@@ -17,7 +17,7 @@ import Button from 'components/UI/Button';
 import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // Localisation
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -53,7 +53,7 @@ interface DataProps {
 export interface Props extends InputProps, DataProps {}
 
 const AdminProjectFolderEdition = memo<
-  Props & InjectedIntlProps & WithRouterProps
+  Props & WrappedComponentProps & WithRouterProps
 >(
   ({
     authUser,

@@ -23,6 +23,14 @@ describe('Idea new page', () => {
     cy.get('#e2e-idea-title-input .e2e-error-message');
   });
 
+  it('shows a back button to navigate to the projects page', () => {
+    cy.get('#e2e-idea-other-link').click();
+    cy.location('pathname').should(
+      'eq',
+      '/en/projects/an-idea-bring-it-to-your-council'
+    );
+  });
+
   it('shows an error when no description is provided', () => {
     cy.get('#idea-form');
     cy.get('.e2e-submit-idea-form').click();
