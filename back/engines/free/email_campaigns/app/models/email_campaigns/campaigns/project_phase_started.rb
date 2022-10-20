@@ -64,10 +64,10 @@ module EmailCampaigns
           phase_end_at: notification.phase.end_at.iso8601,
           phase_url: Frontend::UrlService.new.model_to_url(notification.phase, locale: recipient.locale),
           project_title_multiloc: notification.project.title_multiloc,
-          project_description_multiloc: notification.project.description_multiloc
-
+          project_description_multiloc: notification.project.description_multiloc, # Can maybe remove this
+          project_description_preview_multiloc: notification.project.description_preview_multiloc
         },
-        delay: 8.hours.to_i
+        delay: 0 # 8.hours.to_i (set to zero for testing)
       }]
     end
   end
