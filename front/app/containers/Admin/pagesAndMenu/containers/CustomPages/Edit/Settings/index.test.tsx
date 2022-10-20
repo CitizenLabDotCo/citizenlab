@@ -36,7 +36,6 @@ describe('EditCustomPageSettings', () => {
   describe('Edit custom page', () => {
     it('renders error in case of invalid slug', async () => {
       const { container } = render(<EditCustomPageSettings />);
-
       fireEvent.change(screen.getByRole('textbox', { name: 'Page URL' }), {
         target: {
           value: 'existing-slug',
@@ -44,7 +43,6 @@ describe('EditCustomPageSettings', () => {
       });
       fireEvent.click(container.querySelector('button[type="submit"]'));
       await waitFor(() => {
-        expect(screen.getAllByTestId('error-message')).toHaveLength(2);
         expect(screen.getByTestId('feedbackErrorMessage')).toBeInTheDocument();
       });
     });

@@ -23,6 +23,7 @@ interface Props {
   formStatus: ISubmitState;
   setFormStatus: (submitState: ISubmitState) => void;
   onSave: () => void;
+  onSaveAndEnable?: () => void | undefined;
   isLoading: boolean;
   outletSectionStart?: ReactElement;
   layoutSettingFieldComponent?: ReactElement;
@@ -32,11 +33,13 @@ interface Props {
   avatarsFieldComponent?: ReactElement;
   ctaButtonFieldsComponent?: ReactElement;
   outletSectionEnd?: ReactElement;
+  badge?: JSX.Element;
   linkToViewPage?: string;
 }
 
 const GenericHeroBannerForm = ({
   onSave,
+  onSaveAndEnable,
   formStatus,
   isLoading,
   title,
@@ -49,6 +52,7 @@ const GenericHeroBannerForm = ({
   bannerImageFieldsComponent,
   layoutSettingFieldComponent,
   ctaButtonFieldsComponent,
+  badge,
   linkToViewPage,
 }: Props) => {
   return (
@@ -56,18 +60,22 @@ const GenericHeroBannerForm = ({
       <SectionFormWrapper
         breadcrumbs={breadcrumbs}
         title={title}
+        badge={badge}
         stickyMenuContents={
           <SubmitWrapper
             status={formStatus}
             buttonStyle="primary"
             loading={isLoading}
             onClick={onSave}
+            enableFormOnSuccess
             messages={{
               buttonSave: messages.heroBannerSaveButton,
               buttonSuccess: messages.heroBannerButtonSuccess,
               messageSuccess: messages.heroBannerMessageSuccess,
               messageError: messages.heroBannerError,
             }}
+            secondaryButtonOnClick={onSaveAndEnable}
+            secondaryButtonSaveMessage={messages.saveAndEnable}
           />
         }
         rightSideCTA={
