@@ -1683,7 +1683,6 @@
   "app.modules.navbar.admin.components.NavbarItemList.hiddenFromNavigation": "Andra tillgängliga sidor",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Sidor som visas i navigeringsfältet",
   "app.modules.navbar.admin.components.tabNavigation": "Navigering",
-  "app.modules.navbar.admin.containers.addPageButton": "Lägg till sida",
   "app.modules.navbar.admin.containers.createCustomPageButton": "Skapa anpassad sida",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Är du säker på att du vill ta bort den här sidan? Du kan inte ångra den här åtgärden. Du kan också ta bort sidan från navigeringsfältet om du inte är redo att ta bort den ännu.",
   "app.modules.navbar.admin.containers.deletePageConfirmationHidden": "Är du säker på att du vill ta bort den här sidan? Du kan inte ångra den här åtgärden.",

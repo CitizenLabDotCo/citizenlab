@@ -1683,7 +1683,6 @@
   "app.modules.navbar.admin.components.NavbarItemList.hiddenFromNavigation": "Andre tilgængelige sider",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Sider, der vises på din navigationslinje",
   "app.modules.navbar.admin.components.tabNavigation": "Navigation",
-  "app.modules.navbar.admin.containers.addPageButton": "Tilføj side",
   "app.modules.navbar.admin.containers.createCustomPageButton": "Opret brugerdefineret side",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Er du sikker på, at du ønsker at slette denne side? Dette kan ikke fortrydes. Du kan også fjerne siden fra navigationslinjen, hvis du ikke er klar til at slette den endnu.",
   "app.modules.navbar.admin.containers.deletePageConfirmationHidden": "Er du sikker på, at du vil slette denne side? Dette kan ikke fortrydes.",

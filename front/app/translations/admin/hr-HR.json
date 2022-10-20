@@ -1683,7 +1683,6 @@
   "app.modules.navbar.admin.components.NavbarItemList.hiddenFromNavigation": "Ostale dostupne stranice",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Stranice prikazane u navigacijskoj traci",
   "app.modules.navbar.admin.components.tabNavigation": "Navigacija",
-  "app.modules.navbar.admin.containers.addPageButton": "Dodaj stranicu",
   "app.modules.navbar.admin.containers.createCustomPageButton": "Kreiraj prilagođenu stranicu",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Jeste li sigurni da želite izbrisati ovu stranicu? Ova radnja ne može se poništiti. Također možete ukloniti stranicu iz navigacijske trake ako je još uvijek niste spremni izbrisati.",
   "app.modules.navbar.admin.containers.deletePageConfirmationHidden": "Jeste li sigurni da želite izbrisati ovu stranicu? Ovu radnju ne možete poništiti.",

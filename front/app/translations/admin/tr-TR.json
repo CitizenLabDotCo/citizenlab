@@ -1683,7 +1683,6 @@
   "app.modules.navbar.admin.components.NavbarItemList.hiddenFromNavigation": "Kullanılabilen diğer sayfalar",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Gezinme çubuğunuzda gösterilen sayfalar",
   "app.modules.navbar.admin.components.tabNavigation": "Gezinme",
-  "app.modules.navbar.admin.containers.addPageButton": "Sayfa ekle",
   "app.modules.navbar.admin.containers.createCustomPageButton": "Create custom page",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Bu sayfayı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz. Henüz sayfayı silmeye hazır değilseniz gezinme çubuğundan da silebilirsiniz.",
   "app.modules.navbar.admin.containers.deletePageConfirmationHidden": "Bu sayfayı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
