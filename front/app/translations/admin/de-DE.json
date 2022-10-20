@@ -1683,7 +1683,6 @@
   "app.modules.navbar.admin.components.NavbarItemList.hiddenFromNavigation": "Andere verfügbare Seiten",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Seiten, die in Ihrer Navigationsleiste angezeigt werden",
   "app.modules.navbar.admin.components.tabNavigation": "Seiten",
-  "app.modules.navbar.admin.containers.addPageButton": "Seite hinzufügen",
   "app.modules.navbar.admin.containers.createCustomPageButton": "Benutzerdefinierte Seite erstellen",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Sind Sie sicher, dass Sie diese Seite löschen möchten? Dies kann nicht rückgängig gemacht werden. Wenn Sie diese Seite noch nicht löschen möchten, können Sie die Seite auch von Navigationsleiste entfernen.",
   "app.modules.navbar.admin.containers.deletePageConfirmationHidden": "Sind Sie sicher, dass Sie diese Seite löschen möchten? Dies kann nicht rückgängig gemacht werden.",

@@ -1683,7 +1683,6 @@
   "app.modules.navbar.admin.components.NavbarItemList.hiddenFromNavigation": "Inne dostępne strony",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Strony wyświetlane na pasku nawigacyjnym",
   "app.modules.navbar.admin.components.tabNavigation": "Nawigacja",
-  "app.modules.navbar.admin.containers.addPageButton": "Dodaj stronę",
   "app.modules.navbar.admin.containers.createCustomPageButton": "Create custom page",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Czy na pewno chcesz usunąć tę stronę? Nie można tego cofnąć. Możesz również usunąć stronę z paska nawigacyjnego, jeśli nie jesteś jeszcze gotowy, aby ją usunąć.",
   "app.modules.navbar.admin.containers.deletePageConfirmationHidden": "Czy na pewno chcesz usunąć ten projekt? Tej operacji nie da się cofnąć.",

@@ -1683,7 +1683,6 @@
   "app.modules.navbar.admin.components.NavbarItemList.hiddenFromNavigation": "Autres pages disponibles",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Pages affichées dans votre barre de navigation",
   "app.modules.navbar.admin.components.tabNavigation": "Navigation",
-  "app.modules.navbar.admin.containers.addPageButton": "Ajouter une page",
   "app.modules.navbar.admin.containers.createCustomPageButton": "Créer une page personnalisée",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Êtes-vous sûr de vouloir supprimer cette page ? Cette suppression ne peut être annulée. Vous pouvez également supprimer la page de la barre de navigation si vous n'êtes pas encore prêt à la supprimer.",
   "app.modules.navbar.admin.containers.deletePageConfirmationHidden": "Êtes-vous sûr de vouloir supprimer cette page ? Cette suppression ne peut être annulée.",

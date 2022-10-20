@@ -1683,7 +1683,6 @@
   "app.modules.navbar.admin.components.NavbarItemList.hiddenFromNavigation": "Quppernerit takuneqariaannaasut",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Quppernerit illit iserfigisinnaasanni takusinnaasatit",
   "app.modules.navbar.admin.components.tabNavigation": "Iserfiusinnaasut",
-  "app.modules.navbar.admin.containers.addPageButton": "Qupperneq ilannguguk",
   "app.modules.navbar.admin.containers.createCustomPageButton": "Create custom page",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Ilumut qupperneq una peerniarpiuk? Uterteqqissinnaanavianngilaq. Peernissaanut piareersimanngikkuit qupperneq navigationslinjemiit peersinnaavat.",
   "app.modules.navbar.admin.containers.deletePageConfirmationHidden": "Ilumut qupperneq una peerniarpiuk? Uterteqqissinnaanavianngilaq.",
