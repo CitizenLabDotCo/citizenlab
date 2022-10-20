@@ -485,7 +485,6 @@
   "app.containers.Admin.PagesAndMenu.heroBannerSaveButton": "Sauvegarder la bannière principale",
   "app.containers.Admin.PagesAndMenu.homeTitle": "Accueil",
   "app.containers.Admin.PagesAndMenu.missingOneLocaleError": "Fournir du contenu pour au moins une langue",
-  "app.containers.Admin.PagesAndMenu.pageHeader": "Pages",
   "app.containers.Admin.PagesAndMenu.pagesMenuMetaTitle": "Pages et menu | {orgName}",
   "app.containers.Admin.PagesAndMenu.removeButton": "Supprimer de la barre de navigation",
   "app.containers.Admin.PagesAndMenu.title": "Pages et menu",
