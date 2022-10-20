@@ -204,29 +204,36 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
     : `/admin/projects/${project.id}/native-survey/edit`;
 
   const TitleComponent = (
-    <Box width="100%" display="flex" flexDirection="column">
-      <Box width="100%" display="flex" justifyContent="center">
-        <Box
-          display="flex"
-          width="50%"
-          flexDirection="row"
-          justifyContent="space-around"
-          mb="14px"
-        >
-          <GoBackButton insideModal={false} projectId={project.id} />
-          <Box data-cy="e2e-edit-survey-link">
-            {showEditSurveyButton && (
-              <Button
-                icon="edit"
-                linkTo={linkToSurveyBuilder}
-                buttonStyle="secondary"
-                padding="5px 8px"
-                hidden={!userCanEditProject}
-              >
-                <FormattedMessage {...messages.editSurvey} />
-              </Button>
-            )}
-          </Box>
+    <Box
+      width="100%"
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+    >
+      <Box
+        display="flex"
+        width="100%"
+        flexDirection="row"
+        justifyContent="space-between"
+        mb="14px"
+        alignItems="center"
+        maxWidth="700px"
+        px="20px"
+      >
+        <GoBackButton insideModal={false} projectId={project.id} />
+        <Box data-cy="e2e-edit-survey-link">
+          {showEditSurveyButton && (
+            <Button
+              icon="edit"
+              linkTo={linkToSurveyBuilder}
+              buttonStyle="text"
+              textDecorationHover="underline"
+              hidden={!userCanEditProject}
+            >
+              <FormattedMessage {...messages.editSurvey} />
+            </Button>
+          )}
         </Box>
       </Box>
 
