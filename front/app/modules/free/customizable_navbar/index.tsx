@@ -3,9 +3,6 @@ import { ModuleConfiguration } from 'utils/moduleUtils';
 import PagesMenu from './admin/containers';
 import NavbarTitleField from './admin/components/NavbarTitleField';
 
-const NewPageFormComponent = lazy(
-  () => import('./admin/containers/NewPageForm')
-);
 const EditNavbarItemComponent = lazy(
   () => import('./admin/containers/EditNavbarItemForm')
 );
@@ -17,10 +14,6 @@ const NavigationSettings = lazy(
 const configuration: ModuleConfiguration = {
   routes: {
     'admin.pages-menu': [
-      {
-        path: 'pages/new',
-        element: <NewPageFormComponent />,
-      },
       {
         path: 'navbar-items/edit/:navbarItemId',
         element: <EditNavbarItemComponent />,
