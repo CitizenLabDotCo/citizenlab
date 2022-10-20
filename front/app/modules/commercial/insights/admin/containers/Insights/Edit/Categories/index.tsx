@@ -34,7 +34,7 @@ import useInsightsInputsCount from 'modules/commercial/insights/hooks/useInsight
 import useDetectedCategories from 'modules/commercial/insights/hooks/useInsightsDetectedCategories';
 
 // intl
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 
 // types
@@ -53,12 +53,12 @@ import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks
 
 const CategoriesLabel = styled.div`
   display: flex;
+  align-items: center;
   p {
     text-transform: uppercase;
     font-size: ${fontSizes.xs}px;
     color: ${colors.primary};
     font-weight: bold;
-    margin-bottom: 0px;
     margin-right: 8px;
   }
 `;
@@ -115,9 +115,9 @@ const StyledPlus = styled.div`
 `;
 
 const DeletedIcon = styled(Icon)`
-  width: 18px;
-  height: 18px;
   fill: ${colors.textSecondary};
+  width: 20px;
+  height: 20px;
   &:hover {
     fill: ${colors.red600};
   }
@@ -127,7 +127,7 @@ const Categories = ({
   intl: { formatMessage },
   params: { viewId },
   location: { query, pathname },
-}: InjectedIntlProps & WithRouterProps) => {
+}: WrappedComponentProps & WithRouterProps) => {
   const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
 
   const [loadingAdd, setLoadingAdd] = useState(false);
@@ -348,7 +348,7 @@ const Categories = ({
           />
         </CategoriesLabel>
         <Button
-          icon="more-options"
+          icon="dots-horizontal"
           iconColor={colors.textSecondary}
           iconHoverColor={colors.textSecondary}
           boxShadow="none"

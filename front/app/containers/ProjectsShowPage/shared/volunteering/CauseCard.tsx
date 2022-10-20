@@ -146,9 +146,7 @@ const VolunteersCount = styled.div`
 `;
 
 const VolunteersCountIcon = styled(Icon)`
-  flex: 0 0 16px;
-  width: 16px;
-  height: 16px;
+  flex: 0 0 24px;
   fill: #fff;
   margin-right: 8px;
 `;
@@ -221,7 +219,7 @@ const CauseCard = memo<Props>(({ cause, className }) => {
           <ImageWrapper>
             <StyledImage src={cause.attributes.image.medium} alt="" />
             <VolunteersCount>
-              <VolunteersCountIcon name="volunteer-hand" />
+              <VolunteersCountIcon name="volunteer" />
               <VolunteersCountText aria-hidden="true">
                 <FormattedMessage
                   {...messages.xVolunteers}
@@ -232,9 +230,9 @@ const CauseCard = memo<Props>(({ cause, className }) => {
           </ImageWrapper>
         ) : (
           <ImageWrapper className="fillBackground">
-            <PlaceholderIcon name="volunteer-hand" />
+            <PlaceholderIcon name="volunteer" />
             <VolunteersCount>
-              <VolunteersCountIcon name="volunteer-hand" />
+              <VolunteersCountIcon name="volunteer" />
               <VolunteersCountText aria-hidden="true">
                 <FormattedMessage
                   {...messages.xVolunteers}
@@ -277,7 +275,7 @@ const CauseCard = memo<Props>(({ cause, className }) => {
           ) : (
             <Button
               onClick={handleOnVolunteerButtonClick}
-              icon={!isVolunteer ? 'volunteer-hand' : 'unvolunteer-hand'}
+              icon={!isVolunteer ? 'volunteer' : 'volunteer-off'}
               disabled={!authUser}
               buttonStyle={!isVolunteer ? 'primary' : 'secondary'}
               fullWidth={smallerThanSmallTablet}

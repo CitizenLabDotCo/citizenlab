@@ -28,12 +28,13 @@ module ParticipationContext
     # for timeline projects, the phases are the participation contexts, so nothing applies
     with_options unless: :timeline_project? do
       validates :participation_method, inclusion: { in: PARTICIPATION_METHODS }
+      validate :validate_participation_method_change, on: :update
 
       before_validation :set_participation_method, on: :create
       before_validation :set_presentation_mode, on: :create
 
       # ideation? or budgeting?
-      with_options if: :ideation_or_budgeting? do
+      with_options if: :can_contain_ideas? do
         validates :presentation_mode,
           inclusion: { in: PRESENTATION_MODES }, allow_nil: true
 
@@ -52,10 +53,10 @@ module ParticipationContext
       end
       validates :upvoting_limited_max, presence: true,
         numericality: { only_integer: true, greater_than: 0 },
-        if: %i[ideation_or_budgeting? upvoting_limited?]
+        if: %i[can_contain_ideas? upvoting_limited?]
       validates :downvoting_limited_max, presence: true,
         numericality: { only_integer: true, greater_than: 0 },
-        if: %i[ideation_or_budgeting? downvoting_limited?]
+        if: %i[can_contain_ideas? downvoting_limited?]
 
       # ideation?
       with_options if: :ideation? do
@@ -76,10 +77,6 @@ module ParticipationContext
     end
   end
 
-  def ideation_or_budgeting?
-    ideation? || budgeting?
-  end
-
   def ideation?
     participation_method == 'ideation'
   end
@@ -94,6 +91,10 @@ module ParticipationContext
 
   def can_contain_ideas?
     ideation? || budgeting?
+  end
+
+  def can_contain_input?
+    can_contain_ideas? || native_survey?
   end
 
   def upvoting_limited?
@@ -136,5 +137,13 @@ module ParticipationContext
 
   def set_input_term
     self.input_term ||= DEFAULT_INPUT_TERM
+  end
+
+  def validate_participation_method_change
+    return unless participation_method_changed?
+
+    return if participation_method_was != 'native_survey' && participation_method != 'native_survey'
+
+    errors.add :participation_method, :change_not_permitted, message: 'change is not permitted'
   end
 end

@@ -5,7 +5,7 @@ import cardMessages from '../../components/VisitorsCard/messages';
 // typings
 import { TimeSeriesResponse } from './typings';
 import { IResolution } from 'components/admin/ResolutionControl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 export const deduceResolution = (
   timeSeriesResponse: TimeSeriesResponse
@@ -40,7 +40,7 @@ export interface Translations {
 }
 
 export const getTranslations = (
-  formatMessage: InjectedIntlProps['intl']['formatMessage']
+  formatMessage: WrappedComponentProps['intl']['formatMessage']
 ): Translations => ({
   stats: formatMessage(messages.stats),
   timeSeries: formatMessage(messages.timeSeries),

@@ -8,7 +8,7 @@ import DateRangePicker from 'components/admin/DateRangePicker';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 // styling
@@ -31,10 +31,7 @@ const StyledButton = styled(Button)`
 `;
 
 const DropdownItemIcon = styled(Icon)`
-  width: 11px;
-  height: 6px;
   fill: ${colors.textSecondary};
-  margin-top: 1px;
   margin-left: 4px;
 `;
 
@@ -66,7 +63,7 @@ type State = {
   dropdownOpened: boolean;
 };
 
-class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
+class TimeControl extends PureComponent<Props & WrappedComponentProps, State> {
   private presets = [
     {
       id: 'allTime',
@@ -166,7 +163,7 @@ class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
             ) : (
               <FormattedMessage {...messages.customDateRange} />
             )}
-            <DropdownItemIcon name="dropdown" />
+            <DropdownItemIcon name="chevron-down" />
           </StyledButton>
           <Dropdown
             width="200px"
@@ -207,4 +204,4 @@ class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default injectIntl<Props>(TimeControl);
+export default injectIntl(TimeControl);

@@ -27,7 +27,7 @@ import { Icon } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 import messages from './messages';
 import { getInputTermMessage } from 'utils/i18n';
 
@@ -60,9 +60,7 @@ const TooltipContent = styled.div<{ inMap?: boolean }>`
 `;
 
 const TooltipContentIcon = styled(Icon)`
-  flex: 0 0 25px;
-  width: 20px;
-  height: 25px;
+  flex: 0 0 24px;
   margin-right: 1rem;
 `;
 
@@ -122,7 +120,7 @@ interface InputProps extends Omit<ButtonProps, 'onClick'> {
 
 interface Props extends InputProps, DataProps {}
 
-const IdeaButton = memo<Props & InjectedIntlProps>(
+const IdeaButton = memo<Props & WrappedComponentProps>(
   ({
     id,
     project,
@@ -139,7 +137,7 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
     ...buttonContainerProps
   }) => {
     const disabledMessages: {
-      [key in IIdeaPostingDisabledReason]: ReactIntl.FormattedMessage.MessageDescriptor;
+      [key in IIdeaPostingDisabledReason]: MessageDescriptor;
     } = {
       notPermitted: messages.postingNoPermission,
       postingDisabled: messages.postingDisabled,
@@ -265,7 +263,7 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
             className="e2e-disabled-tooltip"
             inMap={inMap}
           >
-            <TooltipContentIcon name="lock-outlined" ariaHidden />
+            <TooltipContentIcon name="lock" ariaHidden />
             <TooltipContentText>
               <FormattedMessage
                 {...disabledMessages[disabledReason]}
@@ -282,7 +280,7 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
             className="e2e-disabled-tooltip"
             inMap={inMap}
           >
-            <TooltipContentIcon name="lock-outlined" ariaHidden />
+            <TooltipContentIcon name="lock" ariaHidden />
             <TooltipContentText>
               <FormattedMessage
                 {...disabledMessages[disabledReason]}
@@ -324,6 +322,7 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
               hideOnClick={false}
             >
               <ButtonWrapper
+                id="e2e-cta-button"
                 tabIndex={!enabled ? 0 : -1}
                 className={`e2e-idea-button ${!enabled ? 'disabled' : ''} ${
                   disabledReason ? disabledReason : ''

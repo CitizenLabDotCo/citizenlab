@@ -4,10 +4,11 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Phases' do
-  explanation 'Timeline projects constist of multiple phases through which ideas can transit.'
+  explanation 'Timeline projects consist of multiple phases through which ideas can transit.'
 
   before do
     header 'Content-Type', 'application/json'
+    create(:idea_status_proposed)
     @project = create(:project)
     @phases = create_list(:phase_sequence, 2, project: @project)
   end
@@ -50,6 +51,19 @@ resource 'Phases' do
         expect(json_response.dig(:data, :relationships, :permissions, :data).size)
           .to eq(PermissionsService.actions(@phases.first).length)
       end
+    end
+  end
+
+  delete 'web_api/v1/phases/:id/inputs' do
+    let(:project) { create(:project_with_active_native_survey_phase) }
+    let(:active_phase) { project.phases.first }
+    let(:id) { active_phase.id }
+
+    example '[error] Delete all inputs of a phase' do
+      create :idea, project: project, phases: [active_phase]
+
+      do_request
+      assert_status 401
     end
   end
 
@@ -327,7 +341,8 @@ resource 'Phases' do
           :custom_field_multiselect,
           resource: form,
           title_multiloc: { 'en' => 'What are your favourite pets?' },
-          description_multiloc: {}
+          description_multiloc: {},
+          required: true
         )
       end
       let!(:cat_option) do
@@ -365,6 +380,7 @@ resource 'Phases' do
                 {
                   inputType: 'multiselect',
                   question: { en: 'What are your favourite pets?' },
+                  required: true,
                   totalResponses: 3,
                   answers: [
                     { answer: { en: 'Cat' }, responses: 2 },
@@ -429,6 +445,33 @@ resource 'Phases' do
 
         json_response = json_parse(response_body)
         expect(json_response).to eq({ data: { totalSubmissions: 3 } })
+      end
+    end
+
+    delete 'web_api/v1/phases/:id/inputs' do
+      let(:project) { create(:project_with_active_native_survey_phase) }
+      let(:active_phase) { project.phases.order(:start_at).last }
+      let(:id) { active_phase.id }
+
+      example 'Delete all inputs of a phase' do
+        ideation_phase = create(
+          :phase,
+          project: project,
+          participation_method: 'ideation',
+          start_at: (Time.now - 2.months),
+          end_at: (Time.now - 1.month)
+        )
+        create_list :idea, 2, project: project, phases: [active_phase]
+        create :idea, project: project, phases: [ideation_phase]
+        expect_any_instance_of(SideFxPhaseService).to receive(:after_delete_inputs)
+
+        do_request
+        assert_status 200
+        expect(Phase.find(id)).to eq active_phase
+        expect(project.reload.ideas_count).to eq 1
+        expect(active_phase.reload.ideas_count).to eq 0
+        expect(ideation_phase.reload.ideas_count).to eq 1
+        expect(Idea.count).to eq 1
       end
     end
   end

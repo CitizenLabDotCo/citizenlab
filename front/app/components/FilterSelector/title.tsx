@@ -20,16 +20,15 @@ const Text = styled.span<{ textColor?: string }>`
 `;
 
 const DropdownIcon = styled(Icon)<{ textColor?: string }>`
-  width: 10px;
-  height: 7px;
   fill: ${({ textColor }) => textColor ?? colors.textPrimary};
   transition: all 100ms ease-out;
-  margin-left: 7px;
 `;
 
 const Container = styled.button<{ textColor?: string }>`
   height: 24px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
 
   &.adminpage {
     ${Text} {
@@ -92,7 +91,7 @@ export default class Title extends PureComponent<Props, State> {
         </Text>
         <DropdownIcon
           className="FilterSelectorTitleIcon"
-          name="dropdown"
+          name="chevron-down"
           ariaHidden
           textColor={textColor}
         />

@@ -72,8 +72,7 @@ const ColorLabel = styled.div`
 
 const StyledIcon = styled(Icon)<{ color: string }>`
   fill: ${(props) => props.color};
-  flex: 0 0 18px;
-  width: 18px;
+  flex: 0 0 24px;
   margin-right: 10px;
 
   &.ie {

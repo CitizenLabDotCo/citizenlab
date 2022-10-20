@@ -140,9 +140,7 @@ const InfoOverlayInner = styled.div`
 
 const InfoOverlayIcon = styled(Icon)`
   fill: ${colors.teal700};
-  flex: 0 0 18px;
-  width: 18px;
-  height: 18px;
+  flex: 0 0 24px;
   margin-right: 8px;
 `;
 
@@ -390,7 +388,7 @@ const IdeasMap = memo<Props>((props) => {
         {isIdeaPostingEnabled && (
           <InfoOverlay>
             <InfoOverlayInner>
-              <InfoOverlayIcon name="info" />
+              <InfoOverlayIcon name="info-outline" />
               <InfoOverlayText>
                 <FormattedMessage
                   {...(tablet

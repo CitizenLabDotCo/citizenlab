@@ -22,7 +22,7 @@ import tracks from './tracks';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from 'containers/ProjectsShowPage/messages';
 import FormattedBudget from 'utils/currency/FormattedBudget';
@@ -81,8 +81,7 @@ const Title = styled.h2`
 `;
 
 const TitleIcon = styled(Icon)<{ viewMode?: 'row' | 'column' }>`
-  flex: 0 0 18px;
-  height: 18px;
+  flex: 0 0 24px;
   margin-right: 10px;
 
   ${({ viewMode }) =>
@@ -242,9 +241,9 @@ const TooltipContent = styled.div`
 `;
 
 const TooltipContentIcon = styled(Icon)`
-  flex: 0 0 25px;
+  flex: 0 0 20px;
   width: 20px;
-  height: 25px;
+  height: 20px;
   margin-right: 1rem;
 `;
 
@@ -272,7 +271,7 @@ const PBExpenses = ({
   className,
   viewMode,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const [processing, setProcessing] = useState(false);
   const locale = useLocale();
   const appConfiguration = useAppConfiguration();
@@ -407,7 +406,12 @@ const PBExpenses = ({
               )}
               {validationStatus === 'validationError' && (
                 <>
-                  <TitleIcon name="error" ariaHidden viewMode={viewMode} />
+                  <TitleIcon
+                    name="alert-circle"
+                    fill={colors.error}
+                    ariaHidden
+                    viewMode={viewMode}
+                  />
                   {showFixedRequiredBudget ? (
                     <FormattedMessage {...messages.requiredSelectionExceeded} />
                   ) : (
@@ -417,7 +421,7 @@ const PBExpenses = ({
               )}
               {validationStatus === 'validationSuccess' && (
                 <>
-                  <TitleIcon name="checkmark" ariaHidden viewMode={viewMode} />
+                  <TitleIcon name="check" ariaHidden viewMode={viewMode} />
                   <FormattedMessage {...messages.basketSubmitted} />
                 </>
               )}
@@ -531,7 +535,7 @@ const PBExpenses = ({
                 placement="bottom"
                 content={
                   <TooltipContent>
-                    <TooltipContentIcon name="lock-outlined" ariaHidden />
+                    <TooltipContentIcon name="lock" ariaHidden />
                     <TooltipContentText>
                       <FormattedMessage
                         // This will only show when there's a min budget that is not reached,

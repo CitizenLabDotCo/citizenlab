@@ -31,7 +31,7 @@ module Analytics
         results = query_order(results)
       end
 
-      limit = @json_query.fetch(:limit, 10)
+      limit = @json_query.fetch(:limit, 1000)
       results = results.limit(limit)
 
       query_pluck(results)

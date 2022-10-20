@@ -3,7 +3,7 @@ import { isNumber } from 'lodash-es';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 
 // components
@@ -17,8 +17,6 @@ import { darken } from 'polished';
 const Container = styled.div`
   position: relative;
 `;
-
-const NotificationIconButton = styled(IconButton)``;
 
 const NewNotificationsIndicator = styled.div`
   color: #fff;
@@ -56,12 +54,12 @@ const NotificationCount = ({
   dropdownOpened,
   onToggleDropdown,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const theme: any = useTheme();
 
   return (
     <Container>
-      <NotificationIconButton
+      <IconButton
         onClick={onToggleDropdown}
         iconName="notification"
         a11y_buttonActionMessage={formatMessage(
@@ -74,8 +72,6 @@ const NotificationCount = ({
             ? darken(0.2, theme.navbarTextColor)
             : colors.textPrimary
         }
-        iconWidth={'20px'}
-        iconHeight={'24px'}
         ariaExpanded={dropdownOpened}
         ariaControls="notifications-dropdown"
       />

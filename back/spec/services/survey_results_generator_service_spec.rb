@@ -42,7 +42,8 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
         'fr-FR' => 'Quels sont vos animaux de compagnie préférés ?',
         'nl-NL' => 'Wat zijn je favoriete huisdieren?'
       },
-      description_multiloc: {}
+      description_multiloc: {},
+      required: false
     )
   end
   let!(:cat_option) do
@@ -102,7 +103,8 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
       },
       maximum: 5,
       minimum_label_multiloc: minimum_label_multiloc,
-      maximum_label_multiloc: maximum_label_multiloc
+      maximum_label_multiloc: maximum_label_multiloc,
+      required: true
     )
   end
   let(:select_field) do
@@ -114,7 +116,8 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
         'fr-FR' => 'Quelle ville préférez-vous ?',
         'nl-NL' => 'Welke stad vind jij het leukst?'
       },
-      description_multiloc: {}
+      description_multiloc: {},
+      required: true
     )
   end
   let!(:la_option) do
@@ -145,6 +148,7 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
               'fr-FR' => 'Quels sont vos animaux de compagnie préférés ?',
               'nl-NL' => 'Wat zijn je favoriete huisdieren?'
             },
+            required: false,
             totalResponses: 10,
             answers: [
               { answer: { 'en' => 'Cat', 'fr-FR' => 'Chat', 'nl-NL' => 'Kat' }, responses: 4 },
@@ -160,6 +164,7 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
               'fr-FR' => "Êtes-vous d'accord avec la vision ?",
               'nl-NL' => 'Ben je het eens met de visie?'
             },
+            required: true,
             totalResponses: 18,
             answers: [
               { answer: { 'en' => '3', 'fr-FR' => '3', 'nl-NL' => '3' }, responses: 7 },
@@ -190,6 +195,7 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
               'fr-FR' => 'Quelle ville préférez-vous ?',
               'nl-NL' => 'Welke stad vind jij het leukst?'
             },
+            required: true,
             totalResponses: 4,
             answers: [
               { answer: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' }, responses: 3 },
@@ -218,6 +224,7 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
   end
 
   before do
+    create(:idea_status_proposed)
     create(
       :idea,
       project: project,

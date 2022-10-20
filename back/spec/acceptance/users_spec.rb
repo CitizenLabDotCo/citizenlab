@@ -837,9 +837,11 @@ resource 'Users' do
       let(:id) { @user.id }
 
       example 'Get the number of ideas published by one user' do
+        IdeaStatus.create_defaults
         create(:idea, author: @user)
         create(:idea)
         create(:idea, author: @user, publication_status: 'draft')
+        create(:idea, author: @user, project: create(:continuous_native_survey_project))
         do_request
         expect(status).to eq 200
         json_response = json_parse(response_body)

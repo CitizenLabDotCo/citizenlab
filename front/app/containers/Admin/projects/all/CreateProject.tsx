@@ -20,7 +20,7 @@ import tracks from './tracks';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // style
@@ -112,7 +112,6 @@ const ExpandIconWrapper = styled.div`
 `;
 
 const ExpandIcon = styled(Icon)`
-  height: 11px;
   fill: ${colors.textSecondary};
   transition: all ${duartion - 100}ms ease-out;
 
@@ -159,13 +158,13 @@ export interface ITabNamesMap {
 
 export type TTabName = ITabNamesMap[keyof ITabNamesMap];
 
-const CreateProject = memo<Props & InjectedIntlProps>(
+const CreateProject = memo<Props & WrappedComponentProps>(
   ({ className, intl: { formatMessage } }) => {
     const [tabs, setTabs] = useState<ITabItem[]>([
       {
         name: 'scratch',
         label: formatMessage(messages.fromScratch),
-        icon: 'scratch',
+        icon: 'blank-paper',
       },
     ]);
     const tabValues = tabs.map((tab) => tab.name) as TTabName[];

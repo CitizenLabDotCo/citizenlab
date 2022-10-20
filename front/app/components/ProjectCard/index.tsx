@@ -27,7 +27,7 @@ import useProjectImages from 'hooks/useProjectImages';
 
 // i18n
 import T from 'components/T';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from './messages';
@@ -160,11 +160,6 @@ const ProjectImagePlaceholder = styled.div`
   align-items: center;
   justify-content: center;
   background: ${colors.grey300};
-`;
-
-const ProjectImagePlaceholderIcon = styled(Icon)`
-  height: 45px;
-  fill: #fff;
 `;
 
 const ProjectImage = styled(Image)`
@@ -436,8 +431,6 @@ const MetaItem = styled.div`
 `;
 
 const MetaItemIcon = styled(Icon)`
-  width: 20px;
-  height: 20px;
   fill: ${({ theme }) => theme.colors.tenantPrimary};
 `;
 
@@ -462,7 +455,7 @@ export interface InputProps {
   className?: string;
 }
 
-interface Props extends InputProps, InjectedIntlProps {}
+interface Props extends InputProps, WrappedComponentProps {}
 
 const ProjectCard = memo<Props>(
   ({
@@ -708,7 +701,12 @@ const ProjectCard = memo<Props>(
               <ProjectImage src={imageUrl} alt="" cover={true} />
             ) : (
               <ProjectImagePlaceholder>
-                <ProjectImagePlaceholderIcon name="project" />
+                <Icon
+                  name="building"
+                  width="80px"
+                  height="80px"
+                  fill={colors.white}
+                />
               </ProjectImagePlaceholder>
             )}
           </ProjectImageContainer>

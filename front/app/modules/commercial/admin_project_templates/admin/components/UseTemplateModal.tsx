@@ -29,7 +29,7 @@ import T from 'components/T';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // analytics
@@ -121,7 +121,7 @@ interface IVariables {
   timelineStartAt: string;
 }
 
-const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(
+const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
   ({
     params,
     intl,
@@ -353,7 +353,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(
             </>
           ) : (
             <Success>
-              <SuccessIcon name="round-checkmark" />
+              <SuccessIcon name="check-circle" />
               <SuccessText>
                 <FormattedMessage {...messages.successMessage} />
                 {showGoBackLink && (

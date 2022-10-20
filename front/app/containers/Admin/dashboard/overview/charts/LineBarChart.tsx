@@ -4,7 +4,7 @@ import { map, isEmpty } from 'lodash-es';
 
 // intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 
 // typings
@@ -58,8 +58,6 @@ const InfoIcon = styled(Icon)`
   display: flex;
   align-items: center;
   cursor: pointer;
-  width: 20px;
-  height: 22px;
   margin-left: 10px;
 `;
 
@@ -108,7 +106,7 @@ interface Props {
   xlsxEndpoint: string;
 }
 class LineBarChart extends React.PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   combined$: Subscription;
@@ -287,7 +285,7 @@ class LineBarChart extends React.PureComponent<
                   basic
                   trigger={
                     <div>
-                      <InfoIcon name="info" />
+                      <InfoIcon name="info-outline" />
                     </div>
                   }
                   content={infoMessage}
@@ -403,4 +401,4 @@ class LineBarChart extends React.PureComponent<
   }
 }
 
-export default injectIntl<Props>(LineBarChart);
+export default injectIntl<Props & WrappedComponentProps>(LineBarChart);

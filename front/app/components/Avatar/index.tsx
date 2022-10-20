@@ -16,7 +16,7 @@ import useUser from 'hooks/useUser';
 
 // i18n
 import injectIntl from 'utils/cl-intl/injectIntl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // styles
 import styled from 'styled-components';
@@ -133,7 +133,7 @@ const Avatar = memo(
     userId,
     hideIfNoAvatar,
     ...props
-  }: Props & InjectedIntlProps) => {
+  }: Props & WrappedComponentProps) => {
     const user = useUser({ userId });
 
     if (!isNilOrError(user)) {
@@ -181,7 +181,7 @@ const Avatar = memo(
           {!avatarSrc && !hideIfNoAvatar && (
             <AvatarIcon
               className={`avatarIcon ${hasHoverEffect ? 'hasHoverEffect' : ''}`}
-              name="user"
+              name="user-circle"
               size={containerSize}
               fillColor={fillColor}
               fillHoverColor={fillHoverColor}
@@ -194,13 +194,17 @@ const Avatar = memo(
           )}
 
           {moderator && (
-            <BadgeIcon name="clShield" size={badgeSize} fill={colors.red600} />
+            <BadgeIcon
+              name="cl-favicon"
+              size={badgeSize}
+              fill={colors.red600}
+            />
           )}
 
           {verified && addVerificationBadge && (
             <FeatureFlag name="verification">
               <BadgeIcon
-                name="checkmark-full"
+                name="check-circle"
                 size={badgeSize}
                 fill={colors.success}
               />

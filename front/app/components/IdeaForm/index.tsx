@@ -57,9 +57,10 @@ import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import eventEmitter from 'utils/eventEmitter';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { isFieldEnabled } from 'utils/projectUtils';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import { getInputTermMessage } from 'utils/i18n';
@@ -137,6 +138,8 @@ interface InputProps {
   onAddressChange: (address: string) => void;
   onIdeaFilesChange: (ideaFiles: UploadFile[]) => void;
   authorId: string | null;
+  ideaId?: string;
+  phaseId?: string;
 }
 
 interface DataProps {
@@ -178,7 +181,7 @@ interface State {
 }
 
 class IdeaForm extends PureComponent<
-  Props & InjectedIntlProps & WithRouterProps,
+  Props & WrappedComponentProps & WithRouterProps,
   State
 > {
   subscriptions: Subscription[];
@@ -219,13 +222,15 @@ class IdeaForm extends PureComponent<
   }
 
   componentDidMount() {
-    const { projectId } = this.props;
+    const { projectId, ideaId, phaseId } = this.props;
     const locale$ = localeStream().observable;
     const tenant$ = currentAppConfigurationStream().observable;
     const project$: Observable<IProject | null> =
       projectByIdStream(projectId).observable;
     const ideaCustomFieldsSchemas$ = ideaFormSchemaStream(
-      projectId as string
+      projectId as string,
+      phaseId,
+      ideaId
     ).observable;
     const pbContext$: Observable<IProjectData | IPhaseData | null> =
       project$.pipe(
@@ -655,21 +660,6 @@ class IdeaForm extends PureComponent<
     ].required?.includes(fieldCode);
   };
 
-  isFieldEnabled = (
-    fieldCode: CustomFieldCodes,
-    ideaCustomFieldsSchemas: IIdeaFormSchemas,
-    locale: Locale
-  ) => {
-    return (
-      ideaCustomFieldsSchemas.json_schema_multiloc?.[locale]?.properties?.[
-        fieldCode
-      ] &&
-      ideaCustomFieldsSchemas.ui_schema_multiloc?.[locale]?.[fieldCode]?.[
-        'ui:widget'
-      ] !== 'hidden'
-    );
-  };
-
   handleAuthorChange = (authorId?: string) => {
     this.setState({ authorId: authorId ? authorId : null });
   };
@@ -723,22 +713,22 @@ class IdeaForm extends PureComponent<
       !isNilOrError(allowedTopics) &&
       !isNilOrError(project)
     ) {
-      const topicsEnabled = this.isFieldEnabled(
+      const topicsEnabled = isFieldEnabled(
         'topic_ids',
         ideaCustomFieldsSchemas,
         locale
       );
-      const locationEnabled = this.isFieldEnabled(
+      const locationEnabled = isFieldEnabled(
         'location_description',
         ideaCustomFieldsSchemas,
         locale
       );
-      const attachmentsEnabled = this.isFieldEnabled(
+      const attachmentsEnabled = isFieldEnabled(
         'idea_files_attributes',
         ideaCustomFieldsSchemas,
         locale
       );
-      const proposedBudgetEnabled = this.isFieldEnabled(
+      const proposedBudgetEnabled = isFieldEnabled(
         'proposed_budget',
         ideaCustomFieldsSchemas,
         locale
@@ -767,7 +757,7 @@ class IdeaForm extends PureComponent<
             <IconTooltip
               iconColor="black"
               marginLeft="4px"
-              icon="admin"
+              icon="shield-checkered"
               content={<FormattedMessage {...messages.adminFieldTooltip} />}
             />
           </>

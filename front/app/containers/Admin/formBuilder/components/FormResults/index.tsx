@@ -1,8 +1,11 @@
 import React from 'react';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { get } from 'lodash-es';
+import { get, snakeCase } from 'lodash-es';
 import { useParams } from 'react-router-dom';
+
+// Hooks
+import useLocale from 'hooks/useLocale';
 
 // components
 import {
@@ -19,32 +22,17 @@ import T from 'components/T';
 // i18n
 import messages from '../messages';
 
-// styles
-import styled from 'styled-components';
-
 // utils
-import { media } from 'utils/styleUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
 import useFormResults from 'hooks/useFormResults';
 
-const StyledBox = styled(Box)`
-  display: grid;
-  gap: 80px;
-
-  ${media.tablet`
-    grid-template-columns: 1fr;
-  `}
-
-  grid-template-columns: 1fr 1fr;
-`;
-
-const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const { projectId } = useParams() as {
     projectId: string;
   };
-
+  const locale = useLocale();
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   let phaseId = urlParams.get('phase_id');
@@ -57,24 +45,27 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     phaseId,
   });
 
-  if (isNilOrError(formResults)) {
+  if (isNilOrError(formResults) || isNilOrError(locale)) {
     return null;
   }
 
   const { totalSubmissions, results } = formResults;
+
+  const surveyResponseMessage =
+    totalSubmissions > 0
+      ? formatMessage(messages.totalSurveyResponses, {
+          count: totalSubmissions,
+        })
+      : formatMessage(messages.noSurveyResponses);
 
   return (
     <Box width="100%">
       <Box width="100%" display="flex" alignItems="center">
         <Box width="100%">
           <Title variant="h2">{formatMessage(messages.surveyResults)}</Title>
-          {totalSubmissions && (
-            <Text variant="bodyM" color="teal700">
-              {formatMessage(messages.totalSurveyResponses, {
-                count: totalSubmissions,
-              })}
-            </Text>
-          )}
+          <Text variant="bodyM" color="textSecondary">
+            {surveyResponseMessage}
+          </Text>
         </Box>
         <Box>
           <Button
@@ -93,32 +84,51 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         borderRadius="3px"
         px="12px"
         py="4px"
-        mb="12px"
+        mt="0px"
+        mb="32px"
         role="alert"
         display="flex"
         justifyContent="space-between"
         alignItems="center"
-        mt="32px"
       >
         <Box display="flex" gap="16px" alignItems="center">
-          <Icon name="info" width="24px" height="24px" fill="teal700" />
-          <Text variant="bodyM" color="teal700">
+          <Icon
+            name="info-outline"
+            width="24px"
+            height="24px"
+            fill="textSecondary"
+          />
+          <Text variant="bodyM" color="textSecondary">
             {formatMessage(messages.informationText)}
           </Text>
         </Box>
       </Box>
-      <StyledBox mt="12px">
+      <Box maxWidth="524px">
         {results.map(
-          ({ question, inputType, answers, totalResponses }, index) => {
+          (
+            { question, inputType, answers, totalResponses, required },
+            index
+          ) => {
             const inputTypeText = get(messages, inputType, '');
+            const requiredOrOptionalText = required
+              ? formatMessage(messages.required)
+              : formatMessage(messages.optional);
+            const inputTypeLabel = `${formatMessage(
+              inputTypeText
+            )} - ${requiredOrOptionalText.toLowerCase()}`;
+
             return (
-              <Box key={index}>
-                <Text fontWeight="bold">
+              <Box
+                key={index}
+                data-cy={`e2e-${snakeCase(question[locale])}`}
+                mb="56px"
+              >
+                <Title variant="h3" mb="0">
                   <T value={question} />
-                </Text>
+                </Title>
                 {inputTypeText && (
-                  <Text variant="bodyS" color="textSecondary">
-                    {formatMessage(inputTypeText)}
+                  <Text variant="bodyS" color="textSecondary" mb="0">
+                    {inputTypeLabel}
                   </Text>
                 )}
                 {answers.map(({ answer, responses }, index) => {
@@ -139,7 +149,7 @@ const FormResults = ({ intl: { formatMessage } }: InjectedIntlProps) => {
             );
           }
         )}
-      </StyledBox>
+      </Box>
     </Box>
   );
 };

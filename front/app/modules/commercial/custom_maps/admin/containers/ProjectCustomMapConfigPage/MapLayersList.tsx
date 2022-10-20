@@ -26,7 +26,7 @@ import addOrderingToLayers, {
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // styling
@@ -52,7 +52,6 @@ const ListItem = styled.div`
 
 const LayerIcon = styled(Icon)<{ color: string }>`
   fill: ${(props) => props.color};
-  width: 19px;
   margin-right: 10px;
 `;
 
@@ -86,7 +85,7 @@ interface Props {
   className?: string;
 }
 
-const MapLayersList = memo<Props & InjectedIntlProps & InjectedLocalized>(
+const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
   ({
     projectId,
     onEditLayer,

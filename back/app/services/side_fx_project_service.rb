@@ -48,6 +48,12 @@ class SideFxProjectService
     @sfx_pc.after_destroy frozen_project, user if frozen_project.participation_context?
   end
 
+  def before_delete_inputs(project, user); end
+
+  def after_delete_inputs(project, user)
+    LogActivityJob.perform_later project, 'inputs_deleted', user, Time.now.to_i
+  end
+
   private
 
   def after_publish(project, user)

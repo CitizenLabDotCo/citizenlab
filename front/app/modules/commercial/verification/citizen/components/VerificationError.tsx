@@ -56,7 +56,7 @@ const VerificationError = ({ className, error }: Props) => {
 
   return (
     <Container id="e2e-verification-errror" className={className}>
-      <StyledIcon name="error" />
+      <StyledIcon name="alert-circle" fill={colors.error} />
       <Title className="e2e-user-verified-errror-modal-content">
         <strong>
           <FormattedMessage {...messages.errorTitle} />

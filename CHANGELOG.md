@@ -6,6 +6,24 @@
 
 - [CL-1814] Fixed bug when opening the verification model after having a verification error
 
+## 2022-10-18
+
+### Fixed
+
+- [CL-1825] Made tables more visually consistent.
+
+## 2022-10-14
+
+### Fixed
+
+- Fixed bug where subtitle in some admin pages would appear above the main header.
+
+## 2022-10-13
+
+### Fixed
+
+- [CL-1835] Fixed missing verification button icon, which caused the verification modal to not open.
+
 ## 2022-10-11
 
 ### Fixed

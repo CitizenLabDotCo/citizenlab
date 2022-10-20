@@ -35,7 +35,10 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
   });
 
   const phases = usePhases(project?.id);
-  const { schema, uiSchema, inputSchemaError } = useInputSchema(project?.id);
+  const { schema, uiSchema, inputSchemaError } = useInputSchema({
+    projectId: project?.id,
+    inputId: ideaId,
+  });
   const permisison = usePermission({
     item: isNilOrError(idea) ? null : idea,
     action: 'edit',
@@ -53,7 +56,9 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
       ? null
       : Object.fromEntries(
           Object.keys(schema.properties).map((prop) => {
-            if (idea.attributes?.[prop]) {
+            if (prop === 'author_id') {
+              return [prop, idea.relationships?.author?.data?.id];
+            } else if (idea.attributes?.[prop]) {
               return [prop, idea.attributes?.[prop]];
             } else if (
               prop === 'topic_ids' &&
@@ -119,7 +124,6 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
     },
     [uiSchema]
   );
-
   return (
     <PageContainer overflow="hidden" id="e2e-idea-edit-page">
       {!isNilOrError(project) && !isNilOrError(idea) && schema && uiSchema ? (

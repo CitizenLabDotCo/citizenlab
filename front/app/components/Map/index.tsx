@@ -97,8 +97,6 @@ const CloseButton = styled.button`
 `;
 
 const CloseIcon = styled(Icon)`
-  width: 12px;
-  height: 12px;
   fill: #000;
 `;
 

@@ -14,7 +14,7 @@ import { UploadFile } from 'typings';
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 const Container = styled.div<{ error: boolean }>`
   display: flex;
@@ -29,9 +29,7 @@ const Container = styled.div<{ error: boolean }>`
 `;
 
 const Paperclip = styled(Icon)`
-  flex: 0 0 10px;
-  width: 10px;
-  height: 20px;
+  flex: 0 0 24px;
   fill: ${colors.textSecondary};
   margin-right: 15px;
 `;
@@ -83,7 +81,7 @@ const FileDisplay = ({
   file,
   intl: { formatMessage },
   onDeleteClick,
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const { error, url, filename, size } = file;
   return (
     <Container error={!!file.error}>
