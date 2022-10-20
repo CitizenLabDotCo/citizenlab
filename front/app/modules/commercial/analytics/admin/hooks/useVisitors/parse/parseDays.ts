@@ -4,8 +4,8 @@ import {
   getFirstDateInData,
   getLastDateInData,
   getEmptyRow,
-  dateRange,
 } from './utils';
+import { dateRange } from '../../../utils/timeSeries';
 import { TimeSeriesResponse } from '../typings';
 
 export const parseDays = (

@@ -5,11 +5,8 @@ import { parseDays } from './parseDays';
 
 // utils
 import { keys } from 'utils/helperUtils';
-import {
-  roundDateToMidnight,
-  parseVisitDuration,
-  parsePageViews,
-} from './utils';
+import { roundDateToMidnight } from '../../../utils/timeSeries';
+import { parseVisitDuration, parsePageViews } from './utils';
 
 // typings
 import { Moment } from 'moment';
