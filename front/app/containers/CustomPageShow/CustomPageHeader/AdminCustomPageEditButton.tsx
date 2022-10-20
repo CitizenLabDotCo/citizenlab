@@ -2,7 +2,7 @@ import Button from 'components/UI/Button';
 import { adminCustomPageContentPath } from 'containers/Admin/pagesAndMenu/routes';
 import useAuthUser from 'hooks/useAuthUser';
 import React from 'react';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { isAdmin } from 'services/permissions/roles';
 import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
@@ -15,7 +15,7 @@ interface Props {
 const AdminCustomPageEditButton = ({
   pageId,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const authUser = useAuthUser();
 
   const userCanEditPage =

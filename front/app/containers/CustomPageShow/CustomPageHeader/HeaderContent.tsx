@@ -7,7 +7,7 @@ import {
   TAlign,
   getAlignItems,
 } from 'containers/LandingPage/SignedOutHeader/HeaderContent';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import BannerButton from 'containers/LandingPage/BannerButton';
 import { ICustomPageAttributes } from 'services/customPages';
@@ -24,7 +24,7 @@ const HeaderContent = ({
   fontColors,
   hasHeaderBannerImage,
   pageAttributes,
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const localize = useLocalize();
 
   const formattedHeaderTitle = pageAttributes.banner_header_multiloc

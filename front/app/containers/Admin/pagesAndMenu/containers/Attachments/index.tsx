@@ -15,7 +15,7 @@ import ViewCustomPageButton from '../CustomPages/Edit/ViewCustomPageButton';
 // i18n
 import HelmetIntl from 'components/HelmetIntl';
 import useLocalize from 'hooks/useLocalize';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -50,7 +50,9 @@ type FormValues = {
   local_page_files: UploadFile[] | null;
 };
 
-const AttachmentsForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+const AttachmentsForm = ({
+  intl: { formatMessage },
+}: WrappedComponentProps) => {
   const localize = useLocalize();
   const { customPageId } = useParams() as { customPageId: string };
   const customPage = useCustomPage({ customPageId });

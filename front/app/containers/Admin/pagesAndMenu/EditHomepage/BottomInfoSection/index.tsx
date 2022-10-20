@@ -1,6 +1,6 @@
 import useHomepageSettings from 'hooks/useHomepageSettings';
 import React from 'react';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import {
   IHomepageSettingsAttributes,
   updateHomepageSettings,
@@ -10,7 +10,9 @@ import { isNilOrError } from 'utils/helperUtils';
 import { homeBreadcrumb } from '../../breadcrumbs';
 import GenericBottomInfoSection from 'containers/Admin/pagesAndMenu/containers/GenericBottomInfoSection';
 
-const BottomInfoSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+const BottomInfoSection = ({
+  intl: { formatMessage },
+}: WrappedComponentProps) => {
   const homepageSettings = useHomepageSettings();
   if (isNilOrError(homepageSettings)) {
     return null;

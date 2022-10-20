@@ -32,7 +32,7 @@ describe('Form builder linear scale', () => {
 
   it('adds linear scale field and tests validations', () => {
     cy.visit(`admin/projects/${projectId}/native-survey/edit`);
-    cy.get('[data-cy="linear-scale"]').click();
+    cy.get('[data-cy="e2e-linear-scale"]').click();
 
     // Save the survey
     cy.get('form').submit();
@@ -41,7 +41,7 @@ describe('Form builder linear scale', () => {
 
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
     // Set the field to required
-    cy.contains('Required').click();
+    cy.get('#e2e-required-toggle').find('input').click({ force: true });
 
     cy.get('form').submit();
     // Should show success message on saving

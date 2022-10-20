@@ -22,8 +22,8 @@ import useNavbarItems from 'hooks/useNavbarItems';
 import useCustomPageSlugById from 'hooks/useCustomPageSlugById';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // utils
@@ -33,7 +33,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 const VisibleNavbarItemList = ({
   intl: { formatMessage },
-}: InjectedIntlProps) => {
+}: WrappedComponentProps) => {
   const navbarItems = useNavbarItems();
   const pageSlugById = useCustomPageSlugById();
 

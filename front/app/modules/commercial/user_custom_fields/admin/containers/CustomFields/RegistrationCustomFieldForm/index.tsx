@@ -4,7 +4,7 @@ import { IUserCustomFieldInputType } from '../../../../services/userCustomFields
 import { Button, Box } from '@citizenlab/cl2-component-library';
 
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { Multiloc } from 'typings';
 import messages from '../messages';
 
@@ -12,7 +12,7 @@ import messages from '../messages';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, boolean, string } from 'yup';
-import validateMultiloc from 'utils/yup/validateMultiloc';
+import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import TextAreaMultilocWithLocaleSwitcher from 'components/HookForm/TextAreaMultilocWithLocaleSwitcher';
 import Feedback from 'components/HookForm/Feedback';
@@ -35,7 +35,7 @@ type Props = {
   builtInField: boolean;
   defaultValues?: FormValues;
   onSubmit: (formValues: FormValues) => void | Promise<void>;
-} & InjectedIntlProps;
+} & WrappedComponentProps;
 
 const fieldTypes = [
   'select',
@@ -58,7 +58,9 @@ const RegistrationCustomFieldForm = ({
     input_type: string()
       .oneOf(fieldTypes, formatMessage(messages.answerFormatError))
       .required(formatMessage(messages.answerFormatError)),
-    title_multiloc: validateMultiloc(formatMessage(messages.fieldNameError)),
+    title_multiloc: validateMultilocForEveryLocale(
+      formatMessage(messages.fieldNameError)
+    ),
     description_multiloc: object(),
     required: boolean().required(),
   });

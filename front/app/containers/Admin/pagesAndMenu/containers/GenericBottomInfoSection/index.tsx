@@ -17,7 +17,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { object } from 'yup';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -32,8 +32,8 @@ import { ICustomPageData } from 'services/customPages';
 import { IHomepageSettingsData } from 'services/homepageSettings';
 
 // utils
+import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import validateMultiloc from 'utils/yup/validateMultiloc';
 
 interface Props {
   pageData: IHomepageSettingsData | ICustomPageData;
@@ -58,7 +58,7 @@ const GenericBottomInfoSection = ({
   breadcrumbs,
   intl: { formatMessage },
   linkToViewPage,
-}: InjectedIntlProps & Props) => {
+}: WrappedComponentProps & Props) => {
   const theme: any = useTheme();
 
   const onFormSubmit = async (formValues: FormValues) => {
@@ -80,7 +80,7 @@ const GenericBottomInfoSection = ({
   };
 
   const schema = object({
-    bottom_info_section_multiloc: validateMultiloc(
+    bottom_info_section_multiloc: validateAtLeastOneLocale(
       formatMessage(messages.blankDescriptionError)
     ),
   });

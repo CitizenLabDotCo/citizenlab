@@ -18,7 +18,7 @@ import { isNilOrError, isNil } from 'utils/helperUtils';
 
 // resources
 import { adminCustomPageContentPath } from 'containers/Admin/pagesAndMenu/routes';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import useCustomPage from 'hooks/useCustomPage';
 import {
@@ -43,7 +43,7 @@ export type CustomPageBannerSettingKeyType = Extract<
 
 const EditCustomPageHeroBannerForm = ({
   intl: { formatMessage },
-}: InjectedIntlProps) => {
+}: WrappedComponentProps) => {
   const localize = useLocalize();
   const [isLoading, setIsLoading] = useState(false);
   const [apiErrors, setApiErrors] = useState<CLErrors | null>(null);

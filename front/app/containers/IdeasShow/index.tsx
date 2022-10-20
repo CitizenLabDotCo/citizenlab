@@ -33,7 +33,7 @@ import MobileSharingButtonComponent from './Buttons/MobileSharingButtonComponent
 import RightColumnDesktop from './RightColumnDesktop';
 
 // utils
-import { checkFieldEnabled } from './isFieldEnabled';
+import { isFieldEnabled } from 'utils/projectUtils';
 
 // resources
 import GetIdeaImages, {
@@ -52,7 +52,7 @@ import GetPermission, {
 import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from './messages';
@@ -191,7 +191,7 @@ export const IdeasShow = ({
   officialFeedbacks,
   setRef,
   intl: { formatMessage },
-}: Props & InjectedIntlProps & InjectedLocalized & WithRouterProps) => {
+}: Props & WrappedComponentProps & InjectedLocalized & WithRouterProps) => {
   const [newIdeaId, setNewIdeaId] = useState<string | null>(null);
   const [translateButtonIsClicked, setTranslateButtonIsClicked] =
     useState<boolean>(false);
@@ -217,12 +217,6 @@ export const IdeasShow = ({
 
   const ideaflowSocialSharingIsEnabled = useFeatureFlag({
     name: 'ideaflow_social_sharing',
-  });
-  const isIdeaCustomFieldsEnabled = useFeatureFlag({
-    name: 'idea_custom_fields',
-  });
-  const isDynamicIdeaFormEnabled = useFeatureFlag({
-    name: 'dynamic_idea_form',
   });
 
   const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({
@@ -276,12 +270,10 @@ export const IdeasShow = ({
       compact === true ||
       (windowSize ? windowSize <= viewportWidths.tablet : false);
 
-    const proposedBudgetEnabled = checkFieldEnabled(
+    const proposedBudgetEnabled = isFieldEnabled(
       'proposed_budget',
       ideaCustomFieldsSchemas,
-      locale,
-      isIdeaCustomFieldsEnabled,
-      isDynamicIdeaFormEnabled
+      locale
     );
 
     content = (

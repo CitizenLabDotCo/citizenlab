@@ -22,8 +22,8 @@ import NavbarItemRow from 'containers/Admin/pagesAndMenu/containers/NavigationSe
 import Header from './Header';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // utils
@@ -38,7 +38,7 @@ const isNotFixedPage = (page: ICustomPageData) =>
 
 const HiddenNavbarItemList = ({
   intl: { formatMessage },
-}: InjectedIntlProps) => {
+}: WrappedComponentProps) => {
   const navbarItems = useNavbarItems();
   const removedDefaultNavbarItems = useRemovedDefaultNavbarItems();
   const pages = useCustomPages();

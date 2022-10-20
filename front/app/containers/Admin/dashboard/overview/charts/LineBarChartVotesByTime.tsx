@@ -46,7 +46,7 @@ import { IResolution } from 'components/admin/ResolutionControl';
 // i18n
 import messages from '../../messages';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // utils
 import { toThreeLetterMonth, toFullMonth } from 'utils/dateUtils';
@@ -78,7 +78,7 @@ type Props = {
 };
 
 class LineBarChartVotesByTime extends React.PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   combined$: Subscription;
@@ -377,4 +377,6 @@ class LineBarChartVotesByTime extends React.PureComponent<
   }
 }
 
-export default injectIntl<Props>(LineBarChartVotesByTime);
+export default injectIntl<Props & WrappedComponentProps>(
+  LineBarChartVotesByTime
+);

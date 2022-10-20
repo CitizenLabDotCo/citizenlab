@@ -26,13 +26,13 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import HelmetIntl from 'components/HelmetIntl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../../containers/GenericHeroBannerForm/messages';
 
 const EditHomepageHeroBannerForm = ({
   intl: { formatMessage },
-}: InjectedIntlProps) => {
+}: WrappedComponentProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [apiErrors, setApiErrors] = useState<CLErrors | null>(null);
   const [formStatus, setFormStatus] = useState<ISubmitState>('enabled');

@@ -34,13 +34,14 @@ describe('Impact tracking: Session tracking', () => {
     });
   });
 
-  it('Upgrades the current session after a user registered', () => {
-    cy.intercept('PATCH', '**/web_api/v1/sessions/current/upgrade').as(
-      'upgradeSession'
-    );
-    cy.signUp();
-    cy.wait('@upgradeSession').then((interception) => {
-      expect(interception.response?.statusCode).to.be.oneOf([200, 204]);
-    });
-  });
+  // Commenting this out as it is a flaky test. See https://citizenlabco.slack.com/archives/C02PFSWEK6X/p1665558422691559?thread_ts=1665539765.438799&cid=C02PFSWEK6X
+  // it('Upgrades the current session after a user registered', () => {
+  //   cy.intercept('PATCH', '**/web_api/v1/sessions/current/upgrade').as(
+  //     'upgradeSession'
+  //   );
+  //   cy.signUp();
+  //   cy.wait('@upgradeSession').then((interception) => {
+  //     expect(interception.response?.statusCode).to.be.oneOf([200, 204]);
+  //   });
+  // });
 });
