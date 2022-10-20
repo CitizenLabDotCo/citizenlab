@@ -242,7 +242,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                     scope: "#/properties/#{field1.key}",
                     label: 'Text titel',
                     options: {
-                      description: 'Text description', 
+                      description: 'Text description',
                       isAdminField: false,
                       transform: 'trim_on_blur'
                     }
