@@ -3,7 +3,7 @@ import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWi
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
-import usePage from 'hooks/usePage';
+import useCustomPage from 'hooks/useCustomPage';
 import { isNilOrError } from 'utils/helperUtils';
 import { isPolicyPageSlug } from 'services/customPages';
 import { SectionField } from 'components/admin/Section';
@@ -19,7 +19,7 @@ const NavbarTitleField = ({
   navbarItemId,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
-  const page = usePage({ pageId });
+  const page = useCustomPage({ customPageId: pageId });
   const navbarItem = useNavbarItem({ navbarItemId });
 
   if (

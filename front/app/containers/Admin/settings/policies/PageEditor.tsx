@@ -14,7 +14,7 @@ import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 
 // hooks
 import useRemoteFiles, { RemoteFiles } from 'hooks/useRemoteFiles';
-import usePage from 'hooks/usePage';
+import useCustomPage from 'hooks/useCustomPage';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -97,7 +97,7 @@ interface Props {
 }
 
 const PageEditor = ({ className, pageSlug }: Props) => {
-  const page = usePage({ pageSlug });
+  const page = useCustomPage({ customPageSlug: pageSlug });
   const remotePageFiles = useRemoteFiles({
     resourceType: 'page',
     resourceId: !isNilOrError(page) ? page.id : null,

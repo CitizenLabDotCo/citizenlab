@@ -38,7 +38,7 @@ import { slugRegEx } from 'utils/textUtils';
 
 // hooks
 import useLocale from 'hooks/useLocale';
-import usePage from 'hooks/usePage';
+import useCustomPage from 'hooks/useCustomPage';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 
 export interface FormValues {
@@ -64,7 +64,7 @@ const PageForm = ({
   hideSlugInput = false,
 }: PageFormProps) => {
   const locale = useLocale();
-  const page = usePage({ pageId });
+  const page = useCustomPage({ customPageId: pageId });
   const appConfig = useAppConfiguration();
 
   const schema = object({

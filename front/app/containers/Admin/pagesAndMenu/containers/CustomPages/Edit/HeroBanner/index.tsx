@@ -53,7 +53,7 @@ const EditCustomPageHeroBannerForm = ({
     useState<ICustomPageAttributes | null>(null);
 
   const { customPageId } = useParams() as { customPageId: string };
-  const customPage = useCustomPage(customPageId);
+  const customPage = useCustomPage({ customPageId });
 
   useEffect(() => {
     if (!isNilOrError(customPage)) {

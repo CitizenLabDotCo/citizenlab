@@ -5,7 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useNavbarItemEnabled from 'hooks/useNavbarItemEnabled';
-import usePage from 'hooks/usePage';
+import useCustomPage from 'hooks/useCustomPage';
 
 // services
 import { updateAppConfiguration } from 'services/appConfiguration';
@@ -57,7 +57,7 @@ type ProposalsSettingName = keyof ProposalsSettings;
 const InitiativesSettingsPage = () => {
   const appConfiguration = useAppConfiguration();
   const proposalsNavbarItemEnabled = useNavbarItemEnabled('proposals');
-  const proposalsPage = usePage({ pageSlug: 'initiatives' });
+  const proposalsPage = useCustomPage({ customPageSlug: 'initiatives' });
 
   const remoteProposalsSettings = useMemo(() => {
     if (
