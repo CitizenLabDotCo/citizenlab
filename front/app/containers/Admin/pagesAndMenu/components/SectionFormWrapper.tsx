@@ -1,8 +1,7 @@
 import React from 'react';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
-import PageTitle from 'components/admin/PageTitle';
+import { Box, Title } from '@citizenlab/cl2-component-library';
 import PageWrapper from 'components/admin/PageWrapper';
 import { SectionDescription } from 'components/admin/Section';
 import Breadcrumbs, { TBreadcrumbs } from 'components/UI/Breadcrumbs';
@@ -16,6 +15,7 @@ interface Props {
   stickyMenuContents?: JSX.Element | JSX.Element[];
   rightSideCTA?: JSX.Element | JSX.Element[] | null;
   flatTopBorder?: boolean;
+  badge?: JSX.Element;
 }
 
 const SectionFormWrapper = ({
@@ -26,6 +26,7 @@ const SectionFormWrapper = ({
   stickyMenuContents,
   rightSideCTA,
   flatTopBorder,
+  badge,
 }: Props) => {
   return (
     <>
@@ -37,7 +38,10 @@ const SectionFormWrapper = ({
       <Box display="flex" justifyContent="space-between">
         {title && (
           <Box mb="20px">
-            <PageTitle>{title}</PageTitle>
+            <Box display="flex" alignItems="center">
+              <Title color="primary">{title}</Title>
+              {badge && <Box ml="20px">{badge}</Box>}
+            </Box>
             {subtitle && <SectionDescription>{subtitle}</SectionDescription>}
           </Box>
         )}

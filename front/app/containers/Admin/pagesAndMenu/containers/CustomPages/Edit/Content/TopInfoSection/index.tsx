@@ -3,7 +3,7 @@ import useCustomPage from 'hooks/useCustomPage';
 import useLocalize from 'hooks/useLocalize';
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { updateCustomPage } from 'services/customPages';
+import { ICustomPageAttributes, updateCustomPage } from 'services/customPages';
 import { isNilOrError } from 'utils/helperUtils';
 
 const TopInfoSection = () => {
@@ -14,10 +14,23 @@ const TopInfoSection = () => {
     return null;
   }
 
+  const updateCustomPageAndEnableSection = (
+    customPageId: string,
+    data: Partial<ICustomPageAttributes>
+  ) => {
+    return updateCustomPage(customPageId, {
+      ...data,
+      top_info_section_enabled: true,
+    });
+  };
+
   return (
     <GenericTopInfoSection
       pageData={customPage}
       updatePage={(data) => updateCustomPage(customPageId, data)}
+      updatePageAndEnableSection={(data) =>
+        updateCustomPageAndEnableSection(customPageId, data)
+      }
       breadcrumbs={[
         {
           label: localize(customPage.attributes.title_multiloc),
