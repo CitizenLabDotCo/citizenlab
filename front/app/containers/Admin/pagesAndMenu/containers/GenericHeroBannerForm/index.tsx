@@ -5,6 +5,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { Section } from 'components/admin/Section';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 import SectionFormWrapper from '../../components/SectionFormWrapper';
+import ViewCustomPageButton from '../CustomPages/Edit/ViewCustomPageButton';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -22,6 +23,7 @@ interface Props {
   formStatus: ISubmitState;
   setFormStatus: (submitState: ISubmitState) => void;
   onSave: () => void;
+  onSaveAndEnable?: () => void | undefined;
   isLoading: boolean;
   outletSectionStart?: ReactElement;
   layoutSettingFieldComponent?: ReactElement;
@@ -31,10 +33,13 @@ interface Props {
   avatarsFieldComponent?: ReactElement;
   ctaButtonFieldsComponent?: ReactElement;
   outletSectionEnd?: ReactElement;
+  badge?: JSX.Element;
+  linkToViewPage?: string;
 }
 
 const GenericHeroBannerForm = ({
   onSave,
+  onSaveAndEnable,
   formStatus,
   isLoading,
   title,
@@ -47,25 +52,36 @@ const GenericHeroBannerForm = ({
   bannerImageFieldsComponent,
   layoutSettingFieldComponent,
   ctaButtonFieldsComponent,
+  badge,
+  linkToViewPage,
 }: Props) => {
   return (
     <>
       <SectionFormWrapper
         breadcrumbs={breadcrumbs}
         title={title}
+        badge={badge}
         stickyMenuContents={
           <SubmitWrapper
             status={formStatus}
             buttonStyle="primary"
             loading={isLoading}
             onClick={onSave}
+            enableFormOnSuccess
             messages={{
               buttonSave: messages.heroBannerSaveButton,
               buttonSuccess: messages.heroBannerButtonSuccess,
               messageSuccess: messages.heroBannerMessageSuccess,
               messageError: messages.heroBannerError,
             }}
+            secondaryButtonOnClick={onSaveAndEnable}
+            secondaryButtonSaveMessage={messages.saveAndEnable}
           />
+        }
+        rightSideCTA={
+          linkToViewPage ? (
+            <ViewCustomPageButton linkTo={linkToViewPage} />
+          ) : null
         }
       >
         <Section key={'header'}>

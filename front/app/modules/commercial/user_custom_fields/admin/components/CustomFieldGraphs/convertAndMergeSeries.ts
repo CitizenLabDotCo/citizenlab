@@ -18,9 +18,9 @@ import {
 } from 'modules/commercial/user_custom_fields/services/stats';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
 import messages from 'containers/Admin/dashboard/messages';
 import { InjectedLocalized } from 'utils/localize';
+import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
 
 export type ISupportedDataType =
   | IUsersByRegistrationField
@@ -28,7 +28,7 @@ export type ISupportedDataType =
   | IUsersByBirthyear;
 
 interface IParameters {
-  formatMessage: InjectedIntlProps['intl']['formatMessage'];
+  formatMessage: WrappedComponentProps['intl']['formatMessage'];
   localize: InjectedLocalized['localize'];
 }
 
@@ -48,10 +48,7 @@ type Gender = 'male' | 'female' | 'unspecified' | '_blank';
 
 const GENDER_COLUMNS: Gender[] = ['male', 'female', 'unspecified', '_blank'];
 
-const GENDER_MESSAGES: Record<
-  Gender,
-  ReactIntl.FormattedMessage.MessageDescriptor
-> = {
+const GENDER_MESSAGES: Record<Gender, MessageDescriptor> = {
   male: messages.male,
   female: messages.female,
   unspecified: messages.unspecified,

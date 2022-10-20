@@ -53,6 +53,7 @@ const VoteIconContainer = styled.div<{
     return (
       styleType === 'border' &&
       `
+      padding: 8px;
       border: solid 1px ${lighten(0.2, colors.textSecondary)};
       `
     );

@@ -9,7 +9,7 @@ import { Icon } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -224,7 +224,10 @@ interface State {
   errorMessage: string | null;
 }
 
-class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
+class ImagesDropzone extends PureComponent<
+  Props & WrappedComponentProps,
+  State
+> {
   static defaultProps = {
     maxNumberOfImages: 1,
     maxImageFileSize: 10000000,
@@ -242,6 +245,10 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
   componentDidMount() {
     this.setUrlObjects();
     this.removeExcessImages();
+
+    if (this.props.errorMessage) {
+      this.setState({ errorMessage: this.props.errorMessage });
+    }
   }
 
   componentDidUpdate(prevProps: Props) {

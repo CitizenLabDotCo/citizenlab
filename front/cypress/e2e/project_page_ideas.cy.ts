@@ -212,7 +212,7 @@ describe('Archived timeline project with ideation phase', () => {
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
           description: randomString(),
-          publicationStatus: 'archived',
+          publicationStatus: 'draft',
         });
       })
       .then((project) => {
@@ -245,7 +245,14 @@ describe('Archived timeline project with ideation phase', () => {
       })
       .then((idea) => {
         ideaId = idea.body.data.id;
+        cy.setAdminLoginCookie();
         cy.visit(`/projects/${projectTitle}`);
+      })
+      .then(() => {
+        return cy.apiEditProject({
+          projectId,
+          publicationStatus: 'archived',
+        });
       });
   });
 

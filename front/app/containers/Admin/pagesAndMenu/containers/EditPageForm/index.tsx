@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 
 // components
 import PageForm, { FormValues } from 'components/PageForm';
-import Outlet from 'components/Outlet';
 
 // components
 import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
@@ -14,7 +13,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import useLocalize from 'hooks/useLocalize';
 
 // services
@@ -27,7 +26,7 @@ import useRemoteFiles from 'hooks/useRemoteFiles';
 import usePage from 'hooks/usePage';
 import { truncateMultiloc } from 'utils/textUtils';
 
-const EditPageForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+const EditPageForm = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const { pageId } = useParams() as { pageId: string };
   const localize = useLocalize();
   const page = usePage({ pageId });
@@ -35,7 +34,6 @@ const EditPageForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     resourceType: 'page',
     resourceId: !isNilOrError(page) ? page.id : null,
   });
-  const [navbarModuleActive, setNavbarModuleActive] = useState(false);
 
   const handleSubmit = async ({
     local_page_files,
@@ -67,10 +65,6 @@ const EditPageForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
 
   return (
     <>
-      <Outlet
-        id="app.containers.Admin.pages-menu.containers.EditPageForm.index.onMount"
-        onMount={() => setNavbarModuleActive(true)}
-      />
       <SectionFormWrapper
         title={localize(page.attributes.title_multiloc)}
         breadcrumbs={[
@@ -99,7 +93,6 @@ const EditPageForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
             slug: page.attributes.slug,
             local_page_files: remotePageFiles,
           }}
-          hideSlugInput={!navbarModuleActive}
         />
       </SectionFormWrapper>
     </>

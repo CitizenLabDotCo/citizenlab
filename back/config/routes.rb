@@ -106,9 +106,6 @@ Rails.application.routes.draw do
 
       resources :nav_bar_items, only: :index do
         get 'removed_default_items', on: :collection
-        %w[proposals events all_input].each do |code|
-          post "toggle_#{code}", on: :collection, to: 'nav_bar_items#toggle_item', defaults: { code: code }
-        end
       end
 
       # Events and phases are split in two because we cannot have a non-shallow
@@ -124,6 +121,7 @@ Rails.application.routes.draw do
         resources :files, defaults: { container_type: 'Phase' }, shallow: false
         get 'survey_results', on: :member
         get 'submission_count', on: :member
+        delete 'inputs', on: :member, action: 'delete_inputs'
         resources :custom_fields, controller: 'phase_custom_fields', only: %i[] do
           get 'schema', on: :collection
           get 'json_forms_schema', on: :collection
@@ -146,6 +144,7 @@ Rails.application.routes.draw do
         get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'
         get 'survey_results', on: :member
         get 'submission_count', on: :member
+        delete 'inputs', on: :member, action: 'delete_inputs'
       end
 
       resources :projects_allowed_input_topics, only: %i[show create destroy] do

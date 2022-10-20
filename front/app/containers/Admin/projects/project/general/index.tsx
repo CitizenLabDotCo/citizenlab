@@ -53,7 +53,7 @@ import { addProjectImage, deleteProjectImage } from 'services/projectImages';
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // utils
 import { validateSlug } from 'utils/textUtils';
@@ -71,7 +71,7 @@ export type TOnProjectAttributesDiffChangeFunction = (
 
 const AdminProjectsProjectGeneral = ({
   intl: { formatMessage },
-}: InjectedIntlProps) => {
+}: WrappedComponentProps) => {
   const { projectId } = useParams();
   const project = useProject({ projectId });
   const appConfigLocales = useAppConfigurationLocales();

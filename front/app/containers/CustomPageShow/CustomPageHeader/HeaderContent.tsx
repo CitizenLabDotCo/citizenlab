@@ -1,4 +1,3 @@
-import BannerButton from 'components/LandingPages/citizen/BannerButton';
 import {
   Container,
   getAlignItems,
@@ -8,9 +7,10 @@ import {
 } from 'components/LandingPages/citizen/HeaderContent';
 import useLocalize from 'hooks/useLocalize';
 import React from 'react';
-import { InjectedIntlProps } from 'react-intl';
-import { ICustomPageAttributes } from 'services/customPages';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
+import BannerButton from 'components/LandingPages/citizen/BannerButton';
+import { ICustomPageAttributes } from 'services/customPages';
 
 interface Props {
   fontColors: 'light' | 'dark';
@@ -24,7 +24,7 @@ const HeaderContent = ({
   fontColors,
   hasHeaderBannerImage,
   pageAttributes,
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const localize = useLocalize();
 
   const formattedHeaderTitle = pageAttributes.banner_header_multiloc

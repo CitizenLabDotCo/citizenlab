@@ -1,7 +1,7 @@
 import React from 'react';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
@@ -16,7 +16,7 @@ import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWi
 import Feedback from 'components/HookForm/Feedback';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object } from 'yup';
-import validateMultiloc from 'utils/yup/validateMultiloc';
+import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 // Typings
@@ -30,7 +30,7 @@ export interface FormValues {
 type Props = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
   defaultValues?: FormValues;
-} & InjectedIntlProps;
+} & WrappedComponentProps;
 
 const RegistrationCustomFieldOptionsForm = ({
   intl: { formatMessage },
@@ -39,7 +39,9 @@ const RegistrationCustomFieldOptionsForm = ({
 }: Props) => {
   const { userCustomFieldId } = useParams() as { userCustomFieldId: string };
   const schema = object({
-    title_multiloc: validateMultiloc(formatMessage(messages.answerOptionError)),
+    title_multiloc: validateMultilocForEveryLocale(
+      formatMessage(messages.answerOptionError)
+    ),
   });
 
   const methods = useForm({

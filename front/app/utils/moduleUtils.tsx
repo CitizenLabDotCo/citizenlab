@@ -23,8 +23,8 @@ import { castArray, clamp, isNil, mergeWith, omitBy } from 'lodash-es';
 import { IProjectData, IUpdatedProjectProperties } from 'services/projects';
 
 import { ManagerType } from 'components/admin/PostManager';
-import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaHeaderRow';
-import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
+import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/header/IdeaHeaderRow';
+import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/Row/IdeaRow';
 import { IResolution } from 'components/admin/ResolutionControl';
 import { AuthProvider } from 'components/SignUpIn/AuthProviders';
 import { Point } from 'components/UI/LeafletMap/typings';
@@ -35,7 +35,6 @@ import { NavItem } from 'containers/Admin/sideBar';
 import { BannerButtonStyle } from 'components/LandingPages/citizen/BannerButton';
 import { Localize } from 'hooks/useLocalize';
 import { LatLngTuple } from 'leaflet';
-import { MessageValue } from 'react-intl';
 import { GetAppConfigurationLocalesChildProps } from 'resources/GetAppConfigurationLocales';
 import { GetIdeaChildProps } from 'resources/GetIdea';
 import { GetInitiativeChildProps } from 'resources/GetInitiative';
@@ -64,15 +63,12 @@ import {
   InsertConfigurationOptions,
   ITab,
   Locale,
-  MessageDescriptor,
   Multiloc,
 } from 'typings';
+import { IntlFormatters } from 'react-intl';
 
 export type ITabsOutlet = {
-  formatMessage: (
-    messageDescriptor: MessageDescriptor,
-    values?: { [key: string]: MessageValue } | undefined
-  ) => string;
+  formatMessage: IntlFormatters['formatMessage'];
   onData: (data: InsertConfigurationOptions<ITab>) => void;
 };
 
@@ -358,22 +354,9 @@ export interface OutletsPropertyMap {
     className?: string;
   };
   'app.containers.LandingPage.EventsWidget': Record<string, any>;
-  'app.containers.Admin.settings.customize.Events': {
-    onMount: () => void;
-  };
-  'app.containers.Admin.settings.customize.AllInput': {
-    onMount: () => void;
-  };
-  'app.containers.Admin.initiatives.settings.EnableSwitch': {
-    onMount: () => void;
-  };
   'app.containers.LandingPage.SignedOutHeader.index': {
     homepageBannerLayout: THomepageBannerLayout;
   };
-  'app.containers.Admin.settings.policies.start': {
-    onMount: () => void;
-  };
-  'app.containers.Admin.settings.policies.subTitle': Record<string, any>;
   'app.containers.Admin.pages-menu.index': Record<string, any>;
   'app.containers.Admin.pages-menu.NavigationSettings': Record<string, any>;
   'app.containers.LandingPage.SignedOutHeader.CTA': {
@@ -395,9 +378,6 @@ export interface OutletsPropertyMap {
   'app.components.PageForm.index.top': {
     pageId: string | null;
     navbarItemId: string | null;
-  };
-  'app.containers.Admin.pages-menu.containers.EditPageForm.index.onMount': {
-    onMount: () => void;
   };
 }
 

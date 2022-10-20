@@ -8,12 +8,14 @@ import {
   Label,
 } from '@citizenlab/cl2-component-library';
 import { SectionField } from 'components/admin/Section';
+import ShownOnPageBadge from '../../components/ShownOnPageBadge';
 import SectionFormWrapper from '../../components/SectionFormWrapper';
+import ViewCustomPageButton from '../CustomPages/Edit/ViewCustomPageButton';
 
 // i18n
 import HelmetIntl from 'components/HelmetIntl';
 import useLocalize from 'hooks/useLocalize';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -32,6 +34,7 @@ import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 
 // hooks
 import useCustomPage from 'hooks/useCustomPage';
+import { updateCustomPage } from 'services/customPages';
 import useRemoteFiles from 'hooks/useRemoteFiles';
 import { useParams } from 'react-router-dom';
 
@@ -47,7 +50,9 @@ type FormValues = {
   local_page_files: UploadFile[] | null;
 };
 
-const AttachmentsForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+const AttachmentsForm = ({
+  intl: { formatMessage },
+}: WrappedComponentProps) => {
   const localize = useLocalize();
   const { customPageId } = useParams() as { customPageId: string };
   const customPage = useCustomPage(customPageId);
@@ -57,7 +62,10 @@ const AttachmentsForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     resourceId: !isNilOrError(customPage) ? customPage.id : null,
   });
 
-  const handleSubmit = async ({ local_page_files }: FormValues) => {
+  const handleSubmit = async (
+    { local_page_files }: FormValues,
+    enableSection = false
+  ) => {
     const promises: Promise<any>[] = [];
 
     if (!isNilOrError(local_page_files)) {
@@ -75,12 +83,27 @@ const AttachmentsForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       promises.push(addPromise, removePromise);
     }
 
+    if (enableSection) {
+      const enableSectionPromise = updateCustomPage(customPageId, {
+        files_section_enabled: true,
+      });
+      promises.push(enableSectionPromise);
+    }
+
     await Promise.all(promises);
   };
 
   const onFormSubmit = async (formValues: FormValues) => {
     try {
       await handleSubmit(formValues);
+    } catch (error) {
+      handleHookFormSubmissionError(error, methods.setError);
+    }
+  };
+
+  const onFormSubmitAndEnable = async (formValues: FormValues) => {
+    try {
+      await handleSubmit(formValues, true);
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);
     }
@@ -100,6 +123,8 @@ const AttachmentsForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     return null;
   }
 
+  const isSectionEnabled = customPage.attributes.files_section_enabled;
+
   return (
     <>
       <HelmetIntl title={messages.pageMetaTitle} />
@@ -107,6 +132,7 @@ const AttachmentsForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         <form onSubmit={methods.handleSubmit(onFormSubmit)}>
           <SectionFormWrapper
             title={formatMessage(messages.pageTitle)}
+            badge={<ShownOnPageBadge shownOnPage={isSectionEnabled} />}
             breadcrumbs={[
               {
                 label: formatMessage(pagesAndMenuBreadcrumb.label),
@@ -120,6 +146,11 @@ const AttachmentsForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
                 label: formatMessage(messages.pageTitle),
               },
             ]}
+            rightSideCTA={
+              <ViewCustomPageButton
+                linkTo={`/pages/${customPage.attributes.slug}`}
+              />
+            }
           >
             <Feedback successMessage={formatMessage(messages.messageSuccess)} />
             <SectionField>
@@ -145,6 +176,17 @@ const AttachmentsForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
               >
                 <FormattedMessage {...messages.saveButton} />
               </Button>
+              {!isSectionEnabled && (
+                <Button
+                  ml="30px"
+                  type="button"
+                  buttonStyle="primary-outlined"
+                  onClick={methods.handleSubmit(onFormSubmitAndEnable)}
+                  processing={methods.formState.isSubmitting}
+                >
+                  {formatMessage(messages.saveAndEnableButton)}
+                </Button>
+              )}
             </Box>
           </SectionFormWrapper>
         </form>

@@ -6,13 +6,13 @@ import {
   HeaderTitle,
   TAlign,
 } from 'components/LandingPages/citizen/HeaderContent';
+import { WrappedComponentProps } from 'react-intl';
 import Outlet from 'components/Outlet';
 import { openSignUpInModal } from 'components/SignUpIn/events';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useHomepageSettings from 'hooks/useHomepageSettings';
 import useLocalize from 'hooks/useLocalize';
 import React from 'react';
-import { InjectedIntlProps } from 'react-intl';
 import styled from 'styled-components';
 import { trackEventByName } from 'utils/analytics';
 import { injectIntl } from 'utils/cl-intl';
@@ -49,7 +49,7 @@ const HeaderContent = ({
   align = 'center',
   fontColors,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const homepageSettings = useHomepageSettings();
   const localize = useLocalize();
 

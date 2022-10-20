@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.saveButton',
     defaultMessage: 'Save attachments',
   },
+  saveAndEnableButton: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.saveAndEnableButton',
+    defaultMessage: 'Save and enable attachments',
+  },
   buttonSuccess: {
     id: 'app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.buttonSuccess',
     defaultMessage: 'Success',

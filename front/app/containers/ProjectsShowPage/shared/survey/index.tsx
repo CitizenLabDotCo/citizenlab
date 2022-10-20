@@ -27,7 +27,7 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import messages from './messages';
 
 // events
@@ -160,7 +160,7 @@ class Survey extends PureComponent<Props, State> {
   noOp = () => {};
 
   disabledMessage: {
-    [key in ISurveyTakingDisabledReason]: ReactIntl.FormattedMessage.MessageDescriptor;
+    [key in ISurveyTakingDisabledReason]: MessageDescriptor;
   } = {
     projectInactive: messages.surveyDisabledProjectInactive,
     maybeNotPermitted: messages.surveyDisabledMaybeNotPermitted,

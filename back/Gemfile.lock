@@ -145,15 +145,6 @@ PATH
       rails (~> 6.1)
 
 PATH
-  remote: engines/commercial/customizable_navbar
-  specs:
-    customizable_navbar (0.1.0)
-      active_model_serializers (~> 0.10.7)
-      pundit (~> 2.0)
-      rails (~> 6.1)
-      ros-apartment (>= 2.9.0)
-
-PATH
   remote: engines/commercial/flag_inappropriate_content
   specs:
     flag_inappropriate_content (0.1.0)
@@ -377,6 +368,15 @@ PATH
     multi_tenancy (0.1.0)
       actionpack-cloudfront (~> 1.2.0)
       nlp
+      rails (~> 6.1)
+      ros-apartment (>= 2.9.0)
+
+PATH
+  remote: engines/free/customizable_navbar
+  specs:
+    customizable_navbar (0.1.0)
+      active_model_serializers (~> 0.10.7)
+      pundit (~> 2.0)
       rails (~> 6.1)
       ros-apartment (>= 2.9.0)
 
@@ -802,11 +802,11 @@ GEM
       ruby2_keywords (~> 0.0.1)
     netrc (0.11.0)
     nio4r (2.5.8)
-    nokogiri (1.13.8-aarch64-linux)
+    nokogiri (1.13.9-aarch64-linux)
       racc (~> 1.4)
-    nokogiri (1.13.8-arm64-darwin)
+    nokogiri (1.13.9-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.13.8-x86_64-linux)
+    nokogiri (1.13.9-x86_64-linux)
       racc (~> 1.4)
     nori (2.6.0)
     oauth2 (1.4.9)
@@ -1233,6 +1233,7 @@ DEPENDENCIES
   moderation!
   multi_tenancy!
   nlp!
+  nokogiri (>= 1.13.9)
   okcomputer
   omniauth (~> 1.9.1)
   omniauth-azure-activedirectory!
@@ -1312,4 +1313,4 @@ DEPENDENCIES
   whenever (~> 1.0)
 
 BUNDLED WITH
-   2.3.22
+   2.3.20

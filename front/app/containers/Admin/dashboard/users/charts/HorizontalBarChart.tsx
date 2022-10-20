@@ -4,7 +4,7 @@ import { isEmpty } from 'lodash-es';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 
 // styling
@@ -63,10 +63,10 @@ interface InputProps {
 interface Props extends InputProps, DataProps {}
 
 export class HorizontalBarChart extends React.PureComponent<
-  Props & InjectedIntlProps
+  Props & WrappedComponentProps
 > {
   currentChart: React.RefObject<any>;
-  constructor(props: Props & InjectedIntlProps) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props as any);
     this.currentChart = React.createRef();
   }
@@ -127,7 +127,7 @@ export class HorizontalBarChart extends React.PureComponent<
   }
 }
 
-const HorizontalBarChartWithHoCs = injectIntl<Props>(HorizontalBarChart);
+const HorizontalBarChartWithHoCs = injectIntl(HorizontalBarChart);
 
 const WrappedHorizontalBarChart = (inputProps: InputProps) => (
   <GetSerieFromStream {...inputProps}>
