@@ -230,6 +230,7 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
               buttonStyle="text"
               textDecorationHover="underline"
               hidden={!userCanEditProject}
+              padding="0"
             >
               <FormattedMessage {...messages.editSurvey} />
             </Button>
