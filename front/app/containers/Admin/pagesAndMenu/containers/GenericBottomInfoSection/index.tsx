@@ -108,11 +108,9 @@ const GenericBottomInfoSection = ({
           ]}
           title={formatMessage(messages.pageTitle)}
           badge={
-            pageData.attributes.bottom_info_section_enabled ? (
-              <ShownOnPageBadge shownOnPage />
-            ) : (
-              <ShownOnPageBadge shownOnPage={false} />
-            )
+            <ShownOnPageBadge
+              shownOnPage={pageData.attributes.bottom_info_section_enabled}
+            />
           }
           rightSideCTA={
             linkToViewPage ? (

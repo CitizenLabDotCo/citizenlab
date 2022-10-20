@@ -99,11 +99,9 @@ const GenericTopInfoSection = ({
         <form onSubmit={methods.handleSubmit(onFormSubmit)}>
           <SectionFormWrapper
             badge={
-              pageData.attributes.top_info_section_enabled ? (
-                <ShownOnPageBadge shownOnPage />
-              ) : (
-                <ShownOnPageBadge shownOnPage={false} />
-              )
+              <ShownOnPageBadge
+                shownOnPage={pageData.attributes.top_info_section_enabled}
+              />
             }
             breadcrumbs={[
               {

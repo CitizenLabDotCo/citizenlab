@@ -195,11 +195,7 @@ const EditCustomPageHeroBannerForm = ({
             localSettings.banner_enabled ? undefined : handleSaveAndEnable
           }
           badge={
-            localSettings.banner_enabled ? (
-              <ShownOnPageBadge shownOnPage />
-            ) : (
-              <ShownOnPageBadge shownOnPage={false} />
-            )
+            <ShownOnPageBadge shownOnPage={localSettings.banner_enabled} />
           }
           formStatus={formStatus}
           isLoading={isLoading}

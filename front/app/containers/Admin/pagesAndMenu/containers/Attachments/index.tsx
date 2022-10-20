@@ -130,13 +130,7 @@ const AttachmentsForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         <form onSubmit={methods.handleSubmit(onFormSubmit)}>
           <SectionFormWrapper
             title={formatMessage(messages.pageTitle)}
-            badge={
-              isSectionEnabled ? (
-                <ShownOnPageBadge shownOnPage />
-              ) : (
-                <ShownOnPageBadge shownOnPage={false} />
-              )
-            }
+            badge={<ShownOnPageBadge shownOnPage={isSectionEnabled} />}
             breadcrumbs={[
               {
                 label: formatMessage(pagesAndMenuBreadcrumb.label),
