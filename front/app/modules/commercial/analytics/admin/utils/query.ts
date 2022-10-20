@@ -53,3 +53,32 @@ const RESOLUTION_TO_INTERVAL: Record<IResolution, Interval> = {
 
 export const getInterval = (resolution: IResolution) =>
   RESOLUTION_TO_INTERVAL[resolution];
+
+const getLastPeriod = (resolution: IResolution) => {
+  if (resolution === 'month') {
+    return moment().subtract({ days: 30 }).format('YYYY-MM-DD');
+  }
+
+  if (resolution === 'week') {
+    return moment().subtract({ days: 7 }).format('YYYY-MM-DD');
+  }
+
+  return moment().subtract({ days: 1 }).format('YYYY-MM-DD');
+};
+
+export const getDateFilterLastPeriod = (
+  filter: string,
+  resolution: IResolution
+) => {
+  const today = moment().format('YYYY-MM-DD');
+  const lastPeriod = getLastPeriod(resolution);
+
+  return {
+    [filter]: {
+      date: {
+        from: lastPeriod,
+        to: today,
+      },
+    },
+  };
+};
