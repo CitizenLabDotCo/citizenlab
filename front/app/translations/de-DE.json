@@ -268,8 +268,6 @@
   "app.components.PagesForm.slugLabelTooltip": "Sie können den letzten Teil der URL Ihrer Seite (den so genannten Slug) angeben. Die URL der aktuellen Seite lautet zum Beispiel {currentPageURL}, wobei {currentPageSlug} der Slug ist.",
   "app.components.PagesForm.slugRegexError": "Der Slug darf nur normale Kleinbuchstaben (a-z), Zahlen (0-9) und Bindestriche (-) enthalten. Das erste und das letzte Zeichen dürfen keine Bindestriche sein. Aufeinanderfolgende Bindestriche (--) sind verboten.",
   "app.components.PagesForm.titleMissingOneLanguageError": "Geben Sie einen Titel für mindestens eine Sprache ein",
-  "app.components.PagesShowPage.notFoundDescription": "Die angeforderte Seite konnte leider nicht gefunden werden",
-  "app.components.PagesShowPage.notFoundTitle": "Seite nicht gefunden",
   "app.components.PasswordInput.a11y_passwordHidden": "Passwort versteckt",
   "app.components.PasswordInput.a11y_passwordVisible": "Passwort sichtbar",
   "app.components.PasswordInput.a11y_strength1Password": "Schlechte Passwortstärke",
