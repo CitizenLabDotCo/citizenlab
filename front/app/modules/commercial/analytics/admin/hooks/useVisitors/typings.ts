@@ -1,5 +1,6 @@
 import { IResolution } from 'components/admin/ResolutionControl';
 import { Moment } from 'moment';
+import { Stat } from '../typings';
 
 export interface QueryParameters {
   projectId: string | undefined;
@@ -43,18 +44,6 @@ interface TimeSeriesResponseDay extends BaseRow {
 }
 
 // Hook return value
-interface Stat {
-  value: string;
-  lastPeriod: string;
-}
-
-export interface Stats {
-  visitors: Stat;
-  visits: Stat;
-  visitDuration: Stat;
-  pageViews: Stat;
-}
-
 export interface TimeSeriesRow {
   /* Date format: YYYY-MM-DD */
   date: string;
@@ -63,3 +52,10 @@ export interface TimeSeriesRow {
 }
 
 export type TimeSeries = TimeSeriesRow[];
+
+export interface Stats {
+  visitors: Stat;
+  visits: Stat;
+  visitDuration: Stat;
+  pageViews: Stat;
+}

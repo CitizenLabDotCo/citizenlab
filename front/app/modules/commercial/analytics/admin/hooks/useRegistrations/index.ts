@@ -7,14 +7,16 @@ import { analyticsStream } from '../../services/analyticsFacts';
 import { query } from './query';
 
 // typings
-import { QueryParameters, Response } from './typings';
+import { QueryParameters, Response, TimeSeries, Stats } from './typings';
+import { NilOrError } from 'utils/helperUtils';
 
 export default function useRegistrations({
   startAtMoment,
   endAtMoment,
   resolution,
 }: QueryParameters) {
-  const [timeSeries /*, setTimeSeries */] = useState();
+  const [timeSeries, setTimeSeries] = useState<TimeSeries | NilOrError>();
+  const [stats, setStats] = useState<Stats | NilOrError>();
 
   useEffect(() => {
     const observable = analyticsStream<Response>(
@@ -25,14 +27,10 @@ export default function useRegistrations({
       })
     ).observable;
 
-    const subscription = observable.subscribe((response) => {
-      console.log(response);
-    });
+    const subscription = observable.subscribe((response) => {});
 
     return () => subscription.unsubscribe();
   }, [startAtMoment, endAtMoment, resolution]);
 
-  return {
-    timeSeries,
-  };
+  return { timeSeries, stats };
 }

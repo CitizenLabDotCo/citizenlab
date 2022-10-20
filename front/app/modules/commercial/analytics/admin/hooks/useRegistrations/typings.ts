@@ -1,5 +1,6 @@
 import { Moment } from 'moment';
 import { IResolution } from 'components/admin/ResolutionControl';
+import { Stat } from '../typings';
 
 export interface QueryParameters {
   startAtMoment: Moment | null | undefined;
@@ -47,3 +48,15 @@ interface VisitorsCountRow {
 }
 
 // Hook return value
+export interface TimeSeriesRow {
+  /* Date format: YYYY-MM-DD */
+  date: string;
+  registrations: number;
+}
+
+export type TimeSeries = TimeSeriesRow[];
+
+export interface Stats {
+  totalRegistrations: Stat;
+  conversionRate: Stat;
+}
