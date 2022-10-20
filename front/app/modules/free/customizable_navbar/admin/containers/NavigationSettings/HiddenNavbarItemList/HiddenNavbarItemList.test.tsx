@@ -19,7 +19,7 @@ jest.mock('../../../../hooks/useRemovedDefaultNavbarItems', () =>
 );
 
 jest.mock('hooks/useCustomPages');
-jest.mock('hooks/usePageSlugById');
+jest.mock('hooks/useCustomPageSlugById');
 jest.mock('hooks/useLocale');
 
 jest.mock('../../../../services/navbar', () => ({

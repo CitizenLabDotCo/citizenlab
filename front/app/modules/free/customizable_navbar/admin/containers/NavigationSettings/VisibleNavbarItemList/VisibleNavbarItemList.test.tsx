@@ -13,7 +13,7 @@ import { deleteCustomPage } from 'services/customPages';
 jest.mock('services/locale');
 jest.mock('services/appConfiguration');
 jest.mock('hooks/useNavbarItems');
-jest.mock('hooks/usePageSlugById');
+jest.mock('hooks/useCustomPageSlugById');
 jest.mock('hooks/useLocale');
 
 jest.mock('../../../../services/navbar', () => ({
