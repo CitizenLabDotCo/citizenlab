@@ -76,6 +76,35 @@ describe('Survey builder', () => {
     cy.get('#e2e-modal-container').should('have.length', 0);
   });
 
+  it('can create survey, save survey and admin can click button in survey page to navigate to the survey builder', () => {
+    cy.visit(`admin/projects/${projectId}/native-survey`);
+    cy.get('[data-cy="e2e-edit-survey-content"]').click();
+    cy.get('[data-cy="e2e-short-answer"]').click();
+
+    // Save the survey
+    cy.get('form').submit();
+    // Should show error if no title is entered
+    cy.get('[data-testid="error-message"]').should('exist');
+
+    cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
+    // Set the field to required
+    cy.get('#e2e-required-toggle').find('input').click({ force: true });
+
+    cy.get('form').submit();
+    // Should show success message on saving
+    cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
+
+    // Navigate to the survey
+    cy.visit(`/projects/${projectSlug}/ideas/new`);
+    cy.acceptCookies();
+
+    cy.get('[data-cy="e2e-edit-survey-link"]').click();
+    cy.location('pathname').should(
+      'eq',
+      `/en/admin/projects/${projectId}/native-survey/edit`
+    );
+  });
+
   it('deletes a field when the delete button is clicked', () => {
     const fieldIdentifier = snakeCase(questionTitle);
     cy.visit(`admin/projects/${projectId}/native-survey/edit`);
