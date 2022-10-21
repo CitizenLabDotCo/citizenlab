@@ -26,6 +26,8 @@ import IdeasEditMeta from '../IdeasEditMeta';
 import { usePermission } from 'services/permissions';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 
+import useIdeaImages from 'hooks/useIdeaImages';
+
 const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
   const authUser = useAuthUser();
@@ -33,6 +35,7 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
   const project = useProject({
     projectId: isNilOrError(idea) ? null : idea.relationships.project.data.id,
   });
+  const remoteImages = useIdeaImages(ideaId);
 
   const phases = usePhases(project?.id);
   const { schema, uiSchema, inputSchemaError } = useInputSchema({
@@ -68,9 +71,15 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
                 prop,
                 idea.relationships?.topics?.data.map((rel) => rel.id),
               ];
+            } else if (
+              prop === 'idea_images_attributes' &&
+              Array.isArray(idea.relationships?.idea_images?.data)
+            ) {
+              return [prop, remoteImages];
             } else return [prop, undefined];
           })
         );
+  debugger;
 
   const onSubmit = async (data) => {
     let location_point_geojson;
