@@ -545,6 +545,7 @@
   "app.components.form.ErrorDisplay.guidelinesLinkText": "yönergelerimiz",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Kullanıcı e-posta adresine veya adına göre aramak için yazmaya başlayın...",
   "app.components.form.blockedVerified": "Doğrulanmış bilgiler içerdiğinden bu alanı düzenleyemezsiniz",
+  "app.components.form.controls.adminFieldTooltip": "Alan yalnızca yöneticiler tarafından görülebilir",
   "app.components.form.controls.selectMany": "*Choose as many as you like",
   "app.components.form.error": "Hata",
   "app.components.form.locationGoogleUnavailable": "Google Maps tarafından sağlanan konum alanı yüklenemedi.",
