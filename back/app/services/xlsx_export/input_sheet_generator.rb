@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module XlsxExport
-  class SheetGenerator
+  class InputSheetGenerator
     US_DATE_TIME_FORMAT = 'mm/dd/yyyy hh:mm:ss'
 
     def initialize(inputs, form, participation_method, include_private_attributes)

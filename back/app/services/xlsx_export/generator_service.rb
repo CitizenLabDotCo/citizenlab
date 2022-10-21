@@ -49,7 +49,7 @@ module XlsxExport
       form = project.custom_form || CustomForm.new(participation_context: project)
       project_participation_method = Factory.instance.participation_method_for project
       inputs = eager_load_inputs(project.ideas)
-      sheet_generator = SheetGenerator.new(inputs, form, project_participation_method, include_private_attributes)
+      sheet_generator = InputSheetGenerator.new(inputs, form, project_participation_method, include_private_attributes)
       sheet_generator.generate_sheet(workbook, sheet_name)
     end
 
@@ -69,7 +69,7 @@ module XlsxExport
         phase.project.custom_form || CustomForm.new(participation_context: phase.project)
       end
       inputs = eager_load_inputs(phase.ideas)
-      sheet_generator = SheetGenerator.new(inputs, form, phase_participation_method, include_private_attributes)
+      sheet_generator = InputSheetGenerator.new(inputs, form, phase_participation_method, include_private_attributes)
       sheet_name = MultilocService.new.t phase.title_multiloc
       sheet_generator.generate_sheet(workbook, sheet_name)
     end
