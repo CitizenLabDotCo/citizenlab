@@ -175,7 +175,7 @@ export default class SubmitWrapper extends PureComponent<Props> {
         {/* show a secondary button if an onClick handler is provided for it */}
         {this.props.secondaryButtonOnClick && (
           <Button
-            className="e2e-submit-wrapper-button"
+            data-cy="e2e-submit-wrapper-secondary-submit-button"
             buttonStyle={secondaryButtonStyle}
             processing={loading}
             disabled={isSubmitButtonDisabled}
