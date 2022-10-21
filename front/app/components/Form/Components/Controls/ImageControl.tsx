@@ -51,7 +51,7 @@ const ImageControl = ({
       inputId &&
       !isNilOrError(data) &&
       data.length > 0 &&
-      data[0].attributes.versions.medium
+      data[0].attributes?.versions.medium
     ) {
       (async () => {
         const newRemoteFile = await convertUrlToUploadFile(
