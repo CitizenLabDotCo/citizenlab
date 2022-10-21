@@ -32,7 +32,6 @@ const ImageControl = ({
     setDidBlur(true);
   };
   const handleUploadOnRemove = (_file) => {
-    // Image removal will need to be handled in the onSubmit of the form itself
     handleChange(path, undefined);
     setImageFiles([]);
     setDidBlur(true);
